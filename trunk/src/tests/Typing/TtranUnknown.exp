@@ -1,0 +1,43 @@
+// fn0C00_0000
+void fn0C00_0000(word16 bx, segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	store(Mem6[ds:bx:word32]) = Mem0[ds:bx + 0x0004:word32]
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+// Equivalence classes ////////////
+Eq_3: (struct (0 word32 dw0000) (4 word32 dw0004))
+	T_3 (in bx : word16)
+// Type Variables ////////////
+Globals:(in globals)
+  Class: Eq_1
+  DataType: Eq_1
+  OrigDataType: 
+T_2:(in ds)
+  Class: Eq_2
+  DataType: segment
+  OrigDataType: segment
+T_3:(in bx)
+  Class: Eq_3
+  DataType: (memptr segment Eq_3)
+  OrigDataType: (memptr T_2 (struct (0 T_7 t0000) (4 T_6 t0004)))
+T_4:(in 0x0004)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_5:(in bx + 0x0004)
+  Class: Eq_5
+  DataType: word16
+  OrigDataType: word16
+T_6:(in Mem0[ds:bx + 0x0004:word32])
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32
+T_7:(in Mem6[ds:bx:word32])
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32

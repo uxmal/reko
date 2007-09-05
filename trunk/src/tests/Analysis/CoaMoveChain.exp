@@ -1,0 +1,24 @@
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+ax: ax:Register
+bx: bx:Register
+cx: cx:Register
+ds: ds:Register, def: {def ds}, uses: {store(Mem9[ds:0x0300:word16]) = 0x0004}
+ax_6: orig: ax
+bx_7: orig: bx
+cx_8: orig: cx
+Mem9: orig: Mem0, def: {store(Mem9[ds:0x0300:word16]) = 0x0004}
+bx_10: orig: bx
+ax_11: orig: ax
+// fn0C00_0000
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	store(Mem9[ds:0x0300:word16]) = 0x0004
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+

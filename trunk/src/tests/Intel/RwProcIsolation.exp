@@ -1,0 +1,58 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// di:Register
+// wLoc02:Local -0002
+// ax:Register
+// ds:Register
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	call fn0C00_000F (depth: 0;)
+	wLoc02 = di
+	ax = 0x0100
+	call fn0C00_0014 (depth: 2;)
+	store(Mem0[ds:0x0300:word16]) = ax
+	di = wLoc02
+	call fn0C00_000F (depth: 0;)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_000F
+// Mem0:Global memory
+// fp:Temporary
+// di:Register
+// ds:Register
+// return address size: 2
+void fn0C00_000F()
+fn0C00_000F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_000F:		// block 1, pred: 0
+	store(Mem0[ds:di:word16]) = 0x0000
+	return
+	// succ:  2
+fn0C00_000F_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_0014
+// Mem0:Global memory
+// fp:Temporary
+// di:Register
+// SCZO:Flags
+// ax:Register
+// SZO:Flags
+// return address size: 2
+void fn0C00_0014()
+fn0C00_0014_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0014:		// block 1, pred: 0
+	di = 0x0000
+	SCZO = cond(di)
+	ax = ax - 0x0001
+	SZO = cond(ax)
+	return
+	// succ:  2
+fn0C00_0014_exit:		// block 2, pred: 1
+	// succ: 

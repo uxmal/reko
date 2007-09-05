@@ -1,0 +1,42 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// ds:Register
+// al:Register
+// ax:Register
+// dx:Register
+// dx_ax:Sequence dx:ax
+// cx:Register
+// cl:Register
+// SCZO:Flags
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	al = Mem0[ds:0x0300:byte]
+	ax = Mem0[ds:0x0301:byte] *u al
+	store(Mem0[ds:0x0302:word16]) = ax
+	ax = Mem0[ds:0x0304:word16]
+	dx_ax = Mem0[ds:0x0306:word16] *u ax
+	store(Mem0[ds:0x0308:word16]) = ax
+	store(Mem0[ds:0x030A:word16]) = dx
+	cx = Mem0[ds:0x030C:word16]
+	ax = Mem0[ds:0x030E:word16]
+	dx_ax = cx * ax
+	store(Mem0[ds:0x0310:word16]) = ax
+	store(Mem0[ds:0x0312:word16]) = dx
+	al = Mem0[ds:0x0300:byte]
+	cl = Mem0[ds:0x0301:byte]
+	ax = cl *u al
+	store(Mem0[ds:0x0302:word16]) = ax
+	ax = Mem0[ds:0x0304:word16] * 0x0024
+	dx = ax * 0x0024
+	ax = Mem0[ds:0x0304:word16] * 0x0114
+	dx = ax * 0x0114
+	ax = Mem0[ds:0x0304:word16] * 0x0114
+	SCZO = cond(ax)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 

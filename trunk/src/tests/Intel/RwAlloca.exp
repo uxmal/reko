@@ -1,0 +1,108 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// ds:Register
+// ax:Register
+// wLoc02:Local -0002
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax = Mem0[ds:0x0300:word16]
+	wLoc02 = ax
+	call fn0C00_001F (depth: 2;)
+	call fn0C00_000C (depth: 2;)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_001F
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// wLoc02:Local -0002
+// wArg02:Stack +0002
+// bx:Register
+// ds:Register
+// ax:Register
+// wLoc04:Local -0004
+// return address size: 2
+void fn0C00_001F()
+fn0C00_001F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_001F:		// block 1, pred: 0
+	wLoc02 = bp
+	bx = wArg02
+	ax = Mem0[ds:bx + 0x0002:word16]
+	alloca(ax)
+	wLoc04 = ax
+	call fn0C00_003A (depth: 4;)
+	bp = wLoc02
+	return
+	// succ:  2
+fn0C00_001F_exit:		// block 2, pred: 1
+	// succ: 
+// alloca
+// Mem0:Global memory
+// fp:Temporary
+// ax:Register
+// wLoc00:Local -0000
+// cx:Register
+// sp:Register
+// return address size: 2
+void alloca(word16 ax)
+alloca_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0033:		// block 1, pred: 0
+	cx = wLoc00
+	ax = sp
+	wLoc00 = cx
+	return
+	// succ:  2
+alloca_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_003A
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// wLoc02:Local -0002
+// wArg02:Stack +0002
+// bx:Register
+// ds:Register
+// return address size: 2
+void fn0C00_003A()
+fn0C00_003A_entry:		// block 0, pred:
+	// succ:  1
+l0C00_003A:		// block 1, pred: 0
+	wLoc02 = bp
+	bx = wArg02
+	store(Mem0[ds:bx:word16]) = 0x0000
+	bp = wLoc02
+	return
+	// succ:  2
+fn0C00_003A_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_000C
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// wLoc02:Local -0002
+// ax:Register
+// tLoc0102:Local -0102
+// wLoc0104:Local -0104
+// return address size: 2
+void fn0C00_000C()
+fn0C00_000C_entry:		// block 0, pred:
+	// succ:  1
+l0C00_000C:		// block 1, pred: 0
+	wLoc02 = bp
+	ax = 0x0100
+	ax = &tLoc0102
+	wLoc0104 = 0x1000
+	call fn0C00_003A (depth: 260;)
+	bp = wLoc02
+	return
+	// succ:  2
+fn0C00_000C_exit:		// block 2, pred: 1
+	// succ: 

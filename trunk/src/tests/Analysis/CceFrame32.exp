@@ -1,0 +1,123 @@
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {eax_6 = Mem0[0x10003420:word32]}
+fp: fp:Temporary
+eax: eax:Register
+dwLoc04: dwLoc04:Local -0004
+ax: ax:Register
+ecx: ecx:Register, def: {def ecx}, uses: {ax_8 = fn10000017(ecx, dwLoc04_7)}
+eax_6: orig: eax, def: {eax_6 = Mem0[0x10003420:word32]}, uses: {dwLoc04_7 = eax_6}
+dwLoc04_7: orig: dwLoc04, def: {dwLoc04_7 = eax_6}, uses: {ax_8 = fn10000017(ecx, dwLoc04_7)}
+ax_8: orig: ax, def: {ax_8 = fn10000017(ecx, dwLoc04_7)}, uses: {store(Mem10[0x10003428:word16]) = ax_8}
+eax_9: orig: eax
+Mem10: orig: Mem0, def: {store(Mem10[0x10003428:word16]) = ax_8}
+// fn10000000
+void fn10000000(word32 ecx)
+fn10000000_entry:		// block 0, pred:
+	def Mem0
+	def ecx
+	// succ:  1
+l10000000:		// block 1, pred: 0
+	eax_6 = Mem0[0x10003420:word32]
+	dwLoc04_7 = eax_6
+	ax_8 = fn10000017(ecx, dwLoc04_7)
+	store(Mem10[0x10003428:word16]) = ax_8
+	return
+	// succ:  2
+fn10000000_exit:		// block 2, pred: 1
+	// succ: 
+
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]}
+fp: fp:Temporary
+ebp: ebp:Register
+dwLoc04: dwLoc04:Local -0004
+ecx: ecx:Register
+dwLoc08: dwLoc08:Local -0008
+wLoc08: wLoc08:Local -0008
+dwArg04: dwArg04:Stack +0004, def: {def dwArg04}, uses: {ecx_24 = dwArg04}{branch dwArg04 != 0x00000000}
+SCZO: SCZO:Flags
+Z: Z:Flags
+ax: ax:Register
+eax: eax:Register
+edx: edx:Register
+C: C:Flags
+SO: SO:Flags
+cx: cx:Register
+dwLoc08_16: orig: dwLoc08
+wLoc08_17: orig: wLoc08, def: {wLoc08_17 = 0x0000}, uses: {wLoc08_21 = PHI(wLoc08_17, wLoc08_38)}
+SCZO_18: orig: SCZO
+Z_19: orig: Z
+SO_20: orig: SO
+wLoc08_21: orig: wLoc08, def: {wLoc08_21 = PHI(wLoc08_17, wLoc08_38)}, uses: {eax_22 = (int32) wLoc08_21}{eax_30 = (int32) wLoc08_21}{cx_34 = wLoc08_21}{ax_42 = wLoc08_21}
+eax_22: orig: eax, def: {eax_22 = (int32) wLoc08_21}, uses: {edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]}
+ax_23: orig: ax
+ecx_24: orig: ecx, def: {ecx_24 = dwArg04}, uses: {edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]}
+cx_25: orig: cx
+edx_26: orig: edx, def: {edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]}, uses: {branch edx_26 == 0x00000000}
+SCZO_27: orig: SCZO
+Z_28: orig: Z
+C_29: orig: C
+eax_30: orig: eax, def: {eax_30 = (int32) wLoc08_21}, uses: {branch eax_30 >= 0x00007FFF}
+ax_31: orig: ax
+SCZO_32: orig: SCZO
+SO_33: orig: SO
+cx_34: orig: cx, def: {cx_34 = wLoc08_21}, uses: {cx_35 = cx_34 + 0x0001}
+cx_35: orig: cx, def: {cx_35 = cx_34 + 0x0001}, uses: {wLoc08_38 = cx_35}
+ecx_36: orig: ecx
+SCZO_37: orig: SCZO
+wLoc08_38: orig: wLoc08, def: {wLoc08_38 = cx_35}, uses: {wLoc08_21 = PHI(wLoc08_17, wLoc08_38)}
+SO_39: orig: SO
+eax_40: orig: eax
+SCZO_41: orig: SCZO
+ax_42: orig: ax, def: {ax_42 = wLoc08_21}, uses: {ax_52 = PHI(ax_44, ax_42)}
+eax_43: orig: eax
+ax_44: orig: ax, def: {ax_44 = 0x0000}, uses: {ax_52 = PHI(ax_44, ax_42)}
+eax_45: orig: eax
+SCZO_46: orig: SCZO
+cx_47: orig: cx
+SO_48: orig: SO
+C_49: orig: C
+edx_50: orig: edx
+eax_51: orig: eax
+ax_52: orig: ax, def: {ax_52 = PHI(ax_44, ax_42)}, uses: {return ax_52}
+Z_53: orig: Z
+SCZO_54: orig: SCZO
+wLoc08_55: orig: wLoc08
+ecx_56: orig: ecx
+// fn10000017
+word16 fn10000017(word32 ecx, word32 dwArg04)
+fn10000017_entry:		// block 0, pred:
+	def Mem0
+	def dwArg04
+	// succ:  1
+l10000017:		// block 1, pred: 0
+	wLoc08_17 = 0x0000
+	branch dwArg04 != 0x00000000
+	// succ:  6 2
+l1000002F:		// block 2, pred: 1 5
+	wLoc08_21 = PHI(wLoc08_17, wLoc08_38)
+	eax_22 = (int32) wLoc08_21
+	ecx_24 = dwArg04
+	edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]
+	branch edx_26 == 0x00000000
+	// succ:  3 4
+l1000003E:		// block 3, pred: 2
+	eax_30 = (int32) wLoc08_21
+	branch eax_30 >= 0x00007FFF
+	// succ:  5 4
+l1000005A:		// block 4, pred: 3 2
+	ax_42 = wLoc08_21
+	// succ:  7
+l10000049:		// block 5, pred: 3
+	cx_34 = wLoc08_21
+	cx_35 = cx_34 + 0x0001
+	wLoc08_38 = cx_35
+	// succ:  2
+l10000027:		// block 6, pred: 1
+	ax_44 = 0x0000
+	// succ:  7
+l1000005E:		// block 7, pred: 6 4
+	ax_52 = PHI(ax_44, ax_42)
+	return ax_52
+	// succ:  8
+fn10000017_exit:		// block 8, pred: 7
+	// succ: 
+

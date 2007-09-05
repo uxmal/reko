@@ -1,0 +1,70 @@
+// void fn0C00_0000(Register word16 dx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  dx
+// LiveOut:
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000(word16 dx)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	word16 dx_4
+	fn0C00_0004(dx, &dx_4)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+// Register word16 fn0C00_0004(Register word16 dx, Register out ptr0 dxOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  dx
+// LiveOut: ax dx
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved:
+// fn0C00_0004
+word16 fn0C00_0004(word16 dx, ptr0 dxOut)
+fn0C00_0004_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0004:		// block 1, pred: 0
+	word16 dx_10
+	branch dx != 0x001E
+	// succ:  3 2
+l0C00_000F:		// block 2, pred: 1
+	store(Mem0[dxOut:word16]) = dx - 0x0001
+	// succ:  4
+l0C00_0009:		// block 3, pred: 1
+	store(Mem0[dxOut:word16]) = fn0C00_0013(dx)
+	// succ:  4
+l0C00_0010:		// block 4, pred: 3 2
+	return dx_10
+	// succ:  5
+fn0C00_0004_exit:		// block 5, pred: 4
+	// succ: 
+
+// Register word16 fn0C00_0013(Register word16 dx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  dx
+// LiveOut: dx
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved:
+// fn0C00_0013
+word16 fn0C00_0013(word16 dx)
+fn0C00_0013_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0013:		// block 1, pred: 0
+	word16 dx_11
+	branch dx < 0x0014
+	// succ:  3 2
+l0C00_001F:		// block 2, pred: 1
+	fn0C00_0004(dx - 0x000A, &dx_11)
+	// succ:  4
+l0C00_0018:		// block 3, pred: 1
+	fn0C00_0004(dx - 0x0001, &dx_11)
+	// succ:  4
+l0C00_0025:		// block 4, pred: 3 2
+	return dx_11
+	// succ:  5
+fn0C00_0013_exit:		// block 5, pred: 4
+	// succ: 
+

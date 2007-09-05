@@ -1,0 +1,69 @@
+// fn0C00_0000
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	store(Mem6[ds:0x0300:word16]) = 0x0000
+	store(Mem7[ds:0x0302:word16]) = 0x00CA
+	store(Mem8[ds:0x0304:word16]) = 0x0194
+	store(Mem14[ds:0x0306:word16]) = Mem8[ds:0x0302:word16] + Mem8[ds:0x0304:word16]
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+T_2 (in 0x0000)
+	trait_primitive(word16)
+T_3 (in ds)
+	trait_primitive(segment)
+	trait_mem(T_5, 300)
+	trait_primitive(segment)
+	trait_mem(T_8, 302)
+	trait_primitive(segment)
+	trait_mem(T_11, 304)
+	trait_primitive(segment)
+	trait_mem(T_13, 302)
+	trait_primitive(segment)
+	trait_mem(T_15, 304)
+	trait_primitive(segment)
+	trait_mem(T_18, 306)
+T_4 (in 0x0300)
+	trait_primitive(word16)
+	trait_mem(T_3:T_5, 0)
+T_5 (in Mem6[ds:0x0300:word16])
+	trait_primitive(word16)
+	trait_equal(T_2)
+T_6 (in 0x00CA)
+	trait_primitive(word16)
+T_7 (in 0x0302)
+	trait_primitive(word16)
+	trait_mem(T_3:T_8, 0)
+T_8 (in Mem7[ds:0x0302:word16])
+	trait_primitive(word16)
+	trait_equal(T_6)
+T_9 (in 0x0194)
+	trait_primitive(word16)
+T_10 (in 0x0304)
+	trait_primitive(word16)
+	trait_mem(T_3:T_11, 0)
+T_11 (in Mem8[ds:0x0304:word16])
+	trait_primitive(word16)
+	trait_equal(T_9)
+T_12 (in 0x0302)
+	trait_primitive(word16)
+	trait_mem(T_3:T_13, 0)
+T_13 (in Mem8[ds:0x0302:word16])
+	trait_primitive(word16)
+T_14 (in 0x0304)
+	trait_primitive(word16)
+	trait_mem(T_3:T_15, 0)
+T_15 (in Mem8[ds:0x0304:word16])
+	trait_primitive(word16)
+T_16 (in Mem8[ds:0x0302:word16] + Mem8[ds:0x0304:word16])
+	trait_primitive(word16)
+T_17 (in 0x0306)
+	trait_primitive(word16)
+	trait_mem(T_3:T_18, 0)
+T_18 (in Mem14[ds:0x0306:word16])
+	trait_primitive(word16)
+	trait_equal(T_16)

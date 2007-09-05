@@ -1,0 +1,31 @@
+// SegmentedMemoryPointerMock
+void SegmentedMemoryPointerMock()
+SegmentedMemoryPointerMock_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	si = &T5::w0001;
+	ax = cs->*si;
+	// succ: 
+
+// TypeVariable -> EquivalenceClass ////////////
+Globals: Eq_1 (in globals)
+T_2: Eq_2 (in 0x0001)
+T_3: Eq_2 (in si)
+T_4: Eq_4 (in cs)
+T_5: Eq_5 (in Mem0[cs:si:word16])
+T_6: Eq_5 (in ax)
+// EquivalenceClass -> DataType ///////////
+// TypeVariable -> OriginalDataType ////////////
+Globals: 
+T_2: word16 (in 0x0001)
+T_3: (memptr T_4 (struct (0 T_5 t0000))) (in si)
+T_4: word16 (in cs)
+T_5: word16 (in Mem0[cs:si:word16])
+T_6: word16 (in ax)
+// TypeVariable -> DataType ////////////////////
+Globals: Eq_1 (in globals)
+T_2: (memptr word16 word16) (in 0x0001)
+T_3: (memptr word16 word16) (in si)
+T_4: word16 (in cs)
+T_5: word16 (in Mem0[cs:si:word16])
+T_6: word16 (in ax)

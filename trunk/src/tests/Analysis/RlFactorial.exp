@@ -1,0 +1,63 @@
+fn0C00_0000
+	LiveOut:  
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:   SCZO ax cx dx al cl dl ah ch dh
+	Preserved:
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: ds
+l0C00_0000:		// block 1, pred: 0
+	cx = 0x0064
+	wLoc02 = cx
+	call fn0C00_000F (depth: 2;)
+	store(Mem0[ds:0x0064:word16]) = ax
+	return
+	// succ:  2
+// DataOut:
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// DataOut:
+fn0C00_000F
+	LiveOut:   ax ds
+	MayUseIn: 
+	BypassIn: 
+	Trashed:   SCZO ax dx al dl ah dh
+	Preserved: bp
+// fn0C00_000F
+void fn0C00_000F()
+fn0C00_000F_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: ds
+// LocalsOut: Stack +0002(16)
+
+l0C00_000F:		// block 1, pred: 0
+	ax = wArg02
+	ax = ax - 0x0001
+	SZO = cond(ax)
+	branch Test(EQ,Z)
+	// succ:  3 2
+// DataOut: ax ds
+// LocalsOut: Stack +0002(16)
+
+l0C00_0026:		// block 2, pred: 1
+	ax = 0x0001
+	// succ:  4
+// DataOut: ax ds
+l0C00_0018:		// block 3, pred: 1
+	wLoc04 = ax
+	call fn0C00_000F (depth: 4;)
+	dx = wArg02
+	dx_ax = dx * ax
+	SCZO = cond(dx_ax)
+	// succ:  4
+// DataOut: ax ds
+l0C00_0029:		// block 4, pred: 3 2
+	return
+	// succ:  5
+// DataOut: ax ds
+fn0C00_000F_exit:		// block 5, pred: 4
+	// succ: 
+// DataOut: ax ds

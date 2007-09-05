@@ -1,0 +1,35 @@
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	wLoc02 = 0x0C00
+	ds = wLoc02
+	bl = Mem0[ds:si:byte]
+	SCZO = cond(bl - 0x02)
+	branch Test(UGT,CZ)
+	// succ:  3 2
+l0C00_0023:		// block 2, pred: 1
+	ax = 0x0000
+	return
+	// succ:  7
+l0C00_0009:		// block 3, pred: 1
+	bh = 0x00
+	bx = bx + bx
+	SCZO = cond(bx)
+	switch (bl) { 6 5 4 }
+	// succ:  6 5 4
+l0C00_001F:		// block 4, pred: 3
+	ax = 0x0003
+	return
+	// succ:  7
+l0C00_001B:		// block 5, pred: 3
+	ax = 0x0002
+	return
+	// succ:  7
+l0C00_0017:		// block 6, pred: 3
+	ax = 0x0001
+	return
+	// succ:  7
+fn0C00_0000_exit:		// block 7, pred: 6 5 4 2
+	// succ: 

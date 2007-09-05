@@ -1,0 +1,24 @@
+// void fn0C00_0000(Register segment ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO ax cx dx bx di al cl dl bl ah ch dh bh es ds gs
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	word16 dx_18 = Mem0[ds:Mem0[ds:0x9CFD:word16] *u 0x0002 + 0x99F8:word16]
+	store(Mem19[ds:0x9CFF:word16]) = dx_18
+	word16 ax_28
+	msdos_read_file(Mem19[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_18), &ax_28)
+	msdos_close_file(Mem19[ds:0x99D0:word16])
+	store(Mem40[ds:0xC36A:word16]) = Mem19[ds:Mem19[ds:0x9CFD:word16] *u 0x0002 + 0x542E:word16]
+	store(Mem46[ds:0x0100:word16]) = ds
+	store(Mem48[ds:0x0102:word16]) = 0x6041
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+

@@ -1,0 +1,207 @@
+Mem0: Mem0:Global memory, def: {def Mem0}
+fp: fp:Temporary, def: {def fp}
+cx: cx:Register, def: {def cx}
+loc02: loc02:Local -0002 (temp), def: {def loc02}
+ax: ax:Register, def: {def ax}, uses: {call fn0C00_000F (depth: 2;)}{store(Mem7[0x0064:word16]) = ax}
+cx_5: orig: cx, def: {cx_5 = 0x0064}, uses: {loc02_6 = cx_5}{call fn0C00_000F (depth: 2;)}
+loc02_6: orig: loc02, def: {loc02_6 = cx_5}
+Mem7: orig: Mem0, def: {store(Mem7[0x0064:word16]) = ax}
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def cx
+	def loc02
+	def ax
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	cx_5 = 0x0064
+	loc02_6 = cx_5
+	call fn0C00_000F (depth: 2;)
+	store(Mem7[0x0064:word16]) = ax
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+Values:
+	0x0064: <cx_5>
+	any: <store(Mem7[0x0064:word16])>
+	ax: <ax>
+	cx: <cx>
+	cx_5: <loc02_6>
+	fp: <fp>
+	loc02: <loc02>
+	Mem0: <Mem0>
+Identifiers:
+	Mem0: <Mem0>
+	fp: <fp>
+	cx: <cx>
+	loc02: <loc02>
+	ax: <ax>
+	cx_5: <cx_5>
+	loc02_6: <loc02_6>
+	Mem7: <store(Mem7[0x0064:word16])>
+
+Mem0: Mem0:Global memory, def: {def Mem0}
+fp: fp:Temporary, def: {def fp}
+bp: bp:Register, def: {def bp}, uses: {loc02_12 = bp}{call fn0C00_000F (depth: 4;)}
+loc02: loc02:Local -0002 (temp), def: {def loc02}
+arg02: arg02:Stack +0002, def: {def arg02}, uses: {ax_13 = arg02}{dx_22 = arg02}
+ax: ax:Register, def: {def ax}
+SZO: SZO:Flags, def: {def SZO}
+Z: Z:Flags, def: {def Z}
+loc04: loc04:Local -0004 (temp), def: {def loc04}, uses: {loc04_32 = PHI(loc04_21, loc04)}
+dx: dx:Register, def: {def dx}, uses: {dx_31 = PHI(dx_25, dx)}{call fn0C00_000F (depth: 4;)}
+dx_ax: dx_ax:Sequence dx:ax, def: {def dx_ax}, uses: {dx_ax_15 = DPB(dx_ax, ax_14, 0, 16) (alias)}
+SCZO: SCZO:Flags, def: {def SCZO}
+loc02_12: orig: loc02, def: {loc02_12 = bp}, uses: {bp_36 = loc02_12}
+ax_13: orig: ax, def: {ax_13 = arg02}, uses: {ax_14 = ax_13 - 0x0001}
+ax_14: orig: ax, def: {ax_14 = ax_13 - 0x0001}, uses: {dx_ax_15 = DPB(dx_ax, ax_14, 0, 16) (alias)}{SZO_16 = cond(ax_14)}{loc04_21 = ax_14}{call fn0C00_000F (depth: 4;)}{dx_ax_23 = dx_22 * ax_14}
+dx_ax_15: orig: dx_ax, def: {dx_ax_15 = DPB(dx_ax, ax_14, 0, 16) (alias)}, uses: {dx_ax_20 = DPB(dx_ax_15, ax_19, 0, 16) (alias)}
+SZO_16: orig: SZO, def: {SZO_16 = cond(ax_14)}, uses: {Z_17 = SZO_16 (alias)}{SCZO_18 = SZO_16 (alias)}{SZO_34 = PHI(SZO_27, SZO_16)}{call fn0C00_000F (depth: 4;)}
+Z_17: orig: Z, def: {Z_17 = SZO_16 (alias)}, uses: {branch Test(EQ,Z_17)}{Z_33 = PHI(Z_28, Z_17)}{call fn0C00_000F (depth: 4;)}
+SCZO_18: orig: SCZO, def: {SCZO_18 = SZO_16 (alias)}, uses: {SCZO_29 = PHI(SCZO_26, SCZO_18)}{call fn0C00_000F (depth: 4;)}
+ax_19: orig: ax, def: {ax_19 = 0x0001}, uses: {dx_ax_20 = DPB(dx_ax_15, ax_19, 0, 16) (alias)}{ax_35 = PHI(ax_24, ax_19)}
+dx_ax_20: orig: dx_ax, def: {dx_ax_20 = DPB(dx_ax_15, ax_19, 0, 16) (alias)}, uses: {dx_ax_30 = PHI(dx_ax_23, dx_ax_20)}
+loc04_21: orig: loc04, def: {loc04_21 = ax_14}, uses: {loc04_32 = PHI(loc04_21, loc04)}
+dx_22: orig: dx, def: {dx_22 = arg02}, uses: {dx_ax_23 = dx_22 * ax_14}
+dx_ax_23: orig: dx_ax, def: {dx_ax_23 = dx_22 * ax_14}, uses: {ax_24 = (word16) dx_ax_23 (alias)}{dx_25 = SLICE(dx_ax_23, word16, 16) (alias)}{SCZO_26 = cond(dx_ax_23)}{dx_ax_30 = PHI(dx_ax_23, dx_ax_20)}
+ax_24: orig: ax, def: {ax_24 = (word16) dx_ax_23 (alias)}, uses: {ax_35 = PHI(ax_24, ax_19)}
+dx_25: orig: dx, def: {dx_25 = SLICE(dx_ax_23, word16, 16) (alias)}, uses: {dx_31 = PHI(dx_25, dx)}
+SCZO_26: orig: SCZO, def: {SCZO_26 = cond(dx_ax_23)}, uses: {SZO_27 = SCZO_26 (alias)}{Z_28 = SCZO_26 (alias)}{SCZO_29 = PHI(SCZO_26, SCZO_18)}
+SZO_27: orig: SZO, def: {SZO_27 = SCZO_26 (alias)}, uses: {SZO_34 = PHI(SZO_27, SZO_16)}
+Z_28: orig: Z, def: {Z_28 = SCZO_26 (alias)}, uses: {Z_33 = PHI(Z_28, Z_17)}
+SCZO_29: orig: SCZO, def: {SCZO_29 = PHI(SCZO_26, SCZO_18)}
+dx_ax_30: orig: dx_ax, def: {dx_ax_30 = PHI(dx_ax_23, dx_ax_20)}
+dx_31: orig: dx, def: {dx_31 = PHI(dx_25, dx)}
+loc04_32: orig: loc04, def: {loc04_32 = PHI(loc04_21, loc04)}
+Z_33: orig: Z, def: {Z_33 = PHI(Z_28, Z_17)}
+SZO_34: orig: SZO, def: {SZO_34 = PHI(SZO_27, SZO_16)}
+ax_35: orig: ax, def: {ax_35 = PHI(ax_24, ax_19)}
+bp_36: orig: bp, def: {bp_36 = loc02_12}
+// fn0C00_000F
+void fn0C00_000F()
+fn0C00_000F_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def bp
+	def loc02
+	def arg02
+	def ax
+	def SZO
+	def Z
+	def loc04
+	def dx
+	def dx_ax
+	def SCZO
+	// succ:  1
+l0C00_000F:		// block 1, pred: 0
+	loc02_12 = bp
+	ax_13 = arg02
+	ax_14 = ax_13 - 0x0001
+	dx_ax_15 = DPB(dx_ax, ax_14, 0, 16) (alias)
+	SZO_16 = cond(ax_14)
+	Z_17 = SZO_16 (alias)
+	SCZO_18 = SZO_16 (alias)
+	branch Test(EQ,Z_17)
+	// succ:  3 2
+l0C00_0026:		// block 2, pred: 1
+	ax_19 = 0x0001
+	dx_ax_20 = DPB(dx_ax_15, ax_19, 0, 16) (alias)
+	// succ:  4
+l0C00_0018:		// block 3, pred: 1
+	loc04_21 = ax_14
+	call fn0C00_000F (depth: 4;)
+	dx_22 = arg02
+	dx_ax_23 = dx_22 * ax_14
+	ax_24 = (word16) dx_ax_23 (alias)
+	dx_25 = SLICE(dx_ax_23, word16, 16) (alias)
+	SCZO_26 = cond(dx_ax_23)
+	SZO_27 = SCZO_26 (alias)
+	Z_28 = SCZO_26 (alias)
+	// succ:  4
+l0C00_0029:		// block 4, pred: 3 2
+	SCZO_29 = PHI(SCZO_26, SCZO_18)
+	dx_ax_30 = PHI(dx_ax_23, dx_ax_20)
+	dx_31 = PHI(dx_25, dx)
+	loc04_32 = PHI(loc04_21, loc04)
+	Z_33 = PHI(Z_28, Z_17)
+	SZO_34 = PHI(SZO_27, SZO_16)
+	ax_35 = PHI(ax_24, ax_19)
+	bp_36 = loc02_12
+	return
+	// succ:  5
+fn0C00_000F_exit:		// block 5, pred: 4
+	// succ: 
+Values:
+	(word16) dx_ax_23: <ax_24>
+	0x0001: <ax_19>
+	arg02 - 0x0001: <ax_14>
+	arg02 * ax_14: <dx_ax_23>
+	arg02: <arg02>
+	ax: <ax>
+	ax_14: <loc04_21>
+	bp: <bp>
+	cond(ax_14): <SZO_16>
+	cond(dx_ax_23): <SCZO_26>
+	DPB(dx_ax, ax_14, 0, 16): <dx_ax_15>
+	DPB(dx_ax_15, ax_19, 0, 16): <dx_ax_20>
+	dx: <dx>
+	dx_ax: <dx_ax>
+	fp: <fp>
+	loc02: <loc02>
+	loc04: <loc04>
+	Mem0: <Mem0>
+	PHI(ax_24, ax_19): <ax_35>
+	PHI(dx_25, dx): <dx_31>
+	PHI(dx_ax_23, dx_ax_20): <dx_ax_30>
+	PHI(loc04_21, loc04): <loc04_32>
+	PHI(SCZO_26, Z_17): <SCZO_29>
+	PHI(SZO_27, SZO_16): <SZO_34>
+	PHI(SZO_27, Z_17): <Z_33>
+	SCZO: <SCZO>
+	SCZO_26: <SZO_27>
+	SLICE(dx_ax_23, word16, 16): <dx_25>
+	SZO: <SZO>
+	SZO_16: <Z_17>
+	Z: <Z>
+Identifiers:
+	Mem0: <Mem0>
+	fp: <fp>
+	bp: <bp>
+	loc02: <loc02>
+	arg02: <arg02>
+	ax: <ax>
+	SZO: <SZO>
+	Z: <Z>
+	loc04: <loc04>
+	dx: <dx>
+	dx_ax: <dx_ax>
+	SCZO: <SCZO>
+	loc02_12: <bp>
+	ax_13: <arg02>
+	ax_14: <ax_14>
+	dx_ax_15: <dx_ax_15>
+	SZO_16: <SZO_16>
+	Z_17: <Z_17>
+	SCZO_18: <Z_17>
+	ax_19: <ax_19>
+	dx_ax_20: <dx_ax_20>
+	loc04_21: <loc04_21>
+	dx_22: <arg02>
+	dx_ax_23: <dx_ax_23>
+	ax_24: <ax_24>
+	dx_25: <dx_25>
+	SCZO_26: <SCZO_26>
+	SZO_27: <SZO_27>
+	Z_28: <SZO_27>
+	SCZO_29: <SCZO_29>
+	dx_ax_30: <dx_ax_30>
+	dx_31: <dx_31>
+	loc04_32: <loc04_32>
+	Z_33: <Z_33>
+	SZO_34: <SZO_34>
+	ax_35: <ax_35>
+	bp_36: <bp>
+

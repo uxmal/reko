@@ -1,0 +1,491 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7A9440A2-7692-4F74-BFFE-23741DE81C61}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Decompiler</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Decompiler</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <Name>nunit.framework</Name>
+      <HintPath>..\..\..\..\Program Files\NUnit 2.2\bin\nunit.framework.dll</HintPath>
+      <AssemblyFolderKey>hklm\dn\nunit.framework</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Arch\Intel\Intel.csproj">
+      <Name>Intel</Name>
+      <Project>{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Name>Core</Name>
+      <Project>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analysis\Aliases.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\BlockFlow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Coalescer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ConditionCodeEliminator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\CopyChain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\CriticalInstruction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DataFlow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DataFlowAnalysis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DeadCode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DeclarationInserter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\DefinedIdentifierFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ExpressionSimplifier.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ExpressionUseAdder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\GlobalCallRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\GrfDefinitionFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\InductionVariableCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Inteference.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\InteferenceGraph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\LinearInductionVariable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\LinearInductionVariableFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\LiveCopyInserter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Liveness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\MemReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\OutParameterTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ProcedureFlow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\RegisterLiveness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SegmentedAccessClassifier.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SequenceFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SideEffectFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\AddTwoIdsRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\Add_e_c_cRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\Add_mul_id_c_id_Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\ConstConstBin_Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\DpbConstantRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\IdBinIdc_Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\IdConstant.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\IdCopyPropagationRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\Mps_Constant_Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\NegSub_Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\Shl_mul_e_Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\Shl_Shl_c_c_Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\SliceConstant_Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Simplification\SliceMem_Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaIdentifier.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaIdentifierCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaLiveness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\SsaTransform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\StackVariableMap.cs" />
+    <Compile Include="Analysis\ValueNumbering.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\ValuePropagator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\VariableLiveness.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\Web.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Analysis\WebBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Decompiler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DecompilerHost.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Diagnostic.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\CodeControl.cs" />
+    <Compile Include="Gui\DisassemblyControl.cs" />
+    <Compile Include="Gui\ImageMapControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\MemoryControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Loading\ExeImageLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Loading\ExePackLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Loading\ImageLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Loading\Loader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Loading\LzExeUnpacker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Loading\MsdosImageLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Loading\PeImageLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Loading\PkLiteUnpacker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\EscapedAccessRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\HeuristicScanner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\InstructionTrie.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\ProcedureRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\Regexp.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\RegexpBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\RewriterHost.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\Scanner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\VectorBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanning\WorkItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\BlockLinearizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\CaseStatementRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\CompoundConditionCoalescer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\ControlFlowGraphCleaner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\DerivedSequence.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\IfRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\Interval.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\IntervalCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\IntervalFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\Linearizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\Loop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\LoopFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\StraightPathWalker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\StructureAnalysis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\StructureBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\StructureNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\StructureTransform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\SwitchRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\AddressTraitCollector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\ArrayExpressionMatcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\ArrayExpressionNormalizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\ComplexExpressionBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\ComplexTypeNamer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\DataTypeBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\DerivedPointerAnalysis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\EquivalenceClassBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\ITraitHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\NestedComplexTypeRemover.cs" />
+    <Compile Include="Typing\PtrPrimitiveReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\StructureMerger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TraitCollector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeAnalyzer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypedConstantRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypedExpressionRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypedMemoryExpressionRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeInferenceException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeStore.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeVariableCollection.cs" />
+    <Compile Include="Typing\TypeVariableReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypeVarMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\Unifier.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\UnionPointersStructuresMatcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\UnionTypeVarsReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Gui\ImageMapControl.resx">
+      <DependentUpon>ImageMapControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,41 @@
+// RepeatExitMock
+void RepeatExitMock()
+RepeatExitMock_entry:		// block 0, pred:
+	// succ:  1
+loop:		// block 1, pred: 0 2
+	foo()
+	branch p != 0x00000002
+	// succ:  3 2
+not2:		// block 2, pred: 1
+	foo()
+	p = p - 0x00000001
+	branch p == 0x00000000
+	// succ:  4 1
+exitBlock:		// block 3, pred: 1
+	bar()
+	// succ:  4
+done:		// block 4, pred: 3 2
+	return p
+	// succ:  5
+RepeatExitMock_exit:		// block 5, pred: 4
+	// succ: 
+-----------
+hdr: 1, end: 2 [1, 2]
+
+void RepeatExitMock()
+{
+	while (true)
+	{
+		foo();
+		if (p == 0x00000002)
+			break;
+		foo();
+		p = p - 0x00000001;
+		if (p != 0x00000000)
+			goto done;
+	}
+	bar()
+done:
+	return p
+}
+===========

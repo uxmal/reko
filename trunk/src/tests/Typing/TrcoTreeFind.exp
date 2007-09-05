@@ -1,0 +1,73 @@
+// TreeFindMock
+void TreeFindMock()
+TreeFindMock_entry:		// block 0, pred:
+	// succ:  1
+seek:		// block 1, pred: 0 7
+	branch t == 0x00000000
+	// succ:  2 5
+l1:		// block 2, pred: 1
+	word32 vv_7 = Mem0[t:word32]
+	branch v == vv_7
+	// succ:  3 5
+l2:		// block 3, pred: 2
+	branch v < vv_7
+	// succ:  7 4
+lt:		// block 4, pred: 3
+	t = Mem0[t + 0x00000004:word32]
+	// succ:  5
+found:		// block 5, pred: 1 2 4
+	return t
+	// succ:  6
+TreeFindMock_exit:		// block 6, pred: 5
+	// succ: 
+l3:		// block 7, pred: 3
+	t = Mem0[t + 0x00000008:word32]
+	// succ:  1
+
+T_2 (in t)
+	trait_primitive(word32)
+	trait_equal(T_3)
+	trait_primitive(word32)
+	trait_mem(T_6, 0)
+	trait_primitive(word32)
+	trait_mem(T_12, 4)
+	trait_primitive(word32)
+	trait_equal(T_12)
+	trait_primitive(word32)
+	trait_primitive(word32)
+	trait_mem(T_15, 8)
+	trait_primitive(word32)
+	trait_equal(T_15)
+T_3 (in 0x00000000)
+	trait_primitive(word32)
+T_4 (in t == 0x00000000)
+	trait_primitive(bool)
+T_5 (in vv_7)
+	trait_equal(T_6)
+	trait_primitive(word32)
+	trait_primitive(word32)
+	trait_primitive(int32)
+T_6 (in Mem0[t:word32])
+	trait_primitive(word32)
+T_7 (in v)
+	trait_primitive(word32)
+	trait_equal(T_5)
+	trait_primitive(word32)
+	trait_equal(T_5)
+	trait_primitive(int32)
+T_8 (in v == vv_7)
+	trait_primitive(bool)
+T_9 (in v < vv_7)
+	trait_primitive(bool)
+T_10 (in 0x00000004)
+	trait_primitive(word32)
+T_11 (in t + 0x00000004)
+	trait_primitive(word32)
+T_12 (in Mem0[t + 0x00000004:word32])
+	trait_primitive(word32)
+T_13 (in 0x00000008)
+	trait_primitive(word32)
+T_14 (in t + 0x00000008)
+	trait_primitive(word32)
+T_15 (in Mem0[t + 0x00000008:word32])
+	trait_primitive(word32)

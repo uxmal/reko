@@ -1,0 +1,41 @@
+void MockSnarl()
+{
+	branch a0
+	foo(a2)
+	if (!a2)
+		break;
+	foo(a0)
+	break;
+	foo(a3)
+	branch a3
+	foo()
+	return
+}
+// MockSnarl
+void MockSnarl()
+MockSnarl_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	branch a0
+	// succ:  3 2
+b2:		// block 2, pred: 1
+	foo(a2)
+	if (!a2)
+		break;
+	// succ:  5
+l2:		// block 3, pred: 1
+	foo(a0)
+	break;
+	// succ: 
+b3:		// block 4, pred:
+	foo(a3)
+	branch a3
+	// succ:  5 6
+b4:		// block 5, pred: 2 4
+	foo()
+	// succ:  6
+b5:		// block 6, pred: 4 5
+	return
+	// succ:  7
+MockSnarl_exit:		// block 7, pred: 6
+	// succ: 

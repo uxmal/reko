@@ -1,0 +1,49 @@
+fn0C00_0000
+	LiveOut:  
+	MayUseIn:  si ds
+	BypassIn: 
+	Trashed:   SCZO ax al ah
+	Preserved:
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: si ds
+l0C00_0000:		// block 1, pred: 0
+	ax = Mem0[ds:si + 0x0200:word16]
+	store(Mem0[ds:0x0200:word16]) = 0x0000
+	store(Mem0[ds:0x0300:word16]) = ax
+	ax = Mem0[ds:si + 0x0202:word16]
+	store(Mem0[ds:0x0202:word16]) = ax
+	ax = Mem0[ds:si + 0x0204:word16]
+	v5 = Mem0[ds:0x0204:word16] + ax
+	store(Mem0[ds:0x0204:word16]) = v5
+	SCZO = cond(v5)
+	ax = Mem0[ds:0x0200:word16]
+	call fn0C00_002A (depth: 0;)
+	store(Mem0[ds:0x0200:word16]) = ax
+	return
+	// succ:  2
+// DataOut:
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// DataOut:
+fn0C00_002A
+	LiveOut:   ds
+	MayUseIn:  ds
+	BypassIn: 
+	Trashed:  
+	Preserved: ax al ah
+// fn0C00_002A
+void fn0C00_002A()
+fn0C00_002A_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: ds
+l0C00_002A:		// block 1, pred: 0
+	store(Mem0[ds:0x0200:word16]) = 0xFFFF
+	return
+	// succ:  2
+// DataOut: ds
+fn0C00_002A_exit:		// block 2, pred: 1
+	// succ: 
+// DataOut: ds

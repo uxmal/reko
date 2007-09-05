@@ -1,0 +1,6 @@
+// Mem0:Global memory
+// fp:Temporary
+// rLoc1:FPU stack
+// rLoc2:FPU stack
+// rArg0:FPU stack
+// return address size: 0

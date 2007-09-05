@@ -1,0 +1,74 @@
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+cx: cx:Register
+ax: ax:Register
+si: si:Register, def: {def si}, uses: {store(Mem9[ds:si:word16]) = ax_8}
+ds: ds:Register, def: {def ds}, uses: {ax_8 = fn0C00_0008(cx_7, di, ds)}{store(Mem9[ds:si:word16]) = ax_8}{fn0C00_0008(cx_7, di, ds)}
+di: di:Register, def: {def di}, uses: {ax_8 = fn0C00_0008(cx_7, di, ds)}{fn0C00_0008(cx_7, di, ds)}
+cx_7: orig: cx, def: {cx_7 = 0x0014}, uses: {ax_8 = fn0C00_0008(cx_7, di, ds)}{fn0C00_0008(cx_7, di, ds)}
+ax_8: orig: ax, def: {ax_8 = fn0C00_0008(cx_7, di, ds)}, uses: {store(Mem9[ds:si:word16]) = ax_8}
+Mem9: orig: Mem0, def: {store(Mem9[ds:si:word16]) = ax_8}
+ax_10: orig: ax
+// fn0C00_0000
+void fn0C00_0000(word16 si, word16 di, segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def si
+	def ds
+	def di
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	cx_7 = 0x0014
+	ax_8 = fn0C00_0008(cx_7, di, ds)
+	store(Mem9[ds:si:word16]) = ax_8
+	fn0C00_0008(cx_7, di, ds)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {si_17 = si_13 + Mem0[ds:di_12:word16]}
+fp: fp:Temporary
+si: si:Register
+wLoc02: wLoc02:Local -0002
+di: di:Register, def: {def di}, uses: {di_12 = PHI(di, di_18)}
+wLoc04: wLoc04:Local -0004
+cx: cx:Register, def: {def cx}, uses: {branch cx == 0x0000}
+SCZO: SCZO:Flags
+Z: Z:Flags
+ds: ds:Register, def: {def ds}, uses: {si_17 = si_13 + Mem0[ds:di_12:word16]}
+ax: ax:Register
+si_11: orig: si, def: {si_11 = 0x0000}, uses: {si_13 = PHI(si_11, si_17)}
+di_12: orig: di, def: {di_12 = PHI(di, di_18)}, uses: {si_17 = si_13 + Mem0[ds:di_12:word16]}{di_18 = di_12 + 0x0002}
+si_13: orig: si, def: {si_13 = PHI(si_11, si_17)}, uses: {ax_16 = si_13}{si_17 = si_13 + Mem0[ds:di_12:word16]}
+SCZO_14: orig: SCZO
+Z_15: orig: Z
+ax_16: orig: ax, def: {ax_16 = si_13}, uses: {return ax_16}
+si_17: orig: si, def: {si_17 = si_13 + Mem0[ds:di_12:word16]}, uses: {si_13 = PHI(si_11, si_17)}
+di_18: orig: di, def: {di_18 = di_12 + 0x0002}, uses: {di_12 = PHI(di, di_18)}
+SCZO_19: orig: SCZO
+Z_20: orig: Z
+// fn0C00_0008
+word16 fn0C00_0008(word16 cx, word16 di, segment ds)
+fn0C00_0008_entry:		// block 0, pred:
+	def Mem0
+	def di
+	def cx
+	def ds
+	// succ:  1
+l0C00_0008:		// block 1, pred: 0
+	si_11 = 0x0000
+	// succ:  2
+l0C00_000D:		// block 2, pred: 1 5
+	di_12 = PHI(di, di_18)
+	si_13 = PHI(si_11, si_17)
+	branch cx == 0x0000
+	// succ:  5 3
+l0C00_001A:		// block 3, pred: 2
+	ax_16 = si_13
+	return ax_16
+	// succ:  4
+fn0C00_0008_exit:		// block 4, pred: 3
+	// succ: 
+l0C00_0012:		// block 5, pred: 2
+	si_17 = si_13 + Mem0[ds:di_12:word16]
+	di_18 = di_12 + 0x0002
+	// succ:  2
