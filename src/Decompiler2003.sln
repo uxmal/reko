@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests2003", "UnitTests\
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGui2003", "WindowsGui\WindowsGui2003.csproj", "{E80D1E76-8C38-4320-88D1-8104B75078F2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -37,6 +41,10 @@ Global
 		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Debug.Build.0 = Debug|.NET
 		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Release.ActiveCfg = Release|.NET
 		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Release.Build.0 = Release|.NET
+		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Debug.ActiveCfg = Debug|.NET
+		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Debug.Build.0 = Debug|.NET
+		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Release.ActiveCfg = Release|.NET
+		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
