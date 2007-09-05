@@ -9,16 +9,16 @@
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "Grovel2003"
+                AssemblyName = "Decompiler.WindowsGui2003"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
-                OutputType = "Library"
+                OutputType = "WinExe"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
-                RootNamespace = "Grovel2003"
+                RootNamespace = "Decompiler.WindowsGui"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
@@ -99,6 +99,11 @@
                     Project = "{7F7E97C7-F0E7-4947-BB49-25DCF343D190}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -124,19 +129,89 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MainForm.cs"
+                    RelPath = "MruList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MainForm.resx"
+                    RelPath = "Controls\CodeControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\DisassemblyControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\ImageMapControl.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\ImageMapControl.resx"
+                    DependentUpon = "ImageMapControl.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Controls\MemoryControl.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\MemoryControl.resx"
+                    DependentUpon = "MemoryControl.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Forms\AnalyzePage.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Forms\AnalyzePage.resx"
+                    DependentUpon = "AnalyzePage.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Forms\LoadPage.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Forms\LoadPage.resx"
+                    DependentUpon = "LoadPage.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Forms\MainForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Forms\MainForm.resx"
                     DependentUpon = "MainForm.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "MruList.cs"
-                    SubType = "Code"
+                    RelPath = "Forms\PhasePage.cs"
+                    SubType = "UserControl"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Forms\PhasePage.resx"
+                    DependentUpon = "PhasePage.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Forms\ScanPage.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Forms\ScanPage.resx"
+                    DependentUpon = "ScanPage.cs"
+                    BuildAction = "EmbeddedResource"
                 />
             </Include>
         </Files>

@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Decompiler.Gui
+namespace Decompiler.WindowsGui.Controls
 {
 	public class DisassemblyControl
 	{

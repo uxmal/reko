@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Decompiler.Gui
+namespace Decompiler.WindowsGui.Controls
 {
 	/// <summary>
 	/// Displays IL codes. This could be raw blocks, in which case a pseudo-assembler

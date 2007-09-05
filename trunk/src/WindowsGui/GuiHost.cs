@@ -20,7 +20,7 @@ using Decompiler;
 using System;
 using System.Windows.Forms;	
 
-namespace Grovel
+namespace Decompiler.WindowsGui
 {
 	public class GuiHost : DecompilerHost
 	{
