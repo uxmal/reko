@@ -110,11 +110,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "DecompilerTests.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "FileUnitTester.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
