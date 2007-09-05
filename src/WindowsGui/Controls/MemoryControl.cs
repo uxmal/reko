@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Decompiler.WindowsGui.Controls
 {
 	/// <summary>
 	/// Displays memory and allows selection of memory ranges. 
@@ -53,8 +53,8 @@ namespace Decompiler.Gui
 		private int cyPage;				// number of rows / page.
 		private Size cellSize;			// size of cell in pixels.
 		private Point ptDown;			 // point at which mouse was clicked.
-		private Scroller hscroller;
-		private Scroller vscroller;
+		private HScrollBar hscroller;
+		private VScrollBar vscroller;
 		private Point hitTestPoint = new Point(0, 0);
 
 		private const int AddressDisplaySize = 10;
@@ -62,8 +62,9 @@ namespace Decompiler.Gui
 
 		public MemoryControl()
 		{
-			hscroller = new Scroller(this, Scrollbars.SB_HORZ);
-			vscroller = new Scroller(this, Scrollbars.SB_VERT);
+			hscroller = new HScrollBar();
+			vscroller = new VScrollBar();
+			Controls.AddRange(new Control[] { hscroller, vscroller });
 			wordSize = 1;
 			cbRow = 16;
 		}
@@ -325,7 +326,7 @@ namespace Decompiler.Gui
 			{
 				StartAddress = addr;
 				yTopRow = cbOffset / cbRow;
-				vscroller.Position = yTopRow;
+				vscroller.Value = yTopRow;
 				Invalidate();
 			}
 		}
@@ -342,11 +343,13 @@ namespace Decompiler.Gui
 		{
 			if (addrTopVisible == null || image == null || imageMap == null)
 			{
-				ShowScrollBar(Handle.ToInt32(), Scrollbars.SB_BOTH, false);
+				hscroller.Visible = false;
+				vscroller.Visible = false;
 				return;
 			}
 
-			ShowScrollBar(Handle.ToInt32(), Scrollbars.SB_BOTH, true);
+			hscroller.Visible = true;
+			vscroller.Visible = true;
 			
 			using (Graphics g = Graphics.FromHwnd(Handle))
 			{
@@ -354,111 +357,20 @@ namespace Decompiler.Gui
 				int nChunks = cbRow / wordSize;		// number of chunks per line.
 				int cCols = (cbRow * 2) + (2 * nChunks) + AddressDisplaySize;
 
-				hscroller.Min = 0;
-				vscroller.Min = 0;
+				hscroller.Minimum = 0;
+				vscroller.Minimum = 0;
 				SizeF sz = g.MeasureString("M", Font);
 				cxPage = (int) (ClientRectangle.Width / sz.Width);
 				cyPage = (ClientRectangle.Height / Font.Height) - 1;
 				if (cyPage < 1)
 					cyPage = 1;
-				hscroller.Page = (uint) cxPage; 
-				vscroller.Page = (uint) cyPage;
-				hscroller.Max = cCols;
-				vscroller.Max = cRows - cyPage;
+				hscroller.LargeChange = cxPage; 
+				vscroller.LargeChange = cyPage;
+				hscroller.Maximum = cCols;
+				vscroller.Maximum = cRows - cyPage;
 			}
 		}
 
-		private const int WM_HSCROLL = 0x0114;
-		private const int WM_VSCROLL = 0x0115;
-		private const int SB_LINEUP          = 0;
-		private const int SB_LINELEFT        = 0;
-		private const int SB_LINEDOWN        = 1;
-		private const int SB_LINERIGHT       = 1;
-		private const int SB_PAGEUP          = 2;
-		private const int SB_PAGELEFT        = 2;
-		private const int SB_PAGEDOWN        = 3;
-		private const int SB_PAGERIGHT       = 3;
-		private const int SB_THUMBPOSITION   = 4;
-		private const int SB_THUMBTRACK      = 5;
-		private const int SB_TOP             = 6;
-		private const int SB_LEFT            = 6;
-		private const int SB_BOTTOM          = 7;
-		private const int SB_RIGHT           = 7;
-		private const int SB_ENDSCROLL       = 8;
-
-
-		protected override void WndProc(ref Message m)
-		{
-			int xPos;
-			switch (m.Msg)
-			{
-			case WM_HSCROLL: 
-				xPos = hscroller.Position;
-				switch ((int)m.WParam & 0xFFFF)
-				{
-				case SB_LINELEFT:
-					--xPos;
-					break;
-				case SB_LINERIGHT:
-					++xPos;
-					break;
-				case SB_PAGELEFT:
-					xPos -= (int) hscroller.Page;
-					break;
-				case SB_PAGERIGHT:
-					xPos += (int) hscroller.Page;
-					break;
-				case SB_THUMBPOSITION:
-					xPos = hscroller.Track;
-					break;
-				default:
-					base.WndProc(ref m);
-					return;
-				}
-				if (xPos < 0)
-					xPos = 0;
-				if (xPos > 20)
-					xPos = 20;
-				hscroller.Position = xPos;
-				Invalidate();
-				m.Result = IntPtr.Zero;
-				break;
-			case WM_VSCROLL:
-				switch ((int)m.WParam & 0xFFFF)
-				{
-				case SB_LINEUP:
-					--yTopRow;
-					break;
-				case SB_LINEDOWN:
-					++yTopRow;
-					break;
-				case SB_PAGEUP:
-					yTopRow -= cyPage;
-					break;
-				case SB_PAGEDOWN:
-					yTopRow += cyPage;
-					break;
-				case SB_THUMBPOSITION:
-					yTopRow = vscroller.Track;
-					break;
-				default:
-					base.WndProc(ref m);
-					return;
-				}
-				if (yTopRow < 0)
-					yTopRow = 0;
-				if (yTopRow > cRows - cyPage + 1)
-					yTopRow = cRows - cyPage + 1;
-				vscroller.Position = yTopRow;
-				addrTopVisible = ImageMap.MapLinearAddressToAddress(yTopRow * cbRow + image.BaseAddress.Linear);
-				Invalidate();
-				m.Result = IntPtr.Zero;
-				break;
-			default:
-				break;
-			}
-			base.WndProc(ref m);
-		}
 
 		public int WordSize
 		{
@@ -468,153 +380,6 @@ namespace Decompiler.Gui
 				wordSize = value;
 				UpdateScroll();
 				Invalidate();
-			}
-		}
-
-		#region WIN32 imports
-
-		private enum Scrollbars : int
-		{
-			SB_HORZ            = 0,
-			SB_VERT            = 1,
-			SB_CTL             = 2,
-			SB_BOTH            = 3
-		}
-
-		[Flags]
-			private enum ScrollInfoFlags : uint
-		{
-			SIF_RANGE           = 0x0001,
-			SIF_PAGE            = 0x0002,
-			SIF_POS             = 0x0004,
-			SIF_DISABLENOSCROLL = 0x0008,
-			SIF_TRACKPOS        = 0x0010,
-			SIF_ALL		        = (SIF_RANGE | SIF_PAGE | SIF_POS | SIF_TRACKPOS)
-		}
-
-		[StructLayout(LayoutKind.Sequential)]
-			struct ScrollInfo
-		{
-			public uint cbSize;
-			public ScrollInfoFlags fMask;
-			public int  nMin;
-			public int  nMax;
-			public uint nPage;
-			public int  nPos;
-			public int  nTrackPos;
-		}
-
-		[DllImport("user32.dll")] private static extern void ShowScrollBar(int hwnd, Scrollbars bar, bool fShow);
-		[DllImport("user32.dll")] private unsafe static extern void GetScrollInfo(int hwnd, Scrollbars bar, ScrollInfo * sc);
-		[DllImport("user32.dll",SetLastError=true)] private unsafe static extern int SetScrollInfo(int hwnd, Scrollbars bar, ScrollInfo * sc, int fRepaint);
-		#endregion 
-
-		/// <summary>
-		/// Represents a scroll bar.
-		/// </summary>
-		private class Scroller
-		{
-			private int hwnd;
-			private ScrollInfo sc;
-			private Scrollbars bar;
-
-			public unsafe Scroller(Control ctrl, Scrollbars bar)
-			{
-				hwnd = ctrl.Handle.ToInt32();
-				sc.cbSize = (uint) sizeof (ScrollInfo);
-				this.bar = bar;
-			}
-
-			public int Position
-			{
-				get 
-				{ 
-					sc.fMask = ScrollInfoFlags.SIF_POS;
-					Get();
-					return sc.nPos;
-				}
-				set
-				{
-					sc.fMask = ScrollInfoFlags.SIF_POS;
-					sc.nPos = value;
-					Set();
-				}
-			}
-
-			public int Min
-			{
-				get 
-				{
-					sc.fMask = ScrollInfoFlags.SIF_RANGE;
-					Get();
-					return sc.nMin;
-				}
-				set 
-				{
-					sc.fMask = ScrollInfoFlags.SIF_RANGE;
-					Get();
-					sc.nMin = value;
-					Set();
-				}
-			}
-
-			public unsafe int Max
-			{
-				get 
-				{
-					sc.fMask = ScrollInfoFlags.SIF_RANGE;
-					Get();
-					return sc.nMax;
-				}
-				set 
-				{
-					sc.fMask = ScrollInfoFlags.SIF_RANGE;
-					Get();
-					sc.nMax = value;
-					Set();
-				}
-			}
-
-			public uint Page
-			{
-				get
-				{
-					sc.fMask = ScrollInfoFlags.SIF_PAGE;
-					Get();
-					return sc.nPage;
-				}
-				set
-				{
-					sc.fMask = ScrollInfoFlags.SIF_PAGE;
-					sc.nPage = value;
-					Set();
-				}
-			}
-
-			public int Track
-			{
-				get 
-				{
-					sc.fMask = ScrollInfoFlags.SIF_TRACKPOS;
-					Get();
-					return sc.nTrackPos;
-				}
-			}
-
-			private unsafe void Get()
-			{
-				fixed (ScrollInfo * p = &sc)
-				{
-					GetScrollInfo(hwnd, bar, p);
-				}
-			}
-
-			private unsafe void Set()
-			{
-				fixed (ScrollInfo * p = &sc)
-				{
-					SetScrollInfo(hwnd, bar, p, 0);
-				}
 			}
 		}
 	}

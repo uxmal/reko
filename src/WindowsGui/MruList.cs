@@ -21,7 +21,7 @@ using System.Collections;
 using System.IO;
 using System.Text;
 
-namespace Grovel
+namespace Decompiler.WindowsGui
 {
 	public class MruList
 	{
@@ -34,7 +34,6 @@ namespace Grovel
 			this.items = new ArrayList(itemsMax);
 			try
 			{
-
 				using (StreamReader rdr = new StreamReader(fileLocation, new UTF8Encoding(false)))
 				{
 					string line = rdr.ReadLine();

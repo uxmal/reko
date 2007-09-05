@@ -23,7 +23,7 @@ using System.Drawing;
 using System.Data;
 using System.Windows.Forms;
 
-namespace Grovel.Forms
+namespace Decompiler.WindowsGui.Forms
 {
 	public class AnalysePage : PhasePage
 	{
