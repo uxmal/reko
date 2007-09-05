@@ -1,0 +1,29 @@
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {r0_7 = Mem0[0x01001000:word32]}
+fp: fp:Temporary
+r0: r0:Local -0004
+C: C:Flags
+r1: r1:Register, def: {def r1}, uses: {r0_11 = r0_10 + (r1 <u 0x00000002)}
+r2: r2:Register
+SZC: SZC:Flags
+r0_7: orig: r0, def: {r0_7 = Mem0[0x01001000:word32]}, uses: {r0_10 = r0_7 + r0_7}{r0_10 = r0_7 + r0_7}
+SZC_8: orig: SZC
+C_9: orig: C
+r0_10: orig: r0, def: {r0_10 = r0_7 + r0_7}, uses: {r0_11 = r0_10 + (r1 <u 0x00000002)}
+r0_11: orig: r0, def: {r0_11 = r0_10 + (r1 <u 0x00000002)}, uses: {store(Mem12[0x01001004:word32]) = r0_11}
+Mem12: orig: Mem0, def: {store(Mem12[0x01001004:word32]) = r0_11}
+// AdcMock
+void AdcMock(word32 r1)
+AdcMock_entry:		// block 0, pred:
+	def Mem0
+	def r1
+	// succ:  1
+l1:		// block 1, pred: 0
+	r0_7 = Mem0[0x01001000:word32]
+	r0_10 = r0_7 + r0_7
+	r0_11 = r0_10 + (r1 <u 0x00000002)
+	store(Mem12[0x01001004:word32]) = r0_11
+	return
+	// succ:  2
+AdcMock_exit:		// block 2, pred: 1
+	// succ: 
+

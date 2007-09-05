@@ -1,0 +1,14 @@
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+unused: unused:Local -0004
+unused_3: orig: unused
+// DeadFnReturnMock
+void DeadFnReturnMock()
+DeadFnReturnMock_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	foo(0x00000001)
+	return
+	// succ:  2
+DeadFnReturnMock_exit:		// block 2, pred: 1
+	// succ: 

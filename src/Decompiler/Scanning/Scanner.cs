@@ -1,0 +1,541 @@
+/* 
+ * Copyright (C) 1999-2007 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+using Decompiler;
+using Decompiler.Core;
+using Decompiler.Core.Lib;
+using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
+using System;
+using System.Collections;
+using System.Diagnostics;
+
+namespace Decompiler.Scanning
+{
+	/// <summary>
+	/// Scans the binary, locating procedures and basic blocks by following calls, jumps,
+	/// and branches. Simple data type analysis is done as well: for instance, pointers to
+	/// code are located, as are global data pointers.
+	/// </summary>
+	public class Scanner : ICodeWalkerListener
+	{
+		private Program prog;
+		private ImageMap imageMap;
+		private DecompilerHost host;
+		private ImageMapBlock blockCur;
+		private Hashtable blocksVisited;
+		private Map vectorUses;
+		private SortedList syscalls;
+		private WorkItem wiCur;
+		private DirectedGraph jumpGraph;
+
+		private Queue qProcs;
+		private Queue qJumps;
+		private Queue qStarts;
+		private Queue qSegments;
+		private Queue qVectors;
+
+		private static TraceSwitch trace = new TraceSwitch("Scanner", "Enables tracing in the scanning phase");
+
+		public Scanner(Program prog, ImageMap imageMap, DecompilerHost host)
+		{
+			this.prog = prog;
+			this.host = host;
+			this.ImageMap = imageMap;
+			this.vectorUses = new Map();
+			this.syscalls = new SortedList();
+			qStarts = new Queue();
+			qProcs = new Queue();
+			qJumps = new Queue();
+			qSegments = new Queue();
+			qVectors = new Queue();
+			this.blocksVisited = new Hashtable();
+			this.jumpGraph = new DirectedGraph();
+		}
+
+		/// <summary>
+		/// An entry point into the binary has been found.
+		/// </summary>
+		/// <param name="addr"></param>
+		public virtual void EnqueueStartAddress(EntryPoint ep)
+		{
+			Debug.Assert(ep.Address != null);
+			WorkItem wi = new WorkItem(null, BlockType.Procedure, ep.Address);
+			wi.state = ep.ProcessorState;
+			EnqueueProcedure(null, ep.Address, ep.Name, wi.state);
+			qStarts.Enqueue(wi);
+		}
+
+		/// <summary>
+		/// A segment of the binary has been found. 
+		/// </summary>
+		/// <param name="addr"></param>
+		public void EnqueueSegment(Address addr)
+		{
+			WorkItem wi = new WorkItem(wiCur, BlockType.Segment, addr);
+			qSegments.Enqueue(wi);
+		}
+
+		/// <summary>
+		/// The first instruction of a procedure has been found.
+		/// </summary>
+		/// <param name="addr">The address at which the procedure was found.</param>
+		/// <param name="state"></param>
+		public Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state)
+		{
+			WorkItem wi = new WorkItem(wiPrev, BlockType.Procedure, addr);
+			wi.state = (ProcessorState) state.Clone();
+			Procedure proc = (Procedure) prog.Procedures[wi.Address];
+			if (proc == null)
+			{
+				Frame f = new Frame(prog.Architecture.WordWidth);
+				proc = Procedure.Create(procedureName, wi.Address, f);
+				prog.Procedures[wi.Address] = proc;
+				prog.CallGraph.AddProcedure(proc);
+			}
+			ImageMapBlock entry = new ImageMapBlock();
+			entry.Procedure = proc;
+			imageMap.AddItem(addr, entry);
+
+			qProcs.Enqueue(wi);
+			return proc;
+		}
+
+		public void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc)
+		{
+			if (prog.Procedures[addrProc] == null)
+			{
+				prog.Procedures[addrProc] = proc;
+				prog.CallGraph.AddProcedure(proc);
+			}
+			WorkItem wi = new WorkItem(wiPrev, BlockType.Procedure, addrProc);
+			wi.state = prog.Architecture.CreateProcessorState();
+			qProcs.Enqueue(wi);
+		}
+
+		/// <summary>
+		/// The target of a branch or jump instruction has been found.
+		/// </summary>
+		/// <param name="addr"></param>
+		/// <param name="st"></param>
+		/// <param name="proc"></param>
+		private void EnqueueJumpTarget(Address addr, ProcessorState st, Procedure proc)
+		{
+			if (!prog.Image.IsValidAddress(addr))
+				return;
+
+			Debug.Assert(proc != null);
+			WorkItem wi = new WorkItem(wiCur, BlockType.JumpTarget, addr);
+			wi.state = (ProcessorState) st.Clone();
+			qJumps.Enqueue(wi);
+			ImageMapBlock bl = new ImageMapBlock();
+			bl.Procedure = proc;
+			ImageMapBlock item = ImageMap.AddItem(addr, bl) as ImageMapBlock;
+			if (item != null && item.Procedure != proc)
+			{
+				// When two procedures join, they generate a new procedure. If there is
+				// no procedure yet, make one and OWN all the reachable nodes.
+
+				PromoteBlockToProcedure(bl, proc);
+			}
+		}
+
+		private void PromoteBlockToProcedure(ImageMapBlock bl, Procedure proc)
+		{
+			if (prog.Procedures[bl.Address] == null)
+			{
+				Procedure procNew = Procedure.Create(null, bl.Address, new Frame(prog.Architecture.WordWidth));
+				prog.Procedures[bl.Address] = procNew;
+				prog.CallGraph.AddProcedure(procNew);
+				bl.Procedure = procNew;
+			}
+		}
+
+		private void EnqueueUserProcedure(SerializedProcedure sp)
+		{
+			Procedure proc = EnqueueProcedure(null, Address.ToAddress(sp.Address, 16), sp.Name, prog.Architecture.CreateProcessorState());
+			if (sp.Signature != null)
+			{
+				SignatureSerializer sser = new SignatureSerializer(prog.Architecture, "stdapi");
+				proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
+			}
+			if (sp.Characteristics != null)
+			{
+				proc.Characteristics = sp.Characteristics;
+			}
+		}
+
+		/// <summary>
+		/// A vector table of jumps or procedures has been found.
+		/// </summary>
+		/// <param name="addrUser"></param>
+		/// <param name="addrTable"></param>
+		/// <param name="stride"></param>
+		/// <param name="segBase">For x86 16-bit binaries, the code segment of the calling code. For all other architectures, zero.</param>
+		/// <param name="calltable"></param>
+		/// <param name="state"></param>
+		private void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, ProcessorState state)
+		{
+			ImageMapVectorTable table = (ImageMapVectorTable) prog.Vectors[addrTable];
+			if (table == null)
+			{
+				table = new ImageMapVectorTable(calltable);
+				VectorWorkItem wi = new VectorWorkItem(wiCur, blockCur.Procedure, addrTable);
+				wi.state = (ProcessorState) state.Clone();
+				wi.reader = prog.Image.CreateReader(addrTable);
+				wi.stride = stride;
+				wi.segBase = segBase;
+				wi.table = table;
+				wi.addrFrom = addrUser;
+
+				ImageMap.AddItem(addrTable, table);
+				prog.Vectors[addrTable] = table;
+				qVectors.Enqueue(wi);
+			}
+		}
+
+
+		public ImageMap ImageMap
+		{
+			get { return imageMap; }
+			set { imageMap = value; }
+		}
+		
+		/// <summary>
+		/// Heuristic function: returns false if the bytes at address <paramref>addr</paramref>
+		/// don't look like the kind of code that might follow a table jump.
+		/// </summary>
+		/// <param name="addr"></param>
+		/// <returns></returns>
+		private bool IsCodeAddress(Address addr)
+		{
+			return false;
+		}
+
+		#region ICodeWalkerListener methods
+
+		public void OnBranch(ProcessorState st, Address addrTerm, Address addrBranch)
+		{
+			jumpGraph.AddEdge(addrTerm - 1, addrTerm);
+			jumpGraph.AddEdge(addrTerm - 1, addrBranch);
+
+			EnqueueJumpTarget(addrBranch, st, blockCur.Procedure);
+			EnqueueJumpTarget(addrTerm, st, blockCur.Procedure);
+		}
+
+		public void OnGlobalVariable(Address addr, PrimitiveType width, Value v)
+		{
+			throw new NotImplementedException("NYI");
+		}
+
+		public void OnIllegalOpcode(Address addrIllegal)
+		{
+			throw new NotImplementedException("NYI");
+		}
+
+		public void OnJump(ProcessorState st, Address addrTerm, Address addrJump)
+		{
+			ImageMap.AddItem(addrTerm, new ImageMapItem());
+			if (addrJump != null)
+			{
+				jumpGraph.AddEdge(addrTerm - 1, addrJump);
+				EnqueueJumpTarget(addrJump, st, blockCur.Procedure);
+			}
+		}
+
+		public void OnJumpPointer(ProcessorState st, Address addrFrom, Address addrJump, PrimitiveType width)
+		{
+			ImageMap.AddItem(addrFrom, new ImageMapItem());
+		}
+
+		public void OnJumpTable(ProcessorState st,
+			Address addrInstr, Address addrTable, ushort segBase, PrimitiveType width)
+		{
+			if (!prog.Image.IsValidAddress(addrTable))
+			{
+				Debug.WriteLine(string.Format("Instruction at address {0}: uncertain about table start.", addrInstr));
+				return;
+			}
+			EnqueueVectorTable(addrInstr, addrTable, width, segBase, false, st);
+		}
+
+		public void OnProcedure(ProcessorState st, Address addr)
+		{
+			EnqueueProcedure(wiCur, addr, null, st);
+		}
+
+		public void OnProcedurePointer(ProcessorState st, Address addrBase, Address addr, PrimitiveType width)
+		{
+		}
+
+		public void OnProcedureTable(
+			ProcessorState st, 
+			Address addrInstr,
+			Address addrTable, 
+			ushort segBase, 
+			PrimitiveType width)
+		{
+			if (!prog.Image.IsValidAddress(addrTable))
+			{
+				Debug.WriteLine(string.Format("Instruction at address {0}: uncertain about table start.", addrInstr));
+				return;
+			}
+			EnqueueVectorTable(addrInstr, addrTable, width, segBase, true, st);
+		}
+
+		public void OnProcessExit(Address addrTerm)
+		{
+			ImageMap.AddItem(addrTerm, new ImageMapItem());
+		}
+
+		public void OnReturn(Address addrTerm)
+		{
+			ImageMap.AddItem(addrTerm, new ImageMapItem());
+		}
+
+		public void OnSystemServiceCall(Address addrInstr, SystemService svc)
+		{
+			syscalls[addrInstr] = svc;
+		}
+
+		public void OnTrampoline(ProcessorState st, Address addrInstr, Address addrGlob)
+		{
+			PseudoProcedure ppp = (PseudoProcedure) prog.ImportThunks[(uint) addrGlob.Linear];
+			if (ppp != null)
+			{
+				Debug.WriteLine(string.Format("Trampoline[{0}] = {1}", addrInstr, ppp.Name));
+				prog.Trampolines[addrInstr.Linear] = ppp;
+			}
+		}
+
+		public void Warn(string format, params object [] args)
+		{
+			if (host != null)
+				host.WriteDiagnostic(Diagnostic.Warning, format, args);
+		}
+		#endregion
+
+
+		public void Parse(ICollection entrypoints)
+		{
+			Parse(entrypoints, null);
+		}
+
+		public void Parse(ICollection entrypoints, ICollection userProcedures)
+		{
+			ImageMap.ItemSplit += new ItemSplitHandler(ImageMap_ItemSplit);
+			ImageMap.ItemCoincides += new ItemSplitHandler(ImageMap_ItemCoincides);
+
+			// Add one mega item that covers the entire address space.
+
+			ImageMap.AddItem(prog.Image.BaseAddress, new ImageMapItem(prog.Image.Bytes.Length));
+
+			// Seed the worklists with all the entry points.
+
+			foreach (EntryPoint ep in entrypoints)
+			{
+				prog.AddEntryPoint(ep);
+				EnqueueStartAddress(ep);
+			}
+
+			if (userProcedures != null)
+			{
+				foreach (SerializedProcedure sp in userProcedures)
+				{
+					EnqueueUserProcedure(sp);
+				}
+			}
+
+			while (ProcessItem())
+				;
+
+			ImageMap.ItemSplit -= new ItemSplitHandler(ImageMap_ItemSplit);
+			ImageMap.ItemCoincides -= new ItemSplitHandler(ImageMap_ItemCoincides);
+		}
+
+		/// <summary>
+		/// If we haven't been to this block before, create a codewalker and walk the block until we fall off the end.
+		/// </summary>
+		/// <remarks>
+		/// During the call to Codewalker.WalkInstruction(), it is possible that the code block
+		/// we're currently in (blockCur) is fragmented (due to a backwards jump, for instance).
+		/// </remarks>
+		/// <param name="wi"></param>
+		public void ParseJumpTarget(WorkItem wi)
+		{
+			if (!prog.Image.IsValidAddress(wi.Address))
+			{
+				Warn("Attempted decompilation of invalid address: {0}", wi.Address);
+				return;
+			}
+			blockCur = ImageMap.FindItem(wi.Address) as ImageMapBlock;
+			if (blockCur == null)
+			{
+				blockCur = new ImageMapBlock();
+				ImageMap.AddItem(wi.Address, blockCur);
+			}
+
+			if (blocksVisited[blockCur] == null)
+			{
+				blocksVisited[blockCur] = blockCur;
+
+				wi.state.SetInstructionPointer(wi.Address);
+				CodeWalker cw = prog.Architecture.CreateCodeWalker(prog.Image, prog.Platform, wi.Address, wi.state, this);
+				try
+				{
+					do
+					{
+						cw.WalkInstruction();
+					} while (blockCur.IsInRange(cw.Address));
+				} 
+				catch (Exception ex)
+				{
+					Debug.WriteLine("ParseJumpTarget: " + ex.Message);
+					throw new ApplicationException(
+						string.Format("Scanner failed near address {0}.", cw.Address), ex);
+				}
+			}
+		}
+
+		private void ParseProcedure(WorkItem wi)
+		{
+			ImageMapBlock bl = ImageMap.FindItemExact(wi.Address) as ImageMapBlock;
+			if (bl != null)
+			{
+				// We've already parsed this code, so it must be part of another procedure.
+				if (blocksVisited[bl] != null)
+					bl.Procedure = null;				// means that this is a block that is jumped into.
+			}
+			Procedure proc = (Procedure) prog.Procedures[wi.Address];
+			EnqueueJumpTarget(wi.Address, wi.state, proc);
+		}
+
+		private void ParseSegment(WorkItem wi)
+		{
+		}
+
+		private void ProcessVector(VectorWorkItem wi)
+		{
+			ImageMapVectorTable item = ImageMap.FindItem(wi.Address) as ImageMapVectorTable;
+			VectorBuilder builder = new VectorBuilder(prog, imageMap, jumpGraph);
+			Address [] vector = builder.Build(wi.Address, wi.addrFrom, wi.segBase, wi.stride);
+			if (vector == null)
+			{
+				Address addrNext = wi.Address + wi.stride.Size;
+				if (prog.Image.IsValidAddress(addrNext))
+				{
+					// Can't determine the size of the table, but surely it has one entry?
+					ImageMap.AddItem(addrNext, new ImageMapItem());
+				}
+				return;
+			}
+
+			item.Addresses.AddRange(vector);
+			for (int i = 0; i < vector.Length; ++i)
+			{
+				ProcessorState st = (ProcessorState) wi.state.Clone();
+				if (wi.table.IsCallTable)
+				{
+					EnqueueProcedure(wiCur, vector[i], null, st);
+				}
+				else
+				{
+					jumpGraph.AddEdge(wi.addrFrom - 1, vector[i]);
+					EnqueueJumpTarget(vector[i], st, wi.proc);
+				}
+			}
+			vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);	
+			ImageMap.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
+
+		}
+
+		public bool ProcessItem()
+		{
+			wiCur = null;
+			if (qStarts.Count > 0)
+			{
+				wiCur = (WorkItem) qStarts.Dequeue();
+				ParseProcedure(wiCur);
+				return true;
+			}
+
+			if (qSegments.Count > 0)
+			{
+				wiCur = (WorkItem) qSegments.Dequeue();
+				ParseSegment(wiCur);
+				return true;
+			}
+
+			if (qProcs.Count > 0)
+			{
+				wiCur = (WorkItem) qProcs.Dequeue();
+				ParseProcedure(wiCur);
+				return true;
+			}
+
+			if (qJumps.Count > 0)
+			{
+				wiCur = (WorkItem) qJumps.Dequeue();
+				ParseJumpTarget(wiCur);
+				return true;
+			}
+
+			if (qVectors.Count > 0)
+			{
+				VectorWorkItem vwi = (VectorWorkItem) qVectors.Dequeue();
+				wiCur = vwi;
+				ProcessVector(vwi);
+				return true;
+			}
+			return false;
+		}
+
+		public SortedList SystemCalls
+		{
+			get { return syscalls; }
+		}
+
+		public Map VectorUses
+		{
+			get { return vectorUses; }
+		}
+
+
+		// Event handlers ///////////////
+
+		private void ImageMap_ItemSplit(object o, ItemSplitArgs e)
+		{
+			ImageMapBlock block = e.ItemOld as ImageMapBlock;
+			ImageMapBlock gnu = e.ItemNew as ImageMapBlock;
+			if (block != null && gnu != null)
+			{
+				Debug.WriteIf(trace.TraceVerbose, string.Format(    "Split into {0} (in {1})", block.Address, block.Procedure != null ? block.Procedure.Name : "<none>"));
+				Debug.WriteLineIf(trace.TraceVerbose, string.Format("       and {0} (in {1})", gnu.Address, gnu.Procedure != null ? gnu.Procedure.Name : "<none>")); 
+			}
+		}
+
+		private void ImageMap_ItemCoincides(object o, ItemSplitArgs e)
+		{
+			if (e.ItemOld.GetType() == typeof (ImageMapItem))
+			{
+				ImageMap.Items[e.ItemOld.Address] = e.ItemNew;
+				e.ItemNew.Size = e.ItemOld.Size;
+			}
+		}
+	}
+}

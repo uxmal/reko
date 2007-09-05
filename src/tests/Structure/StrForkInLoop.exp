@@ -1,0 +1,36 @@
+// fn0C00_0000
+void fn0C00_0000(word16 bx, segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	word16 ax_9 = 0x0000
+	// succ:  1
+l0C00_0019:		// block 1, pred: 0 4 3
+	branch ax_9 < bx
+	// succ:  5 2
+l0C00_0005:		// block 2, pred: 1
+	word16 si_16 = Mem0[ds:0x0300:word16]
+	branch si_16 == 0x0000
+	// succ:  4 3
+l0C00_0012:		// block 3, pred: 2
+	ax_9 = ax_9 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16]
+	// succ:  1
+l0C00_000D:		// block 4, pred: 2
+	ax_9 = ax_9 + Mem0[ds:si_16:word16]
+	// succ:  1
+l0C00_001D:		// block 5, pred: 1
+	return
+	// succ: 
+
+void fn0C00_0000(word16 bx, segment ds)
+{
+	word16 ax_9 = 0x0000;
+	while (ax_9 < bx)
+	{
+		word16 si_16 = Mem0[ds:0x0300:word16];
+		if (si_16 == 0x0000)
+			ax_9 = ax_9 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16];
+		else
+			ax_9 = ax_9 + Mem0[ds:si_16:word16];
+	}
+	return;
+}
+===========================

@@ -1,0 +1,48 @@
+// fn10000000
+// Mem0:Global memory
+// fp:Temporary
+// eax:Register
+// ecx:Register
+// SCZO:Flags
+// dwLoc0C:Local -000C
+// dwLoc08:Local -0008
+// dwLoc04:Local -0004
+// SZO:Flags
+// dwArg04:Stack +0004
+// edi:Register
+// esp:Register
+// fn10000000_frame:Temporary
+// Frame escapes
+// return address size: 4
+void fn10000000()
+fn10000000_entry:		// block 0, pred:
+	// succ:  1
+fn10000000_frame_asgn:		// block 1, pred: 0
+	fp = &fn10000000_frame
+	// succ:  2
+l10000000:		// block 2, pred: 1
+	eax = 0x00000000
+	ecx = 0x00000000
+	SCZO = cond(ecx)
+	store(Mem0[fp - 0x0000000C:word32]) = 0x00000001
+	store(Mem0[fp - 0x00000008:word32]) = 0x00000002
+	store(Mem0[fp - 0x00000004:word32]) = 0x00000003
+	// succ:  3
+l10000027:		// block 3, pred: 2 4
+	SCZO = cond(ecx - 0x00000003)
+	branch Test(LE,SZO)
+	// succ:  5 4
+l10000023:		// block 4, pred: 3
+	eax = eax + Mem0[fp + 0xFFFFFFF4 + ecx * 0x00000004:word32]
+	SCZO = cond(eax)
+	ecx = ecx + 0x00000001
+	SZO = cond(ecx)
+	// succ:  3
+l1000002C:		// block 5, pred: 3
+	edi = dwArg04
+	store(Mem0[edi:word32]) = eax
+	return
+	// succ:  6
+fn10000000_exit:		// block 6, pred: 5
+	// succ: 
+

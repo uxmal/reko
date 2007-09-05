@@ -1,0 +1,6 @@
+// Mem0:Global memory
+// fp:Temporary
+// wLoc02:Local -0002
+// wLoc04:Local -0004
+// return address size: 0
+foo(wLoc04, wLoc02)

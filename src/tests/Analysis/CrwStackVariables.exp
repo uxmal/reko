@@ -1,0 +1,99 @@
+void fn0C00_0000(Register segment ds, Stack ptr32 dwArg04)
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO ax bx al bl ah bh es
+// Preserved: bp
+// Stack args: Stack +0004(32)
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// wLoc02:Local -0002
+// es:Register
+// bx:Register
+// es_bx:Sequence es:bx
+// dwArg04:Stack +0004
+// wLoc04:Local -0004
+// wLoc06:Local -0006
+// ax:Register
+// wLoc08:Local -0008
+// ds:Register
+// ptrLoc06:Local -0006
+// ptrLoc08:Local -0008
+// return address size: 2
+void fn0C00_0000(segment ds, ptr32 dwArg04)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	es_bx = dwArg04
+	wLoc04 = es
+	wLoc06 = bx
+	ax = fn0C00_0020(ptrLoc06)
+	wLoc04 = ax
+	es_bx = dwArg04
+	wLoc06 = es
+	wLoc08 = bx
+	ax = fn0C00_002E(ptrLoc08, wLoc04)
+	store(Mem0[ds:0x0200:word16]) = ax
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+Register word16 fn0C00_0020(Stack ptr32 dwArg02)
+// MayUse: 
+// LiveOut: ax
+// Trashed: ax bx al bl ah bh es
+// Preserved: bp
+// Stack args: Stack +0002(32)
+// fn0C00_0020
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// wLoc02:Local -0002
+// es:Register
+// bx:Register
+// es_bx:Sequence es:bx
+// dwArg02:Stack +0002
+// ax:Register
+// return address size: 2
+word16 fn0C00_0020(ptr32 dwArg02)
+fn0C00_0020_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0020:		// block 1, pred: 0
+	es_bx = dwArg02
+	ax = Mem0[es:bx + 0x0004:word16]
+	return ax
+	// succ:  2
+fn0C00_0020_exit:		// block 2, pred: 1
+	// succ: 
+Register word16 fn0C00_002E(Stack ptr32 dwArg02, Stack word16 wArg06)
+// MayUse: 
+// LiveOut: ax
+// Trashed: SCZO ax bx al bl ah bh es
+// Preserved: bp
+// Stack args: Stack +0002(32) Stack +0006(16)
+// fn0C00_002E
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// wLoc02:Local -0002
+// es:Register
+// bx:Register
+// es_bx:Sequence es:bx
+// dwArg02:Stack +0002
+// wArg06:Stack +0006
+// ax:Register
+// SCZO:Flags
+// return address size: 2
+word16 fn0C00_002E(ptr32 dwArg02, word16 wArg06)
+fn0C00_002E_entry:		// block 0, pred:
+	// succ:  1
+l0C00_002E:		// block 1, pred: 0
+	es_bx = dwArg02
+	ax = wArg06
+	ax = ax + Mem0[es:bx + 0x0006:word16]
+	SCZO = cond(ax)
+	return ax
+	// succ:  2
+fn0C00_002E_exit:		// block 2, pred: 1
+	// succ: 

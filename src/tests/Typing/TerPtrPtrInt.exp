@@ -1,0 +1,58 @@
+// PtrPtrIntMock
+void PtrPtrIntMock()
+PtrPtrIntMock_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	r2 = *r1;
+	r3 = *r2;
+	globals->dw10000 = r3;
+	globals->ptr10004 = r1;
+	return r3
+	// succ:  2
+PtrPtrIntMock_exit:		// block 2, pred: 1
+	// succ: 
+
+// Equivalence classes ////////////
+Eq_1: (struct "Eq_1" (10000 word32 dw10000) (10004 (ptr (ptr word32)) ptr10004))
+	Globals (in globals : ptr0)
+// Type Variables ////////////
+Globals:(in globals)
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct (10000 T_8 t10000) (10004 T_10 t10004)))
+T_2:(in r1)
+  Class: Eq_2
+  DataType: (ptr (ptr word32))
+  OrigDataType: (ptr (struct (0 T_3 t0000)))
+T_3:(in Mem0[r1:word32])
+  Class: Eq_3
+  DataType: (ptr word32)
+  OrigDataType: word32
+T_4:(in r2)
+  Class: Eq_3
+  DataType: (ptr word32)
+  OrigDataType: (ptr (struct (0 T_5 t0000)))
+T_5:(in Mem0[r2:word32])
+  Class: Eq_5
+  DataType: word32
+  OrigDataType: word32
+T_6:(in r3)
+  Class: Eq_5
+  DataType: word32
+  OrigDataType: word32
+T_7:(in 0x00010000)
+  Class: Eq_7
+  DataType: (ptr word32)
+  OrigDataType: (ptr (struct (0 T_8 t0000)))
+T_8:(in Mem0[0x00010000:word32])
+  Class: Eq_5
+  DataType: word32
+  OrigDataType: word32
+T_9:(in 0x00010004)
+  Class: Eq_9
+  DataType: (ptr (ptr (ptr word32)))
+  OrigDataType: (ptr (struct (0 T_10 t0000)))
+T_10:(in Mem0[0x00010004:word32])
+  Class: Eq_2
+  DataType: (ptr (ptr word32))
+  OrigDataType: word32

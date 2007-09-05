@@ -1,0 +1,45 @@
+// fn0C00_0000
+void fn0C00_0000(word16 bx, word16 si, word16 di, segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	word16 dx_12 = 0x0004
+	// succ:  1
+l0C00_0003:		// block 1, pred: 0 3
+	word16 cx_22 = 0x0004
+	// succ:  2
+l0C00_0006:		// block 2, pred: 1 2
+	store(Mem31[ds:di:word32]) = Mem27[ds:si:word32] + Mem27[ds:bx:word32]
+	si = si + 0x0004
+	bx = bx + 0x0004
+	di = di + 0x0004
+	cx_22 = cx_22 - 0x0001
+	branch cx_22 != 0x0000
+	// succ:  3 2
+l0C00_001A:		// block 3, pred: 2
+	dx_12 = dx_12 - 0x0001
+	branch dx_12 != 0x0000
+	// succ:  4 1
+l0C00_001D:		// block 4, pred: 3
+	return
+	// succ: 
+
+void fn0C00_0000(word16 bx, word16 si, word16 di, segment ds)
+{
+	word16 dx_12 = 0x0004;
+	do
+	{
+		word16 cx_22 = 0x0004;
+		do
+		{
+			Mem31[ds:di:word32] = Mem27[ds:si:word32] + Mem27[ds:bx:word32];
+			si = si + 0x0004;
+			bx = bx + 0x0004;
+			di = di + 0x0004;
+			cx_22 = cx_22 - 0x0001;
+		}
+		while (cx_22 != 0x0000);
+		dx_12 = dx_12 - 0x0001;
+	}
+	while (dx_12 != 0x0000);
+	return;
+}
+===========================

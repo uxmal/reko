@@ -1,0 +1,28 @@
+// fn0C00_0000
+void fn0C00_0000(word16 ax, word16 si, segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	word16 bx_10
+	branch ax != 0x0000
+	// succ:  2 1
+l0C00_000B:		// block 1, pred: 0
+	bx_10 = 0x1211
+	// succ:  3
+l0C00_0005:		// block 2, pred: 0
+	bx_10 = 0x1234
+	// succ:  3
+l0C00_000E:		// block 3, pred: 2 1
+	store(Mem13[ds:si:word16]) = bx_10
+	return
+	// succ: 
+
+void fn0C00_0000(word16 ax, word16 si, segment ds)
+{
+	word16 bx_10;
+	if (ax != 0x0000)
+		bx_10 = 0x1211;
+	else
+		bx_10 = 0x1234;
+	Mem13[ds:si:word16] = bx_10;
+	return;
+}
+===========================

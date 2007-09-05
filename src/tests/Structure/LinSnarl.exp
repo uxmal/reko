@@ -1,0 +1,16 @@
+	if (a0)
+	{
+		foo(a2);
+		if (a2)
+			goto b4;
+	}
+	else
+		foo(a0);
+	foo(a3);
+	if (!a3)
+	{
+b4:
+		foo();
+	}
+	return;
+

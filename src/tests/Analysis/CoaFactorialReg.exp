@@ -1,0 +1,71 @@
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+cx: cx:Register
+ax: ax:Register
+ds: ds:Register, def: {def ds}, uses: {store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)}
+cx_5: orig: cx
+ax_6: orig: ax, uses: {store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)}
+Mem7: orig: Mem0, def: {store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)}
+// fn0C00_0000
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+si: si:Register
+wLoc02: wLoc02:Local -0002
+cx: cx:Register, def: {def cx}, uses: {branch cx <= 0x0001}{ax_19 = (word16) (cx * fn0C00_000B(cx - 0x0001)) (alias)}{ax_19 = (word16) (cx * fn0C00_000B(cx - 0x0001)) (alias)}
+SCZO: SCZO:Flags
+SZO: SZO:Flags
+ax: ax:Register
+dx: dx:Register
+dx_ax: dx_ax:Sequence dx:ax
+SCZO_10: orig: SCZO
+SZO_11: orig: SZO
+ax_12: orig: ax, def: {ax_12 = 0x0001}, uses: {ax_25 = PHI(ax_19, ax_12)}
+dx_ax_13: orig: dx_ax
+si_14: orig: si
+cx_15: orig: cx
+SZO_16: orig: SZO
+ax_17: orig: ax
+dx_ax_18: orig: dx_ax, uses: {ax_19 = (word16) (cx * fn0C00_000B(cx - 0x0001)) (alias)}
+ax_19: orig: ax, def: {ax_19 = (word16) (cx * fn0C00_000B(cx - 0x0001)) (alias)}, uses: {ax_25 = PHI(ax_19, ax_12)}
+dx_20: orig: dx
+SCZO_21: orig: SCZO
+SZO_22: orig: SZO
+dx_ax_23: orig: dx_ax
+dx_24: orig: dx
+ax_25: orig: ax, def: {ax_25 = PHI(ax_19, ax_12)}, uses: {return ax_25}
+SZO_26: orig: SZO
+SCZO_27: orig: SCZO
+cx_28: orig: cx
+si_29: orig: si
+// fn0C00_000B
+word16 fn0C00_000B(word16 cx)
+fn0C00_000B_entry:		// block 0, pred:
+	def cx
+	// succ:  1
+l0C00_000B:		// block 1, pred: 0
+	branch cx <= 0x0001
+	// succ:  3 2
+l0C00_001C:		// block 2, pred: 1
+	ax_12 = 0x0001
+	// succ:  4
+l0C00_0011:		// block 3, pred: 1
+	ax_19 = (word16) (cx * fn0C00_000B(cx - 0x0001)) (alias)
+	// succ:  4
+l0C00_001F:		// block 4, pred: 3 2
+	ax_25 = PHI(ax_19, ax_12)
+	return ax_25
+	// succ:  5
+fn0C00_000B_exit:		// block 5, pred: 4
+	// succ: 
+

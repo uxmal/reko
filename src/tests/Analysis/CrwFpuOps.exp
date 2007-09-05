@@ -1,0 +1,86 @@
+void fn0C00_0000(Register segment ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed: bx bl bh
+// Preserved:
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// wLoc02:Local -0002
+// wLoc04:Local -0004
+// ds:Register
+// return address size: 2
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	wLoc02 = 0x0320
+	wLoc04 = 0x0300
+	fn0C00_0010(ds, wLoc04, wLoc02)
+	fn0C00_0037(ds)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+void fn0C00_0010(Register segment ds, Stack word16 wArg02, Stack word16 wArg04)
+// MayUse:  ds
+// LiveOut:
+// Trashed: bx bl bh
+// Preserved: bp
+// Stack args: Stack +0002(16) Stack +0004(16)
+// fn0C00_0010
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register
+// wLoc02:Local -0002
+// wArg02:Stack +0002
+// bx:Register
+// rLoc1:FPU stack
+// ds:Register
+// rLoc2:FPU stack
+// wArg04:Stack +0004
+// return address size: 2
+void fn0C00_0010(segment ds, word16 wArg02, word16 wArg04)
+fn0C00_0010_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0010:		// block 1, pred: 0
+	bx = wArg02
+	rLoc1 = Mem0[ds:bx:real64]
+	rLoc1 = rLoc1 * rLoc1
+	rLoc2 = Mem0[ds:bx + 0x0008:real64]
+	rLoc2 = rLoc2 * rLoc2
+	rLoc1 = rLoc1 + rLoc2
+	rLoc2 = Mem0[ds:bx + 0x0010:real64]
+	rLoc2 = rLoc2 * rLoc2
+	rLoc1 = rLoc1 + rLoc2
+	bx = wArg04
+	store(Mem0[ds:bx:real64]) = rLoc1
+	rLoc1 = (real64) Mem0[ds:bx + 0x0020:word16]
+	store(Mem0[ds:bx + 0x0028:real64]) = rLoc1
+	return
+	// succ:  2
+fn0C00_0010_exit:		// block 2, pred: 1
+	// succ: 
+void fn0C00_0037(Register segment ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed:
+// Preserved:
+// fn0C00_0037
+// Mem0:Global memory
+// fp:Temporary
+// rLoc1:FPU stack
+// ds:Register
+// return address size: 2
+void fn0C00_0037(segment ds)
+fn0C00_0037_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0037:		// block 1, pred: 0
+	rLoc1 = 0
+	store(Mem0[ds:0x0400:real64]) = rLoc1
+	rLoc1 = 1
+	store(Mem0[ds:0x0408:word32]) = (word32) rLoc1
+	return
+	// succ:  2
+fn0C00_0037_exit:		// block 2, pred: 1
+	// succ: 
