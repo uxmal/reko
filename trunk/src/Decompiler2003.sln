@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests2003", "UnitTests\
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler", "WindowsDecompiler\WindowsDecompiler.csproj", "{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler2003", "WindowsDecompiler\WindowsDecompiler2003.csproj", "{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject

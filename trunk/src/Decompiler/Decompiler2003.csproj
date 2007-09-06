@@ -868,16 +868,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "WindowsGui\Controls\MemoryControlRichedit.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WindowsGui\Controls\MemoryControlRichedit.resx"
-                    DependentUpon = "MemoryControlRichedit.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "WindowsGui\Forms\AnalyzePage.cs"
                     SubType = "UserControl"
                     BuildAction = "Compile"
