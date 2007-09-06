@@ -28,7 +28,15 @@ namespace WindowsDecompiler
 		[STAThread]
 		public static void Main(string [] args)
 		{
-			Application.Run(new MainForm());
+			if (args.Length == 0)
+			{
+				Application.Run(new MainForm());
+			}
+			else
+			{
+				DecompilerDriver dec = new DecompilerDriver(args[0]);
+				dec.Decompile(new NullDecompilerHost());
+			}
 		}
 	}
 }

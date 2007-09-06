@@ -15,13 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests2003", "UnitTests\
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGui2003", "WindowsGui\WindowsGui2003.csproj", "{E80D1E76-8C38-4320-88D1-8104B75078F2}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler", "WindowsDecompiler\WindowsDecompiler.csproj", "{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler", "WindowsDecompiler\WindowsDecompiler.csproj", "{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -47,14 +41,10 @@ Global
 		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Debug.Build.0 = Debug|.NET
 		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Release.ActiveCfg = Release|.NET
 		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Release.Build.0 = Release|.NET
-		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Debug.ActiveCfg = Debug|.NET
-		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Debug.Build.0 = Debug|.NET
-		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Release.ActiveCfg = Release|.NET
-		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Release.Build.0 = Release|.NET
-		{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}.Debug.ActiveCfg = Debug|.NET
-		{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}.Debug.Build.0 = Debug|.NET
-		{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}.Release.ActiveCfg = Release|.NET
-		{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}.Release.Build.0 = Release|.NET
+		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Debug.ActiveCfg = Debug|.NET
+		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Debug.Build.0 = Debug|.NET
+		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Release.ActiveCfg = Release|.NET
+		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
