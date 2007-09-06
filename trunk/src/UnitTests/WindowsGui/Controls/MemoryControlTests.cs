@@ -16,7 +16,7 @@ namespace Decompiler.UnitTests.WindowsGui.Controls
 		[Test]
 		public void Initialize()
 		{
-			MemoryControl ctl = new MemoryControlTests();
+			MemoryControl ctl = new MemoryControl();
 		}
 
 		private byte [] GenerateTestMemory()
