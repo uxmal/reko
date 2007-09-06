@@ -41,55 +41,52 @@ namespace Decompiler
 	{
 		private Program program;
 		private DecompilerProject project;
+		private Loader loader;
+		private Scanner scanner;
+		private RewriterHost rewriterHost;
+		private InductionVariableCollection ivs;
 
-		public event ProgramLoadedEventHandler Loaded;
-		public event EventHandler Scanned;
-		public event EventHandler Rewritten;
-		public event EventHandler ProceduresUntangled;
-		public event EventHandler DataAnalyzed;
-		public event EventHandler ProgramStructured;
-		public event EventHandler Finished;
-
-		public DecompilerDriver()
+		public DecompilerDriver(DecompilerProject project)
 		{
+			this.project = project;
+			this.program = new Program();
 		}
 
-		private DataFlowAnalysis AnalyzeData(DecompilerHost host)
+		public DecompilerDriver(string binaryFilename)
+		{
+			this.project = new DecompilerProject();
+			this.project.Input.Filename = binaryFilename;
+			this.program = new Program();
+		}
+
+		public void AnalyzeDataFlow(DecompilerHost host)
 		{
 			// Data flow analysis: determines the signature of the procedures,
 			// the locations and types of all the values in the program.
 
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, host);
 			RegisterLiveness rl = dfa.UntangleProcedures();
-			OnProceduresUntangled();
+			host.InterproceduralAnalysisComplete();
 
 			dfa.BuildExpressionTrees(rl);
 			EmitProgram(dfa, host.IntermediateCodeWriter);
 			
-			OnDataAnalyzed();
-			return dfa;
+			ivs = dfa.InductionVariables;
+			host.ProceduresTransformed();
 		}
 
 
-		public void DecompileBinary(string binaryFilename, DecompilerHost host)
-		{
-			DecompilerProject p = new DecompilerProject();
-			p.Input.Filename = binaryFilename;
-			Decompile(p, host);
-		}
 
-		public void Decompile(DecompilerProject proj, DecompilerHost host)
+		public void Decompile(DecompilerHost host)
 		{
-			this.project = proj;
-			program = new Program();
 			try 
 			{
-				Loader ldr = Load(program);
-				Scanner scanner = Scan(ldr, program, host);
-				Rewrite(program, scanner, host);
-				DataFlowAnalysis dfa =  AnalyzeData(host);
-				ReconstructTypes(host, dfa.InductionVariables);
-				StructureProgram();
+				LoadProgram(host);
+				ScanProgram(host);
+				RewriteMachineCode(host);
+				AnalyzeDataFlow(host);
+				ReconstructTypes(host);
+				StructureProgram(host);
 				WriteDecompiledProcedures(host);
 			} 
 			catch (Exception e)
@@ -98,7 +95,7 @@ namespace Decompiler
 			}				
 			finally
 			{
-				host.Finished();
+				host.DecompilationFinished();
 			}
 		}
 
@@ -112,7 +109,7 @@ namespace Decompiler
 				{
 					if (dfa != null)
 					{
-						ProcedureFlow flow = dfa.FlowOf(proc);
+						ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 						if (flow.Signature != null)
 							flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, output);
 						else if (proc.Signature != null)
@@ -127,7 +124,7 @@ namespace Decompiler
 								continue;
 
 							block.Write(output); output.Flush();
-							BlockFlow bf = dfa.FlowOf(block);
+							BlockFlow bf = dfa.ProgramDataFlow[block];
 							if (bf != null) bf.Emit(program.Architecture, output);
 						}
 					}
@@ -139,7 +136,6 @@ namespace Decompiler
 				}
 				output.Flush();
 			}
-			OnFinished();
 		}
 
 		/// <summary>
@@ -147,71 +143,28 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="program"></param>
 		/// <param name="cfg"></param>
-		public Loader Load(Program program)
+		public void LoadProgram(DecompilerHost host)
 		{
-			Loader ld = new Loader(program);
+			loader = new Loader(program);
 			switch (project.Input.FileFormat)
 			{
 			case InputFormat.Assembler:
-				ld.Assemble(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
+				loader.Assemble(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
 				break;
 			case InputFormat.AssemblerFragment:
-				ld.AssembleFragment(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
+				loader.AssembleFragment(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
 				break;
 			case InputFormat.Binary:
 			case InputFormat.COM:
 				if (project.Input.BaseAddress == null)
 					throw new ArgumentException("Base address must be specified when input format is Binary or COM");
-				ld.LoadBinary(project.Input.Filename, project.Input.BaseAddress);
+				loader.LoadBinary(project.Input.Filename, project.Input.BaseAddress);
 				break;
 			default:
-				ld.LoadExecutable(project.Input.Filename, project.Input.BaseAddress);
+				loader.LoadExecutable(project.Input.Filename, project.Input.BaseAddress);
 				break;
 			}
-			OnLoaded(ld);
-			return ld;
-		}
-
-		protected void OnProgramStructured()
-		{
-			if (ProgramStructured != null)
-				ProgramStructured(this, EventArgs.Empty);
-		}
-
-		protected void OnDataAnalyzed()
-		{
-			if (DataAnalyzed != null)
-				DataAnalyzed(this, EventArgs.Empty);
-		}
-
-		protected void OnFinished()
-		{
-			if (Finished != null)
-				Finished(this, EventArgs.Empty);
-		}
-
-		protected void OnLoaded(Loader ldr)
-		{
-			if (Loaded != null)
-				Loaded(this, new ProgramLoadedEventArgs(ldr));
-		}
-
-		protected void OnProceduresUntangled()
-		{
-			if (ProceduresUntangled != null)
-				ProceduresUntangled(this, EventArgs.Empty);
-		}
-
-		protected void OnRewritten()
-		{
-			if (Rewritten != null)
-				Rewritten(this, EventArgs.Empty);
-		}
-
-		protected void OnScanned()
-		{
-			if (Scanned != null)
-				Scanned(this, EventArgs.Empty);
+			host.ProgramLoaded();
 		}
 
 		public Program Program
@@ -225,9 +178,9 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="host"></param>
 		/// <param name="ivs"></param>
-		public void ReconstructTypes(DecompilerHost host, InductionVariableCollection ivs)
+		public void ReconstructTypes(DecompilerHost host)
 		{
-			if (this.project.Output.TypeInference)
+			if (project.Output.TypeInference)
 			{
 				TypeAnalyzer analyzer = new TypeAnalyzer(program, ivs, host);
 				analyzer.RewriteProgram();
@@ -245,14 +198,14 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="prog">the program to rewrite</param>
 		/// <param name="cfg">configuration information</param>
-		public void Rewrite(Program prog, Scanner scanner, DecompilerHost host)
+		public void RewriteMachineCode(DecompilerHost host)
 		{
-			RewriterHost rwHost = new RewriterHost(prog, host, scanner.ImageMap, scanner.SystemCalls, scanner.VectorUses);
-			rwHost.LoadCallSignatures(this.project.UserCalls);
-			rwHost.RewriteProgram();
+			rewriterHost = new RewriterHost(program, host, scanner.ImageMap, scanner.SystemCalls, scanner.VectorUses);
+			rewriterHost.LoadCallSignatures(this.project.UserCalls);
+			rewriterHost.RewriteProgram();
 
 			EmitProgram(null, host.IntermediateCodeWriter);
-			OnRewritten();
+			host.MachineCodeRewritten();
 		}
 
 		public void WriteDecompiledProcedures(DecompilerHost host)
@@ -266,28 +219,33 @@ namespace Decompiler
 		}
 
 		/// <summary>
-		/// Generates the control flow graph and finds procedures.
+		/// Generates the control flow graph and finds executable code.
 		/// </summary>
 		/// <param name="prog">the program whose flow graph we seek</param>
 		/// <param name="cfg">configuration information</param>
-		public Scanner Scan(Loader ld, Program prog, DecompilerHost host)
+		public void ScanProgram(DecompilerHost host)
 		{
-			Scanner scanner = new Scanner(program, ld.ImageMap, null);
+			if (loader == null)
+				throw new InvalidOperationException("Program must be loaded before it can be scanned.");
+			scanner = new Scanner(program, loader.ImageMap, null);
 			try
 			{
-				scanner.Parse(ld.EntryPoints, project.UserProcedures);
+				scanner.Parse(loader.EntryPoints, project.UserProcedures);
 				// Dump all procedures in DFS order.
-				OnScanned();
-				return scanner;
+				host.ProgramScanned();
 			}
 			finally
 			{
-				prog.DumpAssembler(scanner.ImageMap, host.DisassemblyWriter);
-				host.DisassemblyWriter.Flush();
+				loader = null;
+				if (host.DisassemblyWriter != null)
+				{
+					program.DumpAssembler(scanner.ImageMap, host.DisassemblyWriter);
+					host.DisassemblyWriter.Flush();
+				}
 			}
 		}
 
-		public void StructureProgram()
+		public void StructureProgram(DecompilerHost host)
 		{
 			if (project.Output.ControlStructure)
 			{
@@ -304,9 +262,8 @@ namespace Decompiler
 					sa.FindStructures();
 				}
 			}
-			OnProgramStructured();
+			host.CodeStructuringComplete();
 		}
-
 
 		// class Timer /////////////////////////////////////////////////////
 
@@ -330,20 +287,4 @@ namespace Decompiler
 			}
 		}
 	}
-
-	// Delegates for the decompiler driver 
-	//$REVIEW: consider making these members of the DecompilerHost instead.
-	public delegate void ProgramLoadedEventHandler(object sender, ProgramLoadedEventArgs l);
-
-	public class ProgramLoadedEventArgs
-	{
-		public Loader Loader;
-
-		public ProgramLoadedEventArgs(Loader ldr)
-		{
-			this.Loader = ldr;
-		}
-	}
-
-
 }

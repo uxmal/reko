@@ -23,6 +23,9 @@ using System.Text;
 
 namespace Decompiler.WindowsGui
 {
+	/// <summary>
+	/// Maintains a most-recently used file lists at a specified location in the user's settings directory.
+	/// </summary>
 	public class MruList
 	{
 		private int itemsMax;

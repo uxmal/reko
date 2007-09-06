@@ -33,7 +33,6 @@ namespace Decompiler.UnitTests.Loading
 		[Test]
 		public void LoadSpacesim()
 		{
-			DecompilerDriver decompiler = new DecompilerDriver();
 			Program prog = new Program();
 			Loader loader = new Loader(prog);
 			loader.LoadExecutable(FileUnitTester.MapTestPath("binaries/itp.exe"));
@@ -42,7 +41,6 @@ namespace Decompiler.UnitTests.Loading
 		[Test]
 		public void LoadOmni()
 		{
-			DecompilerDriver decompiler = new DecompilerDriver();
 			Program prog = new Program();
 			Loader loader = new Loader(prog);
 			loader.LoadBinary(FileUnitTester.MapTestPath("binaries/omni.com"), new Address(0xC000, 0));
@@ -51,7 +49,6 @@ namespace Decompiler.UnitTests.Loading
 		[Test]
 		public void LoadItp()
 		{
-			DecompilerDriver decompiler = new DecompilerDriver();
 			Program prog = new Program();
 			Loader loader = new Loader(prog);
 			loader.LoadExecutable(FileUnitTester.MapTestPath("binaries/itp.exe"));
@@ -60,7 +57,6 @@ namespace Decompiler.UnitTests.Loading
 		[Test]
 		public void LoadLunar()
 		{
-			DecompilerDriver decompiler = new DecompilerDriver();
 			Program prog = new Program();
 			Loader loader = new Loader(prog);
 			loader.LoadExecutable(FileUnitTester.MapTestPath("binaries/lunarcell-150.8bf"));
