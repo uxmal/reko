@@ -52,11 +52,10 @@ namespace Decompiler.Scanning
 
 		private static TraceSwitch trace = new TraceSwitch("Scanner", "Enables tracing in the scanning phase");
 
-		public Scanner(Program prog, ImageMap imageMap, DecompilerHost host)
+		public Scanner(Program prog, DecompilerHost host)
 		{
 			this.prog = prog;
 			this.host = host;
-			this.ImageMap = imageMap;
 			this.vectorUses = new Map();
 			this.syscalls = new SortedList();
 			qStarts = new Queue();

@@ -92,7 +92,7 @@ baz proc
 baz endp
 ");
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
-			Scanner scan = new Scanner(prog, new ImageMap(prog.Image), null);
+			Scanner scan = new Scanner(prog, null);
 			ArrayList eps = new ArrayList();
 			eps.Add(ep);
 			scan.Parse(eps);
@@ -107,7 +107,7 @@ baz endp
 		public void DontPromoteStumps()
 		{
 			Program prog = BuildTest("Fragments/multiple/jumpintoproc2.asm");
-			Scanner scan = new Scanner(prog, new ImageMap(prog.Image), null);
+			Scanner scan = new Scanner(prog, null);
 			scan.EnqueueProcedure(null, prog.Image.BaseAddress, null, prog.Architecture.CreateProcessorState());
 			Assert.IsTrue(scan.ProcessItem());
 			Assert.IsTrue(scan.ProcessItem());
@@ -127,13 +127,13 @@ baz endp
 			EntryPoint ep = new EntryPoint(asm.StartAddress, new IntelState());
 			ArrayList eps = new ArrayList();
 			eps.Add(ep);
-			Scanner scan = new Scanner(prog, new ImageMap(prog.Image), null);
+			Scanner scan = new Scanner(prog, null);
 			scan.Parse(eps);
 
 			using (FileUnitTester fut = new FileUnitTester("Scanning/ScanInterprocedureJump.txt"))
 			{
-				Dumper dumper = prog.Architecture.CreateDumper(prog, fut.TextWriter);
-				dumper.Dump(scan.ImageMap);
+				Dumper dumper = prog.Architecture.CreateDumper();
+				dumper.Dump(prog, scan.ImageMap, fut.TextWriter);
 				foreach (DictionaryEntry de in prog.Procedures)
 				{
 					Procedure proc = (Procedure) de.Value;

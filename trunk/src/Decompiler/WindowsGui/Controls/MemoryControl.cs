@@ -16,97 +16,373 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler;
+using Decompiler.Core;
 using System;
 using System.Collections;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Drawing;
-using System.Data;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
 
 namespace Decompiler.WindowsGui.Controls
 {
 	/// <summary>
-	/// Displays memory.
+	/// Displays memory and allows selection of memory ranges. 
 	/// </summary>
-	public class MemoryControl : System.Windows.Forms.UserControl
+	/// <remarks>
+	/// Memory that has been identified is colored.
+	/// <para>
+	/// A memory cell is displayed with a one-pixel border on all sides to
+	/// help present it with selections.
+	/// </para>
+	/// </remarks>
+	public class MemoryControl : Control
 	{
-		private System.Windows.Forms.RichTextBox txtMemory;
-		private System.Windows.Forms.VScrollBar vScrollBar1;
-		/// <summary> 
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private Address addrTopVisible;		// address of topmost visible row.
+		private int wordSize;
+		private int cbRow;
+		private ProgramImage image;
+		private ImageMap imageMap;
+		private Address addrSelected;
+
+		private int cRows;				// total number of rows.
+		private int yTopRow;			// index of topmost visible row
+		private int cyPage;				// number of rows / page.
+		private Size cellSize;			// size of cell in pixels.
+		private Point ptDown;			 // point at which mouse was clicked.
+		private VScrollBar vscroller;
+		private Point hitTestPoint = new Point(0, 0);
 
 		public MemoryControl()
 		{
-			// This call is required by the Windows.Forms Form Designer.
-			InitializeComponent();
-
-			// TODO: Add any initialization after the InitializeComponent call
-
+			vscroller = new VScrollBar();
+			vscroller.Dock = DockStyle.Right;
+ 			Controls.Add(vscroller);
+			wordSize = 1;
+			cbRow = 16;
 		}
 
-		/// <summary> 
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
+		public int BytesPerRow
 		{
-			if( disposing )
+			get { return cbRow; }
+			set 
 			{
-				if(components != null)
+				UpdateScroll();
+				cbRow = value;
+			}
+		}
+
+		private void CacheCellSize()
+		{
+			using (Graphics g = this.CreateGraphics())
+			{
+				SizeF cellF = g.MeasureString("M", Font, Width, StringFormat.GenericTypographic);
+				cellSize = new Size((int) (cellF.Width + 0.5F), (int) (cellF.Height + 0.5F));
+			}
+		}
+
+		private Size CellSize
+		{
+			get { return cellSize; }
+		}
+
+		private bool IsVisible(Address addr)
+		{
+			if (addr == null)
+				return false;
+			int cbOffset = addr - StartAddress;
+			int yRow = cbOffset / cbRow;
+			return (yTopRow <= yRow && yRow < yTopRow + cyPage);
+		}
+
+		private Brush GetBackgroundBrush(ImageMapItem item)
+		{
+			if (item is ImageMapBlock)
+				return Brushes.Pink;
+			return SystemBrushes.Window;
+		} 
+
+		private Brush GetForegroundBrush(ImageMapItem item)
+		{
+			return SystemBrushes.WindowText;
+		}
+
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			base.OnMouseDown(e);
+			Focus();
+			CacheCellSize();
+			ptDown = new Point(e.X, e.Y);
+
+			int row = e.X / CellSize.Width;
+			int col = e.Y / CellSize.Height;
+
+			if (imageMap != null)
+			{
+				this.addrSelected = ImageMap.MapLinearAddressToAddress(addrTopVisible.Linear + row * BytesPerRow + col);
+			}
+		}
+
+		protected override void OnPaint(PaintEventArgs pea)
+		{
+			if (image == null)
+			{
+				pea.Graphics.FillRectangle(SystemBrushes.Window, ClientRectangle);
+			}
+			else
+			{
+				CacheCellSize();
+				PaintWindow(pea.Graphics);
+			}
+		}
+
+		protected override void OnSizeChanged(EventArgs e)
+		{
+			base.OnSizeChanged(e);
+			UpdateScroll();
+		}
+		
+		/// <summary>
+		/// Paints a line of the memory control, starting with the address. 
+		/// </summary>
+		/// <remarks>
+		/// The strategy is to find any items present at the current address, and try
+		/// to paint as many adjacent items as possible.
+		/// </remarks>
+		/// <param name="g"></param>
+		/// <param name="rc"></param>
+		/// <param name="rdr"></param>
+		private Address PaintLine(Graphics g, Rectangle rc, ImageReader rdr, bool render)
+		{
+			StringBuilder sbCode = new StringBuilder(" ");
+
+			// Draw the address part.
+
+			rc.X = 0;
+			string s = string.Format("{0}", rdr.Address);
+			int cx = (int) g.MeasureString(s + "X", Font, rc.Width, StringFormat.GenericTypographic).Width;
+			if (render)
+			{
+				g.FillRectangle(SystemBrushes.Window, rc.X, rc.Y, cx, rc.Height);
+				g.DrawString(s, Font, SystemBrushes.ControlText, rc.X, rc.Y, StringFormat.GenericTypographic);
+			}
+			rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
+
+			int rowBytesLeft = cbRow;
+			do 
+			{
+				Address addr = rdr.Address;
+				int linear = addr.Linear;
+
+				/*
+				ImageMapItem item = ImageMap.FindItem(rdr.Address);
+				if (item == null)
+					break;
+				int cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
+				*/
+				int cbIn = 0;
+				int cbToDraw = 16; // item.Size - cbIn;
+
+				// See if the chunk goes off the edge of the line. If so, clip it.
+				if (cbToDraw > rowBytesLeft)
+					cbToDraw = rowBytesLeft;
+
+				// Now paint the bytes in this span.
+
+				Brush fg = SystemBrushes.ControlText; // GetForegroundBrush(item);
+				Brush bg = SystemBrushes.Window; //  GetBackgroundBrush(item);
+				for (int i = 0; i < cbToDraw; ++i)
 				{
-					components.Dispose();
+					Address addrByte = rdr.Address;
+					byte b = rdr.ReadByte();
+					char ch = (char) b;
+					sbCode.Append(Char.IsControl(ch) ? '.' : ch);
+
+					s = string.Format("{0:X2}", b);
+					cx = cellSize.Width * 3;
+					Rectangle rcByte = new Rectangle(
+						rc.Left,
+						rc.Top,
+						cx,
+						rc.Height);
+	
+					if (render)
+					{
+						g.FillRectangle(bg, 
+							rc.Left,
+							rc.Top,
+							cx,
+							rc.Height);
+						g.DrawString(s, Font, SystemBrushes.WindowText, rc.Left, rc.Top, StringFormat.GenericTypographic);
+					}
+					else
+					{
+						if (rcByte.Contains(hitTestPoint))
+						{
+							return addrByte;
+						}
+					}
+					rc = new Rectangle(rc.X + cx, rc.Y, rc.Width - cx, rc.Height);
+				}
+				rowBytesLeft -= cbToDraw;
+			} while (rowBytesLeft > 0);
+
+			g.DrawString(sbCode.ToString(), Font, SystemBrushes.WindowText, rc.X + 8, rc.Top, StringFormat.GenericTypographic);
+			return null;
+		}
+
+		/// <summary>
+		/// Paints the control's window area. Strategy is to find the spans that make up
+		/// the whole segment, and paint them one at a time.
+		/// </summary>
+		/// <param name="g"></param>
+		public void PaintWindow(Graphics g)
+		{
+			// Enumerate all segments visible on screen.
+
+			ImageReader rdr = image.CreateReader(addrTopVisible);
+			Rectangle rc = ClientRectangle;
+			Size cell = CellSize;
+			rc.Height = cell.Height;
+
+			//$REVIEW: Ignore scrollbars for now.rc.X -= hscroller.Position;
+
+			int laEnd = image.BaseAddress.Linear + image.Bytes.Length;
+			
+//			IDictionaryEnumerator segs = ImageMap.GetSegmentEnumerator(addrTopVisible);
+//			ImageMapSegment seg = null;
+//			int laSegEnd = 0;
+			while (rc.Top < this.Height && rdr.Address.Linear < laEnd)
+			{
+//				if (rdr.Address.Linear >= laSegEnd)
+//				{
+//					if (!segs.MoveNext())
+//						return;
+//					seg = (ImageMapSegment) segs.Value;
+//					laSegEnd = seg.Address.Linear + seg.Size;
+//					rdr = image.CreateReader(seg.Address + (rdr.Address - seg.Address));
+//				}
+				PaintLine(g, rc, rdr, true);
+				rc.Offset(0, CellSize.Height);
+			}
+		}
+
+
+		[Browsable(false)]
+		public ProgramImage ProgramImage
+		{
+			get { return image; }
+			set { 
+				image = value;
+				if (image != null)
+				{
+					TopAddress = image.BaseAddress;
+					UpdateScroll();
+				}
+				else
+				{
+					UpdateScroll();
+					Invalidate();
 				}
 			}
-			base.Dispose( disposing );
 		}
 
-		#region Component Designer generated code
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
+		[Browsable(false)]
+		public ImageMap ImageMap
 		{
-			this.txtMemory = new System.Windows.Forms.RichTextBox();
-			this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-			this.SuspendLayout();
-			// 
-			// txtMemory
-			// 
-			this.txtMemory.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtMemory.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.txtMemory.Location = new System.Drawing.Point(0, 0);
-			this.txtMemory.Name = "txtMemory";
-			this.txtMemory.ReadOnly = true;
-			this.txtMemory.Size = new System.Drawing.Size(160, 144);
-			this.txtMemory.TabIndex = 0;
-			this.txtMemory.Text = "richTextBox1";
-			// 
-			// vScrollBar1
-			// 
-			this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
-			this.vScrollBar1.Location = new System.Drawing.Point(143, 0);
-			this.vScrollBar1.Name = "vScrollBar1";
-			this.vScrollBar1.Size = new System.Drawing.Size(17, 144);
-			this.vScrollBar1.TabIndex = 1;
-			this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
-			// 
-			// MemoryControl
-			// 
-			this.Controls.Add(this.vScrollBar1);
-			this.Controls.Add(this.txtMemory);
-			this.Name = "MemoryControl";
-			this.Size = new System.Drawing.Size(160, 144);
-			this.ResumeLayout(false);
-
+			get { return imageMap; }
+			set { imageMap = value; }
 		}
-		#endregion
-
-		private void vScrollBar1_Scroll(object sender, System.Windows.Forms.ScrollEventArgs e)
+ 
+		private Address RoundToNearestRow(Address addr)
 		{
+			int rows = addr.Linear / cbRow;
+			return ImageMap.MapLinearAddressToAddress(rows * cbRow);
+		}
+
+		[Browsable(false)]
+		public Address SelectedAddress
+		{
+			get { return addrSelected; }
+			set 
+			{
+				if (IsVisible(value) || IsVisible(addrSelected))
+					Invalidate();
+				addrSelected = value;
+			}
+		}
+
+		[Browsable(false)]
+		public Address TopAddress
+		{
+			get { return addrTopVisible; }
+			set
+			{
+				addrTopVisible = value;
+				UpdateScroll();
+				Invalidate();
+			}
+		}
+
+		public void ShowAddress(Address addr)
+		{
+			int cbOffset = addr - image.BaseAddress;
+			if (cbOffset < 0)
+				return;
+
+			if (!IsVisible(addr))
+			{
+				StartAddress = addr;
+				yTopRow = cbOffset / cbRow;
+				vscroller.Value = yTopRow;
+				Invalidate();
+			}
+		}
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public Address StartAddress
+		{
+			get { return addrTopVisible; }
+			set { 
+				addrTopVisible = RoundToNearestRow(value); 
+				UpdateScroll();
+			}
+		}
+
+		private void UpdateScroll()
+		{
+			if (addrTopVisible == null || image == null)
+			{
+				vscroller.Enabled = false;
+				return;
+			}
+
+			vscroller.Enabled = true;
+			using (Graphics g = Graphics.FromHwnd(Handle))
+			{
+				cRows = (image.Bytes.Length + cbRow - 1) / cbRow;
+				int nChunks = cbRow / wordSize;		// number of chunks per line.
+
+				vscroller.Minimum = 0;
+				int h = Font.Height;
+				cyPage = Math.Max((ClientRectangle.Height / Font.Height) - 1, 1);
+				vscroller.LargeChange = cyPage;
+				vscroller.Maximum = cRows - cyPage;
+			}
+		}
+
+		public int WordSize
+		{
+			get { return wordSize; }
+			set 
+			{	
+				wordSize = value;
+				UpdateScroll();
+				Invalidate();
+			}
 		}
 	}
 }

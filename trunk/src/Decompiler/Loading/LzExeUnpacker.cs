@@ -76,31 +76,30 @@ namespace Decompiler.Loading
 
 		// Fix up the relocations.
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
 		{
-			if (isLz91)
-			{
-				Relocate91(RawImage, addrLoad.seg, imgLoaded);
-			}
-			else
-			{
-				Relocate90(RawImage, addrLoad.seg, imgLoaded);
-			}
-
-			// Seed the parser with the start location.
+			// Seed the scanner with the start location.
 
 			EntryPoint ep =  new EntryPoint(new Address((ushort) (lzCs + addrLoad.seg), lzIp), new IntelState());
 			entryPoints.Add(ep);
+			if (isLz91)
+			{
+				return Relocate91(RawImage, addrLoad.seg, imgLoaded);
+			}
+			else
+			{
+				return Relocate90(RawImage, addrLoad.seg, imgLoaded);
+			}
 		}
 
 		// for LZEXE ver 0.90 
-		private  void Relocate90(ProgramImage pgmImg, ushort segReloc, ProgramImage pgmImgNew)
+		private  ImageMap Relocate90(ProgramImage pgmImg, ushort segReloc, ProgramImage pgmImgNew)
 		{
 			int ifile = lzHdrOffset + 0x19D;
 
 			// 0x19d=compressed relocation table address 
 
-			throw new NotImplementedException("NYI");
+			throw new NotImplementedException();
 			/*
 			unsigned int c;
 				ushort rel_count=0;
@@ -126,8 +125,10 @@ namespace Decompiler.Loading
 
 		// Unpacks the relocation entries in a LzExe 0.91 binary
 
-		private void Relocate91(ProgramImage pgmImg, ushort segReloc, ProgramImage pgmImgNew)
+		private ImageMap Relocate91(ProgramImage pgmImg, ushort segReloc, ProgramImage pgmImgNew)
 		{
+			ImageMap imageMap = new ImageMap(pgmImgNew);
+
 			ushort span;
 			byte [] abUncompressed = pgmImg.Bytes;
 			int ifile = lzHdrOffset + 0x158;
@@ -159,8 +160,9 @@ namespace Decompiler.Loading
 
 				// This is a known segment!
 
-				ImageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
+				imageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
 			}
+			return imageMap;
 		}
 
 
@@ -250,7 +252,6 @@ namespace Decompiler.Loading
 			// Create a new image based on the uncompressed data.
 
 			this.imgLoaded = new ProgramImage(addrLoad, abU);
-			this.ImageMap = new ImageMap(imgLoaded);
 
 			return imgLoaded;
 		}

@@ -60,7 +60,7 @@ namespace Decompiler.Loading
 			ReadOptionalHeader(rdr);
 		}
 
-		private void AddExportedEntryPoints(Address addrLoad, ArrayList entryPoints)
+		private void AddExportedEntryPoints(Address addrLoad, ImageMap imageMap, ArrayList entryPoints)
 		{
 			ImageReader rdr = imgLoaded.CreateReader(rvaExportTable);
 			rdr.ReadUint();	// Characteristics
@@ -86,7 +86,7 @@ namespace Decompiler.Loading
 					;
 				char [] chars = Encoding.ASCII.GetChars(imgLoaded.Bytes, iNameMin, j - iNameMin);
 				Address addrEp = addrLoad + addr;
-				if (ImageMap.IsExecutableAddress(addrEp))
+				if (imageMap.IsExecutableAddress(addrEp))
 				{
 					EntryPoint ep = new EntryPoint(addrLoad + addr, new String(chars), new IntelState());
 					entryPoints.Add(ep);
@@ -142,7 +142,7 @@ namespace Decompiler.Loading
 			}
 
 			imgLoaded = new ProgramImage(addrLoad, new byte[sectionMax.VirtualAddress + sectionMax.Size]);
-			ImageMap = new ImageMap(imgLoaded);
+
 			foreach (Section s in sectionMap.Values)
 			{
 				if (!s.IsDiscardable)
@@ -233,8 +233,9 @@ namespace Decompiler.Loading
 		private const ushort RelocationLow = 2;
 		private const ushort RelocationHighLow = 3;
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
 		{
+			ImageMap imageMap = new ImageMap(this.imgLoaded);
 			foreach (Section s in sectionMap.Values)
 			{
 				if (!s.IsDiscardable)
@@ -248,7 +249,7 @@ namespace Decompiler.Loading
 					{
 						acc |= AccessMode.Execute;
 					}
-					ImageMap.AddSegment(addrLoad + s.VirtualAddress, acc);
+					imageMap.AddSegment(addrLoad + s.VirtualAddress, acc);
 				}
 			}
 			
@@ -258,8 +259,9 @@ namespace Decompiler.Loading
 				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.Linear);
 			}
 			entryPoints.Add(new EntryPoint(addrLoad + rvaStartAddress, new IntelState()));
-			AddExportedEntryPoints(addrLoad, entryPoints);
+			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
+			return imageMap;
 		}
 
 		public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage)

@@ -47,13 +47,6 @@ namespace Decompiler.Loading
 			return true;
 		}
 
-		public virtual ImageMap ImageMap
-		{
-			get { return map; }
-			set { map = value; }
-		}
-
-
 		/// <summary>
 		/// Loads the image into memory starting at the specified address
 		/// </summary>
@@ -71,7 +64,13 @@ namespace Decompiler.Loading
 			get { return imgRaw; }
 		}
 
-		public abstract void Relocate(Address addrLoad, ArrayList entryPoints);
+		/// <summary>
+		/// Performs fix-ups of the loaded image, creating an ImageMap with the details.
+		/// </summary>
+		/// <param name="addrLoad">The address at which the program image is loaded.</param>
+		/// <param name="entryPoints">Collection into which any found entry points found should be added.</param>
+		/// <returns>A freshly created ImageMap of the loaded program.</returns>
+		public abstract ImageMap Relocate(Address addrLoad, ArrayList entryPoints);
 
 	}
 }

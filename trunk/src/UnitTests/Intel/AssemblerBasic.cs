@@ -64,12 +64,12 @@ namespace Decompiler.UnitTests.Intel
 			prog.Image = asm.Assemble(prog, addrBase, FileUnitTester.MapTestPath(sourceFile), null);
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Dumper dumper = prog.Architecture.CreateDumper(prog, fut.TextWriter);
+				Dumper dumper = prog.Architecture.CreateDumper();
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
-				dumper.DumpData(prog.Image.BaseAddress, prog.Image.Bytes.Length);
+				dumper.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
-				dumper.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length);
+				dumper.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
 				if (prog.ImportThunks.Count > 0)
 				{
 					SortedList list = new SortedList(prog.ImportThunks);
@@ -104,8 +104,8 @@ hello	endp
 				prog.Image = img;
 				IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 				prog.Architecture = arch;
-				Dumper d = new IntelDumper(prog, fut.TextWriter, arch);
-				d.DumpData(img.BaseAddress, img.Bytes.Length);
+				Dumper d = new IntelDumper(arch);
+				d.DumpData(prog.Image, img.BaseAddress, img.Bytes.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -224,8 +224,8 @@ foo		endp
 			prog.Image = asm.Assemble(prog, new Address(0xBAC, 0), FileUnitTester.MapTestPath("Fragments/carryinsts.asm"), null);
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
-				IntelDumper dump = new IntelDumper(prog, fut.TextWriter, arch);
-				dump.DumpData(prog.Image.BaseAddress, prog.Image.Bytes.Length);
+				IntelDumper dump = new IntelDumper(arch);
+				dump.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -302,12 +302,12 @@ foo		endp
 			prog.Image = asm.Assemble(prog, new Address(0x0C00, 0), FileUnitTester.MapTestPath(sourceFile), null);
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Dumper dump = prog.Architecture.CreateDumper(prog, fut.TextWriter);
-				dump.DumpData(prog.Image.BaseAddress, prog.Image.Bytes.Length);
+				Dumper dump = prog.Architecture.CreateDumper();
+				dump.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length);
+				dump.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}	

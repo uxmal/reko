@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Loading
 			Program prog = new Program();
 			Loader loader = new Loader(prog);
 			loader.LoadExecutable(FileUnitTester.MapTestPath("binaries/lunarcell-150.8bf"));
-			Scanner scan = new Scanner(prog, loader.ImageMap, null);
+			Scanner scan = new Scanner(prog, null);
 			scan.Parse(loader.EntryPoints);
 			using (FileUnitTester fut = new FileUnitTester("Loading/LoadLunar.txt"))
 			{

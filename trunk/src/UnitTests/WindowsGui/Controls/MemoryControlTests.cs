@@ -1,3 +1,4 @@
+using Decompiler.Core;
 using Decompiler.WindowsGui.Controls;
 using NUnit.Framework;
 using System;
@@ -7,16 +8,16 @@ namespace Decompiler.UnitTests.WindowsGui.Controls
 	[TestFixture]
 	public class MemoryControlTests
 	{
+		private byte [] bytes;
+
 		public MemoryControlTests()
 		{
-			byte [] bytes = GenerateTestMemory();
-
+			bytes = GenerateTestMemory();
 		}
 
 		[Test]
 		public void Initialize()
 		{
-			MemoryControl ctl = new MemoryControl();
 		}
 
 		private byte [] GenerateTestMemory()

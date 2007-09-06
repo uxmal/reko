@@ -182,7 +182,7 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		[Obsolete]
+		[Obsolete("Looks identical to TrashedRegisters")]
 		public Hashtable RegisterSet
 		{
 			get { return tsh.TrashedRegisters; }

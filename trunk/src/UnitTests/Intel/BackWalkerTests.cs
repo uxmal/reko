@@ -86,10 +86,10 @@ namespace Decompiler.UnitTests.Intel
 				Loader ld = new Loader(prog);
 				ld.Assemble(FileUnitTester.MapTestPath(sourceFile), arch, addrBase);
 				prog.Architecture = arch;
-				IntelDumper dumper = new IntelDumper(prog, fut.TextWriter, arch);
+				IntelDumper dumper = new IntelDumper(arch);
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
-				dumper.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length);
+				dumper.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.Flush();
 
 				IntelBackWalker ibw = new IntelBackWalker(arch, prog.Image);

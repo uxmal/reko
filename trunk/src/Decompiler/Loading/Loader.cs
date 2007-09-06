@@ -33,7 +33,6 @@ namespace Decompiler.Loading
 		private Program prog;
 		private ArrayList entryPoints;
 		private ProgramImage image;
-		private ImageMap imageMap;
 
 		public Loader(Program prog)
 		{
@@ -46,8 +45,8 @@ namespace Decompiler.Loading
 			prog.Architecture = arch;
 			Assembler asm = arch.CreateAssembler();
 			image = asm.Assemble(prog, addrBase, asmFile, entryPoints);
-			imageMap = new ImageMap(image);
 			prog.Image = image;			//$REFACTOR: this responsibility should be the caller's.
+			prog.ImageMap = new ImageMap(image);
 			entryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
 		}
 
@@ -68,11 +67,6 @@ namespace Decompiler.Loading
 			get { return image; }
 		}
 
-		public ImageMap ImageMap
-		{
-			get { return imageMap; }
-		}
-
 		/// <summary>
 		/// Loads the <paramref>binaryFile</paramref> into memory without any 
 		/// relocation or other processing. The beginning of the
@@ -86,7 +80,7 @@ namespace Decompiler.Loading
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			prog.Image = Image;
 			prog.Platform = new Arch.Intel.MsDos.MsdosPlatform(prog.Architecture);
-			imageMap = new ImageMap(Image);
+			prog.ImageMap = new ImageMap(Image);
 			entryPoints.Add(new EntryPoint(addrBase + 0x0100, prog.Architecture.CreateProcessorState()));
 		}
 
@@ -107,8 +101,7 @@ namespace Decompiler.Loading
 					addrLoad = ldr.PreferredBaseAddress;
 				}
 				prog.Image = ldr.Load(addrLoad);
-				ldr.Relocate(addrLoad, entryPoints);
-				this.imageMap = ldr.ImageMap;
+				prog.ImageMap = ldr.Relocate(addrLoad, entryPoints);
 				return;
 			}
 			throw new ApplicationException("Unknown executable format: " + pstrFileName);

@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Mocks
 			return null;
 		}
 
-		public Dumper CreateDumper(Program pgm, System.IO.TextWriter stm)
+		public Dumper CreateDumper()
 		{
 			// TODO:  Add ArchitectureMock.CreateDumper implementation
 			return null;

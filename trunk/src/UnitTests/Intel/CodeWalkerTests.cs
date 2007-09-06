@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Intel
 		public void FindJumps()
 		{
 			Program pgm = BuildProgram();
-			Scanner sc = new Scanner(pgm, imageMap, null);
+			Scanner sc = new Scanner(pgm, null);
 
 			EntryPoint ep = new EntryPoint(pgm.Image.BaseAddress, new IntelState());
 			ArrayList eps = new ArrayList();
@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Intel
 				Program prog = new Program();
 				Loader ld = new Loader(prog);
 				ld.Assemble(FileUnitTester.MapTestPath("fragments/Factorial.asm"), new IntelArchitecture(ProcessorMode.Real), new Address(0x0C00, 0));
-				Scanner sc = new Scanner(prog, ld.ImageMap, null);
+				Scanner sc = new Scanner(prog, null);
 				sc.Parse(ld.EntryPoints);
 				prog.DumpAssembler(sc.ImageMap, fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -239,10 +239,10 @@ namespace Decompiler.UnitTests.Intel
 				prog.Architecture = new IntelArchitecture(mode);
 				Loader ld = new Loader(prog);
 				ld.Assemble(FileUnitTester.MapTestPath(sourceFile), prog.Architecture, addrBase);
-				Scanner sc = new Scanner(prog, ld.ImageMap, null);
+				Scanner sc = new Scanner(prog, null);
 				sc.Parse(ld.EntryPoints);
-				Dumper d = prog.Architecture.CreateDumper(prog, fut.TextWriter);
-				d.Dump(sc.ImageMap);
+				Dumper d = prog.Architecture.CreateDumper();
+				d.Dump(prog, sc.ImageMap, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}

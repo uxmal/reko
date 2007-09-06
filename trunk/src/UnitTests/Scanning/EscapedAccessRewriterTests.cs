@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Scanning
 			Assembler asm = prog.Architecture.CreateAssembler();
 			Loader ldr = new Loader(prog);
 			ldr.Assemble(FileUnitTester.MapTestPath(sourceFile), prog.Architecture, addr);
-			Scanner scan = new Scanner(prog, ldr.ImageMap, null);
+			Scanner scan = new Scanner(prog, null);
 			scan.Parse(ldr.EntryPoints);
 			RewriterHost host = new RewriterHost(prog, null, scan.ImageMap, scan.SystemCalls, scan.VectorUses);
 			host.RewriteProgram();

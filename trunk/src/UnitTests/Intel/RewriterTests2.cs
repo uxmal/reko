@@ -82,8 +82,8 @@ namespace Decompiler.UnitTests.Intel
 			DoRewriteFile("Fragments/multiple/calltables.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwCallTable.txt"))
 			{
-				Dumper dump = prog.Architecture.CreateDumper(prog, fut.TextWriter);
-				dump.Dump(scanner.ImageMap);
+				Dumper dump = prog.Architecture.CreateDumper();
+				dump.Dump(prog, scanner.ImageMap, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				prog.CallGraph.Emit(fut.TextWriter);
 
