@@ -116,7 +116,6 @@
     <Compile Include="Core\VariableVisitorTests.cs" />
     <Compile Include="Core\WorkListTests.cs" />
     <Compile Include="DecompilerHostTests.cs" />
-    <Compile Include="DecompilerTests.cs" />
     <Compile Include="FileUnitTester.cs" />
     <Compile Include="ImageMapTests.cs" />
     <Compile Include="Intel\AssemblerAdvanced.cs" />
@@ -204,7 +203,6 @@
     <Compile Include="Typing\TypedConstantRewriterTests.cs" />
     <Compile Include="Typing\TypedExpressionRewriterTest.cs" />
     <Compile Include="Typing\TypedMemoryExpressionRewriterTests.cs" />
-    <Compile Include="Typing\TypeMappingTests.cs" />
     <Compile Include="Typing\TypeStoreTests.cs" />
     <Compile Include="Typing\TypeTransformArrayTests.cs" />
     <Compile Include="Typing\TypeTransformTest.cs" />
@@ -231,10 +229,6 @@
     <ProjectReference Include="..\Decompiler\Decompiler.csproj">
       <Project>{7A9440A2-7692-4F74-BFFE-23741DE81C61}</Project>
       <Name>Decompiler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Grovel\Grovel.csproj">
-      <Project>{6BE5D553-093E-44E1-90D6-711A9003976A}</Project>
-      <Name>Grovel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

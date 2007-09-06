@@ -181,6 +181,7 @@
     <Compile Include="Analysis\ProcedureFlow.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\ProgramDataFlow.cs" />
     <Compile Include="Analysis\RegisterLiveness.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -251,6 +252,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\StackVariableMap.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinder.cs" />
+    <Compile Include="Analysis\TrashedStorageHelper.cs" />
     <Compile Include="Analysis\ValueNumbering.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -446,9 +449,6 @@
     <Compile Include="Typing\TypeInferenceException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Typing\TypeMapping.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Typing\TypeStore.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -471,6 +471,35 @@
     <Compile Include="Typing\UnionTypeVarsReplacer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WindowsGui\Controls\CodeControl.cs" />
+    <Compile Include="WindowsGui\Controls\DisassemblyControl.cs" />
+    <Compile Include="WindowsGui\Controls\ImageMapControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Controls\MemoryControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Controls\MemoryControlRichedit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\AnalyzePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\LoadPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\MainFormInteractor.cs" />
+    <Compile Include="WindowsGui\Forms\PhasePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\ScanPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\GuiHost.cs" />
+    <Compile Include="WindowsGui\MruList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
@@ -480,6 +509,81 @@
       <DependentUpon>ImageMapControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Controls\ImageMapControl.resx">
+      <DependentUpon>ImageMapControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Controls\MemoryControl.resx">
+      <DependentUpon>MemoryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Controls\MemoryControlRichedit.resx">
+      <DependentUpon>MemoryControlRichedit.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Forms\AnalyzePage.resx">
+      <DependentUpon>AnalyzePage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Forms\LoadPage.resx">
+      <DependentUpon>LoadPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Forms\PhasePage.resx">
+      <DependentUpon>PhasePage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Forms\ScanPage.resx">
+      <DependentUpon>ScanPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.ImageMapControl.resources" />
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.MemoryControl.resources" />
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.MemoryControl2.resources" />
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Driver.resources" />
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.AnalysePage.resources" />
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.LoadPage.resources" />
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.MainForm.resources" />
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.PhasePage.resources" />
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.ScanPage.resources" />
+    <EmbeddedResource Include="WindowsGui\obj\Debug\Grovel.MainForm.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WindowsGui\bin\Debug\advapi32.xml" />
+    <Content Include="WindowsGui\bin\Debug\comdlg32.xml" />
+    <Content Include="WindowsGui\bin\Debug\Decompiler.Core2003.dll" />
+    <Content Include="WindowsGui\bin\Debug\Decompiler.Core2003.pdb" />
+    <Content Include="WindowsGui\bin\Debug\Decompiler.WindowsGui2003.exe" />
+    <Content Include="WindowsGui\bin\Debug\Decompiler.WindowsGui2003.pdb" />
+    <Content Include="WindowsGui\bin\Debug\Decompiler2003.dll" />
+    <Content Include="WindowsGui\bin\Debug\Decompiler2003.pdb" />
+    <Content Include="WindowsGui\bin\Debug\gdi32.xml" />
+    <Content Include="WindowsGui\bin\Debug\Grovel.vshost.exe" />
+    <Content Include="WindowsGui\bin\Debug\Intel2003.dll" />
+    <Content Include="WindowsGui\bin\Debug\Intel2003.pdb" />
+    <Content Include="WindowsGui\bin\Debug\kernel32.xml" />
+    <Content Include="WindowsGui\bin\Debug\msvcrt.xml" />
+    <Content Include="WindowsGui\bin\Debug\realmodeintservices.xml" />
+    <Content Include="WindowsGui\bin\Debug\shell32.xml" />
+    <Content Include="WindowsGui\bin\Debug\user32.xml" />
+    <Content Include="WindowsGui\bin\Debug\wininet.xml" />
+    <Content Include="WindowsGui\obj\Debug\Decompiler.WindowsGui2003.exe" />
+    <Content Include="WindowsGui\obj\Debug\Decompiler.WindowsGui2003.pdb" />
+    <Content Include="WindowsGui\obj\WindowsGui2005.csproj.FileList.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WindowsGui\bin\Debug\Decompiler.WindowsGui2003.exe.config" />
+    <None Include="WindowsGui\bin\Debug\Grovel.exe.config" />
+    <None Include="WindowsGui\bin\Debug\Grovel.vshost.exe.config" />
+    <None Include="WindowsGui\obj\Debug\WindowsGui2003.projdata" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WindowsGui\obj\Debug\TempPE\" />
+    <Folder Include="WindowsGui\obj\Debug\temp\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

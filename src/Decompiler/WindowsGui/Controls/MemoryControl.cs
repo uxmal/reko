@@ -60,6 +60,7 @@ namespace Decompiler.WindowsGui.Controls
 			vscroller = new VScrollBar();
 			vscroller.Dock = DockStyle.Right;
  			Controls.Add(vscroller);
+			vscroller.Scroll += new ScrollEventHandler(vscroller_Scroll);
 			wordSize = 1;
 			cbRow = 16;
 		}
@@ -127,7 +128,7 @@ namespace Decompiler.WindowsGui.Controls
 
 		protected override void OnPaint(PaintEventArgs pea)
 		{
-			if (image == null)
+			if (image == null || imageMap == null)
 			{
 				pea.Graphics.FillRectangle(SystemBrushes.Window, ClientRectangle);
 			}
@@ -176,13 +177,10 @@ namespace Decompiler.WindowsGui.Controls
 				Address addr = rdr.Address;
 				int linear = addr.Linear;
 
-				/*
 				ImageMapItem item = ImageMap.FindItem(rdr.Address);
 				if (item == null)
 					break;
 				int cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
-				*/
-				int cbIn = 0;
 				int cbToDraw = 16; // item.Size - cbIn;
 
 				// See if the chunk goes off the edge of the line. If so, clip it.
@@ -229,7 +227,8 @@ namespace Decompiler.WindowsGui.Controls
 				rowBytesLeft -= cbToDraw;
 			} while (rowBytesLeft > 0);
 
-			g.DrawString(sbCode.ToString(), Font, SystemBrushes.WindowText, rc.X + 8, rc.Top, StringFormat.GenericTypographic);
+			g.FillRectangle(SystemBrushes.Window, rc);
+			g.DrawString(sbCode.ToString(), Font, SystemBrushes.WindowText, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
 			return null;
 		}
 
@@ -251,19 +250,19 @@ namespace Decompiler.WindowsGui.Controls
 
 			int laEnd = image.BaseAddress.Linear + image.Bytes.Length;
 			
-//			IDictionaryEnumerator segs = ImageMap.GetSegmentEnumerator(addrTopVisible);
-//			ImageMapSegment seg = null;
-//			int laSegEnd = 0;
+			IDictionaryEnumerator segs = ImageMap.GetSegmentEnumerator(addrTopVisible);
+			ImageMapSegment seg = null;
+			int laSegEnd = 0;
 			while (rc.Top < this.Height && rdr.Address.Linear < laEnd)
 			{
-//				if (rdr.Address.Linear >= laSegEnd)
-//				{
-//					if (!segs.MoveNext())
-//						return;
-//					seg = (ImageMapSegment) segs.Value;
-//					laSegEnd = seg.Address.Linear + seg.Size;
-//					rdr = image.CreateReader(seg.Address + (rdr.Address - seg.Address));
-//				}
+				if (rdr.Address.Linear >= laSegEnd)
+				{
+					if (!segs.MoveNext())
+						return;
+					seg = (ImageMapSegment) segs.Value;
+					laSegEnd = seg.Address.Linear + seg.Size;
+					rdr = image.CreateReader(seg.Address + (rdr.Address - seg.Address));
+				}
 				PaintLine(g, rc, rdr, true);
 				rc.Offset(0, CellSize.Height);
 			}
@@ -361,17 +360,14 @@ namespace Decompiler.WindowsGui.Controls
 			}
 
 			vscroller.Enabled = true;
-			using (Graphics g = Graphics.FromHwnd(Handle))
-			{
-				cRows = (image.Bytes.Length + cbRow - 1) / cbRow;
-				int nChunks = cbRow / wordSize;		// number of chunks per line.
+			cRows = (image.Bytes.Length + cbRow - 1) / cbRow;
+			int nChunks = cbRow / wordSize;		// number of chunks per line.
 
-				vscroller.Minimum = 0;
-				int h = Font.Height;
-				cyPage = Math.Max((ClientRectangle.Height / Font.Height) - 1, 1);
-				vscroller.LargeChange = cyPage;
-				vscroller.Maximum = cRows - cyPage;
-			}
+			vscroller.Minimum = 0;
+			int h = Font.Height;
+			cyPage = Math.Max((ClientRectangle.Height / Font.Height) - 1, 1);
+			vscroller.LargeChange = cyPage;
+			vscroller.Maximum = cRows - cyPage;
 		}
 
 		public int WordSize
@@ -383,6 +379,13 @@ namespace Decompiler.WindowsGui.Controls
 				UpdateScroll();
 				Invalidate();
 			}
+		}
+
+		private void vscroller_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (e.Type ==ScrollEventType.ThumbTrack)
+				return;
+			TopAddress = imageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
 		}
 	}
 }
