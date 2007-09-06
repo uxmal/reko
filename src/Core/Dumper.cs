@@ -25,29 +25,20 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Dumps low-level information about a binary.
 	/// </summary>
-	public abstract class Dumper
+	public class Dumper
 	{
-		private TextWriter stm;
-		private Program program;
 		private bool fShowAddr;
 		private bool fShowBytes;
 
-		public Dumper(Program prog, TextWriter ss)
+		public Dumper()
 		{
-			stm = ss;
-			this.program = prog;
 		}
 
-		public TextWriter Output
-		{
-			get { return stm; }
-		}
-
-		public void Dump(ImageMap map)
+		public void Dump(Program program, ImageMap map, TextWriter stm)
 		{
 			if (map == null)
 			{
-				DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + program.Image.Bytes.Length);
+				DumpAssembler(program.Image, program.Image.BaseAddress, program.Image.BaseAddress + program.Image.Bytes.Length, stm);
 			}
 			else
 			{
@@ -67,7 +58,7 @@ namespace Decompiler.Core
 							stm.WriteLine();
 							stm.WriteLine(block.Address.GenerateName("l",":"));
 						}
-						DumpAssembler(program.Image, block.Address, block.Address + block.Size);
+						DumpAssembler(program.Image, block.Address, block.Address + block.Size, stm);
 						continue;
 					}
 
@@ -81,20 +72,20 @@ namespace Decompiler.Core
 						{
 							stm.WriteLine("\t{0}", addr != null ? addr.ToString() : "-- null --");
 						}
-						DumpData(i.Address, i.Size);
+						DumpData(program.Image, i.Address, i.Size, stm);
 					}
 					else
 					{
-						DumpData(i.Address, i.Size);
+						DumpData(program.Image, i.Address, i.Size, stm);
 					}							   
 				}
 			}
 		}
 
-		public void DumpData(Address address, int cbBytes)
+		public void DumpData(ProgramImage image, Address address, int cbBytes, TextWriter stm)
 		{
 			int cSkip = address.Linear & 0x0F;
-			ImageReader rdr = program.Image.CreateReader(address);
+			ImageReader rdr = image.CreateReader(address);
 			while (cbBytes > 0)
 			{
 				StringBuilder sb = new StringBuilder(0x12);
@@ -131,7 +122,9 @@ namespace Decompiler.Core
 			}
 		}
 
-		public abstract void DumpAssembler(ProgramImage image, Address addrStart, Address addrEnd);
+		public virtual void DumpAssembler(ProgramImage image, Address addrStart, Address addrEnd, TextWriter stm)
+		{
+		}
 
 		public bool ShowAddresses
 		{

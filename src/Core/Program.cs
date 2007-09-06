@@ -34,6 +34,7 @@ namespace Decompiler.Core
 		private ProgramImage image;
 		private IProcessorArchitecture arch;
 		private Platform platform;
+		private ImageMap imageMap;
 		private Map procedures;
 		private CallGraph callGraph;
 		private ProcedureCollection dfsProcs;
@@ -87,8 +88,8 @@ namespace Decompiler.Core
 
 		public void DumpAssembler(ImageMap map, TextWriter wr)
 		{
-			Dumper dump = arch.CreateDumper(this, wr);
-			dump.Dump(map);
+			Dumper dump = arch.CreateDumper();
+			dump.Dump(this, map, wr);
 		}
 
 		public PseudoProcedure EnsurePseudoProcedure(string name, int arity)
@@ -113,6 +114,12 @@ namespace Decompiler.Core
 			set { image = value; }
 		}
 		
+		public ImageMap ImageMap
+		{
+			get { return imageMap; }
+			set { imageMap = value; }
+		}
+
 		public Hashtable ImportThunks
 		{
 			get { return mpuintfn; }

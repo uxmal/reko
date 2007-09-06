@@ -102,7 +102,6 @@ namespace Decompiler.Loading
 					}
 				}
 			} while ((op & 1) == 0);
-			ImageMap = new ImageMap(imgU);
 			return imgU;
 		}
 
@@ -111,8 +110,9 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
 		{
+			ImageMap imageMap = new ImageMap(imgU);
 			ImageReader rdr = RawImage.CreateReader(hdrOffset + 0x012Du);
 			ushort segCode = (ushort) (addrLoad.seg + (ExeImageLoader.CbPsp >> 4));
 			ushort dx = 0;
@@ -126,7 +126,7 @@ namespace Decompiler.Loading
 					{
 						ushort relocOff = rdr.ReadUShort();
 						ushort seg = imgU.FixupUShort(relocBase + relocOff, segCode);
-						ImageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
+						imageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
 					} while (--cx != 0);
 				}       
 				if (dx == 0xF000)
@@ -135,7 +135,7 @@ namespace Decompiler.Loading
 			}
 
 			this.cs += segCode;
-			ImageMap.AddSegment(new Address(cs, 0), AccessMode.ReadWrite);
+			imageMap.AddSegment(new Address(cs, 0), AccessMode.ReadWrite);
 			this.ss += segCode;
 			IntelState state = new IntelState();
 			state.Set(Registers.ds, new Value(PrimitiveType.Word16, addrLoad.seg));
@@ -144,6 +144,7 @@ namespace Decompiler.Loading
 			state.Set(Registers.ss, new Value(PrimitiveType.Word16, ss));
 			state.Set(Registers.bx, new Value(PrimitiveType.Word16, 0));
 			entryPoints.Add(new EntryPoint(new Address(cs, ip), state));
+			return imageMap;
 		}
 
 		private static byte [] signature = 

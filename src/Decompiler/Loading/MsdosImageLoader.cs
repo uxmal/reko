@@ -43,8 +43,9 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
 		{
+			ImageMap imageMap = new ImageMap(RawImage);
 			ImageReader rdr = RawImage.CreateReader(exe.e_lfarlc);
 			int i = exe.e_crlc;
 			while (i != 0)
@@ -55,15 +56,16 @@ namespace Decompiler.Loading
 				ushort seg = (ushort) (imgLoaded.ReadUShort(offset) + addrLoad.seg);
 				imgLoaded.WriteUShort(offset, seg);
 
-				ImageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
+				imageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
 				--i;
 			}
 		
 			// Found the start address.
 
 			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.seg), exe.e_ip);
-			ImageMap.AddSegment(new Address(addrStart.seg, 0), AccessMode.ReadWrite);
+			imageMap.AddSegment(new Address(addrStart.seg, 0), AccessMode.ReadWrite);
 			entryPoints.Add(new EntryPoint(addrStart, new IntelState()));
+			return imageMap;
 		}
 
 		public override ProgramImage Load(Address addrLoad)
@@ -74,7 +76,6 @@ namespace Decompiler.Loading
 			int cbCopy = Math.Min(cbImageSize, RawImage.Bytes.Length - iImageStart);
 			Array.Copy(RawImage.Bytes, iImageStart, bytes, 0, cbCopy);
 			imgLoaded = new ProgramImage(addrLoad, bytes);
-			ImageMap = new ImageMap(imgLoaded);
 			return imgLoaded;
 		}
 	}

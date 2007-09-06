@@ -27,12 +27,10 @@ namespace Decompiler.Arch.Intel
 	{
 		private IntelArchitecture arch;
 
-		public IntelDumper(Program pgm, TextWriter txt, IntelArchitecture arch) : 
-			base(pgm, txt)
+		public IntelDumper(IntelArchitecture arch) 
 		{
 			this.arch = arch;
 		}
-
 
 		private string ByteString(ProgramImage image, Address begin, Address addrEnd)
 		{
@@ -45,22 +43,22 @@ namespace Decompiler.Arch.Intel
 			return sb.ToString();
 		}
 
-		public override void DumpAssembler(ProgramImage image, Address addrStart, Address addrLast)
+		public override void DumpAssembler(ProgramImage image, Address addrStart, Address addrLast, TextWriter writer)
 		{
 			IntelDisassembler dasm = new IntelDisassembler(image.CreateReader(addrStart), arch.WordWidth);
 			while (dasm.Address < addrLast)
 			{
 				Address addrBegin = dasm.Address;
 				if (ShowAddresses)
-					Output.Write("{0} ", addrBegin);
+					writer.Write("{0} ", addrBegin);
 				IntelInstruction instr = dasm.Disassemble();
 				if (ShowCodeBytes)
 				{
-					Output.WriteLine("{0,-16}\t{1}", ByteString(image, addrBegin, dasm.Address), instr);
+					writer.WriteLine("{0,-16}\t{1}", ByteString(image, addrBegin, dasm.Address), instr);
 				}
 				else
 				{
-					Output.WriteLine("\t{0}", instr.ToString());
+					writer.WriteLine("\t{0}", instr.ToString());
 				}
 			}
 		}

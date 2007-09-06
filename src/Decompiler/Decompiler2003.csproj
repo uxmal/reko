@@ -859,7 +859,7 @@
                 />
                 <File
                     RelPath = "WindowsGui\Controls\MemoryControl.cs"
-                    SubType = "UserControl"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
@@ -868,13 +868,13 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "WindowsGui\Controls\MemoryControl2.cs"
-                    SubType = "Component"
+                    RelPath = "WindowsGui\Controls\MemoryControlRichedit.cs"
+                    SubType = "UserControl"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "WindowsGui\Controls\MemoryControl2.resx"
-                    DependentUpon = "MemoryControl2.cs"
+                    RelPath = "WindowsGui\Controls\MemoryControlRichedit.resx"
+                    DependentUpon = "MemoryControlRichedit.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File

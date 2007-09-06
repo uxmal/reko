@@ -194,7 +194,6 @@ l01C8:
 */
 			l01C8:
 			imgU = new ProgramImage(addrLoad, abU);
-			ImageMap = new ImageMap(imgU);
 			return imgU;
 		}
 
@@ -224,8 +223,9 @@ l01C8:
 			}
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
 		{
+			ImageMap imageMap = new ImageMap(imgU);
 			ushort segCode = (ushort) (addrLoad.seg + (PspSize >> 4));
 			for (;;)
 			{
@@ -240,7 +240,7 @@ l01C8:
 					ushort seg = imgU.ReadUShort(relocBase + relocOff);
 					seg = (ushort) (seg + segCode);
 					imgU.WriteUShort(relocBase + relocOff, seg);
-					ImageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
+					imageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
 				} while (--relocs != 0);
 			}
 
@@ -263,6 +263,8 @@ l01C8:
 			state.Set(Registers.di, new Value(PrimitiveType.Word16, 0));
 
 			entryPoints.Add(new EntryPoint(new Address(pklCs, pklIp), state));
+
+			return imageMap;
 		}
 
 

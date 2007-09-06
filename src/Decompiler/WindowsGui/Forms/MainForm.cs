@@ -81,7 +81,7 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.ListView listDiscoveries;
 		private System.Windows.Forms.ColumnHeader colDiscoveryType;
 		private System.Windows.Forms.ColumnHeader colDiscoveryDescription;
-		private Decompiler.WindowsGui.Forms.LoadPage loadPage1;
+		private Decompiler.WindowsGui.Forms.LoadPage loadPage;
 		private System.ComponentModel.IContainer components;
 
 		public MainForm()
@@ -153,7 +153,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabLog = new System.Windows.Forms.TabPage();
 			this.txtLog = new System.Windows.Forms.TextBox();
 			this.splitter1 = new System.Windows.Forms.Splitter();
-			this.loadPage1 = new Decompiler.WindowsGui.Forms.LoadPage();
+			this.loadPage = new Decompiler.WindowsGui.Forms.LoadPage();
 			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel3)).BeginInit();
@@ -389,18 +389,20 @@ namespace Decompiler.WindowsGui.Forms
 			this.splitter1.TabIndex = 13;
 			this.splitter1.TabStop = false;
 			// 
-			// loadPage1
+			// loadPage
 			// 
-			this.loadPage1.Location = new System.Drawing.Point(0, 0);
-			this.loadPage1.Name = "loadPage1";
-			this.loadPage1.Size = new System.Drawing.Size(600, 360);
-			this.loadPage1.TabIndex = 14;
+			this.loadPage.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.loadPage.Location = new System.Drawing.Point(0, 0);
+			this.loadPage.Name = "loadPage";
+			this.loadPage.ProgramImage = null;
+			this.loadPage.Size = new System.Drawing.Size(984, 350);
+			this.loadPage.TabIndex = 14;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(984, 513);
-			this.Controls.Add(this.loadPage1);
+			this.Controls.Add(this.loadPage);
 			this.Controls.Add(this.splitter1);
 			this.Controls.Add(this.tabsOutput);
 			this.Controls.Add(this.statusBar);
@@ -499,6 +501,14 @@ namespace Decompiler.WindowsGui.Forms
 			statusBar.Panels[0].Text = txt;
 		}
 
+		public void ShowLoadPage(ProgramImage image, ImageMap imageMap)
+		{
+			loadPage.BringToFront();
+			loadPage.ProgramImage = image;
+			loadPage.ImageMap = imageMap;
+		}
+
+		// Event handlers /////////////////////////////////////
 
 		private void miFileExit_Click(object sender, System.EventArgs e)
 		{

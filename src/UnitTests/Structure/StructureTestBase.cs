@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Structure
 			prog = new Program();
 			Loader ldr = new Loader(prog);
 			ldr.Assemble(FileUnitTester.MapTestPath(sourceFilename), new IntelArchitecture(addrBase.seg != 0 ? ProcessorMode.Real : ProcessorMode.ProtectedFlat), addrBase);
-			Scanner scan = new Scanner(prog, ldr.ImageMap,  null);
+			Scanner scan = new Scanner(prog,  null);
 			scan.Parse(ldr.EntryPoints);
 			DecompilerHost host = new FakeDecompilerHost();
 			RewriterHost rw = new RewriterHost(prog, host, scan.ImageMap, scan.SystemCalls, scan.VectorUses);

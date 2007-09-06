@@ -249,9 +249,9 @@ namespace Decompiler.Arch.Intel
 			return new IntelDisassembler(img.CreateReader(addr), WordWidth);
 		}
 
-		public virtual Dumper CreateDumper(Program prog, TextWriter txt)
+		public virtual Dumper CreateDumper()
 		{
-			return new IntelDumper(prog, txt, this);
+			return new IntelDumper(this);
 		}
 
 		public virtual BitSet CreateRegisterBitset()

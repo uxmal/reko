@@ -227,7 +227,7 @@ namespace Decompiler
 		{
 			if (loader == null)
 				throw new InvalidOperationException("Program must be loaded before it can be scanned.");
-			scanner = new Scanner(program, loader.ImageMap, null);
+			scanner = new Scanner(program, null);
 			try
 			{
 				scanner.Parse(loader.EntryPoints, project.UserProcedures);

@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Intel
 			DecompilerProject project = (configFile != null)
 				? DecompilerProject.Load(FileUnitTester.MapTestPath(configFile))
 				: null;
-			scanner = new Scanner(prog, imageMap, null);
+			scanner = new Scanner(prog, null);
 			EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
 			ArrayList eps = new ArrayList();
 			eps.Add(ep);

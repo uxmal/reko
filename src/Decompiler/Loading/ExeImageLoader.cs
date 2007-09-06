@@ -110,13 +110,6 @@ namespace Decompiler.Loading
 			}
 		}
 
-
- 		public override ImageMap ImageMap
-		{
-			get { return ldrDeferred.ImageMap; }
-			set { ldrDeferred.ImageMap = value; }
-		}
-
 		public bool IsNewExecutable
 		{
 			get { return (uint) RawImage.Bytes.Length > (uint) (e_lfanew + 1) && RawImage.Bytes[e_lfanew] == 'N' && RawImage.Bytes[e_lfanew+1] == 'E'; }
@@ -180,9 +173,9 @@ namespace Decompiler.Loading
 			e_lfanew = rdr.ReadInt();          
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
 		{
-			ldrDeferred.Relocate(addrLoad, entryPoints);
+			return ldrDeferred.Relocate(addrLoad, entryPoints);
 		}
 
 		void RelocateNewExe(object neHeader)

@@ -28,7 +28,7 @@ namespace Decompiler.Core
 	{
 		Assembler CreateAssembler();
 		Disassembler CreateDisassembler(ProgramImage img, Address addr);
-		Dumper CreateDumper(Program pgm, TextWriter stm);
+		Dumper CreateDumper();
 		ProcessorState CreateProcessorState();
 		BackWalker CreateBackWalker(ProgramImage img);
 		CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list);
