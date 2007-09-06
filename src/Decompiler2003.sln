@@ -18,6 +18,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGui2003", "WindowsGui\WindowsGui2003.csproj", "{E80D1E76-8C38-4320-88D1-8104B75078F2}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler", "WindowsDecompiler\WindowsDecompiler.csproj", "{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -45,6 +51,10 @@ Global
 		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Debug.Build.0 = Debug|.NET
 		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Release.ActiveCfg = Release|.NET
 		{E80D1E76-8C38-4320-88D1-8104B75078F2}.Release.Build.0 = Release|.NET
+		{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}.Debug.ActiveCfg = Debug|.NET
+		{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}.Debug.Build.0 = Debug|.NET
+		{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}.Release.ActiveCfg = Release|.NET
+		{8F9F5592-1ADD-4882-8200-A414AD6DFBE5}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
