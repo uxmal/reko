@@ -27,8 +27,7 @@ namespace Decompiler.WindowsGui.Forms
 {
 	public class LoadPage : PhasePage
 	{
-		private System.Windows.Forms.TextBox txtImageFile;
-		private System.Windows.Forms.Button btnBrowse;
+		private System.Windows.Forms.Label lblBinaryFileName;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -62,34 +61,21 @@ namespace Decompiler.WindowsGui.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.txtImageFile = new System.Windows.Forms.TextBox();
-			this.btnBrowse = new System.Windows.Forms.Button();
+			this.lblBinaryFileName = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
-			// txtImageFile
+			// lblBinaryFileName
 			// 
-			this.txtImageFile.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right);
-			this.txtImageFile.Location = new System.Drawing.Point(8, 8);
-			this.txtImageFile.Name = "txtImageFile";
-			this.txtImageFile.Size = new System.Drawing.Size(504, 20);
-			this.txtImageFile.TabIndex = 1;
-			this.txtImageFile.Text = "";
-			// 
-			// btnBrowse
-			// 
-			this.btnBrowse.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
-			this.btnBrowse.Location = new System.Drawing.Point(520, 8);
-			this.btnBrowse.Name = "btnBrowse";
-			this.btnBrowse.Size = new System.Drawing.Size(72, 24);
-			this.btnBrowse.TabIndex = 2;
-			this.btnBrowse.Text = "Browse...";
+			this.lblBinaryFileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lblBinaryFileName.Location = new System.Drawing.Point(8, 8);
+			this.lblBinaryFileName.Name = "lblBinaryFileName";
+			this.lblBinaryFileName.Size = new System.Drawing.Size(584, 16);
+			this.lblBinaryFileName.TabIndex = 0;
 			// 
 			// LoadPage
 			// 
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.btnBrowse,
-																		  this.txtImageFile});
+			this.Controls.Add(this.lblBinaryFileName);
 			this.Name = "LoadPage";
 			this.Size = new System.Drawing.Size(600, 360);
 			this.ResumeLayout(false);

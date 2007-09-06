@@ -109,6 +109,14 @@
         <Files>
             <Include>
                 <File
+                    RelPath = "App.config"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "App.ico"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -155,12 +163,22 @@
                 />
                 <File
                     RelPath = "Controls\MemoryControl.cs"
-                    SubType = "Component"
+                    SubType = "UserControl"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Controls\MemoryControl.resx"
                     DependentUpon = "MemoryControl.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Controls\MemoryControl2.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\MemoryControl2.resx"
+                    DependentUpon = "MemoryControl2.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
@@ -192,6 +210,11 @@
                     RelPath = "Forms\MainForm.resx"
                     DependentUpon = "MainForm.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Forms\MainFormInteractor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Forms\PhasePage.cs"

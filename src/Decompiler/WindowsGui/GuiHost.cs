@@ -17,28 +17,26 @@
  */
 
 using Decompiler;
+using Decompiler.WindowsGui.Forms;
 using System;
+using System.IO;
 using System.Windows.Forms;	
 
 namespace Decompiler.WindowsGui
 {
+	//$REVIEW: this class is similar to MainFormInteractor; perhaps they should be the same class?
 	public class GuiHost : DecompilerHost
 	{
-		private ListView diags;
+		private MainForm form;
 
-		public GuiHost()
+		public GuiHost(MainForm form)		//$REFACTOR: make this an interface.
 		{
-		}
-
-		public ListView DiagnosticsControl
-		{
-			get { return diags; }
-			set { diags = value; }
+			this.form = form;
 		}
 
 		#region DecompilerHost Members //////////////////////////////////
 
-		public System.IO.TextWriter DisassemblyWriter
+		public TextWriter DisassemblyWriter
 		{
 			get
 			{
@@ -61,18 +59,47 @@ namespace Decompiler.WindowsGui
 			// TODO:  Add GuiHost.ShowProgress implementation
 		}
 
-		public void Finished()
+		public void CodeStructuringComplete()
 		{
-			// TODO:  Add GuiHost.Finished implementation
+		}
+
+		public void DecompilationFinished()
+		{
+			form.SetStatus("Finished");
+		}
+
+		public void InterproceduralAnalysisComplete()
+		{
+		}
+
+		public void MachineCodeRewritten()
+		{
+			form.SetStatus("Machine code rewritten.");
+		}
+
+		public void ProceduresTransformed()
+		{
+			form.SetStatus("Procedures transformed.");
+		}
+
+		public void ProgramLoaded()
+		{
+			form.SetStatus("Program loaded.");
+		}
+
+		public void ProgramScanned()
+		{
+			form.SetStatus("Program scanned.");
+		}
+
+		public void TypeReconstructionComplete()
+		{
+			form.SetStatus("Data types reconstructed.");
 		}
 
 		public void WriteDiagnostic(Diagnostic d, string format, params object[] args)
 		{
-			if (this.DiagnosticsControl != null)
-			{
-				ListViewItem li = new ListViewItem(string.Format(format, args));
-				DiagnosticsControl.Items.Add(li);
-			}
+			form.AddDiagnostic(d, format, args);
 		}
 
 		public System.IO.TextWriter DecompiledCodeWriter

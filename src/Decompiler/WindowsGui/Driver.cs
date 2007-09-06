@@ -41,8 +41,8 @@ namespace Decompiler.WindowsGui
 			}
 			else
 			{
-				DecompilerDriver dec = new DecompilerDriver();
-				dec.DecompileBinary(args[0], null);
+				DecompilerDriver dec = new DecompilerDriver(args[0]);
+				dec.Decompile(new NullDecompilerHost());
 			}
 		}
 	}

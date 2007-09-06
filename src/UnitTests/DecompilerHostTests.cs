@@ -126,6 +126,38 @@ namespace Decompiler.UnitTests
 			lastProgress = string.Format("{0}: {1}%", caption, (numerator * 100) / denominator);
 		}
 
+		public void CodeStructuringComplete()
+		{
+		}
+
+		public void DecompilationFinished()
+		{
+		}
+
+		public void InterproceduralAnalysisComplete()
+		{
+		}
+
+		public void MachineCodeRewritten()
+		{
+		}
+
+		public void ProceduresTransformed()
+		{
+		}
+
+		public void ProgramLoaded()
+		{
+		}
+
+		public void ProgramScanned()
+		{
+		}
+
+		public void TypeReconstructionComplete()
+		{
+		}
+
 		// Diagnostic methods.
 
 		public bool FinishedCalled
@@ -142,6 +174,5 @@ namespace Decompiler.UnitTests
 		{
 			get { return lastProgress; }
 		}
-
 	}
 }

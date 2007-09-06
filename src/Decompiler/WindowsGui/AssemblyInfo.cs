@@ -24,12 +24,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Windows GUI")]
+[assembly: AssemblyDescription("Windows Forms user interface for decompiler")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright (c) 2007 John Källén")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
