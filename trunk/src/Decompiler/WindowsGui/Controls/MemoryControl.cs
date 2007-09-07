@@ -40,6 +40,8 @@ namespace Decompiler.WindowsGui.Controls
 	/// </remarks>
 	public class MemoryControl : Control
 	{
+		public event EventHandler SelectionChanged;
+
 		private Address addrTopVisible;		// address of topmost visible row.
 		private int wordSize;
 		private int cbRow;
@@ -53,7 +55,6 @@ namespace Decompiler.WindowsGui.Controls
 		private Size cellSize;			// size of cell in pixels.
 		private Point ptDown;			 // point at which mouse was clicked.
 		private VScrollBar vscroller;
-		private Point hitTestPoint = new Point(0, 0);
 
 		public MemoryControl()
 		{
@@ -84,9 +85,21 @@ namespace Decompiler.WindowsGui.Controls
 			}
 		}
 
+
 		private Size CellSize
 		{
 			get { return cellSize; }
+		}
+
+		protected override CreateParams CreateParams
+		{
+			get
+			{
+				const int WS_EX_CLIENTEDGE = 0x00000200;
+				CreateParams c = base.CreateParams;
+				c.ExStyle |= WS_EX_CLIENTEDGE;
+				return c;
+			}
 		}
 
 		private bool IsVisible(Address addr)
@@ -98,32 +111,38 @@ namespace Decompiler.WindowsGui.Controls
 			return (yTopRow <= yRow && yRow < yTopRow + cyPage);
 		}
 
-		private Brush GetBackgroundBrush(ImageMapItem item)
+		private Brush GetBackgroundBrush(ImageMapItem item, bool selected)
 		{
+			if (selected)
+				return SystemBrushes.Highlight;
 			if (item is ImageMapBlock)
 				return Brushes.Pink;
 			return SystemBrushes.Window;
 		} 
 
-		private Brush GetForegroundBrush(ImageMapItem item)
+		private Brush GetForegroundBrush(ImageMapItem item, bool selected)
 		{
+			if (selected)
+				return SystemBrushes.HighlightText;
 			return SystemBrushes.WindowText;
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
+
 			Focus();
 			CacheCellSize();
+			if (image == null || imageMap == null)
+				return;
+
 			ptDown = new Point(e.X, e.Y);
-
-			int row = e.X / CellSize.Width;
-			int col = e.Y / CellSize.Height;
-
-			if (imageMap != null)
+			using (Graphics g = this.CreateGraphics())
 			{
-				this.addrSelected = ImageMap.MapLinearAddressToAddress(addrTopVisible.Linear + row * BytesPerRow + col);
+				addrSelected = PaintWindow(g, false);
+				PaintWindow(g, true);
 			}
+			OnSelectionChanged();
 		}
 
 		protected override void OnPaint(PaintEventArgs pea)
@@ -135,8 +154,14 @@ namespace Decompiler.WindowsGui.Controls
 			else
 			{
 				CacheCellSize();
-				PaintWindow(pea.Graphics);
+				PaintWindow(pea.Graphics, true);
 			}
+		}
+
+		protected virtual void OnSelectionChanged()
+		{
+			if (SelectionChanged != null)
+				SelectionChanged(this, EventArgs.Empty);
 		}
 
 		protected override void OnSizeChanged(EventArgs e)
@@ -164,20 +189,26 @@ namespace Decompiler.WindowsGui.Controls
 			rc.X = 0;
 			string s = string.Format("{0}", rdr.Address);
 			int cx = (int) g.MeasureString(s + "X", Font, rc.Width, StringFormat.GenericTypographic).Width;
-			if (render)
+			if (!render && new Rectangle(rc.X, rc.Y, cx, rc.Height).Contains(ptDown))
+			{
+				return rdr.Address;
+			}
+			else
 			{
 				g.FillRectangle(SystemBrushes.Window, rc.X, rc.Y, cx, rc.Height);
 				g.DrawString(s, Font, SystemBrushes.ControlText, rc.X, rc.Y, StringFormat.GenericTypographic);
 			}
+			cx -= cellSize.Width / 2;
 			rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
 
 			int rowBytesLeft = cbRow;
+			int linearSelected = addrSelected != null ? addrSelected.Linear : -1;
 			do 
 			{
 				Address addr = rdr.Address;
 				int linear = addr.Linear;
 
-				ImageMapItem item = ImageMap.FindItem(rdr.Address);
+				ImageMapItem item = ImageMap.FindItem(addr);
 				if (item == null)
 					break;
 				int cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
@@ -189,11 +220,13 @@ namespace Decompiler.WindowsGui.Controls
 
 				// Now paint the bytes in this span.
 
-				Brush fg = SystemBrushes.ControlText; // GetForegroundBrush(item);
-				Brush bg = SystemBrushes.Window; //  GetBackgroundBrush(item);
 				for (int i = 0; i < cbToDraw; ++i)
 				{
 					Address addrByte = rdr.Address;
+					bool isSelected = addrByte.Linear == linearSelected;
+					Brush fg = GetForegroundBrush(item, isSelected);
+					Brush bg = GetBackgroundBrush(item, isSelected);
+
 					byte b = rdr.ReadByte();
 					char ch = (char) b;
 					sbCode.Append(Char.IsControl(ch) ? '.' : ch);
@@ -206,29 +239,21 @@ namespace Decompiler.WindowsGui.Controls
 						cx,
 						rc.Height);
 	
-					if (render)
-					{
-						g.FillRectangle(bg, 
-							rc.Left,
-							rc.Top,
-							cx,
-							rc.Height);
-						g.DrawString(s, Font, SystemBrushes.WindowText, rc.Left, rc.Top, StringFormat.GenericTypographic);
-					}
-					else
-					{
-						if (rcByte.Contains(hitTestPoint))
-						{
-							return addrByte;
-						}
-					}
+					if (!render && rcByte.Contains(ptDown))
+						return addrByte;
+
+					g.FillRectangle(bg, rc.Left, rc.Top, cx, rc.Height);
+					g.DrawString(s, Font, SystemBrushes.WindowText, rc.Left + cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
 					rc = new Rectangle(rc.X + cx, rc.Y, rc.Width - cx, rc.Height);
 				}
 				rowBytesLeft -= cbToDraw;
 			} while (rowBytesLeft > 0);
 
-			g.FillRectangle(SystemBrushes.Window, rc);
-			g.DrawString(sbCode.ToString(), Font, SystemBrushes.WindowText, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
+			if (render)
+			{
+				g.FillRectangle(SystemBrushes.Window, rc);
+				g.DrawString(sbCode.ToString(), Font, SystemBrushes.WindowText, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
+			}
 			return null;
 		}
 
@@ -237,7 +262,7 @@ namespace Decompiler.WindowsGui.Controls
 		/// the whole segment, and paint them one at a time.
 		/// </summary>
 		/// <param name="g"></param>
-		public void PaintWindow(Graphics g)
+		public Address PaintWindow(Graphics g, bool render)
 		{
 			// Enumerate all segments visible on screen.
 
@@ -258,14 +283,17 @@ namespace Decompiler.WindowsGui.Controls
 				if (rdr.Address.Linear >= laSegEnd)
 				{
 					if (!segs.MoveNext())
-						return;
+						return null;
 					seg = (ImageMapSegment) segs.Value;
 					laSegEnd = seg.Address.Linear + seg.Size;
 					rdr = image.CreateReader(seg.Address + (rdr.Address - seg.Address));
 				}
-				PaintLine(g, rc, rdr, true);
+				Address addr = PaintLine(g, rc, rdr, render);
+				if (addr != null)
+					return addr;
 				rc.Offset(0, CellSize.Height);
 			}
+			return null;
 		}
 
 
@@ -307,9 +335,10 @@ namespace Decompiler.WindowsGui.Controls
 			get { return addrSelected; }
 			set 
 			{
+				addrSelected = value;
 				if (IsVisible(value) || IsVisible(addrSelected))
 					Invalidate();
-				addrSelected = value;
+				OnSelectionChanged();
 			}
 		}
 
