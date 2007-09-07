@@ -115,7 +115,7 @@ namespace Decompiler.Loading
 
 		public void LoadSection(Section s, byte [] rawImage, byte [] loadedImage)
 		{
-			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress, s.SizeRawData);
+			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress, s.VirtualSize);
 		}
 
 		/// <summary>
@@ -141,7 +141,7 @@ namespace Decompiler.Loading
 					sectionMax = section;
 			}
 
-			imgLoaded = new ProgramImage(addrLoad, new byte[sectionMax.VirtualAddress + sectionMax.Size]);
+			imgLoaded = new ProgramImage(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
 
 			foreach (Section s in sectionMap.Values)
 			{
@@ -362,7 +362,7 @@ namespace Decompiler.Loading
 		{
 			Section sec = new Section();
 			sec.Name = ReadSectionName(rdr);
-			sec.Size = rdr.ReadUint();
+			sec.VirtualSize = rdr.ReadUint();
 			sec.VirtualAddress = rdr.ReadUint();
 			sec.SizeRawData = rdr.ReadUint();
 			sec.OffsetRawData = rdr.ReadUint();
@@ -412,7 +412,7 @@ namespace Decompiler.Loading
 		public class Section
 		{
 			public string Name;
-			public uint Size;
+			public uint VirtualSize;
 			public uint VirtualAddress;
 			public uint SizeRawData;
 			public uint Flags;

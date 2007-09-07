@@ -501,11 +501,12 @@ namespace Decompiler.WindowsGui.Forms
 			statusBar.Panels[0].Text = txt;
 		}
 
-		public void ShowLoadPage(ProgramImage image, ImageMap imageMap)
+		public void ShowLoadPage(Program program)
 		{
 			loadPage.BringToFront();
-			loadPage.ProgramImage = image;
-			loadPage.ImageMap = imageMap;
+			loadPage.Architecture = program.Architecture;
+			loadPage.ProgramImage = program.Image;
+			loadPage.ImageMap = program.ImageMap;
 		}
 
 		// Event handlers /////////////////////////////////////

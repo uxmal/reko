@@ -122,9 +122,14 @@ namespace Decompiler.Core
 			}
 		}
 
-		public virtual void DumpAssembler(ProgramImage image, Address addrStart, Address addrEnd, TextWriter stm)
+		public virtual void DumpAssembler(ProgramImage image, Address addrStart, Address addrEnd, TextWriter writer)
 		{
 		}
+
+		public virtual void DumpAssemblerLine(ProgramImage image, Disassembler dis, bool showAddress, bool showCodeBytes, TextWriter writer)
+		{
+		}
+
 
 		public bool ShowAddresses
 		{
@@ -136,6 +141,15 @@ namespace Decompiler.Core
 		{
 			get { return fShowBytes; }
 			set { fShowBytes = value; }
+		}
+
+		public void WriteByteRange(ProgramImage image, Address begin, Address addrEnd, TextWriter writer)
+		{
+			ImageReader rdr = image.CreateReader(begin);
+			while (rdr.Address < addrEnd)
+			{
+				writer.Write("{0:X2} ", rdr.ReadByte());
+			}
 		}
 	}
 }

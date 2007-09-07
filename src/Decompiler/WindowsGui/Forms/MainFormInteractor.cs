@@ -43,7 +43,7 @@ namespace Decompiler.WindowsGui.Forms
 			{
 				form.SetStatus("Loading...");
 				decompiler.LoadProgram(host);
-				form.ShowLoadPage(decompiler.Program.Image, decompiler.Program.ImageMap);
+				form.ShowLoadPage(decompiler.Program);
 			} 	
 			catch (Exception e)
 			{
