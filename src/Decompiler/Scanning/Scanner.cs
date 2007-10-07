@@ -34,8 +34,7 @@ namespace Decompiler.Scanning
 	/// </summary>
 	public class Scanner : ICodeWalkerListener
 	{
-		private Program prog;
-		private ImageMap imageMap;
+		private Program program;
 		private DecompilerHost host;
 		private ImageMapBlock blockCur;
 		private Hashtable blocksVisited;
@@ -52,9 +51,11 @@ namespace Decompiler.Scanning
 
 		private static TraceSwitch trace = new TraceSwitch("Scanner", "Enables tracing in the scanning phase");
 
-		public Scanner(Program prog, DecompilerHost host)
+		public Scanner(Program program, DecompilerHost host)
 		{
-			this.prog = prog;
+			if (program.ImageMap == null)
+				throw new InvalidOperationException("Program.ImageMap must be defined");
+			this.program = program;
 			this.host = host;
 			this.vectorUses = new Map();
 			this.syscalls = new SortedList();
@@ -99,17 +100,17 @@ namespace Decompiler.Scanning
 		{
 			WorkItem wi = new WorkItem(wiPrev, BlockType.Procedure, addr);
 			wi.state = (ProcessorState) state.Clone();
-			Procedure proc = (Procedure) prog.Procedures[wi.Address];
+			Procedure proc = (Procedure) program.Procedures[wi.Address];
 			if (proc == null)
 			{
-				Frame f = new Frame(prog.Architecture.WordWidth);
+				Frame f = new Frame(program.Architecture.WordWidth);
 				proc = Procedure.Create(procedureName, wi.Address, f);
-				prog.Procedures[wi.Address] = proc;
-				prog.CallGraph.AddProcedure(proc);
+				program.Procedures[wi.Address] = proc;
+				program.CallGraph.AddProcedure(proc);
 			}
 			ImageMapBlock entry = new ImageMapBlock();
 			entry.Procedure = proc;
-			imageMap.AddItem(addr, entry);
+			program.ImageMap.AddItem(addr, entry);
 
 			qProcs.Enqueue(wi);
 			return proc;
@@ -117,13 +118,13 @@ namespace Decompiler.Scanning
 
 		public void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc)
 		{
-			if (prog.Procedures[addrProc] == null)
+			if (program.Procedures[addrProc] == null)
 			{
-				prog.Procedures[addrProc] = proc;
-				prog.CallGraph.AddProcedure(proc);
+				program.Procedures[addrProc] = proc;
+				program.CallGraph.AddProcedure(proc);
 			}
 			WorkItem wi = new WorkItem(wiPrev, BlockType.Procedure, addrProc);
-			wi.state = prog.Architecture.CreateProcessorState();
+			wi.state = program.Architecture.CreateProcessorState();
 			qProcs.Enqueue(wi);
 		}
 
@@ -135,7 +136,7 @@ namespace Decompiler.Scanning
 		/// <param name="proc"></param>
 		private void EnqueueJumpTarget(Address addr, ProcessorState st, Procedure proc)
 		{
-			if (!prog.Image.IsValidAddress(addr))
+			if (!program.Image.IsValidAddress(addr))
 				return;
 
 			Debug.Assert(proc != null);
@@ -144,7 +145,7 @@ namespace Decompiler.Scanning
 			qJumps.Enqueue(wi);
 			ImageMapBlock bl = new ImageMapBlock();
 			bl.Procedure = proc;
-			ImageMapBlock item = ImageMap.AddItem(addr, bl) as ImageMapBlock;
+			ImageMapBlock item = program.ImageMap.AddItem(addr, bl) as ImageMapBlock;
 			if (item != null && item.Procedure != proc)
 			{
 				// When two procedures join, they generate a new procedure. If there is
@@ -156,21 +157,21 @@ namespace Decompiler.Scanning
 
 		private void PromoteBlockToProcedure(ImageMapBlock bl, Procedure proc)
 		{
-			if (prog.Procedures[bl.Address] == null)
+			if (program.Procedures[bl.Address] == null)
 			{
-				Procedure procNew = Procedure.Create(null, bl.Address, new Frame(prog.Architecture.WordWidth));
-				prog.Procedures[bl.Address] = procNew;
-				prog.CallGraph.AddProcedure(procNew);
+				Procedure procNew = Procedure.Create(null, bl.Address, new Frame(program.Architecture.WordWidth));
+				program.Procedures[bl.Address] = procNew;
+				program.CallGraph.AddProcedure(procNew);
 				bl.Procedure = procNew;
 			}
 		}
 
 		private void EnqueueUserProcedure(SerializedProcedure sp)
 		{
-			Procedure proc = EnqueueProcedure(null, Address.ToAddress(sp.Address, 16), sp.Name, prog.Architecture.CreateProcessorState());
+			Procedure proc = EnqueueProcedure(null, Address.ToAddress(sp.Address, 16), sp.Name, program.Architecture.CreateProcessorState());
 			if (sp.Signature != null)
 			{
-				SignatureSerializer sser = new SignatureSerializer(prog.Architecture, "stdapi");
+				SignatureSerializer sser = new SignatureSerializer(program.Architecture, "stdapi");
 				proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
 			}
 			if (sp.Characteristics != null)
@@ -190,31 +191,24 @@ namespace Decompiler.Scanning
 		/// <param name="state"></param>
 		private void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, ProcessorState state)
 		{
-			ImageMapVectorTable table = (ImageMapVectorTable) prog.Vectors[addrTable];
+			ImageMapVectorTable table = (ImageMapVectorTable) program.Vectors[addrTable];
 			if (table == null)
 			{
 				table = new ImageMapVectorTable(calltable);
 				VectorWorkItem wi = new VectorWorkItem(wiCur, blockCur.Procedure, addrTable);
 				wi.state = (ProcessorState) state.Clone();
-				wi.reader = prog.Image.CreateReader(addrTable);
+				wi.reader = program.Image.CreateReader(addrTable);
 				wi.stride = stride;
 				wi.segBase = segBase;
 				wi.table = table;
 				wi.addrFrom = addrUser;
 
-				ImageMap.AddItem(addrTable, table);
-				prog.Vectors[addrTable] = table;
+				program.ImageMap.AddItem(addrTable, table);
+				program.Vectors[addrTable] = table;
 				qVectors.Enqueue(wi);
 			}
 		}
 
-
-		public ImageMap ImageMap
-		{
-			get { return imageMap; }
-			set { imageMap = value; }
-		}
-		
 		/// <summary>
 		/// Heuristic function: returns false if the bytes at address <paramref>addr</paramref>
 		/// don't look like the kind of code that might follow a table jump.
@@ -249,7 +243,7 @@ namespace Decompiler.Scanning
 
 		public void OnJump(ProcessorState st, Address addrTerm, Address addrJump)
 		{
-			ImageMap.AddItem(addrTerm, new ImageMapItem());
+			program.ImageMap.AddItem(addrTerm, new ImageMapItem());
 			if (addrJump != null)
 			{
 				jumpGraph.AddEdge(addrTerm - 1, addrJump);
@@ -259,13 +253,13 @@ namespace Decompiler.Scanning
 
 		public void OnJumpPointer(ProcessorState st, Address addrFrom, Address addrJump, PrimitiveType width)
 		{
-			ImageMap.AddItem(addrFrom, new ImageMapItem());
+			program.ImageMap.AddItem(addrFrom, new ImageMapItem());
 		}
 
 		public void OnJumpTable(ProcessorState st,
 			Address addrInstr, Address addrTable, ushort segBase, PrimitiveType width)
 		{
-			if (!prog.Image.IsValidAddress(addrTable))
+			if (!program.Image.IsValidAddress(addrTable))
 			{
 				Debug.WriteLine(string.Format("Instruction at address {0}: uncertain about table start.", addrInstr));
 				return;
@@ -289,7 +283,7 @@ namespace Decompiler.Scanning
 			ushort segBase, 
 			PrimitiveType width)
 		{
-			if (!prog.Image.IsValidAddress(addrTable))
+			if (!program.Image.IsValidAddress(addrTable))
 			{
 				Debug.WriteLine(string.Format("Instruction at address {0}: uncertain about table start.", addrInstr));
 				return;
@@ -299,12 +293,12 @@ namespace Decompiler.Scanning
 
 		public void OnProcessExit(Address addrTerm)
 		{
-			ImageMap.AddItem(addrTerm, new ImageMapItem());
+			program.ImageMap.AddItem(addrTerm, new ImageMapItem());
 		}
 
 		public void OnReturn(Address addrTerm)
 		{
-			ImageMap.AddItem(addrTerm, new ImageMapItem());
+			program.ImageMap.AddItem(addrTerm, new ImageMapItem());
 		}
 
 		public void OnSystemServiceCall(Address addrInstr, SystemService svc)
@@ -314,11 +308,11 @@ namespace Decompiler.Scanning
 
 		public void OnTrampoline(ProcessorState st, Address addrInstr, Address addrGlob)
 		{
-			PseudoProcedure ppp = (PseudoProcedure) prog.ImportThunks[(uint) addrGlob.Linear];
+			PseudoProcedure ppp = (PseudoProcedure) program.ImportThunks[(uint) addrGlob.Linear];
 			if (ppp != null)
 			{
 				Debug.WriteLine(string.Format("Trampoline[{0}] = {1}", addrInstr, ppp.Name));
-				prog.Trampolines[addrInstr.Linear] = ppp;
+				program.Trampolines[addrInstr.Linear] = ppp;
 			}
 		}
 
@@ -337,18 +331,18 @@ namespace Decompiler.Scanning
 
 		public void Parse(ICollection entrypoints, ICollection userProcedures)
 		{
-			ImageMap.ItemSplit += new ItemSplitHandler(ImageMap_ItemSplit);
-			ImageMap.ItemCoincides += new ItemSplitHandler(ImageMap_ItemCoincides);
+			program.ImageMap.ItemSplit += new ItemSplitHandler(ImageMap_ItemSplit);
+			program.ImageMap.ItemCoincides += new ItemSplitHandler(ImageMap_ItemCoincides);
 
 			// Add one mega item that covers the entire address space.
 
-			ImageMap.AddItem(prog.Image.BaseAddress, new ImageMapItem(prog.Image.Bytes.Length));
+			program.ImageMap.AddItem(program.Image.BaseAddress, new ImageMapItem(program.Image.Bytes.Length));
 
 			// Seed the worklists with all the entry points.
 
 			foreach (EntryPoint ep in entrypoints)
 			{
-				prog.AddEntryPoint(ep);
+				program.AddEntryPoint(ep);
 				EnqueueStartAddress(ep);
 			}
 
@@ -363,8 +357,8 @@ namespace Decompiler.Scanning
 			while (ProcessItem())
 				;
 
-			ImageMap.ItemSplit -= new ItemSplitHandler(ImageMap_ItemSplit);
-			ImageMap.ItemCoincides -= new ItemSplitHandler(ImageMap_ItemCoincides);
+			program.ImageMap.ItemSplit -= new ItemSplitHandler(ImageMap_ItemSplit);
+			program.ImageMap.ItemCoincides -= new ItemSplitHandler(ImageMap_ItemCoincides);
 		}
 
 		/// <summary>
@@ -377,16 +371,16 @@ namespace Decompiler.Scanning
 		/// <param name="wi"></param>
 		public void ParseJumpTarget(WorkItem wi)
 		{
-			if (!prog.Image.IsValidAddress(wi.Address))
+			if (!program.Image.IsValidAddress(wi.Address))
 			{
 				Warn("Attempted decompilation of invalid address: {0}", wi.Address);
 				return;
 			}
-			blockCur = ImageMap.FindItem(wi.Address) as ImageMapBlock;
+			blockCur = program.ImageMap.FindItem(wi.Address) as ImageMapBlock;
 			if (blockCur == null)
 			{
 				blockCur = new ImageMapBlock();
-				ImageMap.AddItem(wi.Address, blockCur);
+				program.ImageMap.AddItem(wi.Address, blockCur);
 			}
 
 			if (blocksVisited[blockCur] == null)
@@ -394,7 +388,7 @@ namespace Decompiler.Scanning
 				blocksVisited[blockCur] = blockCur;
 
 				wi.state.SetInstructionPointer(wi.Address);
-				CodeWalker cw = prog.Architecture.CreateCodeWalker(prog.Image, prog.Platform, wi.Address, wi.state, this);
+				CodeWalker cw = program.Architecture.CreateCodeWalker(program.Image, program.Platform, wi.Address, wi.state, this);
 				try
 				{
 					do
@@ -413,14 +407,14 @@ namespace Decompiler.Scanning
 
 		private void ParseProcedure(WorkItem wi)
 		{
-			ImageMapBlock bl = ImageMap.FindItemExact(wi.Address) as ImageMapBlock;
+			ImageMapBlock bl = program.ImageMap.FindItemExact(wi.Address) as ImageMapBlock;
 			if (bl != null)
 			{
 				// We've already parsed this code, so it must be part of another procedure.
 				if (blocksVisited[bl] != null)
 					bl.Procedure = null;				// means that this is a block that is jumped into.
 			}
-			Procedure proc = (Procedure) prog.Procedures[wi.Address];
+			Procedure proc = (Procedure) program.Procedures[wi.Address];
 			EnqueueJumpTarget(wi.Address, wi.state, proc);
 		}
 
@@ -430,16 +424,16 @@ namespace Decompiler.Scanning
 
 		private void ProcessVector(VectorWorkItem wi)
 		{
-			ImageMapVectorTable item = ImageMap.FindItem(wi.Address) as ImageMapVectorTable;
-			VectorBuilder builder = new VectorBuilder(prog, imageMap, jumpGraph);
+			ImageMapVectorTable item = program.ImageMap.FindItem(wi.Address) as ImageMapVectorTable;
+			VectorBuilder builder = new VectorBuilder(program, program.ImageMap, jumpGraph);
 			Address [] vector = builder.Build(wi.Address, wi.addrFrom, wi.segBase, wi.stride);
 			if (vector == null)
 			{
 				Address addrNext = wi.Address + wi.stride.Size;
-				if (prog.Image.IsValidAddress(addrNext))
+				if (program.Image.IsValidAddress(addrNext))
 				{
 					// Can't determine the size of the table, but surely it has one entry?
-					ImageMap.AddItem(addrNext, new ImageMapItem());
+					program.ImageMap.AddItem(addrNext, new ImageMapItem());
 				}
 				return;
 			}
@@ -459,7 +453,7 @@ namespace Decompiler.Scanning
 				}
 			}
 			vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);	
-			ImageMap.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
+			program.ImageMap.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
 
 		}
 
@@ -532,7 +526,7 @@ namespace Decompiler.Scanning
 		{
 			if (e.ItemOld.GetType() == typeof (ImageMapItem))
 			{
-				ImageMap.Items[e.ItemOld.Address] = e.ItemNew;
+				program.ImageMap.Items[e.ItemOld.Address] = e.ItemNew;
 				e.ItemNew.Size = e.ItemOld.Size;
 			}
 		}

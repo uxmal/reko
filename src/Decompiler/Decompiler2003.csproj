@@ -409,24 +409,39 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Gui\CodeControl.cs"
+                    RelPath = "Gui\CommandGroup.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Gui\DisassemblyControl.cs"
+                    RelPath = "Gui\ICommandTarget.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Gui\ImageMapControl.cs"
-                    SubType = "Component"
+                    RelPath = "Gui\IMainForm.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Gui\ImageMapControl.resx"
-                    DependentUpon = "ImageMapControl.cs"
-                    BuildAction = "EmbeddedResource"
+                    RelPath = "Gui\IStartPage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Gui\LoadPageAdapter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Gui\MainFormInteractor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Gui\MenuBuilder.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Loading\ExeImageLoader.cs"
@@ -754,6 +769,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "WindowsGui\WindowsMenuBuilder.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "WindowsGui\bin\Debug\advapi32.xml"
                     BuildAction = "Content"
                 />
@@ -875,6 +895,21 @@
                 <File
                     RelPath = "WindowsGui\Forms\AnalyzePage.resx"
                     DependentUpon = "AnalyzePage.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\DecompilerPhase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\InitialPage.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\InitialPage.resx"
+                    DependentUpon = "InitialPage.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File

@@ -41,25 +41,28 @@ namespace Decompiler
 	{
 		private Program program;
 		private DecompilerProject project;
+		private DecompilerHost host;
 		private Loader loader;
 		private Scanner scanner;
 		private RewriterHost rewriterHost;
 		private InductionVariableCollection ivs;
 
-		public DecompilerDriver(DecompilerProject project)
+		public DecompilerDriver(DecompilerProject project, DecompilerHost host)
 		{
 			this.project = project;
+			this.host = host;
 			this.program = new Program();
 		}
 
-		public DecompilerDriver(string binaryFilename)
+		public DecompilerDriver(string binaryFilename, DecompilerHost host)
 		{
 			this.project = new DecompilerProject();
+			this.host = host;
 			this.project.Input.Filename = binaryFilename;
 			this.program = new Program();
 		}
 
-		public void AnalyzeDataFlow(DecompilerHost host)
+		public void AnalyzeDataFlow()
 		{
 			// Data flow analysis: determines the signature of the procedures,
 			// the locations and types of all the values in the program.
@@ -77,16 +80,16 @@ namespace Decompiler
 
 
 
-		public void Decompile(DecompilerHost host)
+		public void Decompile()
 		{
 			try 
 			{
-				LoadProgram(host);
-				ScanProgram(host);
-				RewriteMachineCode(host);
-				AnalyzeDataFlow(host);
-				ReconstructTypes(host);
-				StructureProgram(host);
+				LoadProgram();
+				ScanProgram();
+				RewriteMachineCode();
+				AnalyzeDataFlow();
+				ReconstructTypes();
+				StructureProgram();
 				WriteDecompiledProcedures(host);
 			} 
 			catch (Exception e)
@@ -98,7 +101,6 @@ namespace Decompiler
 				host.DecompilationFinished();
 			}
 		}
-
 
 
 		private void EmitProgram(DataFlowAnalysis dfa, TextWriter output)
@@ -143,7 +145,7 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="program"></param>
 		/// <param name="cfg"></param>
-		public void LoadProgram(DecompilerHost host)
+		public void LoadProgram()
 		{
 			loader = new Loader(program);
 			switch (project.Input.FileFormat)
@@ -172,13 +174,17 @@ namespace Decompiler
 			get { return program; }
 		}
 
+		public DecompilerProject Project
+		{
+			get { return project; }
+		}
 
 		/// <summary>
 		/// Extracts type information from the typeless rewritten program.
 		/// </summary>
 		/// <param name="host"></param>
 		/// <param name="ivs"></param>
-		public void ReconstructTypes(DecompilerHost host)
+		public void ReconstructTypes()
 		{
 			if (project.Output.TypeInference)
 			{
@@ -198,9 +204,9 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="prog">the program to rewrite</param>
 		/// <param name="cfg">configuration information</param>
-		public void RewriteMachineCode(DecompilerHost host)
+		public void RewriteMachineCode()
 		{
-			rewriterHost = new RewriterHost(program, host, scanner.ImageMap, scanner.SystemCalls, scanner.VectorUses);
+			rewriterHost = new RewriterHost(program, host, scanner.SystemCalls, scanner.VectorUses);
 			rewriterHost.LoadCallSignatures(this.project.UserCalls);
 			rewriterHost.RewriteProgram();
 
@@ -223,7 +229,7 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="prog">the program whose flow graph we seek</param>
 		/// <param name="cfg">configuration information</param>
-		public void ScanProgram(DecompilerHost host)
+		public void ScanProgram()
 		{
 			if (loader == null)
 				throw new InvalidOperationException("Program must be loaded before it can be scanned.");
@@ -239,13 +245,13 @@ namespace Decompiler
 				loader = null;
 				if (host.DisassemblyWriter != null)
 				{
-					program.DumpAssembler(scanner.ImageMap, host.DisassemblyWriter);
+					program.DumpAssembler(program.ImageMap, host.DisassemblyWriter);
 					host.DisassemblyWriter.Flush();
 				}
 			}
 		}
 
-		public void StructureProgram(DecompilerHost host)
+		public void StructureProgram()
 		{
 			if (project.Output.ControlStructure)
 			{

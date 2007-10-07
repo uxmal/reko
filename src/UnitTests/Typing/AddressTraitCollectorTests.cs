@@ -124,7 +124,7 @@ namespace Decompiler.UnitTests.Typing
 			handler = new MockTraitHandler();
 			eqb = new EquivalenceClassBuilder(factory, store);
 			globals = new Identifier("globals", 0, PrimitiveType.Pointer, null);
-			store.EnsureTypeVariable(globals, null, factory);
+			store.EnsureTypeVariable(factory, globals);
 			
 			ivs = new InductionVariableCollection();
 			atrco = new AddressTraitCollector(factory, store, handler, globals, ivs);

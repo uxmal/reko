@@ -17,16 +17,104 @@
  */
 
 using NUnit.Framework;
+using Decompiler.Arch.Intel;
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.UnitTests.Mocks;
 using System;
+using System.Collections;
+using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
 {
 	[TestFixture]
 	public class CopyChainTests
+	{
+		private ProcedureMock m;
+		private string nl = Environment.NewLine;
+
+		[SetUp]
+		public void Setup()
+		{
+			m = new ProcedureMock();
+		}
+
+		[Test]
+		public void SingleCopy()
+		{
+			Identifier eax = m.Frame.EnsureRegister(Registers.eax);
+			Identifier tmp = m.Frame.EnsureStackLocal(-4, eax.DataType);
+			
+			CopyChainFinder cch = new CopyChainFinder(null);
+			cch.Process(m.Assign(tmp, eax));
+			string exp = "dwLoc04 = eax" + nl;
+			Assert.AreEqual(exp, Dump(cch.Chains[tmp]));
+		}
+
+		[Test]
+		public void TrashCopy()
+		{
+			Identifier eax = m.Frame.EnsureRegister(Registers.eax);
+			Identifier ebx = m.Frame.EnsureRegister(Registers.ebx);
+
+			CopyChainFinder cch = new CopyChainFinder(null);
+			cch.Process(m.Assign(ebx, eax));
+			cch.Process(m.Assign(ebx, m.Int32(42)));	 // trashes ebx
+			Assert.AreEqual("Trash", cch.Chains[ebx]);
+		}
+
+		[Test]
+		public void RestoredCopy()
+		{
+			Identifier eax = m.Frame.EnsureRegister(Registers.eax);
+			Identifier ebx = m.Frame.EnsureRegister(Registers.ebx);
+
+			CopyChainFinder cch = new CopyChainFinder(null);
+			cch.Process(m.Assign(ebx, eax));
+			cch.Process(m.Assign(eax, m.Int32(42)));
+			cch.Process(m.Assign(eax, ebx));				// eax now is restored.
+			string exp = 
+				"ebx = eax" + nl +
+				"eax = ebx" + nl;
+			Assert.AreEqual(exp, Dump(cch.Chains[ebx]));
+		}
+
+		[Test]
+		public void OneBranchTrashes()
+		{
+			Identifier eax = m.Frame.EnsureRegister(Registers.eax);
+			Identifier tmp = m.Frame.EnsureStackLocal(-4, eax.DataType);
+
+			m.BranchIf(eax, "preserve");
+			m.Assign(eax, m.Int32(42));
+			m.Jump("join");
+			m.Label("preserve");
+			m.Assign(tmp, eax);
+			m.Assign(eax, m.Int32(42));
+			m.Assign(eax, tmp);
+			m.Label("join");
+			m.Return();
+			CopyChainFinder cch = new CopyChainFinder(m.Procedure);
+			cch.FindCopyChains();
+			Assert.AreEqual("Trash", cch.Chains[eax]);
+		}
+
+		private string Dump(object a)
+		{
+			ArrayList aa = (ArrayList) a;
+			StringWriter writer = new StringWriter();
+			foreach (object o in aa)
+			{
+				writer.WriteLine(o);
+			}
+			return writer.ToString();
+		}
+	}
+
+	[TestFixture]
+	[Obsolete("Class is going away")]
+	public class CopyChainTests2
 	{
 		private Procedure proc;
 		private SsaState ssa;
@@ -36,7 +124,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Build(new SimpleChainMock());
 
-			CopyChain cch = new CopyChain(ssa);
+			CopyChain2 cch = new CopyChain2(ssa);
 			Block b = proc.ExitBlock.Pred[0];
 			cch.Kill(b.Statements[3]);
 			cch.Kill(b.Statements[2]);
@@ -64,7 +152,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Build(new SavedAndUsedRegisterMock());
 
-			CopyChain cch = new CopyChain(ssa);
+			CopyChain2 cch = new CopyChain2(ssa);
 			Block b = proc.RpoBlocks[1];
 			Statement stm = b.Statements[4];
 			Assert.AreEqual("use reg_6", stm.ToString());			
@@ -97,7 +185,7 @@ namespace Decompiler.UnitTests.Analysis
 			SsaTransform st = new SsaTransform(proc, new DominatorGraph(proc), false);
 			SsaState ssa = st.SsaState;
 
-			CopyChain cch = new CopyChain(ssa);
+			CopyChain2 cch = new CopyChain2(ssa);
 			Block b = proc.RpoBlocks[3];
 			Assert.AreEqual("use tmp_7", b.Statements[2].ToString());
 			cch.Kill(b.Statements[2]);

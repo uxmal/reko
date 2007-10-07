@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -25,6 +26,9 @@ using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
+	/// <summary>
+	/// Base class for the user interfaces of all the phases
+	/// </summary>
 	public class PhasePage : System.Windows.Forms.UserControl
 	{
 		/// <summary> 
@@ -36,8 +40,6 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
-
-			// TODO: Add any initialization after the InitForm call
 
 		}
 
@@ -66,5 +68,23 @@ namespace Decompiler.WindowsGui.Forms
 			components = new System.ComponentModel.Container();
 		}
 		#endregion
+
+		public virtual void Populate(DecompilerDriver decompiler, TreeView browser)
+		{
+		}
+
+		public virtual void BrowserItemSelected(object item)
+		{
+		}
+
+		public virtual void BrowserItemDoubleClicked(object item)
+		{
+		}
+
+		public virtual MenuItem GetMenu()
+		{
+			return null;
+		}
+
 	}
 }

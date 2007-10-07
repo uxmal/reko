@@ -56,14 +56,14 @@ namespace Decompiler.Loading
 				ushort seg = (ushort) (imgLoaded.ReadUShort(offset) + addrLoad.seg);
 				imgLoaded.WriteUShort(offset, seg);
 
-				imageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
+				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 				--i;
 			}
 		
 			// Found the start address.
 
 			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.seg), exe.e_ip);
-			imageMap.AddSegment(new Address(addrStart.seg, 0), AccessMode.ReadWrite);
+			imageMap.AddSegment(new Address(addrStart.seg, 0), addrStart.seg.ToString("X4"), AccessMode.ReadWrite);
 			entryPoints.Add(new EntryPoint(addrStart, new IntelState()));
 			return imageMap;
 		}

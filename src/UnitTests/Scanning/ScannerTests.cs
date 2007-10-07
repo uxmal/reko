@@ -91,12 +91,13 @@ baz proc
 	jmp		foo
 baz endp
 ");
+			prog.ImageMap = new ImageMap(prog.Image);
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			Scanner scan = new Scanner(prog, null);
 			ArrayList eps = new ArrayList();
 			eps.Add(ep);
 			scan.Parse(eps);
-			RewriterHost rw = new RewriterHost(prog, null, scan.ImageMap, scan.SystemCalls, scan.VectorUses);
+			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 		}
 
@@ -107,6 +108,7 @@ baz endp
 		public void DontPromoteStumps()
 		{
 			Program prog = BuildTest("Fragments/multiple/jumpintoproc2.asm");
+			prog.ImageMap = new ImageMap(prog.Image);
 			Scanner scan = new Scanner(prog, null);
 			scan.EnqueueProcedure(null, prog.Image.BaseAddress, null, prog.Architecture.CreateProcessorState());
 			Assert.IsTrue(scan.ProcessItem());
@@ -114,7 +116,7 @@ baz endp
 			Assert.IsTrue(scan.ProcessItem());
 			Assert.IsTrue(scan.ProcessItem());
 //			Assert.IsTrue(scan.ProcessItem());
-			DumpImageMap(scan.ImageMap);
+			DumpImageMap(prog.ImageMap);
 		}
 
 		[Test]
@@ -124,6 +126,7 @@ baz endp
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			Assembler asm = prog.Architecture.CreateAssembler();
 			prog.Image = asm.Assemble(prog, new Address(0xC00, 0x0000), FileUnitTester.MapTestPath("Fragments/multiple/jumpintoproc.asm"), null);
+			prog.ImageMap = new ImageMap(prog.Image);
 			EntryPoint ep = new EntryPoint(asm.StartAddress, new IntelState());
 			ArrayList eps = new ArrayList();
 			eps.Add(ep);
@@ -133,7 +136,7 @@ baz endp
 			using (FileUnitTester fut = new FileUnitTester("Scanning/ScanInterprocedureJump.txt"))
 			{
 				Dumper dumper = prog.Architecture.CreateDumper();
-				dumper.Dump(prog, scan.ImageMap, fut.TextWriter);
+				dumper.Dump(prog, prog.ImageMap, fut.TextWriter);
 				foreach (DictionaryEntry de in prog.Procedures)
 				{
 					Procedure proc = (Procedure) de.Value;

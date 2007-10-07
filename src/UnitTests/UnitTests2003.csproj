@@ -560,6 +560,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Gui\MainFormInteractorTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Gui\MenuBuilderTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Intel\AssemblerAdvanced.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1031,6 +1041,11 @@
                 />
                 <File
                     RelPath = "Typing\VectorMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\WindowsMenuBuilderTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

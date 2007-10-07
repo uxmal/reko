@@ -160,7 +160,7 @@ namespace Decompiler.Loading
 
 				// This is a known segment!
 
-				imageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
+				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 			}
 			return imageMap;
 		}

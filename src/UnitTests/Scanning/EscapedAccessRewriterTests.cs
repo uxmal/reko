@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Scanning
 			ldr.Assemble(FileUnitTester.MapTestPath(sourceFile), prog.Architecture, addr);
 			Scanner scan = new Scanner(prog, null);
 			scan.Parse(ldr.EntryPoints);
-			RewriterHost host = new RewriterHost(prog, null, scan.ImageMap, scan.SystemCalls, scan.VectorUses);
+			RewriterHost host = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			host.RewriteProgram();
 			return prog;
 		}

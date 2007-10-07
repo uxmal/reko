@@ -80,6 +80,7 @@ namespace Decompiler.UnitTests.Analysis
 			prog.Platform = new Arch.Intel.MsDos.MsdosPlatform(prog.Architecture);
 			Assembler asm = prog.Architecture.CreateAssembler();
 			prog.Image = asm.Assemble(prog, new Address(0xC00, 0), FileUnitTester.MapTestPath(relativePath), null);
+			prog.ImageMap = new ImageMap(prog.Image);
 			Rewrite(prog, asm, configFile);
 			return prog;
 		}
@@ -127,7 +128,7 @@ namespace Decompiler.UnitTests.Analysis
 			eps.Add(ep);
 			prog.AddEntryPoint(ep);
 			scan.Parse(eps, project.UserProcedures);
-			RewriterHost rw = new RewriterHost(prog, null, scan.ImageMap, scan.SystemCalls, scan.VectorUses);
+			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 		}
 

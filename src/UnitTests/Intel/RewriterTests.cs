@@ -61,11 +61,12 @@ namespace Decompiler.UnitTests.Intel
 		protected Procedure DoRewrite(string code)
 		{
 			prog.Image = asm.AssembleFragment(prog, baseAddress, code);
-			DoRewriteCore(new ImageMap(prog.Image));
+			prog.ImageMap = new ImageMap(prog.Image);
+			DoRewriteCore();
 			return prog.DfsProcedures[0];
 		}
 
-		private void DoRewriteCore(ImageMap imageMap)
+		private void DoRewriteCore()
 		{
 			DecompilerProject project = (configFile != null)
 				? DecompilerProject.Load(FileUnitTester.MapTestPath(configFile))
@@ -75,14 +76,15 @@ namespace Decompiler.UnitTests.Intel
 			ArrayList eps = new ArrayList();
 			eps.Add(ep);
 			scanner.Parse(eps, project != null ? project.UserProcedures : null);
-			RewriterHost rw = new RewriterHost(prog, null, scanner.ImageMap, scanner.SystemCalls, scanner.VectorUses);
+			RewriterHost rw = new RewriterHost(prog, null, scanner.SystemCalls, scanner.VectorUses);
 			rw.RewriteProgram();
 		}
 
 		protected void DoRewriteFile(string relativePath)
 		{
 			prog.Image = asm.Assemble(prog, baseAddress, FileUnitTester.MapTestPath(relativePath), null);
-			DoRewriteCore(new ImageMap(prog.Image));
+			prog.ImageMap = new ImageMap(prog.Image);
+			DoRewriteCore();
 		}
 	}
 

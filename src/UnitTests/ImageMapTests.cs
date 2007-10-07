@@ -46,9 +46,9 @@ namespace Decompiler.UnitTests
 		{
 			ImageMap im = new ImageMap(img);
 
-			im.AddSegment(new Address(0x8000, 2), AccessMode.ReadWrite);
-			im.AddSegment(new Address(0x8000, 3), AccessMode.ReadWrite);
-			im.AddSegment(new Address(0x8000, 0), AccessMode.ReadWrite);
+			im.AddSegment(new Address(0x8000, 2), "",  AccessMode.ReadWrite);
+			im.AddSegment(new Address(0x8000, 3), "", AccessMode.ReadWrite);
+			im.AddSegment(new Address(0x8000, 0), "", AccessMode.ReadWrite);
 
 			// Verify
 
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests
 			ImageMap im = new ImageMap();
 
 			im.SetAddressSpan(new Address(0x8000, 0), 40);
-			im.AddSegment(new Address(0x8000, 10), AccessMode.ReadWrite);
+			im.AddSegment(new Address(0x8000, 10), "", AccessMode.ReadWrite);
 		}
 
 		private ImageMapItem GetNextMapItem(IDictionaryEnumerator e)
@@ -104,11 +104,11 @@ namespace Decompiler.UnitTests
 
 			// Now add a segment, which should stir things up.
 
-			im.AddSegment(new Address(0xD00, 0), AccessMode.ReadWrite);
+			im.AddSegment(new Address(0xD00, 0), "0D00", AccessMode.ReadWrite);
 
 			Assert.IsTrue(cItemsSplit == 3);
 
-			IDictionaryEnumerator e = (IDictionaryEnumerator) im.Items.GetEnumerator();
+			IDictionaryEnumerator e = im.Items.GetEnumerator();
 			ImageMapItem mi = GetNextMapItem(e);
 			Assert.IsTrue(mi.Size == 30);
 			mi = GetNextMapItem(e);
@@ -116,6 +116,19 @@ namespace Decompiler.UnitTests
 			mi = GetNextMapItem(e);
 			Assert.IsTrue(mi.Size == 0x100);
 		}
+
+		[Test]
+		public void AddNamedSegment()
+		{
+			ImageMap map = new ImageMap(img);
+			map.AddSegment(new Address(0xC00, 0), "0C00", AccessMode.ReadWrite);
+			IDictionaryEnumerator e = map.Segments.GetEnumerator();
+			ImageMapSegment s = GetNextMapSegment(e);
+			Assert.AreEqual("0C00", s.Name);
+			Assert.AreEqual(-1, s.Size);
+
+		}
+
 
 		private void ImageItems_ItemSplit(object o, ItemSplitArgs isa)
 		{

@@ -34,8 +34,8 @@ namespace WindowsDecompiler
 			}
 			else
 			{
-				DecompilerDriver dec = new DecompilerDriver(args[0]);
-				dec.Decompile(new NullDecompilerHost());
+				DecompilerDriver dec = new DecompilerDriver(args[0], new NullDecompilerHost());
+				dec.Decompile();
 			}
 		}
 	}

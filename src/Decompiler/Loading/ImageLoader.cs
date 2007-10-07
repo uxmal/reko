@@ -28,7 +28,6 @@ namespace Decompiler.Loading
 	public abstract class ImageLoader
 	{
 		private ProgramImage imgRaw;
-		private ImageMap map;
 
 		public ImageLoader(ProgramImage imgRaw)
 		{

@@ -68,11 +68,9 @@ namespace Decompiler.Analysis
 		{
 			foreach (Procedure proc in prog.DfsProcedures)
 			{
-				DefinedLocalIds dli = new DefinedLocalIds(prog.Architecture, proc, mpprocData[proc]);
 				foreach (Block block in proc.RpoBlocks)
 				{
 					worklist.Add(mpprocData[block]);
-					dli.LocateDefs(block);
 				}
 			}
 		}
@@ -724,71 +722,6 @@ namespace Decompiler.Analysis
 			{
 				// Used to update LiveIn, but it was never used.
 			}
-		}
-
-
-		[Obsolete]
-		private class DefinedLocalIds : DefinedIdentifierFinder, StorageVisitor
-		{
-			private IProcessorArchitecture arch;
-			private Procedure proc;
-			private ProcedureFlow flow;
-
-			public DefinedLocalIds(IProcessorArchitecture arch, Procedure proc, ProcedureFlow flow) : base(proc)
-			{
-				this.arch = arch;
-				this.flow = flow;
-				this.proc = proc;
-			}
-
-			public override void Def(Identifier id)
-			{
-				id.Storage.Accept(this);
-			}
-
-			#region VariableVisitor Members /////////////////////////////////////////
-
-			public void VisitFlagGroupStorage(FlagGroupStorage grf)
-			{
-			}
-
-			public void VisitFpuStackStorage(FpuStackStorage fpu)
-			{
-			}
-
-			public void VisitMemoryStorage(MemoryStorage global)
-			{
-			}
-
-			public void VisitOutArgumentStorage(OutArgumentStorage arg)
-			{
-				arg.OriginalIdentifier.Storage.Accept(this);
-			}
-
-			public void VisitRegisterStorage(RegisterStorage reg)
-			{
-			}
-
-			public void VisitSequenceStorage(SequenceStorage seq)
-			{
-				Def(seq.Head);
-				Def(seq.Tail);
-			}
-
-			public void VisitStackArgumentStorage(StackArgumentStorage stack)
-			{
-			}
-
-			public void VisitStackLocalStorage(StackLocalStorage local)
-			{
-			}
-
-			public void VisitTemporaryStorage(TemporaryStorage temp)
-			{
-			}
-
-
-			#endregion
 		}
 	}
 }

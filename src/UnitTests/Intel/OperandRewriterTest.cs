@@ -118,7 +118,7 @@ namespace Decompiler.UnitTests.Intel
 			Assert.AreEqual(false, proc.Frame.Escapes);
 
 			RegisterOperand r = new RegisterOperand(Registers.ebp);
-			orw.Transform(r, PrimitiveType.Word32, state);
+			orw.Transform(r, PrimitiveType.Word32, PrimitiveType.Word32, state);
 			Assert.AreEqual(false, proc.Frame.Escapes);
 
 			state.GrowStack(4);

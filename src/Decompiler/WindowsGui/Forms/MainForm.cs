@@ -37,7 +37,15 @@ namespace Decompiler.WindowsGui.Forms
 		private MruList mru;
 		private GuiHost host;
 		private MainFormInteractor interactor;
+		private PhasePage currentPage;
 
+		private InitialPhase initialPhase;
+		private LoadedPhase loadingPhase;
+		private ScannedPhase scannedPhase;
+		private MachineCodeRewrittenPhase rewritingPhase;
+		private DataFlowPhase dataflowPhase;
+		private TypeReconstructedPhase typeReconstructionPhase;
+		private CodeStructuredPhase codeStructuringPhase;
 
 		private const int ImageIndexSegment = 0;
 		private const int ImageIndexProcedureBlock = 1;
@@ -47,8 +55,6 @@ namespace Decompiler.WindowsGui.Forms
 		private const int ImageIndexUnknown = 5;
 
 		private const int MaxMruItems = 10;
-
-		private System.Windows.Forms.MenuItem miFileOpen;
 		private System.Windows.Forms.MenuItem miFileExit;
 		private System.Windows.Forms.MenuItem menuItem3;
 		private System.Windows.Forms.OpenFileDialog ofd;
@@ -65,13 +71,6 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.TabPage tabLog;
 		private System.Windows.Forms.ListView listDiagnostics;
 		private System.Windows.Forms.TextBox txtLog;
-		private System.Windows.Forms.MenuItem menuItem2;
-		private System.Windows.Forms.MenuItem miFileDecompile;
-		private System.Windows.Forms.MenuItem miFileLoad;
-		private System.Windows.Forms.MenuItem miFileScan;
-		private System.Windows.Forms.MenuItem miFileRewrite;
-		private System.Windows.Forms.MenuItem miFileTypeInference;
-		private System.Windows.Forms.MenuItem miFileStructure;
 		private System.Windows.Forms.MenuItem miView;
 		private System.Windows.Forms.MenuItem miViewMemory;
 		private System.Windows.Forms.MenuItem miViewDisassembly;
@@ -81,7 +80,25 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.ListView listDiscoveries;
 		private System.Windows.Forms.ColumnHeader colDiscoveryType;
 		private System.Windows.Forms.ColumnHeader colDiscoveryDescription;
+		private System.Windows.Forms.Panel panel1;
 		private Decompiler.WindowsGui.Forms.LoadPage loadPage;
+		private System.Windows.Forms.Splitter splitterTop;
+		private System.Windows.Forms.TreeView treeBrowser;
+		private System.Windows.Forms.ToolBar toolBar;
+		private System.Windows.Forms.MenuItem menuItem1;
+		private System.Windows.Forms.MenuItem menuItem4;
+		private System.Windows.Forms.MenuItem menuItem5;
+		private System.Windows.Forms.MenuItem menuItem6;
+		private System.Windows.Forms.ToolBarButton tbtnNextPhase;
+		private System.Windows.Forms.ToolBarButton tbtnOpen;
+		private System.Windows.Forms.ToolBarButton tbtnSave;
+		private System.Windows.Forms.ToolBarButton toolBarButton3;
+		private System.Windows.Forms.ImageList imagesToolbar;
+		private System.Windows.Forms.ToolBarButton tbtnFinishDecompilation;
+		private Decompiler.WindowsGui.Forms.InitialPage initialPage;
+		private System.Windows.Forms.MenuItem miFileOpenProject;
+		private System.Windows.Forms.MenuItem menuItem8;
+		private System.Windows.Forms.MenuItem miFileOpenBinary;
 		private System.ComponentModel.IContainer components;
 
 		public MainForm()
@@ -92,7 +109,9 @@ namespace Decompiler.WindowsGui.Forms
 			InitializeComponent();
 
 			mru = new MruList(MruListFile, MaxMruItems);
-			interactor = new MainFormInteractor(this);
+			BuildPhases();
+
+			interactor = new MainFormInteractor(this, initialPhase);
 			host = new GuiHost(this);
 		}
 
@@ -101,9 +120,9 @@ namespace Decompiler.WindowsGui.Forms
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
-			if( disposing )
+			if (disposing )
 			{
-				if(components != null)
+				if (components != null)
 				{
 					components.Dispose();
 				}
@@ -122,20 +141,19 @@ namespace Decompiler.WindowsGui.Forms
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MainForm));
 			this.menu = new System.Windows.Forms.MainMenu();
 			this.miFile = new System.Windows.Forms.MenuItem();
-			this.miFileOpen = new System.Windows.Forms.MenuItem();
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
-			this.miFileDecompile = new System.Windows.Forms.MenuItem();
-			this.miFileLoad = new System.Windows.Forms.MenuItem();
-			this.miFileScan = new System.Windows.Forms.MenuItem();
-			this.miFileRewrite = new System.Windows.Forms.MenuItem();
-			this.miFileTypeInference = new System.Windows.Forms.MenuItem();
-			this.miFileStructure = new System.Windows.Forms.MenuItem();
+			this.menuItem8 = new System.Windows.Forms.MenuItem();
+			this.miFileOpenProject = new System.Windows.Forms.MenuItem();
+			this.miFileOpenBinary = new System.Windows.Forms.MenuItem();
 			this.miFileMruSeparator = new System.Windows.Forms.MenuItem();
 			this.menuItem3 = new System.Windows.Forms.MenuItem();
 			this.miFileExit = new System.Windows.Forms.MenuItem();
+			this.menuItem1 = new System.Windows.Forms.MenuItem();
+			this.menuItem4 = new System.Windows.Forms.MenuItem();
 			this.miView = new System.Windows.Forms.MenuItem();
 			this.miViewMemory = new System.Windows.Forms.MenuItem();
 			this.miViewDisassembly = new System.Windows.Forms.MenuItem();
+			this.menuItem5 = new System.Windows.Forms.MenuItem();
+			this.menuItem6 = new System.Windows.Forms.MenuItem();
 			this.ofd = new System.Windows.Forms.OpenFileDialog();
 			this.statusBar = new System.Windows.Forms.StatusBar();
 			this.statusBarPanel1 = new System.Windows.Forms.StatusBarPanel();
@@ -153,7 +171,18 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabLog = new System.Windows.Forms.TabPage();
 			this.txtLog = new System.Windows.Forms.TextBox();
 			this.splitter1 = new System.Windows.Forms.Splitter();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.splitterTop = new System.Windows.Forms.Splitter();
 			this.loadPage = new Decompiler.WindowsGui.Forms.LoadPage();
+			this.treeBrowser = new System.Windows.Forms.TreeView();
+			this.toolBar = new System.Windows.Forms.ToolBar();
+			this.tbtnOpen = new System.Windows.Forms.ToolBarButton();
+			this.tbtnSave = new System.Windows.Forms.ToolBarButton();
+			this.toolBarButton3 = new System.Windows.Forms.ToolBarButton();
+			this.tbtnNextPhase = new System.Windows.Forms.ToolBarButton();
+			this.tbtnFinishDecompilation = new System.Windows.Forms.ToolBarButton();
+			this.imagesToolbar = new System.Windows.Forms.ImageList(this.components);
+			this.initialPage = new Decompiler.WindowsGui.Forms.InitialPage();
 			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel3)).BeginInit();
@@ -161,91 +190,77 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabDiagnostics.SuspendLayout();
 			this.tabDiscoveries.SuspendLayout();
 			this.tabLog.SuspendLayout();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menu
 			// 
 			this.menu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
 																				 this.miFile,
-																				 this.miView});
+																				 this.menuItem1,
+																				 this.miView,
+																				 this.menuItem5});
 			// 
 			// miFile
 			// 
 			this.miFile.Index = 0;
 			this.miFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																				   this.miFileOpen,
-																				   this.menuItem2,
-																				   this.miFileDecompile,
-																				   this.miFileLoad,
-																				   this.miFileScan,
-																				   this.miFileRewrite,
-																				   this.miFileTypeInference,
-																				   this.miFileStructure,
+																				   this.menuItem8,
+																				   this.miFileOpenProject,
+																				   this.miFileOpenBinary,
 																				   this.miFileMruSeparator,
 																				   this.menuItem3,
 																				   this.miFileExit});
 			this.miFile.Text = "&File";
 			// 
-			// miFileOpen
+			// menuItem8
 			// 
-			this.miFileOpen.Index = 0;
-			this.miFileOpen.Text = "&Open...";
-			this.miFileOpen.Click += new System.EventHandler(this.miFileOpen_Click);
+			this.menuItem8.Index = 0;
+			this.menuItem8.Text = "&New Project";
 			// 
-			// menuItem2
+			// miFileOpenProject
 			// 
-			this.menuItem2.Index = 1;
-			this.menuItem2.Text = "-";
+			this.miFileOpenProject.Index = 1;
+			this.miFileOpenProject.Text = "&Open Project...";
+			this.miFileOpenProject.Click += new System.EventHandler(this.miFileOpen_Click);
 			// 
-			// miFileDecompile
+			// miFileOpenBinary
 			// 
-			this.miFileDecompile.Index = 2;
-			this.miFileDecompile.Text = "&Decompile";
-			// 
-			// miFileLoad
-			// 
-			this.miFileLoad.Index = 3;
-			this.miFileLoad.Text = "&Load";
-			// 
-			// miFileScan
-			// 
-			this.miFileScan.Index = 4;
-			this.miFileScan.Text = "&Scan";
-			// 
-			// miFileRewrite
-			// 
-			this.miFileRewrite.Index = 5;
-			this.miFileRewrite.Text = "&Rewrite";
-			// 
-			// miFileTypeInference
-			// 
-			this.miFileTypeInference.Index = 6;
-			this.miFileTypeInference.Text = "&Type Inference";
-			// 
-			// miFileStructure
-			// 
-			this.miFileStructure.Index = 7;
-			this.miFileStructure.Text = "Stru&cture";
+			this.miFileOpenBinary.Index = 2;
+			this.miFileOpenBinary.Text = "Open &Binary File...";
+			this.miFileOpenBinary.Click += new System.EventHandler(this.miFileOpenBinary_Click);
 			// 
 			// miFileMruSeparator
 			// 
-			this.miFileMruSeparator.Index = 8;
+			this.miFileMruSeparator.Index = 3;
 			this.miFileMruSeparator.Text = "-";
 			// 
 			// menuItem3
 			// 
-			this.menuItem3.Index = 9;
+			this.menuItem3.Index = 4;
 			this.menuItem3.Text = "-";
 			// 
 			// miFileExit
 			// 
-			this.miFileExit.Index = 10;
+			this.miFileExit.Index = 5;
 			this.miFileExit.Text = "E&xit";
 			this.miFileExit.Click += new System.EventHandler(this.miFileExit_Click);
 			// 
+			// menuItem1
+			// 
+			this.menuItem1.Index = 1;
+			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+																					  this.menuItem4});
+			this.menuItem1.Text = "&Edit";
+			// 
+			// menuItem4
+			// 
+			this.menuItem4.Index = 0;
+			this.menuItem4.Text = "&Copy";
+			// 
 			// miView
 			// 
-			this.miView.Index = 1;
+			this.miView.Index = 2;
 			this.miView.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
 																				   this.miViewMemory,
 																				   this.miViewDisassembly});
@@ -261,16 +276,28 @@ namespace Decompiler.WindowsGui.Forms
 			this.miViewDisassembly.Index = 1;
 			this.miViewDisassembly.Text = "&Disassembly";
 			// 
+			// menuItem5
+			// 
+			this.menuItem5.Index = 3;
+			this.menuItem5.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+																					  this.menuItem6});
+			this.menuItem5.Text = "&Help";
+			// 
+			// menuItem6
+			// 
+			this.menuItem6.Index = 0;
+			this.menuItem6.Text = "&About...";
+			// 
 			// statusBar
 			// 
-			this.statusBar.Location = new System.Drawing.Point(0, 489);
+			this.statusBar.Location = new System.Drawing.Point(0, 449);
 			this.statusBar.Name = "statusBar";
 			this.statusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
 																						 this.statusBarPanel1,
 																						 this.statusBarPanel2,
 																						 this.statusBarPanel3});
 			this.statusBar.ShowPanels = true;
-			this.statusBar.Size = new System.Drawing.Size(984, 24);
+			this.statusBar.Size = new System.Drawing.Size(792, 24);
 			this.statusBar.TabIndex = 3;
 			this.statusBar.PanelClick += new System.Windows.Forms.StatusBarPanelClickEventHandler(this.statusBar_PanelClick);
 			// 
@@ -286,7 +313,7 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			this.statusBarPanel3.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
 			this.statusBarPanel3.Text = "bar";
-			this.statusBarPanel3.Width = 468;
+			this.statusBarPanel3.Width = 276;
 			// 
 			// imglMapItems
 			// 
@@ -300,10 +327,10 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabsOutput.Controls.Add(this.tabDiscoveries);
 			this.tabsOutput.Controls.Add(this.tabLog);
 			this.tabsOutput.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.tabsOutput.Location = new System.Drawing.Point(0, 353);
+			this.tabsOutput.Location = new System.Drawing.Point(0, 313);
 			this.tabsOutput.Name = "tabsOutput";
 			this.tabsOutput.SelectedIndex = 0;
-			this.tabsOutput.Size = new System.Drawing.Size(984, 136);
+			this.tabsOutput.Size = new System.Drawing.Size(792, 136);
 			this.tabsOutput.TabIndex = 12;
 			// 
 			// tabDiagnostics
@@ -311,7 +338,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabDiagnostics.Controls.Add(this.listDiagnostics);
 			this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
 			this.tabDiagnostics.Name = "tabDiagnostics";
-			this.tabDiagnostics.Size = new System.Drawing.Size(976, 110);
+			this.tabDiagnostics.Size = new System.Drawing.Size(784, 110);
 			this.tabDiagnostics.TabIndex = 0;
 			this.tabDiagnostics.Text = "Diagnostics";
 			this.tabDiagnostics.ToolTipText = "Displays errors and warnings incurred during decompilation";
@@ -323,7 +350,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listDiagnostics.Location = new System.Drawing.Point(0, 0);
 			this.listDiagnostics.Name = "listDiagnostics";
-			this.listDiagnostics.Size = new System.Drawing.Size(976, 110);
+			this.listDiagnostics.Size = new System.Drawing.Size(784, 110);
 			this.listDiagnostics.TabIndex = 2;
 			this.listDiagnostics.View = System.Windows.Forms.View.Details;
 			// 
@@ -336,7 +363,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabDiscoveries.Controls.Add(this.listDiscoveries);
 			this.tabDiscoveries.Location = new System.Drawing.Point(4, 22);
 			this.tabDiscoveries.Name = "tabDiscoveries";
-			this.tabDiscoveries.Size = new System.Drawing.Size(976, 110);
+			this.tabDiscoveries.Size = new System.Drawing.Size(784, 110);
 			this.tabDiscoveries.TabIndex = 2;
 			this.tabDiscoveries.Text = "Discoveries";
 			// 
@@ -348,7 +375,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.listDiscoveries.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listDiscoveries.Location = new System.Drawing.Point(0, 0);
 			this.listDiscoveries.Name = "listDiscoveries";
-			this.listDiscoveries.Size = new System.Drawing.Size(976, 110);
+			this.listDiscoveries.Size = new System.Drawing.Size(784, 110);
 			this.listDiscoveries.TabIndex = 0;
 			this.listDiscoveries.View = System.Windows.Forms.View.Details;
 			// 
@@ -366,7 +393,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabLog.Controls.Add(this.txtLog);
 			this.tabLog.Location = new System.Drawing.Point(4, 22);
 			this.tabLog.Name = "tabLog";
-			this.tabLog.Size = new System.Drawing.Size(976, 110);
+			this.tabLog.Size = new System.Drawing.Size(784, 110);
 			this.tabLog.TabIndex = 1;
 			this.tabLog.Text = "Log";
 			// 
@@ -376,33 +403,122 @@ namespace Decompiler.WindowsGui.Forms
 			this.txtLog.Location = new System.Drawing.Point(0, -26);
 			this.txtLog.Multiline = true;
 			this.txtLog.Name = "txtLog";
-			this.txtLog.Size = new System.Drawing.Size(976, 136);
+			this.txtLog.Size = new System.Drawing.Size(784, 136);
 			this.txtLog.TabIndex = 2;
 			this.txtLog.Text = "";
 			// 
 			// splitter1
 			// 
 			this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.splitter1.Location = new System.Drawing.Point(0, 350);
+			this.splitter1.Location = new System.Drawing.Point(0, 310);
 			this.splitter1.Name = "splitter1";
-			this.splitter1.Size = new System.Drawing.Size(984, 3);
+			this.splitter1.Size = new System.Drawing.Size(792, 3);
 			this.splitter1.TabIndex = 13;
 			this.splitter1.TabStop = false;
 			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.splitterTop);
+			this.panel1.Controls.Add(this.loadPage);
+			this.panel1.Controls.Add(this.treeBrowser);
+			this.panel1.Controls.Add(this.toolBar);
+			this.panel1.Controls.Add(this.initialPage);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel1.Location = new System.Drawing.Point(0, 0);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(792, 310);
+			this.panel1.TabIndex = 15;
+			// 
+			// splitterTop
+			// 
+			this.splitterTop.Location = new System.Drawing.Point(200, 28);
+			this.splitterTop.Name = "splitterTop";
+			this.splitterTop.Size = new System.Drawing.Size(3, 282);
+			this.splitterTop.TabIndex = 17;
+			this.splitterTop.TabStop = false;
+			// 
 			// loadPage
 			// 
+			this.loadPage.Architecture = null;
+			this.loadPage.BackColor = System.Drawing.SystemColors.Control;
 			this.loadPage.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.loadPage.Location = new System.Drawing.Point(0, 0);
+			this.loadPage.Location = new System.Drawing.Point(200, 28);
 			this.loadPage.Name = "loadPage";
+			this.loadPage.ProcessorArchitecture = null;
 			this.loadPage.ProgramImage = null;
-			this.loadPage.Size = new System.Drawing.Size(984, 350);
-			this.loadPage.TabIndex = 14;
+			this.loadPage.Size = new System.Drawing.Size(592, 282);
+			this.loadPage.TabIndex = 15;
+			// 
+			// treeBrowser
+			// 
+			this.treeBrowser.Dock = System.Windows.Forms.DockStyle.Left;
+			this.treeBrowser.ImageIndex = -1;
+			this.treeBrowser.Location = new System.Drawing.Point(0, 28);
+			this.treeBrowser.Name = "treeBrowser";
+			this.treeBrowser.SelectedImageIndex = -1;
+			this.treeBrowser.Size = new System.Drawing.Size(200, 282);
+			this.treeBrowser.TabIndex = 16;
+			this.treeBrowser.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeBrowser_AfterSelect);
+			// 
+			// toolBar
+			// 
+			this.toolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+			this.toolBar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
+																					   this.tbtnOpen,
+																					   this.tbtnSave,
+																					   this.toolBarButton3,
+																					   this.tbtnNextPhase,
+																					   this.tbtnFinishDecompilation});
+			this.toolBar.DropDownArrows = true;
+			this.toolBar.ImageList = this.imagesToolbar;
+			this.toolBar.Location = new System.Drawing.Point(0, 0);
+			this.toolBar.Name = "toolBar";
+			this.toolBar.ShowToolTips = true;
+			this.toolBar.Size = new System.Drawing.Size(792, 28);
+			this.toolBar.TabIndex = 18;
+			this.toolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar_ButtonClick);
+			// 
+			// tbtnOpen
+			// 
+			this.tbtnOpen.ImageIndex = 0;
+			// 
+			// tbtnSave
+			// 
+			this.tbtnSave.ImageIndex = 1;
+			// 
+			// toolBarButton3
+			// 
+			this.toolBarButton3.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
+			// 
+			// tbtnNextPhase
+			// 
+			this.tbtnNextPhase.ImageIndex = 2;
+			this.tbtnNextPhase.ToolTipText = "Advance to next Decompiler Phase";
+			// 
+			// tbtnFinishDecompilation
+			// 
+			this.tbtnFinishDecompilation.ImageIndex = 3;
+			this.tbtnFinishDecompilation.ToolTipText = "Finish decompilation";
+			// 
+			// imagesToolbar
+			// 
+			this.imagesToolbar.ImageSize = new System.Drawing.Size(16, 16);
+			this.imagesToolbar.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imagesToolbar.ImageStream")));
+			this.imagesToolbar.TransparentColor = System.Drawing.Color.Transparent;
+			// 
+			// initialPage
+			// 
+			this.initialPage.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.initialPage.Location = new System.Drawing.Point(0, 0);
+			this.initialPage.Name = "initialPage";
+			this.initialPage.Size = new System.Drawing.Size(792, 310);
+			this.initialPage.TabIndex = 19;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(984, 513);
-			this.Controls.Add(this.loadPage);
+			this.ClientSize = new System.Drawing.Size(792, 473);
+			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.splitter1);
 			this.Controls.Add(this.tabsOutput);
 			this.Controls.Add(this.statusBar);
@@ -410,7 +526,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.Menu = this.menu;
 			this.Name = "MainForm";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.Text = "Driver";
+			this.Text = "Decompiler";
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.Closed += new System.EventHandler(this.MainForm_Closed);
 			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).EndInit();
@@ -420,10 +536,30 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabDiagnostics.ResumeLayout(false);
 			this.tabDiscoveries.ResumeLayout(false);
 			this.tabLog.ResumeLayout(false);
+			this.panel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 		#endregion
+
+		public void BuildPhases()
+		{
+			initialPhase = new InitialPhase(initialPage);
+			loadingPhase = new LoadedPhase(loadPage);
+//			scannedPhase = new ScannedPhase(ScanPage);
+			//			rewritingPhase = new RewritingPhase();
+			//			dataflowPhase = new DataFlowPhrase();
+			//			typeReconstructionPhase = new TypeReconstructionPhase();
+			//			codeStructuringPhase = new CodeStructuringPhase();
+			initialPhase.NextPhase = loadingPhase;
+			loadingPhase.NextPhase = scannedPhase;
+//5			scannedPhase.NextPhase = null;
+		}
+
+		public DecompilerPhase GetInitialPhase()
+		{
+			return initialPhase;
+		}
 
 		private int ImageIndexOfMapItem(ImageMapItem mi)
 		{
@@ -489,8 +625,6 @@ namespace Decompiler.WindowsGui.Forms
 		}
 
 
-
-
 		public void SetStatus(string txt)
 		{
 			statusBar.Panels[1].Text = txt;
@@ -501,12 +635,17 @@ namespace Decompiler.WindowsGui.Forms
 			statusBar.Panels[0].Text = txt;
 		}
 
-		public void ShowLoadPage(Program program)
+
+		public void ShowLoadPage(DecompilerDriver decompiler)
 		{
 			loadPage.BringToFront();
-			loadPage.Architecture = program.Architecture;
-			loadPage.ProgramImage = program.Image;
-			loadPage.ImageMap = program.ImageMap;
+			loadPage.Populate(decompiler, treeBrowser);
+		}
+
+		public void ShowPhasePage(PhasePage page, DecompilerDriver decompiler)
+		{
+			page.BringToFront();
+			page.Populate(decompiler, treeBrowser);
 		}
 
 		// Event handlers /////////////////////////////////////
@@ -518,20 +657,6 @@ namespace Decompiler.WindowsGui.Forms
 
 		private void miFileOpen_Click(object sender, System.EventArgs e)
 		{
-			Cursor.Current = Cursors.WaitCursor;
-			try
-			{
-				if (this.ofd.ShowDialog(this) == DialogResult.OK)
-				{
-					mru.Add(ofd.FileName);
-					interactor.Open(ofd.FileName, host);
-				}
-			} 
-			finally 
-			{
-				Cursor.Current = Cursors.Arrow;
-				SetStatus("");
-			}
 		}
 
 		private void MainForm_Load(object sender, System.EventArgs e)
@@ -555,6 +680,8 @@ namespace Decompiler.WindowsGui.Forms
 				miFile.MenuItems.Add(idx, mi);
 				++idx;
 			}
+
+			initialPage.BringToFront();
 		}
 
 		private void MainForm_Closed(object sender, System.EventArgs e)
@@ -566,7 +693,7 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			MenuItem mi = (MenuItem) sender;
 			mru.Add(mi.Text);
-			interactor.Open(mi.Text, host);
+			interactor.OpenBinary(mi.Text, host);
 		}
 
 		private void statusBar_PanelClick(object sender, System.Windows.Forms.StatusBarPanelClickEventArgs e)
@@ -577,6 +704,43 @@ namespace Decompiler.WindowsGui.Forms
 		private void txtLog_TextChanged(object sender, System.EventArgs e)
 		{
 		
+		}
+
+		private void treeBrowser_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
+		{
+			interactor.BrowserItemSelected(e.Node.Tag);
+		}
+
+		private void toolBar_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
+		{
+			//$REVIEW: this hard-wiring should use command routing instead. Store the menu commands in the tags of the 
+			// toolbar.
+			if (e.Button == tbtnNextPhase)
+			{
+				interactor.NextPhase();
+			} 
+			else if (e.Button == tbtnFinishDecompilation)
+			{
+				interactor.FinishDecompilation();
+			}
+		}
+
+		private void miFileOpenBinary_Click(object sender, System.EventArgs e)
+		{
+			Cursor.Current = Cursors.WaitCursor;
+			try
+			{
+				if (this.ofd.ShowDialog(this) == DialogResult.OK)
+				{
+					mru.Add(ofd.FileName);
+					interactor.OpenBinary(ofd.FileName, host);
+				}
+			} 
+			finally 
+			{
+				Cursor.Current = Cursors.Arrow;
+				SetStatus("");
+			}
 		}
 	}
 }

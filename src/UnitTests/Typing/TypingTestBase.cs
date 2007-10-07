@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Typing
 			ldr.EntryPoints.Add(new EntryPoint(ldr.Image.BaseAddress, new IntelState()));
 			Scanner scan = new Scanner(prog, null);
 			scan.Parse(ldr.EntryPoints);
-			RewriterHost rw = new RewriterHost(prog, null, scan.ImageMap, scan.SystemCalls, scan.VectorUses);
+			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());

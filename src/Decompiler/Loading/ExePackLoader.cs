@@ -126,7 +126,7 @@ namespace Decompiler.Loading
 					{
 						ushort relocOff = rdr.ReadUShort();
 						ushort seg = imgU.FixupUShort(relocBase + relocOff, segCode);
-						imageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
+						imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 					} while (--cx != 0);
 				}       
 				if (dx == 0xF000)
@@ -135,7 +135,7 @@ namespace Decompiler.Loading
 			}
 
 			this.cs += segCode;
-			imageMap.AddSegment(new Address(cs, 0), AccessMode.ReadWrite);
+			imageMap.AddSegment(new Address(cs, 0), cs.ToString("X4"), AccessMode.ReadWrite);
 			this.ss += segCode;
 			IntelState state = new IntelState();
 			state.Set(Registers.ds, new Value(PrimitiveType.Word16, addrLoad.seg));

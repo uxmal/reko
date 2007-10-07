@@ -38,12 +38,6 @@ namespace Decompiler.Core
 			this.arch = arch; 
 		}
 
-		[Obsolete]
-		public void Emit(TextWriter tw)
-		{
-			Write(tw);
-		}
-
 		public void Write(TextWriter tw)
 		{
 			SortedList sl = new SortedList(hash, new Comparer(System.Globalization.CultureInfo.InvariantCulture));

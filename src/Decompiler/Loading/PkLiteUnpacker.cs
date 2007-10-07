@@ -240,7 +240,7 @@ l01C8:
 					ushort seg = imgU.ReadUShort(relocBase + relocOff);
 					seg = (ushort) (seg + segCode);
 					imgU.WriteUShort(relocBase + relocOff, seg);
-					imageMap.AddSegment(new Address(seg, 0), AccessMode.ReadWrite);
+					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 				} while (--relocs != 0);
 			}
 

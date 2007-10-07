@@ -32,7 +32,6 @@ namespace Decompiler.Scanning
 	{
 		private Program prog;
 		private DecompilerHost host;
-		private ImageMap imageMap;
 		private Map vectorUses;
 		private Hashtable proceduresRewritten;
 		private int dfs;
@@ -41,10 +40,9 @@ namespace Decompiler.Scanning
 		private Hashtable callSignatures;
 		private ProcedureRewriter prw;
 
-		public RewriterHost(Program prog, DecompilerHost host, ImageMap imageMap, SortedList syscalls, Map vectorUses)
+		public RewriterHost(Program prog, DecompilerHost host, SortedList syscalls, Map vectorUses)
 		{
 			this.prog = prog;
-			this.imageMap = imageMap;
 			this.proceduresRewritten = new Hashtable();
 			this.vectorUses = vectorUses;
 			this.syscalls = syscalls;
@@ -70,7 +68,7 @@ namespace Decompiler.Scanning
 
 		public ImageMap ImageMap
 		{
-			get { return imageMap; }
+			get { return prog.ImageMap; }
 		}
 
 		public void LoadCallSignatures(ICollection serializedCalls)
