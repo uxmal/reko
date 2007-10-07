@@ -21,20 +21,23 @@ using System;
 namespace Decompiler.Core
 {
 	/// <summary>
-	/// Represent a segment of memory, corresponding to an 16 segment for intel real and protected modes, and 
+	/// Represent a segment of memory, corresponding to an 16-bit segment for intel real and protected modes, and 
 	/// executable sections for flat processor modes.
 	/// </summary>
 	public class ImageMapSegment : ImageMapItem
 	{
+		private string name;
 		private AccessMode access; 
 
-		public ImageMapSegment(AccessMode access) : base() 
+		public ImageMapSegment(string name, AccessMode access) : base() 
 		{
+			this.name = name;
 			this.access = access;
 		}
 
-		public ImageMapSegment(int size, AccessMode access) : base(size) 
+		public ImageMapSegment(string name, int size, AccessMode access) : base(size) 
 		{
+			this.name = name;
 			this.access = access;
 		}
 
@@ -43,9 +46,15 @@ namespace Decompiler.Core
 			get { return access; }
 		}
 
+		public string Name
+		{
+			get { return name; }
+			set { name = value; }
+		}
+
 		public override string ToString()
 		{
-			return "Segment at " + Address.ToString() + ", size: " + Size;
+			return string.Format("Segment {0} at {1}, {2} bytes", Name, Address.ToString(), Size);
 		}
 	}
 

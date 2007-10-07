@@ -27,8 +27,8 @@ using System.Collections;
 namespace Decompiler.Analysis
 {
 	/// <summary>
-	/// Uses an interprocedural analysis to detect which variables are 
-	/// modified by the procedure. 
+	/// Uses an interprocedural reaching definition analysis to detect which 
+	/// registers are modified by the procedures. 
 	/// </summary>
 	public class TrashedRegisterFinder : InstructionVisitorBase
 	{
@@ -182,12 +182,6 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		[Obsolete("Looks identical to TrashedRegisters")]
-		public Hashtable RegisterSet
-		{
-			get { return tsh.TrashedRegisters; }
-		}
-
 		public Hashtable TrashedRegisters
 		{
 			get { return tsh.TrashedRegisters; }
@@ -220,6 +214,7 @@ namespace Decompiler.Analysis
 			Identifier idSrc = a.Src as Identifier;
 			if (idSrc != null)
 			{
+				// idDst = idSrc; a copy.
 				tsh.Copy(a.Dst, idSrc);
 			}
 			else

@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Typing
 		public void PointerToSingleItem()
 		{
 			Identifier ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
-			TypeVariable tv = store.EnsureTypeVariable(ptr, null, factory);
+			TypeVariable tv = store.EnsureTypeVariable(factory, ptr);
 			tv.OriginalDataType = new Pointer(point, 4);
 			EquivalenceClass eq = new EquivalenceClass(tv);
 			eq.DataType = point;
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Typing
 		public void PointerToSecondItemOfPoint()
 		{
 			Identifier ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
-			store.EnsureTypeVariable(ptr, null, factory);
+			store.EnsureTypeVariable(factory, ptr);
 			EquivalenceClass eqPtr = new EquivalenceClass(ptr.TypeVariable);
 			eqPtr.DataType = point;
 			ptr.TypeVariable.OriginalDataType = new Pointer(point, 4);
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Typing
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
 			c.TypeVariable.DataType = PrimitiveType.Word32;
 			BinaryExpression bin = new BinaryExpression(BinaryOperator.add, PrimitiveType.Word32, ptr, c);
-			store.EnsureTypeVariable(bin, null, factory);
+			store.EnsureTypeVariable(factory, bin, null);
 			bin.TypeVariable.DataType = bin.DataType;
 			bin.TypeVariable.OriginalDataType = bin.DataType;
 

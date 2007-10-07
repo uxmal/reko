@@ -241,7 +241,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProcedureMock m = new ProcedureMock();
 			Identifier globals = m.Local32("globals");
-			store.EnsureTypeVariable(globals, null, factory);
+			store.EnsureTypeVariable(factory, globals);
 
 			Identifier ds = m.Local16("ds");
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));

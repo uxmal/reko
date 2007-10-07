@@ -41,12 +41,6 @@ namespace Decompiler.Typing
 			usedClasses = new SortedList();
 		}
 
-		[Obsolete("Rewrite this to make parameter order match the other overloads.")]
-		public TypeVariable EnsureTypeVariable(Expression e, string name, TypeFactory factory)
-		{
-			return EnsureTypeVariable(factory, e, name);
-		}
-
 		public TypeVariable EnsureTypeVariable(TypeFactory factory, Expression e)
 		{
 			return EnsureTypeVariable(factory, e, null);

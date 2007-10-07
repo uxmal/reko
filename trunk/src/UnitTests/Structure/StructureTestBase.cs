@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Structure
 			Scanner scan = new Scanner(prog,  null);
 			scan.Parse(ldr.EntryPoints);
 			DecompilerHost host = new FakeDecompilerHost();
-			RewriterHost rw = new RewriterHost(prog, host, scan.ImageMap, scan.SystemCalls, scan.VectorUses);
+			RewriterHost rw = new RewriterHost(prog, host, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 			DataFlowAnalysis da = new DataFlowAnalysis(prog, host);
 			da.AnalyzeProgram();

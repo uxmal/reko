@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Scanning
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 			Program prog = new Program();
 			prog.Architecture = arch;
-			RewriterHost host = new RewriterHost(prog, null, null, null, null);
+			RewriterHost host = new RewriterHost(prog, null, null, null);
 			ArrayList al = new ArrayList();
 			SerializedSignature sig = new SerializedSignature();
 			sig.Arguments = new SerializedArgument[2];

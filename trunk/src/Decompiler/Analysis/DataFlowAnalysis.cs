@@ -225,7 +225,7 @@ namespace Decompiler.Analysis
 				stmsToKill.Add(stm);
 			}
 
-			CopyChain cch = new CopyChain(ssa);
+			CopyChain2 cch = new CopyChain2(ssa);
 			foreach (Statement s in stmsToKill)
 			{
 				cch.Kill(s);

@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Typing
 			StructureType point = new StructureType("Point", 0);
 			point.Fields.Add(0, PrimitiveType.Word32, null);
 			point.Fields.Add(4, PrimitiveType.Word32, null);
-			TypeVariable tvPoint = store.EnsureTypeVariable(null, null, factory);
+			TypeVariable tvPoint = store.EnsureTypeVariable(factory, null);
 			EquivalenceClass eq = new EquivalenceClass(tvPoint);
 			tvPoint.DataType = eq;
 			eq.DataType = point;
@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Typing
 			UnionType u = new UnionType("RealInt", null);
 			u.Alternatives.Add(new UnionAlternative("w", PrimitiveType.Word32));
 			u.Alternatives.Add(new UnionAlternative("r", PrimitiveType.Real32));
-			TypeVariable tvUnion = store.EnsureTypeVariable(null, null,  factory);
+			TypeVariable tvUnion = store.EnsureTypeVariable(factory, null);
 			eq = new EquivalenceClass(tvUnion);
 			tvUnion.DataType = eq;
 			eq.DataType = u;

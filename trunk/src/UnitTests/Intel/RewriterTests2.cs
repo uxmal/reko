@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Intel
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwCallTable.txt"))
 			{
 				Dumper dump = prog.Architecture.CreateDumper();
-				dump.Dump(prog, scanner.ImageMap, fut.TextWriter);
+				dump.Dump(prog, prog.ImageMap, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				prog.CallGraph.Emit(fut.TextWriter);
 

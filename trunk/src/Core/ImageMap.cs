@@ -82,8 +82,7 @@ namespace Decompiler.Core
 			}
 		}
 
-
-		public ImageMapSegment AddSegment(Address addr, AccessMode access)
+		public ImageMapSegment AddSegment(Address addr, string segmentName, AccessMode access)
 		{
 			ImageMapSegment seg = FindSegment(addr);
 			int delta = addr - seg.Address;
@@ -92,7 +91,7 @@ namespace Decompiler.Core
 			{
 				// Need to split the segment.
 
-				ImageMapSegment segNew = new ImageMapSegment(access);
+				ImageMapSegment segNew = new ImageMapSegment(segmentName, access);
 				segNew.Address = addr;
 				segNew.Size = seg.Size - delta;
 				seg.Size = delta;
@@ -112,7 +111,7 @@ namespace Decompiler.Core
 			items.Clear();
 			segments.Clear();
 
-			ImageMapSegment seg = new ImageMapSegment(size, AccessMode.ReadWrite);
+			ImageMapSegment seg = new ImageMapSegment("Image base", size, AccessMode.ReadWrite);
 			seg.Address = addr;
 			segments.Add(addr, seg);
 

@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Analysis
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(null, null);
 
 			stm.Instruction.Accept(trf);
-			Assert.IsTrue(trf.RegisterSet.Contains(r1.Storage));
+			Assert.IsTrue(trf.TrashedRegisters.Contains(r1.Storage));
 //			Assert.AreNotSame(trf.RegisterSet[r1], r1);
 		}
 
@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(null, null);
 			stm.Instruction.Accept(trf);
-			Assert.AreEqual("ax:TRASH al:TRASH ah:TRASH", DumpRegs(trf.RegisterSet));
+			Assert.AreEqual("ax:TRASH al:TRASH ah:TRASH", DumpRegs(trf.TrashedRegisters));
 		}
 
 		[Test]
@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Analysis
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(null, null);
 
 			stm.Instruction.Accept(trf);
-			Assert.AreEqual(r1.Storage, trf.RegisterSet[r2.Storage]);
+			Assert.AreEqual(r1.Storage, trf.TrashedRegisters[r2.Storage]);
 		}
 
 		[Test]
@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Analysis
 			stm2.Instruction.Accept(trf);
 			stm3.Instruction.Accept(trf);
 
-			Assert.AreEqual(r2.Storage, trf.RegisterSet[r2.Storage]);
+			Assert.AreEqual(r2.Storage, trf.TrashedRegisters[r2.Storage]);
 		}
 
 		[Test]
@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Analysis
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(null, null);
 
 			stm.Instruction.Accept(trf);
-			Assert.AreEqual("TRASH", trf.RegisterSet[r2.Storage].ToString());
+			Assert.AreEqual("TRASH", trf.TrashedRegisters[r2.Storage].ToString());
 		}
 
 		[Test]
@@ -137,7 +137,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			trf.CurrentFrame = new Frame(null);
 			ci.Accept(trf);
-			Assert.AreEqual("(ebx:TRASH)", DumpRegs(trf.RegisterSet));
+			Assert.AreEqual("(ebx:TRASH)", DumpRegs(trf.TrashedRegisters));
 		}
 
 		[Test]
@@ -156,8 +156,8 @@ namespace Decompiler.UnitTests.Analysis
 			pdf[e] = new BlockFlow(e, null);
 
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(null, pdf);
-			trf.RegisterSet[r1.Storage] = "trash";
-			trf.RegisterSet[r2.Storage] = r3.Storage;
+			trf.TrashedRegisters[r1.Storage] = "trash";
+			trf.TrashedRegisters[r2.Storage] = r3.Storage;
 
 			pdf[e].TrashedIn[r1.Storage] = r2.Storage;
 			pdf[e].TrashedIn[r2.Storage] = r3.Storage;

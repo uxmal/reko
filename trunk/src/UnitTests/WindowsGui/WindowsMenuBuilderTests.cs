@@ -16,17 +16,33 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Gui;
+using Decompiler.WindowsGui;
+using NUnit.Framework;
 using System;
+using System.ComponentModel.Design;
+using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Decompiler.UnitTests.WindowsGui
 {
-	/// <summary>
-	/// Displays IL codes. This could be raw blocks, in which case a pseudo-assembler
-	/// look results, or more strucured
-	/// </summary>
-	public class CodeControl
+	[TestFixture]
+	public class WindowsMenuBuilderTests
 	{
-		public CodeControl()
+		[Test]
+		public void CreateMainMenu()
+		{
+			MainMenu menu = new MainMenu();
+			WindowsMenuBuilder bldr = new WindowsMenuBuilder(menu, new MenuCommandHandler(test_Click));
+			bldr.BeginSubMenu();
+			bldr.AddMenuItem("&File", new CommandID(CommandGroup.File, CmdID.File));
+			bldr.EndSubMenu();
+
+			Assert.AreEqual(1, menu.MenuItems.Count);
+			MenuItem mi = menu.MenuItems[0];
+			Assert.AreEqual("&File", mi.Text);
+		}
+
+		public void test_Click(object sender, MenuCommandArgs args)
 		{
 		}
 	}

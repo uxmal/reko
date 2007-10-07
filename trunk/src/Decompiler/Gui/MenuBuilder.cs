@@ -17,13 +17,22 @@
  */
 
 using System;
+using System.ComponentModel.Design;
 
 namespace Decompiler.Gui
 {
-	public class DisassemblyControl
+	/// <summary>
+	/// Abstract class that builds menus. It is intended to be called by the platform-agnostic interactor code.
+	/// </summary>
+	public abstract class MenuBuilder
 	{
-		public DisassemblyControl()
-		{
-		}
+		public abstract void AddMenuItem(string text, CommandID cmd);
+
+		public abstract void AddSeparator();
+
+		public abstract void BeginSubMenu();
+
+		public abstract void EndSubMenu();
+
 	}
 }

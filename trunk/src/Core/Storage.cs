@@ -48,12 +48,6 @@ namespace Decompiler.Core
 			get { return storageKind; }
 		}
 
-		[Obsolete]
-		public int OffsetOf(Identifier id)
-		{
-			return OffsetOf(id.Storage);
-		}
-
 		public abstract int OffsetOf(Storage storage);
 
 		public virtual SerializedKind Serialize()

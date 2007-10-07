@@ -24,6 +24,7 @@ using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Text;
 
 namespace Decompiler.UnitTests.Analysis
 {

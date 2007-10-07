@@ -113,7 +113,7 @@ namespace Decompiler.Loading
 			return imgLoaded;
 		}
 
-		public void LoadSection(Section s, byte [] rawImage, byte [] loadedImage)
+		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
 		{
 			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress, s.VirtualSize);
 		}
@@ -147,7 +147,7 @@ namespace Decompiler.Loading
 			{
 				if (!s.IsDiscardable)
 				{
-					LoadSection(s, RawImage.Bytes, imgLoaded.Bytes);
+					LoadSectionBytes(s, RawImage.Bytes, imgLoaded.Bytes);
 				}
 			}
 		}
@@ -249,7 +249,7 @@ namespace Decompiler.Loading
 					{
 						acc |= AccessMode.Execute;
 					}
-					imageMap.AddSegment(addrLoad + s.VirtualAddress, acc);
+					imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc);
 				}
 			}
 			

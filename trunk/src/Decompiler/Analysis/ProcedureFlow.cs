@@ -33,10 +33,9 @@ namespace Decompiler.Analysis
 	{
 		private Procedure proc;
 
-		[Obsolete]
 		public BitSet Preserved;			// Registers explicitly preserved by the procedure.
-		[Obsolete]
 		public uint grfPreserved;
+
 		public uint grfTrashed;
 		public BitSet TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
 

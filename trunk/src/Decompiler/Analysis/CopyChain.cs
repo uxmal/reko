@@ -19,18 +19,93 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
+using System.Collections;
 
 namespace Decompiler.Analysis
 {
+	public class CopyChainFinder : InstructionVisitorBase
+	{
+		private Procedure proc;
+		private Statement stmCur;
+		private Hashtable chains;
+
+		public CopyChainFinder(Procedure proc)
+		{
+			this.proc = proc;
+			chains = new Hashtable();
+		}
+
+		public Hashtable Chains
+		{
+			get { return chains; }
+		}
+
+		public void Process(Statement stm)
+		{
+			stmCur = stm;
+			stm.Instruction.Accept(this);
+		}
+
+		public void CopyIdentifier(Identifier dst, Identifier src)
+		{
+			ArrayList chain = (ArrayList) chains[src];
+			if (chain == null)
+			{
+				chain = new ArrayList();
+			}
+			chains[dst] = chain;
+			chain.Add(stmCur);
+		}
+
+		public void FindCopyChains()
+		{
+			Hashtable visited = new Hashtable();
+			WorkList wl = new WorkList();
+			wl.Add(proc.EntryBlock);
+			while (!wl.IsEmpty)
+			{
+				Block b = (Block) wl.GetWorkItem();
+				if (!visited.Contains(b))
+				{
+					visited[b] = b;
+					foreach (Statement stm in b.Statements)
+					{
+						Process(stm);
+					}
+					foreach (Block s in b.Succ)
+					{
+						wl.Add(s);
+					}
+				}
+			}
+		}
+
+		public void TrashIdentifier(Identifier dst)
+		{
+			chains[dst] = "Trash";
+		}
+
+		public override void VisitAssignment(Assignment a)
+		{
+			Identifier src = a.Src as Identifier;
+			if (src != null)
+				CopyIdentifier(a.Dst, src);
+			else
+				TrashIdentifier(a.Dst);
+		}
+
+	}
+
 	/// <summary>
 	/// Deletes chains of variable copies, starting with the tail.
 	/// </summary>
-	public class CopyChain : InstructionVisitorBase
+	[Obsolete("Use new CopyChain class, which has no SSA requirement.")]
+	public class CopyChain2 : InstructionVisitorBase
 	{
 		private SsaState ssa;
 		private WorkList wl;
 
-		public CopyChain(SsaState ssa)
+		public CopyChain2(SsaState ssa)
 		{
 			this.ssa = ssa;
 			wl = new WorkList();

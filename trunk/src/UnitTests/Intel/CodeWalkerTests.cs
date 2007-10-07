@@ -35,8 +35,6 @@ namespace Decompiler.UnitTests.Intel
 	[TestFixture]	
 	public class CodeWalkerTests
 	{
-		private ImageMap imageMap;
-
 		private Program BuildProgram()
 		{
 			Program prog = new Program();
@@ -54,7 +52,7 @@ namespace Decompiler.UnitTests.Intel
 				"		ret\r\n");
 
 			prog.Image = img;
-			imageMap = new ImageMap(img);
+			prog.ImageMap = new ImageMap(img);
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			return prog; 
 		}
@@ -69,9 +67,9 @@ namespace Decompiler.UnitTests.Intel
 			ArrayList eps = new ArrayList();
 			eps.Add(ep);
 			sc.Parse(eps);
-			Assert.AreEqual(4, sc.ImageMap.Items.Count);
+			Assert.AreEqual(4, pgm.ImageMap.Items.Count);
 			StringBuilder sb = new StringBuilder();
-			foreach (DictionaryEntry de in sc.ImageMap.Items)
+			foreach (DictionaryEntry de in pgm.ImageMap.Items)
 			{
 				sb.Append(de.Value.ToString() + "\r\n");
 			}
@@ -94,7 +92,7 @@ namespace Decompiler.UnitTests.Intel
 				ld.Assemble(FileUnitTester.MapTestPath("fragments/Factorial.asm"), new IntelArchitecture(ProcessorMode.Real), new Address(0x0C00, 0));
 				Scanner sc = new Scanner(prog, null);
 				sc.Parse(ld.EntryPoints);
-				prog.DumpAssembler(sc.ImageMap, fut.TextWriter);
+				prog.DumpAssembler(prog.ImageMap, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -242,7 +240,7 @@ namespace Decompiler.UnitTests.Intel
 				Scanner sc = new Scanner(prog, null);
 				sc.Parse(ld.EntryPoints);
 				Dumper d = prog.Architecture.CreateDumper();
-				d.Dump(prog, sc.ImageMap, fut.TextWriter);
+				d.Dump(prog, prog.ImageMap, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}

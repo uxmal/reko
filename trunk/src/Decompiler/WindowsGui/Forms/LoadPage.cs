@@ -157,6 +157,14 @@ namespace Decompiler.WindowsGui.Forms
 		}
 		#endregion
 
+
+		public override void BrowserItemSelected(object item)
+		{
+			ImageMapSegment segment = (ImageMapSegment) item;
+			memctl.TopAddress = segment.Address;
+			memctl.SelectedAddress = segment.Address;
+		}
+
 		[Browsable(false)]
 		public IProcessorArchitecture ProcessorArchitecture
 		{
@@ -185,18 +193,32 @@ namespace Decompiler.WindowsGui.Forms
 			txtDisassembly.Text = writer.ToString();
 		}
 
-		[Browsable(false)]
-		public ImageMap ImageMap
+		public void PopulateBrowser(ImageMap imageMap, TreeView browser)
 		{
-			get { return memctl.ImageMap; }
-			set { memctl.ImageMap = value; }
+			browser.Nodes.Clear();
+			foreach (ImageMapSegment seg in imageMap.Segments.Values)
+			{
+				TreeNode node = new TreeNode(seg.Name);
+				node.Tag = seg;
+				browser.Nodes.Add(node);
+			}
 		}
+
+		public override void Populate(DecompilerDriver decompiler, TreeView browser)
+		{
+			Architecture = decompiler.Program.Architecture;
+			memctl.ProgramImage = decompiler.Program.Image;
+			memctl.ImageMap = decompiler.Program.ImageMap;
+			txtDisassembly.Text = "";
+			PopulateBrowser(decompiler.Program.ImageMap, browser);
+		}
+
 
 		[Browsable(false)]
 		public ProgramImage ProgramImage
 		{
 			get { return memctl.ProgramImage; }
-			set {memctl.ProgramImage = value; }
+			set { memctl.ProgramImage = value; }
 		}
 
 		[Browsable(false)]

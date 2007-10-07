@@ -108,6 +108,8 @@ namespace Decompiler.Arch.Intel
 			case 3: return Registers.ds;
 			case 4: return Registers.fs;
 			case 5: return Registers.gs;
+			case 6: return Registers.ss;
+			case 7: return Registers.ds;
 			}
 			throw new ArgumentOutOfRangeException("bits", string.Format("{0} doesn't correspond to a segment register.", bits));
 		}
@@ -129,18 +131,22 @@ namespace Decompiler.Arch.Intel
 			X =  0x8000
 		}
 
-
-		private struct OpRec
+		/// <summary>
+		/// Simple opcode record.
+		/// </summary>
+		private class OpRec
 		{
 			public Opcode	opcode;
 			public string	Format;
 			public OpFlag	Flags;
+			public OpRec [] indirect;
 
 			public OpRec(Opcode op, string fmt)
 			{
 				opcode = op;
 				Format = fmt;
 				Flags = OpFlag.None;
+				indirect = null;
 			}
 
 			public OpRec(Opcode op, string fmt, OpFlag flags)
@@ -278,10 +284,6 @@ namespace Decompiler.Arch.Intel
 				strFormat = opRec.Format;
 			}
 
-			if ((opRec.Flags & OpFlag.X) != 0)
-			{
-				Debug.Assert(false, string.Format("IntelDisassembler: untested opcode '{0}' at address {1}", opRec.opcode, this.Address));
-			}
 			if (opRec.opcode == Opcode.illegal)
 			{
 				pInstr.cOperands = 0;

@@ -30,25 +30,55 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		private MainForm form;			//$REVIEW: in the future, this should be an interface.
 		private DecompilerDriver decompiler;
-
-		public MainFormInteractor(MainForm form)
+		private DecompilerPhase initialPhase;
+		private DecompilerPhase phase;
+		
+		public MainFormInteractor(MainForm form, DecompilerPhase initialPhase)
 		{
 			this.form = form;
+			this.initialPhase = initialPhase;
+			this.phase = initialPhase;
 		}
 
-		public void Open(string file, DecompilerHost host)
+		public void OpenBinary(string file, DecompilerHost host)
 		{
-			decompiler = new DecompilerDriver(file);
+			decompiler = new DecompilerDriver(file, host);
 			try
 			{
-				form.SetStatus("Loading...");
-				decompiler.LoadProgram(host);
-				form.ShowLoadPage(decompiler.Program);
+				decompiler.LoadProgram();
+				form.ShowPhasePage(initialPhase.Page, decompiler);
 			} 	
 			catch (Exception e)
 			{
 				form.AddDiagnostic(Diagnostic.FatalError, "Fatal error: {0}", e.Message);
 				form.SetStatus("Terminated due to fatal error.");
+			}
+		}
+
+		public void BrowserItemSelected(object item)
+		{
+			phase.Page.BrowserItemSelected(item);
+		}
+
+		public void FinishDecompilation()
+		{
+			phase.Execute(decompiler);
+			while (phase.NextPhase != null)
+			{
+				phase = phase.NextPhase;
+				phase.Execute(decompiler);
+			}
+			form.ShowPhasePage(phase.Page, decompiler);
+
+		}
+
+		public void NextPhase()
+		{
+			phase.Execute(decompiler);
+			if (phase.NextPhase != null)
+			{
+				phase = phase.NextPhase;
+				form.ShowPhasePage(phase.Page, decompiler);
 			}
 		}
 	}

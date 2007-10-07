@@ -29,7 +29,7 @@ using System.Windows.Forms;
 namespace Decompiler.WindowsGui.Controls
 {
 	/// <summary>
-	/// Displays memory and allows selection of memory ranges. 
+	/// Displays the contents of memory and allows selection of memory ranges. 
 	/// </summary>
 	/// <remarks>
 	/// Memory that has been identified is colored.
@@ -58,6 +58,9 @@ namespace Decompiler.WindowsGui.Controls
 
 		public MemoryControl()
 		{
+			SetStyle(ControlStyles.DoubleBuffer, true);
+			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+			SetStyle(ControlStyles.UserPaint, true);
 			vscroller = new VScrollBar();
 			vscroller.Dock = DockStyle.Right;
  			Controls.Add(vscroller);
@@ -140,7 +143,7 @@ namespace Decompiler.WindowsGui.Controls
 			using (Graphics g = this.CreateGraphics())
 			{
 				addrSelected = PaintWindow(g, false);
-				PaintWindow(g, true);
+				Invalidate();
 			}
 			OnSelectionChanged();
 		}
@@ -243,7 +246,7 @@ namespace Decompiler.WindowsGui.Controls
 						return addrByte;
 
 					g.FillRectangle(bg, rc.Left, rc.Top, cx, rc.Height);
-					g.DrawString(s, Font, SystemBrushes.WindowText, rc.Left + cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
+					g.DrawString(s, Font, fg, rc.Left + cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
 					rc = new Rectangle(rc.X + cx, rc.Y, rc.Width - cx, rc.Height);
 				}
 				rowBytesLeft -= cbToDraw;
