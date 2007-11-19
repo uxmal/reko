@@ -1,11 +1,11 @@
 Mem0: Mem0:Global memory, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
-bx: bx:Register, def: {def bx}, uses: {SCZO_8 = cond(bx - 0x0000)}
+bx: bx:Register bx, def: {def bx}, uses: {SCZO_8 = cond(bx - 0x0000)}
 SCZO: SCZO:Flags, def: {def SCZO}
 Z: Z:Flags, def: {def Z}
 SZO: SZO:Flags, def: {def SZO}
-ax: ax:Register, def: {def ax}
-ds: ds:Register, def: {def ds}, uses: {store(Mem21[ds:0x0100:word16]) = ax_17}
+ax: ax:Register ax, def: {def ax}
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem21[ds:0x0100:word16]) = ax_17}
 SCZO_8: orig: SCZO, def: {SCZO_8 = cond(bx - 0x0000)}, uses: {Z_9 = SCZO_8 (alias)}{SZO_10 = SCZO_8 (alias)}{SCZO_20 = PHI(SCZO_8, SCZO_8, SCZO_12)}{SCZO_20 = PHI(SCZO_8, SCZO_8, SCZO_12)}
 Z_9: orig: Z, def: {Z_9 = SCZO_8 (alias)}, uses: {branch Test(EQ,Z_9)}{Z_19 = PHI(Z_9, Z_9, Z_13)}{Z_19 = PHI(Z_9, Z_9, Z_13)}
 SZO_10: orig: SZO, def: {SZO_10 = SCZO_8 (alias)}, uses: {branch Test(GT,SZO_10)}{SZO_18 = PHI(SZO_10, SZO_10, SZO_14)}{SZO_18 = PHI(SZO_10, SZO_10, SZO_14)}

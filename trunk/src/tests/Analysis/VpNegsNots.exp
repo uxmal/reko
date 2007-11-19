@@ -1,15 +1,15 @@
 = fn0C00_0000 ========================
 Mem0: Mem0:Global memory, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
-eax: eax:Register, def: {def eax}, uses: {eax_12 = -eax}
+eax: eax:Register eax, def: {def eax}, uses: {eax_12 = -eax}
 C: C:Flags, def: {def C}
-ds: ds:Register, def: {def ds}, uses: {store(Mem15[ds:0x0300:word32]) = eax_14}{v5_16 = Mem15[ds:0x0202:word16]}{store(Mem17[ds:0x0202:word16]) = -v5_16}{v6_19 = Mem17[ds:0x0200:word16]}{store(Mem20[ds:0x0200:word16]) = -v6_19}{store(Mem23[ds:0x0308:word32]) = ecx_22}{store(Mem25[ds:0x0304:word16]) = bx_24}{v9_26 = Mem25[ds:0x0204:word16]}{store(Mem27[ds:0x0204:word16]) = ~v9_26}{cx_28 = Mem27[ds:0x0304:word16]}{store(Mem34[ds:0x0306:word16]) = cx_30}
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem15[ds:0x0300:word32]) = eax_14}{v5_16 = Mem15[ds:0x0202:word16]}{store(Mem17[ds:0x0202:word16]) = -v5_16}{v6_19 = Mem17[ds:0x0200:word16]}{store(Mem20[ds:0x0200:word16]) = -v6_19}{store(Mem23[ds:0x0308:word32]) = ecx_22}{store(Mem25[ds:0x0304:word16]) = bx_24}{v9_26 = Mem25[ds:0x0204:word16]}{store(Mem27[ds:0x0204:word16]) = ~v9_26}{cx_28 = Mem27[ds:0x0304:word16]}{store(Mem34[ds:0x0306:word16]) = cx_30}
 v5: v5:Temporary, def: {def v5}
 v6: v6:Temporary, def: {def v6}
-ecx: ecx:Register, def: {def ecx}
-bx: bx:Register, def: {def bx}, uses: {bx_24 = ~bx}
+ecx: ecx:Register ecx, def: {def ecx}
+bx: bx:Register bx, def: {def bx}, uses: {bx_24 = ~bx}
 v9: v9:Temporary, def: {def v9}
-cx: cx:Register, def: {def cx}
+cx: cx:Register cx, def: {def cx}
 SZO: SZO:Flags, def: {def SZO}
 eax_12: orig: eax, def: {eax_12 = -eax}, uses: {C_13 = eax_12 == 0x00000000}
 C_13: orig: C, def: {C_13 = eax_12 == 0x00000000}, uses: {eax_14 = 0x00000000 - C_13}
@@ -81,15 +81,15 @@ fn0C00_0000_exit:		// block 2, pred: 1
 
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-eax: eax:Register, def: {def eax}, uses: {eax_12 = -eax}
+eax: eax:Register eax, def: {def eax}, uses: {eax_12 = -eax}
 C: C:Flags
-ds: ds:Register, def: {def ds}, uses: {store(Mem15[ds:0x0300:word32]) = eax_14}{v5_16 = Mem15[ds:0x0202:word16]}{store(Mem17[ds:0x0202:word16]) = -v5_16}{v6_19 = Mem17[ds:0x0200:word16]}{store(Mem20[ds:0x0200:word16]) = -v6_19}{store(Mem23[ds:0x0308:word32]) = ecx_22}{store(Mem25[ds:0x0304:word16]) = bx_24}{v9_26 = Mem25[ds:0x0204:word16]}{store(Mem27[ds:0x0204:word16]) = ~v9_26}{cx_28 = Mem27[ds:0x0304:word16]}{store(Mem34[ds:0x0306:word16]) = cx_30}
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem15[ds:0x0300:word32]) = eax_14}{v5_16 = Mem15[ds:0x0202:word16]}{store(Mem17[ds:0x0202:word16]) = -v5_16}{v6_19 = Mem17[ds:0x0200:word16]}{store(Mem20[ds:0x0200:word16]) = -v6_19}{store(Mem23[ds:0x0308:word32]) = ecx_22}{store(Mem25[ds:0x0304:word16]) = bx_24}{v9_26 = Mem25[ds:0x0204:word16]}{store(Mem27[ds:0x0204:word16]) = ~v9_26}{cx_28 = Mem27[ds:0x0304:word16]}{store(Mem34[ds:0x0306:word16]) = cx_30}
 v5: v5:Temporary
 v6: v6:Temporary
-ecx: ecx:Register
-bx: bx:Register, def: {def bx}, uses: {bx_24 = ~bx}
+ecx: ecx:Register ecx
+bx: bx:Register bx, def: {def bx}, uses: {bx_24 = ~bx}
 v9: v9:Temporary
-cx: cx:Register
+cx: cx:Register cx
 SZO: SZO:Flags
 eax_12: orig: eax, def: {eax_12 = -eax}, uses: {eax_14 = 0x00000000 - (eax_12 == 0x00000000)}
 C_13: orig: C

@@ -1,12 +1,12 @@
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-cx: cx:Register
-wLoc02: wLoc02:Local -0002
-ax: ax:Register
-ds: ds:Register, def: {def ds}, uses: {store(Mem9[ds:0x0064:word16]) = ax_8}
-cx_6: orig: cx, def: {cx_6 = 0x0064}, uses: {wLoc02_7 = cx_6}
-wLoc02_7: orig: wLoc02, def: {wLoc02_7 = cx_6}, uses: {ax_8 = fn0C00_000F(wLoc02_7)}
-ax_8: orig: ax, def: {ax_8 = fn0C00_000F(wLoc02_7)}, uses: {store(Mem9[ds:0x0064:word16]) = ax_8}
+cx: cx:Register cx
+wLoc04: wLoc04:Local -0004
+ax: ax:Register ax
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem9[ds:0x0064:word16]) = ax_8}
+cx_6: orig: cx, def: {cx_6 = 0x0064}, uses: {wLoc04_7 = cx_6}
+wLoc04_7: orig: wLoc04, def: {wLoc04_7 = cx_6}, uses: {ax_8 = fn0C00_000F(wLoc04_7)}
+ax_8: orig: ax, def: {ax_8 = fn0C00_000F(wLoc04_7)}, uses: {store(Mem9[ds:0x0064:word16]) = ax_8}
 Mem9: orig: Mem0, def: {store(Mem9[ds:0x0064:word16]) = ax_8}
 // fn0C00_0000
 void fn0C00_0000(segment ds)
@@ -15,8 +15,8 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	cx_6 = 0x0064
-	wLoc02_7 = cx_6
-	ax_8 = fn0C00_000F(wLoc02_7)
+	wLoc04_7 = cx_6
+	ax_8 = fn0C00_000F(wLoc04_7)
 	store(Mem9[ds:0x0064:word16]) = ax_8
 	return
 	// succ:  2
@@ -24,63 +24,65 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-bp: bp:Register
-wLoc02: wLoc02:Local -0002
-wArg02: wArg02:Stack +0002, def: {def wArg02}, uses: {ax_12 = wArg02}{dx_22 = wArg02}
-ax: ax:Register
+bp: bp:Register bp
+wLoc04: wLoc04:Local -0004
+wArg00: wArg00:Stack +0000, def: {def wArg00}, uses: {ax_13 = wArg00}{dx_23 = wArg00}
+ax: ax:Register ax
 SZO: SZO:Flags
 Z: Z:Flags
-wLoc04: wLoc04:Local -0004
-dx: dx:Register
+wLoc06: wLoc06:Local -0006
+dx: dx:Register dx
 dx_ax: dx_ax:Sequence dx:ax
 SCZO: SCZO:Flags
-ax_12: orig: ax, def: {ax_12 = wArg02}, uses: {ax_13 = ax_12 - 0x0001}
-ax_13: orig: ax, def: {ax_13 = ax_12 - 0x0001}, uses: {wLoc04_20 = ax_13}{branch ax_13 == 0x0000}
-dx_ax_14: orig: dx_ax
-SZO_15: orig: SZO
-Z_16: orig: Z
-SCZO_17: orig: SCZO
-ax_18: orig: ax, def: {ax_18 = 0x0001}, uses: {ax_35 = PHI(ax_24, ax_18)}
-dx_ax_19: orig: dx_ax
-wLoc04_20: orig: wLoc04, def: {wLoc04_20 = ax_13}, uses: {ax_21 = fn0C00_000F(wLoc04_20)}
-ax_21: orig: ax, def: {ax_21 = fn0C00_000F(wLoc04_20)}, uses: {dx_ax_23 = dx_22 * ax_21}
-dx_22: orig: dx, def: {dx_22 = wArg02}, uses: {dx_ax_23 = dx_22 * ax_21}
-dx_ax_23: orig: dx_ax, def: {dx_ax_23 = dx_22 * ax_21}, uses: {ax_24 = (word16) dx_ax_23 (alias)}
-ax_24: orig: ax, def: {ax_24 = (word16) dx_ax_23 (alias)}, uses: {ax_35 = PHI(ax_24, ax_18)}
-dx_25: orig: dx
-SCZO_26: orig: SCZO
-SZO_27: orig: SZO
-Z_28: orig: Z
-SCZO_29: orig: SCZO
-dx_ax_30: orig: dx_ax
-dx_31: orig: dx
-wLoc04_32: orig: wLoc04
-Z_33: orig: Z
-SZO_34: orig: SZO
-ax_35: orig: ax, def: {ax_35 = PHI(ax_24, ax_18)}, uses: {return ax_35}
+wLoc04_12: orig: wLoc04
+ax_13: orig: ax, def: {ax_13 = wArg00}, uses: {ax_14 = ax_13 - 0x0001}
+ax_14: orig: ax, def: {ax_14 = ax_13 - 0x0001}, uses: {wLoc06_21 = ax_14}{branch ax_14 == 0x0000}
+dx_ax_15: orig: dx_ax
+SZO_16: orig: SZO
+Z_17: orig: Z
+SCZO_18: orig: SCZO
+ax_19: orig: ax, def: {ax_19 = 0x0001}, uses: {ax_36 = PHI(ax_25, ax_19)}
+dx_ax_20: orig: dx_ax
+wLoc06_21: orig: wLoc06, def: {wLoc06_21 = ax_14}, uses: {ax_22 = fn0C00_000F(wLoc06_21)}
+ax_22: orig: ax, def: {ax_22 = fn0C00_000F(wLoc06_21)}, uses: {dx_ax_24 = dx_23 * ax_22}
+dx_23: orig: dx, def: {dx_23 = wArg00}, uses: {dx_ax_24 = dx_23 * ax_22}
+dx_ax_24: orig: dx_ax, def: {dx_ax_24 = dx_23 * ax_22}, uses: {ax_25 = (word16) dx_ax_24 (alias)}
+ax_25: orig: ax, def: {ax_25 = (word16) dx_ax_24 (alias)}, uses: {ax_36 = PHI(ax_25, ax_19)}
+dx_26: orig: dx
+SCZO_27: orig: SCZO
+SZO_28: orig: SZO
+Z_29: orig: Z
+SCZO_30: orig: SCZO
+dx_ax_31: orig: dx_ax
+dx_32: orig: dx
+wLoc06_33: orig: wLoc06
+Z_34: orig: Z
+SZO_35: orig: SZO
+ax_36: orig: ax, def: {ax_36 = PHI(ax_25, ax_19)}, uses: {return ax_36}
+bp_37: orig: bp
 // fn0C00_000F
-word16 fn0C00_000F(word16 wArg02)
+word16 fn0C00_000F(word16 wArg00)
 fn0C00_000F_entry:		// block 0, pred:
-	def wArg02
+	def wArg00
 	// succ:  1
 l0C00_000F:		// block 1, pred: 0
-	ax_12 = wArg02
-	ax_13 = ax_12 - 0x0001
-	branch ax_13 == 0x0000
+	ax_13 = wArg00
+	ax_14 = ax_13 - 0x0001
+	branch ax_14 == 0x0000
 	// succ:  3 2
 l0C00_0026:		// block 2, pred: 1
-	ax_18 = 0x0001
+	ax_19 = 0x0001
 	// succ:  4
 l0C00_0018:		// block 3, pred: 1
-	wLoc04_20 = ax_13
-	ax_21 = fn0C00_000F(wLoc04_20)
-	dx_22 = wArg02
-	dx_ax_23 = dx_22 * ax_21
-	ax_24 = (word16) dx_ax_23 (alias)
+	wLoc06_21 = ax_14
+	ax_22 = fn0C00_000F(wLoc06_21)
+	dx_23 = wArg00
+	dx_ax_24 = dx_23 * ax_22
+	ax_25 = (word16) dx_ax_24 (alias)
 	// succ:  4
 l0C00_0029:		// block 4, pred: 3 2
-	ax_35 = PHI(ax_24, ax_18)
-	return ax_35
+	ax_36 = PHI(ax_25, ax_19)
+	return ax_36
 	// succ:  5
 fn0C00_000F_exit:		// block 5, pred: 4
 	// succ: 

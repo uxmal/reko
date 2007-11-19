@@ -15,30 +15,30 @@ l0C00_0000:		// block 1, pred: 0
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 
-// Register word16 fn0C00_000F(Stack word16 wArg02)
+// Register word16 fn0C00_000F(Stack word16 wArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse: 
 // LiveOut: ax
 // Trashed: SCZO ax dx al dl ah dh
 // Preserved: bp
-// Stack args: Stack +0002(16)
+// Stack args: Stack +0000(16)
 // fn0C00_000F
-word16 fn0C00_000F(word16 wArg02)
+word16 fn0C00_000F(word16 wArg00)
 fn0C00_000F_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000F:		// block 1, pred: 0
-	word16 ax_17
-	word16 ax_13 = wArg02 - 0x0001
-	branch ax_13 == 0x0000
+	word16 ax_18
+	word16 ax_14 = wArg00 - 0x0001
+	branch ax_14 == 0x0000
 	// succ:  3 2
 l0C00_0026:		// block 2, pred: 1
-	ax_17 = 0x0001
+	ax_18 = 0x0001
 	// succ:  4
 l0C00_0018:		// block 3, pred: 1
-	ax_17 = (word16) (wArg02 * fn0C00_000F(ax_13)) (alias)
+	ax_18 = (word16) (wArg00 * fn0C00_000F(ax_14)) (alias)
 	// succ:  4
 l0C00_0029:		// block 4, pred: 3 2
-	return ax_17
+	return ax_18
 	// succ:  5
 fn0C00_000F_exit:		// block 5, pred: 4
 	// succ: 

@@ -1,122 +1,122 @@
-Mem0: Mem0:Global memory, def: {def Mem0}, uses: {eax_6 = Mem0[0x10003420:word32]}
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {eax_5 = Mem0[0x10003420:word32]}
 fp: fp:Temporary
-eax: eax:Register
-dwLoc04: dwLoc04:Local -0004
-ax: ax:Register
-ecx: ecx:Register, def: {def ecx}, uses: {ax_8 = fn10000017(ecx, dwLoc04_7)}
-eax_6: orig: eax, def: {eax_6 = Mem0[0x10003420:word32]}, uses: {dwLoc04_7 = eax_6}
-dwLoc04_7: orig: dwLoc04, def: {dwLoc04_7 = eax_6}, uses: {ax_8 = fn10000017(ecx, dwLoc04_7)}
-ax_8: orig: ax, def: {ax_8 = fn10000017(ecx, dwLoc04_7)}, uses: {store(Mem10[0x10003428:word16]) = ax_8}
-eax_9: orig: eax
-Mem10: orig: Mem0, def: {store(Mem10[0x10003428:word16]) = ax_8}
+eax: eax:Register eax
+dwLoc08: dwLoc08:Local -0008
+ax: ax:Register ax
+eax_5: orig: eax, def: {eax_5 = Mem0[0x10003420:word32]}, uses: {dwLoc08_6 = eax_5}
+dwLoc08_6: orig: dwLoc08, def: {dwLoc08_6 = eax_5}, uses: {ax_7 = fn10000017(dwLoc08_6)}
+ax_7: orig: ax, def: {ax_7 = fn10000017(dwLoc08_6)}, uses: {store(Mem9[0x10003428:word16]) = ax_7}
+eax_8: orig: eax
+Mem9: orig: Mem0, def: {store(Mem9[0x10003428:word16]) = ax_7}
 // fn10000000
-void fn10000000(word32 ecx)
+void fn10000000()
 fn10000000_entry:		// block 0, pred:
 	def Mem0
-	def ecx
 	// succ:  1
 l10000000:		// block 1, pred: 0
-	eax_6 = Mem0[0x10003420:word32]
-	dwLoc04_7 = eax_6
-	ax_8 = fn10000017(ecx, dwLoc04_7)
-	store(Mem10[0x10003428:word16]) = ax_8
+	eax_5 = Mem0[0x10003420:word32]
+	dwLoc08_6 = eax_5
+	ax_7 = fn10000017(dwLoc08_6)
+	store(Mem9[0x10003428:word16]) = ax_7
 	return
 	// succ:  2
 fn10000000_exit:		// block 2, pred: 1
 	// succ: 
 
-Mem0: Mem0:Global memory, def: {def Mem0}, uses: {edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]}
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {edx_27 = (int32) Mem0[ecx_25 + eax_23:byte]}
 fp: fp:Temporary
-ebp: ebp:Register
-dwLoc04: dwLoc04:Local -0004
-ecx: ecx:Register
+ebp: ebp:Register ebp
 dwLoc08: dwLoc08:Local -0008
-wLoc08: wLoc08:Local -0008
-dwArg04: dwArg04:Stack +0004, def: {def dwArg04}, uses: {ecx_24 = dwArg04}{branch dwArg04 != 0x00000000}
+ecx: ecx:Register ecx
+dwLoc0C: dwLoc0C:Local -000C
+wLoc0C: wLoc0C:Local -000C
+dwArg00: dwArg00:Stack +0000, def: {def dwArg00}, uses: {ecx_25 = dwArg00}{branch dwArg00 != 0x00000000}
 SCZO: SCZO:Flags
 Z: Z:Flags
-ax: ax:Register
-eax: eax:Register
-edx: edx:Register
+ax: ax:Register ax
+eax: eax:Register eax
+edx: edx:Register edx
 C: C:Flags
 SO: SO:Flags
-cx: cx:Register
+cx: cx:Register cx
 dwLoc08_16: orig: dwLoc08
-wLoc08_17: orig: wLoc08, def: {wLoc08_17 = 0x0000}, uses: {wLoc08_21 = PHI(wLoc08_17, wLoc08_38)}
-SCZO_18: orig: SCZO
-Z_19: orig: Z
-SO_20: orig: SO
-wLoc08_21: orig: wLoc08, def: {wLoc08_21 = PHI(wLoc08_17, wLoc08_38)}, uses: {eax_22 = (int32) wLoc08_21}{eax_30 = (int32) wLoc08_21}{cx_34 = wLoc08_21}{ax_42 = wLoc08_21}
-eax_22: orig: eax, def: {eax_22 = (int32) wLoc08_21}, uses: {edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]}
-ax_23: orig: ax
-ecx_24: orig: ecx, def: {ecx_24 = dwArg04}, uses: {edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]}
-cx_25: orig: cx
-edx_26: orig: edx, def: {edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]}, uses: {branch edx_26 == 0x00000000}
-SCZO_27: orig: SCZO
-Z_28: orig: Z
-C_29: orig: C
-eax_30: orig: eax, def: {eax_30 = (int32) wLoc08_21}, uses: {branch eax_30 >= 0x00007FFF}
-ax_31: orig: ax
-SCZO_32: orig: SCZO
-SO_33: orig: SO
-cx_34: orig: cx, def: {cx_34 = wLoc08_21}, uses: {cx_35 = cx_34 + 0x0001}
-cx_35: orig: cx, def: {cx_35 = cx_34 + 0x0001}, uses: {wLoc08_38 = cx_35}
-ecx_36: orig: ecx
-SCZO_37: orig: SCZO
-wLoc08_38: orig: wLoc08, def: {wLoc08_38 = cx_35}, uses: {wLoc08_21 = PHI(wLoc08_17, wLoc08_38)}
-SO_39: orig: SO
-eax_40: orig: eax
-SCZO_41: orig: SCZO
-ax_42: orig: ax, def: {ax_42 = wLoc08_21}, uses: {ax_52 = PHI(ax_44, ax_42)}
-eax_43: orig: eax
-ax_44: orig: ax, def: {ax_44 = 0x0000}, uses: {ax_52 = PHI(ax_44, ax_42)}
-eax_45: orig: eax
-SCZO_46: orig: SCZO
-cx_47: orig: cx
-SO_48: orig: SO
-C_49: orig: C
-edx_50: orig: edx
-eax_51: orig: eax
-ax_52: orig: ax, def: {ax_52 = PHI(ax_44, ax_42)}, uses: {return ax_52}
-Z_53: orig: Z
-SCZO_54: orig: SCZO
-wLoc08_55: orig: wLoc08
-ecx_56: orig: ecx
+dwLoc0C_17: orig: dwLoc0C
+wLoc0C_18: orig: wLoc0C, def: {wLoc0C_18 = 0x0000}, uses: {wLoc0C_22 = PHI(wLoc0C_18, wLoc0C_39)}
+SCZO_19: orig: SCZO
+Z_20: orig: Z
+SO_21: orig: SO
+wLoc0C_22: orig: wLoc0C, def: {wLoc0C_22 = PHI(wLoc0C_18, wLoc0C_39)}, uses: {eax_23 = (int32) wLoc0C_22}{eax_31 = (int32) wLoc0C_22}{cx_35 = wLoc0C_22}{ax_43 = wLoc0C_22}
+eax_23: orig: eax, def: {eax_23 = (int32) wLoc0C_22}, uses: {edx_27 = (int32) Mem0[ecx_25 + eax_23:byte]}
+ax_24: orig: ax
+ecx_25: orig: ecx, def: {ecx_25 = dwArg00}, uses: {edx_27 = (int32) Mem0[ecx_25 + eax_23:byte]}
+cx_26: orig: cx
+edx_27: orig: edx, def: {edx_27 = (int32) Mem0[ecx_25 + eax_23:byte]}, uses: {branch edx_27 == 0x00000000}
+SCZO_28: orig: SCZO
+Z_29: orig: Z
+C_30: orig: C
+eax_31: orig: eax, def: {eax_31 = (int32) wLoc0C_22}, uses: {branch eax_31 >= 0x00007FFF}
+ax_32: orig: ax
+SCZO_33: orig: SCZO
+SO_34: orig: SO
+cx_35: orig: cx, def: {cx_35 = wLoc0C_22}, uses: {cx_36 = cx_35 + 0x0001}
+cx_36: orig: cx, def: {cx_36 = cx_35 + 0x0001}, uses: {wLoc0C_39 = cx_36}
+ecx_37: orig: ecx
+SCZO_38: orig: SCZO
+wLoc0C_39: orig: wLoc0C, def: {wLoc0C_39 = cx_36}, uses: {wLoc0C_22 = PHI(wLoc0C_18, wLoc0C_39)}
+SO_40: orig: SO
+eax_41: orig: eax
+SCZO_42: orig: SCZO
+ax_43: orig: ax, def: {ax_43 = wLoc0C_22}, uses: {ax_53 = PHI(ax_45, ax_43)}
+eax_44: orig: eax
+ax_45: orig: ax, def: {ax_45 = 0x0000}, uses: {ax_53 = PHI(ax_45, ax_43)}
+eax_46: orig: eax
+SCZO_47: orig: SCZO
+cx_48: orig: cx
+SO_49: orig: SO
+C_50: orig: C
+edx_51: orig: edx
+eax_52: orig: eax
+ax_53: orig: ax, def: {ax_53 = PHI(ax_45, ax_43)}, uses: {return ax_53}
+Z_54: orig: Z
+SCZO_55: orig: SCZO
+wLoc0C_56: orig: wLoc0C
+ecx_57: orig: ecx
+ebp_58: orig: ebp
 // fn10000017
-word16 fn10000017(word32 ecx, word32 dwArg04)
+word16 fn10000017(word32 dwArg00)
 fn10000017_entry:		// block 0, pred:
 	def Mem0
-	def dwArg04
+	def dwArg00
 	// succ:  1
 l10000017:		// block 1, pred: 0
-	wLoc08_17 = 0x0000
-	branch dwArg04 != 0x00000000
+	wLoc0C_18 = 0x0000
+	branch dwArg00 != 0x00000000
 	// succ:  6 2
 l1000002F:		// block 2, pred: 1 5
-	wLoc08_21 = PHI(wLoc08_17, wLoc08_38)
-	eax_22 = (int32) wLoc08_21
-	ecx_24 = dwArg04
-	edx_26 = (int32) Mem0[ecx_24 + eax_22:byte]
-	branch edx_26 == 0x00000000
+	wLoc0C_22 = PHI(wLoc0C_18, wLoc0C_39)
+	eax_23 = (int32) wLoc0C_22
+	ecx_25 = dwArg00
+	edx_27 = (int32) Mem0[ecx_25 + eax_23:byte]
+	branch edx_27 == 0x00000000
 	// succ:  3 4
 l1000003E:		// block 3, pred: 2
-	eax_30 = (int32) wLoc08_21
-	branch eax_30 >= 0x00007FFF
+	eax_31 = (int32) wLoc0C_22
+	branch eax_31 >= 0x00007FFF
 	// succ:  5 4
 l1000005A:		// block 4, pred: 3 2
-	ax_42 = wLoc08_21
+	ax_43 = wLoc0C_22
 	// succ:  7
 l10000049:		// block 5, pred: 3
-	cx_34 = wLoc08_21
-	cx_35 = cx_34 + 0x0001
-	wLoc08_38 = cx_35
+	cx_35 = wLoc0C_22
+	cx_36 = cx_35 + 0x0001
+	wLoc0C_39 = cx_36
 	// succ:  2
 l10000027:		// block 6, pred: 1
-	ax_44 = 0x0000
+	ax_45 = 0x0000
 	// succ:  7
 l1000005E:		// block 7, pred: 6 4
-	ax_52 = PHI(ax_44, ax_42)
-	return ax_52
+	ax_53 = PHI(ax_45, ax_43)
+	return ax_53
 	// succ:  8
 fn10000017_exit:		// block 8, pred: 7
 	// succ: 

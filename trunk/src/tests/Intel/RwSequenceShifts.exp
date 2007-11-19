@@ -1,9 +1,9 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ds:Register
-// eax:Register
-// edx:Register
+// ds:Register ds
+// eax:Register eax
+// edx:Register edx
 // SCZO:Flags
 // v6:Temporary
 // C:Flags

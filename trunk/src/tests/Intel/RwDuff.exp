@@ -1,15 +1,15 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ds:Register
-// bx:Register
-// cx:Register
+// ds:Register ds
+// bx:Register bx
+// cx:Register cx
 // C:Flags
-// si:Register
-// di:Register
+// si:Register si
+// di:Register di
 // SCZO:Flags
 // v9:Temporary
-// es:Register
+// es:Register es
 // v11:Temporary
 // v12:Temporary
 // v13:Temporary

@@ -67,6 +67,7 @@ namespace Decompiler.Arch.Intel
 		/// <summary>
 		/// Implements a frame shift.
 		/// </summary>
+		/// <param name="regFrame">Register used as a frame register</param>
 		public void EnterFrame(IntelRegister regFrame)
 		{
 			FrameRegister = regFrame;
@@ -116,7 +117,6 @@ namespace Decompiler.Arch.Intel
 		{
 			cbStackDepth -= cb;
 		}
-
 
 		/// <summary>
 		/// Number of bytes on the processor stack.

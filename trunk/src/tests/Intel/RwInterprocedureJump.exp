@@ -1,17 +1,17 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// bx:Register
+// bx:Register bx
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	bx = 0x1234
-	call fn0C00_000C (depth: 0;)
+	call fn0C00_000C (depth: 2;)
 	bx = 0x5678
-	call fn0C00_0018 (depth: 0;)
-	call fn0C00_000C (depth: 0;)
+	call fn0C00_0018 (depth: 2;)
+	call fn0C00_000C (depth: 2;)
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
@@ -19,11 +19,11 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // fn0C00_000C
 // Mem0:Global memory
 // fp:Temporary
-// bx:Register
-// ds:Register
+// bx:Register bx
+// ds:Register ds
 // SCZO:Flags
 // SZO:Flags
-// ax:Register
+// ax:Register ax
 // return address size: 2
 void fn0C00_000C()
 fn0C00_000C_entry:		// block 0, pred:
@@ -33,7 +33,7 @@ l0C00_000C:		// block 1, pred: 0
 	branch Test(LE,SZO)
 	// succ:  3 2
 l0C00_000F_branch:		// block 2, pred: 1
-	call fn0C00_0014 (depth: 0;)
+	call fn0C00_0014 (depth: 2;)
 	return
 	// succ:  4
 l0C00_0011:		// block 3, pred: 1
@@ -46,9 +46,9 @@ fn0C00_000C_exit:		// block 4, pred: 3 2
 // fn0C00_0014
 // Mem0:Global memory
 // fp:Temporary
-// bx:Register
-// ds:Register
-// ax:Register
+// bx:Register bx
+// ds:Register ds
+// ax:Register ax
 // SZO:Flags
 // return address size: 2
 void fn0C00_0014()
@@ -65,7 +65,7 @@ fn0C00_0014_exit:		// block 2, pred: 1
 // fn0C00_0018
 // Mem0:Global memory
 // fp:Temporary
-// bx:Register
+// bx:Register bx
 // SCZO:Flags
 // return address size: 2
 void fn0C00_0018()
@@ -74,7 +74,7 @@ fn0C00_0018_entry:		// block 0, pred:
 l0C00_0018:		// block 1, pred: 0
 	bx = bx + 0x0004
 	SCZO = cond(bx)
-	call fn0C00_0014 (depth: 0;)
+	call fn0C00_0014 (depth: 2;)
 	return
 	// succ:  2
 fn0C00_0018_exit:		// block 2, pred: 1

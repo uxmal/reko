@@ -1,8 +1,8 @@
 Mem0: Mem0:Global memory, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
-bx: bx:Register, def: {def bx}, uses: {call fn0C00_000C (depth: 0;)}{store(Mem5[ds:0x0300:word16]) = bx}
-ds: ds:Register, def: {def ds}, uses: {call fn0C00_000C (depth: 0;)}{store(Mem5[ds:0x0300:word16]) = bx}{store(Mem6[ds:0x0302:byte]) = cl}
-cl: cl:Register, def: {def cl}, uses: {call fn0C00_000C (depth: 0;)}{store(Mem6[ds:0x0302:byte]) = cl}
+bx: bx:Register bx, def: {def bx}, uses: {call fn0C00_000C (depth: 2;)}{store(Mem5[ds:0x0300:word16]) = bx}
+ds: ds:Register ds, def: {def ds}, uses: {call fn0C00_000C (depth: 2;)}{store(Mem5[ds:0x0300:word16]) = bx}{store(Mem6[ds:0x0302:byte]) = cl}
+cl: cl:Register cl, def: {def cl}, uses: {call fn0C00_000C (depth: 2;)}{store(Mem6[ds:0x0302:byte]) = cl}
 Mem5: orig: Mem0, def: {store(Mem5[ds:0x0300:word16]) = bx}
 Mem6: orig: Mem0, def: {store(Mem6[ds:0x0302:byte]) = cl}
 // fn0C00_0000
@@ -15,7 +15,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	def cl
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	call fn0C00_000C (depth: 0;)
+	call fn0C00_000C (depth: 2;)
 	store(Mem5[ds:0x0300:word16]) = bx
 	store(Mem6[ds:0x0302:byte]) = cl
 	return
@@ -25,18 +25,18 @@ fn0C00_0000_exit:		// block 2, pred: 1
 
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {SCZO_30 = cond(al_19 - Mem0[es_15:di_26:byte])}{ah_43 = Mem0[ds:di_36 + 0x0001:byte]}
 fp: fp:Temporary, def: {def fp}
-ds: ds:Register, def: {def ds}, uses: {cx_14 = ds}{ah_43 = Mem0[ds:di_36 + 0x0001:byte]}
-cx: cx:Register, def: {def cx}
-es: es:Register, def: {def es}
-di: di:Register, def: {def di}
-al: al:Register, def: {def al}
+ds: ds:Register ds, def: {def ds}, uses: {cx_14 = ds}{ah_43 = Mem0[ds:di_36 + 0x0001:byte]}
+cx: cx:Register cx, def: {def cx}
+es: es:Register es, def: {def es}
+di: di:Register di, def: {def di}
+al: al:Register al, def: {def al}
 SCZO: SCZO:Flags, def: {def SCZO}
 v8: v8:Temporary, def: {def v8}
 Z: Z:Flags, def: {def Z}
-ah: ah:Register, def: {def ah}, uses: {ah_56 = PHI(ah_43, ah)}
-ax: ax:Register, def: {def ax}, uses: {ax_20 = DPB(ax, al_19, 0, 8) (alias)}
-bx: bx:Register, def: {def bx}
-cl: cl:Register, def: {def cl}
+ah: ah:Register ah, def: {def ah}, uses: {ah_56 = PHI(ah_43, ah)}
+ax: ax:Register ax, def: {def ax}, uses: {ax_20 = DPB(ax, al_19, 0, 8) (alias)}
+bx: bx:Register bx, def: {def bx}
+cl: cl:Register cl, def: {def cl}
 cx_14: orig: cx, def: {cx_14 = ds}, uses: {es_15 = cx_14}
 es_15: orig: es, def: {es_15 = cx_14}, uses: {SCZO_30 = cond(al_19 - Mem0[es_15:di_26:byte])}
 di_16: orig: di, def: {di_16 = 0x7E0F}, uses: {di_26 = PHI(di_16, di_32)}

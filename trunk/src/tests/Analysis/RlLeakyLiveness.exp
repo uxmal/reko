@@ -1,4 +1,4 @@
-fn0C00_0000
+// fn0C00_0000 /////////////////////
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
@@ -10,7 +10,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: ds
 l0C00_0000:		// block 1, pred: 0
-	call fn0C00_000A (depth: 0;)
+	call fn0C00_000A (depth: 2;)
 	branch Test(ULT,C)
 	// succ:  2 3
 // DataOut: ax ds
@@ -27,7 +27,7 @@ l0C00_0009:		// block 3, pred: 2 1
 fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
 // DataOut:
-fn0C00_000A
+// fn0C00_000A /////////////////////
 	LiveOut:   C ax ds
 	MayUseIn:  ds
 	BypassIn: 

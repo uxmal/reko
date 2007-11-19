@@ -144,11 +144,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Analysis\CopyChain.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Analysis\CriticalInstruction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

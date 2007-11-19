@@ -1,29 +1,29 @@
-fn0C00_0000
+// fn0C00_0000 /////////////////////
 	LiveOut:  
 	MayUseIn:  di ds
 	BypassIn: 
-	Trashed:   SCZO ax di al ah
-	Preserved:
+	Trashed:   SCZO ax al ah
+	Preserved: di
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: di ds
 l0C00_0000:		// block 1, pred: 0
-	call fn0C00_000F (depth: 0;)
-	wLoc02 = di
+	call fn0C00_000F (depth: 2;)
+	wLoc04 = di
 	ax = 0x0100
-	call fn0C00_0014 (depth: 2;)
+	call fn0C00_0014 (depth: 4;)
 	store(Mem0[ds:0x0300:word16]) = ax
-	di = wLoc02
-	call fn0C00_000F (depth: 0;)
+	di = wLoc04
+	call fn0C00_000F (depth: 2;)
 	return
 	// succ:  2
 // DataOut:
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut:
-fn0C00_000F
+// fn0C00_000F /////////////////////
 	LiveOut:   di ds
 	MayUseIn:  di ds
 	BypassIn: 
@@ -42,7 +42,7 @@ l0C00_000F:		// block 1, pred: 0
 fn0C00_000F_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut: di ds
-fn0C00_0014
+// fn0C00_0014 /////////////////////
 	LiveOut:   ax ds
 	MayUseIn:  ax
 	BypassIn: 

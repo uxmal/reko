@@ -115,10 +115,18 @@ namespace Decompiler.Scanning
 			return prog.EnsurePseudoProcedure(name, arity);
 		}
 
-
-		public Procedure [] GetAddressesFromVector(Address addr)
+		public Procedure [] GetProceduresFromVector(Address addr, int cbReturnAddress)
 		{
-			throw new NotImplementedException();
+			VectorUse vu = (VectorUse) vectorUses[addr];
+			if (vu == null)
+				return new Procedure[0];
+			ImageMapVectorTable vector = (ImageMapVectorTable) ImageMap.FindItemExact(vu.TableAddress);
+			Procedure [] procs = new Procedure[vector.Addresses.Count];
+			for (int i = 0; i < vector.Addresses.Count; ++i)
+			{
+				procs[i] = GetProcedureAtAddress((Address) vector.Addresses[i], cbReturnAddress);
+			}
+			return procs;
 		}
 
 		public Procedure [] GetAddressesFromVector(Address addr, int cbReturnAddress)

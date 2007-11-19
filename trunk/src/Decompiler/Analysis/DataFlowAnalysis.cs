@@ -95,47 +95,6 @@ namespace Decompiler.Analysis
 			} 
 		}
 
-		/// <summary>
-		/// Collects the local effects of calling a function. That is, only 
-		/// registers modified _locally_ (LMOD) are accumulated. Preserved
-		/// registers are detected, and the copies that preserve them are
-		/// removed.
-		/// </summary>
-		[Obsolete]
-		public void CollectLocalInformation()
-		{
-			prog.CallGraph.RenumberProcedures();
-			foreach (Procedure proc in prog.DfsProcedures)
-			{
-				InsertExitBlockStatements(proc);
-
-				Aliases alias = new Aliases(proc, prog.Architecture);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, new DominatorGraph(proc), false);
-				SsaState ssa = sst.SsaState;
-				DetectLocalPreservedTrashedRegisters(proc, ssa, flow[proc]);
-				ssa.ConvertBack(true);
-				alias.Restore();
-			}
-
-			foreach (Procedure proc in prog.DfsProcedures)
-			{
-				if (flow[proc] == null)
-					Debug.WriteLine("Error: procedure not registered: " + proc.Name);
-			}
-		}
-
-		public int CountUnaliasedUses(SsaIdentifier sid)
-		{
-			int c = 0;
-			foreach (Statement stm in sid.uses)
-			{
-				if (!(stm.Instruction is AliasAssignment))
-					++c;
-			}
-			return c;
-		}
-
 		public void DumpProgram(RegisterLiveness rl)
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
@@ -173,75 +132,9 @@ namespace Decompiler.Analysis
 			get { return ivs; }
 		}
 
-		[Obsolete("Use ProgramDataFlow property")]
-		public ProgramDataFlow ProcedureDataflow
-		{
-			get { return flow; }
-		}
-
 		public ProgramDataFlow ProgramDataFlow
 		{
 			get { return flow; }
-		}
-
-		/// <summary>
-		/// Detects which registers are preserved by this function,
-		/// and which ones trashed on exit from the function.
-		/// </summary>
-		/// <remarks>
-		/// The function also removes statements that are used to preserve register values,
-		/// since this information is now summarized in the <paramref name="flow"/> of the function.
-		/// </remarks>
-		/// <param name="valnums">A value numbering previously performed on the code</param>
-		/// <param name="ssa">The procedure (in SSA form) we want to analyze/param>
-		/// <param name="flow">Summary information is stored here.</param>
-		[Obsolete]
-		public void DetectLocalPreservedTrashedRegisters(
-			Procedure proc,
-			SsaState ssa,
-			ProcedureFlow flow)
-		{
-			Frame frame = proc.Frame;
-			object [] exitStatements = proc.ExitBlock.Statements.CopyToArray();
-
-			// The exit block contains reaching definitions of all variables.
-			// We are interested in their value numbers: if the values are the same as
-			// they were on entry, the register is preserved, otherwise it is modified.
-
-			ArrayList stmsToKill = new ArrayList();
-			foreach (Statement stm in exitStatements)
-			{
-				UseInstruction use = stm.Instruction as UseInstruction;
-				if (use == null)
-					continue;
-				Identifier id = (Identifier) use.Expression;
-				RegisterStorage rs = id.Storage as RegisterStorage;
-				if (rs == null || !flow.Preserved[rs.Register.Number])
-					continue;
-				
-				// Since the register preserved, the use statement is dead.
-				// We can remove it, and the statement that defined it, and so on.
-
-				stmsToKill.Add(stm);
-			}
-
-			CopyChain2 cch = new CopyChain2(ssa);
-			foreach (Statement s in stmsToKill)
-			{
-				cch.Kill(s);
-			}
-		}
-
-		[Obsolete]
-		public BlockFlow FlowOf(Block block)
-		{
-			return (BlockFlow) flow[block];
-		}
-
-		[Obsolete]
-		public ProcedureFlow FlowOf(Procedure proc)
-		{
-			return (ProcedureFlow) flow[proc];
 		}
 
 		/// <summary>
@@ -268,8 +161,6 @@ namespace Decompiler.Analysis
 		/// </summary>
 		public RegisterLiveness UntangleProcedures()
 		{
-			host.WriteDiagnostic(Diagnostic.Info, "Collecting local information");
-			CollectLocalInformation();
 			host.WriteDiagnostic(Diagnostic.Info, "Finding trashed registers");
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
 			trf.Compute();

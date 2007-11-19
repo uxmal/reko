@@ -1,14 +1,14 @@
 void fn0C00_0000(Register byte al, Register segment ds)
 // MayUse:  al ds
 // LiveOut:
-// Trashed: SCZO ax al
+// Trashed: SCZO ax al ah
 // Preserved:
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
 // C:Flags
-// al:Register
-// ds:Register
+// al:Register al
+// ds:Register ds
 // return address size: 2
 void fn0C00_0000(byte al, segment ds)
 fn0C00_0000_entry:		// block 0, pred:
@@ -28,16 +28,16 @@ fn0C00_0000_exit:		// block 4, pred: 3
 FlagGroup byte fn0C00_000A(Register byte al, Register out ptr0 alOut)
 // MayUse:  al
 // LiveOut: C al
-// Trashed: SCZO ax al
+// Trashed: SCZO ax al ah
 // Preserved:
 // fn0C00_000A
 // Mem0:Global memory
 // fp:Temporary
-// al:Register
+// al:Register al
 // SCZO:Flags
 // C:Flags
 // CZ:Flags
-// alOut:Out:Register
+// alOut:Out:Register al
 // return address size: 2
 byte fn0C00_000A(byte al, ptr0 alOut)
 fn0C00_000A_entry:		// block 0, pred:

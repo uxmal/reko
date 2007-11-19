@@ -412,7 +412,11 @@ namespace Decompiler.Arch.Intel
 			return pInstr;
 		}
 
-		// Returns the operand width of the operand type.
+		/// <summary>
+		/// Returns the operand width of the operand type.
+		/// </summary>
+		/// <param name="ch"></param>
+		/// <returns></returns>
 
 		private PrimitiveType OperandWidth(char ch)
 		{
@@ -432,7 +436,7 @@ namespace Decompiler.Arch.Intel
 				m_dataWidth = PrimitiveType.Word32;
 				break;
 			case 'p':
-				m_dataWidth = PrimitiveType.Word32;
+				m_dataWidth = PrimitiveType.Pointer32;		// Far pointer.
 				break;
 			case 'f':
 				m_dataWidth = PrimitiveType.Real32;

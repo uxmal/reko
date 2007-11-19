@@ -1,23 +1,23 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register
-// ss:Register
-// si:Register
-// dx:Register
-// al:Register
+// bp:Register bp
+// ss:Register ss
+// si:Register si
+// dx:Register dx
+// al:Register al
 // v7:Temporary
-// bx:Register
+// bx:Register bx
 // C:Flags
-// cx:Register
+// cx:Register cx
 // SZO:Flags
-// es:Register
-// di:Register
-// ds:Register
-// ax:Register
+// es:Register es
+// di:Register di
+// ds:Register ds
+// ax:Register ax
 // Z:Flags
-// eax:Register
-// ecx:Register
+// eax:Register eax
+// ecx:Register ecx
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:

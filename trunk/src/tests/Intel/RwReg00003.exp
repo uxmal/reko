@@ -1,16 +1,16 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ecx:Register
+// ecx:Register ecx
 // SCZO:Flags
-// ds:Register
+// ds:Register ds
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	call fn0C00_000F (depth: 0;)
-	call fn0C00_0010 (depth: 0;)
+	call fn0C00_000F (depth: 2;)
+	call fn0C00_0010 (depth: 2;)
 	ecx = 0x00000000
 	SCZO = cond(ecx)
 	store(Mem0[ds:0x0310:word32]) = ecx
@@ -35,11 +35,11 @@ fn0C00_000F_exit:		// block 2, pred: 1
 // fn0C00_0010
 // Mem0:Global memory
 // fp:Temporary
-// ch:Register
+// ch:Register ch
 // SCZO:Flags
-// ds:Register
-// cl:Register
-// cx:Register
+// ds:Register ds
+// cl:Register cl
+// cx:Register cx
 // return address size: 2
 void fn0C00_0010()
 fn0C00_0010_entry:		// block 0, pred:

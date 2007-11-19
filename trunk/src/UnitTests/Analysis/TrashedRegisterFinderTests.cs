@@ -69,14 +69,14 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		public void TrashCompoundRegister() // e.g. an intel register AX with subregisters AL and AH
+		public void TrashCompoundRegister()
 		{
 			Identifier ax = m.Frame.EnsureRegister(Registers.ax);
 			Statement stm = m.Assign(ax, 1);
 
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(null, null);
 			stm.Instruction.Accept(trf);
-			Assert.AreEqual("ax:TRASH al:TRASH ah:TRASH", DumpRegs(trf.TrashedRegisters));
+			Assert.AreEqual("(ax:TRASH)", DumpRegs(trf.TrashedRegisters));
 		}
 
 		[Test]
@@ -189,7 +189,9 @@ namespace Decompiler.UnitTests.Analysis
 			trf.TrashedRegisters[ebx.Storage] = ecx.Storage;			// trashed
 			trf.TrashedRegisters[esi.Storage] = "@#$@";				// trashed
 			trf.PropagateToProcedureSummary(proc);
-			Assert.AreEqual(" ebx esi bx si bl bh", flow[proc].EmitRegisters(prog.Architecture, "", flow[proc].TrashedRegisters));
+			ProcedureFlow pf = flow[proc];
+			Assert.AreEqual(" ebx esi bx si bl bh", pf.EmitRegisters(prog.Architecture, "", pf.TrashedRegisters));
+			Assert.AreEqual(" eax ax al ah", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
 		}
 
 		[Test]
@@ -206,6 +208,26 @@ namespace Decompiler.UnitTests.Analysis
 			trf.PropagateToProcedureSummary(proc);
 			Assert.AreEqual(" SZ" + Environment.NewLine, flow[proc].EmitFlagGroup(prog.Architecture, "", flow[proc].grfTrashed));
 
+		}
+
+		[Test]
+		public void PreserveEbp()
+		{
+			Identifier ebp = m.Frame.EnsureRegister(Registers.ebp);
+			Identifier loc = m.Frame.EnsureStackLocal(-1, PrimitiveType.Word32);
+			m.Assign(loc, ebp);
+			m.Assign(ebp, m.LoadDw(m.Int32(0x12345678)));
+			m.Assign(ebp, loc);
+			m.Return();
+
+			Procedure proc = m.Procedure;
+			proc.RenumberBlocks();
+			prog.Procedures.Add(proc,  proc);
+			ProgramDataFlow flow = new ProgramDataFlow(prog);
+			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
+			trf.Compute();
+			ProcedureFlow pf = flow[proc];
+			Assert.AreEqual(" ebp bp", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
 		}
 
 		[Test]

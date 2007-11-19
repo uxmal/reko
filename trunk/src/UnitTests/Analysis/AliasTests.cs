@@ -123,7 +123,8 @@ namespace Decompiler.UnitTests.Analysis
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
-			dfa.CollectLocalInformation();
+			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow);
+			trf.Compute();
 			RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow);
 			foreach (Procedure proc in prog.DfsProcedures)
 			{

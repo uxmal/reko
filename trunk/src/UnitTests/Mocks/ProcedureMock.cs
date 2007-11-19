@@ -158,7 +158,12 @@ namespace Decompiler.UnitTests.Mocks
 			CallInstruction ci = new CallInstruction(null, 0, 0);
 			unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
 			return Emit(ci);
+		}
 
+		public Statement Call(Procedure callee)
+		{
+			CallInstruction ci = new CallInstruction(callee, 0, 0);
+			return Emit(ci);
 		}
 
 		public void Compare(string flags, Expression a, Expression b)

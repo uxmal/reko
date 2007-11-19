@@ -1,12 +1,12 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// cx:Register
-// wLoc02:Local -0002
-// cl:Register
-// ax:Register
+// cx:Register cx
+// wLoc04:Local -0004
+// cl:Register cl
+// ax:Register ax
 // SCZO:Flags
-// al:Register
+// al:Register al
 // SZO:Flags
 // Z:Flags
 // return address size: 2
@@ -14,7 +14,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	wLoc02 = cx
+	wLoc04 = cx
 	cl = 0x03
 	cx = DPB(cx, cl, 0, 8) (alias)
 	ax = 0x0000
@@ -35,7 +35,7 @@ l0C00_0005:		// block 2, pred: 1 2
 	branch Test(NE,Z)
 	// succ:  3 2
 l0C00_000B:		// block 3, pred: 2
-	cx = wLoc02
+	cx = wLoc04
 	cl = (byte) cx (alias)
 	return
 	// succ:  4

@@ -133,6 +133,27 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
+		public void CopyDeadRegister()
+		{
+			Identifier bx = f.EnsureRegister(Registers.bx);
+			Identifier ax = f.EnsureRegister(Registers.ax);
+
+			m.Assign(ax, bx).Instruction.Accept(rl);
+			Assert.AreEqual("", Dump(rl.IdentifierLiveness), "No identifiers should be live since ax is dead");
+		}
+
+		[Test]
+		public void CopyLiveRegister()
+		{
+			Identifier bx = f.EnsureRegister(Registers.bx);
+			Identifier ax = f.EnsureRegister(Registers.ax);
+
+			m.Store(m.Int32(0x12341234), ax).Instruction.Accept(rl);
+			m.Assign(ax, bx).Instruction.Accept(rl);
+			Assert.AreEqual(" bx", Dump(rl.IdentifierLiveness), "bx should be live since ax was stored");
+		}
+
+		[Test]
 		public void Locals()
 		{
 			Identifier ax = f.EnsureRegister(Registers.ax);
@@ -141,7 +162,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			m.Store(m.Int32(0x01DFDF), ax).Instruction.Accept(rl);
 			m.Assign(ax, loc).Instruction.Accept(rl);
-			Assert.AreEqual("", Dump(rl.IdentifierLiveness));
+			Assert.AreEqual(" Local -0008", Dump(rl.IdentifierLiveness));
 			m.Assign(loc, ecx).Instruction.Accept(rl);
 			Assert.AreEqual(" cx", Dump(rl.IdentifierLiveness));
 		}
@@ -166,33 +187,40 @@ namespace Decompiler.UnitTests.Analysis
 
 			m.Assign(bp, loc).Instruction.Accept(rl);
 			m.Assign(loc, bp).Instruction.Accept(rl);
-			Assert.AreEqual("@@@", rl.IdentifierLiveness.LiveStackVariables[bp.Storage]);
-
+			Assert.AreEqual("", Dump(rl.IdentifierLiveness));
 		}
+
+		[Test]
+		public void PushPopLiveBp()
+		{
+			Identifier bp = f.EnsureRegister(Registers.bp);
+			Identifier loc = f.EnsureStackLocal(-4, PrimitiveType.Word16);
+
+			m.Assign(bp, loc).Instruction.Accept(rl);
+			m.Store(m.Int32(0x12345678), bp).Instruction.Accept(rl);
+			m.Assign(loc, bp).Instruction.Accept(rl);
+			Assert.AreEqual(" bp", Dump(rl.IdentifierLiveness));
+		}
+
 		[Test]
 		public void CallToProcedureWithValidSignature()
 		{
 			Procedure callee = new Procedure("callee", null);
-			BitSet trash = prog.Architecture.CreateRegisterBitset();
-			trash[Registers.esi.Number] = true;
 			callee.Signature = new ProcedureSignature(
 				new Identifier("eax", -1, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
 				new Identifier[] {
 					new Identifier("ebx", -1, PrimitiveType.Word32, new RegisterStorage(Registers.ebx)),
 					new Identifier("ecx", -1, PrimitiveType.Word32, new RegisterStorage(Registers.ecx)),
 					new Identifier("edi", -1, PrimitiveType.Word32, new OutArgumentStorage(
-						new Identifier("edi", -1, PrimitiveType.Word32, new RegisterStorage(Registers.edi))))},
-				trash);
+						new Identifier("edi", -1, PrimitiveType.Word32, new RegisterStorage(Registers.edi))))
+								 });
 			
 			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;
 			rl.IdentifierLiveness.BitSet[Registers.esi.Number] = true;
 			rl.IdentifierLiveness.BitSet[Registers.edi.Number] = true;
 			CallInstruction ci = new CallInstruction(callee, 0, 0);
 			rl.VisitCallInstruction(ci);
-			Assert.IsFalse(rl.IdentifierLiveness.BitSet[Registers.esi.Number], "esi should have been marked dead because it is trashed in the signature.");
-			Assert.IsFalse(rl.IdentifierLiveness.BitSet[Registers.esi.Number], "edi should have been marked dead because it is trashed in the signature.");
-			Assert.IsTrue(rl.IdentifierLiveness.BitSet[Registers.ebx.Number], "ebx should be live since it appears in the signature.");
-			Assert.IsTrue(rl.IdentifierLiveness.BitSet[Registers.ebx.Number], "ebx should be live since it appears in the signature.");
+			Assert.AreEqual(" ecx ebx esi", Dump(rl.IdentifierLiveness));
 		}
 
 		[Test]
@@ -200,12 +228,10 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure callee = new Procedure("callee", null);
 			BitSet trash = prog.Architecture.CreateRegisterBitset();
-			trash[Registers.ecx.Number]= true;
 			callee.Signature = new ProcedureSignature(
 				new Identifier("eax", -1, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
 				new Identifier[] { new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
-								   new Identifier("arg08", -1, PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte)) },
-				trash);
+								   new Identifier("arg08", -1, PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte)) });
 
 			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
 			Identifier w08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
@@ -222,6 +248,27 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
+		public void MarkLiveStackParameters()
+		{
+			Procedure callee = new Procedure("callee", new Frame(PrimitiveType.Word32));
+			callee.Frame.ReturnAddressSize = 4;
+			callee.Frame.EnsureStackArgument(0, PrimitiveType.Word32);
+			callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
+			Assert.AreEqual(8, callee.Frame.GetStackArgumentSpace());
+			ProcedureFlow pf = new ProcedureFlow(callee, prog.Architecture);
+			mpprocflow[callee] = pf;
+
+			Identifier loc08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
+			Identifier loc0C = m.Frame.EnsureStackLocal(-12, PrimitiveType.Word32);
+			Identifier loc10 = m.Frame.EnsureStackLocal(-16, PrimitiveType.Word32);
+			rl.CurrentState = new RegisterLiveness.ByPassState();
+			CallInstruction ci = new CallInstruction(callee, 16, 0);
+			rl.Procedure = m.Procedure;
+			rl.MarkLiveStackParameters(ci);
+			Assert.AreEqual(" Local -000C Local -0010", Dump(rl.IdentifierLiveness));
+		}
+
+		[Test]
 		public void PredefinedSignature()
 		{
 			Procedure callee = new Procedure("callee", null);
@@ -235,12 +282,37 @@ namespace Decompiler.UnitTests.Analysis
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
 			BlockFlow bf = new BlockFlow(callee.ExitBlock, prog.Architecture.CreateRegisterBitset());
 			mpprocflow[callee.ExitBlock] = bf;
-			st.InitializeBlockFlow(bf, true);
+			st.InitializeBlockFlow(callee.ExitBlock, mpprocflow, true);
 			Assert.IsTrue(bf.DataOut[Registers.eax.Number],"eax is a return register");
 			Assert.IsTrue(bf.DataOut[Registers.edx.Number],"edx is an out register");
 			Assert.IsTrue(bf.DataOut[Registers.ax.Number], "ax is aliased by eax");
 			Assert.IsFalse(bf.DataOut[Registers.ecx.Number], "ecx is an in register");
 			Assert.IsFalse(bf.DataOut[Registers.esi.Number], "esi is not present in signature");
+		}
+
+		/// <summary>
+		/// We assume preserved registers are _never_ live out.
+		/// </summary>
+		[Test]
+		public void ProcedureWithTrashedAndPreservedRegisters()
+		{
+			Procedure proc = new Procedure("test", new Frame(PrimitiveType.Word32));
+			ProcedureFlow pf = new ProcedureFlow(proc, prog.Architecture);
+			mpprocflow[proc] = pf;
+			pf.TrashedRegisters[Registers.eax.Number] = true;
+			pf.TrashedRegisters[Registers.ebx.Number] = true;
+			pf.PreservedRegisters[Registers.ebp.Number] = true;
+			pf.PreservedRegisters[Registers.bp.Number] = true;
+
+			
+			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
+			BlockFlow bf = new BlockFlow(proc.ExitBlock, prog.Architecture.CreateRegisterBitset());
+			mpprocflow[proc.ExitBlock] = bf;
+			st.InitializeBlockFlow(proc.ExitBlock, mpprocflow, true);
+			Assert.IsFalse(bf.DataOut[Registers.ebp.Number], "preserved registers cannot be live out");
+			Assert.IsFalse(bf.DataOut[Registers.bp.Number], "preserved registers cannot be live out");
+			Assert.IsTrue(bf.DataOut[Registers.eax.Number], "trashed registers may be live out");
+			Assert.IsTrue(bf.DataOut[Registers.esi.Number], "Unmentioned registers may be live out");
 		}
 
 		[Ignore("Decide how to implement this")]
@@ -267,6 +339,17 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			StringWriter sw = new StringWriter();
 			vl.Write(sw, "");
+			SortedList sl = new SortedList();
+			foreach (object o in vl.LiveStackVariables.Keys)
+			{
+				string s = o.ToString();
+				sl.Add(s, s);
+			}
+			foreach (string s in sl.Keys)
+			{
+				sw.Write(" ");
+				sw.Write(s);
+			}
 			return sw.ToString();
 		}	
 	}

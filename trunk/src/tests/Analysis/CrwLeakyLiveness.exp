@@ -7,8 +7,8 @@ void fn0C00_0000(Register segment ds)
 // Mem0:Global memory
 // fp:Temporary
 // C:Flags
-// ax:Register
-// ds:Register
+// ax:Register ax
+// ds:Register ds
 // v5:Temporary
 // SCZO:Flags
 // return address size: 2
@@ -37,14 +37,14 @@ FlagGroup byte fn0C00_000A(Register segment ds, Register out ptr0 axOut)
 // fn0C00_000A
 // Mem0:Global memory
 // fp:Temporary
-// ds:Register
-// si:Register
+// ds:Register ds
+// si:Register si
 // SCZO:Flags
 // Z:Flags
-// ax:Register
+// ax:Register ax
 // SZO:Flags
 // C:Flags
-// axOut:Out:Register
+// axOut:Out:Register ax
 // return address size: 2
 byte fn0C00_000A(segment ds, ptr0 axOut)
 fn0C00_000A_entry:		// block 0, pred:

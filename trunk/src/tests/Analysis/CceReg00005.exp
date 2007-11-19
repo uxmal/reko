@@ -1,8 +1,8 @@
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-bx: bx:Register
-ds: ds:Register, def: {def ds}, uses: {bx_6 = fn0C00_000C(ds, &cl_5)}{store(Mem7[ds:0x0300:word16]) = bx_6}{store(Mem8[ds:0x0302:byte]) = cl_5}
-cl: cl:Register
+bx: bx:Register bx
+ds: ds:Register ds, def: {def ds}, uses: {bx_6 = fn0C00_000C(ds, &cl_5)}{store(Mem7[ds:0x0300:word16]) = bx_6}{store(Mem8[ds:0x0302:byte]) = cl_5}
+cl: cl:Register cl
 cl_5: orig: cl, def: {bx_6 = fn0C00_000C(ds, &cl_5)}, uses: {store(Mem8[ds:0x0302:byte]) = cl_5}
 bx_6: orig: bx, def: {bx_6 = fn0C00_000C(ds, &cl_5)}, uses: {store(Mem7[ds:0x0300:word16]) = bx_6}
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:word16]) = bx_6}
@@ -23,19 +23,19 @@ fn0C00_0000_exit:		// block 2, pred: 1
 
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {SCZO_31 = cond(al_20 - Mem0[es_16:di_27:byte])}{ah_43 = Mem0[ds:di_37 + 0x0001:byte]}{branch al_20 == Mem0[es_16:di_27:byte]}
 fp: fp:Temporary
-ds: ds:Register, def: {def ds}, uses: {cx_15 = ds}{ah_43 = Mem0[ds:di_37 + 0x0001:byte]}
-cx: cx:Register
-es: es:Register
-di: di:Register
-al: al:Register
+ds: ds:Register ds, def: {def ds}, uses: {cx_15 = ds}{ah_43 = Mem0[ds:di_37 + 0x0001:byte]}
+cx: cx:Register cx
+es: es:Register es
+di: di:Register di
+al: al:Register al
 SCZO: SCZO:Flags
 v8: v8:Temporary
 Z: Z:Flags
-ah: ah:Register
-ax: ax:Register, def: {def ax}, uses: {ax_21 = DPB(ax, al_20, 0, 8) (alias)}
-bx: bx:Register
-cl: cl:Register
-clOut: clOut:Out:Register
+ah: ah:Register ah
+ax: ax:Register ax, def: {def ax}, uses: {ax_21 = DPB(ax, al_20, 0, 8) (alias)}
+bx: bx:Register bx
+cl: cl:Register cl
+clOut: clOut:Out:Register cl
 cx_15: orig: cx, def: {cx_15 = ds}, uses: {es_16 = cx_15}
 es_16: orig: es, def: {es_16 = cx_15}, uses: {SCZO_31 = cond(al_20 - Mem0[es_16:di_27:byte])}{branch al_20 == Mem0[es_16:di_27:byte]}
 di_17: orig: di, def: {di_17 = 0x7E0F}, uses: {di_27 = PHI(di_17, di_33)}

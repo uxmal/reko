@@ -28,7 +28,8 @@ namespace Decompiler.Analysis
 {
 	/// <summary>
 	/// Uses an interprocedural reaching definition analysis to detect which 
-	/// registers are modified by the procedures. 
+	/// registers are modified by the procedures, and which registers have
+	/// their values preserved. 
 	/// </summary>
 	public class TrashedRegisterFinder : InstructionVisitorBase
 	{
@@ -55,7 +56,7 @@ namespace Decompiler.Analysis
 				ProcedureFlow pf = flow[proc];
 				foreach (int r in pf.TrashedRegisters)
 				{
-					prog.Architecture.GetRegister(r).SetAliases(pf.Preserved, true);
+					prog.Architecture.GetRegister(r).SetAliases(pf.TrashedRegisters, true);
 				}
 			}
 		}
@@ -112,24 +113,37 @@ namespace Decompiler.Analysis
 		{
 			bool changed = false;
 			ProcedureFlow pf = flow[proc];
-			BitSet b = prog.Architecture.CreateRegisterBitset();
+			BitSet tr = prog.Architecture.CreateRegisterBitset();
+			BitSet pr = prog.Architecture.CreateRegisterBitset();
 			foreach (DictionaryEntry de in tsh.TrashedRegisters)
 			{
+				RegisterStorage r = de.Key as RegisterStorage;
+				if (r == null)
+					continue;
+
 				if (de.Key != de.Value)
 				{
-					RegisterStorage r = de.Key as RegisterStorage;
 					if (r != null)
 					{
-						r.Register.SetAliases(b, true);
+						r.Register.SetAliases(tr, true);
 					}
 				}
-			}
-			if (!(b & ~pf.TrashedRegisters).IsEmpty)
-			{
-				pf.TrashedRegisters |= b;
-				changed = true;
+				else
+				{
+					r.Register.SetAliases(pr, true);
+				}
 			}
 
+			if (!(tr & ~pf.TrashedRegisters).IsEmpty)
+			{
+				pf.TrashedRegisters |= tr;
+				changed = true;
+			}
+			if (!(pr & ~pf.PreservedRegisters).IsEmpty)
+			{
+				pf.PreservedRegisters |= pr;
+				changed = true;
+			}
 			uint grfNew = pf.grfTrashed | tsh.TrashedFlags;
 			if (grfNew != pf.grfTrashed)
 			{
@@ -214,7 +228,6 @@ namespace Decompiler.Analysis
 			Identifier idSrc = a.Src as Identifier;
 			if (idSrc != null)
 			{
-				// idDst = idSrc; a copy.
 				tsh.Copy(a.Dst, idSrc);
 			}
 			else

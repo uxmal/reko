@@ -51,6 +51,7 @@ namespace Decompiler.Analysis
 		private IdentifierLiveness varLive;
 		private int bitUseOffset;
 		private int cbitsUse;
+		private IsLiveHelper isLiveHelper;
 
 		private static TraceSwitch trace = new TraceSwitch("RegisterLiveness", "Details of register liveness analysis");
 
@@ -60,6 +61,7 @@ namespace Decompiler.Analysis
 			this.mpprocData = procFlow;
 			this.worklist = new WorkList();
 			this.varLive = new IdentifierLiveness(prog.Architecture);
+			this.isLiveHelper = new IsLiveHelper();
 			CollectBasicBlocks();
 			Dump();
 		}
@@ -166,6 +168,7 @@ namespace Decompiler.Analysis
 			}
 		}
 
+
 		private void Iterate()
 		{
 			InitializeWorkList();
@@ -249,6 +252,21 @@ namespace Decompiler.Analysis
 			}
 		}
 
+		public void MarkLiveStackParameters(CallInstruction ci)
+		{
+			int cBegin = ci.Callee.Frame.GetStackArgumentSpace();
+			foreach (Identifier id in Procedure.Frame.Identifiers)
+			{
+				StackLocalStorage sl = id.Storage as StackLocalStorage;
+				if (sl == null)
+					continue;
+				if (-ci.CallSite.StackDepthBefore <= sl.StackOffset && sl.StackOffset < cBegin - ci.CallSite.StackDepthBefore)
+				{
+					Use(id);
+				}
+			}
+		}
+
 		public void MergeBlockInfo(Block block)
 		{
 			BlockFlow blockFlow = mpprocData[block];
@@ -311,7 +329,7 @@ namespace Decompiler.Analysis
 			foreach (Procedure p in prog.CallGraph.Callees(stm))
 			{
 				ProcedureFlow flow = mpprocData[p];
-				varLive.BitSet = liveOrig - flow.Preserved;
+				varLive.BitSet = liveOrig - flow.PreservedRegisters;
 				varLive.LiveStackVariables = new StorageWidthMap();
 				MergeBlockInfo(p.ExitBlock);
 				varLive.BitSet = new BitSet(liveOrig);
@@ -369,6 +387,26 @@ namespace Decompiler.Analysis
 			get { return varLive; }
 		}
 
+		public void VisitAssignmentInner(Identifier idDst, Expression src)
+		{
+			Def(idDst);
+			bitUseOffset = varLive.DefOffset;
+			cbitsUse = varLive.DefBitSize;
+			src.Accept(this);
+		}
+
+		public void VisitCopy(Identifier idDst, Identifier idSrc)
+		{
+			if (isLiveHelper.IsLive(idDst, this.varLive))
+			{
+				VisitAssignmentInner(idDst, idSrc);
+			}
+			else
+			{
+				Def(idDst);
+			}
+		}
+
 		#region InstructionVisitor methods ////////////////////////////////////////////////////////////
 
 		private void Dump(string caption, IdentifierLiveness vl)
@@ -380,12 +418,17 @@ namespace Decompiler.Analysis
 
 		public override void VisitAssignment(Assignment a)
 		{
-			Identifier id = a.Dst;
-			Def(id);
-			bitUseOffset = varLive.DefOffset;
-			cbitsUse = varLive.DefBitSize;
-			a.Src.Accept(this);
+			Identifier idSrc = a.Src as Identifier;
+			if (idSrc != null)
+			{
+				VisitCopy(a.Dst, idSrc);
+			}
+			else
+			{
+				VisitAssignmentInner(a.Dst, a.Src);
+			}
 		}
+
 
 		public override void VisitApplication(Application appl)
 		{
@@ -439,8 +482,6 @@ namespace Decompiler.Analysis
 
 		public override void VisitCallInstruction(CallInstruction ci)
 		{
-			//$REVIEW: consider another mechanism to indicate signature
-			// is specified by user and therefore overrides normal processing.
 			if (ci.Callee.Signature != null && ci.Callee.Signature.ArgumentsValid)		
 			{
 				ProcedureSignature sig = ci.Callee.Signature;
@@ -463,9 +504,6 @@ namespace Decompiler.Analysis
 						varLive.Use(arg.Storage.BindFormalArgumentToFrame(proc.Frame, ci.CallSite));
 					}
 				}
-				varLive.BitSet = varLive.BitSet & ~sig.TrashedRegisters;
-//$				varLive.Grf =  ~grfTrashed) & varLive.Grf);
-
 			}
 			else
 			{
@@ -484,6 +522,9 @@ namespace Decompiler.Analysis
 				// or used by the called function.
 				varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
 				varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
+
+				// Any stack parameters are also considered live.
+				MarkLiveStackParameters(ci);
 			}
 		}
 
@@ -532,16 +573,17 @@ namespace Decompiler.Analysis
 				state = value;
 				foreach (object o in mpprocData.Values)
 				{
-					BlockFlow bi = o as BlockFlow;
-					if (bi != null)
-					{
-						state.InitializeBlockFlow(bi, bi.Block.Procedure.ExitBlock == bi.Block);
-						continue;
-					}
 					ProcedureFlow pi = o as ProcedureFlow;
 					if (pi != null)
 					{
 						state.InitializeProcedureFlow(pi);
+						continue;
+					}
+					BlockFlow bi = o as BlockFlow;
+					if (bi != null)
+					{
+						state.InitializeBlockFlow(bi.Block, mpprocData, bi.Block.Procedure.ExitBlock == bi.Block);
+						continue;
 					}
 				}
 			}
@@ -556,7 +598,7 @@ namespace Decompiler.Analysis
 				this.propagateThroughExitNodes = prop;
 			}
 
-			public abstract void InitializeBlockFlow(BlockFlow flow, bool isExitBlock);
+			public abstract void InitializeBlockFlow(Block blow, ProgramDataFlow flow, bool isExitBlock);
 
 			public abstract void InitializeProcedureFlow(ProcedureFlow flow);
 
@@ -604,21 +646,22 @@ namespace Decompiler.Analysis
 
 			public override void ApplySavedRegisters(ProcedureFlow procFlow, IdentifierLiveness varLive)
 			{
-				varLive.BitSet |= procFlow.Preserved;
+//				varLive.BitSet &= ~procFlow.PreservedRegisters;
 			}
 
-			public override void InitializeBlockFlow(BlockFlow flow, bool isExitBlock)
+			public override void InitializeBlockFlow(Block block, ProgramDataFlow flow, bool isExitBlock)
 			{
-				if (isExitBlock && flow.Block.Procedure.Signature.ArgumentsValid)
+				BlockFlow bf = flow[block];
+				if (isExitBlock && block.Procedure.Signature.ArgumentsValid)
 				{
-					Identifier ret = flow.Block.Procedure.Signature.ReturnValue;
+					Identifier ret = block.Procedure.Signature.ReturnValue;
 					if (ret != null)
 					{
 						RegisterStorage rs = ret.Storage as RegisterStorage;
 						if (rs != null)
-							rs.Register.SetAliases(flow.DataOut, true);
+							rs.Register.SetAliases(bf.DataOut, true);
 					}
-					foreach (Identifier id in flow.Block.Procedure.Signature.Arguments)
+					foreach (Identifier id in block.Procedure.Signature.Arguments)
 					{
 						OutArgumentStorage os = id.Storage as OutArgumentStorage;
 						if (os == null)
@@ -626,13 +669,14 @@ namespace Decompiler.Analysis
 						RegisterStorage rs = os.OriginalIdentifier.Storage as RegisterStorage;
 						if (rs != null) 
 						{
-							rs.Register.SetAliases(flow.DataOut, true);
+							rs.Register.SetAliases(bf.DataOut, true);
 						}
 					}
 				}
 				else
 				{
-					flow.DataOut.SetAll(isExitBlock);
+					bf.DataOut.SetAll(isExitBlock);
+					bf.DataOut &= ~flow[block.Procedure].PreservedRegisters;
 				}
 			}
 
@@ -675,9 +719,9 @@ namespace Decompiler.Analysis
 			{
 			}
 
-			public override void InitializeBlockFlow(BlockFlow flow, bool isExitBlock)
+			public override void InitializeBlockFlow(Block block, ProgramDataFlow flow, bool isExitBlock)
 			{
-				flow.DataOut.SetAll(false);
+				flow[block].DataOut.SetAll(false);
 			}
 
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
@@ -701,9 +745,9 @@ namespace Decompiler.Analysis
 			{
 			}
 
-			public override void InitializeBlockFlow(BlockFlow flow, bool isExitBlock)
+			public override void InitializeBlockFlow(Block block, ProgramDataFlow flow, bool isExitBlock)
 			{
-				flow.DataOut.SetAll(false);
+				flow[block].DataOut.SetAll(false);
 			}
 
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
@@ -723,5 +767,75 @@ namespace Decompiler.Analysis
 				// Used to update LiveIn, but it was never used.
 			}
 		}
+
+		public class IsLiveHelper : StorageVisitor
+		{
+			private bool retval;
+			private IdentifierLiveness liveState;
+
+			public bool IsLive(Identifier id, IdentifierLiveness liveState)
+			{
+				retval = false;
+				this.liveState = liveState;
+				id.Storage.Accept(this);
+				return retval;
+			}
+
+			#region StorageVisitor Members
+
+			public void VisitTemporaryStorage(TemporaryStorage temp)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void VisitStackArgumentStorage(StackArgumentStorage stack)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void VisitOutArgumentStorage(OutArgumentStorage arg)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void VisitMemoryStorage(MemoryStorage global)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void VisitRegisterStorage(RegisterStorage reg)
+			{
+				//$REFACTOR: make SetAliases be a bitset of Register.
+				BitSet b = new BitSet(liveState.BitSet.Count);
+				reg.Register.SetAliases(b, true);
+				retval = !(liveState.BitSet & b).IsEmpty;
+			}
+
+			public void VisitFpuStackStorage(FpuStackStorage fpu)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void VisitFlagGroupStorage(FlagGroupStorage grf)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void VisitSequenceStorage(SequenceStorage seq)
+			{
+				seq.Head.Storage.Accept(this);
+				if (!retval)
+					seq.Tail.Storage.Accept(this);
+			}
+
+			public void VisitStackLocalStorage(StackLocalStorage local)
+			{
+				retval = liveState.LiveStackVariables.Contains(local);
+			}
+
+			#endregion
+
+		}
+
 	}
 }

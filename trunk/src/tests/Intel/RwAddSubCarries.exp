@@ -1,17 +1,17 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ds:Register
-// ax:Register
-// dx:Register
-// cx:Register
-// bx:Register
+// ds:Register ds
+// ax:Register ax
+// dx:Register dx
+// cx:Register cx
+// bx:Register bx
 // bx_cx:Sequence bx:cx
 // dx_ax:Sequence dx:ax
 // SCZO:Flags
-// es:Register
+// es:Register es
 // es_cx:Sequence es:cx
-// cl:Register
+// cl:Register cl
 // v13:Temporary
 // C:Flags
 // v15:Temporary

@@ -1,4 +1,4 @@
-fn0C00_0000
+// fn0C00_0000 /////////////////////
 	LiveOut:  
 	MayUseIn:  es ds
 	BypassIn: 
@@ -11,7 +11,7 @@ fn0C00_0000_entry:		// block 0, pred:
 // DataOut: es ds
 l0C00_0000:		// block 1, pred: 0
 	si = 0x1234
-	call fn0C00_000B (depth: 0;)
+	call fn0C00_000B (depth: 2;)
 	store(Mem0[ds:0x4321:word16]) = ax
 	return
 	// succ:  2
@@ -19,7 +19,7 @@ l0C00_0000:		// block 1, pred: 0
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut:
-fn0C00_000B
+// fn0C00_000B /////////////////////
 	LiveOut:   ax ds
 	MayUseIn:  si es ds
 	BypassIn: 
@@ -31,20 +31,22 @@ fn0C00_000B_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: si es ds
 l0C00_000B:		// block 1, pred: 0
-	call fn0C00_0026 (depth: 2;)
+	wLoc04 = si
+	call fn0C00_0026 (depth: 4;)
 	di = ax
 	store(Mem0[ds:di:word16]) = 0x0000
 	store(Mem0[ds:di + 0x0002:word16]) = 0x0000
 	store(Mem0[ds:di + 0x0004:word16]) = 0x0000
-	call fn0C00_0035 (depth: 2;)
+	call fn0C00_0035 (depth: 4;)
 	ax = si
+	si = wLoc04
 	return
 	// succ:  2
 // DataOut: ax ds
 fn0C00_000B_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut: ax ds
-fn0C00_0026
+// fn0C00_0026 /////////////////////
 	LiveOut:   ax es ds
 	MayUseIn:  si ds
 	BypassIn: 
@@ -56,16 +58,18 @@ fn0C00_0026_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: si es ds
 l0C00_0026:		// block 1, pred: 0
+	wLoc04 = si
 	store(Mem0[ds:si:word16]) = 0x0001
 	store(Mem0[ds:si + 0x0002:word16]) = 0x0000
 	ax = si + 0x0004
+	si = wLoc04
 	return
 	// succ:  2
 // DataOut: ax es ds
 fn0C00_0026_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut: ax es ds
-fn0C00_0035
+// fn0C00_0035 /////////////////////
 	LiveOut:   si ds
 	MayUseIn:  si di es ds
 	BypassIn: 
@@ -77,7 +81,7 @@ fn0C00_0035_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: si di es ds
 l0C00_0035:		// block 1, pred: 0
-	wLoc02 = di
+	wLoc04 = di
 	v6 = Mem0[ds:si + 0x0002:word16] + 0x0001
 	store(Mem0[ds:si + 0x0002:word16]) = v6
 	ax = Mem0[ds:si + 0x0002:word16]
@@ -85,7 +89,7 @@ l0C00_0035:		// block 1, pred: 0
 	di = si + 0x0004
 	di = di + ax
 	SCZO = cond(di)
-	ax = wLoc02
+	ax = wLoc04
 	store(Mem0[es:di:word16]) = ax
 	di = di + 0x0002
 	return

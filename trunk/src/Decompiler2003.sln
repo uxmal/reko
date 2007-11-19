@@ -1,8 +1,4 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core2003", "Core\Core2003.csproj", "{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decompiler2003", "Decompiler\Decompiler2003.csproj", "{D7596024-6BF0-491A-8369-831693AF94E2}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -19,16 +15,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler2003", "Wi
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core2003", "Core\Core2003.csproj", "{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Debug.ActiveCfg = Debug|.NET
-		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Debug.Build.0 = Debug|.NET
-		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Release.ActiveCfg = Release|.NET
-		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Release.Build.0 = Release|.NET
 		{D7596024-6BF0-491A-8369-831693AF94E2}.Debug.ActiveCfg = Debug|.NET
 		{D7596024-6BF0-491A-8369-831693AF94E2}.Debug.Build.0 = Debug|.NET
 		{D7596024-6BF0-491A-8369-831693AF94E2}.Release.ActiveCfg = Release|.NET
@@ -45,6 +41,10 @@ Global
 		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Debug.Build.0 = Debug|.NET
 		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Release.ActiveCfg = Release|.NET
 		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Release.Build.0 = Release|.NET
+		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Debug.ActiveCfg = Debug|.NET
+		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Debug.Build.0 = Debug|.NET
+		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Release.ActiveCfg = Release|.NET
+		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

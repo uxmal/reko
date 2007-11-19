@@ -63,18 +63,22 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host, CodeEmitter emitter)
 		{
-			throw new NotImplementedException();
+			return CreateRewriter(prw, proc, host, emitter);
+		}
+
+		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, Address addrProc, int cbReturnOnStack, IRewriterHost host, CodeEmitter emitter)
+		{
+			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateRewriter implementation");
 		}
 
 		public Assembler CreateAssembler()
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateAssembler implementation");
 		}
 
 		public Dumper CreateDumper()
 		{
-			// TODO:  Add ArchitectureMock.CreateDumper implementation
-			return null;
+			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateDumper implementation");
 		}
 
 		public MachineFlags GetFlagGroup(uint grf)

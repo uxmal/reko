@@ -35,19 +35,19 @@ namespace Decompiler.Core
 	/// The frame layout is particularly interesting. On the Intel x86 architecture in real mode we have the following:
 	/// </para>
 	/// <code>
-	///   Layout                     offset value
+	///   Layout             offset value
 	/// +-----------------+
-	/// | arg3            |           6
+	/// | arg3            |   4
 	/// +-----------------+
-	/// | arg2            |           4
+	/// | arg2            |   2
 	/// +-----------------+
-	/// | arg1            |           2
+	/// | arg1            |   0
 	/// +-----------------+
-	/// | return address  |		      0
+	/// | return address  |	  -2
 	/// +-----------------+
-	/// | frame pointer   |
+	/// | frame pointer   |   -4
 	/// +-----------------+
-	/// | local1          |
+	/// | local1          |   -6
 	/// +-----------------+
 	/// | local2          |
 	/// 
@@ -61,6 +61,7 @@ namespace Decompiler.Core
 	{
 		private IdentifierCollection identifiers;	// Identifiers for each access.
 		private int returnAddressSize;			// Size of return value on stack -- (some processors pass it in a register)
+		private int stackDelta;					
 		private bool escapes;
 		private Identifier framePointer;
 		private int frameOffset;				// frame offset from stack pointer in bytes.
@@ -138,7 +139,6 @@ namespace Decompiler.Core
 		/// <param name="name"></param>
 		/// <param name="vt"></param>
 		/// <returns></returns>
-
 		public Identifier EnsureRegister(MachineRegister reg)
 		{
 			Identifier id = FindRegister(reg);
@@ -171,18 +171,19 @@ namespace Decompiler.Core
 			return idSeq;
 		}
 
-		// Makes sure that there is a local variable at 
-		// the given offset.
-
+		/// <summary>
+		/// Makes sure that there is a local variable at the given offset.
+		/// </summary>
+		/// <param name="cbOffset"></param>
+		/// <param name="type"></param>
+		/// <returns></returns>
 		public Identifier EnsureStackLocal(int cbOffset, DataType type)
 		{
 			return EnsureStackLocal(cbOffset, type, null);
-
 		}
+
 		public Identifier EnsureStackLocal(int cbOffset, DataType type, string name)
 		{
-			if (cbOffset==0)
-				cbOffset = 0;		//$DEBUG
 			Identifier id = FindStackLocal(cbOffset, type.Size);
 			if (id == null)
 			{
@@ -194,11 +195,16 @@ namespace Decompiler.Core
 
 		public Identifier EnsureStackArgument(int cbOffset, DataType type)
 		{
+			return EnsureStackArgument(cbOffset, type, null);
+		}
+
+		public Identifier EnsureStackArgument(int cbOffset, DataType type, string argName)
+		{
 			Identifier id = FindStackArgument(cbOffset, type.Size);
 			if (id == null)
 			{
 				id = new Identifier(
-					FormatStackAccessName(type, "Arg", cbOffset), 
+					FormatStackAccessName(type, "Arg", cbOffset, argName), 
 					identifiers.Count,
 					type, 
 					new StackArgumentStorage(cbOffset, type));
@@ -219,12 +225,11 @@ namespace Decompiler.Core
 				cbOffset = -cbOffset;
 			}
 
-			return (cbOffset > 0) 
+			return (cbOffset >= 0) 
 				? EnsureStackArgument(cbOffset, type)
 				: EnsureStackLocal(cbOffset, type);
 
 		}
-
 
 		public bool Escapes
 		{
@@ -243,7 +248,7 @@ namespace Decompiler.Core
 				return 0;
 			StackArgumentStorage stVar = id.Storage as StackArgumentStorage;
 			if (stVar != null)
-				return stVar.StackOffset - (int) ReturnAddressSize;
+				return stVar.StackOffset;
 			FpuStackStorage fstVar = id.Storage as FpuStackStorage;
 			if (fstVar != null)
 				return fstVar.FpuStackOffset;
@@ -286,6 +291,23 @@ namespace Decompiler.Core
 		public Identifier FramePointer
 		{
 			get { return framePointer; }
+		}
+
+		/// <summary>
+		/// Returns the number of bytes the stack arguments consume on the stack.
+		/// </summary>
+		/// <returns></returns>
+		public int GetStackArgumentSpace()
+		{
+			int cbMax = 0;
+			foreach (Identifier id in identifiers)
+			{
+				StackArgumentStorage sa = id.Storage as StackArgumentStorage;
+				if (sa == null)
+					continue;
+				cbMax = Math.Max(cbMax, sa.StackOffset + sa.DataType.Size);
+			}
+			return cbMax;
 		}
 
 		public Identifier FindFlagGroup(uint grfMask)
@@ -362,6 +384,11 @@ namespace Decompiler.Core
 			return null;
 		}
 
+		/// <summary>
+		/// Amount of bytes that the calling function pushed on the stack to store 
+		/// the return address. Some architectures pass the return address in a register,
+		/// which implies that in those architectures the return address size should be zero.
+		/// </summary>
 		public int ReturnAddressSize
 		{
 			get { return returnAddressSize; }

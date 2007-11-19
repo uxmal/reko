@@ -1,8 +1,8 @@
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-cx: cx:Register
-ax: ax:Register
-ds: ds:Register, def: {def ds}, uses: {store(Mem7[ds:0x0064:word16]) = ax_6}
+cx: cx:Register cx
+ax: ax:Register ax
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem7[ds:0x0064:word16]) = ax_6}
 cx_5: orig: cx, def: {cx_5 = 0x0005}, uses: {ax_6 = fn0C00_000B(cx_5)}
 ax_6: orig: ax, def: {ax_6 = fn0C00_000B(cx_5)}, uses: {store(Mem7[ds:0x0064:word16]) = ax_6}
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x0064:word16]) = ax_6}
@@ -21,34 +21,35 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-si: si:Register
-wLoc02: wLoc02:Local -0002
-cx: cx:Register, def: {def cx}, uses: {si_14 = cx}{cx_15 = cx - 0x0001}{branch cx <= 0x0001}
+si: si:Register si
+wLoc04: wLoc04:Local -0004
+cx: cx:Register cx, def: {def cx}, uses: {si_15 = cx}{cx_16 = cx - 0x0001}{branch cx <= 0x0001}
 SCZO: SCZO:Flags
 SZO: SZO:Flags
-ax: ax:Register
-dx: dx:Register
+ax: ax:Register ax
+dx: dx:Register dx
 dx_ax: dx_ax:Sequence dx:ax
-SCZO_10: orig: SCZO
-SZO_11: orig: SZO
-ax_12: orig: ax, def: {ax_12 = 0x0001}, uses: {ax_25 = PHI(ax_19, ax_12)}
-dx_ax_13: orig: dx_ax
-si_14: orig: si, def: {si_14 = cx}, uses: {dx_ax_18 = si_14 * ax_17}
-cx_15: orig: cx, def: {cx_15 = cx - 0x0001}, uses: {ax_17 = fn0C00_000B(cx_15)}
-SZO_16: orig: SZO
-ax_17: orig: ax, def: {ax_17 = fn0C00_000B(cx_15)}, uses: {dx_ax_18 = si_14 * ax_17}
-dx_ax_18: orig: dx_ax, def: {dx_ax_18 = si_14 * ax_17}, uses: {ax_19 = (word16) dx_ax_18 (alias)}
-ax_19: orig: ax, def: {ax_19 = (word16) dx_ax_18 (alias)}, uses: {ax_25 = PHI(ax_19, ax_12)}
-dx_20: orig: dx
-SCZO_21: orig: SCZO
-SZO_22: orig: SZO
-dx_ax_23: orig: dx_ax
-dx_24: orig: dx
-ax_25: orig: ax, def: {ax_25 = PHI(ax_19, ax_12)}, uses: {return ax_25}
-SZO_26: orig: SZO
-SCZO_27: orig: SCZO
-cx_28: orig: cx
-si_29: orig: si
+wLoc04_10: orig: wLoc04
+SCZO_11: orig: SCZO
+SZO_12: orig: SZO
+ax_13: orig: ax, def: {ax_13 = 0x0001}, uses: {ax_26 = PHI(ax_20, ax_13)}
+dx_ax_14: orig: dx_ax
+si_15: orig: si, def: {si_15 = cx}, uses: {dx_ax_19 = si_15 * ax_18}
+cx_16: orig: cx, def: {cx_16 = cx - 0x0001}, uses: {ax_18 = fn0C00_000B(cx_16)}
+SZO_17: orig: SZO
+ax_18: orig: ax, def: {ax_18 = fn0C00_000B(cx_16)}, uses: {dx_ax_19 = si_15 * ax_18}
+dx_ax_19: orig: dx_ax, def: {dx_ax_19 = si_15 * ax_18}, uses: {ax_20 = (word16) dx_ax_19 (alias)}
+ax_20: orig: ax, def: {ax_20 = (word16) dx_ax_19 (alias)}, uses: {ax_26 = PHI(ax_20, ax_13)}
+dx_21: orig: dx
+SCZO_22: orig: SCZO
+SZO_23: orig: SZO
+dx_ax_24: orig: dx_ax
+dx_25: orig: dx
+ax_26: orig: ax, def: {ax_26 = PHI(ax_20, ax_13)}, uses: {return ax_26}
+SZO_27: orig: SZO
+SCZO_28: orig: SCZO
+cx_29: orig: cx
+si_30: orig: si
 // fn0C00_000B
 word16 fn0C00_000B(word16 cx)
 fn0C00_000B_entry:		// block 0, pred:
@@ -58,18 +59,18 @@ l0C00_000B:		// block 1, pred: 0
 	branch cx <= 0x0001
 	// succ:  3 2
 l0C00_001C:		// block 2, pred: 1
-	ax_12 = 0x0001
+	ax_13 = 0x0001
 	// succ:  4
 l0C00_0011:		// block 3, pred: 1
-	si_14 = cx
-	cx_15 = cx - 0x0001
-	ax_17 = fn0C00_000B(cx_15)
-	dx_ax_18 = si_14 * ax_17
-	ax_19 = (word16) dx_ax_18 (alias)
+	si_15 = cx
+	cx_16 = cx - 0x0001
+	ax_18 = fn0C00_000B(cx_16)
+	dx_ax_19 = si_15 * ax_18
+	ax_20 = (word16) dx_ax_19 (alias)
 	// succ:  4
 l0C00_001F:		// block 4, pred: 3 2
-	ax_25 = PHI(ax_19, ax_12)
-	return ax_25
+	ax_26 = PHI(ax_20, ax_13)
+	return ax_26
 	// succ:  5
 fn0C00_000B_exit:		// block 5, pred: 4
 	// succ: 

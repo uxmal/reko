@@ -1,17 +1,17 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
-// eax:Register
-// dwLoc04:Local -0004
-// ax:Register
+// eax:Register eax
+// dwLoc08:Local -0008
+// ax:Register ax
 // return address size: 4
 void fn10000000()
 fn10000000_entry:		// block 0, pred:
 	// succ:  1
 l10000000:		// block 1, pred: 0
 	eax = Mem0[0x10003420:word32]
-	dwLoc04 = eax
-	call fn10000017 (depth: 4;)
+	dwLoc08 = eax
+	call fn10000017 (depth: 8;)
 	store(Mem0[0x10003428:word16]) = ax
 	return
 	// succ:  2
@@ -21,59 +21,59 @@ fn10000000_exit:		// block 2, pred: 1
 // fn10000017
 // Mem0:Global memory
 // fp:Temporary
-// ebp:Register
-// dwLoc04:Local -0004
-// ecx:Register
+// ebp:Register ebp
 // dwLoc08:Local -0008
-// wLoc08:Local -0008
-// dwArg04:Stack +0004
+// ecx:Register ecx
+// dwLoc0C:Local -000C
+// wLoc0C:Local -000C
+// dwArg00:Stack +0000
 // SCZO:Flags
 // Z:Flags
-// ax:Register
-// eax:Register
-// edx:Register
+// ax:Register ax
+// eax:Register eax
+// edx:Register edx
 // C:Flags
 // SO:Flags
-// cx:Register
+// cx:Register cx
 // return address size: 4
 void fn10000017()
 fn10000017_entry:		// block 0, pred:
 	// succ:  1
 l10000017:		// block 1, pred: 0
-	dwLoc04 = ebp
-	dwLoc08 = ecx
-	wLoc08 = 0x0000
-	SCZO = cond(dwArg04 - 0x00000000)
+	dwLoc08 = ebp
+	dwLoc0C = ecx
+	wLoc0C = 0x0000
+	SCZO = cond(dwArg00 - 0x00000000)
 	branch Test(NE,Z)
 	// succ:  6 2
 l1000002F:		// block 2, pred: 1 5
-	eax = (int32) wLoc08
-	ecx = dwArg04
+	eax = (int32) wLoc0C
+	ecx = dwArg00
 	edx = (int32) Mem0[ecx + eax:byte]
 	SCZO = cond(edx - 0x00000000)
 	C = false
 	branch Test(EQ,Z)
 	// succ:  3 4
 l1000003E:		// block 3, pred: 2
-	eax = (int32) wLoc08
+	eax = (int32) wLoc0C
 	SCZO = cond(eax - 0x00007FFF)
 	branch Test(GE,SO)
 	// succ:  5 4
 l1000005A:		// block 4, pred: 3 2
-	ax = wLoc08
+	ax = wLoc0C
 	// succ:  7
 l10000049:		// block 5, pred: 3
-	cx = wLoc08
+	cx = wLoc0C
 	cx = cx + 0x0001
 	SCZO = cond(cx)
-	wLoc08 = cx
+	wLoc0C = cx
 	// succ:  2
 l10000027:		// block 6, pred: 1
 	ax = 0x0000
 	SCZO = cond(ax)
 	// succ:  7
 l1000005E:		// block 7, pred: 6 4
-	ebp = dwLoc04
+	ebp = dwLoc08
 	return
 	// succ:  8
 fn10000017_exit:		// block 8, pred: 7

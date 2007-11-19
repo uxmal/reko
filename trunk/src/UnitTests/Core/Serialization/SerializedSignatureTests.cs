@@ -72,23 +72,6 @@ namespace Decompiler.UnitTests.Core.Serialization
 		}
 
 		[Test]
-		public void BuildSignatureWithTrashedRegisters()
-		{
-			SerializedSignature ssig = new SerializedSignature();
-			SerializedArgument arg = new SerializedArgument();
-			arg.Type = "word32";
-			arg.Kind = new SerializedRegister("eax");
-			ssig.ReturnValue = arg;
-			ssig.TrashedRegisters = new string[] {"eax", "ecx", "edx"};
-
-			SignatureSerializer sser = new SignatureSerializer(arch, "stdapi");
-			ProcedureSignature sig =  sser.Deserialize(ssig, new Frame(null));
-			Assert.IsTrue(sig.TrashedRegisters[Registers.eax.Number], "eax should be trashed");
-			Assert.IsTrue(sig.TrashedRegisters[Registers.ecx.Number], "ecx should be trashed");
-			Assert.IsTrue(sig.TrashedRegisters[Registers.edx.Number], "edx should be trashed");
-		}
-
-		[Test]
 		public void SsigWriteStdapi()
 		{
 			SerializedSignature ssig = BuildSsigStack();

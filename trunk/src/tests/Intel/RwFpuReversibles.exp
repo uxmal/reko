@@ -2,7 +2,7 @@
 // Mem0:Global memory
 // fp:Temporary
 // rLoc1:FPU stack
-// ds:Register
+// ds:Register ds
 // rLoc2:FPU stack
 // return address size: 2
 void fn0C00_0000()

@@ -1,12 +1,12 @@
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {ax_21 = Mem0[ds:si_17:word16]}
 fp: fp:Temporary, def: {def fp}
-dx: dx:Register, def: {def dx}
+dx: dx:Register dx, def: {def dx}
 SCZO: SCZO:Flags, def: {def SCZO}
-cx: cx:Register, def: {def cx}
-di: di:Register, def: {def di}
-ax: ax:Register, def: {def ax}
-ds: ds:Register, def: {def ds}, uses: {ax_21 = Mem0[ds:si_17:word16]}{store(Mem34[ds:0x0300:word16]) = dx_23}
-si: si:Register, def: {def si}, uses: {si_17 = PHI(si, si_22, si_22)}
+cx: cx:Register cx, def: {def cx}
+di: di:Register di, def: {def di}
+ax: ax:Register ax, def: {def ax}
+ds: ds:Register ds, def: {def ds}, uses: {ax_21 = Mem0[ds:si_17:word16]}{store(Mem34[ds:0x0300:word16]) = dx_23}
+si: si:Register si, def: {def si}, uses: {si_17 = PHI(si, si_22, si_22)}
 Z: Z:Flags, def: {def Z}
 SZO: SZO:Flags, def: {def SZO}
 dx_11: orig: dx, def: {dx_11 = 0x0000}, uses: {SCZO_12 = cond(dx_11)}{dx_20 = PHI(dx_11, dx_23, dx_23)}

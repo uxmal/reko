@@ -1,17 +1,17 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ds:Register
-// ax:Register
-// dx:Register
+// ds:Register ds
+// ax:Register ax
+// dx:Register dx
 // dx_ax:Sequence dx:ax
 // SCZO:Flags
-// si:Register
-// bx:Register
-// cx:Register
+// si:Register si
+// bx:Register bx
+// cx:Register cx
 // bx_cx:Sequence bx:cx
-// edx:Register
-// eax:Register
+// edx:Register edx
+// eax:Register eax
 // edx_eax:Sequence edx:eax
 // return address size: 2
 void fn0C00_0000()

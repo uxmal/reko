@@ -71,6 +71,24 @@ namespace Decompiler.UnitTests.Core
 //			Assert.AreNotSame(argOff, arg_alias);
 			Assert.AreEqual(16, arg_alias.Storage.OffsetOf(argSeg.Storage));
 		}
+
+		[Test]
+		public void BindToCallingFrame()
+		{
+			Frame caller = new Frame(PrimitiveType.Word16);
+			caller.EnsureStackLocal(-4, PrimitiveType.Word32, "bindToArg04");
+			caller.EnsureStackLocal(-6, PrimitiveType.Word16, "bindToArg02");
+
+			Frame callee = new Frame(PrimitiveType.Word16);
+			callee.EnsureStackArgument(4, PrimitiveType.Word16);
+			Identifier id = callee.EnsureStackArgument(4, PrimitiveType.Word32);
+			Identifier id2 = id.Storage.BindFormalArgumentToFrame(caller, new CallSite(6+2, 0));
+			Assert.AreEqual("bindToArg04", id2.Name);
+
+			id = callee.EnsureStackArgument(2, PrimitiveType.Word16);
+			id2 = id.Storage.BindFormalArgumentToFrame(caller, new CallSite(6+2, 0));
+			Assert.AreEqual("bindToArg02", id2.Name);
+		}
 	}
 
 	[TestFixture]

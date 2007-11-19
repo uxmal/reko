@@ -1,10 +1,10 @@
 // fn10000000
-void fn10000000(word32 dwArg04)
+void fn10000000(word32 dwArg00)
 fn10000000_entry:		// block 0, pred:
 	// succ:  1
 l10000000:		// block 1, pred: 0
-	GlobalUnlock(GlobalHandle(dwArg04))
-	GlobalFree(GlobalHandle(dwArg04))
+	GlobalUnlock(GlobalHandle(dwArg00))
+	GlobalFree(GlobalHandle(dwArg00))
 	return
 	// succ:  2
 fn10000000_exit:		// block 2, pred: 1

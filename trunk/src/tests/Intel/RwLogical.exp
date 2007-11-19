@@ -1,12 +1,12 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ax:Register
+// ax:Register ax
 // C:Flags
-// ebx:Register
+// ebx:Register ebx
 // SCZO:Flags
 // Z:Flags
-// ds:Register
+// ds:Register ds
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
