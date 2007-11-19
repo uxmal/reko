@@ -51,7 +51,6 @@ namespace Decompiler.Arch.Intel
 		public IntelRewriter(
 			IProcedureRewriter prw,
 			Procedure proc,
-			Address procAddress,
 			IRewriterHost host,
 			IntelArchitecture arch,
 			RewriterState state,
@@ -63,7 +62,8 @@ namespace Decompiler.Arch.Intel
 			this.prw = prw;
 			this.arch = arch;
 			this.state = state;
-			this.orw = new OperandRewriter(host, arch, frame, procAddress);
+			state.GrowStack(frame.ReturnAddressSize);
+			this.orw = new OperandRewriter(host, arch, frame);
 			this.dcff = new DeadConditionFlagsFinder();
 			this.emitter = emitter;
 			this.siw = new StringInstructionRewriter(arch, emitter, orw);
@@ -729,7 +729,7 @@ namespace Decompiler.Arch.Intel
 							instrs[i+3].op1 is AddressOperand))
 						{
 							// That's actually a far call.
-							EmitCall(GetProcedureFromInstructionAddr(instrs[i+3].op1, true));
+							EmitCall(GetProcedureFromInstructionAddr(instrs[i+3].op1, 2, true));
 							i += 3; // Skip the pushes and jump that we coalesced.
 							break;
 						}
@@ -1076,7 +1076,7 @@ namespace Decompiler.Arch.Intel
 			emitter.Emit(branch);
 			Block blockHead = emitter.Block;
 			EmitBranchPath(blockHead, addrEnd);
-			EmitBranchPath(blockHead, orw.OperandAsCodeAddress(opTarget));
+			EmitBranchPath(blockHead, orw.OperandAsCodeAddress(opTarget, state));
 		}
 
 		//$REFACTOR: move to ProcedureRewriter.
@@ -1084,7 +1084,7 @@ namespace Decompiler.Arch.Intel
 		{
 			emitter.Block = blockHead;
 			Block blockTo;
-			Procedure p = host.GetProcedureAtAddress(addrTo);
+			Procedure p = host.GetProcedureAtAddress(addrTo, frame.ReturnAddressSize);
 			if (p != null && p != this.proc)
 			{
 				// A branch to a procedure header other than the current procedure 
@@ -1326,7 +1326,7 @@ namespace Decompiler.Arch.Intel
 			{
 				emitter.Emit(new IndirectCall(e, state.StackBytes, state.FpuStackItems));
 			}
-			Procedure [] procs = host.GetAddressesFromVector(addrInstr);
+			Procedure [] procs = host.GetAddressesFromVector(addrInstr, instrCur.op1.Width.Size);
 			if (procs != null)
 			{
 				for (int j = 0; j < procs.Length; ++j)
@@ -1373,7 +1373,7 @@ namespace Decompiler.Arch.Intel
 			// Jumps to procedure are converted to calls -- but not if they are jumps
 			// to the same procedure!
 	
-			Procedure p = GetProcedureFromInstructionAddr(instrCur.op1, false);
+			Procedure p = GetProcedureFromInstructionAddr(instrCur.op1, frame.ReturnAddressSize, false);
 			if (p != null)
 			{
 				EmitCallAndReturn(p);
@@ -1382,7 +1382,7 @@ namespace Decompiler.Arch.Intel
 				
 			if (instrCur.op1 is ImmediateOperand)
 			{
-				Address addr = orw.OperandAsCodeAddress(instrCur.op1);
+				Address addr = orw.OperandAsCodeAddress(instrCur.op1, state);
 				Block blockFrom = emitter.Block;
 				Block blockTo = prw.RewriteBlock(addr, blockFrom);
 				return;
@@ -1636,7 +1636,10 @@ namespace Decompiler.Arch.Intel
 		public void EmitReturnInstruction(int cbReturn)
 		{
 			emitter.Return();
-			frame.ReturnAddressSize = cbReturn;
+			if (frame.ReturnAddressSize != cbReturn)
+				throw new InvalidOperationException(string.Format(
+					"Return instruction at address {0} expects a return address of {1} bytes, but procedure {2} was called with a return address of {3} bytes.",
+					state.InstructionAddress, cbReturn, this.proc, frame.ReturnAddressSize));
 			proc.Signature.FpuStackDelta = state.FpuStackItems;
 			proc.Signature.FpuStackParameterMax = maxFpuStackRead;
 			proc.Signature.FpuStackOutParameterMax = maxFpuStackWrite;
@@ -1732,10 +1735,10 @@ namespace Decompiler.Arch.Intel
 			return orw.FpuRegister(reg, state);
 		}
 
-		private Procedure GetProcedureFromInstructionAddr(Operand op, bool fSameProc)
+		private Procedure GetProcedureFromInstructionAddr(Operand op, int cbReturnAddress, bool fSameProc)
 		{
-			Address addr = orw.OperandAsCodeAddress(op);
-			Procedure p = host.GetProcedureAtAddress(addr);
+			Address addr = orw.OperandAsCodeAddress(op, state);
+			Procedure p = host.GetProcedureAtAddress(addr, cbReturnAddress);
 			if (p != null)
 			{
 				if (p != proc || fSameProc) 
@@ -1787,7 +1790,7 @@ namespace Decompiler.Arch.Intel
 		{
 			if (instrCur.op1 is AddressOperand || instrCur.op1 is ImmediateOperand)
 			{
-				Address addr = orw.OperandAsCodeAddress(instrCur.op1);
+				Address addr = orw.OperandAsCodeAddress(instrCur.op1, state);
 				if (addr == null)
 					throw new ApplicationException("Unable to determine address");
 				PseudoProcedure ppp = (PseudoProcedure) host.TrampolineAt(addr);
@@ -1797,7 +1800,10 @@ namespace Decompiler.Arch.Intel
 				}
 				else
 				{
-					Procedure p = GetProcedureFromInstructionAddr(instrCur.op1, true);
+					Procedure p = GetProcedureFromInstructionAddr(
+						instrCur.op1, 
+						instrCur.op1.Width.Size, 
+						true);
 					EmitCall(p);
 				}
 			} 

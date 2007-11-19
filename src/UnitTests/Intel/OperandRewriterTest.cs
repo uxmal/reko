@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Intel
 			Address procAddress = new Address(0x10000000);
 			proc = Procedure.Create(procAddress, new Frame(PrimitiveType.Word32));
 			state = new RewriterState(proc.Frame);
-			orw = new OperandRewriter(new FakeRewriterHost(), arch, proc.Frame, procAddress);
+			orw = new OperandRewriter(new FakeRewriterHost(), arch, proc.Frame);
 		}
 
 		[Test]
@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Intel
 		public void OrwOperandAsCodeAddress()
 		{
 			ImmediateOperand imm = new ImmediateOperand(PrimitiveType.Word32, 0x100F0000);
-			Address addr = orw.OperandAsCodeAddress(imm);
+			Address addr = orw.OperandAsCodeAddress(imm, null);
 			Assert.AreEqual(imm.val.Unsigned, addr.off);
 		}
 
@@ -195,9 +195,8 @@ namespace Decompiler.UnitTests.Intel
 			return null;
 		}
 
-		public Procedure[] GetAddressesFromVector(Address addrCaller)
+		public Procedure[] GetAddressesFromVector(Address addrCaller, int cbReturnAddress)
 		{
-			// TODO:  Add FakeRewriterHost.GetAddressesFromVector implementation
 			return null;
 		}
 
@@ -225,10 +224,9 @@ namespace Decompiler.UnitTests.Intel
 			}
 		}
 
-		public Procedure GetProcedureAtAddress(Address addr)
+		public Procedure GetProcedureAtAddress(Address addr, int cbStackDepth)
 		{
-			// TODO:  Add FakeRewriterHost.GetProcedureAtAddress implementation
-			return null;
+			throw new NotImplementedException();
 		}
 
 		public void AddCallEdge(Procedure caller, Statement stm, Procedure callee)

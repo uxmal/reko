@@ -889,7 +889,7 @@
                 />
                 <File
                     RelPath = "WindowsGui\Forms\AnalyzePage.cs"
-                    SubType = "UserControl"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -904,7 +904,7 @@
                 />
                 <File
                     RelPath = "WindowsGui\Forms\InitialPage.cs"
-                    SubType = "UserControl"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -914,7 +914,7 @@
                 />
                 <File
                     RelPath = "WindowsGui\Forms\LoadPage.cs"
-                    SubType = "UserControl"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
@@ -961,60 +961,6 @@
                     RelPath = "WindowsGui\obj\WindowsGui2005.csproj.FileList.txt"
                     BuildAction = "Content"
                 />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.ImageMapControl.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.MemoryControl.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.MemoryControl2.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui.Driver.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.AnalysePage.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.LoadPage.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.MainForm.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.PhasePage.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.ScanPage.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui2003.exe"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Decompiler.WindowsGui2003.pdb"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\Grovel.MainForm.resources"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WindowsGui\obj\Debug\WindowsGui2003.projdata"
-                    BuildAction = "None"
-                />
-                <Folder RelPath = "WindowsGui\obj\Debug\temp\" />
-                <Folder RelPath = "WindowsGui\obj\Debug\TempPE\" />
             </Include>
         </Files>
     </CSHARP>

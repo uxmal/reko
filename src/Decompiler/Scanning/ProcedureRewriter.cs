@@ -41,7 +41,7 @@ namespace Decompiler.Scanning
 
 		public void HandleFallThrough(Block block, Address addr)
 		{
-			Procedure procTarget = host.GetProcedureAtAddress(addr);
+			Procedure procTarget = host.GetProcedureAtAddress(addr, proc.Frame.ReturnAddressSize);
 			if (procTarget != null)
 			{
 				rewriter.EmitCallAndReturn(procTarget);

@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Intel
 		public void Setup()
 		{
 			frame = new Frame(PrimitiveType.Word16);
-			orw = new OperandRewriter(null, arch, frame, null);
+			orw = new OperandRewriter(null, arch, frame);
 			rw = new LongAddRewriter(frame, orw, null);
 		}
 

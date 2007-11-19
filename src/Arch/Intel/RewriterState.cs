@@ -59,6 +59,11 @@ namespace Decompiler.Arch.Intel
 			return state;
 		}
 
+		public ushort CodeSegment
+		{
+			get { return addrCur.seg; }
+		}
+
 		/// <summary>
 		/// Implements a frame shift.
 		/// </summary>

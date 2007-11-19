@@ -93,7 +93,7 @@ namespace Decompiler.Scanning
 				Procedure p = (Procedure) de.Value;
 				if (prog.CallGraph.EntryPoints.Contains(p))
 				{
-					RewriteProcedure(p, addrProc);
+					RewriteProcedure(p, addrProc, prog.Architecture.WordWidth.Size);
 				}
 			}
 
@@ -101,7 +101,7 @@ namespace Decompiler.Scanning
 			{
 				Address addrProc = (Address) de.Key;
 				Procedure p = (Procedure) de.Value;
-				RewriteProcedure(p, addrProc);
+				RewriteProcedure(p, addrProc, p.Frame.ReturnAddressSize);
 			}
 
 			foreach (Procedure proc in prog.Procedures.Values)
@@ -118,6 +118,11 @@ namespace Decompiler.Scanning
 
 		public Procedure [] GetAddressesFromVector(Address addr)
 		{
+			throw new NotImplementedException();
+		}
+
+		public Procedure [] GetAddressesFromVector(Address addr, int cbReturnAddress)
+		{
 			VectorUse vu = (VectorUse) vectorUses[addr];
 			if (vu == null)
 				return null;
@@ -125,7 +130,7 @@ namespace Decompiler.Scanning
 			Procedure [] procs = new Procedure[vector.Addresses.Count];
 			for (int i = 0; i < vector.Addresses.Count; ++i)
 			{
-				procs[i] = GetProcedureAtAddress((Address) vector.Addresses[i]);
+				procs[i] = GetProcedureAtAddress((Address) vector.Addresses[i], cbReturnAddress);
 			}
 			return procs;
 		}
@@ -135,14 +140,14 @@ namespace Decompiler.Scanning
 			return (PseudoProcedure) prog.ImportThunks[(uint) addrThunk.Linear];		//$REVIEW: should be external procedures, since they have real signatures.
 		}
 
-		public virtual Procedure GetProcedureAtAddress(Address addr)
+		public virtual Procedure GetProcedureAtAddress(Address addr, int cbReturnAddress)
 		{
 			if (addr == null)
 				return null;
 			Procedure proc = (Procedure) prog.Procedures[addr];
 			if (proc != null)
 			{
-				RewriteProcedure(proc, addr);
+				RewriteProcedure(proc, addr, cbReturnAddress);
 			}
 			return proc;
 		}
@@ -157,7 +162,7 @@ namespace Decompiler.Scanning
 			return (ProcedureSignature) callSignatures[addr];
 		}
 
-		public void RewriteProcedure(Procedure proc, Address addrProc)
+		public void RewriteProcedure(Procedure proc, Address addrProc, int cbReturnAddress)
 		{
 			if (proceduresRewritten.Contains(proc))
 				return;
@@ -166,34 +171,38 @@ namespace Decompiler.Scanning
 			{
 				proceduresRewritten.Add(proc, proc);
 
-				// dfs number the procedure.
-
 				proc.DfsNumber = dfs++;
 				prog.DfsProcedures.Add(proc);
 
-				// Rewrite the blocks in the procedure.
-
-				prw = new ProcedureRewriter(this, proc);
-				Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, addrProc, this, new CodeEmitter(prog, proc));
-				prw.Rewriter = rw;
-				ImageMapBlock raw = (ImageMapBlock) ImageMap.FindItemExact(addrProc);
-				prw.RewriteBlock(raw.Address, proc.EntryBlock);
-				proc.RenumberBlocks();
-
-				// If the frame escaped, rewrite local/parameter accesses to memory fetches.
-
-				if (proc.Frame.Escapes)
-				{
-					EscapedAccessRewriter esc = new EscapedAccessRewriter(proc);
-					esc.Transform();
-					esc.InsertFramePointerAssignment();
-					proc.RenumberBlocks();
-				}
+				proc.Frame.ReturnAddressSize = cbReturnAddress;
+				RewriteProcedureBlocks(proc, addrProc);
 			} 
 			catch (Exception ex)
 			{
 				host.WriteDiagnostic(Diagnostic.Error, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message);
 				throw;
+			}
+		}
+
+		public virtual void RewriteProcedureBlocks(Procedure proc, Address addrProc)
+		{
+			// Rewrite the blocks in the procedure.
+
+			prw = new ProcedureRewriter(this, proc);
+			Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, this, new CodeEmitter(prog, proc));
+			prw.Rewriter = rw;
+			ImageMapBlock raw = (ImageMapBlock) ImageMap.FindItemExact(addrProc);
+			prw.RewriteBlock(raw.Address, proc.EntryBlock);
+			proc.RenumberBlocks();
+
+			// If the frame escaped, rewrite local/parameter accesses to memory fetches.
+
+			if (proc.Frame.Escapes)
+			{
+				EscapedAccessRewriter esc = new EscapedAccessRewriter(proc);
+				esc.Transform();
+				esc.InsertFramePointerAssignment();
+				proc.RenumberBlocks();
 			}
 		}
 
