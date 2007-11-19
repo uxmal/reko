@@ -59,5 +59,30 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual(1, tsh.TrashedRegisters.Count);
 			Assert.AreEqual("ebx", ((RegisterStorage) tsh.TrashedRegisters[eax.Storage]).Register.Name);
 		}
+
+		[Test]
+		public void TrashSequence()
+		{
+			Identifier es = frame.EnsureRegister(Registers.es);
+			Identifier bx = frame.EnsureRegister(Registers.bx);
+			Identifier es_bx = frame.EnsureSequence(es, bx, PrimitiveType.Pointer32);
+			tsh.Trash(es_bx, "TRASH");
+			Assert.AreEqual("(Register bx:TRASH) (Register es:TRASH) (Sequence es:bx:TRASH) ", Dump(tsh.TrashedRegisters));
+		}
+
+		private string Dump(Hashtable trash)
+		{
+			StringBuilder sb = new StringBuilder();
+			SortedList sl = new SortedList();
+			foreach (DictionaryEntry de in trash)
+			{
+				sl[de.Key.ToString()] = de.Value.ToString();
+			}
+			foreach (DictionaryEntry de in sl)
+			{
+				sb.AppendFormat("({0}:{1}) ", de.Key, de.Value);
+			}
+			return sb.ToString();
+		}
 	}
 }

@@ -24,21 +24,36 @@ namespace Decompiler.Core.Code
 	/// <summary>
 	/// Interface between a calling procedure and a callee procedure. All registers
 	/// used or defined by the called procedure are stored here, as is the stack
-	/// depth before the call.
+	/// depth before the call. The stack depth includes any return address pushed
+	/// on the stack before control transfers to the callee. 
 	/// </summary>
 	public class CallSite
 	{
-		public int StackDepthBefore;	// Depth of stack before call.
-		public int FpuStackDepthBefore;	// Depth of FPU stack before call.
-		public Identifier [] Usex;		// registers used by procedure.
-		public Identifier [] Def;		// registers defined by procedure.
+		private int stackDepthBefore;	// Depth of stack before call.
+		private int fpuStackDepthBefore;	// Depth of FPU stack before call.
 
 		public CallSite(int stackDepthBefore, int fpuStackDepthBefore)
 		{
-			this.StackDepthBefore = stackDepthBefore;
-			this.FpuStackDepthBefore = fpuStackDepthBefore;
+			this.stackDepthBefore = stackDepthBefore;
+			this.fpuStackDepthBefore = fpuStackDepthBefore;
 		}
 
+		/// <summary>
+		/// Depth of FPU stack before call.
+		/// </summary>
+		public int FpuStackDepthBefore
+		{
+			get { return fpuStackDepthBefore; }
+		}
+
+		/// <summary>
+		/// Depth of stack before call, including possible return address.
+		/// </summary>
+		public int StackDepthBefore
+		{
+			get { return stackDepthBefore; }
+		}
+		
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
@@ -46,24 +61,6 @@ namespace Decompiler.Core.Code
 			if (FpuStackDepthBefore != 0)
 			{
 				sb.AppendFormat(" FPU: {0};", FpuStackDepthBefore);
-			}
-			if (Usex != null && Usex.Length > 0)
-			{
-				sb.Append(" (Use");
-				foreach (Identifier id in Usex)
-				{
-					sb.AppendFormat(" {0}", id);
-				}
-				sb.Append(")");
-			}
-			if (Def != null && Def.Length > 0)
-			{
-				sb.Append(" (Def");
-				foreach (Identifier id in Def)
-				{
-					sb.AppendFormat(" {0}", id);
-				}
-				sb.Append(")");
 			}
 			return sb.ToString();
 		}

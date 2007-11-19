@@ -1,4 +1,4 @@
-fn0C00_0000
+// fn0C00_0000 /////////////////////
 	LiveOut:  
 	MayUseIn:  dx
 	BypassIn: 
@@ -10,14 +10,14 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: dx
 l0C00_0000:		// block 1, pred: 0
-	call fn0C00_0004 (depth: 0;)
+	call fn0C00_0004 (depth: 2;)
 	return
 	// succ:  2
 // DataOut:
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut:
-fn0C00_0004
+// fn0C00_0004 /////////////////////
 	LiveOut:   ax dx
 	MayUseIn:  dx
 	BypassIn: 
@@ -39,7 +39,7 @@ l0C00_000F:		// block 2, pred: 1
 	// succ:  4
 // DataOut: dx
 l0C00_0009:		// block 3, pred: 1
-	call fn0C00_0013 (depth: 0;)
+	call fn0C00_0013 (depth: 2;)
 	// succ:  4
 // DataOut: dx
 l0C00_0010:		// block 4, pred: 3 2
@@ -50,7 +50,7 @@ l0C00_0010:		// block 4, pred: 3 2
 fn0C00_0004_exit:		// block 5, pred: 4
 	// succ: 
 // DataOut: ax dx
-fn0C00_0013
+// fn0C00_0013 /////////////////////
 	LiveOut:   dx
 	MayUseIn:  dx
 	BypassIn: 
@@ -69,13 +69,13 @@ l0C00_0013:		// block 1, pred: 0
 l0C00_001F:		// block 2, pred: 1
 	dx = dx - 0x000A
 	SCZO = cond(dx)
-	call fn0C00_0004 (depth: 0;)
+	call fn0C00_0004 (depth: 2;)
 	// succ:  4
 // DataOut: ax dx
 l0C00_0018:		// block 3, pred: 1
 	dx = dx - 0x0001
 	SZO = cond(dx)
-	call fn0C00_0004 (depth: 0;)
+	call fn0C00_0004 (depth: 2;)
 	// succ:  4
 // DataOut: ax dx
 l0C00_0025:		// block 4, pred: 3 2

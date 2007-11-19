@@ -492,7 +492,7 @@ namespace Decompiler.Arch.Intel
 					case Opcode.iret:
 						EmitPop(orw.FlagGroup(FlagM.SF|FlagM.CF|FlagM.ZF|FlagM.OF), instrCur.dataWidth);
 						//$BUGBUG: what if in 32-bit mode?
-						EmitReturnInstruction(4);
+						EmitReturnInstruction(4, 0);
 						break;
 
 					case Opcode.jmp:
@@ -728,7 +728,7 @@ namespace Decompiler.Arch.Intel
 							(instrs[i+3].code == Opcode.jmp && 
 							instrs[i+3].op1 is AddressOperand))
 						{
-							// That's actually a far call.
+							// That's actually a far call, but the callee thinks its a near call.
 							EmitCall(GetProcedureFromInstructionAddr(instrs[i+3].op1, 2, true));
 							i += 3; // Skip the pushes and jump that we coalesced.
 							break;
@@ -761,8 +761,8 @@ namespace Decompiler.Arch.Intel
 						}
 
 						EmitReturnInstruction(
-							this.arch.WordWidth.Size +
-							(instrCur.code == Opcode.retf ? PrimitiveType.Word16.Size : 0));
+							this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? PrimitiveType.Word16.Size : 0),
+							instrCur.cOperands == 1 ? ((ImmediateOperand) instrCur.op1).Signed : 0);
 						break;
 
 					case Opcode.rcl:
@@ -1112,7 +1112,7 @@ namespace Decompiler.Arch.Intel
 			if (procCallee.Characteristics.IsAlloca)
 			{
 				if (procCallee.Signature == null)
-					throw new ApplicationException("You must specify a procedure signature for 'alloca'.");
+					throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", proc.Name));
 				Identifier id = 
 					procCallee.Signature.Arguments[0].Storage.BindFormalArgumentToFrame(this.frame, call.CallSite);
 				Constant c = SearchBackForConstantAssignment(id);
@@ -1139,7 +1139,7 @@ namespace Decompiler.Arch.Intel
 		public override void EmitCallAndReturn(Procedure callee)
 		{
 			EmitCall(callee);
-			EmitReturnInstruction(callee.Frame.ReturnAddressSize);
+			EmitReturnInstruction(callee.Frame.ReturnAddressSize, callee.Signature.StackDelta); 
 		}
 
 		
@@ -1317,6 +1317,7 @@ namespace Decompiler.Arch.Intel
 				}
 			}
 
+			//$BUGBUG: we need the size of the return address.
 			ProcedureSignature sig = host.GetCallSignatureAtAddress(addrInstr);
 			if (sig != null)
 			{
@@ -1400,7 +1401,7 @@ namespace Decompiler.Arch.Intel
 			}
 
 			EmitIndirectCall(addrInstr);
-			EmitReturnInstruction(0);
+			EmitReturnInstruction(0, 0);
 		}
 
 
@@ -1633,13 +1634,14 @@ namespace Decompiler.Arch.Intel
 			Block.AddEdge(blockStringInstr, blockHead);
 		}
 
-		public void EmitReturnInstruction(int cbReturn)
+		public void EmitReturnInstruction(int cbReturnAddress, int cbBytesPop)
 		{
-			emitter.Return();
-			if (frame.ReturnAddressSize != cbReturn)
+			if (frame.ReturnAddressSize != cbReturnAddress)
 				throw new InvalidOperationException(string.Format(
 					"Return instruction at address {0} expects a return address of {1} bytes, but procedure {2} was called with a return address of {3} bytes.",
-					state.InstructionAddress, cbReturn, this.proc, frame.ReturnAddressSize));
+					state.InstructionAddress, cbReturnAddress, this.proc, frame.ReturnAddressSize));
+			emitter.Return();
+			proc.Signature.StackDelta = cbBytesPop;
 			proc.Signature.FpuStackDelta = state.FpuStackItems;
 			proc.Signature.FpuStackParameterMax = maxFpuStackRead;
 			proc.Signature.FpuStackOutParameterMax = maxFpuStackWrite;

@@ -104,13 +104,17 @@ namespace Decompiler.Analysis
 		public void VisitRegisterStorage(RegisterStorage reg)
 		{
 			if (defining)
+			{
 				regDefs[reg] = value;
+			}
 			else
 				value = regDefs[reg];
 		}
 
 		public void VisitSequenceStorage(SequenceStorage seq)
 		{
+			seq.Head.Storage.Accept(this);
+			seq.Tail.Storage.Accept(this);
 			if (defining)
 			{
 				regDefs[seq] = value;

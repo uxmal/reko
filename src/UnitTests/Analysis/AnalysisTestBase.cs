@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			foreach (Procedure proc in prog.DfsProcedures)
 			{
-				w.WriteLine(proc.Name);
+				w.WriteLine("// {0} /////////////////////", proc.Name);
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				DataFlow.EmitRegisters(prog.Architecture, "\tLiveOut:  ", flow.grfLiveOut, flow.LiveOut, w);
 				w.WriteLine();
@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Analysis
 				w.WriteLine();
 				DataFlow.EmitRegisters(prog.Architecture, "\tTrashed:  ", flow.grfTrashed, flow.TrashedRegisters, w);
 				w.WriteLine();
-				DataFlow.EmitRegisters(prog.Architecture, "\tPreserved:", flow.grfPreserved, flow.Preserved, w);
+				DataFlow.EmitRegisters(prog.Architecture, "\tPreserved:", flow.grfPreserved, flow.PreservedRegisters, w);
 				w.WriteLine();
 
 				w.WriteLine("// {0}", proc.Name);
@@ -101,6 +101,7 @@ namespace Decompiler.UnitTests.Analysis
 			prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
 			Assembler asm = prog.Architecture.CreateAssembler();
 			prog.Image = asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(relativePath), null);
+			prog.ImageMap = new ImageMap(prog.Image);
 			Rewrite(prog, asm, configFile);
 			return prog;
 		}

@@ -309,7 +309,8 @@ namespace Decompiler.Core
 
 		public override void Write(TextWriter writer)
 		{
-			writer.Write("Register");
+			writer.Write("Register ");
+			writer.Write(reg.Name);
 		}
 	}
 
@@ -386,7 +387,7 @@ namespace Decompiler.Core
 
 	public class StackArgumentStorage : Storage
 	{
-		private int cbOffset;
+		private int cbOffset;		// offset stack pointer on entry to routine.
 		private DataType dataType;
 
 		public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
@@ -400,9 +401,9 @@ namespace Decompiler.Core
 			visitor.VisitStackArgumentStorage(this);
 		}
 
-		public override Identifier BindFormalArgumentToFrame(Frame frame, CallSite cs)
+		public override Identifier BindFormalArgumentToFrame(Frame callingFrame, CallSite cs)
 		{
-			return frame.EnsureStackLocal(cbOffset - cs.StackDepthBefore, DataType);
+			return callingFrame.EnsureStackLocal(cbOffset - cs.StackDepthBefore, DataType);
 		}
 
 		public DataType DataType
@@ -433,6 +434,15 @@ namespace Decompiler.Core
 			return -1;
 		}
 
+		/// <summary>
+		/// Offset from stack pointer as it was when the procedure was entered.
+		/// </summary>
+		/// <remarks>
+		/// If the architecture stores the return address on the stack, the return address will be at offset 0 and
+		/// any stack arguments will have offsets > 0. If the architecture passes the return address in a
+		/// register, there may be stack arguments with offset 0. In either case, negative stack offsets for parameters
+		/// are not legal.
+		/// </remarks>
 		public int StackOffset
 		{
 			get { return cbOffset; }

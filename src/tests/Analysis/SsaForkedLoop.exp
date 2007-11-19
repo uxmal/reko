@@ -1,11 +1,11 @@
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {si_18 = Mem0[ds:0x0300:word16]}{si_22 = Mem0[ds:0x0302:word16]}{ax_23 = ax_14 + Mem0[ds:si_22 + 0x0004:word16]}{ax_27 = ax_14 + Mem0[ds:si_18:word16]}
 fp: fp:Temporary, def: {def fp}
-ax: ax:Register, def: {def ax}
+ax: ax:Register ax, def: {def ax}
 SCZO: SCZO:Flags, def: {def SCZO}
-bx: bx:Register, def: {def bx}, uses: {SCZO_15 = cond(ax_14 - bx)}
+bx: bx:Register bx, def: {def bx}, uses: {SCZO_15 = cond(ax_14 - bx)}
 SO: SO:Flags, def: {def SO}
-ds: ds:Register, def: {def ds}, uses: {si_18 = Mem0[ds:0x0300:word16]}{si_22 = Mem0[ds:0x0302:word16]}{ax_23 = ax_14 + Mem0[ds:si_22 + 0x0004:word16]}{ax_27 = ax_14 + Mem0[ds:si_18:word16]}
-si: si:Register, def: {def si}, uses: {si_13 = PHI(si, si_18, si_22)}
+ds: ds:Register ds, def: {def ds}, uses: {si_18 = Mem0[ds:0x0300:word16]}{si_22 = Mem0[ds:0x0302:word16]}{ax_23 = ax_14 + Mem0[ds:si_22 + 0x0004:word16]}{ax_27 = ax_14 + Mem0[ds:si_18:word16]}
+si: si:Register si, def: {def si}, uses: {si_13 = PHI(si, si_18, si_22)}
 Z: Z:Flags, def: {def Z}
 ax_9: orig: ax, def: {ax_9 = 0x0000}, uses: {SCZO_10 = cond(ax_9)}{ax_14 = PHI(ax_9, ax_27, ax_23)}
 SCZO_10: orig: SCZO, def: {SCZO_10 = cond(ax_9)}, uses: {SO_11 = SCZO_10 (alias)}{Z_12 = SCZO_10 (alias)}

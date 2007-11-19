@@ -75,9 +75,8 @@ namespace Decompiler.Core.Serialization
 					args.Add(argser.Deserialize(arg));
 				}
 			}
-			BitSet trash = ss.CreatedTrashedRegisterBitset(arch);
 			ProcedureSignature sig = new ProcedureSignature(
-				ret, (Identifier [])args.ToArray(typeof(Identifier)), trash);
+				ret, (Identifier [])args.ToArray(typeof(Identifier)));
 			
 			ApplyConvention(ss, sig);
 

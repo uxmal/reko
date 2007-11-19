@@ -229,6 +229,11 @@ namespace Decompiler.UnitTests.Intel
 			throw new NotImplementedException();
 		}
 
+		public Procedure [] GetProceduresFromVector(Address vectorAddress)
+		{
+			throw new NotImplementedException();
+		}
+
 		public void AddCallEdge(Procedure caller, Statement stm, Procedure callee)
 		{
 			// TODO:  Add FakeRewriterHost.AddCallEdge implementation

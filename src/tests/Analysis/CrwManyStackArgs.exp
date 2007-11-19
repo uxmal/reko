@@ -6,50 +6,52 @@ void fn0C00_0000(Register segment ds)
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// wLoc02:Local -0002
 // wLoc04:Local -0004
 // wLoc06:Local -0006
-// ax:Register
-// ds:Register
+// wLoc08:Local -0008
+// ax:Register ax
+// ds:Register ds
 // return address size: 2
 void fn0C00_0000(segment ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	wLoc02 = 0x0003
-	wLoc04 = 0x0002
-	wLoc06 = 0x0001
-	ax = fn0C00_0011(wLoc06, wLoc04, wLoc02)
+	wLoc04 = 0x0003
+	wLoc06 = 0x0002
+	wLoc08 = 0x0001
+	ax = fn0C00_0011(wLoc08, wLoc06, wLoc04)
 	store(Mem0[ds:0x1300:word16]) = ax
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
-Register word16 fn0C00_0011(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
+Register word16 fn0C00_0011(Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
 // MayUse: 
 // LiveOut: ax
 // Trashed: SCZO ax al ah
 // Preserved: bp
-// Stack args: Stack +0002(16) Stack +0004(16) Stack +0006(16)
+// Stack args: Stack +0000(16) Stack +0002(16) Stack +0004(16)
 // fn0C00_0011
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register
-// wLoc02:Local -0002
+// bp:Register bp
+// wLoc04:Local -0004
+// wArg00:Stack +0000
+// ax:Register ax
 // wArg02:Stack +0002
-// ax:Register
 // wArg04:Stack +0004
-// wArg06:Stack +0006
 // SCZO:Flags
 // return address size: 2
-word16 fn0C00_0011(word16 wArg02, word16 wArg04, word16 wArg06)
+word16 fn0C00_0011(word16 wArg00, word16 wArg02, word16 wArg04)
 fn0C00_0011_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0011:		// block 1, pred: 0
-	ax = wArg02
+	wLoc04 = bp
+	ax = wArg00
+	ax = ax + wArg02
 	ax = ax + wArg04
-	ax = ax + wArg06
 	SCZO = cond(ax)
+	bp = wLoc04
 	return ax
 	// succ:  2
 fn0C00_0011_exit:		// block 2, pred: 1

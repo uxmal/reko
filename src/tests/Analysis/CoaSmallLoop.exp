@@ -1,10 +1,10 @@
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {cx_11 = Mem0[ds:bx:word16]}
 fp: fp:Temporary
-ax: ax:Register
+ax: ax:Register ax
 SCZO: SCZO:Flags
-bx: bx:Register, def: {def bx}, uses: {cx_11 = Mem0[ds:bx:word16]}
-ds: ds:Register, def: {def ds}, uses: {cx_11 = Mem0[ds:bx:word16]}{store(Mem20[ds:0x0300:word16]) = ax_15}
-cx: cx:Register
+bx: bx:Register bx, def: {def bx}, uses: {cx_11 = Mem0[ds:bx:word16]}
+ds: ds:Register ds, def: {def ds}, uses: {cx_11 = Mem0[ds:bx:word16]}{store(Mem20[ds:0x0300:word16]) = ax_15}
+cx: cx:Register cx
 Z: Z:Flags
 ax_8: orig: ax, def: {ax_8 = 0x0000}, uses: {ax_13 = PHI(ax_8, ax_15)}
 SCZO_9: orig: SCZO

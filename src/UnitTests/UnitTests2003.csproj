@@ -160,11 +160,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Analysis\CopyChainTests.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Analysis\CriticalInstructionTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -216,6 +211,11 @@
                 />
                 <File
                     RelPath = "Analysis\InterferenceTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Analysis\IsLiveHelperTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

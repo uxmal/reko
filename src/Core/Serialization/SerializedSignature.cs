@@ -42,9 +42,6 @@ namespace Decompiler.Core.Serialization
 		[XmlElement("arg")]
 		public SerializedArgument [] Arguments;
 
-		[XmlElement("trash")]
-		public string [] TrashedRegisters;
-
 		public SerializedSignature()
 		{
 		}
@@ -64,19 +61,5 @@ namespace Decompiler.Core.Serialization
 				}
 			}
 		}
-
-		public BitSet CreatedTrashedRegisterBitset(IProcessorArchitecture arch)
-		{
-			BitSet trash = arch.CreateRegisterBitset();
-			if (TrashedRegisters != null)
-			{
-				foreach (string r in TrashedRegisters)
-				{
-					trash[arch.GetRegister(r).Number] = true;
-				}
-			}
-			return trash;
-		}
-
 	}
 }

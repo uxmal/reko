@@ -37,7 +37,6 @@ namespace Decompiler.Core
 	{
 		private Identifier ret;
 		private Identifier [] args;
-		private BitSet trash;
 		private int stackDelta;
 		private TypeVariable typeVar;
 
@@ -53,16 +52,8 @@ namespace Decompiler.Core
 		{
 			this.ret = returnId;
 			this.args = arguments;
-			this.trash = new BitSet(16);
 		}
-
-		public ProcedureSignature(Identifier returnId, Identifier [] arguments, BitSet trashedRegisters)
-		{
-			this.ret = returnId;
-			this.args = arguments;
-			this.trash = trashedRegisters;
-		}
-
+		
 		public Identifier [] Arguments
 		{
 			get { return args; } 
@@ -136,7 +127,9 @@ namespace Decompiler.Core
 		}
 
 		/// <summary>
-		/// Returns the difference in stack depth between before a call and after that call returns.
+		/// Amount of bytes to add to the stack pointer after returning from the procedure.
+		/// Note that this also includes the return address size, if the return address is 
+		/// passed on the stack.
 		/// </summary>
 		public int StackDelta
 		{
@@ -166,11 +159,6 @@ namespace Decompiler.Core
 			StringWriter sw = new StringWriter();
 			Emit(name, EmitFlags.ArgumentKind, sw);
 			return sw.ToString();
-		}
-
-		public BitSet TrashedRegisters
-		{
-			get { return trash; }
 		}
 
 		public TypeVariable TypeVariable

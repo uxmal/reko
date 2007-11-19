@@ -6,8 +6,8 @@ void fn0C00_0000(Register segment ds)
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ds:Register
-// ax:Register
+// ds:Register ds
+// ax:Register ax
 // return address size: 2
 void fn0C00_0000(segment ds)
 fn0C00_0000_entry:		// block 0, pred:
@@ -31,11 +31,11 @@ void memfoo()
 // memfoo
 // Mem0:Global memory
 // fp:Temporary
-// ax:Register
-// ds:Register
-// bx:Register
-// cx:Register
-// cl:Register
+// ax:Register ax
+// ds:Register ds
+// bx:Register bx
+// cx:Register cx
+// cl:Register cl
 // SCZO:Flags
 // return address size: 2
 void memfoo()
@@ -66,9 +66,9 @@ Register word16 membar(Register word16 ax, Register segment ds)
 // membar
 // Mem0:Global memory
 // fp:Temporary
-// ax:Register
-// ds:Register
-// bx:Register
+// ax:Register ax
+// ds:Register ds
+// bx:Register bx
 // SCZO:Flags
 // return address size: 2
 word16 membar(word16 ax, segment ds)

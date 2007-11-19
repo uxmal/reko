@@ -1,7 +1,7 @@
 Mem0: Mem0:Global memory, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
-r0: r0:Register, def: {def r0}
-r1: r1:Register, def: {def r1}, uses: {Z_10 = cond(r1 - 0x00000003)}
+r0: r0:Register r0, def: {def r0}
+r1: r1:Register r1, def: {def r1}, uses: {Z_10 = cond(r1 - 0x00000003)}
 Z: Z:Flags, def: {def Z}
 r0_5: orig: r0, def: {r0_5 = 0x00000000}, uses: {r0_6 = PHI(r0_5, r0_9)}
 r0_6: orig: r0, def: {r0_6 = PHI(r0_5, r0_9)}, uses: {Z_7 = cond(r0_6 - 0x00000002)}{r0_9 = PHI(r0_6, r0_8)}

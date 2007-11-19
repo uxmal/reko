@@ -1,4 +1,4 @@
-fn0C00_0000
+// fn0C00_0000 /////////////////////
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
@@ -12,15 +12,15 @@ fn0C00_0000_entry:		// block 0, pred:
 l0C00_0000:		// block 1, pred: 0
 	di = Mem0[ds:0x0100:word16]
 	si = Mem0[ds:di:word16]
-	call fn0C00_0026 (depth: 0;)
+	call fn0C00_0026 (depth: 2;)
 	store(Mem0[ds:di + 0x0002:word16]) = ax
 	bx = Mem0[ds:0x0102:word16]
 	si = Mem0[ds:bx + 0x0004:word16]
-	call fn0C00_0026 (depth: 0;)
+	call fn0C00_0026 (depth: 2;)
 	store(Mem0[ds:bx + 0x0008:word16]) = ax
 	di = Mem0[ds:0x0104:word16]
 	si = Mem0[ds:di:word16]
-	call fn0C00_0033 (depth: 0;)
+	call fn0C00_0033 (depth: 2;)
 	store(Mem0[ds:di + 0x0002:word16]) = ax
 	return
 	// succ:  2
@@ -28,7 +28,7 @@ l0C00_0000:		// block 1, pred: 0
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut:
-fn0C00_0026
+// fn0C00_0026 /////////////////////
 	LiveOut:   ax bx ds
 	MayUseIn:  si ds
 	BypassIn: 
@@ -40,18 +40,20 @@ fn0C00_0026_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: bx si ds
 l0C00_0026:		// block 1, pred: 0
+	wLoc04 = di
 	di = Mem0[ds:0x0104:word16]
 	v5 = Mem0[ds:di + 0x0030:word16] + 0x0001
 	store(Mem0[ds:di + 0x0030:word16]) = v5
 	SZO = cond(v5)
-	call fn0C00_0033 (depth: 2;)
+	call fn0C00_0033 (depth: 4;)
+	di = wLoc04
 	return
 	// succ:  2
 // DataOut: ax bx ds
 fn0C00_0026_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut: ax bx ds
-fn0C00_0033
+// fn0C00_0033 /////////////////////
 	LiveOut:   ax bx di ds
 	MayUseIn:  si ds
 	BypassIn: 

@@ -7,11 +7,11 @@ void fn0C00_0000(Register segment ds)
 // Mem0:Global memory
 // fp:Temporary
 // rLoc1:FPU stack
-// ds:Register
+// ds:Register ds
 // rLoc2:FPU stack
-// wLoc02:Local -0002
-// ax:Register
 // wLoc04:Local -0004
+// ax:Register ax
+// wLoc06:Local -0006
 // return address size: 2
 void fn0C00_0000(segment ds)
 fn0C00_0000_entry:		// block 0, pred:
@@ -19,68 +19,72 @@ fn0C00_0000_entry:		// block 0, pred:
 l0C00_0000:		// block 1, pred: 0
 	rLoc1 = Mem0[ds:0x0300:real32]
 	rLoc2 = Mem0[ds:0x0304:real32]
-	wLoc02 = 0x0308
-	fn0C00_0024(ds, wLoc02, rLoc2, rLoc1)
+	wLoc04 = 0x0308
+	fn0C00_0024(ds, wLoc04, rLoc2, rLoc1)
 	rLoc1 = 0
 	store(Mem0[ds:0x030C:real32]) = rLoc1
 	ax = Mem0[ds:0x0308:word16]
-	wLoc04 = ax
-	rLoc1 = fn0C00_0031(ds, wLoc04)
+	wLoc06 = ax
+	rLoc1 = fn0C00_0031(ds, wLoc06)
 	store(Mem0[ds:0x030C:real32]) = rLoc1
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
-void fn0C00_0024(Register segment ds, Stack word16 wArg02, FpuStack real64 rArg0, FpuStack real64 rArg1)
+void fn0C00_0024(Register segment ds, Stack word16 wArg00, FpuStack real64 rArg0, FpuStack real64 rArg1)
 // MayUse:  ds
 // LiveOut:
 // Trashed: bx bl bh
 // Preserved: bp
-// Stack args: Stack +0002(16)
+// Stack args: Stack +0000(16)
 // fn0C00_0024
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register
-// wLoc02:Local -0002
-// wArg02:Stack +0002
-// bx:Register
+// bp:Register bp
+// wLoc04:Local -0004
+// wArg00:Stack +0000
+// bx:Register bx
 // rArg0:FPU stack
-// ds:Register
+// ds:Register ds
 // rArg1:FPU stack
 // return address size: 2
-void fn0C00_0024(segment ds, word16 wArg02, real64 rArg0, real64 rArg1)
+void fn0C00_0024(segment ds, word16 wArg00, real64 rArg0, real64 rArg1)
 fn0C00_0024_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0024:		// block 1, pred: 0
-	bx = wArg02
+	wLoc04 = bp
+	bx = wArg00
 	store(Mem0[ds:bx:real32]) = rArg0
 	store(Mem0[ds:bx + 0x0004:real32]) = rArg1
+	bp = wLoc04
 	return
 	// succ:  2
 fn0C00_0024_exit:		// block 2, pred: 1
 	// succ: 
-FpuStack real64 fn0C00_0031(Register segment ds, Stack word16 wArg02)
+FpuStack real64 fn0C00_0031(Register segment ds, Stack word16 wArg00)
 // MayUse:  ds
 // LiveOut:
 // Trashed: bx bl bh
 // Preserved: bp
-// Stack args: Stack +0002(16)
+// Stack args: Stack +0000(16)
 // fn0C00_0031
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register
-// wLoc02:Local -0002
-// wArg02:Stack +0002
-// bx:Register
+// bp:Register bp
+// wLoc04:Local -0004
+// wArg00:Stack +0000
+// bx:Register bx
 // rLoc1:FPU stack
-// ds:Register
+// ds:Register ds
 // return address size: 2
-real64 fn0C00_0031(segment ds, word16 wArg02)
+real64 fn0C00_0031(segment ds, word16 wArg00)
 fn0C00_0031_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0031:		// block 1, pred: 0
-	bx = wArg02
+	wLoc04 = bp
+	bx = wArg00
 	rLoc1 = Mem0[ds:bx:real32]
+	bp = wLoc04
 	return rLoc1
 	// succ:  2
 fn0C00_0031_exit:		// block 2, pred: 1

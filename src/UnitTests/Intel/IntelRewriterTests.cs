@@ -102,6 +102,18 @@ namespace Decompiler.UnitTests.Intel
 			Assert.AreEqual("ebx = __bswap(ebx)", emitter.Block.Statements.Last.Instruction.ToString());
 		}
 
+		[Test]
+		public void RewriterNearReturn()
+		{
+			IntelInstruction instr = new IntelInstruction();
+			instr.code = Opcode.ret;
+
+			proc.Frame.ReturnAddressSize = 2;
+			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
+			ConvertInstruction(rw, instr);
+			Assert.AreEqual(2, proc.Frame.ReturnAddressSize);
+		}
+
 		public void ConvertInstruction(IntelRewriter rw, IntelInstruction instr)
 		{
 			rw.ConvertInstructions(new IntelInstruction[] { instr }, new Address[] { null }, new FlagM[] { 0 });
@@ -157,6 +169,11 @@ namespace Decompiler.UnitTests.Intel
 			Assert.AreEqual(2, emitter.Block.Statements.Count);
 			Assert.AreEqual("SCZO = cond(ax & 0x0008)", emitter.Block.Statements[0].Instruction.ToString());
 			Assert.AreEqual("C = false", emitter.Block.Statements[1].Instruction.ToString());
+		}
+
+		[Test]
+		public void RewriteNearCall()
+		{
 		}
 	}
 }

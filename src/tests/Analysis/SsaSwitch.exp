@@ -1,16 +1,16 @@
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {bl_13 = Mem0[ds_12:si:byte]}
 fp: fp:Temporary, def: {def fp}
-wLoc02: wLoc02:Local -0002, def: {def wLoc02}
-ds: ds:Register, def: {def ds}
-si: si:Register, def: {def si}, uses: {bl_13 = Mem0[ds_12:si:byte]}
-bl: bl:Register, def: {def bl}
+wLoc04: wLoc04:Local -0004, def: {def wLoc04}
+ds: ds:Register ds, def: {def ds}
+si: si:Register si, def: {def si}, uses: {bl_13 = Mem0[ds_12:si:byte]}
+bl: bl:Register bl, def: {def bl}
 SCZO: SCZO:Flags, def: {def SCZO}
 CZ: CZ:Flags, def: {def CZ}
-bh: bh:Register, def: {def bh}, uses: {bh_30 = PHI(bh_22, bh_22, bh_22, bh)}
-bx: bx:Register, def: {def bx}, uses: {bx_14 = DPB(bx, bl_13, 0, 8) (alias)}
-ax: ax:Register, def: {def ax}
-wLoc02_11: orig: wLoc02, def: {wLoc02_11 = 0x0C00}, uses: {ds_12 = wLoc02_11}
-ds_12: orig: ds, def: {ds_12 = wLoc02_11}, uses: {bl_13 = Mem0[ds_12:si:byte]}
+bh: bh:Register bh, def: {def bh}, uses: {bh_30 = PHI(bh_22, bh_22, bh_22, bh)}
+bx: bx:Register bx, def: {def bx}, uses: {bx_14 = DPB(bx, bl_13, 0, 8) (alias)}
+ax: ax:Register ax, def: {def ax}
+wLoc04_11: orig: wLoc04, def: {wLoc04_11 = 0x0C00}, uses: {ds_12 = wLoc04_11}
+ds_12: orig: ds, def: {ds_12 = wLoc04_11}, uses: {bl_13 = Mem0[ds_12:si:byte]}
 bl_13: orig: bl, def: {bl_13 = Mem0[ds_12:si:byte]}, uses: {bx_14 = DPB(bx, bl_13, 0, 8) (alias)}{SCZO_15 = cond(bl_13 - 0x02)}{bl_33 = PHI(bl_21, bl_21, bl_21, bl_13)}
 bx_14: orig: bx, def: {bx_14 = DPB(bx, bl_13, 0, 8) (alias)}, uses: {bx_29 = PHI(bx_20, bx_20, bx_20, bx_14)}{bx_19 = DPB(bx_14, bh_18, 8, 8) (alias)}
 SCZO_15: orig: SCZO, def: {SCZO_15 = cond(bl_13 - 0x02)}, uses: {CZ_16 = SCZO_15 (alias)}{SCZO_32 = PHI(SCZO_23, SCZO_23, SCZO_23, SCZO_15)}
@@ -37,7 +37,7 @@ void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def fp
-	def wLoc02
+	def wLoc04
 	def ds
 	def si
 	def bl
@@ -48,8 +48,8 @@ fn0C00_0000_entry:		// block 0, pred:
 	def ax
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	wLoc02_11 = 0x0C00
-	ds_12 = wLoc02_11
+	wLoc04_11 = 0x0C00
+	ds_12 = wLoc04_11
 	bl_13 = Mem0[ds_12:si:byte]
 	bx_14 = DPB(bx, bl_13, 0, 8) (alias)
 	SCZO_15 = cond(bl_13 - 0x02)

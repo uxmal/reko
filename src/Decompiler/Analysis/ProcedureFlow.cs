@@ -33,7 +33,7 @@ namespace Decompiler.Analysis
 	{
 		private Procedure proc;
 
-		public BitSet Preserved;			// Registers explicitly preserved by the procedure.
+		public BitSet PreservedRegisters;			// Registers explicitly preserved by the procedure.
 		public uint grfPreserved;
 
 		public uint grfTrashed;
@@ -57,7 +57,7 @@ namespace Decompiler.Analysis
 		{
 			this.proc = proc;
 
-			Preserved = arch.CreateRegisterBitset();
+			PreservedRegisters = arch.CreateRegisterBitset();
 			TrashedRegisters = arch.CreateRegisterBitset();
 
 			ByPass = arch.CreateRegisterBitset();
@@ -75,7 +75,7 @@ namespace Decompiler.Analysis
 			sb.WriteLine();
 			EmitRegisters(arch, "// Trashed:", grfTrashed, TrashedRegisters, sb);
 			sb.WriteLine();
-			EmitRegisters(arch, "// Preserved:", grfPreserved, Preserved, sb);
+			EmitRegisters(arch, "// Preserved:", grfPreserved, PreservedRegisters, sb);
 			sb.WriteLine();
 			EmitStackArguments(StackArguments, sb);
 		}
@@ -100,27 +100,6 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		[Obsolete]
-		private uint EnsureVariable(Identifier id,  BitSet regs, uint grfFlags, IProcessorArchitecture arch)
-		{
-			FlagGroupStorage flags = id.Storage as FlagGroupStorage;
-			if (flags != null)
-			{
-				uint grf = flags.FlagGroup;
-				return grf | grfFlags;
-			}
-			RegisterStorage reg = id.Storage as RegisterStorage;
-			if (reg != null)
-			{
-				if (!regs[reg.Register.Number])
-				{
-					reg.Register.SetAliases(regs, true);
-				}
-			}
-			return grfFlags;
-		}
-
-		
 		public bool IsLiveOut(Identifier id)
 		{
 			FlagGroupStorage flags = id.Storage as FlagGroupStorage;
@@ -136,15 +115,6 @@ namespace Decompiler.Analysis
 			}
 			return false;
 		}
-
-
-		[Obsolete]
-		public void PreserveVariable(Identifier id, IProcessorArchitecture arch)
-		{
-			grfPreserved = EnsureVariable(id, Preserved, grfPreserved, arch);
-		}
-
-
 
 		public Procedure Procedure
 		{

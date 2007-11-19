@@ -1,7 +1,7 @@
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-r0: r0:Register, def: {def r0}, uses: {r0_7 = PHI(r0, r0_6)}{r0_6 = r0 + r1}{branch r0 == 0x00000000}
-r1: r1:Register, def: {def r1}, uses: {r0_6 = r0 + r1}
+r0: r0:Register r0, def: {def r0}, uses: {r0_7 = PHI(r0, r0_6)}{r0_6 = r0 + r1}{branch r0 == 0x00000000}
+r1: r1:Register r1, def: {def r1}, uses: {r0_6 = r0 + r1}
 Z: Z:Flags
 Z_5: orig: Z
 r0_6: orig: r0, def: {r0_6 = r0 + r1}, uses: {r0_7 = PHI(r0, r0_6)}

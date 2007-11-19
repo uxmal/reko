@@ -6,8 +6,8 @@ void fn0C00_0000(Register word16 dx)
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// dx:Register
-// ax:Register
+// dx:Register dx
+// ax:Register ax
 // return address size: 2
 void fn0C00_0000(word16 dx)
 fn0C00_0000_entry:		// block 0, pred:
@@ -26,12 +26,12 @@ Register word16 fn0C00_0004(Register word16 dx, Register out ptr0 dxOut)
 // fn0C00_0004
 // Mem0:Global memory
 // fp:Temporary
-// dx:Register
+// dx:Register dx
 // SCZO:Flags
 // Z:Flags
-// ax:Register
+// ax:Register ax
 // SZO:Flags
-// dxOut:Out:Register
+// dxOut:Out:Register dx
 // return address size: 2
 word16 fn0C00_0004(word16 dx, ptr0 dxOut)
 fn0C00_0004_entry:		// block 0, pred:
@@ -62,11 +62,11 @@ Register word16 fn0C00_0013(Register word16 dx)
 // fn0C00_0013
 // Mem0:Global memory
 // fp:Temporary
-// dx:Register
+// dx:Register dx
 // SCZO:Flags
 // SO:Flags
 // SZO:Flags
-// ax:Register
+// ax:Register ax
 // return address size: 2
 word16 fn0C00_0013(word16 dx)
 fn0C00_0013_entry:		// block 0, pred:

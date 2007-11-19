@@ -6,9 +6,9 @@ void fn0C00_0000(Register segment ds)
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ax:Register
-// al:Register
-// ds:Register
+// ax:Register ax
+// al:Register al
+// ds:Register ds
 // return address size: 2
 void fn0C00_0000(segment ds)
 fn0C00_0000_entry:		// block 0, pred:
@@ -33,10 +33,10 @@ Register byte fn0C00_0015(Register word16 ax)
 // Mem0:Global memory
 // fp:Temporary
 // SCZO:Flags
-// ax:Register
+// ax:Register ax
 // Z:Flags
 // SZO:Flags
-// al:Register
+// al:Register al
 // return address size: 2
 byte fn0C00_0015(word16 ax)
 fn0C00_0015_entry:		// block 0, pred:
@@ -66,10 +66,10 @@ Register byte fn0C00_0020(Register word16 ax)
 // Mem0:Global memory
 // fp:Temporary
 // SCZO:Flags
-// ax:Register
+// ax:Register ax
 // Z:Flags
 // SZO:Flags
-// al:Register
+// al:Register al
 // return address size: 2
 byte fn0C00_0020(word16 ax)
 fn0C00_0020_entry:		// block 0, pred:

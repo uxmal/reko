@@ -112,17 +112,18 @@ namespace Decompiler.UnitTests.Core
 		public void FrBindStackParameters()
 		{
 			Frame f = new Frame(PrimitiveType.Word16);
+			f.ReturnAddressSize = 4;						// far call.
 			int stack = 2;
-			Identifier id1 = f.EnsureStackLocal(-stack, PrimitiveType.Word16);
-			stack += id1.DataType.Size;
-			Identifier id2 = f.EnsureStackLocal(-stack, PrimitiveType.Word16);
+			Identifier loc02 = f.EnsureStackLocal(-stack, PrimitiveType.Word16, "wLoc02");
+			stack += loc02.DataType.Size;
+			Identifier loc04 = f.EnsureStackLocal(-stack, PrimitiveType.Word16, "wLoc04");
 
 			ProcedureSignature sig = new ProcedureSignature(
 				null, new Identifier[] {
-					new Identifier("arg0", 0, PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)),
-					new Identifier("arg1", 1, PrimitiveType.Word16, new StackArgumentStorage(2, PrimitiveType.Word16)) });
+					new Identifier("arg0", 0, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
+					new Identifier("arg1", 1, PrimitiveType.Word16, new StackArgumentStorage(6, PrimitiveType.Word16)) });
 
-			CallSite cs = new CallSite(stack, 0);
+			CallSite cs = new CallSite(stack + f.ReturnAddressSize, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer, new PseudoProcedure("foo", sig));
 			ApplicationBuilder ab = new ApplicationBuilder(f);
 			Instruction instr = ab.BuildApplication(cs, fn, sig);
@@ -194,6 +195,32 @@ namespace Decompiler.UnitTests.Core
 			Identifier arg = f.EnsureOutArgument(r);
 			Assert.AreEqual("r1Out", arg.Name);
 			Assert.AreSame(PrimitiveType.Pointer, arg.DataType);
+		}
+
+		[Test]
+		public void BindStackArgumentToCallerFrame()
+		{
+			Procedure callee = new Procedure("callee", new Frame(PrimitiveType.Word16));
+			callee.Frame.ReturnAddressSize = 2;				// "near" call.
+			Identifier arg02 = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word16, "wArg02");
+			Identifier arg04 = callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32, "dwArg04");
+			Identifier arg08 = callee.Frame.EnsureStackArgument(8, PrimitiveType.Word16, "wArg08");
+
+			Procedure caller = new Procedure("caller", new Frame(PrimitiveType.Word16));
+			caller.Frame.ReturnAddressSize = 2;
+			caller.Frame.EnsureStackLocal(-2, PrimitiveType.Word16, "bpSaved");
+			caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word16, "bindToArg08");
+			caller.Frame.EnsureStackLocal(-8, PrimitiveType.Word32, "bindToArg04");
+			caller.Frame.EnsureStackLocal(-10, PrimitiveType.Word16, "bindToArg02");
+			CallSite cs = new CallSite(10 + callee.Frame.ReturnAddressSize, 0);
+			Identifier id = arg08.Storage.BindFormalArgumentToFrame(caller.Frame, cs);
+			Assert.AreEqual("bindToArg08", id.Name);
+			id = arg02.Storage.BindFormalArgumentToFrame(caller.Frame, cs);
+			Assert.AreEqual("bindToArg02", id.Name);
+			id = arg04.Storage.BindFormalArgumentToFrame(caller.Frame, cs);
+			caller.Frame.Write(Console.Out);
+
+			Assert.AreEqual("bindToArg04", id.Name);
 		}
 	}
 }

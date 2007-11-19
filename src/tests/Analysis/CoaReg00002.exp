@@ -1,12 +1,12 @@
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-edx: edx:Register, def: {def edx}, uses: {store(Mem9[ds:0x7960:word32]) = edx}{store(Mem15[ds:si + 0x00C8:word32]) = -edx}
-ds: ds:Register, def: {def ds}, uses: {store(Mem9[ds:0x7960:word32]) = edx}{store(Mem10[ds:0x7964:byte]) = cl}{store(Mem15[ds:si + 0x00C8:word32]) = -edx}
-cl: cl:Register, def: {def cl}, uses: {store(Mem10[ds:0x7964:byte]) = cl}
-eax: eax:Register
+edx: edx:Register edx, def: {def edx}, uses: {store(Mem9[ds:0x7960:word32]) = edx}{store(Mem15[ds:si + 0x00C8:word32]) = -edx}
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem9[ds:0x7960:word32]) = edx}{store(Mem10[ds:0x7964:byte]) = cl}{store(Mem15[ds:si + 0x00C8:word32]) = -edx}
+cl: cl:Register cl, def: {def cl}, uses: {store(Mem10[ds:0x7964:byte]) = cl}
+eax: eax:Register eax
 SZO: SZO:Flags
 C: C:Flags
-si: si:Register, def: {def si}, uses: {store(Mem15[ds:si + 0x00C8:word32]) = -edx}
+si: si:Register si, def: {def si}, uses: {store(Mem15[ds:si + 0x00C8:word32]) = -edx}
 Mem9: orig: Mem0, def: {store(Mem9[ds:0x7960:word32]) = edx}
 Mem10: orig: Mem0, def: {store(Mem10[ds:0x7964:byte]) = cl}
 eax_11: orig: eax

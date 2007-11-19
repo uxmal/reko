@@ -2,5 +2,5 @@
 // fp:Temporary
 // wLoc02:Local -0002
 // wLoc04:Local -0004
-// return address size: 0
+// return address size: 4
 foo(wLoc04, wLoc02)

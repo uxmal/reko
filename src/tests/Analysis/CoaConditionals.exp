@@ -1,16 +1,16 @@
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}{Mem22 = PHI(Mem21, Mem0)}{branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}
 fp: fp:Temporary
-ds: ds:Register, def: {def ds}, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}{store(Mem21[ds:0x0F00:byte]) = 0x01}{v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}{v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}{store(Mem25[ds:0x0106:word16]) = v6_24}{store(Mem32[ds:0x0F01:byte]) = 0x01}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000}{store(Mem43[ds:0x0F02:byte]) = 0x01}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]}{store(Mem54[ds:0x0F03:byte]) = 0x01}{store(Mem59[ds:0x0F04:byte]) = 0x01}{store(Mem68[ds:0x0F05:byte]) = 0x01}{store(Mem86[ds:0x0F07:byte]) = 0x01}{branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]}{branch (Mem60[ds:0x010E:word16] & 0x01FF) == 0x0000}
-ax: ax:Register
+ds: ds:Register ds, def: {def ds}, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}{store(Mem21[ds:0x0F00:byte]) = 0x01}{v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}{v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}{store(Mem25[ds:0x0106:word16]) = v6_24}{store(Mem32[ds:0x0F01:byte]) = 0x01}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000}{store(Mem43[ds:0x0F02:byte]) = 0x01}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]}{store(Mem54[ds:0x0F03:byte]) = 0x01}{store(Mem59[ds:0x0F04:byte]) = 0x01}{store(Mem68[ds:0x0F05:byte]) = 0x01}{store(Mem86[ds:0x0F07:byte]) = 0x01}{branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]}{branch (Mem60[ds:0x010E:word16] & 0x01FF) == 0x0000}
+ax: ax:Register ax
 SCZO: SCZO:Flags
 Z: Z:Flags
 v6: v6:Temporary
 SZO: SZO:Flags
 C: C:Flags
-wLoc02: wLoc02:Local -0002
-bp: bp:Register, def: {def bp}, uses: {bp_70 = bp - 0x0010}{store(Mem77[ss:bp + 0xFFF6:byte]) = 0x01}
+wLoc04: wLoc04:Local -0004
+bp: bp:Register bp, def: {def bp}, uses: {bp_70 = bp - 0x0010}{store(Mem77[ss:bp + 0xFFF6:byte]) = 0x01}
 SO: SO:Flags
-ss: ss:Register, def: {def ss}, uses: {store(Mem77[ss:bp + 0xFFF6:byte]) = 0x01}
+ss: ss:Register ss, def: {def ss}, uses: {store(Mem77[ss:bp + 0xFFF6:byte]) = 0x01}
 O: O:Flags
 ax_14: orig: ax, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}
 SCZO_15: orig: SCZO
@@ -54,7 +54,7 @@ C_52: orig: C
 SCZO_53: orig: SCZO
 Mem54: orig: Mem0, def: {store(Mem54[ds:0x0F03:byte]) = 0x01}, uses: {Mem55 = PHI(Mem54, Mem44)}
 Mem55: orig: Mem0, def: {Mem55 = PHI(Mem54, Mem44)}, uses: {Mem60 = PHI(Mem59, Mem55)}
-wLoc02_56: orig: wLoc02
+wLoc04_56: orig: wLoc04
 C_57: orig: C, uses: {branch fn0C00_0069(0x0003)}
 SCZO_58: orig: SCZO
 Mem59: orig: Mem0, def: {store(Mem59[ds:0x0F04:byte]) = 0x01}, uses: {Mem60 = PHI(Mem59, Mem55)}
@@ -158,20 +158,22 @@ fn0C00_0000_exit:		// block 18, pred: 17
 
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-bp: bp:Register
-wLoc02: wLoc02:Local -0002
-wArg02: wArg02:Stack +0002, def: {def wArg02}, uses: {return cond(wArg02)}
+bp: bp:Register bp
+wLoc04: wLoc04:Local -0004
+wArg00: wArg00:Stack +0000, def: {def wArg00}, uses: {return cond(wArg00)}
 SCZO: SCZO:Flags
 C: C:Flags
-SCZO_7: orig: SCZO, uses: {return cond(wArg02)}
-C_8: orig: C
+wLoc04_7: orig: wLoc04
+SCZO_8: orig: SCZO, uses: {return cond(wArg00)}
+C_9: orig: C
+bp_10: orig: bp
 // fn0C00_0069
-byte fn0C00_0069(word16 wArg02)
+byte fn0C00_0069(word16 wArg00)
 fn0C00_0069_entry:		// block 0, pred:
-	def wArg02
+	def wArg00
 	// succ:  1
 l0C00_0069:		// block 1, pred: 0
-	return cond(wArg02)
+	return cond(wArg00)
 	// succ:  2
 fn0C00_0069_exit:		// block 2, pred: 1
 	// succ: 

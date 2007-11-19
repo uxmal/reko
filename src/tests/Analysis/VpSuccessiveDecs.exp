@@ -1,8 +1,8 @@
 = fn0C00_0000 ========================
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {ax_4 = Mem0[ds:0x0300:word16]}
 fp: fp:Temporary, def: {def fp}
-ds: ds:Register, def: {def ds}, uses: {ax_4 = Mem0[ds:0x0300:word16]}{store(Mem6[ds:0x0302:word16]) = ax_5}
-ax: ax:Register, def: {def ax}
+ds: ds:Register ds, def: {def ds}, uses: {ax_4 = Mem0[ds:0x0300:word16]}{store(Mem6[ds:0x0302:word16]) = ax_5}
+ax: ax:Register ax, def: {def ax}
 ax_4: orig: ax, def: {ax_4 = Mem0[ds:0x0300:word16]}, uses: {ax_5 = fn0C00_000C(ax_4)}
 ax_5: orig: ax, def: {ax_5 = fn0C00_000C(ax_4)}, uses: {store(Mem6[ds:0x0302:word16]) = ax_5}
 Mem6: orig: Mem0, def: {store(Mem6[ds:0x0302:word16]) = ax_5}
@@ -25,8 +25,8 @@ fn0C00_0000_exit:		// block 2, pred: 1
 
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {ax_4 = Mem0[ds:0x0300:word16]}
 fp: fp:Temporary
-ds: ds:Register, def: {def ds}, uses: {ax_4 = Mem0[ds:0x0300:word16]}{store(Mem6[ds:0x0302:word16]) = ax_5}
-ax: ax:Register
+ds: ds:Register ds, def: {def ds}, uses: {ax_4 = Mem0[ds:0x0300:word16]}{store(Mem6[ds:0x0302:word16]) = ax_5}
+ax: ax:Register ax
 ax_4: orig: ax, def: {ax_4 = Mem0[ds:0x0300:word16]}, uses: {ax_5 = fn0C00_000C(ax_4)}
 ax_5: orig: ax, def: {ax_5 = fn0C00_000C(ax_4)}, uses: {store(Mem6[ds:0x0302:word16]) = ax_5}
 Mem6: orig: Mem0, def: {store(Mem6[ds:0x0302:word16]) = ax_5}
@@ -48,7 +48,7 @@ fn0C00_0000_exit:		// block 2, pred: 1
 Mem0: Mem0:Global memory, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
 SCZO: SCZO:Flags, def: {def SCZO}
-ax: ax:Register, def: {def ax}, uses: {SCZO_6 = cond(ax - 0x0000)}{ax_9 = ax - 0x0001}
+ax: ax:Register ax, def: {def ax}, uses: {SCZO_6 = cond(ax - 0x0000)}{ax_9 = ax - 0x0001}
 Z: Z:Flags, def: {def Z}
 SZO: SZO:Flags, def: {def SZO}
 SCZO_6: orig: SCZO, def: {SCZO_6 = cond(ax - 0x0000)}, uses: {Z_7 = SCZO_6 (alias)}{SZO_8 = SCZO_6 (alias)}{SCZO_27 = PHI(SCZO_6, SCZO_11, SCZO_15, SCZO_18)}
@@ -132,7 +132,7 @@ fn0C00_000C_exit:		// block 8, pred: 7 6 5 4
 Mem0: Mem0:Global memory
 fp: fp:Temporary
 SCZO: SCZO:Flags
-ax: ax:Register, def: {def ax}, uses: {SCZO_6 = cond(ax)}{SZO_14 = cond(ax - 0x0002)}{SZO_10 = cond(ax - 0x0001)}
+ax: ax:Register ax, def: {def ax}, uses: {SCZO_6 = cond(ax)}{SZO_14 = cond(ax - 0x0002)}{SZO_10 = cond(ax - 0x0001)}
 Z: Z:Flags
 SZO: SZO:Flags
 SCZO_6: orig: SCZO, def: {SCZO_6 = cond(ax)}, uses: {branch Test(NE,SCZO_6)}

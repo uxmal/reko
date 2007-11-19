@@ -1,11 +1,11 @@
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-bx: bx:Register, def: {def bx}, uses: {branch bx == 0x0000}{branch bx > 0x0000}
+bx: bx:Register bx, def: {def bx}, uses: {branch bx == 0x0000}{branch bx > 0x0000}
 SCZO: SCZO:Flags
 Z: Z:Flags
 SZO: SZO:Flags
-ax: ax:Register
-ds: ds:Register, def: {def ds}, uses: {store(Mem21[ds:0x0100:word16]) = ax_17}
+ax: ax:Register ax
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem21[ds:0x0100:word16]) = ax_17}
 SCZO_8: orig: SCZO
 Z_9: orig: Z
 SZO_10: orig: SZO

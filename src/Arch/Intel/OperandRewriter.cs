@@ -109,14 +109,13 @@ namespace Decompiler.Arch.Intel
 					return frame.EnsureStackVariable(
 						mem.Offset,
 						IsStackRegister(mem.Base) 
-						? state.StackBytes
-						: frame.FrameOffset,
+							? state.StackBytes
+							: frame.FrameOffset,
 						mem.Width);
 				}
 				return null;
 			}
 			throw new ArgumentException("Illegal operand type: " + op.GetType().Name);
-			
 		}
 
 		public Identifier FlagGroup(FlagM flags)

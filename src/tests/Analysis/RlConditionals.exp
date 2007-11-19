@@ -1,4 +1,4 @@
-fn0C00_0000
+// fn0C00_0000 /////////////////////
 	LiveOut:  
 	MayUseIn:  bp ss ds
 	BypassIn: 
@@ -55,8 +55,8 @@ l0C00_0038:		// block 8, pred: 7
 	// succ:  9
 // DataOut: bp ss ds
 l0C00_003D:		// block 9, pred: 8 7
-	wLoc02 = 0x0003
-	call fn0C00_0069 (depth: 2;)
+	wLoc04 = 0x0003
+	call fn0C00_0069 (depth: 4;)
 	branch Test(UGE,C)
 	// succ:  10 11
 // DataOut: bp ss ds
@@ -101,7 +101,7 @@ l0C00_0068:		// block 17, pred: 16 15
 fn0C00_0000_exit:		// block 18, pred: 17
 	// succ: 
 // DataOut:
-fn0C00_0069
+// fn0C00_0069 /////////////////////
 	LiveOut:   C ss ds
 	MayUseIn: 
 	BypassIn: 
@@ -112,10 +112,12 @@ void fn0C00_0069()
 fn0C00_0069_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: ss ds
-// LocalsOut: Stack +0002(16)
+// LocalsOut: Stack +0000(16)
 
 l0C00_0069:		// block 1, pred: 0
-	SCZO = cond(wArg02 - 0x0000)
+	wLoc04 = bp
+	SCZO = cond(wArg00 - 0x0000)
+	bp = wLoc04
 	return
 	// succ:  2
 // DataOut: ss ds// DataOut (flags): C

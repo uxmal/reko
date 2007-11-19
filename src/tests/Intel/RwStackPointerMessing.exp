@@ -1,14 +1,14 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// ax:Register
-// ds:Register
+// ax:Register ax
+// ds:Register ds
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	call fn0C00_0008 (depth: 0;)
+	call fn0C00_0008 (depth: 2;)
 	store(Mem0[ds:0x0306:word16]) = ax
 	return
 	// succ:  2
@@ -17,11 +17,11 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // fn0C00_0008
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register
-// ds:Register
-// ss:Register
-// bx:Register
-// ax:Register
+// sp:Register sp
+// ds:Register ds
+// ss:Register ss
+// bx:Register bx
+// ax:Register ax
 // ss_sp:Sequence ss:sp
 // return address size: 2
 void fn0C00_0008()

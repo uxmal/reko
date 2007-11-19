@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  al ds
 // LiveOut:
-// Trashed: SCZO ax al
+// Trashed: SCZO ax al ah
 // Preserved:
 // fn0C00_0000
 void fn0C00_0000(byte al, segment ds)
@@ -25,7 +25,7 @@ fn0C00_0000_exit:		// block 4, pred: 3
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  al
 // LiveOut: C al
-// Trashed: SCZO ax al
+// Trashed: SCZO ax al ah
 // Preserved:
 // fn0C00_000A
 byte fn0C00_000A(byte al, ptr0 alOut)

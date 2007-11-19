@@ -1,8 +1,8 @@
 Mem0: Mem0:Global memory
 fp: fp:Temporary
 C: C:Flags
-al: al:Register, def: {def al}, uses: {branch fn0C00_000A(al, &al_5)}
-ds: ds:Register, def: {def ds}, uses: {store(Mem7[ds:0x0300:byte]) = al_5}
+al: al:Register al, def: {def al}, uses: {branch fn0C00_000A(al, &al_5)}
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem7[ds:0x0300:byte]) = al_5}
 al_5: orig: al, def: {branch fn0C00_000A(al, &al_5)}, uses: {store(Mem7[ds:0x0300:byte]) = al_5}
 C_6: orig: C, uses: {branch fn0C00_000A(al, &al_5)}
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:byte]) = al_5}
@@ -27,11 +27,11 @@ fn0C00_0000_exit:		// block 4, pred: 3
 
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-al: al:Register, def: {def al}, uses: {al_25 = al - 0x30}{al_47 = PHI(al_37, al)}{branch al <u 0x30}{branch al <=u 0x39}{branch al <u 0x41}{branch al <=u 0x46}{branch al <u 0x61}{branch al >u 0x66}{al_29 = al - 0x37}{al_33 = al - 0x57}
+al: al:Register al, def: {def al}, uses: {al_25 = al - 0x30}{al_47 = PHI(al_37, al)}{branch al <u 0x30}{branch al <=u 0x39}{branch al <u 0x41}{branch al <=u 0x46}{branch al <u 0x61}{branch al >u 0x66}{al_29 = al - 0x37}{al_33 = al - 0x57}
 SCZO: SCZO:Flags
 C: C:Flags
 CZ: CZ:Flags
-alOut: alOut:Out:Register
+alOut: alOut:Out:Register al
 SCZO_7: orig: SCZO
 C_8: orig: C
 CZ_9: orig: CZ

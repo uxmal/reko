@@ -215,7 +215,7 @@ movzx	ax,byte ptr [bp+04]
 			IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
 			IntelInstruction instr = dasm.Disassemble();
 			Assert.AreEqual("les\tbx,[bp+06]", instr.ToString());
-			Assert.AreSame(PrimitiveType.Word32, instr.op2.Width);
+			Assert.AreSame(PrimitiveType.Pointer32, instr.op2.Width);
 		}
 
 		[Test]

@@ -1,4 +1,4 @@
-fn0C00_0000
+// fn0C00_0000 /////////////////////
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
@@ -11,7 +11,7 @@ fn0C00_0000_entry:		// block 0, pred:
 // DataOut: ds
 l0C00_0000:		// block 1, pred: 0
 	si = 0x1234
-	call fn0C00_000B (depth: 0;)
+	call fn0C00_000B (depth: 2;)
 	store(Mem0[ds:0x5431:word16]) = ax
 	return
 	// succ:  2
@@ -19,7 +19,7 @@ l0C00_0000:		// block 1, pred: 0
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut:
-fn0C00_000B
+// fn0C00_000B /////////////////////
 	LiveOut:   ax ds
 	MayUseIn:  si ds
 	BypassIn: 
@@ -31,14 +31,16 @@ fn0C00_000B_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: si ds
 l0C00_000B:		// block 1, pred: 0
-	call fn0C00_0011 (depth: 2;)
+	wLoc04 = si
+	call fn0C00_0011 (depth: 4;)
+	si = wLoc04
 	return
 	// succ:  2
 // DataOut: ax ds
 fn0C00_000B_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut: ax ds
-fn0C00_0011
+// fn0C00_0011 /////////////////////
 	LiveOut:   ax ds
 	MayUseIn:  si ds
 	BypassIn: 

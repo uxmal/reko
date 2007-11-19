@@ -1,22 +1,22 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// di:Register
-// wLoc02:Local -0002
-// ax:Register
-// ds:Register
+// di:Register di
+// wLoc04:Local -0004
+// ax:Register ax
+// ds:Register ds
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	call fn0C00_000F (depth: 0;)
-	wLoc02 = di
+	call fn0C00_000F (depth: 2;)
+	wLoc04 = di
 	ax = 0x0100
-	call fn0C00_0014 (depth: 2;)
+	call fn0C00_0014 (depth: 4;)
 	store(Mem0[ds:0x0300:word16]) = ax
-	di = wLoc02
-	call fn0C00_000F (depth: 0;)
+	di = wLoc04
+	call fn0C00_000F (depth: 2;)
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
@@ -24,8 +24,8 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // fn0C00_000F
 // Mem0:Global memory
 // fp:Temporary
-// di:Register
-// ds:Register
+// di:Register di
+// ds:Register ds
 // return address size: 2
 void fn0C00_000F()
 fn0C00_000F_entry:		// block 0, pred:
@@ -39,9 +39,9 @@ fn0C00_000F_exit:		// block 2, pred: 1
 // fn0C00_0014
 // Mem0:Global memory
 // fp:Temporary
-// di:Register
+// di:Register di
 // SCZO:Flags
-// ax:Register
+// ax:Register ax
 // SZO:Flags
 // return address size: 2
 void fn0C00_0014()

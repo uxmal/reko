@@ -1,4 +1,4 @@
-fn0C00_0000
+// fn0C00_0000 /////////////////////
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 
@@ -10,17 +10,17 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: ds
 l0C00_0000:		// block 1, pred: 0
-	wLoc02 = 0x0320
-	wLoc04 = 0x0300
-	call fn0C00_0010 (depth: 4;)
-	call fn0C00_0037 (depth: 4;)
+	wLoc04 = 0x0320
+	wLoc06 = 0x0300
+	call fn0C00_0010 (depth: 6;)
+	call fn0C00_0037 (depth: 6;)
 	return
 	// succ:  2
 // DataOut:
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut:
-fn0C00_0010
+// fn0C00_0010 /////////////////////
 	LiveOut:   ds
 	MayUseIn:  ds
 	BypassIn: 
@@ -31,10 +31,11 @@ void fn0C00_0010()
 fn0C00_0010_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: ds
-// LocalsOut: Stack +0002(16) Stack +0004(16)
+// LocalsOut: Stack +0000(16) Stack +0002(16)
 
 l0C00_0010:		// block 1, pred: 0
-	bx = wArg02
+	wLoc04 = bp
+	bx = wArg00
 	rLoc1 = Mem0[ds:bx:real64]
 	rLoc1 = rLoc1 * rLoc1
 	rLoc2 = Mem0[ds:bx + 0x0008:real64]
@@ -43,17 +44,18 @@ l0C00_0010:		// block 1, pred: 0
 	rLoc2 = Mem0[ds:bx + 0x0010:real64]
 	rLoc2 = rLoc2 * rLoc2
 	rLoc1 = rLoc1 + rLoc2
-	bx = wArg04
+	bx = wArg02
 	store(Mem0[ds:bx:real64]) = rLoc1
 	rLoc1 = (real64) Mem0[ds:bx + 0x0020:word16]
 	store(Mem0[ds:bx + 0x0028:real64]) = rLoc1
+	bp = wLoc04
 	return
 	// succ:  2
 // DataOut: ds
 fn0C00_0010_exit:		// block 2, pred: 1
 	// succ: 
 // DataOut: ds
-fn0C00_0037
+// fn0C00_0037 /////////////////////
 	LiveOut:  
 	MayUseIn:  ds
 	BypassIn: 

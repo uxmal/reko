@@ -1,17 +1,17 @@
 = fn0C00_0000 ========================
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {ax_16 = Mem0[ds:0x0200:word16]}{dx_17 = Mem0[ds:0x0202:word16]}{cx_19 = Mem0[ds:0x0204:word16]}{bx_20 = Mem0[ds:0x0206:word16]}
 fp: fp:Temporary, def: {def fp}
-ds: ds:Register, def: {def ds}, uses: {ax_16 = Mem0[ds:0x0200:word16]}{dx_17 = Mem0[ds:0x0202:word16]}{cx_19 = Mem0[ds:0x0204:word16]}{bx_20 = Mem0[ds:0x0206:word16]}{store(Mem26[ds:0x0208:word16]) = ax_23}{store(Mem27[ds:0x020A:word16]) = dx_24}{ax_28 = Mem27[ds:0x0210:word16]}{dx_29 = Mem27[ds:0x0212:word16]}{es_cx_31 = Mem27[ds:0x0214:ptr32]}{store(Mem39[ds:0x0218:word16]) = ax_36}{store(Mem40[ds:0x021A:word16]) = dx_37}{cl_42 = Mem40[ds:0x0220:byte]}{cl_47 = Mem40[ds:0x0221:byte]}{store(Mem59[ds:0x0222:word16]) = ax_55}
-ax: ax:Register, def: {def ax}
-dx: dx:Register, def: {def dx}
-cx: cx:Register, def: {def cx}
-bx: bx:Register, def: {def bx}
+ds: ds:Register ds, def: {def ds}, uses: {ax_16 = Mem0[ds:0x0200:word16]}{dx_17 = Mem0[ds:0x0202:word16]}{cx_19 = Mem0[ds:0x0204:word16]}{bx_20 = Mem0[ds:0x0206:word16]}{store(Mem26[ds:0x0208:word16]) = ax_23}{store(Mem27[ds:0x020A:word16]) = dx_24}{ax_28 = Mem27[ds:0x0210:word16]}{dx_29 = Mem27[ds:0x0212:word16]}{es_cx_31 = Mem27[ds:0x0214:ptr32]}{store(Mem39[ds:0x0218:word16]) = ax_36}{store(Mem40[ds:0x021A:word16]) = dx_37}{cl_42 = Mem40[ds:0x0220:byte]}{cl_47 = Mem40[ds:0x0221:byte]}{store(Mem59[ds:0x0222:word16]) = ax_55}
+ax: ax:Register ax, def: {def ax}
+dx: dx:Register dx, def: {def dx}
+cx: cx:Register cx, def: {def cx}
+bx: bx:Register bx, def: {def bx}
 bx_cx: bx_cx:Sequence bx:cx, def: {def bx_cx}
 dx_ax: dx_ax:Sequence dx:ax, def: {def dx_ax}
 SCZO: SCZO:Flags, def: {def SCZO}
-es: es:Register, def: {def es}
+es: es:Register es, def: {def es}
 es_cx: es_cx:Sequence es:cx, def: {def es_cx}
-cl: cl:Register, def: {def cl}
+cl: cl:Register cl, def: {def cl}
 v13: v13:Temporary, def: {def v13}
 C: C:Flags, def: {def C}
 v15: v15:Temporary, def: {def v15}
@@ -131,17 +131,17 @@ fn0C00_0000_exit:		// block 2, pred: 1
 
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {ax_16 = Mem0[ds:0x0200:word16]}{dx_17 = Mem0[ds:0x0202:word16]}{cx_19 = Mem0[ds:0x0204:word16]}{bx_20 = Mem0[ds:0x0206:word16]}
 fp: fp:Temporary
-ds: ds:Register, def: {def ds}, uses: {ax_16 = Mem0[ds:0x0200:word16]}{dx_17 = Mem0[ds:0x0202:word16]}{cx_19 = Mem0[ds:0x0204:word16]}{bx_20 = Mem0[ds:0x0206:word16]}{store(Mem26[ds:0x0208:word16]) = ax_23}{store(Mem27[ds:0x020A:word16]) = dx_24}{ax_28 = Mem27[ds:0x0210:word16]}{dx_29 = Mem27[ds:0x0212:word16]}{es_cx_31 = Mem27[ds:0x0214:ptr32]}{store(Mem39[ds:0x0218:word16]) = ax_36}{store(Mem40[ds:0x021A:word16]) = dx_37}{cl_42 = Mem40[ds:0x0220:byte]}{cl_47 = Mem40[ds:0x0221:byte]}{store(Mem59[ds:0x0222:word16]) = ax_55}
-ax: ax:Register
-dx: dx:Register
-cx: cx:Register
-bx: bx:Register
+ds: ds:Register ds, def: {def ds}, uses: {ax_16 = Mem0[ds:0x0200:word16]}{dx_17 = Mem0[ds:0x0202:word16]}{cx_19 = Mem0[ds:0x0204:word16]}{bx_20 = Mem0[ds:0x0206:word16]}{store(Mem26[ds:0x0208:word16]) = ax_23}{store(Mem27[ds:0x020A:word16]) = dx_24}{ax_28 = Mem27[ds:0x0210:word16]}{dx_29 = Mem27[ds:0x0212:word16]}{es_cx_31 = Mem27[ds:0x0214:ptr32]}{store(Mem39[ds:0x0218:word16]) = ax_36}{store(Mem40[ds:0x021A:word16]) = dx_37}{cl_42 = Mem40[ds:0x0220:byte]}{cl_47 = Mem40[ds:0x0221:byte]}{store(Mem59[ds:0x0222:word16]) = ax_55}
+ax: ax:Register ax
+dx: dx:Register dx
+cx: cx:Register cx
+bx: bx:Register bx
 bx_cx: bx_cx:Sequence bx:cx
 dx_ax: dx_ax:Sequence dx:ax
 SCZO: SCZO:Flags
-es: es:Register
+es: es:Register es
 es_cx: es_cx:Sequence es:cx
-cl: cl:Register
+cl: cl:Register cl
 v13: v13:Temporary
 C: C:Flags
 v15: v15:Temporary

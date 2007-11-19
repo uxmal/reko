@@ -2,8 +2,8 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  ds
 // LiveOut:
-// Trashed: SCZO ax cx dx bx di al cl dl bl ah ch dh bh es ds gs
-// Preserved:
+// Trashed: SCZO ax cx dx bx di al cl dl bl ah ch dh bh es gs
+// Preserved: ds
 // fn0C00_0000
 void fn0C00_0000(segment ds)
 fn0C00_0000_entry:		// block 0, pred:
