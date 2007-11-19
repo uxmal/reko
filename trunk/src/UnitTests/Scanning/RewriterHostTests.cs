@@ -19,6 +19,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
@@ -49,6 +50,29 @@ namespace Decompiler.UnitTests.Scanning
 
 			ProcedureSignature ps = host.GetCallSignatureAtAddress(new Address(0x0C32, 0x3200));
 			Assert.IsNotNull(ps, "Expected a call signature for address");
+		}
+
+		[Test]
+		public void RewriteProcedure()
+		{
+			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+			Program prog = new Program();
+			prog.Architecture = arch;
+			TestRewriterHost host = new TestRewriterHost(prog);
+			Procedure proc = new Procedure("test", new Frame(PrimitiveType.Word16));
+			host.RewriteProcedure(proc, new Address(0xC00, 0x000), 2);
+			Assert.AreEqual(proc.Frame.ReturnAddressSize, 2);
+		}
+
+		public class TestRewriterHost : RewriterHost
+		{
+			public TestRewriterHost(Program prog) : base(prog, null, null, null)
+			{
+			}
+
+			public override void RewriteProcedureBlocks(Procedure proc, Address addrProc)
+			{
+			}
 		}
 	}
 }

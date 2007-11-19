@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Intel
 			ArrayList eps = new ArrayList();
 			eps.Add(ep);
 			scanner.Parse(eps, project != null ? project.UserProcedures : null);
-			RewriterHost rw = new RewriterHost(prog, null, scanner.SystemCalls, scanner.VectorUses);
+			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerHost(), scanner.SystemCalls, scanner.VectorUses);
 			rw.RewriteProgram();
 		}
 

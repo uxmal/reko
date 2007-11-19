@@ -25,9 +25,9 @@ namespace Decompiler.Core
 		void AddCallEdge(Procedure caller, Statement stm, Procedure callee);
 		ImageReader CreateImageReader(Address addr);
 		PseudoProcedure EnsurePseudoProcedure(string name, int arity);
-		Procedure GetProcedureAtAddress(Address addr);
+		Procedure GetProcedureAtAddress(Address addr, int cbReturnAddress);
 		ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
-		Procedure [] GetAddressesFromVector(Address addrCaller);
+		Procedure [] GetAddressesFromVector(Address addrCaller, int cbReturnAddress);
 		PseudoProcedure GetImportThunkAtAddress(Address addrThunk);
 		VectorUse VectorUseAt(Address addr);
 		SystemService SystemCallAt(Address addr);

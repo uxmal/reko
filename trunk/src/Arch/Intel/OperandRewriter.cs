@@ -30,14 +30,12 @@ namespace Decompiler.Arch.Intel
 		private IRewriterHost host;
 		private IntelArchitecture arch;
 		private Frame frame;
-		private Address procAddress;
 
-		public OperandRewriter(IRewriterHost host, IntelArchitecture arch, Frame frame, Address procAddress)
+		public OperandRewriter(IRewriterHost host, IntelArchitecture arch, Frame frame)
 		{
 			this.host = host;
 			this.arch = arch;
 			this.frame = frame;
-			this.procAddress = procAddress;
 		}
 
 		private Address AbsoluteAddress(MemoryOperand mem)
@@ -78,7 +76,7 @@ namespace Decompiler.Arch.Intel
 			RegisterOperand reg = op as RegisterOperand;
 			if (reg != null)
 			{
-				Constant codeSeg = ReplaceCodeSegment(reg.Register);
+				Constant codeSeg = ReplaceCodeSegment(reg.Register, state);
 				if (codeSeg != null)
 					return codeSeg;
 #if NO_UNNECESSARY_ESCAPES	// A reference to the stack pointer can be left as is.
@@ -126,7 +124,7 @@ namespace Decompiler.Arch.Intel
 			return frame.EnsureFlagGroup((uint) flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
 		}
 
-		public Address OperandAsCodeAddress(Operand op)
+		public Address OperandAsCodeAddress(Operand op, RewriterState state)
 		{
 			AddressOperand ado = op as AddressOperand;
 			if (ado != null)
@@ -139,15 +137,9 @@ namespace Decompiler.Arch.Intel
 					return new Address(imm.val.Unsigned);
 				}
 				else
-					return new Address(procAddress.seg, imm.val.Word);
+					return new Address(state.CodeSegment, imm.val.Word);
 			}
 			return null;
-		}
-
-		[Obsolete]
-		public Expression Transform(Operand opSrc, PrimitiveType addrWidth, RewriterState state)
-		{
-			return Transform(opSrc, addrWidth, addrWidth, state);
 		}
 
 		public Expression Transform(Operand opSrc, PrimitiveType dataWidth, PrimitiveType addrWidth, RewriterState state)
@@ -185,7 +177,7 @@ namespace Decompiler.Arch.Intel
 			Expression expr = EffectiveAddressExpression(mem, state);
 			if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
 			{
-				Expression seg = ReplaceCodeSegment(mem.DefaultSegment);
+				Expression seg = ReplaceCodeSegment(mem.DefaultSegment, state);
 				if (seg == null)
 					seg = AluRegister(mem.DefaultSegment);
 				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, seg, expr, dt);
@@ -308,10 +300,10 @@ namespace Decompiler.Arch.Intel
 			return frame.CreateTemporary(width);
 		}
 	
-		public Constant ReplaceCodeSegment(IntelRegister reg)
+		public Constant ReplaceCodeSegment(IntelRegister reg, RewriterState state)
 		{
 			if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
-				return new Constant(PrimitiveType.Word16, procAddress.seg);
+				return new Constant(PrimitiveType.Word16, state.CodeSegment);
 			else 
 				return null;
 

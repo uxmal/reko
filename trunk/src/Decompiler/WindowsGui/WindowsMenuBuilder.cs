@@ -76,7 +76,7 @@ namespace Decompiler.WindowsGui
 
 	public class WindowsMenuItem : MenuItem
 	{
-		public event MenuCommandHandler Click;
+		public new event MenuCommandHandler Click;
 
 		private MenuCommand cmd;
 

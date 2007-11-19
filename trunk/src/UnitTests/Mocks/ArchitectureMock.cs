@@ -61,16 +61,14 @@ namespace Decompiler.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, Address addrProc, IRewriterHost host, CodeEmitter emitter)
+		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host, CodeEmitter emitter)
 		{
-			// TODO:  Add ArchitectureMock.CreateRewriter implementation
-			return null;
+			throw new NotImplementedException();
 		}
 
 		public Assembler CreateAssembler()
 		{
-			// TODO:  Add ArchitectureMock.CreateAssembler implementation
-			return null;
+			throw new NotImplementedException();
 		}
 
 		public Dumper CreateDumper()

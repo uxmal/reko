@@ -111,7 +111,7 @@ namespace Decompiler.Arch.Intel
 	{
 		public Address addr;
 
-		public AddressOperand(Address a) : base(PrimitiveType.Word32)	//$BUGBUG: P6 pointers?
+		public AddressOperand(Address a) : base(PrimitiveType.Pointer32)	//$BUGBUG: P6 pointers?
 		{
 			addr = a;
 		}
