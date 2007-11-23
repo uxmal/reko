@@ -84,17 +84,17 @@ namespace Decompiler.UnitTests.Gui
 		{
 		}
 
-		public override void ExecuteCommand(MenuCommand cmd)
+		public override bool Execute(ref Guid cmdSet, int cmdId)
 		{
-			base.ExecuteCommand(cmd);
-			if (cmd.CommandID.Guid == testCmd.Guid)
+			if (cmdSet == testCmd.Guid)
 			{
-				if (cmd.CommandID.ID==testCmd.ID)
+				if (cmdId==testCmd.ID)
 				{
 					MainForm.TitleText = "hello";
-					return;
+					return true;
 				}
 			}
+			return base.Execute(ref cmdSet, cmdId);
 		}
 	}
 }

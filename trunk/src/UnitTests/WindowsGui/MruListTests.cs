@@ -16,37 +16,19 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.WindowsGui;
+using NUnit.Framework;
 using System;
-using System.ComponentModel.Design;
 
-namespace Decompiler.Gui
+namespace Decompiler.UnitTests.WindowsGui
 {
-	/// <summary>
-	/// GUI-neutral class that handles abstract command events, and dispatches UI requests to the main form or window
-	/// of the Decompiler UI.
-	/// </summary>
-	public class MainFormInteractor : ICommandTarget
+	[TestFixture]
+	public class MruListTests
 	{
-		private IMainForm mainForm;
-
-		public MainFormInteractor(IMainForm mainForm, string [] arguments)
+		[Test]
+		public void Add()
 		{
-			this.mainForm = mainForm;
-		}
-
-		public IMainForm MainForm
-		{
-			get { return mainForm; }
-		}
-
-		public virtual bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
-		{
-			return false;
-		}
-
-		public virtual bool Execute(ref Guid cmdSet, int cmdId)
-		{
-			return false;
+			MruList m = new MruList(2);
 		}
 	}
 }

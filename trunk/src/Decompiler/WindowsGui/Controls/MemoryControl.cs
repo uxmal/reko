@@ -130,6 +130,45 @@ namespace Decompiler.WindowsGui.Controls
 			return SystemBrushes.WindowText;
 		}
 
+		protected override bool IsInputKey(Keys keyData)
+		{
+			switch (keyData & ~Keys.Modifiers)
+			{
+			case Keys.Down:
+			case Keys.Up:
+			case Keys.Left:
+			case Keys.Right:
+				return true;
+			default:
+				return base.IsInputKey (keyData);
+			}
+		}
+
+		protected override void OnKeyDown(KeyEventArgs e)
+		{
+			switch (e.KeyCode)
+			{
+			case Keys.Down:
+				SelectedAddress += cbRow;
+				Invalidate();
+				break;
+			case Keys.Up:
+				SelectedAddress -= cbRow;
+				Invalidate();
+				break;
+			case Keys.Left:
+				SelectedAddress -= wordSize;
+				Invalidate();
+				break;
+			case Keys.Right:
+				SelectedAddress += wordSize;
+				Invalidate();
+				break;
+			}
+			base.OnKeyDown(e);
+
+		}
+
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
@@ -273,8 +312,6 @@ namespace Decompiler.WindowsGui.Controls
 			Rectangle rc = ClientRectangle;
 			Size cell = CellSize;
 			rc.Height = cell.Height;
-
-			//$REVIEW: Ignore scrollbars for now.rc.X -= hscroller.Position;
 
 			int laEnd = image.BaseAddress.Linear + image.Bytes.Length;
 			

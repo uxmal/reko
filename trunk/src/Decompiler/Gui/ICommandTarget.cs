@@ -29,14 +29,43 @@ namespace Decompiler.Gui
 		/// <summary>
 		/// Sets or rests the visibility flags of the command. 
 		/// </summary>
+		/// <remarks>
+		/// If the command target knows about the command, but doesn't want it visible or enabled, set the 
+		/// appropriate bits on <paramref>cmd</paramref> and return true; higher level command targets will
+		/// then respect this selection. If the command target doesn't know what the 
+		/// menu command is, return false from this method. This allows higher-level command targets to set
+		/// set command statues
+		/// </remarks>
 		/// <param name="cmd"></param>
+		/// <param name="info">collecting parameter. If not null, asks for the text of the command item (for
+		/// displaying in menus, buttons, etc).</param>
 		/// <returns>false if the command is not supported, true if it is.</returns>
-		bool GetCommandStatus(MenuCommand cmd);
+		bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text);
 
 		/// <summary>
 		/// Executes the specified command.
 		/// </summary>
 		/// <param name="cmd"></param>
-		void ExecuteCommand(MenuCommand cmd);
+		/// <returns>false if the specified command is unknown, true otherwise.</returns>
+		bool Execute(ref Guid cmdSet, int cmdId);
 	}
+
+	public class CommandStatus
+	{
+		public MenuStatus Status;
+	}
+
+	public class CommandText
+	{
+		public string Text;
+	}
+
+	[Flags]
+	public enum MenuStatus
+	{
+		Visible = 0x0001,
+		Enabled = 0x0002,
+		Checked = 0x0004,
+	}
+
 }

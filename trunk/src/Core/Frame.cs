@@ -61,7 +61,6 @@ namespace Decompiler.Core
 	{
 		private IdentifierCollection identifiers;	// Identifiers for each access.
 		private int returnAddressSize;			// Size of return value on stack -- (some processors pass it in a register)
-		private int stackDelta;					
 		private bool escapes;
 		private Identifier framePointer;
 		private int frameOffset;				// frame offset from stack pointer in bytes.

@@ -31,16 +31,25 @@ namespace Decompiler.WindowsGui
 		private int itemsMax;
 		private ArrayList items;
 
-		public MruList(string fileLocation, int itemsMax)
+		public MruList(int itemsMax)
 		{
 			this.itemsMax = itemsMax;
 			this.items = new ArrayList(itemsMax);
+		}
+
+		public IList Items
+		{
+			get { return items; }
+		}
+
+		public void Load(string fileLocation)
+		{
 			try
 			{
 				using (StreamReader rdr = new StreamReader(fileLocation, new UTF8Encoding(false)))
 				{
 					string line = rdr.ReadLine();
-					while (line != null)
+					while (line != null && items.Count < items.Capacity)
 					{
 						this.items.Add(line.TrimEnd('\r', '\n'));
 						line = rdr.ReadLine();
@@ -52,7 +61,23 @@ namespace Decompiler.WindowsGui
 			}
 		}
 
-		public void Add(string item)
+		public void Save(string fileLocation)
+		{
+			using (StreamWriter wrt = new StreamWriter(fileLocation, false, new UTF8Encoding(false)))
+			{
+				foreach (string line in items)
+				{
+					wrt.WriteLine(line);
+				}
+			}
+		}
+
+		/// <summary>
+		/// By using the selected index, we move the item to the top of the mru, shifting any other items down.
+		/// </summary>
+		/// <param name="index"></param>
+
+		public void Use(string item)
 		{
 			for (int i = 0; i < items.Count; ++i)
 			{
@@ -72,20 +97,5 @@ namespace Decompiler.WindowsGui
 			}
 		}
 
-		public ICollection Items
-		{
-			get { return items; }
-		}
-
-		public void Save(string fileLocation)
-		{
-			using (StreamWriter wrt = new StreamWriter(fileLocation, false, new UTF8Encoding(false)))
-			{
-				foreach (string line in items)
-				{
-					wrt.WriteLine(line);
-				}
-			}
-		}
 	}
 }

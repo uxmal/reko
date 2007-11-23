@@ -1045,12 +1045,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "WindowsGui\MruListTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "WindowsGui\WindowsMenuBuilderTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "WindowsGui\Controls\MemoryControlTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Controls\MenuSystemTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
