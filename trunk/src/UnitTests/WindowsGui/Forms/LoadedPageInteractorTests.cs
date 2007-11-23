@@ -59,9 +59,8 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		{
 			Program prog = new Program();
 			prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[10000]);
-			prog.ImageMap = new ImageMap(prog.Image);
-			prog.ImageMap.AddSegment(new Address(0x0C10, 0), null, AccessMode.ReadWrite);
-			prog.ImageMap.AddSegment(new Address(0x0C20, 0), null, AccessMode.ReadWrite);
+			prog.Image.Map.AddSegment(new Address(0x0C10, 0), null, AccessMode.ReadWrite);
+			prog.Image.Map.AddSegment(new Address(0x0C20, 0), null, AccessMode.ReadWrite);
 			return prog;
 		}
 	}

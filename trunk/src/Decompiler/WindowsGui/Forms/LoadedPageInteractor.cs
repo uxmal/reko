@@ -57,7 +57,6 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			pageLoaded.Architecture = MainInteractor.Program.Architecture;
 			pageLoaded.MemoryControl.ProgramImage = MainInteractor.Program.Image;
-			pageLoaded.MemoryControl.ImageMap = MainInteractor.Program.ImageMap;
 			pageLoaded.Disassembly.Text = "";
 
 			MainForm.BrowserTree.Visible = true;
@@ -70,7 +69,7 @@ namespace Decompiler.WindowsGui.Forms
 		public void PopulateBrowser()
 		{
 			MainForm.BrowserTree.Nodes.Clear();
-			foreach (ImageMapSegment seg in MainInteractor.Program.ImageMap.Segments.Values)
+			foreach (ImageMapSegment seg in MainInteractor.Program.Image.Map.Segments.Values)
 			{
 				TreeNode node = new TreeNode(seg.Name);
 				node.Tag = seg;

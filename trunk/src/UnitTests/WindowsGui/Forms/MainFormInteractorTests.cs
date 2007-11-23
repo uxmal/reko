@@ -72,7 +72,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			{
 				Program prog = new Program();
 				prog.Image = new ProgramImage(new Address(0xC00, 0), new byte [300]);
-				prog.ImageMap = new ImageMap(prog.Image);
 				MainFormInteractor i = new TestMainFormInteractor(form, prog);
 				i.OpenBinary(null);
 				Assert.AreEqual(form.LoadedPage, form.PhasePage);

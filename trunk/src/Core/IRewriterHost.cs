@@ -33,6 +33,5 @@ namespace Decompiler.Core
 		SystemService SystemCallAt(Address addr);
 		PseudoProcedure TrampolineAt(Address addr);
 		ProgramImage Image { get; }
-		ImageMap ImageMap { get; }
 	}
 }

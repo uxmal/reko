@@ -35,6 +35,7 @@ namespace Decompiler.Scanning
 	public class Scanner : ICodeWalkerListener
 	{
 		private Program program;
+		private ImageMap map;
 		private DecompilerHost host;
 		private ImageMapBlock blockCur;
 		private Hashtable blocksVisited;
@@ -53,9 +54,10 @@ namespace Decompiler.Scanning
 
 		public Scanner(Program program, DecompilerHost host)
 		{
-			if (program.ImageMap == null)
-				throw new InvalidOperationException("Program.ImageMap must be defined");
+			if (program.Image == null)
+				throw new InvalidOperationException("Program.Image must be defined.");
 			this.program = program;
+			this.map = program.Image.Map;
 			this.host = host;
 			this.vectorUses = new Map();
 			this.syscalls = new SortedList();
@@ -110,7 +112,7 @@ namespace Decompiler.Scanning
 			}
 			ImageMapBlock entry = new ImageMapBlock();
 			entry.Procedure = proc;
-			program.ImageMap.AddItem(addr, entry);
+			map.AddItem(addr, entry);
 
 			qProcs.Enqueue(wi);
 			return proc;
@@ -145,7 +147,7 @@ namespace Decompiler.Scanning
 			qJumps.Enqueue(wi);
 			ImageMapBlock bl = new ImageMapBlock();
 			bl.Procedure = proc;
-			ImageMapBlock item = program.ImageMap.AddItem(addr, bl) as ImageMapBlock;
+			ImageMapBlock item = map.AddItem(addr, bl) as ImageMapBlock;
 			if (item != null && item.Procedure != proc)
 			{
 				// When two procedures join, they generate a new procedure. If there is
@@ -203,7 +205,7 @@ namespace Decompiler.Scanning
 				wi.table = table;
 				wi.addrFrom = addrUser;
 
-				program.ImageMap.AddItem(addrTable, table);
+				map.AddItem(addrTable, table);
 				program.Vectors[addrTable] = table;
 				qVectors.Enqueue(wi);
 			}
@@ -243,7 +245,7 @@ namespace Decompiler.Scanning
 
 		public void OnJump(ProcessorState st, Address addrTerm, Address addrJump)
 		{
-			program.ImageMap.AddItem(addrTerm, new ImageMapItem());
+			map.AddItem(addrTerm, new ImageMapItem());
 			if (addrJump != null)
 			{
 				jumpGraph.AddEdge(addrTerm - 1, addrJump);
@@ -253,7 +255,7 @@ namespace Decompiler.Scanning
 
 		public void OnJumpPointer(ProcessorState st, Address addrFrom, Address addrJump, PrimitiveType width)
 		{
-			program.ImageMap.AddItem(addrFrom, new ImageMapItem());
+			map.AddItem(addrFrom, new ImageMapItem());
 		}
 
 		public void OnJumpTable(ProcessorState st,
@@ -293,12 +295,12 @@ namespace Decompiler.Scanning
 
 		public void OnProcessExit(Address addrTerm)
 		{
-			program.ImageMap.AddItem(addrTerm, new ImageMapItem());
+			map.AddItem(addrTerm, new ImageMapItem());
 		}
 
 		public void OnReturn(Address addrTerm)
 		{
-			program.ImageMap.AddItem(addrTerm, new ImageMapItem());
+			map.AddItem(addrTerm, new ImageMapItem());
 		}
 
 		public void OnSystemServiceCall(Address addrInstr, SystemService svc)
@@ -331,12 +333,12 @@ namespace Decompiler.Scanning
 
 		public void Parse(ICollection entrypoints, ICollection userProcedures)
 		{
-			program.ImageMap.ItemSplit += new ItemSplitHandler(ImageMap_ItemSplit);
-			program.ImageMap.ItemCoincides += new ItemSplitHandler(ImageMap_ItemCoincides);
+			map.ItemSplit += new ItemSplitHandler(ImageMap_ItemSplit);
+			map.ItemCoincides += new ItemSplitHandler(ImageMap_ItemCoincides);
 
 			// Add one mega item that covers the entire address space.
 
-			program.ImageMap.AddItem(program.Image.BaseAddress, new ImageMapItem(program.Image.Bytes.Length));
+			map.AddItem(program.Image.BaseAddress, new ImageMapItem(program.Image.Bytes.Length));
 
 			// Seed the worklists with all the entry points.
 
@@ -357,8 +359,8 @@ namespace Decompiler.Scanning
 			while (ProcessItem())
 				;
 
-			program.ImageMap.ItemSplit -= new ItemSplitHandler(ImageMap_ItemSplit);
-			program.ImageMap.ItemCoincides -= new ItemSplitHandler(ImageMap_ItemCoincides);
+			map.ItemSplit -= new ItemSplitHandler(ImageMap_ItemSplit);
+			map.ItemCoincides -= new ItemSplitHandler(ImageMap_ItemCoincides);
 		}
 
 		/// <summary>
@@ -376,11 +378,11 @@ namespace Decompiler.Scanning
 				Warn("Attempted decompilation of invalid address: {0}", wi.Address);
 				return;
 			}
-			blockCur = program.ImageMap.FindItem(wi.Address) as ImageMapBlock;
+			blockCur = map.FindItem(wi.Address) as ImageMapBlock;
 			if (blockCur == null)
 			{
 				blockCur = new ImageMapBlock();
-				program.ImageMap.AddItem(wi.Address, blockCur);
+				map.AddItem(wi.Address, blockCur);
 			}
 
 			if (blocksVisited[blockCur] == null)
@@ -407,7 +409,7 @@ namespace Decompiler.Scanning
 
 		private void ParseProcedure(WorkItem wi)
 		{
-			ImageMapBlock bl = program.ImageMap.FindItemExact(wi.Address) as ImageMapBlock;
+			ImageMapBlock bl = map.FindItemExact(wi.Address) as ImageMapBlock;
 			if (bl != null)
 			{
 				// We've already parsed this code, so it must be part of another procedure.
@@ -424,8 +426,8 @@ namespace Decompiler.Scanning
 
 		private void ProcessVector(VectorWorkItem wi)
 		{
-			ImageMapVectorTable item = program.ImageMap.FindItem(wi.Address) as ImageMapVectorTable;
-			VectorBuilder builder = new VectorBuilder(program, program.ImageMap, jumpGraph);
+			ImageMapVectorTable item = map.FindItem(wi.Address) as ImageMapVectorTable;
+			VectorBuilder builder = new VectorBuilder(program, map, jumpGraph);
 			Address [] vector = builder.Build(wi.Address, wi.addrFrom, wi.segBase, wi.stride);
 			if (vector == null)
 			{
@@ -433,7 +435,7 @@ namespace Decompiler.Scanning
 				if (program.Image.IsValidAddress(addrNext))
 				{
 					// Can't determine the size of the table, but surely it has one entry?
-					program.ImageMap.AddItem(addrNext, new ImageMapItem());
+					program.Image.Map.AddItem(addrNext, new ImageMapItem());
 				}
 				return;
 			}
@@ -453,7 +455,7 @@ namespace Decompiler.Scanning
 				}
 			}
 			vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);	
-			program.ImageMap.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
+			program.Image.Map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
 
 		}
 
@@ -526,7 +528,7 @@ namespace Decompiler.Scanning
 		{
 			if (e.ItemOld.GetType() == typeof (ImageMapItem))
 			{
-				program.ImageMap.Items[e.ItemOld.Address] = e.ItemNew;
+				program.Image.Map.Items[e.ItemOld.Address] = e.ItemNew;
 				e.ItemNew.Size = e.ItemOld.Size;
 			}
 		}

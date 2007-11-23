@@ -55,5 +55,13 @@ namespace Decompiler.UnitTests.Core
 			ushort newSeg = img.FixupUShort(1, 0x4444);
 			Assert.AreEqual(0x4746, newSeg);
 		}
+
+		[Test]
+		public void MapTests()
+		{
+			ProgramImage img = new ProgramImage(new Address(0x1231000), new byte [256]);
+			Assert.IsNotNull(img.Map);
+			Assert.AreEqual(1, img.Map.Items.Count);
+		}
 	}
 }

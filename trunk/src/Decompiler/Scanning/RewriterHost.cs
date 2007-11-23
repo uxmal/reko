@@ -66,11 +66,6 @@ namespace Decompiler.Scanning
 			get { return prog.Image; }
 		}
 
-		public ImageMap ImageMap
-		{
-			get { return prog.ImageMap; }
-		}
-
 		public void LoadCallSignatures(ICollection serializedCalls)
 		{
 			foreach (SerializedCall sc in serializedCalls)
@@ -120,7 +115,7 @@ namespace Decompiler.Scanning
 			VectorUse vu = (VectorUse) vectorUses[addr];
 			if (vu == null)
 				return new Procedure[0];
-			ImageMapVectorTable vector = (ImageMapVectorTable) ImageMap.FindItemExact(vu.TableAddress);
+			ImageMapVectorTable vector = (ImageMapVectorTable) Image.Map.FindItemExact(vu.TableAddress);
 			Procedure [] procs = new Procedure[vector.Addresses.Count];
 			for (int i = 0; i < vector.Addresses.Count; ++i)
 			{
@@ -134,7 +129,7 @@ namespace Decompiler.Scanning
 			VectorUse vu = (VectorUse) vectorUses[addr];
 			if (vu == null)
 				return null;
-			ImageMapVectorTable vector = (ImageMapVectorTable) ImageMap.FindItemExact(vu.TableAddress);
+			ImageMapVectorTable vector = (ImageMapVectorTable) Image.Map.FindItemExact(vu.TableAddress);
 			Procedure [] procs = new Procedure[vector.Addresses.Count];
 			for (int i = 0; i < vector.Addresses.Count; ++i)
 			{
@@ -199,7 +194,7 @@ namespace Decompiler.Scanning
 			prw = new ProcedureRewriter(this, proc);
 			Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, this, new CodeEmitter(prog, proc));
 			prw.Rewriter = rw;
-			ImageMapBlock raw = (ImageMapBlock) ImageMap.FindItemExact(addrProc);
+			ImageMapBlock raw = (ImageMapBlock) Image.Map.FindItemExact(addrProc);
 			prw.RewriteBlock(raw.Address, proc.EntryBlock);
 			proc.RenumberBlocks();
 

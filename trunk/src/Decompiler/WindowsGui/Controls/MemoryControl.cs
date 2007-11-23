@@ -46,7 +46,6 @@ namespace Decompiler.WindowsGui.Controls
 		private int wordSize;
 		private int cbRow;
 		private ProgramImage image;
-		private ImageMap imageMap;
 		private Address addrSelected;
 
 		private int cRows;				// total number of rows.
@@ -175,7 +174,7 @@ namespace Decompiler.WindowsGui.Controls
 
 			Focus();
 			CacheCellSize();
-			if (image == null || imageMap == null)
+			if (image == null)
 				return;
 
 			ptDown = new Point(e.X, e.Y);
@@ -189,7 +188,7 @@ namespace Decompiler.WindowsGui.Controls
 
 		protected override void OnPaint(PaintEventArgs pea)
 		{
-			if (image == null || imageMap == null)
+			if (image == null)
 			{
 				pea.Graphics.FillRectangle(SystemBrushes.Window, ClientRectangle);
 			}
@@ -250,7 +249,7 @@ namespace Decompiler.WindowsGui.Controls
 				Address addr = rdr.Address;
 				int linear = addr.Linear;
 
-				ImageMapItem item = ImageMap.FindItem(addr);
+				ImageMapItem item = ProgramImage.Map.FindItem(addr);
 				if (item == null)
 					break;
 				int cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
@@ -315,7 +314,7 @@ namespace Decompiler.WindowsGui.Controls
 
 			int laEnd = image.BaseAddress.Linear + image.Bytes.Length;
 			
-			IDictionaryEnumerator segs = ImageMap.GetSegmentEnumerator(addrTopVisible);
+			IDictionaryEnumerator segs = ProgramImage.Map.GetSegmentEnumerator(addrTopVisible);
 			ImageMapSegment seg = null;
 			int laSegEnd = 0;
 			while (rc.Top < this.Height && rdr.Address.Linear < laEnd)
@@ -356,17 +355,10 @@ namespace Decompiler.WindowsGui.Controls
 			}
 		}
 
-		[Browsable(false)]
-		public ImageMap ImageMap
-		{
-			get { return imageMap; }
-			set { imageMap = value; }
-		}
- 
 		private Address RoundToNearestRow(Address addr)
 		{
 			int rows = addr.Linear / cbRow;
-			return ImageMap.MapLinearAddressToAddress(rows * cbRow);
+			return ProgramImage.Map.MapLinearAddressToAddress(rows * cbRow);
 		}
 
 		[Browsable(false)]
@@ -454,7 +446,7 @@ namespace Decompiler.WindowsGui.Controls
 		{
 			if (e.Type ==ScrollEventType.ThumbTrack)
 				return;
-			TopAddress = imageMap.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
+			TopAddress = ProgramImage.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
 		}
 	}
 }

@@ -173,9 +173,9 @@ namespace Decompiler.Loading
 			e_lfanew = rdr.ReadInt();          
 		}
 
-		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
+		public override void Relocate(Address addrLoad, ArrayList entryPoints)
 		{
-			return ldrDeferred.Relocate(addrLoad, entryPoints);
+			ldrDeferred.Relocate(addrLoad, entryPoints);
 		}
 
 		void RelocateNewExe(object neHeader)

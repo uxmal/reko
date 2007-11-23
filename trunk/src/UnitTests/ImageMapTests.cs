@@ -28,23 +28,18 @@ namespace Decompiler.UnitTests
 	[TestFixture]
 	public class ImageMapTests
 	{
-		private ProgramImage img;
+		private Address addrBase = new Address(0x8000);
+		private byte [] img = new Byte [] { 0x00, 0x00, 0x00, 0x00 };
 		private int cItemsSplit;
 
 		public ImageMapTests()
 		{
 		}
 
-		[SetUp]
-		public void Setup()
-		{
-			img = new ProgramImage(new Address(0x8000, 0), new Byte [] { 0x00, 0x00, 0x00, 0x00 });
-		}
-
 		[Test]
 		public void ImageMapCreation()
 		{
-			ImageMap im = new ImageMap(img);
+			ImageMap im = new ImageMap(addrBase, img.Length);
 
 			im.AddSegment(new Address(0x8000, 2), "",  AccessMode.ReadWrite);
 			im.AddSegment(new Address(0x8000, 3), "", AccessMode.ReadWrite);
@@ -120,7 +115,7 @@ namespace Decompiler.UnitTests
 		[Test]
 		public void AddNamedSegment()
 		{
-			ImageMap map = new ImageMap(img);
+			ImageMap map = new ImageMap(addrBase, img.Length);
 			map.AddSegment(new Address(0xC00, 0), "0C00", AccessMode.ReadWrite);
 			IDictionaryEnumerator e = map.Segments.GetEnumerator();
 			ImageMapSegment s = GetNextMapSegment(e);

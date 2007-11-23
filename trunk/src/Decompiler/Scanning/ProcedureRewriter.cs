@@ -73,7 +73,7 @@ namespace Decompiler.Scanning
 
 			// Locate the image map block corresponding to the address.
 
-			ImageMapItem item = host.ImageMap.FindItemExact(addr);
+			ImageMapItem item = host.Image.Map.FindItemExact(addr);
 			ImageMapBlock raw = item as ImageMapBlock;
 			if (raw != null)
 			{

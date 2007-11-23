@@ -35,11 +35,13 @@ namespace Decompiler.Core
 	{
 		private byte [] abImage;
 		private Address addrBase;				// address of start of image.
+		private ImageMap map;
 
 		public ProgramImage(Address addrBase, byte [] ab)
 		{
 			this.addrBase = addrBase;
 			this.abImage = ab;
+			this.map = new ImageMap(addrBase, ab.Length);
 		}
 
 		public Address BaseAddress
@@ -109,6 +111,11 @@ namespace Decompiler.Core
 				return false;
 			int offset = addr.Linear - addrBase.Linear;
 			return 0 <= offset && offset < abImage.Length;
+		}
+
+		public ImageMap Map
+		{
+			get { return map; }
 		}
 
 		public byte ReadByte(int off)
