@@ -71,13 +71,13 @@ namespace Decompiler.WindowsGui.Forms
 		private void InitializeComponent()
 		{
 			this.listView1 = new System.Windows.Forms.ListView();
+			this.columnAddress = new System.Windows.Forms.ColumnHeader();
+			this.columnType = new System.Windows.Forms.ColumnHeader();
+			this.columnName = new System.Windows.Forms.ColumnHeader();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.contextMenuList = new System.Windows.Forms.ContextMenu();
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
-			this.columnAddress = new System.Windows.Forms.ColumnHeader();
-			this.columnName = new System.Windows.Forms.ColumnHeader();
-			this.columnType = new System.Windows.Forms.ColumnHeader();
 			this.ddlFilter = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
@@ -93,6 +93,20 @@ namespace Decompiler.WindowsGui.Forms
 			this.listView1.Size = new System.Drawing.Size(280, 312);
 			this.listView1.TabIndex = 1;
 			this.listView1.View = System.Windows.Forms.View.Details;
+			// 
+			// columnAddress
+			// 
+			this.columnAddress.Text = "Address";
+			// 
+			// columnType
+			// 
+			this.columnType.Text = "Type";
+			this.columnType.Width = 81;
+			// 
+			// columnName
+			// 
+			this.columnName.Text = "Item";
+			this.columnName.Width = 135;
 			// 
 			// textBox1
 			// 
@@ -119,20 +133,6 @@ namespace Decompiler.WindowsGui.Forms
 			this.menuItem2.Index = 1;
 			this.menuItem2.Text = "&View Item as Code";
 			// 
-			// columnAddress
-			// 
-			this.columnAddress.Text = "Address";
-			// 
-			// columnName
-			// 
-			this.columnName.Text = "Item";
-			this.columnName.Width = 135;
-			// 
-			// columnType
-			// 
-			this.columnType.Text = "Type";
-			this.columnType.Width = 81;
-			// 
 			// ddlFilter
 			// 
 			this.ddlFilter.Items.AddRange(new object[] {
@@ -148,20 +148,19 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			// label1
 			// 
-			this.label1.Location = new System.Drawing.Point(0, 9);
+			this.label1.Location = new System.Drawing.Point(0, 12);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(40, 18);
+			this.label1.Size = new System.Drawing.Size(40, 12);
 			this.label1.TabIndex = 3;
 			this.label1.Text = "&Show:";
 			this.label1.Click += new System.EventHandler(this.label1_Click);
 			// 
 			// ScanPage
 			// 
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.label1,
-																		  this.ddlFilter,
-																		  this.textBox1,
-																		  this.listView1});
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.ddlFilter);
+			this.Controls.Add(this.textBox1);
+			this.Controls.Add(this.listView1);
 			this.Name = "ScanPage";
 			this.Size = new System.Drawing.Size(600, 360);
 			this.ResumeLayout(false);

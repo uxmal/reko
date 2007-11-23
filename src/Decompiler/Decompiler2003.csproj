@@ -16,7 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                PreBuildEvent = ""
+                PreBuildEvent = "$(SolutionDir)tools\xslt.exe $(ProjectDir)WindowsGui\Forms\decompiler-menus.xslt $(ProjectDir)Gui\decompiler-menus.xml $(ProjectDir)WindowsGui\Forms\DecompilerMenus.cs&#xd;&#xa;$(SolutionDir)tools\xslt.exe $(ProjectDir)WindowsGui\Forms\cmdids.xslt $(ProjectDir)Gui\decompiler-menus.xml $(ProjectDir)WindowsGui\Forms\CmdIds.cs&#xd;&#xa;"
                 PostBuildEvent = ""
                 RootNamespace = "Decompiler"
                 RunPostBuildEvent = "OnBuildSuccess"
@@ -409,6 +409,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Gui\decompiler-menus.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Gui\ICommandTarget.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -769,92 +773,13 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "WindowsGui\bin\Debug\advapi32.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\comdlg32.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Decompiler.Core2003.dll"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Decompiler.Core2003.pdb"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Decompiler.WindowsGui2003.exe"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Decompiler.WindowsGui2003.exe.config"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Decompiler.WindowsGui2003.pdb"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Decompiler2003.dll"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Decompiler2003.pdb"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\gdi32.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Grovel.exe.config"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Grovel.vshost.exe"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Grovel.vshost.exe.config"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Intel2003.dll"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\Intel2003.pdb"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\kernel32.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\msvcrt.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\realmodeintservices.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\shell32.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\user32.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WindowsGui\bin\Debug\wininet.xml"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "WindowsGui\Controls\CodeControl.cs"
                     SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Controls\CommandMenuItem.cs"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
@@ -883,6 +808,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "WindowsGui\Controls\MenuSystem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "WindowsGui\Forms\AnalyzePage.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -891,6 +821,24 @@
                     RelPath = "WindowsGui\Forms\AnalyzePage.resx"
                     DependentUpon = "AnalyzePage.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\CmdIds.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\cmdids.xslt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\DecompilerMenus.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\decompiler-menus.xslt"
+                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "WindowsGui\Forms\DecompilerPhase.cs"

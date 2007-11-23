@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu-definitions xmlns="urn:Decompiler.Schemata.MenuDefinitions">
+	<cmdSet id="Decompiler">6D65B38B-4275-4892-BD3C-05AC0645373F</cmdSet>
+	
+	<!-- Menus ========================================================== -->
+	
+	<menu type="MainMenu" id="MainMenu" cmdSet="GuidCmdSet"/>
+	<menu id="FileMenu" cmdSet="Decompiler" container="GrpMain">_File</menu>
+	<menu id="HelpMenu" cmdSet="Decompiler" container="GrpMain">_Help</menu>
+	
+	<!-- Groups ========================================================== -->
+	
+	<group id="GrpMain" cmdSet="Decompiler" container="MainMenu"/>
+	
+	<group id="GrpFile" cmdSet="Decompiler" container="FileMenu" priority="0"/>
+	<group id="GrpFileMru" cmdSet="Decompiler" container="FileMenu" priority="0"/>
+	<group id="GrpFileEnd" cmdSet="Decompiler" container="FileMenu" priority="1000"/>
+	
+	<group id="GrpHelp" cmdSet="Decompiler" container="HelpMenu" />
+	
+	<!-- Commands ========================================================== -->
+	
+	<cmd id="FileOpen" cmdSet="Decompiler" container="GrpFile">_Open</cmd>
+	<cmd id="FileMru"  cmdSet="Decompiler" container="GrpFileMru" dynamic-item-id="2200"/>
+	<cmd id="FileExit" cmdSet="Decompiler" container="GrpFileEnd">E_xit</cmd>
+	
+</menu-definitions>
+ 

@@ -301,6 +301,12 @@ namespace Decompiler.Loading
 			}
 		}
 
+		public string ImportFileLocation(string dllName)
+		{
+			string assemblyDir = System.IO.Path.GetDirectoryName(GetType().Assembly.Location);
+			return System.IO.Path.Combine(assemblyDir, System.IO.Path.ChangeExtension(dllName, ".xml"));
+		}
+
 		public string ReadAsciiString(uint rva, int maxLength)
 		{
 			ImageReader rdr = RawImage.CreateReader(rva);
@@ -328,9 +334,9 @@ namespace Decompiler.Loading
 			id.DllName = ReadAsciiString(rdr.ReadUint(), 0);		// DLL name
 			id.RvaThunks = rdr.ReadUint();		// first thunk
 
-			Debug.WriteLine(id.DllName);
 			SignatureLibrary lib = new SignatureLibrary(program.Architecture);
-			lib.Load(System.IO.Path.ChangeExtension(id.DllName, ".xml"));
+			
+			lib.Load(ImportFileLocation(id.DllName));
 			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
 			ImageReader rdrThunks  = imgLoaded.CreateReader(id.RvaThunks);
 			for (;;)

@@ -723,7 +723,15 @@
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
-                <Folder RelPath = "Schemata\" />
+                <File
+                    RelPath = "Schemata\MenuDefinitions.xsd"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Schemata\MenuDefinitions.xsx"
+                    DependentUpon = "MenuDefinitions.xsd"
+                    BuildAction = "None"
+                />
                 <File
                     RelPath = "Serialization\ArgumentSerializer.cs"
                     SubType = "Code"

@@ -69,6 +69,7 @@ namespace Decompiler.WindowsGui.Forms
 		}
 		#endregion
 
+		[Obsolete]
 		public virtual void Populate(DecompilerDriver decompiler, TreeView browser)
 		{
 		}
