@@ -16,30 +16,32 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
-using Decompiler.Core;
 using Decompiler.WindowsGui.Forms;
+using NUnit.Framework;
 using System;
-using System.Windows.Forms;
 
-namespace WindowsDecompiler
+namespace Decompiler.UnitTests.WindowsGui.Forms
 {
-	public class Driver
+	[TestFixture]
+	public class MainFormTests
 	{
-		[STAThread]
-		public static void Main(string [] args)
+		private int phasePageChanged;
+
+		[Test]
+		public void ChangePage()
 		{
-			if (args.Length == 0)
+			using (MainForm form = new MainForm())
 			{
-				MainForm form = new MainForm();
-				MainFormInteractor interactor = new MainFormInteractor(form);
-				Application.Run(form);
+				form.PhasePageChanged += new EventHandler(form_PhasePageChanged);
+				phasePageChanged = 0;
+				form.PhasePage = form.InitialPage;
+				Assert.AreEqual(1, phasePageChanged, "PhasePageChanged didn't fire");
 			}
-			else
-			{
-				DecompilerDriver dec = new DecompilerDriver(args[0], new Program(), new NullDecompilerHost());
-				dec.Decompile();
-			}
+		}
+
+		private void form_PhasePageChanged(object sender, EventArgs e)
+		{
+			++phasePageChanged;
 		}
 	}
 }

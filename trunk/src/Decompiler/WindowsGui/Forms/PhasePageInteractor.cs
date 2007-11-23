@@ -16,29 +16,39 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Gui;
 using System;
-using System.ComponentModel.Design;
 
-namespace Decompiler.Gui
+namespace Decompiler.WindowsGui.Forms
 {
 	/// <summary>
-	/// GUI-neutral class that handles abstract command events, and dispatches UI requests to the main form or window
-	/// of the Decompiler UI.
+	/// Base class for all interactors in charge of phase pages. Provides common functionality
+	/// such as command routing.
 	/// </summary>
-	//$REVIEW: when porting to a new platform, move all platform-independent code here.
-	public class MainFormInteractorQ : ICommandTarget
+	public class PhasePageInteractor : ICommandTarget
 	{
-		private IMainForm mainForm;
+		private PhasePage page;
+		private MainFormInteractor mainInteractor;
 
-		public MainFormInteractorQ(IMainForm mainForm, string [] arguments)
+		public PhasePageInteractor(PhasePage page, MainFormInteractor mainInteractor)
 		{
-			this.mainForm = mainForm;
+			this.page = page;
+			this.mainInteractor = mainInteractor;
+			page.Enter += new EventHandler(OnPageEntered);
+			
 		}
 
-		public IMainForm MainForm
+		public MainForm MainForm
 		{
-			get { return mainForm; }
+			get { return mainInteractor.MainForm; }
 		}
+
+		public MainFormInteractor MainInteractor
+		{
+			get { return mainInteractor; }
+		}
+
+		#region ICommandTarget Members
 
 		public virtual bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
 		{
@@ -48,6 +58,16 @@ namespace Decompiler.Gui
 		public virtual bool Execute(ref Guid cmdSet, int cmdId)
 		{
 			return false;
+		}
+
+		#endregion
+
+		// Event handlers /////////////////////////////////
+
+		public virtual void OnPageEntered(object sender, EventArgs e)
+		{
+			System.Diagnostics.Debug.WriteLine(string.Format("Entered {0}",  sender.GetType().Name));
+			mainInteractor.CommandTarget = this;
 		}
 	}
 }

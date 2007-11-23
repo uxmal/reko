@@ -47,19 +47,19 @@ namespace Decompiler
 		private RewriterHost rewriterHost;
 		private InductionVariableCollection ivs;
 
-		public DecompilerDriver(DecompilerProject project, DecompilerHost host)
+		public DecompilerDriver(DecompilerProject project, Program program, DecompilerHost host)
 		{
 			this.project = project;
 			this.host = host;
-			this.program = new Program();
+			this.program = program;
 		}
 
-		public DecompilerDriver(string binaryFilename, DecompilerHost host)
+		public DecompilerDriver(string binaryFilename, Program program, DecompilerHost host)
 		{
 			this.project = new DecompilerProject();
 			this.host = host;
 			this.project.Input.Filename = binaryFilename;
-			this.program = new Program();
+			this.program = program;
 		}
 
 		public void AnalyzeDataFlow()
@@ -77,8 +77,6 @@ namespace Decompiler
 			ivs = dfa.InductionVariables;
 			host.ProceduresTransformed();
 		}
-
-
 
 		public void Decompile()
 		{
@@ -145,7 +143,7 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="program"></param>
 		/// <param name="cfg"></param>
-		public void LoadProgram()
+		public virtual void LoadProgram()
 		{
 			loader = new Loader(program);
 			switch (project.Input.FileFormat)

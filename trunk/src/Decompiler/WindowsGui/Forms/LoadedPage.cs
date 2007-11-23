@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.WindowsGui.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -26,7 +27,10 @@ using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
-	public class LoadPage : PhasePage
+	/// <summary>
+	/// Displays the contents of a file after it has been loaded.
+	/// </summary>
+	public class LoadedPage : PhasePage
 	{
 		private IProcessorArchitecture arch;
 		private System.Windows.Forms.Label label1;
@@ -41,7 +45,7 @@ namespace Decompiler.WindowsGui.Forms
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
-		public LoadPage()
+		public LoadedPage()
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
@@ -50,16 +54,16 @@ namespace Decompiler.WindowsGui.Forms
 		/// <summary> 
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
+			if (disposing)
 			{
-				if(components != null)
+				if (components != null)
 				{
 					components.Dispose();
 				}
 			}
-			base.Dispose( disposing );
+			base.Dispose(disposing);
 		}
 
 		#region Component Designer generated code
@@ -157,19 +161,16 @@ namespace Decompiler.WindowsGui.Forms
 		}
 		#endregion
 
-
-		public override void BrowserItemSelected(object item)
-		{
-			ImageMapSegment segment = (ImageMapSegment) item;
-			memctl.TopAddress = segment.Address;
-			memctl.SelectedAddress = segment.Address;
-		}
-
 		[Browsable(false)]
-		public IProcessorArchitecture ProcessorArchitecture
+		public IProcessorArchitecture Architecture
 		{
 			get { return arch; }
 			set { arch = value; }
+		}
+
+		public TextBox Disassembly
+		{
+			get { return txtDisassembly; }
 		}
 
 		public void DumpAssembler()
@@ -193,25 +194,11 @@ namespace Decompiler.WindowsGui.Forms
 			txtDisassembly.Text = writer.ToString();
 		}
 
-		public void PopulateBrowser(ImageMap imageMap, TreeView browser)
+		public MemoryControl MemoryControl
 		{
-			browser.Nodes.Clear();
-			foreach (ImageMapSegment seg in imageMap.Segments.Values)
-			{
-				TreeNode node = new TreeNode(seg.Name);
-				node.Tag = seg;
-				browser.Nodes.Add(node);
-			}
+			get { return memctl; }
 		}
 
-		public override void Populate(DecompilerDriver decompiler, TreeView browser)
-		{
-			Architecture = decompiler.Program.Architecture;
-			memctl.ProgramImage = decompiler.Program.Image;
-			memctl.ImageMap = decompiler.Program.ImageMap;
-			txtDisassembly.Text = "";
-			PopulateBrowser(decompiler.Program.ImageMap, browser);
-		}
 
 
 		[Browsable(false)]
@@ -221,14 +208,7 @@ namespace Decompiler.WindowsGui.Forms
 			set { memctl.ProgramImage = value; }
 		}
 
-		[Browsable(false)]
-		public IProcessorArchitecture Architecture
-		{
-			get { return arch; }
-			set { arch = value; }
-		}
-
-		// Event handlers
+		// Event handlers /////////////////////////
 
 		private void memctl_SelectionChanged(object sender, System.EventArgs e)
 		{

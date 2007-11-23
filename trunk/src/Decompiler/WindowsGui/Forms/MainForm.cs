@@ -33,8 +33,10 @@ namespace Decompiler.WindowsGui.Forms
 {
 	public class MainForm : System.Windows.Forms.Form
 	{
+		public event EventHandler PhasePageChanged;
+
 		private MainFormInteractor interactor;
-		private PhasePage currentPage;
+		private PhasePage phasePage;
 
 		private InitialPhase initialPhase;
 		private LoadedPhase loadingPhase;
@@ -78,7 +80,7 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.StatusBarPanel statusBarPanel3;
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.Panel panelRhs;
-		private Decompiler.WindowsGui.Forms.LoadPage pageLoaded;
+		private Decompiler.WindowsGui.Forms.LoadedPage pageLoaded;
 		private Decompiler.WindowsGui.Forms.InitialPage pageInitial;
 		private System.Windows.Forms.Panel panelLhs;
 		private System.Windows.Forms.ListView listBrowser;
@@ -94,8 +96,6 @@ namespace Decompiler.WindowsGui.Forms
 			InitializeComponent();
 
 			BuildPhases();
-
-			interactor = new MainFormInteractor(this, initialPhase);
 		}
 
 		/// <summary>
@@ -144,7 +144,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.panelTop = new System.Windows.Forms.Panel();
 			this.splitterTop = new System.Windows.Forms.Splitter();
 			this.panelRhs = new System.Windows.Forms.Panel();
-			this.pageLoaded = new Decompiler.WindowsGui.Forms.LoadPage();
+			this.pageLoaded = new Decompiler.WindowsGui.Forms.LoadedPage();
 			this.pageInitial = new Decompiler.WindowsGui.Forms.InitialPage();
 			this.panelLhs = new System.Windows.Forms.Panel();
 			this.listBrowser = new System.Windows.Forms.ListView();
@@ -344,7 +344,6 @@ namespace Decompiler.WindowsGui.Forms
 			this.pageLoaded.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pageLoaded.Location = new System.Drawing.Point(0, 0);
 			this.pageLoaded.Name = "pageLoaded";
-			this.pageLoaded.ProcessorArchitecture = null;
 			this.pageLoaded.ProgramImage = null;
 			this.pageLoaded.Size = new System.Drawing.Size(528, 390);
 			this.pageLoaded.TabIndex = 20;
@@ -496,7 +495,7 @@ namespace Decompiler.WindowsGui.Forms
 			return initialPhase;
 		}
 
-		private int ImageIndexOfMapItem(ImageMapItem mi)
+		public int ImageIndexOfMapItem(ImageMapItem mi)
 		{
 			//$REFACTOR: figure out where this class belongs.
 
@@ -519,24 +518,41 @@ namespace Decompiler.WindowsGui.Forms
 			this.listDiagnostics.Items.Add(li);
 		}
 
-		private void LoadMapItems(ImageMap map, ImageMapSegment seg, TreeNode node)
+		public ComboBox BrowserFilter
 		{
-			int maxAddr = (int) (seg.Address.Linear + seg.Size);
-			IEnumerator e = map.GetItemEnumerator(seg.Address);
-			while (e.MoveNext())
-			{
-				DictionaryEntry de = (DictionaryEntry) e.Current;
-				ImageMapItem mi = (ImageMapItem) de.Value;
-				if (mi.Address.Linear >= maxAddr)
-					break;
+			get {return ddlBrowserFilter; }
+		}
 
-				TreeNode item = new TreeNode(
-					string.Format("{0}, size: 0x{1:X8}", mi.Address.ToString(), mi.Size));
-				item.ImageIndex = ImageIndexOfMapItem(mi);
-				item.SelectedImageIndex = item.ImageIndex;
-				item.Tag = mi;
-				node.Nodes.Add(item);
+		public ListView BrowserList
+		{
+			get { return listBrowser; }
+		}
+
+		public TreeView BrowserTree
+		{
+			get { return treeBrowser; }
+		}
+
+		public PhasePage PhasePage
+		{
+			get { return phasePage; }
+			set { 
+				this.phasePage = value;
+				phasePage.BringToFront();
+				ActiveControl = phasePage;
+				if (PhasePageChanged != null)
+					PhasePageChanged(this, EventArgs.Empty);
 			}
+		}
+
+		public InitialPage InitialPage
+		{
+			get { return pageInitial; }
+		}
+
+		public LoadedPage LoadedPage
+		{
+			get { return pageLoaded; }
 		}
 
 		public OpenFileDialog OpenFileDialog
