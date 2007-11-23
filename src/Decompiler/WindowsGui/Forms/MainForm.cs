@@ -570,21 +570,5 @@ namespace Decompiler.WindowsGui.Forms
 			statusBar.Panels[0].Text = txt;
 		}
 
-
-		[Obsolete]
-		public void ShowLoadPage(DecompilerDriver decompiler)
-		{
-			ShowPhasePage(pageLoaded, decompiler);
-		}
-
-		public void ShowPhasePage(PhasePage page, DecompilerDriver decompiler)
-		{
-			page.BringToFront();
-			page.Populate(decompiler, this.treeBrowser);
-		}
-
-		// Event handlers /////////////////////////////////////
-
-
 	}
 }

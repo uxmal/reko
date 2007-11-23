@@ -110,9 +110,9 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
-		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
+		public override void Relocate(Address addrLoad, ArrayList entryPoints)
 		{
-			ImageMap imageMap = new ImageMap(imgU);
+			ImageMap imageMap = imgU.Map;
 			ImageReader rdr = RawImage.CreateReader(hdrOffset + 0x012Du);
 			ushort segCode = (ushort) (addrLoad.seg + (ExeImageLoader.CbPsp >> 4));
 			ushort dx = 0;
@@ -144,7 +144,6 @@ namespace Decompiler.Loading
 			state.Set(Registers.ss, new Value(PrimitiveType.Word16, ss));
 			state.Set(Registers.bx, new Value(PrimitiveType.Word16, 0));
 			entryPoints.Add(new EntryPoint(new Address(cs, ip), state));
-			return imageMap;
 		}
 
 		private static byte [] signature = 

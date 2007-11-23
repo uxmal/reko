@@ -34,7 +34,6 @@ namespace Decompiler.Core
 		private ProgramImage image;
 		private IProcessorArchitecture arch;
 		private Platform platform;
-		private ImageMap imageMap;
 		private Map procedures;
 		private CallGraph callGraph;
 		private ProcedureCollection dfsProcs;
@@ -114,12 +113,6 @@ namespace Decompiler.Core
 			set { image = value; }
 		}
 		
-		public ImageMap ImageMap
-		{
-			get { return imageMap; }
-			set { imageMap = value; }
-		}
-
 		public Hashtable ImportThunks
 		{
 			get { return mpuintfn; }

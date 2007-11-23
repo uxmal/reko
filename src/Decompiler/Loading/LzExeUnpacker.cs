@@ -77,7 +77,7 @@ namespace Decompiler.Loading
 
 		// Fix up the relocations.
 
-		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
+		public override void Relocate(Address addrLoad, ArrayList entryPoints)
 		{
 			// Seed the scanner with the start location.
 
@@ -85,11 +85,11 @@ namespace Decompiler.Loading
 			entryPoints.Add(ep);
 			if (isLz91)
 			{
-				return Relocate91(RawImage, addrLoad.seg, imgLoaded);
+				Relocate91(RawImage, addrLoad.seg, imgLoaded);
 			}
 			else
 			{
-				return Relocate90(RawImage, addrLoad.seg, imgLoaded);
+				Relocate90(RawImage, addrLoad.seg, imgLoaded);
 			}
 		}
 
@@ -128,7 +128,7 @@ namespace Decompiler.Loading
 
 		private ImageMap Relocate91(ProgramImage pgmImg, ushort segReloc, ProgramImage pgmImgNew)
 		{
-			ImageMap imageMap = new ImageMap(pgmImgNew);
+			ImageMap imageMap = pgmImgNew.Map;
 
 			ushort span;
 			byte [] abUncompressed = pgmImg.Bytes;

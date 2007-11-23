@@ -44,9 +44,7 @@ namespace Decompiler.Loading
 		{
 			prog.Architecture = arch;
 			Assembler asm = arch.CreateAssembler();
-			image = asm.Assemble(prog, addrBase, asmFile, entryPoints);
-			prog.Image = image;			//$REFACTOR: this responsibility should be the caller's.
-			prog.ImageMap = new ImageMap(image);
+			prog.Image = asm.Assemble(prog, addrBase, asmFile, entryPoints);
 			entryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
 		}
 
@@ -76,11 +74,11 @@ namespace Decompiler.Loading
 		/// <param name="addrBase"></param>
 		public void LoadBinary(string binaryFile, Address addrBase)
 		{
-			LoadImageBytes(binaryFile, addrBase, 0x100);
+			byte [] rawBytes = LoadImageBytes(binaryFile, 0x100);
+			prog.Image = new ProgramImage(addrBase, rawBytes);
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			prog.Image = Image;
 			prog.Platform = new Arch.Intel.MsDos.MsdosPlatform(prog.Architecture);
-			prog.ImageMap = new ImageMap(Image);
+			prog.Image = Image;
 			entryPoints.Add(new EntryPoint(addrBase + 0x0100, prog.Architecture.CreateProcessorState()));
 		}
 
@@ -91,9 +89,9 @@ namespace Decompiler.Loading
 		/// <param name="binaryFile"></param>
 		public void LoadExecutable(string pstrFileName, Address addrLoad)
 		{
-			LoadImageBytes(pstrFileName, addrLoad, 0);
-			if (image.Bytes[0] == 'M' && 
-				image.Bytes[1] == 'Z')
+			byte [] rawBytes = LoadImageBytes(pstrFileName, 0);
+			if (rawBytes[0] == 'M' && 
+				rawBytes[1] == 'Z')
 			{
 				ExeImageLoader ldr = new ExeImageLoader(prog, image);
 				if (addrLoad == null)
@@ -101,7 +99,7 @@ namespace Decompiler.Loading
 					addrLoad = ldr.PreferredBaseAddress;
 				}
 				prog.Image = ldr.Load(addrLoad);
-				prog.ImageMap = ldr.Relocate(addrLoad, entryPoints);
+				ldr.Relocate(addrLoad, entryPoints);
 				return;
 			}
 			throw new ApplicationException("Unknown executable format: " + pstrFileName);
@@ -112,7 +110,7 @@ namespace Decompiler.Loading
 			LoadExecutable(fileName, null);
 		}
 
-		public void LoadImageBytes(string pstrFileName, Address addrBase, int offset)
+		public byte [] LoadImageBytes(string pstrFileName, int offset)
 		{
 			byte [] bytes;
 			using (FileStream stm = new FileStream(pstrFileName, FileMode.Open, FileAccess.Read))
@@ -120,7 +118,7 @@ namespace Decompiler.Loading
 				bytes = new Byte[stm.Length + offset];
 				stm.Read(bytes, offset, (int) stm.Length);
 			}
-			image = new ProgramImage(addrBase, bytes);
+			return bytes;
 		}
 
 		public Program Program

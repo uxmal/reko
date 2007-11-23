@@ -102,7 +102,6 @@ namespace Decompiler.WindowsGui.Forms
 			this.memctl.BytesPerRow = 16;
 			this.memctl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.memctl.Font = new System.Drawing.Font("Lucida Console", 10F);
-			this.memctl.ImageMap = null;
 			this.memctl.Location = new System.Drawing.Point(0, 32);
 			this.memctl.Name = "memctl";
 			this.memctl.ProgramImage = null;

@@ -223,9 +223,9 @@ l01C8:
 			}
 		}
 
-		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
+		public override void Relocate(Address addrLoad, ArrayList entryPoints)
 		{
-			ImageMap imageMap = new ImageMap(imgU);
+			ImageMap imageMap = imgU.Map;
 			ushort segCode = (ushort) (addrLoad.seg + (PspSize >> 4));
 			for (;;)
 			{
@@ -263,8 +263,6 @@ l01C8:
 			state.Set(Registers.di, new Value(PrimitiveType.Word16, 0));
 
 			entryPoints.Add(new EntryPoint(new Address(pklCs, pklIp), state));
-
-			return imageMap;
 		}
 
 

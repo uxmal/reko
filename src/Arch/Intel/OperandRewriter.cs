@@ -151,7 +151,7 @@ namespace Decompiler.Arch.Intel
 			if (ppp != null)
 				return new ProcedureConstant(PrimitiveType.Create(Domain.Pointer, 0, Sign.Unknown), ppp);
 			Address addr = AbsoluteAddress(mem);
-			if (addr != null && host.ImageMap.IsReadOnlyAddress(addr) && mem.Width.Domain == Domain.Real)
+			if (addr != null && host.Image.Map.IsReadOnlyAddress(addr) && mem.Width.Domain == Domain.Real)
 			{
 				if (mem.Width == PrimitiveType.Real32)
 					return host.Image.ReadFloat(addr - host.Image.BaseAddress);

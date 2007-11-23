@@ -34,6 +34,7 @@ namespace Decompiler.Core
 		{
 		}
 
+		//$REVIEW: map parameter seems redundant.
 		public void Dump(Program program, ImageMap map, TextWriter stm)
 		{
 			if (map == null)

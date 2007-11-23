@@ -32,8 +32,8 @@ namespace Decompiler.UnitTests.Loading
 		{
 			Program prog = new Program();
 			Loader l = new Loader(prog);
-			l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), new Address(0xC00, 0), 0);
-			prog.Image = l.Image;
+			
+			prog.Image = new ProgramImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
 			ExeImageLoader exe = new ExeImageLoader(prog, l.Image);
 			PkLiteUnpacker ldr = new PkLiteUnpacker(exe, l.Image);
 			ProgramImage img = ldr.Load(new Address(0xC00, 0));

@@ -233,9 +233,9 @@ namespace Decompiler.Loading
 		private const ushort RelocationLow = 2;
 		private const ushort RelocationHighLow = 3;
 
-		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
+		public override void Relocate(Address addrLoad, ArrayList entryPoints)
 		{
-			ImageMap imageMap = new ImageMap(this.imgLoaded);
+			ImageMap imageMap = imgLoaded.Map;
 			foreach (Section s in sectionMap.Values)
 			{
 				if (!s.IsDiscardable)
@@ -261,7 +261,6 @@ namespace Decompiler.Loading
 			entryPoints.Add(new EntryPoint(addrLoad + rvaStartAddress, new IntelState()));
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
-			return imageMap;
 		}
 
 		public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage)

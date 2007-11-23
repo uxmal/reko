@@ -43,9 +43,9 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
-		public override ImageMap Relocate(Address addrLoad, ArrayList entryPoints)
+		public override void Relocate(Address addrLoad, ArrayList entryPoints)
 		{
-			ImageMap imageMap = new ImageMap(RawImage);
+			ImageMap imageMap = RawImage.Map;
 			ImageReader rdr = RawImage.CreateReader(exe.e_lfarlc);
 			int i = exe.e_crlc;
 			while (i != 0)
@@ -65,7 +65,6 @@ namespace Decompiler.Loading
 			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.seg), exe.e_ip);
 			imageMap.AddSegment(new Address(addrStart.seg, 0), addrStart.seg.ToString("X4"), AccessMode.ReadWrite);
 			entryPoints.Add(new EntryPoint(addrStart, new IntelState()));
-			return imageMap;
 		}
 
 		public override ProgramImage Load(Address addrLoad)

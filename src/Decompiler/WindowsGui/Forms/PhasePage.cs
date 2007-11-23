@@ -69,19 +69,6 @@ namespace Decompiler.WindowsGui.Forms
 		}
 		#endregion
 
-		[Obsolete]
-		public virtual void Populate(DecompilerDriver decompiler, TreeView browser)
-		{
-		}
-
-		[Obsolete]
-		public virtual void BrowserItemSelected(object item)
-		{
-		}
-
-		public virtual void BrowserItemDoubleClicked(object item)
-		{
-		}
 
 		public virtual MenuItem GetMenu()
 		{

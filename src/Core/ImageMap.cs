@@ -43,10 +43,10 @@ namespace Decompiler.Core
 			Init();
 		}
 
-		public ImageMap(ProgramImage img)
+		public ImageMap(Address addrBase, int imageSize)
 		{
 			Init();
-			SetAddressSpan(img.BaseAddress, img.Bytes.Length);
+			SetAddressSpan(addrBase, imageSize);
 		}
 
 		public ImageMapItem AddItem(Address addr, ImageMapItem itemNew)

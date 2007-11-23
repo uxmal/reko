@@ -243,7 +243,7 @@ namespace Decompiler
 				loader = null;
 				if (host.DisassemblyWriter != null)
 				{
-					program.DumpAssembler(program.ImageMap, host.DisassemblyWriter);
+					program.DumpAssembler(program.Image.Map, host.DisassemblyWriter);
 					host.DisassemblyWriter.Flush();
 				}
 			}

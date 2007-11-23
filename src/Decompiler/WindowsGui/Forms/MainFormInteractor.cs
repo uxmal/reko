@@ -139,18 +139,6 @@ namespace Decompiler.WindowsGui.Forms
 			set { cmdTarget = value; }
 		}
 
-		public void FinishDecompilation()
-		{
-			phase.Execute(decompiler);
-			while (phase.NextPhase != null)
-			{
-				phase = phase.NextPhase;
-				phase.Execute(decompiler);
-			}
-			form.ShowPhasePage(phase.Page, decompiler);
-
-		}
-
 		public InitialPageInteractor InitialPageInteractor
 		{
 			get { return pageInitial; }
@@ -166,16 +154,6 @@ namespace Decompiler.WindowsGui.Forms
 			get { return SettingsDirectory + "\\mru.txt"; }
 		}
 
-
-		public void NextPhase()
-		{
-			phase.Execute(decompiler);
-			if (phase.NextPhase != null)
-			{
-				phase = phase.NextPhase;
-				form.ShowPhasePage(phase.Page, decompiler);
-			}
-		}
 
 		private static string SettingsDirectory
 		{
