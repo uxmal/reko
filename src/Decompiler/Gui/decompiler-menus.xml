@@ -24,5 +24,7 @@
 	<cmd id="FileMru"  cmdSet="Decompiler" container="GrpFileMru" dynamic-item-id="2200"/>
 	<cmd id="FileExit" cmdSet="Decompiler" container="GrpFileEnd">E_xit</cmd>
 	
+	<cmd id="BrowserItemSelected" cmdSet="Decompiler"/>
+	
 </menu-definitions>
  

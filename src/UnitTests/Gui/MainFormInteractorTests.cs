@@ -37,13 +37,13 @@ namespace Decompiler.UnitTests.Gui
 		[Test]
 		public void Create()
 		{
-			MainFormInteractor interactor = new MainFormInteractor(mf, new string [] { "testFile.exe" });
+			MainFormInteractorQ interactor = new MainFormInteractorQ(mf, new string [] { "testFile.exe" });
 		}
 
 		[Test]
 		public void HandleMenuEvents()
 		{
-			MainFormInteractor interactor = new TestMainFormInteractor(mf, new string [] { "testFile.exe" });
+			MainFormInteractorQ interactor = new TestMainFormInteractor(mf, new string [] { "testFile.exe" });
 			mf.SendMenuEvent(TestMainFormInteractor.testCmd);		// Command to set the main form's command line to 'hello'.
 			Assert.AreEqual("hello", mf.TitleText);
 		}
@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Gui
 	/// <summary>
 	/// MainFormInteractor with some testing extensions.
 	/// </summary>
-	public class TestMainFormInteractor : MainFormInteractor
+	public class TestMainFormInteractor : MainFormInteractorQ
 	{
 		public static readonly CommandID testCmd = new CommandID(new Guid("0123456789ABCDEF0123456789ABCDEF"), 42);
 		

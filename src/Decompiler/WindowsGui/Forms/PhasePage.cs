@@ -46,11 +46,11 @@ namespace Decompiler.WindowsGui.Forms
 		/// <summary> 
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
+			if (disposing)
 			{
-				if(components != null)
+				if (components != null)
 				{
 					components.Dispose();
 				}
@@ -74,6 +74,7 @@ namespace Decompiler.WindowsGui.Forms
 		{
 		}
 
+		[Obsolete]
 		public virtual void BrowserItemSelected(object item)
 		{
 		}
@@ -86,6 +87,5 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			return null;
 		}
-
 	}
 }

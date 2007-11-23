@@ -18,15 +18,30 @@
 
 using System;
 
-namespace Decompiler.Gui
+namespace Decompiler.WindowsGui.Forms
 {
 	/// <summary>
-	/// Abstract class that populates the contents of the LoadedPage with values.
+	/// Handles interactions on InitialPage
 	/// </summary>
-	public class LoadedPageAdapter
+	public class InitialPageInteractor : PhasePageInteractor
 	{
-		public LoadedPageAdapter()
+		private InitialPage page;
+		private MainFormInteractor mainInteractor;
+
+		public InitialPageInteractor(InitialPage page, MainFormInteractor mainInteractor)
+			: base(page, mainInteractor)
 		{
+			this.page = page;
+			this.mainInteractor = mainInteractor;
+		}
+
+		public override void OnPageEntered(object sender, EventArgs e)
+		{
+			MainForm.BrowserFilter.Enabled = false;
+			MainForm.BrowserList.Enabled = false;
+			MainForm.BrowserTree.Enabled = false;
+
+			base.OnPageEntered (sender, e);
 		}
 	}
 }

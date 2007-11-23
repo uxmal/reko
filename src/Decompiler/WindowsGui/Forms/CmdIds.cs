@@ -53,6 +53,7 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		public const int FileOpen = 1 + 2000;
 		public const int FileExit = 2 + 2000;
+		public const int BrowserItemSelected = 3 + 2000;
 		public const int FileMru = 2200;
 	}
 

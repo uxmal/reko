@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.WindowsGui.Controls;
@@ -30,44 +31,72 @@ namespace Decompiler.WindowsGui.Forms
 	/// specific code from the user interaction code. This will make it easier to port
 	/// to other GUI platforms.
 	/// </summary>
-	public class MainFormInteractor : ICommandTarget
+	public class MainFormInteractor : 
+		ICommandTarget,
+		DecompilerHost
 	{
-		private GuiHost host;
 		private MainForm form;			//$REVIEW: in the future, this should be an interface.
 		private DecompilerDriver decompiler;
 		private DecompilerPhase initialPhase;
 		private DecompilerPhase phase;
+		private InitialPageInteractor pageInitial;
+		private LoadedPageInteractor pageLoaded;
+		private ICommandTarget cmdTarget;
 		private MruList mru;
 
 		private static string dirSettings;
 		
 		private const int MaxMruItems = 10;
 
-		public MainFormInteractor(MainForm form, DecompilerPhase initialPhase)
+		public MainFormInteractor()
 		{
-			this.form = form;
-			this.initialPhase = initialPhase;
-			this.phase = initialPhase;
-
-			host = new GuiHost(form);
 			mru = new MruList(MaxMruItems);
 			mru.Load(MruListFile);
+		}
+
+		public MainFormInteractor(MainForm form) : this()
+		{
+			Attach(form);
+		}
+
+		public void Attach(MainForm form)
+		{
+			this.form = form;
+
 			DecompilerMenus dm = new DecompilerMenus(this);
 			form.Menu = dm.MainMenu;
 
-
-			form.Load += new System.EventHandler(this.MainForm_Load);
+			AttachInteractors();
 			form.Closed += new System.EventHandler(this.MainForm_Closed);
+			form.PhasePageChanged += new System.EventHandler(this.MainForm_PhasePageChanged);
+			form.BrowserTree.AfterSelect += new TreeViewEventHandler(OnBrowserItemSelected);
 
+			form.PhasePage = form.InitialPage;
 		}
 
-		public void OpenBinary(string file, DecompilerHost host)
+		private void AttachInteractors()
 		{
-			decompiler = new DecompilerDriver(file, host);
+			pageInitial = new InitialPageInteractor(form.InitialPage, this);
+			pageLoaded = new LoadedPageInteractor(form.LoadedPage, this);
+		}
+
+		public virtual DecompilerDriver CreateDecompiler(string file)
+		{
+			return new DecompilerDriver(file, new Program(), this);
+		}
+
+		public MainForm MainForm
+		{
+			get { return form; }
+		}
+
+		public void OpenBinary(string file)
+		{
+			decompiler = CreateDecompiler(file);
 			try
 			{
 				decompiler.LoadProgram();
-				form.ShowPhasePage(initialPhase.Page, decompiler);
+				form.PhasePage = form.LoadedPage;
 			} 	
 			catch (Exception e)
 			{
@@ -76,9 +105,38 @@ namespace Decompiler.WindowsGui.Forms
 			}
 		}
 
-		public void BrowserItemSelected(object item)
+		public void OpenBinaryWithPrompt()
 		{
-			phase.Page.BrowserItemSelected(item);
+			Cursor.Current = Cursors.WaitCursor;
+			try
+			{
+				if (form.OpenFileDialog.ShowDialog(form) == DialogResult.OK)
+				{
+					OpenBinary(form.OpenFileDialog.FileName);
+					mru.Use(form.OpenFileDialog.FileName);
+				}
+			} 
+			finally 
+			{
+				Cursor.Current = Cursors.Arrow;
+				form.SetStatus("");
+			}
+		}
+
+
+		public Program Program
+		{
+			get { return decompiler.Program; }
+		}
+
+		/// <summary>
+		/// The current command target, which gets first chance at handling commands 
+		/// before the MainFormInteractor does.
+		/// </summary>
+		public ICommandTarget CommandTarget
+		{
+			get { return cmdTarget; }
+			set { cmdTarget = value; }
 		}
 
 		public void FinishDecompilation()
@@ -91,6 +149,16 @@ namespace Decompiler.WindowsGui.Forms
 			}
 			form.ShowPhasePage(phase.Page, decompiler);
 
+		}
+
+		public InitialPageInteractor InitialPageInteractor
+		{
+			get { return pageInitial; }
+		}
+
+		public LoadedPageInteractor LoadedPageInteractor
+		{
+			get { return pageLoaded; }
 		}
 
 		private static string MruListFile
@@ -127,6 +195,8 @@ namespace Decompiler.WindowsGui.Forms
 		#region ICommandTarget members 
 		public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus cmdStatus, CommandText cmdText)
 		{
+			if (CommandTarget != null && CommandTarget.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
+				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{
 				int iMru = cmdId - CmdIds.FileMru;
@@ -153,19 +223,21 @@ namespace Decompiler.WindowsGui.Forms
 
 		public bool Execute(ref Guid cmdSet, int cmdId)
 		{
+			if (CommandTarget != null && CommandTarget.Execute(ref cmdSet, cmdId))
+				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{
 				int iMru = cmdId - CmdIds.FileMru;
 				if (0 <= iMru && iMru < mru.Items.Count)
 				{
 					string file = (string) mru.Items[iMru];
-					OpenBinary(file, host);
+					OpenBinary(file);
 					mru.Use(file);
 					return true;
 				}
 				switch (cmdId)
 				{
-				case CmdIds.FileOpen: OpenBinary(); return true;
+				case CmdIds.FileOpen: OpenBinaryWithPrompt(); return true;
 				case CmdIds.FileExit: form.Close(); return true;
 				}
 			}
@@ -174,37 +246,100 @@ namespace Decompiler.WindowsGui.Forms
 
 		#endregion
 
+		#region DecompilerHost Members //////////////////////////////////
+
+		public TextWriter DisassemblyWriter
+		{
+			get
+			{
+				// TODO:  Add GuiHost.DisassemblyWriter getter implementation
+				return null;
+			}
+		}
+
+		public System.IO.TextWriter TypesWriter
+		{
+			get
+			{
+				// TODO:  Add GuiHost.TypesWriter getter implementation
+				return null;
+			}
+		}
+
+		public void ShowProgress(string caption, int numerator, int denominator)
+		{
+			// TODO:  Add GuiHost.ShowProgress implementation
+		}
+
+		public void CodeStructuringComplete()
+		{
+		}
+
+		public void DecompilationFinished()
+		{
+			form.SetStatus("Finished");
+		}
+
+		public void InterproceduralAnalysisComplete()
+		{
+		}
+
+		public void MachineCodeRewritten()
+		{
+			form.SetStatus("Machine code rewritten.");
+		}
+
+		public void ProceduresTransformed()
+		{
+			form.SetStatus("Procedures transformed.");
+		}
+
+		public void ProgramLoaded()
+		{
+			form.SetStatus("Program loaded.");
+		}
+
+		public void ProgramScanned()
+		{
+			form.SetStatus("Program scanned.");
+		}
+
+		public void TypeReconstructionComplete()
+		{
+			form.SetStatus("Data types reconstructed.");
+		}
+
+		public void WriteDiagnostic(Diagnostic d, string format, params object[] args)
+		{
+			form.AddDiagnostic(d, format, args);
+		}
+
+		public System.IO.TextWriter DecompiledCodeWriter
+		{
+			get
+			{
+				// TODO:  Add GuiHost.DecompiledCodeWriter getter implementation
+				return null;
+			}
+		}
+
+		public System.IO.TextWriter IntermediateCodeWriter
+		{
+			get
+			{
+				// TODO:  Add GuiHost.IntermediateCodeWriter getter implementation
+				return null;
+			}
+		}
+
+		#endregion ////////////////////////////////////////////////////
+
+
 		// Event handlers //////////////////////////////
 
 		private void miFileExit_Click(object sender, System.EventArgs e)
 		{
 			form.Close();
-		}
-
-		private void MainForm_Load(object sender, System.EventArgs e)
-		{
-			/*
-			// Populate menu with stuff.
-
-			if (MruList.Items.Count == 0)
-			{
-				miFileMruSeparator.Visible = false;
-			}
-			else
-			{
-				miFileMruSeparator.Visible = true;
-			}
-
-			int idx = miFileMruSeparator.Index + 1;
-			foreach (string item in mru.Items)
-			{
-				MenuItem mi = new MenuItem(item);
-				mi.Click +=new EventHandler(miFileMru_Click);
-				miFile.MenuItems.Add(idx, mi);
-				++idx;
-			}
-			pageInitial.BringToFront();
-*/
 		}
 
 		private void MainForm_Closed(object sender, System.EventArgs e)
@@ -223,10 +358,6 @@ namespace Decompiler.WindowsGui.Forms
 		
 		}
 
-		private void treeBrowser_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
-		{
-			BrowserItemSelected(e.Node.Tag);
-		}
 
 		private void toolBar_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
 		{
@@ -244,22 +375,13 @@ namespace Decompiler.WindowsGui.Forms
 			*/
 		}
 
-		private void OpenBinary()
+		private void MainForm_PhasePageChanged(object sender, EventArgs e)
 		{
-			Cursor.Current = Cursors.WaitCursor;
-			try
-			{
-				if (form.OpenFileDialog.ShowDialog(form) == DialogResult.OK)
-				{
-					OpenBinary(form.OpenFileDialog.FileName, host);
-					mru.Use(form.OpenFileDialog.FileName);
-				}
-			} 
-			finally 
-			{
-				Cursor.Current = Cursors.Arrow;
-				form.SetStatus("");
-			}
+		}
+
+		public void OnBrowserItemSelected(object sender, TreeViewEventArgs e)
+		{
+			Execute(ref CmdSets.GuidDecompiler, CmdIds.BrowserItemSelected);
 		}
 	}
 }

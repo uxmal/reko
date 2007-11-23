@@ -50,7 +50,7 @@ namespace Decompiler.WindowsGui.Forms
 			SortedList sl<value-of select="@id"/> = CreatePriorityList();<if test="@id != @container">
 			sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@id"/>);</if></for-each>
     
-            <for-each select="c:cmd">
+            <for-each select="c:cmd[@container]">
             CommandMenuItem sl<value-of select="@id"/> = new CommandMenuItem("<apply-templates/>", new Guid(CmdSets.<value-of select="@cmdSet"/>), CmdIds.<value-of select="@id"/>);
             sl<value-of select="@id"/>.IsDynamic = <call-template name="dynamic"/>;
 			sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@id"/>);</for-each>

@@ -428,11 +428,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Gui\LoadPageAdapter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Gui\MainFormInteractor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -758,18 +753,8 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "WindowsGui\GuiHost.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "WindowsGui\MruList.cs"
                     SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WindowsGui\WindowsMenuBuilder.cs"
-                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
@@ -856,14 +841,24 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "WindowsGui\Forms\LoadPage.cs"
+                    RelPath = "WindowsGui\Forms\InitialPageInteractor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "WindowsGui\Forms\LoadPage.resx"
-                    DependentUpon = "LoadPage.cs"
+                    RelPath = "WindowsGui\Forms\LoadedPage.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\LoadedPage.resx"
+                    DependentUpon = "LoadedPage.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\LoadedPageInteractor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "WindowsGui\Forms\MainForm.cs"
@@ -889,6 +884,11 @@
                     RelPath = "WindowsGui\Forms\PhasePage.resx"
                     DependentUpon = "PhasePage.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\PhasePageInteractor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "WindowsGui\Forms\ScanPage.cs"

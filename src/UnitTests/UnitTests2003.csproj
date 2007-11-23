@@ -1050,17 +1050,32 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "WindowsGui\WindowsMenuBuilderTests.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "WindowsGui\Controls\MemoryControlTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "WindowsGui\Controls\MenuSystemTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\InitialPageInteractorTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\LoadedPageInteractorTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\MainFormInteractorTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\MainFormTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

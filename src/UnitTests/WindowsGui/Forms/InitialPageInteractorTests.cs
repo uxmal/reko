@@ -17,33 +17,25 @@
  */
 
 using Decompiler.Gui;
-using Decompiler.WindowsGui;
+using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
-using System.ComponentModel.Design;
-using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.WindowsGui
+namespace Decompiler.UnitTests.WindowsGui.Forms
 {
 	[TestFixture]
-	public class WindowsMenuBuilderTests
+	public class InitialPageInteractorTests
 	{
 		[Test]
-		public void CreateMainMenu()
+		public void SetCommandTargetWhenEntered()
 		{
-			MainMenu menu = new MainMenu();
-			WindowsMenuBuilder bldr = new WindowsMenuBuilder(menu, new MenuCommandHandler(test_Click));
-			bldr.BeginSubMenu();
-			bldr.AddMenuItem("&File", new CommandID(CommandGroup.File, CmdID.File));
-			bldr.EndSubMenu();
-
-			Assert.AreEqual(1, menu.MenuItems.Count);
-			MenuItem mi = menu.MenuItems[0];
-			Assert.AreEqual("&File", mi.Text);
-		}
-
-		public void test_Click(object sender, MenuCommandArgs args)
-		{
+			using (MainForm form = new MainForm())
+			{
+				MainFormInteractor mi = new MainFormInteractor(form);
+				mi.CommandTarget = null;
+				mi.InitialPageInteractor.OnPageEntered(this, EventArgs.Empty);
+				Assert.AreSame((ICommandTarget)mi.InitialPageInteractor, mi.CommandTarget);
+			}
 		}
 	}
 }
