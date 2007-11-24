@@ -39,6 +39,8 @@ namespace Decompiler.WindowsGui.Forms
         {
 			SortedList slMainMenu = CreatePriorityList();
 			SortedList slFileMenu = CreatePriorityList();
+			SortedList slViewMenu = CreatePriorityList();
+			SortedList slActionMenu = CreatePriorityList();
 			SortedList slHelpMenu = CreatePriorityList();
 			SortedList slGrpMain = CreatePriorityList();
 			slMainMenu.Add(0, slGrpMain);
@@ -48,6 +50,10 @@ namespace Decompiler.WindowsGui.Forms
 			slFileMenu.Add(0, slGrpFileMru);
 			SortedList slGrpFileEnd = CreatePriorityList();
 			slFileMenu.Add(1000, slGrpFileEnd);
+			SortedList slGrpViewScanned = CreatePriorityList();
+			slViewMenu.Add(0, slGrpViewScanned);
+			SortedList slGrpActionsScanned = CreatePriorityList();
+			slActionMenu.Add(0, slGrpActionsScanned);
 			SortedList slGrpHelp = CreatePriorityList();
 			slHelpMenu.Add(0, slGrpHelp);
             CommandMenuItem slFileOpen = new CommandMenuItem("_Open", new Guid(CmdSets.Decompiler), CmdIds.FileOpen);
@@ -59,14 +65,34 @@ namespace Decompiler.WindowsGui.Forms
             CommandMenuItem slFileExit = new CommandMenuItem("E_xit", new Guid(CmdSets.Decompiler), CmdIds.FileExit);
             slFileExit.IsDynamic = false;
 			slGrpFileEnd.Add(0, slFileExit);
+            CommandMenuItem slViewShowAllFragments = new CommandMenuItem("Show _all fragments", new Guid(CmdSets.Decompiler), CmdIds.ViewShowAllFragments);
+            slViewShowAllFragments.IsDynamic = false;
+			slGrpViewScanned.Add(0, slViewShowAllFragments);
+            CommandMenuItem slViewShowUnscanned = new CommandMenuItem("Show _unscanned fragments", new Guid(CmdSets.Decompiler), CmdIds.ViewShowUnscanned);
+            slViewShowUnscanned.IsDynamic = false;
+			slGrpViewScanned.Add(0, slViewShowUnscanned);
+            CommandMenuItem slViewFindFragments = new CommandMenuItem("_Find fragments...", new Guid(CmdSets.Decompiler), CmdIds.ViewFindFragments);
+            slViewFindFragments.IsDynamic = false;
+			slGrpViewScanned.Add(0, slViewFindFragments);
+            CommandMenuItem slActionMarkProcedure = new CommandMenuItem("Mark _Procedure Entry", new Guid(CmdSets.Decompiler), CmdIds.ActionMarkProcedure);
+            slActionMarkProcedure.IsDynamic = false;
+			slGrpActionsScanned.Add(0, slActionMarkProcedure);
             CommandMenuItem miFileMenu = new CommandMenuItem("_File");
             slGrpMain.Add(0, miFileMenu);
+            CommandMenuItem miViewMenu = new CommandMenuItem("_View");
+            slGrpMain.Add(0, miViewMenu);
+            CommandMenuItem miActionMenu = new CommandMenuItem("_Actions");
+            slGrpMain.Add(0, miActionMenu);
             CommandMenuItem miHelpMenu = new CommandMenuItem("_Help");
             slGrpMain.Add(0, miHelpMenu);
 			this.MainMenu = new System.Windows.Forms.MainMenu();
 			BuildMenu(slMainMenu, MainMenu.MenuItems);
   
 			BuildMenu(slFileMenu, miFileMenu.MenuItems);
+			
+			BuildMenu(slViewMenu, miViewMenu.MenuItems);
+			
+			BuildMenu(slActionMenu, miActionMenu.MenuItems);
 			
 			BuildMenu(slHelpMenu, miHelpMenu.MenuItems);
 			

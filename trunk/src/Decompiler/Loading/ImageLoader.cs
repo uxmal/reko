@@ -27,9 +27,9 @@ namespace Decompiler.Loading
 	/// </summary>
 	public abstract class ImageLoader
 	{
-		private ProgramImage imgRaw;
+		private byte [] imgRaw;
 
-		public ImageLoader(ProgramImage imgRaw)
+		public ImageLoader(byte [] imgRaw)
 		{
 			this.imgRaw = imgRaw;
 		}
@@ -58,7 +58,7 @@ namespace Decompiler.Loading
 			get; 
 		}
 
-		public ProgramImage RawImage
+		public byte [] RawImage
 		{
 			get { return imgRaw; }
 		}

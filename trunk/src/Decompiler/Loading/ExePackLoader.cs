@@ -41,11 +41,11 @@ namespace Decompiler.Loading
 
 		private ProgramImage imgU;
 
-		public ExePackLoader(ExeImageLoader exe, ProgramImage imgRaw) : base(imgRaw)
+		public ExePackLoader(ExeImageLoader exe, byte [] imgRaw) : base(imgRaw)
 		{
 			this.exeHdrSize = (uint) (exe.e_cparhdr * 0x10U);
 			this.hdrOffset = (uint) (exe.e_cparhdr + exe.e_cs) * 0x10U;
-			ImageReader rdr = new ImageReader(imgRaw, hdrOffset);
+			ImageReader rdr = new ImageReader(RawImage, hdrOffset);
 			this.ip = rdr.ReadUShort();
 			this.cs = rdr.ReadUShort();
 					  rdr.ReadUShort();
@@ -55,16 +55,16 @@ namespace Decompiler.Loading
 			this.cpUncompressed = rdr.ReadUShort();
 		}
 
-		static public bool IsCorrectUnpacker(ExeImageLoader exe, ProgramImage rawImg)
+		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
 		{
 			int offset = (exe.e_cparhdr + exe.e_cs) * 0x10 + exe.e_ip;
-			return CompareEqual(rawImg.Bytes, offset, signature, signature.Length);
+			return CompareEqual(rawImg, offset, signature, signature.Length);
 		}
 
 
 		public override ProgramImage Load(Address addr)
 		{
-			byte [] abC = RawImage.Bytes;
+			byte [] abC = RawImage;
 			byte [] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
 			Array.Copy(abC, exeHdrSize, abU, ExeImageLoader.CbPsp, abC.Length - exeHdrSize);
 			imgU = new ProgramImage(addr, abU);
@@ -80,7 +80,7 @@ namespace Decompiler.Loading
 			do
 			{
 				op = abC[SI];
-				int cx = RawImage.ReadUShort(SI - 2);
+				int cx = ProgramImage.ReadUShort(abC, SI - 2);
 				SI -= 3;
 				if ((op & 0xFE) == 0xB0)
 				{
@@ -113,7 +113,7 @@ namespace Decompiler.Loading
 		public override void Relocate(Address addrLoad, ArrayList entryPoints)
 		{
 			ImageMap imageMap = imgU.Map;
-			ImageReader rdr = RawImage.CreateReader(hdrOffset + 0x012Du);
+			ImageReader rdr = new ImageReader(RawImage, hdrOffset + 0x012Du);
 			ushort segCode = (ushort) (addrLoad.seg + (ExeImageLoader.CbPsp >> 4));
 			ushort dx = 0;
 			for (;;)
