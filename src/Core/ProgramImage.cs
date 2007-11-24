@@ -118,12 +118,23 @@ namespace Decompiler.Core
 			get { return map; }
 		}
 
+		//$OBSOLETE? these two do absolutely no work.
 		public byte ReadByte(int off)
 		{
 			return abImage[off];
 		}
 
+		public static byte ReadByte(byte [] abImage, int off)
+		{
+			return abImage[off];
+		}
+
 		public Constant ReadDouble(int off)
+		{
+			return ReadDouble(abImage, off);
+		}
+
+		public static Constant ReadDouble(byte [] abImage, int off)
 		{
 			long bits = 
 				(abImage[off] |
@@ -156,6 +167,11 @@ namespace Decompiler.Core
 
 		public int ReadInt(int off)
 		{
+			return ReadInt(abImage, off);
+		}
+
+		public static int ReadInt(byte [] abImage, int off)
+		{
 			int u = abImage[off] | 
 				((int) abImage[off+1] << 8) |
 				((int) abImage[off+2] << 16) |
@@ -174,7 +190,17 @@ namespace Decompiler.Core
 			return (uint) ReadInt(addr - addrBase);
 		}
 
+		public static uint ReadUint(byte [] img, int off)
+		{
+			return (uint) ReadInt(img, off);
+		}
+
 		public ushort ReadUShort(int off)
+		{
+			return ReadUShort(abImage, off);
+		}
+
+		public static ushort ReadUShort(byte [] abImage, int off)
 		{
 			ushort w = (ushort) (abImage[off] + ((ushort) abImage[off+1] << 8));
 			return w;
