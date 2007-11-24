@@ -93,7 +93,7 @@ namespace Decompiler.Loading
 			if (rawBytes[0] == 'M' && 
 				rawBytes[1] == 'Z')
 			{
-				ExeImageLoader ldr = new ExeImageLoader(prog, rawBytes);
+				ExeImageLoader ldr = new ExeImageLoader(prog, image);
 				if (addrLoad == null)
 				{
 					addrLoad = ldr.PreferredBaseAddress;

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2007 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,6 @@ namespace Decompiler.Tools.Xslt
 				Console.Out.WriteLine("Source file {0} is missing.", args[1]);
 				return 1;
 			}
-
 			try
 			{
 				StringWriter sw = new StringWriter();
@@ -50,7 +49,8 @@ namespace Decompiler.Tools.Xslt
 				{
 					XmlTextReader rdrSheet = new XmlTextReader(stmSheet);
 					FilteringXmlWriter wrtOut = new FilteringXmlWriter(sw);
-#if VS2003
+#if VS2003 || MONO
+
 					XslTransform xslt = new XslTransform();
 					xslt.Load(rdrSheet, null, null);
 					using (FileStream stm = new FileStream(args[1], FileMode.Open, FileAccess.Read))
@@ -58,6 +58,7 @@ namespace Decompiler.Tools.Xslt
 						XPathDocument doc = new XPathDocument(stm);
 						xslt.Transform(doc, null, wrtOut);
 					}
+				
 #else
 					XslCompiledTransform xslt = new XslCompiledTransform();
 					xslt.Load(rdrSheet);
@@ -88,24 +89,7 @@ namespace Decompiler.Tools.Xslt
 
 		private static void Usage()
 		{
-			Console.Out.WriteLine("usage: xslt <transform> <inputfile> <outputfile>");
-		}
-	}
-
-	public class FilteringXmlWriter : System.Xml.XmlTextWriter
-	{
-		public FilteringXmlWriter(Stream stm)
-			: base(new StreamWriter(stm, new UTF8Encoding(false)))
-		{
-		}
-
-		public FilteringXmlWriter(TextWriter txt)
-			: base(txt)
-		{
-		}
-
-		public override void WriteProcessingInstruction(string name, string text)
-		{
+			Console.Out.WriteLine("usage: xslt [transform] [inputfile] [outputfile]");
 		}
 	}
 }

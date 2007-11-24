@@ -23,25 +23,19 @@ namespace Decompiler.Core
 {
 	public class ImageReader
 	{
-		private byte [] img;
+		private ProgramImage img;
 		private int offStart;
 		private int off;
 		private Address addrStart;
 
 		public ImageReader(ProgramImage img, Address addr)
 		{
-			this.img = img.Bytes;;
+			this.img = img;
 			this.addrStart = addr;
 			this.off = offStart = addr - img.BaseAddress;
 		}
 
 		public ImageReader(ProgramImage img, uint off)
-		{
-			this.img = img.Bytes;
-			this.off = offStart = (int) off;
-		}
-
-		public ImageReader(byte [] img, uint off)
 		{
 			this.img = img;
 			this.off = offStart = (int) off;
@@ -74,7 +68,7 @@ namespace Decompiler.Core
 
 		public byte ReadByte()
 		{
-			byte b = ProgramImage.ReadByte(img, off);
+			byte b = img.ReadByte(off);
 			++off;
 			return b;
 		}
@@ -91,7 +85,7 @@ namespace Decompiler.Core
 
 		public uint ReadUint()
 		{
-			uint u = ProgramImage.ReadUint(img, off);
+			uint u = img.ReadUint(off);
 			off += 4;
 			return u;
 		}
@@ -109,7 +103,7 @@ namespace Decompiler.Core
 
 		public ushort ReadUShort()
 		{
-			ushort w = ProgramImage.ReadUShort(img, off);
+			ushort w = img.ReadUShort(off);
 			off += 2;
 			return w;
 		}

@@ -229,14 +229,14 @@ namespace Decompiler
 		/// <param name="cfg">configuration information</param>
 		public void ScanProgram()
 		{
-			try 
+			if (loader == null)
+				throw new InvalidOperationException("Program must be loaded before it can be scanned.");
+			scanner = new Scanner(program, null);
+			try
 			{
-				scanner = new Scanner(program, null);
-				if (loader != null)
-				{
-					scanner.Parse(loader.EntryPoints, project.UserProcedures);
-					host.ProgramScanned();
-				}
+				scanner.Parse(loader.EntryPoints, project.UserProcedures);
+				// Dump all procedures in DFS order.
+				host.ProgramScanned();
 			}
 			finally
 			{

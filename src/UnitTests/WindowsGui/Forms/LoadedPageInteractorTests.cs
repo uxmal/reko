@@ -17,7 +17,6 @@
  */
 
 using Decompiler.Core;
-using Decompiler.Gui;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
@@ -28,49 +27,32 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	[TestFixture]
 	public class LoadedPageInteractorTests
 	{
-		private MainForm form;
-		private TestMainFormInteractor mi;
-
-		[SetUp]
-		public void Setup()
-		{
-			form = new MainForm();
-			mi = new TestMainFormInteractor(form, BuildFakeProgram());
-			mi.OpenBinary(null);
-		}
-
-		[TearDown]
-		public void Teardown()
-		{
-			form.Dispose();
-		}
-
 		[Test]
 		public void Populate()
 		{
-			TreeView tv = mi.MainForm.BrowserTree;
-			Assert.AreEqual(3, tv.Nodes.Count);
+			using (MainForm form = new MainForm())
+			{
+				Program prog = BuildFakeProgram();
+
+				TestMainFormInteractor mi = new TestMainFormInteractor(form, prog);
+				mi.OpenBinary(null);
+				TreeView tv = mi.MainForm.BrowserTree;
+				Assert.AreEqual(3, tv.Nodes.Count);
+			}
 		}
 
 		[Test]
 		public void SelectBrowserItem()
 		{
-			form.BrowserTree.SelectedNode = form.BrowserTree.Nodes[1];
-			mi.OnBrowserItemSelected(null, null);
-			Assert.AreEqual(new Address(0xC10, 0), form.LoadedPage.MemoryControl.TopAddress);
-		}
-
-		[Test]
-		public void QueryStatus()
-		{
-			Assert.AreEqual(MenuStatus.Enabled|MenuStatus.Visible, QueryStatus(CmdIds.ViewFindFragments));
-		}
-
-		private MenuStatus QueryStatus(int cmdId)
-		{
-			CommandStatus status = new CommandStatus();
-			mi.LoadedPageInteractor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
-			return status.Status;
+			using (MainForm form = new MainForm())
+			{
+				Program prog = BuildFakeProgram();
+				MainFormInteractor mi = new TestMainFormInteractor(form, prog);
+				mi.OpenBinary(null);
+				form.BrowserTree.SelectedNode = form.BrowserTree.Nodes[1];
+				mi.OnBrowserItemSelected(null, null);
+				Assert.AreEqual(new Address(0xC10, 0), form.LoadedPage.MemoryControl.TopAddress);
+			}
 		}
 
 		private Program BuildFakeProgram()
