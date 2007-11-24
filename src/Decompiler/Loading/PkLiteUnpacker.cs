@@ -38,27 +38,27 @@ namespace Decompiler.Loading
 		private const int signatureOffset = 0x1C;
 		private const int PspSize = 0x0100;
 
-		public PkLiteUnpacker(ExeImageLoader exe, ProgramImage rawImg) : base(rawImg)
+		public PkLiteUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
 		{
 			int pkLiteHdrOffset = exe.e_cparhdr * 0x10;
 
-			if (rawImg.ReadByte(pkLiteHdrOffset) != 0xB8)
+			if (RawImage[pkLiteHdrOffset] != 0xB8)
 				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}", pkLiteHdrOffset));
-			uint cparUncompressed = RawImage.ReadUShort(pkLiteHdrOffset + 1);
+			uint cparUncompressed = ProgramImage.ReadUShort(RawImage, pkLiteHdrOffset + 1);
 			abU = new byte[cparUncompressed * 0x10U];
 
-			if (rawImg.ReadByte(pkLiteHdrOffset + 0x04C) != 0x83)
+			if (RawImage[pkLiteHdrOffset + 0x04C] != 0x83)
 				throw new ApplicationException(string.Format("Expected ADD BX,+XX at offset 0x{0:X4}", pkLiteHdrOffset + 0x04C));
-			int offCompressedData = pkLiteHdrOffset + RawImage.ReadByte(pkLiteHdrOffset + 0x04E) * 0x10 - PspSize;
-			bitStm = new BitStream(RawImage.Bytes, offCompressedData);
+			int offCompressedData = pkLiteHdrOffset + RawImage[pkLiteHdrOffset + 0x04E] * 0x10 - PspSize;
+			bitStm = new BitStream(RawImage, offCompressedData);
 		}
 
-		static public bool IsCorrectUnpacker(ExeImageLoader exe, ProgramImage rawImg)
+		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
 		{
 			if (exe.e_ovno != 0)
 				return false;
 
-			return CompareEqual(rawImg.Bytes, signatureOffset, signature, signature.Length);
+			return CompareEqual(rawImg, signatureOffset, signature, signature.Length);
 		}
 
 		public override ProgramImage Load(Address addrLoad)

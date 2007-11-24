@@ -773,6 +773,9 @@ namespace Decompiler.Analysis
 			private bool retval;
 			private IdentifierLiveness liveState;
 
+			/// <summary>
+			/// Determines whether an identifier is live in <paramref>liveStat</paramref>.
+			/// </summary>
 			public bool IsLive(Identifier id, IdentifierLiveness liveState)
 			{
 				retval = false;
@@ -818,7 +821,7 @@ namespace Decompiler.Analysis
 
 			public void VisitFlagGroupStorage(FlagGroupStorage grf)
 			{
-				throw new NotImplementedException();
+				retval = (grf.FlagGroup & liveState.Grf) != 0;
 			}
 
 			public void VisitSequenceStorage(SequenceStorage seq)

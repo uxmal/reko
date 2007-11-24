@@ -102,6 +102,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "FilteringXmlWriter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Program.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -96,6 +96,8 @@ namespace Decompiler.WindowsGui.Forms
 			try
 			{
 				decompiler.LoadProgram();
+				//$REVIEW if (executable_format) then scanProgram.
+				decompiler.ScanProgram();
 				form.PhasePage = form.LoadedPage;
 			} 	
 			catch (Exception e)
