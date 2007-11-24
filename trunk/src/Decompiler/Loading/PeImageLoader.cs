@@ -45,10 +45,10 @@ namespace Decompiler.Loading
 		private const short ImageFileExecutable = 0x0002;
 
 
-		public PeImageLoader(Program pgm, byte [] img, uint peOffset) : base(img)
+		public PeImageLoader(Program pgm, ProgramImage img, int peOffset) : base(img)
 		{
 			program = pgm;
-			ImageReader rdr = new ImageReader(RawImage, peOffset);
+			ImageReader rdr = RawImage.CreateReader(peOffset);
 			if (rdr.ReadByte() != 'P' ||
 				rdr.ReadByte() != 'E' ||
 				rdr.ReadByte() != 0x0 ||
@@ -109,7 +109,7 @@ namespace Decompiler.Loading
 			{
 				LoadSections(addrLoad, sectionOffset, sections);
 			}
-			imgLoaded.BaseAddress = addrLoad;
+			RawImage.BaseAddress = addrLoad;
 			return imgLoaded;
 		}
 
@@ -128,7 +128,7 @@ namespace Decompiler.Loading
 			// Read the sections.
 
 			Section section;
-			ImageReader rdr = new ImageReader(RawImage, sectionOffset);
+			ImageReader rdr = RawImage.CreateReader(sectionOffset);
 			section = ReadSection(rdr);
 			Section sectionMax = section;
 			sectionMap[section.Name] = section;
@@ -147,7 +147,7 @@ namespace Decompiler.Loading
 			{
 				if (!s.IsDiscardable)
 				{
-					LoadSectionBytes(s, RawImage, imgLoaded.Bytes);
+					LoadSectionBytes(s, RawImage.Bytes, imgLoaded.Bytes);
 				}
 			}
 		}
@@ -265,7 +265,7 @@ namespace Decompiler.Loading
 
 		public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage)
 		{
-			ImageReader rdr = new ImageReader(RawImage, rvaReloc);
+			ImageReader rdr = RawImage.CreateReader(rvaReloc);
 			uint rvaStop = rvaReloc + size;
 			while (rdr.Offset < rvaStop)
 			{
@@ -308,7 +308,7 @@ namespace Decompiler.Loading
 
 		public string ReadAsciiString(uint rva, int maxLength)
 		{
-			ImageReader rdr = new ImageReader(RawImage, rva);
+			ImageReader rdr = RawImage.CreateReader(rva);
 			ArrayList bytes = new ArrayList();
 			byte b;
 			while ((b = rdr.ReadByte()) != 0)
@@ -354,7 +354,7 @@ namespace Decompiler.Loading
 
 		private void ReadImportDescriptors(Address addrLoad)
 		{
-			ImageReader rdr = new ImageReader(RawImage, rvaImportTable);
+			ImageReader rdr = RawImage.CreateReader(rvaImportTable);
 			for (;;)
 			{
 				ImportDescriptor id = ReadImportDescriptor(rdr, addrLoad);

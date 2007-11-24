@@ -17,10 +17,8 @@
  */
 
 using Decompiler.Core;
-using Decompiler.Gui;
 using System;
 using System.Collections;
-using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
@@ -28,22 +26,10 @@ namespace Decompiler.WindowsGui.Forms
 	public class LoadedPageInteractor : PhasePageInteractor
 	{
 		private LoadedPage pageLoaded;
-		private Hashtable mpCmdidToCommand;
 
 		public LoadedPageInteractor(LoadedPage page, MainFormInteractor mi) : base(page, mi)
 		{
-			this.pageLoaded = page;
-			mpCmdidToCommand = new Hashtable();
-			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
-			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned);
-			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewFindFragments);
-		}
-
-		protected MenuCommand AddCommand(ref Guid cmdSet, int cmdId)
-		{
-			MenuCommand mc = new MenuCommand(null, new CommandID(cmdSet, cmdId));
-			mpCmdidToCommand.Add(mc.CommandID.ID, mc);
-			return mc;
+			pageLoaded = page;
 		}
 
 		public void BrowserItemSelected()
@@ -90,19 +76,5 @@ namespace Decompiler.WindowsGui.Forms
 				MainForm.BrowserTree.Nodes.Add(node);
 			}
 		}
-
-		public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
-		{
-			if (cmdSet == CmdSets.GuidDecompiler)
-			{
-				MenuCommand cmd = (MenuCommand) mpCmdidToCommand[cmdId];
-				if (cmd == null)
-					return false;
-				status.Status = (MenuStatus) cmd.OleStatus;
-				return true;
-			}
-			return false;
-		}
-
 	}
 }

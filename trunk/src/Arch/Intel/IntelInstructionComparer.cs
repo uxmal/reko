@@ -19,7 +19,7 @@
 using System;
 
 using IComparer = System.Collections.IComparer;
-#if VS2003
+#if VS2003 || MONO
 using IHashCodeProvider = System.Collections.IHashCodeProvider;
 #else
 using IEqualityComparer = System.Collections.IEqualityComparer;
@@ -36,7 +36,7 @@ namespace Decompiler.Arch.Intel
 	/// 
 	public class IntelInstructionComparer : 
 		IComparer,
-#if VS2003
+#if VS2003 || MONO
 		IHashCodeProvider
 #else
 		IEqualityComparer
@@ -131,7 +131,7 @@ namespace Decompiler.Arch.Intel
 		}
 
 
-#if VS2003
+#if VS2003 || MONO
 
 		#region IHashCodeProvider Members
 

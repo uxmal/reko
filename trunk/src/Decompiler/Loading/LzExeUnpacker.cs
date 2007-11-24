@@ -38,13 +38,13 @@ namespace Decompiler.Loading
 
 		// Code insipired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
 
-		public LzExeUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
+		public LzExeUnpacker(ExeImageLoader exe, ProgramImage rawImg) : base(rawImg)
 		{
 			this.lzHdrOffset = (exe.e_cparhdr + exe.e_cs) << 4;
 
 			// Locate the LzExe header and verify signature.
 
-			byte [] abC = RawImage;
+			byte [] abC = RawImage.Bytes;
 			int entry = lzHdrOffset + exe.e_ip;
 			if (CompareEqual(abC, entry, s_sig90, s_sig90.Length)) 
 			{
@@ -64,15 +64,15 @@ namespace Decompiler.Loading
 
 		// EXE header test (is it LZEXE file?) 
 
-		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
+		static public bool IsCorrectUnpacker(ExeImageLoader exe, ProgramImage rawImg)
 		{
 			if (exe.e_ovno != 0 || exe.e_lfarlc != 0x1C)
 				return false;
 
 			int lzHdrOffset = ((int) exe.e_cparhdr + (int) exe.e_cs) << 4;
 			int entry = lzHdrOffset + exe.e_ip;
-			return (CompareEqual(rawImg, entry, s_sig91, s_sig91.Length) ||
-					CompareEqual(rawImg, entry, s_sig90, s_sig90.Length));
+			return (CompareEqual(rawImg.Bytes, entry, s_sig91, s_sig91.Length) ||
+					CompareEqual(rawImg.Bytes, entry, s_sig90, s_sig90.Length));
 		}
 
 		// Fix up the relocations.
@@ -94,7 +94,7 @@ namespace Decompiler.Loading
 		}
 
 		// for LZEXE ver 0.90 
-		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, ProgramImage pgmImgNew)
+		private  ImageMap Relocate90(ProgramImage pgmImg, ushort segReloc, ProgramImage pgmImgNew)
 		{
 			int ifile = lzHdrOffset + 0x19D;
 
@@ -126,11 +126,12 @@ namespace Decompiler.Loading
 
 		// Unpacks the relocation entries in a LzExe 0.91 binary
 
-		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, ProgramImage pgmImgNew)
+		private ImageMap Relocate91(ProgramImage pgmImg, ushort segReloc, ProgramImage pgmImgNew)
 		{
 			ImageMap imageMap = pgmImgNew.Map;
 
 			ushort span;
+			byte [] abUncompressed = pgmImg.Bytes;
 			int ifile = lzHdrOffset + 0x158;
 
 			// 0x158=compressed relocation table address 
@@ -177,11 +178,11 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
-		public ProgramImage Unpack(byte [] abC, Address addrLoad)
+		public ProgramImage Unpack(ProgramImage pgmImg, Address addrLoad)
 		{
 			// Extract the LZ stuff.
 
-			ImageReader rdr = new ImageReader(abC, (uint) lzHdrOffset);
+			ImageReader rdr = pgmImg.CreateReader(lzHdrOffset);
 			lzIp = rdr.ReadUShort();
 			lzCs = rdr.ReadUShort();
 			ushort lzSp = rdr.ReadUShort();
@@ -191,6 +192,7 @@ namespace Decompiler.Loading
 
 			// Find the start of the compressed stream.
 
+			byte [] abC = pgmImg.Bytes;
 			int ifile = lzHdrOffset - (lzcpCompressed << 4);
 
 			// Allocate space for the decompressed goo.

@@ -358,7 +358,7 @@ namespace Decompiler.WindowsGui.Controls
 		private Address RoundToNearestRow(Address addr)
 		{
 			int rows = addr.Linear / cbRow;
-			return image.Map.MapLinearAddressToAddress(rows * cbRow);
+			return ProgramImage.Map.MapLinearAddressToAddress(rows * cbRow);
 		}
 
 		[Browsable(false)]
@@ -444,9 +444,9 @@ namespace Decompiler.WindowsGui.Controls
 
 		private void vscroller_Scroll(object sender, ScrollEventArgs e)
 		{
-			if (e.Type == ScrollEventType.ThumbTrack)
+			if (e.Type ==ScrollEventType.ThumbTrack)
 				return;
-			TopAddress = image.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
+			TopAddress = ProgramImage.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
 		}
 	}
 }

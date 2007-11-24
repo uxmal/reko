@@ -60,5 +60,17 @@ namespace Decompiler.Core
 			}
 			return true;
 		}
+
+		private int Parse(XmlNode el, string elName)
+		{
+			el = el.SelectSingleNode(elName);
+			if (el == null)
+				return -1;
+
+			string s = el.InnerText.Trim();
+			if (s[0] == '-')
+				return -Convert.ToInt32(s.Substring(1), 16);
+			return Convert.ToInt32(s, 16);
+		}
 	}	
 }
