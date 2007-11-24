@@ -53,14 +53,14 @@ namespace Decompiler.Loading
 		public ushort   e_oemid;                     // OEM identifier (for e_oeminfo)
 		public ushort   e_oeminfo;                   // OEM information; e_oemid specific
 		public ushort [] e_res2;                     // Reserved words
-		public int      e_lfanew;                    // File address of new exe header
+		public uint      e_lfanew;                    // File address of new exe header
 
 		private const int MarkZbikowski = (('Z' << 8) | 'M');		// 'MZ' magic number expressed in little-endian.
 
 		public const int CbPsp = 0x0100;			// Program segment prefix size in bytes.
 		public const int CbPageSize = 0x0200;		// MSDOS pages are 512 bytes.
 
-		public ExeImageLoader(Program prog, ProgramImage image) : base(image)
+		public ExeImageLoader(Program prog, byte [] image) : base(image)
 		{
 			this.prog = prog;
 
@@ -72,7 +72,7 @@ namespace Decompiler.Loading
 			if (IsPortableExecutable)
 			{
 				// Win32 executable.
-				ldrDeferred = new PeImageLoader(prog, RawImage, e_lfanew);
+				ldrDeferred = new PeImageLoader(prog, image, e_lfanew);
 			}
 			else if (IsNewExecutable)
 			{
@@ -90,17 +90,17 @@ namespace Decompiler.Loading
 
 				// Detect if it is a compressed image.
 
-				if (LzExeUnpacker.IsCorrectUnpacker(this, RawImage))
+				if (LzExeUnpacker.IsCorrectUnpacker(this, image))
 				{
-					ldrDeferred = new LzExeUnpacker(this, RawImage);
+					ldrDeferred = new LzExeUnpacker(this, image);
 				}
-				else if (PkLiteUnpacker.IsCorrectUnpacker(this, RawImage))
+				else if (PkLiteUnpacker.IsCorrectUnpacker(this, image))
 				{
-					ldrDeferred = new PkLiteUnpacker(this, RawImage);
+					ldrDeferred = new PkLiteUnpacker(this, image);
 				}
-				else if (ExePackLoader.IsCorrectUnpacker(this, RawImage))
+				else if (ExePackLoader.IsCorrectUnpacker(this, image))
 				{
-					ldrDeferred = new ExePackLoader(this, RawImage);
+					ldrDeferred = new ExePackLoader(this, image);
 				}
 				else
 				{
@@ -112,7 +112,7 @@ namespace Decompiler.Loading
 
 		public bool IsNewExecutable
 		{
-			get { return (uint) RawImage.Bytes.Length > (uint) (e_lfanew + 1) && RawImage.Bytes[e_lfanew] == 'N' && RawImage.Bytes[e_lfanew+1] == 'E'; }
+			get { return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'N' && RawImage[e_lfanew+1] == 'E'; }
 		}
 
 		public bool IsRealModeExecutable
@@ -122,7 +122,7 @@ namespace Decompiler.Loading
 
 		public bool IsPortableExecutable
 		{
-			get { return (uint) RawImage.Bytes.Length > (uint) (e_lfanew + 1) && RawImage.Bytes[e_lfanew] == 'P' && RawImage.Bytes[e_lfanew+1] == 'E'; }
+			get { return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'P' && RawImage[e_lfanew+1] == 'E'; }
 		}
 
 
@@ -142,7 +142,7 @@ namespace Decompiler.Loading
 
 		public void ReadCommonExeFields()
 		{
-			ImageReader rdr = RawImage.CreateReader(0);
+			ImageReader rdr = new ImageReader(RawImage, 0);
 
 			e_magic = rdr.ReadUShort();        
 			e_cblp = rdr.ReadUShort();         
@@ -170,7 +170,7 @@ namespace Decompiler.Loading
 			{
 				e_res2[i] = rdr.ReadUShort();        
 			}
-			e_lfanew = rdr.ReadInt();          
+			e_lfanew = rdr.ReadUint();          
 		}
 
 		public override void Relocate(Address addrLoad, ArrayList entryPoints)

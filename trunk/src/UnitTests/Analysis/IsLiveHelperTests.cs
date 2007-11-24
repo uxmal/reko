@@ -49,7 +49,16 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier ecx = f.EnsureRegister(Registers.ecx);
 			Assert.IsTrue(isLiveHelper.IsLive(ecx, liveness), "ECX should be live");
 			Assert.IsFalse(isLiveHelper.IsLive(eax, liveness), "EAX should be dead");
+		}
 
+		[Test]
+		public void IsFlagGroupLive()
+		{
+			liveness.Grf = (uint)(FlagM.SF|FlagM.OF|FlagM.ZF);
+			Identifier Z = f.EnsureFlagGroup((uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+			Identifier C = f.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool);
+			Assert.IsTrue(isLiveHelper.IsLive(Z, liveness), "Z flag should be live");
+			Assert.IsFalse(isLiveHelper.IsLive(C, liveness), "C flag isn't live");
 		}
 	}
 }

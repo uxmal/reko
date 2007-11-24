@@ -2,8 +2,8 @@ Mem0: Mem0:Global memory, def: {def Mem0}, uses: {r0_7 = Mem0[0x01001000:word32]
 fp: fp:Temporary
 r0: r0:Local -0004
 C: C:Flags
-r1: r1:Register, def: {def r1}, uses: {r0_11 = r0_10 + (r1 <u 0x00000002)}
-r2: r2:Register
+r1: r1:Register r1, def: {def r1}, uses: {r0_11 = r0_10 + (r1 <u 0x00000002)}
+r2: r2:Register r2
 SZC: SZC:Flags
 r0_7: orig: r0, def: {r0_7 = Mem0[0x01001000:word32]}, uses: {r0_10 = r0_7 + r0_7}{r0_10 = r0_7 + r0_7}
 SZC_8: orig: SZC
