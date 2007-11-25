@@ -41,6 +41,7 @@ namespace Decompiler.UnitTests.Gui
 		}
 
 		[Test]
+		[Ignore("Revisit these tests when we skin the interface off MainForm")]
 		public void HandleMenuEvents()
 		{
 			MainFormInteractorQ interactor = new TestMainFormInteractor(mf, new string [] { "testFile.exe" });

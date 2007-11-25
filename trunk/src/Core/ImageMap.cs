@@ -85,6 +85,14 @@ namespace Decompiler.Core
 		public ImageMapSegment AddSegment(Address addr, string segmentName, AccessMode access)
 		{
 			ImageMapSegment seg = FindSegment(addr);
+			if (seg == null)
+			{
+				ImageMapSegment segNew = new ImageMapSegment(segmentName, access);
+				segNew.Address = addr;
+				segNew.Size = -1;
+				segments.Add(segNew.Address, segNew);
+				return segNew;
+			}
 			int delta = addr - seg.Address;
 			Debug.Assert(delta >= 0);
 			if (delta > 0)

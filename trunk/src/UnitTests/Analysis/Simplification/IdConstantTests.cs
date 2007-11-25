@@ -49,8 +49,10 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 			SsaIdentifier sidDs = ssa.Add(ds, def);
 			sidDs.uses.Add(use);
 
-			IdConstant ic = new IdConstant(ssa);
-			throw new NotImplementedException("Incomplete test, ensure type of constant is SEGMENT.");
+			IdConstant ic = new IdConstant(ssa, new Decompiler.Typing.Unifier(null));
+			Assert.IsTrue(ic.Match(sidDs.id));
+			Expression e = ic.Transform(def);
+			Assert.AreEqual("segment", e.DataType.ToString());
 		}
 	}
 }

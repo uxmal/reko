@@ -49,7 +49,7 @@ fn0C00_0023_exit:		// block 4, pred: 3
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  al
 // LiveOut: ax
-// Trashed: ax al ah
+// Trashed: ax ah
 // Preserved:
 // fn0C00_001F
 word16 fn0C00_001F(byte al)

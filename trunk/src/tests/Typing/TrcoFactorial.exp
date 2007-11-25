@@ -10,22 +10,22 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 
 // fn0C00_000F
-word16 fn0C00_000F(word16 wArg02)
+word16 fn0C00_000F(word16 wArg00)
 fn0C00_000F_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000F:		// block 1, pred: 0
-	word16 ax_17
-	word16 ax_13 = wArg02 - 0x0001
-	branch ax_13 == 0x0000
+	word16 ax_18
+	word16 ax_14 = wArg00 - 0x0001
+	branch ax_14 == 0x0000
 	// succ:  3 2
 l0C00_0026:		// block 2, pred: 1
-	ax_17 = 0x0001
+	ax_18 = 0x0001
 	// succ:  4
 l0C00_0018:		// block 3, pred: 1
-	ax_17 = (word16) (wArg02 * fn0C00_000F(ax_13)) (alias)
+	ax_18 = (word16) (wArg00 * fn0C00_000F(ax_14)) (alias)
 	// succ:  4
 l0C00_0029:		// block 4, pred: 3 2
-	return ax_17
+	return ax_18
 	// succ:  5
 fn0C00_000F_exit:		// block 5, pred: 4
 	// succ: 
@@ -45,37 +45,37 @@ T_8 (in 0x0064)
 T_9 (in Mem9[ds:0x0064:word16])
 	trait_primitive(word16)
 	trait_equal(T_6)
-T_10 (in ax_17)
+T_10 (in ax_18)
 	trait_primitive(word16)
 	trait_equal(T_17)
 	trait_primitive(word16)
 	trait_equal(T_21)
 	trait_primitive(word16)
-T_11 (in ax_13)
+T_11 (in ax_14)
 	trait_equal(T_14)
 	trait_primitive(word16)
 	trait_equal(T_15)
 	trait_primitive(word16)
-T_12 (in wArg02)
+T_12 (in wArg00)
 	trait_primitive(word16)
 	trait_primitive(word16)
 	trait_primitive(int16)
 T_13 (in 0x0001)
 	trait_primitive(word16)
-T_14 (in wArg02 - 0x0001)
+T_14 (in wArg00 - 0x0001)
 	trait_primitive(word16)
 T_15 (in 0x0000)
 	trait_primitive(word16)
-T_16 (in ax_13 == 0x0000)
+T_16 (in ax_14 == 0x0000)
 	trait_primitive(bool)
 T_17 (in 0x0001)
 	trait_primitive(word16)
 T_18 (in fn0C00_000F)
 	trait_func(T_11 -> T_19)
-T_19 (in fn0C00_000F(ax_13))
+T_19 (in fn0C00_000F(ax_14))
 	trait_primitive(word16)
 	trait_primitive(int16)
-T_20 (in wArg02 * fn0C00_000F(ax_13))
+T_20 (in wArg00 * fn0C00_000F(ax_14))
 	trait_primitive(int32)
-T_21 (in (word16) (wArg02 * fn0C00_000F(ax_13)))
+T_21 (in (word16) (wArg00 * fn0C00_000F(ax_14)))
 	trait_primitive(word16)

@@ -28,7 +28,7 @@ Eq_9: (struct 26 (0 word16 w0000))
 	T_10 (in 0x0000 : word16)
 	T_22 (in si_16 + 0x0026 : word16)
 Eq_12: (arr Eq_25)
-	T_12 (in 0x5CE1 : word16)
+	T_12 (in 0x5CE1 : segment)
 Eq_25: (struct 26 (0 word16 w0000))
 	T_25
 // Type Variables ////////////

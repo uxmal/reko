@@ -125,11 +125,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ImageMapTests.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Analysis\AliasTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -406,6 +401,11 @@
                 />
                 <File
                     RelPath = "Core\FrameTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Core\ImageMapTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

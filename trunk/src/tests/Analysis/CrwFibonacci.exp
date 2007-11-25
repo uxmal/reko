@@ -2,7 +2,7 @@ Register word32 fn10000000(Stack word32 dwArg00)
 // MayUse: 
 // LiveOut: eax
 // Trashed: SCZO eax ax al ah
-// Preserved: esi edi si di
+// Preserved: esi edi
 // Stack args: Stack +0000(32)
 // fn10000000
 // Mem0:Global memory

@@ -3,7 +3,7 @@
 // MayUse: 
 // LiveOut:
 // Trashed: eax ax al ah
-// Preserved: esi edi si di
+// Preserved: esi edi
 // Stack args: Stack +0000(32)
 // fn10000000
 void fn10000000(word32 dwArg00)

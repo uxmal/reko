@@ -33,7 +33,7 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	MayUseIn:  ds
 	BypassIn: 
 	Trashed:  
-	Preserved: ax al ah
+	Preserved: ax
 // fn0C00_002A
 void fn0C00_002A()
 fn0C00_002A_entry:		// block 0, pred:
