@@ -24,7 +24,7 @@ Eq_11: word16
 	T_11 (in 0xFFFF : word16)
 	T_13 (in Mem19[0x5CE1:si_16:word16] : word16)
 Eq_12: (ptr (struct (0 (arr (struct 26 (0 T_13 t0000))) a0000)))
-	T_12 (in 0x5CE1 : word16)
+	T_12 (in 0x5CE1 : segment)
 Eq_15: (memptr T_3 (struct (0 T_16 t0000)))
 	T_15 (in 0x9A26 : word16)
 Eq_17: word16

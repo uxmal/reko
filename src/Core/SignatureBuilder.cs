@@ -43,9 +43,21 @@ namespace Decompiler.Core
 			args = new ArrayList();
 		}
 
+		[Obsolete]
 		public void AddFlagGroupReturnValue(uint grf, Frame frame, IProcessorArchitecture arch)
 		{
 			ret = frame.EnsureFlagGroup(grf, arch.GrfToString(grf), PrimitiveType.Byte);
+		}
+
+		private bool SingleBitSet(uint w)
+		{
+			return ((w & (w - 1)) == 0);
+		}
+
+		public void AddFlagGroupReturnValue(uint grf, Frame frame)
+		{
+			PrimitiveType dt = SingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+			ret = frame.EnsureFlagGroup(grf, arch.GrfToString(grf), dt);
 		}
 
 		public void AddFpuStackArgument(int x, Identifier id)

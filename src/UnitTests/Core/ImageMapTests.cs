@@ -23,12 +23,12 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 
-namespace Decompiler.UnitTests
+namespace Decompiler.UnitTests.Core
 {
 	[TestFixture]
 	public class ImageMapTests
 	{
-		private Address addrBase = new Address(0x8000);
+		private Address addrBase = new Address(0x8000, 0);
 		private byte [] img = new Byte [] { 0x00, 0x00, 0x00, 0x00 };
 		private int cItemsSplit;
 
@@ -115,7 +115,7 @@ namespace Decompiler.UnitTests
 		[Test]
 		public void AddNamedSegment()
 		{
-			ImageMap map = new ImageMap(addrBase, img.Length);
+			ImageMap map = new ImageMap();
 			map.AddSegment(new Address(0xC00, 0), "0C00", AccessMode.ReadWrite);
 			IDictionaryEnumerator e = map.Segments.GetEnumerator();
 			ImageMapSegment s = GetNextMapSegment(e);

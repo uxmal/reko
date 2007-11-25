@@ -98,6 +98,14 @@ namespace Decompiler.Analysis
 			foreach (Statement stm in block.Statements)
 			{
 				stm.Instruction.Accept(this);
+				foreach (object o in this.TrashedRegisters.Keys)
+				{
+					RegisterStorage stg = o as RegisterStorage;
+					if (stg == null)
+						continue;
+					System.Diagnostics.Debug.Write(string.Format("{0} ", stg.Register.Name));
+				}
+				System.Diagnostics.Debug.WriteLine("");
 			}
 			if (block == block.Procedure.ExitBlock)
 			{
@@ -123,14 +131,11 @@ namespace Decompiler.Analysis
 
 				if (de.Key != de.Value)
 				{
-					if (r != null)
-					{
-						r.Register.SetAliases(tr, true);
-					}
+					tr[r.Register.Number] = true;
 				}
 				else
 				{
-					r.Register.SetAliases(pr, true);
+					pr[r.Register.Number] = true;
 				}
 			}
 

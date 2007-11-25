@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
@@ -28,5 +29,15 @@ namespace Decompiler.UnitTests.Analysis
 	[TestFixture]
 	public class SignatureBuilderTests
 	{
+		[Test]
+		public void TestGrfWithOneBit()
+		{
+			IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+			SignatureBuilder sb = new SignatureBuilder(null, arch);
+			Frame frame = new Frame(arch.WordWidth);
+			sb.AddFlagGroupReturnValue((uint)FlagM.CF, frame);
+			ProcedureSignature sig = sb.BuildSignature();
+			Assert.AreEqual("bool", sig.ReturnValue.DataType.ToString());
+		}
 	}
 }

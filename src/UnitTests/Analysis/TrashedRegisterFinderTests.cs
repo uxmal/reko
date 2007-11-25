@@ -190,8 +190,8 @@ namespace Decompiler.UnitTests.Analysis
 			trf.TrashedRegisters[esi.Storage] = "@#$@";				// trashed
 			trf.PropagateToProcedureSummary(proc);
 			ProcedureFlow pf = flow[proc];
-			Assert.AreEqual(" ebx esi bx si bl bh", pf.EmitRegisters(prog.Architecture, "", pf.TrashedRegisters));
-			Assert.AreEqual(" eax ax al ah", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
+			Assert.AreEqual(" ebx esi", pf.EmitRegisters(prog.Architecture, "", pf.TrashedRegisters));
+			Assert.AreEqual(" eax", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
 		}
 
 		[Test]
@@ -227,7 +227,7 @@ namespace Decompiler.UnitTests.Analysis
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
 			trf.Compute();
 			ProcedureFlow pf = flow[proc];
-			Assert.AreEqual(" ebp bp", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
+			Assert.AreEqual(" ebp", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
 		}
 
 		[Test]

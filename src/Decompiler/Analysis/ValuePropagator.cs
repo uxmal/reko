@@ -62,7 +62,7 @@ namespace Decompiler.Analysis
 			this.addEcc = new Add_e_c_cRule(ssaIds);
 			this.addMici = new Add_mul_id_c_id_Rule(ssaIds);
 			this.dpbConstantRule = new DpbConstantRule();
-			this.idConst = new IdConstant(ssaIds);
+			this.idConst = new IdConstant(ssaIds, new Decompiler.Typing.Unifier(null));
 			this.idCopyPropagation = new IdCopyPropagationRule(ssaIds);
 			this.idBinIdc = new IdBinIdc_Rule(ssaIds);
 			this.sliceConst = new SliceConstant_Rule();

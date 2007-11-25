@@ -19,8 +19,8 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  si di ds
 // LiveOut:
-// Trashed: SCZO esi ax di al ah
-// Preserved: si ds
+// Trashed: SCZO esi ax si di al ah
+// Preserved: si
 // fn0C00_0007
 void fn0C00_0007(word16 si, word16 di, segment ds)
 fn0C00_0007_entry:		// block 0, pred:

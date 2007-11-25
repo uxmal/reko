@@ -30,7 +30,7 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	LiveOut:   ax cl ds
 	MayUseIn:  ax bx cl ch
 	BypassIn: 
-	Trashed:   SCZO ax cx bx al cl bl ah ch bh
+	Trashed:   SCZO ax cx bx al cl bl ah bh
 	Preserved:
 // fn0C00_001E
 void fn0C00_001E()
@@ -71,7 +71,7 @@ fn0C00_001E_exit:		// block 5, pred: 4
 	LiveOut:   ax cl ds
 	MayUseIn:  ax bx cl ch
 	BypassIn: 
-	Trashed:   SCZO ax cx dx al cl dl ah ch dh
+	Trashed:   SCZO ax cx dx al cl dl ah dh
 	Preserved:
 // fn0C00_0032
 void fn0C00_0032()

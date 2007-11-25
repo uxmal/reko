@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Typing
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			Loader ldr = new Loader(prog);
 			ldr.Assemble(FileUnitTester.MapTestPath(relativePath), prog.Architecture, new Address(0xC00, 0));
-			ldr.EntryPoints.Add(new EntryPoint(ldr.Image.BaseAddress, new IntelState()));
+			ldr.EntryPoints.Add(new EntryPoint(prog.Image.BaseAddress, new IntelState()));
 			Scanner scan = new Scanner(prog, null);
 			scan.Parse(ldr.EntryPoints);
 			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);

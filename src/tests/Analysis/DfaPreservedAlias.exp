@@ -21,8 +21,8 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  ds
 // LiveOut:
-// Trashed: ax al ah
-// Preserved: ax al ah
+// Trashed: ax al
+// Preserved: ax
 // fn0C00_000C
 void fn0C00_000C(segment ds)
 fn0C00_000C_entry:		// block 0, pred:

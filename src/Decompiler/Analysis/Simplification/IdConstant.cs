@@ -18,6 +18,8 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Types;
+using Decompiler.Typing;
 using System;
 
 namespace Decompiler.Analysis.Simplification
@@ -28,12 +30,15 @@ namespace Decompiler.Analysis.Simplification
 	public class IdConstant
 	{
 		private SsaIdentifierCollection ssaIds;
+		private Unifier unifier;
 		private SsaIdentifier sid;
-		private Constant c;
+		private Constant cSrc;
+		private Identifier idDst;
 
-		public IdConstant(SsaIdentifierCollection ssaIds)
+		public IdConstant(SsaIdentifierCollection ssaIds, Unifier u)
 		{
 			this.ssaIds = ssaIds;
+			this.unifier = u;
 		}
 
 		public bool Match(Identifier id)
@@ -44,14 +49,18 @@ namespace Decompiler.Analysis.Simplification
 			Assignment ass = sid.def.Instruction as Assignment;
 			if (ass == null)
 				return false;
-			c = ass.Src as Constant;
-			return c != null;
+			cSrc = ass.Src as Constant;
+			idDst = id;
+			return cSrc != null;
 		}
 
 		public Expression Transform(Statement stm)
 		{
 			sid.uses.Remove(stm);
-			return new Constant(c.DataType, c.Value);
+			DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
+			if (dt is PrimitiveType)
+				return new Constant(dt, cSrc.Value);
+			throw new NotSupportedException(string.Format("Resulting type is {0}, which isn't supported yet.", dt));
 		}
 	}
 }

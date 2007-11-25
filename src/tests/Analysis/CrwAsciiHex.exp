@@ -1,7 +1,7 @@
 void fn0C00_0000(Register byte al, Register segment ds)
 // MayUse:  al ds
 // LiveOut:
-// Trashed: SCZO ax al ah
+// Trashed: SCZO ax al
 // Preserved:
 // fn0C00_0000
 // Mem0:Global memory
@@ -28,7 +28,7 @@ fn0C00_0000_exit:		// block 4, pred: 3
 FlagGroup byte fn0C00_000A(Register byte al, Register out ptr0 alOut)
 // MayUse:  al
 // LiveOut: C al
-// Trashed: SCZO ax al ah
+// Trashed: SCZO ax al
 // Preserved:
 // fn0C00_000A
 // Mem0:Global memory
