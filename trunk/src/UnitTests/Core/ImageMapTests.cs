@@ -66,9 +66,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ImageMapOverlaps()
 		{
-			ImageMap im = new ImageMap();
-
-			im.SetAddressSpan(new Address(0x8000, 0), 40);
+			ImageMap im = new ImageMap(new Address(0x8000, 0), 40);
 			im.AddSegment(new Address(0x8000, 10), "", AccessMode.ReadWrite);
 		}
 
@@ -87,11 +85,9 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ImageItems()
 		{
-			ImageMap im = new ImageMap();
+			ImageMap im = new ImageMap(new Address(0xC00, 0), 0x4000);
 			cItemsSplit = 0;
 			im.ItemSplit += new ItemSplitHandler(ImageItems_ItemSplit);
-
-			im.SetAddressSpan(new Address(0xC00, 0), 0x4000);
 
 			im.AddItem(new Address(0xC00, 30), new ImageMapItem());
 			im.AddItem(new Address(0xC00, 30), new ImageMapItem());
@@ -115,13 +111,13 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void AddNamedSegment()
 		{
-			ImageMap map = new ImageMap();
+			ImageMap map = new ImageMap(new Address(0x0B00, 0), 40000);
 			map.AddSegment(new Address(0xC00, 0), "0C00", AccessMode.ReadWrite);
 			IDictionaryEnumerator e = map.Segments.GetEnumerator();
+			GetNextMapSegment(e);
 			ImageMapSegment s = GetNextMapSegment(e);
 			Assert.AreEqual("0C00", s.Name);
-			Assert.AreEqual(-1, s.Size);
-
+			Assert.AreEqual(35904, s.Size);
 		}
 
 

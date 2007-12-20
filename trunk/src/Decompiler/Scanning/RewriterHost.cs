@@ -34,7 +34,6 @@ namespace Decompiler.Scanning
 		private DecompilerHost host;
 		private Map vectorUses;
 		private Hashtable proceduresRewritten;
-		private int dfs;
 		private SortedList syscalls;
 		private CallRewriter crw;
 		private Hashtable callSignatures;
@@ -86,6 +85,7 @@ namespace Decompiler.Scanning
 			{
 				Address addrProc = (Address) de.Key;
 				Procedure p = (Procedure) de.Value;
+				System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}, {2}", addrProc, p.Name, p.Frame.ReturnAddressSize));
 				if (prog.CallGraph.EntryPoints.Contains(p))
 				{
 					RewriteProcedure(p, addrProc, prog.Architecture.WordWidth.Size);
@@ -174,15 +174,12 @@ namespace Decompiler.Scanning
 			{
 				proceduresRewritten.Add(proc, proc);
 
-				proc.DfsNumber = dfs++;
-				prog.DfsProcedures.Add(proc);
-
 				proc.Frame.ReturnAddressSize = cbReturnAddress;
 				RewriteProcedureBlocks(proc, addrProc);
 			} 
 			catch (Exception ex)
 			{
-				host.WriteDiagnostic(Diagnostic.Error, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message);
+				if (host != null) host.WriteDiagnostic(Diagnostic.Error, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message);
 				throw;
 			}
 		}
@@ -194,8 +191,8 @@ namespace Decompiler.Scanning
 			prw = new ProcedureRewriter(this, proc);
 			Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, this, new CodeEmitter(prog, proc));
 			prw.Rewriter = rw;
-			ImageMapBlock raw = (ImageMapBlock) Image.Map.FindItemExact(addrProc);
-			prw.RewriteBlock(raw.Address, proc.EntryBlock);
+//			ImageMapItem item = Image.MapFindItemExact(addrProc);
+			prw.RewriteBlock(addrProc, proc.EntryBlock);
 			proc.RenumberBlocks();
 
 			// If the frame escaped, rewrite local/parameter accesses to memory fetches.

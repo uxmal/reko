@@ -17,6 +17,29 @@ l0C00_0000:		// block 1, pred: 0
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
+// fn0C00_000C
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// ax:Register ax
+// tLoc0104:Local -0104
+// wLoc0106:Local -0106
+// return address size: 2
+void fn0C00_000C()
+fn0C00_000C_entry:		// block 0, pred:
+	// succ:  1
+l0C00_000C:		// block 1, pred: 0
+	wLoc04 = bp
+	ax = 0x0100
+	ax = &tLoc0104
+	wLoc0106 = 0x1000
+	call fn0C00_003A (depth: 262;)
+	bp = wLoc04
+	return
+	// succ:  2
+fn0C00_000C_exit:		// block 2, pred: 1
+	// succ: 
 // fn0C00_001F
 // Mem0:Global memory
 // fp:Temporary
@@ -82,27 +105,4 @@ l0C00_003A:		// block 1, pred: 0
 	return
 	// succ:  2
 fn0C00_003A_exit:		// block 2, pred: 1
-	// succ: 
-// fn0C00_000C
-// Mem0:Global memory
-// fp:Temporary
-// bp:Register bp
-// wLoc04:Local -0004
-// ax:Register ax
-// tLoc0104:Local -0104
-// wLoc0106:Local -0106
-// return address size: 2
-void fn0C00_000C()
-fn0C00_000C_entry:		// block 0, pred:
-	// succ:  1
-l0C00_000C:		// block 1, pred: 0
-	wLoc04 = bp
-	ax = 0x0100
-	ax = &tLoc0104
-	wLoc0106 = 0x1000
-	call fn0C00_003A (depth: 262;)
-	bp = wLoc04
-	return
-	// succ:  2
-fn0C00_000C_exit:		// block 2, pred: 1
 	// succ: 

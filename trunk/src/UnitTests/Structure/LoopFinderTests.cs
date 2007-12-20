@@ -307,7 +307,7 @@ namespace Decompiler.UnitTests.Structure
 			RewriteProgram(sourceFilename, new Address(0xC00, 0));
 			using (FileUnitTester fut = new FileUnitTester(outFilename))
 			{
-				foreach (Procedure proc in prog.DfsProcedures)
+				foreach (Procedure proc in prog.Procedures.Values)
 				{
 					RunTestCore(proc, fut);
 				}

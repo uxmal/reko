@@ -61,7 +61,11 @@ namespace Decompiler.UnitTests.Loading
 			Loader loader = new Loader(prog);
 			loader.LoadExecutable(FileUnitTester.MapTestPath("binaries/lunarcell-150.8bf"));
 			Scanner scan = new Scanner(prog, null);
-			scan.Parse(loader.EntryPoints);
+			foreach (EntryPoint ep in loader.EntryPoints)
+			{
+				scan.EnqueueEntryPoint(ep);
+			}
+			scan.ProcessQueues();
 			using (FileUnitTester fut = new FileUnitTester("Loading/LoadLunar.txt"))
 			{
 				foreach (Procedure proc in prog.Procedures.Values)

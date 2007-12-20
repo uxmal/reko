@@ -126,7 +126,7 @@ namespace Decompiler.UnitTests.Analysis
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow);
 			trf.Compute();
 			RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow);
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
 				alias.Transform();

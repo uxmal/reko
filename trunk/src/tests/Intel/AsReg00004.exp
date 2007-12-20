@@ -39,24 +39,24 @@
 10000038 57              	push	edi
 10000039 33 F6           	xor	esi,esi
 1000003B BF A0 86 01 00  	mov	edi,000186A0
-10000040 D9 5C 24 14     	fstp	float ptr [esp+14]
+10000040 D9 5C 24 14     	fstp	dword ptr [esp+14]
 10000044 DD 44 24 1C     	fld	double ptr [esp+1C]
-10000048 D9 44 24 14     	fld	float ptr [esp+14]
+10000048 D9 44 24 14     	fld	dword ptr [esp+14]
 1000004C DC 0D 8A 18 99 00 	fmul	double ptr [0099188A]
 10000052 46              	inc	esi
-10000053 D9 54 24 14     	fst	float ptr [esp+14]
+10000053 D9 54 24 14     	fst	dword ptr [esp+14]
 10000057 E8 AC 00 00 00  	call	10000108
 1000005C 8B C8           	mov	ecx,eax
 1000005E 89 4C 24 1C     	mov	dword ptr [esp+1C],ecx
 10000062 DD 44 24 1C     	fld	double ptr [esp+1C]
-10000066 D8 5C 24 14     	fcomp	float ptr [esp+14]
+10000066 D8 5C 24 14     	fcomp	dword ptr [esp+14]
 1000006A 66 DF E0        	fstsw	ax
 1000006D F6 C4 40        	test	ah,40
 10000070 75 0D           	jnz	1000007F
 10000072 41              	inc	ecx
 10000073 89 4C 24 14     	mov	dword ptr [esp+14],ecx
 10000077 DD 44 24 14     	fld	double ptr [esp+14]
-1000007B D9 5C 24 14     	fstp	float ptr [esp+14]
+1000007B D9 5C 24 14     	fstp	dword ptr [esp+14]
 1000007F DC 0D 90 32 03 10 	fmul	double ptr [10033290]
 10000085 D9 C0           	fld	st(0)
 10000087 E8 7C 00 00 00  	call	10000108
@@ -71,7 +71,7 @@
 100000A1 DD D8           	fstp	st(0)
 100000A3 89 4C 24 1C     	mov	dword ptr [esp+1C],ecx
 100000A7 DD 44 24 1C     	fld	double ptr [esp+1C]
-100000AB D9 44 24 14     	fld	float ptr [esp+14]
+100000AB D9 44 24 14     	fld	dword ptr [esp+14]
 100000AF DC 1D 98 32 03 10 	fcomp	double ptr [10033298]
 100000B5 66 DF E0        	fstsw	ax
 100000B8 F6 C4 40        	test	ah,40
@@ -85,7 +85,7 @@
 100000D3 8B FE           	mov	edi,esi
 100000D5 3B F5           	cmp	esi,ebp
 100000D7 0F 8C 6B FF FF FF 	jl	10000048
-100000DD D9 44 24 14     	fld	float ptr [esp+14]
+100000DD D9 44 24 14     	fld	dword ptr [esp+14]
 100000E1 E8 22 00 00 00  	call	10000108
 100000E6 89 03           	mov	dword ptr [ebx],eax
 100000E8 E8 1B 00 00 00  	call	10000108
@@ -100,6 +100,6 @@
 10000105 5D              	pop	ebp
 10000106 5B              	pop	ebx
 10000107 C3              	ret	
-10000108 D9 5C 24 FC     	fstp	float ptr [esp-04]
+10000108 D9 5C 24 FC     	fstp	dword ptr [esp-04]
 1000010C 8B 44 24 FC     	mov	eax,[esp-04]
 10000110 C3              	ret	

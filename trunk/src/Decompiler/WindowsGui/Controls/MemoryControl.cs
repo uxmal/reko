@@ -223,6 +223,8 @@ namespace Decompiler.WindowsGui.Controls
 		/// <param name="rdr"></param>
 		private Address PaintLine(Graphics g, Rectangle rc, ImageReader rdr, bool render)
 		{
+			if (!render)
+				render.ToString();	//$DEBUG
 			StringBuilder sbCode = new StringBuilder(" ");
 
 			// Draw the address part.
@@ -264,6 +266,7 @@ namespace Decompiler.WindowsGui.Controls
 				for (int i = 0; i < cbToDraw; ++i)
 				{
 					Address addrByte = rdr.Address;
+					item = ProgramImage.Map.FindItem(addrByte);
 					bool isSelected = addrByte.Linear == linearSelected;
 					Brush fg = GetForegroundBrush(item, isSelected);
 					Brush bg = GetBackgroundBrush(item, isSelected);

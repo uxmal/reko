@@ -46,27 +46,6 @@ l0C00_0010:		// block 1, pred: 0
 	// succ:  2
 fn0C00_0010_exit:		// block 2, pred: 1
 	// succ: 
-void fn0C00_0029(Register word16 ax, Register word16 di, Register segment ds)
-// MayUse:  ax di ds
-// LiveOut:
-// Trashed:
-// Preserved:
-// fn0C00_0029
-// Mem0:Global memory
-// fp:Temporary
-// ax:Register ax
-// di:Register di
-// ds:Register ds
-// return address size: 2
-void fn0C00_0029(word16 ax, word16 di, segment ds)
-fn0C00_0029_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0029:		// block 1, pred: 0
-	store(Mem0[ds:di:word16]) = ax
-	return
-	// succ:  2
-fn0C00_0029_exit:		// block 2, pred: 1
-	// succ: 
 void fn0C00_0017(Register word16 di, Register segment ds, Stack word16 wArg00)
 // MayUse:  di ds
 // LiveOut:
@@ -98,6 +77,27 @@ l0C00_0017:		// block 1, pred: 0
 	return
 	// succ:  2
 fn0C00_0017_exit:		// block 2, pred: 1
+	// succ: 
+void fn0C00_0029(Register word16 ax, Register word16 di, Register segment ds)
+// MayUse:  ax di ds
+// LiveOut:
+// Trashed:
+// Preserved:
+// fn0C00_0029
+// Mem0:Global memory
+// fp:Temporary
+// ax:Register ax
+// di:Register di
+// ds:Register ds
+// return address size: 2
+void fn0C00_0029(word16 ax, word16 di, segment ds)
+fn0C00_0029_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0029:		// block 1, pred: 0
+	store(Mem0[ds:di:word16]) = ax
+	return
+	// succ:  2
+fn0C00_0029_exit:		// block 2, pred: 1
 	// succ: 
 void fn0C00_002C(Register word16 di, Register segment ds, Stack word16 wArg00)
 // MayUse:  di ds

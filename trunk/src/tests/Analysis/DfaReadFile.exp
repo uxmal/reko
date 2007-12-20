@@ -22,6 +22,22 @@ l0C00_001A:		// block 3, pred: 2 1
 fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
 
+// Register word16 fn0C00_001F(Register byte al)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  al
+// LiveOut: ax
+// Trashed: ax ah
+// Preserved:
+// fn0C00_001F
+word16 fn0C00_001F(byte al)
+fn0C00_001F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_001F:		// block 1, pred: 0
+	msdos_terminate(al)
+	// succ:  2
+fn0C00_001F_exit:		// block 2, pred: 1
+	// succ: 
+
 // Register word16 fn0C00_0023(Register word16 cx, Register word16 dx, Register word16 bx, Register segment ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  cx dx bx ds
@@ -43,21 +59,5 @@ l0C00_002C:		// block 3, pred: 2 1
 	return ax_12
 	// succ:  4
 fn0C00_0023_exit:		// block 4, pred: 3
-	// succ: 
-
-// Register word16 fn0C00_001F(Register byte al)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
-// MayUse:  al
-// LiveOut: ax
-// Trashed: ax ah
-// Preserved:
-// fn0C00_001F
-word16 fn0C00_001F(byte al)
-fn0C00_001F_entry:		// block 0, pred:
-	// succ:  1
-l0C00_001F:		// block 1, pred: 0
-	msdos_terminate(al)
-	// succ:  2
-fn0C00_001F_exit:		// block 2, pred: 1
 	// succ: 
 

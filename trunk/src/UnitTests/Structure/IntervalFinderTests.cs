@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Structure
 			using (FileUnitTester fut = new FileUnitTester(testFile))
 			{
 				this.RewriteProgram(sourceFile, new Address(0xC00, 0));
-				foreach (Procedure proc in prog.DfsProcedures)
+				foreach (Procedure proc in prog.Procedures.Values)
 				{
 					proc.Write(false, fut.TextWriter);
 					IntervalFinder infi = new IntervalFinder(proc);

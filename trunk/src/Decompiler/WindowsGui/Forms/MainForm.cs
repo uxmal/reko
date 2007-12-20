@@ -25,6 +25,7 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -86,6 +87,7 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.ListView listBrowser;
 		private System.Windows.Forms.ComboBox ddlBrowserFilter;
 		private System.Windows.Forms.TreeView treeBrowser;
+		private System.Windows.Forms.ColumnHeader listBrowserItemName;
 		private System.ComponentModel.IContainer components;
 
 		public MainForm()
@@ -94,6 +96,8 @@ namespace Decompiler.WindowsGui.Forms
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
+
+			BuildToolbarButtons();
 
 			BuildPhases();
 		}
@@ -148,6 +152,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.pageInitial = new Decompiler.WindowsGui.Forms.InitialPage();
 			this.panelLhs = new System.Windows.Forms.Panel();
 			this.listBrowser = new System.Windows.Forms.ListView();
+			this.listBrowserItemName = new System.Windows.Forms.ColumnHeader();
 			this.ddlBrowserFilter = new System.Windows.Forms.ComboBox();
 			this.treeBrowser = new System.Windows.Forms.TreeView();
 			this.panelBottom = new System.Windows.Forms.Panel();
@@ -197,6 +202,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.toolBar.ShowToolTips = true;
 			this.toolBar.Size = new System.Drawing.Size(784, 28);
 			this.toolBar.TabIndex = 19;
+			this.toolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar_ButtonClick);
 			// 
 			// tbtnOpen
 			// 
@@ -376,10 +382,18 @@ namespace Decompiler.WindowsGui.Forms
 			this.listBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
+			this.listBrowser.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																						  this.listBrowserItemName});
 			this.listBrowser.Location = new System.Drawing.Point(3, 32);
 			this.listBrowser.Name = "listBrowser";
 			this.listBrowser.Size = new System.Drawing.Size(253, 358);
 			this.listBrowser.TabIndex = 21;
+			this.listBrowser.View = System.Windows.Forms.View.Details;
+			// 
+			// listBrowserItemName
+			// 
+			this.listBrowserItemName.Text = "Item";
+			this.listBrowserItemName.Width = 187;
 			// 
 			// ddlBrowserFilter
 			// 
@@ -480,14 +494,16 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			initialPhase = new InitialPhase(pageInitial);
 			loadingPhase = new LoadedPhase(pageLoaded);
-//			scannedPhase = new ScannedPhase(ScanPage);
-			//			rewritingPhase = new RewritingPhase();
-			//			dataflowPhase = new DataFlowPhrase();
-			//			typeReconstructionPhase = new TypeReconstructionPhase();
-			//			codeStructuringPhase = new CodeStructuringPhase();
 			initialPhase.NextPhase = loadingPhase;
 			loadingPhase.NextPhase = scannedPhase;
-//5			scannedPhase.NextPhase = null;
+		}
+
+		public void BuildToolbarButtons()
+		{
+			tbtnOpen.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.FileOpen);
+			tbtnSave.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.FileSave);
+			tbtnNextPhase.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionNextPhase);
+			tbtnFinishDecompilation.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionFinishDecompilation);
 		}
 
 		public DecompilerPhase GetInitialPhase()
@@ -568,6 +584,11 @@ namespace Decompiler.WindowsGui.Forms
 		public void SetDetails(string txt)
 		{
 			statusBar.Panels[0].Text = txt;
+		}
+
+		private void toolBar_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
+		{
+		
 		}
 
 	}

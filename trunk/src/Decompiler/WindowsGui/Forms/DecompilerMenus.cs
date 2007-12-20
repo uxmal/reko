@@ -33,7 +33,7 @@ namespace Decompiler.WindowsGui.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {
-    	public readonly System.Windows.Forms.MainMenu MainMenu;
+    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;
     
         public DecompilerMenus(ICommandTarget target) : base(target)
         {
@@ -42,6 +42,10 @@ namespace Decompiler.WindowsGui.Forms
 			SortedList slViewMenu = CreatePriorityList();
 			SortedList slActionMenu = CreatePriorityList();
 			SortedList slHelpMenu = CreatePriorityList();
+			SortedList slCtxMemoryControl = CreatePriorityList();
+			
+			// Create groups
+			
 			SortedList slGrpMain = CreatePriorityList();
 			slMainMenu.Add(0, slGrpMain);
 			SortedList slGrpFile = CreatePriorityList();
@@ -52,31 +56,53 @@ namespace Decompiler.WindowsGui.Forms
 			slFileMenu.Add(1000, slGrpFileEnd);
 			SortedList slGrpViewScanned = CreatePriorityList();
 			slViewMenu.Add(0, slGrpViewScanned);
+			SortedList slGrpActions = CreatePriorityList();
+			slActionMenu.Add(0, slGrpActions);
 			SortedList slGrpActionsScanned = CreatePriorityList();
 			slActionMenu.Add(0, slGrpActionsScanned);
 			SortedList slGrpHelp = CreatePriorityList();
 			slHelpMenu.Add(0, slGrpHelp);
+			SortedList slGrpMemoryControl = CreatePriorityList();
+			slCtxMemoryControl.Add(0, slGrpMemoryControl);
+    
+			// Create commands in containers.
+            
             CommandMenuItem slFileOpen = new CommandMenuItem("_Open", new Guid(CmdSets.Decompiler), CmdIds.FileOpen);
             slFileOpen.IsDynamic = false;
-			slGrpFile.Add(0, slFileOpen);
+            slGrpFile.Add(0, slFileOpen);
+            CommandMenuItem slFileSave = new CommandMenuItem("_Save", new Guid(CmdSets.Decompiler), CmdIds.FileSave);
+            slFileSave.IsDynamic = false;
+            slGrpFile.Add(0, slFileSave);
             CommandMenuItem slFileMru = new CommandMenuItem("", new Guid(CmdSets.Decompiler), CmdIds.FileMru);
             slFileMru.IsDynamic = true;
-			slGrpFileMru.Add(0, slFileMru);
+            slGrpFileMru.Add(0, slFileMru);
             CommandMenuItem slFileExit = new CommandMenuItem("E_xit", new Guid(CmdSets.Decompiler), CmdIds.FileExit);
             slFileExit.IsDynamic = false;
-			slGrpFileEnd.Add(0, slFileExit);
+            slGrpFileEnd.Add(0, slFileExit);
+            CommandMenuItem slViewGoToAddress = new CommandMenuItem("_Go to Address...", new Guid(CmdSets.Decompiler), CmdIds.ViewGoToAddress);
+            slViewGoToAddress.IsDynamic = false;
+            slGrpViewScanned.Add(0, slViewGoToAddress);
             CommandMenuItem slViewShowAllFragments = new CommandMenuItem("Show _all fragments", new Guid(CmdSets.Decompiler), CmdIds.ViewShowAllFragments);
             slViewShowAllFragments.IsDynamic = false;
-			slGrpViewScanned.Add(0, slViewShowAllFragments);
+            slGrpViewScanned.Add(0, slViewShowAllFragments);
             CommandMenuItem slViewShowUnscanned = new CommandMenuItem("Show _unscanned fragments", new Guid(CmdSets.Decompiler), CmdIds.ViewShowUnscanned);
             slViewShowUnscanned.IsDynamic = false;
-			slGrpViewScanned.Add(0, slViewShowUnscanned);
+            slGrpViewScanned.Add(0, slViewShowUnscanned);
             CommandMenuItem slViewFindFragments = new CommandMenuItem("_Find fragments...", new Guid(CmdSets.Decompiler), CmdIds.ViewFindFragments);
             slViewFindFragments.IsDynamic = false;
-			slGrpViewScanned.Add(0, slViewFindFragments);
+            slGrpViewScanned.Add(0, slViewFindFragments);
+            CommandMenuItem slActionNextPhase = new CommandMenuItem("_Next Phase", new Guid(CmdSets.Decompiler), CmdIds.ActionNextPhase);
+            slActionNextPhase.IsDynamic = false;
+            slGrpActions.Add(0, slActionNextPhase);
+            CommandMenuItem slActionFinishDecompilation = new CommandMenuItem("_Finish Decompilation", new Guid(CmdSets.Decompiler), CmdIds.ActionFinishDecompilation);
+            slActionFinishDecompilation.IsDynamic = false;
+            slGrpActions.Add(0, slActionFinishDecompilation);
             CommandMenuItem slActionMarkProcedure = new CommandMenuItem("Mark _Procedure Entry", new Guid(CmdSets.Decompiler), CmdIds.ActionMarkProcedure);
             slActionMarkProcedure.IsDynamic = false;
-			slGrpActionsScanned.Add(0, slActionMarkProcedure);
+            
+			
+			// Create submenus
+			
             CommandMenuItem miFileMenu = new CommandMenuItem("_File");
             slGrpMain.Add(0, miFileMenu);
             CommandMenuItem miViewMenu = new CommandMenuItem("_View");
@@ -85,6 +111,12 @@ namespace Decompiler.WindowsGui.Forms
             slGrpMain.Add(0, miActionMenu);
             CommandMenuItem miHelpMenu = new CommandMenuItem("_Help");
             slGrpMain.Add(0, miHelpMenu);
+    
+			// Place commands.
+			
+			slGrpActionsScanned.Add(0, slActionMarkProcedure);
+			slGrpMemoryControl.Add(0, slViewGoToAddress);
+			slGrpMemoryControl.Add(0, slActionMarkProcedure);
 			this.MainMenu = new System.Windows.Forms.MainMenu();
 			BuildMenu(slMainMenu, MainMenu.MenuItems);
   
@@ -96,6 +128,9 @@ namespace Decompiler.WindowsGui.Forms
 			
 			BuildMenu(slHelpMenu, miHelpMenu.MenuItems);
 			
+			this.CtxMemoryControl = new System.Windows.Forms.ContextMenu();
+			BuildMenu(slCtxMemoryControl, CtxMemoryControl.MenuItems);
+  
 		}
 		
 		public override Menu GetMenu(int menuId)
@@ -110,6 +145,11 @@ namespace Decompiler.WindowsGui.Forms
 		
 		public override ContextMenu GetContextMenu(int menuId)
 		{
+			
+			switch (menuId)
+			{
+				case MenuIds.CtxMemoryControl: return this.CtxMemoryControl;
+			}
 			throw new ArgumentException(string.Format("There is no context menu with id {0}.", menuId));
 		}
     }

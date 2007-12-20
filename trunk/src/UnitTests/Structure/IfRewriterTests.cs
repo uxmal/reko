@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Structure
 			using (FileUnitTester fut = new FileUnitTester(outFilename))
 			{
 				RewriteProgram(sourceFilename, new Address(0xC00, 0000));
-				foreach (Procedure proc in prog.DfsProcedures)
+				foreach (Procedure proc in prog.Procedures.Values)
 				{
 					ControlFlowGraphCleaner cleaner = new ControlFlowGraphCleaner(proc);
 					cleaner.Transform();

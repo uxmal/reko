@@ -36,8 +36,6 @@ namespace Decompiler.Core
 		private BlockList rpoBlocks;
 		private Block blockEntry;
 		private Block blockExit;
-		private int dfs;
-		private int invdfs;
 		private int poNumber;
 		private int rpoNumber;
 		private Frame frame;
@@ -89,11 +87,6 @@ namespace Decompiler.Core
 			return new BitSet(RpoBlocks.Count);
 		}
 
-		public int DfsNumber
-		{
-			get { return dfs; }
-			set { dfs = value; }
-		}
 
 #if DEBUG
 		public void Dump(bool dump, bool emitFrame)
@@ -140,12 +133,6 @@ namespace Decompiler.Core
 			get { return frame; }
 		}
 		
-		public int InvDfsNumber
-		{
-			get { return invdfs; }
-			set { invdfs = value; }
-		}
-
 		public int PostOrderNumber
 		{
 			get { return poNumber; }

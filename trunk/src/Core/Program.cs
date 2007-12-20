@@ -34,9 +34,8 @@ namespace Decompiler.Core
 		private ProgramImage image;
 		private IProcessorArchitecture arch;
 		private Platform platform;
-		private Map procedures;
+		private ProcedureCollection2 procedures;
 		private CallGraph callGraph;
-		private ProcedureCollection dfsProcs;
 		private Map vectors;
 		private Hashtable mpuintfn;
 		private Hashtable trampolines;
@@ -46,8 +45,7 @@ namespace Decompiler.Core
 
 		public Program()
 		{
-			procedures = new Map();
-			dfsProcs = new ProcedureCollection();
+			procedures = new ProcedureCollection2();
 			vectors = new Map();
 			callGraph = new CallGraph();
 			mpuintfn = new Hashtable();		// uint (offset) -> string
@@ -59,7 +57,7 @@ namespace Decompiler.Core
 
 		public void AddEntryPoint(EntryPoint ep)
 		{
-			Procedure proc = (Procedure) procedures[ep.Address];
+			Procedure proc = procedures[ep.Address];
 			if (proc == null)
 			{
 				Frame frame = new Frame(arch.WordWidth);
@@ -78,11 +76,6 @@ namespace Decompiler.Core
 		public CallGraph CallGraph
 		{
 			get { return callGraph; }
-		}
-
-		public virtual ProcedureCollection DfsProcedures
-		{
-			get { return dfsProcs; }
 		}
 
 		public void DumpAssembler(ImageMap map, TextWriter wr)
@@ -127,7 +120,7 @@ namespace Decompiler.Core
 		/// <summary>
 		/// Provides access to the program's procedures, indexed by address.
 		/// </summary>
-		public Map Procedures
+		public ProcedureCollection2 Procedures
 		{
 			get { return procedures; }
 		}

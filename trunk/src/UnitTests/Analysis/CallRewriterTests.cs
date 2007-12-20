@@ -144,7 +144,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind, fut.TextWriter);

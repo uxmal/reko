@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void DiamondDominatorTest()
 		{
 			Program prog = RewriteFile("Fragments/diamond.asm");
-			Procedure proc = prog.DfsProcedures[0];
+			Procedure proc = prog.Procedures[0];
 			DominatorGraph doms = new DominatorGraph(proc);
 			BlockList bl = proc.RpoBlocks;
 			Assert.IsTrue(doms.ImmediateDominator(bl[2]) == bl[1]);
@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void LoopDominatorTest()
 		{
 			Program prog = RewriteFile("Fragments/while_loop.asm");
-			DominatorGraph doms = new DominatorGraph(prog.DfsProcedures[0]);
+			DominatorGraph doms = new DominatorGraph(prog.Procedures[0]);
 			Assert.IsTrue(doms.DominatesStrictly(0, 1));
 			Assert.IsTrue(doms.DominatesStrictly(0, 2));
 			Assert.IsTrue(doms.DominatesStrictly(1, 2));
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void AnAliasExpanderTest()
 		{
 			Program prog = RewriteFile("Fragments/alias_regs.asm");
-			Procedure proc = prog.DfsProcedures[0];
+			Procedure proc = prog.Procedures[0];
 			Aliases alias = new Aliases(proc, prog.Architecture);
 			alias.Transform();
 			using (FileUnitTester fut = new FileUnitTester("Analysis/AnAliasExpanderTest.txt"))
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void AliasExpandDeadVars()
 		{
 			Program prog = RewriteFile("Fragments/alias_regs2.asm");
-			Procedure proc = prog.DfsProcedures[0];
+			Procedure proc = prog.Procedures[0];
 			Aliases alias = new Aliases(proc, prog.Architecture);
 			alias.Transform();
 

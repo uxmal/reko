@@ -32,18 +32,11 @@ namespace Decompiler.UnitTests.Intel
 	{
 		protected IntelArchitecture arch;
 		protected IntelAssembler asm;
-		protected ImageMap map;
 
 		[SetUp]
 		public void Setup()
 		{
 			asm = new IntelAssembler();
-			map = new ImageMap();
-		}
-
-		[TearDown]
-		public void TearDown()
-		{
 		}
 
 		protected bool Compare(byte [] a, byte [] b)

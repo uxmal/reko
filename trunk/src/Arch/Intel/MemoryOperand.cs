@@ -83,7 +83,7 @@ namespace Decompiler.Arch.Intel
 					s = "byte ptr ";
 				else if (Width == PrimitiveType.Word16)
 					s = "word ptr ";
-				else if (Width == PrimitiveType.Word32)
+				else if (Width.Size == 4)
 					s = "dword ptr ";
 				else if (Width == PrimitiveType.Word64)
 					s = "qword ptr ";

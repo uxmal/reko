@@ -144,7 +144,5 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			ignore = false;
 		}
-
-
 	}
 }

@@ -16,8 +16,11 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using Decompiler.Gui;
+using Decompiler.UnitTests.Mocks;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
@@ -48,16 +51,29 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[Test]
 		public void Populate()
 		{
-			TreeView tv = mi.MainForm.BrowserTree;
-			Assert.AreEqual(3, tv.Nodes.Count);
+			ListView lv = mi.MainForm.BrowserList;
+			Assert.AreEqual(3, lv.Items.Count);
 		}
 
 		[Test]
-		public void SelectBrowserItem()
+		public void PopulateBrowserWithScannedProcedures()
 		{
-			form.BrowserTree.SelectedNode = form.BrowserTree.Nodes[1];
-			mi.OnBrowserItemSelected(null, null);
-			Assert.AreEqual(new Address(0xC10, 0), form.LoadedPage.MemoryControl.TopAddress);
+			mi.Program.Procedures.Add(new Address(0xC20, 0), new Procedure("Test1", new Frame(mi.Program.Architecture.WordWidth)));
+			mi.Program.Procedures.Add(new Address(0xC20, 2), new Procedure("Test2", new Frame(mi.Program.Architecture.WordWidth)));
+			form.PhasePage = form.LoadedPage;
+			Assert.AreEqual(3, form.BrowserList.Items.Count);
+			Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
+		}
+
+		[Test]
+		public void MarkingProceduresShouldAddToUserProceduresList()
+		{
+			Assert.AreEqual(0, mi.Decompiler.Project.UserProcedures.Count);
+			mi.MainForm.LoadedPage.MemoryControl.SelectedAddress = new Address(0x0C20, 0);
+			mi.LoadedPageInteractor.MarkAndScanProcedure();
+			Assert.AreEqual(1, mi.Decompiler.Project.UserProcedures.Count);
+			SerializedProcedure uproc = (SerializedProcedure) mi.Decompiler.Project.UserProcedures[0];
+			Assert.AreEqual("0C20:0000", uproc.Address);
 		}
 
 		[Test]
@@ -76,9 +92,10 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		private Program BuildFakeProgram()
 		{
 			Program prog = new Program();
+			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[10000]);
-			prog.Image.Map.AddSegment(new Address(0x0C10, 0), null, AccessMode.ReadWrite);
-			prog.Image.Map.AddSegment(new Address(0x0C20, 0), null, AccessMode.ReadWrite);
+			prog.Image.Map.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
+			prog.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
 			return prog;
 		}
 	}

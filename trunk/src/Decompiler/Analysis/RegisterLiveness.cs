@@ -68,7 +68,7 @@ namespace Decompiler.Analysis
 
 		private void CollectBasicBlocks()
 		{
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				foreach (Block block in proc.RpoBlocks)
 				{
@@ -114,7 +114,7 @@ namespace Decompiler.Analysis
 		/// </summary>
 		private void CompleteWork()
 		{
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow pi = mpprocData[proc];
 
@@ -230,7 +230,7 @@ namespace Decompiler.Analysis
 
 		private void Dump()
 		{
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				StringWriter sw = new StringWriter();
 				ProcedureFlow flow = mpprocData[proc];

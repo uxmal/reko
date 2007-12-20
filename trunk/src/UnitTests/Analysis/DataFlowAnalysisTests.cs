@@ -166,7 +166,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			dfa.AnalyzeProgram();
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				fut.TextWriter.Write("// ");

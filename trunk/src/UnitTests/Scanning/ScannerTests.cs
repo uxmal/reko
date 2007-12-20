@@ -91,11 +91,11 @@ baz proc
 	jmp		foo
 baz endp
 ");
-			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			Scanner scan = new Scanner(prog, null);
-			ArrayList eps = new ArrayList();
-			eps.Add(ep);
-			scan.Parse(eps);
+			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
+			prog.AddEntryPoint(ep);
+			scan.EnqueueEntryPoint(ep);
+			scan.ProcessQueues();
 			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 		}
@@ -124,12 +124,9 @@ baz endp
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			Assembler asm = prog.Architecture.CreateAssembler();
 			prog.Image = asm.Assemble(prog, new Address(0xC00, 0x0000), FileUnitTester.MapTestPath("Fragments/multiple/jumpintoproc.asm"), null);
-			EntryPoint ep = new EntryPoint(asm.StartAddress, new IntelState());
-			ArrayList eps = new ArrayList();
-			eps.Add(ep);
 			Scanner scan = new Scanner(prog, null);
-			scan.Parse(eps);
-
+			scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, new IntelState()));
+			scan.ProcessQueues();
 			using (FileUnitTester fut = new FileUnitTester("Scanning/ScanInterprocedureJump.txt"))
 			{
 				Dumper dumper = prog.Architecture.CreateDumper();
@@ -147,6 +144,7 @@ baz endp
 		[Ignore("Need to implement this feature")]
 		public void ObeyDontDecompileUserProcedure()
 		{
+			//$REVIEW: a directive that introduces a procedure signature, but inhibits its decompilation.
 		}
 
 		private Program BuildTest(string srcFile)

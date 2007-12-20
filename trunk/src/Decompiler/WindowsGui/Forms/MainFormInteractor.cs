@@ -21,6 +21,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.WindowsGui.Controls;
 using System;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Windows.Forms;
 
@@ -66,23 +67,29 @@ namespace Decompiler.WindowsGui.Forms
 			DecompilerMenus dm = new DecompilerMenus(this);
 			form.Menu = dm.MainMenu;
 
-			AttachInteractors();
+			AttachInteractors(dm);
 			form.Closed += new System.EventHandler(this.MainForm_Closed);
 			form.PhasePageChanged += new System.EventHandler(this.MainForm_PhasePageChanged);
-			form.BrowserTree.AfterSelect += new TreeViewEventHandler(OnBrowserItemSelected);
+			form.BrowserTree.AfterSelect += new TreeViewEventHandler(OnBrowserTreeItemSelected);
+			form.BrowserList.SelectedIndexChanged += new EventHandler(OnBrowserListItemSelected);
 
 			form.PhasePage = form.InitialPage;
 		}
 
-		private void AttachInteractors()
+		private void AttachInteractors(DecompilerMenus dm)
 		{
 			pageInitial = new InitialPageInteractor(form.InitialPage, this);
-			pageLoaded = new LoadedPageInteractor(form.LoadedPage, this);
+			pageLoaded = new LoadedPageInteractor(form.LoadedPage, dm, this);
 		}
 
 		public virtual DecompilerDriver CreateDecompiler(string file)
 		{
 			return new DecompilerDriver(file, new Program(), this);
+		}
+
+		public DecompilerDriver Decompiler
+		{
+			get { return decompiler; }
 		}
 
 		public MainForm MainForm
@@ -99,6 +106,7 @@ namespace Decompiler.WindowsGui.Forms
 				//$REVIEW if (executable_format) then scanProgram.
 				decompiler.ScanProgram();
 				form.PhasePage = form.LoadedPage;
+				pageLoaded.Initialize();
 			} 	
 			catch (Exception e)
 			{
@@ -156,6 +164,13 @@ namespace Decompiler.WindowsGui.Forms
 			get { return SettingsDirectory + "\\mru.txt"; }
 		}
 
+		public void NextPhase()
+		{
+		}
+
+		public void FinishDecompilation()
+		{
+		}
 
 		private static string SettingsDirectory
 		{
@@ -219,6 +234,9 @@ namespace Decompiler.WindowsGui.Forms
 				{
 				case CmdIds.FileOpen: OpenBinaryWithPrompt(); return true;
 				case CmdIds.FileExit: form.Close(); return true;
+
+				case CmdIds.ActionNextPhase: NextPhase(); return true;
+				case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
 				}
 			}
 			return false;
@@ -341,25 +359,26 @@ namespace Decompiler.WindowsGui.Forms
 
 		private void toolBar_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
 		{
-			/*
-			//$REVIEW: this hard-wiring should use command routing instead. Store the menu commands in the tags of the 
-			// toolbar.
-			if (e.Button == tbtnNextPhase)
-			{
-				NextPhase();
-			} 
-			else if (e.Button == tbtnFinishDecompilation)
-			{
-				FinishDecompilation();
-			}
-			*/
+			CommandID cmd = e.Button.Tag as CommandID;
+			if (cmd == null) throw new NotImplementedException("Button not hooked up");
+			Guid g = cmd.Guid;
+			Execute(ref g, cmd.ID);
 		}
 
 		private void MainForm_PhasePageChanged(object sender, EventArgs e)
 		{
 		}
 
-		public void OnBrowserItemSelected(object sender, TreeViewEventArgs e)
+		public void OnBrowserTreeItemSelected(object sender, TreeViewEventArgs e)
+		{
+			if (e.Action == TreeViewAction.ByKeyboard ||
+				e.Action == TreeViewAction.ByMouse)
+			{
+				Execute(ref CmdSets.GuidDecompiler, CmdIds.BrowserItemSelected);
+			}
+		}
+
+		public void OnBrowserListItemSelected(object sender, EventArgs e)
 		{
 			Execute(ref CmdSets.GuidDecompiler, CmdIds.BrowserItemSelected);
 		}

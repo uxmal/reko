@@ -62,10 +62,8 @@ namespace Decompiler.UnitTests.Intel
 			Program pgm = BuildProgram();
 			Scanner sc = new Scanner(pgm, null);
 
-			EntryPoint ep = new EntryPoint(pgm.Image.BaseAddress, new IntelState());
-			ArrayList eps = new ArrayList();
-			eps.Add(ep);
-			sc.Parse(eps);
+			sc.EnqueueEntryPoint(new EntryPoint(pgm.Image.BaseAddress, new IntelState()));
+			sc.ProcessQueues();
 			Assert.AreEqual(4, pgm.Image.Map.Items.Count);
 			StringBuilder sb = new StringBuilder();
 			foreach (DictionaryEntry de in pgm.Image.Map.Items)
@@ -90,7 +88,11 @@ namespace Decompiler.UnitTests.Intel
 				Loader ld = new Loader(prog);
 				ld.Assemble(FileUnitTester.MapTestPath("fragments/Factorial.asm"), new IntelArchitecture(ProcessorMode.Real), new Address(0x0C00, 0));
 				Scanner sc = new Scanner(prog, null);
-				sc.Parse(ld.EntryPoints);
+				foreach (EntryPoint ep in ld.EntryPoints)
+				{
+					sc.EnqueueEntryPoint(ep);
+				}
+				sc.ProcessQueues();
 				prog.DumpAssembler(prog.Image.Map, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
@@ -237,7 +239,11 @@ namespace Decompiler.UnitTests.Intel
 				Loader ld = new Loader(prog);
 				ld.Assemble(FileUnitTester.MapTestPath(sourceFile), prog.Architecture, addrBase);
 				Scanner sc = new Scanner(prog, null);
-				sc.Parse(ld.EntryPoints);
+				foreach (EntryPoint ep in ld.EntryPoints)
+				{
+					sc.EnqueueEntryPoint(ep);
+				}
+				sc.ProcessQueues();
 				Dumper d = prog.Architecture.CreateDumper();
 				d.Dump(prog, prog.Image.Map, fut.TextWriter);
 

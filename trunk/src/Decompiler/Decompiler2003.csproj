@@ -831,6 +831,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "WindowsGui\Forms\GotoDialog.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\GotoDialog.resx"
+                    DependentUpon = "GotoDialog.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\GotoDialogInteractor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "WindowsGui\Forms\InitialPage.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

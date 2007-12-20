@@ -294,7 +294,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				fut.TextWriter.WriteLine("= {0} ========================", proc.Name);
 				DominatorGraph gr = new DominatorGraph(proc);

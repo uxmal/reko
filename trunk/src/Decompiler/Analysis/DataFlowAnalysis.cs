@@ -56,8 +56,8 @@ namespace Decompiler.Analysis
 
 		public void BuildExpressionTrees(RegisterLiveness rl)
 		{
-			int total = prog.DfsProcedures.Count;
-			foreach (Procedure proc in prog.DfsProcedures)
+			int total = prog.Procedures.Count;
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture, flow);
 				alias.Transform();

@@ -31,12 +31,16 @@ namespace Decompiler.Core
 
 		public ImageMapSegment(string name, AccessMode access) : base() 
 		{
+			if (name == null)
+				throw new ArgumentNullException("name", "Segments must have names.");
 			this.name = name;
 			this.access = access;
 		}
 
 		public ImageMapSegment(string name, int size, AccessMode access) : base(size) 
 		{
+			if (name == null)
+				throw new ArgumentNullException("name", "Segments must have names.");
 			this.name = name;
 			this.access = access;
 		}

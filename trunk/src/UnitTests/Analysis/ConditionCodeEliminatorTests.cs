@@ -142,7 +142,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			RegisterLiveness rl = dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
 				alias.Transform();
