@@ -44,7 +44,6 @@ namespace Decompiler.UnitTests.Mocks
 			mock.ProgramMock = this;
 			Procedure proc = mock.Procedure;
 			prog.Procedures[new Address(procCount)] = proc;
-			prog.DfsProcedures.Add(proc);
 			nameToProcedure.Add(mock.Procedure.Name, proc);
 			Console.WriteLine(mock.GetType().Name);
 			unresolvedProcedures.AddRange(mock.UnresolvedProcedures);

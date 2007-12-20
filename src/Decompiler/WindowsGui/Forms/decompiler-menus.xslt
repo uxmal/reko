@@ -45,22 +45,25 @@ namespace Decompiler.WindowsGui.Forms
         {<for-each select="c:menu">
 			SortedList sl<value-of select="@id"/> = CreatePriorityList();</for-each>
 			
-
+			// Create groups
 			<for-each select="c:group">
 			SortedList sl<value-of select="@id"/> = CreatePriorityList();<if test="@id != @container">
 			sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@id"/>);</if></for-each>
     
+			// Create commands in containers.
             <for-each select="c:cmd[@container]">
             CommandMenuItem sl<value-of select="@id"/> = new CommandMenuItem("<apply-templates/>", new Guid(CmdSets.<value-of select="@cmdSet"/>), CmdIds.<value-of select="@id"/>);
             sl<value-of select="@id"/>.IsDynamic = <call-template name="dynamic"/>;
-			sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@id"/>);</for-each>
+            <if test="@container != @id">sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@id"/>);</if></for-each>
 			
+			// Create submenus
 			<for-each select="c:menu[@container]">
             CommandMenuItem mi<value-of select="@id"/> = new CommandMenuItem("<apply-templates/>");
             sl<value-of select="@container"/>.Add(<call-template name="priority"/>, mi<value-of select="@id"/>);</for-each>
     
+			// Place commands.
 			<for-each select="c:placement">
-			sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@id"/>);</for-each>
+			sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@item"/>);</for-each>
     
     <for-each select="c:menu">
 		<choose>

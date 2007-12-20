@@ -32,7 +32,7 @@ namespace Decompiler.UnitTests.Analysis
 	{
 		protected void DumpProcedureFlows(Program prog, DataFlowAnalysis dfa, RegisterLiveness live, TextWriter w)
 		{
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				w.WriteLine("// {0} /////////////////////", proc.Name);
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
@@ -123,10 +123,13 @@ namespace Decompiler.UnitTests.Analysis
 				project = DecompilerProject.Load(FileUnitTester.MapTestPath(configFile));
 			}
 			EntryPoint ep = new EntryPoint(asm.StartAddress, new IntelState());
-			ArrayList eps = new ArrayList();
-			eps.Add(ep);
 			prog.AddEntryPoint(ep);
-			scan.Parse(eps, project.UserProcedures);
+			scan.EnqueueEntryPoint(ep);
+			foreach (SerializedProcedure sp in project.UserProcedures)
+			{
+				scan.EnqueueUserProcedure(sp);
+			}
+			scan.ProcessQueues();
 			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 		}

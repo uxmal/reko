@@ -34,6 +34,21 @@ l0C00_001A:		// block 3, pred: 2 1
 	// succ:  4
 fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
+// fn0C00_001F
+// Mem0:Global memory
+// fp:Temporary
+// ah:Register ah
+// al:Register al
+// return address size: 2
+void fn0C00_001F()
+fn0C00_001F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_001F:		// block 1, pred: 0
+	ah = 0x4C
+	msdos_terminate(al)
+	// succ:  2
+fn0C00_001F_exit:		// block 2, pred: 1
+	// succ: 
 // fn0C00_0023
 // Mem0:Global memory
 // fp:Temporary
@@ -61,19 +76,4 @@ l0C00_002C:		// block 3, pred: 2 1
 	return
 	// succ:  4
 fn0C00_0023_exit:		// block 4, pred: 3
-	// succ: 
-// fn0C00_001F
-// Mem0:Global memory
-// fp:Temporary
-// ah:Register ah
-// al:Register al
-// return address size: 2
-void fn0C00_001F()
-fn0C00_001F_entry:		// block 0, pred:
-	// succ:  1
-l0C00_001F:		// block 1, pred: 0
-	ah = 0x4C
-	msdos_terminate(al)
-	// succ:  2
-fn0C00_001F_exit:		// block 2, pred: 1
 	// succ: 

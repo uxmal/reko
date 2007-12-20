@@ -32,6 +32,10 @@ namespace Decompiler.Scanning
 	/// and branches. Simple data type analysis is done as well: for instance, pointers to
 	/// code are located, as are global data pointers.
 	/// </summary>
+	/// <remarks>
+	/// Callers feed the scanner by calling EnqueueXXX methods before calling Scan(). Scan() then
+	/// processes the queues.
+	/// </remarks>
 	public class Scanner : ICodeWalkerListener
 	{
 		private Program program;
@@ -74,7 +78,7 @@ namespace Decompiler.Scanning
 		/// An entry point into the binary has been found.
 		/// </summary>
 		/// <param name="addr"></param>
-		public virtual void EnqueueStartAddress(EntryPoint ep)
+		public void EnqueueEntryPoint(EntryPoint ep)
 		{
 			Debug.Assert(ep.Address != null);
 			WorkItem wi = new WorkItem(null, BlockType.Procedure, ep.Address);
@@ -83,14 +87,37 @@ namespace Decompiler.Scanning
 			qStarts.Enqueue(wi);
 		}
 
+		
 		/// <summary>
-		/// A segment of the binary has been found. 
+		/// The target of a branch or jump instruction has been found.
 		/// </summary>
 		/// <param name="addr"></param>
-		public void EnqueueSegment(Address addr)
+		/// <param name="st"></param>
+		/// <param name="proc"></param>
+		private void EnqueueJumpTarget(Address addr, ProcessorState st, Procedure proc)
 		{
-			WorkItem wi = new WorkItem(wiCur, BlockType.Segment, addr);
-			qSegments.Enqueue(wi);
+			if (!program.Image.IsValidAddress(addr))
+				return;
+
+			Debug.Assert(proc != null);
+			WorkItem wi = new WorkItem(wiCur, BlockType.JumpTarget, addr);
+			wi.state = (ProcessorState) st.Clone();
+			qJumps.Enqueue(wi);
+			ImageMapBlock bl = new ImageMapBlock();
+			bl.Procedure = proc;
+			ImageMapBlock item = map.AddItem(addr, bl) as ImageMapBlock;
+			if (item != null && item.Procedure != proc)
+			{
+				// When two procedures join, they generate a new procedure. If there is
+				// no procedure yet, make one and OWN all the reachable nodes.
+
+				PromoteBlockToProcedure(bl, proc);
+			}
+		}
+
+		public Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName)
+		{
+			return EnqueueProcedure(wiPrev, addr, procedureName, program.Architecture.CreateProcessorState());
 		}
 
 		/// <summary>
@@ -102,7 +129,7 @@ namespace Decompiler.Scanning
 		{
 			WorkItem wi = new WorkItem(wiPrev, BlockType.Procedure, addr);
 			wi.state = (ProcessorState) state.Clone();
-			Procedure proc = (Procedure) program.Procedures[wi.Address];
+			Procedure proc = (Procedure) program.Procedures[addr];
 			if (proc == null)
 			{
 				Frame f = new Frame(program.Architecture.WordWidth);
@@ -131,46 +158,19 @@ namespace Decompiler.Scanning
 		}
 
 		/// <summary>
-		/// The target of a branch or jump instruction has been found.
+		/// A segment of the binary has been found. 
 		/// </summary>
 		/// <param name="addr"></param>
-		/// <param name="st"></param>
-		/// <param name="proc"></param>
-		private void EnqueueJumpTarget(Address addr, ProcessorState st, Procedure proc)
+		public void EnqueueSegment(Address addr)
 		{
-			if (!program.Image.IsValidAddress(addr))
-				return;
-
-			Debug.Assert(proc != null);
-			WorkItem wi = new WorkItem(wiCur, BlockType.JumpTarget, addr);
-			wi.state = (ProcessorState) st.Clone();
-			qJumps.Enqueue(wi);
-			ImageMapBlock bl = new ImageMapBlock();
-			bl.Procedure = proc;
-			ImageMapBlock item = map.AddItem(addr, bl) as ImageMapBlock;
-			if (item != null && item.Procedure != proc)
-			{
-				// When two procedures join, they generate a new procedure. If there is
-				// no procedure yet, make one and OWN all the reachable nodes.
-
-				PromoteBlockToProcedure(bl, proc);
-			}
+			WorkItem wi = new WorkItem(wiCur, BlockType.Segment, addr);
+			qSegments.Enqueue(wi);
 		}
 
-		private void PromoteBlockToProcedure(ImageMapBlock bl, Procedure proc)
-		{
-			if (program.Procedures[bl.Address] == null)
-			{
-				Procedure procNew = Procedure.Create(null, bl.Address, new Frame(program.Architecture.WordWidth));
-				program.Procedures[bl.Address] = procNew;
-				program.CallGraph.AddProcedure(procNew);
-				bl.Procedure = procNew;
-			}
-		}
 
-		private void EnqueueUserProcedure(SerializedProcedure sp)
+		public void EnqueueUserProcedure(SerializedProcedure sp)
 		{
-			Procedure proc = EnqueueProcedure(null, Address.ToAddress(sp.Address, 16), sp.Name, program.Architecture.CreateProcessorState());
+			Procedure proc = EnqueueProcedure(null, Address.ToAddress(sp.Address, 16), sp.Name);
 			if (sp.Signature != null)
 			{
 				SignatureSerializer sser = new SignatureSerializer(program.Architecture, "stdapi");
@@ -325,36 +325,10 @@ namespace Decompiler.Scanning
 		}
 		#endregion
 
-
-		public void Parse(ICollection entrypoints)
-		{
-			Parse(entrypoints, null);
-		}
-
-		public void Parse(ICollection entrypoints, ICollection userProcedures)
+		public void ProcessQueues()
 		{
 			map.ItemSplit += new ItemSplitHandler(ImageMap_ItemSplit);
 			map.ItemCoincides += new ItemSplitHandler(ImageMap_ItemCoincides);
-
-			// Add one mega item that covers the entire address space.
-
-			map.AddItem(program.Image.BaseAddress, new ImageMapItem(program.Image.Bytes.Length));
-
-			// Seed the worklists with all the entry points.
-
-			foreach (EntryPoint ep in entrypoints)
-			{
-				program.AddEntryPoint(ep);
-				EnqueueStartAddress(ep);
-			}
-
-			if (userProcedures != null)
-			{
-				foreach (SerializedProcedure sp in userProcedures)
-				{
-					EnqueueUserProcedure(sp);
-				}
-			}
 
 			while (ProcessItem())
 				;
@@ -435,7 +409,7 @@ namespace Decompiler.Scanning
 				if (program.Image.IsValidAddress(addrNext))
 				{
 					// Can't determine the size of the table, but surely it has one entry?
-					program.Image.Map.AddItem(addrNext, new ImageMapItem());
+					map.AddItem(addrNext, new ImageMapItem());
 				}
 				return;
 			}
@@ -455,7 +429,7 @@ namespace Decompiler.Scanning
 				}
 			}
 			vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);	
-			program.Image.Map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
+			map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
 
 		}
 
@@ -500,6 +474,18 @@ namespace Decompiler.Scanning
 			return false;
 		}
 
+		private void PromoteBlockToProcedure(ImageMapBlock bl, Procedure proc)
+		{
+			if (program.Procedures[bl.Address] == null)
+			{
+				Procedure procNew = Procedure.Create(null, bl.Address, new Frame(program.Architecture.WordWidth));
+				program.Procedures[bl.Address] = procNew;
+				program.CallGraph.AddProcedure(procNew);
+				bl.Procedure = procNew;
+			}
+		}
+
+
 		public SortedList SystemCalls
 		{
 			get { return syscalls; }
@@ -528,7 +514,7 @@ namespace Decompiler.Scanning
 		{
 			if (e.ItemOld.GetType() == typeof (ImageMapItem))
 			{
-				program.Image.Map.Items[e.ItemOld.Address] = e.ItemNew;
+				map.Items[e.ItemOld.Address] = e.ItemNew;
 				e.ItemNew.Size = e.ItemOld.Size;
 			}
 		}

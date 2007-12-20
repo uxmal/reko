@@ -222,7 +222,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			Procedure proc = m.Procedure;
 			proc.RenumberBlocks();
-			prog.Procedures.Add(proc,  proc);
+			prog.Procedures.Add(new Address(0x10000),  proc);
 			ProgramDataFlow flow = new ProgramDataFlow(prog);
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
 			trf.Compute();

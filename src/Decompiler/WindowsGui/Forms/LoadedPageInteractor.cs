@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using System;
 using System.Collections;
@@ -30,13 +31,14 @@ namespace Decompiler.WindowsGui.Forms
 		private LoadedPage pageLoaded;
 		private Hashtable mpCmdidToCommand;
 
-		public LoadedPageInteractor(LoadedPage page, MainFormInteractor mi) : base(page, mi)
+		public LoadedPageInteractor(LoadedPage page, DecompilerMenus dm, MainFormInteractor mi) : base(page, mi)
 		{
 			this.pageLoaded = page;
 			mpCmdidToCommand = new Hashtable();
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned);
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewFindFragments);
+			pageLoaded.MemoryControl.ContextMenu = dm.GetContextMenu(MenuIds.CtxMemoryControl);
 		}
 
 		protected MenuCommand AddCommand(ref Guid cmdSet, int cmdId)
@@ -48,7 +50,7 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void BrowserItemSelected()
 		{
-			ImageMapSegment segment = (ImageMapSegment) MainForm.BrowserTree.SelectedNode.Tag;
+			ImageMapSegment segment = (ImageMapSegment) MainForm.BrowserList.FocusedItem.Tag;
 			pageLoaded.MemoryControl.TopAddress = segment.Address;
 			pageLoaded.MemoryControl.SelectedAddress = segment.Address;
 		}
@@ -61,33 +63,67 @@ namespace Decompiler.WindowsGui.Forms
 				{
 				case CmdIds.BrowserItemSelected:
 					BrowserItemSelected(); return true;
+				case CmdIds.ViewGoToAddress:
+					GotoAddress(); return true;
+				case CmdIds.ActionMarkProcedure:
+					MarkAndScanProcedure(); return true;
 				}
 			}
 			return base.Execute(ref cmdSet, cmdId);
 		}
 
 
-		public override void OnPageEntered(object sender, EventArgs e)
+		public void GotoAddress()
+		{
+			using (GotoDialog dlg = new GotoDialog())
+			{
+				GotoDialogInteractor i = new GotoDialogInteractor(dlg);
+				if (dlg.ShowDialog(MainForm) == DialogResult.OK)
+				{
+					pageLoaded.MemoryControl.SelectedAddress = i.Address;
+					pageLoaded.MemoryControl.TopAddress = i.Address;
+				}
+			}
+		}
+
+		public void Initialize()
 		{
 			pageLoaded.Architecture = MainInteractor.Program.Architecture;
 			pageLoaded.MemoryControl.ProgramImage = MainInteractor.Program.Image;
 			pageLoaded.Disassembly.Text = "";
 
-			MainForm.BrowserTree.Visible = true;
-			MainForm.BrowserTree.Enabled = true;
-			MainForm.BrowserList.Visible = false; 
+			MainForm.BrowserList.Visible = true;
+			MainForm.BrowserList.Enabled = true;
+			MainForm.BrowserTree.Visible = false; 
 			PopulateBrowser();
+		}
+
+		public void MarkAndScanProcedure()
+		{
+			Address addr = pageLoaded.MemoryControl.SelectedAddress;
+			if (addr != null)
+			{
+				MainInteractor.Decompiler.ScanProcedure(addr);
+				SerializedProcedure userp = new SerializedProcedure();
+				userp.Address = addr.ToString();
+				MainInteractor.Decompiler.Project.UserProcedures.Add(userp);
+				pageLoaded.MemoryControl.Invalidate();
+			}
+		}
+
+		public override void OnPageEntered(object sender, EventArgs e)
+		{
 			base.OnPageEntered(sender, e);
 		}
 
 		public void PopulateBrowser()
 		{
-			MainForm.BrowserTree.Nodes.Clear();
+			MainForm.BrowserList.Items.Clear();
 			foreach (ImageMapSegment seg in MainInteractor.Program.Image.Map.Segments.Values)
 			{
-				TreeNode node = new TreeNode(seg.Name);
+				ListViewItem node = new ListViewItem(seg.Name);
 				node.Tag = seg;
-				MainForm.BrowserTree.Nodes.Add(node);
+				MainForm.BrowserList.Items.Add(node);
 			}
 		}
 

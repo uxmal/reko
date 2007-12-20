@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			prog.Image = asm.AssembleFragment(prog, baseAddress, code);
 			DoRewriteCore();
-			return prog.DfsProcedures[0];
+			return prog.Procedures[0];
 		}
 
 		private void DoRewriteCore()
@@ -72,9 +72,16 @@ namespace Decompiler.UnitTests.Intel
 				: null;
 			scanner = new Scanner(prog, null);
 			EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
-			ArrayList eps = new ArrayList();
-			eps.Add(ep);
-			scanner.Parse(eps, project != null ? project.UserProcedures : null);
+			prog.AddEntryPoint(ep);
+			scanner.EnqueueEntryPoint(ep);
+			if (project != null)
+			{
+				foreach (SerializedProcedure sp in  project.UserProcedures)
+				{
+					scanner.EnqueueUserProcedure(sp);
+				}
+			}
+			scanner.ProcessQueues();
 			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerHost(), scanner.SystemCalls, scanner.VectorUses);
 			rw.RewriteProgram();
 		}
@@ -104,17 +111,16 @@ namespace Decompiler.UnitTests.Intel
 	ret
 ");
 
-			Assert.IsTrue(prog.Procedures.Count == 1);
-			Assert.IsTrue(prog.DfsProcedures.Count == 1);
-			Procedure proc = prog.DfsProcedures[0];
-			Assert.IsTrue(proc.RpoBlocks.Count == 3);		// Entry, code, Exit
+			Assert.AreEqual(1, prog.Procedures.Count );
+			Procedure proc = prog.Procedures[0];
+			Assert.AreEqual(3, proc.RpoBlocks.Count);		// Entry, code, Exit
 
 			Block block = proc.RpoBlocks[0].Succ[0];
-			Assert.IsTrue(block.Statements.Count == 5);
+			Assert.AreEqual(5, block.Statements.Count);
 			Assignment instr1 = (Assignment) block.Statements[0].Instruction;
 			Assert.IsTrue(block.Statements[1].Instruction is Assignment);
 
-			Assert.IsTrue(block.Succ[0] == proc.ExitBlock);
+			Assert.AreSame(block.Succ[0], proc.ExitBlock);
 		}
 
 		[Test]
@@ -141,7 +147,7 @@ join:
 		public void RwDeadConditionals()
 		{
 			DoRewriteFile("Fragments/small_loop.asm");
-			Procedure proc = prog.DfsProcedures[0];
+			Procedure proc = prog.Procedures[0];
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwDeadConditionals.txt"))
 			{
 				proc.Write(true, fut.TextWriter);
@@ -154,7 +160,7 @@ join:
 		public void RwPseudoProcs()
 		{
 			DoRewriteFile("Fragments/pseudoprocs.asm");
-			Procedure proc = prog.DfsProcedures[0];
+			Procedure proc = prog.Procedures[0];
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwPseudoProcs.txt"))
 			{
 				proc.Write(true, fut.TextWriter);
@@ -234,7 +240,7 @@ join:
 			DoRewriteFile(sourceFile);
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				foreach (Procedure proc in prog.DfsProcedures)
+				foreach (Procedure proc in prog.Procedures.Values)
 				{
 					proc.Write(true, fut.TextWriter);
 					fut.TextWriter.WriteLine();

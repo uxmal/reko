@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
@@ -100,7 +100,7 @@ namespace Decompiler.UnitTests.Analysis
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
 			Build(prog);
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				proc.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine();

@@ -32,7 +32,6 @@ namespace Decompiler.Loading
 	{
 		private Program prog;
 		private ArrayList entryPoints;
-		private ProgramImage image;
 
 		public Loader(Program prog)
 		{
@@ -60,11 +59,6 @@ namespace Decompiler.Loading
 			get { return entryPoints; }
 		}
 
-		public ProgramImage Image
-		{
-			get { return image; }
-		}
-
 		/// <summary>
 		/// Loads the <paramref>binaryFile</paramref> into memory without any 
 		/// relocation or other processing. The beginning of the
@@ -78,7 +72,6 @@ namespace Decompiler.Loading
 			prog.Image = new ProgramImage(addrBase, rawBytes);
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			prog.Platform = new Arch.Intel.MsDos.MsdosPlatform(prog.Architecture);
-			prog.Image = Image;
 			entryPoints.Add(new EntryPoint(addrBase + 0x0100, prog.Architecture.CreateProcessorState()));
 		}
 

@@ -10,6 +10,8 @@
 	<menu id="ActionMenu" cmdSet="Decompiler" container="GrpMain">_Actions</menu>
 	<menu id="HelpMenu" cmdSet="Decompiler" container="GrpMain">_Help</menu>
 	
+	<menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Decompiler"/>
+	
 	<!-- Groups ========================================================== -->
 	
 	<group id="GrpMain" cmdSet="Decompiler" container="MainMenu"/>
@@ -20,22 +22,36 @@
 	
 	<group id="GrpViewScanned" cmdSet="Decompiler" container="ViewMenu"/>
 	
-	<group id="GrpActionsScanned" cmdset="Decompiler" container="ActionMenu"/>
+	<group id="GrpActions" cmdSet="Decompiler" container="ActionMenu"/>
+	<group id="GrpActionsScanned" cmdSet="Decompiler" container="ActionMenu"/>
 	
 	<group id="GrpHelp" cmdSet="Decompiler" container="HelpMenu" />
+	
+	<group id="GrpMemoryControl" cmdSet="Decompiler" container="CtxMemoryControl"/>
 	
 	<!-- Commands ========================================================== -->
 	
 	<cmd id="FileOpen" cmdSet="Decompiler" container="GrpFile">_Open</cmd>
+	<cmd id="FileSave" cmdSet="Decompiler" container="GrpFile">_Save</cmd>
 	<cmd id="FileMru"  cmdSet="Decompiler" container="GrpFileMru" dynamic-item-id="2200"/>
 	<cmd id="FileExit" cmdSet="Decompiler" container="GrpFileEnd">E_xit</cmd>
 	
+	<cmd id="ViewGoToAddress" cmdSet="Decompiler" container="GrpViewScanned">_Go to Address...</cmd>
 	<cmd id="ViewShowAllFragments" cmdSet="Decompiler" container="GrpViewScanned">Show _all fragments</cmd>
 	<cmd id="ViewShowUnscanned" cmdSet="Decompiler" container="GrpViewScanned">Show _unscanned fragments</cmd>
 	<cmd id="ViewFindFragments" cmdSet="Decompiler" container="GrpViewScanned">_Find fragments...</cmd>
 	
-	<cmd id="ActionMarkProcedure" cmdSet="Decompiler" container="GrpActionsScanned">Mark _Procedure Entry</cmd>
+	<cmd id="ActionNextPhase" cmdSet="Decompiler" container="GrpActions">_Next Phase</cmd>
+	<cmd id="ActionFinishDecompilation" cmdSet="Decompiler" container="GrpActions">_Finish Decompilation</cmd>
+	
+	<cmd id="ActionMarkProcedure" cmdSet="Decompiler" container="ActionMarkProcedure">Mark _Procedure Entry</cmd>
+
 	<cmd id="BrowserItemSelected" cmdSet="Decompiler"/>
 	
+	<!-- Placements ======================================================= -->
+	
+	<placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
+	<placement item="ViewGoToAddress" container="GrpMemoryControl"/>
+	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
 </menu-definitions>
  

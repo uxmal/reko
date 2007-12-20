@@ -222,6 +222,12 @@ namespace Decompiler
 			}
 		}
 
+		public void ScanProcedure(Address addr)
+		{
+			scanner.EnqueueProcedure(null, addr, null);
+			scanner.ProcessQueues();
+		}
+
 		/// <summary>
 		/// Generates the control flow graph and finds executable code.
 		/// </summary>
@@ -234,7 +240,15 @@ namespace Decompiler
 				scanner = new Scanner(program, null);
 				if (loader != null)
 				{
-					scanner.Parse(loader.EntryPoints, project.UserProcedures);
+					foreach (EntryPoint ep in loader.EntryPoints)
+					{
+						scanner.EnqueueEntryPoint(ep);
+					}
+					foreach (SerializedProcedure sp in project.UserProcedures)
+					{
+						scanner.EnqueueUserProcedure(sp);
+					}
+					scanner.ProcessQueues();
 					host.ProgramScanned();
 				}
 			}
@@ -249,6 +263,7 @@ namespace Decompiler
 			}
 		}
 
+
 		public void StructureProgram()
 		{
 			if (project.Output.ControlStructure)
@@ -260,7 +275,7 @@ namespace Decompiler
 				// Since procedures are now independent of each other, this analysis
 				// is done one procedure at a time.
 
-				foreach (Procedure proc in program.DfsProcedures)
+				foreach (Procedure proc in program.Procedures.Values)
 				{
 					StructureAnalysis sa = new StructureAnalysis(proc);
 					sa.FindStructures();

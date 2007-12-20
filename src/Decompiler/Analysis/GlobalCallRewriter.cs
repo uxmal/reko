@@ -123,7 +123,7 @@ namespace Decompiler.Analysis
 		public static void Rewrite(Program prog, ProgramDataFlow summaries)
 		{
 			GlobalCallRewriter crw = new GlobalCallRewriter(prog, summaries);
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = (ProcedureFlow) crw.mpprocflow[proc];
 				crw.AdjustLiveOut(flow);
@@ -131,7 +131,7 @@ namespace Decompiler.Analysis
 				crw.AddUseInstructionsForOutArguments(proc);
 			}
 
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				crw.RewriteCalls(proc);
 				crw.RewriteReturns(proc);
@@ -176,7 +176,7 @@ namespace Decompiler.Analysis
 			Frame frame = proc.Frame;
 			if (flow.grfLiveOut != 0)
 			{
-				sb.AddFlagGroupReturnValue(flow.grfLiveOut, frame, prog.Architecture);
+				sb.AddFlagGroupReturnValue(flow.grfLiveOut, frame);
 			}
 
 			BitSet mayUse = flow.MayUse - prog.Architecture.ImplicitParameterRegisters;

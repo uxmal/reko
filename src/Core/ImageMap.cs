@@ -38,11 +38,6 @@ namespace Decompiler.Core
 		public event ItemSplitHandler ItemCoincides;
 		public event SegmentSplitHandler SegmentSplit;
 
-		public ImageMap()
-		{
-			Init();
-		}
-
 		public ImageMap(Address addrBase, int imageSize)
 		{
 			Init();

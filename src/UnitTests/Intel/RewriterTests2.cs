@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Intel
 			DoRewriteFile("Fragments/switch.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwSwitch.txt"))
 			{
-				prog.DfsProcedures[0].Write(false, fut.TextWriter);
+				prog.Procedures[0].Write(false, fut.TextWriter);
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Intel
 			DoRewriteFile("Fragments/memoperations.asm");
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwMemOperations.txt"))
 			{
-				prog.DfsProcedures[0].Write(false, fut.TextWriter);
+				prog.Procedures[0].Write(false, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Intel
 			DoRewriteFile(sourceFile);
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				foreach (Procedure proc in prog.DfsProcedures)
+				foreach (Procedure proc in prog.Procedures.Values)
 					proc.Write(true, fut.TextWriter);
 
 				fut.AssertFilesEqual();

@@ -40,6 +40,7 @@ namespace Decompiler.WindowsGui.Forms
 		public const int ViewMenu = 3;
 		public const int ActionMenu = 4;
 		public const int HelpMenu = 5;
+		public const int CtxMemoryControl = 6;
 	}
 	
 	public class GroupIds
@@ -49,19 +50,25 @@ namespace Decompiler.WindowsGui.Forms
 		public const int GrpFileMru = 3 + 1000;
 		public const int GrpFileEnd = 4 + 1000;
 		public const int GrpViewScanned = 5 + 1000;
-		public const int GrpActionsScanned = 6 + 1000;
-		public const int GrpHelp = 7 + 1000;
+		public const int GrpActions = 6 + 1000;
+		public const int GrpActionsScanned = 7 + 1000;
+		public const int GrpHelp = 8 + 1000;
+		public const int GrpMemoryControl = 9 + 1000;
 	}
 	
 	public class CmdIds
 	{
 		public const int FileOpen = 1 + 2000;
-		public const int FileExit = 2 + 2000;
-		public const int ViewShowAllFragments = 3 + 2000;
-		public const int ViewShowUnscanned = 4 + 2000;
-		public const int ViewFindFragments = 5 + 2000;
-		public const int ActionMarkProcedure = 6 + 2000;
-		public const int BrowserItemSelected = 7 + 2000;
+		public const int FileSave = 2 + 2000;
+		public const int FileExit = 3 + 2000;
+		public const int ViewGoToAddress = 4 + 2000;
+		public const int ViewShowAllFragments = 5 + 2000;
+		public const int ViewShowUnscanned = 6 + 2000;
+		public const int ViewFindFragments = 7 + 2000;
+		public const int ActionNextPhase = 8 + 2000;
+		public const int ActionFinishDecompilation = 9 + 2000;
+		public const int ActionMarkProcedure = 10 + 2000;
+		public const int BrowserItemSelected = 11 + 2000;
 		public const int FileMru = 2200;
 	}
 

@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Dumper CreateDumper()
 		{
-			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateDumper implementation");
+			return new Dumper();
 		}
 
 		public MachineFlags GetFlagGroup(uint grf)
@@ -135,7 +135,7 @@ namespace Decompiler.UnitTests.Mocks
 		public ProcessorState CreateProcessorState()
 		{
 			// TODO:  Add ArchitectureMock.CreateProcessorState implementation
-			return null;
+			return new FakeProcessorState();
 		}
 
 		public BitSet CreateRegisterBitset()
@@ -172,6 +172,27 @@ namespace Decompiler.UnitTests.Mocks
 			return (bits[Number])
 				? this
 				: null;
+		}
+	}
+
+	public class FakeProcessorState : ProcessorState
+	{
+		public override object Clone()
+		{
+			return new FakeProcessorState();
+		}
+
+		public override Value Get(MachineRegister r)
+		{
+			return Value.Invalid;
+		}
+
+		public override void Set(MachineRegister r, Value v)
+		{
+		}
+
+		public override void SetInstructionPointer(Address addr)
+		{
 		}
 	}
 }

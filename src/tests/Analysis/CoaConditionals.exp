@@ -168,7 +168,7 @@ SCZO_8: orig: SCZO, uses: {return cond(wArg00)}
 C_9: orig: C
 bp_10: orig: bp
 // fn0C00_0069
-byte fn0C00_0069(word16 wArg00)
+bool fn0C00_0069(word16 wArg00)
 fn0C00_0069_entry:		// block 0, pred:
 	def wArg00
 	// succ:  1

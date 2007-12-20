@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
-			foreach (Procedure proc in prog.DfsProcedures)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				DominatorGraph gr = new DominatorGraph(proc);
 				Aliases alias = new Aliases(proc, prog.Architecture);

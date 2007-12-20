@@ -97,16 +97,15 @@ namespace Decompiler.UnitTests.Intel
 			prog.Image = asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(sourceFile), null);
 			Scanner scan = new Scanner(prog, null);
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
-			ArrayList eps = new ArrayList();
-			eps.Add(ep);
-			scan.EnqueueStartAddress(ep);
-			scan.Parse(eps);
+			prog.AddEntryPoint(ep);
+			scan.EnqueueEntryPoint(ep);
+			scan.ProcessQueues();
 			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				foreach (Procedure proc in prog.DfsProcedures)
+				foreach (Procedure proc in prog.Procedures.Values)
 				{
 					proc.Write(true, fut.TextWriter);
 					fut.TextWriter.WriteLine();

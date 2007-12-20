@@ -43,12 +43,6 @@ namespace Decompiler.Core
 			args = new ArrayList();
 		}
 
-		[Obsolete]
-		public void AddFlagGroupReturnValue(uint grf, Frame frame, IProcessorArchitecture arch)
-		{
-			ret = frame.EnsureFlagGroup(grf, arch.GrfToString(grf), PrimitiveType.Byte);
-		}
-
 		private bool SingleBitSet(uint w)
 		{
 			return ((w & (w - 1)) == 0);

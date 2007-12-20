@@ -64,7 +64,11 @@ namespace Decompiler.UnitTests.Scanning
 			Loader ldr = new Loader(prog);
 			ldr.Assemble(FileUnitTester.MapTestPath(sourceFile), prog.Architecture, addr);
 			Scanner scan = new Scanner(prog, null);
-			scan.Parse(ldr.EntryPoints);
+			foreach (EntryPoint ep in ldr.EntryPoints)
+			{
+				scan.EnqueueEntryPoint(ep);
+			}
+			scan.ProcessQueues();
 			RewriterHost host = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			host.RewriteProgram();
 			return prog;
@@ -75,7 +79,7 @@ namespace Decompiler.UnitTests.Scanning
 			Program prog = AssembleFile(sourceFile, addr);
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				foreach (Procedure proc in prog.DfsProcedures)
+				foreach (Procedure proc in prog.Procedures.Values)
 				{
 					fut.TextWriter.WriteLine("= Before ==========");
 					proc.Write(true, fut.TextWriter);
