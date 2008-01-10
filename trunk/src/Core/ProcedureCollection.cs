@@ -18,33 +18,14 @@
 
 using System;
 using System.Collections;
+
 namespace Decompiler.Core
 {
-	[Obsolete]
-	public class ProcedureCollection : CollectionBase
-	{
-		public int Add(Procedure proc)
-		{
-			return InnerList.Add(proc);
-		}
-
-		public Procedure this[int i]
-		{
-			get { return (Procedure) InnerList[i]; }
-			set { InnerList[i] = value; }
-		}
-
-		public void Remove(Procedure proc)
-		{
-			InnerList.Remove(proc);
-		}
-	}
-
-	public class ProcedureCollection2 : IDictionary
+	public class ProcedureCollection : IDictionary
 	{
 		private SortedList innerList;
 
-		public ProcedureCollection2()
+		public ProcedureCollection()
 		{
 			innerList = new SortedList();
 		}

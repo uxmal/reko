@@ -161,6 +161,7 @@ namespace Decompiler.WindowsGui.Forms
 		#endregion
 
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public IProcessorArchitecture Architecture
 		{
 			get { return arch; }

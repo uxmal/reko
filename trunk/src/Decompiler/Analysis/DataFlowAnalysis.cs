@@ -163,6 +163,7 @@ namespace Decompiler.Analysis
 		{
 			host.WriteDiagnostic(Diagnostic.Info, "Finding trashed registers");
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
+			trf.DecompilerHost = host;
 			trf.Compute();
 			host.WriteDiagnostic(Diagnostic.Info, "Computing register liveness");
 			RegisterLiveness rl = RegisterLiveness.Compute(prog, flow);

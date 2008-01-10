@@ -40,7 +40,7 @@ namespace Decompiler.Loading
 
 		public PkLiteUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
 		{
-			int pkLiteHdrOffset = exe.e_cparhdr * 0x10;
+			int pkLiteHdrOffset = exe.e_cparHeader * 0x10;
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
 				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}", pkLiteHdrOffset));

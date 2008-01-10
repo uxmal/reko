@@ -67,13 +67,8 @@ namespace Decompiler.UnitTests.Core
 
 			g.AddEdge(s41, p4);		// recursion!
 
-			g.RenumberProcedures();
-
 			Assert.IsTrue(g.Callees(p1).Count == 3);
 			Assert.IsTrue(g.CallerStatements(p4).Count == 3);
-			Assert.IsTrue(p1.RpoNumber == 0);
-			Assert.IsTrue(p4.RpoNumber == 3);
-			Assert.IsTrue(p2.RpoNumber == 1);
 		}
 	}
 }

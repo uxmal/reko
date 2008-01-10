@@ -30,6 +30,10 @@ namespace Decompiler.Core
 
 		public AddressRange(Address addrBegin, Address addrEnd)
 		{
+			if (addrBegin == null)
+				throw new ArgumentNullException("addrBegin");
+			if (addrEnd == null)
+				throw new ArgumentNullException("addrEnd");
 			this.addrBegin = addrBegin;
 			this.addrEnd = addrEnd;
 		}

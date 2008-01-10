@@ -43,8 +43,8 @@ namespace Decompiler.Loading
 
 		public ExePackLoader(ExeImageLoader exe, byte [] imgRaw) : base(imgRaw)
 		{
-			this.exeHdrSize = (uint) (exe.e_cparhdr * 0x10U);
-			this.hdrOffset = (uint) (exe.e_cparhdr + exe.e_cs) * 0x10U;
+			this.exeHdrSize = (uint) (exe.e_cparHeader * 0x10U);
+			this.hdrOffset = (uint) (exe.e_cparHeader + exe.e_cs) * 0x10U;
 			ImageReader rdr = new ImageReader(RawImage, hdrOffset);
 			this.ip = rdr.ReadUShort();
 			this.cs = rdr.ReadUShort();
@@ -57,7 +57,7 @@ namespace Decompiler.Loading
 
 		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
 		{
-			int offset = (exe.e_cparhdr + exe.e_cs) * 0x10 + exe.e_ip;
+			int offset = (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
 			return CompareEqual(rawImg, offset, signature, signature.Length);
 		}
 

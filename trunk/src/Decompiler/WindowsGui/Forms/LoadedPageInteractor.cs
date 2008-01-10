@@ -31,7 +31,7 @@ namespace Decompiler.WindowsGui.Forms
 		private LoadedPage pageLoaded;
 		private Hashtable mpCmdidToCommand;
 
-		public LoadedPageInteractor(LoadedPage page, DecompilerMenus dm, MainFormInteractor mi) : base(page, mi)
+		public LoadedPageInteractor(LoadedPage page, MainForm form, DecompilerMenus dm) : base(page, form)
 		{
 			this.pageLoaded = page;
 			mpCmdidToCommand = new Hashtable();
@@ -86,10 +86,23 @@ namespace Decompiler.WindowsGui.Forms
 			}
 		}
 
-		public void Initialize()
+		public void MarkAndScanProcedure()
 		{
-			pageLoaded.Architecture = MainInteractor.Program.Architecture;
-			pageLoaded.MemoryControl.ProgramImage = MainInteractor.Program.Image;
+			Address addr = pageLoaded.MemoryControl.SelectedAddress;
+			if (addr != null)
+			{
+				Decompiler.ScanProcedure(addr);
+				SerializedProcedure userp = new SerializedProcedure();
+				userp.Address = addr.ToString();
+				Decompiler.Project.UserProcedures.Add(userp);
+				pageLoaded.MemoryControl.Invalidate();
+			}
+		}
+
+		public override void PopulateControls()
+		{
+			pageLoaded.Architecture = Decompiler.Program.Architecture;
+			pageLoaded.MemoryControl.ProgramImage = Decompiler.Program.Image;
 			pageLoaded.Disassembly.Text = "";
 
 			MainForm.BrowserList.Visible = true;
@@ -98,28 +111,10 @@ namespace Decompiler.WindowsGui.Forms
 			PopulateBrowser();
 		}
 
-		public void MarkAndScanProcedure()
-		{
-			Address addr = pageLoaded.MemoryControl.SelectedAddress;
-			if (addr != null)
-			{
-				MainInteractor.Decompiler.ScanProcedure(addr);
-				SerializedProcedure userp = new SerializedProcedure();
-				userp.Address = addr.ToString();
-				MainInteractor.Decompiler.Project.UserProcedures.Add(userp);
-				pageLoaded.MemoryControl.Invalidate();
-			}
-		}
-
-		public override void OnPageEntered(object sender, EventArgs e)
-		{
-			base.OnPageEntered(sender, e);
-		}
-
 		public void PopulateBrowser()
 		{
 			MainForm.BrowserList.Items.Clear();
-			foreach (ImageMapSegment seg in MainInteractor.Program.Image.Map.Segments.Values)
+			foreach (ImageMapSegment seg in Decompiler.Program.Image.Map.Segments.Values)
 			{
 				ListViewItem node = new ListViewItem(seg.Name);
 				node.Tag = seg;
@@ -139,6 +134,5 @@ namespace Decompiler.WindowsGui.Forms
 			}
 			return false;
 		}
-
 	}
 }

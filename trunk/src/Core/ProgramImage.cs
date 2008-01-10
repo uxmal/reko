@@ -118,17 +118,6 @@ namespace Decompiler.Core
 			get { return map; }
 		}
 
-		//$OBSOLETE? these two do absolutely no work.
-		public byte ReadByte(int off)
-		{
-			return abImage[off];
-		}
-
-		public static byte ReadByte(byte [] abImage, int off)
-		{
-			return abImage[off];
-		}
-
 		public Constant ReadDouble(int off)
 		{
 			return ReadDouble(abImage, off);

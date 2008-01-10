@@ -29,13 +29,10 @@ namespace Decompiler.Core
 	/// </summary>
 	public class CallGraph
 	{
-		private Procedure [] postOrderProcs;
-		private Procedure [] rpoProcs;
 		private ArrayList entryPoints = new ArrayList();	
 		private Hashtable procedures = new Hashtable();
 		private DirectedGraph graphProcs = new DirectedGraph();
 		private DirectedGraph graphStms = new DirectedGraph();
-		private int invdfs;
 
 		public void AddEdge(Statement stmCaller, Procedure callee)
 		{
@@ -117,61 +114,12 @@ namespace Decompiler.Core
 			}
 
 			#endregion
-
 		}
 
 
 		public ArrayList EntryPoints
 		{
 			get { return entryPoints; }
-		}
-
-		public ICollection PostOrderProcedures
-		{
-			get { return postOrderProcs; }
-		}
-
-		private void Renumber(Procedure n, Hashtable visited)
-		{
-			if (!visited.Contains(n))
-			{
-				visited[n] = n;
-				ArrayList callees = new ArrayList();
-				foreach (Procedure proc in graphProcs.Successors(n))
-				{
-					callees.Add(proc);
-				}
-				int c = callees.Count;
-				for (int i = c - 1; i >= 0; --i)
-				{
-					Procedure callee = (Procedure) callees[i];
-					Renumber(callee, visited);
-				}
-				
-				n.PostOrderNumber = invdfs;
-				postOrderProcs[invdfs] = n;
-				++invdfs;
-				n.RpoNumber = graphProcs.Nodes.Count - invdfs;
-				rpoProcs[n.RpoNumber] = n;
-			}
-		}
-
-		public void RenumberProcedures()
-		{
-			rpoProcs = new Procedure[graphProcs.Nodes.Count];
-			postOrderProcs = new Procedure[graphProcs.Nodes.Count];
-
-			Hashtable visited = new Hashtable(graphProcs.Nodes.Count);
-			invdfs = 0;
-			foreach (Procedure p in entryPoints)
-			{
-				Renumber(p, visited);
-			}
-
-			foreach (Procedure p in graphProcs.Nodes)
-			{
-				Renumber(p, visited);
-			}
 		}
 	}
 }

@@ -36,16 +36,10 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		public event EventHandler PhasePageChanged;
 
-		private MainFormInteractor interactor;
 		private PhasePage phasePage;
 
 		private InitialPhase initialPhase;
 		private LoadedPhase loadingPhase;
-		private ScannedPhase scannedPhase;
-		private MachineCodeRewrittenPhase rewritingPhase;
-		private DataFlowPhase dataflowPhase;
-		private TypeReconstructedPhase typeReconstructionPhase;
-		private CodeStructuredPhase codeStructuringPhase;
 
 		private const int ImageIndexSegment = 0;
 		private const int ImageIndexProcedureBlock = 1;
@@ -83,11 +77,13 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.Panel panelRhs;
 		private Decompiler.WindowsGui.Forms.LoadedPage pageLoaded;
 		private Decompiler.WindowsGui.Forms.InitialPage pageInitial;
+		private Decompiler.WindowsGui.Forms.FinalPage pageFinal;
 		private System.Windows.Forms.Panel panelLhs;
 		private System.Windows.Forms.ListView listBrowser;
 		private System.Windows.Forms.ComboBox ddlBrowserFilter;
 		private System.Windows.Forms.TreeView treeBrowser;
 		private System.Windows.Forms.ColumnHeader listBrowserItemName;
+		private System.Windows.Forms.ProgressBar progressBar1;
 		private System.ComponentModel.IContainer components;
 
 		public MainForm()
@@ -155,12 +151,14 @@ namespace Decompiler.WindowsGui.Forms
 			this.listBrowserItemName = new System.Windows.Forms.ColumnHeader();
 			this.ddlBrowserFilter = new System.Windows.Forms.ComboBox();
 			this.treeBrowser = new System.Windows.Forms.TreeView();
+			this.pageFinal = new Decompiler.WindowsGui.Forms.FinalPage();
 			this.panelBottom = new System.Windows.Forms.Panel();
 			this.statusBar = new System.Windows.Forms.StatusBar();
 			this.statusBarPanel1 = new System.Windows.Forms.StatusBarPanel();
 			this.statusBarPanel2 = new System.Windows.Forms.StatusBarPanel();
 			this.statusBarPanel3 = new System.Windows.Forms.StatusBarPanel();
 			this.splitter1 = new System.Windows.Forms.Splitter();
+			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.tabsOutput.SuspendLayout();
 			this.tabDiagnostics.SuspendLayout();
 			this.tabDiscoveries.SuspendLayout();
@@ -200,9 +198,8 @@ namespace Decompiler.WindowsGui.Forms
 			this.toolBar.Location = new System.Drawing.Point(0, 0);
 			this.toolBar.Name = "toolBar";
 			this.toolBar.ShowToolTips = true;
-			this.toolBar.Size = new System.Drawing.Size(784, 28);
+			this.toolBar.Size = new System.Drawing.Size(680, 28);
 			this.toolBar.TabIndex = 19;
-			this.toolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.toolBar_ButtonClick);
 			// 
 			// tbtnOpen
 			// 
@@ -235,7 +232,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabsOutput.Location = new System.Drawing.Point(0, 0);
 			this.tabsOutput.Name = "tabsOutput";
 			this.tabsOutput.SelectedIndex = 0;
-			this.tabsOutput.Size = new System.Drawing.Size(784, 100);
+			this.tabsOutput.Size = new System.Drawing.Size(680, 100);
 			this.tabsOutput.TabIndex = 21;
 			// 
 			// tabDiagnostics
@@ -243,7 +240,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabDiagnostics.Controls.Add(this.listDiagnostics);
 			this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
 			this.tabDiagnostics.Name = "tabDiagnostics";
-			this.tabDiagnostics.Size = new System.Drawing.Size(776, 74);
+			this.tabDiagnostics.Size = new System.Drawing.Size(672, 74);
 			this.tabDiagnostics.TabIndex = 0;
 			this.tabDiagnostics.Text = "Diagnostics";
 			this.tabDiagnostics.ToolTipText = "Displays errors and warnings incurred during decompilation";
@@ -255,7 +252,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listDiagnostics.Location = new System.Drawing.Point(0, 0);
 			this.listDiagnostics.Name = "listDiagnostics";
-			this.listDiagnostics.Size = new System.Drawing.Size(776, 74);
+			this.listDiagnostics.Size = new System.Drawing.Size(672, 74);
 			this.listDiagnostics.TabIndex = 2;
 			this.listDiagnostics.View = System.Windows.Forms.View.Details;
 			// 
@@ -322,14 +319,14 @@ namespace Decompiler.WindowsGui.Forms
 			this.panelTop.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panelTop.Location = new System.Drawing.Point(0, 28);
 			this.panelTop.Name = "panelTop";
-			this.panelTop.Size = new System.Drawing.Size(784, 390);
+			this.panelTop.Size = new System.Drawing.Size(680, 387);
 			this.panelTop.TabIndex = 23;
 			// 
 			// splitterTop
 			// 
 			this.splitterTop.Location = new System.Drawing.Point(256, 0);
 			this.splitterTop.Name = "splitterTop";
-			this.splitterTop.Size = new System.Drawing.Size(3, 390);
+			this.splitterTop.Size = new System.Drawing.Size(3, 387);
 			this.splitterTop.TabIndex = 18;
 			this.splitterTop.TabStop = false;
 			// 
@@ -340,18 +337,17 @@ namespace Decompiler.WindowsGui.Forms
 			this.panelRhs.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panelRhs.Location = new System.Drawing.Point(256, 0);
 			this.panelRhs.Name = "panelRhs";
-			this.panelRhs.Size = new System.Drawing.Size(528, 390);
+			this.panelRhs.Size = new System.Drawing.Size(424, 387);
 			this.panelRhs.TabIndex = 22;
 			// 
 			// pageLoaded
 			// 
-			this.pageLoaded.Architecture = null;
 			this.pageLoaded.BackColor = System.Drawing.SystemColors.Control;
 			this.pageLoaded.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pageLoaded.Location = new System.Drawing.Point(0, 0);
 			this.pageLoaded.Name = "pageLoaded";
 			this.pageLoaded.ProgramImage = null;
-			this.pageLoaded.Size = new System.Drawing.Size(528, 390);
+			this.pageLoaded.Size = new System.Drawing.Size(424, 387);
 			this.pageLoaded.TabIndex = 20;
 			// 
 			// pageInitial
@@ -359,7 +355,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.pageInitial.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pageInitial.Location = new System.Drawing.Point(0, 0);
 			this.pageInitial.Name = "pageInitial";
-			this.pageInitial.Size = new System.Drawing.Size(528, 390);
+			this.pageInitial.Size = new System.Drawing.Size(424, 387);
 			this.pageInitial.TabIndex = 19;
 			// 
 			// panelLhs
@@ -374,7 +370,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.panelLhs.DockPadding.Top = 1;
 			this.panelLhs.Location = new System.Drawing.Point(0, 0);
 			this.panelLhs.Name = "panelLhs";
-			this.panelLhs.Size = new System.Drawing.Size(256, 390);
+			this.panelLhs.Size = new System.Drawing.Size(256, 387);
 			this.panelLhs.TabIndex = 23;
 			// 
 			// listBrowser
@@ -386,7 +382,7 @@ namespace Decompiler.WindowsGui.Forms
 																						  this.listBrowserItemName});
 			this.listBrowser.Location = new System.Drawing.Point(3, 32);
 			this.listBrowser.Name = "listBrowser";
-			this.listBrowser.Size = new System.Drawing.Size(253, 358);
+			this.listBrowser.Size = new System.Drawing.Size(253, 355);
 			this.listBrowser.TabIndex = 21;
 			this.listBrowser.View = System.Windows.Forms.View.Details;
 			// 
@@ -414,17 +410,26 @@ namespace Decompiler.WindowsGui.Forms
 			this.treeBrowser.Location = new System.Drawing.Point(3, 32);
 			this.treeBrowser.Name = "treeBrowser";
 			this.treeBrowser.SelectedImageIndex = -1;
-			this.treeBrowser.Size = new System.Drawing.Size(253, 358);
+			this.treeBrowser.Size = new System.Drawing.Size(253, 355);
 			this.treeBrowser.TabIndex = 16;
+			// 
+			// pageFinal
+			// 
+			this.pageFinal.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pageFinal.Location = new System.Drawing.Point(0, 0);
+			this.pageFinal.Name = "pageFinal";
+			this.pageFinal.Size = new System.Drawing.Size(312, 104);
+			this.pageFinal.TabIndex = 0;
 			// 
 			// panelBottom
 			// 
+			this.panelBottom.Controls.Add(this.progressBar1);
 			this.panelBottom.Controls.Add(this.statusBar);
 			this.panelBottom.Controls.Add(this.tabsOutput);
 			this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panelBottom.Location = new System.Drawing.Point(0, 421);
+			this.panelBottom.Location = new System.Drawing.Point(0, 418);
 			this.panelBottom.Name = "panelBottom";
-			this.panelBottom.Size = new System.Drawing.Size(784, 100);
+			this.panelBottom.Size = new System.Drawing.Size(680, 100);
 			this.panelBottom.TabIndex = 24;
 			// 
 			// statusBar
@@ -436,7 +441,7 @@ namespace Decompiler.WindowsGui.Forms
 																						 this.statusBarPanel2,
 																						 this.statusBarPanel3});
 			this.statusBar.ShowPanels = true;
-			this.statusBar.Size = new System.Drawing.Size(784, 24);
+			this.statusBar.Size = new System.Drawing.Size(680, 24);
 			this.statusBar.TabIndex = 22;
 			// 
 			// statusBarPanel1
@@ -450,22 +455,32 @@ namespace Decompiler.WindowsGui.Forms
 			// statusBarPanel3
 			// 
 			this.statusBarPanel3.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
+			this.statusBarPanel3.BorderStyle = System.Windows.Forms.StatusBarPanelBorderStyle.None;
 			this.statusBarPanel3.Text = "bar";
-			this.statusBarPanel3.Width = 268;
+			this.statusBarPanel3.Width = 164;
 			// 
 			// splitter1
 			// 
 			this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.splitter1.Location = new System.Drawing.Point(0, 418);
+			this.splitter1.Location = new System.Drawing.Point(0, 415);
 			this.splitter1.Name = "splitter1";
-			this.splitter1.Size = new System.Drawing.Size(784, 3);
+			this.splitter1.Size = new System.Drawing.Size(680, 3);
 			this.splitter1.TabIndex = 25;
 			this.splitter1.TabStop = false;
+			// 
+			// progressBar1
+			// 
+			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.progressBar1.Location = new System.Drawing.Point(502, 78);
+			this.progressBar1.Name = "progressBar1";
+			this.progressBar1.Size = new System.Drawing.Size(152, 22);
+			this.progressBar1.TabIndex = 23;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(784, 521);
+			this.ClientSize = new System.Drawing.Size(680, 518);
 			this.Controls.Add(this.panelTop);
 			this.Controls.Add(this.splitter1);
 			this.Controls.Add(this.panelBottom);
@@ -495,7 +510,6 @@ namespace Decompiler.WindowsGui.Forms
 			initialPhase = new InitialPhase(pageInitial);
 			loadingPhase = new LoadedPhase(pageLoaded);
 			initialPhase.NextPhase = loadingPhase;
-			loadingPhase.NextPhase = scannedPhase;
 		}
 
 		public void BuildToolbarButtons()
@@ -515,15 +529,15 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			//$REFACTOR: figure out where this class belongs.
 
-/*			if (dec.Program.Procedures[mi.Address] != null)
-			{
-				return MainForm.ImageIndexProcedureBlock;
-			}
-			if (mi is ImageMapBlock)
-			{
-				return MainForm.ImageIndexCodeBlock;
-			}
-			*/
+			/*			if (dec.Program.Procedures[mi.Address] != null)
+						{
+							return MainForm.ImageIndexProcedureBlock;
+						}
+						if (mi is ImageMapBlock)
+						{
+							return MainForm.ImageIndexCodeBlock;
+						}
+						*/
 			return MainForm.ImageIndexUnknown;
 		}
 
@@ -552,13 +566,19 @@ namespace Decompiler.WindowsGui.Forms
 		public PhasePage PhasePage
 		{
 			get { return phasePage; }
-			set { 
+			set 
+			{ 
 				this.phasePage = value;
 				phasePage.BringToFront();
 				ActiveControl = phasePage;
 				if (PhasePageChanged != null)
 					PhasePageChanged(this, EventArgs.Empty);
 			}
+		}
+
+		public FinalPage FinalPage
+		{
+			get { return pageFinal; }
 		}
 
 		public InitialPage InitialPage
@@ -576,6 +596,11 @@ namespace Decompiler.WindowsGui.Forms
 			get { return ofd; }
 		}
 
+		public ProgressBar ProgressBar
+		{
+			get { return progressBar1; }
+		}
+
 		public void SetStatus(string txt)
 		{
 			statusBar.Panels[1].Text = txt;
@@ -586,10 +611,9 @@ namespace Decompiler.WindowsGui.Forms
 			statusBar.Panels[0].Text = txt;
 		}
 
-		private void toolBar_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
+		public ToolBar ToolBar
 		{
-		
+			get { return this.toolBar; }
 		}
-
 	}
 }

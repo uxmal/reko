@@ -26,22 +26,19 @@ namespace Decompiler.WindowsGui.Forms
 	public class InitialPageInteractor : PhasePageInteractor
 	{
 		private InitialPage page;
-		private MainFormInteractor mainInteractor;
 
-		public InitialPageInteractor(InitialPage page, MainFormInteractor mainInteractor)
-			: base(page, mainInteractor)
+		public InitialPageInteractor(InitialPage page, MainForm form)
+			: base(page, form)
 		{
 			this.page = page;
-			this.mainInteractor = mainInteractor;
 		}
 
-		public override void OnPageEntered(object sender, EventArgs e)
+		public override void PopulateControls()
 		{
 			MainForm.BrowserFilter.Enabled = false;
 			MainForm.BrowserList.Enabled = false;
 			MainForm.BrowserTree.Enabled = false;
-
-			base.OnPageEntered (sender, e);
+			page.BringToFront();
 		}
 	}
 }

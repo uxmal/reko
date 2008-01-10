@@ -38,11 +38,10 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		private MainForm form;			//$REVIEW: in the future, this should be an interface.
 		private DecompilerDriver decompiler;
-		private DecompilerPhase initialPhase;
-		private DecompilerPhase phase;
+		private PhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
 		private LoadedPageInteractor pageLoaded;
-		private ICommandTarget cmdTarget;
+		private FinalPageInteractor pageFinal;
 		private MruList mru;
 
 		private static string dirSettings;
@@ -72,19 +71,32 @@ namespace Decompiler.WindowsGui.Forms
 			form.PhasePageChanged += new System.EventHandler(this.MainForm_PhasePageChanged);
 			form.BrowserTree.AfterSelect += new TreeViewEventHandler(OnBrowserTreeItemSelected);
 			form.BrowserList.SelectedIndexChanged += new EventHandler(OnBrowserListItemSelected);
+			form.ToolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(toolBar_ButtonClick);
 
-			form.PhasePage = form.InitialPage;
+
+			SwitchInteractor(pageInitial);
 		}
 
 		private void AttachInteractors(DecompilerMenus dm)
 		{
-			pageInitial = new InitialPageInteractor(form.InitialPage, this);
-			pageLoaded = new LoadedPageInteractor(form.LoadedPage, dm, this);
+			pageInitial = new InitialPageInteractor(form.InitialPage, this.form);
+			pageLoaded = new LoadedPageInteractor(form.LoadedPage, this.form, dm);
+			pageFinal = new FinalPageInteractor(form.FinalPage, this.form);
+
+			pageInitial.NextPage = pageLoaded;
+			pageLoaded.NextPage = pageFinal;
+
 		}
 
 		public virtual DecompilerDriver CreateDecompiler(string file)
 		{
 			return new DecompilerDriver(file, new Program(), this);
+		}
+
+		public PhasePageInteractor CurrentPage
+		{
+			get { return currentPage; }
+			set { currentPage = value; }
 		}
 
 		public DecompilerDriver Decompiler
@@ -105,8 +117,9 @@ namespace Decompiler.WindowsGui.Forms
 				decompiler.LoadProgram();
 				//$REVIEW if (executable_format) then scanProgram.
 				decompiler.ScanProgram();
+
 				form.PhasePage = form.LoadedPage;
-				pageLoaded.Initialize();
+				SwitchInteractor(pageLoaded);
 			} 	
 			catch (Exception e)
 			{
@@ -139,16 +152,6 @@ namespace Decompiler.WindowsGui.Forms
 			get { return decompiler.Program; }
 		}
 
-		/// <summary>
-		/// The current command target, which gets first chance at handling commands 
-		/// before the MainFormInteractor does.
-		/// </summary>
-		public ICommandTarget CommandTarget
-		{
-			get { return cmdTarget; }
-			set { cmdTarget = value; }
-		}
-
 		public InitialPageInteractor InitialPageInteractor
 		{
 			get { return pageInitial; }
@@ -159,6 +162,11 @@ namespace Decompiler.WindowsGui.Forms
 			get { return pageLoaded; }
 		}
 
+		public FinalPageInteractor FinalPageInteractor
+		{
+			get { return pageFinal; }
+		}
+
 		private static string MruListFile
 		{
 			get { return SettingsDirectory + "\\mru.txt"; }
@@ -166,6 +174,10 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void NextPhase()
 		{
+			if (CurrentPage.NextPage != null)
+			{
+				SwitchInteractor(CurrentPage.NextPage);
+			}
 		}
 
 		public void FinishDecompilation()
@@ -187,10 +199,17 @@ namespace Decompiler.WindowsGui.Forms
 			}
 		}
 
+		public void SwitchInteractor(PhasePageInteractor interactor)
+		{
+			CurrentPage = interactor;
+			interactor.Decompiler = decompiler;
+			interactor.PopulateControls();
+		}
+
 		#region ICommandTarget members 
 		public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus cmdStatus, CommandText cmdText)
 		{
-			if (CommandTarget != null && CommandTarget.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
+			if (currentPage != null && currentPage.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{
@@ -218,7 +237,7 @@ namespace Decompiler.WindowsGui.Forms
 
 		public bool Execute(ref Guid cmdSet, int cmdId)
 		{
-			if (CommandTarget != null && CommandTarget.Execute(ref cmdSet, cmdId))
+			if (currentPage != null && currentPage.Execute(ref cmdSet, cmdId))
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{
@@ -266,7 +285,10 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void ShowProgress(string caption, int numerator, int denominator)
 		{
-			// TODO:  Add GuiHost.ShowProgress implementation
+			form.SetStatus(caption);
+			form.ProgressBar.Value = numerator;
+			form.ProgressBar.Minimum = 0;
+			form.ProgressBar.Maximum = denominator;
 		}
 
 		public void CodeStructuringComplete()
@@ -380,6 +402,11 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void OnBrowserListItemSelected(object sender, EventArgs e)
 		{
+			if (form.BrowserList.SelectedItems.Count == 0)
+				System.Diagnostics.Debug.WriteLine("No items selected");
+			else
+				System.Diagnostics.Debug.WriteLine(string.Format("Selected Item Index: {0}, Focus index: {1}", form.BrowserList.SelectedItems[0].Text, form.BrowserList.FocusedItem.Text));
+
 			Execute(ref CmdSets.GuidDecompiler, CmdIds.BrowserItemSelected);
 		}
 	}

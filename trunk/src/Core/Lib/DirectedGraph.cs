@@ -244,7 +244,9 @@ namespace Decompiler.Core.Lib
 
 			public int Count
 			{
-				get { return fSuccessor
+				get 
+				{
+					return fSuccessor
 						  ? graph.nodes[iNode].cSucc
 						  : graph.nodes[iNode].cPred; }
 			}
@@ -287,6 +289,7 @@ namespace Decompiler.Core.Lib
 				return new EdgeEnumerator(graph, iNode, fSuccessor);
 			}
 			#endregion
+
 		}
 
 

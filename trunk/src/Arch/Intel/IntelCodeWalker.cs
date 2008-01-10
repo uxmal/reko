@@ -30,7 +30,6 @@ namespace Decompiler.Arch.Intel
 		private IntelArchitecture arch;
 		private IntelDisassembler dasm; 
 		private IntelState state;
-		private ICodeWalkerListener listener;
 		private Platform platform;
 
 		public IntelCodeWalker(
@@ -38,13 +37,12 @@ namespace Decompiler.Arch.Intel
 			Platform platform,
 			IntelDisassembler dasm,
 			IntelState state,
-			ICodeWalkerListener listener)
+			ICodeWalkerListener listener) : base(listener)
 		{
 			this.arch = arch;
 			this.platform = platform;
 			this.dasm = dasm;
 			this.state = state;
-			this.listener = listener;
 		}
 
 		public override Address Address
@@ -97,12 +95,12 @@ namespace Decompiler.Arch.Intel
 			return Value.Invalid;
 		}
 
-		private void HandleBranch(IntelInstruction instr, Address addrTerm)
+		private void HandleBranch(Address addrInstr, IntelInstruction instr, Address addrTerm)
 		{
 			Address addrBranch = new Address(
 				addrTerm.seg,
 				((ImmediateOperand) instr.op1).val.Unsigned);
-			listener.OnBranch(state, addrTerm, addrBranch);
+			Listener.OnBranch(state, addrInstr, addrTerm, addrBranch);
 		}
 
 		// Called upon the parsing of a 'call' opcode.
@@ -117,7 +115,7 @@ namespace Decompiler.Arch.Intel
 			AddressOperand addrOp = op as AddressOperand;
 			if (addrOp != null)
 			{
-				listener.OnProcedure(state, addrOp.addr);
+				Listener.OnProcedure(state, addrOp.addr);
 				return;
 			}
 			ImmediateOperand immOp = op as ImmediateOperand;
@@ -126,7 +124,7 @@ namespace Decompiler.Arch.Intel
 				addr = AddressFromSegOffset(Registers.cs, immOp.val.Unsigned);
 				if (addr != null)
 				{
-					listener.OnProcedure(state, addr);
+					Listener.OnProcedure(state, addr);
 				}
 				return;
 			}
@@ -136,7 +134,7 @@ namespace Decompiler.Arch.Intel
 				addr = state.AddressFromSegReg(Registers.cs, regOp.Register);
 				if (addr != null)
 				{
-					listener.OnProcedure(state, addr);
+					Listener.OnProcedure(state, addr);
 					return;
 				}
 			}
@@ -147,7 +145,6 @@ namespace Decompiler.Arch.Intel
 				HandleTransfer(instr, addrFrom, addrTerm, memOp, true);
 				return;
 			}
-
 		}
 
 		private void HandleIntInstruction(IntelInstruction instr, Address addrStart)
@@ -156,24 +153,14 @@ namespace Decompiler.Arch.Intel
 			SystemService svc = platform.FindService(vector, state);
 			if (svc == null)
 			{
-				listener.Warn("Unknown service: INT {0:X2} at address {1}", vector, addrStart);
+				Listener.Warn("Unknown service: INT {0:X2} at address {1}", vector, addrStart);
 				return;
 			}
-			listener.OnSystemServiceCall(addrStart, svc);
+			Listener.OnSystemServiceCall(addrStart, svc);
 			switch (vector)
 			{
-			case 0x03:
-			case 0x02:
-			case 0x10:
-			case 0x12:
-			case 0x15:
-			case 0x16:
-			case 0x2F:
-			case 0x33:
-			case 0x67:
-				break;
 			case 0x20:
-				listener.OnProcessExit(dasm.Address);
+				Listener.OnProcessExit(dasm.Address);		//$REFACTOR: use platform instead.
 				break;
 			case 0x21:				// MS-DOS interrupt.
 			{
@@ -189,14 +176,14 @@ namespace Decompiler.Arch.Intel
 						Value dx = state.Get(Registers.dx);
 						if (ds.IsValid && dx.IsValid)
 						{
-							listener.OnProcedure(
+							Listener.OnProcedure(
 								new IntelState(),
 								new Address(ds.Word, dx.Word));
 						}
 						break;
 					}
 					case 0x4C:				// Terminate process.
-						listener.OnProcessExit(dasm.Address);
+						Listener.OnProcessExit(dasm.Address);
 						break;
 					default:
 						break;
@@ -227,14 +214,14 @@ namespace Decompiler.Arch.Intel
 			{
 				if (IsBiosRebootAddress(addrOp.addr))
 				{
-					listener.OnProcessExit(addrTerm);
+					Listener.OnProcessExit(addrTerm);
 				}
 				else
 				{
 					// FAR jmps are treated like calls. 
 
-					listener.OnProcedure(state, addrOp.addr);
-					listener.OnJump(state, addrTerm, addrTerm);
+					Listener.OnProcedure(state, addrOp.addr);
+					Listener.OnJump(state, addrFrom, addrTerm, addrTerm);
 				}
 				return;
 			}
@@ -243,14 +230,14 @@ namespace Decompiler.Arch.Intel
 			if (immOp != null)
 			{
 				// local jump within this segment.
-				listener.OnJump(state, addrTerm, AddressFromSegOffset(Registers.cs, immOp.val.Unsigned));
+				Listener.OnJump(state, addrFrom, addrTerm, AddressFromSegOffset(Registers.cs, immOp.val.Unsigned));
 				return;
 			}
 
 			MemoryOperand memOp = instr.op1 as MemoryOperand;
 			if (memOp != null)
 			{
-				listener.OnJump(state, addrTerm, null);
+				Listener.OnJump(state, addrFrom, addrTerm, null);
 				HandleTransfer(instr, addrFrom, addrTerm, memOp, false);
 				return;
 			}
@@ -258,7 +245,7 @@ namespace Decompiler.Arch.Intel
 			RegisterOperand regOp = instr.op1 as RegisterOperand;
 			if (regOp != null)
 			{
-				listener.OnJump(state, addrTerm, null);
+				Listener.OnJump(state, addrFrom, addrTerm, null);
 				return;
 			}
 			throw new ApplicationException("NYI");
@@ -291,7 +278,7 @@ namespace Decompiler.Arch.Intel
 				state.Set(Registers.ecx, Value.Invalid);			
 				break;
 			}
-			listener.OnBranch(state, dasm.Address, addrBegin);
+			Listener.OnBranch(state, addrBegin, dasm.Address, addrBegin);
 		}
 
 		private void HandleLeaInstruction(IntelInstruction instr)
@@ -319,10 +306,10 @@ namespace Decompiler.Arch.Intel
 					{
 						if (!fCall)
 						{
-							listener.OnTrampoline(state, addrInstr, addrGlob);
+							Listener.OnTrampoline(state, addrInstr, addrGlob);
 							return;
 						}
-						listener.OnProcedurePointer(state, addrInstr, addrGlob, memOp.Width);
+						Listener.OnProcedurePointer(state, addrInstr, addrGlob, memOp.Width);
 					}
 				}
 				else
@@ -331,11 +318,11 @@ namespace Decompiler.Arch.Intel
 					{
 						if (fCall)
 						{
-							listener.OnProcedureTable(state, addrInstr, addrGlob, segBase, memOp.Width);
+							Listener.OnProcedureTable(state, addrInstr, addrGlob, segBase, memOp.Width);
 						}
 						else
 						{
-							listener.OnJumpTable(state, addrInstr, addrGlob, segBase, memOp.Width);
+							Listener.OnJumpTable(state, addrInstr, addrGlob, segBase, memOp.Width);
 						}
 					}
 				}
@@ -384,12 +371,12 @@ namespace Decompiler.Arch.Intel
 		/// Simulates the execution of an Intel x86 instruction.
 		/// </summary>
 		/// <returns>The simulated instruction.</returns>
-		public override object WalkInstruction()
+		public override void WalkInstruction()
 		{
 			Address addrStart = dasm.Address;
 			IntelInstruction instr = dasm.Disassemble();
 			Address addrTerm = dasm.Address;
-			return WalkInstruction(addrStart, instr, addrTerm);
+			WalkInstruction(addrStart, instr, addrTerm);
 		}
 
 		public object WalkInstruction(Address addrStart, IntelInstruction instr, Address addrTerm)
@@ -574,7 +561,7 @@ namespace Decompiler.Arch.Intel
 			case Opcode.jpe:
 			case Opcode.jpo:
 			case Opcode.js:
-				HandleBranch(instr, addrTerm);
+				HandleBranch(addrStart, instr, addrTerm);
 				break;
 			case Opcode.jmp:
 				HandleJmpInstruction(instr, addrStart, addrTerm);
@@ -608,7 +595,7 @@ namespace Decompiler.Arch.Intel
 			case Opcode.loope:
 			case Opcode.loopne:
 				state.Set(Registers.ecx.GetPart(instr.dataWidth), Value.Invalid);
-				HandleBranch(instr, addrTerm);
+				HandleBranch(addrStart, instr, addrTerm);
 				break;
 			case Opcode.mov:
 				SetValue(instr.op1, GetValue(instr.op2));
@@ -663,7 +650,7 @@ namespace Decompiler.Arch.Intel
 			case Opcode.iret:
 			case Opcode.ret:
 			case Opcode.retf:
-				listener.OnReturn(addrTerm);
+				Listener.OnReturn(addrTerm);
 				break;
 			case Opcode.sahf:
 				break;

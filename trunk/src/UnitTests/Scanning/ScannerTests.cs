@@ -21,6 +21,7 @@ using Decompiler.Core;
 using Decompiler.Arch.Intel;
 using Decompiler.Scanning;
 using Decompiler.Loading;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
@@ -31,8 +32,21 @@ namespace Decompiler.UnitTests.Scanning
 	[TestFixture]
 	public class ScannerTests
 	{
+		private Program prog;
+		private TestScanner scanner;
+
 		public ScannerTests()
 		{
+		}
+
+		private void SetupMockCodeWalker()
+		{
+			prog = new Program();
+			prog.Architecture = new ArchitectureMock();
+			prog.Image = new ProgramImage(new Address(0x1000), new byte[0x4000]);
+			scanner = new TestScanner(prog);
+			scanner.MockCodeWalker = new MockCodeWalker(new Address(0x1000), scanner);
+			scanner.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), prog.Architecture.CreateProcessorState()));
 		}
 
 		[Test]
@@ -141,6 +155,92 @@ baz endp
 		}
 
 		[Test]
+		public void ScanSimple()
+		{
+			SetupMockCodeWalker();
+
+			scanner.MockCodeWalker.AddReturn(new Address(0x1004));
+			scanner.ProcessQueues();
+
+			Assert.AreEqual(1, prog.Procedures.Count);
+
+		}
+
+		[Test]
+		public void ScanTwoProcedures()
+		{
+			SetupMockCodeWalker();
+
+			scanner.MockCodeWalker.AddCall(new Address(0x1001), new Address(0x2000), new FakeProcessorState());
+			scanner.MockCodeWalker.AddReturn(new Address(0x1002));
+
+			scanner.MockCodeWalker.AddReturn(new Address(0x2002));
+
+			scanner.ProcessQueues();
+
+			Assert.AreEqual(2, prog.Procedures.Count);
+		}
+
+		[Test]
+		public void ScanProcJumpingIntoOther()
+		{
+			SetupMockCodeWalker();
+			scanner.MockCodeWalker.AddCall(new Address(0x1001), new Address(0x1100));
+			scanner.MockCodeWalker.AddReturn(new Address(0x1002));
+
+			scanner.MockCodeWalker.AddJump(new Address(0x1102), new Address(0x1103)); 
+			scanner.MockCodeWalker.AddReturn(new Address(0x1110));
+
+			scanner.ProcessQueues();
+			scanner.EnqueueProcedure(null, new Address(0x2000), null, new FakeProcessorState());
+			scanner.MockCodeWalker.AddCall(new Address(0x2001), new Address(0x1101));	// calls into middle of procedure already scanned.
+			scanner.MockCodeWalker.AddReturn(new Address(0x2004));
+
+			scanner.ProcessQueues();
+
+			IEnumerator e = prog.Image.Map.GetItemEnumerator(prog.Image.BaseAddress);
+			while (e.MoveNext())
+			{
+				ImageMapBlock b = ((DictionaryEntry) e.Current).Value as ImageMapBlock;
+				if (b != null)
+					Console.WriteLine("{0}, part of {1}", b, b.Procedure);
+			}
+
+			foreach (Procedure proc in prog.Procedures.Values)
+			{
+				Console.WriteLine("{0}", proc);
+			}
+			Assert.AreEqual(3, prog.Procedures.Count);
+			Procedure p2000 = prog.Procedures[new Address(0x2000)];
+			Procedure p1100 = prog.Procedures[new Address(0x1100)];
+			Procedure p1101 = prog.Procedures[new Address(0x1101)];
+			Assert.IsNotNull(p2000);
+			Assert.IsNotNull(p1100);
+			Assert.IsNotNull(p1101);
+			ImageMapBlock b1100 = GetBlockAt(0x1100);
+			ImageMapBlock b1101 = GetBlockAt(0x1101);
+			ImageMapBlock b1103 = GetBlockAt(0x1103);
+			Assert.AreSame(p1100, b1100.Procedure);
+			Assert.AreSame(p1101, b1101.Procedure);
+			Assert.AreSame(p1101, b1103.Procedure);
+		}
+
+		private ImageMapBlock GetBlockAt(uint a)
+		{
+			return (ImageMapBlock) prog.Image.Map.FindItemExact(new Address(a));
+		}
+
+		private bool Contains(ICollection c, object o)
+		{
+			foreach (object q in c)
+			{
+				if (q == o)
+					return true;
+			}
+			return false;
+		}
+
+		[Test]
 		[Ignore("Need to implement this feature")]
 		public void ObeyDontDecompileUserProcedure()
 		{
@@ -153,7 +253,7 @@ baz endp
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			Assembler asm = prog.Architecture.CreateAssembler();
 			ArrayList entryPoints = new ArrayList();
-			prog.Image = asm.Assemble(prog, new Address(0x0C00, 0x0000),FileUnitTester.MapTestPath(srcFile), entryPoints);
+			prog.Image = asm.Assemble(prog, new Address(0x0C00, 0x0000), FileUnitTester.MapTestPath(srcFile), entryPoints);
 			return prog;
 		}
 
@@ -162,6 +262,32 @@ baz endp
 			foreach (ImageMapItem item in map.Items.Values)
 			{
 				Console.WriteLine(item);
+			}
+		}
+
+		private class TestScanner : Scanner
+		{
+			private MockCodeWalker mcw; 
+
+			public TestScanner(Program prog) : base(prog, null)
+			{
+			}
+
+			public override CodeWalker CreateCodeWalker(Address addr, ProcessorState state)
+			{
+				if (mcw != null)
+				{
+					mcw.SetWalkAddress(addr);
+					return mcw;
+				}
+				else
+					return base.CreateCodeWalker(addr, state);
+			}
+
+			public MockCodeWalker MockCodeWalker
+			{
+				get { return mcw; }
+				set { mcw = value; }
 			}
 		}
 	}

@@ -35,7 +35,6 @@ namespace Decompiler.Scanning
 	{
 		private WorkItem wiPrev;
 		private Address addr;
-		private Procedure proc;
 		public ProcessorState state;
 		public BlockType type;
 
@@ -44,17 +43,11 @@ namespace Decompiler.Scanning
 			this.wiPrev = wiPrev;
 			this.type = type;
 			this.addr = addr;
-			this.proc = null;
 		}
 
 		public Address Address
 		{
 			get { return addr; }
-		}
-
-		public Procedure Procedure
-		{
-			get { return proc; }
 		}
 
 		public WorkItem Previous

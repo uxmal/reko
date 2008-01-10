@@ -110,31 +110,26 @@ namespace Decompiler.UnitTests.Mocks
 
 		public string RegisterToString(int reg)
 		{
-			// TODO:  Add ArchitectureMock.RegisterToString implementation
-			return null;
+			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
 		}
 
 		public BackWalker CreateBackWalker(ProgramImage img)
 		{
-			// TODO:  Add ArchitectureMock.CreateBackWalker implementation
-			return null;
+			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateBackWalker implementation");
 		}
 
 		public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list)
 		{
-			// TODO:  Add ArchitectureMock.CreateCodeWalker implementation
-			return null;
+			return new MockCodeWalker(addr, list);
 		}
 
 		public Disassembler CreateDisassembler(ProgramImage img, Address addr)
 		{
-			// TODO:  Add ArchitectureMock.CreateDisassembler implementation
-			return null;
+			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateDisassembler implementation");
 		}
 
 		public ProcessorState CreateProcessorState()
 		{
-			// TODO:  Add ArchitectureMock.CreateProcessorState implementation
 			return new FakeProcessorState();
 		}
 
@@ -145,8 +140,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public string GrfToString(uint grf)
 		{
-			// TODO:  Add ArchitectureMock.GrfToString implementation
-			return null;
+			throw new NotImplementedException("// TODO:  Add ArchitectureMock.GrfToString implementation");
 		}
 
 		public PrimitiveType WordWidth

@@ -34,7 +34,7 @@ namespace Decompiler.Core
 		private ProgramImage image;
 		private IProcessorArchitecture arch;
 		private Platform platform;
-		private ProcedureCollection2 procedures;
+		private ProcedureCollection procedures;
 		private CallGraph callGraph;
 		private Map vectors;
 		private Hashtable mpuintfn;
@@ -45,7 +45,7 @@ namespace Decompiler.Core
 
 		public Program()
 		{
-			procedures = new ProcedureCollection2();
+			procedures = new ProcedureCollection();
 			vectors = new Map();
 			callGraph = new CallGraph();
 			mpuintfn = new Hashtable();		// uint (offset) -> string
@@ -78,11 +78,13 @@ namespace Decompiler.Core
 			get { return callGraph; }
 		}
 
-		public void DumpAssembler(ImageMap map, TextWriter wr)
+		public void DumpAssembler(TextWriter wr)
 		{
 			Dumper dump = arch.CreateDumper();
-			dump.Dump(this, map, wr);
+			dump.Dump(this, Image.Map, wr);
 		}
+
+
 
 		public PseudoProcedure EnsurePseudoProcedure(string name, int arity)
 		{
@@ -120,7 +122,7 @@ namespace Decompiler.Core
 		/// <summary>
 		/// Provides access to the program's procedures, indexed by address.
 		/// </summary>
-		public ProcedureCollection2 Procedures
+		public ProcedureCollection Procedures
 		{
 			get { return procedures; }
 		}
