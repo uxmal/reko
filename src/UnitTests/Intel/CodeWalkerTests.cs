@@ -93,7 +93,7 @@ namespace Decompiler.UnitTests.Intel
 					sc.EnqueueEntryPoint(ep);
 				}
 				sc.ProcessQueues();
-				prog.DumpAssembler(prog.Image.Map, fut.TextWriter);
+				prog.DumpAssembler(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -150,6 +150,7 @@ namespace Decompiler.UnitTests.Intel
 			cw.WalkInstruction(new Address(0x100000), instr, null);
 			Assert.AreSame(Value.Invalid,  state.Get(Registers.ebp));
 		}
+
 		private class TestCodeWalkerListener : ICodeWalkerListener
 		{
 			private SortedList syscalls = new SortedList();
@@ -176,12 +177,12 @@ namespace Decompiler.UnitTests.Intel
 				syscalls[addrInstr] = svc;
 			}
 
-			public void OnBranch(Decompiler.Core.ProcessorState st, Address addrTerm, Address addrBranch)
+			public void OnBranch(Decompiler.Core.ProcessorState st, Address addrInstr, Address addrTerm, Address addrBranch)
 			{
 				// TODO:  Add TestCodeWalkerListener.OnBranch implementation
 			}
 
-			public void OnJump(Decompiler.Core.ProcessorState st, Address addrTerm, Address addrJump)
+			public void OnJump(Decompiler.Core.ProcessorState st, Address addrInstr, Address addrTerm, Address addrJump)
 			{
 				// TODO:  Add TestCodeWalkerListener.OnJump implementation
 			}

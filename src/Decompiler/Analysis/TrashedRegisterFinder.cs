@@ -39,6 +39,7 @@ namespace Decompiler.Analysis
 		private WorkList worklist;
 		private Frame frame;
 		private TrashStorageHelper tsh;
+		private DecompilerHost decompilerHost;
 
 		public TrashedRegisterFinder(Program prog, ProgramDataFlow flow)
 		{
@@ -65,9 +66,14 @@ namespace Decompiler.Analysis
 		{
 			FillWorklist();
 			Console.WriteLine("{0} items in worklist", worklist.Count);
+			int initial = worklist.Count;
 			while (!worklist.IsEmpty)
 			{
+				if (decompilerHost != null)
+					decompilerHost.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
 				Block block = (Block) worklist.GetWorkItem();
+				System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", block.Procedure.Name, block.Name));
+
 				CurrentFrame = block.Procedure.Frame;
 				ProcessBlock(block);
 			}
@@ -78,6 +84,12 @@ namespace Decompiler.Analysis
 		{
 			get { return frame; }
 			set { frame = value; }
+		}
+
+		public DecompilerHost DecompilerHost
+		{
+			get { return decompilerHost; }
+			set { decompilerHost = value; }
 		}
 
 		public void FillWorklist()

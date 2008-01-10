@@ -46,8 +46,8 @@ namespace Decompiler.Loading
 		public override void Relocate(Address addrLoad, ArrayList entryPoints)
 		{
 			ImageMap imageMap = imgLoaded.Map;
-			ImageReader rdr = new ImageReader(imgLoaded, (uint) exe.e_lfarlc);
-			int i = exe.e_crlc;
+			ImageReader rdr = new ImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
+			int i = exe.e_cRelocations;
 			while (i != 0)
 			{
 				int offset = rdr.ReadUShort();
@@ -69,8 +69,8 @@ namespace Decompiler.Loading
 
 		public override ProgramImage Load(Address addrLoad)
 		{
-			int iImageStart = (exe.e_cparhdr * 0x10);
-			int cbImageSize = exe.e_cp * ExeImageLoader.CbPageSize - iImageStart;
+			int iImageStart = (exe.e_cparHeader * 0x10);
+			int cbImageSize = exe.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
 			byte [] bytes = new byte[cbImageSize];
 			int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
 			Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);

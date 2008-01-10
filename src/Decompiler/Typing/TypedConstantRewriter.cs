@@ -84,7 +84,7 @@ namespace Decompiler.Typing
 
 		public void VisitMemberPointer(MemberPointer memptr)
 		{
-			throw new NotImplementedException();
+			Return(c);
 		}
 
 		public void VisitPointer(Pointer ptr)

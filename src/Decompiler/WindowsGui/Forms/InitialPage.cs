@@ -24,7 +24,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
-	public class InitialPage : Decompiler.WindowsGui.Forms.PhasePage
+	public class InitialPage : PhasePage
 	{
 		private System.Windows.Forms.RadioButton rdbBinary;
 		private System.Windows.Forms.RadioButton rdbProject;

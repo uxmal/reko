@@ -126,7 +126,6 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		[Ignore("Need more work in typing segmented pointers")]
 		public void TerSegmentedMemoryPointer()
 		{
 			ProgramMock mock = new ProgramMock();
@@ -179,10 +178,14 @@ namespace Decompiler.UnitTests.Typing
 		protected override void BuildBody()
 		{
 			Identifier cs = Local16("cs");
+			cs.DataType = PrimitiveType.Segment;
 			Identifier ax = Local16("ax");
 			Identifier si = Local16("si");
+			Identifier si2 = Local16("si2");
 			Assign(si, Int16(0x0001));
 			Assign(ax, SegMemW(cs, si));
+			Assign(si2, Int16(0x0005));
+			Assign(ax, SegMemW(cs, si2));
 		}
 	}
 

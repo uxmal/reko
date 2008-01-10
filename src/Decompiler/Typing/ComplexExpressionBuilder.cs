@@ -144,7 +144,6 @@ namespace Decompiler.Typing
 
 		public override void VisitMemberPointer(MemberPointer memptr)
 		{
-			throw new NotImplementedException();
 			/*
 			PrimitiveType x = memptr.Pointee as PrimitiveType;
 			if (x != null)

@@ -26,16 +26,5 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	[TestFixture]
 	public class InitialPageInteractorTests
 	{
-		[Test]
-		public void SetCommandTargetWhenEntered()
-		{
-			using (MainForm form = new MainForm())
-			{
-				MainFormInteractor mi = new MainFormInteractor(form);
-				mi.CommandTarget = null;
-				mi.InitialPageInteractor.OnPageEntered(this, EventArgs.Empty);
-				Assert.AreSame((ICommandTarget)mi.InitialPageInteractor, mi.CommandTarget);
-			}
-		}
 	}
 }

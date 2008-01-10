@@ -136,8 +136,6 @@ namespace Decompiler.Core
 			get { return stackDelta; }
 			set 
 			{
-				if (stackDelta != 0 && stackDelta != value)
-					  throw new ArgumentException("Multiple values of stack delta");
 				stackDelta = value; 
 			}
 		}

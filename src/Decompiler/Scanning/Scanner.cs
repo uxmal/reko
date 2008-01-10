@@ -39,7 +39,7 @@ namespace Decompiler.Scanning
 	public class Scanner : ICodeWalkerListener
 	{
 		private Program program;
-		private ImageMap map;
+		private ImageMap map;			// cached copy of program.Image.Map; it's used very often.
 		private DecompilerHost host;
 		private ImageMapBlock blockCur;
 		private Hashtable blocksVisited;
@@ -74,6 +74,11 @@ namespace Decompiler.Scanning
 			this.jumpGraph = new DirectedGraph();
 		}
 
+		public virtual CodeWalker CreateCodeWalker(Address addr, ProcessorState state)
+		{
+			return program.Architecture.CreateCodeWalker(program.Image, program.Platform, addr, state, this);
+		}
+
 		/// <summary>
 		/// An entry point into the binary has been found.
 		/// </summary>
@@ -94,18 +99,17 @@ namespace Decompiler.Scanning
 		/// <param name="addr"></param>
 		/// <param name="st"></param>
 		/// <param name="proc"></param>
-		private void EnqueueJumpTarget(Address addr, ProcessorState st, Procedure proc)
+		private void EnqueueJumpTarget(Address addrTarget, ProcessorState st, Procedure proc)
 		{
-			if (!program.Image.IsValidAddress(addr))
-				return;
+			Debug.Assert(program.Image.IsValidAddress(addrTarget));
 
 			Debug.Assert(proc != null);
-			WorkItem wi = new WorkItem(wiCur, BlockType.JumpTarget, addr);
+			WorkItem wi = new WorkItem(wiCur, BlockType.JumpTarget, addrTarget);
 			wi.state = (ProcessorState) st.Clone();
 			qJumps.Enqueue(wi);
 			ImageMapBlock bl = new ImageMapBlock();
 			bl.Procedure = proc;
-			ImageMapBlock item = map.AddItem(addr, bl) as ImageMapBlock;
+			ImageMapBlock item = map.AddItem(addrTarget, bl) as ImageMapBlock;
 			if (item != null && item.Procedure != proc)
 			{
 				// When two procedures join, they generate a new procedure. If there is
@@ -224,8 +228,15 @@ namespace Decompiler.Scanning
 
 		#region ICodeWalkerListener methods
 
-		public void OnBranch(ProcessorState st, Address addrTerm, Address addrBranch)
+		public void OnBranch(ProcessorState st, Address addrInstr, Address addrTerm, Address addrBranch)
 		{
+			map.AddItem(addrTerm, new ImageMapItem());
+			if (!program.Image.IsValidAddress(addrBranch))
+			{
+				Warn("Instruction at address {0} attempted to branch to illegal address {1}", addrInstr, addrBranch);
+				return;
+			}
+
 			jumpGraph.AddEdge(addrTerm - 1, addrTerm);
 			jumpGraph.AddEdge(addrTerm - 1, addrBranch);
 
@@ -243,14 +254,16 @@ namespace Decompiler.Scanning
 			throw new NotImplementedException("NYI");
 		}
 
-		public void OnJump(ProcessorState st, Address addrTerm, Address addrJump)
+		public void OnJump(ProcessorState st, Address addrInstr, Address addrTerm, Address addrJump)
 		{
 			map.AddItem(addrTerm, new ImageMapItem());
-			if (addrJump != null)
+			if (!program.Image.IsValidAddress(addrJump))
 			{
-				jumpGraph.AddEdge(addrTerm - 1, addrJump);
-				EnqueueJumpTarget(addrJump, st, blockCur.Procedure);
+				Warn("Instruction at address {0} attempted to jump to illegal address {1}", addrInstr, addrJump);
+				return;
 			}
+			jumpGraph.AddEdge(addrTerm - 1, addrJump);
+			EnqueueJumpTarget(addrJump, st, blockCur.Procedure);
 		}
 
 		public void OnJumpPointer(ProcessorState st, Address addrFrom, Address addrJump, PrimitiveType width)
@@ -263,15 +276,15 @@ namespace Decompiler.Scanning
 		{
 			if (!program.Image.IsValidAddress(addrTable))
 			{
-				Debug.WriteLine(string.Format("Instruction at address {0}: uncertain about table start.", addrInstr));
+				Warn("Instruction at address {0}: uncertain about table start {1}.", addrInstr, addrTable);
 				return;
 			}
 			EnqueueVectorTable(addrInstr, addrTable, width, segBase, false, st);
 		}
 
-		public void OnProcedure(ProcessorState st, Address addr)
+		public void OnProcedure(ProcessorState st, Address addrCallee)
 		{
-			EnqueueProcedure(wiCur, addr, null, st);
+			EnqueueProcedure(wiCur, addrCallee, null, st);
 		}
 
 		public void OnProcedurePointer(ProcessorState st, Address addrBase, Address addr, PrimitiveType width)
@@ -287,7 +300,7 @@ namespace Decompiler.Scanning
 		{
 			if (!program.Image.IsValidAddress(addrTable))
 			{
-				Debug.WriteLine(string.Format("Instruction at address {0}: uncertain about table start.", addrInstr));
+				this.Warn("Instruction at address {0}: uncertain about table start {1}.", addrInstr, addrTable);
 				return;
 			}
 			EnqueueVectorTable(addrInstr, addrTable, width, segBase, true, st);
@@ -313,7 +326,6 @@ namespace Decompiler.Scanning
 			PseudoProcedure ppp = (PseudoProcedure) program.ImportThunks[(uint) addrGlob.Linear];
 			if (ppp != null)
 			{
-				Debug.WriteLine(string.Format("Trampoline[{0}] = {1}", addrInstr, ppp.Name));
 				program.Trampolines[addrInstr.Linear] = ppp;
 			}
 		}
@@ -364,20 +376,11 @@ namespace Decompiler.Scanning
 				blocksVisited[blockCur] = blockCur;
 
 				wi.state.SetInstructionPointer(wi.Address);
-				CodeWalker cw = program.Architecture.CreateCodeWalker(program.Image, program.Platform, wi.Address, wi.state, this);
-				try
+				CodeWalker cw = CreateCodeWalker(wi.Address, wi.state);
+				do
 				{
-					do
-					{
-						cw.WalkInstruction();
-					} while (blockCur.IsInRange(cw.Address));
-				} 
-				catch (Exception ex)
-				{
-					Debug.WriteLine("ParseJumpTarget: " + ex.Message);
-					throw new ApplicationException(
-						string.Format("Scanner failed near address {0}.", cw.Address), ex);
-				}
+					cw.WalkInstruction();
+				} while (blockCur.IsInRange(cw.Address));
 			}
 		}
 

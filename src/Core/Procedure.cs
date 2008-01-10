@@ -36,8 +36,6 @@ namespace Decompiler.Core
 		private BlockList rpoBlocks;
 		private Block blockEntry;
 		private Block blockExit;
-		private int poNumber;
-		private int rpoNumber;
 		private Frame frame;
 		private ProcedureSignature signature;
 
@@ -133,12 +131,6 @@ namespace Decompiler.Core
 			get { return frame; }
 		}
 		
-		public int PostOrderNumber
-		{
-			get { return poNumber; }
-			set { poNumber = value; }
-		}
-
 		public void RenumberBlocks()
 		{
 			BlockRenumbering br = new BlockRenumbering();
@@ -148,12 +140,6 @@ namespace Decompiler.Core
 		public BlockList RpoBlocks
 		{
 			get { return rpoBlocks; }
-		}
-
-		public int RpoNumber
-		{
-			get { return rpoNumber; }
-			set { rpoNumber = value; }
 		}
 
 		/// <summary>

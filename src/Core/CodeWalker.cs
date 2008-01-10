@@ -22,12 +22,26 @@ namespace Decompiler.Core
 {
 	public abstract class CodeWalker
 	{
-		/// <summary>
-		/// Simulates the next instruction.
-		/// </summary>
-		/// <returns>the instruction just simulated.</returns>
-		public abstract object WalkInstruction();
+		private ICodeWalkerListener listener;
+
+		public CodeWalker(ICodeWalkerListener listener)
+		{
+			this.listener = listener; 
+		}
 
 		public abstract Address Address { get; }
+
+		public ICodeWalkerListener Listener
+		{
+			get { return listener; }
+		}
+
+		/// <summary>
+		/// Simulates the next instruction; if interesting instructions are encountered,
+		/// the appropriate method of ICodeWalkerListener will be called.
+		/// </summary>
+		/// <param name="listener"></param>
+		public abstract void WalkInstruction();
+
 	}
 }

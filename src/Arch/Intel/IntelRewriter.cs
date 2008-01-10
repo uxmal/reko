@@ -160,7 +160,7 @@ namespace Decompiler.Arch.Intel
 						// TODO: call EnterCriticalSection
 						break;
 					case Opcode.call:
-						RewriteCall();
+						RewriteCall(instrCur.op1, instrCur.op1.Width);
 						break;
 					case Opcode.cbw:
 					{
@@ -305,7 +305,7 @@ namespace Decompiler.Arch.Intel
 						state.GrowFpuStack(addrs[i]);
 						emitter.Assign(
 							orw.FpuRegister(0, state),
-							new Cast(PrimitiveType.Real64,  SrcOp(instrCur.op1)));
+							new Cast(PrimitiveType.Real64, SrcOp(instrCur.op1)));
 						WriteFpuStack(0);
 						break;
 					case Opcode.fimul:
@@ -719,21 +719,31 @@ namespace Decompiler.Arch.Intel
 					case Opcode.push:
 					{
 						RegisterOperand reg = instrCur.op1 as RegisterOperand;
-						if (reg != null && reg.Register == Registers.cs &&
-							i + 3 < instrs.Length &&
-							(instrs[i+1].code == Opcode.push && 
-							instrs[i+1].op1 is ImmediateOperand) && 
-							(instrs[i+2].code == Opcode.push && 
-							instrs[i+2].op1 is ImmediateOperand) &&
-							(instrs[i+3].code == Opcode.jmp && 
-							instrs[i+3].op1 is AddressOperand))
+						if (reg != null && reg.Register == Registers.cs)
 						{
-							// That's actually a far call, but the callee thinks its a near call.
-							EmitCall(GetProcedureFromInstructionAddr(instrs[i+3].op1, 2, true));
-							i += 3; // Skip the pushes and jump that we coalesced.
-							break;
+							if (i + 1 < instrs.Length &&
+								instrs[i+1].code == Opcode.call &&
+								instrs[i+1].op1.Width == PrimitiveType.Word16)
+							{
+								state.GrowStack(reg.Register.DataType.Size);
+								RewriteCall(instrs[i+1].op1, PrimitiveType.Word32);
+								++i;
+								break;
+							}
+							if (i + 3 < instrs.Length &&
+								(instrs[i+1].code == Opcode.push && 
+								instrs[i+1].op1 is ImmediateOperand) && 
+								(instrs[i+2].code == Opcode.push && 
+								instrs[i+2].op1 is ImmediateOperand) &&
+								(instrs[i+3].code == Opcode.jmp && 
+								instrs[i+3].op1 is AddressOperand))
+							{
+								// That's actually a far call, but the callee thinks its a near call.
+								EmitCall(GetProcedureFromInstructionAddr(instrs[i+3].op1, 2, true));
+								i += 3; // Skip the pushes and jump that we coalesced.
+								break;
+							}
 						}
-
 						Debug.Assert(instrCur.dataWidth == PrimitiveType.Word16 || instrCur.dataWidth == PrimitiveType.Word32);
 						EmitPush(instrCur.dataWidth, instrCur.op1);
 						break;
@@ -1327,13 +1337,10 @@ namespace Decompiler.Arch.Intel
 			{
 				emitter.Emit(new IndirectCall(e, state.StackBytes, state.FpuStackItems));
 			}
-			Procedure [] procs = host.GetAddressesFromVector(addrInstr, instrCur.op1.Width.Size);
-			if (procs != null)
+			Procedure [] procs = host.GetProceduresFromVector(addrInstr, instrCur.op1.Width.Size);
+			for (int j = 0; j < procs.Length; ++j)
 			{
-				for (int j = 0; j < procs.Length; ++j)
-				{
-					host.AddCallEdge(proc, emitter.Block.Statements.Last, procs[j]);
-				}
+				host.AddCallEdge(proc, emitter.Block.Statements.Last, procs[j]);
 			}
 		}
 
@@ -1637,11 +1644,13 @@ namespace Decompiler.Arch.Intel
 		public void EmitReturnInstruction(int cbReturnAddress, int cbBytesPop)
 		{
 			if (frame.ReturnAddressSize != cbReturnAddress)
-				throw new InvalidOperationException(string.Format(
-					"Return instruction at address {0} expects a return address of {1} bytes, but procedure {2} was called with a return address of {3} bytes.",
-					state.InstructionAddress, cbReturnAddress, this.proc, frame.ReturnAddressSize));
-			emitter.Return();
-			proc.Signature.StackDelta = cbBytesPop;
+				host.WriteDiagnostic(Diagnostic.Warning, "Return instruction at address {0} expects a return address of {1} bytes, but procedure {2} was called with a return address of {3} bytes.",
+					state.InstructionAddress, cbReturnAddress, this.proc, frame.ReturnAddressSize);
+			 emitter.Return();
+			if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != cbBytesPop)
+				host.WriteDiagnostic(Diagnostic.Warning, "Multiple values of stack delta in procedure {0} when processung RET instruction at address {1}: was {2} previously.", proc.Name, state.InstructionAddress, proc.Signature.StackDelta);
+			else
+				proc.Signature.StackDelta = cbBytesPop;
 			proc.Signature.FpuStackDelta = state.FpuStackItems;
 			proc.Signature.FpuStackParameterMax = maxFpuStackRead;
 			proc.Signature.FpuStackOutParameterMax = maxFpuStackWrite;
@@ -1788,14 +1797,12 @@ namespace Decompiler.Arch.Intel
 				return e;
 		}
 
-		public void RewriteCall()
+		public void RewriteCall(Operand callTarget, PrimitiveType returnAddressSize)
 		{
-			if (instrCur.op1 is AddressOperand || instrCur.op1 is ImmediateOperand)
+			Address addr = orw.OperandAsCodeAddress(callTarget, state);
+			if (addr != null)
 			{
-				Address addr = orw.OperandAsCodeAddress(instrCur.op1, state);
-				if (addr == null)
-					throw new ApplicationException("Unable to determine address");
-				PseudoProcedure ppp = (PseudoProcedure) host.TrampolineAt(addr);
+				PseudoProcedure ppp = host.TrampolineAt(addr);
 				if (ppp != null)
 				{
 					emitter.Emit(BuildApplication(ppp));
@@ -1803,8 +1810,8 @@ namespace Decompiler.Arch.Intel
 				else
 				{
 					Procedure p = GetProcedureFromInstructionAddr(
-						instrCur.op1, 
-						instrCur.op1.Width.Size, 
+						callTarget, 
+						returnAddressSize.Size, 
 						true);
 					EmitCall(p);
 				}

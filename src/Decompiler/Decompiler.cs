@@ -242,6 +242,7 @@ namespace Decompiler
 				{
 					foreach (EntryPoint ep in loader.EntryPoints)
 					{
+						program.AddEntryPoint(ep);
 						scanner.EnqueueEntryPoint(ep);
 					}
 					foreach (SerializedProcedure sp in project.UserProcedures)
@@ -257,7 +258,7 @@ namespace Decompiler
 				loader = null;
 				if (host.DisassemblyWriter != null)
 				{
-					program.DumpAssembler(program.Image.Map, host.DisassemblyWriter);
+					program.DumpAssembler(host.DisassemblyWriter);
 					host.DisassemblyWriter.Flush();
 				}
 			}

@@ -23,10 +23,10 @@ namespace Decompiler.Core
 {
 	public interface ICodeWalkerListener
 	{
-		void OnBranch(ProcessorState st, Address addrTerm, Address addrBranch);
+		void OnBranch(ProcessorState st, Address addrInstr, Address addrTerm, Address addrBranch);
 		void OnGlobalVariable(Address addr, PrimitiveType width, Value v);
 		void OnIllegalOpcode(Address addrIllegal);
-		void OnJump(ProcessorState st, Address addrTerm, Address addrJump);
+		void OnJump(ProcessorState st, Address addrInstr, Address addrTerm, Address addrJump);
 		void OnJumpPointer(ProcessorState st, Address segBase, Address addrPtr, PrimitiveType stride);
 		void OnJumpTable(ProcessorState st, 
 			Address addrInstr,

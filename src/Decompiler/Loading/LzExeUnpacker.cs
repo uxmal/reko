@@ -40,7 +40,7 @@ namespace Decompiler.Loading
 
 		public LzExeUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
 		{
-			this.lzHdrOffset = (exe.e_cparhdr + exe.e_cs) << 4;
+			this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
 
 			// Locate the LzExe header and verify signature.
 
@@ -66,10 +66,10 @@ namespace Decompiler.Loading
 
 		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
 		{
-			if (exe.e_ovno != 0 || exe.e_lfarlc != 0x1C)
+			if (exe.e_ovno != 0 || exe.e_lfaRelocations != 0x1C)
 				return false;
 
-			int lzHdrOffset = ((int) exe.e_cparhdr + (int) exe.e_cs) << 4;
+			int lzHdrOffset = ((int) exe.e_cparHeader + (int) exe.e_cs) << 4;
 			int entry = lzHdrOffset + exe.e_ip;
 			return (CompareEqual(rawImg, entry, s_sig91, s_sig91.Length) ||
 					CompareEqual(rawImg, entry, s_sig90, s_sig90.Length));

@@ -119,11 +119,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Diagnostic.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Analysis\Aliases.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -799,7 +794,7 @@
                 />
                 <File
                     RelPath = "WindowsGui\Forms\AnalyzePage.cs"
-                    SubType = "Code"
+                    SubType = "UserControl"
                     BuildAction = "Compile"
                 />
                 <File
@@ -831,6 +826,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "WindowsGui\Forms\FinalPage.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\FinalPage.resx"
+                    DependentUpon = "FinalPage.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\FinalPageInteractor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "WindowsGui\Forms\GotoDialog.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -847,7 +857,7 @@
                 />
                 <File
                     RelPath = "WindowsGui\Forms\InitialPage.cs"
-                    SubType = "Code"
+                    SubType = "UserControl"
                     BuildAction = "Compile"
                 />
                 <File

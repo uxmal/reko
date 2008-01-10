@@ -25,28 +25,40 @@ namespace Decompiler.WindowsGui.Forms
 	/// Base class for all interactors in charge of phase pages. Provides common functionality
 	/// such as command routing.
 	/// </summary>
-	public class PhasePageInteractor : ICommandTarget
+	public abstract class PhasePageInteractor : ICommandTarget
 	{
 		private PhasePage page;
-		private MainFormInteractor mainInteractor;
+		private PhasePageInteractor nextPage;
+		private MainForm form;
+		private DecompilerDriver decompiler;
 
-		public PhasePageInteractor(PhasePage page, MainFormInteractor mainInteractor)
+		public PhasePageInteractor(PhasePage page, MainForm form)
 		{
-			this.page = page;
-			this.mainInteractor = mainInteractor;
-			page.Enter += new EventHandler(OnPageEntered);
-			
+			this.page = page; 
+			this.form = form;
+		}
+
+		public DecompilerDriver Decompiler
+		{
+			get { return decompiler; }
+			set { decompiler = value; }
 		}
 
 		public MainForm MainForm
 		{
-			get { return mainInteractor.MainForm; }
+			get { return form; }
 		}
 
-		public MainFormInteractor MainInteractor
+		public PhasePageInteractor NextPage
 		{
-			get { return mainInteractor; }
+			get { return nextPage; }
+			set { nextPage = value; }
 		}
+
+		/// <summary>
+		/// Displays and populates all the controls for this phase page.
+		/// </summary>
+		public abstract void PopulateControls();
 
 		#region ICommandTarget Members
 
@@ -61,13 +73,5 @@ namespace Decompiler.WindowsGui.Forms
 		}
 
 		#endregion
-
-		// Event handlers /////////////////////////////////
-
-		public virtual void OnPageEntered(object sender, EventArgs e)
-		{
-			System.Diagnostics.Debug.WriteLine(string.Format("Entered {0}",  sender.GetType().Name));
-			mainInteractor.CommandTarget = this;
-		}
 	}
 }

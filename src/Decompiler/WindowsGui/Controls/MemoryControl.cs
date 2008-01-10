@@ -47,6 +47,8 @@ namespace Decompiler.WindowsGui.Controls
 		private int cbRow;
 		private ProgramImage image;
 		private Address addrSelected;
+		private Address addrAnchor;			// The start of the selection.
+		private Address addrFocus;			// The end of the 
 
 		private int cRows;				// total number of rows.
 		private int yTopRow;			// index of topmost visible row
@@ -62,7 +64,7 @@ namespace Decompiler.WindowsGui.Controls
 			SetStyle(ControlStyles.UserPaint, true);
 			vscroller = new VScrollBar();
 			vscroller.Dock = DockStyle.Right;
- 			Controls.Add(vscroller);
+			Controls.Add(vscroller);
 			vscroller.Scroll += new ScrollEventHandler(vscroller_Scroll);
 			wordSize = 1;
 			cbRow = 16;
@@ -104,15 +106,6 @@ namespace Decompiler.WindowsGui.Controls
 			}
 		}
 
-		private bool IsVisible(Address addr)
-		{
-			if (addr == null)
-				return false;
-			int cbOffset = addr - StartAddress;
-			int yRow = cbOffset / cbRow;
-			return (yTopRow <= yRow && yRow < yTopRow + cyPage);
-		}
-
 		private Brush GetBackgroundBrush(ImageMapItem item, bool selected)
 		{
 			if (selected)
@@ -143,25 +136,45 @@ namespace Decompiler.WindowsGui.Controls
 			}
 		}
 
+		private bool IsVisible(Address addr)
+		{
+			if (addr == null)
+				return false;
+			int cbOffset = addr - TopAddress;
+			int yRow = cbOffset / cbRow;
+			return (yTopRow <= yRow && yRow < yTopRow + cyPage);
+		}
+
+		private void MoveSelection(int offset)
+		{
+			int linAddr = SelectedAddress.Linear + offset;
+			Address addr = image.Map.MapLinearAddressToAddress(linAddr);
+			if (!image.IsValidAddress(addr))
+				return;
+			if (IsVisible(SelectedAddress))
+			{
+				TopAddress += offset;
+			}
+			SelectedAddress = addr;
+			Invalidate();
+		}
+
+
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			switch (e.KeyCode)
 			{
 			case Keys.Down:
-				SelectedAddress += cbRow;
-				Invalidate();
+				MoveSelection(cbRow);
 				break;
 			case Keys.Up:
-				SelectedAddress -= cbRow;
-				Invalidate();
+				MoveSelection(-cbRow);
 				break;
 			case Keys.Left:
-				SelectedAddress -= wordSize;
-				Invalidate();
+				MoveSelection(-wordSize);
 				break;
 			case Keys.Right:
-				SelectedAddress += wordSize;
-				Invalidate();
+				MoveSelection(wordSize);
 				break;
 			}
 			base.OnKeyDown(e);
@@ -397,21 +410,10 @@ namespace Decompiler.WindowsGui.Controls
 
 			if (!IsVisible(addr))
 			{
-				StartAddress = addr;
+				TopAddress = RoundToNearestRow(addr);
 				yTopRow = cbOffset / cbRow;
 				vscroller.Value = yTopRow;
 				Invalidate();
-			}
-		}
-
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Address StartAddress
-		{
-			get { return addrTopVisible; }
-			set { 
-				addrTopVisible = RoundToNearestRow(value); 
-				UpdateScroll();
 			}
 		}
 
@@ -432,6 +434,7 @@ namespace Decompiler.WindowsGui.Controls
 			cyPage = Math.Max((ClientRectangle.Height / Font.Height) - 1, 1);
 			vscroller.LargeChange = cyPage;
 			vscroller.Maximum = cRows - cyPage;
+			vscroller.Value = (addrTopVisible.Linear - image.BaseAddress.Linear) / cbRow;
 		}
 
 		public int WordSize

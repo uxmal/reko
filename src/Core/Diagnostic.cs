@@ -20,19 +20,11 @@ using System;
 
 namespace Decompiler.Core
 {
-	public interface IRewriterHost
+	public enum Diagnostic
 	{
-		void AddCallEdge(Procedure caller, Statement stm, Procedure callee);
-		ImageReader CreateImageReader(Address addr);
-		PseudoProcedure EnsurePseudoProcedure(string name, int arity);
-		Procedure GetProcedureAtAddress(Address addr, int cbReturnAddress);
-		ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
-		Procedure [] GetProceduresFromVector(Address addrCallingInstruction, int cbReturnAddress);
-		PseudoProcedure GetImportThunkAtAddress(Address addrThunk);
-		VectorUse VectorUseAt(Address addr);
-		SystemService SystemCallAt(Address addr);
-		PseudoProcedure TrampolineAt(Address addr);
-		ProgramImage Image { get; }
-		void WriteDiagnostic(Diagnostic d, string format, params object [] args);
+		FatalError,
+		Error,
+		Warning,
+		Info
 	}
 }

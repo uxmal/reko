@@ -189,7 +189,7 @@ namespace Decompiler.Typing
 
 		public override Expression TransformSegmentedAccess(SegmentedAccess access)
 		{
-			throw new NotImplementedException();
+			return access;
 		}
 
 		#endregion

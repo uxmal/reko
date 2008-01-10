@@ -124,20 +124,6 @@ namespace Decompiler.Scanning
 			return procs;
 		}
 
-		public Procedure [] GetAddressesFromVector(Address addr, int cbReturnAddress)
-		{
-			VectorUse vu = (VectorUse) vectorUses[addr];
-			if (vu == null)
-				return null;
-			ImageMapVectorTable vector = (ImageMapVectorTable) Image.Map.FindItemExact(vu.TableAddress);
-			Procedure [] procs = new Procedure[vector.Addresses.Count];
-			for (int i = 0; i < vector.Addresses.Count; ++i)
-			{
-				procs[i] = GetProcedureAtAddress((Address) vector.Addresses[i], cbReturnAddress);
-			}
-			return procs;
-		}
-
 		public virtual PseudoProcedure GetImportThunkAtAddress(Address addrThunk)
 		{
 			return (PseudoProcedure) prog.ImportThunks[(uint) addrThunk.Linear];		//$REVIEW: should be external procedures, since they have real signatures.
@@ -173,7 +159,6 @@ namespace Decompiler.Scanning
 			try
 			{
 				proceduresRewritten.Add(proc, proc);
-
 				proc.Frame.ReturnAddressSize = cbReturnAddress;
 				RewriteProcedureBlocks(proc, addrProc);
 			} 
@@ -191,7 +176,6 @@ namespace Decompiler.Scanning
 			prw = new ProcedureRewriter(this, proc);
 			Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, this, new CodeEmitter(prog, proc));
 			prw.Rewriter = rw;
-//			ImageMapItem item = Image.MapFindItemExact(addrProc);
 			prw.RewriteBlock(addrProc, proc.EntryBlock);
 			proc.RenumberBlocks();
 
@@ -224,6 +208,11 @@ namespace Decompiler.Scanning
 		public VectorUse VectorUseAt(Address addrInstr)
 		{
 			return (VectorUse) vectorUses[addrInstr];
+		}
+
+		public void WriteDiagnostic(Diagnostic diagnostic, string format, params object [] args)
+		{
+			host.WriteDiagnostic(diagnostic, format, args);
 		}
 	}
 }

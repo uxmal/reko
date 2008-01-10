@@ -126,7 +126,5 @@ namespace Decompiler.Core
 		{
 			return new BinaryExpression(Operator.sub, left.DataType, left, new Constant(left.DataType, right));
 		}
-
-
 	}
 }

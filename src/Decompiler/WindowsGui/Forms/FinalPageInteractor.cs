@@ -18,13 +18,21 @@
 
 using System;
 
-namespace Decompiler
+namespace Decompiler.WindowsGui.Forms
 {
-	public enum Diagnostic
+	public class FinalPageInteractor : PhasePageInteractor
 	{
-		FatalError,
-		Error,
-		Warning,
-		Info
+		public FinalPageInteractor(FinalPage page, MainForm form) :
+			base(page, form)
+		{
+		}
+
+		public override void PopulateControls()
+		{
+			Decompiler.RewriteMachineCode();
+			Decompiler.AnalyzeDataFlow();
+			Decompiler.ReconstructTypes();
+			Decompiler.StructureProgram();
+		}
 	}
 }

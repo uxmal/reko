@@ -172,32 +172,39 @@ namespace Decompiler.UnitTests.Intel
 	public class FakeRewriterHost : IRewriterHost
 	{
 		private Hashtable callSignatures;
+		private Hashtable procedures;
 
 		public FakeRewriterHost()
 		{
 			callSignatures = new Hashtable();
+			procedures = new Hashtable();
 		}
+
 
 		public void AddCallSignature(Address addr, ProcedureSignature sig)
 		{
 			callSignatures[addr] = sig;
 		}
 
+		public void AddProcedureAtAddress(Address addr, Procedure proc)
+		{
+			procedures[addr] = proc;
+		}
+
 		#region IRewriterHost Members
+
+		public void AddCallEdge(Procedure caller, Statement stm, Procedure callee)
+		{
+		}
 
 		public ImageReader CreateImageReader(Address addr)
 		{
-			return null;
+			throw new NotImplementedException();
 		}
 
 		public PseudoProcedure EnsurePseudoProcedure(string name, int args)
 		{
-			return null;
-		}
-
-		public Procedure[] GetAddressesFromVector(Address addrCaller, int cbReturnAddress)
-		{
-			return null;
+			throw new NotImplementedException();
 		}
 
 		public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
@@ -205,44 +212,35 @@ namespace Decompiler.UnitTests.Intel
 			return (ProcedureSignature) callSignatures[addrCallInstruction];
 		}
 
+
+		public Procedure[] GetAddressesFromVector(Address addrCaller, int cbReturnAddress)
+		{
+			return null;
+		}
+
+		public Procedure[] GetProceduresFromVector(Address addrCaller, int cbReturnAddress)
+		{
+			return new Procedure[0];
+		}
+
 		public PseudoProcedure GetImportThunkAtAddress(Address addr)
 		{
 			return null;
 		}
 
-		public ProgramImage Image
-		{
-			get { return null; }
-		}
-
-		public ImageMap ImageMap
-		{
-			get
-			{
-				// TODO:  Add FakeRewriterHost.ImageMap getter implementation
-				return null;
-			}
-		}
-
 		public Procedure GetProcedureAtAddress(Address addr, int cbStackDepth)
 		{
-			throw new NotImplementedException();
+			return (Procedure) procedures[addr];
 		}
 
 		public Procedure [] GetProceduresFromVector(Address vectorAddress)
 		{
-			throw new NotImplementedException();
+			return new Procedure[0];
 		}
 
-		public void AddCallEdge(Procedure caller, Statement stm, Procedure callee)
+		public ProgramImage Image
 		{
-			// TODO:  Add FakeRewriterHost.AddCallEdge implementation
-		}
-
-		public VectorUse VectorUseAt(Address addr)
-		{
-			// TODO:  Add FakeRewriterHost.VectorUseAt implementation
-			return null;
+			get { throw new NotImplementedException(); }
 		}
 
 		public SystemService SystemCallAt(Address addr)
@@ -254,6 +252,19 @@ namespace Decompiler.UnitTests.Intel
 		public PseudoProcedure TrampolineAt(Address addr)
 		{
 			return null;
+		}
+
+		public VectorUse VectorUseAt(Address addr)
+		{
+			// TODO:  Add FakeRewriterHost.VectorUseAt implementation
+			return null;
+		}
+
+		public void WriteDiagnostic(Diagnostic d, string format, params object [] args)
+		{
+			Console.Write(d.ToString());
+			Console.Write(" ");
+			Console.WriteLine(format, args);
 		}
 		#endregion
 

@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Gui;
 using Decompiler.WindowsGui.Forms;
@@ -28,93 +29,66 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	[TestFixture]
 	public class MainFormInteractorTests
 	{
-		private string execCommand;
+		private MainForm form;
+		private MainFormInteractor interactor;
+
+		[SetUp]
+		public void Setup()
+		{
+			form = new MainForm();
+		}
+
+		[TearDown]
+		public void TearDown()
+		{
+			form.Dispose();
+		}
 
 		[Test]
 		public void CreateForm()
 		{
+			interactor = new MainFormInteractor(form);
 			// When opening the application for the very first time, we should be on the initial page, and 
 			// most controls on the mainform should be disabled.
 
-			using (MainForm form = new MainForm())
-			{
-				MainFormInteractor i = new MainFormInteractor(form);
-				Assert.IsFalse(form.BrowserFilter.Enabled, "Browser filter should be disabled");
-				Assert.IsFalse(form.BrowserTree.Enabled, "Browser tree should be disabled");
-				Assert.IsFalse(form.BrowserList.Enabled, "Browser list should be disabled");
+			Assert.IsFalse(form.BrowserFilter.Enabled, "Browser filter should be disabled");
+			Assert.IsFalse(form.BrowserTree.Enabled, "Browser tree should be disabled");
+			Assert.IsFalse(form.BrowserList.Enabled, "Browser list should be disabled");
 
-				Assert.AreSame(form.InitialPage, form.PhasePage);
-			}
-		}
-
-		[Test]
-		public void CommandRouting()
-		{
-			TestCommandTarget tgt0 = new TestCommandTarget("Hello", this);
-			TestCommandTarget tgt1 = new TestCommandTarget("World", this);
-			using (MainForm form = new MainForm())
-			{
-				MainFormInteractor i = new MainFormInteractor(form);
-				i.CommandTarget = tgt0;
-				Guid gid = new Guid("00001111-2222-3333-4444-555566667777");
-				i.Execute(ref gid, 0);
-				Assert.AreEqual("Hello", ExecutedCommand);
-				i.CommandTarget = tgt1;
-				i.Execute(ref gid, 0);
-				Assert.AreEqual("World", ExecutedCommand);
-			}
+			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPage);
 		}
 
 		[Test]
 		public void OpenBinary()
 		{
-			using (MainForm form = new MainForm())
-			{
-				Program prog = new Program();
-				prog.Image = new ProgramImage(new Address(0xC00, 0), new byte [300]);
-				MainFormInteractor i = new TestMainFormInteractor(form, prog);
-				i.OpenBinary(null);
-				Assert.AreEqual(form.LoadedPage, form.PhasePage);
-				Assert.IsFalse(form.BrowserFilter.Enabled);
-				Assert.IsTrue(form.BrowserTree.Enabled);
-				Assert.IsFalse(form.BrowserList.Visible);
-			}
+			Program prog = CreateFakeProgram();
+			interactor = new TestMainFormInteractor(form, prog);
+
+			interactor.OpenBinary(null);
+			Assert.AreEqual(form.LoadedPage, form.PhasePage);
+			Assert.IsFalse(form.BrowserFilter.Enabled);
+			Assert.IsFalse(form.BrowserTree.Enabled);
+			Assert.IsTrue(form.BrowserList.Enabled);
 		}
 
-
-		public string ExecutedCommand
+		[Test]
+		public void NextPhase()
 		{
-			get { return execCommand; }
-			set { execCommand = value; }
+			Program prog = CreateFakeProgram();
+			interactor = new TestMainFormInteractor(form, prog);
+			interactor.OpenBinary(null);
+			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPage);
+			interactor.NextPhase();
+			Assert.AreEqual(interactor.FinalPageInteractor, interactor.CurrentPage);
 		}
 
-		private class TestCommandTarget : ICommandTarget
+		private Program CreateFakeProgram()
 		{
-			private string message;
-			private MainFormInteractorTests test;
-
-			public TestCommandTarget(string message, MainFormInteractorTests test)
-			{
-				this.message = message;
-				this.test = test;
-			}
-
-			#region ICommandTarget Members
-
-			public bool Execute(ref Guid cmdSet, int cmdId)
-			{
-				test.ExecutedCommand = message;
-				return true;
-			}
-
-			public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
-			{
-				return false;
-			}
-
-			#endregion
+			Program prog = new Program();
+			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
+			prog.Image = new ProgramImage(new Address(0xC00, 0), new byte [300]);
+			return prog;
 		}
-
 	}
 
 	public class TestMainFormInteractor : MainFormInteractor
@@ -127,7 +101,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			this.program = program;
 		}
 
-		public TestMainFormInteractor(TestDecompiler test)
+		public TestMainFormInteractor(MainForm form, TestDecompiler test) : base(form)
 		{
 			decompiler = test;
 		}

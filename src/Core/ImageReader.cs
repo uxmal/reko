@@ -74,7 +74,7 @@ namespace Decompiler.Core
 
 		public byte ReadByte()
 		{
-			byte b = ProgramImage.ReadByte(img, off);
+			byte b = img[off];
 			++off;
 			return b;
 		}

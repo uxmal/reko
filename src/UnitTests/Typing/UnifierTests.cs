@@ -40,7 +40,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyInt32()
 		{
-			Unifier un = new Unifier(factory);
 			DataType d = un.Unify(PrimitiveType.Word32, PrimitiveType.Word32);
 			PrimitiveType p = (PrimitiveType) d;
 			Assert.AreEqual(PrimitiveType.Word32, p);
@@ -49,7 +48,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyIntShort()
 		{
-			Unifier un = new Unifier(new TypeFactory());
 			DataType d = un.Unify(PrimitiveType.Word16, PrimitiveType.Word32);
 			UnionType u = (UnionType) d;
 			Assert.AreEqual(2, u.Alternatives.Count);
@@ -58,7 +56,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyIntReal()
 		{
-			Unifier un = new Unifier(factory);
 			DataType d = un.Unify(PrimitiveType.Real32, PrimitiveType.Word32);
 			PrimitiveType p = (PrimitiveType) d;
 			Assert.AreEqual(PrimitiveType.Real32, p);
@@ -71,7 +68,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyStructs()
 		{
-			Unifier un = new Unifier(new TypeFactory());
 			StructureType m1 = new StructureType(null, 0, new StructureField(4, PrimitiveType.Word32));
 			StructureType m2 = new StructureType(null, 0, new StructureField(8, PrimitiveType.Word32));
 
@@ -91,7 +87,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyStructTypevars()
 		{
-			Unifier un = new Unifier(new TypeFactory());
 			StructureType m1 = new StructureType(null, 0, new StructureField(4, factory.CreateTypeVariable()));
 			StructureType m2 = new StructureType(null, 0, new StructureField(4, factory.CreateTypeVariable()));
 
@@ -104,7 +99,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyNull()
 		{
-			Unifier un = new Unifier(new TypeFactory());
 			PrimitiveType p = PrimitiveType.Word32;
 			DataType d = un.Unify(null, p);
 			Assert.AreSame(d, p);
@@ -116,7 +110,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyEmptyStruct()
 		{
-			Unifier un = new Unifier(new TypeFactory());
 			StructureType m1 = new StructureType(null, 0, new StructureField(4, PrimitiveType.Word32));
 			StructureType m2 = new StructureType(null, 0);
 
@@ -127,7 +120,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyTypeVars()
 		{
-			Unifier un = new Unifier(new TypeFactory());
 			TypeVariable tv1 = new TypeVariable(1);
 			TypeVariable tv2 = new TypeVariable(2);
 
@@ -142,7 +134,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifySameOffsets()
 		{
-			Unifier un = new Unifier(factory);
 			StructureType m1 = new StructureType(null, 0);
 			m1.Fields.Add(new StructureField(4, PrimitiveType.Word32));
 			m1.Fields.Add(new StructureField(8, PrimitiveType.Int32));
@@ -172,8 +163,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyUnion()
 		{
-			Unifier un = new Unifier(new TypeFactory());
-			
 			PrimitiveType p1 = PrimitiveType.Real32;
 			PrimitiveType p2 = PrimitiveType.UInt32;
 			UnionType u1 = (UnionType) un.Unify(p1, p2);
@@ -188,7 +177,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyUnionMem()
 		{
-			Unifier un = new Unifier(new TypeFactory());
 			TypeVariable tv1 = new TypeVariable(1);
 			TypeVariable tv2 = new TypeVariable(2);
 			DataType dt = un.Unify(
@@ -212,7 +200,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyUnknownInt()
 		{
-			Unifier un = new Unifier(factory);
 			DataType dt = un.Unify(PrimitiveType.Int32, factory.CreateUnknown());
 			PrimitiveType p = (PrimitiveType) dt;
 			Assert.AreEqual("int32", dt.ToString());
@@ -221,7 +208,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyPtrWord()
 		{
-			Unifier un = new Unifier(factory);
 			Pointer ptr = factory.CreatePointer(PrimitiveType.Word32, 0);
 			DataType dt = un.Unify(ptr, PrimitiveType.Word32);
 			Assert.AreEqual("(ptr word32)", dt.ToString());
@@ -232,7 +218,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyStructNamedStruct()
 		{
-			Unifier un = new Unifier(new TypeFactory());
 			StructureType st1 = new StructureType("foo", 0);
 			StructureType st2 = new StructureType(null, 0, new StructureField(0, PrimitiveType.Word32, "bar"));
 			StructureType st = (StructureType) un.Unify(st1, st2);
