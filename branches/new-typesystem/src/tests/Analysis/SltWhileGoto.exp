@@ -1,0 +1,112 @@
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {Mem13 = PHI(Mem0, Mem27, Mem19)}
+fp: fp:Temporary
+si: si:Register si, def: {def si}, uses: {si_12 = PHI(si, si_15, si_15)}{ax_33 = si_15 - si}
+bx: bx:Register bx
+ax: ax:Register ax
+ds: ds:Register ds, def: {def ds}, uses: {ax_14 = Mem13[ds:si_12:word16]}{store(Mem19[ds:di:word16]) = ax_14}{store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001}{store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001}{store(Mem42[ds:0x0300:word16]) = ax_40}
+SCZO: SCZO:Flags
+Z: Z:Flags
+di: di:Register di, def: {def di}, uses: {store(Mem19[ds:di:word16]) = ax_14}
+v9: v9:Temporary
+SZO: SZO:Flags
+bx_11: orig: bx
+si_12: orig: si, def: {si_12 = PHI(si, si_15, si_15)}, uses: {ax_14 = Mem13[ds:si_12:word16]}{si_15 = si_12 + 0x0002}
+Mem13: orig: Mem0, def: {Mem13 = PHI(Mem0, Mem27, Mem19)}, uses: {ax_14 = Mem13[ds:si_12:word16]}
+ax_14: orig: ax, def: {ax_14 = Mem13[ds:si_12:word16]}, uses: {store(Mem19[ds:di:word16]) = ax_14}{branch ax_14 != 0x0020}{branch ax_14 != 0x0000}{branch ax_14 != 0x000D}
+si_15: orig: si, def: {si_15 = si_12 + 0x0002}, uses: {si_12 = PHI(si, si_15, si_15)}{si_12 = PHI(si, si_15, si_15)}{ax_33 = si_15 - si}
+SCZO_16: orig: SCZO
+Z_17: orig: Z
+SZO_18: orig: SZO
+Mem19: orig: Mem0, def: {store(Mem19[ds:di:word16]) = ax_14}, uses: {Mem13 = PHI(Mem0, Mem27, Mem19)}{store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001}
+SCZO_20: orig: SCZO
+Z_21: orig: Z
+SZO_22: orig: SZO
+SCZO_23: orig: SCZO
+Z_24: orig: Z
+SZO_25: orig: SZO
+v9_26: orig: v9, uses: {store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001}
+Mem27: orig: Mem0, def: {store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001}, uses: {Mem13 = PHI(Mem0, Mem27, Mem19)}
+SZO_28: orig: SZO
+SCZO_29: orig: SCZO
+Z_30: orig: Z
+ax_31: orig: ax, def: {ax_31 = 0xFFFF}, uses: {ax_40 = PHI(ax_33, ax_31)}
+ax_32: orig: ax
+ax_33: orig: ax, def: {ax_33 = si_15 - si}, uses: {ax_40 = PHI(ax_33, ax_31)}
+SCZO_34: orig: SCZO
+Z_35: orig: Z
+SZO_36: orig: SZO
+SZO_37: orig: SZO
+Z_38: orig: Z
+SCZO_39: orig: SCZO
+ax_40: orig: ax, def: {ax_40 = PHI(ax_33, ax_31)}, uses: {store(Mem42[ds:0x0300:word16]) = ax_40}
+Mem41: orig: Mem0
+Mem42: orig: Mem0, def: {store(Mem42[ds:0x0300:word16]) = ax_40}
+liveIn: 
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def si
+	def ds
+	def di
+	// succ:  1
+liveOut: Mem0 si ds di
+
+liveIn:  Mem0 si ds di
+l0C00_0000:		// block 1, pred: 0
+	// succ:  2
+liveOut: Mem0 si ds di v9_26
+
+liveIn:  si ds di v9_26
+l0C00_001A:		// block 2, pred: 1 5 4
+	si_12 = PHI(si, si_15, si_15)
+	Mem13 = PHI(Mem0, Mem27, Mem19)
+	ax_14 = Mem13[ds:si_12:word16]
+	si_15 = si_12 + 0x0002
+	branch ax_14 != 0x0020
+	// succ:  7 3
+liveOut: si ds di ax_14 si_15 v9_26
+
+liveIn:  si ds di ax_14 si_15 v9_26
+l0C00_0005:		// block 3, pred: 2
+	store(Mem19[ds:di:word16]) = ax_14
+	branch ax_14 != 0x0000
+	// succ:  6 4
+liveOut: si ds di ax_14 si_15 Mem19 v9_26
+
+liveIn:  si ds di ax_14 si_15 Mem19 v9_26
+l0C00_0011:		// block 4, pred: 3
+	branch ax_14 != 0x000D
+	// succ:  5 2
+liveOut: si ds di si_15 Mem19 v9_26
+
+liveIn:  si ds di si_15 Mem19 v9_26
+l0C00_0016:		// block 5, pred: 4
+	store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
+	// succ:  2
+liveOut: si ds di si_15 v9_26 Mem27
+
+liveIn:  ds
+l0C00_000B:		// block 6, pred: 3
+	ax_31 = 0xFFFF
+	// succ:  8
+liveOut: ds ax_31
+
+liveIn:  si ds si_15
+l0C00_0020:		// block 7, pred: 2
+	ax_33 = si_15 - si
+	// succ:  8
+liveOut: ds ax_33
+
+liveIn:  ds
+l0C00_0024:		// block 8, pred: 7 6
+	ax_40 = PHI(ax_33, ax_31)
+	store(Mem42[ds:0x0300:word16]) = ax_40
+	return
+	// succ:  9
+liveOut:
+
+liveIn: 
+fn0C00_0000_exit:		// block 9, pred: 8
+	// succ: 
+liveOut:
+
+

@@ -1,0 +1,89 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  dx
+	BypassIn: 
+	Trashed:   SCZO ax dx al dl ah dh
+	Preserved:
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: dx
+l0C00_0000:		// block 1, pred: 0
+	call fn0C00_0004 (depth: 2;)
+	return
+	// succ:  2
+// DataOut:
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// DataOut:
+// fn0C00_0004 /////////////////////
+	LiveOut:   ax dx
+	MayUseIn:  dx
+	BypassIn: 
+	Trashed:   SCZO ax dx al dl ah dh
+	Preserved:
+// fn0C00_0004
+void fn0C00_0004()
+fn0C00_0004_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: dx
+l0C00_0004:		// block 1, pred: 0
+	SCZO = cond(dx - 0x001E)
+	branch Test(NE,Z)
+	// succ:  3 2
+// DataOut: dx
+l0C00_000F:		// block 2, pred: 1
+	dx = dx - 0x0001
+	SZO = cond(dx)
+	// succ:  4
+// DataOut: dx
+l0C00_0009:		// block 3, pred: 1
+	call fn0C00_0013 (depth: 2;)
+	// succ:  4
+// DataOut: dx
+l0C00_0010:		// block 4, pred: 3 2
+	ax = dx
+	return
+	// succ:  5
+// DataOut: ax dx
+fn0C00_0004_exit:		// block 5, pred: 4
+	// succ: 
+// DataOut: ax dx
+// fn0C00_0013 /////////////////////
+	LiveOut:   dx
+	MayUseIn:  dx
+	BypassIn: 
+	Trashed:   SCZO ax dx al dl ah dh
+	Preserved:
+// fn0C00_0013
+void fn0C00_0013()
+fn0C00_0013_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: dx
+l0C00_0013:		// block 1, pred: 0
+	SCZO = cond(dx - 0x0014)
+	branch Test(LT,SO)
+	// succ:  3 2
+// DataOut: dx
+l0C00_001F:		// block 2, pred: 1
+	dx = dx - 0x000A
+	SCZO = cond(dx)
+	call fn0C00_0004 (depth: 2;)
+	// succ:  4
+// DataOut: ax dx
+l0C00_0018:		// block 3, pred: 1
+	dx = dx - 0x0001
+	SZO = cond(dx)
+	call fn0C00_0004 (depth: 2;)
+	// succ:  4
+// DataOut: ax dx
+l0C00_0025:		// block 4, pred: 3 2
+	ax = ax + 0x0001
+	SZO = cond(ax)
+	return
+	// succ:  5
+// DataOut: dx
+fn0C00_0013_exit:		// block 5, pred: 4
+	// succ: 
+// DataOut: dx

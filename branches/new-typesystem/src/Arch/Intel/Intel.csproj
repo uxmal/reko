@@ -1,0 +1,204 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Decomp.Arch.Intel</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Decompiler.Arch.Intel</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Name>Core</Name>
+      <Project>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assembler\Emitter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assembler\ErrorEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assembler\IntelAssembler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assembler\Lexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assembler\ModRmBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assembler\OperandParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assembler\ParsedOperand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assembler\Symbol.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assembler\Token.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DeadConditionFlagsFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntelBackWalker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntelCodeWalker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntelDisassembler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntelDumper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntelInstruction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntelInstructionComparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntelProcessorArchitecture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntelRegister.cs" />
+    <Compile Include="IntelRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntelState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LongAddRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MemoryOperand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsDos\MsdosPlatform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Opcode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OperandRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProcessorMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RewriterState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StringInstructionRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Win32\Win32Platform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="MsDos\realmodeintservices.xml" />
+    <Content Include="Win32\advapi32.xml" />
+    <Content Include="Win32\comdlg32.xml" />
+    <Content Include="Win32\gdi32.xml" />
+    <Content Include="Win32\kernel32.xml" />
+    <Content Include="Win32\msvcrt.xml" />
+    <Content Include="Win32\shell32.xml" />
+    <Content Include="Win32\user32.xml" />
+    <Content Include="Win32\wininet.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

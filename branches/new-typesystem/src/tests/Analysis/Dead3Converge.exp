@@ -1,0 +1,50 @@
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+bx: bx:Register bx, def: {def bx}, uses: {branch bx == 0x0000}{branch bx > 0x0000}
+SCZO: SCZO:Flags
+Z: Z:Flags
+SZO: SZO:Flags
+ax: ax:Register ax
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem21[ds:0x0100:word16]) = ax_17}
+SCZO_8: orig: SCZO
+Z_9: orig: Z
+SZO_10: orig: SZO
+ax_11: orig: ax, def: {ax_11 = 0x0000}, uses: {ax_17 = PHI(ax_16, ax_15, ax_11)}
+SCZO_12: orig: SCZO
+Z_13: orig: Z
+SZO_14: orig: SZO
+ax_15: orig: ax, def: {ax_15 = 0x0001}, uses: {ax_17 = PHI(ax_16, ax_15, ax_11)}
+ax_16: orig: ax, def: {ax_16 = 0xFFFF}, uses: {ax_17 = PHI(ax_16, ax_15, ax_11)}
+ax_17: orig: ax, def: {ax_17 = PHI(ax_16, ax_15, ax_11)}, uses: {store(Mem21[ds:0x0100:word16]) = ax_17}
+SZO_18: orig: SZO
+Z_19: orig: Z
+SCZO_20: orig: SCZO
+Mem21: orig: Mem0, def: {store(Mem21[ds:0x0100:word16]) = ax_17}
+// fn0C00_0000
+void fn0C00_0000(word16 bx, segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def bx
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	branch bx == 0x0000
+	// succ:  3 2
+l0C00_0013:		// block 2, pred: 1
+	ax_11 = 0x0000
+	// succ:  6
+l0C00_0005:		// block 3, pred: 1
+	branch bx > 0x0000
+	// succ:  5 4
+l0C00_000D:		// block 4, pred: 3
+	ax_15 = 0x0001
+	// succ:  6
+l0C00_0007:		// block 5, pred: 3
+	ax_16 = 0xFFFF
+	// succ:  6
+l0C00_0015:		// block 6, pred: 5 4 2
+	ax_17 = PHI(ax_16, ax_15, ax_11)
+	store(Mem21[ds:0x0100:word16]) = ax_17
+	return
+	// succ:  7
+fn0C00_0000_exit:		// block 7, pred: 6
+	// succ: 

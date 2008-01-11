@@ -1,0 +1,93 @@
+void fn0C00_0000(Register segment ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO ax al ah
+// Preserved:
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// ax:Register ax
+// al:Register al
+// ds:Register ds
+// return address size: 2
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax = 0x0003
+	al = fn0C00_0015(ax)
+	store(Mem0[ds:0x0300:byte]) = al
+	ax = 0x0003
+	al = fn0C00_0020(ax)
+	store(Mem0[ds:0x0301:byte]) = al
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+Register byte fn0C00_0015(Register word16 ax)
+// MayUse:  ax
+// LiveOut: al
+// Trashed: SCZO ax al ah
+// Preserved:
+// fn0C00_0015
+// Mem0:Global memory
+// fp:Temporary
+// SCZO:Flags
+// ax:Register ax
+// Z:Flags
+// SZO:Flags
+// al:Register al
+// return address size: 2
+byte fn0C00_0015(word16 ax)
+fn0C00_0015_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0015:		// block 1, pred: 0
+	SCZO = cond(ax - 0x0000)
+	branch Test(EQ,Z)
+	// succ:  3 2
+l0C00_001D:		// block 2, pred: 1
+	al = 0x01
+	return al
+	// succ:  4
+l0C00_0019:		// block 3, pred: 1
+	ax = ax - 0x0001
+	SZO = cond(ax)
+	al = fn0C00_0020(ax)
+	return al
+	// succ:  4
+fn0C00_0015_exit:		// block 4, pred: 3 2
+	// succ: 
+Register byte fn0C00_0020(Register word16 ax)
+// MayUse:  ax
+// LiveOut: al
+// Trashed: SCZO ax al ah
+// Preserved:
+// fn0C00_0020
+// Mem0:Global memory
+// fp:Temporary
+// SCZO:Flags
+// ax:Register ax
+// Z:Flags
+// SZO:Flags
+// al:Register al
+// return address size: 2
+byte fn0C00_0020(word16 ax)
+fn0C00_0020_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0020:		// block 1, pred: 0
+	SCZO = cond(ax - 0x0000)
+	branch Test(EQ,Z)
+	// succ:  3 2
+l0C00_0028:		// block 2, pred: 1
+	al = 0x00
+	SCZO = cond(al)
+	return al
+	// succ:  4
+l0C00_0024:		// block 3, pred: 1
+	ax = ax - 0x0001
+	SZO = cond(ax)
+	al = fn0C00_0015(ax)
+	return al
+	// succ:  4
+fn0C00_0020_exit:		// block 4, pred: 3 2
+	// succ: 

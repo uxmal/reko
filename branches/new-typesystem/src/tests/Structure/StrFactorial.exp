@@ -1,0 +1,44 @@
+// fn0C00_0000
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0
+	store(Mem9[ds:0x0064:word16]) = fn0C00_000F(0x0064)
+	return
+
+void fn0C00_0000(segment ds)
+{
+	Mem9[ds:0x0064:word16] = fn0C00_000F(0x0064);
+	return;
+}
+===========================
+// fn0C00_000F
+word16 fn0C00_000F(word16 wArg00)
+fn0C00_000F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_000F:		// block 1, pred: 0
+	word16 ax_18
+	word16 ax_14 = wArg00 - 0x0001
+	branch ax_14 == 0x0000
+	// succ:  3 2
+l0C00_0026:		// block 2, pred: 1
+	ax_18 = 0x0001
+	// succ:  4
+l0C00_0018:		// block 3, pred: 1
+	ax_18 = (word16) (wArg00 * fn0C00_000F(ax_14)) (alias)
+	// succ:  4
+l0C00_0029:		// block 4, pred: 3 2
+	return ax_18
+	// succ:  5
+fn0C00_000F_exit:		// block 5, pred: 4
+	// succ: 
+
+word16 fn0C00_000F(word16 wArg00)
+{
+	word16 ax_18;
+	word16 ax_14 = wArg00 - 0x0001;
+	if (ax_14 == 0x0000)
+		ax_18 = 0x0001;
+	else
+		ax_18 = (word16) (wArg00 * fn0C00_000F(ax_14));
+	return ax_18;
+}
+===========================

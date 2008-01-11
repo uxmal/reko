@@ -1,0 +1,23 @@
+// Register word32 fn10000000(Stack word32 dwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse: 
+// LiveOut: eax
+// Trashed: SCZO eax ax al ah
+// Preserved: esi edi
+// Stack args: Stack +0000(32)
+// fn10000000
+word32 fn10000000(word32 dwArg00)
+fn10000000_entry:		// block 0, pred:
+	// succ:  1
+l10000000:		// block 1, pred: 0
+	branch dwArg00 > 0x00000001
+	// succ:  3 2
+l10000011:		// block 2, pred: 1
+	return fn10000000(dwArg00 - 0x00000001) + fn10000000(dwArg00 - 0x00000002)
+	// succ:  4
+l1000000A:		// block 3, pred: 1
+	return 0x00000001
+	// succ:  4
+fn10000000_exit:		// block 4, pred: 3 2
+	// succ: 
+

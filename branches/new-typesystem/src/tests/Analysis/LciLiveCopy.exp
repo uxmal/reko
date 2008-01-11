@@ -1,0 +1,18 @@
+// LiveCopyMock
+void LiveCopyMock()
+LiveCopyMock_entry:		// block 0, pred:
+	def reg
+	// succ:  1
+l1:		// block 1, pred: 0
+	reg_6 = reg
+	branch (reg & 0x00000001) == 0x00000000
+	// succ:  2 3
+l2:		// block 2, pred: 1
+	reg_5 = reg + 0x00000002
+	// succ:  3
+even:		// block 3, pred: 1 2
+	reg_6 = PHI(reg_6, reg_5)
+	return reg_6 - reg
+	// succ:  4
+LiveCopyMock_exit:		// block 4, pred: 3
+	// succ: 

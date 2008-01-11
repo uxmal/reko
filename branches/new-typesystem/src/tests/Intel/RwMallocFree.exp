@@ -1,0 +1,36 @@
+// fn10000000
+// Mem0:Global memory
+// fp:Temporary
+// al:Register al
+// eax:Register eax
+// v4:Temporary
+// v5:Temporary
+// v6:Temporary
+// v7:Temporary
+// SCZO:Flags
+// dwLoc08:Local -0008
+// return address size: 4
+void fn10000000()
+fn10000000_entry:		// block 0, pred:
+	// succ:  1
+l10000000:		// block 1, pred: 0
+	v4 = Mem0[eax:byte] + al
+	store(Mem0[eax:byte]) = v4
+	v5 = Mem0[eax:byte] + al
+	store(Mem0[eax:byte]) = v5
+	v6 = Mem0[eax:byte] + al
+	store(Mem0[eax:byte]) = v6
+	v7 = Mem0[eax:byte] + al
+	store(Mem0[eax:byte]) = v7
+	SCZO = cond(v7)
+	dwLoc08 = 0x00000008
+	eax = malloc(dwLoc08)
+	store(Mem0[eax:word32]) = 0x00000000
+	store(Mem0[eax + 0x00000004:word32]) = 0x00001024
+	dwLoc08 = eax
+	free(dwLoc08)
+	return
+	// succ:  2
+fn10000000_exit:		// block 2, pred: 1
+	// succ: 
+

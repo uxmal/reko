@@ -1,0 +1,59 @@
+Mem0:Global memory (aliases:)
+fp:Temporary (aliases:)
+cx:Register cx (aliases:)
+ax:Register ax (aliases:)
+ds:Register ds (aliases:)
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	cx = 0x0005
+	call fn0C00_000B (depth: 2;)
+	store(Mem0[ds:0x0064:word16]) = ax
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+Mem0:Global memory (aliases:)
+fp:Temporary (aliases:)
+si:Register si (aliases:)
+wLoc04:Local -0004 (aliases:)
+cx:Register cx (aliases:)
+SCZO:Flags (aliases: SZO)
+SZO:Flags (aliases: SCZO)
+ax:Register ax (aliases: dx_ax)
+dx:Register dx (aliases: dx_ax)
+dx_ax:Sequence dx:ax (aliases: ax dx)
+// fn0C00_000B
+void fn0C00_000B()
+fn0C00_000B_entry:		// block 0, pred:
+	// succ:  1
+l0C00_000B:		// block 1, pred: 0
+	wLoc04 = si
+	SCZO = cond(cx - 0x0001)
+	SZO = SCZO (alias)
+	branch Test(LE,SZO)
+	// succ:  3 2
+l0C00_001C:		// block 2, pred: 1
+	ax = 0x0001
+	dx_ax = SEQ(dx, ax) (alias)
+	// succ:  4
+l0C00_0011:		// block 3, pred: 1
+	si = cx
+	cx = cx - 0x0001
+	SZO = cond(cx)
+	call fn0C00_000B (depth: 4;)
+	dx_ax = si *s ax
+	ax = (word16) dx_ax (alias)
+	dx = SLICE(dx_ax, word16, 16) (alias)
+	SCZO = cond(dx_ax)
+	// succ:  4
+l0C00_001F:		// block 4, pred: 3 2
+	si = wLoc04
+	return
+	// succ:  5
+fn0C00_000B_exit:		// block 5, pred: 4
+	// succ: 
+

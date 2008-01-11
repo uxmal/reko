@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<project xmlns="http://schemata.jklnet.org/Decompiler">
+  <procedure name="maybeterminate">
+    <address>0C00:0015</address>
+    <signature>
+	  <return>
+	  <reg>ax</reg>
+	  </return>
+	  <arg><reg>ax</reg></arg>
+	  <arg><reg>bx</reg></arg>
+	</signature>
+  </procedure>
+</project>

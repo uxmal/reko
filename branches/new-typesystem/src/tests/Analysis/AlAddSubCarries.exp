@@ -1,0 +1,69 @@
+Mem0:Global memory (aliases:)
+fp:Temporary (aliases:)
+ds:Register ds (aliases:)
+ax:Register ax (aliases: dx_ax)
+dx:Register dx (aliases: dx_ax)
+cx:Register cx (aliases: bx_cx es_cx cl)
+bx:Register bx (aliases: bx_cx)
+bx_cx:Sequence bx:cx (aliases: cx bx cl)
+dx_ax:Sequence dx:ax (aliases: ax dx)
+SCZO:Flags (aliases: C)
+es:Register es (aliases: es_cx)
+es_cx:Sequence es:cx (aliases: cx es cl)
+cl:Register cl (aliases: cx bx_cx es_cx)
+v13:Temporary (aliases:)
+C:Flags (aliases: SCZO)
+v15:Temporary (aliases:)
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax = Mem0[ds:0x0200:word16]
+	dx = Mem0[ds:0x0202:word16]
+	dx_ax = SEQ(dx, ax) (alias)
+	cx = Mem0[ds:0x0204:word16]
+	bx = Mem0[ds:0x0206:word16]
+	bx_cx = SEQ(bx, cx) (alias)
+	dx_ax = dx_ax + bx_cx
+	ax = (word16) dx_ax (alias)
+	dx = SLICE(dx_ax, word16, 16) (alias)
+	SCZO = cond(dx_ax)
+	store(Mem0[ds:0x0208:word16]) = ax
+	store(Mem0[ds:0x020A:word16]) = dx
+	ax = Mem0[ds:0x0210:word16]
+	dx = Mem0[ds:0x0212:word16]
+	dx_ax = SEQ(dx, ax) (alias)
+	es_cx = Mem0[ds:0x0214:ptr32]
+	es = SLICE(es_cx, segment, 16) (alias)
+	bx = es
+	bx_cx = SEQ(bx, cx) (alias)
+	dx_ax = dx_ax - bx_cx
+	ax = (word16) dx_ax (alias)
+	dx = SLICE(dx_ax, word16, 16) (alias)
+	SCZO = cond(dx_ax)
+	store(Mem0[ds:0x0218:word16]) = ax
+	store(Mem0[ds:0x021A:word16]) = dx
+	ax = 0x0000
+	cl = Mem0[ds:0x0220:byte]
+	SCZO = cond(cl - 0x30)
+	C = SCZO (alias)
+	v13 = ax + ax
+	ax = v13 + (word16) C
+	cl = Mem0[ds:0x0221:byte]
+	cx = DPB(cx, cl, 0, 8) (alias)
+	bx_cx = DPB(bx_cx, cl, 0, 8) (alias)
+	es_cx = DPB(es_cx, cl, 0, 8) (alias)
+	SCZO = cond(cl - 0x3A)
+	C = SCZO (alias)
+	C = !C
+	v15 = ax + ax
+	ax = v15 + (word16) C
+	dx_ax = SEQ(dx, ax) (alias)
+	SCZO = cond(ax)
+	store(Mem0[ds:0x0222:word16]) = ax
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+

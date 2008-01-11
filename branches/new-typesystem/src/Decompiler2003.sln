@@ -1,0 +1,62 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decompiler2003", "Decompiler\Decompiler2003.csproj", "{D7596024-6BF0-491A-8369-831693AF94E2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901} = {C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intel2003", "Arch\Intel\Intel2003.csproj", "{7F7E97C7-F0E7-4947-BB49-25DCF343D190}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests2003", "UnitTests\UnitTests2003.csproj", "{72FAE235-604B-42ED-9CC5-1A475798FB9F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler2003", "WindowsDecompiler\WindowsDecompiler2003.csproj", "{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core2003", "Core\Core2003.csproj", "{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xslt", "tools\xslt\xslt.csproj", "{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{D7596024-6BF0-491A-8369-831693AF94E2}.Debug.ActiveCfg = Debug|.NET
+		{D7596024-6BF0-491A-8369-831693AF94E2}.Debug.Build.0 = Debug|.NET
+		{D7596024-6BF0-491A-8369-831693AF94E2}.Release.ActiveCfg = Release|.NET
+		{D7596024-6BF0-491A-8369-831693AF94E2}.Release.Build.0 = Release|.NET
+		{7F7E97C7-F0E7-4947-BB49-25DCF343D190}.Debug.ActiveCfg = Debug|.NET
+		{7F7E97C7-F0E7-4947-BB49-25DCF343D190}.Debug.Build.0 = Debug|.NET
+		{7F7E97C7-F0E7-4947-BB49-25DCF343D190}.Release.ActiveCfg = Release|.NET
+		{7F7E97C7-F0E7-4947-BB49-25DCF343D190}.Release.Build.0 = Release|.NET
+		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Debug.ActiveCfg = Debug|.NET
+		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Debug.Build.0 = Debug|.NET
+		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Release.ActiveCfg = Release|.NET
+		{72FAE235-604B-42ED-9CC5-1A475798FB9F}.Release.Build.0 = Release|.NET
+		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Debug.ActiveCfg = Debug|.NET
+		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Debug.Build.0 = Debug|.NET
+		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Release.ActiveCfg = Release|.NET
+		{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}.Release.Build.0 = Release|.NET
+		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Debug.ActiveCfg = Debug|.NET
+		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Debug.Build.0 = Debug|.NET
+		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Release.ActiveCfg = Release|.NET
+		{7E1DBAA2-66FE-4672-B7BD-50DE98CAAE2A}.Release.Build.0 = Release|.NET
+		{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}.Debug.ActiveCfg = Debug|.NET
+		{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}.Debug.Build.0 = Debug|.NET
+		{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}.Release.ActiveCfg = Release|.NET
+		{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

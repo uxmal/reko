@@ -1,0 +1,54 @@
+= fn0C00_0000 ========================
+Mem0: Mem0:Global memory, def: {def Mem0}
+fp: fp:Temporary, def: {def fp}
+ax: ax:Register ax, def: {def ax}
+SCZO: SCZO:Flags, def: {def SCZO}
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem7[ds:0x0300:word16]) = ax_5}{store(Mem8[ds:0x0302:word16]) = ax_5}{store(Mem9[ds:0x0304:word16]) = ax_5}
+ax_5: orig: ax, def: {ax_5 = 0x0000}, uses: {SCZO_6 = cond(ax_5)}{store(Mem7[ds:0x0300:word16]) = ax_5}{store(Mem8[ds:0x0302:word16]) = ax_5}{store(Mem9[ds:0x0304:word16]) = ax_5}
+SCZO_6: orig: SCZO, def: {SCZO_6 = cond(ax_5)}
+Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:word16]) = ax_5}
+Mem8: orig: Mem0, def: {store(Mem8[ds:0x0302:word16]) = ax_5}
+Mem9: orig: Mem0, def: {store(Mem9[ds:0x0304:word16]) = ax_5}
+// fn0C00_0000
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def ax
+	def SCZO
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax_5 = 0x0000
+	SCZO_6 = cond(ax_5)
+	store(Mem7[ds:0x0300:word16]) = ax_5
+	store(Mem8[ds:0x0302:word16]) = ax_5
+	store(Mem9[ds:0x0304:word16]) = ax_5
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+ax: ax:Register ax
+SCZO: SCZO:Flags
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem7[ds:0x0300:word16]) = 0x0000}{store(Mem8[ds:0x0302:word16]) = 0x0000}{store(Mem9[ds:0x0304:word16]) = 0x0000}
+ax_5: orig: ax
+SCZO_6: orig: SCZO
+Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:word16]) = 0x0000}
+Mem8: orig: Mem0, def: {store(Mem8[ds:0x0302:word16]) = 0x0000}
+Mem9: orig: Mem0, def: {store(Mem9[ds:0x0304:word16]) = 0x0000}
+// fn0C00_0000
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	store(Mem7[ds:0x0300:word16]) = 0x0000
+	store(Mem8[ds:0x0302:word16]) = 0x0000
+	store(Mem9[ds:0x0304:word16]) = 0x0000
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 

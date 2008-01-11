@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<project xmlns="http://schemata.jklnet.org/Decompiler">
+  <procedure name="alloca">
+    <address>0C00:0033</address>
+    <signature>
+      <ret><reg>ax</reg></ret>
+      <arg><reg>ax</reg></arg>
+    </signature>
+    <characteristics>	
+      <is-alloca>true</is-alloca>
+    </characteristics>	
+  </procedure>
+</project>

@@ -1,0 +1,8 @@
+// Equivalence classes ////////////
+Eq_1: word32
+	T_1 (in 0x0000002A : word32)
+// Type Variables ////////////
+T_1:(in 0x0000002A)
+  Class: Eq_1
+  DataType: word32
+  OrigDataType: word32

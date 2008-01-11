@@ -1,0 +1,85 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// es:Register es
+// bx:Register bx
+// es_bx:Sequence es:bx
+// ptrArg02:Stack +0002
+// wLoc06:Local -0006
+// wLoc08:Local -0008
+// ax:Register ax
+// wLoc0A:Local -000A
+// ds:Register ds
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	wLoc04 = bp
+	es_bx = ptrArg02
+	wLoc06 = es
+	wLoc08 = bx
+	call fn0C00_0020 (depth: 8;)
+	wLoc06 = ax
+	es_bx = ptrArg02
+	wLoc08 = es
+	wLoc0A = bx
+	call fn0C00_002E (depth: 10;)
+	store(Mem0[ds:0x0200:word16]) = ax
+	bp = wLoc04
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_0020
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// es:Register es
+// bx:Register bx
+// es_bx:Sequence es:bx
+// ptrArg00:Stack +0000
+// ax:Register ax
+// return address size: 2
+void fn0C00_0020()
+fn0C00_0020_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0020:		// block 1, pred: 0
+	wLoc04 = bp
+	es_bx = ptrArg00
+	ax = Mem0[es:bx + 0x0004:word16]
+	bp = wLoc04
+	return
+	// succ:  2
+fn0C00_0020_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_002E
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// es:Register es
+// bx:Register bx
+// es_bx:Sequence es:bx
+// ptrArg00:Stack +0000
+// wArg04:Stack +0004
+// ax:Register ax
+// SCZO:Flags
+// return address size: 2
+void fn0C00_002E()
+fn0C00_002E_entry:		// block 0, pred:
+	// succ:  1
+l0C00_002E:		// block 1, pred: 0
+	wLoc04 = bp
+	es_bx = ptrArg00
+	ax = wArg04
+	ax = ax + Mem0[es:bx + 0x0006:word16]
+	SCZO = cond(ax)
+	bp = wLoc04
+	return
+	// succ:  2
+fn0C00_002E_exit:		// block 2, pred: 1
+	// succ: 

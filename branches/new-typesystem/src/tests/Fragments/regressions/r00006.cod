@@ -1,0 +1,257 @@
+fn100048B0()
+	push	ebx
+	push	ebp
+	push	esi
+	push	edi
+	mov	di,[esp+14]
+	xor	bl,bl
+	test	di,di
+	jnz	100048D1
+
+l100048C0:
+	mov	byte ptr [1006B8E0],00
+	call	100325C0
+	pop	edi
+	pop	esi
+	pop	ebp
+	pop	ebx
+	ret	
+
+l100048D1:
+	mov	eax,[esp+1C]
+	cmp	dword ptr [eax],00
+	jnz	100048DC
+
+l100048DA:
+	mov	bl,01
+
+l100048DC:
+	mov	ebp,[esp+20]
+	push	1000A700
+	push	eax
+	mov	eax,[esp+20]
+	push	00003158
+	mov	ecx,[eax+000000D0]
+	push	ecx
+	push	eax
+	push	ebp
+	call	10025590
+	mov	esi,eax
+	add	esp,18
+	test	esi,esi
+	jnz	10004911
+
+l10004906:
+	pop	edi
+	mov	word ptr [ebp+00],FF94
+	pop	esi
+	pop	ebp
+	pop	ebx
+	ret	
+
+l10004911:
+	cmp	di,01
+	jnz	1000491D
+
+l10004917:
+	mov	byte ptr [esi+00000204],bl
+
+l1000491D:
+	push	esi
+	call	100058F0
+	mov	eax,[esi]
+	xor	ebp,ebp
+	add	esp,04
+	cmp	word ptr [eax],bp
+	jnz	10004ACF
+
+l10004933:
+	cmp	di,bp
+	jle	10004AAD
+
+l1000493C:
+	cmp	di,05
+	jg	10004AAD
+
+l10004946:
+	cmp	di,01
+	jnz	10004968
+
+l1000494C:
+	push	esi
+	call	100058F0
+	mov	edx,[esi+04]
+	add	esp,04
+	mov	eax,[edx+0C]
+	mov	ecx,[eax]
+	mov	dword ptr [ecx],00000001
+	jmp	10004AB2
+
+l10004968:
+	cmp	di,02
+	jnz	100049DA
+
+l1000496E:
+	mov	edx,[esi+04]
+	push	esi
+	mov	dword ptr [edx+30],ebp
+	call	100058F0
+	mov	eax,[esi+04]
+	push	01
+	mov	dword ptr [eax+30],ebp
+	mov	eax,[esi+04]
+	add	eax,16
+	mov	cx,[eax+02]
+	mov	word ptr [esi+000000B4],cx
+	mov	dx,[eax]
+	mov	word ptr [esi+000000B2],dx
+	mov	cx,[eax+06]
+	mov	word ptr [esi+000000B8],cx
+	mov	dx,[eax+04]
+	mov	word ptr [esi+000000B6],dx
+	mov	eax,[esi+04]
+	add	eax,16
+	push	eax
+	push	esi
+	call	1000D580
+	push	esi
+	call	1000D510
+	push	esi
+	call	1000D5E0
+	push	esi
+	call	10005A80
+	add	esp,1C
+	jmp	10004AB2
+
+l100049DA:
+	cmp	di,03
+	jnz	100049EE
+
+l100049E0:
+	push	esi
+	call	10004AE0
+	add	esp,04
+	jmp	10004AB2
+
+l100049EE:
+	cmp	di,04
+	jnz	10004A9C
+
+l100049F8:
+	mov	ecx,[esi+04]
+	cmp	dword ptr [ecx+000000E0],ebp
+	setnz	bl
+
+l10004A04:
+	push	esi
+	call	1000B860
+	mov	eax,[esi]
+	add	esp,04
+	cmp	word ptr [eax],bp
+	jz	10004A1B
+
+l10004A14:
+	mov	byte ptr [esi+000000AC],00
+
+l10004A1B:
+	cmp	byte ptr [esi+000000AD],01
+	jnz	10004A29
+
+l10004A24:
+	cmp	word ptr [eax],bp
+	jz	10004A04
+
+l10004A29:
+	cmp	word ptr [eax],bp
+	jnz	10004A37
+
+l10004A2E:
+	push	esi
+	call	10004EA0
+	add	esp,04
+
+l10004A37:
+	cmp	byte ptr [esi+000000AC],01
+	jnz	10004A5B
+
+l10004A40:
+	test	bl,bl
+	jz	10004AB2
+
+l10004A44:
+	mov	edx,[esi+04]
+	call	dword ptr [edx+000000E0]
+	mov	ecx,[esi]
+	mov	word ptr [ecx],ax
+	mov	edx,[esi]
+	cmp	word ptr [edx],bp
+	jnz	10004AB2
+
+l10004A59:
+	jmp	10004A04
+
+l10004A5B:
+	push	esi
+	call	1000A700
+	push	esi
+	call	1000D460
+	mov	eax,[esi+04]
+	push	ebp
+	push	ebp
+	push	ebp
+	add	eax,34
+	push	ebp
+	push	eax
+	call	10032760
+	mov	ecx,[esi+04]
+	push	ebp
+	push	ebp
+	push	ebp
+	add	ecx,40
+	push	ebp
+	push	ecx
+	call	10032760
+	mov	edx,[esi+04]
+	push	ebp
+	push	ebp
+	push	ebp
+	add	edx,60
+	push	ebp
+	push	edx
+	call	10032760
+	add	esp,44
+	jmp	10004AB2
+
+l10004A9C:
+	cmp	di,05
+	jnz	10004AB2
+
+l10004AA2:
+	push	esi
+	call	1000A450
+	add	esp,04
+	jmp	10004AB2
+
+l10004AAD:
+	mov	word ptr [eax],8A6C
+
+l10004AB2:
+	mov	eax,[esp+1C]
+	mov	eax,[eax]
+	cmp	eax,ebp
+	jz	10004ACF
+
+l10004ABC:
+	mov	ecx,[esi+04]
+	push	eax
+	mov	edx,[ecx+000000D0]
+	push	edx
+	call	10025160
+	add	esp,08
+
+l10004ACF:
+	pop	edi
+	pop	esi
+	pop	ebp
+	pop	ebx
+	ret	

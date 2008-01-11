@@ -1,0 +1,506 @@
+// fn100048B0
+void fn100048B0(word32 esi, word32 edi, word16 arg04, word32 arg08, word32 arg0C, word32 arg10)
+fn100048B0_entry:		// block 0, pred:
+	byte bl_48 = 0x00
+	branch arg04 != 0x0000
+	// succ:  33 1
+l100048D1:		// block 1, pred: 0
+	branch Mem0[arg0C:word32] != 0x00000000
+	// succ:  2 3
+l100048DA:		// block 2, pred: 1
+	bl_48 = 0x01
+	// succ:  3
+l100048DC:		// block 3, pred: 2 1
+	word32 ecx_67 = Mem0[arg08 + 0x000000D0:word32]
+	word32 eax_72 = fn10004B17(arg10, arg08, ecx_67, 0x00003158, arg0C, 0x1000A700)
+	branch eax_72 != 0x00000000
+	// succ:  32 4
+l10004911:		// block 4, pred: 3
+	branch arg04 != 0x0001
+	// succ:  5 6
+l10004917:		// block 5, pred: 4
+	store(Mem80[eax_72 + 0x00000204:byte]) = bl_48
+	// succ:  6
+l1000491D:		// block 6, pred: 5 4
+	fn10004ADD(eax_72)
+	word32 eax_83 = Mem81[eax_72:word32]
+	word16 ax_84 = (word16) eax_83
+	branch Mem81[eax_83:word16] != 0x0000
+	// succ:  7 34
+l1000492F:		// block 7, pred: 6
+	branch arg04 <= 0x0000
+	// succ:  8 27
+l10004934:		// block 8, pred: 7
+	branch arg04 > 0x0005
+	// succ:  9 27
+l1000493A:		// block 9, pred: 8
+	branch arg04 != 0x0001
+	// succ:  28 10
+l1000495C:		// block 10, pred: 9
+	branch arg04 != 0x0002
+	// succ:  25 11
+l100049D2:		// block 11, pred: 10
+	branch arg04 != 0x0003
+	// succ:  24 12
+l100049E6:		// block 12, pred: 11
+	branch arg04 != 0x0004
+	// succ:  13 26
+l100049EC:		// block 13, pred: 12
+	byte bl_105 = Mem81[Mem81[eax_72 + 0x00000004:word32] + 0x000000E0:word32] != 0x00000000
+	// succ:  14
+l100049F8:		// block 14, pred: 13 17 23
+	fn10004AF1(eax_72)
+	word32 eax_115 = Mem113[eax_72:word32]
+	branch Mem113[eax_115:word16] == 0x0000
+	// succ:  15 16
+l10004A08:		// block 15, pred: 14
+	store(Mem118[eax_72 + 0x000000AC:byte]) = 0x00
+	// succ:  16
+l10004A0F:		// block 16, pred: 15 14
+	branch Mem119[eax_72 + 0x000000AD:byte] != 0x01
+	// succ:  17 18
+l10004A18:		// block 17, pred: 16
+	branch Mem119[eax_115:word16] == 0x0000
+	// succ:  18 14
+l10004A1D:		// block 18, pred: 17 16
+	branch Mem119[eax_115:word16] != 0x0000
+	// succ:  19 20
+l10004A22:		// block 19, pred: 18
+	ax_84 = fn10004AD8(eax_72)
+	// succ:  20
+l10004A2B:		// block 20, pred: 19 18
+	branch Mem119[eax_72 + 0x000000AC:byte] != 0x01
+	// succ:  22 21
+l10004A52:		// block 21, pred: 20
+	fn10004AEC(eax_72)
+	fn10004AF6(eax_72)
+	fn10004B49(Mem119[eax_72 + 0x00000004:word32] + 0x00000034, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
+	fn10004B49(Mem119[eax_72 + 0x00000004:word32] + 0x00000040, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
+	fn10004B49(Mem119[eax_72 + 0x00000004:word32] + 0x00000060, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
+	// succ:  29
+l10004A34:		// block 22, pred: 20
+	branch bl_105 == 0x00000000
+	// succ:  23 29
+l10004A38:		// block 23, pred: 22
+	icall Mem119[Mem119[eax_72 + 0x00000004:word32] + 0x000000E0:word32]
+	store(Mem169[Mem119[eax_72:word32]:word16]) = ax_84
+	branch Mem169[Mem169[eax_72:word32]:word16] != 0x0000
+	// succ:  14 29
+l100049D8:		// block 24, pred: 11
+	fn10004AD3(eax_72)
+	// succ:  29
+l10004962:		// block 25, pred: 10
+	store(Mem177[Mem81[eax_72 + 0x00000004:word32] + 0x00000030:word32]) = 0x00000000
+	fn10004ADD(eax_72)
+	store(Mem180[Mem177[eax_72 + 0x00000004:word32] + 0x00000030:word32]) = 0x00000000
+	word32 eax_181 = Mem180[eax_72 + 0x00000004:word32]
+	store(Mem186[eax_72 + 0x000000B4:word16]) = Mem180[eax_181 + 0x00000012:word16]
+	eax_83 = eax_181 + 0x00000010
+	store(Mem189[eax_72 + 0x000000B2:word16]) = Mem186[eax_83:word16]
+	word16 cx_190 = Mem189[eax_181 + 0x00000016:word16]
+	store(Mem192[eax_72 + 0x000000B8:word16]) = cx_190
+	ecx_67 = DPB(ecx_67, cx_190, 0, 16) (alias)
+	// succ:  26
+l10004998:		// block 26, pred: 25 12
+	store(Mem202[eax_72 + 0x000000B8:word32]) = ecx_67
+	store(Mem205[eax_72 + 0x000000B6:word16]) = Mem202[eax_83 + 0x00000004:word16]
+	eax_83 = Mem205[eax_72 + 0x00000004:word32]
+	// succ:  27
+l100049AC:		// block 27, pred: 26 8 7
+	fn10004B00(eax_72, eax_83 + 0x00000010)
+	fn10004AFB(eax_72)
+	fn10004B09(eax_72)
+	fn10004AE2(eax_72)
+	// succ:  29
+l10004940:		// block 28, pred: 9
+	fn10004ADD(eax_72)
+	store(Mem215[Mem81[Mem81[Mem81[eax_72 + 0x00000004:word32] + 0x0000000C:word32]:word32]:word32]) = 0x00000001
+	// succ:  29
+l10004AB1:		// block 29, pred: 28 27 24 23 22 21
+	word32 eax_261 = Mem259[arg0C:word32]
+	branch eax_261 == 0x00000000
+	// succ:  30 31
+l10004ABB:		// block 30, pred: 29
+	fn10004B0E(Mem259[Mem259[eax_72 + 0x00000004:word32] + 0x000000D0:word32], eax_261)
+	// succ:  31
+l10004ACE:		// block 31, pred: 30 29
+	return
+	// succ:  35
+l10004906:		// block 32, pred: 3
+	store(Mem282[arg10:word16]) = 0xFF94
+	return
+	// succ:  35
+l100048C0:		// block 33, pred: 0
+	store(Mem284[0x1006B8E0:byte]) = 0x00
+	fn10004B48()
+	// succ:  34
+l100048CE:		// block 34, pred: 33 6
+	return
+	// succ:  35
+fn100048B0_exit:		// block 35, pred: 34 32 31
+	// succ: 
+
+void fn100048B0(word32 esi, word32 edi, word16 arg04, word32 arg08, word32 arg0C, word32 arg10)
+{
+	byte bl_48 = 0x00;
+	if (arg04 != 0x0000)
+	{
+		if (Mem0[arg0C:word32] == 0x00000000)
+			bl_48 = 0x01;
+		word32 ecx_67 = Mem0[arg08 + 0x000000D0:word32];
+		word32 eax_72 = fn10004B17(arg10, arg08, ecx_67, 0x00003158, arg0C, 0x1000A700);
+		if (eax_72 == 0x00000000)
+		{
+			Mem282[arg10:word16] = 0xFF94;
+			return;
+			goto fn100048B0_exit;
+		}
+		if (arg04 == 0x0001)
+			Mem80[eax_72 + 0x00000204:byte] = bl_48;
+		fn10004ADD(eax_72);
+		word32 eax_83 = Mem81[eax_72:word32];
+		word16 ax_84 = (word16) eax_83;
+		if (Mem81[eax_83:word16] != 0x0000)
+		{
+l100048CE:
+			return;
+			goto fn100048B0_exit;
+		}
+		if (arg04 <= 0x0000 || arg04 > 0x0005)
+			goto l100049AC;
+		if (arg04 == 0x0001)
+		{
+			fn10004ADD(eax_72);
+			Mem215[Mem81[Mem81[Mem81[eax_72 + 0x00000004:word32] + 0x0000000C:word32]:word32]:word32] = 0x00000001;
+			goto l10004AB1;
+		}
+		else
+		{
+			if (arg04 == 0x0002)
+				;
+			else
+			{
+				if (arg04 == 0x0003)
+					fn10004AD3(eax_72);
+				else if (arg04 == 0x0004)
+				{
+					byte bl_105 = Mem81[Mem81[eax_72 + 0x00000004:word32] + 0x000000E0:word32] != 0x00000000;
+					do
+					{
+						fn10004AF1(eax_72);
+						word32 eax_115 = Mem113[eax_72:word32];
+						if (Mem113[eax_115:word16] != 0x0000)
+							Mem118[eax_72 + 0x000000AC:byte] = 0x00;
+						if (Mem119[eax_72 + 0x000000AD:byte] != 0x01 || Mem119[eax_115:word16] != 0x0000)
+						{
+							if (Mem119[eax_115:word16] == 0x0000)
+								ax_84 = fn10004AD8(eax_72);
+							if (Mem119[eax_72 + 0x000000AC:byte] != 0x01)
+							{
+								fn10004AEC(eax_72);
+								fn10004AF6(eax_72);
+								fn10004B49(Mem119[eax_72 + 0x00000004:word32] + 0x00000034, 0x00000000, 0x00000000, 0x00000000, 0x00000000);
+								fn10004B49(Mem119[eax_72 + 0x00000004:word32] + 0x00000040, 0x00000000, 0x00000000, 0x00000000, 0x00000000);
+								fn10004B49(Mem119[eax_72 + 0x00000004:word32] + 0x00000060, 0x00000000, 0x00000000, 0x00000000, 0x00000000);
+								break;
+							}
+							if (bl_105 == 0x00000000)
+								break;
+							Mem119[Mem119[eax_72 + 0x00000004:word32] + 0x000000E0:word32]();
+							Mem169[Mem119[eax_72:word32]:word16] = ax_84;
+						}
+					}
+					while (Mem169[Mem169[eax_72:word32]:word16] == 0x0000);
+				}
+				else
+				{
+l10004998:
+					Mem202[eax_72 + 0x000000B8:word32] = ecx_67;
+					Mem205[eax_72 + 0x000000B6:word16] = Mem202[eax_83 + 0x00000004:word16];
+					eax_83 = Mem205[eax_72 + 0x00000004:word32];
+l100049AC:
+					fn10004B00(eax_72, eax_83 + 0x00000010);
+					fn10004AFB(eax_72);
+					fn10004B09(eax_72);
+					fn10004AE2(eax_72);
+				}
+l10004AB1:
+				word32 eax_261 = Mem259[arg0C:word32];
+				if (eax_261 != 0x00000000)
+					fn10004B0E(Mem259[Mem259[eax_72 + 0x00000004:word32] + 0x000000D0:word32], eax_261);
+				return;
+				goto fn100048B0_exit;
+			}
+			Mem177[Mem81[eax_72 + 0x00000004:word32] + 0x00000030:word32] = 0x00000000;
+			fn10004ADD(eax_72);
+			Mem180[Mem177[eax_72 + 0x00000004:word32] + 0x00000030:word32] = 0x00000000;
+			word32 eax_181 = Mem180[eax_72 + 0x00000004:word32];
+			Mem186[eax_72 + 0x000000B4:word16] = Mem180[eax_181 + 0x00000012:word16];
+			eax_83 = eax_181 + 0x00000010;
+			Mem189[eax_72 + 0x000000B2:word16] = Mem186[eax_83:word16];
+			word16 cx_190 = Mem189[eax_181 + 0x00000016:word16];
+			Mem192[eax_72 + 0x000000B8:word16] = cx_190;
+			ecx_67 = DPB(ecx_67, cx_190, 0, 16);
+			goto l10004998;
+		}
+	}
+	else
+	{
+		Mem284[0x1006B8E0:byte] = 0x00;
+		fn10004B48();
+		goto l100048CE;
+	}
+fn100048B0_exit:
+}
+===========================
+// fn10004B48
+void fn10004B48()
+fn10004B48_entry:		// block 0, pred:
+	// succ:  1
+l10004B48:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004B48_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004B48()
+{
+	return;
+}
+===========================
+// fn10004B17
+word32 fn10004B17(word32 arg04, word32 arg08, word32 arg0C, word32 arg10, word32 arg14, word32 arg18)
+fn10004B17_entry:		// block 0, pred:
+	// succ:  1
+l10004B17:		// block 1, pred: 0
+	word32 edx_10 = Mem0[0x20000000:word32]
+	store(Mem12[edx_10 + 0x00000004:word32]) = arg04
+	store(Mem14[edx_10 + 0x00000008:word32]) = arg08
+	store(Mem16[edx_10 + 0x0000000C:word32]) = arg0C
+	store(Mem18[edx_10 + 0x00000010:word32]) = arg10
+	store(Mem20[edx_10 + 0x00000014:word32]) = arg14
+	store(Mem22[edx_10 + 0x0000001C:word32]) = arg18
+	return arg18
+	// succ:  2
+fn10004B17_exit:		// block 2, pred: 1
+	// succ: 
+
+word32 fn10004B17(word32 arg04, word32 arg08, word32 arg0C, word32 arg10, word32 arg14, word32 arg18)
+{
+	word32 edx_10 = Mem0[0x20000000:word32];
+	Mem12[edx_10 + 0x00000004:word32] = arg04;
+	Mem14[edx_10 + 0x00000008:word32] = arg08;
+	Mem16[edx_10 + 0x0000000C:word32] = arg0C;
+	Mem18[edx_10 + 0x00000010:word32] = arg10;
+	Mem20[edx_10 + 0x00000014:word32] = arg14;
+	Mem22[edx_10 + 0x0000001C:word32] = arg18;
+	return arg18;
+}
+===========================
+// fn10004ADD
+void fn10004ADD(word32 arg04)
+fn10004ADD_entry:		// block 0, pred:
+	// succ:  1
+l10004ADD:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004ADD_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004ADD(word32 arg04)
+{
+	return;
+}
+===========================
+// fn10004B0E
+void fn10004B0E(word32 arg04, word32 arg08)
+fn10004B0E_entry:		// block 0, pred:
+	// succ:  1
+l10004B0E:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004B0E_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004B0E(word32 arg04, word32 arg08)
+{
+	return;
+}
+===========================
+// fn10004B00
+void fn10004B00(word32 arg04, word32 arg08)
+fn10004B00_entry:		// block 0, pred:
+	// succ:  1
+l10004B00:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004B00_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004B00(word32 arg04, word32 arg08)
+{
+	return;
+}
+===========================
+// fn10004AFB
+void fn10004AFB(word32 arg04)
+fn10004AFB_entry:		// block 0, pred:
+	// succ:  1
+l10004AFB:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004AFB_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004AFB(word32 arg04)
+{
+	return;
+}
+===========================
+// fn10004B09
+void fn10004B09(word32 arg04)
+fn10004B09_entry:		// block 0, pred:
+	// succ:  1
+l10004B09:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004B09_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004B09(word32 arg04)
+{
+	return;
+}
+===========================
+// fn10004AE2
+void fn10004AE2(word32 arg04)
+fn10004AE2_entry:		// block 0, pred:
+	// succ:  1
+l10004AE2:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004AE2_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004AE2(word32 arg04)
+{
+	return;
+}
+===========================
+// fn10004AD3
+void fn10004AD3(word32 arg04)
+fn10004AD3_entry:		// block 0, pred:
+	// succ:  1
+l10004AD3:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004AD3_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004AD3(word32 arg04)
+{
+	return;
+}
+===========================
+// fn10004AF1
+void fn10004AF1(word32 arg04)
+fn10004AF1_entry:		// block 0, pred:
+	// succ:  1
+l10004AF1:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004AF1_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004AF1(word32 arg04)
+{
+	return;
+}
+===========================
+// fn10004AD8
+word16 fn10004AD8(word32 arg04)
+fn10004AD8_entry:		// block 0, pred:
+	// succ:  1
+l10004AD8:		// block 1, pred: 0
+	return (word16) arg04
+	// succ:  2
+fn10004AD8_exit:		// block 2, pred: 1
+	// succ: 
+
+word16 fn10004AD8(word32 arg04)
+{
+	return (word16) arg04;
+}
+===========================
+// fn10004AEC
+void fn10004AEC(word32 arg04)
+fn10004AEC_entry:		// block 0, pred:
+	// succ:  1
+l10004AEC:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004AEC_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004AEC(word32 arg04)
+{
+	return;
+}
+===========================
+// fn10004AF6
+void fn10004AF6(word32 arg04)
+fn10004AF6_entry:		// block 0, pred:
+	// succ:  1
+l10004AF6:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004AF6_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004AF6(word32 arg04)
+{
+	return;
+}
+===========================
+// fn10004B49
+void fn10004B49(word32 arg04, word32 arg08, word32 arg0C, word32 arg10, word32 arg14)
+fn10004B49_entry:		// block 0, pred:
+	// succ:  1
+l10004B49:		// block 1, pred: 0
+	word32 edx_9 = Mem0[0x20000000:word32]
+	store(Mem11[edx_9 + 0x00000004:word32]) = arg04
+	store(Mem13[edx_9 + 0x00000008:word32]) = arg08
+	store(Mem15[edx_9 + 0x0000000C:word32]) = arg0C
+	store(Mem17[edx_9 + 0x00000010:word32]) = arg10
+	store(Mem19[edx_9 + 0x00000014:word32]) = arg14
+	return
+	// succ:  2
+fn10004B49_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004B49(word32 arg04, word32 arg08, word32 arg0C, word32 arg10, word32 arg14)
+{
+	word32 edx_9 = Mem0[0x20000000:word32];
+	Mem11[edx_9 + 0x00000004:word32] = arg04;
+	Mem13[edx_9 + 0x00000008:word32] = arg08;
+	Mem15[edx_9 + 0x0000000C:word32] = arg0C;
+	Mem17[edx_9 + 0x00000010:word32] = arg10;
+	Mem19[edx_9 + 0x00000014:word32] = arg14;
+	return;
+}
+===========================
+// fn10004AE7
+void fn10004AE7(word32 arg04)
+fn10004AE7_entry:		// block 0, pred:
+	// succ:  1
+l10004AE7:		// block 1, pred: 0
+	return
+	// succ:  2
+fn10004AE7_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn10004AE7(word32 arg04)
+{
+	return;
+}
+===========================

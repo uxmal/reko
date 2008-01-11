@@ -1,0 +1,32 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// ds:Register ds
+// eax:Register eax
+// edx:Register edx
+// SCZO:Flags
+// v6:Temporary
+// C:Flags
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	eax = Mem0[ds:0x0100:word32]
+	edx = Mem0[ds:0x0104:word32]
+	eax = __shld(eax, edx, 0x04)
+	edx = edx >>u 0x00000004
+	store(Mem0[ds:0x0108:word32]) = eax
+	store(Mem0[ds:0x010C:word32]) = edx
+	eax = Mem0[ds:0x0100:word32]
+	edx = Mem0[ds:0x0104:word32]
+	eax = eax << 0x00000001
+	SCZO = cond(eax)
+	v6 = (edx & 0x00000001 << 0x20 - 0x01) != 0x00000000
+	edx = __rcl(edx, 0x01, C)
+	C = v6
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
