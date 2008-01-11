@@ -47,7 +47,7 @@ namespace Decompiler.Analysis.Simplification
 			if (b == null)
 				return false;
 
-			if (b.op != Operator.muls && b.op != Operator.mulu)
+			if (b.op != Operator.muls && b.op != Operator.mulu && b.op != Operator.mul)
 				return false;
 			op = b.op;
 			cMul = b.Right as Constant;

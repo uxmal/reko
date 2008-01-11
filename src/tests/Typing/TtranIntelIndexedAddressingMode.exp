@@ -5,7 +5,7 @@ IntelIndexedAddressingMode_entry:		// block 0, pred:
 l1:		// block 1, pred: 0
 	es = Mem0[0x7070:word16]
 	ax = 0x004A
-	si = ax * Mem0[0x1C0A:word16]
+	si = ax *s Mem0[0x1C0A:word16]
 	bx = Mem0[0x0CA4:word16]
 	store(Mem0[bx + 0x000A + si:byte]) = 0xF8
 	return
@@ -49,7 +49,7 @@ T_8:(in Mem0[0x1C0A:word16])
   Class: Eq_8
   DataType: int16
   OrigDataType: int16
-T_9:(in ax * Mem0[0x1C0A:word16])
+T_9:(in ax *s Mem0[0x1C0A:word16])
   Class: Eq_9
   DataType: int16
   OrigDataType: int16

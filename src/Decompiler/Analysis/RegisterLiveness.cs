@@ -457,6 +457,7 @@ namespace Decompiler.Analysis
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
 			if (binExp.op is ConditionalOperator ||
+				binExp.op == BinaryOperator.mul ||
 				binExp.op == BinaryOperator.muls ||
 				binExp.op == BinaryOperator.mulu ||
 				binExp.op == BinaryOperator.divs ||
@@ -469,6 +470,7 @@ namespace Decompiler.Analysis
 
 			if (binExp.op == BinaryOperator.shl ||
 				binExp.op == BinaryOperator.sar ||
+				binExp.op == BinaryOperator.mul ||
 				binExp.op == BinaryOperator.muls ||
 				binExp.op == BinaryOperator.mulu ||
 				binExp.op == BinaryOperator.divs ||

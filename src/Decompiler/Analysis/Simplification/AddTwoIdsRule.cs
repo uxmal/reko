@@ -51,7 +51,7 @@ namespace Decompiler.Analysis.Simplification
 		public Expression Transform(Statement stm)
 		{
 			ssaIds[idLeft].uses.Remove(stm);
-			return new BinaryExpression(Operator.mulu, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));		//$REVIEW: need an unsigned multiply.
+			return new BinaryExpression(Operator.mul, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));
 		}
 	}
 }

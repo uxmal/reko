@@ -3,7 +3,7 @@ void IntelIndexedAddressingMode()
 IntelIndexedAddressingMode_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
-	store(Mem10[Mem0[0x0CA4:word16] + 0x000A + Mem0[0x1C0A:word16] * 0x004A:byte]) = 0xF8
+	store(Mem10[Mem0[0x0CA4:word16] + 0x000A + Mem0[0x1C0A:word16] *s 0x004A:byte]) = 0xF8
 	return
 	// succ:  2
 IntelIndexedAddressingMode_exit:		// block 2, pred: 1
@@ -33,10 +33,10 @@ T_8 (in Mem0[0x1C0A:word16])
 T_9 (in 0x004A)
 	trait_primitive(word16)
 	trait_primitive(int16)
-T_10 (in Mem0[0x1C0A:word16] * 0x004A)
+T_10 (in Mem0[0x1C0A:word16] *s 0x004A)
 	trait_primitive(int16)
-T_11 (in Mem0[0x0CA4:word16] + 0x000A + Mem0[0x1C0A:word16] * 0x004A)
+T_11 (in Mem0[0x0CA4:word16] + 0x000A + Mem0[0x1C0A:word16] *s 0x004A)
 	trait_primitive(word16)
-T_12 (in Mem10[Mem0[0x0CA4:word16] + 0x000A + Mem0[0x1C0A:word16] * 0x004A:byte])
+T_12 (in Mem10[Mem0[0x0CA4:word16] + 0x000A + Mem0[0x1C0A:word16] *s 0x004A:byte])
 	trait_primitive(byte)
 	trait_equal(T_2)

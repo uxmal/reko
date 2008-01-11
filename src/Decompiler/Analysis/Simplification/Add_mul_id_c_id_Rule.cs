@@ -54,7 +54,7 @@ namespace Decompiler.Analysis.Simplification
 			if (id == null || bin == null)
 				return false;
 
-			if (bin.op != Operator.muls && bin.op != Operator.mulu)
+			if (bin.op != Operator.muls && bin.op != Operator.mulu && bin.op != Operator.mul)
 				return false;
 
 			Identifier idInner = bin.Left as Identifier;

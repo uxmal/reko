@@ -21,7 +21,10 @@ using System;
 
 namespace Decompiler.Core.Operators
 {
-	public class MuluOperator : BinaryOperator
+	/// <summary>
+	/// Unsigned multiplication.
+	/// </summary>
+	public class MuluOperator : MulOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{

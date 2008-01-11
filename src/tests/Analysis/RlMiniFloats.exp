@@ -79,7 +79,7 @@ fn0C00_0032_entry:		// block 0, pred:
 	// succ:  1
 // DataOut: ax bx cl ch ds
 l0C00_0032:		// block 1, pred: 0
-	dx_ax = bx * ax
+	dx_ax = bx *s ax
 	cl = cl + ch
 	SCZO = cond(cl)
 	return

@@ -68,7 +68,7 @@ C_66: orig: C
 SCZO_67: orig: SCZO
 Mem68: orig: Mem0, def: {store(Mem68[ds:0x0F05:byte]) = 0x01}
 Mem69: orig: Mem0
-bp_70: orig: bp, def: {bp_70 = bp - 0x0010}, uses: {branch bp_70 < 0x0000}{branch !OVERFLOW(bp_70 *u 0x0002)}
+bp_70: orig: bp, def: {bp_70 = bp - 0x0010}, uses: {branch bp_70 < 0x0000}{branch !OVERFLOW(bp_70 * 0x0002)}
 SCZO_71: orig: SCZO
 Z_72: orig: Z
 SZO_73: orig: SZO
@@ -145,7 +145,7 @@ l0C00_005B:		// block 14, pred: 13
 	store(Mem77[ss:bp + 0xFFF6:byte]) = 0x01
 	// succ:  15
 l0C00_005F:		// block 15, pred: 14 13
-	branch !OVERFLOW(bp_70 *u 0x0002)
+	branch !OVERFLOW(bp_70 * 0x0002)
 	// succ:  16 17
 l0C00_0063:		// block 16, pred: 15
 	store(Mem86[ds:0x0F07:byte]) = 0x01

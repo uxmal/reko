@@ -10,7 +10,7 @@ l0C00_0000:		// block 1, pred: 0
 	word32 dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], segment, 16), cx_19)
 	store(Mem39[ds:0x0218:word16]) = (word16) dx_ax_35
 	store(Mem40[ds:0x021A:word16]) = SLICE(dx_ax_35, word16, 16)
-	store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) *u 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
+	store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1

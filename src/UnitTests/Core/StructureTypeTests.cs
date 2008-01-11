@@ -48,5 +48,14 @@ namespace Decompiler.UnitTests.Core
 			StructureType s = new StructureType(null, 0x42);
 			Assert.AreEqual("(struct 42)", s.ToString());
 		}
+
+		[Test]
+		public void DontSimplifySegmentStruct()
+		{
+			StructureType s = new StructureType(null, 0, new StructureField(0, PrimitiveType.Int32));
+			s.IsSegment = true;
+			DataType dt = s.Simplify();
+			Assert.AreEqual("(segment (0 int32 dw0000))", dt.ToString());
+		}
 	}
 }

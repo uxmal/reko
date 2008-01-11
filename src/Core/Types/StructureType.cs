@@ -97,7 +97,7 @@ namespace Decompiler.Core.Types
 
 		public DataType Simplify()
 		{
-			if (Fields.Count == 1)
+			if (Fields.Count == 1 && !IsSegment)
 			{
 				StructureField f = Fields[0];
 				if (f.Offset == 0 && (Size == 0 || Size == f.DataType.Size))

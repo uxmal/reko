@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Typing
 			Expression e = m.Add(r, m.Add(m.Muls(c, i), off));
 			Assert.IsTrue(aem.Match(e));
 			Assert.AreEqual("r + 0x0000002A", aem.ArrayPointer.ToString());
-			Assert.AreEqual("0x00000010 * i + r + 0x0000002A", e.ToString());
+			Assert.AreEqual("0x00000010 *s i + r + 0x0000002A", e.ToString());
 		}
 
 		[Test]
@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Typing
 			Expression e = m.Add(m.Add(r, off), m.Muls(i, c));
 			Assert.IsTrue(aem.Match(e));
 			Assert.AreEqual("r + 0x0000002A", aem.ArrayPointer.ToString());
-			Assert.AreEqual("r + 0x0000002A + i * 0x00000010", e.ToString());
+			Assert.AreEqual("r + 0x0000002A + i *s 0x00000010", e.ToString());
 		}
 
 		[SetUp]
