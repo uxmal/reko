@@ -385,6 +385,7 @@ namespace Decompiler.Typing
 				newSize = b.Size;
 			}
 
+
 			string name = null;
 			if (a.Name != null)
 			{
@@ -399,6 +400,7 @@ namespace Decompiler.Typing
 			}
 
 			StructureType mem = factory.CreateStructureType(name, newSize);
+			mem.IsSegment = (a.IsSegment || b.IsSegment);
 
 			IEnumerator ea = a.Fields.GetEnumerator();
 			IEnumerator eb = b.Fields.GetEnumerator();

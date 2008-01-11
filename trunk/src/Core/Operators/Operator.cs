@@ -27,6 +27,7 @@ namespace Decompiler.Core.Operators
 		public static readonly BinaryOperator divs = new DivsOperator();
 		public static readonly BinaryOperator divu = new DivuOperator();
 		public static readonly BinaryOperator mod = new ModOperator();
+		public static readonly BinaryOperator mul = new MulOperator();
 		public static readonly BinaryOperator muls = new MulsOperator();
 		public static readonly BinaryOperator mulu = new MuluOperator();
 

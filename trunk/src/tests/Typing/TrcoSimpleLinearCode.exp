@@ -4,7 +4,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	word16 ax_7 = Mem0[ds:bx + 0x0004:word16]
-	store(Mem9[ds:bx + 0x0006:word16]) = ax_7 * ax_7
+	store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
 	store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
 	return
 	// succ:  2
@@ -32,7 +32,7 @@ T_6 (in bx + 0x0004)
 	trait_primitive(word16)
 T_7 (in Mem0[ds:bx + 0x0004:word16])
 	trait_primitive(word16)
-T_8 (in ax_7 * ax_7)
+T_8 (in ax_7 *s ax_7)
 	trait_primitive(int16)
 T_9 (in 0x0006)
 	trait_primitive(word16)

@@ -22,7 +22,7 @@ l0C00_0026:		// block 2, pred: 1
 	ax_18 = 0x0001
 	// succ:  4
 l0C00_0018:		// block 3, pred: 1
-	ax_18 = (word16) (wArg00 * fn0C00_000F(ax_14)) (alias)
+	ax_18 = (word16) (wArg00 *s fn0C00_000F(ax_14)) (alias)
 	// succ:  4
 l0C00_0029:		// block 4, pred: 3 2
 	return ax_18
@@ -114,11 +114,11 @@ T_19:(in fn0C00_000F(ax_14))
   Class: Eq_19
   DataType: int16
   OrigDataType: int16
-T_20:(in wArg00 * fn0C00_000F(ax_14))
+T_20:(in wArg00 *s fn0C00_000F(ax_14))
   Class: Eq_20
   DataType: int32
   OrigDataType: int32
-T_21:(in (word16) (wArg00 * fn0C00_000F(ax_14)))
+T_21:(in (word16) (wArg00 *s fn0C00_000F(ax_14)))
   Class: Eq_10
   DataType: word16
   OrigDataType: word16

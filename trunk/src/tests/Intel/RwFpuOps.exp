@@ -36,12 +36,12 @@ l0C00_0010:		// block 1, pred: 0
 	wLoc04 = bp
 	bx = wArg00
 	rLoc1 = Mem0[ds:bx:real64]
-	rLoc1 = rLoc1 * rLoc1
+	rLoc1 = rLoc1 *s rLoc1
 	rLoc2 = Mem0[ds:bx + 0x0008:real64]
-	rLoc2 = rLoc2 * rLoc2
+	rLoc2 = rLoc2 *s rLoc2
 	rLoc1 = rLoc1 + rLoc2
 	rLoc2 = Mem0[ds:bx + 0x0010:real64]
-	rLoc2 = rLoc2 * rLoc2
+	rLoc2 = rLoc2 *s rLoc2
 	rLoc1 = rLoc1 + rLoc2
 	bx = wArg02
 	store(Mem0[ds:bx:real64]) = rLoc1

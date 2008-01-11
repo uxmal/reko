@@ -175,16 +175,16 @@ cl_42: orig: cl, def: {cl_42 = Mem40[ds:0x0220:byte]}, uses: {SCZO_43 = cond(cl_
 SCZO_43: orig: SCZO, def: {SCZO_43 = cond(cl_42 - 0x30)}, uses: {ax_46 = (word16) SCZO_43}
 C_44: orig: C
 v13_45: orig: v13
-ax_46: orig: ax, def: {ax_46 = (word16) SCZO_43}, uses: {ax_55 = ax_46 *u 0x0002 + (word16) C_53}
+ax_46: orig: ax, def: {ax_46 = (word16) SCZO_43}, uses: {ax_55 = ax_46 * 0x0002 + (word16) C_53}
 cl_47: orig: cl, def: {cl_47 = Mem40[ds:0x0221:byte]}, uses: {SCZO_51 = cond(cl_47 - 0x3A)}
 cx_48: orig: cx
 bx_cx_49: orig: bx_cx
 es_cx_50: orig: es_cx
 SCZO_51: orig: SCZO, def: {SCZO_51 = cond(cl_47 - 0x3A)}, uses: {C_53 = !SCZO_51}
 C_52: orig: C
-C_53: orig: C, def: {C_53 = !SCZO_51}, uses: {ax_55 = ax_46 *u 0x0002 + (word16) C_53}
+C_53: orig: C, def: {C_53 = !SCZO_51}, uses: {ax_55 = ax_46 * 0x0002 + (word16) C_53}
 v15_54: orig: v15
-ax_55: orig: ax, def: {ax_55 = ax_46 *u 0x0002 + (word16) C_53}, uses: {store(Mem59[ds:0x0222:word16]) = ax_55}
+ax_55: orig: ax, def: {ax_55 = ax_46 * 0x0002 + (word16) C_53}, uses: {store(Mem59[ds:0x0222:word16]) = ax_55}
 dx_ax_56: orig: dx_ax
 SCZO_57: orig: SCZO
 C_58: orig: C
@@ -224,7 +224,7 @@ l0C00_0000:		// block 1, pred: 0
 	cl_47 = Mem40[ds:0x0221:byte]
 	SCZO_51 = cond(cl_47 - 0x3A)
 	C_53 = !SCZO_51
-	ax_55 = ax_46 *u 0x0002 + (word16) C_53
+	ax_55 = ax_46 * 0x0002 + (word16) C_53
 	store(Mem59[ds:0x0222:word16]) = ax_55
 	return
 	// succ:  2

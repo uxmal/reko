@@ -237,7 +237,7 @@ namespace Decompiler.Arch.Intel
 				if (mem.Scale != 0 && mem.Scale != 1)
 				{
 					eIndex = new BinaryExpression(
-						Operator.muls, eIndex.DataType, eIndex, new Constant(mem.Width, mem.Scale));
+						Operator.mul, eIndex.DataType, eIndex, new Constant(mem.Width, mem.Scale));
 				}
 				if (IsFrameRegisterReference(mem.Base, state))
 				{

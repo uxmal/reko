@@ -21,7 +21,10 @@ using System;
 
 namespace Decompiler.Core.Operators
 {
-	public class MulsOperator : BinaryOperator
+	/// <summary>
+	/// Signed multiplication.
+	/// </summary>
+	public class MulsOperator : MulOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -30,7 +33,7 @@ namespace Decompiler.Core.Operators
 		
 		public override string ToString()
 		{
-			return " * ";
+			return " *s ";
 		}
 	}
 }

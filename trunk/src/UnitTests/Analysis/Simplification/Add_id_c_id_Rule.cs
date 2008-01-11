@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 			Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule(ssaIds);
 			Assert.IsTrue(rule.Match(b));
 			ass.Src = rule.Transform(stm);
-			Assert.AreEqual("x = id * 0x00000005", ass.ToString());
+			Assert.AreEqual("x = id *s 0x00000005", ass.ToString());
 			Assert.AreEqual(1, ssaIds[id].uses.Count);
 		}
 
@@ -59,13 +59,13 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 		[Test]
 		public  void Test2()
 		{
-			BinaryExpression b = m.Add(id, m.Muls(id, 5));
+			BinaryExpression b = m.Add(id, m.Mulu(id, 5));
 			Assignment ass = new Assignment(x, b);
 			Statement stm = new Statement(ass, null);
 			Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule(ssaIds);
 			Assert.IsTrue(rule.Match(b));
 			ass.Src = rule.Transform(stm);
-			Assert.AreEqual("x = id * 0x00000006", ass.ToString());
+			Assert.AreEqual("x = id *u 0x00000006", ass.ToString());
 		}
 
 		[SetUp]

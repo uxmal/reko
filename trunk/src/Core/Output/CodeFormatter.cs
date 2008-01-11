@@ -56,6 +56,7 @@ namespace Decompiler.Core.Output
 			precedences[Operator.addrOf] = 2;
 			precedences[Operator.muls] = 4;
 			precedences[Operator.mulu] = 4;
+			precedences[Operator.mul] = 4;
 			precedences[Operator.divs] = 4;
 			precedences[Operator.divu] = 4;
 			precedences[Operator.mod] = 4;

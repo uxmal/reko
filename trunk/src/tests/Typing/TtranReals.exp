@@ -18,7 +18,7 @@ l0C00_0010:		// block 1, pred: 0
 	real64 rLoc1_12 = Mem0[ds:wArg00:real64]
 	real64 rLoc2_14 = Mem0[ds:wArg00 + 0x0008:real64]
 	real64 rLoc2_17 = Mem0[ds:wArg00 + 0x0010:real64]
-	store(Mem21[ds:wArg02:real64]) = rLoc1_12 * rLoc1_12 + rLoc2_14 * rLoc2_14 + rLoc2_17 * rLoc2_17
+	store(Mem21[ds:wArg02:real64]) = rLoc1_12 *s rLoc1_12 + rLoc2_14 *s rLoc2_14 + rLoc2_17 *s rLoc2_17
 	store(Mem23[ds:wArg02 + 0x0028:real64]) = (real64) Mem21[ds:wArg02 + 0x0020:word16]
 	return
 	// succ:  2
@@ -153,23 +153,23 @@ T_25:(in Mem0[ds:wArg00 + 0x0010:real64])
   Class: Eq_22
   DataType: real64
   OrigDataType: real64
-T_26:(in rLoc1_12 * rLoc1_12)
+T_26:(in rLoc1_12 *s rLoc1_12)
   Class: Eq_26
   DataType: real64
   OrigDataType: real64
-T_27:(in rLoc2_14 * rLoc2_14)
+T_27:(in rLoc2_14 *s rLoc2_14)
   Class: Eq_27
   DataType: real64
   OrigDataType: real64
-T_28:(in rLoc1_12 * rLoc1_12 + rLoc2_14 * rLoc2_14)
+T_28:(in rLoc1_12 *s rLoc1_12 + rLoc2_14 *s rLoc2_14)
   Class: Eq_28
   DataType: real64
   OrigDataType: real64
-T_29:(in rLoc2_17 * rLoc2_17)
+T_29:(in rLoc2_17 *s rLoc2_17)
   Class: Eq_29
   DataType: real64
   OrigDataType: real64
-T_30:(in rLoc1_12 * rLoc1_12 + rLoc2_14 * rLoc2_14 + rLoc2_17 * rLoc2_17)
+T_30:(in rLoc1_12 *s rLoc1_12 + rLoc2_14 *s rLoc2_14 + rLoc2_17 *s rLoc2_17)
   Class: Eq_30
   DataType: real64
   OrigDataType: real64

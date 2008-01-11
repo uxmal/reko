@@ -41,7 +41,7 @@ dx_ax: dx_ax:Sequence dx:ax, def: {def dx_ax}
 SCZO: SCZO:Flags, def: {def SCZO}
 wLoc04_12: orig: wLoc04, def: {wLoc04_12 = bp}, uses: {bp_36 = wLoc04_12}
 ax_13: orig: ax, def: {ax_13 = wArg00}, uses: {ax_14 = ax_13 - 0x0001}
-ax_14: orig: ax, def: {ax_14 = ax_13 - 0x0001}, uses: {dx_ax_15 = SEQ(dx, ax_14) (alias)}{SZO_16 = cond(ax_14)}{wLoc06_21 = ax_14}{call fn0C00_000F (depth: 6;)}{dx_ax_23 = dx_22 * ax_14}
+ax_14: orig: ax, def: {ax_14 = ax_13 - 0x0001}, uses: {dx_ax_15 = SEQ(dx, ax_14) (alias)}{SZO_16 = cond(ax_14)}{wLoc06_21 = ax_14}{call fn0C00_000F (depth: 6;)}{dx_ax_23 = dx_22 *s ax_14}
 dx_ax_15: orig: dx_ax, def: {dx_ax_15 = SEQ(dx, ax_14) (alias)}
 SZO_16: orig: SZO, def: {SZO_16 = cond(ax_14)}, uses: {Z_17 = SZO_16 (alias)}{SCZO_18 = SZO_16 (alias)}{SZO_34 = PHI(SZO_27, SZO_16)}{call fn0C00_000F (depth: 6;)}
 Z_17: orig: Z, def: {Z_17 = SZO_16 (alias)}, uses: {branch Test(EQ,Z_17)}{Z_33 = PHI(Z_28, Z_17)}{call fn0C00_000F (depth: 6;)}
@@ -49,8 +49,8 @@ SCZO_18: orig: SCZO, def: {SCZO_18 = SZO_16 (alias)}, uses: {SCZO_29 = PHI(SCZO_
 ax_19: orig: ax, def: {ax_19 = 0x0001}, uses: {dx_ax_20 = SEQ(dx, ax_19) (alias)}{ax_35 = PHI(ax_24, ax_19)}
 dx_ax_20: orig: dx_ax, def: {dx_ax_20 = SEQ(dx, ax_19) (alias)}, uses: {dx_ax_30 = PHI(dx_ax_23, dx_ax_20)}
 wLoc06_21: orig: wLoc06, def: {wLoc06_21 = ax_14}, uses: {wLoc06_32 = PHI(wLoc06_21, wLoc06)}
-dx_22: orig: dx, def: {dx_22 = wArg00}, uses: {dx_ax_23 = dx_22 * ax_14}
-dx_ax_23: orig: dx_ax, def: {dx_ax_23 = dx_22 * ax_14}, uses: {ax_24 = (word16) dx_ax_23 (alias)}{dx_25 = SLICE(dx_ax_23, word16, 16) (alias)}{SCZO_26 = cond(dx_ax_23)}{dx_ax_30 = PHI(dx_ax_23, dx_ax_20)}
+dx_22: orig: dx, def: {dx_22 = wArg00}, uses: {dx_ax_23 = dx_22 *s ax_14}
+dx_ax_23: orig: dx_ax, def: {dx_ax_23 = dx_22 *s ax_14}, uses: {ax_24 = (word16) dx_ax_23 (alias)}{dx_25 = SLICE(dx_ax_23, word16, 16) (alias)}{SCZO_26 = cond(dx_ax_23)}{dx_ax_30 = PHI(dx_ax_23, dx_ax_20)}
 ax_24: orig: ax, def: {ax_24 = (word16) dx_ax_23 (alias)}, uses: {ax_35 = PHI(ax_24, ax_19)}
 dx_25: orig: dx, def: {dx_25 = SLICE(dx_ax_23, word16, 16) (alias)}, uses: {dx_31 = PHI(dx_25, dx)}
 SCZO_26: orig: SCZO, def: {SCZO_26 = cond(dx_ax_23)}, uses: {SZO_27 = SCZO_26 (alias)}{Z_28 = SCZO_26 (alias)}{SCZO_29 = PHI(SCZO_26, SCZO_18)}
@@ -98,7 +98,7 @@ l0C00_0018:		// block 3, pred: 1
 	wLoc06_21 = ax_14
 	call fn0C00_000F (depth: 6;)
 	dx_22 = wArg00
-	dx_ax_23 = dx_22 * ax_14
+	dx_ax_23 = dx_22 *s ax_14
 	ax_24 = (word16) dx_ax_23 (alias)
 	dx_25 = SLICE(dx_ax_23, word16, 16) (alias)
 	SCZO_26 = cond(dx_ax_23)

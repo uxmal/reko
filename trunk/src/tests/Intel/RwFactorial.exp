@@ -49,7 +49,7 @@ l0C00_0018:		// block 3, pred: 1
 	wLoc06 = ax
 	call fn0C00_000F (depth: 6;)
 	dx = wArg00
-	dx_ax = dx * ax
+	dx_ax = dx *s ax
 	SCZO = cond(dx_ax)
 	// succ:  4
 l0C00_0029:		// block 4, pred: 3 2

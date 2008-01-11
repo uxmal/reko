@@ -220,7 +220,7 @@ namespace Decompiler.Typing
 			acc.Array.Accept(this);
 			acc.Index.Accept(this);
 			BinaryExpression b = acc.Index as BinaryExpression;
-			if (b != null && b.op == Operator.muls)
+			if (b != null && b.op == Operator.mul)
 			{
 				Constant c = b.Right as Constant;
 				if (c != null)
@@ -270,7 +270,7 @@ namespace Decompiler.Typing
 			ivCur = null;
 			if (ivLeft != null)
 			{
-				if (binExp.op == Operator.muls || binExp.op == Operator.mulu || binExp.op == Operator.shl)
+				if (binExp.op == Operator.muls || binExp.op == Operator.mulu || binExp.op == Operator.mul || binExp.op == Operator.shl)
 					ivCur = MergeInductionVariableConstant(ivLeft, binExp.op, binExp.Right as Constant);
 			} 
 
@@ -299,6 +299,11 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(tvExp, MakeUnsigned(binExp.DataType));
 				handler.DataTypeTrait(binExp.Left.TypeVariable, MakeUnsigned(binExp.Left.DataType));
 				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeUnsigned(binExp.Right.DataType));
+				return;
+			}
+			else if (binExp.op == Operator.mul)
+			{
+				handler.DataTypeTrait(tvExp, binExp.DataType); //$REVIEW: NonPointer(binExp.DataType);
 				return;
 			}
 			else if (binExp.op == Operator.sar)

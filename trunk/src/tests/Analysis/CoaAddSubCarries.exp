@@ -1,6 +1,6 @@
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)}{dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)}{cx_19 = Mem0[ds:0x0204:word16]}{dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)}
 fp: fp:Temporary
-ds: ds:Register ds, def: {def ds}, uses: {dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)}{dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)}{cx_19 = Mem0[ds:0x0204:word16]}{dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)}{store(Mem26[ds:0x0208:word16]) = (word16) dx_ax_22}{store(Mem27[ds:0x020A:word16]) = SLICE(dx_ax_22, word16, 16)}{dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], segment, 16), cx_19)}{dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], segment, 16), cx_19)}{dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], segment, 16), cx_19)}{store(Mem39[ds:0x0218:word16]) = (word16) dx_ax_35}{store(Mem40[ds:0x021A:word16]) = SLICE(dx_ax_35, word16, 16)}{store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) *u 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}{store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) *u 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}{store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) *u 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}
+ds: ds:Register ds, def: {def ds}, uses: {dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)}{dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)}{cx_19 = Mem0[ds:0x0204:word16]}{dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)}{store(Mem26[ds:0x0208:word16]) = (word16) dx_ax_22}{store(Mem27[ds:0x020A:word16]) = SLICE(dx_ax_22, word16, 16)}{dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], segment, 16), cx_19)}{dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], segment, 16), cx_19)}{dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], segment, 16), cx_19)}{store(Mem39[ds:0x0218:word16]) = (word16) dx_ax_35}{store(Mem40[ds:0x021A:word16]) = SLICE(dx_ax_35, word16, 16)}{store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}{store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}{store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}
 ax: ax:Register ax
 dx: dx:Register dx
 cx: cx:Register cx
@@ -38,7 +38,7 @@ ax_36: orig: ax, uses: {store(Mem39[ds:0x0218:word16]) = (word16) dx_ax_35}
 dx_37: orig: dx, uses: {store(Mem40[ds:0x021A:word16]) = SLICE(dx_ax_35, word16, 16)}
 SCZO_38: orig: SCZO
 Mem39: orig: Mem0, def: {store(Mem39[ds:0x0218:word16]) = (word16) dx_ax_35}
-Mem40: orig: Mem0, def: {store(Mem40[ds:0x021A:word16]) = SLICE(dx_ax_35, word16, 16)}, uses: {store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) *u 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}{store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) *u 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}
+Mem40: orig: Mem0, def: {store(Mem40[ds:0x021A:word16]) = SLICE(dx_ax_35, word16, 16)}, uses: {store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}{store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}
 ax_41: orig: ax
 cl_42: orig: cl
 SCZO_43: orig: SCZO
@@ -53,11 +53,11 @@ SCZO_51: orig: SCZO
 C_52: orig: C
 C_53: orig: C
 v15_54: orig: v15
-ax_55: orig: ax, uses: {store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) *u 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}
+ax_55: orig: ax, uses: {store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}
 dx_ax_56: orig: dx_ax
 SCZO_57: orig: SCZO
 C_58: orig: C
-Mem59: orig: Mem0, def: {store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) *u 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}
+Mem59: orig: Mem0, def: {store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)}
 // fn0C00_0000
 void fn0C00_0000(segment ds)
 fn0C00_0000_entry:		// block 0, pred:
@@ -72,7 +72,7 @@ l0C00_0000:		// block 1, pred: 0
 	dx_ax_35 = SEQ(Mem27[ds:0x0212:word16], Mem27[ds:0x0210:word16]) - SEQ(SLICE(Mem27[ds:0x0214:ptr32], segment, 16), cx_19)
 	store(Mem39[ds:0x0218:word16]) = (word16) dx_ax_35
 	store(Mem40[ds:0x021A:word16]) = SLICE(dx_ax_35, word16, 16)
-	store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) *u 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
+	store(Mem59[ds:0x0222:word16]) = (word16) (Mem40[ds:0x0220:byte] <u 0x30) * 0x0002 + (word16) (Mem40[ds:0x0221:byte] >=u 0x3A)
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1

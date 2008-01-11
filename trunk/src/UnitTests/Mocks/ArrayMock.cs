@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Mocks
 			Jump("loopHdr");
 			
 			Label("loop");
-			Store(Add(a, Muls(i, 4)), 0);
+			Store(Add(a, Mul(i, 4)), 0);
 			Add(i, i, 1);
 			Label("loopHdr");
 			BranchIf(Lt(i, 100), "loop");
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Mocks
 			
 			Label("loop");
 			Sub(i, i, 1);
-			Store(Add(a, Muls(i, 4)), 0);
+			Store(Add(a, Mul(i, 4)), 0);
 			Label("loopHdr");
 			BranchIf(Gt(i, 0), "loop");
 			Return();

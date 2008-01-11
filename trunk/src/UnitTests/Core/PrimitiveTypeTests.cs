@@ -55,5 +55,23 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual("uint32", PrimitiveType.Word32.GetUnsignedEquivalent().ToString());
 		}
 
+		[Test]
+		public void PredefinedTypes2()
+		{
+			Assert.AreEqual("bool", PrimitiveType2.Bool.ToString());
+			Assert.AreEqual("byte", PrimitiveType2.Byte.ToString());
+			Assert.AreEqual("char", PrimitiveType2.Char.ToString());
+			Assert.AreEqual("int8", PrimitiveType2.SByte.ToString());
+			Assert.AreEqual("uint8", PrimitiveType2.UInt8.ToString());
+			Assert.AreEqual("word16", PrimitiveType2.Word16.ToString());
+			Assert.AreEqual("int16", PrimitiveType2.Int16.ToString());
+			Assert.AreEqual("uint16", PrimitiveType2.UInt16.ToString());
+			Assert.AreEqual("word32", PrimitiveType2.Word32.ToString());
+			Assert.AreEqual("int32", PrimitiveType2.Int32.ToString());
+			Assert.AreEqual("uint32", PrimitiveType2.UInt32.ToString());
+			Assert.AreEqual("real32", PrimitiveType2.Real32.ToString());
+			Assert.AreEqual("real64", PrimitiveType2.Real64.ToString());
+			Assert.AreEqual("ptr32", PrimitiveType2.Pointer32.ToString());
+		}
 	}
 }

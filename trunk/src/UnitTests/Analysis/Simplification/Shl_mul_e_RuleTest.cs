@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 			Shl_mul_e_Rule  rule = new Shl_mul_e_Rule(ssaIds);
 			Assert.IsTrue(rule.Match(b));
 			ass.Src = rule.Transform(stm);
-			Assert.AreEqual("x = id * 0x0000000C", ass.ToString());
+			Assert.AreEqual("x = id *s 0x0000000C", ass.ToString());
 		}
 			
 		

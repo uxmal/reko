@@ -659,6 +659,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Operators\MulOperator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Operators\MulsOperator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

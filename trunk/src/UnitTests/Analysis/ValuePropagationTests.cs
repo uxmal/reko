@@ -244,7 +244,7 @@ namespace Decompiler.UnitTests.Analysis
 					id),
 				new Constant(t, 2));
 			Expression e = vp.TransformBinaryExpression(b);
-			Assert.AreEqual("id * 0x00000014", e.ToString());
+			Assert.AreEqual("id *s 0x00000014", e.ToString());
 
 		}
 

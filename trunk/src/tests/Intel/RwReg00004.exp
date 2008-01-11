@@ -66,7 +66,7 @@ l10000035:		// block 2, pred: 1
 	// succ:  3
 l10000048:		// block 3, pred: 2 11
 	rLoc2 = dwArg00
-	rLoc2 = rLoc2 * Mem0[0x0099188A:real64]
+	rLoc2 = rLoc2 *s Mem0[0x0099188A:real64]
 	esi = esi + 0x00000001
 	SZO = cond(esi)
 	dwArg00 = rLoc2
@@ -88,7 +88,7 @@ l10000072:		// block 4, pred: 3
 	dwArg00 = rLoc2
 	// succ:  5
 l1000007F:		// block 5, pred: 4 3
-	rLoc1 = rLoc1 * Mem0[0x10033290:real64]
+	rLoc1 = rLoc1 *s Mem0[0x10033290:real64]
 	rLoc2 = rLoc2
 	call fn10000108 (depth: 20; FPU: 2;)
 	ecx = eax

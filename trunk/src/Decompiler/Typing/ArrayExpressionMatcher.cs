@@ -48,7 +48,7 @@ namespace Decompiler.Typing
 
 		public bool MatchMul(BinaryExpression b)
 		{
-			if (b.op == Operator.muls || b.op == Operator.mulu)
+			if (b.op == Operator.muls || b.op == Operator.mulu || b.op == Operator.mul)
 			{
 				Constant c = b.Left as Constant;
 				Expression e = b.Right;
@@ -140,7 +140,7 @@ namespace Decompiler.Typing
 
 		public Expression Transform(DataType dtAccess)
 		{
-			return new ArrayAccess(dtAccess, arrayPtr, new BinaryExpression(BinaryOperator.muls, index.DataType, index, ElementSize));
+			return new ArrayAccess(dtAccess, arrayPtr, new BinaryExpression(BinaryOperator.mul, index.DataType, index, ElementSize));
 		}
 	}
 }

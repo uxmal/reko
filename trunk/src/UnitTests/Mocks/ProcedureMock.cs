@@ -418,6 +418,16 @@ namespace Decompiler.UnitTests.Mocks
 			Emit(new Assignment(product, new BinaryExpression(Operator.muls, left.DataType, left, right)));
 		}
 
+		public Expression Mul(Expression left, Expression right)
+		{
+			return new BinaryExpression(Operator.mul, left.DataType, left, right);
+		}
+
+		public Expression Mul(Expression left, int c)
+		{
+			return new BinaryExpression(Operator.mul, left.DataType, left, new Constant(left.DataType, c));
+		}
+
 		public Expression Muls(Expression left, Expression right)
 		{
 			return new BinaryExpression(Operator.muls, left.DataType, left, right);

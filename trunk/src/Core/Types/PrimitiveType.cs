@@ -132,7 +132,6 @@ namespace Decompiler.Core.Types
 			}
 		}
 
-
 		public PrimitiveType GetUnsignedEquivalent()
 		{
 			switch (this.dom)
@@ -368,5 +367,276 @@ namespace Decompiler.Core.Types
 		Real,
 		Pointer,
 		Segment
+	}
+
+	[Flags]
+	public enum Domain2
+	{
+		None = 0,
+		Void = 1,
+		Boolean = 2,
+		Character = 4,
+		SignedInt = 8,
+		UnsignedInt = 16,
+		Real = 32,
+		Pointer = 64,
+		Segment = 128,
+	}
+
+	public class PrimitiveType2 : DataType
+	{
+		private Domain2 domain;
+		private int byteSize;
+		
+
+		private PrimitiveType2(Domain2 dom, int byteSize)
+		{
+			if (dom == 0)
+				throw new ArgumentException("Domain is empty.");
+			this.domain = dom;
+			this.byteSize = byteSize;
+		}
+
+		public override DataType Clone()
+		{
+			return this;
+		}
+
+		public static PrimitiveType2 Create(Domain2 dom, int byteSize)
+		{
+			PrimitiveType2 p = new PrimitiveType2(dom, byteSize);
+			PrimitiveType2 shared = (PrimitiveType2) cache[p];
+			if (shared == null)
+			{
+				shared = p;
+				cache[p] = shared;
+			}
+			return shared;
+		}
+
+		public override bool Equals(object obj)
+		{
+			PrimitiveType2 p = obj as PrimitiveType2;
+			if (p == null)
+				return false;
+			return p.domain == domain && p.byteSize == byteSize;
+		}
+	
+
+		public override int GetHashCode()
+		{
+			return byteSize * 256 ^ domain.GetHashCode();
+		}
+
+		public override string Prefix
+		{
+			get
+			{
+				return "pt";
+			}
+		}
+
+		public override DataType Accept(DataTypeTransformer t)
+		{
+			return this;
+		}
+
+		public override void Accept(IDataTypeVisitor v)
+		{
+		}
+
+		public override int Size
+		{
+			get { return byteSize; }
+			set { throw new InvalidOperationException("Size of a primitive type cannot be changed."); }
+		}
+
+		public override void Write(TextWriter writer)
+		{
+			int d = (int) domain;
+			if ((d & (d - 1)) == 0)
+			{
+				switch (domain)
+				{
+				case Domain2.Boolean:
+					writer.Write("bool"); return;
+				case Domain2.Character:
+					writer.Write("char"); return;
+				case Domain2.SignedInt:
+					writer.Write("int");
+					writer.Write(BitSize); return;
+				case Domain2.Pointer:
+					writer.Write("ptr");
+					writer.Write(BitSize); return;
+				case Domain2.Real:
+					writer.Write("real");
+					writer.Write(BitSize); return;
+				case Domain2.Segment:
+					writer.Write("segment"); return;
+				}
+			}
+			if (Size == 1)
+			{
+				writer.Write("byte");
+			}
+			else
+			{
+				writer.Write("word");
+				writer.Write(BitSize);
+			}
+		}
+
+		private static Hashtable cache;
+
+		static PrimitiveType2()
+		{
+			cache = new Hashtable();
+			Domain2 w;
+
+			_void = new PrimitiveType2(Domain2.Void, 0);
+
+			w = Domain2.Boolean|Domain2.Character|Domain2.SignedInt|Domain2.UnsignedInt|Domain2.UnsignedInt;
+			_byte = new PrimitiveType2(w, 1);
+			bool1 = Create(Domain2.Boolean, 1);
+			_char = Create(Domain2.Character, 1);
+			int8 = Create(Domain2.SignedInt, 1);
+			uint8 = Create(Domain2.UnsignedInt, 1);
+
+			w = Domain2.SignedInt|Domain2.UnsignedInt|Domain2.Pointer|Domain2.Segment;
+			word16 = Create(w, 2);
+			int16 = Create(Domain2.SignedInt, 2);
+			uint16 = Create(Domain2.UnsignedInt, 2);
+			ptr16 = Create(Domain2.Pointer, 2);
+			segment = Create(Domain2.Segment, 2);
+
+			w = Domain2.SignedInt|Domain2.UnsignedInt|Domain2.Pointer|Domain2.Real;
+			word32 = Create(w, 4);
+			int32 = Create(Domain2.SignedInt, 4);
+			uint32 = Create(Domain2.UnsignedInt, 4);
+			pointer32 = Create(Domain2.Pointer, 4);
+			real32 = Create(Domain2.Real, 4);
+
+			w = Domain2.SignedInt|Domain2.UnsignedInt|Domain2.Pointer|Domain2.Real;
+			word64 = Create(w, 8);
+			int64 = Create(Domain2.SignedInt, 8);
+			uint64 = Create(Domain2.UnsignedInt, 8);
+			pointer64 = Create(Domain2.Pointer, 8);
+			real64 = Create(Domain2.Real, 8);
+
+			real80 = Create(Domain2.Real, 10);
+
+			pointer = Create(Domain2.Pointer, 0);
+		}
+
+		static private PrimitiveType2 _void;
+
+		static private PrimitiveType2 _byte;
+		static private PrimitiveType2 bool1;
+		static private PrimitiveType2 _char;
+		static private PrimitiveType2 int8;
+		static private PrimitiveType2 uint8;
+
+		static private PrimitiveType2 word16;
+		static private PrimitiveType2 int16;
+		static private PrimitiveType2 uint16;
+		static private PrimitiveType2 ptr16;
+		static private PrimitiveType2 segment;
+
+		static private PrimitiveType2 word32;
+		static private PrimitiveType2 int32;
+		static private PrimitiveType2 uint32;
+		static private PrimitiveType2 pointer32;
+		static private PrimitiveType2 real32;
+
+		static private PrimitiveType2 word64;
+		static private PrimitiveType2 int64;
+		static private PrimitiveType2 uint64;
+		static private PrimitiveType2 pointer64;
+		static private PrimitiveType2 real64;
+
+		static private PrimitiveType2 real80;
+
+		static private PrimitiveType2 pointer;
+
+		static public PrimitiveType2 Void
+		{
+			get { return _void; }
+		}
+		
+		static public PrimitiveType2 Bool
+		{
+			get { return bool1; }
+		}
+
+		static public PrimitiveType2 Byte
+		{
+			get { return _byte; }
+		}
+		static public PrimitiveType2 Char
+		{
+			get { return _char; }
+		}
+		static public PrimitiveType2 SByte
+		{
+			get { return int8; }
+		}
+		static public PrimitiveType2 UInt8
+		{
+			get { return uint8; }
+		}
+
+		static public PrimitiveType2 Word16
+		{
+			get { return word16; }
+		}
+		static public PrimitiveType2 Int16
+		{
+			get { return int16; }
+		}
+		static public PrimitiveType2 UInt16
+		{
+			get { return uint16; }
+		}
+		static public PrimitiveType2 Ptr16
+		{
+			get { return ptr16; }
+		}
+
+		static public PrimitiveType2 Word32
+		{
+			get { return word32; }
+		}
+		static public PrimitiveType2 Int32
+		{
+			get { return int32; }
+		}
+		static public PrimitiveType2 UInt32
+		{
+			get { return uint32; }
+		}
+		static public PrimitiveType2 Pointer32
+		{
+			get { return uint32; }
+		}
+		static public PrimitiveType2 Real32
+		{
+			get { return uint32; }
+		}
+		static public PrimitiveType2 Word64
+		{
+			get { return word64; }
+		}
+		static public PrimitiveType2 Int64
+		{
+			get { return int64; }
+		}
+		static public PrimitiveType2 UInt64
+		{
+			get { return uint64; }
+		}
+		static public PrimitiveType2 Real64
+		{
+			get { return real64; }
+		}
 	}
 }

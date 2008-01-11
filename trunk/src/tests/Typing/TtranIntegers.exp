@@ -19,7 +19,7 @@ l0C00_0025:		// block 4, pred: 2
 	// succ:  5
 l0C00_002C:		// block 5, pred: 4 3
 	store(Mem42[ds:bx + 0x0009:byte]) = al_29
-	word32 dx_ax_45 = Mem42[ds:bx + 0x000C:word16] * Mem42[ds:bx + 0x000A:word16]
+	word32 dx_ax_45 = Mem42[ds:bx + 0x000C:word16] *s Mem42[ds:bx + 0x000A:word16]
 	store(Mem50[ds:bx + 0x000E:word16]) = (word16) dx_ax_45
 	store(Mem51[ds:bx + 0x0010:word16]) = SLICE(dx_ax_45, word16, 16)
 	return
@@ -171,7 +171,7 @@ T_35:(in Mem42[ds:bx + 0x000A:word16])
   Class: Eq_35
   DataType: int16
   OrigDataType: int16
-T_36:(in Mem42[ds:bx + 0x000C:word16] * Mem42[ds:bx + 0x000A:word16])
+T_36:(in Mem42[ds:bx + 0x000C:word16] *s Mem42[ds:bx + 0x000A:word16])
   Class: Eq_29
   DataType: int32
   OrigDataType: int32

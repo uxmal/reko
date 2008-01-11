@@ -62,6 +62,7 @@ namespace Decompiler.Core.Code
 				op == Operator.and ||
 				op == Operator.muls ||
 				op == Operator.mulu ||
+				op == Operator.mul ||
 				op == Operator.or ||
 				op == Operator.xor;
 		}
