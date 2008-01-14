@@ -16,29 +16,24 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
 using System;
-using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Core.Operators
 {
-	public class DecompilerOutput
+	/// <summary>
+	/// Multiplication where the signedness is unknown.
+	/// </summary>
+	public class MulOperator : BinaryOperator
 	{
-		[XmlElement("disassembly")]
-		public string DisassemblyFilename;
-
-		/// <summary>
-		/// If not null, specifies the file name for intermediate code.
-		/// </summary>
-		[XmlElement("rewritten-code")]
-		public string RewrittenFilename;
-
-		[XmlElement("output")]
-		public string OutputFilename;
-
-		[XmlElement("structure")]
-		public bool ControlStructure;
-
-		[XmlElement("type-inference")]
-		public bool TypeInference;
+		public override Constant ApplyConstants(Constant c1, Constant c2)
+		{
+			return BuildConstant(c1.DataType, c2.DataType, Convert.ToInt32(c1.Value) * Convert.ToInt32(c2.Value));
+		}
+		
+		public override string ToString()
+		{
+			return " * ";
+		}
 	}
 }

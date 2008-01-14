@@ -59,6 +59,7 @@ namespace Decompiler
 			this.project = new DecompilerProject();
 			this.host = host;
 			this.project.Input.Filename = binaryFilename;
+			this.project.Output.RewrittenFilename = Path.GetFileNameWithoutExtension(binaryFilename) + ".dis";
 			this.program = program;
 		}
 
@@ -72,8 +73,10 @@ namespace Decompiler
 			host.InterproceduralAnalysisComplete();
 
 			dfa.BuildExpressionTrees(rl);
-			EmitProgram(dfa, host.IntermediateCodeWriter);
-			
+			using (TextWriter textWriter = host.CreateIntermediateCodeWriter())
+			{
+				EmitProgram(dfa, textWriter);
+			}
 			ivs = dfa.InductionVariables;
 			host.ProceduresTransformed();
 		}
@@ -188,7 +191,10 @@ namespace Decompiler
 			{
 				TypeAnalyzer analyzer = new TypeAnalyzer(program, ivs, host);
 				analyzer.RewriteProgram();
-				analyzer.WriteTypes(host.TypesWriter);
+				using (TextWriter w = host.CreateTypesWriter())
+				{
+					analyzer.WriteTypes(w);
+				}
 			}
 			else
 			{
@@ -208,17 +214,23 @@ namespace Decompiler
 			rewriterHost.LoadCallSignatures(this.project.UserCalls);
 			rewriterHost.RewriteProgram();
 
-			EmitProgram(null, host.IntermediateCodeWriter);
-			host.MachineCodeRewritten();
+			using (TextWriter w = host.CreateDisassemblyWriter())
+			{
+				EmitProgram(null, w);
+				host.MachineCodeRewritten();
+			}
 		}
 
 		public void WriteDecompiledProcedures(DecompilerHost host)
 		{
-			CodeFormatter fmt = new CodeFormatter(host.DecompiledCodeWriter);
-			foreach (Procedure proc in program.Procedures.Values)
+			using (TextWriter w = host.CreateDecompiledCodeWriter())
 			{
-				fmt.Write(proc);
-				host.DecompiledCodeWriter.WriteLine();
+				CodeFormatter fmt = new CodeFormatter(w);
+				foreach (Procedure proc in program.Procedures.Values)
+				{
+					fmt.Write(proc);
+					w.WriteLine();
+				}
 			}
 		}
 
@@ -256,10 +268,9 @@ namespace Decompiler
 			finally
 			{
 				loader = null;
-				if (host.DisassemblyWriter != null)
+				using (TextWriter w = host.CreateDisassemblyWriter())
 				{
-					program.DumpAssembler(host.DisassemblyWriter);
-					host.DisassemblyWriter.Flush();
+					program.DumpAssembler(w);
 				}
 			}
 		}

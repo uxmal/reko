@@ -27,7 +27,7 @@ l0C00_0005:		// block 2, pred: 1 2
 	al = al + cl
 	ax = DPB(ax, al, 0, 8) (alias)
 	SCZO = cond(al)
-	cl = cl - 0x0001
+	cl = cl - 0x01
 	cx = DPB(cx, cl, 0, 8) (alias)
 	SZO = cond(cl)
 	SCZO = SZO (alias)
