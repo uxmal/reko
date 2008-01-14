@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,120 +52,6 @@ namespace Decompiler.Core.Operators
 		public override string ToString()
 		{
 			return " || ";
-		}
-	}
-
-	public class LtOperator : ConditionalOperator
-	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			return Convert.ToInt32(c1.Value) < Convert.ToInt32(c2.Value)
-				? Constant.True() 
-				: Constant.False();
-		}
-
-		public override string ToString()
-		{
-			return " < ";
-		}
-	}
-
-	public class GtOperator : ConditionalOperator
-	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override string ToString()
-		{
-			return " > ";
-		}
-	}
-
-	public class LeOperator : ConditionalOperator
-	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override string ToString()
-		{
-			return " <= ";
-		}
-	}
-
-	public class GeOperator : ConditionalOperator
-	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override string ToString()
-		{
-			return " >= ";
-		}
-	}
-
-	public class UltOperator : ConditionalOperator
-	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			uint v1 = (uint) Convert.ToInt32(c1.Value);
-			uint v2 = (uint) Convert.ToInt32(c2.Value);
-			return new Constant(PrimitiveType.Bool, v1 < v2);
-		}
-
-		public override string ToString()
-		{
-			return " <u ";
-		}
-	}
-
-	public class UgtOperator : ConditionalOperator
-	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			uint v1 = (uint) Convert.ToInt32(c1.Value);
-			uint v2 = (uint) Convert.ToInt32(c2.Value);
-			return new Constant(PrimitiveType.Bool, v1 <= v2);
-		}
-
-		public override string ToString()
-		{
-			return " >u ";
-		}
-	}
-
-	public class UleOperator : ConditionalOperator
-	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			uint v1 = (uint) Convert.ToInt32(c1.Value);
-			uint v2 = (uint) Convert.ToInt32(c2.Value);
-			return new Constant(PrimitiveType.Bool, v1 <= v2);
-		}
-
-		public override string ToString()
-		{
-			return " <=u ";
-		}
-	}
-
-	public class UgeOperator : ConditionalOperator
-	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			uint v1 = (uint) Convert.ToInt32(c1.Value);
-			uint v2 = (uint) Convert.ToInt32(c2.Value);
-			return new Constant(PrimitiveType.Bool, v1 >= v2);
-		}
-
-		public override string ToString()
-		{
-			return " >=u ";
 		}
 	}
 

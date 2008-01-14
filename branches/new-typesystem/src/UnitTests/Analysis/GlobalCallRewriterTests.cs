@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier arg = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			flow.StackArguments[arg] = 16;
 			gcr.EnsureSignature(proc, flow);
-			Assert.AreEqual("void foo(Stack word16 dwArg04)", proc.Signature.ToString(proc.Name));
+			Assert.AreEqual("void foo(Stack iupr16 dwArg04)", proc.Signature.ToString(proc.Name));
 		}
 
 

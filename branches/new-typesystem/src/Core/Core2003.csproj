@@ -684,6 +684,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Operators\RealConditionalOperators.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Operators\SarOperator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -699,12 +704,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Operators\SignedIntOperators.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Operators\SubOperator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Operators\UnaryOperator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Operators\UnsignedIntOperators.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

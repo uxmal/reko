@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -417,7 +417,6 @@ namespace Decompiler.Arch.Intel
 		/// </summary>
 		/// <param name="ch"></param>
 		/// <returns></returns>
-
 		private PrimitiveType OperandWidth(char ch)
 		{
 			switch (ch)

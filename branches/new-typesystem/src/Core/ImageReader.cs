@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Decompiler.Core
 
 		public int ReadSigned(PrimitiveType w)
 		{
-			if (w.Domain == Domain.Integral)
+			if (w.IsIntegral)
 			{
 				switch (w.Size)
 				{

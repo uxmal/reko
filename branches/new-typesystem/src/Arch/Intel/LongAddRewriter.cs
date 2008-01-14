@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@ namespace Decompiler.Arch.Intel
 
 		public bool Match(IntelInstruction loInstr, IntelInstruction hiInstr)
 		{
-			DataType totalSize = PrimitiveType.Create(Domain.Integral, loInstr.dataWidth.Size + hiInstr.dataWidth.Size, hiInstr.dataWidth.Sign);
+			DataType totalSize = PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt, loInstr.dataWidth.Size + hiInstr.dataWidth.Size);
 			src = MakeMatch(loInstr.op2, hiInstr.op2, totalSize, false);
 			dst = MakeMatch(loInstr.op1, hiInstr.op1, totalSize, true);
 			return dst != null && src != null;

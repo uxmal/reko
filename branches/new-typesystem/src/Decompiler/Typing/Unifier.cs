@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,20 +44,9 @@ namespace Decompiler.Typing
 			PrimitiveType pb = b as PrimitiveType;
 			if (pa != null && pb != null)
 			{
-				if (pa == pb)
-					return true;
-					
 				if (pa.Size != pb.Size)
 					return false;
-				
-				if (pa.Domain == Domain.Integral && pa.Sign == Sign.Unknown)
-					return true;
-				if (pb.Domain == Domain.Integral && pb.Sign == Sign.Unknown)
-					return true;
-				if (pa.Domain != pb.Domain)
-					return false;
-				if ((pa.Sign == Sign.Unknown || pb.Sign == Sign.Unknown || pa.Sign == pb.Sign))
-					return true;
+				return (pa.Domain &  pb.Domain) != 0;
 			}
 
 			TypeVariable tva = a as TypeVariable;
@@ -201,12 +190,10 @@ namespace Decompiler.Typing
 				if (pa == pb)
 					return pa;
 					
-				if (pa.Size == pb.Size)
+				Domain d = pa.Domain & pb.Domain;
+				if (d != 0 && pa.Size == pb.Size)
 				{
-					if (pa.Sign == Sign.Unknown)
-						return pb;
-					if (pb.Sign == Sign.Unknown)
-						return pa;
+					return PrimitiveType.Create(d, pa.Size);
 				}
 				return MakeUnion(a, b);
 			}
@@ -459,10 +446,9 @@ namespace Decompiler.Typing
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
 			{
-				if (pb == PrimitiveType.Word16 || pb == PrimitiveType.Word32 || pb.Domain == Domain.Pointer ||
-					pb == PrimitiveType.UInt16 || pb == PrimitiveType.UInt32 || pb.Domain == Domain.Segment)
+				if ((ptrA.Size == 0 || pb.Size == 0 || ptrA.Size == pb.Size) &&
+					(pb.Domain & Domain.Pointer|Domain.Segment) != 0)
 				{
-					//$ BUGBUG: line above should be: if (ptrA.Size == pb.Size && pb.Domain == Domain.integer && pb.ValType.Sign == Unknown)
 					return ptrA.Clone();
 				}
 			}

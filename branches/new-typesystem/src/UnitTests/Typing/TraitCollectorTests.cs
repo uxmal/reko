@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -342,12 +342,38 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProcedureMock m = new ProcedureMock();
 			Identifier ds = m.Local16("ds");
-			Expression e = m.SegMemW(ds, m.Int16(0xC002U));
+			Expression e = m.SegMemW(ds, m.Word16(0xC002U));
 			
 			coll = new TraitCollector(factory, store, handler, null, null);
 			e.Accept(eqb);
 			e.Accept(coll);
 			Verify(null, "Typing/TrcoSegMem.txt");
+		}
+
+		[Test]
+		public void TrcoUnsignedCompare()
+		{
+			ProcedureMock m = new ProcedureMock();
+			Identifier ds = m.Local16("ds");
+			Expression e = m.Uge(ds, m.Word16(0x0800));
+
+			coll = new TraitCollector(factory, store, handler, null, null);
+			e.Accept(eqb);
+			e.Accept(coll);
+			StringWriter sb = new StringWriter();
+			handler.Traits.Write(sb);
+			Console.WriteLine(sb);
+			string exp = 
+				"T_1 (in ds)" + nl +
+				"\ttrait_primitive(word16)" + nl +
+				"\ttrait_equal(T_2)" + nl +
+				"\ttrait_primitive(ups16)" + nl +
+				"T_2 (in 0x0800)" + nl +
+				"\ttrait_primitive(word16)" + nl +
+				"\ttrait_primitive(ups16)" + nl +
+				"T_3 (in ds >=u 0x0800)" + nl +
+				"\ttrait_primitive(bool)" + nl;
+			Assert.AreEqual(exp, sb.ToString());
 		}
 
 		[SetUp]

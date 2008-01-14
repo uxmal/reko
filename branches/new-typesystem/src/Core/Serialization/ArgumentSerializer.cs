@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ namespace Decompiler.Core.Serialization
 
 		public void Deserialize(SerializedStackVariable ss)
 		{
-			PrimitiveType dt = PrimitiveType.Create(Domain.Integral, ss.ByteSize, Sign.Unknown);
+			PrimitiveType dt = PrimitiveType.CreateWord(ss.ByteSize);
 			idArg = sig.CreateId(
 				ArgumentName(argCur.Name, "arg" + sig.StackOffset), 
 				dt,
@@ -83,7 +83,7 @@ namespace Decompiler.Core.Serialization
 			Identifier head = frame.EnsureRegister(h);
 			Identifier tail = frame.EnsureRegister(t);
 			idArg = frame.EnsureSequence(head, tail, 
-				PrimitiveType.Create(Domain.Integral, head.DataType.Size + tail.DataType.Size, Sign.Unknown));
+				PrimitiveType.CreateWord(head.DataType.Size + tail.DataType.Size));
 		}
 
 		public Identifier Deserialize(SerializedArgument arg)

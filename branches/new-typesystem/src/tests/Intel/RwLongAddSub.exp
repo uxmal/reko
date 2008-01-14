@@ -20,14 +20,14 @@ fn0C00_0000_entry:		// block 0, pred:
 l0C00_0000:		// block 1, pred: 0
 	ax = Mem0[ds:0x0300:word16]
 	dx = Mem0[ds:0x0302:word16]
-	dx_ax = dx_ax + Mem0[ds:0x0304:word32]
+	dx_ax = dx_ax + Mem0[ds:0x0304:iu32]
 	SCZO = cond(dx_ax)
 	ax = Mem0[ds:si + 0x0308:word16]
 	dx_ax = dx_ax + bx_cx
 	SCZO = cond(dx_ax)
 	dx = Mem0[ds:si + 0x030A:word16]
-	store(Mem0[ds:0x0200:word64]) = Mem0[ds:0x0200:word64] + edx_eax
-	SCZO = cond(Mem0[ds:0x0200:word64])
+	store(Mem0[ds:0x0200:iu64]) = Mem0[ds:0x0200:iu64] + edx_eax
+	SCZO = cond(Mem0[ds:0x0200:iu64])
 	cx = Mem0[ds:si + 0x030C:word16]
 	dx_ax = dx_ax - bx_cx
 	SCZO = cond(dx_ax)

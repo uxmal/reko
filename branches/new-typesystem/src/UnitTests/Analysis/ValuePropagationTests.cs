@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -244,7 +244,7 @@ namespace Decompiler.UnitTests.Analysis
 					id),
 				new Constant(t, 2));
 			Expression e = vp.TransformBinaryExpression(b);
-			Assert.AreEqual("id *s 0x00000014", e.ToString());
+			Assert.AreEqual("id *s 20", e.ToString());
 
 		}
 

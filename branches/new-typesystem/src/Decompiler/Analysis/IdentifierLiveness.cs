@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ using System;
 using System.Collections;
 using System.IO;
 
-//$REFACTOR: rename this file to IdentifierLiveness
 namespace Decompiler.Analysis
 {
 	public class IdentifierLiveness : StorageVisitor	

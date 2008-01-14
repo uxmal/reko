@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,11 @@ namespace Decompiler.Core.Operators
 		public static readonly BinaryOperator gt = new GtOperator();
 		public static readonly BinaryOperator le = new LeOperator();
 		public static readonly BinaryOperator ge = new GeOperator();
+
+		public static readonly BinaryOperator rlt = new RltOperator();
+		public static readonly BinaryOperator rgt = new RgtOperator();
+		public static readonly BinaryOperator rle = new RleOperator();
+		public static readonly BinaryOperator rge = new RgeOperator();
 
 		public static readonly BinaryOperator ult = new UltOperator();
 		public static readonly BinaryOperator ugt = new UgtOperator();

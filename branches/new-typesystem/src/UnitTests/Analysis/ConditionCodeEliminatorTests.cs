@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,6 +123,26 @@ namespace Decompiler.UnitTests.Analysis
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds);
 			cce.Transform();
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
+		}
+
+		[Test]
+		public void SignedIntComparisonFromConditionCode()
+		{
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null);
+			BinaryExpression bin = new BinaryExpression(Operator.sub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
+			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
+			Assert.AreEqual("a < b", b.ToString());
+			Assert.AreEqual("LtOperator", b.op.GetType().Name);
+		}
+
+		[Test]
+		public void RealComparisonFromConditionCode()
+		{
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null);
+			BinaryExpression bin = new BinaryExpression(Operator.sub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
+			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
+			Assert.AreEqual("a < b", b.ToString());
+			Assert.AreEqual("RltOperator", b.op.GetType().Name);
 		}
 
 		private Identifier Reg32(string name)
