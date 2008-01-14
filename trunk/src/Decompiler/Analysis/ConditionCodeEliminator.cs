@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -159,36 +159,38 @@ namespace Decompiler.Analysis
 			return op == Operator.add || op == Operator.sub;
 		}
 
-		private Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)
+		public Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)
 		{
 			BinaryOperator cmpOp = null;
+			if (isNegated)
+			{
+				cc = Negate(cc);
+			}
+			PrimitiveType p = bin.DataType as PrimitiveType;
+			bool isReal = (p != null && (p.Domain & Domain.Real) != 0);
 			switch (cc)
 			{
-			case ConditionCode.UGT: cmpOp = isNegated ? Operator.ule : Operator.ugt; break;
-			case ConditionCode.ULE: cmpOp = isNegated ? Operator.ugt : Operator.ule; break;
-			case ConditionCode.ULT: cmpOp = isNegated ? Operator.uge : Operator.ult; break;
-			case ConditionCode.GT:  cmpOp = isNegated ? Operator.le  : Operator.gt; break;
-			case ConditionCode.GE:  cmpOp = isNegated ? Operator.lt  : Operator.ge; break;
-			case ConditionCode.LT:  cmpOp = isNegated ? Operator.ge  : Operator.lt; break;
-			case ConditionCode.LE:  cmpOp = isNegated ? Operator.gt  : Operator.le; break;
-			case ConditionCode.UGE: cmpOp = isNegated ? Operator.ult : Operator.uge; break;
-			case ConditionCode.NE:  cmpOp = isNegated ? Operator.eq  : Operator.ne; break;
-			case ConditionCode.EQ:  cmpOp = isNegated ? Operator.ne  : Operator.eq; break;
-			case ConditionCode.SG:  cmpOp = isNegated ? Operator.ge  : Operator.lt; break;
-			case ConditionCode.NS:  cmpOp = isNegated ? Operator.lt  : Operator.ge; break;
+			case ConditionCode.UGT: cmpOp = Operator.ugt; break;
+			case ConditionCode.UGE: cmpOp = Operator.uge; break;
+			case ConditionCode.ULE: cmpOp = Operator.ule; break;
+			case ConditionCode.ULT: cmpOp = Operator.ult; break;
+			case ConditionCode.GT:  cmpOp = isReal ? Operator.rgt : Operator.gt; break;
+			case ConditionCode.GE:  cmpOp = isReal ? Operator.rge : Operator.ge; break;
+			case ConditionCode.LE:  cmpOp = isReal ? Operator.rle : Operator.le; break;
+			case ConditionCode.LT:  cmpOp = isReal ? Operator.rlt : Operator.lt; break;
+			case ConditionCode.NE:  cmpOp = Operator.ne; break;
+			case ConditionCode.EQ:  cmpOp = Operator.eq; break;
+			case ConditionCode.SG:  cmpOp = Operator.lt; break;
+			case ConditionCode.NS:  cmpOp = Operator.ge; break;
+			case ConditionCode.OV:  
+				return ComparisonFromOverflow(bin, isNegated);
+			case ConditionCode.NO:
+				return ComparisonFromOverflow(bin, !isNegated);
+			default: throw new NotImplementedException(string.Format("Case {0} not handled.", cc));
 			}
 
 			Expression e;
-			if (cc == ConditionCode.OV || cc == ConditionCode.NO)
-			{
-				e = new Application(new ProcedureConstant(PrimitiveType.Pointer, new PseudoProcedure("OVERFLOW", 1)),
-					PrimitiveType.Bool, bin);
-				if (cc == ConditionCode.NO)
-				{
-					e = new UnaryExpression(Operator.not, PrimitiveType.Bool, e);
-				}
-			}
-			else if (bin.op == Operator.sub)
+			if (bin.op == Operator.sub)
 			{
 				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
 			}
@@ -199,6 +201,37 @@ namespace Decompiler.Analysis
 			return e;
 		}
 
+		public Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
+		{
+			Expression e = new Application(new ProcedureConstant(PrimitiveType.Pointer, new PseudoProcedure("OVERFLOW", 1)),
+				PrimitiveType.Bool, bin);
+			if (isNegated)
+			{
+				e = new UnaryExpression(Operator.not, PrimitiveType.Bool, e);
+			}
+			return e;
+		}
+		
+		public static ConditionCode Negate(ConditionCode cc)
+		{
+			switch (cc)
+			{
+			case ConditionCode.UGT: return ConditionCode.ULE;
+			case ConditionCode.ULE: return ConditionCode.UGT;
+			case ConditionCode.ULT: return ConditionCode.UGE;
+			case ConditionCode.GT:  return ConditionCode.LE; 
+			case ConditionCode.GE:  return ConditionCode.LT; 
+			case ConditionCode.LT:  return ConditionCode.GE; 
+			case ConditionCode.LE:  return ConditionCode.GT; 
+			case ConditionCode.UGE: return ConditionCode.ULT;
+			case ConditionCode.NE:  return ConditionCode.EQ; 
+			case ConditionCode.EQ:  return ConditionCode.NE; 
+			case ConditionCode.SG:  return ConditionCode.GE; 
+			case ConditionCode.NS:  return ConditionCode.LT; 
+			default: throw new ArgumentException("cc");
+			}
+
+		}
 
 		private void Use(Expression expr, Statement stm)
 		{

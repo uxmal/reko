@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -462,7 +462,7 @@ namespace Decompiler.Arch.Intel
 						break;
 
 					case Opcode.imul:
-						ass = EmitMultiply(Operator.muls);
+						ass = EmitMultiply(Operator.muls, Domain.SignedInt);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 
@@ -612,13 +612,13 @@ namespace Decompiler.Arch.Intel
 						siw.EmitStringInstruction(instrCur);
 						break;
 					case Opcode.movsx:
-						EmitCopy(instrCur.op1, new Cast(PrimitiveType.Create(instrCur.op1.Width.Domain, instrCur.op1.Width.Size, Sign.Signed), SrcOp(instrCur.op2)), false);
+						EmitCopy(instrCur.op1, new Cast(PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size), SrcOp(instrCur.op2)), false);
 						break;
 					case Opcode.movzx:
 						EmitCopy(instrCur.op1, new Cast(instrCur.op1.Width, SrcOp(instrCur.op2)), false);
 						break;
 					case Opcode.mul:
-						ass = EmitMultiply(Operator.mulu);
+						ass = EmitMultiply(Operator.mulu, Domain.UnsignedInt);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.neg:
@@ -839,7 +839,7 @@ namespace Decompiler.Arch.Intel
 						break;
 
 					case Opcode.shl:
-						ass = EmitBinOp(Operator.shl, instrCur.op1, instrCur.op1, instrCur.op2);
+						ass = EmitBinOp(Operator.shl, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.shld:
@@ -849,7 +849,7 @@ namespace Decompiler.Arch.Intel
 							SrcOp(instrCur.op3)), false);
 						break;
 					case Opcode.shr:
-						ass = EmitBinOp(Operator.shr, instrCur.op1, instrCur.op1, instrCur.op2);
+						ass = EmitBinOp(Operator.shr, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.shrd:
@@ -947,7 +947,7 @@ namespace Decompiler.Arch.Intel
 						}
 						else
 						{
-							ass = EmitBinOp(Operator.xor, instrCur.op1, instrCur.op1, instrCur.op2);
+							ass = EmitBinOp(Operator.xor, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
 						}
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
@@ -1045,7 +1045,7 @@ namespace Decompiler.Arch.Intel
 			return ass;
 		}
 
-		private Assignment EmitBinOp(BinaryOperator binOp, Operand dst, Operand left, Expression right)
+		public Assignment EmitBinOp(BinaryOperator binOp, Operand dst, DataType dtDst, Operand left, Expression right)
 		{
 			Expression eLeft = SrcOp(left);
 			Constant c = right as Constant;
@@ -1057,12 +1057,19 @@ namespace Decompiler.Arch.Intel
 				}
 			}
 
-			return EmitCopy(dst, new BinaryExpression(binOp, dst.Width, eLeft, right), true);
+			return EmitCopy(dst, new BinaryExpression(binOp, dtDst, eLeft, right), true);
 		}
 
+		[Obsolete]
+		private Assignment EmitBinOp(BinaryOperator binOp, Operand dst, Operand left, Expression right)
+		{
+			return EmitBinOp(binOp, dst, dst.Width, left, right);
+		}
+
+		[Obsolete]
 		private Assignment EmitBinOp(BinaryOperator binOp, Operand dst, Operand left, Operand right)
 		{
-			return EmitBinOp(binOp, dst, left, SrcOp(right));
+			return EmitBinOp(binOp, dst, dst.Width, left, SrcOp(right));
 		}
 
 		private void EmitBranchInstruction(FlagM usedFlags, ConditionCode cc, Operand opTarget)
@@ -1485,7 +1492,7 @@ namespace Decompiler.Arch.Intel
 		}
 
 
-		private Assignment EmitMultiply(BinaryOperator op)
+		private Assignment EmitMultiply(BinaryOperator op, Domain resultDomain)
 		{
 			Assignment ass; 
 			switch (instrCur.cOperands)
@@ -1515,14 +1522,14 @@ namespace Decompiler.Arch.Intel
 							throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
 					};
 					return emitter.Assign(product,
-						new BinaryExpression(op, product.DataType, SrcOp(instrCur.op1), multiplicator));
+						new BinaryExpression(op, PrimitiveType.Create(resultDomain, product.DataType.Size), SrcOp(instrCur.op1), multiplicator));
 				}
 
 				case 2:
-					ass = EmitBinOp(op, instrCur.op1, instrCur.op1, instrCur.op2);
+					ass = EmitBinOp(op, instrCur.op1, instrCur.op1.Width.MaskDomain(resultDomain), instrCur.op1, SrcOp(instrCur.op2));
 					break;
 				case 3:
-					ass = EmitBinOp(op, instrCur.op1, instrCur.op2, instrCur.op3);
+					ass = EmitBinOp(op, instrCur.op1, instrCur.op1.Width.MaskDomain(resultDomain), instrCur.op2, SrcOp(instrCur.op3));
 					break;
 				default:
 					throw new ArgumentException("Invalid number of operands");

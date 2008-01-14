@@ -51,7 +51,7 @@ l0C00_001E:		// block 6, pred: 5
 	branch al >u 0x66
 	// succ:  8 7
 l0C00_0032:		// block 7, pred: 6 5 3 1
-	return 0x01
+	return true
 	// succ:  12
 l0C00_0022:		// block 8, pred: 6 4 2
 	byte al_20 = al - 0x30
@@ -68,7 +68,7 @@ l0C00_002E:		// block 10, pred: 9
 	store(Mem0[alOut:byte]) = al - 0x57
 	// succ:  11
 l0C00_0030:		// block 11, pred: 10 9 8
-	return 0x00
+	return false
 	// succ:  12
 fn0C00_000A_exit:		// block 12, pred: 11 7
 	// succ: 

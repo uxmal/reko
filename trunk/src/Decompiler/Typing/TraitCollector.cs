@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,20 +97,32 @@ namespace Decompiler.Typing
 			} 
 		}
 		
+		public Domain DomainOf(DataType t)
+		{
+			return ((PrimitiveType)t).Domain;
+		}
+
+		public PrimitiveType MakeNotSigned(DataType t)
+		{
+			PrimitiveType p = t as PrimitiveType;
+			if (p == null)
+				return null;
+			return p.MaskDomain(~(Domain.SignedInt|Domain.Real));
+		}
+
 		public PrimitiveType MakeSigned(DataType t)
 		{
 			PrimitiveType p = t as PrimitiveType;
-			if (p != null)
-				return PrimitiveType.Create(p.Domain, p.Size, Sign.Signed);
-			else
+			if (p == null)
 				return null;
+			return p.MaskDomain(Domain.SignedInt);
 		}
 
 		public PrimitiveType MakeUnsigned(DataType t)
 		{
 			PrimitiveType p = t as PrimitiveType;
 			if (p != null)
-				return PrimitiveType.Create(p.Domain, p.Size, Sign.Unsigned);
+				return PrimitiveType.Create(Domain.UnsignedInt, p.Size);
 			else
 				return null;
 		}
@@ -287,9 +299,9 @@ namespace Decompiler.Typing
 			else if (binExp.op == Operator.muls ||
 				binExp.op == Operator.divs)
 			{
-				handler.DataTypeTrait(tvExp, MakeSigned(binExp.DataType));
-				handler.DataTypeTrait(binExp.Left.TypeVariable, MakeSigned(binExp.Left.DataType));
-				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeSigned(binExp.Right.DataType));
+				handler.DataTypeTrait(tvExp, binExp.DataType);
+				handler.DataTypeTrait(binExp.Left.TypeVariable, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Left.DataType.Size));
+				handler.DataTypeTrait(binExp.Right.TypeVariable, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.Size));
 				return;
 			}
 			else if (binExp.op == Operator.mulu ||
@@ -343,6 +355,14 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeSigned(binExp.Right.DataType));
 				return;
 			}
+			else if (binExp.op is RealConditionalOperator)
+			{
+				handler.EqualTrait(binExp.Left.TypeVariable, binExp.Right.TypeVariable);
+				handler.DataTypeTrait(tvExp, PrimitiveType.Bool);
+				handler.DataTypeTrait(binExp.Left.TypeVariable, PrimitiveType.Create(Domain.Real, binExp.Left.DataType.Size));
+				handler.DataTypeTrait(binExp.Right.TypeVariable, PrimitiveType.Create(Domain.Real, binExp.Right.DataType.Size));
+				return;
+			}
 			else if (binExp.op == Operator.uge ||
 				binExp.op == Operator.ugt ||
 				binExp.op == Operator.ule ||
@@ -350,7 +370,8 @@ namespace Decompiler.Typing
 			{
 				handler.EqualTrait(binExp.Left.TypeVariable, binExp.Right.TypeVariable);
 				handler.DataTypeTrait(tvExp, PrimitiveType.Bool);
-				// Can't introduce unsigned types here, because the comparands could be pointers too.
+				handler.DataTypeTrait(binExp.Left.TypeVariable, MakeNotSigned(binExp.Left.DataType));
+				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeNotSigned(binExp.Right.DataType));
 				return;
 			}
 			throw new NotImplementedException("NYI: " + binExp.op + " in " + binExp);

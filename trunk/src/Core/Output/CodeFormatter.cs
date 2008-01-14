@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,6 +69,10 @@ namespace Decompiler.Core.Output
 			precedences[Operator.le] = 7;
 			precedences[Operator.gt] = 7;
 			precedences[Operator.ge] = 7;
+			precedences[Operator.rlt] = 7;
+			precedences[Operator.rle] = 7;
+			precedences[Operator.rgt] = 7;
+			precedences[Operator.rge] = 7;
 			precedences[Operator.ult] = 7;
 			precedences[Operator.ule] = 7;
 			precedences[Operator.ugt] = 7;

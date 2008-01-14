@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,7 +149,7 @@ namespace Decompiler.Arch.Intel
 			MemoryOperand mem = (MemoryOperand) opSrc;
 			PseudoProcedure ppp = ImportedProcedureName(addrWidth, mem);
 			if (ppp != null)
-				return new ProcedureConstant(PrimitiveType.Create(Domain.Pointer, 0, Sign.Unknown), ppp);
+				return new ProcedureConstant(PrimitiveType.Pointer, ppp);
 			Address addr = AbsoluteAddress(mem);
 			if (addr != null && host.Image.Map.IsReadOnlyAddress(addr) && mem.Width.Domain == Domain.Real)
 			{
@@ -194,7 +194,7 @@ namespace Decompiler.Arch.Intel
 			Expression eIndex = null;
 			Expression eBase = null;
 			Expression expr = null;
-			PrimitiveType type = new PrimitiveType(Domain.Integral, mem.Width.Size, Sign.Unknown);
+			PrimitiveType type = PrimitiveType.CreateWord(mem.Width.Size);
 
 			if (mem.Base != Registers.None)
 			{

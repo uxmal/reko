@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,15 +126,6 @@ namespace Decompiler.Core
 		{
 			switch (type.Domain)
 			{
-			case Domain.Integral:
-				switch (type.Size)
-				{
-				case 1: return "X2";
-				case 2: return "X4";
-				case 4: return "X8";
-				case 8: return "X8";
-				default: throw new ArgumentOutOfRangeException();
-				}
 			case Domain.Real:
 				switch (type.Size)
 				{
@@ -143,13 +134,20 @@ namespace Decompiler.Core
 				default: throw new ArgumentOutOfRangeException();
 				}
 			default:
-				throw new ArgumentOutOfRangeException();
+				switch (type.Size)
+				{
+				case 1: return "X2";
+				case 2: return "X4";
+				case 4: return "X8";
+				case 8: return "X8";
+				default: throw new ArgumentOutOfRangeException();
+				}
 			}
 		}
 
 		public string FormatSigned()
 		{
-			if (type.Domain == Domain.Integral)
+			if (type.IsIntegral)
 			{
 				string s = "+";
 				long tmp = Convert.ToInt64(v);
@@ -166,7 +164,7 @@ namespace Decompiler.Core
 
 		public string FormatUnsigned()
 		{
-			if (type.Domain == Domain.Integral)
+			if (type.IsIntegral)
 			{
 				return Unsigned.ToString(FormatString());
 			}

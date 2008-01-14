@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,29 +34,24 @@ namespace Decompiler.Core.Serialization
 		[XmlAttribute("size")]
 		public int ByteSize;
 
-		[DefaultValue(Sign.Unknown)]
-		[XmlAttribute("sign")]
-		public Sign Sign;
-
 		public SerializedPrimitiveType()
 		{
 		}
 
-		public SerializedPrimitiveType(Domain domain, int byteSize, Sign sign)
+		public SerializedPrimitiveType(Domain domain, int byteSize)
 		{
 			this.Domain = domain;	
 			this.ByteSize = byteSize;
-			this.Sign = sign;
 		}
 
 		public override DataType BuildDataType(TypeFactory factory)
 		{
-			return factory.CreatePrimitiveType(Domain, ByteSize, Sign);
+			return factory.CreatePrimitiveType(Domain, ByteSize);
 		}
 
 		public override string ToString()
 		{
-			return string.Format("prim({0},{1},{2})", Domain, ByteSize, Sign);
+			return string.Format("prim({0},{1})", Domain, ByteSize);
 		}
 	}
 }

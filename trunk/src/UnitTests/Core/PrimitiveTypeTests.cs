@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,9 @@ namespace Decompiler.UnitTests.Core
 		{
 			Assert.AreEqual("bool", PrimitiveType.Bool.ToString());
 			Assert.AreEqual("byte", PrimitiveType.Byte.ToString());
-			Assert.AreEqual("byte", PrimitiveType.Char.ToString());
-			Assert.AreEqual("sbyte", PrimitiveType.SByte.ToString());
+			Assert.AreEqual("char", PrimitiveType.Char.ToString());
+			Assert.AreEqual("int8", PrimitiveType.SByte.ToString());
+			Assert.AreEqual("uint8", PrimitiveType.UInt8.ToString());
 			Assert.AreEqual("word16", PrimitiveType.Word16.ToString());
 			Assert.AreEqual("int16", PrimitiveType.Int16.ToString());
 			Assert.AreEqual("uint16", PrimitiveType.UInt16.ToString());
@@ -40,38 +41,22 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual("uint32", PrimitiveType.UInt32.ToString());
 			Assert.AreEqual("real32", PrimitiveType.Real32.ToString());
 			Assert.AreEqual("real64", PrimitiveType.Real64.ToString());
+			Assert.AreEqual("ptr32", PrimitiveType.Pointer32.ToString());
 		}
 
 		[Test]
-		public void GetSignedEquivalent()
+		public void IsIntegral()
 		{
-			Assert.AreEqual("int16", PrimitiveType.Word16.GetSignedEquivalent().ToString());
-			Assert.AreEqual("int16", PrimitiveType.UInt16.GetSignedEquivalent().ToString());
+			Assert.IsTrue(PrimitiveType.Word16.IsIntegral);
+			Assert.IsTrue(PrimitiveType.Int32.IsIntegral);
+			Assert.IsFalse(PrimitiveType.Pointer64.IsIntegral);
+			Assert.IsFalse(PrimitiveType.Real32.IsIntegral);
 		}
 
 		[Test]
-		public void GetUnsignedEquivalent()
+		public void Hybrid32()
 		{
-			Assert.AreEqual("uint32", PrimitiveType.Word32.GetUnsignedEquivalent().ToString());
-		}
-
-		[Test]
-		public void PredefinedTypes2()
-		{
-			Assert.AreEqual("bool", PrimitiveType2.Bool.ToString());
-			Assert.AreEqual("byte", PrimitiveType2.Byte.ToString());
-			Assert.AreEqual("char", PrimitiveType2.Char.ToString());
-			Assert.AreEqual("int8", PrimitiveType2.SByte.ToString());
-			Assert.AreEqual("uint8", PrimitiveType2.UInt8.ToString());
-			Assert.AreEqual("word16", PrimitiveType2.Word16.ToString());
-			Assert.AreEqual("int16", PrimitiveType2.Int16.ToString());
-			Assert.AreEqual("uint16", PrimitiveType2.UInt16.ToString());
-			Assert.AreEqual("word32", PrimitiveType2.Word32.ToString());
-			Assert.AreEqual("int32", PrimitiveType2.Int32.ToString());
-			Assert.AreEqual("uint32", PrimitiveType2.UInt32.ToString());
-			Assert.AreEqual("real32", PrimitiveType2.Real32.ToString());
-			Assert.AreEqual("real64", PrimitiveType2.Real64.ToString());
-			Assert.AreEqual("ptr32", PrimitiveType2.Pointer32.ToString());
+			Assert.AreEqual("iup32", PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 4).ToString());
 		}
 	}
 }

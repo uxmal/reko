@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,7 +135,6 @@ namespace Decompiler.UnitTests.Analysis
 			
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
 
-			trf.CurrentFrame = new Frame(null);
 			ci.Accept(trf);
 			Assert.AreEqual("(ebx:TRASH)", DumpRegs(trf.TrashedRegisters));
 		}

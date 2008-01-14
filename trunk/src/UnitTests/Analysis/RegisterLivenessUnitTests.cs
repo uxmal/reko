@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Analysis
 			proc = m.Procedure;
 			f = proc.Frame;
 			mpprocflow = new ProgramDataFlow();
-			rl = new RegisterLiveness(prog, mpprocflow);
+			rl = new RegisterLiveness(prog, mpprocflow, null);
 			rl.Procedure = proc;
 			rl.IdentifierLiveness.BitSet = prog.Architecture.CreateRegisterBitset();
 

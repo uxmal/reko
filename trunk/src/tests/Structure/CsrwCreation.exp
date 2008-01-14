@@ -6,7 +6,7 @@ l1:		// block 1, pred: 0
 	branch r1 >u 0x00000004
 	// succ:  3 2
 default:		// block 2, pred: 1
-	r2 = r1 * r1
+	r2 = r1 *s r1
 	// succ:  8
 l2:		// block 3, pred: 1
 	switch (r1) { 7 6 5 4 }

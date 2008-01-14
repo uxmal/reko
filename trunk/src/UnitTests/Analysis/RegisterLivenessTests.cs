@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -163,7 +163,7 @@ namespace Decompiler.UnitTests.Analysis
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow);
 			trf.Compute();
-			RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow);
+			RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, null);
 			DumpProcedureFlows(prog, dfa, rl, fut.TextWriter);
 		}
 	}

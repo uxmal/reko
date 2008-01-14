@@ -4,7 +4,7 @@ StaggeredArraysMock_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
 	x = p[i * 0x00000008]
-	x = (p + 0x00000004)[i * 0x00000008]
+	x = (p + 4)[i * 0x00000008]
 	// succ: 
 
 T_2 (in p)
@@ -26,13 +26,13 @@ T_7 (in x)
 	trait_equal(T_6)
 	trait_primitive(word32)
 	trait_equal(T_12)
-T_8 (in 0x00000004)
-	trait_primitive(word32)
-T_9 (in p + 0x00000004)
+T_8 (in 4)
+	trait_primitive(int32)
+T_9 (in p + 4)
 	trait_primitive(word32)
 T_10 (in 0x00000008)
 	trait_primitive(word32)
 T_11 (in i * 0x00000008)
 	trait_primitive(word32)
-T_12 (in (p + 0x00000004)[i * 0x00000008])
+T_12 (in (p + 4)[i * 0x00000008])
 	trait_primitive(word32)

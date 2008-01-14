@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ namespace Decompiler.Scanning
 			}
 			PrimitiveType p = (PrimitiveType) fp.DataType;
 			Expression ea = new BinaryExpression(op, fp.DataType,
-				fp, new Constant(p.GetSignedEquivalent(), offset));
+				fp, new Constant(PrimitiveType.Create(Domain.SignedInt, p.Size), offset));
 			return ea;
 		}
 

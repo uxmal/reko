@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,9 +37,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void TfacCreation()
 		{
-			PrimitiveType it = factory.CreatePrimitiveType(Domain.Integral, 4, Sign.Unknown);
+			PrimitiveType it = factory.CreatePrimitiveType(Domain.UnsignedInt, 4);
 			Assert.AreEqual(4, it.Size);
-			Assert.AreEqual(Sign.Unknown, it.Sign);
 
 			StructureType str = factory.CreateStructureType("niz", 30);
 			Assert.AreEqual(30, str.Size);
@@ -54,8 +53,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void TfacIdenticalPrimitives()
 		{
-			object o1 = factory.CreatePrimitiveType(Domain.Integral, 2, Sign.Signed);
-			object o2 = factory.CreatePrimitiveType(Domain.Integral, 2, Sign.Signed);
+			object o1 = factory.CreatePrimitiveType(Domain.SignedInt, 2);
+			object o2 = factory.CreatePrimitiveType(Domain.SignedInt, 2);
 			Assert.AreSame(o1, o2);
 		}
 	}

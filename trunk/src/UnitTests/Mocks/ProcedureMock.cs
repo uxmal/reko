@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -387,7 +387,7 @@ namespace Decompiler.UnitTests.Mocks
 		public MkSequence Seq(Expression head, Expression tail)
 		{
 			return new MkSequence(
-				PrimitiveType.Create(Domain.Integral, head.DataType.Size + tail.DataType.Size, ((PrimitiveType)head.DataType).Sign),
+				PrimitiveType.Create(((PrimitiveType)head.DataType).Domain, head.DataType.Size + tail.DataType.Size),
 				head, 
 				tail);
 		}
@@ -413,9 +413,10 @@ namespace Decompiler.UnitTests.Mocks
 			set { programMock = value; }
 		}
 
+		[Obsolete("Replace with Ass(Muls(left, right))")]
 		public void Muls(Identifier product, Expression left, Expression right)
 		{
-			Emit(new Assignment(product, new BinaryExpression(Operator.muls, left.DataType, left, right)));
+			Emit(new Assignment(product, Muls(left, right)));
 		}
 
 		public Expression Mul(Expression left, Expression right)
@@ -430,17 +431,17 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Expression Muls(Expression left, Expression right)
 		{
-			return new BinaryExpression(Operator.muls, left.DataType, left, right);
+			return new BinaryExpression(Operator.muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, right);
 		}
 
 		public Expression Muls(Expression left, int c)
 		{
-			return new BinaryExpression(Operator.muls, left.DataType, left, new Constant(left.DataType, c));
+			return new BinaryExpression(Operator.muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
 		}
 
 		public Expression Mulu(Expression left, int c)
 		{
-			return new BinaryExpression(Operator.mulu, left.DataType, left, new Constant(left.DataType, c));
+			return new BinaryExpression(Operator.mulu, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
 		}
 
 		public BinaryExpression Ne(Expression a, Expression b)
@@ -601,6 +602,17 @@ namespace Decompiler.UnitTests.Mocks
 		public Statement Use(Identifier id)
 		{
 			return Emit(new UseInstruction(id));
+		}
+
+		public Constant Word16(short n)
+		{
+			return new Constant(PrimitiveType.Word16, n);
+		}
+
+
+		public Constant Word16(uint n)
+		{
+			return new Constant(PrimitiveType.Word16, n);
 		}
 	}
 }

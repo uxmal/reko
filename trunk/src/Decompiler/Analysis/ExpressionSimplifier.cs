@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -191,7 +191,7 @@ namespace Decompiler.Analysis
 			if (c != null)
 			{
 				PrimitiveType p = c.DataType as PrimitiveType;
-				if (p != null && p.Domain == Domain.Integral)
+				if (p != null && p.IsIntegral)
 				{
 					return new Constant(cast.DataType, Convert.ToInt32(c.Value));
 				}
