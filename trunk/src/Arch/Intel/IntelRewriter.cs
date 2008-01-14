@@ -231,7 +231,7 @@ namespace Decompiler.Arch.Intel
 							Operator.sub,
 							instrCur.op1,
 							instrCur.op1,
-							new Constant(instrCur.dataWidth, 1));
+							new Constant(instrCur.op1.Width, 1));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.div:
@@ -478,7 +478,10 @@ namespace Decompiler.Arch.Intel
 						else
 						{
 							ass = EmitBinOp(Operator.add,
-								instrCur.op1, instrCur.op1, new Constant(instrCur.dataWidth, 1));
+								instrCur.op1,
+								instrCur.op1.Width, 
+								instrCur.op1, 
+								new Constant(instrCur.op1.Width, 1));
 							EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						}
 						break;

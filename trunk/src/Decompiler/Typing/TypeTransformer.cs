@@ -190,11 +190,6 @@ namespace Decompiler.Typing
 			do
 			{
 				++iteration;
-				if (host != null)
-				{
-					host.IntermediateCodeWriter.WriteLine("// Iteration {0} ///////////////////////////////////////////////////", iteration);
-					store.Write(host.IntermediateCodeWriter);
-				}
 				Changed = false;
 				foreach (TypeVariable tv in store.TypeVariables)
 				{

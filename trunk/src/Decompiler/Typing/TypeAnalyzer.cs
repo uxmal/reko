@@ -91,22 +91,22 @@ namespace Decompiler.Typing
 				dtb.BuildEquivalenceClassDataTypes();
 				dpa.FollowConstantPointers(prog);
 				tvr.ReplaceTypeVariables();
-				host.IntermediateCodeWriter.WriteLine("= replaced type variables ==================================");
-				store.Write(host.IntermediateCodeWriter);
-				host.IntermediateCodeWriter.Flush();
+				Debug.WriteLine("= replaced type variables ==================================");
+//				store.Write(host.IntermediateCodeWriter);
+//				host.IntermediateCodeWriter.Flush();
 				Debug.WriteLine("= Transforming types =======================================");
 				trans.Transform();
 				ctn.RenameAllTypes(store);
-				host.IntermediateCodeWriter.WriteLine("= transformed types ========================================");
-				store.Write(host.IntermediateCodeWriter);
-				host.IntermediateCodeWriter.Flush();
+				Debug.WriteLine("= transformed types ========================================");
+//				store.Write(host.IntermediateCodeWriter);
+//				host.IntermediateCodeWriter.Flush();
 				Debug.WriteLine("= Rewriting expressions ====================================");
 				ter.RewriteProgram();
 			}
 			catch
 			{
-				host.WriteDiagnostic(Diagnostic.FatalError, "Crash while typing program. Dumping type store:");
-				store.Write(host.IntermediateCodeWriter);
+//				host.WriteDiagnostic(Diagnostic.FatalError, "Crash while typing program. Dumping type store:");
+//				store.Write(host.IntermediateCodeWriter);
 				throw;
 			}
 		}

@@ -27,6 +27,7 @@ namespace Decompiler.Analysis
 {
 	public class IdentifierLiveness : StorageVisitor	
 	{
+		private Identifier id;
 		private BitSet bits;
 		private uint grf;
 		private StorageWidthMap liveStackVars;
@@ -45,6 +46,7 @@ namespace Decompiler.Analysis
 
 		public void Def(Identifier id)
 		{
+			this.id = id;
 			define = true;
 			id.Storage.Accept(this);
 		}
@@ -61,6 +63,7 @@ namespace Decompiler.Analysis
 
 		public void Use(Identifier id)
 		{
+			this.id = id;
 			define = false;
 			id.Storage.Accept(this);
 		}
@@ -100,6 +103,7 @@ namespace Decompiler.Analysis
 			set { grf = value; }
 		}
 
+		//$REFACTOR: rename to LiveStorages.
 		public StorageWidthMap LiveStackVariables
 		{
 			get { return liveStackVars; }
@@ -219,15 +223,24 @@ namespace Decompiler.Analysis
 
 		public void VisitTemporaryStorage(TemporaryStorage tmp)
 		{
-/*			if (define)
+			if (define)
 			{
-				liveStackVars.Remove(tmp);
+				if (liveStackVars.Contains(tmp))
+				{
+					defBitSize = liveStackVars[tmp];
+					liveStackVars.Remove(tmp);
+				}
+				defOffset = 0;
 			}
 			else
 			{
-				liveStackVars[tmp] = tmp.DataType.BitSize;
+				if (liveStackVars.Contains(tmp))
+				{
+					liveStackVars[tmp] = Math.Max(useBitSize, liveStackVars[tmp]);
+				}
+				else
+					liveStackVars.Add(tmp, useBitSize != 0 ? useBitSize : id.DataType.BitSize);
 			}
- */
 		}
 
 		public void Write(TextWriter writer, string format, params object [] args)

@@ -27,10 +27,10 @@ namespace Decompiler
 	/// </summary>
 	public interface DecompilerHost
 	{
-		TextWriter DisassemblyWriter { get; }
-		TextWriter IntermediateCodeWriter { get; }
-		TextWriter TypesWriter { get; }				// TextWriter into which the reconstructed types are written.
-		TextWriter DecompiledCodeWriter { get; }	// Textwriter into which the Data is written
+		TextWriter CreateDisassemblyWriter();
+		TextWriter CreateIntermediateCodeWriter();
+		TextWriter CreateTypesWriter();				// TextWriter into which the reconstructed types are written.
+		TextWriter CreateDecompiledCodeWriter();	// Textwriter into which the Data is written
 
 		void ProgramLoaded();
 		void ProgramScanned();
@@ -53,24 +53,24 @@ namespace Decompiler
 		#region DecompilerHost Members
 
 
-		public TextWriter DisassemblyWriter
+		public TextWriter CreateDisassemblyWriter()
 		{
-			get { throw new Exception("The method or operation is not implemented."); }
+			throw new Exception("The method or operation is not implemented.");
 		}
 
-		public TextWriter IntermediateCodeWriter
+		public TextWriter CreateIntermediateCodeWriter()
 		{
-			get { throw new Exception("The method or operation is not implemented."); }
+			throw new Exception("The method or operation is not implemented.");
 		}
 
-		public TextWriter TypesWriter
+		public TextWriter CreateTypesWriter()
 		{
-			get { throw new Exception("The method or operation is not implemented."); }
+			throw new Exception("The method or operation is not implemented."); 
 		}
 
-		public TextWriter DecompiledCodeWriter
+		public TextWriter CreateDecompiledCodeWriter()
 		{
-			get { throw new Exception("The method or operation is not implemented."); }
+			throw new Exception("The method or operation is not implemented."); 
 		}
 
 		public void ProgramLoaded()

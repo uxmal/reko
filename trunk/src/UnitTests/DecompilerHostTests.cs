@@ -49,9 +49,11 @@ namespace Decompiler.UnitTests
 		[Test]
 		public void DhGetDisassemblyWriter()
 		{
-			host.DisassemblyWriter.WriteLine("Hello");
-			host.DisassemblyWriter.WriteLine("world");
-
+			using (TextWriter w = host.CreateDisassemblyWriter())
+			{
+				w.WriteLine("Hello");
+				w.WriteLine("world");
+			}
 			Assert.AreEqual("Hello" + Environment.NewLine + "world" + Environment.NewLine, fake.DisassemblyWriter.ToString());
 		}
 
@@ -66,7 +68,10 @@ namespace Decompiler.UnitTests
 		[Test]
 		public void DhTypes()
 		{
-			host.TypesWriter.WriteLine("Nils");
+			using (TextWriter w = host.CreateTypesWriter())
+			{
+				w.WriteLine("Nils");
+			}
 			Assert.AreEqual("Nils" + Environment.NewLine, fake.TypesWriter.ToString());
 		}
 
@@ -97,24 +102,24 @@ namespace Decompiler.UnitTests
 			sb.WriteLine(format, args);
 		}
 
-		public TextWriter DecompiledCodeWriter
+		public TextWriter CreateDecompiledCodeWriter()
 		{
-			get { return decompiled; }
+			return decompiled;
 		}
 
-		public TextWriter DisassemblyWriter
+		public TextWriter CreateDisassemblyWriter()
 		{
-			get { return disassembly; }
+			return disassembly;
 		}
 
-		public TextWriter IntermediateCodeWriter
+		public TextWriter CreateIntermediateCodeWriter()
 		{
-			get { return null; }
+			return null;
 		}
 
-		public TextWriter TypesWriter
+		public TextWriter CreateTypesWriter()
 		{
-			get { return typesWriter; }
+			return typesWriter;
 		}
 
 		public void Finished()
@@ -174,6 +179,16 @@ namespace Decompiler.UnitTests
 		public string LastProgress
 		{
 			get { return lastProgress; }
+		}
+
+		public StringWriter DisassemblyWriter
+		{
+			get { return disassembly; }
+		}
+
+		public StringWriter TypesWriter
+		{
+			get { return typesWriter; }
 		}
 	}
 }

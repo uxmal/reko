@@ -81,9 +81,6 @@ namespace Decompiler.Structure
 		
 		public void FindStructures()
 		{
-			if (proc.Name.EndsWith("6_2F6F"))
-				proc.Name.ToCharArray();
-			
 			CompoundConditionCoalescer ccc = new CompoundConditionCoalescer(proc);
 			ccc.Transform();
 			Debug.WriteLineIf(trace.TraceWarning, "Finding structure in " + proc.Name);

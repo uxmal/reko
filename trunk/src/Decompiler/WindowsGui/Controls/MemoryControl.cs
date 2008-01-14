@@ -236,8 +236,6 @@ namespace Decompiler.WindowsGui.Controls
 		/// <param name="rdr"></param>
 		private Address PaintLine(Graphics g, Rectangle rc, ImageReader rdr, bool render)
 		{
-			if (!render)
-				render.ToString();	//$DEBUG
 			StringBuilder sbCode = new StringBuilder(" ");
 
 			// Draw the address part.

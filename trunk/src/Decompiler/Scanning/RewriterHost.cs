@@ -85,7 +85,6 @@ namespace Decompiler.Scanning
 			{
 				Address addrProc = (Address) de.Key;
 				Procedure p = (Procedure) de.Value;
-				System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}, {2}", addrProc, p.Name, p.Frame.ReturnAddressSize));
 				if (prog.CallGraph.EntryPoints.Contains(p))
 				{
 					RewriteProcedure(p, addrProc, prog.Architecture.WordWidth.Size);

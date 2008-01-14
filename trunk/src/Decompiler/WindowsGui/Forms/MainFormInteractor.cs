@@ -73,7 +73,6 @@ namespace Decompiler.WindowsGui.Forms
 			form.BrowserList.SelectedIndexChanged += new EventHandler(OnBrowserListItemSelected);
 			form.ToolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(toolBar_ButtonClick);
 
-
 			SwitchInteractor(pageInitial);
 		}
 
@@ -91,6 +90,13 @@ namespace Decompiler.WindowsGui.Forms
 		public virtual DecompilerDriver CreateDecompiler(string file)
 		{
 			return new DecompilerDriver(file, new Program(), this);
+		}
+
+		public virtual TextWriter CreateTextWriter(string filename)
+		{
+			if (filename == null || filename == "")
+				return null;
+			return new StreamWriter(filename);
 		}
 
 		public PhasePageInteractor CurrentPage
@@ -265,22 +271,14 @@ namespace Decompiler.WindowsGui.Forms
 
 		#region DecompilerHost Members //////////////////////////////////
 
-		public TextWriter DisassemblyWriter
+		public TextWriter CreateDisassemblyWriter()
 		{
-			get
-			{
-				// TODO:  Add GuiHost.DisassemblyWriter getter implementation
-				return null;
-			}
+			return null;
 		}
 
-		public System.IO.TextWriter TypesWriter
+		public TextWriter CreateTypesWriter()
 		{
-			get
-			{
-				// TODO:  Add GuiHost.TypesWriter getter implementation
-				return null;
-			}
+			return null;
 		}
 
 		public void ShowProgress(string caption, int numerator, int denominator)
@@ -289,7 +287,6 @@ namespace Decompiler.WindowsGui.Forms
 			form.ProgressBar.Value = numerator;
 			form.ProgressBar.Minimum = 0;
 			form.ProgressBar.Maximum = denominator;
-			System.Diagnostics.Debug.WriteLine(caption);
 		}
 
 		public void CodeStructuringComplete()
@@ -335,22 +332,14 @@ namespace Decompiler.WindowsGui.Forms
 			form.AddDiagnostic(d, format, args);
 		}
 
-		public System.IO.TextWriter DecompiledCodeWriter
+		public TextWriter CreateDecompiledCodeWriter()
 		{
-			get
-			{
-				// TODO:  Add GuiHost.DecompiledCodeWriter getter implementation
-				return null;
-			}
+			return null;
 		}
 
-		public System.IO.TextWriter IntermediateCodeWriter
+		public TextWriter CreateIntermediateCodeWriter()
 		{
-			get
-			{
-				// TODO:  Add GuiHost.IntermediateCodeWriter getter implementation
-				return null;
-			}
+			return CreateTextWriter(decompiler.Project.Output.RewrittenFilename);
 		}
 
 		#endregion ////////////////////////////////////////////////////

@@ -161,7 +161,8 @@ namespace Decompiler.Analysis
 				PrimitiveType p = c.DataType as PrimitiveType;
 				if (p != null && p.IsIntegral)
 				{
-					return new Constant(cast.DataType, Convert.ToInt32(c.Value));
+					//$REVIEW: this is fixed to 32 bits; need a general solution to it.
+					return new Constant(cast.DataType, c.Value);
 				}
 			}
 			return cast;
@@ -343,7 +344,11 @@ namespace Decompiler.Analysis
 			{
 				PrimitiveType tHead = (PrimitiveType) c1.DataType;
 				PrimitiveType tTail = (PrimitiveType) c2.DataType;
-				PrimitiveType t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
+				PrimitiveType t;
+				if (tHead.Domain == Domain.Segment)			//$REVIEW: seems to require Address
+					t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
+				else
+					t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
 				Changed = true;
 				return new Constant(t, Convert.ToInt32(c1.Value) << tHead.BitSize | Convert.ToInt32(c2.Value));
 			}
