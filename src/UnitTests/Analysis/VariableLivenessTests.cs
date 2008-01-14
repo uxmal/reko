@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,6 +110,15 @@ namespace Decompiler.UnitTests.Analysis
 			vl.Def(arg04);
 			Assert.AreEqual(0, vl.LiveStackVariables.Count);
 			Assert.AreEqual(16, vl.DefBitSize);
+		}
+
+		[Test]
+		public void UseTemporary()
+		{
+			vl.LiveStackVariables = new StorageWidthMap();
+			Identifier tmp = frame.CreateTemporary(PrimitiveType.Word16);
+			Use(tmp, 0, tmp.DataType.BitSize);
+			Assert.AreEqual(1, vl.LiveStackVariables.Count);
 		}
 
 		private void Def(Identifier id)

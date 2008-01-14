@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,8 +32,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void TeqInts()
 		{
-			PrimitiveType p1 = new PrimitiveType(Domain.Integral, 2, Sign.Unknown);
-			PrimitiveType p2 = new PrimitiveType(Domain.Integral, 2, Sign.Unknown);
+			PrimitiveType p1 = PrimitiveType.Create(Domain.SignedInt, 2);
+			PrimitiveType p2 = PrimitiveType.Create(Domain.SignedInt, 2);
 			Assert.IsTrue(Object.Equals(p1, p2));
 		}
 

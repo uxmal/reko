@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CreateConst()
 		{
-			Constant c = factory.Constant(typefactory.CreatePrimitiveType(Domain.Integral, 4, Sign.Unknown), 3);
+			Constant c = factory.Constant(PrimitiveType.Word32, 3);
 			Assert.AreEqual("0x00000003", c.ToString());
 		}
 

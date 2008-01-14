@@ -22,6 +22,6 @@ done:		// block 3, pred: 2
 FactorialMock_exit:		// block 4, pred: 3
 	// succ: 
 l2:		// block 5, pred: 2
-	r3 = r3 * r2
+	r3 = r3 *s r2
 	r2 = r2 - 0x00000001
 	// succ:  2

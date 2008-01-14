@@ -189,6 +189,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Analysis\IdentifierLiveness.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Analysis\InductionVariableCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -310,11 +315,6 @@
                 />
                 <File
                     RelPath = "Analysis\ValuePropagator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Analysis\VariableLiveness.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

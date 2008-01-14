@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
+using System.Diagnostics;
 
 namespace Decompiler.Analysis
 {
@@ -65,26 +66,18 @@ namespace Decompiler.Analysis
 		public void Compute()
 		{
 			FillWorklist();
-			Console.WriteLine("{0} items in worklist", worklist.Count);
 			int initial = worklist.Count;
 			while (!worklist.IsEmpty)
 			{
 				if (decompilerHost != null)
 					decompilerHost.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
-				Block block = (Block) worklist.GetWorkItem();
-				System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}", block.Procedure.Name, block.Name));
 
-				CurrentFrame = block.Procedure.Frame;
+				Block block = (Block) worklist.GetWorkItem();
 				ProcessBlock(block);
 			}
 			CompleteWork();
 		}
 
-		public Frame CurrentFrame 
-		{
-			get { return frame; }
-			set { frame = value; }
-		}
 
 		public DecompilerHost DecompilerHost
 		{
@@ -110,14 +103,15 @@ namespace Decompiler.Analysis
 			foreach (Statement stm in block.Statements)
 			{
 				stm.Instruction.Accept(this);
-				foreach (object o in this.TrashedRegisters.Keys)
-				{
-					RegisterStorage stg = o as RegisterStorage;
-					if (stg == null)
-						continue;
-					System.Diagnostics.Debug.Write(string.Format("{0} ", stg.Register.Name));
-				}
-				System.Diagnostics.Debug.WriteLine("");
+//				DumpRegisters();
+//				foreach (object o in this.TrashedRegisters.Keys)
+//				{
+//					RegisterStorage stg = o as RegisterStorage;
+//					if (stg == null)
+//						continue;
+//					System.Diagnostics.Debug.Write(string.Format("{0} ", stg.Register.Name));
+//				}
+//				System.Diagnostics.Debug.WriteLine("");
 			}
 			if (block == block.Procedure.ExitBlock)
 			{

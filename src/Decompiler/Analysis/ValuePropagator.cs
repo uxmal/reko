@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -159,7 +159,7 @@ namespace Decompiler.Analysis
 			if (c != null)
 			{
 				PrimitiveType p = c.DataType as PrimitiveType;
-				if (p != null && p.Domain == Domain.Integral)
+				if (p != null && p.IsIntegral)
 				{
 					return new Constant(cast.DataType, Convert.ToInt32(c.Value));
 				}
@@ -343,7 +343,7 @@ namespace Decompiler.Analysis
 			{
 				PrimitiveType tHead = (PrimitiveType) c1.DataType;
 				PrimitiveType tTail = (PrimitiveType) c2.DataType;
-				PrimitiveType t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size, tHead.Sign);
+				PrimitiveType t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
 				Changed = true;
 				return new Constant(t, Convert.ToInt32(c1.Value) << tHead.BitSize | Convert.ToInt32(c2.Value));
 			}

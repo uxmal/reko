@@ -23,7 +23,7 @@ l0C00_0026:		// block 2, pred: 1
 	ax_18 = 0x0001
 	// succ:  4
 l0C00_0018:		// block 3, pred: 1
-	ax_18 = (word16) (wArg00 * fn0C00_000F(ax_14)) (alias)
+	ax_18 = (word16) (wArg00 *s fn0C00_000F(ax_14)) (alias)
 	// succ:  4
 l0C00_0029:		// block 4, pred: 3 2
 	return ax_18
@@ -38,7 +38,7 @@ word16 fn0C00_000F(word16 wArg00)
 	if (ax_14 == 0x0000)
 		ax_18 = 0x0001;
 	else
-		ax_18 = (word16) (wArg00 * fn0C00_000F(ax_14));
+		ax_18 = (word16) (wArg00 *s fn0C00_000F(ax_14));
 	return ax_18;
 }
 ===========================

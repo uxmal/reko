@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ namespace Decompiler.Analysis
 	public class RegisterLiveness : InstructionVisitorBase		//$REFACTOR: should be called InterproceduralLiveness
 	{
 		private Program prog;
+		private DecompilerHost host;
 		private Procedure proc;
 		private WorkList worklist;
 		private ProgramDataFlow mpprocData;
@@ -55,9 +56,10 @@ namespace Decompiler.Analysis
 
 		private static TraceSwitch trace = new TraceSwitch("RegisterLiveness", "Details of register liveness analysis");
 
-		public RegisterLiveness(Program prog, ProgramDataFlow procFlow)
+		public RegisterLiveness(Program prog, ProgramDataFlow procFlow, DecompilerHost host)
 		{
 			this.prog = prog;
+			this.host = host;
 			this.mpprocData = procFlow;
 			this.worklist = new WorkList();
 			this.varLive = new IdentifierLiveness(prog.Architecture);
@@ -84,9 +86,9 @@ namespace Decompiler.Analysis
 		/// <param name="p"></param>
 		/// <param name="procFlow"></param>
 		/// <returns></returns>
-		public static RegisterLiveness Compute(Program p, ProgramDataFlow procFlow)
+		public static RegisterLiveness Compute(Program p, ProgramDataFlow procFlow, DecompilerHost host)
 		{
-			RegisterLiveness live = new RegisterLiveness(p, procFlow);
+			RegisterLiveness live = new RegisterLiveness(p, procFlow, host);
 			Debug.WriteLineIf(trace.TraceError, "** Computing ByPass ****");
 			live.CurrentState = new ByPassState();
 			live.Iterate();
@@ -172,8 +174,11 @@ namespace Decompiler.Analysis
 		private void Iterate()
 		{
 			InitializeWorkList();
+			int initial = worklist.Count;
 			while (!worklist.IsEmpty)
 			{
+				if (host != null)
+					host.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
 				object o = worklist.GetWorkItem();
 				BlockFlow item = (BlockFlow) o;
 				ProcessBlock(item);
@@ -770,14 +775,14 @@ namespace Decompiler.Analysis
 			}
 		}
 
+		/// <summary>
+		/// Determines whether an identifier is live in <paramref>liveStat</paramref>.
+		/// </summary>
 		public class IsLiveHelper : StorageVisitor
 		{
 			private bool retval;
 			private IdentifierLiveness liveState;
 
-			/// <summary>
-			/// Determines whether an identifier is live in <paramref>liveStat</paramref>.
-			/// </summary>
 			public bool IsLive(Identifier id, IdentifierLiveness liveState)
 			{
 				retval = false;
@@ -790,7 +795,7 @@ namespace Decompiler.Analysis
 
 			public void VisitTemporaryStorage(TemporaryStorage temp)
 			{
-				throw new NotImplementedException();
+				retval = liveState.LiveStackVariables.Contains(temp);
 			}
 
 			public void VisitStackArgumentStorage(StackArgumentStorage stack)

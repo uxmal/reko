@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -336,8 +336,7 @@ namespace Decompiler.Core
 		{
 			Identifier idHead = head.Storage.BindFormalArgumentToFrame(callingFrame, cs);
 			Identifier idTail = tail.Storage.BindFormalArgumentToFrame(callingFrame, cs);
-			return callingFrame.EnsureSequence(idHead, idTail, 
-				PrimitiveType.Create(Domain.Integral, idHead.DataType.Size + idTail.DataType.Size, Sign.Unknown));
+			return callingFrame.EnsureSequence(idHead, idTail, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
 		}
 
 		public override bool Equals(object obj)

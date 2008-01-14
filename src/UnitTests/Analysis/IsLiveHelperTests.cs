@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,13 +29,14 @@ namespace Decompiler.UnitTests.Analysis
 	[TestFixture]
 	public class IsLiveHelperTests
 	{
-		private Frame f = new Frame(PrimitiveType.Word32);
+		private Frame f;
 		private IdentifierLiveness liveness;
 		private RegisterLiveness.IsLiveHelper isLiveHelper;
 
 		[SetUp]
 		public void Setup()
 		{
+			f = new Frame(PrimitiveType.Word32);
 			liveness = new IdentifierLiveness(new IntelArchitecture(ProcessorMode.ProtectedFlat));
 			isLiveHelper = new RegisterLiveness.IsLiveHelper();
 		}
@@ -59,6 +60,14 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier C = f.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool);
 			Assert.IsTrue(isLiveHelper.IsLive(Z, liveness), "Z flag should be live");
 			Assert.IsFalse(isLiveHelper.IsLive(C, liveness), "C flag isn't live");
+		}
+
+		[Test]
+		public void IsTemporaryLive()
+		{
+			Identifier id = f.CreateTemporary(PrimitiveType.Word32);
+			liveness.LiveStackVariables.Add(id.Storage, id.DataType.BitSize);
+			Assert.IsTrue(isLiveHelper.IsLive(id, liveness));
 		}
 	}
 }

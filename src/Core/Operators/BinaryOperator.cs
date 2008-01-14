@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,11 +35,7 @@ namespace Decompiler.Core.Operators
 			PrimitiveType p1 = (PrimitiveType) t1;
 			PrimitiveType p2 = (PrimitiveType) t2;
 			int size = Math.Max(p1.Size, p2.Size);
-			return new Constant(
-				PrimitiveType.Create(p1.Domain, 
-				size,
-				Sign.Unknown),
-				val);
+			return new Constant(PrimitiveType.Create(p1.Domain&p2.Domain, size), val);
 		}
 	}
 }

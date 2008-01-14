@@ -3,13 +3,13 @@ void ConstantUnionMock()
 ConstantUnionMock_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
-	x.u0 = 0x00000003;
+	x.u0 = 3;
 	x.u1 = 3F;
 	// succ: 
 
 // Equivalence classes ////////////
 Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
-	T_2 (in 0x00000003 : int32)
+	T_2 (in 3 : int32)
 	T_3 (in x : word32)
 	T_4 (in 3F : real32)
 // Type Variables ////////////
@@ -17,7 +17,7 @@ Globals:(in globals)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 
-T_2:(in 0x00000003)
+T_2:(in 3)
   Class: Eq_2
   DataType: int32
   OrigDataType: int32

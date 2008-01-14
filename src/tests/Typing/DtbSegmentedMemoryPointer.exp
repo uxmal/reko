@@ -2,11 +2,15 @@
 Eq_2: (memptr T_4 (struct (0 T_5 t0000)))
 	T_2 (in 0x0001 : word16)
 	T_3 (in si : word16)
-Eq_4: word16
-	T_4 (in cs : word16)
+Eq_4: segment
+	T_4 (in cs : segment)
 Eq_5: word16
 	T_5 (in Mem0[cs:si:word16] : word16)
 	T_6 (in ax : word16)
+	T_9 (in Mem0[cs:si2:word16] : word16)
+Eq_7: (memptr T_4 (struct (0 T_9 t0000)))
+	T_7 (in 0x0005 : word16)
+	T_8 (in si2 : word16)
 // Type Variables ////////////
 Globals:(in globals)
   Class: Eq_1
@@ -22,13 +26,25 @@ T_3:(in si)
   OrigDataType: (memptr T_4 (struct (0 T_5 t0000)))
 T_4:(in cs)
   Class: Eq_4
-  DataType: word16
-  OrigDataType: word16
+  DataType: segment
+  OrigDataType: segment
 T_5:(in Mem0[cs:si:word16])
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
 T_6:(in ax)
+  Class: Eq_5
+  DataType: word16
+  OrigDataType: word16
+T_7:(in 0x0005)
+  Class: Eq_7
+  DataType: (memptr T_4 (struct (0 T_9 t0000)))
+  OrigDataType: word16
+T_8:(in si2)
+  Class: Eq_7
+  DataType: (memptr T_4 (struct (0 T_9 t0000)))
+  OrigDataType: (memptr T_4 (struct (0 T_9 t0000)))
+T_9:(in Mem0[cs:si2:word16])
   Class: Eq_5
   DataType: word16
   OrigDataType: word16

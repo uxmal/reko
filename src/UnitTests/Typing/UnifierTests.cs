@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -283,7 +283,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyPointerStructSegment()
 		{
-			Pointer p = new Pointer(new StructureType(null, 0, new StructureField(4, PrimitiveType.UInt32, null)), 4);
+			Pointer p = new Pointer(new StructureType(null, 0, new StructureField(4, PrimitiveType.UInt32, null)), 2);
 			DataType dt = un.Unify(p, PrimitiveType.Segment);
 			Assert.AreEqual("(ptr (struct (4 uint32 dw0004)))", dt.ToString());
 		}
@@ -302,6 +302,15 @@ namespace Decompiler.UnitTests.Typing
 			un.UnifyIntoUnion(ut, PrimitiveType.Word16);
 
 			Assert.AreEqual("(union ((memptr T_1 T_2) u0) ((memptr T_1 T_3) u1))", ut.ToString());
+		}
+
+		[Test]
+		public void UnifyPtrHybrid()
+		{
+			Pointer p = new Pointer(new StructureType(null, 32), 4);
+			PrimitiveType hybrid = PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 4);
+			DataType dt = un.Unify(p, hybrid);
+			Assert.AreEqual("(ptr (struct 20))", dt.ToString());
 		}
 
 		[Test]

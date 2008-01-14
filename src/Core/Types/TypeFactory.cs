@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,9 +61,9 @@ namespace Decompiler.Core.Types
 			return new FunctionType(functionName, returnType, paramTypes, paramNames);
 		}
 
-		public PrimitiveType CreatePrimitiveType(Domain dom, int size, Sign sign)
+		public PrimitiveType CreatePrimitiveType(Domain dom, int size)
 		{
-			return PrimitiveType.Create(dom, size, sign);
+			return PrimitiveType.Create(dom, size);
 		}
 
 		public StructureType CreateStructureType(string name, int size)

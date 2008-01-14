@@ -33,7 +33,7 @@ fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
 ================
 // fn0C00_000A
-byte fn0C00_000A(byte al, pointer alOut)
+byte fn0C00_000A(byte al, ptr0 alOut)
 fn0C00_000A_entry:		// block 0, pred:
 	store(Mem0[alOut:byte]) = al
 	// succ:  1
@@ -79,7 +79,7 @@ fn0C00_000A_exit:		// block 12, pred: 11 7
 	// succ: 
 
 // fn0C00_000A
-byte fn0C00_000A(byte al, pointer alOut)
+byte fn0C00_000A(byte al, ptr0 alOut)
 fn0C00_000A_entry:		// block 0, pred:
 	store(Mem0[alOut:byte]) = al
 	// succ:  1

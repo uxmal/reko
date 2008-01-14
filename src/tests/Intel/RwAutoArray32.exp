@@ -24,9 +24,9 @@ l10000000:		// block 2, pred: 1
 	eax = 0x00000000
 	ecx = 0x00000000
 	SCZO = cond(ecx)
-	store(Mem0[fp - 0x00000010:word32]) = 0x00000001
-	store(Mem0[fp - 0x0000000C:word32]) = 0x00000002
-	store(Mem0[fp - 0x00000008:word32]) = 0x00000003
+	store(Mem0[fp - 16:word32]) = 0x00000001
+	store(Mem0[fp - 12:word32]) = 0x00000002
+	store(Mem0[fp - 8:word32]) = 0x00000003
 	// succ:  3
 l10000027:		// block 3, pred: 2 4
 	SCZO = cond(ecx - 0x00000003)

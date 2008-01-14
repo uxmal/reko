@@ -28,7 +28,7 @@ fn0C00_0000_exit:		// block 6, pred: 5
 	// succ: 
 
 // Equivalence classes ////////////
-Eq_4: (struct (0 word32 dw0000) (4 word32 dw0004) (8 byte b0008) (9 byte b0009) (A int16 w000A) (C int16 w000C) (E word16 w000E) (10 word16 w0010))
+Eq_4: (struct (0 word32 dw0000) (4 word32 dw0004) (8 bcu8 b0008) (9 byte b0009) (A int16 w000A) (C int16 w000C) (E word16 w000E) (10 word16 w0010))
 	T_4 (in bx : word16)
 // Type Variables ////////////
 Globals:(in globals)
@@ -93,8 +93,8 @@ T_15:(in Mem20[ds:bx + 0x0004:word32])
   OrigDataType: word32
 T_16:(in al_21)
   Class: Eq_16
-  DataType: byte
-  OrigDataType: byte
+  DataType: bcu8
+  OrigDataType: bcu8
 T_17:(in 0x0008)
   Class: Eq_17
   DataType: word16
@@ -105,20 +105,20 @@ T_18:(in bx + 0x0008)
   OrigDataType: word16
 T_19:(in Mem20[ds:bx + 0x0008:byte])
   Class: Eq_16
-  DataType: byte
+  DataType: bcu8
   OrigDataType: byte
 T_20:(in 0x30)
   Class: Eq_16
-  DataType: byte
-  OrigDataType: byte
+  DataType: bcu8
+  OrigDataType: bcu8
 T_21:(in al_21 <u 0x30)
   Class: Eq_21
   DataType: bool
   OrigDataType: bool
 T_22:(in 0x3A)
   Class: Eq_16
-  DataType: byte
-  OrigDataType: byte
+  DataType: bcu8
+  OrigDataType: bcu8
 T_23:(in al_21 >=u 0x3A)
   Class: Eq_23
   DataType: bool

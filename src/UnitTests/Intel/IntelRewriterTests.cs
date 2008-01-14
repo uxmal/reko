@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -185,8 +185,45 @@ namespace Decompiler.UnitTests.Intel
 		}
 
 		[Test]
-		public void RewriteNearCall()
+		public void RewriteImul()
 		{
+			IntelInstruction instr = new IntelInstruction(
+				Opcode.imul, PrimitiveType.Word32, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
+			IntelRewriter rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
+			ConvertInstructions(rw, instr);
+			Assert.AreEqual(2, emitter.Block.Statements.Count);
+			Assignment ass = (Assignment) emitter.Block.Statements[0].Instruction;
+			Assert.AreEqual("dx_ax = cx *s ax", ass.ToString());
+			BinaryExpression bin = (BinaryExpression) ass.Src;
+			Assert.AreEqual("int32", bin.DataType.ToString());
+		}
+
+		[Test]
+		public void RewriteMul()
+		{
+			IntelInstruction instr = new IntelInstruction(
+				Opcode.mul, PrimitiveType.Word32, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
+			IntelRewriter rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
+			ConvertInstructions(rw, instr);
+			Assert.AreEqual(2, emitter.Block.Statements.Count);
+			Assignment ass = (Assignment) emitter.Block.Statements[0].Instruction;
+			Assert.AreEqual("dx_ax = cx *u ax", ass.ToString());
+			BinaryExpression bin = (BinaryExpression) ass.Src;
+			Assert.AreEqual("uint32", bin.DataType.ToString());
+		}
+
+		[Test]
+		public void RewriteFmul()
+		{
+			IntelInstruction instr = new IntelInstruction(
+				Opcode.fmul, PrimitiveType.Real64, PrimitiveType.Word16, new FpuOperand(1));
+			IntelRewriter rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
+			ConvertInstructions(rw, instr);
+			Assert.AreEqual(1, emitter.Block.Statements.Count);
+			Assignment ass = (Assignment) emitter.Block.Statements[0].Instruction;
+			Assert.AreEqual("rArg0 = rArg0 *s rArg1", ass.ToString());
+			BinaryExpression bin = (BinaryExpression) ass.Src;
+			Assert.AreEqual("real64", bin.DataType.ToString());
 		}
 
 		public void ConvertInstructions(IntelRewriter rw, params IntelInstruction [] instrs)

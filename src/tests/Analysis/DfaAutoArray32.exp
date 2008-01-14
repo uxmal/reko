@@ -14,9 +14,9 @@ fn10000000_frame_asgn:		// block 1, pred: 0
 	word32 fp_14 = &fn10000000_frame_13
 	// succ:  2
 l10000000:		// block 2, pred: 1
-	store(Mem18[fp_14 - 0x00000010:word32]) = 0x00000001
-	store(Mem19[fp_14 - 0x0000000C:word32]) = 0x00000002
-	store(Mem20[fp_14 - 0x00000008:word32]) = 0x00000003
+	store(Mem18[fp_14 - 16:word32]) = 0x00000001
+	store(Mem19[fp_14 - 12:word32]) = 0x00000002
+	store(Mem20[fp_14 - 8:word32]) = 0x00000003
 	word32 eax_15 = 0x00000000
 	word32 ecx_16 = 0x00000000
 	// succ:  3

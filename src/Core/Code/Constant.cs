@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,13 +35,13 @@ namespace Decompiler.Core.Code
 				switch (p.Size)
 				{
 				case 1: 
-					v = p.Sign == Sign.Signed ? (object) (sbyte) Convert.ToInt64(v) : (object) (byte) (Convert.ToInt64(v) & 0xFF);
+					v = p.Domain == Domain.SignedInt ? (object) (sbyte) Convert.ToInt64(v) : (object) (byte) (Convert.ToInt64(v) & 0xFF);
 					break;
 				case 2:
-					v = p.Sign == Sign.Signed ? (object) (short) Convert.ToInt64(v) : (object) (ushort) (Convert.ToInt64(v) & 0xFFFF);
+					v = p.Domain == Domain.SignedInt ? (object) (short) Convert.ToInt64(v) : (object) (ushort) (Convert.ToInt64(v) & 0xFFFF);
 					break;
 				case 4:
-					v = p.Sign == Sign.Signed ? (object) (int) Convert.ToInt64(v) : (object) (uint) (Convert.ToInt64(v) & 0xFFFFFFFF);
+					v = p.Domain == Domain.SignedInt ? (object) (int) Convert.ToInt64(v) : (object) (uint) (Convert.ToInt64(v) & 0xFFFFFFFF);
 					break;
 				}
 			}
@@ -178,7 +178,16 @@ namespace Decompiler.Core.Code
 		{
 			switch (type.Domain)
 			{
-			case Domain.Integral:
+			case Domain.SignedInt:
+				return "{0}";
+			case Domain.Real:
+				switch (type.Size)
+				{
+				case 4: return "{0:g}F";
+				case 8: return "{0:g}";
+				default: throw new ArgumentOutOfRangeException();
+				}
+			default:
 				switch (type.Size)
 				{
 				case 1: return "0x{0:X2}";
@@ -188,17 +197,6 @@ namespace Decompiler.Core.Code
 				case 8: return "0x{0:X16}";
 				default: throw new ArgumentOutOfRangeException();
 				}
-			case Domain.Real:
-				switch (type.Size)
-				{
-				case 4: return "{0:g}F";
-				case 8: return "{0:g}";
-				default: throw new ArgumentOutOfRangeException();
-				}
-			case Domain.Segment:
-				return "0x{0:X4}";
-			default:
-				throw new ArgumentOutOfRangeException("Unsupported domain type: " + type.Domain);
 			}
 		}
 
@@ -238,7 +236,7 @@ namespace Decompiler.Core.Code
 			get 
 			{
 				PrimitiveType p = (PrimitiveType) DataType;
-				if (p.Domain == Domain.Integral)
+				if (p.Domain == Domain.SignedInt)
 					return Convert.ToInt64(c) < 0;
 				else if (p == PrimitiveType.Real32)
 					return AsFloat() < 0.0F;
@@ -266,7 +264,7 @@ namespace Decompiler.Core.Code
 		public Constant Negate()
 		{
 			PrimitiveType p = (PrimitiveType) DataType;
-			if (p.Domain == Domain.Integral)
+			if ((p.Domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0)
 			{
 				if (p.BitSize <= 8)				//$REVIEW: Depending heavily on specific byte sizes here.
 					return new Constant(p, -Convert.ToSByte(c));
@@ -285,7 +283,7 @@ namespace Decompiler.Core.Code
 				return new Constant(-AsDouble());
 			}
 			else 
-				throw new InvalidOperationException("Type doesn't support negation");
+				throw new InvalidOperationException(string.Format("Type {0} doesn't support negation.", p));
 		}
 
 		public static Constant Pi()

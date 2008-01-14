@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,7 +107,7 @@ namespace Decompiler.Typing
 
 		public void VisitPrimitive(PrimitiveType pt)
 		{
-			if (pt.Domain == Domain.Real && pOrig.Domain == Domain.Integral)
+			if (pt.Domain == Domain.Real && pOrig.IsIntegral)
 			{
 				Return(Constant.RealFromBitpattern(pt, Convert.ToInt64(c.Value)));
 			}

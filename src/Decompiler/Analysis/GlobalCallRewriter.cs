@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2007 John Källén.
+ * Copyright (C) 1999-2008 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,13 +77,13 @@ namespace Decompiler.Analysis
 			object o = flow.StackArguments[id];
 			if (o != null)
 			{
-				int width = (int) o;
-				if (width < id.DataType.BitSize)
+				int bitWidth = (int) o;
+				if (bitWidth < id.DataType.BitSize)
 				{
 					PrimtiveType pt = id.DataType as PrimtiveType;
 					if (pt != null)
 					{
-						id.DataType = PrimtiveType.Create(pt.Domain, width/8, pt.Sign);
+						id.DataType = PrimtiveType.Create(pt.Domain, bitWidth/8);
 					}
 				}
 			}
