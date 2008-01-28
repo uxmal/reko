@@ -152,7 +152,7 @@ namespace Decompiler.Arch.Intel
 							memSrc != null && memSrc.Offset != null &&
 							memSrc.Base != Registers.None)
 						{
-							operations.Add(new BackwalkDereference(memSrc.Offset.Signed, memSrc.Scale));
+							operations.Add(new BackwalkDereference(memSrc.Offset.ToInt32(), memSrc.Scale));
 							regIdx = memSrc.Base;
 						}
 					}

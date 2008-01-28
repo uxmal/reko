@@ -800,7 +800,7 @@ namespace Decompiler.Analysis
 
 			public void VisitStackArgumentStorage(StackArgumentStorage stack)
 			{
-				throw new NotImplementedException();
+				retval = liveState.LiveStackVariables.Contains(stack);
 			}
 
 			public void VisitOutArgumentStorage(OutArgumentStorage arg)
@@ -823,7 +823,7 @@ namespace Decompiler.Analysis
 
 			public void VisitFpuStackStorage(FpuStackStorage fpu)
 			{
-				throw new NotImplementedException();
+				retval = liveState.LiveStackVariables.Contains(fpu);
 			}
 
 			public void VisitFlagGroupStorage(FlagGroupStorage grf)

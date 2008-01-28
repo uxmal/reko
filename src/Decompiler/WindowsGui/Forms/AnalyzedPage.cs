@@ -25,14 +25,15 @@ using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
-	public class AnalysePage : PhasePage
+	public class AnalyzedPage : PhasePage
 	{
+		private System.Windows.Forms.CheckBox chkTypeRecovery;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
-		public AnalysePage()
+		public AnalyzedPage()
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
@@ -43,14 +44,14 @@ namespace Decompiler.WindowsGui.Forms
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
-			if( disposing )
+			if (disposing)
 			{
-				if(components != null)
+				if (components != null)
 				{
 					components.Dispose();
 				}
 			}
-			base.Dispose( disposing );
+			base.Dispose(disposing);
 		}
 
 		#region Component Designer generated code
@@ -60,13 +61,32 @@ namespace Decompiler.WindowsGui.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.chkTypeRecovery = new System.Windows.Forms.CheckBox();
+			this.SuspendLayout();
 			// 
-			// AnalysePage
+			// chkTypeRecovery
 			// 
-			this.Name = "AnalysePage";
+			this.chkTypeRecovery.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.chkTypeRecovery.Location = new System.Drawing.Point(8, 0);
+			this.chkTypeRecovery.Name = "chkTypeRecovery";
+			this.chkTypeRecovery.Size = new System.Drawing.Size(584, 24);
+			this.chkTypeRecovery.TabIndex = 0;
+			this.chkTypeRecovery.Text = "Perform &Type Recovery";
+			// 
+			// AnalyzedPage
+			// 
+			this.Controls.Add(this.chkTypeRecovery);
+			this.Name = "AnalyzedPage";
 			this.Size = new System.Drawing.Size(600, 360);
+			this.ResumeLayout(false);
 
 		}
 		#endregion
+
+		public CheckBox PerformTypeRecovery 
+		{
+			get { return chkTypeRecovery; }
+		}
 	}
 }

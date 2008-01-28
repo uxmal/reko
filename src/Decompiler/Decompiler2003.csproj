@@ -793,14 +793,19 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "WindowsGui\Forms\AnalyzePage.cs"
+                    RelPath = "WindowsGui\Forms\AnalyzedPage.cs"
                     SubType = "UserControl"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "WindowsGui\Forms\AnalyzePage.resx"
-                    DependentUpon = "AnalyzePage.cs"
+                    RelPath = "WindowsGui\Forms\AnalyzedPage.resx"
+                    DependentUpon = "AnalyzedPage.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WindowsGui\Forms\AnalyzedPageInteractor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "WindowsGui\Forms\CmdIds.cs"

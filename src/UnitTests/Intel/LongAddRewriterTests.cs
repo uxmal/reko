@@ -49,10 +49,10 @@ namespace Decompiler.UnitTests.Intel
 			dx = new RegisterOperand(Registers.dx);
 			addAxMem = new IntelInstruction(
 				Opcode.add, w16, w16, ax, new MemoryOperand(
-				w16, Registers.bx, new Value(w16, 0x300)));
+				w16, Registers.bx, new Constant(w16, 0x300)));
 			adcDxMem = new IntelInstruction(
 				Opcode.adc, w16, w16, dx, new MemoryOperand(
-				w16, Registers.bx, new Value(w16, 0x302)));
+				w16, Registers.bx, new Constant(w16, 0x302)));
 		}
 
 		[SetUp]

@@ -38,7 +38,6 @@ namespace Decompiler.WindowsGui.Forms
 			MainForm.BrowserFilter.Enabled = false;
 			MainForm.BrowserList.Enabled = false;
 			MainForm.BrowserTree.Enabled = false;
-			page.BringToFront();
 		}
 	}
 }

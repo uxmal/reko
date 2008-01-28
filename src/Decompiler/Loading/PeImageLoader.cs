@@ -233,7 +233,13 @@ namespace Decompiler.Loading
 		private const ushort RelocationLow = 2;
 		private const ushort RelocationHighLow = 3;
 
+		[Obsolete]
 		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		{
+			Relocate(addrLoad, entryPoints, new RelocationDictionary());
+		}
+
+		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgLoaded.Map;
 			foreach (Section s in sectionMap.Values)
@@ -256,14 +262,36 @@ namespace Decompiler.Loading
 			Section relocSection = (Section) sectionMap[".reloc"];
 			if (relocSection != null)
 			{
-				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.Linear);
+				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.Linear, relocations);
 			}
 			entryPoints.Add(new EntryPoint(addrLoad + rvaStartAddress, new IntelState()));
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
 		}
 
-		public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage)
+		public void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
+		{
+			ushort fixup = rdr.ReadUShort();
+			switch (fixup >> 12)
+			{
+			case RelocationAbsolute:
+				// Used for padding to 4-byte boundary, ignore.
+				break;
+			case RelocationHighLow:
+			{
+				int offset = (int)(page + (fixup & 0x0FFF));
+				uint n = (uint) (imgLoaded.ReadUint(offset) + (baseOfImage - preferredBaseOfImage));
+				imgLoaded.WriteUint(offset, n);
+				relocations.AddPointerReference(new Address((uint)offset + baseOfImage), n);
+				break;
+			}
+			default:
+				throw new NotImplementedException(string.Format("Fixup type: {0:X}", fixup >> 12));
+			}
+
+		}
+
+		public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage, RelocationDictionary relocations)
 		{
 			ImageReader rdr = new ImageReader(RawImage, rvaReloc);
 			uint rvaStop = rvaReloc + size;
@@ -276,26 +304,7 @@ namespace Decompiler.Loading
 				uint offBlockEnd = (uint)(rdr.Offset + cbBlock - 8);
 				while (rdr.Offset < offBlockEnd)
 				{
-					// Read a fixup.
-
-					ushort fixup = rdr.ReadUShort();
-					switch (fixup >> 12)
-					{
-					case RelocationAbsolute:
-						// Used for padding to 4-byte boundary, ignored.
-						break;
-					case RelocationHighLow:
-					{
-						int offset = (int)(page + (fixup & 0x0FFF));
-						uint n = (uint) (imgLoaded.ReadUint(offset) + (baseOfImage - preferredBaseOfImage));
-						imgLoaded.WriteUint(offset, n);
-						//$TODO: this offset should be marked as 'contains pointer' and used for type analysis
-						// and jump table analysis.
-						break;
-					}
-					default:
-						throw new NotImplementedException(string.Format("NYI {0:X}", fixup >> 12));
-					}
+					ApplyRelocation(baseOfImage, page, rdr, relocations);
 				}
 			}
 		}

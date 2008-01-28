@@ -77,7 +77,7 @@ namespace Decompiler.Loading
 
 		// Fix up the relocations.
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
 		{
 			// Seed the scanner with the start location.
 
@@ -85,16 +85,16 @@ namespace Decompiler.Loading
 			entryPoints.Add(ep);
 			if (isLz91)
 			{
-				Relocate91(RawImage, addrLoad.seg, imgLoaded);
+				Relocate91(RawImage, addrLoad.seg, imgLoaded, relocations);
 			}
 			else
 			{
-				Relocate90(RawImage, addrLoad.seg, imgLoaded);
+				Relocate90(RawImage, addrLoad.seg, imgLoaded, relocations);
 			}
 		}
 
 		// for LZEXE ver 0.90 
-		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, ProgramImage pgmImgNew)
+		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, ProgramImage pgmImgNew, RelocationDictionary relocations)
 		{
 			int ifile = lzHdrOffset + 0x19D;
 
@@ -126,7 +126,7 @@ namespace Decompiler.Loading
 
 		// Unpacks the relocation entries in a LzExe 0.91 binary
 
-		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, ProgramImage pgmImgNew)
+		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, ProgramImage pgmImgNew, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = pgmImgNew.Map;
 
@@ -157,6 +157,7 @@ namespace Decompiler.Loading
 				rel_off += span;
 				ushort seg = (ushort) (pgmImgNew.ReadUShort(rel_off) + segReloc);
 				pgmImgNew.WriteUShort(rel_off, seg);
+				relocations.AddSegmentReference(pgmImgNew.Map.MapLinearAddressToAddress(rel_off + pgmImgNew.BaseAddress.Linear), seg);
 
 				// This is a known segment!
 

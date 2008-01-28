@@ -80,6 +80,8 @@ namespace Decompiler.Core
 
 		public void DumpAssembler(TextWriter wr)
 		{
+			if (wr == null)
+				return;
 			Dumper dump = arch.CreateDumper();
 			dump.Dump(this, Image.Map, wr);
 		}

@@ -29,8 +29,6 @@ namespace Decompiler.WindowsGui.Forms
 
 		public override void PopulateControls()
 		{
-			Decompiler.RewriteMachineCode();
-			Decompiler.AnalyzeDataFlow();
 			Decompiler.ReconstructTypes();
 			Decompiler.StructureProgram();
 		}

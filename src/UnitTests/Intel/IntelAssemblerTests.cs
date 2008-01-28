@@ -16,32 +16,30 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel.Assembler;
+using Decompiler.Core;
+using Decompiler.Core.Code;
+using Decompiler.Core.Types;
+using NUnit.Framework;
 using System;
-using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.UnitTests.Intel
 {
-	public class DecompilerOutput
+	[TestFixture]
+	public class IntelAssemblerTests
 	{
-		[XmlElement("disassembly")]
-		public string DisassemblyFilename;
-
-		/// <summary>
-		/// If not null, specifies the file name for intermediate code.
-		/// </summary>
-		[XmlElement("rewritten-code")]
-		public string RewrittenFilename;
-
-		[XmlElement("output")]
-		public string OutputFilename;
-
-		[XmlElement("structure")]
-		public bool ControlStructure;
-
-		[XmlElement("type-inference")]
-		public bool TypeInference;
-
-		[XmlElement("types-file")]
-		public string TypesFilename;
+		[Test]
+		public void IntegralConstant32()
+		{
+			Constant c;
+			c = IntelAssembler.IntegralConstant(-2, PrimitiveType.Word32);
+			Assert.AreSame(PrimitiveType.SByte, c.DataType);
+			c = IntelAssembler.IntegralConstant(-128, PrimitiveType.Word32);
+			Assert.AreSame(PrimitiveType.SByte, c.DataType);
+			c = IntelAssembler.IntegralConstant(-129, PrimitiveType.Word32);
+			Assert.AreSame(PrimitiveType.Word32, c.DataType);
+			c = IntelAssembler.IntegralConstant(-129, PrimitiveType.Word16);
+			Assert.AreSame(PrimitiveType.Word16, c.DataType);
+		}
 	}
 }

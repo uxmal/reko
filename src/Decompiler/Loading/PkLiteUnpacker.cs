@@ -18,6 +18,7 @@
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
@@ -223,7 +224,7 @@ l01C8:
 			}
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgU.Map;
 			ushort segCode = (ushort) (addrLoad.seg + (PspSize >> 4));
@@ -239,6 +240,8 @@ l01C8:
 					ushort relocOff = bitStm.GetWord();
 					ushort seg = imgU.ReadUShort(relocBase + relocOff);
 					seg = (ushort) (seg + segCode);
+
+					//$TODO: add to relocations
 					imgU.WriteUShort(relocBase + relocOff, seg);
 					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 				} while (--relocs != 0);
@@ -250,17 +253,17 @@ l01C8:
 			pklIp = bitStm.GetWord();
 
 			IntelState state = new IntelState();
-			state.Set(Registers.ds, new Value(PrimitiveType.Word16, addrLoad.seg));
-			state.Set(Registers.es, new Value(PrimitiveType.Word16, addrLoad.seg));
-			state.Set(Registers.cs, new Value(PrimitiveType.Word16, pklCs));
-			state.Set(Registers.ax, new Value(PrimitiveType.Word16, 0));
-			state.Set(Registers.bx, new Value(PrimitiveType.Word16, 0));
-			state.Set(Registers.cx, new Value(PrimitiveType.Word16, 0));
-			state.Set(Registers.dx, new Value(PrimitiveType.Word16, 0));
-			state.Set(Registers.bp, new Value(PrimitiveType.Word16, 0));
-			state.Set(Registers.sp, new Value(PrimitiveType.Word16, pklSp));
-			state.Set(Registers.si, new Value(PrimitiveType.Word16, 0));
-			state.Set(Registers.di, new Value(PrimitiveType.Word16, 0));
+			state.Set(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.seg));
+			state.Set(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.seg));
+			state.Set(Registers.cs, new Constant(PrimitiveType.Word16, pklCs));
+			state.Set(Registers.ax, new Constant(PrimitiveType.Word16, 0));
+			state.Set(Registers.bx, new Constant(PrimitiveType.Word16, 0));
+			state.Set(Registers.cx, new Constant(PrimitiveType.Word16, 0));
+			state.Set(Registers.dx, new Constant(PrimitiveType.Word16, 0));
+			state.Set(Registers.bp, new Constant(PrimitiveType.Word16, 0));
+			state.Set(Registers.sp, new Constant(PrimitiveType.Word16, pklSp));
+			state.Set(Registers.si, new Constant(PrimitiveType.Word16, 0));
+			state.Set(Registers.di, new Constant(PrimitiveType.Word16, 0));
 
 			entryPoints.Add(new EntryPoint(new Address(pklCs, pklIp), state));
 		}

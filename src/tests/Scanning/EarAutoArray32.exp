@@ -2,19 +2,19 @@
 // fn04000000
 // Mem0:Global memory
 // fp:Temporary
-// eax:Register
-// ecx:Register
+// eax:Register eax
+// ecx:Register ecx
 // SCZO:Flags
 // dwLoc0C:Local -000C
 // dwLoc08:Local -0008
 // dwLoc04:Local -0004
 // SZO:Flags
 // dwArg04:Stack +0004
-// edi:Register
-// esp:Register
+// edi:Register edi
+// esp:Register esp
 // fn04000000_frame:Temporary
 // Frame escapes
-// return address size: 4
+// return address size: 0
 void fn04000000()
 fn04000000_entry:		// block 0, pred:
 	// succ:  1
@@ -25,9 +25,9 @@ l04000000:		// block 2, pred: 1
 	eax = 0x00000000
 	ecx = 0x00000000
 	SCZO = cond(ecx)
-	store(Mem0[fp - 0x0000000C:word32]) = 0x00000001
-	store(Mem0[fp - 0x00000008:word32]) = 0x00000002
-	store(Mem0[fp - 0x00000004:word32]) = 0x00000003
+	store(Mem0[fp - 12:word32]) = 0x00000001
+	store(Mem0[fp - 8:word32]) = 0x00000002
+	store(Mem0[fp - 4:word32]) = 0x00000003
 	// succ:  3
 l04000027:		// block 3, pred: 2 4
 	SCZO = cond(ecx - 0x00000003)
@@ -51,19 +51,19 @@ The frame of procedure fn04000000 escapes
 // fn04000000
 // Mem0:Global memory
 // fp:Temporary
-// eax:Register
-// ecx:Register
+// eax:Register eax
+// ecx:Register ecx
 // SCZO:Flags
 // dwLoc0C:Local -000C
 // dwLoc08:Local -0008
 // dwLoc04:Local -0004
 // SZO:Flags
 // dwArg04:Stack +0004
-// edi:Register
-// esp:Register
+// edi:Register edi
+// esp:Register esp
 // fn04000000_frame:Temporary
 // Frame escapes
-// return address size: 4
+// return address size: 0
 void fn04000000()
 fn04000000_entry:		// block 0, pred:
 	// succ:  1
@@ -74,9 +74,9 @@ l04000000:		// block 2, pred: 1
 	eax = 0x00000000
 	ecx = 0x00000000
 	SCZO = cond(ecx)
-	store(Mem0[fp - 0x0000000C:word32]) = 0x00000001
-	store(Mem0[fp - 0x00000008:word32]) = 0x00000002
-	store(Mem0[fp - 0x00000004:word32]) = 0x00000003
+	store(Mem0[fp - 12:word32]) = 0x00000001
+	store(Mem0[fp - 8:word32]) = 0x00000002
+	store(Mem0[fp - 4:word32]) = 0x00000003
 	// succ:  3
 l04000027:		// block 3, pred: 2 4
 	SCZO = cond(ecx - 0x00000003)

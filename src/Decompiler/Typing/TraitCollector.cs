@@ -94,6 +94,7 @@ namespace Decompiler.Typing
 						stm.Instruction.Accept(this);
 					}
 				}
+				break;		//$DEBUG: just collect types for first procedure.
 			} 
 		}
 		
@@ -315,7 +316,7 @@ namespace Decompiler.Typing
 			}
 			else if (binExp.op == Operator.mul)
 			{
-				handler.DataTypeTrait(tvExp, binExp.DataType); //$REVIEW: NonPointer(binExp.DataType);
+				handler.DataTypeTrait(tvExp, binExp.DataType);
 				return;
 			}
 			else if (binExp.op == Operator.sar)
@@ -332,9 +333,9 @@ namespace Decompiler.Typing
 			}
 			else if (binExp.op == Operator.mod)
 			{
-				handler.DataTypeTrait(tvExp, MakeSigned(binExp.DataType));		//$REVIEW: are there unsigned 'mod's?
-				handler.DataTypeTrait(binExp.Left.TypeVariable, MakeSigned(binExp.Left.DataType));
-				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeUnsigned(binExp.Right.DataType));
+				handler.DataTypeTrait(tvExp, binExp.DataType);
+				handler.DataTypeTrait(binExp.Left.TypeVariable, binExp.Left.DataType);
+				handler.DataTypeTrait(binExp.Right.TypeVariable, binExp.Right.DataType);
 				return;
 			}
 			else if (binExp.op == Operator.eq ||

@@ -16,25 +16,36 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Types;
+using NUnit.Framework;
 using System;
+using System.Collections;
 
-namespace Decompiler.Core
+namespace Decompiler.UnitTests.Core
 {
-	public abstract class ProcessorState : ICloneable
+	[TestFixture]
+	public class RelocationDictionaryTests
 	{
-		public ProcessorState()
+		[Test]
+		public void AddSegmentRelocation()
 		{
+			RelocationDictionary rd = new RelocationDictionary();
+			rd.AddSegmentReference(new Address(0xC00, 0x1234), 0x0C00);
+			Assert.AreEqual(1, rd.Count);
+			Constant c = rd[new Address(0x0C00, 0x1234)];
+			Assert.AreEqual("segment", c.DataType.ToString());
 		}
 
-		public abstract object Clone();
-		[Obsolete]
-		public abstract void Set(MachineRegister r, Value v);
-		public abstract void Set(MachineRegister r, Constant v);
-
-		public abstract void SetInstructionPointer(Address addr);
-		[Obsolete]
-		public abstract Value Get(MachineRegister r);
-		public abstract Constant GetV(MachineRegister r);		//$REVIEW: rename to Get once the obsolete Get => Value method is gone
+		[Test]
+		public void AddPointerRelocation()
+		{
+			RelocationDictionary rd = new RelocationDictionary();
+			rd.AddPointerReference(new Address(0x100400), 0x100500);
+			Assert.AreEqual(1, rd.Count);
+			Constant c = rd[new Address(0x0100400)];
+			Assert.AreEqual("ptr32", c.DataType.ToString());
+		}
 	}
 }

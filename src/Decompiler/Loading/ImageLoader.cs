@@ -64,11 +64,20 @@ namespace Decompiler.Loading
 		}
 
 		/// <summary>
-		/// Performs fix-ups of the loaded image, adding findings to the ImageMap as appropriate.
+		/// Performs fix-ups of the loaded image, adding findings to the supplied collections.
 		/// </summary>
 		/// <param name="addrLoad">The address at which the program image is loaded.</param>
 		/// <param name="entryPoints">Collection into which any found entry points found should be added.</param>
-		public abstract void Relocate(Address addrLoad, ArrayList entryPoints);
+		public virtual void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
+		{
+			throw new NotImplementedException();
+		}
+
+		[Obsolete]
+		public virtual void Relocate(Address addrLoad, ArrayList entryPoints)
+		{
+			Relocate(addrLoad, entryPoints, new RelocationDictionary());
+		}
 
 	}
 }

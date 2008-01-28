@@ -118,9 +118,6 @@
     <Compile Include="Analysis\ConditionCodeEliminator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\CopyChain.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\CriticalInstruction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -151,6 +148,7 @@
     <Compile Include="Analysis\GrfDefinitionFinder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\IdentifierLiveness.cs" />
     <Compile Include="Analysis\InductionVariableCollection.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -260,9 +258,6 @@
     <Compile Include="Analysis\ValuePropagator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\VariableLiveness.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\Web.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -278,17 +273,12 @@
     <Compile Include="DecompilerHost.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Diagnostic.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gui\CodeControl.cs" />
-    <Compile Include="Gui\DisassemblyControl.cs" />
-    <Compile Include="Gui\ImageMapControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Gui\MemoryControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Gui\CommandGroup.cs" />
+    <Compile Include="Gui\ICommandTarget.cs" />
+    <Compile Include="Gui\IMainForm.cs" />
+    <Compile Include="Gui\IStartPage.cs" />
+    <Compile Include="Gui\MainFormInteractor.cs" />
+    <Compile Include="Gui\MenuBuilder.cs" />
     <Compile Include="Loading\ExeImageLoader.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -472,6 +462,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="WindowsGui\Controls\CodeControl.cs" />
+    <Compile Include="WindowsGui\Controls\CommandMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WindowsGui\Controls\DisassemblyControl.cs" />
     <Compile Include="WindowsGui\Controls\ImageMapControl.cs">
       <SubType>Component</SubType>
@@ -479,15 +472,30 @@
     <Compile Include="WindowsGui\Controls\MemoryControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WindowsGui\Controls\MemoryControlRichedit.cs">
+    <Compile Include="WindowsGui\Controls\MenuSystem.cs" />
+    <Compile Include="WindowsGui\Forms\AnalyzedPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WindowsGui\Forms\AnalyzePage.cs">
+    <Compile Include="WindowsGui\Forms\AnalyzedPageInteractor.cs" />
+    <Compile Include="WindowsGui\Forms\CmdIds.cs" />
+    <Compile Include="WindowsGui\Forms\DecompilerMenus.cs" />
+    <Compile Include="WindowsGui\Forms\DecompilerPhase.cs" />
+    <Compile Include="WindowsGui\Forms\FinalPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WindowsGui\Forms\LoadPage.cs">
+    <Compile Include="WindowsGui\Forms\FinalPageInteractor.cs" />
+    <Compile Include="WindowsGui\Forms\GotoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\GotoDialogInteractor.cs" />
+    <Compile Include="WindowsGui\Forms\InitialPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="WindowsGui\Forms\InitialPageInteractor.cs" />
+    <Compile Include="WindowsGui\Forms\LoadedPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\LoadedPageInteractor.cs" />
     <Compile Include="WindowsGui\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -495,20 +503,16 @@
     <Compile Include="WindowsGui\Forms\PhasePage.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="WindowsGui\Forms\PhasePageInteractor.cs" />
     <Compile Include="WindowsGui\Forms\ScanPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WindowsGui\GuiHost.cs" />
     <Compile Include="WindowsGui\MruList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Gui\ImageMapControl.resx">
-      <DependentUpon>ImageMapControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="WindowsGui\Controls\ImageMapControl.resx">
       <DependentUpon>ImageMapControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -517,16 +521,24 @@
       <DependentUpon>MemoryControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="WindowsGui\Controls\MemoryControlRichedit.resx">
-      <DependentUpon>MemoryControlRichedit.cs</DependentUpon>
+    <EmbeddedResource Include="WindowsGui\Forms\AnalyzedPage.resx">
+      <DependentUpon>AnalyzedPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="WindowsGui\Forms\AnalyzePage.resx">
-      <DependentUpon>AnalyzePage.cs</DependentUpon>
+    <EmbeddedResource Include="WindowsGui\Forms\FinalPage.resx">
+      <DependentUpon>FinalPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="WindowsGui\Forms\LoadPage.resx">
-      <DependentUpon>LoadPage.cs</DependentUpon>
+    <EmbeddedResource Include="WindowsGui\Forms\GotoDialog.resx">
+      <DependentUpon>GotoDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Forms\InitialPage.resx">
+      <DependentUpon>InitialPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Forms\LoadedPage.resx">
+      <DependentUpon>LoadedPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="WindowsGui\Forms\MainForm.resx">
@@ -553,32 +565,14 @@
     <EmbeddedResource Include="WindowsGui\obj\Debug\Grovel.MainForm.resources" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="WindowsGui\bin\Debug\advapi32.xml" />
-    <Content Include="WindowsGui\bin\Debug\comdlg32.xml" />
-    <Content Include="WindowsGui\bin\Debug\Decompiler.Core2003.dll" />
-    <Content Include="WindowsGui\bin\Debug\Decompiler.Core2003.pdb" />
-    <Content Include="WindowsGui\bin\Debug\Decompiler.WindowsGui2003.exe" />
-    <Content Include="WindowsGui\bin\Debug\Decompiler.WindowsGui2003.pdb" />
-    <Content Include="WindowsGui\bin\Debug\Decompiler2003.dll" />
-    <Content Include="WindowsGui\bin\Debug\Decompiler2003.pdb" />
-    <Content Include="WindowsGui\bin\Debug\gdi32.xml" />
-    <Content Include="WindowsGui\bin\Debug\Grovel.vshost.exe" />
-    <Content Include="WindowsGui\bin\Debug\Intel2003.dll" />
-    <Content Include="WindowsGui\bin\Debug\Intel2003.pdb" />
-    <Content Include="WindowsGui\bin\Debug\kernel32.xml" />
-    <Content Include="WindowsGui\bin\Debug\msvcrt.xml" />
-    <Content Include="WindowsGui\bin\Debug\realmodeintservices.xml" />
-    <Content Include="WindowsGui\bin\Debug\shell32.xml" />
-    <Content Include="WindowsGui\bin\Debug\user32.xml" />
-    <Content Include="WindowsGui\bin\Debug\wininet.xml" />
+    <Content Include="Gui\decompiler-menus.xml" />
+    <Content Include="WindowsGui\Forms\cmdids.xslt" />
+    <Content Include="WindowsGui\Forms\decompiler-menus.xslt" />
     <Content Include="WindowsGui\obj\Debug\Decompiler.WindowsGui2003.exe" />
     <Content Include="WindowsGui\obj\Debug\Decompiler.WindowsGui2003.pdb" />
     <Content Include="WindowsGui\obj\WindowsGui2005.csproj.FileList.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="WindowsGui\bin\Debug\Decompiler.WindowsGui2003.exe.config" />
-    <None Include="WindowsGui\bin\Debug\Grovel.exe.config" />
-    <None Include="WindowsGui\bin\Debug\Grovel.vshost.exe.config" />
     <None Include="WindowsGui\obj\Debug\WindowsGui2003.projdata" />
   </ItemGroup>
   <ItemGroup>

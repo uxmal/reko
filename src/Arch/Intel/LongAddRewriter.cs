@@ -97,7 +97,7 @@ namespace Decompiler.Arch.Intel
 			ImmediateOperand immHi = opHi as ImmediateOperand;
 			if (immLo != null && immHi != null)
 			{
-				return new Constant(totalSize, (immHi.val.AsLong() << opLo.Width.BitSize) | immLo.val.AsLong());
+				return new Constant(totalSize, ((ulong)immHi.Value.ToUInt32() << opLo.Width.BitSize) | immLo.Value.ToUInt32());
 			}
 
 			return null;
@@ -126,9 +126,9 @@ namespace Decompiler.Arch.Intel
 			long off = 0;
 			if (m1.Offset.IsValid)
 			{
-				off = m1.Offset.AsLong();
+				off = m1.Offset.ToInt32();
 			}
-			long off2 = m2.Offset.AsLong();
+			long off2 = m2.Offset.ToInt32();
 			return off + m1.Width.Size == off2;
 		}
 	}

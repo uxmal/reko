@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using Decompiler;
 using System;
@@ -107,11 +108,11 @@ namespace Decompiler.Arch.Intel.Assembler
 			ResolveSymbol(symtab.DefineSymbol(pstr, emitter.Position));
 		}
 
-		private void EmitOffset(Value v)
+		private void EmitOffset(Constant v)
 		{
 			if (v == null)
 				return;
-			emitter.EmitInteger(v.Width, v.Signed);
+			emitter.EmitInteger((PrimitiveType)v.DataType, v.ToInt32());
 		}
 
 		private void EmitModRM(int reg, ParsedOperand op)
@@ -150,21 +151,21 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		private void EmitModRM(int reg, MemoryOperand memOp, Symbol sym)
 		{
-			Value offset = modRm.EmitModRMPrefix(reg, memOp);
+			Constant offset = modRm.EmitModRMPrefix(reg, memOp);
 			int offsetPosition = emitter.Position;
 			EmitOffset(offset);
 			if (sym != null)
-				ReferToSymbol(sym, offsetPosition, offset.Width);
+				ReferToSymbol(sym, offsetPosition, offset.DataType);
 		}
 
 		private void EmitModRM(int reg, MemoryOperand memOp, byte b, Symbol sym)
 		{
-			Value offset = modRm.EmitModRMPrefix(reg, memOp);
+			Constant offset = modRm.EmitModRMPrefix(reg, memOp);
 			emitter.EmitByte(b);
 			int offsetPosition = emitter.Position;
 			EmitOffset(offset);
 			if (sym != null)
-				ReferToSymbol(sym, emitter.Position, offset.Width);
+				ReferToSymbol(sym, emitter.Position, offset.DataType);
 		}
 
 		private void EmitRelativeTarget(string target, PrimitiveType offsetSize)
@@ -288,7 +289,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 		}
 
-		public static Value IntegralConstant(int i)
+		public static Constant IntegralConstant(int i)
 		{
 			PrimitiveType width; 
 			if (-0x80 <= i && i < 0x80)
@@ -297,9 +298,22 @@ namespace Decompiler.Arch.Intel.Assembler
 				width = PrimitiveType.Word16;
 			else 
 				width = PrimitiveType.Word32;
-			return new Value(width, i);
+			return new Constant(width, i);
 		}
 
+		public static Constant IntegralConstant(int i, PrimitiveType width)
+		{
+			if (-0x80 <= i && i < 0x80)
+				width = PrimitiveType.SByte;
+			else if (width == null)
+			{
+				if (-0x8000 <= i && i < 0x8000)
+					width = PrimitiveType.Word16;
+				else 
+					width = PrimitiveType.Word32;
+			}
+			return new Constant(width, i);
+		}
 	
 		private int IsAccumulator(MachineRegister reg)
 		{
@@ -337,7 +351,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				if (regOpDst != null && IsAccumulator(regOpDst.Register) != 0)
 				{
 					emitter.EmitOpcode((binop << 3) | 0x04 | IsWordWidth(ops[0].Operand), dataWidth);
-					emitter.EmitImmediate(immOp.val, dataWidth);
+					emitter.EmitImmediate(immOp.Value, dataWidth);
 					return;
 				}
 
@@ -363,7 +377,7 @@ namespace Decompiler.Arch.Intel.Assembler
 					{
 						emitter.EmitOpcode(0x81, dataWidth);
 						EmitModRM(binop, ops[0]);
-						emitter.EmitImmediate(immOp.val, dataWidth);
+						emitter.EmitImmediate(immOp.Value, dataWidth);
 					}
 					break;
 				}
@@ -566,7 +580,7 @@ namespace Decompiler.Arch.Intel.Assembler
 					emitter.EmitOpcode(0xF6 | (isWord & 1), dataWidth);
 					EmitModRM(0, ops[0]);
 					if (isWord != 0)
-						emitter.EmitImmediate(immOpSrc.val, dataWidth);
+						emitter.EmitInteger(dataWidth, immOpSrc.Value.ToInt32());
 					else
 						emitter.EmitByte(immOpSrc.Byte);
 
@@ -584,7 +598,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			emitter.EmitOpcode(0xF6 | (isWord & 1), dataWidth);
 			EmitModRM(0, ops[0]);
 			if (isWord != 0)
-				emitter.EmitImmediate(immOp.val, dataWidth);
+				emitter.EmitImmediate(immOp.Value, dataWidth);
 			else
 				emitter.EmitByte(immOp.Byte);
 
@@ -905,7 +919,7 @@ namespace Decompiler.Arch.Intel.Assembler
 					{
 						emitter.EmitOpcode(0x69, dataWidth);
 						EmitModRM(RegisterEncoding(regOp.Register), ops[1]);
-						emitter.EmitImmediate(op3.val, dataWidth);
+						emitter.EmitImmediate(op3.Value, dataWidth);
 					}
 				}
 			}
@@ -949,14 +963,14 @@ namespace Decompiler.Arch.Intel.Assembler
 			ImmediateOperand immOp = opPort.Operand as ImmediateOperand;
 			if (immOp != null)
 			{
-				if (immOp.val.Word > 0xFF)
+				if (immOp.Value.ToUInt32() > 0xFF)
 				{
 					throw new ApplicationException("port number must be between 0 and 255");
 				}
 				else
 				{
 					emitter.EmitOpcode(opcode, regOpPort.Width);
-					emitter.EmitByte(immOp.val.Byte);
+					emitter.EmitByte(immOp.Value.ToInt32());
 				}
 			}
 			else
@@ -1016,7 +1030,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				DefineSymbol(s);
 				lexer.SkipUntil(Token.EOL);		// TODO: keep track of procedures on a stack?
 				Expect(Token.EOL);
-				if (entryPoints != null)
+				if (entryPoints != null && entryPoints.Count == 0)
 					entryPoints.Add(new EntryPoint(addrBase + emitter.Position, new IntelState()));
 				break;
 			case Token.COLON:
@@ -1532,7 +1546,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				{
 					emitter.EmitOpcode(0xB0 | (isWord << 3) | reg, dataWidth);
 					if (isWord != 0)
-						emitter.EmitImmediate(immOpSrc.val, ops[0].Operand.Width);
+						emitter.EmitInteger(dataWidth, immOpSrc.val.SignExtend(dataWidth));
 					else
 						emitter.EmitByte(immOpSrc.Byte);
 
@@ -1809,11 +1823,11 @@ namespace Decompiler.Arch.Intel.Assembler
 			Debug.Assert(psym.fResolved);
 			foreach (BackPatch patch in psym.patches)
 			{
-				emitter.Patch(patch.offset, psym.offset, patch.size);
+				emitter.Patch(patch.offset, psym.offset, patch.Size);
 			}
 		}
 
-		private void ReferToSymbol(Symbol psym, int off, PrimitiveType width)
+		private void ReferToSymbol(Symbol psym, int off, DataType width)
 		{
 			if (psym.fResolved)
 			{

@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
@@ -98,7 +99,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				return;
 			case Token.INTEGER:
 				totalInt += lexer.Integer;
-				memOp.Offset = IntelAssembler.IntegralConstant(totalInt);
+				memOp.Offset = IntelAssembler.IntegralConstant(totalInt, memOp.Width);
 				break;
 			case Token.REGISTER:
 			{
@@ -120,7 +121,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				else
 				{
 					sym = symtab.CreateSymbol(lexer.StringLiteral);
-					memOp.Offset = new Value(defaultWordWidth, addrBase.off);
+					memOp.Offset = new Constant(defaultWordWidth, addrBase.off);
 				}
 				break;
 			}
@@ -170,13 +171,13 @@ namespace Decompiler.Arch.Intel.Assembler
 					return null;
 				case Token.KET:
 					if (totalInt != 0)
-						memOp.Offset = IntelAssembler.IntegralConstant(totalInt);
+						memOp.Offset = IntelAssembler.IntegralConstant(totalInt, memOp.Width);
 					return new ParsedOperand(memOp, sym);
 				case Token.PLUS:
 					break;
 				case Token.MINUS:
 					Expect(Token.INTEGER);
-					memOp.Offset = IntelAssembler.IntegralConstant(totalInt - lexer.Integer);
+					memOp.Offset = IntelAssembler.IntegralConstant(totalInt - lexer.Integer, AddressWidth);
 					continue;
 				case Token.ID:
 					break;
@@ -213,7 +214,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				}
 				else
 				{
-					return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(totalInt)));
+					return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(totalInt, null)));
 				}
 			case Token.REGISTER:
 			{
@@ -245,7 +246,7 @@ namespace Decompiler.Arch.Intel.Assembler
 					goto IntegerCommon;
 				}
 				return new ParsedOperand(
-							   new MemoryOperand(addrWidth, new Value(defaultWordWidth, addrBase.off)),
+							   new MemoryOperand(addrWidth, new Constant(defaultWordWidth, addrBase.off)),
 							   symtab.CreateSymbol(lexer.StringLiteral));
 			}
 			case Token.WORD:

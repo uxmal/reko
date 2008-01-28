@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Text;
@@ -69,20 +70,32 @@ namespace Decompiler.Arch.Intel
 
 	public class ImmediateOperand : Operand
 	{
-		public Value val;
+		[Obsolete]
+		public Value val;	
+		private Constant value;
 
 		public ImmediateOperand(PrimitiveType  t, int v) : base(t)
 		{
+			value = new Constant(t, v);
 			val = new Value(t, v);
 		}
 
 		public ImmediateOperand(PrimitiveType t, uint v) : base(t)
 		{
+			value = new Constant(t, v);
 			val = new Value(t, v);
 		}
 
+		public ImmediateOperand(Constant c) : base((PrimitiveType)c.DataType)
+		{
+			value = c;
+			val = new Value((PrimitiveType)c.DataType, c.AsInt32());
+		}
+
+		[Obsolete]
 		public ImmediateOperand(Value v) : base(v.Width)
 		{
+			value = new Constant(v.Width, v.Unsigned);
 			val = v;
 		}
 
@@ -104,6 +117,11 @@ namespace Decompiler.Arch.Intel
 		public ushort Word
 		{
 			get { return val.Word; }
+		}
+
+		public Constant Value
+		{
+			get { return value; }
 		}
 	}
 

@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
@@ -55,51 +56,52 @@ namespace Decompiler.Arch.Intel
 			return arch.AddressFromSegOffset(state, seg, offset);
 		}
 
-		private Value ExecuteAluOp(Opcode code, Operand op1, Operand op2)
+		//$REVIEW: consider passing an operator instead, and use "Apply".
+		private Constant ExecuteAluOp(Opcode code, Operand op1, Operand op2)
 		{
-			Value v1 = GetValue(op1);
-			Value v2 = GetValue(op2);
+			Constant v1 = GetValue(op1);
+			Constant v2 = GetValue(op2);
 			if (!v1.IsValid || !v2.IsValid)
-				return Value.Invalid;
+				return Constant.Invalid;
 
 			int v;
 			switch (code)
 			{
-			case Opcode.add: v = v1.Signed + v2.Signed; break;
-			case Opcode.sub: v = v1.Signed - v2.Signed;	break;
-			case Opcode.and: v = v1.Signed & v2.Signed;	break;
-			case Opcode.or:  v = v1.Signed | v2.Signed;	break;
-			case Opcode.xor: v = v1.Signed ^ v2.Signed;	break;
-			case Opcode.adc:  case Opcode.sbb: return Value.Invalid;
-			case Opcode.shl: v = v1.Signed << v2.Signed; break;
-			case Opcode.shr: v = (int) (v1.Unsigned >> v2.Signed); break;
-			case Opcode.sar: v = v1.Signed << v2.Signed; break;
+			case Opcode.add: v = v1.ToInt32() + v2.ToInt32(); break;
+			case Opcode.sub: v = v1.ToInt32() - v2.ToInt32();	break;
+			case Opcode.and: v = v1.ToInt32() & v2.ToInt32();	break;
+			case Opcode.or:  v = v1.ToInt32() | v2.ToInt32();	break;
+			case Opcode.xor: v = v1.ToInt32() ^ v2.ToInt32();	break;
+			case Opcode.adc:  case Opcode.sbb: return Constant.Invalid;
+			case Opcode.shl: v = v1.ToInt32() << v2.ToInt32(); break;
+			case Opcode.shr: v = (int) (v1.ToUInt32() >> v2.ToInt32()); break;
+			case Opcode.sar: v = v1.ToInt32() << v2.ToInt32(); break;
 			case Opcode.rcl: case Opcode.rcr:
 			case Opcode.rol: case Opcode.ror:
-				return Value.Invalid;
+				return Constant.Invalid;
 			default:
 				throw new ArgumentOutOfRangeException();
 			}
-			return new Value(v1.Width, v);
+			return new Constant(v1.DataType, v);
 		}
 
-		public Value GetValue(Operand op)
+		public Constant GetValue(Operand op)
 		{
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)
-				return state.Get(regOp.Register);
+				return state.GetV(regOp.Register);
 			ImmediateOperand immOp = op as ImmediateOperand;
 			if (immOp != null)
-				return immOp.val;
+				return immOp.Value;
 
-			return Value.Invalid;
+			return Constant.Invalid;
 		}
 
 		private void HandleBranch(Address addrInstr, IntelInstruction instr, Address addrTerm)
 		{
 			Address addrBranch = new Address(
 				addrTerm.seg,
-				((ImmediateOperand) instr.op1).val.Unsigned);
+				((ImmediateOperand) instr.op1).Value.ToUInt32());
 			Listener.OnBranch(state, addrInstr, addrTerm, addrBranch);
 		}
 
@@ -164,21 +166,21 @@ namespace Decompiler.Arch.Intel
 				break;
 			case 0x21:				// MS-DOS interrupt.
 			{
-				Value ah = state.Get(Registers.ah);
+				Constant ah = state.GetV(Registers.ah);
 				if (ah.IsValid)
 				{
-					switch (ah.Byte)
+					switch (ah.ToUInt32())
 					{
 					case 0x25:				// Set interrupt vector
 					{
 						// DS:DX contain the address of an interrupt routine.
-						Value ds = state.Get(Registers.ds);
-						Value dx = state.Get(Registers.dx);
+						Constant ds = state.GetV(Registers.ds);
+						Constant dx = state.GetV(Registers.dx);
 						if (ds.IsValid && dx.IsValid)
 						{
 							Listener.OnProcedure(
 								new IntelState(),
-								new Address(ds.Word, dx.Word));
+								new Address((ushort)ds.ToUInt32(), dx.ToUInt32()));
 						}
 						break;
 					}
@@ -230,7 +232,7 @@ namespace Decompiler.Arch.Intel
 			if (immOp != null)
 			{
 				// local jump within this segment.
-				Listener.OnJump(state, addrFrom, addrTerm, AddressFromSegOffset(Registers.cs, immOp.val.Unsigned));
+				Listener.OnJump(state, addrFrom, addrTerm, AddressFromSegOffset(Registers.cs, immOp.Value.ToUInt32()));
 				return;
 			}
 
@@ -253,10 +255,10 @@ namespace Decompiler.Arch.Intel
 
 		private void HandleNegInstruction(IntelInstruction instr)
 		{
-			Value v = GetValue(instr.op2);
+			Constant v = GetValue(instr.op2);
 			if (v.IsValid)
 			{
-				SetValue(instr.op1, new Value(v.Width, -v.Signed));
+				SetValue(instr.op1, Operator.neg.ApplyConstant(v));
 			}
 		}
 
@@ -264,8 +266,8 @@ namespace Decompiler.Arch.Intel
 		{
 			//$REVIEW: can do more; we know the source operand is a memory address
 			// to a pointer value.
-			SetValue(instr.op1, Value.Invalid);
-			state.Set(seg, Value.Invalid);
+			SetValue(instr.op1, Constant.Invalid);
+			state.Set(seg, Constant.Invalid);
 		}
 
 		private void HandleRepInstruction(Address addrTerm)
@@ -275,7 +277,7 @@ namespace Decompiler.Arch.Intel
 			switch (instr.code)
 			{
 			case Opcode.cmps: case Opcode.cmpsb: case Opcode.scas: case Opcode.scasb:
-				state.Set(Registers.ecx, Value.Invalid);			
+				state.Set(Registers.ecx, Constant.Invalid);			
 				break;
 			}
 			Listener.OnBranch(state, addrBegin, dasm.Address, addrBegin);
@@ -296,9 +298,9 @@ namespace Decompiler.Arch.Intel
 
 			if (memOp.Offset.IsValid)
 			{
-				Address addrGlob = AddressFromSegOffset(memOp.DefaultSegment, memOp.Offset.Unsigned);
+				Address addrGlob = AddressFromSegOffset(memOp.DefaultSegment, memOp.Offset.ToUInt32());
 				ushort segBase = (memOp.Width == PrimitiveType.Word16)
-					? state.Get(Registers.cs).Word
+					? (ushort) state.GetV(Registers.cs).ToUInt32()
 					: (ushort) 0;
 				if (memOp.IsAbsolute)
 				{
@@ -341,12 +343,22 @@ namespace Decompiler.Arch.Intel
 			return (r1 != null && r2 != null && r1.Register == r2.Register);
 		}
 
+		[Obsolete]
 		public void SetValue(Operand op, Value v)
 		{
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)
 			{
 				state.Set(regOp.Register, v);
+			}
+		}
+
+		public void SetValue(Operand op, Constant c)
+		{
+			RegisterOperand regOp = op as RegisterOperand;
+			if (regOp != null)
+			{
+				state.Set(regOp.Register, c);
 			}
 		}
 
@@ -357,7 +369,7 @@ namespace Decompiler.Arch.Intel
 			RegisterStorage reg = id.Storage as RegisterStorage;
 			if (reg != null)
 			{	
-				state.Set(reg.Register, Value.Invalid);
+				state.Set(reg.Register, Constant.Invalid);
 			}
 			SequenceStorage seq = id.Storage as SequenceStorage;
 			if (seq != null)
@@ -389,7 +401,7 @@ namespace Decompiler.Arch.Intel
 			case Opcode.aaa:
 			case Opcode.aam:
 			case Opcode.daa:
-				state.Set(Registers.ax, Value.Invalid);
+				state.Set(Registers.ax, Constant.Invalid);
 				break;
 			case Opcode.add:
 			case Opcode.adc:
@@ -407,26 +419,26 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.xor:
 				if (IsSameRegister(instr.op1, instr.op2))
-					SetValue(instr.op1, new Value(instr.op2.Width, 0));
+					SetValue(instr.op1, new Constant(instr.op2.Width, 0));
 				else
 					SetValue(instr.op1, ExecuteAluOp(instr.code, instr.op1, instr.op2));
 				break;
 			case Opcode.sub:
 				if (IsSameRegister(instr.op1, instr.op2))
-					SetValue(instr.op1, new Value(instr.op2.Width, 0));
+					SetValue(instr.op1, new Constant(instr.op2.Width, 0));
 				else
 					SetValue(instr.op1, ExecuteAluOp(instr.code, instr.op1, instr.op2));
 				break;
 			case Opcode.arpl:
 				break;
 			case Opcode.bsr:
-				SetValue(instr.op1, Value.Invalid);
+				SetValue(instr.op1, Constant.Invalid);
 				break;
 			case Opcode.bswap:
-				SetValue(instr.op1, Value.Invalid);
+				SetValue(instr.op1, Constant.Invalid);
 				break;
 			case Opcode.bt:
-				SetValue(instr.op1, Value.Invalid);
+				SetValue(instr.op1, Constant.Invalid);
 				break;
 			case Opcode.call:
 				HandleCallInstruction(instr, addrStart, addrTerm);
@@ -464,24 +476,25 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.cwd:
 			{
-				Value t = state.Get(Registers.ax);
+				//$BUG: 32-bit registers?
+				Constant t = state.GetV(Registers.ax);
 				if (t.IsValid)
 				{
-					t = new Value(PrimitiveType.Word16, t.Signed < 0 ? -1 : 0);
+					t = new Constant(PrimitiveType.Word16, t.ToInt32() < 0 ? -1 : 0);
 				}
 				state.Set(Registers.dx, t);
 				break;
 			}
 			case Opcode.das:
-				state.Set(Registers.al, Value.Invalid);
-				state.Set(Registers.C, Value.Invalid);
+				state.Set(Registers.al, Constant.Invalid);
+				state.Set(Registers.C, Constant.Invalid);
 				break;
 			case Opcode.div:
 			case Opcode.idiv:
 				break;		//$BUGBUG: trashes many registers in some cases!
 			case Opcode.enter:
-				state.Push(instr.dataWidth, state.Get(Registers.bp));
-				state.Set(Registers.bp, state.Get(Registers.sp));
+				state.Push(instr.dataWidth, state.GetV(Registers.bp));
+				state.Set(Registers.bp, state.GetV(Registers.sp));
 				break;
 			case Opcode.fadd:
 			case Opcode.faddp:
@@ -532,11 +545,11 @@ namespace Decompiler.Arch.Intel
 			case Opcode.mul:
 				break;
 			case Opcode.@in:
-				SetValue(instr.op1, Value.Invalid);
+				SetValue(instr.op1, Constant.Invalid);
 				break;
 			case Opcode.@ins:
 			case Opcode.@insb:
-				state.Set(Registers.edi, Value.Invalid);
+				state.Set(Registers.edi, Constant.Invalid);
 				break;
 			case Opcode.inc:
 			case Opcode.dec:
@@ -567,7 +580,7 @@ namespace Decompiler.Arch.Intel
 				HandleJmpInstruction(instr, addrStart, addrTerm);
 				break;
 			case Opcode.lahf:
-				state.Set(Registers.ah, Value.Invalid);
+				state.Set(Registers.ah, Constant.Invalid);
 				break;
 			case Opcode.lds:
 				HandleLxsInstruction(instr, Registers.ds);
@@ -594,7 +607,7 @@ namespace Decompiler.Arch.Intel
 			case Opcode.loop:
 			case Opcode.loope:
 			case Opcode.loopne:
-				state.Set(Registers.ecx.GetPart(instr.dataWidth), Value.Invalid);
+				state.Set(Registers.ecx.GetPart(instr.dataWidth), Constant.Invalid);
 				HandleBranch(addrStart, instr, addrTerm);
 				break;
 			case Opcode.mov:
@@ -602,7 +615,7 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.movsx:
 			case Opcode.movzx:
-				SetValue(instr.op1, Value.Invalid);		//$REVIEW: could do more here.
+				SetValue(instr.op1, Constant.Invalid);		//$REVIEW: could do more here.
 				break;
 			case Opcode.neg:
 				HandleNegInstruction(instr);
@@ -611,10 +624,10 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.not:
 			{
-				Value t = GetValue(instr.op1);
+				Constant t = GetValue(instr.op1);
 				if (t.IsValid)
 				{
-					t = new Value(t.Width, ~t.Unsigned);
+					t = Operator.comp.ApplyConstant(t);
 				}
 				SetValue(instr.op1, t);
 				break;
@@ -623,7 +636,7 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.outs:
 			case Opcode.outsb:
-				state.Set(Registers.si, Value.Invalid);
+				state.Set(Registers.si, Constant.Invalid);
 				break;
 			case Opcode.pop:
 				SetValue(instr.op1, state.Pop(instr.op1.Width));
@@ -641,7 +654,7 @@ namespace Decompiler.Arch.Intel
 				//$BUGBUG: should ram a load of regs on to stack.
 				break;
 			case Opcode.pushf:
-				state.Push(instr.dataWidth, Value.Invalid);
+				state.Push(instr.dataWidth, Constant.Invalid);
 				break;
 			case Opcode.rep:
 			case Opcode.repne:
@@ -670,11 +683,11 @@ namespace Decompiler.Arch.Intel
 			case Opcode.setpo:
 			case Opcode.sets:
 			case Opcode.setz:
-				SetValue(instr.op1, Value.Invalid);
+				SetValue(instr.op1, Constant.Invalid);
 				break;
 			case Opcode.shrd:
 			case Opcode.shld:
-				SetValue(instr.op1, Value.Invalid);
+				SetValue(instr.op1, Constant.Invalid);
 				break;
 			case Opcode.test:
 				break;
@@ -682,9 +695,9 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.xchg:
 			{
-				Value t = GetValue(instr.op1);
+				Constant c = GetValue(instr.op1);
 				SetValue(instr.op1, GetValue(instr.op2));
-				SetValue(instr.op2, t);
+				SetValue(instr.op2, c);
 				break;
 			}
 			case Opcode.xlat:

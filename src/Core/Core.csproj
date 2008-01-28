@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Decomp.Core</AssemblyName>
+    <AssemblyName>Decompiler.Core</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -269,6 +269,7 @@
     <Compile Include="Code\UnaryExpression.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Diagnostic.cs" />
     <Compile Include="Disassembler.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -369,6 +370,7 @@
     <Compile Include="Operators\ModOperator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operators\MulOperator.cs" />
     <Compile Include="Operators\MulsOperator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -381,6 +383,7 @@
     <Compile Include="Operators\OrOperator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operators\RealConditionalOperators.cs" />
     <Compile Include="Operators\SarOperator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -390,12 +393,14 @@
     <Compile Include="Operators\ShrOperator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operators\SignedIntOperators.cs" />
     <Compile Include="Operators\SubOperator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operators\UnaryOperator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operators\UnsignedIntOperators.cs" />
     <Compile Include="Operators\XorOperator.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -88,9 +88,16 @@ namespace Decompiler.Core.Code
 			return Convert.ToSingle(c);
 		}
 
+		[Obsolete]
 		public int AsInt32()
 		{
-			return unchecked((int) Convert.ToInt64(c));
+			return ToInt32();
+		}
+
+		[Obsolete]
+		public uint AsUInt32()
+		{
+			return ToUInt32();
 		}
 
 		public override Expression CloneExpression()
@@ -185,7 +192,7 @@ namespace Decompiler.Core.Code
 				{
 				case 4: return "{0:g}F";
 				case 8: return "{0:g}";
-				default: throw new ArgumentOutOfRangeException();
+				default: throw new ArgumentOutOfRangeException("Only real types of size 4 and 8 are supported.");
 				}
 			default:
 				switch (type.Size)
@@ -195,7 +202,7 @@ namespace Decompiler.Core.Code
 				case 4: return "0x{0:X8}";
 				case 5: return "$$0x{0:X16}$$";
 				case 8: return "0x{0:X16}";
-				default: throw new ArgumentOutOfRangeException();
+				default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} are not supported.", type.Size));
 				}
 			}
 		}
@@ -256,6 +263,11 @@ namespace Decompiler.Core.Code
 			}
 		}
 
+		public bool IsValid
+		{
+			get { return !Object.ReferenceEquals(this, Constant.Invalid); }
+		}
+
 		public static Constant Ln2()
 		{
 			return new Constant(0.69314718055994530941723212145818);
@@ -291,8 +303,30 @@ namespace Decompiler.Core.Code
 			return new Constant(3.1415926535897932384626433832795);
 		}
 
+		public int ToInt32()
+		{
+			return unchecked((int) Convert.ToInt64(c));
+		}
+
+		public uint ToUInt32()
+		{
+			return unchecked((uint) Convert.ToInt64(c));
+		}
+
+		public long ToInt64()
+		{
+			return Convert.ToInt64(c);
+		}
+
+		public ulong ToUInt64()
+		{
+			return Convert.ToUInt64(c);
+		}
+
 		public override string ToString()
 		{
+			if (Object.ReferenceEquals(this, Invalid))
+				return "<void>";
 			PrimitiveType t = (PrimitiveType) DataType;
 			if (t.Domain == Domain.Boolean)
 			{
@@ -318,5 +352,7 @@ namespace Decompiler.Core.Code
 		{
 			return new Constant(PrimitiveType.Word32, n); 
 		}
+
+		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0);
 	}
 }

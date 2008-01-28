@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
@@ -70,6 +71,7 @@ namespace Decompiler.Arch.Intel
 			return new IntelState(this);
 		}
 
+		[Obsolete]
 		public override void Set(MachineRegister reg, Value v)
 		{
 			if (!v.IsValid)
@@ -82,11 +84,24 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
+		public override void Set(MachineRegister reg, Constant c)
+		{
+			if (!c.IsValid)
+			{
+				valid[reg.Number] = false;
+			}
+			else
+			{
+				reg.SetRegisterFileValues(regs, c.AsUInt32(), valid);	//$REVIEW: AsUint64 for x86-64?
+			}
+		}
+
 		public override void SetInstructionPointer(Address addr)
 		{
 			Set(Registers.cs, new Value(PrimitiveType.Word16, addr.seg));
 		}
 
+		[Obsolete]
 		public override Value Get(MachineRegister reg)
 		{
 			if (valid[reg.Number])
@@ -95,6 +110,15 @@ namespace Decompiler.Arch.Intel
 				return Value.Invalid;
 		}
 
+		public override Constant GetV(MachineRegister reg)
+		{
+			if (valid[reg.Number])
+				return new Constant(reg.DataType, regs[reg.Number]);
+			else
+				return Constant.Invalid;
+		}
+
+		[Obsolete("", true)]
 		public void Push(PrimitiveType t, Value v)
 		{
 			switch (t.Size)
@@ -120,7 +144,8 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
-		public Value Pop(PrimitiveType t)
+		[Obsolete]
+		public Value PopV(PrimitiveType t)
 		{
 			try
 			{
@@ -157,6 +182,73 @@ namespace Decompiler.Arch.Intel
 			{
 				//$NYI:				Log.Warn("Stack underflow");
 				return Value.Invalid;
+			}
+		}
+
+		public Constant Pop(PrimitiveType t)
+		{
+			try
+			{
+				switch (t.Size)
+				{
+				default:
+					throw new ArgumentOutOfRangeException("t");
+				case 2:
+					if (stack.Count < 1)
+					{
+						System.Diagnostics.Debug.WriteLine("bad pop");
+						return Constant.Invalid;
+					}
+					return (Constant) stack.Pop();
+				case 4:
+					if (stack.Count < 2)
+					{
+						System.Diagnostics.Debug.WriteLine("bad pop");
+						return Constant.Invalid;
+					}
+					Constant v = (Constant) stack.Pop();
+					Constant v2 = (Constant) stack.Pop();
+					if (v.IsValid && v2.IsValid)
+					{
+						return new Constant(t, (v.ToUInt32() & 0x0000FFFF) | (v2.ToUInt32() << 16));
+					}
+					else
+					{
+						return Constant.Invalid;
+					}
+				}
+			}
+			catch (InvalidOperationException)
+			{
+				//$NYI:				Log.Warn("Stack underflow");
+				return Constant.Invalid;
+			}
+		}
+
+		public void Push(PrimitiveType t, Constant c)
+		{
+			switch (t.Size)
+			{
+			default:
+				throw new ArgumentOutOfRangeException();
+			case 1:
+			case 2:
+				stack.Push(c);
+				break;
+			case 4:
+				if (!c.IsValid)
+				{
+					stack.Push(c);
+					stack.Push(c);
+				}				 
+				else
+				{
+					//$REVIEW: we lose type information here, change stack model to sortedlist.
+					//$BUG: 64-bit constants?
+					stack.Push(new Constant(PrimitiveType.Word16, c.ToUInt32() >> 16));
+					stack.Push(new Constant(PrimitiveType.Word16, c.ToUInt32() & 0xFFFF));
+				}
+				break;
 			}
 		}
 	}

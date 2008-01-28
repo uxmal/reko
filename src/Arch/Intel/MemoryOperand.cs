@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Text;
@@ -29,7 +30,7 @@ namespace Decompiler.Arch.Intel
 		public IntelRegister Base;
 		public IntelRegister Index;
 		public byte Scale;
-		public Value Offset;
+		private Constant offset;
 
 		public MemoryOperand(PrimitiveType width) : base(width)
 		{
@@ -39,33 +40,68 @@ namespace Decompiler.Arch.Intel
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, Value off) : base(width)
+		public MemoryOperand(PrimitiveType width, Constant off) : base(width)
 		{
-			Offset = off;
+			offset = off;
 			Base = Registers.None;
 			Index = Registers.None;
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, IntelRegister @base, Value off) : base(width)
+		public MemoryOperand(PrimitiveType width, IntelRegister @base, Constant off) : base(width)
 		{
-			Offset = off;
+			offset = off;
 			Base = @base;
 			Index = Registers.None;
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, IntelRegister @base, IntelRegister index, byte scale,  Value off) : base(width)
+		public MemoryOperand(PrimitiveType width, IntelRegister @base, IntelRegister index, byte scale,  Constant off) : base(width)
 		{
-			Offset = off;
+			offset = off;
 			Base = @base;
 			Index = index;
 			Scale = scale;
 		}
 
+		public string FormatSignedOffset()
+		{
+			string s = "+";
+			int tmp = offset.ToInt32();
+			if (tmp < 0)
+			{
+				s = "-";
+				tmp = -tmp;
+			}
+			return s + tmp.ToString(OffsetFormatString());
+		}
+
+		public string FormatUnsignedOffset()
+		{
+			return offset.ToUInt32().ToString(OffsetFormatString());
+		}
+
 		public bool IsAbsolute
 		{
-			get { return Offset.IsValid && Base == Registers.None && Index == Registers.None; }
+			get { return offset.IsValid && Base == Registers.None && Index == Registers.None; }
+		}
+
+		public Constant Offset
+		{
+			get { return offset; }
+			set { offset = value; }
+		}
+
+		private string OffsetFormatString()
+		{
+			switch (offset.DataType.Size)
+			{
+			case 1: return "X2";
+			case 2: return "X4";
+			case 4: return "X8";
+			case 8: return "X8";
+			default: throw new InvalidOperationException();
+			}
 		}
 
 		public override string ToString()
@@ -110,7 +146,7 @@ namespace Decompiler.Arch.Intel
 			}
 			else
 			{
-				sb.Append(Offset.ToString());
+				sb.AppendFormat(FormatUnsignedOffset());
 			}
 
 			if (Index != Registers.None)
@@ -123,16 +159,16 @@ namespace Decompiler.Arch.Intel
 					sb.Append(Scale);
 				}
 			}
-			if (Base != Registers.None && Offset.IsValid)
+			if (Base != Registers.None && offset.IsValid)
 			{
-				if (Offset.Width == PrimitiveType.Byte || Offset.Width == PrimitiveType.SByte)
+				if (offset.DataType == PrimitiveType.Byte || offset.DataType == PrimitiveType.SByte)
 				{
-					sb.Append(Offset.FormatSigned());
+					sb.Append(FormatSignedOffset());
 				}
 				else
 				{	
 					sb.Append("+");
-					sb.Append(Offset.FormatUnsigned());
+					sb.Append(FormatUnsignedOffset());
 				}
 			}
 			sb.Append("]");

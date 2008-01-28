@@ -299,6 +299,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "RelocationDictionary.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Rewriter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

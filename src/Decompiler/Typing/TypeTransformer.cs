@@ -181,7 +181,7 @@ namespace Decompiler.Typing
 			return (aOffset + a.Size > bOffset);
 		}
 
-		public void Transform()
+		public void Transform(System.IO.TextWriter w)
 		{
 			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
 			ppr.ReplaceAll();
@@ -190,6 +190,7 @@ namespace Decompiler.Typing
 			do
 			{
 				++iteration;
+				DumpStore(iteration, w);
 				Changed = false;
 				foreach (TypeVariable tv in store.TypeVariables)
 				{
@@ -205,6 +206,16 @@ namespace Decompiler.Typing
 				if (NestedComplexTypeRemover.ReplaceAll(factory, store))
 					Changed = true;
 			} while (Changed);
+		}
+
+		private void DumpStore(int iteration, System.IO.TextWriter writer)
+		{
+			if (writer == null)
+				return;
+			writer.WriteLine("// Store dump: iteration {0} ///////////////////////");
+			store.Write(writer);
+			writer.WriteLine();
+			writer.Flush();
 		}
 
 		#region DataTypeTransformer methods  //////////////////////////////////////////

@@ -32,6 +32,7 @@ namespace Decompiler.Loading
 	{
 		private Program prog;
 		private ArrayList entryPoints;
+		private RelocationDictionary relocations;
 
 		public Loader(Program prog)
 		{
@@ -92,7 +93,8 @@ namespace Decompiler.Loading
 					addrLoad = ldr.PreferredBaseAddress;
 				}
 				prog.Image = ldr.Load(addrLoad);
-				ldr.Relocate(addrLoad, entryPoints);
+				relocations = new RelocationDictionary();
+				ldr.Relocate(addrLoad, entryPoints, relocations);
 				return;
 			}
 			throw new ApplicationException("Unknown executable format: " + pstrFileName);

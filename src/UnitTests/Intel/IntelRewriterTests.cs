@@ -34,6 +34,7 @@ namespace Decompiler.UnitTests.Intel
 		private FakeRewriterHost host;
 		private RewriterState state;
 		private Program prog;
+		private IntelRewriter rw;
 
 		public IntelRewriterTests()
 		{
@@ -49,6 +50,7 @@ namespace Decompiler.UnitTests.Intel
 			emitter.Block = new Block(proc, new Address(0xC10, 0x0030));
 			host = new FakeRewriterHost();
 			state = new RewriterState(proc.Frame);
+			rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
 		}
 
 		[Test]
@@ -56,7 +58,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			IntelInstruction instr = new IntelInstruction();
 			instr.code = Opcode.call;
-			instr.op1 = new MemoryOperand(PrimitiveType.Word16, Registers.bx, new Value(PrimitiveType.Word16, 4));
+			instr.op1 = new MemoryOperand(PrimitiveType.Word16, Registers.bx, new Constant(PrimitiveType.Word16, 4));
 			Address addr = new Address(0x0C00, 0x0100);
 
 			FakeRewriterHost host = new FakeRewriterHost();
@@ -67,8 +69,6 @@ namespace Decompiler.UnitTests.Intel
 							   }));
 
 			Procedure proc = new Procedure("test", new Frame(arch.WordWidth));
-			CodeEmitter emitter = new CodeEmitter(null, proc);
-			emitter.Block = new Block(proc, addr);
 			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
 			rw.ConvertInstructions(new IntelInstruction[] { instr }, new Address[] { addr }, new FlagM[] { FlagM.CF });
 			Assert.AreEqual("ax = Mem0[ds:bx + 0x0004:word16](cx)", emitter.Block.Statements[0].Instruction.ToString());
@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.Intel
 			IntelInstruction instr = new IntelInstruction();
 			instr.code = Opcode.les;
 			instr.op1 = new RegisterOperand(Registers.bx);
-			instr.op2 = new MemoryOperand(PrimitiveType.Word32, Registers.bp, new Value(PrimitiveType.Word16, 6));
+			instr.op2 = new MemoryOperand(PrimitiveType.Word32, Registers.bp, new Constant(PrimitiveType.Word16, 6));
 
 			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
 			state.FrameRegister = Registers.bp;
@@ -122,7 +122,7 @@ namespace Decompiler.UnitTests.Intel
 				Opcode.fiadd,
 				PrimitiveType.Word16,
 				PrimitiveType.Word16,
-				new MemoryOperand(PrimitiveType.Word16, Registers.bx, Value.Invalid));
+				new MemoryOperand(PrimitiveType.Word16, Registers.bx, Constant.Invalid));
 
 			CodeEmitter emitter = new CodeEmitter(null, proc);
 			emitter.Block = new Block(proc, "foo");
@@ -177,7 +177,7 @@ namespace Decompiler.UnitTests.Intel
 			IntelInstruction push = new IntelInstruction(
 				Opcode.push, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cs));
 			IntelInstruction call = new IntelInstruction(
-				Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Value(PrimitiveType.Word16, addrProc.off)));
+				Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word16, addrProc.off)));
 			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
 			ConvertInstructions(rw, push, call);
 			Assert.AreEqual(1, emitter.Block.Statements.Count);
@@ -224,6 +224,44 @@ namespace Decompiler.UnitTests.Intel
 			Assert.AreEqual("rArg0 = rArg0 *s rArg1", ass.ToString());
 			BinaryExpression bin = (BinaryExpression) ass.Src;
 			Assert.AreEqual("real64", bin.DataType.ToString());
+		}
+
+		[Test]
+		public void RewriteDivWithRemainder()
+		{
+			IntelInstruction instr = new IntelInstruction(
+				Opcode.div, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
+			ConvertInstructions(rw, instr);
+			Assert.AreEqual(3, emitter.Block.Statements.Count);
+			Assignment a2 = (Assignment) emitter.Block.Statements[0].Instruction;
+			Assert.AreEqual("dx = dx_ax % cx", a2.ToString());
+			BinaryExpression mod = (BinaryExpression) a2.Src;
+			Assert.AreEqual("uint16", mod.DataType.ToString());
+		}
+
+		[Test]
+		public void RewriteIdivWithRemainder()
+		{
+			IntelInstruction instr = new IntelInstruction(
+				Opcode.idiv, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
+			ConvertInstructions(rw, instr);
+			Assert.AreEqual(3, emitter.Block.Statements.Count);
+			Assignment a2 = (Assignment) emitter.Block.Statements[0].Instruction;
+			Assert.AreEqual("dx = dx_ax % cx", a2.ToString());
+			BinaryExpression mod = (BinaryExpression) a2.Src;
+			Assert.AreEqual("int16", mod.DataType.ToString());
+
+		}
+
+		[Test]
+		public void RewriteBsr()
+		{
+			IntelInstruction instr = new IntelInstruction(
+				Opcode.bsr, PrimitiveType.Word32, PrimitiveType.Word32, new RegisterOperand(Registers.ecx), new RegisterOperand(Registers.eax));
+			ConvertInstructions(rw, instr);
+//			Assert.AreEqual(1, emitter.Block.Statements.Count);
+			Assert.AreEqual("Z = eax == 0x00000000", emitter.Block.Statements[0].Instruction.ToString());
+			Assert.AreEqual("ecx = __bsr(eax)", emitter.Block.Statements[1].Instruction.ToString());
 		}
 
 		public void ConvertInstructions(IntelRewriter rw, params IntelInstruction [] instrs)
