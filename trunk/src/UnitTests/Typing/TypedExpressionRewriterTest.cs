@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Typing
 			dtb.BuildEquivalenceClassDataTypes();
 
 			tvr.ReplaceTypeVariables();
-			trans.Transform();
+			trans.Transform(null);
 			ctn.RenameAllTypes(store);
 
 			ter = new TypedExpressionRewriter(store, prog);
@@ -142,7 +142,7 @@ namespace Decompiler.UnitTests.Typing
 			dtb.BuildEquivalenceClassDataTypes();
 			cpf.FollowConstantPointers(prog);
 			tvr.ReplaceTypeVariables();
-			trans.Transform();
+			trans.Transform(null);
 			ctn.RenameAllTypes(store);
 			ter = new TypedExpressionRewriter(store, prog);
 			ter.RewriteProgram();

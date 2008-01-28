@@ -129,7 +129,7 @@ namespace Decompiler.Arch.Intel
 						}
 						break;
 					case Opcode.and:
-						ass = EmitBinOp(Operator.and, instrCur.op1, instrCur.op1, instrCur.op2);
+						ass = EmitBinOp(Operator.and, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
 						break;
@@ -142,8 +142,8 @@ namespace Decompiler.Arch.Intel
 					case Opcode.bsr:
 					{
 						Expression src = SrcOp(instrCur.op2);
-						ass = EmitCopy(instrCur.op1, emitter.PseudoProc("__bsr", PrimitiveType.Bool, src), false);
 						emitter.Assign(orw.FlagGroup(FlagM.ZF), emitter.Eq0(src));
+						ass = EmitCopy(instrCur.op1, emitter.PseudoProc("__bsr", instrCur.op1.Width, src), false);
 						break;
 					}
 					case Opcode.bswap:
@@ -230,12 +230,13 @@ namespace Decompiler.Arch.Intel
 						ass = EmitBinOp(
 							Operator.sub,
 							instrCur.op1,
+							instrCur.op1.Width,
 							instrCur.op1,
 							new Constant(instrCur.op1.Width, 1));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.div:
-						ass = EmitDivide(Operator.divu);
+						ass = EmitDivide(Operator.divu, Domain.UnsignedInt);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.enter:
@@ -457,7 +458,7 @@ namespace Decompiler.Arch.Intel
 					}
 
 					case Opcode.idiv:
-						ass = EmitDivide(Operator.divs);
+						ass = EmitDivide(Operator.divs, Domain.SignedInt);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 
@@ -654,7 +655,7 @@ namespace Decompiler.Arch.Intel
 						}
 						else
 						{
-							ass = EmitBinOp(Operator.or, instrCur.op1, instrCur.op1, instrCur.op2);
+							ass = EmitBinOp(Operator.or, instrCur.op1, instrCur.op1.Width, instrCur.op1, instrCur.op2);
 							EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						}
 						break;
@@ -794,7 +795,7 @@ namespace Decompiler.Arch.Intel
 						emitter.Assign(orw.FlagGroup(defFlags), orw.AluRegister(Registers.ah));
 						break;
 					case Opcode.sar:
-						ass = EmitBinOp(Operator.sar, instrCur.op1, instrCur.op1, instrCur.op2);
+						ass = EmitBinOp(Operator.sar, instrCur.op1, instrCur.op1.Width, instrCur.op1, instrCur.op2);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.sbb:
@@ -1001,7 +1002,7 @@ namespace Decompiler.Arch.Intel
 				emitter.Emit(larw.CreateInstruction(op));
 				return larw.Dst;
 			}
-			Assignment ass = EmitBinOp(op, instrCur.op1, instrCur.op1, instrCur.op2);
+			Assignment ass = EmitBinOp(op, instrCur.op1, instrCur.op1.Width, instrCur.op1, instrCur.op2);
 			return ass.Dst;
 		}
 
@@ -1063,16 +1064,9 @@ namespace Decompiler.Arch.Intel
 			return EmitCopy(dst, new BinaryExpression(binOp, dtDst, eLeft, right), true);
 		}
 
-		[Obsolete]
-		private Assignment EmitBinOp(BinaryOperator binOp, Operand dst, Operand left, Expression right)
+		public Assignment EmitBinOp(BinaryOperator binOp, Operand dst, DataType dtDst, Operand left, Operand right)
 		{
-			return EmitBinOp(binOp, dst, dst.Width, left, right);
-		}
-
-		[Obsolete]
-		private Assignment EmitBinOp(BinaryOperator binOp, Operand dst, Operand left, Operand right)
-		{
-			return EmitBinOp(binOp, dst, dst.Width, left, SrcOp(right));
+			return EmitBinOp(binOp, dst, dtDst, left, SrcOp(right));
 		}
 
 		private void EmitBranchInstruction(FlagM usedFlags, ConditionCode cc, Operand opTarget)
@@ -1263,7 +1257,7 @@ namespace Decompiler.Arch.Intel
 				orw.AddrOf(orw.AluRegister(Registers.al))));
 		}
 
-		private Assignment EmitDivide(BinaryOperator op)
+		private Assignment EmitDivide(BinaryOperator op, Domain domain)
 		{
 			Assignment ass = null;
 			if (instrCur.cOperands != 1)
@@ -1292,12 +1286,13 @@ namespace Decompiler.Arch.Intel
 				default:
 					throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported", instrCur.dataWidth.Size));
 			};
+			PrimitiveType p = ((PrimitiveType) regRemainder.DataType).MaskDomain(domain);
 			emitter.Assign(
-				regRemainder, new BinaryExpression(Operator.mod, regRemainder.DataType,
+				regRemainder, new BinaryExpression(Operator.mod, p,
 				regDividend,
 				SrcOp(instrCur.op1)));
 			ass = emitter.Assign(
-				regQuotient, new BinaryExpression(op, regQuotient.DataType, regDividend, 
+				regQuotient, new BinaryExpression(op, p, regDividend, 
 				SrcOp(instrCur.op1)));
 			return ass;
 		}
@@ -1428,7 +1423,7 @@ namespace Decompiler.Arch.Intel
 			MemoryOperand mem = (MemoryOperand) instrCur.op2;
 			if (mem.Base == Registers.None && mem.Index == Registers.None)
 			{																			   
-				src = new Constant(mem.Offset);
+				src = mem.Offset;
 			}
 			else
 			{
@@ -1484,7 +1479,7 @@ namespace Decompiler.Arch.Intel
 			MemoryOperand mem = (MemoryOperand) instrCur.op2;
 			if (!mem.Offset.IsValid)
 			{
-				mem.Offset = new Value(instrCur.addrWidth, 0);
+				mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, new Constant(instrCur.addrWidth, 0));
 			}
 
 			Assignment ass = emitter.Assign(

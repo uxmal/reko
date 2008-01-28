@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 
@@ -24,7 +25,9 @@ namespace Decompiler.Core
 	public interface ICodeWalkerListener
 	{
 		void OnBranch(ProcessorState st, Address addrInstr, Address addrTerm, Address addrBranch);
+		[Obsolete]
 		void OnGlobalVariable(Address addr, PrimitiveType width, Value v);
+		void OnGlobalVariable(Address addr, PrimitiveType width, Constant c);
 		void OnIllegalOpcode(Address addrIllegal);
 		void OnJump(ProcessorState st, Address addrInstr, Address addrTerm, Address addrJump);
 		void OnJumpPointer(ProcessorState st, Address segBase, Address addrPtr, PrimitiveType stride);

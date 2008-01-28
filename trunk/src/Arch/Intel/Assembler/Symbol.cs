@@ -39,7 +39,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			patches = new ArrayList();
 		}
 
-		public void AddForwardReference(int offset, PrimitiveType width)
+		public void AddForwardReference(int offset, DataType width)
 		{
 			patches.Add(new BackPatch(offset, width));
 		}
@@ -55,12 +55,17 @@ namespace Decompiler.Arch.Intel.Assembler
 	public class BackPatch
 	{
 		public int	offset;
-		public PrimitiveType size;
+		private DataType size;
 
-		public BackPatch(int o, PrimitiveType s)
+		public BackPatch(int o, DataType s)
 		{
 			offset = o; 
 			size = s;
+		}
+
+		public DataType Size
+		{
+			get { return size; }
 		}
 	}
 

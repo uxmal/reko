@@ -450,7 +450,14 @@ namespace Decompiler.WindowsGui.Controls
 		{
 			if (e.Type == ScrollEventType.ThumbTrack)
 				return;
-			TopAddress = image.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
+			if (image.BaseAddress.seg != 0)
+			{
+				TopAddress = image.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
+			}
+			else
+			{
+				TopAddress = image.BaseAddress + e.NewValue * cbRow;
+			}
 		}
 	}
 }

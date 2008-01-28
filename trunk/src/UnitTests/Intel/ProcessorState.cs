@@ -18,6 +18,7 @@
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using NUnit.Framework;
@@ -31,14 +32,14 @@ namespace Decompiler.UnitTests.Intel
 		public void Simple()
 		{
 			IntelState st = new IntelState();
-			st.Set(Registers.cs, new Value(PrimitiveType.Word16, 0xC00));
-			st.Set(Registers.ax, new Value(PrimitiveType.Word16, 0x1234));
-			Assert.IsTrue(!st.Get(Registers.bx).IsValid);
-			Assert.IsTrue(st.Get(Registers.ax).IsValid);
-			Assert.IsTrue(st.Get(Registers.al).IsValid);
-			Assert.IsTrue(st.Get(Registers.al).Unsigned == 0x34);
-			Assert.IsTrue(st.Get(Registers.ah).IsValid);
-			Assert.IsTrue(st.Get(Registers.ah).Unsigned == 0x12);
+			st.Set(Registers.cs, new Constant(PrimitiveType.Word16, 0xC00));
+			st.Set(Registers.ax, new Constant(PrimitiveType.Word16, 0x1234));
+			Assert.IsTrue(!st.GetV(Registers.bx).IsValid);
+			Assert.IsTrue(st.GetV(Registers.ax).IsValid);
+			Assert.IsTrue(st.GetV(Registers.al).IsValid);
+			Assert.IsTrue(st.GetV(Registers.al).AsUInt32() == 0x34);
+			Assert.IsTrue(st.GetV(Registers.ah).IsValid);
+			Assert.IsTrue(st.GetV(Registers.ah).AsUInt32() == 0x12);
 		}
 	}
 }

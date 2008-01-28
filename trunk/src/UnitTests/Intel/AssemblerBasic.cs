@@ -18,6 +18,7 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using Decompiler.Arch.Intel;
 using Decompiler.Arch.Intel.Assembler;
@@ -271,21 +272,21 @@ foo		endp
 			MemoryOperand m;
 			PrimitiveType w = PrimitiveType.Word16;
 			ModRmBuilder mrm = new ModRmBuilder(w, null);
-			m = new MemoryOperand(w, Registers.bx, Registers.si, 1, Value.Invalid);
+			m = new MemoryOperand(w, Registers.bx, Registers.si, 1, Constant.Invalid);
 			Assert.AreEqual(0, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bx, Registers.di, 1, Value.Invalid);
+			m = new MemoryOperand(w, Registers.bx, Registers.di, 1, Constant.Invalid);
 			Assert.AreEqual(1, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bp, Registers.si, 1, Value.Invalid);
+			m = new MemoryOperand(w, Registers.bp, Registers.si, 1, Constant.Invalid);
 			Assert.AreEqual(2, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bp, Registers.di, 1, Value.Invalid);
+			m = new MemoryOperand(w, Registers.bp, Registers.di, 1, Constant.Invalid);
 			Assert.AreEqual(3, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.si, Value.Invalid);
+			m = new MemoryOperand(w, Registers.si, Constant.Invalid);
 			Assert.AreEqual(4, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.di, Value.Invalid);
+			m = new MemoryOperand(w, Registers.di, Constant.Invalid);
 			Assert.AreEqual(5, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bp, Value.Invalid);
+			m = new MemoryOperand(w, Registers.bp, Constant.Invalid);
 			Assert.AreEqual(0x46, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bx, Value.Invalid);
+			m = new MemoryOperand(w, Registers.bx, Constant.Invalid);
 			Assert.AreEqual(7, mrm.Get16AddressingModeMask(m));
 		}
 

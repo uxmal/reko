@@ -455,6 +455,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Core\RelocationDictionary.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Core\SetTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -621,6 +626,11 @@
                 />
                 <File
                     RelPath = "Intel\IntelArchitectureTests.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Intel\IntelAssemblerTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

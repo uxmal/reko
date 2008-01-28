@@ -55,6 +55,11 @@ namespace Decompiler.WindowsGui.Forms
 			set { nextPage = value; }
 		}
 
+		public PhasePage PhasePage
+		{
+			get { return page; }
+		}
+
 		/// <summary>
 		/// Displays and populates all the controls for this phase page.
 		/// </summary>

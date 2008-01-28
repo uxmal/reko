@@ -212,7 +212,7 @@ namespace Decompiler.Core
 			return id;
 		}
 
-
+		[Obsolete]
 		public Identifier EnsureStackVariable(Value imm, int cbOffset, DataType type)
 		{
 			if (imm.IsValid)
@@ -227,7 +227,19 @@ namespace Decompiler.Core
 			return (cbOffset >= 0) 
 				? EnsureStackArgument(cbOffset, type)
 				: EnsureStackLocal(cbOffset, type);
+		}
 
+		public Identifier EnsureStackVariable(Constant imm, int cbOffset, DataType type)
+		{
+			if (imm.IsValid)
+			{
+				cbOffset = imm.AsInt32() - cbOffset;
+			}
+			else
+				cbOffset = -cbOffset;
+			return (cbOffset >= 0)
+				? EnsureStackArgument(cbOffset, type)
+				: EnsureStackLocal(cbOffset, type);
 		}
 
 		public bool Escapes

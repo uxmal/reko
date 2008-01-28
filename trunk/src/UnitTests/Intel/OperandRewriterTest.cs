@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Intel
 			mem.Base = Registers.esp;
 			mem.Index = Registers.eax;
 			mem.Scale = 4;
-			mem.Offset = new Value(PrimitiveType.Byte, 0x02);
+			mem.Offset = new Constant(PrimitiveType.Byte, 0x02);
 			Expression expr = orw.Transform(mem, PrimitiveType.Word32, PrimitiveType.Word32, state);
 			Assert.IsTrue(proc.Frame.Escapes);
 		}
@@ -128,7 +128,7 @@ namespace Decompiler.UnitTests.Intel
 
 			MemoryOperand m = new MemoryOperand(PrimitiveType.Word32);
 			m.Base = Registers.ebp;
-			m.Offset = new Value(PrimitiveType.Byte, 0x08);
+			m.Offset = new Constant(PrimitiveType.Byte, 0x08);
 			Expression expr = orw.Transform(m, m.Width, PrimitiveType.Word32, state);
 			Assert.AreEqual(false, proc.Frame.Escapes);
 
@@ -141,7 +141,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
 			mem.Base = Registers.ecx;
-			mem.Offset = new Value(PrimitiveType.Word32, 4);
+			mem.Offset = new Constant(PrimitiveType.Word32, 4);
 			Expression expr = orw.Transform(mem, PrimitiveType.Word32, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[ecx + 0x00000004:word32]", expr.ToString());
 		}	
@@ -149,7 +149,7 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void OrwIndexedAccess()
 		{
-			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, new Value(PrimitiveType.Word32, 0x24));
+			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, new Constant(PrimitiveType.Word32, 0x24));
 			Expression expr = orw.Transform(mem, PrimitiveType.Word32, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[eax + 0x00000024 + edx * 0x00000004:word32]", expr.ToString());
 		}

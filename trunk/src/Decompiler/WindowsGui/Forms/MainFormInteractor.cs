@@ -41,6 +41,7 @@ namespace Decompiler.WindowsGui.Forms
 		private PhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
 		private LoadedPageInteractor pageLoaded;
+		private AnalyzedPageInteractor pageAnalyzed;
 		private FinalPageInteractor pageFinal;
 		private MruList mru;
 
@@ -80,10 +81,12 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			pageInitial = new InitialPageInteractor(form.InitialPage, this.form);
 			pageLoaded = new LoadedPageInteractor(form.LoadedPage, this.form, dm);
+			pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage, form);
 			pageFinal = new FinalPageInteractor(form.FinalPage, this.form);
 
 			pageInitial.NextPage = pageLoaded;
-			pageLoaded.NextPage = pageFinal;
+			pageLoaded.NextPage = pageAnalyzed;
+			pageAnalyzed.NextPage = pageFinal;
 
 		}
 
@@ -124,7 +127,6 @@ namespace Decompiler.WindowsGui.Forms
 				//$REVIEW if (executable_format) then scanProgram.
 				decompiler.ScanProgram();
 
-				form.PhasePage = form.LoadedPage;
 				SwitchInteractor(pageLoaded);
 			} 	
 			catch (Exception e)
@@ -207,6 +209,7 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void SwitchInteractor(PhasePageInteractor interactor)
 		{
+			form.PhasePage = interactor.PhasePage;
 			CurrentPage = interactor;
 			interactor.Decompiler = decompiler;
 			interactor.PopulateControls();
@@ -278,7 +281,7 @@ namespace Decompiler.WindowsGui.Forms
 
 		public TextWriter CreateTypesWriter()
 		{
-			return null;
+			return CreateTextWriter(decompiler.Project.Output.TypesFilename);
 		}
 
 		public void ShowProgress(string caption, int numerator, int denominator)

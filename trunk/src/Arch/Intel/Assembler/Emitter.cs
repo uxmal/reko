@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;
@@ -79,13 +80,26 @@ namespace Decompiler.Arch.Intel.Assembler
 			stmOut.WriteByte((byte)(l));
 		}
 
+		[Obsolete("Use other overloaded method instead")]
 		public void EmitImmediate(Value v, PrimitiveType w)
 		{
-			switch (w.Size)
+			EmitImmediate(new Constant(v.Width, v.Unsigned), w);
+//			switch (w.Size)
+//			{
+//			case 1: EmitByte(v.Byte); return;
+//			case 2: EmitWord(v.Word); return;
+//			case 4: EmitDword(v.Unsigned); return;
+//			}
+		}
+
+		public void EmitImmediate(Constant c, PrimitiveType dt)
+		{
+			switch (dt.Size)
 			{
-			case 1: EmitByte(v.Byte); return;
-			case 2: EmitWord(v.Word); return;
-			case 4: EmitDword(v.Unsigned); return;
+			case 1: EmitByte(c.ToInt32()); return;
+			case 2: EmitWord(c.ToInt32()); return;
+			case 4: EmitDword(c.ToUInt32()); return;
+			default: throw new NotSupportedException(string.Format("Unsupported type: {0}", dt));
 			}
 		}
 
@@ -160,7 +174,7 @@ namespace Decompiler.Arch.Intel.Assembler
 		/// <param name="offsetPatch"></param>
 		/// <param name="offsetRef"></param>
 		/// <param name="width"></param>
-		public void Patch(int offsetPatch, int offsetRef, PrimitiveType width)
+		public void Patch(int offsetPatch, int offsetRef, DataType width)
 		{
 			Debug.Assert(offsetPatch < stmOut.Length);
 			long posOrig = stmOut.Position;

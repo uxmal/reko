@@ -81,6 +81,7 @@ namespace Decompiler.Typing
 		/// <param name="prog"></param>
 		public void RewriteProgram()
 		{
+			TextWriter w = host.CreateTypesWriter();
 			try
 			{
 				aen.Transform(prog);
@@ -92,22 +93,26 @@ namespace Decompiler.Typing
 				dpa.FollowConstantPointers(prog);
 				tvr.ReplaceTypeVariables();
 				Debug.WriteLine("= replaced type variables ==================================");
-//				store.Write(host.IntermediateCodeWriter);
-//				host.IntermediateCodeWriter.Flush();
+				store.Write(w);
+				w.Flush();
 				Debug.WriteLine("= Transforming types =======================================");
-				trans.Transform();
+				trans.Transform(w);
 				ctn.RenameAllTypes(store);
 				Debug.WriteLine("= transformed types ========================================");
-//				store.Write(host.IntermediateCodeWriter);
-//				host.IntermediateCodeWriter.Flush();
+				store.Write(w);
+				w.Flush();
 				Debug.WriteLine("= Rewriting expressions ====================================");
 				ter.RewriteProgram();
 			}
 			catch
 			{
-//				host.WriteDiagnostic(Diagnostic.FatalError, "Crash while typing program. Dumping type store:");
-//				store.Write(host.IntermediateCodeWriter);
+				//				host.WriteDiagnostic(Diagnostic.FatalError, "Crash while typing program. Dumping type store:");
+				//				store.Write(host.IntermediateCodeWriter);
 				throw;
+			}
+			finally
+			{
+				w.Close();
 			}
 		}
 

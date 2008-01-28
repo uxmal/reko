@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using Decompiler.Arch.Intel;
 using System;
@@ -110,7 +111,13 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
+		[Obsolete]
 		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		{
+			Relocate(addrLoad, entryPoints, new RelocationDictionary());
+		}
+
+		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgU.Map;
 			ImageReader rdr = new ImageReader(RawImage, hdrOffset + 0x012Du);
@@ -138,11 +145,11 @@ namespace Decompiler.Loading
 			imageMap.AddSegment(new Address(cs, 0), cs.ToString("X4"), AccessMode.ReadWrite);
 			this.ss += segCode;
 			IntelState state = new IntelState();
-			state.Set(Registers.ds, new Value(PrimitiveType.Word16, addrLoad.seg));
-			state.Set(Registers.es, new Value(PrimitiveType.Word16, addrLoad.seg));
-			state.Set(Registers.cs, new Value(PrimitiveType.Word16, cs));
-			state.Set(Registers.ss, new Value(PrimitiveType.Word16, ss));
-			state.Set(Registers.bx, new Value(PrimitiveType.Word16, 0));
+			state.Set(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.seg));
+			state.Set(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.seg));
+			state.Set(Registers.cs, new Constant(PrimitiveType.Word16, cs));
+			state.Set(Registers.ss, new Constant(PrimitiveType.Word16, ss));
+			state.Set(Registers.bx, new Constant(PrimitiveType.Word16, 0));
 			entryPoints.Add(new EntryPoint(new Address(cs, ip), state));
 		}
 

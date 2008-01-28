@@ -255,7 +255,7 @@ namespace Decompiler.UnitTests.Typing
 			tvr.ReplaceTypeVariables();
 
 			TypeTransformer trans = new TypeTransformer(factory, store, null);
-			trans.Transform();
+			trans.Transform(null);
 			using (FileUnitTester fut = new FileUnitTester(outputFileName))
 			{
 				foreach (Procedure proc in prog.Procedures.Values)

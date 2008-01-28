@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;
@@ -32,7 +33,7 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		private Emitter emitter;
 		private PrimitiveType defaultWordSize;
-		private Value offset;
+		private Constant offset;
 
 		public ModRmBuilder(PrimitiveType defaultWordSize, Emitter emitter)
 		{
@@ -40,20 +41,20 @@ namespace Decompiler.Arch.Intel.Assembler
 			this.defaultWordSize = defaultWordSize;
 		}
 
-		private Value EmitDirectAddress(int reg, MemoryOperand memOp)
+		private Constant EmitDirectAddress(int reg, MemoryOperand memOp)
 		{
 			Debug.Assert(memOp.Offset.IsValid);
 			if (defaultWordSize == PrimitiveType.Word16)
 			{
 				reg |= 0x6;
 				emitter.EmitByte(reg);
-				return new Value(PrimitiveType.Word16, memOp.Offset.Word);
+				return new Constant(PrimitiveType.Word16, memOp.Offset.ToUInt32());
 			}
 			else
 			{
 				reg |= 0x5;
 				emitter.EmitByte(reg);
-				return new Value(PrimitiveType.Word32, memOp.Offset.Signed);
+				return new Constant(PrimitiveType.Word32, memOp.Offset.ToUInt32());
 			}
 		}
 
@@ -77,7 +78,7 @@ namespace Decompiler.Arch.Intel.Assembler
 		/// <param name="reg"></param>
 		/// <param name="memOp"></param>
 		/// <returns>The offset value to be emitted as the last piece of the instructon</returns>
-		public Value EmitModRMPrefix(int reg, MemoryOperand memOp)
+		public Constant EmitModRMPrefix(int reg, MemoryOperand memOp)
 		{
 			offset = null;
 			reg <<= 3;
@@ -99,15 +100,15 @@ namespace Decompiler.Arch.Intel.Assembler
 				if (memOp.Offset != null)
 				{
 					Debug.Assert(memOp.Offset.IsValid);
-					if (memOp.Offset.Width == PrimitiveType.Byte)
+					if (memOp.Offset.DataType == PrimitiveType.SByte)
 					{
 						reg |= 0x40;
-						offset = new Value(PrimitiveType.SByte, memOp.Offset.SByte);
+						offset = memOp.Offset;
 					}
 					else
 					{
 						reg |= 0x80;
-						offset = new Value(defaultWordSize, memOp.Offset.Signed);
+						offset = new Constant(defaultWordSize, memOp.Offset.ToInt32());
 					}
 				}
 
@@ -127,7 +128,7 @@ namespace Decompiler.Arch.Intel.Assembler
 							if (memOp.Offset == null && memOp.Base == Registers.ebp)
 							{
 								reg |= 0x40;
-								offset = new Value(PrimitiveType.Byte, 0);
+								offset = new Constant(PrimitiveType.Byte, 0);
 							}
 						}
 						else
@@ -147,7 +148,7 @@ namespace Decompiler.Arch.Intel.Assembler
 						case 2: sib = 0x40; break;
 						case 4: sib = 0x80; break;
 						case 8: sib = 0xC0; break;
-						default: OnError("Scale factor must be 1, 2, 4, or 8"); return Value.Invalid;
+						default: OnError("Scale factor must be 1, 2, 4, or 8"); return Constant.Invalid;
 						}
 
 						if (memOp.Base == Registers.None)
@@ -157,7 +158,7 @@ namespace Decompiler.Arch.Intel.Assembler
 
 							if (memOp.Offset == null)
 							{
-								offset = new Value(PrimitiveType.Word32, 0);
+								offset = new Constant(PrimitiveType.Word32, 0);
 							}
 						}
 						else
@@ -213,7 +214,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				if (memOp.Offset == null || !memOp.Offset.IsValid)
 				{
 					mask |= 0x40;
-					offset = new Value(PrimitiveType.Byte, 0);
+					offset = new Constant(PrimitiveType.Byte, 0);
 				}
 				return mask;
 			}

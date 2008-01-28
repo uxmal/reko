@@ -18,6 +18,7 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
@@ -244,10 +245,17 @@ namespace Decompiler.Scanning
 			EnqueueJumpTarget(addrTerm, st, blockCur.Procedure);
 		}
 
+		[Obsolete]
 		public void OnGlobalVariable(Address addr, PrimitiveType width, Value v)
 		{
 			throw new NotImplementedException("NYI");
 		}
+
+		public void OnGlobalVariable(Address addr, PrimitiveType width, Constant c)
+		{
+			throw new NotImplementedException("NYI");
+		}
+
 
 		public void OnIllegalOpcode(Address addrIllegal)
 		{

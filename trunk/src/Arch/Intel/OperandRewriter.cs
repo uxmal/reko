@@ -44,7 +44,7 @@ namespace Decompiler.Arch.Intel
 				return null;
 			if (mem.Base != Registers.None || mem.Index != Registers.None)
 				return null;
-			return new Address(0, mem.Offset.Unsigned);
+			return new Address(0, mem.Offset.ToUInt32());
 		}
 
 		public UnaryExpression AddrOf(Expression expr)
@@ -154,7 +154,7 @@ namespace Decompiler.Arch.Intel
 			if (addr != null && host.Image.Map.IsReadOnlyAddress(addr) && mem.Width.Domain == Domain.Real)
 			{
 				if (mem.Width == PrimitiveType.Real32)
-					return host.Image.ReadFloat(addr - host.Image.BaseAddress);
+					return new Cast(PrimitiveType.Real64, host.Image.ReadFloat(addr - host.Image.BaseAddress));
 				if (mem.Width == PrimitiveType.Real64)
 					return host.Image.ReadDouble(addr - host.Image.BaseAddress);
 			}
@@ -214,7 +214,7 @@ namespace Decompiler.Arch.Intel
 				if (expr != null)
 				{
 					BinaryOperator op = Operator.add;
-					long l = mem.Offset.AsLong();
+					long l = mem.Offset.ToInt64();
 					if (l < 0)
 					{
 						l = -l;
@@ -227,7 +227,7 @@ namespace Decompiler.Arch.Intel
 				}
 				else
 				{
-					expr = new Constant(mem.Offset);
+					expr = mem.Offset;
 				}
 			}
 
@@ -243,7 +243,7 @@ namespace Decompiler.Arch.Intel
 				{
 					frame.Escapes = true;
 					Identifier fp = frame.FramePointer;
-					int cbOffset = mem.Offset.IsValid ? mem.Offset.Signed : 0;
+					int cbOffset = mem.Offset.IsValid ? mem.Offset.ToInt32() : 0;
 					Expression fpOff = new BinaryExpression(Operator.add, fp.DataType,
 						fp,
 						new Constant(fp.DataType, cbOffset -
@@ -277,7 +277,7 @@ namespace Decompiler.Arch.Intel
 			if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == Registers.None && 
 				mem.Index == Registers.None)
 			{
-				return (PseudoProcedure) host.GetImportThunkAtAddress(new Address(mem.Offset.Unsigned));
+				return (PseudoProcedure) host.GetImportThunkAtAddress(new Address(mem.Offset.ToUInt32()));
 			}
 			return null;
 		}

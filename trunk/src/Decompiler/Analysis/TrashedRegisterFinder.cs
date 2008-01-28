@@ -38,7 +38,6 @@ namespace Decompiler.Analysis
 		private Identifier trash;
 		private ProgramDataFlow flow;
 		private WorkList worklist;
-		private Frame frame;
 		private TrashStorageHelper tsh;
 		private DecompilerHost decompilerHost;
 

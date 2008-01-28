@@ -88,12 +88,19 @@ namespace Decompiler.UnitTests.Core
 		}
 
 		[Test]
-		public void AsInt32()
+		public void ToInt32()
 		{
 			Constant c2 = new Constant(PrimitiveType.Word16, 0xFFFF);
-			Assert.AreEqual(0xFFFF, c2.AsInt32());
+			Assert.AreEqual(0xFFFF, c2.ToInt32());
 			Constant c3 = new Constant(PrimitiveType.Word32, 0xFFFFFFFF);
-			Assert.AreEqual(-1, c3.AsInt32());
+			Assert.AreEqual(-1, c3.ToInt32());
+		}
+
+		[Test]
+		public void SignExtendSignedByte()
+		{
+			Constant c = new Constant(PrimitiveType.SByte, (sbyte)-2);
+			Assert.AreEqual(-2, c.ToInt32());
 		}
 
 	}

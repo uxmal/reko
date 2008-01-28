@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Structure
 			Jump("done");
 
 			Label("default");
-			Muls(r2, r1, r1);
+			Assign(r2, Muls(r1, r1));
 
 			Label("done");
 			Return(r2);

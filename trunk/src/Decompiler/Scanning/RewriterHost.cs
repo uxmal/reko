@@ -211,7 +211,8 @@ namespace Decompiler.Scanning
 
 		public void WriteDiagnostic(Diagnostic diagnostic, string format, params object [] args)
 		{
-			host.WriteDiagnostic(diagnostic, format, args);
+			if (host != null)
+				host.WriteDiagnostic(diagnostic, format, args);
 		}
 	}
 }

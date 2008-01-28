@@ -40,7 +40,6 @@
     <Compile Include="Analysis\CallRewriterTests.cs" />
     <Compile Include="Analysis\CoalescerTests.cs" />
     <Compile Include="Analysis\ConditionCodeEliminatorTests.cs" />
-    <Compile Include="Analysis\CopyChainTests.cs" />
     <Compile Include="Analysis\CriticalInstructionTests.cs" />
     <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
     <Compile Include="Analysis\DeadCodeTests.cs" />
@@ -117,7 +116,6 @@
     <Compile Include="Core\WorkListTests.cs" />
     <Compile Include="DecompilerHostTests.cs" />
     <Compile Include="FileUnitTester.cs" />
-    <Compile Include="ImageMapTests.cs" />
     <Compile Include="Intel\AssemblerAdvanced.cs" />
     <Compile Include="Intel\AssemblerBasic.cs" />
     <Compile Include="Intel\AssemblerData.cs" />
@@ -151,6 +149,7 @@
     <Compile Include="Mocks\FactorialMock.cs" />
     <Compile Include="Mocks\LiveCopyMock.cs" />
     <Compile Include="Mocks\LiveLoopMock.cs" />
+    <Compile Include="Mocks\MockCodeWalker.cs" />
     <Compile Include="Mocks\ProcedureMock.cs" />
     <Compile Include="Mocks\ProcedureMockTest.cs" />
     <Compile Include="Mocks\ProgramMock.cs" />

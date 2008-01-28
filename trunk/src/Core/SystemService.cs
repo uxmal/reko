@@ -16,9 +16,9 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
 using System;
-using System.Xml;	//$REFACTOR remove this dependency!
 
 namespace Decompiler.Core
 {
@@ -52,10 +52,10 @@ namespace Decompiler.Core
 				return false;
 			for (int i = 0; i < RegisterValues.Length; ++i)
 			{
-				Value v = state.Get(RegisterValues[i].Register);
-				if (v == null || v == Value.Invalid)
+				Constant v = state.GetV(RegisterValues[i].Register);
+				if (v == null || v == Constant.Invalid)
 					return false;
-				if (v.Unsigned != RegisterValues[i].Value)
+				if (v.ToUInt32() != RegisterValues[i].Value)
 					return false;
 			}
 			return true;

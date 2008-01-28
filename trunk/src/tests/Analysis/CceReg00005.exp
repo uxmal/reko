@@ -65,10 +65,10 @@ cl_40: orig: cl, def: {cl_40 = 0x00}, uses: {cl_52 = PHI(cl_48, cl_40)}
 cx_41: orig: cx
 SCZO_42: orig: SCZO
 ah_43: orig: ah, def: {ah_43 = Mem0[ds:di_37 + 0x0001:byte]}, uses: {ax_44 = DPB(ax_21, ah_43, 8, 8) (alias)}
-ax_44: orig: ax, def: {ax_44 = DPB(ax_21, ah_43, 8, 8) (alias)}, uses: {cx_45 = __bsr(ax_44)}
-cx_45: orig: cx, def: {cx_45 = __bsr(ax_44)}, uses: {cx_47 = cx_45 - 0x0008}
-Z_46: orig: Z
-cx_47: orig: cx, def: {cx_47 = cx_45 - 0x0008}, uses: {cl_48 = (byte) cx_47 (alias)}
+ax_44: orig: ax, def: {ax_44 = DPB(ax_21, ah_43, 8, 8) (alias)}, uses: {cx_46 = __bsr(ax_44)}
+Z_45: orig: Z
+cx_46: orig: cx, def: {cx_46 = __bsr(ax_44)}, uses: {cx_47 = cx_46 - 0x0008}
+cx_47: orig: cx, def: {cx_47 = cx_46 - 0x0008}, uses: {cl_48 = (byte) cx_47 (alias)}
 cl_48: orig: cl, def: {cl_48 = (byte) cx_47 (alias)}, uses: {cl_52 = PHI(cl_48, cl_40)}
 bx_49: orig: bx, def: {bx_49 = di_37}, uses: {bx_50 = bx_49 - 0x7E03}
 bx_50: orig: bx, def: {bx_50 = bx_49 - 0x7E03}, uses: {return bx_50}
@@ -123,8 +123,8 @@ l0C00_002D:		// block 5, pred: 4
 l0C00_001D:		// block 6, pred: 4
 	ah_43 = Mem0[ds:di_37 + 0x0001:byte]
 	ax_44 = DPB(ax_21, ah_43, 8, 8) (alias)
-	cx_45 = __bsr(ax_44)
-	cx_47 = cx_45 - 0x0008
+	cx_46 = __bsr(ax_44)
+	cx_47 = cx_46 - 0x0008
 	cl_48 = (byte) cx_47 (alias)
 	bx_49 = di_37
 	bx_50 = bx_49 - 0x7E03

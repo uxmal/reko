@@ -21,6 +21,7 @@ using System;
 
 namespace Decompiler.Core
 {
+	[Obsolete("Duplicates Constant completely; replace where possible.")]
 	public class Value
 	{
 		private PrimitiveType type;

@@ -1,3 +1,4 @@
+;;; autoarray32.asm
 ;;; Sets up an automatic array in the stack frame.
 
 .i386

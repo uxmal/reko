@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Text;
@@ -357,7 +358,7 @@ namespace Decompiler.Arch.Intel
 					width = OperandWidth(strFormat[i++]);
 					pOperand = memOp = new MemoryOperand(
 						width, 
-						new Value(
+						new Constant(
 							m_addressWidth,
 							rdr.ReadUnsigned(m_addressWidth)));
 					memOp.SegOverride = m_segOverride;
@@ -585,17 +586,17 @@ namespace Decompiler.Arch.Intel
 
 			// Now fetch the offset if there was any.
 
-			Value offset = null;
+			Constant offset = null;
 			if (offsetWidth == PrimitiveType.SByte)
 			{
-				offset = new Value(offsetWidth, (sbyte) rdr.ReadSigned(offsetWidth));
+				offset = new Constant(offsetWidth, (sbyte) rdr.ReadSigned(offsetWidth));
 			}
 			else if (offsetWidth != null)
 			{
-				offset = new Value(offsetWidth, rdr.ReadUnsigned(offsetWidth));
+				offset = new Constant(offsetWidth, rdr.ReadUnsigned(offsetWidth));
 			}
 			else
-				offset = Value.Invalid;
+				offset = Constant.Invalid;
 
 			MemoryOperand memOp = new MemoryOperand(dataWidth, offset);
 			memOp.Base = b;

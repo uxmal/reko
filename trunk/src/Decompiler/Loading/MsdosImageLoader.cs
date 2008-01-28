@@ -43,7 +43,7 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
+		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgLoaded.Map;
 			ImageReader rdr = new ImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
@@ -51,10 +51,13 @@ namespace Decompiler.Loading
 			while (i != 0)
 			{
 				int offset = rdr.ReadUShort();
-				offset += rdr.ReadUShort() * 0x0010;
+				ushort segOffset = rdr.ReadUShort();
+				Address addrReloc = new Address((ushort) (segOffset + addrLoad.seg), (uint) offset);
+				offset += segOffset * 0x0010;
 
 				ushort seg = (ushort) (imgLoaded.ReadUShort(offset) + addrLoad.seg);
 				imgLoaded.WriteUShort(offset, seg);
+				relocations.AddSegmentReference(addrReloc, seg);
 
 				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 				--i;

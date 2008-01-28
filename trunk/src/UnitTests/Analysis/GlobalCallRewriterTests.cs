@@ -116,9 +116,9 @@ namespace Decompiler.UnitTests.Analysis
 			Frame f = new Frame(PrimitiveType.Word16);
 			f.ReturnAddressSize = PrimitiveType.Word16.Size;
 
-			f.EnsureStackVariable(new Value(PrimitiveType.Word16, 8), 2, PrimitiveType.Word16);
-			f.EnsureStackVariable(new Value(PrimitiveType.Word16, 6), 2, PrimitiveType.Word16);
-			f.EnsureStackVariable(new Value(PrimitiveType.Word16, 0x0E), 2, PrimitiveType.Word32);
+			f.EnsureStackVariable(new Constant(PrimitiveType.Word16, 8), 2, PrimitiveType.Word16);
+			f.EnsureStackVariable(new Constant(PrimitiveType.Word16, 6), 2, PrimitiveType.Word16);
+			f.EnsureStackVariable(new Constant(PrimitiveType.Word16, 0x0E), 2, PrimitiveType.Word32);
 
 			GlobalCallRewriter gcr = new GlobalCallRewriter(null, null);
 			using (FileUnitTester fut = new FileUnitTester("Analysis/GcrStackParameters.txt"))

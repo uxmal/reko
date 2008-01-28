@@ -59,7 +59,8 @@ namespace Decompiler
 			this.project = new DecompilerProject();
 			this.host = host;
 			this.project.Input.Filename = binaryFilename;
-			this.project.Output.RewrittenFilename = Path.GetFileNameWithoutExtension(binaryFilename) + ".dis";
+			this.project.Output.RewrittenFilename = Path.ChangeExtension(binaryFilename, ".dis");
+			this.project.Output.TypesFilename = Path.ChangeExtension(binaryFilename, ".h");
 			this.program = program;
 		}
 

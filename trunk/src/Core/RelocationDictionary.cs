@@ -16,32 +16,33 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
+using Decompiler.Core.Types;
 using System;
-using System.Xml.Serialization;
+using System.Collections;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Core
 {
-	public class DecompilerOutput
+	/// <summary>
+	/// Maps program image addresses to relocated values (with correct primitive types).
+	/// </summary>
+	public class RelocationDictionary : DictionaryBase
 	{
-		[XmlElement("disassembly")]
-		public string DisassemblyFilename;
+		public Constant this[Address addr]
+		{
+			get { return (Constant) InnerHashtable[addr]; }
+		}
 
-		/// <summary>
-		/// If not null, specifies the file name for intermediate code.
-		/// </summary>
-		[XmlElement("rewritten-code")]
-		public string RewrittenFilename;
+		public void AddPointerReference(Address addr, uint pointer)
+		{
+			Constant c = new Constant(PrimitiveType.Pointer32, pointer);
+			InnerHashtable.Add(addr, c);
+		}
 
-		[XmlElement("output")]
-		public string OutputFilename;
-
-		[XmlElement("structure")]
-		public bool ControlStructure;
-
-		[XmlElement("type-inference")]
-		public bool TypeInference;
-
-		[XmlElement("types-file")]
-		public string TypesFilename;
+		public void AddSegmentReference(Address addr, ushort segmentSelector)
+		{
+			Constant c = new Constant(PrimitiveType.Segment, segmentSelector);
+			InnerHashtable.Add(addr, c);
+		}
 	}
 }

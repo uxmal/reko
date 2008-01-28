@@ -20,6 +20,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Arch.Intel.MsDos;
 using Decompiler.Arch.Intel.Assembler;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using Decompiler.Loading;
 using Decompiler.Scanning;
@@ -121,10 +122,10 @@ namespace Decompiler.UnitTests.Intel
 		{
 			// Checks to see if a sequence return value (es:bx) trashes the state appropriately.
 			IntelState state = new IntelState();
-			state.Set(Registers.es, new Value(PrimitiveType.Word16, 0));	
-			state.Set(Registers.es, new Value(PrimitiveType.Word16, 0));
+			state.Set(Registers.es, new Constant(PrimitiveType.Word16, 0));	
+			state.Set(Registers.es, new Constant(PrimitiveType.Word16, 0));
 
-			state.Set(Registers.ah, new Value(PrimitiveType.Word16, 0x2F));
+			state.Set(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
 			IntelInstruction instr = new IntelInstruction(Opcode.@int, PrimitiveType.Word16, PrimitiveType.Word16,
 				new ImmediateOperand(PrimitiveType.Byte, 0x21));
 
@@ -132,8 +133,8 @@ namespace Decompiler.UnitTests.Intel
 			TestCodeWalkerListener listener = new TestCodeWalkerListener();
 			IntelCodeWalker cw = new IntelCodeWalker(arch, new MsdosPlatform(arch), null, state, listener);
 			cw.WalkInstruction(new Address(0x100, 0x100), instr, null);
-			Assert.IsFalse(state.Get(Registers.es).IsValid, "should have trashed ES");
-			Assert.IsFalse(state.Get(Registers.bx).IsValid, "should have trashed BX");
+			Assert.IsFalse(state.GetV(Registers.es).IsValid, "should have trashed ES");
+			Assert.IsFalse(state.GetV(Registers.bx).IsValid, "should have trashed BX");
 			Assert.AreEqual(1, listener.SystemCalls.Count);
 		}
 
@@ -141,14 +142,14 @@ namespace Decompiler.UnitTests.Intel
 		public void WalkBswap()
 		{
 			IntelState state = new IntelState();
-			state.Set(Registers.ebp, new Value(PrimitiveType.Word32, 0x12345678));
+			state.Set(Registers.ebp, new Constant(PrimitiveType.Word32, 0x12345678));
 			IntelInstruction instr = new IntelInstruction(Opcode.bswap, PrimitiveType.Word32, PrimitiveType.Word32, 
 				new RegisterOperand(Registers.ebp));
 
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
 			IntelCodeWalker cw = new IntelCodeWalker(arch, null, null, state, null);
 			cw.WalkInstruction(new Address(0x100000), instr, null);
-			Assert.AreSame(Value.Invalid,  state.Get(Registers.ebp));
+			Assert.AreSame(Constant.Invalid, state.GetV(Registers.ebp));
 		}
 
 		private class TestCodeWalkerListener : ICodeWalkerListener
@@ -207,9 +208,15 @@ namespace Decompiler.UnitTests.Intel
 				// TODO:  Add TestCodeWalkerListener.OnReturn implementation
 			}
 
+			[Obsolete]
 			public void OnGlobalVariable(Address addr, PrimitiveType width, Value v)
 			{
 				// TODO:  Add TestCodeWalkerListener.OnGlobalVariable implementation
+			}
+
+			public void OnGlobalVariable(Address addr, PrimitiveType width, Constant c)
+			{
+				throw new NotImplementedException("Add TestCodeWalkerListener.OnGlobalVariable implementation.");
 			}
 
 			public void OnProcedureTable(Decompiler.Core.ProcessorState st, Address addrInstr, Address addrTable, ushort segBase, PrimitiveType stride)

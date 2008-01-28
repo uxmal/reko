@@ -64,8 +64,8 @@ l0C00_002D:		// block 5, pred: 4
 	// succ:  7
 l0C00_001D:		// block 6, pred: 4
 	ah = Mem0[ds:di + 0x0001:byte]
-	cx = __bsr(ax)
 	Z = ax == 0x0000
+	cx = __bsr(ax)
 	cx = cx - 0x0008
 	bx = di
 	bx = bx - 0x7E03
