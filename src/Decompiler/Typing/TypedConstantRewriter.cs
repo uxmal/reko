@@ -89,9 +89,9 @@ namespace Decompiler.Typing
 
 		public void VisitPointer(Pointer ptr)
 		{
-			StructureField f = globalVars.Fields.AtOffset(c.AsInt32());
+			StructureField f = globalVars.Fields.AtOffset(c.ToInt32());
 			if (f == null)
-				throw new InvalidOperationException(string.Format("Expected a global variable with address 0x{0:X8}", c.AsInt32()));
+				throw new InvalidOperationException(string.Format("Expected a global variable with address 0x{0:X8}", c.ToInt32()));
 
 			Expression e = new FieldAccess(ptr.Pointee, new Dereference(null, globals), f.Name);
 			if (dereferenced)

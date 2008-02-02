@@ -11,7 +11,7 @@ l0C00_0006:		// block 2, pred: 1 6
 	// succ:  3 4
 l0C00_000A:		// block 3, pred: 2
 	store(Mem17[ds:0x0204:word16]) = bx_10
-	branch Mem17[ds:bx_10:word16] == 0x00FF
+	branch Mem17[ds:bx_10:word16] == 0xFFFF
 	// succ:  6 4
 l0C00_001A:		// block 4, pred: 3 2
 	store(Mem26[ds:0x0300:word16]) = ax_8

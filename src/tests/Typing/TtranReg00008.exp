@@ -26,11 +26,11 @@ Eq_3: (struct (9A26 word16 w9A26) (9A2E word16 w9A2E))
 Eq_9: (struct 26 (0 word16 w0000))
 	T_9 (in si_16 : word16)
 	T_10 (in 0x0000 : word16)
-	T_22 (in si_16 + 0x0026 : word16)
-Eq_12: (arr Eq_25)
+	T_21 (in si_16 + 0x0026 : word16)
+Eq_12: (arr Eq_24)
 	T_12 (in 0x5CE1 : segment)
-Eq_25: (struct 26 (0 word16 w0000))
-	T_25
+Eq_24: (struct 26 (0 word16 w0000))
+	T_24
 // Type Variables ////////////
 Globals:(in globals)
   Class: Eq_1
@@ -91,7 +91,7 @@ T_14:(in v8_22)
 T_15:(in 0x9A26)
   Class: Eq_15
   DataType: (memptr (ptr Eq_3) word16)
-  OrigDataType: (memptr T_3 (struct (0 T_16 t0000)))
+  OrigDataType: (memptr T_3 (struct (0 T_6 t0000)))
 T_16:(in Mem19[ds:0x9A26:word16])
   Class: Eq_6
   DataType: word16
@@ -104,31 +104,27 @@ T_18:(in Mem19[ds:0x9A26:word16] - 0x0001)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_19:(in 0x9A26)
-  Class: Eq_19
-  DataType: (memptr (ptr Eq_3) word16)
-  OrigDataType: (memptr T_3 (struct (0 T_20 t0000)))
-T_20:(in Mem23[ds:0x9A26:word16])
+T_19:(in Mem23[ds:0x9A26:word16])
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_21:(in 0x0026)
-  Class: Eq_21
+T_20:(in 0x0026)
+  Class: Eq_20
   DataType: word16
   OrigDataType: word16
-T_22:(in si_16 + 0x0026)
+T_21:(in si_16 + 0x0026)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
   OrigDataType: word16
-T_23:(in 0x0000)
+T_22:(in 0x0000)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_24:(in v8_22 != 0x0000)
-  Class: Eq_24
+T_23:(in v8_22 != 0x0000)
+  Class: Eq_23
   DataType: bool
   OrigDataType: bool
-T_25:
-  Class: Eq_25
-  DataType: Eq_25
+T_24:
+  Class: Eq_24
+  DataType: Eq_24
   OrigDataType: 

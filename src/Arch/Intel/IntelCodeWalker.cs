@@ -123,7 +123,7 @@ namespace Decompiler.Arch.Intel
 			ImmediateOperand immOp = op as ImmediateOperand;
 			if (immOp != null)
 			{
-				addr = AddressFromSegOffset(Registers.cs, immOp.val.Unsigned);
+				addr = AddressFromSegOffset(Registers.cs, immOp.Value.ToUInt32());
 				if (addr != null)
 				{
 					Listener.OnProcedure(state, addr);
@@ -151,7 +151,7 @@ namespace Decompiler.Arch.Intel
 
 		private void HandleIntInstruction(IntelInstruction instr, Address addrStart)
 		{
-			int vector = ((ImmediateOperand) instr.op1).Byte;
+			int vector = ((ImmediateOperand) instr.op1).Value.ToInt32();
 			SystemService svc = platform.FindService(vector, state);
 			if (svc == null)
 			{
@@ -343,16 +343,6 @@ namespace Decompiler.Arch.Intel
 			return (r1 != null && r2 != null && r1.Register == r2.Register);
 		}
 
-		[Obsolete]
-		public void SetValue(Operand op, Value v)
-		{
-			RegisterOperand regOp = op as RegisterOperand;
-			if (regOp != null)
-			{
-				state.Set(regOp.Register, v);
-			}
-		}
-
 		public void SetValue(Operand op, Constant c)
 		{
 			RegisterOperand regOp = op as RegisterOperand;
@@ -445,10 +435,10 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.cbw:
 			{
-				Value t = state.Get(Registers.al);
+				Constant t = state.GetV(Registers.al);
 				if (t.IsValid)
 				{
-					t = new Value(PrimitiveType.Word16, t.Signed);
+					t = new Constant(PrimitiveType.Word16, t.ToInt32());
 				}
 				state.Set(Registers.ax, t);
 				break;
@@ -590,7 +580,7 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.leave:
 				state.Set(Registers.bp, state.Pop(instr.dataWidth));
-				state.Set(Registers.sp, state.Get(Registers.bp));
+				state.Set(Registers.sp, state.GetV(Registers.bp));
 				break;
 			case Opcode.les:
 				HandleLxsInstruction(instr, Registers.es);

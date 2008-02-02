@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
@@ -279,11 +280,11 @@ namespace Decompiler.UnitTests.Typing
 
 	public class TraitConstant : Trait
 	{
-		public Value Value;
+		public Constant Value;
 
-		public TraitConstant(Value v)
+		public TraitConstant(Constant c)
 		{
-			this.Value = v;
+			this.Value = c;
 		}
 
 		public override string ToString()

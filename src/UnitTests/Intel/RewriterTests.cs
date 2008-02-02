@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Intel
 	public class RewriterTestBase
 	{
 		private string configFile;
-		protected Assembler asm; 
+		protected Decompiler.Core.Assembler asm; 
 		protected Program prog;
 		protected Scanner scanner;
 		protected Address baseAddress;

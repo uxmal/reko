@@ -37,6 +37,36 @@ namespace Decompiler.Arch.Intel
 		{
 			return ToString();
 		}
+
+		public string FormatSignedValue(Constant c)
+		{
+			string s = "+";
+			int tmp = c.ToInt32();
+			if (tmp < 0)
+			{
+				s = "-";
+				tmp = -tmp;
+			}
+			return s + tmp.ToString(FormatString(c.DataType));
+		}
+
+		private string FormatString(DataType dt)
+		{
+			switch (dt.Size)
+			{
+			case 1: return "X2";
+			case 2: return "X4";
+			case 4: return "X8";
+			case 8: return "X8";
+			default: throw new InvalidOperationException();
+			}
+		}
+
+		public string FormatUnsignedValue(Constant c)
+		{
+			return c.ToUInt32().ToString(FormatString(c.DataType));
+		}
+
 	}
 
 
@@ -70,53 +100,26 @@ namespace Decompiler.Arch.Intel
 
 	public class ImmediateOperand : Operand
 	{
-		[Obsolete]
-		public Value val;	
 		private Constant value;
 
 		public ImmediateOperand(PrimitiveType  t, int v) : base(t)
 		{
 			value = new Constant(t, v);
-			val = new Value(t, v);
 		}
 
 		public ImmediateOperand(PrimitiveType t, uint v) : base(t)
 		{
 			value = new Constant(t, v);
-			val = new Value(t, v);
 		}
 
 		public ImmediateOperand(Constant c) : base((PrimitiveType)c.DataType)
 		{
 			value = c;
-			val = new Value((PrimitiveType)c.DataType, c.AsInt32());
-		}
-
-		[Obsolete]
-		public ImmediateOperand(Value v) : base(v.Width)
-		{
-			value = new Constant(v.Width, v.Unsigned);
-			val = v;
-		}
-
-		public byte Byte
-		{
-			get { return val.Byte; }
-		}
-
-		public int Signed
-		{
-			get { return val.Signed; }
 		}
 
 		public override string ToString()
 		{
-			return val.ToString();
-		}
-
-		public ushort Word
-		{
-			get { return val.Word; }
+			return FormatUnsignedValue(value);
 		}
 
 		public Constant Value

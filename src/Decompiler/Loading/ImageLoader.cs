@@ -68,16 +68,7 @@ namespace Decompiler.Loading
 		/// </summary>
 		/// <param name="addrLoad">The address at which the program image is loaded.</param>
 		/// <param name="entryPoints">Collection into which any found entry points found should be added.</param>
-		public virtual void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
-		{
-			throw new NotImplementedException();
-		}
-
-		[Obsolete]
-		public virtual void Relocate(Address addrLoad, ArrayList entryPoints)
-		{
-			Relocate(addrLoad, entryPoints, new RelocationDictionary());
-		}
+		public abstract void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations);
 
 	}
 }

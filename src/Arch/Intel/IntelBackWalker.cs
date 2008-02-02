@@ -70,7 +70,7 @@ namespace Decompiler.Arch.Intel
 			{
 				operations.Add(new BackwalkOperation(
 					add ? BackwalkOperator.add : BackwalkOperator.sub,
-					immSrc.Signed));
+					immSrc.Value.ToInt32()));
 				return regIdx;
 			}
 			else
@@ -104,9 +104,9 @@ namespace Decompiler.Arch.Intel
 				case Opcode.and:
 					if (ropDst != null && ropDst.Register == regIdx && immSrc != null)
 					{
-						if (IsEvenPowerOfTwo(immSrc.Signed + 1))
+						if (IsEvenPowerOfTwo(immSrc.Value.ToInt32() + 1))
 						{
-							operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.Signed + 1));
+							operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.Value.ToInt32() + 1));
 							returnToCaller = true;
 						}
 						else
@@ -130,7 +130,7 @@ namespace Decompiler.Arch.Intel
 					{
 						if (immSrc != null)
 						{
-							operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.Signed));
+							operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.Value.ToInt32()));
 							return regIdx;
 						}
 					}
@@ -179,7 +179,7 @@ namespace Decompiler.Arch.Intel
 					{
 						if (immSrc != null)
 						{
-							operations.Add(new BackwalkOperation(BackwalkOperator.mul, 1<<immSrc.Word));
+							operations.Add(new BackwalkOperation(BackwalkOperator.mul, 1<<immSrc.Value.ToInt32()));
 						}
 						else
 							return Registers.None;

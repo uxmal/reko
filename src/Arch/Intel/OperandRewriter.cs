@@ -89,9 +89,9 @@ namespace Decompiler.Arch.Intel
 			if (imm != null)
 			{
 				if (dataWidth.BitSize > imm.Width.BitSize)
-					return new Constant(dataWidth, imm.val.SignExtend(dataWidth));
+					return new Constant(dataWidth, imm.Value.ToInt32());
 				else
-					return new Constant(imm.Width, imm.val.Unsigned);
+					return new Constant(imm.Width, imm.Value.ToUInt32());
 			}
 			FpuOperand fpu = op as FpuOperand;
 			if (fpu != null)
@@ -133,10 +133,10 @@ namespace Decompiler.Arch.Intel
 			{
 				if (arch.ProcessorMode == ProcessorMode.ProtectedFlat)
 				{
-					return new Address(imm.val.Unsigned);
+					return new Address(imm.Value.ToUInt32());
 				}
 				else
-					return new Address(state.CodeSegment, imm.val.Word);
+					return new Address(state.CodeSegment, imm.Value.ToUInt32());
 			}
 			return null;
 		}

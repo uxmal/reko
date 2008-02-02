@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void OrwImmediateExtend()
 		{
-			ImmediateOperand imm = new ImmediateOperand(PrimitiveType.Byte, -1);
+			ImmediateOperand imm = new ImmediateOperand(PrimitiveType.SByte, -1);
 			Constant c = (Constant) orw.Transform(imm, PrimitiveType.Word16, PrimitiveType.Word16, state);
 			Assert.AreEqual("0xFFFF", c.ToString());
 		}
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			ImmediateOperand imm = new ImmediateOperand(PrimitiveType.Word32, 0x100F0000);
 			Address addr = orw.OperandAsCodeAddress(imm, null);
-			Assert.AreEqual(imm.val.Unsigned, addr.off);
+			Assert.AreEqual(imm.Value.ToUInt32(), addr.off);
 		}
 
 		[Test]

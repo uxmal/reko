@@ -173,17 +173,10 @@ namespace Decompiler.Loading
 			e_lfanew = rdr.ReadUint();          
 		}
 
-		[Obsolete]
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
-		{
-			ldrDeferred.Relocate(addrLoad, entryPoints);
-		}
-
 		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
 		{
 			ldrDeferred.Relocate(addrLoad, entryPoints, relocations);
 		}
-
 
 		void RelocateNewExe(object neHeader)
 		{

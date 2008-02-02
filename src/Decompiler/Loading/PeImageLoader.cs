@@ -233,12 +233,6 @@ namespace Decompiler.Loading
 		private const ushort RelocationLow = 2;
 		private const ushort RelocationHighLow = 3;
 
-		[Obsolete]
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
-		{
-			Relocate(addrLoad, entryPoints, new RelocationDictionary());
-		}
-
 		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgLoaded.Map;

@@ -64,7 +64,7 @@ namespace Decompiler.Typing
 					binExp.Left.TypeVariable.DataType,
 					binExp.Left.TypeVariable.OriginalDataType,
 					binExp.Left,
-					c.AsInt32());
+					c.ToInt32());
 				ceb.Dereferenced = true;
 				return ceb.BuildComplex();
 			}

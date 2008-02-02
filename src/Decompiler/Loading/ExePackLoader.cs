@@ -111,12 +111,6 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
-		[Obsolete]
-		public override void Relocate(Address addrLoad, ArrayList entryPoints)
-		{
-			Relocate(addrLoad, entryPoints, new RelocationDictionary());
-		}
-
 		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgU.Map;

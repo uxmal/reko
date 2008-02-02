@@ -119,7 +119,7 @@ namespace Decompiler.Arch.Intel
 							ImmediateOperand imm = instrCur.op2 as ImmediateOperand;
 							if (imm != null)
 							{
-								state.ShrinkStack(imm.Signed);
+								state.ShrinkStack(imm.Value.ToInt32());
 							}
 						}
 						else 
@@ -771,12 +771,12 @@ namespace Decompiler.Arch.Intel
 						if (instrCur.cOperands == 1)
 						{
 							// RET pops values off stack: this must be a 'pascal' function.
-							proc.Signature.StackDelta = ((ImmediateOperand) instrCur.op1).Word;
+							proc.Signature.StackDelta = ((ImmediateOperand) instrCur.op1).Value.ToInt32();
 						}
 
 						EmitReturnInstruction(
 							this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? PrimitiveType.Word16.Size : 0),
-							instrCur.cOperands == 1 ? ((ImmediateOperand) instrCur.op1).Signed : 0);
+							instrCur.cOperands == 1 ? ((ImmediateOperand) instrCur.op1).Value.ToInt32() : 0);
 						break;
 
 					case Opcode.rcl:
@@ -806,7 +806,7 @@ namespace Decompiler.Arch.Intel
 								instrCur.op1,
 								new BinaryExpression(Operator.sub,
 								instrCur.dataWidth,
-								new Constant(new Value(instrCur.dataWidth, 0)),
+								new Constant(instrCur.dataWidth, 0),
 								orw.FlagGroup(FlagM.CF)),
 								false);
 						}
@@ -880,7 +880,7 @@ namespace Decompiler.Arch.Intel
 							ImmediateOperand imm = instrCur.op2 as ImmediateOperand;
 							if (imm != null)
 							{
-								state.GrowStack(imm.Signed);
+								state.GrowStack(imm.Value.ToInt32());
 							}
 						}
 						else 
@@ -1181,7 +1181,7 @@ namespace Decompiler.Arch.Intel
 			Constant c = op2 as Constant;
 			if (c != null && op1.DataType != op2.DataType)
 			{
-				op2 = new Constant(op1.DataType, c.Value);
+				op2 = new Constant(op1.DataType, c.ToInt32());
 			}
 
 			emitter.Assign(
@@ -1834,8 +1834,8 @@ namespace Decompiler.Arch.Intel
 			state.EnterFrame(freg);
 			frame.SetFramePointerWidth(instrCur.dataWidth);
 			state.GrowStack(
-				instrCur.dataWidth.Size * ((ImmediateOperand)instrCur.op2).Word + 
-				((ImmediateOperand)instrCur.op1).Word);
+				instrCur.dataWidth.Size * ((ImmediateOperand)instrCur.op2).Value.ToInt32() + 
+				((ImmediateOperand)instrCur.op1).Value.ToInt32());
 		}
 
 		public override void RewriteInstructions(Address addrStart, int length, Block block)
