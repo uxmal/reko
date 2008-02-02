@@ -177,20 +177,9 @@ namespace Decompiler.UnitTests.Mocks
 			return new FakeProcessorState();
 		}
 
-		[Obsolete]
-		public override Value Get(MachineRegister r)
-		{
-			return Value.Invalid;
-		}
-
 		public override Constant GetV(MachineRegister r)
 		{
 			return Constant.Invalid;
-		}
-
-		[Obsolete]
-		public override void Set(MachineRegister r, Value v)
-		{
 		}
 
 		public override void Set(MachineRegister r, Decompiler.Core.Code.Constant v)

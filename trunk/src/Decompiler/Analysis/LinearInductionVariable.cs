@@ -67,8 +67,8 @@ namespace Decompiler.Analysis
 		{
 			if (liv1.Delta == null || liv2.Delta == null)
 				return null;
-			int delta1 = Convert.ToInt32(liv1.Delta.AsInt32());
-			int delta2 = Convert.ToInt32(liv2.Delta.AsInt32());
+			int delta1 = Convert.ToInt32(liv1.Delta.ToInt32());
+			int delta2 = Convert.ToInt32(liv2.Delta.ToInt32());
 			if (delta1 == 1)
 				return new LinearInductionVariable(null, liv1.Delta, null);
 			else if (delta2 == 1)

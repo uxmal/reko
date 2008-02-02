@@ -28,13 +28,9 @@ namespace Decompiler.Core
 		}
 
 		public abstract object Clone();
-		[Obsolete]
-		public abstract void Set(MachineRegister r, Value v);
 		public abstract void Set(MachineRegister r, Constant v);
 
 		public abstract void SetInstructionPointer(Address addr);
-		[Obsolete]
-		public abstract Value Get(MachineRegister r);
 		public abstract Constant GetV(MachineRegister r);		//$REVIEW: rename to Get once the obsolete Get => Value method is gone
 	}
 }

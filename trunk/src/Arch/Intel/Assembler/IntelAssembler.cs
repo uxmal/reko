@@ -42,7 +42,6 @@ namespace Decompiler.Arch.Intel.Assembler
 		private SortedList importLibraries;
 		private Program prog;
 		private ModRmBuilder modRm;
-		private OperandParser opp;
 		private ArrayList entryPoints;
 
 		public IntelAssembler()
@@ -248,6 +247,7 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		public ParsedOperand [] ParseOperandList(int min, int max)
 		{
+			OperandParser opp = new OperandParser(lexer, symtab, addrBase, emitter.SegmentDataWidth, emitter.SegmentAddressWidth);
 			ArrayList ops = new ArrayList();
 			emitter.SegmentOverride = Registers.None;
 			emitter.AddressWidth = emitter.SegmentAddressWidth;
@@ -258,9 +258,11 @@ namespace Decompiler.Arch.Intel.Assembler
 					emitter.SegmentOverride = opp.SegmentOverride;
 				if (opp.AddressWidth != null)
 					emitter.AddressWidth = opp.AddressWidth;
+
 				while (lexer.PeekToken() == Token.COMMA)
 				{
 					lexer.DiscardToken();
+					opp.DataWidth = ((ParsedOperand)ops[0]).Operand.Width;
 					ops.Add(opp.ParseOperand());
 					if (opp.SegmentOverride != Registers.None)
 					{
@@ -346,7 +348,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			ImmediateOperand immOp = ops[1].Operand as ImmediateOperand;
 			if (immOp != null)
 			{
-				int imm = immOp.Signed;
+				int imm = immOp.Value.ToInt32();
 				RegisterOperand regOpDst = ops[0].Operand as RegisterOperand;
 				if (regOpDst != null && IsAccumulator(regOpDst.Register) != 0)
 				{
@@ -409,7 +411,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				emitter.EmitOpcode(0x0F, dataWidth);
 				emitter.EmitByte(0xBA);
 				EmitModRM(0x04, ops[0]);
-				emitter.EmitByte(imm2.Byte);
+				emitter.EmitByte(imm2.Value.ToInt32());
 			}
 			else
 			{
@@ -582,11 +584,11 @@ namespace Decompiler.Arch.Intel.Assembler
 					if (isWord != 0)
 						emitter.EmitInteger(dataWidth, immOpSrc.Value.ToInt32());
 					else
-						emitter.EmitByte(immOpSrc.Byte);
+						emitter.EmitByte(immOpSrc.Value.ToInt32());
 
 					if (ops[1].Symbol != null && isWord != 0)
 					{
-						Debug.Assert(immOpSrc.Word == 0);
+						Debug.Assert(immOpSrc.Value.ToUInt32() == 0);
 						ReferToSymbol(ops[1].Symbol, emitter.Length - 2, PrimitiveType.Word16);
 					}
 					return;
@@ -600,11 +602,10 @@ namespace Decompiler.Arch.Intel.Assembler
 			if (isWord != 0)
 				emitter.EmitImmediate(immOp.Value, dataWidth);
 			else
-				emitter.EmitByte(immOp.Byte);
+				emitter.EmitByte(immOp.Value.ToInt32());
 
 			if (ops[1].Symbol != null && isWord != 0)
 			{
-				Debug.Assert(immOp.Word == 0);
 				ReferToSymbol(ops[1].Symbol, emitter.Length - 2, PrimitiveType.Word16);
 			}
 		}
@@ -909,11 +910,11 @@ namespace Decompiler.Arch.Intel.Assembler
 					ImmediateOperand op3 = ops[2].Operand as ImmediateOperand;
 					if (op3 == null)
 						throw new ApplicationException("Third operand must be an immediate value");
-					if (IsSignedByte(op3.Signed))
+					if (IsSignedByte(op3.Value.ToInt32()))
 					{
 						emitter.EmitOpcode(0x6B, dataWidth);
 						EmitModRM(RegisterEncoding(regOp.Register), ops[1]);
-						emitter.EmitByte(op3.Byte);
+						emitter.EmitByte(op3.Value.ToInt32());
 					}
 					else
 					{
@@ -984,7 +985,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			ParsedOperand [] ops = ParseOperandList(1);
 			ImmediateOperand op = (ImmediateOperand) ops[0].Operand;
 			emitter.EmitOpcode(0xCD, null);
-			emitter.EmitByte(op.val.Byte);
+			emitter.EmitByte(op.Value.ToInt32());
 		}
 
 		private void ProcessLabel()
@@ -1546,9 +1547,9 @@ namespace Decompiler.Arch.Intel.Assembler
 				{
 					emitter.EmitOpcode(0xB0 | (isWord << 3) | reg, dataWidth);
 					if (isWord != 0)
-						emitter.EmitInteger(dataWidth, immOpSrc.val.SignExtend(dataWidth));
+						emitter.EmitInteger(dataWidth, immOpSrc.Value.ToInt32());
 					else
-						emitter.EmitByte(immOpSrc.Byte);
+						emitter.EmitByte(immOpSrc.Value.ToInt32());
 
 					if (ops[1].Symbol != null && isWord != 0)
 					{
@@ -1579,7 +1580,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				int isWord = (dataWidth != PrimitiveType.Byte) ? 1 : 0;
 				emitter.EmitOpcode(0xC6 | IsWordWidth(dataWidth), dataWidth);
 				EmitModRM(0, memOpDst, ops[0].Symbol);
-				emitter.EmitImmediate(immOpSrc.val, dataWidth);
+				emitter.EmitImmediate(immOpSrc.Value, dataWidth);
 			}
 		}
 
@@ -1630,7 +1631,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			{
 				if (fPop)
 					throw new ApplicationException("Can't pop an immediate value");
-				imm = immOp.Signed;
+				imm = immOp.Value.ToInt32();
 				if (IsSignedByte(imm))
 				{
 					emitter.EmitOpcode(0x6A, PrimitiveType.Byte);
@@ -1718,7 +1719,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			ImmediateOperand immOp = ops[1].Operand as ImmediateOperand;
 			if (immOp != null)
 			{
-				int imm = immOp.Signed;
+				int imm = immOp.Value.ToInt32();
 				if (imm == 1)
 				{
 					emitter.EmitOpcode(0xD0 | IsWordWidth(dataWidth), dataWidth);
@@ -1727,7 +1728,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				else
 				{
 					emitter.EmitOpcode(0xC0 | IsWordWidth(dataWidth), dataWidth);
-					EmitModRM(bits, ops[0], immOp.Byte);
+					EmitModRM(bits, ops[0], (byte) immOp.Value.ToInt32());
 				}
 				return;
 			}
@@ -1767,7 +1768,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			emitter.EmitByte(0xA4|bits);
 			EmitModRM(RegisterEncoding(regSrc.Register), ops[0]);
 			if (immShift != null)
-				emitter.EmitByte(immShift.Byte);
+				emitter.EmitByte((byte)immShift.Value.ToUInt32());
 		}
 
 		private void ProcessFstsw()
@@ -1846,8 +1847,6 @@ namespace Decompiler.Arch.Intel.Assembler
 			emitter.SegmentAddressWidth = width;
 			modRm = new ModRmBuilder(width, emitter);
 			modRm.Error += new ErrorEventHandler(modRm_Error);
-			opp = new OperandParser(lexer, symtab, addrBase, width);
-
 		}
 
 		public override Address StartAddress

@@ -53,11 +53,6 @@ namespace Decompiler.Core.Code
 			this.c = us;
 		}
 
-		public Constant(Value v) : base(v.Width)
-		{
-			this.c = v.Signed;
-		}
-
 		public Constant(double d) : base(PrimitiveType.Real64)
 		{
 			this.c = d;
@@ -76,28 +71,6 @@ namespace Decompiler.Core.Code
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitConstant(this);
-		}
-
-		public double AsDouble()
-		{
-			return Convert.ToDouble(c);
-		}
-
-		public float AsFloat()
-		{
-			return Convert.ToSingle(c);
-		}
-
-		[Obsolete]
-		public int AsInt32()
-		{
-			return ToInt32();
-		}
-
-		[Obsolete]
-		public uint AsUInt32()
-		{
-			return ToUInt32();
 		}
 
 		public override Expression CloneExpression()
@@ -246,9 +219,9 @@ namespace Decompiler.Core.Code
 				if (p.Domain == Domain.SignedInt)
 					return Convert.ToInt64(c) < 0;
 				else if (p == PrimitiveType.Real32)
-					return AsFloat() < 0.0F;
+					return ToFloat() < 0.0F;
 				else if (p == PrimitiveType.Real64)
-					return AsDouble() < 0.0;
+					return ToDouble() < 0.0;
 				else 
 					throw new InvalidOperationException("type can't be negative");
 			}
@@ -288,11 +261,11 @@ namespace Decompiler.Core.Code
 			}
 			else if (p == PrimitiveType.Real32)
 			{
-				return new Constant(-AsFloat());
+				return new Constant(-ToFloat());
 			}
 			else if (p == PrimitiveType.Real64)
 			{
-				return new Constant(-AsDouble());
+				return new Constant(-ToDouble());
 			}
 			else 
 				throw new InvalidOperationException(string.Format("Type {0} doesn't support negation.", p));
@@ -303,9 +276,21 @@ namespace Decompiler.Core.Code
 			return new Constant(3.1415926535897932384626433832795);
 		}
 
+		public double ToDouble()
+		{
+			return Convert.ToDouble(c);
+		}
+
+		public float ToFloat()
+		{
+			return Convert.ToSingle(c);
+		}
+
 		public int ToInt32()
 		{
-			return unchecked((int) Convert.ToInt64(c));
+			int q = (int) Convert.ToInt64(c);
+ 			int mask = (0 - (q & (1 << (DataType.BitSize - 1)))) << 1;
+			return q | mask;
 		}
 
 		public uint ToUInt32()

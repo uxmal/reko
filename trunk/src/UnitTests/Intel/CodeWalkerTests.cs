@@ -208,12 +208,6 @@ namespace Decompiler.UnitTests.Intel
 				// TODO:  Add TestCodeWalkerListener.OnReturn implementation
 			}
 
-			[Obsolete]
-			public void OnGlobalVariable(Address addr, PrimitiveType width, Value v)
-			{
-				// TODO:  Add TestCodeWalkerListener.OnGlobalVariable implementation
-			}
-
 			public void OnGlobalVariable(Address addr, PrimitiveType width, Constant c)
 			{
 				throw new NotImplementedException("Add TestCodeWalkerListener.OnGlobalVariable implementation.");

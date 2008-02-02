@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Loading
 			PkLiteUnpacker ldr = new PkLiteUnpacker(exe, prog.Image.Bytes);
 			ProgramImage img = ldr.Load(new Address(0xC00, 0));
 			Assert.AreEqual(0x19EC0, img.Bytes.Length);
-			ldr.Relocate(new Address(0xC00, 0), new ArrayList());
+			ldr.Relocate(new Address(0xC00, 0), new ArrayList(), new RelocationDictionary());
 		}
 	}
 }

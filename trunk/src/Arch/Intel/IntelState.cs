@@ -46,10 +46,10 @@ namespace Decompiler.Arch.Intel
 
 		public Address AddressFromSegOffset(MachineRegister seg, uint offset)
 		{
-			Value v = Get(seg);
-			if (v.IsValid)
+			Constant c = GetV(seg);
+			if (c.IsValid)
 			{
-				return new Address(v.Word, offset & 0xFFFF);
+				return new Address((ushort) c.ToUInt32(), offset & 0xFFFF);
 			}
 			else
 				return null;
@@ -57,10 +57,10 @@ namespace Decompiler.Arch.Intel
 
 		public Address AddressFromSegReg(MachineRegister seg, IntelRegister reg)
 		{
-			Value v = Get(reg);
-			if (v.IsValid)
+			Constant c = GetV(reg);
+			if (c.IsValid)
 			{
-				return AddressFromSegOffset(seg, v.Unsigned);
+				return AddressFromSegOffset(seg, c.ToUInt32());
 			}
 			else 
 				return null;
@@ -71,19 +71,6 @@ namespace Decompiler.Arch.Intel
 			return new IntelState(this);
 		}
 
-		[Obsolete]
-		public override void Set(MachineRegister reg, Value v)
-		{
-			if (!v.IsValid)
-			{
-				valid[reg.Number] = false;
-			}
-			else
-			{
-				reg.SetRegisterFileValues(regs, v.Unsigned, valid);
-			}
-		}
-
 		public override void Set(MachineRegister reg, Constant c)
 		{
 			if (!c.IsValid)
@@ -92,22 +79,13 @@ namespace Decompiler.Arch.Intel
 			}
 			else
 			{
-				reg.SetRegisterFileValues(regs, c.AsUInt32(), valid);	//$REVIEW: AsUint64 for x86-64?
+				reg.SetRegisterFileValues(regs, c.ToUInt32(), valid);	//$REVIEW: AsUint64 for x86-64?
 			}
 		}
 
 		public override void SetInstructionPointer(Address addr)
 		{
-			Set(Registers.cs, new Value(PrimitiveType.Word16, addr.seg));
-		}
-
-		[Obsolete]
-		public override Value Get(MachineRegister reg)
-		{
-			if (valid[reg.Number])
-				return new Value(reg.DataType, (uint) regs[reg.Number]);
-			else
-				return Value.Invalid;
+			Set(Registers.cs, new Constant(PrimitiveType.Word16, addr.seg));
 		}
 
 		public override Constant GetV(MachineRegister reg)
@@ -116,73 +94,6 @@ namespace Decompiler.Arch.Intel
 				return new Constant(reg.DataType, regs[reg.Number]);
 			else
 				return Constant.Invalid;
-		}
-
-		[Obsolete("", true)]
-		public void Push(PrimitiveType t, Value v)
-		{
-			switch (t.Size)
-			{
-			default:
-				throw new ArgumentOutOfRangeException();
-			case 1:
-			case 2:
-				stack.Push(v);
-				break;
-			case 4:
-				if (!v.IsValid)
-				{
-					stack.Push(v);
-					stack.Push(v);
-				}				 
-				else
-				{
-					stack.Push(new Value(PrimitiveType.Word16, v.Unsigned >> 16));
-					stack.Push(new Value(PrimitiveType.Word16, v.Unsigned & 0xFFFF));
-				}
-				break;
-			}
-		}
-
-		[Obsolete]
-		public Value PopV(PrimitiveType t)
-		{
-			try
-			{
-				switch (t.Size)
-				{
-				default:
-					throw new ArgumentOutOfRangeException();
-				case 2:
-					if (stack.Count < 1)
-					{
-						System.Diagnostics.Debug.WriteLine("bad pop");
-						return Value.Invalid;
-					}
-					return (Value) stack.Pop();
-				case 4:
-					if (stack.Count < 2)
-					{
-						System.Diagnostics.Debug.WriteLine("bad pop");
-						return Value.Invalid;
-					}
-					Value v = (Value) stack.Pop();
-					Value v2 = (Value) stack.Pop();
-					if (v.IsValid && v2.IsValid)
-					{
-						return new Value(t, (v.Unsigned & 0x0000FFFF) | (v2.Unsigned << 16));
-					}
-					else
-					{
-						return Value.Invalid;
-					}
-				}
-			}
-			catch (InvalidOperationException)
-			{
-				//$NYI:				Log.Warn("Stack underflow");
-				return Value.Invalid;
-			}
 		}
 
 		public Constant Pop(PrimitiveType t)

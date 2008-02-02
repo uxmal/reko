@@ -37,9 +37,9 @@ namespace Decompiler.UnitTests.Intel
 			Assert.IsTrue(!st.GetV(Registers.bx).IsValid);
 			Assert.IsTrue(st.GetV(Registers.ax).IsValid);
 			Assert.IsTrue(st.GetV(Registers.al).IsValid);
-			Assert.IsTrue(st.GetV(Registers.al).AsUInt32() == 0x34);
+			Assert.AreEqual(0x34, st.GetV(Registers.al).ToUInt32());
 			Assert.IsTrue(st.GetV(Registers.ah).IsValid);
-			Assert.IsTrue(st.GetV(Registers.ah).AsUInt32() == 0x12);
+			Assert.AreEqual(0x12, st.GetV(Registers.ah).ToUInt32());
 		}
 	}
 }

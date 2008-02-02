@@ -94,7 +94,6 @@ namespace Decompiler.Typing
 						stm.Instruction.Accept(this);
 					}
 				}
-				break;		//$DEBUG: just collect types for first procedure.
 			} 
 		}
 		

@@ -25,8 +25,6 @@ namespace Decompiler.Core
 	public interface ICodeWalkerListener
 	{
 		void OnBranch(ProcessorState st, Address addrInstr, Address addrTerm, Address addrBranch);
-		[Obsolete]
-		void OnGlobalVariable(Address addr, PrimitiveType width, Value v);
 		void OnGlobalVariable(Address addr, PrimitiveType width, Constant c);
 		void OnIllegalOpcode(Address addrIllegal);
 		void OnJump(ProcessorState st, Address addrInstr, Address addrTerm, Address addrJump);

@@ -38,20 +38,28 @@ namespace Decompiler.Arch.Intel.Assembler
 		private SymbolTable symtab; 
 		private Address addrBase;
 		private PrimitiveType defaultWordWidth;
+		private PrimitiveType defaultAddressWidth;
 		private IntelRegister segOverride;
 		private int totalInt;
 
-		public OperandParser(Lexer lexer, SymbolTable symtab, Address addrBase, PrimitiveType defaultWordWidth)
+		public OperandParser(Lexer lexer, SymbolTable symtab, Address addrBase, PrimitiveType defaultWordWidth, PrimitiveType defaultAddressWidth)
 		{
 			this.lexer = lexer;
 			this.symtab = symtab;
 			this.addrBase = addrBase;
 			this.defaultWordWidth = defaultWordWidth;
+			this.defaultAddressWidth = defaultAddressWidth;
 		}
 
 		public PrimitiveType AddressWidth
 		{
 			get { return addrWidth; }
+		}
+
+		public PrimitiveType DataWidth
+		{
+			get { return defaultWordWidth; }
+			set { defaultWordWidth = value; }
 		}
 
 		private void Expect(Token tok)
@@ -99,7 +107,6 @@ namespace Decompiler.Arch.Intel.Assembler
 				return;
 			case Token.INTEGER:
 				totalInt += lexer.Integer;
-				memOp.Offset = IntelAssembler.IntegralConstant(totalInt, memOp.Width);
 				break;
 			case Token.REGISTER:
 			{
@@ -121,7 +128,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				else
 				{
 					sym = symtab.CreateSymbol(lexer.StringLiteral);
-					memOp.Offset = new Constant(defaultWordWidth, addrBase.off);
+					totalInt += unchecked((int) addrBase.off);
 				}
 				break;
 			}
@@ -156,7 +163,7 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		private ParsedOperand ParseMemoryOperand(IntelRegister segOver)
 		{
-			MemoryOperand memOp = new MemoryOperand(AddressWidth);
+			MemoryOperand memOp = new MemoryOperand(null);
 			memOp.SegOverride = segOver;
 			this.segOverride = segOver;
 
@@ -170,14 +177,19 @@ namespace Decompiler.Arch.Intel.Assembler
 					OnError("Unexpected token: " + token);
 					return null;
 				case Token.KET:
-					if (totalInt != 0)
-						memOp.Offset = IntelAssembler.IntegralConstant(totalInt, memOp.Width);
+					if (totalInt != 0 || sym != null)
+					{
+						if (addrWidth == null || sym != null)
+							memOp.Offset = new Constant(defaultAddressWidth, totalInt);
+						else
+							memOp.Offset = IntelAssembler.IntegralConstant(totalInt, addrWidth);
+					}
 					return new ParsedOperand(memOp, sym);
 				case Token.PLUS:
 					break;
 				case Token.MINUS:
 					Expect(Token.INTEGER);
-					memOp.Offset = IntelAssembler.IntegralConstant(totalInt - lexer.Integer, AddressWidth);
+					totalInt -= lexer.Integer;
 					continue;
 				case Token.ID:
 					break;
@@ -186,10 +198,10 @@ namespace Decompiler.Arch.Intel.Assembler
 			} 
 		}
 
+
 		public ParsedOperand ParseOperand()
 		{
 			sym = null;
-			addrWidth = null;
 			totalInt = 0;
 			segOverride = Registers.None;
 			Token token = lexer.GetToken();
@@ -214,7 +226,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				}
 				else
 				{
-					return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(totalInt, null)));
+					return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(totalInt, defaultWordWidth)));
 				}
 			case Token.REGISTER:
 			{

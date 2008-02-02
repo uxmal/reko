@@ -51,6 +51,7 @@
     <Compile Include="Analysis\InductionVariableTests.cs" />
     <Compile Include="Analysis\InterferenceGraphTests.cs" />
     <Compile Include="Analysis\InterferenceTests.cs" />
+    <Compile Include="Analysis\IsLiveHelperTests.cs" />
     <Compile Include="Analysis\LinearInductionVariableTests.cs" />
     <Compile Include="Analysis\LiveCopyInserterTests.cs" />
     <Compile Include="Analysis\LivenessTests.cs" />
@@ -66,6 +67,8 @@
     <Compile Include="Analysis\Simplification\SliceMem_RuleTest.cs" />
     <Compile Include="Analysis\SsaLivenessTests.cs" />
     <Compile Include="Analysis\SsaTests.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinderTests.cs" />
+    <Compile Include="Analysis\TrashStorageHelperTests.cs" />
     <Compile Include="Analysis\ValueNumberingTest.cs" />
     <Compile Include="Analysis\ValuePropagationTests.cs" />
     <Compile Include="Analysis\VariableLivenessTests.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="Core\ExternalProcedureTest.cs" />
     <Compile Include="Core\FieldCollectionTests.cs" />
     <Compile Include="Core\FrameTests.cs" />
+    <Compile Include="Core\ImageMapTests.cs" />
     <Compile Include="Core\InstructionTests.cs" />
     <Compile Include="Core\MapTests.cs" />
     <Compile Include="Core\OperatorTests.cs" />
@@ -95,6 +99,7 @@
     <Compile Include="Core\ProgramImageTests.cs" />
     <Compile Include="Core\ProgramTests.cs" />
     <Compile Include="Core\RegisterTests.cs" />
+    <Compile Include="Core\RelocationDictionary.cs" />
     <Compile Include="Core\Serialization\SerializedArgumentTests.cs" />
     <Compile Include="Core\Serialization\SerializedCallTests.cs" />
     <Compile Include="Core\Serialization\SerializedLibraryTests.cs" />
@@ -120,6 +125,7 @@
     <Compile Include="Intel\AssemblerBasic.cs" />
     <Compile Include="Intel\AssemblerData.cs" />
     <Compile Include="Intel\AssemblerOverrides.cs" />
+    <Compile Include="Intel\Assembler\OperandParserTests.cs" />
     <Compile Include="Intel\BackWalkerTests.cs" />
     <Compile Include="Intel\CodeEmitterTests.cs" />
     <Compile Include="Intel\CodeWalkerTests.cs" />
@@ -127,6 +133,7 @@
     <Compile Include="Intel\DisassemblerTests.cs" />
     <Compile Include="Intel\ImportResolution.cs" />
     <Compile Include="Intel\IntelArchitectureTests.cs" />
+    <Compile Include="Intel\IntelAssemblerTests.cs" />
     <Compile Include="Intel\IntelInstructionTrieTests.cs" />
     <Compile Include="Intel\IntelRegisterTests.cs" />
     <Compile Include="Intel\IntelRewriterTests.cs" />

@@ -413,12 +413,6 @@ namespace Decompiler.UnitTests.Mocks
 			set { programMock = value; }
 		}
 
-		[Obsolete("Replace with Ass(Muls(left, right))")]
-		public void Muls(Identifier product, Expression left, Expression right)
-		{
-			Emit(new Assignment(product, Muls(left, right)));
-		}
-
 		public Expression Mul(Expression left, Expression right)
 		{
 			return new BinaryExpression(Operator.mul, left.DataType, left, right);

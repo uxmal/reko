@@ -80,18 +80,6 @@ namespace Decompiler.Arch.Intel.Assembler
 			stmOut.WriteByte((byte)(l));
 		}
 
-		[Obsolete("Use other overloaded method instead")]
-		public void EmitImmediate(Value v, PrimitiveType w)
-		{
-			EmitImmediate(new Constant(v.Width, v.Unsigned), w);
-//			switch (w.Size)
-//			{
-//			case 1: EmitByte(v.Byte); return;
-//			case 2: EmitWord(v.Word); return;
-//			case 4: EmitDword(v.Unsigned); return;
-//			}
-		}
-
 		public void EmitImmediate(Constant c, PrimitiveType dt)
 		{
 			switch (dt.Size)

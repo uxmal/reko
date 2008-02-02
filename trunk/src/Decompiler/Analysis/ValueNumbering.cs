@@ -431,13 +431,13 @@ namespace Decompiler.Analysis
 			private ArrayList scc;
 			private bool inductive = true;
 			private Identifier identifier;
-			private Value stride;
+			private Constant stride;
 
 			public RegionConstantFinder(ArrayList scc, SsaIdentifierCollection ssaIds)
 			{
 				this.ssaIds = ssaIds;
 				this.scc = scc;
-				this.stride = Value.Invalid;
+				this.stride = Constant.Invalid;
 			}
 
 			public bool IsInductiveOperation(Statement stm)
@@ -470,7 +470,7 @@ namespace Decompiler.Analysis
 
 			public override void VisitConstant(Constant c)
 			{
-				stride = new Value((PrimitiveType) c.DataType, Convert.ToInt32(c.Value));
+				stride = c;
 			}
 
 			public override void VisitBinaryExpression(BinaryExpression binExp)
