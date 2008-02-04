@@ -229,6 +229,9 @@ namespace Decompiler.Core.Types
 			}
 		}
 
+		/// <summary>
+		/// Size of this primitive type in bytes.
+		/// </summary>
 		public override int Size
 		{
 			get { return byteSize; }

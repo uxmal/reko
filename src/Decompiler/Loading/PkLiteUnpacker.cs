@@ -45,7 +45,7 @@ namespace Decompiler.Loading
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
 				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}", pkLiteHdrOffset));
-			uint cparUncompressed = ProgramImage.ReadUShort(RawImage, pkLiteHdrOffset + 1);
+			uint cparUncompressed = ProgramImage.ReadLeUint16(RawImage, pkLiteHdrOffset + 1);
 			abU = new byte[cparUncompressed * 0x10U];
 
 			if (RawImage[pkLiteHdrOffset + 0x04C] != 0x83)
@@ -227,7 +227,7 @@ l01C8:
 		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgU.Map;
-			ushort segCode = (ushort) (addrLoad.seg + (PspSize >> 4));
+			ushort segCode = (ushort) (addrLoad.Selector + (PspSize >> 4));
 			for (;;)
 			{
 				int relocs = (ushort) bitStm.GetByte();
@@ -238,11 +238,11 @@ l01C8:
 				do
 				{
 					ushort relocOff = bitStm.GetWord();
-					ushort seg = imgU.ReadUShort(relocBase + relocOff);
+					ushort seg = imgU.ReadLeUint16(relocBase + relocOff);
 					seg = (ushort) (seg + segCode);
 
 					//$TODO: add to relocations
-					imgU.WriteUShort(relocBase + relocOff, seg);
+					imgU.WriteLeUint16(relocBase + relocOff, seg);
 					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 				} while (--relocs != 0);
 			}
@@ -253,8 +253,8 @@ l01C8:
 			pklIp = bitStm.GetWord();
 
 			IntelState state = new IntelState();
-			state.Set(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.seg));
-			state.Set(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.seg));
+			state.Set(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.Selector));
+			state.Set(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.Selector));
 			state.Set(Registers.cs, new Constant(PrimitiveType.Word16, pklCs));
 			state.Set(Registers.ax, new Constant(PrimitiveType.Word16, 0));
 			state.Set(Registers.bx, new Constant(PrimitiveType.Word16, 0));

@@ -22,21 +22,21 @@ namespace Decompiler.Core
 {
 	public class Address : IComparable
 	{
-		public ushort seg;
-		public uint off;
+		public ushort Selector;			// Segment selector.
+		public uint Offset;
 
 		public Address(uint off)
 		{
-			this.seg = 0;
-			this.off = off;
+			this.Selector = 0;
+			this.Offset = off;
 		}
 
 		public Address(ushort seg, uint off)
 		{
-			this.seg = seg;
-			this.off = off;
+			this.Selector = seg;
+			this.Offset = off;
 			if (seg != 0)
-				this.off = (ushort) off;
+				this.Offset = (ushort) off;
 		}
 
 		public override bool Equals(object obj)
@@ -46,29 +46,29 @@ namespace Decompiler.Core
 
 		public override int GetHashCode()
 		{
-			return seg.GetHashCode() ^ off.GetHashCode();
+			return Selector.GetHashCode() ^ Offset.GetHashCode();
 		}
 
 		public int Linear
 		{
-			get  { return (int) (((uint) seg << 4) + off); }
+			get  { return (int) (((uint) Selector << 4) + Offset); }
 		}
 
 		public string GenerateName(string prefix, string suffix)
 		{
 			return string.Format(
-				(seg == 0)
+				(Selector == 0)
 				? "{0}{2:X8}{3}" 
 				: "{0}{1:X4}_{2:X4}{3}", 
-				prefix, seg, off, suffix);
+				prefix, Selector, Offset, suffix);
 		}
 
 		public override string ToString()
 		{
-			string strFmt = (seg == 0)
+			string strFmt = (Selector == 0)
 				? "{1:X8}"
 				: "{0:X4}:{1:X4}";
-			return string.Format(strFmt, seg, off);
+			return string.Format(strFmt, Selector, Offset);
 		}
 
 		public static bool operator < (Address a, Address b)
@@ -98,13 +98,13 @@ namespace Decompiler.Core
 
 		public static Address operator + (Address a, int off)
 		{
-			uint newOff = (uint) (a.off + off);
-			if (a.seg != 0 && newOff > 0xFFFF)
+			uint newOff = (uint) (a.Offset + off);
+			if (a.Selector != 0 && newOff > 0xFFFF)
 			{
-				a.seg += 0x1000;
+				a.Selector += 0x1000;
 				newOff &= 0xFFFF;
 			}
-			return new Address(a.seg, newOff);
+			return new Address(a.Selector, newOff);
 		}
 
 		public static Address operator - (Address a, int delta)

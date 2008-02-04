@@ -144,33 +144,33 @@ namespace Decompiler.Loading
 		{
 			ImageReader rdr = new ImageReader(RawImage, 0);
 
-			e_magic = rdr.ReadUShort();        
-			e_cbLastPage = rdr.ReadUShort();         
-			e_cpImage = rdr.ReadUShort();           
-			e_cRelocations = rdr.ReadUShort();         
-			e_cparHeader = rdr.ReadUShort();      
-			e_minalloc = rdr.ReadUShort();     
-			e_maxalloc = rdr.ReadUShort();     
-			e_ss = rdr.ReadUShort();           
-			e_sp = rdr.ReadUShort();           
-			e_csum = rdr.ReadUShort();         
-			e_ip = rdr.ReadUShort();              
-			e_cs = rdr.ReadUShort();              
-			e_lfaRelocations = rdr.ReadUShort();          
-			e_ovno = rdr.ReadUShort();            
+			e_magic = rdr.ReadLeUint16();        
+			e_cbLastPage = rdr.ReadLeUint16();         
+			e_cpImage = rdr.ReadLeUint16();           
+			this.e_cRelocations = rdr.ReadLeUint16();         
+			e_cparHeader = rdr.ReadLeUint16();      
+			e_minalloc = rdr.ReadLeUint16();     
+			e_maxalloc = rdr.ReadLeUint16();     
+			e_ss = rdr.ReadLeUint16();           
+			e_sp = rdr.ReadLeUint16();           
+			e_csum = rdr.ReadLeUint16();         
+			e_ip = rdr.ReadLeUint16();              
+			e_cs = rdr.ReadLeUint16();              
+			e_lfaRelocations = rdr.ReadLeUint16();          
+			e_ovno = rdr.ReadLeUint16();            
 			e_res = new ushort[4];
 			for (int i = 0; i != 4; ++i)
 			{
-				e_res[i] = rdr.ReadUShort();          
+				e_res[i] = rdr.ReadLeUint16();          
 			}
-			e_oemid = rdr.ReadUShort();           
-			e_oeminfo = rdr.ReadUShort();         
+			e_oemid = rdr.ReadLeUint16();           
+			e_oeminfo = rdr.ReadLeUint16();         
 			e_res2 = new ushort[10];
 			for (int i = 0; i != 10; ++i)
 			{
-				e_res2[i] = rdr.ReadUShort();        
+				e_res2[i] = rdr.ReadLeUint16();        
 			}
-			e_lfanew = rdr.ReadUint();          
+			e_lfanew = rdr.ReadLeUint32();          
 		}
 
 		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)

@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			ImmediateOperand imm = new ImmediateOperand(PrimitiveType.Word32, 0x100F0000);
 			Address addr = orw.OperandAsCodeAddress(imm, null);
-			Assert.AreEqual(imm.Value.ToUInt32(), addr.off);
+			Assert.AreEqual(imm.Value.ToUInt32(), addr.Offset);
 		}
 
 		[Test]

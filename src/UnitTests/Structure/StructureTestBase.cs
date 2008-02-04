@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Structure
 		{
 			prog = new Program();
 			Loader ldr = new Loader(prog);
-			ldr.Assemble(FileUnitTester.MapTestPath(sourceFilename), new IntelArchitecture(addrBase.seg != 0 ? ProcessorMode.Real : ProcessorMode.ProtectedFlat), addrBase);
+			ldr.Assemble(FileUnitTester.MapTestPath(sourceFilename), new IntelArchitecture(addrBase.Selector != 0 ? ProcessorMode.Real : ProcessorMode.ProtectedFlat), addrBase);
 			Scanner scan = new Scanner(prog,  null);
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{

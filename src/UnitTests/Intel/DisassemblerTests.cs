@@ -241,5 +241,18 @@ movzx	ax,byte ptr [bp+04]
 			instr = dasm.Disassemble();
 			Assert.AreEqual("bswap\tedi", instr.ToString());
 		}
+
+		[Test]
+		public void DisasmRelocatedOperand()
+		{
+			byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678
+			ProgramImage img = new ProgramImage(new Address(0x00100000), image);
+			img.Relocations.AddPointerReference(new Address(0x00100001) - img.BaseAddress, 0x12345678);
+			ImageReader rdr = img.CreateReader(img.BaseAddress);
+			IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word32);
+			IntelInstruction instr = dasm.Disassemble();
+			Assert.AreEqual("mov\teax,12345678", instr.ToString());
+			Assert.AreEqual("ptr32", instr.op2.Width.ToString());
+		}
 	}
 }

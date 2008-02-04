@@ -310,19 +310,19 @@ namespace Decompiler.Arch.Intel
 			{
 				if (size == PrimitiveType.Word16)
 				{
-					return new Address(segBase, rdr.ReadUShort());
+					return new Address(segBase, rdr.ReadLeUint16());
 				}
 				else
 				{
-					ushort off = rdr.ReadUShort();
-					ushort seg = rdr.ReadUShort();
+					ushort off = rdr.ReadLeUint16();
+					ushort seg = rdr.ReadLeUint16();
 					return new Address(seg, off);
 				}
 			} 
 			else if (arch.WordWidth == PrimitiveType.Word32)
 			{
 				System.Diagnostics.Debug.Assert(segBase == 0);
-				return new Address(rdr.ReadUint());
+				return new Address(rdr.ReadLeUint32());
 			}
 			else 
 				throw new ApplicationException("Unexpected word width: " + size);

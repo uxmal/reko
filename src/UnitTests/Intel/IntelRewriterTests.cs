@@ -171,13 +171,13 @@ namespace Decompiler.UnitTests.Intel
 		{
 			Address addrProc = new Address(0xC00, 0x1234);
 			host.AddProcedureAtAddress(addrProc, new Procedure("test", new Frame(PrimitiveType.Word16)));
-			state.InstructionAddress = new Address(addrProc.seg, 0);
+			state.InstructionAddress = new Address(addrProc.Selector, 0);
 
 
 			IntelInstruction push = new IntelInstruction(
 				Opcode.push, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cs));
 			IntelInstruction call = new IntelInstruction(
-				Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word16, addrProc.off)));
+				Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word16, addrProc.Offset)));
 			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
 			ConvertInstructions(rw, push, call);
 			Assert.AreEqual(1, emitter.Block.Statements.Count);

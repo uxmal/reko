@@ -81,15 +81,15 @@ namespace Decompiler.Loading
 		{
 			// Seed the scanner with the start location.
 
-			EntryPoint ep =  new EntryPoint(new Address((ushort) (lzCs + addrLoad.seg), lzIp), new IntelState());
+			EntryPoint ep =  new EntryPoint(new Address((ushort) (lzCs + addrLoad.Selector), lzIp), new IntelState());
 			entryPoints.Add(ep);
 			if (isLz91)
 			{
-				Relocate91(RawImage, addrLoad.seg, imgLoaded, relocations);
+				Relocate91(RawImage, addrLoad.Selector, imgLoaded, relocations);
 			}
 			else
 			{
-				Relocate90(RawImage, addrLoad.seg, imgLoaded, relocations);
+				Relocate90(RawImage, addrLoad.Selector, imgLoaded, relocations);
 			}
 		}
 
@@ -155,9 +155,9 @@ namespace Decompiler.Loading
 				}
 
 				rel_off += span;
-				ushort seg = (ushort) (pgmImgNew.ReadUShort(rel_off) + segReloc);
-				pgmImgNew.WriteUShort(rel_off, seg);
-				relocations.AddSegmentReference(pgmImgNew.Map.MapLinearAddressToAddress(rel_off + pgmImgNew.BaseAddress.Linear), seg);
+				ushort seg = (ushort) (pgmImgNew.ReadLeUint16(rel_off) + segReloc);
+				pgmImgNew.WriteLeUint16(rel_off, seg);
+				relocations.AddSegmentReference(rel_off, seg);
 
 				// This is a known segment!
 
@@ -183,12 +183,12 @@ namespace Decompiler.Loading
 			// Extract the LZ stuff.
 
 			ImageReader rdr = new ImageReader(abC, (uint) lzHdrOffset);
-			lzIp = rdr.ReadUShort();
-			lzCs = rdr.ReadUShort();
-			ushort lzSp = rdr.ReadUShort();
-			ushort lzSs = rdr.ReadUShort();
-			ushort lzcpCompressed = rdr.ReadUShort();
-			ushort lzcpDecompressed = rdr.ReadUShort();
+			lzIp = rdr.ReadLeUint16();
+			lzCs = rdr.ReadLeUint16();
+			ushort lzSp = rdr.ReadLeUint16();
+			ushort lzSs = rdr.ReadLeUint16();
+			ushort lzcpCompressed = rdr.ReadLeUint16();
+			ushort lzcpDecompressed = rdr.ReadLeUint16();
 
 			// Find the start of the compressed stream.
 

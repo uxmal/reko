@@ -55,13 +55,13 @@ namespace Decompiler.Arch.Intel
 			state.fpuStackDepth = fpuStackDepth;
 			state.frameReg = frameReg;
 			if (addrCur != null)
-				state.addrCur = new Address(addrCur.seg, addrCur.off);
+				state.addrCur = new Address(addrCur.Selector, addrCur.Offset);
 			return state;
 		}
 
 		public ushort CodeSegment
 		{
-			get { return addrCur.seg; }
+			get { return addrCur.Selector; }
 		}
 
 		/// <summary>

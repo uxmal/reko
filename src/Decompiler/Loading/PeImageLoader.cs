@@ -63,24 +63,24 @@ namespace Decompiler.Loading
 		private void AddExportedEntryPoints(Address addrLoad, ImageMap imageMap, ArrayList entryPoints)
 		{
 			ImageReader rdr = imgLoaded.CreateReader(rvaExportTable);
-			rdr.ReadUint();	// Characteristics
-			rdr.ReadUint(); // timestamp
-			rdr.ReadUint();	// version.
-			rdr.ReadUint();	// binary name.
-			rdr.ReadUint();	// base ordinal
-			int nExports = rdr.ReadInt();
-			int nNames = rdr.ReadInt();
+			rdr.ReadLeUint32();	// Characteristics
+			rdr.ReadLeUint32(); // timestamp
+			rdr.ReadLeUint32();	// version.
+			rdr.ReadLeUint32();	// binary name.
+			rdr.ReadLeUint32();	// base ordinal
+			int nExports = rdr.ReadLeInt32();
+			int nNames = rdr.ReadLeInt32();
 			if (nExports != nNames)
 				throw new ApplicationException("Unexpected discrepancy in PE image");
-			uint rvaApfn = rdr.ReadUint();
-			uint rvaNames = rdr.ReadUint();
+			uint rvaApfn = rdr.ReadLeUint32();
+			uint rvaNames = rdr.ReadLeUint32();
 
 			ImageReader rdrAddrs = imgLoaded.CreateReader(rvaApfn);
 			ImageReader rdrNames = imgLoaded.CreateReader(rvaNames);
 			for (int i = 0; i < nNames; ++i)
 			{
-				uint addr = rdrAddrs.ReadUint();
-				int iNameMin = rdrNames.ReadInt();
+				uint addr = rdrAddrs.ReadLeUint32();
+				int iNameMin = rdrNames.ReadLeInt32();
 				int j;
 				for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
 					;
@@ -162,17 +162,17 @@ namespace Decompiler.Loading
 		{
 			// Read COFF header.
 
-			short machine = rdr.ReadShort();
+			short machine = rdr.ReadLeInt16();
 			program.Architecture = CreateArchitecture(machine);
 			program.Platform = new Decompiler.Arch.Intel.Win32.Win32Platform(program.Architecture);
 
-			sections = rdr.ReadShort();
+			sections = rdr.ReadLeInt16();
 			sectionMap = new SortedList(sections);
-			rdr.ReadUint();		// timestamp.
-			rdr.ReadUint();		// COFF symbol table.
-			rdr.ReadUint();		// #of symbols.
-			optionalHeaderSize = rdr.ReadShort();
-			short fileFlags = rdr.ReadShort();
+			rdr.ReadLeUint32();		// timestamp.
+			rdr.ReadLeUint32();		// COFF symbol table.
+			rdr.ReadLeUint32();		// #of symbols.
+			optionalHeaderSize = rdr.ReadLeInt16();
+			short fileFlags = rdr.ReadLeInt16();
 			sectionOffset = (uint) (rdr.Offset + optionalHeaderSize);
 		}
 
@@ -181,51 +181,51 @@ namespace Decompiler.Loading
 			if (optionalHeaderSize <= 0)
 				throw new ApplicationException("Optional header size should be larger than 0 in a PE image file");
 
-			short magic = rdr.ReadShort();
+			short magic = rdr.ReadLeInt16();
 			if (magic != 0x010B)
 				throw new ApplicationException("Not a valid PE Header");
 			rdr.ReadByte();		// Linker major version
 			rdr.ReadByte();		// Linker minor version
-			rdr.ReadUint();		// code size (== .text section size)
-			rdr.ReadUint();		// size of initialized data
-			rdr.ReadUint();		// size of uninitialized data
-			rvaStartAddress = rdr.ReadUint();
-			uint rvaBaseOfCode = rdr.ReadUint();
-			uint rvaBaseOfData = rdr.ReadUint();
-			preferredBaseOfImage = rdr.ReadUint();
-			rdr.ReadUint();		// section alignment
-			rdr.ReadUint();		// file alignment
-			rdr.ReadUShort();		// OS major version
-			rdr.ReadUShort();		// OS minor version
-			rdr.ReadUShort();		// Image major version
-			rdr.ReadUShort();		// Image minor version
-			rdr.ReadUShort();		// Subsystem major version
-			rdr.ReadUShort();		// Subsystem minor version
-			rdr.ReadUint();		// reserved
-			uint sizeOfImage = rdr.ReadUint();
-			uint sizeOfHeaders = rdr.ReadUint();
-			uint checksum = rdr.ReadUint();
-			ushort subsystem = rdr.ReadUShort();
-			ushort dllFlags = rdr.ReadUShort();
-			uint stackReserve  = rdr.ReadUint();
-			uint stackCommit  = rdr.ReadUint();
-			uint heapReserve  = rdr.ReadUint();
-			uint heapCommit   = rdr.ReadUint();
-			rdr.ReadUint();			// obsolete
-			uint dictionaryCount = rdr.ReadUint();
+			rdr.ReadLeUint32();		// code size (== .text section size)
+			rdr.ReadLeUint32();		// size of initialized data
+			rdr.ReadLeUint32();		// size of uninitialized data
+			rvaStartAddress = rdr.ReadLeUint32();
+			uint rvaBaseOfCode = rdr.ReadLeUint32();
+			uint rvaBaseOfData = rdr.ReadLeUint32();
+			preferredBaseOfImage = rdr.ReadLeUint32();
+			rdr.ReadLeUint32();		// section alignment
+			rdr.ReadLeUint32();		// file alignment
+			rdr.ReadLeUint16();		// OS major version
+			rdr.ReadLeUint16();		// OS minor version
+			rdr.ReadLeUint16();		// Image major version
+			rdr.ReadLeUint16();		// Image minor version
+			rdr.ReadLeUint16();		// Subsystem major version
+			rdr.ReadLeUint16();		// Subsystem minor version
+			rdr.ReadLeUint32();		// reserved
+			uint sizeOfImage = rdr.ReadLeUint32();
+			uint sizeOfHeaders = rdr.ReadLeUint32();
+			uint checksum = rdr.ReadLeUint32();
+			ushort subsystem = rdr.ReadLeUint16();
+			ushort dllFlags = rdr.ReadLeUint16();
+			uint stackReserve  = rdr.ReadLeUint32();
+			uint stackCommit  = rdr.ReadLeUint32();
+			uint heapReserve  = rdr.ReadLeUint32();
+			uint heapCommit   = rdr.ReadLeUint32();
+			rdr.ReadLeUint32();			// obsolete
+			uint dictionaryCount = rdr.ReadLeUint32();
 
-			rvaExportTable = rdr.ReadUint();
-			sizeExportTable = rdr.ReadUint();
-			rvaImportTable = rdr.ReadUint();
-			uint importTableSize = rdr.ReadUint();
-			rdr.ReadUint();			// resource address
-			rdr.ReadUint();			// resource size
-			rdr.ReadUint();			// exception address
-			rdr.ReadUint();			// exception size
-			rdr.ReadUint();			// certificate address
-			rdr.ReadUint();			// certificate size
-			uint rvaBaseRelocAddress = rdr.ReadUint();
-			uint baseRelocSize = rdr.ReadUint();
+			rvaExportTable = rdr.ReadLeUint32();
+			sizeExportTable = rdr.ReadLeUint32();
+			rvaImportTable = rdr.ReadLeUint32();
+			uint importTableSize = rdr.ReadLeUint32();
+			rdr.ReadLeUint32();			// resource address
+			rdr.ReadLeUint32();			// resource size
+			rdr.ReadLeUint32();			// exception address
+			rdr.ReadLeUint32();			// exception size
+			rdr.ReadLeUint32();			// certificate address
+			rdr.ReadLeUint32();			// certificate size
+			uint rvaBaseRelocAddress = rdr.ReadLeUint32();
+			uint baseRelocSize = rdr.ReadLeUint32();
 		}
 
 		private const ushort RelocationAbsolute = 0;
@@ -265,7 +265,7 @@ namespace Decompiler.Loading
 
 		public void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
 		{
-			ushort fixup = rdr.ReadUShort();
+			ushort fixup = rdr.ReadLeUint16();
 			switch (fixup >> 12)
 			{
 			case RelocationAbsolute:
@@ -274,9 +274,9 @@ namespace Decompiler.Loading
 			case RelocationHighLow:
 			{
 				int offset = (int)(page + (fixup & 0x0FFF));
-				uint n = (uint) (imgLoaded.ReadUint(offset) + (baseOfImage - preferredBaseOfImage));
-				imgLoaded.WriteUint(offset, n);
-				relocations.AddPointerReference(new Address((uint)offset + baseOfImage), n);
+				uint n = (uint) (imgLoaded.ReadLeUint32(offset) + (baseOfImage - preferredBaseOfImage));
+				imgLoaded.WriteLeUint32(offset, n);
+				relocations.AddPointerReference(offset, n);
 				break;
 			}
 			default:
@@ -293,8 +293,8 @@ namespace Decompiler.Loading
 			{
 				// Read fixup block header.
 
-				uint page = rdr.ReadUint();
-				int cbBlock = rdr.ReadInt();
+				uint page = rdr.ReadLeUint32();
+				int cbBlock = rdr.ReadLeInt32();
 				uint offBlockEnd = (uint)(rdr.Offset + cbBlock - 8);
 				while (rdr.Offset < offBlockEnd)
 				{
@@ -328,13 +328,13 @@ namespace Decompiler.Loading
 		public ImportDescriptor ReadImportDescriptor(ImageReader rdr, Address addrLoad)
 		{
 			ImportDescriptor id = new ImportDescriptor();
-			id.RvaEntries = rdr.ReadUint();		// IAT
+			id.RvaEntries = rdr.ReadLeUint32();		// IAT
 			if (id.RvaEntries == 0)
 				return null;
-			rdr.ReadUint();		// datestamp
-			rdr.ReadUint();		// forwarder chain
-			id.DllName = ReadAsciiString(rdr.ReadUint(), 0);		// DLL name
-			id.RvaThunks = rdr.ReadUint();		// first thunk
+			rdr.ReadLeUint32();		// datestamp
+			rdr.ReadLeUint32();		// forwarder chain
+			id.DllName = ReadAsciiString(rdr.ReadLeUint32(), 0);		// DLL name
+			id.RvaThunks = rdr.ReadLeUint32();		// first thunk
 
 			SignatureLibrary lib = new SignatureLibrary(program.Architecture);
 			
@@ -344,13 +344,13 @@ namespace Decompiler.Loading
 			for (;;)
 			{
 				Address addrThunk = imgLoaded.BaseAddress + rdrThunks.Offset;
-				uint rvaEntry = rdrEntries.ReadUint();
-				uint rvaThunk = rdrThunks.ReadUint();
+				uint rvaEntry = rdrEntries.ReadLeUint32();
+				uint rvaThunk = rdrThunks.ReadLeUint32();
 				if (rvaEntry == 0)
 					break;
 			
 				string fnName = ReadAsciiString(rvaEntry + 2, 0);
-				program.ImportThunks.Add(addrThunk.off, new PseudoProcedure(fnName, lib.Lookup(fnName)));
+				program.ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, lib.Lookup(fnName)));
 			}
 			return id;
 		}
@@ -370,15 +370,15 @@ namespace Decompiler.Loading
 		{
 			Section sec = new Section();
 			sec.Name = ReadSectionName(rdr);
-			sec.VirtualSize = rdr.ReadUint();
-			sec.VirtualAddress = rdr.ReadUint();
-			sec.SizeRawData = rdr.ReadUint();
-			sec.OffsetRawData = rdr.ReadUint();
-			rdr.ReadUint();			// pointer to relocations
-			rdr.ReadUint();			// pointer to line numbers.
-			rdr.ReadShort();		// # of relocations
-			rdr.ReadShort();		// # of line numbers
-			sec.Flags = rdr.ReadUint();
+			sec.VirtualSize = rdr.ReadLeUint32();
+			sec.VirtualAddress = rdr.ReadLeUint32();
+			sec.SizeRawData = rdr.ReadLeUint32();
+			sec.OffsetRawData = rdr.ReadLeUint32();
+			rdr.ReadLeUint32();			// pointer to relocations
+			rdr.ReadLeUint32();			// pointer to line numbers.
+			rdr.ReadLeInt16();		// # of relocations
+			rdr.ReadLeInt16();		// # of line numbers
+			sec.Flags = rdr.ReadLeUint32();
 
 			return sec;
 		}

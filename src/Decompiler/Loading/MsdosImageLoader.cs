@@ -50,14 +50,13 @@ namespace Decompiler.Loading
 			int i = exe.e_cRelocations;
 			while (i != 0)
 			{
-				int offset = rdr.ReadUShort();
-				ushort segOffset = rdr.ReadUShort();
-				Address addrReloc = new Address((ushort) (segOffset + addrLoad.seg), (uint) offset);
+				int offset = rdr.ReadLeUint16();
+				ushort segOffset = rdr.ReadLeUint16();
 				offset += segOffset * 0x0010;
 
-				ushort seg = (ushort) (imgLoaded.ReadUShort(offset) + addrLoad.seg);
-				imgLoaded.WriteUShort(offset, seg);
-				relocations.AddSegmentReference(addrReloc, seg);
+				ushort seg = (ushort) (imgLoaded.ReadLeUint16(offset) + addrLoad.Selector);
+				imgLoaded.WriteLeUint16(offset, seg);
+				relocations.AddSegmentReference(offset, seg);
 
 				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 				--i;
@@ -65,8 +64,8 @@ namespace Decompiler.Loading
 		
 			// Found the start address.
 
-			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.seg), exe.e_ip);
-			imageMap.AddSegment(new Address(addrStart.seg, 0), addrStart.seg.ToString("X4"), AccessMode.ReadWrite);
+			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.Selector), exe.e_ip);
+			imageMap.AddSegment(new Address(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWrite);
 			entryPoints.Add(new EntryPoint(addrStart, new IntelState()));
 		}
 

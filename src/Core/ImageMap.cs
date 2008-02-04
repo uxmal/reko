@@ -195,7 +195,7 @@ namespace Decompiler.Core
 			foreach (ImageMapSegment seg in segments.Values)
 			{
 				if (seg.IsInRange(linearAddress))
-					return new Address(seg.Address.seg, (uint) (linearAddress - seg.Address.Linear));
+					return new Address(seg.Address.Selector, (uint) (linearAddress - seg.Address.Linear));
 			}			
 			throw new ArgumentOutOfRangeException("linear address {0:X8} exceeeds known address range");
 		}
