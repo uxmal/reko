@@ -75,22 +75,27 @@ information provided by the user. Memory access expressions
         and <span class="code">switch</span>-statements.</p>
 
 <h2>Development</h2>
-The decompiler is written in C# and currently targets CLR version 1.1. 
+The decompiler is written in C# and currently targets CLR version 1.1 (sorry, no generics... yet). 
+It's currently developed with Visual Studio 2005, but the general plan
+is to have a working MonoDevelop project soon.
 
 <p>The project implements the <dfn>Test Driven Development</dfn> methodology, with heavy emphasis on unit testing.
 No new code is allowed into the project unless it has one or more associated tests written for it. Developing a 
-decompiler is notoriously tricky work with lots of special cases. Not having unit tests would make development an eternal bug hunt as fixes for one bug introduce other bugs.
+decompiler is notoriously tricky work with lots of special cases. Not having unit tests would make development an 
+eternal bug hunt as fixes for one bug introduce other bugs. Unit tests are developed using NUnit
 </p>
 
 <p>Subversion is used for source control.</p>
 
 <h2>Status</h2>
 Currently, the decompiler project is very early stages. As it stands, it is able to load MS-DOS and PE binary files,
-disassemble their contents, rewrite the disassembled instructions into intermediate code, 
+disassemble their contents, rewrite the disassembled instructions into intermediate code, and perform the analysis phase
+mentioned above. Currently work is focussed on type analysis, while code structuring is on the back-burner as it's considerably
+less complex than type recovery -- but if you'd like to chip in, feel free!
+<br />
+<br />
+<div align="right"><a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204959&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a></div>
 
-
-<h2>Contributing</h2>
-The 
 </body>
 
 </html>
