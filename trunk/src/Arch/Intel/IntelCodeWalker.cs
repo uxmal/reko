@@ -100,7 +100,7 @@ namespace Decompiler.Arch.Intel
 		private void HandleBranch(Address addrInstr, IntelInstruction instr, Address addrTerm)
 		{
 			Address addrBranch = new Address(
-				addrTerm.seg,
+				addrTerm.Selector,
 				((ImmediateOperand) instr.op1).Value.ToUInt32());
 			Listener.OnBranch(state, addrInstr, addrTerm, addrBranch);
 		}
@@ -333,7 +333,7 @@ namespace Decompiler.Arch.Intel
 
 		private bool IsBiosRebootAddress(Address addr)
 		{
-			return (addr.seg == 0xFFFF && addr.off == 0x0000);
+			return (addr.Selector == 0xFFFF && addr.Offset == 0x0000);
 		}
 
 		private bool IsSameRegister(Operand op1, Operand op2)

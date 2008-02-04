@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Scanning
 		private Program AssembleFile(string sourceFile, Address addr)
 		{
 			Program prog = new Program();
-			prog.Architecture = new IntelArchitecture(addr.seg == 0 ? ProcessorMode.ProtectedFlat : ProcessorMode.Real);
+			prog.Architecture = new IntelArchitecture(addr.Selector == 0 ? ProcessorMode.ProtectedFlat : ProcessorMode.Real);
 			Assembler asm = prog.Architecture.CreateAssembler();
 			Loader ldr = new Loader(prog);
 			ldr.Assemble(FileUnitTester.MapTestPath(sourceFile), prog.Architecture, addr);

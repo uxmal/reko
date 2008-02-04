@@ -32,9 +32,9 @@ namespace Decompiler.UnitTests.Core
 		public void AddSegmentRelocation()
 		{
 			RelocationDictionary rd = new RelocationDictionary();
-			rd.AddSegmentReference(new Address(0xC00, 0x1234), 0x0C00);
+			rd.AddSegmentReference(0xD234, 0x0C00);
 			Assert.AreEqual(1, rd.Count);
-			Constant c = rd[new Address(0x0C00, 0x1234)];
+			Constant c = rd[0xD234];
 			Assert.AreEqual("segment", c.DataType.ToString());
 		}
 
@@ -42,10 +42,31 @@ namespace Decompiler.UnitTests.Core
 		public void AddPointerRelocation()
 		{
 			RelocationDictionary rd = new RelocationDictionary();
-			rd.AddPointerReference(new Address(0x100400), 0x100500);
+			rd.AddPointerReference(0x100400, 0x100500);
 			Assert.AreEqual(1, rd.Count);
-			Constant c = rd[new Address(0x0100400)];
+			Constant c = rd[0x0100400];
 			Assert.AreEqual("ptr32", c.DataType.ToString());
+		}
+
+		[Test]
+		public void AddSegmentRelocationByLinearAddress()
+		{
+			RelocationDictionary rd = new RelocationDictionary();
+			rd.AddSegmentReference(0x0C010, 0x0C00);
+			Assert.AreEqual(1, rd.Count);
+			Constant c = rd[0x0C010];
+			Assert.AreEqual("segment", c.DataType.ToString());
+			c = rd[0x0C010];
+			Assert.AreEqual("segment", c.DataType.ToString());
+		}
+
+		[Test]
+		public void AddressNotInDictionary()
+		{
+			RelocationDictionary rd = new RelocationDictionary();
+			rd.AddPointerReference(0x020, 0x12312312);
+			Assert.IsNull(rd[0x3243232]);
+			Assert.IsFalse(rd.Contains(0x2341231));
 		}
 	}
 }

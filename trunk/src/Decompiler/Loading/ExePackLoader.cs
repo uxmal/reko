@@ -47,13 +47,13 @@ namespace Decompiler.Loading
 			this.exeHdrSize = (uint) (exe.e_cparHeader * 0x10U);
 			this.hdrOffset = (uint) (exe.e_cparHeader + exe.e_cs) * 0x10U;
 			ImageReader rdr = new ImageReader(RawImage, hdrOffset);
-			this.ip = rdr.ReadUShort();
-			this.cs = rdr.ReadUShort();
-					  rdr.ReadUShort();
-			this.cbExepackHeader = rdr.ReadUShort();
-			this.sp = rdr.ReadUShort();
-			this.ss = rdr.ReadUShort();
-			this.cpUncompressed = rdr.ReadUShort();
+			this.ip = rdr.ReadLeUint16();
+			this.cs = rdr.ReadLeUint16();
+					  rdr.ReadLeUint16();
+			this.cbExepackHeader = rdr.ReadLeUint16();
+			this.sp = rdr.ReadLeUint16();
+			this.ss = rdr.ReadLeUint16();
+			this.cpUncompressed = rdr.ReadLeUint16();
 		}
 
 		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
@@ -81,7 +81,7 @@ namespace Decompiler.Loading
 			do
 			{
 				op = abC[SI];
-				int cx = ProgramImage.ReadUShort(abC, SI - 2);
+				int cx = ProgramImage.ReadLeUint16(abC, SI - 2);
 				SI -= 3;
 				if ((op & 0xFE) == 0xB0)
 				{
@@ -115,18 +115,18 @@ namespace Decompiler.Loading
 		{
 			ImageMap imageMap = imgU.Map;
 			ImageReader rdr = new ImageReader(RawImage, hdrOffset + 0x012Du);
-			ushort segCode = (ushort) (addrLoad.seg + (ExeImageLoader.CbPsp >> 4));
+			ushort segCode = (ushort) (addrLoad.Selector + (ExeImageLoader.CbPsp >> 4));
 			ushort dx = 0;
 			for (;;)
 			{
-				int cx = rdr.ReadUShort();
+				int cx = rdr.ReadLeUint16();
 				if (cx != 0)
 				{
 					int relocBase = ExeImageLoader.CbPsp + dx * 0x10; 
 					do
 					{
-						ushort relocOff = rdr.ReadUShort();
-						ushort seg = imgU.FixupUShort(relocBase + relocOff, segCode);
+						ushort relocOff = rdr.ReadLeUint16();
+						ushort seg = imgU.FixupLeUint16(relocBase + relocOff, segCode);
 						imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 					} while (--cx != 0);
 				}       
@@ -139,8 +139,8 @@ namespace Decompiler.Loading
 			imageMap.AddSegment(new Address(cs, 0), cs.ToString("X4"), AccessMode.ReadWrite);
 			this.ss += segCode;
 			IntelState state = new IntelState();
-			state.Set(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.seg));
-			state.Set(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.seg));
+			state.Set(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.Selector));
+			state.Set(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.Selector));
 			state.Set(Registers.cs, new Constant(PrimitiveType.Word16, cs));
 			state.Set(Registers.ss, new Constant(PrimitiveType.Word16, ss));
 			state.Set(Registers.bx, new Constant(PrimitiveType.Word16, 0));

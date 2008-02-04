@@ -36,12 +36,14 @@ namespace Decompiler.Core
 		private byte [] abImage;
 		private Address addrBase;				// address of start of image.
 		private ImageMap map;
+		private RelocationDictionary relocations;
 
 		public ProgramImage(Address addrBase, byte [] ab)
 		{
 			this.addrBase = addrBase;
 			this.abImage = ab;
 			this.map = new ImageMap(addrBase, ab.Length);
+			this.relocations = new RelocationDictionary();
 		}
 
 		public Address BaseAddress
@@ -76,11 +78,11 @@ namespace Decompiler.Core
 		/// <param name="offset"></param>
 		/// <param name="delta"></param>
 		/// <returns>The new value of the ushort</returns>
-		public ushort FixupUShort(int offset, ushort delta)
+		public ushort FixupLeUint16(int offset, ushort delta)
 		{
-			ushort seg = ReadUShort(offset);
+			ushort seg = ReadLeUint16(abImage, offset);
 			seg = (ushort) (seg + delta);
-			WriteUShort(offset, seg);
+			WriteLeUint16(offset, seg);
 			return seg;
 		}
 
@@ -118,12 +120,27 @@ namespace Decompiler.Core
 			get { return map; }
 		}
 
-		public Constant ReadDouble(int off)
+		public Constant ReadLe(int imageOffset, PrimitiveType type)
 		{
-			return ReadDouble(abImage, off);
+			Constant c = relocations[imageOffset];
+			if (c != null && c.DataType.Size == type.Size)
+				return c;
+			switch (type.Size)
+			{
+			case 1: return new Constant(type, abImage[imageOffset]);
+			case 2: return new Constant(type, ReadLeUint16(abImage, imageOffset));
+			case 4: return new Constant(type, ReadLeUint32(abImage, imageOffset));
+			}
+			throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
 		}
 
-		public static Constant ReadDouble(byte [] abImage, int off)
+
+		public Constant ReadLeDouble(int off)
+		{
+			return ReadLeDouble(abImage, off);
+		}
+
+		public static Constant ReadLeDouble(byte [] abImage, int off)
 		{
 			long bits = 
 				(abImage[off] |
@@ -139,7 +156,7 @@ namespace Decompiler.Core
 		}
 
 
-		public Constant ReadFloat(int off)
+		public Constant ReadLeFloat(int off)
 		{
 			int bits = 
 				(abImage[off] |
@@ -149,17 +166,7 @@ namespace Decompiler.Core
 			return Constant.FloatFromBitpattern(bits);
 		}
 
-		public short ReadShort(int off)
-		{
-			return (short) ReadUShort(off);
-		}
-
-		public int ReadInt(int off)
-		{
-			return ReadInt(abImage, off);
-		}
-
-		public static int ReadInt(byte [] abImage, int off)
+		public static int ReadLeInt32(byte [] abImage, int off)
 		{
 			int u = abImage[off] | 
 				((int) abImage[off+1] << 8) |
@@ -168,47 +175,55 @@ namespace Decompiler.Core
 			return u;
 		}
 
-
-		public uint ReadUint(int off)
+		public int ReadLeInt32(int off)
 		{
-			return (uint) ReadInt(off);
+			return ReadLeInt32(this.abImage, off);
 		}
 
-		public uint ReadUint(Address addr)
+		public uint ReadLeUint32(int off)
 		{
-			return (uint) ReadInt(addr - addrBase);
+			return (uint) ReadLeInt32(abImage, off);
 		}
 
-		public static uint ReadUint(byte [] img, int off)
+		public uint ReadLeUint32(Address addr)
 		{
-			return (uint) ReadInt(img, off);
+			return (uint) ReadLeInt32(abImage, addr - addrBase);
 		}
 
-		public ushort ReadUShort(int off)
+		public static uint ReadLeUint32(byte [] img, int off)
 		{
-			return ReadUShort(abImage, off);
+			return (uint) ReadLeInt32(img, off);
 		}
 
-		public static ushort ReadUShort(byte [] abImage, int off)
+		public ushort ReadLeUint16(int offset)
 		{
-			ushort w = (ushort) (abImage[off] + ((ushort) abImage[off+1] << 8));
+			return ReadLeUint16(abImage, offset);
+		}
+
+		public static ushort ReadLeUint16(byte[] abImage, int offset)
+		{
+			ushort w = (ushort) (abImage[offset] + ((ushort) abImage[offset + 1] << 8));
 			return w;
 		}
 
+		public RelocationDictionary Relocations
+		{
+			get { return relocations; }
+		}
 
-		public void WriteUShort(int offset, ushort w)
+		public void WriteLeUint16(int offset, ushort w)
 		{
 			abImage[offset] = (byte) (w & 0xFF);
 			abImage[offset+1] = (byte) (w >> 8);
 		}
 
-		public void WriteUint(int offset, uint dw)
+		public void WriteLeUint32(int offset, uint dw)
 		{
 			abImage[offset] = (byte) (dw & 0xFF);
 			abImage[offset + 1] = (byte) (dw >> 8);
 			abImage[offset + 2] = (byte) (dw >> 16);
 			abImage[offset + 3] = (byte) (dw >> 24);
 		}
+
 	}
 }
-

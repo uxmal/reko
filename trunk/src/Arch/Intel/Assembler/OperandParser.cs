@@ -128,7 +128,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				else
 				{
 					sym = symtab.CreateSymbol(lexer.StringLiteral);
-					totalInt += unchecked((int) addrBase.off);
+					totalInt += unchecked((int) addrBase.Offset);
 				}
 				break;
 			}
@@ -246,7 +246,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			case Token.OFFSET:
 				Expect(Token.ID);
 				return new ParsedOperand(
-					new ImmediateOperand(defaultWordWidth, addrBase.off),
+					new ImmediateOperand(defaultWordWidth, addrBase.Offset),
 					symtab.CreateSymbol(lexer.StringLiteral));
 				
 			case Token.ID:
@@ -258,7 +258,7 @@ namespace Decompiler.Arch.Intel.Assembler
 					goto IntegerCommon;
 				}
 				return new ParsedOperand(
-							   new MemoryOperand(addrWidth, new Constant(defaultWordWidth, addrBase.off)),
+							   new MemoryOperand(addrWidth, new Constant(defaultWordWidth, addrBase.Offset)),
 							   symtab.CreateSymbol(lexer.StringLiteral));
 			}
 			case Token.WORD:

@@ -28,21 +28,26 @@ namespace Decompiler.Core
 	/// </summary>
 	public class RelocationDictionary : DictionaryBase
 	{
-		public Constant this[Address addr]
+		public Constant this[int imageOffset]
 		{
-			get { return (Constant) InnerHashtable[addr]; }
+			get { return (Constant) InnerHashtable[imageOffset]; }
 		}
 
-		public void AddPointerReference(Address addr, uint pointer)
+		public void AddPointerReference(int imageOffset, uint pointer)
 		{
 			Constant c = new Constant(PrimitiveType.Pointer32, pointer);
-			InnerHashtable.Add(addr, c);
+			InnerHashtable.Add(imageOffset, c);
 		}
 
-		public void AddSegmentReference(Address addr, ushort segmentSelector)
+		public void AddSegmentReference(int imageOffset, ushort segmentSelector)
 		{
 			Constant c = new Constant(PrimitiveType.Segment, segmentSelector);
-			InnerHashtable.Add(addr, c);
+			InnerHashtable.Add(imageOffset, c);
+		}
+
+		public bool Contains(int imageOffset)
+		{
+			return InnerHashtable.Contains(imageOffset);
 		}
 	}
 }

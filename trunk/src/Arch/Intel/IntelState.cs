@@ -85,7 +85,7 @@ namespace Decompiler.Arch.Intel
 
 		public override void SetInstructionPointer(Address addr)
 		{
-			Set(Registers.cs, new Constant(PrimitiveType.Word16, addr.seg));
+			Set(Registers.cs, new Constant(PrimitiveType.Word16, addr.Selector));
 		}
 
 		public override Constant GetV(MachineRegister reg)

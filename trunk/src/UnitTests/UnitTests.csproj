@@ -99,7 +99,7 @@
     <Compile Include="Core\ProgramImageTests.cs" />
     <Compile Include="Core\ProgramTests.cs" />
     <Compile Include="Core\RegisterTests.cs" />
-    <Compile Include="Core\RelocationDictionary.cs" />
+    <Compile Include="Core\RelocationDictionaryTests.cs" />
     <Compile Include="Core\Serialization\SerializedArgumentTests.cs" />
     <Compile Include="Core\Serialization\SerializedCallTests.cs" />
     <Compile Include="Core\Serialization\SerializedLibraryTests.cs" />

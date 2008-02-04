@@ -16,21 +16,27 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 
 namespace Decompiler.Core
 {
+	/// <summary>
+	/// Reads bytes and differently sized words sequentially from an associated ProgramImage.
+	/// </summary>
 	public class ImageReader
 	{
-		private byte [] img;
+		private ProgramImage image;
+		private byte[] img;
 		private int offStart;
 		private int off;
 		private Address addrStart;
 
 		public ImageReader(ProgramImage img, Address addr)
 		{
-			this.img = img.Bytes;;
+			this.image = img;
+			this.img = img.Bytes;
 			this.addrStart = addr;
 			this.off = offStart = addr - img.BaseAddress;
 		}
@@ -41,7 +47,7 @@ namespace Decompiler.Core
 			this.off = offStart = (int) off;
 		}
 
-		public ImageReader(byte [] img, uint off)
+		public ImageReader(byte[] img, uint off)
 		{
 			this.img = img;
 			this.off = offStart = (int) off;
@@ -52,25 +58,11 @@ namespace Decompiler.Core
 			get { return addrStart + (off - offStart); }
 		}
 
-		public int Offset 
+		public int Offset
 		{
 			get { return off; }
 		}
 
-		public int ReadSigned(PrimitiveType w)
-		{
-			if (w.IsIntegral)
-			{
-				switch (w.Size)
-				{
-				case 1: return (sbyte) ReadByte();
-				case 2: return ReadShort();
-				case 4: return ReadInt();
-				default: throw new ArgumentOutOfRangeException();
-				}
-			}
-			throw new ArgumentOutOfRangeException();
-		}
 
 		public byte ReadByte()
 		{
@@ -79,40 +71,65 @@ namespace Decompiler.Core
 			return b;
 		}
 
-		public int ReadInt()
+		public Constant ReadLe(PrimitiveType type)
 		{
-			return (int) ReadUint();
+			Constant c = image.ReadLe(off, type);
+			off += type.Size;
+			return c;
 		}
 
-		public short ReadShort()
+		public short ReadLeInt16()
 		{
-			return (short) ReadUShort();
+			return (short) ReadLeUint16();
 		}
 
-		public uint ReadUint()
+		public int ReadLeInt32()
 		{
-			uint u = ProgramImage.ReadUint(img, off);
+			return (int) ReadLeUint32();
+		}
+
+		public ushort ReadLeUint16()
+		{
+			ushort w = ProgramImage.ReadLeUint16(img, off);
+			off += 2;
+			return w;
+		}
+
+		public int ReadLeSigned(PrimitiveType w)
+		{
+			if (w.IsIntegral)
+			{
+				switch (w.Size)
+				{
+				case 1: return (sbyte) ReadByte();
+				case 2: return ReadLeInt16();
+				case 4: return ReadLeInt32();
+				default: throw new ArgumentOutOfRangeException();
+				}
+			}
+			throw new ArgumentOutOfRangeException();
+		}
+
+		public uint ReadLeUint32()
+		{
+			uint u = image.ReadLeUint32(off);
 			off += 4;
 			return u;
 		}
 
-		public uint ReadUnsigned(PrimitiveType w)
+		public uint ReadLeUnsigned(PrimitiveType w)
 		{
-			switch (w.Size)
+			if (w.IsIntegral)
 			{
-			case 1: return ReadByte();
-			case 2: return ReadUShort();
-			case 4: return ReadUint();
-			default: throw new ArgumentOutOfRangeException();
+				switch (w.Size)
+				{
+				case 1: return ReadByte();
+				case 2: return ReadLeUint16();
+				case 4: return ReadLeUint32();
+				default: throw new ArgumentOutOfRangeException();
+				}
 			}
-		}
-
-		public ushort ReadUShort()
-		{
-			ushort w = ProgramImage.ReadUShort(img, off);
-			off += 2;
-			return w;
+			throw new ArgumentOutOfRangeException();
 		}
 	}
 }
-

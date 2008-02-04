@@ -94,7 +94,7 @@ namespace Decompiler.Scanning
 				{
 					if (permutation[i] > iMax)
 						iMax = permutation[i];
-					vector[i] = new Address(prog.Image.ReadUint(addrTable + permutation[i]*cbEntry));
+					vector[i] = new Address(prog.Image.ReadLeUint32(addrTable + permutation[i]*cbEntry));
 				}
 			}
 			else

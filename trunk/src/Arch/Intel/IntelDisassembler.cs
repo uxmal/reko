@@ -30,13 +30,13 @@ namespace Decompiler.Arch.Intel
 	/// </summary>
 	public class IntelDisassembler : Disassembler
 	{
-		private PrimitiveType m_dataWidth;
-		private PrimitiveType m_addressWidth;
-		private PrimitiveType m_dataWidthSeg;
-		private PrimitiveType m_addressWidthSeg;
+		private PrimitiveType dataWidth;
+		private PrimitiveType addressWidth;
+		private PrimitiveType defaultDataWidth;
+		private PrimitiveType defaultAddressWidth;
 		private byte m_modrm;
 		private bool isModrmValid;
-		private IntelRegister m_segOverride;
+		private IntelRegister segmentOverride;
 		private ImageReader	rdr;
 		private OpRec [] m_aopRecs;
 
@@ -47,8 +47,8 @@ namespace Decompiler.Arch.Intel
 		public IntelDisassembler(ImageReader rdr, PrimitiveType width)
 		{
 			this.rdr = rdr;
-			m_dataWidthSeg = width;
-			m_addressWidthSeg = width;
+			defaultDataWidth = width;
+			defaultAddressWidth = width;
 		}
 
 		private static IntelRegister RegFromBits(int bits, PrimitiveType dataWidth)
@@ -138,14 +138,14 @@ namespace Decompiler.Arch.Intel
 		private class OpRec
 		{
 			public Opcode	opcode;
-			public string	Format;
+			public string	format;
 			public OpFlag	Flags;
 			public OpRec [] indirect;
 
 			public OpRec(Opcode op, string fmt)
 			{
 				opcode = op;
-				Format = fmt;
+				format = fmt;
 				Flags = OpFlag.None;
 				indirect = null;
 			}
@@ -153,8 +153,22 @@ namespace Decompiler.Arch.Intel
 			public OpRec(Opcode op, string fmt, OpFlag flags)
 			{
 				opcode = op;
-				Format = fmt;
+				format = fmt;
 				Flags = flags;
+			}
+
+			public virtual void Decode(IntelDisassembler disasm)
+			{
+			}
+
+			public string Format
+			{
+				get { return format; }
+			}
+
+			public Opcode Opcode
+			{
+				get { return opcode; }
 			}
 		}
 
@@ -202,21 +216,21 @@ namespace Decompiler.Arch.Intel
 				case 0x2E:
 				case 0x36:
 				case 0x3E:
-					m_segOverride = SegFromBits((op >> 3) & 0x03);
+					segmentOverride = SegFromBits((op >> 3) & 0x03);
 					break;
 				case 0x64:
-					m_segOverride = Registers.fs;
+					segmentOverride = Registers.fs;
 					break;
 				case 0x65:
-					m_segOverride = Registers.gs;
+					segmentOverride = Registers.gs;
 					break;
 				case 0x66:		// 66: changes the width of the data operands.
-					m_dataWidth = (m_dataWidth == PrimitiveType.Word16)
+					dataWidth = (dataWidth == PrimitiveType.Word16)
 						? PrimitiveType.Word32
 						: PrimitiveType.Word16;
 					break;
 				case 0x67:		// 67: changes the width of the address operands 
-					m_addressWidth = (m_addressWidth == PrimitiveType.Word16)
+					addressWidth = (addressWidth == PrimitiveType.Word16)
 						? PrimitiveType.Word32
 						: PrimitiveType.Word16;
 					break;
@@ -233,19 +247,17 @@ namespace Decompiler.Arch.Intel
 		/// <returns>A single disassembled instruction.</returns>
 		public virtual IntelInstruction Disassemble()
 		{
-			byte op;
-			OpRec 	opRec;
-			m_dataWidth = m_dataWidthSeg;
-			m_addressWidth = m_addressWidthSeg;
+			dataWidth = defaultDataWidth;
+			addressWidth = defaultAddressWidth;
 			isModrmValid = false;
-			m_segOverride = Registers.None;
+			segmentOverride = Registers.None;
 			m_aopRecs = s_aOpRec;
 			IntelInstruction pInstr = new IntelInstruction();
 
 			// Fetch the opcode description.
 
-			op = ConsumePrefixes();
-			opRec = m_aopRecs[op];
+			byte op = ConsumePrefixes();
+			OpRec opRec = m_aopRecs[op];
 			string strFormat = opRec.Format;
 
 			// Group instructions need to be handled separately.
@@ -293,8 +305,8 @@ namespace Decompiler.Arch.Intel
 			}
 
 			pInstr.code = opRec.opcode;
-			pInstr.dataWidth = m_dataWidth;
-			pInstr.addrWidth = m_addressWidth;
+			pInstr.dataWidth = dataWidth;
+			pInstr.addrWidth = addressWidth;
 
 			// Now decode instruction format.
 
@@ -324,13 +336,13 @@ namespace Decompiler.Arch.Intel
 					break;
 				case 'A':		// Absolute memory address.
 					++i;
-					ushort off = rdr.ReadUShort();
-					ushort seg = rdr.ReadUShort();
+					ushort off = rdr.ReadLeUint16();
+					ushort seg = rdr.ReadLeUint16();
 					pOperand = addrOp = new AddressOperand(new Address(seg, off));
 					break;
 				case 'E':		// memory or register operand specified by mod & r/m fields.
 					width = OperandWidth(strFormat[i++]);
-					pOperand = DecodeModRM(width, m_segOverride);
+					pOperand = DecodeModRM(width, segmentOverride);
 					break;
 				case 'G':		// register operand specified by the reg field of the modRM byte.
 					width = OperandWidth(strFormat[i++]);
@@ -347,21 +359,17 @@ namespace Decompiler.Arch.Intel
 					break;
 				case 'J':		// Relative jump.
 					width = OperandWidth(strFormat[i++]);
-					offset = rdr.ReadSigned(width);
-					pOperand = new ImmediateOperand(m_dataWidthSeg, (uint)(rdr.Address.off + offset));
+					offset = rdr.ReadLeSigned(width);
+					pOperand = new ImmediateOperand(defaultDataWidth, (uint)(rdr.Address.Offset + offset));
 					break;
 				case 'M':		// modRM may only refer to memory.
 					width = OperandWidth(strFormat[i++]);
-					pOperand = DecodeModRM(m_dataWidth, m_segOverride);
+					pOperand = DecodeModRM(dataWidth, segmentOverride);
 					break;
 				case 'O':		// Offset of the operand is encoded directly after the opcode.
 					width = OperandWidth(strFormat[i++]);
-					pOperand = memOp = new MemoryOperand(
-						width, 
-						new Constant(
-							m_addressWidth,
-							rdr.ReadUnsigned(m_addressWidth)));
-					memOp.SegOverride = m_segOverride;
+					pOperand = memOp = new MemoryOperand(width, rdr.ReadLe(addressWidth));
+					memOp.SegOverride = segmentOverride;
 					break;
 				case 'S':		// Segment register encoded by reg field of modRM byte.
 					Debug.Assert(strFormat[i++] == 'w');
@@ -425,33 +433,33 @@ namespace Decompiler.Arch.Intel
 			default:
 				throw new ArgumentOutOfRangeException();
 			case 'b':
-				m_dataWidth = PrimitiveType.Byte;
+				dataWidth = PrimitiveType.Byte;
 				break;
 			case 'v':
 				break;
 			case 'w':
-				m_dataWidth = PrimitiveType.Word16;
+				dataWidth = PrimitiveType.Word16;
 				break;
 			case 'd':
-				m_dataWidth = PrimitiveType.Word32;
+				dataWidth = PrimitiveType.Word32;
 				break;
 			case 'p':
-				m_dataWidth = PrimitiveType.Pointer32;		// Far pointer.
+				dataWidth = PrimitiveType.Pointer32;		// Far pointer.
 				break;
 			case 'f':
-				m_dataWidth = PrimitiveType.Real32;
+				dataWidth = PrimitiveType.Real32;
 				break;
 			case 'g':
-				m_dataWidth = PrimitiveType.Real64;
+				dataWidth = PrimitiveType.Real64;
 				break;
 			case 'h':
-				m_dataWidth = PrimitiveType.Real80;
+				dataWidth = PrimitiveType.Real80;
 				break;
 			case 'q':
-				m_dataWidth = PrimitiveType.Word64;
+				dataWidth = PrimitiveType.Word64;
 				break;
 			}
-			return m_dataWidth;
+			return dataWidth;
 		}
 
 		public override object DisassembleInstruction()
@@ -486,7 +494,7 @@ namespace Decompiler.Arch.Intel
 
 		public ImmediateOperand CreateImmediateOperand(PrimitiveType immWidth, PrimitiveType instrWidth)
 		{
-			return new ImmediateOperand(immWidth, rdr.ReadUnsigned(immWidth));
+			return new ImmediateOperand(rdr.ReadLe(immWidth));
 		}
 
 		private Operand DecodeModRM(PrimitiveType dataWidth, IntelRegister segOverride)
@@ -501,7 +509,7 @@ namespace Decompiler.Arch.Intel
 			byte scale = 1;
 			PrimitiveType offsetWidth = null;
 
-			if (m_addressWidth == PrimitiveType.Word16)
+			if (addressWidth == PrimitiveType.Word16)
 			{
 				// 16-bit addressing modes are weird.
 
@@ -535,7 +543,7 @@ namespace Decompiler.Arch.Intel
 			}
 			else 
 			{
-				b = RegFromBits(rm, m_addressWidth);
+				b = RegFromBits(rm, addressWidth);
 				idx = Registers.None;
 
 				switch (mod)
@@ -575,11 +583,11 @@ namespace Decompiler.Arch.Intel
 					}
 					else
 					{
-						b = RegFromBits(sib, m_addressWidth);
+						b = RegFromBits(sib, addressWidth);
 					}
 			
 					int i = (sib >> 3) & 0x7;
-					idx = (i == 0x04) ? Registers.None : RegFromBits(i, m_addressWidth);
+					idx = (i == 0x04) ? Registers.None : RegFromBits(i, addressWidth);
 					scale = (byte) (1 << (sib >> 6));
 				}
 			}
@@ -587,13 +595,9 @@ namespace Decompiler.Arch.Intel
 			// Now fetch the offset if there was any.
 
 			Constant offset = null;
-			if (offsetWidth == PrimitiveType.SByte)
+			if (offsetWidth != null)
 			{
-				offset = new Constant(offsetWidth, (sbyte) rdr.ReadSigned(offsetWidth));
-			}
-			else if (offsetWidth != null)
-			{
-				offset = new Constant(offsetWidth, rdr.ReadUnsigned(offsetWidth));
+				offset = rdr.ReadLe(offsetWidth);
 			}
 			else
 				offset = Constant.Invalid;
@@ -1093,7 +1097,7 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.jo,	"Jv"),
 				new OpRec(Opcode.jno,   "Jv"),
 				new OpRec(Opcode.jc,	"Jv"),
-				new OpRec(Opcode.jnc,	 "Jv"),
+				new OpRec(Opcode.jnc,	"Jv"),
 				new OpRec(Opcode.jz,	"Jv"),
 				new OpRec(Opcode.jnz,   "Jv"),
 				new OpRec(Opcode.jbe,   "Jv"),
@@ -1110,12 +1114,12 @@ namespace Decompiler.Arch.Intel
 
 				// 90
 				new OpRec(Opcode.seto, "Eb", OpFlag.X),
-				new OpRec(Opcode.setno, "Eb", OpFlag.X),
+				new OpRec(Opcode.setno,"Eb", OpFlag.X),
 				new OpRec(Opcode.setc, "Eb", OpFlag.X),
-				new OpRec(Opcode.setnc, "Eb", OpFlag.X),
+				new OpRec(Opcode.setnc,"Eb", OpFlag.X),
 				new OpRec(Opcode.setz, "Eb"),
-				new OpRec(Opcode.setnz, "Eb"),
-				new OpRec(Opcode.setbe, "Eb", OpFlag.X),
+				new OpRec(Opcode.setnz,"Eb"),
+				new OpRec(Opcode.setbe,"Eb", OpFlag.X),
 				new OpRec(Opcode.seta, "Eb", OpFlag.X),
 
 				new OpRec(Opcode.sets,    "Eb"),
@@ -1333,9 +1337,9 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.fmul, "Mf"),
 				new OpRec(Opcode.fcom, "Mf"),
 				new OpRec(Opcode.fcomp, "Mf"),
-				new OpRec(Opcode.fsub, "Mf"),
+				new OpRec(Opcode.fsub,  "Mf"),
 				new OpRec(Opcode.fsubr, "Mf"),
-				new OpRec(Opcode.fdiv, "Mf"),
+				new OpRec(Opcode.fdiv,  "Mf"),
 				new OpRec(Opcode.fdivr, "Mf"),
 				// D8 C0
 				new OpRec(Opcode.fadd, "f,F", OpFlag.X),

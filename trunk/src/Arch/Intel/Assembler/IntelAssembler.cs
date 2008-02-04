@@ -93,7 +93,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 			if (m_symOrigin != null && m_symOrigin.fResolved)
 			{
-				addrStart = new Address(addrBase.seg, (ushort) m_symOrigin.offset);
+				addrStart = new Address(addrBase.Selector, (ushort) m_symOrigin.offset);
 			}
 			else
 			{
@@ -631,7 +631,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				case Token.ID:
 				{
 					Symbol sym = symtab.CreateSymbol(lexer.StringLiteral);
-					emitter.EmitInteger(width, (int)addrBase.off);
+					emitter.EmitInteger(width, (int)addrBase.Offset);
 					ReferToSymbol(sym, emitter.Length - (int) width.Size, emitter.SegmentAddressWidth);
 					break;
 				}

@@ -17,6 +17,8 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
+using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
 
@@ -36,12 +38,12 @@ namespace Decompiler.UnitTests.Core
 											0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x49, 0x40,
 			};
 			ProgramImage img = new ProgramImage(new Address(0xC00, 0), bytes);
-			Assert.AreEqual(-0x7F01FFFF, img.ReadInt(0));
-			Assert.AreEqual(0.5, (double) img.ReadDouble(0x04).Value, 0.00001);
-			Assert.AreEqual(1.0, (double) img.ReadDouble(0x0C).Value, 0.00001);
-			Assert.AreEqual(1e-5, (double) img.ReadDouble(0x14).Value, 1e-10);
-			Assert.AreEqual(0.007843137254902, (double) img.ReadDouble(0x1C).Value, 1e-8);
-			Assert.AreEqual(51.0, (double) img.ReadDouble(0x24).Value, 0.00001);
+			Assert.AreEqual(-0x7F01FFFF, img.ReadLeInt32(0));
+			Assert.AreEqual(0.5, (double) img.ReadLeDouble(0x04).Value, 0.00001);
+			Assert.AreEqual(1.0, (double) img.ReadLeDouble(0x0C).Value, 0.00001);
+			Assert.AreEqual(1e-5, (double) img.ReadLeDouble(0x14).Value, 1e-10);
+			Assert.AreEqual(0.007843137254902, (double) img.ReadLeDouble(0x1C).Value, 1e-8);
+			Assert.AreEqual(51.0, (double) img.ReadLeDouble(0x24).Value, 0.00001);
 		}
 
 		//$TODO: little endian / big-endian reader.
@@ -52,7 +54,7 @@ namespace Decompiler.UnitTests.Core
 			byte [] bytes = new byte[] { 0x01, 0x02, 0x03 };
 
 			ProgramImage img = new ProgramImage(new Address(0x0C00, 0), bytes);
-			ushort newSeg = img.FixupUShort(1, 0x4444);
+			ushort newSeg = img.FixupLeUint16(1, 0x4444);
 			Assert.AreEqual(0x4746, newSeg);
 		}
 
@@ -62,6 +64,37 @@ namespace Decompiler.UnitTests.Core
 			ProgramImage img = new ProgramImage(new Address(0x1231000), new byte [256]);
 			Assert.IsNotNull(img.Map);
 			Assert.AreEqual(1, img.Map.Items.Count);
+		}
+
+		[Test]
+		public void ReadLeUShort()
+		{
+			ProgramImage img = new ProgramImage(new Address(0x10000), new byte[] {
+				0x78, 0x56, 0x34, 0x12 });
+			Constant c = img.ReadLe(2, PrimitiveType.Word16);
+			Assert.AreSame(PrimitiveType.Word16, c.DataType);
+			Assert.AreEqual("0x1234", c.ToString());
+		}
+
+		[Test]
+		public void ReadLeUInt32()
+		{
+			ProgramImage img = new ProgramImage(new Address(0x10000), new byte[] {
+				0x78, 0x56, 0x34, 0x12 });
+			Constant c = img.ReadLe(0, PrimitiveType.Word32);
+			Assert.AreSame(PrimitiveType.Word32, c.DataType);
+			Assert.AreEqual("0x12345678", c.ToString());
+		}
+
+		[Test]
+		public void ReadLeNegativeInt()
+		{
+			ProgramImage img = new ProgramImage(new Address(0x10000), new byte[] {
+				0xFE, 0xFF, 0xFF, 0xFF });
+			Constant c = img.ReadLe(0, PrimitiveType.Int32);
+			Assert.AreSame(PrimitiveType.Int32, c.DataType);
+			Assert.AreEqual("-2", c.ToString());
+
 		}
 	}
 }

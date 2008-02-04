@@ -57,23 +57,6 @@ namespace Decompiler.Core.Code
 			set { typeVariable = value; }
 		}
 
-		protected static string [] opStrings = 
-		{
-			" + ",  " & ",  " / ", 
-			" /u ", " % ",  " * ",  " *u ",
-			" | ", " >>u ", " >> ",
-			" << ", " - ", " ^ ",
-			" && ", " || ",
-
-			" < ",  " > ",  " <= ", " >= ", 
-			" <u ", " >u ", " <=u ", " >=u ",
-			" == ", " != ",
-
-			"!", "-",
-			"~",
-			"&" 
-		};
-
 		public override string ToString()
 		{
 			StringWriter sw = new StringWriter();

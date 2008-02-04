@@ -108,17 +108,17 @@ namespace Decompiler.UnitTests.Intel
 		{
 			public Address GetBlockStartAddress(Address addr)
 			{
-				switch (addr.off)
+				switch (addr.Offset)
 				{
-					case 0x000D: return new Address(addr.seg, 0x0009);
-					default: throw new ArgumentException(string.Format("offset {0:X4} not handled", addr.off));
+					case 0x000D: return new Address(addr.Selector, 0x0009);
+					default: throw new ArgumentException(string.Format("offset {0:X4} not handled", addr.Offset));
 				}
 			}
 
 			public AddressRange GetSinglePredecessorAddressRange(Address addrBegin)
 			{
-				if (addrBegin.off == 0x0009)
-					return new AddressRange(new Address(addrBegin.seg, 0), addrBegin);
+				if (addrBegin.Offset == 0x0009)
+					return new AddressRange(new Address(addrBegin.Selector, 0), addrBegin);
 				else
 					return null;
 			}
@@ -128,19 +128,19 @@ namespace Decompiler.UnitTests.Intel
 		{
 			public AddressRange GetSinglePredecessorAddressRange(Address addr)
 			{
-				switch (addr.off)
+				switch (addr.Offset)
 				{
 					case 0x1000000B: return new AddressRange(new Address(0x10000000), addr);
-					default: throw new ArgumentException(string.Format("offset {0:X8} not handled", addr.off));
+					default: throw new ArgumentException(string.Format("offset {0:X8} not handled", addr.Offset));
 				}
 			}
 
 			public Address GetBlockStartAddress(Address addr)
 			{
-				switch (addr.off)
+				switch (addr.Offset)
 				{
 					case 0x10000013: return new Address(0x1000000B);
-					default: throw new ArgumentException(string.Format("offset {0:X8} not handled", addr.off));
+					default: throw new ArgumentException(string.Format("offset {0:X8} not handled", addr.Offset));
 				}
 			}
 		}
