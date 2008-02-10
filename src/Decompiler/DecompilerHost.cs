@@ -29,8 +29,8 @@ namespace Decompiler
 	{
 		TextWriter CreateDisassemblyWriter();
 		TextWriter CreateIntermediateCodeWriter();
-		TextWriter CreateTypesWriter();				// TextWriter into which the reconstructed types are written.
-		TextWriter CreateDecompiledCodeWriter();	// Textwriter into which the Data is written
+		TextWriter CreateTypesWriter(string filename);				// TextWriter into which the reconstructed types are written.
+		TextWriter CreateDecompiledCodeWriter(string filename);	// Textwriter into which the Data is written
 
 		void ProgramLoaded();
 		void ProgramScanned();
@@ -63,12 +63,12 @@ namespace Decompiler
 			throw new Exception("The method or operation is not implemented.");
 		}
 
-		public TextWriter CreateTypesWriter()
+		public TextWriter CreateTypesWriter(string filename)
 		{
 			throw new Exception("The method or operation is not implemented."); 
 		}
 
-		public TextWriter CreateDecompiledCodeWriter()
+		public TextWriter CreateDecompiledCodeWriter(string filename)
 		{
 			throw new Exception("The method or operation is not implemented."); 
 		}

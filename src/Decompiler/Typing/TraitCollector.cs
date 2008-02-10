@@ -71,12 +71,12 @@ namespace Decompiler.Typing
 			
 		public void CollectEffectiveAddress(TypeVariable fieldType, Expression effectiveAddress)
 		{
-			atrco.Collect(null, fieldType, effectiveAddress);
+			atrco.Collect(null, 0, fieldType, effectiveAddress);
 		}
 
-		public void CollectEffectiveAddress(TypeVariable basePtrType, TypeVariable fieldType, Expression effectiveAddress)
+		public void CollectEffectiveAddress(TypeVariable basePtrType, int basePtrSize, TypeVariable fieldType, Expression effectiveAddress)
 		{
-			atrco.Collect(basePtrType, fieldType, effectiveAddress);
+			atrco.Collect(basePtrType, basePtrSize, fieldType, effectiveAddress);
 		}
 
 		public void CollectProgramTraits(Program prog)
@@ -442,7 +442,7 @@ namespace Decompiler.Typing
 			base.VisitSegmentedAccess(access);
 			TypeVariable tAccess = access.TypeVariable;
 			handler.DataTypeTrait(tAccess, access.DataType);
-			CollectEffectiveAddress(access.BasePointer.TypeVariable, tAccess, access.EffectiveAddress);
+			CollectEffectiveAddress(access.BasePointer.TypeVariable, access.BasePointer.DataType.Size, tAccess, access.EffectiveAddress);
 		}
 
 		public override void VisitPhiFunction(PhiFunction phi)
@@ -465,10 +465,10 @@ namespace Decompiler.Typing
 			DataType [] argTypes = null;
 			if (sig != null)
 			{
-				argTypes = new DataType[sig.Arguments.Length];
+				argTypes = new DataType[sig.FormalArguments.Length];
 				for (int i = 0; i < argTypes.Length; ++i)
 				{
-					argTypes[i] = sig.Arguments[i].DataType;
+					argTypes[i] = sig.FormalArguments[i].DataType;
 				}
 			} 
 			else

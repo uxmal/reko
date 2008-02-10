@@ -38,8 +38,8 @@ namespace Decompiler.Typing
 		{
 			this.store = store;
 			this.prog = prog;
-			this.tcr = new TypedConstantRewriter(store, prog.Globals);
 			this.compTypes = new DataTypeComparer();
+			this.tcr = new TypedConstantRewriter(store, prog.Globals);
 		}
 
 		public UnionType AsUnion(DataType dt)
@@ -156,7 +156,12 @@ namespace Decompiler.Typing
 			if (dtLeft.IsComplex)
 			{
 				if (dtRight.IsComplex)
-					throw new TypeInferenceException("Both left and right sides of a binary expression can't be complex types.");
+				{
+					System.Diagnostics.Debug.WriteLine(	//$DEBUG replace exception
+						/*throw new TypeInferenceException(*/"Both left and right sides of a binary expression can't be complex types." +
+						string.Format("\r\n{0}: [{1}], [{2}].", binExp, dtLeft, dtRight));
+					return binExp;
+				}
 				Constant c = (Constant) binExp.Right;
 				ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
 					dtLeft, 

@@ -16,11 +16,10 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core.Types;
 using System;
 using System.Collections;
 
-namespace Decompiler.Typing
+namespace Decompiler.Core.Types
 {
 	public class TypeVariableCollection : CollectionBase
 	{

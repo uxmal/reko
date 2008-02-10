@@ -19,6 +19,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
 using Decompiler.Scanning;
 using Decompiler.Loading;
 using Decompiler.Analysis;
@@ -60,6 +61,7 @@ namespace Decompiler
 			this.host = host;
 			this.project.Input.Filename = binaryFilename;
 			this.project.Output.RewrittenFilename = Path.ChangeExtension(binaryFilename, ".dis");
+			this.project.Output.OutputFilename = Path.ChangeExtension(binaryFilename, ".c");
 			this.project.Output.TypesFilename = Path.ChangeExtension(binaryFilename, ".h");
 			this.program = program;
 		}
@@ -92,7 +94,7 @@ namespace Decompiler
 				AnalyzeDataFlow();
 				ReconstructTypes();
 				StructureProgram();
-				WriteDecompiledProcedures(host);
+				WriteDecompilerProducts();
 			} 
 			catch (Exception e)
 			{
@@ -192,7 +194,7 @@ namespace Decompiler
 			{
 				TypeAnalyzer analyzer = new TypeAnalyzer(program, ivs, host);
 				analyzer.RewriteProgram();
-				using (TextWriter w = host.CreateTypesWriter())
+				using (TextWriter w = host.CreateTypesWriter(project.Output.TypesFilename))
 				{
 					analyzer.WriteTypes(w);
 				}
@@ -224,8 +226,11 @@ namespace Decompiler
 
 		public void WriteDecompiledProcedures(DecompilerHost host)
 		{
-			using (TextWriter w = host.CreateDecompiledCodeWriter())
+			using (TextWriter w = host.CreateDecompiledCodeWriter(project.Output.OutputFilename))
 			{
+				WriteHeaderComment(Path.GetFileName(project.Output.OutputFilename), w);
+				w.WriteLine("#include \"{0}\"", Path.GetFileName(project.Output.TypesFilename));
+				w.WriteLine();
 				CodeFormatter fmt = new CodeFormatter(w);
 				foreach (Procedure proc in program.Procedures.Values)
 				{
@@ -233,6 +238,36 @@ namespace Decompiler
 					w.WriteLine();
 				}
 			}
+		}
+
+		public void WriteDecompiledTypes(DecompilerHost host)
+		{
+			using (TextWriter w = host.CreateTypesWriter(project.Output.TypesFilename))
+			{
+				WriteHeaderComment(Path.GetFileName(project.Output.TypesFilename), w);
+				w.WriteLine("/*");program.TypeStore.Write(w); w.WriteLine("*/");
+				TypeFormatter fmt = new TypeFormatter(w);
+				foreach (EquivalenceClass eq in program.TypeStore.UsedEquivalenceClasses)
+				{
+					if (eq.DataType != null)
+						fmt.Write(eq.DataType, eq.Name);
+				}
+			}
+		}
+
+
+		public void WriteDecompilerProducts()
+		{
+			WriteDecompiledTypes(host);
+			WriteDecompiledProcedures(host);
+		}
+
+		public void WriteHeaderComment(string filename, TextWriter w)
+		{
+			w.WriteLine("// {0}", filename);
+			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, project.Input.Filename);
+			w.WriteLine("// using Decompiler.");
+			w.WriteLine();
 		}
 
 		public void ScanProcedure(Address addr)

@@ -92,7 +92,7 @@ namespace Decompiler.Analysis
 
 		public void AddUseInstructionsForOutArguments(Procedure proc)
 		{
-			foreach (Identifier id in proc.Signature.Arguments)
+			foreach (Identifier id in proc.Signature.FormalArguments)
 			{
 				OutArgumentStorage os = id.Storage as OutArgumentStorage;
 				if (os == null)

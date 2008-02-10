@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests
 		[Test]
 		public void DhTypes()
 		{
-			using (TextWriter w = host.CreateTypesWriter())
+			using (TextWriter w = host.CreateTypesWriter("Nils"))
 			{
 				w.WriteLine("Nils");
 			}
@@ -102,7 +102,7 @@ namespace Decompiler.UnitTests
 			sb.WriteLine(format, args);
 		}
 
-		public TextWriter CreateDecompiledCodeWriter()
+		public TextWriter CreateDecompiledCodeWriter(string file)
 		{
 			return decompiled;
 		}
@@ -117,7 +117,7 @@ namespace Decompiler.UnitTests
 			return null;
 		}
 
-		public TextWriter CreateTypesWriter()
+		public TextWriter CreateTypesWriter(string fileName)
 		{
 			return typesWriter;
 		}

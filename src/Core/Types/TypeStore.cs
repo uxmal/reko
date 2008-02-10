@@ -17,13 +17,12 @@
  */
 
 using Decompiler.Core.Code;
-using Decompiler.Core.Types;
 using Decompiler.Core.Output;
 using System;
 using System.Collections;
 using System.IO;
 
-namespace Decompiler.Typing
+namespace Decompiler.Core.Types
 {
 	/// <summary>
 	/// Stores, for a particular program, all type variables, equivalence classes, and their mappings to

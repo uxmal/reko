@@ -36,7 +36,7 @@ namespace Decompiler.Core
 	public class ProcedureSignature
 	{
 		private Identifier ret;
-		private Identifier [] args;
+		private Identifier [] formals;
 		private int stackDelta;
 		private TypeVariable typeVar;
 
@@ -48,15 +48,15 @@ namespace Decompiler.Core
 		{
 		}
 
-		public ProcedureSignature(Identifier returnId, Identifier [] arguments)
+		public ProcedureSignature(Identifier returnId, Identifier [] formalArguments)
 		{
 			this.ret = returnId;
-			this.args = arguments;
+			this.formals = formalArguments;
 		}
 		
-		public Identifier [] Arguments
+		public Identifier [] FormalArguments
 		{
-			get { return args; } 
+			get { return formals; } 
 		}
 
 		public void Emit(string fnName, EmitFlags f, TextWriter w)
@@ -72,13 +72,13 @@ namespace Decompiler.Core
 				w.Write("void ");
 			}
 			w.Write("{0}(", fnName);
-			if (args != null && args.Length > 0)
+			if (formals != null && formals.Length > 0)
 			{
-				args[0].Write(emitStorage, w);
-				for (int i = 1; i < args.Length; ++i)
+				formals[0].Write(emitStorage, w);
+				for (int i = 1; i < formals.Length; ++i)
 				{
 					w.Write(", ");
-					args[i].Write(emitStorage, w);
+					formals[i].Write(emitStorage, w);
 				}
 			}
 			w.Write(")");
@@ -123,7 +123,7 @@ namespace Decompiler.Core
 
 		public bool ArgumentsValid
 		{
-			get { return args != null || ret != null; }
+			get { return formals != null || ret != null; }
 		}
 
 		/// <summary>

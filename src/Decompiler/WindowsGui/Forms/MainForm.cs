@@ -59,7 +59,6 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.TabControl tabsOutput;
 		private System.Windows.Forms.TabPage tabDiagnostics;
 		private System.Windows.Forms.ListView listDiagnostics;
-		private System.Windows.Forms.TabPage tabDiscoveries;
 		private System.Windows.Forms.ListView listDiscoveries;
 		private System.Windows.Forms.TabPage tabLog;
 		private System.Windows.Forms.TextBox txtLog;
@@ -85,6 +84,7 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.ColumnHeader listBrowserItemName;
 		private System.Windows.Forms.ProgressBar progressBar1;
 		private Decompiler.WindowsGui.Forms.AnalyzedPage pageAnalyzed;
+		private System.Windows.Forms.TabPage tabWarnings;
 		private System.ComponentModel.IContainer components;
 
 		public MainForm()
@@ -136,7 +136,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.tabDiagnostics = new System.Windows.Forms.TabPage();
 			this.listDiagnostics = new System.Windows.Forms.ListView();
 			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-			this.tabDiscoveries = new System.Windows.Forms.TabPage();
+			this.tabWarnings = new System.Windows.Forms.TabPage();
 			this.listDiscoveries = new System.Windows.Forms.ListView();
 			this.colDiscoveryType = new System.Windows.Forms.ColumnHeader();
 			this.colDiscoveryDescription = new System.Windows.Forms.ColumnHeader();
@@ -147,12 +147,13 @@ namespace Decompiler.WindowsGui.Forms
 			this.panelRhs = new System.Windows.Forms.Panel();
 			this.pageLoaded = new Decompiler.WindowsGui.Forms.LoadedPage();
 			this.pageInitial = new Decompiler.WindowsGui.Forms.InitialPage();
+			this.pageAnalyzed = new Decompiler.WindowsGui.Forms.AnalyzedPage();
+			this.pageFinal = new Decompiler.WindowsGui.Forms.FinalPage();
 			this.panelLhs = new System.Windows.Forms.Panel();
 			this.listBrowser = new System.Windows.Forms.ListView();
 			this.listBrowserItemName = new System.Windows.Forms.ColumnHeader();
 			this.ddlBrowserFilter = new System.Windows.Forms.ComboBox();
 			this.treeBrowser = new System.Windows.Forms.TreeView();
-			this.pageFinal = new Decompiler.WindowsGui.Forms.FinalPage();
 			this.panelBottom = new System.Windows.Forms.Panel();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.statusBar = new System.Windows.Forms.StatusBar();
@@ -160,10 +161,9 @@ namespace Decompiler.WindowsGui.Forms
 			this.statusBarPanel2 = new System.Windows.Forms.StatusBarPanel();
 			this.statusBarPanel3 = new System.Windows.Forms.StatusBarPanel();
 			this.splitter1 = new System.Windows.Forms.Splitter();
-			this.pageAnalyzed = new Decompiler.WindowsGui.Forms.AnalyzedPage();
 			this.tabsOutput.SuspendLayout();
 			this.tabDiagnostics.SuspendLayout();
-			this.tabDiscoveries.SuspendLayout();
+			this.tabWarnings.SuspendLayout();
 			this.tabLog.SuspendLayout();
 			this.panelTop.SuspendLayout();
 			this.panelRhs.SuspendLayout();
@@ -228,7 +228,7 @@ namespace Decompiler.WindowsGui.Forms
 			// tabsOutput
 			// 
 			this.tabsOutput.Controls.Add(this.tabDiagnostics);
-			this.tabsOutput.Controls.Add(this.tabDiscoveries);
+			this.tabsOutput.Controls.Add(this.tabWarnings);
 			this.tabsOutput.Controls.Add(this.tabLog);
 			this.tabsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabsOutput.Location = new System.Drawing.Point(0, 0);
@@ -262,15 +262,15 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			this.columnHeader1.Width = 400;
 			// 
-			// tabDiscoveries
+			// tabWarnings
 			// 
-			this.tabDiscoveries.Controls.Add(this.listDiscoveries);
-			this.tabDiscoveries.Location = new System.Drawing.Point(4, 22);
-			this.tabDiscoveries.Name = "tabDiscoveries";
-			this.tabDiscoveries.Size = new System.Drawing.Size(672, 74);
-			this.tabDiscoveries.TabIndex = 2;
-			this.tabDiscoveries.Text = "Discoveries";
-			this.tabDiscoveries.Visible = false;
+			this.tabWarnings.Controls.Add(this.listDiscoveries);
+			this.tabWarnings.Location = new System.Drawing.Point(4, 22);
+			this.tabWarnings.Name = "tabWarnings";
+			this.tabWarnings.Size = new System.Drawing.Size(672, 74);
+			this.tabWarnings.TabIndex = 2;
+			this.tabWarnings.Text = "Warnings";
+			this.tabWarnings.Visible = false;
 			// 
 			// listDiscoveries
 			// 
@@ -334,9 +334,10 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			// panelRhs
 			// 
-			this.panelRhs.Controls.Add(this.pageAnalyzed);
 			this.panelRhs.Controls.Add(this.pageLoaded);
 			this.panelRhs.Controls.Add(this.pageInitial);
+			this.panelRhs.Controls.Add(this.pageAnalyzed);
+			this.panelRhs.Controls.Add(this.pageFinal);
 			this.panelRhs.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panelRhs.Location = new System.Drawing.Point(256, 0);
 			this.panelRhs.Name = "panelRhs";
@@ -345,6 +346,7 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			// pageLoaded
 			// 
+			this.pageLoaded.BackColor = System.Drawing.SystemColors.Control;
 			this.pageLoaded.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pageLoaded.Location = new System.Drawing.Point(0, 0);
 			this.pageLoaded.Name = "pageLoaded";
@@ -363,11 +365,18 @@ namespace Decompiler.WindowsGui.Forms
 			// pageAnalyzed
 			// 
 			this.pageAnalyzed.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pageAnalyzed.Location = new System.Drawing.Point(176, 352);
+			this.pageAnalyzed.Location = new System.Drawing.Point(0, 0);
 			this.pageAnalyzed.Name = "pageAnalyzed";
-			this.pageAnalyzed.Size = new System.Drawing.Size(600, 360);
+			this.pageAnalyzed.Size = new System.Drawing.Size(424, 387);
 			this.pageAnalyzed.TabIndex = 21;
-
+			// 
+			// pageFinal
+			// 
+			this.pageFinal.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pageFinal.Location = new System.Drawing.Point(0, 0);
+			this.pageFinal.Name = "pageFinal";
+			this.pageFinal.Size = new System.Drawing.Size(424, 387);
+			this.pageFinal.TabIndex = 0;
 			// 
 			// panelLhs
 			// 
@@ -423,14 +432,6 @@ namespace Decompiler.WindowsGui.Forms
 			this.treeBrowser.SelectedImageIndex = -1;
 			this.treeBrowser.Size = new System.Drawing.Size(253, 355);
 			this.treeBrowser.TabIndex = 16;
-			// 
-			// pageFinal
-			// 
-			this.pageFinal.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pageFinal.Location = new System.Drawing.Point(0, 0);
-			this.pageFinal.Name = "pageFinal";
-			this.pageFinal.Size = new System.Drawing.Size(312, 104);
-			this.pageFinal.TabIndex = 0;
 			// 
 			// panelBottom
 			// 
@@ -502,7 +503,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.Text = "Decompiler";
 			this.tabsOutput.ResumeLayout(false);
 			this.tabDiagnostics.ResumeLayout(false);
-			this.tabDiscoveries.ResumeLayout(false);
+			this.tabWarnings.ResumeLayout(false);
 			this.tabLog.ResumeLayout(false);
 			this.panelTop.ResumeLayout(false);
 			this.panelRhs.ResumeLayout(false);

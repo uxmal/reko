@@ -608,5 +608,11 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			return new Constant(PrimitiveType.Word16, n);
 		}
+
+		public Constant Word32(int n)
+		{
+			return new Constant(PrimitiveType.Word32, n);
+		}
+	
 	}
 }

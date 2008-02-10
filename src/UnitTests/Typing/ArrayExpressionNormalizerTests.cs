@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Typing
 			Expression e = m.Load(PrimitiveType.Int32, 
 				m.Add(p, m.Add(m.Muls(i, 8), 4)));
 			e = e.Accept(aen);
-			Assert.AreEqual("(p + 0x00000004)[i * 0x00000008]", e.ToString());
+			Assert.AreEqual("(p + 4)[i * 0x00000008]", e.ToString());
 		}
 
 		[SetUp]

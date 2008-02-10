@@ -107,8 +107,12 @@ namespace Decompiler.Core.Output
 
 		public void VisitArray(ArrayType at)
 		{
+			string oldName = name;
+			name = null;
 			at.ElementType.Accept(this);
-			WriteName();
+			name = oldName;
+			WriteName(true);
+			name = null;
 			writer.Write("[");
 			if (at.Length != 0)
 			{
@@ -119,12 +123,33 @@ namespace Decompiler.Core.Output
 
 		public void VisitEquivalenceClass(EquivalenceClass eq)
 		{
-			throw new NotImplementedException("TypeFormatter.EquivalenceClass");
+			writer.Write(eq.Name);
 		}
 
 		public void VisitFunctionType(FunctionType ft)
 		{
-			throw new NotImplementedException("TypeFormatter.FunctionType");
+			string oldName = name;
+			name = null;
+			ft.ReturnType.Accept(this);
+			writer.Write(" (");
+			name = oldName;
+			WriteName(false);
+			writer.Write(")(");
+			if (ft.ArgumentTypes.Length > 0)
+			{
+				name = ft.ArgumentNames != null ? ft.ArgumentNames[0] : null;
+				ft.ArgumentTypes[0].Accept(this);
+				
+				for (int i = 1; i < ft.ArgumentTypes.Length; ++i)
+				{
+					writer.Write(", ");
+					name = ft.ArgumentNames != null ? ft.ArgumentNames[i] : null;
+					ft.ArgumentTypes[i].Accept(this);
+				}
+				name = oldName;
+			}
+
+			writer.Write(")");
 		}
 
 		public void VisitStructure(StructureType str)
@@ -157,7 +182,7 @@ namespace Decompiler.Core.Output
 				}
 
 				name = n;
-				WriteName();
+				WriteName(true);
 			}
 			else
 			{
@@ -184,7 +209,20 @@ namespace Decompiler.Core.Output
 
 		public void VisitMemberPointer(MemberPointer memptr)
 		{
-			throw new NotImplementedException();
+			Pointer p = memptr.BasePointer as Pointer;
+			if (p != null)
+			{
+				string oldName = name;
+				name = null;
+				memptr.Pointee.Accept(this);
+				writer.Write(' ');
+				writer.Write(p.Pointee.Name);
+				writer.Write("::*");
+				name = oldName;
+				WriteName(false);
+			}
+			else
+				writer.Write("@@@Expected a base pointer in {0}", memptr);
 		}
 
 		public void VisitPointer(Pointer pt)
@@ -204,7 +242,7 @@ namespace Decompiler.Core.Output
 			if (mode == Mode.Writing)
 			{
 				pt.Write(writer);
-				WriteName();
+				WriteName(true);
 			}
 		}
 
@@ -231,7 +269,7 @@ namespace Decompiler.Core.Output
 			CloseBrace();
 
 			name = n;
-			WriteName();
+			WriteName(true);
 		}
 
 		public void VisitUnknownType(UnknownType ut)
@@ -260,11 +298,12 @@ namespace Decompiler.Core.Output
 			}
 		}
 
-		private void WriteName()
+		private void WriteName(bool spacePrefix)
 		{
 			if (name != null)
 			{
-				writer.Write(" ");
+				if (spacePrefix)
+					writer.Write(" ");
 				writer.Write(name);
 			}
 		}

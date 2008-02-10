@@ -31,7 +31,6 @@ namespace Decompiler.Typing
 	{
 		private TypeStore store;
 		private Identifier globals;
-		private StructureType globalVars;
 		private Constant c;
 		private PrimitiveType pOrig;
 		private Expression exp;
@@ -41,17 +40,24 @@ namespace Decompiler.Typing
 		{
 			this.store = store;
 			this.globals = globals;
-			if (globals != null && globals.TypeVariable != null)
-			{
-				Pointer pGlob = globals.TypeVariable.DataType as Pointer;
-				if (pGlob != null)
-				{
-					object o = store.ResolvePossibleTypeVar(pGlob.Pointee);
-					this.globalVars = (StructureType) o;
-				}
-			}
 		}
 
+		private StructureType GlobalVars
+		{
+			get
+			{
+				if (globals != null && globals.TypeVariable != null)
+				{
+					Pointer pGlob = globals.TypeVariable.DataType as Pointer;
+					if (pGlob != null)
+					{
+						object o = store.ResolvePossibleTypeVar(pGlob.Pointee);
+						return (StructureType) o;
+					}
+				}
+				return null;
+			}
+		}
 		public Expression Rewrite(Constant c, bool dereferenced)
 		{
 			this.c = c;
@@ -89,18 +95,22 @@ namespace Decompiler.Typing
 
 		public void VisitPointer(Pointer ptr)
 		{
-			StructureField f = globalVars.Fields.AtOffset(c.ToInt32());
-			if (f == null)
-				throw new InvalidOperationException(string.Format("Expected a global variable with address 0x{0:X8}", c.ToInt32()));
+			Expression e = c;
+			if (GlobalVars != null)
+			{
+				StructureField f = GlobalVars.Fields.AtOffset(c.ToInt32());
+				if (f == null)
+					throw new InvalidOperationException(string.Format("Expected a global variable with address 0x{0:X8}", c.ToInt32()));
 
-			Expression e = new FieldAccess(ptr.Pointee, new Dereference(null, globals), f.Name);
-			if (dereferenced)
-			{
-				e.DataType = ptr.Pointee;
-			}
-			else
-			{
-				e = new UnaryExpression(Operator.addrOf, ptr, e);
+				e = new FieldAccess(ptr.Pointee, new Dereference(null, globals), f.Name);
+				if (dereferenced)
+				{
+					e.DataType = ptr.Pointee;
+				}
+				else
+				{
+					e = new UnaryExpression(Operator.addrOf, ptr, e);
+				}
 			}
 			Return(e);
 		}

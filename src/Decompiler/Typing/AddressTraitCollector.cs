@@ -40,6 +40,7 @@ namespace Decompiler.Typing
 		private Procedure proc;
 		private bool arrayContext;
 		private TypeVariable tvBasePointer;
+		private int basePointerSize;
 		private int arrayElementSize;
 		private int arrayLength;
 
@@ -53,9 +54,10 @@ namespace Decompiler.Typing
 			this.arrayContext = false;
 		}
 
-		public void Collect(TypeVariable tvBasePointer, TypeVariable tvField, Expression effectiveAddress)
+		public void Collect(TypeVariable tvBasePointer, int basePointerSize, TypeVariable tvField, Expression effectiveAddress)
 		{
 			this.tvBasePointer = tvBasePointer;
+			this.basePointerSize = basePointerSize;
 			this.tvField = tvField;
 			effectiveAddress.Accept(this);
 		}
@@ -164,7 +166,7 @@ namespace Decompiler.Typing
 				v = (int) Convert.ToUInt32(c.Value);
 
 			if (tvBasePointer != null)
-				handler.MemAccessTrait(null, tvBasePointer, c.DataType.Size, tvField, v);
+				handler.MemAccessTrait(null, tvBasePointer, basePointerSize, tvField, v);
 			else
 				handler.MemAccessTrait(null, globals.TypeVariable, c.DataType.Size, tvField, v);
 			// C is a pointer to tvField: [[c]] = ptr(tvField)

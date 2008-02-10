@@ -198,9 +198,9 @@ namespace Decompiler.Arch.Intel
 			// Trash registers as appropriate.
 
 			TrashVariable(svc.Signature.ReturnValue);
-			for (int i = 0; i < svc.Signature.Arguments.Length; ++i)
+			for (int i = 0; i < svc.Signature.FormalArguments.Length; ++i)
 			{
-				OutArgumentStorage os = svc.Signature.Arguments[i].Storage as OutArgumentStorage;
+				OutArgumentStorage os = svc.Signature.FormalArguments[i].Storage as OutArgumentStorage;
 				if (os != null)
 				{
 					TrashVariable(os.OriginalIdentifier);

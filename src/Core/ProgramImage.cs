@@ -28,9 +28,6 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Contains the bytes that are present in memory when a program is loaded.
 	/// </summary>
-	/// <remarks>
-	///$TODO: this is little endian. Need separate routines for big-endian reader.
-	/// </remarks>
 	public class ProgramImage
 	{
 		private byte [] abImage;

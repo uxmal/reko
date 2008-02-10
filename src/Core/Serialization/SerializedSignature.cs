@@ -52,12 +52,12 @@ namespace Decompiler.Core.Serialization
 			{
 				ReturnValue = new SerializedArgument(sig.ReturnValue);
 			}
-			if (sig.Arguments != null && sig.Arguments.Length > 0)
+			if (sig.FormalArguments != null && sig.FormalArguments.Length > 0)
 			{
-				Arguments = new SerializedArgument[sig.Arguments.Length];
+				Arguments = new SerializedArgument[sig.FormalArguments.Length];
 				for (int i = 0; i < Arguments.Length; ++i)
 				{
-					Arguments[i] = new SerializedArgument(sig.Arguments[i]);
+					Arguments[i] = new SerializedArgument(sig.FormalArguments[i]);
 				}
 			}
 		}

@@ -44,12 +44,6 @@ namespace Decompiler.Core.Code
 			v.VisitDeclaration(this);
 		}
 
-		public Identifier Id
-		{
-			get { return id; }
-			set { id = value; }
-		}
-
 		public Expression Expression
 		{
 			get { return init; }
@@ -61,5 +55,10 @@ namespace Decompiler.Core.Code
 			get { return false; }
 		}
 
+		public Identifier Id
+		{
+			get { return id; }
+			set { id = value; }
+		}
 	}
 }
