@@ -344,11 +344,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Value.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "WorkList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -966,7 +961,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Types\TypeStore.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Types\TypeVariable.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Types\TypeVariableCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -39,19 +39,19 @@ namespace Decompiler.UnitTests.Intel
 			state.Set(Registers.ah, new Constant(PrimitiveType.Byte, 0x3E));
 			SystemService svc = platform.FindService(0x21, state);
 			Assert.AreEqual("msdos_close_file", svc.Name);
-			Assert.AreEqual(1, svc.Signature.Arguments.Length);
+			Assert.AreEqual(1, svc.Signature.FormalArguments.Length);
 			Assert.IsFalse(svc.Characteristics.Terminates, "close() shouldn't terminate program");
 
 			state.Set(Registers.ah, new Constant(PrimitiveType.Byte, 0x4C));
 			svc = platform.FindService(0x21, state);
 			Assert.AreEqual("msdos_terminate", svc.Name);
-			Assert.AreEqual(1, svc.Signature.Arguments.Length);
+			Assert.AreEqual(1, svc.Signature.FormalArguments.Length);
 			Assert.IsTrue(svc.Characteristics.Terminates, "terminate() should terminate program");
 
 			state.Set(Registers.ah, new Constant(PrimitiveType.Byte, 0x2F));
 			svc = platform.FindService(0x21, state);
 			Assert.AreEqual("msdos_get_disk_transfer_area_address", svc.Name);
-			Assert.AreEqual(0, svc.Signature.Arguments.Length);
+			Assert.AreEqual(0, svc.Signature.FormalArguments.Length);
 			SequenceStorage seq = (SequenceStorage) svc.Signature.ReturnValue.Storage;
 			Assert.AreEqual("es", seq.Head.Name);
 			Assert.AreEqual("bx", seq.Tail.Name);

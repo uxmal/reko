@@ -17,16 +17,18 @@
  */
 
 using System;
+using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
 	public class FinalPage : PhasePage
 	{
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Button btnBrowseHeaderFile;
-		private System.Windows.Forms.TextBox textBox2;
 		private System.Windows.Forms.Button btnBrowseSourceFile;
+		private System.Windows.Forms.TextBox txtHeaderFile;
+		private System.Windows.Forms.TextBox txtSourceFile;
+		private System.Windows.Forms.Button btnSave;
 		private System.Windows.Forms.Label label2;
 	
 		public FinalPage()
@@ -38,11 +40,12 @@ namespace Decompiler.WindowsGui.Forms
 		private void InitializeComponent()
 		{
 			this.label1 = new System.Windows.Forms.Label();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.txtHeaderFile = new System.Windows.Forms.TextBox();
 			this.btnBrowseHeaderFile = new System.Windows.Forms.Button();
 			this.btnBrowseSourceFile = new System.Windows.Forms.Button();
-			this.textBox2 = new System.Windows.Forms.TextBox();
+			this.txtSourceFile = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
+			this.btnSave = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -53,15 +56,15 @@ namespace Decompiler.WindowsGui.Forms
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Data types header file:";
 			// 
-			// textBox1
+			// txtHeaderFile
 			// 
-			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.txtHeaderFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.textBox1.Location = new System.Drawing.Point(8, 24);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(264, 20);
-			this.textBox1.TabIndex = 1;
-			this.textBox1.Text = "textBox1";
+			this.txtHeaderFile.Location = new System.Drawing.Point(8, 24);
+			this.txtHeaderFile.Name = "txtHeaderFile";
+			this.txtHeaderFile.Size = new System.Drawing.Size(264, 20);
+			this.txtHeaderFile.TabIndex = 1;
+			this.txtHeaderFile.Text = "textBox1";
 			// 
 			// btnBrowseHeaderFile
 			// 
@@ -81,15 +84,15 @@ namespace Decompiler.WindowsGui.Forms
 			this.btnBrowseSourceFile.TabIndex = 5;
 			this.btnBrowseSourceFile.Text = "...";
 			// 
-			// textBox2
+			// txtSourceFile
 			// 
-			this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.txtSourceFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.textBox2.Location = new System.Drawing.Point(8, 64);
-			this.textBox2.Name = "textBox2";
-			this.textBox2.Size = new System.Drawing.Size(264, 20);
-			this.textBox2.TabIndex = 4;
-			this.textBox2.Text = "textBox2";
+			this.txtSourceFile.Location = new System.Drawing.Point(8, 64);
+			this.txtSourceFile.Name = "txtSourceFile";
+			this.txtSourceFile.Size = new System.Drawing.Size(264, 20);
+			this.txtSourceFile.TabIndex = 4;
+			this.txtSourceFile.Text = "textBox2";
 			// 
 			// label2
 			// 
@@ -99,21 +102,55 @@ namespace Decompiler.WindowsGui.Forms
 			this.label2.TabIndex = 3;
 			this.label2.Text = "Source code file:";
 			// 
+			// btnSave
+			// 
+			this.btnSave.Location = new System.Drawing.Point(8, 96);
+			this.btnSave.Name = "btnSave";
+			this.btnSave.TabIndex = 6;
+			this.btnSave.Text = "&Save";
+			// 
 			// FinalPage
 			// 
+			this.Controls.Add(this.btnSave);
 			this.Controls.Add(this.btnBrowseSourceFile);
-			this.Controls.Add(this.textBox2);
+			this.Controls.Add(this.txtSourceFile);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.btnBrowseHeaderFile);
-			this.Controls.Add(this.textBox1);
+			this.Controls.Add(this.txtHeaderFile);
 			this.Controls.Add(this.label1);
 			this.Name = "FinalPage";
-			this.Size = new System.Drawing.Size(312, 104);
+			this.Size = new System.Drawing.Size(312, 136);
 			this.ResumeLayout(false);
 
 		}
 		#endregion
 	
+
+		public Button BrowseHeaderFile
+		{
+			get { return this.btnBrowseHeaderFile; }
+		}
+
+		public Button BrowseSourceFile
+		{
+			get { return this.btnBrowseSourceFile; }
+		}
+		
+		public TextBox HeaderFile
+		{
+			get { return txtHeaderFile; }
+		}
+
+		public Button SaveButton
+		{
+			get { return btnSave; }
+		}
+
+		public TextBox SourceFile
+		{
+			get { return txtSourceFile; }
+		}
+
 
 	}
 }

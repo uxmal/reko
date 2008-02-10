@@ -1128,7 +1128,7 @@ namespace Decompiler.Arch.Intel
 				if (procCallee.Signature == null)
 					throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", proc.Name));
 				Identifier id = 
-					procCallee.Signature.Arguments[0].Storage.BindFormalArgumentToFrame(this.frame, call.CallSite);
+					procCallee.Signature.FormalArguments[0].Storage.BindFormalArgumentToFrame(this.frame, call.CallSite);
 				Constant c = SearchBackForConstantAssignment(id);
 				if (c != null)
 				{

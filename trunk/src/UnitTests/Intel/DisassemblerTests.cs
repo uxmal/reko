@@ -254,5 +254,18 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("mov\teax,12345678", instr.ToString());
 			Assert.AreEqual("ptr32", instr.op2.Width.ToString());
 		}
+
+		[Test]
+		public void DisasmRelocatedSegment()
+		{
+			byte[] image = new byte[] { 0x2E, 0xC7, 0x06, 0x01, 0x00, 0x00, 0x08 }; // mov cs:[0001],0800
+			ProgramImage img = new ProgramImage(new Address(0x900, 0), image);
+			img.Relocations.AddSegmentReference(5, 0x0800);
+			ImageReader rdr = img.CreateReader(img.BaseAddress);
+			IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
+			IntelInstruction instr = dasm.Disassemble();
+			Assert.AreEqual("mov\tword ptr cs:[0001],0800", instr.ToString());
+			Assert.AreEqual("segment", instr.op2.Width.ToString());
+		}
 	}
 }

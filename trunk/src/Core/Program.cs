@@ -42,6 +42,7 @@ namespace Decompiler.Core
 		private Identifier globals;
 		private Hashtable pseudoProcs;
 		private TypeFactory typefactory;
+		private TypeStore typeStore;
 
 		public Program()
 		{
@@ -52,6 +53,7 @@ namespace Decompiler.Core
 			trampolines = new Hashtable();	// address -> string
 			pseudoProcs = new Hashtable();
 			typefactory = new TypeFactory();
+			typeStore = new TypeStore();
 			globals = new Identifier("globals", 0, PrimitiveType.Pointer, new MemoryStorage());
 		}
 
@@ -147,6 +149,11 @@ namespace Decompiler.Core
 			get { return typefactory; }
 		}
 		
+		public TypeStore TypeStore
+		{
+			get { return typeStore; }
+		}
+
 		/// <summary>
 		/// Provides access to the program's jump and call tables, sorted by address.
 		/// </summary>

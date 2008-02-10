@@ -56,6 +56,11 @@ namespace Decompiler.Typing
 		/// <paramref>tStruct</paramref> has a field of type <paramref>tField</paramref> at offset <paramref>offset</paramref>. Optionally,
 		/// the memory access is a member pointer based on <paramref>tBase</paramref>
 		/// </summary>
+		/// <param name="tBase">Base pointer for member pointer accesses, or null for simple pointer accesses.</param>
+		/// <param name="tStruct">Type variable of the structure whose field is being accessed.</param>
+		/// <param name="structPtrSize">Size of the pointer associated with the structure field reference.</param>
+		/// <param name="tField">Type variable for the field.</param>
+		/// <param name="offset">Field offset within the structure (in bytes).</param>
 		void MemAccessTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, TypeVariable tField, int offset);
 
 		/// <summary>

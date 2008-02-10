@@ -190,7 +190,7 @@ namespace Decompiler.Typing
 			do
 			{
 				++iteration;
-				DumpStore(iteration, w);
+				if (w != null) DumpStore(iteration, w);
 				Changed = false;
 				foreach (TypeVariable tv in store.TypeVariables)
 				{

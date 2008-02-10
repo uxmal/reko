@@ -34,6 +34,8 @@ namespace Decompiler.Core.Types
 			string [] argumentNames) :
 			base(name)
 		{
+			if (returnType == null)
+				returnType = PrimitiveType.Void;
 			this.ReturnType = returnType; 
 			this.ArgumentTypes = argumentTypes; 
 			this.ArgumentNames = argumentNames;

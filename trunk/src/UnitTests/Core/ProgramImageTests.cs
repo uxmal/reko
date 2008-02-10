@@ -46,8 +46,6 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual(51.0, (double) img.ReadLeDouble(0x24).Value, 0.00001);
 		}
 
-		//$TODO: little endian / big-endian reader.
-
 		[Test]
 		public void UShortFixup()
 		{

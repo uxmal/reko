@@ -70,9 +70,9 @@ namespace Decompiler.Core
 				idOut = Bind(sigCallee.ReturnValue, cs);
 			}
 
-			for (int i = 0; i < sigCallee.Arguments.Length; ++i)
+			for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
 			{
-				Identifier formalArg = sigCallee.Arguments[i];
+				Identifier formalArg = sigCallee.FormalArguments[i];
 				Identifier actualArg = formalArg.Storage.BindFormalArgumentToFrame(frame, cs);
 				if (formalArg.Storage is OutArgumentStorage)
 				{

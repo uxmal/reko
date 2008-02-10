@@ -57,8 +57,8 @@ namespace Decompiler.Typing
 			this.ivs = ivs;
 			this.host = host;
 
-			factory = new TypeFactory();
-			store = new TypeStore();
+			factory = prog.TypeFactory;
+			store = prog.TypeStore;
 
 			aen = new ArrayExpressionNormalizer();
 			eqb = new EquivalenceClassBuilder(factory, store);
@@ -81,39 +81,26 @@ namespace Decompiler.Typing
 		/// <param name="prog"></param>
 		public void RewriteProgram()
 		{
-			TextWriter w = host.CreateTypesWriter();
-			try
-			{
-				aen.Transform(prog);
-				eqb.Build(prog);
-				Debug.WriteLine("= Collecting traits ========================================");
-				trco.CollectProgramTraits(prog);
-				Debug.WriteLine("= Building equivalence classes =============================");
-				dtb.BuildEquivalenceClassDataTypes();
-				dpa.FollowConstantPointers(prog);
-				tvr.ReplaceTypeVariables();
-				Debug.WriteLine("= replaced type variables ==================================");
-				store.Write(w);
-				w.Flush();
-				Debug.WriteLine("= Transforming types =======================================");
-				trans.Transform(w);
-				ctn.RenameAllTypes(store);
-				Debug.WriteLine("= transformed types ========================================");
-				store.Write(w);
-				w.Flush();
-				Debug.WriteLine("= Rewriting expressions ====================================");
-				ter.RewriteProgram();
-			}
-			catch
-			{
-				//				host.WriteDiagnostic(Diagnostic.FatalError, "Crash while typing program. Dumping type store:");
-				//				store.Write(host.IntermediateCodeWriter);
-				throw;
-			}
-			finally
-			{
-				w.Close();
-			}
+			Procedure proc = prog.Procedures[0];
+			prog.Procedures.Clear();
+			prog.Procedures[new Address(0x00001)] = proc;
+			aen.Transform(prog);
+			eqb.Build(prog);
+			Debug.WriteLine("= Collecting traits ========================================");
+			trco.CollectProgramTraits(prog);
+			Debug.WriteLine("= Building equivalence classes =============================");
+			dtb.BuildEquivalenceClassDataTypes();
+			dpa.FollowConstantPointers(prog);
+			tvr.ReplaceTypeVariables();
+			Debug.WriteLine("= replaced type variables ==================================");
+			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
+			ppr.ReplaceAll();
+			Debug.WriteLine("= Transforming types =======================================");
+			trans.Transform(null);
+			ctn.RenameAllTypes(store);
+			Debug.WriteLine("= transformed types ========================================");
+			Debug.WriteLine("= Rewriting expressions ====================================");
+			ter.RewriteProgram();
 		}
 
 		public void WriteTypes(TextWriter output)

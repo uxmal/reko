@@ -43,6 +43,7 @@ namespace Decompiler.Core
 
 		public ImageReader(ProgramImage img, uint off)
 		{
+			this.image = img;
 			this.img = img.Bytes;
 			this.off = offStart = (int) off;
 		}
@@ -112,7 +113,7 @@ namespace Decompiler.Core
 
 		public uint ReadLeUint32()
 		{
-			uint u = image.ReadLeUint32(off);
+			uint u = ProgramImage.ReadLeUint32(img, off);
 			off += 4;
 			return u;
 		}

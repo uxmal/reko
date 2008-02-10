@@ -77,7 +77,7 @@ namespace Decompiler.Typing
 
 			if (sig != null)
 			{
-				if (sig.Arguments.Length != appl.Arguments.Length)
+				if (sig.FormalArguments.Length != appl.Arguments.Length)
 					throw new InvalidOperationException("Parameter count must match.");
 			}
 
@@ -86,8 +86,8 @@ namespace Decompiler.Typing
 				appl.Arguments[i].Accept(this);
 				if (sig != null)
 				{
-					EnsureTypeVariable(sig.Arguments[i]);
-					store.MergeClasses(appl.Arguments[i].TypeVariable, sig.Arguments[i].TypeVariable);
+					EnsureTypeVariable(sig.FormalArguments[i]);
+					store.MergeClasses(appl.Arguments[i].TypeVariable, sig.FormalArguments[i].TypeVariable);
 				}
 			}
 			EnsureTypeVariable(appl);
@@ -117,6 +117,9 @@ namespace Decompiler.Typing
 
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
+			if (binExp.Left.ToString().IndexOf("ax_349") >= 0)
+				binExp.ToString();
+
 			binExp.Left.Accept(this);
 			binExp.Right.Accept(this);
 			if (binExp.op is ConditionalOperator)
@@ -161,6 +164,7 @@ namespace Decompiler.Typing
 		public override void VisitDepositBits(DepositBits d)
 		{
 			d.Source.Accept(this);
+			d.InsertedBits.Accept(this);
 			EnsureTypeVariable(d);
 		}
 
@@ -253,9 +257,9 @@ namespace Decompiler.Typing
 						new Identifier("signature of " + proc.Name, 0, null, null),
 						null);
 				}
-				if (proc.Signature.Arguments != null)
+				if (proc.Signature.FormalArguments != null)
 				{
-					foreach (Identifier id in proc.Signature.Arguments)
+					foreach (Identifier id in proc.Signature.FormalArguments)
 					{
 						id.Accept(this);
 					}

@@ -43,13 +43,13 @@ namespace Decompiler.Core
 
 		public int Arity
 		{
-			get { return sig != null ? sig.Arguments.Length : arity; }
+			get { return sig != null ? sig.FormalArguments.Length : arity; }
 		}
 
 		public override ProcedureSignature Signature
 		{
 			get { return sig; }
-			set { throw new InvalidOperationException("Not allowed to change the signature of a PseudoProcedure"); }
+			set { throw new InvalidOperationException("Not allowed to change the signature of a PseudoProcedure."); }
 		}
 
 		public override string ToString()

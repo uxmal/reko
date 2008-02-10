@@ -23,6 +23,7 @@ using Decompiler.WindowsGui.Controls;
 using System;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
@@ -279,9 +280,9 @@ namespace Decompiler.WindowsGui.Forms
 			return null;
 		}
 
-		public TextWriter CreateTypesWriter()
+		public TextWriter CreateTypesWriter(string filename)
 		{
-			return CreateTextWriter(decompiler.Project.Output.TypesFilename);
+			return CreateTextWriter(filename);
 		}
 
 		public void ShowProgress(string caption, int numerator, int denominator)
@@ -335,9 +336,9 @@ namespace Decompiler.WindowsGui.Forms
 			form.AddDiagnostic(d, format, args);
 		}
 
-		public TextWriter CreateDecompiledCodeWriter()
+		public TextWriter CreateDecompiledCodeWriter(string fileName)
 		{
-			return null;
+			return new StreamWriter(fileName, false, new UTF8Encoding(false));
 		}
 
 		public TextWriter CreateIntermediateCodeWriter()

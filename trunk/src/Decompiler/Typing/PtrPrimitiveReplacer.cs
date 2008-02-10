@@ -23,7 +23,7 @@ using System.Collections;
 namespace Decompiler.Typing
 {
 	/// <summary>
-	/// If a particular class is of the type "primitive" or "ptr(...)", replace all references to it.
+	/// Replaces references to classes which are PrimitiveType or Pointer to T with the actual primitive type or (ptr T) respectively.
 	/// </summary>
 	public class PtrPrimitiveReplacer : DataTypeTransformer
 	{

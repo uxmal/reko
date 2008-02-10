@@ -30,6 +30,7 @@ namespace Decompiler.UnitTests.Core
 	{
 		private StringWriter sw;
 		private TypeFormatter tyfo;
+		private string nl = Environment.NewLine;
 
 		[Test]
 		public void TyfoInt()
@@ -123,6 +124,45 @@ struct a {
 	struct b * pb;	// 0
 }",
 			sw.ToString());
+		}
+
+		[Test]
+		public void TyfoFn()
+		{
+			FunctionType fn = new FunctionType(null, PrimitiveType.Int32, 
+				new DataType[] { PrimitiveType.Word32 }, null);
+			tyfo.Write(fn, "fn");
+			Assert.AreEqual("int32 (fn)(word32)", 
+				sw.ToString());
+		}
+
+		[Test]
+		public void Tyfopfn()
+		{
+			FunctionType fn = new FunctionType(null, null, 
+				new DataType[] { PrimitiveType.Word32 }, null);
+			Pointer pfn = new Pointer(fn, 4);
+			tyfo.Write(pfn, "pfn");
+			Assert.AreEqual("void (* pfn)(word32)", 
+				sw.ToString());
+		}
+
+		[Test]
+		public void TyfoMembptr()
+		{
+			StructureType s = new StructureType("s", 0);
+			MemberPointer mp = new MemberPointer(new Pointer(s, 4), PrimitiveType.Int32, 2);
+			tyfo.Write(mp, "mp");
+			Assert.AreEqual("int32 s::*mp", sw.ToString());
+		}
+
+		[Test]
+		public void TyfoManyArgs()
+		{
+			FunctionType fn = new FunctionType(null, null, 
+				new DataType[] { PrimitiveType.Pointer32, PrimitiveType.Pointer }, null);
+			tyfo.Write(fn, "fn");
+			Assert.AreEqual("void (fn)(ptr32, ptr0)", sw.ToString());
 		}
 
 		[SetUp]

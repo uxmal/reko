@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Core
 		{
 			Frame frame = new Frame(PrimitiveType.Word32);
 			ApplicationBuilder ab = new ApplicationBuilder(frame);
-			Assert.IsTrue(sig.Arguments[3].Storage is OutArgumentStorage);
+			Assert.IsTrue(sig.FormalArguments[3].Storage is OutArgumentStorage);
 			Instruction instr = ab.BuildApplication(new CallSite(16, 0), new Identifier("foo", -1, PrimitiveType.Pointer, null), sig);
 			Assert.AreEqual("eax = foo(dwLoc0C, wLoc08, bLoc04, &edx)", instr.ToString());
 		}

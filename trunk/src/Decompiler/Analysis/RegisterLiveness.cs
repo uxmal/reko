@@ -496,7 +496,7 @@ namespace Decompiler.Analysis
 				{
 					varLive.Def(sig.ReturnValue.Storage.BindFormalArgumentToFrame(proc.Frame, ci.CallSite));
 				}
-				foreach (Identifier arg in sig.Arguments)
+				foreach (Identifier arg in sig.FormalArguments)
 				{
 					if (arg.Storage is OutArgumentStorage)
 					{
@@ -504,7 +504,7 @@ namespace Decompiler.Analysis
 					}
 				}
 
-				foreach (Identifier arg in sig.Arguments)
+				foreach (Identifier arg in sig.FormalArguments)
 				{
 					if (!(arg.Storage is OutArgumentStorage))
 					{
@@ -668,7 +668,7 @@ namespace Decompiler.Analysis
 						if (rs != null)
 							rs.Register.SetAliases(bf.DataOut, true);
 					}
-					foreach (Identifier id in block.Procedure.Signature.Arguments)
+					foreach (Identifier id in block.Procedure.Signature.FormalArguments)
 					{
 						OutArgumentStorage os = id.Storage as OutArgumentStorage;
 						if (os == null)

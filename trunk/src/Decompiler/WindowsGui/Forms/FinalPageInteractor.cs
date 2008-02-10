@@ -16,21 +16,69 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Serialization;
 using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
 	public class FinalPageInteractor : PhasePageInteractor
 	{
+		private FinalPage finalPage;
+
 		public FinalPageInteractor(FinalPage page, MainForm form) :
 			base(page, form)
 		{
+			finalPage = page;
+			finalPage.SourceFile.Click += new EventHandler(BrowseSourceFile_Click);
+			finalPage.HeaderFile.Click += new EventHandler(BrowseHeaderFile_Click);
+			finalPage.SaveButton.Click += new EventHandler(SaveButton_Click);
 		}
 
 		public override void PopulateControls()
 		{
+			finalPage.SourceFile.Text = Decompiler.Project.Output.OutputFilename;
+			finalPage.HeaderFile.Text = Decompiler.Project.Output.TypesFilename;
+
+			SetTextBoxes(Decompiler.Project.Output);
 			Decompiler.ReconstructTypes();
 			Decompiler.StructureProgram();
+		}
+
+		private void SaveButton_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				Decompiler.Project.Output.OutputFilename = finalPage.SourceFile.Text;
+				Decompiler.Project.Output.TypesFilename = finalPage.HeaderFile.Text;
+				Decompiler.WriteDecompilerProducts();
+			} 
+			catch (Exception ex)
+			{
+				MessageBox.Show(finalPage, string.Format("Couldn't save decompilation results. {0}", ex.Message), "Decompiler");
+			}
+		}
+
+		public void SetTextBoxes(DecompilerOutput output)
+		{
+			if (output.TypesFilename == null || output.TypesFilename.Length == 0)
+			{
+			}
+
+		}
+
+		private void BrowseSourceFile_Click(object sender, EventArgs e)
+		{
+			MainForm.OpenFileDialog.FileName = finalPage.SourceFile.Text;
+			MainForm.OpenFileDialog.ShowDialog(MainForm);
+		}
+
+		private void BrowseHeaderFile_Click(object sender, EventArgs e)
+		{
+			MainForm.OpenFileDialog.FileName = finalPage.HeaderFile.Text;
+			MainForm.OpenFileDialog.ShowDialog(MainForm);
+
 		}
 	}
 }

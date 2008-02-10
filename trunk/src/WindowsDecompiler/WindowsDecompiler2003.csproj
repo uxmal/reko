@@ -9,7 +9,7 @@
             <Settings
                 ApplicationIcon = "App.ico"
                 AssemblyKeyContainerName = ""
-                AssemblyName = "WindowsDecompiler"
+                AssemblyName = "WindowsDecompiler2003"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"

@@ -48,7 +48,7 @@ namespace Decompiler.WindowsGui.Controls
 		private ProgramImage image;
 		private Address addrSelected;
 		private Address addrAnchor;			// The start of the selection.
-		private Address addrFocus;			// The end of the 
+		private Address addrFocus;			// The end of the selection.
 
 		private int cRows;				// total number of rows.
 		private int yTopRow;			// index of topmost visible row
