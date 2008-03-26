@@ -31,7 +31,7 @@ namespace Decompiler.WindowsGui.Forms
 		private LoadedPage pageLoaded;
 		private Hashtable mpCmdidToCommand;
 
-		public LoadedPageInteractor(LoadedPage page, MainForm form, DecompilerMenus dm) : base(page, form)
+		public LoadedPageInteractor(LoadedPage page, MainFormInteractor form, DecompilerMenus dm) : base(page, form)
 		{
 			this.pageLoaded = page;
 			mpCmdidToCommand = new Hashtable();
@@ -91,6 +91,7 @@ namespace Decompiler.WindowsGui.Forms
 			Address addr = pageLoaded.MemoryControl.SelectedAddress;
 			if (addr != null)
 			{
+				//$TODO: add to oracle!
 				Decompiler.ScanProcedure(addr);
 				SerializedProcedure userp = new SerializedProcedure();
 				userp.Address = addr.ToString();
@@ -99,8 +100,10 @@ namespace Decompiler.WindowsGui.Forms
 			}
 		}
 
-		public override void PopulateControls()
+		public override void EnterPage()
 		{
+			Decompiler.ScanProgram();
+
 			pageLoaded.Architecture = Decompiler.Program.Architecture;
 			pageLoaded.MemoryControl.ProgramImage = Decompiler.Program.Image;
 			pageLoaded.Disassembly.Text = "";
@@ -109,6 +112,11 @@ namespace Decompiler.WindowsGui.Forms
 			MainForm.BrowserList.Enabled = true;
 			MainForm.BrowserTree.Visible = false; 
 			PopulateBrowser();
+		}
+
+		public override bool LeavePage()
+		{
+			return true;
 		}
 
 		public void PopulateBrowser()

@@ -29,8 +29,8 @@ namespace Decompiler.Core.Serialization
 		/// <summary>
 		/// If not null, specifies the file name for intermediate code.
 		/// </summary>
-		[XmlElement("rewritten-code")]
-		public string RewrittenFilename;
+		[XmlElement("intermediate-code")]
+		public string IntermediateFilename;
 
 		[XmlElement("output")]
 		public string OutputFilename;

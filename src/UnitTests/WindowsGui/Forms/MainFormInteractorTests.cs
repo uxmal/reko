@@ -19,6 +19,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Gui;
+using Decompiler.Loading;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
@@ -65,7 +66,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			interactor = new TestMainFormInteractor(form, prog);
 
 			interactor.OpenBinary(null);
-			Assert.AreEqual(form.LoadedPage, form.PhasePage);
+			Assert.AreEqual(form.LoadedPage, form.InitialPage);
 			Assert.IsFalse(form.BrowserFilter.Enabled);
 			Assert.IsFalse(form.BrowserTree.Enabled);
 			Assert.IsTrue(form.BrowserList.Enabled);
@@ -93,36 +94,54 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 
 	public class TestMainFormInteractor : MainFormInteractor
 	{
-		private TestDecompiler decompiler; 
+		private DecompilerDriver decompiler; 
+		private Loader ldr;
 		private Program program;
 
 		public TestMainFormInteractor(MainForm form, Program program) : base(form)
 		{
 			this.program = program;
+			this.ldr = new TestLoader(program);
+
 		}
 
-		public TestMainFormInteractor(MainForm form, TestDecompiler test) : base(form)
+		public TestMainFormInteractor(MainForm form, DecompilerDriver test) : base(form)
 		{
 			decompiler = test;
+			this.ldr = new TestLoader(program);
 		}
 
-		public override DecompilerDriver CreateDecompiler(string file)
+		public override Loader CreateLoader(Program prog, string file)
 		{
-			return new TestDecompiler(program, this);
+			return ldr;
+		}
+
+		public override Program CreateProgram()
+		{
+			return program;
+		}
+
+		public Loader Loader
+		{
+			get { return ldr; }
+			set { ldr = value; }
+		}
+
+		public override void ShowError(string format, params object [] args)
+		{
+			throw new ApplicationException(string.Format(format, args));
 		}
 	}
 
-	public class TestDecompiler : DecompilerDriver
+	public class TestLoader : Loader
 	{
-		private Program program;
-
-		public TestDecompiler(Program program, DecompilerHost host)  : base((string)null, program, host)
+		public TestLoader(Program p):base(p)
 		{
-			this.program = program;
 		}
 
-		public override void LoadProgram()
+		public override byte[] LoadImageBytes(string fileName, int offset)
 		{
+			return base.Program.Image.Bytes;
 		}
 	}
 }

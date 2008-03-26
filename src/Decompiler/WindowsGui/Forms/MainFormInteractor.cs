@@ -19,6 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
+using Decompiler.Loading;
 using Decompiler.WindowsGui.Controls;
 using System;
 using System.ComponentModel.Design;
@@ -70,20 +71,20 @@ namespace Decompiler.WindowsGui.Forms
 
 			AttachInteractors(dm);
 			form.Closed += new System.EventHandler(this.MainForm_Closed);
-			form.PhasePageChanged += new System.EventHandler(this.MainForm_PhasePageChanged);
 			form.BrowserTree.AfterSelect += new TreeViewEventHandler(OnBrowserTreeItemSelected);
 			form.BrowserList.SelectedIndexChanged += new EventHandler(OnBrowserListItemSelected);
 			form.ToolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(toolBar_ButtonClick);
-
+			form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);
 			SwitchInteractor(pageInitial);
+			MainForm.InitialPage.IsDirty = false;
 		}
 
 		private void AttachInteractors(DecompilerMenus dm)
 		{
-			pageInitial = new InitialPageInteractor(form.InitialPage, this.form);
-			pageLoaded = new LoadedPageInteractor(form.LoadedPage, this.form, dm);
-			pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage, form);
-			pageFinal = new FinalPageInteractor(form.FinalPage, this.form);
+			pageInitial = new InitialPageInteractor(form.InitialPage, this);
+			pageLoaded = new LoadedPageInteractor(form.LoadedPage, this, dm);
+			pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage, this);
+			pageFinal = new FinalPageInteractor(form.FinalPage, this);
 
 			pageInitial.NextPage = pageLoaded;
 			pageLoaded.NextPage = pageAnalyzed;
@@ -91,9 +92,19 @@ namespace Decompiler.WindowsGui.Forms
 
 		}
 
-		public virtual DecompilerDriver CreateDecompiler(string file)
+		public DecompilerDriver CreateDecompiler(DecompilerProject proj, Program prog)
 		{
-			return new DecompilerDriver(file, new Program(), this);
+			return new DecompilerDriver(proj, prog, this);
+		}
+
+		public virtual Loader CreateLoader(Program prog, string file)
+		{
+			return new Loader(prog);
+		}
+
+		public virtual Program CreateProgram()
+		{
+			return new Program();
 		}
 
 		public virtual TextWriter CreateTextWriter(string filename)
@@ -121,19 +132,17 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void OpenBinary(string file)
 		{
-			decompiler = CreateDecompiler(file);
-			try
+			try 
 			{
-				decompiler.LoadProgram();
-				//$REVIEW if (executable_format) then scanProgram.
-				decompiler.ScanProgram();
-
-				SwitchInteractor(pageLoaded);
-			} 	
-			catch (Exception e)
+				Program prog = CreateProgram();
+				Loader ldr = CreateLoader(prog, file);
+				ldr.Load(file, null);
+				decompiler = CreateDecompiler(ldr.Project, prog);
+				SwitchInteractor(pageInitial);
+			} 
+			catch (Exception ex)
 			{
-				form.AddDiagnostic(Diagnostic.FatalError, "Fatal error: {0}", e.Message);
-				form.SetStatus("Terminated due to fatal error.");
+				ShowError("Couldn't open file '{0}'. {1}", file, ex.Message + ex.StackTrace);		//$DEBUG
 			}
 		}
 
@@ -208,12 +217,34 @@ namespace Decompiler.WindowsGui.Forms
 			}
 		}
 
+		public virtual void ShowError(string format, params object [] args)
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.AppendFormat(format, args);
+			MessageBox.Show(MainForm, sb.ToString());
+		}
+
 		public void SwitchInteractor(PhasePageInteractor interactor)
 		{
+			if (CurrentPage != null)
+				CurrentPage.LeavePage();
 			form.PhasePage = interactor.PhasePage;
 			CurrentPage = interactor;
-			interactor.Decompiler = decompiler;
-			interactor.PopulateControls();
+			interactor.EnterPage();
+		}
+
+		public void UpdateWindowTitle()
+		{
+			StringBuilder sb = new StringBuilder();
+			if (decompiler != null && decompiler.Project != null)
+			{
+				sb.Append(Path.GetFileName(decompiler.Project.Input.Filename));
+				if (MainForm.InitialPage.IsDirty)
+					sb.Append('*');
+				sb.Append(" - ");
+			}
+			sb.Append("Decompiler");
+			MainForm.Text = sb.ToString();
 		}
 
 		#region ICommandTarget members 
@@ -343,7 +374,7 @@ namespace Decompiler.WindowsGui.Forms
 
 		public TextWriter CreateIntermediateCodeWriter()
 		{
-			return CreateTextWriter(decompiler.Project.Output.RewrittenFilename);
+			return CreateTextWriter(decompiler.Project.Output.IntermediateFilename);
 		}
 
 		#endregion ////////////////////////////////////////////////////
@@ -381,10 +412,6 @@ namespace Decompiler.WindowsGui.Forms
 			Execute(ref g, cmd.ID);
 		}
 
-		private void MainForm_PhasePageChanged(object sender, EventArgs e)
-		{
-		}
-
 		public void OnBrowserTreeItemSelected(object sender, TreeViewEventArgs e)
 		{
 			if (e.Action == TreeViewAction.ByKeyboard ||
@@ -402,6 +429,11 @@ namespace Decompiler.WindowsGui.Forms
 				System.Diagnostics.Debug.WriteLine(string.Format("Selected Item Index: {0}, Focus index: {1}", form.BrowserList.SelectedItems[0].Text, form.BrowserList.FocusedItem.Text));
 
 			Execute(ref CmdSets.GuidDecompiler, CmdIds.BrowserItemSelected);
+		}
+
+		private void InitialPage_IsDirtyChanged(object sender, EventArgs e)
+		{
+			UpdateWindowTitle();
 		}
 	}
 }

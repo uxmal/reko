@@ -20,6 +20,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
+using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
@@ -38,7 +39,9 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		public void Setup()
 		{
 			form = new MainForm();
-			mi = new TestMainFormInteractor(form, BuildFakeProgram());
+			Program prog = BuildFakeProgram();
+			mi = new TestMainFormInteractor(form, prog);
+			mi.Loader = new TestLoader(prog);
 			mi.OpenBinary(null);
 		}
 
@@ -98,5 +101,23 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			prog.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
 			return prog;
 		}
+
+		private class TestLoader : Loader
+		{
+			public TestLoader(Program prog) : base(prog)
+			{
+			}
+
+			public override void LoadExecutable(string pstrFileName, Address addrLoad)
+			{
+			}
+
+			public override byte[] LoadImageBytes(string fileName, int offset)
+			{
+				return Program.Image.Bytes;
+			}
+
+		}
+
 	}
 }

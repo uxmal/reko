@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			DecompilerProject ud = new DecompilerProject();
 			ud.Input.Address = "0x1000:0x0";
 			ud.Output.DisassemblyFilename = "foo.asm";
-			ud.Output.RewrittenFilename = "foo.cod";
+			ud.Output.IntermediateFilename = "foo.cod";
 			SerializedProcedure proc = new SerializedProcedure();
 			proc.Name = "foo";
 			proc.Signature = new SerializedSignature();

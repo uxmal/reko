@@ -23,7 +23,11 @@ using System;
 namespace Decompiler.UnitTests.WindowsGui.Forms
 {
 	[TestFixture]
-	public class MainFormTests
+	public class FinalPageInteractorTests
 	{
+		[Test]
+		public void Test()
+		{
+		}
 	}
 }

@@ -753,6 +753,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "WindowsGui\Controls\DirtyManager.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Controls\DirtyManager.resx"
+                    DependentUpon = "DirtyManager.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "WindowsGui\Controls\DisassemblyControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -780,6 +790,11 @@
                 <File
                     RelPath = "WindowsGui\Controls\MenuSystem.cs"
                     SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WindowsGui\Controls\RegexValidator.cs"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File

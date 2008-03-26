@@ -568,9 +568,11 @@
     <Compile Include="Types\TypeFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\TypeStore.cs" />
     <Compile Include="Types\TypeVariable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\TypeVariableCollection.cs" />
     <Compile Include="Types\TypeVarSet.cs">
       <SubType>Code</SubType>
     </Compile>

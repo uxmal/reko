@@ -59,7 +59,7 @@ namespace Decompiler.Loading
 			if (exe.e_ovno != 0)
 				return false;
 
-			return CompareEqual(rawImg, signatureOffset, signature, signature.Length);
+			return ImageLoader.CompareArrays(rawImg, signatureOffset, signature, signature.Length);
 		}
 
 		public override ProgramImage Load(Address addrLoad)

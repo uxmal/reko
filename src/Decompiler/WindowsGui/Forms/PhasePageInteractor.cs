@@ -29,24 +29,24 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		private PhasePage page;
 		private PhasePageInteractor nextPage;
-		private MainForm form;
-		private DecompilerDriver decompiler;
+		private MainFormInteractor form;
 
-		public PhasePageInteractor(PhasePage page, MainForm form)
+		public PhasePageInteractor(PhasePage page, MainFormInteractor form)
 		{
 			this.page = page; 
 			this.form = form;
 		}
 
+		//$TODO: consider making this a service.
 		public DecompilerDriver Decompiler
 		{
-			get { return decompiler; }
-			set { decompiler = value; }
+			get { return form.Decompiler; }
 		}
+
 
 		public MainForm MainForm
 		{
-			get { return form; }
+			get { return form.MainForm; }
 		}
 
 		public PhasePageInteractor NextPage
@@ -54,6 +54,17 @@ namespace Decompiler.WindowsGui.Forms
 			get { return nextPage; }
 			set { nextPage = value; }
 		}
+
+		/// <summary>
+		/// Derived classes should copy populate editable controls with initial values.
+		/// </summary>
+		public abstract void EnterPage();
+
+		/// <summary>
+		/// Derived classes should copy any values out of controls.
+		/// </summary>
+		/// <returns>False if derived class wants to cancel leaving the page due to errors.</returns>
+		public abstract bool LeavePage();
 
 		public PhasePage PhasePage
 		{
@@ -63,7 +74,10 @@ namespace Decompiler.WindowsGui.Forms
 		/// <summary>
 		/// Displays and populates all the controls for this phase page.
 		/// </summary>
-		public abstract void PopulateControls();
+		[Obsolete("Use EnterPage instead")]
+		public virtual void PopulateControls()
+	{
+	}
 
 		#region ICommandTarget Members
 
