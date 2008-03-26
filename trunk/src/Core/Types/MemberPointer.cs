@@ -52,6 +52,11 @@ namespace Decompiler.Core.Types
 			return new MemberPointer(BasePointer.Clone(), Pointee.Clone(), byteSize);
 		}
 
+		public override bool IsComplex
+		{
+			get { return true; }
+		}
+
 		/// <summary>
 		/// The offset part of a member pointer.
 		/// </summary>

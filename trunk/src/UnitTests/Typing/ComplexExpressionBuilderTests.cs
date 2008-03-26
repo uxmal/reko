@@ -98,5 +98,23 @@ namespace Decompiler.UnitTests.Typing
 		public void BuildArrayFetch()
 		{
 		}
+
+		[Test]
+		public void BuildMemberAccessFetch()
+		{
+			Identifier ds = new Identifier("ds", 3, PrimitiveType.Segment, null);
+			Identifier bx = new Identifier("bx", 3, PrimitiveType.Word16, null);
+			SegmentedAccess sa = new SegmentedAccess(null, ds, bx, PrimitiveType.Word16);
+			TypeVariable tvDs = store.EnsureTypeVariable(factory, ds);
+			TypeVariable tvBx = store.EnsureTypeVariable(factory, bx);
+			tvDs.OriginalDataType = ds.DataType;
+			tvBx.OriginalDataType = new MemberPointer(new TypeVariable(412), PrimitiveType.Word16, 2);
+			tvDs.Class.DataType = new StructureType("SEG", 0);
+			tvBx.Class.DataType = new MemberPointer(new Pointer(new StructureType("SEG", 0), 2), PrimitiveType.Word16, 2);
+			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+				tvBx.Class.DataType, tvBx.OriginalDataType, ds, bx, 0);
+			ceb.Dereferenced = true;
+			Assert.AreEqual("ds->*bx", ceb.BuildComplex().ToString());
+		}
 	}
 }

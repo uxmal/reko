@@ -256,9 +256,9 @@ namespace Decompiler.Analysis
 
 		public Expression TransformMemberPointerSelector(MemberPointerSelector mps)
 		{
-			Expression memberPtr = mps.MemberPtr.Accept(this);
-			Expression ptr = mps.Ptr.Accept(this);
-			return new MemberPointerSelector(ptr, memberPtr);
+			Expression ptr = mps.BasePointer.Accept(this);
+			Expression memberPtr = mps.MemberPointer.Accept(this);
+			return new MemberPointerSelector(mps.DataType, ptr, memberPtr);
 		}
 
 		public Expression TransformMemoryAccess(MemoryAccess access)

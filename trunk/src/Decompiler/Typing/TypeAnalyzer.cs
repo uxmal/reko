@@ -100,6 +100,7 @@ namespace Decompiler.Typing
 			ctn.RenameAllTypes(store);
 			Debug.WriteLine("= transformed types ========================================");
 			Debug.WriteLine("= Rewriting expressions ====================================");
+			store.Dump();
 			ter.RewriteProgram();
 		}
 

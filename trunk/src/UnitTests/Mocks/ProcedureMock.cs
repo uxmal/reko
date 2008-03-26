@@ -379,9 +379,9 @@ namespace Decompiler.UnitTests.Mocks
 			return Lt(a, Int32(b));
 		}
 
-		public MemberPointerSelector MembPtr(Expression ptr, Expression membPtr)
+		public MemberPointerSelector MembPtrW(Expression ptr, Expression membPtr)
 		{
-			return new MemberPointerSelector(ptr, membPtr);
+			return new MemberPointerSelector(PrimitiveType.Word16, new Dereference(PrimitiveType.Pointer, ptr), membPtr);
 		}
 
 		public MkSequence Seq(Expression head, Expression tail)

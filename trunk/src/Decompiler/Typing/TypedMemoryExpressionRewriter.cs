@@ -29,6 +29,7 @@ namespace Decompiler.Typing
 	{
 		private TypeStore store;
 		private Identifier globals;
+		private Expression basePointer;
 
 		public TypedMemoryExpressionRewriter(TypeStore store, Identifier globals)
 		{
@@ -39,6 +40,13 @@ namespace Decompiler.Typing
 
 		public Expression Rewrite(MemoryAccess access)
 		{
+			basePointer = null;
+			return access.EffectiveAddress.Accept(this);
+		}
+
+		public Expression Rewrite(SegmentedAccess access)
+		{
+			basePointer = access.BasePointer;
 			return access.EffectiveAddress.Accept(this);
 		}
 
@@ -57,12 +65,13 @@ namespace Decompiler.Typing
 			if (binExp.Left.TypeVariable.DataType.IsComplex)
 			{
 				if (binExp.Right.TypeVariable.DataType.IsComplex)
-					throw new InvalidOperationException(string.Format("Both subexpressions are complex in {0}. Left type: {1}, right type {2}",
-						binExp, binExp.Left.TypeVariable.DataType, binExp.Right.TypeVariable.DataType));
+					throw new TypeInferenceException("Both subexpressions are complex in {0}. Left type: {1}, right type {2}",
+						binExp, binExp.Left.TypeVariable.DataType, binExp.Right.TypeVariable.DataType);
 				Constant c = (Constant) binExp.Right;
 				ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
 					binExp.Left.TypeVariable.DataType,
 					binExp.Left.TypeVariable.OriginalDataType,
+					basePointer,
 					binExp.Left,
 					c.ToInt32());
 				ceb.Dereferenced = true;
@@ -110,7 +119,7 @@ namespace Decompiler.Typing
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
 				id.TypeVariable.DataType,
 				id.TypeVariable.OriginalDataType,
-				id, 0);
+				basePointer, id, 0);
 			ceb.Dereferenced = true;
 			return ceb.BuildComplex();
 		}

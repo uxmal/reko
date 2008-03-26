@@ -72,14 +72,14 @@ namespace Decompiler.Core
 		/// <summary>
 		/// Adds the delta to the ushort at the given offset.
 		/// </summary>
-		/// <param name="offset"></param>
+		/// <param name="imageOffset"></param>
 		/// <param name="delta"></param>
 		/// <returns>The new value of the ushort</returns>
-		public ushort FixupLeUint16(int offset, ushort delta)
+		public ushort FixupLeUint16(int imageOffset, ushort delta)
 		{
-			ushort seg = ReadLeUint16(abImage, offset);
+			ushort seg = ReadLeUint16(abImage, imageOffset);
 			seg = (ushort) (seg + delta);
-			WriteLeUint16(offset, seg);
+			WriteLeUint16(imageOffset, seg);
 			return seg;
 		}
 
@@ -117,6 +117,16 @@ namespace Decompiler.Core
 			get { return map; }
 		}
 
+		/// <summary>
+		/// Reads a little-endian word from image offset.
+		/// </summary>
+		/// <remarks>
+		/// If the word being read was a relocation, it is returned with a [[pointer]]
+		/// or [[segment]] data type. Otherwise a neutral [[word]] is returned.
+		/// </remarks>
+		/// <param name="imageOffset">Offset from image start, in bytes.</param>
+		/// <param name="type">Size of the word being requested.</param>
+		/// <returns>Typed constant from the image.</returns>
 		public Constant ReadLe(int imageOffset, PrimitiveType type)
 		{
 			Constant c = relocations[imageOffset];

@@ -416,6 +416,12 @@ namespace Decompiler.Typing
 			ivCur = null;
 		}
 
+		public override void VisitDereference(Dereference deref)
+		{
+			deref.Expression.Accept(this);
+			handler.MemAccessTrait(null, deref.Expression.TypeVariable, 0, deref.TypeVariable, 0);
+		}
+
 		public override void VisitFieldAccess(FieldAccess acc)
 		{
 			throw new NotImplementedException();
@@ -423,8 +429,8 @@ namespace Decompiler.Typing
 
 		public override void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
-			mps.MemberPtr.Accept(this);
-			mps.Ptr.Accept(this);
+			mps.BasePointer.Accept(this);
+			mps.MemberPointer.Accept(this);
 			handler.DataTypeTrait(mps.TypeVariable, PrimitiveType.Pointer);
 		}
 

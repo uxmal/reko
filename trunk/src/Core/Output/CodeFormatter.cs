@@ -204,9 +204,18 @@ namespace Decompiler.Core.Output
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			int prec = SetPrecedence(PrecedenceMemberPointerSelector);
-			mps.Ptr.Accept(this);
-			writer.Write("->*");
-			mps.MemberPtr.Accept(this);
+			Dereference d = mps.BasePointer as Dereference;
+			if (d != null)
+			{
+				d.Expression.Accept(this);
+				writer.Write("->*");
+			}
+			else
+			{
+				mps.BasePointer.Accept(this);
+				writer.Write(".*");
+			}
+			mps.MemberPointer.Accept(this);
 			ResetPresedence(prec);
 		}
 

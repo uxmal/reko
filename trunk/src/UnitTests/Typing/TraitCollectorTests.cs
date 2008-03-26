@@ -206,7 +206,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			Identifier ax = m.Local16("ax");
-			MemberPointerSelector mps = m.MembPtr(ds, m.Add(bx, 4));
+			MemberPointerSelector mps = m.MembPtrW(ds, m.Add(bx, 4));
 			Expression e = m.Load(PrimitiveType.Byte, mps);
 
 			coll = new TraitCollector(factory, store, handler, globals, ivs);
@@ -214,7 +214,7 @@ namespace Decompiler.UnitTests.Typing
 			e = e.Accept(aen);
 			e.Accept(eqb);
 			e.Accept(coll);
-			Assert.IsNotNull(mps.Ptr.TypeVariable, "Base pointer should have type variable");
+			Assert.IsNotNull(mps.BasePointer.TypeVariable, "Base pointer should have type variable");
 			Verify(null, "Typing/TrcoMemberPointer.txt");
 		}
 
@@ -252,6 +252,23 @@ namespace Decompiler.UnitTests.Typing
 			e.Accept(eqb);
 			e.Accept(coll);
 			Verify(null, "Typing/TrcoSegmentedDirectAddress.txt");
+		}
+
+		[Test]
+		public void TrcoSegmentSelector()
+		{
+			Frame f = new Frame(PrimitiveType.Word16);
+			Identifier ds = f.EnsureRegister(Registers.ds);
+			Assert.AreEqual(PrimitiveType.Segment, ds.DataType);
+
+			Identifier globals = f.EnsureStackLocal(0, PrimitiveType.Pointer, "globals");
+			store.EnsureTypeVariable(factory, globals);
+			coll = new TraitCollector(factory, store, handler, globals, ivs);
+			coll.Procedure = new Procedure("foo", null);
+			Expression e = ds.Accept(aen);
+			e.Accept(eqb);
+			e.Accept(coll);
+			Verify(null, "Typing/TrcoSegmentSelector.txt");
 		}
 
 		[Test]

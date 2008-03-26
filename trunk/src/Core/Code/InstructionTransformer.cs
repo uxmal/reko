@@ -187,8 +187,8 @@ namespace Decompiler.Core.Code
 
 		public virtual Expression TransformMemberPointerSelector(MemberPointerSelector mps)
 		{
-			mps.MemberPtr = mps.MemberPtr.Accept(this);
-			mps.Ptr = mps.Ptr.Accept(this);
+			mps.BasePointer = mps.BasePointer.Accept(this);
+			mps.MemberPointer = mps.MemberPointer.Accept(this);
 			return mps;
 		}
 		

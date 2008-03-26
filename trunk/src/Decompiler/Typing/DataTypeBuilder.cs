@@ -100,6 +100,12 @@ namespace Decompiler.Typing
 
 		public void DataTypeTrait(TypeVariable type, DataType dt)
 		{
+			if (dt == PrimitiveType.Segment)
+			{
+				StructureType seg = factory.CreateStructureType(null, 0);
+				Pointer ptr = factory.CreatePointer(seg, dt.Size);
+				dt = ptr;
+			}
 			MergeIntoDataType(dt, type);
 		}
 

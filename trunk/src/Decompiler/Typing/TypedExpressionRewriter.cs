@@ -156,12 +156,11 @@ namespace Decompiler.Typing
 			if (dtLeft.IsComplex)
 			{
 				if (dtRight.IsComplex)
-				{
-					System.Diagnostics.Debug.WriteLine(	//$DEBUG replace exception
-						/*throw new TypeInferenceException(*/"Both left and right sides of a binary expression can't be complex types." +
-						string.Format("\r\n{0}: [{1}], [{2}].", binExp, dtLeft, dtRight));
-					return binExp;
-				}
+					throw new TypeInferenceException(
+						"Both left and right sides of a binary expression can't be complex types.{0}{1}: {2}:[{3}] {4}:[{5}].",
+						Environment.NewLine, binExp,
+						binExp.Left.TypeVariable, dtLeft,
+						binExp.Right.TypeVariable, dtRight);
 				Constant c = (Constant) binExp.Right;
 				ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
 					dtLeft, 
@@ -194,7 +193,8 @@ namespace Decompiler.Typing
 
 		public override Expression TransformSegmentedAccess(SegmentedAccess access)
 		{
-			return access;
+			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, prog.Globals);
+			return tmer.Rewrite(access);
 		}
 
 		#endregion

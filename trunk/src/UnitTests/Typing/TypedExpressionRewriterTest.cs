@@ -133,7 +133,14 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(mock.BuildProgram(), "Typing/TerSegmentedMemoryPointer.txt");
 		}
 
-
+		[Test]
+		public void TerSegMemPtr2()
+		{
+			ProgramMock mock = new ProgramMock();
+			mock.Add(new SegmentedMemoryPointerMock2());
+			RunTest(mock.BuildProgram(), "Typing/TerSegMemPtr2.txt");
+		}
+		
 		private void RunTest(Program prog, string outputFile)
 		{
 			eqb.Build(prog);
@@ -186,6 +193,19 @@ namespace Decompiler.UnitTests.Typing
 			Assign(ax, SegMemW(cs, si));
 			Assign(si2, Int16(0x0005));
 			Assign(ax, SegMemW(cs, si2));
+		}
+	}
+
+	public class SegmentedMemoryPointerMock2 : ProcedureMock
+	{
+		protected override void BuildBody()
+		{
+			Identifier ds = Local16("ds");
+			ds.DataType = PrimitiveType.Segment;
+			Identifier ax = Local16("ax");
+			Identifier bx = Local16("bx");
+			Assign(ax, SegMemW(ds, bx));
+			Assign(ax, SegMemW(ds, Add(bx, 4)));
 		}
 	}
 

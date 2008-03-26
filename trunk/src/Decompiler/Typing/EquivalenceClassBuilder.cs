@@ -191,8 +191,8 @@ namespace Decompiler.Typing
 
 		public override void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
-			mps.MemberPtr.Accept(this);
-			mps.Ptr.Accept(this);
+			mps.BasePointer.Accept(this);
+			mps.MemberPointer.Accept(this);
 			EnsureTypeVariable(mps);
 		}
 
