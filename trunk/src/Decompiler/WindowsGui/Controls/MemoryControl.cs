@@ -138,7 +138,7 @@ namespace Decompiler.WindowsGui.Controls
 
 		private bool IsVisible(Address addr)
 		{
-			if (addr == null)
+			if (addr == null || TopAddress == null)
 				return false;
 			int cbOffset = addr - TopAddress;
 			int yRow = cbOffset / cbRow;

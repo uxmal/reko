@@ -28,13 +28,11 @@ namespace Decompiler.Loading
 	/// </summary>
 	public class MsdosImageLoader : ImageLoader
 	{
-		private Program prog;
 		private ExeImageLoader exe;
 		private ProgramImage imgLoaded;
 
-		public MsdosImageLoader(Program prog, ExeImageLoader exe) : base(exe.RawImage)
+		public MsdosImageLoader(ExeImageLoader exe) : base(exe.RawImage)
 		{
-			this.prog = prog;
 			this.exe = exe;
 		}
 

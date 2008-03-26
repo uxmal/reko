@@ -35,7 +35,7 @@ namespace Decompiler.Core.Serialization
 			this.UserCalls = new ArrayList();
 		}
 
-		[XmlElement("load")]
+		[XmlElement("input")]
 		public DecompilerInput Input;
 
 		[XmlElement("output")]

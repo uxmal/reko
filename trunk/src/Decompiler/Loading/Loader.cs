@@ -18,9 +18,12 @@
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using System;
 using System.Collections;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Decompiler.Loading
 {
@@ -31,6 +34,7 @@ namespace Decompiler.Loading
 	public class Loader
 	{
 		private Program prog;
+		private DecompilerProject project;
 		private ArrayList entryPoints;
 		private RelocationDictionary relocations;
 
@@ -42,7 +46,6 @@ namespace Decompiler.Loading
 
 		public void Assemble(string asmFile, IProcessorArchitecture arch, Address addrBase)
 		{
-			prog.Architecture = arch;
 			Assembler asm = arch.CreateAssembler();
 			prog.Image = asm.Assemble(prog, addrBase, asmFile, entryPoints);
 			entryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
@@ -51,13 +54,56 @@ namespace Decompiler.Loading
 		public void AssembleFragment(string asmFragment, IProcessorArchitecture arch, Address addrBase)
 		{
 			Assembler asm = arch.CreateAssembler();
-			prog.Image = asm.AssembleFragment(prog, addrBase, asmFragment);
+			prog.Image = asm.AssembleFragment(null, addrBase, asmFragment);
 			entryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
 		}
 
 		public ArrayList EntryPoints
 		{
 			get { return entryPoints; }
+		}
+
+
+		/// <summary>
+		/// Loads a file and returns a decompiler project.
+		/// </summary>
+		/// <remarks>
+		/// The file can either be an executable or a decompiler project file.
+		/// </remarks>
+		/// <param name="file"></param>
+		public void Load(string file, Address addrLoad)
+		{
+			byte [] image = LoadImageBytes(file, 0);
+			bool isXmlFile = IsXmlFile(image);
+			if (isXmlFile)
+			{
+				XmlSerializer ser = new XmlSerializer(typeof (DecompilerProject));
+				project = (DecompilerProject) ser.Deserialize(new MemoryStream(image));
+				addrLoad = project.Input.BaseAddress;
+			}
+			else
+			{
+				// Wasn't a project, so make a blank one.
+
+				project = new DecompilerProject();
+				project.Input.Filename = file;
+
+				project.Output.DisassemblyFilename = Path.ChangeExtension(file, ".asm");
+				project.Output.IntermediateFilename = Path.ChangeExtension(file, ".dis");
+				project.Output.OutputFilename = Path.ChangeExtension(file, ".c");
+				project.Output.TypesFilename = Path.ChangeExtension(file, ".h");
+			}
+			LoadExecutable(project.Input.Filename, addrLoad);
+			if (!isXmlFile)
+			{
+				project.Input.BaseAddress = prog.Image.BaseAddress;
+			}
+		}
+
+		private static bool IsXmlFile(byte[] image)
+		{
+			bool isXmlFile = ImageLoader.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5);	// <?xml
+			return isXmlFile;
 		}
 
 		/// <summary>
@@ -81,7 +127,7 @@ namespace Decompiler.Loading
 		/// Relocation gives us a chance to determine the addresses of interesting items.
 		/// </summary>
 		/// <param name="binaryFile"></param>
-		public void LoadExecutable(string pstrFileName, Address addrLoad)
+		public virtual void LoadExecutable(string pstrFileName, Address addrLoad)
 		{
 			byte [] rawBytes = LoadImageBytes(pstrFileName, 0);
 			if (rawBytes[0] == 'M' && 
@@ -97,7 +143,7 @@ namespace Decompiler.Loading
 				ldr.Relocate(addrLoad, entryPoints, relocations);
 				return;
 			}
-			throw new ApplicationException("Unknown executable format: " + pstrFileName);
+			throw new ApplicationException("File has an unknown executable format.");
 		}
 
 		public void LoadExecutable(string fileName)
@@ -105,20 +151,31 @@ namespace Decompiler.Loading
 			LoadExecutable(fileName, null);
 		}
 
-		public byte [] LoadImageBytes(string pstrFileName, int offset)
+		/// <summary>
+		/// Loads the contents of a file with the specified filename into an array 
+		/// of bytes, optionally at the offset <paramref>offset</paramref>.
+		/// </summary>
+		/// <param name="fileName">File to open.</param>
+		/// <param name="offset">The offset into the array into which the file will be loaded.</param>
+		/// <returns>An array of bytes with the file contents at the specified offset.</returns>
+		public virtual byte [] LoadImageBytes(string fileName, int offset)
 		{
-			byte [] bytes;
-			using (FileStream stm = new FileStream(pstrFileName, FileMode.Open, FileAccess.Read))
+			using (FileStream stm = new FileStream(fileName, FileMode.Open, FileAccess.Read))
 			{
-				bytes = new Byte[stm.Length + offset];
+				byte [] bytes = new Byte[stm.Length + offset];
 				stm.Read(bytes, offset, (int) stm.Length);
+				return bytes;
 			}
-			return bytes;
 		}
 
 		public Program Program
 		{
 			get { return prog; }
+		}
+
+		public DecompilerProject Project
+		{
+			get { return project; }
 		}
 	}
 }

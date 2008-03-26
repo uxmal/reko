@@ -59,7 +59,7 @@ namespace Decompiler.Loading
 		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
 		{
 			int offset = (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
-			return CompareEqual(rawImg, offset, signature, signature.Length);
+			return ImageLoader.CompareArrays(rawImg, offset, signature, signature.Length);
 		}
 
 

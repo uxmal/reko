@@ -30,60 +30,73 @@ The decompiler can be run as a command-line tool, in which case it can be fed ei
         The outputs of the decompiler are a C source code file containing all the disassembled
         code and a header file types.h in which type-reconstructed data types can be found.</p>
 <h2>Design</h2>
-The decompiler consists of several stages. The first one is the <b>loading phase</b>, which loads the executable into
-memory and determines what kind of executable is 
-being decompiled. The executable format usually defines the processor format and the expected operating system environment. 
-For older formats, such as plain MS-DOS .EXE files, the processor (x86 real mode) and operating system environent (MS-DOS) is implicit.
-Once the format is determined, the binary is loaded into memory (uncompressing
-    it if necessary) and pointer or segment relocations are carried out. These relocations are also helpful
+<img style="float:right" src="images/design.png" alt="Diagram of decompiler design" />
+The decompiler consists of several phases.
+<ul>
+<li>The <b>loading phase</b> loads the executable into memory 
+and determines what kind of executable is being decompiled. The 
+executable format usually defines the processor format and the 
+expected operating system environment. For older formats, such 
+as plain MS-DOS .EXE files, the processor (x86 real mode) and 
+operating system environent (MS-DOS) are implicit. Once the 
+format is determined, the binary is loaded into memory 
+(uncompressing it if necessary) and pointer or segment 
+relocations are carried out. These relocations are also helpful
 in later stages of the decompiler, as each relocated pointer value
-    can be given a preliminary type <strong>pointer-to(&lt;unknown&gt;)</strong> and
-    each relocated segment selector the type <strong>segment-selector</strong>.<p>
-A scanning phase follows the loading phase. The executable will usually have one or more <dfn>entry points</dfn>, addresses
- pointing to executable code. The code at the the entry points is disassembled, looking in particular for <span class="code">branch</span>
-  <span class="code">call</span>, and <span class="code">return</span> statements. Successively, individual <strong>procedures</strong>
- are discovered, and <strong>call graph</strong>
-        is built up, whose edges represent calls between procedures. A subsequent <b>rewriting phase</b> 
- rewrites all machine-specific instructions into low-level machine-independent instructions. From this point on, the decompilation
- process is processor independent.
-</p>
-<p>
-The <b>analysis phase</b> first does a interprocedural reaching definitions analysis. This is done to determine, for each procedure <em>proc</em> of the program, which
+can be given a preliminary type <strong>pointer-to(&lt;unknown&gt;)</strong> and
+each relocated segment selector the type <strong>segment-selector</strong>.
+    </li>
+    <li>
+The <strong>scanning phase</strong> follows the loading phase. The executable
+will usually have one or more <dfn>entry points</dfn>, addresses pointing to 
+executable code. The code at the the entry points is disassembled and traced, 
+looking in particular for <span class="code">branch</span>, <span class="code">call</span>, 
+and <span class="code">return</span> statements. Successively, individual <strong>procedures</strong>
+ are discovered, and <strong>call graph</strong> is built up, whose edges represent 
+ calls between procedures.</li>
+ <li>The <b>rewriting phase</b> rewrites all machine-specific instructions into 
+ low-level machine-independent instructions. Idiomatic instruction sequences 
+ are rewritten to expressions. From this point on, the decompilation  process is processor independent.
+</li>
+<li>
+The <b>analysis phase</b> first does a interprocedural reaching definitions analysis. 
+This is done to determine, for each procedure <em>proc</em> of the program, which
     processor registers
 are preserved and which processor registers are modified after
     a call to <em>proc.</em> A subsequent interprocedural liveness analysis, combined
     with the results of the reaching definitions analysis, determins which processor
-    registers are used as parameters and return value registes for each procedure. Note
+    registers are used as parameters and return value registers for each procedure. Note
     that this analysis avoids depending on a specific processor/platform ABI or calling
     convention. Once the two interprocedural analyses are complete, the procedures can
     be rewritten with their explicit arguments. Subsequent analyses are then performed
     on a procedure-by-procedure basis. Procedures are converted into <strong>SSA Form</strong>,
-    condition code flags are eliminated, expressions are simplified, and finally converted
-    out of SSA Form.</p>
-    <p>
+    condition code flags are eliminated and expressions are simplified. Finally the
+    procedures are converted
+    out of SSA Form.</li>
+    <li>
         The interprocedural <strong>type analysis</strong> phase attempts to recover the
-        data types used in the program by analyizing the way in which values are used by
-        the program code, as well as incorporating clues obtained from the relocation data
+        data types used in the program by analyzing the way in which values are used by
+        the program code, incorporating clues obtained from the relocation data
         as well as any "oracular" 
 information provided by the user. Memory access expressions
         are converted into their C equivalents: pointer dereferences (<span class="code">*foo</span>), member access
         expressions (<span class="code">foo-&gt;bar</span>), and array references (<span class="code">foo[bar]</span>).
-    </p>
-    <p>
+    </li>
+    <li>
         Finally, a <strong>structure analysis</strong> rewrites the control structures from
         unstructured goto-sphaghetti code to C-language <span class="code">if</span>, <span class="code">while</span>- / <span class="code">do</span>-loops,
-        and <span class="code">switch</span>-statements.</p>
+        and <span class="code">switch</span>-statements.</li>
+</ul>
 
 <h2>Development</h2>
 The decompiler is written in C# and currently targets CLR version 1.1 (sorry, no generics... yet). 
-It's currently developed with Visual Studio 2005, but the general plan
+It's currently developed with Visual Studio 2005, but the plan
 is to have a working MonoDevelop project soon.
 
 <p>The project implements the <dfn>Test Driven Development</dfn> methodology, with heavy emphasis on unit testing.
 No new code is allowed into the project unless it has one or more associated tests written for it. Developing a 
 decompiler is notoriously tricky work with lots of special cases. Not having unit tests would make development an 
-eternal bug hunt as fixes for one bug introduce other bugs. Unit tests are developed using NUnit
-</p>
+eternal bug hunt as fixes for one bug introduce other bugs. Unit tests are developed using NUnit v2.2.&nbsp;</p>
 
 <p>Subversion is used for source control.</p>
 

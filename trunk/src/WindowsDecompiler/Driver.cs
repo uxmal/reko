@@ -17,6 +17,7 @@
  */
 
 using Decompiler;
+using Decompiler.Loading;
 using Decompiler.Core;
 using Decompiler.WindowsGui.Forms;
 using System;
@@ -37,7 +38,10 @@ namespace WindowsDecompiler
 			}
 			else
 			{
-				DecompilerDriver dec = new DecompilerDriver(args[0], new Program(), new NullDecompilerHost());
+				Program prog = new Program();
+				Loader l = new Loader(prog);
+				l.Load(args[0], null);
+				DecompilerDriver dec = new DecompilerDriver(l.Project, prog, new NullDecompilerHost());
 				dec.Decompile();
 			}
 		}

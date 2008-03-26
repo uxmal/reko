@@ -34,7 +34,13 @@ namespace Decompiler.Loading
 			this.imgRaw = imgRaw;
 		}
 
+		[Obsolete("Use CompareArrays")]
 		public static bool CompareEqual(byte [] src, int iSrc, byte [] dst, int cb)
+		{
+			return CompareArrays(src, iSrc, dst, cb);
+		}
+
+		public static bool CompareArrays(byte [] src, int iSrc, byte [] dst, int cb)
 		{
 			int iDst = 0;
 			while (cb != 0)

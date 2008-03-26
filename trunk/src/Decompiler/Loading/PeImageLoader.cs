@@ -27,13 +27,13 @@ namespace Decompiler.Loading
 {
 	public class PeImageLoader : ImageLoader
 	{
+		private Program prog;
 		private short optionalHeaderSize;
 		private int sections;
 		private uint sectionOffset;
 		private ProgramImage imgLoaded;
 		private uint preferredBaseOfImage;
 		private SortedList sectionMap;
-		private Program program;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
 		private uint rvaExportTable;
 		private uint sizeExportTable;
@@ -45,9 +45,9 @@ namespace Decompiler.Loading
 		private const short ImageFileExecutable = 0x0002;
 
 
-		public PeImageLoader(Program pgm, byte [] img, uint peOffset) : base(img)
+		public PeImageLoader(Program prog, byte [] img, uint peOffset) : base(img)
 		{
-			program = pgm;
+			this.prog = prog;
 			ImageReader rdr = new ImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
 				rdr.ReadByte() != 'E' ||
@@ -163,8 +163,8 @@ namespace Decompiler.Loading
 			// Read COFF header.
 
 			short machine = rdr.ReadLeInt16();
-			program.Architecture = CreateArchitecture(machine);
-			program.Platform = new Decompiler.Arch.Intel.Win32.Win32Platform(program.Architecture);
+			prog.Architecture = CreateArchitecture(machine);
+			prog.Platform = new Decompiler.Arch.Intel.Win32.Win32Platform(prog.Architecture);
 
 			sections = rdr.ReadLeInt16();
 			sectionMap = new SortedList(sections);
@@ -336,7 +336,7 @@ namespace Decompiler.Loading
 			id.DllName = ReadAsciiString(rdr.ReadLeUint32(), 0);		// DLL name
 			id.RvaThunks = rdr.ReadLeUint32();		// first thunk
 
-			SignatureLibrary lib = new SignatureLibrary(program.Architecture);
+			SignatureLibrary lib = new SignatureLibrary(prog.Architecture);
 			
 			lib.Load(ImportFileLocation(id.DllName));
 			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
@@ -350,7 +350,7 @@ namespace Decompiler.Loading
 					break;
 			
 				string fnName = ReadAsciiString(rvaEntry + 2, 0);
-				program.ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, lib.Lookup(fnName)));
+				prog.ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, lib.Lookup(fnName)));
 			}
 			return id;
 		}

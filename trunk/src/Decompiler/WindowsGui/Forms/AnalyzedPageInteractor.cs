@@ -24,24 +24,24 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		private AnalyzedPage page;
 
-		public AnalyzedPageInteractor(AnalyzedPage page, MainForm form)
+		public AnalyzedPageInteractor(AnalyzedPage page, MainFormInteractor form)
 			: base(page, form)
 		{
 			this.page = page;
-			page.PerformTypeRecovery.CheckedChanged += new EventHandler(PerformTypeRecovery_CheckedChanged);
 		}
 
 
-		public override void PopulateControls()
+		public override void EnterPage()
 		{
 			Decompiler.RewriteMachineCode();
 			Decompiler.AnalyzeDataFlow();
 			page.PerformTypeRecovery.Checked = Decompiler.Project.Output.TypeInference;
 		}
 
-		private void PerformTypeRecovery_CheckedChanged(object sender, EventArgs e)
+		public override bool LeavePage()
 		{
 			Decompiler.Project.Output.TypeInference = page.PerformTypeRecovery.Checked;
+			return true;
 		}
 	}
 }

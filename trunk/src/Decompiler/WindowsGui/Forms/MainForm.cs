@@ -34,8 +34,6 @@ namespace Decompiler.WindowsGui.Forms
 {
 	public class MainForm : System.Windows.Forms.Form
 	{
-		public event EventHandler PhasePageChanged;
-
 		private PhasePage phasePage;
 
 		private InitialPhase initialPhase;
@@ -583,8 +581,6 @@ namespace Decompiler.WindowsGui.Forms
 				this.phasePage = value;
 				phasePage.BringToFront();
 				phasePage.Visible = true;
-				if (PhasePageChanged != null)
-					PhasePageChanged(this, EventArgs.Empty);
 			}
 		}
 

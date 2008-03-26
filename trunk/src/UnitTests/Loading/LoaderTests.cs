@@ -18,10 +18,12 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
+using System.Text;
 using System.Collections;
 using System.Diagnostics;
 
@@ -31,49 +33,50 @@ namespace Decompiler.UnitTests.Loading
 	public class LoaderTests
 	{
 		[Test]
-		public void LoadSpacesim()
+		public void LoadProjectFileNoBom()
 		{
-			Program prog = new Program();
-			Loader loader = new Loader(prog);
-			loader.LoadExecutable(FileUnitTester.MapTestPath("binaries/itp.exe"));
+			byte [] image = new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
+				"<input><filename>foo.bar</filename></input></project>");
+			TestLoader ldr = new TestLoader(new Program());
+			ldr.Image = image;
+			ldr.Load("", null);
+			Assert.IsNotNull(ldr.Project);
+			Assert.AreEqual("foo.bar", ldr.Project.Input.Filename);
 		}
 
-		[Test]
-		public void LoadOmni()
+		private class TestLoader : Loader
 		{
-			Program prog = new Program();
-			Loader loader = new Loader(prog);
-			loader.LoadBinary(FileUnitTester.MapTestPath("binaries/omni.com"), new Address(0xC000, 0));
-		}
-
-		[Test]
-		public void LoadItp()
-		{
-			Program prog = new Program();
-			Loader loader = new Loader(prog);
-			loader.LoadExecutable(FileUnitTester.MapTestPath("binaries/itp.exe"));
-		}
-
-		[Test]
-		public void LoadLunar()
-		{
-			Program prog = new Program();
-			Loader loader = new Loader(prog);
-			loader.LoadExecutable(FileUnitTester.MapTestPath("binaries/lunarcell-150.8bf"));
-			Scanner scan = new Scanner(prog, null);
-			foreach (EntryPoint ep in loader.EntryPoints)
+			public TestLoader(Program prog)
+				: base(prog)
 			{
-				scan.EnqueueEntryPoint(ep);
 			}
-			scan.ProcessQueues();
-			using (FileUnitTester fut = new FileUnitTester("Loading/LoadLunar.txt"))
+
+			private bool allowLoadExecutable;
+			private byte [] image;
+
+			public bool AllowLoadExecutable
 			{
-				foreach (Procedure proc in prog.Procedures.Values)
-				{
-					fut.TextWriter.WriteLine(proc.Name);
-				}
-				fut.AssertFilesEqual();
+				get { return allowLoadExecutable; }
+				set { allowLoadExecutable = value; }
 			}
+
+			public byte [] Image
+			{
+				get { return image; }
+				set { image = value; }
+			}
+
+			public override byte[] LoadImageBytes(string fileName, int offset)
+			{
+				return image;
+			}
+
+			public override void LoadExecutable(string pstrFileName, Address addrLoad)
+			{
+				if (allowLoadExecutable)
+					base.LoadExecutable(pstrFileName, addrLoad);
+			}
+
 		}
 	}
 }

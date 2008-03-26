@@ -27,7 +27,7 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		private FinalPage finalPage;
 
-		public FinalPageInteractor(FinalPage page, MainForm form) :
+		public FinalPageInteractor(FinalPage page, MainFormInteractor form) :
 			base(page, form)
 		{
 			finalPage = page;
@@ -36,7 +36,8 @@ namespace Decompiler.WindowsGui.Forms
 			finalPage.SaveButton.Click += new EventHandler(SaveButton_Click);
 		}
 
-		public override void PopulateControls()
+
+		public override void EnterPage()
 		{
 			finalPage.SourceFile.Text = Decompiler.Project.Output.OutputFilename;
 			finalPage.HeaderFile.Text = Decompiler.Project.Output.TypesFilename;
@@ -44,6 +45,11 @@ namespace Decompiler.WindowsGui.Forms
 			SetTextBoxes(Decompiler.Project.Output);
 			Decompiler.ReconstructTypes();
 			Decompiler.StructureProgram();
+		}
+
+		public override bool LeavePage()
+		{
+			return true;
 		}
 
 		private void SaveButton_Click(object sender, EventArgs e)

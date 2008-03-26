@@ -46,13 +46,13 @@ namespace Decompiler.Loading
 
 			byte [] abC = RawImage;
 			int entry = lzHdrOffset + exe.e_ip;
-			if (CompareEqual(abC, entry, s_sig90, s_sig90.Length)) 
+			if (ImageLoader.CompareArrays(abC, entry, s_sig90, s_sig90.Length)) 
 			{
 				// Untested binary version
 				isLz91 = false;
 				throw new NotImplementedException("Untested");
 			}			
-			else if (CompareEqual(abC, entry, s_sig91, s_sig91.Length))
+			else if (ImageLoader.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
 			{
 				isLz91 = true;
 			}			
@@ -71,8 +71,8 @@ namespace Decompiler.Loading
 
 			int lzHdrOffset = ((int) exe.e_cparHeader + (int) exe.e_cs) << 4;
 			int entry = lzHdrOffset + exe.e_ip;
-			return (CompareEqual(rawImg, entry, s_sig91, s_sig91.Length) ||
-					CompareEqual(rawImg, entry, s_sig90, s_sig90.Length));
+			return (ImageLoader.CompareArrays(rawImg, entry, s_sig91, s_sig91.Length) ||
+					ImageLoader.CompareArrays(rawImg, entry, s_sig90, s_sig90.Length));
 		}
 
 		// Fix up the relocations.

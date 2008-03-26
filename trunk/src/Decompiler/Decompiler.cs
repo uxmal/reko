@@ -55,12 +55,14 @@ namespace Decompiler
 			this.program = program;
 		}
 
+		[Obsolete("Deprecated: loader takes care of creating projects.", true)]
 		public DecompilerDriver(string binaryFilename, Program program, DecompilerHost host)
 		{
 			this.project = new DecompilerProject();
 			this.host = host;
 			this.project.Input.Filename = binaryFilename;
-			this.project.Output.RewrittenFilename = Path.ChangeExtension(binaryFilename, ".dis");
+			this.project.Output.DisassemblyFilename = Path.ChangeExtension(binaryFilename, ".asm");
+			this.project.Output.IntermediateFilename = Path.ChangeExtension(binaryFilename, ".dis");
 			this.project.Output.OutputFilename = Path.ChangeExtension(binaryFilename, ".c");
 			this.project.Output.TypesFilename = Path.ChangeExtension(binaryFilename, ".h");
 			this.program = program;
@@ -250,7 +252,12 @@ namespace Decompiler
 				foreach (EquivalenceClass eq in program.TypeStore.UsedEquivalenceClasses)
 				{
 					if (eq.DataType != null)
+					{
+						w.Write("typedef ");
 						fmt.Write(eq.DataType, eq.Name);
+						w.WriteLine(";");
+						w.WriteLine();
+					}
 				}
 			}
 		}
@@ -272,6 +279,8 @@ namespace Decompiler
 
 		public void ScanProcedure(Address addr)
 		{
+			if (scanner == null)
+				scanner = new Scanner(program, host);
 			scanner.EnqueueProcedure(null, addr, null);
 			scanner.ProcessQueues();
 		}
@@ -285,7 +294,7 @@ namespace Decompiler
 		{
 			try 
 			{
-				scanner = new Scanner(program, null);
+				scanner = new Scanner(program, host);
 				if (loader != null)
 				{
 					foreach (EntryPoint ep in loader.EntryPoints)

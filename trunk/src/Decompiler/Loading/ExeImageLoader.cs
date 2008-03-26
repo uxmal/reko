@@ -29,7 +29,6 @@ namespace Decompiler.Loading
 	/// </summary>
 	public class ExeImageLoader : ImageLoader
 	{
-		private Program prog;
 		private ImageLoader ldrDeferred;
 
 		public ushort	e_magic;                     // Magic number
@@ -62,8 +61,6 @@ namespace Decompiler.Loading
 
 		public ExeImageLoader(Program prog, byte [] image) : base(image)
 		{
-			this.prog = prog;
-
 			ReadCommonExeFields();	
 		
 			if (e_magic != MarkZbikowski)
@@ -105,7 +102,7 @@ namespace Decompiler.Loading
 				else
 				{
 					// Uncompressed MS-DOS executable.
-					ldrDeferred = new MsdosImageLoader(prog, this);
+					ldrDeferred = new MsdosImageLoader(this);
 				}
 			}
 		}
