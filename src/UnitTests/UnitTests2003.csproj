@@ -1065,11 +1065,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "WindowsGui\Forms\FinalPageInteractorTests.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "WindowsGui\Forms\InitialPageInteractorTests.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

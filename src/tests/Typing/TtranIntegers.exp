@@ -28,6 +28,8 @@ fn0C00_0000_exit:		// block 6, pred: 5
 	// succ: 
 
 // Equivalence classes ////////////
+Eq_3: (struct)
+	T_3 (in ds : segment)
 Eq_4: (struct (0 word32 dw0000) (4 word32 dw0004) (8 bcu8 b0008) (9 byte b0009) (A int16 w000A) (C int16 w000C) (E word16 w000E) (10 word16 w0010))
 	T_4 (in bx : word16)
 // Type Variables ////////////
@@ -41,11 +43,11 @@ T_2:(in al_29)
   OrigDataType: byte
 T_3:(in ds)
   Class: Eq_3
-  DataType: segment
-  OrigDataType: segment
+  DataType: (ptr Eq_3)
+  OrigDataType: (ptr (struct))
 T_4:(in bx)
   Class: Eq_4
-  DataType: (memptr segment Eq_4)
+  DataType: (memptr (ptr Eq_3) Eq_4)
   OrigDataType: (memptr T_3 (struct (0 T_5 t0000) (4 T_15 t0004) (8 T_19 t0008) (9 T_28 t0009) (A T_35 t000A) (C T_32 t000C) (E T_40 t000E) (10 T_44 t0010)))
 T_5:(in Mem0[ds:bx:word32])
   Class: Eq_5
@@ -61,7 +63,7 @@ T_7:(in Mem0[ds:bx:word32] & 0x000000FF)
   OrigDataType: word32
 T_8:(in si)
   Class: Eq_8
-  DataType: (memptr segment word32)
+  DataType: (memptr (ptr Eq_3) word32)
   OrigDataType: (memptr T_3 (struct (0 T_9 t0000)))
 T_9:(in Mem0[ds:si:word32])
   Class: Eq_9

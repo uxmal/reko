@@ -106,8 +106,8 @@ namespace Decompiler.Core.Code
 
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
-			mps.MemberPtr.Accept(this);
-			mps.Ptr.Accept(this);
+			mps.BasePointer.Accept(this);
+			mps.MemberPointer.Accept(this);
 		}
 
 		public void VisitMemoryAccess(MemoryAccess access)

@@ -158,9 +158,6 @@ namespace Decompiler.Loading
 				ushort seg = (ushort) (pgmImgNew.ReadLeUint16(rel_off) + segReloc);
 				pgmImgNew.WriteLeUint16(rel_off, seg);
 				relocations.AddSegmentReference(rel_off, seg);
-
-				// This is a known segment!
-
 				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 			}
 			return imageMap;
@@ -252,7 +249,6 @@ namespace Decompiler.Loading
 			// Create a new image based on the uncompressed data.
 
 			this.imgLoaded = new ProgramImage(addrLoad, abU);
-
 			return imgLoaded;
 		}
 

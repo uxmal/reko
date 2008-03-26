@@ -105,6 +105,16 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual("      branch 0x00000000" + nl, sw.ToString());
 		}
 
+		[Test]
+		public void CfMemberPointerSelector()
+		{
+			Identifier ds = new Identifier("ds", 1, PrimitiveType.Segment, null);
+			Identifier bx = new Identifier("bx", 1, PrimitiveType.Word16, null);
+			Expression e = new MemberPointerSelector(PrimitiveType.Byte, ds, bx);
+			e.Accept(cf);
+			Assert.AreEqual("ds.*bx", sw.ToString());
+		}
+
 		[SetUp]
 		public void Setup()
 		{

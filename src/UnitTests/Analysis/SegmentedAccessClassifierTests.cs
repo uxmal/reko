@@ -163,8 +163,8 @@ namespace Decompiler.UnitTests.Analysis
 				Identifier ds = Local16("ds");
 				Identifier ax = Local16("ax");
 				Identifier bx = Local16("bx");
-				Load(ax, MembPtr(ds, Add(bx, Int16(4))));
-				Load(ax, MembPtr(ds, Int16(0x3000)));
+				Load(ax, MembPtrW(ds, Add(bx, Int16(4))));
+				Load(ax, MembPtrW(ds, Int16(0x3000)));
 			}
 		}
 	}

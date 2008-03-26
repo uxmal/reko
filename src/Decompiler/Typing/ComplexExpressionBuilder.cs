@@ -32,15 +32,21 @@ namespace Decompiler.Typing
 	{
 		private DataType dt;
 		private DataType dtOriginal;
+		private Expression basePointer;
 		private Expression baseExp;
 		private int offset;
 		private Expression complexExp;
 		private bool dereferenced;
 
-		public ComplexExpressionBuilder(DataType dt, DataType dtOrig, Expression b, int offset)
+		public ComplexExpressionBuilder(DataType dt, DataType dtOrig, Expression b, int offset) : this(dt, dtOrig, null, b, offset)
+		{
+		}
+
+		public ComplexExpressionBuilder(DataType dt, DataType dtOrig, Expression basePointer, Expression b, int offset)
 		{
 			this.dt = dt;
 			this.dtOriginal = dtOrig;
+			this.basePointer = basePointer;
 			this.baseExp = b;
 			this.offset = offset;
 		}
@@ -51,6 +57,59 @@ namespace Decompiler.Typing
 			dt.Accept(this);
 			return complexExp;
 		}
+
+		private Expression CreateDereference(DataType dt, Expression e)
+		{
+			if (basePointer != null)
+				return new MemberPointerSelector(dt, new Dereference(null, basePointer), e);
+			else
+				return new Dereference(dt, e);
+		}
+
+		private void RewritePointer(DataType dtPtr, DataType dtPointee, DataType dtPointeeOriginal)
+		{
+			if (dtPointee is PrimitiveType || dtPointee is Pointer)
+			{
+				if (offset % dtPointee.Size == 0)
+				{
+					int idx = offset / dtPointee.Size;
+					if (idx == 0)
+					{
+						if (Dereferenced)
+						{
+							complexExp = CreateDereference(dtPointee, baseExp);
+						}
+						else
+							complexExp = baseExp;
+					}
+					else
+					{
+						complexExp = new ArrayAccess(dtPointee, baseExp, 
+							new Constant(PrimitiveType.Word32, idx));
+						if (!Dereferenced)
+						{
+							complexExp = new UnaryExpression(UnaryOperator.addrOf, dtPtr, complexExp);
+						}
+					}
+				}
+				else
+				{
+					complexExp = new PointerAddition(dtPtr, baseExp, offset);
+				}
+			}
+			else
+			{
+				dtOriginal = dtPointeeOriginal;
+				baseExp = CreateDereference(dtPointee, baseExp);
+				basePointer = null;
+				dtPointee.Accept(this);
+				if (!Dereferenced)
+				{
+					complexExp = new UnaryExpression(UnaryOperator.addrOf, dtPtr, complexExp);
+				}
+			}
+		}
+
 
 		public bool Dereferenced
 		{
@@ -99,72 +158,15 @@ namespace Decompiler.Typing
 
 		public override void VisitPointer(Pointer ptr)
 		{
-			DataType x = ptr.Pointee;
-			if (x is PrimitiveType || x is Pointer)
-			{
-				if (offset % x.Size == 0)
-				{
-					int idx = offset / x.Size;
-					if (idx == 0)
-					{
-						if (Dereferenced)
-						{
-							complexExp = new Dereference(ptr.Pointee, baseExp);
-						}
-						else
-							complexExp = baseExp;
-					}
-					else
-					{
-						complexExp = new ArrayAccess(x, baseExp, 
-							new Constant(PrimitiveType.Word32, idx));
-						if (!Dereferenced)
-						{
-							complexExp = new UnaryExpression(UnaryOperator.addrOf, ptr, complexExp);
-						}
-					}
-				}
-				else
-				{
-					complexExp = new PointerAddition(ptr, baseExp, offset);
-				}
-			}
-			else
-			{
-				dt = ptr.Pointee;
-				dtOriginal = ((Pointer) this.dtOriginal).Pointee;
-				baseExp = new Dereference(dt, baseExp);
-				dt.Accept(this);
-				if (!Dereferenced)
-				{
-					complexExp = new UnaryExpression(UnaryOperator.addrOf, ptr, complexExp);
-				}
-			}
+			RewritePointer(ptr, ptr.Pointee, ((Pointer) this.dtOriginal).Pointee);
 		}
 
 		public override void VisitMemberPointer(MemberPointer memptr)
 		{
-			/*
-			PrimitiveType x = memptr.Pointee as PrimitiveType;
-			if (x != null)
-			{
-				if (cbOffset % x.Size == 0)
-				{
-					ArrayAccess acc = new ArrayAccess(x, baseExp,
-						new Constant(PrimitiveType.Word32, cbOffset / x.Size));
-					complexExp = MkAddrOf(memptr, acc);
-				}
-				else
-				{
-					complexExp = new PointerAddition(memptr, baseExp, cbOffset);
-				}
-			}
-			else
-			{
-				MemberPointer mOriginal = (MemberPointer) this.dtOriginal;
-				complexExp = ConstructComplex(memptr.Pointee, mOriginal.Pointee, baseExp, cbOffset);
-			}
-			*/
+			if (!(dtOriginal is MemberPointer))
+				throw new TypeInferenceException("MemberPointer expression {0}  was expected to have MemberPointer as its " +
+					"original type, but was {1}.", memptr, dtOriginal);
+			RewritePointer(memptr, memptr.Pointee, ((MemberPointer) dtOriginal).Pointee);
 		}
 
 
@@ -172,20 +174,29 @@ namespace Decompiler.Typing
 		{
 			StructureField field = str.Fields.LowerBound(this.offset);
 			if (field == null)
-				throw new NotImplementedException(string.Format("Expression should have fields at offset {0}", offset));
+				throw new TypeInferenceException("Expected structure type {0} to have a field at offset {1}.", str.Name, offset);
 		
 			dt = field.DataType;
 			dtOriginal = field.DataType;
-			baseExp = new FieldAccess(field.DataType, baseExp, field.Name);
+			baseExp = CreateFieldAccess(field.DataType, baseExp, field.Name);
 			offset -= field.Offset;
 			dt.Accept(this);
+		}
+
+		private Expression CreateFieldAccess(DataType dt, Expression exp, string fieldName)
+		{
+			if (basePointer != null)
+			{
+				exp = new MemberPointerSelector(dt, basePointer, exp);
+			}
+			return new FieldAccess(dt, exp, fieldName);
 		}
 
 		public override void VisitUnion(UnionType ut)
 		{
 			UnionAlternative alt = ut.FindAlternative(dtOriginal);
 			if (alt == null)
-				throw new TypeInferenceException("Unable to find {0} in {1} (offset {2})", dtOriginal, ut, offset);
+				throw new TypeInferenceException("Unable to find {0} in {1} (offset {2}).", dtOriginal, ut, offset);
 
 			dt = alt.DataType;
 			dtOriginal = alt.DataType;
@@ -198,8 +209,6 @@ namespace Decompiler.Typing
 				baseExp = new FieldAccess(alt.DataType, baseExp, alt.Name);
 			}
 			dt.Accept(this);
-
 		}
-
 	}
 }

@@ -22,17 +22,17 @@ using System;
 namespace Decompiler.Core.Code
 {
 	/// <summary>
-	/// Implements the C++ construct ptr->*mp
+	/// Implements the C++ construct ptr.*mp
 	/// </summary>
 	public class MemberPointerSelector : Expression
 	{
-		public Expression Ptr;
-		public Expression MemberPtr;
+		public Expression BasePointer;
+		public Expression MemberPointer;
 
-		public MemberPointerSelector(Expression ptr, Expression memberPtr) : base(ptr.DataType)
+		public MemberPointerSelector(DataType dt, Expression basePtr, Expression memberPtr) : base(dt)
 		{
-			Ptr = ptr;
-			MemberPtr = memberPtr;
+			BasePointer = basePtr;
+			MemberPointer = memberPtr;
 		}
 
 		public override Expression Accept(IExpressionTransformer xform)
@@ -47,8 +47,7 @@ namespace Decompiler.Core.Code
 
 		public override Expression CloneExpression()
 		{
-			return new MemberPointerSelector(Ptr.CloneExpression(), MemberPtr.CloneExpression());
+			return new MemberPointerSelector(DataType, BasePointer.CloneExpression(), MemberPointer.CloneExpression());
 		}
-
 	}
 }
