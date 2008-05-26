@@ -35,6 +35,7 @@ namespace Decompiler.Core.Serialization
 		[XmlElement("output")]
 		public string OutputFilename;
 
+		[Obsolete]
 		[XmlElement("structure")]
 		public bool ControlStructure;
 

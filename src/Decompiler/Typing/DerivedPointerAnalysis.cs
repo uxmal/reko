@@ -67,6 +67,20 @@ namespace Decompiler.Typing
 			}
 		}
 
+		private TypeVariable GetTypeVariableForField(DataType fieldType)
+		{
+			StructureType s = fieldType as StructureType;
+			if (s != null)
+			{
+				StructureField f = s.Fields.AtOffset(0);
+				if (f == null)
+					return null;
+				return f.DataType as TypeVariable;
+			}
+			throw new NotImplementedException(string.Format("Don't know how to handle pointers to {0}.", fieldType));
+		}
+
+
 		public Identifier Globals
 		{
 			get 
@@ -84,33 +98,49 @@ namespace Decompiler.Typing
 		public override void VisitConstant(Constant c)
 		{
 			DataType dt = store.ResolvePossibleTypeVar(c.TypeVariable);
+			int offset = Convert.ToInt32(c.Value);
 			Pointer ptr = dt as Pointer;
 			if (ptr != null)
 			{
 				// C is a constant pointer.
-				int offset = Convert.ToInt32(c.Value);
 				if (offset != 0)
 				{
-					StructureType s = ptr.Pointee as StructureType;
-					if (s == null)
-						return;			//$REFACTOR: handle these cases, and clean up this obscure function.
-					StructureField f = s.Fields.AtOffset(0);
-					if (f == null)
+					TypeVariable tvField = GetTypeVariableForField(ptr.Pointee);
+					if (tvField == null)
 						return;
-					TypeVariable tvPointee = tvPointee = f.DataType as TypeVariable;
-					if (tvPointee == null)
-						return;
-					
-					ptr = CreatePointerToField(offset, tvPointee);
+
+					ptr = CreatePointerToField(offset, tvField);
 					Globals.TypeVariable.OriginalDataType = 
 						unifier.Unify(Globals.TypeVariable.OriginalDataType, ptr);
 
-					ptr = CreatePointerToField(offset, tvPointee);
+					ptr = CreatePointerToField(offset, tvField);
 					Globals.TypeVariable.Class.DataType = 
 						unifier.Unify(Globals.TypeVariable.Class.DataType, ptr);
 				}
 			}
+			MemberPointer mptr = dt as MemberPointer;
+			if (mptr != null)
+			{
+				VisitConstantMemberPointer(offset, mptr);
+			}
 		}
+
+		private void VisitConstantMemberPointer(int offset, MemberPointer mptr)
+		{
+			TypeVariable tvField = GetTypeVariableForField(mptr.Pointee);
+			if (tvField == null)
+				return;
+
+			TypeVariable tvBase = (TypeVariable) mptr.BasePointer;
+			Pointer ptr = CreatePointerToField(offset, tvField);
+			tvBase.OriginalDataType =
+				unifier.Unify(tvBase.OriginalDataType, ptr);
+
+			ptr = CreatePointerToField(offset, tvField);
+			tvBase.Class.DataType =
+				unifier.Unify(tvBase.Class.DataType, ptr);
+		}
+
 
 		public override void VisitMemoryAccess(MemoryAccess acc)
 		{

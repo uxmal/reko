@@ -33,7 +33,7 @@ fn0C00_000F_exit:		// block 5, pred: 4
 // Equivalence classes ////////////
 Eq_2: (fn int16 (word16))
 	T_2 (in fn0C00_000F : ptr0)
-	T_3 (in signature of fn0C00_000F : )
+	T_3 (in signature of fn0C00_000F)
 	T_18 (in fn0C00_000F : ptr0)
 Eq_7: (struct (64 word16 w0064))
 	T_7 (in ds : segment)

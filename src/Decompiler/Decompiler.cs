@@ -26,6 +26,7 @@ using Decompiler.Analysis;
 using Decompiler.Structure;
 using Decompiler.Typing;
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.IO;
 
@@ -41,6 +42,7 @@ namespace Decompiler
 	public class DecompilerDriver
 	{
 		private Program program;
+		private string filename;
 		private DecompilerProject project;
 		private DecompilerHost host;
 		private Loader loader;
@@ -48,31 +50,18 @@ namespace Decompiler
 		private RewriterHost rewriterHost;
 		private InductionVariableCollection ivs;
 
-		public DecompilerDriver(DecompilerProject project, Program program, DecompilerHost host)
+		public DecompilerDriver(string filename, Program program, DecompilerHost host)
 		{
-			this.project = project;
-			this.host = host;
+			this.filename = filename;
 			this.program = program;
+			this.host = host;
 		}
 
-		[Obsolete("Deprecated: loader takes care of creating projects.", true)]
-		public DecompilerDriver(string binaryFilename, Program program, DecompilerHost host)
-		{
-			this.project = new DecompilerProject();
-			this.host = host;
-			this.project.Input.Filename = binaryFilename;
-			this.project.Output.DisassemblyFilename = Path.ChangeExtension(binaryFilename, ".asm");
-			this.project.Output.IntermediateFilename = Path.ChangeExtension(binaryFilename, ".dis");
-			this.project.Output.OutputFilename = Path.ChangeExtension(binaryFilename, ".c");
-			this.project.Output.TypesFilename = Path.ChangeExtension(binaryFilename, ".h");
-			this.program = program;
-		}
-
+		///<summary>determines the signature of the procedures,
+		/// the locations and types of all the values in the program.
+		///</summary>
 		public void AnalyzeDataFlow()
 		{
-			// Data flow analysis: determines the signature of the procedures,
-			// the locations and types of all the values in the program.
-
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, host);
 			RegisterLiveness rl = dfa.UntangleProcedures();
 			host.InterproceduralAnalysisComplete();
@@ -80,7 +69,8 @@ namespace Decompiler
 			dfa.BuildExpressionTrees(rl);
 			using (TextWriter textWriter = host.CreateIntermediateCodeWriter())
 			{
-				EmitProgram(dfa, textWriter);
+				if (textWriter != null)
+					EmitProgram(dfa, textWriter);
 			}
 			ivs = dfa.InductionVariables;
 			host.ProceduresTransformed();
@@ -146,6 +136,11 @@ namespace Decompiler
 			}
 		}
 
+		protected virtual Loader CreateLoader(Program prog)
+		{
+			return new Loader(prog);
+		}
+
 		/// <summary>
 		/// Loads (or assembles) the program in memory, performing relocations as necessary.
 		/// </summary>
@@ -153,25 +148,9 @@ namespace Decompiler
 		/// <param name="cfg"></param>
 		public virtual void LoadProgram()
 		{
-			loader = new Loader(program);
-			switch (project.Input.FileFormat)
-			{
-			case InputFormat.Assembler:
-				loader.Assemble(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
-				break;
-			case InputFormat.AssemblerFragment:
-				loader.AssembleFragment(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
-				break;
-			case InputFormat.Binary:
-			case InputFormat.COM:
-				if (project.Input.BaseAddress == null)
-					throw new ArgumentException("Base address must be specified when input format is Binary or COM");
-				loader.LoadBinary(project.Input.Filename, project.Input.BaseAddress);
-				break;
-			default:
-				loader.LoadExecutable(project.Input.Filename, project.Input.BaseAddress);
-				break;
-			}
+			loader = CreateLoader(program);
+			loader.Load(filename, null);
+			project = loader.Project;
 			host.ProgramLoaded();
 		}
 
@@ -263,19 +242,6 @@ namespace Decompiler
 		}
 
 
-		public void WriteDecompilerProducts()
-		{
-			WriteDecompiledTypes(host);
-			WriteDecompiledProcedures(host);
-		}
-
-		public void WriteHeaderComment(string filename, TextWriter w)
-		{
-			w.WriteLine("// {0}", filename);
-			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, project.Input.Filename);
-			w.WriteLine("// using Decompiler.");
-			w.WriteLine();
-		}
 
 		public void ScanProcedure(Address addr)
 		{
@@ -292,23 +258,23 @@ namespace Decompiler
 		/// <param name="cfg">configuration information</param>
 		public void ScanProgram()
 		{
-			try 
+			if (loader == null)
+				throw new InvalidOperationException("Program must be loaded first.");
+
+			try
 			{
 				scanner = new Scanner(program, host);
-				if (loader != null)
+				foreach (EntryPoint ep in loader.EntryPoints)
 				{
-					foreach (EntryPoint ep in loader.EntryPoints)
-					{
-						program.AddEntryPoint(ep);
-						scanner.EnqueueEntryPoint(ep);
-					}
-					foreach (SerializedProcedure sp in project.UserProcedures)
-					{
-						scanner.EnqueueUserProcedure(sp);
-					}
-					scanner.ProcessQueues();
-					host.ProgramScanned();
+					program.AddEntryPoint(ep);
+					scanner.EnqueueEntryPoint(ep);
 				}
+				foreach (SerializedProcedure sp in project.UserProcedures)
+				{
+					scanner.EnqueueUserProcedure(sp);
+				}
+				scanner.ProcessQueues();
+				host.ProgramScanned();
 			}
 			finally
 			{
@@ -320,27 +286,37 @@ namespace Decompiler
 			}
 		}
 
-
 		public void StructureProgram()
 		{
-			if (project.Output.ControlStructure)
+			// At this point, the functions are unsnarled from each other, and 
+			// can be analyzed separately.
+
+			// Extracts structured program constructs out of snarled goto nests, if possible.
+			// Since procedures are now independent of each other, this analysis
+			// is done one procedure at a time.
+
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-				// At this point, the functions are unsnarled from each other, and 
-				// can be analyzed separately.
-
-				// Extracts structured program constructs out of snarled goto nests, if possible.
-				// Since procedures are now independent of each other, this analysis
-				// is done one procedure at a time.
-
-				foreach (Procedure proc in program.Procedures.Values)
-				{
-					StructureAnalysis sa = new StructureAnalysis(proc);
-					sa.FindStructures();
-				}
+				StructureAnalysis sa = new StructureAnalysis(proc);
+				sa.FindStructures();
 			}
 			host.CodeStructuringComplete();
 		}
 
+
+		public void WriteDecompilerProducts()
+		{
+			WriteDecompiledTypes(host);
+			WriteDecompiledProcedures(host);
+		}
+
+		public void WriteHeaderComment(string filename, TextWriter w)
+		{
+			w.WriteLine("// {0}", filename);
+			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, project.Input.Filename);
+			w.WriteLine("// using Decompiler.");
+			w.WriteLine();
+		}
 		// class Timer /////////////////////////////////////////////////////
 
 		public class Timer

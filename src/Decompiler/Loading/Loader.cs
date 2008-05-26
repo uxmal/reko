@@ -93,6 +93,28 @@ namespace Decompiler.Loading
 				project.Output.OutputFilename = Path.ChangeExtension(file, ".c");
 				project.Output.TypesFilename = Path.ChangeExtension(file, ".h");
 			}
+
+			//$TODO: integrate this.
+			/*
+			switch (project.Input.FileFormat)
+			{
+			case InputFormat.Assembler:
+				loader.Assemble(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
+				break;
+			case InputFormat.AssemblerFragment:
+				loader.AssembleFragment(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
+				break;
+			case InputFormat.Binary:
+			case InputFormat.COM:
+				if (project.Input.BaseAddress == null)
+					throw new ArgumentException("Base address must be specified when input format is Binary or COM");
+				loader.LoadBinary(project.Input.Filename, project.Input.BaseAddress);
+				break;
+			default:
+				loader.LoadExecutable(project.Input.Filename, project.Input.BaseAddress);
+				break;
+			}
+			*/
 			LoadExecutable(project.Input.Filename, addrLoad);
 			if (!isXmlFile)
 			{

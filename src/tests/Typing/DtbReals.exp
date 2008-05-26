@@ -1,7 +1,46 @@
+// fn0C00_0000
+void fn0C00_0000(segment ds)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	fn0C00_0010(ds, 0x0300, 0x0320)
+	fn0C00_0037(ds)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn0C00_0010
+void fn0C00_0010(segment ds, word16 wArg00, word16 wArg02)
+fn0C00_0010_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0010:		// block 1, pred: 0
+	real64 rLoc1_12 = Mem0[ds:wArg00:real64]
+	real64 rLoc2_14 = Mem0[ds:wArg00 + 0x0008:real64]
+	real64 rLoc2_17 = Mem0[ds:wArg00 + 0x0010:real64]
+	store(Mem21[ds:wArg02:real64]) = rLoc1_12 *s rLoc1_12 + rLoc2_14 *s rLoc2_14 + rLoc2_17 *s rLoc2_17
+	store(Mem23[ds:wArg02 + 0x0028:real64]) = (real64) Mem21[ds:wArg02 + 0x0020:word16]
+	return
+	// succ:  2
+fn0C00_0010_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn0C00_0037
+void fn0C00_0037(segment ds)
+fn0C00_0037_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0037:		// block 1, pred: 0
+	store(Mem5[ds:0x0400:real64]) = 0
+	store(Mem7[ds:0x0408:word32]) = (word32) 1
+	return
+	// succ:  2
+fn0C00_0037_exit:		// block 2, pred: 1
+	// succ: 
+
 // Equivalence classes ////////////
 Eq_2: (ptr (fn T_10 (T_7, T_8, T_9)))
 	T_2 (in fn0C00_0010 : ptr0)
-	T_3 (in signature of fn0C00_0010 : )
+	T_3 (in signature of fn0C00_0010)
 Eq_4: (ptr (struct (400 T_42 t0400) (408 T_46 t0408)))
 	T_4 (in ds : segment)
 	T_7 (in ds : segment)
@@ -16,7 +55,7 @@ Eq_10: void
 	T_10 (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
 Eq_11: (ptr (fn T_14 (T_7)))
 	T_11 (in fn0C00_0037 : ptr0)
-	T_12 (in signature of fn0C00_0037 : )
+	T_12 (in signature of fn0C00_0037)
 Eq_14: void
 	T_14 (in fn0C00_0037(ds) : void)
 Eq_15: real64

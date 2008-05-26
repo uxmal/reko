@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			interactor = new TestMainFormInteractor(form, prog);
 
 			interactor.OpenBinary(null);
-			Assert.AreEqual(form.LoadedPage, form.InitialPage);
+			Assert.AreEqual(form.LoadedPage, form.LoadedPage);
 			Assert.IsFalse(form.BrowserFilter.Enabled);
 			Assert.IsFalse(form.BrowserTree.Enabled);
 			Assert.IsTrue(form.BrowserList.Enabled);
@@ -111,9 +111,9 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			this.ldr = new TestLoader(program);
 		}
 
-		public override Loader CreateLoader(Program prog, string file)
+		protected override DecompilerDriver CreateDecompiler(string filename, Program prog)
 		{
-			return ldr;
+			return new TestDecompilerDriver(prog, this);
 		}
 
 		public override Program CreateProgram()
@@ -133,15 +133,31 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		}
 	}
 
+	public class TestDecompilerDriver : DecompilerDriver
+	{
+		public TestDecompilerDriver(Program prog, DecompilerHost host) : base("", prog, host)
+		{
+		}
+
+		protected override Loader CreateLoader(Program prog)
+		{
+			return new TestLoader(prog);
+		}
+	}
+
 	public class TestLoader : Loader
 	{
-		public TestLoader(Program p):base(p)
+		public TestLoader(Program p) : base(p)
 		{
 		}
 
 		public override byte[] LoadImageBytes(string fileName, int offset)
 		{
 			return base.Program.Image.Bytes;
+		}
+
+		public override void LoadExecutable(string pstrFileName, Address addrLoad)
+		{
 		}
 	}
 }

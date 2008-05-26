@@ -135,7 +135,12 @@ namespace Decompiler.Core.Types
 						writer.Write("\t{0}", tvMember);
 						if (tvMember.Expression != null)
 						{
-							writer.Write(" (in {0} : {1})", tvMember.Expression, tvMember.Expression.DataType);
+							writer.Write(" (in {0}", tvMember.Expression);
+							if (tvMember.Expression.DataType != null)
+							{
+								writer.Write(" : {0}", tvMember.Expression.DataType);
+							}
+							writer.Write(")");
 						}
 						writer.WriteLine();
 					}
