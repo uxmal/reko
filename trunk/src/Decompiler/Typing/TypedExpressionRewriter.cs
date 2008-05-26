@@ -137,7 +137,7 @@ namespace Decompiler.Typing
 				}
 				else
 					throw new NotImplementedException(string.Format("[{0}] = [{1}] (in assignment {2} = {3}) not supported.", dtDst, dtSrc, dst, src));
-			}
+				}
 			return new Decompiler.Core.Absyn.AbsynAssignment(dst, src);
 		}
 		

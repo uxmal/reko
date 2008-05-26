@@ -361,6 +361,56 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(m.BuildProgram(), "Typing/DtbSegmentedMemoryPointer.txt");
 		}
 
+		[Test]
+		public void DtbFn1CallFn2()
+		{
+			ProgramMock pp = new ProgramMock();
+			ProcedureMock m = new ProcedureMock("Fn1");
+			Identifier loc1 = m.Local32("loc1");
+			Identifier loc2 = m.Local32("loc2");
+			m.Assign(loc2, m.Fn("Fn2", loc1));
+			m.Return();
+			m.Procedure.RenumberBlocks();
+			pp.Add(m);
+
+			m = new ProcedureMock("Fn2");
+			Identifier arg1 = m.Local32("arg1");
+			Identifier ret = m.Register(1);
+			m.Procedure.Signature = new ProcedureSignature(ret, new Identifier[] { arg1 });
+			m.Procedure.Signature.FormalArguments[0] = arg1;
+			m.Assign(ret, m.Add(arg1, 1));
+			m.Return(ret);
+			m.Procedure.RenumberBlocks();
+			pp.Add(m);
+
+			RunTest(pp.BuildProgram(), "Typing/DtbFn1CallFn2.txt");
+		}
+
+		[Test]
+		public void DtbStructurePointerPassedToFunction()
+		{
+			ProgramMock pp = new ProgramMock();
+			
+			ProcedureMock m = new ProcedureMock("Fn1");
+			Identifier p = m.Local32("p");
+			m.Store(m.Add(p, 4), m.Word32(0x42));
+			m.SideEffect(m.Fn("Fn2", p));
+			m.Return();
+			m.Procedure.RenumberBlocks();
+			pp.Add(m);
+
+			m = new ProcedureMock("Fn2");
+			Identifier arg1 = m.Local32("arg1");
+			m.Procedure.Signature = new ProcedureSignature(null, new Identifier[] { arg1 });
+			m.Store(m.Add(arg1, 8), m.Int32(0x23));
+			m.Return();
+			m.Procedure.RenumberBlocks();
+			pp.Add(m);
+
+			RunTest(pp.BuildProgram(), "Typing/DtbStructurePointerPassedToFunction.txt");
+			
+		}
+
 		[SetUp]
 		public void SetUp()
 		{
@@ -388,14 +438,27 @@ namespace Decompiler.UnitTests.Typing
 			TraitCollector trco = new TraitCollector(factory, store, dtb, prog.Globals, this.ivs);
 			trco.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();
-			Verify(outputFile);
+			Verify(prog, outputFile);
 		}
 
 		private void Verify(string outputFile)
 		{
+			Verify(null, outputFile);
+		}
+
+		private void Verify(Program prog, string outputFile)
+		{
 			store.CopyClassDataTypesToTypeVariables();
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
+				if (prog != null)
+				{
+					foreach (Procedure proc in prog.Procedures.Values)
+					{
+						proc.Write(false, fut.TextWriter);
+						fut.TextWriter.WriteLine();
+					}
+				}
 				store.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}

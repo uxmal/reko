@@ -19,6 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using System;
+using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
@@ -33,6 +34,7 @@ namespace Decompiler.WindowsGui.Forms
 			: base(page, form)
 		{
 			this.page = page;
+			page.BrowseInputFile.Click += new EventHandler(BrowseInputFile_Click);
 		}
 
 		public void EnableControls()
@@ -70,6 +72,28 @@ namespace Decompiler.WindowsGui.Forms
 				project.Output.DisassemblyFilename = page.AssemblerFile.Text;
 			}
 			return true;
+		}
+
+		public virtual string ShowOpenFileDialog(string fileName)
+		{
+			if (fileName != null && fileName.Length != 0)
+				page.OpenFileDialog.FileName = fileName;
+			if (page.OpenFileDialog.ShowDialog(page) == DialogResult.OK)
+			{
+				return fileName;
+			}
+			else
+				return null;
+		}
+
+		// Event handlers. 
+		public void BrowseInputFile_Click(object sender, EventArgs e)
+		{
+			string sNew = ShowOpenFileDialog(page.InputFile.Text);
+			if (sNew != null)
+			{
+				page.InputFile.Text = sNew;
+			}
 		}
 	}
 }

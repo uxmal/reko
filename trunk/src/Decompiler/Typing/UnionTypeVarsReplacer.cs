@@ -23,7 +23,7 @@ using System.Collections;
 namespace Decompiler.Typing
 {
 	/// <summary>
-	/// Walks through all union types in the type graphReplaces a union of TypeVars with a reference to an equivalence class.
+	/// Replaces a union of TypeVars with a reference to an equivalence class.
 	/// </summary>
 	public class UnionTypeVarsReplacer : DataTypeTransformer
 	{

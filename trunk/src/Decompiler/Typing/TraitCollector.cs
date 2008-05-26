@@ -209,6 +209,7 @@ namespace Decompiler.Typing
 		public override void VisitApplication(Application appl)
 		{
 			appl.Procedure.Accept(this);
+
 			TypeVariable [] paramTypes = new TypeVariable[appl.Arguments.Length];
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{
@@ -218,7 +219,31 @@ namespace Decompiler.Typing
 			handler.DataTypeTrait(appl.TypeVariable, appl.DataType as PrimitiveType); 
 			handler.FunctionTrait(appl.Procedure.TypeVariable, appl.Procedure.DataType.Size, appl.TypeVariable, paramTypes);
 
+			BindActualTypesToFormalTypes(appl);
+
 			ivCur = null;
+		}
+
+		private void BindActualTypesToFormalTypes(Application appl)
+		{
+			ProcedureConstant pc = appl.Procedure as ProcedureConstant;
+			if (pc != null)
+			{
+				Debug.Assert(pc.Procedure.Signature != null);
+				ProcedureSignature sig = pc.Procedure.Signature;
+				if (appl.Arguments.Length != sig.FormalArguments.Length)
+					throw new InvalidOperationException(
+						string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
+						pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
+				for (int i = 0; i < appl.Arguments.Length; ++i)
+				{
+					handler.EqualTrait(appl.Arguments[i].TypeVariable, sig.FormalArguments[i].TypeVariable);
+				}
+				if (sig.ReturnValue != null)
+					handler.EqualTrait(appl.TypeVariable, sig.ReturnValue.TypeVariable);
+			}
+			else
+				throw new NotImplementedException("Indirect call");
 		}
 
 		public class ArrayContext

@@ -16,32 +16,23 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
-using Decompiler.Loading;
-using Decompiler.Core;
-using Decompiler.WindowsGui.Forms;
+using NUnit.Framework;
 using System;
-using System.Windows.Forms;
 
-namespace WindowsDecompiler
+namespace Decompiler.UnitTests.Structure
 {
-	public class Driver
+	[TestFixture]
+	public class IntervalFinder2Tests
 	{
-		[STAThread]
-		public static void Main(string [] args)
+		[SetUp]
+		public void Setup()
 		{
-			if (args.Length == 0)
-			{
-				MainForm form = new MainForm();
-				MainFormInteractor interactor = new MainFormInteractor(form);
-				Application.Run(form);
-			}
-			else
-			{
-				Program prog = new Program();
-				DecompilerDriver dec = new DecompilerDriver(args[0], prog, new NullDecompilerHost());
-				dec.Decompile();
-			}
+		}
+
+		[Test]
+		public void Test()
+		{
+			throw new NotImplementedException("Implement new interval tests!");
 		}
 	}
 }

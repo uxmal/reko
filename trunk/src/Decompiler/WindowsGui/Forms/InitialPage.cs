@@ -51,6 +51,7 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox txtLoadAddress;
 		private System.Windows.Forms.Label label5;
+		private OpenFileDialog openFileDialog;
 		private System.ComponentModel.IContainer components = null;
 
 		public InitialPage()
@@ -105,41 +106,39 @@ namespace Decompiler.WindowsGui.Forms
 			this.chkIntermediateFile = new System.Windows.Forms.CheckBox();
 			this.btnBrowseAssemblerFile = new System.Windows.Forms.Button();
 			this.chkAssemblerFile = new System.Windows.Forms.CheckBox();
+			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// txtInputFile
 			// 
-			this.txtInputFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtInputFile.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtInputFile.Location = new System.Drawing.Point(24, 40);
 			this.txtInputFile.Name = "txtInputFile";
 			this.txtInputFile.Size = new System.Drawing.Size(368, 20);
 			this.txtInputFile.TabIndex = 3;
-			this.txtInputFile.Text = "";
 			this.dirtyManager.SetTrackChanges(this.txtInputFile, true);
 			// 
 			// txtSourceFile
 			// 
-			this.txtSourceFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtSourceFile.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtSourceFile.Location = new System.Drawing.Point(24, 80);
 			this.txtSourceFile.Name = "txtSourceFile";
 			this.txtSourceFile.Size = new System.Drawing.Size(368, 20);
 			this.txtSourceFile.TabIndex = 11;
-			this.txtSourceFile.Text = "";
 			this.dirtyManager.SetTrackChanges(this.txtSourceFile, true);
 			// 
 			// txtHeaderFile
 			// 
-			this.txtHeaderFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtHeaderFile.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtHeaderFile.Location = new System.Drawing.Point(24, 40);
 			this.txtHeaderFile.Name = "txtHeaderFile";
 			this.txtHeaderFile.Size = new System.Drawing.Size(368, 20);
 			this.txtHeaderFile.TabIndex = 8;
-			this.txtHeaderFile.Text = "";
 			this.dirtyManager.SetTrackChanges(this.txtHeaderFile, true);
 			// 
 			// txtLoadAddress
@@ -148,29 +147,26 @@ namespace Decompiler.WindowsGui.Forms
 			this.txtLoadAddress.Name = "txtLoadAddress";
 			this.txtLoadAddress.Size = new System.Drawing.Size(64, 20);
 			this.txtLoadAddress.TabIndex = 6;
-			this.txtLoadAddress.Text = "";
 			this.dirtyManager.SetTrackChanges(this.txtLoadAddress, false);
 			// 
 			// txtIntermediateFile
 			// 
-			this.txtIntermediateFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtIntermediateFile.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtIntermediateFile.Location = new System.Drawing.Point(24, 192);
 			this.txtIntermediateFile.Name = "txtIntermediateFile";
 			this.txtIntermediateFile.Size = new System.Drawing.Size(368, 20);
 			this.txtIntermediateFile.TabIndex = 18;
-			this.txtIntermediateFile.Text = "";
 			this.dirtyManager.SetTrackChanges(this.txtIntermediateFile, true);
 			// 
 			// txtAssemblerFile
 			// 
-			this.txtAssemblerFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtAssemblerFile.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.txtAssemblerFile.Location = new System.Drawing.Point(24, 136);
 			this.txtAssemblerFile.Name = "txtAssemblerFile";
 			this.txtAssemblerFile.Size = new System.Drawing.Size(368, 20);
 			this.txtAssemblerFile.TabIndex = 15;
-			this.txtAssemblerFile.Text = "";
 			this.dirtyManager.SetTrackChanges(this.txtAssemblerFile, true);
 			// 
 			// addressValidator
@@ -182,7 +178,7 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			// btnBrowseInputFile
 			// 
-			this.btnBrowseInputFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnBrowseInputFile.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnBrowseInputFile.Location = new System.Drawing.Point(400, 40);
 			this.btnBrowseInputFile.Name = "btnBrowseInputFile";
 			this.btnBrowseInputFile.Size = new System.Drawing.Size(22, 20);
@@ -191,7 +187,7 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			// btnBrowseSourceFile
 			// 
-			this.btnBrowseSourceFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnBrowseSourceFile.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnBrowseSourceFile.Location = new System.Drawing.Point(400, 80);
 			this.btnBrowseSourceFile.Name = "btnBrowseSourceFile";
 			this.btnBrowseSourceFile.Size = new System.Drawing.Size(22, 20);
@@ -208,7 +204,7 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			// btnBrowseHeaderFile
 			// 
-			this.btnBrowseHeaderFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnBrowseHeaderFile.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnBrowseHeaderFile.Location = new System.Drawing.Point(400, 40);
 			this.btnBrowseHeaderFile.Name = "btnBrowseHeaderFile";
 			this.btnBrowseHeaderFile.Size = new System.Drawing.Size(22, 20);
@@ -225,8 +221,8 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.txtLoadAddress);
 			this.groupBox1.Controls.Add(this.label3);
@@ -259,12 +255,13 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			this.label4.Location = new System.Drawing.Point(0, 0);
 			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(100, 23);
 			this.label4.TabIndex = 0;
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox2.Controls.Add(this.btnBrowseIntermediateFile);
 			this.groupBox2.Controls.Add(this.txtIntermediateFile);
 			this.groupBox2.Controls.Add(this.chkIntermediateFile);
@@ -286,7 +283,7 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			// btnBrowseIntermediateFile
 			// 
-			this.btnBrowseIntermediateFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnBrowseIntermediateFile.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnBrowseIntermediateFile.Location = new System.Drawing.Point(400, 192);
 			this.btnBrowseIntermediateFile.Name = "btnBrowseIntermediateFile";
 			this.btnBrowseIntermediateFile.Size = new System.Drawing.Size(22, 20);
@@ -303,7 +300,7 @@ namespace Decompiler.WindowsGui.Forms
 			// 
 			// btnBrowseAssemblerFile
 			// 
-			this.btnBrowseAssemblerFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnBrowseAssemblerFile.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnBrowseAssemblerFile.Location = new System.Drawing.Point(400, 136);
 			this.btnBrowseAssemblerFile.Name = "btnBrowseAssemblerFile";
 			this.btnBrowseAssemblerFile.Size = new System.Drawing.Size(22, 20);
@@ -325,17 +322,23 @@ namespace Decompiler.WindowsGui.Forms
 			this.Name = "InitialPage";
 			this.Size = new System.Drawing.Size(448, 360);
 			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
 		#endregion
 
-
 		public bool IsDirty
 		{
 			get { return dirtyManager.IsDirty; }
 			set { dirtyManager.IsDirty = value; }
+		}
+
+		public Button BrowseInputFile
+		{
+			get { return btnBrowseInputFile; }
 		}
 
 		public TextBox InputFile
@@ -366,6 +369,11 @@ namespace Decompiler.WindowsGui.Forms
 		public TextBox AssemblerFile
 		{
 			get { return txtAssemblerFile; }
+		}
+
+		public OpenFileDialog OpenFileDialog
+		{
+			get { return openFileDialog; }
 		}
 
 		private void dirtyManager_IsDirtyChanged(object sender, EventArgs e)

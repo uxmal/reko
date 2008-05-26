@@ -243,6 +243,7 @@ l01C8:
 
 					//$TODO: add to relocations
 					imgU.WriteLeUint16(relocBase + relocOff, seg);
+					relocations.AddSegmentReference(relocBase + relocOff, seg);
 					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 				} while (--relocs != 0);
 			}

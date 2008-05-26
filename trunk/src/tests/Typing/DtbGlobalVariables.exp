@@ -1,3 +1,12 @@
+// GlobalVariablesMock
+void GlobalVariablesMock()
+GlobalVariablesMock_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	store(Mem3[ptr:real32]) = 0.75F
+	store(Mem4[0x10000000:real32]) = 0.5F
+	// succ: 
+
 // Equivalence classes ////////////
 Eq_1: (ptr (struct (10000000 T_7 t10000000)))
 	Globals (in globals : ptr0)

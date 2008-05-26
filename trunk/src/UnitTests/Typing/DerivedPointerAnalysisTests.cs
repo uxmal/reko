@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Typing
 			DerivedPointerAnalysis cf = new DerivedPointerAnalysis(factory, store, dtb);
 			mem.Accept(cf);
 
-			Verify("Typing/CpfSimple.txt");
+			Verify(null, "Typing/CpfSimple.txt");
 		}
 
 		[Test]
@@ -66,6 +66,35 @@ namespace Decompiler.UnitTests.Typing
 			ProgramMock prog = new ProgramMock();
 			prog.Add(new GlobalVariablesMock());
 			RunTest(prog.BuildProgram(), "Typing/DpaGlobalVariables.txt");
+		}
+
+		[Test]
+		public void DpaConstantPointer()
+		{
+			ProgramMock prog = new ProgramMock();
+			ProcedureMock m = new ProcedureMock();
+			Identifier r1 = m.Register(1);
+			m.Assign(r1, 0x123130);
+			m.Store(r1, m.Int32(0x42));
+			prog.Add(m);
+
+			RunTest(prog.BuildProgram(), "Typing/DpaConstantPointer.txt");
+		}
+
+		[Test]
+		public void DpaConstantMemberPointer()
+		{
+			ProgramMock prog = new ProgramMock();
+			ProcedureMock m = new ProcedureMock();
+			Identifier ds = m.Local16("ds");
+			ds.DataType = PrimitiveType.Segment;
+			Identifier bx = m.Local16("bx");
+
+			m.Assign(bx, 0x1234);
+			m.Store(m.SegMemW(ds, bx), m.Int16(0x0042));
+			prog.Add(m);
+
+			RunTest(prog.BuildProgram(), "Typing/DpaConstantMemberPointer.txt");
 		}
 
 		private void RunTest(Program prog, string outputFile)
@@ -80,7 +109,7 @@ namespace Decompiler.UnitTests.Typing
 			DerivedPointerAnalysis dpa = new DerivedPointerAnalysis(factory, store, dtb);
 			dpa.FollowConstantPointers(prog);
 
-			Verify(outputFile);
+			Verify(null, outputFile);
 		}
 
 		[SetUp]
@@ -90,11 +119,19 @@ namespace Decompiler.UnitTests.Typing
 			factory = new TypeFactory();
 		}
 
-		private void Verify(string outputFile)
+		private void Verify(Program prog, string outputFile)
 		{
 			store.CopyClassDataTypesToTypeVariables();
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
+				if (prog != null)
+				{
+					foreach (Procedure proc in prog.Procedures.Values)
+					{
+						proc.Write(false, fut.TextWriter);
+						fut.TextWriter.WriteLine();
+					}
+				}
 				store.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}

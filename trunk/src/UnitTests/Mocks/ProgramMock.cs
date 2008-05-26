@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Types;
 using System;
 using System.Collections;
 
@@ -43,6 +44,7 @@ namespace Decompiler.UnitTests.Mocks
 			++procCount;
 			mock.ProgramMock = this;
 			Procedure proc = mock.Procedure;
+			proc.RenumberBlocks();
 			prog.Procedures[new Address(procCount)] = proc;
 			nameToProcedure.Add(mock.Procedure.Name, proc);
 			Console.WriteLine(mock.GetType().Name);
@@ -77,7 +79,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public void ResolveUnresolved()
 		{
-			foreach (ProcedureConstantUpdater pcu in unresolvedProcedures)
+			foreach (ProcUpdater pcu in unresolvedProcedures)
 			{
 				Procedure proc = (Procedure) nameToProcedure[pcu.Name];
 				if (proc == null)
@@ -87,27 +89,52 @@ namespace Decompiler.UnitTests.Mocks
 		}
 	}
 
-	public class ProcedureConstantUpdater 
+	public abstract class ProcUpdater
 	{
 		private string name;
-		private CallInstruction ci;
-
-		public ProcedureConstantUpdater(string name, CallInstruction ci)
+		public ProcUpdater(string name)
 		{
 			this.name = name;
-			this.ci = ci;
-		}
-
-		public void Update(Procedure proc)
-		{
-			ci.Callee = proc;
 		}
 
 		public string Name
 		{
 			get { return name; }
 		}
+
+		public abstract void Update(Procedure proc);
 	}
 
+	public class ProcedureConstantUpdater : ProcUpdater
+	{
+		private CallInstruction ci;
+
+		public ProcedureConstantUpdater(string name, CallInstruction ci) : base(name)
+		{
+			this.ci = ci;
+		}
+
+		public override void Update(Procedure proc)
+		{
+			ci.Callee = proc;
+		}
+
+	}
+
+	public class ApplicationUpdater : ProcUpdater
+	{
+		private string name;
+		private Application appl;
+
+		public ApplicationUpdater(string name, Application appl) : base(name)
+		{
+			this.appl = appl;
+		}
+
+		public override void Update(Procedure proc)
+		{
+			appl.Procedure = new ProcedureConstant(PrimitiveType.Pointer, proc);
+		}
+	}
 }
 

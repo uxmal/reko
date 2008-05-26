@@ -266,7 +266,9 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Application Fn(string name, params Expression [] exps)
 		{
-			return new Application(new ProcedureConstant(PrimitiveType.Pointer, new PseudoProcedure(name, 0)), PrimitiveType.Word32, exps);
+			Application appl = new Application(new ProcedureConstant(PrimitiveType.Pointer, new PseudoProcedure(name, 0)), PrimitiveType.Word32, exps);
+			unresolvedProcedures.Add(new ApplicationUpdater(name, appl));
+			return appl;
 		}
 
 		public Application Fn(Expression e, params Expression[] exps)

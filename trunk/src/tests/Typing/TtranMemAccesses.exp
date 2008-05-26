@@ -37,7 +37,7 @@ fn0C00_0015_exit:		// block 2, pred: 1
 // Equivalence classes ////////////
 Eq_2: (fn void ((ptr Eq_4)))
 	T_2 (in fn0C00_000C : ptr0)
-	T_3 (in signature of fn0C00_000C : )
+	T_3 (in signature of fn0C00_000C)
 	T_14 (in fn0C00_000C : ptr0)
 Eq_4: (struct (100 word16 w0100) (200 word16 w0200) (202 word16 w0202) (300 word16 w0300) (302 word16 w0302))
 	T_4 (in ds : segment)
@@ -45,7 +45,7 @@ Eq_4: (struct (100 word16 w0100) (200 word16 w0200) (202 word16 w0202) (300 word
 	T_9 (in ds : segment)
 Eq_7: (fn void ((ptr Eq_4)))
 	T_7 (in fn0C00_0015 : ptr0)
-	T_8 (in signature of fn0C00_0015 : )
+	T_8 (in signature of fn0C00_0015)
 // Type Variables ////////////
 Globals:(in globals)
   Class: Eq_1

@@ -55,7 +55,7 @@ namespace Decompiler.Typing
 						return (StructureType) o;
 					}
 				}
-				return null;
+					return null;
 			}
 		}
 		public Expression Rewrite(Constant c, bool dereferenced)
@@ -67,6 +67,7 @@ namespace Decompiler.Typing
 			dtInferred.Accept(this);
 			return exp;
 		}
+
 
 		private void Return(Expression exp)
 		{
@@ -88,9 +89,47 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
+		public class ScopeResolution : Expression
+		{
+			private string name;
+
+			public ScopeResolution(string name) : base(PrimitiveType.Word32)
+			{
+				this.name = name;
+			}
+			public override Expression Accept(IExpressionTransformer xform)
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+
+			public override void Accept(IExpressionVisitor visit)
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+
+			public override Expression CloneExpression()
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+
+			public override string ToString()
+			{
+				return "SR(" + name + ")";
+			}
+		}
+
 		public void VisitMemberPointer(MemberPointer memptr)
 		{
-			Return(c);
+			// The constant is a member pointer.
+			Console.WriteLine("VMP: "  + memptr.BasePointer.GetType().Name);
+			EquivalenceClass eq = (EquivalenceClass) memptr.BasePointer;
+			StructureType baseType = (StructureType) eq.DataType;
+			Expression baseExpr = new ScopeResolution(baseType.Name);
+
+			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+				baseType, baseType, baseExpr, c.ToInt32());
+
+			Return(ceb.BuildComplex());
 		}
 
 		public void VisitPointer(Pointer ptr)

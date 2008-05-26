@@ -38,17 +38,17 @@ namespace Decompiler.Arch.Intel
 		private bool isModrmValid;
 		private IntelRegister segmentOverride;
 		private ImageReader	rdr;
-		private OpRec [] m_aopRecs;
+		private OpRec[] m_aopRecs;
 
 		/// <summary>
 		/// Creates a disassember that uses the specified reader to fetch bytes from the program image.
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 16-bit operation, PrimitiveType.Word32
 		/// for 32-bit operation.</param>
-		public IntelDisassembler(ImageReader rdr, PrimitiveType width)
+		public IntelDisassembler(ImageReader rdr, PrimitiveType defaultWordSize)
 		{
 			this.rdr = rdr;
-			defaultDataWidth = width;
-			defaultAddressWidth = width;
+			defaultDataWidth = defaultWordSize;
+			defaultAddressWidth = defaultWordSize;
 		}
 
 		private static IntelRegister RegFromBits(int bits, PrimitiveType dataWidth)
@@ -132,10 +132,16 @@ namespace Decompiler.Arch.Intel
 			X =  0x8000
 		}
 
+		private abstract class OpRecBase
+		{
+			public abstract void Decode(IntelDisassembler disasm);
+
+		}
+
 		/// <summary>
 		/// Simple opcode record.
 		/// </summary>
-		private class OpRec
+		private class OpRec : OpRecBase
 		{
 			public Opcode	opcode;
 			public string	format;
@@ -157,7 +163,7 @@ namespace Decompiler.Arch.Intel
 				Flags = flags;
 			}
 
-			public virtual void Decode(IntelDisassembler disasm)
+			public override void Decode(IntelDisassembler disasm)
 			{
 			}
 
@@ -172,6 +178,16 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
+		private class PrefixOprec : OpRecBase
+		{
+			public PrefixOprec()
+			{
+			}
+
+			public override void Decode(IntelDisassembler disasm)
+			{
+			}
+		}
 	
 		/// <summary>
 		/// Current address of the disassembler.
@@ -210,7 +226,7 @@ namespace Decompiler.Arch.Intel
 				switch (op)
 				{
 				case 0x0F:		// 0F: prefix for two-byte opcodes.
-					m_aopRecs = s_aOpRec0F;
+					CurrentOpRecs = s_aOpRec0F;
 					return rdr.ReadByte();
 				case 0x26:		// segment overrides
 				case 0x2E:
@@ -238,7 +254,14 @@ namespace Decompiler.Arch.Intel
 					return op;
 				}
 			}
-		}	
+		}
+
+		private OpRec[] CurrentOpRecs
+		{
+			get { return m_aopRecs; }
+			set { m_aopRecs = value; }
+		}
+
 
 		/// <summary>
 		/// Disassembles the current instruction. The address is incremented
@@ -251,13 +274,13 @@ namespace Decompiler.Arch.Intel
 			addressWidth = defaultAddressWidth;
 			isModrmValid = false;
 			segmentOverride = Registers.None;
-			m_aopRecs = s_aOpRec;
+			CurrentOpRecs = s_aOpRec;
 			IntelInstruction pInstr = new IntelInstruction();
 
 			// Fetch the opcode description.
 
 			byte op = ConsumePrefixes();
-			OpRec opRec = m_aopRecs[op];
+			OpRec opRec = CurrentOpRecs[op];
 			string strFormat = opRec.Format;
 
 			// Group instructions need to be handled separately.

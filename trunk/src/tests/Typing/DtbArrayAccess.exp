@@ -1,3 +1,14 @@
+// ArrayAccess
+void ArrayAccess()
+ArrayAccess_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	store((r + 0x00000014)[i * 0x0000000A]) = 0x00000000
+	return (r + 0x00000010)[i * 0x0000000A]
+	// succ:  2
+ArrayAccess_exit:		// block 2, pred: 1
+	// succ: 
+
 // Equivalence classes ////////////
 Eq_2: word32
 	T_2 (in 0x00000000 : word32)
