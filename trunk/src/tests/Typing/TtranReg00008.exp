@@ -27,10 +27,10 @@ Eq_9: (struct 26 (0 word16 w0000))
 	T_9 (in si_16 : word16)
 	T_10 (in 0x0000 : word16)
 	T_21 (in si_16 + 0x0026 : word16)
-Eq_12: (arr Eq_24)
+Eq_12: (arr Eq_25)
 	T_12 (in 0x5CE1 : segment)
-Eq_24: (struct 26 (0 word16 w0000))
-	T_24
+Eq_25: (struct 26 (0 word16 w0000))
+	T_25
 // Type Variables ////////////
 Globals:(in globals)
   Class: Eq_1
@@ -43,7 +43,7 @@ T_2:(in 0x0000)
 T_3:(in ds)
   Class: Eq_3
   DataType: (ptr Eq_3)
-  OrigDataType: (ptr (struct (9A26 T_6 t9A26) (9A2E T_5 t9A2E)))
+  OrigDataType: (ptr (struct (9A26 (union (T_6 u0) (T_8 u1)) u9A26) (9A2E T_5 t9A2E)))
 T_4:(in 0x9A2E)
   Class: Eq_4
   DataType: (memptr (ptr Eq_3) word16)
@@ -126,5 +126,9 @@ T_23:(in v8_22 != 0x0000)
   OrigDataType: bool
 T_24:
   Class: Eq_24
-  DataType: Eq_24
+  DataType: word16
+  OrigDataType: 
+T_25:
+  Class: Eq_25
+  DataType: Eq_25
   OrigDataType: 

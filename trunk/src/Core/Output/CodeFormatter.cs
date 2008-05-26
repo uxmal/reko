@@ -269,6 +269,11 @@ namespace Decompiler.Core.Output
 			writer.Write(")");
 		}
 
+		public void VisitScopeResolution(ScopeResolution scope)
+		{
+			writer.Write(scope.TypeName);
+		}
+
 		public void VisitSlice(Slice slice)
 		{
 			writer.Write("SLICE(");
@@ -420,7 +425,6 @@ namespace Decompiler.Core.Output
 			Terminate();
 		}
 		#endregion
-
 
 
 		#region IAbsynStatementVisitor //////////////////////

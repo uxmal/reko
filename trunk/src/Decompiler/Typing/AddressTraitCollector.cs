@@ -260,6 +260,10 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
+		public void VisitScopeResolution(ScopeResolution scope)
+		{
+		}
+
 		public void VisitTestCondition(TestCondition test)
 		{
 			throw new NotImplementedException();

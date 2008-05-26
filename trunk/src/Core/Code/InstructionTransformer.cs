@@ -234,6 +234,11 @@ namespace Decompiler.Core.Code
 			return access;
 		}
 
+		public virtual Expression TransformScopeResolution(ScopeResolution scope)
+		{
+			return scope;
+		}
+
 		public virtual Expression TransformSlice(Slice slice)
 		{
 			slice.Expression = slice.Expression.Accept(this);

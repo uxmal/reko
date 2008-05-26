@@ -62,8 +62,10 @@ namespace Decompiler.Typing
 		{
 			if (basePointer != null)
 				return new MemberPointerSelector(dt, new Dereference(null, basePointer), e);
-			else
+			else if (e != null)
 				return new Dereference(dt, e);
+			else
+				return new ScopeResolution(dt, dt.Name);
 		}
 
 		private void RewritePointer(DataType dtPtr, DataType dtPointee, DataType dtPointeeOriginal)
@@ -178,18 +180,25 @@ namespace Decompiler.Typing
 		
 			dt = field.DataType;
 			dtOriginal = field.DataType;
-			baseExp = CreateFieldAccess(field.DataType, baseExp, field.Name);
+			baseExp = CreateFieldAccess(str, field.DataType, baseExp, field.Name);
 			offset -= field.Offset;
 			dt.Accept(this);
 		}
 
-		private Expression CreateFieldAccess(DataType dt, Expression exp, string fieldName)
+		private Expression CreateFieldAccess(DataType dtStructure, DataType dtField, Expression exp, string fieldName)
 		{
-			if (basePointer != null)
+			if (exp != null)
 			{
-				exp = new MemberPointerSelector(dt, basePointer, exp);
+				if (basePointer != null)
+				{
+					exp = new MemberPointerSelector(dtField, basePointer, exp);
+				}
+				return new FieldAccess(dtField, exp, fieldName);
 			}
-			return new FieldAccess(dt, exp, fieldName);
+			else
+			{
+				return new ScopeResolution(dtStructure, dtStructure.Name + "::" + fieldName);
+			}
 		}
 
 		public override void VisitUnion(UnionType ut)

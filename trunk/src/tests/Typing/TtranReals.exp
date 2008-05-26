@@ -40,14 +40,14 @@ fn0C00_0037_exit:		// block 2, pred: 1
 // Equivalence classes ////////////
 Eq_2: (fn void ((ptr Eq_4), word16, word16))
 	T_2 (in fn0C00_0010 : ptr0)
-	T_3 (in signature of fn0C00_0010 : )
+	T_3 (in signature of fn0C00_0010)
 Eq_4: (struct (400 real64 r0400) (408 word32 dw0408))
 	T_4 (in ds : segment)
 	T_7 (in ds : segment)
 	T_13 (in ds : segment)
 Eq_11: (fn void ((ptr Eq_4)))
 	T_11 (in fn0C00_0037 : ptr0)
-	T_12 (in signature of fn0C00_0037 : )
+	T_12 (in signature of fn0C00_0037)
 Eq_16: (struct (0 real64 r0000) (8 real64 r0008) (10 real64 r0010))
 	T_16 (in wArg00 : word16)
 Eq_31: (struct (0 real64 r0000) (20 word16 w0020) (28 real64 r0028))
@@ -104,7 +104,7 @@ T_12:(in signature of fn0C00_0037)
 T_13:(in ds)
   Class: Eq_4
   DataType: (ptr Eq_4)
-  OrigDataType: (ptr (struct (400 real64 r0400) (408 T_46 t0408)))
+  OrigDataType: (ptr (struct (400 T_42 t0400) (408 T_46 t0408)))
 T_14:(in fn0C00_0037(ds))
   Class: Eq_14
   DataType: void
