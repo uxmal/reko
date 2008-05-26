@@ -159,6 +159,11 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
+		public Expression TransformScopeResolution(ScopeResolution scope)
+		{
+			return scope;
+		}
+
 		public Expression TransformSlice(Slice slice)
 		{
 			throw new NotImplementedException();

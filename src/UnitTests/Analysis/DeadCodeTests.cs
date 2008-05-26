@@ -67,7 +67,11 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DeadFnReturn()
 		{
-			RunTest(new DeadFnReturnMock(), "Analysis/DeadFnReturn.txt");
+			ProcedureMock m = new ProcedureMock("foo");
+			Identifier unused = m.Local32("unused");
+			m.Assign(unused, m.Fn("foo", Constant.Word32(1)));
+			m.Return();
+			RunTest(m, "Analysis/DeadFnReturn.txt");
 		}
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
@@ -88,15 +92,5 @@ namespace Decompiler.UnitTests.Analysis
 				proc.Write(false, fut.TextWriter);
 			}
 		}
-
-		public class DeadFnReturnMock : ProcedureMock
-		{
-			protected override void BuildBody()
-			{
-				Identifier unused = Local32("unused");
-				Assign(unused, Fn("foo", Constant.Word32(1)));
-				Return();
-			}
-		}	
  	}
 }

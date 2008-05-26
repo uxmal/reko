@@ -274,6 +274,11 @@ namespace Decompiler.Analysis
 			return new MkSequence(seq.DataType, head, tail);
 		}
 
+		public Expression TransformScopeResolution(ScopeResolution scope)
+		{
+			return scope;
+		}
+
 		public Expression TransformSegmentedAccess(SegmentedAccess access)
 		{
 			Expression b = access.BasePointer.Accept(this);

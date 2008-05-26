@@ -255,23 +255,6 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void TrcoSegmentSelector()
-		{
-			Frame f = new Frame(PrimitiveType.Word16);
-			Identifier ds = f.EnsureRegister(Registers.ds);
-			Assert.AreEqual(PrimitiveType.Segment, ds.DataType);
-
-			Identifier globals = f.EnsureStackLocal(0, PrimitiveType.Pointer, "globals");
-			store.EnsureTypeVariable(factory, globals);
-			coll = new TraitCollector(factory, store, handler, globals, ivs);
-			coll.Procedure = new Procedure("foo", null);
-			Expression e = ds.Accept(aen);
-			e.Accept(eqb);
-			e.Accept(coll);
-			Verify(null, "Typing/TrcoSegmentSelector.txt");
-		}
-
-		[Test]
 		public void TrcoPtrPtrInt()
 		{
 			ProgramMock p = new ProgramMock();

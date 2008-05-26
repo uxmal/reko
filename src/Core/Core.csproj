@@ -260,6 +260,7 @@
     <Compile Include="Code\ProcedureConstant.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Code\ScopeResolution.cs" />
     <Compile Include="Code\SideEffect.cs">
       <SubType>Code</SubType>
     </Compile>

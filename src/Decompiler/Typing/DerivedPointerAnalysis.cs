@@ -77,6 +77,11 @@ namespace Decompiler.Typing
 					return null;
 				return f.DataType as TypeVariable;
 			}
+			FunctionType fn = fieldType as FunctionType;
+			if (fn != null)
+			{
+				throw new NotImplementedException();
+			}
 			throw new NotImplementedException(string.Format("Don't know how to handle pointers to {0}.", fieldType));
 		}
 
@@ -98,25 +103,30 @@ namespace Decompiler.Typing
 		public override void VisitConstant(Constant c)
 		{
 			DataType dt = store.ResolvePossibleTypeVar(c.TypeVariable);
-			int offset = Convert.ToInt32(c.Value);
+			int offset = (int) Convert.ToInt64(c.Value);
 			Pointer ptr = dt as Pointer;
 			if (ptr != null)
 			{
 				// C is a constant pointer.
-				if (offset != 0)
+				if (offset == 0)
+					return;
+
+				StructureType str = ptr.Pointee as StructureType;
+				if (str != null)
 				{
 					TypeVariable tvField = GetTypeVariableForField(ptr.Pointee);
 					if (tvField == null)
 						return;
 
 					ptr = CreatePointerToField(offset, tvField);
-					Globals.TypeVariable.OriginalDataType = 
+					Globals.TypeVariable.OriginalDataType =
 						unifier.Unify(Globals.TypeVariable.OriginalDataType, ptr);
 
 					ptr = CreatePointerToField(offset, tvField);
-					Globals.TypeVariable.Class.DataType = 
+					Globals.TypeVariable.Class.DataType =
 						unifier.Unify(Globals.TypeVariable.Class.DataType, ptr);
 				}
+				return;
 			}
 			MemberPointer mptr = dt as MemberPointer;
 			if (mptr != null)

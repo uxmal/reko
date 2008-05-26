@@ -17,28 +17,41 @@
  */
 
 using System;
-using System.Xml.Serialization;
+using Decompiler.Core.Types;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Core.Code
 {
-	public class DecompilerOutput
+	/// <summary>
+	/// Corresponds to the :: operator of C++; 
+	/// </summary>
+	public class ScopeResolution : Expression
 	{
-		[XmlElement("disassembly")]
-		public string DisassemblyFilename;
+		private string name;
 
-		/// <summary>
-		/// If not null, specifies the file name for intermediate code.
-		/// </summary>
-		[XmlElement("intermediate-code")]
-		public string IntermediateFilename;
+		public ScopeResolution(DataType dt, string typeName) : base(dt)
+		{
+			this.name = typeName;
+		}
 
-		[XmlElement("output")]
-		public string OutputFilename;
+		public override Expression Accept(IExpressionTransformer xform)
+		{
+			return xform.TransformScopeResolution(this);
+		}
 
-		[XmlElement("type-inference")]
-		public bool TypeInference;
+		public override void Accept(IExpressionVisitor visit)
+		{
+			visit.VisitScopeResolution(this);
+		}
 
-		[XmlElement("types-file")]
-		public string TypesFilename;
+		public override Expression CloneExpression()
+		{
+			return new ScopeResolution(DataType, name);
+		}
+
+		public string TypeName
+		{
+			get { return name; }
+		}
 	}
+
 }

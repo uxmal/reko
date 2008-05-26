@@ -47,5 +47,7 @@ namespace Decompiler.Core.Code
 		Expression TransformSlice(Slice slice);
 		Expression TransformTestCondition(TestCondition tc);
 		Expression TransformUnaryExpression(UnaryExpression unary);
+
+		Expression TransformScopeResolution(ScopeResolution scopeResolution);
 	}
 }

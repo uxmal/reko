@@ -43,10 +43,12 @@ namespace Decompiler.Core.Code
 		void VisitPhiFunction(PhiFunction phi);
 		void VisitPointerAddition(PointerAddition pa);
 		void VisitProcedureConstant(ProcedureConstant pc);
+		void VisitScopeResolution(ScopeResolution scopeResolution);
 		void VisitSegmentedAccess(SegmentedAccess access);
 		void VisitSlice(Slice slice);
 		void VisitTestCondition(TestCondition tc);
 		void VisitUnaryExpression(UnaryExpression unary);
+
 	}
 
 	public class ExpressionVisitorBase : IExpressionVisitor
@@ -154,6 +156,9 @@ namespace Decompiler.Core.Code
 			access.EffectiveAddress.Accept(this);
 		}
 
+		public void VisitScopeResolution(ScopeResolution scope)
+		{
+		}
 
 		public void VisitSlice(Slice slice)
 		{

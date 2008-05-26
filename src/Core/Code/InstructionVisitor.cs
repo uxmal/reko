@@ -225,6 +225,10 @@ namespace Decompiler.Core.Code
 			access.EffectiveAddress.Accept(this);
 		}
 
+		public virtual void VisitScopeResolution(ScopeResolution scope)
+		{
+		}
+
 		public virtual void VisitSlice(Slice slice)
 		{
 			slice.Expression.Accept(this);
