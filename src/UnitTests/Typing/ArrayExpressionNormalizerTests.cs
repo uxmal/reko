@@ -29,7 +29,7 @@ namespace Decompiler.UnitTests.Typing
 	public class ArrayExpressionNormalizerTests
 	{
 		private ProcedureMock m;
-		private ArrayExpressionNormalizer aen;
+		private ExpressionNormalizer aen;
 
 		[Test]
 		public void SimpleArray()
@@ -53,11 +53,12 @@ namespace Decompiler.UnitTests.Typing
 			Assert.AreEqual("(p + 4)[i * 0x00000008]", e.ToString());
 		}
 
+
 		[SetUp]
 		public void Setup()
 		{
 			m = new ProcedureMock();
-			aen = new ArrayExpressionNormalizer();
+			aen = new ExpressionNormalizer();
 		}
 	}
 }

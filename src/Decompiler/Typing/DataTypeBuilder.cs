@@ -103,6 +103,7 @@ namespace Decompiler.Typing
 			if (dt == PrimitiveType.Segment)
 			{
 				StructureType seg = factory.CreateStructureType(null, 0);
+				seg.IsSegment = true;
 				Pointer ptr = factory.CreatePointer(seg, dt.Size);
 				dt = ptr;
 			}

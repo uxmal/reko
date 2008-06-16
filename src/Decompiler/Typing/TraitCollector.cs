@@ -262,7 +262,7 @@ namespace Decompiler.Typing
 				Constant c = b.Right as Constant;
 				if (c != null)
 				{
-					atrco.CollectArray(null, acc.TypeVariable, acc.Array, Convert.ToInt32(c.Value), 0);
+					atrco.CollectArray(null, acc.TypeVariable, acc.Array, c.ToInt32(), 0);
 					handler.DataTypeTrait(acc.TypeVariable, acc.DataType);
 					return;
 				}
@@ -275,7 +275,7 @@ namespace Decompiler.Typing
 		{
 			if (id is MemoryIdentifier)
 				return;
-			
+
 			handler.DataTypeTrait(id.TypeVariable, id.DataType);
 			if (ivs != null && proc != null)
 			{

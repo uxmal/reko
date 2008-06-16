@@ -28,7 +28,7 @@ fn0C00_0000_exit:		// block 6, pred: 5
 	// succ: 
 
 // Equivalence classes ////////////
-Eq_3: (struct)
+Eq_3: (segment)
 	T_3 (in ds : segment)
 Eq_4: (struct (0 word32 dw0000) (4 word32 dw0004) (8 bcu8 b0008) (9 byte b0009) (A int16 w000A) (C int16 w000C) (E word16 w000E) (10 word16 w0010))
 	T_4 (in bx : word16)
@@ -44,7 +44,7 @@ T_2:(in al_29)
 T_3:(in ds)
   Class: Eq_3
   DataType: (ptr Eq_3)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (segment))
 T_4:(in bx)
   Class: Eq_4
   DataType: (memptr (ptr Eq_3) Eq_4)

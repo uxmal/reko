@@ -210,8 +210,8 @@ namespace Decompiler.Typing
 		{
 			if (iv.Initial != null)
 			{
-				int init = Convert.ToInt32(iv.Initial.Value);
-				int delta = Convert.ToInt32(iv.Delta.Value);
+				int init = iv.Initial.ToInt32();
+				int delta = iv.Delta.ToInt32();
 				if (tvBasePointer != null)
 					handler.MemAccessArrayTrait(null, tvBasePointer, id.DataType.Size, init, delta, iv.IterationCount, tvField);
 				else

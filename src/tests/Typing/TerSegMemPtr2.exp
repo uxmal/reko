@@ -8,7 +8,7 @@ l1:		// block 1, pred: 0
 	// succ: 
 
 // Equivalence classes ////////////
-Eq_2: (struct "Eq_2")
+Eq_2: (segment "Eq_2")
 	T_2 (in ds : segment)
 Eq_3: (struct "Eq_3" (0 word16 w0000) (4 word16 w0004))
 	T_3 (in bx : word16)
@@ -20,7 +20,7 @@ Globals:(in globals)
 T_2:(in ds)
   Class: Eq_2
   DataType: (ptr Eq_2)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (segment))
 T_3:(in bx)
   Class: Eq_3
   DataType: (memptr (ptr Eq_2) Eq_3)

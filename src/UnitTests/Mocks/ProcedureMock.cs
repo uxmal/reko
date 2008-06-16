@@ -556,6 +556,12 @@ namespace Decompiler.UnitTests.Mocks
             TerminateBlock();
 		}
 
+		protected Identifier Local(PrimitiveType primitiveType, string name)
+		{
+			localStackOffset -= primitiveType.Size;
+			return proc.Frame.EnsureStackLocal(localStackOffset, primitiveType, name);
+		}
+
 		public Identifier LocalBool(string name)
 		{
 			localStackOffset -= PrimitiveType.Word32.Size;
@@ -615,6 +621,5 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			return new Constant(PrimitiveType.Word32, n);
 		}
-	
 	}
 }

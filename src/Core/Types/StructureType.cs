@@ -62,6 +62,7 @@ namespace Decompiler.Core.Types
 		public override DataType Clone()
 		{
 			StructureType s = new StructureType(name, size);
+			s.IsSegment = IsSegment;
 			foreach (StructureField f in Fields)
 			{
 				s.Fields.Add(f.Clone());

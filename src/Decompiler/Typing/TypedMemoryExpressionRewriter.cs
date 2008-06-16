@@ -62,26 +62,29 @@ namespace Decompiler.Typing
 
 		public Expression TransformBinaryExpression(BinaryExpression binExp)
 		{
-			if (binExp.Left.TypeVariable.DataType.IsComplex)
-			{
-				if (binExp.Right.TypeVariable.DataType.IsComplex)
-					throw new TypeInferenceException("Both subexpressions are complex in {0}. Left type: {1}, right type {2}",
-						binExp, binExp.Left.TypeVariable.DataType, binExp.Right.TypeVariable.DataType);
-				Constant c = (Constant) binExp.Right;
-				ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
-					binExp.Left.TypeVariable.DataType,
-					binExp.Left.TypeVariable.OriginalDataType,
-					basePointer,
-					binExp.Left,
-					c.ToInt32());
-				ceb.Dereferenced = true;
-				return ceb.BuildComplex();
-			}
-			else
-			{
+			if (!binExp.Left.TypeVariable.DataType.IsComplex)
 				throw new NotImplementedException(string.Format("{0}: [[{1}]] and [[{2}]]", binExp, binExp.Left.TypeVariable.DataType, binExp.Right.TypeVariable.DataType));
+
+			if (binExp.Right.TypeVariable.DataType.IsComplex)
+				throw new TypeInferenceException("Both subexpressions are complex in {0}. Left type: {1}, right type {2}",
+					binExp, binExp.Left.TypeVariable.DataType, binExp.Right.TypeVariable.DataType);
+			Constant cRight = binExp.Right as Constant;
+			int offset = 0;
+			if (cRight != null)
+			{
+				offset = cRight.ToInt32();
 			}
+
+			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+				binExp.Left.TypeVariable.DataType,
+				binExp.Left.TypeVariable.OriginalDataType,
+				basePointer,
+				binExp.Left,
+				offset);
+			ceb.Dereferenced = true;
+			return ceb.BuildComplex();
 		}
+		
 
 		public Expression TransformCast(Cast cast)
 		{
@@ -93,10 +96,28 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// A constant in a memory context is a pointer or a member pointer. It is always unsigned.
+		/// </summary>
+		/// <param name="c"></param>
+		/// <returns></returns>
 		public Expression TransformConstant(Constant c)
 		{
-			TypedConstantRewriter tcr = new TypedConstantRewriter(store, globals);
-			return tcr.Rewrite(c, true);
+			if (basePointer != null)
+			{
+				ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+					basePointer.TypeVariable.DataType,
+					basePointer.TypeVariable.OriginalDataType,
+					basePointer,
+					(int) c.ToUInt64());
+				ceb.Dereferenced = true;
+				return ceb.BuildComplex();
+			}
+			else
+			{
+				TypedConstantRewriter tcr = new TypedConstantRewriter(store, globals);
+				return tcr.Rewrite(c, true);
+			}
 		}
 
 		public Expression TransformDepositBits(DepositBits d)

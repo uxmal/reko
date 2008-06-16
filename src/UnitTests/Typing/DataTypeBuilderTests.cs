@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Typing
 	{
 		private TypeFactory factory;
 		private TypeStore store;
-		private ArrayExpressionNormalizer aen;
+		private ExpressionNormalizer aen;
 		private EquivalenceClassBuilder eqb;
 		private DataTypeBuilder dtb;
 
@@ -408,8 +408,8 @@ namespace Decompiler.UnitTests.Typing
 			pp.Add(m);
 
 			RunTest(pp.BuildProgram(), "Typing/DtbStructurePointerPassedToFunction.txt");
-			
 		}
+
 
 		[SetUp]
 		public void SetUp()
@@ -417,7 +417,7 @@ namespace Decompiler.UnitTests.Typing
 			store = new TypeStore();
 			factory = new TypeFactory();
 			ivs = new InductionVariableCollection();
-			aen = new ArrayExpressionNormalizer();
+			aen = new ExpressionNormalizer();
 			eqb = new EquivalenceClassBuilder(factory, store);
 			dtb = new DataTypeBuilder(factory, store);
 		}

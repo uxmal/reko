@@ -37,6 +37,7 @@ namespace Decompiler.Typing
 		private int offset;
 		private Expression complexExp;
 		private bool dereferenced;
+		private bool seenPtr;
 
 		public ComplexExpressionBuilder(DataType dt, DataType dtOrig, Expression b, int offset) : this(dt, dtOrig, null, b, offset)
 		{
@@ -70,6 +71,13 @@ namespace Decompiler.Typing
 
 		private void RewritePointer(DataType dtPtr, DataType dtPointee, DataType dtPointeeOriginal)
 		{
+			if (seenPtr)
+			{
+				complexExp = baseExp;
+				return;
+			}
+
+			seenPtr = true;
 			if (dtPointee is PrimitiveType || dtPointee is Pointer)
 			{
 				if (offset % dtPointee.Size == 0)
@@ -86,11 +94,14 @@ namespace Decompiler.Typing
 					}
 					else
 					{
-						complexExp = new ArrayAccess(dtPointee, baseExp, 
-							new Constant(PrimitiveType.Word32, idx));
-						if (!Dereferenced)
+						Constant i = new Constant(PrimitiveType.Create(Domain.SignedInt, dtPtr.Size), idx);
+						if (Dereferenced)
 						{
-							complexExp = new UnaryExpression(UnaryOperator.addrOf, dtPtr, complexExp);
+							complexExp = new ArrayAccess(dtPointee, baseExp, i);
+						}
+						else
+						{
+							complexExp = new BinaryExpression(Operator.add, dtPtr, baseExp, i);
 						}
 					}
 				}
@@ -103,13 +114,17 @@ namespace Decompiler.Typing
 			{
 				dtOriginal = dtPointeeOriginal;
 				baseExp = CreateDereference(dtPointee, baseExp);
+				bool deref = Dereferenced;
+				Dereferenced = false;
 				basePointer = null;
 				dtPointee.Accept(this);
-				if (!Dereferenced)
+				if (!deref)
 				{
 					complexExp = new UnaryExpression(UnaryOperator.addrOf, dtPtr, complexExp);
 				}
+				Dereferenced = deref; 
 			}
+			seenPtr = false;
 		}
 
 
