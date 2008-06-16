@@ -7,10 +7,10 @@ l1:		// block 1, pred: 0
 	// succ: 
 
 // Equivalence classes ////////////
-Eq_2: (struct)
+Eq_2: (segment)
 	T_2 (in 0x0800 : segment)
 	T_5 (in Mem0[cs:0x00000001:word16] : word16)
-Eq_3: (struct (1 (ptr Eq_2) ptr0001))
+Eq_3: (segment (1 (ptr Eq_2) ptr0001))
 	T_3 (in cs : segment)
 Eq_4: (struct (0 (ptr Eq_2) ptr0000))
 	T_4 (in 0x00000001 : word32)
@@ -22,11 +22,11 @@ Globals:(in globals)
 T_2:(in 0x0800)
   Class: Eq_2
   DataType: (ptr Eq_2)
-  OrigDataType: (ptr (struct))
+  OrigDataType: (ptr (segment))
 T_3:(in cs)
   Class: Eq_3
   DataType: (ptr Eq_3)
-  OrigDataType: (ptr (struct (1 T_5 t0001)))
+  OrigDataType: (ptr (segment (1 T_5 t0001)))
 T_4:(in 0x00000001)
   Class: Eq_4
   DataType: (memptr (ptr Eq_3) Eq_4)

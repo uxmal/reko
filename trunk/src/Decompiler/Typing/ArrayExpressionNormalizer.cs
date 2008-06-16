@@ -18,16 +18,19 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Operators;
+using Decompiler.Core.Types;
 using System;
 
 namespace Decompiler.Typing
 {
 	/// <summary>
+	/// Transform certain expressions to equivalents, to simplify type inference.
 	/// Locates array expressions and converts them to array access expressions. 
 	/// This simplifies work for later stages of the type inference, when we want to identify
 	/// array accesses quickly.
 	/// </summary>
-	public class ArrayExpressionNormalizer : InstructionTransformer
+	public class ExpressionNormalizer : InstructionTransformer
 	{
 		private ArrayExpressionMatcher aem = new ArrayExpressionMatcher();
 
@@ -41,7 +44,8 @@ namespace Decompiler.Typing
 			else
 				return access;
 		}
-	
+
+
 		public void Transform(Program prog)
 		{
 			foreach (Procedure proc in prog.Procedures.Values)

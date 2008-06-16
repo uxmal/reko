@@ -41,7 +41,7 @@ namespace Decompiler.Typing
 
 		private TypeFactory factory;
 		private TypeStore store;
-		private ArrayExpressionNormalizer aen;
+		private ExpressionNormalizer aen;
 		private EquivalenceClassBuilder eqb;
 		private TraitCollector trco;
 		private DataTypeBuilder dtb;
@@ -60,7 +60,7 @@ namespace Decompiler.Typing
 			factory = prog.TypeFactory;
 			store = prog.TypeStore;
 
-			aen = new ArrayExpressionNormalizer();
+			aen = new ExpressionNormalizer();
 			eqb = new EquivalenceClassBuilder(factory, store);
 			dtb = new DataTypeBuilder(factory, store);
 			trco = new TraitCollector(factory, store, dtb, prog.Globals, ivs);

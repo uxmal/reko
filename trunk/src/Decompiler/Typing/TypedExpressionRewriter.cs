@@ -76,7 +76,7 @@ namespace Decompiler.Typing
 			if (acc != null)
 			{
 				Constant index = acc.Index as Constant;
-				if (index != null && Convert.ToInt32(index.Value) == 0)
+				if (index != null && index.ToInt32() == 0)
 					return acc.Array;
 			}
 			return new UnaryExpression(Operator.addrOf, dt, e);
@@ -96,6 +96,12 @@ namespace Decompiler.Typing
 
 		public void RewriteProgram()
 		{
+			{//$DEBUG
+				System.IO.StringWriter sb = new System.IO.StringWriter();
+				prog.TypeStore.Write(sb);
+				System.Diagnostics.Debug.WriteLine(sb.ToString());
+			}
+
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				foreach (Block b in proc.RpoBlocks)
@@ -117,6 +123,8 @@ namespace Decompiler.Typing
 
 		public Instruction MakeAssignment(Expression dst, Expression src)
 		{
+			if (dst.ToString() == "si_16")
+				dst.ToString();
 			src = src.Accept(this);
 			DataType dtSrc = DataTypeOf(src);
 			dst = dst.Accept(this);
@@ -166,8 +174,8 @@ namespace Decompiler.Typing
 					dtLeft, 
 					binExp.Left.TypeVariable.OriginalDataType,
 					new Dereference(null, binExp.Left),
-					Convert.ToInt32(c.Value));
-				return MkAddrOf(null, ceb.BuildComplex());
+					c.ToInt32());
+				return ceb.BuildComplex();
 			}
 			return binExp;
 		}

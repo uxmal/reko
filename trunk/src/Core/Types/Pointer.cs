@@ -60,7 +60,7 @@ namespace Decompiler.Core.Types
 			get { return pointee; }
 			set 
 			{
-				if (value == null) throw new ArgumentNullException("Pointee mustn't be null");
+				if (value == null) throw new ArgumentNullException("Pointee mustn't be null.");
 				pointee = value; 
 			}
 		}

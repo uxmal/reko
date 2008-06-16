@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Typing
 		private TypeStore store;
 		private MockTraitHandler handler;
 		private TraitCollector coll;
-		private ArrayExpressionNormalizer aen;
+		private ExpressionNormalizer aen;
 		private EquivalenceClassBuilder eqb;
 		private readonly string nl;
 
@@ -383,7 +383,7 @@ namespace Decompiler.UnitTests.Typing
 			store = new TypeStore();
 			handler = new MockTraitHandler();
 			ivs = new InductionVariableCollection();
-			aen = new ArrayExpressionNormalizer();
+			aen = new ExpressionNormalizer();
 			eqb = new EquivalenceClassBuilder(factory, new TypeStore());
 		}
 

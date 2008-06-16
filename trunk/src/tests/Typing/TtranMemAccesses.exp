@@ -39,7 +39,7 @@ Eq_2: (fn void ((ptr Eq_4)))
 	T_2 (in fn0C00_000C : ptr0)
 	T_3 (in signature of fn0C00_000C)
 	T_14 (in fn0C00_000C : ptr0)
-Eq_4: (struct (100 word16 w0100) (200 word16 w0200) (202 word16 w0202) (300 word16 w0300) (302 word16 w0302))
+Eq_4: (segment (100 word16 w0100) (200 word16 w0200) (202 word16 w0202) (300 word16 w0300) (302 word16 w0302))
 	T_4 (in ds : segment)
 	T_5 (in ds : segment)
 	T_9 (in ds : segment)
@@ -62,11 +62,11 @@ T_3:(in signature of fn0C00_000C)
 T_4:(in ds)
   Class: Eq_4
   DataType: (ptr Eq_4)
-  OrigDataType: (ptr (struct (300 T_17 t0300) (302 T_19 t0302)))
+  OrigDataType: (ptr (segment (300 T_17 t0300) (302 T_19 t0302)))
 T_5:(in ds)
   Class: Eq_4
   DataType: (ptr Eq_4)
-  OrigDataType: (ptr (struct (100 T_13 t0100)))
+  OrigDataType: (ptr (segment (100 T_13 t0100)))
 T_6:(in fn0C00_000C(ds))
   Class: Eq_6
   DataType: void
@@ -82,7 +82,7 @@ T_8:(in signature of fn0C00_0015)
 T_9:(in ds)
   Class: Eq_4
   DataType: (ptr Eq_4)
-  OrigDataType: (ptr (struct (200 T_21 t0200) (202 T_23 t0202)))
+  OrigDataType: (ptr (segment (200 T_21 t0200) (202 T_23 t0202)))
 T_10:(in fn0C00_0015(ds))
   Class: Eq_10
   DataType: void
