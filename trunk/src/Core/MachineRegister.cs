@@ -34,6 +34,10 @@ namespace Decompiler.Core
 			this.number = number;
 		}
 
+        /// <summary>
+        /// If this register is a subregister of a wider register, this property the bit offset within that wider register.
+        /// </summary>
+        /// <remarks>For instance, on X86 systems, AH would return 8 here.</remarks>
 		public virtual int AliasOffset
 		{
 			get { return 0; }

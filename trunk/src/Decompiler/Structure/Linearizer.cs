@@ -22,7 +22,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Structure
@@ -44,7 +44,7 @@ namespace Decompiler.Structure
 			Init(proc, blin);
 		}
 
-		public BlockList Blocks
+		public List<Block> Blocks
 		{
 			get { return proc.RpoBlocks; }
 		}

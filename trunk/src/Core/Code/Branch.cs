@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using System;
 using System.IO;
 
 namespace Decompiler.Core.Code
@@ -27,15 +28,11 @@ namespace Decompiler.Core.Code
 	{
 		private Expression cond;
 
-		public Branch(ConditionCode cc, Expression usedFlags)
-		{
-			this.cond = new TestCondition(cc, usedFlags);
-		}
+        public Branch(Expression cond)
+        {
+            this.cond = cond;
+        }
 
-		public Branch(Expression cond)
-		{
-			this.cond = cond;
-		}
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{

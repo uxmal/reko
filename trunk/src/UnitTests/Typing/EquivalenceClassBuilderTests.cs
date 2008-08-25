@@ -70,6 +70,18 @@ namespace Decompiler.UnitTests.Typing
 			Assert.AreEqual("T_3", mps.TypeVariable.Name);
 		}
 
+        [Test]
+        public void SegmentConstants()
+        {
+            Constant seg1 = new Constant(PrimitiveType.Segment, 0x1234);
+            Constant seg2 = new Constant(PrimitiveType.Segment, 0x1234);
+
+            seg1.Accept(eqb);
+            seg2.Accept(eqb);
+            Assert.IsNotNull(seg1.TypeVariable);
+            Assert.AreSame(seg1.TypeVariable, seg2.TypeVariable);
+        }
+
 		[SetUp]
 		public void Setup()
 		{

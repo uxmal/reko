@@ -48,7 +48,7 @@ namespace Decompiler.Core.Output
 			{
 				if (UseTabs)
 				{
-					writer.Write('\t');
+					Write("\t");
 				}
 				else
 				{
@@ -74,13 +74,13 @@ namespace Decompiler.Core.Output
 
 		public void Terminate()
 		{
-			writer.Write(terminator);
+			Write(terminator);
 		}
 
 		public void Terminate(string s)
 		{
-			writer.Write(s);
-			writer.Write(terminator);
+			Write(s);
+			Write(terminator);
 		}
 
 		public string Terminator
@@ -95,11 +95,32 @@ namespace Decompiler.Core.Output
 			set { useTabs = value; }
 		}
 
+        public virtual void Write(string s)
+        {
+            writer.Write(s);
+        }
+
+        public virtual void Write(string format, params object[] arguments)
+        {
+            writer.Write(format, arguments);
+        }
+
+	
+        public virtual void WriteKeyword(string keyword)
+        {
+            writer.Write(keyword);
+        }
+
+        public virtual void WriteLine()
+        {
+            writer.WriteLine();
+        }
+
 		public void WriteSpaces(int n)
 		{
 			while (n > 0)
 			{
-				writer.Write(' ');
+				Write(" ");
 				--n;
 			}
 		}

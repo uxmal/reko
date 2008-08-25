@@ -286,6 +286,11 @@ namespace Decompiler.Core.Code
 			return Convert.ToSingle(c);
 		}
 
+        public ushort ToUInt16()
+        {
+            return unchecked((ushort) Convert.ToInt64(c));
+        }
+
 		public int ToInt32()
 		{
 			int q = (int) Convert.ToInt64(c);
@@ -339,5 +344,6 @@ namespace Decompiler.Core.Code
 		}
 
 		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0);
-	}
+
+    }
 }

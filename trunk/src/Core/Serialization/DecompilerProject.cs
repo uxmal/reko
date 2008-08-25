@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -31,7 +32,7 @@ namespace Decompiler.Core.Serialization
 		{
 			this.Input = new DecompilerInput();
 			this.Output = new DecompilerOutput();
-			this.UserProcedures = new ArrayList();
+			this.UserProcedures = new List<SerializedProcedure>();
 			this.UserCalls = new ArrayList();
 		}
 
@@ -42,7 +43,7 @@ namespace Decompiler.Core.Serialization
 		public DecompilerOutput Output;
 
 		[XmlElement("procedure", typeof (SerializedProcedure))]
-		public ArrayList UserProcedures;
+		public List<SerializedProcedure> UserProcedures;
 
 		[XmlElement("call", typeof (SerializedCall))]
 		public ArrayList UserCalls;

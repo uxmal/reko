@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Lib
 {
@@ -25,9 +26,9 @@ namespace Decompiler.Core.Lib
 	/// A directed graph implementation.
 	/// $TODO: recover lost space from deleted nodes and edges if this proves necessary.
 	/// </summary>
-	public class DirectedGraph
+	public class DirectedGraph<T> where T : class
 	{
-		private Hashtable mpobjectNode = new Hashtable();		// Maps object to integer index into nodes array.
+		private Dictionary<T, int> mpobjectNode = new Dictionary<T,int>();		// Maps object to integer index into nodes array.
 		private Node [] nodes;
 		private int cNodes;
 		private Edge [] edges;
@@ -39,15 +40,15 @@ namespace Decompiler.Core.Lib
 			this.nodeCollection = new NodeCollection(this);
 		}
 
-		public void AddNode(object n)
+		public void AddNode(T n)
 		{
-			if (mpobjectNode.Contains(n))
+			if (mpobjectNode.ContainsKey(n))
 				return;
 
 			AddNodeInternal(n);
 		}
 
-		private int AddNodeInternal(object n)
+		private int AddNodeInternal(T n)
 		{
 			if (nodes == null)
 			{
@@ -70,7 +71,7 @@ namespace Decompiler.Core.Lib
 			return cNodes++;
 		}
 
-		public void AddEdge(object from, object to)
+		public void AddEdge(T from, T to)
 		{
 			int iFrom = NodeIndex(from);
 			if (iFrom <  0)
@@ -124,34 +125,34 @@ namespace Decompiler.Core.Lib
 			++nodes[iTo].cPred;
 		}
 
-		private ICollection CreateEdgeCollectionCore(object o, bool fSuccessors)
+		private IEnumerable<T> CreateEdgeCollectionCore(T o, bool fSuccessors)
 		{
-			object oIdx = mpobjectNode[o];
-			if (oIdx == null)
+            int iNode;
+            if (!mpobjectNode.TryGetValue(o, out iNode))
 				return new EdgeCollection(this, -1, true);
-			int iNode = (int) oIdx;
 			return new EdgeCollection(this, iNode, fSuccessors);
 		}
 
-		private int NodeIndex(object o)
+		private int NodeIndex(T o)
 		{
-			object oIdx = mpobjectNode[o];
-			if (oIdx == null)
+            int idx;
+            if (mpobjectNode.TryGetValue(o, out idx))
+                return idx;
+            else
 				return -1;
-			return (int) oIdx;
 		}
 
-		public ICollection Nodes
+		public ICollection<T> Nodes
 		{
 			get { return nodeCollection; }
 		}
 
-		public ICollection Predecessors(object o)
+		public IEnumerable<T> Predecessors(T o)
 		{
 			return CreateEdgeCollectionCore(o, false);
 		}
 
-		public void RemoveEdge(object from, object to)
+		public void RemoveEdge(T from, T to)
 		{
 			int iFrom = NodeIndex(from);
 			int iTo = NodeIndex(to);
@@ -199,7 +200,7 @@ namespace Decompiler.Core.Lib
 			--nodes[iTo].cPred;
 		}
 
-		public ICollection Successors(object o)
+		public IEnumerable<T> Successors(T o)
 		{
 			return CreateEdgeCollectionCore(o, true);
 		}
@@ -207,7 +208,7 @@ namespace Decompiler.Core.Lib
 
 		internal struct Node
 		{
-			public object Item;
+			public T Item;
 			public int firstPred;
 			public int firstSucc;
 			public int cSucc;
@@ -223,85 +224,43 @@ namespace Decompiler.Core.Lib
 		}
 
 		private class EdgeCollection :
-			ICollection
+			IEnumerable<T>
 		{
-			private DirectedGraph graph;
+			private DirectedGraph<T> graph;
 			private int iNode;
 			private bool fSuccessor;
 
-			public EdgeCollection(DirectedGraph graph, int iNode, bool fSuccessor)
+			public EdgeCollection(DirectedGraph<T> graph, int iNode, bool fSuccessor)
 			{
 				this.graph = graph;
 				this.iNode = iNode;
 				this.fSuccessor = fSuccessor;
 			}
 
-			#region ICollection Members
-			public bool IsSynchronized
-			{
-				get { return false; }
-			}
-
-			public int Count
-			{
-				get 
-				{
-					return fSuccessor
-						  ? graph.nodes[iNode].cSucc
-						  : graph.nodes[iNode].cPred; }
-			}
-
-			public void CopyTo(Array array, int index)
-			{
-				if (fSuccessor)
-				{
-					int iEdge = graph.nodes[iNode].firstSucc;
-					int i = 0;
-					while (iEdge != -1)
-					{
-						array.SetValue(graph.nodes[graph.edges[iEdge].to].Item, index + i);
-						iEdge = graph.edges[iEdge].nextSucc;
-						++i;
-					}
-				}
-				else
-				{
-					int iEdge = graph.nodes[iNode].firstPred;
-					int i = 0;
-					while (iEdge != -1)
-					{
-						array.SetValue(graph.nodes[graph.edges[iEdge].from].Item, index + i);
-						++i;
-						iEdge = graph.edges[iEdge].nextPred;
-					}
-				}
-			}
-
-			public object SyncRoot
-			{
-				get { return null; }
-			}
-			#endregion
-
 			#region IEnumerable Members
-			public IEnumerator GetEnumerator()
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return new EdgeEnumerator(graph, iNode, fSuccessor);
+            }
+
+			public IEnumerator<T> GetEnumerator()
 			{
 				return new EdgeEnumerator(graph, iNode, fSuccessor);
 			}
 			#endregion
 
-		}
+        }
 
 
 		private class EdgeEnumerator : 
-			IEnumerator
+			IEnumerator<T>
 		{
-			private DirectedGraph graph;
+			private DirectedGraph<T> graph;
 			private int iEdge = -1;
 			private int iNode;
 			private bool fSuccessor;
 
-			public EdgeEnumerator(DirectedGraph graph, int iNode, bool fSuccessor)
+			public EdgeEnumerator(DirectedGraph<T> graph, int iNode, bool fSuccessor)
 			{
 				this.graph = graph;
 				this.iNode = iNode;
@@ -318,23 +277,38 @@ namespace Decompiler.Core.Lib
 				get { return fSuccessor ? graph.nodes[iNode].cSucc : graph.nodes[iNode].cPred; }
 			}
 
-			public object Current
-			{
-				get
-				{
-					if (iEdge == -1)
-						throw new InvalidOperationException("MoveNext must be called before Current");
+            object IEnumerator.Current
+            {
+                get { return GetCurrent(); }
+            }
 
-					if (fSuccessor)
-					{
-						return graph.nodes[graph.edges[iEdge].to].Item;
-					}
-					else
-					{
-						return graph.nodes[graph.edges[iEdge].from].Item;
-					}
-				}
-			}
+            public T Current
+            {
+                get
+                {
+                    return GetCurrent();
+                }
+            }
+
+            public void Dispose()
+            {
+                GC.SuppressFinalize(this);
+            }
+
+            private T GetCurrent()
+            {
+                if (iEdge == -1)
+                    throw new InvalidOperationException("MoveNext must be called before Current");
+
+                if (fSuccessor)
+                {
+                    return graph.nodes[graph.edges[iEdge].to].Item;
+                }
+                else
+                {
+                    return graph.nodes[graph.edges[iEdge].from].Item;
+                }
+            }
 
 			public IEnumerator GetEnumerator()
 			{
@@ -363,32 +337,54 @@ namespace Decompiler.Core.Lib
 			}
 		}
 
-		private class NodeCollection : ICollection
+		private class NodeCollection : ICollection<T>
 		{
-			private DirectedGraph graph;
+			private DirectedGraph<T> graph;
 
-			public NodeCollection(DirectedGraph graph)
+			public NodeCollection(DirectedGraph<T> graph)
 			{
 				this.graph = graph;
 			}
+
+            public void Add(T node)
+            {
+                throw new NotSupportedException();
+            }
 
 			public bool IsSynchronized
 			{
 				get { return false; }
 			}
 
+            public void Clear()
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool Contains(T node)
+            {
+                return graph.mpobjectNode.ContainsKey(node);
+            }
+
 			public int Count
 			{
 				get { return graph.cNodes; }
 			}
 
-			public void CopyTo(Array array, int index)
+			public void CopyTo(T [] array, int index)
 			{
-				for (int i = 0; i < graph.cNodes; ++i)
-				{
-					array.SetValue(graph.nodes[i], index + i);
-				}
+                graph.nodes.CopyTo(array, index);
 			}
+
+            public bool IsReadOnly
+            {
+                get { return false; }
+            }
+
+            public bool Remove(T node)
+            {
+                throw new NotImplementedException("Remove");
+            }
 
 			public object SyncRoot
 			{
@@ -397,7 +393,13 @@ namespace Decompiler.Core.Lib
 
 
 			#region IEnumerable Members
-			public IEnumerator GetEnumerator()
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return new NodeEnumerator(graph);
+            }
+
+			public IEnumerator<T> GetEnumerator()
 			{
 				return new NodeEnumerator(graph);
 			}
@@ -405,12 +407,12 @@ namespace Decompiler.Core.Lib
 
 		}
 
-		private class NodeEnumerator : IEnumerator
+		private class NodeEnumerator : IEnumerator<T>
 		{
-			private DirectedGraph graph;
+			private DirectedGraph<T> graph;
 			private int iNode = -1;
 
-			public NodeEnumerator(DirectedGraph graph)
+			public NodeEnumerator(DirectedGraph<T> graph)
 			{
 				this.graph = graph;
 			}
@@ -420,7 +422,12 @@ namespace Decompiler.Core.Lib
 				iNode = -1;
 			}
 
-			public object Current
+            object IEnumerator.Current
+            {
+                get { return Current; }
+            }
+
+			public T Current
 			{
 				get 
 				{
@@ -429,6 +436,11 @@ namespace Decompiler.Core.Lib
 					return graph.nodes[iNode].Item;
 				}
 			}
+
+            public void Dispose()
+            {
+                GC.SuppressFinalize(this);
+            }
 
 			public bool MoveNext()
 			{

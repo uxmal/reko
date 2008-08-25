@@ -20,6 +20,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -59,8 +60,8 @@ namespace Decompiler.Core
 	/// </remarks>
 	public class Frame
 	{
-		private IdentifierCollection identifiers;	// Identifiers for each access.
-		private int returnAddressSize;			// Size of return value on stack -- (some processors pass it in a register)
+		private List<Identifier> identifiers;	// Identifiers for each access.
+		private int returnAddressSize;			// Size of return value on stack -- (some processors pass it in a register or a separate return stack)
 		private bool escapes;
 		private Identifier framePointer;
 		private int frameOffset;				// frame offset from stack pointer in bytes.
@@ -68,7 +69,7 @@ namespace Decompiler.Core
 		//$REFACTOR: perhaps we can get rid of framePointerSize? It's only used by the constructor.
 		public Frame(PrimitiveType framePointerSize)
 		{
-			identifiers = new IdentifierCollection();
+			identifiers = new List<Identifier>();
 
 			// There is always a "variable" for the global memory and the frame
 			// pointer.
@@ -401,7 +402,7 @@ namespace Decompiler.Core
 			}
 		}
 
-		public IdentifierCollection Identifiers
+		public List<Identifier> Identifiers
 		{
 			get { return identifiers; }
 		}

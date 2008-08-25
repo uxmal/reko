@@ -24,6 +24,7 @@
 	
 	<group id="GrpActions" cmdSet="Decompiler" container="ActionMenu"/>
 	<group id="GrpActionsScanned" cmdSet="Decompiler" container="ActionMenu"/>
+  <group id="GrpActionsRewritten" cmdSet="Decompiler" container="ActionMenu"/>
 	
 	<group id="GrpHelp" cmdSet="Decompiler" container="HelpMenu" />
 	
@@ -45,6 +46,7 @@
 	<cmd id="ActionFinishDecompilation" cmdSet="Decompiler" container="GrpActions">_Finish Decompilation</cmd>
 	
 	<cmd id="ActionMarkProcedure" cmdSet="Decompiler" container="ActionMarkProcedure">Mark _Procedure Entry</cmd>
+  <cmd id="ActionEditSignature" cmdSet="Decompiler" container="ActionEditSignature">Edit _Signature...</cmd>
 
 	<cmd id="BrowserItemSelected" cmdSet="Decompiler"/>
 	
@@ -53,5 +55,6 @@
 	<placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
 	<placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
+  <placement item="ActionEditSignature" container="GrpActionsRewritten" />
 </menu-definitions>
  

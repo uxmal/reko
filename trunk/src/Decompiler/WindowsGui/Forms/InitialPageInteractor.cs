@@ -78,7 +78,7 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			if (fileName != null && fileName.Length != 0)
 				page.OpenFileDialog.FileName = fileName;
-			if (page.OpenFileDialog.ShowDialog(page) == DialogResult.OK)
+			if (ShowModalDialog(page.OpenFileDialog) == DialogResult.OK)
 			{
 				return fileName;
 			}

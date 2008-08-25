@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 
@@ -44,6 +45,12 @@ namespace Decompiler.Core.Code
 		public override Expression CloneExpression()
 		{
 			return new FieldAccess(DataType, structure.CloneExpression(), FieldName);
+		}
+
+
+		public override Expression Invert()
+		{
+			return new UnaryExpression(Operator.not, PrimitiveType.Bool, this);
 		}
 
 	}

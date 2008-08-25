@@ -59,8 +59,8 @@ namespace Decompiler.Core
 
 		public void AddEntryPoint(EntryPoint ep)
 		{
-			Procedure proc = procedures[ep.Address];
-			if (proc == null)
+			Procedure proc; 
+			if (!procedures.TryGetValue(ep.Address, out proc))
 			{
 				Frame frame = new Frame(arch.WordWidth);
 				proc = Procedure.Create(ep.Name, ep.Address, frame);

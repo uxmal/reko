@@ -23,6 +23,7 @@ using Decompiler.Loading;
 using Decompiler.WindowsGui.Controls;
 using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -92,7 +93,7 @@ namespace Decompiler.WindowsGui.Forms
 
 		}
 
-		protected virtual DecompilerDriver CreateDecompiler(string filename, Program prog)
+		public virtual DecompilerDriver CreateDecompiler(string filename, Program prog)
 		{
 			return new DecompilerDriver(filename, prog, this);
 		}
@@ -174,6 +175,11 @@ namespace Decompiler.WindowsGui.Forms
 			get { return pageLoaded; }
 		}
 
+        public AnalyzedPageInteractor AnalyzedPageInteractor
+        {
+            get { return pageAnalyzed; }
+        }
+
 		public FinalPageInteractor FinalPageInteractor
 		{
 			get { return pageFinal; }
@@ -222,7 +228,7 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			if (CurrentPage != null)
 				CurrentPage.LeavePage();
-			form.PhasePage = interactor.PhasePage;
+			form.CurrentPhasePage = interactor.PhasePage;
 			CurrentPage = interactor;
 			interactor.EnterPage();
 		}
@@ -417,10 +423,11 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void OnBrowserListItemSelected(object sender, EventArgs e)
 		{
-			if (form.BrowserList.SelectedItems.Count == 0)
-				System.Diagnostics.Debug.WriteLine("No items selected");
+			if (form.BrowserList.SelectedItems.Count <= 0)
+				Debug.WriteLine("No items selected");
 			else
-				System.Diagnostics.Debug.WriteLine(string.Format("Selected Item Index: {0}, Focus index: {1}", form.BrowserList.SelectedItems[0].Text, form.BrowserList.FocusedItem.Text));
+				Debug.WriteLine(string.Format("Selected Item Index: {0}, Focus index: {1}", form.BrowserList.SelectedItems[0].Text,
+                    form.BrowserList.FocusedItem != null ? form.BrowserList.FocusedItem.Text : "<none>"));
 
 			Execute(ref CmdSets.GuidDecompiler, CmdIds.BrowserItemSelected);
 		}
@@ -429,5 +436,6 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			UpdateWindowTitle();
 		}
-	}
+
+    }
 }

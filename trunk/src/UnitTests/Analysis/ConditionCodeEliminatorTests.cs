@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Analysis
 			Statement stmY = new Statement(new Assignment(y, z), null);
 			ssaIds[y].def = stmY;
 			ssaIds[z].uses.Add(stmY);
-			Statement stmBr = new Statement(new Branch(ConditionCode.EQ, y), null);
+			Statement stmBr = new Statement(new Branch(new TestCondition(ConditionCode.EQ, y)), null);
 			ssaIds[y].uses.Add(stmBr);
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds);

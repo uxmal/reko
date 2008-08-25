@@ -24,6 +24,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Scanning
@@ -47,7 +48,7 @@ namespace Decompiler.Scanning
 		private Map vectorUses;
 		private SortedList syscalls;
 		private WorkItem wiCur;
-		private DirectedGraph jumpGraph;
+		private DirectedGraph<object> jumpGraph;    //$TODO: what is the right type? This is a bipartite graph with statements and procedures.
 
 		private Queue qProcs;
 		private Queue qJumps;
@@ -72,7 +73,7 @@ namespace Decompiler.Scanning
 			qSegments = new Queue();
 			qVectors = new Queue();
 			this.blocksVisited = new Hashtable();
-			this.jumpGraph = new DirectedGraph();
+			this.jumpGraph = new DirectedGraph<object>();
 		}
 
 		public virtual CodeWalker CreateCodeWalker(Address addr, ProcessorState state)
@@ -134,8 +135,8 @@ namespace Decompiler.Scanning
 		{
 			WorkItem wi = new WorkItem(wiPrev, BlockType.Procedure, addr);
 			wi.state = (ProcessorState) state.Clone();
-			Procedure proc = (Procedure) program.Procedures[addr];
-			if (proc == null)
+            Procedure proc;
+			if (!program.Procedures.TryGetValue(addr, out proc))
 			{
 				Frame f = new Frame(program.Architecture.WordWidth);
 				proc = Procedure.Create(procedureName, wi.Address, f);
@@ -178,7 +179,7 @@ namespace Decompiler.Scanning
 			Procedure proc = EnqueueProcedure(null, Address.ToAddress(sp.Address, 16), sp.Name);
 			if (sp.Signature != null)
 			{
-				SignatureSerializer sser = new SignatureSerializer(program.Architecture, "stdapi");
+				ProcedureSerializer sser = new ProcedureSerializer(program.Architecture, "stdapi"); //$TODO: where do default singatures come from? Platform?
 				proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
 			}
 			if (sp.Characteristics != null)
@@ -481,7 +482,7 @@ namespace Decompiler.Scanning
 
 		private void PromoteBlockToProcedure(ImageMapBlock bl, Procedure proc)
 		{
-			if (program.Procedures[bl.Address] == null)
+			if (!program.Procedures.ContainsKey(bl.Address))
 			{
 				Procedure procNew = Procedure.Create(null, bl.Address, new Frame(program.Architecture.WordWidth));
 				program.Procedures[bl.Address] = procNew;

@@ -123,8 +123,6 @@ namespace Decompiler.Typing
 
 		public Instruction MakeAssignment(Expression dst, Expression src)
 		{
-			if (dst.ToString() == "si_16")
-				dst.ToString();
 			src = src.Accept(this);
 			DataType dtSrc = DataTypeOf(src);
 			dst = dst.Accept(this);

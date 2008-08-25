@@ -39,7 +39,8 @@ namespace Decompiler.Typing
 		private bool dereferenced;
 		private bool seenPtr;
 
-		public ComplexExpressionBuilder(DataType dt, DataType dtOrig, Expression b, int offset) : this(dt, dtOrig, null, b, offset)
+		public ComplexExpressionBuilder(DataType dt, DataType dtOrig, Expression b, int offset) 
+			: this(dt, dtOrig, null, b, offset)
 		{
 		}
 

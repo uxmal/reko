@@ -18,6 +18,7 @@
 
 using Decompiler.Gui;
 using System;
+using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
@@ -38,7 +39,7 @@ namespace Decompiler.WindowsGui.Forms
 		}
 
 		//$TODO: consider making this a service.
-		public DecompilerDriver Decompiler
+		public virtual DecompilerDriver Decompiler
 		{
 			get { return form.Decompiler; }
 		}
@@ -71,13 +72,21 @@ namespace Decompiler.WindowsGui.Forms
 			get { return page; }
 		}
 
-		/// <summary>
-		/// Displays and populates all the controls for this phase page.
-		/// </summary>
-		[Obsolete("Use EnterPage instead")]
-		public virtual void PopulateControls()
-	{
-	}
+        /// <summary>
+        /// Displays a modal dialog on the main form.
+        /// </summary>
+        /// <param name="form">Form to display.</param>
+        /// <returns>Dialog result of the dialog.</returns>
+        /// <remarks>Test classes can override this method to avoid blocking on a modal dialog.</remarks>
+        public virtual DialogResult ShowModalDialog(Form dlg)
+        {
+            return dlg.ShowDialog(MainForm);
+        }
+
+        public virtual DialogResult ShowModalDialog(CommonDialog dlg)
+        {
+            return dlg.ShowDialog(MainForm);
+        }
 
 		#region ICommandTarget Members
 

@@ -18,6 +18,7 @@
 
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Output;
 using Decompiler.Core.Types;
 using System;
 using System.IO;
@@ -61,38 +62,66 @@ namespace Decompiler.Core
 
 		public void Emit(string fnName, EmitFlags f, TextWriter w)
 		{
-			bool emitStorage = (f & EmitFlags.ArgumentKind) == EmitFlags.ArgumentKind;
-			if (ret != null)
-			{
-				ret.WriteType(emitStorage, w);
-				w.Write(" ");
-			}
-			else
-			{
-				w.Write("void ");
-			}
-			w.Write("{0}(", fnName);
-			if (formals != null && formals.Length > 0)
-			{
-				formals[0].Write(emitStorage, w);
-				for (int i = 1; i < formals.Length; ++i)
-				{
-					w.Write(", ");
-					formals[i].Write(emitStorage, w);
-				}
-			}
-			w.Write(")");
-			if ((f & EmitFlags.LowLevelInfo) == EmitFlags.LowLevelInfo)
-			{
-				w.WriteLine();
-				w.WriteLine("// stackDelta: {0}; fpuStackDelta: {1}; fpuMaxParam: {2}", stackDelta, FpuStackDelta, FpuStackParameterMax);
-			}
+            Emit(fnName, f, new CodeFormatter(w));
 		}
 
-		private void EmitArgument(Identifier arg, bool emitStorage, TextWriter w)
+        public void Emit(string fnName, EmitFlags f, CodeFormatter w)
+        {
+            bool emitStorage = (f & EmitFlags.ArgumentKind) == EmitFlags.ArgumentKind;
+            if (ret != null)
+            {
+                WriteType(ret, emitStorage, w);
+                w.Write(" ");
+            }
+            else
+            {
+                w.Write("void ");
+            }
+            w.Write("{0}(", fnName);
+            if (formals != null && formals.Length > 0)
+            {
+                EmitArgument(formals[0], emitStorage, w);
+                for (int i = 1; i < formals.Length; ++i)
+                {
+                    w.Write(", ");
+                    EmitArgument(formals[i], emitStorage, w);
+                }
+            }
+            w.Write(")");
+            if ((f & EmitFlags.LowLevelInfo) == EmitFlags.LowLevelInfo)
+            {
+                w.WriteLine();
+                w.Write("// stackDelta: {0}; fpuStackDelta: {1}; fpuMaxParam: {2}", stackDelta, FpuStackDelta, FpuStackParameterMax);
+                w.WriteLine();
+            }
+        }
+
+		private void EmitArgument(Identifier arg, bool writeStorage, CodeFormatter writer)
 		{
-			arg.Write(emitStorage, w);
-		}
+            WriteType(arg, writeStorage, writer);
+            writer.Write(" ");
+            writer.Write(arg.Name);
+        }
+
+
+        public void WriteType(Identifier arg, bool writeStorage, CodeFormatter writer)
+        {
+            if (writeStorage)
+            {
+                OutArgumentStorage os = arg.Storage as OutArgumentStorage;
+                if (os != null)
+                {
+                    writer.Write(os.OriginalIdentifier.Storage.Kind);
+                    writer.Write(" out ");
+                }
+                else
+                {
+                    writer.Write(arg.Storage.Kind);
+                    writer.Write(" ");
+                }
+            }
+            writer.Write(arg.DataType.ToString());
+        }
 
 		/// <summary>
 		/// Amount by which the FPU stack grows or shrinks after the procedure is called.
@@ -148,14 +177,16 @@ namespace Decompiler.Core
 		public override string ToString()
 		{
 			StringWriter w = new StringWriter();
-			Emit("()", EmitFlags.ArgumentKind|EmitFlags.LowLevelInfo, w);
+            CodeFormatter f = new CodeFormatter(w);
+			Emit("()", EmitFlags.ArgumentKind|EmitFlags.LowLevelInfo, f);
 			return w.ToString();
 		}
 
 		public string ToString(string name)
 		{
 			StringWriter sw = new StringWriter();
-			Emit(name, EmitFlags.ArgumentKind, sw);
+            CodeFormatter f = new CodeFormatter(sw);
+            Emit(name, EmitFlags.ArgumentKind, f);
 			return sw.ToString();
 		}
 

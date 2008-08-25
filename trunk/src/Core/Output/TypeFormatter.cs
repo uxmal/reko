@@ -210,19 +210,24 @@ namespace Decompiler.Core.Output
 		public void VisitMemberPointer(MemberPointer memptr)
 		{
 			Pointer p = memptr.BasePointer as Pointer;
+			DataType baseType;
 			if (p != null)
 			{
-				string oldName = name;
-				name = null;
-				memptr.Pointee.Accept(this);
-				writer.Write(' ');
-				writer.Write(p.Pointee.Name);
-				writer.Write("::*");
-				name = oldName;
-				WriteName(false);
+				baseType = p.Pointee;
 			}
 			else
-				writer.Write("@@@Expected a base pointer in {0}", memptr);
+			{
+				baseType = memptr.BasePointer;
+			}
+
+			string oldName = name;
+			name = null;
+			memptr.Pointee.Accept(this);
+			writer.Write(' ');
+			writer.Write(baseType.Name);
+			writer.Write("::*");
+			name = oldName;
+			WriteName(false);
 		}
 
 		public void VisitPointer(Pointer pt)

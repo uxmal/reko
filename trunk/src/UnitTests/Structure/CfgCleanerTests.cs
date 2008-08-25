@@ -50,10 +50,10 @@ namespace Decompiler.UnitTests.Structure
 			using (FileUnitTester fut = new FileUnitTester(testFile))
 			{
 				this.RewriteProgram(sourceFile, new Address(0xC00, 0));
-				prog.Procedures[0].Write(false, fut.TextWriter);
-				ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(prog.Procedures[0]);
+				prog.Procedures.Values[0].Write(false, fut.TextWriter);
+				ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(prog.Procedures.Values[0]);
 				cfgc.Transform();
-				prog.Procedures[0].Write(false, fut.TextWriter);
+				prog.Procedures.Values[0].Write(false, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}

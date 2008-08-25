@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Output;
 using Decompiler.Core.Code;
 using System;
 using System.IO;
@@ -40,7 +41,8 @@ namespace Decompiler.Core
 		public override string ToString()
 		{
 			StringWriter sw = new StringWriter();
-			signature.Emit(Name, ProcedureSignature.EmitFlags.ArgumentKind, sw);
+            CodeFormatter formatter = new CodeFormatter(sw);
+			signature.Emit(Name, ProcedureSignature.EmitFlags.ArgumentKind, formatter);
 			return sw.ToString();
 		}
 	}

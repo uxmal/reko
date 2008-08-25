@@ -31,33 +31,33 @@ namespace Decompiler.UnitTests.Core
 		{
 		}
 
-		private DirectedGraph CreateAcyclicGraph()
+		private DirectedGraph<string> CreateAcyclicGraph()
 		{
-			DirectedGraph gr = new DirectedGraph();
-			gr.AddNode(0);
-			gr.AddNode(1);
-			gr.AddNode(2);
+			DirectedGraph<string> gr = new DirectedGraph<string>();
+			gr.AddNode("0");
+			gr.AddNode("1");
+			gr.AddNode("2");
 
-			gr.AddEdge(0, 1);
-			gr.AddEdge(0, 2);
-			gr.AddEdge(1, 2);
-			gr.AddEdge(2, 1);
+			gr.AddEdge("0", "1");
+			gr.AddEdge("0", "2");
+			gr.AddEdge("1", "2");
+			gr.AddEdge("2", "1");
 		
 			return gr;
 		}
 
-		private string DumpGraph(DirectedGraph gr)
+		private string DumpGraph(DirectedGraph<string> gr)
 		{
 			StringBuilder sb = new StringBuilder();
-			foreach (int n in gr.Nodes)
+			foreach (string n in gr.Nodes)
 			{
 				sb.AppendFormat("({0} s:(", n);
-				foreach (int i in gr.Successors(n))
+				foreach (string i in gr.Successors(n))
 				{
 					sb.AppendFormat("{0} ", i);
 				}
 				sb.Append(") p:( ");
-				foreach (int p in gr.Predecessors(n))
+				foreach (string p in gr.Predecessors(n))
 				{
 					sb.AppendFormat("{0} ", p);
 				}
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void SimpleGraph()
 		{
-			DirectedGraph gr = CreateAcyclicGraph();
+			DirectedGraph<string> gr = CreateAcyclicGraph();
 			string sExp = "(0 s:(1 2 ) p:( )) (1 s:(2 ) p:( 0 2 )) (2 s:(1 ) p:( 0 1 )) ";
 			string s = DumpGraph(gr);
 
@@ -79,22 +79,22 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ModifyGraph()
 		{
-			DirectedGraph gr = CreateAcyclicGraph();
+			DirectedGraph<string> gr = CreateAcyclicGraph();
 
-			gr.AddNode(3);
-			gr.AddEdge(0, 3);
-			gr.AddEdge(1, 3);
+			gr.AddNode("3");
+			gr.AddEdge("0", "3");
+			gr.AddEdge("1", "3");
 
-			gr.RemoveEdge(1, 2);
+			gr.RemoveEdge("1", "2");
 
 			string sExp = "(0 s:(1 2 3 ) p:( )) (1 s:(3 ) p:( 0 2 )) (2 s:(1 ) p:( 0 )) (3 s:() p:( 0 1 )) ";
 
 			string s = DumpGraph(gr);
 			Assert.AreEqual(sExp, s);
 
-			gr.RemoveEdge(2, 1);
-			gr.RemoveEdge(0, 1);
-			gr.RemoveEdge(0, 2);
+			gr.RemoveEdge("2", "1");
+			gr.RemoveEdge("0", "1");
+			gr.RemoveEdge("0", "2");
 
 			sExp = "(0 s:(3 ) p:( )) (1 s:(3 ) p:( )) (2 s:() p:( )) (3 s:() p:( 0 1 )) ";
 

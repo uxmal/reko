@@ -18,6 +18,9 @@
 
 using Decompiler.Core;
 using Decompiler.Analysis;
+using Decompiler.Core.Code;
+using Decompiler.Core.Types;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -64,14 +67,6 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 		[Test]
-		[Ignore("mutual.asm is hard to understand")]
-		public void CoaMutual()
-		{
-			RunTest("Fragments/multiple/mutual.asm", "Analysis/CoaMutual.txt");
-		}
-
-
-		[Test]
 		public void CoaSmallLoop()
 		{
 			RunTest("Fragments/small_loop.asm", "Analysis/CoaSmallLoop.txt");
@@ -107,6 +102,11 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/while_goto.asm", "Analysis/CoaWhileGoto.txt");
 		}
 
+        [Test]
+        public void CoaSideEffectCalls()
+        {
+            RunTest("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");
+        }
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{

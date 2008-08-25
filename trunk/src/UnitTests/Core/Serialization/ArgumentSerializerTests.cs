@@ -30,16 +30,43 @@ namespace Decompiler.UnitTests.Core.Serialization
 	public class ArgumentSerializerTests
 	{
 		private IntelArchitecture arch;
-		private SignatureSerializer sigser;
+		private ProcedureSerializer sigser;
 		private ArgumentSerializer argser;
 
 		[SetUp]
 		public void Setup()
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
-			sigser = new SignatureSerializer(arch, "stdapi");
+			sigser = new ProcedureSerializer(arch, "stdapi");
 			argser = new ArgumentSerializer(sigser, arch, new Frame(PrimitiveType.Word32));
 		}
+
+        [Test]
+        public void SerializeNullArgument()
+        {
+            Assert.IsNull(argser.Serialize(null));
+        }
+
+        [Test]
+        public void SerializeRegister()
+        {
+            Identifier arg = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, new RegisterStorage(Registers.ax));
+            SerializedArgument sarg = argser.Serialize(arg);
+            Assert.AreEqual("ax", sarg.Name);
+            SerializedRegister sreg = (SerializedRegister) sarg.Kind;
+            Assert.IsNotNull(sreg);
+            Assert.AreEqual("ax", sreg.Name);
+        }
+
+        [Test]
+        public void SargSerializeFlag()
+        {
+            Identifier arg = new Identifier("SZ", 0, PrimitiveType.Byte, new FlagGroupStorage(3, "SZ"));
+            SerializedArgument sarg = argser.Serialize(arg);
+            Assert.AreEqual("SZ", sarg.Name);
+            SerializedFlag sflag = (SerializedFlag) sarg.Kind;
+            Assert.AreEqual("SZ", sflag.Name);
+        }
 
 		[Test]
 		public void DeserializeRegister()
@@ -51,7 +78,18 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Identifier id = argser.Deserialize(arg);
 			Assert.AreEqual("eax", id.Name);
 			Assert.AreEqual(32, id.DataType.BitSize);
-
 		}
+
+        [Test]
+        public void SerializeOutArgument()
+        {
+            Identifier id = new Identifier("qOut", 42, PrimitiveType.Word32,
+                new OutArgumentStorage(new Identifier("q", 33, PrimitiveType.Word32, new RegisterStorage(new MachineRegister("q", 4, PrimitiveType.Word32)))));
+            SerializedArgument arg = argser.Serialize(id);
+            Assert.AreEqual("qOut", arg.Name);
+            Assert.IsTrue(arg.OutParameter);
+            SerializedRegister sr = (SerializedRegister) arg.Kind;
+            Assert.AreEqual("q", sr.Name);
+        }
 	}
 }

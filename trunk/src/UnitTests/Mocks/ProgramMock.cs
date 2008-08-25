@@ -123,7 +123,6 @@ namespace Decompiler.UnitTests.Mocks
 
 	public class ApplicationUpdater : ProcUpdater
 	{
-		private string name;
 		private Application appl;
 
 		public ApplicationUpdater(string name, Application appl) : base(name)

@@ -107,7 +107,6 @@ namespace Decompiler.Loading
 										goto l00C5;
 									}
 								}
-							l015D:
 								CX = ab0211[BX];
 								if (CX != 0x19)
 									goto l00C5;
@@ -159,7 +158,6 @@ namespace Decompiler.Loading
 				BX = bitStm.AccumulateBit(BX);	// bx: [0-7]
 				if (BX < 02)
 				{
-				l00F1: 
 					dst = CopyDictionaryWord2(abU, BX, CX, bitStm, dst);
 					continue;
 				}
@@ -218,10 +216,7 @@ l01C8:
 
 		public override Address PreferredBaseAddress
 		{
-			get
-			{
-				return new Address(0x800, 0);
-			}
+			get { return new Address(0x800, 0); }
 		}
 
 		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
@@ -241,7 +236,6 @@ l01C8:
 					ushort seg = imgU.ReadLeUint16(relocBase + relocOff);
 					seg = (ushort) (seg + segCode);
 
-					//$TODO: add to relocations
 					imgU.WriteLeUint16(relocBase + relocOff, seg);
 					relocations.AddSegmentReference(relocBase + relocOff, seg);
 					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);

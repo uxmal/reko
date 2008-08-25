@@ -96,6 +96,7 @@
     <Compile Include="Core\FrameTests.cs" />
     <Compile Include="Core\ImageMapTests.cs" />
     <Compile Include="Core\InstructionTests.cs" />
+    <Compile Include="Core\Lib\DisjointPartitionTests.cs" />
     <Compile Include="Core\MapTests.cs" />
     <Compile Include="Core\OperatorTests.cs" />
     <Compile Include="Core\PrimitiveTypeTests.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Core\ProgramTests.cs" />
     <Compile Include="Core\RegisterTests.cs" />
     <Compile Include="Core\RelocationDictionaryTests.cs" />
+    <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
     <Compile Include="Core\Serialization\SerializedArgumentTests.cs" />
     <Compile Include="Core\Serialization\SerializedCallTests.cs" />
     <Compile Include="Core\Serialization\SerializedLibraryTests.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="Core\Serialization\SerializedServiceTests.cs" />
     <Compile Include="Core\Serialization\SerializedSignatureTests.cs" />
     <Compile Include="Core\Serialization\SerializedTypeTests.cs" />
+    <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
     <Compile Include="Core\SetTests.cs" />
     <Compile Include="Core\SignatureLibraryTests.cs" />
     <Compile Include="Core\StructureTypeTests.cs" />
@@ -227,11 +230,13 @@
     <Compile Include="Typing\VectorMock.cs" />
     <Compile Include="WindowsGui\Controls\MemoryControlTests.cs" />
     <Compile Include="WindowsGui\Controls\MenuSystemTests.cs" />
+    <Compile Include="WindowsGui\Forms\AnalyzedPageInteractorTests.cs" />
     <Compile Include="WindowsGui\Forms\FinalPageInteractorTests.cs" />
     <Compile Include="WindowsGui\Forms\InitialPageInteractorTests.cs" />
     <Compile Include="WindowsGui\Forms\LoadedPageInteractorTests.cs" />
     <Compile Include="WindowsGui\Forms\MainFormInteractorTests.cs" />
     <Compile Include="WindowsGui\Forms\MainFormTests.cs" />
+    <Compile Include="WindowsGui\Forms\ProcedureDialogInteractorTests.cs" />
     <Compile Include="WindowsGui\MruListTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -57,10 +57,18 @@ namespace Decompiler
 			this.host = host;
 		}
 
-		///<summary>determines the signature of the procedures,
+        protected DecompilerDriver(DecompilerProject project, Program prog, DecompilerHost host)
+        {
+            this.project = project;
+            this.program = prog;
+            this.host = host;
+        }
+
+		///<summary>
+        /// Determines the signature of the procedures,
 		/// the locations and types of all the values in the program.
 		///</summary>
-		public void AnalyzeDataFlow()
+		public virtual void AnalyzeDataFlow()
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, host);
 			RegisterLiveness rl = dfa.UntangleProcedures();
@@ -192,7 +200,7 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="prog">the program to rewrite</param>
 		/// <param name="cfg">configuration information</param>
-		public void RewriteMachineCode()
+		public virtual void RewriteMachineCode()
 		{
 			rewriterHost = new RewriterHost(program, host, scanner.SystemCalls, scanner.VectorUses);
 			rewriterHost.LoadCallSignatures(this.project.UserCalls);
@@ -242,13 +250,18 @@ namespace Decompiler
 		}
 
 
-
-		public void ScanProcedure(Address addr)
+        /// <summary>
+        /// Starts a scan at address <paramref name="addr"/> on the user's request.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns></returns>
+		public Procedure ScanProcedure(Address addr)
 		{
-			if (scanner == null)
+			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
 				scanner = new Scanner(program, host);
-			scanner.EnqueueProcedure(null, addr, null);
+			Procedure proc = scanner.EnqueueProcedure(null, addr, null);
 			scanner.ProcessQueues();
+            return proc;
 		}
 
 		/// <summary>
@@ -316,27 +329,6 @@ namespace Decompiler
 			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, project.Input.Filename);
 			w.WriteLine("// using Decompiler.");
 			w.WriteLine();
-		}
-		// class Timer /////////////////////////////////////////////////////
-
-		public class Timer
-		{
-			private DateTime time;
-
-			public Timer()
-			{
-				Start();
-			}
-			
-			public TimeSpan Elapsed() 
-			{
-				return DateTime.Now - time; 
-			}
-			
-			public void Start()
-			{
-				time = DateTime.Now;
-			}
 		}
 	}
 }

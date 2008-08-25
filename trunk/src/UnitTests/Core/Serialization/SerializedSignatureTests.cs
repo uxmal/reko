@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 				XmlSerializer ser = new XmlSerializer(typeof (SerializedSignature));
 				ssig = (SerializedSignature) ser.Deserialize(rdr);
 			}
-			SignatureSerializer sser = new SignatureSerializer(this.arch, "stdapi");
+			ProcedureSerializer sser = new ProcedureSerializer(this.arch, "stdapi");
 			Assert.AreEqual("Register word16 AxBxCl(Register word16 bx, Register byte cl)", sser.Deserialize(ssig, new Frame(null)).ToString("AxBxCl"));
 		}
 
@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		public void SsigBuildSig()
 		{
 			SerializedSignature ssig = BuildSsigAxBxCl();
-			SignatureSerializer sser = new SignatureSerializer(arch, "stdapi");
+			ProcedureSerializer sser = new ProcedureSerializer(arch, "stdapi");
 			ProcedureSignature sig = sser.Deserialize(ssig, new Frame(null));
 			Assert.AreEqual("Register word16 AxBxCl(Register word16 bx, Register byte cl)", sig.ToString("AxBxCl"));
 			Assert.AreEqual(PrimitiveType.Word16, sig.ReturnValue.DataType);
@@ -80,25 +80,6 @@ namespace Decompiler.UnitTests.Core.Serialization
 		}
 
 		[Test]
-		public void SsigSerializeAxBxCl()
-		{
-			SerializedSignature ssig = new SerializedSignature(MkSigAxBxCl());
-			Verify(ssig, "Core/SsigSerializeAxBxCl.txt");
-		}
-
-		[Test]
-		public void SsigSerializeSequence()
-		{
-			Identifier seq = new Identifier("es_bx", 0, PrimitiveType.Word32, new SequenceStorage(
-				new Identifier(Registers.es.Name, 0, Registers.es.DataType, new RegisterStorage(Registers.es)), 
-				new Identifier(Registers.bx.Name, 1, Registers.bx.DataType, new RegisterStorage(Registers.bx)))); 
-			SerializedSignature ssig = new SerializedSignature(
-				new ProcedureSignature(seq, new Identifier[0]));
-			Verify(ssig, "Core/SsigSerializeSequence.txt");
-
-		}
-
-		[Test]
 		public void DeserializeOutArgument()
 		{
 			SerializedArgument arg = new SerializedArgument();
@@ -106,12 +87,12 @@ namespace Decompiler.UnitTests.Core.Serialization
 			arg.OutParameter = true;
 			SerializedSignature sig = new SerializedSignature();
 			sig.Arguments = new SerializedArgument[] { arg };
-			SignatureSerializer ser = new SignatureSerializer(arch, "stdapi");
+			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
 			ProcedureSignature ps =  ser.Deserialize(sig, new Frame(null));
 			Assert.AreEqual("void foo(Register out ptr0 bpOut)", ps.ToString("foo"));
 		}
 
-		private SerializedSignature BuildSsigAxBxCl()
+		public static SerializedSignature BuildSsigAxBxCl()
 		{
 			SerializedSignature ssig = new SerializedSignature();
 			
@@ -129,7 +110,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			return ssig;
 		}
 
-		private ProcedureSignature MkSigAxBxCl()
+		public static ProcedureSignature MkSigAxBxCl()
 		{
 			Identifier ret = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, new RegisterStorage(Registers.ax));
 			Identifier [] args = new Identifier[2];
