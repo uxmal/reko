@@ -546,7 +546,7 @@ namespace Decompiler.Arch.Intel
 						EmitBranchInstruction(useFlags, ConditionCode.EQ, instrCur.op1);
 						break;
 					case Opcode.jcxz:
-						EmitBranchInstruction(new Branch(emitter.Eq0(orw.AluRegister(Registers.ecx, instrCur.dataWidth))), instrCur.op1);
+						EmitBranchInstruction(emitter.Eq0(orw.AluRegister(Registers.ecx, instrCur.dataWidth)), instrCur.op1);
 						break;
 					case Opcode.lahf:
 						emitter.Assign(orw.AluRegister(Registers.ah), orw.FlagGroup(useFlags));
@@ -1071,29 +1071,29 @@ namespace Decompiler.Arch.Intel
 
 		private void EmitBranchInstruction(FlagM usedFlags, ConditionCode cc, Operand opTarget)
 		{
-			EmitBranchInstruction(orw.FlagGroup(usedFlags), cc, opTarget);
+			EmitBranchInstruction(new TestCondition(cc, orw.FlagGroup(usedFlags)), opTarget);
 		}
 
 		private void EmitBranchInstruction(Identifier idFlag, ConditionCode cc, Operand opTarget)
 		{
-			EmitBranchInstruction(new Branch(cc, idFlag), opTarget);
+			EmitBranchInstruction(new TestCondition(cc, idFlag), opTarget);
 		}
 
 		
-		private void EmitBranchInstruction(Branch branch, Operand opTarget)
-		{
-			// The first (0'th) branch is the path taken when "falling through"
-			// a conditional expression.
-			// The second (1'th) outward bound branch is the path we take 
-			// when the condition the opcode tests for is true.
+        private void EmitBranchInstruction(Expression branchCondition, Operand opTarget)
+        {
+            // The first (0'th) branch is the path taken when "falling through"
+            // a conditional expression.
+            // The second (1'th) outward bound branch is the path we take 
+            // when the condition the opcode tests for is true.
 
-			emitter.Emit(branch);
-			Block blockHead = emitter.Block;
-			EmitBranchPath(blockHead, addrEnd);
-			EmitBranchPath(blockHead, orw.OperandAsCodeAddress(opTarget, state));
-		}
+            emitter.Emit(new Branch(branchCondition));
+            Block blockHead = emitter.Block;
+            EmitBranchPath(blockHead, addrEnd);
+            EmitBranchPath(blockHead, orw.OperandAsCodeAddress(opTarget, state));
+        }
 
-		//$REFACTOR: move to ProcedureRewriter.
+        //$REFACTOR: move to ProcedureRewriter.
 		private Block EmitBranchPath(Block blockHead, Address addrTo)
 		{
 			emitter.Block = blockHead;
@@ -1451,7 +1451,7 @@ namespace Decompiler.Arch.Intel
 			Identifier flag;
 			if (useFlags != 0)
 			{
-				emitter.Emit(new Branch(cc, orw.FlagGroup(useFlags)));
+				emitter.Emit(new Branch(new TestCondition(cc, orw.FlagGroup(useFlags))));
 
 				// Splice in a new block.
 
@@ -1459,7 +1459,7 @@ namespace Decompiler.Arch.Intel
 				Block.AddEdge(blockHead, blockNew);
 
 				emitter.Block = blockNew;
-				EmitBranchInstruction(new Branch(emitter.Eq0(cx)), instrCur.op1);
+				EmitBranchInstruction(emitter.Eq0(cx), instrCur.op1);
 			}
 			else
 			{
@@ -1636,7 +1636,7 @@ namespace Decompiler.Arch.Intel
 					ConditionCode cc = (instrs[i-1].code == Opcode.repne)
 						? ConditionCode.NE
 						: ConditionCode.EQ;
-					emitter.Emit(new Branch(cc, orw.FlagGroup(FlagM.ZF)));
+                    emitter.Emit(new Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF))));
 					Block.AddEdge(blockStringInstr, blockFollow);
 					break;
 				}

@@ -77,13 +77,13 @@ namespace Decompiler.WindowsGui.Forms
 		private void BrowseSourceFile_Click(object sender, EventArgs e)
 		{
 			MainForm.OpenFileDialog.FileName = finalPage.SourceFile.Text;
-			MainForm.OpenFileDialog.ShowDialog(MainForm);
+			ShowModalDialog(MainForm.OpenFileDialog);
 		}
 
 		private void BrowseHeaderFile_Click(object sender, EventArgs e)
 		{
 			MainForm.OpenFileDialog.FileName = finalPage.HeaderFile.Text;
-			MainForm.OpenFileDialog.ShowDialog(MainForm);
+			ShowModalDialog(MainForm.OpenFileDialog);
 
 		}
 	}

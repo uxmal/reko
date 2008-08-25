@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedSignature ssig = new SerializedSignature();
 			ssig.Arguments = new SerializedArgument[] { sa };
 
-			SignatureSerializer ser = new SignatureSerializer(arch, "stdapi");
+			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
 			ProcedureSignature ps = ser.Deserialize(ssig, f);
 			Assert.AreEqual("void foo(Sequence word32 dx_ax)", ps.ToString("foo"));
 		}
@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		public void VoidFunctionSignature()
 		{
 			SerializedSignature sig = new SerializedSignature();
-			SignatureSerializer ser = new SignatureSerializer(arch, "stdapi");
+			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
 			ProcedureSignature ps = ser.Deserialize(sig, new Frame(null));
 			Assert.AreEqual("void foo()", ps.ToString("foo"));
 			Assert.IsTrue(ps.ArgumentsValid);

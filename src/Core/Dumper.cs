@@ -49,7 +49,7 @@ namespace Decompiler.Core
 					ImageMapBlock block = i as ImageMapBlock;
 					if (block != null)
 					{
-						if (program.Procedures.Contains(block.Address))
+						if (program.Procedures.ContainsKey(block.Address))
 						{
 							stm.WriteLine();
 							stm.WriteLine(block.Address.GenerateName("fn","()"));

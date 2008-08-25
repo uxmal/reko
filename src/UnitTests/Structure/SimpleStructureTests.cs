@@ -142,7 +142,7 @@ namespace Decompiler.UnitTests.Structure
 				RewriteProgram(sourceFilename, addrBase);
 				foreach (Procedure proc in prog.Procedures.Values)
 				{
-					ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(prog.Procedures[0]);
+					ControlFlowGraphCleaner cfgc = new ControlFlowGraphCleaner(prog.Procedures.Values[0]);
 					cfgc.Transform();
 					proc.Write(false, fut.TextWriter);
 					fut.TextWriter.WriteLine();

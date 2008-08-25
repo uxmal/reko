@@ -295,7 +295,6 @@
     <Compile Include="ICodeWalkerListener.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IdentifierCollection.cs" />
     <Compile Include="ImageMap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -329,6 +328,7 @@
     <Compile Include="Lib\DirectedGraph.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Lib\DisjointPartition.cs" />
     <Compile Include="Lib\IntSet.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -514,7 +514,7 @@
     <Compile Include="Serialization\SerializedType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SignatureSerializer.cs" />
+    <Compile Include="Serialization\ProcedureSerializer.cs" />
     <Compile Include="SignatureBuilder.cs" />
     <Compile Include="SignatureLibrary.cs">
       <SubType>Code</SubType>

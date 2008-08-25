@@ -21,6 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Typing
 {
@@ -33,6 +34,7 @@ namespace Decompiler.Typing
 		private TypeStore store;
 		private ArrayExpressionMatcher aem;
 		private ProcedureSignature signature;
+        private Dictionary<ushort, TypeVariable> segTypevars;
 
 		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store)
 		{
@@ -40,6 +42,7 @@ namespace Decompiler.Typing
 			this.store = store;
 			this.aem = new ArrayExpressionMatcher();
 			this.signature = null;
+            this.segTypevars = new Dictionary<ushort, TypeVariable>();
 		}
 
 		public void Build(Program prog)
@@ -138,6 +141,20 @@ namespace Decompiler.Typing
 
 		public override void VisitConstant(Constant c)
 		{
+            if (c.DataType == PrimitiveType.Segment)
+            {
+                TypeVariable tv;
+                if (segTypevars.TryGetValue(c.ToUInt16(), out tv))
+                {
+                    c.TypeVariable = tv;
+                }
+                else
+                {
+                    EnsureTypeVariable(c);
+                    segTypevars[c.ToUInt16()] = c.TypeVariable;
+                }
+                return;
+            }
 			EnsureTypeVariable(c);
 		}
 

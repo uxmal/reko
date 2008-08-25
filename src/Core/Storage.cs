@@ -244,6 +244,11 @@ namespace Decompiler.Core
 			get { return originalId; }
 		}
 
+        public override SerializedKind Serialize()
+        {
+            return OriginalIdentifier.Storage.Serialize();
+        }
+
 		public override void Write(TextWriter writer)
 		{
 			writer.Write("Out:");
@@ -433,14 +438,21 @@ namespace Decompiler.Core
 			return -1;
 		}
 
+        public override SerializedKind Serialize()
+        {
+            SerializedStackVariable svar = new SerializedStackVariable();
+            svar.ByteSize = dataType.Size;
+            return svar;
+        }
+
 		/// <summary>
 		/// Offset from stack pointer as it was when the procedure was entered.
 		/// </summary>
 		/// <remarks>
 		/// If the architecture stores the return address on the stack, the return address will be at offset 0 and
 		/// any stack arguments will have offsets > 0. If the architecture passes the return address in a
-		/// register, there may be stack arguments with offset 0. In either case, negative stack offsets for parameters
-		/// are not legal.
+		/// register or a separate return stack, there may be stack arguments with offset 0. In either case,
+        /// negative stack offsets for parameters are not legal.
 		/// </remarks>
 		public int StackOffset
 		{

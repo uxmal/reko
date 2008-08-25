@@ -16,12 +16,14 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
- using Decompiler.Core.Absyn;
+using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -33,7 +35,7 @@ namespace Decompiler.Core
 	public class Procedure : ProcedureBase
 	{
 		private AbsynStatementList body = new AbsynStatementList();
-		private BlockList rpoBlocks;
+		private List<Block> rpoBlocks;
 		private Block blockEntry;
 		private Block blockExit;
 		private Frame frame;
@@ -118,7 +120,7 @@ namespace Decompiler.Core
 			tw.WriteLine("// {0}", Name);
 			if (emitFrame)
 				frame.Write(tw);
-			Signature.Emit(Name, ProcedureSignature.EmitFlags.None, tw);
+			Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new CodeFormatter(tw));
 			tw.WriteLine();
 			foreach (Block block in RpoBlocks)
 			{
@@ -137,7 +139,7 @@ namespace Decompiler.Core
 			rpoBlocks = br.Renumber(blockEntry);
 		}
 
-		public BlockList RpoBlocks
+		public List<Block> RpoBlocks
 		{
 			get { return rpoBlocks; }
 		}
@@ -159,7 +161,7 @@ namespace Decompiler.Core
 
 		private class BlockRenumbering
 		{
-			private BlockList rpoBlocks;
+			private List<Block> rpoBlocks;
 			private int rpo;
 
 			private void DFS(Block block, Hashtable visited)
@@ -183,13 +185,17 @@ namespace Decompiler.Core
 				return b.Succ.Count == 0;
 			}
 
-			public BlockList Renumber(Block block)
+			public List<Block> Renumber(Block block)
 			{
 				Hashtable visited = new Hashtable();
 				DFS(block, visited);
 				rpo = visited.Count;
 
-				rpoBlocks = new BlockList(rpo);
+				rpoBlocks = new List<Block>(rpo);
+                for (int i = 0; i < rpo; ++i)
+                {
+                    rpoBlocks.Add(null);
+                }
 				RenumberBlock(block, new Hashtable());
 
 				return rpoBlocks;

@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			interactor.OpenBinary(null);
 			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPage);
 			interactor.NextPhase();
-			Assert.AreEqual(interactor.FinalPageInteractor, interactor.CurrentPage);
+			Assert.AreEqual(interactor.AnalyzedPageInteractor, interactor.CurrentPage);
 		}
 
 		private Program CreateFakeProgram()
@@ -111,7 +111,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			this.ldr = new TestLoader(program);
 		}
 
-		protected override DecompilerDriver CreateDecompiler(string filename, Program prog)
+		public override DecompilerDriver CreateDecompiler(string filename, Program prog)
 		{
 			return new TestDecompilerDriver(prog, this);
 		}

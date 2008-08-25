@@ -18,15 +18,17 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
-	public class BlockList : CollectionBase
+	public class BlockList : List<Block>
 	{
 		public BlockList()
 		{
 		}
 
+        [Obsolete]
 		public BlockList(int c)
 		{
 			for (int i = 0; i < c; ++i)
@@ -35,42 +37,8 @@ namespace Decompiler.Core
 			}
 		}
 
-		public BlockList(ICollection c)
+		public BlockList(IEnumerable<Block> c) : base(c)
 		{
-			foreach (Block b in c)
-			{
-				Add(b);
-			}
-		}
-
-		public int Add(Block b)
-		{
-			return InnerList.Add(b);
-		}
-
-		public Block this[int i]
-		{
-			get { return (Block) InnerList[i]; }
-			set { InnerList[i] = value; }
-		}
-
-		public bool Contains(Block b)
-		{
-			return InnerList.Contains(b);
-		}
-
-		public void CopyTo(Array a)
-		{
-			InnerList.CopyTo(a);
-		}
-		public int IndexOf(Block b)
-		{
-			return InnerList.IndexOf(b);
-		}
-
-		public void Remove(Block b)
-		{
-			InnerList.Remove(b);
 		}
 	}
 }

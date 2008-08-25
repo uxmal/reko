@@ -46,6 +46,7 @@ namespace Decompiler.Core.Serialization
 		{
 		}
 
+        [Obsolete("Use ProcedureSerializer.Serialize", true)]
 		public SerializedSignature(ProcedureSignature sig)
 		{
 			if (sig.ReturnValue != null)
@@ -61,5 +62,9 @@ namespace Decompiler.Core.Serialization
 				}
 			}
 		}
-	}
+
+        [XmlAttribute("fpuStackDelta")]
+        [DefaultValue(0)]
+        public int FpuStackDelta;
+    }
 }

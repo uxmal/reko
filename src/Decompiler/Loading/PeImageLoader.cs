@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Arch.Intel;		
+using Decompiler.Arch.Intel.Win32;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -71,7 +72,7 @@ namespace Decompiler.Loading
 			int nExports = rdr.ReadLeInt32();
 			int nNames = rdr.ReadLeInt32();
 			if (nExports != nNames)
-				throw new ApplicationException("Unexpected discrepancy in PE image");
+				throw new ApplicationException("Unexpected discrepancy in PE image.");
 			uint rvaApfn = rdr.ReadLeUint32();
 			uint rvaNames = rdr.ReadLeUint32();
 
@@ -164,7 +165,7 @@ namespace Decompiler.Loading
 
 			short machine = rdr.ReadLeInt16();
 			prog.Architecture = CreateArchitecture(machine);
-			prog.Platform = new Decompiler.Arch.Intel.Win32.Win32Platform(prog.Architecture);
+			prog.Platform = new Win32Platform(prog.Architecture);
 
 			sections = rdr.ReadLeInt16();
 			sectionMap = new SortedList(sections);

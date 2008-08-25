@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Lib;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.Core
@@ -31,8 +32,8 @@ namespace Decompiler.Core
 	{
 		private ArrayList entryPoints = new ArrayList();	
 		private Hashtable procedures = new Hashtable();
-		private DirectedGraph graphProcs = new DirectedGraph();
-		private DirectedGraph graphStms = new DirectedGraph();
+		private DirectedGraph<Procedure> graphProcs = new DirectedGraph<Procedure>();
+		private DirectedGraph<object> graphStms = new DirectedGraph<object>();
 
 		public void AddEdge(Statement stmCaller, Procedure callee)
 		{
@@ -65,22 +66,22 @@ namespace Decompiler.Core
 			graphStms.AddNode(stm);
 		}
 
-		public ICollection Callees(Statement stm)
+		public IEnumerable<object> Callees(Statement stm)
 		{
-			return graphStms.Successors(stm);
+            return graphStms.Successors(stm);
 		}
 
-		public ICollection Callees(Procedure proc)
+		public IEnumerable<Procedure> Callees(Procedure proc)
 		{
 			return graphProcs.Successors(proc);
 		}
 
-		public ICollection CallerProcedures(Procedure proc)
+        public IEnumerable<Procedure> CallerProcedures(Procedure proc)
 		{
 			return graphProcs.Predecessors(proc);
 		}
 
-		public ICollection CallerStatements(Procedure proc)
+        public IEnumerable<object> CallerStatements(Procedure proc)
 		{
 			return graphStms.Predecessors(proc);
 		}

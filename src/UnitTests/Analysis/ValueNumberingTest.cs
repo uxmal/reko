@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Analysis
 	");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnSumTest.txt"))
 			{
-				Procedure proc = prog.Procedures[0];
+				Procedure proc = prog.Procedures.Values[0];
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				DominatorGraph gr = new DominatorGraph(proc);
@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.Analysis
 ");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnMemoryTest.txt"))
 			{
-				Procedure proc = prog.Procedures[0];
+				Procedure proc = prog.Procedures.Values[0];
 				DominatorGraph gr = new DominatorGraph(proc);
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
@@ -114,7 +114,7 @@ done:
 ");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnLoopTest.txt"))
 			{
-				Procedure proc = prog.Procedures[0];
+				Procedure proc = prog.Procedures.Values[0];
 				DominatorGraph gr = new DominatorGraph(proc);
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
@@ -151,7 +151,7 @@ done:
 ");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnRedundantStore.txt"))
 			{
-				Procedure proc = prog.Procedures[0];
+				Procedure proc = prog.Procedures.Values[0];
 				DominatorGraph gr = new DominatorGraph(proc);
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
@@ -184,7 +184,7 @@ looptest:
 ");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnLoop.txt"))
 			{
-				Procedure proc = prog.Procedures[0];
+				Procedure proc = prog.Procedures.Values[0];
 				DominatorGraph gr = new DominatorGraph(proc);
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();

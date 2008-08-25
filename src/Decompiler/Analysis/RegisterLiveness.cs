@@ -65,7 +65,7 @@ namespace Decompiler.Analysis
 			this.varLive = new IdentifierLiveness(prog.Architecture);
 			this.isLiveHelper = new IsLiveHelper();
 			CollectBasicBlocks();
-			Dump();
+			if (trace.TraceInfo) Dump();
 		}
 
 		private void CollectBasicBlocks()

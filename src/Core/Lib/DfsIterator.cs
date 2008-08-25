@@ -18,22 +18,24 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Lib
 {
 	/// <summary>
 	/// Iterates through a directed graph in Depth-First order.
 	/// </summary>
-	public class DfsIterator : IEnumerator
+	public class DfsIterator<T> //$TODO : IEnumerator<T> where T : class 
 	{
-		private DirectedGraph graph;
-		private Stack stack;
-		private object startNode;
-		private object curNode;
-		private IEnumerator enumCur;
-		private Hashtable visited;
+#if NOTYET
+		private DirectedGraph<T> graph;
+		private Stack<StackItem> stack;
+		private T startNode;
+		private T curNode;
+		private IEnumerator<T> enumCur;
+		private Dictionary<T, T> visited;
 
-		public DfsIterator(DirectedGraph graph, object startNode)
+		public DfsIterator(DirectedGraph<T> graph, T startNode)
 		{
 			this.graph = graph;
 			this.startNode = startNode;
@@ -41,22 +43,34 @@ namespace Decompiler.Core.Lib
 			Reset();
 		}
 
-		public DfsIterator(DirectedGraph graph, object startNode, bool reverse)
+		public DfsIterator(DirectedGraph<T> graph, T startNode, bool reverse)
 		{
 			this.graph = graph;
 			this.startNode = startNode;
 			Reset();
 		}
 
-		private void AddNodeToStack(object node)
+		private void AddNodeToStack(T node)
 		{
 			stack.Push(new StackItem(node, graph.Successors(node).GetEnumerator()));
 		}
 
-		public object Current
+        object IEnumerator.Current
+        {
+            get { return curNode; }
+        }
+
+		public T Current
 		{
 			get { return curNode; }
 		}
+
+        public void Dispose()
+        {
+            graph = null;
+            enumCur = null;
+            GC.SuppressFinalize(this);
+        }
 
 		public IEnumerator GetEnumerator()
 		{
@@ -77,13 +91,14 @@ namespace Decompiler.Core.Lib
 						enumCur = null;
 						return false;
 					}
-					enumCur = (IEnumerator) stack.Pop();
+                    StackItem item = stack.Pop();
+                    enumCur = item.Enum;
 				}
 				curNode = enumCur.Current;
 			} while (visited.ContainsKey(curNode));
 
 			visited[curNode] = curNode;
-			stack.Push(enumCur);
+			stack.Push(new enumCur);
 			enumCur = graph.Successors(curNode).GetEnumerator();
 			return true;
 		}
@@ -99,7 +114,7 @@ namespace Decompiler.Core.Lib
 		private class StackItem
 		{
 			public object Node;
-			public IEnumerator Enum;
+			public IEnumerator<T> Enum;
 
 			public StackItem(object node, IEnumerator e)
 			{
@@ -107,5 +122,7 @@ namespace Decompiler.Core.Lib
 				Enum = e;
 			}
 		}
+#endif
 	}
+
 }

@@ -21,6 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
+using System.Diagnostics;
 
 namespace Decompiler.Arch.Intel
 {
@@ -29,6 +30,7 @@ namespace Decompiler.Arch.Intel
 		private IntelArchitecture arch;
 		private bool returnToCaller;
 		private MachineRegister regIdxDetected;
+        private static TraceSwitch trace = new TraceSwitch("IntelBackWalker", "Traces the progress of x86 backward instruction walking");
 
 		public IntelBackWalker(IntelArchitecture arch, ProgramImage img) : base(img)
 		{
@@ -39,7 +41,7 @@ namespace Decompiler.Arch.Intel
 		{
 			for (int i = 0; i < instrs.Count; ++i)
 			{
-				System.Diagnostics.Debug.WriteLine(
+				Debug.WriteLineIf(trace.TraceInfo,
 					string.Format("{0} {1}", 
 					idx == i ? '*' : ' ',
 					instrs[i]));

@@ -23,18 +23,32 @@ namespace Decompiler.Core.Serialization
 {
 	public class SerializedProcedure
 	{
+        /// <summary>
+        /// The name of a procedure.
+        /// </summary>
 		[XmlAttribute("name")]
 		public string Name;
 
+        /// <summary>
+        /// Address of procedure.
+        /// </summary>
 		[XmlElement("address")]
 		public string Address;
 
+        /// <summary>
+        /// Procedure signature. If non-null, the user has specified a signature. If null, the
+        /// signature is unknown.
+        /// </summary>
 		[XmlElement("signature")]
 		public SerializedSignature Signature;
 
 		[XmlElement("characteristics")]
 		public ProcedureCharacteristics Characteristics;
 
+        /// <summary>
+        /// Property that indicated whether the procedure body is to be decompiled or not. If false, it is recommended
+        /// that the Signature property be set.
+        /// </summary>
 		[XmlElement("decompile")]
 		[DefaultValue(true)]
 		public bool Decompile = true;

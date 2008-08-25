@@ -81,7 +81,7 @@ namespace Decompiler.Typing
 		/// <param name="prog"></param>
 		public void RewriteProgram()
 		{
-			Procedure proc = prog.Procedures[0];
+			Procedure proc = prog.Procedures.Values[0];
 			prog.Procedures.Clear();
 			prog.Procedures[new Address(0x00001)] = proc;
 			aen.Transform(prog);

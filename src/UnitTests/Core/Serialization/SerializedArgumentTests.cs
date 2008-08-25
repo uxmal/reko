@@ -81,27 +81,6 @@ namespace Decompiler.UnitTests.Core.Serialization
 		}
 
 	
-		[Test]
-		public void SargSerializeRegister()
-		{
-			Identifier arg = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, new RegisterStorage(Registers.ax));
-			SerializedArgument sarg = new SerializedArgument(arg);
-			Assert.AreEqual("ax", sarg.Name);
-			SerializedRegister sreg = (SerializedRegister) sarg.Kind;
-			Assert.IsNotNull(sreg);
-			Assert.AreEqual("ax", sreg.Name);
-		}
-
-		[Test]
-		public void SargSerializeFlag()
-		{
-			Identifier arg = new Identifier("SZ", 0, PrimitiveType.Byte, new FlagGroupStorage(3, "SZ"));
-			SerializedArgument sarg = new SerializedArgument(arg);
-			Assert.AreEqual("SZ", sarg.Name);
-			SerializedFlag sflag = (SerializedFlag) sarg.Kind;
-			Assert.AreEqual("SZ", sflag.Name);
-		}
-
 		private void Verify(SerializedArgument sarg, string outputFilename)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFilename))

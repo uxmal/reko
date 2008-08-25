@@ -573,7 +573,7 @@ namespace Decompiler.WindowsGui.Forms
 			get { return treeBrowser; }
 		}
 
-		public PhasePage PhasePage
+		public PhasePage CurrentPhasePage
 		{
 			get { return phasePage; }
 			set 

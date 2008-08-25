@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			prog.Image = asm.AssembleFragment(prog, baseAddress, code);
 			DoRewriteCore();
-			return prog.Procedures[0];
+			return prog.Procedures.Values[0];
 		}
 
 		private void DoRewriteCore()
@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Intel
 ");
 
 			Assert.AreEqual(1, prog.Procedures.Count );
-			Procedure proc = prog.Procedures[0];
+			Procedure proc = prog.Procedures.Values[0];
 			Assert.AreEqual(3, proc.RpoBlocks.Count);		// Entry, code, Exit
 
 			Block block = proc.RpoBlocks[0].Succ[0];
@@ -147,7 +147,7 @@ join:
 		public void RwDeadConditionals()
 		{
 			DoRewriteFile("Fragments/small_loop.asm");
-			Procedure proc = prog.Procedures[0];
+			Procedure proc = prog.Procedures.Values[0];
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwDeadConditionals.txt"))
 			{
 				proc.Write(true, fut.TextWriter);
@@ -160,7 +160,7 @@ join:
 		public void RwPseudoProcs()
 		{
 			DoRewriteFile("Fragments/pseudoprocs.asm");
-			Procedure proc = prog.Procedures[0];
+			Procedure proc = prog.Procedures.Values[0];
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwPseudoProcs.txt"))
 			{
 				proc.Write(true, fut.TextWriter);

@@ -24,8 +24,9 @@ using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Diagnostics;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Decompiler.UnitTests.Scanning
 {
@@ -145,10 +146,9 @@ baz endp
 			{
 				Dumper dumper = prog.Architecture.CreateDumper();
 				dumper.Dump(prog, prog.Image.Map, fut.TextWriter);
-				foreach (DictionaryEntry de in prog.Procedures)
+                foreach (KeyValuePair<Address, Procedure> de in prog.Procedures)
 				{
-					Procedure proc = (Procedure) de.Value;
-					fut.TextWriter.WriteLine("{0} (@ {1})", proc.Name, de.Key);
+					fut.TextWriter.WriteLine("{0} (@ {1})", de.Value.Name, de.Key);
 				}
 				fut.AssertFilesEqual();
 			}

@@ -172,7 +172,7 @@ namespace Decompiler.Loading
 
 		public override Address PreferredBaseAddress
 		{
-			get { return new Address(0x800, 0); }
+			get { return new Address(0x0800, 0); }
 		}
 
 		public ProgramImage Unpack(byte [] abC, Address addrLoad)

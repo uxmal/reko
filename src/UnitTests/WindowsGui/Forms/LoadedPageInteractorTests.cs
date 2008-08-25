@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		{
 			mi.Program.Procedures.Add(new Address(0xC20, 0), new Procedure("Test1", new Frame(mi.Program.Architecture.WordWidth)));
 			mi.Program.Procedures.Add(new Address(0xC20, 2), new Procedure("Test2", new Frame(mi.Program.Architecture.WordWidth)));
-			form.PhasePage = form.LoadedPage;
+			form.CurrentPhasePage = form.LoadedPage;
 			Assert.AreEqual(3, form.BrowserList.Items.Count);
 			Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
 		}

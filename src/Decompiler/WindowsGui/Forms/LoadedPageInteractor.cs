@@ -78,7 +78,7 @@ namespace Decompiler.WindowsGui.Forms
 			using (GotoDialog dlg = new GotoDialog())
 			{
 				GotoDialogInteractor i = new GotoDialogInteractor(dlg);
-				if (dlg.ShowDialog(MainForm) == DialogResult.OK)
+				if (ShowModalDialog(dlg) == DialogResult.OK)
 				{
 					pageLoaded.MemoryControl.SelectedAddress = i.Address;
 					pageLoaded.MemoryControl.TopAddress = i.Address;
@@ -91,10 +91,10 @@ namespace Decompiler.WindowsGui.Forms
 			Address addr = pageLoaded.MemoryControl.SelectedAddress;
 			if (addr != null)
 			{
-				//$TODO: add to oracle!
-				Decompiler.ScanProcedure(addr);
+				Procedure proc = Decompiler.ScanProcedure(addr);
 				SerializedProcedure userp = new SerializedProcedure();
-				userp.Address = addr.ToString();
+                userp.Address = addr.ToString();
+                userp.Name = proc.Name;
 				Decompiler.Project.UserProcedures.Add(userp);
 				pageLoaded.MemoryControl.Invalidate();
 			}

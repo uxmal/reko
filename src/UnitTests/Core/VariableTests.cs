@@ -23,7 +23,6 @@ using NUnit.Framework;
 using System;
 using System.IO;
 
-//$REFACTOR: rename file to StorageTests
 namespace Decompiler.UnitTests.Core
 {
 	[TestFixture]

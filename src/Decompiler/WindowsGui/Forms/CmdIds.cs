@@ -52,8 +52,9 @@ namespace Decompiler.WindowsGui.Forms
 		public const int GrpViewScanned = 5 + 1000;
 		public const int GrpActions = 6 + 1000;
 		public const int GrpActionsScanned = 7 + 1000;
-		public const int GrpHelp = 8 + 1000;
-		public const int GrpMemoryControl = 9 + 1000;
+		public const int GrpActionsRewritten = 8 + 1000;
+		public const int GrpHelp = 9 + 1000;
+		public const int GrpMemoryControl = 10 + 1000;
 	}
 	
 	public class CmdIds
@@ -68,7 +69,8 @@ namespace Decompiler.WindowsGui.Forms
 		public const int ActionNextPhase = 8 + 2000;
 		public const int ActionFinishDecompilation = 9 + 2000;
 		public const int ActionMarkProcedure = 10 + 2000;
-		public const int BrowserItemSelected = 11 + 2000;
+		public const int ActionEditSignature = 11 + 2000;
+		public const int BrowserItemSelected = 12 + 2000;
 		public const int FileMru = 2200;
 	}
 

@@ -60,6 +60,8 @@ namespace Decompiler.WindowsGui.Forms
 			slActionMenu.Add(0, slGrpActions);
 			SortedList slGrpActionsScanned = CreatePriorityList();
 			slActionMenu.Add(0, slGrpActionsScanned);
+			SortedList slGrpActionsRewritten = CreatePriorityList();
+			slActionMenu.Add(0, slGrpActionsRewritten);
 			SortedList slGrpHelp = CreatePriorityList();
 			slHelpMenu.Add(0, slGrpHelp);
 			SortedList slGrpMemoryControl = CreatePriorityList();
@@ -100,6 +102,9 @@ namespace Decompiler.WindowsGui.Forms
             CommandMenuItem slActionMarkProcedure = new CommandMenuItem("Mark _Procedure Entry", new Guid(CmdSets.Decompiler), CmdIds.ActionMarkProcedure);
             slActionMarkProcedure.IsDynamic = false;
             
+            CommandMenuItem slActionEditSignature = new CommandMenuItem("Edit _Signature...", new Guid(CmdSets.Decompiler), CmdIds.ActionEditSignature);
+            slActionEditSignature.IsDynamic = false;
+            
 			
 			// Create submenus
 			
@@ -117,6 +122,7 @@ namespace Decompiler.WindowsGui.Forms
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);
+			slGrpActionsRewritten.Add(0, slActionEditSignature);
 			this.MainMenu = new System.Windows.Forms.MainMenu();
 			BuildMenu(slMainMenu, MainMenu.MenuItems);
   

@@ -28,6 +28,7 @@ namespace Decompiler.WindowsGui.Forms
 	public class AnalyzedPage : PhasePage
 	{
 		private System.Windows.Forms.CheckBox chkTypeRecovery;
+        private RichTextBox txtProcedure;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -61,25 +62,38 @@ namespace Decompiler.WindowsGui.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.chkTypeRecovery = new System.Windows.Forms.CheckBox();
-			this.SuspendLayout();
-			// 
-			// chkTypeRecovery
-			// 
-			this.chkTypeRecovery.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.chkTypeRecovery.Location = new System.Drawing.Point(8, 0);
-			this.chkTypeRecovery.Name = "chkTypeRecovery";
-			this.chkTypeRecovery.Size = new System.Drawing.Size(584, 24);
-			this.chkTypeRecovery.TabIndex = 0;
-			this.chkTypeRecovery.Text = "Perform &Type Recovery";
-			// 
-			// AnalyzedPage
-			// 
-			this.Controls.Add(this.chkTypeRecovery);
-			this.Name = "AnalyzedPage";
-			this.Size = new System.Drawing.Size(600, 360);
-			this.ResumeLayout(false);
+            this.chkTypeRecovery = new System.Windows.Forms.CheckBox();
+            this.txtProcedure = new System.Windows.Forms.RichTextBox();
+            this.SuspendLayout();
+            // 
+            // chkTypeRecovery
+            // 
+            this.chkTypeRecovery.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkTypeRecovery.Location = new System.Drawing.Point(3, 333);
+            this.chkTypeRecovery.Name = "chkTypeRecovery";
+            this.chkTypeRecovery.Size = new System.Drawing.Size(584, 24);
+            this.chkTypeRecovery.TabIndex = 0;
+            this.chkTypeRecovery.Text = "Perform &Type Recovery";
+            // 
+            // txtProcedure
+            // 
+            this.txtProcedure.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProcedure.Location = new System.Drawing.Point(4, 4);
+            this.txtProcedure.Name = "txtProcedure";
+            this.txtProcedure.Size = new System.Drawing.Size(593, 323);
+            this.txtProcedure.TabIndex = 1;
+            this.txtProcedure.Text = "";
+            // 
+            // AnalyzedPage
+            // 
+            this.Controls.Add(this.txtProcedure);
+            this.Controls.Add(this.chkTypeRecovery);
+            this.Name = "AnalyzedPage";
+            this.Size = new System.Drawing.Size(600, 360);
+            this.ResumeLayout(false);
 
 		}
 		#endregion
@@ -88,5 +102,10 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			get { return chkTypeRecovery; }
 		}
+
+        public RichTextBox ProcedureText
+        {
+            get { return this.txtProcedure; }
+        }
 	}
 }

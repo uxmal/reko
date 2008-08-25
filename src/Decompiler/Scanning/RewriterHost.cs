@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
@@ -72,7 +73,7 @@ namespace Decompiler.Scanning
 				Address addr = Address.ToAddress(sc.InstructionAddress, 16);
 				if (sc.Signature != null)
 				{
-					SignatureSerializer sser = new SignatureSerializer(prog.Architecture, "stdapi");
+					ProcedureSerializer sser = new ProcedureSerializer(prog.Architecture, "stdapi");
 					callSignatures[addr] = sser.Deserialize(sc.Signature, new Frame(null));
 				}
 			}
@@ -81,17 +82,17 @@ namespace Decompiler.Scanning
 
 		public void RewriteProgram()
 		{
-			foreach (DictionaryEntry de in prog.Procedures)
+			foreach (KeyValuePair<Address, Procedure> de in prog.Procedures)
 			{
-				Address addrProc = (Address) de.Key;
-				Procedure p = (Procedure) de.Value;
+				Address addrProc =  de.Key;
+				Procedure p = de.Value;
 				if (prog.CallGraph.EntryPoints.Contains(p))
 				{
 					RewriteProcedure(p, addrProc, prog.Architecture.WordWidth.Size);
 				}
 			}
 
-			foreach (DictionaryEntry de in prog.Procedures)
+            foreach (KeyValuePair<Address, Procedure> de in prog.Procedures)
 			{
 				Address addrProc = (Address) de.Key;
 				Procedure p = (Procedure) de.Value;
@@ -132,8 +133,8 @@ namespace Decompiler.Scanning
 		{
 			if (addr == null)
 				return null;
-			Procedure proc = (Procedure) prog.Procedures[addr];
-			if (proc != null)
+			Procedure proc;
+            if (prog.Procedures.TryGetValue(addr, out proc))
 			{
 				RewriteProcedure(proc, addr, cbReturnAddress);
 			}

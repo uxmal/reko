@@ -510,9 +510,17 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="WindowsGui\Forms\PhasePageInteractor.cs" />
+    <Compile Include="WindowsGui\Forms\RicheditFormatter.cs" />
     <Compile Include="WindowsGui\Forms\ScanPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="WindowsGui\Forms\ProcedureDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\ProcedureDialog.Designer.cs">
+      <DependentUpon>ProcedureDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\ProcedureDialogInteractor.cs" />
     <Compile Include="WindowsGui\MruList.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -562,6 +570,10 @@
     <EmbeddedResource Include="WindowsGui\Forms\ScanPage.resx">
       <DependentUpon>ScanPage.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Forms\ProcedureDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProcedureDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.ImageMapControl.resources" />
     <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.MemoryControl.resources" />

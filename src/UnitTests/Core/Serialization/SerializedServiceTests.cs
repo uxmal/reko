@@ -46,7 +46,8 @@ namespace Decompiler.UnitTests.Core.Serialization
 			svc.SyscallInfo.RegisterValues[0] = new SerializedRegValue("ah", "44");
 			svc.SyscallInfo.RegisterValues[1] = new SerializedRegValue("al", "00");
 			svc.Signature = new SerializedSignature();
-			svc.Signature.ReturnValue = new SerializedArgument(new Identifier("C", 0, PrimitiveType.Bool, new FlagGroupStorage((uint)FlagM.CF, "C")));
+            ArgumentSerializer argSer = new ArgumentSerializer(null, arch, null);
+            svc.Signature.ReturnValue = argSer.Serialize(new Identifier("C", 0, PrimitiveType.Bool, new FlagGroupStorage((uint) FlagM.CF, "C")));
 		}
 
 		[Test]

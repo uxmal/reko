@@ -45,10 +45,9 @@ namespace Decompiler.Core.Serialization
 		[System.ComponentModel.DefaultValue(false)]
 		public bool OutParameter;
 
-		public SerializedArgument()
-		{
-		}
+        public SerializedArgument() { }
 
+        [Obsolete("Use ArgumentSerializer.Serialize", true)]
 		public SerializedArgument(Identifier arg)
 		{
 			Name = arg.Name;

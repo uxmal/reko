@@ -24,13 +24,13 @@ namespace Decompiler.Core.Serialization
 {
 	public class ArgumentSerializer
 	{
-		private SignatureSerializer sig;
+		private ProcedureSerializer sig;
 		private IProcessorArchitecture arch;
 		private Frame frame;
 		private SerializedArgument argCur;
 		private Identifier idArg;
 
-		public ArgumentSerializer(SignatureSerializer sig, IProcessorArchitecture arch, Frame frame)
+		public ArgumentSerializer(ProcedureSerializer sig, IProcessorArchitecture arch, Frame frame)
 		{
 			this.sig = sig;
 			this.arch = arch;
@@ -92,5 +92,16 @@ namespace Decompiler.Core.Serialization
 			arg.Kind.Accept(this);
 			return idArg;
 		}
-	}
+
+        public SerializedArgument Serialize(Identifier arg)
+        {
+            if (arg == null)
+                return null;
+            SerializedArgument sarg = new SerializedArgument();
+			sarg.Name = arg.Name;
+			sarg.Kind = arg.Storage.Serialize();
+            sarg.OutParameter = arg.Storage is OutArgumentStorage;
+            return sarg;
+        }
+    }
 }
