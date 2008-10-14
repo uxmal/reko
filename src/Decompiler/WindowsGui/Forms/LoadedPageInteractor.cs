@@ -35,6 +35,7 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			this.pageLoaded = page;
 			mpCmdidToCommand = new Hashtable();
+            AddCommand(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned);
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewFindFragments);

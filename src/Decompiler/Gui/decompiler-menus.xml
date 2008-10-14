@@ -6,6 +6,7 @@
 	
 	<menu type="MainMenu" id="MainMenu" cmdSet="GuidCmdSet"/>
 	<menu id="FileMenu" cmdSet="Decompiler" container="GrpMain">_File</menu>
+  <menu id="EditMenu" cmdSet="Decompiler" container="GrpMain">_Edit</menu>
 	<menu id="ViewMenu" cmdSet="Decompiler" container="GrpMain">_View</menu>
 	<menu id="ActionMenu" cmdSet="Decompiler" container="GrpMain">_Actions</menu>
 	<menu id="HelpMenu" cmdSet="Decompiler" container="GrpMain">_Help</menu>
@@ -19,7 +20,9 @@
 	<group id="GrpFile" cmdSet="Decompiler" container="FileMenu" priority="0"/>
 	<group id="GrpFileMru" cmdSet="Decompiler" container="FileMenu" priority="0"/>
 	<group id="GrpFileEnd" cmdSet="Decompiler" container="FileMenu" priority="1000"/>
-	
+
+  <group id="GrpEdit" cmdSet="Decompiler" container="EditMenu" />
+  
 	<group id="GrpViewScanned" cmdSet="Decompiler" container="ViewMenu"/>
 	
 	<group id="GrpActions" cmdSet="Decompiler" container="ActionMenu"/>
@@ -36,7 +39,9 @@
 	<cmd id="FileSave" cmdSet="Decompiler" container="GrpFile">_Save</cmd>
 	<cmd id="FileMru"  cmdSet="Decompiler" container="GrpFileMru" dynamic-item-id="2200"/>
 	<cmd id="FileExit" cmdSet="Decompiler" container="GrpFileEnd">E_xit</cmd>
-	
+
+  <cmd id="EditFind" cmdSet="Decompiler" container="GrpEdit">_Find...</cmd>
+  
 	<cmd id="ViewGoToAddress" cmdSet="Decompiler" container="GrpViewScanned">_Go to Address...</cmd>
 	<cmd id="ViewShowAllFragments" cmdSet="Decompiler" container="GrpViewScanned">Show _all fragments</cmd>
 	<cmd id="ViewShowUnscanned" cmdSet="Decompiler" container="GrpViewScanned">Show _unscanned fragments</cmd>

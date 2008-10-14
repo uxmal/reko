@@ -37,10 +37,11 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		public const int MainMenu = 1;
 		public const int FileMenu = 2;
-		public const int ViewMenu = 3;
-		public const int ActionMenu = 4;
-		public const int HelpMenu = 5;
-		public const int CtxMemoryControl = 6;
+		public const int EditMenu = 3;
+		public const int ViewMenu = 4;
+		public const int ActionMenu = 5;
+		public const int HelpMenu = 6;
+		public const int CtxMemoryControl = 7;
 	}
 	
 	public class GroupIds
@@ -49,12 +50,13 @@ namespace Decompiler.WindowsGui.Forms
 		public const int GrpFile = 2 + 1000;
 		public const int GrpFileMru = 3 + 1000;
 		public const int GrpFileEnd = 4 + 1000;
-		public const int GrpViewScanned = 5 + 1000;
-		public const int GrpActions = 6 + 1000;
-		public const int GrpActionsScanned = 7 + 1000;
-		public const int GrpActionsRewritten = 8 + 1000;
-		public const int GrpHelp = 9 + 1000;
-		public const int GrpMemoryControl = 10 + 1000;
+		public const int GrpEdit = 5 + 1000;
+		public const int GrpViewScanned = 6 + 1000;
+		public const int GrpActions = 7 + 1000;
+		public const int GrpActionsScanned = 8 + 1000;
+		public const int GrpActionsRewritten = 9 + 1000;
+		public const int GrpHelp = 10 + 1000;
+		public const int GrpMemoryControl = 11 + 1000;
 	}
 	
 	public class CmdIds
@@ -62,15 +64,16 @@ namespace Decompiler.WindowsGui.Forms
 		public const int FileOpen = 1 + 2000;
 		public const int FileSave = 2 + 2000;
 		public const int FileExit = 3 + 2000;
-		public const int ViewGoToAddress = 4 + 2000;
-		public const int ViewShowAllFragments = 5 + 2000;
-		public const int ViewShowUnscanned = 6 + 2000;
-		public const int ViewFindFragments = 7 + 2000;
-		public const int ActionNextPhase = 8 + 2000;
-		public const int ActionFinishDecompilation = 9 + 2000;
-		public const int ActionMarkProcedure = 10 + 2000;
-		public const int ActionEditSignature = 11 + 2000;
-		public const int BrowserItemSelected = 12 + 2000;
+		public const int EditFind = 4 + 2000;
+		public const int ViewGoToAddress = 5 + 2000;
+		public const int ViewShowAllFragments = 6 + 2000;
+		public const int ViewShowUnscanned = 7 + 2000;
+		public const int ViewFindFragments = 8 + 2000;
+		public const int ActionNextPhase = 9 + 2000;
+		public const int ActionFinishDecompilation = 10 + 2000;
+		public const int ActionMarkProcedure = 11 + 2000;
+		public const int ActionEditSignature = 12 + 2000;
+		public const int BrowserItemSelected = 13 + 2000;
 		public const int FileMru = 2200;
 	}
 
