@@ -83,6 +83,10 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.ProgressBar progressBar1;
 		private Decompiler.WindowsGui.Forms.AnalyzedPage pageAnalyzed;
 		private System.Windows.Forms.TabPage tabWarnings;
+        private SaveFileDialog sfd;
+        private TabPage tabFindResults;
+        private ListView listView1;
+        private ColumnHeader columnHeader2;
 		private System.ComponentModel.IContainer components;
 
 		public MainForm()
@@ -119,398 +123,451 @@ namespace Decompiler.WindowsGui.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(MainForm));
-			this.ofd = new System.Windows.Forms.OpenFileDialog();
-			this.imglMapItems = new System.Windows.Forms.ImageList(this.components);
-			this.imagesToolbar = new System.Windows.Forms.ImageList(this.components);
-			this.toolBar = new System.Windows.Forms.ToolBar();
-			this.tbtnOpen = new System.Windows.Forms.ToolBarButton();
-			this.tbtnSave = new System.Windows.Forms.ToolBarButton();
-			this.toolBarButton3 = new System.Windows.Forms.ToolBarButton();
-			this.tbtnNextPhase = new System.Windows.Forms.ToolBarButton();
-			this.tbtnFinishDecompilation = new System.Windows.Forms.ToolBarButton();
-			this.tabsOutput = new System.Windows.Forms.TabControl();
-			this.tabDiagnostics = new System.Windows.Forms.TabPage();
-			this.listDiagnostics = new System.Windows.Forms.ListView();
-			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-			this.tabWarnings = new System.Windows.Forms.TabPage();
-			this.listDiscoveries = new System.Windows.Forms.ListView();
-			this.colDiscoveryType = new System.Windows.Forms.ColumnHeader();
-			this.colDiscoveryDescription = new System.Windows.Forms.ColumnHeader();
-			this.tabLog = new System.Windows.Forms.TabPage();
-			this.txtLog = new System.Windows.Forms.TextBox();
-			this.panelTop = new System.Windows.Forms.Panel();
-			this.splitterTop = new System.Windows.Forms.Splitter();
-			this.panelRhs = new System.Windows.Forms.Panel();
-			this.pageLoaded = new Decompiler.WindowsGui.Forms.LoadedPage();
-			this.pageInitial = new Decompiler.WindowsGui.Forms.InitialPage();
-			this.pageAnalyzed = new Decompiler.WindowsGui.Forms.AnalyzedPage();
-			this.pageFinal = new Decompiler.WindowsGui.Forms.FinalPage();
-			this.panelLhs = new System.Windows.Forms.Panel();
-			this.listBrowser = new System.Windows.Forms.ListView();
-			this.listBrowserItemName = new System.Windows.Forms.ColumnHeader();
-			this.ddlBrowserFilter = new System.Windows.Forms.ComboBox();
-			this.treeBrowser = new System.Windows.Forms.TreeView();
-			this.panelBottom = new System.Windows.Forms.Panel();
-			this.progressBar1 = new System.Windows.Forms.ProgressBar();
-			this.statusBar = new System.Windows.Forms.StatusBar();
-			this.statusBarPanel1 = new System.Windows.Forms.StatusBarPanel();
-			this.statusBarPanel2 = new System.Windows.Forms.StatusBarPanel();
-			this.statusBarPanel3 = new System.Windows.Forms.StatusBarPanel();
-			this.splitter1 = new System.Windows.Forms.Splitter();
-			this.tabsOutput.SuspendLayout();
-			this.tabDiagnostics.SuspendLayout();
-			this.tabWarnings.SuspendLayout();
-			this.tabLog.SuspendLayout();
-			this.panelTop.SuspendLayout();
-			this.panelRhs.SuspendLayout();
-			this.panelLhs.SuspendLayout();
-			this.panelBottom.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel3)).BeginInit();
-			this.SuspendLayout();
-			// 
-			// imglMapItems
-			// 
-			this.imglMapItems.ImageSize = new System.Drawing.Size(16, 16);
-			this.imglMapItems.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imglMapItems.ImageStream")));
-			this.imglMapItems.TransparentColor = System.Drawing.Color.Transparent;
-			// 
-			// imagesToolbar
-			// 
-			this.imagesToolbar.ImageSize = new System.Drawing.Size(16, 16);
-			this.imagesToolbar.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imagesToolbar.ImageStream")));
-			this.imagesToolbar.TransparentColor = System.Drawing.Color.Transparent;
-			// 
-			// toolBar
-			// 
-			this.toolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
-			this.toolBar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
-																					   this.tbtnOpen,
-																					   this.tbtnSave,
-																					   this.toolBarButton3,
-																					   this.tbtnNextPhase,
-																					   this.tbtnFinishDecompilation});
-			this.toolBar.DropDownArrows = true;
-			this.toolBar.ImageList = this.imagesToolbar;
-			this.toolBar.Location = new System.Drawing.Point(0, 0);
-			this.toolBar.Name = "toolBar";
-			this.toolBar.ShowToolTips = true;
-			this.toolBar.Size = new System.Drawing.Size(680, 28);
-			this.toolBar.TabIndex = 19;
-			// 
-			// tbtnOpen
-			// 
-			this.tbtnOpen.ImageIndex = 0;
-			// 
-			// tbtnSave
-			// 
-			this.tbtnSave.ImageIndex = 1;
-			// 
-			// toolBarButton3
-			// 
-			this.toolBarButton3.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
-			// 
-			// tbtnNextPhase
-			// 
-			this.tbtnNextPhase.ImageIndex = 2;
-			this.tbtnNextPhase.ToolTipText = "Advance to next Decompiler Phase";
-			// 
-			// tbtnFinishDecompilation
-			// 
-			this.tbtnFinishDecompilation.ImageIndex = 3;
-			this.tbtnFinishDecompilation.ToolTipText = "Finish decompilation";
-			// 
-			// tabsOutput
-			// 
-			this.tabsOutput.Controls.Add(this.tabDiagnostics);
-			this.tabsOutput.Controls.Add(this.tabWarnings);
-			this.tabsOutput.Controls.Add(this.tabLog);
-			this.tabsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabsOutput.Location = new System.Drawing.Point(0, 0);
-			this.tabsOutput.Name = "tabsOutput";
-			this.tabsOutput.SelectedIndex = 0;
-			this.tabsOutput.Size = new System.Drawing.Size(680, 100);
-			this.tabsOutput.TabIndex = 21;
-			// 
-			// tabDiagnostics
-			// 
-			this.tabDiagnostics.Controls.Add(this.listDiagnostics);
-			this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
-			this.tabDiagnostics.Name = "tabDiagnostics";
-			this.tabDiagnostics.Size = new System.Drawing.Size(672, 74);
-			this.tabDiagnostics.TabIndex = 0;
-			this.tabDiagnostics.Text = "Diagnostics";
-			this.tabDiagnostics.ToolTipText = "Displays errors and warnings incurred during decompilation";
-			// 
-			// listDiagnostics
-			// 
-			this.listDiagnostics.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																							  this.columnHeader1});
-			this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listDiagnostics.Location = new System.Drawing.Point(0, 0);
-			this.listDiagnostics.Name = "listDiagnostics";
-			this.listDiagnostics.Size = new System.Drawing.Size(672, 74);
-			this.listDiagnostics.TabIndex = 2;
-			this.listDiagnostics.View = System.Windows.Forms.View.Details;
-			// 
-			// columnHeader1
-			// 
-			this.columnHeader1.Width = 400;
-			// 
-			// tabWarnings
-			// 
-			this.tabWarnings.Controls.Add(this.listDiscoveries);
-			this.tabWarnings.Location = new System.Drawing.Point(4, 22);
-			this.tabWarnings.Name = "tabWarnings";
-			this.tabWarnings.Size = new System.Drawing.Size(672, 74);
-			this.tabWarnings.TabIndex = 2;
-			this.tabWarnings.Text = "Warnings";
-			this.tabWarnings.Visible = false;
-			// 
-			// listDiscoveries
-			// 
-			this.listDiscoveries.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																							  this.colDiscoveryType,
-																							  this.colDiscoveryDescription});
-			this.listDiscoveries.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listDiscoveries.Location = new System.Drawing.Point(0, 0);
-			this.listDiscoveries.Name = "listDiscoveries";
-			this.listDiscoveries.Size = new System.Drawing.Size(672, 74);
-			this.listDiscoveries.TabIndex = 0;
-			this.listDiscoveries.View = System.Windows.Forms.View.Details;
-			// 
-			// colDiscoveryType
-			// 
-			this.colDiscoveryType.Text = "Type";
-			// 
-			// colDiscoveryDescription
-			// 
-			this.colDiscoveryDescription.Text = "Description";
-			this.colDiscoveryDescription.Width = 396;
-			// 
-			// tabLog
-			// 
-			this.tabLog.Controls.Add(this.txtLog);
-			this.tabLog.Location = new System.Drawing.Point(4, 22);
-			this.tabLog.Name = "tabLog";
-			this.tabLog.Size = new System.Drawing.Size(672, 74);
-			this.tabLog.TabIndex = 1;
-			this.tabLog.Text = "Log";
-			this.tabLog.Visible = false;
-			// 
-			// txtLog
-			// 
-			this.txtLog.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.txtLog.Location = new System.Drawing.Point(0, -62);
-			this.txtLog.Multiline = true;
-			this.txtLog.Name = "txtLog";
-			this.txtLog.Size = new System.Drawing.Size(672, 136);
-			this.txtLog.TabIndex = 2;
-			this.txtLog.Text = "";
-			// 
-			// panelTop
-			// 
-			this.panelTop.Controls.Add(this.splitterTop);
-			this.panelTop.Controls.Add(this.panelRhs);
-			this.panelTop.Controls.Add(this.panelLhs);
-			this.panelTop.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panelTop.Location = new System.Drawing.Point(0, 28);
-			this.panelTop.Name = "panelTop";
-			this.panelTop.Size = new System.Drawing.Size(680, 387);
-			this.panelTop.TabIndex = 23;
-			// 
-			// splitterTop
-			// 
-			this.splitterTop.Location = new System.Drawing.Point(256, 0);
-			this.splitterTop.Name = "splitterTop";
-			this.splitterTop.Size = new System.Drawing.Size(3, 387);
-			this.splitterTop.TabIndex = 18;
-			this.splitterTop.TabStop = false;
-			// 
-			// panelRhs
-			// 
-			this.panelRhs.Controls.Add(this.pageLoaded);
-			this.panelRhs.Controls.Add(this.pageInitial);
-			this.panelRhs.Controls.Add(this.pageAnalyzed);
-			this.panelRhs.Controls.Add(this.pageFinal);
-			this.panelRhs.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panelRhs.Location = new System.Drawing.Point(256, 0);
-			this.panelRhs.Name = "panelRhs";
-			this.panelRhs.Size = new System.Drawing.Size(424, 387);
-			this.panelRhs.TabIndex = 22;
-			// 
-			// pageLoaded
-			// 
-			this.pageLoaded.BackColor = System.Drawing.SystemColors.Control;
-			this.pageLoaded.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pageLoaded.Location = new System.Drawing.Point(0, 0);
-			this.pageLoaded.Name = "pageLoaded";
-			this.pageLoaded.ProgramImage = null;
-			this.pageLoaded.Size = new System.Drawing.Size(424, 387);
-			this.pageLoaded.TabIndex = 20;
-			// 
-			// pageInitial
-			// 
-			this.pageInitial.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pageInitial.Location = new System.Drawing.Point(0, 0);
-			this.pageInitial.Name = "pageInitial";
-			this.pageInitial.Size = new System.Drawing.Size(424, 387);
-			this.pageInitial.TabIndex = 19;
-			// 
-			// pageAnalyzed
-			// 
-			this.pageAnalyzed.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pageAnalyzed.Location = new System.Drawing.Point(0, 0);
-			this.pageAnalyzed.Name = "pageAnalyzed";
-			this.pageAnalyzed.Size = new System.Drawing.Size(424, 387);
-			this.pageAnalyzed.TabIndex = 21;
-			// 
-			// pageFinal
-			// 
-			this.pageFinal.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pageFinal.Location = new System.Drawing.Point(0, 0);
-			this.pageFinal.Name = "pageFinal";
-			this.pageFinal.Size = new System.Drawing.Size(424, 387);
-			this.pageFinal.TabIndex = 0;
-			// 
-			// panelLhs
-			// 
-			this.panelLhs.Controls.Add(this.listBrowser);
-			this.panelLhs.Controls.Add(this.ddlBrowserFilter);
-			this.panelLhs.Controls.Add(this.treeBrowser);
-			this.panelLhs.Dock = System.Windows.Forms.DockStyle.Left;
-			this.panelLhs.DockPadding.Bottom = 1;
-			this.panelLhs.DockPadding.Left = 4;
-			this.panelLhs.DockPadding.Right = 1;
-			this.panelLhs.DockPadding.Top = 1;
-			this.panelLhs.Location = new System.Drawing.Point(0, 0);
-			this.panelLhs.Name = "panelLhs";
-			this.panelLhs.Size = new System.Drawing.Size(256, 387);
-			this.panelLhs.TabIndex = 23;
-			// 
-			// listBrowser
-			// 
-			this.listBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.listBrowser.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																						  this.listBrowserItemName});
-			this.listBrowser.Location = new System.Drawing.Point(3, 32);
-			this.listBrowser.Name = "listBrowser";
-			this.listBrowser.Size = new System.Drawing.Size(253, 355);
-			this.listBrowser.TabIndex = 21;
-			this.listBrowser.View = System.Windows.Forms.View.Details;
-			// 
-			// listBrowserItemName
-			// 
-			this.listBrowserItemName.Text = "Item";
-			this.listBrowserItemName.Width = 187;
-			// 
-			// ddlBrowserFilter
-			// 
-			this.ddlBrowserFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.ddlBrowserFilter.Location = new System.Drawing.Point(3, 8);
-			this.ddlBrowserFilter.Name = "ddlBrowserFilter";
-			this.ddlBrowserFilter.Size = new System.Drawing.Size(253, 21);
-			this.ddlBrowserFilter.TabIndex = 20;
-			this.ddlBrowserFilter.Text = "comboBox1";
-			// 
-			// treeBrowser
-			// 
-			this.treeBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.treeBrowser.ImageIndex = -1;
-			this.treeBrowser.Location = new System.Drawing.Point(3, 32);
-			this.treeBrowser.Name = "treeBrowser";
-			this.treeBrowser.SelectedImageIndex = -1;
-			this.treeBrowser.Size = new System.Drawing.Size(253, 355);
-			this.treeBrowser.TabIndex = 16;
-			// 
-			// panelBottom
-			// 
-			this.panelBottom.Controls.Add(this.progressBar1);
-			this.panelBottom.Controls.Add(this.statusBar);
-			this.panelBottom.Controls.Add(this.tabsOutput);
-			this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panelBottom.Location = new System.Drawing.Point(0, 418);
-			this.panelBottom.Name = "panelBottom";
-			this.panelBottom.Size = new System.Drawing.Size(680, 100);
-			this.panelBottom.TabIndex = 24;
-			// 
-			// progressBar1
-			// 
-			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBar1.Location = new System.Drawing.Point(502, 78);
-			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(152, 22);
-			this.progressBar1.TabIndex = 23;
-			// 
-			// statusBar
-			// 
-			this.statusBar.Location = new System.Drawing.Point(0, 76);
-			this.statusBar.Name = "statusBar";
-			this.statusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
-																						 this.statusBarPanel1,
-																						 this.statusBarPanel2,
-																						 this.statusBarPanel3});
-			this.statusBar.ShowPanels = true;
-			this.statusBar.Size = new System.Drawing.Size(680, 24);
-			this.statusBar.TabIndex = 22;
-			// 
-			// statusBarPanel1
-			// 
-			this.statusBarPanel1.Width = 400;
-			// 
-			// statusBarPanel2
-			// 
-			this.statusBarPanel2.Text = "Ready";
-			// 
-			// statusBarPanel3
-			// 
-			this.statusBarPanel3.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
-			this.statusBarPanel3.BorderStyle = System.Windows.Forms.StatusBarPanelBorderStyle.None;
-			this.statusBarPanel3.Text = "bar";
-			this.statusBarPanel3.Width = 164;
-			// 
-			// splitter1
-			// 
-			this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.splitter1.Location = new System.Drawing.Point(0, 415);
-			this.splitter1.Name = "splitter1";
-			this.splitter1.Size = new System.Drawing.Size(680, 3);
-			this.splitter1.TabIndex = 25;
-			this.splitter1.TabStop = false;
-			// 
-			// MainForm
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(680, 518);
-			this.Controls.Add(this.panelTop);
-			this.Controls.Add(this.splitter1);
-			this.Controls.Add(this.panelBottom);
-			this.Controls.Add(this.toolBar);
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Name = "MainForm";
-			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.Text = "Decompiler";
-			this.tabsOutput.ResumeLayout(false);
-			this.tabDiagnostics.ResumeLayout(false);
-			this.tabWarnings.ResumeLayout(false);
-			this.tabLog.ResumeLayout(false);
-			this.panelTop.ResumeLayout(false);
-			this.panelRhs.ResumeLayout(false);
-			this.panelLhs.ResumeLayout(false);
-			this.panelBottom.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.statusBarPanel3)).EndInit();
-			this.ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.imglMapItems = new System.Windows.Forms.ImageList(this.components);
+            this.imagesToolbar = new System.Windows.Forms.ImageList(this.components);
+            this.toolBar = new System.Windows.Forms.ToolBar();
+            this.tbtnOpen = new System.Windows.Forms.ToolBarButton();
+            this.tbtnSave = new System.Windows.Forms.ToolBarButton();
+            this.toolBarButton3 = new System.Windows.Forms.ToolBarButton();
+            this.tbtnNextPhase = new System.Windows.Forms.ToolBarButton();
+            this.tbtnFinishDecompilation = new System.Windows.Forms.ToolBarButton();
+            this.tabsOutput = new System.Windows.Forms.TabControl();
+            this.tabDiagnostics = new System.Windows.Forms.TabPage();
+            this.listDiagnostics = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.tabWarnings = new System.Windows.Forms.TabPage();
+            this.listDiscoveries = new System.Windows.Forms.ListView();
+            this.colDiscoveryType = new System.Windows.Forms.ColumnHeader();
+            this.colDiscoveryDescription = new System.Windows.Forms.ColumnHeader();
+            this.tabLog = new System.Windows.Forms.TabPage();
+            this.txtLog = new System.Windows.Forms.TextBox();
+            this.panelTop = new System.Windows.Forms.Panel();
+            this.splitterTop = new System.Windows.Forms.Splitter();
+            this.panelRhs = new System.Windows.Forms.Panel();
+            this.panelLhs = new System.Windows.Forms.Panel();
+            this.listBrowser = new System.Windows.Forms.ListView();
+            this.listBrowserItemName = new System.Windows.Forms.ColumnHeader();
+            this.ddlBrowserFilter = new System.Windows.Forms.ComboBox();
+            this.treeBrowser = new System.Windows.Forms.TreeView();
+            this.panelBottom = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.statusBar = new System.Windows.Forms.StatusBar();
+            this.statusBarPanel1 = new System.Windows.Forms.StatusBarPanel();
+            this.statusBarPanel2 = new System.Windows.Forms.StatusBarPanel();
+            this.statusBarPanel3 = new System.Windows.Forms.StatusBarPanel();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.pageLoaded = new Decompiler.WindowsGui.Forms.LoadedPage();
+            this.pageInitial = new Decompiler.WindowsGui.Forms.InitialPage();
+            this.pageAnalyzed = new Decompiler.WindowsGui.Forms.AnalyzedPage();
+            this.pageFinal = new Decompiler.WindowsGui.Forms.FinalPage();
+            this.tabFindResults = new System.Windows.Forms.TabPage();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.tabsOutput.SuspendLayout();
+            this.tabDiagnostics.SuspendLayout();
+            this.tabWarnings.SuspendLayout();
+            this.tabLog.SuspendLayout();
+            this.panelTop.SuspendLayout();
+            this.panelRhs.SuspendLayout();
+            this.panelLhs.SuspendLayout();
+            this.panelBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize) (this.statusBarPanel1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.statusBarPanel2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.statusBarPanel3)).BeginInit();
+            this.tabFindResults.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // imglMapItems
+            // 
+            this.imglMapItems.ImageStream = ((System.Windows.Forms.ImageListStreamer) (resources.GetObject("imglMapItems.ImageStream")));
+            this.imglMapItems.TransparentColor = System.Drawing.Color.Transparent;
+            this.imglMapItems.Images.SetKeyName(0, "");
+            this.imglMapItems.Images.SetKeyName(1, "");
+            this.imglMapItems.Images.SetKeyName(2, "");
+            this.imglMapItems.Images.SetKeyName(3, "");
+            this.imglMapItems.Images.SetKeyName(4, "");
+            this.imglMapItems.Images.SetKeyName(5, "");
+            // 
+            // imagesToolbar
+            // 
+            this.imagesToolbar.ImageStream = ((System.Windows.Forms.ImageListStreamer) (resources.GetObject("imagesToolbar.ImageStream")));
+            this.imagesToolbar.TransparentColor = System.Drawing.Color.Transparent;
+            this.imagesToolbar.Images.SetKeyName(0, "");
+            this.imagesToolbar.Images.SetKeyName(1, "");
+            this.imagesToolbar.Images.SetKeyName(2, "");
+            this.imagesToolbar.Images.SetKeyName(3, "");
+            // 
+            // toolBar
+            // 
+            this.toolBar.Appearance = System.Windows.Forms.ToolBarAppearance.Flat;
+            this.toolBar.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
+            this.tbtnOpen,
+            this.tbtnSave,
+            this.toolBarButton3,
+            this.tbtnNextPhase,
+            this.tbtnFinishDecompilation});
+            this.toolBar.DropDownArrows = true;
+            this.toolBar.ImageList = this.imagesToolbar;
+            this.toolBar.Location = new System.Drawing.Point(0, 0);
+            this.toolBar.Name = "toolBar";
+            this.toolBar.ShowToolTips = true;
+            this.toolBar.Size = new System.Drawing.Size(704, 28);
+            this.toolBar.TabIndex = 19;
+            // 
+            // tbtnOpen
+            // 
+            this.tbtnOpen.ImageIndex = 0;
+            this.tbtnOpen.Name = "tbtnOpen";
+            // 
+            // tbtnSave
+            // 
+            this.tbtnSave.ImageIndex = 1;
+            this.tbtnSave.Name = "tbtnSave";
+            // 
+            // toolBarButton3
+            // 
+            this.toolBarButton3.Name = "toolBarButton3";
+            this.toolBarButton3.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
+            // 
+            // tbtnNextPhase
+            // 
+            this.tbtnNextPhase.ImageIndex = 2;
+            this.tbtnNextPhase.Name = "tbtnNextPhase";
+            this.tbtnNextPhase.ToolTipText = "Advance to next Decompiler Phase";
+            // 
+            // tbtnFinishDecompilation
+            // 
+            this.tbtnFinishDecompilation.ImageIndex = 3;
+            this.tbtnFinishDecompilation.Name = "tbtnFinishDecompilation";
+            this.tbtnFinishDecompilation.ToolTipText = "Finish decompilation";
+            // 
+            // tabsOutput
+            // 
+            this.tabsOutput.Controls.Add(this.tabDiagnostics);
+            this.tabsOutput.Controls.Add(this.tabWarnings);
+            this.tabsOutput.Controls.Add(this.tabLog);
+            this.tabsOutput.Controls.Add(this.tabFindResults);
+            this.tabsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabsOutput.Location = new System.Drawing.Point(0, 0);
+            this.tabsOutput.Name = "tabsOutput";
+            this.tabsOutput.SelectedIndex = 0;
+            this.tabsOutput.Size = new System.Drawing.Size(704, 100);
+            this.tabsOutput.TabIndex = 21;
+            // 
+            // tabDiagnostics
+            // 
+            this.tabDiagnostics.Controls.Add(this.listDiagnostics);
+            this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
+            this.tabDiagnostics.Name = "tabDiagnostics";
+            this.tabDiagnostics.Size = new System.Drawing.Size(696, 74);
+            this.tabDiagnostics.TabIndex = 0;
+            this.tabDiagnostics.Text = "Diagnostics";
+            this.tabDiagnostics.ToolTipText = "Displays errors and warnings incurred during decompilation";
+            this.tabDiagnostics.UseVisualStyleBackColor = true;
+            // 
+            // listDiagnostics
+            // 
+            this.listDiagnostics.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listDiagnostics.Location = new System.Drawing.Point(0, 0);
+            this.listDiagnostics.Name = "listDiagnostics";
+            this.listDiagnostics.Size = new System.Drawing.Size(696, 74);
+            this.listDiagnostics.TabIndex = 2;
+            this.listDiagnostics.UseCompatibleStateImageBehavior = false;
+            this.listDiagnostics.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Width = 400;
+            // 
+            // tabWarnings
+            // 
+            this.tabWarnings.Controls.Add(this.listDiscoveries);
+            this.tabWarnings.Location = new System.Drawing.Point(4, 22);
+            this.tabWarnings.Name = "tabWarnings";
+            this.tabWarnings.Size = new System.Drawing.Size(696, 74);
+            this.tabWarnings.TabIndex = 2;
+            this.tabWarnings.Text = "Warnings";
+            this.tabWarnings.UseVisualStyleBackColor = true;
+            this.tabWarnings.Visible = false;
+            // 
+            // listDiscoveries
+            // 
+            this.listDiscoveries.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colDiscoveryType,
+            this.colDiscoveryDescription});
+            this.listDiscoveries.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listDiscoveries.Location = new System.Drawing.Point(0, 0);
+            this.listDiscoveries.Name = "listDiscoveries";
+            this.listDiscoveries.Size = new System.Drawing.Size(696, 74);
+            this.listDiscoveries.TabIndex = 0;
+            this.listDiscoveries.UseCompatibleStateImageBehavior = false;
+            this.listDiscoveries.View = System.Windows.Forms.View.Details;
+            // 
+            // colDiscoveryType
+            // 
+            this.colDiscoveryType.Text = "Type";
+            // 
+            // colDiscoveryDescription
+            // 
+            this.colDiscoveryDescription.Text = "Description";
+            this.colDiscoveryDescription.Width = 396;
+            // 
+            // tabLog
+            // 
+            this.tabLog.Controls.Add(this.txtLog);
+            this.tabLog.Location = new System.Drawing.Point(4, 22);
+            this.tabLog.Name = "tabLog";
+            this.tabLog.Size = new System.Drawing.Size(696, 74);
+            this.tabLog.TabIndex = 1;
+            this.tabLog.Text = "Log";
+            this.tabLog.UseVisualStyleBackColor = true;
+            this.tabLog.Visible = false;
+            // 
+            // txtLog
+            // 
+            this.txtLog.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.txtLog.Location = new System.Drawing.Point(0, -62);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.Size = new System.Drawing.Size(696, 136);
+            this.txtLog.TabIndex = 2;
+            // 
+            // panelTop
+            // 
+            this.panelTop.Controls.Add(this.splitterTop);
+            this.panelTop.Controls.Add(this.panelRhs);
+            this.panelTop.Controls.Add(this.panelLhs);
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelTop.Location = new System.Drawing.Point(0, 28);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(704, 446);
+            this.panelTop.TabIndex = 23;
+            // 
+            // splitterTop
+            // 
+            this.splitterTop.Location = new System.Drawing.Point(256, 0);
+            this.splitterTop.Name = "splitterTop";
+            this.splitterTop.Size = new System.Drawing.Size(3, 446);
+            this.splitterTop.TabIndex = 18;
+            this.splitterTop.TabStop = false;
+            // 
+            // panelRhs
+            // 
+            this.panelRhs.Controls.Add(this.pageLoaded);
+            this.panelRhs.Controls.Add(this.pageInitial);
+            this.panelRhs.Controls.Add(this.pageAnalyzed);
+            this.panelRhs.Controls.Add(this.pageFinal);
+            this.panelRhs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelRhs.Location = new System.Drawing.Point(256, 0);
+            this.panelRhs.Name = "panelRhs";
+            this.panelRhs.Size = new System.Drawing.Size(448, 446);
+            this.panelRhs.TabIndex = 22;
+            // 
+            // panelLhs
+            // 
+            this.panelLhs.Controls.Add(this.listBrowser);
+            this.panelLhs.Controls.Add(this.ddlBrowserFilter);
+            this.panelLhs.Controls.Add(this.treeBrowser);
+            this.panelLhs.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panelLhs.Location = new System.Drawing.Point(0, 0);
+            this.panelLhs.Name = "panelLhs";
+            this.panelLhs.Padding = new System.Windows.Forms.Padding(4, 1, 1, 1);
+            this.panelLhs.Size = new System.Drawing.Size(256, 446);
+            this.panelLhs.TabIndex = 23;
+            // 
+            // listBrowser
+            // 
+            this.listBrowser.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBrowser.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listBrowserItemName});
+            this.listBrowser.Location = new System.Drawing.Point(3, 32);
+            this.listBrowser.Name = "listBrowser";
+            this.listBrowser.Size = new System.Drawing.Size(253, 414);
+            this.listBrowser.TabIndex = 21;
+            this.listBrowser.UseCompatibleStateImageBehavior = false;
+            this.listBrowser.View = System.Windows.Forms.View.Details;
+            // 
+            // listBrowserItemName
+            // 
+            this.listBrowserItemName.Text = "Item";
+            this.listBrowserItemName.Width = 187;
+            // 
+            // ddlBrowserFilter
+            // 
+            this.ddlBrowserFilter.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ddlBrowserFilter.Location = new System.Drawing.Point(3, 8);
+            this.ddlBrowserFilter.Name = "ddlBrowserFilter";
+            this.ddlBrowserFilter.Size = new System.Drawing.Size(253, 21);
+            this.ddlBrowserFilter.TabIndex = 20;
+            this.ddlBrowserFilter.Text = "comboBox1";
+            // 
+            // treeBrowser
+            // 
+            this.treeBrowser.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeBrowser.Location = new System.Drawing.Point(3, 32);
+            this.treeBrowser.Name = "treeBrowser";
+            this.treeBrowser.Size = new System.Drawing.Size(253, 414);
+            this.treeBrowser.TabIndex = 16;
+            // 
+            // panelBottom
+            // 
+            this.panelBottom.Controls.Add(this.progressBar1);
+            this.panelBottom.Controls.Add(this.statusBar);
+            this.panelBottom.Controls.Add(this.tabsOutput);
+            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelBottom.Location = new System.Drawing.Point(0, 477);
+            this.panelBottom.Name = "panelBottom";
+            this.panelBottom.Size = new System.Drawing.Size(704, 100);
+            this.panelBottom.TabIndex = 24;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(502, 78);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(176, 22);
+            this.progressBar1.TabIndex = 23;
+            // 
+            // statusBar
+            // 
+            this.statusBar.Location = new System.Drawing.Point(0, 76);
+            this.statusBar.Name = "statusBar";
+            this.statusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
+            this.statusBarPanel1,
+            this.statusBarPanel2,
+            this.statusBarPanel3});
+            this.statusBar.ShowPanels = true;
+            this.statusBar.Size = new System.Drawing.Size(704, 24);
+            this.statusBar.TabIndex = 22;
+            // 
+            // statusBarPanel1
+            // 
+            this.statusBarPanel1.Name = "statusBarPanel1";
+            this.statusBarPanel1.Width = 400;
+            // 
+            // statusBarPanel2
+            // 
+            this.statusBarPanel2.Name = "statusBarPanel2";
+            this.statusBarPanel2.Text = "Ready";
+            // 
+            // statusBarPanel3
+            // 
+            this.statusBarPanel3.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
+            this.statusBarPanel3.BorderStyle = System.Windows.Forms.StatusBarPanelBorderStyle.None;
+            this.statusBarPanel3.Name = "statusBarPanel3";
+            this.statusBarPanel3.Text = "bar";
+            this.statusBarPanel3.Width = 163;
+            // 
+            // splitter1
+            // 
+            this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitter1.Location = new System.Drawing.Point(0, 474);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(704, 3);
+            this.splitter1.TabIndex = 25;
+            this.splitter1.TabStop = false;
+            // 
+            // pageLoaded
+            // 
+            this.pageLoaded.BackColor = System.Drawing.SystemColors.Control;
+            this.pageLoaded.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pageLoaded.Location = new System.Drawing.Point(0, 0);
+            this.pageLoaded.Name = "pageLoaded";
+            this.pageLoaded.ProgramImage = null;
+            this.pageLoaded.Size = new System.Drawing.Size(448, 446);
+            this.pageLoaded.TabIndex = 20;
+            // 
+            // pageInitial
+            // 
+            this.pageInitial.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pageInitial.IsDirty = false;
+            this.pageInitial.Location = new System.Drawing.Point(0, 0);
+            this.pageInitial.Name = "pageInitial";
+            this.pageInitial.Size = new System.Drawing.Size(448, 446);
+            this.pageInitial.TabIndex = 19;
+            // 
+            // pageAnalyzed
+            // 
+            this.pageAnalyzed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pageAnalyzed.Location = new System.Drawing.Point(0, 0);
+            this.pageAnalyzed.Name = "pageAnalyzed";
+            this.pageAnalyzed.Size = new System.Drawing.Size(448, 446);
+            this.pageAnalyzed.TabIndex = 21;
+            // 
+            // pageFinal
+            // 
+            this.pageFinal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pageFinal.Location = new System.Drawing.Point(0, 0);
+            this.pageFinal.Name = "pageFinal";
+            this.pageFinal.Size = new System.Drawing.Size(448, 446);
+            this.pageFinal.TabIndex = 0;
+            // 
+            // tabFindResults
+            // 
+            this.tabFindResults.Controls.Add(this.listView1);
+            this.tabFindResults.Location = new System.Drawing.Point(4, 22);
+            this.tabFindResults.Name = "tabFindResults";
+            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFindResults.Size = new System.Drawing.Size(696, 74);
+            this.tabFindResults.TabIndex = 3;
+            this.tabFindResults.Text = "Find Results";
+            this.tabFindResults.UseVisualStyleBackColor = true;
+            // 
+            // listView1
+            // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader2});
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.Location = new System.Drawing.Point(3, 3);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(690, 68);
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Item";
+            // 
+            // MainForm
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(704, 577);
+            this.Controls.Add(this.panelTop);
+            this.Controls.Add(this.splitter1);
+            this.Controls.Add(this.panelBottom);
+            this.Controls.Add(this.toolBar);
+            this.Icon = ((System.Drawing.Icon) (resources.GetObject("$this.Icon")));
+            this.Name = "MainForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = "Decompiler";
+            this.tabsOutput.ResumeLayout(false);
+            this.tabDiagnostics.ResumeLayout(false);
+            this.tabWarnings.ResumeLayout(false);
+            this.tabLog.ResumeLayout(false);
+            this.tabLog.PerformLayout();
+            this.panelTop.ResumeLayout(false);
+            this.panelRhs.ResumeLayout(false);
+            this.panelLhs.ResumeLayout(false);
+            this.panelBottom.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize) (this.statusBarPanel1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.statusBarPanel2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.statusBarPanel3)).EndInit();
+            this.tabFindResults.ResumeLayout(false);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
@@ -614,7 +671,12 @@ namespace Decompiler.WindowsGui.Forms
 			get { return progressBar1; }
 		}
 
-		public void SetStatus(string txt)
+        public SaveFileDialog SaveFileDialog
+        {
+            get { return sfd; }
+        }
+
+        public void SetStatus(string txt)
 		{
 			statusBar.Panels[1].Text = txt;
 		}
@@ -628,5 +690,6 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			get { return this.toolBar; }
 		}
-	}
+
+    }
 }

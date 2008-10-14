@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace Decompiler.WindowsGui.Forms
             }
         }
 
-        public void ApplyChangesToProcedure(Decompiler.Core.Procedure SelectedProcedure)
+        public void ApplyChangesToProcedure(Procedure selectedProcedure)
         {
             throw new Exception("The method or operation is not implemented.");
         }
@@ -70,7 +71,5 @@ namespace Decompiler.WindowsGui.Forms
         {
             throw new Exception("The method or operation is not implemented.");
         }
-
-
     }
 }

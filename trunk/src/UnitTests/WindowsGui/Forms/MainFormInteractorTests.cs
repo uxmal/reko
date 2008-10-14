@@ -23,6 +23,7 @@ using Decompiler.Loading;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.WindowsGui.Forms
@@ -31,7 +32,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	public class MainFormInteractorTests
 	{
 		private MainForm form;
-		private MainFormInteractor interactor;
+		private TestMainFormInteractor interactor;
 
 		[SetUp]
 		public void Setup()
@@ -48,7 +49,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[Test]
 		public void CreateForm()
 		{
-			interactor = new MainFormInteractor(form);
+			interactor = new TestMainFormInteractor(form, (Program) null);
 			// When opening the application for the very first time, we should be on the initial page, and 
 			// most controls on the mainform should be disabled.
 
@@ -83,6 +84,53 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			Assert.AreEqual(interactor.AnalyzedPageInteractor, interactor.CurrentPage);
 		}
 
+        [Test]
+        public void Save()
+        {
+            Program prog = CreateFakeProgram();
+            interactor = new TestMainFormInteractor(form, prog);
+
+            interactor.OpenBinary("foo.project");
+            Decompiler.Core.Serialization.SerializedProcedure p = new Decompiler.Core.Serialization.SerializedProcedure();
+            p.Address = "12345";
+            p.Name = "MyProc";
+            interactor.Decompiler.Project.UserProcedures.Add(p);
+            interactor.Save();
+            string s = 
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <input>
+    <filename />
+    <address>0C00:0000</address>
+  </input>
+  <output>
+    <disassembly />
+    <intermediate-code />
+    <output />
+    <type-inference>false</type-inference>
+    <types-file />
+  </output>
+  <procedure name=""MyProc"">
+    <address>12345</address>
+  </procedure>
+</project>";
+            Console.WriteLine(interactor.TestSavedProjectXml);
+
+            Assert.AreEqual(s, interactor.TestSavedProjectXml);
+        }
+
+        [Test]
+        public void SaveShouldShowDialog()
+        {
+            Program prog = CreateFakeProgram();
+            interactor = new TestMainFormInteractor(form, prog);
+            Assert.IsNull(interactor.ProjectFileName);
+            interactor.OpenBinary("foo.exe");
+            interactor.Save();
+            Assert.IsTrue(interactor.TestPromptedForSaving);
+            Assert.AreEqual("foo.project", interactor.ProjectFileName);
+        }
+
 		private Program CreateFakeProgram()
 		{
 			Program prog = new Program();
@@ -97,6 +145,9 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		private DecompilerDriver decompiler; 
 		private Loader ldr;
 		private Program program;
+        private StringWriter sw;
+        private string testFilename;
+        private bool promptedForSaving;
 
 		public TestMainFormInteractor(MainForm form, Program program) : base(form)
 		{
@@ -116,22 +167,53 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			return new TestDecompilerDriver(prog, this);
 		}
 
-		public override Program CreateProgram()
+
+        public override Program CreateProgram()
 		{
 			return program;
 		}
 
-		public Loader Loader
+        public override TextWriter CreateTextWriter(string filename)
+        {
+            testFilename = filename;
+            sw = new StringWriter();
+            return sw;
+        }
+
+        public Loader Loader
 		{
 			get { return ldr; }
 			set { ldr = value; }
 		}
 
+
 		public override void ShowError(string format, params object [] args)
 		{
 			throw new ApplicationException(string.Format(format, args));
-		}
-	}
+        }
+
+        protected override string PromptForFilename(string suggestedName)
+        {
+            testFilename = suggestedName;
+            return suggestedName;
+        }
+
+        public string TestSavedProjectXml
+        {
+            get { return sw.ToString(); }
+        }
+
+        public string TestFilename
+        {
+            get { return testFilename; }
+        }
+
+
+        public bool TestPromptedForSaving
+        {
+            get { return promptedForSaving; }
+        }
+    }
 
 	public class TestDecompilerDriver : DecompilerDriver
 	{

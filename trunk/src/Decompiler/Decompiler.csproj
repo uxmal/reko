@@ -278,7 +278,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\CommandGroup.cs" />
+    <Compile Include="Gui\FindResult.cs" />
     <Compile Include="Gui\ICommandTarget.cs" />
+    <Compile Include="Gui\IFindResultsService.cs" />
     <Compile Include="Gui\IMainForm.cs" />
     <Compile Include="Gui\IStartPage.cs" />
     <Compile Include="Gui\MainFormInteractor.cs" />
@@ -490,6 +492,14 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="WindowsGui\Forms\FinalPageInteractor.cs" />
+    <Compile Include="WindowsGui\Forms\FindDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\FindDialog.Designer.cs">
+      <DependentUpon>FindDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsGui\Forms\FindDialogInteractor.cs" />
+    <Compile Include="WindowsGui\Forms\FindResultsInteractor.cs" />
     <Compile Include="WindowsGui\Forms\GotoDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -547,6 +557,10 @@
       <DependentUpon>FinalPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="WindowsGui\Forms\FindDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FindDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WindowsGui\Forms\GotoDialog.resx">
       <DependentUpon>GotoDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -603,8 +617,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)tools\xslt" "$(ProjectDir)WindowsGui\Forms\cmdids.xslt" "$(ProjectDir)Gui\decompiler-menus.xml" "$(ProjectDir)WindowsGui\Forms\CmdIds.cs"
+"$(SolutionDir)tools\xslt" "$(ProjectDir)WindowsGui\Forms\decompiler-menus.xslt" "$(ProjectDir)Gui\decompiler-menus.xml" "$(ProjectDir)WindowsGui\Forms\DecompilerMenus.cs"</PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

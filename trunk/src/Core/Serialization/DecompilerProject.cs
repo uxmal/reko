@@ -25,36 +25,44 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	[XmlRoot(ElementName="project", Namespace="http://schemata.jklnet.org/Decompiler")]
-	public class DecompilerProject
-	{
-		public DecompilerProject()
-		{
-			this.Input = new DecompilerInput();
-			this.Output = new DecompilerOutput();
-			this.UserProcedures = new List<SerializedProcedure>();
-			this.UserCalls = new ArrayList();
-		}
+    [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Decompiler")]
+    public class DecompilerProject
+    {
+        public const string FileExtension = ".dcproject";
 
-		[XmlElement("input")]
-		public DecompilerInput Input;
+        public DecompilerProject()
+        {
+            this.Input = new DecompilerInput();
+            this.Output = new DecompilerOutput();
+            this.UserProcedures = new List<SerializedProcedure>();
+            this.UserCalls = new ArrayList();
+        }
 
-		[XmlElement("output")]
-		public DecompilerOutput Output;
+        [XmlElement("input")]
+        public DecompilerInput Input;
 
-		[XmlElement("procedure", typeof (SerializedProcedure))]
-		public List<SerializedProcedure> UserProcedures;
+        [XmlElement("output")]
+        public DecompilerOutput Output;
 
-		[XmlElement("call", typeof (SerializedCall))]
-		public ArrayList UserCalls;
+        [XmlElement("procedure", typeof(SerializedProcedure))]
+        public List<SerializedProcedure> UserProcedures;
 
-		public static DecompilerProject Load(string file)
-		{
-			using (FileStream stm = new FileStream(file, FileMode.Open))
-			{
-				XmlSerializer ser = new XmlSerializer(typeof (DecompilerProject));
-				return (DecompilerProject) ser.Deserialize(stm);
-			}
-		}
-	}
+        [XmlElement("call", typeof(SerializedCall))]
+        public ArrayList UserCalls;
+
+        public static DecompilerProject Load(string file)
+        {
+            using (FileStream stm = new FileStream(file, FileMode.Open))
+            {
+                XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
+                return (DecompilerProject) ser.Deserialize(stm);
+            }
+        }
+
+        public void Save(TextWriter sw)
+        {
+            XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
+            ser.Serialize(sw, this);
+        }
+    }
 }

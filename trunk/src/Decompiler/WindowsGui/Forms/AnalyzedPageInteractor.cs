@@ -127,7 +127,7 @@ namespace Decompiler.WindowsGui.Forms
                         ProcedureDialogInteractor i = new ProcedureDialogInteractor(proc);
                         using (ProcedureDialog dlg = i.CreateDialog())
                         {
-                            if (DialogResult.OK == dlg.ShowDialog(this.page))
+                            if (DialogResult.OK == ShowModalDialog(dlg))
                             {
                                 i.ApplyChangesToProcedure(SelectedProcedureEntry.Value);
                                 //$TODO: prohibit stepping forward, only go back to previous steps.

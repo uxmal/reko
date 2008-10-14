@@ -39,6 +39,7 @@ namespace Decompiler.WindowsGui.Forms
         {
 			SortedList slMainMenu = CreatePriorityList();
 			SortedList slFileMenu = CreatePriorityList();
+			SortedList slEditMenu = CreatePriorityList();
 			SortedList slViewMenu = CreatePriorityList();
 			SortedList slActionMenu = CreatePriorityList();
 			SortedList slHelpMenu = CreatePriorityList();
@@ -54,6 +55,8 @@ namespace Decompiler.WindowsGui.Forms
 			slFileMenu.Add(0, slGrpFileMru);
 			SortedList slGrpFileEnd = CreatePriorityList();
 			slFileMenu.Add(1000, slGrpFileEnd);
+			SortedList slGrpEdit = CreatePriorityList();
+			slEditMenu.Add(0, slGrpEdit);
 			SortedList slGrpViewScanned = CreatePriorityList();
 			slViewMenu.Add(0, slGrpViewScanned);
 			SortedList slGrpActions = CreatePriorityList();
@@ -81,6 +84,9 @@ namespace Decompiler.WindowsGui.Forms
             CommandMenuItem slFileExit = new CommandMenuItem("E_xit", new Guid(CmdSets.Decompiler), CmdIds.FileExit);
             slFileExit.IsDynamic = false;
             slGrpFileEnd.Add(0, slFileExit);
+            CommandMenuItem slEditFind = new CommandMenuItem("_Find...", new Guid(CmdSets.Decompiler), CmdIds.EditFind);
+            slEditFind.IsDynamic = false;
+            slGrpEdit.Add(0, slEditFind);
             CommandMenuItem slViewGoToAddress = new CommandMenuItem("_Go to Address...", new Guid(CmdSets.Decompiler), CmdIds.ViewGoToAddress);
             slViewGoToAddress.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewGoToAddress);
@@ -110,6 +116,8 @@ namespace Decompiler.WindowsGui.Forms
 			
             CommandMenuItem miFileMenu = new CommandMenuItem("_File");
             slGrpMain.Add(0, miFileMenu);
+            CommandMenuItem miEditMenu = new CommandMenuItem("_Edit");
+            slGrpMain.Add(0, miEditMenu);
             CommandMenuItem miViewMenu = new CommandMenuItem("_View");
             slGrpMain.Add(0, miViewMenu);
             CommandMenuItem miActionMenu = new CommandMenuItem("_Actions");
@@ -127,6 +135,8 @@ namespace Decompiler.WindowsGui.Forms
 			BuildMenu(slMainMenu, MainMenu.MenuItems);
   
 			BuildMenu(slFileMenu, miFileMenu.MenuItems);
+			
+			BuildMenu(slEditMenu, miEditMenu.MenuItems);
 			
 			BuildMenu(slViewMenu, miViewMenu.MenuItems);
 			

@@ -47,6 +47,7 @@ namespace Decompiler.WindowsGui.Forms
 		private AnalyzedPageInteractor pageAnalyzed;
 		private FinalPageInteractor pageFinal;
 		private MruList mru;
+        private string projectFileName;
 
 		private static string dirSettings;
 		
@@ -71,6 +72,7 @@ namespace Decompiler.WindowsGui.Forms
 			form.Menu = dm.MainMenu;
 
 			AttachInteractors(dm);
+            CreateServices();
 			form.Closed += new System.EventHandler(this.MainForm_Closed);
 			form.BrowserTree.AfterSelect += new TreeViewEventHandler(OnBrowserTreeItemSelected);
 			form.BrowserList.SelectedIndexChanged += new EventHandler(OnBrowserListItemSelected);
@@ -79,6 +81,11 @@ namespace Decompiler.WindowsGui.Forms
 			SwitchInteractor(pageInitial);
 			MainForm.InitialPage.IsDirty = false;
 		}
+
+        private void CreateServices()
+        {
+            
+        }
 
 		private void AttachInteractors(DecompilerMenus dm)
 		{
@@ -90,7 +97,6 @@ namespace Decompiler.WindowsGui.Forms
 			pageInitial.NextPage = pageLoaded;
 			pageLoaded.NextPage = pageAnalyzed;
 			pageAnalyzed.NextPage = pageFinal;
-
 		}
 
 		public virtual DecompilerDriver CreateDecompiler(string filename, Program prog)
@@ -102,6 +108,11 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			return new Program();
 		}
+
+        private void FindResults()
+        {
+            throw new NotImplementedException();
+        }
 
 		public virtual TextWriter CreateTextWriter(string filename)
 		{
@@ -202,6 +213,39 @@ namespace Decompiler.WindowsGui.Forms
 		{
 		}
 
+        public string ProjectFileName
+        {
+            get { return projectFileName; }
+            set { projectFileName = value; }
+        }
+
+        public void Save()
+        {
+            if (string.IsNullOrEmpty(this.ProjectFileName))
+            {
+                string newName = PromptForFilename(Path.ChangeExtension(this.Decompiler.Project.Input.Filename, DecompilerProject.FileExtension));
+                if (newName == null)
+                    return;
+                ProjectFileName = newName;
+                mru.Use(newName);
+
+            }
+
+            using (TextWriter sw = CreateTextWriter(ProjectFileName))
+            {
+                Decompiler.Project.Save(sw);
+            }
+        }
+
+        protected virtual string PromptForFilename(string suggestedName)
+        {
+            form.SaveFileDialog.FileName = suggestedName;
+            if (DialogResult.OK != form.SaveFileDialog.ShowDialog(form))
+                return null;
+            else 
+                return form.SaveFileDialog.FileName;
+        }
+
 		private static string SettingsDirectory
 		{
 			get 
@@ -290,10 +334,12 @@ namespace Decompiler.WindowsGui.Forms
 					mru.Use(file);
 					return true;
 				}
+
 				switch (cmdId)
 				{
 				case CmdIds.FileOpen: OpenBinaryWithPrompt(); return true;
-				case CmdIds.FileExit: form.Close(); return true;
+                case CmdIds.FileSave: Save(); return true;
+                case CmdIds.FileExit: form.Close(); return true;
 
 				case CmdIds.ActionNextPhase: NextPhase(); return true;
 				case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
@@ -436,6 +482,7 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			UpdateWindowTitle();
 		}
+
 
     }
 }
