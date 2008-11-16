@@ -33,8 +33,11 @@ namespace Decompiler.UnitTests.Structure
 		protected void RewriteProgram(string sourceFilename, Address addrBase)
 		{
 			prog = new Program();
-			Loader ldr = new Loader(prog);
-			ldr.Assemble(FileUnitTester.MapTestPath(sourceFilename), new IntelArchitecture(addrBase.Selector != 0 ? ProcessorMode.Real : ProcessorMode.ProtectedFlat), addrBase);
+			AssemblerLoader ldr = new AssemblerLoader(
+                FileUnitTester.MapTestPath(sourceFilename),
+                prog,
+                new IntelArchitecture(addrBase.Selector != 0 ? ProcessorMode.Real : ProcessorMode.ProtectedFlat));
+            ldr.Load(addrBase);
 			Scanner scan = new Scanner(prog,  null);
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{

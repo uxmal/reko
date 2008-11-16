@@ -18,6 +18,7 @@
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.Loading;
 using Decompiler.WindowsGui.Forms;
@@ -90,33 +91,32 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             Program prog = CreateFakeProgram();
             interactor = new TestMainFormInteractor(form, prog);
 
-            interactor.OpenBinary("foo.project");
+            interactor.OpenBinary("foo.exe");
             Decompiler.Core.Serialization.SerializedProcedure p = new Decompiler.Core.Serialization.SerializedProcedure();
             p.Address = "12345";
             p.Name = "MyProc";
             interactor.Decompiler.Project.UserProcedures.Add(p);
             interactor.Save();
-            string s = 
+            string s =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Decompiler"">
   <input>
-    <filename />
-    <address>0C00:0000</address>
+    <filename>foo.exe</filename>
   </input>
   <output>
-    <disassembly />
-    <intermediate-code />
-    <output />
+    <disassembly>foo.asm</disassembly>
+    <intermediate-code>foo.dis</intermediate-code>
+    <output>foo.c</output>
     <type-inference>false</type-inference>
-    <types-file />
+    <types-file>foo.h</types-file>
   </output>
   <procedure name=""MyProc"">
     <address>12345</address>
   </procedure>
 </project>";
-            Console.WriteLine(interactor.TestSavedProjectXml);
+            Console.WriteLine(interactor.ProbeSavedProjectXml);
 
-            Assert.AreEqual(s, interactor.TestSavedProjectXml);
+            Assert.AreEqual(s, interactor.ProbeSavedProjectXml);
         }
 
         [Test]
@@ -126,11 +126,14 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             interactor = new TestMainFormInteractor(form, prog);
             Assert.IsNull(interactor.ProjectFileName);
             interactor.OpenBinary("foo.exe");
+            Assert.AreEqual("foo.exe", interactor.Decompiler.Project.Input.Filename);
+            Assert.IsTrue(string.IsNullOrEmpty(interactor.ProjectFileName), "project filename should be clear");
             interactor.Save();
-            Assert.IsTrue(interactor.TestPromptedForSaving);
-            Assert.AreEqual("foo.project", interactor.ProjectFileName);
+            Assert.IsTrue(interactor.ProbePromptedForSaving, "Should have prompted for saving as no file name was supplied.");
+            Assert.AreEqual("foo.dcproject", interactor.ProbeFilename);
         }
 
+        [Obsolete("Use fakeloader instead")]
 		private Program CreateFakeProgram()
 		{
 			Program prog = new Program();
@@ -143,30 +146,32 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	public class TestMainFormInteractor : MainFormInteractor
 	{
 		private DecompilerDriver decompiler; 
-		private Loader ldr;
 		private Program program;
         private StringWriter sw;
         private string testFilename;
         private bool promptedForSaving;
 
-		public TestMainFormInteractor(MainForm form, Program program) : base(form)
+		public TestMainFormInteractor(MainForm form, Program prog) : base(form)
 		{
-			this.program = program;
-			this.ldr = new TestLoader(program);
-
+            this.program = prog;
 		}
 
-		public TestMainFormInteractor(MainForm form, DecompilerDriver test) : base(form)
+		public TestMainFormInteractor(MainForm form, DecompilerDriver decompiler) : base(form)
 		{
-			decompiler = test;
-			this.ldr = new TestLoader(program);
+            this.decompiler = decompiler;
 		}
 
-		public override DecompilerDriver CreateDecompiler(string filename, Program prog)
+		public override DecompilerDriver CreateDecompiler(LoaderBase ldr, Program prog)
 		{
-			return new TestDecompilerDriver(prog, this);
+            if (decompiler != null)
+                return decompiler;
+            return base.CreateDecompiler(ldr, prog);
 		}
 
+        protected override LoaderBase CreateLoader(string filename, Program prog)
+        {
+            return new FakeLoader(filename, prog);
+        }
 
         public override Program CreateProgram()
 		{
@@ -180,12 +185,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             return sw;
         }
 
-        public Loader Loader
-		{
-			get { return ldr; }
-			set { ldr = value; }
-		}
-
 
 		public override void ShowError(string format, params object [] args)
 		{
@@ -194,52 +193,72 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 
         protected override string PromptForFilename(string suggestedName)
         {
+            promptedForSaving = true;
             testFilename = suggestedName;
             return suggestedName;
         }
 
-        public string TestSavedProjectXml
+        public string ProbeSavedProjectXml
         {
             get { return sw.ToString(); }
         }
 
-        public string TestFilename
+        public string ProbeFilename
         {
             get { return testFilename; }
         }
 
 
-        public bool TestPromptedForSaving
+        public bool ProbePromptedForSaving
         {
             get { return promptedForSaving; }
         }
     }
 
-	public class TestDecompilerDriver : DecompilerDriver
+	public class FakeLoader : LoaderBase
 	{
-		public TestDecompilerDriver(Program prog, DecompilerHost host) : base("", prog, host)
+        private string filename;
+        private IProcessorArchitecture arch;
+        private ProgramImage image;
+
+
+		public FakeLoader(string filename, Program p) : base(p)
 		{
+            this.filename = filename;
 		}
 
-		protected override Loader CreateLoader(Program prog)
-		{
-			return new TestLoader(prog);
-		}
-	}
+        public IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
 
-	public class TestLoader : Loader
-	{
-		public TestLoader(Program p) : base(p)
-		{
-		}
 
-		public override byte[] LoadImageBytes(string fileName, int offset)
-		{
-			return base.Program.Image.Bytes;
-		}
+        public ProgramImage Image
+        {
+            get { return Image; }
+        }
 
-		public override void LoadExecutable(string pstrFileName, Address addrLoad)
-		{
-		}
+        public override DecompilerProject Load(Address addrLoad)
+        {
+            DecompilerProject project = new DecompilerProject();
+            SetDefaultFilenames(filename, project);
+            if (arch == null)
+            {
+                arch = new IntelArchitecture(ProcessorMode.Real);
+            }
+            Program.Architecture = Architecture;
+
+            if (addrLoad == null)
+            {
+                addrLoad = new Address(0xC00, 0);
+            }
+            if (image == null)
+            {
+                image = new ProgramImage(addrLoad, new byte[300]);
+            }
+            Program.Image = image;
+            return project;
+
+        }
 	}
 }

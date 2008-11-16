@@ -83,8 +83,9 @@ namespace Decompiler.UnitTests.Intel
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				Program prog = new Program();
-				Loader ld = new Loader(prog);
-				ld.Assemble(FileUnitTester.MapTestPath(sourceFile), arch, addrBase);
+				AssemblerLoader ld = new AssemblerLoader(
+				    FileUnitTester.MapTestPath(sourceFile), prog, arch);
+                ld.Load(addrBase);
 				prog.Architecture = arch;
 				IntelDumper dumper = new IntelDumper(arch);
 				dumper.ShowAddresses = true;

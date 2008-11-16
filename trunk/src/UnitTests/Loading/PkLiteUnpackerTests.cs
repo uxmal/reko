@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Loading;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Loading
 {
@@ -31,14 +31,14 @@ namespace Decompiler.UnitTests.Loading
 		public void PkLiteLoad()
 		{
 			Program prog = new Program();
-			Loader l = new Loader(prog);
+			Loader l = new Loader("foo", prog);
 			
 			prog.Image = new ProgramImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
 			ExeImageLoader exe = new ExeImageLoader(prog, prog.Image.Bytes);
 			PkLiteUnpacker ldr = new PkLiteUnpacker(exe, prog.Image.Bytes);
 			ProgramImage img = ldr.Load(new Address(0xC00, 0));
 			Assert.AreEqual(0x19EC0, img.Bytes.Length);
-			ldr.Relocate(new Address(0xC00, 0), new ArrayList(), new RelocationDictionary());
+			ldr.Relocate(new Address(0xC00, 0), new List<EntryPoint>(), new RelocationDictionary());
 		}
 	}
 }

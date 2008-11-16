@@ -43,8 +43,11 @@ namespace Decompiler.UnitTests.Typing
 		{
 			prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			Loader ldr = new Loader(prog);
-			ldr.Assemble(FileUnitTester.MapTestPath(relativePath), prog.Architecture, new Address(0xC00, 0));
+			AssemblerLoader ldr = new AssemblerLoader(
+			    FileUnitTester.MapTestPath(relativePath),
+                prog,
+                prog.Architecture);
+            ldr.Load(new Address(0xC00, 0));
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			

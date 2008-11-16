@@ -25,6 +25,7 @@ using NUnit.Framework;
 using Decompiler.UnitTests.Mocks;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Structure
 {
@@ -65,7 +66,7 @@ namespace Decompiler.UnitTests.Structure
 			e.MoveNext();
 			e.MoveNext();
 			Interval i = (Interval) e.Current;
-			BlockList preds = lf.BackEdges(i.Header);
+			List<Block> preds = lf.BackEdges(i.Header);
 			Assert.AreEqual(3, preds.Count);
 		}
 

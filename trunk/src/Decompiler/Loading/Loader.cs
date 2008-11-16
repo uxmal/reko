@@ -31,49 +31,34 @@ namespace Decompiler.Loading
 	/// Loads an image into memory, and deduces the processor architecture 
 	/// from the image contents.
 	/// </summary>
-	public class Loader
+	public class Loader : LoaderBase
 	{
-		private Program prog;
-		private DecompilerProject project;
-		private ArrayList entryPoints;
+        private string filename;
 		private RelocationDictionary relocations;
 
-		public Loader(Program prog)
-		{
-			this.prog = prog;
-			this.entryPoints = new ArrayList();
-		}
-
-		public void Assemble(string asmFile, IProcessorArchitecture arch, Address addrBase)
-		{
-			Assembler asm = arch.CreateAssembler();
-			prog.Image = asm.Assemble(prog, addrBase, asmFile, entryPoints);
-			entryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
-		}
-
-		public void AssembleFragment(string asmFragment, IProcessorArchitecture arch, Address addrBase)
-		{
-			Assembler asm = arch.CreateAssembler();
-			prog.Image = asm.AssembleFragment(null, addrBase, asmFragment);
-			entryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
-		}
-
-		public ArrayList EntryPoints
-		{
-			get { return entryPoints; }
-		}
-
+        public Loader(string filename, Program prog) :
+            base(prog)
+        {
+            this.filename = filename;
+        }
 
 		/// <summary>
-		/// Loads a file and returns a decompiler project.
+		/// Loads the file and returns a decompiler project.
 		/// </summary>
 		/// <remarks>
 		/// The file can either be an executable or a decompiler project file.
 		/// </remarks>
 		/// <param name="file"></param>
-		public void Load(string file, Address addrLoad)
+        [Obsolete]
+		public DecompilerProject Load(string file, Address addrLoad)
+        {
+            return Load(addrLoad);
+        }
+
+        public override DecompilerProject Load(Address addrLoad)
 		{
-			byte [] image = LoadImageBytes(file, 0);
+    		DecompilerProject project;
+			byte [] image = LoadImageBytes(filename, 0);
 			bool isXmlFile = IsXmlFile(image);
 			if (isXmlFile)
 			{
@@ -86,12 +71,8 @@ namespace Decompiler.Loading
 				// Wasn't a project, so make a blank one.
 
 				project = new DecompilerProject();
-				project.Input.Filename = file;
 
-				project.Output.DisassemblyFilename = Path.ChangeExtension(file, ".asm");
-				project.Output.IntermediateFilename = Path.ChangeExtension(file, ".dis");
-				project.Output.OutputFilename = Path.ChangeExtension(file, ".c");
-				project.Output.TypesFilename = Path.ChangeExtension(file, ".h");
+                SetDefaultFilenames(filename, project);
 			}
 
 			//$TODO: integrate this.
@@ -118,9 +99,11 @@ namespace Decompiler.Loading
 			LoadExecutable(project.Input.Filename, addrLoad);
 			if (!isXmlFile)
 			{
-				project.Input.BaseAddress = prog.Image.BaseAddress;
+				project.Input.BaseAddress = Program.Image.BaseAddress;
 			}
+            return project;
 		}
+
 
 		private static bool IsXmlFile(byte[] image)
 		{
@@ -135,13 +118,13 @@ namespace Decompiler.Loading
 		/// </summary>
 		/// <param name="binaryFile"></param>
 		/// <param name="addrBase"></param>
-		public void LoadBinary(string binaryFile, Address addrBase)
+		public void LoadComBinary(string binaryFile, Address addrBase)
 		{
 			byte [] rawBytes = LoadImageBytes(binaryFile, 0x100);
-			prog.Image = new ProgramImage(addrBase, rawBytes);
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			prog.Platform = new Arch.Intel.MsDos.MsdosPlatform(prog.Architecture);
-			entryPoints.Add(new EntryPoint(addrBase + 0x0100, prog.Architecture.CreateProcessorState()));
+			Program.Image = new ProgramImage(addrBase, rawBytes);
+			Program.Architecture = new IntelArchitecture(ProcessorMode.Real);
+			Program.Platform = new Arch.Intel.MsDos.MsdosPlatform(Program.Architecture);
+			EntryPoints.Add(new EntryPoint(addrBase + 0x0100, Program.Architecture.CreateProcessorState()));
 		}
 
 		/// <summary>
@@ -155,14 +138,14 @@ namespace Decompiler.Loading
 			if (rawBytes[0] == 'M' && 
 				rawBytes[1] == 'Z')
 			{
-				ExeImageLoader ldr = new ExeImageLoader(prog, rawBytes);
+				ExeImageLoader ldr = new ExeImageLoader(Program, rawBytes);
 				if (addrLoad == null)
 				{
 					addrLoad = ldr.PreferredBaseAddress;
 				}
-				prog.Image = ldr.Load(addrLoad);
+				Program.Image = ldr.Load(addrLoad);
 				relocations = new RelocationDictionary();
-				ldr.Relocate(addrLoad, entryPoints, relocations);
+				ldr.Relocate(addrLoad, EntryPoints, relocations);
 				return;
 			}
 			throw new ApplicationException("File has an unknown executable format.");
@@ -190,15 +173,6 @@ namespace Decompiler.Loading
 			}
 		}
 
-		public Program Program
-		{
-			get { return prog; }
-		}
-
-		public DecompilerProject Project
-		{
-			get { return project; }
-		}
 	}
 }
 

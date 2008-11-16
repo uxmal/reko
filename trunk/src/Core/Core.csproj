@@ -158,9 +158,6 @@
     <Compile Include="Block.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BlockList.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="CallGraph.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -424,9 +421,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProcedureBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ProcedureCollection.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProcedureSignature.cs">

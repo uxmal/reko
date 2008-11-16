@@ -60,9 +60,9 @@ namespace Decompiler.UnitTests.Scanning
 		{
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(addr.Selector == 0 ? ProcessorMode.ProtectedFlat : ProcessorMode.Real);
-			Assembler asm = prog.Architecture.CreateAssembler();
-			Loader ldr = new Loader(prog);
-			ldr.Assemble(FileUnitTester.MapTestPath(sourceFile), prog.Architecture, addr);
+            AssemblerLoader ldr = new AssemblerLoader(
+                FileUnitTester.MapTestPath(sourceFile), prog, prog.Architecture);
+            ldr.Load(addr);
 			Scanner scan = new Scanner(prog, null);
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{

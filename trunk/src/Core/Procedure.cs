@@ -48,7 +48,7 @@ namespace Decompiler.Core
 		
 		private void Init(Frame frame)
 		{
-			this.rpoBlocks = new BlockList();
+			this.rpoBlocks = new List<Block>();
 			this.frame = frame;
 			this.signature = new ProcedureSignature();
 			this.blockEntry = new Block(this, Name + "_entry");		// Entry block

@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Arch.Intel;		
 using Decompiler.Arch.Intel.Win32;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
@@ -34,7 +34,7 @@ namespace Decompiler.Loading
 		private uint sectionOffset;
 		private ProgramImage imgLoaded;
 		private uint preferredBaseOfImage;
-		private SortedList sectionMap;
+		private SortedDictionary<string, Section> sectionMap;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
 		private uint rvaExportTable;
 		private uint sizeExportTable;
@@ -61,7 +61,7 @@ namespace Decompiler.Loading
 			ReadOptionalHeader(rdr);
 		}
 
-		private void AddExportedEntryPoints(Address addrLoad, ImageMap imageMap, ArrayList entryPoints)
+		private void AddExportedEntryPoints(Address addrLoad, ImageMap imageMap, List<EntryPoint> entryPoints)
 		{
 			ImageReader rdr = imgLoaded.CreateReader(rvaExportTable);
 			rdr.ReadLeUint32();	// Characteristics
@@ -168,7 +168,7 @@ namespace Decompiler.Loading
 			prog.Platform = new Win32Platform(prog.Architecture);
 
 			sections = rdr.ReadLeInt16();
-			sectionMap = new SortedList(sections);
+			sectionMap = new SortedDictionary<string, Section>();
 			rdr.ReadLeUint32();		// timestamp.
 			rdr.ReadLeUint32();		// COFF symbol table.
 			rdr.ReadLeUint32();		// #of symbols.
@@ -234,7 +234,7 @@ namespace Decompiler.Loading
 		private const ushort RelocationLow = 2;
 		private const ushort RelocationHighLow = 3;
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
+		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgLoaded.Map;
 			foreach (Section s in sectionMap.Values)
@@ -254,8 +254,8 @@ namespace Decompiler.Loading
 				}
 			}
 			
-			Section relocSection = (Section) sectionMap[".reloc"];
-			if (relocSection != null)
+			Section relocSection;
+            if (sectionMap.TryGetValue(".reloc", out relocSection))
 			{
 				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.Linear, relocations);
 			}
@@ -313,7 +313,7 @@ namespace Decompiler.Loading
 		public string ReadAsciiString(uint rva, int maxLength)
 		{
 			ImageReader rdr = new ImageReader(RawImage, rva);
-			ArrayList bytes = new ArrayList();
+			List<byte> bytes = new List<byte>();
 			byte b;
 			while ((b = rdr.ReadByte()) != 0)
 			{
@@ -321,7 +321,7 @@ namespace Decompiler.Loading
 				if (bytes.Count == maxLength)
 					break;
 			}
-			byte [] bs = (byte []) bytes.ToArray(typeof (byte));
+			byte [] bs = bytes.ToArray();
 			char [] chars = Encoding.ASCII.GetChars(bs);
 			return new String(chars);
 		}

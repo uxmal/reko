@@ -21,7 +21,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Loading
 {
@@ -219,7 +219,7 @@ l01C8:
 			get { return new Address(0x800, 0); }
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
+		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgU.Map;
 			ushort segCode = (ushort) (addrLoad.Selector + (PspSize >> 4));

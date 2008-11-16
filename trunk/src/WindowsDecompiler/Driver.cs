@@ -39,7 +39,8 @@ namespace WindowsDecompiler
 			else
 			{
 				Program prog = new Program();
-				DecompilerDriver dec = new DecompilerDriver(args[0], prog, new NullDecompilerHost());
+                Loader ldr = new Loader(args[0], prog);
+				DecompilerDriver dec = new DecompilerDriver(ldr, prog, new NullDecompilerHost());
 				dec.Decompile();
 			}
 		}

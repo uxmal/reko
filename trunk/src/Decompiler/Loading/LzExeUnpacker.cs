@@ -20,7 +20,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Loading
@@ -77,7 +77,7 @@ namespace Decompiler.Loading
 
 		// Fix up the relocations.
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
+		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
 			// Seed the scanner with the start location.
 

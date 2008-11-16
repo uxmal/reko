@@ -20,7 +20,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Arch.Intel.MsDos;
 using Decompiler.Core;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Loading
 {
@@ -170,7 +170,7 @@ namespace Decompiler.Loading
 			e_lfanew = rdr.ReadLeUint32();          
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
+		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
 			ldrDeferred.Relocate(addrLoad, entryPoints, relocations);
 		}

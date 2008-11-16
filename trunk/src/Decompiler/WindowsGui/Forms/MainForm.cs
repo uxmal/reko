@@ -85,7 +85,7 @@ namespace Decompiler.WindowsGui.Forms
 		private System.Windows.Forms.TabPage tabWarnings;
         private SaveFileDialog sfd;
         private TabPage tabFindResults;
-        private ListView listView1;
+        private ListView listFindResults;
         private ColumnHeader columnHeader2;
 		private System.ComponentModel.IContainer components;
 
@@ -144,6 +144,9 @@ namespace Decompiler.WindowsGui.Forms
             this.colDiscoveryDescription = new System.Windows.Forms.ColumnHeader();
             this.tabLog = new System.Windows.Forms.TabPage();
             this.txtLog = new System.Windows.Forms.TextBox();
+            this.tabFindResults = new System.Windows.Forms.TabPage();
+            this.listFindResults = new System.Windows.Forms.ListView();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.panelTop = new System.Windows.Forms.Panel();
             this.splitterTop = new System.Windows.Forms.Splitter();
             this.panelRhs = new System.Windows.Forms.Panel();
@@ -160,17 +163,11 @@ namespace Decompiler.WindowsGui.Forms
             this.statusBarPanel3 = new System.Windows.Forms.StatusBarPanel();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.pageLoaded = new Decompiler.WindowsGui.Forms.LoadedPage();
-            this.pageInitial = new Decompiler.WindowsGui.Forms.InitialPage();
-            this.pageAnalyzed = new Decompiler.WindowsGui.Forms.AnalyzedPage();
-            this.pageFinal = new Decompiler.WindowsGui.Forms.FinalPage();
-            this.tabFindResults = new System.Windows.Forms.TabPage();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.tabsOutput.SuspendLayout();
             this.tabDiagnostics.SuspendLayout();
             this.tabWarnings.SuspendLayout();
             this.tabLog.SuspendLayout();
+            this.tabFindResults.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelRhs.SuspendLayout();
             this.panelLhs.SuspendLayout();
@@ -338,6 +335,33 @@ namespace Decompiler.WindowsGui.Forms
             this.txtLog.Size = new System.Drawing.Size(696, 136);
             this.txtLog.TabIndex = 2;
             // 
+            // tabFindResults
+            // 
+            this.tabFindResults.Controls.Add(this.listFindResults);
+            this.tabFindResults.Location = new System.Drawing.Point(4, 22);
+            this.tabFindResults.Name = "tabFindResults";
+            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFindResults.Size = new System.Drawing.Size(696, 74);
+            this.tabFindResults.TabIndex = 3;
+            this.tabFindResults.Text = "Find Results";
+            this.tabFindResults.UseVisualStyleBackColor = true;
+            // 
+            // listFindResults
+            // 
+            this.listFindResults.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader2});
+            this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listFindResults.Location = new System.Drawing.Point(3, 3);
+            this.listFindResults.Name = "listFindResults";
+            this.listFindResults.Size = new System.Drawing.Size(690, 68);
+            this.listFindResults.TabIndex = 0;
+            this.listFindResults.UseCompatibleStateImageBehavior = false;
+            this.listFindResults.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Item";
+            // 
             // panelTop
             // 
             this.panelTop.Controls.Add(this.splitterTop);
@@ -368,6 +392,41 @@ namespace Decompiler.WindowsGui.Forms
             this.panelRhs.Name = "panelRhs";
             this.panelRhs.Size = new System.Drawing.Size(448, 446);
             this.panelRhs.TabIndex = 22;
+            // 
+            // pageLoaded
+            // 
+            this.pageLoaded.BackColor = System.Drawing.SystemColors.Control;
+            this.pageLoaded.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pageLoaded.Location = new System.Drawing.Point(0, 0);
+            this.pageLoaded.Name = "pageLoaded";
+            this.pageLoaded.ProgramImage = null;
+            this.pageLoaded.Size = new System.Drawing.Size(448, 446);
+            this.pageLoaded.TabIndex = 20;
+            // 
+            // pageInitial
+            // 
+            this.pageInitial.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pageInitial.IsDirty = false;
+            this.pageInitial.Location = new System.Drawing.Point(0, 0);
+            this.pageInitial.Name = "pageInitial";
+            this.pageInitial.Size = new System.Drawing.Size(448, 446);
+            this.pageInitial.TabIndex = 19;
+            // 
+            // pageAnalyzed
+            // 
+            this.pageAnalyzed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pageAnalyzed.Location = new System.Drawing.Point(0, 0);
+            this.pageAnalyzed.Name = "pageAnalyzed";
+            this.pageAnalyzed.Size = new System.Drawing.Size(448, 446);
+            this.pageAnalyzed.TabIndex = 21;
+            // 
+            // pageFinal
+            // 
+            this.pageFinal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pageFinal.Location = new System.Drawing.Point(0, 0);
+            this.pageFinal.Name = "pageFinal";
+            this.pageFinal.Size = new System.Drawing.Size(448, 446);
+            this.pageFinal.TabIndex = 0;
             // 
             // panelLhs
             // 
@@ -468,7 +527,7 @@ namespace Decompiler.WindowsGui.Forms
             this.statusBarPanel3.BorderStyle = System.Windows.Forms.StatusBarPanelBorderStyle.None;
             this.statusBarPanel3.Name = "statusBarPanel3";
             this.statusBarPanel3.Text = "bar";
-            this.statusBarPanel3.Width = 163;
+            this.statusBarPanel3.Width = 187;
             // 
             // splitter1
             // 
@@ -558,6 +617,7 @@ namespace Decompiler.WindowsGui.Forms
             this.tabWarnings.ResumeLayout(false);
             this.tabLog.ResumeLayout(false);
             this.tabLog.PerformLayout();
+            this.tabFindResults.ResumeLayout(false);
             this.panelTop.ResumeLayout(false);
             this.panelRhs.ResumeLayout(false);
             this.panelLhs.ResumeLayout(false);
@@ -645,6 +705,11 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			get { return pageFinal; }
 		}
+
+        public ListView FindResultsList
+        {
+            get { return listFindResults; }
+        }
 
 		public InitialPage InitialPage
 		{

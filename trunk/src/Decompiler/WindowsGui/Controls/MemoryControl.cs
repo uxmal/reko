@@ -431,7 +431,7 @@ namespace Decompiler.WindowsGui.Controls
 			int h = Font.Height;
 			cyPage = Math.Max((ClientRectangle.Height / Font.Height) - 1, 1);
 			vscroller.LargeChange = cyPage;
-			vscroller.Maximum = cRows - cyPage;
+			vscroller.Maximum = Math.Max(0, cRows - cyPage);
 			vscroller.Value = (addrTopVisible.Linear - image.BaseAddress.Linear) / cbRow;
 		}
 

@@ -252,7 +252,7 @@ baz endp
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			Assembler asm = prog.Architecture.CreateAssembler();
-			ArrayList entryPoints = new ArrayList();
+			List<EntryPoint> entryPoints = new List<EntryPoint>();
 			prog.Image = asm.Assemble(prog, new Address(0x0C00, 0x0000), FileUnitTester.MapTestPath(srcFile), entryPoints);
 			return prog;
 		}

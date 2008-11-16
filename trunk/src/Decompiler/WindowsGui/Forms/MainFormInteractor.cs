@@ -39,7 +39,7 @@ namespace Decompiler.WindowsGui.Forms
 		ICommandTarget,
 		DecompilerHost
 	{
-		private MainForm form;			//$REVIEW: in the future, this should be an interface.
+		private MainForm form;			//$REVIEW: for platform independence, this should be an interface.
 		private DecompilerDriver decompiler;
 		private PhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
@@ -99,24 +99,30 @@ namespace Decompiler.WindowsGui.Forms
 			pageAnalyzed.NextPage = pageFinal;
 		}
 
-		public virtual DecompilerDriver CreateDecompiler(string filename, Program prog)
+		public virtual DecompilerDriver CreateDecompiler(LoaderBase ldr, Program prog)
 		{
-			return new DecompilerDriver(filename, prog, this);
+            return new DecompilerDriver(ldr, prog, this);
 		}
+
+        protected virtual LoaderBase CreateLoader(string filename, Program prog)
+        {
+            return new Loader(filename, prog);
+        }
 
 		public virtual Program CreateProgram()
 		{
 			return new Program();
 		}
 
-        private void FindResults()
+        private void CreateServices()
         {
-            throw new NotImplementedException();
+            FindResultsInteractor f = new FindResultsInteractor();
+            f.Attach(form.FindResultsList);
         }
 
 		public virtual TextWriter CreateTextWriter(string filename)
 		{
-			if (filename == null || filename == "")
+			if (string.IsNullOrEmpty(filename))
 				return null;
 			return new StreamWriter(filename);
 		}
@@ -142,14 +148,15 @@ namespace Decompiler.WindowsGui.Forms
 			try 
 			{
 				Program prog = CreateProgram();
-				decompiler = CreateDecompiler(file, prog);
+                LoaderBase ldr = CreateLoader(file, prog);
+				decompiler = CreateDecompiler(ldr, prog);
 				decompiler.LoadProgram();
-				SwitchInteractor(pageLoaded);
 			} 
 			catch (Exception ex)
 			{
-				ShowError("Couldn't open file '{0}'. {1}", file, ex.Message + ex.StackTrace);		//$DEBUG
+				ShowError("Couldn't open file '{0}'. {1}", file, ex.Message);
 			}
+            SwitchInteractor(pageLoaded);
 		}
 
 		public void OpenBinaryWithPrompt()

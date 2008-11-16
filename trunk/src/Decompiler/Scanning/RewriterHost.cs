@@ -84,19 +84,15 @@ namespace Decompiler.Scanning
 		{
 			foreach (KeyValuePair<Address, Procedure> de in prog.Procedures)
 			{
-				Address addrProc =  de.Key;
-				Procedure p = de.Value;
-				if (prog.CallGraph.EntryPoints.Contains(p))
+				if (prog.CallGraph.EntryPoints.Contains(de.Value))
 				{
-					RewriteProcedure(p, addrProc, prog.Architecture.WordWidth.Size);
+					RewriteProcedure(de.Value, de.Key, prog.Architecture.WordWidth.Size);
 				}
 			}
 
             foreach (KeyValuePair<Address, Procedure> de in prog.Procedures)
 			{
-				Address addrProc = (Address) de.Key;
-				Procedure p = (Procedure) de.Value;
-				RewriteProcedure(p, addrProc, p.Frame.ReturnAddressSize);
+				RewriteProcedure(de.Value, de.Key, de.Value.Frame.ReturnAddressSize);
 			}
 
 			foreach (Procedure proc in prog.Procedures.Values)
