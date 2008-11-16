@@ -19,7 +19,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Loading
 {
@@ -41,7 +41,7 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
+		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgLoaded.Map;
 			ImageReader rdr = new ImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);

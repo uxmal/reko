@@ -41,26 +41,18 @@ namespace Decompiler
 	/// </remarks>
 	public class DecompilerDriver
 	{
-		private Program program;
-		private string filename;
+		private Program prog;
 		private DecompilerProject project;
 		private DecompilerHost host;
-		private Loader loader;
+		private LoaderBase loader;
 		private Scanner scanner;
 		private RewriterHost rewriterHost;
 		private InductionVariableCollection ivs;
 
-		public DecompilerDriver(string filename, Program program, DecompilerHost host)
-		{
-			this.filename = filename;
-			this.program = program;
-			this.host = host;
-		}
-
-        protected DecompilerDriver(DecompilerProject project, Program prog, DecompilerHost host)
+        public DecompilerDriver(LoaderBase ldr, Program prog, DecompilerHost host)
         {
-            this.project = project;
-            this.program = prog;
+            this.loader = ldr;
+            this.prog = prog;
             this.host = host;
         }
 
@@ -70,7 +62,7 @@ namespace Decompiler
 		///</summary>
 		public virtual void AnalyzeDataFlow()
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, host);
+			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, host);
 			RegisterLiveness rl = dfa.UntangleProcedures();
 			host.InterproceduralAnalysisComplete();
 
@@ -84,6 +76,9 @@ namespace Decompiler
 			host.ProceduresTransformed();
 		}
 
+        /// <summary>
+        /// Main entry point of the decompiler. Loads, decompiles, and outputs the results.
+        /// </summary>
 		public void Decompile()
 		{
 			try 
@@ -111,7 +106,7 @@ namespace Decompiler
 		{	
 			if (output != null)
 			{
-				foreach (Procedure proc in program.Procedures.Values)
+				foreach (Procedure proc in prog.Procedures.Values)
 				{
 					if (dfa != null)
 					{
@@ -123,7 +118,7 @@ namespace Decompiler
 						else
 							output.Write("Warning: no signature found for {0}", proc.Name);
 						output.WriteLine();
-						flow.Emit(program.Architecture, output);
+						flow.Emit(prog.Architecture, output);
 						foreach (Block block in proc.RpoBlocks)
 						{
 							if (block == null)
@@ -131,7 +126,7 @@ namespace Decompiler
 
 							block.Write(output); output.Flush();
 							BlockFlow bf = dfa.ProgramDataFlow[block];
-							if (bf != null) bf.Emit(program.Architecture, output);
+							if (bf != null) bf.Emit(prog.Architecture, output);
 						}
 					}
 					else
@@ -144,27 +139,20 @@ namespace Decompiler
 			}
 		}
 
-		protected virtual Loader CreateLoader(Program prog)
-		{
-			return new Loader(prog);
-		}
-
 		/// <summary>
 		/// Loads (or assembles) the program in memory, performing relocations as necessary.
 		/// </summary>
 		/// <param name="program"></param>
 		/// <param name="cfg"></param>
-		public virtual void LoadProgram()
+		public void LoadProgram()
 		{
-			loader = CreateLoader(program);
-			loader.Load(filename, null);
-			project = loader.Project;
+            project = loader.Load(null);
 			host.ProgramLoaded();
 		}
 
 		public Program Program
 		{
-			get { return program; }
+			get { return prog; }
 		}
 
 		public DecompilerProject Project
@@ -181,7 +169,7 @@ namespace Decompiler
 		{
 			if (project.Output.TypeInference)
 			{
-				TypeAnalyzer analyzer = new TypeAnalyzer(program, ivs, host);
+				TypeAnalyzer analyzer = new TypeAnalyzer(prog, ivs, host);
 				analyzer.RewriteProgram();
 				using (TextWriter w = host.CreateTypesWriter(project.Output.TypesFilename))
 				{
@@ -190,7 +178,7 @@ namespace Decompiler
 			}
 			else
 			{
-				MemReplacer mem = new MemReplacer(program);
+				MemReplacer mem = new MemReplacer(prog);
 				mem.RewriteProgram();
 			}
 		}
@@ -202,7 +190,7 @@ namespace Decompiler
 		/// <param name="cfg">configuration information</param>
 		public virtual void RewriteMachineCode()
 		{
-			rewriterHost = new RewriterHost(program, host, scanner.SystemCalls, scanner.VectorUses);
+			rewriterHost = new RewriterHost(prog, host, scanner.SystemCalls, scanner.VectorUses);
 			rewriterHost.LoadCallSignatures(this.project.UserCalls);
 			rewriterHost.RewriteProgram();
 
@@ -221,7 +209,7 @@ namespace Decompiler
 				w.WriteLine("#include \"{0}\"", Path.GetFileName(project.Output.TypesFilename));
 				w.WriteLine();
 				CodeFormatter fmt = new CodeFormatter(w);
-				foreach (Procedure proc in program.Procedures.Values)
+				foreach (Procedure proc in prog.Procedures.Values)
 				{
 					fmt.Write(proc);
 					w.WriteLine();
@@ -234,9 +222,9 @@ namespace Decompiler
 			using (TextWriter w = host.CreateTypesWriter(project.Output.TypesFilename))
 			{
 				WriteHeaderComment(Path.GetFileName(project.Output.TypesFilename), w);
-				w.WriteLine("/*");program.TypeStore.Write(w); w.WriteLine("*/");
+				w.WriteLine("/*");prog.TypeStore.Write(w); w.WriteLine("*/");
 				TypeFormatter fmt = new TypeFormatter(w);
-				foreach (EquivalenceClass eq in program.TypeStore.UsedEquivalenceClasses)
+				foreach (EquivalenceClass eq in prog.TypeStore.UsedEquivalenceClasses)
 				{
 					if (eq.DataType != null)
 					{
@@ -258,7 +246,7 @@ namespace Decompiler
 		public Procedure ScanProcedure(Address addr)
 		{
 			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-				scanner = new Scanner(program, host);
+				scanner = new Scanner(prog, host);
 			Procedure proc = scanner.EnqueueProcedure(null, addr, null);
 			scanner.ProcessQueues();
             return proc;
@@ -276,10 +264,10 @@ namespace Decompiler
 
 			try
 			{
-				scanner = new Scanner(program, host);
+				scanner = new Scanner(prog, host);
 				foreach (EntryPoint ep in loader.EntryPoints)
 				{
-					program.AddEntryPoint(ep);
+					prog.AddEntryPoint(ep);
 					scanner.EnqueueEntryPoint(ep);
 				}
 				foreach (SerializedProcedure sp in project.UserProcedures)
@@ -294,7 +282,7 @@ namespace Decompiler
 				loader = null;
 				using (TextWriter w = host.CreateDisassemblyWriter())
 				{
-					program.DumpAssembler(w);
+					prog.DumpAssembler(w);
 				}
 			}
 		}
@@ -308,7 +296,7 @@ namespace Decompiler
 			// Since procedures are now independent of each other, this analysis
 			// is done one procedure at a time.
 
-			foreach (Procedure proc in program.Procedures.Values)
+			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				StructureAnalysis sa = new StructureAnalysis(proc);
 				sa.FindStructures();

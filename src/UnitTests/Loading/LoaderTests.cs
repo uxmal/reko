@@ -39,15 +39,14 @@ namespace Decompiler.UnitTests.Loading
 				"<input><filename>foo.bar</filename></input></project>");
 			TestLoader ldr = new TestLoader(new Program());
 			ldr.Image = image;
-			ldr.Load("", null);
-			Assert.IsNotNull(ldr.Project);
-			Assert.AreEqual("foo.bar", ldr.Project.Input.Filename);
+			DecompilerProject project = ldr.Load(null);
+			Assert.AreEqual("foo.bar", project.Input.Filename);
 		}
 
 		private class TestLoader : Loader
 		{
 			public TestLoader(Program prog)
-				: base(prog)
+				: base("", prog)
 			{
 			}
 

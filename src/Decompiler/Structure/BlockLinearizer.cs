@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Structure
 {
@@ -71,7 +72,7 @@ namespace Decompiler.Structure
 
 		public void ConvertInboundEdges(Block b, StructureExitCreator creator)
 		{
-			BlockList inboundEdges = new BlockList(b.Pred);
+			List<Block> inboundEdges = new List<Block>(b.Pred);
 			foreach (Block p in inboundEdges)
 			{
 				AbsynStatement tgt = creator(b);

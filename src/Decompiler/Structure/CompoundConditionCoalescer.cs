@@ -21,6 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Structure
@@ -192,7 +193,7 @@ namespace Decompiler.Structure
 		}
 
 
-		private void ReplaceBlock(BlockList blocks, Block old, Block gnu)
+		private void ReplaceBlock(List<Block> blocks, Block old, Block gnu)
 		{
 			for (int i = 0; i < blocks.Count; ++i)
 				if (blocks[i] == old)

@@ -20,6 +20,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -34,7 +35,7 @@ namespace Decompiler.Core
 		private ProgramImage image;
 		private IProcessorArchitecture arch;
 		private Platform platform;
-		private ProcedureCollection procedures;
+		private SortedList<Address,Procedure> procedures;
 		private CallGraph callGraph;
 		private Map vectors;
 		private Hashtable mpuintfn;
@@ -46,7 +47,7 @@ namespace Decompiler.Core
 
 		public Program()
 		{
-			procedures = new ProcedureCollection();
+			procedures = new SortedList<Address,Procedure>();
 			vectors = new Map();
 			callGraph = new CallGraph();
 			mpuintfn = new Hashtable();		// uint (offset) -> string
@@ -82,7 +83,7 @@ namespace Decompiler.Core
 
 		public void DumpAssembler(TextWriter wr)
 		{
-			if (wr == null)
+			if (wr == null || arch == null)
 				return;
 			Dumper dump = arch.CreateDumper();
 			dump.Dump(this, Image.Map, wr);
@@ -106,6 +107,9 @@ namespace Decompiler.Core
 			get { return globals; } 
 		}
 		
+        /// <summary>
+        /// The unpacked, relocated, in-memory image of the program to be decompiled.
+        /// </summary>
 		public ProgramImage Image
 		{
 			get { return image; }
@@ -126,7 +130,7 @@ namespace Decompiler.Core
 		/// <summary>
 		/// Provides access to the program's procedures, indexed by address.
 		/// </summary>
-		public ProcedureCollection Procedures
+		public SortedList<Address, Procedure> Procedures
 		{
 			get { return procedures; }
 		}

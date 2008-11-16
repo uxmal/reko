@@ -86,8 +86,11 @@ namespace Decompiler.UnitTests.Intel
 			using (FileUnitTester fut = new FileUnitTester("intel/WalkFactorial.txt"))
 			{
 				Program prog = new Program();
-				Loader ld = new Loader(prog);
-				ld.Assemble(FileUnitTester.MapTestPath("fragments/Factorial.asm"), new IntelArchitecture(ProcessorMode.Real), new Address(0x0C00, 0));
+                AssemblerLoader ld = new AssemblerLoader(
+                    FileUnitTester.MapTestPath("fragments/Factorial.asm"),
+                    prog,
+                    new IntelArchitecture(ProcessorMode.Real));
+                ld.Load(new Address(0x0C00, 0));
 				Scanner sc = new Scanner(prog, null);
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
@@ -238,8 +241,9 @@ namespace Decompiler.UnitTests.Intel
 			{
 				Program prog = new Program();
 				prog.Architecture = new IntelArchitecture(mode);
-				Loader ld = new Loader(prog);
-				ld.Assemble(FileUnitTester.MapTestPath(sourceFile), prog.Architecture, addrBase);
+				AssemblerLoader ld = new AssemblerLoader(
+				    FileUnitTester.MapTestPath(sourceFile), prog, prog.Architecture);
+                ld.Load(addrBase);
 				Scanner sc = new Scanner(prog, null);
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{

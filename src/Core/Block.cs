@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Output;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -34,8 +34,8 @@ namespace Decompiler.Core
 
 		private string name;
 		private Procedure proc;
-		private BlockList pred = new BlockList();
-		private BlockList succ = new BlockList();
+		private List<Block> pred = new List<Block>();
+		private List<Block> succ = new List<Block>();
 		private StatementList stms;
 
 		public Block(Procedure proc, string name)
@@ -96,7 +96,7 @@ namespace Decompiler.Core
 				block.Statements.Add(stm);
 			}
 
-			block.succ = new BlockList(next.succ);
+			block.succ = new List<Block>(next.succ);
 			ReplaceJumpsFrom(next, block);
 			next.Pred.Clear();
 			next.Statements.Clear();
@@ -161,7 +161,7 @@ namespace Decompiler.Core
 			set { succ[0] = value; }
 		}
 
-		public BlockList Pred
+		public List<Block> Pred
 		{
 			get { return pred; }
 		}
@@ -171,7 +171,7 @@ namespace Decompiler.Core
 			get { return proc; }
 		}
 
-		public BlockList Succ
+		public List<Block> Succ
 		{
 			get { return succ; }
 		}

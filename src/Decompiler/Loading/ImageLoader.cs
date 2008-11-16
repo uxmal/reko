@@ -18,7 +18,7 @@
 
 using Decompiler.Core;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Loading
 {
@@ -68,7 +68,7 @@ namespace Decompiler.Loading
 		/// </summary>
 		/// <param name="addrLoad">The address at which the program image is loaded.</param>
 		/// <param name="entryPoints">Collection into which any found entry points found should be added.</param>
-		public abstract void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations);
+		public abstract void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations);
 
 	}
 }

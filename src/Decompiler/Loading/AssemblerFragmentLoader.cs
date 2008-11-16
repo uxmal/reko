@@ -16,31 +16,36 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Loading
 {
-    public partial class FindDialog : Form
+    /// <summary>
+    /// Loader that assembles a literal string. Mostly used for testing.
+    /// </summary>
+    public class AssemblerFragmentLoader : LoaderBase
     {
-        public FindDialog()
+        private string asmFragment;
+        private IProcessorArchitecture arch;
+
+        public AssemblerFragmentLoader(string asmFragment, Program prog, IProcessorArchitecture arch)
+            : base(prog)
         {
-            InitializeComponent();
+            this.asmFragment = asmFragment;
+            this.arch = arch;
         }
 
-        public Button FindButton
+        public override DecompilerProject Load(Address addrLoad)
         {
-            get { return btnFind; }
+            Assembler asm = arch.CreateAssembler();
+            Program.Image = asm.AssembleFragment(null, addrLoad, asmFragment);
+            EntryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
+            return new DecompilerProject();
         }
 
-        public TextBox FindText
-        {
-            get { return txtFindText; }
-        }
     }
 }

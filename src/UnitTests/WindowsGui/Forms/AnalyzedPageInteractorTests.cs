@@ -16,10 +16,12 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
-using Decompiler.Arch.Intel;
+using Decompiler.Loading;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
@@ -32,21 +34,22 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
     public class AnalyzedPageInteractorTests
     {
         private Program prog;
-        private FakeDecompilerDriver decompiler;
+        private DecompilerDriver decompiler;
         private MainForm form;
-        private MainFormInteractor main;
-        private TestAnalyzedPageInteractor interactor ;
+        private TestMainFormInteractor main;
+        private TestAnalyzedPageInteractor interactor;
     
 
         [SetUp]
         public void Setup()
         {
             prog = new Program();
-            decompiler = new FakeDecompilerDriver(prog, new FakeDecompilerHost());
+            FakeLoader ldr = new FakeLoader("fakefile.exe", prog);
+            decompiler = new DecompilerDriver(ldr, prog, new FakeDecompilerHost());
             form = new MainForm();
-            main = new MainFormInteractor(form);
-            main.CreateDecompiler("", prog);
+            main = new TestMainFormInteractor(form, decompiler);
             interactor = new TestAnalyzedPageInteractor(prog, form.AnalyzedPage, main);
+            main.OpenBinary("");
         }
 
         [TearDown]
@@ -103,27 +106,16 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             interactor.EnterPage();
             form.BrowserList.Items[0].Selected = true;
             Assert.IsTrue(interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ActionEditSignature), "Should have executed command.");
-            Assert.AreSame(typeof(ProcedureDialog), interactor.LastShownDialog);
+            Assert.AreSame(typeof(ProcedureDialog), interactor.ProbeLastShownDialog);
         }
 
         private class TestAnalyzedPageInteractor : AnalyzedPageInteractor
         {
-            private FakeDecompilerDriver decompiler;
             private Form lastDlg; 
 
             public TestAnalyzedPageInteractor(Program prog, AnalyzedPage page, MainFormInteractor main)
                 : base(page, main)
             {
-                decompiler = new FakeDecompilerDriver(prog, new FakeDecompilerHost());
-                decompiler.Project.Output = new Decompiler.Core.Serialization.DecompilerOutput();
-            }
-
-            public override DecompilerDriver Decompiler
-            {
-                get
-                {
-                    return decompiler;
-                }
             }
 
             public override DialogResult ShowModalDialog(Form dlg)
@@ -132,38 +124,10 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
                 return DialogResult.OK;
             }
 
-            public Form LastShownDialog
+            public Form ProbeLastShownDialog
             {
                 get { return lastDlg; }
             }
         }
-
-        private class TestMainFormInteractor : MainFormInteractor
-        {
-            private DecompilerDriver decompiler;
-
-            public override DecompilerDriver CreateDecompiler(string filename, Program prog)
-            {
-                decompiler = new FakeDecompilerDriver(prog, this);
-                return decompiler;
-            }
-        }
-
-        private class FakeDecompilerDriver : DecompilerDriver
-        {
-            public FakeDecompilerDriver(Program prog, DecompilerHost host)
-                : base(new Decompiler.Core.Serialization.DecompilerProject(), prog, host)
-            {
-            }
-
-            public override void RewriteMachineCode()
-            {
-            }
-
-            public override void AnalyzeDataFlow()
-            { 
-            }
-        }
     }
-
 }

@@ -41,7 +41,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			form = new MainForm();
 			Program prog = BuildFakeProgram();
 			mi = new TestMainFormInteractor(form, prog);
-			mi.Loader = new TestLoader(prog);
 			mi.OpenBinary(null);
 		}
 
@@ -102,22 +101,17 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			return prog;
 		}
 
-		private class TestLoader : Loader
-		{
-			public TestLoader(Program prog) : base(prog)
-			{
-			}
+        private class TestLoader : LoaderBase
+        {
+            public TestLoader(Program prog)
+                : base(prog)
+            {
+            }
 
-			public override void LoadExecutable(string pstrFileName, Address addrLoad)
-			{
-			}
-
-			public override byte[] LoadImageBytes(string fileName, int offset)
-			{
-				return Program.Image.Bytes;
-			}
-
-		}
-
+            public override DecompilerProject Load(Address userSpecifiedAddress)
+            {
+                return new DecompilerProject();
+            }
+        }
 	}
 }

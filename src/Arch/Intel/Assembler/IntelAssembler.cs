@@ -21,7 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using Decompiler;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -39,19 +39,19 @@ namespace Decompiler.Arch.Intel.Assembler
 		private Address addrBase;
 		private Address addrStart;
 		private SymbolTable symtab;
-		private SortedList importLibraries;
+		private SortedDictionary<string, SignatureLibrary> importLibraries;
 		private Program prog;
 		private ModRmBuilder modRm;
-		private ArrayList entryPoints;
+		private List<EntryPoint> entryPoints;
 
 		public IntelAssembler()
 		{
-			importLibraries = new SortedList();
+			importLibraries = new SortedDictionary<string, SignatureLibrary>();
 			m_symOrigin = null;
 			symtab = new SymbolTable();
 		}
 
-		public override ProgramImage Assemble(Program prog, Address addr, string file, ArrayList entryPoints)
+		public override ProgramImage Assemble(Program prog, Address addr, string file, List<EntryPoint> entryPoints)
 		{
 			this.prog = prog;
 			this.entryPoints = entryPoints;
@@ -248,7 +248,7 @@ namespace Decompiler.Arch.Intel.Assembler
 		public ParsedOperand [] ParseOperandList(int min, int max)
 		{
 			OperandParser opp = new OperandParser(lexer, symtab, addrBase, emitter.SegmentDataWidth, emitter.SegmentAddressWidth);
-			ArrayList ops = new ArrayList();
+            List<ParsedOperand> ops = new List<ParsedOperand>();
 			emitter.SegmentOverride = Registers.None;
 			emitter.AddressWidth = emitter.SegmentAddressWidth;
 			if (lexer.PeekToken() != Token.EOL)
@@ -262,7 +262,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				while (lexer.PeekToken() == Token.COMMA)
 				{
 					lexer.DiscardToken();
-					opp.DataWidth = ((ParsedOperand)ops[0]).Operand.Width;
+					opp.DataWidth = ops[0].Operand.Width;
 					ops.Add(opp.ParseOperand());
 					if (opp.SegmentOverride != Registers.None)
 					{
@@ -863,8 +863,9 @@ namespace Decompiler.Arch.Intel.Assembler
 			Expect(Token.STRINGLITERAL);
 			string dll = lexer.StringLiteral.ToLower();
 
-			SignatureLibrary lib = (SignatureLibrary) importLibraries[dll];
-			if (lib == null)
+
+			SignatureLibrary lib;
+            if (!importLibraries.TryGetValue(dll, out lib))
 			{
 				lib = new SignatureLibrary(prog.Architecture);
 				lib.Load(Path.ChangeExtension(dll, ".xml"));

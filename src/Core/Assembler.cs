@@ -18,13 +18,13 @@
 
 using Decompiler;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
 	public abstract class Assembler
 	{
-		public abstract ProgramImage Assemble(Program prog, Address baseAddress, string sourcefile, ArrayList entryPoints);
+		public abstract ProgramImage Assemble(Program prog, Address baseAddress, string sourcefile, List<EntryPoint> entryPoints);
 		public abstract ProgramImage AssembleFragment(Program prog, Address baseAddress, string fragment);
 		public abstract Address StartAddress { get; }
 	}

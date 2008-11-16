@@ -22,6 +22,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Structure
@@ -242,9 +243,9 @@ namespace Decompiler.Structure
 		/// </summary>
 		/// <param name="block"></param>
 		/// <returns></returns>
-		public BlockList BackEdges(Block block)
+		public List<Block> BackEdges(Block block)
 		{
-			BlockList blox = new BlockList();
+			List<Block> blox = new List<Block>();
 			foreach (Block p in block.Pred)
 			{
 				if (IsBackEdge(p, block))

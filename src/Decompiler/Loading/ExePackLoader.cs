@@ -21,7 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using Decompiler.Arch.Intel;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Loading
 {
@@ -111,7 +111,7 @@ namespace Decompiler.Loading
 			get { return new Address(0x800, 0); }
 		}
 
-		public override void Relocate(Address addrLoad, ArrayList entryPoints, RelocationDictionary relocations)
+		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgU.Map;
 			ImageReader rdr = new ImageReader(RawImage, hdrOffset + 0x012Du);
