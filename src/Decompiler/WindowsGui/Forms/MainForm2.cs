@@ -27,12 +27,12 @@ using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
-    public partial class MainForm2 : Form,
+    public partial class MainForm : Form,
         IMainForm
     {
         private ProgressBarWrapper wrProgress;
 
-        public MainForm2()
+        public MainForm()
         {
             InitializeComponent();
             wrProgress = new ProgressBarWrapper(progressStatus);
@@ -40,14 +40,8 @@ namespace Decompiler.WindowsGui.Forms
 
         public string TitleText
         {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
+            get { return Text; }
+            set { Text = value; }
         }
         
         //$REFACTOR: this should be a service.
@@ -66,6 +60,11 @@ namespace Decompiler.WindowsGui.Forms
         public void BuildPhases()
         {
             throw new Exception("The method or operation is not implemented.");
+        }
+
+        public ListView DiagnosticsList
+        {
+            get { return listDiagnostics; }
         }
 
         public ListView FindResultsList

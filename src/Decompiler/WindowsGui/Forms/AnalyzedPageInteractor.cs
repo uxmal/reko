@@ -138,7 +138,7 @@ namespace Decompiler.WindowsGui.Forms
                             }
                         }
                     }
-                    break;
+                    return true;
                 }
             }
             return base.Execute(ref cmdSet, cmdId);

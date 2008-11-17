@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         {
             prog = new Program();
             TestLoader ldr = new TestLoader(prog);
-            form = new MainForm2();
+            form = new MainForm();
             main = new TestMainFormInteractor(form, prog, ldr);
             interactor = new TestAnalyzedPageInteractor(prog, form.AnalyzedPage, main);
             main.OpenBinary("");
@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             main.SwitchInteractor(interactor);
             form.BrowserList.Items[0].Selected = true;
             Assert.IsTrue(interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ActionEditSignature), "Should have executed command.");
-            Assert.AreSame(typeof(ProcedureDialog), interactor.ProbeLastShownDialog);
+            Assert.AreSame(typeof(ProcedureDialog), interactor.ProbeLastShownDialog.GetType());
         }
 
         private class TestAnalyzedPageInteractor : AnalyzedPageInteractor

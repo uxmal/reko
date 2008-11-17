@@ -18,7 +18,7 @@
 
 namespace Decompiler.WindowsGui.Forms
 {
-    partial class MainForm2
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.

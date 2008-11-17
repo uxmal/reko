@@ -160,7 +160,7 @@ namespace Decompiler.Scanning
 			} 
 			catch (Exception ex)
 			{
-				if (host != null) host.WriteDiagnostic(Diagnostic.Error, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message);
+				if (host != null) host.WriteDiagnostic(Diagnostic.FatalError, null, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message);
 				throw;
 			}
 		}
@@ -191,7 +191,7 @@ namespace Decompiler.Scanning
 			SystemService svc = (SystemService) syscalls[addrInstr];
 			if (svc == null)
 			{
-				host.WriteDiagnostic(Diagnostic.Warning, "System call at address {0} wasn't previously recorded.", addrInstr);
+				host.WriteDiagnostic(Diagnostic.Warning, addrInstr, "System call at this address wasn't previously recorded.");
 			}
 			return svc;
 		}
@@ -206,10 +206,11 @@ namespace Decompiler.Scanning
 			return (VectorUse) vectorUses[addrInstr];
 		}
 
-		public void WriteDiagnostic(Diagnostic diagnostic, string format, params object [] args)
+        //$REVIEW: another place where calling the diagnostic service directly would be better.
+		public void WriteDiagnostic(Diagnostic diagnostic, Address addr, string format, params object [] args)
 		{
 			if (host != null)
-				host.WriteDiagnostic(diagnostic, format, args);
+				host.WriteDiagnostic(diagnostic, addr, format, args);
 		}
 	}
 }

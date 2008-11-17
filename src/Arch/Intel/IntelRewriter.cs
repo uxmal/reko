@@ -1648,14 +1648,26 @@ namespace Decompiler.Arch.Intel
 
 		public void EmitReturnInstruction(int cbReturnAddress, int cbBytesPop)
 		{
-			if (frame.ReturnAddressSize != cbReturnAddress)
-				host.WriteDiagnostic(Diagnostic.Warning, "Return instruction at address {0} expects a return address of {1} bytes, but procedure {2} was called with a return address of {3} bytes.",
-					state.InstructionAddress, cbReturnAddress, this.proc, frame.ReturnAddressSize);
-			 emitter.Return();
-			if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != cbBytesPop)
-				host.WriteDiagnostic(Diagnostic.Warning, "Multiple values of stack delta in procedure {0} when processung RET instruction at address {1}: was {2} previously.", proc.Name, state.InstructionAddress, proc.Signature.StackDelta);
-			else
-				proc.Signature.StackDelta = cbBytesPop;
+            if (frame.ReturnAddressSize != cbReturnAddress)
+            {
+                host.WriteDiagnostic(
+                    Diagnostic.Warning,
+                    state.InstructionAddress,
+                    "Return instruction expects a return address of {0} bytes, but procedure {1} was called with a return address of {2} bytes.",
+                    cbReturnAddress, this.proc, frame.ReturnAddressSize);
+            }
+			emitter.Return();
+            if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != cbBytesPop)
+            {
+                host.WriteDiagnostic(
+                    Diagnostic.Warning,
+                    state.InstructionAddress,
+                    "Multiple values of stack delta in procedure {0} when processung RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta);
+            }
+            else
+            {
+                proc.Signature.StackDelta = cbBytesPop;
+            }
 			proc.Signature.FpuStackDelta = state.FpuStackItems;
 			proc.Signature.FpuStackParameterMax = maxFpuStackRead;
 			proc.Signature.FpuStackOutParameterMax = maxFpuStackWrite;

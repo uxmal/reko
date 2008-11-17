@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm2();
+			form = new MainForm();
 		}
 
 		[TearDown]
@@ -128,7 +128,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             Assert.AreEqual("foo.dcproject", interactor.ProbeFilename);
         }
 
-        [Obsolete("Use fakeloader instead")]
 		private Program CreateFakeProgram()
 		{
 			Program prog = new Program();
@@ -136,6 +135,18 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			prog.Image = new ProgramImage(new Address(0xC00, 0), new byte [300]);
 			return prog;
 		}
+
+        [Test]
+        public void GetDiagnostics()
+        {
+            Program prog = new Program();
+            interactor = new TestMainFormInteractor(form, prog, new FakeLoader("fake.exe", prog));
+            object oSvc = interactor.GetService(typeof(IDiagnosticsService));
+            Assert.IsNotNull(oSvc, "IDiagnosticsService should be available!");
+            IDiagnosticsService svc = (IDiagnosticsService) oSvc;
+            svc.AddDiagnostic(Diagnostic.Warning, new Address(0x30000), "Whoa");
+            Assert.AreEqual(1, form.DiagnosticsList.Items.Count, "Should have added an item to diagnostics list.");
+        }
 	}
 
 	public class TestMainFormInteractor : MainFormInteractor
@@ -219,6 +230,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         {
             get { return promptedForSaving; }
         }
+
     }
 
 	public class FakeLoader : LoaderBase

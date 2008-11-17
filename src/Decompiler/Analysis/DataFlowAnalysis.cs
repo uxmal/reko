@@ -161,13 +161,13 @@ namespace Decompiler.Analysis
 		/// </summary>
 		public RegisterLiveness UntangleProcedures()
 		{
-			host.WriteDiagnostic(Diagnostic.Info, "Finding trashed registers");
+			host.WriteDiagnostic(Diagnostic.Info, null, "Finding trashed registers");
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
 			trf.DecompilerHost = host;
 			trf.Compute();
-			host.WriteDiagnostic(Diagnostic.Info, "Computing register liveness");
+			host.WriteDiagnostic(Diagnostic.Info, null, "Computing register liveness");
 			RegisterLiveness rl = RegisterLiveness.Compute(prog, flow, host);
-			host.WriteDiagnostic(Diagnostic.Info, "Rewriting calls");
+			host.WriteDiagnostic(Diagnostic.Info, null, "Rewriting calls");
 			GlobalCallRewriter.Rewrite(prog, flow);
 			return rl;
 		}

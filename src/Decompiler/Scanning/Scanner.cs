@@ -235,7 +235,7 @@ namespace Decompiler.Scanning
 			map.AddItem(addrTerm, new ImageMapItem());
 			if (!program.Image.IsValidAddress(addrBranch))
 			{
-				Warn("Instruction at address {0} attempted to branch to illegal address {1}", addrInstr, addrBranch);
+                Warn(addrInstr, "Instruction attempted to branch to illegal address {0}.", addrBranch);
 				return;
 			}
 
@@ -262,7 +262,7 @@ namespace Decompiler.Scanning
 			map.AddItem(addrTerm, new ImageMapItem());
 			if (!program.Image.IsValidAddress(addrJump))
 			{
-				Warn("Instruction at address {0} attempted to jump to illegal address {1}", addrInstr, addrJump);
+				Warn(addrInstr, "Instruction attempted to jump to illegal address {0}.", addrJump);
 				return;
 			}
 			jumpGraph.AddEdge(addrTerm - 1, addrJump);
@@ -279,7 +279,7 @@ namespace Decompiler.Scanning
 		{
 			if (!program.Image.IsValidAddress(addrTable))
 			{
-				Warn("Instruction at address {0}: uncertain about table start {1}.", addrInstr, addrTable);
+                Warn(addrInstr, "Unncertain about table start {0}.", addrTable);
 				return;
 			}
 			EnqueueVectorTable(addrInstr, addrTable, width, segBase, false, st);
@@ -303,7 +303,7 @@ namespace Decompiler.Scanning
 		{
 			if (!program.Image.IsValidAddress(addrTable))
 			{
-				this.Warn("Instruction at address {0}: uncertain about table start {1}.", addrInstr, addrTable);
+                this.Warn(addrInstr, "Uncertain about table start {0}.", addrTable);
 				return;
 			}
 			EnqueueVectorTable(addrInstr, addrTable, width, segBase, true, st);
@@ -333,10 +333,11 @@ namespace Decompiler.Scanning
 			}
 		}
 
-		public void Warn(string format, params object [] args)
+        //$REFACTOR: pass the service down.
+        public void Warn(Address addr, string format, params object[] args)
 		{
 			if (host != null)
-				host.WriteDiagnostic(Diagnostic.Warning, format, args);
+				host.WriteDiagnostic(Diagnostic.Warning, addr, format, args);
 		}
 		#endregion
 
@@ -364,7 +365,7 @@ namespace Decompiler.Scanning
 		{
 			if (!program.Image.IsValidAddress(wi.Address))
 			{
-				Warn("Attempted decompilation of invalid address: {0}", wi.Address);
+				Warn(wi.Address, "Attempted decompilation at invalid address.");
 				return;
 			}
 			blockCur = map.FindItem(wi.Address) as ImageMapBlock;

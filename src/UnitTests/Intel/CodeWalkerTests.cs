@@ -226,7 +226,7 @@ namespace Decompiler.UnitTests.Intel
 				// TODO:  Add TestCodeWalkerListener.OnProcedure implementation
 			}
 
-			public void Warn(string format, params object [] args)
+			public void Warn(Address addr, string format, params object [] args)
 			{
 			}
 

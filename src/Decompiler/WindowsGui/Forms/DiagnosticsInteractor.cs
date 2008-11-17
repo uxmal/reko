@@ -16,34 +16,38 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
-using Decompiler.Loading;
 using Decompiler.Core;
 using Decompiler.Gui;
-using Decompiler.WindowsGui.Forms;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
 
-namespace WindowsDecompiler
+namespace Decompiler.WindowsGui.Forms
 {
-	public class Driver
-	{
-		[STAThread]
-		public static void Main(string [] args)
-		{
-			if (args.Length == 0)
-			{
-				MainForm form = new MainForm();
-				MainFormInteractor interactor = new MainFormInteractor(form);
-				Application.Run(form);
-			}
-			else
-			{
-				Program prog = new Program();
-                Loader ldr = new Loader(args[0], prog);
-				DecompilerDriver dec = new DecompilerDriver(ldr, prog, new NullDecompilerHost());
-				dec.Decompile();
-			}
-		}
-	}
+    public class DiagnosticsInteractor : IDiagnosticsService
+    {
+        private ListView listView;
+
+        public void Attach(ListView listView)
+        {
+            this.listView = listView;
+        }
+
+        #region IDiagnosticsService Members
+
+        public void AddDiagnostic(Diagnostic d, Address addr, string format, params object[] args)
+        {
+            ListViewItem li = new ListViewItem();
+            li.Text = d.ToString();
+            ListViewItem.ListViewSubItem si = li.SubItems.Add(addr != null
+                ? addr.ToString()
+                : "");
+            si.Tag = addr;
+            li.SubItems.Add(string.Format(format, args));
+            this.listView.Items.Add(li);
+        }
+
+        #endregion
+    }
 }

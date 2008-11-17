@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm2();
+			form = new MainForm();
             Program prog = new Program();
             mi = new TestMainFormInteractor(form, prog, new TestLoader(prog));
 			mi.OpenBinary(null);
