@@ -155,7 +155,7 @@ namespace Decompiler.Arch.Intel
 			SystemService svc = platform.FindService(vector, state);
 			if (svc == null)
 			{
-				Listener.Warn("Unknown service: INT {0:X2} at address {1}", vector, addrStart);
+				Listener.Warn(addrStart, "Unknown service: INT {0:X2}.", vector);
 				return;
 			}
 			Listener.OnSystemServiceCall(addrStart, svc);

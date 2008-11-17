@@ -64,7 +64,7 @@ namespace Decompiler.WindowsGui.Forms
 
         public void ApplyChangesToProcedure(Procedure selectedProcedure)
         {
-            throw new Exception("The method or operation is not implemented.");
+            //$TODO: actually apply changes!
         }
 
         private void ArgumentList_SelectedIndexChanged(object sender, EventArgs e)

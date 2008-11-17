@@ -41,7 +41,7 @@ namespace Decompiler
 		void CodeStructuringComplete();
 		void DecompilationFinished();
  
-		void WriteDiagnostic(Diagnostic d, string format, params object [] args);
+		void WriteDiagnostic(Diagnostic d, Address addr, string format, params object [] args);
 		void ShowProgress(string caption, int numerator, int denominator);
 	}
 
@@ -113,7 +113,7 @@ namespace Decompiler
 			throw new Exception("The method or operation is not implemented.");
 		}
 
-		public void WriteDiagnostic(Diagnostic d, string format, params object[] args)
+		public void WriteDiagnostic(Diagnostic d, Address address, string format, params object[] args)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}

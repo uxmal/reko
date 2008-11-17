@@ -16,34 +16,15 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
-using Decompiler.Loading;
 using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.WindowsGui.Forms;
 using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Text;
 
-namespace WindowsDecompiler
+namespace Decompiler.Gui
 {
-	public class Driver
-	{
-		[STAThread]
-		public static void Main(string [] args)
-		{
-			if (args.Length == 0)
-			{
-				MainForm form = new MainForm();
-				MainFormInteractor interactor = new MainFormInteractor(form);
-				Application.Run(form);
-			}
-			else
-			{
-				Program prog = new Program();
-                Loader ldr = new Loader(args[0], prog);
-				DecompilerDriver dec = new DecompilerDriver(ldr, prog, new NullDecompilerHost());
-				dec.Decompile();
-			}
-		}
-	}
+    public interface IDiagnosticsService
+    {
+        void AddDiagnostic(Diagnostic d, Address addr, string format, params object[] args);
+    }
 }

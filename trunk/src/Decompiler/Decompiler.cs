@@ -93,7 +93,7 @@ namespace Decompiler
 			} 
 			catch (Exception e)
 			{
-				host.WriteDiagnostic(Diagnostic.FatalError, "{0}", e.Message + Environment.NewLine + e.StackTrace);
+				host.WriteDiagnostic(Diagnostic.FatalError, null, "{0}", e.Message + Environment.NewLine + e.StackTrace);
 			}				
 			finally
 			{

@@ -22,6 +22,7 @@ using Decompiler.Gui;
 using Decompiler.Loading;
 using Decompiler.WindowsGui.Controls;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
@@ -37,6 +38,7 @@ namespace Decompiler.WindowsGui.Forms
 	/// </summary>
 	public class MainFormInteractor : 
 		ICommandTarget,
+        IServiceProvider,
 		DecompilerHost
 	{
 		private IMainForm form;		
@@ -48,6 +50,7 @@ namespace Decompiler.WindowsGui.Forms
 		private FinalPageInteractor pageFinal;
 		private MruList mru;
         private string projectFileName;
+        private ServiceContainer sc;
 
 		private static string dirSettings;
 		
@@ -57,6 +60,7 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			mru = new MruList(MaxMruItems);
 			mru.Load(MruListFile);
+            sc = new ServiceContainer();
 		}
 
 		public MainFormInteractor(IMainForm form) : this()
@@ -114,6 +118,11 @@ namespace Decompiler.WindowsGui.Forms
         {
             FindResultsInteractor f = new FindResultsInteractor();
             f.Attach(form.FindResultsList);
+            sc.AddService(typeof(IFindResultsService), f);
+
+            DiagnosticsInteractor d = new DiagnosticsInteractor();
+            d.Attach(form.DiagnosticsList);
+            sc.AddService(typeof(IDiagnosticsService), d);
         }
 
 		public virtual TextWriter CreateTextWriter(string filename)
@@ -133,6 +142,11 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			get { return decompiler; }
 		}
+
+        public object GetService(Type type)
+        {
+            return sc.GetService(type);
+        }
 
 		public IMainForm MainForm
 		{
@@ -412,9 +426,13 @@ namespace Decompiler.WindowsGui.Forms
 			form.SetStatus("Data types reconstructed.");
 		}
 
-		public void WriteDiagnostic(Diagnostic d, string format, params object[] args)
+		public void WriteDiagnostic(Diagnostic d, Address addr, string format, params object[] args)
 		{
-			form.AddDiagnostic(d, format, args);
+            IDiagnosticsService svc = (IDiagnosticsService) GetService(typeof(IDiagnosticsService));
+            if (svc != null)
+            {
+                svc.AddDiagnostic(d, null, format, args);
+            }
 		}
 
 		public TextWriter CreateDecompiledCodeWriter(string fileName)
@@ -486,7 +504,5 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			UpdateWindowTitle();
 		}
-
-
     }
 }

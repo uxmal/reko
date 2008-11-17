@@ -21,6 +21,7 @@ using DecompilerHost = Decompiler.DecompilerHost;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Text;
 
 namespace Decompiler.UnitTests
 {
@@ -40,9 +41,9 @@ namespace Decompiler.UnitTests
 		[Test]
 		public void DhWriteDiagnostic()
 		{
-			host.WriteDiagnostic(Diagnostic.Info, "{0}, world!", "Hello");
+			host.WriteDiagnostic(Diagnostic.Info, new Address(42), "{0}, world!", "Hello");
 
-			Assert.AreEqual("Hello, world!", fake.LastDiagnostic);
+			Assert.AreEqual("Info - 0000002A: Hello, world!", fake.LastDiagnostic);
 
 		}
 
@@ -86,21 +87,16 @@ namespace Decompiler.UnitTests
 		private StringWriter decompiled = new StringWriter();
 		private StringWriter typesWriter = new StringWriter();
 
-		public void WriteDiagnostic(Diagnostic d, string format, params object[] args)
+		public void WriteDiagnostic(Diagnostic d, Address addr, string format, params object[] args)
 		{
-			lastDiagnostic = string.Format(format, args);
-			WriteDiagnostic(Console.Out, d, format, args);
-			StringWriter sb = new StringWriter();
-			WriteDiagnostic(sb, d, format, args);
-			System.Diagnostics.Debug.Write(sb.ToString());
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{0} - {1}: ", d, addr);
+            sb.AppendFormat(format, args);
+            lastDiagnostic = sb.ToString();
+            Console.Out.WriteLine(lastDiagnostic);
+            System.Diagnostics.Debug.WriteLine(lastDiagnostic);
 		}
 
-		private void WriteDiagnostic(TextWriter sb, Diagnostic d, string format, params object[] args)
-		{
-			sb.Write(d.ToString());
-			sb.Write(": ");
-			sb.WriteLine(format, args);
-		}
 
 		public TextWriter CreateDecompiledCodeWriter(string file)
 		{

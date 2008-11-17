@@ -260,10 +260,12 @@ namespace Decompiler.UnitTests.Intel
 			return null;
 		}
 
-		public void WriteDiagnostic(Diagnostic d, string format, params object [] args)
+		public void WriteDiagnostic(Diagnostic d, Address addr, string format, params object [] args)
 		{
 			Console.Write(d.ToString());
-			Console.Write(" ");
+			Console.Write(" - ");
+            Console.WriteLine(addr.ToString());
+            Console.Write(": ");
 			Console.WriteLine(format, args);
 		}
 		#endregion

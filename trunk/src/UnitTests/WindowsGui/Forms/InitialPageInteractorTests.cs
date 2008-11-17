@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm2();
+			form = new MainForm();
 			formI = new MainFormInteractor(form);
             page = form.StartPage;
 			i = new TestInitialPageInteractor(page, formI);

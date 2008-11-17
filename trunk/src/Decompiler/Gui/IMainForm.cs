@@ -32,16 +32,16 @@ namespace Decompiler.Gui
 		string TitleText { get; set; }
 
         void AddDiagnostic(Decompiler.Core.Diagnostic d, string format, params object[] args);
-        System.Windows.Forms.ListView BrowserList { get; }
         void BuildPhases();
+        System.Windows.Forms.ListView BrowserList { get; }
         System.Windows.Forms.ListView FindResultsList { get; }
+        System.Windows.Forms.ListView DiagnosticsList { get; }
         System.Windows.Forms.OpenFileDialog OpenFileDialog { get; }
         IProgressBar ProgressBar { get; }
         System.Windows.Forms.SaveFileDialog SaveFileDialog { get; }
         void SetStatus(string txt);
         void SetStatusDetails(string txt);
         System.Windows.Forms.ToolStrip ToolBar { get; }
-
         System.Windows.Forms.MainMenu Menu { get; set; }
 
         IStartPage StartPage { get; }

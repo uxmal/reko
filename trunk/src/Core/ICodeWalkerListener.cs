@@ -46,6 +46,6 @@ namespace Decompiler.Core
 		void OnReturn(Address addrTerm);
 		void OnSystemServiceCall(Address addrInstr, SystemService svc);
 		void OnTrampoline(ProcessorState st, Address addrInstr, Address addrGlob);
-		void Warn(string format, params object [] args);
+        void Warn(Address addr, string format, params object[] args);
 	}
 }
