@@ -30,7 +30,7 @@ namespace Decompiler.WindowsGui.Forms
 	/// <summary>
 	/// Displays the contents of a file after it has been loaded.
 	/// </summary>
-	public class LoadedPage : PhasePage
+	public class LoadedPage : PhasePage, Decompiler.Gui.ILoadedPage
 	{
 		private IProcessorArchitecture arch;
 		private System.Windows.Forms.Label label1;
@@ -110,7 +110,7 @@ namespace Decompiler.WindowsGui.Forms
 			this.memctl.TabIndex = 3;
 			this.memctl.TopAddress = null;
 			this.memctl.WordSize = 1;
-			this.memctl.SelectionChanged += new System.EventHandler(this.memctl_SelectionChanged);
+
 			// 
 			// txtDisassembly
 			// 
@@ -124,7 +124,6 @@ namespace Decompiler.WindowsGui.Forms
 			this.txtDisassembly.TabIndex = 4;
 			this.txtDisassembly.Text = "";
 			this.txtDisassembly.WordWrap = false;
-			this.txtDisassembly.Resize += new System.EventHandler(this.txtDisassembly_Resize);
 			// 
 			// splitter1
 			// 
@@ -160,39 +159,11 @@ namespace Decompiler.WindowsGui.Forms
 		}
 		#endregion
 
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public IProcessorArchitecture Architecture
-		{
-			get { return arch; }
-			set { arch = value; }
-		}
-
 		public TextBox Disassembly
 		{
 			get { return txtDisassembly; }
 		}
 
-		public void DumpAssembler()
-		{
-			if (arch == null || ProgramImage == null || memctl.SelectedAddress == null)
-			{
-				txtDisassembly.Text = "";
-				return;
-			}
-			int lines = (txtDisassembly.Height + txtDisassembly.Font.Height - 1) / txtDisassembly.Font.Height;
-			if (lines < 1)
-				lines = 1;
-			StringWriter writer = new StringWriter();
-			Dumper dumper = arch.CreateDumper();
-			Disassembler dasm = arch.CreateDisassembler(ProgramImage, memctl.SelectedAddress);
-			while (lines != 0)
-			{
-				dumper.DumpAssemblerLine(ProgramImage, dasm, true, true, writer);
-				--lines;
-			}
-			txtDisassembly.Text = writer.ToString();
-		}
 
 		public MemoryControl MemoryControl
 		{
@@ -200,24 +171,5 @@ namespace Decompiler.WindowsGui.Forms
 		}
 
 
-
-		[Browsable(false)]
-		public ProgramImage ProgramImage
-		{
-			get { return memctl.ProgramImage; }
-			set { memctl.ProgramImage = value; }
-		}
-
-		// Event handlers /////////////////////////
-
-		private void memctl_SelectionChanged(object sender, System.EventArgs e)
-		{
-			DumpAssembler();
-		}
-
-		private void txtDisassembly_Resize(object sender, System.EventArgs e)
-		{
-			DumpAssembler();
-		}
 	}
 }

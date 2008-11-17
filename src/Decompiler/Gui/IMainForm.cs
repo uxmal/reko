@@ -24,18 +24,45 @@ namespace Decompiler.Gui
 	/// <summary>
 	/// Interface that abstracts the functionality of the main form.
 	/// </summary>
-	public interface IMainForm
+	public interface IMainForm : IDisposable
 	{
 		/// <summary>
 		/// The text of the windows's title bar.
 		/// </summary>
 		string TitleText { get; set; }
 
-		/// <summary>
-		/// Fired when the user picks a command.
-		/// </summary>
-		event MenuCommandHandler CommandInvoked;
-	}
+        void AddDiagnostic(Decompiler.Core.Diagnostic d, string format, params object[] args);
+        System.Windows.Forms.ListView BrowserList { get; }
+        void BuildPhases();
+        System.Windows.Forms.ListView FindResultsList { get; }
+        System.Windows.Forms.OpenFileDialog OpenFileDialog { get; }
+        IProgressBar ProgressBar { get; }
+        System.Windows.Forms.SaveFileDialog SaveFileDialog { get; }
+        void SetStatus(string txt);
+        void SetStatusDetails(string txt);
+        System.Windows.Forms.ToolStrip ToolBar { get; }
+
+        System.Windows.Forms.MainMenu Menu { get; set; }
+
+        IStartPage StartPage { get; }
+        ILoadedPage LoadedPage { get; }
+        Decompiler.WindowsGui.Forms.AnalyzedPage AnalyzedPage { get; }
+
+        event EventHandler Closed;
+
+        void Show();
+
+        System.Windows.Forms.DialogResult ShowDialog(System.Windows.Forms.Form dialog);
+
+        System.Windows.Forms.DialogResult ShowDialog(System.Windows.Forms.CommonDialog dialog);
+
+        void Close();
+
+        void ShowMessageBox(string message, string caption);
+
+        void SetCurrentPage(object page);
+
+    }
 
 	public delegate void MenuCommandHandler(object sender, MenuCommandArgs arg);
 	
@@ -60,6 +87,4 @@ namespace Decompiler.Gui
 			get { return cmd; }
 		}
 	}
-
-
 }

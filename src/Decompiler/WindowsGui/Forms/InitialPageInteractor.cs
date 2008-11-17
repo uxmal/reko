@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Gui;
 using System;
 using System.Windows.Forms;
 
@@ -28,10 +29,10 @@ namespace Decompiler.WindowsGui.Forms
 	/// </summary>
 	public class InitialPageInteractor : PhasePageInteractor
 	{
-		private InitialPage page;
+		private IStartPage page;
 
-		public InitialPageInteractor(InitialPage page, MainFormInteractor form)
-			: base(page, form)
+		public InitialPageInteractor(IStartPage page, MainFormInteractor form)
+			: base(form)
 		{
 			this.page = page;
 			page.BrowseInputFile.Click += new EventHandler(BrowseInputFile_Click);
@@ -39,9 +40,7 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void EnableControls()
 		{
-			MainForm.BrowserFilter.Enabled = false;
 			MainForm.BrowserList.Enabled = false;
-			MainForm.BrowserTree.Enabled = false;
 		}
 
 		public override void EnterPage()
@@ -74,11 +73,16 @@ namespace Decompiler.WindowsGui.Forms
 			return true;
 		}
 
+        public override object Page
+        {
+            get { return page; }
+        }
+
 		public virtual string ShowOpenFileDialog(string fileName)
 		{
 			if (fileName != null && fileName.Length != 0)
-				page.OpenFileDialog.FileName = fileName;
-			if (ShowModalDialog(page.OpenFileDialog) == DialogResult.OK)
+				base.MainForm.OpenFileDialog.FileName = fileName;
+			if (ShowModalDialog(MainForm.OpenFileDialog) == DialogResult.OK)
 			{
 				return fileName;
 			}
@@ -86,7 +90,20 @@ namespace Decompiler.WindowsGui.Forms
 				return null;
 		}
 
-		// Event handlers. 
+        public virtual string ShowSaveFileDialog(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                base.MainForm.SaveFileDialog.FileName = fileName;
+            if (MainForm.ShowDialog(MainForm.SaveFileDialog) == DialogResult.OK)
+            {
+                return fileName;
+            }
+            else
+                return null;
+        }
+
+
+        // Event handlers. 
 		public void BrowseInputFile_Click(object sender, EventArgs e)
 		{
 			string sNew = ShowOpenFileDialog(page.InputFile.Text);

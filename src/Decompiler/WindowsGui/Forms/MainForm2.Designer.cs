@@ -1,0 +1,312 @@
+namespace Decompiler.WindowsGui.Forms
+{
+    partial class MainForm2
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolbar = new System.Windows.Forms.ToolStrip();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblStatusDetails = new System.Windows.Forms.ToolStripStatusLabel();
+            this.progressStatus = new System.Windows.Forms.ToolStripProgressBar();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.listBrowser = new System.Windows.Forms.ListView();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabDiagnostics = new System.Windows.Forms.TabPage();
+            this.tabFindResults = new System.Windows.Forms.TabPage();
+            this.listFindResults = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.analyzedPage1 = new Decompiler.WindowsGui.Forms.AnalyzedPage();
+            this.startPage = new Decompiler.WindowsGui.Forms.StartPage();
+            this.loadedPage1 = new Decompiler.WindowsGui.Forms.LoadedPage();
+            this.listDiagnostics = new System.Windows.Forms.ListView();
+            this.colDiagnosticType = new System.Windows.Forms.ColumnHeader();
+            this.colDiagnosticAddress = new System.Windows.Forms.ColumnHeader();
+            this.colDiagnosticDescription = new System.Windows.Forms.ColumnHeader();
+            this.statusStrip1.SuspendLayout();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabDiagnostics.SuspendLayout();
+            this.tabFindResults.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(725, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolbar
+            // 
+            this.toolbar.Location = new System.Drawing.Point(0, 24);
+            this.toolbar.Name = "toolbar";
+            this.toolbar.Size = new System.Drawing.Size(725, 25);
+            this.toolbar.TabIndex = 1;
+            this.toolbar.Text = "toolStrip1";
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus,
+            this.lblStatusDetails,
+            this.progressStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 490);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(725, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(0, 17);
+            // 
+            // lblStatusDetails
+            // 
+            this.lblStatusDetails.Name = "lblStatusDetails";
+            this.lblStatusDetails.Size = new System.Drawing.Size(0, 17);
+            // 
+            // progressStatus
+            // 
+            this.progressStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.progressStatus.Name = "progressStatus";
+            this.progressStatus.Size = new System.Drawing.Size(100, 16);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer1.Size = new System.Drawing.Size(725, 441);
+            this.splitContainer1.SplitterDistance = 312;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.listBrowser);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.analyzedPage1);
+            this.splitContainer2.Panel2.Controls.Add(this.startPage);
+            this.splitContainer2.Panel2.Controls.Add(this.loadedPage1);
+            this.splitContainer2.Size = new System.Drawing.Size(725, 312);
+            this.splitContainer2.SplitterDistance = 169;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // listBrowser
+            // 
+            this.listBrowser.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader2});
+            this.listBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBrowser.Location = new System.Drawing.Point(0, 0);
+            this.listBrowser.Name = "listBrowser";
+            this.listBrowser.Size = new System.Drawing.Size(169, 312);
+            this.listBrowser.TabIndex = 0;
+            this.listBrowser.UseCompatibleStateImageBehavior = false;
+            this.listBrowser.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Item";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabDiagnostics);
+            this.tabControl1.Controls.Add(this.tabFindResults);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(725, 125);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabDiagnostics
+            // 
+            this.tabDiagnostics.Controls.Add(this.listDiagnostics);
+            this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
+            this.tabDiagnostics.Name = "tabDiagnostics";
+            this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDiagnostics.Size = new System.Drawing.Size(717, 99);
+            this.tabDiagnostics.TabIndex = 0;
+            this.tabDiagnostics.Text = "Diagnostics";
+            this.tabDiagnostics.UseVisualStyleBackColor = true;
+            // 
+            // tabFindResults
+            // 
+            this.tabFindResults.Controls.Add(this.listFindResults);
+            this.tabFindResults.Location = new System.Drawing.Point(4, 22);
+            this.tabFindResults.Name = "tabFindResults";
+            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFindResults.Size = new System.Drawing.Size(717, 99);
+            this.tabFindResults.TabIndex = 1;
+            this.tabFindResults.Text = "Search Results";
+            this.tabFindResults.UseVisualStyleBackColor = true;
+            // 
+            // listFindResults
+            // 
+            this.listFindResults.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listFindResults.Location = new System.Drawing.Point(3, 3);
+            this.listFindResults.Name = "listFindResults";
+            this.listFindResults.Size = new System.Drawing.Size(711, 93);
+            this.listFindResults.TabIndex = 0;
+            this.listFindResults.UseCompatibleStateImageBehavior = false;
+            this.listFindResults.View = System.Windows.Forms.View.Details;
+            // 
+            // analyzedPage1
+            // 
+            this.analyzedPage1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.analyzedPage1.Location = new System.Drawing.Point(0, 0);
+            this.analyzedPage1.Name = "analyzedPage1";
+            this.analyzedPage1.Size = new System.Drawing.Size(552, 312);
+            this.analyzedPage1.TabIndex = 2;
+            // 
+            // startPage
+            // 
+            this.startPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.startPage.IsDirty = false;
+            this.startPage.Location = new System.Drawing.Point(0, 0);
+            this.startPage.Name = "startPage";
+            this.startPage.Size = new System.Drawing.Size(552, 312);
+            this.startPage.TabIndex = 0;
+            // 
+            // loadedPage1
+            // 
+            this.loadedPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.loadedPage1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.loadedPage1.Location = new System.Drawing.Point(0, 0);
+            this.loadedPage1.Name = "loadedPage1";
+            this.loadedPage1.Size = new System.Drawing.Size(552, 312);
+            this.loadedPage1.TabIndex = 1;
+            // 
+            // listDiagnostics
+            // 
+            this.listDiagnostics.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colDiagnosticType,
+            this.colDiagnosticAddress,
+            this.colDiagnosticDescription});
+            this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listDiagnostics.Location = new System.Drawing.Point(3, 3);
+            this.listDiagnostics.Name = "listDiagnostics";
+            this.listDiagnostics.Size = new System.Drawing.Size(711, 93);
+            this.listDiagnostics.TabIndex = 0;
+            this.listDiagnostics.UseCompatibleStateImageBehavior = false;
+            this.listDiagnostics.View = System.Windows.Forms.View.Details;
+            // 
+            // colDiagnosticType
+            // 
+            this.colDiagnosticType.Text = "Type";
+            // 
+            // colDiagnosticAddress
+            // 
+            this.colDiagnosticAddress.Text = "Address";
+            // 
+            // colDiagnosticDescription
+            // 
+            this.colDiagnosticDescription.Text = "Description";
+            // 
+            // MainForm2
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(725, 512);
+            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.toolbar);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
+            this.Name = "MainForm2";
+            this.Text = "Decompiler";
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabDiagnostics.ResumeLayout(false);
+            this.tabFindResults.ResumeLayout(false);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStrip toolbar;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private StartPage startPage;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabDiagnostics;
+        private System.Windows.Forms.TabPage tabFindResults;
+        private System.Windows.Forms.ListView listFindResults;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ListView listBrowser;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private LoadedPage loadedPage1;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatusDetails;
+        private System.Windows.Forms.ToolStripProgressBar progressStatus;
+        private AnalyzedPage analyzedPage1;
+        private System.Windows.Forms.ListView listDiagnostics;
+        private System.Windows.Forms.ColumnHeader colDiagnosticType;
+        private System.Windows.Forms.ColumnHeader colDiagnosticAddress;
+        private System.Windows.Forms.ColumnHeader colDiagnosticDescription;
+    }
+}

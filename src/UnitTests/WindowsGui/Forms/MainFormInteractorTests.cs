@@ -32,13 +32,13 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	[TestFixture]
 	public class MainFormInteractorTests
 	{
-		private MainForm form;
+		private IMainForm form;
 		private TestMainFormInteractor interactor;
 
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm();
+			form = new MainForm2();
 		}
 
 		[TearDown]
@@ -54,8 +54,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			// When opening the application for the very first time, we should be on the initial page, and 
 			// most controls on the mainform should be disabled.
 
-			Assert.IsFalse(form.BrowserFilter.Enabled, "Browser filter should be disabled");
-			Assert.IsFalse(form.BrowserTree.Enabled, "Browser tree should be disabled");
 			Assert.IsFalse(form.BrowserList.Enabled, "Browser list should be disabled");
 
 			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPage);
@@ -68,9 +66,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			interactor = new TestMainFormInteractor(form, prog);
 
 			interactor.OpenBinary(null);
-			Assert.AreEqual(form.LoadedPage, form.LoadedPage);
-			Assert.IsFalse(form.BrowserFilter.Enabled);
-			Assert.IsFalse(form.BrowserTree.Enabled);
 			Assert.IsTrue(form.BrowserList.Enabled);
 		}
 
@@ -145,23 +140,32 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 
 	public class TestMainFormInteractor : MainFormInteractor
 	{
-		private DecompilerDriver decompiler; 
+		private DecompilerDriver decompiler;
+        private LoaderBase ldr;
 		private Program program;
         private StringWriter sw;
         private string testFilename;
         private bool promptedForSaving;
 
-		public TestMainFormInteractor(MainForm form, Program prog) : base(form)
+		public TestMainFormInteractor(IMainForm form, Program prog) : base(form)
 		{
             this.program = prog;
 		}
 
-		public TestMainFormInteractor(MainForm form, DecompilerDriver decompiler) : base(form)
+		public TestMainFormInteractor(IMainForm form, DecompilerDriver decompiler) : base(form)
 		{
             this.decompiler = decompiler;
 		}
 
-		public override DecompilerDriver CreateDecompiler(LoaderBase ldr, Program prog)
+        public TestMainFormInteractor(IMainForm form, Program prog, LoaderBase ldr)
+            : base(form)
+        {
+            this.program = prog;
+            this.ldr = ldr;
+        }
+
+
+        public override DecompilerDriver CreateDecompiler(LoaderBase ldr, Program prog)
 		{
             if (decompiler != null)
                 return decompiler;
@@ -170,6 +174,8 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 
         protected override LoaderBase CreateLoader(string filename, Program prog)
         {
+            if (ldr != null)
+                return ldr;
             return new FakeLoader(filename, prog);
         }
 

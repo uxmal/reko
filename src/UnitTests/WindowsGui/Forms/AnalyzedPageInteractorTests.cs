@@ -21,6 +21,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
+using Decompiler.Gui;
 using Decompiler.Loading;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
@@ -35,7 +36,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
     {
         private Program prog;
         private DecompilerDriver decompiler;
-        private MainForm form;
+        private IMainForm form;
         private TestMainFormInteractor main;
         private TestAnalyzedPageInteractor interactor;
     
@@ -44,10 +45,9 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         public void Setup()
         {
             prog = new Program();
-            FakeLoader ldr = new FakeLoader("fakefile.exe", prog);
-            decompiler = new DecompilerDriver(ldr, prog, new FakeDecompilerHost());
-            form = new MainForm();
-            main = new TestMainFormInteractor(form, decompiler);
+            TestLoader ldr = new TestLoader(prog);
+            form = new MainForm2();
+            main = new TestMainFormInteractor(form, prog, ldr);
             interactor = new TestAnalyzedPageInteractor(prog, form.AnalyzedPage, main);
             main.OpenBinary("");
         }
@@ -62,10 +62,9 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         public void Populate()
         {
             form.Show();
-            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("foo", null));
-            interactor.EnterPage();
+            prog.Procedures.Add(new Address(0x12345), new Procedure("foo", new Frame(PrimitiveType.Word32)));
+            main.SwitchInteractor(interactor);
             Assert.IsTrue(form.BrowserList.Visible, "Browserlist should be visible");
-            Assert.IsFalse(form.BrowserTree.Visible, "Browserlist should not be visible");
 
             Assert.AreEqual(1, form.BrowserList.Items.Count);
             KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) form.BrowserList.Items[0].Tag;
@@ -85,9 +84,10 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
                     new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
 
-            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", null));
+            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", new Frame(PrimitiveType.Word32)));
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12346), p);
-            interactor.EnterPage();
+            main.SwitchInteractor(interactor);
+            form.BrowserList.Items[1].Focused = true;
             form.BrowserList.Items[1].Selected = true;
             Assert.IsTrue(form.AnalyzedPage.ProcedureText.Text.StartsWith("word32 foo_proc"));
         }
@@ -102,8 +102,8 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
                 new Identifier[] {
                     new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
-            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", null));
-            interactor.EnterPage();
+            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", new Frame(PrimitiveType.Word32)));
+            main.SwitchInteractor(interactor);
             form.BrowserList.Items[0].Selected = true;
             Assert.IsTrue(interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ActionEditSignature), "Should have executed command.");
             Assert.AreSame(typeof(ProcedureDialog), interactor.ProbeLastShownDialog);
@@ -127,6 +127,21 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             public Form ProbeLastShownDialog
             {
                 get { return lastDlg; }
+            }
+        }
+
+        private class TestLoader : LoaderBase
+        {
+            public TestLoader(Program prog)
+                : base(prog)
+            {
+            }
+
+            public override DecompilerProject Load(Address userSpecifiedAddress)
+            {
+                Program.Image = new ProgramImage(new Address(0x1234), new byte[4211]);
+                Program.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+                return new DecompilerProject();
             }
         }
     }

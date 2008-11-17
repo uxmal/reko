@@ -33,7 +33,7 @@ namespace Decompiler.WindowsGui.Forms
         private RichEditFormatter formatter;
 
 		public AnalyzedPageInteractor(AnalyzedPage page, MainFormInteractor form)
-			: base(page, form)
+			: base(form)
 		{
 			this.page = page;
             mainInteractor = form;
@@ -56,7 +56,6 @@ namespace Decompiler.WindowsGui.Forms
             mainInteractor.MainForm.BrowserList.Items.Clear();
             mainInteractor.MainForm.BrowserList.Visible = true;
             mainInteractor.MainForm.BrowserList.MultiSelect = false;
-            mainInteractor.MainForm.BrowserTree.Visible = false;
 
 			Decompiler.RewriteMachineCode();
 			Decompiler.AnalyzeDataFlow();
@@ -72,6 +71,11 @@ namespace Decompiler.WindowsGui.Forms
             mainInteractor.MainForm.BrowserList.SelectedIndexChanged -= new EventHandler(BrowserList_SelectedIndexChanged);
 			Decompiler.Project.Output.TypeInference = page.PerformTypeRecovery.Checked;
 			return true;
+        }
+
+        public override object Page
+        {
+            get { return page; }
         }
 
         private void PopulateBrowserListWithProcedures()

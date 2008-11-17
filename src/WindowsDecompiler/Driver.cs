@@ -19,6 +19,7 @@
 using Decompiler;
 using Decompiler.Loading;
 using Decompiler.Core;
+using Decompiler.Gui;
 using Decompiler.WindowsGui.Forms;
 using System;
 using System.Windows.Forms;
@@ -32,7 +33,7 @@ namespace WindowsDecompiler
 		{
 			if (args.Length == 0)
 			{
-				MainForm form = new MainForm();
+				MainForm2 form = new MainForm2();
 				MainFormInteractor interactor = new MainFormInteractor(form);
 				Application.Run(form);
 			}

@@ -28,7 +28,7 @@ namespace Decompiler.WindowsGui.Forms
 		private FinalPage finalPage;
 
 		public FinalPageInteractor(FinalPage page, MainFormInteractor form) :
-			base(page, form)
+			base(form)
 		{
 			finalPage = page;
 			finalPage.SourceFile.Click += new EventHandler(BrowseSourceFile_Click);
@@ -51,6 +51,11 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			return true;
 		}
+
+        public override object Page
+        {
+            get { return finalPage; }
+        }
 
 		private void SaveButton_Click(object sender, EventArgs e)
 		{
