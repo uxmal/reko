@@ -22,18 +22,22 @@ using Decompiler.Gui;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
 	public class LoadedPageInteractor : PhasePageInteractor
 	{
-		private LoadedPage pageLoaded;
+		private ILoadedPage pageLoaded;
 		private Hashtable mpCmdidToCommand;
 
-		public LoadedPageInteractor(LoadedPage page, MainFormInteractor form, DecompilerMenus dm) : base(page, form)
+		public LoadedPageInteractor(ILoadedPage page, MainFormInteractor form, DecompilerMenus dm) : base(form)
 		{
 			this.pageLoaded = page;
+            page.MemoryControl.SelectionChanged += new System.EventHandler(this.memctl_SelectionChanged);
+            page.Disassembly.Resize += new System.EventHandler(this.txtDisassembly_Resize);
+
 			mpCmdidToCommand = new Hashtable();
             AddCommand(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
@@ -87,31 +91,39 @@ namespace Decompiler.WindowsGui.Forms
 			}
 		}
 
-		public void MarkAndScanProcedure()
-		{
-			Address addr = pageLoaded.MemoryControl.SelectedAddress;
-			if (addr != null)
-			{
-				Procedure proc = Decompiler.ScanProcedure(addr);
-				SerializedProcedure userp = new SerializedProcedure();
-                userp.Address = addr.ToString();
-                userp.Name = proc.Name;
-				Decompiler.Project.UserProcedures.Add(userp);
-				pageLoaded.MemoryControl.Invalidate();
-			}
-		}
+
+
+
+        public void DumpAssembler()
+        {
+            if (Decompiler.Program.Architecture == null || Decompiler.Program.Image == null || pageLoaded.MemoryControl.SelectedAddress == null)
+            {
+                pageLoaded.Disassembly.Text = "";
+                return;
+            }
+            int lines = (pageLoaded.Disassembly.Height + pageLoaded.Disassembly.Font.Height - 1) / pageLoaded.Disassembly.Font.Height;
+            if (lines < 1)
+                lines = 1;
+            StringWriter writer = new StringWriter();
+            Dumper dumper = Decompiler.Program.Architecture.CreateDumper();
+            Disassembler dasm = Decompiler.Program.Architecture.CreateDisassembler(Decompiler.Program.Image, pageLoaded.MemoryControl.SelectedAddress);
+            while (lines != 0)
+            {
+                dumper.DumpAssemblerLine(Decompiler.Program.Image, dasm, true, true, writer);
+                --lines;
+            }
+            pageLoaded.Disassembly.Text = writer.ToString();
+        }
 
 		public override void EnterPage()
 		{
 			Decompiler.ScanProgram();
 
-			pageLoaded.Architecture = Decompiler.Program.Architecture;
 			pageLoaded.MemoryControl.ProgramImage = Decompiler.Program.Image;
 			pageLoaded.Disassembly.Text = "";
 
 			MainForm.BrowserList.Visible = true;
 			MainForm.BrowserList.Enabled = true;
-			MainForm.BrowserTree.Visible = false; 
 			PopulateBrowser();
 		}
 
@@ -119,6 +131,25 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			return true;
 		}
+
+        public void MarkAndScanProcedure()
+        {
+            Address addr = pageLoaded.MemoryControl.SelectedAddress;
+            if (addr != null)
+            {
+                Procedure proc = Decompiler.ScanProcedure(addr);
+                SerializedProcedure userp = new SerializedProcedure();
+                userp.Address = addr.ToString();
+                userp.Name = proc.Name;
+                Decompiler.Project.UserProcedures.Add(userp);
+                pageLoaded.MemoryControl.Invalidate();
+            }
+        }
+
+        public override object Page
+        {
+            get { return pageLoaded; }
+        }
 
 		public void PopulateBrowser()
 		{
@@ -143,5 +174,18 @@ namespace Decompiler.WindowsGui.Forms
 			}
 			return false;
 		}
+
+        // Event handlers /////////////////////////
+
+        private void memctl_SelectionChanged(object sender, System.EventArgs e)
+        {
+            DumpAssembler();
+        }
+
+        private void txtDisassembly_Resize(object sender, System.EventArgs e)
+        {
+            DumpAssembler();
+        }
+
 	}
 }

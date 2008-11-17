@@ -26,17 +26,17 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	[TestFixture]
 	public class InitialPageInteractorTests
 	{
-		private MainForm form;
+		private IMainForm form;
 		private MainFormInteractor formI;
-		private InitialPage page;
+		private IStartPage page;
 		private TestInitialPageInteractor i;
 
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm();
+			form = new MainForm2();
 			formI = new MainFormInteractor(form);
-			page = form.InitialPage;
+            page = form.StartPage;
 			i = new TestInitialPageInteractor(page, formI);
 		}
 
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		private string lastFileName;
 		private bool simulateUserCancel;
 
-		public TestInitialPageInteractor(InitialPage page, MainFormInteractor formI)
+		public TestInitialPageInteractor(IStartPage page, MainFormInteractor formI)
 			: base(page, formI)
 		{
 		}

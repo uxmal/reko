@@ -39,7 +39,7 @@ namespace Decompiler.WindowsGui.Forms
 		ICommandTarget,
 		DecompilerHost
 	{
-		private MainForm form;			//$REVIEW: for platform independence, this should be an interface.
+		private IMainForm form;		
 		private DecompilerDriver decompiler;
 		private PhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
@@ -59,12 +59,12 @@ namespace Decompiler.WindowsGui.Forms
 			mru.Load(MruListFile);
 		}
 
-		public MainFormInteractor(MainForm form) : this()
+		public MainFormInteractor(IMainForm form) : this()
 		{
 			Attach(form);
 		}
 
-		public void Attach(MainForm form)
+		public void Attach(IMainForm form)
 		{
 			this.form = form;
 
@@ -74,30 +74,26 @@ namespace Decompiler.WindowsGui.Forms
 			AttachInteractors(dm);
             CreateServices();
 			form.Closed += new System.EventHandler(this.MainForm_Closed);
-			form.BrowserTree.AfterSelect += new TreeViewEventHandler(OnBrowserTreeItemSelected);
 			form.BrowserList.SelectedIndexChanged += new EventHandler(OnBrowserListItemSelected);
-			form.ToolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(toolBar_ButtonClick);
-			form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);
+			form.ToolBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(toolBar_ItemClicked);
+			//form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
 			SwitchInteractor(pageInitial);
-			MainForm.InitialPage.IsDirty = false;
+			//MainForm.InitialPage.IsDirty = false;         //$REENABLE
 		}
-
-        private void CreateServices()
-        {
-            
-        }
 
 		private void AttachInteractors(DecompilerMenus dm)
 		{
-			pageInitial = new InitialPageInteractor(form.InitialPage, this);
-			pageLoaded = new LoadedPageInteractor(form.LoadedPage, this, dm);
-			pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage, this);
-			pageFinal = new FinalPageInteractor(form.FinalPage, this);
+            //$REENABLE
+            pageInitial = new InitialPageInteractor(form.StartPage, this);
+            pageLoaded = new LoadedPageInteractor(form.LoadedPage, this, dm);
+            //pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage, this);
+            //pageFinal = new FinalPageInteractor(form.FinalPage, this);
 
-			pageInitial.NextPage = pageLoaded;
-			pageLoaded.NextPage = pageAnalyzed;
-			pageAnalyzed.NextPage = pageFinal;
+            //pageInitial.NextPage = pageLoaded;
+            //pageLoaded.NextPage = pageAnalyzed;
+            //pageAnalyzed.NextPage = pageFinal;
 		}
+
 
 		public virtual DecompilerDriver CreateDecompiler(LoaderBase ldr, Program prog)
 		{
@@ -138,7 +134,7 @@ namespace Decompiler.WindowsGui.Forms
 			get { return decompiler; }
 		}
 
-		public MainForm MainForm
+		public IMainForm MainForm
 		{
 			get { return form; }
 		}
@@ -154,7 +150,7 @@ namespace Decompiler.WindowsGui.Forms
 			} 
 			catch (Exception ex)
 			{
-				ShowError("Couldn't open file '{0}'. {1}", file, ex.Message);
+				ShowError("Couldn't open file '{0}'. {1}", file, ex.Message + ex.StackTrace);
 			}
             SwitchInteractor(pageLoaded);
 		}
@@ -164,7 +160,7 @@ namespace Decompiler.WindowsGui.Forms
 			Cursor.Current = Cursors.WaitCursor;
 			try
 			{
-				if (form.OpenFileDialog.ShowDialog(form) == DialogResult.OK)
+				if (form.ShowDialog(form.OpenFileDialog) == DialogResult.OK)
 				{
 					OpenBinary(form.OpenFileDialog.FileName);
 					mru.Use(form.OpenFileDialog.FileName);
@@ -247,7 +243,7 @@ namespace Decompiler.WindowsGui.Forms
         protected virtual string PromptForFilename(string suggestedName)
         {
             form.SaveFileDialog.FileName = suggestedName;
-            if (DialogResult.OK != form.SaveFileDialog.ShowDialog(form))
+            if (DialogResult.OK != form.ShowDialog(form.SaveFileDialog))
                 return null;
             else 
                 return form.SaveFileDialog.FileName;
@@ -272,14 +268,14 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.AppendFormat(format, args);
-			MessageBox.Show(MainForm, sb.ToString());
+            MainForm.ShowMessageBox(sb.ToString(), "Decompiler");
 		}
 
 		public void SwitchInteractor(PhasePageInteractor interactor)
 		{
 			if (CurrentPage != null)
 				CurrentPage.LeavePage();
-			form.CurrentPhasePage = interactor.PhasePage;
+            form.SetCurrentPage(interactor.Page);
 			CurrentPage = interactor;
 			interactor.EnterPage();
 		}
@@ -290,12 +286,13 @@ namespace Decompiler.WindowsGui.Forms
 			if (decompiler != null && decompiler.Project != null)
 			{
 				sb.Append(Path.GetFileName(decompiler.Project.Input.Filename));
-				if (MainForm.InitialPage.IsDirty)
-					sb.Append('*');
+                //$REFACTOR: dirtiness of project is not limiited to first page.
+                //if (MainForm.InitialPage.IsDirty)
+                //    sb.Append('*');
 				sb.Append(" - ");
 			}
 			sb.Append("Decompiler");
-			MainForm.Text = sb.ToString();
+			MainForm.TitleText = sb.ToString();
 		}
 
 		#region ICommandTarget members 
@@ -457,9 +454,9 @@ namespace Decompiler.WindowsGui.Forms
 		}
 
 
-		private void toolBar_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
+		private void toolBar_ItemClicked(object sender, System.Windows.Forms.ToolStripItemClickedEventArgs e)
 		{
-			CommandID cmd = e.Button.Tag as CommandID;
+			CommandID cmd = e.ClickedItem.Tag as CommandID;
 			if (cmd == null) throw new NotImplementedException("Button not hooked up");
 			Guid g = cmd.Guid;
 			Execute(ref g, cmd.ID);

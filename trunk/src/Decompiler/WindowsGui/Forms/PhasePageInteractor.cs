@@ -28,26 +28,24 @@ namespace Decompiler.WindowsGui.Forms
 	/// </summary>
 	public abstract class PhasePageInteractor : ICommandTarget
 	{
-		private PhasePage page;
 		private PhasePageInteractor nextPage;
-		private MainFormInteractor form;
+		private MainFormInteractor mainInteractor;
 
-		public PhasePageInteractor(PhasePage page, MainFormInteractor form)
+		public PhasePageInteractor(MainFormInteractor form)
 		{
-			this.page = page; 
-			this.form = form;
+			this.mainInteractor = form;
 		}
 
 		//$TODO: consider making this a service.
 		public virtual DecompilerDriver Decompiler
 		{
-			get { return form.Decompiler; }
+			get { return mainInteractor.Decompiler; }
 		}
 
 
-		public MainForm MainForm
+		public IMainForm MainForm
 		{
-			get { return form.MainForm; }
+			get { return mainInteractor.MainForm; }
 		}
 
 		public PhasePageInteractor NextPage
@@ -67,10 +65,7 @@ namespace Decompiler.WindowsGui.Forms
 		/// <returns>False if derived class wants to cancel leaving the page due to errors.</returns>
 		public abstract bool LeavePage();
 
-		public PhasePage PhasePage
-		{
-			get { return page; }
-		}
+        public abstract object Page { get; }
 
         /// <summary>
         /// Displays a modal dialog on the main form.
@@ -80,12 +75,12 @@ namespace Decompiler.WindowsGui.Forms
         /// <remarks>Test classes can override this method to avoid blocking on a modal dialog.</remarks>
         public virtual DialogResult ShowModalDialog(Form dlg)
         {
-            return dlg.ShowDialog(MainForm);
+            return MainForm.ShowDialog(dlg);
         }
 
         public virtual DialogResult ShowModalDialog(CommonDialog dlg)
         {
-            return dlg.ShowDialog(MainForm);
+            return MainForm.ShowDialog(dlg);
         }
 
 		#region ICommandTarget Members
@@ -101,5 +96,6 @@ namespace Decompiler.WindowsGui.Forms
 		}
 
 		#endregion
-	}
+
+    }
 }

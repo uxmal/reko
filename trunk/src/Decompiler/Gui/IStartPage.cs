@@ -25,10 +25,14 @@ namespace Decompiler.Gui
 	/// </summary>
 	public interface IStartPage
 	{
-		/// <summary>
-		/// The name of the binary to decompile.
-		/// </summary>
-		string InputFileName { get; set; }
-		
+        System.Windows.Forms.TextBox AssemblerFile { get; }
+        System.Windows.Forms.Button BrowseInputFile { get; }
+        System.Windows.Forms.TextBox HeaderFile { get; }
+        System.Windows.Forms.TextBox InputFile { get; }
+        System.Windows.Forms.TextBox IntermediateFile { get; }
+        bool IsDirty { get; set; }
+        event EventHandler IsDirtyChanged;
+        System.Windows.Forms.TextBox LoadAddress { get; }
+        System.Windows.Forms.TextBox SourceFile { get; }
 	}
 }

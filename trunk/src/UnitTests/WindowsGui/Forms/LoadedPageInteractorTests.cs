@@ -32,15 +32,15 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	[TestFixture]
 	public class LoadedPageInteractorTests
 	{
-		private MainForm form;
+		private IMainForm form;
 		private TestMainFormInteractor mi;
 
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm();
-			Program prog = BuildFakeProgram();
-			mi = new TestMainFormInteractor(form, prog);
+			form = new MainForm2();
+            Program prog = new Program();
+            mi = new TestMainFormInteractor(form, prog, new TestLoader(prog));
 			mi.OpenBinary(null);
 		}
 
@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		public void Populate()
 		{
 			ListView lv = mi.MainForm.BrowserList;
-			Assert.AreEqual(3, lv.Items.Count);
+			Assert.AreEqual(3, lv.Items.Count, "There should be three segments in the image.");
 		}
 
 		[Test]
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		{
 			mi.Program.Procedures.Add(new Address(0xC20, 0), new Procedure("Test1", new Frame(mi.Program.Architecture.WordWidth)));
 			mi.Program.Procedures.Add(new Address(0xC20, 2), new Procedure("Test2", new Frame(mi.Program.Architecture.WordWidth)));
-			form.CurrentPhasePage = form.LoadedPage;
+			form.SetCurrentPage(form.LoadedPage);
 			Assert.AreEqual(3, form.BrowserList.Items.Count);
 			Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
 		}
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		public void MarkingProceduresShouldAddToUserProceduresList()
 		{
 			Assert.AreEqual(0, mi.Decompiler.Project.UserProcedures.Count);
-			mi.MainForm.LoadedPage.MemoryControl.SelectedAddress = new Address(0x0C20, 0);
+            mi.MainForm.LoadedPage.MemoryControl.SelectedAddress = new Address(0x0C20, 0);
 			mi.LoadedPageInteractor.MarkAndScanProcedure();
 			Assert.AreEqual(1, mi.Decompiler.Project.UserProcedures.Count);
 			SerializedProcedure uproc = (SerializedProcedure) mi.Decompiler.Project.UserProcedures[0];
@@ -91,15 +91,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			return status.Status;
 		}
 
-		private Program BuildFakeProgram()
-		{
-			Program prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[10000]);
-			prog.Image.Map.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
-			prog.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
-			return prog;
-		}
 
         private class TestLoader : LoaderBase
         {
@@ -110,7 +101,12 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 
             public override DecompilerProject Load(Address userSpecifiedAddress)
             {
+                Program.Architecture = new IntelArchitecture(ProcessorMode.Real);
+                Program.Image = new ProgramImage(new Address(0xC00, 0), new byte[10000]);
+                Program.Image.Map.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
+                Program.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
                 return new DecompilerProject();
+
             }
         }
 	}

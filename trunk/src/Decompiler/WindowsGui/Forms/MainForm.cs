@@ -19,6 +19,7 @@
 using Decompiler;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Gui;
 using Decompiler.WindowsGui.Controls;
 using Decompiler.WindowsGui.Forms;
 using System;
@@ -32,7 +33,8 @@ using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
-	public class MainForm : System.Windows.Forms.Form
+	public class MainForm : System.Windows.Forms.Form, 
+        Decompiler.Gui.IMainForm
 	{
 		private PhasePage phasePage;
 
@@ -95,9 +97,6 @@ namespace Decompiler.WindowsGui.Forms
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-
-			BuildToolbarButtons();
-
 			BuildPhases();
 		}
 
@@ -125,6 +124,10 @@ namespace Decompiler.WindowsGui.Forms
 		{
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.pageInitial = new Decompiler.WindowsGui.Forms.InitialPage();
+            this.pageLoaded = new Decompiler.WindowsGui.Forms.LoadedPage();
+            this.pageAnalyzed = new Decompiler.WindowsGui.Forms.AnalyzedPage();
+            this.pageFinal = new Decompiler.WindowsGui.Forms.FinalPage();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.imglMapItems = new System.Windows.Forms.ImageList(this.components);
             this.imagesToolbar = new System.Windows.Forms.ImageList(this.components);
@@ -399,7 +402,6 @@ namespace Decompiler.WindowsGui.Forms
             this.pageLoaded.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pageLoaded.Location = new System.Drawing.Point(0, 0);
             this.pageLoaded.Name = "pageLoaded";
-            this.pageLoaded.ProgramImage = null;
             this.pageLoaded.Size = new System.Drawing.Size(448, 446);
             this.pageLoaded.TabIndex = 20;
             // 
@@ -544,7 +546,6 @@ namespace Decompiler.WindowsGui.Forms
             this.pageLoaded.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pageLoaded.Location = new System.Drawing.Point(0, 0);
             this.pageLoaded.Name = "pageLoaded";
-            this.pageLoaded.ProgramImage = null;
             this.pageLoaded.Size = new System.Drawing.Size(448, 446);
             this.pageLoaded.TabIndex = 20;
             // 
@@ -575,7 +576,7 @@ namespace Decompiler.WindowsGui.Forms
             // 
             // tabFindResults
             // 
-            this.tabFindResults.Controls.Add(this.listView1);
+            this.tabFindResults.Controls.Add(this.listFindResults);
             this.tabFindResults.Location = new System.Drawing.Point(4, 22);
             this.tabFindResults.Name = "tabFindResults";
             this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
@@ -583,18 +584,6 @@ namespace Decompiler.WindowsGui.Forms
             this.tabFindResults.TabIndex = 3;
             this.tabFindResults.Text = "Find Results";
             this.tabFindResults.UseVisualStyleBackColor = true;
-            // 
-            // listView1
-            // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader2});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Location = new System.Drawing.Point(3, 3);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(690, 68);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader2
             // 
@@ -632,19 +621,21 @@ namespace Decompiler.WindowsGui.Forms
 		}
 		#endregion
 
-		public void BuildPhases()
+
+        private void BuildToolbarButtons()
+        {
+            tbtnOpen.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.FileOpen);
+            tbtnSave.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.FileSave);
+            tbtnNextPhase.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionNextPhase);
+            tbtnFinishDecompilation.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionFinishDecompilation);
+        }
+
+
+        public void BuildPhases()
 		{
 			initialPhase = new InitialPhase(pageInitial);
 			loadingPhase = new LoadedPhase(pageLoaded);
 			initialPhase.NextPhase = loadingPhase;
-		}
-
-		public void BuildToolbarButtons()
-		{
-			tbtnOpen.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.FileOpen);
-			tbtnSave.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.FileSave);
-			tbtnNextPhase.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionNextPhase);
-			tbtnFinishDecompilation.Tag = new CommandID(CmdSets.GuidDecompiler, CmdIds.ActionFinishDecompilation);
 		}
 
 		public DecompilerPhase GetInitialPhase()
@@ -701,6 +692,13 @@ namespace Decompiler.WindowsGui.Forms
 			}
 		}
 
+        public void SetCurrentPage(object oPage)
+        {
+            Control page = (Control)oPage;
+            page.BringToFront();
+            page.Visible = true;
+        }
+
 		public FinalPage FinalPage
 		{
 			get { return pageFinal; }
@@ -711,12 +709,12 @@ namespace Decompiler.WindowsGui.Forms
             get { return listFindResults; }
         }
 
-		public InitialPage InitialPage
+		public IStartPage StartPage
 		{
 			get { return pageInitial; }
 		}
 
-		public LoadedPage LoadedPage
+		public ILoadedPage LoadedPage
 		{
 			get { return pageLoaded; }
 		}
@@ -731,9 +729,9 @@ namespace Decompiler.WindowsGui.Forms
 			get { return ofd; }
 		}
 
-		public ProgressBar ProgressBar
+		public IProgressBar ProgressBar
 		{
-			get { return progressBar1; }
+			get { return null; }
 		}
 
         public SaveFileDialog SaveFileDialog
@@ -741,19 +739,40 @@ namespace Decompiler.WindowsGui.Forms
             get { return sfd; }
         }
 
+        public DialogResult ShowDialog(CommonDialog dlg)
+        {
+            return dlg.ShowDialog(this);
+        }
+
+        public DialogResult ShowDialog(Form dlg)
+        {
+            return dlg.ShowDialog(this);
+        }
+
         public void SetStatus(string txt)
 		{
 			statusBar.Panels[1].Text = txt;
 		}
 
-		public void SetDetails(string txt)
+		public void SetStatusDetails(string txt)
 		{
 			statusBar.Panels[0].Text = txt;
 		}
 
-		public ToolBar ToolBar
+        public void ShowMessageBox(string message, string caption)
+        {
+            MessageBox.Show(this, message, caption);
+        }
+
+        public string TitleText
+        {
+            get { return Text; }
+            set { Text = TitleText; }
+        }
+
+		public ToolStrip ToolBar
 		{
-			get { return this.toolBar; }
+			get { return null; }
 		}
 
     }

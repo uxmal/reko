@@ -25,7 +25,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
-	public class InitialPage : PhasePage
+	public class InitialPage : PhasePage, Decompiler.Gui.IStartPage
 	{
 		public event EventHandler IsDirtyChanged;
 
