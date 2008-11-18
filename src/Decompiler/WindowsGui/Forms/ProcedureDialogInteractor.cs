@@ -27,7 +27,7 @@ namespace Decompiler.WindowsGui.Forms
 {
     public class ProcedureDialogInteractor
     {
-        private ProcedureDialog dlg;
+        protected ProcedureDialog dlg;
         private SerializedProcedure proc;
 
 
@@ -57,8 +57,9 @@ namespace Decompiler.WindowsGui.Forms
         {
             if (sig.ReturnValue != null)
             {
-                ListViewItem item = dlg.ArgumentList.Items.Add("<Return value>");
+                ListViewItem item = new ListViewItem("<Return value>"); 
                 item.Tag = sig.ReturnValue;
+                dlg.ArgumentList.Items.Add(item);
             }
         }
 
@@ -67,9 +68,16 @@ namespace Decompiler.WindowsGui.Forms
             //$TODO: actually apply changes!
         }
 
-        private void ArgumentList_SelectedIndexChanged(object sender, EventArgs e)
+        protected void ArgumentList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            throw new Exception("The method or operation is not implemented.");
+            if (dlg.ArgumentList.SelectedItems.Count != 0)
+            {
+                dlg.ArgumentProperties.SelectedObjects = new object[] {
+                    dlg.ArgumentList.SelectedItems[0].Tag
+                };
+            }
+            else
+                dlg.ArgumentProperties.SelectedObjects = new object[0];
         }
     }
 }

@@ -90,12 +90,12 @@ namespace Decompiler.WindowsGui.Forms
             //$REENABLE
             pageInitial = new InitialPageInteractor(form.StartPage, this);
             pageLoaded = new LoadedPageInteractor(form.LoadedPage, this, dm);
-            //pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage, this);
-            //pageFinal = new FinalPageInteractor(form.FinalPage, this);
+            pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage, this);
+            pageFinal = new FinalPageInteractor(form.FinalPage, this);
 
-            //pageInitial.NextPage = pageLoaded;
-            //pageLoaded.NextPage = pageAnalyzed;
-            //pageAnalyzed.NextPage = pageFinal;
+            pageInitial.NextPage = pageLoaded;
+            pageLoaded.NextPage = pageAnalyzed;
+            pageAnalyzed.NextPage = pageFinal;
 		}
 
 

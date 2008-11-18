@@ -55,22 +55,22 @@ namespace Decompiler.WindowsGui.Forms
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabParameters = new System.Windows.Forms.TabPage();
             this.tabProcedure = new System.Windows.Forms.TabPage();
-            this.btnAddArgument = new System.Windows.Forms.Button();
-            this.btnRemoveArgument = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtComment = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.chkMalloc = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkMalloc = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtComment = new System.Windows.Forms.TextBox();
+            this.tabParameters = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnRemoveArgument = new System.Windows.Forms.Button();
+            this.btnAddArgument = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabParameters.SuspendLayout();
             this.tabProcedure.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabParameters.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
@@ -121,6 +121,7 @@ namespace Decompiler.WindowsGui.Forms
             this.listArguments.Size = new System.Drawing.Size(164, 230);
             this.listArguments.TabIndex = 4;
             this.listArguments.UseCompatibleStateImageBehavior = false;
+            this.listArguments.View = System.Windows.Forms.View.List;
             // 
             // propArgument
             // 
@@ -129,6 +130,7 @@ namespace Decompiler.WindowsGui.Forms
             this.propArgument.Name = "propArgument";
             this.propArgument.Size = new System.Drawing.Size(233, 230);
             this.propArgument.TabIndex = 6;
+            this.propArgument.ToolbarVisible = false;
             // 
             // textBox2
             // 
@@ -169,21 +171,6 @@ namespace Decompiler.WindowsGui.Forms
             this.tabControl1.Size = new System.Drawing.Size(415, 410);
             this.tabControl1.TabIndex = 10;
             // 
-            // tabParameters
-            // 
-            this.tabParameters.Controls.Add(this.label2);
-            this.tabParameters.Controls.Add(this.btnRemoveArgument);
-            this.tabParameters.Controls.Add(this.btnAddArgument);
-            this.tabParameters.Controls.Add(this.textBox2);
-            this.tabParameters.Controls.Add(this.splitContainer1);
-            this.tabParameters.Location = new System.Drawing.Point(4, 22);
-            this.tabParameters.Name = "tabParameters";
-            this.tabParameters.Padding = new System.Windows.Forms.Padding(3);
-            this.tabParameters.Size = new System.Drawing.Size(407, 384);
-            this.tabParameters.TabIndex = 0;
-            this.tabParameters.Text = "Parameters";
-            this.tabParameters.UseVisualStyleBackColor = true;
-            // 
             // tabProcedure
             // 
             this.tabProcedure.Controls.Add(this.groupBox1);
@@ -199,49 +186,15 @@ namespace Decompiler.WindowsGui.Forms
             this.tabProcedure.Text = "Procedure";
             this.tabProcedure.UseVisualStyleBackColor = true;
             // 
-            // btnAddArgument
+            // groupBox1
             // 
-            this.btnAddArgument.Location = new System.Drawing.Point(0, 236);
-            this.btnAddArgument.Name = "btnAddArgument";
-            this.btnAddArgument.Size = new System.Drawing.Size(75, 23);
-            this.btnAddArgument.TabIndex = 10;
-            this.btnAddArgument.Text = "&Add";
-            this.btnAddArgument.UseVisualStyleBackColor = true;
-            // 
-            // btnRemoveArgument
-            // 
-            this.btnRemoveArgument.Location = new System.Drawing.Point(81, 236);
-            this.btnRemoveArgument.Name = "btnRemoveArgument";
-            this.btnRemoveArgument.Size = new System.Drawing.Size(75, 23);
-            this.btnRemoveArgument.TabIndex = 11;
-            this.btnRemoveArgument.Text = "&Remove";
-            this.btnRemoveArgument.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 272);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 13);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Previe&w:";
-            // 
-            // txtComment
-            // 
-            this.txtComment.Location = new System.Drawing.Point(3, 75);
-            this.txtComment.Multiline = true;
-            this.txtComment.Name = "txtComment";
-            this.txtComment.Size = new System.Drawing.Size(395, 64);
-            this.txtComment.TabIndex = 4;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 59);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "&Comment:";
+            this.groupBox1.Controls.Add(this.chkMalloc);
+            this.groupBox1.Location = new System.Drawing.Point(6, 145);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(392, 224);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "C&haracteristics";
             // 
             // chkMalloc
             // 
@@ -253,15 +206,64 @@ namespace Decompiler.WindowsGui.Forms
             this.chkMalloc.Text = "Memory allocating procedure (like malloc, calloc)";
             this.chkMalloc.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // label3
             // 
-            this.groupBox1.Controls.Add(this.chkMalloc);
-            this.groupBox1.Location = new System.Drawing.Point(6, 145);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(392, 224);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "C&haracteristics";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 59);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "&Comment:";
+            // 
+            // txtComment
+            // 
+            this.txtComment.Location = new System.Drawing.Point(3, 75);
+            this.txtComment.Multiline = true;
+            this.txtComment.Name = "txtComment";
+            this.txtComment.Size = new System.Drawing.Size(395, 64);
+            this.txtComment.TabIndex = 4;
+            // 
+            // tabParameters
+            // 
+            this.tabParameters.Controls.Add(this.label2);
+            this.tabParameters.Controls.Add(this.btnRemoveArgument);
+            this.tabParameters.Controls.Add(this.btnAddArgument);
+            this.tabParameters.Controls.Add(this.textBox2);
+            this.tabParameters.Controls.Add(this.splitContainer1);
+            this.tabParameters.Location = new System.Drawing.Point(4, 22);
+            this.tabParameters.Name = "tabParameters";
+            this.tabParameters.Padding = new System.Windows.Forms.Padding(3);
+            this.tabParameters.Size = new System.Drawing.Size(407, 384);
+            this.tabParameters.TabIndex = 0;
+            this.tabParameters.Text = "Parameters";
+            this.tabParameters.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 272);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(48, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Previe&w:";
+            // 
+            // btnRemoveArgument
+            // 
+            this.btnRemoveArgument.Location = new System.Drawing.Point(81, 236);
+            this.btnRemoveArgument.Name = "btnRemoveArgument";
+            this.btnRemoveArgument.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveArgument.TabIndex = 11;
+            this.btnRemoveArgument.Text = "&Remove";
+            this.btnRemoveArgument.UseVisualStyleBackColor = true;
+            // 
+            // btnAddArgument
+            // 
+            this.btnAddArgument.Location = new System.Drawing.Point(0, 236);
+            this.btnAddArgument.Name = "btnAddArgument";
+            this.btnAddArgument.Size = new System.Drawing.Size(75, 23);
+            this.btnAddArgument.TabIndex = 10;
+            this.btnAddArgument.Text = "&Add";
+            this.btnAddArgument.UseVisualStyleBackColor = true;
             // 
             // ProcedureDialog
             // 
@@ -284,12 +286,12 @@ namespace Decompiler.WindowsGui.Forms
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.tabParameters.ResumeLayout(false);
-            this.tabParameters.PerformLayout();
             this.tabProcedure.ResumeLayout(false);
             this.tabProcedure.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabParameters.ResumeLayout(false);
+            this.tabParameters.PerformLayout();
             this.ResumeLayout(false);
 
         }
