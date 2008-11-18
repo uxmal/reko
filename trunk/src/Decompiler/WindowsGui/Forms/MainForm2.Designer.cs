@@ -56,18 +56,19 @@ namespace Decompiler.WindowsGui.Forms
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listBrowser = new System.Windows.Forms.ListView();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabDiagnostics = new System.Windows.Forms.TabPage();
-            this.tabFindResults = new System.Windows.Forms.TabPage();
-            this.listFindResults = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.analyzedPage1 = new Decompiler.WindowsGui.Forms.AnalyzedPage();
             this.startPage = new Decompiler.WindowsGui.Forms.StartPage();
             this.loadedPage1 = new Decompiler.WindowsGui.Forms.LoadedPage();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabDiagnostics = new System.Windows.Forms.TabPage();
             this.listDiagnostics = new System.Windows.Forms.ListView();
             this.colDiagnosticType = new System.Windows.Forms.ColumnHeader();
             this.colDiagnosticAddress = new System.Windows.Forms.ColumnHeader();
             this.colDiagnosticDescription = new System.Windows.Forms.ColumnHeader();
+            this.tabFindResults = new System.Windows.Forms.TabPage();
+            this.listFindResults = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.finalPage1 = new Decompiler.WindowsGui.Forms.FinalPage();
             this.statusStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -154,6 +155,7 @@ namespace Decompiler.WindowsGui.Forms
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.finalPage1);
             this.splitContainer2.Panel2.Controls.Add(this.analyzedPage1);
             this.splitContainer2.Panel2.Controls.Add(this.startPage);
             this.splitContainer2.Panel2.Controls.Add(this.loadedPage1);
@@ -176,51 +178,6 @@ namespace Decompiler.WindowsGui.Forms
             // columnHeader2
             // 
             this.columnHeader2.Text = "Item";
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabDiagnostics);
-            this.tabControl1.Controls.Add(this.tabFindResults);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(725, 125);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // tabDiagnostics
-            // 
-            this.tabDiagnostics.Controls.Add(this.listDiagnostics);
-            this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
-            this.tabDiagnostics.Name = "tabDiagnostics";
-            this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDiagnostics.Size = new System.Drawing.Size(717, 99);
-            this.tabDiagnostics.TabIndex = 0;
-            this.tabDiagnostics.Text = "Diagnostics";
-            this.tabDiagnostics.UseVisualStyleBackColor = true;
-            // 
-            // tabFindResults
-            // 
-            this.tabFindResults.Controls.Add(this.listFindResults);
-            this.tabFindResults.Location = new System.Drawing.Point(4, 22);
-            this.tabFindResults.Name = "tabFindResults";
-            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFindResults.Size = new System.Drawing.Size(717, 99);
-            this.tabFindResults.TabIndex = 1;
-            this.tabFindResults.Text = "Search Results";
-            this.tabFindResults.UseVisualStyleBackColor = true;
-            // 
-            // listFindResults
-            // 
-            this.listFindResults.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listFindResults.Location = new System.Drawing.Point(3, 3);
-            this.listFindResults.Name = "listFindResults";
-            this.listFindResults.Size = new System.Drawing.Size(711, 93);
-            this.listFindResults.TabIndex = 0;
-            this.listFindResults.UseCompatibleStateImageBehavior = false;
-            this.listFindResults.View = System.Windows.Forms.View.Details;
             // 
             // analyzedPage1
             // 
@@ -248,6 +205,28 @@ namespace Decompiler.WindowsGui.Forms
             this.loadedPage1.Size = new System.Drawing.Size(552, 312);
             this.loadedPage1.TabIndex = 1;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabDiagnostics);
+            this.tabControl1.Controls.Add(this.tabFindResults);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(725, 125);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabDiagnostics
+            // 
+            this.tabDiagnostics.Controls.Add(this.listDiagnostics);
+            this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
+            this.tabDiagnostics.Name = "tabDiagnostics";
+            this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDiagnostics.Size = new System.Drawing.Size(717, 99);
+            this.tabDiagnostics.TabIndex = 0;
+            this.tabDiagnostics.Text = "Diagnostics";
+            this.tabDiagnostics.UseVisualStyleBackColor = true;
+            // 
             // listDiagnostics
             // 
             this.listDiagnostics.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -274,7 +253,38 @@ namespace Decompiler.WindowsGui.Forms
             // 
             this.colDiagnosticDescription.Text = "Description";
             // 
-            // MainForm2
+            // tabFindResults
+            // 
+            this.tabFindResults.Controls.Add(this.listFindResults);
+            this.tabFindResults.Location = new System.Drawing.Point(4, 22);
+            this.tabFindResults.Name = "tabFindResults";
+            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFindResults.Size = new System.Drawing.Size(717, 99);
+            this.tabFindResults.TabIndex = 1;
+            this.tabFindResults.Text = "Search Results";
+            this.tabFindResults.UseVisualStyleBackColor = true;
+            // 
+            // listFindResults
+            // 
+            this.listFindResults.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listFindResults.Location = new System.Drawing.Point(3, 3);
+            this.listFindResults.Name = "listFindResults";
+            this.listFindResults.Size = new System.Drawing.Size(711, 93);
+            this.listFindResults.TabIndex = 0;
+            this.listFindResults.UseCompatibleStateImageBehavior = false;
+            this.listFindResults.View = System.Windows.Forms.View.Details;
+            // 
+            // finalPage1
+            // 
+            this.finalPage1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.finalPage1.Location = new System.Drawing.Point(0, 0);
+            this.finalPage1.Name = "finalPage1";
+            this.finalPage1.Size = new System.Drawing.Size(552, 312);
+            this.finalPage1.TabIndex = 3;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -284,7 +294,7 @@ namespace Decompiler.WindowsGui.Forms
             this.Controls.Add(this.toolbar);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "MainForm2";
+            this.Name = "MainForm";
             this.Text = "Decompiler";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -326,5 +336,6 @@ namespace Decompiler.WindowsGui.Forms
         private System.Windows.Forms.ColumnHeader colDiagnosticType;
         private System.Windows.Forms.ColumnHeader colDiagnosticAddress;
         private System.Windows.Forms.ColumnHeader colDiagnosticDescription;
+        private FinalPage finalPage1;
     }
 }

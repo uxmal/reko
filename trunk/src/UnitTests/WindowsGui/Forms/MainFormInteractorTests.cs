@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			interactor.OpenBinary(null);
 			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPage);
 			interactor.NextPhase();
-			Assert.AreEqual(interactor.AnalyzedPageInteractor, interactor.CurrentPage);
+			Assert.AreSame(interactor.AnalyzedPageInteractor, interactor.CurrentPage);
 		}
 
         [Test]

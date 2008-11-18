@@ -47,6 +47,8 @@ namespace Decompiler.Gui
         IStartPage StartPage { get; }
         ILoadedPage LoadedPage { get; }
         Decompiler.WindowsGui.Forms.AnalyzedPage AnalyzedPage { get; }
+        Decompiler.WindowsGui.Forms.FinalPage FinalPage { get; }
+
 
         event EventHandler Closed;
 
@@ -61,6 +63,7 @@ namespace Decompiler.Gui
         void ShowMessageBox(string message, string caption);
 
         void SetCurrentPage(object page);
+
 
     }
 

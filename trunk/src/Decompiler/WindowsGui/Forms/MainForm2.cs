@@ -140,6 +140,10 @@ namespace Decompiler.WindowsGui.Forms
             get { return analyzedPage1; }
         }
 
+        public FinalPage FinalPage
+        {
+            get { return finalPage1; }
+        }
 
         private class ProgressBarWrapper : IProgressBar
         {

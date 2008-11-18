@@ -1,22 +1,41 @@
+/* 
+ * Copyright (C) 1999-2008 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
+using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.WindowsGui.Forms
 {
     [TestFixture]
     public class ProcedureDialogInteractorTests
     {
-        private ProcedureDialogInteractor interactor;
+        private TestProcedureDialogInteractor interactor;
         private SerializedProcedure proc;
  
         [SetUp]
         public void Setup()
         {
             proc = new SerializedProcedure();
-            interactor = new ProcedureDialogInteractor(proc);
+            interactor = new TestProcedureDialogInteractor(proc);
         }
 
         [Test]
@@ -66,8 +85,32 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
-                dlg.ArgumentList.SelectedIndices.Add(0);
-                Assert.AreSame(dlg.ArgumentList.Items[0].Tag, dlg.ArgumentProperties.SelectedObject);
+                interactor.UserSwitchTab(1);
+                interactor.UserSelectedItem(dlg.ArgumentList, 0);
+
+                ListViewItem item = dlg.ArgumentList.Items[0];
+                Assert.AreEqual("<Return value>", item.Text);
+                Assert.AreSame(item.Tag, dlg.ArgumentProperties.SelectedObject);
+            }
+        }
+
+
+        private class TestProcedureDialogInteractor : ProcedureDialogInteractor
+        {
+            public TestProcedureDialogInteractor(SerializedProcedure proc)
+                : base(proc)
+            {
+            }
+
+            public void UserSelectedItem(ListView listView, int p)
+            {
+                listView.Items[0].Selected = true;
+                base.ArgumentList_SelectedIndexChanged(listView, EventArgs.Empty);
+            }
+
+            internal void UserSwitchTab(int p)
+            {
+                dlg.TabControl.SelectedIndex = p;
             }
         }
     }

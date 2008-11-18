@@ -19,6 +19,9 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.Design;
+using System.Drawing.Design;
 using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
@@ -28,30 +31,30 @@ namespace Decompiler.Core.Serialization
 	/// </summary>
 	public class SerializedArgument
 	{
-		[XmlAttribute("name")]
-		public string Name;
-
-		[XmlElement("type")]
-		public string Type;				//$REVIEW: this needs to be SerializedType.
-
-		[XmlElement("reg", typeof (SerializedRegister))]
-		[XmlElement("stack", typeof (SerializedStackVariable))]
-		[XmlElement("fpustack", typeof (SerializedFpuStackVariable))]
-		[XmlElement("seq", typeof (SerializedSequence))]
-		[XmlElement("flag", typeof (SerializedFlag))]
-		public SerializedKind  Kind;
-
-		[XmlAttribute("out")]
-		[System.ComponentModel.DefaultValue(false)]
-		public bool OutParameter;
+        private string name;
+        private string type;
+        private SerializedKind kind;
+        private bool outParameter;
 
         public SerializedArgument() { }
 
-        [Obsolete("Use ArgumentSerializer.Serialize", true)]
-		public SerializedArgument(Identifier arg)
-		{
-			Name = arg.Name;
-			Kind = arg.Storage.Serialize();
-		}
+		[XmlAttribute("name")]
+		public string Name { get { return name; } set { name = value; } }
+
+        [XmlElement("type")]
+        public string Type { get { return type; } set { type = value; } }		//$REVIEW: this needs to be SerializedType.
+
+        [XmlElement("reg", typeof(SerializedRegister))]
+        [XmlElement("stack", typeof(SerializedStackVariable))]
+        [XmlElement("fpustack", typeof(SerializedFpuStackVariable))]
+        [XmlElement("seq", typeof(SerializedSequence))]
+        [XmlElement("flag", typeof(SerializedFlag))]
+        [ReadOnly(true)]
+        public SerializedKind Kind { get { return kind; } set { kind = value; } }
+
+        [XmlAttribute("out")]
+        [DefaultValue(false)]
+        public bool OutParameter { get { return outParameter; } set { outParameter = value; } }
+
 	}
 }

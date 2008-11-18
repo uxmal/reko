@@ -47,5 +47,10 @@ namespace Decompiler.WindowsGui.Forms
         {
             get { return propArgument; }
         }
+
+        public TabControl TabControl
+        {
+            get { return tabControl1; }
+        }
     }
 }

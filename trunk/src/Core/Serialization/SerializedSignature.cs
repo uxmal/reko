@@ -29,6 +29,10 @@ namespace Decompiler.Core.Serialization
 	/// </summary>
 	public class SerializedSignature
 	{
+        public SerializedSignature()
+        {
+        }
+
 		[XmlElement("return")]
 		public SerializedArgument ReturnValue;
 
@@ -41,27 +45,6 @@ namespace Decompiler.Core.Serialization
 
 		[XmlElement("arg")]
 		public SerializedArgument [] Arguments;
-
-		public SerializedSignature()
-		{
-		}
-
-        [Obsolete("Use ProcedureSerializer.Serialize", true)]
-		public SerializedSignature(ProcedureSignature sig)
-		{
-			if (sig.ReturnValue != null)
-			{
-				ReturnValue = new SerializedArgument(sig.ReturnValue);
-			}
-			if (sig.FormalArguments != null && sig.FormalArguments.Length > 0)
-			{
-				Arguments = new SerializedArgument[sig.FormalArguments.Length];
-				for (int i = 0; i < Arguments.Length; ++i)
-				{
-					Arguments[i] = new SerializedArgument(sig.FormalArguments[i]);
-				}
-			}
-		}
 
         [XmlAttribute("fpuStackDelta")]
         [DefaultValue(0)]
