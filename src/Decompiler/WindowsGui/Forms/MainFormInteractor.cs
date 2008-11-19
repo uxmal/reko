@@ -74,6 +74,7 @@ namespace Decompiler.WindowsGui.Forms
 
 			DecompilerMenus dm = new DecompilerMenus(this);
 			form.Menu = dm.MainMenu;
+            form.AddToolbar(dm.MainToolbar);
 
 			AttachInteractors(dm);
             CreateServices();
@@ -474,10 +475,10 @@ namespace Decompiler.WindowsGui.Forms
 
 		private void toolBar_ItemClicked(object sender, System.Windows.Forms.ToolStripItemClickedEventArgs e)
 		{
-			CommandID cmd = e.ClickedItem.Tag as CommandID;
+			MenuCommand cmd = e.ClickedItem.Tag as MenuCommand;
 			if (cmd == null) throw new NotImplementedException("Button not hooked up");
-			Guid g = cmd.Guid;
-			Execute(ref g, cmd.ID);
+			Guid g = cmd.CommandID.Guid;
+			Execute(ref g, cmd.CommandID.ID);
 		}
 
 		public void OnBrowserTreeItemSelected(object sender, TreeViewEventArgs e)

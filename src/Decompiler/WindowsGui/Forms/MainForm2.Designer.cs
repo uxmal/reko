@@ -47,7 +47,6 @@ namespace Decompiler.WindowsGui.Forms
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolbar = new System.Windows.Forms.ToolStrip();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatusDetails = new System.Windows.Forms.ToolStripStatusLabel();
@@ -56,6 +55,7 @@ namespace Decompiler.WindowsGui.Forms
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listBrowser = new System.Windows.Forms.ListView();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.finalPage1 = new Decompiler.WindowsGui.Forms.FinalPage();
             this.analyzedPage1 = new Decompiler.WindowsGui.Forms.AnalyzedPage();
             this.startPage = new Decompiler.WindowsGui.Forms.StartPage();
             this.loadedPage1 = new Decompiler.WindowsGui.Forms.LoadedPage();
@@ -68,7 +68,8 @@ namespace Decompiler.WindowsGui.Forms
             this.tabFindResults = new System.Windows.Forms.TabPage();
             this.listFindResults = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.finalPage1 = new Decompiler.WindowsGui.Forms.FinalPage();
+            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.statusStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -88,14 +89,6 @@ namespace Decompiler.WindowsGui.Forms
             this.menuStrip1.Size = new System.Drawing.Size(725, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // toolbar
-            // 
-            this.toolbar.Location = new System.Drawing.Point(0, 24);
-            this.toolbar.Name = "toolbar";
-            this.toolbar.Size = new System.Drawing.Size(725, 25);
-            this.toolbar.TabIndex = 1;
-            this.toolbar.Text = "toolStrip1";
             // 
             // statusStrip1
             // 
@@ -128,7 +121,7 @@ namespace Decompiler.WindowsGui.Forms
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -139,8 +132,8 @@ namespace Decompiler.WindowsGui.Forms
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(725, 441);
-            this.splitContainer1.SplitterDistance = 312;
+            this.splitContainer1.Size = new System.Drawing.Size(725, 466);
+            this.splitContainer1.SplitterDistance = 329;
             this.splitContainer1.TabIndex = 3;
             // 
             // splitContainer2
@@ -159,7 +152,7 @@ namespace Decompiler.WindowsGui.Forms
             this.splitContainer2.Panel2.Controls.Add(this.analyzedPage1);
             this.splitContainer2.Panel2.Controls.Add(this.startPage);
             this.splitContainer2.Panel2.Controls.Add(this.loadedPage1);
-            this.splitContainer2.Size = new System.Drawing.Size(725, 312);
+            this.splitContainer2.Size = new System.Drawing.Size(725, 329);
             this.splitContainer2.SplitterDistance = 169;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -170,7 +163,7 @@ namespace Decompiler.WindowsGui.Forms
             this.listBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBrowser.Location = new System.Drawing.Point(0, 0);
             this.listBrowser.Name = "listBrowser";
-            this.listBrowser.Size = new System.Drawing.Size(169, 312);
+            this.listBrowser.Size = new System.Drawing.Size(169, 329);
             this.listBrowser.TabIndex = 0;
             this.listBrowser.UseCompatibleStateImageBehavior = false;
             this.listBrowser.View = System.Windows.Forms.View.Details;
@@ -179,12 +172,20 @@ namespace Decompiler.WindowsGui.Forms
             // 
             this.columnHeader2.Text = "Item";
             // 
+            // finalPage1
+            // 
+            this.finalPage1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.finalPage1.Location = new System.Drawing.Point(0, 0);
+            this.finalPage1.Name = "finalPage1";
+            this.finalPage1.Size = new System.Drawing.Size(552, 329);
+            this.finalPage1.TabIndex = 3;
+            // 
             // analyzedPage1
             // 
             this.analyzedPage1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.analyzedPage1.Location = new System.Drawing.Point(0, 0);
             this.analyzedPage1.Name = "analyzedPage1";
-            this.analyzedPage1.Size = new System.Drawing.Size(552, 312);
+            this.analyzedPage1.Size = new System.Drawing.Size(552, 329);
             this.analyzedPage1.TabIndex = 2;
             // 
             // startPage
@@ -193,7 +194,7 @@ namespace Decompiler.WindowsGui.Forms
             this.startPage.IsDirty = false;
             this.startPage.Location = new System.Drawing.Point(0, 0);
             this.startPage.Name = "startPage";
-            this.startPage.Size = new System.Drawing.Size(552, 312);
+            this.startPage.Size = new System.Drawing.Size(552, 329);
             this.startPage.TabIndex = 0;
             // 
             // loadedPage1
@@ -202,7 +203,7 @@ namespace Decompiler.WindowsGui.Forms
             this.loadedPage1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.loadedPage1.Location = new System.Drawing.Point(0, 0);
             this.loadedPage1.Name = "loadedPage1";
-            this.loadedPage1.Size = new System.Drawing.Size(552, 312);
+            this.loadedPage1.Size = new System.Drawing.Size(552, 329);
             this.loadedPage1.TabIndex = 1;
             // 
             // tabControl1
@@ -213,7 +214,7 @@ namespace Decompiler.WindowsGui.Forms
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(725, 125);
+            this.tabControl1.Size = new System.Drawing.Size(725, 133);
             this.tabControl1.TabIndex = 0;
             // 
             // tabDiagnostics
@@ -222,7 +223,7 @@ namespace Decompiler.WindowsGui.Forms
             this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
             this.tabDiagnostics.Name = "tabDiagnostics";
             this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDiagnostics.Size = new System.Drawing.Size(717, 99);
+            this.tabDiagnostics.Size = new System.Drawing.Size(717, 107);
             this.tabDiagnostics.TabIndex = 0;
             this.tabDiagnostics.Text = "Diagnostics";
             this.tabDiagnostics.UseVisualStyleBackColor = true;
@@ -236,7 +237,7 @@ namespace Decompiler.WindowsGui.Forms
             this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listDiagnostics.Location = new System.Drawing.Point(3, 3);
             this.listDiagnostics.Name = "listDiagnostics";
-            this.listDiagnostics.Size = new System.Drawing.Size(711, 93);
+            this.listDiagnostics.Size = new System.Drawing.Size(711, 101);
             this.listDiagnostics.TabIndex = 0;
             this.listDiagnostics.UseCompatibleStateImageBehavior = false;
             this.listDiagnostics.View = System.Windows.Forms.View.Details;
@@ -259,7 +260,7 @@ namespace Decompiler.WindowsGui.Forms
             this.tabFindResults.Location = new System.Drawing.Point(4, 22);
             this.tabFindResults.Name = "tabFindResults";
             this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFindResults.Size = new System.Drawing.Size(717, 99);
+            this.tabFindResults.Size = new System.Drawing.Size(717, 107);
             this.tabFindResults.TabIndex = 1;
             this.tabFindResults.Text = "Search Results";
             this.tabFindResults.UseVisualStyleBackColor = true;
@@ -271,18 +272,10 @@ namespace Decompiler.WindowsGui.Forms
             this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listFindResults.Location = new System.Drawing.Point(3, 3);
             this.listFindResults.Name = "listFindResults";
-            this.listFindResults.Size = new System.Drawing.Size(711, 93);
+            this.listFindResults.Size = new System.Drawing.Size(711, 101);
             this.listFindResults.TabIndex = 0;
             this.listFindResults.UseCompatibleStateImageBehavior = false;
             this.listFindResults.View = System.Windows.Forms.View.Details;
-            // 
-            // finalPage1
-            // 
-            this.finalPage1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.finalPage1.Location = new System.Drawing.Point(0, 0);
-            this.finalPage1.Name = "finalPage1";
-            this.finalPage1.Size = new System.Drawing.Size(552, 312);
-            this.finalPage1.TabIndex = 3;
             // 
             // MainForm
             // 
@@ -291,7 +284,6 @@ namespace Decompiler.WindowsGui.Forms
             this.ClientSize = new System.Drawing.Size(725, 512);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.toolbar);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -315,7 +307,6 @@ namespace Decompiler.WindowsGui.Forms
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStrip toolbar;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
@@ -337,5 +328,7 @@ namespace Decompiler.WindowsGui.Forms
         private System.Windows.Forms.ColumnHeader colDiagnosticAddress;
         private System.Windows.Forms.ColumnHeader colDiagnosticDescription;
         private FinalPage finalPage1;
+        private System.Windows.Forms.OpenFileDialog ofd;
+        private System.Windows.Forms.SaveFileDialog sfd;
     }
 }

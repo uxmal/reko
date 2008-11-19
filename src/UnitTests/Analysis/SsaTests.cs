@@ -109,6 +109,17 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest(new SsaMock(), "Analysis/SsaMockTest.txt");
 		}
 
+        [Test]
+        public void SsaOutParamters()
+        {
+            ProcedureMock m = new ProcedureMock("foo");
+            Identifier r4 = m.Register(4);
+            m.Store(m.Int32(0x400), m.Fn("foo", m.AddrOf(r4)));
+            m.Return();
+
+            RunTest(m, "Analysis/SsaOutParameters.txt");
+        }
+
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
 			ssas.Clear();

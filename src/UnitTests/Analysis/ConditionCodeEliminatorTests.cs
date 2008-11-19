@@ -95,12 +95,12 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier y = Reg32("y");
 
 			Statement stmZ = new Statement(new Assignment(z, new ConditionOf(r)), null);
-			ssaIds[z].def = stmZ;
+			ssaIds[z].DefStatement = stmZ;
 			Statement stmY = new Statement(new Assignment(y, z), null);
-			ssaIds[y].def = stmY;
-			ssaIds[z].uses.Add(stmY);
+			ssaIds[y].DefStatement = stmY;
+			ssaIds[z].Uses.Add(stmY);
 			Statement stmBr = new Statement(new Branch(new TestCondition(ConditionCode.EQ, y)), null);
-			ssaIds[y].uses.Add(stmBr);
+			ssaIds[y].Uses.Add(stmBr);
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds);
 			Instruction instr = stmBr.Instruction.Accept(cce);
@@ -115,10 +115,10 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier f = Reg32("f");
 
 			Statement stmZ = new Statement(new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.sub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
-			ssaIds[Z].def = stmZ;
+			ssaIds[Z].DefStatement = stmZ;
 			Statement stmF = new Statement(new Assignment(f, new TestCondition(ConditionCode.NE, Z)), null);
-			ssaIds[f].def = stmF;
-			ssaIds[Z].uses.Add(stmF);
+			ssaIds[f].DefStatement = stmF;
+			ssaIds[Z].Uses.Add(stmF);
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds);
 			cce.Transform();
@@ -149,13 +149,13 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			MachineRegister mr = new MachineRegister(name, ssaIds.Count, PrimitiveType.Word32);
 			Identifier id = new Identifier(name, ssaIds.Count, PrimitiveType.Word32, new RegisterStorage(mr));
-			return ssaIds.Add(id, null).id;
+			return ssaIds.Add(id, null, null, false).Identifier;
 		}
 
 		private Identifier FlagGroup(string name)
 		{
 			Identifier id = new Identifier(name, ssaIds.Count, PrimitiveType.Word32, new FlagGroupStorage(1U, "C"));
-			return ssaIds.Add(id, null).id;
+			return ssaIds.Add(id, null, null, false).Identifier;
 		}
 
 		protected override void RunTest(Program prog, FileUnitTester fut)

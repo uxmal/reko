@@ -93,10 +93,10 @@ namespace Decompiler.Analysis
 			if (id == null)
 				return null;
 			SsaIdentifier ssaId = ssaIds[id];
-			if (ssaId.def == null)
+			if (ssaId.DefStatement == null)
 				return null;
-			Assignment ass = ssaId.def.Instruction as Assignment;
-			if (ass != null && ass.Dst == ssaId.id)
+			Assignment ass = ssaId.DefStatement.Instruction as Assignment;
+			if (ass != null && ass.Dst == ssaId.Identifier)
 			{
 				return ass.Src;
 			}
@@ -120,7 +120,7 @@ namespace Decompiler.Analysis
 		private void RemoveUse(Identifier id)
 		{
 			if (id != null)
-				ssaIds[id].uses.Remove(stm);
+				ssaIds[id].Uses.Remove(stm);
 		}
 
 		public void Transform()

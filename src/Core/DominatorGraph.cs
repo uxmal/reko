@@ -44,6 +44,11 @@ namespace Decompiler.Core
 			}
 		}
 
+        /// <summary>
+        /// Find the common dominator of all the provided blocks.
+        /// </summary>
+        /// <param name="blocks"></param>
+        /// <returns></returns>
 		public Block CommonDominator(ICollection blocks)
 		{
 			if (blocks == null || blocks.Count == 0)

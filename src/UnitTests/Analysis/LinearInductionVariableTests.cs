@@ -64,10 +64,10 @@ namespace Decompiler.UnitTests.Analysis
 			b2.Statements.Add(stm_a2);
 			b2.Statements.Add(stm_a3);
 
-			SsaIdentifier sid_a1 = new SsaIdentifier(a1, a1, stm_a1);
-			SsaIdentifier sid_a2 = new SsaIdentifier(a2, a2, stm_a2);
-			SsaIdentifier sid_a3 = new SsaIdentifier(a3, a3, stm_a3);
-			sid_a1.uses.Add(stm_a2);
+			SsaIdentifier sid_a1 = new SsaIdentifier(a1, a1, stm_a1, ((Assignment)stm_a1.Instruction).Src, false);
+            SsaIdentifier sid_a2 = new SsaIdentifier(a2, a2, stm_a2, ((PhiAssignment) stm_a2.Instruction).Src, false);
+            SsaIdentifier sid_a3 = new SsaIdentifier(a3, a3, stm_a3, ((Assignment) stm_a3.Instruction).Src, false);
+			sid_a1.Uses.Add(stm_a2);
 			ssaIds = new SsaIdentifierCollection();
 			ssaIds.Add(sid_a1);
 			ssaIds.Add(sid_a2);
@@ -141,10 +141,10 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.IsNull(liv.PhiIdentifier);
 			Assert.IsNull(liv.PhiStatement);
 
-			liv.PhiStatement = ssaIds[5].def;
+			liv.PhiStatement = ssaIds[5].DefStatement;
 			liv.PhiIdentifier = (Identifier) ((PhiAssignment) liv.PhiStatement.Instruction).Dst;
 			liv.TestStatement = proc.RpoBlocks[2].Statements[1];
-			liv.DeltaStatement = ssaIds[8].def;
+			liv.DeltaStatement = ssaIds[8].DefStatement;
 			liv.InitialValue = Constant.Word32(0);
 			liv.DeltaValue = Constant.Word32(1);
 			liv.TestValue = Constant.Word32(10);
@@ -165,8 +165,8 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds = new SsaIdentifierCollection();
 			Identifier id0 = new Identifier("foo", 1, PrimitiveType.Word32, new TemporaryStorage());
 			Identifier id1 = new Identifier("bar", 2, PrimitiveType.Word32, new TemporaryStorage());
-			ssaIds.Add(new SsaIdentifier(id0, id0, null));
-			ssaIds.Add(new SsaIdentifier(id1, id1, null));
+			ssaIds.Add(new SsaIdentifier(id0, id0, null, null, false));
+			ssaIds.Add(new SsaIdentifier(id1, id1, null, null, false));
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 			liv.PhiStatement = new Statement(null, null);
 			liv.PhiIdentifier = new Identifier("i_3", 1, PrimitiveType.Word32, null);
@@ -183,11 +183,11 @@ namespace Decompiler.UnitTests.Analysis
 			liv.InitialValue = Constant.Word32(0);
 			liv.PhiStatement = new Statement(null, null);
 			liv.PhiIdentifier = new Identifier("foo_0", 0, PrimitiveType.Word32, null);
-			ssaIds.Add(new SsaIdentifier(liv.PhiIdentifier, liv.PhiIdentifier, liv.PhiStatement));
+            ssaIds.Add(new SsaIdentifier(liv.PhiIdentifier, liv.PhiIdentifier, liv.PhiStatement, null, false));
 			liv.DeltaValue = Constant.Word32(1);
 			liv.DeltaStatement = new Statement(new Assignment(new Identifier("foo_1", 1, PrimitiveType.Word32, null), 
 				new BinaryExpression(Operator.add, PrimitiveType.Word32, liv.PhiIdentifier, liv.DeltaValue)), null);
-			ssaIds[liv.PhiIdentifier].uses.Add(liv.DeltaStatement);
+			ssaIds[liv.PhiIdentifier].Uses.Add(liv.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("(0x00000001 0x00000001 ?)", iv.ToString());
@@ -198,13 +198,13 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			ProcedureMock m = new ProcedureMock();
 			ssaIds = new SsaIdentifierCollection();
-			SsaId(new Identifier("id0", 0, PrimitiveType.Word32, new TemporaryStorage()), null);
-			SsaId(new Identifier("id1", 1, PrimitiveType.Word32, new TemporaryStorage()), null);
+			SsaId(new Identifier("id0", 0, PrimitiveType.Word32, new TemporaryStorage()), null, null, false);
+			SsaId(new Identifier("id1", 1, PrimitiveType.Word32, new TemporaryStorage()), null, null, false);
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 
 			liv.InitialValue = Constant.Word32(0);
 			Identifier id2 = m.Local32("id_2");
-			SsaId(id2, new Statement(null, null));
+			SsaId(id2, new Statement(null, null), null, false);
 			Assert.AreEqual(3, ssaIds.Count);
 
 			Identifier id3 = m.Local32("id_3");
@@ -212,15 +212,15 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier id4 = m.Local32("id_4");
 			liv.PhiStatement = m.Phi(id3, id2, id4);
 			liv.PhiIdentifier = id3;
-			SsaId(id3, liv.PhiStatement);
+			SsaId(id3, liv.PhiStatement, ((PhiAssignment)liv.PhiStatement.Instruction).Src, false);
 			Assert.AreEqual(4, ssaIds.Count);
 
 			Statement use = new Statement(null, null);
-			ssaIds[id3].uses.Add(use);
+			ssaIds[id3].Uses.Add(use);
 
 			liv.DeltaValue = m.Int32(1);
 			liv.DeltaStatement = m.Add(id4, id3, liv.DeltaValue);
-			ssaIds[id3].uses.Add(liv.DeltaStatement);
+			ssaIds[id3].Uses.Add(liv.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("(0x00000000 0x00000001 ?)", iv.ToString());
@@ -234,30 +234,30 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds = new SsaIdentifierCollection();
 			Identifier id0 = new Identifier("id0", 0, PrimitiveType.Word32, new TemporaryStorage());
 			Identifier id1 = new Identifier("id1", 1, PrimitiveType.Word32, new TemporaryStorage());
-			ssaIds.Add(new SsaIdentifier(id0, id0, null));
-			ssaIds.Add(new SsaIdentifier(id1, id1, null));
+			ssaIds.Add(new SsaIdentifier(id0, id0, null, null, false));
+			ssaIds.Add(new SsaIdentifier(id1, id1, null, null, false));
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 
 			liv.InitialValue = Constant.Word32(10);		// id_2 = 10;
 			Identifier id2 = m.Local32("id_2");
-			SsaId(id2, new Statement(null, null));
+			SsaId(id2, new Statement(null, null), null, false);
 
 			m.Label("loop");
 			Identifier id3 = m.Local32("id_3");		// do {
 			Identifier id4 = m.Local32("id_4");		//   id_3 = phi(id_2, id_4);
 			liv.PhiStatement = m.Phi(id3, id2, id4);
 			liv.PhiIdentifier = id3;
-			SsaId(id3, liv.PhiStatement);
+			SsaId(id3, liv.PhiStatement, ((PhiAssignment) liv.PhiStatement.Instruction).Src, false);
 
 			liv.DeltaValue = m.Int32(-1);				//  id_4 = id_3 - 1;
 			liv.DeltaStatement = m.Sub(id4, id3, m.Int32(1));
-			SsaId(id4, liv.DeltaStatement);
-			ssaIds[id3].uses.Add(liv.DeltaStatement);
+            SsaId(id4, liv.DeltaStatement, ((Assignment) liv.DeltaStatement.Instruction).Src, false);
+			ssaIds[id3].Uses.Add(liv.DeltaStatement);
 
 			liv.TestStatement = m.BranchIf(m.Ge(id4, 0), "loop");
 			liv.TestOperator = Operator.ge;				//  if (id_4 >= 0)
 			liv.TestValue = Constant.Word32(0);
-			ssaIds[id4].uses.Add(liv.DeltaStatement);
+			ssaIds[id4].Uses.Add(liv.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("(0x00000009 0xFFFFFFFF 0xFFFFFFFE)", iv.ToString());
@@ -333,9 +333,9 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
-		private void SsaId(Identifier id, Statement stm)
+		private void SsaId(Identifier id, Statement stm, Expression expr, bool isSideEffect)
 		{
-			ssaIds.Add(new SsaIdentifier(id, id, stm));
+			ssaIds.Add(new SsaIdentifier(id, id, stm, expr, isSideEffect));
 		}
 
 		private class FakeDominatorGraph : DominatorGraph

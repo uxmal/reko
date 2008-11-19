@@ -47,13 +47,13 @@ namespace Decompiler.UnitTests.Analysis
 				sla.Write(proc, fut.TextWriter);
 				fut.TextWriter.WriteLine("=======================");
 			}
-			Identifier i =   ssa.Identifiers[2].id; 
-			Identifier i_4 = ssa.Identifiers[4].id;
-			Identifier i_6 = ssa.Identifiers[6].id;
+			Identifier i =   ssa.Identifiers[2].Identifier; 
+			Identifier i_4 = ssa.Identifiers[4].Identifier;
+			Identifier i_6 = ssa.Identifiers[6].Identifier;
 			Assert.AreEqual("i", i.Name);
 			Assert.AreEqual("i_4", i_4.Name);
 			Assert.AreEqual("i_6", i_6.Name);
-			Assert.IsFalse(sla.IsLiveOut(i, ssa.Identifiers[4].def));
+			Assert.IsFalse(sla.IsLiveOut(i, ssa.Identifiers[4].DefStatement));
 			Assert.AreEqual("branch Mem0[i_6:byte] != 0x00", proc.RpoBlocks[1].Statements[2].Instruction.ToString());
 			Assert.IsTrue(sla.IsLiveOut(i_4, proc.RpoBlocks[1].Statements[2]), "i_4 should be live at the end of block 1");
 			Assert.IsTrue(sla.IsLiveOut(i_6, proc.RpoBlocks[1].Statements[2]),"i_6 should be live at the end of block 1");
@@ -79,8 +79,8 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual("store(Mem6[0x10000000:word32]) = a + b", block.Statements[0].Instruction.ToString());
 			Assert.AreEqual("store(Mem7[0x10000004:word32]) = a", block.Statements[1].Instruction.ToString());
 
-			Identifier a = ssa.Identifiers[2].id;
-			Identifier c_5 = ssa.Identifiers[5].id;
+			Identifier a = ssa.Identifiers[2].Identifier;
+			Identifier c_5 = ssa.Identifiers[5].Identifier;
 			Assert.AreEqual("a", a.Name);
 			Assert.IsFalse(sla.IsLiveOut(a, block.Statements[1]), "a should be dead after its last use");
 			Assert.IsTrue(sla.IsLiveOut(a, block.Statements[0]), "a should be live after the first use");
@@ -117,10 +117,10 @@ namespace Decompiler.UnitTests.Analysis
 
 			Statement phiStm = proc.RpoBlocks[3].Statements[0];
 			Assert.AreEqual("reg_6 = PHI(reg, reg_5)", phiStm.Instruction.ToString());
-			Identifier reg   = ssa.Identifiers[3].id;
+			Identifier reg   = ssa.Identifiers[3].Identifier;
 			Assert.AreEqual("reg", reg.Name);
-			Identifier reg_5 = ssa.Identifiers[5].id;
-			Identifier reg_6 = ssa.Identifiers[6].id;
+			Identifier reg_5 = ssa.Identifiers[5].Identifier;
+			Identifier reg_6 = ssa.Identifiers[6].Identifier;
 			Assert.IsTrue(sla.IsLiveOut(reg,   phiStm), "reg is live!");
 			Assert.IsFalse(sla.IsLiveOut(reg_5, phiStm), "reg_5 should be dead");
 			Assert.IsTrue(sla.IsLiveOut(reg_6, phiStm), "reg_6 should be live");
@@ -139,8 +139,8 @@ namespace Decompiler.UnitTests.Analysis
 				fut.AssertFilesEqual();
 			}
 			Statement phiStm = proc.RpoBlocks[1].Statements[0];
-			Identifier r0_4 = ssa.Identifiers[4].id;
-			Identifier r0_15 = ssa.Identifiers[15].id;
+			Identifier r0_4 = ssa.Identifiers[4].Identifier;
+			Identifier r0_15 = ssa.Identifiers[15].Identifier;
 			Console.WriteLine(r0_15);
 			Assert.IsFalse(sla2.InterferenceGraph.Interfere(r0_4, r0_15));
 		}

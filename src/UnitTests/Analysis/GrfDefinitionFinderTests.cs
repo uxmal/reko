@@ -58,9 +58,9 @@ namespace Decompiler.UnitTests.Analysis
 				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);
 				foreach (SsaIdentifier sid in ssa.Identifiers)
 				{
-					if (!(sid.idOrig.Storage is FlagGroupStorage) || sid.uses.Count == 0)
+					if (!(sid.OriginalIdentifier.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
 						continue;
-					fut.TextWriter.Write("{0}: ", sid.def.Instruction);
+					fut.TextWriter.Write("{0}: ", sid.DefStatement.Instruction);
 					grfd.FindDefiningExpression(sid);
 					string fmt = grfd.IsNegated ? "!{0};" : "{0}";
 					fut.TextWriter.WriteLine(fmt, grfd.DefiningExpression);

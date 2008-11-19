@@ -70,7 +70,7 @@ namespace Decompiler.Analysis.Simplification
 
 		public Expression Transform(Statement stm)
 		{
-			ssaIds[id].uses.Remove(stm);
+			ssaIds[id].Uses.Remove(stm);
 			return new BinaryExpression(bin.op, id.DataType, id, Operator.add.ApplyConstants(cInner, new Constant(cInner.DataType, 1)));
 		}
 	}

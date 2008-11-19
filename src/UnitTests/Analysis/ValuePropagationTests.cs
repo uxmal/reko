@@ -160,8 +160,8 @@ namespace Decompiler.UnitTests.Analysis
 			Statement stmX = new Statement(new Assignment(x, new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(0x1000300), PrimitiveType.Word32)), null);
 			Statement stmY = new Statement(new Assignment(y, new BinaryExpression(Operator.sub, PrimitiveType.Word32, x, Constant.Word32(2))), null);
 			Statement stm = new Statement(new Branch(new BinaryExpression(Operator.eq, PrimitiveType.Bool, y, Constant.Word32(0))), null);
-			ssaIds[x].def = stmX;
-			ssaIds[y].def = stmY;
+			ssaIds[x].DefStatement = stmX;
+			ssaIds[y].DefStatement = stmY;
 			Assert.AreEqual("x = Mem0[0x01000300:word32]", stmX.Instruction.ToString());
 			Assert.AreEqual("y = x - 0x00000002", stmY.Instruction.ToString());
 			Assert.AreEqual("branch y == 0x00000000", stm.Instruction.ToString());
@@ -182,13 +182,13 @@ namespace Decompiler.UnitTests.Analysis
 			Statement stmY = new Statement(new Assignment(y, x), null);
 			Statement stmZ = new Statement(new Assignment(z, new BinaryExpression(Operator.add, PrimitiveType.Word32, y, Constant.Word32(2))), null);
 			Statement stmW = new Statement(new Assignment(w, y), null);
-			ssaIds[x].def = stmX;
-			ssaIds[y].def = stmY;
-			ssaIds[z].def = stmZ;
-			ssaIds[w].def = stmW;
-			ssaIds[x].uses.Add(stmY);
-			ssaIds[y].uses.Add(stmZ);
-			ssaIds[y].uses.Add(stmW);
+			ssaIds[x].DefStatement = stmX;
+			ssaIds[y].DefStatement = stmY;
+			ssaIds[z].DefStatement = stmZ;
+			ssaIds[w].DefStatement = stmW;
+			ssaIds[x].Uses.Add(stmY);
+			ssaIds[y].Uses.Add(stmZ);
+			ssaIds[y].Uses.Add(stmW);
 			Assert.AreEqual("x = Mem0[0x10004000:word32]", stmX.Instruction.ToString());
 			Assert.AreEqual("y = x", stmY.Instruction.ToString());
 			Assert.AreEqual("z = y + 0x00000002", stmZ.Instruction.ToString());
@@ -204,8 +204,8 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual("y = x", stmY.Instruction.ToString());
 			Assert.AreEqual("z = x + 0x00000002", stmZ.Instruction.ToString());
 			Assert.AreEqual("w = x", stmW.Instruction.ToString());
-			Assert.AreEqual(3, ssaIds[x].uses.Count);
-			Assert.AreEqual(0, ssaIds[y].uses.Count);
+			Assert.AreEqual(3, ssaIds[x].Uses.Count);
+			Assert.AreEqual(0, ssaIds[y].Uses.Count);
 		}
 
 		[Test]
@@ -285,9 +285,9 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			MachineRegister mr = new MachineRegister(name, ssaIds.Count, PrimitiveType.Word32);
 			Identifier id = new Identifier(mr.Name, ssaIds.Count, mr.DataType, new RegisterStorage(mr));
-			SsaIdentifier sid = new SsaIdentifier(id, id, null);
+			SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
 			ssaIds.Add(sid);
-			return sid.id;
+			return sid.Identifier;
 		}
 
 		protected override void RunTest(Program prog, FileUnitTester fut)

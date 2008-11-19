@@ -58,7 +58,7 @@ namespace Decompiler.Analysis
 			{
 				id = (Identifier) wl.GetWorkItem();
 				ssa = ssaIds[id];
-				stmDef = ssa.def;
+				stmDef = ssa.DefStatement;
 				if (stmDef != null && !visited.ContainsKey(stmDef))
 				{
 					visited.Add(stmDef, stmDef);
@@ -77,7 +77,7 @@ namespace Decompiler.Analysis
 				if (use != null)
 				{
 					Identifier id = (Identifier) use.Expression;
-					ssaIds[id].uses.Remove(stm);
+					ssaIds[id].Uses.Remove(stm);
 					ReplaceDefinitionsWithOutParameter(id, use.OutArgument);
 					proc.ExitBlock.Statements.RemoveAt(i);
 				}
@@ -88,9 +88,9 @@ namespace Decompiler.Analysis
 		{
 			a.Src = a.Src.Accept(this);
 			Identifier id = a.Dst;
-			if (ssa.id == id)
+			if (ssa.Identifier == id)
 			{
-				if (ssa.uses.Count == 0)
+				if (ssa.Uses.Count == 0)
 				{
 					return new Store(Dereference(idOut, a.Src.DataType), a.Src);
 				}
@@ -118,7 +118,7 @@ namespace Decompiler.Analysis
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
 				Identifier idSrc = (Identifier) phi.Src.Arguments[i];
-				ssaIds[idSrc].uses.Remove(stmDef);
+				ssaIds[idSrc].Uses.Remove(stmDef);
 				wl.Add(idSrc);
 			}
 			return phi;
@@ -129,7 +129,7 @@ namespace Decompiler.Analysis
 			if (unary.op == Operator.addrOf)
 			{
 				Identifier id = unary.Expression as Identifier;
-				if (id != null && ssa.id == id)
+				if (id != null && ssa.Identifier == id)
 				{
 					return idOut;
 				}

@@ -33,7 +33,7 @@ namespace Decompiler.WindowsGui.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {
-    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;
+    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;	public readonly System.Windows.Forms.ToolStrip MainToolbar;
     
         public DecompilerMenus(ICommandTarget target) : base(target)
         {
@@ -44,6 +44,7 @@ namespace Decompiler.WindowsGui.Forms
 			SortedList slActionMenu = CreatePriorityList();
 			SortedList slHelpMenu = CreatePriorityList();
 			SortedList slCtxMemoryControl = CreatePriorityList();
+			SortedList slMainToolbar = CreatePriorityList();
 			
 			// Create groups
 			
@@ -69,15 +70,17 @@ namespace Decompiler.WindowsGui.Forms
 			slHelpMenu.Add(0, slGrpHelp);
 			SortedList slGrpMemoryControl = CreatePriorityList();
 			slCtxMemoryControl.Add(0, slGrpMemoryControl);
+			SortedList slGrpToolbarFileOps = CreatePriorityList();
+			slMainToolbar.Add(0, slGrpToolbarFileOps);
     
 			// Create commands in containers.
             
             CommandMenuItem slFileOpen = new CommandMenuItem("_Open", new Guid(CmdSets.Decompiler), CmdIds.FileOpen);
             slFileOpen.IsDynamic = false;
-            slGrpFile.Add(0, slFileOpen);
+            
             CommandMenuItem slFileSave = new CommandMenuItem("_Save", new Guid(CmdSets.Decompiler), CmdIds.FileSave);
             slFileSave.IsDynamic = false;
-            slGrpFile.Add(0, slFileSave);
+            
             CommandMenuItem slFileMru = new CommandMenuItem("", new Guid(CmdSets.Decompiler), CmdIds.FileMru);
             slFileMru.IsDynamic = true;
             slGrpFileMru.Add(0, slFileMru);
@@ -127,6 +130,10 @@ namespace Decompiler.WindowsGui.Forms
     
 			// Place commands.
 			
+			slGrpFile.Add(0, slFileOpen);
+			slGrpFile.Add(0, slFileSave);
+			slGrpToolbarFileOps.Add(0, slFileOpen);
+			slGrpToolbarFileOps.Add(0, slFileSave);
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);
@@ -146,6 +153,9 @@ namespace Decompiler.WindowsGui.Forms
 			
 			this.CtxMemoryControl = new System.Windows.Forms.ContextMenu();
 			BuildMenu(slCtxMemoryControl, CtxMemoryControl.MenuItems);
+  
+			this.MainToolbar = new System.Windows.Forms.ToolStrip();
+			BuildMenu(slMainToolbar, MainToolbar.Items);
   
 		}
 		
@@ -168,6 +178,17 @@ namespace Decompiler.WindowsGui.Forms
 			}
 			throw new ArgumentException(string.Format("There is no context menu with id {0}.", menuId));
 		}
+    
+    public override ToolStrip GetToolStrip(int menuId)
+    {
+      
+      switch (menuId)
+      {
+        case MenuIds.MainToolbar: return this.MainToolbar;
+      }
+      throw new ArgumentException(string.Format("There is no tool strip with id {0}.", menuId));
     }
-}
+
+    }
+    }
   

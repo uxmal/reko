@@ -39,6 +39,7 @@ namespace Decompiler.WindowsGui.Forms
         <choose>
 			<when test="@type='ContextMenu'">	public readonly System.Windows.Forms.ContextMenu <value-of select="@id"/>;</when>
 			<when test="@type='MainMenu'">	public readonly System.Windows.Forms.MainMenu <value-of select="@id"/>;</when>
+          <when test="@type='ToolStrip'">	public readonly System.Windows.Forms.ToolStrip <value-of select="@id"/>;</when>
         </choose></for-each>
     
         public DecompilerMenus(ICommandTarget target) : base(target)
@@ -70,18 +71,27 @@ namespace Decompiler.WindowsGui.Forms
 			<when test="@container">
 			BuildMenu(sl<value-of select="@id"/>, mi<value-of select="@id"/>.MenuItems);
 			</when>
-            <when test="@type='ContextMenu'">
+      <when test="@type='ContextMenu'">
 				<call-template name="build-menu">
 					<with-param name="menuType" select="'System.Windows.Forms.ContextMenu'"/>
-					<with-param name="menuName" select="@id"/>  
-				</call-template>
-            </when>
-            <when test="@type='MainMenu'">
+          <with-param name="menuName" select="@id"/>
+          <with-param name="itemCollectionName" select="'MenuItems'"/>
+        </call-template>
+      </when>
+      <when test="@type='MainMenu'">
 				<call-template name="build-menu">
 					<with-param name="menuType" select="'System.Windows.Forms.MainMenu'"/>
-					<with-param name="menuName" select="@id"/> 
-				</call-template>
-            </when>
+					<with-param name="menuName" select="@id"/>
+          <with-param name="itemCollectionName" select="'MenuItems'"/>
+        </call-template>
+      </when>
+      <when test="@type='ToolStrip'">
+          <call-template name="build-menu">
+            <with-param name="menuType" select="'System.Windows.Forms.ToolStrip'"/>
+            <with-param name="menuName" select="@id"/>
+            <with-param name="itemCollectionName" select="'Items'"/>
+          </call-template>
+      </when>
 		</choose>
 	</for-each>
 		}
@@ -105,15 +115,27 @@ namespace Decompiler.WindowsGui.Forms
 			}
 			</if>throw new ArgumentException(string.Format("There is no context menu with id {0}.", menuId));
 		}
+    
+    public override ToolStrip GetToolStrip(int menuId)
+    {
+      <if test="count(c:menu[@type='ToolStrip'])">
+      switch (menuId)
+      {<for-each select="c:menu[@type='ToolStrip']">
+        case MenuIds.<value-of select="@id"/>: return this.<value-of select="@id"/>;</for-each>
+      }
+      </if>throw new ArgumentException(string.Format("There is no tool strip with id {0}.", menuId));
     }
-}
+
+    }
+    }
   </template>
   
   <template name="build-menu">
 	<param name="menuType"/>
 	<param name="menuName"/>
+    <param name="itemCollectionName"/>
 			this.<value-of select="$menuName"/> = new <value-of select="$menuType"/>();
-			BuildMenu(sl<value-of select="$menuName"/>, <value-of select="$menuName"/>.MenuItems);
+			BuildMenu(sl<value-of select="$menuName"/>, <value-of select="$menuName"/>.<value-of select="$itemCollectionName"/>);
   </template>
   
   <template name="priority">

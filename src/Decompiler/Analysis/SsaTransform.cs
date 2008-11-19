@@ -289,14 +289,14 @@ namespace Decompiler.Analysis
 				Debug.Assert(entryBlock.Statements.Count == 0);
 				for (int a = 0; a < rename.Length; ++a)
 				{
-					SsaIdentifier id = ssa.SsaState.Identifiers.Add(ssa.varsOrig[a], null);
+					SsaIdentifier id = ssa.SsaState.Identifiers.Add(ssa.varsOrig[a], null, null, false);
 					rename[a] = a;
 
 					// Variables that are used before defining are "predefined" in the 
 					// dummy entry block.
 
-					id.def = new Statement(new DefInstruction(proc.Frame.Identifiers[a]), entryBlock);
-					entryBlock.Statements.Add(id.def);
+					id.DefStatement = new Statement(new DefInstruction(proc.Frame.Identifiers[a]), entryBlock);
+					entryBlock.Statements.Add(id.DefStatement);
 					wasonentry[a] = -1;
 				}
 			}
@@ -373,15 +373,15 @@ namespace Decompiler.Analysis
 				}	
 			}
 
-			private Identifier NewDef(Identifier idOld)
+			private Identifier NewDef(Identifier idOld, Expression exprDef, bool isSideEffect)
 			{
 				// A new definition of id requires a new SSA name.
 
-				SsaIdentifier sid = ssa.SsaState.Identifiers.Add(idOld, stmCur);
+				SsaIdentifier sid = ssa.SsaState.Identifiers.Add(idOld, stmCur, exprDef, isSideEffect);
 				int idPrev = rename[idOld.Number];
-				rename[idOld.Number] = sid.id.Number;
+				rename[idOld.Number] = sid.Identifier.Number;
 				EnsureWasOnEntry(idOld.Number, idPrev);
-				return sid.id;
+				return sid.Identifier;
 			}
 
 
@@ -389,15 +389,15 @@ namespace Decompiler.Analysis
 			{
 				int iNew = rename[idOld.Number];
 				SsaIdentifier id = ssa.SsaState.Identifiers[iNew];
-				id.uses.Add(stm);
-				return id.id;
+				id.Uses.Add(stm);
+				return id.Identifier;
 			}
 
 			public override Instruction TransformAssignment(Assignment ass)
 			{
 				ass.Src = ass.Src.Accept(this);
 				Identifier id = (Identifier) ass.Dst;
-				ass.Dst = NewDef(id);
+				ass.Dst = NewDef(id, ass.Src, false);
 				return ass;
 			}
 
@@ -407,7 +407,7 @@ namespace Decompiler.Analysis
 				// Only rename the defined variable in phi-functions.
 
 				Identifier id = (Identifier) phi.Dst;
-				phi.Dst = NewDef(id);
+                phi.Dst = NewDef(id, phi.Src, false);
 				return phi;
 			}
 
@@ -431,7 +431,17 @@ namespace Decompiler.Analysis
 			{
 				for (int i = 0; i < appl.Arguments.Length; ++i)
 				{
-					appl.Arguments[i] = appl.Arguments[i].Accept(this);
+                    UnaryExpression unary = appl.Arguments[i] as UnaryExpression;
+                    if (unary != null && unary.op == Operator.addrOf)
+                    {
+                        Identifier id = unary.Expression as Identifier;
+                        if (id != null)
+                        {
+                            unary.Expression = NewDef(id, appl, true);
+                            continue;
+                        }
+                    }
+                    appl.Arguments[i] = appl.Arguments[i].Accept(this);
 				}
 				return appl;
 			}
@@ -449,7 +459,7 @@ namespace Decompiler.Analysis
 				MemoryAccess acc = store.Dst as MemoryAccess;
 				if (acc != null)
 				{
-					acc.MemoryId = (MemoryIdentifier) NewDef(acc.MemoryId);
+					acc.MemoryId = (MemoryIdentifier) NewDef(acc.MemoryId, store.Src, false);
 					SegmentedAccess sa = acc as SegmentedAccess;
 					if (sa != null)
 						sa.BasePointer = sa.BasePointer.Accept(this);
@@ -465,15 +475,6 @@ namespace Decompiler.Analysis
 
 			public override Expression TransformUnaryExpression(UnaryExpression unary)
 			{
-				if (unary.op == Operator.addrOf)
-				{
-					Identifier id = unary.Expression as Identifier;
-					if (id != null)
-					{
-						unary.Expression = NewDef(id);
-						return unary;
-					}
-				}
 				unary.Expression = unary.Expression.Accept(this);
 				return unary;
 			}

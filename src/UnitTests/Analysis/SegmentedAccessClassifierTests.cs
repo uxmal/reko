@@ -86,8 +86,8 @@ namespace Decompiler.UnitTests.Analysis
 			Prepare(new Mp1());
 			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(proc, ssaIds);
 			mpc.Classify();
-			Identifier ds = ssaIds[2].id;
-			Identifier bx = ssaIds[4].id;
+			Identifier ds = ssaIds[2].Identifier;
+			Identifier bx = ssaIds[4].Identifier;
 			Identifier a = mpc.AssociatedIdentifier(ds);
 			Assert.AreSame(a, bx);
 		}
@@ -98,9 +98,9 @@ namespace Decompiler.UnitTests.Analysis
 			Prepare(new Mp2());
 			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(proc, ssaIds);
 			mpc.Classify();
-			Identifier ds = ssaIds[2].id;
+			Identifier ds = ssaIds[2].Identifier;
 			Assert.AreEqual("ds", ds.Name);
-			Identifier bx = ssaIds[4].id;
+			Identifier bx = ssaIds[4].Identifier;
 			Assert.AreEqual("bx", bx.Name);
 			Identifier a = mpc.AssociatedIdentifier(ds);
 			Assert.AreSame(a, bx);
@@ -112,9 +112,9 @@ namespace Decompiler.UnitTests.Analysis
 			Prepare(new Mp3());
 			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(proc, ssaIds);
 			mpc.Classify();
-			Identifier ds = ssaIds[2].id;
+			Identifier ds = ssaIds[2].Identifier;
 			Assert.AreEqual("ds", ds.Name);
-			Identifier bx = ssaIds[4].id;
+			Identifier bx = ssaIds[4].Identifier;
 			Assert.AreEqual("bx", bx.Name);
 			Identifier a = mpc.AssociatedIdentifier(ds);
 			Assert.IsNull(a, "ds is used both as ds:[bx+4] and ds:[0x3000], it should't be strongly associated with a register");

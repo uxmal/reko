@@ -39,13 +39,13 @@ namespace Decompiler.Analysis
 			ArrayList blocks = new ArrayList();
 			foreach (SsaIdentifier sid in web.Members)
 			{
-				if (sid.def != null)
+				if (sid.DefStatement != null)
 				{
-					if (sid.def.Instruction is DefInstruction)
+					if (sid.DefStatement.Instruction is DefInstruction)
 						blocks.Add(null);
 					else
-						blocks.Add(sid.def.block);
-					foreach (Statement u in sid.uses)
+						blocks.Add(sid.DefStatement.block);
+					foreach (Statement u in sid.Uses)
 					{
 						blocks.Add(u.block);
 					}
@@ -58,16 +58,16 @@ namespace Decompiler.Analysis
 			{
 				foreach (SsaIdentifier sid in web.Members)
 				{
-					if (sid.def != null && sid.def.block == dominator)
+					if (sid.DefStatement != null && sid.DefStatement.block == dominator)
 					{
-						Assignment ass = sid.def.Instruction as Assignment;
-						if (ass != null && ass.Dst == sid.id)
+						Assignment ass = sid.DefStatement.Instruction as Assignment;
+						if (ass != null && ass.Dst == sid.Identifier)
 						{
-							sid.def.Instruction = new Declaration(web.id, ass.Src);
+							sid.DefStatement.Instruction = new Declaration(web.id, ass.Src);
 						}
 						else
 						{
-							int idx = dominator.Statements.IndexOf(sid.def);
+							int idx = dominator.Statements.IndexOf(sid.DefStatement);
 							dominator.Statements.Insert(idx, new Declaration(web.id, null));
 						}
 						return;

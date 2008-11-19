@@ -1,13 +1,13 @@
 Mem0: Mem0:Global memory
 fp: fp:Temporary
 bx: bx:Register bx
-ds: ds:Register ds, def: {def ds}, uses: {store(Mem7[ds:0x0300:word16]) = bx_5}{fn0C00_0015(fn0C00_000E(&bx_8), ds)}
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem7[ds:0x0300:word16]) = bx_5}{fn0C00_0015(ax_9, bx_8, ds)}
 ax: ax:Register ax
 bx_5: orig: bx, def: {fn0C00_000E(&bx_5)}, uses: {store(Mem7[ds:0x0300:word16]) = bx_5}
 ax_6: orig: ax
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:word16]) = bx_5}
-bx_8: orig: bx, def: {fn0C00_0015(fn0C00_000E(&bx_8), ds)}
-ax_9: orig: ax, uses: {fn0C00_0015(fn0C00_000E(&bx_8), ds)}
+bx_8: orig: bx, def: {ax_9 = fn0C00_000E(&bx_8)}, uses: {fn0C00_0015(ax_9, bx_8, ds)}
+ax_9: orig: ax, def: {ax_9 = fn0C00_000E(&bx_8)}, uses: {fn0C00_0015(ax_9, bx_8, ds)}
 // fn0C00_0000
 void fn0C00_0000(segment ds)
 fn0C00_0000_entry:		// block 0, pred:
@@ -17,7 +17,7 @@ l0C00_0000:		// block 1, pred: 0
 	fn0C00_000E(&bx_5)
 	store(Mem7[ds:0x0300:word16]) = bx_5
 	ax_9 = fn0C00_000E(&bx_8)
-	fn0C00_0015(ax_9, ds)
+	fn0C00_0015(ax_9, bx_8, ds)
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
@@ -44,17 +44,21 @@ fn0C00_000E_exit:		// block 2, pred: 1
 
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-ax: ax:Register ax, def: {def ax}, uses: {store(Mem4[ds:0x0400:word16]) = ax}
-ds: ds:Register ds, def: {def ds}, uses: {store(Mem4[ds:0x0400:word16]) = ax}
-Mem4: orig: Mem0, def: {store(Mem4[ds:0x0400:word16]) = ax}
+ax: ax:Register ax, def: {def ax}, uses: {store(Mem5[ds:0x0400:word16]) = ax}
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem5[ds:0x0400:word16]) = ax}{store(Mem6[ds:0x0402:word16]) = bx}
+bx: bx:Register bx, def: {def bx}, uses: {store(Mem6[ds:0x0402:word16]) = bx}
+Mem5: orig: Mem0, def: {store(Mem5[ds:0x0400:word16]) = ax}
+Mem6: orig: Mem0, def: {store(Mem6[ds:0x0402:word16]) = bx}
 // fn0C00_0015
-void fn0C00_0015(word16 ax, segment ds)
+void fn0C00_0015(word16 ax, word16 bx, segment ds)
 fn0C00_0015_entry:		// block 0, pred:
 	def ax
 	def ds
+	def bx
 	// succ:  1
 l0C00_0015:		// block 1, pred: 0
-	store(Mem4[ds:0x0400:word16]) = ax
+	store(Mem5[ds:0x0400:word16]) = ax
+	store(Mem6[ds:0x0402:word16]) = bx
 	return
 	// succ:  2
 fn0C00_0015_exit:		// block 2, pred: 1

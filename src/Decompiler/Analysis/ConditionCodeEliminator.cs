@@ -57,12 +57,12 @@ namespace Decompiler.Analysis
 			for (int i = 0; i < ssaIds.Count; ++i)
 			{	
 				sidGrf = ssaIds[i];
-				if (sidGrf.idOrig.Storage is FlagGroupStorage && sidGrf.def != null)
+				if (sidGrf.OriginalIdentifier.Storage is FlagGroupStorage && sidGrf.DefStatement != null)
 				{
-					if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.def.Instruction));
-					for (int u = sidGrf.uses.Count - 1; u >= 0; --u)
+					if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
+					for (int u = sidGrf.Uses.Count - 1; u >= 0; --u)
 					{
-						useStm = (Statement) sidGrf.uses[u];
+						useStm = sidGrf.Uses[u];
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("   used {0}", useStm.Instruction));
 						useStm.Instruction.Accept(this);
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("    now {0}", useStm.Instruction));
@@ -84,7 +84,7 @@ namespace Decompiler.Analysis
 			Expression e = gf.DefiningExpression;
 			if (e == null)
 			{
-				return sid.id;
+				return sid.Identifier;
 			}
 			BinaryExpression binDef = e as BinaryExpression;
 			if (binDef != null)
@@ -105,12 +105,12 @@ namespace Decompiler.Analysis
 			Application app = e as Application;
 			if (app != null)
 			{
-				return sid.id;
+				return sid.Identifier;
 			}
 			PhiFunction phi = e as PhiFunction;
 			if (phi != null)
 			{
-				return sid.id;
+				return sid.Identifier;
 			}
 			throw new NotImplementedException("NYI: e: " + e.ToString());
 		}
@@ -125,13 +125,13 @@ namespace Decompiler.Analysis
 				return a;
 			Expression u = binUse.Right;
 			Cast c = null;
-			if (u != sidGrf.id)
+			if (u != sidGrf.Identifier)
 			{
 				c = binUse.Right as Cast;
 				if (c != null)
 					u = c.Expression;
 			}
-			if (u != sidGrf.id)
+			if (u != sidGrf.Identifier)
 				return a;
 
 			u = UseGrfConditionally(sidGrf, ConditionCode.ULT);
@@ -139,7 +139,7 @@ namespace Decompiler.Analysis
 				c.Expression = u;
 			else
 				binUse.Right = u;
-			sidGrf.uses.Remove(useStm);
+			sidGrf.Uses.Remove(useStm);
 			Use(u, useStm);
 			return a;
 		}
@@ -148,7 +148,7 @@ namespace Decompiler.Analysis
 		{
 			SsaIdentifier sid = ssaIds[(Identifier) tc.Expression];
 		
-			sid.uses.Remove(useStm);
+			sid.Uses.Remove(useStm);
 			Expression c = UseGrfConditionally(sid, tc.Cc);
 			Use(c, useStm);
 			return c;

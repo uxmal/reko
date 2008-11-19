@@ -50,7 +50,7 @@ namespace Decompiler.Analysis.Simplification
 
 		public Expression Transform(Statement stm)
 		{
-			ssaIds[idLeft].uses.Remove(stm);
+			ssaIds[idLeft].Uses.Remove(stm);
 			return new BinaryExpression(Operator.mul, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));
 		}
 	}

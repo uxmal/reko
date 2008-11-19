@@ -43,14 +43,14 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 			BinaryExpression b = m.Add(m.Muls(id, 4), id);
 			Assignment ass = new Assignment(x, b);
 			Statement stm = new Statement(ass, null);
-			ssaIds[id].uses.Add(stm);
-			ssaIds[id].uses.Add(stm);
+			ssaIds[id].Uses.Add(stm);
+			ssaIds[id].Uses.Add(stm);
 
 			Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule(ssaIds);
 			Assert.IsTrue(rule.Match(b));
 			ass.Src = rule.Transform(stm);
 			Assert.AreEqual("x = id *s 0x00000005", ass.ToString());
-			Assert.AreEqual(1, ssaIds[id].uses.Count);
+			Assert.AreEqual(1, ssaIds[id].Uses.Count);
 		}
 
 		/// <summary>
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 			ssaIds = new SsaIdentifierCollection();
 			foreach (Identifier i in m.Procedure.Frame.Identifiers)
 			{
-				ssaIds.Add(i, null);
+				ssaIds.Add(i, null, null, false);
 			}
 		}
 	}

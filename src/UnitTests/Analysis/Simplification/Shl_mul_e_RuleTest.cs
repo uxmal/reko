@@ -43,8 +43,8 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 			BinaryExpression b = m.Shl(m.Muls(id, 3), 2);
 			Assignment ass = new Assignment(x, b);
 			Statement stm = new Statement(ass, null);
-			ssaIds[id].uses.Add(stm);
-			ssaIds[id].uses.Add(stm);
+			ssaIds[id].Uses.Add(stm);
+			ssaIds[id].Uses.Add(stm);
 
 			Shl_mul_e_Rule  rule = new Shl_mul_e_Rule(ssaIds);
 			Assert.IsTrue(rule.Match(b));
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 			ssaIds = new SsaIdentifierCollection();
 			foreach (Identifier i in m.Procedure.Frame.Identifiers)
 			{
-				ssaIds.Add(i, null);
+				ssaIds.Add(i, null, null, false);
 			}
 		}
 	}

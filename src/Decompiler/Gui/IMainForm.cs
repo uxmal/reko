@@ -30,6 +30,7 @@ namespace Decompiler.Gui
 		/// The text of the windows's title bar.
 		/// </summary>
 		string TitleText { get; set; }
+        void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
 
         void AddDiagnostic(Decompiler.Core.Diagnostic d, string format, params object[] args);
         void BuildPhases();
@@ -63,6 +64,7 @@ namespace Decompiler.Gui
         void ShowMessageBox(string message, string caption);
 
         void SetCurrentPage(object page);
+
 
 
     }

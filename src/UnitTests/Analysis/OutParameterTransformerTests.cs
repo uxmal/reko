@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			Identifier pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer, null);
 			Statement stmDef = new Statement(new Assignment(foo, Constant.Word32(3)), block);
-			SsaIdentifier sid = new SsaIdentifier(foo, foo, stmDef);
+			SsaIdentifier sid = new SsaIdentifier(foo, foo, stmDef, null, false);
 
 			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
 			ssaIds.Add(sid);
@@ -102,9 +102,9 @@ namespace Decompiler.UnitTests.Analysis
 			block3.Statements.Add(stmFoo3);
 
 			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
-			ssaIds.Add(new SsaIdentifier(foo1, foo, stmFoo1));
-			ssaIds.Add(new SsaIdentifier(foo2, foo, stmFoo2));
-			ssaIds.Add(new SsaIdentifier(foo3, foo, stmFoo3));
+			ssaIds.Add(new SsaIdentifier(foo1, foo, stmFoo1, null, false));
+			ssaIds.Add(new SsaIdentifier(foo2, foo, stmFoo2, null, false));
+			ssaIds.Add(new SsaIdentifier(foo3, foo, stmFoo3, null, false));
 
 			OutParameterTransformer opt = new OutParameterTransformer(null, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo3, pfoo);
@@ -138,9 +138,9 @@ namespace Decompiler.UnitTests.Analysis
 			block.Statements.Add(stmFoo);
 			block.Statements.Add(stmBar);
 
-			SsaIdentifier ssaFoo = new SsaIdentifier(foo, foo, stmFoo);
-			ssaFoo.uses.Add(bar);
-			SsaIdentifier ssaBar = new SsaIdentifier(bar, bar, stmBar);
+			SsaIdentifier ssaFoo = new SsaIdentifier(foo, foo, stmFoo, ((Assignment) stmFoo.Instruction).Src, false);
+			ssaFoo.Uses.Add(stmBar);
+            SsaIdentifier ssaBar = new SsaIdentifier(bar, bar, stmBar, ((Assignment) stmBar.Instruction).Src, false);
 
 			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
 			ssaIds.Add(ssaFoo);

@@ -50,7 +50,7 @@ namespace Decompiler.Analysis
 		{
 			this.sid = sid;
 			negated = false;
-			stm = sid.def;
+			stm = sid.DefStatement;
 			if (stm != null)
 			{
 				Statement stmOld = null;
@@ -88,7 +88,7 @@ namespace Decompiler.Analysis
 		public override void VisitIdentifier(Identifier id)
 		{
 			sid = ssaIds[id];
-			stm = sid.def;
+			stm = sid.DefStatement;
 		}
 
 		public override void VisitBinaryExpression(BinaryExpression binExp)
@@ -117,7 +117,7 @@ namespace Decompiler.Analysis
 				Identifier id = (Identifier) unary.Expression;
 				negated = !negated;
 
-				stm = ssaIds[id].def;
+				stm = ssaIds[id].DefStatement;
 			}
 		}
 	}

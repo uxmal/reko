@@ -48,8 +48,8 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
 			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
 
-			Identifier i = ssaIds[2].id;
-			Identifier i_6 = ssaIds[6].id;
+			Identifier i = ssaIds[2].Identifier;
+			Identifier i_6 = ssaIds[6].Identifier;
 			Assert.IsFalse(lci.IsLiveAtCopyPoint(i, proc.RpoBlocks[1]));
 			Assert.IsTrue(lci.IsLiveAtCopyPoint(i_6, proc.RpoBlocks[1]), "i_6 should be live");
 		}
@@ -60,12 +60,12 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new LiveCopyMock().Procedure, new ArchitectureMock());
 			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
 
-			Identifier reg   = ssaIds[3].id;
-			Identifier reg_5 = ssaIds[5].id;
-			Identifier reg_6 = ssaIds[6].id;
+			Identifier reg   = ssaIds[3].Identifier;
+			Identifier reg_5 = ssaIds[5].Identifier;
+			Identifier reg_6 = ssaIds[6].Identifier;
 
-			Assert.AreEqual("reg_6 = PHI(reg, reg_5)", ssaIds[6].def.Instruction.ToString());
-			Assert.IsTrue(lci.IsLiveOut(reg, ssaIds[6].def));
+			Assert.AreEqual("reg_6 = PHI(reg, reg_5)", ssaIds[6].DefStatement.Instruction.ToString());
+			Assert.IsTrue(lci.IsLiveOut(reg, ssaIds[6].DefStatement));
 		}
 
 		[Test]
@@ -76,9 +76,9 @@ namespace Decompiler.UnitTests.Analysis
 
 			int i = lci.IndexOfInsertedCopy(proc.RpoBlocks[1]);
 			Assert.AreEqual(i, 0);
-			Identifier idNew = lci.InsertAssignmentNewId(ssaIds[3].id, proc.RpoBlocks[1], i);
+			Identifier idNew = lci.InsertAssignmentNewId(ssaIds[3].Identifier, proc.RpoBlocks[1], i);
 			Assert.AreEqual("reg_7 = reg", proc.RpoBlocks[1].Statements[0].Instruction.ToString());
-			Assert.AreSame(proc.RpoBlocks[1].Statements[0], ssaIds[idNew].def);
+			Assert.AreSame(proc.RpoBlocks[1].Statements[0], ssaIds[idNew].DefStatement);
 		}
 
 
@@ -88,9 +88,9 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
 			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
 
-			Identifier idNew = lci.InsertAssignmentNewId(ssaIds[4].id, proc.RpoBlocks[1], 2);
+			Identifier idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.RpoBlocks[1], 2);
 			Assert.AreEqual("i_7 = i_4", proc.RpoBlocks[1].Statements[2].Instruction.ToString());
-			Assert.AreEqual(proc.RpoBlocks[1].Statements[2], ssaIds[idNew].def);
+			Assert.AreEqual(proc.RpoBlocks[1].Statements[2], ssaIds[idNew].DefStatement);
 		}
 
 		[Test]
@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Analysis
 			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
 			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
 
-			Identifier idNew = lci.InsertAssignmentNewId(ssaIds[4].id, proc.RpoBlocks[1], 2);
+			Identifier idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.RpoBlocks[1], 2);
 			lci.RenameDominatedIdentifiers(ssaIds[4], ssaIds[idNew]);
 			Assert.AreEqual("return i_7", proc.RpoBlocks[2].Statements[0].Instruction.ToString());
 
