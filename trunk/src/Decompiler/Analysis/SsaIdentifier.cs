@@ -20,19 +20,28 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.Analysis
 {
 	public class SsaIdentifier
 	{
-		public readonly Identifier id;			// The name of the identifier.
-		public readonly Identifier idOrig;		// The original name of the identifier.
-		public Statement def;			// Statement that defines the identifier.
-		public readonly ArrayList uses;			// _bag_ of Statements that use the identifier, since a = i * i uses i twice.
-		public LinearInductionVariable iv; // If not null, the induction variable associated with this identifier.
+        private Identifier id;
+        private Identifier idOrig;
+        private Statement def;
+        private Expression exprDef;
+        private List<Statement> uses;
+        private LinearInductionVariable iv; // If not null, the induction variable associated with this identifier.
 
-		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef)
+        public LinearInductionVariable InductionVariable
+        {
+            get { return iv; }
+            set { iv = value; }
+        }
+        private bool isSideEffect;
+
+		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
 			if (id == null)
 				throw new ArgumentNullException("id");
@@ -41,13 +50,54 @@ namespace Decompiler.Analysis
 			this.id = id;
 			this.idOrig = idOrig;
 			this.def = stmDef;
-			this.uses = new ArrayList();
+            this.exprDef = exprDef;
+            this.isSideEffect = isSideEffect;
+			this.uses = new List<Statement>();
 		}
+
+        /// <summary>
+        /// Expression that defines identifier.
+        /// </summary>
+        public Expression DefExpression
+        {
+            get { return exprDef; }
+            set { exprDef = value; }
+        }
+
+        /// <summary>
+        /// Statement that defines the identifier
+        /// </summary>
+        public Statement DefStatement
+        {
+            get { return def; }
+            set { def = value; }
+        }
+
+        /// <summary>
+        /// The Identifier itself
+        /// </summary>
+        public Identifier Identifier
+        {
+            get { return id; }
+        } 
 
 		public bool IsOriginal
 		{
 			get { return id.Number == idOrig.Number; }
 		}
+
+        public bool IsSideEffect
+        {
+            get { return isSideEffect; }
+        }
+
+        /// <summary>
+        /// The original name of the identifier.
+        /// </summary>
+        public Identifier OriginalIdentifier
+        {
+            get { return idOrig; }
+        } 
 
 		public override string ToString()
 		{
@@ -55,6 +105,15 @@ namespace Decompiler.Analysis
 			Write(sb);
 			return sb.ToString();
 		}
+
+        /// <summary>
+        /// _Bag_ of Statements that use the identifier. A bag is needed, since the statement a = i * i uses i twice.
+        /// </summary>
+        public List<Statement> Uses
+        {
+            get { return uses; }
+        } 
+
 
 		public void Write(TextWriter writer)
 		{

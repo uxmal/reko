@@ -100,7 +100,7 @@ namespace Decompiler.Analysis
 				Node n = new Node(id);
 				if (id.IsOriginal)
 				{
-					n.vn = Lookup(n.info.id, valid, n.info.id);
+					n.vn = Lookup(n.info.Identifier, valid, n.info.Identifier);
 				}
 				else
 				{
@@ -150,14 +150,14 @@ namespace Decompiler.Analysis
 			Block header = null;
 			foreach (Node n in scc)
 			{
-				if (header == null || header.RpoNumber > n.info.def.block.RpoNumber)
-					header = n.info.def.block;
+				if (header == null || header.RpoNumber > n.info.DefStatement.block.RpoNumber)
+					header = n.info.DefStatement.block;
 			}
 
 			bool fInductionVariable = true;
 			foreach (Node n in scc)
 			{
-				if (!rc.IsInductiveOperation(n.info.def))
+				if (!rc.IsInductiveOperation(n.info.DefStatement))
 				{
 					fInductionVariable = false;
 					break;
@@ -308,7 +308,7 @@ namespace Decompiler.Analysis
 			for (int i = 0; i != nodes.Length; ++i)
 			{
 				SsaIdentifier info = ssaIds[i];
-				writer.WriteLine("\t{0}: <{1}>", info.id, nodes[i].vn);
+				writer.WriteLine("\t{0}: <{1}>", info.Identifier, nodes[i].vn);
 			}
 		}
 
@@ -340,22 +340,22 @@ namespace Decompiler.Analysis
 			public Node(SsaIdentifier info)
 			{
 				this.info = info;
-				if (info.def != null)
+				if (info.DefStatement != null)
 				{
-					Assignment ass = info.def.Instruction as Assignment;
+					Assignment ass = info.DefStatement.Instruction as Assignment;
 					if (ass != null)
 					{
 						this.lvalue = ass.Dst;
 						return;
 					}
-					PhiAssignment phi = info.def.Instruction as PhiAssignment;
+					PhiAssignment phi = info.DefStatement.Instruction as PhiAssignment;
 					if (phi != null)
 					{
 						this.lvalue = phi.Dst;
 						return;
 					}
 				}
-				this.lvalue = info.id;
+				this.lvalue = info.Identifier;
 			}
 		}
 
@@ -376,10 +376,10 @@ namespace Decompiler.Analysis
 			public void Visit(Node n)
 			{
 				node = n;
-				if (node.info.def != null && !(n.info.id is MemoryIdentifier))
-					node.info.def.Instruction.Accept(this);
+				if (node.info.DefStatement != null && !(n.info.Identifier is MemoryIdentifier))
+					node.info.DefStatement.Instruction.Accept(this);
 				else
-					node.definingExpr = n.info.id;
+					node.definingExpr = n.info.Identifier;
 			}
 
 			public override void VisitAssignment(Assignment ass)

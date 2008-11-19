@@ -147,6 +147,11 @@ namespace Decompiler.UnitTests.WindowsGui.Controls
 			{
 				throw new NotImplementedException();
 			}
+
+            public override ToolStrip GetToolStrip(int menuId)
+            {
+                throw new NotImplementedException();
+            }
 		}
 	}
 }

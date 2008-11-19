@@ -39,9 +39,9 @@ namespace Decompiler.Analysis.Simplification
 		public bool Match(Identifier id)
 		{
 			sid = ssaIds[id];
-			if (sid.def == null)
+			if (sid.DefStatement == null)
 				return false;
-			Assignment ass = sid.def.Instruction as Assignment;
+			Assignment ass = sid.DefStatement.Instruction as Assignment;
 			if (ass == null)
 				return false;
 			idNew = ass.Src as Identifier;
@@ -51,8 +51,8 @@ namespace Decompiler.Analysis.Simplification
 
 		public Expression Transform(Statement stm)
 		{
-			sid.uses.Remove(stm);
-			ssaIds[idNew].uses.Add(stm);
+			sid.Uses.Remove(stm);
+			ssaIds[idNew].Uses.Add(stm);
 			return idNew;
 		}
 	}

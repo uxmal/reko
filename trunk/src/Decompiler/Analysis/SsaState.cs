@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -156,8 +157,8 @@ namespace Decompiler.Analysis
 		{
 			for (int i = 0; i < Identifiers.Count; ++i)
 			{
-				if (Identifiers[i].def == stmOld)
-					Identifiers[i].def = stmNew;
+				if (Identifiers[i].DefStatement == stmOld)
+					Identifiers[i].DefStatement = stmNew;
 			}
 		}
 
@@ -165,7 +166,7 @@ namespace Decompiler.Analysis
 		{
 			for (int i = 0; i < Identifiers.Count; ++i)
 			{
-				ArrayList uses = Identifiers[i].uses;
+				List<Statement> uses = Identifiers[i].Uses;
 				int jTo = 0;
 				for (int j = 0; j < uses.Count; ++j)
 				{
@@ -194,7 +195,7 @@ namespace Decompiler.Analysis
 
 			public override Expression TransformIdentifier(Identifier id)
 			{
-				return ssa.Identifiers[id].idOrig;
+				return ssa.Identifiers[id].OriginalIdentifier;
 			}
 		}
 

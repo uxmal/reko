@@ -57,7 +57,7 @@ namespace Decompiler.Analysis
 			{
 				Web w = new Web();
 				w.Add(sid);
-				webOf[sid.id.Number] = w;
+				webOf[sid.Identifier.Number] = w;
 				webs.Add(w);
 			}
 		}
@@ -79,8 +79,8 @@ namespace Decompiler.Analysis
 
 			foreach (SsaIdentifier id in ssaIds)
 			{
-				if (id.def != null && !(id.id is MemoryIdentifier))
-					VisitStatement(id.def);
+				if (id.DefStatement != null && !(id.Identifier is MemoryIdentifier))
+					VisitStatement(id.DefStatement);
 			}
 
 			InsertDeclarations();
@@ -114,7 +114,7 @@ namespace Decompiler.Analysis
 			foreach (SsaIdentifier sid in a.Members)
 			{
 				c.Add(sid);
-				webOf[sid.id.Number] = c;
+				webOf[sid.Identifier.Number] = c;
 				foreach (Statement u in a.uses)
 					if (!c.uses.Contains(u))
 						c.uses.Add(u);
@@ -122,7 +122,7 @@ namespace Decompiler.Analysis
 			foreach (SsaIdentifier sid in b.Members)
 			{
 				c.Add(sid);
-				webOf[sid.id.Number] = c;
+				webOf[sid.Identifier.Number] = c;
 				foreach (Statement u in b.uses)
 					if (!c.uses.Contains(u))
 						c.uses.Add(u);
@@ -163,7 +163,7 @@ namespace Decompiler.Analysis
 		{
 			foreach (SsaIdentifier sid in ssaIds)
 			{
-				WebOf(sid.id).Write(writer);
+				WebOf(sid.Identifier).Write(writer);
 			}
 		}
 

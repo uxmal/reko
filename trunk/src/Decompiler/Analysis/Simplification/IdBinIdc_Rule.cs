@@ -40,10 +40,10 @@ namespace Decompiler.Analysis.Simplification
 		public bool Match(Identifier id)
 		{
 			sid = ssaIds[id];
-			Statement s = sid.def;
+			Statement s = sid.DefStatement;
 			if (s == null)
 				return false;
-			if (sid.uses.Count != 1)
+			if (sid.Uses.Count != 1)
 				return false;
 			Assignment ass = s.Instruction as Assignment;
 			if (ass == null)
@@ -56,7 +56,7 @@ namespace Decompiler.Analysis.Simplification
 
 		public Expression Transform(Statement stm)
 		{
-			sid.uses.Remove(stm);
+			sid.Uses.Remove(stm);
 			ExpressionUseAdder eua = new ExpressionUseAdder(stm, ssaIds);
 			bin.Accept(eua);
 			return bin;

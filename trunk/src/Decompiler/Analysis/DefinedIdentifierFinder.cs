@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
@@ -30,63 +31,98 @@ namespace Decompiler.Analysis
 	/// These are all the variables that are known to be dead on
 	/// entry to the function. Dead variables won't need phi code!
 	/// </summary>
-	public abstract class DefinedIdentifierFinder : InstructionVisitorBase
+	public class DefinedIdentifierFinder
 	{
-		private Procedure proc;
-		private Block block;
-		private Statement stmCur;
+        private Dictionary<Identifier, Definition> definitions;
+        private InnerFinder f;
 
-		public DefinedIdentifierFinder(Procedure proc)
+		public DefinedIdentifierFinder()
 		{
-			this.proc = proc;
+            definitions = new Dictionary<Identifier, Definition>();
+            f = new InnerFinder(definitions);
 		}
 
-		public abstract void Def(Identifier id);
+        public Dictionary<Identifier, Definition> Definitions
+        {
+            get { return definitions; }
+        }
 
-		public void LocateDefs(Block b)
-		{
-			block = b;
+        public void FindDefinitions(Statement def)
+        {
+            def.Instruction.Accept(f);
+        }
 
-			for (int i = block.Statements.Count - 1; i >= 0; --i)
-			{
-				stmCur = (Statement) block.Statements[i];
-				stmCur.Instruction.Accept(this);
-			}
-		}
+        public class Definition
+        {
+            private Expression expr;
+            private bool isSideEffect;
 
-		public override void VisitAssignment(Assignment ass)
-		{
-			Identifier id = ass.Dst as Identifier;
-			if (id != null)
-			{
-				Def(id);
-			}
-			else if (ass.Dst != null)
-			{
-				ass.Dst.Accept(this);
-			}
-			ass.Src.Accept(this);
-		}
+            public Definition(Expression expr, bool isSideEffect)
+            {
+                this.expr = expr;
+                this.isSideEffect = isSideEffect;
+            }
 
-		public override void VisitApplication(Application app)
-		{
-			app.Procedure.Accept(this);
-			foreach (Expression exp in app.Arguments)
-			{
-				UnaryExpression u = exp as UnaryExpression;
-				if (u != null && u.op == Operator.addrOf)
-				{
-					Identifier id = u.Expression as Identifier;
-					if (id != null)
-						Def(id);
-					else
-						u.Expression.Accept(this);
-				}
-				else
-				{
-					exp.Accept(this);
-				}
-			}
-		}
-	}
+
+            public Expression Expression
+            {
+                get { return expr; }
+            }
+
+            public bool IsSideEffect
+            {
+                get { return isSideEffect; }
+            }
+        }
+
+        private class InnerFinder : InstructionVisitorBase
+        {
+            private Dictionary<Identifier, Definition> defs;
+
+            public InnerFinder(Dictionary<Identifier, Definition> defs)
+            {
+                this.defs = defs;
+            }
+
+            public override void VisitAssignment(Assignment ass)
+            {
+                Identifier id = ass.Dst as Identifier;
+                if (id != null)
+                {
+                    Def(id, ass.Src, false);
+                }
+                else if (ass.Dst != null)
+                {
+                    ass.Dst.Accept(this);
+                }
+                ass.Src.Accept(this);
+            }
+
+            private void Def(Identifier id, Expression expr, bool isSideEffect)
+            {
+                defs.Add(id, new Definition(expr, isSideEffect));
+            }
+
+            public override void VisitApplication(Application app)
+            {
+                app.Procedure.Accept(this);
+                foreach (Expression exp in app.Arguments)
+                {
+                    UnaryExpression u = exp as UnaryExpression;
+                    if (u != null && u.op == Operator.addrOf)
+                    {
+                        Identifier id = u.Expression as Identifier;
+                        if (id != null)
+                            Def(id, app, true);
+                        else
+                            u.Expression.Accept(this);
+                    }
+                    else
+                    {
+                        exp.Accept(this);
+                    }
+                }
+            }
+        }
+    }
 }

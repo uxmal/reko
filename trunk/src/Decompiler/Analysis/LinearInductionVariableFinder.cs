@@ -145,7 +145,7 @@ namespace Decompiler.Analysis
 		public bool DominatesAllUses(Statement stm, Identifier id)
 		{
 			SsaIdentifier sid = ssaIds[id];
-			foreach (Statement u in sid.uses)
+			foreach (Statement u in sid.Uses)
 			{
 				if (u != stm)
 				{
@@ -169,7 +169,7 @@ namespace Decompiler.Analysis
 		{
 			foreach (SsaIdentifier sid in scc)
 			{
-				foreach (Statement u in sid.uses)
+				foreach (Statement u in sid.Uses)
 				{
 					Branch b = u.Instruction as Branch;
 					if (b != null)
@@ -199,10 +199,10 @@ namespace Decompiler.Analysis
 				Identifier t = id0; id0 = id1; id1 = t;
 			}
 			SsaIdentifier sid = ssaIds[id0];
-			if (sid.def == null)
+			if (sid.DefStatement == null)
 				return null;
 
-			Assignment ass = sid.def.Instruction as Assignment;
+			Assignment ass = sid.DefStatement.Instruction as Assignment;
 			if (ass == null)
 				return null;
 
@@ -217,9 +217,9 @@ namespace Decompiler.Analysis
 		{
 			foreach (SsaIdentifier sid in sids)
 			{
-				if (sid.def != null)
+				if (sid.DefStatement != null)
 				{
-					Assignment ass = sid.def.Instruction as Assignment;
+					Assignment ass = sid.DefStatement.Instruction as Assignment;
 					if (ass != null)
 					{
 						BinaryExpression bin = ass.Src as BinaryExpression;
@@ -231,7 +231,7 @@ namespace Decompiler.Analysis
 								Constant c = bin.Right as Constant;
 								if (c != null)
 								{
-									DeltaStatement = sid.def;
+									DeltaStatement = sid.DefStatement;
 									DeltaValue = (bin.op == Operator.sub)
 										? c.Negate()
 										: c;
@@ -249,12 +249,12 @@ namespace Decompiler.Analysis
 		{
 			foreach (SsaIdentifier sid in sids)
 			{
-				if (sid.def != null)
+				if (sid.DefStatement != null)
 				{
-					PhiAssignment phi = sid.def.Instruction as PhiAssignment;
+					PhiAssignment phi = sid.DefStatement.Instruction as PhiAssignment;
 					if (phi != null)
 					{
-						PhiStatement = sid.def;
+						PhiStatement = sid.DefStatement;
 						PhiIdentifier = (Identifier) phi.Dst;
 						return phi.Src;
 					}
@@ -271,14 +271,14 @@ namespace Decompiler.Analysis
 		public bool IsSingleUsingStatement(Statement stm, Identifier id)
 		{
 			SsaIdentifier sid = ssaIds[id];
-			return sid.uses.Count == 1 && sid.uses[0] == stm;
+			return sid.Uses.Count == 1 && sid.Uses[0] == stm;
 		}
 
 
 		public bool IsIdUsedOnlyBy(Identifier id, Statement stm1, Statement stm2)
 		{
 			SsaIdentifier sid = ssaIds[id];
-			foreach (Statement u in sid.uses)
+			foreach (Statement u in sid.Uses)
 			{
 				if (u != stm1 && u != stm2)
 					return false;
@@ -290,7 +290,7 @@ namespace Decompiler.Analysis
 		{
 			foreach (SsaIdentifier sid in sids)
 			{
-				if (sid.id == id)
+				if (sid.Identifier == id)
 					return true;
 			}
 			return false;
@@ -326,9 +326,9 @@ namespace Decompiler.Analysis
 		{
 			this.operands = operands;
 			SsaIdentifier sidDef = (SsaIdentifier) o;
-			if (sidDef.def != null)
+			if (sidDef.DefStatement != null)
 			{
-				sidDef.def.Instruction.Accept(this);
+				sidDef.DefStatement.Instruction.Accept(this);
 			}
 		}
 
@@ -351,7 +351,7 @@ namespace Decompiler.Analysis
 			{
 				foreach (SsaIdentifier sid in scc)
 				{
-					sid.iv = iv;
+					sid.InductionVariable = iv;
 				}
 				ivs.Add(iv);
 			}

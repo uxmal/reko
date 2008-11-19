@@ -51,10 +51,10 @@ namespace Decompiler.Analysis
 		public Identifier InsertAssignmentNewId(Identifier idOld, Block b, int i)
 		{
 			Statement stm = new Statement(null, b);
-			SsaIdentifier sidNew = ssaIds.Add(ssaIds[idOld].idOrig, stm);
-			stm.Instruction = new Assignment(sidNew.id, idOld);
+            SsaIdentifier sidNew = ssaIds.Add(ssaIds[idOld].OriginalIdentifier, stm, idOld, false);
+			stm.Instruction = new Assignment(sidNew.Identifier, idOld);
 			b.Statements.Insert(i, stm);
-			return sidNew.id;
+			return sidNew.Identifier;
 		}
 
 		public Identifier InsertAssignment(Identifier idDst, Identifier idSrc, Block b, int i)
@@ -90,12 +90,12 @@ namespace Decompiler.Analysis
 			for (int i = 0; i < ssaIds.Count; ++i)
 			{
 				SsaIdentifier sid = ssaIds[i];
-				if (sid.def == null || sid.uses.Count == 0)
+				if (sid.DefStatement == null || sid.Uses.Count == 0)
 					continue;
-				PhiAssignment ass = sid.def.Instruction as PhiAssignment;
+				PhiAssignment ass = sid.DefStatement.Instruction as PhiAssignment;
 				if (ass != null)
 				{
-					Transform(sid.def, ass);
+					Transform(sid.DefStatement, ass);
 				}
 			}
 		}
@@ -143,10 +143,10 @@ namespace Decompiler.Analysis
 				this.sidOld = sidOld;
 				this.sidNew = sidNew;
 
-				foreach (Statement stm in sidOld.uses)
+				foreach (Statement stm in sidOld.Uses)
 				{
 					stmCur = stm;
-					if (domGraph.DominatesStrictly(sidOld.def, stm))
+					if (domGraph.DominatesStrictly(sidOld.DefStatement, stm))
 					{
 						stm.Instruction = stm.Instruction.Accept(this);
 					}
@@ -155,7 +155,7 @@ namespace Decompiler.Analysis
 
 			public override Expression TransformIdentifier(Identifier id)
 			{
-				return (id == sidOld.id) ? sidNew.id : id;
+				return (id == sidOld.Identifier) ? sidNew.Identifier : id;
 			}
 
 

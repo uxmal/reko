@@ -62,7 +62,8 @@ namespace Decompiler.UnitTests.Analysis
 
 			SsaIdentifierCollection coll = new SsaIdentifierCollection();
 			
-			coll.Add(foo, new Statement(new Assignment(foo, Constant.Word32(1)), null));
+            Expression src = Constant.Word32(1);
+            coll.Add(foo, new Statement(new Assignment(foo, src), null), src, false);
 			return coll;
 		}
 	}

@@ -42,6 +42,7 @@ namespace Decompiler.WindowsGui.Forms
 		public const int ActionMenu = 5;
 		public const int HelpMenu = 6;
 		public const int CtxMemoryControl = 7;
+		public const int MainToolbar = 8;
 	}
 	
 	public class GroupIds
@@ -57,6 +58,7 @@ namespace Decompiler.WindowsGui.Forms
 		public const int GrpActionsRewritten = 9 + 1000;
 		public const int GrpHelp = 10 + 1000;
 		public const int GrpMemoryControl = 11 + 1000;
+		public const int GrpToolbarFileOps = 12 + 1000;
 	}
 	
 	public class CmdIds

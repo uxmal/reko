@@ -62,10 +62,10 @@ namespace Decompiler.Analysis
 						Identifier id = ass.Dst as Identifier;
 						if (id != null && ass.Src is Application)
 						{
-							if (ssa.Identifiers[id].uses.Count == 0)
+							if (ssa.Identifiers[id].Uses.Count == 0)
 							{
 								stm.Instruction = new SideEffect(ass.Src);
-								ssa.Identifiers[id].def = null;
+								ssa.Identifiers[id].DefStatement = null;
 							}
 						}
 					}
@@ -105,14 +105,14 @@ namespace Decompiler.Analysis
 			while (!liveIds.IsEmpty)
 			{
 				SsaIdentifier sid = NextWorkItem(liveIds);
-				Statement def = sid.def;
+				Statement def = sid.DefStatement;
 				if (def != null)
 				{
 					if (!marks.Contains(def))
 					{
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("Marked: {0}", def.Instruction));
-						marks[sid.def] = def;
-						sid.def.Instruction.Accept(this);
+						marks[sid.DefStatement] = def;
+						sid.DefStatement.Instruction.Accept(this);
 					}
 				}
 			}
@@ -152,7 +152,7 @@ namespace Decompiler.Analysis
 		public override void VisitIdentifier(Identifier id)
 		{
 			SsaIdentifier sid = ssa.Identifiers[id];
-			if (sid.def != null)
+			if (sid.DefStatement != null)
 				liveIds.Add(sid);
 		}
 

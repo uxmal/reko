@@ -30,7 +30,7 @@ namespace Decompiler.Analysis
 			List.Add(sid);
 		}
 
-		public SsaIdentifier Add(Identifier idOld, Statement stmDef)
+		public SsaIdentifier Add(Identifier idOld, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
 			int i = InnerList.Count;
 			Identifier idNew;
@@ -44,7 +44,7 @@ namespace Decompiler.Analysis
 			{
 				idNew = idOld;
 			}
-			SsaIdentifier id = new SsaIdentifier(idNew, idOld, stmDef);
+			SsaIdentifier id = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
 			List.Add(id);
 			return id;
 		}

@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Analysis
@@ -35,6 +36,8 @@ namespace Decompiler.Analysis
 		private SsaState ssa;
 		private SideEffectFinder sef;
 		private bool coalesced;
+        private Dictionary<Statement, List<SsaIdentifier>> defsByStatement;
+
 		private static TraceSwitch trace = new TraceSwitch("Coalescer", "Traces the progress of identifier coalescing");
 
 		public Coalescer(Procedure proc, SsaState ssa)
@@ -42,18 +45,60 @@ namespace Decompiler.Analysis
 			this.proc = proc;
 			this.ssa = ssa;
 			this.sef = new SideEffectFinder();
+            this.defsByStatement = new Dictionary<Statement, List<SsaIdentifier>>();
+            foreach (SsaIdentifier sid in ssa.Identifiers)
+            {
+                if (sid.DefStatement != null)
+                    SetDefStatement(sid.DefStatement, sid);
+            }
 		}
 
+        private void SetDefStatement(Statement stm, SsaIdentifier sid)
+        {
+            List<SsaIdentifier> sids;
+            if (defsByStatement.TryGetValue(sid.DefStatement, out sids))
+            {
+                sids.Remove(sid);
+            }
+            if (!defsByStatement.TryGetValue(stm, out sids))
+            {
+                sids = new List<SsaIdentifier>();
+                defsByStatement.Add(stm, sids);
+            }
+            sids.Add(sid);
+        }
 
-		private bool CanCoalesce(SsaIdentifier sid, Statement def, Statement use)
+        /// <summary>
+        /// Returns true if the identifer <paramref name="sid"/>, which is defined in <paramref name="def"/>, can safely
+        /// be coalesced into <paramref name="use"/>.
+        /// </summary>
+        /// <param name="sid">identifier common to <paramref name="def"/> and <paramref name="use"/>.</param>
+        /// <param name="def">Statement that defines <paramref name="sid"/>. </param>
+        /// <param name="use">Statement that uses <paramref name="sid"/>. </param>
+        /// <returns></returns>
+		public bool CanCoalesce(SsaIdentifier sid, Statement def, Statement use)
 		{
-			if (sid.uses.Count != 1)
+			if (sid.Uses.Count != 1)
 				return false;
-			System.Diagnostics.Debug.Assert(sid.uses[0] == use);
+			System.Diagnostics.Debug.Assert(sid.Uses[0] == use);
 			if (use.Instruction is PhiAssignment)
 				return false;
 			if (use.Instruction is UseInstruction)
 				return false;
+
+            //$PERFORMANCE: this loop might be slow and should be improved if possible.
+            List<SsaIdentifier> sids;
+            if (defsByStatement.TryGetValue(def, out sids))
+            {
+                foreach (SsaIdentifier sidOther in sids)
+                {
+                    if (sidOther != sid && sidOther.IsSideEffect)
+                    {
+                        if (sidOther.Uses.Contains(use))
+                            return false;
+                    }
+                }
+            }
 			return true;
 		}
 
@@ -75,7 +120,7 @@ namespace Decompiler.Analysis
 		{
 			if (trace.TraceInfo)
 			{
-				Debug.WriteLineIf(trace.TraceInfo, "Coalescing on " + sid.id.ToString());
+				Debug.WriteLineIf(trace.TraceInfo, "Coalescing on " + sid.Identifier.ToString());
 				Debug.Indent();
 				Debug.WriteLineIf(trace.TraceInfo, def.Instruction.ToString());
 				Debug.WriteLineIf(trace.TraceInfo, use.Instruction.ToString());
@@ -83,13 +128,21 @@ namespace Decompiler.Analysis
 			}
 			UsedIdentifierAdjuster uia = new UsedIdentifierAdjuster(def, ssa.Identifiers, use);
 			def.Instruction.Accept(uia);
-			IdentifierReplacer ir = new IdentifierReplacer(sid.id, defExpr);
+			IdentifierReplacer ir = new IdentifierReplacer(sid.Identifier, defExpr);
 			use.Instruction.Accept(ir);
-			foreach (SsaIdentifier s in ssa.Identifiers)
-			{
-				if (s.def == def && s != sid)
-					s.def = use;
-			}
+
+            List<SsaIdentifier> sids;
+            if (defsByStatement.TryGetValue(def, out sids))
+            {
+                foreach (SsaIdentifier s in sids)
+                {
+                    if (s != sid)
+                    {
+                        s.DefStatement = use;
+                        SetDefStatement(use, s);
+                    }
+                }
+            }
 			ssa.DeleteStatement(def);
 
 			if (trace.TraceInfo)
@@ -157,7 +210,7 @@ namespace Decompiler.Analysis
 			for (int i = initialPosition + 1; i < block.Statements.Count; ++i)
 			{
 				Statement stm = block.Statements[i];
-				if (sidDef.uses.Contains(stm))
+				if (sidDef.Uses.Contains(stm))
 				{
 					if (CanCoalesce(sidDef, stmDef, stm))
 					{
@@ -236,10 +289,10 @@ namespace Decompiler.Analysis
 			public override void VisitIdentifier(Identifier id)
 			{
 				SsaIdentifier sid = ssaIds[id];
-				for (int i = 0; i < sid.uses.Count; ++i)
+				for (int i = 0; i < sid.Uses.Count; ++i)
 				{
-					if (sid.uses[i] == def)
-						sid.uses[i] = use;
+					if (sid.Uses[i] == def)
+						sid.Uses[i] = use;
 				}
 			}
 

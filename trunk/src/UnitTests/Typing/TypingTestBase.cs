@@ -74,8 +74,8 @@ namespace Decompiler.UnitTests.Typing
 		{
 			foreach (SsaIdentifier id in ssa.Identifiers)
 			{
-				if (id.id.TypeVariable != null)
-					writer.WriteLine("{0}: {1}", id.id, id.id.TypeVariable);
+				if (id.Identifier.TypeVariable != null)
+					writer.WriteLine("{0}: {1}", id.Identifier, id.Identifier.TypeVariable);
 			}
 		}
 

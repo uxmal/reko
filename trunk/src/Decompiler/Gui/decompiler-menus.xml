@@ -2,8 +2,10 @@
 <menu-definitions xmlns="urn:Decompiler.Schemata.MenuDefinitions">
 	<cmdSet id="Decompiler">6D65B38B-4275-4892-BD3C-05AC0645373F</cmdSet>
 	
-	<!-- Menus ========================================================== -->
-	
+	<!-- Menus and Toolbars ========================================================== -->
+
+
+  <!-- Menus -->
 	<menu type="MainMenu" id="MainMenu" cmdSet="GuidCmdSet"/>
 	<menu id="FileMenu" cmdSet="Decompiler" container="GrpMain">_File</menu>
   <menu id="EditMenu" cmdSet="Decompiler" container="GrpMain">_Edit</menu>
@@ -12,9 +14,13 @@
 	<menu id="HelpMenu" cmdSet="Decompiler" container="GrpMain">_Help</menu>
 	
 	<menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Decompiler"/>
-	
+
+  <!-- Toolbars -->
+  <menu type="ToolStrip" id="MainToolbar" cmdSet="GuidCmdSet"/>
+  
 	<!-- Groups ========================================================== -->
-	
+
+  <!-- Menu groups -->
 	<group id="GrpMain" cmdSet="Decompiler" container="MainMenu"/>
 	
 	<group id="GrpFile" cmdSet="Decompiler" container="FileMenu" priority="0"/>
@@ -32,11 +38,13 @@
 	<group id="GrpHelp" cmdSet="Decompiler" container="HelpMenu" />
 	
 	<group id="GrpMemoryControl" cmdSet="Decompiler" container="CtxMemoryControl"/>
-	
+
+  <group id="GrpToolbarFileOps" cmdSet="Decompiler" container="MainToolbar" />
+  
 	<!-- Commands ========================================================== -->
 	
-	<cmd id="FileOpen" cmdSet="Decompiler" container="GrpFile">_Open</cmd>
-	<cmd id="FileSave" cmdSet="Decompiler" container="GrpFile">_Save</cmd>
+	<cmd id="FileOpen" cmdSet="Decompiler" container="FileOpen">_Open</cmd>
+	<cmd id="FileSave" cmdSet="Decompiler" container="FileSave">_Save</cmd>
 	<cmd id="FileMru"  cmdSet="Decompiler" container="GrpFileMru" dynamic-item-id="2200"/>
 	<cmd id="FileExit" cmdSet="Decompiler" container="GrpFileEnd">E_xit</cmd>
 
@@ -56,8 +64,13 @@
 	<cmd id="BrowserItemSelected" cmdSet="Decompiler"/>
 	
 	<!-- Placements ======================================================= -->
-	
-	<placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
+
+  <placement item="FileOpen" container="GrpFile" />
+  <placement item="FileSave" container="GrpFile" />
+  <placement item="FileOpen" container="GrpToolbarFileOps"/>
+  <placement item="FileSave" container="GrpToolbarFileOps"/>
+
+  <placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
 	<placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
   <placement item="ActionEditSignature" container="GrpActionsRewritten" />

@@ -31,11 +31,18 @@ namespace Decompiler.WindowsGui.Forms
         IMainForm
     {
         private ProgressBarWrapper wrProgress;
+        private ToolStrip toolBar;
 
         public MainForm()
         {
             InitializeComponent();
             wrProgress = new ProgressBarWrapper(progressStatus);
+        }
+
+        public void AddToolbar(ToolStrip toolBar)
+        {
+            this.Controls.Add(toolBar);
+            this.toolBar = toolBar;
         }
 
         public string TitleText
@@ -74,7 +81,7 @@ namespace Decompiler.WindowsGui.Forms
 
         public OpenFileDialog OpenFileDialog
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return ofd; }
         }
 
         public IProgressBar ProgressBar
@@ -84,7 +91,7 @@ namespace Decompiler.WindowsGui.Forms
 
         public SaveFileDialog SaveFileDialog
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { return sfd; }
         }
 
         public void SetCurrentPage(object oPage)
@@ -122,7 +129,7 @@ namespace Decompiler.WindowsGui.Forms
 
         public ToolStrip ToolBar
         {
-            get { return toolbar; }
+            get { return toolBar; }
         }
 
         public IStartPage StartPage

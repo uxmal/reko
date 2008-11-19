@@ -67,6 +67,26 @@ namespace Decompiler.WindowsGui.Controls
 			}
 		}
 
+        public void BuildMenu(SortedList menu, ToolStripItemCollection items)
+        {
+            bool separator = false;
+            foreach (SortedList group in menu.Values)
+            {
+                if (group.Count == 0)
+                    continue;
+//                if (separator)
+//                    m.Add(new CommandMenuItem("-"));
+                separator = true;
+                foreach (CommandMenuItem cmi in group.Values)
+                {
+                    ToolStripButton btnNew = new ToolStripButton();
+                    btnNew.Text = cmi.Text;
+                    btnNew.Tag = cmi.MenuCommand;
+                    items.Add(btnNew);
+                }
+            }
+        }
+
 		public SortedList CreatePriorityList()
 		{
 			return new SortedList(new PriorityComparer());
@@ -75,6 +95,8 @@ namespace Decompiler.WindowsGui.Controls
 		public abstract ContextMenu GetContextMenu(int menuId);
 
 		public abstract Menu GetMenu(int menuId);
+
+        public abstract ToolStrip GetToolStrip(int menuId);
 
 		public void SetItemVisibility(CommandMenuItem item, CommandStatus cmdStatus)
 		{

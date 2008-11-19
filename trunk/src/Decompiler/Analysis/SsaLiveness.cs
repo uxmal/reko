@@ -61,15 +61,15 @@ namespace Decompiler.Analysis
 			defined = new Hashtable();
 			foreach (SsaIdentifier ssa in ssaIds)
 			{
-				if (ssa.uses.Count > 0 && ssa.def != null)
+				if (ssa.Uses.Count > 0 && ssa.DefStatement != null)
 				{
-					ArrayList al = (ArrayList) defined[ssa.def];
+					ArrayList al = (ArrayList) defined[ssa.DefStatement];
 					if (al == null)
 					{
 						al = new ArrayList();
-						defined.Add(ssa.def, al);
+						defined.Add(ssa.DefStatement, al);
 					}
-					al.Add(ssa.id);
+					al.Add(ssa.Identifier);
 				}
 			}
 		}
@@ -80,12 +80,12 @@ namespace Decompiler.Analysis
 			foreach (SsaIdentifier v in ssaIds)
 			{
 				visited.SetAll(false);
-				foreach (Statement s in v.uses)
+				foreach (Statement s in v.Uses)
 				{
 					PhiFunction phi = GetPhiFunction(s);
 					if (phi != null)
 					{
-						int i = Array.IndexOf(phi.Arguments, v.id);
+						int i = Array.IndexOf(phi.Arguments, v.Identifier);
 						Block p = s.block.Pred[i];
 						LiveOutAtBlock(p, v);
 					}
@@ -111,7 +111,7 @@ namespace Decompiler.Analysis
 
 		public bool IsDefinedAtStatement(SsaIdentifier v, Statement stm)
 		{
-			return (v.def == stm);
+			return (v.DefStatement == stm);
 		}
 
 		public bool IsFirstStatementInBlock(Statement stm, Block block)
@@ -125,10 +125,10 @@ namespace Decompiler.Analysis
 			for (int i = stm.block.Statements.Count - 1; i >= 0; --i)
 			{
 				Statement s = stm.block.Statements[i];
-				if (ssaIds[id].def == s)
+				if (ssaIds[id].DefStatement == s)
 					return false;
 
-				if (!(s.Instruction is PhiAssignment) && ssaIds[id].uses.Contains(s))
+				if (!(s.Instruction is PhiAssignment) && ssaIds[id].Uses.Contains(s))
 					live = true;
 
 				if (s == stm)
@@ -151,10 +151,10 @@ namespace Decompiler.Analysis
 				if (s == stm)
 					return live;
 
-				if (ssaIds[id].def == s)
+				if (ssaIds[id].DefStatement == s)
 					return false;
 
-				if (!(s.Instruction is PhiAssignment) && ssaIds[id].uses.Contains(s))
+				if (!(s.Instruction is PhiAssignment) && ssaIds[id].Uses.Contains(s))
 					live = true;
 			}
 			return live;
@@ -200,7 +200,7 @@ namespace Decompiler.Analysis
 				writer.Write("liveIn: ");
 				foreach (SsaIdentifier v in liveInBlocks[b.RpoNumber])
 				{
-					writer.Write(" {0}", v.id.Name);
+					writer.Write(" {0}", v.Identifier.Name);
 				}
 				writer.WriteLine();
 
@@ -209,7 +209,7 @@ namespace Decompiler.Analysis
 				writer.Write("liveOut:");
 				foreach (SsaIdentifier v in liveOutBlocks[b.RpoNumber])
 				{
-					writer.Write(" {0}", v.id.Name);
+					writer.Write(" {0}", v.Identifier.Name);
 				}
 				writer.WriteLine();
 				writer.WriteLine();
@@ -228,11 +228,11 @@ namespace Decompiler.Analysis
 			{
 				foreach (Identifier id in ids)
 				{
-					if (id != v.id)
-						interference.Add(id, v.id);
+					if (id != v.Identifier)
+						interference.Add(id, v.Identifier);
 				}
 			}
-			return (v.def != s);
+			return (v.DefStatement != s);
 		}
 
 		public PhiFunction GetPhiFunction(Statement stm)
@@ -268,9 +268,9 @@ namespace Decompiler.Analysis
 			foreach (SsaIdentifier sid in ssa)
 			{
 				WorkList stms = new WorkList();
-				foreach (Statement use in sid.uses)
+				foreach (Statement use in sid.Uses)
 				{
-					Block p = PrecedingPhiBlock(sid.id, use);
+					Block p = PrecedingPhiBlock(sid.Identifier, use);
 					if (p != null)
 					{
 						LiveOutAtBlock(p, sid);
@@ -322,7 +322,7 @@ namespace Decompiler.Analysis
 			foreach (SsaIdentifier w in W.Values)
 			{
 				if (w != sid)
-					interference.Add(w.id, sid.id);
+					interference.Add(w.Identifier, sid.Identifier);
 
 			}
 			if (!W.Contains(sid))
@@ -334,7 +334,7 @@ namespace Decompiler.Analysis
 			Hashtable W = new Hashtable();
 			foreach (SsaIdentifier sid in ssa)
 			{
-				if (sid.def == stm)
+				if (sid.DefStatement == stm)
 					W[sid] = sid;
 			}
 			return W;

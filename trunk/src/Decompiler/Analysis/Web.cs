@@ -46,35 +46,35 @@ namespace Decompiler.Analysis
 				members.Add(sid);
 				if (this.id == null)
 				{
-					this.id = sid.id;
+					this.id = sid.Identifier;
 				}
 				else
 				{
-					if (sid.id.Number < this.id.Number)
+					if (sid.Identifier.Number < this.id.Number)
 					{
-						this.id = sid.id;
+						this.id = sid.Identifier;
 					}
 
 					if (iv == null)
 					{
-						iv = sid.iv;
+						iv = sid.InductionVariable;
 					}
-					else if (sid.iv == null)
+					else if (sid.InductionVariable == null)
 					{
-						sid.iv = iv;
+						sid.InductionVariable = iv;
 					}
 					else 
 					{
-						iv = LinearInductionVariable.Merge(sid.iv, iv);
+						iv = LinearInductionVariable.Merge(sid.InductionVariable, iv);
 						if (iv == null)
 						{
 							// Warning(string.Format("{0} and {1} are conflicting induction variables: {2} {3}", 
 						}
-						sid.iv = iv;
+						sid.InductionVariable = iv;
 					}
 				}
-				defs.Add(sid.def);
-				foreach (Statement u in sid.uses)
+				defs.Add(sid.DefStatement);
+				foreach (Statement u in sid.Uses)
 					uses.Add(u);
 			}
 		}
@@ -94,7 +94,7 @@ namespace Decompiler.Analysis
 			writer.Write("{0}: {{ ", id.Name);
 			foreach (SsaIdentifier m in members)
 			{
-				writer.Write("{0} ", m.id.Name);
+				writer.Write("{0} ", m.Identifier.Name);
 			}
 			writer.WriteLine("}");
 		}

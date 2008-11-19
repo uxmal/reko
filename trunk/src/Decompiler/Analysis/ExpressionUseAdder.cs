@@ -34,7 +34,7 @@ namespace Decompiler.Analysis
 
 		public override void VisitIdentifier(Identifier id)
 		{
-			ssaIds[id].uses.Add(user);
+			ssaIds[id].Uses.Add(user);
 		}
 	}
 }
