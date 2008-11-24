@@ -19,7 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.Analysis
@@ -27,8 +27,12 @@ namespace Decompiler.Analysis
 	/// <summary>
 	/// Builds webs out of the unions of phi functions. Each
 	/// web will correspond to a local variable in the finished 
-	/// decompilation. After this
-	/// </summary>
+	/// decompilation. 
+    /// </summary>
+    /// <remarks>
+    /// After this pass, the code is no longer in SSA
+    /// form, so all analyses should be done prior to applying this stage.
+    /// </remarks>
 	public class WebBuilder
 	{
 		private Procedure proc;
@@ -37,17 +41,18 @@ namespace Decompiler.Analysis
 		private DominatorGraph doms;
 		private InductionVariableCollection ivs;
 		private Web [] webOf;
-		private ArrayList webs = new ArrayList();
+		private List<Web> webs;
 		private Statement stmCur;
-		
-		public WebBuilder(Procedure proc, SsaIdentifierCollection ssaIds, InductionVariableCollection ivs)
-		{
-			this.proc = proc;
-			this.ssaIds = ssaIds;
-			this.ivs = ivs;
-			this.sla = new SsaLivenessAnalysis(proc, ssaIds);
-			this.doms = new DominatorGraph(proc);
-		}
+
+        public WebBuilder(Procedure proc, SsaIdentifierCollection ssaIds, InductionVariableCollection ivs)
+        {
+            this.proc = proc;
+            this.ssaIds = ssaIds;
+            this.ivs = ivs;
+            this.sla = new SsaLivenessAnalysis(proc, ssaIds);
+            this.doms = new DominatorGraph(proc);
+            this.webs = new List<Web>();
+        }
 
 
 		private void BuildWebOf()

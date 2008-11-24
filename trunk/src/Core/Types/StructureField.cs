@@ -89,6 +89,11 @@ namespace Decompiler.Core.Types
 			InnerList.Insert(i, f);
 		}
 
+        public void AddRange(ICollection fields)
+        {
+            InnerList.AddRange(fields);
+        }
+
 		public StructureField [] ArrayCopy()
 		{
 			StructureField [] fs = new StructureField[InnerList.Count];

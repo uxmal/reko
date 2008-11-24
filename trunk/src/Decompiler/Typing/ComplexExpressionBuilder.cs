@@ -28,8 +28,12 @@ namespace Decompiler.Typing
 	/// Given an expression with a complex type, rebuilds it to accomodate the 
 	/// complex data type.
 	/// </summary>
+    /// <remarks>
+    /// Complex expressions are assumed to take the form of expr + C. If the
+    /// </remarks>
 	public class ComplexExpressionBuilder : DataTypeVisitor
 	{
+        private DataType dtResult;
 		private DataType dt;
 		private DataType dtOriginal;
 		private Expression basePointer;
@@ -38,19 +42,28 @@ namespace Decompiler.Typing
 		private Expression complexExp;
 		private bool dereferenced;
 		private bool seenPtr;
+        private DataTypeComparer comp; 
 
-		public ComplexExpressionBuilder(DataType dt, DataType dtOrig, Expression b, int offset) 
-			: this(dt, dtOrig, null, b, offset)
+        /// <summary>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="dtOrig"></param>
+        /// <param name="b"></param>
+        /// <param name="offset"></param>
+		public ComplexExpressionBuilder(DataType dtResult, DataType dt, DataType dtOrig, Expression b, int offset) 
+			: this(dtResult, dt, dtOrig, null, b, offset)
 		{
 		}
 
-		public ComplexExpressionBuilder(DataType dt, DataType dtOrig, Expression basePointer, Expression b, int offset)
+		public ComplexExpressionBuilder(DataType dtResult, DataType dt, DataType dtOrig, Expression basePointer, Expression b, int offset)
 		{
+            this.dtResult = dtResult;
 			this.dt = dt;
 			this.dtOriginal = dtOrig;
 			this.basePointer = basePointer;
 			this.baseExp = b;
 			this.offset = offset;
+            this.comp = new DataTypeComparer();
 		}
 
 		public Expression BuildComplex()
@@ -79,7 +92,8 @@ namespace Decompiler.Typing
 			}
 
 			seenPtr = true;
-			if (dtPointee is PrimitiveType || dtPointee is Pointer)
+			if (dtPointee is PrimitiveType || dtPointee is Pointer || dtPointee is MemberPointer ||
+                comp.Compare(dtPtr, dtResult) == 0)
 			{
 				if (offset % dtPointee.Size == 0)
 				{

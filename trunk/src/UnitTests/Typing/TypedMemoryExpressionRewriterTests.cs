@@ -54,7 +54,10 @@ namespace Decompiler.UnitTests.Typing
 			tv.DataType = new Pointer(eq, 4);
 
 			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, null);
-			Expression e = ptr.Accept(tmer);
+            MemoryAccess access = new MemoryAccess(ptr, PrimitiveType.Word32);
+            TypeVariable tvAccess = store.EnsureTypeVariable(factory, access);
+            tvAccess.DataType = PrimitiveType.Word32;
+            Expression e = tmer.Rewrite(access);
 			Assert.AreEqual("ptr->dw0000", e.ToString());
 		}
 

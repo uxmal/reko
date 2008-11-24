@@ -99,6 +99,7 @@ namespace Decompiler.Typing
 			Expression baseExpr = new ScopeResolution(baseType, baseType.Name);
 
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                c.DataType,
 				baseType, baseType, null, c.ToInt32());
 			Expression ex = ceb.BuildComplex();
 			if (dereferenced)

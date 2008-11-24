@@ -31,6 +31,8 @@ namespace Decompiler.UnitTests.Typing
 		private TypeFactory factory;
 		private Pointer ptrPoint;
 		private Pointer ptrUnion;
+        private Pointer ptrInt;
+        private Pointer ptrWord;
 
 		public ComplexExpressionBuilderTests()
 		{
@@ -54,13 +56,16 @@ namespace Decompiler.UnitTests.Typing
 			eq.DataType = u;
 			ptrUnion = new Pointer(eq, 4);
 
+            ptrInt = new Pointer(PrimitiveType.Int32, 4);
+            ptrWord = new Pointer(PrimitiveType.Word32, 4);
+
 		}
 
 		[Test]
 		public void BuildPrimitive()
 		{
 			Identifier id = new Identifier("id", 3, PrimitiveType.Word32, null);
-			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, PrimitiveType.Word32, id, 0);
+            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(PrimitiveType.Word32, PrimitiveType.Word32, PrimitiveType.Word32, id, 0);
 			Assert.AreEqual("id", ceb.BuildComplex().ToString());
 		}
 
@@ -69,7 +74,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
 			store.EnsureTypeVariable(factory, ptr);
-			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrPoint, new Pointer(PrimitiveType.Word32, 4), ptr, 0);
+			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), ptr, 0);
 			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex().ToString());
 		}
 
@@ -77,7 +82,7 @@ namespace Decompiler.UnitTests.Typing
 		public void BuildPointerFetch()
 		{
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
-			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrPoint, new Pointer(PrimitiveType.Word32, 4), ptr, 0);
+			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), ptr, 0);
 			ceb.Dereferenced = true;
 			Assert.AreEqual("ptr->dw0000", ceb.BuildComplex().ToString());
 		}
@@ -87,6 +92,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                ptrWord,
 				ptrUnion,
 				new Pointer(PrimitiveType.Real32, 4),
 				ptr, 0);
@@ -112,6 +118,7 @@ namespace Decompiler.UnitTests.Typing
 			tvDs.Class.DataType = new StructureType("SEG", 0);
 			tvBx.Class.DataType = new MemberPointer(new Pointer(new StructureType("SEG", 0), 2), PrimitiveType.Word16, 2);
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                new Pointer(PrimitiveType.Word16, 2),
 				tvBx.Class.DataType, tvBx.OriginalDataType, ds, bx, 0);
 			ceb.Dereferenced = true;
 			Assert.AreEqual("ds->*bx", ceb.BuildComplex().ToString());

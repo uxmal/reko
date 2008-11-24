@@ -133,12 +133,12 @@ namespace Decompiler.Typing
 				UnionType uSrc = AsUnion(dtSrc);
 				if (uDst != null)
 				{
-					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtDst, dtSrc, dst, 0);
+					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, dst, 0);
 					dst = ceb.BuildComplex();
 				}
 				else if (uSrc != null)
 				{
-					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtSrc, dtDst, src, 0);
+					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, src, 0);
 					src = ceb.BuildComplex();
 				}
 				else
@@ -153,6 +153,17 @@ namespace Decompiler.Typing
 			return MakeAssignment(store.Dst, store.Src);
 		}
 
+        /// <summary>
+        /// Rewrites an expression of the type (a + b)
+        /// </summary>
+        /// <param name="binExp"></param>
+        /// <remarks>
+        /// If [[a]] is a complex type, it's with high likelihood a pointer type. If this is the case,
+        /// we want to return something like &(*a).b. If this sum is in a Mem context, the & is removed to yield
+        /// (*a).b. <para>If [[a]] is a memptr(ptr(A), x), and b is a constant, then we want to return something like &A::b
+        /// </para>
+        /// </remarks>
+        /// <returns>The rewritten expression</returns>
 		public override Expression TransformBinaryExpression(BinaryExpression binExp)
 		{
 			base.TransformBinaryExpression(binExp);
@@ -169,9 +180,10 @@ namespace Decompiler.Typing
 						binExp.Right.TypeVariable, dtRight);
 				Constant c = (Constant) binExp.Right;
 				ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                    binExp.TypeVariable.DataType,
 					dtLeft, 
 					binExp.Left.TypeVariable.OriginalDataType,
-					new Dereference(null, binExp.Left),
+					binExp.Left,
 					c.ToInt32());
 				return ceb.BuildComplex();
 			}
