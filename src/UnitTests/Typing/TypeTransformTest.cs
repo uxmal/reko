@@ -237,7 +237,6 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(m.BuildProgram(), "Typing/TtranTreeFind.txt");
 		}
 
-
 		private void RunTest(Program prog, string outputFileName)
 		{
 			ExpressionNormalizer aen = new ExpressionNormalizer();

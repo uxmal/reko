@@ -48,7 +48,6 @@
     <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
     <Compile Include="Analysis\DeadCodeTests.cs" />
     <Compile Include="Analysis\DeclarationInserterTests.cs" />
-    <Compile Include="Analysis\DefinedIdentifierFinderTests.cs" />
     <Compile Include="Analysis\DominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionSimplifierTests.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />

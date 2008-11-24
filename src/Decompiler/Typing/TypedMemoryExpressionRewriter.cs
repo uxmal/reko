@@ -30,6 +30,7 @@ namespace Decompiler.Typing
 		private TypeStore store;
 		private Identifier globals;
 		private Expression basePointer;
+        private DataType dtResult;
 
 		public TypedMemoryExpressionRewriter(TypeStore store, Identifier globals)
 		{
@@ -41,12 +42,17 @@ namespace Decompiler.Typing
 		public Expression Rewrite(MemoryAccess access)
 		{
 			basePointer = null;
+            dtResult = new Pointer(access.TypeVariable.DataType, access.EffectiveAddress.DataType.Size);
 			return access.EffectiveAddress.Accept(this);
 		}
 
 		public Expression Rewrite(SegmentedAccess access)
 		{
 			basePointer = access.BasePointer;
+            dtResult = new MemberPointer(
+                access.BasePointer.TypeVariable.DataType,
+                access.TypeVariable.DataType,
+                access.EffectiveAddress.DataType.Size);
 			return access.EffectiveAddress.Accept(this);
 		}
 
@@ -76,6 +82,7 @@ namespace Decompiler.Typing
 			}
 
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                binExp.DataType,
 				binExp.Left.TypeVariable.DataType,
 				binExp.Left.TypeVariable.OriginalDataType,
 				basePointer,
@@ -106,6 +113,7 @@ namespace Decompiler.Typing
 			if (basePointer != null)
 			{
 				ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                    dtResult,
 					basePointer.TypeVariable.DataType,
 					basePointer.TypeVariable.OriginalDataType,
 					basePointer,
@@ -138,6 +146,7 @@ namespace Decompiler.Typing
 		public Expression TransformIdentifier(Identifier id)
 		{
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                dtResult,
 				id.TypeVariable.DataType,
 				id.TypeVariable.OriginalDataType,
 				basePointer, id, 0);

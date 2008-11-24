@@ -11,7 +11,7 @@ l0C00_0015:		// block 2, pred: 1 2
 	(0x5CE1->*si_16).w0000 = 0xFFFF;
 	word16 v8_22 = ds->w9A26 - 0x0001
 	ds->w9A26 = v8_22;
-	si_16 = si_16 + 0x0001;
+	si_16 = si_16 + 1;
 	branch v8_22 != 0x0000
 	// succ:  3 2
 l0C00_0023:		// block 3, pred: 2
