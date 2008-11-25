@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(word16 bx, segment ds)
+void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -39,9 +39,9 @@ T_5 (in 0x0000)
 T_6 (in bx == 0x0000)
 	trait_primitive(bool)
 T_7 (in ds)
-	trait_primitive(segment)
+	trait_primitive(selector)
 	trait_mem(T_9, 200)
-	trait_primitive(segment)
+	trait_primitive(selector)
 T_8 (in 0x0200)
 	trait_primitive(word16)
 	trait_mem(T_7:T_9, 0)

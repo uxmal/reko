@@ -1,4 +1,4 @@
-void fn0C00_0000(Register word16 di, Register segment ds)
+void fn0C00_0000(Register word16 di, Register selector ds)
 // MayUse:  di ds
 // LiveOut:
 // Trashed: SCZO ax al ah
@@ -11,7 +11,7 @@ void fn0C00_0000(Register word16 di, Register segment ds)
 // ax:Register ax
 // ds:Register ds
 // return address size: 2
-void fn0C00_0000(word16 di, segment ds)
+void fn0C00_0000(word16 di, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -26,7 +26,7 @@ l0C00_0000:		// block 1, pred: 0
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
-void fn0C00_000F(Register word16 di, Register segment ds)
+void fn0C00_000F(Register word16 di, Register selector ds)
 // MayUse:  di ds
 // LiveOut:
 // Trashed:
@@ -37,7 +37,7 @@ void fn0C00_000F(Register word16 di, Register segment ds)
 // di:Register di
 // ds:Register ds
 // return address size: 2
-void fn0C00_000F(word16 di, segment ds)
+void fn0C00_000F(word16 di, selector ds)
 fn0C00_000F_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000F:		// block 1, pred: 0

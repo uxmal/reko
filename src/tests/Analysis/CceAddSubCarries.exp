@@ -29,8 +29,8 @@ Mem27: orig: Mem0, def: {store(Mem27[ds:0x020A:word16]) = dx_24}, uses: {ax_28 =
 ax_28: orig: ax, def: {ax_28 = Mem27[ds:0x0210:word16]}, uses: {dx_ax_30 = SEQ(dx_29, ax_28) (alias)}
 dx_29: orig: dx, def: {dx_29 = Mem27[ds:0x0212:word16]}, uses: {dx_ax_30 = SEQ(dx_29, ax_28) (alias)}
 dx_ax_30: orig: dx_ax, def: {dx_ax_30 = SEQ(dx_29, ax_28) (alias)}, uses: {dx_ax_35 = dx_ax_30 - bx_cx_34}
-es_cx_31: orig: es_cx, def: {es_cx_31 = Mem27[ds:0x0214:ptr32]}, uses: {es_32 = SLICE(es_cx_31, segment, 16) (alias)}
-es_32: orig: es, def: {es_32 = SLICE(es_cx_31, segment, 16) (alias)}, uses: {bx_33 = es_32}
+es_cx_31: orig: es_cx, def: {es_cx_31 = Mem27[ds:0x0214:ptr32]}, uses: {es_32 = SLICE(es_cx_31, selector, 16) (alias)}
+es_32: orig: es, def: {es_32 = SLICE(es_cx_31, selector, 16) (alias)}, uses: {bx_33 = es_32}
 bx_33: orig: bx, def: {bx_33 = es_32}, uses: {bx_cx_34 = SEQ(bx_33, cx_19) (alias)}
 bx_cx_34: orig: bx_cx, def: {bx_cx_34 = SEQ(bx_33, cx_19) (alias)}, uses: {dx_ax_35 = dx_ax_30 - bx_cx_34}
 dx_ax_35: orig: dx_ax, def: {dx_ax_35 = dx_ax_30 - bx_cx_34}, uses: {ax_36 = (word16) dx_ax_35 (alias)}{dx_37 = SLICE(dx_ax_35, word16, 16) (alias)}
@@ -58,7 +58,7 @@ dx_ax_56: orig: dx_ax
 SCZO_57: orig: SCZO
 Mem58: orig: Mem0, def: {store(Mem58[ds:0x0222:word16]) = ax_55}
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def ds
@@ -79,7 +79,7 @@ l0C00_0000:		// block 1, pred: 0
 	dx_29 = Mem27[ds:0x0212:word16]
 	dx_ax_30 = SEQ(dx_29, ax_28) (alias)
 	es_cx_31 = Mem27[ds:0x0214:ptr32]
-	es_32 = SLICE(es_cx_31, segment, 16) (alias)
+	es_32 = SLICE(es_cx_31, selector, 16) (alias)
 	bx_33 = es_32
 	bx_cx_34 = SEQ(bx_33, cx_19) (alias)
 	dx_ax_35 = dx_ax_30 - bx_cx_34

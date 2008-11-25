@@ -35,7 +35,7 @@ SCZO_32: orig: SCZO, def: {SCZO_32 = SZO_31 (alias)}
 Z_33: orig: Z, def: {Z_33 = SZO_31 (alias)}, uses: {branch Test(NE,Z_33)}
 Mem34: orig: Mem0, def: {store(Mem34[ds:0x0300:word16]) = dx_23}
 // fn0C00_0000
-void fn0C00_0000(word16 si, segment ds)
+void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -123,7 +123,7 @@ SCZO_32: orig: SCZO
 Z_33: orig: Z
 Mem34: orig: Mem0, def: {store(Mem34[ds:0x0300:word16]) = dx_23}
 // fn0C00_0000
-void fn0C00_0000(word16 si, segment ds)
+void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def ds

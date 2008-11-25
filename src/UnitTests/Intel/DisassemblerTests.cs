@@ -265,7 +265,7 @@ movzx	ax,byte ptr [bp+04]
 			IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
 			IntelInstruction instr = dasm.Disassemble();
 			Assert.AreEqual("mov\tword ptr cs:[0001],0800", instr.ToString());
-			Assert.AreEqual("segment", instr.op2.Width.ToString());
+			Assert.AreEqual("selector", instr.op2.Width.ToString());
 		}
 	}
 }

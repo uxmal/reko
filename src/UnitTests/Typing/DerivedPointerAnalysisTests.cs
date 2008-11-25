@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Typing
 			ProgramMock prog = new ProgramMock();
 			ProcedureMock m = new ProcedureMock();
 			Identifier ds = m.Local16("ds");
-			ds.DataType = PrimitiveType.Segment;
+			ds.DataType = PrimitiveType.SegmentSelector;
 			Identifier bx = m.Local16("bx");
 
 			m.Assign(bx, 0x1234);

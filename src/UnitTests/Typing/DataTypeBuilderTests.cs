@@ -25,7 +25,7 @@ using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Typing
 {
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Typing
 			dtb.DataTypeTrait(id2.TypeVariable, id2.DataType);
 			dtb.BuildEquivalenceClassDataTypes();
 
-			ICollection used = store.UsedEquivalenceClasses;
+			IList<EquivalenceClass> used = store.UsedEquivalenceClasses;
 			Assert.AreEqual(1, used.Count);
 			Verify("Typing/DtbEqClass.txt");
 		}

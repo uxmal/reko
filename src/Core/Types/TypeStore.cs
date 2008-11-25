@@ -19,7 +19,7 @@
 using Decompiler.Core.Code;
 using Decompiler.Core.Output;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.Core.Types
@@ -30,14 +30,14 @@ namespace Decompiler.Core.Types
 	/// </summary>
 	public class TypeStore
 	{
-		private TypeVariableCollection typevars;
-		private SortedList usedClasses;
+		private List<TypeVariable> typevars;
+        private SortedList<int, EquivalenceClass> usedClasses;
 		private DataTypeComparer tycomp = new DataTypeComparer();
 
 		public TypeStore()
 		{
-			typevars = new TypeVariableCollection();
-			usedClasses = new SortedList();
+			typevars = new List<TypeVariable>();
+			usedClasses = new SortedList<int, EquivalenceClass>();
 		}
 
 		public TypeVariable EnsureTypeVariable(TypeFactory factory, Expression e)
@@ -81,7 +81,7 @@ namespace Decompiler.Core.Types
 			return merged;
 		}
 
-		public TypeVariableCollection TypeVariables		//$REVIEW: consider renaming to "TypeVariables"
+		public List<TypeVariable> TypeVariables
 		{
 			get { return typevars; }
 		}
@@ -117,7 +117,7 @@ namespace Decompiler.Core.Types
 			return dt;
 		}
 
-		public ICollection UsedEquivalenceClasses
+		public IList<EquivalenceClass> UsedEquivalenceClasses
 		{
 			get { return usedClasses.Values; }
 		}
@@ -174,11 +174,6 @@ namespace Decompiler.Core.Types
 
 			writer.Write("  OrigDataType: ");
 			writer.WriteLine(tv.OriginalDataType);
-		}
-
-		private void WriteEntry(DictionaryEntry de, TextWriter writer)
-		{
-			WriteEntry((TypeVariable) de.Key, (DataType) de.Value, writer);
 		}
 
 		private void WriteEntry(TypeVariable tv, DataType dt, TextWriter writer)

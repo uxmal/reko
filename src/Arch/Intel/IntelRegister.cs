@@ -396,7 +396,7 @@ namespace Decompiler.Arch.Intel
 	public class SegmentRegister : IntelRegister
 	{
 		public SegmentRegister(string name, int number)
-			: base(name, number, PrimitiveType.Segment, -1, number, -1, -1)
+			: base(name, number, PrimitiveType.SegmentSelector, -1, number, -1, -1)
 		{
 			isBaseRegister = false;
 		}

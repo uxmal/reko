@@ -181,16 +181,14 @@ namespace Decompiler.Typing
 			return (aOffset + a.Size > bOffset);
 		}
 
-		public void Transform(System.IO.TextWriter w)
+		public void Transform()
 		{
 			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
 			ppr.ReplaceAll();
-			NestedComplexTypeRemover.ReplaceAll(factory, store);
 			int iteration = 0;
 			do
 			{
 				++iteration;
-				if (w != null) DumpStore(iteration, w);
 				Changed = false;
 				foreach (TypeVariable tv in store.TypeVariables)
 				{
@@ -203,7 +201,7 @@ namespace Decompiler.Typing
 				}
 				if (ppr.ReplaceAll())
 					Changed = true;
-				if (NestedComplexTypeRemover.ReplaceAll(factory, store))
+				if (NestedComplexTypeExtractor.ReplaceAll(factory, store))
 					Changed = true;
 			} while (Changed);
 		}
@@ -241,9 +239,9 @@ namespace Decompiler.Typing
 			if (upsm.Match(ut))
 			{
 				StructureMerger sm = new StructureMerger(upsm.Structures, upsm.EquivalenceClasses);
-				DataType dt = sm.Merge();
+				sm.Merge();
 				Changed = true;
-				return new Pointer(dt, 0);
+				return new Pointer(sm.MergedClass, 0);
 			}
 
 			UnionType utNew = FactorDuplicateAlternatives(ut);

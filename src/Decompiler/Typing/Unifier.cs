@@ -123,7 +123,7 @@ namespace Decompiler.Typing
 			if (pb != null)
 			{
 				if (pb == PrimitiveType.Word16 || pb == PrimitiveType.Word32 || pb.Domain == Domain.Pointer ||
-					pb == PrimitiveType.UInt16 || pb == PrimitiveType.UInt32 || pb.Domain == Domain.Segment)
+					pb == PrimitiveType.UInt16 || pb == PrimitiveType.UInt32 || pb.Domain == Domain.Selector)
 				{
 					return true;
 				}
@@ -139,7 +139,7 @@ namespace Decompiler.Typing
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
 			{
-				if (pb == PrimitiveType.Word16 || pb.Domain == Domain.Pointer || pb.Domain == Domain.Segment)
+				if (pb == PrimitiveType.Word16 || pb.Domain == Domain.Pointer || pb.Domain == Domain.Selector)
 					return true;
 			}
 			return false;
@@ -447,7 +447,7 @@ namespace Decompiler.Typing
 			if (pb != null)
 			{
 				if ((ptrA.Size == 0 || pb.Size == 0 || ptrA.Size == pb.Size) &&
-					(pb.Domain & Domain.Pointer|Domain.Segment) != 0)
+					(pb.Domain & Domain.Pointer|Domain.Selector) != 0)
 				{
 					return ptrA.Clone();
 				}
@@ -460,7 +460,7 @@ namespace Decompiler.Typing
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
 			{
-				if (pb == PrimitiveType.Word16 || pb == PrimitiveType.Word32 || pb.Domain == Domain.Segment)
+				if (pb == PrimitiveType.Word16 || pb == PrimitiveType.Word32 || pb.Domain == Domain.Selector)
 				{
 					//$REVIEW: line above should be if (mpA.Size = b.Size .... as in UnifyPointer.
 					return mpA.Clone();

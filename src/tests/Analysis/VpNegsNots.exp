@@ -35,7 +35,7 @@ SZO_32: orig: SZO, def: {SZO_32 = cond(cx_30)}
 C_33: orig: C, def: {C_33 = cx_30 == 0x0000}
 Mem34: orig: Mem0, def: {store(Mem34[ds:0x0306:word16]) = cx_30}
 // fn0C00_0000
-void fn0C00_0000(word32 eax, word16 bx, segment ds)
+void fn0C00_0000(word32 eax, word16 bx, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -115,7 +115,7 @@ SZO_32: orig: SZO
 C_33: orig: C
 Mem34: orig: Mem0, def: {store(Mem34[ds:0x0306:word16]) = cx_30}
 // fn0C00_0000
-void fn0C00_0000(word32 eax, word16 bx, segment ds)
+void fn0C00_0000(word32 eax, word16 bx, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def eax
 	def ds

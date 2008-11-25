@@ -35,11 +35,9 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
     public class AnalyzedPageInteractorTests
     {
         private Program prog;
-        private DecompilerDriver decompiler;
         private IMainForm form;
         private TestMainFormInteractor main;
         private TestAnalyzedPageInteractor interactor;
-    
 
         [SetUp]
         public void Setup()

@@ -16,7 +16,7 @@ Eq_2: (struct "Eq_2" (0 word16 w0000) (2 word16 w0002))
 	T_2 (in 0x0001 : word16)
 	T_3 (in si : word16)
 Eq_4: (segment "Eq_4" (1 word16 w0001) (5 word16 w0005) (1234 word16 w1234))
-	T_4 (in cs : segment)
+	T_4 (in cs : selector)
 // Type Variables ////////////
 Globals:(in globals)
   Class: Eq_1

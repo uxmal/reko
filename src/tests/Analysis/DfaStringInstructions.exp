@@ -1,11 +1,11 @@
-// void fn0C00_0000(Register word32 eax, Register word16 si, Register segment es, Register segment ds)
+// void fn0C00_0000(Register word32 eax, Register word16 si, Register selector es, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  eax si es ds
 // LiveOut:
 // Trashed: SCZO eax ax cx si di al cl ah ch
 // Preserved:
 // fn0C00_0000
-void fn0C00_0000(word32 eax, word16 si, segment es, segment ds)
+void fn0C00_0000(word32 eax, word16 si, selector es, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -20,14 +20,14 @@ l0C00_0000:		// block 1, pred: 0
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 
-// void fn0C00_0026(Register segment es, Register segment ds)
+// void fn0C00_0026(Register selector es, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  es ds
 // LiveOut:
 // Trashed: SCZO ax cx di al cl ch
 // Preserved:
 // fn0C00_0026
-void fn0C00_0026(segment es, segment ds)
+void fn0C00_0026(selector es, selector ds)
 fn0C00_0026_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0026:		// block 1, pred: 0

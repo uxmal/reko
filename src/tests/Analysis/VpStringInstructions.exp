@@ -22,7 +22,7 @@ eax_19: orig: eax, def: {eax_19 = DPB(eax_12, ax_18, 0, 16) (alias)}
 si_20: orig: si, def: {si_20 = si_16 + 0x0002}
 Mem21: orig: Mem0, def: {store(Mem21[ds:0x030A:word16]) = ax_18}
 // fn0C00_0000
-void fn0C00_0000(word32 eax, word16 si, segment es, segment ds)
+void fn0C00_0000(word32 eax, word16 si, selector es, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -77,7 +77,7 @@ eax_19: orig: eax
 si_20: orig: si
 Mem21: orig: Mem0, def: {store(Mem21[ds:0x030A:word16]) = ax_18}
 // fn0C00_0000
-void fn0C00_0000(word32 eax, word16 si, segment es, segment ds)
+void fn0C00_0000(word32 eax, word16 si, selector es, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def eax
 	def ds
@@ -127,7 +127,7 @@ di_23: orig: di, def: {di_23 = PHI(di_15, di_20)}, uses: {store(Mem25[ds:0x0404:
 cx_24: orig: cx, def: {cx_24 = PHI(cx_16, cx_17)}
 Mem25: orig: Mem0, def: {store(Mem25[ds:0x0404:word16]) = di_23}
 // fn0C00_0026
-void fn0C00_0026(segment es, segment ds)
+void fn0C00_0026(selector es, selector ds)
 fn0C00_0026_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -197,7 +197,7 @@ di_23: orig: di, def: {di_23 = PHI(di_15, di_20)}, uses: {store(Mem25[ds:0x0404:
 cx_24: orig: cx
 Mem25: orig: Mem0, def: {store(Mem25[ds:0x0404:word16]) = di_23}
 // fn0C00_0026
-void fn0C00_0026(segment es, segment ds)
+void fn0C00_0026(selector es, selector ds)
 fn0C00_0026_entry:		// block 0, pred:
 	def Mem0
 	def ds

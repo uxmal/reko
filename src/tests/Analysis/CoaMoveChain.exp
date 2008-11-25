@@ -11,7 +11,7 @@ Mem9: orig: Mem0, def: {store(Mem9[ds:0x0300:word16]) = 0x0004}
 bx_10: orig: bx
 ax_11: orig: ax
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def ds
 	// succ:  1

@@ -1,4 +1,4 @@
-void fn0C00_0000(Register segment ds)
+void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
 // Trashed: ax si al ah
@@ -11,7 +11,7 @@ void fn0C00_0000(Register segment ds)
 // ds:Register ds
 // al:Register al
 // return address size: 2
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -25,7 +25,7 @@ l0C00_0000:		// block 1, pred: 0
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
-Register word16 fn0C00_0015(Register word16 si, Register segment ds)
+Register word16 fn0C00_0015(Register word16 si, Register selector ds)
 // MayUse:  si ds
 // LiveOut: ax al
 // Trashed: ax al ah
@@ -37,7 +37,7 @@ Register word16 fn0C00_0015(Register word16 si, Register segment ds)
 // ds:Register ds
 // ax:Register ax
 // return address size: 2
-word16 fn0C00_0015(word16 si, segment ds)
+word16 fn0C00_0015(word16 si, selector ds)
 fn0C00_0015_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0015:		// block 1, pred: 0

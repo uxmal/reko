@@ -141,7 +141,7 @@ namespace Decompiler.Typing
 
 		public override void VisitConstant(Constant c)
 		{
-            if (c.DataType == PrimitiveType.Segment)
+            if (c.DataType == PrimitiveType.SegmentSelector)
             {
                 TypeVariable tv;
                 if (segTypevars.TryGetValue(c.ToUInt16(), out tv))

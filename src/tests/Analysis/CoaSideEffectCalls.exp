@@ -9,7 +9,7 @@ Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:word16]) = bx_5}
 bx_8: orig: bx, def: {ax_9 = fn0C00_000E(&bx_8)}, uses: {fn0C00_0015(ax_9, bx_8, ds)}
 ax_9: orig: ax, def: {ax_9 = fn0C00_000E(&bx_8)}, uses: {fn0C00_0015(ax_9, bx_8, ds)}
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def ds
 	// succ:  1
@@ -50,7 +50,7 @@ bx: bx:Register bx, def: {def bx}, uses: {store(Mem6[ds:0x0402:word16]) = bx}
 Mem5: orig: Mem0, def: {store(Mem5[ds:0x0400:word16]) = ax}
 Mem6: orig: Mem0, def: {store(Mem6[ds:0x0402:word16]) = bx}
 // fn0C00_0015
-void fn0C00_0015(word16 ax, word16 bx, segment ds)
+void fn0C00_0015(word16 ax, word16 bx, selector ds)
 fn0C00_0015_entry:		// block 0, pred:
 	def ax
 	def ds

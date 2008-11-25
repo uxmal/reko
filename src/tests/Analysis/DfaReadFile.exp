@@ -38,14 +38,14 @@ l0C00_001F:		// block 1, pred: 0
 fn0C00_001F_exit:		// block 2, pred: 1
 	// succ: 
 
-// Register word16 fn0C00_0023(Register word16 cx, Register word16 dx, Register word16 bx, Register segment ds)
+// Register word16 fn0C00_0023(Register word16 cx, Register word16 dx, Register word16 bx, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  cx dx bx ds
 // LiveOut: ax
 // Trashed: C ax al ah
 // Preserved:
 // fn0C00_0023
-word16 fn0C00_0023(word16 cx, word16 dx, word16 bx, segment ds)
+word16 fn0C00_0023(word16 cx, word16 dx, word16 bx, selector ds)
 fn0C00_0023_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0023:		// block 1, pred: 0

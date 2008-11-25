@@ -35,7 +35,7 @@ namespace Decompiler.Core.Types
 		UnsignedInt = 16,
 		Real = 32,
 		Pointer = 64,
-		Segment = 128,
+		Selector = 128,
 	}
 
 	/// <summary>
@@ -113,7 +113,7 @@ namespace Decompiler.Core.Types
 				name = "byte";
 				break;
 			case 2:
-				w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Segment;
+				w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Selector;
 				name = "word16";
 				break;
 			case 4:
@@ -162,21 +162,21 @@ namespace Decompiler.Core.Types
 				return "ptr" + bitSize;
 			case Domain.Real:
 				return "real" + bitSize;
-			case Domain.Segment:
-				return "segment";
+			case Domain.Selector:
+				return "selector";
 			default:
 				sb = new StringBuilder();
 				if ((dom & Domain.Boolean) != 0)
 					sb.Append('b');
 				if ((dom & Domain.Character) != 0)
 					sb.Append('c');
-				if ((dom & Domain.SignedInt) != 0)
-					sb.Append('i');
 				if ((dom & Domain.UnsignedInt) != 0)
 					sb.Append('u');
-				if ((dom & Domain.Pointer) != 0)
+                if ((dom & Domain.SignedInt) != 0)
+                    sb.Append('i');
+                if ((dom & Domain.Pointer) != 0)
 					sb.Append('p');
-				if ((dom & Domain.Segment) != 0)
+				if ((dom & Domain.Selector) != 0)
 					sb.Append('s');
 				if ((dom & Domain.Real) != 0)
 					sb.Append('r');
@@ -214,7 +214,7 @@ namespace Decompiler.Core.Types
 					return "r";
 				case Domain.Pointer:
 					return "ptr";
-				case Domain.Segment:
+				case Domain.Selector:
 					return "pseg";
 				default:
 					switch (byteSize)
@@ -256,7 +256,7 @@ namespace Decompiler.Core.Types
 			int16 = Create(Domain.SignedInt, 2);
 			uint16 = Create(Domain.UnsignedInt, 2);
 			ptr16 = Create(Domain.Pointer, 2);
-			segment = Create(Domain.Segment, 2);
+			selector = Create(Domain.Selector, 2);
 
 			word32 = CreateWord(4);
 			int32 = Create(Domain.SignedInt, 4);
@@ -287,7 +287,7 @@ namespace Decompiler.Core.Types
 		static private PrimitiveType int16;
 		static private PrimitiveType uint16;
 		static private PrimitiveType ptr16;
-		static private PrimitiveType segment;
+		static private PrimitiveType selector;
 
 		static private PrimitiveType word32;
 		static private PrimitiveType int32;
@@ -348,9 +348,10 @@ namespace Decompiler.Core.Types
 		{
 			get { return ptr16; }
 		}
-		static public PrimitiveType Segment
+
+		static public PrimitiveType SegmentSelector
 		{
-			get { return segment; }
+			get { return selector; }
 		}
 
 		static public PrimitiveType Word32

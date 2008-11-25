@@ -23,16 +23,16 @@ using System.Collections;
 namespace Decompiler.Typing
 {
 	/// <summary>
-	/// Removes nested types from the insides of each other. Thus, (struct (0 union x)) becomes (struct (0 eq_1)) where eq_1: (union x)
+	/// Extracts nested types from the insides of each other. Thus, (struct (0 union x)) becomes (struct (0 eq_1)) where eq_1: (union x)
 	/// </summary>
-	public class NestedComplexTypeRemover : DataTypeTransformer
+	public class NestedComplexTypeExtractor : DataTypeTransformer
 	{
 		private TypeFactory factory;
 		private TypeStore store;
 		private bool insideComplexType;
 		private bool changed;
 
-		public NestedComplexTypeRemover(TypeFactory factory, TypeStore store)
+		public NestedComplexTypeExtractor(TypeFactory factory, TypeStore store)
 		{
 			this.factory = factory;
 			this.store = store;
@@ -60,20 +60,36 @@ namespace Decompiler.Typing
 			{
 				if (eqs[i].DataType != null)
 				{
-					NestedComplexTypeRemover nctr = new NestedComplexTypeRemover(factory, store);
-					eqs[i].DataType.Accept(nctr);
+					NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
+					eqs[i].DataType = eqs[i].DataType.Accept(nctr);
 					changed |= nctr.Changed;
 				}
 			}
 			return changed;
 		}
 
+        public override DataType TransformArrayType(ArrayType at)
+        {
+            if (insideComplexType)
+            {
+                NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
+                at.Accept(nctr);
+                return at;
+            }
+            else
+            {
+                insideComplexType = true;
+                return base.TransformArrayType(at);
+            }
+
+        }
+
 		public override DataType TransformStructure(StructureType str)
 		{
 			if (insideComplexType)
 			{
 				changed = true;
-				NestedComplexTypeRemover nctr = new NestedComplexTypeRemover(factory, store);
+				NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
 				str.Accept(nctr);
 				return CreateEquivalenceClass(str);
 			}
@@ -89,7 +105,7 @@ namespace Decompiler.Typing
 			if (insideComplexType)
 			{
 				changed = true;
-				NestedComplexTypeRemover nctr = new NestedComplexTypeRemover(factory, store);
+				NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
 				ut.Accept(nctr);
 				return CreateEquivalenceClass(ut);
 			}

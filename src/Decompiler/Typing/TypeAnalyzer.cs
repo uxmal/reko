@@ -96,7 +96,7 @@ namespace Decompiler.Typing
 			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
 			ppr.ReplaceAll();
 			Debug.WriteLine("= Transforming types =======================================");
-			trans.Transform(null);
+			trans.Transform();
 			ctn.RenameAllTypes(store);
 			Debug.WriteLine("= transformed types ========================================");
 			Debug.WriteLine("= Rewriting expressions ====================================");

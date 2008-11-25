@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void SegmentedAccess()
 		{
-			Identifier ds = new Identifier("ds", 1, PrimitiveType.Segment, null);
+			Identifier ds = new Identifier("ds", 1, PrimitiveType.SegmentSelector, null);
 			Identifier bx = new Identifier("bx", 2, PrimitiveType.Word16, null);
 			SegmentedAccess mps = new SegmentedAccess(MemoryIdentifier.GlobalMemory, ds, bx, PrimitiveType.Word32);
 			mps.Accept(eqb);
@@ -73,8 +73,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void SegmentConstants()
         {
-            Constant seg1 = new Constant(PrimitiveType.Segment, 0x1234);
-            Constant seg2 = new Constant(PrimitiveType.Segment, 0x1234);
+            Constant seg1 = new Constant(PrimitiveType.SegmentSelector, 0x1234);
+            Constant seg2 = new Constant(PrimitiveType.SegmentSelector, 0x1234);
 
             seg1.Accept(eqb);
             seg2.Accept(eqb);

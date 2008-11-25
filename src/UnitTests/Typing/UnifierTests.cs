@@ -284,7 +284,7 @@ namespace Decompiler.UnitTests.Typing
 		public void UnifyPointerStructSegment()
 		{
 			Pointer p = new Pointer(new StructureType(null, 0, new StructureField(4, PrimitiveType.UInt32, null)), 2);
-			DataType dt = un.Unify(p, PrimitiveType.Segment);
+			DataType dt = un.Unify(p, PrimitiveType.SegmentSelector);
 			Assert.AreEqual("(ptr (struct (4 uint32 dw0004)))", dt.ToString());
 		}
 

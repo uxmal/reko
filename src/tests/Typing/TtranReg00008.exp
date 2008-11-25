@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -22,15 +22,15 @@ fn0C00_0000_exit:		// block 4, pred: 3
 
 // Equivalence classes ////////////
 Eq_3: (segment (9A26 word16 w9A26) (9A2E word16 w9A2E))
-	T_3 (in ds : segment)
+	T_3 (in ds : selector)
 Eq_9: (struct 26 (0 word16 w0000))
 	T_9 (in si_16 : word16)
 	T_10 (in 0x0000 : word16)
 	T_21 (in si_16 + 0x0026 : word16)
-Eq_12: (segment (0 (arr Eq_25) a0000))
-	T_12 (in 0x5CE1 : segment)
-Eq_25: (struct 26 (0 word16 w0000))
-	T_25
+Eq_12: (segment (0 (arr Eq_24) a0000))
+	T_12 (in 0x5CE1 : selector)
+Eq_24: (struct 26 (0 word16 w0000))
+	T_24
 // Type Variables ////////////
 Globals:(in globals)
   Class: Eq_1
@@ -126,9 +126,5 @@ T_23:(in v8_22 != 0x0000)
   OrigDataType: bool
 T_24:
   Class: Eq_24
-  DataType: word16
-  OrigDataType: 
-T_25:
-  Class: Eq_25
-  DataType: Eq_25
+  DataType: Eq_24
   OrigDataType: 

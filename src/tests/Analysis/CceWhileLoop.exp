@@ -34,7 +34,7 @@ ax_32: orig: ax
 bx_33: orig: bx, def: {bx_33 = PHI(bx_23, bx_19)}, uses: {store(Mem34[ds:0x0300:word16]) = bx_33}
 Mem34: orig: Mem0, def: {store(Mem34[ds:0x0300:word16]) = bx_33}
 // fn0C00_0000
-void fn0C00_0000(word16 bp, segment ds)
+void fn0C00_0000(word16 bp, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def bp

@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CfMemberPointerSelector()
 		{
-			Identifier ds = new Identifier("ds", 1, PrimitiveType.Segment, null);
+			Identifier ds = new Identifier("ds", 1, PrimitiveType.SegmentSelector, null);
 			Identifier bx = new Identifier("bx", 1, PrimitiveType.Word16, null);
 			Expression e = new MemberPointerSelector(PrimitiveType.Byte, ds, bx);
 			e.Accept(cf);

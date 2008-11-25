@@ -1,11 +1,11 @@
-// void fn0C00_0000(Register segment ds)
+// void fn0C00_0000(Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  ds
 // LiveOut:
 // Trashed: bx bl bh
 // Preserved:
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -16,7 +16,7 @@ l0C00_0000:		// block 1, pred: 0
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 
-// void fn0C00_0010(Register segment ds, Stack word16 wArg00, Stack word16 wArg02)
+// void fn0C00_0010(Register selector ds, Stack word16 wArg00, Stack word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  ds
 // LiveOut:
@@ -24,7 +24,7 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // Preserved: bp
 // Stack args: Stack +0000(16) Stack +0002(16)
 // fn0C00_0010
-void fn0C00_0010(segment ds, word16 wArg00, word16 wArg02)
+void fn0C00_0010(selector ds, word16 wArg00, word16 wArg02)
 fn0C00_0010_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0010:		// block 1, pred: 0
@@ -38,14 +38,14 @@ l0C00_0010:		// block 1, pred: 0
 fn0C00_0010_exit:		// block 2, pred: 1
 	// succ: 
 
-// void fn0C00_0037(Register segment ds)
+// void fn0C00_0037(Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  ds
 // LiveOut:
 // Trashed:
 // Preserved:
 // fn0C00_0037
-void fn0C00_0037(segment ds)
+void fn0C00_0037(selector ds)
 fn0C00_0037_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0037:		// block 1, pred: 0

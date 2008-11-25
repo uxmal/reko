@@ -1,4 +1,4 @@
-void fn0C00_0000(Register byte al, Register segment ds)
+void fn0C00_0000(Register byte al, Register selector ds)
 // MayUse:  al ds
 // LiveOut:
 // Trashed: SCZO ax al
@@ -10,7 +10,7 @@ void fn0C00_0000(Register byte al, Register segment ds)
 // al:Register al
 // ds:Register ds
 // return address size: 2
-void fn0C00_0000(byte al, segment ds)
+void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0

@@ -8,7 +8,7 @@ bx_6: orig: bx, def: {bx_6 = fn0C00_000C(ds, &cl_5)}, uses: {store(Mem7[ds:0x030
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:word16]) = bx_6}
 Mem8: orig: Mem0, def: {store(Mem8[ds:0x0302:byte]) = cl_5}
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def ds
 	// succ:  1
@@ -81,7 +81,7 @@ Z_56: orig: Z
 SCZO_57: orig: SCZO
 cx_58: orig: cx
 // fn0C00_000C
-word16 fn0C00_000C(segment ds, ptr0 clOut)
+word16 fn0C00_000C(selector ds, ptr0 clOut)
 fn0C00_000C_entry:		// block 0, pred:
 	def Mem0
 	def ds

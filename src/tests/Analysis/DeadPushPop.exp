@@ -10,7 +10,7 @@ ax_8: orig: ax, def: {ax_8 = fn0C00_0008(cx_7, di, ds)}, uses: {store(Mem9[ds:si
 Mem9: orig: Mem0, def: {store(Mem9[ds:si:word16]) = ax_8}
 ax_10: orig: ax
 // fn0C00_0000
-void fn0C00_0000(word16 si, word16 di, segment ds)
+void fn0C00_0000(word16 si, word16 di, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def si
 	def ds
@@ -51,7 +51,7 @@ di_22: orig: di, def: {di_22 = di_14 + 0x0002}, uses: {di_14 = PHI(di, di_22)}
 SCZO_23: orig: SCZO
 Z_24: orig: Z
 // fn0C00_0008
-word16 fn0C00_0008(word16 cx, word16 di, segment ds)
+word16 fn0C00_0008(word16 cx, word16 di, selector ds)
 fn0C00_0008_entry:		// block 0, pred:
 	def Mem0
 	def di

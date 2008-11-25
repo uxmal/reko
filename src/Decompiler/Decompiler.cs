@@ -223,7 +223,7 @@ namespace Decompiler
 			{
 				WriteHeaderComment(Path.GetFileName(project.Output.TypesFilename), w);
 				w.WriteLine("/*");prog.TypeStore.Write(w); w.WriteLine("*/");
-				TypeFormatter fmt = new TypeFormatter(w);
+				TypeFormatter fmt = new TypeFormatter(w, false);
 				foreach (EquivalenceClass eq in prog.TypeStore.UsedEquivalenceClasses)
 				{
 					if (eq.DataType != null)

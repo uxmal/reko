@@ -3,7 +3,7 @@ void GlobalVariablesMock()
 GlobalVariablesMock_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
-	(ptr real32) ptr = &globals->r10000004
+	real32 * ptr = &globals->r10000004
 	*ptr = 0.75F;
 	globals->r10000000 = 0.5F;
 	// succ: 

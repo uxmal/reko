@@ -423,7 +423,7 @@
     <Compile Include="Typing\ITraitHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Typing\NestedComplexTypeRemover.cs" />
+    <Compile Include="Typing\NestedComplexTypeExtractor.cs" />
     <Compile Include="Typing\PtrPrimitiveReplacer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -518,11 +518,11 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="WindowsGui\Forms\LoadedPageInteractor.cs" />
-    <Compile Include="WindowsGui\Forms\MainForm2.cs">
+    <Compile Include="WindowsGui\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WindowsGui\Forms\MainForm2.Designer.cs">
-      <DependentUpon>MainForm2.cs</DependentUpon>
+    <Compile Include="WindowsGui\Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="WindowsGui\Forms\MainFormInteractor.cs" />
     <Compile Include="WindowsGui\Forms\PhasePage.cs">
@@ -588,9 +588,9 @@
       <DependentUpon>LoadedPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="WindowsGui\Forms\MainForm2.resx">
+    <EmbeddedResource Include="WindowsGui\Forms\MainForm.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>MainForm2.cs</DependentUpon>
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WindowsGui\Forms\PhasePage.resx">
       <DependentUpon>PhasePage.cs</DependentUpon>

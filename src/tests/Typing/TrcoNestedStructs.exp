@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -15,17 +15,17 @@ fn0C00_0000_exit:		// block 2, pred: 1
 T_2 (in 0x0000)
 	trait_primitive(word16)
 T_3 (in ds)
-	trait_primitive(segment)
+	trait_primitive(selector)
 	trait_mem(T_5, 300)
-	trait_primitive(segment)
+	trait_primitive(selector)
 	trait_mem(T_8, 302)
-	trait_primitive(segment)
+	trait_primitive(selector)
 	trait_mem(T_11, 304)
-	trait_primitive(segment)
+	trait_primitive(selector)
 	trait_mem(T_13, 302)
-	trait_primitive(segment)
+	trait_primitive(selector)
 	trait_mem(T_15, 304)
-	trait_primitive(segment)
+	trait_primitive(selector)
 	trait_mem(T_18, 306)
 T_4 (in 0x0300)
 	trait_primitive(word16)

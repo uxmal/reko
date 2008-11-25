@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void Hybrid32()
 		{
-			Assert.AreEqual("iup32", PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 4).ToString());
+			Assert.AreEqual("uip32", PrimitiveType.Create(Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer, 4).ToString());
 		}
 	}
 }

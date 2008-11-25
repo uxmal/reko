@@ -94,7 +94,21 @@ namespace Decompiler.Typing
 			return new ArrayAccess(elementType, e, Constant.Word32(idx));
 		}
 
-		public void RewriteProgram()
+
+        private void RewriteFormals(ProcedureSignature sig)
+        {
+            if (sig.ReturnValue != null)
+                sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable.DataType;
+            if (sig.FormalArguments != null)
+            {
+                foreach (Identifier formalArg in sig.FormalArguments)
+                {
+                    formalArg.DataType = formalArg.TypeVariable.DataType;
+                }
+            }
+        }
+
+        public void RewriteProgram()
 		{
 			{//$DEBUG
 				System.IO.StringWriter sb = new System.IO.StringWriter();
@@ -104,6 +118,7 @@ namespace Decompiler.Typing
 
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
+                RewriteFormals(proc.Signature);
 				foreach (Block b in proc.RpoBlocks)
 				{
 					foreach (Statement stm in b.Statements)
@@ -113,6 +128,7 @@ namespace Decompiler.Typing
 				}
 			}
 		}
+
 
 		#region InstructionTransformer methods //////////////////////
 
@@ -178,14 +194,17 @@ namespace Decompiler.Typing
 						Environment.NewLine, binExp,
 						binExp.Left.TypeVariable, dtLeft,
 						binExp.Right.TypeVariable, dtRight);
-				Constant c = (Constant) binExp.Right;
-				ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
-                    binExp.TypeVariable.DataType,
-					dtLeft, 
-					binExp.Left.TypeVariable.OriginalDataType,
-					binExp.Left,
-					c.ToInt32());
-				return ceb.BuildComplex();
+                Constant c = binExp.Right as Constant;
+                if (c != null)
+                {
+                    ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                        binExp.TypeVariable.DataType,
+                        dtLeft,
+                        binExp.Left.TypeVariable.OriginalDataType,
+                        binExp.Left,
+                        c.ToInt32());
+                    return ceb.BuildComplex();
+                }
 			}
 			return binExp;
 		}
