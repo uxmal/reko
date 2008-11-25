@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			Assert.IsTrue(rw.Match(addAxMem, adcDxMem));
 			Assert.AreEqual("dx_ax", rw.Dst.ToString());
-			Assert.AreEqual("Mem0[ds:bx + 0x0300:iu32]", rw.Src.ToString());
+			Assert.AreEqual("Mem0[ds:bx + 0x0300:ui32]", rw.Src.ToString());
 		}
 
 		[Test]
@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Intel
 		public void CreateInstruction()
 		{
 			rw.Match(addAxMem, adcDxMem);
-			Assert.AreEqual("dx_ax = dx_ax + Mem0[ds:bx + 0x0300:iu32]", rw.CreateInstruction(Operator.add).ToString());
+			Assert.AreEqual("dx_ax = dx_ax + Mem0[ds:bx + 0x0300:ui32]", rw.CreateInstruction(Operator.add).ToString());
 		}
 	}
 }

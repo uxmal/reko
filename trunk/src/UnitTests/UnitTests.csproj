@@ -207,6 +207,7 @@
     <Compile Include="Typing\DerivedPointerAnalysisTests.cs" />
     <Compile Include="Typing\EquivalenceClassBuilderTests.cs" />
     <Compile Include="Typing\GlobalVariablesMock.cs" />
+    <Compile Include="Typing\NestedComplexTypeExtractorTests.cs" />
     <Compile Include="Typing\PtrPrimitiveReplacerTests.cs" />
     <Compile Include="Typing\PtrPtrIntMock.cs" />
     <Compile Include="Typing\StructureMergerTests.cs" />

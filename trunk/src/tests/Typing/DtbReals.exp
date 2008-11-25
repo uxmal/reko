@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -11,7 +11,7 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 
 // fn0C00_0010
-void fn0C00_0010(segment ds, word16 wArg00, word16 wArg02)
+void fn0C00_0010(selector ds, word16 wArg00, word16 wArg02)
 fn0C00_0010_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0010:		// block 1, pred: 0
@@ -26,7 +26,7 @@ fn0C00_0010_exit:		// block 2, pred: 1
 	// succ: 
 
 // fn0C00_0037
-void fn0C00_0037(segment ds)
+void fn0C00_0037(selector ds)
 fn0C00_0037_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0037:		// block 1, pred: 0
@@ -42,9 +42,9 @@ Eq_2: (ptr (fn T_10 (T_7, T_8, T_9)))
 	T_2 (in fn0C00_0010 : ptr0)
 	T_3 (in signature of fn0C00_0010)
 Eq_4: (ptr (segment (400 T_42 t0400) (408 T_46 t0408)))
-	T_4 (in ds : segment)
-	T_7 (in ds : segment)
-	T_13 (in ds : segment)
+	T_4 (in ds : selector)
+	T_7 (in ds : selector)
+	T_13 (in ds : selector)
 Eq_5: word16
 	T_5 (in wArg00 : word16)
 	T_8 (in 0x0300 : word16)

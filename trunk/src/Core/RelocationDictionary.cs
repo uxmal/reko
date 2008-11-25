@@ -41,7 +41,7 @@ namespace Decompiler.Core
 
 		public void AddSegmentReference(int imageOffset, ushort segmentSelector)
 		{
-			Constant c = new Constant(PrimitiveType.Segment, segmentSelector);
+			Constant c = new Constant(PrimitiveType.SegmentSelector, segmentSelector);
 			InnerHashtable.Add(imageOffset, c);
 		}
 

@@ -1,4 +1,4 @@
-void fn0C00_0000(Register segment ds)
+void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
 // Trashed: SCZO ax si al ah
@@ -12,7 +12,7 @@ void fn0C00_0000(Register segment ds)
 // v5:Temporary
 // SCZO:Flags
 // return address size: 2
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -29,7 +29,7 @@ l0C00_0009:		// block 3, pred: 2 1
 	// succ:  4
 fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
-FlagGroup byte fn0C00_000A(Register segment ds, Register out ptr0 axOut)
+FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr0 axOut)
 // MayUse:  ds
 // LiveOut: C ax
 // Trashed: SCZO ax si al ah
@@ -46,7 +46,7 @@ FlagGroup byte fn0C00_000A(Register segment ds, Register out ptr0 axOut)
 // C:Flags
 // axOut:Out:Register ax
 // return address size: 2
-byte fn0C00_000A(segment ds, ptr0 axOut)
+byte fn0C00_000A(selector ds, ptr0 axOut)
 fn0C00_000A_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000A:		// block 1, pred: 0

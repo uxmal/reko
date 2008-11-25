@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Typing
 			dtb.BuildEquivalenceClassDataTypes();
 
 			tvr.ReplaceTypeVariables();
-			trans.Transform(null);
+			trans.Transform();
 			ctn.RenameAllTypes(store);
 
 			ter = new TypedExpressionRewriter(store, prog);
@@ -164,12 +164,27 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(pp.BuildProgram(), "Typing/TerArrayConstantPointers.txt");
 		}
 
-
 		[Test]
 		public void TerReg00008()
 		{
 			RunTest("fragments/regressions/r00008.asm", "Typing/TerReg00008.txt");
 		}
+
+        [Test]
+        public void TerAddNonConstantToPointer()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier i = m.Local16("i");
+            Identifier p = m.Local16("p");
+
+            m.Store(p, m.Word16(4));
+            m.Store(m.Add(p, 4), m.Word16(4));
+            m.Assign(p, m.Add(p, i));
+            ProgramMock prog = new ProgramMock();
+            prog.Add(m);
+
+            RunTest(prog.BuildProgram(), "Typing/TerAddNonConstantToPointer.txt");
+        }
 
 		private void RunTest(string relativePath, string outputFile)
 		{
@@ -193,7 +208,7 @@ namespace Decompiler.UnitTests.Typing
 				dtb.BuildEquivalenceClassDataTypes();
 				cpf.FollowConstantPointers(prog);
 				tvr.ReplaceTypeVariables();
-				trans.Transform(null);
+				trans.Transform();
 				ctn.RenameAllTypes(store);
 
 				ter = new TypedExpressionRewriter(store, prog);
@@ -237,6 +252,11 @@ namespace Decompiler.UnitTests.Typing
 			trans = new TypeTransformer(factory, store, null);
 			ctn = new ComplexTypeNamer();
 		}
+
+        private void SetType(Expression e, DataType t)
+        {
+            e.DataType = t;
+        }
 	}
 
 	public class SegmentedMemoryPointerMock : ProcedureMock
@@ -244,7 +264,7 @@ namespace Decompiler.UnitTests.Typing
 		protected override void BuildBody()
 		{
 			Identifier cs = Local16("cs");
-			cs.DataType = PrimitiveType.Segment;
+			cs.DataType = PrimitiveType.SegmentSelector;
 			Identifier ax = Local16("ax");
 			Identifier si = Local16("si");
 			Identifier si2 = Local16("si2");
@@ -262,7 +282,7 @@ namespace Decompiler.UnitTests.Typing
 		protected override void BuildBody()
 		{
 			Identifier ds = Local16("ds");
-			ds.DataType = PrimitiveType.Segment;
+			ds.DataType = PrimitiveType.SegmentSelector;
 			Identifier ax = Local16("ax");
 			Identifier bx = Local16("bx");
 			Assign(ax, SegMemW(ds, bx));
@@ -275,14 +295,14 @@ namespace Decompiler.UnitTests.Typing
 	{
 		private Constant Seg(int seg)
 		{
-			return new Constant(PrimitiveType.Segment, seg);
+			return new Constant(PrimitiveType.SegmentSelector, seg);
 		}
 
 		protected override void BuildBody()
 		{
-			Identifier ds = base.Local(PrimitiveType.Segment, "ds");
+			Identifier ds = base.Local(PrimitiveType.SegmentSelector, "ds");
 			Identifier ax = Local16("ax");
-			Identifier ds2 = base.Local(PrimitiveType.Segment, "ds2");
+			Identifier ds2 = base.Local(PrimitiveType.SegmentSelector, "ds2");
 			
 			base.Store(SegMemW(Seg(0x1796), Int16(0x0001)), Seg(0x0800));
 			Store(SegMemW(Seg(0x800), Int16(0x5422)), ds);

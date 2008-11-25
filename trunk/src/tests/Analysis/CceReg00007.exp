@@ -8,7 +8,7 @@ C_6: orig: C, def: {C_6 = fn0C00_000C(al_5, ds)}, uses: {branch C_6}
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:byte]) = al_5}
 Mem8: orig: Mem0
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def ds
 	// succ:  1
@@ -45,7 +45,7 @@ SZO_15: orig: SZO
 SCZO_16: orig: SCZO
 Mem17: orig: Mem0
 // fn0C00_000C
-byte fn0C00_000C(byte al, segment ds)
+byte fn0C00_000C(byte al, selector ds)
 fn0C00_000C_entry:		// block 0, pred:
 	def Mem0
 	def al

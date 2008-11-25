@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Typing
 			ProgramMock mock = new ProgramMock();
 			ProcedureMock p = new ProcedureMock();
 			Identifier cs = p.Frame.EnsureRegister(Registers.cs);
-			p.Store(p.SegMemW(cs, p.Word32(0x0001)), new Constant(PrimitiveType.Segment, 0x0800));
+			p.Store(p.SegMemW(cs, p.Word32(0x0001)), new Constant(PrimitiveType.SegmentSelector, 0x0800));
 			p.Procedure.RenumberBlocks();
 			mock.Add(p);
 			RunTest(mock.BuildProgram(), "Typing/PprMemberVars.txt");

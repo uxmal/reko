@@ -39,8 +39,8 @@ namespace Decompiler.UnitTests.Typing
 			c1.DataType = s1;
 			c2.DataType = s2;
 			StructureMerger sm = new StructureMerger(new DataType[] { s1, s2 }, new DataType[] { c1, c2 } );
-			StructureType sNew = sm.Merge();
-			Assert.AreEqual("(struct (4 ptr0 ptr0004))", sNew.ToString());
+			sm.Merge();
+			Assert.AreEqual("(struct (4 ptr0 ptr0004))", c1.DataType.ToString());
 		}
 	}
 }

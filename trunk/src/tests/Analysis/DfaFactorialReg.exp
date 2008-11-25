@@ -1,11 +1,11 @@
-// void fn0C00_0000(Register segment ds)
+// void fn0C00_0000(Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  ds
 // LiveOut:
 // Trashed: SCZO ax cx dx al cl dl ah ch dh
 // Preserved:
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0

@@ -1,4 +1,4 @@
-void fn0C00_0000(Register segment ds)
+void fn0C00_0000(Register selector ds)
 // MayUse:  ds
 // LiveOut:
 // Trashed: ax bx al bl ah bh
@@ -13,7 +13,7 @@ void fn0C00_0000(Register segment ds)
 // ax:Register ax
 // wLoc06:Local -0006
 // return address size: 2
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -31,7 +31,7 @@ l0C00_0000:		// block 1, pred: 0
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
-void fn0C00_0024(Register segment ds, Stack word16 wArg00, FpuStack real64 rArg0, FpuStack real64 rArg1)
+void fn0C00_0024(Register selector ds, Stack word16 wArg00, FpuStack real64 rArg0, FpuStack real64 rArg1)
 // MayUse:  ds
 // LiveOut:
 // Trashed: bx bl bh
@@ -48,7 +48,7 @@ void fn0C00_0024(Register segment ds, Stack word16 wArg00, FpuStack real64 rArg0
 // ds:Register ds
 // rArg1:FPU stack
 // return address size: 2
-void fn0C00_0024(segment ds, word16 wArg00, real64 rArg0, real64 rArg1)
+void fn0C00_0024(selector ds, word16 wArg00, real64 rArg0, real64 rArg1)
 fn0C00_0024_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0024:		// block 1, pred: 0
@@ -61,7 +61,7 @@ l0C00_0024:		// block 1, pred: 0
 	// succ:  2
 fn0C00_0024_exit:		// block 2, pred: 1
 	// succ: 
-FpuStack real64 fn0C00_0031(Register segment ds, Stack word16 wArg00)
+FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg00)
 // MayUse:  ds
 // LiveOut:
 // Trashed: bx bl bh
@@ -77,7 +77,7 @@ FpuStack real64 fn0C00_0031(Register segment ds, Stack word16 wArg00)
 // rLoc1:FPU stack
 // ds:Register ds
 // return address size: 2
-real64 fn0C00_0031(segment ds, word16 wArg00)
+real64 fn0C00_0031(selector ds, word16 wArg00)
 fn0C00_0031_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0031:		// block 1, pred: 0

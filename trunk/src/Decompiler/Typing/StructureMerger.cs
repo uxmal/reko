@@ -44,6 +44,11 @@ namespace Decompiler.Typing
 			}
 		}
 
+        public EquivalenceClass MergedClass
+        {
+            get { return eqMin; }
+        }
+
 		// T_1 --> C_1 --> S_1
 		// T_2 --> C_2 --> S_2
 		// T_3 --> C_3 --> S_3
@@ -51,16 +56,16 @@ namespace Decompiler.Typing
 		// T_1 --> C_1 --> S_New
 		// T_2 --> C_1
 		// T_3 --> C_1
-		public StructureType Merge()
-		{
-			Unifier un = new Unifier(new TypeFactory());
-			DataType dt = null;
-			foreach (StructureType str in structures)
-			{
-				dt = un.Unify(dt, str);
-			}
-			StructureType strNew = (StructureType) dt;
-			return strNew;
-		}
+        public void Merge()
+        {
+            Unifier un = new Unifier(new TypeFactory());
+            DataType dt = null;
+            foreach (StructureType str in structures)
+            {
+                dt = un.Unify(dt, str);
+            }
+            StructureType strNew = (StructureType) dt;
+            eqMin.DataType = strNew;
+        }
 	}
 }

@@ -345,7 +345,7 @@ namespace Decompiler.Analysis
 				PrimitiveType tHead = (PrimitiveType) c1.DataType;
 				PrimitiveType tTail = (PrimitiveType) c2.DataType;
 				PrimitiveType t;
-				if (tHead.Domain == Domain.Segment)			//$REVIEW: seems to require Address
+				if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address
 					t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
 				else
 					t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);

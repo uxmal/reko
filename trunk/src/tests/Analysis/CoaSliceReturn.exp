@@ -12,7 +12,7 @@ ax_10: orig: ax
 al_11: orig: al, uses: {store(Mem12[ds:0x0302:byte]) = (byte) fn0C00_0015(0x0300, ds)}
 Mem12: orig: Mem0, def: {store(Mem12[ds:0x0302:byte]) = (byte) fn0C00_0015(0x0300, ds)}
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def ds
 	// succ:  1
@@ -31,7 +31,7 @@ ds: ds:Register ds, def: {def ds}, uses: {return Mem0[ds:si:word16]}
 ax: ax:Register ax
 ax_5: orig: ax, uses: {return Mem0[ds:si:word16]}
 // fn0C00_0015
-word16 fn0C00_0015(word16 si, segment ds)
+word16 fn0C00_0015(word16 si, selector ds)
 fn0C00_0015_entry:		// block 0, pred:
 	def Mem0
 	def si

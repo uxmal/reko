@@ -17,7 +17,7 @@ SCZO_15: orig: SCZO
 ax_16: orig: ax, def: {ax_16 = Mem14[ds:0x0200:word16]}, uses: {store(Mem17[ds:0x0200:word16]) = ax_16}
 Mem17: orig: Mem0, def: {store(Mem17[ds:0x0200:word16]) = ax_16}
 // fn0C00_0000
-void fn0C00_0000(word16 si, segment ds)
+void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def si
@@ -46,7 +46,7 @@ wLoc04_5: orig: wLoc04
 Mem6: orig: Mem0, def: {store(Mem6[ds:0x0200:word16]) = 0xFFFF}
 ax_7: orig: ax
 // fn0C00_002A
-void fn0C00_002A(segment ds)
+void fn0C00_002A(selector ds)
 fn0C00_002A_entry:		// block 0, pred:
 	def ds
 	// succ:  1

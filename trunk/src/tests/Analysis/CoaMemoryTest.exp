@@ -13,7 +13,7 @@ Mem11: orig: Mem0, def: {store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002}
 ax_12: orig: ax
 SCZO_13: orig: SCZO
 // fn0C00_0000
-void fn0C00_0000(word16 bx, word16 si, segment ds)
+void fn0C00_0000(word16 bx, word16 si, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def bx

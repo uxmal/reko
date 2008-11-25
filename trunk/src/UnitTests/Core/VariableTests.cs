@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Core
 		{
 			f = new Frame(PrimitiveType.Word16);
 			argOff = f.EnsureStackArgument(4, PrimitiveType.Word16);
-			argSeg = f.EnsureStackArgument(6, PrimitiveType.Segment);
+			argSeg = f.EnsureStackArgument(6, PrimitiveType.SegmentSelector);
 			arg_alias = f.EnsureStackArgument(4, PrimitiveType.Pointer32);
 		}
 
@@ -103,7 +103,7 @@ namespace Decompiler.UnitTests.Core
 		{
 			f = new Frame(PrimitiveType.Word16);
 			varOff = (StackLocalStorage) f.EnsureStackLocal(-4, PrimitiveType.Word16).Storage;
-			varSeg = (StackLocalStorage) f.EnsureStackLocal(-2, PrimitiveType.Segment).Storage;
+			varSeg = (StackLocalStorage) f.EnsureStackLocal(-2, PrimitiveType.SegmentSelector).Storage;
 			varPointer = (StackLocalStorage) f.EnsureStackLocal(-4, PrimitiveType.Pointer32).Storage;
 		}
 

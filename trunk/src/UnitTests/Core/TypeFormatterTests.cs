@@ -165,11 +165,22 @@ struct a {
 			Assert.AreEqual("void (fn)(ptr32, ptr0)", sw.ToString());
 		}
 
+        [Test]
+        public void TypeReference()
+        {
+            tyfo = new TypeFormatter(sw, true);
+            EquivalenceClass b = new EquivalenceClass(new TypeVariable(1));
+            b.DataType = new StructureType("b", 0, new StructureField(4, PrimitiveType.Word32));
+
+            tyfo.Write(new Pointer(b, 2), "pb");
+            Assert.AreEqual("b * pb", sw.ToString());
+        }
+
 		[SetUp]
 		public void SetUp()
 		{
 			sw = new StringWriter();
-			tyfo = new TypeFormatter(sw);
+            tyfo = new TypeFormatter(sw, false);
 		}
 	}
 }

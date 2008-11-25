@@ -87,7 +87,7 @@ O_85: orig: O
 Mem86: orig: Mem0, def: {store(Mem86[ds:0x0F07:byte]) = 0x01}
 Mem87: orig: Mem0
 // fn0C00_0000
-void fn0C00_0000(word16 bp, segment ds)
+void fn0C00_0000(word16 bp, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def ds

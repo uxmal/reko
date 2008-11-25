@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Core
 			rd.AddSegmentReference(0xD234, 0x0C00);
 			Assert.AreEqual(1, rd.Count);
 			Constant c = rd[0xD234];
-			Assert.AreEqual("segment", c.DataType.ToString());
+			Assert.AreEqual("selector", c.DataType.ToString());
 		}
 
 		[Test]
@@ -55,9 +55,9 @@ namespace Decompiler.UnitTests.Core
 			rd.AddSegmentReference(0x0C010, 0x0C00);
 			Assert.AreEqual(1, rd.Count);
 			Constant c = rd[0x0C010];
-			Assert.AreEqual("segment", c.DataType.ToString());
+			Assert.AreEqual("selector", c.DataType.ToString());
 			c = rd[0x0C010];
-			Assert.AreEqual("segment", c.DataType.ToString());
+			Assert.AreEqual("selector", c.DataType.ToString());
 		}
 
 		[Test]

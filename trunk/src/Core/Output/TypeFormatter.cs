@@ -32,15 +32,18 @@ namespace Decompiler.Core.Output
 		public int indentLevel;
 		private Hashtable visited;
 		private Mode mode;
+        private bool typeReference;
+
 		private readonly object Declared = 1;
 		private readonly object Defined = 2;
 
 		private enum Mode { Writing, Scanning }
 
-		public TypeFormatter(TextWriter tw) : base(tw)
+		public TypeFormatter(TextWriter tw, bool typeReference) : base(tw)
 		{
 			this.visited = new Hashtable();
 			this.mode = Mode.Writing;
+            this.typeReference = typeReference;
 		}
 
 		public void BeginLine()
@@ -123,7 +126,8 @@ namespace Decompiler.Core.Output
 
 		public void VisitEquivalenceClass(EquivalenceClass eq)
 		{
-			writer.Write(eq.Name);
+			writer.Write(eq.DataType.Name);
+            WriteName(true);
 		}
 
 		public void VisitFunctionType(FunctionType ft)

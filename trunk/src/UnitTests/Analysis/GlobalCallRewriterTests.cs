@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier arg = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			flow.StackArguments[arg] = 16;
 			gcr.EnsureSignature(proc, flow);
-			Assert.AreEqual("void foo(Stack iupr16 dwArg04)", proc.Signature.ToString(proc.Name));
+			Assert.AreEqual("void foo(Stack uipr16 dwArg04)", proc.Signature.ToString(proc.Name));
 		}
 
 

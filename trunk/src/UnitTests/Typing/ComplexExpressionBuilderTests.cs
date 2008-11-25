@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void BuildMemberAccessFetch()
 		{
-			Identifier ds = new Identifier("ds", 3, PrimitiveType.Segment, null);
+			Identifier ds = new Identifier("ds", 3, PrimitiveType.SegmentSelector, null);
 			Identifier bx = new Identifier("bx", 3, PrimitiveType.Word16, null);
 			SegmentedAccess sa = new SegmentedAccess(null, ds, bx, PrimitiveType.Word16);
 			TypeVariable tvDs = store.EnsureTypeVariable(factory, ds);

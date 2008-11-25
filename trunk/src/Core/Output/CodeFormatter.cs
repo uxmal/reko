@@ -330,14 +330,15 @@ namespace Decompiler.Core.Output
 			Indent();
 			if (decl.Id.DataType != null)
 			{
-				Write(decl.Id.DataType.ToString());
+                TypeFormatter tf = new TypeFormatter(writer, true);
+                tf.Write(decl.Id.DataType, decl.Id.Name);
 			}
 			else
 			{
 				decl.Id.DataType.Write(writer);
-			}
-			Write(" ");
-			decl.Id.Accept(this);
+                Write(" ");
+                decl.Id.Accept(this);
+            }
 			if (decl.Expression != null)
 			{
 				Write(" = ");
@@ -480,14 +481,15 @@ namespace Decompiler.Core.Output
 			Indent();
 			if (decl.Identifier.DataType != null)
 			{
-				Write(decl.Identifier.DataType.ToString());
+                TypeFormatter tf = new TypeFormatter(writer, true);
+                tf.Write(decl.Identifier.DataType, decl.Identifier.Name);
 			}
 			else
 			{
 				decl.Identifier.DataType.Write(writer);
-			}
-			Write(" ");
-			decl.Identifier.Accept(this);
+                Write(" ");
+                decl.Identifier.Accept(this);
+            }
 			if (decl.Expression != null)
 			{
 				Write(" = ");
@@ -593,7 +595,7 @@ namespace Decompiler.Core.Output
 
 		public void Write(Procedure proc)
 		{
-			proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, this);
+			proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, this, new TypeFormatter(writer, true));
 			WriteLine();
 			Write("{");
             WriteLine();

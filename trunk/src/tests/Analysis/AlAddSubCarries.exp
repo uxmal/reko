@@ -35,7 +35,7 @@ l0C00_0000:		// block 1, pred: 0
 	dx = Mem0[ds:0x0212:word16]
 	dx_ax = SEQ(dx, ax) (alias)
 	es_cx = Mem0[ds:0x0214:ptr32]
-	es = SLICE(es_cx, segment, 16) (alias)
+	es = SLICE(es_cx, selector, 16) (alias)
 	bx = es
 	bx_cx = SEQ(bx, cx) (alias)
 	dx_ax = dx_ax - bx_cx

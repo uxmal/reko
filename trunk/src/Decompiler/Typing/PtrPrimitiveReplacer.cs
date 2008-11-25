@@ -23,7 +23,8 @@ using System.Collections;
 namespace Decompiler.Typing
 {
 	/// <summary>
-	/// Replaces references to classes which are PrimitiveType or Pointer to T with the actual primitive type or (ptr T) respectively.
+	/// Replaces references to classes which are PrimitiveType or Pointer to T,
+    /// with the actual primitive type or (ptr T) respectively.
 	/// </summary>
 	public class PtrPrimitiveReplacer : DataTypeTransformer
 	{
@@ -35,17 +36,6 @@ namespace Decompiler.Typing
 		{
 			this.factory = factory;
 			this.store = store;
-		}
-
-		private void DumpStore()
-		{
-			string tmpdir = Environment.GetEnvironmentVariable("TEMP");
-			string outfile = System.IO.Path.Combine(tmpdir, "storedump.txt");
-			using (System.IO.StreamWriter w = new System.IO.StreamWriter(outfile, true))
-			{
-				w.WriteLine("====================================");
-				store.Write(w);
-			}
 		}
 
 		public DataType Replace(DataType dt)

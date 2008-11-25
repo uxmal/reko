@@ -100,7 +100,7 @@ namespace Decompiler.Typing
 
 		public void DataTypeTrait(TypeVariable type, DataType dt)
 		{
-			if (dt == PrimitiveType.Segment)
+			if (dt == PrimitiveType.SegmentSelector)
 			{
 				StructureType seg = factory.CreateStructureType(null, 0);
 				seg.IsSegment = true;

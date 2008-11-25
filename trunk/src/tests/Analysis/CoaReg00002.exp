@@ -15,7 +15,7 @@ SZO_13: orig: SZO
 C_14: orig: C
 Mem15: orig: Mem0, def: {store(Mem15[ds:si + 0x00C8:word32]) = -edx}
 // fn0C00_0000
-void fn0C00_0000(word32 edx, word16 si, byte cl, segment ds)
+void fn0C00_0000(word32 edx, word16 si, byte cl, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def edx
 	def ds

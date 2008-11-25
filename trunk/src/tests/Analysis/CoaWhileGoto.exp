@@ -42,7 +42,7 @@ ax_40: orig: ax, def: {ax_40 = PHI(ax_33, ax_31)}, uses: {store(Mem42[ds:0x0300:
 Mem41: orig: Mem0
 Mem42: orig: Mem0, def: {store(Mem42[ds:0x0300:word16]) = ax_40}
 // fn0C00_0000
-void fn0C00_0000(word16 si, word16 di, segment ds)
+void fn0C00_0000(word16 si, word16 di, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def si

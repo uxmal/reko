@@ -10,7 +10,7 @@ Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:word16]) = ax_5}
 Mem8: orig: Mem0, def: {store(Mem8[ds:0x0302:word16]) = ax_5}
 Mem9: orig: Mem0, def: {store(Mem9[ds:0x0304:word16]) = ax_5}
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -40,7 +40,7 @@ Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:word16]) = 0x0000}
 Mem8: orig: Mem0, def: {store(Mem8[ds:0x0302:word16]) = 0x0000}
 Mem9: orig: Mem0, def: {store(Mem9[ds:0x0304:word16]) = 0x0000}
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def ds
 	// succ:  1

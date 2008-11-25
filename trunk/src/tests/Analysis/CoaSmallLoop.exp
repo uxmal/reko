@@ -20,7 +20,7 @@ Z_18: orig: Z
 SCZO_19: orig: SCZO
 Mem20: orig: Mem0, def: {store(Mem20[ds:0x0300:word16]) = ax_15}
 // fn0C00_0000
-void fn0C00_0000(word16 bx, segment ds)
+void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def bx

@@ -9,7 +9,7 @@ wLoc04_7: orig: wLoc04, def: {wLoc04_7 = cx_6}, uses: {ax_8 = fn0C00_000F(wLoc04
 ax_8: orig: ax, def: {ax_8 = fn0C00_000F(wLoc04_7)}, uses: {store(Mem9[ds:0x0064:word16]) = ax_8}
 Mem9: orig: Mem0, def: {store(Mem9[ds:0x0064:word16]) = ax_8}
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def ds
 	// succ:  1

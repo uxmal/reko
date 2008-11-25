@@ -8,7 +8,7 @@ dx_5: orig: dx, def: {dx_5 = 0x001E}, uses: {ax_6 = fn0C00_000B(dx_5)}
 ax_6: orig: ax, def: {ax_6 = fn0C00_000B(dx_5)}, uses: {store(Mem7[ds:0x012C:word16]) = ax_6}
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x012C:word16]) = ax_6}
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -34,7 +34,7 @@ dx_5: orig: dx
 ax_6: orig: ax, def: {ax_6 = fn0C00_000B(0x001E)}, uses: {store(Mem7[ds:0x012C:word16]) = ax_6}
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x012C:word16]) = ax_6}
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	def ds
 	// succ:  1

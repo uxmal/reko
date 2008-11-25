@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -44,7 +44,7 @@ T_5 (in 0x0005)
 T_6 (in fn0C00_000B(0x0005))
 	trait_primitive(word16)
 T_7 (in ds)
-	trait_primitive(segment)
+	trait_primitive(selector)
 	trait_mem(T_9, 64)
 T_8 (in 0x0064)
 	trait_primitive(word16)
