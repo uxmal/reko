@@ -67,20 +67,6 @@ namespace Decompiler.Core.Code
 				op == Operator.xor;
 		}
 
-		public override bool Equals(Object o)
-		{
-			BinaryExpression b = o as BinaryExpression;
-			if (b == null)
-				return false;
-			if (op != b.op)
-				return false;
-			return (Left.Equals(b.Left) && Right.Equals(b.Right));
-		}
-
-		public override int GetHashCode()
-		{
-			return op.GetHashCode() ^ Left.GetHashCode() ^ 47 * Right.GetHashCode();
-		}
 
 		public override Expression Invert()
 		{

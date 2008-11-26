@@ -78,13 +78,6 @@ namespace Decompiler.Core.Code
 			return new Constant(DataType, c);
 		}
 
-		public override bool Equals(object o)
-		{
-			Constant c = o as Constant;
-			if (c == null)
-				return false;
-			return c.Equals(c.c);
-		}
 
 		public static Constant RealFromBitpattern(PrimitiveType dt, long bits)
 		{
@@ -143,11 +136,6 @@ namespace Decompiler.Core.Code
 			return mantissa * IntPow(m, exponent);
 		}
 
-
-		public override int GetHashCode()
-		{
-			return c.GetHashCode();
-		}
 
 		public static Constant False()
 		{

@@ -45,13 +45,6 @@ namespace Decompiler.Core.Code
 			return new ConditionOf(expr.CloneExpression());
 		}
 
-		public override bool Equals(object o)
-		{
-			ConditionOf co = o as ConditionOf;
-			if (co == null)
-				return false;
-			return expr.Equals(co.expr);
-		}
 
 		public Expression Expression
 		{
@@ -59,9 +52,5 @@ namespace Decompiler.Core.Code
 			set { expr = value; }
 		}
 
-		public override int GetHashCode()
-		{
-			return 0x10101010 ^ expr.GetHashCode();
-		}
 	}
 }

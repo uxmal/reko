@@ -53,14 +53,6 @@ namespace Decompiler.Core.Code
 			throw new NotImplementedException();
 		}
 
-		public override bool Equals(object o)
-		{
-			Slice s = o as Slice;
-			if (s == null)
-				return false;
-			return expr.Equals(s.expr) && Offset == s.Offset && DataType == s.DataType;
-		}
-
 		public Expression Expression
 		{
 			get { return expr; }
@@ -70,11 +62,6 @@ namespace Decompiler.Core.Code
 		public int Offset 
 		{
 			get { return offset; }
-		}
-
-		public override int GetHashCode()
-		{
-			return expr.GetHashCode() ^ offset * 47 ^ DataType.GetHashCode() * 23;
 		}
 	}
 }

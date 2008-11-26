@@ -36,48 +36,6 @@ namespace Decompiler.Core.Code
 			this.Arguments = arguments;
 		}
 
-		public override bool Equals(object o)
-		{
-			Application app = o as Application;
-			if (app == null)
-				return false;
-			if (this.Procedure != app.Procedure)
-				return false;
-			if (Arguments.Length != app.Arguments.Length)
-				return false;
-			for (int i = 0; i != Arguments.Length; ++i)
-			{
-				Expression e1 = Arguments[i];
-				Expression e2 = app.Arguments[i];
-				if (e1 == null)
-				{
-					if (e2 != null)
-						return false;
-				}
-				else
-				{
-					if (e2 == null)
-						return false;
-					if (!e1.Equals(e2))
-						return false;
-				}
-			}
-			return true;
-		}
-
-		public override int GetHashCode()
-		{
-			int h = this.Procedure.GetHashCode();
-			h ^= Arguments.Length;
-			foreach (Expression e in Arguments)
-			{
-				h *= 47;
-				if (e != null)
-					h ^= e.GetHashCode();
-			}
-			return h;
-		}
-
 		public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformApplication(this);

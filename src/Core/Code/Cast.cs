@@ -45,13 +45,6 @@ namespace Decompiler.Core.Code
 			return new Cast(DataType, expr.CloneExpression());
 		}
 
-		public override bool Equals(object obj)
-		{
-			Cast c = obj as Cast;
-			if (c == null)
-				return false;
-			return expr.Equals(c.Expression);
-		}
 
 
 		public Expression Expression
@@ -60,10 +53,6 @@ namespace Decompiler.Core.Code
 			set { expr = value; }
 		}
 
-		public override int GetHashCode()
-		{
-			return 0xCA57 * expr.GetHashCode();
-		}
 
 	}
 }

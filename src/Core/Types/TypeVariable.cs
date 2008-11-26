@@ -80,6 +80,7 @@ namespace Decompiler.Core.Types
 		/// <summary>
 		/// The expression this type variable applies to.
 		/// </summary>
+        [Obsolete("Only used for debugging.")]
 		public Expression Expression
 		{
 			get { return expr; }

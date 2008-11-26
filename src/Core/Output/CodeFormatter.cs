@@ -264,7 +264,7 @@ namespace Decompiler.Core.Output
 
 		public void VisitTestCondition(TestCondition tc)
 		{
-			Write("Test({0},", tc.Cc);
+			Write("Test({0},", tc.ConditionCode);
 			WriteExpression(tc.Expression);
 			Write(")");
 		}
