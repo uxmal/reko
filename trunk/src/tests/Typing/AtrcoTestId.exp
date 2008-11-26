@@ -1,2 +1,2 @@
-T_2 (in r)
+T_2 (in r : word32)
 	trait_mem(T_3, 0)

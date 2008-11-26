@@ -324,12 +324,13 @@ namespace Decompiler.UnitTests.Typing
 			StringWriter sw = new StringWriter();
 			handler.Traits.Write(sw);
 			string exp =
-				"T_1 (in pfn)" + nl +
+				"T_1 (in pfn : word32)" + nl +
 				"\ttrait_primitive(word32)" + nl +
 				"\ttrait_mem(T_2, 0)" + nl + 
-				"T_2 (in Mem0[pfn:word32])" + nl +
+				"T_2 (in Mem0[pfn:word32] : word32)" + nl +
 				"\ttrait_primitive(word32)" + nl +
 				"\ttrait_func( -> )" + nl;
+            Console.WriteLine(sw.ToString());
 			Assert.AreEqual(exp, sw.ToString());
 		}
 
@@ -361,14 +362,14 @@ namespace Decompiler.UnitTests.Typing
 			handler.Traits.Write(sb);
 			Console.WriteLine(sb);
 			string exp = 
-				"T_1 (in ds)" + nl +
+				"T_1 (in ds : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
 				"\ttrait_equal(T_2)" + nl +
 				"\ttrait_primitive(ups16)" + nl +
-				"T_2 (in 0x0800)" + nl +
+				"T_2 (in 0x0800 : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
 				"\ttrait_primitive(ups16)" + nl +
-				"T_3 (in ds >=u 0x0800)" + nl +
+				"T_3 (in ds >=u 0x0800 : bool)" + nl +
 				"\ttrait_primitive(bool)" + nl;
 			Assert.AreEqual(exp, sb.ToString());
 		}

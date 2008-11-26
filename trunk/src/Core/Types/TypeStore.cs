@@ -32,14 +32,14 @@ namespace Decompiler.Core.Types
 	{
 		private List<TypeVariable> typevars;
         private SortedList<int, EquivalenceClass> usedClasses;
-        private Dictionary<TypeVariable, Expression> mpTvExpr;
+        private Dictionary<TypeVariable, Expression> tvSources;
 		private DataTypeComparer tycomp = new DataTypeComparer();
 
 		public TypeStore()
 		{
 			typevars = new List<TypeVariable>();
 			usedClasses = new SortedList<int, EquivalenceClass>();
-            mpTvExpr = new Dictionary<TypeVariable, Expression>();
+            tvSources = new Dictionary<TypeVariable, Expression>();
 		}
 
 		public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e)
@@ -52,7 +52,7 @@ namespace Decompiler.Core.Types
 			if (e == null || e.TypeVariable == null)
 			{
 				TypeVariable tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
-                mpTvExpr.Add(tv, e);
+                AddDebugSource(tv, e);
 				tv.Class = new EquivalenceClass(tv);
 				if (e != null)
 					e.TypeVariable = tv;
@@ -62,6 +62,12 @@ namespace Decompiler.Core.Types
 			}
 			return e.TypeVariable;
 		}
+
+        private void AddDebugSource(TypeVariable tv, Expression e)
+        {
+            if (e != null)
+                tvSources.Add(tv, e);
+        }
 
         public TypeVariable EnsureFieldTypeVariable(TypeFactory factory, StructureField field)
         {
@@ -77,8 +83,8 @@ namespace Decompiler.Core.Types
 
         public Expression ExpressionOf(TypeVariable tv)
         {
-            Expression e ;
-            if (mpTvExpr.TryGetValue(tv, out e))
+            Expression e;
+            if (tvSources.TryGetValue(tv, out e))
                 return e;
             else
                 return null; 
@@ -149,16 +155,7 @@ namespace Decompiler.Core.Types
 					foreach (TypeVariable tvMember in tv.Class.ClassMembers)
 					{
 						writer.Write("\t{0}", tvMember);
-                        Expression e;
-                        if (mpTvExpr.TryGetValue(tvMember, out e) && e != null)
-                        {
-							writer.Write(" (in {0}", e);
-							if (e.DataType != null)
-							{
-								writer.Write(" : {0}", e.DataType);
-							}
-							writer.Write(")");
-						}
+                        WriteExpressionOf(tvMember, writer);
 						writer.WriteLine();
 					}
 				}
@@ -171,17 +168,26 @@ namespace Decompiler.Core.Types
 			}
 		}
 
+        public void WriteExpressionOf(TypeVariable tvMember, TextWriter writer)
+        {
+            Expression e;
+            if (tvSources.TryGetValue(tvMember, out e) && e != null)
+            {
+                writer.Write(" (in {0}", e);
+                if (e.DataType != null)
+                {
+                    writer.Write(" : ");
+                    writer.Write(e.DataType);
+                }
+                writer.Write(")");
+            }
+        }
+
 		public void WriteEntry(TypeVariable tv, TextWriter writer)
 		{
 			writer.Write(tv.Name);
 			writer.Write(":");
-            Expression e;
-            if (mpTvExpr.TryGetValue(tv, out e) && e != null)
-			{
-				writer.Write("(in ");
-				writer.Write(e.ToString());
-				writer.Write(")");
-			}
+            WriteExpressionOf(tv, writer);
 			writer.WriteLine();
 
 			writer.Write("  Class: ");
@@ -200,11 +206,7 @@ namespace Decompiler.Core.Types
 			if (dt != null)
 			{
 				dt.Write(writer);
-                Expression e;
-                if (tv != null && mpTvExpr.TryGetValue(tv, out e))
-				{
-					writer.Write(" (in {0})", e);
-				}
+                WriteExpressionOf(tv, writer);
 			}
 
 			writer.WriteLine();

@@ -10,51 +10,51 @@ l1:		// block 1, pred: 0
 Eq_2: (struct "Eq_2" (0 real32 r0000) (4 real32 r0004) (8 real32 r0008))
 	T_2 (in v : word32)
 // Type Variables ////////////
-Globals:(in globals)
+Globals: (in globals : ptr0)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 
-T_2:(in v)
+T_2: (in v : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: (ptr (struct (0 T_3 t0000) (4 T_6 t0004) (8 T_9 t0008)))
-T_3:(in Mem0[v:real32])
+T_3: (in Mem0[v:real32] : real32)
   Class: Eq_3
   DataType: real32
   OrigDataType: real32
-T_4:(in 0x00000004)
+T_4: (in 0x00000004 : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32
-T_5:(in v + 0x00000004)
+T_5: (in v + 0x00000004 : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6:(in Mem0[v + 0x00000004:real32])
+T_6: (in Mem0[v + 0x00000004:real32] : real32)
   Class: Eq_6
   DataType: real32
   OrigDataType: real32
-T_7:(in 0x00000008)
+T_7: (in 0x00000008 : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8:(in v + 0x00000008)
+T_8: (in v + 0x00000008 : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9:(in Mem0[v + 0x00000008:real32])
+T_9: (in Mem0[v + 0x00000008:real32] : real32)
   Class: Eq_9
   DataType: real32
   OrigDataType: real32
-T_10:(in v->r0004 + v->r0008)
+T_10: (in v->r0004 + v->r0008 : real32)
   Class: Eq_10
   DataType: real32
   OrigDataType: real32
-T_11:(in v->r0000 + v->r0004 + v->r0008)
+T_11: (in v->r0000 + v->r0004 + v->r0008 : real32)
   Class: Eq_11
   DataType: real32
   OrigDataType: real32
-T_12:(in mod)
+T_12: (in mod : word32)
   Class: Eq_11
   DataType: real32
   OrigDataType: word32

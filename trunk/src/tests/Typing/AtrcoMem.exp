@@ -1,2 +1,2 @@
-T_3 (in Mem0[pp:word32])
+T_3 (in Mem0[pp:word32] : word32)
 	trait_mem(T_4, 0)
