@@ -48,24 +48,10 @@ namespace Decompiler.Core.Code
 			return new Dereference(DataType, exp.CloneExpression());
 		}
 
-
-		public override bool Equals(object obj)
-		{
-			Dereference deref = obj as Dereference;
-			if (deref == null)
-				return false;
-			return Equals(exp, deref.Expression);
-		}
-
 		public Expression Expression
 		{
 			get { return exp; }
 			set { exp = value; }
-		}
-
-		public override int GetHashCode()
-		{
-			return exp.GetHashCode() * 129;
 		}
 
 	}

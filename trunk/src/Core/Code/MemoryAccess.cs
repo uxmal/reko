@@ -54,23 +54,6 @@ namespace Decompiler.Core.Code
 		{
 			return new MemoryAccess(EffectiveAddress.CloneExpression(), DataType);
 		}
-
-
-		public override bool Equals(object o)
-		{
-			MemoryAccess fetch = o as MemoryAccess;
-			if (fetch == null)
-				return false;
-			return 
-				MemoryId.Equals(fetch.MemoryId) && 
-				DataType == fetch.DataType && 
-				EffectiveAddress.Equals(fetch.EffectiveAddress);
-		}
-
-		public override int GetHashCode()
-		{
-			return MemoryId.GetHashCode() ^ DataType.GetHashCode() ^ 47 * EffectiveAddress.GetHashCode();
-		}
 	}
 
 	/// <summary>
@@ -99,24 +82,6 @@ namespace Decompiler.Core.Code
 		{
 			return new SegmentedAccess(MemoryId, BasePointer.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
 		}
-
-		public override bool Equals(object obj)
-		{
-			SegmentedAccess sa = obj as SegmentedAccess;
-			if (sa == null)
-				return false;
-			if (!BasePointer.Equals(sa.BasePointer))
-				return false;
-			return base.Equals(obj);
-		}
-
-		public override int GetHashCode()
-		{
-			return base.GetHashCode() * 19 ^ BasePointer.GetHashCode();
-		}
-
-
-
 
 	}
 }

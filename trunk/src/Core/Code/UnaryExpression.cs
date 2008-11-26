@@ -48,19 +48,6 @@ namespace Decompiler.Core.Code
 			throw new NotImplementedException();
 		}
 
-		public override bool Equals(object o)
-		{
-			UnaryExpression u = o as UnaryExpression;
-			if (u == null)
-				return false;
-			return op == u.op && Expression.Equals(u.Expression);
-		}
-
-		public override int GetHashCode()
-		{
-			return op.GetHashCode() ^ Expression.GetHashCode();
-		}
-
 		public override Expression Invert()
 		{
 			if (op == Operator.not)

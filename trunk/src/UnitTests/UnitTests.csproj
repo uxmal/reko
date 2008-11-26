@@ -90,6 +90,7 @@
     <Compile Include="Core\DirectedGraphTests.cs" />
     <Compile Include="Core\ExpressionFactoryTests.cs" />
     <Compile Include="Core\ExpressionTests.cs" />
+    <Compile Include="Core\ExpressionValueComparerTests.cs" />
     <Compile Include="Core\ExternalProcedureTest.cs" />
     <Compile Include="Core\FieldCollectionTests.cs" />
     <Compile Include="Core\FrameTests.cs" />

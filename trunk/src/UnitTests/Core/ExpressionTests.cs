@@ -42,5 +42,12 @@ namespace Decompiler.UnitTests.Core
 		{
 			Assert.AreEqual("eax", reg.ToString());
 		}
+
+        [Test]
+        public void HashCode()
+        {
+            Assert.AreNotEqual(reg.GetHashCode(), outReg.GetHashCode());
+            Assert.IsTrue(object.Equals(reg, outReg));
+        }
 	}
 }

@@ -149,7 +149,7 @@ namespace Decompiler.Analysis
 			SsaIdentifier sid = ssaIds[(Identifier) tc.Expression];
 		
 			sid.Uses.Remove(useStm);
-			Expression c = UseGrfConditionally(sid, tc.Cc);
+			Expression c = UseGrfConditionally(sid, tc.ConditionCode);
 			Use(c, useStm);
 			return c;
 		}

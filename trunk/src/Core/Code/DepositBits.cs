@@ -63,19 +63,6 @@ namespace Decompiler.Core.Code
 			return new DepositBits(src.CloneExpression(), bits.CloneExpression(), bitPos, bitCount);
 		}
 
-		public override bool Equals(object obj)
-		{
-			DepositBits d = obj as DepositBits;
-			if (d == null)
-				return false;
-			return d.bitCount == bitCount && d.bitPos == bitPos &&
-				d.src.Equals(src) && d.bits.Equals(bits);
-		}
-
-		public override int GetHashCode()
-		{
-			return src.GetHashCode() * 67 ^ bits.GetHashCode() * 43 ^ bitPos * 7 ^ bitCount;
-		}
 
 		public Expression Source
 		{

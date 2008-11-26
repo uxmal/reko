@@ -300,7 +300,7 @@ namespace Decompiler.Analysis
 			
 		public Expression TransformTestCondition(TestCondition tc)
 		{
-			return new TestCondition(tc.Cc, tc.Expression.Accept(this));
+			return new TestCondition(tc.ConditionCode, tc.Expression.Accept(this));
 		}
 
 		public Expression TransformSlice(Slice slice)

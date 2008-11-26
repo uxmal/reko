@@ -215,6 +215,7 @@
     <Compile Include="Code\ExpressionFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Code\ExpressionValueComparer.cs" />
     <Compile Include="Code\ExpressionVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -264,6 +265,7 @@
     <Compile Include="Code\Slice.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Code\TestCondition.cs" />
     <Compile Include="Code\UnaryExpression.cs">
       <SubType>Code</SubType>
     </Compile>

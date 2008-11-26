@@ -55,17 +55,6 @@ namespace Decompiler.Core.Code
 			return this;
 		}
 
-		public override bool Equals(object o)
-		{
-			Identifier id = o as Identifier;
-			return id != null && idx == id.idx;
-		}
-
-		public override int GetHashCode()
-		{
-			return idx.GetHashCode();
-		}
-
 		public override Expression Invert()
 		{
 			return new UnaryExpression(Operator.not, PrimitiveType.Bool, this);

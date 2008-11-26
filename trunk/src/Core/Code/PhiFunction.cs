@@ -47,45 +47,5 @@ namespace Decompiler.Core.Code
 		{
 			throw new NotImplementedException();
 		}
-
-		public override bool Equals(object o)
-		{
-			PhiFunction phi = o as PhiFunction;
-			if (phi == null)
-				return false;
-			if (Arguments.Length != phi.Arguments.Length)
-				return false;
-			for (int i = 0; i != Arguments.Length; ++i)
-			{
-				Expression e1 = Arguments[i];
-				Expression e2 = phi.Arguments[i];
-				if (e1 == null)
-				{
-					if (e2 != null)
-						return false;
-				}
-				else
-				{
-					if (e2 == null)
-						return false;
-					if (!e1.Equals(e2))
-						return false;
-				}
-			}
-			return true;
-		}
-
-		public override int GetHashCode()
-		{
-			int h = Arguments.Length.GetHashCode();
-			foreach (Expression e in Arguments)
-			{
-				h *= 47;
-				if (e != null)
-					h ^= e.GetHashCode();
-			}
-			return h;
-		}
-
 	}
 }

@@ -24,6 +24,9 @@ using System.IO;
 
 namespace Decompiler.Core.Code
 {
+    /// <summary>
+    /// Base class for all decompiled expressions.
+    /// </summary>
 	public abstract class Expression
 	{
 		private DataType dataType;					// Data type of this expression.
@@ -69,73 +72,5 @@ namespace Decompiler.Core.Code
 		{
 			return op.ToString();
 		}
-	}
-
-	/// <summary>
-	/// Represents testing the expression to see if the conditioncode is true, and generating a
-	/// boolean value.
-	/// </summary>
-	/// <remarks>
-	/// This is a very low-level instruction, and should be rewritten by higher level layers of 
-	/// code.
-	/// </remarks>
-	public class TestCondition : Expression
-	{
-		public ConditionCode Cc;
-		private Expression expr;
-
-		public TestCondition(ConditionCode cc, Expression expr) : base(PrimitiveType.Bool)
-		{
-			Cc = cc;
-			this.expr = expr;
-		}
-
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformTestCondition(this);
-		}
-
-		public override void Accept(IExpressionVisitor visitor)
-		{
-			visitor.VisitTestCondition(this);
-		}
-
-		public override Expression CloneExpression()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override bool Equals(object obj)
-		{
-			TestCondition tc = obj as TestCondition;
-			if (tc == null)
-				return false;
-			return Cc == tc.Cc && expr == tc.expr;
-		}
-
-		public Expression Expression
-		{
-			get { return expr; }
-			set { expr = value; }
-		}
-
-		public override int GetHashCode()
-		{
-			return Cc.GetHashCode() ^ Expression.GetHashCode() & 47;
-		}
-
-		public override Expression Invert()
-		{
-			ConditionCode cc;
-			switch (this.Cc)
-			{
-			case ConditionCode.EQ: cc = ConditionCode.NE; break;
-			case ConditionCode.NE: cc = ConditionCode.EQ; break;
-			default: throw new NotImplementedException("Invert of Test(" + Cc + ") not implemented");
-			}
-			return new TestCondition(cc, Expression);
-		}
-
-
 	}
 }
