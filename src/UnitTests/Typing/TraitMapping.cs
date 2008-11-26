@@ -74,11 +74,7 @@ namespace Decompiler.UnitTests.Typing
 			foreach (KeyValuePair<TypeVariable,List<Trait>> de in items)
 			{
                 tw.Write(de.Key);
-                Expression e = store.ExpressionOf(de.Key);
-                if (e != null)
-                {
-                    tw.Write(" (in {0})", e);
-                }
+                store.WriteExpressionOf(de.Key, tw);
                 tw.WriteLine();
 				foreach (Trait tr in de.Value)
 				{

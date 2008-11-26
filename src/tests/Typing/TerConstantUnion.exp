@@ -13,19 +13,19 @@ Eq_2: (union "Eq_2" (int32 u0) (real32 u1))
 	T_3 (in x : word32)
 	T_4 (in 3F : real32)
 // Type Variables ////////////
-Globals:(in globals)
+Globals: (in globals : ptr0)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 
-T_2:(in 3)
+T_2: (in 3 : int32)
   Class: Eq_2
   DataType: int32
   OrigDataType: int32
-T_3:(in x)
+T_3: (in x : word32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word32
-T_4:(in 3F)
+T_4: (in 3F : real32)
   Class: Eq_2
   DataType: real32
   OrigDataType: real32

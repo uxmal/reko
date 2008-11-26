@@ -27,59 +27,59 @@ Eq_4: (struct (4 (memptr Eq_7 Eq_4) ptr0004))
 Eq_7: (segment (200 word16 w0200))
 	T_7 (in ds : selector)
 // Type Variables ////////////
-Globals:(in globals)
+Globals: (in globals : ptr0)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 
-T_2:(in ax_8)
+T_2: (in ax_8 : word16)
   Class: Eq_2
   DataType: word16
   OrigDataType: word16
-T_3:(in 0x0000)
+T_3: (in 0x0000 : word16)
   Class: Eq_2
   DataType: word16
   OrigDataType: word16
-T_4:(in bx)
+T_4: (in bx : word16)
   Class: Eq_4
   DataType: (memptr (ptr Eq_7) Eq_4)
   OrigDataType: (memptr T_7 (struct (4 T_14 t0004)))
-T_5:(in 0x0000)
+T_5: (in 0x0000 : word16)
   Class: Eq_4
   DataType: (memptr (ptr Eq_7) Eq_4)
   OrigDataType: word16
-T_6:(in bx == 0x0000)
+T_6: (in bx == 0x0000 : bool)
   Class: Eq_6
   DataType: bool
   OrigDataType: bool
-T_7:(in ds)
+T_7: (in ds : selector)
   Class: Eq_7
   DataType: (ptr Eq_7)
   OrigDataType: (ptr (segment (200 T_9 t0200)))
-T_8:(in 0x0200)
+T_8: (in 0x0200 : word16)
   Class: Eq_8
   DataType: (memptr (ptr Eq_7) word16)
   OrigDataType: (memptr T_7 (struct (0 T_9 t0000)))
-T_9:(in Mem15[ds:0x0200:word16])
+T_9: (in Mem15[ds:0x0200:word16] : word16)
   Class: Eq_2
   DataType: word16
   OrigDataType: word16
-T_10:(in 0x0001)
+T_10: (in 0x0001 : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
-T_11:(in ax_8 + 0x0001)
+T_11: (in ax_8 + 0x0001 : word16)
   Class: Eq_2
   DataType: word16
   OrigDataType: word16
-T_12:(in 0x0004)
+T_12: (in 0x0004 : word16)
   Class: Eq_12
   DataType: word16
   OrigDataType: word16
-T_13:(in bx + 0x0004)
+T_13: (in bx + 0x0004 : word16)
   Class: Eq_13
   DataType: word16
   OrigDataType: word16
-T_14:(in Mem0[ds:bx + 0x0004:word16])
+T_14: (in Mem0[ds:bx + 0x0004:word16] : word16)
   Class: Eq_4
   DataType: (memptr (ptr Eq_7) Eq_4)
   OrigDataType: word16

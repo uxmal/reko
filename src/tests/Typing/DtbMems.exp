@@ -23,55 +23,55 @@ Eq_12: word32
 	T_12 (in Mem0[baz + 0x00000000:word32] : word32)
 	T_13 (in fred : word32)
 // Type Variables ////////////
-T_1:(in foo)
+T_1: (in foo : word32)
   Class: Eq_1
   DataType: (ptr (struct (4 T_4 t0004) (6 T_8 t0006)))
   OrigDataType: (ptr (struct (4 T_4 t0004) (6 T_8 t0006)))
-T_2:(in 0x00000004)
+T_2: (in 0x00000004 : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
-T_3:(in foo + 0x00000004)
+T_3: (in foo + 0x00000004 : word32)
   Class: Eq_3
   DataType: word32
   OrigDataType: word32
-T_4:(in Mem0[foo + 0x00000004:word16])
+T_4: (in Mem0[foo + 0x00000004:word16] : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
-T_5:(in bar)
+T_5: (in bar : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
-T_6:(in 0x00000006)
+T_6: (in 0x00000006 : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7:(in foo + 0x00000006)
+T_7: (in foo + 0x00000006 : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8:(in Mem0[foo + 0x00000006:word32])
+T_8: (in Mem0[foo + 0x00000006:word32] : word32)
   Class: Eq_8
   DataType: (ptr (struct (0 T_12 t0000)))
   OrigDataType: word32
-T_9:(in baz)
+T_9: (in baz : word32)
   Class: Eq_8
   DataType: (ptr (struct (0 T_12 t0000)))
   OrigDataType: (ptr (struct (0 T_12 t0000)))
-T_10:(in 0x00000000)
+T_10: (in 0x00000000 : word32)
   Class: Eq_10
   DataType: word32
   OrigDataType: word32
-T_11:(in baz + 0x00000000)
+T_11: (in baz + 0x00000000 : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
-T_12:(in Mem0[baz + 0x00000000:word32])
+T_12: (in Mem0[baz + 0x00000000:word32] : word32)
   Class: Eq_12
   DataType: word32
   OrigDataType: word32
-T_13:(in fred)
+T_13: (in fred : word32)
   Class: Eq_12
   DataType: word32
   OrigDataType: word32
