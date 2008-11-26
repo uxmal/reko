@@ -81,9 +81,7 @@ namespace Decompiler.Typing
 		/// <param name="prog"></param>
 		public void RewriteProgram()
 		{
-			Procedure proc = prog.Procedures.Values[0];
-			prog.Procedures.Clear();
-			prog.Procedures[new Address(0x00001)] = proc;
+            RestrictProcedures(0, 4);
 			aen.Transform(prog);
 			eqb.Build(prog);
 			Debug.WriteLine("= Collecting traits ========================================");
@@ -103,6 +101,26 @@ namespace Decompiler.Typing
 			store.Dump();
 			ter.RewriteProgram();
 		}
+
+        /// <summary>
+        /// $DEBUG: for debugging only, only performs type analysis on the count procedures starting at
+        /// procedure start.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="p_2"></param>
+        private void RestrictProcedures(int start, int count)
+        {
+            Procedure[] procs = new Procedure[count];
+            for (int i = 0; i < count; ++i)
+            {
+                procs[i] = prog.Procedures.Values[i + start];
+            }
+            prog.Procedures.Clear();
+            for (uint i = 0; i <procs.Length; ++i)
+            {
+                prog.Procedures[new Address(i)] = procs[i];
+            }
+        }
 
 		public void WriteTypes(TextWriter output)
 		{

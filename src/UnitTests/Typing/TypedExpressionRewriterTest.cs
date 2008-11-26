@@ -186,6 +186,22 @@ namespace Decompiler.UnitTests.Typing
             RunTest(prog.BuildProgram(), "Typing/TerAddNonConstantToPointer.txt");
         }
 
+        [Test]
+        public void TerSignedCompare()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier p = m.Local32("p");
+            Identifier ds = m.Local32("ds"); ds.DataType = PrimitiveType.SegmentSelector;
+            m.Store(
+                m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
+                m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
+            m.Store(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(0));
+
+            ProgramMock prog = new ProgramMock();
+            prog.Add(m);
+            RunTest(prog.BuildProgram(), "Typing/TerSignedCompare.txt");
+        }
+
 		private void RunTest(string relativePath, string outputFile)
 		{
 			base.RewriteFile(relativePath);

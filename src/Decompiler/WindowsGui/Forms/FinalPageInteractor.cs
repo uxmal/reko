@@ -43,8 +43,15 @@ namespace Decompiler.WindowsGui.Forms
 			finalPage.HeaderFile.Text = Decompiler.Project.Output.TypesFilename;
 
 			SetTextBoxes(Decompiler.Project.Output);
-			Decompiler.ReconstructTypes();
-			Decompiler.StructureProgram();
+            try
+            {
+                Decompiler.ReconstructTypes();
+                Decompiler.StructureProgram();
+            }
+            catch (Exception ex)
+            {
+                MainInteractor.ShowError("An error occurred while reconstructing types. {0}", ex.Message);
+            }
 		}
 
 		public override bool LeavePage()
