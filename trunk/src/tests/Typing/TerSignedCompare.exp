@@ -3,16 +3,13 @@ void ProcedureMock()
 ProcedureMock_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
-	ds->b5400 = ds->w5404 < 0x0014;
+	ds->f5400 = ds->w5404 < 0x0014;
 	ds->w5404 = 0x0000;
 	// succ: 
 
 // Equivalence classes ////////////
-Eq_2: (segment "Eq_2" (5400 bool b5400) (5404 int16 w5404))
+Eq_2: (segment "Eq_2" (5400 bool f5400) (5404 int16 w5404))
 	T_2 (in ds : selector)
-Eq_6: (union "Eq_6" (bool u0) (word16 u1))
-	T_6 (in ds->w5404 < 0x0014 : bool)
-	T_8 (in Mem0[ds:0x5400:word16] : word16)
 // Type Variables ////////////
 Globals:(in globals)
   Class: Eq_1
@@ -36,16 +33,16 @@ T_5:(in 0x0014)
   OrigDataType: int16
 T_6:(in ds->w5404 < 0x0014)
   Class: Eq_6
-  DataType: Eq_6
+  DataType: bool
   OrigDataType: bool
 T_7:(in 0x5400)
   Class: Eq_7
-  DataType: (memptr (ptr Eq_2) Eq_6)
+  DataType: (memptr (ptr Eq_2) bool)
   OrigDataType: (memptr T_2 (struct (0 T_8 t0000)))
-T_8:(in Mem0[ds:0x5400:word16])
+T_8:(in Mem0[ds:0x5400:bool])
   Class: Eq_6
-  DataType: Eq_6
-  OrigDataType: word16
+  DataType: bool
+  OrigDataType: bool
 T_9:(in 0x0000)
   Class: Eq_4
   DataType: int16

@@ -32,7 +32,6 @@ namespace Decompiler.WindowsGui.Forms
 	/// </summary>
 	public class LoadedPage : PhasePage, Decompiler.Gui.ILoadedPage
 	{
-		private IProcessorArchitecture arch;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox txtAddress;
 		private Decompiler.WindowsGui.Controls.MemoryControl memctl;

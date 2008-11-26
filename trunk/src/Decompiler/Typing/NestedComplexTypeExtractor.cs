@@ -45,7 +45,7 @@ namespace Decompiler.Typing
 
 		public EquivalenceClass CreateEquivalenceClass(DataType dt)
 		{
-			TypeVariable tv = store.EnsureTypeVariable(factory, null);
+			TypeVariable tv = store.EnsureExpressionTypeVariable(factory, (Decompiler.Core.Code.Expression) null);
 			tv.Class.DataType = dt;
 			tv.DataType = tv.Class;
 			return tv.Class;

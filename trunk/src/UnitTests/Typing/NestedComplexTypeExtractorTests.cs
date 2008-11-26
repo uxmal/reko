@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Typing
 
             ArrayType a = new ArrayType(s, 0);
 
-            TypeVariable tv = store.EnsureTypeVariable(factory, null);
+            TypeVariable tv = store.EnsureExpressionTypeVariable(factory, null);
             tv.Class.DataType = a;
             Assert.AreEqual(1, store.UsedEquivalenceClasses.Count);
 
@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Typing
 
             StructureType s = new StructureType(null, 0, new StructureField(8, a));
 
-            TypeVariable tv = store.EnsureTypeVariable(factory, null);
+            TypeVariable tv = store.EnsureExpressionTypeVariable(factory, null);
             tv.Class.DataType = s;
             Assert.AreEqual(1, store.UsedEquivalenceClasses.Count);
 

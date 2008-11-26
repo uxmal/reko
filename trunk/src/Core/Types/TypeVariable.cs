@@ -27,7 +27,6 @@ namespace Decompiler.Core.Types
 	/// </summary>
 	public class TypeVariable : DataType
 	{
-		private Expression expr;
 		private int number;
 		private EquivalenceClass eqClass;
 		private DataType dtOriginal;
@@ -75,16 +74,6 @@ namespace Decompiler.Core.Types
 		{
 			get { return dt; }
 			set { dt = value; }
-		}
-
-		/// <summary>
-		/// The expression this type variable applies to.
-		/// </summary>
-        [Obsolete("Only used for debugging.")]
-		public Expression Expression
-		{
-			get { return expr; }
-			set { expr = value; }
 		}
 
 		public int Number

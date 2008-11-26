@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Typing
 			StructureType point = new StructureType("Point", 0);
 			point.Fields.Add(0, PrimitiveType.Word32, null);
 			point.Fields.Add(4, PrimitiveType.Word32, null);
-			TypeVariable tvPoint = store.EnsureTypeVariable(factory, null);
+			TypeVariable tvPoint = store.EnsureExpressionTypeVariable(factory, null);
 			EquivalenceClass eq = new EquivalenceClass(tvPoint);
 			tvPoint.DataType = eq;
 			eq.DataType = point;
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Typing
 			UnionType u = new UnionType("RealInt", null);
 			u.Alternatives.Add(new UnionAlternative("w", PrimitiveType.Word32));
 			u.Alternatives.Add(new UnionAlternative("r", PrimitiveType.Real32));
-			TypeVariable tvUnion = store.EnsureTypeVariable(factory, null);
+			TypeVariable tvUnion = store.EnsureExpressionTypeVariable(factory, null);
 			eq = new EquivalenceClass(tvUnion);
 			tvUnion.DataType = eq;
 			eq.DataType = u;
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Typing
 		public void BuildPointer()
 		{
 			Identifier ptr = new Identifier("ptr", 3, PrimitiveType.Word32, null);
-			store.EnsureTypeVariable(factory, ptr);
+			store.EnsureExpressionTypeVariable(factory, ptr);
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(ptrInt, ptrPoint, new Pointer(PrimitiveType.Word32, 4), ptr, 0);
 			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex().ToString());
 		}
@@ -111,8 +111,8 @@ namespace Decompiler.UnitTests.Typing
 			Identifier ds = new Identifier("ds", 3, PrimitiveType.SegmentSelector, null);
 			Identifier bx = new Identifier("bx", 3, PrimitiveType.Word16, null);
 			SegmentedAccess sa = new SegmentedAccess(null, ds, bx, PrimitiveType.Word16);
-			TypeVariable tvDs = store.EnsureTypeVariable(factory, ds);
-			TypeVariable tvBx = store.EnsureTypeVariable(factory, bx);
+			TypeVariable tvDs = store.EnsureExpressionTypeVariable(factory, ds);
+			TypeVariable tvBx = store.EnsureExpressionTypeVariable(factory, bx);
 			tvDs.OriginalDataType = ds.DataType;
 			tvBx.OriginalDataType = new MemberPointer(new TypeVariable(412), PrimitiveType.Word16, 2);
 			tvDs.Class.DataType = new StructureType("SEG", 0);
