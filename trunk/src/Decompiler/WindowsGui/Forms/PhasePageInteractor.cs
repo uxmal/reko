@@ -48,6 +48,11 @@ namespace Decompiler.WindowsGui.Forms
 			get { return mainInteractor.MainForm; }
 		}
 
+        public MainFormInteractor MainInteractor
+        {
+            get { return mainInteractor; }
+        }
+
 		public PhasePageInteractor NextPage
 		{
 			get { return nextPage; }
