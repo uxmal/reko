@@ -63,12 +63,12 @@ namespace Decompiler.Typing
 
 		public TypeVariable EnsureTypeVariable(Expression e)
 		{
-			return store.EnsureTypeVariable(factory, e);
+			return store.EnsureExpressionTypeVariable(factory, e);
 		}
 
 		public TypeVariable EnsureTypeVariable(Expression e, string name)
 		{
-			return store.EnsureTypeVariable(factory, e, name);
+			return store.EnsureExpressionTypeVariable(factory, e, name);
 		}
 
 
@@ -269,7 +269,7 @@ namespace Decompiler.Typing
 			{
 				if (proc.Signature.TypeVariable == null)
 				{
-					proc.Signature.TypeVariable = store.EnsureTypeVariable(
+					proc.Signature.TypeVariable = store.EnsureExpressionTypeVariable(
 						factory,
 						new Identifier("signature of " + proc.Name, 0, null, null),
 						null);

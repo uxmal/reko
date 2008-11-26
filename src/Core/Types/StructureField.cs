@@ -21,9 +21,13 @@ using System.Collections;
 
 namespace Decompiler.Core.Types
 {
+    /// <summary>
+    /// Describes a field of a structure.
+    /// </summary>
 	public class StructureField
 	{
 		public int Offset;
+        public TypeVariable TypeVariable;
 		public DataType DataType;
 		private string name;
 
@@ -48,7 +52,7 @@ namespace Decompiler.Core.Types
 			{ 
 				if (name != null)
 					return name;
-				return string.Format("{0}{1:X4}", DataType.Prefix, Offset);
+				return string.Format("{0}{1:X4}", DataType.Prefix, Offset);         //$This probably should happen at a different level.
 			}
 		}
 	}

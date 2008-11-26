@@ -235,9 +235,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbBuildEqClassDataTypes()
 		{
-			TypeVariable tv1 = store.EnsureTypeVariable(factory, null);
+			TypeVariable tv1 = store.EnsureExpressionTypeVariable(factory, null);
 			tv1.OriginalDataType = PrimitiveType.Word32;
-			TypeVariable tv2 = store.EnsureTypeVariable(factory, null);
+			TypeVariable tv2 = store.EnsureExpressionTypeVariable(factory, null);
 			tv2.OriginalDataType = PrimitiveType.Real32;
 			store.MergeClasses(tv1, tv2);
 
@@ -316,7 +316,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProcedureMock m = new ProcedureMock();
 			Identifier globals = m.Local32("globals");
-			store.EnsureTypeVariable(factory, globals);
+			store.EnsureExpressionTypeVariable(factory, globals);
 
 			Identifier ds = m.Local16("ds");
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));

@@ -121,10 +121,10 @@ namespace Decompiler.UnitTests.Typing
 		{
 			factory = new TypeFactory();
 			store = new TypeStore();
-			handler = new MockTraitHandler();
+			handler = new MockTraitHandler(store);
 			eqb = new EquivalenceClassBuilder(factory, store);
 			globals = new Identifier("globals", 0, PrimitiveType.Pointer, null);
-			store.EnsureTypeVariable(factory, globals);
+			store.EnsureExpressionTypeVariable(factory, globals);
 			
 			ivs = new InductionVariableCollection();
 			atrco = new AddressTraitCollector(factory, store, handler, globals, ivs);

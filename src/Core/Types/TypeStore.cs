@@ -32,25 +32,27 @@ namespace Decompiler.Core.Types
 	{
 		private List<TypeVariable> typevars;
         private SortedList<int, EquivalenceClass> usedClasses;
+        private Dictionary<TypeVariable, Expression> mpTvExpr;
 		private DataTypeComparer tycomp = new DataTypeComparer();
 
 		public TypeStore()
 		{
 			typevars = new List<TypeVariable>();
 			usedClasses = new SortedList<int, EquivalenceClass>();
+            mpTvExpr = new Dictionary<TypeVariable, Expression>();
 		}
 
-		public TypeVariable EnsureTypeVariable(TypeFactory factory, Expression e)
+		public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e)
 		{
-			return EnsureTypeVariable(factory, e, null);
+			return EnsureExpressionTypeVariable(factory, e, null);
 		}
 
-		public TypeVariable EnsureTypeVariable(TypeFactory factory, Expression e, string name)
+		public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e, string name)
 		{
 			if (e == null || e.TypeVariable == null)
 			{
 				TypeVariable tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
-				tv.Expression = e;
+                mpTvExpr.Add(tv, e);
 				tv.Class = new EquivalenceClass(tv);
 				if (e != null)
 					e.TypeVariable = tv;
@@ -61,12 +63,26 @@ namespace Decompiler.Core.Types
 			return e.TypeVariable;
 		}
 
+        public TypeVariable EnsureFieldTypeVariable(TypeFactory factory, StructureField field)
+        {
+            throw new NotImplementedException();
+        }
+
 		public void Dump()
 		{
 			StringWriter sw = new StringWriter();
 			Write(sw);
 			System.Diagnostics.Debug.WriteLine(sw.ToString());
 		}
+
+        public Expression ExpressionOf(TypeVariable tv)
+        {
+            Expression e ;
+            if (mpTvExpr.TryGetValue(tv, out e))
+                return e;
+            else
+                return null; 
+        }
 
 		public EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2)
 		{
@@ -133,12 +149,13 @@ namespace Decompiler.Core.Types
 					foreach (TypeVariable tvMember in tv.Class.ClassMembers)
 					{
 						writer.Write("\t{0}", tvMember);
-						if (tvMember.Expression != null)
-						{
-							writer.Write(" (in {0}", tvMember.Expression);
-							if (tvMember.Expression.DataType != null)
+                        Expression e;
+                        if (mpTvExpr.TryGetValue(tvMember, out e) && e != null)
+                        {
+							writer.Write(" (in {0}", e);
+							if (e.DataType != null)
 							{
-								writer.Write(" : {0}", tvMember.Expression.DataType);
+								writer.Write(" : {0}", e.DataType);
 							}
 							writer.Write(")");
 						}
@@ -158,10 +175,11 @@ namespace Decompiler.Core.Types
 		{
 			writer.Write(tv.Name);
 			writer.Write(":");
-			if (tv.Expression != null)
+            Expression e;
+            if (mpTvExpr.TryGetValue(tv, out e) && e != null)
 			{
 				writer.Write("(in ");
-				writer.Write(tv.Expression.ToString());
+				writer.Write(e.ToString());
 				writer.Write(")");
 			}
 			writer.WriteLine();
@@ -182,9 +200,10 @@ namespace Decompiler.Core.Types
 			if (dt != null)
 			{
 				dt.Write(writer);
-				if (tv != null && tv.Expression != null)
+                Expression e;
+                if (tv != null && mpTvExpr.TryGetValue(tv, out e))
 				{
-					writer.Write(" (in {0})", tv.Expression);
+					writer.Write(" (in {0})", e);
 				}
 			}
 

@@ -214,8 +214,9 @@
     <Compile Include="Typing\StructureMergerTests.cs" />
     <Compile Include="Typing\Trait.cs" />
     <Compile Include="Typing\TraitCollectorTests.cs" />
-    <Compile Include="Typing\TraitHandlerTests.cs" />
-    <Compile Include="Typing\TraitMapping.cs" />
+    <Compile Include="Typing\TraitMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Typing\TypedConstantRewriterTests.cs" />
     <Compile Include="Typing\TypedExpressionRewriterTest.cs" />
     <Compile Include="Typing\TypedMemoryExpressionRewriterTests.cs" />

@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			TypeStore store = new TypeStore();
 			TypeFactory factory = new TypeFactory();
-			TypeVariable tv1 = store.EnsureTypeVariable(factory, null);
+			TypeVariable tv1 = store.EnsureExpressionTypeVariable(factory, (Decompiler.Core.Code.Expression) null);
 			tv1.Class.DataType = new StructureType(null, 0);
 			tv1.DataType = tv1.Class.DataType;
 

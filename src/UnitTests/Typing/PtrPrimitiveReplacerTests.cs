@@ -38,14 +38,14 @@ namespace Decompiler.UnitTests.Typing
 		{
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();
-			TypeVariable tv1 = store.EnsureTypeVariable(factory, null);
-			TypeVariable tv2 = store.EnsureTypeVariable(factory, null);
+			TypeVariable tv1 = store.EnsureExpressionTypeVariable(factory, null);
+			TypeVariable tv2 = store.EnsureExpressionTypeVariable(factory, null);
 			Assert.IsNotNull(tv1.Class, "Expected store.EnsureTypeVariable to create equivalence class");
 			Assert.IsNotNull(tv2.Class, "Expected store.EnsureTypeVariable to create equivalence class");
 			tv1.Class.DataType = PrimitiveType.Word32;
 			tv2.Class.DataType = PrimitiveType.Word16;
 
-			TypeVariable tv3 = store.EnsureTypeVariable(factory, null);
+			TypeVariable tv3 = store.EnsureExpressionTypeVariable(factory, null);
 			Assert.IsNotNull(tv3.Class, "Expected store.EnsureTypeVariable to create equivalence class");
 
 			StructureType mem = factory.CreateStructureType(null, 0);

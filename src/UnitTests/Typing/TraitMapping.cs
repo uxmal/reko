@@ -16,9 +16,10 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.UnitTests.Typing
@@ -26,24 +27,25 @@ namespace Decompiler.UnitTests.Typing
 	/// <summary>
 	/// Given a type variable T, maps to the traits associated with that type variable.
 	/// </summary>
-	public class TraitMapping : IComparer, IEnumerable
+	public class TraitMapping : IComparer<TypeVariable>
 	{
-		private SortedList items;
-		
-		public TraitMapping()
+		private SortedList<TypeVariable, List<Trait>> items;
+        private TypeStore store;
+
+		public TraitMapping(TypeStore store)
 		{
-			items = new SortedList(this);
+			items = new SortedList<TypeVariable,List<Trait>>(this);
+            this.store = store;
 		}
 
-		public ArrayList this[TypeVariable t]
+		public List<Trait> this[TypeVariable t]
 		{
 			get { return GetTypeTraits(t); }
 		}
 
 		public void AddTrait(TypeVariable t, Trait tr)
 		{
-			ArrayList traits = GetTypeTraits(t);
-			traits.Add(tr);
+            GetTypeTraits(t).Add(tr);
 		}
 
 		public void AddTypeVar(TypeVariable t)
@@ -56,25 +58,29 @@ namespace Decompiler.UnitTests.Typing
 		/// </summary>
 		/// <param name="t"></param>
 		/// <returns></returns>
-		private ArrayList GetTypeTraits(TypeVariable t)
+		private List<Trait> GetTypeTraits(TypeVariable t)
 		{
-			ArrayList typeTraits = (ArrayList) items[t];
-			if (typeTraits == null)
+            List<Trait> typeTraits;
+            if (!items.TryGetValue(t, out typeTraits))
 			{
-				typeTraits = new ArrayList();
-				items[t] = typeTraits;
+				typeTraits = new List<Trait>();
+                items.Add(t, typeTraits);
 			}
 			return typeTraits;
 		}
 
 		public void Write(TextWriter tw)
 		{
-			foreach (DictionaryEntry de in items)
+			foreach (KeyValuePair<TypeVariable,List<Trait>> de in items)
 			{
-				TypeVariable t = (TypeVariable) de.Key;
-				tw.WriteLine("{0} (in {1})", t, t.Expression);
-				
-				foreach (Trait tr in GetTypeTraits(t))
+                tw.Write(de.Key);
+                Expression e = store.ExpressionOf(de.Key);
+                if (e != null)
+                {
+                    tw.Write(" (in {0})", e);
+                }
+                tw.WriteLine();
+				foreach (Trait tr in de.Value)
 				{
 					tw.WriteLine("\t{0}", tr);
 				}
@@ -82,20 +88,9 @@ namespace Decompiler.UnitTests.Typing
 		}
 		#region IComparer Members
 
-		public int Compare(object x, object y)
+		public int Compare(TypeVariable a, TypeVariable b)
 		{
-			TypeVariable a = (TypeVariable) x;
-			TypeVariable b = (TypeVariable) y;
 			return a.Number - b.Number;
-		}
-
-		#endregion
-
-		#region IEnumerable Members
-
-		public IEnumerator GetEnumerator()
-		{
-			return items.GetEnumerator();
 		}
 
 		#endregion

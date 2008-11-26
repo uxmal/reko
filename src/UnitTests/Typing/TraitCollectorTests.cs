@@ -35,10 +35,8 @@ namespace Decompiler.UnitTests.Typing
 	[TestFixture]
 	public class TraitCollectorTests : TypingTestBase
 	{
-		private TypeFactory factory;
-		private TypeStore store;
-		private MockTraitHandler handler;
 		private TraitCollector coll;
+        private MockTraitHandler handler;
 		private ExpressionNormalizer aen;
 		private EquivalenceClassBuilder eqb;
 		private readonly string nl;
@@ -102,9 +100,9 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProgramMock mock = new ProgramMock();
 			mock.Add(new CmpMock());
-			Program prog = mock.BuildProgram();
-			eqb.Build(prog);
-			coll = new TraitCollector(factory, store, handler, prog.Globals, ivs);
+			prog = mock.BuildProgram();
+            coll = CreateCollector(prog);
+            eqb.Build(prog);
 			coll.CollectProgramTraits(prog);
 
 			Verify(prog, "Typing/TrcoCmpMock.txt");
@@ -115,10 +113,11 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProgramMock mock = new ProgramMock();
 			mock.Add(new StaggeredArraysMock());
-			Program prog = mock.BuildProgram();
+			prog = mock.BuildProgram();
+            coll = CreateCollector(prog);
+
 			aen.Transform(prog);
 			eqb.Build(prog);
-			coll = new TraitCollector(factory, store, handler, prog.Globals, ivs);
 			coll.CollectProgramTraits(prog);
 
 			Verify(prog, "Typing/TrcoStaggeredArraysMock.txt");
@@ -127,7 +126,6 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoArrayExpression()
 		{
-			coll = new TraitCollector(factory, store, handler, null, ivs);
 			Identifier b = new Identifier("base", 0, PrimitiveType.Word32, null);
 			Identifier i = new Identifier("idx", 1, PrimitiveType.Word32, null);
 			Constant s = Constant.Word32(4);
@@ -139,6 +137,7 @@ namespace Decompiler.UnitTests.Typing
 				PrimitiveType.Word16,
 				m.Add(m.Add(b, Constant.Word32(0x10030000)),
 				m.Muls(i, s)));
+            coll = CreateCollector();
 			coll.Procedure = new Procedure("foo", null);
 			e = e.Accept(aen);
 			e.Accept(eqb);
@@ -149,16 +148,13 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoInductionVariable()
 		{
-			Identifier globals = new Identifier("globals", 0, PrimitiveType.Pointer, null);
-
-			coll = new TraitCollector(factory, store, handler, globals, ivs);
-		
 			Identifier i = new Identifier("i", 0, PrimitiveType.Word32, null);
 			MemoryAccess load = new MemoryAccess(MemoryIdentifier.GlobalMemory, i, PrimitiveType.Int32);
 			Identifier i2 = new Identifier("i2", 1, PrimitiveType.Word32, null);
 			MemoryAccess ld2 = new MemoryAccess(MemoryIdentifier.GlobalMemory, i2, PrimitiveType.Int32);
 			Procedure proc = new Procedure("foo", null);
-			coll.Procedure = proc;
+            coll = CreateCollector();
+            coll.Procedure = proc;
 
 			LinearInductionVariable iv = new LinearInductionVariable(
 				Constant.Word32(0), 
@@ -173,10 +169,10 @@ namespace Decompiler.UnitTests.Typing
 			ivs.Add(proc, i2, iv2);
 
 			
-			globals.Accept(eqb);
+			prog.Globals.Accept(eqb);
 			load.Accept(eqb);
 			ld2.Accept(eqb);
-			globals.Accept(coll);
+			prog.Globals.Accept(coll);
 			load.Accept(coll);
 			ld2.Accept(coll);
 			Verify(null, "Typing/TrcoInductionVariable.txt");
@@ -185,12 +181,13 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoGlobalArray()
 		{
-			ProcedureMock m = new ProcedureMock();
-			Identifier globals = m.Local32("globals");
-			Identifier i = m.Local32("i");
-			Expression ea = m.Add(globals, m.Add(m.Shl(i, 2), 0x3000));
-			Expression e = m.Load(PrimitiveType.Int32, ea);
-			coll = new TraitCollector(factory, store, handler, globals, ivs);
+            prog = new Program();
+            ProcedureMock m = new ProcedureMock();
+            Identifier i = m.Local32("i");
+            Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
+            Expression e = m.Load(PrimitiveType.Int32, ea);
+
+            coll = CreateCollector(prog);
 			coll.Procedure = new Procedure("foo", null);
 			e = e.Accept(aen);
 			e.Accept(eqb);
@@ -201,15 +198,16 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoMemberPointer()
 		{
+            prog = new Program();
 			ProcedureMock m = new ProcedureMock();
-			Identifier globals = m.Local32("globals");
+			//Identifier globals = m.Local32("globals");
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			Identifier ax = m.Local16("ax");
 			MemberPointerSelector mps = m.MembPtrW(ds, m.Add(bx, 4));
 			Expression e = m.Load(PrimitiveType.Byte, mps);
 
-			coll = new TraitCollector(factory, store, handler, globals, ivs);
+            coll = CreateCollector(prog);
 			coll.Procedure = new Procedure("foo", null);
 			e = e.Accept(aen);
 			e.Accept(eqb);
@@ -222,13 +220,12 @@ namespace Decompiler.UnitTests.Typing
 		public void TrcoSegmentedAccess()
 		{
 			ProcedureMock m = new ProcedureMock();
-			Identifier globals = m.Local32("globals");
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			Identifier ax = m.Local16("ax");
 			Expression e = m.SegMem(PrimitiveType.Word16, ds, m.Add(bx, 4));
 
-			coll = new TraitCollector(factory, store, handler, globals, ivs);
+            coll = CreateCollector();
 			coll.Procedure = new Procedure("foo", null);
 			e = e.Accept(aen);
 			e.Accept(eqb);
@@ -240,13 +237,12 @@ namespace Decompiler.UnitTests.Typing
 		public void TrcoSegmentedDirectAddress()
 		{
 			ProcedureMock m = new ProcedureMock();
-			Identifier globals = m.Local32("globals");
-			store.EnsureTypeVariable(factory, globals);
+			prog.TypeStore.EnsureExpressionTypeVariable(prog.TypeFactory, prog.Globals);
 
 			Identifier ds = m.Local16("ds");
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));
-			
-			coll = new TraitCollector(factory, store, handler, globals, ivs);
+
+            coll = CreateCollector(prog);
 			coll.Procedure = new Procedure("foo", null);
 			e = e.Accept(aen);
 			e.Accept(eqb);
@@ -321,8 +317,8 @@ namespace Decompiler.UnitTests.Typing
 			Identifier pfn = m.Local32("pfn");
 			Expression l = m.Load(PrimitiveType.Word32, pfn);
 			IndirectCall icall = new IndirectCall(l, 0, 0);
-			
-			coll = new TraitCollector(factory, store, handler, null, ivs);
+
+            coll = CreateCollector();
 			icall.Accept(eqb);
 			icall.Accept(coll);
 			StringWriter sw = new StringWriter();
@@ -343,8 +339,9 @@ namespace Decompiler.UnitTests.Typing
 			ProcedureMock m = new ProcedureMock();
 			Identifier ds = m.Local16("ds");
 			Expression e = m.SegMemW(ds, m.Word16(0xC002U));
-			
-			coll = new TraitCollector(factory, store, handler, null, null);
+
+
+            coll = CreateCollector();
 			e.Accept(eqb);
 			e.Accept(coll);
 			Verify(null, "Typing/TrcoSegMem.txt");
@@ -357,7 +354,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier ds = m.Local16("ds");
 			Expression e = m.Uge(ds, m.Word16(0x0800));
 
-			coll = new TraitCollector(factory, store, handler, null, null);
+            coll = CreateCollector();
 			e.Accept(eqb);
 			e.Accept(coll);
 			StringWriter sb = new StringWriter();
@@ -376,21 +373,31 @@ namespace Decompiler.UnitTests.Typing
 			Assert.AreEqual(exp, sb.ToString());
 		}
 
-		[SetUp]
-		public void SetUp()
-		{
-			factory = new TypeFactory();
-			store = new TypeStore();
-			handler = new MockTraitHandler();
-			ivs = new InductionVariableCollection();
-			aen = new ExpressionNormalizer();
-			eqb = new EquivalenceClassBuilder(factory, new TypeStore());
-		}
+        private TraitCollector CreateCollector()
+        {
+            prog = new Program();
+            return CreateCollector(prog);
+        }
 
-		private void RunTest(Program prog, string outFile)
+        private TraitCollector CreateCollector(Program prog)
+        {
+            if (ivs == null) 
+                ivs = new InductionVariableCollection();
+            aen = new ExpressionNormalizer();
+            eqb = new EquivalenceClassBuilder(prog.TypeFactory, prog.TypeStore);
+            handler = new MockTraitHandler(prog.TypeStore);
+            return new TraitCollector(prog.TypeFactory, prog.TypeStore, handler, prog.Globals, ivs);
+        }
+
+        private ITraitHandler CreateHandler(TypeStore store)
+        {
+            return new MockTraitHandler(store);
+        }
+
+        private void RunTest(Program prog, string outFile)
 		{
-			eqb.Build(prog);
-			coll = new TraitCollector(factory, store, handler, prog.Globals, ivs);
+            coll = CreateCollector(prog);
+            eqb.Build(prog);
 			coll.CollectProgramTraits(prog);
 
 			using (FileUnitTester fut = new FileUnitTester(outFile))
@@ -446,5 +453,77 @@ namespace Decompiler.UnitTests.Typing
 			Return();
 		}
 	}
+
+    public class MockTraitHandler : ITraitHandler
+    {
+        private TraitMapping traits;
+        private TypeFactory factory = new TypeFactory();
+
+        public MockTraitHandler(TypeStore store)
+        {
+            traits = new TraitMapping(store);
+        }
+
+        public TraitMapping Traits
+        {
+            get { return traits; }
+        }
+
+        #region ITraitHandler Members
+
+        public void ArrayTrait(TypeVariable tArray, int elementSize, int length)
+        {
+            traits.AddTrait(tArray, new TraitArray(elementSize, length));
+        }
+
+        public void BuildEquivalenceClassDataTypes()
+        {
+        }
+
+        public void DataTypeTrait(TypeVariable type, DataType p)
+        {
+            traits.AddTrait(type, new TraitDataType(p));
+        }
+
+        public void EqualTrait(TypeVariable t1, TypeVariable t2)
+        {
+            if (t1 != null && t2 != null)
+                traits.AddTrait(t1, new TraitEqual(t2));
+        }
+
+        public void FunctionTrait(TypeVariable function, int funcPtrSize, TypeVariable ret, params TypeVariable[] actuals)
+        {
+            traits.AddTrait(function, new TraitFunc(function, funcPtrSize, ret, actuals));
+        }
+
+        public void MemAccessArrayTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tAccess)
+        {
+            traits.AddTrait(tStruct, new TraitMemArray(tBase, structPtrSize, offset, elementSize, length, tAccess));
+        }
+
+        public void MemAccessTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, TypeVariable tField, int offset)
+        {
+            traits.AddTrait(tStruct, new TraitMem(tBase, structPtrSize, tField, offset));
+        }
+
+        public void MemSizeTrait(TypeVariable tBase, TypeVariable tStruct, int size)
+        {
+            traits.AddTrait(tStruct, new TraitMemSize(size));
+        }
+
+        public void PointerTrait(TypeVariable tPtr, int ptrSize, TypeVariable tPointee)
+        {
+            traits.AddTrait(tPtr, new TraitPointer(tPointee));
+        }
+
+        public void UnknownTrait(TypeVariable tUnknown)
+        {
+            throw new NotImplementedException("UnknownTrait not handled");
+        }
+
+        #endregion
+
+    }
+
 
 }

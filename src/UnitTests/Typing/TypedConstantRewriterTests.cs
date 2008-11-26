@@ -38,12 +38,12 @@ namespace Decompiler.UnitTests.Typing
 			store = new TypeStore();
 			factory = new TypeFactory();
 			globals = new Identifier("globals", 0, PrimitiveType.Pointer, null);
-			store.EnsureTypeVariable(factory, globals);
+			store.EnsureExpressionTypeVariable(factory, globals);
 
 			StructureType s = new StructureType(null, 0);
 			s.Fields.Add(0x00100000, PrimitiveType.Word32, null);
 
-			TypeVariable tvGlobals = store.EnsureTypeVariable(factory, globals);
+			TypeVariable tvGlobals = store.EnsureExpressionTypeVariable(factory, globals);
 			EquivalenceClass eqGlobals = new EquivalenceClass(tvGlobals);
 			eqGlobals.DataType = s;
 			globals.TypeVariable.DataType = new Pointer(eqGlobals, 4);
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Typing
 		public void RewriteWord32()
 		{
 			Constant c = new Constant(PrimitiveType.Word32, 0x0131230);
-			store.EnsureTypeVariable(factory, c);
+			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Word32;
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
 			Expression e = tcr.Rewrite(c, false);
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Typing
 		public void RewriterRealBitpattern()
 		{
 			Constant c = new Constant(PrimitiveType.Word32, 0x3F800000);
-			store.EnsureTypeVariable(factory, c);
+			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Real32;
 			c.TypeVariable.OriginalDataType = c.DataType;
 			Expression e = tcr.Rewrite(c, false);
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Typing
 		public void RewritePointer()
 		{
 			Constant c = new Constant(PrimitiveType.Word32, 0x00100000);
-			store.EnsureTypeVariable(factory, c);
+			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 4);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
 			Expression e = tcr.Rewrite(c, false);
