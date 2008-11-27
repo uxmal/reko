@@ -108,6 +108,7 @@ namespace Decompiler.UnitTests.Typing
 
 	
 		[Test]
+        [Ignore("Frames require escape and aliasing analysis.")]
 		public void TtranFramePointer()
 		{
 			ProgramMock prog = new ProgramMock();

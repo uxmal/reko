@@ -75,7 +75,7 @@ namespace Decompiler.Typing
 				if (tv.OriginalDataType != null)
 					tv.OriginalDataType.Accept(utv);
 			}
-			Unifier u = new Unifier(factory);
+			Unifier u = new DataTypeBuilderUnifier(factory, store);
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
 				DataType dt = tv.OriginalDataType;

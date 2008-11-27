@@ -104,7 +104,7 @@ T_14: (in fn0C00_000C : ptr0)
   DataType: (ptr Eq_2)
   OrigDataType: (ptr (fn T_15 (T_5)))
 T_15: (in fn0C00_000C(ds) : void)
-  Class: Eq_15
+  Class: Eq_6
   DataType: void
   OrigDataType: void
 T_16: (in 0x0300 : word16)

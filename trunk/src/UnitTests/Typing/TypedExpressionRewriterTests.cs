@@ -191,15 +191,60 @@ namespace Decompiler.UnitTests.Typing
         {
             ProcedureMock m = new ProcedureMock();
             Identifier p = m.Local32("p");
-            Identifier ds = m.Local32("ds"); ds.DataType = PrimitiveType.SegmentSelector;
+            Identifier ds = m.Local16("ds");
+            ds.DataType = PrimitiveType.SegmentSelector;
+            Identifier ds2 = m.Local16("ds2");
+            ds2.DataType = PrimitiveType.SegmentSelector;
+            m.Assign(ds2, ds);
             m.Store(
                 m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
                 m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
-            m.Store(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(0));
+            m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
 
             ProgramMock prog = new ProgramMock();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/TerSignedCompare.txt");
+        }
+
+        [Test]
+        public void TerDereferenceSignedCompare()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier p = m.Local32("p");
+            Identifier ds = m.Local16("ds");
+            ds.DataType = PrimitiveType.SegmentSelector;
+            Identifier ds2 = m.Local16("ds2");
+            ds2.DataType = PrimitiveType.SegmentSelector;
+            m.Assign(ds2, ds);
+            m.Store(
+                m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
+                m.Lt(
+                    m.SegMemW(ds, m.Add(m.SegMemW(ds, m.Word16(0x5404)), 4)),
+                    m.Word16(20)));
+            m.Store(m.SegMemW(ds2, m.Add(m.SegMemW(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
+
+            ProgramMock prog = new ProgramMock();
+            prog.Add(m);
+            RunTest(prog.BuildProgram(), "Typing/TerDereferenceSignedCompare.txt");
+        }
+
+        [Test]
+        public void TerFlatDereferenceSignedCompare()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier ds = m.Local32("ds");
+            Identifier ds2 = m.Local32("ds2");
+            m.Assign(ds2, ds);
+            m.Store(
+                m.Add(ds, m.Word32(0x5400)),
+                m.Lt(
+                    m.LoadW(m.Add(m.LoadDw(m.Add(ds, m.Word32(0x5404))), 4)),
+                    m.Word16(20)));
+            m.Store(m.Add(m.LoadDw(m.Add(ds2, m.Word32(0x5404))), 4), m.Word16(0));
+
+            ProgramMock prog = new ProgramMock();
+            prog.Add(m);
+            RunTest(prog.BuildProgram(), "Typing/TerFlatDereferenceSignedCompare.txt");
         }
 
 		private void RunTest(string relativePath, string outputFile)
