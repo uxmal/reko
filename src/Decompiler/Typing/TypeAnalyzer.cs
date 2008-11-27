@@ -68,7 +68,7 @@ namespace Decompiler.Typing
 			tvr = new TypeVariableReplacer(store);
 			trans = new TypeTransformer(factory, store, host);
 			ctn = new ComplexTypeNamer();
-			ter = new TypedExpressionRewriter(store, prog);
+			ter = new TypedExpressionRewriter(store, prog.Globals);
 		}
 
 		/// <summary>
@@ -99,7 +99,7 @@ namespace Decompiler.Typing
 			Debug.WriteLine("= transformed types ========================================");
 			Debug.WriteLine("= Rewriting expressions ====================================");
 			store.Dump();
-			ter.RewriteProgram();
+			ter.RewriteProgram(prog);
 		}
 
         /// <summary>

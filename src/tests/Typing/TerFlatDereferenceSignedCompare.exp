@@ -44,11 +44,11 @@ T_7: (in 0x00000004 : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in Mem0[ds + 0x00005404:word32] + 0x00000004 : word32)
+T_8: (in ds->ptr5404 + 0x00000004 : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in Mem0[Mem0[ds + 0x00005404:word32] + 0x00000004:word16] : word16)
+T_9: (in Mem0[ds->ptr5404 + 0x00000004:word16] : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: int16
@@ -56,7 +56,7 @@ T_10: (in 0x0014 : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: int16
-T_11: (in Mem0[ds + 0x00005404:word32]->w0004 < 0x0014 : bool)
+T_11: (in ds->ptr5404->w0004 < 0x0014 : bool)
   Class: Eq_11
   DataType: bool
   OrigDataType: bool
@@ -92,11 +92,11 @@ T_19: (in 0x00000004 : word32)
   Class: Eq_19
   DataType: word32
   OrigDataType: word32
-T_20: (in Mem0[ds2 + 0x00005404:word32] + 0x00000004 : word32)
+T_20: (in ds2->ptr5404 + 0x00000004 : word32)
   Class: Eq_20
   DataType: word32
   OrigDataType: word32
-T_21: (in Mem0[Mem0[ds2 + 0x00005404:word32] + 0x00000004:word16] : word16)
+T_21: (in Mem0[ds2->ptr5404 + 0x00000004:word16] : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
