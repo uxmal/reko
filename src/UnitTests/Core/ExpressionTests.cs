@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Core
         public void HashCode()
         {
             Assert.AreNotEqual(reg.GetHashCode(), outReg.GetHashCode());
-            Assert.IsTrue(object.Equals(reg, outReg));
+            Assert.IsFalse(object.Equals(reg, outReg));
         }
 	}
 }

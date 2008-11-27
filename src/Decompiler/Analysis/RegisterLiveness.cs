@@ -45,7 +45,7 @@ namespace Decompiler.Analysis
 		private Program prog;
 		private DecompilerHost host;
 		private Procedure proc;
-		private WorkList worklist;
+		private WorkList<BlockFlow> worklist;
 		private ProgramDataFlow mpprocData;
 		private State state;
 		private Statement stmCur;
@@ -61,7 +61,7 @@ namespace Decompiler.Analysis
 			this.prog = prog;
 			this.host = host;
 			this.mpprocData = procFlow;
-			this.worklist = new WorkList();
+			this.worklist = new WorkList<BlockFlow>();
 			this.varLive = new IdentifierLiveness(prog.Architecture);
 			this.isLiveHelper = new IsLiveHelper();
 			CollectBasicBlocks();
@@ -165,8 +165,9 @@ namespace Decompiler.Analysis
 		{
 			foreach (object b in mpprocData.Values)
 			{
-				if (b is BlockFlow)
-					worklist.Add(b);
+                BlockFlow bf = b as BlockFlow;
+                if (bf != null)
+					worklist.Add(bf);
 			}
 		}
 
@@ -175,12 +176,11 @@ namespace Decompiler.Analysis
 		{
 			InitializeWorkList();
 			int initial = worklist.Count;
-			while (!worklist.IsEmpty)
+            BlockFlow item;
+            while (worklist.GetWorkItem(out item))
 			{
 				if (host != null)
 					host.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
-				object o = worklist.GetWorkItem();
-				BlockFlow item = (BlockFlow) o;
 				ProcessBlock(item);
 			}
 		}

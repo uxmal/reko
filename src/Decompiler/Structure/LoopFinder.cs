@@ -311,11 +311,11 @@ namespace Decompiler.Structure
 			// The blocks in the loop are each predecessor to the header p, where p is dominated by the header.
 
 			BitSet visited = proc.CreateBlocksBitset();
-			WorkList wl = new WorkList();
+			WorkList<Block> wl = new WorkList<Block>();
 			wl.Add(head);
-			while (!wl.IsEmpty)
+            Block b;
+			while (wl.GetWorkItem(out b))
 			{
-				Block b = (Block) wl.GetWorkItem();
 				if (visited[b.RpoNumber])
 					continue;
 

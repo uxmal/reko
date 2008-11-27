@@ -73,14 +73,6 @@ namespace Decompiler.UnitTests.Core
 		}
 
 		[Test]
-		public void ConHash()
-		{
-			Constant c1 = new Constant(PrimitiveType.Word32, 3);
-			Constant c2 = new Constant(PrimitiveType.Word32, 3);
-			Assert.AreEqual(c1.GetHashCode(), c2.GetHashCode());
-		}
-
-		[Test]
 		public void Negate()
 		{
 			Constant c1 = new Constant(PrimitiveType.Word16, 0xFFFF);

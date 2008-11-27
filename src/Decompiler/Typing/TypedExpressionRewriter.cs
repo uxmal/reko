@@ -139,6 +139,8 @@ namespace Decompiler.Typing
 
 		public Instruction MakeAssignment(Expression dst, Expression src)
 		{
+            TypeVariable tvDst = dst.TypeVariable;
+            TypeVariable tvSrc = src.TypeVariable;
 			src = src.Accept(this);
 			DataType dtSrc = DataTypeOf(src);
 			dst = dst.Accept(this);
@@ -158,7 +160,7 @@ namespace Decompiler.Typing
 					src = ceb.BuildComplex();
 				}
 				else
-					throw new NotImplementedException(string.Format("[{0}] = [{1}] (in assignment {2} = {3}) not supported.", dtDst, dtSrc, dst, src));
+					throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
 				}
 			return new Decompiler.Core.Absyn.AbsynAssignment(dst, src);
 		}

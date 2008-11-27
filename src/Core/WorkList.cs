@@ -17,40 +17,40 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
 	/// <summary>
 	/// A WorkList contains a list of items to be processed. 
 	/// </summary>
-	public class WorkList
+	public class WorkList<T>
 	{
-		private Hashtable inQ;
-		private Queue q;
+		private Dictionary<T,T> inQ;
+		private Queue<T> q;
 
 		public WorkList()
 		{
-			q = new Queue();
-			inQ = new Hashtable();
+			q = new Queue<T>();
+			inQ = new Dictionary<T,T>();
 		}
 
-		public WorkList(ICollection coll)
+		public WorkList(ICollection<T> coll)
 		{
-			q = new Queue(coll);
-			inQ = new Hashtable(coll.Count);
-			foreach (object o in coll)
+			q = new Queue<T>(coll);
+			inQ = new Dictionary<T,T>(coll.Count);
+			foreach (T t in coll)
 			{
-				Add(o);
+				Add(t);
 			}
 		}
 
-		public void Add(object o)
+		public void Add(T  t)
 		{
-			if (!inQ.Contains(o))
+			if (!inQ.ContainsKey(t))
 			{
-				q.Enqueue(o);
-				inQ.Add(o, o);
+				q.Enqueue(t);
+				inQ.Add(t, t);
 			}
 		}
 
@@ -64,23 +64,25 @@ namespace Decompiler.Core
 			get { return inQ.Count == 0; }
 		}
 
-		public object GetWorkItem()
+		public bool GetWorkItem(out T item)
 		{
 			while (!IsEmpty)
 			{
-				object o = q.Dequeue();
-				if (inQ.Contains(o))
+				T t = q.Dequeue();
+				if (inQ.ContainsKey(t))
 				{
-					inQ.Remove(o);
-					return o;
+					inQ.Remove(t);
+                    item = t;
+					return true;
 				}
 			}
-			return null;
+			item = default(T);
+            return false;
 		}
 
-		public void Remove(object o)
+		public void Remove(T t)
 		{
-			inQ.Remove(o);
+			inQ.Remove(t);
 		}
 	}
 }

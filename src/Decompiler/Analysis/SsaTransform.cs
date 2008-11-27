@@ -113,34 +113,31 @@ namespace Decompiler.Analysis
 			{
 				// Create a worklist W of all the blocks that define a.
 
-				WorkList W = new WorkList();
+				WorkList<Block> W = new WorkList<Block>();
 				foreach (Block b in proc.RpoBlocks)
 				{
 					if ((AOrig[a, b.RpoNumber] & BitDefined) != 0)
 						W.Add(b);
 				}
-				if (!W.IsEmpty)
-				{
-					do
-					{
-						Block n = (Block) W.GetWorkItem();
-						foreach (Block y in domGraph.DominatorFrontier(n))
-						{
-							// Only add phi functions if theere is no
-							// phi already and variable is not deadIn.
+                Block n;
+                while (W.GetWorkItem(out n))
+                {
+                    foreach (Block y in domGraph.DominatorFrontier(n))
+                    {
+                        // Only add phi functions if theere is no
+                        // phi already and variable is not deadIn.
 
-							if ((AOrig[a, y.RpoNumber] & (BitHasPhi|BitDeadIn)) == 0)
-							{
-								AOrig[a, y.RpoNumber] |= BitHasPhi;
-								InsertPhiStatement(y, a);
-								if ((AOrig[a, y.RpoNumber] & BitDefined) == 0)
-								{
-									W.Add(y);
-								}
-							}
-						}
-					} while (!W.IsEmpty);
-				}
+                        if ((AOrig[a, y.RpoNumber] & (BitHasPhi | BitDeadIn)) == 0)
+                        {
+                            AOrig[a, y.RpoNumber] |= BitHasPhi;
+                            InsertPhiStatement(y, a);
+                            if ((AOrig[a, y.RpoNumber] & BitDefined) == 0)
+                            {
+                                W.Add(y);
+                            }
+                        }
+                    }
+                }
 			}
 		}
 

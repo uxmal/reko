@@ -28,17 +28,19 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void WlAdd()
 		{
-			WorkList w = new WorkList();
+			WorkList<int> w = new WorkList<int>();
 			w.Add(3);
 			Assert.IsFalse(w.IsEmpty);
-			Assert.AreEqual(3, w.GetWorkItem());
+            int x;
+            Assert.IsTrue(w.GetWorkItem(out x));
+			Assert.AreEqual(3, x);
 			Assert.IsTrue(w.IsEmpty);
 		}
 
 		[Test]
 		public void WlRemove()
 		{
-			WorkList w = new WorkList();
+			WorkList<int> w = new WorkList<int>();
 			w.Add(3);
 			w.Add(2);
 			Assert.IsFalse(w.IsEmpty);
@@ -46,7 +48,8 @@ namespace Decompiler.UnitTests.Core
 			Assert.IsFalse(w.IsEmpty);
 			w.Remove(2);
 			Assert.IsTrue(w.IsEmpty);
-			Assert.IsNull(w.GetWorkItem());
+            int x;
+			Assert.IsFalse(w.GetWorkItem(out x));
 		}
 	}
 }

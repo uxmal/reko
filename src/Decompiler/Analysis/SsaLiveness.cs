@@ -267,7 +267,6 @@ namespace Decompiler.Analysis
 		{
 			foreach (SsaIdentifier sid in ssa)
 			{
-				WorkList stms = new WorkList();
 				foreach (Statement use in sid.Uses)
 				{
 					Block p = PrecedingPhiBlock(sid.Identifier, use);
