@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Typing
 			trans.Transform();
 			ctn.RenameAllTypes(store);
 
-			ter = new TypedExpressionRewriter(store, prog);
+			ter = new TypedExpressionRewriter(store, prog.Globals);
 			cmp = cmp.Accept(ter);
 			Assert.AreEqual("v0->dw0004", cmp.ToString());
 		}
@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Typing
 			tvI.DataType = u;
 			tvX.DataType = u;
 			ctn.RenameAllTypes(store);
-			TypedExpressionRewriter ter = new TypedExpressionRewriter(store, prog);
+			TypedExpressionRewriter ter = new TypedExpressionRewriter(store, prog.Globals);
 			Instruction instr = ter.TransformAssignment(ass);
 			Assert.AreEqual("x.u1 = 3F;", instr.ToString());
 		}
@@ -272,10 +272,10 @@ namespace Decompiler.UnitTests.Typing
 				trans.Transform();
 				ctn.RenameAllTypes(store);
 
-				ter = new TypedExpressionRewriter(store, prog);
+				ter = new TypedExpressionRewriter(store, prog.Globals);
 				try
 				{
-					ter.RewriteProgram();
+					ter.RewriteProgram(prog);
 				}
 				catch (Exception ex)
 				{

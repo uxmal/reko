@@ -29,17 +29,17 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class TypedExpressionRewriter : InstructionTransformer //, IDataTypeVisitor
 	{
-		private Program prog;
 		private TypeStore store;
+        private Identifier globals;
 		private DataTypeComparer compTypes;
 		private TypedConstantRewriter tcr;
 
-		public TypedExpressionRewriter(TypeStore store, Program prog)
+		public TypedExpressionRewriter(TypeStore store, Identifier globals)
 		{
 			this.store = store;
-			this.prog = prog;
+            this.globals = globals;
 			this.compTypes = new DataTypeComparer();
-			this.tcr = new TypedConstantRewriter(store, prog.Globals);
+			this.tcr = new TypedConstantRewriter(store, globals);
 		}
 
 		public UnionType AsUnion(DataType dt)
@@ -108,7 +108,7 @@ namespace Decompiler.Typing
             }
         }
 
-        public void RewriteProgram()
+        public void RewriteProgram(Program prog)
 		{
 			{//$DEBUG
 				System.IO.StringWriter sb = new System.IO.StringWriter();
@@ -224,13 +224,13 @@ namespace Decompiler.Typing
 
 		public override Expression TransformMemoryAccess(MemoryAccess access)
 		{
-			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, prog.Globals);
+			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, globals);
 			return tmer.Rewrite(access);
 		}
 
 		public override Expression TransformSegmentedAccess(SegmentedAccess access)
 		{
-			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, prog.Globals);
+			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, globals);
 			return tmer.Rewrite(access);
 		}
 

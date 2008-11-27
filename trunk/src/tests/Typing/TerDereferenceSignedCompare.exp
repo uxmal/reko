@@ -5,7 +5,7 @@ ProcedureMock_entry:		// block 0, pred:
 l1:		// block 1, pred: 0
 	ds2 = ds;
 	ds->f5400 = (ds->*ds->ptr5404).w0004 < 0x0014;
-	(ds2->*ds->ptr5404).w0004 = 0x0000;
+	(ds2->*ds2->ptr5404).w0004 = 0x0000;
 	// succ: 
 
 // Equivalence classes ////////////
@@ -40,11 +40,11 @@ T_6: (in 0x0004 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_7: (in Mem0[ds:0x5404:word16] + 0x0004 : word16)
+T_7: (in ds->ptr5404 + 0x0004 : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16
-T_8: (in Mem0[ds:Mem0[ds:0x5404:word16] + 0x0004:word16] : word16)
+T_8: (in Mem0[ds:ds->ptr5404 + 0x0004:word16] : word16)
   Class: Eq_8
   DataType: word16
   OrigDataType: int16
@@ -52,7 +52,7 @@ T_9: (in 0x0014 : word16)
   Class: Eq_8
   DataType: word16
   OrigDataType: int16
-T_10: (in (ds->*Mem0[ds:0x5404:word16]).w0004 < 0x0014 : bool)
+T_10: (in (ds->*ds->ptr5404).w0004 < 0x0014 : bool)
   Class: Eq_10
   DataType: bool
   OrigDataType: bool
@@ -80,11 +80,11 @@ T_16: (in 0x0004 : word16)
   Class: Eq_16
   DataType: word16
   OrigDataType: word16
-T_17: (in Mem0[ds2:0x5404:word16] + 0x0004 : word16)
+T_17: (in ds2->ptr5404 + 0x0004 : word16)
   Class: Eq_17
   DataType: word16
   OrigDataType: word16
-T_18: (in Mem0[ds2:Mem0[ds2:0x5404:word16] + 0x0004:word16] : word16)
+T_18: (in Mem0[ds2:ds2->ptr5404 + 0x0004:word16] : word16)
   Class: Eq_8
   DataType: word16
   OrigDataType: word16

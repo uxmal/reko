@@ -38,7 +38,6 @@ namespace Decompiler.Typing
 			this.globals = globals;
 		}
 
-
 		public Expression Rewrite(MemoryAccess access)
 		{
 			basePointer = null;
@@ -68,12 +67,19 @@ namespace Decompiler.Typing
 
 		public Expression TransformBinaryExpression(BinaryExpression binExp)
 		{
-			if (!binExp.Left.TypeVariable.DataType.IsComplex)
-				throw new NotImplementedException(string.Format("{0}: [[{1}]] and [[{2}]]", binExp, binExp.Left.TypeVariable.DataType, binExp.Right.TypeVariable.DataType));
+            TypeVariable tvLeft = binExp.Left.TypeVariable;
+            TypeVariable tvRight = binExp.Right.TypeVariable;
+            if (!tvLeft.DataType.IsComplex)
+                throw new NotImplementedException(string.Format("{0}: [[{1}]] and [[{2}]]", binExp, tvLeft.DataType, tvRight.DataType));
 
-			if (binExp.Right.TypeVariable.DataType.IsComplex)
-				throw new TypeInferenceException("Both subexpressions are complex in {0}. Left type: {1}, right type {2}",
-					binExp, binExp.Left.TypeVariable.DataType, binExp.Right.TypeVariable.DataType);
+            if (tvRight.DataType.IsComplex)
+                throw new TypeInferenceException("Both subexpressions are complex in {0}. Left type: {1}, right type {2}",
+                    binExp, tvLeft.DataType, tvRight.DataType);
+
+            TypedExpressionRewriter ter = new TypedExpressionRewriter(store, globals);
+            binExp.Left = binExp.Left.Accept(ter);
+            binExp.Right = binExp.Right.Accept(ter);
+
 			Constant cRight = binExp.Right as Constant;
 			int offset = 0;
 			if (cRight != null)
@@ -83,8 +89,8 @@ namespace Decompiler.Typing
 
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                 binExp.DataType,
-				binExp.Left.TypeVariable.DataType,
-				binExp.Left.TypeVariable.OriginalDataType,
+				tvLeft.DataType,
+				tvLeft.OriginalDataType,
 				basePointer,
 				binExp.Left,
 				offset);

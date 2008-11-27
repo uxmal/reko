@@ -218,7 +218,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\TypedConstantRewriterTests.cs" />
-    <Compile Include="Typing\TypedExpressionRewriterTest.cs" />
+    <Compile Include="Typing\TypedExpressionRewriterTests.cs" />
     <Compile Include="Typing\TypedMemoryExpressionRewriterTests.cs" />
     <Compile Include="Typing\TypeStoreTests.cs" />
     <Compile Include="Typing\TypeTransformArrayTests.cs" />
