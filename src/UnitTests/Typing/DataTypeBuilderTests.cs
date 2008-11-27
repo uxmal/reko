@@ -114,11 +114,13 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
+        [Ignore("Frame pointers require escape and alias analysis.")]
 		public void DtbFramePointer()
 		{
 			ProgramMock mock = new Mocks.ProgramMock();
 			mock.Add(new FramePointerMock(factory));
 			RunTest(mock, "Typing/DtbFramePointer.txt");
+            throw new NotImplementedException();
 		}
 
 		[Test]
@@ -409,6 +411,28 @@ namespace Decompiler.UnitTests.Typing
 
 			RunTest(pp.BuildProgram(), "Typing/DtbStructurePointerPassedToFunction.txt");
 		}
+
+
+        [Test]
+        public void DtbSignedCompare()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier p = m.Local32("p");
+            Identifier ds = m.Local16("ds");
+            ds.DataType = PrimitiveType.SegmentSelector;
+            Identifier ds2 = m.Local16("ds2");
+            ds.DataType = PrimitiveType.SegmentSelector;
+            m.Assign(ds2, ds);
+            m.Store(
+                m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
+                m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
+            m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
+
+            ProgramMock prog = new ProgramMock();
+            prog.Add(m);
+            RunTest(prog.BuildProgram(), "Typing/DtbSignedCompare.txt");
+
+        }
 
 
 		[SetUp]
