@@ -32,7 +32,7 @@ namespace Decompiler.Analysis
 	{
 		private Procedure proc;
 		private SsaState ssa;
-		private WorkList liveIds;
+		private WorkList<SsaIdentifier> liveIds;
 		private CriticalInstruction critical;
 
 		private static TraceSwitch trace = new TraceSwitch("DeadCode", "Traces dead code elimination");
@@ -80,7 +80,7 @@ namespace Decompiler.Analysis
 
 		private void Eliminate()
 		{
-			liveIds = new WorkList();
+			liveIds = new WorkList<SsaIdentifier>();
 			Hashtable marks = new Hashtable();
 
 			// Initially, just mark those statements that contain critical statements.
@@ -102,9 +102,9 @@ namespace Decompiler.Analysis
 			
 			// Each identifier is live, so its defining statement is also live.
 
-			while (!liveIds.IsEmpty)
+            SsaIdentifier sid;
+			while (liveIds.GetWorkItem(out sid))
 			{
-				SsaIdentifier sid = NextWorkItem(liveIds);
 				Statement def = sid.DefStatement;
 				if (def != null)
 				{
@@ -138,11 +138,6 @@ namespace Decompiler.Analysis
 		}
 
 
-
-		private SsaIdentifier NextWorkItem(WorkList wl)
-		{
-			return (SsaIdentifier) liveIds.GetWorkItem();
-		}
 
 		public override void VisitAssignment(Assignment a)
 		{

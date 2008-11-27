@@ -46,14 +46,14 @@ namespace Decompiler.Structure
             intervalOf = new Interval[blocks.Count];
 
             Hashtable processed = new Hashtable();
-            WorkList wlIntHeaders = new WorkList();		// Possible interval headers
-            WorkList wlIntMembers = new WorkList();		// Known interval members.
+            WorkList<Block> wlIntHeaders = new WorkList<Block>();		// Possible interval headers
+            WorkList<Block> wlIntMembers = new WorkList<Block>();		// Known interval members.
             int[] linksFollowed = new int[blocks.Count];
 
             wlIntHeaders.Add(entry);
-            while (!wlIntHeaders.IsEmpty)
+            Block h;
+            while (wlIntHeaders.GetWorkItem(out h))
             {
-                Block h = (Block) wlIntHeaders.GetWorkItem();
                 Interval interval = new Interval(h, blocks.Count);
                 interval.AddBlock(h);
                 intervalOf[h.RpoNumber] = interval;
@@ -61,10 +61,9 @@ namespace Decompiler.Structure
                 wlIntMembers.Add(h);
                 intervals.Add(interval);
 
-                while (!wlIntMembers.IsEmpty)
+                Block n;
+                while (wlIntMembers.GetWorkItem(out n))
                 {
-                    Block n = (Block) wlIntMembers.GetWorkItem();
-
                     // n is known to be in the interval; see if the successors also are in the interval.
 
                     foreach (Block s in n.Succ)

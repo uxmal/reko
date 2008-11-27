@@ -37,7 +37,7 @@ namespace Decompiler.Analysis
 		private Program prog;
 		private Identifier trash;
 		private ProgramDataFlow flow;
-		private WorkList worklist;
+		private WorkList<Block> worklist;
 		private TrashStorageHelper tsh;
 		private DecompilerHost decompilerHost;
 
@@ -47,7 +47,7 @@ namespace Decompiler.Analysis
 			this.flow = flow;
 			tsh = new TrashStorageHelper();
 			this.trash = new Identifier("TRASH", -1, PrimitiveType.Void, null);
-			this.worklist = new WorkList();
+			this.worklist = new WorkList<Block>();
 		}
 
 		public void CompleteWork()
@@ -66,12 +66,12 @@ namespace Decompiler.Analysis
 		{
 			FillWorklist();
 			int initial = worklist.Count;
-			while (!worklist.IsEmpty)
+            Block block;
+			while (worklist.GetWorkItem(out block))
 			{
 				if (decompilerHost != null)
 					decompilerHost.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
 
-				Block block = (Block) worklist.GetWorkItem();
 				ProcessBlock(block);
 			}
 			CompleteWork();

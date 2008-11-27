@@ -40,7 +40,7 @@ namespace Decompiler.Analysis
 		private SsaIdentifier ssa;
 		private Statement stmDef;
 		private int iStmDef;
-		private WorkList wl;
+		private WorkList<Identifier> wl;
 
 		public OutParameterTransformer(Procedure proc, SsaIdentifierCollection ssaIds)
 		{
@@ -51,12 +51,12 @@ namespace Decompiler.Analysis
 		public void ReplaceDefinitionsWithOutParameter(Identifier id, Identifier idOut)
 		{
 			this.idOut = idOut;
-			wl = new WorkList();
+			wl = new WorkList<Identifier>();
 			wl.Add(id);
 			Hashtable visited = new Hashtable();
-			while (!wl.IsEmpty)
+
+			while (wl.GetWorkItem(out id))
 			{
-				id = (Identifier) wl.GetWorkItem();
 				ssa = ssaIds[id];
 				stmDef = ssa.DefStatement;
 				if (stmDef != null && !visited.ContainsKey(stmDef))
