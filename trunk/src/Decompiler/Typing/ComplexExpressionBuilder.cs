@@ -95,9 +95,11 @@ namespace Decompiler.Typing
 			if (dtPointee is PrimitiveType || dtPointee is Pointer || dtPointee is MemberPointer ||
                 comp.Compare(dtPtr, dtResult) == 0)
 			{
-				if (offset % dtPointee.Size == 0)
+				if (offset == 0 || offset % dtPointee.Size == 0)
 				{
-					int idx = offset / dtPointee.Size;
+					int idx = offset == 0 
+                        ? 0
+                        : offset / dtPointee.Size;
 					if (idx == 0)
 					{
 						if (Dereferenced)

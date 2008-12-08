@@ -415,7 +415,8 @@ namespace Decompiler.Typing
 				}
 				else
 				{
-					mem.Fields.Add(fa.Offset, Unify(fa.DataType, fb.DataType));
+                    DataType fieldType = Unify(fa.DataType, fb.DataType);
+					mem.Fields.Add(fa.Offset, fieldType);
 					fa = null;
 					fb = null;
 				}

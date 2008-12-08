@@ -27,7 +27,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	public class InitialPageInteractorTests
 	{
 		private IMainForm form;
-		private MainFormInteractor formI;
+		private MainFormInteractor mi;
 		private IStartPage page;
 		private TestInitialPageInteractor i;
 
@@ -35,9 +35,9 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		public void Setup()
 		{
 			form = new MainForm();
-			formI = new MainFormInteractor(form);
+			mi = new MainFormInteractor(form);
             page = form.StartPage;
-			i = new TestInitialPageInteractor(page, formI);
+			i = new TestInitialPageInteractor(page, mi);
 		}
 
 		[TearDown]
@@ -66,6 +66,22 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 
 			Assert.AreEqual("foo.bar", page.InputFile.Text);
 		}
+
+        [Test]
+        public void CanAdvance()
+        {
+            Assert.IsFalse(i.CanAdvance);
+        }
+
+        //$REFACTOR: copied from LoadedPageInteractor, should
+        // push to base class or utility class.
+        private MenuStatus QueryStatus(int cmdId)
+        {
+            CommandStatus status = new CommandStatus();
+            mi.InitialPageInteractor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
+            return status.Status;
+        }
+
 	}
 
 	public class TestInitialPageInteractor : InitialPageInteractor
@@ -103,5 +119,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			get { return simulateUserCancel; }
 			set { simulateUserCancel = value; }
 		}
-	}
+
+    }
 }

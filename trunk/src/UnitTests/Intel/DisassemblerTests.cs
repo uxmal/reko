@@ -267,5 +267,19 @@ movzx	ax,byte ptr [bp+04]
 			Assert.AreEqual("mov\tword ptr cs:[0001],0800", instr.ToString());
 			Assert.AreEqual("selector", instr.op2.Width.ToString());
 		}
+
+        [Test]
+        public void TestWithImmediateOperands()
+        {
+            byte[] image = new byte[] { 0xF6, 0x06, 0x26, 0x54, 0x01 };
+            ProgramImage img = new ProgramImage(new Address(0x900, 0), image);
+            ImageReader rdr = img.CreateReader(img.BaseAddress);
+            IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
+            IntelInstruction instr = dasm.Disassemble();
+            Assert.AreEqual("test\tbyte ptr [5426],01", instr.ToString());
+            Assert.AreSame(PrimitiveType.Byte, instr.op1.Width);
+            Assert.AreSame(PrimitiveType.Byte, instr.op2.Width);
+            Assert.AreSame(PrimitiveType.Byte, instr.dataWidth, "Instruction data width should be byte");
+        }
 	}
 }

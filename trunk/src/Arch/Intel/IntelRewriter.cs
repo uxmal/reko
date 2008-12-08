@@ -907,14 +907,14 @@ namespace Decompiler.Arch.Intel
 						{
 							// test X,X ==> cmp X,0
 							src = new BinaryExpression(Operator.sub, 
-								instrCur.dataWidth,
+								instrCur.op1.Width,
 								SrcOp(instrCur.op1),
 								new Constant(instrCur.dataWidth, 0));
 						}
 						else
 						{
 							src = new BinaryExpression(Operator.and,
-								instrCur.dataWidth,
+								instrCur.op1.Width,
 								SrcOp(instrCur.op1),
 								SrcOp(instrCur.op2));
 						}

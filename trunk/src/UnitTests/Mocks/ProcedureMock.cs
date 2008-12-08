@@ -182,9 +182,9 @@ namespace Decompiler.UnitTests.Mocks
 			Emit(new Declaration(id, initial));
 		}
 
-		public void Dpb(Identifier dst, Expression src, int offset, int bitCount)
+		public Statement Dpb(Identifier dst, Expression src, int offset, int bitCount)
 		{
-			Assign(dst, new DepositBits(dst, src, offset, bitCount));
+			return Assign(dst, new DepositBits(dst, src, offset, bitCount));
 		}
 
 		private Block EnsureBlock(string name)

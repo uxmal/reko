@@ -334,6 +334,11 @@ namespace Decompiler.WindowsGui.Forms
 				case CmdIds.FileMru:
 					cmdStatus.Status = MenuStatus.Visible;
 					return true;
+                case CmdIds.ActionNextPhase:
+                    cmdStatus.Status = currentPage.CanAdvance
+                        ? MenuStatus.Enabled | MenuStatus.Visible
+                        : MenuStatus.Visible;
+                    return true;
 				}
 			}
 			return false;
@@ -373,7 +378,7 @@ namespace Decompiler.WindowsGui.Forms
 
 		public TextWriter CreateDisassemblyWriter()
 		{
-			return null;
+            return CreateTextWriter(decompiler.Project.Output.DisassemblyFilename);
 		}
 
 		public TextWriter CreateTypesWriter(string filename)

@@ -79,21 +79,13 @@ namespace Decompiler.Typing
             TypedExpressionRewriter ter = new TypedExpressionRewriter(store, globals);
             binExp.Left = binExp.Left.Accept(ter);
             binExp.Right = binExp.Right.Accept(ter);
-
-			Constant cRight = binExp.Right as Constant;
-			int offset = 0;
-			if (cRight != null)
-			{
-				offset = cRight.ToInt32();
-			}
-
-			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                 binExp.DataType,
-				tvLeft.DataType,
-				tvLeft.OriginalDataType,
-				basePointer,
-				binExp.Left,
-				offset);
+                tvLeft.DataType,
+                tvLeft.OriginalDataType,
+                basePointer,
+                binExp.Left,
+                StructureField.ToOffset(binExp.Right as Constant));
 			ceb.Dereferenced = true;
 			return ceb.BuildComplex();
 		}

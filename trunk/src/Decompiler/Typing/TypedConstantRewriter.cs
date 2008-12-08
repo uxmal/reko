@@ -92,7 +92,6 @@ namespace Decompiler.Typing
 		public void VisitMemberPointer(MemberPointer memptr)
 		{
 			// The constant is a member pointer.
-			Console.WriteLine("VMP: "  + memptr.BasePointer.GetType().Name);
 			Pointer p = (Pointer) memptr.BasePointer;
 			EquivalenceClass eq = (EquivalenceClass) p.Pointee;
 			StructureType baseType = (StructureType) eq.DataType;

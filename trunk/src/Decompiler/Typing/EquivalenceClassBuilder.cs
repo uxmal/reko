@@ -51,6 +51,14 @@ namespace Decompiler.Typing
 			
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
+                ProcedureSignature signature = proc.Signature;
+                if (signature != null)
+                {
+                    if (signature.ReturnValue != null)
+                    {
+                        signature.ReturnValue.Accept(this);
+                    }
+                }
 				foreach (Block block in proc.RpoBlocks)
 				{
 					foreach (Statement stm in block.Statements)

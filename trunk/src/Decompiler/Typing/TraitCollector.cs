@@ -67,6 +67,10 @@ namespace Decompiler.Typing
 		private void AddProcedureTraits(Procedure proc)
 		{
 			ProcedureSignature sig = proc.Signature;
+            if (sig.ReturnValue != null)
+            {
+                handler.DataTypeTrait(sig.ReturnValue.TypeVariable, sig.ReturnValue.DataType);
+            }
 		}
 			
 		public void CollectEffectiveAddress(TypeVariable fieldType, Expression effectiveAddress)
@@ -188,8 +192,14 @@ namespace Decompiler.Typing
 
 		public override void VisitReturnInstruction(ReturnInstruction ret)
 		{
-			if (ret.Value != null)
-				ret.Value.Accept(this);
+            if (ret.Value != null)
+            {
+                ret.Value.Accept(this);
+                if (Procedure.Signature != null && Procedure.Signature.ReturnValue != null)
+                {
+                    handler.EqualTrait(Procedure.Signature.ReturnValue.TypeVariable, ret.Value.TypeVariable);
+                }
+            }
 		}
 
 		public override void VisitSwitchInstruction(SwitchInstruction si)
@@ -437,6 +447,7 @@ namespace Decompiler.Typing
 		public override void VisitDepositBits(DepositBits d)
 		{
 			d.Source.Accept(this);
+            d.InsertedBits.Accept(this);
 			handler.DataTypeTrait(d.TypeVariable, d.DataType);
 			ivCur = null;
 		}

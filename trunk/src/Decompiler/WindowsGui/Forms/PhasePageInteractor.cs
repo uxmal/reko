@@ -22,53 +22,58 @@ using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
 {
-	/// <summary>
-	/// Base class for all interactors in charge of phase pages. Provides common functionality
-	/// such as command routing.
-	/// </summary>
-	public abstract class PhasePageInteractor : ICommandTarget
-	{
-		private PhasePageInteractor nextPage;
-		private MainFormInteractor mainInteractor;
+    /// <summary>
+    /// Base class for all interactors in charge of phase pages. Provides common functionality
+    /// such as command routing.
+    /// </summary>
+    public abstract class PhasePageInteractor : ICommandTarget
+    {
+        private PhasePageInteractor nextPage;
+        private MainFormInteractor mainInteractor;
 
-		public PhasePageInteractor(MainFormInteractor form)
-		{
-			this.mainInteractor = form;
-		}
+        public PhasePageInteractor(MainFormInteractor form)
+        {
+            this.mainInteractor = form;
+        }
 
-		//$TODO: consider making this a service.
-		public virtual DecompilerDriver Decompiler
-		{
-			get { return mainInteractor.Decompiler; }
-		}
+        public virtual bool CanAdvance
+        {
+            get { return this.Decompiler != null; }
+        }
+
+        //$TODO: consider making this a service.
+        public virtual DecompilerDriver Decompiler
+        {
+            get { return mainInteractor.Decompiler; }
+        }
 
 
-		public IMainForm MainForm
-		{
-			get { return mainInteractor.MainForm; }
-		}
+        public IMainForm MainForm
+        {
+            get { return mainInteractor.MainForm; }
+        }
 
         public MainFormInteractor MainInteractor
         {
             get { return mainInteractor; }
         }
 
-		public PhasePageInteractor NextPage
-		{
-			get { return nextPage; }
-			set { nextPage = value; }
-		}
+        public PhasePageInteractor NextPage
+        {
+            get { return nextPage; }
+            set { nextPage = value; }
+        }
 
-		/// <summary>
-		/// Derived classes should copy populate editable controls with initial values.
-		/// </summary>
-		public abstract void EnterPage();
+        /// <summary>
+        /// Derived classes should copy populate editable controls with initial values.
+        /// </summary>
+        public abstract void EnterPage();
 
-		/// <summary>
-		/// Derived classes should copy any values out of controls.
-		/// </summary>
-		/// <returns>False if derived class wants to cancel leaving the page due to errors.</returns>
-		public abstract bool LeavePage();
+        /// <summary>
+        /// Derived classes should copy any values out of controls.
+        /// </summary>
+        /// <returns>False if derived class wants to cancel leaving the page due to errors.</returns>
+        public abstract bool LeavePage();
 
         public abstract object Page { get; }
 
@@ -88,19 +93,19 @@ namespace Decompiler.WindowsGui.Forms
             return MainForm.ShowDialog(dlg);
         }
 
-		#region ICommandTarget Members
+        #region ICommandTarget Members
 
-		public virtual bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
-		{
-			return false;
-		}
+        public virtual bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        {
+            return false;
+        }
 
-		public virtual bool Execute(ref Guid cmdSet, int cmdId)
-		{
-			return false;
-		}
+        public virtual bool Execute(ref Guid cmdSet, int cmdId)
+        {
+            return false;
+        }
 
-		#endregion
+        #endregion
 
     }
 }

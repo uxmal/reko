@@ -167,7 +167,7 @@ namespace Decompiler.Analysis
 				cc = Negate(cc);
 			}
 			PrimitiveType p = bin.DataType as PrimitiveType;
-			bool isReal = (p != null && (p.Domain & Domain.Real) != 0);
+			bool isReal = (p != null && p.Domain == Domain.Real);
 			switch (cc)
 			{
 			case ConditionCode.UGT: cmpOp = Operator.ugt; break;

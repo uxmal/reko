@@ -36,7 +36,6 @@ namespace Decompiler.Typing
 	/// </remarks>
 	public class DataTypeBuilder : ITraitHandler
 	{
-		private ArrayList typeVars = new ArrayList();
 		private TypeStore store;
 		private TypeFactory factory;
 		private DataTypeBuilderUnifier unifier;
@@ -53,22 +52,8 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
-		public void MergeIntoDataType(DataType dtNew, TypeVariable tv)
-		{
-			if (dtNew == null)
-				return;
-
-			DataType dtCurrent = tv.OriginalDataType;;
-			if (dtCurrent != null)
-			{
-				dtNew = unifier.Unify(dtCurrent, dtNew);
-			}			
-			tv.OriginalDataType = dtNew;
-		}
-
 		public void BuildEquivalenceClassDataTypes()
 		{
-			//$REVIEW: this code causes cycles in the DataType graph.
 			UnionTypeVarsReplacer utv = new UnionTypeVarsReplacer(store);
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
@@ -88,6 +73,20 @@ namespace Decompiler.Typing
 				c.DataType = dt;
 			}
 		}
+
+        public void MergeIntoDataType(DataType dtNew, TypeVariable tv)
+        {
+            if (dtNew == null)
+                return;
+
+            DataType dtCurrent = tv.OriginalDataType; ;
+            if (dtCurrent != null)
+            {
+                dtNew = unifier.Unify(dtCurrent, dtNew);
+            }
+            tv.OriginalDataType = dtNew;
+        }
+
 
 		#region ITraitHandler Members
 
