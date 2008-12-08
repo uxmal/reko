@@ -147,6 +147,28 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             svc.AddDiagnostic(Diagnostic.Warning, new Address(0x30000), "Whoa");
             Assert.AreEqual(1, form.DiagnosticsList.Items.Count, "Should have added an item to diagnostics list.");
         }
+
+        [Test]
+        public void IsNextPhaseEnabled()
+        {
+            Program prog = new Program();
+            interactor = new TestMainFormInteractor(form, prog, new FakeLoader("fake.exe", prog));
+            CommandStatus status = QueryStatus(CmdIds.ActionNextPhase);
+            Assert.IsNotNull(status, "MainFormInteractor should know this command.");
+            Assert.AreEqual(MenuStatus.Visible, status.Status);
+        }
+
+        //$REFACTOR: copied from LoadedPageInteractor, should
+        // push to base class or utility class.
+        private CommandStatus QueryStatus(int cmdId)
+        {
+            CommandStatus status = new CommandStatus();
+            if (interactor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null))
+                return status;
+            else
+                return null;
+        }
+
 	}
 
 	public class TestMainFormInteractor : MainFormInteractor

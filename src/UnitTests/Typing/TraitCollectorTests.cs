@@ -360,7 +360,6 @@ namespace Decompiler.UnitTests.Typing
 			e.Accept(coll);
 			StringWriter sb = new StringWriter();
 			handler.Traits.Write(sb);
-			Console.WriteLine(sb);
 			string exp = 
 				"T_1 (in ds : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
@@ -373,6 +372,32 @@ namespace Decompiler.UnitTests.Typing
 				"\ttrait_primitive(bool)" + nl;
 			Assert.AreEqual(exp, sb.ToString());
 		}
+
+
+        [Test]
+        public void TrcoDbp()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier a = m.Local32("a");
+            Identifier b = m.LocalByte("b");
+            Statement s = m.Dpb(a, b, 0, 8);
+            coll = CreateCollector();
+            s.Instruction.Accept(eqb);
+            s.Instruction.Accept(coll);
+            StringWriter sb = new StringWriter();
+            handler.Traits.Write(sb);
+            Console.WriteLine(sb);
+            string exp =
+                "T_1 (in a : word32)" + nl +
+                "\ttrait_primitive(word32)" + nl +
+                "\ttrait_primitive(word32)" + nl +
+                "\ttrait_equal(T_3)" + nl +
+                "T_2 (in b : byte)" + nl +
+                "\ttrait_primitive(byte)" + nl +
+                "T_3 (in DPB(a, b, 0, 8) : word32)" + nl +
+                "\ttrait_primitive(word32)" + nl;
+            Assert.AreEqual(exp, sb.ToString());
+        }
 
         private TraitCollector CreateCollector()
         {

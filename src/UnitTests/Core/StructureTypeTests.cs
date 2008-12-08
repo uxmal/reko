@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -57,5 +58,20 @@ namespace Decompiler.UnitTests.Core
 			DataType dt = s.Simplify();
 			Assert.AreEqual("(segment (0 int32 dw0000))", dt.ToString());
 		}
+
+        [Test]
+        public void CreateField()
+        {
+            int off = StructureField.ToOffset(new Constant(PrimitiveType.Word16, 4));
+            Assert.AreEqual(4, off);
+        }
+
+        [Test]
+        public void CreateFieldWithLargeOffset()
+        {
+            ushort s = 0xC004;
+            int off = StructureField.ToOffset(new Constant(PrimitiveType.Word16, s));
+            Assert.AreEqual(0xC004, off);
+        }
 	}
 }

@@ -34,7 +34,7 @@ fn0C00_000F_exit:		// block 5, pred: 4
 Eq_2: (fn int16 (word16))
 	T_2 (in fn0C00_000F : ptr0)
 	T_3 (in signature of fn0C00_000F)
-	T_18 (in fn0C00_000F : ptr0)
+	T_19 (in fn0C00_000F : ptr0)
 Eq_7: (segment (64 int16 w0064))
 	T_7 (in ds : selector)
 // Type Variables ////////////
@@ -74,51 +74,55 @@ T_9: (in Mem9[ds:0x0064:word16] : word16)
   Class: Eq_6
   DataType: int16
   OrigDataType: word16
-T_10: (in ax_18 : word16)
+T_10: (in ax : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
-T_11: (in ax_14 : word16)
+T_11: (in ax_18 : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_12: (in ax_14 : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
-T_12: (in wArg00 : word16)
-  Class: Eq_12
+T_13: (in wArg00 : word16)
+  Class: Eq_13
   DataType: int16
   OrigDataType: int16
-T_13: (in 0x0001 : word16)
-  Class: Eq_13
+T_14: (in 0x0001 : word16)
+  Class: Eq_14
   DataType: word16
   OrigDataType: word16
-T_14: (in wArg00 - 0x0001 : word16)
+T_15: (in wArg00 - 0x0001 : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
-T_15: (in 0x0000 : word16)
+T_16: (in 0x0000 : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
-T_16: (in ax_14 == 0x0000 : bool)
-  Class: Eq_16
+T_17: (in ax_14 == 0x0000 : bool)
+  Class: Eq_17
   DataType: bool
   OrigDataType: bool
-T_17: (in 0x0001 : word16)
-  Class: Eq_10
+T_18: (in 0x0001 : word16)
+  Class: Eq_11
   DataType: word16
   OrigDataType: word16
-T_18: (in fn0C00_000F : ptr0)
+T_19: (in fn0C00_000F : ptr0)
   Class: Eq_2
   DataType: (ptr Eq_2)
-  OrigDataType: (ptr (fn T_19 (T_11)))
-T_19: (in fn0C00_000F(ax_14) : word16)
+  OrigDataType: (ptr (fn T_20 (T_12)))
+T_20: (in fn0C00_000F(ax_14) : word16)
   Class: Eq_6
   DataType: int16
   OrigDataType: int16
-T_20: (in wArg00 *s fn0C00_000F(ax_14) : int32)
-  Class: Eq_20
+T_21: (in wArg00 *s fn0C00_000F(ax_14) : int32)
+  Class: Eq_21
   DataType: int32
   OrigDataType: int32
-T_21: (in (word16) (wArg00 *s fn0C00_000F(ax_14)) : word16)
-  Class: Eq_10
+T_22: (in (word16) (wArg00 *s fn0C00_000F(ax_14)) : word16)
+  Class: Eq_11
   DataType: word16
   OrigDataType: word16

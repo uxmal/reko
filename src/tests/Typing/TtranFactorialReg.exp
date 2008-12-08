@@ -33,7 +33,7 @@ fn0C00_000B_exit:		// block 5, pred: 4
 Eq_2: (fn int16 (int16))
 	T_2 (in fn0C00_000B : ptr0)
 	T_3 (in signature of fn0C00_000B)
-	T_14 (in fn0C00_000B : ptr0)
+	T_15 (in fn0C00_000B : ptr0)
 Eq_7: (segment (64 int16 w0064))
 	T_7 (in ds : selector)
 // Type Variables ////////////
@@ -73,43 +73,47 @@ T_9: (in Mem7[ds:0x0064:word16] : word16)
   Class: Eq_6
   DataType: int16
   OrigDataType: word16
-T_10: (in ax_13 : word16)
+T_10: (in ax : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
-T_11: (in 0x0001 : word16)
+T_11: (in ax_13 : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_12: (in 0x0001 : word16)
   Class: Eq_4
   DataType: int16
   OrigDataType: int16
-T_12: (in cx <= 0x0001 : bool)
-  Class: Eq_12
+T_13: (in cx <= 0x0001 : bool)
+  Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_13: (in 0x0001 : word16)
-  Class: Eq_10
+T_14: (in 0x0001 : word16)
+  Class: Eq_11
   DataType: word16
   OrigDataType: word16
-T_14: (in fn0C00_000B : ptr0)
+T_15: (in fn0C00_000B : ptr0)
   Class: Eq_2
   DataType: (ptr Eq_2)
-  OrigDataType: (ptr (fn T_17 (T_16)))
-T_15: (in 0x0001 : word16)
-  Class: Eq_15
+  OrigDataType: (ptr (fn T_18 (T_17)))
+T_16: (in 0x0001 : word16)
+  Class: Eq_16
   DataType: word16
   OrigDataType: word16
-T_16: (in cx - 0x0001 : word16)
+T_17: (in cx - 0x0001 : word16)
   Class: Eq_4
   DataType: int16
   OrigDataType: word16
-T_17: (in fn0C00_000B(cx - 0x0001) : word16)
+T_18: (in fn0C00_000B(cx - 0x0001) : word16)
   Class: Eq_6
   DataType: int16
   OrigDataType: int16
-T_18: (in cx *s fn0C00_000B(cx - 0x0001) : int32)
-  Class: Eq_18
+T_19: (in cx *s fn0C00_000B(cx - 0x0001) : int32)
+  Class: Eq_19
   DataType: int32
   OrigDataType: int32
-T_19: (in (word16) (cx *s fn0C00_000B(cx - 0x0001)) : word16)
-  Class: Eq_10
+T_20: (in (word16) (cx *s fn0C00_000B(cx - 0x0001)) : word16)
+  Class: Eq_11
   DataType: word16
   OrigDataType: word16

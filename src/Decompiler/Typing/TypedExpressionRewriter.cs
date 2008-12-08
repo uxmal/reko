@@ -204,7 +204,7 @@ namespace Decompiler.Typing
                         dtLeft,
                         binExp.Left.TypeVariable.OriginalDataType,
                         binExp.Left,
-                        c.ToInt32());
+                        StructureField.ToOffset(c));
                     return ceb.BuildComplex();
                 }
 			}

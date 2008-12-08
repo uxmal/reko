@@ -42,7 +42,7 @@ namespace Decompiler.Typing
 			this.factory = factory;
 			this.store = store;
 			this.handler = handler;
-			this.unifier = new Unifier(factory);
+            this.unifier = new DataTypeBuilderUnifier(factory, store);
 		}
 
 		public Pointer CreatePointerToField(int offset, TypeVariable tvField)

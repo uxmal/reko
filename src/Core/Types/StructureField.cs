@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
 using System;
 using System.Collections;
 
@@ -36,6 +37,7 @@ namespace Decompiler.Core.Types
 			this.Offset = offset; this.DataType = type;
 		}
 
+
 		public StructureField(int offset, DataType type, string name)
 		{
 			this.Offset = offset; this.DataType = type; this.name = name;
@@ -55,6 +57,16 @@ namespace Decompiler.Core.Types
 				return string.Format("{0}{1:X4}", DataType.Prefix, Offset);         //$This probably should happen at a different level.
 			}
 		}
+
+        public static int ToOffset(Constant offset)
+        {
+            if (offset == null)
+                return 0;
+            else if (offset.Value is Int16 || offset.Value is Int32)
+                return (int) Convert.ToInt32(offset.Value);
+            else
+                return (int) Convert.ToUInt32(offset.Value);
+        }
 	}
 
 	public class StructureFieldCollection : CollectionBase
@@ -138,5 +150,6 @@ namespace Decompiler.Core.Types
 			}
 			return null;
 		}
+
 	}
 }
