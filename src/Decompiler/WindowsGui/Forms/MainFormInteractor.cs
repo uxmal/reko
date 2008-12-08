@@ -392,7 +392,9 @@ namespace Decompiler.WindowsGui.Forms
 			form.ProgressBar.Value = numerator;
 			form.ProgressBar.Minimum = 0;
 			form.ProgressBar.Maximum = denominator;
+            form.ProgressBar.Update();
 		}
+
 
 		public void CodeStructuringComplete()
 		{

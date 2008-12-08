@@ -27,5 +27,7 @@ namespace Decompiler.Gui
         int Value { get; set; }
         int Minimum { get; set; }
         int Maximum { get; set; }
+
+        void Update();
     }
 }

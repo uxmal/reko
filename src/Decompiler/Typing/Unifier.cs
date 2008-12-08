@@ -275,23 +275,23 @@ namespace Decompiler.Typing
 				return arrB;
 			}
 
-			StructureType memA = a as StructureType;
-			StructureType memB = b as StructureType;
-			if (memA != null && memB != null)
+			StructureType strA = a as StructureType;
+			StructureType strB = b as StructureType;
+			if (strA != null && strB != null)
 			{
-				return UnifyStructures(memA, memB);
+				return UnifyStructures(strA, strB);
 			}
-			if (memA != null && memA.Size >= b.Size)
+			if (strA != null && strA.Size >= b.Size)
 			{
-				memA.Fields.Add(0, b, null);
-				return memA;
+                MergeIntoStructure(b, strA);
+				return strA;
 			}
-			if (memB != null && memB.Size >= a.Size)
+			if (strB != null && strB.Size >= a.Size)
 			{
-				memB.Fields.Add(0, a, null);
-				return memB;
+                MergeIntoStructure(a, strB);
+				return strB;
 			}
-			if (memA != null || memB != null)
+			if (strA != null || strB != null)
 			{
 				return MakeUnion(a, b);
 			}
@@ -299,6 +299,19 @@ namespace Decompiler.Typing
 
 			return MakeUnion(a, b);
 		}
+
+        private void MergeIntoStructure(DataType a, StructureType str)
+        {
+            StructureField f = str.Fields.AtOffset(0);
+            if (f != null)
+            {
+                f.DataType = Unify(a, f.DataType);
+            }
+            else
+            {
+                str.Fields.Add(0, a, null);
+            }
+        }
 
 		public DataType UnifyArrays(ArrayType a, ArrayType b)
 		{

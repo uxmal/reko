@@ -179,6 +179,11 @@ namespace Decompiler.WindowsGui.Forms
                 set { bar.Maximum = Value; }
             }
 
+            public void Update()
+            {
+                bar.Control.Update();
+            }
+
             #endregion
         }
 
