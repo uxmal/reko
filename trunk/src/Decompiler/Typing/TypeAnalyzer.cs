@@ -81,7 +81,7 @@ namespace Decompiler.Typing
 		/// <param name="prog"></param>
 		public void RewriteProgram()
 		{
-            RestrictProcedures(0, 8);
+            RestrictProcedures(0, 8, true);
 			aen.Transform(prog);
 			eqb.Build(prog);
 			Debug.WriteLine("= Collecting traits ========================================");
@@ -108,7 +108,7 @@ namespace Decompiler.Typing
         /// </summary>
         /// <param name="p"></param>
         /// <param name="p_2"></param>
-        private void RestrictProcedures(int start, int count)
+        private void RestrictProcedures(int start, int count, bool dumpProcedures)
         {
             Procedure[] procs = new Procedure[count];
             for (int i = 0; i < count; ++i)
@@ -119,6 +119,14 @@ namespace Decompiler.Typing
             for (uint i = 0; i <procs.Length; ++i)
             {
                 prog.Procedures[new Address(i)] = procs[i];
+                if (dumpProcedures)
+                {
+                    procs[i].Dump(true, false);
+                }
+                else
+                {
+                    Debug.WriteLine(procs[i].Name);
+                }
             }
         }
 

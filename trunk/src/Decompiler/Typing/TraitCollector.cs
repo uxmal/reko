@@ -437,6 +437,7 @@ namespace Decompiler.Typing
 
 		public override void VisitDeclaration(Declaration decl)
 		{
+            decl.Id.Accept(this);
 			if (decl.Expression != null) 
 			{
 				decl.Expression.Accept(this);
