@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Core
 			Constant c2 = Constant.Word32(2);
 			BinaryOperator op = new AndOperator();
 			Constant c3 = op.ApplyConstants(c1, c2);
-			Assert.AreEqual(0, Convert.ToInt32(c3.Value));
+			Assert.AreEqual(0, c3.ToInt32());
 		}
 
 		[Test]
@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Core
 			Constant c2 = Constant.Word32(2);
 			BinaryOperator op = new OrOperator();
 			Constant c3 = op.ApplyConstants(c1, c2);
-			Assert.AreEqual(3, Convert.ToInt32(c3.Value));
+			Assert.AreEqual(3, c3.ToInt32());
 		}
 
 		[Test]
@@ -203,14 +203,14 @@ namespace Decompiler.UnitTests.Core
 			Constant c1 = Constant.Word32(a);
 			Constant c2 = Constant.Word32(b);
 			Constant c3 = op.ApplyConstants(c1, c2);
-			Assert.AreEqual(expected, (int) Convert.ToInt64(c3.Value));
+			Assert.AreEqual(expected, (int) c3.ToInt64());
 		}
 
 		private void RunApply(int a, UnaryOperator op, int expected)
 		{
 			Constant c1 = Constant.Word32(a);
 			Constant c2 = op.ApplyConstant(c1);
-			Assert.AreEqual(expected, (int) Convert.ToInt64(c2.Value));
+			Assert.AreEqual(expected, (int) c2.ToInt64());
 		}
 	}
 }

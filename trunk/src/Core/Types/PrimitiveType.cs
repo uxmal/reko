@@ -17,7 +17,7 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -84,6 +84,7 @@ namespace Decompiler.Core.Types
 				return d;
 			return byteSize - p.byteSize;
 		}
+
 		public static PrimitiveType Create(Domain dom, int byteSize)
 		{
 			return Create(dom, byteSize, null);
@@ -92,12 +93,12 @@ namespace Decompiler.Core.Types
 		private static PrimitiveType Create(Domain dom, int byteSize, string name)
 		{
 			PrimitiveType p = new PrimitiveType(dom, byteSize, null);
-			PrimitiveType shared = (PrimitiveType) cache[p];
-			if (shared == null)
+			PrimitiveType shared;
+            if (!cache.TryGetValue(p, out shared))
 			{
 				shared = p;
 				shared.Name = name != null ? name : GenerateName(dom, p.BitSize);
-				cache[p] = shared;
+                cache.Add(shared, shared);
 			}
 			return shared;
 		}
@@ -238,11 +239,11 @@ namespace Decompiler.Core.Types
 			set { throw new InvalidOperationException("Size of a primitive type cannot be changed."); }
 		}
 
-		private static Hashtable cache;
+		private static Dictionary<PrimitiveType,PrimitiveType> cache;
 
 		static PrimitiveType()
 		{
-			cache = new Hashtable();
+			cache = new Dictionary<PrimitiveType,PrimitiveType>();
 
 			_void = Create(Domain.Void, 0);
 

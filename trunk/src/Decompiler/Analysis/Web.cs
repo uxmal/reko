@@ -19,7 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.Analysis
@@ -27,56 +27,56 @@ namespace Decompiler.Analysis
 	public class Web
 	{
 		public Identifier id;
-		private ArrayList members;
-		public ArrayList defs;
-		public ArrayList uses;
+		private List<SsaIdentifier> members;
+		public List<Statement> defs;
+        public List<Statement> uses;
 		private LinearInductionVariable iv;
 
 		public Web()
 		{
-			members = new ArrayList();
-			defs = new ArrayList();
-			uses = new ArrayList();
+			members = new List<SsaIdentifier>();
+			defs = new List<Statement>();
+			uses = new List<Statement>();
 		}
 
 		public void Add(SsaIdentifier sid)
 		{
-			if (!members.Contains(sid))		// should be a set!
+            if (members.Contains(sid))		// should be a set!
+                return;
+
+			members.Add(sid);
+			if (this.id == null)
 			{
-				members.Add(sid);
-				if (this.id == null)
+				this.id = sid.Identifier;
+			}
+			else
+			{
+				if (sid.Identifier.Number < this.id.Number)
 				{
 					this.id = sid.Identifier;
 				}
-				else
-				{
-					if (sid.Identifier.Number < this.id.Number)
-					{
-						this.id = sid.Identifier;
-					}
 
+				if (iv == null)
+				{
+					iv = sid.InductionVariable;
+				}
+				else if (sid.InductionVariable == null)
+				{
+					sid.InductionVariable = iv;
+				}
+				else 
+				{
+					iv = LinearInductionVariable.Merge(sid.InductionVariable, iv);
 					if (iv == null)
 					{
-						iv = sid.InductionVariable;
+						// Warning(string.Format("{0} and {1} are conflicting induction variables: {2} {3}", 
 					}
-					else if (sid.InductionVariable == null)
-					{
-						sid.InductionVariable = iv;
-					}
-					else 
-					{
-						iv = LinearInductionVariable.Merge(sid.InductionVariable, iv);
-						if (iv == null)
-						{
-							// Warning(string.Format("{0} and {1} are conflicting induction variables: {2} {3}", 
-						}
-						sid.InductionVariable = iv;
-					}
+					sid.InductionVariable = iv;
 				}
-				defs.Add(sid.DefStatement);
-				foreach (Statement u in sid.Uses)
-					uses.Add(u);
 			}
+			defs.Add(sid.DefStatement);
+			foreach (Statement u in sid.Uses)
+				uses.Add(u);
 		}
 
 		public LinearInductionVariable InductionVariable
@@ -84,7 +84,7 @@ namespace Decompiler.Analysis
 			get { return iv; }
 		}
 
-		public ArrayList Members
+		public List<SsaIdentifier> Members
 		{
 			get { return members; }
 		}

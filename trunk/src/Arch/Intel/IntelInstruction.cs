@@ -26,7 +26,7 @@ namespace Decompiler.Arch.Intel
 	/// <summary>
 	/// Models an X86 instruction.
 	/// </summary>
-	public class IntelInstruction
+	public class IntelInstruction : MachineInstruction
 	{
 		public FlagM DefCc()  { return DefCc(code); }		// Condition codes defined by this instruction.
 		public FlagM UseCc()  { return UseCc(code); }		// Condition codes used by this instruction.

@@ -30,8 +30,7 @@ namespace Decompiler.Core
 	/// </summary>
 	public class CallGraph
 	{
-		private ArrayList entryPoints = new ArrayList();	
-		private Hashtable procedures = new Hashtable();
+		private List<Procedure> entryPoints = new List<Procedure>();	
 		private DirectedGraph<Procedure> graphProcs = new DirectedGraph<Procedure>();
 		private DirectedGraph<object> graphStms = new DirectedGraph<object>();
 
@@ -118,7 +117,7 @@ namespace Decompiler.Core
 		}
 
 
-		public ArrayList EntryPoints
+		public List<Procedure> EntryPoints
 		{
 			get { return entryPoints; }
 		}

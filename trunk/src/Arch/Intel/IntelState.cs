@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Arch.Intel
 {
@@ -28,20 +28,20 @@ namespace Decompiler.Arch.Intel
 	{
 		private ulong [] regs;
 		private bool [] valid;
-		private Stack stack;
+		private Stack<Constant> stack;
 
 		public IntelState()
 		{
 			regs = new ulong[(int)Registers.Max];
 			valid = new bool[(int)Registers.Max];
-			stack = new Stack();
+			stack = new Stack<Constant>();
 		}
 
 		public IntelState(IntelState st)
 		{
 			regs = (ulong []) st.regs.Clone();
 			valid = (bool []) st.valid.Clone();
-			stack = (Stack) st.stack.Clone();
+            stack = new Stack<Constant>(st.stack);
 		}
 
 		public Address AddressFromSegOffset(MachineRegister seg, uint offset)
@@ -110,15 +110,15 @@ namespace Decompiler.Arch.Intel
 						System.Diagnostics.Debug.WriteLine("bad pop");
 						return Constant.Invalid;
 					}
-					return (Constant) stack.Pop();
+					return stack.Pop();
 				case 4:
 					if (stack.Count < 2)
 					{
 						System.Diagnostics.Debug.WriteLine("bad pop");
 						return Constant.Invalid;
 					}
-					Constant v = (Constant) stack.Pop();
-					Constant v2 = (Constant) stack.Pop();
+					Constant v = stack.Pop();
+					Constant v2 = stack.Pop();
 					if (v.IsValid && v2.IsValid)
 					{
 						return new Constant(t, (v.ToUInt32() & 0x0000FFFF) | (v2.ToUInt32() << 16));

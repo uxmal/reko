@@ -18,14 +18,14 @@
 
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Types
 {
 	public class TypeFactory
 	{
 		private int typeVars;
-		private Hashtable primitives = new Hashtable();
+		private Dictionary<PrimitiveType,PrimitiveType> primitives = new Dictionary<PrimitiveType,PrimitiveType>();
 
 		public TypeFactory()
 		{
@@ -106,7 +106,7 @@ namespace Decompiler.Core.Types
 			return new UnionType(name, preferred);
 		}
 
-		public UnionType CreateUnionType(string name, DataType preferred, ICollection alternatives)
+		public UnionType CreateUnionType(string name, DataType preferred, ICollection<DataType> alternatives)
 		{
 			return new UnionType(name, preferred, alternatives);
 		}

@@ -19,7 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 
@@ -29,11 +29,11 @@ namespace Decompiler.Structure
 	{
 		public StructureNode G;			// graph entry
 		public StructureNode [] nodes;	// storage for graph nodes.
-		public ArrayList I;				// Intervals.
+		public List<Interval> I;				// Intervals.
 
 		public DerivedSequence()
 		{
-			I = new ArrayList();
+			I = new List<Interval>();
 		}
 
 		public StructureNode NewNode(int i, Block entry, BitSet blocks)

@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
@@ -40,7 +40,7 @@ namespace Decompiler.Core
 			get { return img; }
 		}
 
-		public abstract ArrayList BackWalk(Address addrFrom, IBackWalkHost host);
+		public abstract List<BackwalkOperation> BackWalk(Address addrFrom, IBackWalkHost host);
 
 		public static bool IsEvenPowerOfTwo(int n)
 		{

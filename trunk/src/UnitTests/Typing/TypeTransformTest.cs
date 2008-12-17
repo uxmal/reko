@@ -245,7 +245,7 @@ namespace Decompiler.UnitTests.Typing
 			EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store);
 			eq.Build(prog);
 			DataTypeBuilder dtb = new DataTypeBuilder(factory, store);
-			TraitCollector coll = new TraitCollector(factory, store, dtb, prog.Globals, ivs);
+			TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
 			coll.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();
 
@@ -271,7 +271,7 @@ namespace Decompiler.UnitTests.Typing
 
 		private void RunTest(string asmSourceFileName, string testFileName)
 		{
-			RewriteFile(asmSourceFileName);
+			Program prog = RewriteFile(asmSourceFileName);
 			RunTest(prog, testFileName);
 		}
 	}

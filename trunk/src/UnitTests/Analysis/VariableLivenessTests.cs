@@ -23,6 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 //$REFACTOR: rename file to IdentifierLivenessTests
@@ -73,7 +74,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LocalVar()
 		{
-			vl.LiveStackVariables = new StorageWidthMap();
+			vl.LiveStackVariables = new Dictionary<Storage,int>();
 			Identifier loc = frame.EnsureStackLocal(-8, PrimitiveType.Word32);		// pushed as a word.
 			Use(loc, 0, 16); // only read the last 16 bits.
 			Assert.AreEqual(1, vl.LiveStackVariables.Count);
@@ -83,7 +84,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void UseStackArg()
 		{
-			vl.LiveStackVariables = new StorageWidthMap();
+			vl.LiveStackVariables = new Dictionary<Storage,int>();
 			Identifier arg = frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			Use(arg, 0, 32);
 			Assert.AreEqual(1, vl.LiveStackVariables.Count);
@@ -115,7 +116,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void UseTemporary()
 		{
-			vl.LiveStackVariables = new StorageWidthMap();
+			vl.LiveStackVariables = new Dictionary<Storage,int>();
 			Identifier tmp = frame.CreateTemporary(PrimitiveType.Word16);
 			Use(tmp, 0, tmp.DataType.BitSize);
 			Assert.AreEqual(1, vl.LiveStackVariables.Count);

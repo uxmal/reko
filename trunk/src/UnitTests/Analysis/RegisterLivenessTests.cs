@@ -157,8 +157,8 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			RunTest("Fragments/regressions/r00010.asm", "Analysis/RlReg00010.txt");
 		}
-
-		protected override void RunTest(Program prog, FileUnitTester fut)
+        
+        protected override void RunTest(Program prog, FileUnitTester fut)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow);

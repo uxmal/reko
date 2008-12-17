@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Typing
 			Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
 
 			cmp.Accept(eqb);
-			coll = new TraitCollector(factory, store, dtb, prog.Globals, ivs);
+			coll = new TraitCollector(factory, store, dtb, prog);
 			cmp.Accept(coll);
 			dtb.BuildEquivalenceClassDataTypes();
 
@@ -249,22 +249,15 @@ namespace Decompiler.UnitTests.Typing
 
 		private void RunTest(string relativePath, string outputFile)
 		{
-			base.RewriteFile(relativePath);
-			RunTestCore(outputFile);
+			RunTest(RewriteFile(relativePath), outputFile);
 		}
 
 		private void RunTest(Program prog, string outputFile)
 		{
-			base.prog = prog;
-			RunTestCore(outputFile);
-		}
-
-		private void RunTestCore(string outputFile)
-		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				eqb.Build(prog);
-				coll = new TraitCollector(factory, store, dtb, prog.Globals, ivs);
+				coll = new TraitCollector(factory, store, dtb, prog);
 				coll.CollectProgramTraits(prog);
 				dtb.BuildEquivalenceClassDataTypes();
 				cpf.FollowConstantPointers(prog);
@@ -284,12 +277,12 @@ namespace Decompiler.UnitTests.Typing
 				}
 				finally
 				{
-					DumpProgAndStore(fut);
+					DumpProgAndStore(prog, fut);
 				}
 			}
 		}
 
-		private void DumpProgAndStore(FileUnitTester fut)
+		private void DumpProgAndStore(Program prog, FileUnitTester fut)
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
 			{

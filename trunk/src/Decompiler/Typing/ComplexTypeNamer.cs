@@ -59,7 +59,7 @@ namespace Decompiler.Typing
 			if (ut.Name == null && eq != null)
 				ut.Name = eq.Name;
 			int i = 0; 
-			foreach (UnionAlternative a in ut.Alternatives)
+			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
 				a.Name = a.MakeName(i++);
 			}

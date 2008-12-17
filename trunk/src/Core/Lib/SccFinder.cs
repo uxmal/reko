@@ -17,7 +17,7 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Lib
 {
@@ -28,23 +28,23 @@ namespace Decompiler.Core.Lib
 	/// The algorithm itself is generic, and depends on an implementation of the ISccFinderHost interface for specific
 	/// nodes.
 	/// </remarks>
-	public class SccFinder
+	public class SccFinder<T>
 	{
-		private ISccFinderHost host;
+		private ISccFinderHost<T> host;
 		private int nextDfs = 0;
-		private Stack stack = new Stack();
-		private Hashtable map = new Hashtable();
+		private Stack<Node> stack = new Stack<Node>();
+		private Dictionary<T,Node> map = new Dictionary<T,Node>();
 
-		public SccFinder(ISccFinderHost host)
+		public SccFinder(ISccFinderHost<T> host)
 		{
 			this.host = host;
 			this.nextDfs = 0;
 		}
 
-		private Node AddNode(object o)
+		private Node AddNode(T o)
 		{
-			Node node = (Node) map[o];
-			if (node == null)
+			Node node;
+            if (!map.TryGetValue(o, out node))
 			{
 				node = new Node(o);
 				map[o] = node;
@@ -72,30 +72,31 @@ namespace Decompiler.Core.Lib
 			}
 			if (node.low == node.dfsNumber)
 			{
-				ArrayList scc = new ArrayList();
+				List<T> scc = new List<T>();
 				Node x;
 				do
 				{
-					x = (Node) stack.Pop();
+					x = stack.Pop();
 					scc.Add(x.o);
 				} while (x != node);
 				host.ProcessScc(scc);
 			}
 		}
 
-		public void Find(object start)
+		public void Find(T start)
 		{
-			if (map[start] == null)
+			if (!map.ContainsKey(start))
 				Dfs(AddNode(start));
 		}
 
-		private ArrayList GetSuccessors(Node node)
+		private ICollection<Node> GetSuccessors(Node node)
 		{
-			ArrayList succ = new ArrayList();
+			List<T> succ = new List<T>();
 			host.AddSuccessors(node.o, succ);
+            List<Node> nodes = new List<Node>(succ.Count);
 			for (int i = 0; i < succ.Count; ++i)
-				succ[i] = AddNode(succ[i]);
-			return succ;
+				nodes.Add(AddNode(succ[i]));
+			return nodes;
 		}
 
 		private class Node
@@ -103,9 +104,9 @@ namespace Decompiler.Core.Lib
 			public int dfsNumber;
 			public bool visited;
 			public int low;
-			public object o;
+			public T o;
 
-			public Node(object o)
+			public Node(T o)
 			{
 				this.o = o;
 			}
@@ -113,10 +114,10 @@ namespace Decompiler.Core.Lib
 	}
 
 
-	public interface ISccFinderHost
+	public interface ISccFinderHost<T>
 	{
-		void AddSuccessors(object o, ArrayList succ);
+		void AddSuccessors(T t, ICollection<T> succ);
 
-		void ProcessScc(ArrayList scc);
+		void ProcessScc(ICollection<T> scc);
 	}
 }

@@ -47,8 +47,8 @@ namespace Decompiler.UnitTests.Typing
 			eqb.VisitAssignment(ass1);
 			eqb.VisitAssignment(ass2);
 
-			trco = new TraitCollector(factory, store, dtb, new Identifier("globals", 0, PrimitiveType.Pointer, new MemoryStorage()), ivs);
-			trco.Procedure = new Procedure("foo", null);
+            Program prog = new Program();
+            trco = new TraitCollector(factory, store, dtb, prog);
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
 			dtb.BuildEquivalenceClassDataTypes();
@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Typing
 		private void RunTest(Program prog, string outputFilename)
 		{
 			eqb.Build(prog);
-			trco = new TraitCollector(factory, store, dtb, prog.Globals, ivs);
+			trco = new TraitCollector(factory, store, dtb, prog);
 			trco.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();
 
@@ -79,7 +79,6 @@ namespace Decompiler.UnitTests.Typing
 		{
 			factory = new TypeFactory();
 			store = new TypeStore();
-			ivs = new InductionVariableCollection();
 			eqb = new EquivalenceClassBuilder(factory, store);
 			dtb = new DataTypeBuilder(factory, store);
 		}

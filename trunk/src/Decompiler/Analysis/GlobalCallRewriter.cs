@@ -18,7 +18,6 @@
 
 using System;
 using Application = Decompiler.Core.Code.Application;
-using ArrayList = System.Collections.ArrayList;
 using Assignment = Decompiler.Core.Code.Assignment;
 using BitSet = Decompiler.Core.Lib.BitSet;
 using Block = Decompiler.Core.Block;
@@ -31,7 +30,6 @@ using Debug = System.Diagnostics.Debug;
 using Expression = Decompiler.Core.Code.Expression;
 using FpuStackStorage = Decompiler.Core.FpuStackStorage;
 using Frame = Decompiler.Core.Frame;
-using Hashtable = System.Collections.Hashtable;
 using Identifier = Decompiler.Core.Code.Identifier;
 using Instruction = Decompiler.Core.Code.Instruction;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
@@ -44,7 +42,6 @@ using ProcedureSignature = Decompiler.Core.ProcedureSignature;
 using Program = Decompiler.Core.Program;
 using RegisterStorage = Decompiler.Core.RegisterStorage;
 using ReturnInstruction = Decompiler.Core.Code.ReturnInstruction;
-using SccFinder = Decompiler.Core.Lib.SccFinder;
 using SortedList = System.Collections.SortedList;
 using SignatureBuilder = Decompiler.Core.SignatureBuilder;
 using StackArgumentStorage= Decompiler.Core.StackArgumentStorage;

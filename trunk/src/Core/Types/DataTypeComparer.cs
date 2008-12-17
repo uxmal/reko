@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Core.Types
@@ -26,7 +27,7 @@ namespace Decompiler.Core.Types
 	/// Compares two data types to see if they are equal or
 	/// less than each other.
 	/// </summary>
-	public class DataTypeComparer : IComparer, IDataTypeVisitor
+	public class DataTypeComparer : IComparer<DataType>, IDataTypeVisitor
 	{
 		private int prio;
 
@@ -45,7 +46,7 @@ namespace Decompiler.Core.Types
 		{
 		}
 
-		public int Compare(object x, object y)
+		public int Compare(DataType x, DataType y)
 		{
 			return Compare(x, y, 0);
 		}
@@ -59,15 +60,13 @@ namespace Decompiler.Core.Types
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public int Compare(object x, object y, int count)
+		public int Compare(DataType x, DataType y, int count)
 		{
 			if (count > 20)
 				throw new ApplicationException("Way too deep");
-			DataType dx = (DataType) x; 
-			DataType dy = (DataType) y;
-			dx.Accept(this);
+			x.Accept(this);
 			int prioX = prio;
-			dy.Accept(this);
+			y.Accept(this);
 			int dPrio = prioX - prio;
 			if (dPrio != 0)
 				return dPrio;
@@ -142,14 +141,11 @@ namespace Decompiler.Core.Types
 			d = x.Alternatives.Count - y.Alternatives.Count;
 			if (d != 0)
 				return d;
-			IEnumerator ex = x.Alternatives.GetEnumerator();
-			IEnumerator ey = y.Alternatives.GetEnumerator();
 			++count;
-			while (ex.MoveNext())
-			{
-				ey.MoveNext();
-				UnionAlternative ax = (UnionAlternative) ex.Current;
-				UnionAlternative ay = (UnionAlternative) ey.Current;
+            for (int i = 0; i < x.Alternatives.Count; ++i)
+            {
+				UnionAlternative ax = x.Alternatives.Values[0];
+                UnionAlternative ay = y.Alternatives.Values[0];
 				d = Compare(ax.DataType, ay.DataType, count);
 				if (d != 0)
 					return d;

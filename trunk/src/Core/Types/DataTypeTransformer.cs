@@ -85,7 +85,7 @@ namespace Decompiler.Core.Types
 
 		public virtual DataType TransformUnionType(UnionType ut)
 		{
-			foreach (UnionAlternative a in ut.Alternatives)
+			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
 				a.DataType = a.DataType.Accept(this);
 			}

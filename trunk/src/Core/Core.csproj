@@ -343,9 +343,11 @@
     <Compile Include="Lib\Tree.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LinearInductionVariable.cs" />
     <Compile Include="MachineFlags.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MachineInstruction.cs" />
     <Compile Include="MachineRegister.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
@@ -31,7 +31,7 @@ namespace Decompiler.Core
 	/// </summary>
 	public class SignatureBuilder
 	{
-		private ArrayList args;
+		private List<Identifier> args;
 		private Identifier ret = null;
 		private Procedure proc;
 		private IProcessorArchitecture arch;
@@ -40,7 +40,7 @@ namespace Decompiler.Core
 		{
 			this.proc = proc;
 			this.arch = arch;
-			args = new ArrayList();
+			args = new List<Identifier>();
 		}
 
 		private bool SingleBitSet(uint w)
@@ -91,8 +91,7 @@ namespace Decompiler.Core
 
 		public ProcedureSignature BuildSignature()
 		{
-			Identifier [] a = (Identifier []) args.ToArray(typeof (Identifier));
-			return new ProcedureSignature(ret, a);
+			return new ProcedureSignature(ret, args.ToArray());
 		}
 
 		public Identifier CreateOutIdentifier(Procedure proc, Identifier id)

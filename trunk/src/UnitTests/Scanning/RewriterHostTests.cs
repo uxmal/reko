@@ -23,7 +23,7 @@ using Decompiler.Core.Types;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 
 namespace Decompiler.UnitTests.Scanning
@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Scanning
 			Program prog = new Program();
 			prog.Architecture = arch;
 			RewriterHost host = new RewriterHost(prog, null, null, null);
-			ArrayList al = new ArrayList();
+			List<SerializedCall> al = new List<SerializedCall>();
 			SerializedSignature sig = new SerializedSignature();
 			sig.Arguments = new SerializedArgument[2];
 			sig.Arguments[0] = new SerializedArgument();

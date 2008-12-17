@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.Analysis
@@ -30,7 +30,7 @@ namespace Decompiler.Analysis
 		private Identifier id;
 		private BitSet bits;
 		private uint grf;
-		private StorageWidthMap liveStackVars;
+		private Dictionary<Storage,int> liveStackVars;
 		private IProcessorArchitecture arch;
 		private bool define;
 		private int defOffset;
@@ -41,7 +41,7 @@ namespace Decompiler.Analysis
 		public IdentifierLiveness(IProcessorArchitecture arch)
 		{
 			this.arch = arch;
-			liveStackVars = new StorageWidthMap();
+			liveStackVars = new Dictionary<Storage,int>();
 		}
 
 		public void Def(Identifier id)
@@ -104,7 +104,7 @@ namespace Decompiler.Analysis
 		}
 
 		//$REFACTOR: rename to LiveStorages.
-		public StorageWidthMap LiveStackVariables
+		public Dictionary<Storage,int> LiveStackVariables
 		{
 			get { return liveStackVars; }
 			set { liveStackVars = value; }
@@ -174,7 +174,7 @@ namespace Decompiler.Analysis
 		{
 			if (define)
 			{
-				if (liveStackVars.Contains(local))
+				if (liveStackVars.ContainsKey(local))
 				{
 					defBitSize = liveStackVars[local];
 					liveStackVars.Remove(local);
@@ -183,7 +183,7 @@ namespace Decompiler.Analysis
 			}
 			else
 			{
-				if (liveStackVars.Contains(local))
+				if (liveStackVars.ContainsKey(local))
 				{
 					liveStackVars[local] =
 						Math.Max(useBitSize, liveStackVars[local]);
@@ -200,7 +200,7 @@ namespace Decompiler.Analysis
 		{
 			if (define)
 			{
-				if (liveStackVars.Contains(arg))
+				if (liveStackVars.ContainsKey(arg))
 				{
 					defBitSize = liveStackVars[arg];
 					liveStackVars.Remove(arg);
@@ -209,7 +209,7 @@ namespace Decompiler.Analysis
 			}
 			else
 			{
-				if (liveStackVars.Contains(arg))
+				if (liveStackVars.ContainsKey(arg))
 				{
 					liveStackVars[arg] = Math.Max(useBitSize, liveStackVars[arg]);
 				}
@@ -225,7 +225,7 @@ namespace Decompiler.Analysis
 		{
 			if (define)
 			{
-				if (liveStackVars.Contains(tmp))
+				if (liveStackVars.ContainsKey(tmp))
 				{
 					defBitSize = liveStackVars[tmp];
 					liveStackVars.Remove(tmp);
@@ -234,7 +234,7 @@ namespace Decompiler.Analysis
 			}
 			else
 			{
-				if (liveStackVars.Contains(tmp))
+				if (liveStackVars.ContainsKey(tmp))
 				{
 					liveStackVars[tmp] = Math.Max(useBitSize, liveStackVars[tmp]);
 				}

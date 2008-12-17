@@ -25,7 +25,7 @@ using Decompiler.Analysis;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void SltLiveCopy()
 		{
 			Build(new LiveCopyMock().Procedure, new ArchitectureMock());
-			WebBuilder wb = new WebBuilder(proc, ssa.Identifiers, new InductionVariableCollection());
+			WebBuilder wb = new WebBuilder(proc, ssa.Identifiers, new Dictionary<Identifier,LinearInductionVariable>());
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltLiveCopy.txt"))
 			{
 				ssa.Write(fut.TextWriter);

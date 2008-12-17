@@ -21,7 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.Analysis
@@ -33,7 +33,7 @@ namespace Decompiler.Analysis
 		private Block block;
 		private int iStm;
 		private bool [] deadIn;
-		private ArrayList [] aliases;
+		private List<int> [] aliases;
 		private IProcessorArchitecture arch;
 
 		public Aliases(Procedure proc, IProcessorArchitecture arch)
@@ -57,10 +57,10 @@ namespace Decompiler.Analysis
 
 		private void BuildAliases()
 		{
-			aliases = new ArrayList[proc.Frame.Identifiers.Count];
+			aliases = new List<int>[proc.Frame.Identifiers.Count];
 			for (int i = 0; i < aliases.Length; ++i)
 			{
-				aliases[i] = new ArrayList();
+				aliases[i] = new List<int>();
 			}
 
 			for (int i = 0; i < aliases.Length; ++i)
@@ -349,7 +349,7 @@ namespace Decompiler.Analysis
 
 		public void VisitRegisterStorage(RegisterStorage reg)
 		{
-			liveVars[idCur.Number] = !liveRegs[reg.Register.Number];
+			liveVars[idCur.Number] = liveRegs[reg.Register.Number];
 		}
 
 		public void VisitStackLocalStorage(StackLocalStorage local)

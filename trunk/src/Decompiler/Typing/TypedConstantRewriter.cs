@@ -138,7 +138,7 @@ namespace Decompiler.Typing
 		{
 			if (pt.Domain == Domain.Real && pOrig.IsIntegral)
 			{
-				Return(Constant.RealFromBitpattern(pt, Convert.ToInt64(c.Value)));
+				Return(Constant.RealFromBitpattern(pt, c.ToInt64()));
 			}
 			else
 			{

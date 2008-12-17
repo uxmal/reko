@@ -20,7 +20,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace Decompiler.Core.Serialization
@@ -67,7 +67,7 @@ namespace Decompiler.Core.Serialization
 			{
 				ret = argser.Deserialize(ss.ReturnValue);
 			}
-			ArrayList args = new ArrayList();
+			List<Identifier> args = new List<Identifier>();
 			if (ss.Arguments != null)
 			{
 				foreach (SerializedArgument arg in ss.Arguments)
@@ -75,9 +75,7 @@ namespace Decompiler.Core.Serialization
 					args.Add(argser.Deserialize(arg));
 				}
 			}
-			ProcedureSignature sig = new ProcedureSignature(
-				ret, (Identifier [])args.ToArray(typeof(Identifier)));
-			
+            ProcedureSignature sig = new ProcedureSignature(ret, args.ToArray());
 			ApplyConvention(ss, sig);
 			return sig;
 		}

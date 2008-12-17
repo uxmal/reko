@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using TextWriter = System.IO.TextWriter;
 using StringWriter = System.IO.StringWriter;
@@ -36,9 +36,9 @@ namespace Decompiler.Analysis
 	public class ValueNumbering
 	{
 		private SsaIdentifierCollection ssaIds;
-		private Hashtable optimistic;	// maps <valnum> -> <node>
-		private Hashtable valid;
-		private Stack stack;
+        private Dictionary<Expression, Expression> optimistic;	// maps <valnum> -> <node>
+        private Dictionary<Expression, Expression> valid;
+		private Stack<Node> stack;
 		private int iDFS;
 		private Node [] nodes;
 
@@ -58,9 +58,9 @@ namespace Decompiler.Analysis
 		public ValueNumbering(SsaIdentifierCollection ssaIds)
 		{
 			this.ssaIds = ssaIds;
-			optimistic = new Hashtable();
-			valid = new Hashtable();
-			stack = new Stack();
+            optimistic = new Dictionary<Expression, Expression>();
+			valid = new Dictionary<Expression,Expression>();
+			stack = new Stack<Node>();
 
 
 			// Set initial value numbers for all nodes (SSA identifiers). 
@@ -78,11 +78,11 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		private void AddNodeInOrder(ArrayList al, Node n)
+		private void AddNodeInOrder(List<Node> al, Node n)
 		{
 			for (int i = 0; i < al.Count; ++i)
 			{
-				if (n.DfsNumber < ((Node) al[i]).DfsNumber)
+				if (n.DfsNumber < al[i].DfsNumber)
 				{
 					al.Insert(i, n);
 					return;
@@ -117,7 +117,7 @@ namespace Decompiler.Analysis
 		/// <param name="n"></param>
 		/// <param name="table"></param>
 		/// <returns></returns>
-		private bool AssignValueNumber(Node n, Hashtable table)
+		private bool AssignValueNumber(Node n, Dictionary<Expression,Expression> table)
 		{
 			ExpressionSimplifier simp = new ExpressionSimplifier(this, table);
 			Expression expr;
@@ -144,7 +144,7 @@ namespace Decompiler.Analysis
 		}
 
 
-		private void ClassifyInductionVariable(ArrayList scc)
+		private void ClassifyInductionVariable(List<Node> scc)
 		{
 			RegionConstantFinder rc = new RegionConstantFinder(scc, ssaIds);
 			Block header = null;
@@ -205,11 +205,11 @@ namespace Decompiler.Analysis
 
 				if (n.low == n.DfsNumber)
 				{
-					ArrayList scc = new ArrayList();
+					List<Node> scc = new List<Node>();
 					Node x;
 					do
 					{
-						x = (Node) stack.Pop();
+						x = stack.Pop();
 						AddNodeInOrder(scc, x);
 					} while (x != n);
 					ProcessScc(scc);
@@ -242,16 +242,16 @@ namespace Decompiler.Analysis
 		/// </summary>
 		/// <param name="expr">Expression to look for</param>
 		/// <returns>Value number of the expression</returns>
-		public Expression Lookup(Expression expr, Hashtable table, Expression lvalue)
+		public Expression Lookup(Expression expr, Dictionary<Expression,Expression> table, Expression lvalue)
 		{
-			object o = table[expr];
-			if (o != null)
+			Expression e;
+            if (table.TryGetValue(expr, out e))
 			{
-				return (Expression) o;
+                return e;
 			}
 			else
 			{
-				table[expr] = lvalue;
+				table.Add(expr, lvalue);
 				return lvalue;
 			}
 		}
@@ -262,11 +262,11 @@ namespace Decompiler.Analysis
 		/// Loops have to be iterated until they stabilize.
 		/// </summary>
 		/// <param name="scc"></param>
-		private void ProcessScc(ArrayList scc)
+		private void ProcessScc(List<Node> scc)
 		{
 			if (scc.Count == 1)
 			{
-				AssignValueNumber((Node) scc[0], valid);
+				AssignValueNumber(scc[0], valid);
 			}
 			else
 			{
@@ -293,9 +293,9 @@ namespace Decompiler.Analysis
 
 		public void Write(TextWriter writer)
 		{
-			SortedList vals = new SortedList();
+			SortedList<string,string> vals = new SortedList<string,string>();
 			writer.WriteLine("Values:");
-			foreach (DictionaryEntry de in valid)
+			foreach (KeyValuePair<Expression,Expression> de in valid)
 			{
 				string s = string.Format("{0}: <{1}>", de.Key, de.Value);
 				vals.Add(s, s);
@@ -428,12 +428,12 @@ namespace Decompiler.Analysis
 		private class RegionConstantFinder : InstructionVisitorBase
 		{
 			private SsaIdentifierCollection ssaIds;
-			private ArrayList scc;
+			private List<Node> scc;
 			private bool inductive = true;
 			private Identifier identifier;
 			private Constant stride;
 
-			public RegionConstantFinder(ArrayList scc, SsaIdentifierCollection ssaIds)
+			public RegionConstantFinder(List<Node> scc, SsaIdentifierCollection ssaIds)
 			{
 				this.ssaIds = ssaIds;
 				this.scc = scc;
@@ -451,7 +451,7 @@ namespace Decompiler.Analysis
 				Constant c = e as Constant;
 				if (c != null)
 				{
-					return Convert.ToInt32(c.Value);
+                    return c.ToInt32();
 				}
 				return 0;
 			}
@@ -482,11 +482,12 @@ namespace Decompiler.Analysis
 
 			public override void VisitIdentifier(Identifier id)
 			{
-				inductive = scc.Contains(id);
-				if (inductive)
-					identifier = id;
-				else
-					identifier = null;
+                throw new NotImplementedException();
+                //inductive = scc.Contains(id);
+                //if (inductive)
+                //    identifier = id;
+                //else
+                //    identifier = null;
 			}
 		}
 

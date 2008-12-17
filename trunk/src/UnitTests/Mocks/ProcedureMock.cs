@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 
 namespace Decompiler.UnitTests.Mocks
@@ -31,14 +31,14 @@ namespace Decompiler.UnitTests.Mocks
 	public class ProcedureMock
 	{
 		private Block block;
-		private Hashtable blocks;
+		private Dictionary<string,Block> blocks;
 		private Procedure proc;
 		private Block branchBlock;
 		private Block lastBlock;
 		private int numBlock;
 		private ProgramMock programMock;
 		private int localStackOffset;
-		private ArrayList unresolvedProcedures;
+		private List<ProcUpdater> unresolvedProcedures;
 
 		public ProcedureMock()
 		{
@@ -119,8 +119,8 @@ namespace Decompiler.UnitTests.Mocks
 
 		private Block BlockOf(string label)
 		{
-			Block b = (Block) blocks[label];
-			if (b == null)
+			Block b;
+            if (!blocks.TryGetValue(label, out b))
 			{
 				b = new Block(proc, label);
 				blocks.Add(label, b);
@@ -299,9 +299,9 @@ namespace Decompiler.UnitTests.Mocks
 
 		private void Init(string name)
 		{
-			blocks = new Hashtable();
+			blocks = new Dictionary<string,Block>();
 			proc = new Procedure(name, new Frame(PrimitiveType.Word32));
-			unresolvedProcedures = new ArrayList();
+			unresolvedProcedures = new List<ProcUpdater>();
 			BuildBody();
 			proc.RenumberBlocks();
 		}
@@ -596,7 +596,7 @@ namespace Decompiler.UnitTests.Mocks
 			}
 		}
 
-		public ICollection UnresolvedProcedures
+		public ICollection<ProcUpdater> UnresolvedProcedures
 		{
 			get { return unresolvedProcedures; }
 		}

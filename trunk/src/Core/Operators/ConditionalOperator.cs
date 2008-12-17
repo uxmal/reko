@@ -72,7 +72,7 @@ namespace Decompiler.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			return Convert.ToInt32(c1.Value) != Convert.ToInt32(c2.Value)
+			return c1.ToInt32() != c2.ToInt32()
 				? Constant.True() 
 				: Constant.False();
 

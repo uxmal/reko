@@ -36,7 +36,7 @@ namespace Decompiler.Analysis.Simplification
 
 		public Expression Transform(Statement stm)
 		{
-			return new Constant(slice.DataType, Slice(Convert.ToInt32(c.Value)));
+			return new Constant(slice.DataType, Slice(c.ToInt32()));
 		}
 
 		public int Slice(int val)

@@ -22,7 +22,6 @@ using Decompiler.Core.Lib;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -164,12 +163,12 @@ namespace Decompiler.Core
 			private List<Block> rpoBlocks;
 			private int rpo;
 
-			private void DFS(Block block, Hashtable visited)
+			private void DFS(Block block, Dictionary<Block,Block> visited)
 			{
 				visited[block] = block;
 				foreach (Block s in block.Succ)
 				{
-					if (!visited.Contains(s) && !IsEmpty(s))
+					if (!visited.ContainsKey(s) && !IsEmpty(s))
 					{
 						DFS(s, visited);
 					}
@@ -187,7 +186,7 @@ namespace Decompiler.Core
 
 			public List<Block> Renumber(Block block)
 			{
-				Hashtable visited = new Hashtable();
+                Dictionary<Block, Block> visited = new Dictionary<Block, Block>();
 				DFS(block, visited);
 				rpo = visited.Count;
 
@@ -196,12 +195,12 @@ namespace Decompiler.Core
                 {
                     rpoBlocks.Add(null);
                 }
-				RenumberBlock(block, new Hashtable());
+                RenumberBlock(block, new Dictionary<Block, Block>());
 
 				return rpoBlocks;
 			}
 
-			private void RenumberBlock(Block block, Hashtable visited)
+            private void RenumberBlock(Block block, Dictionary<Block, Block> visited)
 			{
 				visited[block] = block;
 				for (int i = 0; i < block.Succ.Count; ++i)

@@ -103,7 +103,7 @@ namespace Decompiler.Typing
 		public override void VisitConstant(Constant c)
 		{
 			DataType dt = store.ResolvePossibleTypeVar(c.TypeVariable);
-			int offset = (int) Convert.ToInt64(c.Value);
+            int offset = StructureField.ToOffset(c);
 			Pointer ptr = dt as Pointer;
 			if (ptr != null)
 			{

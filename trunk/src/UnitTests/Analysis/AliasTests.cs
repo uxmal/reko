@@ -48,6 +48,12 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/multiple/preserved_alias.asm", "Analysis/AlPreservedAlias.txt");
 		}
 
+        [Test]
+        public void AlReg00011()
+        {
+            RunTest("Fragments/regressions/r00011.asm", "Analysis/AlReg00011.txt");
+        }
+
 		[Test]
 		public void AliasWideToNarrow()
 		{

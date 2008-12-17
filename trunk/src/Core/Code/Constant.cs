@@ -321,11 +321,6 @@ namespace Decompiler.Core.Code
 			return new Constant(PrimitiveType.Bool, 1);
 		}
 
-		public object Value
-		{
-			get { return this.c; }
-		}
-
 		public static Constant Word32(int n)
 		{
 			return new Constant(PrimitiveType.Word32, n); 

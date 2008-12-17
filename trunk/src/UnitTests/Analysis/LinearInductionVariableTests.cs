@@ -24,7 +24,7 @@ using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Analysis
 		///    a3 = a2 + 4
 		/// }
 		/// </summary>
-		private ArrayList BuildScc()
+		private List<SsaIdentifier> BuildScc()
 		{
 			Block b1 = new Block(null, "b1");
 			b1.RpoNumber = 1;
@@ -73,18 +73,17 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds.Add(sid_a2);
 			ssaIds.Add(sid_a3);
 
-			ArrayList list = new ArrayList();
+            List<SsaIdentifier> list = new List<SsaIdentifier>();
 			list.Add(ssaIds[0]);
 			list.Add(ssaIds[1]);
 			list.Add(ssaIds[2]);
 			return list;
-
 		}
 
 		[Test]
 		public void FindPhi()
 		{
-			ArrayList a = BuildScc();
+			List<SsaIdentifier> a = BuildScc();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
 			PhiFunction p = liv.FindPhiFunction(a);
 			Assert.IsNotNull(p, "Didn't find phi function!");
@@ -93,20 +92,20 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void FindLinearIncrement()
 		{
-			ArrayList a = BuildScc();
+			List<SsaIdentifier> a = BuildScc();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
 			Constant c = liv.FindLinearIncrement(a);
-			Assert.AreEqual(4, Convert.ToInt32(c.Value));
+			Assert.AreEqual(4, c.ToInt32());
 		}
 
 		[Test]
 		public void FindInitialValue()
 		{
-			ArrayList a = BuildScc();
+			List<SsaIdentifier> a = BuildScc();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 			PhiFunction phi = liv.FindPhiFunction(a);
 			Constant c = liv.FindInitialValue(phi);
-			Assert.AreEqual(0, Convert.ToInt32(c.Value));
+            Assert.AreEqual(0, c.ToInt32());
 		}
 
 		[Test]
@@ -114,11 +113,11 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Prepare(new ByteArrayLoopMock().Procedure);
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssaIds, null);
-			ArrayList a = new ArrayList();
+			List<SsaIdentifier> a = new List<SsaIdentifier>();
 			a.Add(ssaIds[5]);
 			a.Add(ssaIds[8]);
 			Constant c = liv.FindFinalValue(a);
-			Assert.AreEqual(10, Convert.ToInt32(c.Value));
+			Assert.AreEqual(10, c.ToInt32());
 		}
 
 		[Test]
@@ -132,6 +131,12 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			RunTest(new WhileGtDecMock().Procedure, "Analysis/LivWhileGtDec.txt");
 		}
+
+        [Test]
+        public void ArrayLoopMock()
+        {
+            RunTest(new ArrayLoopMock().Procedure, "Analysis/LivArrayLoopMock.txt");
+        }
 
 		public void Create1()
 		{
@@ -227,6 +232,27 @@ namespace Decompiler.UnitTests.Analysis
 
 		}
 
+        [Test]
+        public void PreTestedUge()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier i = m.Local32("i");
+            m.Label("test");
+            m.BranchIf(m.Uge(i, 10), "done");
+            m.Store(m.Word32(0x4204), i);
+            m.Assign(i, m.Add(i, 1));
+            m.Jump("test");
+            m.Label("done");
+            m.Store(m.Word32(0x4200), i);
+            m.Return();
+            m.Procedure.Dump(true, false);
+            m.Procedure.RenumberBlocks();
+            Prepare(m.Procedure);
+            LinearInductionVariableFinder liv = new LinearInductionVariableFinder(m.Procedure, ssaIds, doms);
+            liv.Find();
+            Assert.AreEqual("@@@", liv.InductionVariables[0].ToString());
+        }
+
 		[Test]
 		public void CreateDecTest()
 		{
@@ -271,7 +297,7 @@ namespace Decompiler.UnitTests.Analysis
 			LinearInductionVariable liv =
 				LinearInductionVariable.Merge(liv1, liv2);
 			Assert.IsNotNull(liv);
-			Assert.AreEqual(1, liv.Delta.Value);
+			Assert.AreEqual(1, liv.Delta.ToInt32());
 		}
 
 		[Test]
@@ -282,7 +308,7 @@ namespace Decompiler.UnitTests.Analysis
 			LinearInductionVariable liv =
 				LinearInductionVariable.Merge(liv1, liv2);
 			Assert.IsNotNull(liv);
-			Assert.AreEqual(2, liv.Delta.Value);
+			Assert.AreEqual(2, liv.Delta.ToInt32());
 		}
 
 		[Test]
@@ -336,38 +362,6 @@ namespace Decompiler.UnitTests.Analysis
 		private void SsaId(Identifier id, Statement stm, Expression expr, bool isSideEffect)
 		{
 			ssaIds.Add(new SsaIdentifier(id, id, stm, expr, isSideEffect));
-		}
-
-		private class FakeDominatorGraph : DominatorGraph
-		{
-			private ArrayList doms = new ArrayList();
-
-			public FakeDominatorGraph() : base(null)
-			{
-			}
-
-			public void Add(Statement stmDominates, Statement stm)
-			{
-				doms.Add(new Pair(stmDominates, stm));
-			}
-
-			public override bool DominatesStrictly(Statement stmDom, Statement stm)
-			{
-				foreach (Pair p in doms)
-				{
-					if (p.Dom == stmDom && p.Stm == stm)
-						return true;
-				}
-				return false;
-			}
-
-			private class Pair
-			{
-				public Statement Dom;
-				public Statement Stm;
-
-				public Pair(Statement a, Statement b) { Dom = a; Stm = b; }
-			}
 		}
 	}
 }

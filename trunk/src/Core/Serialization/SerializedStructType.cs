@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -26,7 +26,7 @@ namespace Decompiler.Core.Serialization
 {
 	public class SerializedStructType : SerializedType
 	{
-		private ArrayList fields;
+		private List<SerializedStructField> fields;
 
 		[XmlElement("name")]
 		public string Name;
@@ -36,11 +36,11 @@ namespace Decompiler.Core.Serialization
 
 		public SerializedStructType()
 		{
-			fields = new ArrayList();
+            fields = new List<SerializedStructField>();
 		}
 
 		[XmlElement("field", typeof (SerializedStructField))]
-		public ArrayList Fields
+		public List<SerializedStructField> Fields
 		{
 			get { return fields; }
 		}

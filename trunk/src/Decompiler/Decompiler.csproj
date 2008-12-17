@@ -162,9 +162,6 @@
     <Compile Include="Analysis\InteferenceGraph.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\LinearInductionVariable.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\LinearInductionVariableFinder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -452,9 +449,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\TypeVariableReplacer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Typing\TypeVarMapping.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\Unifier.cs">

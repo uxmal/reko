@@ -19,7 +19,7 @@
 using Decompiler.Core;
 using System;
 using System.IO;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Core
@@ -29,16 +29,15 @@ namespace Decompiler.Core
 	/// </summary>
 	public class DominatorGraph
 	{
-		private Procedure proc;
+        private Block[] blocks;
 		private int [] doms;
-		private ArrayList [] domFrontiers;
+		private List<Block> [] domFrontiers;
 
 		public DominatorGraph(Procedure proc)
 		{
-			this.proc = proc;
 			if (proc != null)
 			{
-				this.doms = Build(proc);
+                this.doms = Build(proc.RpoBlocks, proc.EntryBlock.RpoNumber);
 				this.domFrontiers = BuildDominanceFrontiers(proc);
 				this.doms[0] = -1;		// No-one dominates the root node.
 			}
@@ -49,7 +48,7 @@ namespace Decompiler.Core
         /// </summary>
         /// <param name="blocks"></param>
         /// <returns></returns>
-		public Block CommonDominator(ICollection blocks)
+		public Block CommonDominator(ICollection<Block> blocks)
 		{
 			if (blocks == null || blocks.Count == 0)
                 return null; 
@@ -117,22 +116,26 @@ namespace Decompiler.Core
 		public Block ImmediateDominator(Block b)
 		{
 			int i = doms[b.RpoNumber];
-			return (i < 0) ? null : proc.RpoBlocks[i];
+			return (i < 0) ? null : blocks[i];
 		}
 
-		public static int [] Build(Procedure proc)
+		public int [] Build(IList<Block> blockList, int start)
 		{
 			const int Undefined = -1;
-			int [] doms = new int[proc.RpoBlocks.Count];
-			for (int i = 0; i != doms.Length; ++i)
-				doms[i] = Undefined;
+            blocks = new Block[blockList.Count];
+			int [] doms = new int[blockList.Count];
+            for (int i = 0; i != doms.Length; ++i)
+            {
+                blocks[i] = blockList[i];
+                doms[i] = Undefined;
+            }
 
-			doms[proc.EntryBlock.RpoNumber] = proc.EntryBlock.RpoNumber;
+			doms[start] = start;
 			bool fChanged;
 			do
 			{
 				fChanged = false;
-				foreach (Block bb in proc.RpoBlocks)
+				foreach (Block bb in blockList)
 				{
 					int c = bb.Pred.Count;
 					if (c == 0)
@@ -163,12 +166,12 @@ namespace Decompiler.Core
 			return doms;
 		}
 
-		private ArrayList [] BuildDominanceFrontiers(Procedure proc)
+		private List<Block> [] BuildDominanceFrontiers(Procedure proc)
 		{
-			ArrayList [] fronts = new ArrayList[doms.Length];
+			List<Block> [] fronts = new List<Block>[doms.Length];
 			for (int i = 0; i != doms.Length; ++i)
 			{
-				fronts[i] = new ArrayList();
+				fronts[i] = new List<Block>();
 			}
 
 			foreach (Block bb in proc.RpoBlocks)
@@ -185,7 +188,7 @@ namespace Decompiler.Core
 
 							if (fronts[r] == null)
 							{
-								fronts[r] = new ArrayList();
+								fronts[r] = new List<Block>();
 								fronts[r].Add(bb);
 							}
 							else
@@ -202,7 +205,7 @@ namespace Decompiler.Core
 			return fronts;
 		}
 
-		public ArrayList DominatorFrontier(Block b)
+		public List<Block> DominatorFrontier(Block b)
 		{
 			return domFrontiers[b.RpoNumber];
 		}
@@ -214,7 +217,7 @@ namespace Decompiler.Core
 			Debug.Write(sw.ToString());
 		}
 
-		public IEnumerable GetDominatedNodes(Block b)
+        public DominatedNodesEnumerator GetDominatedNodes(Block b)
 		{
 			return new DominatedNodesEnumerator(b, this);
 		}
@@ -235,7 +238,7 @@ namespace Decompiler.Core
 
 		public void Write(TextWriter writer)
 		{
-			foreach (Block b in proc.RpoBlocks)
+			foreach (Block b in blocks)
 			{
 				Block idom = this.ImmediateDominator(b);
 				writer.Write("{0} ({1}): idom {2}, Frontier:", b.RpoNumber, b.Name,  (idom != null ? idom.RpoNumber : -1));
@@ -247,52 +250,28 @@ namespace Decompiler.Core
 			}
 		}
 
-		private class DominatedNodesEnumerator : IEnumerable, IEnumerator
-		{
-			private Block b;
-			private DominatorGraph dom;
-			private IEnumerator e;
+        public class DominatedNodesEnumerator
+        {
+            private Block b;
+            private DominatorGraph dom;
+            private IEnumerator<Block> e;
 
-			public DominatedNodesEnumerator(Block b, DominatorGraph dom)
-			{
-				this.b = b;
-				this.dom = dom;
-				this.e = b.Procedure.RpoBlocks.GetEnumerator();
-			}
-			#region IEnumerable Members
+            public DominatedNodesEnumerator(Block b, DominatorGraph dom)
+            {
+                this.b = b;
+                this.dom = dom;
+                this.e = b.Procedure.RpoBlocks.GetEnumerator();
+            }
 
-			public IEnumerator GetEnumerator()
-			{
-				return this;
-			}
+            public IEnumerator<Block> GetEnumerator()
+            {
+                foreach (Block t in b.Procedure.RpoBlocks)
+                {
+                    if (dom.DominatesStrictly(b.RpoNumber, t.RpoNumber))
+                        yield return t;
+                }
+            }
 
-			#endregion
-
-			#region IEnumerator Members
-
-			public void Reset()
-			{
-				e.Reset();
-			}
-
-			public object Current
-			{
-				get { return e.Current; }
-			}
-
-			public bool MoveNext()
-			{
-				while (e.MoveNext())
-				{
-					Block t = (Block) e.Current;
-					if (dom.DominatesStrictly(b.RpoNumber, t.RpoNumber))
-						return true;
-				}
-				return false;
-			}
-
-			#endregion
-		}
-
+        }
 	}
 }

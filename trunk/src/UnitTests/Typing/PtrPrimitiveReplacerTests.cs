@@ -97,10 +97,9 @@ namespace Decompiler.UnitTests.Typing
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-			InductionVariableCollection ivs = new InductionVariableCollection();
 			eqb.Build(prog);
 			DataTypeBuilder dtb = new DataTypeBuilder(factory, store);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, prog.Globals, ivs);
+			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			trco.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();
 

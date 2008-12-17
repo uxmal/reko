@@ -20,6 +20,7 @@ l0C00_0006:		// block 5, pred: 2
 	// succ:  2
 
 T_2 (in ax_8 : word16)
+	trait_primitive(word16)
 	trait_equal(T_3)
 	trait_primitive(word16)
 	trait_primitive(word16)

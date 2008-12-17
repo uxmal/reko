@@ -21,7 +21,7 @@ using Decompiler.Core.Operators;
 using System;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Decompiler.Core
 {
 	/// <summary>
 	/// Describes the initial value, stride, and final value of an induction variable.
@@ -59,7 +59,7 @@ namespace Decompiler.Analysis
 			{
 				if (Initial == null || Final == null)
 					return 0;
-				return Math.Abs((Convert.ToInt32(Initial.Value) - Convert.ToInt32(Final.Value)) / Convert.ToInt32(Delta.Value));
+				return Math.Abs((Initial.ToInt32() - Final.ToInt32()) / Delta.ToInt32());
 			}
 		}
 

@@ -19,7 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.Arch.Intel.Assembler
@@ -29,14 +29,14 @@ namespace Decompiler.Arch.Intel.Assembler
 		public string sym;
 		public bool fResolved;
 		public int offset;
-		public ArrayList patches;		
+		public List<BackPatch> patches;		
 			
 		public Symbol(string s)
 		{
 			sym = s;
 			fResolved = false;
 			offset = 0;
-			patches = new ArrayList();
+			patches = new List<BackPatch>();
 		}
 
 		public void AddForwardReference(int offset, DataType width)
@@ -71,13 +71,13 @@ namespace Decompiler.Arch.Intel.Assembler
 
 	public class SymbolTable 
 	{
-		private SortedList symbols;
-		private Hashtable equates;
+		private SortedList<string,Symbol> symbols;
+		private Dictionary<string,int> equates;
 
 		public SymbolTable()
 		{
-			symbols = new SortedList();
-			equates = new Hashtable();
+			symbols = new SortedList<string,Symbol>();
+			equates = new Dictionary<string,int>();
 		}
 
 		public Symbol AddDefinition(string s, int off)
@@ -87,8 +87,8 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		public Symbol CreateSymbol(string s)
 		{
-			Symbol sym = (Symbol) symbols[s];
-			if (sym == null)
+			Symbol sym;
+            if (!symbols.TryGetValue(s, out sym))
 			{
 				// Forward reference to a symbol. 
 
@@ -103,7 +103,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			Symbol	sym;
 			if (symbols.ContainsKey(s))
 			{
-				sym = (Symbol) symbols[s];
+				sym = symbols[s];
 				if (sym.fResolved || sym.offset != 0)
 					throw new ApplicationException("symbol '" + s + "' redefined");
 			}
@@ -117,33 +117,32 @@ namespace Decompiler.Arch.Intel.Assembler
 			return sym;
 		}
 
-		public Hashtable Equates
+		public Dictionary<string,int> Equates
 		{
 			get { return equates; }
 		}
 
 		public Symbol [] GetUndefinedSymbols()
 		{
-			ArrayList undef = new ArrayList();
+            List<Symbol> undef = new List<Symbol>();
 			foreach (Symbol sym in symbols.Values)
 			{
 				if (!sym.fResolved)
 					undef.Add(sym);
 			}
-			return (Symbol []) undef.ToArray(typeof (Symbol));
+            return undef.ToArray();
 		}
 
 		public void Write(TextWriter txt)
 		{
-			foreach (DictionaryEntry de in symbols)
+			foreach (KeyValuePair<string,Symbol> de in symbols)
 			{
-				string s = (string) de.Key;
-				Symbol sym = (Symbol) de.Value;
 				txt.WriteLine("{0}: {1} {2:X8} patches: {3} ({4})", 
-					(string) de.Key, 
-					sym.fResolved ? "resolved" : "unresolved",
-					sym.offset, sym.patches.Count,
-					(sym.sym != null ? sym.sym : ""));
+					de.Key, 
+					de.Value.fResolved ? "resolved" : "unresolved",
+					de.Value.offset, 
+                    de.Value.patches.Count,
+					(de.Value.sym != null ? de.Value.sym : ""));
 			}
 		}
 	}			

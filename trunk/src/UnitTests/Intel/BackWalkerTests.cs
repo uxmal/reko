@@ -21,7 +21,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Loading;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Intel
 {
@@ -57,9 +57,9 @@ namespace Decompiler.UnitTests.Intel
 		{
 			IntelBackWalker ibw = new IntelBackWalker(new IntelArchitecture(ProcessorMode.ProtectedFlat), null);
 			IntelInstruction instr = new IntelInstruction(Opcode.inc, null, null, new RegisterOperand(Registers.di));
-			ArrayList instrs = new ArrayList();
+			List<IntelInstruction> instrs = new List<IntelInstruction>();
 			instrs.Add(instr);
-			ArrayList ops = new ArrayList();
+            List<BackwalkOperation> ops = new List<BackwalkOperation>(); 
 			MachineRegister r = ibw.BackwalkInstructions(Registers.di, instrs, 0, ops);
 			Assert.AreSame(Registers.di, r);
 			Assert.AreEqual("+ 1", ops[0].ToString());
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Intel
 				fut.TextWriter.Flush();
 
 				IntelBackWalker ibw = new IntelBackWalker(arch, prog.Image);
-				ArrayList bws = ibw.BackWalk(addrJump, host);
+				List<BackwalkOperation> bws = ibw.BackWalk(addrJump, host);
 				foreach (BackwalkOperation bwo in bws)
 				{
 					fut.TextWriter.WriteLine(bwo);

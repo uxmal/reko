@@ -64,7 +64,7 @@ namespace Decompiler.Analysis
 			Constant c = ea as Constant;
 			if (c != null)
 			{
-				return new Identifier(string.Format("g_{0}{1:X8}", 0, type.Prefix, c.Value), 0, type, new MemoryStorage());
+				return new Identifier(string.Format("g_{0}{1:X8}", 0, type.Prefix, c.ToUInt32()), 0, type, new MemoryStorage());
 			}
 			Identifier id = ea as Identifier;
 			if (id != null)
@@ -76,7 +76,7 @@ namespace Decompiler.Analysis
 			{
 				c = b.Right as Constant;
 				if (c != null && b.op == Operator.add)
-					return new FieldAccess(type, new Dereference(type, b.Left), string.Format("{0}{1:X8}", type.Prefix, c.Value));
+					return new FieldAccess(type, new Dereference(type, b.Left), string.Format("{0}{1:X8}", type.Prefix, c.ToUInt32()));
 			}
 			return new Dereference(null, ea);
 		}

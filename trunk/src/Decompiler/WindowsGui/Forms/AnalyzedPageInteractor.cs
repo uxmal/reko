@@ -16,6 +16,7 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
@@ -31,6 +32,7 @@ namespace Decompiler.WindowsGui.Forms
 		private AnalyzedPage page;
         private MainFormInteractor mainInteractor;
         private RichEditFormatter formatter;
+        private DataFlowAnalysis dfa;
 
 		public AnalyzedPageInteractor(AnalyzedPage page, MainFormInteractor form)
 			: base(form)

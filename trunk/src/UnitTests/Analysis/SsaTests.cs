@@ -23,7 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -34,7 +34,6 @@ namespace Decompiler.UnitTests.Analysis
 	public class SsaTests : AnalysisTestBase
 	{
 		private SsaState ssa; 
-		private ArrayList ssas = new ArrayList();
 
 		[Test]
 		public void SsaSimple()
@@ -122,7 +121,6 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
-			ssas.Clear();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture);
@@ -130,7 +128,6 @@ namespace Decompiler.UnitTests.Analysis
 				DominatorGraph gr = new DominatorGraph(proc);
 				SsaTransform sst = new SsaTransform(proc, gr, false);
 				ssa = sst.SsaState;
-				ssas.Add(ssa);
 				ssa.Write(fut.TextWriter);
 				proc.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine();

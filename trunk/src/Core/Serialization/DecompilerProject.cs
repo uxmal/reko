@@ -35,7 +35,7 @@ namespace Decompiler.Core.Serialization
             this.Input = new DecompilerInput();
             this.Output = new DecompilerOutput();
             this.UserProcedures = new List<SerializedProcedure>();
-            this.UserCalls = new ArrayList();
+            this.UserCalls = new List<SerializedCall>();
         }
 
         [XmlElement("input")]
@@ -48,7 +48,7 @@ namespace Decompiler.Core.Serialization
         public List<SerializedProcedure> UserProcedures;
 
         [XmlElement("call", typeof(SerializedCall))]
-        public ArrayList UserCalls;
+        public List<SerializedCall> UserCalls;
 
         public static DecompilerProject Load(string file)
         {

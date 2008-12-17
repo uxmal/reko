@@ -30,8 +30,8 @@ namespace Decompiler.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			uint v1 = (uint) Convert.ToInt32(c1.Value);
-			uint v2 = (uint) Convert.ToInt32(c2.Value);
+			uint v1 = c1.ToUInt32();
+			uint v2 = c2.ToUInt32();
 			return new Constant(PrimitiveType.Bool, v1 < v2);
 		}
 
@@ -45,8 +45,8 @@ namespace Decompiler.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			uint v1 = (uint) Convert.ToInt32(c1.Value);
-			uint v2 = (uint) Convert.ToInt32(c2.Value);
+			uint v1 = c1.ToUInt32();
+			uint v2 = c2.ToUInt32();
 			return new Constant(PrimitiveType.Bool, v1 <= v2);
 		}
 
@@ -60,8 +60,8 @@ namespace Decompiler.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			uint v1 = (uint) Convert.ToInt32(c1.Value);
-			uint v2 = (uint) Convert.ToInt32(c2.Value);
+			uint v1 = (uint) c1.ToInt32();
+			uint v2 = (uint) c2.ToInt32();
 			return new Constant(PrimitiveType.Bool, v1 <= v2);
 		}
 
@@ -75,8 +75,8 @@ namespace Decompiler.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			uint v1 = (uint) Convert.ToInt32(c1.Value);
-			uint v2 = (uint) Convert.ToInt32(c2.Value);
+			uint v1 = (uint) c1.ToUInt32();
+			uint v2 = (uint) c2.ToUInt32();
 			return new Constant(PrimitiveType.Bool, v1 >= v2);
 		}
 

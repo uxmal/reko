@@ -17,7 +17,6 @@
  */
 
 using System;
-using ArrayList = System.Collections.ArrayList;
 using BitSet = Decompiler.Core.Lib.BitSet;
 using MachineRegister = Decompiler.Core.MachineRegister;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
@@ -36,7 +35,6 @@ namespace Decompiler.Analysis
 		/// Displays the dataflow object as a human-readable stream of text.
 		/// </summary>
 		/// <param name="arch">current processor architecture (to interpret registers)</param>
-		/// <param name="regs">an ArrayList of registers</param>
 		/// <param name="sb">stream into which the data is written</param>
 		public abstract void Emit(IProcessorArchitecture arch, TextWriter sb);
 
