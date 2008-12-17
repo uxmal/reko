@@ -23,14 +23,14 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Analysis
 {
 	[TestFixture]
 	public class ExpressionSimplifierTests
 	{
-		private Hashtable table;
+		private Dictionary<Expression, Expression> table;
 		private ExpressionSimplifier simplifier;
 		private Identifier foo;
 		private Identifier bar;
@@ -43,13 +43,13 @@ namespace Decompiler.UnitTests.Analysis
 				Constant.Word32(1), Constant.Word32(2));
 			Constant c = (Constant) simplifier.Simplify(expr);
 
-			Assert.AreEqual(3, Convert.ToInt32(c.Value));
+			Assert.AreEqual(3, c.ToInt32());
 		}
 
 		private void BuildExpressionSimplifier()
 		{
 			SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
-			table = new Hashtable();
+			table = new Dictionary<Expression,Expression>();
 			simplifier = new ExpressionSimplifier(new ValueNumbering(ssaIds), table);
 		}
 

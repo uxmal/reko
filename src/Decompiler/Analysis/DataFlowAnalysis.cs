@@ -38,13 +38,11 @@ namespace Decompiler.Analysis
 		private Program prog;
 		private DecompilerHost host;
 		private ProgramDataFlow flow;
-		private InductionVariableCollection ivs;
 	
 		public DataFlowAnalysis(Program prog, DecompilerHost host)
 		{
 			this.prog = prog;
 			this.host = host;
-			this.ivs = new InductionVariableCollection();
 			this.flow = new ProgramDataFlow(prog);
 		}
 
@@ -94,7 +92,7 @@ namespace Decompiler.Analysis
 				opt.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
-				WebBuilder web = new WebBuilder(proc, ssa.Identifiers, this.ivs);
+                WebBuilder web = new WebBuilder(proc, ssa.Identifiers, prog.InductionVariables);
 				web.Transform();
 				ssa.ConvertBack(false);
 			} 
@@ -130,11 +128,6 @@ namespace Decompiler.Analysis
 				}
 				Debug.WriteLine(output.ToString());
 			}
-		}
-
-		public InductionVariableCollection InductionVariables
-		{
-			get { return ivs; }
 		}
 
 		public ProgramDataFlow ProgramDataFlow

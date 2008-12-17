@@ -60,7 +60,7 @@ namespace Decompiler.Typing
 		public UnionType FactorDuplicateAlternatives(UnionType u)
 		{
 			UnionType uNew = new UnionType(u.Name, u.PreferredType);
-			foreach (UnionAlternative a in u.Alternatives)
+			foreach (UnionAlternative a in u.Alternatives.Values)
 			{
 				unifier.UnifyIntoUnion(uNew, a.DataType);
 			}

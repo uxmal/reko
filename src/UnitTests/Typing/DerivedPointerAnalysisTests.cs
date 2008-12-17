@@ -41,16 +41,14 @@ namespace Decompiler.UnitTests.Typing
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
 			DataTypeBuilder dtb = new DataTypeBuilder(factory, store);
 
-			Identifier globals = new Identifier("globals", 0, PrimitiveType.Pointer, null);
 			Constant c = new Constant(PrimitiveType.Word32,0x10000000);
 			MemoryAccess mem = new MemoryAccess(c, PrimitiveType.Real32);
 
-			globals.Accept(eqb);
+			prog.Globals.Accept(eqb);
 			mem.Accept(eqb);
 
-			TraitCollector tc = new TraitCollector(factory, store, dtb, globals, new InductionVariableCollection());
-			tc.Procedure = new Procedure("foo", null);
-			globals.Accept(tc);
+			TraitCollector tc = new TraitCollector(factory, store, dtb, prog);
+			prog.Globals.Accept(tc);
 			mem.Accept(tc);
 			dtb.BuildEquivalenceClassDataTypes();
 
@@ -102,7 +100,7 @@ namespace Decompiler.UnitTests.Typing
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
 			DataTypeBuilder dtb = new DataTypeBuilder(factory, store);
 			eqb.Build(prog);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, prog.Globals, new InductionVariableCollection());
+            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			trco.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();
 

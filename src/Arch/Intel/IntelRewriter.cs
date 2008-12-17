@@ -21,7 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Arch.Intel
@@ -1057,7 +1057,7 @@ namespace Decompiler.Arch.Intel
 			{
 				if (c.DataType == PrimitiveType.Byte && eLeft.DataType != c.DataType)
 				{
-					right = new Constant(eLeft.DataType, Convert.ToInt32(c.Value));
+					right = new Constant(eLeft.DataType, c.ToInt32());
 				}
 			}
 
@@ -1132,7 +1132,7 @@ namespace Decompiler.Arch.Intel
 				Constant c = SearchBackForConstantAssignment(id);
 				if (c != null)
 				{
-					int size = Convert.ToInt32(c.Value);
+					int size = c.ToInt32();
 					state.GrowStack(size);
 					Identifier idBuf = frame.EnsureStackLocal(state.StackBytes, new StructureType(null, size));	
 					emitter.Assign(id, new UnaryExpression(Operator.addrOf, id.DataType, idBuf));
@@ -1575,7 +1575,7 @@ namespace Decompiler.Arch.Intel
 			Constant c = expr as Constant;
 			if (c != null && c.DataType != width)
 			{
-				expr = new Constant(width, c.Value);
+				expr = new Constant(width, c.ToInt64());
 			}
 			
 			// Allocate an local variable for the push.
@@ -1858,16 +1858,15 @@ namespace Decompiler.Arch.Intel
 			// Extract the instructions.
 
 			IntelDisassembler dasm = new IntelDisassembler(host.CreateImageReader(addrStart), arch.WordWidth);
-			ArrayList al = new ArrayList();
-			ArrayList al2 = new ArrayList();
+            List<IntelInstruction> al = new List<IntelInstruction>();
+            List<Address> al2 = new List<Address>();
 			while (dasm.Address < addrEnd)
 			{
 				al2.Add(dasm.Address);
 				al.Add(dasm.Disassemble());
 			}
-			IntelInstruction [] instrs = (IntelInstruction []) al.ToArray(typeof (IntelInstruction));
-			Address [] addrs = (Address []) al2.ToArray(typeof (Address));
-
+            IntelInstruction[] instrs = al.ToArray();
+			Address [] addrs = al2.ToArray();
 			FlagM [] deadOutFlags = dcff.DeadOutFlags(instrs);
 
 			// Rewrite the current flow block.

@@ -62,10 +62,11 @@ namespace Decompiler.Core.Types
         {
             if (offset == null)
                 return 0;
-            else if (offset.Value is Int16 || offset.Value is Int32)
-                return (int) Convert.ToInt32(offset.Value);
+            PrimitiveType pt = (PrimitiveType) offset.DataType;
+            if (pt.Domain == Domain.SignedInt)
+                return (int) offset.ToInt32();
             else
-                return (int) Convert.ToUInt32(offset.Value);
+                return (int) offset.ToUInt32();
         }
 	}
 

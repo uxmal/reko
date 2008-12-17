@@ -33,24 +33,21 @@ namespace Decompiler.Typing
 		private TypeFactory factory;
 		private TypeStore store;
 		private ITraitHandler handler;
-		private Identifier globals;
-		private InductionVariableCollection ivs;
+		private Program prog;
 
 		private TypeVariable tvField;
-		private Procedure proc;
 		private bool arrayContext;
 		private TypeVariable tvBasePointer;
 		private int basePointerSize;
 		private int arrayElementSize;
 		private int arrayLength;
 
-		public AddressTraitCollector(TypeFactory factory, TypeStore store, ITraitHandler handler, Identifier globals, InductionVariableCollection ivs)
+		public AddressTraitCollector(TypeFactory factory, TypeStore store, ITraitHandler handler, Program prog)
 		{
 			this.factory = factory;
 			this.store = store;
 			this.handler = handler;
-			this.globals = globals;
-			this.ivs = ivs;
+			this.prog = prog;
 			this.arrayContext = false;
 		}
 
@@ -85,19 +82,12 @@ namespace Decompiler.Typing
 
 		public LinearInductionVariable GetInductionVariable(Expression e)
 		{
-			if (Procedure == null) return null;
-			if (ivs == null) return null;
 			Identifier id = e as Identifier;
 			if (id == null) return null;
-			return ivs[Procedure, id];
+            LinearInductionVariable iv;
+            if (!prog.InductionVariables.TryGetValue(id, out iv)) return null;
+            return iv;
 		}
-
-		public Procedure Procedure
-		{
-			get { return proc; }
-			set { proc = value; }
-		}
-
 
 		#region IExpressionVisitor members
 
@@ -122,13 +112,13 @@ namespace Decompiler.Typing
 				Constant offset = bin.Right as Constant;
 				if (offset != null)
 				{
-					int o = Convert.ToInt32(offset.Value);
+					int o = offset.ToInt32();
 					if (bin.op == Operator.sub)
 						o = -o;
 					LinearInductionVariable iv = GetInductionVariable(bin.Left);
 					if (iv != null)
 					{
-						int delta = Convert.ToInt32(iv.Delta.Value);
+						int delta = iv.Delta.ToInt32();
 						handler.MemSizeTrait(tvBasePointer, bin.Left.TypeVariable, Math.Abs(delta));
 						handler.ArrayTrait(offset.TypeVariable, delta, iv.IterationCount);
 					}
@@ -142,8 +132,7 @@ namespace Decompiler.Typing
 				EmitAccessTrait(tvBasePointer, bin.Left.TypeVariable, bin.DataType.Size, 0);
 				return;
 			}
-
-			throw new TypeInferenceException("Couldn't generate traits for {0} in procedure {1}", bin, Procedure != null ? Procedure.Name : "?");
+            throw new TypeInferenceException("Couldn't generate traits for {0}.", bin);
 		}
 
 		public void VisitCast(Cast cast)
@@ -159,16 +148,11 @@ namespace Decompiler.Typing
 		public void VisitConstant(Constant c)
 		{
 			// Globals has a field at offset C that is a tvField: [[g->c]] = ptr(tvField)
-			int v; 
-			if (c.Value is Int16 || c.Value is Int32)		//$HACK: needs to be resolved on a global level.
-				v = (int) Convert.ToInt32(c.Value);
-			else 
-				v = (int) Convert.ToUInt32(c.Value);
-
+			int v = StructureField.ToOffset(c);
 			if (tvBasePointer != null)
 				handler.MemAccessTrait(null, tvBasePointer, basePointerSize, tvField, v);
 			else
-				handler.MemAccessTrait(null, globals.TypeVariable, c.DataType.Size, tvField, v);
+				handler.MemAccessTrait(null, prog.Globals.TypeVariable, c.DataType.Size, tvField, v);
 			// C is a pointer to tvField: [[c]] = ptr(tvField)
 			handler.MemAccessTrait(tvBasePointer, c.TypeVariable, c.DataType.Size, tvField, 0);
 		}
@@ -215,9 +199,9 @@ namespace Decompiler.Typing
 				if (tvBasePointer != null)
 					handler.MemAccessArrayTrait(null, tvBasePointer, id.DataType.Size, init, delta, iv.IterationCount, tvField);
 				else
-					handler.MemAccessArrayTrait(null, globals.TypeVariable, id.DataType.Size, init, delta, iv.IterationCount, tvField);
+					handler.MemAccessArrayTrait(null, prog.Globals.TypeVariable, id.DataType.Size, init, delta, iv.IterationCount, tvField);
 			}
-			handler.MemSizeTrait(tvBasePointer, id.TypeVariable, Math.Abs(Convert.ToInt32(iv.Delta.Value)));
+			handler.MemSizeTrait(tvBasePointer, id.TypeVariable, Math.Abs(iv.Delta.ToInt32()));
 		}
 
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)

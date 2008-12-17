@@ -20,7 +20,6 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
 
 namespace Decompiler.Arch.Intel.Assembler
 {
@@ -120,10 +119,10 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 			case Token.ID:
 			{
-				object v = symtab.Equates[lexer.StringLiteral.ToLower()];
-				if (v != null)
+				int v;
+                if (symtab.Equates.TryGetValue(lexer.StringLiteral.ToLower(), out v))
 				{
-					totalInt += Convert.ToInt32(v);
+                    totalInt += v;
 				}
 				else
 				{
@@ -251,9 +250,9 @@ namespace Decompiler.Arch.Intel.Assembler
 				
 			case Token.ID:
 			{
-				object v = symtab.Equates[lexer.StringLiteral.ToLower()];
-				if (v != null)
-				{
+                int v;
+                if (symtab.Equates.TryGetValue(lexer.StringLiteral.ToLower(), out v))
+                {
 					totalInt += lexer.Integer;
 					goto IntegerCommon;
 				}

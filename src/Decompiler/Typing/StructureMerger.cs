@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Typing
 {
@@ -27,11 +27,11 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class StructureMerger
 	{
-		private ICollection structures;
-		private ICollection eqClasses;
+        private ICollection<StructureType> structures;
+        private ICollection<EquivalenceClass> eqClasses;
 		private EquivalenceClass eqMin;
 
-		public StructureMerger(ICollection structures, ICollection eqClasses)
+        public StructureMerger(ICollection<StructureType> structures, ICollection<EquivalenceClass> eqClasses)
 		{
 			this.structures = structures;
 			this.eqClasses = eqClasses;

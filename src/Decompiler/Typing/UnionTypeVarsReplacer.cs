@@ -37,7 +37,7 @@ namespace Decompiler.Typing
 		public override DataType TransformUnionType(UnionType ut)
 		{
 			ArrayList typeVars = new ArrayList();
-			foreach (UnionAlternative a in ut.Alternatives)
+			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
 				TypeVariable tv = a.DataType as TypeVariable;
 				if (tv == null)

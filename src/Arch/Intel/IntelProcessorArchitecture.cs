@@ -21,7 +21,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -203,12 +203,12 @@ namespace Decompiler.Arch.Intel
 	{
 		private BitSet implicitRegs;
 		private ProcessorMode mode;
-		private ArrayList flagGroups;
+		private List<MachineFlags> flagGroups;
 
 		public IntelArchitecture(ProcessorMode mode)
 		{
 			this.mode = mode;
-			this.flagGroups = new ArrayList();
+			this.flagGroups = new List<MachineFlags>();
 		
 			implicitRegs = CreateRegisterBitset();
 			implicitRegs[Registers.cs.Number] = true;

@@ -19,7 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
@@ -36,7 +36,7 @@ namespace Decompiler.Analysis
 
 		public void InsertDeclaration(Web web)
 		{
-			ArrayList blocks = new ArrayList();
+            List<Block> blocks = new List<Block>();
 			foreach (SsaIdentifier sid in web.Members)
 			{
 				if (sid.DefStatement != null)

@@ -242,8 +242,8 @@ namespace Decompiler.UnitTests.Analysis
 				Console.WriteLine("{0} {1} {2}",o, Object.Equals(o, b04.Storage), Object.Equals(o, b04.Storage));
 			}
 
-			Assert.IsTrue(rl.IdentifierLiveness.LiveStackVariables.Contains(b04.Storage), "Should have storage for b04");
-			Assert.IsTrue(rl.IdentifierLiveness.LiveStackVariables.Contains(w08.Storage), "Should have storage for w08");
+			Assert.IsTrue(rl.IdentifierLiveness.LiveStackVariables.ContainsKey(b04.Storage), "Should have storage for b04");
+			Assert.IsTrue(rl.IdentifierLiveness.LiveStackVariables.ContainsKey(w08.Storage), "Should have storage for w08");
 
 		}
 

@@ -158,6 +158,7 @@
     <Compile Include="Loading\PkLiteUnpackerTests.cs" />
     <Compile Include="Mocks\AdcMock.cs" />
     <Compile Include="Mocks\ArchitectureMock.cs" />
+    <Compile Include="Mocks\ArrayLoopMock.cs" />
     <Compile Include="Mocks\ArrayMock.cs" />
     <Compile Include="Mocks\ByteArrayLoopMock.cs" />
     <Compile Include="Mocks\CmpMock.cs" />
@@ -200,7 +201,6 @@
     <Compile Include="Typing\AddressTraitCollectorTests.cs" />
     <Compile Include="Typing\ArrayExpressionMatcherTests.cs" />
     <Compile Include="Typing\ArrayExpressionNormalizerTests.cs" />
-    <Compile Include="Typing\ArrayLoopMock.cs" />
     <Compile Include="Typing\ComplexExpressionBuilderTests.cs" />
     <Compile Include="Typing\ComplexTypeNamerTests.cs" />
     <Compile Include="Typing\ConstantUnionMock.cs" />

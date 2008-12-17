@@ -26,7 +26,7 @@ using Decompiler.Core.Types;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.UnitTests.Typing
@@ -36,12 +36,9 @@ namespace Decompiler.UnitTests.Typing
 	/// </summary>
 	public class TypingTestBase
 	{
-		protected Program prog;
-		protected InductionVariableCollection ivs;
-
-		protected void RewriteFile(string relativePath)
+		protected Program RewriteFile(string relativePath)
 		{
-			prog = new Program();
+			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			AssemblerLoader ldr = new AssemblerLoader(
 			    FileUnitTester.MapTestPath(relativePath),
@@ -59,7 +56,7 @@ namespace Decompiler.UnitTests.Typing
 
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			dfa.AnalyzeProgram();
-			ivs = dfa.InductionVariables;
+            return prog;
 		}
 
 		protected void DumpSsaInfo(Procedure proc, SsaState ssa, TextWriter writer)

@@ -19,6 +19,7 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Types
 {
@@ -44,7 +45,7 @@ namespace Decompiler.Core.Types
 			this.PreferredType = preferredType; 
 		}
 
-		public UnionType(string name, DataType preferredType, ICollection alternatives) : base(name)
+		public UnionType(string name, DataType preferredType, ICollection<DataType> alternatives) : base(name)
 		{
 			this.Name = name; this.PreferredType = preferredType; 
 			foreach (DataType dt in alternatives)
@@ -74,7 +75,7 @@ namespace Decompiler.Core.Types
 		{
 			DataType pre = PreferredType != null ? PreferredType.Clone() : null;
 			UnionType u = new UnionType(Name, pre);
-			foreach (UnionAlternative a in this.Alternatives)
+			foreach (UnionAlternative a in this.Alternatives.Values)
 			{
 				UnionAlternative aClone = new UnionAlternative(a.DataType.Clone());
 				u.Alternatives.Add(aClone);
@@ -84,7 +85,7 @@ namespace Decompiler.Core.Types
 
 		public UnionAlternative FindAlternative(DataType dtOrig)
 		{
-			foreach (UnionAlternative alt in Alternatives)
+			foreach (UnionAlternative alt in Alternatives.Values)
 			{
 				if (Object.Equals(alt.DataType, dtOrig))
 					return alt;
@@ -108,7 +109,7 @@ namespace Decompiler.Core.Types
 			get
 			{
 				int size = 0;
-				foreach (UnionAlternative alt in Alternatives)
+				foreach (UnionAlternative alt in Alternatives.Values)
 				{
 					size = Math.Max(size, alt.DataType.Size);
 				}
@@ -121,7 +122,7 @@ namespace Decompiler.Core.Types
 		{
 			if (Alternatives.Count == 1)
 			{
-				return Alternatives[0].DataType;
+				return Alternatives.Values[0].DataType;
 			}
 			else
 				return this;
@@ -135,7 +136,7 @@ namespace Decompiler.Core.Types
 				writer.Write(" \"{0}\"", name);
 			}
 			int i = 0;
-			foreach (UnionAlternative alt in Alternatives)
+			foreach (UnionAlternative alt in Alternatives.Values)
 			{
 				writer.Write(" (");
 				alt.DataType.Write(writer);
@@ -171,108 +172,20 @@ namespace Decompiler.Core.Types
 		}
 	}
 
-	public class UnionAlternativeCollection : IDictionary
+	public class UnionAlternativeCollection : SortedList<DataType,UnionAlternative>
 	{
-		private SortedList innerList;
-
-		public UnionAlternativeCollection()
-		{
-			innerList = new SortedList(new DataTypeComparer());
-		}
-
-		public UnionAlternative this[int i]
-		{
-			get { return (UnionAlternative) innerList.GetByIndex(i); }
-		}
-
-		object IDictionary.this[object dt]
-		{
-			get { throw new NotSupportedException(); }
-			set { throw new NotSupportedException(); }
-		}
-	
-		/// <summary>
-		/// Adds an alternative to the collection.
-		/// </summary>
-		/// <param name="a"></param>
+        public UnionAlternativeCollection()
+            : base(new DataTypeComparer())
+        {
+        }
 		public void Add(UnionAlternative a)
 		{
-			innerList[a.DataType] = a;
+            base[a.DataType] = a;
 		}
 
 		public void Add(DataType dt)
 		{
 			Add(new UnionAlternative(dt));
 		}
-
-		public void CopyTo(Array a, int i)
-		{
-			innerList.Values.CopyTo(a, i);
-		}
-
-		public int Count
-		{
-			get { return innerList.Count; }
-		}
-
-		public bool IsSynchronized
-		{
-			get { return innerList.IsSynchronized; }
-		}
-
-		public object SyncRoot
-		{
-			get { return innerList.SyncRoot; }
-		}
-
-		void IDictionary.Add(object dt, object ua)
-		{
-			throw new NotSupportedException();
-		}
-
-		public void Clear()
-		{
-			innerList.Clear();
-		}
-
-		public bool Contains(object o)
-		{
-			return innerList.Contains(o);
-		}
-
-		public IEnumerator GetEnumerator()
-		{
-			return innerList.Values.GetEnumerator();
-		}
-
-		IDictionaryEnumerator IDictionary.GetEnumerator()
-		{
-			throw new NotSupportedException();
-		}
-
-		public bool IsFixedSize
-		{
-			get { return innerList.IsFixedSize; }
-		}
-
-		public bool IsReadOnly
-		{
-			get { return innerList.IsReadOnly; }
-		}
-
-		public ICollection Keys
-		{
-			get { return innerList.Keys; }
-		}
-
-		void IDictionary.Remove(object dt)
-		{
-			throw new NotSupportedException();
-		}
-
-		public ICollection Values
-		{
-			get { return innerList.Values; }
-		}
-	}
+    }
 }

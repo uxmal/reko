@@ -18,10 +18,11 @@
 
 using Decompiler.Analysis;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
@@ -89,7 +90,7 @@ namespace Decompiler.UnitTests.Analysis
 				LiveCopyInserter lci = new LiveCopyInserter(proc, ssa.Identifiers);
 				lci.Transform();
 
-				WebBuilder web = new WebBuilder(proc, ssa.Identifiers, new InductionVariableCollection());
+				WebBuilder web = new WebBuilder(proc, ssa.Identifiers, new Dictionary<Identifier,LinearInductionVariable>());
 				web.Transform();
 
 				ssa.ConvertBack(false);

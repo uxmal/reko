@@ -199,8 +199,8 @@ namespace Decompiler.Scanning
 		/// <param name="state"></param>
 		private void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, ProcessorState state)
 		{
-			ImageMapVectorTable table = (ImageMapVectorTable) program.Vectors[addrTable];
-			if (table == null)
+			ImageMapVectorTable table;
+            if (!program.Vectors.TryGetValue(addrTable, out table))
 			{
 				table = new ImageMapVectorTable(calltable);
 				VectorWorkItem wi = new VectorWorkItem(wiCur, blockCur.Procedure, addrTable);
@@ -326,8 +326,8 @@ namespace Decompiler.Scanning
 
 		public void OnTrampoline(ProcessorState st, Address addrInstr, Address addrGlob)
 		{
-			PseudoProcedure ppp = (PseudoProcedure) program.ImportThunks[(uint) addrGlob.Linear];
-			if (ppp != null)
+			PseudoProcedure ppp;
+            if (program.ImportThunks.TryGetValue((uint) addrGlob.Linear, out ppp))
 			{
 				program.Trampolines[addrInstr.Linear] = ppp;
 			}

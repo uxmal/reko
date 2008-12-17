@@ -37,7 +37,7 @@ namespace Decompiler.Analysis.Simplification
 			cBits = dpb.InsertedBits as Constant;
 			if (cBits != null)
 				return true;
-			return (Convert.ToInt32(cSrc.Value) == 0 && dpb.BitPosition == 0);
+			return (cSrc.ToInt32() == 0 && dpb.BitPosition == 0);
 		}
 
 		public Expression Transform(Statement stm)
@@ -45,11 +45,11 @@ namespace Decompiler.Analysis.Simplification
 			if (cBits != null)
 			{
 				int bitMask = Mask(dpb.BitCount) << dpb.BitPosition;
-				int maskedVal = Convert.ToInt32(cSrc.Value) & ~bitMask;
-				int newBits = Convert.ToInt32(cBits.Value) << dpb.BitPosition;
+				int maskedVal = cSrc.ToInt32() & ~bitMask;
+				int newBits = cBits.ToInt32() << dpb.BitPosition;
 				return new Constant(cSrc.DataType, maskedVal | (newBits & bitMask));
 			}
-			else if (dpb.BitPosition == 0 && Convert.ToInt32(cSrc.Value) == 0)
+			else if (dpb.BitPosition == 0 && cSrc.ToInt32() == 0)
 			{
 				return new Cast(dpb.Source.DataType, dpb.InsertedBits);
 			}

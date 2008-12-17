@@ -40,25 +40,24 @@ namespace Decompiler.Typing
 	public class TraitCollector : InstructionVisitorBase
 	{
 		private Program prog;
-		private Procedure proc;
+        private Procedure proc;
 		private TypeFactory factory;
 		private TypeStore store;
 		private ITraitHandler handler;
-		private InductionVariableCollection ivs;
 		private LinearInductionVariable ivCur;
 		private ArrayExpressionMatcher aem;
 		private AddressTraitCollector atrco;
 
 		private static TraceSwitch trace = new TraceSwitch("TraitCollector", "Traces the work of the Trait Collector");
 
-		public TraitCollector(TypeFactory factory, TypeStore store, ITraitHandler handler, Identifier globals, InductionVariableCollection ivs)
+		public TraitCollector(TypeFactory factory, TypeStore store, ITraitHandler handler, Program prog)
 		{
 			this.factory = factory;
 			this.store = store;
 			this.handler = handler;
-			this.ivs = ivs;
+            this.prog = prog;
 			this.aem = new ArrayExpressionMatcher();
-			this.atrco = new AddressTraitCollector(factory, store, handler, globals, ivs);
+			this.atrco = new AddressTraitCollector(factory, store, handler, prog);
 		}
 
 		/// <summary>
@@ -88,9 +87,9 @@ namespace Decompiler.Typing
 			this.prog = prog;
 			foreach (Procedure p in prog.Procedures.Values)
 			{
-				Procedure = p;
-				AddProcedureTraits(Procedure);
-				foreach (Block block in proc.RpoBlocks)
+                proc = p;
+				AddProcedureTraits(p);
+				foreach (Block block in p.RpoBlocks)
 				{
 					foreach (Statement stm in block.Statements)
 					{
@@ -141,16 +140,6 @@ namespace Decompiler.Typing
 			return new LinearInductionVariable(initial, delta, final);
 		}
 
-		public Procedure Procedure
-		{
-			get { return proc; }
-			set 
-			{ 
-				atrco.Procedure = value;
-				proc = value; 
-			}
-		}
-
 		#region InstructionVisitor methods ///////////////////////////
 
 		public override void VisitAssignment(Assignment a)
@@ -195,9 +184,9 @@ namespace Decompiler.Typing
             if (ret.Value != null)
             {
                 ret.Value.Accept(this);
-                if (Procedure.Signature != null && Procedure.Signature.ReturnValue != null)
+                if (proc.Signature != null && proc.Signature.ReturnValue != null)
                 {
-                    handler.EqualTrait(Procedure.Signature.ReturnValue.TypeVariable, ret.Value.TypeVariable);
+                    handler.EqualTrait(proc.Signature.ReturnValue.TypeVariable, ret.Value.TypeVariable);
                 }
             }
 		}
@@ -287,10 +276,8 @@ namespace Decompiler.Typing
 				return;
 
 			handler.DataTypeTrait(id.TypeVariable, id.DataType);
-			if (ivs != null && proc != null)
-			{
-				ivCur = ivs[proc, id];
-			}
+            if (!prog.InductionVariables.TryGetValue(id, out ivCur))
+                ivCur = null;
 		}
 
 		/*

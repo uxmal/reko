@@ -16,27 +16,16 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Types;
-using Decompiler.UnitTests.Mocks;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.UnitTests.Typing
+namespace Decompiler.Core
 {
-	public class ArrayLoopMock : ProcedureMock
-	{
-		protected override void BuildBody()
-		{
-			Identifier ptr = Local32("ptr");
-			Assign(ptr, 0x04000000);
-			Label("looptest");
-			BranchIf(Uge(ptr, 0x04001000), "done");
-			Store(ptr, 0);
-			Add(ptr, ptr, 4);
-			Jump("looptest");
-			Label("done");
-			Return();
-		}
-	}
+    /// <summary>
+    /// Abstract base class for low-level machine instructions.
+    /// </summary>
+    public abstract class MachineInstruction
+    {
+    }
 }

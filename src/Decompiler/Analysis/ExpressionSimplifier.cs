@@ -21,7 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
@@ -33,9 +33,9 @@ namespace Decompiler.Analysis
 	public class ExpressionSimplifier : IExpressionTransformer
 	{
 		private ValueNumbering dad;
-		private Hashtable table;
+		private Dictionary<Expression,Expression> table;
 
-		public ExpressionSimplifier(ValueNumbering d, Hashtable table)
+        public ExpressionSimplifier(ValueNumbering d, Dictionary<Expression, Expression> table)
 		{
 			this.dad = d;
 			this.table = table;
@@ -193,7 +193,7 @@ namespace Decompiler.Analysis
 				PrimitiveType p = c.DataType as PrimitiveType;
 				if (p != null && p.IsIntegral)
 				{
-					return new Constant(cast.DataType, Convert.ToInt32(c.Value));
+					return new Constant(cast.DataType, c.ToInt32());
 				}
 			}
 			return cast;

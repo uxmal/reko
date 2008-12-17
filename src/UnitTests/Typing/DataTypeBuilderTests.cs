@@ -38,6 +38,16 @@ namespace Decompiler.UnitTests.Typing
 		private EquivalenceClassBuilder eqb;
 		private DataTypeBuilder dtb;
 
+        [SetUp]
+        public void SetUp()
+        {
+            store = new TypeStore();
+            factory = new TypeFactory();
+            aen = new ExpressionNormalizer();
+            eqb = new EquivalenceClassBuilder(factory, store);
+            dtb = new DataTypeBuilder(factory, store);
+        }
+
 		[Test]
 		public void DtbArrayAccess()
 		{
@@ -60,7 +70,8 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
-		public void DtbArrayLoopMock()
+        [Ignore("Infrastructure needs to be built to handle negative induction variables correctly.")]
+        public void DtbArrayLoopMock()
 		{
 			ProgramMock mock = new Mocks.ProgramMock();
 			mock.Add(new ArrayLoopMock());
@@ -144,8 +155,7 @@ namespace Decompiler.UnitTests.Typing
 			ass1.Accept(eqb);
 			ass2.Accept(eqb);
 			ass3.Accept(eqb);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, new Identifier("globals", 0, PrimitiveType.Pointer, null), new InductionVariableCollection());
-			trco.Procedure = new Procedure("foo", new Frame(PrimitiveType.Word32));
+            TraitCollector trco = new TraitCollector(factory, store, dtb, new Program());
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
 			trco.VisitAssignment(ass3);
@@ -164,8 +174,7 @@ namespace Decompiler.UnitTests.Typing
 			Assignment ass2 = new Assignment(x, MemLoad(pfoo, 4, PrimitiveType.Word32));
 			ass1.Accept(eqb);
 			ass2.Accept(eqb);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, new Identifier("globals", 0, PrimitiveType.Pointer, null), ivs);
-			trco.Procedure = new Procedure("foo", null);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, new Program());
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
 			dtb.BuildEquivalenceClassDataTypes();
@@ -185,8 +194,7 @@ namespace Decompiler.UnitTests.Typing
 			Assignment ass2 = new Assignment(baz, MemLoad(foo, 4, PrimitiveType.Word16));
 			ass1.Accept(eqb);
 			ass2.Accept(eqb);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, new Identifier("globals", 0, PrimitiveType.Pointer, null), ivs);
-			trco.Procedure = new Procedure("foo", null);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, new Program());
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
 			dtb.BuildEquivalenceClassDataTypes();
@@ -200,15 +208,10 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbInductionVariables()
 		{
-			Identifier globals = new Identifier("globals", 0, PrimitiveType.Pointer, null);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, globals, ivs);
-
 			Identifier i = new Identifier("i", 0, PrimitiveType.Word32, null);
 			MemoryAccess load = new MemoryAccess(MemoryIdentifier.GlobalMemory, i, PrimitiveType.Int32);
 			Identifier i2 = new Identifier("i2", 1, PrimitiveType.Word32, null);
 			MemoryAccess ld2 = new MemoryAccess(MemoryIdentifier.GlobalMemory, i2, PrimitiveType.Int32);
-			Procedure proc = new Procedure("foo", null);
-			trco.Procedure = proc;
 
 			LinearInductionVariable iv = new LinearInductionVariable(
 				Constant.Word32(0), 
@@ -219,14 +222,15 @@ namespace Decompiler.UnitTests.Typing
 				Constant.Word32(4),
 				Constant.Word32(0x0010040));
 
-			ivs.Add(proc, i, iv);
-			ivs.Add(proc, i2, iv2);
+            Program prog = new Program();
+			prog.InductionVariables.Add(i, iv);
+            prog.InductionVariables.Add(i2, iv2);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 
-			globals.Accept(eqb);
+			prog.Globals.Accept(eqb);
 			load.Accept(eqb);
 			ld2.Accept(eqb);
-			trco.Procedure = proc;
-			globals.Accept(trco);
+			prog.Globals.Accept(trco);
 			load.Accept(trco);
 			ld2.Accept(trco);
 			dtb.BuildEquivalenceClassDataTypes();
@@ -261,11 +265,11 @@ namespace Decompiler.UnitTests.Typing
 		public void DtbGlobalArray()
 		{
 			ProcedureMock m = new ProcedureMock();
-			Identifier globals = m.Local32("globals");
+            Program prog = new Program();
 			Identifier i = m.Local32("i");
-			Expression ea = m.Add(globals, m.Add(m.Shl(i, 2), 0x3000));
+			Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
 			Expression e = m.Load(PrimitiveType.Int32, ea);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, globals, null);
+			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			e = e.Accept(aen);
 			e.Accept(eqb);
 			e.Accept(trco);
@@ -292,20 +296,19 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbReals()
 		{
-			RewriteFile("Fragments/fpuops.asm");
-            RunTest(this.prog, "Typing/DtbReals.txt");
+            RunTest(RewriteFile("Fragments/fpuops.asm"), "Typing/DtbReals.txt");
 		}
 
 		[Test]
 		public void DtbSegmentedAccess()
 		{
 			ProcedureMock m = new ProcedureMock();
-			Identifier globals = m.Local32("globals");
 
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			Expression e = m.SegMem(bx.DataType, ds, m.Add(bx, 4));
-			TraitCollector trco = new TraitCollector(factory, store, dtb, globals, null);
+            Program prog = new Program();
+			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			e = e.Accept(aen);
 			e.Accept(eqb);
 			e.Accept(trco);
@@ -317,14 +320,13 @@ namespace Decompiler.UnitTests.Typing
 		public void DtbSegmentedDirectAddress()
 		{
 			ProcedureMock m = new ProcedureMock();
-			Identifier globals = m.Local32("globals");
-			store.EnsureExpressionTypeVariable(factory, globals);
+            Program prog = new Program();
+			store.EnsureExpressionTypeVariable(factory, prog.Globals);
 
 			Identifier ds = m.Local16("ds");
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));
 			
-			TraitCollector coll = new TraitCollector(factory, store, dtb, globals, ivs);
-			coll.Procedure = new Procedure("foo", new Frame(PrimitiveType.Word32));
+			TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
 			e = e.Accept(aen);
 			e.Accept(eqb);
 			e.Accept(coll);
@@ -343,9 +345,15 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbReg00008()
 		{
-			this.RewriteFile("fragments/regressions/r00008.asm");
-			RunTest(prog, "Typing/DtbReg00008.txt");
+			RunTest("fragments/regressions/r00008.asm", "Typing/DtbReg00008.txt");
 		}
+
+        [Test]
+        [Ignore("Infrastructure needs to be built to handle negative induction variables correctly.")]
+        public void DtbReg00011()
+        {
+            RunTest("fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");
+        }
 
 		[Test]
 		public void DtbTreeFind()
@@ -435,23 +443,16 @@ namespace Decompiler.UnitTests.Typing
         }
 
 
-		[SetUp]
-		public void SetUp()
-		{
-			store = new TypeStore();
-			factory = new TypeFactory();
-			ivs = new InductionVariableCollection();
-			aen = new ExpressionNormalizer();
-			eqb = new EquivalenceClassBuilder(factory, store);
-			dtb = new DataTypeBuilder(factory, store);
-		}
+        private void RunTest(string srcfile, string outputFile)
+        {
+            RunTest(base.RewriteFile(srcfile), outputFile);
+        }
 
 		private void RunTest(ProgramMock mock, string outputFile)
 		{
-			prog = mock.BuildProgram();
+			Program prog = mock.BuildProgram();
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			dfa.BuildExpressionTrees(null);
-			ivs = dfa.InductionVariables;
 			RunTest(prog, outputFile);
 		}
 
@@ -459,7 +460,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			aen.Transform(prog);
 			eqb.Build(prog);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, prog.Globals, this.ivs);
+			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			trco.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();
 			Verify(prog, outputFile);

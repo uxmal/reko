@@ -21,7 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
 using System.IO;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
@@ -30,10 +30,10 @@ namespace Decompiler.Analysis
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
 		private BitSet visited;
-		private Hashtable defined;		// maps statement to -> ArrayList of identifiers
+		private Dictionary<Statement, List<Identifier>> defined;		// maps statement to -> List of identifiers
 		private InterferenceGraph interference; 
-		private ArrayList [] liveInBlocks;
-		private ArrayList [] liveOutBlocks;
+		private List<SsaIdentifier> [] liveInBlocks;
+		private List<SsaIdentifier> [] liveOutBlocks;
 
 		public SsaLivenessAnalysis(Procedure proc, SsaIdentifierCollection ssaIds)
 		{
@@ -46,27 +46,27 @@ namespace Decompiler.Analysis
 			BuildInterferenceGraph(ssaIds);
 		}
 
-		private ArrayList [] BuildLiveSet(int size)
+		private List<SsaIdentifier> [] BuildLiveSet(int size)
 		{
-			ArrayList [] arr = new ArrayList[size];
+			List<SsaIdentifier> [] arr = new List<SsaIdentifier>[size];
 			for (int i = 0; i < size; ++i)
 			{
-				arr[i] = new ArrayList();
+				arr[i] = new List<SsaIdentifier>();
 			}
 			return arr;
 		}
 
 		public void BuildDefinedMap(SsaIdentifierCollection ssaIds)
 		{
-			defined = new Hashtable();
+			defined = new Dictionary<Statement,List<Identifier>>();
 			foreach (SsaIdentifier ssa in ssaIds)
 			{
 				if (ssa.Uses.Count > 0 && ssa.DefStatement != null)
 				{
-					ArrayList al = (ArrayList) defined[ssa.DefStatement];
-					if (al == null)
+					List<Identifier> al;
+                    if (!defined.TryGetValue(ssa.DefStatement, out al))
 					{
-						al = new ArrayList();
+						al = new List<Identifier>();
 						defined.Add(ssa.DefStatement, al);
 					}
 					al.Add(ssa.Identifier);
@@ -98,10 +98,10 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		public ArrayList IdentifiersDefinedAtStatement(Statement stm)
+		public List<Identifier> IdentifiersDefinedAtStatement(Statement stm)
 		{
 			if (stm == null) return null;
-			return (ArrayList) defined[stm];
+			return defined[stm];
 		}
 
 		public InterferenceGraph InterferenceGraph
@@ -223,7 +223,7 @@ namespace Decompiler.Analysis
 		{
 			// v is live-out at s.
 
-			ArrayList ids = this.IdentifiersDefinedAtStatement(s);
+			List<Identifier> ids = this.IdentifiersDefinedAtStatement(s);
 			if (ids != null)
 			{
 				foreach (Identifier id in ids)
@@ -243,7 +243,7 @@ namespace Decompiler.Analysis
 			return ass.Src;
 		}
 
-		private void Set(ArrayList s, SsaIdentifier v)
+		private void Set(List<SsaIdentifier> s, SsaIdentifier v)
 		{
 			if (!s.Contains(v))
 				s.Add(v);
@@ -253,16 +253,16 @@ namespace Decompiler.Analysis
 	public class SsaLivenessAnalysis2 : InstructionVisitorBase
 	{
 		private SsaIdentifierCollection ssa;
-		private Hashtable visitedBlocks;
+		private Dictionary<Block,Block> visitedBlocks;
 		private InterferenceGraph interference;
 
 		public SsaLivenessAnalysis2(Procedure proc, SsaIdentifierCollection ssa)
 		{
 			this.ssa = ssa;
-			visitedBlocks = new Hashtable();
+            visitedBlocks = new Dictionary<Block, Block>();
 			interference = new InterferenceGraph();
-
 		}
+
 		public void Analyze()
 		{
 			foreach (SsaIdentifier sid in ssa)
@@ -290,7 +290,7 @@ namespace Decompiler.Analysis
 
 		private void LiveOutAtBlock(Block n, SsaIdentifier sid)
 		{
-			if (!visitedBlocks.Contains(n))
+			if (!visitedBlocks.ContainsKey(n))
 			{
 				visitedBlocks[n] = n;
 				LiveOutAtStatement(n, n.Statements.Count-1, sid);
@@ -314,9 +314,9 @@ namespace Decompiler.Analysis
 
 		public void LiveOutAtStatement(Block block, int iStm, SsaIdentifier sid)
 		{
-			Hashtable W = iStm >= 0 
+            Dictionary<SsaIdentifier, SsaIdentifier> W = iStm >= 0 
 				? VariablesDefinedByStatement(block.Statements[iStm])
-				: new Hashtable();
+				: new Dictionary<SsaIdentifier,SsaIdentifier>();
 
 			foreach (SsaIdentifier w in W.Values)
 			{
@@ -324,13 +324,13 @@ namespace Decompiler.Analysis
 					interference.Add(w.Identifier, sid.Identifier);
 
 			}
-			if (!W.Contains(sid))
+			if (!W.ContainsKey(sid))
 				LiveInAtStatement(block, iStm, sid);
 		}
 
-		private Hashtable VariablesDefinedByStatement(Statement stm)
+		private Dictionary<SsaIdentifier,SsaIdentifier> VariablesDefinedByStatement(Statement stm)
 		{
-			Hashtable W = new Hashtable();
+			Dictionary<SsaIdentifier,SsaIdentifier> W = new Dictionary<SsaIdentifier,SsaIdentifier>();
 			foreach (SsaIdentifier sid in ssa)
 			{
 				if (sid.DefStatement == stm)

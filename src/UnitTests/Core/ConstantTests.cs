@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Core
 		{
 			Constant c = Constant.Word32(3);
 			Assert.AreEqual(PrimitiveType.Word32, c.DataType);
-			Assert.AreEqual(3, Convert.ToInt32(c.Value));
+			Assert.AreEqual(3, c.ToInt32());
 		}
 
 		[Test]
@@ -68,15 +68,15 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ConFloatFromBits()
 		{
-			Constant c = Constant.RealFromBitpattern(PrimitiveType.Real32, 0x3F800000);
-			Assert.AreEqual(1.0F, (float) c.Value);
+			Constant c = Constant.RealFromBitpattern(PrimitiveType.Real32, 0x3FC00000);
+			Assert.AreEqual(1.5F, c.ToFloat());
 		}
 
 		[Test]
 		public void Negate()
 		{
 			Constant c1 = new Constant(PrimitiveType.Word16, 0xFFFF);
-			Assert.AreEqual(1, c1.Negate().Value, "-(-1) == 1");
+			Assert.AreEqual(1, c1.Negate().ToInt32(), "-(-1) == 1");
 		}
 
 		[Test]

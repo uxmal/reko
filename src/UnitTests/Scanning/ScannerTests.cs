@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Scanning
 									   };
 
 			Regexp re = Regexp.Compile(".*55C3");
-			Assert.IsTrue(re.Match(data, 0));
+			Assert.IsTrue(re.Match(data, 0), "Should have matched");
 		}
 
 		[Test]

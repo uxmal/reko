@@ -13,7 +13,7 @@ l0C00_0000:		// block 1, pred: 0
 	store(Mem11[ds:0x0300:word32]) = Mem8[ds:si:word32]
 	store(Mem14[ds:0x0304:word32]) = Mem11[ds:si + 0x0004:word32]
 	store(Mem17[ds:0x0308:word16]) = Mem14[ds:si + 0x0008:word16]
-	store(Mem21[ds:0x030A:word16]) = Mem17[ds:si + 0x000A:word16]
+	store(Mem20[ds:0x030A:word16]) = Mem17[ds:si + 0x000A:word16]
 	fn0C00_0026(es, ds)
 	return
 	// succ:  2

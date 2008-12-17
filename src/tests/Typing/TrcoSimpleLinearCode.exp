@@ -12,6 +12,7 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 
 T_2 (in ax_7 : word16)
+	trait_primitive(word16)
 	trait_equal(T_7)
 	trait_primitive(word16)
 	trait_primitive(word16)

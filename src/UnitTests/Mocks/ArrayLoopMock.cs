@@ -16,23 +16,27 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
+using Decompiler.UnitTests.Mocks;
 using System;
-using System.Collections;
 
-namespace Decompiler.Typing
+namespace Decompiler.UnitTests.Mocks
 {
-	public class TypeVarMapping : DictionaryBase
+	public class ArrayLoopMock : ProcedureMock
 	{
-		public DataType this[TypeVariable t]
+		protected override void BuildBody()
 		{
-			get { return (DataType) InnerHashtable[t]; }
-			set { InnerHashtable[t] = value; }
-		}
-
-		public ICollection Keys
-		{
-			get { return InnerHashtable.Keys; }
+			Identifier ptr = Local32("ptr");
+			Assign(ptr, 0x04000000);
+			Label("looptest");
+			BranchIf(Uge(ptr, 0x04001000), "done");
+			Store(ptr, 0);
+			Add(ptr, ptr, 4);
+			Jump("looptest");
+			Label("done");
+			Return();
 		}
 	}
 }

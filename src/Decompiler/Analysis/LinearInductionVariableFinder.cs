@@ -21,20 +21,20 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
 	/// <summary>
 	/// Finds linear induction variables and annotates the identifiers with that information.
 	/// </summary>
-	public class LinearInductionVariableFinder : InstructionVisitorBase, ISccFinderHost
+	public class LinearInductionVariableFinder : InstructionVisitorBase, ISccFinderHost<SsaIdentifier>
 	{
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
 		private DominatorGraph doms;
-		private ArrayList operands;
-		private ArrayList ivs;
+		private ICollection<SsaIdentifier> operands;
+        private List<LinearInductionVariable> ivs;
 		private Statement stmInc;
 		private Statement stmPhi;
 		private Statement stmTest;
@@ -49,8 +49,8 @@ namespace Decompiler.Analysis
 			this.proc = proc;
 			this.ssaIds = ssaIds;
 			this.doms = doms;
-			this.ivs = new ArrayList();
-		}
+            this.ivs = new List<LinearInductionVariable>();
+        }
 
 		public Constant InitialValue
 		{
@@ -120,27 +120,47 @@ namespace Decompiler.Analysis
 				}
 			}
 
-			if (TestValue != null)
-			{
-				// <= or >= operators imply an extra spin around the loop.
+            TestValue = AdjustTestValue(TestValue);
 
-				if (TestOperator == Operator.le || TestOperator == Operator.ge)
-				{
-					TestValue = Operator.add.ApplyConstants(TestValue, DeltaValue);
-				}
-				Identifier idNew = (Identifier) ((Assignment) DeltaStatement.Instruction).Dst;
-				if (!IsSingleUsingStatement(TestStatement, idNew))
-				{
-					if (!(IsSingleUsingStatement(PhiStatement, idNew) && 
-						DominatesAllUses(TestStatement, PhiIdentifier)))
-					{
-						// A use is made of the variable between increment and test.
-						TestValue = Operator.add.ApplyConstants(TestValue, DeltaValue);
-					}
-				}
-			}
 			return new LinearInductionVariable(InitialValue, DeltaValue, TestValue);
 		}
+
+        public Constant AdjustTestValue(Constant testValue)
+        {
+            if (testValue == null)
+                return null; 
+
+            // <= or >= operators imply an extra spin around the loop.
+
+            if (RelEq(TestOperator) &&
+                
+                DominatesAllUses(TestStatement, PhiIdentifier))
+            {
+                testValue = Operator.add.ApplyConstants(testValue, DeltaValue);
+            }
+            Identifier idNew = (Identifier) ((Assignment) DeltaStatement.Instruction).Dst;
+            if (!IsSingleUsingStatement(TestStatement, idNew))
+            {
+                if (!(IsSingleUsingStatement(PhiStatement, idNew) &&
+                    DominatesAllUses(TestStatement, PhiIdentifier)))
+                {
+                    // A use is made of the variable between increment and test.
+                    testValue = Operator.add.ApplyConstants(testValue, DeltaValue);
+                }
+            }
+            return testValue;
+        }
+
+        /// <summary>
+        /// Operator is a relation-equals operator.
+        /// </summary>
+        /// <param name="op"></param>
+        /// <returns></returns>
+        private bool RelEq(Operator op)
+        {
+            return op == Operator.le || op == Operator.ge ||
+                   op == Operator.ule || op == Operator.uge;
+        }
 
 		public bool DominatesAllUses(Statement stm, Identifier id)
 		{
@@ -158,14 +178,14 @@ namespace Decompiler.Analysis
 
 		public void Find()
 		{
-			SccFinder sccFinder = new SccFinder(this);
+			SccFinder<SsaIdentifier> sccFinder = new SccFinder<SsaIdentifier>(this);
 			foreach (SsaIdentifier sid in ssaIds)
 			{
 				sccFinder.Find(sid);
 			}
 		}
 
-		public Constant FindFinalValue(ArrayList scc)
+		public Constant FindFinalValue(ICollection<SsaIdentifier> scc)
 		{
 			foreach (SsaIdentifier sid in scc)
 			{
@@ -213,7 +233,7 @@ namespace Decompiler.Analysis
 			return InitialValue;
 		}
 
-		public Constant FindLinearIncrement(ArrayList sids)
+		public Constant FindLinearIncrement(ICollection<SsaIdentifier> sids)
 		{
 			foreach (SsaIdentifier sid in sids)
 			{
@@ -245,7 +265,7 @@ namespace Decompiler.Analysis
 			return null;
 		}
 
-		public PhiFunction FindPhiFunction(ArrayList sids)
+		public PhiFunction FindPhiFunction(ICollection<SsaIdentifier> sids)
 		{
 			foreach (SsaIdentifier sid in sids)
 			{
@@ -263,7 +283,7 @@ namespace Decompiler.Analysis
 			return null;
 		}
 
-		public ArrayList InductionVariables
+        public List<LinearInductionVariable> InductionVariables
 		{
 			get { return ivs; }
 		}
@@ -286,7 +306,7 @@ namespace Decompiler.Analysis
 			return true;
 		}
 
-		public bool IsSccMember(Identifier id, ArrayList sids)
+		public bool IsSccMember(Identifier id, ICollection<SsaIdentifier> sids)
 		{
 			foreach (SsaIdentifier sid in sids)
 			{
@@ -322,10 +342,9 @@ namespace Decompiler.Analysis
 
 		#region ISccFinderHost Members //////////////////////
 
-		public void AddSuccessors(object o, ArrayList operands)
+		public void AddSuccessors(SsaIdentifier sidDef, ICollection<SsaIdentifier> operands)
 		{
 			this.operands = operands;
-			SsaIdentifier sidDef = (SsaIdentifier) o;
 			if (sidDef.DefStatement != null)
 			{
 				sidDef.DefStatement.Instruction.Accept(this);
@@ -333,7 +352,7 @@ namespace Decompiler.Analysis
 		}
 
 
-		public virtual void ProcessScc(ArrayList scc)
+		public virtual void ProcessScc(ICollection<SsaIdentifier> scc)
 		{
 			if (scc.Count <= 1)
 				return;

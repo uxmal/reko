@@ -91,11 +91,11 @@ namespace Decompiler.Core.Code
                 delegate(Expression ea, Expression eb)
                 {
                     Constant a = (Constant) ea, b = (Constant) eb;
-                    return object.Equals(a.Value, b.Value);
+                    return object.Equals(a.ToUInt64(), b.ToUInt64());
                 },
                 delegate(Expression obj)
                 {
-                    return ((Constant)obj).Value.GetHashCode();
+                    return ((Constant)obj).ToUInt64().GetHashCode();
                 });
 
             Add(typeof(DepositBits),

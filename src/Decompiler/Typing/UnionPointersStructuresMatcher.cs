@@ -18,29 +18,27 @@
 
 using Decompiler.Core.Types;
 using System;
-using System.Collections;	
+using System.Collections.Generic;
 
 namespace Decompiler.Typing
 {
 	/// <summary>
 	/// Matches the pattern: (union (ptr T_1) (ptr T_2) ... (ptr T_n)) where T_1.class .. T_n.class are all structures.
 	/// </summary>
-
-	/// </summary>
 	public class UnionPointersStructuresMatcher
 	{
-		private ArrayList eqClasses;
-		private ArrayList strs;
+		private List<EquivalenceClass> eqClasses;
+		private List<StructureType> strs;
 
 		public UnionPointersStructuresMatcher()
 		{
-			this.eqClasses = new ArrayList();
-			this.strs = new ArrayList();
+			this.eqClasses = new List<EquivalenceClass>();
+			this.strs = new List<StructureType>();
 		}
 
 		public bool Match(UnionType ut)
 		{
-			foreach (UnionAlternative a in ut.Alternatives)
+			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
 				Pointer p = a.DataType as Pointer;
 				if (p == null)
@@ -59,12 +57,12 @@ namespace Decompiler.Typing
 			return true;
 		}
 
-		public ICollection Structures 
+		public ICollection<StructureType> Structures 
 		{
 			get { return strs; }
 		}
 
-		public ICollection EquivalenceClasses
+		public ICollection<EquivalenceClass> EquivalenceClasses
 		{
 			get { return eqClasses; }
 		}

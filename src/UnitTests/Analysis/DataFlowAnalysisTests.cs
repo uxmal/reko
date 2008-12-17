@@ -160,6 +160,11 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/regressions/r00010.asm", "Analysis/DfaReg00010.txt");
 		}
 
+        [Test]
+        public void DfaReg00011()
+        {
+            RunTest("Fragments/regressions/r00011.asm", "Analysis/DfaReg00011.txt");
+        }
 
 
 		protected override void RunTest(Program prog, FileUnitTester fut)

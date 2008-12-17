@@ -17,58 +17,43 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
-	/// <summary>
-	/// Represents a table of jumps or calls. Initially, it is empty.
-	/// item, but further analysis may grow this size.
-	/// </summary>
-	public class ImageMapVectorTable : ImageMapItem
-	{
-		private bool fCallTable;
-		private ArrayList addresses;
-		private MapAddressToRegister registerUsed = new MapAddressToRegister();
+    /// <summary>
+    /// Represents a table of jumps or calls. Initially, it is empty.
+    /// item, but further analysis may grow this size.
+    /// </summary>
+    public class ImageMapVectorTable : ImageMapItem
+    {
+        private bool fCallTable;
+        private List<Address> addresses;
+        private Dictionary<Address, int> registerUsed = new Dictionary<Address, int>();
 
-		public ImageMapVectorTable(bool fCallTable)
-		{
-			this.fCallTable = fCallTable;
-			this.addresses = new ArrayList();
-		}
+        public ImageMapVectorTable(bool fCallTable)
+        {
+            this.fCallTable = fCallTable;
+            this.addresses = new List<Address>();
+        }
 
-		public ImageMapVectorTable(bool isCallTable, Address [] vector, int size) 
-		{
-			this.fCallTable = isCallTable;
-			this.addresses = new ArrayList(vector);
-		}
+        public ImageMapVectorTable(bool isCallTable, Address[] vector, int size)
+        {
+            this.fCallTable = isCallTable;
+            this.addresses = new List<Address>(vector);
+        }
 
-		public ArrayList Addresses { get { return addresses; } }
+        public List<Address> Addresses { get { return addresses; } }
 
-		public bool IsCallTable
-		{
-			get { return fCallTable; }
-		}
+        public bool IsCallTable
+        {
+            get { return fCallTable; }
+        }
 
-		public MapAddressToRegister RegisterUsed
-		{
-			get { return registerUsed; }
-		}
-	}
+        public Dictionary<Address,int> RegisterUsed
+        {
+            get { return registerUsed; }
+        }
+    }
 
-	public class MapAddressToRegister : DictionaryBase
-	{
-		public int this[Address addr]
-		{
-			get 
-			{
-				object o = InnerHashtable[addr];
-				if (o != null)
-					return (int) o;
-				else 
-					return -1;
-			}
-			set { InnerHashtable[addr] = value; }
-		}
-	}
 }

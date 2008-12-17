@@ -327,7 +327,7 @@ namespace Decompiler.Typing
 
 		public void UnifyIntoUnion(UnionType u, DataType dt)
 		{
-			foreach (UnionAlternative alt in u.Alternatives)
+			foreach (UnionAlternative alt in u.Alternatives.Values)
 			{
 				if (AreCompatible(alt.DataType, dt))
 				{
@@ -494,11 +494,11 @@ namespace Decompiler.Typing
 		public UnionType UnifyUnions(UnionType u1, UnionType u2)
 		{
 			UnionType u = new UnionType(null, null);
-			foreach (UnionAlternative a in u1.Alternatives)
+			foreach (UnionAlternative a in u1.Alternatives.Values)
 			{
 				UnifyIntoUnion(u, a.DataType);
 			}
-			foreach (UnionAlternative a in u2.Alternatives)
+			foreach (UnionAlternative a in u2.Alternatives.Values)
 			{
 				UnifyIntoUnion(u, a.DataType);
 			}

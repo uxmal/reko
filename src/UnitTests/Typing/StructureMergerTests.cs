@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Typing
 			EquivalenceClass c2 = new EquivalenceClass(tv2);
 			c1.DataType = s1;
 			c2.DataType = s2;
-			StructureMerger sm = new StructureMerger(new DataType[] { s1, s2 }, new DataType[] { c1, c2 } );
+			StructureMerger sm = new StructureMerger(new StructureType[] { s1, s2 }, new EquivalenceClass[] { c1, c2 } );
 			sm.Merge();
 			Assert.AreEqual("(struct (4 ptr0 ptr0004))", c1.DataType.ToString());
 		}

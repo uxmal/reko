@@ -169,9 +169,9 @@ namespace Decompiler.UnitTests.Typing
 			PrimitiveType p3 = PrimitiveType.Bool;
 			UnionType u2 = (UnionType) un.Unify(u1, p3);
 			Assert.AreEqual(3, u2.Alternatives.Count);
-			Assert.AreEqual("bool", u2.Alternatives[0].DataType.ToString());
-			Assert.AreEqual("uint32", u2.Alternatives[1].DataType.ToString());
-			Assert.AreEqual("real32", u2.Alternatives[2].DataType.ToString());
+			Assert.AreEqual("bool", u2.Alternatives.Values[0].DataType.ToString());
+			Assert.AreEqual("uint32", u2.Alternatives.Values[1].DataType.ToString());
+			Assert.AreEqual("real32", u2.Alternatives.Values[2].DataType.ToString());
 		}
 
 		[Test]

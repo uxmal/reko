@@ -30,7 +30,6 @@ l0C00_000C:		// block 1, pred: 0
 	al = Mem0[ds:0x0104:byte]
 	store(Mem0[ds:0x0105:byte]) = al
 	ax = wLoc04
-	al = (byte) ax (alias)
 	return
 	// succ:  2
 fn0C00_000C_exit:		// block 2, pred: 1

@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Mocks
 {
@@ -31,8 +31,8 @@ namespace Decompiler.UnitTests.Mocks
 	{
 		private Program prog;
 		private uint procCount;
-		private Hashtable nameToProcedure = new Hashtable();
-		private ArrayList unresolvedProcedures = new ArrayList();
+        private Dictionary<string, Procedure> nameToProcedure = new Dictionary<string, Procedure>();
+		private List<ProcUpdater> unresolvedProcedures = new List<ProcUpdater>();
 
 		public ProgramMock()
 		{
@@ -81,8 +81,8 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			foreach (ProcUpdater pcu in unresolvedProcedures)
 			{
-				Procedure proc = (Procedure) nameToProcedure[pcu.Name];
-				if (proc == null)
+				Procedure proc;
+                if (!nameToProcedure.TryGetValue(pcu.Name, out proc))
 					throw new ApplicationException("Unresolved procedure name: " + pcu.Name);
 				pcu.Update(proc);
 			}

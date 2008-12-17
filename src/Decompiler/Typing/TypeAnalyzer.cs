@@ -36,7 +36,6 @@ namespace Decompiler.Typing
 	public class TypeAnalyzer
 	{
 		private Program prog;
-		private InductionVariableCollection ivs;
 		private DecompilerHost host;
 
 		private TypeFactory factory;
@@ -51,10 +50,9 @@ namespace Decompiler.Typing
 		private ComplexTypeNamer ctn;
 		private TypedExpressionRewriter ter;
 
-		public TypeAnalyzer(Program prog, InductionVariableCollection ivs, DecompilerHost host)
+		public TypeAnalyzer(Program prog, DecompilerHost host)
 		{
 			this.prog = prog;
-			this.ivs = ivs;
 			this.host = host;
 
 			factory = prog.TypeFactory;
@@ -63,7 +61,7 @@ namespace Decompiler.Typing
 			aen = new ExpressionNormalizer();
 			eqb = new EquivalenceClassBuilder(factory, store);
 			dtb = new DataTypeBuilder(factory, store);
-			trco = new TraitCollector(factory, store, dtb, prog.Globals, ivs);
+			trco = new TraitCollector(factory, store, dtb, prog);
 			dpa = new DerivedPointerAnalysis(factory, store, dtb);
 			tvr = new TypeVariableReplacer(store);
 			trans = new TypeTransformer(factory, store, host);
@@ -81,7 +79,7 @@ namespace Decompiler.Typing
 		/// <param name="prog"></param>
 		public void RewriteProgram()
 		{
-            RestrictProcedures(0, 8, true);
+            RestrictProcedures(0, 16, true);
 			aen.Transform(prog);
 			eqb.Build(prog);
 			Debug.WriteLine("= Collecting traits ========================================");

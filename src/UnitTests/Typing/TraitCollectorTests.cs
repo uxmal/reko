@@ -100,7 +100,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProgramMock mock = new ProgramMock();
 			mock.Add(new CmpMock());
-			prog = mock.BuildProgram();
+			Program prog = mock.BuildProgram();
             coll = CreateCollector(prog);
             eqb.Build(prog);
 			coll.CollectProgramTraits(prog);
@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProgramMock mock = new ProgramMock();
 			mock.Add(new StaggeredArraysMock());
-			prog = mock.BuildProgram();
+			Program prog = mock.BuildProgram();
             coll = CreateCollector(prog);
 
 			aen.Transform(prog);
@@ -138,7 +138,6 @@ namespace Decompiler.UnitTests.Typing
 				m.Add(m.Add(b, Constant.Word32(0x10030000)),
 				m.Muls(i, s)));
             coll = CreateCollector();
-			coll.Procedure = new Procedure("foo", null);
 			e = e.Accept(aen);
 			e.Accept(eqb);
 			e.Accept(coll);
@@ -152,9 +151,6 @@ namespace Decompiler.UnitTests.Typing
 			MemoryAccess load = new MemoryAccess(MemoryIdentifier.GlobalMemory, i, PrimitiveType.Int32);
 			Identifier i2 = new Identifier("i2", 1, PrimitiveType.Word32, null);
 			MemoryAccess ld2 = new MemoryAccess(MemoryIdentifier.GlobalMemory, i2, PrimitiveType.Int32);
-			Procedure proc = new Procedure("foo", null);
-            coll = CreateCollector();
-            coll.Procedure = proc;
 
 			LinearInductionVariable iv = new LinearInductionVariable(
 				Constant.Word32(0), 
@@ -165,10 +161,11 @@ namespace Decompiler.UnitTests.Typing
 				Constant.Word32(4),
 				Constant.Word32(0x0010040));
 
-			ivs.Add(proc, i, iv);
-			ivs.Add(proc, i2, iv2);
+            Program prog = new Program();
+			prog.InductionVariables.Add(i, iv);
+			prog.InductionVariables.Add(i2, iv2);
 
-			
+            coll = CreateCollector(prog);
 			prog.Globals.Accept(eqb);
 			load.Accept(eqb);
 			ld2.Accept(eqb);
@@ -181,14 +178,13 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoGlobalArray()
 		{
-            prog = new Program();
+            Program prog = new Program();
             ProcedureMock m = new ProcedureMock();
             Identifier i = m.Local32("i");
             Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
             Expression e = m.Load(PrimitiveType.Int32, ea);
 
             coll = CreateCollector(prog);
-			coll.Procedure = new Procedure("foo", null);
 			e = e.Accept(aen);
 			e.Accept(eqb);
 			e.Accept(coll);
@@ -198,17 +194,14 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoMemberPointer()
 		{
-            prog = new Program();
 			ProcedureMock m = new ProcedureMock();
-			//Identifier globals = m.Local32("globals");
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			Identifier ax = m.Local16("ax");
 			MemberPointerSelector mps = m.MembPtrW(ds, m.Add(bx, 4));
 			Expression e = m.Load(PrimitiveType.Byte, mps);
 
-            coll = CreateCollector(prog);
-			coll.Procedure = new Procedure("foo", null);
+            coll = CreateCollector();
 			e = e.Accept(aen);
 			e.Accept(eqb);
 			e.Accept(coll);
@@ -226,7 +219,6 @@ namespace Decompiler.UnitTests.Typing
 			Expression e = m.SegMem(PrimitiveType.Word16, ds, m.Add(bx, 4));
 
             coll = CreateCollector();
-			coll.Procedure = new Procedure("foo", null);
 			e = e.Accept(aen);
 			e.Accept(eqb);
 			e.Accept(coll);
@@ -237,13 +229,13 @@ namespace Decompiler.UnitTests.Typing
 		public void TrcoSegmentedDirectAddress()
 		{
 			ProcedureMock m = new ProcedureMock();
+            Program prog = new Program();
 			prog.TypeStore.EnsureExpressionTypeVariable(prog.TypeFactory, prog.Globals);
 
 			Identifier ds = m.Local16("ds");
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));
 
             coll = CreateCollector(prog);
-			coll.Procedure = new Procedure("foo", null);
 			e = e.Accept(aen);
 			e.Accept(eqb);
 			e.Accept(coll);
@@ -280,12 +272,19 @@ namespace Decompiler.UnitTests.Typing
 			RunTest("fragments/regressions/r00008.asm", "Typing/TrcoReg00008.txt");
 		}
 
+        [Test]
+        [Ignore("Infrastructure needs to be built to handle negative induction variables correctly.")]
+        public void TrcoReg00011()
+        {
+            RunTest("fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
+        }
+
 		[Test]
 		public void TrcoIntelIndexedAddressingMode()
 		{
 			ProgramMock m = new ProgramMock();
 			m.Add(new IntelIndexedAddressingMode());
-			prog = m.BuildProgram();
+			Program prog = m.BuildProgram();
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			dfa.AnalyzeProgram();
 			RunTest(prog, "Typing/TrcoIntelIndexedAddressingMode.txt");
@@ -296,7 +295,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProgramMock m = new ProgramMock();
 			m.Add(new TreeFindMock());
-			prog = m.BuildProgram();
+			Program prog = m.BuildProgram();
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			dfa.AnalyzeProgram();
 			RunTest(prog, "Typing/TrcoTreeFind.txt");
@@ -340,7 +339,6 @@ namespace Decompiler.UnitTests.Typing
 			ProcedureMock m = new ProcedureMock();
 			Identifier ds = m.Local16("ds");
 			Expression e = m.SegMemW(ds, m.Word16(0xC002U));
-
 
             coll = CreateCollector();
 			e.Accept(eqb);
@@ -401,18 +399,15 @@ namespace Decompiler.UnitTests.Typing
 
         private TraitCollector CreateCollector()
         {
-            prog = new Program();
-            return CreateCollector(prog);
+            return CreateCollector(new Program());
         }
 
         private TraitCollector CreateCollector(Program prog)
         {
-            if (ivs == null) 
-                ivs = new InductionVariableCollection();
             aen = new ExpressionNormalizer();
             eqb = new EquivalenceClassBuilder(prog.TypeFactory, prog.TypeStore);
             handler = new MockTraitHandler(prog.TypeStore);
-            return new TraitCollector(prog.TypeFactory, prog.TypeStore, handler, prog.Globals, ivs);
+            return new TraitCollector(prog.TypeFactory, prog.TypeStore, handler, prog);
         }
 
         private ITraitHandler CreateHandler(TypeStore store)
@@ -440,9 +435,7 @@ namespace Decompiler.UnitTests.Typing
 
 		private void RunTest(string sourceFile, string outFile)
 		{
-			RewriteFile(sourceFile);
-			Assert.IsNotNull(prog);
-			RunTest(prog, outFile);
+            RunTest(RewriteFile(sourceFile), outFile);
 		}
 
 		private void Verify(Program prog, string outputFilename)

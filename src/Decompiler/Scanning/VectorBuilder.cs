@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Scanning
 {
@@ -48,7 +48,7 @@ namespace Decompiler.Scanning
 			bw = prog.Architecture.CreateBackWalker(prog.Image);
 			if (bw == null) 
 				return null;
-			ArrayList operations = bw.BackWalk(addrFrom, this);
+			List<BackwalkOperation> operations = bw.BackWalk(addrFrom, this);
 			if (operations == null)
 				return PostError("Unable to determine limit", addrFrom, addrTable);
 			int limit = 0;

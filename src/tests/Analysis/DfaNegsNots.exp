@@ -16,7 +16,7 @@ l0C00_0000:		// block 1, pred: 0
 	store(Mem23[ds:0x0308:word32]) = 0x00000000 - (v6_19 == 0x0000)
 	store(Mem25[ds:0x0304:word16]) = ~bx
 	store(Mem27[ds:0x0204:word16]) = ~Mem25[ds:0x0204:word16]
-	store(Mem34[ds:0x0306:word16]) = 0x03E8 - Mem27[ds:0x0304:word16]
+	store(Mem33[ds:0x0306:word16]) = 0x03E8 - Mem27[ds:0x0304:word16]
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1

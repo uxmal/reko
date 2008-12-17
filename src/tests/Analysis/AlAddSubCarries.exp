@@ -51,15 +51,11 @@ l0C00_0000:		// block 1, pred: 0
 	v13 = ax + ax
 	ax = v13 + (word16) C
 	cl = Mem0[ds:0x0221:byte]
-	cx = DPB(cx, cl, 0, 8) (alias)
-	bx_cx = DPB(bx_cx, cl, 0, 8) (alias)
-	es_cx = DPB(es_cx, cl, 0, 8) (alias)
 	SCZO = cond(cl - 0x3A)
 	C = SCZO (alias)
 	C = !C
 	v15 = ax + ax
 	ax = v15 + (word16) C
-	dx_ax = SEQ(dx, ax) (alias)
 	SCZO = cond(ax)
 	store(Mem0[ds:0x0222:word16]) = ax
 	return

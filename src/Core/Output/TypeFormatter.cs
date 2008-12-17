@@ -267,7 +267,7 @@ namespace Decompiler.Core.Output
 			writer.Write("union {0}", ut.Name);
 			OpenBrace();
 			int i = 0;
-			foreach (UnionAlternative alt in ut.Alternatives)
+			foreach (UnionAlternative alt in ut.Alternatives.Values)
 			{
 				BeginLine();
 				name = alt.MakeName(i);

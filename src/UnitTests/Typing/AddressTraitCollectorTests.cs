@@ -24,20 +24,21 @@ using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Typing
 {
 	[TestFixture]
 	public class AddressTraitCollectorTests
 	{
+        private Program prog;
 		private TypeFactory factory;
 		private TypeStore store;
 		private ProcedureMock m;
 		private AddressTraitCollector atrco;
 		private MockTraitHandler handler;
 		private EquivalenceClassBuilder eqb;
-		private InductionVariableCollection ivs;
-		private Identifier globals;
+		private Dictionary<Identifier,LinearInductionVariable>ivs;
 
 		[Test]
 		public void AtrcoTestIdPlusConst()
@@ -97,7 +98,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier bx = m.Local16("bx");
 			MemoryAccess mem = m.SegMem(PrimitiveType.Word16, ds, bx);
 			mem.Accept(eqb);
-			atrco.Collect(globals.TypeVariable, 2, mem.TypeVariable, mem.EffectiveAddress);
+			atrco.Collect(prog.Globals.TypeVariable, 2, mem.TypeVariable, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoSegPtr.txt");
 		}
 
@@ -109,25 +110,49 @@ namespace Decompiler.UnitTests.Typing
 		public void AtrcoInductionVariablIncr()
 		{
 			Identifier id = m.Local16("si");
-			LinearInductionVariable iv = new LinearInductionVariable(null, new Constant(PrimitiveType.Int16, 1), null);
+			LinearInductionVariable iv = Liv16(1);
 			MemoryAccess mem = m.Load(PrimitiveType.Byte, id);
 			mem.Accept(eqb);
 			atrco.VisitInductionVariable(id, iv);
 			Verify(null, "Typing/AtrcoInductionVariableIncr.txt");
 		}
 
+        [Test]
+        [Ignore("Infrastructure needs to be built to handle negative induction variables correctly.")]
+        public void AtrcoInductionVariablDecrement()
+        {
+            Identifier id = m.Local16("bx");
+            LinearInductionVariable iv = Liv16(-1);
+            MemoryAccess mem = m.Load(PrimitiveType.Byte, id);
+            mem.Accept(eqb);
+            atrco.VisitInductionVariable(id, iv);
+            Verify(null, "Typing/AtrcoInductionVariableDecr.txt");
+        }
+
+        private static LinearInductionVariable Liv16(short stride)
+        {
+            return new LinearInductionVariable(null, new Constant(PrimitiveType.Int16, stride), null);
+        }
+
+        private static LinearInductionVariable Liv16(short start, short stride, short end)
+        {
+            return new LinearInductionVariable(
+                new Constant(PrimitiveType.Word16, start),
+                new Constant(PrimitiveType.Int16, stride), 
+                new Constant(PrimitiveType.Word16, end));
+        }
+
 		[SetUp]
 		public void Setup()
 		{
-			factory = new TypeFactory();
-			store = new TypeStore();
+            prog = new Program();
+			factory = prog.TypeFactory;
+			store = prog.TypeStore;
 			handler = new MockTraitHandler(store);
 			eqb = new EquivalenceClassBuilder(factory, store);
-			globals = new Identifier("globals", 0, PrimitiveType.Pointer, null);
-			store.EnsureExpressionTypeVariable(factory, globals);
+			store.EnsureExpressionTypeVariable(factory, prog.Globals);
 			
-			ivs = new InductionVariableCollection();
-			atrco = new AddressTraitCollector(factory, store, handler, globals, ivs);
+			atrco = new AddressTraitCollector(factory, store, handler, prog);
 			m = new ProcedureMock();
 		}
 

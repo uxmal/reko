@@ -39,12 +39,12 @@ namespace Decompiler.Analysis
 		private SsaIdentifierCollection ssaIds;
 		private SsaLivenessAnalysis sla;
 		private DominatorGraph doms;
-		private InductionVariableCollection ivs;
+		private Dictionary<Identifier,LinearInductionVariable>ivs;
 		private Web [] webOf;
 		private List<Web> webs;
 		private Statement stmCur;
 
-        public WebBuilder(Procedure proc, SsaIdentifierCollection ssaIds, InductionVariableCollection ivs)
+        public WebBuilder(Procedure proc, SsaIdentifierCollection ssaIds, Dictionary<Identifier,LinearInductionVariable> ivs)
         {
             this.proc = proc;
             this.ssaIds = ssaIds;
@@ -108,7 +108,7 @@ namespace Decompiler.Analysis
 			{
 				if (w.InductionVariable != null)
 				{
-					ivs.Add(proc, w.id, w.InductionVariable);
+					ivs.Add(w.id, w.InductionVariable);
 				}
 			}
 		}

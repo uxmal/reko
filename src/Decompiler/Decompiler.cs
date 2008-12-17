@@ -47,7 +47,6 @@ namespace Decompiler
 		private LoaderBase loader;
 		private Scanner scanner;
 		private RewriterHost rewriterHost;
-		private InductionVariableCollection ivs;
 
         public DecompilerDriver(LoaderBase ldr, Program prog, DecompilerHost host)
         {
@@ -60,7 +59,7 @@ namespace Decompiler
         /// Determines the signature of the procedures,
 		/// the locations and types of all the values in the program.
 		///</summary>
-		public virtual void AnalyzeDataFlow()
+		public virtual DataFlowAnalysis AnalyzeDataFlow()
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, host);
 			RegisterLiveness rl = dfa.UntangleProcedures();
@@ -72,8 +71,8 @@ namespace Decompiler
 				if (textWriter != null)
 					EmitProgram(dfa, textWriter);
 			}
-			ivs = dfa.InductionVariables;
 			host.ProceduresTransformed();
+            return dfa;
 		}
 
         /// <summary>
@@ -169,7 +168,7 @@ namespace Decompiler
 		{
 			if (project.Output.TypeInference)
 			{
-				TypeAnalyzer analyzer = new TypeAnalyzer(prog, ivs, host);
+				TypeAnalyzer analyzer = new TypeAnalyzer(prog, host);
 				analyzer.RewriteProgram();
 				using (TextWriter w = host.CreateTypesWriter(project.Output.TypesFilename))
 				{

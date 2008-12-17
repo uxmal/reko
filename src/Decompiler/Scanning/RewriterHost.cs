@@ -70,9 +70,9 @@ namespace Decompiler.Scanning
 		{
 			foreach (SerializedCall sc in serializedCalls)
 			{
-				Address addr = Address.ToAddress(sc.InstructionAddress, 16);
 				if (sc.Signature != null)
 				{
+                    Address addr = Address.ToAddress(sc.InstructionAddress, 16);
 					ProcedureSerializer sser = new ProcedureSerializer(prog.Architecture, "stdapi");
 					callSignatures[addr] = sser.Deserialize(sc.Signature, new Frame(null));
 				}
@@ -122,7 +122,12 @@ namespace Decompiler.Scanning
 
 		public virtual PseudoProcedure GetImportThunkAtAddress(Address addrThunk)
 		{
-			return (PseudoProcedure) prog.ImportThunks[(uint) addrThunk.Linear];		//$REVIEW: should be external procedures, since they have real signatures.
+            //$REVIEW: should be external procedures, since they have real signatures.
+            PseudoProcedure p;
+            if (prog.ImportThunks.TryGetValue((uint) addrThunk.Linear, out p))
+                return p;
+            else
+                return null;
 		}
 
 		public virtual Procedure GetProcedureAtAddress(Address addr, int cbReturnAddress)
@@ -196,10 +201,14 @@ namespace Decompiler.Scanning
 			return svc;
 		}
 
-		public PseudoProcedure TrampolineAt(Address addr)
-		{
-			return (PseudoProcedure) prog.Trampolines[addr.Linear];
-		}
+        public PseudoProcedure TrampolineAt(Address addr)
+        {
+            PseudoProcedure p;
+            if (prog.Trampolines.TryGetValue(addr.Linear, out p))
+                return p;
+            else 
+                return null;
+        }
 
 		public VectorUse VectorUseAt(Address addrInstr)
 		{

@@ -33,11 +33,11 @@ namespace Decompiler.Core.Operators
 		{
 			try
 			{
-				return BuildConstant(c1.DataType, c2.DataType, unchecked((int) (uint) (Convert.ToUInt32(c1.Value) * Convert.ToUInt32(c2.Value))));
+				return BuildConstant(c1.DataType, c2.DataType, unchecked((int) (c1.ToUInt32() * c2.ToUInt32())));
 			}
 			catch	//$HACK: sometimes we get -ive numbers here, at which point .NET casts fail; attempt to use signed integers instead.
 			{
-				return BuildConstant(c1.DataType, c2.DataType, Convert.ToInt32(c1.Value) * Convert.ToInt32(c2.Value));
+				return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() * c1.ToInt32());
 			}
 		}
 

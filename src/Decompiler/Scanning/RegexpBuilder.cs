@@ -16,11 +16,13 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using BitArray = System.Collections.BitArray;
 
 namespace Decompiler.Scanning
 {
@@ -41,7 +43,7 @@ namespace Decompiler.Scanning
 			Cut
 		}
 
-		internal ArrayList positions;
+		private List<Node> positions;
 		private byte b;
 		private string pattern;
 		private StringReader rdr;
@@ -54,7 +56,7 @@ namespace Decompiler.Scanning
 
 		public RegexpBuilder(string s)
 		{
-			positions = new ArrayList();
+			positions = new List<Node>();
 
 			// Initially, all characters belong to the character class 0.
 
@@ -117,7 +119,7 @@ namespace Decompiler.Scanning
 
 		private State [] BuildDfaTable(Node n)
 		{
-			ArrayList dStates = new ArrayList();
+			List<State> dStates = new List<State>();
 
 			// Create the default, error state.
 
@@ -131,13 +133,11 @@ namespace Decompiler.Scanning
 
 			// Start the worklist.
 
-			Queue worklist = new Queue();
-			worklist.Enqueue(s0);
-			while (worklist.Count != 0)
+            WorkList<State> worklist = new WorkList<State>();
+			worklist.Add(s0);
+            State t;
+			while (worklist.GetWorkItem(out t))
 			{
-				// Get a state to work on.
-
-				State t = (State) worklist.Dequeue();
 				Debug.WriteLine(t.ToString());
 				for (int a = 0; a != charClasses; ++a)
 				{
@@ -168,7 +168,7 @@ namespace Decompiler.Scanning
 						if (uu == null)
 						{
 							AddState(dStates, u);
-							worklist.Enqueue(u);
+							worklist.Add(u);
 						}
 						else
 						{
@@ -184,14 +184,14 @@ namespace Decompiler.Scanning
 			return dfaStates;
 		}
 
-		private void AddState(ArrayList dStates, State s)
+		private void AddState(List<State> dStates, State s)
 		{
 			s.Index = dStates.Count;
 			dStates.Add(s);
 			Debug.WriteLine("add state " + s);
 		}
 
-		private State FindState(ArrayList dStates, BitArray state)
+		private State FindState(List<State> dStates, BitArray state)
 		{
 			foreach (State s in dStates)
 			{

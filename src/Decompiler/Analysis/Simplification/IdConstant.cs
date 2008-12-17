@@ -59,7 +59,7 @@ namespace Decompiler.Analysis.Simplification
 			sid.Uses.Remove(stm);
 			DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
 			if (dt is PrimitiveType)
-				return new Constant(dt, cSrc.Value);
+				return new Constant(dt, cSrc.ToInt64());
 			throw new NotSupportedException(string.Format("Resulting type is {0}, which isn't supported yet.", dt));
 		}
 	}

@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Arch.Intel
@@ -37,7 +37,7 @@ namespace Decompiler.Arch.Intel
 			this.arch = arch;
 		}
 
-		private void DumpInstructions(ArrayList instrs, int idx)
+		private void DumpInstructions(List<IntelInstruction> instrs, int idx)
 		{
 			for (int i = 0; i < instrs.Count; ++i)
 			{
@@ -50,7 +50,7 @@ namespace Decompiler.Arch.Intel
 
 		private MachineRegister HandleAddition(
 			MachineRegister regIdx,
-			ArrayList operations, 
+			List<BackwalkOperation> operations, 
 			RegisterOperand ropDst,
 			RegisterOperand ropSrc, 
 			ImmediateOperand immSrc, 
@@ -79,11 +79,15 @@ namespace Decompiler.Arch.Intel
 				return Registers.None;
 		}
 
-		public MachineRegister BackwalkInstructions(MachineRegister regIdx, ArrayList instrs, int i, ArrayList operations)
+		public MachineRegister BackwalkInstructions(
+            MachineRegister regIdx,
+            List<IntelInstruction> instrs, 
+            int i, 
+            List<BackwalkOperation> operations)
 		{
 			for (; i >= 0; --i)
 			{
-				IntelInstruction instr = (IntelInstruction) instrs[i];
+				IntelInstruction instr = instrs[i];
 				RegisterOperand ropDst = instr.op1 as RegisterOperand;
 				RegisterOperand ropSrc = instr.op2 as RegisterOperand;
 				ImmediateOperand immSrc = instr.op2 as ImmediateOperand;
@@ -237,13 +241,13 @@ namespace Decompiler.Arch.Intel
 				return mem.Index;
 		}
 
-		public override ArrayList BackWalk(Address addrCallJump, IBackWalkHost host)
+		public override List<BackwalkOperation> BackWalk(Address addrCallJump, IBackWalkHost host)
 		{
 			Address addrBegin = host.GetBlockStartAddress(addrCallJump);
 			if (addrBegin >= addrCallJump)
 				throw new ArgumentException("Invalid address range");
 	
-			ArrayList instrs = DisassembleRange(addrBegin, addrCallJump, true);
+			List<IntelInstruction> instrs = DisassembleRange(addrBegin, addrCallJump, true);
 			IntelInstruction instr = (IntelInstruction) instrs[instrs.Count - 1];
 
 			if (instr.code != Opcode.jmp && instr.code != Opcode.call)
@@ -256,7 +260,7 @@ namespace Decompiler.Arch.Intel
 			if (regIdx == Registers.None)
 				return null;
 
-			ArrayList operations = new ArrayList();
+            List<BackwalkOperation> operations = new List<BackwalkOperation>();
 
 			// Record the operations done to the idx register.
 
@@ -287,13 +291,13 @@ namespace Decompiler.Arch.Intel
 			}
 			operations.Reverse();
 			regIdxDetected = regIdx;
-			return operations;
+            return operations;
 		}
 
-		private ArrayList DisassembleRange(Address addrBegin, Address addrEnd, bool inclusive)
+		private List<IntelInstruction> DisassembleRange(Address addrBegin, Address addrEnd, bool inclusive)
 		{
 			IntelDisassembler dasm = new IntelDisassembler(Image.CreateReader(addrBegin), arch.WordWidth);
-			ArrayList instrs = new ArrayList();
+            List<IntelInstruction> instrs = new List<IntelInstruction>();
 			do
 			{
 				instrs.Add(dasm.Disassemble());

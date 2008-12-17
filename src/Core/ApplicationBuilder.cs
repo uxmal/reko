@@ -21,7 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
@@ -62,7 +62,7 @@ namespace Decompiler.Core
 			if (sigCallee == null || !sigCallee.ArgumentsValid)
 				return null;
 
-			ArrayList actuals = new ArrayList();
+			List<Expression> actuals = new List<Expression>();
 
 			Expression idOut = null;
 			if (sigCallee.ReturnValue != null)
@@ -83,9 +83,11 @@ namespace Decompiler.Core
 					actuals.Add(actualArg);
 				}
 			}
-			
-			Expression [] act = (Expression []) actuals.ToArray(typeof (Expression));
-			Application appl = new Application(callee, (idOut == null ? null : idOut.DataType), act);
+
+			Application appl = new Application(
+                callee, 
+                (idOut == null ? null : idOut.DataType),
+                actuals.ToArray());
 
 			if (idOut == null)
 			{

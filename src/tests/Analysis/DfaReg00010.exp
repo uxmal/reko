@@ -36,14 +36,16 @@ l0C00_0014:		// block 2, pred: 1
 	// succ:  3
 l0C00_0016:		// block 3, pred: 2 1
 	byte ah_41 = Mem26[ds:si:byte]
-	branch (ah_41 & 0x0F) + 0x30 <= 0x39
+	byte ah_44 = (ah_41 & 0x0F) + 0x30
+	word16 ax_45 = DPB(ax_33, ah_44, 8, 8)
+	branch ah_44 <= 0x39
 	// succ:  4 5
 l0C00_0023:		// block 4, pred: 3
-	ax_33 = DPB(ax_33, (ah_41 & 0x0F) + 0x37, 8, 8) (alias)
+	ax_45 = DPB(ax_45, (ah_41 & 0x0F) + 0x37, 8, 8) (alias)
 	// succ:  5
 l0C00_0026:		// block 5, pred: 4 3
-	store(Mem52[ds:0x5427:word16]) = ax_33
-	msdos_write_file(Mem52[ds:0x5424:word16], 0x0004, SEQ(ds, 0x5427), &ax)
+	store(Mem53[ds:0x5427:word16]) = ax_45
+	msdos_write_file(Mem53[ds:0x5424:word16], 0x0004, SEQ(ds, 0x5427), &ax)
 	si = si + 0x0001
 	bp = bp - 0x0001
 	branch bp != 0x0000

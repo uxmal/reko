@@ -19,9 +19,9 @@ l0C00_0025:		// block 4, pred: 2
 	// succ:  5
 l0C00_002C:		// block 5, pred: 4 3
 	store(Mem42[ds:bx + 0x0009:byte]) = al_29
-	word32 dx_ax_45 = Mem42[ds:bx + 0x000C:word16] *s Mem42[ds:bx + 0x000A:word16]
-	store(Mem50[ds:bx + 0x000E:word16]) = (word16) dx_ax_45
-	store(Mem51[ds:bx + 0x0010:word16]) = SLICE(dx_ax_45, word16, 16)
+	word32 dx_ax_44 = Mem42[ds:bx + 0x000C:word16] *s Mem42[ds:bx + 0x000A:word16]
+	store(Mem48[ds:bx + 0x000E:word16]) = (word16) dx_ax_44
+	store(Mem49[ds:bx + 0x0010:word16]) = SLICE(dx_ax_44, word16, 16)
 	return
 	// succ:  6
 fn0C00_0000_exit:		// block 6, pred: 5
@@ -145,7 +145,7 @@ T_28: (in Mem42[ds:bx + 0x0009:byte] : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_29: (in dx_ax_45 : word32)
+T_29: (in dx_ax_44 : word32)
   Class: Eq_29
   DataType: int32
   OrigDataType: word32
@@ -177,7 +177,7 @@ T_36: (in Mem42[ds:bx + 0x000C:word16] *s Mem42[ds:bx + 0x000A:word16] : int32)
   Class: Eq_29
   DataType: int32
   OrigDataType: int32
-T_37: (in (word16) dx_ax_45 : word16)
+T_37: (in (word16) dx_ax_44 : word16)
   Class: Eq_37
   DataType: word16
   OrigDataType: word16
@@ -189,11 +189,11 @@ T_39: (in bx + 0x000E : word16)
   Class: Eq_39
   DataType: word16
   OrigDataType: word16
-T_40: (in Mem50[ds:bx + 0x000E:word16] : word16)
+T_40: (in Mem48[ds:bx + 0x000E:word16] : word16)
   Class: Eq_37
   DataType: word16
   OrigDataType: word16
-T_41: (in SLICE(dx_ax_45, word16, 16) : word16)
+T_41: (in SLICE(dx_ax_44, word16, 16) : word16)
   Class: Eq_41
   DataType: word16
   OrigDataType: word16
@@ -205,7 +205,7 @@ T_43: (in bx + 0x0010 : word16)
   Class: Eq_43
   DataType: word16
   OrigDataType: word16
-T_44: (in Mem51[ds:bx + 0x0010:word16] : word16)
+T_44: (in Mem49[ds:bx + 0x0010:word16] : word16)
   Class: Eq_41
   DataType: word16
   OrigDataType: word16

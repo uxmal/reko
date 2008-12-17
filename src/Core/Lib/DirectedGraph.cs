@@ -17,7 +17,6 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Decompiler.Core.Lib
@@ -238,7 +237,7 @@ namespace Decompiler.Core.Lib
 			}
 
 			#region IEnumerable Members
-            IEnumerator IEnumerable.GetEnumerator()
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
                 return new EdgeEnumerator(graph, iNode, fSuccessor);
             }
@@ -277,7 +276,7 @@ namespace Decompiler.Core.Lib
 				get { return fSuccessor ? graph.nodes[iNode].cSucc : graph.nodes[iNode].cPred; }
 			}
 
-            object IEnumerator.Current
+            object System.Collections.IEnumerator.Current
             {
                 get { return GetCurrent(); }
             }
@@ -310,7 +309,7 @@ namespace Decompiler.Core.Lib
                 }
             }
 
-			public IEnumerator GetEnumerator()
+			public System.Collections.IEnumerator GetEnumerator()
 			{
 				return this;
 			}
@@ -394,7 +393,7 @@ namespace Decompiler.Core.Lib
 
 			#region IEnumerable Members
 
-            IEnumerator IEnumerable.GetEnumerator()
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
                 return new NodeEnumerator(graph);
             }
@@ -422,7 +421,7 @@ namespace Decompiler.Core.Lib
 				iNode = -1;
 			}
 
-            object IEnumerator.Current
+            object System.Collections.IEnumerator.Current
             {
                 get { return Current; }
             }

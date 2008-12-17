@@ -19,7 +19,6 @@
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -37,22 +36,24 @@ namespace Decompiler.Core
 		private Platform platform;
 		private SortedList<Address,Procedure> procedures;
 		private CallGraph callGraph;
-		private Map vectors;
-		private Hashtable mpuintfn;
-		private Hashtable trampolines;
+        private SortedList<Address, ImageMapVectorTable> vectors;
+        private Dictionary<uint, PseudoProcedure> mpuintfn;
+        private Dictionary<int, PseudoProcedure> trampolines;
 		private Identifier globals;
-		private Hashtable pseudoProcs;
+		private Dictionary<string, PseudoProcedure> pseudoProcs;
+        private Dictionary<Identifier, LinearInductionVariable> ivs;
 		private TypeFactory typefactory;
 		private TypeStore typeStore;
 
 		public Program()
 		{
 			procedures = new SortedList<Address,Procedure>();
-			vectors = new Map();
+            vectors = new SortedList<Address, ImageMapVectorTable>();
 			callGraph = new CallGraph();
-			mpuintfn = new Hashtable();		// uint (offset) -> string
-			trampolines = new Hashtable();	// address -> string
-			pseudoProcs = new Hashtable();
+            mpuintfn = new Dictionary<uint, PseudoProcedure>();		// uint (offset) -> string
+			trampolines = new Dictionary<int, PseudoProcedure>();	// address -> string
+            pseudoProcs = new Dictionary<string, PseudoProcedure>();
+            ivs = new Dictionary<Identifier, LinearInductionVariable>();
 			typefactory = new TypeFactory();
 			typeStore = new TypeStore();
 			globals = new Identifier("globals", 0, PrimitiveType.Pointer, new MemoryStorage());
@@ -93,10 +94,10 @@ namespace Decompiler.Core
 
 		public PseudoProcedure EnsurePseudoProcedure(string name, int arity)
 		{
-			PseudoProcedure p = pseudoProcs[name] as PseudoProcedure;
-			if (p == null)
-			{
-				p = new PseudoProcedure(name, arity);
+            PseudoProcedure p;
+            if (!pseudoProcs.TryGetValue(name, out p))
+            {
+                p = new PseudoProcedure(name, arity);
 				pseudoProcs[name] = p;
 			}
 			return p;
@@ -116,10 +117,16 @@ namespace Decompiler.Core
 			set { image = value; }
 		}
 		
-		public Hashtable ImportThunks
+		public Dictionary<uint, PseudoProcedure> ImportThunks
 		{
 			get { return mpuintfn; }
 		}
+
+        public Dictionary<Identifier, LinearInductionVariable> InductionVariables
+        {
+            get { return ivs; }
+        }
+
 
 		public Platform Platform
 		{
@@ -138,12 +145,12 @@ namespace Decompiler.Core
 		/// <summary>
 		/// Provides access to the program's pseudo procedures, indexed by name.
 		/// </summary>
-		public Hashtable PseudoProcedures
+		public Dictionary<string,PseudoProcedure> PseudoProcedures
 		{
 			get { return pseudoProcs; }
 		}
 
-		public Hashtable Trampolines
+        public Dictionary<int, PseudoProcedure> Trampolines
 		{
 			get { return trampolines; }
 		}
@@ -161,7 +168,7 @@ namespace Decompiler.Core
 		/// <summary>
 		/// Provides access to the program's jump and call tables, sorted by address.
 		/// </summary>
-		public Map Vectors
+		public SortedList<Address, ImageMapVectorTable> Vectors
 		{
 			get { return vectors; }
 		}
