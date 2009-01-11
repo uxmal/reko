@@ -83,20 +83,26 @@ namespace Decompiler.Typing
 			aen.Transform(prog);
 			eqb.Build(prog);
 			Debug.WriteLine("= Collecting traits ========================================");
+            host.WriteDiagnostic(Diagnostic.Info, null, "Collecting traits");
 			trco.CollectProgramTraits(prog);
 			Debug.WriteLine("= Building equivalence classes =============================");
+            host.WriteDiagnostic(Diagnostic.Info, null, "Building equivalence classes");
 			dtb.BuildEquivalenceClassDataTypes();
 			dpa.FollowConstantPointers(prog);
 			tvr.ReplaceTypeVariables();
 			Debug.WriteLine("= replaced type variables ==================================");
+
+            host.WriteDiagnostic(Diagnostic.Info, null, "Transforming types");
 			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
 			ppr.ReplaceAll();
+
 			Debug.WriteLine("= Transforming types =======================================");
 			trans.Transform();
 			ctn.RenameAllTypes(store);
 			Debug.WriteLine("= transformed types ========================================");
 			Debug.WriteLine("= Rewriting expressions ====================================");
 			store.Dump();
+            host.WriteDiagnostic(Diagnostic.Info, null, "Rewriting expressions");
 			ter.RewriteProgram(prog);
 		}
 

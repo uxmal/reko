@@ -151,17 +151,17 @@ namespace Decompiler.Typing
 				UnionType uSrc = AsUnion(dtSrc);
 				if (uDst != null)
 				{
-					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, dst, 0);
+					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
 					dst = ceb.BuildComplex();
 				}
 				else if (uSrc != null)
 				{
-					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, src, 0);
+					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
 					src = ceb.BuildComplex();
 				}
 				else
 					throw new NotImplementedException(string.Format("{0} [{1}] = {2} [{3}] (in assignment {4} = {5}) not supported.", tvDst, dtDst, tvSrc, dtSrc, dst, src));
-				}
+			}
 			return new Decompiler.Core.Absyn.AbsynAssignment(dst, src);
 		}
 		
@@ -203,7 +203,9 @@ namespace Decompiler.Typing
                         binExp.TypeVariable.DataType,
                         dtLeft,
                         binExp.Left.TypeVariable.OriginalDataType,
+                        null,
                         binExp.Left,
+                        null,
                         StructureField.ToOffset(c));
                     return ceb.BuildComplex();
                 }

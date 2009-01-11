@@ -22,6 +22,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
+using System.Diagnostics;
 
 namespace Decompiler.Typing
 {
@@ -112,17 +113,17 @@ namespace Decompiler.Typing
 				Constant offset = bin.Right as Constant;
 				if (offset != null)
 				{
-					int o = offset.ToInt32();
-					if (bin.op == Operator.sub)
-						o = -o;
+                    if (bin.op == Operator.sub)
+                        offset = offset.Negate();
 					LinearInductionVariable iv = GetInductionVariable(bin.Left);
-					if (iv != null)
-					{
-						int delta = iv.Delta.ToInt32();
-						handler.MemSizeTrait(tvBasePointer, bin.Left.TypeVariable, Math.Abs(delta));
-						handler.ArrayTrait(offset.TypeVariable, delta, iv.IterationCount);
-					}
-					EmitAccessTrait(tvBasePointer, bin.Left.TypeVariable, bin.DataType.Size, o);
+                    if (iv != null)
+                    {
+                        VisitInductionVariable((Identifier) bin.Left, iv, offset);
+                    }
+                    else
+                    {
+                        EmitAccessTrait(tvBasePointer, bin.Left.TypeVariable, bin.DataType.Size, offset.ToInt32());
+                    }
 					return;
 				}
 
@@ -185,23 +186,67 @@ namespace Decompiler.Typing
 			LinearInductionVariable iv = GetInductionVariable(id);
 			if (iv != null)
 			{
-				VisitInductionVariable(id, iv);
+				VisitInductionVariable(id, iv, null);
 			}
 			EmitAccessTrait(tvBasePointer, id.TypeVariable, id.DataType.Size, 0);
 		}
 
-		public void VisitInductionVariable(Identifier id, LinearInductionVariable iv)
+        /// <summary>
+        /// Handle an expression of type 'id + offset', where id is a LinearInductionVariable.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="iv"></param>
+        /// <param name="offset"></param>
+		public void VisitInductionVariable(Identifier id, LinearInductionVariable iv, Constant cOffset)
 		{
-			if (iv.Initial != null)
-			{
-				int init = iv.Initial.ToInt32();
-				int delta = iv.Delta.ToInt32();
-				if (tvBasePointer != null)
-					handler.MemAccessArrayTrait(null, tvBasePointer, id.DataType.Size, init, delta, iv.IterationCount, tvField);
-				else
-					handler.MemAccessArrayTrait(null, prog.Globals.TypeVariable, id.DataType.Size, init, delta, iv.IterationCount, tvField);
-			}
-			handler.MemSizeTrait(tvBasePointer, id.TypeVariable, Math.Abs(iv.Delta.ToInt32()));
+            int delta = iv.Delta.ToInt32();
+            int offset = StructureField.ToOffset(cOffset);
+            TypeVariable tvBase = (tvBasePointer != null) ? tvBasePointer : prog.Globals.TypeVariable;
+            if (delta < 0)
+            {
+                // induction variable is decremented, so the actual array begings at ivFinal - delta.
+                if (iv.Final != null)
+                {
+                    int init = iv.Final.ToInt32() - delta;
+                    if (iv.IsSigned)
+                    {
+                        handler.MemAccessArrayTrait(null, tvBase, cOffset.DataType.Size, init + offset, Math.Abs(delta), iv.IterationCount, tvField);
+                    }
+                    else
+                    {
+                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.Size, init + offset, Math.Abs(delta), iv.IterationCount, tvField);
+                    }
+                }
+            }
+            else
+            {
+                if (iv.Initial != null)
+                {
+                    int init = iv.Initial.ToInt32();
+                    if (iv.IsSigned)
+                    {
+                        handler.MemAccessArrayTrait(null, tvBase, cOffset.DataType.Size, init + offset, Math.Abs(delta), iv.IterationCount, tvField);
+                    }
+                    else
+                    {
+                        handler.MemAccessArrayTrait(null, tvBase, id.DataType.Size, init + offset, Math.Abs(delta), iv.IterationCount, tvField);
+                    }
+
+                }
+            }
+            if (iv.IsSigned)
+            {
+                if (cOffset != null)
+                {
+                    handler.MemSizeTrait(tvBasePointer, cOffset.TypeVariable, Math.Abs(delta));
+                    EmitAccessTrait(tvBasePointer, cOffset.TypeVariable, cOffset.DataType.Size, 0);
+                }
+            }
+            else
+            {
+                handler.MemSizeTrait(tvBasePointer, id.TypeVariable, Math.Abs(delta));
+                EmitAccessTrait(tvBasePointer, id.TypeVariable, id.DataType.Size, offset);
+            }
 		}
 
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)

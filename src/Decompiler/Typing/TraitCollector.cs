@@ -137,7 +137,7 @@ namespace Decompiler.Typing
 			Constant delta   = op.ApplyConstants(iv.Delta, c);
 			Constant initial = (iv.Initial != null) ? op.ApplyConstants(iv.Initial, c) : null; 
 			Constant final =   (iv.Final != null) ?   op.ApplyConstants(iv.Final, c) : null;
-			return new LinearInductionVariable(initial, delta, final);
+			return new LinearInductionVariable(initial, delta, final, false);
 		}
 
 		#region InstructionVisitor methods ///////////////////////////

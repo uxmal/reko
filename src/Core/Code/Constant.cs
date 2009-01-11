@@ -239,7 +239,8 @@ namespace Decompiler.Core.Code
 			PrimitiveType p = (PrimitiveType) DataType;
 			if ((p.Domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0)
 			{
-				if (p.BitSize <= 8)				//$REVIEW: Depending heavily on specific byte sizes here.
+                p = PrimitiveType.Create(Domain.SignedInt, p.Size);
+				if (p.BitSize <= 8)				
 					return new Constant(p, -Convert.ToSByte(c));
 				if (p.BitSize <= 16)
 					return new Constant(p, -Convert.ToInt32(c) & 0xFFFF);

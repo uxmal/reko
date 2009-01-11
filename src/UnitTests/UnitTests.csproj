@@ -52,7 +52,6 @@
     <Compile Include="Analysis\ExpressionSimplifierTests.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
-    <Compile Include="Analysis\InductionVariableTests.cs" />
     <Compile Include="Analysis\InterferenceGraphTests.cs" />
     <Compile Include="Analysis\InterferenceTests.cs" />
     <Compile Include="Analysis\IsLiveHelperTests.cs" />
@@ -200,13 +199,13 @@
     <Compile Include="Structure\StructureTestBase.cs" />
     <Compile Include="Typing\AddressTraitCollectorTests.cs" />
     <Compile Include="Typing\ArrayExpressionMatcherTests.cs" />
-    <Compile Include="Typing\ArrayExpressionNormalizerTests.cs" />
     <Compile Include="Typing\ComplexExpressionBuilderTests.cs" />
     <Compile Include="Typing\ComplexTypeNamerTests.cs" />
     <Compile Include="Typing\ConstantUnionMock.cs" />
     <Compile Include="Typing\DataTypeBuilderTests.cs" />
     <Compile Include="Typing\DerivedPointerAnalysisTests.cs" />
     <Compile Include="Typing\EquivalenceClassBuilderTests.cs" />
+    <Compile Include="Typing\ExpressionNormalizerTests.cs" />
     <Compile Include="Typing\GlobalVariablesMock.cs" />
     <Compile Include="Typing\NestedComplexTypeExtractorTests.cs" />
     <Compile Include="Typing\PtrPrimitiveReplacerTests.cs" />
