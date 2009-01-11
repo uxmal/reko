@@ -31,12 +31,14 @@ namespace Decompiler.Core
 		public readonly Constant Initial;		// First value used by induction variable 
 		public readonly Constant Delta;			// Amount incremented or decremented per interation
 		public readonly Constant Final;			// Value not attained by loop since it terminated.
+        private bool isSigned;
 
-		public LinearInductionVariable(Constant initial, Constant delta, Constant final)
+		public LinearInductionVariable(Constant initial, Constant delta, Constant final, bool isSigned)
 		{
 			this.Initial = initial;
 			this.Delta = delta;
 			this.Final = final;
+            this.isSigned = isSigned;
 		}
 
 		public static int Gcd(int a, int b)
@@ -49,6 +51,14 @@ namespace Decompiler.Core
 			}
 			return a;
 		}
+
+        /// <summary>
+        /// True if signed compares are used for the induction variable.
+        /// </summary>
+        public bool IsSigned
+        {
+            get { return isSigned; }
+        }
 
 		/// <summary>
 		/// Returns the number of times the loop iterates, or zero if this can't be determined.
@@ -70,16 +80,17 @@ namespace Decompiler.Core
 			int delta1 = Convert.ToInt32(liv1.Delta.ToInt32());
 			int delta2 = Convert.ToInt32(liv2.Delta.ToInt32());
 			if (delta1 == 1)
-				return new LinearInductionVariable(null, liv1.Delta, null);
+				return new LinearInductionVariable(null, liv1.Delta, null, liv1.IsSigned);
 			else if (delta2 == 1)
-				return new LinearInductionVariable(null, liv2.Delta, null);
+				return new LinearInductionVariable(null, liv2.Delta, null, liv2.IsSigned);
 			else
 			{
 				int delta = Gcd(delta1, delta2);
 				if (delta == 1)
 					return null;
 				else
-					return new LinearInductionVariable(null, new Constant(liv1.Delta.DataType, delta), null);
+					return new LinearInductionVariable(null, new Constant(liv1.Delta.DataType, delta),
+                        null, liv1.IsSigned || liv2.IsSigned);
 			}
 		}
 
@@ -94,7 +105,7 @@ namespace Decompiler.Core
 			delta = Operator.muls.ApplyConstants(delta, c);
 			if (final != null)
 				final = Operator.muls.ApplyConstants(final, c);
-			return new LinearInductionVariable(initial, delta, final);
+			return new LinearInductionVariable(initial, delta, final, IsSigned);
 		}
 
 		public override string ToString()
@@ -120,6 +131,10 @@ namespace Decompiler.Core
 			{
 				sb.Append('?');
 			}
+            if (IsSigned)
+            {
+                sb.Append(" signed");
+            }
 			sb.Append(')');
 			return sb.ToString();
 		}

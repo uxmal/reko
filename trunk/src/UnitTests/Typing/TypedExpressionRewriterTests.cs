@@ -32,6 +32,7 @@ namespace Decompiler.UnitTests.Typing
 		private TypeFactory factory;
 		private TypeStore store;
 		private TypedExpressionRewriter ter;
+        private ExpressionNormalizer aen;
 		private EquivalenceClassBuilder eqb;
 		private TraitCollector coll;
 		private DataTypeBuilder dtb;
@@ -47,6 +48,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier id = new Identifier("v0", 0, PrimitiveType.Word32, null);
 			Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
 
+            cmp.Accept(aen);
 			cmp.Accept(eqb);
 			coll = new TraitCollector(factory, store, dtb, prog);
 			cmp.Accept(coll);
@@ -150,6 +152,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 
 		[Test]
+        [Ignore("Need a constant pointer analysis phase")]
 		public void TerArrayConstantPointers()
 		{
 			ProgramMock pp = new ProgramMock();
@@ -164,11 +167,17 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(pp.BuildProgram(), "Typing/TerArrayConstantPointers.txt");
 		}
 
-		[Test]
-		public void TerReg00008()
-		{
-			RunTest("fragments/regressions/r00008.asm", "Typing/TerReg00008.txt");
-		}
+        [Test]
+        public void TerReg00008()
+        {
+            RunTest("fragments/regressions/r00008.asm", "Typing/TerReg00008.txt");
+        }
+
+        [Test]
+        public void TerReg00011()
+        {
+            RunTest("fragments/regressions/r00011.asm", "Typing/TerReg00011.txt");
+        }
 
         [Test]
         public void TerAddNonConstantToPointer()
@@ -256,6 +265,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
+                aen.Transform(prog);
 				eqb.Build(prog);
 				coll = new TraitCollector(factory, store, dtb, prog);
 				coll.CollectProgramTraits(prog);
@@ -299,6 +309,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			factory = new TypeFactory();
 			store = new TypeStore();
+            aen = new ExpressionNormalizer();
 			eqb = new EquivalenceClassBuilder(factory, store);
 			dtb = new DataTypeBuilder(factory, store);
 			cpf = new DerivedPointerAnalysis(factory, store, dtb);

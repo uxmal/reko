@@ -34,17 +34,58 @@ namespace Decompiler.Typing
 	{
 		private ArrayExpressionMatcher aem = new ArrayExpressionMatcher();
 
+        /// <summary>
+        /// Extends an effective address ''id'' to ''id'' + 0. 
+        /// </summary>
+        /// <remarks>
+        /// The purpose here is to extend the effective address to avoid premature typing of id.
+        /// If later in the type inference process [[id]] is discovered to be a signed integer, the
+        /// decompiler can accomodate that by having the added 0 be [[pointer]] or [[member pointer]].
+        /// This is not possible if all we have is the id.
+        /// </remarks>
+        /// <param name="ea"></param>
+        /// <returns></returns>
+        private Expression AddZeroToEffectiveAddress(Expression ea)
+        {
+            BinaryExpression bin = new BinaryExpression(
+                Operator.add,
+                PrimitiveType.CreateWord(ea.DataType.Size),
+                ea,
+                new Constant(PrimitiveType.CreateWord(ea.DataType.Size), 0));
+            return bin;
+        }
+
 		public override Expression TransformMemoryAccess(MemoryAccess access)
 		{
 			access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-			if (aem.Match(access.EffectiveAddress))
-			{
-				return aem.Transform(access.DataType);
-			}
-			else
-				return access;
+            if (aem.Match(access.EffectiveAddress))
+            {
+                return aem.Transform(access.DataType);
+            }
+            else if (access.EffectiveAddress is Identifier)
+            {
+                access.EffectiveAddress = AddZeroToEffectiveAddress(access.EffectiveAddress);
+                return access;
+            }
+            else
+            {
+                return access;
+            }
 		}
 
+
+        public override Expression TransformSegmentedAccess(SegmentedAccess access)
+        {
+            if (access.EffectiveAddress is Identifier)
+            {
+                access.EffectiveAddress = AddZeroToEffectiveAddress(access.EffectiveAddress);
+                return access;
+            }
+            else
+            {
+                return access;
+            }
+        }
 
 		public void Transform(Program prog)
 		{

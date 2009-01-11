@@ -76,7 +76,9 @@ namespace Decompiler.UnitTests.Core
 		public void Negate()
 		{
 			Constant c1 = new Constant(PrimitiveType.Word16, 0xFFFF);
-			Assert.AreEqual(1, c1.Negate().ToInt32(), "-(-1) == 1");
+            Constant c2 = c1.Negate();
+			Assert.AreEqual(1, c2.ToInt32(), "-(-1) == 1");
+            Assert.AreSame(PrimitiveType.Int16, c2.DataType);
 		}
 
 		[Test]

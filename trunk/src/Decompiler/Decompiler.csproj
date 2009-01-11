@@ -399,9 +399,6 @@
     <Compile Include="Typing\ArrayExpressionMatcher.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Typing\ArrayExpressionNormalizer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Typing\ComplexExpressionBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -417,6 +414,7 @@
     <Compile Include="Typing\EquivalenceClassBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Typing\ExpressionNormalizer.cs" />
     <Compile Include="Typing\ITraitHandler.cs">
       <SubType>Code</SubType>
     </Compile>

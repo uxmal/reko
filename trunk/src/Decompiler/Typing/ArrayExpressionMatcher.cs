@@ -140,7 +140,14 @@ namespace Decompiler.Typing
 
 		public Expression Transform(DataType dtAccess)
 		{
-			return new ArrayAccess(dtAccess, arrayPtr, new BinaryExpression(BinaryOperator.mul, index.DataType, index, ElementSize));
+			return new ArrayAccess(
+                dtAccess, 
+                arrayPtr,
+                new BinaryExpression(
+                    BinaryOperator.mul, 
+                    index.DataType,
+                    index,
+                    ElementSize));
 		}
 	}
 }

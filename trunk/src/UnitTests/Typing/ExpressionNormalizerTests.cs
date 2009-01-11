@@ -26,7 +26,7 @@ using System;
 namespace Decompiler.UnitTests.Typing
 {
 	[TestFixture]
-	public class ArrayExpressionNormalizerTests
+	public class ExpressionNormalizerTests
 	{
 		private ProcedureMock m;
 		private ExpressionNormalizer aen;
@@ -52,6 +52,26 @@ namespace Decompiler.UnitTests.Typing
 			e = e.Accept(aen);
 			Assert.AreEqual("(p + 4)[i * 0x00000008]", e.ToString());
 		}
+
+        [Test]
+        public void TransformIdentifierPointer()
+        {
+            Identifier p = m.Local32("p");
+            Expression e = m.Load(PrimitiveType.Word16, p);
+            e = e.Accept(aen);
+            Assert.AreEqual("Mem0[p + 0x00000000:word16]", e.ToString());
+        }
+
+        [Test]
+        public void TransformSegAccessMemPointer()
+        {
+            Identifier bx = m.Local16("bx");
+            Identifier ds = m.Local16("ds");
+            Expression e = m.SegMem(PrimitiveType.Byte, ds, bx);
+            e = e.Accept(aen);
+            Assert.AreEqual("Mem0[ds:bx + 0x0000:byte]", e.ToString());
+        }
+
 
 
 		[SetUp]

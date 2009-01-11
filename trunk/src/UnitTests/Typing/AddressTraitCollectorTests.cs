@@ -107,31 +107,33 @@ namespace Decompiler.UnitTests.Typing
 		/// the increment.
 		/// </summary>
 		[Test]
-		public void AtrcoInductionVariablIncr()
+		public void AtrcoInductionVariableIncr()
 		{
-			Identifier id = m.Local16("si");
-			LinearInductionVariable iv = Liv16(1);
-			MemoryAccess mem = m.Load(PrimitiveType.Byte, id);
+			Identifier id = m.Local32("esi");
+			LinearInductionVariable iv = Liv32(1);
+            prog.InductionVariables.Add(id, iv);
+            Constant zero = m.Word32(0);
+			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.Add(id, zero));
 			mem.Accept(eqb);
-			atrco.VisitInductionVariable(id, iv);
+            atrco.Collect(null, 0, mem.TypeVariable, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoInductionVariableIncr.txt");
 		}
 
         [Test]
         [Ignore("Infrastructure needs to be built to handle negative induction variables correctly.")]
-        public void AtrcoInductionVariablDecrement()
+        public void AtrcoInductionVariableDecrement()
         {
-            Identifier id = m.Local16("bx");
-            LinearInductionVariable iv = Liv16(-1);
+            Identifier id = m.Local32("ebx");
+            LinearInductionVariable iv = Liv32(-1);
             MemoryAccess mem = m.Load(PrimitiveType.Byte, id);
             mem.Accept(eqb);
-            atrco.VisitInductionVariable(id, iv);
+            atrco.VisitInductionVariable(id, iv, null);
             Verify(null, "Typing/AtrcoInductionVariableDecr.txt");
         }
 
         private static LinearInductionVariable Liv16(short stride)
         {
-            return new LinearInductionVariable(null, new Constant(PrimitiveType.Int16, stride), null);
+            return new LinearInductionVariable(null, new Constant(PrimitiveType.Int16, stride), null, false);
         }
 
         private static LinearInductionVariable Liv16(short start, short stride, short end)
@@ -139,7 +141,13 @@ namespace Decompiler.UnitTests.Typing
             return new LinearInductionVariable(
                 new Constant(PrimitiveType.Word16, start),
                 new Constant(PrimitiveType.Int16, stride), 
-                new Constant(PrimitiveType.Word16, end));
+                new Constant(PrimitiveType.Word16, end),
+                false);
+        }
+
+        private static LinearInductionVariable Liv32(short stride)
+        {
+            return new LinearInductionVariable(null, new Constant(PrimitiveType.Int32, stride), null, false);
         }
 
 		[SetUp]

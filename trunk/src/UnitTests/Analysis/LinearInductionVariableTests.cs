@@ -292,8 +292,8 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void Commensurate()
 		{
-			LinearInductionVariable liv1 = new LinearInductionVariable(null, Constant.Word32(1), null);
-			LinearInductionVariable liv2 = new LinearInductionVariable(null, Constant.Word32(2), null);
+			LinearInductionVariable liv1 = new LinearInductionVariable(null, Constant.Word32(1), null, false);
+            LinearInductionVariable liv2 = new LinearInductionVariable(null, Constant.Word32(2), null, false);
 			LinearInductionVariable liv =
 				LinearInductionVariable.Merge(liv1, liv2);
 			Assert.IsNotNull(liv);
@@ -303,8 +303,8 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void Commensurate2()
 		{
-			LinearInductionVariable liv1 = new LinearInductionVariable(null, Constant.Word32(2), null);
-			LinearInductionVariable liv2 = new LinearInductionVariable(null, Constant.Word32(8), null);
+            LinearInductionVariable liv1 = new LinearInductionVariable(null, Constant.Word32(2), null, false);
+            LinearInductionVariable liv2 = new LinearInductionVariable(null, Constant.Word32(8), null, false);
 			LinearInductionVariable liv =
 				LinearInductionVariable.Merge(liv1, liv2);
 			Assert.IsNotNull(liv);
@@ -314,8 +314,8 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void InCommensurate()
 		{
-			LinearInductionVariable liv1 = new LinearInductionVariable(null, Constant.Word32(3), null);
-			LinearInductionVariable liv2 = new LinearInductionVariable(null, Constant.Word32(8), null);
+			LinearInductionVariable liv1 = new LinearInductionVariable(null, Constant.Word32(3), null, false);
+			LinearInductionVariable liv2 = new LinearInductionVariable(null, Constant.Word32(8), null, false);
 			LinearInductionVariable liv =
 				LinearInductionVariable.Merge(liv1, liv2);
 			Assert.IsNull(liv);

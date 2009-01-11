@@ -51,6 +51,19 @@ namespace Decompiler.Core.Code
 			return new BinaryExpression(op, DataType, Left.CloneExpression(), Right.CloneExpression());
 		}
 
+        /// <summary>
+        /// Creates a BinaryExpression with the operands commuted.
+        /// </summary>
+        /// <returns></returns>
+        public BinaryExpression Commute()
+        {
+            return new BinaryExpression(
+                op,
+                DataType,
+                Right,
+                Left);
+        }
+
 		public bool Commutes()
 		{
 			return Commutes(op);

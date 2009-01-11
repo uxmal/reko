@@ -109,7 +109,7 @@ namespace Decompiler.Analysis
 			SsaIdentifier sidPhi = ssaIds[PhiIdentifier];
 			if (TestStatement == null && InitialValue == null)
 			{
-				return new LinearInductionVariable(null, DeltaValue, null);
+				return new LinearInductionVariable(null, DeltaValue, null, false);
 			}
 			if (InitialValue != null)
 			{
@@ -122,8 +122,15 @@ namespace Decompiler.Analysis
 
             TestValue = AdjustTestValue(TestValue);
 
-			return new LinearInductionVariable(InitialValue, DeltaValue, TestValue);
+			return new LinearInductionVariable(InitialValue, DeltaValue, TestValue, IsSignedOperator(testOperator));
 		}
+
+        private bool IsSignedOperator(Operator op)
+        {
+            return 
+                op == Operator.lt || op == Operator.le ||
+                op == Operator.gt || op == Operator.ge;
+        }
 
         public Constant AdjustTestValue(Constant testValue)
         {
@@ -133,7 +140,6 @@ namespace Decompiler.Analysis
             // <= or >= operators imply an extra spin around the loop.
 
             if (RelEq(TestOperator) &&
-                
                 DominatesAllUses(TestStatement, PhiIdentifier))
             {
                 testValue = Operator.add.ApplyConstants(testValue, DeltaValue);

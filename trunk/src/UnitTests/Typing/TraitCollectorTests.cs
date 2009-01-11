@@ -155,11 +155,13 @@ namespace Decompiler.UnitTests.Typing
 			LinearInductionVariable iv = new LinearInductionVariable(
 				Constant.Word32(0), 
 				Constant.Word32(1),
-				Constant.Word32(10));
+				Constant.Word32(10),
+                false);
 			LinearInductionVariable iv2 = new LinearInductionVariable(
 				Constant.Word32(0x0010000),
 				Constant.Word32(4),
-				Constant.Word32(0x0010040));
+				Constant.Word32(0x0010040),
+                false);
 
             Program prog = new Program();
 			prog.InductionVariables.Add(i, iv);
@@ -273,7 +275,6 @@ namespace Decompiler.UnitTests.Typing
 		}
 
         [Test]
-        [Ignore("Infrastructure needs to be built to handle negative induction variables correctly.")]
         public void TrcoReg00011()
         {
             RunTest("fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
@@ -418,6 +419,7 @@ namespace Decompiler.UnitTests.Typing
         private void RunTest(Program prog, string outFile)
 		{
             coll = CreateCollector(prog);
+            aen.Transform(prog);
             eqb.Build(prog);
 			coll.CollectProgramTraits(prog);
 
