@@ -20,4 +20,4 @@ l2:		// block 4, pred: 2
 WhileLtIncMock_exit:		// block 5, pred: 4
 	// succ: 
 
-(0x00000000 0x00000001 0x00000064)
+(0x00000000 0x00000001 0x00000064 signed)

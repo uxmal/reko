@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,8 @@ namespace Decompiler.Arch.Intel
 
 		public UnaryExpression AddrOf(Expression expr)
 		{
-			return new UnaryExpression(Operator.addrOf, PrimitiveType.Pointer, expr);
+			return new UnaryExpression(Operator.addrOf, 
+                PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), expr);
 		}
 
 		public Identifier AluRegister(MachineRegister reg)
@@ -149,7 +150,7 @@ namespace Decompiler.Arch.Intel
 			MemoryOperand mem = (MemoryOperand) opSrc;
 			PseudoProcedure ppp = ImportedProcedureName(addrWidth, mem);
 			if (ppp != null)
-				return new ProcedureConstant(PrimitiveType.Pointer, ppp);
+				return new ProcedureConstant(arch.PointerType, ppp);
 			Address addr = AbsoluteAddress(mem);
 			if (addr != null && host.Image.Map.IsReadOnlyAddress(addr) && mem.Width.Domain == Domain.Real)
 			{

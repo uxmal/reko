@@ -26,7 +26,7 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 ====================
 // fn0C00_0004
-word16 fn0C00_0004(word16 dx, ptr0 dxOut)
+word16 fn0C00_0004(word16 dx, ptr16 dxOut)
 fn0C00_0004_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -65,7 +65,7 @@ fn0C00_0004_exit:		// block 5, pred: 4
 	// succ: 
 
 // fn0C00_0004
-word16 fn0C00_0004(word16 dx, ptr0 dxOut)
+word16 fn0C00_0004(word16 dx, ptr16 dxOut)
 fn0C00_0004_entry:		// block 0, pred:
 	def Mem0
 	def dx

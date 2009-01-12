@@ -41,7 +41,7 @@ Eq_16: word16
 Eq_17: word16
 	T_17 (in si + 0x0002 : word16)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: 
   OrigDataType: 

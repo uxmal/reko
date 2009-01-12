@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,20 +36,22 @@ namespace Decompiler.Typing
 		private Program prog;
 		private Identifier globals;
 		private Unifier unifier;
+        private IProcessorArchitecture arch;
 
-		public DerivedPointerAnalysis(TypeFactory factory, TypeStore store, ITraitHandler handler)
+		public DerivedPointerAnalysis(TypeFactory factory, TypeStore store, ITraitHandler handler, IProcessorArchitecture arch)
 		{
 			this.factory = factory;
 			this.store = store;
 			this.handler = handler;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
+            this.arch = arch;
 		}
 
 		public Pointer CreatePointerToField(int offset, TypeVariable tvField)
 		{
 			return factory.CreatePointer(
 				factory.CreateStructureType(null, 0, new StructureField(offset, tvField)),
-				0);
+				arch.PointerType.Size);
 		}
 
 		public void FollowConstantPointers(Program prog)

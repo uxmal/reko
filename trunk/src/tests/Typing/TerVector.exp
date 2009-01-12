@@ -10,7 +10,7 @@ l1:		// block 1, pred: 0
 Eq_2: (struct "Eq_2" (0 real32 r0000) (4 real32 r0004) (8 real32 r0008))
 	T_2 (in v : word32)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

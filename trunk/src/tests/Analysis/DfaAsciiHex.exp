@@ -21,14 +21,14 @@ l0C00_0009:		// block 3, pred: 2 1
 fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
 
-// FlagGroup byte fn0C00_000A(Register byte al, Register out ptr0 alOut)
+// FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
 // MayUse:  al
 // LiveOut: C al
 // Trashed: SCZO ax al
 // Preserved:
 // fn0C00_000A
-byte fn0C00_000A(byte al, ptr0 alOut)
+byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:		// block 0, pred:
 	store(Mem0[alOut:byte]) = al
 	// succ:  1

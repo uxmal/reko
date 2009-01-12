@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,12 +149,13 @@ namespace Decompiler.Core
 			return id;
 		}
 
-		public Identifier EnsureOutArgument(Identifier idOrig)
+		public Identifier EnsureOutArgument(Identifier idOrig, PrimitiveType outParameterPointer)
 		{
 			Identifier idOut = FindOutArgument(idOrig);
 			if (idOut == null)
 			{
-				idOut = new Identifier(idOrig.Name + "Out", identifiers.Count, PrimitiveType.Pointer, new OutArgumentStorage(idOrig));
+				idOut = new Identifier(idOrig.Name + "Out", identifiers.Count, 
+                    outParameterPointer, new OutArgumentStorage(idOrig));
 				identifiers.Add(idOut);
 			}
 			return idOut;

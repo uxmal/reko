@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -127,7 +127,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void CallInstruction()
 		{
 			Procedure callee = new Procedure("Callee", new Frame(PrimitiveType.Word32));
-			CallInstruction ci = new CallInstruction(callee, 0, 0);
+            CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), 0, 0);
 			ProgramDataFlow flow = new ProgramDataFlow();
 			ProcedureFlow pf = new ProcedureFlow(callee, prog.Architecture);
 			pf.TrashedRegisters[Registers.ebx.Number] = true;

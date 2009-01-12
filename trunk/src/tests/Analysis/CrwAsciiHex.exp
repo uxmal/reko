@@ -25,7 +25,7 @@ l0C00_0009:		// block 3, pred: 2 1
 	// succ:  4
 fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
-FlagGroup byte fn0C00_000A(Register byte al, Register out ptr0 alOut)
+FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // MayUse:  al
 // LiveOut: C al
 // Trashed: SCZO ax al
@@ -39,7 +39,7 @@ FlagGroup byte fn0C00_000A(Register byte al, Register out ptr0 alOut)
 // CZ:Flags
 // alOut:Out:Register al
 // return address size: 2
-byte fn0C00_000A(byte al, ptr0 alOut)
+byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000A:		// block 1, pred: 0

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Decompiler.Core
 		/// </remarks>
 		/// <param name="callee"></param>
 		/// <returns></returns>
-		public Instruction BuildApplication(CallSite cs, Expression callee, ProcedureSignature sigCallee)
+		public Instruction BuildApplication(CallSite cs, IProcessorArchitecture arch, Expression callee, ProcedureSignature sigCallee)
 		{
 			if (sigCallee == null || !sigCallee.ArgumentsValid)
 				return null;
@@ -76,7 +76,7 @@ namespace Decompiler.Core
 				Identifier actualArg = formalArg.Storage.BindFormalArgumentToFrame(frame, cs);
 				if (formalArg.Storage is OutArgumentStorage)
 				{
-					actuals.Add(new UnaryExpression(UnaryOperator.addrOf, PrimitiveType.Pointer, actualArg));
+					actuals.Add(new UnaryExpression(UnaryOperator.addrOf, arch.FramePointerType, actualArg));
 				}
 				else
 				{

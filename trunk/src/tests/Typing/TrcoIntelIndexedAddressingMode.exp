@@ -9,7 +9,7 @@ l1:		// block 1, pred: 0
 IntelIndexedAddressingMode_exit:		// block 2, pred: 1
 	// succ: 
 
-Globals (in globals : ptr0)
+Globals (in globals : ptr32)
 	trait_mem(T_4, CA4)
 	trait_mem(T_8, 1C0A)
 T_2 (in 0xF8 : byte)

@@ -1,6 +1,6 @@
 // Equivalence classes ////////////
 // Type Variables ////////////
-T_1: (in globals : ptr0)
+T_1: (in globals : ptr32)
   Class: Eq_1
   DataType: 
   OrigDataType: (ptr (struct (3000 (arr (struct 4 (0 T_7 t0000))) a3000)))
@@ -8,10 +8,10 @@ T_2: (in 0x00003000 : word32)
   Class: Eq_2
   DataType: 
   OrigDataType: word32
-T_3: (in globals + 0x00003000 : ptr0)
+T_3: (in globals + 0x00003000 : ptr32)
   Class: Eq_3
   DataType: 
-  OrigDataType: ptr0
+  OrigDataType: ptr32
 T_4: (in i : word32)
   Class: Eq_4
   DataType: 

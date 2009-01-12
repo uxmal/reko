@@ -53,7 +53,7 @@ Eq_15: word32
 Eq_16: word32
 	T_16 (in t + 0x00000008 : word32)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: 
   OrigDataType: 

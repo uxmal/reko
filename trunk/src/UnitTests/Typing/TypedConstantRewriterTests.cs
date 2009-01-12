@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			store = new TypeStore();
 			factory = new TypeFactory();
-			globals = new Identifier("globals", 0, PrimitiveType.Pointer, null);
+			globals = new Identifier("globals", 0, PrimitiveType.Pointer32, null);
 			store.EnsureExpressionTypeVariable(factory, globals);
 
 			StructureType s = new StructureType(null, 0);

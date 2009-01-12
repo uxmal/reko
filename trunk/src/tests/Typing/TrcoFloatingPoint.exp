@@ -37,7 +37,7 @@ l0C00_0037:		// block 1, pred: 0
 fn0C00_0037_exit:		// block 2, pred: 1
 	// succ: 
 
-T_2 (in fn0C00_0010 : ptr0)
+T_2 (in fn0C00_0010 : ptr32)
 	trait_func(T_7, T_8, T_9 -> T_10)
 T_4 (in ds : selector)
 	trait_primitive(selector)
@@ -59,7 +59,7 @@ T_9 (in 0x0320 : word16)
 	trait_equal(T_6)
 T_10 (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
 	trait_primitive(void)
-T_11 (in fn0C00_0037 : ptr0)
+T_11 (in fn0C00_0037 : ptr32)
 	trait_func(T_7 -> T_14)
 T_13 (in ds : selector)
 	trait_primitive(selector)

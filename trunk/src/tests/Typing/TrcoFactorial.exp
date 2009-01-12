@@ -30,7 +30,7 @@ l0C00_0029:		// block 4, pred: 3 2
 fn0C00_000F_exit:		// block 5, pred: 4
 	// succ: 
 
-T_2 (in fn0C00_000F : ptr0)
+T_2 (in fn0C00_000F : ptr32)
 	trait_func(T_5 -> T_6)
 T_5 (in 0x0064 : word16)
 	trait_primitive(word16)
@@ -78,7 +78,7 @@ T_17 (in ax_14 == 0x0000 : bool)
 	trait_primitive(bool)
 T_18 (in 0x0001 : word16)
 	trait_primitive(word16)
-T_19 (in fn0C00_000F : ptr0)
+T_19 (in fn0C00_000F : ptr32)
 	trait_func(T_12 -> T_20)
 T_20 (in fn0C00_000F(ax_14) : word16)
 	trait_primitive(word16)

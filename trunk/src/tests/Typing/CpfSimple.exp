@@ -1,12 +1,12 @@
 // Equivalence classes ////////////
 Eq_1: (ptr (struct (10000000 T_3 t10000000)))
-	T_1 (in globals : ptr0)
+	T_1 (in globals : ptr32)
 Eq_2: (ptr (struct (0 T_3 t0000)))
 	T_2 (in 0x10000000 : word32)
 Eq_3: real32
 	T_3 (in Mem0[0x10000000:real32] : real32)
 // Type Variables ////////////
-T_1: (in globals : ptr0)
+T_1: (in globals : ptr32)
   Class: Eq_1
   DataType: (ptr (struct (10000000 T_3 t10000000)))
   OrigDataType: (ptr (struct (10000000 T_3 t10000000)))

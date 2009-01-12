@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,12 +44,14 @@ namespace Decompiler.Analysis
 		private SsaIdentifierCollection ssaIds;
 		private SsaIdentifier sidGrf;
 		private Statement useStm;
+        private IProcessorArchitecture arch;
 
 		private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator");
 
-		public ConditionCodeEliminator(SsaIdentifierCollection ssaIds)
+		public ConditionCodeEliminator(SsaIdentifierCollection ssaIds, IProcessorArchitecture arch)
 		{
 			this.ssaIds = ssaIds;
+            this.arch = arch;
 		}
 
 		public void Transform()
@@ -203,7 +205,7 @@ namespace Decompiler.Analysis
 
 		public Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
 		{
-			Expression e = new Application(new ProcedureConstant(PrimitiveType.Pointer, new PseudoProcedure("OVERFLOW", 1)),
+			Expression e = new Application(new ProcedureConstant(arch.PointerType, new PseudoProcedure("OVERFLOW", 1)),
 				PrimitiveType.Bool, bin);
 			if (isNegated)
 			{

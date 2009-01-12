@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void TestCallInstruction()
 		{
-			Assert.IsTrue(ci.IsCritical(new CallInstruction(null, 0, 0)));
+			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(null, null), 0, 0)));
 		}
 
 		[Test]

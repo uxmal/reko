@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,11 +71,12 @@ namespace Decompiler.Core.Code
 	{
 		private Procedure proc;
 
-		public CallInstruction(Procedure proc, int stackDepth, int fpuStackDepth) :
-			base(new ProcedureConstant(PrimitiveType.Pointer, proc), stackDepth, fpuStackDepth)
-		{	
-			this.proc = proc;
-		}
+        public CallInstruction(ProcedureConstant pc, int stackDepth, int fpuStackDepth)
+            : base(pc, stackDepth, fpuStackDepth)
+        {
+            this.proc = (Procedure) pc.Procedure;
+        }
+
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{

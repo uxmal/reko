@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Scanning
 			Block.AddEdge(proc.EntryBlock, b);
 			Block.AddEdge(b, proc.ExitBlock);
 			EscapedAccessRewriter ear = new EscapedAccessRewriter(proc);
-			ear.InsertFramePointerAssignment();
+			ear.InsertFramePointerAssignment(new Mocks.ArchitectureMock());
 			Block x = proc.EntryBlock.Succ[0];
 			Assert.AreEqual(1, x.Statements.Count);
 			Assert.AreEqual("fp = &foo_frame", x.Statements[0].Instruction.ToString());

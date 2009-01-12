@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,7 +78,11 @@ namespace Decompiler.Core
 			if (args.Length != ppp.Arity)
 				throw new ArgumentOutOfRangeException("Must pass correct # of arguments");
 
-			return new Application(new ProcedureConstant(PrimitiveType.Pointer, ppp), retType, args);
+            
+			return new Application(
+                new ProcedureConstant(prog.Architecture.PointerType, ppp),
+                retType, 
+                args);
 		}
 
 

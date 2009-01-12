@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -241,7 +241,7 @@ namespace Decompiler.Typing
 				StructureMerger sm = new StructureMerger(upsm.Structures, upsm.EquivalenceClasses);
 				sm.Merge();
 				Changed = true;
-				return new Pointer(sm.MergedClass, 0);
+				return new Pointer(sm.MergedClass, upsm.PointerSize);
 			}
 
 			UnionType utNew = FactorDuplicateAlternatives(ut);

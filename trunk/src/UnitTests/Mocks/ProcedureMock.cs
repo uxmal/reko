@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public UnaryExpression AddrOf(Expression e)
 		{
-			return new UnaryExpression(UnaryOperator.addrOf, PrimitiveType.Pointer, e);
+			return new UnaryExpression(UnaryOperator.addrOf, PrimitiveType.Pointer32, e);
 		}
 
 		public BinaryExpression And(Expression left, int right)
@@ -162,7 +162,8 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Statement Call(Procedure callee)
 		{
-			CallInstruction ci = new CallInstruction(callee, 0, 0);
+            ProcedureConstant c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
+			CallInstruction ci = new CallInstruction(c, 0, 0);
 			return Emit(ci);
 		}
 
@@ -266,7 +267,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Application Fn(string name, params Expression [] exps)
 		{
-			Application appl = new Application(new ProcedureConstant(PrimitiveType.Pointer, new PseudoProcedure(name, 0)), PrimitiveType.Word32, exps);
+			Application appl = new Application(new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure(name, 0)), PrimitiveType.Word32, exps);
 			unresolvedProcedures.Add(new ApplicationUpdater(name, appl));
 			return appl;
 		}
@@ -383,7 +384,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public MemberPointerSelector MembPtrW(Expression ptr, Expression membPtr)
 		{
-			return new MemberPointerSelector(PrimitiveType.Word16, new Dereference(PrimitiveType.Pointer, ptr), membPtr);
+			return new MemberPointerSelector(PrimitiveType.Word16, new Dereference(PrimitiveType.Pointer32, ptr), membPtr);
 		}
 
 		public MkSequence Seq(Expression head, Expression tail)

@@ -1,5 +1,5 @@
-T_1 (in globals : ptr0)
-	trait_primitive(ptr0)
+T_1 (in globals : ptr32)
+	trait_primitive(ptr32)
 	trait_mem_array(0, 1, 10, T_3)
 	trait_mem_array(65536, 4, 16, T_5)
 T_2 (in i : word32)

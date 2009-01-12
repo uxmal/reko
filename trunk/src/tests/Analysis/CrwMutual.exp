@@ -18,7 +18,7 @@ l0C00_0000:		// block 1, pred: 0
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
-Register word16 fn0C00_0004(Register word16 dx, Register out ptr0 dxOut)
+Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
 // MayUse:  dx
 // LiveOut: ax dx
 // Trashed: SCZO ax dx al dl ah dh
@@ -33,7 +33,7 @@ Register word16 fn0C00_0004(Register word16 dx, Register out ptr0 dxOut)
 // SZO:Flags
 // dxOut:Out:Register dx
 // return address size: 2
-word16 fn0C00_0004(word16 dx, ptr0 dxOut)
+word16 fn0C00_0004(word16 dx, ptr16 dxOut)
 fn0C00_0004_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0004:		// block 1, pred: 0

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -961,13 +961,13 @@ namespace Decompiler.Arch.Intel
 
 		private Instruction BuildApplication(PseudoProcedure ppp)
 		{
-			Expression e = new ProcedureConstant(PrimitiveType.Pointer, ppp);
+			Expression e = new ProcedureConstant(PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), ppp);
 			return BuildApplication(e, ppp.Signature);
 		}
 
 		private Instruction BuildApplication(Expression fn, ProcedureSignature sig)
 		{
-			Instruction instr = ab.BuildApplication(new CallSite(state.StackBytes, state.FpuStackItems), fn, sig);
+			Instruction instr = ab.BuildApplication(new CallSite(state.StackBytes, state.FpuStackItems), arch, fn, sig);
 			state.ShrinkStack(sig.StackDelta);
 			state.ShrinkFpuStack(sig.FpuStackDelta);
 			return instr;
@@ -1122,7 +1122,8 @@ namespace Decompiler.Arch.Intel
 
 		private void EmitCall(Procedure procCallee)
 		{
-			CallInstruction call = new CallInstruction(procCallee, state.StackBytes, state.FpuStackItems);
+            ProcedureConstant pc = new ProcedureConstant(arch.PointerType, procCallee);
+			CallInstruction call = new CallInstruction(pc, state.StackBytes, state.FpuStackItems);
 			if (procCallee.Characteristics.IsAlloca)
 			{
 				if (procCallee.Signature == null)
@@ -1355,7 +1356,7 @@ namespace Decompiler.Arch.Intel
 			if (svc != null)
 			{
 				ExternalProcedure ep = svc.CreateExternalProcedure(arch);
-				ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer, ep);
+				ProcedureConstant fn = new ProcedureConstant(arch.PointerType, ep);
 				emitter.Emit(BuildApplication(fn, ep.Signature));
 				if (svc.Characteristics.Terminates)
 				{

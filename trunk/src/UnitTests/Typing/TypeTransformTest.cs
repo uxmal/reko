@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,8 +146,8 @@ namespace Decompiler.UnitTests.Typing
 		public void TtranSimplify()
 		{
 			UnionType u = new UnionType(null, null);
-			u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 0));
-			u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 0));
+			u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
+			u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
 			TypeTransformer trans = new TypeTransformer(factory, store, null);
 			DataType dt = u.Accept(trans);
 			Assert.AreEqual("(ptr real32)", dt.ToString());
@@ -158,7 +158,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			UnionType u = new UnionType(null, null);
 			u.Alternatives.Add(PrimitiveType.Word32);
-			u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 0));
+			u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
 			TypeTransformer trans = new TypeTransformer(factory, store, null);
 			DataType dt = u.Accept(trans);
 			Assert.AreEqual("(ptr real32)", dt.ToString());
@@ -245,12 +245,12 @@ namespace Decompiler.UnitTests.Typing
 			aen.Transform(prog);
 			EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store);
 			eq.Build(prog);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store);
+			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
 			TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
 			coll.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();
 
-			DerivedPointerAnalysis cpf = new DerivedPointerAnalysis(factory, store, dtb);
+			DerivedPointerAnalysis cpf = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
 			cpf.FollowConstantPointers(prog);
 
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);

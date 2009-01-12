@@ -10,9 +10,9 @@ l1:		// block 1, pred: 0
 
 // Equivalence classes ////////////
 Eq_1: (struct (10000000 real32 r10000000) (10000004 real32 r10000004))
-	Globals (in globals : ptr0)
+	Globals (in globals : ptr32)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (10000000 T_10 t10000000) (10000004 T_7 t10000004)))

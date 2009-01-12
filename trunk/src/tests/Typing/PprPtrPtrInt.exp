@@ -14,7 +14,7 @@ PtrPtrIntMock_exit:		// block 2, pred: 1
 
 // Equivalence classes ////////////
 Eq_1: (struct (10000 word32 dw10000) (10004 (ptr Eq_2) ptr10004))
-	Globals (in globals : ptr0)
+	Globals (in globals : ptr32)
 Eq_2: (struct (0 (ptr Eq_3) ptr0000))
 	T_2 (in r1 : word32)
 	T_10 (in Mem0[0x00010004:word32] : word32)
@@ -26,7 +26,7 @@ Eq_7: (struct (0 word32 dw0000))
 Eq_9: (struct (0 (ptr Eq_2) ptr0000))
 	T_9 (in 0x00010004 : word32)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct (10000 T_8 t10000) (10004 T_10 t10004)))

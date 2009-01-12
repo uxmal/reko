@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,8 +47,6 @@ namespace Decompiler.WindowsGui.Controls
 		private int cbRow;
 		private ProgramImage image;
 		private Address addrSelected;
-		private Address addrAnchor;			// The start of the selection.
-		private Address addrFocus;			// The end of the selection.
 
 		private int cRows;				// total number of rows.
 		private int yTopRow;			// index of topmost visible row

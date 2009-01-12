@@ -81,7 +81,7 @@ Z_56: orig: Z
 SCZO_57: orig: SCZO
 cx_58: orig: cx
 // fn0C00_000C
-word16 fn0C00_000C(selector ds, ptr0 clOut)
+word16 fn0C00_000C(selector ds, ptr16 clOut)
 fn0C00_000C_entry:		// block 0, pred:
 	def Mem0
 	def ds

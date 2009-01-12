@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,9 +124,9 @@ namespace Decompiler.UnitTests.Core
 					new Identifier("arg1", 1, PrimitiveType.Word16, new StackArgumentStorage(6, PrimitiveType.Word16)) });
 
 			CallSite cs = new CallSite(stack + f.ReturnAddressSize, 0);
-			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer, new PseudoProcedure("foo", sig));
+			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
 			ApplicationBuilder ab = new ApplicationBuilder(f);
-			Instruction instr = ab.BuildApplication(cs, fn, sig);
+			Instruction instr = ab.BuildApplication(cs, new IntelArchitecture(ProcessorMode.Real), fn, sig);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
 			{
 				f.Write(fut.TextWriter);
@@ -152,9 +152,9 @@ namespace Decompiler.UnitTests.Core
 					new Identifier("arg0", 0, PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)) } );
 			
 			CallSite cs = new CallSite(stack, 0);
-			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer, new PseudoProcedure("bar", sig));
+			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));
 			ApplicationBuilder ab = new ApplicationBuilder(f);
-			Instruction instr = ab.BuildApplication(cs, fn, sig);
+			Instruction instr = ab.BuildApplication(cs, arch, fn, sig);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindMixedParameters.txt"))
 			{
 				f.Write(fut.TextWriter);
@@ -192,9 +192,9 @@ namespace Decompiler.UnitTests.Core
 		{
 			Frame f = new Frame(PrimitiveType.Word32);
 			Identifier r = f.EnsureRegister(new Mocks.MockMachineRegister("r1", 1, PrimitiveType.Word32));
-			Identifier arg = f.EnsureOutArgument(r);
+			Identifier arg = f.EnsureOutArgument(r, PrimitiveType.Pointer32);
 			Assert.AreEqual("r1Out", arg.Name);
-			Assert.AreSame(PrimitiveType.Pointer, arg.DataType);
+			Assert.AreSame(PrimitiveType.Pointer32, arg.DataType);
 		}
 
 		[Test]

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ namespace Decompiler.Scanning
 		/// The frame pointer assignment needs a block of its own, as placing it in the 
 		/// "entryBlock" wreaks havoc with SSA assignments &c.
 		/// </remarks>
-		public void InsertFramePointerAssignment()
+		public void InsertFramePointerAssignment(IProcessorArchitecture arch)
 		{
 			Block b = new Block(proc, proc.Name + "_frame_asgn");
 			Block s = proc.EntryBlock.Succ[0];
@@ -87,7 +87,7 @@ namespace Decompiler.Scanning
 			b.Statements.Add(
 				new Assignment(
 				proc.Frame.FramePointer,
-				new UnaryExpression(Operator.addrOf, PrimitiveType.Pointer, frame)));
+				new UnaryExpression(Operator.addrOf, arch.FramePointerType, frame)));
 		}
 
 		private bool IsLocal(Identifier id)

@@ -41,7 +41,7 @@ fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
 ====================
 // fn0C00_000A
-byte fn0C00_000A(byte al, ptr0 alOut)
+byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -129,7 +129,7 @@ fn0C00_000A_exit:		// block 12, pred: 11 7
 	// succ: 
 
 // fn0C00_000A
-byte fn0C00_000A(byte al, ptr0 alOut)
+byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:		// block 0, pred:
 	def Mem0
 	def al

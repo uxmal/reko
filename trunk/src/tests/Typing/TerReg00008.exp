@@ -32,7 +32,7 @@ Eq_12: (segment "Eq_12" (0 (arr Eq_26) a0000))
 Eq_26: (struct "Eq_26" 26 (0 word16 w0000))
 	T_26
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

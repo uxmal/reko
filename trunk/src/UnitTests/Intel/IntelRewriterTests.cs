@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,6 +45,7 @@ namespace Decompiler.UnitTests.Intel
 		public void Setup()
 		{
 			prog = new Program();
+            prog.Architecture = arch;
 			proc = new Procedure("test", new Frame(PrimitiveType.Word16));
 			emitter = new CodeEmitter(prog, proc);
 			emitter.Block = new Block(proc, new Address(0xC10, 0x0030));

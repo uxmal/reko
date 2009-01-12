@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@ namespace Decompiler.Typing
 	{
 		private List<EquivalenceClass> eqClasses;
 		private List<StructureType> strs;
+        private int pointerSize;
+
 
 		public UnionPointersStructuresMatcher()
 		{
@@ -43,6 +45,12 @@ namespace Decompiler.Typing
 				Pointer p = a.DataType as Pointer;
 				if (p == null)
 					return false;
+
+                if (pointerSize == 0)
+                    pointerSize = p.Size;
+                else if (pointerSize != p.Size)
+                    return false;
+
 				EquivalenceClass eq = p.Pointee as EquivalenceClass;
 				if (eq == null)
 					return false;
@@ -56,6 +64,11 @@ namespace Decompiler.Typing
 			}
 			return true;
 		}
+
+        public int PointerSize
+        {
+            get { return pointerSize; }
+        }
 
 		public ICollection<StructureType> Structures 
 		{

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,12 +39,14 @@ namespace Decompiler.Typing
 		private TypeStore store;
 		private TypeFactory factory;
 		private DataTypeBuilderUnifier unifier;
+        private IProcessorArchitecture arch;
 
-		public DataTypeBuilder(TypeFactory factory, TypeStore store)
+		public DataTypeBuilder(TypeFactory factory, TypeStore store, IProcessorArchitecture arch)
 		{
 			this.store = store;
 			this.factory = factory;
 			this.unifier = new DataTypeBuilderUnifier(factory, store);
+            this.arch = arch;
 		}
 
 		public UnionType MakeUnion(DataType a, DataType b)
@@ -154,8 +156,8 @@ namespace Decompiler.Typing
 				throw new ArgumentOutOfRangeException("size must be positive");
 			StructureType s = factory.CreateStructureType(null, size);
 			DataType ptr = tBase != null
-				? (DataType)factory.CreateMemberPointer(tBase, s, 0)
-				: (DataType)factory.CreatePointer(s, 0);
+				? (DataType)factory.CreateMemberPointer(tBase, s, arch.FramePointerType.Size)
+				: (DataType)factory.CreatePointer(s, arch.PointerType.Size);
 			MergeIntoDataType(ptr, tStruct);
 		}
 

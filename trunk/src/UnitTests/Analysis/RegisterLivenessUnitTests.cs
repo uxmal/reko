@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -218,7 +218,7 @@ namespace Decompiler.UnitTests.Analysis
 			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;
 			rl.IdentifierLiveness.BitSet[Registers.esi.Number] = true;
 			rl.IdentifierLiveness.BitSet[Registers.edi.Number] = true;
-			CallInstruction ci = new CallInstruction(callee, 0, 0);
+			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), 0, 0);
 			rl.VisitCallInstruction(ci);
 			Assert.AreEqual(" ecx ebx esi", Dump(rl.IdentifierLiveness));
 		}
@@ -235,7 +235,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
 			Identifier w08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
-			new CallInstruction(callee, 0x0C, 0).Accept(rl);
+			new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), 0x0C, 0).Accept(rl);
 			Assert.AreEqual(2, rl.IdentifierLiveness.LiveStackVariables.Count, "Should have two accesses");
 			foreach (object o in rl.IdentifierLiveness.LiveStackVariables.Keys)
 			{
@@ -262,7 +262,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier loc0C = m.Frame.EnsureStackLocal(-12, PrimitiveType.Word32);
 			Identifier loc10 = m.Frame.EnsureStackLocal(-16, PrimitiveType.Word32);
 			rl.CurrentState = new RegisterLiveness.ByPassState();
-			CallInstruction ci = new CallInstruction(callee, 16, 0);
+			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), 16, 0);
 			rl.Procedure = m.Procedure;
 			rl.MarkLiveStackParameters(ci);
 			Assert.AreEqual(" Local -000C Local -0010", Dump(rl.IdentifierLiveness));
