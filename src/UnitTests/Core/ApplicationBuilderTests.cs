@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Core
 			Frame frame = new Frame(PrimitiveType.Word32);
 			ApplicationBuilder ab = new ApplicationBuilder(frame);
 			Assert.IsTrue(sig.FormalArguments[3].Storage is OutArgumentStorage);
-			Instruction instr = ab.BuildApplication(new CallSite(16, 0), new Identifier("foo", -1, PrimitiveType.Pointer, null), sig);
+			Instruction instr = ab.BuildApplication(new CallSite(16, 0), new Mocks.ArchitectureMock(), new Identifier("foo", -1, PrimitiveType.Word32, null), sig);
 			Assert.AreEqual("eax = foo(dwLoc0C, wLoc08, bLoc04, &edx)", instr.ToString());
 		}
 	}

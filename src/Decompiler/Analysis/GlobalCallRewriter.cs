@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -130,7 +130,7 @@ namespace Decompiler.Analysis
 
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				crw.RewriteCalls(proc);
+				crw.RewriteCalls(proc, prog.Architecture);
 				crw.RewriteReturns(proc);
 			}
 		}

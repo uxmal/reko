@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -163,7 +163,7 @@ namespace Decompiler.UnitTests.Typing
 				Constant.Word32(0x0010040),
                 false);
 
-            Program prog = new Program();
+            Program prog = CreateProgram();
 			prog.InductionVariables.Add(i, iv);
 			prog.InductionVariables.Add(i2, iv2);
 
@@ -180,7 +180,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoGlobalArray()
 		{
-            Program prog = new Program();
+            Program prog = CreateProgram();
             ProcedureMock m = new ProcedureMock();
             Identifier i = m.Local32("i");
             Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
@@ -230,11 +230,11 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoSegmentedDirectAddress()
 		{
-			ProcedureMock m = new ProcedureMock();
-            Program prog = new Program();
+            Program prog = CreateProgram();
 			prog.TypeStore.EnsureExpressionTypeVariable(prog.TypeFactory, prog.Globals);
 
-			Identifier ds = m.Local16("ds");
+            ProcedureMock m = new ProcedureMock();
+            Identifier ds = m.Local16("ds");
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));
 
             coll = CreateCollector(prog);
@@ -243,6 +243,13 @@ namespace Decompiler.UnitTests.Typing
 			e.Accept(coll);
 			Verify(null, "Typing/TrcoSegmentedDirectAddress.txt");
 		}
+
+        private static Program CreateProgram()
+        {
+            Program prog = new Program();
+            prog.Architecture = new ArchitectureMock();
+            return prog;
+        }
 
 		[Test]
 		public void TrcoPtrPtrInt()
@@ -400,7 +407,7 @@ namespace Decompiler.UnitTests.Typing
 
         private TraitCollector CreateCollector()
         {
-            return CreateCollector(new Program());
+            return CreateCollector(CreateProgram());
         }
 
         private TraitCollector CreateCollector(Program prog)

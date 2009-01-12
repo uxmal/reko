@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,32 +24,47 @@ namespace Decompiler.Arch.Intel
 {
 	public class ProcessorMode 
 	{
-		private PrimitiveType width;
+		private PrimitiveType wordSize;
+        private PrimitiveType framePtrSize;
+        private PrimitiveType pointerType;
 
-		public static readonly ProcessorMode None = new ProcessorMode(null);
-		public static readonly ProcessorMode Real = new ProcessorMode(PrimitiveType.Word16);
-		public static readonly ProcessorMode ProtectedSegmented = new ProcessorMode(PrimitiveType.Word16);
+		public static readonly ProcessorMode None = new ProcessorMode(null, null, null);
+        public static readonly ProcessorMode Real = new ProcessorMode(PrimitiveType.Word16, PrimitiveType.Ptr16, PrimitiveType.Pointer32);
+        public static readonly ProcessorMode ProtectedSegmented = new ProcessorMode(PrimitiveType.Word16, PrimitiveType.Ptr16, PrimitiveType.Pointer32);
 		public static readonly ProcessorMode ProtectedFlat = new FlatMode();
 
-		protected ProcessorMode(PrimitiveType w)
+		protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType)
 		{
-			this.width = w;
+			this.wordSize = wordSize;
+            this.framePtrSize = framePointerType;
+            this.pointerType = pointerType;
 		}
+
+        public virtual Address AddressFromSegOffset(IntelState state, MachineRegister seg, uint offset)
+        {
+            return state.AddressFromSegOffset(seg, offset);
+        }
+
+        public PrimitiveType FramePointerType
+        {
+            get { return framePtrSize; }
+        }
+
+        public PrimitiveType PointerType
+        {
+            get { return pointerType; }
+        }
 
 		public PrimitiveType WordWidth
 		{
-			get { return width; }
+			get { return wordSize; }
 		}
 
-		public virtual Address AddressFromSegOffset(IntelState state, MachineRegister seg, uint offset)
-		{
-			return state.AddressFromSegOffset(seg, offset);
-		}
-	}
+    }
 
 	internal class FlatMode : ProcessorMode
 	{
-		internal FlatMode() : base(PrimitiveType.Word32)
+		internal FlatMode() : base(PrimitiveType.Word32, PrimitiveType.Pointer32, PrimitiveType.Pointer32)
 		{
 		}
 

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@ namespace Decompiler.Core.Types
 
 		public Pointer(DataType pointee, int byteSize)
 		{
+            if (byteSize == 0)
+                throw new ArgumentOutOfRangeException("byteSize", "Zero-sized pointers are not allowed.");
 			this.Pointee = pointee;
 			this.byteSize = byteSize;
 		}

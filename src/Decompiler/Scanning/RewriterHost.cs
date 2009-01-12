@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,7 +97,7 @@ namespace Decompiler.Scanning
 
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				crw.RewriteCalls(proc);
+				crw.RewriteCalls(proc, prog.Architecture);
 			}
 		}
 
@@ -161,7 +161,7 @@ namespace Decompiler.Scanning
 			{
 				proceduresRewritten.Add(proc, proc);
 				proc.Frame.ReturnAddressSize = cbReturnAddress;
-				RewriteProcedureBlocks(proc, addrProc);
+                RewriteProcedureBlocks(proc, addrProc, prog.Architecture);
 			} 
 			catch (Exception ex)
 			{
@@ -170,7 +170,7 @@ namespace Decompiler.Scanning
 			}
 		}
 
-		public virtual void RewriteProcedureBlocks(Procedure proc, Address addrProc)
+		public virtual void RewriteProcedureBlocks(Procedure proc, Address addrProc, IProcessorArchitecture arch)
 		{
 			// Rewrite the blocks in the procedure.
 
@@ -186,7 +186,7 @@ namespace Decompiler.Scanning
 			{
 				EscapedAccessRewriter esc = new EscapedAccessRewriter(proc);
 				esc.Transform();
-				esc.InsertFramePointerAssignment();
+				esc.InsertFramePointerAssignment(arch);
 				proc.RenumberBlocks();
 			}
 		}

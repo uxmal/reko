@@ -74,7 +74,7 @@ C_45: orig: C
 SCZO_46: orig: SCZO
 al_47: orig: al, def: {al_47 = PHI(al_37, al)}, uses: {use al_47 (=> alOut)}
 // fn0C00_000A
-byte fn0C00_000A(byte al, ptr0 alOut)
+byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:		// block 0, pred:
 	def al
 	// succ:  1

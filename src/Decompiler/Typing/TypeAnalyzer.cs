@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,9 +60,9 @@ namespace Decompiler.Typing
 
 			aen = new ExpressionNormalizer();
 			eqb = new EquivalenceClassBuilder(factory, store);
-			dtb = new DataTypeBuilder(factory, store);
+			dtb = new DataTypeBuilder(factory, store, prog.Architecture);
 			trco = new TraitCollector(factory, store, dtb, prog);
-			dpa = new DerivedPointerAnalysis(factory, store, dtb);
+			dpa = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
 			tvr = new TypeVariableReplacer(store);
 			trans = new TypeTransformer(factory, store, host);
 			ctn = new ComplexTypeNamer();

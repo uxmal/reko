@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Core
 		public IdentifierTests()
 		{
 			reg = new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax));
-			outReg = new Identifier("eaxOut", 1, PrimitiveType.Pointer, new OutArgumentStorage(reg));
+			outReg = new Identifier("eaxOut", 1, PrimitiveType.Pointer32, new OutArgumentStorage(reg));
 		}
 
 		[Test]

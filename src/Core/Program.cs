@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,6 @@ namespace Decompiler.Core
             ivs = new Dictionary<Identifier, LinearInductionVariable>();
 			typefactory = new TypeFactory();
 			typeStore = new TypeStore();
-			globals = new Identifier("globals", 0, PrimitiveType.Pointer, new MemoryStorage());
 		}
 
 		public void AddEntryPoint(EntryPoint ep)
@@ -105,7 +104,14 @@ namespace Decompiler.Core
 
 		public Identifier Globals
 		{
-			get { return globals; } 
+			get {
+                if (globals == null)
+                {
+                    if (arch == null)
+                        throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
+                    globals = new Identifier("globals", 0, arch.PointerType, new MemoryStorage()); 
+                }
+                return globals; } 
 		}
 		
         /// <summary>

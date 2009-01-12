@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -208,7 +208,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void UnifyPtrWord()
 		{
-			Pointer ptr = factory.CreatePointer(PrimitiveType.Word32, 0);
+			Pointer ptr = factory.CreatePointer(PrimitiveType.Word32, 4);
 			DataType dt = un.Unify(ptr, PrimitiveType.Word32);
 			Assert.AreEqual("(ptr word32)", dt.ToString());
 			Assert.IsFalse(Object.ReferenceEquals(ptr, dt), "Should be different");
@@ -353,8 +353,8 @@ namespace Decompiler.UnitTests.Typing
 		public void CompatiblePointers()
 		{
 			TypeVariable tv1 = new TypeVariable(1);
-			Pointer p1 = new Pointer(tv1, 0);
-			Pointer p2 = new Pointer(tv1, 0);
+			Pointer p1 = new Pointer(tv1, 4);
+			Pointer p2 = new Pointer(tv1, 4);
 			Assert.IsTrue(un.AreCompatible(p1, p2));
 		}
 
@@ -363,7 +363,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			TypeVariable tv1 = new TypeVariable(1);
 			TypeVariable tv2 = new TypeVariable(2);
-			Assert.IsFalse(un.AreCompatible(new Pointer(tv1, 0), new Pointer(tv2, 0)));
+			Assert.IsFalse(un.AreCompatible(new Pointer(tv1, 4), new Pointer(tv2, 4)));
 		}
 
 		[Test]

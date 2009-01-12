@@ -46,7 +46,7 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 ====================
 // fn0C00_0025
-word16 fn0C00_0025(word16 si, selector ds, ptr0 siOut)
+word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
 fn0C00_0025_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -65,7 +65,7 @@ fn0C00_0025_exit:		// block 2, pred: 1
 	// succ: 
 
 // fn0C00_0025
-word16 fn0C00_0025(word16 si, selector ds, ptr0 siOut)
+word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
 fn0C00_0025_entry:		// block 0, pred:
 	def Mem0
 	def ds
@@ -81,7 +81,7 @@ fn0C00_0025_exit:		// block 2, pred: 1
 	// succ: 
 ====================
 // fn0C00_0027
-word16 fn0C00_0027(word16 si, selector ds, ptr0 siOut)
+word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
 fn0C00_0027_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -112,7 +112,7 @@ fn0C00_0027_exit:		// block 4, pred: 3
 	// succ: 
 
 // fn0C00_0027
-word16 fn0C00_0027(word16 si, selector ds, ptr0 siOut)
+word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
 fn0C00_0027_entry:		// block 0, pred:
 	def Mem0
 	def si
@@ -138,7 +138,7 @@ fn0C00_0027_exit:		// block 4, pred: 3
 	// succ: 
 ====================
 // fn0C00_002F
-word16 fn0C00_002F(word16 si, selector ds, ptr0 siOut)
+word16 fn0C00_002F(word16 si, selector ds, ptr16 siOut)
 fn0C00_002F_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -158,7 +158,7 @@ fn0C00_002F_exit:		// block 2, pred: 1
 	// succ: 
 
 // fn0C00_002F
-word16 fn0C00_002F(word16 si, selector ds, ptr0 siOut)
+word16 fn0C00_002F(word16 si, selector ds, ptr16 siOut)
 fn0C00_002F_entry:		// block 0, pred:
 	def Mem0
 	def ds
@@ -176,7 +176,7 @@ fn0C00_002F_exit:		// block 2, pred: 1
 	// succ: 
 ====================
 // fn0C00_0036
-word16 fn0C00_0036(word16 si, selector ds, ptr0 siOut)
+word16 fn0C00_0036(word16 si, selector ds, ptr16 siOut)
 fn0C00_0036_entry:		// block 0, pred:
 	def Mem0
 	def fp
@@ -196,7 +196,7 @@ fn0C00_0036_exit:		// block 2, pred: 1
 	// succ: 
 
 // fn0C00_0036
-word16 fn0C00_0036(word16 si, selector ds, ptr0 siOut)
+word16 fn0C00_0036(word16 si, selector ds, ptr16 siOut)
 fn0C00_0036_entry:		// block 0, pred:
 	def ds
 	def si

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,6 +154,7 @@ namespace Decompiler.UnitTests.Typing
 		public void Setup()
 		{
             prog = new Program();
+            prog.Architecture = new ArchitectureMock();
 			factory = prog.TypeFactory;
 			store = prog.TypeStore;
 			handler = new MockTraitHandler(store);

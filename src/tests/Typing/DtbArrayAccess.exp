@@ -36,7 +36,7 @@ Eq_13: word32
 Eq_14: word16
 	T_14 (in (r + 0x00000010)[i * 0x0000000A] : word16)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: 
   OrigDataType: 

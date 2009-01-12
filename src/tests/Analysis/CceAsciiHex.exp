@@ -66,7 +66,7 @@ C_36: orig: C
 SCZO_37: orig: SCZO
 al_38: orig: al, def: {al_38 = PHI(al_28, al)}, uses: {use al_38 (=> alOut)}
 // fn0C00_000A
-byte fn0C00_000A(byte al, ptr0 alOut)
+byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:		// block 0, pred:
 	def al
 	// succ:  1

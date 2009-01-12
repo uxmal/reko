@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -337,6 +337,11 @@ namespace Decompiler.Arch.Intel
 			return (u & (u - 1)) == 0;
 		}
 
+        public PrimitiveType PointerType
+        {
+            get { return mode.PointerType; }
+        }
+
 		public ProcessorMode ProcessorMode
 		{
 			get { return mode; }
@@ -346,5 +351,11 @@ namespace Decompiler.Arch.Intel
 		{
 			get { return mode.WordWidth; }
 		}
-	}
+
+        public PrimitiveType FramePointerType
+        {
+            get { return mode.FramePointerType; }
+        }
+
+    }
 }

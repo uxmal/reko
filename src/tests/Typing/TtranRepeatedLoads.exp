@@ -11,7 +11,7 @@ l1:		// block 1, pred: 0
 Eq_2: (struct (4 word32 dw0004))
 	T_2 (in pfoo : word32)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

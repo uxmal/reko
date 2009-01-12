@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -169,7 +169,7 @@ namespace Decompiler.Typing
 		public override void VisitIndirectCall(IndirectCall ic)
 		{
 			ic.Callee.Accept(this);
-			handler.FunctionTrait(ic.Callee.TypeVariable, 0, null, new TypeVariable[0]);
+			handler.FunctionTrait(ic.Callee.TypeVariable, ic.Callee.DataType.Size, null, new TypeVariable[0]);
 		}
 
 		public override void VisitPhiAssignment(PhiAssignment phi)
@@ -455,7 +455,7 @@ namespace Decompiler.Typing
 		{
 			mps.BasePointer.Accept(this);
 			mps.MemberPointer.Accept(this);
-			handler.DataTypeTrait(mps.TypeVariable, PrimitiveType.Pointer);
+			handler.DataTypeTrait(mps.TypeVariable, prog.Architecture.PointerType);
 		}
 
 

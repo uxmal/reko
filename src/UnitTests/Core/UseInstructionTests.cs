@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Core
 		{
 			Identifier id2 = new Identifier("bar", -1, PrimitiveType.Word32, new TemporaryStorage());
 			Identifier r = new Identifier(Registers.edx.Name, 2, Registers.edx.DataType, new RegisterStorage(Registers.edx));
-			Identifier arg = new Identifier("barOut", 3, PrimitiveType.Pointer, new OutArgumentStorage(r));
+			Identifier arg = new Identifier("barOut", 3, PrimitiveType.Pointer32, new OutArgumentStorage(r));
 			UseInstruction use2 = new UseInstruction(id2, arg);
 			Assert.AreSame(id2, use2.Expression);
 			Assert.AreEqual("barOut", use2.OutArgument.Name);
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual("use foo", use.ToString());
 
 			Identifier r = new Identifier(Registers.edx.Name, 3, Registers.edx.DataType, new RegisterStorage(Registers.edx));
-			Identifier arg = new Identifier("edxOut", 4, PrimitiveType.Pointer, new OutArgumentStorage(r));
+			Identifier arg = new Identifier("edxOut", 4, PrimitiveType.Pointer32, new OutArgumentStorage(r));
 			use = new UseInstruction(id1, arg);
 			Assert.AreEqual("use foo (=> edxOut)" , use.ToString());
 		}

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Analysis
 			flow.LiveOut[Registers.eax.Number] = true;		// becomes the return value.
 			flow.LiveOut[Registers.ebx.Number] = true;
 			gcr.EnsureSignature(proc, flow);
-			Assert.AreEqual("Register word32 foo(Register out ptr0 ebxOut)", proc.Signature.ToString(proc.Name));
+			Assert.AreEqual("Register word32 foo(Register out ptr32 ebxOut)", proc.Signature.ToString(proc.Name));
 		}
 
 		[Test]
@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Analysis
 			proc.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
 			proc.Signature.FpuStackDelta = 1;
 			gcr.EnsureSignature(proc, flow);
-			Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack real80 rArg1, FpuStack out ptr0 rArg0Out)", proc.Signature.ToString(proc.Name));
+			Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack real80 rArg1, FpuStack out ptr32 rArg0Out)", proc.Signature.ToString(proc.Name));
 		}
 
 		[Test]

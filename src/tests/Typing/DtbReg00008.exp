@@ -60,7 +60,7 @@ Eq_22: word16
 Eq_25: bool
 	T_25 (in v8_22 != 0x0000 : bool)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: 
   OrigDataType: 

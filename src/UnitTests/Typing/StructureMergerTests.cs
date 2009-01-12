@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,15 +32,15 @@ namespace Decompiler.UnitTests.Typing
 		{
 			TypeVariable tv1 = new TypeVariable(1);
 			TypeVariable tv2 = new TypeVariable(2);
-			StructureType s1 = new StructureType(null, 0, new StructureField(4, PrimitiveType.Pointer));
-			StructureType s2 = new StructureType(null, 0, new StructureField(4, PrimitiveType.Pointer));
+			StructureType s1 = new StructureType(null, 0, new StructureField(4, PrimitiveType.Pointer32));
+			StructureType s2 = new StructureType(null, 0, new StructureField(4, PrimitiveType.Pointer32));
 			EquivalenceClass c1 = new EquivalenceClass(tv1);
 			EquivalenceClass c2 = new EquivalenceClass(tv2);
 			c1.DataType = s1;
 			c2.DataType = s2;
 			StructureMerger sm = new StructureMerger(new StructureType[] { s1, s2 }, new EquivalenceClass[] { c1, c2 } );
 			sm.Merge();
-			Assert.AreEqual("(struct (4 ptr0 ptr0004))", c1.DataType.ToString());
+			Assert.AreEqual("(struct (4 ptr32 ptr0004))", c1.DataType.ToString());
 		}
 	}
 }

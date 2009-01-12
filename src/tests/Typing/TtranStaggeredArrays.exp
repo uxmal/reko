@@ -13,7 +13,7 @@ Eq_2: (arr Eq_13)
 Eq_13: (struct 8 (0 word32 dw0000) (4 word32 dw0004))
 	T_13
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

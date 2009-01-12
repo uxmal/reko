@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -273,7 +273,6 @@ namespace Decompiler.Core.Types
 
 			real80 = Create(Domain.Real, 10);
 
-			pointer = Create(Domain.Pointer, 0);
 		}
 
 		static private PrimitiveType _void;
@@ -303,8 +302,6 @@ namespace Decompiler.Core.Types
 		static private PrimitiveType real64;
 
 		static private PrimitiveType real80;
-
-		static private PrimitiveType pointer;
 
 		static public PrimitiveType Void
 		{
@@ -400,11 +397,6 @@ namespace Decompiler.Core.Types
 		static public PrimitiveType Real80
 		{
 			get { return real80; }
-		}
-
-		static public PrimitiveType Pointer
-		{
-			get { return pointer; }
 		}
 	}
 }

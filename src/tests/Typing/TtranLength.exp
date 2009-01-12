@@ -27,7 +27,7 @@ Eq_4: (struct (4 (memptr Eq_7 Eq_4) ptr0004))
 Eq_7: (segment (200 word16 w0200))
 	T_7 (in ds : selector)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

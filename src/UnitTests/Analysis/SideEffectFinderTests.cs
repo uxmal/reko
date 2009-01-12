@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure p = new Procedure("foo", null);
 			Application a = new Application(
-				new ProcedureConstant(PrimitiveType.Pointer, p), 
+				new ProcedureConstant(PrimitiveType.Pointer32, p), 
 				PrimitiveType.Word32,
 				Constant.Word32(3));
 			Assert.AreEqual("foo(0x00000003)", a.ToString());

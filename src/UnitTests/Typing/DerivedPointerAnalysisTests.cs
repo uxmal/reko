@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,9 +37,10 @@ namespace Decompiler.UnitTests.Typing
 		public void CpfSimple()
 		{
 			Program prog = new Program();
+            prog.Architecture = new ArchitectureMock();
 
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store);
+			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
 
 			Constant c = new Constant(PrimitiveType.Word32,0x10000000);
 			MemoryAccess mem = new MemoryAccess(c, PrimitiveType.Real32);
@@ -52,7 +53,7 @@ namespace Decompiler.UnitTests.Typing
 			mem.Accept(tc);
 			dtb.BuildEquivalenceClassDataTypes();
 
-			DerivedPointerAnalysis cf = new DerivedPointerAnalysis(factory, store, dtb);
+			DerivedPointerAnalysis cf = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
 			mem.Accept(cf);
 
 			Verify(null, "Typing/CpfSimple.txt");
@@ -98,13 +99,13 @@ namespace Decompiler.UnitTests.Typing
 		private void RunTest(Program prog, string outputFile)
 		{
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store);
+			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
 			eqb.Build(prog);
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			trco.CollectProgramTraits(prog);
 			dtb.BuildEquivalenceClassDataTypes();
 
-			DerivedPointerAnalysis dpa = new DerivedPointerAnalysis(factory, store, dtb);
+			DerivedPointerAnalysis dpa = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
 			dpa.FollowConstantPointers(prog);
 
 			Verify(null, outputFile);

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TerComplex()
 		{
-			Program prog = new Program();
+            Program prog = new Program();
+            prog.Architecture = new ArchitectureMock();
+            SetupPreStages(prog.Architecture);
 			Identifier id = new Identifier("v0", 0, PrimitiveType.Word32, null);
 			Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
 
@@ -89,7 +91,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TerConstants()
 		{
-			Program prog = new Program();
+            Program prog = new Program();
+            prog.Architecture = new ArchitectureMock();
+            SetupPreStages(prog.Architecture);
 			Constant r = new Constant(3.0F);
 			Constant i = new Constant(PrimitiveType.Int32, 1);
 			Identifier x = new Identifier("x", 0, PrimitiveType.Word32, null);
@@ -265,6 +269,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
+                SetupPreStages(prog.Architecture);
                 aen.Transform(prog);
 				eqb.Build(prog);
 				coll = new TraitCollector(factory, store, dtb, prog);
@@ -304,15 +309,15 @@ namespace Decompiler.UnitTests.Typing
 			fut.AssertFilesEqual();
 		}
 
-		[SetUp]
-		public void Setup()
-		{
+
+        public void SetupPreStages(IProcessorArchitecture arch)
+        {
 			factory = new TypeFactory();
 			store = new TypeStore();
             aen = new ExpressionNormalizer();
 			eqb = new EquivalenceClassBuilder(factory, store);
-			dtb = new DataTypeBuilder(factory, store);
-			cpf = new DerivedPointerAnalysis(factory, store, dtb);
+            dtb = new DataTypeBuilder(factory, store, arch);
+			cpf = new DerivedPointerAnalysis(factory, store, dtb, arch);
 			tvr = new TypeVariableReplacer(store);
 			trans = new TypeTransformer(factory, store, null);
 			ctn = new ComplexTypeNamer();

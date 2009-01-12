@@ -31,7 +31,7 @@ bxOut: bxOut:Out:Register bx
 ax_5: orig: ax
 bx_6: orig: bx, def: {bx_6 = 0x002B}, uses: {use bx_6 (=> bxOut)}
 // fn0C00_000E
-word16 fn0C00_000E(ptr0 bxOut)
+word16 fn0C00_000E(ptr16 bxOut)
 fn0C00_000E_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000E:		// block 1, pred: 0

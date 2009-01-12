@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,12 +54,12 @@ namespace Decompiler.Core
 		/// <param name="call">The actuall CALL instruction.</param>
 		/// <returns>True if the conversion was possible, false if the procedure didn't have
 		/// a signature yet.</returns>
-		public bool RewriteCall(Procedure proc, Statement stm, CallInstruction call)
+		public bool RewriteCall(Procedure proc, IProcessorArchitecture arch, Statement stm, CallInstruction call)
 		{
 			Procedure procCallee = call.Callee;
 			ProcedureSignature sigCallee = GetProcedureSignature(procCallee);
-			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer, procCallee);
-			Instruction instr = ab.BuildApplication(call.CallSite, fn, sigCallee);
+			ProcedureConstant fn = new ProcedureConstant(arch.PointerType, procCallee);
+			Instruction instr = ab.BuildApplication(call.CallSite, arch, fn, sigCallee);
 			if (instr != null)
 			{
 				stm.Instruction = instr;
@@ -79,7 +79,7 @@ namespace Decompiler.Core
 		/// </summary>
 		/// <param name="proc"></param>
 		/// <returns>The number of calls that couldn't be converted</returns>
-		public int RewriteCalls(Procedure proc)
+		public int RewriteCalls(Procedure proc, IProcessorArchitecture arch)
 		{
 			ab = new ApplicationBuilder(proc.Frame);
 			int unConverted = 0;
@@ -90,7 +90,7 @@ namespace Decompiler.Core
 					CallInstruction ci = stm.Instruction as CallInstruction;
 					if (ci != null)
 					{
-						if (!RewriteCall(proc, stm, ci))
+						if (!RewriteCall(proc, arch, stm, ci))
 							++unConverted;
 					}
 				}

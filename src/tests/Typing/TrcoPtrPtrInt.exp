@@ -12,7 +12,7 @@ l1:		// block 1, pred: 0
 PtrPtrIntMock_exit:		// block 2, pred: 1
 	// succ: 
 
-Globals (in globals : ptr0)
+Globals (in globals : ptr32)
 	trait_mem(T_12, 10000)
 	trait_mem(T_14, 10004)
 T_2 (in r1 : word32)

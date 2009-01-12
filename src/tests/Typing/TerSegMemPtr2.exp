@@ -13,7 +13,7 @@ Eq_2: (segment "Eq_2")
 Eq_3: (struct "Eq_3" (0 word16 w0000) (4 word16 w0004))
 	T_3 (in bx : word16)
 // Type Variables ////////////
-Globals: (in globals : ptr0)
+Globals: (in globals : ptr32)
   Class: Eq_1
   DataType: Eq_1
   OrigDataType: 

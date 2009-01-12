@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void Application()
         {
-            Identifier pfn = new Identifier("pfn", 1, PrimitiveType.Pointer, new TemporaryStorage());
+            Identifier pfn = new Identifier("pfn", 1, PrimitiveType.Pointer32, new TemporaryStorage());
             Application a1 = new Application(pfn, PrimitiveType.Int32, pfn);
             Application a2 = new Application(pfn, PrimitiveType.Int32, pfn);
             Assert.IsTrue(eq.Equals(a1, a2));

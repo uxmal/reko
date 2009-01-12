@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,7 +102,7 @@ namespace Decompiler.UnitTests.Analysis
 			Statement stmBr = new Statement(new Branch(new TestCondition(ConditionCode.EQ, y)), null);
 			ssaIds[y].Uses.Add(stmBr);
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new ArchitectureMock());
 			Instruction instr = stmBr.Instruction.Accept(cce);
 			Assert.AreEqual("branch r == 0x00000000", instr.ToString());
 		}
@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds[f].DefStatement = stmF;
 			ssaIds[Z].Uses.Add(stmF);
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new ArchitectureMock());
 			cce.Transform();
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
@@ -128,7 +128,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void SignedIntComparisonFromConditionCode()
 		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new ArchitectureMock());
 			BinaryExpression bin = new BinaryExpression(Operator.sub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
@@ -138,7 +138,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void RealComparisonFromConditionCode()
 		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new ArchitectureMock());
 			BinaryExpression bin = new BinaryExpression(Operator.sub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
@@ -169,7 +169,7 @@ namespace Decompiler.UnitTests.Analysis
 				SsaTransform sst = new SsaTransform(proc, new DominatorGraph(proc), true);
 				SsaState ssa = sst.SsaState;
 
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
 				cce.Transform();
 				DeadCode.Eliminate(proc, ssa);
 

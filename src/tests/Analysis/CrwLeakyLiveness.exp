@@ -29,7 +29,7 @@ l0C00_0009:		// block 3, pred: 2 1
 	// succ:  4
 fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
-FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr0 axOut)
+FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // MayUse:  ds
 // LiveOut: C ax
 // Trashed: SCZO ax si al ah
@@ -46,7 +46,7 @@ FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr0 axOut)
 // C:Flags
 // axOut:Out:Register ax
 // return address size: 2
-byte fn0C00_000A(selector ds, ptr0 axOut)
+byte fn0C00_000A(selector ds, ptr16 axOut)
 fn0C00_000A_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000A:		// block 1, pred: 0

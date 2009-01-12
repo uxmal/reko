@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using StringWriter = System.IO.StringWriter;
@@ -39,10 +40,10 @@ namespace Decompiler.UnitTests.Core
 					new Identifier(Registers.cl.Name, 2, PrimitiveType.Byte, new RegisterStorage(Registers.cl)) } );
 			ExternalProcedure ep = new ExternalProcedure("foo", sig);
 			Assert.AreEqual("Register word16 foo(Register word16 bx, Register byte cl)", ep.ToString());
-			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer, ep);
+			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, ep);
 			Frame frame = new Frame(PrimitiveType.Word16);
 			ApplicationBuilder ab = new ApplicationBuilder(frame);
-			Instruction instr = ab.BuildApplication(new CallSite(0, 0), fn, ep.Signature);
+			Instruction instr = ab.BuildApplication(new CallSite(0, 0), new ArchitectureMock(), fn, ep.Signature);
 			Assert.AreEqual("ax = foo(bx, cl)", instr.ToString());
 
 		}

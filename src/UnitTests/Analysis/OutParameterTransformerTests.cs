@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Block block = new Block(null, "block");
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
-			Identifier pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer, null);
+			Identifier pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer32, null);
 			Statement stmDef = new Statement(new Assignment(foo, Constant.Word32(3)), block);
 			SsaIdentifier sid = new SsaIdentifier(foo, foo, stmDef, null, false);
 
@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier foo1 = new Identifier("foo1", 0, PrimitiveType.Word32, null);
 			Identifier foo2 = new Identifier("foo2", 1, PrimitiveType.Word32, null);
 			Identifier foo3 = new Identifier("foo3", 2, PrimitiveType.Word32, null);
-			Identifier pfoo = new Identifier("pfoo", 4, PrimitiveType.Pointer, null);
+			Identifier pfoo = new Identifier("pfoo", 4, PrimitiveType.Pointer32, null);
 
 			Statement stmFoo1 = new Statement(new Assignment(foo1, Constant.Word32(1)), block1);
 			Statement stmFoo2 = new Statement(new Assignment(foo2, Constant.Word32(2)), block2);
@@ -131,7 +131,7 @@ namespace Decompiler.UnitTests.Analysis
 			Block block = new Block(null, "block");
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			Identifier bar = new Identifier("bar", 1, PrimitiveType.Word32, null);
-			Identifier pfoo = new Identifier("pfoo", 2, PrimitiveType.Pointer, null);
+			Identifier pfoo = new Identifier("pfoo", 2, PrimitiveType.Pointer32, null);
 
 			Statement stmFoo = new Statement(new Assignment(foo, Constant.Word32(1)), block);
 			Statement stmBar = new Statement(new Assignment(bar, foo), block);

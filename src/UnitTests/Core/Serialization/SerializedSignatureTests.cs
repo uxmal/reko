@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			sig.Arguments = new SerializedArgument[] { arg };
 			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
 			ProcedureSignature ps =  ser.Deserialize(sig, new Frame(null));
-			Assert.AreEqual("void foo(Register out ptr0 bpOut)", ps.ToString("foo"));
+			Assert.AreEqual("void foo(Register out ptr16 bpOut)", ps.ToString("foo"));
 		}
 
 		public static SerializedSignature BuildSsigAxBxCl()

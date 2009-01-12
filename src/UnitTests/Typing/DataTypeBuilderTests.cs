@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2008 John Källén.
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Typing
             factory = new TypeFactory();
             aen = new ExpressionNormalizer();
             eqb = new EquivalenceClassBuilder(factory, store);
-            dtb = new DataTypeBuilder(factory, store);
+            dtb = new DataTypeBuilder(factory, store, new ArchitectureMock());
         }
 
 		[Test]
@@ -225,6 +225,7 @@ namespace Decompiler.UnitTests.Typing
                 false);
 
             Program prog = new Program();
+            prog.Architecture = new ArchitectureMock();
 			prog.InductionVariables.Add(i, iv);
             prog.InductionVariables.Add(i2, iv2);
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
@@ -268,6 +269,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProcedureMock m = new ProcedureMock();
             Program prog = new Program();
+            prog.Architecture = new ArchitectureMock();
 			Identifier i = m.Local32("i");
 			Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
 			Expression e = m.Load(PrimitiveType.Int32, ea);
@@ -310,6 +312,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier bx = m.Local16("bx");
 			Expression e = m.SegMem(bx.DataType, ds, m.Add(bx, 4));
             Program prog = new Program();
+            prog.Architecture = new Decompiler.Arch.Intel.IntelArchitecture(Decompiler.Arch.Intel.ProcessorMode.Real);
 			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			e = e.Accept(aen);
 			e.Accept(eqb);
@@ -323,7 +326,8 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProcedureMock m = new ProcedureMock();
             Program prog = new Program();
-			store.EnsureExpressionTypeVariable(factory, prog.Globals);
+            prog.Architecture = new Decompiler.Arch.Intel.IntelArchitecture(Decompiler.Arch.Intel.ProcessorMode.Real);
+            store.EnsureExpressionTypeVariable(factory, prog.Globals);
 
 			Identifier ds = m.Local16("ds");
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));
