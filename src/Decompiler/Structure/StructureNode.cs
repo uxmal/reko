@@ -19,8 +19,8 @@
 using Decompiler.Core;
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Decompiler.Structure
 {
@@ -33,8 +33,8 @@ namespace Decompiler.Structure
 		public int LinksFollowed;
 		public Interval Interval;
 		public BitSet Blocks;
-		public ArrayList Pred;
-		public ArrayList Succ;
+		public List<StructureNode> Pred;
+		public List<StructureNode> Succ;
 
 		public StructureNode(int i, Block entry, BitSet blocks)
 		{
@@ -42,8 +42,8 @@ namespace Decompiler.Structure
 			EntryBlock = entry;
 			LinksFollowed = 0;
 			Blocks = blocks;
-			Pred = new ArrayList();
-			Succ = new ArrayList();
+			Pred = new List<StructureNode>();
+			Succ = new List<StructureNode>();
 		}
 
 		public static void AddEdge(StructureNode from, StructureNode to)

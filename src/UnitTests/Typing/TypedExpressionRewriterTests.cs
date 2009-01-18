@@ -260,6 +260,35 @@ namespace Decompiler.UnitTests.Typing
             RunTest(prog.BuildProgram(), "Typing/TerFlatDereferenceSignedCompare.txt");
         }
 
+        [Test]
+        public void TerComparison()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier p = m.Local32("p");
+            Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.Add(p, 4));
+            m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(3)));
+
+            ProgramMock prog = new ProgramMock();
+            prog.Add(m);
+            RunTest(prog.BuildProgram(), "Typing/TerComparison.txt");
+        }
+
+        [Test]
+        public void TerUnionConstants()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier bx = m.Local16("bx");
+            m.Assign(bx, m.Shr(bx, 2));     // makes bx unsigned uint16
+            m.Assign(m.LocalBool("f"), m.Lt(bx, 4));    // makes bx also signed; assembler bug, but forces a union.
+            m.Assign(bx, m.Word16(4));          // what type should 4 have?
+
+            ProgramMock prog = new ProgramMock();
+            prog.Add(m);
+            RunTest(prog.BuildProgram(), "Typing/TerUnionConstants.txt");
+        }
+
+        //////////////////////////////////////////////////////////////////////////
+
 		private void RunTest(string relativePath, string outputFile)
 		{
 			RunTest(RewriteFile(relativePath), outputFile);

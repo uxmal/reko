@@ -73,6 +73,12 @@ namespace Decompiler.Core.Code
 			v.VisitConstant(this);
 		}
 
+        public static Constant Byte(byte c)
+        {
+            return new Constant(PrimitiveType.Byte, c);
+        }
+
+
 		public override Expression CloneExpression()
 		{
 			return new Constant(DataType, c);
@@ -328,6 +334,5 @@ namespace Decompiler.Core.Code
 		}
 
 		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0);
-
     }
 }

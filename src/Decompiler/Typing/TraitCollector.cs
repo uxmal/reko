@@ -22,7 +22,6 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
 using System.Diagnostics;
 
 namespace Decompiler.Typing
@@ -532,7 +531,10 @@ namespace Decompiler.Typing
 			unary.Expression.Accept(this);
 			if (unary.op == Operator.addrOf)
 			{
-				handler.PointerTrait(unary.TypeVariable, 0, unary.Expression.TypeVariable);
+				handler.PointerTrait(
+                    unary.TypeVariable, 
+                    unary.DataType.Size,
+                    unary.Expression.TypeVariable);
 			}
 			else if (unary.op == Operator.neg)
 			{
