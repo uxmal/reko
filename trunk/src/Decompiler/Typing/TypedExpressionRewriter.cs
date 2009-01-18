@@ -188,14 +188,26 @@ namespace Decompiler.Typing
 
 			DataType dtLeft = DataTypeOf(binExp.Left);
 			DataType dtRight = DataTypeOf(binExp.Right);
-			if (dtLeft.IsComplex)
-			{
-				if (dtRight.IsComplex)
-					throw new TypeInferenceException(
-						"Both left and right sides of a binary expression can't be complex types.{0}{1}: {2}:[{3}] {4}:[{5}].",
-						Environment.NewLine, binExp,
-						binExp.Left.TypeVariable, dtLeft,
-						binExp.Right.TypeVariable, dtRight);
+            if (binExp.op == Operator.add)
+            {
+                return TransformSum(binExp, dtLeft, dtRight);
+            }
+            else
+            {
+                return binExp;
+            }
+		}
+
+        private Expression TransformSum(BinaryExpression binExp, DataType dtLeft, DataType dtRight)
+        {
+            if (dtLeft.IsComplex)
+            {
+                if (dtRight.IsComplex)
+                    throw new TypeInferenceException(
+                        "Both left and right sides of a binary expression can't be complex types.{0}{1}: {2}:[{3}] {4}:[{5}].",
+                        Environment.NewLine, binExp,
+                        binExp.Left.TypeVariable, dtLeft,
+                        binExp.Right.TypeVariable, dtRight);
                 Constant c = binExp.Right as Constant;
                 if (c != null)
                 {
@@ -209,9 +221,9 @@ namespace Decompiler.Typing
                         StructureField.ToOffset(c));
                     return ceb.BuildComplex();
                 }
-			}
-			return binExp;
-		}
+            }
+            return binExp;
+        }
 
 		public override Expression TransformConstant(Constant c)
 		{

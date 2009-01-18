@@ -160,9 +160,15 @@ namespace Decompiler.Typing
 		{
 			// A constant can't have a union value, so we coerce it to the appropriate type.
 			UnionAlternative a = ut.FindAlternative(pOrig);
-			if (a == null)
-				throw new TypeInferenceException("Couldn't find alternative of type {0} in {1}", pOrig, ut);
-			c.TypeVariable.DataType = pOrig;
+            if (a == null)
+            {
+                // This is encountered when the original type is a [[word]] but
+                // the alternatives are, say, [[int32]] and [[uint32]]. In this case
+                // we pick an arbitrary type and go with it.
+                //$REVIEW: should emit a warning.
+                a = ut.Alternatives.Values[0];
+            }
+			c.TypeVariable.DataType = a.DataType;
 			Return(c);
 		}
 

@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Types
 {
@@ -70,13 +70,14 @@ namespace Decompiler.Core.Types
         }
 	}
 
-	public class StructureFieldCollection : CollectionBase
+	public class StructureFieldCollection : ICollection<StructureField>
 	{
-		public StructureField this[int i]
-		{
-			get { return (StructureField) InnerList[i]; }
-			set { InnerList[i] = value; }
-		}
+        private List<StructureField> innerList = new List<StructureField>();
+
+        public StructureField this[int i]
+        {
+            get { return innerList[i]; }
+        }
 
 		public void Add(int offset, DataType dt)
 		{
@@ -92,9 +93,9 @@ namespace Decompiler.Core.Types
 		{
 			int i;
 			StructureField ff = null;
-			for (i = 0; i < InnerList.Count; ++i)
+			for (i = 0; i < innerList.Count; ++i)
 			{
-				ff = (StructureField) InnerList[i];
+				ff = innerList[i];
 				if (f.Offset == ff.Offset)
 				{
 					if (f.DataType == ff.DataType)
@@ -103,33 +104,33 @@ namespace Decompiler.Core.Types
 				if (f.Offset <= ff.Offset)
 					break;
 			}
-			InnerList.Insert(i, f);
+			innerList.Insert(i, f);
 		}
 
-        public void AddRange(ICollection fields)
+        /// <summary>
+        /// Returns the structurefield exactly located at the specified offset.
+        /// </summary>
+        /// <param name="offset">Offset (in bytes) of the field to retrieve.</param>
+        /// <returns>The requested StructureField if it exists at <paramref>offset</paramref>, otherwise null.</returns>
+        public StructureField AtOffset(int offset)
         {
-            InnerList.AddRange(fields);
+            foreach (StructureField f in innerList)
+            {
+                if (f.Offset == offset)
+                    return f;
+            }
+            return null;
         }
 
-		public StructureField [] ArrayCopy()
+        public void Insert(int i, StructureField f)
 		{
-			StructureField [] fs = new StructureField[InnerList.Count];
-			for (int i = 0; i < fs.Length; ++i)
-			{
-				fs[i] = (StructureField) InnerList[i];
-			}
-			return fs;
-		}
-
-		public void Insert(int i, StructureField f)
-		{
-			InnerList.Insert(i, f);
+			innerList.Insert(i, f);
 		}
 
 		public StructureField LowerBound(int offset)
 		{
 			StructureField fPrev = null;
-			foreach (StructureField f in InnerList)
+			foreach (StructureField f in innerList)
 			{
 				if (f.Offset <= offset)
 					fPrev = f;
@@ -137,20 +138,67 @@ namespace Decompiler.Core.Types
 			return fPrev;
 		}
 
-		/// <summary>
-		/// Returns the structurefield exactly located at the specified offset.
-		/// </summary>
-		/// <param name="offset">Offset (in bytes) of the field to retrieve.</param>
-		/// <returns>The requested StructureField if it exists at <paramref>offset</paramref>, otherwise null.</returns>
-		public StructureField AtOffset(int offset)
-		{
-			foreach (StructureField f in InnerList)
-			{
-				if (f.Offset == offset)
-					return f;
-			}
-			return null;
-		}
 
-	}
+
+        public void RemoveAt(int i)
+        {
+            innerList.RemoveAt(i);
+        }
+
+
+
+        #region ICollection<StructureField> Members
+
+
+        public void Clear()
+        {
+            innerList.Clear();
+        }
+
+        public bool Contains(StructureField item)
+        {
+            return innerList.Contains(item);
+        }
+
+        public void CopyTo(StructureField[] array, int arrayIndex)
+        {
+            innerList.CopyTo(array, arrayIndex);
+        }
+
+        public int Count
+        {
+            get { return innerList.Count; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public bool Remove(StructureField item)
+        {
+            return innerList.Remove(item);
+        }
+
+        #endregion
+
+        #region IEnumerable<StructureField> Members
+
+        public IEnumerator<StructureField> GetEnumerator()
+        {
+            return innerList.GetEnumerator();
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return innerList.GetEnumerator();
+        }
+
+        #endregion
+
+    }
 }

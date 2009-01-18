@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Typing
 {
@@ -36,7 +36,7 @@ namespace Decompiler.Typing
 
 		public override DataType TransformUnionType(UnionType ut)
 		{
-			ArrayList typeVars = new ArrayList();
+			List<TypeVariable> typeVars = new List<TypeVariable>();
 			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
 				TypeVariable tv = a.DataType as TypeVariable;

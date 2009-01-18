@@ -19,7 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Typing
 {
@@ -402,16 +402,16 @@ namespace Decompiler.Typing
 			StructureType mem = factory.CreateStructureType(name, newSize);
 			mem.IsSegment = (a.IsSegment || b.IsSegment);
 
-			IEnumerator ea = a.Fields.GetEnumerator();
-			IEnumerator eb = b.Fields.GetEnumerator();
+			IEnumerator<StructureField> ea = a.Fields.GetEnumerator();
+            IEnumerator<StructureField> eb = b.Fields.GetEnumerator();
 			StructureField fa = null;
 			StructureField fb = null;
 			for (;;)
 			{
 				if (fa == null && ea.MoveNext())
-					fa = (StructureField) ea.Current;
+					fa = ea.Current;
 				if (fb == null && eb.MoveNext())
-					fb = (StructureField) eb.Current;
+					fb = eb.Current;
 			
 				if (fa == null || fb == null)
 					break;

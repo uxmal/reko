@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Typing
 {
@@ -49,11 +49,11 @@ namespace Decompiler.Typing
 		{
 			changed = false;
 			
-			Hashtable classesInUse = new Hashtable();
+			Dictionary<EquivalenceClass,EquivalenceClass> classesInUse = new Dictionary<EquivalenceClass,EquivalenceClass>();
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
 				EquivalenceClass eq = tv.Class;
-				if (!classesInUse.Contains(eq))
+				if (!classesInUse.ContainsKey(eq))
 				{
 					classesInUse.Add(eq, eq);
 					eq.DataType = Replace(eq.DataType);

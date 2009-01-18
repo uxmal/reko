@@ -379,7 +379,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public BinaryExpression Lt(Expression a, int b)
 		{
-			return Lt(a, Int32(b));
+			return Lt(a, new Constant(a.DataType, b));
 		}
 
 		public MemberPointerSelector MembPtrW(Expression ptr, Expression membPtr)
@@ -500,6 +500,12 @@ namespace Decompiler.UnitTests.Mocks
 			return new BinaryExpression(Operator.shl, cc.DataType, cc, sh);
 		}
 
+        public BinaryExpression Shr(Expression bx, byte c)
+        {
+            Constant cc = Constant.Byte(c);
+            return new BinaryExpression(Operator.shr, bx.DataType, bx, cc);
+        }
+
 		public Statement SideEffect(Expression side)
 		{
 			return Emit(new SideEffect(side));
@@ -602,6 +608,16 @@ namespace Decompiler.UnitTests.Mocks
 			get { return unresolvedProcedures; }
 		}
 
+        public Expression Ult(Expression a, Expression b)
+        {
+			return new BinaryExpression(Operator.lt, PrimitiveType.Bool, a, b);
+        }
+
+        public Expression Ult(Expression a, int b)
+        {
+            return new BinaryExpression(Operator.lt, PrimitiveType.Bool, a, new Constant(PrimitiveType.CreateWord(a.DataType.Size), b));
+        }
+
 		public Statement Use(Identifier id)
 		{
 			return Emit(new UseInstruction(id));
@@ -622,5 +638,6 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			return new Constant(PrimitiveType.Word32, n);
 		}
-	}
+
+    }
 }

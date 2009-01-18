@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Typing
 {
@@ -40,11 +40,11 @@ namespace Decompiler.Typing
 		/// </summary>
 		public void ReplaceTypeVariables()
 		{
-			Hashtable visited = new Hashtable();
+			Dictionary<EquivalenceClass,EquivalenceClass> visited = new Dictionary<EquivalenceClass,EquivalenceClass>();
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
 				EquivalenceClass eq = tv.Class;
-				if (!visited.Contains(eq))
+				if (!visited.ContainsKey(eq))
 				{
 					visited.Add(eq, eq);
 					if (eq.DataType != null)
