@@ -20,7 +20,6 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
 using System.Text;
 
 namespace Decompiler.UnitTests.Typing

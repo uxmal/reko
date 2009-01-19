@@ -17,10 +17,10 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
 
 namespace Decompiler.Scanning
@@ -34,21 +34,21 @@ namespace Decompiler.Scanning
 		private Program prog;
 		private DecompilerHost host;
 		private Map vectorUses;
-		private Hashtable proceduresRewritten;
-		private SortedList syscalls;
+		private Dictionary<Procedure, Procedure> proceduresRewritten;
+        private SortedList<Address, SystemService> syscalls;
 		private CallRewriter crw;
-		private Hashtable callSignatures;
+		private Dictionary<Address,ProcedureSignature> callSignatures;
 		private ProcedureRewriter prw;
 
-		public RewriterHost(Program prog, DecompilerHost host, SortedList syscalls, Map vectorUses)
+		public RewriterHost(Program prog, DecompilerHost host, SortedList<Address,SystemService> syscalls, Map vectorUses)
 		{
 			this.prog = prog;
-			this.proceduresRewritten = new Hashtable();
+            this.proceduresRewritten = new Dictionary<Procedure, Procedure>();
 			this.vectorUses = vectorUses;
 			this.syscalls = syscalls;
 			this.crw = new CallRewriter();
 			this.host = host;
-			this.callSignatures = new Hashtable();
+            this.callSignatures = new Dictionary<Address, ProcedureSignature>();
 		}
 
 		public virtual void AddCallEdge(Procedure caller, Statement stm, Procedure callee)
@@ -66,7 +66,7 @@ namespace Decompiler.Scanning
 			get { return prog.Image; }
 		}
 
-		public void LoadCallSignatures(ICollection serializedCalls)
+		public void LoadCallSignatures(ICollection<SerializedCall> serializedCalls)
 		{
 			foreach (SerializedCall sc in serializedCalls)
 			{
@@ -74,7 +74,7 @@ namespace Decompiler.Scanning
 				{
                     Address addr = Address.ToAddress(sc.InstructionAddress, 16);
 					ProcedureSerializer sser = new ProcedureSerializer(prog.Architecture, "stdapi");
-					callSignatures[addr] = sser.Deserialize(sc.Signature, new Frame(null));
+                    callSignatures.Add(addr, sser.Deserialize(sc.Signature, new Frame(null)));
 				}
 			}
 		}
@@ -149,12 +149,16 @@ namespace Decompiler.Scanning
 		/// <returns></returns>
 		public virtual ProcedureSignature GetCallSignatureAtAddress(Address addr)
 		{
-			return (ProcedureSignature) callSignatures[addr];
+            ProcedureSignature sig;
+            if (callSignatures.TryGetValue(addr, out sig))
+                return sig;
+            else
+                return null;
 		}
 
 		public void RewriteProcedure(Procedure proc, Address addrProc, int cbReturnAddress)
 		{
-			if (proceduresRewritten.Contains(proc))
+			if (proceduresRewritten.ContainsKey(proc))
 				return;
 
 			try

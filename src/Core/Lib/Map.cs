@@ -18,8 +18,9 @@
 
 using System;
 using System.Diagnostics;
+using System.Collections;
 
-namespace System.Collections
+namespace Decompiler.Core.Lib
 {
 	/// <summary>
 	/// Represents a collection of key-and-value pairs in sorted order. Lookups are just

@@ -26,7 +26,6 @@ using Decompiler.Analysis;
 using Decompiler.Structure;
 using Decompiler.Typing;
 using System;
-using System.Collections;
 using System.Diagnostics;
 using System.IO;
 

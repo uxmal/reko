@@ -19,7 +19,6 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 

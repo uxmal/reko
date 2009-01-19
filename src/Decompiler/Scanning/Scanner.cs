@@ -23,7 +23,6 @@ using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -44,17 +43,17 @@ namespace Decompiler.Scanning
 		private ImageMap map;			// cached copy of program.Image.Map; it's used very often.
 		private DecompilerHost host;
 		private ImageMapBlock blockCur;
-		private Hashtable blocksVisited;
+		private Dictionary<ImageMapBlock,ImageMapBlock> blocksVisited;
 		private Map vectorUses;
-		private SortedList syscalls;
+		private SortedList<Address,SystemService> syscalls;
 		private WorkItem wiCur;
 		private DirectedGraph<object> jumpGraph;    //$TODO: what is the right type? This is a bipartite graph with statements and procedures.
 
-		private Queue qProcs;
-		private Queue qJumps;
-		private Queue qStarts;
-		private Queue qSegments;
-		private Queue qVectors;
+		private Queue<WorkItem> qProcs;
+		private Queue<WorkItem> qJumps;
+		private Queue<WorkItem> qStarts;
+		private Queue<WorkItem> qSegments;
+		private Queue<VectorWorkItem> qVectors;
 
 		private static TraceSwitch trace = new TraceSwitch("Scanner", "Enables tracing in the scanning phase");
 
@@ -66,13 +65,13 @@ namespace Decompiler.Scanning
 			this.map = program.Image.Map;
 			this.host = host;
 			this.vectorUses = new Map();
-			this.syscalls = new SortedList();
-			qStarts = new Queue();
-			qProcs = new Queue();
-			qJumps = new Queue();
-			qSegments = new Queue();
-			qVectors = new Queue();
-			this.blocksVisited = new Hashtable();
+            this.syscalls = new SortedList<Address, SystemService>();
+			qStarts = new Queue<WorkItem>();
+			qProcs = new Queue<WorkItem>();
+			qJumps = new Queue<WorkItem>();
+			qSegments = new Queue<WorkItem>();
+			qVectors = new Queue<VectorWorkItem>();
+            this.blocksVisited = new Dictionary<ImageMapBlock, ImageMapBlock>();
 			this.jumpGraph = new DirectedGraph<object>();
 		}
 
@@ -375,9 +374,9 @@ namespace Decompiler.Scanning
 				map.AddItem(wi.Address, blockCur);
 			}
 
-			if (blocksVisited[blockCur] == null)
+			if (!blocksVisited.ContainsKey(blockCur))
 			{
-				blocksVisited[blockCur] = blockCur;
+				blocksVisited.Add(blockCur,blockCur);
 
 				wi.state.SetInstructionPointer(wi.Address);
 				CodeWalker cw = CreateCodeWalker(wi.Address, wi.state);
@@ -394,7 +393,7 @@ namespace Decompiler.Scanning
 			if (bl != null)
 			{
 				// We've already parsed this code, so it must be part of another procedure.
-				if (blocksVisited[bl] != null)
+				if (blocksVisited.ContainsKey(bl))
 					bl.Procedure = null;				// means that this is a block that is jumped into.
 			}
 			Procedure proc = (Procedure) program.Procedures[wi.Address];
@@ -445,35 +444,35 @@ namespace Decompiler.Scanning
 			wiCur = null;
 			if (qStarts.Count > 0)
 			{
-				wiCur = (WorkItem) qStarts.Dequeue();
+				wiCur = qStarts.Dequeue();
 				ParseProcedure(wiCur);
 				return true;
 			}
 
 			if (qSegments.Count > 0)
 			{
-				wiCur = (WorkItem) qSegments.Dequeue();
+				wiCur = qSegments.Dequeue();
 				ParseSegment(wiCur);
 				return true;
 			}
 
 			if (qProcs.Count > 0)
 			{
-				wiCur = (WorkItem) qProcs.Dequeue();
+				wiCur = qProcs.Dequeue();
 				ParseProcedure(wiCur);
 				return true;
 			}
 
 			if (qJumps.Count > 0)
 			{
-				wiCur = (WorkItem) qJumps.Dequeue();
+				wiCur = qJumps.Dequeue();
 				ParseJumpTarget(wiCur);
 				return true;
 			}
 
 			if (qVectors.Count > 0)
 			{
-				VectorWorkItem vwi = (VectorWorkItem) qVectors.Dequeue();
+				VectorWorkItem vwi = qVectors.Dequeue();
 				wiCur = vwi;
 				ProcessVector(vwi);
 				return true;
@@ -493,7 +492,7 @@ namespace Decompiler.Scanning
 		}
 
 
-		public SortedList SystemCalls
+		public SortedList<Address,SystemService> SystemCalls
 		{
 			get { return syscalls; }
 		}

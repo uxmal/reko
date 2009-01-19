@@ -178,6 +178,14 @@ namespace Decompiler.UnitTests.Mocks
 			return proc.Frame.CreateTemporary(name, dt);
 		}
 
+		public Identifier Declare(DataType dt, string name, Expression expr)
+		{
+			Identifier id = proc.Frame.CreateTemporary(name, dt);
+            Emit(new Declaration(id, expr));
+            return id;
+		}
+
+
 		public void Declare(Identifier id, Expression initial)
 		{
 			Emit(new Declaration(id, initial));

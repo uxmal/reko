@@ -18,7 +18,7 @@
 
 using Decompiler.Core;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -36,8 +36,8 @@ namespace Decompiler.Arch.Intel.Assembler
 		private StringBuilder sb;
 		private IntelRegister reg;
 		private int integer;
-		
-		private static SortedList keywords = new SortedList();
+
+        private static SortedList<string, Token> keywords = new SortedList<string, Token>(StringComparer.InvariantCultureIgnoreCase);
 		private const string IdentifierCharacters = "._$@?";
 
 		public Lexer(TextReader rdr)
@@ -205,10 +205,9 @@ namespace Decompiler.Arch.Intel.Assembler
 		private Token ClassifySymbol()
 		{
 			string s = sb.ToString();
-			object v = keywords[s.ToLower()];
-			if (v != null)
-				return (Token) v;
-
+            Token tok;
+            if (keywords.TryGetValue(s, out tok))
+                return tok;
 			IntelRegister reg = Registers.GetRegister(s);
 			if (reg != Registers.None)
 			{

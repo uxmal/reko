@@ -18,8 +18,8 @@
 
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Collections;
 
 namespace Decompiler.Core.Output
 {
@@ -30,7 +30,7 @@ namespace Decompiler.Core.Output
 	{
 		private string name;
 		public int indentLevel;
-		private Hashtable visited;
+		private Dictionary<DataType,object> visited;
 		private Mode mode;
         private bool typeReference;
 
@@ -41,7 +41,7 @@ namespace Decompiler.Core.Output
 
 		public TypeFormatter(TextWriter tw, bool typeReference) : base(tw)
 		{
-			this.visited = new Hashtable();
+			this.visited = new Dictionary<DataType,object>();
 			this.mode = Mode.Writing;
             this.typeReference = typeReference;
 		}
@@ -161,11 +161,12 @@ namespace Decompiler.Core.Output
 			string n = name;
 			if (mode == Mode.Writing)
 			{
-				if (visited[str] == Defined || visited[str] == Declared)
+                object v;
+                if (visited.TryGetValue(str, out v) && (v == Defined || v == Declared))
 				{
 					writer.Write("struct {0}", str.Name);
 				}
-				else if (visited[str] != Declared)
+				else if (v != Declared)
 				{
 					visited[str] = Declared;
 					ScanFields(str);
@@ -190,7 +191,7 @@ namespace Decompiler.Core.Output
 			}
 			else
 			{
-				if (visited[str] == null)
+				if (!visited.ContainsKey(str))
 				{
 					visited[str] = Declared;
 					writer.WriteLine("struct {0};", str.Name);
@@ -297,7 +298,7 @@ namespace Decompiler.Core.Output
 			dt.Accept(this);
 		}
 
-		public void WriteTypes(ICollection datatypes)
+		public void WriteTypes(ICollection<DataType> datatypes)
 		{
 			foreach (DataType dt in datatypes)
 			{

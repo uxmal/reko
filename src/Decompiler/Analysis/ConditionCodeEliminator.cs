@@ -21,7 +21,6 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
 using System.Diagnostics;
 
 namespace Decompiler.Analysis

@@ -18,11 +18,11 @@
 
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
-	public class StatementList : CollectionBase
+	public class StatementList : List<Statement>
 	{
 		private Block block;
 
@@ -31,54 +31,23 @@ namespace Decompiler.Core
 			this.block = block;
 		}
 
-		public int Add(Instruction instr)
+		public void Add(Instruction instr)
 		{
-			return List.Add(new Statement(instr, block));
-		}
-
-		public int Add(Statement stm)
-		{
-			return List.Add(stm);
-		}
-
-		public Statement this[int i]
-		{
-			get { return (Statement) List[i]; }
-			set { List[i] = value; }
-		}
-
-		public object [] CopyToArray()
-		{
-			return (object []) InnerList.ToArray();
-		}
-
-		public int IndexOf(Statement stm)
-		{
-			return List.IndexOf(stm);
+			Add(new Statement(instr, block));
 		}
 
 		public void Insert(int at, Instruction instr)
 		{
-			List.Insert(at, new Statement(instr, block));
-		}
-
-		public void Insert(int at, Statement stm)
-		{
-			List.Insert(at, stm);
+			base.Insert(at, new Statement(instr, block));
 		}
 
 		public Statement Last
 		{
 			get 
 			{ 
-				int i = List.Count - 1;
-				return i >= 0 ? (Statement) InnerList[i] : null;
+				int i = Count - 1;
+				return i >= 0 ? this[i] : null;
 			}
-		}
-
-		public void Remove(Statement stm)
-		{
-			List.Remove(stm);
 		}
 	}
 }

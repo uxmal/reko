@@ -27,15 +27,15 @@ namespace Decompiler.Core.Absyn
 	public abstract class AbsynLoop : AbsynStatement
 	{
 		private Expression condition;
-		private AbsynStatement body;
+		private AbsynStatementList body;
 
-		protected AbsynLoop(Expression condition, AbsynStatement body)
+		protected AbsynLoop(Expression condition, AbsynStatementList body)
 		{
 			this.condition = condition;
 			this.body = body;
 		}
 
-		public AbsynStatement Body
+		public AbsynStatementList Body
 		{
 			get { return body; }
 			set { body = value; }

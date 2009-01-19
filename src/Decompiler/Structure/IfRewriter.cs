@@ -130,25 +130,17 @@ namespace Decompiler.Structure
 		/// </summary>
 		/// <param name="block"></param>
 		/// <returns></returns>
-		public AbsynStatement ConvertBlock(Block block)
-		{
-			AbsynStatementList stms = new AbsynStatementList();
-			Branch branch = GetBranch(block);
-			if (block.Statements.Count == 1 && branch == null)
-				return ConvertInstruction(block.Statements[0].Instruction);
-			else
-			{
-				AbsynStatementList list = new AbsynStatementList();
-				foreach (Statement stm in block.Statements)
-				{
-					if (stm.Instruction is Branch)
-						break;
-					list.Add(ConvertInstruction(stm.Instruction));
-				}
-				return new AbsynCompoundStatement(list);
-			}
-		}
-
+        public AbsynStatementList ConvertBlock(Block block)
+        {
+            AbsynStatementList list = new AbsynStatementList();
+            foreach (Statement stm in block.Statements)
+            {
+                if (stm.Instruction is Branch)
+                    break;
+                list.Add(ConvertInstruction(stm.Instruction));
+            }
+            return list;
+        }
 
 		private void RewriteIfThen(Block block, Expression cond, Block t, Block follow)
 		{
@@ -269,22 +261,29 @@ namespace Decompiler.Structure
 				{
 					if (block.ThenBlock == this.continueTarget)
 					{
-						block.Statements.Last.Instruction = new AbsynIf(branch.Condition, new AbsynContinue());
+						block.Statements.Last.Instruction = new AbsynIf(branch.Condition, SingleStm(new AbsynContinue()));
 					}
 					else if (block.ThenBlock == this.breakTarget)
 					{
-						block.Statements.Last.Instruction = new AbsynIf(branch.Condition, new AbsynBreak());
+                        block.Statements.Last.Instruction = new AbsynIf(branch.Condition, SingleStm(new AbsynBreak()));
 					}
 					else
 					{
 						InsertLabel(block.ThenBlock);
 						block.Statements.Last.Instruction = 
-							new AbsynIf(branch.Condition, new AbsynGoto(BlockLabel(block.ThenBlock).Name));
+							new AbsynIf(branch.Condition, SingleStm(new AbsynGoto(BlockLabel(block.ThenBlock).Name)));
 					}
 				}
 			}
 
 		}
+
+        private AbsynStatementList SingleStm(AbsynStatement stm)
+        {
+            AbsynStatementList list = new AbsynStatementList();
+            list.Add(stm);
+            return list;
+        }
 
 		private void ConvertBranches(BitSet blocks)
 		{

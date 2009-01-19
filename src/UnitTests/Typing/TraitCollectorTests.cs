@@ -405,6 +405,34 @@ namespace Decompiler.UnitTests.Typing
             Assert.AreEqual(exp, sb.ToString());
         }
 
+        [Test]
+        public void TrcoOffsetInArrayLoop()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier ds = m.Local16("ds");
+            Identifier cx = m.Local16("cx");
+            Identifier di = m.Declare(PrimitiveType.Word16, "di", m.Word16(0));
+            m.Label("lupe");
+            m.Store(m.SegMemW(ds, m.Add(di, 0x5388)), 0);
+            m.Assign(di, m.Add(di, 2));
+            m.Assign(cx, m.Sub(di, 1));
+            m.BranchIf(m.Ne(cx, 0), "lupe");
+            m.Return();
+
+            ProgramMock pm = new ProgramMock();
+            pm.Add(m);
+            Program prog = pm.BuildProgram();
+            prog.InductionVariables.Add(
+                di,
+                new LinearInductionVariable(
+                    m.Word16(0),
+                    m.Word16(2),
+                    null,
+                    false));
+                    
+            RunTest(prog, "Typing/TrcoOffsetInArrayLoop.txt");
+        }
+
         private TraitCollector CreateCollector()
         {
             return CreateCollector(CreateProgram());

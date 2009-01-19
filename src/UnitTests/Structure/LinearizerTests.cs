@@ -262,8 +262,8 @@ namespace Decompiler.UnitTests.Structure
 			Linearizer lin = new Linearizer(null, new BlockLinearizer(null));
 			Expression cond = MakeNeCompare(r, 0);
 			AbsynStatement stmThen = new AbsynIf(MakeNeCompare(r, 1),
-				new AbsynAssignment(x, Constant.Word32(-1)),
-				new AbsynAssignment(x, Constant.Word32(1)));
+				SingleStm(new AbsynAssignment(x, Constant.Word32(-1))),
+				SingleStm(new AbsynAssignment(x, Constant.Word32(1))));
 			AbsynStatementList stmsThen = new AbsynStatementList();
 			stmsThen.Add(stmThen);
 
@@ -273,6 +273,13 @@ namespace Decompiler.UnitTests.Structure
 
 			Assert.IsTrue(lin.ShouldSwap(cond, stmsThen, stmsElse));
 		}
+
+        private AbsynStatementList SingleStm(AbsynStatement stm)
+        {
+            AbsynStatementList list = new AbsynStatementList();
+            list.Add(stm);
+            return list;
+        }
 
 		private Expression MakeNeCompare(Identifier id, int val)
 		{

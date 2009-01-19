@@ -17,7 +17,6 @@
  */
 
 using System;
-using System.Collections;
 using System.IO;
 
 namespace Decompiler.Core.Types
@@ -121,6 +120,11 @@ namespace Decompiler.Core.Types
 		/// <summary>
 		/// The set of type variables that are members of this class.
 		/// </summary>
+        /// <remarks>
+        /// //$REVIEW: this is only used for printing the typestore, and is expensive to maintain;
+        /// it ruins the efficiency of the disjoint-set data structure. Consider moving this
+        /// to TypeStore.
+        /// </remarks>
 		public TypeVariableSet ClassMembers
 		{
 			get { return types; }

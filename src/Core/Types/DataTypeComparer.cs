@@ -17,7 +17,6 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -175,13 +174,13 @@ namespace Decompiler.Core.Types
 				return d;
 
 			++count;
-			IEnumerator ex = x.Fields.GetEnumerator();
-			IEnumerator ey = y.Fields.GetEnumerator();
+			IEnumerator<StructureField> ex = x.Fields.GetEnumerator();
+            IEnumerator<StructureField> ey = y.Fields.GetEnumerator();
 			while (ex.MoveNext())
 			{
 				ey.MoveNext();
-				StructureField fx = (StructureField) ex.Current;
-				StructureField fy = (StructureField) ey.Current;
+				StructureField fx = ex.Current;
+				StructureField fy = ey.Current;
 				d = fx.Offset - fy.Offset;
 				if (d != 0)
 					return d;

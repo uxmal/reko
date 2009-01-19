@@ -97,9 +97,6 @@
     <Compile Include="Absyn\AbsynBreak.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Absyn\AbsynCompoundStatement.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Absyn\AbsynContinue.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -491,6 +488,7 @@
     <Compile Include="Serialization\SerializedProcedure.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Serialization\SerializedProcedureBase.cs" />
     <Compile Include="Serialization\SerializedRegister.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -571,7 +569,6 @@
     <Compile Include="Types\TypeVariable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Types\TypeVariableCollection.cs" />
     <Compile Include="Types\TypeVarSet.cs">
       <SubType>Code</SubType>
     </Compile>

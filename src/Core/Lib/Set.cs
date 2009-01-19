@@ -19,7 +19,7 @@
 using System;
 using System.Collections;
 
-namespace System.Collections
+namespace Decompiler.Core.Lib
 {
 	/// <summary>
 	/// Represents a set of items.

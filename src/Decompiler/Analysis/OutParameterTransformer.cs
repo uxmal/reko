@@ -21,7 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
@@ -53,7 +53,7 @@ namespace Decompiler.Analysis
 			this.idOut = idOut;
 			wl = new WorkList<Identifier>();
 			wl.Add(id);
-			Hashtable visited = new Hashtable();
+			Dictionary<Statement,Statement> visited = new Dictionary<Statement,Statement>();
 
 			while (wl.GetWorkItem(out id))
 			{

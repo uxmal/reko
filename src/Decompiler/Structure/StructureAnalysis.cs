@@ -21,7 +21,6 @@ using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
 using System.Diagnostics;
 using System.IO;
 
@@ -87,7 +86,7 @@ namespace Decompiler.Structure
 			FindLoops();
 			Linearizer lin = new Linearizer(proc, new BlockLinearizer(null));
 			lin.ProcedureExit = proc.ExitBlock;
-			lin.Linearize(AllBlocks(proc), false).CopyTo(proc.Body);
+            proc.Body.AddRange(lin.Linearize(AllBlocks(proc), false));
 		}
 	}
 
