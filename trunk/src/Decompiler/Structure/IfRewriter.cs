@@ -21,6 +21,7 @@ using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Structure
@@ -35,7 +36,7 @@ namespace Decompiler.Structure
 		private Block head;						// the first of the blocks to linearize.
 		private Block continueTarget;			// this is where 'continue' statements go.
 		private Block breakTarget;				// this is where 'break' statements go.
-		private AbsynStatement linearized;
+		private List<AbsynStatement> linearized;
 
 		private DominatorGraph domGraph;
 
@@ -130,9 +131,9 @@ namespace Decompiler.Structure
 		/// </summary>
 		/// <param name="block"></param>
 		/// <returns></returns>
-        public AbsynStatementList ConvertBlock(Block block)
+        public List<AbsynStatement> ConvertBlock(Block block)
         {
-            AbsynStatementList list = new AbsynStatementList();
+            List<AbsynStatement> list = new List<AbsynStatement>();
             foreach (Statement stm in block.Statements)
             {
                 if (stm.Instruction is Branch)
@@ -278,9 +279,9 @@ namespace Decompiler.Structure
 
 		}
 
-        private AbsynStatementList SingleStm(AbsynStatement stm)
+        private List<AbsynStatement> SingleStm(AbsynStatement stm)
         {
-            AbsynStatementList list = new AbsynStatementList();
+            List<AbsynStatement> list = new List<AbsynStatement>();
             list.Add(stm);
             return list;
         }
@@ -320,10 +321,10 @@ namespace Decompiler.Structure
 		/// If there are any remaining branches, they are resolved as either 'break's, 'continue's,
 		/// 'return's or 'goto's.
 		/// <param name="blocks"></param>
-		private void Linearize(BitSet blocks)
+		private List<AbsynStatement> Linearize(BitSet blocks)
 		{
 			ConvertBranches(blocks);
-			AbsynStatementList stms = new AbsynStatementList();
+			List<AbsynStatement> stms = new List<AbsynStatement>();
 			for (int i = 0; i < proc.RpoBlocks.Count; ++i)
 			{
 				if (!blocks[i])
@@ -349,13 +350,10 @@ namespace Decompiler.Structure
 			}
 			if (stms.Count == 0)
 				throw new NotImplementedException("NYI");
-			if (stms.Count == 1)
-				linearized = stms[0];
-			else 
-				linearized = new AbsynCompoundStatement(stms);
+			return stms;
 		}
 
-		public AbsynStatement LinearizedStatement
+		public List<AbsynStatement> LinearizedStatements
 		{
 			get { return linearized; }
 		}
@@ -364,7 +362,7 @@ namespace Decompiler.Structure
 		{
 			DumpBlockSetIf(trace.TraceVerbose, "Linearizing", this.blocks);
 			FindIfs(this.blocks);
-			Linearize(this.blocks);
+			linearized = Linearize(this.blocks);
 		}
 	}
 }

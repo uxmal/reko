@@ -33,7 +33,7 @@ namespace Decompiler.Core
 	/// </summary>
 	public class Procedure : ProcedureBase
 	{
-		private AbsynStatementList body = new AbsynStatementList();
+		private List<AbsynStatement> body = new List<AbsynStatement>();
 		private List<Block> rpoBlocks;
 		private Block blockEntry;
 		private Block blockExit;
@@ -54,7 +54,7 @@ namespace Decompiler.Core
 			this.blockExit = new Block(this, Name + "_exit");		// Exit block.
 		}
 
-		public AbsynStatementList Body
+		public List<AbsynStatement> Body
 		{
 			get { return body; }
 		}

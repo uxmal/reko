@@ -76,7 +76,6 @@
     <Compile Include="Analysis\ValuePropagationTests.cs" />
     <Compile Include="Analysis\VariableLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
-    <Compile Include="Core\AbsynTests.cs" />
     <Compile Include="Core\AddressTests.cs" />
     <Compile Include="Core\ApplicationBuilderTests.cs" />
     <Compile Include="Core\BitSetTests.cs" />

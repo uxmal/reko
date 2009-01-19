@@ -27,7 +27,7 @@ using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Structure
 {
@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Structure
 			Linearizer lin = new Linearizer(proc, new BlockLinearizer(null));
 			Assert.AreEqual(1, proc.RpoBlocks[2].Succ.Count);
 			Block.RemoveEdge(proc.RpoBlocks[1], proc.RpoBlocks[2]);
-			AbsynStatementList stms = lin.LinearizeStraightPath(proc.RpoBlocks[2], proc.RpoBlocks[3]);
+			List<AbsynStatement> stms = lin.LinearizeStraightPath(proc.RpoBlocks[2], proc.RpoBlocks[3]);
 			Assert.AreEqual(1, stms.Count);			// There is only one statement in the block.
 		}
 
@@ -149,7 +149,7 @@ namespace Decompiler.UnitTests.Structure
 			Block p = lin.PreferredUnstructuredExit(t.Current, e.Current);
 			Assert.AreEqual("done", p.Name);
 
-			AbsynStatementList stms = lin.Linearize(blocks, true);
+			List<AbsynStatement> stms = lin.Linearize(blocks, true);
 			Assert.AreEqual(6, stms.Count);
 			AbsynIf ifStm = stms[4] as AbsynIf;
 			Assert.IsNotNull(ifStm);
@@ -204,7 +204,7 @@ namespace Decompiler.UnitTests.Structure
 			BitSet blocks = proc.CreateBlocksBitset();
 			blocks.SetAll(true);
 
-			AbsynStatementList stms = lin.Linearize(blocks, true);
+			List<AbsynStatement> stms = lin.Linearize(blocks, true);
 			using (FileUnitTester fut = new FileUnitTester("Structure/LinSnarl.txt"))
 			{
 				CodeFormatter cf = new CodeFormatter(fut.TextWriter);
@@ -230,7 +230,7 @@ namespace Decompiler.UnitTests.Structure
 			blocks[8] = true;
 			Block.RemoveEdge(proc.RpoBlocks[2], proc.RpoBlocks[5]);
 
-			AbsynStatementList stms = lin.Linearize(blocks, true);
+			List<AbsynStatement> stms = lin.Linearize(blocks, true);
 			using (FileUnitTester fut = new FileUnitTester("Structure/LinWhileFork.txt"))
 			{
 				CodeFormatter cf = new CodeFormatter(fut.TextWriter);
@@ -247,7 +247,7 @@ namespace Decompiler.UnitTests.Structure
 			Linearizer lin = new Linearizer(proc, new BlockLinearizer(null));
 			BitSet region = proc.CreateBlocksBitset();
 			region[2] = true;
-			AbsynStatementList stms = lin.BuildStatementList(region, false);
+			List<AbsynStatement> stms = lin.BuildStatementList(region, false);
 			Assert.AreEqual(1, stms.Count);
 			AbsynAssignment ass = (AbsynAssignment) stms[0];
 			BinaryExpression b = (BinaryExpression) ass.Src;
@@ -264,19 +264,19 @@ namespace Decompiler.UnitTests.Structure
 			AbsynStatement stmThen = new AbsynIf(MakeNeCompare(r, 1),
 				SingleStm(new AbsynAssignment(x, Constant.Word32(-1))),
 				SingleStm(new AbsynAssignment(x, Constant.Word32(1))));
-			AbsynStatementList stmsThen = new AbsynStatementList();
+			List<AbsynStatement> stmsThen = new List<AbsynStatement>();
 			stmsThen.Add(stmThen);
 
 			AbsynStatement stmElse = new AbsynAssignment(x, Constant.Word32(0));
-			AbsynStatementList stmsElse = new AbsynStatementList();
+			List<AbsynStatement> stmsElse = new List<AbsynStatement>();
 			stmsElse.Add(stmElse);
 
 			Assert.IsTrue(lin.ShouldSwap(cond, stmsThen, stmsElse));
 		}
 
-        private AbsynStatementList SingleStm(AbsynStatement stm)
+        private List<AbsynStatement> SingleStm(AbsynStatement stm)
         {
-            AbsynStatementList list = new AbsynStatementList();
+            List<AbsynStatement> list = new List<AbsynStatement>();
             list.Add(stm);
             return list;
         }

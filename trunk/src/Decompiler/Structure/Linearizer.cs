@@ -49,7 +49,7 @@ namespace Decompiler.Structure
 			get { return proc.RpoBlocks; }
 		}
 
-        public AbsynIf BuildIfStatement(Expression cond, AbsynStatementList stmsThen, AbsynStatementList stmsElse)
+        public AbsynIf BuildIfStatement(Expression cond, List<AbsynStatement> stmsThen, List<AbsynStatement> stmsElse)
         {
             if (stmsThen == null || stmsThen.Count == 0)
             {
@@ -75,7 +75,7 @@ namespace Decompiler.Structure
 		/// <param name="blockSet">Only blocks in this bitset are examined for if-ness.</param>
 		public void BuildIfStatements(BitSet blockSet)
 		{
-			AbsynStatementList stms = new AbsynStatementList();
+			List<AbsynStatement> stms = new List<AbsynStatement>();
 			foreach (int b in blockSet.Reverse)
 			{
 				Block block = Blocks[b];
@@ -91,8 +91,8 @@ namespace Decompiler.Structure
 					{
 						Block.RemoveEdge(block, th);
 						Block.RemoveEdge(block, el);
-						AbsynStatementList stmsThen = LinearizeStraightPath(th, join);
-						AbsynStatementList stmsElse = LinearizeStraightPath(el, join);
+						List<AbsynStatement> stmsThen = LinearizeStraightPath(th, join);
+						List<AbsynStatement> stmsElse = LinearizeStraightPath(el, join);
 						block.Statements.Last.Instruction = 
 							BuildIfStatement(branch.Condition, stmsThen, stmsElse);
 						Block.AddEdge(block, join);
@@ -103,7 +103,7 @@ namespace Decompiler.Structure
 						if (p == t.Current)
 						{
 							Block.RemoveEdge(block, th);
-							AbsynStatementList stmsThen = LinearizeStraightPath(th, t.Current);
+							List<AbsynStatement> stmsThen = LinearizeStraightPath(th, t.Current);
 							stmsThen.Add(blin.MakeGoto(t.Current));
 							block.Statements.Last.Instruction = 
 								BuildIfStatement(branch.Condition, stmsThen, null);
@@ -111,7 +111,7 @@ namespace Decompiler.Structure
 						else if (p == e.Current)
 						{
 							Block.RemoveEdge(block, el);
-							AbsynStatementList stmsElse = LinearizeStraightPath(el, e.Current);
+							List<AbsynStatement> stmsElse = LinearizeStraightPath(el, e.Current);
 							stmsElse.Add(blin.MakeGoto(e.Current));
 							block.Statements.Last.Instruction =
 								BuildIfStatement(branch.Condition.Invert(), stmsElse, null);
@@ -120,8 +120,8 @@ namespace Decompiler.Structure
 						{
 							Block.RemoveEdge(block, th);
 							Block.RemoveEdge(block, el);
-							AbsynStatementList stmsThen = LinearizeStraightPath(th, join);
-							AbsynStatementList stmsElse = LinearizeStraightPath(el, join);
+							List<AbsynStatement> stmsThen = LinearizeStraightPath(th, join);
+							List<AbsynStatement> stmsElse = LinearizeStraightPath(el, join);
 							block.Statements.Last.Instruction = 
 								BuildIfStatement(branch.Condition, stmsThen, stmsElse);
 
@@ -140,13 +140,13 @@ namespace Decompiler.Structure
 			}
 		}
 		
-		public AbsynStatementList BuildStatementList(BitSet region, bool fConvertInEdges)
+		public List<AbsynStatement> BuildStatementList(BitSet region, bool fConvertInEdges)
 		{
 			// At this point, there are no more branches left in the block set.
 			// So, we concatenate the blocks in the region, starting with the first block 
 			// in RP order.
 
-			AbsynStatementList stms = new AbsynStatementList();
+			List<AbsynStatement> stms = new List<AbsynStatement>();
 			foreach (int b in region)
 			{
 				Block block = Blocks[b];
@@ -219,7 +219,7 @@ namespace Decompiler.Structure
 			return blockSet[block.RpoNumber];
 		}
 
-		public AbsynStatementList Linearize(BitSet region, bool fConvertInEdges)
+		public List<AbsynStatement> Linearize(BitSet region, bool fConvertInEdges)
 		{
 			BuildIfStatements(region);
 
@@ -230,9 +230,9 @@ namespace Decompiler.Structure
 			return BuildStatementList(region, fConvertInEdges);
 		}
 		
-		public AbsynStatementList LinearizeStraightPath(Block from, Block to)
+		public List<AbsynStatement> LinearizeStraightPath(Block from, Block to)
 		{
-			AbsynStatementList stms = new AbsynStatementList();
+			List<AbsynStatement> stms = new List<AbsynStatement>();
 			while (from != to)
 			{
 				blin.ConvertBlock(from, stms);	
@@ -285,7 +285,7 @@ namespace Decompiler.Structure
 			set { procedureExit = value; }
 		}
 
-		public bool ShouldSwap(Expression cond, AbsynStatementList stmsThen, AbsynStatementList stmsElse)
+		public bool ShouldSwap(Expression cond, List<AbsynStatement> stmsThen, List<AbsynStatement> stmsElse)
 		{
 			BinaryExpression b = cond as BinaryExpression;
 			if (b == null)

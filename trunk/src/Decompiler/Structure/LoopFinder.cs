@@ -238,9 +238,9 @@ namespace Decompiler.Structure
 
 
         //$REVIEW: this occurs in many places, put it in common place.
-        private AbsynStatementList SingleStm(AbsynStatement stm)
+        private List<AbsynStatement> SingleStm(AbsynStatement stm)
         {
-            AbsynStatementList list = new AbsynStatementList();
+            List<AbsynStatement> list = new List<AbsynStatement>();
             list.Add(stm);
             return list;
         }
