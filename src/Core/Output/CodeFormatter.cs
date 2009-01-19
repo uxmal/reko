@@ -454,23 +454,6 @@ namespace Decompiler.Core.Output
 			Terminate(";");
 		}
 
-		public void VisitCompoundStatement(AbsynCompoundStatement compound)
-		{
-			Indentation -= TabSize;
-			Indent();
-			Write("{");
-			Terminate();
-			Indentation += TabSize;
-
-			WriteStatementList(compound.Statements);
-
-			Indentation -= TabSize;
-			Indent();
-			Write("}");
-			Terminate();
-			Indentation += TabSize;
-		}
-
 		public void VisitContinue(AbsynContinue cont)
 		{
 			WriteKeyword("continue");
@@ -556,7 +539,7 @@ namespace Decompiler.Core.Output
 			}
 		}
 
-        private bool IsSingleIfStatement(AbsynStatementList stms, out AbsynIf elseIf)
+        private bool IsSingleIfStatement(List<AbsynStatement> stms, out AbsynIf elseIf)
         {
             elseIf = null;
             if (stms.Count != 1)
@@ -711,7 +694,7 @@ namespace Decompiler.Core.Output
 			Indentation -= TabSize;
 		}
 
-        public void WriteIndentedStatements(AbsynStatementList stms)
+        public void WriteIndentedStatements(List<AbsynStatement> stms)
         {
             if (stms.Count == 0)
             {
@@ -740,7 +723,7 @@ namespace Decompiler.Core.Output
 
         }
 
-		public void WriteStatementList(AbsynStatementList list)
+		public void WriteStatementList(List<AbsynStatement> list)
 		{
 			foreach (AbsynStatement s in list)
 			{

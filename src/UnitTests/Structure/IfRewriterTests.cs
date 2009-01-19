@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Structure
 						ifr.Transform();
 						fut.TextWriter.WriteLine("{0}()", proc.Name);
 						CodeFormatter fmt = new CodeFormatter(fut.TextWriter);
-						ifr.LinearizedStatement.Accept(fmt);
+                        fmt.WriteIndentedStatements(ifr.LinearizedStatements);
 					}
 					fut.TextWriter.WriteLine("===========");
 

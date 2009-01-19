@@ -18,6 +18,7 @@
 
 using Decompiler.Core.Code;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Absyn
 {
@@ -27,8 +28,8 @@ namespace Decompiler.Core.Absyn
 	public class AbsynIf : AbsynStatement
 	{
         private Expression condition;
-        private AbsynStatementList then;
-        private AbsynStatementList @else;
+        private List<AbsynStatement> then;
+        private List<AbsynStatement> @else;
 
         public Expression Condition
         {
@@ -36,21 +37,21 @@ namespace Decompiler.Core.Absyn
             set { condition = value; }
         }
 
-        public AbsynStatementList Then
+        public List<AbsynStatement> Then
         {
             get { return then; }
         }
 
-        public AbsynStatementList Else
+        public List<AbsynStatement> Else
         {
             get { return @else; }
         }
 
-        public AbsynIf(Expression e, AbsynStatementList then) : this(e, then, null)
+        public AbsynIf(Expression e, List<AbsynStatement> then) : this(e, then, null)
 		{
 		}
 
-		public AbsynIf(Expression e, AbsynStatementList then, AbsynStatementList els)
+		public AbsynIf(Expression e, List<AbsynStatement> then, List<AbsynStatement> els)
 		{
 			this.Condition = e;
 			this.then = then;
@@ -64,7 +65,7 @@ namespace Decompiler.Core.Absyn
 
         public void InvertCondition()
         {
-            AbsynStatementList t = then;
+            List<AbsynStatement> t = then;
             then = @else;
             @else = t;
             Condition = Condition.Invert();

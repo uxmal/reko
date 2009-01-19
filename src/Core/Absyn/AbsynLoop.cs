@@ -18,6 +18,7 @@
 
 using Decompiler.Core.Code;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Absyn
 {
@@ -27,18 +28,17 @@ namespace Decompiler.Core.Absyn
 	public abstract class AbsynLoop : AbsynStatement
 	{
 		private Expression condition;
-		private AbsynStatementList body;
+		private List<AbsynStatement> body;
 
-		protected AbsynLoop(Expression condition, AbsynStatementList body)
+		protected AbsynLoop(Expression condition, List<AbsynStatement> body)
 		{
 			this.condition = condition;
 			this.body = body;
 		}
 
-		public AbsynStatementList Body
+		public List<AbsynStatement> Body
 		{
 			get { return body; }
-			set { body = value; }
 		}
 
 		public Expression Condition

@@ -18,6 +18,7 @@
 
 using Decompiler.Core.Code;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Absyn
 {
@@ -27,7 +28,7 @@ namespace Decompiler.Core.Absyn
 	public class AbsynWhile : AbsynLoop
 	{
 
-		public AbsynWhile(Expression condition, AbsynStatementList body) : base(condition, body)
+		public AbsynWhile(Expression condition, List<AbsynStatement> body) : base(condition, body)
 		{
 		}
 

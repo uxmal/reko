@@ -24,6 +24,7 @@ using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Structure
 {
@@ -86,10 +87,10 @@ namespace Decompiler.UnitTests.Structure
 			BlockLinearizer blin = new BlockLinearizer(null);
 			Block block = proc.RpoBlocks[1];
 			Block.RemoveEdge(proc.RpoBlocks[0], proc.RpoBlocks[1]);
-			AbsynCompoundStatement stms = (AbsynCompoundStatement) blin.ConvertBlock(block);
-			Assert.AreEqual(2, stms.Statements.Count);
-			Assert.IsNotNull((AbsynAssignment) stms.Statements[0]);
-			Assert.IsNotNull((AbsynReturn) stms.Statements[1]);
+			List<AbsynStatement> stms = blin.ConvertBlock(block);
+			Assert.AreEqual(2, stms.Count);
+			Assert.IsNotNull((AbsynAssignment) stms[0]);
+			Assert.IsNotNull((AbsynReturn) stms[1]);
 		}
 
 

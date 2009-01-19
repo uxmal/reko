@@ -27,7 +27,6 @@ namespace Decompiler.Core.Absyn
 	{
 		void VisitAssignment(AbsynAssignment expr);
 		void VisitBreak(AbsynBreak brk);
-		void VisitCompoundStatement(AbsynCompoundStatement compound);
 		void VisitContinue(AbsynContinue cont);
 		void VisitDeclaration(AbsynDeclaration decl);
 		void VisitDoWhile(AbsynDoWhile loop);

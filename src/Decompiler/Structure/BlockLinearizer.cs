@@ -48,19 +48,19 @@ namespace Decompiler.Structure
 			return null;
 		}
 
-		public AbsynStatement ConvertBlock(Block b)
+		public List<AbsynStatement> ConvertBlock(Block b)
 		{
-			AbsynStatementList stms = new AbsynStatementList();
+			List<AbsynStatement> stms = new List<AbsynStatement>();
 			ConvertBlock(b, stms);
-			return stms.MakeAbsynStatement();
+			return stms;
 		}
 
-		public void ConvertBlock(Block b,  AbsynStatementList stms)
+		public void ConvertBlock(Block b,  List<AbsynStatement> stms)
 		{
 			ConvertBlock(b, true, stms);
 		}
 
-		public void ConvertBlock(Block b, bool fConvertInEdges, AbsynStatementList stms)
+		public void ConvertBlock(Block b, bool fConvertInEdges, List<AbsynStatement> stms)
 		{
 			if (fConvertInEdges)
 				ConvertInboundEdgesToGotos(b);
@@ -223,11 +223,6 @@ namespace Decompiler.Structure
 			abs = brk;
 		}
 
-		public void VisitCompoundStatement(AbsynCompoundStatement compound)
-		{
-			abs = compound;
-		}
-
 		public void VisitContinue(AbsynContinue cont)
 		{
 			abs = cont;
@@ -276,9 +271,9 @@ namespace Decompiler.Structure
 		#endregion
 
         //$REVIEW: this occurs in many places, put it in common place.
-        private AbsynStatementList SingleStm(AbsynStatement stm)
+        private List<AbsynStatement> SingleStm(AbsynStatement stm)
         {
-            AbsynStatementList list = new AbsynStatementList();
+            List<AbsynStatement> list = new List<AbsynStatement>();
             list.Add(stm);
             return list;
         }
