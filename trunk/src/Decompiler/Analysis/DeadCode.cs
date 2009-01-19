@@ -19,7 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Analysis
@@ -81,7 +81,7 @@ namespace Decompiler.Analysis
 		private void Eliminate()
 		{
 			liveIds = new WorkList<SsaIdentifier>();
-			Hashtable marks = new Hashtable();
+			Dictionary<Statement,Statement> marks = new Dictionary<Statement, Statement>();
 
 			// Initially, just mark those statements that contain critical statements.
 			// These are calls to other functions, functions (which have side effects) and use statements.
@@ -108,7 +108,7 @@ namespace Decompiler.Analysis
 				Statement def = sid.DefStatement;
 				if (def != null)
 				{
-					if (!marks.Contains(def))
+					if (!marks.ContainsKey(def))
 					{
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("Marked: {0}", def.Instruction));
 						marks[sid.DefStatement] = def;
@@ -125,7 +125,7 @@ namespace Decompiler.Analysis
 				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
 				{
 					Statement stm = b.Statements[iStm];
-					if (!marks.Contains(stm))
+					if (!marks.ContainsKey(stm))
 					{
 						if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Deleting: {0}", stm.Instruction));
 						ssa.DeleteStatement(stm);

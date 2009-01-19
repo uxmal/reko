@@ -83,17 +83,17 @@ namespace Decompiler.Structure
 					AbsynIf ifs;
 					if (pThen == b)
 					{
-						ifs = new AbsynIf(branch.Condition, tgt);
+						ifs = new AbsynIf(branch.Condition, SingleStm(tgt));
 					}
 					else
 					{
-						ifs = new AbsynIf(branch.Condition.Invert(), tgt);
+						ifs = new AbsynIf(branch.Condition.Invert(), SingleStm(tgt));
 					}
 					p.Statements.Last.Instruction = ifs;
 				}
 				else
 				{
-					p.Statements.Add(tgt);
+                    p.Statements.Add(tgt);
 				}
 				Block.RemoveEdge(p, b);
 			}
@@ -142,8 +142,8 @@ namespace Decompiler.Structure
 		{
 			if (block == breakTarget)
 				return new AbsynBreak();
-			else 
-				return new AbsynGoto(EnsureLabel(block).Name);
+			else
+                return new AbsynGoto(EnsureLabel(block).Name);
 		}
 
 
@@ -274,5 +274,14 @@ namespace Decompiler.Structure
 		}
 
 		#endregion
+
+        //$REVIEW: this occurs in many places, put it in common place.
+        private AbsynStatementList SingleStm(AbsynStatement stm)
+        {
+            AbsynStatementList list = new AbsynStatementList();
+            list.Add(stm);
+            return list;
+        }
+
 	}
 }

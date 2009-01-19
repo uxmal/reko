@@ -18,17 +18,18 @@
 
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+
 namespace Decompiler.Analysis
 {
 	public class InterferenceGraph
 	{
-		private Hashtable intf;
+        private Dictionary<Interference, Interference> intf;
 
 		public InterferenceGraph()
 		{
-			intf = new Hashtable();
+            intf = new Dictionary<Interference, Interference>();
 		}
 
 		public void Add(Identifier id1, Identifier id2)
@@ -36,7 +37,7 @@ namespace Decompiler.Analysis
 			if (id1 != id2)
 			{
 				Interference i = new Interference(id1, id2);
-				if (!intf.Contains(i))
+				if (!intf.ContainsKey(i))
 					intf.Add(i, i);
 			}
 		}
@@ -44,12 +45,12 @@ namespace Decompiler.Analysis
 		public bool Interfere(Identifier id1, Identifier id2)
 		{
 			Interference i = new Interference(id1, id2);
-			return intf.Contains(i);
+			return intf.ContainsKey(i);
 		}
 
 		public void Write(TextWriter sb)
 		{
-			SortedList sl = new SortedList(intf);
+			SortedList<Interference,Interference> sl = new SortedList<Interference,Interference>(intf);
 			foreach (Interference i in sl.Values)
 			{
 				sb.WriteLine("{0} interferes with {1}", i.Identifier1, i.Identifier2);

@@ -20,7 +20,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Core
 {
@@ -80,12 +80,10 @@ namespace Decompiler.UnitTests.Core
 				IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 				SignatureLibrary user32 = new SignatureLibrary(arch);
 				user32.Load(FileUnitTester.MapTestPath("../arch/intel/Win32/user32.xml"));
-				SortedList sigs = new SortedList(user32.Signatures);
-				foreach (DictionaryEntry de in sigs)
+				SortedList<string,ProcedureSignature> sigs = new SortedList<string,ProcedureSignature>(user32.Signatures);
+				foreach (KeyValuePair<string,ProcedureSignature> de in sigs)
 				{
-					string name = (string) de.Key;
-					ProcedureSignature sig = (ProcedureSignature) de.Value;
-					sig.Emit(name, ProcedureSignature.EmitFlags.ArgumentKind|ProcedureSignature.EmitFlags.LowLevelInfo, fut.TextWriter);
+					de.Value.Emit(de.Key, ProcedureSignature.EmitFlags.ArgumentKind|ProcedureSignature.EmitFlags.LowLevelInfo, fut.TextWriter);
 				}
 				fut.AssertFilesEqual();
 			}

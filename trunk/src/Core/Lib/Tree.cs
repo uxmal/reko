@@ -20,7 +20,7 @@ using System;
 using System.Diagnostics;
 using System.Collections;
 
-namespace System.Collections
+namespace Decompiler.Core.Lib
 {
 	public class Tree
 	{

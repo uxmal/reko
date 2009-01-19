@@ -18,7 +18,6 @@
 
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
 
 namespace Decompiler.Core
 {

@@ -20,7 +20,7 @@ using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 
@@ -33,7 +33,8 @@ namespace Decompiler.Core.Output
 	{
 		private int precedenceCur = PrecedenceLeast;
 
-		private static Hashtable precedences;
+        //$TODO: move this to a language-specific class.
+		private static Dictionary<Operator,int> precedences;
 
 		private const int PrecedenceApplication = 1;
 		private const int PrecedenceArrayAccess = 1;
@@ -49,7 +50,7 @@ namespace Decompiler.Core.Output
 
 		static CodeFormatter()
 		{
-			precedences = new Hashtable();
+            precedences = new Dictionary<Operator, int>();
 			precedences[Operator.not] = 2;			//$REFACTOR: precedence is a property of the output language; these are the C/C++ precedences
 			precedences[Operator.neg] = 2;			
 			precedences[Operator.comp] = 2;
@@ -503,7 +504,7 @@ namespace Decompiler.Core.Output
 			Indent();
 			WriteKeyword("do");
 			Terminate();
-			WriteIndentedStatement(loop.Body);
+			WriteIndentedStatements(loop.Body);
 			
 			Indent();
 			WriteKeyword("while");
@@ -535,14 +536,14 @@ namespace Decompiler.Core.Output
 			Write(")");
 			Terminate();
 
-			WriteIndentedStatement(ifs.Then);
+			WriteIndentedStatements(ifs.Then);
 
-			if (ifs.Else != null)
+			if (ifs.Else != null && ifs.Else.Count > 0)
 			{
 				Indent();
 				WriteKeyword("else");
-				AbsynIf elseIf = ifs.Else as AbsynIf;
-				if (elseIf != null)
+                AbsynIf elseIf;
+                if (IsSingleIfStatement(ifs.Else, out elseIf))
 				{
 					Write(" ");
 					WriteIf(elseIf);
@@ -550,10 +551,19 @@ namespace Decompiler.Core.Output
 				else
 				{
 					Terminate();
-					WriteIndentedStatement(ifs.Else);
+					WriteIndentedStatements(ifs.Else);
 				}
 			}
 		}
+
+        private bool IsSingleIfStatement(AbsynStatementList stms, out AbsynIf elseIf)
+        {
+            elseIf = null;
+            if (stms.Count != 1)
+                return false;
+            elseIf = stms[0] as AbsynIf;
+            return elseIf != null;
+        }
 
 		public void VisitLabel(AbsynLabel lbl)
 		{
@@ -588,7 +598,7 @@ namespace Decompiler.Core.Output
 			WriteExpression(loop.Condition);
 			Terminate(")");
 
-			WriteIndentedStatement(loop.Body);
+			WriteIndentedStatements(loop.Body);
 		}
 
 		#endregion
@@ -701,6 +711,34 @@ namespace Decompiler.Core.Output
 			Indentation -= TabSize;
 		}
 
+        public void WriteIndentedStatements(AbsynStatementList stms)
+        {
+            if (stms.Count == 0)
+            {
+                Indentation += TabSize;
+                Indent();
+                Terminate(";");
+                Indentation -= TabSize;
+            }
+            else
+            {
+                Indent();
+                Write("{");
+                Terminate();
+
+                Indentation += TabSize;
+                foreach (AbsynStatement stm in stms)
+                {
+                    stm.Accept(this);
+                }
+                Indentation -= TabSize;
+
+                Indent();
+                Write("}");
+                Terminate();
+            }
+
+        }
 
 		public void WriteStatementList(AbsynStatementList list)
 		{

@@ -19,7 +19,6 @@
 using Decompiler.Core;
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -45,7 +44,7 @@ namespace Decompiler.Structure
             intervals = new IntervalCollection(blocks.Count);
             intervalOf = new Interval[blocks.Count];
 
-            Hashtable processed = new Hashtable();
+            Dictionary<Block, Block> processed = new Dictionary<Block, Block>();
             WorkList<Block> wlIntHeaders = new WorkList<Block>();		// Possible interval headers
             WorkList<Block> wlIntMembers = new WorkList<Block>();		// Known interval members.
             int[] linksFollowed = new int[blocks.Count];

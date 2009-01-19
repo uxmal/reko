@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Serialization;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -29,7 +29,7 @@ namespace Decompiler.Core
 	{
 		private IProcessorArchitecture arch;
 		private bool caseInsensitive;
-		private Hashtable hash;
+		private Dictionary<string,ProcedureSignature> hash;
 
 		private string defaultConvention;
 
@@ -38,21 +38,22 @@ namespace Decompiler.Core
 			this.arch = arch; 
 		}
 
-		public void Write(TextWriter tw)
+		public void Write(TextWriter writer)
 		{
-			SortedList sl = new SortedList(hash, new Comparer(System.Globalization.CultureInfo.InvariantCulture));
-			foreach (DictionaryEntry de in sl)
+            SortedList<string, ProcedureSignature> sl = new SortedList<string, ProcedureSignature>(
+                hash,
+                StringComparer.InvariantCulture);
+			foreach (KeyValuePair<string,ProcedureSignature> de in sl)
 			{
 				string name = (string) de.Key;
-				ProcedureSignature sig = (ProcedureSignature) de.Value;
-				sig.Emit(name, ProcedureSignature.EmitFlags.ArgumentKind, tw);
-				tw.WriteLine();
+				de.Value.Emit(de.Key, ProcedureSignature.EmitFlags.ArgumentKind, writer);
+				writer.WriteLine();
 			}
 		}
 
 		public void Load(string s)
 		{
-			hash = new Hashtable();
+            hash = new Dictionary<string, ProcedureSignature>();
 			XmlSerializer ser = new XmlSerializer(typeof (SerializedLibrary));
 			SerializedLibrary slib;
 			using (FileStream stm = new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -87,13 +88,13 @@ namespace Decompiler.Core
 		{
 			if (caseInsensitive)
 				procedureName = procedureName.ToUpper();
-			ProcedureSignature sig = (ProcedureSignature) hash[procedureName];
-			if (sig == null)
-				throw new ArgumentException(string.Format("The imported function '{0}' was not found", procedureName));
+			ProcedureSignature sig;
+            if (!hash.TryGetValue(procedureName, out sig))
+				throw new ArgumentException(string.Format("The imported function '{0}' was not found.", procedureName));
 			return sig;
 		}
 
-		public IDictionary Signatures
+		public IDictionary<string,ProcedureSignature> Signatures
 		{
 			get { return hash; }
 		}

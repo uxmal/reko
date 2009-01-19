@@ -49,35 +49,20 @@ namespace Decompiler.Structure
 			get { return proc.RpoBlocks; }
 		}
 
-		public AbsynIf BuildIfStatement(Expression cond, AbsynStatementList stmsThen, AbsynStatementList stmsElse)
-		{
-			AbsynStatement stmThen = null;
-			AbsynStatement stmElse = null;
-			if (stmsThen == null || stmsThen.Count == 0)
-			{
-				stmThen = stmsElse.MakeAbsynStatement();
-				cond = cond.Invert();
-			}
-			else if (stmsElse == null || stmsElse.Count == 0)
-			{
-				stmThen = stmsThen.MakeAbsynStatement();
-			}
-			else
-			{
-				if (ShouldSwap(cond, stmsThen, stmsElse))
-				{
-					cond = cond.Invert();
-					stmThen = stmsElse.MakeAbsynStatement();
-					stmElse = stmsThen.MakeAbsynStatement();
-				}
-				else
-				{
-					stmThen = stmsThen.MakeAbsynStatement();
-					stmElse = stmsElse.MakeAbsynStatement();
-				}
-			}
-			return new AbsynIf(cond, stmThen, stmElse);
-		}
+        public AbsynIf BuildIfStatement(Expression cond, AbsynStatementList stmsThen, AbsynStatementList stmsElse)
+        {
+            if (stmsThen == null || stmsThen.Count == 0)
+            {
+                stmsThen = stmsElse;
+                cond = cond.Invert();
+            }
+            AbsynIf aIf = new AbsynIf(cond, stmsThen, stmsElse);
+            if (ShouldSwap(cond, stmsThen, stmsElse))
+            {
+                aIf.InvertCondition();
+            }
+            return aIf;
+        }
 
 		/// <summary>
 		/// Finds all structured if-statements in a set of blocks and replaces them with if-statements.
@@ -333,10 +318,7 @@ namespace Decompiler.Structure
 		//$REVIEW: need a pass that finds 'ifthenelseifs' and makes them into switch statements.
 		public void SwapIf(AbsynIf stm)
 		{
-			AbsynStatement t = stm.Then;
-			stm.Then = stm.Else;
-			stm.Else = t;
-			stm.Condition = stm.Condition.Invert();
+            stm.InvertCondition();
 		}
 	}
 }

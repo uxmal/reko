@@ -26,7 +26,7 @@ namespace Decompiler.Core.Absyn
 	/// </summary>
 	public class AbsynDoWhile : AbsynLoop
 	{
-		public AbsynDoWhile(AbsynStatement body, Expression condition) : base(condition, body)
+		public AbsynDoWhile(AbsynStatementList body, Expression condition) : base(condition, body)
 		{
 			if (body == null)
 				throw new ArgumentNullException("body", "Body of do-while mustn't be null");

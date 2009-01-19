@@ -20,20 +20,22 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
 	/// <summary>
-	/// Looks at member pointer uses, to see if they always are associated with the same pointer. 
+	/// Looks at member pointer uses, to see if they always are associated with the same base pointer / segment.
+    /// If so, they can be treated as a pointer.
 	/// </summary>
 	public class SegmentedAccessClassifier : InstructionVisitorBase	
 	{
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
-		private Hashtable assocs;
-		private Hashtable consts;
-		private object overAssociated = new object();
+		private Dictionary<Identifier,Identifier> assocs;
+		private Dictionary<Identifier,Constant> consts;
+		private Identifier overAssociatedId = new Identifier("overAssociated", -1, null, null);
+        private Constant overAssociatedConst = new Constant(0.0);
 
 		private int sequencePoint;
 
@@ -41,8 +43,8 @@ namespace Decompiler.Analysis
 		{
 			this.proc = proc;
 			this.ssaIds = ssaIds;
-			assocs = new Hashtable();
-			consts = new Hashtable();
+			assocs = new Dictionary<Identifier,Identifier>();
+            consts = new Dictionary<Identifier, Constant>();
 		}
 
 		/// <summary>
@@ -52,28 +54,28 @@ namespace Decompiler.Analysis
 		/// <param name="membPtr"></param>
 		public void Associate(Identifier basePtr, Identifier membPtr)
 		{
-			if (consts.Contains(basePtr))
+			if (consts.ContainsKey(basePtr))
 			{
-				assocs[basePtr] = overAssociated;
-				consts[basePtr] = overAssociated;
+				assocs[basePtr] = overAssociatedId;
+                consts[basePtr] = overAssociatedConst;
 				return;
 			}
 			
-			object a = assocs[basePtr];
-			if (a == null)
-				assocs[basePtr] = membPtr;
-			else if (a != membPtr)
-				assocs[basePtr] = overAssociated;
-			else
-				assocs[basePtr] = membPtr;
+			Identifier a;
+            if (!assocs.TryGetValue(basePtr, out a))
+                assocs[basePtr] = membPtr;
+            else if (a != membPtr)
+                assocs[basePtr] = overAssociatedId;
+            else
+                assocs[basePtr] = membPtr;
 		}
 
 		public void Associate(Identifier basePtr, Constant memberPtr)
 		{
-			if (assocs.Contains(basePtr))
+			if (assocs.ContainsKey(basePtr))
 			{
-				assocs[basePtr] = overAssociated;
-				consts[basePtr] = overAssociated;
+				assocs[basePtr] = overAssociatedId;
+                consts[basePtr] = overAssociatedConst;
 				return;
 			}
 			consts[basePtr] = memberPtr;
@@ -81,7 +83,15 @@ namespace Decompiler.Analysis
 
 		public Identifier AssociatedIdentifier(Identifier pointer)
 		{
-			return assocs[pointer] as Identifier;
+            Identifier id;
+            if (assocs.TryGetValue(pointer, out id))
+            {
+                return (id != overAssociatedId) ? id : null;
+            }
+            else
+            {
+                return null;
+            }
 		}
 
 		public void Classify()
@@ -99,7 +109,8 @@ namespace Decompiler.Analysis
 
 		public bool IsOnlyAssociatedWithConstants(Identifier pointer)
 		{
-			return (consts[pointer] as Constant) != null;
+            Constant c;
+            return (consts.TryGetValue(pointer, out c) &&  c != overAssociatedConst);
 		}
 
 

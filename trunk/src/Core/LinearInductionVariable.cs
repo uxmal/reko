@@ -28,18 +28,34 @@ namespace Decompiler.Core
 	/// </summary>
 	public class LinearInductionVariable
 	{
-		public readonly Constant Initial;		// First value used by induction variable 
-		public readonly Constant Delta;			// Amount incremented or decremented per interation
-		public readonly Constant Final;			// Value not attained by loop since it terminated.
+        private readonly Constant initial;		// First value used by induction variable 
+        private readonly Constant delta;			// Amount incremented or decremented per interation
+        private readonly Constant final;			// Value not attained by loop since it terminated.
         private bool isSigned;
 
 		public LinearInductionVariable(Constant initial, Constant delta, Constant final, bool isSigned)
 		{
-			this.Initial = initial;
-			this.Delta = delta;
-			this.Final = final;
+			this.initial = initial;
+			this.delta = delta;
+			this.final = final;
             this.isSigned = isSigned;
 		}
+
+        public Constant Initial
+        {
+            get { return initial; }
+        }
+
+        public Constant Delta
+        {
+            get { return delta; }
+        }
+
+
+        public Constant Final
+        {
+            get { return final; }
+        } 
 
 		public static int Gcd(int a, int b)
 		{

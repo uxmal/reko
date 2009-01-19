@@ -241,52 +241,50 @@ namespace Decompiler.Analysis
 
 		public Constant FindLinearIncrement(ICollection<SsaIdentifier> sids)
 		{
-			foreach (SsaIdentifier sid in sids)
-			{
-				if (sid.DefStatement != null)
-				{
-					Assignment ass = sid.DefStatement.Instruction as Assignment;
-					if (ass != null)
-					{
-						BinaryExpression bin = ass.Src as BinaryExpression;
-						if (bin != null && (bin.op == Operator.add || bin.op == Operator.sub))
-						{
-							Identifier idLeft = bin.Left as Identifier;
-							if (idLeft != null && IsSccMember(idLeft, sids))
-							{
-								Constant c = bin.Right as Constant;
-								if (c != null)
-								{
-									DeltaStatement = sid.DefStatement;
-									DeltaValue = (bin.op == Operator.sub)
-										? c.Negate()
-										: c;
-									return DeltaValue;
-								}
-							}
-						}
-					}
-				}
-			}
+            foreach (SsaIdentifier sid in sids)
+            {
+                if (sid.DefStatement == null)
+                    continue;
+                Assignment ass = sid.DefStatement.Instruction as Assignment;
+                if (ass == null)
+                    continue;
+                BinaryExpression bin = ass.Src as BinaryExpression;
+                if (bin != null && (bin.op == Operator.add || bin.op == Operator.sub))
+                {
+                    Identifier idLeft = bin.Left as Identifier;
+                    if (idLeft != null && IsSccMember(idLeft, sids))
+                    {
+                        Constant c = bin.Right as Constant;
+                        if (c != null)
+                        {
+                            DeltaStatement = sid.DefStatement;
+                            DeltaValue = (bin.op == Operator.sub)
+                                ? c.Negate()
+                                : c;
+                            return DeltaValue;
+                        }
+                    }
+
+                }
+            }
 			return null;
 		}
 
 		public PhiFunction FindPhiFunction(ICollection<SsaIdentifier> sids)
 		{
-			foreach (SsaIdentifier sid in sids)
-			{
-				if (sid.DefStatement != null)
-				{
-					PhiAssignment phi = sid.DefStatement.Instruction as PhiAssignment;
-					if (phi != null)
-					{
-						PhiStatement = sid.DefStatement;
-						PhiIdentifier = (Identifier) phi.Dst;
-						return phi.Src;
-					}
-				}
-			}
-			return null;
+            foreach (SsaIdentifier sid in sids)
+            {
+                if (sid.DefStatement == null)
+                    continue;
+                PhiAssignment phi = sid.DefStatement.Instruction as PhiAssignment;
+                if (phi != null)
+                {
+                    PhiStatement = sid.DefStatement;
+                    PhiIdentifier = (Identifier) phi.Dst;
+                    return phi.Src;
+                }
+            }
+            return null;
 		}
 
         public List<LinearInductionVariable> InductionVariables

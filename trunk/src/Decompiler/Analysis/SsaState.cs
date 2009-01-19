@@ -19,7 +19,6 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -120,32 +119,6 @@ namespace Decompiler.Analysis
 				writer.WriteLine();
 			}
 		}
-
-		private void WriteIdentifier(SsaIdentifier id, TextWriter sb)
-		{
-			id.Write(sb);
-			sb.WriteLine();
-		}
-
-#if DEBUG
-		private void DumpDefSites(Set [] defsites)
-		{
-			for (int a = 0; a < defsites.Length; ++a)
-			{
-				Debug.WriteLine("v" + a + " defined in: ");
-				foreach (Block it in defsites[a])
-				{
-					Debug.Write("#" + it.RpoNumber + " ");
-				}
-				Debug.WriteLine("");
-			}
-		}
-#else
-		public void Dump() {}
-		private void DumpDefSites(Set [] defsites) {}
-		private void DumpIdentifier(int v) {}
-#endif 
-
 
 		public SsaIdentifierCollection Identifiers
 		{

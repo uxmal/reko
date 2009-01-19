@@ -26,27 +26,48 @@ namespace Decompiler.Core.Absyn
 	/// </summary>
 	public class AbsynIf : AbsynStatement
 	{
-		public Expression Condition;
-		public AbsynStatement Then;
-		public AbsynStatement Else;
+        private Expression condition;
+        private AbsynStatementList then;
+        private AbsynStatementList @else;
 
-		public AbsynIf(Expression e, AbsynStatement then)
+        public Expression Condition
+        {
+            get { return condition; }
+            set { condition = value; }
+        }
+
+        public AbsynStatementList Then
+        {
+            get { return then; }
+        }
+
+        public AbsynStatementList Else
+        {
+            get { return @else; }
+        }
+
+        public AbsynIf(Expression e, AbsynStatementList then) : this(e, then, null)
 		{
-			this.Condition = e;
-			this.Then = then;
-			this.Else = null;
 		}
 
-		public AbsynIf(Expression e, AbsynStatement then, AbsynStatement els)
+		public AbsynIf(Expression e, AbsynStatementList then, AbsynStatementList els)
 		{
 			this.Condition = e;
-			this.Then = then;
-			this.Else = els;
+			this.then = then;
+			this.@else = els;
 		}
 
 		public override void Accept(IAbsynVisitor v)
 		{
 			v.VisitIf(this);
 		}
-	}
+
+        public void InvertCondition()
+        {
+            AbsynStatementList t = then;
+            then = @else;
+            @else = t;
+            Condition = Condition.Invert();
+        }
+    }
 }

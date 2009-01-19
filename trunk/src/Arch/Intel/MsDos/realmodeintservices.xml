@@ -1215,7 +1215,7 @@
 		<reg>bx</reg>
 	  </arg>
 	  <arg out="true">
-		<reg>bx</reg>
+		<reg>dx</reg>
 	  </arg>
 	</signature>
   </service>

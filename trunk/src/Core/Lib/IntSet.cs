@@ -17,7 +17,6 @@
  */
 
 using System;
-using System.Collections;
 
 namespace Decompiler.Core.Lib
 {
@@ -48,7 +47,7 @@ namespace Decompiler.Core.Lib
 
 		public bool Contains(int e)
 		{
-			return Array.BinarySearch(rep, 0, items, e) >= 0;
+			return Array.BinarySearch<int>(rep, e) >= 0;
 		}
 	}
 }

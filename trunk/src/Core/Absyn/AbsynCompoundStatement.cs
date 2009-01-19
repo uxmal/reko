@@ -17,7 +17,7 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -46,19 +46,9 @@ namespace Decompiler.Core.Absyn
 		}
 	}
 
-	public class AbsynStatementList : CollectionBase
+	public class AbsynStatementList : List<AbsynStatement>
 	{
-		public void Add(AbsynStatement stm)
-		{
-			InnerList.Add(stm);
-		}
-
-		public AbsynStatement this[int i]
-		{
-			get { return (AbsynStatement) InnerList[i]; }
-			set { InnerList[i] = value; }
-		}
-
+/*
 		public void CopyTo(AbsynStatementList dst)
 		{
 			for (int i = 0; i < Count; ++i)
@@ -66,26 +56,9 @@ namespace Decompiler.Core.Absyn
 				dst.InnerList.Add(this.InnerList[i]);
 			}
 		}
+*/
 
-#if DEBUG
-		public void Dump()
-		{
-			foreach (AbsynStatement stm in InnerList)
-			{
-				Debug.WriteLine(stm.ToString());
-			}
-		}
-#else
-		public void Dump()
-		{
-		}
-#endif
-
-		public void Insert(int at, AbsynStatement stm)
-		{
-			InnerList.Insert(at, stm);
-		}
-
+        //$REVIEW: consider changing statements so that statementlists are used everywhere.
 		public AbsynStatement MakeAbsynStatement()
 		{
 			if (Count > 1)

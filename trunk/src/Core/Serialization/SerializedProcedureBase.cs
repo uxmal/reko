@@ -17,26 +17,30 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.Xml.Serialization;
 
-namespace Decompiler.Core.Types
+namespace Decompiler.Core.Serialization
 {
-	public class TypeVariableCollection : CollectionBase
-	{
-		public TypeVariable this[int i]
-		{
-			get { return (TypeVariable) List[i]; }
-			set { List[i] = value; }
-		}
+    public class SerializedProcedureBase
+    {
+        /// <summary>
+        /// The name of a procedure.
+        /// </summary>
+        [XmlAttribute("name")]
+        public string Name;
 
-		public int Add(TypeVariable tv)
-		{
-			return List.Add(tv);
-		}
+        /// <summary>
+        /// Procedure signature. If non-null, the user has specified a signature. If null, the
+        /// signature is unknown.
+        /// </summary>
+        [XmlElement("signature")]
+        public SerializedSignature Signature;
 
-		public void AddRange(TypeVariable [] tvs)
-		{
-			InnerList.AddRange(tvs);
-		}
-	}
+        [XmlElement("characteristics")]
+        public ProcedureCharacteristics Characteristics;
+
+
+    }
 }

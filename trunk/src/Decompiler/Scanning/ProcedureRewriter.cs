@@ -18,7 +18,7 @@
 
 using Decompiler.Core;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Scanning
 {
@@ -30,13 +30,13 @@ namespace Decompiler.Scanning
 		private IRewriterHost host;
 		private Procedure proc;
 		private Rewriter rewriter; 
-		private Hashtable blocksVisited;			// maps Address -> Block
+		private Dictionary<Address,Block> blocksVisited;			// maps Address -> Block
 
 		public ProcedureRewriter(IRewriterHost host, Procedure proc)
 		{
 			this.host = host;
 			this.proc = proc;
-			this.blocksVisited = new Hashtable();
+            this.blocksVisited = new Dictionary<Address, Block>();
 		}
 
 		public void HandleFallThrough(Block block, Address addr)
@@ -64,8 +64,8 @@ namespace Decompiler.Scanning
 
 		public Block RewriteBlock(Address addr, Block pred)
 		{
-			Block block = (Block) blocksVisited[addr];
-			if (block != null)
+			Block block;
+            if (blocksVisited.TryGetValue(addr, out block))
 			{
 				Block.AddEdge(pred, block);
 				return block;
@@ -80,7 +80,7 @@ namespace Decompiler.Scanning
 				// Create a new block in the procedure.
 
 				block = new Block(proc, addr);
-				blocksVisited[addr] = block;
+				blocksVisited.Add(addr, block);
 				Block.AddEdge(pred, block);
 
 				RewriteInstructions(addr, raw.Size, block);

@@ -22,23 +22,18 @@ using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {
-	public class SerializedService
+	public class SerializedService : SerializedProcedureBase
 	{
 		public SerializedService()
 		{
 		}
 
-		[XmlAttribute("name")]
-		public string Name;
-
+        /// <summary>
+        /// Describes what registers must be set at what values to call this system call.
+        /// </summary>
 		[XmlElement("syscallinfo")]
 		public SerializedSyscallInfo SyscallInfo;
 
-		[XmlElement("signature")]
-		public SerializedSignature Signature;
-
-		[XmlElement("characteristics")]
-		public ProcedureCharacteristics Characteristics;
 
 		public SystemService Build(IProcessorArchitecture arch)
 		{

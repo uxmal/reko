@@ -17,7 +17,7 @@
  */
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -35,11 +35,11 @@ namespace Decompiler.Core.Serialization
 
 		[XmlElement("procedure", typeof (SerializedProcedure))]
 		[XmlElement("service", typeof (SerializedService))]
-		public ArrayList Procedures;
+		public List<SerializedProcedureBase> Procedures;
 
 		public SerializedLibrary()
 		{
-			this.Procedures = new ArrayList();
+			this.Procedures = new List<SerializedProcedureBase>();
 		}
 
 		public static SerializedLibrary LoadFromFile(string filename)

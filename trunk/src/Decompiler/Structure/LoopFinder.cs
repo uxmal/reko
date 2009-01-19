@@ -21,7 +21,6 @@ using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -168,7 +167,7 @@ namespace Decompiler.Structure
 			Linearizer lin = new Linearizer(proc, new BlockLinearizer(follow));
 			lin.LoopHeader = head;
 			lin.LoopFollow = follow;
-			head.Statements.Add(new AbsynDoWhile(lin.Linearize(loop.Blocks, false).MakeAbsynStatement(), br.Condition));
+			head.Statements.Add(new AbsynDoWhile(lin.Linearize(loop.Blocks, false), br.Condition));
 			Block.AddEdge(head, follow);
 		}
 
@@ -221,7 +220,7 @@ namespace Decompiler.Structure
 			
 			if (head.Statements.Count > 0)
 			{
-				head.Statements.Add(new AbsynIf(br.Condition.Invert(), new AbsynBreak()));
+				head.Statements.Add(new AbsynIf(br.Condition.Invert(), SingleStm(new AbsynBreak())));
 				InsertStatements(body, 0, head);
 				br.Condition = Constant.True();
 			}
@@ -233,9 +232,18 @@ namespace Decompiler.Structure
 			Linearizer lin = new Linearizer(proc, new BlockLinearizer(follow));
 			lin.LoopHeader = head;
 			lin.LoopFollow = follow;
-			AbsynWhile wh = new AbsynWhile(br.Condition, lin.Linearize(loop.Blocks, true).MakeAbsynStatement());
+			AbsynWhile wh = new AbsynWhile(br.Condition, lin.Linearize(loop.Blocks, true));
 			head.Statements.Add(wh);
 		}
+
+
+        //$REVIEW: this occurs in many places, put it in common place.
+        private AbsynStatementList SingleStm(AbsynStatement stm)
+        {
+            AbsynStatementList list = new AbsynStatementList();
+            list.Add(stm);
+            return list;
+        }
 
 		/// <summary>
 		/// Returns a list of the blocks that are sources of back edges
@@ -252,12 +260,6 @@ namespace Decompiler.Structure
 					blox.Add(p);
 			}
 			return blox;
-		}
-
-		private ArrayList CopyStatements(StatementList stms)
-		{
-			ArrayList s = new ArrayList(stms);
-			return s;
 		}
 
 		public Loop Create(Block head, Block end, BitSet loopBlocks)
