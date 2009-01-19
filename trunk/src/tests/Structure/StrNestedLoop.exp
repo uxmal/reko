@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(word16 bx, word16 si, word16 di, segment ds)
+void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	word16 dx_12 = 0x0004
 	// succ:  1
@@ -22,7 +22,7 @@ l0C00_001D:		// block 4, pred: 3
 	return
 	// succ: 
 
-void fn0C00_0000(word16 bx, word16 si, word16 di, segment ds)
+void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 {
 	word16 dx_12 = 0x0004;
 	do

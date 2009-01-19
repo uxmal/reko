@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(word16 bx, segment ds)
+void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	word16 ax_9 = 0x0000
 	// succ:  1
@@ -20,7 +20,7 @@ l0C00_001D:		// block 5, pred: 1
 	return
 	// succ: 
 
-void fn0C00_0000(word16 bx, segment ds)
+void fn0C00_0000(word16 bx, selector ds)
 {
 	word16 ax_9 = 0x0000;
 	while (ax_9 < bx)

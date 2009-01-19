@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	word16 ax_8 = 0x0000
 	word16 bx_10 = Mem0[ds:0x0200:word16]
@@ -20,7 +20,7 @@ l0C00_0013:		// block 4, pred: 2
 	ax_8 = ax_8 + 0x0001
 	// succ:  1
 
-void fn0C00_0000(segment ds)
+void fn0C00_0000(selector ds)
 {
 	word16 ax_8 = 0x0000;
 	word16 bx_10 = Mem0[ds:0x0200:word16];

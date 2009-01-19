@@ -1,5 +1,5 @@
 // fn0C00_0000
-void fn0C00_0000(word16 ax, segment ds)
+void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
@@ -30,7 +30,7 @@ l0C00_001C:		// block 7, pred: 6 3 2
 fn0C00_0000_exit:		// block 8, pred: 7
 	// succ: 
 // fn0C00_0000
-void fn0C00_0000(word16 ax, segment ds)
+void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	byte cl_10
 	branch ax < 0x0000

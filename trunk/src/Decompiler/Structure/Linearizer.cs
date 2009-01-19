@@ -310,15 +310,10 @@ namespace Decompiler.Structure
 
 			if (bThen.op == Operator.ne)
 			{
-				SwapIf(stmThen);
+                //$REVIEW: need a pass that finds 'ifthenelseifs' and makes them into switch statements.
+                stmThen.InvertCondition();
 			}
 			return true;
-		}
-
-		//$REVIEW: need a pass that finds 'ifthenelseifs' and makes them into switch statements.
-		public void SwapIf(AbsynIf stm)
-		{
-            stm.InvertCondition();
 		}
 	}
 }

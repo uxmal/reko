@@ -696,11 +696,18 @@ namespace Decompiler.Core.Output
 
         public void WriteIndentedStatements(List<AbsynStatement> stms)
         {
-            if (stms.Count == 0)
+            if (stms.Count <= 1)
             {
                 Indentation += TabSize;
-                Indent();
-                Terminate(";");
+                if (stms.Count == 0)
+                {
+                    Indent();
+                    Terminate(";");
+                }
+                else
+                {
+                    stms[0].Accept(this);
+                }
                 Indentation -= TabSize;
             }
             else
