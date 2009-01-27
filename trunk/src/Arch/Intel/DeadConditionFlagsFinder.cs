@@ -17,7 +17,7 @@
  */
 
 using System;
-
+using System.Collections.Generic;
 namespace Decompiler.Arch.Intel
 {
 	/// <summary>
@@ -28,11 +28,11 @@ namespace Decompiler.Arch.Intel
 	/// </summary>
 	public class DeadConditionFlagsFinder
 	{
-		public FlagM [] DeadOutFlags(IntelInstruction [] instrs)
+		public FlagM [] DeadOutFlags(IList<IntelInstruction> instrs)
 		{
-			FlagM [] deadOutflags = new FlagM[instrs.Length];
+			FlagM [] deadOutflags = new FlagM[instrs.Count];
 			uint grfDeadIn = 0;
-			for (int i = instrs.Length - 1; i > 0;)
+			for (int i = instrs.Count - 1; i > 0;)
 			{
 				grfDeadIn |= (uint) instrs[i].DefCc();
 				grfDeadIn &= ~(uint) instrs[i].UseCc();
@@ -42,7 +42,8 @@ namespace Decompiler.Arch.Intel
 				// pessimistically lose all deadness information. The author
 				// has personally never seen any functions that use
 				// condition code flags as in parameters, but such code
-				// may exist. 
+				// may exist. A later global register liveness pass will
+                // eliminate the dead parameters.
 
 				if (instrs[i].code == Opcode.call)
 					grfDeadIn = 0;

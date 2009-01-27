@@ -600,31 +600,11 @@
       <SubType>Designer</SubType>
       <DependentUpon>StartPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.ImageMapControl.resources" />
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.MemoryControl.resources" />
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Controls.MemoryControl2.resources" />
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Driver.resources" />
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.AnalysePage.resources" />
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.LoadPage.resources" />
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.MainForm.resources" />
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.PhasePage.resources" />
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Decompiler.WindowsGui.Forms.ScanPage.resources" />
-    <EmbeddedResource Include="WindowsGui\obj\Debug\Grovel.MainForm.resources" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Gui\decompiler-menus.xml" />
     <Content Include="WindowsGui\Forms\cmdids.xslt" />
     <Content Include="WindowsGui\Forms\decompiler-menus.xslt" />
-    <Content Include="WindowsGui\obj\Debug\Decompiler.WindowsGui2003.exe" />
-    <Content Include="WindowsGui\obj\Debug\Decompiler.WindowsGui2003.pdb" />
-    <Content Include="WindowsGui\obj\WindowsGui2005.csproj.FileList.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="WindowsGui\obj\Debug\WindowsGui2003.projdata" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WindowsGui\obj\Debug\TempPE\" />
-    <Folder Include="WindowsGui\obj\Debug\temp\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

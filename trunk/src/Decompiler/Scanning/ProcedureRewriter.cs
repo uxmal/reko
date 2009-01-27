@@ -30,14 +30,19 @@ namespace Decompiler.Scanning
 		private IRewriterHost host;
 		private Procedure proc;
 		private Rewriter rewriter; 
-		private Dictionary<Address,Block> blocksVisited;			// maps Address -> Block
+		private Dictionary<Address,Block> blocksVisited;
 
-		public ProcedureRewriter(IRewriterHost host, Procedure proc)
+		public ProcedureRewriter(IRewriterHost host, Program prog, Procedure proc)
 		{
 			this.host = host;
 			this.proc = proc;
             this.blocksVisited = new Dictionary<Address, Block>();
 		}
+
+        public CodeEmitter CreateEmitter(Block block)
+        {
+            return new CodeEmitter(rewriter.Architecture, host, proc, block);
+        }
 
 		public void HandleFallThrough(Block block, Address addr)
 		{

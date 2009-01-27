@@ -42,7 +42,6 @@ namespace Decompiler.Arch.Intel
 		private int maxFpuStackRead;
 		private int maxFpuStackWrite;
 		private OperandRewriter orw;
-		private DeadConditionFlagsFinder dcff;
 		private StringInstructionRewriter siw;
 		private CodeEmitter emitter;
 		private LongAddRewriter larw;
@@ -53,8 +52,7 @@ namespace Decompiler.Arch.Intel
 			Procedure proc,
 			IRewriterHost host,
 			IntelArchitecture arch,
-			RewriterState state,
-			CodeEmitter emitter)
+			RewriterState state) : base(arch)
 		{
 			this.host = host;
 			this.proc = proc;
@@ -64,9 +62,7 @@ namespace Decompiler.Arch.Intel
 			this.state = state;
 			state.GrowStack(frame.ReturnAddressSize);
 			this.orw = new OperandRewriter(host, arch, frame);
-			this.dcff = new DeadConditionFlagsFinder();
-			this.emitter = emitter;
-			this.siw = new StringInstructionRewriter(arch, emitter, orw);
+			this.siw = new StringInstructionRewriter(arch, orw);
 			this.larw = new LongAddRewriter(frame, orw, state);
 			this.ab = new ApplicationBuilder(frame);
 			maxFpuStackRead = -1;
@@ -197,7 +193,7 @@ namespace Decompiler.Arch.Intel
 						break;
 					case Opcode.cmpsb:
 					case Opcode.cmps:
-						siw.EmitStringInstruction(instrCur);
+						siw.EmitStringInstruction(instrCur, emitter);
 						break;
 					case Opcode.cwd:
 						if (instrCur.dataWidth == PrimitiveType.Word32)
@@ -488,7 +484,7 @@ namespace Decompiler.Arch.Intel
 						break;
 					case Opcode.ins:
 					case Opcode.insb:
-						siw.EmitStringInstruction(instrCur);
+						siw.EmitStringInstruction(instrCur, emitter);
 						break;
 					case Opcode.@int:
 						EmitIntInstruction(addrs[i]);
@@ -576,7 +572,7 @@ namespace Decompiler.Arch.Intel
 
 					case Opcode.lods:
 					case Opcode.lodsb:
-						siw.EmitStringInstruction(instrCur);
+						siw.EmitStringInstruction(instrCur, emitter);
 						break;
 
 					case Opcode.loope:
@@ -613,7 +609,7 @@ namespace Decompiler.Arch.Intel
 
 					case Opcode.movs:
 					case Opcode.movsb:
-						siw.EmitStringInstruction(instrCur);
+						siw.EmitStringInstruction(instrCur, emitter);
 						break;
 					case Opcode.movsx:
 						EmitCopy(instrCur.op1, new Cast(PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size), SrcOp(instrCur.op2)), false);
@@ -668,7 +664,7 @@ namespace Decompiler.Arch.Intel
 						break;
 					case Opcode.outs:
 					case Opcode.outsb:
-						siw.EmitStringInstruction(instrCur);
+						siw.EmitStringInstruction(instrCur, emitter);
 						break;
 
 					case Opcode.popa:
@@ -818,7 +814,7 @@ namespace Decompiler.Arch.Intel
 						break;	
 					case Opcode.scas:
 					case Opcode.scasb:
-						siw.EmitStringInstruction(instrCur);
+						siw.EmitStringInstruction(instrCur, emitter);
 						break;
 					case Opcode.setg:
 						EmitSet(instrCur.op1, ConditionCode.GT, useFlags);
@@ -872,7 +868,7 @@ namespace Decompiler.Arch.Intel
 						break;	//$BUG: leavecriticalsection?
 					case Opcode.stos:
 					case Opcode.stosb:
-						siw.EmitStringInstruction(instrCur);
+						siw.EmitStringInstruction(instrCur, emitter);
 						break;			
 					case Opcode.sub:
 						if (IsStackRegister(instrCur.op1))
@@ -1096,7 +1092,7 @@ namespace Decompiler.Arch.Intel
         //$REFACTOR: move to ProcedureRewriter.
 		private Block EmitBranchPath(Block blockHead, Address addrTo)
 		{
-			emitter.Block = blockHead;
+            emitter = prw.CreateEmitter(blockHead);
 			Block blockTo;
 			Procedure p = host.GetProcedureAtAddress(addrTo, frame.ReturnAddressSize);
 			if (p != null && p != this.proc)
@@ -1106,9 +1102,10 @@ namespace Decompiler.Arch.Intel
 				Block block = emitter.Block;
 				blockTo = new Block(proc, state.InstructionAddress.GenerateName("l", "_branch"));
 				Block.AddEdge(block, blockTo);
-				emitter.Block = blockTo;
-				EmitCallAndReturn(p);
-				emitter.Block = block;
+                CodeEmitter e = emitter;
+                emitter = prw.CreateEmitter(blockTo);
+				EmitCallAndReturn(p);       //$REFACTOR: pass emitter.
+                emitter = e;
 			}
 			else
 			{
@@ -1459,7 +1456,7 @@ namespace Decompiler.Arch.Intel
 				blockNew = new Block(proc, state.InstructionAddress.GenerateName("l","_loop"));
 				Block.AddEdge(blockHead, blockNew);
 
-				emitter.Block = blockNew;
+				emitter = prw.CreateEmitter(blockNew);
 				EmitBranchInstruction(emitter.Eq0(cx), instrCur.op1);
 			}
 			else
@@ -1617,14 +1614,14 @@ namespace Decompiler.Arch.Intel
 
 			// Decrement the [E]CX register.
 
-			emitter.Block = blockStringInstr;
+            emitter = prw.CreateEmitter(blockStringInstr);
 			emitter.Assign(regCX, emitter.Sub(regCX, 1));
 
 			// Advance to the next instruction and since it is a string instruction,
 			// convert it.
 
 			instrCur = instrs[++i];
-			siw.EmitStringInstruction(instrCur);
+			siw.EmitStringInstruction(instrCur, emitter);
 
 			// If it was a string compare instruction, we should branch back to the top block.
 
@@ -1736,7 +1733,7 @@ namespace Decompiler.Arch.Intel
 				jumps[i] = EmitBranchPath(block, addrTarget);
 				++i;
 			}
-			emitter.Block = block;
+			emitter = prw.CreateEmitter(block);
 			emitter.Emit(new SwitchInstruction(orw.AluRegister(register), jumps));
 		}
 
@@ -1853,27 +1850,33 @@ namespace Decompiler.Arch.Intel
 
 		public override void RewriteInstructions(Address addrStart, int length, Block block)
 		{
-			emitter.Block = block;
+            emitter = prw.CreateEmitter(block);
 			this.addrEnd = addrStart + length;
 
 			// Extract the instructions.
 
-			IntelDisassembler dasm = new IntelDisassembler(host.CreateImageReader(addrStart), arch.WordWidth);
-            List<IntelInstruction> al = new List<IntelInstruction>();
-            List<Address> al2 = new List<Address>();
-			while (dasm.Address < addrEnd)
-			{
-				al2.Add(dasm.Address);
-				al.Add(dasm.Disassemble());
-			}
-            IntelInstruction[] instrs = al.ToArray();
-			Address [] addrs = al2.ToArray();
+
+            List<IntelInstruction> instrs = new List<IntelInstruction>();
+            List<Address> addrs = new List<Address>();
+            DisassembleInstructions(addrStart, instrs, addrs);
+
+            DeadConditionFlagsFinder dcff = new DeadConditionFlagsFinder();
 			FlagM [] deadOutFlags = dcff.DeadOutFlags(instrs);
 
 			// Rewrite the current flow block.
 
-			ConvertInstructions(instrs, addrs, deadOutFlags);
+			ConvertInstructions(instrs.ToArray(), addrs.ToArray(), deadOutFlags);
 		}
+
+        protected virtual void DisassembleInstructions(Address addrStart, List<IntelInstruction> instrs, List<Address> addrs)
+        {
+            IntelDisassembler dasm = new IntelDisassembler(host.CreateImageReader(addrStart), arch.WordWidth);
+            while (dasm.Address < addrEnd)
+            {
+                addrs.Add(dasm.Address);
+                instrs.Add(dasm.Disassemble());
+            }
+        }
 
 
 		/// <summary>

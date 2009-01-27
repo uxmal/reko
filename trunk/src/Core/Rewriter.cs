@@ -26,6 +26,18 @@ namespace Decompiler.Core
 	/// </summary>
 	public abstract class Rewriter
 	{
+        private IProcessorArchitecture arch;
+
+        public Rewriter(IProcessorArchitecture arch)
+        {
+            this.arch = arch;
+        }
+
+        public IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
 		public abstract void EmitCallAndReturn(Procedure callee);
 
 		public abstract void RewriteInstructions(Address addr, int length, Block block);

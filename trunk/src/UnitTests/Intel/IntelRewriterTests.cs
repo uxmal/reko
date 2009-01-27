@@ -22,6 +22,7 @@ using Decompiler.Core.Types;
 using Decompiler.Arch.Intel;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Intel
 {
@@ -30,11 +31,10 @@ namespace Decompiler.UnitTests.Intel
 	{
 		private IntelArchitecture arch;
 		private Procedure proc;
-		private CodeEmitter emitter;
-		private FakeRewriterHost host;
-		private RewriterState state;
+        private FakeRewriterHost host;
+        private RewriterState state;
 		private Program prog;
-		private IntelRewriter rw;
+		private TestRewriter rw;
 
 		public IntelRewriterTests()
 		{
@@ -47,11 +47,10 @@ namespace Decompiler.UnitTests.Intel
 			prog = new Program();
             prog.Architecture = arch;
 			proc = new Procedure("test", new Frame(PrimitiveType.Word16));
-			emitter = new CodeEmitter(prog, proc);
-			emitter.Block = new Block(proc, new Address(0xC10, 0x0030));
-			host = new FakeRewriterHost();
+            host = new FakeRewriterHost(prog);
 			state = new RewriterState(proc.Frame);
-			rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
+
+			rw = new TestRewriter(new FakeProcedureRewriter(arch, host, proc), proc, host, arch, state);
 		}
 
 		[Test]
@@ -62,18 +61,19 @@ namespace Decompiler.UnitTests.Intel
 			instr.op1 = new MemoryOperand(PrimitiveType.Word16, Registers.bx, new Constant(PrimitiveType.Word16, 4));
 			Address addr = new Address(0x0C00, 0x0100);
 
-			FakeRewriterHost host = new FakeRewriterHost();
 			host.AddCallSignature(addr, new ProcedureSignature(
-				new Identifier(Registers.ax.Name, 0, PrimitiveType.Word16, new RegisterStorage(Registers.ax)),
-				new Identifier[] {
-					new Identifier(Registers.cx.Name, 0, PrimitiveType.Word16, new RegisterStorage(Registers.cx))
-							   }));
+                Reg(Registers.ax),
+				new Identifier[] { Reg(Registers.cx) }));
 
 			Procedure proc = new Procedure("test", new Frame(arch.WordWidth));
-			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
-			rw.ConvertInstructions(new IntelInstruction[] { instr }, new Address[] { addr }, new FlagM[] { FlagM.CF });
-			Assert.AreEqual("ax = Mem0[ds:bx + 0x0004:word16](cx)", emitter.Block.Statements[0].Instruction.ToString());
+            rw.ConvertInstructions(instr);
+			Assert.AreEqual("ax = Mem0[ds:bx + 0x0004:word16](cx)", rw.Block.Statements[0].Instruction.ToString());
 		}
+
+        private Identifier Reg(IntelRegister r)
+        {
+            return new Identifier(r.Name, 0, r.DataType, new RegisterStorage(r));
+        }
 
 		[Test]
 		public void RewriteLesBxStack()
@@ -83,11 +83,10 @@ namespace Decompiler.UnitTests.Intel
 			instr.op1 = new RegisterOperand(Registers.bx);
 			instr.op2 = new MemoryOperand(PrimitiveType.Word32, Registers.bp, new Constant(PrimitiveType.Word16, 6));
 
-			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
 			state.FrameRegister = Registers.bp;
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual("es_bx = dwArg06", emitter.Block.Statements.Last.Instruction.ToString());
-			Assignment ass = (Assignment) emitter.Block.Statements.Last.Instruction;
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual("es_bx = dwArg06", rw.Block.Statements.Last.Instruction.ToString());
+			Assignment ass = (Assignment) rw.Block.Statements.Last.Instruction;
 			Assert.AreSame(PrimitiveType.Pointer32, ass.Src.DataType);
 		}
 
@@ -98,9 +97,8 @@ namespace Decompiler.UnitTests.Intel
 			instr.code = Opcode.bswap;
 			instr.op1 = new RegisterOperand(Registers.ebx);
 
-			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual("ebx = __bswap(ebx)", emitter.Block.Statements.Last.Instruction.ToString());
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual("ebx = __bswap(ebx)", rw.Block.Statements.Last.Instruction.ToString());
 		}
 
 		[Test]
@@ -110,8 +108,7 @@ namespace Decompiler.UnitTests.Intel
 			instr.code = Opcode.ret;
 
 			proc.Frame.ReturnAddressSize = 2;
-			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
-			ConvertInstructions(rw, instr);
+			rw.ConvertInstructions(instr);
 			Assert.AreEqual(2, proc.Frame.ReturnAddressSize);
 		}
 
@@ -125,11 +122,8 @@ namespace Decompiler.UnitTests.Intel
 				PrimitiveType.Word16,
 				new MemoryOperand(PrimitiveType.Word16, Registers.bx, Constant.Invalid));
 
-			CodeEmitter emitter = new CodeEmitter(null, proc);
-			emitter.Block = new Block(proc, "foo");
-			IntelRewriter rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual("rArg0 = rArg0 + (real64) Mem0[ds:bx:word16]", emitter.Block.Statements[0].Instruction.ToString());
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual("rArg0 = rArg0 + (real64) Mem0[ds:bx:word16]", rw.Block.Statements[0].Instruction.ToString());
 		}
 
 		/// <summary>
@@ -142,12 +136,11 @@ namespace Decompiler.UnitTests.Intel
 				Opcode.and, PrimitiveType.Word16, PrimitiveType.Word16,
 				new RegisterOperand(Registers.ax),
 				new ImmediateOperand(PrimitiveType.Word16, 0x08));
-			IntelRewriter rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual(3, emitter.Block.Statements.Count);
-			Assert.AreEqual("ax = ax & 0x0008", emitter.Block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("SCZO = cond(ax)", emitter.Block.Statements[1].Instruction.ToString());
-			Assert.AreEqual("C = false", emitter.Block.Statements[2].Instruction.ToString());
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual(3, rw.Block.Statements.Count);
+			Assert.AreEqual("ax = ax & 0x0008", rw.Block.Statements[0].Instruction.ToString());
+			Assert.AreEqual("SCZO = cond(ax)", rw.Block.Statements[1].Instruction.ToString());
+			Assert.AreEqual("C = false", rw.Block.Statements[2].Instruction.ToString());
 		}
 
 		/// <summary>
@@ -160,11 +153,10 @@ namespace Decompiler.UnitTests.Intel
 				Opcode.test, PrimitiveType.Word16, PrimitiveType.Word16,
 				new RegisterOperand(Registers.ax),
 				new ImmediateOperand(PrimitiveType.Word16, 0x08));
-			IntelRewriter rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual(2, emitter.Block.Statements.Count);
-			Assert.AreEqual("SCZO = cond(ax & 0x0008)", emitter.Block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("C = false", emitter.Block.Statements[1].Instruction.ToString());
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual(2, rw.Block.Statements.Count);
+			Assert.AreEqual("SCZO = cond(ax & 0x0008)", rw.Block.Statements[0].Instruction.ToString());
+			Assert.AreEqual("C = false", rw.Block.Statements[1].Instruction.ToString());
 		}
 
 		[Test]
@@ -174,15 +166,13 @@ namespace Decompiler.UnitTests.Intel
 			host.AddProcedureAtAddress(addrProc, new Procedure("test", new Frame(PrimitiveType.Word16)));
 			state.InstructionAddress = new Address(addrProc.Selector, 0);
 
-
 			IntelInstruction push = new IntelInstruction(
 				Opcode.push, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cs));
 			IntelInstruction call = new IntelInstruction(
 				Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word16, addrProc.Offset)));
-			IntelRewriter rw = new IntelRewriter(null, proc, host, arch, state, emitter);
-			ConvertInstructions(rw, push, call);
-			Assert.AreEqual(1, emitter.Block.Statements.Count);
-			Assert.AreEqual("call test (depth: 2;)", emitter.Block.Statements[0].Instruction.ToString());
+			rw.ConvertInstructions(push, call);
+			Assert.AreEqual(1, rw.Block.Statements.Count);
+			Assert.AreEqual("call test (depth: 2;)", rw.Block.Statements[0].Instruction.ToString());
 		}
 
 		[Test]
@@ -190,10 +180,9 @@ namespace Decompiler.UnitTests.Intel
 		{
 			IntelInstruction instr = new IntelInstruction(
 				Opcode.imul, PrimitiveType.Word32, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
-			IntelRewriter rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual(2, emitter.Block.Statements.Count);
-			Assignment ass = (Assignment) emitter.Block.Statements[0].Instruction;
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual(2, rw.Block.Statements.Count);
+			Assignment ass = (Assignment) rw.Block.Statements[0].Instruction;
 			Assert.AreEqual("dx_ax = cx *s ax", ass.ToString());
 			BinaryExpression bin = (BinaryExpression) ass.Src;
 			Assert.AreEqual("int32", bin.DataType.ToString());
@@ -204,10 +193,9 @@ namespace Decompiler.UnitTests.Intel
 		{
 			IntelInstruction instr = new IntelInstruction(
 				Opcode.mul, PrimitiveType.Word32, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
-			IntelRewriter rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual(2, emitter.Block.Statements.Count);
-			Assignment ass = (Assignment) emitter.Block.Statements[0].Instruction;
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual(2, rw.Block.Statements.Count);
+			Assignment ass = (Assignment) rw.Block.Statements[0].Instruction;
 			Assert.AreEqual("dx_ax = cx *u ax", ass.ToString());
 			BinaryExpression bin = (BinaryExpression) ass.Src;
 			Assert.AreEqual("uint32", bin.DataType.ToString());
@@ -218,10 +206,9 @@ namespace Decompiler.UnitTests.Intel
 		{
 			IntelInstruction instr = new IntelInstruction(
 				Opcode.fmul, PrimitiveType.Real64, PrimitiveType.Word16, new FpuOperand(1));
-			IntelRewriter rw = new IntelRewriter(null, proc, new FakeRewriterHost(), arch, state, emitter);
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual(1, emitter.Block.Statements.Count);
-			Assignment ass = (Assignment) emitter.Block.Statements[0].Instruction;
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual(1, rw.Block.Statements.Count);
+			Assignment ass = (Assignment) rw.Block.Statements[0].Instruction;
 			Assert.AreEqual("rArg0 = rArg0 *s rArg1", ass.ToString());
 			BinaryExpression bin = (BinaryExpression) ass.Src;
 			Assert.AreEqual("real64", bin.DataType.ToString());
@@ -232,9 +219,9 @@ namespace Decompiler.UnitTests.Intel
 		{
 			IntelInstruction instr = new IntelInstruction(
 				Opcode.div, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual(3, emitter.Block.Statements.Count);
-			Assignment a2 = (Assignment) emitter.Block.Statements[0].Instruction;
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual(3, rw.Block.Statements.Count);
+			Assignment a2 = (Assignment) rw.Block.Statements[0].Instruction;
 			Assert.AreEqual("dx = dx_ax % cx", a2.ToString());
 			BinaryExpression mod = (BinaryExpression) a2.Src;
 			Assert.AreEqual("uint16", mod.DataType.ToString());
@@ -245,9 +232,9 @@ namespace Decompiler.UnitTests.Intel
 		{
 			IntelInstruction instr = new IntelInstruction(
 				Opcode.idiv, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
-			ConvertInstructions(rw, instr);
-			Assert.AreEqual(3, emitter.Block.Statements.Count);
-			Assignment a2 = (Assignment) emitter.Block.Statements[0].Instruction;
+			rw.ConvertInstructions(instr);
+			Assert.AreEqual(3, rw.Block.Statements.Count);
+			Assignment a2 = (Assignment) rw.Block.Statements[0].Instruction;
 			Assert.AreEqual("dx = dx_ax % cx", a2.ToString());
 			BinaryExpression mod = (BinaryExpression) a2.Src;
 			Assert.AreEqual("int16", mod.DataType.ToString());
@@ -259,22 +246,78 @@ namespace Decompiler.UnitTests.Intel
 		{
 			IntelInstruction instr = new IntelInstruction(
 				Opcode.bsr, PrimitiveType.Word32, PrimitiveType.Word32, new RegisterOperand(Registers.ecx), new RegisterOperand(Registers.eax));
-			ConvertInstructions(rw, instr);
-//			Assert.AreEqual(1, emitter.Block.Statements.Count);
-			Assert.AreEqual("Z = eax == 0x00000000", emitter.Block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("ecx = __bsr(eax)", emitter.Block.Statements[1].Instruction.ToString());
+			rw.ConvertInstructions(instr);
+//			Assert.AreEqual(1, rw.Block.Statements.Count);
+			Assert.AreEqual("Z = eax == 0x00000000", rw.Block.Statements[0].Instruction.ToString());
+			Assert.AreEqual("ecx = __bsr(eax)", rw.Block.Statements[1].Instruction.ToString());
 		}
 
-		public void ConvertInstructions(IntelRewriter rw, params IntelInstruction [] instrs)
-		{
-			Address [] addrs = new Address[instrs.Length];
-			for (uint i = 0; i < addrs.Length; ++i)
-			{
-				addrs[i] = new Address(0xC00, i * 3);
-			}
-			FlagM [] flags = new FlagM[instrs.Length];
-			rw.ConvertInstructions(instrs, addrs, flags);
-		}
+        public class TestRewriter : IntelRewriter
+        {
+            private FakeRewriterHost host;
+            private IntelInstruction[] testInstrs;
+            private Block block;
 
+            public TestRewriter(IProcedureRewriter prw, Procedure proc, FakeRewriterHost host, IntelArchitecture arch, RewriterState state)
+                : base(prw, proc, host, arch, state)
+            {
+                this.host = host;
+                block = new Block(proc, new Address(0x0C00, 0x0030));
+            }
+
+            public Block Block
+            {
+                get { return block; }
+            }
+
+            public void ConvertInstructions(params IntelInstruction[] instrs)
+            {
+                this.testInstrs = instrs;
+                base.RewriteInstructions(new Address(0x0C00, 0x0100), 42, block);
+            }
+
+            protected override void DisassembleInstructions(Address addrStart, List<IntelInstruction> instrs, List<Address> addrs)
+            {
+                for (int i = 0; i < this.testInstrs.Length; ++i)
+                {
+                    instrs.Add(testInstrs[i]);
+                    addrs.Add(addrStart);
+                    addrStart += 3;
+                }
+            }
+
+            public FakeRewriterHost Host
+            {
+                get { return host; }
+            }
+        }
+
+        public class FakeProcedureRewriter : IProcedureRewriter
+        {
+            private IProcessorArchitecture arch;
+            private IRewriterHost host;
+            private Procedure proc;
+
+            public FakeProcedureRewriter(IProcessorArchitecture arch, IRewriterHost host, Procedure proc)
+            {
+                this.arch = arch;
+                this.host = host;
+                this.proc = proc;
+            }
+
+            #region IProcedureRewriter Members
+
+            public Block RewriteBlock(Address addr, Block prev)
+            {
+                throw new Exception("The method or operation is not implemented.");
+            }
+
+            public CodeEmitter CreateEmitter(Block block)
+            {
+                return new CodeEmitter(arch, host, proc, block);
+            }
+
+            #endregion
+        }
 	}
 }
