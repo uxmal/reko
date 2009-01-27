@@ -29,21 +29,23 @@ namespace Decompiler.Core
 	/// </summary>
 	public class CodeEmitter
 	{
-		private Program prog;
+        private IProcessorArchitecture arch;
+		private IRewriterHost host;
 		private Procedure proc;
 
 		private Block blockCur;
 
-		public CodeEmitter(Program prog, Procedure proc)
+		public CodeEmitter(IProcessorArchitecture arch, IRewriterHost host, Procedure proc, Block block)
 		{
-			this.prog = prog;
+            this.arch = arch;
+			this.host = host;
 			this.proc = proc;
+            this.blockCur = block;
 		}
 
 		public Block Block
 		{
 			get { return blockCur; }
-			set { blockCur = value; }
 		}
 
 		/// <summary>
@@ -55,6 +57,12 @@ namespace Decompiler.Core
 			blockCur.Statements.Add(instr);
 		}
 
+        /// <summary>
+        /// Emits a call to a pseudoprocedure as a side effect, implying the pseudoprocedure is a void function.
+        /// </summary>
+        /// <param name="ppp"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
 		public SideEffect SideEffect(PseudoProcedure ppp, params Expression [] args)
 		{
 			SideEffect s = new SideEffect(PseudoProc(ppp, null, args));
@@ -62,9 +70,15 @@ namespace Decompiler.Core
 			return s;
 		}
 
-		public SideEffect SideEffect(string name, params Expression [] args)
+        /// <summary>
+        /// Emits a call to a named pseudoprocedure as a side effect, implying the pseudoprocedure is a void function.
+        /// </summary>
+        /// <param name="ppp"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public SideEffect SideEffect(string name, params Expression[] args)
 		{
-			PseudoProcedure ppp = prog.EnsurePseudoProcedure(name, args.Length);
+			PseudoProcedure ppp = host.EnsurePseudoProcedure(name, args.Length);
 			return SideEffect(ppp, args);
 		}
 
@@ -75,12 +89,15 @@ namespace Decompiler.Core
 
 		public Expression PseudoProc(PseudoProcedure ppp, PrimitiveType retType, params Expression [] args)
 		{
-			if (args.Length != ppp.Arity)
-				throw new ArgumentOutOfRangeException("Must pass correct # of arguments");
-
+            if (args.Length != ppp.Arity)
+                throw new ArgumentOutOfRangeException(
+                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
+                    ppp.Name,
+                    ppp.Arity,
+                    args.Length));
             
 			return new Application(
-                new ProcedureConstant(prog.Architecture.PointerType, ppp),
+                new ProcedureConstant(arch.PointerType, ppp),
                 retType, 
                 args);
 		}
@@ -88,7 +105,7 @@ namespace Decompiler.Core
 
 		public Expression PseudoProc(string name, PrimitiveType retType, params Expression [] args)
 		{
-			PseudoProcedure ppp = prog.EnsurePseudoProcedure(name, args.Length);
+			PseudoProcedure ppp = host.EnsurePseudoProcedure(name, args.Length);
 			return PseudoProc(ppp, retType, args);
 		}
 

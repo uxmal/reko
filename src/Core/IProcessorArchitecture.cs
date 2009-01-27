@@ -33,7 +33,7 @@ namespace Decompiler.Core
 		BackWalker CreateBackWalker(ProgramImage img);
 		CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list);
 		BitSet CreateRegisterBitset();
-		Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host, CodeEmitter emitter);
+		Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host);
 
 		MachineRegister GetRegister(int i);			// Returns register corresponding to number i.
 		MachineRegister GetRegister(string name);	// Returns register whose name is 'name'

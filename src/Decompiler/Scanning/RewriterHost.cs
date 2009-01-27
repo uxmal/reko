@@ -178,8 +178,8 @@ namespace Decompiler.Scanning
 		{
 			// Rewrite the blocks in the procedure.
 
-			prw = new ProcedureRewriter(this, proc);
-			Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, this, new CodeEmitter(prog, proc));
+			prw = new ProcedureRewriter(this, prog, proc);
+            Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, this);
 			prw.Rewriter = rw;
 			prw.RewriteBlock(addrProc, proc.EntryBlock);
 			proc.RenumberBlocks();

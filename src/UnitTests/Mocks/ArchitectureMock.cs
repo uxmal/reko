@@ -62,12 +62,12 @@ namespace Decompiler.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host, CodeEmitter emitter)
+		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
 		{
-			return CreateRewriter(prw, proc, host, emitter);
+			return CreateRewriter(prw, proc, host);
 		}
 
-		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, Address addrProc, int cbReturnOnStack, IRewriterHost host, CodeEmitter emitter)
+		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, Address addrProc, int cbReturnOnStack, IRewriterHost host)
 		{
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateRewriter implementation");
 		}

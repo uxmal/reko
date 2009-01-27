@@ -32,7 +32,7 @@ namespace Decompiler.UnitTests.Intel
 		public void AddIncrement()
 		{
 			Identifier id = new Identifier("id", 0, PrimitiveType.Word16, null);
-			CodeEmitter emitter = new CodeEmitter(null, null);
+			CodeEmitter emitter = new CodeEmitter(null, null, null, null);
 			BinaryExpression add = emitter.Add(id, 3);
 			Assert.AreEqual(PrimitiveType.Word16, add.DataType);
 			Assert.AreEqual(PrimitiveType.Word16, add.Right.DataType);
@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Intel
 		public void SubIncrement()
 		{
 			Identifier id = new Identifier("id", 0, PrimitiveType.Word16, null);
-			CodeEmitter emitter = new CodeEmitter(null, null);
+			CodeEmitter emitter = new CodeEmitter(null, null, null, null);
 			BinaryExpression add = emitter.Sub(id, 3);
 			Assert.AreEqual(PrimitiveType.Word16, add.DataType);
 			Assert.AreEqual(PrimitiveType.Word16, add.Right.DataType);

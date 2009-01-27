@@ -35,16 +35,17 @@ namespace Decompiler.Arch.Intel
 
 		private IntelInstruction instrCur;
 
-		public StringInstructionRewriter(IntelArchitecture arch, CodeEmitter emitter, OperandRewriter orw)
+		public StringInstructionRewriter(IntelArchitecture arch, OperandRewriter orw)
 		{
 			this.arch = arch;
-			this.emitter = emitter;
 			this.orw = orw;
 		}
 
 
-		public void EmitStringInstruction(IntelInstruction instr)
+		public void EmitStringInstruction(IntelInstruction instr, CodeEmitter emitter)
 		{
+            this.emitter = emitter;
+
 			bool incSi = false;
 			bool incDi = false;
 			this.instrCur = instr;

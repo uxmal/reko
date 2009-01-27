@@ -33,6 +33,7 @@ namespace Decompiler.UnitTests.Intel
 		private IntelArchitecture arch;
 		private RewriterState state;
 		private Procedure proc;
+        private Program prog;
 
 		[Test]
 		public void OrwCreation()
@@ -43,17 +44,17 @@ namespace Decompiler.UnitTests.Intel
 		public void GlobalSetup()
 		{
 			arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-			Program prog = new Program();
-			prog.Image = new ProgramImage(new Address(0x10000), new byte[4]);
 		}
 
 		[SetUp]
 		public void Setup()
 		{
-			Address procAddress = new Address(0x10000000);
+            prog = new Program();
+            prog.Image = new ProgramImage(new Address(0x10000), new byte[4]);
+            Address procAddress = new Address(0x10000000);
 			proc = Procedure.Create(procAddress, new Frame(PrimitiveType.Word32));
 			state = new RewriterState(proc.Frame);
-			orw = new OperandRewriter(new FakeRewriterHost(), arch, proc.Frame);
+			orw = new OperandRewriter(new FakeRewriterHost(prog), arch, proc.Frame);
 		}
 
 		[Test]
@@ -171,11 +172,13 @@ namespace Decompiler.UnitTests.Intel
 
 	public class FakeRewriterHost : IRewriterHost
 	{
+        private Program prog;
 		private Hashtable callSignatures;
 		private Hashtable procedures;
 
-		public FakeRewriterHost()
+		public FakeRewriterHost(Program prog)
 		{
+            this.prog = prog;
 			callSignatures = new Hashtable();
 			procedures = new Hashtable();
 		}
@@ -204,7 +207,9 @@ namespace Decompiler.UnitTests.Intel
 
 		public PseudoProcedure EnsurePseudoProcedure(string name, int args)
 		{
-			throw new NotImplementedException();
+            if (prog == null)
+			    throw new NotImplementedException();
+            return prog.EnsurePseudoProcedure(name, args);
 		}
 
 		public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)

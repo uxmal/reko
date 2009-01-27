@@ -23,5 +23,12 @@ namespace Decompiler.Core
 	public interface IProcedureRewriter
 	{
 		Block RewriteBlock(Address addr, Block prev);
+
+        /// <summary>
+        /// Creates a CodeEmitter for block.
+        /// </summary>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        CodeEmitter CreateEmitter(Block block);
 	}
 }
