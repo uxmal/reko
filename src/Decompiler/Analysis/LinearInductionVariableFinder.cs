@@ -35,102 +35,58 @@ namespace Decompiler.Analysis
 		private DominatorGraph doms;
 		private ICollection<SsaIdentifier> operands;
         private List<LinearInductionVariable> ivs;
-		private Statement stmInc;
-		private Statement stmPhi;
-		private Statement stmTest;
-		private Identifier idPhi;
-		private Constant valInit;
-		private Constant valDelta;
-		private Constant valTest;
-		private Operator testOperator;
+        private Dictionary<LinearInductionVariable, LinearInductionVariableContext> contexts;
+        private LinearInductionVariableContext ctx;
 
 		public LinearInductionVariableFinder(Procedure proc, SsaIdentifierCollection ssaIds, DominatorGraph doms)
 		{
 			this.proc = proc;
 			this.ssaIds = ssaIds;
 			this.doms = doms;
+            this.ctx = new LinearInductionVariableContext();
             this.ivs = new List<LinearInductionVariable>();
+            this.contexts = new Dictionary<LinearInductionVariable, LinearInductionVariableContext>();
         }
 
-		public Constant InitialValue
-		{
-			get { return valInit; }
-			set { valInit = value; }
-		}
+#if OSCAR_CAN_CODE
+        tf6556i yjmuki7        
+#endif
+        public Dictionary<LinearInductionVariable, LinearInductionVariableContext> Contexts
+        {
+            get { return contexts; }
+        }
 
-		public Constant DeltaValue
-		{
-			get { return valDelta; }
-			set { valDelta = value; }
-		}
-
-		public Statement DeltaStatement
-		{
-			get { return stmInc; }
-			set { stmInc = value; }
-		}
-
-		public Statement PhiStatement
-		{
-			get { return stmPhi; }
-			set { stmPhi = value; }
-		}
-
-		public Identifier PhiIdentifier
-		{
-			get { return idPhi; }
-			set { idPhi = value; }
-		}
-
-		public Operator TestOperator
-		{
-			get { return testOperator; }
-			set { testOperator = value; }
-		}
-
-		public Statement TestStatement
-		{
-			get { return stmTest; }
-			set { stmTest = value; }
-		}
-
-		public Constant TestValue
-		{
-			get { return valTest; }
-			set { valTest = value; }
-		}
+        public LinearInductionVariableContext Context
+        {
+            get { return ctx; }
+        }
 
 		public LinearInductionVariable CreateInductionVariable()
 		{
-			if (PhiStatement == null) return null;
-			if (PhiIdentifier == null) return null;
-			if (DeltaValue == null) return null;
+			if (ctx.PhiStatement == null) return null;
+			if (ctx.PhiIdentifier == null) return null;
+			if (ctx.DeltaValue == null) return null;
 
-			SsaIdentifier sidPhi = ssaIds[PhiIdentifier];
-			if (TestStatement == null && InitialValue == null)
+			SsaIdentifier sidPhi = ssaIds[ctx.PhiIdentifier];
+			if (ctx.TestStatement == null && ctx.InitialValue == null)
 			{
-				return new LinearInductionVariable(null, DeltaValue, null, false);
+				return new LinearInductionVariable(null, ctx.DeltaValue, null, false);
 			}
-			if (InitialValue != null)
+			if (ctx.InitialValue != null)
 			{
-				if (IsIdUsedOnlyBy(PhiIdentifier, TestStatement, DeltaStatement))
+				if (IsIdUsedOnlyBy(ctx.PhiIdentifier, ctx.TestStatement, ctx.DeltaStatement))
 				{
 					// The only use inside the loop is the increment, so we never see the initial value.
-					InitialValue = Operator.add.ApplyConstants(InitialValue, DeltaValue);
+					ctx.InitialValue = Operator.add.ApplyConstants(ctx.InitialValue, ctx.DeltaValue);
 				}
 			}
 
-            TestValue = AdjustTestValue(TestValue);
+            ctx.TestValue = AdjustTestValue(ctx.TestValue);
 
-			return new LinearInductionVariable(InitialValue, DeltaValue, TestValue, IsSignedOperator(testOperator));
+            return ctx.CreateInductionVariable();
 		}
 
-        private bool IsSignedOperator(Operator op)
-        {
-            return 
-                op == Operator.lt || op == Operator.le ||
-                op == Operator.gt || op == Operator.ge;
-        }
+
 
         public Constant AdjustTestValue(Constant testValue)
         {
@@ -139,19 +95,19 @@ namespace Decompiler.Analysis
 
             // <= or >= operators imply an extra spin around the loop.
 
-            if (RelEq(TestOperator) &&
-                DominatesAllUses(TestStatement, PhiIdentifier))
+            if (RelEq(ctx.TestOperator) &&
+                DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier))
             {
-                testValue = Operator.add.ApplyConstants(testValue, DeltaValue);
+                testValue = Operator.add.ApplyConstants(testValue, ctx.DeltaValue);
             }
-            Identifier idNew = (Identifier) ((Assignment) DeltaStatement.Instruction).Dst;
-            if (!IsSingleUsingStatement(TestStatement, idNew))
+            Identifier idNew = (Identifier) ((Assignment) ctx.DeltaStatement.Instruction).Dst;
+            if (!IsSingleUsingStatement(ctx.TestStatement, idNew))
             {
-                if (!(IsSingleUsingStatement(PhiStatement, idNew) &&
-                    DominatesAllUses(TestStatement, PhiIdentifier)))
+                if (!(IsSingleUsingStatement(ctx.PhiStatement, idNew) &&
+                    DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier)))
                 {
                     // A use is made of the variable between increment and test.
-                    testValue = Operator.add.ApplyConstants(testValue, DeltaValue);
+                    testValue = Operator.add.ApplyConstants(testValue, ctx.DeltaValue);
                 }
             }
             return testValue;
@@ -182,6 +138,9 @@ namespace Decompiler.Analysis
 			return true;
 		}
 
+        /// <summary>
+        /// Find all linear induction variables in this procedure.
+        /// </summary>
 		public void Find()
 		{
 			SccFinder<SsaIdentifier> sccFinder = new SccFinder<SsaIdentifier>(this);
@@ -203,10 +162,10 @@ namespace Decompiler.Analysis
 						BinaryExpression bin = b.Condition as BinaryExpression;
 						if (bin != null && bin.op is ConditionalOperator)
 						{
-							TestOperator = bin.op;
-							TestStatement = u;
-							TestValue = bin.Right as Constant;
-							return TestValue;
+							ctx.TestOperator = bin.op;
+							ctx.TestStatement = u;
+							ctx.TestValue = bin.Right as Constant;
+							return ctx.TestValue;
 						}
 					}
 				}
@@ -222,7 +181,7 @@ namespace Decompiler.Analysis
 			Identifier id1 = (Identifier)phi.Arguments[1];
 			if (id0.Number > id1.Number)
 			{
-				Identifier t = id0; id0 = id1; id1 = t;
+                id0 = id1;
 			}
 			SsaIdentifier sid = ssaIds[id0];
 			if (sid.DefStatement == null)
@@ -235,8 +194,9 @@ namespace Decompiler.Analysis
 			if (ass.Dst != id0)
 				return null;
 
-			InitialValue = ass.Src as Constant;
-			return InitialValue;
+            ctx.InitialStatement = sid.DefStatement;
+			ctx.InitialValue = ass.Src as Constant;
+			return ctx.InitialValue;
 		}
 
 		public Constant FindLinearIncrement(ICollection<SsaIdentifier> sids)
@@ -257,11 +217,11 @@ namespace Decompiler.Analysis
                         Constant c = bin.Right as Constant;
                         if (c != null)
                         {
-                            DeltaStatement = sid.DefStatement;
-                            DeltaValue = (bin.op == Operator.sub)
+                            ctx.DeltaStatement = sid.DefStatement;
+                            ctx.DeltaValue = (bin.op == Operator.sub)
                                 ? c.Negate()
                                 : c;
-                            return DeltaValue;
+                            return ctx.DeltaValue;
                         }
                     }
 
@@ -279,8 +239,8 @@ namespace Decompiler.Analysis
                 PhiAssignment phi = sid.DefStatement.Instruction as PhiAssignment;
                 if (phi != null)
                 {
-                    PhiStatement = sid.DefStatement;
-                    PhiIdentifier = (Identifier) phi.Dst;
+                    ctx.PhiStatement = sid.DefStatement;
+                    ctx.PhiIdentifier = (Identifier) phi.Dst;
                     return phi.Src;
                 }
             }
@@ -360,15 +320,16 @@ namespace Decompiler.Analysis
 		{
 			if (scc.Count <= 1)
 				return;
+
+            ctx = new LinearInductionVariableContext();
 			PhiFunction phi = FindPhiFunction(scc);
 			if (phi == null)
 				return;
-			DeltaValue = FindLinearIncrement(scc);
-			if (DeltaValue == null)
+			ctx.DeltaValue = FindLinearIncrement(scc);
+			if (ctx.DeltaValue == null)
 				return;
-
-			InitialValue = FindInitialValue(phi);
-			TestValue = FindFinalValue(scc);
+			ctx.InitialValue = FindInitialValue(phi);
+			ctx.TestValue = FindFinalValue(scc);
 			LinearInductionVariable iv = CreateInductionVariable();
 			if (iv != null)
 			{
@@ -377,6 +338,7 @@ namespace Decompiler.Analysis
 					sid.InductionVariable = iv;
 				}
 				ivs.Add(iv);
+                contexts.Add(iv, ctx);
 			}
 		}
 

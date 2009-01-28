@@ -24,13 +24,18 @@ namespace Decompiler.Core
 	public class Statement
 	{
 		private Instruction instruction;
-		public Block block;
+        private Block block;
 
 		public Statement(Instruction instr, Block block)
 		{
 			this.instruction = instr;
 			this.block = block;
 		}
+
+        public Block Block
+        {
+            get { return block; }
+        }
 
 		public Instruction Instruction
 		{

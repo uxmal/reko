@@ -86,13 +86,13 @@ namespace Decompiler.Analysis
 					if (phi != null)
 					{
 						int i = Array.IndexOf(phi.Arguments, v.Identifier);
-						Block p = s.block.Pred[i];
+						Block p = s.Block.Pred[i];
 						LiveOutAtBlock(p, v);
 					}
 					else
 					{
-						int i = s.block.Statements.IndexOf(s);
-						LiveInAtStatement(s.block, i, v);
+						int i = s.Block.Statements.IndexOf(s);
+						LiveInAtStatement(s.Block, i, v);
 					}
 				}
 			}
@@ -121,10 +121,10 @@ namespace Decompiler.Analysis
 
 		public bool IsLiveIn(Identifier id, Statement stm)
 		{
-			bool live = liveOutBlocks[stm.block.RpoNumber].Contains(ssaIds[id]);
-			for (int i = stm.block.Statements.Count - 1; i >= 0; --i)
+			bool live = liveOutBlocks[stm.Block.RpoNumber].Contains(ssaIds[id]);
+			for (int i = stm.Block.Statements.Count - 1; i >= 0; --i)
 			{
-				Statement s = stm.block.Statements[i];
+				Statement s = stm.Block.Statements[i];
 				if (ssaIds[id].DefStatement == s)
 					return false;
 
@@ -144,10 +144,10 @@ namespace Decompiler.Analysis
 
 		public bool IsLiveOut(Identifier id, Statement stm)
 		{
-			bool live = liveOutBlocks[stm.block.RpoNumber].Contains(ssaIds[id]);
-			for (int i = stm.block.Statements.Count - 1; i >= 0; --i)
+			bool live = liveOutBlocks[stm.Block.RpoNumber].Contains(ssaIds[id]);
+			for (int i = stm.Block.Statements.Count - 1; i >= 0; --i)
 			{
-				Statement s = stm.block.Statements[i];
+				Statement s = stm.Block.Statements[i];
 				if (s == stm)
 					return live;
 
@@ -277,7 +277,7 @@ namespace Decompiler.Analysis
 					else
 					{
 
-						LiveInAtStatement(use.block, use.block.Statements.IndexOf(use), sid);
+						LiveInAtStatement(use.Block, use.Block.Statements.IndexOf(use), sid);
 					}
 				}
 			}
@@ -347,7 +347,7 @@ namespace Decompiler.Analysis
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
 				if (u == phi.Src.Arguments[i])
-					return stm.block.Pred[i];
+					return stm.Block.Pred[i];
 			}
 			return null;
 		}

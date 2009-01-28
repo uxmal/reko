@@ -108,8 +108,7 @@ namespace Decompiler.Scanning
 
 		public override Instruction TransformAssignment(Assignment a)
 		{
-			a.Src = a.Src.Accept(this);
-			return Def(a.Dst, a.Src);
+			return Def(a.Dst, a.Src.Accept(this));
 		}
 
 		public override Instruction TransformStore(Store store)

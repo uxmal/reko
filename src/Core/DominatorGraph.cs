@@ -85,9 +85,9 @@ namespace Decompiler.Core
 		{
 			if (stmDom == stm)
 				return false;
-			if (stmDom.block == stm.block)
+			if (stmDom.Block == stm.Block)
 			{
-				foreach (Statement s in stmDom.block.Statements)
+				foreach (Statement s in stmDom.Block.Statements)
 				{
 					if (stmDom == s)
 						return true;
@@ -98,7 +98,7 @@ namespace Decompiler.Core
 			}
 			else
 			{
-				return DominatesStrictly(stmDom.block.RpoNumber, stm.block.RpoNumber);
+				return DominatesStrictly(stmDom.Block.RpoNumber, stm.Block.RpoNumber);
 			}
 		}
 

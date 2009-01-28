@@ -64,7 +64,7 @@ namespace Decompiler
 			RegisterLiveness rl = dfa.UntangleProcedures();
 			host.InterproceduralAnalysisComplete();
 
-			dfa.BuildExpressionTrees(rl);
+			dfa.BuildExpressionTrees();
 			using (TextWriter textWriter = host.CreateIntermediateCodeWriter())
 			{
 				if (textWriter != null)

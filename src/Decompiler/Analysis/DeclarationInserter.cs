@@ -44,10 +44,10 @@ namespace Decompiler.Analysis
 					if (sid.DefStatement.Instruction is DefInstruction)
 						blocks.Add(null);
 					else
-						blocks.Add(sid.DefStatement.block);
+						blocks.Add(sid.DefStatement.Block);
 					foreach (Statement u in sid.Uses)
 					{
-						blocks.Add(u.block);
+						blocks.Add(u.Block);
 					}
 				}
 			}
@@ -58,7 +58,7 @@ namespace Decompiler.Analysis
 			{
 				foreach (SsaIdentifier sid in web.Members)
 				{
-					if (sid.DefStatement != null && sid.DefStatement.block == dominator)
+					if (sid.DefStatement != null && sid.DefStatement.Block == dominator)
 					{
 						Assignment ass = sid.DefStatement.Instruction as Assignment;
 						if (ass != null && ass.Dst == sid.Identifier)

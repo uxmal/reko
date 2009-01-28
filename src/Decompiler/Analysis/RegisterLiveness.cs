@@ -375,8 +375,8 @@ namespace Decompiler.Analysis
 				state.UpdateSummary(item);
 				foreach (Statement stmCaller in prog.CallGraph.CallerStatements(p))
 				{
-					if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceVerbose, string.Format("Propagating to {0} (block {1} in {2}", stmCaller.Instruction.ToString(), stmCaller.block.RpoNumber, stmCaller.block.Procedure.Name));
-					worklist.Add(mpprocData[stmCaller.block]);
+					if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceVerbose, string.Format("Propagating to {0} (block {1} in {2}", stmCaller.Instruction.ToString(), stmCaller.Block.RpoNumber, stmCaller.Block.Procedure.Name));
+					worklist.Add(mpprocData[stmCaller.Block]);
 				}
 			}
 		}

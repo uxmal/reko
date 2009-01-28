@@ -162,6 +162,7 @@
     <Compile Include="Analysis\InteferenceGraph.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\LinearInductionVariableContext.cs" />
     <Compile Include="Analysis\LinearInductionVariableFinder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -339,6 +340,7 @@
     <Compile Include="Scanning\WorkItem.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\StrengthReduction.cs" />
     <Compile Include="Structure\BlockLinearizer.cs">
       <SubType>Code</SubType>
     </Compile>

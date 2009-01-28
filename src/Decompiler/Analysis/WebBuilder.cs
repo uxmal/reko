@@ -144,7 +144,7 @@ namespace Decompiler.Analysis
 			for (int i = 0; i < phi.Arguments.Length; ++i)
 			{
 				Identifier id = (Identifier) phi.Arguments[i];
-				Block pred = stmCur.block.Pred[i];
+				Block pred = stmCur.Block.Pred[i];
 				if (id != idDst)
 					Merge(webOf[idDst.Number], webOf[id.Number]);
 			}
@@ -191,10 +191,10 @@ namespace Decompiler.Analysis
 				a.Dst = (Identifier) a.Dst.Accept(this);
 				a.Src = a.Src.Accept(this);
 				Identifier idDst = a.Dst as Identifier;
-				Identifier idSrc = a.Src as Identifier;
+                Identifier idSrc = a.Src as Identifier;
 				if (idDst != null && idSrc == idDst)
-					return null;
-				else 
+                    return null;
+                else
 					return a;
 			}
 

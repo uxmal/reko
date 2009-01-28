@@ -449,20 +449,7 @@ namespace Decompiler.UnitTests.Typing
 
 
 
-        private void RunTest(string srcfile, string outputFile)
-        {
-            RunTest(base.RewriteFile(srcfile), outputFile);
-        }
-
-		private void RunTest(ProgramMock mock, string outputFile)
-		{
-			Program prog = mock.BuildProgram();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
-			dfa.BuildExpressionTrees(null);
-			RunTest(prog, outputFile);
-		}
-
-		private void RunTest(Program prog, string outputFile)
+		protected override void RunTest(Program prog, string outputFile)
 		{
 			aen.Transform(prog);
 			eqb.Build(prog);

@@ -239,7 +239,7 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(m.BuildProgram(), "Typing/TtranTreeFind.txt");
 		}
 
-		private void RunTest(Program prog, string outputFileName)
+		protected override void RunTest(Program prog, string outputFileName)
 		{
 			ExpressionNormalizer aen = new ExpressionNormalizer();
 			aen.Transform(prog);
@@ -268,12 +268,6 @@ namespace Decompiler.UnitTests.Typing
 				store.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
-		}
-
-		private void RunTest(string asmSourceFileName, string testFileName)
-		{
-			Program prog = RewriteFile(asmSourceFileName);
-			RunTest(prog, testFileName);
 		}
 	}
 

@@ -106,7 +106,7 @@ namespace Decompiler.Analysis
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
 				Identifier id = (Identifier) phi.Src.Arguments[i];
-				Block pred = stm.block.Pred[i];
+				Block pred = stm.Block.Pred[i];
 				if (idDst != id)
 				{
 					if (IsLiveAtCopyPoint(idDst, pred))
@@ -161,7 +161,7 @@ namespace Decompiler.Analysis
 
 			public int Index(Statement stm)
 			{
-				return stm.block.Statements.IndexOf(stm);
+				return stm.Block.Statements.IndexOf(stm);
 			}
 		}
 

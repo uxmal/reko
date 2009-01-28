@@ -102,7 +102,7 @@ namespace Decompiler.Analysis
 			RemoveUses(pstm);
 
 			// Remove the statement itself.
-			pstm.block.Statements.Remove(pstm);
+			pstm.Block.Statements.Remove(pstm);
 		}
 
 
