@@ -38,11 +38,11 @@ l0C00_002A:		// block 2, pred: 1 4
 	cx = 0x0800
 	ax = 0x3F00
 	C = msdos_read_file(bx, cx, ds_dx, &ax)
-	branch Test(ULT,C)
+	branch Test(ULT,C) l0C00_003E
 	// succ:  3 5
 l0C00_003A:		// block 3, pred: 2
 	SCZO = cond(ax - 0x0000)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l0C00_001F
 	// succ:  5 4
 l0C00_001F:		// block 4, pred: 3
 	bx = wLoc08

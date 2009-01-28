@@ -36,7 +36,7 @@ dx_ax: dx_ax:Sequence dx:ax
 SCZO: SCZO:Flags
 wLoc04_12: orig: wLoc04
 ax_13: orig: ax, def: {ax_13 = wArg00}, uses: {ax_14 = ax_13 - 0x0001}
-ax_14: orig: ax, def: {ax_14 = ax_13 - 0x0001}, uses: {wLoc06_21 = ax_14}{branch ax_14 == 0x0000}
+ax_14: orig: ax, def: {ax_14 = ax_13 - 0x0001}, uses: {wLoc06_21 = ax_14}{branch ax_14 == 0x0000 l0C00_0026}
 dx_ax_15: orig: dx_ax
 SZO_16: orig: SZO
 Z_17: orig: Z
@@ -68,7 +68,7 @@ fn0C00_000F_entry:		// block 0, pred:
 l0C00_000F:		// block 1, pred: 0
 	ax_13 = wArg00
 	ax_14 = ax_13 - 0x0001
-	branch ax_14 == 0x0000
+	branch ax_14 == 0x0000 l0C00_0026
 	// succ:  3 2
 l0C00_0026:		// block 2, pred: 1
 	ax_19 = 0x0001

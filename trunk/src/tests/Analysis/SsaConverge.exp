@@ -7,8 +7,8 @@ SZO: SZO:Flags, def: {def SZO}
 ax: ax:Register ax, def: {def ax}
 ds: ds:Register ds, def: {def ds}, uses: {store(Mem21[ds:0x0100:word16]) = ax_17}
 SCZO_8: orig: SCZO, def: {SCZO_8 = cond(bx - 0x0000)}, uses: {Z_9 = SCZO_8 (alias)}{SZO_10 = SCZO_8 (alias)}{SCZO_20 = PHI(SCZO_8, SCZO_8, SCZO_12)}{SCZO_20 = PHI(SCZO_8, SCZO_8, SCZO_12)}
-Z_9: orig: Z, def: {Z_9 = SCZO_8 (alias)}, uses: {branch Test(EQ,Z_9)}{Z_19 = PHI(Z_9, Z_9, Z_13)}{Z_19 = PHI(Z_9, Z_9, Z_13)}
-SZO_10: orig: SZO, def: {SZO_10 = SCZO_8 (alias)}, uses: {branch Test(GT,SZO_10)}{SZO_18 = PHI(SZO_10, SZO_10, SZO_14)}{SZO_18 = PHI(SZO_10, SZO_10, SZO_14)}
+Z_9: orig: Z, def: {Z_9 = SCZO_8 (alias)}, uses: {branch Test(EQ,Z_9) l0C00_0013}{Z_19 = PHI(Z_9, Z_9, Z_13)}{Z_19 = PHI(Z_9, Z_9, Z_13)}
+SZO_10: orig: SZO, def: {SZO_10 = SCZO_8 (alias)}, uses: {branch Test(GT,SZO_10) l0C00_000D}{SZO_18 = PHI(SZO_10, SZO_10, SZO_14)}{SZO_18 = PHI(SZO_10, SZO_10, SZO_14)}
 ax_11: orig: ax, def: {ax_11 = 0x0000}, uses: {SCZO_12 = cond(ax_11)}{ax_17 = PHI(ax_16, ax_15, ax_11)}
 SCZO_12: orig: SCZO, def: {SCZO_12 = cond(ax_11)}, uses: {Z_13 = SCZO_12 (alias)}{SZO_14 = SCZO_12 (alias)}{SCZO_20 = PHI(SCZO_8, SCZO_8, SCZO_12)}
 Z_13: orig: Z, def: {Z_13 = SCZO_12 (alias)}, uses: {Z_19 = PHI(Z_9, Z_9, Z_13)}
@@ -36,7 +36,7 @@ l0C00_0000:		// block 1, pred: 0
 	SCZO_8 = cond(bx - 0x0000)
 	Z_9 = SCZO_8 (alias)
 	SZO_10 = SCZO_8 (alias)
-	branch Test(EQ,Z_9)
+	branch Test(EQ,Z_9) l0C00_0013
 	// succ:  3 2
 l0C00_0013:		// block 2, pred: 1
 	ax_11 = 0x0000
@@ -45,7 +45,7 @@ l0C00_0013:		// block 2, pred: 1
 	SZO_14 = SCZO_12 (alias)
 	// succ:  6
 l0C00_0005:		// block 3, pred: 1
-	branch Test(GT,SZO_10)
+	branch Test(GT,SZO_10) l0C00_000D
 	// succ:  5 4
 l0C00_000D:		// block 4, pred: 3
 	ax_15 = 0x0001

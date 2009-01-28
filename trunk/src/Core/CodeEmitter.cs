@@ -48,6 +48,13 @@ namespace Decompiler.Core
 			get { return blockCur; }
 		}
 
+        public Branch Branch(Expression condition, Block target)
+        {
+            Branch b = new Branch(condition, target);
+            Emit(b);
+            return b;
+        }
+
 		/// <summary>
 		/// Appends the instruction to the end of the list of intstructions of the current block.
 		/// </summary>

@@ -36,7 +36,7 @@ l0C00_0004:		// block 1, pred: 0 5
 	al = al >>u 0x01
 	al = al + 0x30
 	SCZO = cond(al - 0x39)
-	branch Test(LE,SZO)
+	branch Test(LE,SZO) l0C00_0016
 	// succ:  2 3
 // DataOut: bp si al ds
 l0C00_0014:		// block 2, pred: 1
@@ -50,7 +50,7 @@ l0C00_0016:		// block 3, pred: 2 1
 	C = false
 	ah = ah + 0x30
 	SCZO = cond(ah - 0x39)
-	branch Test(LE,SZO)
+	branch Test(LE,SZO) l0C00_0026
 	// succ:  4 5
 // DataOut: ax bp si al ah ds
 l0C00_0023:		// block 4, pred: 3
@@ -68,7 +68,7 @@ l0C00_0026:		// block 5, pred: 4 3
 	si = si + 0x0001
 	bp = bp - 0x0001
 	SZO = cond(bp)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l0C00_0004
 	// succ:  6 1
 // DataOut: bp si ds
 l0C00_003C:		// block 6, pred: 5

@@ -52,16 +52,16 @@ ax: ax:Register ax, def: {def ax}, uses: {SCZO_6 = cond(ax - 0x0000)}{ax_9 = ax 
 Z: Z:Flags, def: {def Z}
 SZO: SZO:Flags, def: {def SZO}
 SCZO_6: orig: SCZO, def: {SCZO_6 = cond(ax - 0x0000)}, uses: {Z_7 = SCZO_6 (alias)}{SZO_8 = SCZO_6 (alias)}{SCZO_27 = PHI(SCZO_6, SCZO_11, SCZO_15, SCZO_18)}
-Z_7: orig: Z, def: {Z_7 = SCZO_6 (alias)}, uses: {branch Test(NE,Z_7)}{Z_25 = PHI(Z_7, Z_12, Z_16, Z_19)}
+Z_7: orig: Z, def: {Z_7 = SCZO_6 (alias)}, uses: {branch Test(NE,Z_7) l0C00_0014}{Z_25 = PHI(Z_7, Z_12, Z_16, Z_19)}
 SZO_8: orig: SZO, def: {SZO_8 = SCZO_6 (alias)}, uses: {SZO_24 = PHI(SZO_8, SZO_10, SZO_14, SZO_20)}
 ax_9: orig: ax, def: {ax_9 = ax - 0x0001}, uses: {SZO_10 = cond(ax_9)}{ax_13 = ax_9 - 0x0001}
 SZO_10: orig: SZO, def: {SZO_10 = cond(ax_9)}, uses: {SCZO_11 = SZO_10 (alias)}{Z_12 = SZO_10 (alias)}{SZO_24 = PHI(SZO_8, SZO_10, SZO_14, SZO_20)}
 SCZO_11: orig: SCZO, def: {SCZO_11 = SZO_10 (alias)}, uses: {SCZO_27 = PHI(SCZO_6, SCZO_11, SCZO_15, SCZO_18)}
-Z_12: orig: Z, def: {Z_12 = SZO_10 (alias)}, uses: {branch Test(NE,Z_12)}{Z_25 = PHI(Z_7, Z_12, Z_16, Z_19)}
+Z_12: orig: Z, def: {Z_12 = SZO_10 (alias)}, uses: {branch Test(NE,Z_12) l0C00_001B}{Z_25 = PHI(Z_7, Z_12, Z_16, Z_19)}
 ax_13: orig: ax, def: {ax_13 = ax_9 - 0x0001}, uses: {SZO_14 = cond(ax_13)}
 SZO_14: orig: SZO, def: {SZO_14 = cond(ax_13)}, uses: {SCZO_15 = SZO_14 (alias)}{Z_16 = SZO_14 (alias)}{SZO_24 = PHI(SZO_8, SZO_10, SZO_14, SZO_20)}
 SCZO_15: orig: SCZO, def: {SCZO_15 = SZO_14 (alias)}, uses: {SCZO_27 = PHI(SCZO_6, SCZO_11, SCZO_15, SCZO_18)}
-Z_16: orig: Z, def: {Z_16 = SZO_14 (alias)}, uses: {branch Test(NE,Z_16)}{Z_25 = PHI(Z_7, Z_12, Z_16, Z_19)}
+Z_16: orig: Z, def: {Z_16 = SZO_14 (alias)}, uses: {branch Test(NE,Z_16) l0C00_0022}{Z_25 = PHI(Z_7, Z_12, Z_16, Z_19)}
 ax_17: orig: ax, def: {ax_17 = 0x0000}, uses: {SCZO_18 = cond(ax_17)}{return ax_17}{ax_26 = PHI(ax_23, ax_22, ax_21, ax_17)}
 SCZO_18: orig: SCZO, def: {SCZO_18 = cond(ax_17)}, uses: {Z_19 = SCZO_18 (alias)}{SZO_20 = SCZO_18 (alias)}{SCZO_27 = PHI(SCZO_6, SCZO_11, SCZO_15, SCZO_18)}
 Z_19: orig: Z, def: {Z_19 = SCZO_18 (alias)}, uses: {Z_25 = PHI(Z_7, Z_12, Z_16, Z_19)}
@@ -87,21 +87,21 @@ l0C00_000C:		// block 1, pred: 0
 	SCZO_6 = cond(ax - 0x0000)
 	Z_7 = SCZO_6 (alias)
 	SZO_8 = SCZO_6 (alias)
-	branch Test(NE,Z_7)
+	branch Test(NE,Z_7) l0C00_0014
 	// succ:  7 2
 l0C00_0014:		// block 2, pred: 1
 	ax_9 = ax - 0x0001
 	SZO_10 = cond(ax_9)
 	SCZO_11 = SZO_10 (alias)
 	Z_12 = SZO_10 (alias)
-	branch Test(NE,Z_12)
+	branch Test(NE,Z_12) l0C00_001B
 	// succ:  6 3
 l0C00_001B:		// block 3, pred: 2
 	ax_13 = ax_9 - 0x0001
 	SZO_14 = cond(ax_13)
 	SCZO_15 = SZO_14 (alias)
 	Z_16 = SZO_14 (alias)
-	branch Test(NE,Z_16)
+	branch Test(NE,Z_16) l0C00_0022
 	// succ:  5 4
 l0C00_0022:		// block 4, pred: 3
 	ax_17 = 0x0000
@@ -135,15 +135,15 @@ SCZO: SCZO:Flags
 ax: ax:Register ax, def: {def ax}, uses: {SCZO_6 = cond(ax)}{SZO_14 = cond(ax - 0x0002)}{SZO_10 = cond(ax - 0x0001)}
 Z: Z:Flags
 SZO: SZO:Flags
-SCZO_6: orig: SCZO, def: {SCZO_6 = cond(ax)}, uses: {branch Test(NE,SCZO_6)}
+SCZO_6: orig: SCZO, def: {SCZO_6 = cond(ax)}, uses: {branch Test(NE,SCZO_6) l0C00_0014}
 Z_7: orig: Z
 SZO_8: orig: SZO
 ax_9: orig: ax
-SZO_10: orig: SZO, def: {SZO_10 = cond(ax - 0x0001)}, uses: {branch Test(NE,SZO_10)}
+SZO_10: orig: SZO, def: {SZO_10 = cond(ax - 0x0001)}, uses: {branch Test(NE,SZO_10) l0C00_001B}
 SCZO_11: orig: SCZO
 Z_12: orig: Z
 ax_13: orig: ax
-SZO_14: orig: SZO, def: {SZO_14 = cond(ax - 0x0002)}, uses: {branch Test(NE,SZO_14)}
+SZO_14: orig: SZO, def: {SZO_14 = cond(ax - 0x0002)}, uses: {branch Test(NE,SZO_14) l0C00_0022}
 SCZO_15: orig: SCZO
 Z_16: orig: Z
 ax_17: orig: ax
@@ -164,15 +164,15 @@ fn0C00_000C_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000C:		// block 1, pred: 0
 	SCZO_6 = cond(ax)
-	branch Test(NE,SCZO_6)
+	branch Test(NE,SCZO_6) l0C00_0014
 	// succ:  7 2
 l0C00_0014:		// block 2, pred: 1
 	SZO_10 = cond(ax - 0x0001)
-	branch Test(NE,SZO_10)
+	branch Test(NE,SZO_10) l0C00_001B
 	// succ:  6 3
 l0C00_001B:		// block 3, pred: 2
 	SZO_14 = cond(ax - 0x0002)
-	branch Test(NE,SZO_14)
+	branch Test(NE,SZO_14) l0C00_0022
 	// succ:  5 4
 l0C00_0022:		// block 4, pred: 3
 	return 0x0000

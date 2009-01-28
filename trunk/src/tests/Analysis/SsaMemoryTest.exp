@@ -9,7 +9,7 @@ si: si:Register si, def: {def si}, uses: {cx_13 = Mem12[ds:si:word16]}{cx_15 = M
 bx_8: orig: bx, def: {bx_8 = Mem0[ds:bx + 0x0004:word16]}, uses: {cx_9 = Mem0[ds:bx_8 + 0x0002:word16]}{store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001}{store(Mem14[ds:bx_8 + 0x0006:word16]) = 0x0000}
 cx_9: orig: cx, def: {cx_9 = Mem0[ds:bx_8 + 0x0002:word16]}, uses: {SCZO_10 = cond(cx_9 - 0x0000)}
 SCZO_10: orig: SCZO, def: {SCZO_10 = cond(cx_9 - 0x0000)}, uses: {Z_11 = SCZO_10 (alias)}
-Z_11: orig: Z, def: {Z_11 = SCZO_10 (alias)}, uses: {branch Test(NE,Z_11)}
+Z_11: orig: Z, def: {Z_11 = SCZO_10 (alias)}, uses: {branch Test(NE,Z_11) l0C00_0015}
 Mem12: orig: Mem0, def: {store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001}, uses: {cx_13 = Mem12[ds:si:word16]}{Mem17 = PHI(Mem14, Mem12)}
 cx_13: orig: cx, def: {cx_13 = Mem12[ds:si:word16]}, uses: {cx_16 = PHI(cx_15, cx_13)}
 Mem14: orig: Mem0, def: {store(Mem14[ds:bx_8 + 0x0006:word16]) = 0x0000}, uses: {cx_15 = Mem14[ds:si:word16]}{Mem17 = PHI(Mem14, Mem12)}
@@ -34,7 +34,7 @@ l0C00_0000:		// block 1, pred: 0
 	cx_9 = Mem0[ds:bx_8 + 0x0002:word16]
 	SCZO_10 = cond(cx_9 - 0x0000)
 	Z_11 = SCZO_10 (alias)
-	branch Test(NE,Z_11)
+	branch Test(NE,Z_11) l0C00_0015
 	// succ:  3 2
 l0C00_0015:		// block 2, pred: 1
 	store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001

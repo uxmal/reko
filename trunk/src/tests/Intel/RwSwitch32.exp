@@ -14,7 +14,7 @@ fn10000000_entry:		// block 0, pred:
 l10000000:		// block 1, pred: 0
 	eax = dwArg00
 	SCZO = cond(eax - 0x00000003)
-	branch Test(UGT,CZ)
+	branch Test(UGT,CZ) l10000048
 	// succ:  3 2
 l10000048:		// block 2, pred: 1
 	eax = 0xFFFFFFFF

@@ -35,7 +35,7 @@ dx: dx:Register dx, def: {def dx}, uses: {dx_ax_14 = SEQ(dx, ax_13) (alias)}{dx_
 dx_ax: dx_ax:Sequence dx:ax, def: {def dx_ax}
 wLoc04_10: orig: wLoc04, def: {wLoc04_10 = si}, uses: {si_29 = wLoc04_10}
 SCZO_11: orig: SCZO, def: {SCZO_11 = cond(cx - 0x0001)}, uses: {SZO_12 = SCZO_11 (alias)}{SCZO_27 = PHI(SCZO_21, SCZO_11)}{call fn0C00_000B (depth: 4;)}
-SZO_12: orig: SZO, def: {SZO_12 = SCZO_11 (alias)}, uses: {branch Test(LE,SZO_12)}{SZO_26 = PHI(SZO_22, SZO_12)}
+SZO_12: orig: SZO, def: {SZO_12 = SCZO_11 (alias)}, uses: {branch Test(LE,SZO_12) l0C00_001C}{SZO_26 = PHI(SZO_22, SZO_12)}
 ax_13: orig: ax, def: {ax_13 = 0x0001}, uses: {dx_ax_14 = SEQ(dx, ax_13) (alias)}{ax_25 = PHI(ax_19, ax_13)}
 dx_ax_14: orig: dx_ax, def: {dx_ax_14 = SEQ(dx, ax_13) (alias)}, uses: {dx_ax_23 = PHI(dx_ax_18, dx_ax_14)}
 si_15: orig: si, def: {si_15 = cx}, uses: {call fn0C00_000B (depth: 4;)}{dx_ax_18 = si_15 *s ax}
@@ -71,7 +71,7 @@ l0C00_000B:		// block 1, pred: 0
 	wLoc04_10 = si
 	SCZO_11 = cond(cx - 0x0001)
 	SZO_12 = SCZO_11 (alias)
-	branch Test(LE,SZO_12)
+	branch Test(LE,SZO_12) l0C00_001C
 	// succ:  3 2
 l0C00_001C:		// block 2, pred: 1
 	ax_13 = 0x0001

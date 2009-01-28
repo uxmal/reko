@@ -16,14 +16,14 @@ Mem13: orig: Mem0, def: {Mem13 = PHI(Mem0, Mem27, Mem19)}, uses: {ax_14 = Mem13[
 ax_14: orig: ax, def: {ax_14 = Mem13[ds:si_12:word16]}, uses: {SCZO_16 = cond(ax_14 - 0x0020)}{store(Mem19[ds:di:word16]) = ax_14}{SCZO_20 = cond(ax_14 - 0x0000)}{SCZO_23 = cond(ax_14 - 0x000D)}
 si_15: orig: si, def: {si_15 = si_12 + 0x0002}, uses: {si_12 = PHI(si, si_15, si_15)}{si_12 = PHI(si, si_15, si_15)}{ax_32 = si_15}
 SCZO_16: orig: SCZO, def: {SCZO_16 = cond(ax_14 - 0x0020)}, uses: {Z_17 = SCZO_16 (alias)}{SZO_18 = SCZO_16 (alias)}
-Z_17: orig: Z, def: {Z_17 = SCZO_16 (alias)}, uses: {branch Test(NE,Z_17)}
+Z_17: orig: Z, def: {Z_17 = SCZO_16 (alias)}, uses: {branch Test(NE,Z_17) l0C00_0005}
 SZO_18: orig: SZO, def: {SZO_18 = SCZO_16 (alias)}
 Mem19: orig: Mem0, def: {store(Mem19[ds:di:word16]) = ax_14}, uses: {Mem13 = PHI(Mem0, Mem27, Mem19)}{v9_26 = Mem19[ds:0x0302:word16] + 0x0001}{Mem41 = PHI(Mem13, Mem19)}
 SCZO_20: orig: SCZO, def: {SCZO_20 = cond(ax_14 - 0x0000)}, uses: {Z_21 = SCZO_20 (alias)}{SZO_22 = SCZO_20 (alias)}{SCZO_39 = PHI(SCZO_34, SCZO_20)}
-Z_21: orig: Z, def: {Z_21 = SCZO_20 (alias)}, uses: {branch Test(NE,Z_21)}{Z_38 = PHI(Z_35, Z_21)}
+Z_21: orig: Z, def: {Z_21 = SCZO_20 (alias)}, uses: {branch Test(NE,Z_21) l0C00_0011}{Z_38 = PHI(Z_35, Z_21)}
 SZO_22: orig: SZO, def: {SZO_22 = SCZO_20 (alias)}, uses: {SZO_37 = PHI(SZO_36, SZO_22)}
 SCZO_23: orig: SCZO, def: {SCZO_23 = cond(ax_14 - 0x000D)}, uses: {Z_24 = SCZO_23 (alias)}{SZO_25 = SCZO_23 (alias)}
-Z_24: orig: Z, def: {Z_24 = SCZO_23 (alias)}, uses: {branch Test(NE,Z_24)}
+Z_24: orig: Z, def: {Z_24 = SCZO_23 (alias)}, uses: {branch Test(NE,Z_24) l0C00_001A}
 SZO_25: orig: SZO, def: {SZO_25 = SCZO_23 (alias)}
 v9_26: orig: v9, def: {v9_26 = Mem19[ds:0x0302:word16] + 0x0001}, uses: {store(Mem27[ds:0x0302:word16]) = v9_26}{SZO_28 = cond(v9_26)}
 Mem27: orig: Mem0, def: {store(Mem27[ds:0x0302:word16]) = v9_26}, uses: {Mem13 = PHI(Mem0, Mem27, Mem19)}
@@ -68,20 +68,20 @@ l0C00_001A:		// block 2, pred: 1 5 4
 	SCZO_16 = cond(ax_14 - 0x0020)
 	Z_17 = SCZO_16 (alias)
 	SZO_18 = SCZO_16 (alias)
-	branch Test(NE,Z_17)
+	branch Test(NE,Z_17) l0C00_0005
 	// succ:  7 3
 l0C00_0005:		// block 3, pred: 2
 	store(Mem19[ds:di:word16]) = ax_14
 	SCZO_20 = cond(ax_14 - 0x0000)
 	Z_21 = SCZO_20 (alias)
 	SZO_22 = SCZO_20 (alias)
-	branch Test(NE,Z_21)
+	branch Test(NE,Z_21) l0C00_0011
 	// succ:  6 4
 l0C00_0011:		// block 4, pred: 3
 	SCZO_23 = cond(ax_14 - 0x000D)
 	Z_24 = SCZO_23 (alias)
 	SZO_25 = SCZO_23 (alias)
-	branch Test(NE,Z_24)
+	branch Test(NE,Z_24) l0C00_001A
 	// succ:  5 2
 l0C00_0016:		// block 5, pred: 4
 	v9_26 = Mem19[ds:0x0302:word16] + 0x0001
@@ -128,14 +128,14 @@ si_12: orig: si, def: {si_12 = PHI(si, si_15, si_15)}, uses: {ax_14 = Mem13[ds:s
 Mem13: orig: Mem0, def: {Mem13 = PHI(Mem0, Mem27, Mem19)}, uses: {ax_14 = Mem13[ds:si_12:word16]}
 ax_14: orig: ax, def: {ax_14 = Mem13[ds:si_12:word16]}, uses: {SCZO_16 = cond(ax_14 - 0x0020)}{store(Mem19[ds:di:word16]) = ax_14}{SCZO_20 = cond(ax_14)}{SCZO_23 = cond(ax_14 - 0x000D)}
 si_15: orig: si, def: {si_15 = si_12 + 0x0002}, uses: {si_12 = PHI(si, si_15, si_15)}{si_12 = PHI(si, si_15, si_15)}{ax_33 = si_15 - si}
-SCZO_16: orig: SCZO, def: {SCZO_16 = cond(ax_14 - 0x0020)}, uses: {branch Test(NE,SCZO_16)}
+SCZO_16: orig: SCZO, def: {SCZO_16 = cond(ax_14 - 0x0020)}, uses: {branch Test(NE,SCZO_16) l0C00_0005}
 Z_17: orig: Z
 SZO_18: orig: SZO
 Mem19: orig: Mem0, def: {store(Mem19[ds:di:word16]) = ax_14}, uses: {Mem13 = PHI(Mem0, Mem27, Mem19)}{v9_26 = Mem19[ds:0x0302:word16] + 0x0001}
-SCZO_20: orig: SCZO, def: {SCZO_20 = cond(ax_14)}, uses: {branch Test(NE,SCZO_20)}
+SCZO_20: orig: SCZO, def: {SCZO_20 = cond(ax_14)}, uses: {branch Test(NE,SCZO_20) l0C00_0011}
 Z_21: orig: Z
 SZO_22: orig: SZO
-SCZO_23: orig: SCZO, def: {SCZO_23 = cond(ax_14 - 0x000D)}, uses: {branch Test(NE,SCZO_23)}
+SCZO_23: orig: SCZO, def: {SCZO_23 = cond(ax_14 - 0x000D)}, uses: {branch Test(NE,SCZO_23) l0C00_001A}
 Z_24: orig: Z
 SZO_25: orig: SZO
 v9_26: orig: v9, def: {v9_26 = Mem19[ds:0x0302:word16] + 0x0001}, uses: {store(Mem27[ds:0x0302:word16]) = v9_26}
@@ -171,16 +171,16 @@ l0C00_001A:		// block 2, pred: 1 5 4
 	ax_14 = Mem13[ds:si_12:word16]
 	si_15 = si_12 + 0x0002
 	SCZO_16 = cond(ax_14 - 0x0020)
-	branch Test(NE,SCZO_16)
+	branch Test(NE,SCZO_16) l0C00_0005
 	// succ:  7 3
 l0C00_0005:		// block 3, pred: 2
 	store(Mem19[ds:di:word16]) = ax_14
 	SCZO_20 = cond(ax_14)
-	branch Test(NE,SCZO_20)
+	branch Test(NE,SCZO_20) l0C00_0011
 	// succ:  6 4
 l0C00_0011:		// block 4, pred: 3
 	SCZO_23 = cond(ax_14 - 0x000D)
-	branch Test(NE,SCZO_23)
+	branch Test(NE,SCZO_23) l0C00_001A
 	// succ:  5 2
 l0C00_0016:		// block 5, pred: 4
 	v9_26 = Mem19[ds:0x0302:word16] + 0x0001

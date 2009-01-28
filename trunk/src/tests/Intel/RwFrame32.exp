@@ -44,7 +44,7 @@ l10000017:		// block 1, pred: 0
 	dwLoc0C = ecx
 	wLoc0C = 0x0000
 	SCZO = cond(dwArg00 - 0x00000000)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l1000002F
 	// succ:  6 2
 l1000002F:		// block 2, pred: 1 5
 	eax = (int32) wLoc0C
@@ -52,12 +52,12 @@ l1000002F:		// block 2, pred: 1 5
 	edx = (int32) Mem0[ecx + eax:byte]
 	SCZO = cond(edx - 0x00000000)
 	C = false
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l1000005A
 	// succ:  3 4
 l1000003E:		// block 3, pred: 2
 	eax = (int32) wLoc0C
 	SCZO = cond(eax - 0x00007FFF)
-	branch Test(GE,SO)
+	branch Test(GE,SO) l1000005A
 	// succ:  5 4
 l1000005A:		// block 4, pred: 3 2
 	ax = wLoc0C

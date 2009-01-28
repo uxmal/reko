@@ -28,7 +28,7 @@ fn0C00_0007_entry:		// block 0, pred:
 l0C00_0007:		// block 1, pred: 0
 	fn0C00_0020(ds)
 	store(Mem14[ds:0x1444:word16]) = Mem0[ds:0x1444:word16] + Mem0[ds:si + 0x0028:word16]
-	branch Mem14[ds:di + 0x0030:byte] == 0x00
+	branch Mem14[ds:di + 0x0030:byte] == 0x00 l0C00_001F
 	// succ:  2 3
 l0C00_0019:		// block 2, pred: 1
 	fn0C00_0007(si, Mem14[ds:di + 0x0030:word16], ds)

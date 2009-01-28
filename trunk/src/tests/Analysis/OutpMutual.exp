@@ -41,7 +41,7 @@ l0C00_0004:		// block 1, pred: 0
 	SCZO_8 = cond(dx - 0x001E)
 	Z_9 = SCZO_8 (alias)
 	SZO_10 = SCZO_8 (alias)
-	branch Test(NE,Z_9)
+	branch Test(NE,Z_9) l0C00_000F
 	// succ:  3 2
 l0C00_000F:		// block 2, pred: 1
 	dx_11 = dx - 0x0001
@@ -74,7 +74,7 @@ fn0C00_0004_entry:		// block 0, pred:
 l0C00_0004:		// block 1, pred: 0
 	SCZO_8 = cond(dx - 0x001E)
 	Z_9 = SCZO_8 (alias)
-	branch Test(NE,Z_9)
+	branch Test(NE,Z_9) l0C00_000F
 	// succ:  3 2
 l0C00_000F:		// block 2, pred: 1
 	dx_11 = dx - 0x0001
@@ -106,7 +106,7 @@ l0C00_0013:		// block 1, pred: 0
 	SCZO_7 = cond(dx - 0x0014)
 	SO_8 = SCZO_7 (alias)
 	SZO_9 = SCZO_7 (alias)
-	branch Test(LT,SO_8)
+	branch Test(LT,SO_8) l0C00_001F
 	// succ:  3 2
 l0C00_001F:		// block 2, pred: 1
 	dx_10 = dx - 0x000A
@@ -142,7 +142,7 @@ fn0C00_0013_entry:		// block 0, pred:
 l0C00_0013:		// block 1, pred: 0
 	SCZO_7 = cond(dx - 0x0014)
 	SO_8 = SCZO_7 (alias)
-	branch Test(LT,SO_8)
+	branch Test(LT,SO_8) l0C00_001F
 	// succ:  3 2
 l0C00_001F:		// block 2, pred: 1
 	dx_10 = dx - 0x000A

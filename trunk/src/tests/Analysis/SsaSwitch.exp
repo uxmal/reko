@@ -14,7 +14,7 @@ ds_12: orig: ds, def: {ds_12 = wLoc04_11}, uses: {bl_13 = Mem0[ds_12:si:byte]}
 bl_13: orig: bl, def: {bl_13 = Mem0[ds_12:si:byte]}, uses: {bx_14 = DPB(bx, bl_13, 0, 8) (alias)}{SCZO_15 = cond(bl_13 - 0x02)}{bl_33 = PHI(bl_21, bl_21, bl_21, bl_13)}
 bx_14: orig: bx, def: {bx_14 = DPB(bx, bl_13, 0, 8) (alias)}, uses: {bx_29 = PHI(bx_20, bx_20, bx_20, bx_14)}{bx_19 = DPB(bx_14, bh_18, 8, 8) (alias)}
 SCZO_15: orig: SCZO, def: {SCZO_15 = cond(bl_13 - 0x02)}, uses: {CZ_16 = SCZO_15 (alias)}{SCZO_32 = PHI(SCZO_23, SCZO_23, SCZO_23, SCZO_15)}
-CZ_16: orig: CZ, def: {CZ_16 = SCZO_15 (alias)}, uses: {branch Test(UGT,CZ_16)}{CZ_31 = PHI(CZ_24, CZ_24, CZ_24, CZ_16)}
+CZ_16: orig: CZ, def: {CZ_16 = SCZO_15 (alias)}, uses: {branch Test(UGT,CZ_16) l0C00_0023}{CZ_31 = PHI(CZ_24, CZ_24, CZ_24, CZ_16)}
 ax_17: orig: ax, def: {ax_17 = 0x0000}, uses: {ax_28 = PHI(ax_27, ax_26, ax_25, ax_17)}
 bh_18: orig: bh, def: {bh_18 = 0x00}, uses: {bx_19 = DPB(bx_14, bh_18, 8, 8) (alias)}
 bx_19: orig: bx, def: {bx_19 = DPB(bx_14, bh_18, 8, 8) (alias)}, uses: {bx_20 = bx_19 + bx_19}{bx_20 = bx_19 + bx_19}
@@ -54,7 +54,7 @@ l0C00_0000:		// block 1, pred: 0
 	bx_14 = DPB(bx, bl_13, 0, 8) (alias)
 	SCZO_15 = cond(bl_13 - 0x02)
 	CZ_16 = SCZO_15 (alias)
-	branch Test(UGT,CZ_16)
+	branch Test(UGT,CZ_16) l0C00_0023
 	// succ:  3 2
 l0C00_0023:		// block 2, pred: 1
 	ax_17 = 0x0000

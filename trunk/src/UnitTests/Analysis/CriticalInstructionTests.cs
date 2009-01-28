@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void TestBranch()
 		{
-			Assert.IsTrue(ci.IsCritical(new Branch(null)));
+			Assert.IsTrue(ci.IsCritical(new Branch(null, null)));
 		}
 
 		[Test]

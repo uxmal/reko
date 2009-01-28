@@ -12,7 +12,7 @@ fn0C00_0000_entry:		// block 0, pred:
 l0C00_0000:		// block 1, pred: 0
 	ax = Mem0[ds:0x0100:word16]
 	SCZO = cond(Mem0[ds:0x0102:word16] - ax)
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l0C00_000F
 	// succ:  2 3
 // DataOut: bp ss ds
 l0C00_000A:		// block 2, pred: 1
@@ -24,7 +24,7 @@ l0C00_000F:		// block 3, pred: 2 1
 	v6 = Mem0[ds:0x0106:word16] - ax
 	store(Mem0[ds:0x0106:word16]) = v6
 	SCZO = cond(v6)
-	branch Test(LE,SZO)
+	branch Test(LE,SZO) l0C00_001E
 	// succ:  4 5
 // DataOut: bp ss ds
 l0C00_0019:		// block 4, pred: 3
@@ -36,7 +36,7 @@ l0C00_001E:		// block 5, pred: 4 3
 	ax = ax & Mem0[ds:0x0108:word16]
 	SCZO = cond(ax)
 	C = false
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l0C00_002D
 	// succ:  6 7
 // DataOut: bp ss ds
 l0C00_0028:		// block 6, pred: 5
@@ -47,7 +47,7 @@ l0C00_002D:		// block 7, pred: 6 5
 	ax = Mem0[ds:0x010A:word16]
 	SCZO = cond(ax - Mem0[ds:0x010C:word16])
 	C = !C
-	branch Test(ULT,C)
+	branch Test(ULT,C) l0C00_003D
 	// succ:  8 9
 // DataOut: bp ss ds
 l0C00_0038:		// block 8, pred: 7
@@ -57,7 +57,7 @@ l0C00_0038:		// block 8, pred: 7
 l0C00_003D:		// block 9, pred: 8 7
 	wLoc04 = 0x0003
 	call fn0C00_0069 (depth: 4;)
-	branch Test(UGE,C)
+	branch Test(UGE,C) l0C00_0049
 	// succ:  10 11
 // DataOut: bp ss ds
 l0C00_0044:		// block 10, pred: 9
@@ -67,7 +67,7 @@ l0C00_0044:		// block 10, pred: 9
 l0C00_0049:		// block 11, pred: 10 9
 	SCZO = cond(Mem0[ds:0x010E:word16] & 0x01FF)
 	C = false
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l0C00_0056
 	// succ:  12 13
 // DataOut: bp ss ds
 l0C00_0051:		// block 12, pred: 11
@@ -77,7 +77,7 @@ l0C00_0051:		// block 12, pred: 11
 l0C00_0056:		// block 13, pred: 12 11
 	bp = bp - 0x0010
 	SCZO = cond(bp)
-	branch Test(LT,SO)
+	branch Test(LT,SO) l0C00_005F
 	// succ:  14 15
 // DataOut: bp ss ds
 l0C00_005B:		// block 14, pred: 13
@@ -87,7 +87,7 @@ l0C00_005B:		// block 14, pred: 13
 l0C00_005F:		// block 15, pred: 14 13
 	bp = bp + bp
 	SCZO = cond(bp)
-	branch Test(NO,O)
+	branch Test(NO,O) l0C00_0068
 	// succ:  16 17
 // DataOut: ds
 l0C00_0063:		// block 16, pred: 15

@@ -5,10 +5,10 @@ r1: r1:Register r1, def: {def r1}, uses: {Z_10 = cond(r1 - 0x00000003)}
 Z: Z:Flags, def: {def Z}
 r0_5: orig: r0, def: {r0_5 = 0x00000000}, uses: {r0_6 = PHI(r0_5, r0_9)}
 r0_6: orig: r0, def: {r0_6 = PHI(r0_5, r0_9)}, uses: {Z_7 = cond(r0_6 - 0x00000002)}{r0_9 = PHI(r0_6, r0_8)}
-Z_7: orig: Z, def: {Z_7 = cond(r0_6 - 0x00000002)}, uses: {branch Test(NE,Z_7)}
+Z_7: orig: Z, def: {Z_7 = cond(r0_6 - 0x00000002)}, uses: {branch Test(NE,Z_7) skip}
 r0_8: orig: r0, def: {r0_8 = 0x00000000}, uses: {r0_9 = PHI(r0_6, r0_8)}
 r0_9: orig: r0, def: {r0_9 = PHI(r0_6, r0_8)}, uses: {r0_6 = PHI(r0_5, r0_9)}
-Z_10: orig: Z, def: {Z_10 = cond(r1 - 0x00000003)}, uses: {branch Test(NE,Z_10)}
+Z_10: orig: Z, def: {Z_10 = cond(r1 - 0x00000003)}, uses: {branch Test(NE,Z_10) top}
 // SsaMock
 void SsaMock(word32 r1)
 SsaMock_entry:		// block 0, pred:
@@ -24,7 +24,7 @@ l1:		// block 1, pred: 0
 top:		// block 2, pred: 1 4
 	r0_6 = PHI(r0_5, r0_9)
 	Z_7 = cond(r0_6 - 0x00000002)
-	branch Test(NE,Z_7)
+	branch Test(NE,Z_7) skip
 	// succ:  3 4
 l2:		// block 3, pred: 2
 	r0_8 = 0x00000000
@@ -32,7 +32,7 @@ l2:		// block 3, pred: 2
 skip:		// block 4, pred: 2 3
 	r0_9 = PHI(r0_6, r0_8)
 	Z_10 = cond(r1 - 0x00000003)
-	branch Test(NE,Z_10)
+	branch Test(NE,Z_10) top
 	// succ:  5 2
 l3:		// block 5, pred: 4
 	return

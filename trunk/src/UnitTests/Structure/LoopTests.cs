@@ -42,11 +42,11 @@ namespace Decompiler.UnitTests.Structure
 		public void LoopClassifyRepeat()
 		{
 			Block b = new Block(null, "foo");
-			b.Statements.Add(new SideEffect(new Application(null, PrimitiveType.Word32)));
-			b.Statements.Add(new Branch(Constant.Word32(0)));
-			b.RpoNumber = 0;
-			Block x = new Block(null, "exit");
-			x.RpoNumber = 1;
+            b.RpoNumber = 0;
+            Block x = new Block(null, "exit");
+            x.RpoNumber = 1;
+            b.Statements.Add(new SideEffect(new Application(null, PrimitiveType.Word32)));
+            b.Statements.Add(new Branch(Constant.Word32(0), x));
 
 			Block.AddEdge(b, b);
 			Block.AddEdge(b, x);
@@ -80,12 +80,13 @@ namespace Decompiler.UnitTests.Structure
 		public void LoopClassifyWhile()
 		{
 			Block h = new Block(null, "head");
-			h.Statements.Add(new Branch(Constant.Word32(0)));
-			h.RpoNumber = 0;
+            h.RpoNumber = 0;
+            Block b = new Block(null, "body");
+            b.RpoNumber = 1;
 
-			Block b = new Block(null, "body");
-			b.Statements.Add(new SideEffect(Constant.Word32(0)));
-			b.RpoNumber = 1;
+            h.Statements.Add(new Branch(Constant.Word32(0), b));
+
+            b.Statements.Add(new SideEffect(Constant.Word32(0)));
 
 			Block x = new Block(null, "exit");
 			Block.AddEdge(h, b);

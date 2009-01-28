@@ -96,7 +96,7 @@ l0C00_0027:		// block 1, pred: 0
 	ax_8 = 0x0000
 	SCZO_9 = cond(si - 0x0000)
 	Z_10 = SCZO_9 (alias)
-	branch Test(EQ,Z_10)
+	branch Test(EQ,Z_10) l0C00_002E
 	// succ:  2 3
 l0C00_002D:		// block 2, pred: 1
 	ax_11 = Mem0[ds:si:word16]
@@ -124,7 +124,7 @@ l0C00_0027:		// block 1, pred: 0
 	ax_8 = 0x0000
 	SCZO_9 = cond(si - 0x0000)
 	Z_10 = SCZO_9 (alias)
-	branch Test(EQ,Z_10)
+	branch Test(EQ,Z_10) l0C00_002E
 	// succ:  2 3
 l0C00_002D:		// block 2, pred: 1
 	ax_11 = Mem0[ds:si:word16]

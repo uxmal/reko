@@ -12,7 +12,7 @@ l0C00_0015:		// block 2, pred: 1 2
 	word16 v8_22 = Mem19[ds:0x9A26:word16] - 0x0001
 	store(Mem23[ds:0x9A26:word16]) = v8_22
 	si_16 = si_16 + 0x0026
-	branch v8_22 != 0x0000
+	branch v8_22 != 0x0000 l0C00_0015
 	// succ:  3 2
 l0C00_0023:		// block 3, pred: 2
 	return

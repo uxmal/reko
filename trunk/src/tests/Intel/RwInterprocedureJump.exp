@@ -30,7 +30,7 @@ fn0C00_000C_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000C:		// block 1, pred: 0
 	SCZO = cond(Mem0[ds:bx:word16] - 0x007B)
-	branch Test(LE,SZO)
+	branch Test(LE,SZO) l0C00_000F_branch
 	// succ:  3 2
 l0C00_000F_branch:		// block 2, pred: 1
 	call fn0C00_0014 (depth: 2;)

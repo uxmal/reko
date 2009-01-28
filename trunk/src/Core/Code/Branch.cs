@@ -27,12 +27,13 @@ namespace Decompiler.Core.Code
 	public class Branch : Instruction
 	{
 		private Expression cond;
+        private Block target;
 
-        public Branch(Expression cond)
+        public Branch(Expression cond, Block target)
         {
             this.cond = cond;
+            this.target = target;
         }
-
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{
@@ -43,6 +44,11 @@ namespace Decompiler.Core.Code
 		{
 			v.VisitBranch(this);
 		}
+
+        public Block Target
+        {
+            get { return target; }
+        }
 
 		public override bool IsControlFlow
 		{

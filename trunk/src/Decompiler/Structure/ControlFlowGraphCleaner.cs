@@ -75,7 +75,7 @@ namespace Decompiler.Structure
 		{
 			Branch br = b2.Statements.Last.Instruction as Branch;
 			Block.RemoveEdge(b1, b2);
-			b1.Statements.Add(new Branch(br.Condition));
+			b1.Statements.Add(new Branch(br.Condition, b2.Succ[1]));
 			Block.AddEdge(b1, b2.Succ[0]);
 			Block.AddEdge(b1, b2.Succ[1]);
 		}

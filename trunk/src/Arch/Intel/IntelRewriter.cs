@@ -760,7 +760,7 @@ namespace Decompiler.Arch.Intel
 
 					case Opcode.rep:
 					case Opcode.repne:
-						EmitRepInstruction(instrs, ref i);
+						EmitRepInstruction(instrs, ref i, emitter);
 						return;		
 					case Opcode.retf:
 					case Opcode.ret:
@@ -1076,17 +1076,20 @@ namespace Decompiler.Arch.Intel
 		}
 
 		
-        private void EmitBranchInstruction(Expression branchCondition, Operand opTarget)
+        private Block EmitBranchInstruction(Expression branchCondition, Operand opTarget)
         {
             // The first (0'th) branch is the path taken when "falling through"
             // a conditional expression.
             // The second (1'th) outward bound branch is the path we take 
             // when the condition the opcode tests for is true.
 
-            emitter.Emit(new Branch(branchCondition));
-            Block blockHead = emitter.Block;
+            CodeEmitter e = emitter;
+            Block blockHead = e.Block;
             EmitBranchPath(blockHead, addrEnd);
-            EmitBranchPath(blockHead, orw.OperandAsCodeAddress(opTarget, state));
+            Block blockTarget = EmitBranchPath(blockHead, orw.OperandAsCodeAddress(opTarget, state));
+            e.Branch(branchCondition, blockTarget);
+            return blockTarget;
+
         }
 
         //$REFACTOR: move to ProcedureRewriter.
@@ -1449,7 +1452,7 @@ namespace Decompiler.Arch.Intel
 			Identifier flag;
 			if (useFlags != 0)
 			{
-				emitter.Emit(new Branch(new TestCondition(cc, orw.FlagGroup(useFlags))));
+                CodeEmitter e = emitter;
 
 				// Splice in a new block.
 
@@ -1457,7 +1460,8 @@ namespace Decompiler.Arch.Intel
 				Block.AddEdge(blockHead, blockNew);
 
 				emitter = prw.CreateEmitter(blockNew);
-				EmitBranchInstruction(emitter.Eq0(cx), instrCur.op1);
+				Block tgt = EmitBranchInstruction(emitter.Eq0(cx), instrCur.op1);
+                e.Branch(new TestCondition(cc, orw.FlagGroup(useFlags)), tgt);
 			}
 			else
 			{
@@ -1596,21 +1600,20 @@ namespace Decompiler.Arch.Intel
 		/// follow: ...	
 		/// </code>
 		///</summary>
-		private void EmitRepInstruction(IntelInstruction [] instrs, ref int i)
+		private void EmitRepInstruction(IntelInstruction [] instrs, ref int i, CodeEmitter emitter)
 		{
 			// Compare [E]CX to 0. If [E]CX isn't 0, fall through to the next block.
 
-			Identifier regCX = orw.AluRegister(Registers.ecx, instrCur.addrWidth);
+            Block blockHead = emitter.Block;
+            Identifier regCX = orw.AluRegister(Registers.ecx, instrCur.addrWidth);
 			Identifier tmp = frame.CreateTemporary(PrimitiveType.Byte);
-			emitter.Emit(new Branch(emitter.Eq0(regCX)));
 
 			// Terminate the header block & create a new block for the repeated string instruction.
 
-			Block blockHead = emitter.Block;
 			Block blockFollow = EmitBranchPath(blockHead, this.addrEnd);
-
 			Block blockStringInstr = new Block(proc, state.InstructionAddress.GenerateName("l", "_rep"));
 			Block.AddEdge(blockHead, blockStringInstr);
+            emitter.Branch(emitter.Eq0(regCX), blockStringInstr);
 
 			// Decrement the [E]CX register.
 
@@ -1634,7 +1637,7 @@ namespace Decompiler.Arch.Intel
 					ConditionCode cc = (instrs[i-1].code == Opcode.repne)
 						? ConditionCode.NE
 						: ConditionCode.EQ;
-                    emitter.Emit(new Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF))));
+                    emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)), blockHead);
 					Block.AddEdge(blockStringInstr, blockFollow);
 					break;
 				}

@@ -32,7 +32,7 @@ l0C00_0005:		// block 2, pred: 1 2
 	SZO = cond(cl)
 	SCZO = SZO (alias)
 	Z = SZO (alias)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l0C00_0005
 	// succ:  3 2
 l0C00_000B:		// block 3, pred: 2
 	cx = wLoc04

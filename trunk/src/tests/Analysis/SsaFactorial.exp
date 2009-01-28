@@ -44,7 +44,7 @@ ax_13: orig: ax, def: {ax_13 = wArg00}, uses: {ax_14 = ax_13 - 0x0001}
 ax_14: orig: ax, def: {ax_14 = ax_13 - 0x0001}, uses: {dx_ax_15 = SEQ(dx, ax_14) (alias)}{SZO_16 = cond(ax_14)}{wLoc06_21 = ax_14}{call fn0C00_000F (depth: 6;)}{dx_ax_23 = dx_22 *s ax_14}
 dx_ax_15: orig: dx_ax, def: {dx_ax_15 = SEQ(dx, ax_14) (alias)}
 SZO_16: orig: SZO, def: {SZO_16 = cond(ax_14)}, uses: {Z_17 = SZO_16 (alias)}{SCZO_18 = SZO_16 (alias)}{SZO_34 = PHI(SZO_27, SZO_16)}{call fn0C00_000F (depth: 6;)}
-Z_17: orig: Z, def: {Z_17 = SZO_16 (alias)}, uses: {branch Test(EQ,Z_17)}{Z_33 = PHI(Z_28, Z_17)}{call fn0C00_000F (depth: 6;)}
+Z_17: orig: Z, def: {Z_17 = SZO_16 (alias)}, uses: {branch Test(EQ,Z_17) l0C00_0026}{Z_33 = PHI(Z_28, Z_17)}{call fn0C00_000F (depth: 6;)}
 SCZO_18: orig: SCZO, def: {SCZO_18 = SZO_16 (alias)}, uses: {SCZO_29 = PHI(SCZO_26, SCZO_18)}{call fn0C00_000F (depth: 6;)}
 ax_19: orig: ax, def: {ax_19 = 0x0001}, uses: {dx_ax_20 = SEQ(dx, ax_19) (alias)}{ax_35 = PHI(ax_24, ax_19)}
 dx_ax_20: orig: dx_ax, def: {dx_ax_20 = SEQ(dx, ax_19) (alias)}, uses: {dx_ax_30 = PHI(dx_ax_23, dx_ax_20)}
@@ -88,7 +88,7 @@ l0C00_000F:		// block 1, pred: 0
 	SZO_16 = cond(ax_14)
 	Z_17 = SZO_16 (alias)
 	SCZO_18 = SZO_16 (alias)
-	branch Test(EQ,Z_17)
+	branch Test(EQ,Z_17) l0C00_0026
 	// succ:  3 2
 l0C00_0026:		// block 2, pred: 1
 	ax_19 = 0x0001

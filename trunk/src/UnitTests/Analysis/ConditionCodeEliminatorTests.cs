@@ -94,17 +94,18 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier z = Reg32("z");
 			Identifier y = Reg32("y");
 
-			Statement stmZ = new Statement(new Assignment(z, new ConditionOf(r)), null);
+            ProcedureMock m = new ProcedureMock();
+            Statement stmZ = m.Assign(z, new ConditionOf(r));
 			ssaIds[z].DefStatement = stmZ;
-			Statement stmY = new Statement(new Assignment(y, z), null);
+            Statement stmY = m.Assign(y, z);
 			ssaIds[y].DefStatement = stmY;
 			ssaIds[z].Uses.Add(stmY);
-			Statement stmBr = new Statement(new Branch(new TestCondition(ConditionCode.EQ, y)), null);
+			Statement stmBr = m.BranchIf(new TestCondition(ConditionCode.EQ, y), "foo");
 			ssaIds[y].Uses.Add(stmBr);
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new ArchitectureMock());
 			Instruction instr = stmBr.Instruction.Accept(cce);
-			Assert.AreEqual("branch r == 0x00000000", instr.ToString());
+			Assert.AreEqual("branch r == 0x00000000 foo", instr.ToString());
 		}
 
 		[Test]

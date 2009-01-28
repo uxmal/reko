@@ -38,7 +38,7 @@ l0C00_000F:		// block 1, pred: 0
 	ax = wArg00
 	ax = ax - 0x0001
 	SZO = cond(ax)
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l0C00_0026
 	// succ:  3 2
 // DataOut: ax ds
 // LocalsOut: Stack +0000(16)

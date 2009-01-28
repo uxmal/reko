@@ -15,7 +15,7 @@ ax_13: orig: ax, def: {ax_13 = PHI(ax_8, ax_15)}, uses: {ax_15 = ax_13 + cx_12 +
 ax_14: orig: ax, uses: {ax_15 = ax_13 + cx_12 + cx_12}
 ax_15: orig: ax, def: {ax_15 = ax_13 + cx_12 + cx_12}, uses: {ax_13 = PHI(ax_8, ax_15)}{store(Mem20[ds:0x0300:word16]) = ax_15}
 SCZO_16: orig: SCZO
-cx_17: orig: cx, def: {cx_17 = cx_12 - 0x0001}, uses: {cx_12 = PHI(cx_11, cx_17)}{branch cx_17 != 0x0000}
+cx_17: orig: cx, def: {cx_17 = cx_12 - 0x0001}, uses: {cx_12 = PHI(cx_11, cx_17)}{branch cx_17 != 0x0000 l0C00_0004}
 Z_18: orig: Z
 SCZO_19: orig: SCZO
 Mem20: orig: Mem0, def: {store(Mem20[ds:0x0300:word16]) = ax_15}
@@ -35,7 +35,7 @@ l0C00_0004:		// block 2, pred: 1 2
 	ax_13 = PHI(ax_8, ax_15)
 	ax_15 = ax_13 + cx_12 + cx_12
 	cx_17 = cx_12 - 0x0001
-	branch cx_17 != 0x0000
+	branch cx_17 != 0x0000 l0C00_0004
 	// succ:  3 2
 l0C00_000A:		// block 3, pred: 2
 	store(Mem20[ds:0x0300:word16]) = ax_15

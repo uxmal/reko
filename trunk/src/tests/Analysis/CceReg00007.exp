@@ -4,7 +4,7 @@ al: al:Register al
 C: C:Flags
 ds: ds:Register ds, def: {def ds}, uses: {C_6 = fn0C00_000C(al_5, ds)}{store(Mem7[ds:0x0300:byte]) = al_5}
 al_5: orig: al, def: {al_5 = 0x20}, uses: {C_6 = fn0C00_000C(al_5, ds)}{store(Mem7[ds:0x0300:byte]) = al_5}
-C_6: orig: C, def: {C_6 = fn0C00_000C(al_5, ds)}, uses: {branch C_6}
+C_6: orig: C, def: {C_6 = fn0C00_000C(al_5, ds)}, uses: {branch C_6 l0C00_000B}
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:byte]) = al_5}
 Mem8: orig: Mem0
 // fn0C00_0000
@@ -15,7 +15,7 @@ fn0C00_0000_entry:		// block 0, pred:
 l0C00_0000:		// block 1, pred: 0
 	al_5 = 0x20
 	C_6 = fn0C00_000C(al_5, ds)
-	branch C_6
+	branch C_6 l0C00_000B
 	// succ:  2 3
 l0C00_0007:		// block 2, pred: 1
 	store(Mem7[ds:0x0300:byte]) = al_5
@@ -28,7 +28,7 @@ fn0C00_0000_exit:		// block 4, pred: 3
 
 Mem0: Mem0:Global memory, def: {def Mem0}, uses: {v6_11 = Mem0[ds:0x0201:word16] + 0x0001}
 fp: fp:Temporary
-al: al:Register al, def: {def al}, uses: {SCZO_8 = cond(al - 0x20)}{branch al <u 0x20}
+al: al:Register al, def: {def al}, uses: {SCZO_8 = cond(al - 0x20)}{branch al <u 0x20 l0C00_0014}
 SCZO: SCZO:Flags
 C: C:Flags
 ds: ds:Register ds, def: {def ds}, uses: {v6_11 = Mem0[ds:0x0201:word16] + 0x0001}{store(Mem12[ds:0x0201:word16]) = v6_11}
@@ -54,7 +54,7 @@ fn0C00_000C_entry:		// block 0, pred:
 l0C00_000C:		// block 1, pred: 0
 	SCZO_8 = cond(al - 0x20)
 	C_9 = SCZO_8 (alias)
-	branch al <u 0x20
+	branch al <u 0x20 l0C00_0014
 	// succ:  2 3
 l0C00_0010:		// block 2, pred: 1
 	v6_11 = Mem0[ds:0x0201:word16] + 0x0001

@@ -56,12 +56,12 @@ l10000000:		// block 1, pred: 0
 	bl = 0x00
 	SCZO = cond(di - 0x0000)
 	C = false
-	branch Test(NE,Z)
+	branch Test(NE,Z) l10000021
 	// succ:  35 2
 l10000021:		// block 2, pred: 1
 	eax = dwArg08
 	SCZO = cond(Mem0[eax:word32] - 0x00000000)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l1000002C
 	// succ:  3 4
 l1000002A:		// block 3, pred: 2
 	bl = 0x01
@@ -80,11 +80,11 @@ l1000002C:		// block 4, pred: 3 2
 	esi = eax
 	SCZO = cond(esi - 0x00000000)
 	C = false
-	branch Test(NE,Z)
+	branch Test(NE,Z) l10000061
 	// succ:  34 5
 l10000061:		// block 5, pred: 4
 	SCZO = cond(di - 0x0001)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l1000006D
 	// succ:  6 7
 l10000067:		// block 6, pred: 5
 	store(Mem0[esi + 0x00000204:byte]) = bl
@@ -95,31 +95,31 @@ l1000006D:		// block 7, pred: 6 5
 	eax = Mem0[esi:word32]
 	ebp = 0x00000000
 	SCZO = cond(Mem0[eax:word16] - bp)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l1000001E
 	// succ:  8 36
 l1000007F:		// block 8, pred: 7
 	SCZO = cond(di - bp)
-	branch Test(LE,SZO)
+	branch Test(LE,SZO) l100000FC
 	// succ:  9 29
 l10000084:		// block 9, pred: 8
 	SCZO = cond(di - 0x0005)
-	branch Test(GT,SZO)
+	branch Test(GT,SZO) l100000FC
 	// succ:  10 29
 l1000008A:		// block 10, pred: 9
 	SCZO = cond(di - 0x0001)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l100000AC
 	// succ:  30 11
 l100000AC:		// block 11, pred: 10
 	SCZO = cond(di - 0x0002)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l10000122
 	// succ:  27 12
 l10000122:		// block 12, pred: 11
 	SCZO = cond(di - 0x0003)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l10000136
 	// succ:  26 13
 l10000136:		// block 13, pred: 12
 	SCZO = cond(di - 0x0004)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l100000E8
 	// succ:  14 28
 l1000013C:		// block 14, pred: 13
 	ecx = Mem0[esi + 0x00000004:word32]
@@ -131,22 +131,22 @@ l10000148:		// block 15, pred: 14 25 18
 	call fn10000241 (depth: 24;)
 	eax = Mem0[esi:word32]
 	SCZO = cond(Mem0[eax:word16] - bp)
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l1000015F
 	// succ:  16 17
 l10000158:		// block 16, pred: 15
 	store(Mem0[esi + 0x000000AC:byte]) = 0x00
 	// succ:  17
 l1000015F:		// block 17, pred: 16 15
 	SCZO = cond(Mem0[esi + 0x000000AD:byte] - 0x01)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l1000016D
 	// succ:  18 19
 l10000168:		// block 18, pred: 17
 	SCZO = cond(Mem0[eax:word16] - bp)
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l10000148
 	// succ:  19 15
 l1000016D:		// block 19, pred: 18 17
 	SCZO = cond(Mem0[eax:word16] - bp)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l1000017B
 	// succ:  20 21
 l10000172:		// block 20, pred: 19
 	dwLoc18 = esi
@@ -154,7 +154,7 @@ l10000172:		// block 20, pred: 19
 	// succ:  21
 l1000017B:		// block 21, pred: 20 19
 	SCZO = cond(Mem0[esi + 0x000000AC:byte] - 0x01)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l100001A2
 	// succ:  23 22
 l100001A2:		// block 22, pred: 21
 	dwLoc18 = esi
@@ -192,7 +192,7 @@ l100001A2:		// block 22, pred: 21
 l10000184:		// block 23, pred: 21
 	SCZO = cond(bl - 0x00000000)
 	C = false
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l10000201
 	// succ:  24 31
 l10000188:		// block 24, pred: 23
 	edx = Mem0[esi + 0x00000004:word32]
@@ -201,7 +201,7 @@ l10000188:		// block 24, pred: 23
 	store(Mem0[ecx:word16]) = ax
 	edx = Mem0[esi:word32]
 	SCZO = cond(Mem0[edx:word16] - bp)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l10000201
 	// succ:  25 31
 l1000019D:		// block 25, pred: 24
 	// succ:  15
@@ -258,7 +258,7 @@ l10000201:		// block 31, pred: 30 29 26 24 23 22
 	eax = dwArg08
 	eax = Mem0[eax:word32]
 	SCZO = cond(eax - ebp)
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l1000021E
 	// succ:  32 33
 l1000020B:		// block 32, pred: 31
 	ecx = Mem0[esi + 0x00000004:word32]

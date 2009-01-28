@@ -6,10 +6,10 @@ l0C00_0000:		// block 1, pred: 0
 	byte al_29
 	store(Mem20[ds:bx + 0x0004:word32]) = Mem0[ds:bx + 0x0000:word32] & 0x000000FF | Mem0[ds:si + 0x0000:word32] & 0xFFFFFF00
 	byte al_21 = Mem20[ds:bx + 0x0008:byte]
-	branch al_21 <u 0x30
+	branch al_21 <u 0x30 l0C00_002A
 	// succ:  2 3
 l0C00_0021:		// block 2, pred: 1
-	branch al_21 >=u 0x3A
+	branch al_21 >=u 0x3A l0C00_002A
 	// succ:  4 3
 l0C00_002A:		// block 3, pred: 2 1
 	al_29 = 0x00

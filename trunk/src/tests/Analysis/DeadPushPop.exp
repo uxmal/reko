@@ -31,7 +31,7 @@ si: si:Register si
 wLoc04: wLoc04:Local -0004
 di: di:Register di, def: {def di}, uses: {di_14 = PHI(di, di_22)}
 wLoc06: wLoc06:Local -0006
-cx: cx:Register cx, def: {def cx}, uses: {branch cx == 0x0000}
+cx: cx:Register cx, def: {def cx}, uses: {branch cx == 0x0000 l0C00_001A}
 SCZO: SCZO:Flags
 Z: Z:Flags
 ds: ds:Register ds, def: {def ds}, uses: {si_21 = si_15 + Mem0[ds:di_14:word16]}
@@ -64,7 +64,7 @@ l0C00_0008:		// block 1, pred: 0
 l0C00_000D:		// block 2, pred: 1 5
 	di_14 = PHI(di, di_22)
 	si_15 = PHI(si_13, si_21)
-	branch cx == 0x0000
+	branch cx == 0x0000 l0C00_001A
 	// succ:  5 3
 l0C00_001A:		// block 3, pred: 2
 	ax_18 = si_15

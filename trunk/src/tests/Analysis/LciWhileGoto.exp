@@ -14,14 +14,14 @@ l0C00_001A:		// block 2, pred: 1 5 4
 	Mem13 = PHI(Mem0, Mem27, Mem19)
 	ax_14 = Mem13[ds:si_12:word16]
 	si_15 = si_12 + 0x0002
-	branch ax_14 != 0x0020
+	branch ax_14 != 0x0020 l0C00_0005
 	// succ:  7 3
 l0C00_0005:		// block 3, pred: 2
 	store(Mem19[ds:di:word16]) = ax_14
-	branch ax_14 != 0x0000
+	branch ax_14 != 0x0000 l0C00_0011
 	// succ:  6 4
 l0C00_0011:		// block 4, pred: 3
-	branch ax_14 != 0x000D
+	branch ax_14 != 0x000D l0C00_001A
 	// succ:  5 2
 l0C00_0016:		// block 5, pred: 4
 	store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001

@@ -136,17 +136,20 @@ namespace Decompiler.UnitTests.Mocks
 			case ConditionCode.EQ: case ConditionCode.NE: f = Flags("Z"); break;
 			default: throw new ArgumentOutOfRangeException("Condition code: " + cc);
 			}
-			Emit(new Branch(new TestCondition(cc, f)));
 			branchBlock = BlockOf(label);
+            Emit(new Branch(new TestCondition(cc, f), branchBlock));
 			TerminateBlock();
 		}
 
 		public Statement BranchIf(Expression expr, string label)
 		{
-			Statement stm = Emit(new Branch(expr));
-			TerminateBlock();
+            Block b = EnsureBlock(null);
 			branchBlock = BlockOf(label);
-			return stm;
+            TerminateBlock();
+
+            Statement stm = new Statement(new Branch(expr, branchBlock), b);
+            b.Statements.Add(stm);
+            return stm;
 		}
 
 		protected virtual void BuildBody()

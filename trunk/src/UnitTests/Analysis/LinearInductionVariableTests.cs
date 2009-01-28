@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			Statement stm_a1 = new Statement(new Assignment(a1, Constant.Word32(0)), null);
 			Statement stm_a2 = new Statement(new PhiAssignment(a2, new PhiFunction(a1.DataType, new Expression[] { a1, a3 } )), null);
-			Statement stm_ex = new Statement(new Branch(new BinaryExpression(Operator.ne, PrimitiveType.Bool, a2, Constant.Word32(10))), null);
+			Statement stm_ex = new Statement(new Branch(new BinaryExpression(Operator.ne, PrimitiveType.Bool, a2, Constant.Word32(10)), b2), null);
 			Statement stm_a3 = new Statement(new Assignment(a3, new BinaryExpression(Operator.add, a3.DataType, a2, Constant.Word32(4))), null);
 			b1.Statements.Add(stm_a1);
 			b2.Statements.Add(stm_a2);

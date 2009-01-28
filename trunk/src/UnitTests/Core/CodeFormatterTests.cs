@@ -89,9 +89,9 @@ namespace Decompiler.UnitTests.Core
 			cf.UseTabs = true;
 			cf.TabSize = 4;
 			cf.Indentation = 6;
-            Instruction b = new Branch(Constant.Word32(0));
+            Instruction b = new Branch(Constant.Word32(0), new Block(null, "target"));
 			b.Accept(cf);
-			Assert.AreEqual("\t  branch 0x00000000" + nl, sw.ToString());
+			Assert.AreEqual("\t  branch 0x00000000 target" + nl, sw.ToString());
 		}
 
 		[Test]
@@ -100,9 +100,9 @@ namespace Decompiler.UnitTests.Core
 			cf.UseTabs = false;
 			cf.TabSize = 4;
 			cf.Indentation = 6;
-            Instruction b = new Branch(Constant.Word32(0));
+            Instruction b = new Branch(Constant.Word32(0), new Block(null, "Test"));
 			b.Accept(cf);
-			Assert.AreEqual("      branch 0x00000000" + nl, sw.ToString());
+			Assert.AreEqual("      branch 0x00000000 Test" + nl, sw.ToString());
 		}
 
 		[Test]
