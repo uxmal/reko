@@ -70,6 +70,7 @@
     <Compile Include="Analysis\Simplification\SliceMem_RuleTest.cs" />
     <Compile Include="Analysis\SsaLivenessTests.cs" />
     <Compile Include="Analysis\SsaTests.cs" />
+    <Compile Include="Analysis\StrengthReductionTests.cs" />
     <Compile Include="Analysis\TrashedRegisterFinderTests.cs" />
     <Compile Include="Analysis\TrashStorageHelperTests.cs" />
     <Compile Include="Analysis\ValueNumberingTest.cs" />

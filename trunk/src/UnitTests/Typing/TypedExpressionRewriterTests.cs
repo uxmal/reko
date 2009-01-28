@@ -287,14 +287,31 @@ namespace Decompiler.UnitTests.Typing
             RunTest(prog.BuildProgram(), "Typing/TerUnionConstants.txt");
         }
 
+        [Test]
+        public void TerOffsetInArrayLoop()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier ds = m.Local16("ds");
+            Identifier cx = m.Local16("cx");
+            Identifier di = m.Local16("di");
+            m.Assign(di, 0);
+            m.Label("lupe");
+            m.SegStoreW(ds, m.Add(di, 0x5388), m.Word16(0));
+            m.Assign(di, m.Add(di, 2));
+            m.Assign(cx, m.Sub(cx, 1));
+            m.BranchIf(m.Ne(cx, 0), "lupe");
+            m.Return();
+
+            ProgramMock pm = new ProgramMock();
+            pm.Add(m);
+            RunTest(pm, "Typing/TerOffsetInArrayLoop.txt");
+        }
+
+
         //////////////////////////////////////////////////////////////////////////
 
-		private void RunTest(string relativePath, string outputFile)
-		{
-			RunTest(RewriteFile(relativePath), outputFile);
-		}
 
-		private void RunTest(Program prog, string outputFile)
+		protected override void RunTest(Program prog, string outputFile)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{

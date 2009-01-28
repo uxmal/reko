@@ -31,13 +31,7 @@ namespace Decompiler.Analysis
         private Statement def;
         private Expression exprDef;
         private List<Statement> uses;
-        private LinearInductionVariable iv; // If not null, the induction variable associated with this identifier.
-
-        public LinearInductionVariable InductionVariable
-        {
-            get { return iv; }
-            set { iv = value; }
-        }
+        private LinearInductionVariable iv; 
         private bool isSideEffect;
 
 		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
@@ -88,6 +82,14 @@ namespace Decompiler.Analysis
         public bool IsSideEffect
         {
             get { return isSideEffect; }
+        }
+        ///<summary>
+        ///If not null, the induction variable associated with this identifier.
+        ///</summary>
+        public LinearInductionVariable InductionVariable
+        {
+            get { return iv; }
+            set { iv = value; }
         }
 
         /// <summary>

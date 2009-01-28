@@ -33,13 +33,13 @@ namespace Decompiler.Analysis
 		public bool AreConstrained(Statement def, Statement use)
 		{
 			SideEffectFlags defFlags = FindSideEffect(def.Instruction);
-			int iUse = use.block.Statements.IndexOf(use);
-			for (int i = def.block.Statements.IndexOf(def) + 1; i < def.block.Statements.Count; ++i)
+			int iUse = use.Block.Statements.IndexOf(use);
+			for (int i = def.Block.Statements.IndexOf(def) + 1; i < def.Block.Statements.Count; ++i)
 			{
 				if (i == iUse)
 					return false;
 
-				if (Conflict(defFlags, FindSideEffect(def.block.Statements[i].Instruction)))
+				if (Conflict(defFlags, FindSideEffect(def.Block.Statements[i].Instruction)))
 					return true;
 			}
 			return true;

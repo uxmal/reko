@@ -533,6 +533,12 @@ namespace Decompiler.UnitTests.Mocks
 			return Emit(s);
 		}
 
+        public Statement SegStoreW(Expression basePtr, BinaryExpression ea, Expression src)
+        {
+            Store s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, PrimitiveType.Word16), src);
+            return Emit(s);
+        }
+
 		public Statement Store(SegmentedAccess s, Expression exp)
 		{
 			return Emit(new Store(s, exp));
@@ -649,6 +655,7 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			return new Constant(PrimitiveType.Word32, n);
 		}
+
 
     }
 }

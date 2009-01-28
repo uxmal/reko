@@ -28,12 +28,16 @@ namespace Decompiler.Core
 	/// </summary>
 	public class LinearInductionVariable
 	{
-        private readonly Constant initial;		// First value used by induction variable 
-        private readonly Constant delta;			// Amount incremented or decremented per interation
-        private readonly Constant final;			// Value not attained by loop since it terminated.
+        private  Constant initial;		// First value used by induction variable 
+        private  Constant delta;			// Amount incremented or decremented per interation
+        private  Constant final;			// Value not attained by loop since it terminated.
         private bool isSigned;
 
-		public LinearInductionVariable(Constant initial, Constant delta, Constant final, bool isSigned)
+		public LinearInductionVariable(
+            Constant initial, 
+            Constant delta, 
+            Constant final,
+            bool isSigned)
 		{
 			this.initial = initial;
 			this.delta = delta;
@@ -109,6 +113,14 @@ namespace Decompiler.Core
                         null, liv1.IsSigned || liv2.IsSigned);
 			}
 		}
+
+        public void AddIncrement(Constant c)
+        {
+            if (initial != null)
+                initial = Operator.add.ApplyConstants(initial, c);
+            if (final != null)
+                final = Operator.add.ApplyConstants(final, c);
+        }
 
 		public LinearInductionVariable Scale(Constant c)
 		{

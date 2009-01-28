@@ -20,4 +20,4 @@ l2:		// block 4, pred: 2
 WhileGtDecMock_exit:		// block 5, pred: 4
 	// succ: 
 
-(0x00000063 0xFFFFFFFF 0xFFFFFFFF)
+(99 -1 -1 signed)

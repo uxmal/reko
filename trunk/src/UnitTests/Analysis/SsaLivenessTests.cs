@@ -46,6 +46,7 @@ namespace Decompiler.UnitTests.Analysis
 			{
 				sla.Write(proc, fut.TextWriter);
 				fut.TextWriter.WriteLine("=======================");
+                fut.AssertFilesEqual();
 			}
 			Identifier i =   ssa.Identifiers[2].Identifier; 
 			Identifier i_4 = ssa.Identifiers[4].Identifier;
@@ -54,7 +55,7 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual("i_4", i_4.Name);
 			Assert.AreEqual("i_6", i_6.Name);
 			Assert.IsFalse(sla.IsLiveOut(i, ssa.Identifiers[4].DefStatement));
-			Assert.AreEqual("branch Mem0[i_6:byte] != 0x00", proc.RpoBlocks[1].Statements[2].Instruction.ToString());
+			Assert.AreEqual("branch Mem0[i_6:byte] != 0x00 loop", proc.RpoBlocks[1].Statements[2].Instruction.ToString());
 			Assert.IsTrue(sla.IsLiveOut(i_4, proc.RpoBlocks[1].Statements[2]), "i_4 should be live at the end of block 1");
 			Assert.IsTrue(sla.IsLiveOut(i_6, proc.RpoBlocks[1].Statements[2]),"i_6 should be live at the end of block 1");
 			Assert.AreEqual("i_4 = PHI(i, i_6)", proc.RpoBlocks[1].Statements[0].Instruction.ToString());

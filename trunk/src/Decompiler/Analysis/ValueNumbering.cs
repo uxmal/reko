@@ -150,8 +150,8 @@ namespace Decompiler.Analysis
 			Block header = null;
 			foreach (Node n in scc)
 			{
-				if (header == null || header.RpoNumber > n.info.DefStatement.block.RpoNumber)
-					header = n.info.DefStatement.block;
+				if (header == null || header.RpoNumber > n.info.DefStatement.Block.RpoNumber)
+					header = n.info.DefStatement.Block;
 			}
 
 			bool fInductionVariable = true;

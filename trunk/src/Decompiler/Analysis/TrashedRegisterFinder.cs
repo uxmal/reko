@@ -166,7 +166,7 @@ namespace Decompiler.Analysis
 			{
 				foreach (Statement stm in prog.CallGraph.CallerStatements(proc))
 				{
-					worklist.Add(stm.block);
+					worklist.Add(stm.Block);
 				}
 			}
 		}

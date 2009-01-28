@@ -96,6 +96,7 @@ namespace Decompiler.UnitTests.Analysis
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
 			Constant c = liv.FindLinearIncrement(a);
 			Assert.AreEqual(4, c.ToInt32());
+            Assert.AreEqual("a3 = a2 + 0x00000004", liv.Context.DeltaStatement.ToString());
 		}
 
 		[Test]
@@ -106,6 +107,7 @@ namespace Decompiler.UnitTests.Analysis
 			PhiFunction phi = liv.FindPhiFunction(a);
 			Constant c = liv.FindInitialValue(phi);
             Assert.AreEqual(0, c.ToInt32());
+            Assert.AreEqual("a1 = 0x00000000", liv.Context.InitialStatement.ToString());
 		}
 
 		[Test]
@@ -118,6 +120,7 @@ namespace Decompiler.UnitTests.Analysis
 			a.Add(ssaIds[8]);
 			Constant c = liv.FindFinalValue(a);
 			Assert.AreEqual(10, c.ToInt32());
+            Assert.AreEqual("branch i_5 < 0x0000000A", liv.Context.TestStatement.ToString());
 		}
 
 		[Test]
@@ -143,16 +146,16 @@ namespace Decompiler.UnitTests.Analysis
 			Prepare(new WhileLtIncMock().Procedure);
 			DominatorGraph doms = new DominatorGraph(proc);
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
-			Assert.IsNull(liv.PhiIdentifier);
-			Assert.IsNull(liv.PhiStatement);
+			Assert.IsNull(liv.Context.PhiIdentifier);
+			Assert.IsNull(liv.Context.PhiStatement);
 
-			liv.PhiStatement = ssaIds[5].DefStatement;
-			liv.PhiIdentifier = (Identifier) ((PhiAssignment) liv.PhiStatement.Instruction).Dst;
-			liv.TestStatement = proc.RpoBlocks[2].Statements[1];
-			liv.DeltaStatement = ssaIds[8].DefStatement;
-			liv.InitialValue = Constant.Word32(0);
-			liv.DeltaValue = Constant.Word32(1);
-			liv.TestValue = Constant.Word32(10);
+			liv.Context.PhiStatement = ssaIds[5].DefStatement;
+			liv.Context.PhiIdentifier = (Identifier) ((PhiAssignment) liv.Context.PhiStatement.Instruction).Dst;
+			liv.Context.TestStatement = proc.RpoBlocks[2].Statements[1];
+			liv.Context.DeltaStatement = ssaIds[8].DefStatement;
+			liv.Context.InitialValue = Constant.Word32(0);
+			liv.Context.DeltaValue = Constant.Word32(1);
+			liv.Context.TestValue = Constant.Word32(10);
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("X", iv.ToString());
 		}
@@ -173,9 +176,9 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds.Add(new SsaIdentifier(id0, id0, null, null, false));
 			ssaIds.Add(new SsaIdentifier(id1, id1, null, null, false));
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
-			liv.PhiStatement = new Statement(null, null);
-			liv.PhiIdentifier = new Identifier("i_3", 1, PrimitiveType.Word32, null);
-			liv.DeltaValue = Constant.Word32(1);
+			liv.Context.PhiStatement = new Statement(null, null);
+			liv.Context.PhiIdentifier = new Identifier("i_3", 1, PrimitiveType.Word32, null);
+			liv.Context.DeltaValue = Constant.Word32(1);
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("(? 0x00000001 ?)", iv.ToString());
 		}
@@ -185,14 +188,14 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			ssaIds = new SsaIdentifierCollection();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
-			liv.InitialValue = Constant.Word32(0);
-			liv.PhiStatement = new Statement(null, null);
-			liv.PhiIdentifier = new Identifier("foo_0", 0, PrimitiveType.Word32, null);
-            ssaIds.Add(new SsaIdentifier(liv.PhiIdentifier, liv.PhiIdentifier, liv.PhiStatement, null, false));
-			liv.DeltaValue = Constant.Word32(1);
-			liv.DeltaStatement = new Statement(new Assignment(new Identifier("foo_1", 1, PrimitiveType.Word32, null), 
-				new BinaryExpression(Operator.add, PrimitiveType.Word32, liv.PhiIdentifier, liv.DeltaValue)), null);
-			ssaIds[liv.PhiIdentifier].Uses.Add(liv.DeltaStatement);
+			liv.Context.InitialValue = Constant.Word32(0);
+			liv.Context.PhiStatement = new Statement(null, null);
+			liv.Context.PhiIdentifier = new Identifier("foo_0", 0, PrimitiveType.Word32, null);
+            ssaIds.Add(new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
+			liv.Context.DeltaValue = Constant.Word32(1);
+			liv.Context.DeltaStatement = new Statement(new Assignment(new Identifier("foo_1", 1, PrimitiveType.Word32, null), 
+				new BinaryExpression(Operator.add, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
+			ssaIds[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("(0x00000001 0x00000001 ?)", iv.ToString());
@@ -207,7 +210,7 @@ namespace Decompiler.UnitTests.Analysis
 			SsaId(new Identifier("id1", 1, PrimitiveType.Word32, new TemporaryStorage()), null, null, false);
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 
-			liv.InitialValue = Constant.Word32(0);
+			liv.Context.InitialValue = Constant.Word32(0);
 			Identifier id2 = m.Local32("id_2");
 			SsaId(id2, new Statement(null, null), null, false);
 			Assert.AreEqual(3, ssaIds.Count);
@@ -215,17 +218,17 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier id3 = m.Local32("id_3");
 			Assert.AreEqual(3, id3.Number);
 			Identifier id4 = m.Local32("id_4");
-			liv.PhiStatement = m.Phi(id3, id2, id4);
-			liv.PhiIdentifier = id3;
-			SsaId(id3, liv.PhiStatement, ((PhiAssignment)liv.PhiStatement.Instruction).Src, false);
+			liv.Context.PhiStatement = m.Phi(id3, id2, id4);
+			liv.Context.PhiIdentifier = id3;
+			SsaId(id3, liv.Context.PhiStatement, ((PhiAssignment)liv.Context.PhiStatement.Instruction).Src, false);
 			Assert.AreEqual(4, ssaIds.Count);
 
 			Statement use = new Statement(null, null);
 			ssaIds[id3].Uses.Add(use);
 
-			liv.DeltaValue = m.Int32(1);
-			liv.DeltaStatement = m.Add(id4, id3, liv.DeltaValue);
-			ssaIds[id3].Uses.Add(liv.DeltaStatement);
+			liv.Context.DeltaValue = m.Int32(1);
+			liv.Context.DeltaStatement = m.Add(id4, id3, liv.Context.DeltaValue);
+			ssaIds[id3].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("(0x00000000 0x00000001 ?)", iv.ToString());
@@ -250,7 +253,7 @@ namespace Decompiler.UnitTests.Analysis
             Prepare(m.Procedure);
             LinearInductionVariableFinder liv = new LinearInductionVariableFinder(m.Procedure, ssaIds, doms);
             liv.Find();
-            Assert.AreEqual("@@@", liv.InductionVariables[0].ToString());
+            Assert.AreEqual("(? 0x00000001 0x0000000B)", liv.InductionVariables[0].ToString());
         }
 
 		[Test]
@@ -264,29 +267,29 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds.Add(new SsaIdentifier(id1, id1, null, null, false));
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 
-			liv.InitialValue = Constant.Word32(10);		// id_2 = 10;
+			liv.Context.InitialValue = Constant.Word32(10);		// id_2 = 10;
 			Identifier id2 = m.Local32("id_2");
 			SsaId(id2, new Statement(null, null), null, false);
 
 			m.Label("loop");
 			Identifier id3 = m.Local32("id_3");		// do {
 			Identifier id4 = m.Local32("id_4");		//   id_3 = phi(id_2, id_4);
-			liv.PhiStatement = m.Phi(id3, id2, id4);
-			liv.PhiIdentifier = id3;
-			SsaId(id3, liv.PhiStatement, ((PhiAssignment) liv.PhiStatement.Instruction).Src, false);
+			liv.Context.PhiStatement = m.Phi(id3, id2, id4);
+			liv.Context.PhiIdentifier = id3;
+			SsaId(id3, liv.Context.PhiStatement, ((PhiAssignment) liv.Context.PhiStatement.Instruction).Src, false);
 
-			liv.DeltaValue = m.Int32(-1);				//  id_4 = id_3 - 1;
-			liv.DeltaStatement = m.Sub(id4, id3, m.Int32(1));
-            SsaId(id4, liv.DeltaStatement, ((Assignment) liv.DeltaStatement.Instruction).Src, false);
-			ssaIds[id3].Uses.Add(liv.DeltaStatement);
+			liv.Context.DeltaValue = m.Int32(-1);				//  id_4 = id_3 - 1;
+			liv.Context.DeltaStatement = m.Sub(id4, id3, m.Int32(1));
+            SsaId(id4, liv.Context.DeltaStatement, ((Assignment) liv.Context.DeltaStatement.Instruction).Src, false);
+			ssaIds[id3].Uses.Add(liv.Context.DeltaStatement);
 
-			liv.TestStatement = m.BranchIf(m.Ge(id4, 0), "loop");
-			liv.TestOperator = Operator.ge;				//  if (id_4 >= 0)
-			liv.TestValue = Constant.Word32(0);
-			ssaIds[id4].Uses.Add(liv.DeltaStatement);
+			liv.Context.TestStatement = m.BranchIf(m.Ge(id4, 0), "loop");
+			liv.Context.TestOperator = Operator.ge;				//  if (id_4 >= 0)
+            liv.Context.TestValue = Constant.Word32(0);
+			ssaIds[id4].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
-			Assert.AreEqual("(0x00000009 0xFFFFFFFF 0xFFFFFFFE)", iv.ToString());
+			Assert.AreEqual("(0 -1 -1 signed)", iv.ToString());
 		}
 
 		[Test]

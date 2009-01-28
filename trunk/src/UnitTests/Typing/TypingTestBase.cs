@@ -25,6 +25,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using Decompiler.Loading;
 using Decompiler.Scanning;
+using Decompiler.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +35,7 @@ namespace Decompiler.UnitTests.Typing
 	/// <summary>
 	/// Base class for all typing tests.
 	/// </summary>
-	public class TypingTestBase
+	public abstract class TypingTestBase
 	{
 		protected Program RewriteFile(string relativePath)
 		{
@@ -58,6 +59,22 @@ namespace Decompiler.UnitTests.Typing
 			dfa.AnalyzeProgram();
             return prog;
 		}
+
+        protected void RunTest(string srcfile, string outputFile)
+        {
+            RunTest(RewriteFile(srcfile), outputFile);
+        }
+
+        protected void RunTest(ProgramMock mock, string outputFile)
+        {
+            Program prog = mock.BuildProgram();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
+            dfa.DumpProgram();
+            dfa.BuildExpressionTrees();
+            RunTest(prog, outputFile);
+        }
+
+        protected abstract void RunTest(Program prog, string outputFile);
 
 		protected void DumpSsaInfo(Procedure proc, SsaState ssa, TextWriter writer)
 		{

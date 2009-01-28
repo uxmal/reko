@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Typing
 			Verify("Typing/TvrReplaceInMem.txt");
 		}
 
-		private void RunTest(Program prog, string outputFilename)
+		protected override void RunTest(Program prog, string outputFilename)
 		{
 			eqb.Build(prog);
 			trco = new TraitCollector(factory, store, dtb, prog);

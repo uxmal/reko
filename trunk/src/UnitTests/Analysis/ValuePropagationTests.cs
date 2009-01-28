@@ -157,18 +157,19 @@ namespace Decompiler.UnitTests.Analysis
 
 			Identifier x = Reg32("x");
 			Identifier y = Reg32("y");
-			Statement stmX = new Statement(new Assignment(x, new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(0x1000300), PrimitiveType.Word32)), null);
-			Statement stmY = new Statement(new Assignment(y, new BinaryExpression(Operator.sub, PrimitiveType.Word32, x, Constant.Word32(2))), null);
-			Statement stm = new Statement(new Branch(new BinaryExpression(Operator.eq, PrimitiveType.Bool, y, Constant.Word32(0)), null), null);
+            ProcedureMock m = new ProcedureMock();
+            Statement stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
+            Statement stmY = m.Assign(y, m.Sub(x, 2));
+			Statement stm = m.BranchIf(m.Eq(y, 0), "test");
 			ssaIds[x].DefStatement = stmX;
 			ssaIds[y].DefStatement = stmY;
 			Assert.AreEqual("x = Mem0[0x01000300:word32]", stmX.Instruction.ToString());
 			Assert.AreEqual("y = x - 0x00000002", stmY.Instruction.ToString());
-			Assert.AreEqual("branch y == 0x00000000", stm.Instruction.ToString());
+			Assert.AreEqual("branch y == 0x00000000 test", stm.Instruction.ToString());
 
 			ValuePropagator vp = new ValuePropagator(ssaIds, null);
 			Instruction instr = stm.Instruction.Accept(vp);
-			Assert.AreEqual("branch y == 0x00000000", instr.ToString());
+			Assert.AreEqual("branch y == 0x00000000 test", instr.ToString());
 		}
 
 		[Test]

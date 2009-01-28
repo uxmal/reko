@@ -36,9 +36,9 @@ namespace Decompiler.Core
 
 		public void AddEdge(Statement stmCaller, Procedure callee)
 		{
-			graphProcs.AddNode(stmCaller.block.Procedure);
+			graphProcs.AddNode(stmCaller.Block.Procedure);
 			graphProcs.AddNode(callee);
-			graphProcs.AddEdge(stmCaller.block.Procedure, callee);
+			graphProcs.AddEdge(stmCaller.Block.Procedure, callee);
 
 			graphStms.AddNode(stmCaller);
 			graphStms.AddNode(callee);

@@ -25,15 +25,15 @@ namespace Decompiler.Core.Code
 	/// </summary>
 	public class Assignment : Instruction
 	{
-		public Identifier Dst;
-		public Expression Src;
+        private Identifier dst;
+        private Expression src;
 
 		public Assignment(Identifier dst, Expression src)
 		{
 			if (dst == null)
 				throw new ArgumentNullException("dst", "Argument must have a non-null value.");
-			Dst = dst;
-			Src = src;
+			this.dst = dst;
+			this.src = src;
 		}
 
 		public override Instruction Accept(InstructionTransformer xform)
@@ -45,6 +45,18 @@ namespace Decompiler.Core.Code
 		{
 			v.VisitAssignment(this);
 		}
+
+        public Identifier Dst 
+        {
+            get { return dst; }
+            set { dst = value; }
+        }
+
+        public Expression Src
+        {
+            get { return src; }
+            set { src = value; }
+        }
 
 		public virtual bool IsAlias
 		{

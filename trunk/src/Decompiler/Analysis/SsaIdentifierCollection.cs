@@ -19,20 +19,15 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
-	public class SsaIdentifierCollection : CollectionBase
+	public class SsaIdentifierCollection : List<SsaIdentifier>
 	{
-		public void Add(SsaIdentifier sid)
-		{
-			List.Add(sid);
-		}
-
 		public SsaIdentifier Add(Identifier idOld, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
-			int i = InnerList.Count;
+			int i = Count;
 			Identifier idNew;
 			if (stmDef != null)
 			{
@@ -45,21 +40,14 @@ namespace Decompiler.Analysis
 				idNew = idOld;
 			}
 			SsaIdentifier id = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
-			List.Add(id);
+			Add(id);
 			return id;
 		}
 
-		public SsaIdentifier this[int i]
-		{
-			get { return (SsaIdentifier) List[i]; }
-			set { List[i] = value; }
-		}
-
-		
 		public SsaIdentifier this[Identifier id]
 		{
-			get { return (SsaIdentifier) List[id.Number]; }
-			set { List[id.Number] = value; }
+			get { return base[id.Number]; }
+			set { base[id.Number] = value; }
 		}
 
 		public string FormatSsaName(string prefix, int v)

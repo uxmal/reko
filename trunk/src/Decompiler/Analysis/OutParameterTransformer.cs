@@ -62,7 +62,7 @@ namespace Decompiler.Analysis
 				if (stmDef != null && !visited.ContainsKey(stmDef))
 				{
 					visited.Add(stmDef, stmDef);
-					iStmDef = stmDef.block.Statements.IndexOf(stmDef);
+					iStmDef = stmDef.Block.Statements.IndexOf(stmDef);
 					stmDef.Instruction = stmDef.Instruction.Accept(this);
 				}
 			}
@@ -96,7 +96,7 @@ namespace Decompiler.Analysis
 				}
 				else
 				{
-					stmDef.block.Statements.Insert(iStmDef + 1, new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
+					stmDef.Block.Statements.Insert(iStmDef + 1, new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
 				}
 			}
 			return a;
@@ -109,7 +109,7 @@ namespace Decompiler.Analysis
 
 		public override Instruction TransformDefInstruction(DefInstruction def)
 		{
-			stmDef.block.Statements.Insert(iStmDef + 1, new Store(Dereference(idOut, def.Expression.DataType), def.Expression));
+			stmDef.Block.Statements.Insert(iStmDef + 1, new Store(Dereference(idOut, def.Expression.DataType), def.Expression));
 			return def;
 		}
 
