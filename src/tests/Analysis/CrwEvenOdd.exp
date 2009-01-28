@@ -43,7 +43,7 @@ fn0C00_0015_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0015:		// block 1, pred: 0
 	SCZO = cond(ax - 0x0000)
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l0C00_001D
 	// succ:  3 2
 l0C00_001D:		// block 2, pred: 1
 	al = 0x01
@@ -76,7 +76,7 @@ fn0C00_0020_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0020:		// block 1, pred: 0
 	SCZO = cond(ax - 0x0000)
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) l0C00_0028
 	// succ:  3 2
 l0C00_0028:		// block 2, pred: 1
 	al = 0x00

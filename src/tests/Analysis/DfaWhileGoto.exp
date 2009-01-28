@@ -16,14 +16,14 @@ l0C00_001A:		// block 2, pred: 1 5 4
 	word16 si_13
 	word16 ax_15 = Mem14[ds:si_13:word16]
 	si_13 = si_13 + 0x0002
-	branch ax_15 != 0x0020
+	branch ax_15 != 0x0020 l0C00_0005
 	// succ:  7 3
 l0C00_0005:		// block 3, pred: 2
 	store(Mem19[ds:di:word16]) = ax_15
-	branch ax_15 != 0x0000
+	branch ax_15 != 0x0000 l0C00_0011
 	// succ:  6 4
 l0C00_0011:		// block 4, pred: 3
-	branch ax_15 != 0x000D
+	branch ax_15 != 0x000D l0C00_001A
 	// succ:  5 2
 l0C00_0016:		// block 5, pred: 4
 	store(Mem25[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001

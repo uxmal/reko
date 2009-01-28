@@ -1,6 +1,6 @@
-Mem0: Mem0:Global memory, def: {def Mem0}, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}{Mem22 = PHI(Mem21, Mem0)}{branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F}{Mem22 = PHI(Mem21, Mem0)}{branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F}
 fp: fp:Temporary
-ds: ds:Register ds, def: {def ds}, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}{store(Mem21[ds:0x0F00:byte]) = 0x01}{v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}{v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}{store(Mem25[ds:0x0106:word16]) = v6_24}{store(Mem32[ds:0x0F01:byte]) = 0x01}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000}{store(Mem43[ds:0x0F02:byte]) = 0x01}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]}{store(Mem54[ds:0x0F03:byte]) = 0x01}{store(Mem59[ds:0x0F04:byte]) = 0x01}{store(Mem68[ds:0x0F05:byte]) = 0x01}{store(Mem86[ds:0x0F07:byte]) = 0x01}{branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]}{branch (Mem60[ds:0x010E:word16] & 0x01FF) == 0x0000}
+ds: ds:Register ds, def: {def ds}, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F}{store(Mem21[ds:0x0F00:byte]) = 0x01}{v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}{v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}{store(Mem25[ds:0x0106:word16]) = v6_24}{store(Mem32[ds:0x0F01:byte]) = 0x01}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000 l0C00_002D}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000 l0C00_002D}{store(Mem43[ds:0x0F02:byte]) = 0x01}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16] l0C00_003D}{store(Mem54[ds:0x0F03:byte]) = 0x01}{store(Mem59[ds:0x0F04:byte]) = 0x01}{store(Mem68[ds:0x0F05:byte]) = 0x01}{store(Mem86[ds:0x0F07:byte]) = 0x01}{branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16] l0C00_003D}{branch (Mem60[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056}
 ax: ax:Register ax
 SCZO: SCZO:Flags
 Z: Z:Flags
@@ -12,7 +12,7 @@ bp: bp:Register bp, def: {def bp}, uses: {bp_70 = bp - 0x0010}{store(Mem77[ss:bp
 SO: SO:Flags
 ss: ss:Register ss, def: {def ss}, uses: {store(Mem77[ss:bp + 0xFFF6:byte]) = 0x01}
 O: O:Flags
-ax_14: orig: ax, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]}
+ax_14: orig: ax, uses: {branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F}
 SCZO_15: orig: SCZO
 Z_16: orig: Z
 SZO_17: orig: SZO
@@ -22,7 +22,7 @@ O_20: orig: O
 Mem21: orig: Mem0, def: {store(Mem21[ds:0x0F00:byte]) = 0x01}, uses: {Mem22 = PHI(Mem21, Mem0)}
 Mem22: orig: Mem0, def: {Mem22 = PHI(Mem21, Mem0)}, uses: {v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}{v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}
 ax_23: orig: ax, uses: {v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}
-v6_24: orig: v6, def: {v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}, uses: {store(Mem25[ds:0x0106:word16]) = v6_24}{branch v6_24 <= 0x0000}
+v6_24: orig: v6, def: {v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]}, uses: {store(Mem25[ds:0x0106:word16]) = v6_24}{branch v6_24 <= 0x0000 l0C00_001E}
 Mem25: orig: Mem0, def: {store(Mem25[ds:0x0106:word16]) = v6_24}, uses: {Mem33 = PHI(Mem32, Mem25)}
 SCZO_26: orig: SCZO
 Z_27: orig: Z
@@ -31,9 +31,9 @@ C_29: orig: C
 SO_30: orig: SO
 O_31: orig: O
 Mem32: orig: Mem0, def: {store(Mem32[ds:0x0F01:byte]) = 0x01}, uses: {Mem33 = PHI(Mem32, Mem25)}
-Mem33: orig: Mem0, def: {Mem33 = PHI(Mem32, Mem25)}, uses: {branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000}{Mem44 = PHI(Mem43, Mem33)}
+Mem33: orig: Mem0, def: {Mem33 = PHI(Mem32, Mem25)}, uses: {branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000 l0C00_002D}{branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000 l0C00_002D}{Mem44 = PHI(Mem43, Mem33)}
 ax_34: orig: ax
-ax_35: orig: ax, uses: {branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000}
+ax_35: orig: ax, uses: {branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000 l0C00_002D}
 SCZO_36: orig: SCZO
 Z_37: orig: Z
 SZO_38: orig: SZO
@@ -42,8 +42,8 @@ O_40: orig: O
 C_41: orig: C
 SCZO_42: orig: SCZO
 Mem43: orig: Mem0, def: {store(Mem43[ds:0x0F02:byte]) = 0x01}, uses: {Mem44 = PHI(Mem43, Mem33)}
-Mem44: orig: Mem0, def: {Mem44 = PHI(Mem43, Mem33)}, uses: {branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]}{Mem55 = PHI(Mem54, Mem44)}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]}
-ax_45: orig: ax, uses: {branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]}
+Mem44: orig: Mem0, def: {Mem44 = PHI(Mem43, Mem33)}, uses: {branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16] l0C00_003D}{Mem55 = PHI(Mem54, Mem44)}{branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16] l0C00_003D}
+ax_45: orig: ax, uses: {branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16] l0C00_003D}
 SCZO_46: orig: SCZO
 Z_47: orig: Z
 SZO_48: orig: SZO
@@ -55,10 +55,10 @@ SCZO_53: orig: SCZO
 Mem54: orig: Mem0, def: {store(Mem54[ds:0x0F03:byte]) = 0x01}, uses: {Mem55 = PHI(Mem54, Mem44)}
 Mem55: orig: Mem0, def: {Mem55 = PHI(Mem54, Mem44)}, uses: {Mem60 = PHI(Mem59, Mem55)}
 wLoc04_56: orig: wLoc04
-C_57: orig: C, uses: {branch fn0C00_0069(0x0003)}
+C_57: orig: C, uses: {branch fn0C00_0069(0x0003) l0C00_0049}
 SCZO_58: orig: SCZO
 Mem59: orig: Mem0, def: {store(Mem59[ds:0x0F04:byte]) = 0x01}, uses: {Mem60 = PHI(Mem59, Mem55)}
-Mem60: orig: Mem0, def: {Mem60 = PHI(Mem59, Mem55)}, uses: {branch (Mem60[ds:0x010E:word16] & 0x01FF) == 0x0000}
+Mem60: orig: Mem0, def: {Mem60 = PHI(Mem59, Mem55)}, uses: {branch (Mem60[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056}
 SCZO_61: orig: SCZO
 Z_62: orig: Z
 SZO_63: orig: SZO
@@ -68,7 +68,7 @@ C_66: orig: C
 SCZO_67: orig: SCZO
 Mem68: orig: Mem0, def: {store(Mem68[ds:0x0F05:byte]) = 0x01}
 Mem69: orig: Mem0
-bp_70: orig: bp, def: {bp_70 = bp - 0x0010}, uses: {branch bp_70 < 0x0000}{branch !OVERFLOW(bp_70 * 0x0002)}
+bp_70: orig: bp, def: {bp_70 = bp - 0x0010}, uses: {branch bp_70 < 0x0000 l0C00_005F}{branch !OVERFLOW(bp_70 * 0x0002) l0C00_0068}
 SCZO_71: orig: SCZO
 Z_72: orig: Z
 SZO_73: orig: SZO
@@ -95,7 +95,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	def ss
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16]
+	branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F
 	// succ:  2 3
 l0C00_000A:		// block 2, pred: 1
 	store(Mem21[ds:0x0F00:byte]) = 0x01
@@ -104,48 +104,48 @@ l0C00_000F:		// block 3, pred: 2 1
 	Mem22 = PHI(Mem21, Mem0)
 	v6_24 = Mem22[ds:0x0106:word16] - Mem22[ds:0x0104:word16]
 	store(Mem25[ds:0x0106:word16]) = v6_24
-	branch v6_24 <= 0x0000
+	branch v6_24 <= 0x0000 l0C00_001E
 	// succ:  4 5
 l0C00_0019:		// block 4, pred: 3
 	store(Mem32[ds:0x0F01:byte]) = 0x01
 	// succ:  5
 l0C00_001E:		// block 5, pred: 4 3
 	Mem33 = PHI(Mem32, Mem25)
-	branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000
+	branch (Mem33[ds:0x0106:word16] & Mem33[ds:0x0108:word16]) == 0x0000 l0C00_002D
 	// succ:  6 7
 l0C00_0028:		// block 6, pred: 5
 	store(Mem43[ds:0x0F02:byte]) = 0x01
 	// succ:  7
 l0C00_002D:		// block 7, pred: 6 5
 	Mem44 = PHI(Mem43, Mem33)
-	branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16]
+	branch Mem44[ds:0x010A:word16] >=u Mem44[ds:0x010C:word16] l0C00_003D
 	// succ:  8 9
 l0C00_0038:		// block 8, pred: 7
 	store(Mem54[ds:0x0F03:byte]) = 0x01
 	// succ:  9
 l0C00_003D:		// block 9, pred: 8 7
 	Mem55 = PHI(Mem54, Mem44)
-	branch fn0C00_0069(0x0003)
+	branch fn0C00_0069(0x0003) l0C00_0049
 	// succ:  10 11
 l0C00_0044:		// block 10, pred: 9
 	store(Mem59[ds:0x0F04:byte]) = 0x01
 	// succ:  11
 l0C00_0049:		// block 11, pred: 10 9
 	Mem60 = PHI(Mem59, Mem55)
-	branch (Mem60[ds:0x010E:word16] & 0x01FF) == 0x0000
+	branch (Mem60[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056
 	// succ:  12 13
 l0C00_0051:		// block 12, pred: 11
 	store(Mem68[ds:0x0F05:byte]) = 0x01
 	// succ:  13
 l0C00_0056:		// block 13, pred: 12 11
 	bp_70 = bp - 0x0010
-	branch bp_70 < 0x0000
+	branch bp_70 < 0x0000 l0C00_005F
 	// succ:  14 15
 l0C00_005B:		// block 14, pred: 13
 	store(Mem77[ss:bp + 0xFFF6:byte]) = 0x01
 	// succ:  15
 l0C00_005F:		// block 15, pred: 14 13
-	branch !OVERFLOW(bp_70 * 0x0002)
+	branch !OVERFLOW(bp_70 * 0x0002) l0C00_0068
 	// succ:  16 17
 l0C00_0063:		// block 16, pred: 15
 	store(Mem86[ds:0x0F07:byte]) = 0x01

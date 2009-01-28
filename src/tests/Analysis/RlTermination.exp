@@ -35,12 +35,12 @@ maybeterminate_entry:		// block 0, pred:
 // DataOut: ax bx ds
 l0C00_0015:		// block 1, pred: 0
 	SCZO = cond(ax - Mem0[ds:bx:word16])
-	branch Test(ULT,C)
+	branch Test(ULT,C) l0C00_0023
 	// succ:  2 3
 // DataOut: ax bx ds
 l0C00_0019:		// block 2, pred: 1
 	SCZO = cond(ax - Mem0[ds:bx + 0x0002:word16])
-	branch Test(UGE,C)
+	branch Test(UGE,C) l0C00_0023
 	// succ:  4 3
 // DataOut: ax bx ds
 l0C00_0023:		// block 3, pred: 2 1

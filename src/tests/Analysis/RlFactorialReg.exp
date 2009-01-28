@@ -33,7 +33,7 @@ fn0C00_000B_entry:		// block 0, pred:
 l0C00_000B:		// block 1, pred: 0
 	wLoc04 = si
 	SCZO = cond(cx - 0x0001)
-	branch Test(LE,SZO)
+	branch Test(LE,SZO) l0C00_001C
 	// succ:  3 2
 // DataOut: cx ds
 l0C00_001C:		// block 2, pred: 1

@@ -4,7 +4,7 @@ C: C:Flags
 al: al:Register al, def: {def al}, uses: {C_6 = fn0C00_000A(al, &al_5)}
 ds: ds:Register ds, def: {def ds}, uses: {store(Mem7[ds:0x0300:byte]) = al_5}
 al_5: orig: al, def: {C_6 = fn0C00_000A(al, &al_5)}, uses: {store(Mem7[ds:0x0300:byte]) = al_5}
-C_6: orig: C, def: {C_6 = fn0C00_000A(al, &al_5)}, uses: {branch C_6}
+C_6: orig: C, def: {C_6 = fn0C00_000A(al, &al_5)}, uses: {branch C_6 l0C00_0009}
 Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:byte]) = al_5}
 Mem8: orig: Mem0
 // fn0C00_0000
@@ -15,7 +15,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	C_6 = fn0C00_000A(al, &al_5)
-	branch C_6
+	branch C_6 l0C00_0009
 	// succ:  2 3
 l0C00_0005:		// block 2, pred: 1
 	store(Mem7[ds:0x0300:byte]) = al_5
@@ -28,7 +28,7 @@ fn0C00_0000_exit:		// block 4, pred: 3
 
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-al: al:Register al, def: {def al}, uses: {al_20 = al - 0x30}{al_38 = PHI(al_28, al)}{branch al <u 0x30}{branch al <=u 0x39}{branch al <u 0x41}{branch al <=u 0x46}{branch al <u 0x61}{branch al >u 0x66}
+al: al:Register al, def: {def al}, uses: {al_20 = al - 0x30}{al_38 = PHI(al_28, al)}{branch al <u 0x30 l0C00_0032}{branch al <=u 0x39 l0C00_0022}{branch al <u 0x41 l0C00_0032}{branch al <=u 0x46 l0C00_0022}{branch al <u 0x61 l0C00_0032}{branch al >u 0x66 l0C00_0032}
 SCZO: SCZO:Flags
 C: C:Flags
 CZ: CZ:Flags
@@ -46,10 +46,10 @@ C_16: orig: C
 SCZO_17: orig: SCZO
 CZ_18: orig: CZ
 CZ_19: orig: CZ
-al_20: orig: al, def: {al_20 = al - 0x30}, uses: {al_28 = PHI(al_26, al_23, al_20)}{al_23 = al_20 - 0x07}{branch al_20 <u 0x0A}
+al_20: orig: al, def: {al_20 = al - 0x30}, uses: {al_28 = PHI(al_26, al_23, al_20)}{al_23 = al_20 - 0x07}{branch al_20 <u 0x0A l0C00_0030}
 SCZO_21: orig: SCZO
 C_22: orig: C
-al_23: orig: al, def: {al_23 = al_20 - 0x07}, uses: {al_28 = PHI(al_26, al_23, al_20)}{al_26 = al_23 - 0x20}{branch al_23 <u 0x10}
+al_23: orig: al, def: {al_23 = al_20 - 0x07}, uses: {al_28 = PHI(al_26, al_23, al_20)}{al_26 = al_23 - 0x20}{branch al_23 <u 0x10 l0C00_0030}
 SCZO_24: orig: SCZO
 C_25: orig: C
 al_26: orig: al, def: {al_26 = al_23 - 0x20}, uses: {al_28 = PHI(al_26, al_23, al_20)}
@@ -71,22 +71,22 @@ fn0C00_000A_entry:		// block 0, pred:
 	def al
 	// succ:  1
 l0C00_000A:		// block 1, pred: 0
-	branch al <u 0x30
+	branch al <u 0x30 l0C00_0032
 	// succ:  2 7
 l0C00_000E:		// block 2, pred: 1
-	branch al <=u 0x39
+	branch al <=u 0x39 l0C00_0022
 	// succ:  3 8
 l0C00_0012:		// block 3, pred: 2
-	branch al <u 0x41
+	branch al <u 0x41 l0C00_0032
 	// succ:  4 7
 l0C00_0016:		// block 4, pred: 3
-	branch al <=u 0x46
+	branch al <=u 0x46 l0C00_0022
 	// succ:  5 8
 l0C00_001A:		// block 5, pred: 4
-	branch al <u 0x61
+	branch al <u 0x61 l0C00_0032
 	// succ:  6 7
 l0C00_001E:		// block 6, pred: 5
-	branch al >u 0x66
+	branch al >u 0x66 l0C00_0032
 	// succ:  8 7
 l0C00_0032:		// block 7, pred: 6 5 3 1
 	C_32 = true
@@ -94,11 +94,11 @@ l0C00_0032:		// block 7, pred: 6 5 3 1
 	// succ:  12
 l0C00_0022:		// block 8, pred: 6 4 2
 	al_20 = al - 0x30
-	branch al_20 <u 0x0A
+	branch al_20 <u 0x0A l0C00_0030
 	// succ:  9 11
 l0C00_0028:		// block 9, pred: 8
 	al_23 = al_20 - 0x07
-	branch al_23 <u 0x10
+	branch al_23 <u 0x10 l0C00_0030
 	// succ:  10 11
 l0C00_002E:		// block 10, pred: 9
 	al_26 = al_23 - 0x20

@@ -20,7 +20,7 @@ l0C00_0000:		// block 1, pred: 0
 	cl = Test(EQ,Z)
 	store(Mem0[ds:0x0300:word32]) = ecx
 	SCZO = cond(ax - 0x0030)
-	branch Test(LT,SO)
+	branch Test(LT,SO) l0C00_0016
 	// succ:  2 3
 l0C00_0012:		// block 2, pred: 1
 	store(Mem0[ds:0x0302:word16]) = ax

@@ -5,7 +5,7 @@ fn0C00_0000_entry:		// block 0, pred:
 l0C00_0000:		// block 1, pred: 0
 	word16 bx_12 = 0x0000
 	word16 ax_13 = Mem0[ss:bp + 0x0006:word16]
-	branch ax_13 <= 0x0000
+	branch ax_13 <= 0x0000 l0C00_0012
 	// succ:  3 2
 l0C00_0012:		// block 2, pred: 1
 	bx_12 = -ax_13
@@ -16,7 +16,7 @@ l0C00_0009:		// block 3, pred: 1
 l0C00_000B:		// block 4, pred: 3 4
 	bx_12 = bx_12 + cx_24
 	cx_24 = cx_24 - 0x0001
-	branch cx_24 != 0x0000
+	branch cx_24 != 0x0000 l0C00_000B
 	// succ:  5 4
 l0C00_000F:		// block 5, pred: 4
 	// succ:  6

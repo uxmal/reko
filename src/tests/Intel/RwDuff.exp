@@ -84,7 +84,7 @@ l0C00_0027:		// block 9, pred: 8 1
 	di = di + 0x0002
 	cx = cx - 0x0001
 	SZO = cond(cx)
-	branch Test(GT,SZO)
+	branch Test(GT,SZO) l0C00_0020
 	// succ:  10 2
 l0C00_002B:		// block 10, pred: 9
 	return

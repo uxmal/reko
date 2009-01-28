@@ -12,7 +12,7 @@ SZO: SZO:Flags
 bx_11: orig: bx
 si_12: orig: si, def: {si_12 = PHI(si, si_15, si_15)}, uses: {ax_14 = Mem13[ds:si_12:word16]}{si_15 = si_12 + 0x0002}
 Mem13: orig: Mem0, def: {Mem13 = PHI(Mem0, Mem27, Mem19)}, uses: {ax_14 = Mem13[ds:si_12:word16]}
-ax_14: orig: ax, def: {ax_14 = Mem13[ds:si_12:word16]}, uses: {store(Mem19[ds:di:word16]) = ax_14}{branch ax_14 != 0x0020}{branch ax_14 != 0x0000}{branch ax_14 != 0x000D}
+ax_14: orig: ax, def: {ax_14 = Mem13[ds:si_12:word16]}, uses: {store(Mem19[ds:di:word16]) = ax_14}{branch ax_14 != 0x0020 l0C00_0005}{branch ax_14 != 0x0000 l0C00_0011}{branch ax_14 != 0x000D l0C00_001A}
 si_15: orig: si, def: {si_15 = si_12 + 0x0002}, uses: {si_12 = PHI(si, si_15, si_15)}{si_12 = PHI(si, si_15, si_15)}{ax_33 = si_15 - si}
 SCZO_16: orig: SCZO
 Z_17: orig: Z
@@ -61,20 +61,20 @@ l0C00_001A:		// block 2, pred: 1 5 4
 	Mem13 = PHI(Mem0, Mem27, Mem19)
 	ax_14 = Mem13[ds:si_12:word16]
 	si_15 = si_12 + 0x0002
-	branch ax_14 != 0x0020
+	branch ax_14 != 0x0020 l0C00_0005
 	// succ:  7 3
 liveOut: si ds di ax_14 si_15 v9_26
 
 liveIn:  si ds di ax_14 si_15 v9_26
 l0C00_0005:		// block 3, pred: 2
 	store(Mem19[ds:di:word16]) = ax_14
-	branch ax_14 != 0x0000
+	branch ax_14 != 0x0000 l0C00_0011
 	// succ:  6 4
 liveOut: si ds di ax_14 si_15 Mem19 v9_26
 
 liveIn:  si ds di ax_14 si_15 Mem19 v9_26
 l0C00_0011:		// block 4, pred: 3
-	branch ax_14 != 0x000D
+	branch ax_14 != 0x000D l0C00_001A
 	// succ:  5 2
 liveOut: si ds di si_15 Mem19 v9_26
 

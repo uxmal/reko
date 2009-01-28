@@ -29,7 +29,7 @@ l0C00_0004:		// block 1, pred: 0 5
 	byte al_27 = Mem26[ds:si:byte]
 	byte al_32 = (al_27 >>u 0x04) + 0x30
 	word16 ax_33 = DPB(ax, al_32, 0, 8)
-	branch al_32 <= 0x39
+	branch al_32 <= 0x39 l0C00_0016
 	// succ:  2 3
 l0C00_0014:		// block 2, pred: 1
 	ax_33 = DPB(ax_33, (al_27 >>u 0x04) + 0x37, 0, 8) (alias)
@@ -38,7 +38,7 @@ l0C00_0016:		// block 3, pred: 2 1
 	byte ah_41 = Mem26[ds:si:byte]
 	byte ah_44 = (ah_41 & 0x0F) + 0x30
 	word16 ax_45 = DPB(ax_33, ah_44, 8, 8)
-	branch ah_44 <= 0x39
+	branch ah_44 <= 0x39 l0C00_0026
 	// succ:  4 5
 l0C00_0023:		// block 4, pred: 3
 	ax_45 = DPB(ax_45, (ah_41 & 0x0F) + 0x37, 8, 8) (alias)
@@ -48,7 +48,7 @@ l0C00_0026:		// block 5, pred: 4 3
 	msdos_write_file(Mem53[ds:0x5424:word16], 0x0004, SEQ(ds, 0x5427), &ax)
 	si = si + 0x0001
 	bp = bp - 0x0001
-	branch bp != 0x0000
+	branch bp != 0x0000 l0C00_0004
 	// succ:  6 1
 l0C00_003C:		// block 6, pred: 5
 	return

@@ -159,7 +159,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier y = Reg32("y");
 			Statement stmX = new Statement(new Assignment(x, new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(0x1000300), PrimitiveType.Word32)), null);
 			Statement stmY = new Statement(new Assignment(y, new BinaryExpression(Operator.sub, PrimitiveType.Word32, x, Constant.Word32(2))), null);
-			Statement stm = new Statement(new Branch(new BinaryExpression(Operator.eq, PrimitiveType.Bool, y, Constant.Word32(0))), null);
+			Statement stm = new Statement(new Branch(new BinaryExpression(Operator.eq, PrimitiveType.Bool, y, Constant.Word32(0)), null), null);
 			ssaIds[x].DefStatement = stmX;
 			ssaIds[y].DefStatement = stmY;
 			Assert.AreEqual("x = Mem0[0x01000300:word32]", stmX.Instruction.ToString());

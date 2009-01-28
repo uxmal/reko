@@ -48,7 +48,7 @@ l0C00_0010:		// block 1, pred: 0
 	ch = 0x00
 	SCZO = cond(ch)
 	cl = Mem0[ds:0x0300:byte]
-	branch cx == 0x0000
+	branch cx == 0x0000 l0C00_001E
 	// succ:  2 3
 l0C00_0018:		// block 2, pred: 1
 	store(Mem0[ds:0x0302:word16]) = 0x0000

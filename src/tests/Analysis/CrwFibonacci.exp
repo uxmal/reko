@@ -25,7 +25,7 @@ l10000000:		// block 1, pred: 0
 	dwLoc08 = esi
 	esi = dwArg00
 	SCZO = cond(esi - 0x00000001)
-	branch Test(GT,SZO)
+	branch Test(GT,SZO) l10000011
 	// succ:  3 2
 l10000011:		// block 2, pred: 1
 	eax = esi - 0x00000002

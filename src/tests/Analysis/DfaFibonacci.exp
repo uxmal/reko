@@ -10,7 +10,7 @@ word32 fn10000000(word32 dwArg00)
 fn10000000_entry:		// block 0, pred:
 	// succ:  1
 l10000000:		// block 1, pred: 0
-	branch dwArg00 > 0x00000001
+	branch dwArg00 > 0x00000001 l10000011
 	// succ:  3 2
 l10000011:		// block 2, pred: 1
 	return fn10000000(dwArg00 - 0x00000001) + fn10000000(dwArg00 - 0x00000002)

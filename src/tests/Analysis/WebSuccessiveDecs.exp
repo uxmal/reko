@@ -14,13 +14,13 @@ word16 fn0C00_000C(word16 ax)
 fn0C00_000C_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000C:		// block 1, pred: 0
-	branch ax != 0x0000
+	branch ax != 0x0000 l0C00_0014
 	// succ:  7 2
 l0C00_0014:		// block 2, pred: 1
-	branch ax != 0x0001
+	branch ax != 0x0001 l0C00_001B
 	// succ:  6 3
 l0C00_001B:		// block 3, pred: 2
-	branch ax != 0x0002
+	branch ax != 0x0002 l0C00_0022
 	// succ:  5 4
 l0C00_0022:		// block 4, pred: 3
 	return 0x0000

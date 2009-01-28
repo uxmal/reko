@@ -29,7 +29,7 @@ fn0C00_000F_entry:		// block 0, pred:
 l0C00_000F:		// block 1, pred: 0
 	word16 ax_18
 	word16 ax_14 = wArg00 - 0x0001
-	branch ax_14 == 0x0000
+	branch ax_14 == 0x0000 l0C00_0026
 	// succ:  3 2
 l0C00_0026:		// block 2, pred: 1
 	ax_18 = 0x0001

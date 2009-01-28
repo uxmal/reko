@@ -30,7 +30,7 @@ fn0C00_0004_entry:		// block 0, pred:
 // DataOut: dx
 l0C00_0004:		// block 1, pred: 0
 	SCZO = cond(dx - 0x001E)
-	branch Test(NE,Z)
+	branch Test(NE,Z) l0C00_000F
 	// succ:  3 2
 // DataOut: dx
 l0C00_000F:		// block 2, pred: 1
@@ -63,7 +63,7 @@ fn0C00_0013_entry:		// block 0, pred:
 // DataOut: dx
 l0C00_0013:		// block 1, pred: 0
 	SCZO = cond(dx - 0x0014)
-	branch Test(LT,SO)
+	branch Test(LT,SO) l0C00_001F
 	// succ:  3 2
 // DataOut: dx
 l0C00_001F:		// block 2, pred: 1

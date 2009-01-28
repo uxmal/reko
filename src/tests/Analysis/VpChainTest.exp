@@ -100,7 +100,7 @@ SZO_13: orig: SZO, def: {SZO_13 = SCZO_11 (alias)}
 dx_14: orig: dx, def: {dx_14 = PHI(dx, dx_21)}, uses: {SCZO_16 = cond(dx_14 - 0x0000)}{si_19 = si_15 + dx_14}{dx_21 = dx_14 - 0x0001}
 si_15: orig: si, def: {si_15 = PHI(si_10, si_19)}, uses: {si_19 = si_15 + dx_14}{ax_25 = si_15}
 SCZO_16: orig: SCZO, def: {SCZO_16 = cond(dx_14 - 0x0000)}, uses: {SO_17 = SCZO_16 (alias)}{SZO_18 = SCZO_16 (alias)}
-SO_17: orig: SO, def: {SO_17 = SCZO_16 (alias)}, uses: {branch Test(GE,SO_17)}
+SO_17: orig: SO, def: {SO_17 = SCZO_16 (alias)}, uses: {branch Test(GE,SO_17) l0C00_0015}
 SZO_18: orig: SZO, def: {SZO_18 = SCZO_16 (alias)}
 si_19: orig: si, def: {si_19 = si_15 + dx_14}, uses: {SCZO_20 = cond(si_19)}{si_15 = PHI(si_10, si_19)}
 SCZO_20: orig: SCZO, def: {SCZO_20 = cond(si_19)}
@@ -136,7 +136,7 @@ l0C00_0018:		// block 2, pred: 1 3
 	SCZO_16 = cond(dx_14 - 0x0000)
 	SO_17 = SCZO_16 (alias)
 	SZO_18 = SCZO_16 (alias)
-	branch Test(GE,SO_17)
+	branch Test(GE,SO_17) l0C00_0015
 	// succ:  4 3
 l0C00_0015:		// block 3, pred: 2
 	si_19 = si_15 + dx_14
@@ -170,7 +170,7 @@ SO_12: orig: SO
 SZO_13: orig: SZO
 dx_14: orig: dx, def: {dx_14 = PHI(dx, dx_21)}, uses: {SCZO_16 = cond(dx_14)}{si_19 = si_15 + dx_14}{dx_21 = dx_14 - 0x0001}
 si_15: orig: si, def: {si_15 = PHI(si_10, si_19)}, uses: {si_19 = si_15 + dx_14}{return si_15}
-SCZO_16: orig: SCZO, def: {SCZO_16 = cond(dx_14)}, uses: {branch Test(GE,SCZO_16)}
+SCZO_16: orig: SCZO, def: {SCZO_16 = cond(dx_14)}, uses: {branch Test(GE,SCZO_16) l0C00_0015}
 SO_17: orig: SO
 SZO_18: orig: SZO
 si_19: orig: si, def: {si_19 = si_15 + dx_14}, uses: {si_15 = PHI(si_10, si_19)}
@@ -193,7 +193,7 @@ l0C00_0018:		// block 2, pred: 1 3
 	dx_14 = PHI(dx, dx_21)
 	si_15 = PHI(si_10, si_19)
 	SCZO_16 = cond(dx_14)
-	branch Test(GE,SCZO_16)
+	branch Test(GE,SCZO_16) l0C00_0015
 	// succ:  4 3
 l0C00_0015:		// block 3, pred: 2
 	si_19 = si_15 + dx_14

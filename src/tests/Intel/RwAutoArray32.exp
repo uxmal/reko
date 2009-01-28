@@ -30,7 +30,7 @@ l10000000:		// block 2, pred: 1
 	// succ:  3
 l10000027:		// block 3, pred: 2 4
 	SCZO = cond(ecx - 0x00000003)
-	branch Test(LE,SZO)
+	branch Test(LE,SZO) l10000023
 	// succ:  5 4
 l10000023:		// block 4, pred: 3
 	eax = eax + Mem0[fp + 0xFFFFFFF0 + ecx * 0x00000004:word32]

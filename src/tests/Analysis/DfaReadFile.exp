@@ -10,7 +10,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	word16 ax_16 = fn0C00_0023(0x0100, 0x3000, Mem0[0x0D00:0x0300:word16], 0x0D00)
-	branch ax_16 >= 0x0000
+	branch ax_16 >= 0x0000 l0C00_001A
 	// succ:  2 3
 l0C00_0015:		// block 2, pred: 1
 	ax_16 = fn0C00_001F(0x01)
@@ -50,7 +50,7 @@ fn0C00_0023_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0023:		// block 1, pred: 0
 	word16 ax_12
-	branch msdos_read_file(bx, cx, ds_dx, &ax_12)
+	branch msdos_read_file(bx, cx, ds_dx, &ax_12) l0C00_002C
 	// succ:  2 3
 l0C00_0029:		// block 2, pred: 1
 	ax_12 = 0xFFFF

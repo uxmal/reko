@@ -315,6 +315,8 @@ namespace Decompiler.Core.Output
 			WriteKeyword("branch");
             Write(" ");
 			b.Condition.Accept(this);
+            Write(" ");
+            Write(b.Target.Name);
 			Terminate();
 		}
 

@@ -15,7 +15,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	C = fn0C00_000A(al, &al)
-	branch Test(ULT,C)
+	branch Test(ULT,C) l0C00_0009
 	// succ:  2 3
 l0C00_0005:		// block 2, pred: 1
 	store(Mem0[ds:0x0300:byte]) = al
@@ -44,27 +44,27 @@ fn0C00_000A_entry:		// block 0, pred:
 	// succ:  1
 l0C00_000A:		// block 1, pred: 0
 	SCZO = cond(al - 0x30)
-	branch Test(ULT,C)
+	branch Test(ULT,C) l0C00_0032
 	// succ:  2 7
 l0C00_000E:		// block 2, pred: 1
 	SCZO = cond(al - 0x39)
-	branch Test(ULE,CZ)
+	branch Test(ULE,CZ) l0C00_0022
 	// succ:  3 8
 l0C00_0012:		// block 3, pred: 2
 	SCZO = cond(al - 0x41)
-	branch Test(ULT,C)
+	branch Test(ULT,C) l0C00_0032
 	// succ:  4 7
 l0C00_0016:		// block 4, pred: 3
 	SCZO = cond(al - 0x46)
-	branch Test(ULE,CZ)
+	branch Test(ULE,CZ) l0C00_0022
 	// succ:  5 8
 l0C00_001A:		// block 5, pred: 4
 	SCZO = cond(al - 0x61)
-	branch Test(ULT,C)
+	branch Test(ULT,C) l0C00_0032
 	// succ:  6 7
 l0C00_001E:		// block 6, pred: 5
 	SCZO = cond(al - 0x66)
-	branch Test(UGT,CZ)
+	branch Test(UGT,CZ) l0C00_0032
 	// succ:  8 7
 l0C00_0032:		// block 7, pred: 6 5 3 1
 	C = true
@@ -73,12 +73,12 @@ l0C00_0032:		// block 7, pred: 6 5 3 1
 l0C00_0022:		// block 8, pred: 6 4 2
 	al = al - 0x30
 	SCZO = cond(al - 0x0A)
-	branch Test(ULT,C)
+	branch Test(ULT,C) l0C00_0030
 	// succ:  9 11
 l0C00_0028:		// block 9, pred: 8
 	al = al - 0x07
 	SCZO = cond(al - 0x10)
-	branch Test(ULT,C)
+	branch Test(ULT,C) l0C00_0030
 	// succ:  10 11
 l0C00_002E:		// block 10, pred: 9
 	al = al - 0x20
