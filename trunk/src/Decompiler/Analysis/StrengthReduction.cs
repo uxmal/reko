@@ -117,7 +117,7 @@ namespace Decompiler.Analysis
                     Operator.add,
                     ass.Src.DataType,
                     ass.Src,
-                    c);
+                    use.Increment);
             }
             return true;
             

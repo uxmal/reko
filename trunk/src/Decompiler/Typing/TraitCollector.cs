@@ -225,23 +225,21 @@ namespace Decompiler.Typing
 		private void BindActualTypesToFormalTypes(Application appl)
 		{
 			ProcedureConstant pc = appl.Procedure as ProcedureConstant;
-			if (pc != null)
-			{
-				Debug.Assert(pc.Procedure.Signature != null);
-				ProcedureSignature sig = pc.Procedure.Signature;
-				if (appl.Arguments.Length != sig.FormalArguments.Length)
-					throw new InvalidOperationException(
-						string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
-						pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
-				for (int i = 0; i < appl.Arguments.Length; ++i)
-				{
-					handler.EqualTrait(appl.Arguments[i].TypeVariable, sig.FormalArguments[i].TypeVariable);
-				}
-				if (sig.ReturnValue != null)
-					handler.EqualTrait(appl.TypeVariable, sig.ReturnValue.TypeVariable);
-			}
-			else
+			if (pc == null)
 				throw new NotImplementedException("Indirect call");
+			Debug.Assert(pc.Procedure.Signature != null);
+			ProcedureSignature sig = pc.Procedure.Signature;
+			if (appl.Arguments.Length != sig.FormalArguments.Length)
+				throw new InvalidOperationException(
+					string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
+					pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
+			for (int i = 0; i < appl.Arguments.Length; ++i)
+			{
+				handler.EqualTrait(appl.Arguments[i].TypeVariable, sig.FormalArguments[i].TypeVariable);
+                sig.FormalArguments[i].Accept(this);
+			}
+			if (sig.ReturnValue != null)
+				handler.EqualTrait(appl.TypeVariable, sig.ReturnValue.TypeVariable);
 		}
 
 		public class ArrayContext

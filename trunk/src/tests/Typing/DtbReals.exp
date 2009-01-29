@@ -143,11 +143,11 @@ T_4: (in ds : selector)
 T_5: (in wArg00 : word16)
   Class: Eq_5
   DataType: word16
-  OrigDataType: 
+  OrigDataType: word16
 T_6: (in wArg02 : word16)
   Class: Eq_6
   DataType: word16
-  OrigDataType: 
+  OrigDataType: word16
 T_7: (in ds : selector)
   Class: Eq_4
   DataType: (ptr (segment (400 T_46 t0400) (408 T_50 t0408)))

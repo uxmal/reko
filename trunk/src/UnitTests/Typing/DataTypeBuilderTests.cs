@@ -447,6 +447,18 @@ namespace Decompiler.UnitTests.Typing
 
         }
 
+        [Test]
+        public void DtbSequenceWithSegment()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier ds = m.Local16("ds");
+            ds.DataType = PrimitiveType.SegmentSelector;
+            m.Store(m.Word16(0x0100), m.Seq(ds, m.Word16(0x1234)));
+
+            ProgramMock prog = new ProgramMock();
+            prog.Add(m);
+            RunTest(prog.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
+        }
 
 
 		protected override void RunTest(Program prog, string outputFile)
