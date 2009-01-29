@@ -30,15 +30,12 @@ namespace Decompiler.WindowsGui.Forms
 	public class AnalyzedPageInteractor : PhasePageInteractor
 	{
 		private AnalyzedPage page;
-        private MainFormInteractor mainInteractor;
         private RichEditFormatter formatter;
-        private DataFlowAnalysis dfa;
+        private IProgramImageBrowserService browserSvc;
 
-		public AnalyzedPageInteractor(AnalyzedPage page, MainFormInteractor form)
-			: base(form)
+		public AnalyzedPageInteractor(AnalyzedPage page)
 		{
 			this.page = page;
-            mainInteractor = form;
             page.ProcedureText.MouseClick += new MouseEventHandler(ProcedureText_MouseClick);
 		}
 
@@ -55,22 +52,20 @@ namespace Decompiler.WindowsGui.Forms
 
 		public override void EnterPage()
 		{
-            mainInteractor.MainForm.BrowserList.Items.Clear();
-            mainInteractor.MainForm.BrowserList.Visible = true;
-            mainInteractor.MainForm.BrowserList.MultiSelect = false;
+            browserSvc.Enabled = true;
 
 			Decompiler.RewriteMachineCode();
 			Decompiler.AnalyzeDataFlow();
 
             PopulateBrowserListWithProcedures();
 			page.PerformTypeRecovery.Checked = Decompiler.Project.Output.TypeInference;
-            mainInteractor.MainForm.BrowserList.SelectedIndexChanged += new EventHandler(BrowserList_SelectedIndexChanged);
+            browserSvc.SelectionChanged += new EventHandler(BrowserList_SelectedIndexChanged);
 		}
 
 
 		public override bool LeavePage()
 		{
-            mainInteractor.MainForm.BrowserList.SelectedIndexChanged -= new EventHandler(BrowserList_SelectedIndexChanged);
+            browserSvc.SelectionChanged -= new EventHandler(BrowserList_SelectedIndexChanged);
 			Decompiler.Project.Output.TypeInference = page.PerformTypeRecovery.Checked;
 			return true;
         }
@@ -82,24 +77,31 @@ namespace Decompiler.WindowsGui.Forms
 
         private void PopulateBrowserListWithProcedures()
         {
-            foreach (KeyValuePair<Address, Procedure> entry in Decompiler.Program.Procedures)
+            browserSvc.Populate(Decompiler.Program.Procedures, delegate(object item, IListViewItem listItem)
             {
-                ListViewItem item = new ListViewItem();
-                item.Text = entry.Value.Name;
-                item.Tag = entry;
-                mainInteractor.MainForm.BrowserList.Items.Add(item);
-            }
+                KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) item;
+                listItem.Text = entry.Value.Name;
+            });
         }
 
         public KeyValuePair<Address, Procedure> SelectedProcedureEntry
         {
             get
             {
-                ListView browserList = mainInteractor.MainForm.BrowserList;
-                if (browserList.SelectedItems.Count <= 0)
+                if (!browserSvc.IsItemSelected)
                     return new KeyValuePair<Address,Procedure>(null, null);
-                KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) browserList.SelectedItems[0].Tag;
+                KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) browserSvc.SelectedItem;
                 return entry;
+            }
+        }
+
+        public override System.ComponentModel.ISite Site
+        {
+            get { return base.Site; }
+            set 
+            {
+                base.Site = value;
+                browserSvc = (IProgramImageBrowserService) EnsureService(typeof(IProgramImageBrowserService));
             }
         }
 
@@ -133,7 +135,7 @@ namespace Decompiler.WindowsGui.Forms
                         ProcedureDialogInteractor i = new ProcedureDialogInteractor(proc);
                         using (ProcedureDialog dlg = i.CreateDialog())
                         {
-                            if (DialogResult.OK == ShowModalDialog(dlg))
+                            if (DialogResult.OK == UIService.ShowModalDialog(dlg))
                             {
                                 i.ApplyChangesToProcedure(SelectedProcedureEntry.Value);
                                 //$TODO: prohibit stepping forward, only go back to previous steps.

@@ -93,7 +93,7 @@ namespace Decompiler.Core.Types
 
 		public virtual void Write(TextWriter writer)
 		{
-			writer.Write(Name);
+            writer.Write(Name);
 		}
 	}
 }

@@ -278,8 +278,11 @@
     <Compile Include="Gui\CommandGroup.cs" />
     <Compile Include="Gui\FindResult.cs" />
     <Compile Include="Gui\ICommandTarget.cs" />
+    <Compile Include="Gui\IDecompilerService.cs" />
+    <Compile Include="Gui\IDecompilerUIService.cs" />
     <Compile Include="Gui\IFindResultsService.cs" />
     <Compile Include="Gui\IMainForm.cs" />
+    <Compile Include="Gui\IProgramImageBrowserService.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
     <Compile Include="Gui\IStartPage.cs" />
     <Compile Include="Gui\MenuBuilder.cs" />
@@ -540,7 +543,11 @@
     <Compile Include="WindowsGui\Forms\StartPage.Designer.cs">
       <DependentUpon>StartPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\IListViewItem.cs" />
+    <Compile Include="WindowsGui\ListViewItemWrapper.cs" />
     <Compile Include="WindowsGui\MruList.cs" />
+    <Compile Include="WindowsGui\ProgramImageBrowserService.cs" />
+    <Compile Include="WindowsGui\DecompilerUiService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

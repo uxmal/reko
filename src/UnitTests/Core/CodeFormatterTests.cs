@@ -31,6 +31,7 @@ namespace Decompiler.UnitTests.Core
 	[TestFixture]
 	public class CodeFormatterTests
 	{
+        private Formatter formatter;
 		private CodeFormatter cf;
 		private StringWriter sw;
 		private string nl = Environment.NewLine;
@@ -86,9 +87,9 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CfIndentation()
 		{
-			cf.UseTabs = true;
-			cf.TabSize = 4;
-			cf.Indentation = 6;
+			formatter.UseTabs = true;
+            formatter.TabSize = 4;
+            formatter.Indentation = 6;
             Instruction b = new Branch(Constant.Word32(0), new Block(null, "target"));
 			b.Accept(cf);
 			Assert.AreEqual("\t  branch 0x00000000 target" + nl, sw.ToString());
@@ -97,9 +98,9 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CfIndentWithSpaces()
 		{
-			cf.UseTabs = false;
-			cf.TabSize = 4;
-			cf.Indentation = 6;
+            formatter.UseTabs = false;
+            formatter.TabSize = 4;
+            formatter.Indentation = 6;
             Instruction b = new Branch(Constant.Word32(0), new Block(null, "Test"));
 			b.Accept(cf);
 			Assert.AreEqual("      branch 0x00000000 Test" + nl, sw.ToString());
@@ -119,7 +120,8 @@ namespace Decompiler.UnitTests.Core
 		public void Setup()
 		{
 			sw = new StringWriter();
-			cf = new CodeFormatter(sw);
+            formatter = new Formatter(sw);
+			cf = new CodeFormatter(formatter);
 		}
 
 	}

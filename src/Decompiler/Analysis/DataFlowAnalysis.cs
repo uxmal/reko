@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -110,17 +111,18 @@ namespace Decompiler.Analysis
 			{
 				StringWriter output = new StringWriter();
 				ProcedureFlow pf= this.flow[proc];
+                Formatter f = new Formatter(output);
 				if (pf.Signature != null)
-					pf.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, output);
+					pf.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
 				else if (proc.Signature != null)
-					proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, output);
+					proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
 				else
 					output.Write("Warning: no signature found for {0}", proc.Name);
 				output.WriteLine();
 				pf.Emit(prog.Architecture, output);
 
 				output.WriteLine("// {0}", proc.Name);
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, output);
+				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
 				output.WriteLine();
 				foreach (Block block in proc.RpoBlocks)
 				{

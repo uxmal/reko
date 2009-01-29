@@ -121,11 +121,6 @@ namespace Decompiler.WindowsGui.Forms
             return dlg.ShowDialog(this);
         }
 
-        public void ShowMessageBox(string message, string caption)
-        {
-            MessageBox.Show(this, message, caption);
-        }
-
 
         public ToolStrip ToolBar
         {

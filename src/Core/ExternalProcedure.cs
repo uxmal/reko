@@ -41,9 +41,10 @@ namespace Decompiler.Core
 		public override string ToString()
 		{
 			StringWriter sw = new StringWriter();
-            CodeFormatter cf = new CodeFormatter(sw);
-            TypeFormatter tf = new TypeFormatter(sw, false);
-			signature.Emit(Name, ProcedureSignature.EmitFlags.ArgumentKind, cf, tf);
+            Formatter fmt = new Formatter(sw);
+            CodeFormatter cf = new CodeFormatter(fmt);
+            TypeFormatter tf = new TypeFormatter(fmt, false);
+			signature.Emit(Name, ProcedureSignature.EmitFlags.ArgumentKind, fmt, cf, tf);
 			return sw.ToString();
 		}
 	}

@@ -26,8 +26,10 @@ namespace Decompiler.Core.Output
 	/// <summary>
 	/// Formats types using indentation settings specified by caller.
 	/// </summary>
-	public class TypeFormatter : Formatter, IDataTypeVisitor
+	public class TypeFormatter : IDataTypeVisitor
 	{
+        private Formatter writer;
+
 		private string name;
 		public int indentLevel;
 		private Dictionary<DataType,object> visited;
@@ -39,8 +41,9 @@ namespace Decompiler.Core.Output
 
 		private enum Mode { Writing, Scanning }
 
-		public TypeFormatter(TextWriter tw, bool typeReference) : base(tw)
+		public TypeFormatter(Formatter writer, bool typeReference)
 		{
+            this.writer = writer;
 			this.visited = new Dictionary<DataType,object>();
 			this.mode = Mode.Writing;
             this.typeReference = typeReference;
@@ -55,7 +58,7 @@ namespace Decompiler.Core.Output
 		{
 			for (int i = 0; i < indentLevel; ++i)
 			{
-				writer.Write('\t');
+				writer.Write("\t");
 			}
 			writer.Write(s);
 		}
@@ -105,7 +108,6 @@ namespace Decompiler.Core.Output
 			writer.Write("}");
 		}
 
-
 		#region IDataTypeVisitor methods ///////////////////////////////////////
 
 		public void VisitArray(ArrayType at)
@@ -119,7 +121,7 @@ namespace Decompiler.Core.Output
 			writer.Write("[");
 			if (at.Length != 0)
 			{
-				writer.Write(at.Length);
+				writer.Write(at.Length.ToString());
 			}
 			writer.Write("]");
 		}
@@ -164,7 +166,9 @@ namespace Decompiler.Core.Output
                 object v;
                 if (visited.TryGetValue(str, out v) && (v == Defined || v == Declared))
 				{
-					writer.Write("struct {0}", str.Name);
+                    writer.WriteKeyword("struct");
+                    writer.Write(" ");
+                    writer.Write(str.Name);
 				}
 				else if (v != Declared)
 				{
@@ -194,7 +198,9 @@ namespace Decompiler.Core.Output
 				if (!visited.ContainsKey(str))
 				{
 					visited[str] = Declared;
-					writer.WriteLine("struct {0};", str.Name);
+					writer.Write("struct ");
+                    writer.Write(str.Name);
+                    writer.Write(";");
 					writer.WriteLine();
 				}
 			}
@@ -228,7 +234,7 @@ namespace Decompiler.Core.Output
 			string oldName = name;
 			name = null;
 			memptr.Pointee.Accept(this);
-			writer.Write(' ');
+			writer.Write(" ");
 			writer.Write(baseType.Name);
 			writer.Write("::*");
 			name = oldName;
@@ -251,7 +257,7 @@ namespace Decompiler.Core.Output
 		{
 			if (mode == Mode.Writing)
 			{
-				pt.Write(writer);
+                writer.Write(pt.ToString());
 				WriteName(true);
 			}
 		}
@@ -265,7 +271,9 @@ namespace Decompiler.Core.Output
 		{
 			string n = name;
 
-			writer.Write("union {0}", ut.Name);
+			writer.WriteKeyword("union");
+            writer.Write(" ");
+            writer.Write(ut.Name);
 			OpenBrace();
 			int i = 0;
 			foreach (UnionAlternative alt in ut.Alternatives.Values)
@@ -303,7 +311,8 @@ namespace Decompiler.Core.Output
 			foreach (DataType dt in datatypes)
 			{
 				Write(dt, null);
-				writer.WriteLine(";");
+				writer.Write(";");
+                writer.WriteLine();
 				writer.WriteLine();
 			}
 		}

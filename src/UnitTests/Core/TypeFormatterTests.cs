@@ -168,7 +168,7 @@ struct a {
         [Test]
         public void TypeReference()
         {
-            tyfo = new TypeFormatter(sw, true);
+            tyfo = new TypeFormatter(new Formatter(sw), true);
             EquivalenceClass b = new EquivalenceClass(new TypeVariable(1));
             b.DataType = new StructureType("b", 0, new StructureField(4, PrimitiveType.Word32));
 
@@ -180,7 +180,7 @@ struct a {
 		public void SetUp()
 		{
 			sw = new StringWriter();
-            tyfo = new TypeFormatter(sw, false);
+            tyfo = new TypeFormatter(new Formatter(sw), false);
 		}
 	}
 }

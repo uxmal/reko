@@ -32,13 +32,13 @@ namespace Decompiler.Core.Code
 		
 		public abstract bool IsControlFlow { get; }
 
-
 		public override string ToString()
 		{
 			StringWriter sw = new StringWriter();
-			CodeFormatter fmt = new CodeFormatter(sw);
-			fmt.Terminator = "";
-			fmt.Indentation = 0;
+            Formatter f = new Formatter(sw);
+			f.Terminator = "";
+			f.Indentation = 0;
+			CodeFormatter fmt = new CodeFormatter(f);
 			Accept(fmt);
 			return sw.ToString();
 		}

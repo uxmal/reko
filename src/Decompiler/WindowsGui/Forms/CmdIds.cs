@@ -75,7 +75,6 @@ namespace Decompiler.WindowsGui.Forms
 		public const int ActionFinishDecompilation = 10 + 2000;
 		public const int ActionMarkProcedure = 11 + 2000;
 		public const int ActionEditSignature = 12 + 2000;
-		public const int BrowserItemSelected = 13 + 2000;
 		public const int FileMru = 2200;
 	}
 

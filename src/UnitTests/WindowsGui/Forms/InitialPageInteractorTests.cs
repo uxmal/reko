@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Gui;
+using Decompiler.UnitTests.Mocks;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
@@ -27,17 +28,21 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	public class InitialPageInteractorTests
 	{
 		private IMainForm form;
-		private MainFormInteractor mi;
 		private IStartPage page;
-		private TestInitialPageInteractor i;
+		private InitialPageInteractor i;
+        private FakeUiService uiSvc;
 
 		[SetUp]
 		public void Setup()
 		{
 			form = new MainForm();
-			mi = new MainFormInteractor(form);
             page = form.StartPage;
-			i = new TestInitialPageInteractor(page, mi);
+			i = new InitialPageInteractor(page);
+            FakeComponentSite site = new FakeComponentSite(i);
+            uiSvc = new FakeUiService();
+            site.AddService(typeof(IDecompilerUIService), uiSvc);
+            site.AddService(typeof(IDecompilerService), new DecompilerService());
+            i.Site = site;
 		}
 
 		[TearDown]
@@ -50,8 +55,8 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		public void ClickOnBrowseBinaryFile()
 		{
 			page.InputFile.Text = "foo.bar";
-			i.OpenFileResult = "baz\\foo.bar";
-			i.BrowseInputFile_Click(null, null);
+			uiSvc.OpenFileResult = "baz\\foo.bar";
+			i.BrowseInputFile_Click(null, EventArgs.Empty);
 
 			Assert.AreEqual("baz\\foo.bar", page.InputFile.Text);
 		}
@@ -60,9 +65,9 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		public void CancelBrowseBinaryFile()
 		{
 			page.InputFile.Text = "foo.bar";
-			i.OpenFileResult = "NIX";
-			i.SimulateUserCancel = true;
-			i.BrowseInputFile_Click(null, null);
+			uiSvc.OpenFileResult = "NIX";
+			uiSvc.SimulateUserCancel = true;
+			i.BrowseInputFile_Click(null, EventArgs.Empty);
 
 			Assert.AreEqual("foo.bar", page.InputFile.Text);
 		}
@@ -78,47 +83,9 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         private MenuStatus QueryStatus(int cmdId)
         {
             CommandStatus status = new CommandStatus();
-            mi.InitialPageInteractor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
+            i.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
             return status.Status;
         }
 
 	}
-
-	public class TestInitialPageInteractor : InitialPageInteractor
-	{
-		private string lastFileName;
-		private bool simulateUserCancel;
-
-		public TestInitialPageInteractor(IStartPage page, MainFormInteractor formI)
-			: base(page, formI)
-		{
-		}
-
-		public override string ShowOpenFileDialog(string fileName)
-		{
-			if (!simulateUserCancel)
-			{
-				return lastFileName;
-			}
-			else
-				return null;
-
-		}
-
-		// Fake members
-
-		public string OpenFileResult
-		{
-			get { return lastFileName; }
-			set { lastFileName = value; }
-		}
-
-
-		public bool SimulateUserCancel
-		{
-			get { return simulateUserCancel; }
-			set { simulateUserCancel = value; }
-		}
-
-    }
 }

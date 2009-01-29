@@ -16,33 +16,31 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
-using Decompiler.Loading;
-using Decompiler.Core;
 using Decompiler.Gui;
-using Decompiler.WindowsGui.Forms;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
 
-namespace WindowsDecompiler
+namespace Decompiler.WindowsGui
 {
-	public class Driver
-	{
-		[STAThread]
-		public static void Main(string [] args)
-		{
-			if (args.Length == 0)
-			{
-                MainFormInteractor interactor = new MainFormInteractor();
-                Application.Run(interactor.CreateForm());
-            }
-			else
-			{
-				Program prog = new Program();
-                Loader ldr = new Loader(args[0], prog);
-				DecompilerDriver dec = new DecompilerDriver(ldr, prog, new NullDecompilerHost());
-				dec.Decompile();
-			}
-		}
-	}
+    /// <summary>
+    /// Windows Forms implementation of the IListViewItem interface.
+    /// </summary>
+    public class ListViewItemWrapper : IListViewItem
+    {
+        private ListViewItem item;
+
+        public ListViewItem Item { get { return item; } set { item = value; } }
+
+        #region IListViewItem Members
+
+        public string Text
+        {
+            get { return item.Text; }
+            set { item.Text = value; }
+        }
+
+        #endregion
+    }
 }

@@ -15,34 +15,23 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
-using Decompiler;
-using Decompiler.Loading;
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.WindowsGui.Forms;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
 
-namespace WindowsDecompiler
+namespace Decompiler.Gui
 {
-	public class Driver
-	{
-		[STAThread]
-		public static void Main(string [] args)
-		{
-			if (args.Length == 0)
-			{
-                MainFormInteractor interactor = new MainFormInteractor();
-                Application.Run(interactor.CreateForm());
-            }
-			else
-			{
-				Program prog = new Program();
-                Loader ldr = new Loader(args[0], prog);
-				DecompilerDriver dec = new DecompilerDriver(ldr, prog, new NullDecompilerHost());
-				dec.Decompile();
-			}
-		}
-	}
+    /// <summary>
+    /// Abstracts the notion of an item in a list view, for future platform
+    /// independence.
+    /// </summary>
+    public interface IListViewItem
+    {
+        //$REVIEW: consider exposing an IconIndex property as well to cover th 90% case and avoid the delegate below.
+
+        string Text { get; set; }
+    }
+
+    public delegate void ListViewItemDecoratorHandler(object item, IListViewItem listItem);
 }

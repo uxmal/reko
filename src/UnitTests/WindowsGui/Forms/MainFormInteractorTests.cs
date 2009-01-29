@@ -21,6 +21,7 @@ using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.Loading;
+using Decompiler.UnitTests.Mocks;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
@@ -38,7 +39,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm();
 		}
 
 		[TearDown]
@@ -50,7 +50,8 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[Test]
 		public void CreateForm()
 		{
-			interactor = new TestMainFormInteractor(form, (Program) null);
+            CreateMainFormInteractor();
+
 			// When opening the application for the very first time, we should be on the initial page, and 
 			// most controls on the mainform should be disabled.
 
@@ -62,35 +63,33 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[Test]
 		public void OpenBinary()
 		{
-			Program prog = CreateFakeProgram();
-			interactor = new TestMainFormInteractor(form, prog);
-
+            CreateMainFormInteractor();
 			interactor.OpenBinary(null);
-			Assert.IsTrue(form.BrowserList.Enabled);
+			Assert.IsTrue(form.BrowserList.Enabled, "Browser list should have been enabled after opening binary.");
 		}
 
 		[Test]
 		public void NextPhase()
 		{
-			Program prog = CreateFakeProgram();
-			interactor = new TestMainFormInteractor(form, prog);
+            CreateMainFormInteractor();
 			interactor.OpenBinary(null);
 			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPage);
 			interactor.NextPhase();
 			Assert.AreSame(interactor.AnalyzedPageInteractor, interactor.CurrentPage);
 		}
 
+
         [Test]
         public void Save()
         {
-            Program prog = CreateFakeProgram();
-            interactor = new TestMainFormInteractor(form, prog);
+            CreateMainFormInteractor();
 
             interactor.OpenBinary("foo.exe");
             Decompiler.Core.Serialization.SerializedProcedure p = new Decompiler.Core.Serialization.SerializedProcedure();
             p.Address = "12345";
             p.Name = "MyProc";
-            interactor.Decompiler.Project.UserProcedures.Add(p);
+            IDecompilerService svc = (IDecompilerService) interactor.ProbeGetService(typeof(IDecompilerService));
+            svc.Decompiler.Project.UserProcedures.Add(p);
             interactor.Save();
             string s =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -117,31 +116,20 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         [Test]
         public void SaveShouldShowDialog()
         {
-            Program prog = CreateFakeProgram();
-            interactor = new TestMainFormInteractor(form, prog);
+            CreateMainFormInteractor();
             Assert.IsNull(interactor.ProjectFileName);
             interactor.OpenBinary("foo.exe");
-            Assert.AreEqual("foo.exe", interactor.Decompiler.Project.Input.Filename);
             Assert.IsTrue(string.IsNullOrEmpty(interactor.ProjectFileName), "project filename should be clear");
             interactor.Save();
             Assert.IsTrue(interactor.ProbePromptedForSaving, "Should have prompted for saving as no file name was supplied.");
             Assert.AreEqual("foo.dcproject", interactor.ProbeFilename);
         }
 
-		private Program CreateFakeProgram()
-		{
-			Program prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			prog.Image = new ProgramImage(new Address(0xC00, 0), new byte [300]);
-			return prog;
-		}
-
         [Test]
         public void GetDiagnostics()
         {
-            Program prog = new Program();
-            interactor = new TestMainFormInteractor(form, prog, new FakeLoader("fake.exe", prog));
-            object oSvc = interactor.GetService(typeof(IDiagnosticsService));
+            CreateMainFormInteractorWithLoader();
+            object oSvc = interactor.ProbeGetService(typeof(IDiagnosticsService));
             Assert.IsNotNull(oSvc, "IDiagnosticsService should be available!");
             IDiagnosticsService svc = (IDiagnosticsService) oSvc;
             svc.AddDiagnostic(Diagnostic.Warning, new Address(0x30000), "Whoa");
@@ -149,13 +137,41 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         }
 
         [Test]
+        public void DecompilerServiceInstalled()
+        {
+            CreateMainFormInteractor();
+            Assert.IsNotNull(interactor.ProbeGetService(typeof (IDecompilerService)), "Should have IDecompilerService available.");
+        }
+
+        [Test]
         public void IsNextPhaseEnabled()
         {
-            Program prog = new Program();
-            interactor = new TestMainFormInteractor(form, prog, new FakeLoader("fake.exe", prog));
+            CreateMainFormInteractorWithLoader();
             CommandStatus status = QueryStatus(CmdIds.ActionNextPhase);
             Assert.IsNotNull(status, "MainFormInteractor should know this command.");
             Assert.AreEqual(MenuStatus.Visible, status.Status);
+        }
+
+        private Program CreateFakeProgram()
+        {
+            Program prog = new Program();
+            prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
+            prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[300]);
+            return prog;
+        }
+
+        private void CreateMainFormInteractorWithLoader()
+        {
+            Program prog = new Program();
+            interactor = new TestMainFormInteractor(prog, new FakeLoader("fake.exe", prog));
+            form = interactor.CreateForm();
+        }
+
+        private void CreateMainFormInteractor()
+        {
+            Program prog = CreateFakeProgram();
+            interactor = new TestMainFormInteractor(prog);
+            form = interactor.CreateForm();
         }
 
         //$REFACTOR: copied from LoadedPageInteractor, should
@@ -180,18 +196,17 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         private string testFilename;
         private bool promptedForSaving;
 
-		public TestMainFormInteractor(IMainForm form, Program prog) : base(form)
+		public TestMainFormInteractor(Program prog)
 		{
             this.program = prog;
 		}
 
-		public TestMainFormInteractor(IMainForm form, DecompilerDriver decompiler) : base(form)
+		public TestMainFormInteractor(DecompilerDriver decompiler)
 		{
             this.decompiler = decompiler;
 		}
 
-        public TestMainFormInteractor(IMainForm form, Program prog, LoaderBase ldr)
-            : base(form)
+        public TestMainFormInteractor(Program prog, LoaderBase ldr)
         {
             this.program = prog;
             this.ldr = ldr;
@@ -224,12 +239,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             return sw;
         }
 
-
-		public override void ShowError(string format, params object [] args)
-		{
-			throw new ApplicationException(string.Format(format, args));
-        }
-
         protected override string PromptForFilename(string suggestedName)
         {
             promptedForSaving = true;
@@ -237,6 +246,10 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
             return suggestedName;
         }
 
+        public object ProbeGetService(Type service)
+        {
+            return base.GetService(service);
+        }
         public string ProbeSavedProjectXml
         {
             get { return sw.ToString(); }
@@ -254,51 +267,4 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         }
 
     }
-
-	public class FakeLoader : LoaderBase
-	{
-        private string filename;
-        private IProcessorArchitecture arch;
-        private ProgramImage image;
-
-
-		public FakeLoader(string filename, Program p) : base(p)
-		{
-            this.filename = filename;
-		}
-
-        public IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
-
-
-        public ProgramImage Image
-        {
-            get { return Image; }
-        }
-
-        public override DecompilerProject Load(Address addrLoad)
-        {
-            DecompilerProject project = new DecompilerProject();
-            SetDefaultFilenames(filename, project);
-            if (arch == null)
-            {
-                arch = new IntelArchitecture(ProcessorMode.Real);
-            }
-            Program.Architecture = Architecture;
-
-            if (addrLoad == null)
-            {
-                addrLoad = new Address(0xC00, 0);
-            }
-            if (image == null)
-            {
-                image = new ProgramImage(addrLoad, new byte[300]);
-            }
-            Program.Image = image;
-            return project;
-
-        }
-	}
 }

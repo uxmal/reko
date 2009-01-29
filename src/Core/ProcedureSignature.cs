@@ -60,87 +60,71 @@ namespace Decompiler.Core
 			get { return formals; } 
 		}
 
-		public void Emit(string fnName, EmitFlags f, TextWriter w)
+        public void Emit(string fnName, EmitFlags f, TextWriter writer)
+        {
+            Emit(fnName, f, new Formatter(writer));
+        }
+
+		public void Emit(string fnName, EmitFlags f, Formatter fmt)
 		{
-            Emit(fnName, f, new CodeFormatter(w), new TypeFormatter(w, true));
+            Emit(fnName, f, fmt, new CodeFormatter(fmt), new TypeFormatter(fmt, true));
 		}
 
-        public void Emit(string fnName, EmitFlags f, CodeFormatter w, TypeFormatter t)
+        public void Emit(string fnName, EmitFlags f, Formatter fmt, CodeFormatter w, TypeFormatter t)
         {
             bool emitStorage = (f & EmitFlags.ArgumentKind) == EmitFlags.ArgumentKind;
             if (emitStorage)
             {
                 if (ret != null)
                 {
-                    WriteType(ret, emitStorage, w);
-                    w.Write(" ");
+                    w.WriteFormalArgumentType(ret, emitStorage);
+                    fmt.Write(" ");
                 }
                 else
                 {
-                    w.Write("void ");
+                    fmt.Write("void ");
                 }
-                w.Write("{0}(", fnName);
+                fmt.Write("{0}(", fnName);
             }
             else
             {
                 if (ret == null)
-                    t.Write("void {0}", fnName);
+                    fmt.Write("void {0}", fnName);
                 else
                 {
                     t.Write(ret.DataType, fnName);           //$TODO: won't work with fn's that return pointers to functions or arrays.
                 }
-                t.Write("(");
+                fmt.Write("(");
             }
             if (formals != null && formals.Length > 0)
             {
-                EmitArgument(formals[0], emitStorage, w, t);
+                w.WriteFormalArgument(formals[0], emitStorage, t);
                 for (int i = 1; i < formals.Length; ++i)
                 {
-                    w.Write(", ");
-                    EmitArgument(formals[i], emitStorage, w, t);
+                    fmt.Write(", ");
+                    w.WriteFormalArgument(formals[i], emitStorage, t);
                 }
             }
-            w.Write(")");
+            fmt.Write(")");
             if ((f & EmitFlags.LowLevelInfo) == EmitFlags.LowLevelInfo)
             {
-                w.WriteLine();
-                w.Write("// stackDelta: {0}; fpuStackDelta: {1}; fpuMaxParam: {2}", stackDelta, FpuStackDelta, FpuStackParameterMax);
-                w.WriteLine();
+                fmt.WriteLine();
+                fmt.Write("// stackDelta: {0}; fpuStackDelta: {1}; fpuMaxParam: {2}", stackDelta, FpuStackDelta, FpuStackParameterMax);
+                fmt.WriteLine();
             }
         }
 
+        [Obsolete("use CodeWriter.WriteFormalArgument")]
 		private void EmitArgument(Identifier arg, bool writeStorage, CodeFormatter writer, TypeFormatter t)
 		{
-            if (writeStorage)
-            {
-                WriteType(arg, writeStorage, writer);
-                writer.Write(" ");
-                writer.Write(arg.Name);
-            }
-            else
-            {
-                t.Write(arg.DataType, arg.Name);
-            }
+            writer.WriteFormalArgument(arg, writeStorage, t);
         }
 
 
+        [Obsolete("use CodeWriter.WriteFormalArgumentType", true)]
         public void WriteType(Identifier arg, bool writeStorage, CodeFormatter writer)
         {
-            if (writeStorage)
-            {
-                OutArgumentStorage os = arg.Storage as OutArgumentStorage;
-                if (os != null)
-                {
-                    writer.Write(os.OriginalIdentifier.Storage.Kind);
-                    writer.Write(" out ");
-                }
-                else
-                {
-                    writer.Write(arg.Storage.Kind);
-                    writer.Write(" ");
-                }
-            }
-            writer.Write(arg.DataType.ToString());
+            throw new NotImplementedException();
         }
 
 		/// <summary>
@@ -197,18 +181,20 @@ namespace Decompiler.Core
 		public override string ToString()
 		{
 			StringWriter w = new StringWriter();
-            CodeFormatter f = new CodeFormatter(w);
-            TypeFormatter tf = new TypeFormatter(w, false);
-			Emit("()", EmitFlags.ArgumentKind|EmitFlags.LowLevelInfo, f, tf);
+            Formatter f = new Formatter(w);
+            CodeFormatter cf = new CodeFormatter(f);
+            TypeFormatter tf = new TypeFormatter(f, false);
+			Emit("()", EmitFlags.ArgumentKind|EmitFlags.LowLevelInfo, f, cf, tf);
 			return w.ToString();
 		}
 
 		public string ToString(string name)
 		{
 			StringWriter sw = new StringWriter();
-            CodeFormatter cf = new CodeFormatter(sw);
-            TypeFormatter tf = new TypeFormatter(sw, false);
-            Emit(name, EmitFlags.ArgumentKind, cf, tf);
+            Formatter f = new Formatter(sw);
+            CodeFormatter cf = new CodeFormatter(f);
+            TypeFormatter tf = new TypeFormatter(f, false);
+            Emit(name, EmitFlags.ArgumentKind, f, cf, tf);
 			return sw.ToString();
 		}
 
