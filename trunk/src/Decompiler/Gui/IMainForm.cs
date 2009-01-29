@@ -61,8 +61,6 @@ namespace Decompiler.Gui
 
         void Close();
 
-        void ShowMessageBox(string message, string caption);
-
         void SetCurrentPage(object page);
 
 

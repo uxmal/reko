@@ -32,17 +32,18 @@ using System.Windows.Forms;
 namespace Decompiler.WindowsGui.Forms
 {
 	/// <summary>
-	/// Handles interaction with the MainForm, in order to decouple platform-
-	/// specific code from the user interaction code. This will make it easier to port
-	/// to other GUI platforms.
+	/// Provices a component Container implementation, and specifically handles interactions 
+    /// with the MainForm. This decouples platform-specific code from the user interaction 
+    /// code. This will make it easier to portto other GUI platforms.
 	/// </summary>
 	public class MainFormInteractor : 
+        Container,
 		ICommandTarget,
-        IServiceProvider,
 		DecompilerHost
 	{
-		private IMainForm form;		
-		private DecompilerDriver decompiler;
+		private MainForm form;		
+		private IDecompilerService decompilerSvc;
+        private IDecompilerUIService uiSvc;
 		private PhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
 		private LoadedPageInteractor pageLoaded;
@@ -63,36 +64,18 @@ namespace Decompiler.WindowsGui.Forms
             sc = new ServiceContainer();
 		}
 
-		public MainFormInteractor(IMainForm form) : this()
-		{
-			Attach(form);
-		}
-
-		public void Attach(IMainForm form)
-		{
-			this.form = form;
-
-			DecompilerMenus dm = new DecompilerMenus(this);
-			form.Menu = dm.MainMenu;
-            form.AddToolbar(dm.MainToolbar);
-
-			AttachInteractors(dm);
-            CreateServices();
-			form.Closed += new System.EventHandler(this.MainForm_Closed);
-			form.BrowserList.SelectedIndexChanged += new EventHandler(OnBrowserListItemSelected);
-			form.ToolBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(toolBar_ItemClicked);
-			//form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
-			SwitchInteractor(pageInitial);
-			//MainForm.InitialPage.IsDirty = false;         //$REENABLE
-		}
-
 		private void AttachInteractors(DecompilerMenus dm)
 		{
             //$REENABLE
-            pageInitial = new InitialPageInteractor(form.StartPage, this);
+            pageInitial = new InitialPageInteractor(form.StartPage);
             pageLoaded = new LoadedPageInteractor(form.LoadedPage, this, dm);
-            pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage, this);
+            pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage);
             pageFinal = new FinalPageInteractor(form.FinalPage, this);
+
+            Add(pageInitial);
+            Add(pageLoaded);
+            Add(pageAnalyzed);
+            Add(pageFinal);
 
             pageInitial.NextPage = pageLoaded;
             pageLoaded.NextPage = pageAnalyzed;
@@ -104,6 +87,25 @@ namespace Decompiler.WindowsGui.Forms
 		{
             return new DecompilerDriver(ldr, prog, this);
 		}
+
+        public MainForm CreateForm()
+        {
+            this.form = new MainForm();
+
+			DecompilerMenus dm = new DecompilerMenus(this);
+			form.Menu = dm.MainMenu;
+            form.AddToolbar(dm.MainToolbar);
+
+            CreateServices();
+            AttachInteractors(dm);
+			form.Closed += new System.EventHandler(this.MainForm_Closed);
+			form.ToolBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(toolBar_ItemClicked);
+			//form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
+			SwitchInteractor(pageInitial);
+			//MainForm.InitialPage.IsDirty = false;         //$REENABLE
+
+            return form;
+        }
 
         protected virtual LoaderBase CreateLoader(string filename, Program prog)
         {
@@ -124,13 +126,22 @@ namespace Decompiler.WindowsGui.Forms
             DiagnosticsInteractor d = new DiagnosticsInteractor();
             d.Attach(form.DiagnosticsList);
             sc.AddService(typeof(IDiagnosticsService), d);
+
+            decompilerSvc = new DecompilerService();
+            sc.AddService(typeof(IDecompilerService), decompilerSvc);
+
+            uiSvc = new DecompilerUiService(this.form, form.OpenFileDialog, form.SaveFileDialog);
+            sc.AddService(typeof(IDecompilerUIService), uiSvc);
+
+            ProgramImageBrowserService pibSvc = new ProgramImageBrowserService(form.BrowserList);
+            sc.AddService(typeof(IProgramImageBrowserService), pibSvc);
         }
 
 		public virtual TextWriter CreateTextWriter(string filename)
 		{
-			if (string.IsNullOrEmpty(filename))
-				return null;
-			return new StreamWriter(filename);
+            if (string.IsNullOrEmpty(filename))
+                return StreamWriter.Null;
+			return new StreamWriter(new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write));
 		}
 
 		public PhasePageInteractor CurrentPage
@@ -139,14 +150,18 @@ namespace Decompiler.WindowsGui.Forms
 			set { currentPage = value; }
 		}
 
+        [Obsolete("User decompilerService instead", true)]
 		public DecompilerDriver Decompiler
 		{
-			get { return decompiler; }
+			get { return decompilerSvc.Decompiler; }
 		}
 
-        public object GetService(Type type)
+        protected override object GetService(Type service)
         {
-            return sc.GetService(type);
+            object svc = sc.GetService(service);
+            if (svc != null)
+                return svc;
+            return base.GetService(service);
         }
 
 		public IMainForm MainForm
@@ -160,12 +175,12 @@ namespace Decompiler.WindowsGui.Forms
 			{
 				Program prog = CreateProgram();
                 LoaderBase ldr = CreateLoader(file, prog);
-				decompiler = CreateDecompiler(ldr, prog);
-				decompiler.LoadProgram();
+				decompilerSvc.Decompiler = CreateDecompiler(ldr, prog);
+				decompilerSvc.Decompiler.LoadProgram();
 			} 
 			catch (Exception ex)
 			{
-				ShowError("Couldn't open file '{0}'. {1}", file, ex.Message + ex.StackTrace);
+				uiSvc.ShowError("Couldn't open file '{0}'. {1}", file, ex.Message + ex.StackTrace);
 			}
             SwitchInteractor(pageLoaded);
 		}
@@ -188,10 +203,10 @@ namespace Decompiler.WindowsGui.Forms
 			}
 		}
 
-
+        [Obsolete("Use decompilerservice", true)]
 		public Program Program
 		{
-			get { return decompiler.Program; }
+			get { return decompilerSvc.Decompiler.Program; }
 		}
 
 		public InitialPageInteractor InitialPageInteractor
@@ -241,7 +256,7 @@ namespace Decompiler.WindowsGui.Forms
         {
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
-                string newName = PromptForFilename(Path.ChangeExtension(this.Decompiler.Project.Input.Filename, DecompilerProject.FileExtension));
+                string newName = PromptForFilename(Path.ChangeExtension(decompilerSvc.Decompiler.Project.Input.Filename, DecompilerProject.FileExtension));
                 if (newName == null)
                     return;
                 ProjectFileName = newName;
@@ -251,7 +266,8 @@ namespace Decompiler.WindowsGui.Forms
 
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
             {
-                Decompiler.Project.Save(sw);
+                //$REFACTOR: rule of demeter, push this into a Save() method.
+                decompilerSvc.Decompiler.Project.Save(sw);
             }
         }
 
@@ -279,13 +295,6 @@ namespace Decompiler.WindowsGui.Forms
 			}
 		}
 
-		public virtual void ShowError(string format, params object [] args)
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat(format, args);
-            MainForm.ShowMessageBox(sb.ToString(), "Decompiler");
-		}
-
 		public void SwitchInteractor(PhasePageInteractor interactor)
 		{
 			if (CurrentPage != null)
@@ -298,9 +307,9 @@ namespace Decompiler.WindowsGui.Forms
 		public void UpdateWindowTitle()
 		{
 			StringBuilder sb = new StringBuilder();
-			if (decompiler != null && decompiler.Project != null)
+			if (!string.IsNullOrEmpty(decompilerSvc.ProjectName))
 			{
-				sb.Append(Path.GetFileName(decompiler.Project.Input.Filename));
+				sb.Append(decompilerSvc.ProjectName);
                 //$REFACTOR: dirtiness of project is not limiited to first page.
                 //if (MainForm.InitialPage.IsDirty)
                 //    sb.Append('*');
@@ -378,7 +387,7 @@ namespace Decompiler.WindowsGui.Forms
 
 		public TextWriter CreateDisassemblyWriter()
 		{
-            return CreateTextWriter(decompiler.Project.Output.DisassemblyFilename);
+            return CreateTextWriter(decompilerSvc.Decompiler.Project.Output.DisassemblyFilename);
 		}
 
 		public TextWriter CreateTypesWriter(string filename)
@@ -448,9 +457,9 @@ namespace Decompiler.WindowsGui.Forms
 			return new StreamWriter(fileName, false, new UTF8Encoding(false));
 		}
 
-		public TextWriter CreateIntermediateCodeWriter()
+		public TextWriter GetIntermediateCodeWriter()
 		{
-			return CreateTextWriter(decompiler.Project.Output.IntermediateFilename);
+			return CreateTextWriter(decompilerSvc.Decompiler.Project.Output.IntermediateFilename);
 		}
 
 		#endregion ////////////////////////////////////////////////////
@@ -493,24 +502,14 @@ namespace Decompiler.WindowsGui.Forms
 			if (e.Action == TreeViewAction.ByKeyboard ||
 				e.Action == TreeViewAction.ByMouse)
 			{
-				Execute(ref CmdSets.GuidDecompiler, CmdIds.BrowserItemSelected);
+                throw new NotImplementedException();
 			}
-		}
-
-		public void OnBrowserListItemSelected(object sender, EventArgs e)
-		{
-			if (form.BrowserList.SelectedItems.Count <= 0)
-				Debug.WriteLine("No items selected");
-			else
-				Debug.WriteLine(string.Format("Selected Item Index: {0}, Focus index: {1}", form.BrowserList.SelectedItems[0].Text,
-                    form.BrowserList.FocusedItem != null ? form.BrowserList.FocusedItem.Text : "<none>"));
-
-			Execute(ref CmdSets.GuidDecompiler, CmdIds.BrowserItemSelected);
 		}
 
 		private void InitialPage_IsDirtyChanged(object sender, EventArgs e)
 		{
 			UpdateWindowTitle();
 		}
+
     }
 }

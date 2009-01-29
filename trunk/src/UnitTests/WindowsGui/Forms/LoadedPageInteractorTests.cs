@@ -32,15 +32,15 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	[TestFixture]
 	public class LoadedPageInteractorTests
 	{
-		private IMainForm form;
+		private MainForm form;
 		private TestMainFormInteractor mi;
 
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm();
             Program prog = new Program();
-            mi = new TestMainFormInteractor(form, prog, new TestLoader(prog));
+            mi = new TestMainFormInteractor(prog, new TestLoader(prog));
+            form = mi.CreateForm();
 			mi.OpenBinary(null);
 		}
 
@@ -60,21 +60,30 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[Test]
 		public void PopulateBrowserWithScannedProcedures()
 		{
-			mi.Program.Procedures.Add(new Address(0xC20, 0), new Procedure("Test1", new Frame(mi.Program.Architecture.WordWidth)));
-			mi.Program.Procedures.Add(new Address(0xC20, 2), new Procedure("Test2", new Frame(mi.Program.Architecture.WordWidth)));
+            AddProcedure(mi, new Address(0xC20, 0), "Test1");
+            AddProcedure(mi, new Address(0xC20, 2), "Test2");
 			form.SetCurrentPage(form.LoadedPage);
 			Assert.AreEqual(3, form.BrowserList.Items.Count);
 			Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
 		}
 
+        private void AddProcedure(TestMainFormInteractor mi, Address addr, string procName)
+        {
+            IDecompilerService svc = (IDecompilerService) mi.ProbeGetService(typeof(IDecompilerService));
+            Program prog = svc.Decompiler.Program;
+            svc.Decompiler.Program.Procedures.Add(addr, 
+                new Procedure(procName, new Frame(prog.Architecture.WordWidth)));
+        }
+
 		[Test]
 		public void MarkingProceduresShouldAddToUserProceduresList()
 		{
-			Assert.AreEqual(0, mi.Decompiler.Project.UserProcedures.Count);
+            IDecompilerService svc = (IDecompilerService) mi.ProbeGetService(typeof(IDecompilerService));
+			Assert.AreEqual(0, svc.Decompiler.Project.UserProcedures.Count);
             mi.MainForm.LoadedPage.MemoryControl.SelectedAddress = new Address(0x0C20, 0);
 			mi.LoadedPageInteractor.MarkAndScanProcedure();
-			Assert.AreEqual(1, mi.Decompiler.Project.UserProcedures.Count);
-			SerializedProcedure uproc = (SerializedProcedure) mi.Decompiler.Project.UserProcedures[0];
+			Assert.AreEqual(1, svc.Decompiler.Project.UserProcedures.Count);
+			SerializedProcedure uproc = (SerializedProcedure) svc.Decompiler.Project.UserProcedures[0];
 			Assert.AreEqual("0C20:0000", uproc.Address);
 		}
 
@@ -84,6 +93,14 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			Assert.AreEqual(MenuStatus.Enabled|MenuStatus.Visible, QueryStatus(CmdIds.ViewFindFragments));
 		}
 
+        [Test]
+        public void ExecuteEditFind()
+        {
+            TestLoadedPageInteractor i = new TestLoadedPageInteractor((LoadedPage)form.LoadedPage, mi, new DecompilerMenus(mi));
+            i.Execute(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
+            Assert.AreSame(typeof(FindDialog), i.ProbeLastDialogShown);
+        }
+
 		private MenuStatus QueryStatus(int cmdId)
 		{
 			CommandStatus status = new CommandStatus();
@@ -91,6 +108,26 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 			return status.Status;
 		}
 
+
+        private class TestLoadedPageInteractor : LoadedPageInteractor
+        {
+            private Type lastDialogType;
+
+            public TestLoadedPageInteractor(LoadedPage page, MainFormInteractor mainInteractor, DecompilerMenus menus)
+                : base(page, mainInteractor, menus)
+            {
+            }
+            public override DialogResult ShowModalDialog(Form dlg)
+            {
+                lastDialogType = dlg.GetType();
+                return DialogResult.OK;
+            }
+
+            public Type ProbeLastDialogShown
+            {
+                get { return lastDialogType; }
+            }
+        }
 
         private class TestLoader : LoaderBase
         {

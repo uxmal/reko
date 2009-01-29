@@ -22,6 +22,7 @@ using Decompiler.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -32,7 +33,7 @@ namespace Decompiler.WindowsGui.Forms
         private RichTextBox txt;
         private SortedList<int, Procedure> procedureLinks;
 
-        public RichEditFormatter(RichTextBox txt) : base(null)
+        public RichEditFormatter(RichTextBox txt) : base(new InnerFormatter(txt)) 
         {
             this.txt = txt;
             procedureLinks = new SortedList<int, Procedure>();
@@ -56,28 +57,39 @@ namespace Decompiler.WindowsGui.Forms
             txt.SelectionFont = oldFont;
         }
 
-        public override void Write(string s)
+        private class InnerFormatter : Formatter
         {
-            txt.SelectedText = s;
+            private RichTextBox txt;
+
+            public InnerFormatter(RichTextBox txt) : base(StringWriter.Null)
+            {
+                this.txt = txt;
+            }
+            public override void Write(string s)
+            {
+                txt.SelectedText = s;
+            }
+            public override void Write(string format, params object[] arguments)
+            {
+                txt.SelectedText = string.Format(format, arguments);
+            }
+
+            public override void WriteKeyword(string keyword)
+            {
+                Color old = txt.SelectionColor;
+                txt.SelectionColor = Color.Blue;
+                txt.SelectedText = keyword;
+                txt.SelectionColor = old;
+            }
+
+            public override void WriteLine()
+            {
+                txt.SelectedText = "\n";
+            }
+
         }
 
-        public override void Write(string format, params object[] arguments)
-        {
-            txt.SelectedText = string.Format(format, arguments);
-        }
 
-        public override void WriteKeyword(string keyword)
-        {
-            Color old = txt.SelectionColor;
-            txt.SelectionColor = Color.Blue;
-            txt.SelectedText = keyword;
-            txt.SelectionColor = old;
-        }
-
-        public override void WriteLine()
-        {
-            txt.SelectedText = "\n";
-        }
 
         public Procedure GetProcedureAtIndex(int i)
         {

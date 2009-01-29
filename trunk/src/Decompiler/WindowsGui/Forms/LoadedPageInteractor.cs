@@ -19,6 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
+using Decompiler.WindowsGui.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
@@ -31,8 +32,9 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		private ILoadedPage pageLoaded;
 		private Hashtable mpCmdidToCommand;
+        private IProgramImageBrowserService browserSvc;
 
-		public LoadedPageInteractor(ILoadedPage page, MainFormInteractor form, DecompilerMenus dm) : base(form)
+		public LoadedPageInteractor(ILoadedPage page, MainFormInteractor form, MenuSystem dm) 
 		{
 			this.pageLoaded = page;
             page.MemoryControl.SelectionChanged += new System.EventHandler(this.memctl_SelectionChanged);
@@ -53,12 +55,6 @@ namespace Decompiler.WindowsGui.Forms
 			return mc;
 		}
 
-		public void BrowserItemSelected()
-		{
-			ImageMapSegment segment = (ImageMapSegment) MainForm.BrowserList.FocusedItem.Tag;
-			pageLoaded.MemoryControl.TopAddress = segment.Address;
-			pageLoaded.MemoryControl.SelectedAddress = segment.Address;
-		}
 
 		public override bool Execute(ref Guid cmdSet, int cmdId)
 		{
@@ -66,8 +62,8 @@ namespace Decompiler.WindowsGui.Forms
 			{
 				switch (cmdId)
 				{
-				case CmdIds.BrowserItemSelected:
-					BrowserItemSelected(); return true;
+                case CmdIds.EditFind:
+                    EditFindBytes(); return true;
 				case CmdIds.ViewGoToAddress:
 					GotoAddress(); return true;
 				case CmdIds.ActionMarkProcedure:
@@ -78,12 +74,29 @@ namespace Decompiler.WindowsGui.Forms
 		}
 
 
+        public void EditFindBytes()
+        {
+            FindDialogInteractor i = new FindDialogInteractor();
+            using (FindDialog dlg = i.CreateDialog())
+            {
+                if (UIService.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    FindMatchingBytes(i.ToHexadecimal(""));
+                }
+            }
+        }
+
+        private void FindMatchingBytes(byte [] pattern)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
 		public void GotoAddress()
 		{
 			using (GotoDialog dlg = new GotoDialog())
 			{
 				GotoDialogInteractor i = new GotoDialogInteractor(dlg);
-				if (ShowModalDialog(dlg) == DialogResult.OK)
+				if (UIService.ShowModalDialog(dlg) == DialogResult.OK)
 				{
 					pageLoaded.MemoryControl.SelectedAddress = i.Address;
 					pageLoaded.MemoryControl.TopAddress = i.Address;
@@ -117,18 +130,20 @@ namespace Decompiler.WindowsGui.Forms
 
 		public override void EnterPage()
 		{
+            browserSvc.Enabled = true;
+            browserSvc.SelectionChanged += BrowserItemSelected;
+
 			Decompiler.ScanProgram();
 
 			pageLoaded.MemoryControl.ProgramImage = Decompiler.Program.Image;
 			pageLoaded.Disassembly.Text = "";
 
-			MainForm.BrowserList.Visible = true;
-			MainForm.BrowserList.Enabled = true;
 			PopulateBrowser();
 		}
 
 		public override bool LeavePage()
 		{
+            browserSvc.SelectionChanged -= BrowserItemSelected;
 			return true;
 		}
 
@@ -153,13 +168,10 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void PopulateBrowser()
 		{
-			MainForm.BrowserList.Items.Clear();
-			foreach (ImageMapSegment seg in Decompiler.Program.Image.Map.Segments.Values)
-			{
-				ListViewItem node = new ListViewItem(seg.Name);
-				node.Tag = seg;
-				MainForm.BrowserList.Items.Add(node);
-			}
+            browserSvc.Populate(Decompiler.Program.Image.Map.Segments.Values, delegate(object item, IListViewItem listItem)
+            {
+                listItem.Text = ((ImageMapSegment) item).Name;
+            });
 		}
 
 		public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
@@ -175,6 +187,21 @@ namespace Decompiler.WindowsGui.Forms
 			return false;
 		}
 
+        public override System.ComponentModel.ISite Site
+        {
+            set
+            {
+                base.Site = value;
+                if (value != null)
+                {
+                    browserSvc = (IProgramImageBrowserService) EnsureService(typeof(IProgramImageBrowserService));
+                }
+                else
+                {
+                    browserSvc = null;
+                }
+            }
+        }
         // Event handlers /////////////////////////
 
         private void memctl_SelectionChanged(object sender, System.EventArgs e)
@@ -185,6 +212,13 @@ namespace Decompiler.WindowsGui.Forms
         private void txtDisassembly_Resize(object sender, System.EventArgs e)
         {
             DumpAssembler();
+        }
+
+        public void BrowserItemSelected(object sender, EventArgs e)
+        {
+            ImageMapSegment segment = (ImageMapSegment) browserSvc.FocusedItem;
+            pageLoaded.MemoryControl.TopAddress = segment.Address;
+            pageLoaded.MemoryControl.SelectedAddress = segment.Address;
         }
 
 	}

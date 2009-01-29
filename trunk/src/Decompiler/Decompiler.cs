@@ -65,7 +65,7 @@ namespace Decompiler
 			host.InterproceduralAnalysisComplete();
 
 			dfa.BuildExpressionTrees();
-			using (TextWriter textWriter = host.CreateIntermediateCodeWriter())
+			using (TextWriter textWriter = host.GetIntermediateCodeWriter())
 			{
 				if (textWriter != null)
 					EmitProgram(dfa, textWriter);
@@ -109,10 +109,11 @@ namespace Decompiler
 					if (dfa != null)
 					{
 						ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+                        Formatter f = new Formatter(output);
 						if (flow.Signature != null)
-							flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, output);
+							flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
 						else if (proc.Signature != null)
-							proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, output);
+							proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
 						else
 							output.Write("Warning: no signature found for {0}", proc.Name);
 						output.WriteLine();
@@ -188,15 +189,14 @@ namespace Decompiler
 		/// <param name="cfg">configuration information</param>
 		public virtual void RewriteMachineCode()
 		{
+            if (scanner == null)
+                throw new InvalidOperationException("Program must be scanned before it can be rewritten.");
 			rewriterHost = new RewriterHost(prog, host, scanner.SystemCalls, scanner.VectorUses);
 			rewriterHost.LoadCallSignatures(this.project.UserCalls);
 			rewriterHost.RewriteProgram();
 
-			using (TextWriter w = host.CreateDisassemblyWriter())
-			{
-				EmitProgram(null, w);
-				host.MachineCodeRewritten();
-			}
+			EmitProgram(null, host.GetIntermediateCodeWriter());
+			host.MachineCodeRewritten();
 		}
 
 		public void WriteDecompiledProcedures(DecompilerHost host)
@@ -206,7 +206,7 @@ namespace Decompiler
 				WriteHeaderComment(Path.GetFileName(project.Output.OutputFilename), w);
 				w.WriteLine("#include \"{0}\"", Path.GetFileName(project.Output.TypesFilename));
 				w.WriteLine();
-				CodeFormatter fmt = new CodeFormatter(w);
+				CodeFormatter fmt = new CodeFormatter(new Formatter(w));
 				foreach (Procedure proc in prog.Procedures.Values)
 				{
 					fmt.Write(proc);
@@ -221,7 +221,7 @@ namespace Decompiler
 			{
 				WriteHeaderComment(Path.GetFileName(project.Output.TypesFilename), w);
 				w.WriteLine("/*");prog.TypeStore.Write(w); w.WriteLine("*/");
-				TypeFormatter fmt = new TypeFormatter(w, false);
+				TypeFormatter fmt = new TypeFormatter(new Formatter(w), false);
 				foreach (EquivalenceClass eq in prog.TypeStore.UsedEquivalenceClasses)
 				{
 					if (eq.DataType != null)

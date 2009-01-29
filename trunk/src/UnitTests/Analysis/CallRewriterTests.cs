@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Output;
 using Decompiler.Analysis;
 using NUnit.Framework;
 using System;
@@ -147,7 +148,7 @@ namespace Decompiler.UnitTests.Analysis
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind, fut.TextWriter);
+				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind, new Formatter(fut.TextWriter));
 				fut.TextWriter.WriteLine();
 				flow.Emit(prog.Architecture, fut.TextWriter);
 				proc.Write(true, fut.TextWriter);

@@ -30,9 +30,9 @@ namespace Decompiler.WindowsGui.Forms
 	public class InitialPageInteractor : PhasePageInteractor
 	{
 		private IStartPage page;
+        private IProgramImageBrowserService browserSvc;
 
-		public InitialPageInteractor(IStartPage page, MainFormInteractor form)
-			: base(form)
+		public InitialPageInteractor(IStartPage page)
 		{
 			this.page = page;
 			page.BrowseInputFile.Click += new EventHandler(BrowseInputFile_Click);
@@ -40,8 +40,25 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void EnableControls()
 		{
-			MainForm.BrowserList.Enabled = false;
+			browserSvc.Enabled = false;
 		}
+
+        public override System.ComponentModel.ISite Site
+        {
+            get { return base.Site; }
+            set
+            {
+                base.Site = value;
+                if (value != null)
+                {
+                    browserSvc = (IProgramImageBrowserService) value.GetService(typeof(IProgramImageBrowserService));
+                }
+                else
+                {
+                    browserSvc = null;
+                }
+            }
+        }
 
 		public override void EnterPage()
 		{
@@ -78,28 +95,16 @@ namespace Decompiler.WindowsGui.Forms
             get { return page; }
         }
 
+        [Obsolete("Call the UI service directly")]
 		public virtual string ShowOpenFileDialog(string fileName)
 		{
-			if (fileName != null && fileName.Length != 0)
-				base.MainForm.OpenFileDialog.FileName = fileName;
-			if (ShowModalDialog(MainForm.OpenFileDialog) == DialogResult.OK)
-			{
-				return fileName;
-			}
-			else
-				return null;
+            return base.UIService.ShowOpenFileDialog(fileName);
 		}
 
+        [Obsolete("Call the UI service directly")]
         public virtual string ShowSaveFileDialog(string fileName)
         {
-            if (string.IsNullOrEmpty(fileName))
-                base.MainForm.SaveFileDialog.FileName = fileName;
-            if (MainForm.ShowDialog(MainForm.SaveFileDialog) == DialogResult.OK)
-            {
-                return fileName;
-            }
-            else
-                return null;
+            return base.UIService.ShowOpenFileDialog(fileName);
         }
 
 

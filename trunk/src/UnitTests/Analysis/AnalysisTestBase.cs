@@ -18,6 +18,7 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
 using Decompiler.Analysis;
 using Decompiler.Arch.Intel;
@@ -48,7 +49,7 @@ namespace Decompiler.UnitTests.Analysis
 				w.WriteLine();
 
 				w.WriteLine("// {0}", proc.Name);
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, w);
+				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, new Formatter(w));
 				w.WriteLine();
 				foreach (Block block in proc.RpoBlocks)
 				{

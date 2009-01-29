@@ -19,6 +19,7 @@
 using System;
 using System.IO;
 using Decompiler.Core;
+using Decompiler.Core.Output;
 
 namespace Decompiler.Core
 {
@@ -57,7 +58,7 @@ namespace Decompiler.Core
 			if (Signature != null)
 			{
 				StringWriter sw = new StringWriter();
-				sig.Emit(this.Name, ProcedureSignature.EmitFlags.ArgumentKind, sw);
+				sig.Emit(this.Name, ProcedureSignature.EmitFlags.ArgumentKind, new Formatter(sw));
 				return sw.ToString();
 			}
 			else

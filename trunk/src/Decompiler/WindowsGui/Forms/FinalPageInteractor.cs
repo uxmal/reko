@@ -27,8 +27,7 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		private FinalPage finalPage;
 
-		public FinalPageInteractor(FinalPage page, MainFormInteractor form) :
-			base(form)
+		public FinalPageInteractor(FinalPage page, MainFormInteractor form)
 		{
 			finalPage = page;
 			finalPage.SourceFile.Click += new EventHandler(BrowseSourceFile_Click);
@@ -50,7 +49,7 @@ namespace Decompiler.WindowsGui.Forms
             }
             catch (Exception ex)
             {
-                MainInteractor.ShowError("An error occurred while reconstructing types. {0}", ex.Message);
+                UIService.ShowError("An error occurred while reconstructing types. {0}", ex.Message);
             }
 		}
 
@@ -88,15 +87,20 @@ namespace Decompiler.WindowsGui.Forms
 
 		private void BrowseSourceFile_Click(object sender, EventArgs e)
 		{
-			MainForm.OpenFileDialog.FileName = finalPage.SourceFile.Text;
-			ShowModalDialog(MainForm.OpenFileDialog);
+            string fileName = UIService.ShowSaveFileDialog(finalPage.SourceFile.Text);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                finalPage.SourceFile.Text = fileName;
+            }
 		}
 
 		private void BrowseHeaderFile_Click(object sender, EventArgs e)
 		{
-			MainForm.OpenFileDialog.FileName = finalPage.HeaderFile.Text;
-			ShowModalDialog(MainForm.OpenFileDialog);
-
+			string fileName = UIService.ShowSaveFileDialog(finalPage.HeaderFile.Text);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                finalPage.HeaderFile.Text = fileName;
+            }
 		}
 	}
 }

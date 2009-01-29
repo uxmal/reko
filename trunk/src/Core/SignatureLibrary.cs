@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,10 +44,11 @@ namespace Decompiler.Core
             SortedList<string, ProcedureSignature> sl = new SortedList<string, ProcedureSignature>(
                 hash,
                 StringComparer.InvariantCulture);
+            Formatter f = new Formatter(writer);
 			foreach (KeyValuePair<string,ProcedureSignature> de in sl)
 			{
 				string name = (string) de.Key;
-				de.Value.Emit(de.Key, ProcedureSignature.EmitFlags.ArgumentKind, writer);
+				de.Value.Emit(de.Key, ProcedureSignature.EmitFlags.ArgumentKind, f);
 				writer.WriteLine();
 			}
 		}

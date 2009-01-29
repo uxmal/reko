@@ -16,33 +16,21 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
-using Decompiler.Loading;
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.WindowsGui.Forms;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
 
-namespace WindowsDecompiler
+namespace Decompiler.Gui
 {
-	public class Driver
-	{
-		[STAThread]
-		public static void Main(string [] args)
-		{
-			if (args.Length == 0)
-			{
-                MainFormInteractor interactor = new MainFormInteractor();
-                Application.Run(interactor.CreateForm());
-            }
-			else
-			{
-				Program prog = new Program();
-                Loader ldr = new Loader(args[0], prog);
-				DecompilerDriver dec = new DecompilerDriver(ldr, prog, new NullDecompilerHost());
-				dec.Decompile();
-			}
-		}
-	}
+    /// <summary>
+    /// Provides services for displaying items in the user interface.
+    /// </summary>
+    public interface IDecompilerUIService
+    {
+        void ShowError(string format, params object[] args);
+        DialogResult ShowModalDialog(Form dlg);
+        string ShowOpenFileDialog(string fileName);
+        string ShowSaveFileDialog(string fileName);
+    }
 }

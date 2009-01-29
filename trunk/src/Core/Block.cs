@@ -214,9 +214,10 @@ namespace Decompiler.Core
 
 		public void WriteStatements(TextWriter writer)
 		{
-			CodeFormatter cf = new CodeFormatter(writer);
-			cf.UseTabs = true;
-			cf.TabSize = 4;
+            Formatter f = new Formatter(writer);
+            f.UseTabs = true;
+            f.TabSize = 4;
+            CodeFormatter cf = new CodeFormatter(f);
 			int i = 0;
 			foreach (Statement s in Statements)
 			{

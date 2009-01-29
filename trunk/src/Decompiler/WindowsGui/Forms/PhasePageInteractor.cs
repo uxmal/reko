@@ -18,6 +18,7 @@
 
 using Decompiler.Gui;
 using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Decompiler.WindowsGui.Forms
@@ -26,42 +27,59 @@ namespace Decompiler.WindowsGui.Forms
     /// Base class for all interactors in charge of phase pages. Provides common functionality
     /// such as command routing.
     /// </summary>
-    public abstract class PhasePageInteractor : ICommandTarget
+    public abstract class PhasePageInteractor : 
+        IComponent,
+        ICommandTarget
     {
-        private PhasePageInteractor nextPage;
-        private MainFormInteractor mainInteractor;
+        public event EventHandler Disposed;
 
-        public PhasePageInteractor(MainFormInteractor form)
+        private ISite site;
+        private IDecompilerService decompilerSvc;
+        private IDecompilerUIService decompilerUiSvc;
+        private PhasePageInteractor nextPage;
+
+        public PhasePageInteractor()
         {
-            this.mainInteractor = form;
         }
 
         public virtual bool CanAdvance
         {
-            get { return this.Decompiler != null; }
+            get { return decompilerSvc.Decompiler != null; }
         }
 
         //$TODO: consider making this a service.
+        [Obsolete("Push this into a service")]
         public virtual DecompilerDriver Decompiler
         {
-            get { return mainInteractor.Decompiler; }
+            get { return decompilerSvc.Decompiler; }
         }
 
-
+        [Obsolete("Use services instead", true)]
         public IMainForm MainForm
         {
-            get { return mainInteractor.MainForm; }
+            get { throw new NotSupportedException(); }
         }
 
+        [Obsolete("Use services instead", true)]
         public MainFormInteractor MainInteractor
         {
-            get { return mainInteractor; }
+            get { throw new NotSupportedException(); }
         }
 
+        [Obsolete("Use services instead")]
         public PhasePageInteractor NextPage
         {
             get { return nextPage; }
             set { nextPage = value; }
+        }
+
+        protected object EnsureService(Type svcType)
+        {
+            object svc = site.GetService(svcType);
+            if (svc == null)
+                throw new InvalidOperationException(string.Format(
+                    "Attempt to obtain {0} service interface failed.", svcType.FullName));
+            return svc;
         }
 
         /// <summary>
@@ -83,15 +101,23 @@ namespace Decompiler.WindowsGui.Forms
         /// <param name="form">Form to display.</param>
         /// <returns>Dialog result of the dialog.</returns>
         /// <remarks>Test classes can override this method to avoid blocking on a modal dialog.</remarks>
+        [Obsolete("Push this into UI service", true)]
         public virtual DialogResult ShowModalDialog(Form dlg)
         {
             return MainForm.ShowDialog(dlg);
         }
 
+        [Obsolete("Push this into UI service", true)]
         public virtual DialogResult ShowModalDialog(CommonDialog dlg)
         {
             return MainForm.ShowDialog(dlg);
         }
+
+        protected IDecompilerUIService UIService
+        {
+            get { return decompilerUiSvc; }
+        }
+
 
         #region ICommandTarget Members
 
@@ -106,6 +132,35 @@ namespace Decompiler.WindowsGui.Forms
         }
 
         #endregion
+
+        #region IComponent interface 
+        public virtual ISite Site
+        {
+            get { return site; }
+            set
+            {
+                site = value;
+                if (site != null)
+                {
+                    decompilerSvc = (IDecompilerService) EnsureService(typeof(IDecompilerService));
+                    decompilerUiSvc = (IDecompilerUIService) EnsureService(typeof(IDecompilerUIService));
+                }
+                else
+                {
+                    decompilerSvc = null;
+                    decompilerUiSvc = null;
+                }
+            }
+
+        }
+
+        public virtual void Dispose()
+        {
+            if (Disposed != null)
+                Disposed(this, EventArgs.Empty);
+        }
+        #endregion
+
 
     }
 }

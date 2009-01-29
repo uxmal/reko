@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Gui
 	/// <summary>
 	/// MainFormInteractor with some testing extensions.
 	/// </summary>
-	public class TestMainFormInteractor : MainFormInteractorQ
+	public class TestMainFormInteractor : MainFormInteractor
 	{
 		public static readonly CommandID testCmd = new CommandID(new Guid("0123456789ABCDEF0123456789ABCDEF"), 42);
 		

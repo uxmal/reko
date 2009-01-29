@@ -23,6 +23,8 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using Decompiler.Gui;
 using Decompiler.Loading;
+using Decompiler.UnitTests.Mocks;
+using Decompiler.WindowsGui;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
@@ -35,19 +37,32 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
     public class AnalyzedPageInteractorTests
     {
         private Program prog;
-        private IMainForm form;
-        private TestMainFormInteractor main;
-        private TestAnalyzedPageInteractor interactor;
+        private MainForm form;
+        private AnalyzedPageInteractor interactor;
+        private FakeUiService uiSvc;
 
         [SetUp]
         public void Setup()
         {
+            form = new MainForm();
+            interactor = new AnalyzedPageInteractor(form.AnalyzedPage);
+
+            FakeComponentSite site = new FakeComponentSite(interactor);
+
+            uiSvc = new FakeUiService();
+            site.AddService(typeof(IDecompilerUIService), uiSvc);
+
             prog = new Program();
             TestLoader ldr = new TestLoader(prog);
-            form = new MainForm();
-            main = new TestMainFormInteractor(form, prog, ldr);
-            interactor = new TestAnalyzedPageInteractor(prog, form.AnalyzedPage, main);
-            main.OpenBinary("");
+            DecompilerService decSvc = new DecompilerService();
+            decSvc.Decompiler = new DecompilerDriver(ldr, prog, new FakeDecompilerHost());
+            decSvc.Decompiler.LoadProgram();
+            decSvc.Decompiler.ScanProgram();
+            site.AddService(typeof(IDecompilerService), decSvc);
+
+            ProgramImageBrowserService brSvc = new ProgramImageBrowserService(form.BrowserList);
+            site.AddService(typeof(IProgramImageBrowserService), brSvc);
+            interactor.Site = site;
         }
 
         [TearDown]
@@ -61,7 +76,7 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
         {
             form.Show();
             prog.Procedures.Add(new Address(0x12345), new Procedure("foo", new Frame(PrimitiveType.Word32)));
-            main.SwitchInteractor(interactor);
+            interactor.EnterPage();
             Assert.IsTrue(form.BrowserList.Visible, "Browserlist should be visible");
 
             Assert.AreEqual(1, form.BrowserList.Items.Count);
@@ -84,10 +99,11 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", new Frame(PrimitiveType.Word32)));
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12346), p);
-            main.SwitchInteractor(interactor);
+            interactor.EnterPage();
             form.BrowserList.Items[1].Focused = true;
             form.BrowserList.Items[1].Selected = true;
-            Assert.IsTrue(form.AnalyzedPage.ProcedureText.Text.StartsWith("word32 foo_proc"));
+            Console.WriteLine(form.AnalyzedPage.ProcedureText.Text);
+            Assert.AreEqual("word32 foo_proc", form.AnalyzedPage.ProcedureText.Text.Remove(15));
         }
 
         [Test]
@@ -101,32 +117,12 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
                     new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", new Frame(PrimitiveType.Word32)));
-            main.SwitchInteractor(interactor);
+            interactor.EnterPage();
             form.BrowserList.Items[0].Selected = true;
             Assert.IsTrue(interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ActionEditSignature), "Should have executed command.");
-            Assert.AreSame(typeof(ProcedureDialog), interactor.ProbeLastShownDialog.GetType());
+            Assert.AreSame(typeof(ProcedureDialog), uiSvc.ProbeLastShownDialog.GetType());
         }
 
-        private class TestAnalyzedPageInteractor : AnalyzedPageInteractor
-        {
-            private Form lastDlg; 
-
-            public TestAnalyzedPageInteractor(Program prog, AnalyzedPage page, MainFormInteractor main)
-                : base(page, main)
-            {
-            }
-
-            public override DialogResult ShowModalDialog(Form dlg)
-            {
-                lastDlg = dlg;
-                return DialogResult.OK;
-            }
-
-            public Form ProbeLastShownDialog
-            {
-                get { return lastDlg; }
-            }
-        }
 
         private class TestLoader : LoaderBase
         {

@@ -119,7 +119,7 @@ namespace Decompiler.Core
 			tw.WriteLine("// {0}", Name);
 			if (emitFrame)
 				frame.Write(tw);
-            Signature.Emit(Name, ProcedureSignature.EmitFlags.None, tw);
+            Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(tw));
 			tw.WriteLine();
 			foreach (Block block in RpoBlocks)
 			{

@@ -63,7 +63,7 @@ namespace Decompiler.Core.Code
 		public override string ToString()
 		{
 			StringWriter sw = new StringWriter();
-			CodeFormatter fmt = new CodeFormatter(sw);
+			CodeFormatter fmt = new CodeFormatter(new Formatter(sw));
 			fmt.WriteExpression(this);
 			return sw.ToString();
 		}

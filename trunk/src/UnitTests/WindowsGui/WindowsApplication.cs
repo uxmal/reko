@@ -16,33 +16,21 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
-using Decompiler.Loading;
-using Decompiler.Core;
-using Decompiler.Gui;
-using Decompiler.WindowsGui.Forms;
 using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
 
-namespace WindowsDecompiler
+namespace Decompiler.UnitTests.WindowsGui
 {
-	public class Driver
-	{
-		[STAThread]
-		public static void Main(string [] args)
-		{
-			if (args.Length == 0)
-			{
-                MainFormInteractor interactor = new MainFormInteractor();
-                Application.Run(interactor.CreateForm());
-            }
-			else
-			{
-				Program prog = new Program();
-                Loader ldr = new Loader(args[0], prog);
-				DecompilerDriver dec = new DecompilerDriver(ldr, prog, new NullDecompilerHost());
-				dec.Decompile();
-			}
-		}
-	}
+    /// <summary>
+    /// The main entry point for the program is a Container of components.
+    /// </summary>
+    public class WindowsApplication : Container
+    {
+
+        public static void Run()
+        {
+        }
+    }
 }

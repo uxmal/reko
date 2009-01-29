@@ -29,9 +29,10 @@ namespace Decompiler.Core.Output
 	/// <summary>
 	/// Formats intermediate-level instructions or abstract syntax statements.
 	/// </summary>
-	public class CodeFormatter : Formatter, InstructionVisitor, IAbsynVisitor, IExpressionVisitor
+	public class CodeFormatter : InstructionVisitor, IAbsynVisitor, IExpressionVisitor
 	{
 		private int precedenceCur = PrecedenceLeast;
+        private Formatter writer;
 
         //$TODO: move this to a language-specific class.
 		private static Dictionary<Operator,int> precedences;
@@ -44,9 +45,15 @@ namespace Decompiler.Core.Output
 		private const int PrecedenceCase = 2;
 		private const int PrecedenceLeast = 20;
 
-		public CodeFormatter(TextWriter writer) : base(writer)
+		public CodeFormatter(Formatter writer)
 		{
+            this.writer = writer;
 		}
+
+        public CodeFormatter(TextWriter writer)
+        {
+            this.writer = new Formatter(writer);
+        }
 
 		static CodeFormatter()
 		{
@@ -91,7 +98,7 @@ namespace Decompiler.Core.Output
 		{
 			if (precedenceOld < precedenceCur)
 			{
-				Write(")");
+				writer.Write(")");
 			}
 			precedenceCur = precedenceOld;
 		}
@@ -100,7 +107,7 @@ namespace Decompiler.Core.Output
 		{
 			if (precedenceCur < precedence)
 			{
-				Write("(");
+				writer.Write("(");
 			}
 			int precedenceOld = precedenceCur;
 			precedenceCur = precedence;
@@ -123,16 +130,16 @@ namespace Decompiler.Core.Output
 			int prec = SetPrecedence(PrecedenceArrayAccess);
 			acc.Array.Accept(this);
 			ResetPresedence(prec);
-			Write("[");
+			writer.Write("[");
 			WriteExpression(acc.Index);
-			Write("]");
+			writer.Write("]");
 		}
 
 		public void VisitBinaryExpression(BinaryExpression binExp)
 		{
 			int prec = SetPrecedence((int) precedences[binExp.op]);
 			binExp.Left.Accept(this);
-			Write(BinaryExpression.OperatorToString(binExp.op));
+			writer.Write(BinaryExpression.OperatorToString(binExp.op));
 			binExp.Right.Accept(this);
 			ResetPresedence(prec);
 		}
@@ -140,47 +147,47 @@ namespace Decompiler.Core.Output
 		public void VisitCast(Cast cast)
 		{
 			int prec = SetPrecedence(PrecedenceCase);
-			Write("(");
-			Write(cast.DataType.ToString());        //$TODO: use a TypeFormatter
-			Write(") ");
+			writer.Write("(");
+			writer.Write(cast.DataType.ToString());        //$TODO: use a TypeFormatter
+			writer.Write(") ");
 			cast.Expression.Accept(this);
 			ResetPresedence(prec);
 		}
 
 		public void VisitConditionOf(ConditionOf cond)
 		{
-			Write("cond(");
+			writer.Write("cond(");
 			WriteExpression(cond.Expression);
-			Write(")");
+			writer.Write(")");
 		}
 
 		public void VisitConstant(Constant c)
 		{
-			Write(c.ToString());
+			writer.Write(c.ToString());
 		}
 
 		public void VisitDepositBits(DepositBits d)
 		{
-			Write("DPB(");
+			writer.Write("DPB(");
 			WriteExpression(d.Source);
-			Write(", ");
+			writer.Write(", ");
 			WriteExpression(d.InsertedBits);
-			Write(", {0}, {1})", d.BitPosition, d.BitCount);
+			writer.Write(", {0}, {1})", d.BitPosition, d.BitCount);
 		}
 
 		public void VisitMkSequence(MkSequence seq)
 		{
-			Write("SEQ(");
+			writer.Write("SEQ(");
 			WriteExpression(seq.Head);
-			Write(", ");
+			writer.Write(", ");
 			WriteExpression(seq.Tail);
-			Write(")");
+			writer.Write(")");
 		}
 
 		public void VisitDereference(Dereference deref)
 		{
 			int prec = SetPrecedence(PrecedenceDereference);
-			Write("*");
+			writer.Write("*");
 			deref.Expression.Accept(this);
 			ResetPresedence(prec);
 		}
@@ -192,12 +199,12 @@ namespace Decompiler.Core.Output
 			if (d != null)
 			{
 				d.Expression.Accept(this);
-				Write("->{0}", acc.FieldName);
+				writer.Write("->{0}", acc.FieldName);
 			}
 			else
 			{
 				acc.structure.Accept(this);
-				Write(".{0}", acc.FieldName);
+				writer.Write(".{0}", acc.FieldName);
 			}
 			ResetPresedence(prec);
 		}
@@ -209,12 +216,12 @@ namespace Decompiler.Core.Output
 			if (d != null)
 			{
 				d.Expression.Accept(this);
-				Write("->*");
+				writer.Write("->*");
 			}
 			else
 			{
 				mps.BasePointer.Accept(this);
-				Write(".*");
+				writer.Write(".*");
 			}
 			mps.MemberPointer.Accept(this);
 			ResetPresedence(prec);
@@ -222,34 +229,34 @@ namespace Decompiler.Core.Output
 
 		public void VisitIdentifier(Identifier id)
 		{
-			Write(id.Name);
+			writer.Write(id.Name);
 		}
 
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
 			access.MemoryId.Accept(this);
-			Write("[");
+			writer.Write("[");
 			WriteExpression(access.EffectiveAddress);
-			Write(":");
-			Write((access.DataType != null) ? access.DataType.ToString() : "??");
-			Write("]");
+			writer.Write(":");
+			writer.Write((access.DataType != null) ? access.DataType.ToString() : "??");
+			writer.Write("]");
 		}
 
 		public void VisitSegmentedAccess(SegmentedAccess access)
 		{
 			access.MemoryId.Accept(this);
-			Write("[");
+			writer.Write("[");
 			WriteExpression(access.BasePointer);
-			Write(":");
+			writer.Write(":");
 			WriteExpression(access.EffectiveAddress);
-			Write(":");
-			Write((access.DataType != null) ? access.DataType.ToString() : "??");
-			Write("]");
+			writer.Write(":");
+			writer.Write((access.DataType != null) ? access.DataType.ToString() : "??");
+			writer.Write("]");
 		}
 
 		public void VisitPhiFunction(PhiFunction phi)
 		{
-			Write("PHI");
+			writer.Write("PHI");
 			WriteActuals(phi.Arguments);
 		}
 
@@ -260,32 +267,32 @@ namespace Decompiler.Core.Output
 
 		public virtual void VisitProcedureConstant(ProcedureConstant pc)
 		{
-			Write(pc.Procedure.Name);
+			writer.Write(pc.Procedure.Name);
 		}
 
 		public void VisitTestCondition(TestCondition tc)
 		{
-			Write("Test({0},", tc.ConditionCode);
+			writer.Write("Test({0},", tc.ConditionCode);
 			WriteExpression(tc.Expression);
-			Write(")");
+			writer.Write(")");
 		}
 
 		public void VisitScopeResolution(ScopeResolution scope)
 		{
-			Write(scope.TypeName);
+			writer.Write(scope.TypeName);
 		}
 
 		public void VisitSlice(Slice slice)
 		{
-			Write("SLICE(");
+			writer.Write("SLICE(");
 			WriteExpression(slice.Expression);
-			Write(", {0}, {1})", slice.DataType, slice.Offset);
+			writer.Write(", {0}, {1})", slice.DataType, slice.Offset);
 		}
 
 		public void VisitUnaryExpression(UnaryExpression unary)
 		{
 			int prec = SetPrecedence((int) precedences[unary.op]);
-			Write(UnaryExpression.OperatorToString(unary.op));
+			writer.Write(UnaryExpression.OperatorToString(unary.op));
 			unary.Expression.Accept(this);
 			ResetPresedence(prec);
 		}
@@ -297,40 +304,40 @@ namespace Decompiler.Core.Output
 		
 		public void VisitAssignment(Assignment a)
 		{
-			Indent();
+			writer.Indent();
 			if (a.Dst != null)
 			{
 				a.Dst.Accept(this);
-				Write(" = "); 
+				writer.Write(" = "); 
 			}
 			a.Src.Accept(this);
 			if (a.IsAlias)
-				Write(" (alias)");
-			Terminate();
+				writer.Write(" (alias)");
+			writer.Terminate();
 		}
 
 		public void VisitBranch(Branch b)
 		{
-			Indent();
-			WriteKeyword("branch");
-            Write(" ");
+			writer.Indent();
+			writer.WriteKeyword("branch");
+            writer.Write(" ");
 			b.Condition.Accept(this);
-            Write(" ");
-            Write(b.Target.Name);
-			Terminate();
+            writer.Write(" ");
+            writer.Write(b.Target.Name);
+			writer.Terminate();
 		}
 
 		public void VisitCallInstruction(CallInstruction ci)
 		{
-			Indent();
-			WriteKeyword("call");
-            Write(string.Format(" {0} ({1})", ci.Callee.Name, ci.CallSite));
-			Terminate();
+			writer.Indent();
+			writer.WriteKeyword("call");
+            writer.Write(string.Format(" {0} ({1})", ci.Callee.Name, ci.CallSite));
+			writer.Terminate();
 		}
 
 		public void VisitDeclaration(Declaration decl)
 		{
-			Indent();
+			writer.Indent();
 			if (decl.Id.DataType != null)
 			{
                 TypeFormatter tf = new TypeFormatter(writer, true);
@@ -338,102 +345,102 @@ namespace Decompiler.Core.Output
 			}
 			else
 			{
-				decl.Id.DataType.Write(writer);
-                Write(" ");
+                writer.Write("?unknown?");
+                writer.Write(" ");
                 decl.Id.Accept(this);
             }
 			if (decl.Expression != null)
 			{
-				Write(" = ");
+				writer.Write(" = ");
 				decl.Expression.Accept(this);
 			}
-			Terminate();
+			writer.Terminate();
 		}
 
 		public void VisitDefInstruction(DefInstruction def)
 		{
-			Indent();
-            WriteKeyword("def");
-            Write(" ");
+			writer.Indent();
+            writer.WriteKeyword("def");
+            writer.Write(" ");
 			def.Expression.Accept(this);
-			Terminate();
+			writer.Terminate();
 		}
 
 
 		public void VisitIndirectCall(IndirectCall ic)
 		{
-			Indent();
-			WriteKeyword("icall");
-            Write(" ");
+			writer.Indent();
+			writer.WriteKeyword("icall");
+            writer.Write(" ");
 			WriteExpression(ic.Callee);
-			Terminate();
+			writer.Terminate();
 		}
 
 		public void VisitPhiAssignment(PhiAssignment phi)
 		{
-			Indent();
+			writer.Indent();
 			WriteExpression(phi.Dst);
-			Write(" = ");
+			writer.Write(" = ");
 			WriteExpression(phi.Src);
-			Terminate();
+			writer.Terminate();
 		}
 
 		public void VisitReturnInstruction(ReturnInstruction ret)
 		{
-			Indent();
-			WriteKeyword("return");
+			writer.Indent();
+			writer.WriteKeyword("return");
 			if (ret.Value != null)
 			{
-				Write(" ");
+				writer.Write(" ");
 				WriteExpression(ret.Value);
 			}
-			Terminate();
+			writer.Terminate();
 		}
 
 		public void VisitSideEffect(SideEffect side)
 		{
-			Indent();
+			writer.Indent();
 			side.Expression.Accept(this);
-			Terminate();
+			writer.Terminate();
 		}
 
 		public void VisitStore(Store store)
 		{
-			Indent();
-			WriteKeyword("store");
-            Write("(");
+			writer.Indent();
+			writer.WriteKeyword("store");
+            writer.Write("(");
 			WriteExpression(store.Dst);
-			Write(") = ");
+			writer.Write(") = ");
 			WriteExpression(store.Src);
-			Terminate();
+			writer.Terminate();
 		}
 
 		public void VisitSwitchInstruction(SwitchInstruction si)
 		{
-			Indent();
-			WriteKeyword("switch");
-            Write(" (");
+			writer.Indent();
+			writer.WriteKeyword("switch");
+            writer.Write(" (");
 			si.expr.Accept(this);
-			Write(") { ");
+			writer.Write(") { ");
 			foreach (Block b in si.targets)
 			{
-				Write("{0} ", b.RpoNumber);
+				writer.Write("{0} ", b.RpoNumber);
 			}
-			Write("}");
-			Terminate();
+			writer.Write("}");
+			writer.Terminate();
 		}
 
 		public void VisitUseInstruction(UseInstruction u)
 		{
-			Indent();
-			WriteKeyword("use");
-            Write(" ");
+			writer.Indent();
+			writer.WriteKeyword("use");
+            writer.Write(" ");
 			WriteExpression(u.Expression);
 			if (u.OutArgument != null)
 			{
-				Write(" (=> {0})", u.OutArgument);
+				writer.Write(" (=> {0})", u.OutArgument);
 			}
-			Terminate();
+			writer.Terminate();
 		}
 		#endregion
 
@@ -442,29 +449,29 @@ namespace Decompiler.Core.Output
 
 		public void VisitAssignment(AbsynAssignment a)
 		{
-			Indent();
+			writer.Indent();
 			a.Dst.Accept(this);
-			Write(" = ");
+			writer.Write(" = ");
 			a.Src.Accept(this);
-			Terminate(";");
+			writer.Terminate(";");
 		}
 
 		public void VisitBreak(AbsynBreak brk)
 		{
-			Indent();
-			WriteKeyword("break");
-			Terminate(";");
+			writer.Indent();
+			writer.WriteKeyword("break");
+			writer.Terminate(";");
 		}
 
 		public void VisitContinue(AbsynContinue cont)
 		{
-			WriteKeyword("continue");
-            WriteLine();
+			writer.WriteKeyword("continue");
+            writer.WriteLine();
 		}
 
 		public void VisitDeclaration(AbsynDeclaration decl)
 		{
-			Indent();
+			writer.Indent();
 			if (decl.Identifier.DataType != null)
 			{
                 TypeFormatter tf = new TypeFormatter(writer, true);
@@ -472,70 +479,70 @@ namespace Decompiler.Core.Output
 			}
 			else
 			{
-				decl.Identifier.DataType.Write(writer);
-                Write(" ");
+                writer.Write("?unknown?");
+                writer.Write(" ");
                 decl.Identifier.Accept(this);
             }
 			if (decl.Expression != null)
 			{
-				Write(" = ");
+				writer.Write(" = ");
 				decl.Expression.Accept(this);
 			}
-			Terminate(";");
+			writer.Terminate(";");
 		}
 
 		public void VisitDoWhile(AbsynDoWhile loop)
 		{
-			Indent();
-			WriteKeyword("do");
-			Terminate();
+			writer.Indent();
+			writer.WriteKeyword("do");
+			writer.Terminate();
 			WriteIndentedStatements(loop.Body);
 			
-			Indent();
-			WriteKeyword("while");
-            Write(" (");
+			writer.Indent();
+			writer.WriteKeyword("while");
+            writer.Write(" (");
 			WriteExpression(loop.Condition);
-			Terminate(");");
+			writer.Terminate(");");
 		}
 
 		public void VisitGoto(AbsynGoto g)
 		{
-			Indent();
-			WriteKeyword("goto");
-            Write(" ");
-			Write(g.Label);
-			Terminate(";");
+			writer.Indent();
+			writer.WriteKeyword("goto");
+            writer.Write(" ");
+			writer.Write(g.Label);
+			writer.Terminate(";");
 		}
 
 		public void VisitIf(AbsynIf ifs)
 		{
-			Indent();
+			writer.Indent();
 			WriteIf(ifs);
 		}
 
 		private void WriteIf(AbsynIf ifs)
 		{
-			WriteKeyword("if");
-            Write(" (");
+			writer.WriteKeyword("if");
+            writer.Write(" (");
 			WriteExpression(ifs.Condition);
-			Write(")");
-			Terminate();
+			writer.Write(")");
+			writer.Terminate();
 
 			WriteIndentedStatements(ifs.Then);
 
 			if (ifs.Else != null && ifs.Else.Count > 0)
 			{
-				Indent();
-				WriteKeyword("else");
+				writer.Indent();
+				writer.WriteKeyword("else");
                 AbsynIf elseIf;
                 if (IsSingleIfStatement(ifs.Else, out elseIf))
 				{
-					Write(" ");
+					writer.Write(" ");
 					WriteIf(elseIf);
 				}
 				else
 				{
-					Terminate();
+					writer.Terminate();
 					WriteIndentedStatements(ifs.Else);
 				}
 			}
@@ -552,36 +559,36 @@ namespace Decompiler.Core.Output
 
 		public void VisitLabel(AbsynLabel lbl)
 		{
-			Write(lbl.Name);
-			Terminate(":");
+			writer.Write(lbl.Name);
+			writer.Terminate(":");
 		}
 
 		public void VisitReturn(AbsynReturn ret)
 		{
-			Indent();
-			WriteKeyword("return");
+			writer.Indent();
+			writer.WriteKeyword("return");
 			if (ret.Value != null)
 			{
-				Write(" ");
+				writer.Write(" ");
 				WriteExpression(ret.Value);
 			}
-			Terminate(";");
+			writer.Terminate(";");
 		}
 
 		public void VisitSideEffect(AbsynSideEffect side)
 		{
-			Indent();
+			writer.Indent();
 			side.Expression.Accept(this);
-			Terminate(";");
+			writer.Terminate(";");
 		}
 
 		public void VisitWhile(AbsynWhile loop)
 		{
-			Indent();
-			WriteKeyword("while");
-            Write(" (");
+			writer.Indent();
+			writer.WriteKeyword("while");
+            writer.Write(" (");
 			WriteExpression(loop.Condition);
-			Terminate(")");
+			writer.Terminate(")");
 
 			WriteIndentedStatements(loop.Body);
 		}
@@ -590,10 +597,10 @@ namespace Decompiler.Core.Output
 
 		public void Write(Procedure proc)
 		{
-			proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, this, new TypeFormatter(writer, true));
-			WriteLine();
-			Write("{");
-            WriteLine();
+			proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, writer, this, new TypeFormatter(writer, true));
+			writer.WriteLine();
+			writer.Write("{");
+            writer.WriteLine();
 			if (proc.Body.Count > 0)
 			{
 				for (int i = 0; i < proc.Body.Count; ++i)
@@ -608,9 +615,9 @@ namespace Decompiler.Core.Output
 					Block b = proc.RpoBlocks[i];
                     if (!string.IsNullOrEmpty(b.Name))
                     {
-                        Write(b.Name);
-                        Write(":");
-                        WriteLine();
+                        writer.Write(b.Name);
+                        writer.Write(":");
+                        writer.WriteLine();
                     }
 					if (b.Statements.Count > 0)
 					{
@@ -626,48 +633,48 @@ namespace Decompiler.Core.Output
 						}
                         if (br != null)
                         {
-                            Indent();
-                            WriteKeyword("if");
-                            Write(" (");
+                            writer.Indent();
+                            writer.WriteKeyword("if");
+                            writer.Write(" (");
                             WriteExpression(br.Condition);
-                            Terminate(")");
-                            int old = Indentation;
-                            Indentation += TabSize;
-                            Indent();
-                            WriteKeyword("goto");
-                            Write(" ");
-                            Write(b.Succ[1].Name);
-                            Terminate();
-                            Indentation = old;
+                            writer.Terminate(")");
+                            int old = writer.Indentation;
+                            writer.Indentation += writer.TabSize;
+                            writer.Indent();
+                            writer.WriteKeyword("goto");
+                            writer.Write(" ");
+                            writer.Write(b.Succ[1].Name);
+                            writer.Terminate();
+                            writer.Indentation = old;
                         }
                         else if (b.Succ.Count == 1 && !(b.Statements.Last.Instruction is ReturnInstruction))
                         {
-                            Indent();
-                            WriteKeyword("goto");
-                            Write(" ");
-                            Write(b.Succ[0].Name);
-                            Terminate();
+                            writer.Indent();
+                            writer.WriteKeyword("goto");
+                            writer.Write(" ");
+                            writer.Write(b.Succ[0].Name);
+                            writer.Terminate();
                         }
 					}
 				}
 			}
-			Write("}");
-            WriteLine();
+			writer.Write("}");
+            writer.WriteLine();
 		}
 
     	private void WriteActuals(Expression [] arguments)
 		{
-			Write("(");
+			writer.Write("(");
 			if (arguments.Length >= 1)
 			{
 				WriteExpression(arguments[0]);
 				for (int i = 1; i < arguments.Length; ++i)
 				{
-					Write(", ");
+					writer.Write(", ");
 					WriteExpression(arguments[i]);
 				}
 			}
-			Write(")");
+			writer.Write(")");
 		}
 
 		/// <summary>
@@ -682,52 +689,84 @@ namespace Decompiler.Core.Output
 			precedenceCur = prec;
 		}
 
+        public void WriteFormalArgument(Identifier arg, bool writeStorage, TypeFormatter t)
+        {
+            if (writeStorage)
+            {
+                WriteFormalArgumentType(arg, writeStorage);
+                writer.Write(" ");
+                writer.Write(arg.Name);
+            }
+            else
+            {
+                t.Write(arg.DataType, arg.Name);
+            }
+        }
+
+        public void WriteFormalArgumentType(Identifier arg, bool writeStorage)
+        {
+            if (writeStorage)
+            {
+                OutArgumentStorage os = arg.Storage as OutArgumentStorage;
+                if (os != null)
+                {
+                    writer.Write(os.OriginalIdentifier.Storage.Kind);
+                    writer.Write(" out ");
+                }
+                else
+                {
+                    writer.Write(arg.Storage.Kind);
+                    writer.Write(" ");
+                }
+            }
+            writer.Write(arg.DataType.ToString());
+        }
 
 		public void WriteIndentedStatement(AbsynStatement stm)
 		{
-			Indentation += TabSize;
+			writer.Indentation += writer.TabSize;
 			if (stm != null)
 				stm.Accept(this);
 			else
 			{
-				Indent();				
-				Terminate(";");
+				writer.Indent();				
+				writer.Terminate(";");
 			}
-			Indentation -= TabSize;
+			writer.Indentation -= writer.TabSize;
 		}
 
         public void WriteIndentedStatements(List<AbsynStatement> stms)
         {
             if (stms.Count <= 1)
             {
-                Indentation += TabSize;
+                writer.Indentation += writer.TabSize;
                 if (stms.Count == 0)
                 {
-                    Indent();
-                    Terminate(";");
+                    writer.Indent();
+                    writer.Terminate(";");
                 }
                 else
                 {
                     stms[0].Accept(this);
                 }
-                Indentation -= TabSize;
+                writer.Indentation -= writer.TabSize;
             }
             else
             {
-                Indent();
-                Write("{");
-                Terminate();
+                writer.Indent();
+                writer.Write("{");
+                writer.Terminate();
 
-                Indentation += TabSize;
+                writer.Indentation += writer.TabSize;
                 foreach (AbsynStatement stm in stms)
                 {
                     stm.Accept(this);
                 }
-                Indentation -= TabSize;
+                writer.Indentation -= writer.TabSize;
 
-                Indent();
-                Write("}");
-                Terminate();
+                writer.Indent();
+                writer.Write("}");
+                writer.Terminate();
             }
 
         }
@@ -739,5 +778,6 @@ namespace Decompiler.Core.Output
 				s.Accept(this);
 			}
 		}
-	}
+
+    }
 }

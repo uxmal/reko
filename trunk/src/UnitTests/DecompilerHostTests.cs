@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests
 			return disassembly;
 		}
 
-		public TextWriter CreateIntermediateCodeWriter()
+		public TextWriter GetIntermediateCodeWriter()
 		{
 			return null;
 		}
