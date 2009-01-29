@@ -48,7 +48,6 @@ namespace Decompiler.Typing
 		public bool ReplaceAll()
 		{
 			changed = false;
-			
 			Dictionary<EquivalenceClass,EquivalenceClass> classesInUse = new Dictionary<EquivalenceClass,EquivalenceClass>();
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
@@ -97,7 +96,7 @@ namespace Decompiler.Typing
 
 		public override DataType TransformEquivalenceClass(EquivalenceClass eq)
 		{
-			DataType dt = eq.DataType;
+            DataType dt = eq.DataType;
 			PrimitiveType pr = dt as PrimitiveType;
 			if (pr != null)
 			{

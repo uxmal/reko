@@ -1,0 +1,45 @@
+// void fn0C00_0000()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ax bx al bl ah bh es
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	fn0C00_0004()
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+// void fn0C00_0004()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ax bx al bl ah bh es
+// Preserved:
+// fn0C00_0004
+void fn0C00_0004()
+fn0C00_0004_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0004:		// block 1, pred: 0
+	word16 bx_15 = 0x0FFF
+	byte bh_16 = 0x0F
+	byte bl_17 = 0xFF
+	// succ:  2
+l0C00_000C:		// block 2, pred: 1 2
+	store(Mem37[0x4DE1:bx_15:byte]) = bl_17 & 0xF0 | SLICE((bl_17 & 0x0F) *u (bh_16 + 0x01) << 0x0004, byte, 8) & 0x0F
+	bx_15 = bx_15 - 0x0001
+	bh_16 = SLICE(bx_15, byte, 8) (alias)
+	bl_17 = (byte) bx_15 (alias)
+	branch bx_15 >= 0x0000 l0C00_000C
+	// succ:  3 2
+l0C00_0029:		// block 3, pred: 2
+	return
+	// succ:  4
+fn0C00_0004_exit:		// block 4, pred: 3
+	// succ: 
+

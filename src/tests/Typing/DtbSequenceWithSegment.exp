@@ -1,0 +1,45 @@
+// ProcedureMock
+void ProcedureMock()
+ProcedureMock_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	store(Mem0[0x0100:selector]) = SEQ(ds, 0x1234)
+	// succ: 
+
+// Equivalence classes ////////////
+Eq_1: (ptr (struct (100 T_6 t0100)))
+	Globals (in globals : ptr32)
+Eq_2: (ptr (segment))
+	T_2 (in ds : selector)
+Eq_3: word16
+	T_3 (in 0x1234 : word16)
+Eq_4: selector
+	T_4 (in SEQ(ds, 0x1234) : selector)
+	T_6 (in Mem0[0x0100:selector] : selector)
+Eq_5: (ptr (struct (0 T_6 t0000)))
+	T_5 (in 0x0100 : word16)
+// Type Variables ////////////
+Globals: (in globals : ptr32)
+  Class: Eq_1
+  DataType: (ptr (struct (100 T_6 t0100)))
+  OrigDataType: (ptr (struct (100 T_6 t0100)))
+T_2: (in ds : selector)
+  Class: Eq_2
+  DataType: (ptr (segment))
+  OrigDataType: (ptr (segment))
+T_3: (in 0x1234 : word16)
+  Class: Eq_3
+  DataType: word16
+  OrigDataType: word16
+T_4: (in SEQ(ds, 0x1234) : selector)
+  Class: Eq_4
+  DataType: selector
+  OrigDataType: 
+T_5: (in 0x0100 : word16)
+  Class: Eq_5
+  DataType: (ptr (struct (0 T_6 t0000)))
+  OrigDataType: (ptr (struct (0 T_6 t0000)))
+T_6: (in Mem0[0x0100:selector] : selector)
+  Class: Eq_4
+  DataType: selector
+  OrigDataType: selector

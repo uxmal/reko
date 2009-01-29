@@ -25,9 +25,9 @@ namespace Decompiler.Core.Code
 {
 	public class BinaryExpression : Expression
 	{
-		public BinaryOperator op;
-		public Expression Left;
-		public Expression Right;
+        public BinaryOperator op;
+		private Expression left;
+		private Expression right;
 
 		public BinaryExpression(BinaryOperator op, DataType dt, Expression left, Expression right) : base(dt)
 		{
@@ -45,6 +45,18 @@ namespace Decompiler.Core.Code
 		{
 			v.VisitBinaryExpression(this);
 		}
+
+        public Expression Left
+        {
+            get { return left; }
+            set { left = value; }
+        }
+
+        public Expression Right
+        {
+            get { return right; }
+            set { right = value; }
+        }
 
 		public override Expression CloneExpression()
 		{
@@ -107,7 +119,7 @@ namespace Decompiler.Core.Code
 				return new BinaryExpression(Operator.ne, this.DataType, Left, Right);
 			if (op == Operator.ne)
 				return new BinaryExpression(Operator.eq, this.DataType, Left, Right);
-			throw new ApplicationException("NYI");
+			throw new NotImplementedException();
 		}
 
 	}
