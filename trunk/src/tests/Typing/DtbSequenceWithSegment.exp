@@ -3,7 +3,7 @@ void ProcedureMock()
 ProcedureMock_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
-	store(Mem0[0x0100:selector]) = SEQ(ds, 0x1234)
+	store(Mem0[0x0100:ptr32]) = SEQ(ds, 0x1234)
 	// succ: 
 
 // Equivalence classes ////////////
@@ -13,9 +13,9 @@ Eq_2: (ptr (segment))
 	T_2 (in ds : selector)
 Eq_3: word16
 	T_3 (in 0x1234 : word16)
-Eq_4: selector
-	T_4 (in SEQ(ds, 0x1234) : selector)
-	T_6 (in Mem0[0x0100:selector] : selector)
+Eq_4: ptr32
+	T_4 (in SEQ(ds, 0x1234) : ptr32)
+	T_6 (in Mem0[0x0100:ptr32] : ptr32)
 Eq_5: (ptr (struct (0 T_6 t0000)))
 	T_5 (in 0x0100 : word16)
 // Type Variables ////////////
@@ -31,15 +31,15 @@ T_3: (in 0x1234 : word16)
   Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_4: (in SEQ(ds, 0x1234) : selector)
+T_4: (in SEQ(ds, 0x1234) : ptr32)
   Class: Eq_4
-  DataType: selector
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_5: (in 0x0100 : word16)
   Class: Eq_5
   DataType: (ptr (struct (0 T_6 t0000)))
   OrigDataType: (ptr (struct (0 T_6 t0000)))
-T_6: (in Mem0[0x0100:selector] : selector)
+T_6: (in Mem0[0x0100:ptr32] : ptr32)
   Class: Eq_4
-  DataType: selector
-  OrigDataType: selector
+  DataType: ptr32
+  OrigDataType: ptr32

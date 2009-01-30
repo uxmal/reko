@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Intel
 
 			Procedure proc = new Procedure("test", new Frame(arch.WordWidth));
             rw.ConvertInstructions(instr);
-			Assert.AreEqual("ax = Mem0[ds:bx + 0x0004:word16](cx)", rw.Block.Statements[0].Instruction.ToString());
+			Assert.AreEqual("ax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)", rw.Block.Statements[0].Instruction.ToString());
 		}
 
         private Identifier Reg(IntelRegister r)
@@ -251,6 +251,24 @@ namespace Decompiler.UnitTests.Intel
 			Assert.AreEqual("Z = eax == 0x00000000", rw.Block.Statements[0].Instruction.ToString());
 			Assert.AreEqual("ecx = __bsr(eax)", rw.Block.Statements[1].Instruction.ToString());
 		}
+
+        [Test]
+        public void RewriteIndirectCalls()
+        {
+            RegisterOperand bx = new RegisterOperand(Registers.bx);
+            rw.ConvertInstructions(new IntelInstruction[] {
+                new IntelInstruction(
+                    Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, bx),
+                new IntelInstruction(
+                    Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new MemoryOperand(PrimitiveType.Word16, Registers.bx, new Constant(PrimitiveType.Word16, 0))),
+                new IntelInstruction(
+                    Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new MemoryOperand(PrimitiveType.Pointer32, Registers.bx, new Constant(PrimitiveType.Word16, 0)))
+            });
+        
+            Assert.AreEqual("icall SEQ(cs, bx)", rw.Block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("icall SEQ(cs, Mem0[ds:bx + 0x0000:word16])", rw.Block.Statements[1].Instruction.ToString());
+            Assert.AreEqual("icall Mem0[ds:bx + 0x0000:ptr32]", rw.Block.Statements[2].Instruction.ToString());
+        }
 
         public class TestRewriter : IntelRewriter
         {

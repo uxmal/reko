@@ -197,9 +197,9 @@ namespace Decompiler.Scanning
 
 		public SystemService SystemCallAt(Address addrInstr)
 		{
-			SystemService svc = (SystemService) syscalls[addrInstr];
-			if (svc == null)
-			{
+			SystemService svc = null;
+            if (!syscalls.TryGetValue(addrInstr, out svc))
+            {
 				host.WriteDiagnostic(Diagnostic.Warning, addrInstr, "System call at this address wasn't previously recorded.");
 			}
 			return svc;

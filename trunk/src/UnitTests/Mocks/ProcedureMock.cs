@@ -50,6 +50,11 @@ namespace Decompiler.UnitTests.Mocks
 			Init(name);
 		}
 
+        public ArrayAccess Array(DataType elemType, Expression arrayPtr, Expression index)
+        {
+            return new ArrayAccess(elemType, arrayPtr, index);
+        }
+
 		public Statement Emit(Instruction instr)
 		{
 			EnsureBlock(null);
@@ -400,10 +405,11 @@ namespace Decompiler.UnitTests.Mocks
 
 		public MkSequence Seq(Expression head, Expression tail)
 		{
-			return new MkSequence(
-				PrimitiveType.Create(((PrimitiveType)head.DataType).Domain, head.DataType.Size + tail.DataType.Size),
-				head, 
-				tail);
+            int totalSize = head.DataType.Size + tail.DataType.Size;
+            Domain dom = (head.DataType == PrimitiveType.SegmentSelector)
+                ? Domain.Pointer
+                : ((PrimitiveType) head.DataType).Domain;
+			return new MkSequence(PrimitiveType.Create(dom, totalSize), head, tail);
 		}
 
 		public SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
@@ -580,7 +586,7 @@ namespace Decompiler.UnitTests.Mocks
             TerminateBlock();
 		}
 
-		protected Identifier Local(PrimitiveType primitiveType, string name)
+		public Identifier Local(PrimitiveType primitiveType, string name)
 		{
 			localStackOffset -= primitiveType.Size;
 			return proc.Frame.EnsureStackLocal(localStackOffset, primitiveType, name);
@@ -655,7 +661,6 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			return new Constant(PrimitiveType.Word32, n);
 		}
-
 
     }
 }

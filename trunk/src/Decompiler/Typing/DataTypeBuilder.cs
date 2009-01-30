@@ -123,11 +123,11 @@ namespace Decompiler.Typing
 			MergeIntoDataType(ptr, function);
 		}
 
-		public void MemAccessArrayTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tAccess)
+		public void MemAccessArrayTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tField)
 		{
 			StructureType element = factory.CreateStructureType(null, elementSize);
-			if (tAccess != null)
-				element.Fields.Add(0, tAccess, null);
+			if (tField != null)
+				element.Fields.Add(0, tField, null);
 			ArrayType a = factory.CreateArrayType(element, length);
 
 			MemoryAccessCommon(tBase, tStruct, new StructureField(offset, a), structPtrSize);

@@ -1,7 +1,7 @@
 T_1 (in globals : ptr32)
 	trait_primitive(ptr32)
 	trait_mem_array(0, 1, 10, T_3)
-	trait_mem_array(65536, 4, 16, T_5)
+	trait_mem_array(10000, 4, 16, T_5)
 T_2 (in i : word32)
 	trait_primitive(word32)
 	trait_memsize(1)

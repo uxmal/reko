@@ -184,6 +184,12 @@ namespace Decompiler.UnitTests.Typing
         }
 
         [Test]
+        public void TerReg00012()
+        {
+            RunTest("fragments/regressions/r00012.asm", "Typing/TerReg00012.txt");
+        }
+
+        [Test]
         public void TerAddNonConstantToPointer()
         {
             ProcedureMock m = new ProcedureMock();
@@ -360,7 +366,7 @@ namespace Decompiler.UnitTests.Typing
         {
 			factory = new TypeFactory();
 			store = new TypeStore();
-            aen = new ExpressionNormalizer();
+            aen = new ExpressionNormalizer(arch.PointerType);
 			eqb = new EquivalenceClassBuilder(factory, store);
             dtb = new DataTypeBuilder(factory, store, arch);
 			cpf = new DerivedPointerAnalysis(factory, store, dtb, arch);

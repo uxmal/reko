@@ -61,10 +61,10 @@ namespace Decompiler.Typing
 		}
 
 
-		public void CollectArray(TypeVariable tvBasePointer, TypeVariable tvAccess, Expression arrayBase, int elementSize, int length)
+		public void CollectArray(TypeVariable tvBasePointer, TypeVariable tvField, Expression arrayBase, int elementSize, int length)
 		{
 			this.tvBasePointer = tvBasePointer;
-			this.tvField = tvAccess;
+			this.tvField = tvField;
 			bool c = arrayContext;
 			arrayContext = true;
 			arrayElementSize = elementSize;
@@ -256,7 +256,15 @@ namespace Decompiler.Typing
 
 		public void VisitMkSequence(MkSequence seq)
 		{
-			throw new NotImplementedException();
+            if (arrayContext)
+            {
+                if (seq.Head.DataType != PrimitiveType.SegmentSelector)
+                    return;
+                Constant c = seq.Tail as Constant;
+                if (c == null)
+                    return;
+                handler.MemAccessArrayTrait(null, seq.Head.TypeVariable, seq.Head.DataType.Size, c.ToInt32(), arrayElementSize, 0, tvField); 
+            }
 		}
 
 		public void VisitMemoryAccess(MemoryAccess access)

@@ -25,7 +25,7 @@ namespace Decompiler.Typing
 {
 	/// <summary>
 	/// The methods of this interface are called by the TraitCollector as it traverses 
-	/// the program. 
+	/// the instructions and expressions of the program. 
 	/// </summary>
 	public interface ITraitHandler
 	{
@@ -67,7 +67,7 @@ namespace Decompiler.Typing
 		/// <paramref>tStruct</paramref> has an array at offset <paramref>offset</paramref> whose elementsize is <paramref>elementSize</paramref>
 		/// and consists of <paramref>length items</paramref>.
 		/// </summary>
-		void MemAccessArrayTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tAccess);
+		void MemAccessArrayTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tField33);
 
 		void MemSizeTrait(TypeVariable tBase, TypeVariable tStruct, int size);
 		void PointerTrait(TypeVariable tPointer, int ptrSize, TypeVariable tPointee);

@@ -55,7 +55,7 @@ namespace Decompiler.Typing
 			this.store = store;
 			this.handler = handler;
             this.prog = prog;
-			this.aem = new ArrayExpressionMatcher();
+			this.aem = new ArrayExpressionMatcher(prog.Architecture.PointerType);
 			this.atrco = new AddressTraitCollector(factory, store, handler, prog);
 		}
 
@@ -70,7 +70,29 @@ namespace Decompiler.Typing
                 handler.DataTypeTrait(sig.ReturnValue.TypeVariable, sig.ReturnValue.DataType);
             }
 		}
-			
+
+        private void BindActualTypesToFormalTypes(Application appl)
+        {
+            ProcedureConstant pc = appl.Procedure as ProcedureConstant;
+            if (pc == null)
+                throw new NotImplementedException("Indirect call");
+            if (pc.Procedure.Signature == null)
+                return;
+
+            ProcedureSignature sig = pc.Procedure.Signature;
+            if (appl.Arguments.Length != sig.FormalArguments.Length)
+                throw new InvalidOperationException(
+                    string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
+                    pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
+            for (int i = 0; i < appl.Arguments.Length; ++i)
+            {
+                handler.EqualTrait(appl.Arguments[i].TypeVariable, sig.FormalArguments[i].TypeVariable);
+                sig.FormalArguments[i].Accept(this);
+            }
+            if (sig.ReturnValue != null)
+                handler.EqualTrait(appl.TypeVariable, sig.ReturnValue.TypeVariable);
+        }
+
 		public void CollectEffectiveAddress(TypeVariable fieldType, Expression effectiveAddress)
 		{
 			atrco.Collect(null, 0, fieldType, effectiveAddress);
@@ -103,6 +125,14 @@ namespace Decompiler.Typing
 		{
 			return ((PrimitiveType)t).Domain;
 		}
+
+        private DataType MakeNonPointer(DataType dataType)
+        {
+            PrimitiveType p = dataType as PrimitiveType;
+            if (p == null)
+                return null;
+            return p.MaskDomain(~Domain.Pointer);
+        }
 
 		public PrimitiveType MakeNotSigned(DataType t)
 		{
@@ -222,26 +252,6 @@ namespace Decompiler.Typing
 			ivCur = null;
 		}
 
-		private void BindActualTypesToFormalTypes(Application appl)
-		{
-			ProcedureConstant pc = appl.Procedure as ProcedureConstant;
-			if (pc == null)
-				throw new NotImplementedException("Indirect call");
-			Debug.Assert(pc.Procedure.Signature != null);
-			ProcedureSignature sig = pc.Procedure.Signature;
-			if (appl.Arguments.Length != sig.FormalArguments.Length)
-				throw new InvalidOperationException(
-					string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
-					pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
-			for (int i = 0; i < appl.Arguments.Length; ++i)
-			{
-				handler.EqualTrait(appl.Arguments[i].TypeVariable, sig.FormalArguments[i].TypeVariable);
-                sig.FormalArguments[i].Accept(this);
-			}
-			if (sig.ReturnValue != null)
-				handler.EqualTrait(appl.TypeVariable, sig.ReturnValue.TypeVariable);
-		}
-
 		public class ArrayContext
 		{
 			public int ElementSize;
@@ -293,6 +303,8 @@ namespace Decompiler.Typing
 		 */
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
+            if (binExp.ToString() == "bx * 0x0002")
+                binExp.ToString();  //$DEBUG
 			binExp.Left.Accept(this);
 			LinearInductionVariable ivLeft = ivCur;
 			binExp.Right.Accept(this);
@@ -318,6 +330,7 @@ namespace Decompiler.Typing
 			else if (binExp.op == Operator.muls ||
 				binExp.op == Operator.divs)
 			{
+                handler.DataTypeTrait(tvExp, MakeNonPointer(binExp.DataType));
 				handler.DataTypeTrait(tvExp, binExp.DataType);
 				handler.DataTypeTrait(binExp.Left.TypeVariable, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Left.DataType.Size));
 				handler.DataTypeTrait(binExp.Right.TypeVariable, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.Size));
@@ -327,14 +340,15 @@ namespace Decompiler.Typing
 				binExp.op == Operator.divu ||
 				binExp.op == Operator.shr)
 			{
-				handler.DataTypeTrait(tvExp, MakeUnsigned(binExp.DataType));
+                handler.DataTypeTrait(tvExp, MakeNonPointer(binExp.DataType));
+                handler.DataTypeTrait(tvExp, MakeUnsigned(binExp.DataType));
 				handler.DataTypeTrait(binExp.Left.TypeVariable, MakeUnsigned(binExp.Left.DataType));
 				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeUnsigned(binExp.Right.DataType));
 				return;
 			}
 			else if (binExp.op == Operator.mul)
 			{
-				handler.DataTypeTrait(tvExp, binExp.DataType);
+				handler.DataTypeTrait(tvExp, MakeNonPointer(binExp.DataType));
 				return;
 			}
 			else if (binExp.op == Operator.sar)
@@ -396,6 +410,7 @@ namespace Decompiler.Typing
 			throw new NotImplementedException("NYI: " + binExp.op + " in " + binExp);
 		}
 
+
 		public override void VisitBranch(Branch b)
 		{
 			b.Condition.Accept(this);
@@ -448,7 +463,13 @@ namespace Decompiler.Typing
 			throw new NotImplementedException();
 		}
 
-		public override void VisitMemberPointerSelector(MemberPointerSelector mps)
+        public override void VisitMkSequence(MkSequence seq)
+        {
+            base.VisitMkSequence(seq);
+            handler.DataTypeTrait(seq.TypeVariable, seq.DataType);
+        }
+
+        public override void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			mps.BasePointer.Accept(this);
 			mps.MemberPointer.Accept(this);

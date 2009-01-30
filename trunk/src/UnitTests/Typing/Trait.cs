@@ -155,8 +155,8 @@ namespace Decompiler.UnitTests.Typing
 		{
 			return string.Format(
 				BasePointer == null ?
-				"trait_mem_array({1}, {2}, {3}, {4})"
-				: "trait_mem_array({0}:{1}, {2}, {3}, {4})",
+				"trait_mem_array({1:X}, {2}, {3}, {4})"
+				: "trait_mem_array({0}:{1:X}, {2}, {3}, {4})",
 				BasePointer, Offset, ElementSize, Length, AccessType);
 		}
 	}

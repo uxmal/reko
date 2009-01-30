@@ -119,7 +119,6 @@ namespace Decompiler.UnitTests.Core
 			tyfo.Write(a, null);
 			Assert.AreEqual(
 @"struct b;
-
 struct a {
 	struct b * pb;	// 0
 }",

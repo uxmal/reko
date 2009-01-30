@@ -196,9 +196,15 @@ namespace Decompiler.Core.Types
 			get { return (domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0; }
 		}
 
-		public PrimitiveType MaskDomain(Domain dom)
+        /// <summary>
+        /// Creates a new primitive type, whose domain is the original domain ANDed 
+        /// with the supplied domain mask.
+        /// </summary>
+        /// <param name="dom"></param>
+        /// <returns></returns>
+		public PrimitiveType MaskDomain(Domain domainMask)
 		{
-			return Create(this.Domain & dom, Size);
+			return Create(this.Domain & domainMask, Size);
 		}
 
 		public override string Prefix

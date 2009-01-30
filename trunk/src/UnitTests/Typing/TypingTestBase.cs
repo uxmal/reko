@@ -19,6 +19,7 @@
 using Decompiler;
 using Decompiler.Analysis;
 using Decompiler.Arch.Intel;
+using Decompiler.Arch.Intel.MsDos;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
@@ -52,7 +53,7 @@ namespace Decompiler.UnitTests.Typing
 			Scanner scan = new Scanner(prog, null);
 			scan.EnqueueEntryPoint(ep);
 			scan.ProcessQueues();
-			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
+			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerHost(), scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
@@ -64,7 +65,7 @@ namespace Decompiler.UnitTests.Typing
         {
             RunTest(RewriteFile(srcfile), outputFile);
         }
-
+        
         protected void RunTest(ProgramMock mock, string outputFile)
         {
             Program prog = mock.BuildProgram();

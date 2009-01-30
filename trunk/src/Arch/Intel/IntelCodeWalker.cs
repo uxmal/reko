@@ -151,7 +151,12 @@ namespace Decompiler.Arch.Intel
 		private void HandleIntInstruction(IntelInstruction instr, Address addrStart)
 		{
 			int vector = ((ImmediateOperand) instr.op1).Value.ToInt32();
-			SystemService svc = platform.FindService(vector, state);
+            if (platform == null)
+            {
+                Listener.Warn(addrStart, "Unknown service: INT {0:X2}.", vector);
+                return;
+            }
+            SystemService svc = platform.FindService(vector, state);
 			if (svc == null)
 			{
 				Listener.Warn(addrStart, "Unknown service: INT {0:X2}.", vector);

@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Types;
 using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -77,7 +78,7 @@ namespace Decompiler.UnitTests.Typing
 			c = m.Int32(16);
 			off = m.Int32(42);
 			r = m.Local32("r");
-			aem = new ArrayExpressionMatcher();
+			aem = new ArrayExpressionMatcher(PrimitiveType.Pointer32);
 		}
 	}
 }

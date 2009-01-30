@@ -57,7 +57,7 @@ namespace Decompiler.Typing
 			factory = prog.TypeFactory;
 			store = prog.TypeStore;
 
-			aen = new ExpressionNormalizer();
+			aen = new ExpressionNormalizer(prog.Architecture.PointerType);
 			eqb = new EquivalenceClassBuilder(factory, store);
 			dtb = new DataTypeBuilder(factory, store, prog.Architecture);
 			trco = new TraitCollector(factory, store, dtb, prog);
