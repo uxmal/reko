@@ -32,7 +32,12 @@ namespace Decompiler.Typing
 	/// </summary>
 	public class ExpressionNormalizer : InstructionTransformer
 	{
-		private ArrayExpressionMatcher aem = new ArrayExpressionMatcher();
+        private ArrayExpressionMatcher aem;
+
+        public ExpressionNormalizer(PrimitiveType pointerType)
+        {
+		    this.aem = new ArrayExpressionMatcher(pointerType);
+        }
 
         /// <summary>
         /// Extends an effective address ''id'' to ''id'' + 0. 
@@ -55,12 +60,13 @@ namespace Decompiler.Typing
             return bin;
         }
 
+
 		public override Expression TransformMemoryAccess(MemoryAccess access)
 		{
-			access.EffectiveAddress = access.EffectiveAddress.Accept(this);
+            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
             if (aem.Match(access.EffectiveAddress))
             {
-                return aem.Transform(access.DataType);
+                return aem.Transform(null, access.DataType);
             }
             else if (access.EffectiveAddress is Identifier)
             {
@@ -71,12 +77,17 @@ namespace Decompiler.Typing
             {
                 return access;
             }
-		}
+        }
 
 
         public override Expression TransformSegmentedAccess(SegmentedAccess access)
         {
-            if (access.EffectiveAddress is Identifier)
+            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
+            if (aem.Match(access.EffectiveAddress))
+            {
+                return aem.Transform(access.BasePointer, access.DataType);
+            }
+            else if (access.EffectiveAddress is Identifier)
             {
                 access.EffectiveAddress = AddZeroToEffectiveAddress(access.EffectiveAddress);
                 return access;

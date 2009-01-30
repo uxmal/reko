@@ -287,6 +287,12 @@ namespace Decompiler.UnitTests.Typing
             RunTest("fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
         }
 
+        [Test]
+        public void TrcoReg00012()
+        {
+            RunTest("fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
+        }
+
 		[Test]
 		public void TrcoIntelIndexedAddressingMode()
 		{
@@ -381,6 +387,37 @@ namespace Decompiler.UnitTests.Typing
 
 
         [Test]
+        public void TrcoArrayAccess()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
+            Identifier bx = m.Local16("bx");
+            Expression e = m.Array(PrimitiveType.Word32, m.Seq(ds, m.Word16(0x300)), m.Mul(bx, 8));
+            coll = CreateCollector();
+            e.Accept(eqb);
+            e.Accept(coll);
+            StringWriter sb = new StringWriter();
+            handler.Traits.Write(sb);
+            string sExp =
+                "T_1 (in ds : selector)" + nl +
+                "	trait_primitive(selector)" + nl +
+                "   trait_mem_array(300, 8, 0, T_7)" + nl + 
+                "T_2 (in 0x0300 : word16)" + nl +
+                "	trait_primitive(word16)" + nl +
+                "T_3 (in SEQ(ds, 0x0300) : ptr32)" + nl +
+                "	trait_primitive(ptr32)" + nl +
+                "T_4 (in bx : word16)" + nl +
+                "	trait_primitive(word16)" + nl +
+                "T_5 (in 0x0008 : word16)" + nl +
+                "	trait_primitive(word16)" + nl +
+                "T_6 (in bx * 0x0008 : word16)" + nl +
+                "	trait_primitive(uis16)" + nl +
+                "T_7 (in SEQ(ds, 0x0300)[bx * 0x0008] : word32)" + nl +
+                "	trait_primitive(word32)" + nl;
+            Assert.AreEqual(sExp, sb.ToString());
+        }
+
+        [Test]
         public void TrcoDbp()
         {
             ProcedureMock m = new ProcedureMock();
@@ -412,7 +449,7 @@ namespace Decompiler.UnitTests.Typing
 
         private TraitCollector CreateCollector(Program prog)
         {
-            aen = new ExpressionNormalizer();
+            aen = new ExpressionNormalizer(prog.Architecture.PointerType);
             eqb = new EquivalenceClassBuilder(prog.TypeFactory, prog.TypeStore);
             handler = new MockTraitHandler(prog.TypeStore);
             return new TraitCollector(prog.TypeFactory, prog.TypeStore, handler, prog);

@@ -1333,6 +1333,12 @@ namespace Decompiler.Arch.Intel
 				}
 			}
 
+            // Near indirect calls must refer to CS.
+            if (e.DataType == PrimitiveType.Word16)
+            {
+                e = new MkSequence(PrimitiveType.Pointer32, orw.AluRegister(Registers.cs), e);
+            }
+
 			//$BUGBUG: we need the size of the return address.
 			ProcedureSignature sig = host.GetCallSignatureAtAddress(addrInstr);
 			if (sig != null)

@@ -241,7 +241,7 @@ namespace Decompiler.UnitTests.Typing
 
 		protected override void RunTest(Program prog, string outputFileName)
 		{
-			ExpressionNormalizer aen = new ExpressionNormalizer();
+			ExpressionNormalizer aen = new ExpressionNormalizer(prog.Architecture.PointerType);
 			aen.Transform(prog);
 			EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store);
 			eq.Build(prog);

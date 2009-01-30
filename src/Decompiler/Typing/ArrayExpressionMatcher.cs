@@ -31,9 +31,11 @@ namespace Decompiler.Typing
 		private Expression index;
 		private Constant elemSize;
 		private Expression arrayPtr;
+        private PrimitiveType dtPointer;
 
-		public ArrayExpressionMatcher()
+		public ArrayExpressionMatcher(PrimitiveType dtPointer)
 		{
+            this.dtPointer = dtPointer;
 		}
 
 		public Expression ArrayPointer
@@ -138,8 +140,12 @@ namespace Decompiler.Typing
 			return false;
 		}
 
-		public Expression Transform(DataType dtAccess)
+		public Expression Transform(Expression baseptr, DataType dtAccess)
 		{
+            if (baseptr != null)
+            {
+                arrayPtr = new MkSequence(dtPointer, baseptr, arrayPtr);
+            }
 			return new ArrayAccess(
                 dtAccess, 
                 arrayPtr,

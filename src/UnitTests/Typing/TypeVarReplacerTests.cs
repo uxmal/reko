@@ -48,6 +48,7 @@ namespace Decompiler.UnitTests.Typing
 			eqb.VisitAssignment(ass2);
 
             Program prog = new Program();
+            prog.Architecture = new ArchitectureMock();
             trco = new TraitCollector(factory, store, dtb, prog);
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);

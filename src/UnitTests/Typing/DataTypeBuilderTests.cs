@@ -37,15 +37,20 @@ namespace Decompiler.UnitTests.Typing
 		private ExpressionNormalizer aen;
 		private EquivalenceClassBuilder eqb;
 		private DataTypeBuilder dtb;
+        private ArchitectureMock arch;
+        private Program prog;
 
         [SetUp]
         public void SetUp()
         {
             store = new TypeStore();
             factory = new TypeFactory();
-            aen = new ExpressionNormalizer();
+            aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
             eqb = new EquivalenceClassBuilder(factory, store);
-            dtb = new DataTypeBuilder(factory, store, new ArchitectureMock());
+            arch = new ArchitectureMock();
+            prog = new Program();
+            prog.Architecture = arch;
+            dtb = new DataTypeBuilder(factory, store, arch);
         }
 
 		[Test]
@@ -124,6 +129,21 @@ namespace Decompiler.UnitTests.Typing
 			Verify("Typing/DtbEqClassType.txt");
 		}
 
+        [Test]
+        public void DtbArrayAccess2()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
+            Identifier bx = m.Local16("bx");
+            Expression e = m.Array(PrimitiveType.Word32, m.Seq(ds, m.Word16(0x300)), m.Mul(bx, 8));
+            e.Accept(eqb);
+
+            TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
+            e.Accept(coll);
+            Verify("Typing/DtbArrayAccess2.txt");
+        }
+
+
 		[Test]
         [Ignore("Frame pointers require escape and alias analysis.")]
 		public void DtbFramePointer()
@@ -155,7 +175,7 @@ namespace Decompiler.UnitTests.Typing
 			ass1.Accept(eqb);
 			ass2.Accept(eqb);
 			ass3.Accept(eqb);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, new Program());
+            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
 			trco.VisitAssignment(ass3);
@@ -174,7 +194,7 @@ namespace Decompiler.UnitTests.Typing
 			Assignment ass2 = new Assignment(x, MemLoad(pfoo, 4, PrimitiveType.Word32));
 			ass1.Accept(eqb);
 			ass2.Accept(eqb);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, new Program());
+            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
 			dtb.BuildEquivalenceClassDataTypes();
@@ -194,7 +214,7 @@ namespace Decompiler.UnitTests.Typing
 			Assignment ass2 = new Assignment(baz, MemLoad(foo, 4, PrimitiveType.Word16));
 			ass1.Accept(eqb);
 			ass2.Accept(eqb);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, new Program());
+            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
 			dtb.BuildEquivalenceClassDataTypes();
@@ -224,8 +244,6 @@ namespace Decompiler.UnitTests.Typing
 				Constant.Word32(0x0010040),
                 false);
 
-            Program prog = new Program();
-            prog.Architecture = new ArchitectureMock();
 			prog.InductionVariables.Add(i, iv);
             prog.InductionVariables.Add(i2, iv2);
             TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
@@ -268,8 +286,6 @@ namespace Decompiler.UnitTests.Typing
 		public void DtbGlobalArray()
 		{
 			ProcedureMock m = new ProcedureMock();
-            Program prog = new Program();
-            prog.Architecture = new ArchitectureMock();
 			Identifier i = m.Local32("i");
 			Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
 			Expression e = m.Load(PrimitiveType.Int32, ea);
@@ -359,6 +375,13 @@ namespace Decompiler.UnitTests.Typing
         {
             RunTest("fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");
         }
+
+        [Test]
+        public void DtbReg00012()
+        {
+            RunTest("fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
+        }
+
 
 		[Test]
 		public void DtbTreeFind()

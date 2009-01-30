@@ -32,7 +32,6 @@ namespace Decompiler.Typing
 	{
 		private TypeFactory factory;
 		private TypeStore store;
-		private ArrayExpressionMatcher aem;
 		private ProcedureSignature signature;
         private Dictionary<ushort, TypeVariable> segTypevars;
 
@@ -40,7 +39,6 @@ namespace Decompiler.Typing
 		{
 			this.factory = factory;
 			this.store = store;
-			this.aem = new ArrayExpressionMatcher();
 			this.signature = null;
             this.segTypevars = new Dictionary<ushort, TypeVariable>();
 		}

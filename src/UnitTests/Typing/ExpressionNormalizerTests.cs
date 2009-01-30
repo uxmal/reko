@@ -72,13 +72,22 @@ namespace Decompiler.UnitTests.Typing
             Assert.AreEqual("Mem0[ds:bx + 0x0000:byte]", e.ToString());
         }
 
+        [Test]
+        public void SegAccessArray()
+        {
+            Identifier bx = m.Local16("bx");
+            Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
+            Expression e = m.SegMem(PrimitiveType.Int32, ds, m.Add(m.Mul(bx, 2), 0x42));
+            e = e.Accept(aen);
+            Assert.AreEqual("SEQ(ds, 0x0042)[bx * 0x0002]", e.ToString());
+        }
 
 
 		[SetUp]
 		public void Setup()
 		{
 			m = new ProcedureMock();
-			aen = new ExpressionNormalizer();
+			aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
 		}
 	}
 }
