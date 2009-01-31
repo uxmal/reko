@@ -303,8 +303,6 @@ namespace Decompiler.Typing
 		 */
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
-            if (binExp.ToString() == "bx * 0x0002")
-                binExp.ToString();  //$DEBUG
 			binExp.Left.Accept(this);
 			LinearInductionVariable ivLeft = ivCur;
 			binExp.Right.Accept(this);
