@@ -122,11 +122,8 @@ namespace Decompiler.Typing
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
 			{
-				if (pb == PrimitiveType.Word16 || pb == PrimitiveType.Word32 || pb.Domain == Domain.Pointer ||
-					pb == PrimitiveType.UInt16 || pb == PrimitiveType.UInt32 || pb.Domain == Domain.Selector)
-				{
-					return true;
-				}
+                if ((pb.Domain & Domain.Selector|Domain.Pointer) != 0 && pb.Size == ptrA.Size)
+                    return true;
 			}
 			return false;
 		}
