@@ -34,7 +34,7 @@ namespace Decompiler.WindowsGui.Forms
 		private Hashtable mpCmdidToCommand;
         private IProgramImageBrowserService browserSvc;
 
-		public LoadedPageInteractor(ILoadedPage page, MainFormInteractor form, MenuSystem dm) 
+		public LoadedPageInteractor(ILoadedPage page) 
 		{
 			this.pageLoaded = page;
             page.MemoryControl.SelectionChanged += new System.EventHandler(this.memctl_SelectionChanged);
@@ -45,7 +45,6 @@ namespace Decompiler.WindowsGui.Forms
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowUnscanned);
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewFindFragments);
-			pageLoaded.MemoryControl.ContextMenu = dm.GetContextMenu(MenuIds.CtxMemoryControl);
 		}
 
 		protected MenuCommand AddCommand(ref Guid cmdSet, int cmdId)
@@ -195,6 +194,8 @@ namespace Decompiler.WindowsGui.Forms
                 if (value != null)
                 {
                     browserSvc = (IProgramImageBrowserService) EnsureService(typeof(IProgramImageBrowserService));
+                    pageLoaded.MemoryControl.ContextMenu  = base.UIService.GetContextMenu(MenuIds.CtxMemoryControl);
+
                 }
                 else
                 {

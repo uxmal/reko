@@ -47,30 +47,9 @@ namespace Decompiler.WindowsGui.Forms
             get { return decompilerSvc.Decompiler != null; }
         }
 
-        //$TODO: consider making this a service.
-        [Obsolete("Push this into a service")]
         public virtual DecompilerDriver Decompiler
         {
             get { return decompilerSvc.Decompiler; }
-        }
-
-        [Obsolete("Use services instead", true)]
-        public IMainForm MainForm
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        [Obsolete("Use services instead", true)]
-        public MainFormInteractor MainInteractor
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        [Obsolete("Use services instead")]
-        public PhasePageInteractor NextPage
-        {
-            get { return nextPage; }
-            set { nextPage = value; }
         }
 
         protected object EnsureService(Type svcType)
@@ -94,24 +73,6 @@ namespace Decompiler.WindowsGui.Forms
         public abstract bool LeavePage();
 
         public abstract object Page { get; }
-
-        /// <summary>
-        /// Displays a modal dialog on the main form.
-        /// </summary>
-        /// <param name="form">Form to display.</param>
-        /// <returns>Dialog result of the dialog.</returns>
-        /// <remarks>Test classes can override this method to avoid blocking on a modal dialog.</remarks>
-        [Obsolete("Push this into UI service", true)]
-        public virtual DialogResult ShowModalDialog(Form dlg)
-        {
-            return MainForm.ShowDialog(dlg);
-        }
-
-        [Obsolete("Push this into UI service", true)]
-        public virtual DialogResult ShowModalDialog(CommonDialog dlg)
-        {
-            return MainForm.ShowDialog(dlg);
-        }
 
         protected IDecompilerUIService UIService
         {

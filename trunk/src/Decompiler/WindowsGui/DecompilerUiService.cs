@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Gui;
+using Decompiler.WindowsGui.Forms;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,17 +31,24 @@ namespace Decompiler.WindowsGui
     public class DecompilerUiService : IDecompilerUIService
     {
         private Form mainForm;
+        private DecompilerMenus dm;
         private OpenFileDialog ofd;
         private SaveFileDialog sfd;
 
-        public DecompilerUiService(Form mainForm, OpenFileDialog ofd, SaveFileDialog sfd)
+        public DecompilerUiService(Form mainForm, DecompilerMenus dm, OpenFileDialog ofd, SaveFileDialog sfd)
         {
             this.mainForm = mainForm;
+            this.dm = dm;
             this.ofd = ofd;
             this.sfd = sfd;
         }
 
         #region IDecompilerUIService Members
+
+        public virtual ContextMenu GetContextMenu(int menuId)
+        {
+            return dm.GetContextMenu(menuId);
+        }
 
         public virtual DialogResult ShowModalDialog(Form dlg)
         {

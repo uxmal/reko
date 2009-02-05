@@ -22,6 +22,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
+using Decompiler.WindowsGui;
 using Decompiler.WindowsGui.Forms;
 using NUnit.Framework;
 using System;
@@ -33,15 +34,38 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 	public class LoadedPageInteractorTests
 	{
 		private MainForm form;
-		private TestMainFormInteractor mi;
+        private FakeUiService uiSvc;
+        private Program prog;
+        private LoadedPageInteractor interactor;
+        private DecompilerService decSvc;
 
 		[SetUp]
 		public void Setup()
 		{
-            Program prog = new Program();
-            mi = new TestMainFormInteractor(prog, new TestLoader(prog));
-            form = mi.CreateForm();
-			mi.OpenBinary(null);
+            form = new MainForm();
+            interactor = new LoadedPageInteractor(form.LoadedPage);
+
+            FakeComponentSite site = new FakeComponentSite(interactor);
+
+            uiSvc = new FakeUiService();
+            site.AddService(typeof(IDecompilerUIService), uiSvc);
+
+            ProgramImageBrowserService svc = new ProgramImageBrowserService(form.BrowserList);
+            site.AddService(typeof(IProgramImageBrowserService), svc);
+
+            prog = new Program();
+            prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
+            prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[10000]);
+            prog.Image.Map.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
+            prog.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
+
+            TestLoader ldr = new TestLoader(prog);
+            decSvc = new DecompilerService();
+            decSvc.Decompiler = new DecompilerDriver(ldr, prog, new FakeDecompilerHost());
+            decSvc.Decompiler.LoadProgram();
+            site.AddService(typeof(IDecompilerService), decSvc);
+
+            interactor.Site = site;
 		}
 
 		[TearDown]
@@ -53,37 +77,36 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		[Test]
 		public void Populate()
 		{
-			ListView lv = mi.MainForm.BrowserList;
+            interactor.EnterPage();
+			ListView lv = form.BrowserList;
 			Assert.AreEqual(3, lv.Items.Count, "There should be three segments in the image.");
 		}
 
 		[Test]
 		public void PopulateBrowserWithScannedProcedures()
 		{
-            AddProcedure(mi, new Address(0xC20, 0), "Test1");
-            AddProcedure(mi, new Address(0xC20, 2), "Test2");
-			form.SetCurrentPage(form.LoadedPage);
-			Assert.AreEqual(3, form.BrowserList.Items.Count);
+            AddProcedure(new Address(0xC20, 0x0000), "Test1");
+            AddProcedure(new Address(0xC20, 0x0002), "Test2");
+            interactor.EnterPage();
+            Assert.AreEqual(3, form.BrowserList.Items.Count);
 			Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
 		}
 
-        private void AddProcedure(TestMainFormInteractor mi, Address addr, string procName)
+        private void AddProcedure(Address addr, string procName)
         {
-            IDecompilerService svc = (IDecompilerService) mi.ProbeGetService(typeof(IDecompilerService));
-            Program prog = svc.Decompiler.Program;
-            svc.Decompiler.Program.Procedures.Add(addr, 
+            Program prog = decSvc.Decompiler.Program;
+            decSvc.Decompiler.Program.Procedures.Add(addr, 
                 new Procedure(procName, new Frame(prog.Architecture.WordWidth)));
         }
 
 		[Test]
 		public void MarkingProceduresShouldAddToUserProceduresList()
 		{
-            IDecompilerService svc = (IDecompilerService) mi.ProbeGetService(typeof(IDecompilerService));
-			Assert.AreEqual(0, svc.Decompiler.Project.UserProcedures.Count);
-            mi.MainForm.LoadedPage.MemoryControl.SelectedAddress = new Address(0x0C20, 0);
-			mi.LoadedPageInteractor.MarkAndScanProcedure();
-			Assert.AreEqual(1, svc.Decompiler.Project.UserProcedures.Count);
-			SerializedProcedure uproc = (SerializedProcedure) svc.Decompiler.Project.UserProcedures[0];
+			Assert.AreEqual(0, decSvc.Decompiler.Project.UserProcedures.Count);
+            form.LoadedPage.MemoryControl.SelectedAddress = new Address(0x0C20, 0);
+			interactor.MarkAndScanProcedure();
+			Assert.AreEqual(1, decSvc.Decompiler.Project.UserProcedures.Count);
+			SerializedProcedure uproc = (SerializedProcedure) decSvc.Decompiler.Project.UserProcedures[0];
 			Assert.AreEqual("0C20:0000", uproc.Address);
 		}
 
@@ -94,40 +117,20 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 		}
 
         [Test]
-        public void ExecuteEditFind()
+        public void ShowEditFindDialogButDontRunIt()
         {
-            TestLoadedPageInteractor i = new TestLoadedPageInteractor((LoadedPage)form.LoadedPage, mi, new DecompilerMenus(mi));
-            i.Execute(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
-            Assert.AreSame(typeof(FindDialog), i.ProbeLastDialogShown);
+            uiSvc.SimulateUserCancel = true;
+            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
+            Assert.AreSame(typeof(FindDialog), uiSvc.ProbeLastShownDialog.GetType());
         }
 
 		private MenuStatus QueryStatus(int cmdId)
 		{
 			CommandStatus status = new CommandStatus();
-			mi.LoadedPageInteractor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
+			interactor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
 			return status.Status;
 		}
 
-
-        private class TestLoadedPageInteractor : LoadedPageInteractor
-        {
-            private Type lastDialogType;
-
-            public TestLoadedPageInteractor(LoadedPage page, MainFormInteractor mainInteractor, DecompilerMenus menus)
-                : base(page, mainInteractor, menus)
-            {
-            }
-            public override DialogResult ShowModalDialog(Form dlg)
-            {
-                lastDialogType = dlg.GetType();
-                return DialogResult.OK;
-            }
-
-            public Type ProbeLastDialogShown
-            {
-                get { return lastDialogType; }
-            }
-        }
 
         private class TestLoader : LoaderBase
         {
@@ -138,10 +141,6 @@ namespace Decompiler.UnitTests.WindowsGui.Forms
 
             public override DecompilerProject Load(Address userSpecifiedAddress)
             {
-                Program.Architecture = new IntelArchitecture(ProcessorMode.Real);
-                Program.Image = new ProgramImage(new Address(0xC00, 0), new byte[10000]);
-                Program.Image.Map.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
-                Program.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
                 return new DecompilerProject();
 
             }
