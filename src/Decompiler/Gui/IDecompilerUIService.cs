@@ -32,5 +32,7 @@ namespace Decompiler.Gui
         DialogResult ShowModalDialog(Form dlg);
         string ShowOpenFileDialog(string fileName);
         string ShowSaveFileDialog(string fileName);
+
+        ContextMenu GetContextMenu(int p);
     }
 }

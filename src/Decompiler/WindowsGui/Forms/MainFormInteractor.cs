@@ -22,6 +22,7 @@ using Decompiler.Gui;
 using Decompiler.Loading;
 using Decompiler.WindowsGui.Controls;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -52,6 +53,7 @@ namespace Decompiler.WindowsGui.Forms
 		private MruList mru;
         private string projectFileName;
         private ServiceContainer sc;
+        private Dictionary<PhasePageInteractor, PhasePageInteractor> nextPage;
 
 		private static string dirSettings;
 		
@@ -62,13 +64,13 @@ namespace Decompiler.WindowsGui.Forms
 			mru = new MruList(MaxMruItems);
 			mru.Load(MruListFile);
             sc = new ServiceContainer();
+            nextPage = new Dictionary<PhasePageInteractor, PhasePageInteractor>();
 		}
 
 		private void AttachInteractors(DecompilerMenus dm)
 		{
-            //$REENABLE
             pageInitial = new InitialPageInteractor(form.StartPage);
-            pageLoaded = new LoadedPageInteractor(form.LoadedPage, this, dm);
+            pageLoaded = new LoadedPageInteractor(form.LoadedPage);
             pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage);
             pageFinal = new FinalPageInteractor(form.FinalPage, this);
 
@@ -77,9 +79,9 @@ namespace Decompiler.WindowsGui.Forms
             Add(pageAnalyzed);
             Add(pageFinal);
 
-            pageInitial.NextPage = pageLoaded;
-            pageLoaded.NextPage = pageAnalyzed;
-            pageAnalyzed.NextPage = pageFinal;
+            nextPage[pageInitial] = pageLoaded;
+            nextPage[pageLoaded] = pageAnalyzed;
+            nextPage[pageAnalyzed] = pageFinal;
 		}
 
 
@@ -96,7 +98,7 @@ namespace Decompiler.WindowsGui.Forms
 			form.Menu = dm.MainMenu;
             form.AddToolbar(dm.MainToolbar);
 
-            CreateServices();
+            CreateServices(dm);
             AttachInteractors(dm);
 			form.Closed += new System.EventHandler(this.MainForm_Closed);
 			form.ToolBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(toolBar_ItemClicked);
@@ -117,7 +119,7 @@ namespace Decompiler.WindowsGui.Forms
 			return new Program();
 		}
 
-        private void CreateServices()
+        private void CreateServices(DecompilerMenus dm)
         {
             FindResultsInteractor f = new FindResultsInteractor();
             f.Attach(form.FindResultsList);
@@ -130,7 +132,7 @@ namespace Decompiler.WindowsGui.Forms
             decompilerSvc = new DecompilerService();
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
-            uiSvc = new DecompilerUiService(this.form, form.OpenFileDialog, form.SaveFileDialog);
+            uiSvc = new DecompilerUiService(this.form, dm, form.OpenFileDialog, form.SaveFileDialog);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
             ProgramImageBrowserService pibSvc = new ProgramImageBrowserService(form.BrowserList);
@@ -236,9 +238,10 @@ namespace Decompiler.WindowsGui.Forms
 
 		public void NextPhase()
 		{
-			if (CurrentPage.NextPage != null)
+            PhasePageInteractor next;
+            if (nextPage.TryGetValue(CurrentPage, out next))
 			{
-				SwitchInteractor(CurrentPage.NextPage);
+                SwitchInteractor(next);
 			}
 		}
 

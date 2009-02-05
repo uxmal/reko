@@ -30,6 +30,11 @@ namespace Decompiler.UnitTests.Mocks
         private string lastFileName;
         private Form lastDialogShown;
 
+        public ContextMenu GetContextMenu(int menuId)
+        {
+            return new ContextMenu();
+        }
+
         public void ShowError(string format, params object[] args)
         {
             throw new Exception("The method or operation is not implemented.");
@@ -38,7 +43,9 @@ namespace Decompiler.UnitTests.Mocks
         public DialogResult ShowModalDialog(Form dlg)
         {
             lastDialogShown = dlg;
-            return DialogResult.OK;
+            return  simulateUserCancel
+                    ? DialogResult.Cancel
+                    : DialogResult.OK;
         }
 
         public string ShowOpenFileDialog(string fileName)
@@ -56,7 +63,7 @@ namespace Decompiler.UnitTests.Mocks
             throw new Exception("The method or operation is not implemented.");
         }
 
-        // Fake members
+        // Fake members ///////
 
         public string OpenFileResult
         {
