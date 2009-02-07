@@ -205,11 +205,11 @@ namespace Decompiler.UnitTests.Intel
 			throw new NotImplementedException();
 		}
 
-		public PseudoProcedure EnsurePseudoProcedure(string name, int args)
+		public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int args)
 		{
             if (prog == null)
 			    throw new NotImplementedException();
-            return prog.EnsurePseudoProcedure(name, args);
+            return prog.EnsurePseudoProcedure(name, returnType, args);
 		}
 
 		public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)

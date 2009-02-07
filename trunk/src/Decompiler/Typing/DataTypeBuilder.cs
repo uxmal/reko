@@ -64,7 +64,7 @@ namespace Decompiler.Typing
 			Unifier u = new DataTypeBuilderUnifier(factory, store);
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
-				DataType dt = tv.OriginalDataType;
+                DataType dt = tv.OriginalDataType;
 				EquivalenceClass c = tv.Class;
 				DataType dtOld = c.DataType;
 				if (dtOld != null)
@@ -185,7 +185,10 @@ namespace Decompiler.Typing
 
 		public override DataType UnifyTypeVariables(TypeVariable tA, TypeVariable tB)
 		{
-			return store.MergeClasses(tA, tB).Representative;
+            DataType dt = Unify(tA.Class.DataType, tB.Class.DataType);
+            EquivalenceClass eq = store.MergeClasses(tA, tB);
+            eq.DataType = dt;
+            return eq.Representative;
 		}
 	}
 }

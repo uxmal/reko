@@ -223,7 +223,16 @@ namespace Decompiler.Typing
 
 		public Expression TransformSegmentedAccess(SegmentedAccess access)
 		{
-			throw new NotImplementedException();
+            TypedMemoryExpressionRewriter r = new TypedMemoryExpressionRewriter(store, globals);
+            Expression e = r.Rewrite(access);
+            ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                dtResult,
+                e.DataType,
+                e.DataType,
+                basePointer,
+                e, null, 0);
+            ceb.Dereferenced = true;
+            return ceb.BuildComplex();
 		}
 
 		public Expression TransformScopeResolution(ScopeResolution scope)

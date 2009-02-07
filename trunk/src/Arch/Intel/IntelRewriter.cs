@@ -252,7 +252,7 @@ namespace Decompiler.Arch.Intel
 						WriteFpuStack(0);
 						break;
 					case Opcode.fclex:
-						emitter.SideEffect(host.EnsurePseudoProcedure("__fclex", 0));
+						emitter.SideEffect(host.EnsurePseudoProcedure("__fclex", PrimitiveType.Void, 0));
 						break;
 					case Opcode.fcom:
 						EmitFcom(0);
@@ -337,7 +337,7 @@ namespace Decompiler.Arch.Intel
 						break;
 					case Opcode.fldcw:
 						emitter.SideEffect(
-							host.EnsurePseudoProcedure("__fldcw", 1),
+							host.EnsurePseudoProcedure("__fldcw", PrimitiveType.Void, 1),
 							SrcOp(instrCur.op1));
 						break;
 					case Opcode.fstcw:
@@ -436,7 +436,7 @@ namespace Decompiler.Arch.Intel
 						break;
 					case Opcode.fxam:		//$TODO: need to make this an assignment to C0|C1|C2|C3 = __fxam();
 						// idiomatically followed by fstsw &c.
-						emitter.SideEffect(host.EnsurePseudoProcedure("__fxam", 0));
+						emitter.SideEffect(host.EnsurePseudoProcedure("__fxam", PrimitiveType.Byte, 0));
 						break;
 
 					case Opcode.fyl2x:			//$REVIEW: Candidate for idiom search.
@@ -658,7 +658,7 @@ namespace Decompiler.Arch.Intel
 
 					case Opcode.@out:
 						emitter.SideEffect(
-							host.EnsurePseudoProcedure("__out" + instrCur.op2.Width.Prefix, 2),
+							host.EnsurePseudoProcedure("__out" + instrCur.op2.Width.Prefix, PrimitiveType.Void, 2),
 							SrcOp(instrCur.op1),
 							SrcOp(instrCur.op2));
 						break;
@@ -1372,7 +1372,7 @@ namespace Decompiler.Arch.Intel
 			else
 			{
 				//$REVIEW: log a warning: unknown int instruction.
-				emitter.SideEffect(host.EnsurePseudoProcedure("__syscall", 1), SrcOp(instrCur.op1));
+				emitter.SideEffect(host.EnsurePseudoProcedure("__syscall", PrimitiveType.Void, 1), SrcOp(instrCur.op1));
 			}
 		}
 		
@@ -1383,7 +1383,7 @@ namespace Decompiler.Arch.Intel
 			AddressOperand addrOp = instrCur.op1 as AddressOperand;
 			if (addrOp != null && addrOp.addr.Linear == 0xFFFF0)
 			{
-				PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", 0);
+				PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", PrimitiveType.Void, 0);
 				reboot.Characteristics = new Decompiler.Core.Serialization.ProcedureCharacteristics();
 				reboot.Characteristics.Terminates = true;
 				emitter.SideEffect(reboot);

@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
 
@@ -30,12 +31,12 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ProgEnsurePseudoProc()
 		{
-			PseudoProcedure ppp = prog.EnsurePseudoProcedure("foo", 3);
+			PseudoProcedure ppp = prog.EnsurePseudoProcedure("foo", PrimitiveType.Void, 3);
 			Assert.IsNotNull(ppp);
 			Assert.AreEqual("foo", ppp.Name);
 			Assert.AreEqual(1, prog.PseudoProcedures.Count);
 
-			PseudoProcedure ppp2 = prog.EnsurePseudoProcedure("foo", 3);
+            PseudoProcedure ppp2 = prog.EnsurePseudoProcedure("foo", PrimitiveType.Void, 3);
 			Assert.IsNotNull(ppp2);
 			Assert.AreSame(ppp, ppp2);
 			Assert.AreEqual("foo", ppp.Name);

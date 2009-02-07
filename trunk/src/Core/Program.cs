@@ -91,12 +91,12 @@ namespace Decompiler.Core
 
 
 
-		public PseudoProcedure EnsurePseudoProcedure(string name, int arity)
+        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
 		{
             PseudoProcedure p;
             if (!pseudoProcs.TryGetValue(name, out p))
             {
-                p = new PseudoProcedure(name, arity);
+                p = new PseudoProcedure(name, returnType, arity);
 				pseudoProcs[name] = p;
 			}
 			return p;

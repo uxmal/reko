@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
 
 namespace Decompiler.Scanning
 {
@@ -101,9 +102,9 @@ namespace Decompiler.Scanning
 			}
 		}
 
-		public PseudoProcedure EnsurePseudoProcedure(string name, int arity)
+		public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
 		{
-			return prog.EnsurePseudoProcedure(name, arity);
+			return prog.EnsurePseudoProcedure(name, returnType, arity);
 		}
 
 		public Procedure [] GetProceduresFromVector(Address addr, int cbReturnAddress)

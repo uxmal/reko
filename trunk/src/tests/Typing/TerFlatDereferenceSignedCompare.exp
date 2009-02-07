@@ -12,7 +12,7 @@ l1:		// block 1, pred: 0
 Eq_2: (struct "Eq_2" (5400 bool f5400) (5404 (ptr Eq_6) ptr5404))
 	T_2 (in ds : word32)
 	T_3 (in ds2 : word32)
-Eq_6: (struct "Eq_6" (4 word16 w0004))
+Eq_6: (struct "Eq_6" (4 int16 w0004))
 	T_6 (in Mem0[ds + 0x00005404:word32] : word32)
 	T_18 (in Mem0[ds2 + 0x00005404:word32] : word32)
 // Type Variables ////////////
@@ -50,11 +50,11 @@ T_8: (in ds->ptr5404 + 0x00000004 : word32)
   OrigDataType: word32
 T_9: (in Mem0[ds->ptr5404 + 0x00000004:word16] : word16)
   Class: Eq_9
-  DataType: word16
+  DataType: int16
   OrigDataType: int16
 T_10: (in 0x0014 : word16)
   Class: Eq_9
-  DataType: word16
+  DataType: int16
   OrigDataType: int16
 T_11: (in ds->ptr5404->w0004 < 0x0014 : bool)
   Class: Eq_11
@@ -74,7 +74,7 @@ T_14: (in Mem0[ds + 0x00005400:bool] : bool)
   OrigDataType: bool
 T_15: (in 0x0000 : word16)
   Class: Eq_9
-  DataType: word16
+  DataType: int16
   OrigDataType: word16
 T_16: (in 0x00005404 : word32)
   Class: Eq_16
@@ -98,5 +98,5 @@ T_20: (in ds2->ptr5404 + 0x00000004 : word32)
   OrigDataType: word32
 T_21: (in Mem0[ds2->ptr5404 + 0x00000004:word16] : word16)
   Class: Eq_9
-  DataType: word16
+  DataType: int16
   OrigDataType: word16

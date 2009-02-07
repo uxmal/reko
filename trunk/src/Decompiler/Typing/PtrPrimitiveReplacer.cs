@@ -31,6 +31,7 @@ namespace Decompiler.Typing
 		private TypeFactory factory;
 		private TypeStore store; 
 		private bool changed;
+        private Dictionary<EquivalenceClass, EquivalenceClass> classesVisited;
 
 		public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store)
 		{
@@ -48,23 +49,23 @@ namespace Decompiler.Typing
 		public bool ReplaceAll()
 		{
 			changed = false;
-			Dictionary<EquivalenceClass,EquivalenceClass> classesInUse = new Dictionary<EquivalenceClass,EquivalenceClass>();
+			classesVisited  = new Dictionary<EquivalenceClass,EquivalenceClass>();
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
 				EquivalenceClass eq = tv.Class;
-				if (!classesInUse.ContainsKey(eq))
+				if (!classesVisited.ContainsKey(eq))
 				{
-					classesInUse.Add(eq, eq);
+					classesVisited.Add(eq, eq);
 					eq.DataType = Replace(eq.DataType);
 				}
 			}
 
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
-				tv.DataType = Replace(tv.DataType);
+                tv.DataType = Replace(tv.DataType);
 			}
 
-			foreach (EquivalenceClass eq in classesInUse.Values)
+			foreach (EquivalenceClass eq in classesVisited.Values)
 			{
 				if (eq.DataType is PrimitiveType ||
 					eq.DataType is EquivalenceClass)
@@ -94,35 +95,46 @@ namespace Decompiler.Typing
 
 		#region DataTypeTransformer methods //////////////////////////
 
-		public override DataType TransformEquivalenceClass(EquivalenceClass eq)
-		{
+        public override DataType TransformEquivalenceClass(EquivalenceClass eq)
+        {
+            if (!classesVisited.ContainsKey(eq))
+            {
+                classesVisited.Add(eq, eq);
+                if (eq.DataType != null)
+                {
+                    eq.DataType = eq.DataType.Accept(this);
+                }
+            }
+
             DataType dt = eq.DataType;
-			PrimitiveType pr = dt as PrimitiveType;
-			if (pr != null)
-			{
-				changed = true;
-				return pr;
-			}
-			Pointer ptr = dt as Pointer;
-			if (ptr != null)
-			{
-				changed = true;
-				return factory.CreatePointer(eq, ptr.Size);
-			}
-			MemberPointer mp = dt as MemberPointer;
-			if (mp != null)
-			{
-				changed = true;
-				return factory.CreateMemberPointer(mp.BasePointer, eq, mp.Size);
-			}
-			EquivalenceClass eq2 = dt as EquivalenceClass;
-			if (eq2 != null)
-			{
-				changed = true;
-				return eq2;
-			}
-			return eq;
-		}
+            PrimitiveType pr = dt as PrimitiveType;
+            if (pr != null)
+            {
+                changed = true;
+                return pr;
+            }
+            Pointer ptr = dt as Pointer;
+            if (ptr != null)
+            {
+                changed = true;
+                return factory.CreatePointer(eq, ptr.Size);
+            }
+            MemberPointer mp = dt as MemberPointer;
+            if (mp != null)
+            {
+                changed = true;
+                return factory.CreateMemberPointer(mp.BasePointer, eq, mp.Size);
+            }
+            EquivalenceClass eq2 = dt as EquivalenceClass;
+            if (eq2 != null)
+            {
+                changed = true;
+                return eq2;
+            }
+
+
+            return eq;
+        }
 
 		public override DataType TransformTypeVar(TypeVariable tv)
 		{

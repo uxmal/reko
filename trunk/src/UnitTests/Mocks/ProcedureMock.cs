@@ -283,7 +283,9 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Application Fn(string name, params Expression [] exps)
 		{
-			Application appl = new Application(new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure(name, 0)), PrimitiveType.Word32, exps);
+			Application appl = new Application(
+                new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure(name, PrimitiveType.Void, 0)),
+                PrimitiveType.Word32, exps);
 			unresolvedProcedures.Add(new ApplicationUpdater(name, appl));
 			return appl;
 		}
@@ -539,7 +541,7 @@ namespace Decompiler.UnitTests.Mocks
 			return Emit(s);
 		}
 
-        public Statement SegStoreW(Expression basePtr, BinaryExpression ea, Expression src)
+        public Statement SegStoreW(Expression basePtr, Expression ea, Expression src)
         {
             Store s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, PrimitiveType.Word16), src);
             return Emit(s);
