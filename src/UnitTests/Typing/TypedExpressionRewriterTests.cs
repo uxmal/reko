@@ -313,6 +313,18 @@ namespace Decompiler.UnitTests.Typing
             RunTest(pm, "Typing/TerOffsetInArrayLoop.txt");
         }
 
+        [Test]
+        public void TerSegmentedLoadLoad()
+        {
+            ProcedureMock m = new ProcedureMock();
+            Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
+            Identifier bx = m.Local(PrimitiveType.Word16, "bx");
+            m.SegStoreW(ds, m.Word16(0x300), m.SegMemW(ds, m.SegMemW(ds, bx)));
+
+            ProgramMock pm = new ProgramMock();
+            pm.Add(m);
+            RunTest(pm, "Typing/TerSegmentedLoadLoad.txt");
+        }
 
         //////////////////////////////////////////////////////////////////////////
 

@@ -204,7 +204,7 @@ namespace Decompiler.Analysis
 
 		public Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
 		{
-			Expression e = new Application(new ProcedureConstant(arch.PointerType, new PseudoProcedure("OVERFLOW", 1)),
+			Expression e = new Application(new ProcedureConstant(arch.PointerType, new PseudoProcedure("OVERFLOW", PrimitiveType.Bool, 1)),
 				PrimitiveType.Bool, bin);
 			if (isNegated)
 			{

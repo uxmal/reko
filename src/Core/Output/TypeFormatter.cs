@@ -128,7 +128,14 @@ namespace Decompiler.Core.Output
 
 		public void VisitEquivalenceClass(EquivalenceClass eq)
 		{
-			writer.Write(eq.DataType.Name);
+            if (eq.DataType == null)
+            {
+                writer.Write("ERROR: EQ_{0}.DataType is Null", eq.Number);      //$DEBUG
+            }
+            else
+            {
+                writer.Write(eq.DataType.Name);
+            }
             WriteName(true);
 		}
 

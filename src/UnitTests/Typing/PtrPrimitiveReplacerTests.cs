@@ -92,6 +92,17 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(mock.BuildProgram(), "Typing/PprMemberVars.txt");
 		}
 
+        [Test]
+        public void PprMemberPointers()
+        {
+            ProgramMock mock = new ProgramMock();
+            ProcedureMock m = new ProcedureMock();
+            Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
+            m.SegStoreW(ds, m.Word32(7000), m.SegMemW(ds, m.SegMemW(ds, m.Word32(0x5321))));
+            mock.Add(m);
+            RunTest(mock.BuildProgram(), "typing/PprMemberPointers.txt");
+        }
+
 		private void RunTest(Program prog, string outputFilename)
 		{
 			TypeFactory factory = new TypeFactory();

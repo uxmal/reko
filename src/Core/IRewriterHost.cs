@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Types;
 using System;
 
 namespace Decompiler.Core
@@ -24,7 +25,7 @@ namespace Decompiler.Core
 	{
 		void AddCallEdge(Procedure caller, Statement stm, Procedure callee);
 		ImageReader CreateImageReader(Address addr);
-		PseudoProcedure EnsurePseudoProcedure(string name, int arity);
+		PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
 		Procedure GetProcedureAtAddress(Address addr, int cbReturnAddress);
 		ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
 		Procedure [] GetProceduresFromVector(Address addrCallingInstruction, int cbReturnAddress);

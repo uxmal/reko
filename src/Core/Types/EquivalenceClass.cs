@@ -56,7 +56,7 @@ namespace Decompiler.Core.Types
 		public DataType DataType
 		{
 			get { return dataType; }
-			set { dataType = value; }
+            set { dataType = value; }
 		}
 
 		public override bool IsComplex

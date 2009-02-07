@@ -9,10 +9,10 @@ l1:		// block 1, pred: 0
 	// succ: 
 
 // Equivalence classes ////////////
-Eq_2: (segment "Eq_2" (5400 bool f5400) (5404 (memptr Eq_2 Eq_5) ptr5404))
+Eq_2: (segment "Eq_2" (5400 bool f5400) (5404 (memptr (ptr Eq_2) Eq_5) ptr5404))
 	T_2 (in ds : selector)
 	T_3 (in ds2 : selector)
-Eq_5: (struct "Eq_5" (4 word16 w0004))
+Eq_5: (struct "Eq_5" (4 int16 w0004))
 	T_5 (in Mem0[ds:0x5404:word16] : word16)
 	T_15 (in Mem0[ds2:0x5404:word16] : word16)
 // Type Variables ////////////
@@ -30,7 +30,7 @@ T_3: (in ds2 : selector)
   OrigDataType: (ptr (segment (5404 T_15 t5404)))
 T_4: (in 0x5404 : word16)
   Class: Eq_4
-  DataType: (memptr (ptr Eq_2) (memptr Eq_2 Eq_5))
+  DataType: (memptr (ptr Eq_2) (memptr (ptr Eq_2) Eq_5))
   OrigDataType: (memptr T_2 (struct (0 T_5 t0000)))
 T_5: (in Mem0[ds:0x5404:word16] : word16)
   Class: Eq_5
@@ -46,11 +46,11 @@ T_7: (in ds->ptr5404 + 0x0004 : word16)
   OrigDataType: word16
 T_8: (in Mem0[ds:ds->ptr5404 + 0x0004:word16] : word16)
   Class: Eq_8
-  DataType: word16
+  DataType: int16
   OrigDataType: int16
 T_9: (in 0x0014 : word16)
   Class: Eq_8
-  DataType: word16
+  DataType: int16
   OrigDataType: int16
 T_10: (in (ds->*ds->ptr5404).w0004 < 0x0014 : bool)
   Class: Eq_10
@@ -66,7 +66,7 @@ T_12: (in Mem0[ds:0x5400:bool] : bool)
   OrigDataType: bool
 T_13: (in 0x0000 : word16)
   Class: Eq_8
-  DataType: word16
+  DataType: int16
   OrigDataType: word16
 T_14: (in 0x5404 : word16)
   Class: Eq_14
@@ -86,5 +86,5 @@ T_17: (in ds2->ptr5404 + 0x0004 : word16)
   OrigDataType: word16
 T_18: (in Mem0[ds2:ds2->ptr5404 + 0x0004:word16] : word16)
   Class: Eq_8
-  DataType: word16
+  DataType: int16
   OrigDataType: word16

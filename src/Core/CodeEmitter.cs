@@ -85,7 +85,7 @@ namespace Decompiler.Core
         /// <returns></returns>
         public SideEffect SideEffect(string name, params Expression[] args)
 		{
-			PseudoProcedure ppp = host.EnsurePseudoProcedure(name, args.Length);
+			PseudoProcedure ppp = host.EnsurePseudoProcedure(name, PrimitiveType.Void, args.Length);
 			return SideEffect(ppp, args);
 		}
 
@@ -112,7 +112,7 @@ namespace Decompiler.Core
 
 		public Expression PseudoProc(string name, PrimitiveType retType, params Expression [] args)
 		{
-			PseudoProcedure ppp = host.EnsurePseudoProcedure(name, args.Length);
+			PseudoProcedure ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
 			return PseudoProc(ppp, retType, args);
 		}
 

@@ -20,6 +20,7 @@ using System;
 using System.IO;
 using Decompiler.Core;
 using Decompiler.Core.Output;
+using Decompiler.Core.Types;
 
 namespace Decompiler.Core
 {
@@ -30,10 +31,12 @@ namespace Decompiler.Core
 	public class PseudoProcedure : ProcedureBase
 	{
 		private int arity;
+        private DataType returnType;
 		private ProcedureSignature sig;
 
-		public PseudoProcedure(string name, int arity) : base(name)
+		public PseudoProcedure(string name, DataType returnType, int arity) : base(name)
 		{
+            this.returnType = returnType;
 			this.arity = arity;
 		}
 
@@ -46,6 +49,11 @@ namespace Decompiler.Core
 		{
 			get { return sig != null ? sig.FormalArguments.Length : arity; }
 		}
+
+        public DataType ReturnType
+        {
+            get { return returnType; }
+        }
 
 		public override ProcedureSignature Signature
 		{
@@ -63,7 +71,7 @@ namespace Decompiler.Core
 			}
 			else
 			{
-				return string.Format("{0}({1} args)", Name, arity);
+				return string.Format("{0} {1}({2} args)", ReturnType, Name, arity);
 			}
 		}
 
