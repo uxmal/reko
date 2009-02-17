@@ -350,7 +350,6 @@
     <Compile Include="Structure\ast\Dominators.cs" />
     <Compile Include="Structure\ast\Graphs.cs" />
     <Compile Include="Structure\ast\GraphsCodeGen.cs" />
-    <Compile Include="Structure\ast\GraphsDerSeq.cs" />
     <Compile Include="Structure\ast\GraphsDfs.cs" />
     <Compile Include="Structure\ast\GraphsPrint.cs" />
     <Compile Include="Structure\ast\Instruction.cs" />
@@ -631,13 +630,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Gui\decompiler-menus.xml" />
-    <Content Include="Structure\ast\Instruction.h" />
-    <Content Include="Structure\ast\Interval.h" />
-    <Content Include="Structure\ast\Options.h" />
-    <Content Include="Structure\ast\Source.h" />
-    <Content Include="Structure\ast\Stats.h" />
-    <Content Include="Structure\ast\StringFunctions.h" />
-    <Content Include="Structure\ast\TypeDefs.h" />
     <Content Include="WindowsGui\Forms\cmdids.xslt" />
     <Content Include="WindowsGui\Forms\decompiler-menus.xslt" />
   </ItemGroup>
