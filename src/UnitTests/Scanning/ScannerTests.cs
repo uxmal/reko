@@ -198,10 +198,9 @@ baz endp
 
 			scanner.ProcessQueues();
 
-			IEnumerator e = prog.Image.Map.GetItemEnumerator(prog.Image.BaseAddress);
-			while (e.MoveNext())
+			foreach (ImageMapItem item in prog.Image.Map.Items.Values)
 			{
-				ImageMapBlock b = ((DictionaryEntry) e.Current).Value as ImageMapBlock;
+                ImageMapBlock b = item as ImageMapBlock;
 				if (b != null)
 					Console.WriteLine("{0}, part of {1}", b, b.Procedure);
 			}
@@ -227,17 +226,9 @@ baz endp
 
 		private ImageMapBlock GetBlockAt(uint a)
 		{
-			return (ImageMapBlock) prog.Image.Map.FindItemExact(new Address(a));
-		}
-
-		private bool Contains(ICollection c, object o)
-		{
-			foreach (object q in c)
-			{
-				if (q == o)
-					return true;
-			}
-			return false;
+            ImageMapItem item;
+			prog.Image.Map.TryFindItemExact(new Address(a), out item);
+            return (ImageMapBlock) item;
 		}
 
 		[Test]

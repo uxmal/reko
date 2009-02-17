@@ -67,11 +67,10 @@ namespace Decompiler.UnitTests.Intel
 			sc.ProcessQueues();
 			Assert.AreEqual(4, pgm.Image.Map.Items.Count);
 			StringBuilder sb = new StringBuilder();
-			foreach (DictionaryEntry de in pgm.Image.Map.Items)
+			foreach (ImageMapItem item in pgm.Image.Map.Items.Values)
 			{
-				sb.Append(de.Value.ToString() + "\r\n");
+				sb.Append(item.ToString() + "\r\n");
 			}
-			Debug.WriteLine(sb.ToString());
 			Assert.AreEqual(
 				"ImageMapBlock: 0B96:0000, size: 0003\r\n" +
 				"ImageMapBlock: 0B96:0003, size: 0008\r\n" + 

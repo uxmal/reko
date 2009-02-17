@@ -114,31 +114,30 @@ namespace Decompiler.Scanning
 
 		public AddressRange GetSinglePredecessorAddressRange(Address addr)
 		{
-#if GOG
-			ImageMapBlock block = imageMap.FindItem(addr) as ImageMapBlock;
-			if (block == null) return null;
-			block = imageMap.FindItem(block.Address-1) as ImageMapBlock;
-			if (block == null) return null;
-			return new AddressRange(block.Address, block.Address + block.Size);
-#else
 			ImageMapBlock block = null;
 			foreach (Address addrPred in this.jumpGraph.Predecessors(addr))
 			{
 				if (block != null)
 					return null;
-				block = imageMap.FindItem(addrPred) as ImageMapBlock;
+                ImageMapItem item;
+				if (!imageMap.TryFindItem(addrPred, out item))
+                    return null;
+                block = item as ImageMapBlock;
 			}
 			if (block == null)
 				return null;
 			else
 				return new AddressRange(block.Address, block.Address + block.Size);
-#endif
 		}
 
 		public Address GetBlockStartAddress(Address addr)
 		{
-			ImageMapBlock block = imageMap.FindItem(addr) as ImageMapBlock;
-			if (block == null) return null;
+            ImageMapItem item;
+            if (!imageMap.TryFindItem(addr, out item))
+                return null;
+			ImageMapBlock block = item as ImageMapBlock;
+			if (block == null) 
+                return null;
 			return block.Address;
 		}
 

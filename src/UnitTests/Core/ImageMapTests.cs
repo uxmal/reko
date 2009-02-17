@@ -21,7 +21,7 @@ using Decompiler.Core;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Core
 {
@@ -47,17 +47,17 @@ namespace Decompiler.UnitTests.Core
 
 			// Verify
 
-			IDictionaryEnumerator e = (IDictionaryEnumerator) im.Segments.GetEnumerator();
+			IEnumerator<KeyValuePair<Address,ImageMapSegment>> e = im.Segments.GetEnumerator();
 			Assert.IsTrue(e.MoveNext());
-			ImageMapSegment seg = (ImageMapSegment) e.Value;
+			ImageMapSegment seg = e.Current.Value;
 			Assert.AreEqual(2, seg.Size);
 
 			Assert.IsTrue(e.MoveNext());
-			seg = (ImageMapSegment) e.Value;
+            seg = e.Current.Value;
 			Assert.AreEqual(1, seg.Size);
 			
 			Assert.IsTrue(e.MoveNext());
-			seg = (ImageMapSegment) e.Value;
+			seg = e.Current.Value;
 			Assert.AreEqual(1, seg.Size);
 
 			Assert.IsTrue(!e.MoveNext());
@@ -70,16 +70,16 @@ namespace Decompiler.UnitTests.Core
 			im.AddSegment(new Address(0x8000, 10), "", AccessMode.ReadWrite);
 		}
 
-		private ImageMapItem GetNextMapItem(IDictionaryEnumerator e)
+		private ImageMapItem GetNextMapItem(IEnumerator<KeyValuePair<Address, ImageMapItem>> e)
 		{
 			Assert.IsTrue(e.MoveNext());
-			return (ImageMapItem) e.Value;
+            return e.Current.Value;
 		}
 
-		private ImageMapSegment GetNextMapSegment(IDictionaryEnumerator e)
+		private ImageMapSegment GetNextMapSegment(IEnumerator<KeyValuePair<Address, ImageMapSegment>> e)
 		{
 			Assert.IsTrue(e.MoveNext());
-			return (ImageMapSegment) e.Value;
+            return e.Current.Value;
 		}
 
 		[Test]
@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Core
 
 			Assert.IsTrue(cItemsSplit == 3);
 
-			IDictionaryEnumerator e = im.Items.GetEnumerator();
+			IEnumerator<KeyValuePair<Address,ImageMapItem>> e = im.Items.GetEnumerator();
 			ImageMapItem mi = GetNextMapItem(e);
 			Assert.IsTrue(mi.Size == 30);
 			mi = GetNextMapItem(e);
@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Core
 		{
 			ImageMap map = new ImageMap(new Address(0x0B00, 0), 40000);
 			map.AddSegment(new Address(0xC00, 0), "0C00", AccessMode.ReadWrite);
-			IDictionaryEnumerator e = map.Segments.GetEnumerator();
+			IEnumerator<KeyValuePair<Address,ImageMapSegment>> e = map.Segments.GetEnumerator();
 			GetNextMapSegment(e);
 			ImageMapSegment s = GetNextMapSegment(e);
 			Assert.AreEqual("0C00", s.Name);

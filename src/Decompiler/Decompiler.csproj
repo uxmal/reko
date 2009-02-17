@@ -344,6 +344,24 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\StrengthReduction.cs" />
+    <Compile Include="Structure\ast\Analysis.cs" />
+    <Compile Include="Structure\ast\Ast.cs" />
+    <Compile Include="Structure\ast\CfgNode.cs" />
+    <Compile Include="Structure\ast\Dominators.cs" />
+    <Compile Include="Structure\ast\Graphs.cs" />
+    <Compile Include="Structure\ast\GraphsCodeGen.cs" />
+    <Compile Include="Structure\ast\GraphsDerSeq.cs" />
+    <Compile Include="Structure\ast\GraphsDfs.cs" />
+    <Compile Include="Structure\ast\GraphsPrint.cs" />
+    <Compile Include="Structure\ast\Instruction.cs" />
+    <Compile Include="Structure\ast\Interval.cs" />
+    <Compile Include="Structure\ast\MemAdvise.cs" />
+    <Compile Include="Structure\ast\NodeCodeGen.cs" />
+    <Compile Include="Structure\ast\Options.cs" />
+    <Compile Include="Structure\ast\Source.cs" />
+    <Compile Include="Structure\ast\Stats.cs" />
+    <Compile Include="Structure\ast\StringFunctions.cs" />
+    <Compile Include="Structure\ast\TypeDefs.cs" />
     <Compile Include="Structure\BlockLinearizer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -386,6 +404,7 @@
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Structure\StructureAnalysis2.cs" />
     <Compile Include="Structure\StructureBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -612,8 +631,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Gui\decompiler-menus.xml" />
+    <Content Include="Structure\ast\Instruction.h" />
+    <Content Include="Structure\ast\Interval.h" />
+    <Content Include="Structure\ast\Options.h" />
+    <Content Include="Structure\ast\Source.h" />
+    <Content Include="Structure\ast\Stats.h" />
+    <Content Include="Structure\ast\StringFunctions.h" />
+    <Content Include="Structure\ast\TypeDefs.h" />
     <Content Include="WindowsGui\Forms\cmdids.xslt" />
     <Content Include="WindowsGui\Forms\decompiler-menus.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Structure\ast\LICENSE.TERMS" />
+    <None Include="Structure\ast\Makefile" />
+    <None Include="Structure\ast\Makefile.bak" />
+    <None Include="Structure\ast\README" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Structure\ast\Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

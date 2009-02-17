@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Core
@@ -32,8 +32,8 @@ namespace Decompiler.Core
 	/// </summary>
 	public class ImageMap
 	{
-		private Map items;
-		private Map segments;
+		private Map<Address,ImageMapItem> items;
+        private Map<Address, ImageMapSegment> segments;
 
 		public event ItemSplitHandler ItemSplit;
 		public event ItemSplitHandler ItemCoincides;
@@ -41,47 +41,48 @@ namespace Decompiler.Core
 
 		public ImageMap(Address addrBase, int imageSize)
 		{
-			Init();
+            items = new Map<Address, ImageMapItem>(new ItemComparer());
+            segments = new Map<Address, ImageMapSegment>(new ItemComparer());
 			SetAddressSpan(addrBase, imageSize);
 		}
 
 		public ImageMapItem AddItem(Address addr, ImageMapItem itemNew)
 		{
 			itemNew.Address = addr;
-			ImageMapItem item = FindItem(addr);
-			if (item == null)
-			{
-				// Outside of range.
-				items.Add(itemNew.Address, itemNew);
-				return itemNew;
-			}
-			else
-			{
-				int delta = addr - item.Address;
-				Debug.Assert(delta >= 0);
-				if (delta > 0)
-				{
-					// Need to split the item.
+			ImageMapItem item;
+            if (!TryFindItem(addr, out item))
+            {
+                // Outside of range.
+                items.Add(itemNew.Address, itemNew);
+                return itemNew;
+            }
+            else
+            {
+                int delta = addr - item.Address;
+                Debug.Assert(delta >= 0);
+                if (delta > 0)
+                {
+                    // Need to split the item.
 
-					itemNew.Size = item.Size - delta;
-					item.Size = delta;
-					items.Add(itemNew.Address, itemNew);
+                    itemNew.Size = item.Size - delta;
+                    item.Size = delta;
+                    items.Add(itemNew.Address, itemNew);
 
-					OnSplitItem(item, itemNew);
-					return itemNew;
-				}
-				else
-				{
-					OnItemCoincides(item, itemNew);
-					return item;
-				}
-			}
+                    OnSplitItem(item, itemNew);
+                    return itemNew;
+                }
+                else
+                {
+                    OnItemCoincides(item, itemNew);
+                    return item;
+                }
+            }
 		}
 
 		public ImageMapSegment AddSegment(Address addr, string segmentName, AccessMode access)
 		{
-			ImageMapSegment seg = FindSegment(addr);
-			if (seg == null)
+			ImageMapSegment seg;
+            if (!TryFindSegment(addr, out seg))
 			{
 				ImageMapSegment segNew = new ImageMapSegment(segmentName, access);
 				segNew.Address = addr;
@@ -124,33 +125,14 @@ namespace Decompiler.Core
 			items.Add(addr, it);
 		}
 
-		public IDictionaryEnumerator LowerBound(Address addr)
+		public bool TryFindItem(Address addr, out ImageMapItem item)
 		{
-			int linAddr = addr.Linear;
-			IDictionaryEnumerator e = items.GetEnumerator();
-			IDictionaryEnumerator e2 = items.GetEnumerator();
-			while (e.MoveNext())
-			{
-				if (((Address) e).Linear > linAddr)
-					return e2;
-				e2.MoveNext();
-			}
-			return e;
+			return items.TryGetLowerBound(addr, out item);
 		}
 
-		public IEnumerator LowerBoundEnumerator(Address addr)
+		public bool TryFindItemExact(Address addr, out ImageMapItem item)
 		{
-			return items.GetBoundedEnumerator(addr);
-		}
-
-		public ImageMapItem FindItem(Address addr)
-		{
-			return (ImageMapItem) items.LowerBound(addr);
-		}
-
-		public ImageMapItem FindItemExact(Address addr)
-		{
-			return (ImageMapItem) items[addr];
+            return items.TryGetValue(addr, out item);
 		}
 		
 		/// <summary>
@@ -158,37 +140,21 @@ namespace Decompiler.Core
 		/// </summary>
 		/// <param name="addr"></param>
 		/// <returns></returns>
-		public ImageMapSegment FindSegment(Address addr)
+		public bool TryFindSegment(Address addr, out ImageMapSegment segment)
 		{
-			return (ImageMapSegment) segments.LowerBound(addr);
-		}
-
-		public IEnumerator GetItemEnumerator(Address addr)
-		{
-			return items.GetBoundedEnumerator(addr);
-		}
-
-		public IDictionaryEnumerator GetSegmentEnumerator(Address addr)
-		{
-			return segments.GetBoundedEnumerator(addr);
-		}
-
-		private void Init()
-		{
-			segments = new Map(new ItemComparer());
-			items = new Map(new ItemComparer());
+            return segments.TryGetLowerBound(addr, out segment);
 		}
 
 		public bool IsReadOnlyAddress(Address addr)
 		{
-			ImageMapSegment seg = FindSegment(addr);
-			return (seg != null && (seg.Access & AccessMode.Write) == 0);
+			ImageMapSegment seg;
+            return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Write) == 0);
 		}
 
 		public bool IsExecutableAddress(Address addr)
 		{
-			ImageMapSegment seg = FindSegment(addr);
-			return (seg != null && (seg.Access & AccessMode.Execute) != 0);
+			ImageMapSegment seg ;
+            return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Execute) != 0);
 		}
 
 		public Address MapLinearAddressToAddress(int linearAddress)
@@ -225,24 +191,23 @@ namespace Decompiler.Core
 			}
 		}
 
-		public Map Items
+		public Map<Address, ImageMapItem> Items
 		{
 			get { return items; }
 		}
-		
-		public Map Segments
+
+        public Map<Address, ImageMapSegment> Segments
 		{
 			get { return segments; }
 		}
 
 		// class ItemComparer //////////////////////////////////////////////////
 
-		private class ItemComparer : IComparer
+		private class ItemComparer : IComparer<Address>
 		{
-			public virtual int Compare(object a, object b)
+			public virtual int Compare(Address a, Address b)
 			{
-				int diff = ((Address)a) - ((Address)b);
-				return diff;
+                return a - b;
 			}
 		}
 	}

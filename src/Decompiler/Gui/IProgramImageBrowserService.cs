@@ -38,6 +38,6 @@ namespace Decompiler.Gui
 
         object SelectedItem { get; }
 
-        void Populate(ICollection items, ListViewItemDecoratorHandler handler);
+        void Populate(IEnumerable items, ListViewItemDecoratorHandler handler);
     }
 }

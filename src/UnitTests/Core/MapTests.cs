@@ -21,6 +21,7 @@ using Decompiler.Core.Lib;
 using System;
 using StringBuilder = System.Text.StringBuilder;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Core
 {
@@ -32,48 +33,37 @@ namespace Decompiler.UnitTests.Core
 
 		}
 
-		public void RunTests()
-		{
-			CreationTest();
-			AddOne();
-			AddOneDeleteOne();
-			AddThreeDeleteOne();
-			AddMany();
-			DeleteTest();
-			CopyToTest();
-		}
-
 		[Test]
 		public void CreationTest()
 		{
-			Map t = new Map();
+			Map<int,string> t = new Map<int,string>();
 			Assert.IsTrue(t.Count == 0);
-			Assert.IsTrue("" == Dump(t));
+			Assert.AreEqual("", Dump(t));
 		}
 
 		[Test]
 		public void AddOne()
 		{
-			Map t = new Map();
+			Map<int,string> t = new Map<int,string>();
 			t.Add(1, "one");
 			Assert.IsTrue("one " == Dump(t));
-			Assert.IsTrue(t.Count == 1);
+			Assert.AreEqual(1, t.Count);
 		}
 
 		[Test]
 		public void AddOneDeleteOne()
 		{
-			Map t = new Map();
+			Map<int,string> t = new Map<int,string>();
 			t.Add(1, "one");
 			t.Remove(1);
-			Assert.IsTrue("" == Dump(t));
+			Assert.AreEqual("" ,Dump(t));
 			Assert.IsTrue(t.Count == 0);
 		}
 
 		[Test]
 		public void AddMany()
 		{
-			Map t = new Map();
+			Map<int,string> t = new Map<int,string>();
 			for (int i = 100; i >= 0; --i)
 			{
 				t.Add(i, i.ToString());
@@ -92,7 +82,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void DeleteTest()
 		{
-			Map t = new Map();
+			Map<int,string> t = new Map<int,string>();
 			t.Add(0, "0");
 			t.Add(10, "10");
 			t.Add(-10, "-10");
@@ -106,7 +96,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void AddThreeDeleteOne()
 		{
-			Map t = new Map();
+			Map<int,string> t = new Map<int,string>();
 			t.Add(1, "one");
 			t.Add(2, "two");
 			t.Add(3, "three");
@@ -120,46 +110,56 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CopyToTest()
 		{
-			Map t = new Map();
-			t.Add(3, 3);
-			t.Add(2, 2);
-			t.Add(4, 4);
-			DictionaryEntry [] a = new DictionaryEntry[3];
-			t.CopyTo(a, 0);
-			Assert.IsTrue((int)a[0].Key == 2);
-			Assert.IsTrue((int)a[1].Key == 3);
-			Assert.IsTrue((int)a[2].Key == 4);
+			Map<int,string> t = new Map<int,string>();
+			t.Add(3, "3");
+			t.Add(2, "2");
+			t.Add(4, "4");
+			int [] a = new int[3];
+			t.Keys.CopyTo(a, 0);
+			Assert.AreEqual(2, a[0]);
+            Assert.AreEqual(3, a[1]);
+            Assert.AreEqual(4, a[2]);
 		}
 
 		[Test]
 		public void LowerBoundTest()
 		{
-			Map m = new Map();
-			m.Add(100, 100);
-			m.Add(0, 0);
-			m.Add(70, 70);
-			m.Add(150, 150);
+			Map<int,string> m = new Map<int,string>();
+			m.Add(100, "100");
+			m.Add(0, "0");
+			m.Add(70, "70");
+			m.Add(150, "150");
 
-			Assert.IsTrue((int) m.LowerBound(100) == 100);
-			Assert.IsTrue((int) m.LowerBound(0) == 0);
-			Assert.IsTrue((int) m.LowerBound(70) == 70);
-			Assert.IsTrue((int) m.LowerBound(150) == 150);
+            string s;
+			Assert.IsTrue(m.TryGetLowerBound(100, out s));
+			Assert.AreEqual("100", s);
+			Assert.IsTrue(m.TryGetLowerBound(0, out s));
+			Assert.AreEqual("0", s);
+			Assert.IsTrue(m.TryGetLowerBound(70, out s));
+			Assert.AreEqual("70", s);
+			Assert.IsTrue(m.TryGetLowerBound(150, out s));
+			Assert.AreEqual("150", s);
 
-			Assert.IsTrue(m.LowerBound(-1) == null);
-			Assert.IsTrue((int) m.LowerBound(1) == 0);
-			Assert.IsTrue((int) m.LowerBound(69) == 0);
-			Assert.IsTrue((int) m.LowerBound(75) == 70);
-			Assert.IsTrue((int) m.LowerBound(102) == 100);
-			Assert.IsTrue((int) m.LowerBound(200) == 150);
+			Assert.IsFalse(m.TryGetLowerBound(-1, out s));
+			Assert.IsTrue(m.TryGetLowerBound(1, out s));
+			Assert.AreEqual("0", s);
+			Assert.IsTrue(m.TryGetLowerBound(69, out s));
+			Assert.AreEqual("0", s);
+			Assert.IsTrue(m.TryGetLowerBound(75, out s));
+			Assert.AreEqual("70", s);
+			Assert.IsTrue(m.TryGetLowerBound(102, out s));
+			Assert.AreEqual("100", s);
+			Assert.IsTrue(m.TryGetLowerBound(200, out s));
+			Assert.AreEqual("150", s);
 
 		}
 
-		private string Dump(Map t)
+		private string Dump(Map<int,string> t)
 		{
 			StringBuilder sb = new StringBuilder();
-			foreach (DictionaryEntry de in t)
+			foreach (KeyValuePair<int,string> de in t)
 			{
-				sb.Append(de.Value.ToString());
+				sb.Append(de.Value);
 				sb.Append(" ");
 			}
 			return sb.ToString();

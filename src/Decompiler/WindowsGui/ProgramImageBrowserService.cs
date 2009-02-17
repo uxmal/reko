@@ -56,7 +56,7 @@ namespace Decompiler.WindowsGui
             get { return list.SelectedItems.Count > 0; }
         }
 
-        public void Populate(ICollection items, ListViewItemDecoratorHandler handler)
+        public void Populate(IEnumerable items, ListViewItemDecoratorHandler handler)
         {
             list.Items.Clear();
             ListViewItemWrapper wli = new ListViewItemWrapper();
