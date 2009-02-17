@@ -23,6 +23,9 @@ using System.ComponentModel;
 
 namespace Decompiler.Core
 {
+    /// <summary>
+    /// Abstract base class for all procedurally called objects.
+    /// </summary>
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase
 	{

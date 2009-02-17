@@ -78,10 +78,10 @@ namespace Decompiler.Scanning
 
 			// Locate the image map block corresponding to the address.
 
-			ImageMapItem item = host.Image.Map.FindItemExact(addr);
-			ImageMapBlock raw = item as ImageMapBlock;
-			if (raw != null)
-			{
+            ImageMapItem item;
+            if (host.Image.Map.TryFindItemExact(addr, out item))
+            {
+                ImageMapBlock raw = (ImageMapBlock) item;
 				// Create a new block in the procedure.
 
 				block = new Block(proc, addr);

@@ -44,7 +44,7 @@ namespace Decompiler.Scanning
 		private DecompilerHost host;
 		private ImageMapBlock blockCur;
 		private Dictionary<ImageMapBlock,ImageMapBlock> blocksVisited;
-		private Map vectorUses;
+		private Map<Address,VectorUse> vectorUses;
 		private SortedList<Address,SystemService> syscalls;
 		private WorkItem wiCur;
 		private DirectedGraph<object> jumpGraph;    //$TODO: what is the right type? This is a bipartite graph with statements and procedures.
@@ -64,7 +64,7 @@ namespace Decompiler.Scanning
 			this.program = program;
 			this.map = program.Image.Map;
 			this.host = host;
-			this.vectorUses = new Map();
+			this.vectorUses = new Map<Address,VectorUse>();
             this.syscalls = new SortedList<Address, SystemService>();
 			qStarts = new Queue<WorkItem>();
 			qProcs = new Queue<WorkItem>();
@@ -367,13 +367,8 @@ namespace Decompiler.Scanning
 				Warn(wi.Address, "Attempted decompilation at invalid address.");
 				return;
 			}
-			blockCur = map.FindItem(wi.Address) as ImageMapBlock;
-			if (blockCur == null)
-			{
-				blockCur = new ImageMapBlock();
-				map.AddItem(wi.Address, blockCur);
-			}
 
+            blockCur = SetCurrentBlock(wi.Address);
 			if (!blocksVisited.ContainsKey(blockCur))
 			{
 				blocksVisited.Add(blockCur,blockCur);
@@ -387,16 +382,37 @@ namespace Decompiler.Scanning
 			}
 		}
 
+        private ImageMapBlock SetCurrentBlock(Address addr)
+        {
+            ImageMapBlock b;
+            ImageMapItem item;
+            if (map.TryFindItem(addr, out item))
+            {
+                b = item as ImageMapBlock;
+                if (b != null)
+                    return b;
+            }
+             
+            b = new ImageMapBlock();
+            map.AddItem(addr, b);
+            return b;
+        }
+
 		private void ParseProcedure(WorkItem wi)
 		{
-			ImageMapBlock bl = map.FindItemExact(wi.Address) as ImageMapBlock;
-			if (bl != null)
-			{
-				// We've already parsed this code, so it must be part of another procedure.
-				if (blocksVisited.ContainsKey(bl))
-					bl.Procedure = null;				// means that this is a block that is jumped into.
-			}
-			Procedure proc = (Procedure) program.Procedures[wi.Address];
+            //$TODO: make Item part of the workItem!
+            ImageMapItem item;
+            if (map.TryFindItemExact(wi.Address, out item))
+            {
+                ImageMapBlock bl = item as ImageMapBlock;
+                if (bl != null)
+                {
+                    // We've already parsed this code, so it must be part of another procedure.
+                    if (blocksVisited.ContainsKey(bl))
+                        bl.Procedure = null;				// means that this is a block that is jumped into.
+                }
+            }
+			Procedure proc = program.Procedures[wi.Address];
 			EnqueueJumpTarget(wi.Address, wi.state, proc);
 		}
 
@@ -406,7 +422,10 @@ namespace Decompiler.Scanning
 
 		private void ProcessVector(VectorWorkItem wi)
 		{
-			ImageMapVectorTable item = map.FindItem(wi.Address) as ImageMapVectorTable;
+            //$TODO: pass imagemapvectortable in workitem.
+			ImageMapItem q;
+            map.TryFindItem(wi.Address, out q);
+            ImageMapVectorTable item = (ImageMapVectorTable) q;
 			VectorBuilder builder = new VectorBuilder(program, map, jumpGraph);
 			Address [] vector = builder.Build(wi.Address, wi.addrFrom, wi.segBase, wi.stride);
 			if (vector == null)
@@ -497,7 +516,7 @@ namespace Decompiler.Scanning
 			get { return syscalls; }
 		}
 
-		public Map VectorUses
+		public Map<Address,VectorUse> VectorUses
 		{
 			get { return vectorUses; }
 		}

@@ -84,13 +84,8 @@ namespace Decompiler.WindowsGui.Controls
 		private ImageMapSegment [] ExtractSegments()
 		{
 			ImageMapSegment [] segs = new ImageMapSegment[map.Segments.Count];
-			int i = 0;
-			foreach (DictionaryEntry de in map.Segments)
-			{
-				segs[i] = (ImageMapSegment) de.Value;
-				++i;
-			}
-			return segs;
+            map.Segments.Values.CopyTo(segs, 0);
+            return segs;
 		}
 
 		private int ImageSize(ImageMapSegment [] segs)

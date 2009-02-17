@@ -39,13 +39,10 @@ namespace Decompiler.Core
 		private Block blockExit;
 		private Frame frame;
 		private ProcedureSignature signature;
+        private bool userSpecified;
+
 
 		public Procedure(string name, Frame frame) : base(name)
-		{
-			Init(frame);
-		}
-		
-		private void Init(Frame frame)
 		{
 			this.rpoBlocks = new List<Block>();
 			this.frame = frame;
@@ -106,7 +103,6 @@ namespace Decompiler.Core
 		public Block EntryBlock
 		{
 			get { return blockEntry; }
-			set { blockEntry = value; }
 		}
 
 		public Block ExitBlock
@@ -114,16 +110,16 @@ namespace Decompiler.Core
 			get { return blockExit; }
 		}
 
-		public void Write(bool emitFrame, TextWriter tw)
+		public void Write(bool emitFrame, TextWriter writer)
 		{
-			tw.WriteLine("// {0}", Name);
+			writer.WriteLine("// {0}", Name);
 			if (emitFrame)
-				frame.Write(tw);
-            Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(tw));
-			tw.WriteLine();
+				frame.Write(writer);
+            Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(writer));
+			writer.WriteLine();
 			foreach (Block block in RpoBlocks)
 			{
-				if (block != null) block.Write(tw);
+				if (block != null) block.Write(writer);
 			}
 		}
 
@@ -138,6 +134,9 @@ namespace Decompiler.Core
 			rpoBlocks = br.Renumber(blockEntry);
 		}
 
+        /// <summary>
+        /// Returns a list of the blocks of this procedure in reverse post order.
+        /// </summary>
 		public List<Block> RpoBlocks
 		{
 			get { return rpoBlocks; }
@@ -157,7 +156,19 @@ namespace Decompiler.Core
 			return Name;
 		}
 
+        /// <summary>
+        /// True if the user specified this procedure by adding it to the project
+        /// file or by marking it in the user interface.
+        /// </summary>
+        public bool UserSpecified
+        {
+            get { return userSpecified; }
+            set { userSpecified = value; }
+        }
 
+        /// <summary>
+        /// Auxiliary class used to renumber the blocks in RPO (reverse post order).
+        /// </summary>
 		private class BlockRenumbering
 		{
 			private List<Block> rpoBlocks;

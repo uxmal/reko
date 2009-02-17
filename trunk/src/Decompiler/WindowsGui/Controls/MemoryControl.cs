@@ -19,7 +19,7 @@
 using Decompiler;
 using Decompiler.Core;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -260,8 +260,8 @@ namespace Decompiler.WindowsGui.Controls
 				Address addr = rdr.Address;
 				int linear = addr.Linear;
 
-				ImageMapItem item = ProgramImage.Map.FindItem(addr);
-				if (item == null)
+				ImageMapItem item;
+                if (!ProgramImage.Map.TryFindItem(addr, out item))
 					break;
 				int cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
 				int cbToDraw = 16; // item.Size - cbIn;
@@ -275,7 +275,7 @@ namespace Decompiler.WindowsGui.Controls
 				for (int i = 0; i < cbToDraw; ++i)
 				{
 					Address addrByte = rdr.Address;
-					item = ProgramImage.Map.FindItem(addrByte);
+					ProgramImage.Map.TryFindItem(addrByte, out item);
 					bool isSelected = addrByte.Linear == linearSelected;
 					Brush fg = GetForegroundBrush(item, isSelected);
 					Brush bg = GetBackgroundBrush(item, isSelected);
@@ -325,17 +325,15 @@ namespace Decompiler.WindowsGui.Controls
 			rc.Height = cell.Height;
 
 			int laEnd = image.BaseAddress.Linear + image.Bytes.Length;
-			
-			IDictionaryEnumerator segs = ProgramImage.Map.GetSegmentEnumerator(addrTopVisible);
-			ImageMapSegment seg = null;
+
 			int laSegEnd = 0;
 			while (rc.Top < this.Height && rdr.Address.Linear < laEnd)
 			{
-				if (rdr.Address.Linear >= laSegEnd)
+                ImageMapSegment seg;
+                if (!ProgramImage.Map.TryFindSegment(addrTopVisible, out seg))
+                    return null;
+                if (rdr.Address.Linear >= laSegEnd)
 				{
-					if (!segs.MoveNext())
-						return null;
-					seg = (ImageMapSegment) segs.Value;
 					laSegEnd = seg.Address.Linear + seg.Size;
 					rdr = image.CreateReader(seg.Address + (rdr.Address - seg.Address));
 				}

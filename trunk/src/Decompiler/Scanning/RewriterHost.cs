@@ -34,14 +34,14 @@ namespace Decompiler.Scanning
 	{
 		private Program prog;
 		private DecompilerHost host;
-		private Map vectorUses;
+		private Map<Address,VectorUse> vectorUses;
 		private Dictionary<Procedure, Procedure> proceduresRewritten;
         private SortedList<Address, SystemService> syscalls;
 		private CallRewriter crw;
 		private Dictionary<Address,ProcedureSignature> callSignatures;
 		private ProcedureRewriter prw;
 
-		public RewriterHost(Program prog, DecompilerHost host, SortedList<Address,SystemService> syscalls, Map vectorUses)
+		public RewriterHost(Program prog, DecompilerHost host, SortedList<Address,SystemService> syscalls, Map<Address,VectorUse> vectorUses)
 		{
 			this.prog = prog;
             this.proceduresRewritten = new Dictionary<Procedure, Procedure>();
@@ -109,14 +109,18 @@ namespace Decompiler.Scanning
 
 		public Procedure [] GetProceduresFromVector(Address addr, int cbReturnAddress)
 		{
-			VectorUse vu = (VectorUse) vectorUses[addr];
-			if (vu == null)
-				return new Procedure[0];
-			ImageMapVectorTable vector = (ImageMapVectorTable) Image.Map.FindItemExact(vu.TableAddress);
+			VectorUse vu;
+            if (!vectorUses.TryGetValue(addr, out vu))
+            {
+                return new Procedure[0];
+            }
+            ImageMapItem item;
+            Image.Map.TryFindItemExact(vu.TableAddress, out item);
+            ImageMapVectorTable vector = (ImageMapVectorTable) item;
 			Procedure [] procs = new Procedure[vector.Addresses.Count];
 			for (int i = 0; i < vector.Addresses.Count; ++i)
 			{
-				procs[i] = GetProcedureAtAddress((Address) vector.Addresses[i], cbReturnAddress);
+				procs[i] = GetProcedureAtAddress(vector.Addresses[i], cbReturnAddress);
 			}
 			return procs;
 		}

@@ -58,6 +58,19 @@ namespace Decompiler.Typing
 					return null;
 			}
 		}
+
+        //$REVIEW: special cased code; we need to handle segments appropriately and remove this function.
+        private bool IsSegmentPointer(Pointer ptr)
+        {
+            EquivalenceClass eq = ptr.Pointee as EquivalenceClass;
+            if (eq == null)
+                return false;
+            StructureType str = eq.DataType as StructureType;
+            if (str == null)
+                return false;
+            return str.IsSegment;
+        }
+
 		public Expression Rewrite(Constant c, bool dereferenced)
 		{
 			this.c = c;
@@ -119,7 +132,11 @@ namespace Decompiler.Typing
 		public void VisitPointer(Pointer ptr)
 		{
 			Expression e = c;
-            if (GlobalVars != null)
+            if (IsSegmentPointer(ptr))
+            {
+                Return(e);
+            } 
+            else if (GlobalVars != null)
             {
                 StructureField f = GlobalVars.Fields.AtOffset(c.ToInt32());
                 if (f == null)

@@ -1411,9 +1411,10 @@ namespace Decompiler.Arch.Intel
 			VectorUse vu = host.VectorUseAt(addrInstr);
 			if (vu != null && vu.IndexRegister != null)
 			{
-				ImageMapVectorTable table = (ImageMapVectorTable) host.Image.Map.FindItemExact(vu.TableAddress);
-				if (table != null)
-				{
+                ImageMapItem t;
+                if (host.Image.Map.TryFindItemExact(vu.TableAddress, out t))
+                {
+                    ImageMapVectorTable table = (ImageMapVectorTable) t;
 					EmitSwitch(vu.IndexRegister, table);
 					return;
 				}

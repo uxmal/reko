@@ -400,8 +400,8 @@ namespace Decompiler.UnitTests.Typing
             handler.Traits.Write(sb);
             string sExp =
                 "T_1 (in ds : selector)" + nl +
-                "	trait_primitive(selector)" + nl +
-                "   trait_mem_array(300, 8, 0, T_7)" + nl + 
+                "\ttrait_primitive(selector)" + nl +
+                "\ttrait_mem_array(300, 8, 0, T_7)" + nl + 
                 "T_2 (in 0x0300 : word16)" + nl +
                 "	trait_primitive(word16)" + nl +
                 "T_3 (in SEQ(ds, 0x0300) : ptr32)" + nl +

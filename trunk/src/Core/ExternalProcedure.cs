@@ -23,6 +23,10 @@ using System.IO;
 
 namespace Decompiler.Core
 {
+    /// <summary>
+    /// Models a procedure in an API, whose signature is known, but whose code is 
+    /// irrelevant to the decompilation.
+    /// </summary>
 	public class ExternalProcedure : ProcedureBase
 	{
 		private ProcedureSignature signature;
