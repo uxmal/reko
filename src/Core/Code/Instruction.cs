@@ -79,11 +79,17 @@ namespace Decompiler.Core.Code
 	
 	public class ReturnInstruction : Instruction
 	{
-		public Expression Value;
+        public Expression expr;
+
+        public Expression Expression
+        {
+            get { return expr; }
+            set { expr = value; }
+        }
 
 		public ReturnInstruction(Expression v)
 		{
-			Value = v;
+			expr = v;
 		}
 
 		public override Instruction Accept(InstructionTransformer xform)

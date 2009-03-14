@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using Application = Decompiler.Core.Code.Application;
 using Assignment = Decompiler.Core.Code.Assignment;
 using BitSet = Decompiler.Core.Lib.BitSet;
@@ -24,7 +25,6 @@ using Block = Decompiler.Core.Block;
 using CallInstruction = Decompiler.Core.Code.CallInstruction;
 using CallRewriter = Decompiler.Core.CallRewriter;
 using CallSite = Decompiler.Core.Code.CallSite;
-using DictionaryEntry = System.Collections.DictionaryEntry;
 using DominatorGraph = Decompiler.Core.DominatorGraph;
 using Debug = System.Diagnostics.Debug;
 using Expression = Decompiler.Core.Code.Expression;
@@ -42,7 +42,6 @@ using ProcedureSignature = Decompiler.Core.ProcedureSignature;
 using Program = Decompiler.Core.Program;
 using RegisterStorage = Decompiler.Core.RegisterStorage;
 using ReturnInstruction = Decompiler.Core.Code.ReturnInstruction;
-using SortedList = System.Collections.SortedList;
 using SignatureBuilder = Decompiler.Core.SignatureBuilder;
 using StackArgumentStorage= Decompiler.Core.StackArgumentStorage;
 using Statement = Decompiler.Core.Statement;
@@ -153,7 +152,7 @@ namespace Decompiler.Analysis
 					ReturnInstruction ret = i.Instruction as ReturnInstruction;
 					if (ret != null)
 					{
-						ret.Value = idRet;
+						ret.Expression = idRet;
 					}
 				}
 			}
@@ -185,14 +184,14 @@ namespace Decompiler.Analysis
 				}
 			}
 
-			foreach (DictionaryEntry de in GetSortedStackArguments(proc.Frame))
+			foreach (KeyValuePair<int,Identifier> de in GetSortedStackArguments(proc.Frame))
 			{
-				AddStackArgument((int) de.Key, (Identifier) de.Value, flow, sb);
+				AddStackArgument(de.Key, de.Value, flow, sb);
 			}
 
-			foreach (DictionaryEntry de in GetSortedFpuStackArguments(proc.Frame, 0))
+            foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, 0))
 			{
-				sb.AddFpuStackArgument((int) de.Key, (Identifier) de.Value);
+				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
 			BitSet liveOut = flow.LiveOut - prog.Architecture.ImplicitParameterRegisters;
@@ -203,13 +202,13 @@ namespace Decompiler.Analysis
 					sb.AddArgument(frame.EnsureRegister(prog.Architecture.GetRegister(r)), true);
 				}
 			}
-			
-			foreach (DictionaryEntry de in GetSortedFpuStackArguments(proc.Frame, -proc.Signature.FpuStackDelta))
+
+            foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, -proc.Signature.FpuStackDelta))
 			{
-				int i = (int) de.Key;
+				int i = de.Key;
 				if (i <= proc.Signature.FpuStackOutParameterMax)
 				{
-					sb.AddArgument(frame.EnsureFpuStackVariable(i, ((Identifier) de.Value).DataType), true);
+					sb.AddArgument(frame.EnsureFpuStackVariable(i, de.Value.DataType), true);
 				}
 			}
 
@@ -218,9 +217,9 @@ namespace Decompiler.Analysis
 		}
 
 
-		public SortedList GetSortedArguments(Frame f, Type type, int startOffset)
+		public SortedList<int, Identifier> GetSortedArguments(Frame f, Type type, int startOffset)
 		{
-			SortedList arguments = new SortedList();
+			SortedList<int, Identifier> arguments = new SortedList<int,Identifier>();
 			foreach (Identifier id in f.Identifiers)
 			{
 				if (id.Storage.GetType() == type)
@@ -241,12 +240,12 @@ namespace Decompiler.Analysis
 		/// Returns a list of all stack arguments accessed, indexed by their offsets
 		/// as seen by a caller. I.e. the first argument is at offset 0, &c.
 		/// </summary>
-		public SortedList GetSortedStackArguments(Frame frame)
+        public SortedList<int, Identifier> GetSortedStackArguments(Frame frame)
 		{
 			return GetSortedArguments(frame, typeof (StackArgumentStorage), 0);
 		}
 
-		public SortedList GetSortedFpuStackArguments(Frame frame, int d)
+        public SortedList<int, Identifier> GetSortedFpuStackArguments(Frame frame, int d)
 		{
 			return GetSortedArguments(frame, typeof (FpuStackStorage), d);
 		}

@@ -19,35 +19,49 @@
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
 	/// <summary>
 	/// Maps program image addresses to relocated values (with correct primitive types).
 	/// </summary>
-	public class RelocationDictionary : DictionaryBase
-	{
-		public Constant this[int imageOffset]
-		{
-			get { return (Constant) InnerHashtable[imageOffset]; }
-		}
+	public class RelocationDictionary 
+    {
+        private Dictionary<int, Constant> map = new Dictionary<int, Constant>();
+
+        public Constant this[int imageOffset]
+        {
+            get
+            {
+                Constant c;
+                if (map.TryGetValue(imageOffset, out c))
+                    return c;
+                else
+                    return null;
+            }
+        }
 
 		public void AddPointerReference(int imageOffset, uint pointer)
 		{
 			Constant c = new Constant(PrimitiveType.Pointer32, pointer);
-			InnerHashtable.Add(imageOffset, c);
+			map.Add(imageOffset, c);
 		}
 
 		public void AddSegmentReference(int imageOffset, ushort segmentSelector)
 		{
 			Constant c = new Constant(PrimitiveType.SegmentSelector, segmentSelector);
-			InnerHashtable.Add(imageOffset, c);
+			map.Add(imageOffset, c);
 		}
 
 		public bool Contains(int imageOffset)
 		{
-			return InnerHashtable.Contains(imageOffset);
+			return map.ContainsKey(imageOffset);
 		}
+
+        public int Count
+        {
+            get { return map.Count; }
+        }
 	}
 }

@@ -16,8 +16,9 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Lib;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -33,12 +34,12 @@ namespace Decompiler.WindowsGui.Controls
 	{
 		public event EventHandler IsDirtyChanged;
 
-		private Hashtable trackedControls; 
+		private HashSet<object> trackedControls; 
 		private bool isDirty;
 
 		public DirtyManager()
 		{
-			trackedControls = new Hashtable();
+			trackedControls = new HashSet<object>();
 		}
 
 		[DefaultValue(false)]
@@ -73,7 +74,7 @@ namespace Decompiler.WindowsGui.Controls
 				{
 					TextBox t = ((TextBox)extendee);
 					t.TextChanged += new EventHandler(textBox_TextChanged);
-					trackedControls[extendee] = extendee;
+                    trackedControls.Add(extendee);
 				}
 			}
 			else 

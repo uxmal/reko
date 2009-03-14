@@ -103,8 +103,7 @@ namespace Decompiler.Analysis
 			set { grf = value; }
 		}
 
-		//$REFACTOR: rename to LiveStorages.
-		public Dictionary<Storage,int> LiveStackVariables
+		public Dictionary<Storage,int> LiveStorages
 		{
 			get { return liveStackVars; }
 			set { liveStackVars = value; }

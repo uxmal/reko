@@ -115,7 +115,6 @@
     <Compile Include="Core\Serialization\SerializedSignatureTests.cs" />
     <Compile Include="Core\Serialization\SerializedTypeTests.cs" />
     <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
-    <Compile Include="Core\SetTests.cs" />
     <Compile Include="Core\SignatureLibraryTests.cs" />
     <Compile Include="Core\StructureTypeTests.cs" />
     <Compile Include="Core\TypeComparerTests.cs" />
@@ -182,6 +181,9 @@
     <Compile Include="Scanning\RewriterHostTests.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\WorkItemTests.cs" />
+    <Compile Include="Structure\ast\DerivedSequenceBuilderTests.cs" />
+    <Compile Include="Structure\ast\IntervalBuilderTests.cs" />
+    <Compile Include="Structure\ast\TestBase.cs" />
     <Compile Include="Structure\BlockLinearizerTests.cs" />
     <Compile Include="Structure\CaseStatementRewriterTests.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />

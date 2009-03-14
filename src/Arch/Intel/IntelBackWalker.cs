@@ -248,7 +248,7 @@ namespace Decompiler.Arch.Intel
 				throw new ArgumentException("Invalid address range");
 	
 			List<IntelInstruction> instrs = DisassembleRange(addrBegin, addrCallJump, true);
-			IntelInstruction instr = (IntelInstruction) instrs[instrs.Count - 1];
+			IntelInstruction instr = instrs[instrs.Count - 1];
 
 			if (instr.code != Opcode.jmp && instr.code != Opcode.call)
 				throw new ArgumentException("Expected backwalk to start at JMP or CALL opcode at address: " + addrCallJump);

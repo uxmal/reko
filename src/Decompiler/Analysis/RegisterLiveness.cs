@@ -209,7 +209,7 @@ namespace Decompiler.Analysis
 			
 			varLive.BitSet = new BitSet(item.DataOut);
 			varLive.Grf = item.grfOut;
-            varLive.LiveStackVariables = new Dictionary<Storage, int>(item.StackVarsOut);
+            varLive.LiveStorages = new Dictionary<Storage, int>(item.StackVarsOut);
 
 			Debug.WriteLineIf(t, string.Format("   out: {0}", DumpRegisters(varLive.BitSet)));
 			Procedure = item.Block.Procedure;		// Used by statements because we need to lookup registers using identifiers and the procedure frame.
@@ -295,7 +295,7 @@ namespace Decompiler.Analysis
 				item.grfSummary |= varLive.Grf;
 				fChange = true;
 			}
-			foreach (KeyValuePair<Storage,int> de in varLive.LiveStackVariables)
+			foreach (KeyValuePair<Storage,int> de in varLive.LiveStorages)
 			{
 				StackArgumentStorage sa = de.Key as StackArgumentStorage;
 				if (sa == null)
@@ -330,16 +330,16 @@ namespace Decompiler.Analysis
 		{
 			BitSet liveOrig = new BitSet(varLive.BitSet);
 			uint grfOrig = varLive.Grf;
-            Dictionary<Storage, int> stackOrig = new Dictionary<Storage, int>(varLive.LiveStackVariables);
+            Dictionary<Storage, int> stackOrig = new Dictionary<Storage, int>(varLive.LiveStorages);
 			foreach (Procedure p in prog.CallGraph.Callees(stm))
 			{
 				ProcedureFlow flow = mpprocData[p];
 				varLive.BitSet = liveOrig - flow.PreservedRegisters;
-				varLive.LiveStackVariables = new Dictionary<Storage,int>();
+				varLive.LiveStorages = new Dictionary<Storage,int>();
 				MergeBlockInfo(p.ExitBlock);
 				varLive.BitSet = new BitSet(liveOrig);
 				varLive.Grf = grfOrig;
-                varLive.LiveStackVariables = new Dictionary<Storage, int>(stackOrig);
+                varLive.LiveStorages = new Dictionary<Storage, int>(stackOrig);
 			}
 		}
 
@@ -625,7 +625,7 @@ namespace Decompiler.Analysis
 					ret = true;
 				}
 				IDictionary dict = blockFlow.StackVarsOut;
-				foreach (KeyValuePair<Storage,int> de in varLive.LiveStackVariables)
+				foreach (KeyValuePair<Storage,int> de in varLive.LiveStorages)
 				{
 					if (!dict.Contains(de.Key))
 					{
@@ -795,12 +795,12 @@ namespace Decompiler.Analysis
 
 			public void VisitTemporaryStorage(TemporaryStorage temp)
 			{
-				retval = liveState.LiveStackVariables.ContainsKey(temp);
+				retval = liveState.LiveStorages.ContainsKey(temp);
 			}
 
 			public void VisitStackArgumentStorage(StackArgumentStorage stack)
 			{
-				retval = liveState.LiveStackVariables.ContainsKey(stack);
+				retval = liveState.LiveStorages.ContainsKey(stack);
 			}
 
 			public void VisitOutArgumentStorage(OutArgumentStorage arg)
@@ -823,7 +823,7 @@ namespace Decompiler.Analysis
 
 			public void VisitFpuStackStorage(FpuStackStorage fpu)
 			{
-				retval = liveState.LiveStackVariables.ContainsKey(fpu);
+				retval = liveState.LiveStorages.ContainsKey(fpu);
 			}
 
 			public void VisitFlagGroupStorage(FlagGroupStorage grf)
@@ -840,7 +840,7 @@ namespace Decompiler.Analysis
 
 			public void VisitStackLocalStorage(StackLocalStorage local)
 			{
-				retval = liveState.LiveStackVariables.ContainsKey(local);
+				retval = liveState.LiveStorages.ContainsKey(local);
 			}
 
 			#endregion

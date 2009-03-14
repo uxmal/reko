@@ -74,21 +74,21 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LocalVar()
 		{
-			vl.LiveStackVariables = new Dictionary<Storage,int>();
+			vl.LiveStorages = new Dictionary<Storage,int>();
 			Identifier loc = frame.EnsureStackLocal(-8, PrimitiveType.Word32);		// pushed as a word.
 			Use(loc, 0, 16); // only read the last 16 bits.
-			Assert.AreEqual(1, vl.LiveStackVariables.Count);
-			Assert.AreEqual(16, (int) vl.LiveStackVariables[frame.FindStackLocal(-8, 4).Storage]);
+			Assert.AreEqual(1, vl.LiveStorages.Count);
+			Assert.AreEqual(16, (int) vl.LiveStorages[frame.FindStackLocal(-8, 4).Storage]);
 		}
 
 		[Test]
 		public void UseStackArg()
 		{
-			vl.LiveStackVariables = new Dictionary<Storage,int>();
+			vl.LiveStorages = new Dictionary<Storage,int>();
 			Identifier arg = frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			Use(arg, 0, 32);
-			Assert.AreEqual(1, vl.LiveStackVariables.Count);
-			Assert.AreEqual(32, (int) vl.LiveStackVariables[frame.FindStackArgument(4, 4).Storage]);
+			Assert.AreEqual(1, vl.LiveStorages.Count);
+			Assert.AreEqual(32, (int) vl.LiveStorages[frame.FindStackArgument(4, 4).Storage]);
 		}
 
 		[Test]
@@ -107,19 +107,19 @@ namespace Decompiler.UnitTests.Analysis
 		public void StackArgumentDef()
 		{
 			Identifier arg04 = frame.EnsureStackArgument(4, PrimitiveType.Word32);
-			vl.LiveStackVariables[arg04.Storage] = 16;
+			vl.LiveStorages[arg04.Storage] = 16;
 			vl.Def(arg04);
-			Assert.AreEqual(0, vl.LiveStackVariables.Count);
+			Assert.AreEqual(0, vl.LiveStorages.Count);
 			Assert.AreEqual(16, vl.DefBitSize);
 		}
 
 		[Test]
 		public void UseTemporary()
 		{
-			vl.LiveStackVariables = new Dictionary<Storage,int>();
+			vl.LiveStorages = new Dictionary<Storage,int>();
 			Identifier tmp = frame.CreateTemporary(PrimitiveType.Word16);
 			Use(tmp, 0, tmp.DataType.BitSize);
-			Assert.AreEqual(1, vl.LiveStackVariables.Count);
+			Assert.AreEqual(1, vl.LiveStorages.Count);
 		}
 
 		private void Def(Identifier id)

@@ -41,7 +41,8 @@ namespace Decompiler.Structure
 
 		public Linearizer(Procedure proc, BlockLinearizer blin)
 		{
-			Init(proc, blin);
+			this.proc = proc;
+			this.blin = blin;
 		}
 
 		public List<Block> Blocks
@@ -208,11 +209,6 @@ namespace Decompiler.Structure
 			return block.Statements.Last.Instruction as Branch;
 		}
 
-		private void Init(Procedure proc, BlockLinearizer blin)
-		{
-			this.proc = proc;
-			this.blin = blin;
-		}
 
 		public bool IsInBlocks(Block block, BitSet blockSet)
 		{

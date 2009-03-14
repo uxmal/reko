@@ -176,7 +176,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			m.Store(m.Int32(0x102343), ax).Instruction.Accept(rl);
 			m.Assign(eax, arg).Instruction.Accept(rl);
-			Assert.AreEqual(16, rl.IdentifierLiveness.LiveStackVariables[arg.Storage]);
+			Assert.AreEqual(16, rl.IdentifierLiveness.LiveStorages[arg.Storage]);
 		}
 
 		[Test]
@@ -236,14 +236,14 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
 			Identifier w08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
 			new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), 0x0C, 0).Accept(rl);
-			Assert.AreEqual(2, rl.IdentifierLiveness.LiveStackVariables.Count, "Should have two accesses");
-			foreach (object o in rl.IdentifierLiveness.LiveStackVariables.Keys)
+			Assert.AreEqual(2, rl.IdentifierLiveness.LiveStorages.Count, "Should have two accesses");
+			foreach (object o in rl.IdentifierLiveness.LiveStorages.Keys)
 			{
 				Console.WriteLine("{0} {1} {2}",o, Object.Equals(o, b04.Storage), Object.Equals(o, b04.Storage));
 			}
 
-			Assert.IsTrue(rl.IdentifierLiveness.LiveStackVariables.ContainsKey(b04.Storage), "Should have storage for b04");
-			Assert.IsTrue(rl.IdentifierLiveness.LiveStackVariables.ContainsKey(w08.Storage), "Should have storage for w08");
+			Assert.IsTrue(rl.IdentifierLiveness.LiveStorages.ContainsKey(b04.Storage), "Should have storage for b04");
+			Assert.IsTrue(rl.IdentifierLiveness.LiveStorages.ContainsKey(w08.Storage), "Should have storage for w08");
 
 		}
 
@@ -340,7 +340,7 @@ namespace Decompiler.UnitTests.Analysis
 			StringWriter sw = new StringWriter();
 			vl.Write(sw, "");
 			SortedList sl = new SortedList();
-			foreach (object o in vl.LiveStackVariables.Keys)
+			foreach (object o in vl.LiveStorages.Keys)
 			{
 				string s = o.ToString();
 				sl.Add(s, s);

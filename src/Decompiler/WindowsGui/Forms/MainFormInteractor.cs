@@ -451,7 +451,7 @@ namespace Decompiler.WindowsGui.Forms
             IDiagnosticsService svc = (IDiagnosticsService) GetService(typeof(IDiagnosticsService));
             if (svc != null)
             {
-                svc.AddDiagnostic(d, null, format, args);
+                svc.AddDiagnostic(d, addr, format, args);
             }
 		}
 

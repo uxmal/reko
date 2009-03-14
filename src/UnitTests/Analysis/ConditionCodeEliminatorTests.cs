@@ -162,7 +162,7 @@ namespace Decompiler.UnitTests.Analysis
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
-			RegisterLiveness rl = dfa.UntangleProcedures();
+			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);

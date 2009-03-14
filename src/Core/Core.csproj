@@ -127,6 +127,7 @@
     <Compile Include="Absyn\AbsynStatement.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Absyn\AbsynSwitch.cs" />
     <Compile Include="Absyn\AbsynWhile.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -325,6 +326,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Lib\DisjointPartition.cs" />
+    <Compile Include="Lib\HashSet.cs" />
     <Compile Include="Lib\IntSet.cs">
       <SubType>Code</SubType>
     </Compile>

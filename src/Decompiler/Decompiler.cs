@@ -61,7 +61,7 @@ namespace Decompiler
 		public virtual DataFlowAnalysis AnalyzeDataFlow()
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, host);
-			RegisterLiveness rl = dfa.UntangleProcedures();
+			dfa.UntangleProcedures();
 			host.InterproceduralAnalysisComplete();
 
 			dfa.BuildExpressionTrees();

@@ -16,27 +16,28 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Core.Absyn
 {
-	/// <summary>
-	/// Interface for visiting abstract syntax nodes.
-	/// </summary>
-	public interface IAbsynVisitor
-	{
-		void VisitAssignment(AbsynAssignment expr);
-		void VisitBreak(AbsynBreak brk);
-		void VisitContinue(AbsynContinue cont);
-		void VisitDeclaration(AbsynDeclaration decl);
-		void VisitDoWhile(AbsynDoWhile loop);
-		void VisitGoto(AbsynGoto loop);
-		void VisitIf(AbsynIf ifStm);
-		void VisitLabel(AbsynLabel lbl);
-		void VisitReturn(AbsynReturn ret);
-		void VisitSideEffect(AbsynSideEffect side);
-		void VisitWhile(AbsynWhile loop);
+    public class AbsynSwitch : AbsynStatement
+    {
+        private Expression expr;
 
-        void VisitSwitch(AbsynSwitch absynSwitch);
+        public AbsynSwitch(Expression expr)
+        {
+        }
+
+        public override void Accept(IAbsynVisitor visitor)
+        {
+            visitor.VisitSwitch(this);
+        }
+
+        public Expression Expression
+        {
+            get { return expr; }
+        }
     }
 }

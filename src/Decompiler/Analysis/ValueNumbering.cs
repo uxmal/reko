@@ -430,7 +430,6 @@ namespace Decompiler.Analysis
 			private SsaIdentifierCollection ssaIds;
 			private List<Node> scc;
 			private bool inductive = true;
-			private Identifier identifier;
 			private Constant stride;
 
 			public RegionConstantFinder(List<Node> scc, SsaIdentifierCollection ssaIds)

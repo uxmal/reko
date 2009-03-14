@@ -254,7 +254,7 @@ namespace Decompiler.Arch.Intel
 				Listener.OnJump(state, addrFrom, addrTerm, null);
 				return;
 			}
-			throw new ApplicationException("NYI");
+			throw new NotImplementedException();
 		}
 
 		private void HandleNegInstruction(IntelInstruction instr)

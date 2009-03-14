@@ -185,7 +185,7 @@ namespace Decompiler.Structure
 
 		public void VisitReturnInstruction(ReturnInstruction ret)
 		{
-			abs = new AbsynReturn(ret.Value);
+			abs = new AbsynReturn(ret.Expression);
 		}
 
 
@@ -263,7 +263,12 @@ namespace Decompiler.Structure
 			abs = side;
 		}
 
-		public void VisitWhile(AbsynWhile loop)
+        public void VisitSwitch(AbsynSwitch s)
+        {
+            abs = s;
+        }
+
+        public void VisitWhile(AbsynWhile loop)
 		{
 			abs = loop;
 		}

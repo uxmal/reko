@@ -183,7 +183,7 @@ namespace Decompiler.Scanning
 		{
 			// Rewrite the blocks in the procedure.
 
-			prw = new ProcedureRewriter(this, prog, proc);
+			prw = new ProcedureRewriter(this, proc);
             Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, this);
 			prw.Rewriter = rw;
 			prw.RewriteBlock(addrProc, proc.EntryBlock);
@@ -221,7 +221,11 @@ namespace Decompiler.Scanning
 
 		public VectorUse VectorUseAt(Address addrInstr)
 		{
-			return (VectorUse) vectorUses[addrInstr];
+            VectorUse vu;
+            if (vectorUses.TryGetValue(addrInstr, out vu))
+                return vu;
+            else
+                return null;
 		}
 
         //$REVIEW: another place where calling the diagnostic service directly would be better.

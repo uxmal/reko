@@ -24,7 +24,7 @@ using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -123,10 +123,10 @@ namespace Decompiler.UnitTests.Analysis
 			GlobalCallRewriter gcr = new GlobalCallRewriter(null, null);
 			using (FileUnitTester fut = new FileUnitTester("Analysis/GcrStackParameters.txt"))
 			{
-				foreach (DictionaryEntry de in gcr.GetSortedStackArguments(f))
+				foreach (KeyValuePair<int,Identifier> de in gcr.GetSortedStackArguments(f))
 				{
 					fut.TextWriter.Write("{0:X4} ", de.Key);
-					((Identifier) de.Value).Write(true, fut.TextWriter);
+					de.Value.Write(true, fut.TextWriter);
 					fut.TextWriter.WriteLine();
 				}
 				fut.AssertFilesEqual();

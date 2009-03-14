@@ -95,8 +95,8 @@ namespace Decompiler.Core.Code
 
 		public virtual void VisitReturnInstruction(ReturnInstruction ret)
 		{
-			if (ret.Value != null)
-				ret.Value.Accept(this);
+			if (ret.Expression != null)
+				ret.Expression.Accept(this);
 		}
 
 		public virtual void VisitSideEffect(SideEffect side)

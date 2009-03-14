@@ -17,26 +17,38 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Core.Absyn
+namespace Decompiler.Core.Lib
 {
-	/// <summary>
-	/// Interface for visiting abstract syntax nodes.
-	/// </summary>
-	public interface IAbsynVisitor
-	{
-		void VisitAssignment(AbsynAssignment expr);
-		void VisitBreak(AbsynBreak brk);
-		void VisitContinue(AbsynContinue cont);
-		void VisitDeclaration(AbsynDeclaration decl);
-		void VisitDoWhile(AbsynDoWhile loop);
-		void VisitGoto(AbsynGoto loop);
-		void VisitIf(AbsynIf ifStm);
-		void VisitLabel(AbsynLabel lbl);
-		void VisitReturn(AbsynReturn ret);
-		void VisitSideEffect(AbsynSideEffect side);
-		void VisitWhile(AbsynWhile loop);
+    /// <summary>
+    /// Provides an unordered set with an O(1) contains method.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class HashSet<T>
+    {
+        private Dictionary<T, int> set;
 
-        void VisitSwitch(AbsynSwitch absynSwitch);
+        public HashSet()
+        {
+            set = new Dictionary<T, int>();
+        }
+
+        public void Add(T t)
+        {
+            set[t] = 1;
+        }
+
+        public bool Contains(T t)
+        {
+            return set.ContainsKey(t);
+        }
+
+        public bool Remove(T t)
+        {
+            return set.Remove(t);
+        }
     }
+
 }

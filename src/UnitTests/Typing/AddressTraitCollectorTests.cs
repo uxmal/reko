@@ -38,7 +38,6 @@ namespace Decompiler.UnitTests.Typing
 		private AddressTraitCollector atrco;
 		private MockTraitHandler handler;
 		private EquivalenceClassBuilder eqb;
-		private Dictionary<Identifier,LinearInductionVariable>ivs;
 
 		[Test]
 		public void AtrcoTestIdPlusConst()

@@ -25,7 +25,7 @@ using Decompiler.Arch.Intel.Assembler;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Intel
 {
@@ -66,8 +66,8 @@ namespace Decompiler.UnitTests.Intel
 				dumper.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
 				if (prog.ImportThunks.Count > 0)
 				{
-					SortedList list = new SortedList(prog.ImportThunks);
-					foreach (DictionaryEntry de in list)
+					SortedList<uint, PseudoProcedure> list = new SortedList<uint, PseudoProcedure>(prog.ImportThunks);
+					foreach (KeyValuePair<uint, PseudoProcedure> de in list)
 					{
 						fut.TextWriter.WriteLine("{0:X8}: {1}", de.Key, de.Value);
 					}
@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Intel
 			Program prog = new Program();
 			ProgramImage img = asm.AssembleFragment(prog,
 				new Address(0xC00, 0),
-				@"		.i86
+@"		.i86
 hello	proc
 		mov	ax,0x30
 		mov	bx,0x40

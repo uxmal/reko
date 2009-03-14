@@ -19,7 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -27,21 +27,21 @@ namespace Decompiler.Structure
 {
 	public class Interval
 	{
-		private Block		header;
-		public int			OutEdges;
-		public ArrayList	Nodes;			// nodes in the interval
-		public BitSet		Blocks;			// blocks of the interval
+		private Block header;
+		public int OutEdges;
+		public List<StructureNode> Nodes;			// nodes in the interval
+		public BitSet Blocks;			// blocks of the interval
 
 		public Interval(Block header, int cBlocks) 
 		{
 			this.header = header;
-			Nodes = new ArrayList();
+			Nodes = new List<StructureNode>();
 			Blocks = new BitSet(cBlocks);
 		}
 		
 		public StructureNode HeadNode
 		{ 
-			get { return (StructureNode) Nodes[0]; }
+			get { return Nodes[0]; }
 		}
 
 		public void AddBlock(Block block)
@@ -76,6 +76,5 @@ namespace Decompiler.Structure
 			Write(text);
 			return text.ToString();
 		}
-
 	}
 }
