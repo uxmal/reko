@@ -28,7 +28,7 @@ The decompiler can be run as a command-line tool, in which case it can be fed ei
     while examining the decompiled executable.</p>
     <p>
         The outputs of the decompiler are a C source code file containing all the disassembled
-        code and a header file types.h in which type-reconstructed data types can be found.</p>
+        code and a header file in which type-reconstructed data types can be found.</p>
 <h2>Design</h2>
 <img style="float:right" src="images/design.png" alt="Diagram of decompiler design" />
 The decompiler consists of several phases.
@@ -89,9 +89,9 @@ information provided by the user. Memory access expressions
 </ul>
 
 <h2>Development</h2>
-The decompiler is written in C# and currently targets CLR version 1.1 (sorry, no generics... yet). 
+The decompiler is written in C# and currently targets CLR version 2.0.
 It's currently developed with Visual Studio 2005, but the plan
-is to have a working MonoDevelop project soon.
+is to have a working MonoDevelop project soon (wanna pitch in?)
 
 <p>The project implements the <dfn>Test Driven Development</dfn> methodology, with heavy emphasis on unit testing.
 No new code is allowed into the project unless it has one or more associated tests written for it. Developing a 
@@ -101,13 +101,14 @@ eternal bug hunt as fixes for one bug introduce other bugs. Unit tests are devel
 <p>Subversion is used for source control.</p>
 
 <h2>Status</h2>
-Currently, the decompiler project is very early stages. As it stands, it is able to load MS-DOS and PE binary files,
+    The decompiler project is in a pre-alpha stage. As it stands, it is able to load MS-DOS and PE binary files,
 disassemble their contents, rewrite the disassembled instructions into intermediate code, and perform the analysis phase
 mentioned above. Currently work is focussed on type analysis, while code structuring is on the back-burner as it's considerably
-less complex than type recovery -- but if you'd like to chip in, feel free!
+less complex than type recovery.If you'd like to chip in, feel free to contact us!
 <br />
 <br />
-<div align="right"><a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204959&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a></div>
+<div align="right"><a href="http://sourceforge.net/projects/decompiler"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204959&type=14" width="150" height="40" border="0" alt="Get Decompiler at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
+</div>
 
 </body>
 
