@@ -32,12 +32,12 @@ namespace Decompiler.Scanning
 		private Rewriter rewriter; 
 		private Dictionary<Address,Block> blocksVisited;
 
-		public ProcedureRewriter(IRewriterHost host, Program prog, Procedure proc)
-		{
-			this.host = host;
-			this.proc = proc;
+        public ProcedureRewriter(IRewriterHost host, Procedure proc)
+        {
+            this.host = host;
+            this.proc = proc;
             this.blocksVisited = new Dictionary<Address, Block>();
-		}
+        }
 
         public CodeEmitter CreateEmitter(Block block)
         {
@@ -88,7 +88,7 @@ namespace Decompiler.Scanning
 				blocksVisited.Add(addr, block);
 				Block.AddEdge(pred, block);
 
-				RewriteInstructions(addr, raw.Size, block);
+				rewriter.RewriteInstructions(addr, raw.Size, block);
 
 				if (IsBlockFallThrough(block))
 				{
@@ -102,17 +102,12 @@ namespace Decompiler.Scanning
 			}
 			return block;
 		}
-	
 
-		public Rewriter Rewriter
-		{
-			get { return rewriter; }
-			set { rewriter = value; }
-		}
 
-		public void RewriteInstructions(Address addr, int length, Block block)
-		{
-			rewriter.RewriteInstructions(addr, length, block);
-		}
+        public Rewriter Rewriter
+        {
+            get { return rewriter; }
+            set { rewriter = value; }
+        }
 	}
 }

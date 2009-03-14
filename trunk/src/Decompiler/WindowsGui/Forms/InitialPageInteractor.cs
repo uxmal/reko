@@ -95,23 +95,10 @@ namespace Decompiler.WindowsGui.Forms
             get { return page; }
         }
 
-        [Obsolete("Call the UI service directly")]
-		public virtual string ShowOpenFileDialog(string fileName)
-		{
-            return base.UIService.ShowOpenFileDialog(fileName);
-		}
-
-        [Obsolete("Call the UI service directly")]
-        public virtual string ShowSaveFileDialog(string fileName)
-        {
-            return base.UIService.ShowOpenFileDialog(fileName);
-        }
-
-
         // Event handlers. 
 		public void BrowseInputFile_Click(object sender, EventArgs e)
 		{
-			string sNew = ShowOpenFileDialog(page.InputFile.Text);
+			string sNew = UIService.ShowOpenFileDialog(page.InputFile.Text);
 			if (sNew != null)
 			{
 				page.InputFile.Text = sNew;

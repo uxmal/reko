@@ -43,7 +43,7 @@ namespace Decompiler.Structure
 				return new AbsynAssignment(ass.Dst, ass.Src);
 			ReturnInstruction ret = instr as ReturnInstruction;
 			if (ret != null)
-				return new AbsynReturn(ret.Value);
+				return new AbsynReturn(ret.Expression);
 			throw new NotImplementedException("NYI");
 		}
 

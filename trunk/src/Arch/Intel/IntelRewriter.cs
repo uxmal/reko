@@ -921,7 +921,7 @@ namespace Decompiler.Arch.Intel
 					case Opcode.wait:	// used to slow down FPU.
 						break;
 					case Opcode.fxch:
-					case Opcode.xchg://$ maybe lock ?
+					case Opcode.xchg:   //$ maybe lock ?
 					{
 						Identifier itmp = frame.CreateTemporary(instrCur.dataWidth);
 						emitter.Assign(itmp, SrcOp(instrCur.op1));

@@ -32,6 +32,8 @@ namespace Decompiler.Core
         private Block[] blocks;
 		private int [] doms;
 		private List<Block> [] domFrontiers;
+        
+        private const int Undefined = -1;
 
 		public DominatorGraph(Procedure proc)
 		{
@@ -39,7 +41,7 @@ namespace Decompiler.Core
 			{
                 this.doms = Build(proc.RpoBlocks, proc.EntryBlock.RpoNumber);
 				this.domFrontiers = BuildDominanceFrontiers(proc);
-				this.doms[0] = -1;		// No-one dominates the root node.
+				this.doms[0] = Undefined;		// No-one dominates the root node.
 			}
 		}
 
@@ -104,7 +106,7 @@ namespace Decompiler.Core
 
 		public bool DominatesStrictly(int dominator, int d)
 		{
-			while (doms[d] != -1)
+			while (doms[d] != Undefined)
 			{
 				if (doms[d] == dominator)
 					return true;
@@ -121,7 +123,6 @@ namespace Decompiler.Core
 
 		public int [] Build(IList<Block> blockList, int start)
 		{
-			const int Undefined = -1;
             blocks = new Block[blockList.Count];
 			int [] doms = new int[blockList.Count];
             for (int i = 0; i != doms.Length; ++i)
@@ -182,7 +183,7 @@ namespace Decompiler.Core
 					foreach (Block p in bb.Pred)
 					{
 						int r = p.RpoNumber;
-						while (r != -1 && r != doms[b])
+						while (r != Undefined && r != doms[b])
 						{
 							// Add b to the dominance frontier of r.
 
@@ -271,7 +272,6 @@ namespace Decompiler.Core
                         yield return t;
                 }
             }
-
         }
 	}
 }

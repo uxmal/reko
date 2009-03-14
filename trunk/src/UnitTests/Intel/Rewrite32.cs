@@ -21,7 +21,6 @@ using Decompiler.Core;
 using Decompiler.Arch.Intel;
 using Decompiler.Scanning;
 using NUnit.Framework;
-using System.Collections;
 
 namespace Decompiler.UnitTests.Intel
 {

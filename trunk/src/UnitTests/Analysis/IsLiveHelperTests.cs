@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void IsTemporaryLive()
 		{
 			Identifier id = f.CreateTemporary(PrimitiveType.Word32);
-			liveness.LiveStackVariables.Add(id.Storage, id.DataType.BitSize);
+			liveness.LiveStorages.Add(id.Storage, id.DataType.BitSize);
 			Assert.IsTrue(isLiveHelper.IsLive(id, liveness));
 		}
 	}

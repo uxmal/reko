@@ -36,7 +36,6 @@ namespace Decompiler.WindowsGui.Forms
         private ISite site;
         private IDecompilerService decompilerSvc;
         private IDecompilerUIService decompilerUiSvc;
-        private PhasePageInteractor nextPage;
 
         public PhasePageInteractor()
         {

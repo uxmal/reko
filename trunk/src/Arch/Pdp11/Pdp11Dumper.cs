@@ -16,27 +16,14 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Core.Absyn
+namespace Decompiler.Arch.Pdp11
 {
-	/// <summary>
-	/// Interface for visiting abstract syntax nodes.
-	/// </summary>
-	public interface IAbsynVisitor
-	{
-		void VisitAssignment(AbsynAssignment expr);
-		void VisitBreak(AbsynBreak brk);
-		void VisitContinue(AbsynContinue cont);
-		void VisitDeclaration(AbsynDeclaration decl);
-		void VisitDoWhile(AbsynDoWhile loop);
-		void VisitGoto(AbsynGoto loop);
-		void VisitIf(AbsynIf ifStm);
-		void VisitLabel(AbsynLabel lbl);
-		void VisitReturn(AbsynReturn ret);
-		void VisitSideEffect(AbsynSideEffect side);
-		void VisitWhile(AbsynWhile loop);
-
-        void VisitSwitch(AbsynSwitch absynSwitch);
+    class Pdp11Dumper : Dumper
+    {
     }
 }

@@ -24,7 +24,6 @@ using Decompiler.Arch.Intel;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Diagnostics;
 using System.IO;
 

@@ -49,7 +49,7 @@ namespace Decompiler.Analysis
 
 		public void AnalyzeProgram()
 		{
-			RegisterLiveness rl = UntangleProcedures();
+			UntangleProcedures();
 			BuildExpressionTrees();
 		}
 
@@ -60,7 +60,6 @@ namespace Decompiler.Analysis
         /// <param name="rl"></param>
 		public void BuildExpressionTrees()
 		{
-			int total = prog.Procedures.Count;
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture, flow);
@@ -79,8 +78,7 @@ namespace Decompiler.Analysis
 				DeadCode.Eliminate(proc, ssa);
 
 				// Build expressions. A definition with a single value can be subsumed
-				// into the using expression. Definitions with multiple uses and variables 
-				// joined by PHI functions become webs.
+				// into the using expression. 
 
 				Coalescer coa = new Coalescer(proc, ssa);
 				coa.Transform();
@@ -99,6 +97,7 @@ namespace Decompiler.Analysis
 				opt.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
+                // Definitions with multiple uses and variables joined by PHI functions become webs.
                 WebBuilder web = new WebBuilder(proc, ssa.Identifiers, prog.InductionVariables);
 				web.Transform();
 				ssa.ConvertBack(false);
@@ -143,23 +142,6 @@ namespace Decompiler.Analysis
 			get { return flow; }
 		}
 
-		/// <summary>
-		/// Inserts "fake" use statements
-		/// in the return block for each defined variable, in order to compute reaching definitions.
-		/// Only variables that can escape are marked as live -- ie. only machine registers.
-		/// </summary>
-		/// <param name="proc"></param>
-		public static void InsertExitBlockStatements(Procedure proc)
-		{
-			Block blReturn = proc.ExitBlock;
-			foreach (Identifier a in proc.Frame.Identifiers)
-			{
-				if (a.Storage is RegisterStorage || a.Storage is FlagGroupStorage)
-				{
-					blReturn.Statements.Add(new UseInstruction(a));
-				}
-			}
-		}
 
 		/// <summary>
 		/// Finds all interprocedural register dependencies (in- and out-parameters) and
@@ -168,7 +150,7 @@ namespace Decompiler.Analysis
         /// <returns>A RegisterLiveness object that summarizes the interprocedural register
         /// liveness analysis. This information can be used to generate SSA form.
         /// </returns>
-		public RegisterLiveness UntangleProcedures()
+		public void UntangleProcedures()
 		{
 			host.WriteDiagnostic(Diagnostic.Info, null, "Finding trashed registers");
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
@@ -178,7 +160,6 @@ namespace Decompiler.Analysis
 			RegisterLiveness rl = RegisterLiveness.Compute(prog, flow, host);
 			host.WriteDiagnostic(Diagnostic.Info, null, "Rewriting calls");
 			GlobalCallRewriter.Rewrite(prog, flow);
-			return rl;
 		}
 	}
 }

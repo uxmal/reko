@@ -389,10 +389,10 @@ namespace Decompiler.Core.Output
 		{
 			writer.Indent();
 			writer.WriteKeyword("return");
-			if (ret.Value != null)
+			if (ret.Expression != null)
 			{
 				writer.Write(" ");
-				WriteExpression(ret.Value);
+				WriteExpression(ret.Expression);
 			}
 			writer.Terminate();
 		}
@@ -582,6 +582,15 @@ namespace Decompiler.Core.Output
 			writer.Terminate(";");
 		}
 
+        public void VisitSwitch(AbsynSwitch s)
+        {
+            writer.Indent();
+            writer.WriteKeyword("switch");
+            writer.Write(" (");
+            WriteExpression(s.Expression);
+            writer.Terminate(")");
+            throw new NotImplementedException();
+        }
 		public void VisitWhile(AbsynWhile loop)
 		{
 			writer.Indent();

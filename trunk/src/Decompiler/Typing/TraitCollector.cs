@@ -210,12 +210,12 @@ namespace Decompiler.Typing
 
 		public override void VisitReturnInstruction(ReturnInstruction ret)
 		{
-            if (ret.Value != null)
+            if (ret.Expression != null)
             {
-                ret.Value.Accept(this);
+                ret.Expression.Accept(this);
                 if (proc.Signature != null && proc.Signature.ReturnValue != null)
                 {
-                    handler.EqualTrait(proc.Signature.ReturnValue.TypeVariable, ret.Value.TypeVariable);
+                    handler.EqualTrait(proc.Signature.ReturnValue.TypeVariable, ret.Expression.TypeVariable);
                 }
             }
 		}

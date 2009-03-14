@@ -22,7 +22,6 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.IO;
 
 namespace Decompiler.UnitTests.Core

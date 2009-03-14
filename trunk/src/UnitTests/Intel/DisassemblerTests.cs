@@ -281,5 +281,17 @@ movzx	ax,byte ptr [bp+04]
             Assert.AreSame(PrimitiveType.Byte, instr.op2.Width);
             Assert.AreSame(PrimitiveType.Byte, instr.dataWidth, "Instruction data width should be byte");
         }
+
+        [Test]
+        public void RelativeCallTest()
+        {
+            byte []image = new byte[] { 0xE8, 0x00, 0xF0 };
+            ProgramImage img = new ProgramImage(new Address(0xC00, 0x0000), image);
+            ImageReader rdr = img.CreateReader(img.BaseAddress);
+            IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
+            IntelInstruction instr = dasm.Disassemble();
+            Assert.AreEqual("call\tF003", instr.ToString());
+            Assert.AreSame(PrimitiveType.Word16, instr.op1.Width);
+        }
 	}
 }

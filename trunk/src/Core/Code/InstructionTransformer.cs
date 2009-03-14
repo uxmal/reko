@@ -87,8 +87,8 @@ namespace Decompiler.Core.Code
 
 		public virtual Instruction TransformReturnInstruction(ReturnInstruction ret)
 		{
-			if (ret.Value != null)
-				ret.Value = ret.Value.Accept(this);
+			if (ret.Expression != null)
+				ret.Expression = ret.Expression.Accept(this);
 			return ret;
 		}
 

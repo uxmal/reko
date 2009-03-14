@@ -148,12 +148,8 @@ namespace Decompiler.Arch.Intel
 			public OpFlag	Flags;
 			public OpRec [] indirect;
 
-			public OpRec(Opcode op, string fmt)
+			public OpRec(Opcode op, string fmt) : this(op, fmt, OpFlag.None)
 			{
-				opcode = op;
-				format = fmt;
-				Flags = OpFlag.None;
-				indirect = null;
 			}
 
 			public OpRec(Opcode op, string fmt, OpFlag flags)
@@ -161,6 +157,7 @@ namespace Decompiler.Arch.Intel
 				opcode = op;
 				format = fmt;
 				Flags = flags;
+                indirect = null;
 			}
 
 			public override void Decode(IntelDisassembler disasm)

@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Decompiler.Core.Lib;
 using System;
 using StringBuilder = System.Text.StringBuilder;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Core

@@ -19,7 +19,6 @@
 using Decompiler.Core;
 using Decompiler.Core.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
@@ -87,7 +86,7 @@ namespace Decompiler.Core
 
 		public void Emit(TextWriter wri)
 		{
-			SortedList sl = new SortedList(new ProcedureComparer());
+            SortedList<Procedure, Procedure> sl = new SortedList<Procedure, Procedure>(new ProcedureComparer());
 			foreach (Procedure proc in graphProcs.Nodes)
 			{
 				sl.Add(proc, proc);
@@ -102,15 +101,13 @@ namespace Decompiler.Core
 			}
 		}
 
-		private class ProcedureComparer : IComparer
+		private class ProcedureComparer : IComparer<Procedure>
 		{
 			#region IComparer Members
 
-			public int Compare(object x, object y)
+			public int Compare(Procedure x, Procedure y)
 			{
-				Procedure a = (Procedure) x;
-				Procedure b = (Procedure) y;
-				return string.Compare(a.Name, b.Name);
+				return string.Compare(x.Name, y.Name);
 			}
 
 			#endregion

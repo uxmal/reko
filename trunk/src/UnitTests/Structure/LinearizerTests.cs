@@ -154,7 +154,7 @@ namespace Decompiler.UnitTests.Structure
 			AbsynIf ifStm = stms[4] as AbsynIf;
 			Assert.IsNotNull(ifStm);
 			proc.Write(false, Console.Out);
-			Assert.IsTrue(ifStm.Then is AbsynBreak);
+			Assert.IsTrue(ifStm.Then[0] is AbsynBreak);
 		}
 
 		[Test]

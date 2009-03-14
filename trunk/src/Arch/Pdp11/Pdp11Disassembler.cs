@@ -17,42 +17,26 @@
  */
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Analysis
+namespace Decompiler.Arch.Pdp11
 {
-	public class InductionVariableCollection
-	{
-		private Hashtable mpproctocoll;
+    public class Pdp11Disassembler : Disassembler
+    {
+        public Pdp11Disassembler(ImageReader rdr, Address addr)
+        {
+        }
 
-		public InductionVariableCollection()
-		{
-			mpproctocoll = new Hashtable();
-		}
+        public override Address Address
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
 
-		public LinearInductionVariable this[Procedure proc, Identifier id]
-		{
-			get 
-			{
-				Hashtable h = (Hashtable) mpproctocoll[proc];
-				if (h == null)
-					return null;
-				return (LinearInductionVariable) h[id];
-			}
-		}
-
-
-		public void Add(Procedure proc, Identifier id, LinearInductionVariable iv)
-		{
-			Hashtable h = (Hashtable) mpproctocoll[proc];
-			if (h == null)
-			{
-				h = new Hashtable();
-				mpproctocoll[proc] = h;
-			}
-			h[id] = iv;
-		}
-	}
+        public override object DisassembleInstruction()
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+    }
 }
