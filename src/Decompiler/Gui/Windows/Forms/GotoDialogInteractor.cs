@@ -2,7 +2,7 @@ using Decompiler.Core;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	/// <summary>
 	/// Summary description for GotoDialogInteractor.

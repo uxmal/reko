@@ -16,12 +16,12 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.WindowsGui.Forms;
+using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.WindowsGui.Forms
+namespace Decompiler.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     public class FindDialogInteractorTests

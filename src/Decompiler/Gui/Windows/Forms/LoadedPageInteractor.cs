@@ -19,14 +19,14 @@
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
-using Decompiler.WindowsGui.Controls;
+using Decompiler.Gui.Windows.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	public class LoadedPageInteractor : PhasePageInteractor
 	{
@@ -108,7 +108,7 @@ namespace Decompiler.WindowsGui.Forms
 
         public void DumpAssembler()
         {
-            if (Decompiler.Program.Architecture == null || Decompiler.Program.Image == null || pageLoaded.MemoryControl.SelectedAddress == null)
+            if (!IsProgramLoaded())
             {
                 pageLoaded.Disassembly.Text = "";
                 return;
@@ -125,6 +125,15 @@ namespace Decompiler.WindowsGui.Forms
                 --lines;
             }
             pageLoaded.Disassembly.Text = writer.ToString();
+        }
+
+        private bool IsProgramLoaded()
+        {
+            return 
+                Decompiler != null && 
+                Decompiler.Program.Architecture != null && 
+                Decompiler.Program.Image != null &&
+                pageLoaded.MemoryControl.SelectedAddress != null;
         }
 
 		public override void EnterPage()

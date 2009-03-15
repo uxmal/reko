@@ -21,7 +21,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Controls
+namespace Decompiler.Gui.Windows.Controls
 {
 	public abstract class BaseValidator : Component
 	{

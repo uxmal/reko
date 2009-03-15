@@ -47,8 +47,8 @@ namespace Decompiler.Gui
 
         IStartPage StartPage { get; }
         ILoadedPage LoadedPage { get; }
-        Decompiler.WindowsGui.Forms.AnalyzedPage AnalyzedPage { get; }
-        Decompiler.WindowsGui.Forms.FinalPage FinalPage { get; }
+        Decompiler.Gui.Windows.Forms.AnalyzedPage AnalyzedPage { get; }
+        Decompiler.Gui.Windows.Forms.FinalPage FinalPage { get; }
 
 
         event EventHandler Closed;

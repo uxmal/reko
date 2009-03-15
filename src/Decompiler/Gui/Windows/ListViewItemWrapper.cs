@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui
+namespace Decompiler.Gui.Windows
 {
     /// <summary>
     /// Windows Forms implementation of the IListViewItem interface.

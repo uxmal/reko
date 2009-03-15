@@ -23,7 +23,7 @@ using System.Drawing;
 using System.Data;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	public class ScanPage : PhasePage
 	{

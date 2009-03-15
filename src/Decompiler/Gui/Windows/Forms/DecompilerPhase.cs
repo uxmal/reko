@@ -20,7 +20,7 @@ using Decompiler;
 using Decompiler.Core;
 using System;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	/// <summary>
 	/// A state in the state machine that describes the current state of 

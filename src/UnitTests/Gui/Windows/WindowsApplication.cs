@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Decompiler.UnitTests.WindowsGui
+namespace Decompiler.UnitTests.Gui.Windows
 {
     /// <summary>
     /// The main entry point for the program is a Container of components.

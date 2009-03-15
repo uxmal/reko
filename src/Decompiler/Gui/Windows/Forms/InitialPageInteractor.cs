@@ -22,7 +22,7 @@ using Decompiler.Gui;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	/// <summary>
 	/// Handles interactions on InitialPage

@@ -22,7 +22,7 @@ using System.Collections;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Controls
+namespace Decompiler.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Base class for obtaining menus for this application. 

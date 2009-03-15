@@ -22,7 +22,7 @@ using System.Collections;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui
+namespace Decompiler.Gui.Windows
 {
     /// <summary>
     /// Windows Forms implementation of IProgramImageBrowserService.

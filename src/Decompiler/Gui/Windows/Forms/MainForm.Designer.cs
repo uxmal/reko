@@ -16,7 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
     partial class MainForm
     {
@@ -55,10 +55,10 @@ namespace Decompiler.WindowsGui.Forms
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listBrowser = new System.Windows.Forms.ListView();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.finalPage1 = new Decompiler.WindowsGui.Forms.FinalPage();
-            this.analyzedPage1 = new Decompiler.WindowsGui.Forms.AnalyzedPage();
-            this.startPage = new Decompiler.WindowsGui.Forms.StartPage();
-            this.loadedPage1 = new Decompiler.WindowsGui.Forms.LoadedPage();
+            this.finalPage1 = new Decompiler.Gui.Windows.Forms.FinalPage();
+            this.analyzedPage1 = new Decompiler.Gui.Windows.Forms.AnalyzedPage();
+            this.startPage = new Decompiler.Gui.Windows.Forms.StartPage();
+            this.loadedPage1 = new Decompiler.Gui.Windows.Forms.LoadedPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabDiagnostics = new System.Windows.Forms.TabPage();
             this.listDiagnostics = new System.Windows.Forms.ListView();

@@ -16,11 +16,11 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.WindowsGui;
+using Decompiler.Gui.Windows;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.WindowsGui
+namespace Decompiler.UnitTests.Gui.Windows
 {
 	[TestFixture]
 	public class MruListTests

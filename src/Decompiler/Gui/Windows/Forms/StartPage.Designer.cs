@@ -1,4 +1,4 @@
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
     partial class StartPage
     {

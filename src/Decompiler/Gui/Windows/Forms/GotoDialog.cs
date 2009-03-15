@@ -19,7 +19,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	/// </summary>
 	public class GotoDialog : Form
