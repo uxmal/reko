@@ -23,6 +23,6 @@ namespace Decompiler.Gui
     public interface ILoadedPage
     {
         System.Windows.Forms.TextBox Disassembly { get; }
-        Decompiler.WindowsGui.Controls.MemoryControl MemoryControl { get; }
+        Decompiler.Gui.Windows.Controls.MemoryControl MemoryControl { get; }
     }
 }

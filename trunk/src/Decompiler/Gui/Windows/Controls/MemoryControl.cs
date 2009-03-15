@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Controls
+namespace Decompiler.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Displays the contents of memory and allows selection of memory ranges. 

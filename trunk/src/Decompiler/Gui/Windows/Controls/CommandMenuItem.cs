@@ -20,7 +20,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Controls
+namespace Decompiler.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Extends MenuItems to contain a MenuCommand.

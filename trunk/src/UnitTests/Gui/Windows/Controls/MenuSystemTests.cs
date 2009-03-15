@@ -17,13 +17,13 @@
  */
 
 using Decompiler.Gui;
-using Decompiler.WindowsGui.Controls;
+using Decompiler.Gui.Windows.Controls;
 using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.WindowsGui.Controls
+namespace Decompiler.UnitTests.Gui.Windows.Controls
 {
 	[TestFixture]
 	public class MenuSystemTests : ICommandTarget

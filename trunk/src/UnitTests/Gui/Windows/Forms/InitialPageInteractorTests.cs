@@ -18,11 +18,11 @@
 
 using Decompiler.Gui;
 using Decompiler.UnitTests.Mocks;
-using Decompiler.WindowsGui.Forms;
+using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.WindowsGui.Forms
+namespace Decompiler.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
 	public class InitialPageInteractorTests

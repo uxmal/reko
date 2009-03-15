@@ -21,7 +21,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
     /// <summary>
     /// Base class for all interactors in charge of phase pages. Provides common functionality

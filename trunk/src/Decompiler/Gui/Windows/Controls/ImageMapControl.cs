@@ -24,7 +24,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Controls
+namespace Decompiler.Gui.Windows.Controls
 {
 	/// <summary>
 	/// Displays an image map graphically.

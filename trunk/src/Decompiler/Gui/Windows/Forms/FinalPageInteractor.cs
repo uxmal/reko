@@ -21,7 +21,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	public class FinalPageInteractor : PhasePageInteractor
 	{

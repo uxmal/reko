@@ -22,13 +22,13 @@ using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
-using Decompiler.WindowsGui;
-using Decompiler.WindowsGui.Forms;
+using Decompiler.Gui.Windows;
+using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using System;
 using System.Windows.Forms;
 
-namespace Decompiler.UnitTests.WindowsGui.Forms
+namespace Decompiler.UnitTests.Gui.Windows.Forms
 {
 	[TestFixture]
 	public class LoadedPageInteractorTests

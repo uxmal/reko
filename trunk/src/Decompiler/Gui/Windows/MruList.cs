@@ -21,7 +21,7 @@ using System.Collections;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.WindowsGui
+namespace Decompiler.Gui.Windows
 {
 	/// <summary>
 	/// Maintains a most-recently used file lists at a specified location in the user's settings directory.

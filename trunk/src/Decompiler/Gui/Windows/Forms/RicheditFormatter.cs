@@ -26,7 +26,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
     public class RichEditFormatter : CodeFormatter
     {

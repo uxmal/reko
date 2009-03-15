@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	public class AnalyzedPageInteractor : PhasePageInteractor
 	{

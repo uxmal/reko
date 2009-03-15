@@ -16,42 +16,42 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.WindowsGui.Controls;
+using Decompiler.Gui.Windows.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	public partial class InitialPage : PhasePage, Decompiler.Gui.IStartPage
 	{
 		public event EventHandler IsDirtyChanged;
 
-		private DirtyManager dirtyManager;
-		private RegexValidator addressValidator;
-		private System.Windows.Forms.Button btnBrowseInputFile;
-		private System.Windows.Forms.Button btnBrowseSourceFile;
-		private System.Windows.Forms.TextBox txtSourceFile;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Button btnBrowseHeaderFile;
-		private System.Windows.Forms.TextBox txtHeaderFile;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.CheckBox chkAssemblerFile;
-		private System.Windows.Forms.TextBox txtAssemblerFile;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.CheckBox chkIntermediateFile;
-		private System.Windows.Forms.TextBox txtInputFile;
-		private System.Windows.Forms.Button btnBrowseAssemblerFile;
-		private System.Windows.Forms.TextBox txtIntermediateFile;
-		private System.Windows.Forms.Button btnBrowseIntermediateFile;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.TextBox txtLoadAddress;
-		private System.Windows.Forms.Label label5;
-		private OpenFileDialog openFileDialog;
+        //private DirtyManager dirtyManager;
+        //private RegexValidator addressValidator;
+        //private System.Windows.Forms.Button btnBrowseInputFile;
+        //private System.Windows.Forms.Button btnBrowseSourceFile;
+        //private System.Windows.Forms.TextBox txtSourceFile;
+        //private System.Windows.Forms.Label label2;
+        //private System.Windows.Forms.Button btnBrowseHeaderFile;
+        //private System.Windows.Forms.TextBox txtHeaderFile;
+        //private System.Windows.Forms.Label label1;
+        //private System.Windows.Forms.GroupBox groupBox1;
+        //private System.Windows.Forms.GroupBox groupBox2;
+        //private System.Windows.Forms.CheckBox chkAssemblerFile;
+        //private System.Windows.Forms.TextBox txtAssemblerFile;
+        //private System.Windows.Forms.Label label3;
+        //private System.Windows.Forms.CheckBox chkIntermediateFile;
+        //private System.Windows.Forms.TextBox txtInputFile;
+        //private System.Windows.Forms.Button btnBrowseAssemblerFile;
+        //private System.Windows.Forms.TextBox txtIntermediateFile;
+        //private System.Windows.Forms.Button btnBrowseIntermediateFile;
+        //private System.Windows.Forms.Label label4;
+        //private System.Windows.Forms.TextBox txtLoadAddress;
+        //private System.Windows.Forms.Label label5;
+        //private OpenFileDialog openFileDialog;
 
 		public InitialPage()
 		{
@@ -66,16 +66,16 @@ namespace Decompiler.WindowsGui.Forms
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		private void InitializeComponent()
+		private void InitializeComponentq()
 		{
-            this.dirtyManager = new Decompiler.WindowsGui.Controls.DirtyManager();
+            this.dirtyManager = new Decompiler.Gui.Windows.Controls.DirtyManager();
             this.txtInputFile = new System.Windows.Forms.TextBox();
             this.txtSourceFile = new System.Windows.Forms.TextBox();
             this.txtHeaderFile = new System.Windows.Forms.TextBox();
             this.txtLoadAddress = new System.Windows.Forms.TextBox();
             this.txtIntermediateFile = new System.Windows.Forms.TextBox();
             this.txtAssemblerFile = new System.Windows.Forms.TextBox();
-            this.addressValidator = new Decompiler.WindowsGui.Controls.RegexValidator();
+            this.addressValidator = new Decompiler.Gui.Windows.Controls.RegexValidator();
             this.btnBrowseInputFile = new System.Windows.Forms.Button();
             this.btnBrowseSourceFile = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();

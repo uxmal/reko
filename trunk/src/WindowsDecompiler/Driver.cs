@@ -20,7 +20,7 @@ using Decompiler;
 using Decompiler.Loading;
 using Decompiler.Core;
 using Decompiler.Gui;
-using Decompiler.WindowsGui.Forms;
+using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Windows.Forms;
 

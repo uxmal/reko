@@ -24,7 +24,7 @@ using System.Drawing;
 using System.Data;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	/// <summary>
 	/// Base class for the user interfaces of all the phases

@@ -20,7 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.Loading;
-using Decompiler.WindowsGui.Controls;
+using Decompiler.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +30,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	/// <summary>
 	/// Provices a component Container implementation, and specifically handles interactions 

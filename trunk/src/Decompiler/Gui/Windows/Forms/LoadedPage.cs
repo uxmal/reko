@@ -17,7 +17,7 @@
  */
 
 using Decompiler.Core;
-using Decompiler.WindowsGui.Controls;
+using Decompiler.Gui.Windows.Controls;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -25,7 +25,7 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Decompiler.WindowsGui.Forms
+namespace Decompiler.Gui.Windows.Forms
 {
 	/// <summary>
 	/// Displays the contents of a file after it has been loaded.
@@ -34,7 +34,7 @@ namespace Decompiler.WindowsGui.Forms
 	{
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox txtAddress;
-		private Decompiler.WindowsGui.Controls.MemoryControl memctl;
+		private Decompiler.Gui.Windows.Controls.MemoryControl memctl;
 		private System.Windows.Forms.TextBox txtDisassembly;
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.Panel panel1;
@@ -74,7 +74,7 @@ namespace Decompiler.WindowsGui.Forms
 		{
 			this.label1 = new System.Windows.Forms.Label();
 			this.txtAddress = new System.Windows.Forms.TextBox();
-			this.memctl = new Decompiler.WindowsGui.Controls.MemoryControl();
+			this.memctl = new Decompiler.Gui.Windows.Controls.MemoryControl();
 			this.txtDisassembly = new System.Windows.Forms.TextBox();
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.panel1 = new System.Windows.Forms.Panel();
