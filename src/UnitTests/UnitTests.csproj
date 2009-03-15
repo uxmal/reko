@@ -129,6 +129,18 @@
     <Compile Include="FileUnitTester.cs" />
     <Compile Include="Gui\DecompilerServiceTests.cs" />
     <Compile Include="Gui\MenuBuilderTests.cs" />
+    <Compile Include="Gui\Windows\Controls\MemoryControlTests.cs" />
+    <Compile Include="Gui\Windows\Controls\MenuSystemTests.cs" />
+    <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\FinalPageInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\FindDialogInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\MainFormTests.cs" />
+    <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs" />
+    <Compile Include="Gui\Windows\MruListTests.cs" />
+    <Compile Include="Gui\Windows\WindowsApplication.cs" />
     <Compile Include="Intel\AssemblerAdvanced.cs" />
     <Compile Include="Intel\AssemblerBasic.cs" />
     <Compile Include="Intel\AssemblerData.cs" />
@@ -236,18 +248,6 @@
     <Compile Include="Typing\UnionIntRealMock.cs" />
     <Compile Include="Typing\UnionPointersStructuresMatcherTests.cs" />
     <Compile Include="Typing\VectorMock.cs" />
-    <Compile Include="WindowsGui\Controls\MemoryControlTests.cs" />
-    <Compile Include="WindowsGui\Controls\MenuSystemTests.cs" />
-    <Compile Include="WindowsGui\Forms\AnalyzedPageInteractorTests.cs" />
-    <Compile Include="WindowsGui\Forms\FinalPageInteractorTests.cs" />
-    <Compile Include="WindowsGui\Forms\FindDialogInteractorTests.cs" />
-    <Compile Include="WindowsGui\Forms\InitialPageInteractorTests.cs" />
-    <Compile Include="WindowsGui\Forms\LoadedPageInteractorTests.cs" />
-    <Compile Include="WindowsGui\Forms\MainFormInteractorTests.cs" />
-    <Compile Include="WindowsGui\Forms\MainFormTests.cs" />
-    <Compile Include="WindowsGui\Forms\ProcedureDialogInteractorTests.cs" />
-    <Compile Include="WindowsGui\MruListTests.cs" />
-    <Compile Include="WindowsGui\WindowsApplication.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

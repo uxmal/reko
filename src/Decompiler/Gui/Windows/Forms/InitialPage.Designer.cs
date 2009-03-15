@@ -26,7 +26,7 @@ namespace Decompiler.WindowsGui.Forms
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        private void InitializeComponentq()
         {
             this.SuspendLayout();
             this.txtInputFile = new System.Windows.Forms.TextBox();
@@ -106,27 +106,27 @@ namespace Decompiler.WindowsGui.Forms
 
         #endregion
 
-        private System.Windows.Forms.Button btnBrowseInputFile;
-        private System.Windows.Forms.Button btnBrowseSourceFile;
-        private System.Windows.Forms.TextBox txtSourceFile;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnBrowseHeaderFile;
-        private System.Windows.Forms.TextBox txtHeaderFile;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox chkAssemblerFile;
-        private System.Windows.Forms.TextBox txtAssemblerFile;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox chkIntermediateFile;
-        private System.Windows.Forms.TextBox txtInputFile;
-        private System.Windows.Forms.Button btnBrowseAssemblerFile;
-        private System.Windows.Forms.TextBox txtIntermediateFile;
-        private System.Windows.Forms.Button btnBrowseIntermediateFile;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtLoadAddress;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        //private System.Windows.Forms.Button btnBrowseInputFile;
+        //private System.Windows.Forms.Button btnBrowseSourceFile;
+        //private System.Windows.Forms.TextBox txtSourceFile;
+        //private System.Windows.Forms.Label label2;
+        //private System.Windows.Forms.Button btnBrowseHeaderFile;
+        //private System.Windows.Forms.TextBox txtHeaderFile;
+        //private System.Windows.Forms.Label label1;
+        //private System.Windows.Forms.GroupBox groupBox1;
+        //private System.Windows.Forms.GroupBox groupBox2;
+        //private System.Windows.Forms.CheckBox chkAssemblerFile;
+        //private System.Windows.Forms.TextBox txtAssemblerFile;
+        //private System.Windows.Forms.Label label3;
+        //private System.Windows.Forms.CheckBox chkIntermediateFile;
+        //private System.Windows.Forms.TextBox txtInputFile;
+        //private System.Windows.Forms.Button btnBrowseAssemblerFile;
+        //private System.Windows.Forms.TextBox txtIntermediateFile;
+        //private System.Windows.Forms.Button btnBrowseIntermediateFile;
+        //private System.Windows.Forms.Label label4;
+        //private System.Windows.Forms.TextBox txtLoadAddress;
+        //private System.Windows.Forms.Label label5;
+        //private System.Windows.Forms.OpenFileDialog openFileDialog;
 
     }
 }
