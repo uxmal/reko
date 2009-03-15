@@ -80,6 +80,7 @@ namespace Decompiler.Gui.Windows.Controls
                     ToolStripButton btnNew = new ToolStripButton();
                     btnNew.Text = cmi.Text;
                     btnNew.Tag = cmi.MenuCommand;
+                    btnNew.ImageIndex = cmi.ImageIndex;
                     items.Add(btnNew);
                 }
             }
@@ -105,7 +106,6 @@ namespace Decompiler.Gui.Windows.Controls
 
 		public void SetStatusForMenuItems(IList menuItems)
 		{
-			IEnumerator ee = menuItems.GetEnumerator();
 			for (int i = 0; i < menuItems.Count; ++i)
 			{
 				CommandMenuItem item = (CommandMenuItem) menuItems[i];

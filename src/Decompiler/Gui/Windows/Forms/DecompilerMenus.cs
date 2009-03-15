@@ -72,15 +72,17 @@ namespace Decompiler.Gui.Windows.Forms
 			slCtxMemoryControl.Add(0, slGrpMemoryControl);
 			SortedList slGrpToolbarFileOps = CreatePriorityList();
 			slMainToolbar.Add(0, slGrpToolbarFileOps);
+			SortedList slGrpToolbarActions = CreatePriorityList();
+			slMainToolbar.Add(0, slGrpToolbarActions);
     
 			// Create commands in containers.
             
             CommandMenuItem slFileOpen = new CommandMenuItem("_Open", new Guid(CmdSets.Decompiler), CmdIds.FileOpen);
             slFileOpen.IsDynamic = false;
-            
+            slFileOpen.ImageIndex = 0;
             CommandMenuItem slFileSave = new CommandMenuItem("_Save", new Guid(CmdSets.Decompiler), CmdIds.FileSave);
             slFileSave.IsDynamic = false;
-            
+            slFileSave.ImageIndex = 1;
             CommandMenuItem slFileMru = new CommandMenuItem("", new Guid(CmdSets.Decompiler), CmdIds.FileMru);
             slFileMru.IsDynamic = true;
             slGrpFileMru.Add(0, slFileMru);
@@ -134,6 +136,8 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpFile.Add(0, slFileSave);
 			slGrpToolbarFileOps.Add(0, slFileOpen);
 			slGrpToolbarFileOps.Add(0, slFileSave);
+			slGrpToolbarActions.Add(0, slActionNextPhase);
+			slGrpToolbarActions.Add(0, slActionFinishDecompilation);
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);

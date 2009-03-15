@@ -32,9 +32,11 @@ namespace Decompiler.Gui.Windows.Controls
 		private MenuCommand cmd;
 		private bool isDynamic;
 		private bool isTemp;
+        private int imgIndex;
 
 		public CommandMenuItem()
 		{
+            this.imgIndex = -1;
 		}
 
 		public CommandMenuItem(string text)
@@ -48,6 +50,12 @@ namespace Decompiler.Gui.Windows.Controls
 			Text = text.Replace('_', '&');
 			cmd = new MenuCommand(null, new CommandID(cmdSet, cmdId));
 		}
+
+        public int ImageIndex
+        {
+            get { return imgIndex; }
+            set { imgIndex = value; }
+        }
 
 		public bool IsDynamic
 		{

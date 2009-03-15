@@ -55,6 +55,7 @@ namespace Decompiler.Gui.Windows.Forms
             <for-each select="c:cmd[@container]">
             CommandMenuItem sl<value-of select="@id"/> = new CommandMenuItem("<apply-templates/>", new Guid(CmdSets.<value-of select="@cmdSet"/>), CmdIds.<value-of select="@id"/>);
             sl<value-of select="@id"/>.IsDynamic = <call-template name="dynamic"/>;
+            <if test="@image">sl<value-of select="@id"/>.ImageIndex = <value-of select="@image"/>;</if>
             <if test="@container != @id">sl<value-of select="@container"/>.Add(<call-template name="priority"/>, sl<value-of select="@id"/>);</if></for-each>
 			
 			// Create submenus
