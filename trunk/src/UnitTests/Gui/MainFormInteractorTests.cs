@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Gui;
+using Decompiler.WindowsGui;
 using NUnit.Framework;
 using System;
 using System.ComponentModel.Design;

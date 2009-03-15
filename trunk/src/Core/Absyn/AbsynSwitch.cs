@@ -28,6 +28,7 @@ namespace Decompiler.Core.Absyn
 
         public AbsynSwitch(Expression expr)
         {
+            this.expr = expr;
         }
 
         public override void Accept(IAbsynVisitor visitor)
