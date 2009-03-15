@@ -59,6 +59,7 @@ namespace Decompiler.Gui.Windows.Forms
 		public const int GrpHelp = 10 + 1000;
 		public const int GrpMemoryControl = 11 + 1000;
 		public const int GrpToolbarFileOps = 12 + 1000;
+		public const int GrpToolbarActions = 13 + 1000;
 	}
 	
 	public class CmdIds

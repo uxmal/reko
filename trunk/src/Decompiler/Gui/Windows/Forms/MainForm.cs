@@ -147,6 +147,11 @@ namespace Decompiler.Gui.Windows.Forms
             get { return finalPage1; }
         }
 
+        public ImageList ImageList
+        {
+            get { return this.imageList; }
+        }
+
         private class ProgressBarWrapper : IProgressBar
         {
             private ToolStripProgressBar bar;
@@ -181,6 +186,7 @@ namespace Decompiler.Gui.Windows.Forms
 
             #endregion
         }
+
 
     }
 }

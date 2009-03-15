@@ -96,6 +96,8 @@ namespace Decompiler.Gui.Windows.Forms
 
 			DecompilerMenus dm = new DecompilerMenus(this);
 			form.Menu = dm.MainMenu;
+            dm.MainToolbar.Text = "";
+            dm.MainToolbar.ImageList = form.ImageList;
             form.AddToolbar(dm.MainToolbar);
 
             CreateServices(dm);

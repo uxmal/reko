@@ -40,11 +40,13 @@
 	<group id="GrpMemoryControl" cmdSet="Decompiler" container="CtxMemoryControl"/>
 
   <group id="GrpToolbarFileOps" cmdSet="Decompiler" container="MainToolbar" />
+
+  <group id="GrpToolbarActions" cmdSet="Decompiler" container="MainToolbar" />
   
 	<!-- Commands ========================================================== -->
 	
-	<cmd id="FileOpen" cmdSet="Decompiler" container="FileOpen">_Open</cmd>
-	<cmd id="FileSave" cmdSet="Decompiler" container="FileSave">_Save</cmd>
+	<cmd id="FileOpen" cmdSet="Decompiler" container="FileOpen" image="0">_Open</cmd>
+	<cmd id="FileSave" cmdSet="Decompiler" container="FileSave" image="1">_Save</cmd>
 	<cmd id="FileMru"  cmdSet="Decompiler" container="GrpFileMru" dynamic-item-id="2200"/>
 	<cmd id="FileExit" cmdSet="Decompiler" container="GrpFileEnd">E_xit</cmd>
 
@@ -67,6 +69,8 @@
   <placement item="FileSave" container="GrpFile" />
   <placement item="FileOpen" container="GrpToolbarFileOps"/>
   <placement item="FileSave" container="GrpToolbarFileOps"/>
+  <placement item="ActionNextPhase" container="GrpToolbarActions"/>
+  <placement item="ActionFinishDecompilation" container="GrpToolbarActions"/>
 
   <placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
 	<placement item="ViewGoToAddress" container="GrpMemoryControl"/>
