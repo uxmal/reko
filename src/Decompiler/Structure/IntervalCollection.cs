@@ -18,20 +18,20 @@
 
 using Decompiler.Core;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Structure
 {
 	/// <summary>
 	/// Contains information about what blocks are in what interval and vice versa.
 	/// </summary>
-	public class IntervalCollection : ICollection
+	public class IntervalCollection : ICollection<Interval>
 	{
-		private SortedList items;
+		private SortedList<int, Interval> items;
 
 		public IntervalCollection(int initialCapacity)
 		{
-			this.items = new SortedList(initialCapacity);
+            this.items = new SortedList<int, Interval>(initialCapacity);
 		}
 
 		public void Add(Interval i)
@@ -39,34 +39,58 @@ namespace Decompiler.Structure
 			items.Add(i.Header.RpoNumber, i);
 		}
 
+        public bool Remove(Interval i)
+        {
+            return items.Remove(i.Header.RpoNumber);
+        }
 
 		#region ICollection Members
 
 		public bool IsSynchronized
 		{
-			get { return items.IsSynchronized; }
+			get { return false; }
 		}
+
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public void Clear()
+        {
+            items.Clear();
+        }
+
+        public bool Contains(Interval interval)
+        {
+            return items.ContainsKey(interval.Header.RpoNumber);
+        }
 
 		public int Count
 		{
 			get { return items.Count; }
 		}
 
-		public void CopyTo(Array array, int index)
+		public void CopyTo(Interval [] array, int index)
 		{
 			items.Values.CopyTo(array, index);
 		}
 
 		public object SyncRoot
 		{
-			get { return items.SyncRoot; }
+			get { return null; }
 		}
 
 		#endregion
 
 		#region IEnumerable Members
 
-		public IEnumerator GetEnumerator()
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return items.Values.GetEnumerator();
+        }
+
+        public IEnumerator<Interval> GetEnumerator()
 		{
 			return items.Values.GetEnumerator();
 		}

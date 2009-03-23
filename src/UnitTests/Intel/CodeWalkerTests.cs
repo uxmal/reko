@@ -25,7 +25,7 @@ using Decompiler.Core.Types;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using NUnit.Framework;
@@ -156,7 +156,7 @@ namespace Decompiler.UnitTests.Intel
 
 		private class TestCodeWalkerListener : ICodeWalkerListener
 		{
-			private SortedList syscalls = new SortedList();
+            private SortedList<Address, SystemService> syscalls = new SortedList<Address, SystemService>();
 
 			#region ICodeWalkerListener Members
 
@@ -231,7 +231,7 @@ namespace Decompiler.UnitTests.Intel
 
 			#endregion
 
-			public SortedList SystemCalls { get { return syscalls; } }
+			public SortedList<Address,SystemService> SystemCalls { get { return syscalls; } }
 		}
 
 		private void RunAsmTest(string sourceFile, string outputFile, ProcessorMode mode, Address addrBase)

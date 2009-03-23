@@ -23,66 +23,80 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Decompiler.UnitTests.Analysis
 {
-	[TestFixture]
-	public class TrashStorageHelperTests
-	{
-		private Frame frame;
-		private TrashStorageHelper tsh;
+    [TestFixture]
+    public class TrashStorageHelperTests
+    {
+        private Frame frame;
+        private TrashStorageHelper tsh;
+        private TemporaryStorage trash;
 
-		[SetUp]
-		public void Setup()
-		{
-			frame = new Frame(PrimitiveType.Word32);
-			tsh = new TrashStorageHelper();
-		}
+        [SetUp]
+        public void Setup()
+        {
+            frame = new Frame(PrimitiveType.Word32);
+            trash = new TemporaryStorage();
+            tsh = new TrashStorageHelper(trash);
+        }
 
-		[Test]
-		public void TrashIdentifier()
-		{
-			Identifier eax = frame.EnsureRegister(Registers.eax);
-			tsh.Trash(eax, "TRASH");
-			Assert.AreEqual(1, tsh.TrashedRegisters.Count);
-			Assert.AreEqual("TRASH", tsh.TrashedRegisters[eax.Storage]);
-		}
-		
-		[Test]
-		public void CopyIdentifier()
-		{
-			Identifier eax = frame.EnsureRegister(Registers.eax);
-			Identifier ebx = frame.EnsureRegister(Registers.ebx);
-			tsh.Copy(eax, ebx);
-			Assert.AreEqual(1, tsh.TrashedRegisters.Count);
-			Assert.AreEqual("ebx", ((RegisterStorage) tsh.TrashedRegisters[eax.Storage]).Register.Name);
-		}
+        [Test]
+        public void TrashIdentifier()
+        {
+            Identifier eax = frame.EnsureRegister(Registers.eax);
+            tsh.Trash(eax, trash);
+            Assert.AreEqual(1, tsh.TrashedRegisters.Count);
+            Assert.AreSame(trash, tsh.TrashedRegisters[eax.Storage]);
+        }
 
-		[Test]
-		public void TrashSequence()
-		{
-			Identifier es = frame.EnsureRegister(Registers.es);
-			Identifier bx = frame.EnsureRegister(Registers.bx);
-			Identifier es_bx = frame.EnsureSequence(es, bx, PrimitiveType.Pointer32);
-			tsh.Trash(es_bx, "TRASH");
-			Assert.AreEqual("(Register bx:TRASH) (Register es:TRASH) (Sequence es:bx:TRASH) ", Dump(tsh.TrashedRegisters));
-		}
+        [Test]
+        public void CopyIdentifier()
+        {
+            Identifier eax = frame.EnsureRegister(Registers.eax);
+            Identifier ebx = frame.EnsureRegister(Registers.ebx);
+            tsh.Copy(eax, ebx);
+            Assert.AreEqual(1, tsh.TrashedRegisters.Count);
+            Assert.AreEqual("ebx", ((RegisterStorage) tsh.TrashedRegisters[eax.Storage]).Register.Name);
+        }
 
-		private string Dump(Hashtable trash)
-		{
-			StringBuilder sb = new StringBuilder();
-			SortedList sl = new SortedList();
-			foreach (DictionaryEntry de in trash)
-			{
-				sl[de.Key.ToString()] = de.Value.ToString();
-			}
-			foreach (DictionaryEntry de in sl)
-			{
-				sb.AppendFormat("({0}:{1}) ", de.Key, de.Value);
-			}
-			return sb.ToString();
-		}
-	}
+        [Test]
+        public void TrashSequence()
+        {
+            Identifier es = frame.EnsureRegister(Registers.es);
+            Identifier bx = frame.EnsureRegister(Registers.bx);
+            Identifier es_bx = frame.EnsureSequence(es, bx, PrimitiveType.Pointer32);
+            tsh.Trash(es_bx, trash);
+            Assert.AreEqual("(Register bx:TRASH) (Register es:TRASH) (Sequence es:bx:TRASH) ", Dump(tsh.TrashedRegisters));
+        }
+
+        private string Dump(Dictionary<Storage, Storage> trashedRegs)
+        {
+            StringBuilder sb = new StringBuilder();
+            SortedList<Storage, string> sl = new SortedList<Storage, string>(new StorageComparer());
+            foreach (KeyValuePair<Storage, Storage> de in trashedRegs)
+            {
+                sl.Add(de.Key, de.Value != trash ? de.Value.ToString() : "TRASH");
+            }
+            foreach (KeyValuePair<Storage,string> de in sl)
+            {
+                sb.AppendFormat("({0}:{1}) ", de.Key, de.Value);
+            }
+            return sb.ToString();
+        }
+    }
+
+    public class StorageComparer : IComparer<Storage>
+    {
+        #region IComparer Members
+
+        public int Compare(Storage x, Storage y)
+        {
+            return String.Compare(x.ToString(), y.ToString());
+        }
+
+        #endregion
+    }
 }

@@ -37,12 +37,15 @@ namespace Decompiler.Core
         /// <summary>
         /// If this register is a subregister of a wider register, this property the bit offset within that wider register.
         /// </summary>
-        /// <remarks>For instance, on X86 systems, AH would return 8 here.</remarks>
+        /// <remarks>For instance, on i386 systems, AH would return 8 here, since it is located at that bit offset of EAX.</remarks>
 		public virtual int AliasOffset
 		{
 			get { return 0; }
 		}
 
+        /// <summary>
+        /// Returns a number that uniquely identifies this identifier.
+        /// </summary>
 		public int Number
 		{
 			get { return number; }
@@ -64,6 +67,9 @@ namespace Decompiler.Core
 			return -1;
 		}
 
+        /// <summary>
+        /// Returns true if this is an ALU register that supports operations like addition, address dereference and the like.
+        /// </summary>
 		public virtual bool IsAluRegister
 		{
 			get { return true; }

@@ -227,9 +227,12 @@ namespace Decompiler.Analysis
 					int externalOffset = f.ExternalOffset(id);		//$REFACTOR: do this with BindToExternalFrame.
 					if (externalOffset >= startOffset)
 					{
-						Identifier vOld = (Identifier) arguments[externalOffset];
-						if (vOld == null || vOld.DataType.Size < id.DataType.Size)
-							arguments[externalOffset] = id;
+						Identifier vOld;
+                        if (!arguments.TryGetValue(externalOffset, out vOld) ||
+                            vOld.DataType.Size < id.DataType.Size)
+                        {
+                            arguments[externalOffset] = id;
+                        }
 					}
 				}
 			}

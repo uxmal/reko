@@ -40,14 +40,14 @@ namespace Decompiler.Analysis
 		public uint grfOut;							    // each bit corresponds to a condition code register that is live at the end of the block
 		public Dictionary<Storage,int> StackVarsOut;    // stack-based storages that are live at the end of the block.
 		public uint grfTrashedIn;					    // each bit corresnpots to a condition code register that is trashed on entrance.
-		public Hashtable TrashedIn;					    // maps which identifiers are trashed on entrance to the block.
+		public Dictionary<Storage, Storage> TrashedIn;	// maps which identifiers are trashed on entrance to the block.
 
 		public BlockFlow(Block block, BitSet dataOut)
 		{
 			this.Block = block;
 			this.DataOut = dataOut;
 			this.StackVarsOut = new Dictionary<Storage,int>();
-			this.TrashedIn = new Hashtable();
+			this.TrashedIn = new Dictionary<Storage, Storage>();
 		}
 
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)

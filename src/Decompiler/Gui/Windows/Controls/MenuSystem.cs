@@ -104,6 +104,12 @@ namespace Decompiler.Gui.Windows.Controls
 			item.Checked = (cmdStatus.Status & MenuStatus.Checked) != 0;
 		}
 
+        public void SetItemVisibility(ToolStripItem item, CommandStatus cmdStatus)
+        {
+            item.Visible = (cmdStatus.Status & MenuStatus.Visible) != 0;
+            item.Enabled = (cmdStatus.Status & MenuStatus.Enabled) != 0;
+        }
+
 		public void SetStatusForMenuItems(IList menuItems)
 		{
 			for (int i = 0; i < menuItems.Count; ++i)
@@ -147,6 +153,21 @@ namespace Decompiler.Gui.Windows.Controls
 			}
 		}
 
+        public void SetStatusForToolStripItems(ToolStripItemCollection items)
+        {
+            foreach (ToolStripItem i in items)
+            {
+                CommandMenuItem item = (CommandMenuItem) i.Tag;
+                if (item.MenuCommand != null)
+                {
+                    Guid guid = item.MenuCommand.CommandID.Guid;
+                    if (target.QueryStatus(ref guid, item.MenuCommand.CommandID.ID, cmdStatus, cmdText))
+                    {
+                        SetItemVisibility(i, cmdStatus);
+                    }
+                }
+            }
+        }
 		/// <summary>
 		/// Comparer is used to fold items into order according to priority.
 		/// </summary>

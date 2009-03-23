@@ -22,7 +22,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Analysis
@@ -35,18 +35,18 @@ namespace Decompiler.Analysis
 	public class TrashedRegisterFinder : InstructionVisitorBase
 	{
 		private Program prog;
-		private Identifier trash;
 		private ProgramDataFlow flow;
 		private WorkList<Block> worklist;
 		private TrashStorageHelper tsh;
+        private readonly TrashStorage trash;
 		private DecompilerHost decompilerHost;
 
 		public TrashedRegisterFinder(Program prog, ProgramDataFlow flow)
 		{
 			this.prog = prog;
 			this.flow = flow;
-			tsh = new TrashStorageHelper();
-			this.trash = new Identifier("TRASH", -1, PrimitiveType.Void, null);
+            this.trash = new TrashStorage();
+            this.tsh = new TrashStorageHelper(trash);
 			this.worklist = new WorkList<Block>();
 		}
 
@@ -98,19 +98,10 @@ namespace Decompiler.Analysis
 		public void ProcessBlock(Block block)
 		{
 			BlockFlow bf = flow[block];
-			tsh = new TrashStorageHelper((Hashtable) bf.TrashedIn.Clone(), bf.grfTrashedIn);
+			tsh = new TrashStorageHelper(new Dictionary<Storage, Storage>(bf.TrashedIn), bf.grfTrashedIn, trash);
 			foreach (Statement stm in block.Statements)
 			{
 				stm.Instruction.Accept(this);
-//				DumpRegisters();
-//				foreach (object o in this.TrashedRegisters.Keys)
-//				{
-//					RegisterStorage stg = o as RegisterStorage;
-//					if (stg == null)
-//						continue;
-//					System.Diagnostics.Debug.Write(string.Format("{0} ", stg.Register.Name));
-//				}
-//				System.Diagnostics.Debug.WriteLine("");
 			}
 			if (block == block.Procedure.ExitBlock)
 			{
@@ -128,7 +119,7 @@ namespace Decompiler.Analysis
 			ProcedureFlow pf = flow[proc];
 			BitSet tr = prog.Architecture.CreateRegisterBitset();
 			BitSet pr = prog.Architecture.CreateRegisterBitset();
-			foreach (DictionaryEntry de in tsh.TrashedRegisters)
+			foreach (KeyValuePair<Storage,Storage> de in tsh.TrashedRegisters)
 			{
 				RegisterStorage r = de.Key as RegisterStorage;
 				if (r == null)
@@ -177,18 +168,18 @@ namespace Decompiler.Analysis
 			{
 				bool changed = false;
 				BlockFlow sf = flow[s];
-				Hashtable trashed = sf.TrashedIn;
-				foreach (DictionaryEntry de in tsh.TrashedRegisters)
+				Dictionary<Storage,Storage> trashed = sf.TrashedIn;
+				foreach (KeyValuePair<Storage,Storage> de in tsh.TrashedRegisters)
 				{
-					object oldValue = trashed[de.Key];
-					if (oldValue == null)
+					Storage oldValue;
+					if (!trashed.TryGetValue(de.Key, out oldValue))
 					{
 						trashed[de.Key] = de.Value;
 						changed = true;
 					}
-					else if (oldValue != de.Value && oldValue != trash)
+					else if (oldValue != de.Value && oldValue != tsh.TrashedStorage)
 					{
-						trashed[de.Key] = trash;
+						trashed[de.Key] = tsh.TrashedStorage;
 						changed = true;
 					}
 				}
@@ -206,7 +197,7 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		public Hashtable TrashedRegisters
+		public Dictionary<Storage,Storage> TrashedRegisters
 		{
 			get { return tsh.TrashedRegisters; }
 		}
@@ -215,6 +206,11 @@ namespace Decompiler.Analysis
 		{
 			get { return tsh.TrashedFlags; }
 		}
+
+        public Storage TrashedStorage
+        {
+            get { return trash; }
+        } 
 
 		public override void VisitApplication(Application appl)
 		{
@@ -257,5 +253,34 @@ namespace Decompiler.Analysis
 			}
 			tsh.TrashedFlags |= pf.grfTrashed;
 		}
-	}
+
+        /// <summary>
+        /// A "fake" Storage object that indicates that the value of a register is irretrievably lost.
+        /// </summary>
+        private class TrashStorage : Storage
+        {
+            public TrashStorage()
+                : base("Trash")
+            {
+            }
+
+            public override void Accept(StorageVisitor visitor)
+            {
+                throw new Exception("The method or operation is not implemented.");
+            }
+
+            public override int OffsetOf(Storage storage)
+            {
+                throw new Exception("The method or operation is not implemented.");
+            }
+
+            public override void Write(System.IO.TextWriter writer)
+            {
+                writer.Write("TRASH");
+            }
+        }
+
+
+
+    }
 }
