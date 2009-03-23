@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Mocks
 			return null;
 		}
 
-		public BitSet ImplicitParameterRegisters
+		public BitSet ImplicitArgumentRegisters
 		{
 			get { return implicitRegs; }
 		}

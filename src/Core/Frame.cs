@@ -149,13 +149,13 @@ namespace Decompiler.Core
 			return id;
 		}
 
-		public Identifier EnsureOutArgument(Identifier idOrig, PrimitiveType outParameterPointer)
+		public Identifier EnsureOutArgument(Identifier idOrig, PrimitiveType outArgumentPointer)
 		{
 			Identifier idOut = FindOutArgument(idOrig);
 			if (idOut == null)
 			{
 				idOut = new Identifier(idOrig.Name + "Out", identifiers.Count, 
-                    outParameterPointer, new OutArgumentStorage(idOrig));
+                    outArgumentPointer, new OutArgumentStorage(idOrig));
 				identifiers.Add(idOut);
 			}
 			return idOut;

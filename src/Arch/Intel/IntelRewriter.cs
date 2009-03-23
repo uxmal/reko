@@ -1677,8 +1677,8 @@ namespace Decompiler.Arch.Intel
                 proc.Signature.StackDelta = cbBytesPop;
             }
 			proc.Signature.FpuStackDelta = state.FpuStackItems;
-			proc.Signature.FpuStackParameterMax = maxFpuStackRead;
-			proc.Signature.FpuStackOutParameterMax = maxFpuStackWrite;
+			proc.Signature.FpuStackArgumentMax = maxFpuStackRead;
+			proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;
 			Block.AddEdge(emitter.Block, proc.ExitBlock);
 		}
 

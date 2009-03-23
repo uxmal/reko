@@ -92,10 +92,8 @@ namespace Decompiler.UnitTests.Core.Serialization
                 x.Formatting = Formatting.Indented;
                 XmlSerializer ser = new XmlSerializer(ssig.GetType());
                 ser.Serialize(x, ssig);
-
                 fut.AssertFilesEqual();
             }
         }
-
     }
 }

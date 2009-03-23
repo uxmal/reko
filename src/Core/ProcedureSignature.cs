@@ -109,7 +109,7 @@ namespace Decompiler.Core
             if ((f & EmitFlags.LowLevelInfo) == EmitFlags.LowLevelInfo)
             {
                 fmt.WriteLine();
-                fmt.Write("// stackDelta: {0}; fpuStackDelta: {1}; fpuMaxParam: {2}", stackDelta, FpuStackDelta, FpuStackParameterMax);
+                fmt.Write("// stackDelta: {0}; fpuStackDelta: {1}; fpuMaxParam: {2}", stackDelta, FpuStackDelta, FpuStackArgumentMax);
                 fmt.WriteLine();
             }
         }
@@ -139,7 +139,7 @@ namespace Decompiler.Core
 		/// <summary>
 		/// The index of the 'deepest' FPU stack argument written. -1 means no stack parameters are used.
 		/// </summary>
-		public int FpuStackOutParameterMax
+		public int FpuStackOutArgumentMax
 		{
 			get { return fpuStackWriteMax; }
 			set { fpuStackWriteMax = value; }
@@ -148,7 +148,7 @@ namespace Decompiler.Core
 		/// <summary>
 		/// The index of the 'deepest' FPU stack argument used. -1 means no stack parameters are used.
 		/// </summary>
-		public int FpuStackParameterMax
+		public int FpuStackArgumentMax
 		{
 			get { return fpuStackMax; }
 			set { fpuStackMax = value; }

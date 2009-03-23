@@ -23,9 +23,6 @@ namespace Decompiler.Core.Operators
 {
 	/// <summary>
 	/// Unsigned multiplication. 
-    ///$TODO: we should avoid MULU/MULS, and instead make the result of the operation unsigned. Type
-    /// reconstruction will propagate the unsignedness to the parameters of the mul. That is: when encountering an unsugned
-    /// multiply of a by b, the resulting code should be a * b, where the datatype of [[a * b]] is uint32.
 	/// </summary>
 	public class MuluOperator : MulOperator
 	{

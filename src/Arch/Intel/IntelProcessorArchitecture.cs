@@ -314,7 +314,7 @@ namespace Decompiler.Arch.Intel
 			return r;
 		}
 
-		public BitSet ImplicitParameterRegisters
+		public BitSet ImplicitArgumentRegisters
 		{
 			get { return implicitRegs; }
 		}
