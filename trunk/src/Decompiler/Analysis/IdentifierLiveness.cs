@@ -68,6 +68,12 @@ namespace Decompiler.Analysis
 			id.Storage.Accept(this);
 		}
 
+        /// <summary>
+        /// Marks this identifier as being used.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="bitOffset">Starting bit position in the identifier being used.</param>
+        /// <param name="cbits">Number of bits being used.</param>
 		public void Use(Identifier id, int bitOffset, int cbits)
 		{
 			define = false;

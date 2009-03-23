@@ -32,7 +32,14 @@ namespace Decompiler.UnitTests.Core
 		private TypeFormatter tyfo;
 		private string nl = Environment.NewLine;
 
-		[Test]
+        [SetUp]
+        public void SetUp()
+        {
+            sw = new StringWriter();
+            tyfo = new TypeFormatter(new Formatter(sw), false);
+        }
+        
+        [Test]
 		public void TyfoInt()
 		{
 			DataType dt = PrimitiveType.Int32;
@@ -175,11 +182,23 @@ struct a {
             Assert.AreEqual("b * pb", sw.ToString());
         }
 
-		[SetUp]
-		public void SetUp()
-		{
-			sw = new StringWriter();
-            tyfo = new TypeFormatter(new Formatter(sw), false);
-		}
+        [Test]
+        public void TyfoMemberPointerMembers()
+        {
+            StructureType seg = new StructureType("seg", 0);
+
+            StructureType s = new StructureType("s", 0);
+            s.Fields.Add(
+                42,
+                new MemberPointer(seg, PrimitiveType.Word32, 2));
+
+            tyfo.Write(s, "meeble");
+            string sExp = @"struct s {
+	word32 seg::*ptr002A;	// 2A
+} meeble";
+
+            Console.WriteLine(sw.ToString());
+            Assert.AreEqual(sExp, sw.ToString());
+        }
 	}
 }

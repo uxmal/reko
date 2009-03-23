@@ -241,11 +241,17 @@ namespace Decompiler.Core.Output
 			string oldName = name;
 			name = null;
 			memptr.Pointee.Accept(this);
-			writer.Write(" ");
-			writer.Write(baseType.Name);
-			writer.Write("::*");
+            if (mode == Mode.Writing)
+            {
+                writer.Write(" ");
+                writer.Write(baseType.Name);
+                writer.Write("::*");
+            }
 			name = oldName;
-			WriteName(false);
+            if (mode == Mode.Writing)
+            {
+                WriteName(false);
+            }
 		}
 
 		public void VisitPointer(Pointer pt)

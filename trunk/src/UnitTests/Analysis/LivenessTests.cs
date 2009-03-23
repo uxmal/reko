@@ -19,10 +19,10 @@
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Analysis
 
 	public class FakeLiveness : Liveness
 	{
-		private Hashtable h = new Hashtable();
+		private HashSet<Identifier> h = new HashSet<Identifier>();
 
 		public override void Def(Identifier id)
 		{
@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		public override void Use(Identifier id)
 		{
-			h[id] = id;
+            h.Add(id);
 		}
 
 	}

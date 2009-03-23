@@ -19,32 +19,33 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
 	public class TrashStorageHelper : StorageVisitor
 	{
 		private uint grfDefs;
-		private Hashtable regDefs;
+		private Dictionary<Storage, Storage> regDefs;
 		private bool defining;
-		private object value;
+		private Storage value;
+		private readonly Storage trash;
 
-		public TrashStorageHelper()
+		public TrashStorageHelper(Storage trash) : this(new Dictionary<Storage, Storage>(), 0, trash)
 		{
-			this.regDefs = new Hashtable();
 		}
 
 
-		public TrashStorageHelper(Hashtable defs, uint grfDefs)
+		public TrashStorageHelper(Dictionary<Storage,Storage> defs, uint grfDefs, Storage trash)
 		{
 			this.regDefs = defs;
 			this.grfDefs = grfDefs;
+            this.trash = trash;
 		}
 
 		public TrashStorageHelper Clone()
 		{
-			return new TrashStorageHelper((Hashtable) regDefs.Clone(), grfDefs);
+			return new TrashStorageHelper(new Dictionary<Storage,Storage>(), grfDefs, trash);
 		}
 
 		public void Copy(Identifier dst, Identifier src)
@@ -57,14 +58,20 @@ namespace Decompiler.Analysis
 			Trash(dst, value);
 		}
 
-		public void Trash(Identifier dst, object v)
+        public Storage TrashedStorage
+        {
+            get { return trash; }
+        }
+
+		public void Trash(Identifier dst, Storage v)
 		{
 			defining = true;
 			value = v;
 			dst.Storage.Accept(this);
 		}
 
-		public Hashtable TrashedRegisters
+
+		public Dictionary<Storage,Storage> TrashedRegisters
 		{
 			get { return regDefs; }
 		}
@@ -85,10 +92,13 @@ namespace Decompiler.Analysis
 
 		public void VisitFpuStackStorage(FpuStackStorage fpu)
 		{
-			if (defining)
-				regDefs[fpu] = value;
-			else
-				value = regDefs[fpu];
+            if (defining)
+                regDefs[fpu] = value;
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(fpu, out value);
+            }
 		}
 
 		public void VisitMemoryStorage(MemoryStorage global)
@@ -103,12 +113,15 @@ namespace Decompiler.Analysis
 
 		public void VisitRegisterStorage(RegisterStorage reg)
 		{
-			if (defining)
-			{
-				regDefs[reg] = value;
-			}
-			else
-				value = regDefs[reg];
+            if (defining)
+            {
+                regDefs[reg] = value;
+            }
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(reg, out value);
+            }
 		}
 
 		public void VisitSequenceStorage(SequenceStorage seq)
@@ -127,28 +140,38 @@ namespace Decompiler.Analysis
 
 		public void VisitStackArgumentStorage(StackArgumentStorage stack)
 		{
-			if (defining)
-				regDefs[stack] = value;
-			else
-				value = regDefs[stack];
+            if (defining)
+                regDefs[stack] = value;
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(stack, out value);
+            }
 		}
 
 		public void VisitStackLocalStorage(StackLocalStorage local)
 		{
-			if (defining)
-				regDefs[local] = value;
-			else
-				value = regDefs[local];
+            if (defining)
+                regDefs[local] = value;
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(local, out value);
+            }
 		}
 
 		public void VisitTemporaryStorage(TemporaryStorage temp)
 		{
-			if (defining)
-				regDefs[temp] = value;
-			else
-				value = regDefs[temp];
+            if (defining)
+                regDefs[temp] = value;
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(temp, out value);
+            }
 		}
 
 		#endregion
-	}
+
+    }
 }

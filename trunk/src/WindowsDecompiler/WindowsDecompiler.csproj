@@ -76,15 +76,24 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms">
       <Name>System.Windows.Forms</Name>
     </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Driver.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Froz.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froz.Designer.cs">
+      <DependentUpon>Froz.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +111,12 @@
       <Project>{7A9440A2-7692-4F74-BFFE-23741DE81C61}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Froz.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Froz.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -21,9 +21,8 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using System;
 using System.Diagnostics;
-using System.Collections;
-using BitSet = Decompiler.Core.Lib.BitSet;
 using System.Collections.Generic;
+using BitSet = Decompiler.Core.Lib.BitSet;
 
 namespace Decompiler.Analysis
 {
@@ -611,6 +610,12 @@ namespace Decompiler.Analysis
 
 			public abstract void ApplySavedRegisters(ProcedureFlow procFlow, IdentifierLiveness varLive);
 
+            /// <summary>
+            /// Merges the liveness information accumulated in <paramref name="varLive"/> into <paramref name="blockFlow"/>
+            /// </summary>
+            /// <param name="varLive">Current liveness state</param>
+            /// <param name="blockFlow">liveness information associated with a block</param>
+            /// <returns>Return true if merging the livness information changed the information in the block flow.</returns>
 			public virtual bool MergeBlockInfo(IdentifierLiveness varLive, BlockFlow blockFlow)
 			{
 				bool ret = false;
@@ -624,10 +629,10 @@ namespace Decompiler.Analysis
 					blockFlow.grfOut |= varLive.Grf;
 					ret = true;
 				}
-				IDictionary dict = blockFlow.StackVarsOut;
+				IDictionary<Storage, int> dict = blockFlow.StackVarsOut;
 				foreach (KeyValuePair<Storage,int> de in varLive.LiveStorages)
 				{
-					if (!dict.Contains(de.Key))
+					if (!dict.ContainsKey(de.Key))
 					{
 						dict.Add(de.Key, de.Value);
 						ret = true;
