@@ -23,7 +23,11 @@ using System.IO;
 namespace Decompiler.Core
 {
 	using BitSet = Decompiler.Core.Lib.BitSet;
+    
 
+    /// <summary>
+    /// Abstraction of a CPU architecture.
+    /// </summary>
 	public interface IProcessorArchitecture
 	{
 		Assembler CreateAssembler();
@@ -47,7 +51,7 @@ namespace Decompiler.Core
 		/// Typically, the stack pointer register is one of these registers. Some architectures define
 		/// global registers that are preserved across calls; these should also be present in this set.
 		/// </remarks>
-		BitSet ImplicitParameterRegisters { get; }
+		BitSet ImplicitArgumentRegisters { get; }
 
 		string GrfToString(uint grf);
 

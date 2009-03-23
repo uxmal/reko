@@ -443,6 +443,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\ArgumentSerializer.cs" />
+    <Compile Include="Serialization\ArraySizeCharacteristic.cs" />
     <Compile Include="Serialization\DecompilerInput.cs">
       <SubType>Code</SubType>
     </Compile>

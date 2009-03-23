@@ -116,7 +116,7 @@ namespace Decompiler.Arch.Pdp11
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public BitSet ImplicitParameterRegisters
+        public BitSet ImplicitArgumentRegisters
         {
             get { throw new Exception("The method or operation is not implemented."); }
         }

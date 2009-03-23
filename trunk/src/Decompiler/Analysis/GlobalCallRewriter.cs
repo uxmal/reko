@@ -175,7 +175,7 @@ namespace Decompiler.Analysis
 				sb.AddFlagGroupReturnValue(flow.grfLiveOut, frame);
 			}
 
-			BitSet mayUse = flow.MayUse - prog.Architecture.ImplicitParameterRegisters;
+			BitSet mayUse = flow.MayUse - prog.Architecture.ImplicitArgumentRegisters;
 			foreach (int r in mayUse)
 			{
 				if (!IsSubRegisterOfRegisters(r, mayUse))
@@ -194,7 +194,7 @@ namespace Decompiler.Analysis
 				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
-			BitSet liveOut = flow.LiveOut - prog.Architecture.ImplicitParameterRegisters;
+			BitSet liveOut = flow.LiveOut - prog.Architecture.ImplicitArgumentRegisters;
 			foreach (int r in liveOut)
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
@@ -206,7 +206,7 @@ namespace Decompiler.Analysis
             foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, -proc.Signature.FpuStackDelta))
 			{
 				int i = de.Key;
-				if (i <= proc.Signature.FpuStackOutParameterMax)
+				if (i <= proc.Signature.FpuStackOutArgumentMax)
 				{
 					sb.AddArgument(frame.EnsureFpuStackVariable(i, de.Value.DataType), true);
 				}

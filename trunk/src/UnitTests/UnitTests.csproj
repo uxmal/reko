@@ -106,6 +106,7 @@
     <Compile Include="Core\RegisterTests.cs" />
     <Compile Include="Core\RelocationDictionaryTests.cs" />
     <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
+    <Compile Include="Core\Serialization\ProcedureCharacteristicsTests.cs" />
     <Compile Include="Core\Serialization\SerializedArgumentTests.cs" />
     <Compile Include="Core\Serialization\SerializedCallTests.cs" />
     <Compile Include="Core\Serialization\SerializedLibraryTests.cs" />
