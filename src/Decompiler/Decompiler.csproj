@@ -248,7 +248,6 @@
     <Compile Include="Analysis\SsaTransform.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\StackVariableMap.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder.cs" />
     <Compile Include="Analysis\TrashedStorageHelper.cs" />
     <Compile Include="Analysis\ValueNumbering.cs">
