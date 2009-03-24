@@ -172,6 +172,11 @@ namespace Decompiler.Core
 			return Constant.FloatFromBitpattern(bits);
 		}
 
+        public static int ReadBeInt32(byte[] abImage, int off)
+        {
+            return (int) ReadBeUint32(abImage, off);
+        }
+
 		public static int ReadLeInt32(byte [] abImage, int off)
 		{
 			int u = abImage[off] | 
@@ -195,6 +200,16 @@ namespace Decompiler.Core
 		{
 			return (uint) ReadLeInt32(abImage, addr - addrBase);
 		}
+
+        public static uint ReadBeUint32(byte[] abImage, int off)
+        {
+            uint u =
+                ((uint) abImage[off] << 24) |
+                ((uint) abImage[off + 1] << 16) |
+                ((uint) abImage[off + 2] << 8) |
+                abImage[off + 3];
+            return u;
+        }
 
 		public static uint ReadLeUint32(byte [] img, int off)
 		{
@@ -231,5 +246,6 @@ namespace Decompiler.Core
 			abImage[offset + 3] = (byte) (dw >> 24);
 		}
 
-	}
+
+    }
 }

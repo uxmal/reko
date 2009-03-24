@@ -82,11 +82,11 @@ namespace Decompiler.Arch.Intel.Assembler
 		{
 			offset = null;
 			reg <<= 3;
-			if (memOp.Base != Registers.None || memOp.Index != Registers.None)
+			if (memOp.Base != MachineRegister.None || memOp.Index != MachineRegister.None)
 			{
 				PrimitiveType baseWidth = memOp.Base.DataType;
 				PrimitiveType indexWidth = memOp.Index.DataType;
-				if (memOp.Base != Registers.None && memOp.Index != Registers.None)
+				if (memOp.Base != MachineRegister.None && memOp.Index != MachineRegister.None)
 				{
 					if (baseWidth != indexWidth)
 					{
@@ -120,7 +120,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				}
 				else if (baseWidth == PrimitiveType.Word32 || indexWidth == PrimitiveType.Word32)
 				{
-					if (memOp.Index == Registers.None)
+					if (memOp.Index == MachineRegister.None)
 					{
 						if (memOp.Base != Registers.esp)
 						{
@@ -151,7 +151,7 @@ namespace Decompiler.Arch.Intel.Assembler
 						default: OnError("Scale factor must be 1, 2, 4, or 8"); return Constant.Invalid;
 						}
 
-						if (memOp.Base == Registers.None)
+						if (memOp.Base == MachineRegister.None)
 						{
 							sib |= 0x05;
 							reg &= ~0xC0;			// clear mod part of modRM.
@@ -192,7 +192,7 @@ namespace Decompiler.Arch.Intel.Assembler
 		public int Get16AddressingModeMask(MemoryOperand memOp)
 		{
 			int mask = (1 << memOp.Base.Number);
-			if (memOp.Index != Registers.None)
+			if (memOp.Index != MachineRegister.None)
 			{
 				mask |= (1 << memOp.Index.Number);
 			}

@@ -555,7 +555,7 @@ namespace Decompiler.Arch.Intel
 						break;
 					case Opcode.leave:
 					{
-						IntelRegister fp = state.FrameRegister;
+						MachineRegister fp = state.FrameRegister;
 						state.LeaveFrame();
 						EmitPop(fp);
 						break;
@@ -596,7 +596,7 @@ namespace Decompiler.Arch.Intel
 						}
 						else if (IsStackRegister(instrCur.op1) && IsBpRegister(instrCur.op2))
 						{
-							if (state.FrameRegister != Registers.None)
+							if (state.FrameRegister != MachineRegister.None)
 							{
 								state.LeaveFrame();
 							}
@@ -1017,7 +1017,7 @@ namespace Decompiler.Arch.Intel
 		/// <param name="src"></param>
 		/// <param name="forceBreak">if true, forcibly splits the assignments in two if the destination is a memory store.</param>
 		/// <returns></returns>
-		public Assignment EmitCopy(Operand opDst, Expression src, bool forceBreak)
+		public Assignment EmitCopy(MachineOperand opDst, Expression src, bool forceBreak)
 		{
 			Expression dst = SrcOp(opDst);
 			Identifier idDst = dst as Identifier;
@@ -1045,7 +1045,7 @@ namespace Decompiler.Arch.Intel
 			return ass;
 		}
 
-		public Assignment EmitBinOp(BinaryOperator binOp, Operand dst, DataType dtDst, Operand left, Expression right)
+		public Assignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, MachineOperand left, Expression right)
 		{
 			Expression eLeft = SrcOp(left);
 			Constant c = right as Constant;
@@ -1060,23 +1060,23 @@ namespace Decompiler.Arch.Intel
 			return EmitCopy(dst, new BinaryExpression(binOp, dtDst, eLeft, right), true);
 		}
 
-		public Assignment EmitBinOp(BinaryOperator binOp, Operand dst, DataType dtDst, Operand left, Operand right)
+		public Assignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, MachineOperand left, MachineOperand right)
 		{
 			return EmitBinOp(binOp, dst, dtDst, left, SrcOp(right));
 		}
 
-		private void EmitBranchInstruction(FlagM usedFlags, ConditionCode cc, Operand opTarget)
+		private void EmitBranchInstruction(FlagM usedFlags, ConditionCode cc, MachineOperand opTarget)
 		{
 			EmitBranchInstruction(new TestCondition(cc, orw.FlagGroup(usedFlags)), opTarget);
 		}
 
-		private void EmitBranchInstruction(Identifier idFlag, ConditionCode cc, Operand opTarget)
+		private void EmitBranchInstruction(Identifier idFlag, ConditionCode cc, MachineOperand opTarget)
 		{
 			EmitBranchInstruction(new TestCondition(cc, idFlag), opTarget);
 		}
 
 		
-        private Block EmitBranchInstruction(Expression branchCondition, Operand opTarget)
+        private Block EmitBranchInstruction(Expression branchCondition, MachineOperand opTarget)
         {
             // The first (0'th) branch is the path taken when "falling through"
             // a conditional expression.
@@ -1429,7 +1429,7 @@ namespace Decompiler.Arch.Intel
 		{
 			Expression src;
 			MemoryOperand mem = (MemoryOperand) instrCur.op2;
-			if (mem.Base == Registers.None && mem.Index == Registers.None)
+			if (mem.Base == MachineRegister.None && mem.Index == MachineRegister.None)
 			{																			   
 				src = mem.Offset;
 			}
@@ -1544,14 +1544,14 @@ namespace Decompiler.Arch.Intel
 			return ass;
 		}
 
-		private void EmitPop(IntelRegister reg)
+		private void EmitPop(MachineRegister reg)
 		{
 			EmitPop(new RegisterOperand(reg), reg.DataType);
 		}
 
 		// A pop is a move from a temporary register to a register, with
 		// the side effect that the temporary register is destroyed.
-		private void EmitPop(Operand op, PrimitiveType width)
+		private void EmitPop(MachineOperand op, PrimitiveType width)
 		{
 			Identifier local = frame.EnsureStackLocal(-state.StackBytes, width);
 			RegisterOperand reg = op as RegisterOperand;
@@ -1574,7 +1574,7 @@ namespace Decompiler.Arch.Intel
 			EmitPush(reg.DataType, orw.AluRegister(reg));
 		}
 
-		private void EmitPush(PrimitiveType width, Operand op)
+		private void EmitPush(PrimitiveType width, MachineOperand op)
 		{
 			EmitPush(width, SrcOp(op));
 		}
@@ -1728,7 +1728,7 @@ namespace Decompiler.Arch.Intel
 
 		/// Emits an appropriate set condition code.
 		
-		private void EmitSet(Operand opDst, ConditionCode cc, FlagM useFlags)
+		private void EmitSet(MachineOperand opDst, ConditionCode cc, FlagM useFlags)
 		{
 			EmitCopy(opDst, new TestCondition(cc, orw.FlagGroup(useFlags)), false);
 		}
@@ -1747,7 +1747,7 @@ namespace Decompiler.Arch.Intel
 			emitter.Emit(new SwitchInstruction(orw.AluRegister(register), jumps));
 		}
 
-		private Expression EmitUnaryOperator(UnaryOperator op, Operand opDst, Operand opSrc)
+		private Expression EmitUnaryOperator(UnaryOperator op, MachineOperand opDst, MachineOperand opSrc)
 		{
 			Expression src = SrcOp(opSrc);
 			if (src is MemoryAccess)
@@ -1771,7 +1771,7 @@ namespace Decompiler.Arch.Intel
 			return orw.FpuRegister(reg, state);
 		}
 
-		private Procedure GetProcedureFromInstructionAddr(Operand op, int cbReturnAddress, bool fSameProc)
+		private Procedure GetProcedureFromInstructionAddr(MachineOperand op, int cbReturnAddress, bool fSameProc)
 		{
 			Address addr = orw.OperandAsCodeAddress(op, state);
 			Procedure p = host.GetProcedureAtAddress(addr, cbReturnAddress);
@@ -1785,31 +1785,31 @@ namespace Decompiler.Arch.Intel
 			return null;
 		}
 
-		private bool IsBpRegister(Operand op)
+		private bool IsBpRegister(MachineOperand op)
 		{
 			RegisterOperand reg = op as RegisterOperand;
 			return reg != null && IsBpRegister(reg.Register);
 		}
 
-		private bool IsBpRegister(IntelRegister reg)
+		private bool IsBpRegister(MachineRegister reg)
 		{
 			return (reg == Registers.bp || reg == Registers.ebp);
 		}
 
-		private bool IsSameRegister(Operand op1, Operand op2)
+		private bool IsSameRegister(MachineOperand op1, MachineOperand op2)
 		{
 			RegisterOperand r1 = op1 as RegisterOperand;
 			RegisterOperand r2 = op2 as RegisterOperand;
 			return (r1 != null && r2 != null && r1.Register == r2.Register);
 		}
 
-		private bool IsStackRegister(Operand op)
+		private bool IsStackRegister(MachineOperand op)
 		{
 			RegisterOperand reg = op as RegisterOperand;
 			return (reg != null && IsStackRegister(reg.Register));
 		}
 
-		private bool IsStackRegister(IntelRegister reg)
+		private bool IsStackRegister(MachineRegister reg)
 		{
 			return (reg == Registers.sp || reg == Registers.esp);
 		}
@@ -1822,7 +1822,7 @@ namespace Decompiler.Arch.Intel
 				return e;
 		}
 
-		public void RewriteCall(Operand callTarget, PrimitiveType returnAddressSize)
+		public void RewriteCall(MachineOperand callTarget, PrimitiveType returnAddressSize)
 		{
 			Address addr = orw.OperandAsCodeAddress(callTarget, state);
 			if (addr != null)
@@ -1950,12 +1950,12 @@ namespace Decompiler.Arch.Intel
 			return null;
 		}
 
-		private Expression SrcOp(Operand opSrc)
+		private Expression SrcOp(MachineOperand opSrc)
 		{
 			return orw.Transform(opSrc, opSrc.Width, instrCur.addrWidth, state);
 		}
 
-		private Expression SrcOp(Operand opSrc, PrimitiveType dstWidth)
+		private Expression SrcOp(MachineOperand opSrc, PrimitiveType dstWidth)
 		{
 			return orw.Transform(opSrc, dstWidth, instrCur.addrWidth, state);
 		}

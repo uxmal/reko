@@ -65,7 +65,7 @@ namespace Decompiler.Arch.Intel
 				}		
 				else
 				{
-					return Registers.None;
+					return MachineRegister.None;
 				}
 			} 
 			else if (immSrc != null)
@@ -76,7 +76,7 @@ namespace Decompiler.Arch.Intel
 				return regIdx;
 			}
 			else
-				return Registers.None;
+				return MachineRegister.None;
 		}
 
 		public MachineRegister BackwalkInstructions(
@@ -104,7 +104,7 @@ namespace Decompiler.Arch.Intel
 				case Opcode.adc:
 					if (ropDst != null && ropDst.Register == regIdx)
 					{
-						return Registers.None;
+						return MachineRegister.None;
 					}
 					break;
 				case Opcode.and:
@@ -117,7 +117,7 @@ namespace Decompiler.Arch.Intel
 						}
 						else
 						{
-							regIdx = Registers.None;
+							regIdx = MachineRegister.None;
 						}
 						return regIdx;
 					}
@@ -152,11 +152,11 @@ namespace Decompiler.Arch.Intel
 							if (ropSrc != null)
 								regIdx = ropSrc.Register;
 							else
-								regIdx = Registers.None;	// haven't seen an immediate compare yet.
+								regIdx = MachineRegister.None;	// haven't seen an immediate compare yet.
 						}
 						else if (ropDst.Register == regIdx.GetSubregister(0, 8) &&
 							memSrc != null && memSrc.Offset != null &&
-							memSrc.Base != Registers.None)
+							memSrc.Base != MachineRegister.None)
 						{
 							operations.Add(new BackwalkDereference(memSrc.Offset.ToInt32(), memSrc.Scale));
 							regIdx = memSrc.Base;
@@ -168,14 +168,14 @@ namespace Decompiler.Arch.Intel
 					{
 						if (memSrc != null)
 						{
-							return Registers.None;
+							return MachineRegister.None;
 						}
 					}
 					break;
 				case Opcode.pop:
 					if (ropDst != null && ropDst.Register == regIdx)
 					{
-						return Registers.None;
+						return MachineRegister.None;
 					}
 					break;
 				case Opcode.push:
@@ -188,11 +188,11 @@ namespace Decompiler.Arch.Intel
 							operations.Add(new BackwalkOperation(BackwalkOperator.mul, 1<<immSrc.Value.ToInt32()));
 						}
 						else
-							return Registers.None;
+							return MachineRegister.None;
 					}
 					break;
 				case Opcode.test:
-					return Registers.None;
+					return MachineRegister.None;
 				case Opcode.xchg:
 					if (ropDst != null && ropSrc != null)
 					{
@@ -204,7 +204,7 @@ namespace Decompiler.Arch.Intel
 					}
 					else
 					{
-						regIdx = Registers.None;
+						regIdx = MachineRegister.None;
 					}
 					break;
 				case Opcode.xor:
@@ -221,7 +221,7 @@ namespace Decompiler.Arch.Intel
 					DumpInstructions(instrs, i);
 					break;
 				}
-				if (regIdx == Registers.None)
+				if (regIdx == MachineRegister.None)
 					break;
 			}
 			return regIdx;
@@ -229,11 +229,11 @@ namespace Decompiler.Arch.Intel
 
 		public MachineRegister FindIndexRegister(MemoryOperand mem)
 		{
-			if (mem.Base != Registers.None)
+			if (mem.Base != MachineRegister.None)
 			{
-				if (mem.Index != Registers.None)
+				if (mem.Index != MachineRegister.None)
 				{
-					return Registers.None; // Address expression too complex. //$REVIEW: Emit warning and barf.
+					return MachineRegister.None; // Address expression too complex. //$REVIEW: Emit warning and barf.
 				}
 				return mem.Base;
 			}
@@ -257,7 +257,7 @@ namespace Decompiler.Arch.Intel
 				throw new ArgumentException("Expected an indirect JMP or CALL");
 
 			MachineRegister regIdx = FindIndexRegister(mem);
-			if (regIdx == Registers.None)
+			if (regIdx == MachineRegister.None)
 				return null;
 
             List<BackwalkOperation> operations = new List<BackwalkOperation>();
@@ -270,7 +270,7 @@ namespace Decompiler.Arch.Intel
 			returnToCaller = false;
 
 			regIdx = BackwalkInstructions(regIdx, instrs, instrs.Count - 2, operations);
-			if (regIdx == Registers.None)
+			if (regIdx == MachineRegister.None)
 			{
 				return null;	// unable to find guard. //$REVIEW: return warning.
 			}
@@ -284,7 +284,7 @@ namespace Decompiler.Arch.Intel
 
 				instrs = DisassembleRange(range.Begin, range.End, false);
 				regIdx = BackwalkInstructions(regIdx, instrs, instrs.Count - 1, operations);
-				if (regIdx == Registers.None)
+				if (regIdx == MachineRegister.None)
 				{
 					return null;
 				}

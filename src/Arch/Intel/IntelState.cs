@@ -55,7 +55,7 @@ namespace Decompiler.Arch.Intel
 				return null;
 		}
 
-		public Address AddressFromSegReg(MachineRegister seg, IntelRegister reg)
+		public Address AddressFromSegReg(MachineRegister seg, MachineRegister reg)
 		{
 			Constant c = GetV(reg);
 			if (c.IsValid)

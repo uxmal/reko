@@ -249,12 +249,12 @@ namespace Decompiler.Arch.Intel.Assembler
 		{
 			OperandParser opp = new OperandParser(lexer, symtab, addrBase, emitter.SegmentDataWidth, emitter.SegmentAddressWidth);
             List<ParsedOperand> ops = new List<ParsedOperand>();
-			emitter.SegmentOverride = Registers.None;
+			emitter.SegmentOverride = MachineRegister.None;
 			emitter.AddressWidth = emitter.SegmentAddressWidth;
 			if (lexer.PeekToken() != Token.EOL)
 			{
 				ops.Add(opp.ParseOperand());
-				if (opp.SegmentOverride != Registers.None)
+				if (opp.SegmentOverride != MachineRegister.None)
 					emitter.SegmentOverride = opp.SegmentOverride;
 				if (opp.AddressWidth != null)
 					emitter.AddressWidth = opp.AddressWidth;
@@ -264,9 +264,9 @@ namespace Decompiler.Arch.Intel.Assembler
 					lexer.DiscardToken();
 					opp.DataWidth = ops[0].Operand.Width;
 					ops.Add(opp.ParseOperand());
-					if (opp.SegmentOverride != Registers.None)
+					if (opp.SegmentOverride != MachineRegister.None)
 					{
-						if (emitter.SegmentOverride != Registers.None)
+						if (emitter.SegmentOverride != MachineRegister.None)
 							Error("Can't have two segment overrides in one instruction");
 						emitter.SegmentOverride = opp.SegmentOverride;
 					}
@@ -322,7 +322,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			return (reg == Registers.eax || reg == Registers.ax || reg == Registers.al) ? 1 : 0;
 		}
 
-		private int IsWordWidth(Operand op)
+		private int IsWordWidth(MachineOperand op)
 		{
 			return IsWordWidth(op.Width);
 		}
@@ -1650,8 +1650,8 @@ namespace Decompiler.Arch.Intel.Assembler
 			RegisterOperand regOp = ops[0].Operand as RegisterOperand;
 			if (regOp != null)
 			{
-				//		AdjustWidthToRegisterWidth(op);
-				if (regOp.Register.IsBaseRegister)
+                IntelRegister rrr = (IntelRegister) regOp.Register;
+				if (rrr.IsBaseRegister)
 				{
 					emitter.EmitOpcode(0x50 | (fPop ? 8 : 0) | RegisterEncoding(regOp.Register), dataWidth);
 				}

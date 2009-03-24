@@ -17,29 +17,30 @@
  */
 
 using System;
+using Decompiler.Core;
 
 namespace Decompiler.Arch.Intel.Assembler
 {
 	public class ParsedOperand
 	{
-		private Operand op;
+		private MachineOperand op;
 		private Symbol sym;
 		private bool longJmp;
 
-		public ParsedOperand(Operand op, Symbol sym, bool l)
+		public ParsedOperand(MachineOperand op, Symbol sym, bool l)
 		{
 			this.op = op;
 			this.sym = sym;
 			this.longJmp = l;
 		}
 
-		public ParsedOperand(Operand op, Symbol sym)
+		public ParsedOperand(MachineOperand op, Symbol sym)
 		{
 			this.op = op;
 			this.sym = sym;
 		}
 
-		public ParsedOperand(Operand op)
+		public ParsedOperand(MachineOperand op)
 		{
 			this.op = op;
 			this.sym = null;
@@ -50,7 +51,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			get { return longJmp; }
 		}
 
-		public Operand Operand
+		public MachineOperand Operand
 		{
 			get { return op; }
 		}

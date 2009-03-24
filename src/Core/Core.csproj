@@ -342,6 +342,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MachineInstruction.cs" />
+    <Compile Include="MachineOperand.cs" />
     <Compile Include="MachineRegister.cs">
       <SubType>Code</SubType>
     </Compile>

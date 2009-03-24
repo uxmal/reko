@@ -22,13 +22,13 @@ using Decompiler.Core.Types;
 using System;
 using System.Text;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Core
 {
-	public abstract class Operand
+	public abstract class MachineOperand
 	{
 		public PrimitiveType Width;
 
-		protected Operand(PrimitiveType width)
+		protected MachineOperand(PrimitiveType width)
 		{
 			Width = width;
 		}
@@ -70,24 +70,17 @@ namespace Decompiler.Arch.Intel
 	}
 
 
-	public interface OperandVisitor
+	public class RegisterOperand : MachineOperand
 	{
-		void VisitRegisterOperand(RegisterOperand regOp);
-		void VisitImmediateOperand(ImmediateOperand immOp);
-		void VisitMemoryOperand(MemoryOperand memOp);
-	}
-
-	public class RegisterOperand : Operand
-	{
-		private IntelRegister reg;
+		private MachineRegister reg;
 		
-		public RegisterOperand(IntelRegister reg) :
+		public RegisterOperand(MachineRegister reg) :
 			base(reg.DataType)
 		{
 			this.reg = reg;
 		}
 
-		public IntelRegister Register
+		public MachineRegister Register
 		{
 			get { return reg; }
 		}
@@ -98,7 +91,7 @@ namespace Decompiler.Arch.Intel
 		}
 	}
 
-	public class ImmediateOperand : Operand
+	public class ImmediateOperand : MachineOperand
 	{
 		private Constant value;
 
@@ -128,7 +121,7 @@ namespace Decompiler.Arch.Intel
 		}
 	}
 
-	public class AddressOperand : Operand
+	public class AddressOperand : MachineOperand
 	{
 		public Address addr;
 
@@ -143,7 +136,7 @@ namespace Decompiler.Arch.Intel
 		}
 	}
 
-	public class FpuOperand : Operand
+	public class FpuOperand : MachineOperand
 	{
 		private int fpuReg;
 

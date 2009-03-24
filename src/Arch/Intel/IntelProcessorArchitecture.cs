@@ -37,8 +37,6 @@ namespace Decompiler.Arch.Intel
 
 	public class Registers
 	{
-		public static readonly IntelRegister None = new IntelRegister("None", -1, PrimitiveType.Void, -1, -1, -1, -1);
-
 		public static readonly Intel32AccRegister eax;
 		public static readonly Intel32AccRegister ecx;
 		public static readonly Intel32AccRegister edx;
@@ -163,21 +161,21 @@ namespace Decompiler.Arch.Intel
 			};
 		}
 
-		public static IntelRegister GetRegister(int i)
+		public static MachineRegister GetRegister(int i)
 		{
 			return (0 <= i && i < regs.Length)
 				? regs[i] 
 				: null;
 		}
 
-		public static IntelRegister GetRegister(string name)
+		public static MachineRegister GetRegister(string name)
 		{
 			for (int i = 0; i < regs.Length; ++i)
 			{
 				if (regs[i] != null && String.Compare(regs[i].Name, name, true) == 0)
 					return regs[i];
 			}
-			return Registers.None;
+			return MachineRegister.None;
 		}
 
 		public static int Max 
@@ -309,7 +307,7 @@ namespace Decompiler.Arch.Intel
 		public MachineRegister GetRegister(string name)
 		{
 			MachineRegister r = Registers.GetRegister(name);
-			if (r == Registers.None)
+			if (r == MachineRegister.None)
 				throw new ArgumentException(string.Format("'{0}' is not a register name.", name));
 			return r;
 		}

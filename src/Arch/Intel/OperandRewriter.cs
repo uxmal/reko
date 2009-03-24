@@ -42,7 +42,7 @@ namespace Decompiler.Arch.Intel
 		{
 			if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
 				return null;
-			if (mem.Base != Registers.None || mem.Index != Registers.None)
+			if (mem.Base != MachineRegister.None || mem.Index != MachineRegister.None)
 				return null;
 			return new Address(0, mem.Offset.ToUInt32());
 		}
@@ -72,7 +72,7 @@ namespace Decompiler.Arch.Intel
 		/// <param name="opSrc"></param>
 		/// <param name="fDefined"></param>
 		/// <returns></returns>
-		private Expression ConvertNonMemoryOperand(Operand op, PrimitiveType dataWidth, RewriterState state)
+		private Expression ConvertNonMemoryOperand(MachineOperand op, PrimitiveType dataWidth, RewriterState state)
 		{
 			RegisterOperand reg = op as RegisterOperand;
 			if (reg != null)
@@ -105,7 +105,7 @@ namespace Decompiler.Arch.Intel
 				// Stack-based (or frame-based) accesses should be converted to temp variable
 				// accesses, but only if there is no index register involved.
 
-				if (IsFrameRegisterReference(mem.Base, state) && mem.Index == Registers.None)
+				if (IsFrameRegisterReference(mem.Base, state) && mem.Index == MachineRegister.None)
 				{
 					return frame.EnsureStackVariable(
 						mem.Offset,
@@ -124,7 +124,7 @@ namespace Decompiler.Arch.Intel
 			return frame.EnsureFlagGroup((uint) flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
 		}
 
-		public Address OperandAsCodeAddress(Operand op, RewriterState state)
+		public Address OperandAsCodeAddress(MachineOperand op, RewriterState state)
 		{
 			AddressOperand ado = op as AddressOperand;
 			if (ado != null)
@@ -142,7 +142,7 @@ namespace Decompiler.Arch.Intel
 			return null;
 		}
 
-		public Expression Transform(Operand opSrc, PrimitiveType dataWidth, PrimitiveType addrWidth, RewriterState state)
+		public Expression Transform(MachineOperand opSrc, PrimitiveType dataWidth, PrimitiveType addrWidth, RewriterState state)
 		{
 			Expression e = ConvertNonMemoryOperand(opSrc, dataWidth, state);
 			if (e != null)
@@ -197,7 +197,7 @@ namespace Decompiler.Arch.Intel
 			Expression expr = null;
 			PrimitiveType type = PrimitiveType.CreateWord(mem.Width.Size);
 
-			if (mem.Base != Registers.None)
+			if (mem.Base != MachineRegister.None)
 			{
 				eBase = AluRegister(mem.Base);
 				if (expr != null)
@@ -232,7 +232,7 @@ namespace Decompiler.Arch.Intel
 				}
 			}
 
-			if (mem.Index != Registers.None)
+			if (mem.Index != MachineRegister.None)
 			{
 				eIndex = AluRegister(mem.Index);
 				if (mem.Scale != 0 && mem.Scale != 1)
@@ -275,8 +275,8 @@ namespace Decompiler.Arch.Intel
 
 		public PseudoProcedure ImportedProcedureName(PrimitiveType addrWidth, MemoryOperand mem)
 		{
-			if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == Registers.None && 
-				mem.Index == Registers.None)
+			if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == MachineRegister.None && 
+				mem.Index == MachineRegister.None)
 			{
 				return (PseudoProcedure) host.GetImportThunkAtAddress(new Address(mem.Offset.ToUInt32()));
 			}
@@ -286,7 +286,7 @@ namespace Decompiler.Arch.Intel
 		public bool IsFrameRegisterReference(MachineRegister reg, RewriterState state)
 		{
 			return IsStackRegister(reg) || 
-				(state.FrameRegister != Registers.None && state.FrameRegister == reg);
+				(state.FrameRegister != MachineRegister.None && state.FrameRegister == reg);
 
 		}
 
@@ -300,7 +300,7 @@ namespace Decompiler.Arch.Intel
 			return frame.CreateTemporary(width);
 		}
 	
-		public Constant ReplaceCodeSegment(IntelRegister reg, RewriterState state)
+		public Constant ReplaceCodeSegment(MachineRegister reg, RewriterState state)
 		{
 			if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
 				return new Constant(PrimitiveType.Word16, state.CodeSegment);

@@ -35,11 +35,11 @@ namespace Decompiler.Arch.Intel
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
 
-		public Operand		op1;
-		public Operand		op2;
-		public Operand		op3;
+		public MachineOperand		op1;
+		public MachineOperand		op2;
+		public MachineOperand		op3;
 
-		public IntelInstruction(Opcode code, PrimitiveType dataWidth, PrimitiveType addrWidth, params Operand [] ops)
+		public IntelInstruction(Opcode code, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
 			this.code = code;
 			this.dataWidth = dataWidth;
@@ -299,7 +299,7 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
-		private bool ImplicitWidth(Operand op)
+		private bool ImplicitWidth(MachineOperand op)
 		{
 			return op is RegisterOperand || op is AddressOperand || op is FpuOperand;
 		}
