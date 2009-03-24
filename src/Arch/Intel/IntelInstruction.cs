@@ -32,7 +32,6 @@ namespace Decompiler.Arch.Intel
 		public FlagM UseCc()  { return UseCc(code); }		// Condition codes used by this instruction.
 
 		public Opcode code;		// Opcode of the instruction.
-		public byte	cOperands;
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
 
@@ -40,16 +39,11 @@ namespace Decompiler.Arch.Intel
 		public Operand		op2;
 		public Operand		op3;
 
-		public IntelInstruction()
-		{
-		}
-
 		public IntelInstruction(Opcode code, PrimitiveType dataWidth, PrimitiveType addrWidth, params Operand [] ops)
 		{
 			this.code = code;
 			this.dataWidth = dataWidth;
 			this.addrWidth = addrWidth;
-			this.cOperands = (byte) ops.Length;
 			if (ops.Length >= 1)
 			{
 				op1 = ops[0];
@@ -64,15 +58,29 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
+
 		private bool NeedsExplicitMemorySize()
 		{
 			if (code == Opcode.movsx || code == Opcode.movzx)
 				return true;
 			return 
-				 (cOperands < 1 || !ImplicitWidth(op1)) &&
-				 (cOperands < 2 || !ImplicitWidth(op2)) &&
-				 (cOperands < 3 || !ImplicitWidth(op3));
+				 (Operands < 1 || !ImplicitWidth(op1)) &&
+				 (Operands < 2 || !ImplicitWidth(op2)) &&
+				 (Operands < 3 || !ImplicitWidth(op3));
 		}
+
+        public byte Operands
+        {
+            get { 
+                if (op1 == null)
+                return 0;
+                if (op2 == null)
+                    return 1;
+                if (op3 == null)
+                    return 2;
+                return 3;
+            }
+        }
 
 		public override string ToString()
 		{
@@ -117,14 +125,14 @@ namespace Decompiler.Arch.Intel
 
 			bool fExplicit = NeedsExplicitMemorySize();
 
-			if (cOperands >= 1)
+			if (Operands >= 1)
 			{
 				sb.Append(op1.ToString());
-				if (cOperands >= 2)
+				if (Operands >= 2)
 				{
 					sb.Append(',');
 					sb.Append(op2.ToString(fExplicit));
-					if (cOperands >= 3)
+					if (Operands >= 3)
 					{
 						sb.Append(",");
 						sb.Append(op3.ToString(fExplicit));

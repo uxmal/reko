@@ -107,25 +107,22 @@ namespace Decompiler.UnitTests.Scanning
 
 		private IntelInstruction CreateMov(IntelRegister regDst, IntelRegister regSrc)
 		{
-			IntelInstruction inst = new IntelInstruction();
-
-			inst.code = Opcode.mov;
-			inst.cOperands = 2;
-			inst.dataWidth = PrimitiveType.Word16;
-			inst.op1 = new RegisterOperand(regDst);
-			inst.op2 = new RegisterOperand(regSrc);
-
+            IntelInstruction inst = new IntelInstruction(
+                Opcode.mov,
+                PrimitiveType.Word16,
+                PrimitiveType.Word16,
+                new RegisterOperand(regDst),
+                new RegisterOperand(regSrc));
 			return inst;
 		}
 
 		private IntelInstruction CreatePush(IntelRegister reg)
 		{
-			IntelInstruction inst = new IntelInstruction();
-
-			inst.code = Opcode.push;
-			inst.op1 = new RegisterOperand(reg);
-			inst.cOperands = 1;
-			inst.dataWidth = reg.DataType;
+            IntelInstruction inst = new IntelInstruction(
+                Opcode.push,
+                reg.DataType,
+                reg.DataType,
+                new RegisterOperand(reg));
 			return inst;
 		}
 	}

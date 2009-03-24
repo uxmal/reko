@@ -74,17 +74,17 @@ namespace Decompiler.Arch.Intel
 			IntelInstruction instrB = (IntelInstruction) oInstrB;
 			if (instrA.code != instrB.code)
 				return (int) instrB.code - (int) instrA.code;
-			if (instrA.cOperands != instrB.cOperands)
-				return instrB.cOperands - instrA.cOperands;;
+			if (instrA.Operands != instrB.Operands)
+				return instrB.Operands - instrA.Operands;;
 
 			int retval = 0;
-			if (instrA.cOperands > 0)
+			if (instrA.Operands > 0)
 			{
 				retval = CompareOperands(instrA.op1, instrB.op1);
-				if (retval == 0 && instrA.cOperands > 1)
+				if (retval == 0 && instrA.Operands > 1)
 				{
 					retval = CompareOperands(instrA.op2, instrB.op2);
-					if (retval == 0 && instrA.cOperands > 2)
+					if (retval == 0 && instrA.Operands > 2)
 					{
 						retval = CompareOperands(instrA.op3, instrB.op3);
 					}
@@ -97,15 +97,15 @@ namespace Decompiler.Arch.Intel
 		{
 			IntelInstruction instr = (IntelInstruction) obj;
 			int hash = instr.code.GetHashCode();
-			hash = hash * 47 + instr.cOperands.GetHashCode();
+			hash = hash * 47 + instr.Operands.GetHashCode();
 
-			if (instr.cOperands > 0)
+			if (instr.Operands > 0)
 			{
 				hash = hash * 23 + GetHashCode(instr.op1);
-				if (instr.cOperands > 1)
+				if (instr.Operands > 1)
 				{
 					hash = hash * 17 + GetHashCode(instr.op2);
-					if (instr.cOperands > 2)
+					if (instr.Operands > 2)
 					{
 						hash = hash * 13 + GetHashCode(instr.op3);
 					}

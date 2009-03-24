@@ -22,6 +22,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Text;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Decompiler.Arch.Intel
 {
@@ -38,7 +39,6 @@ namespace Decompiler.Arch.Intel
 		private bool isModrmValid;
 		private IntelRegister segmentOverride;
 		private ImageReader	rdr;
-		private OpRec[] m_aopRecs;
 
 		/// <summary>
 		/// Creates a disassember that uses the specified reader to fetch bytes from the program image.
@@ -116,37 +116,31 @@ namespace Decompiler.Arch.Intel
 		}
 
 		[Flags]
-		private enum OpFlag
+		public enum OpFlag
 		{
 			None = 0,
-			GRP_1 = 0x0001,
-			GRP_2 =	0x0002,
-			GRP_3 =	0x0003,
-			GRP_4 =	0x0004,
-			GRP_5 =	0x0005,
-			GRP_8 = 0x0008,
 
-			GRP_MASK = 0x000F,
-
-			FP = 0x0080,
-			X =  0x8000
+			X =  0x8000     // hasn't been tested.
 		}
 
-		private abstract class OpRecBase
+		public abstract class OpRecBase
 		{
-			public abstract void Decode(IntelDisassembler disasm);
+			public abstract IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat);
 
 		}
 
 		/// <summary>
 		/// Simple opcode record.
 		/// </summary>
-		private class OpRec : OpRecBase
+		public class OpRec : OpRecBase
 		{
 			public Opcode	opcode;
 			public string	format;
 			public OpFlag	Flags;
-			public OpRec [] indirect;
+
+            public OpRec(Opcode op): this(op, "", OpFlag.None)
+            {
+            }
 
 			public OpRec(Opcode op, string fmt) : this(op, fmt, OpFlag.None)
 			{
@@ -157,35 +151,103 @@ namespace Decompiler.Arch.Intel
 				opcode = op;
 				format = fmt;
 				Flags = flags;
-                indirect = null;
 			}
 
-			public override void Decode(IntelDisassembler disasm)
+			public override IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat)
 			{
-			}
-
-			public string Format
-			{
-				get { return format; }
-			}
-
-			public Opcode Opcode
-			{
-				get { return opcode; }
+                return disasm.DecodeOperands(opcode, op, opFormat + format);
 			}
 		}
 
-		private class PrefixOprec : OpRecBase
+		public class SegmentOverrideOprec : OpRecBase
 		{
-			public PrefixOprec()
+            private int seg;
+
+            public SegmentOverrideOprec(int seg)
 			{
+                this.seg = seg;
 			}
 
-			public override void Decode(IntelDisassembler disasm)
+			public override IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat)
 			{
+                disasm.segmentOverride = SegFromBits(seg);
+                op = disasm.rdr.ReadByte();
+                return s_aOpRec[op].Decode(disasm, op, opFormat);
 			}
 		}
-	
+
+        public class GroupOpRec : OpRecBase
+        {
+            public int Group;
+            public string format;
+
+            public GroupOpRec(int group, string format)
+            {
+                this.Group = group;
+                this.format = format;
+
+            }
+            public override IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat)
+            {
+                int grp = Group - 1;
+                OpRecBase opRec = s_aOpRecGrp[grp * 8 + ((disasm.EnsureModRM() >> 3) & 0x07)];
+                return opRec.Decode(disasm, op, opFormat + format);
+            }
+        }
+
+        public class FpuOpRec : OpRecBase
+        {
+            public override IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat)
+            {
+                byte modRM = disasm.EnsureModRM();
+                OpRecBase opRec;
+                int iOpRec = (op & 0x07) * 0x48;
+                if (modRM < 0xC0)
+                {
+                    opRec = s_aFpOpRec[iOpRec + ((modRM >> 3) & 0x07)];
+                }
+                else
+                {
+                    opRec = s_aFpOpRec[iOpRec + modRM - 0xB8];
+                }
+                return opRec.Decode(disasm, op, opFormat);
+            }
+        }
+
+        public class TwoByteOpcode : OpRecBase
+        {
+            public override IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat)
+            {
+                op = disasm.rdr.ReadByte();
+                return s_aOpRec0F[op].Decode(disasm, op, "");
+            }
+        }
+
+        public class ChangeDataWidth : OpRecBase
+        {
+            public override IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat)
+            {
+                disasm.dataWidth = (disasm.dataWidth == PrimitiveType.Word16)
+                        ? PrimitiveType.Word32
+                        : PrimitiveType.Word16;
+                op = disasm.rdr.ReadByte();
+                return s_aOpRec[op].Decode(disasm, op, opFormat);
+            }
+        }
+
+        public class ChangeAddressWidth : OpRecBase
+        {
+            public override IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat)
+            {
+                disasm.addressWidth = (disasm.addressWidth == PrimitiveType.Word16)
+                        ? PrimitiveType.Word32
+                        : PrimitiveType.Word16;
+                op = disasm.rdr.ReadByte();
+                return s_aOpRec[op].Decode(disasm, op, opFormat);
+            }
+        }
+
+
 		/// <summary>
 		/// Current address of the disassembler.
 		/// </summary>
@@ -210,57 +272,6 @@ namespace Decompiler.Arch.Intel
 
 
 		/// <summary>
-		/// Consumes prefixes that alter the operation of the instruction, such as 
-		/// widening/narrowing the instruction data width and segment overrides.
-		/// </summary>
-		/// <returns></returns>
-
-		private byte ConsumePrefixes()
-		{
-			for (;;)
-			{
-				byte op = rdr.ReadByte();
-				switch (op)
-				{
-				case 0x0F:		// 0F: prefix for two-byte opcodes.
-					CurrentOpRecs = s_aOpRec0F;
-					return rdr.ReadByte();
-				case 0x26:		// segment overrides
-				case 0x2E:
-				case 0x36:
-				case 0x3E:
-					segmentOverride = SegFromBits((op >> 3) & 0x03);
-					break;
-				case 0x64:
-					segmentOverride = Registers.fs;
-					break;
-				case 0x65:
-					segmentOverride = Registers.gs;
-					break;
-				case 0x66:		// 66: changes the width of the data operands.
-					dataWidth = (dataWidth == PrimitiveType.Word16)
-						? PrimitiveType.Word32
-						: PrimitiveType.Word16;
-					break;
-				case 0x67:		// 67: changes the width of the address operands 
-					addressWidth = (addressWidth == PrimitiveType.Word16)
-						? PrimitiveType.Word32
-						: PrimitiveType.Word16;
-					break;
-				default:
-					return op;
-				}
-			}
-		}
-
-		private OpRec[] CurrentOpRecs
-		{
-			get { return m_aopRecs; }
-			set { m_aopRecs = value; }
-		}
-
-
-		/// <summary>
 		/// Disassembles the current instruction. The address is incremented
 		/// to point at the first address after the instruction and returned to the caller.
 		/// </summary>
@@ -271,175 +282,123 @@ namespace Decompiler.Arch.Intel
 			addressWidth = defaultAddressWidth;
 			isModrmValid = false;
 			segmentOverride = Registers.None;
-			CurrentOpRecs = s_aOpRec;
-			IntelInstruction pInstr = new IntelInstruction();
 
-			// Fetch the opcode description.
+            byte op = rdr.ReadByte();
+			OpRecBase opRec = s_aOpRec[op];
+            return opRec.Decode(this, op, "");
+        }
 
-			byte op = ConsumePrefixes();
-			OpRec opRec = CurrentOpRecs[op];
-			string strFormat = opRec.Format;
+        private IntelInstruction DecodeOperands(Opcode opcode, byte op, string strFormat)
+        {
+            Operand pOperand;
+            PrimitiveType width = null;
+            PrimitiveType iWidth = dataWidth;
 
-			// Group instructions need to be handled separately.
+            List<Operand> ops = new List<Operand>();
+            int i = 0;
+            while (i != strFormat.Length)
+            {
+                if (strFormat[i] == ',')
+                    ++i;
 
-			if ((opRec.Flags & OpFlag.GRP_MASK) != 0)
-			{
-				int grp = (int)(opRec.Flags & OpFlag.GRP_MASK) - 1;
-				opRec = s_aOpRecGrp[grp * 8 + ((EnsureModRM() >> 3) & 0x07)];
-				if (opRec.Format != null)
-				{
-					if (strFormat != null)
-					{
-						strFormat = strFormat + opRec.Format;
-					}
-					else
-					{
-						strFormat = opRec.Format;
-					}
-				}
-			}
+                pOperand = null;
+                ImmediateOperand immOp;
+                MemoryOperand memOp;
+                AddressOperand addrOp;
+                int offset;
 
-			// Floating-point instructions need to be handled separately.
-
-			int iOpRec;
-			if ((opRec.Flags & OpFlag.FP) != 0)
-			{
-				byte modRM = EnsureModRM();
-				iOpRec = (op & 0x07) * 0x48;
-				if (modRM < 0xC0)
-				{
-					opRec = s_aFpOpRec[iOpRec + ((modRM >> 3) & 0x07)];
-				}
-				else
-				{
-					opRec = s_aFpOpRec[iOpRec + modRM - 0xB8];
-				}
-				strFormat = opRec.Format;
-			}
-
-			if (opRec.opcode == Opcode.illegal)
-			{
-				pInstr.cOperands = 0;
-				pInstr.code = Opcode.illegal;
-				return pInstr;
-			}
-
-			pInstr.code = opRec.opcode;
-			pInstr.dataWidth = dataWidth;
-			pInstr.addrWidth = addressWidth;
-
-			// Now decode instruction format.
-
-			int iOp = 0;
-			Operand pOperand;
-			PrimitiveType width = null;
-			int i = 0;
-			while (i != strFormat.Length)
-			{
-				if (strFormat[i] == ',')
-					++i;
-
-				pOperand = null;
-				ImmediateOperand immOp;
-				MemoryOperand memOp;
-				AddressOperand addrOp;
-				int offset;
-
-				char chFmt = strFormat[i++];
-				switch (chFmt)
-				{
-				case '1':
-					pOperand = immOp = new ImmediateOperand(PrimitiveType.Byte, 1);
-					break;
-				case '3':
-					pOperand = immOp = new ImmediateOperand(PrimitiveType.Byte, 3);
-					break;
-				case 'A':		// Absolute memory address.
-					++i;
-					ushort off = rdr.ReadLeUint16();
-					ushort seg = rdr.ReadLeUint16();
-					pOperand = addrOp = new AddressOperand(new Address(seg, off));
-					break;
-				case 'E':		// memory or register operand specified by mod & r/m fields.
-					width = OperandWidth(strFormat[i++]);
-					pOperand = DecodeModRM(width, segmentOverride);
-					break;
-				case 'G':		// register operand specified by the reg field of the modRM byte.
-					width = OperandWidth(strFormat[i++]);
-					pOperand = new RegisterOperand(RegFromBits(EnsureModRM() >> 3, width));
-					break;
-				case 'I':		// Immediate operand.
-					if (strFormat[i] != 'x')
-					{
-						//  Don't use the width of the previous operand.
-						width = OperandWidth(strFormat[i]);
-					}
-					++i;
-					pOperand = CreateImmediateOperand(width, pInstr.dataWidth);
-					break;
-				case 'J':		// Relative jump.
-					width = OperandWidth(strFormat[i++]);
-					offset = rdr.ReadLeSigned(width);
-					pOperand = new ImmediateOperand(defaultDataWidth, (uint)(rdr.Address.Offset + offset));
-					break;
-				case 'M':		// modRM may only refer to memory.
-					width = OperandWidth(strFormat[i++]);
-					pOperand = DecodeModRM(dataWidth, segmentOverride);
-					break;
-				case 'O':		// Offset of the operand is encoded directly after the opcode.
-					width = OperandWidth(strFormat[i++]);
-					pOperand = memOp = new MemoryOperand(width, rdr.ReadLe(addressWidth));
-					memOp.SegOverride = segmentOverride;
-					break;
-				case 'S':		// Segment register encoded by reg field of modRM byte.
-					Debug.Assert(strFormat[i++] == 'w');
-					pOperand = new RegisterOperand(SegFromBits(EnsureModRM() >> 3));
-					break;
-				case 'a':		// Implicit use of accumulator.
-					pOperand = new RegisterOperand(RegFromBits(0, OperandWidth(strFormat[i++])));
-					break;
-				case 'b':
-					pInstr.dataWidth = PrimitiveType.Byte;
-					pOperand = null;
-					break;
-				case 'c':		// Implicit use of CL.
-					pOperand = new RegisterOperand(Registers.cl);
-					break;
-				case 'd':		// Implicit use of DX or EDX.
-					width = OperandWidth(strFormat[i++]);
-					pOperand = new RegisterOperand(RegFromBits(2, width));
-					break;
-				case 'r':		// Register encoded as last 3 bits of instruction.
-					width = OperandWidth(strFormat[i++]);
-					pOperand = new RegisterOperand(RegFromBits(op, width));
-					break;
-				case 's':		// Segment encoded as next byte of the format string.
-					pOperand = new RegisterOperand(SegFromBits(strFormat[i++] - '0'));
-					break;
-				case 'F':		// Floating-point ST(x)
-					pOperand = new FpuOperand(EnsureModRM() & 0x07);
-					break;
-				case 'f':		// ST(0)
-					pOperand = new FpuOperand(0);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException("unknown format specifier: " + chFmt.ToString());
-				}
-				switch (iOp)
-				{
-				case 0: pInstr.op1 = pOperand; break;
-				case 1: pInstr.op2 = pOperand; break;
-				case 2: pInstr.op3 = pOperand; break;
-				default: throw new ArgumentOutOfRangeException();
-				}
-
-				if (pOperand != null)
-					++iOp;
-			}
-
-			pInstr.cOperands = (byte) iOp;
-			return pInstr;
-		}
+                char chFmt = strFormat[i++];
+                switch (chFmt)
+                {
+                case '1':
+                    pOperand = immOp = new ImmediateOperand(PrimitiveType.Byte, 1);
+                    break;
+                case '3':
+                    pOperand = immOp = new ImmediateOperand(PrimitiveType.Byte, 3);
+                    break;
+                case 'A':		// Absolute memory address.
+                    ++i;
+                    ushort off = rdr.ReadLeUint16();
+                    ushort seg = rdr.ReadLeUint16();
+                    pOperand = addrOp = new AddressOperand(new Address(seg, off));
+                    break;
+                case 'E':		// memory or register operand specified by mod & r/m fields.
+                    width = OperandWidth(strFormat[i++]);
+                    pOperand = DecodeModRM(width, segmentOverride);
+                    break;
+                case 'G':		// register operand specified by the reg field of the modRM byte.
+                    width = OperandWidth(strFormat[i++]);
+                    pOperand = new RegisterOperand(RegFromBits(EnsureModRM() >> 3, width));
+                    break;
+                case 'I':		// Immediate operand.
+                    if (strFormat[i] == 'x')
+                    {
+                        // Use width of the previous operand.
+                        iWidth = width;
+                    }
+                    else
+                    {
+                        //  Don't use the width of the previous operand.
+                        width = OperandWidth(strFormat[i]);
+                    }
+                    ++i;
+                    pOperand = CreateImmediateOperand(width, dataWidth);
+                    break;
+                case 'J':		// Relative jump.
+                    width = OperandWidth(strFormat[i++]);
+                    offset = rdr.ReadLeSigned(width);
+                    pOperand = new ImmediateOperand(defaultDataWidth, (uint) (rdr.Address.Offset + offset));
+                    break;
+                case 'M':		// modRM may only refer to memory.
+                    width = OperandWidth(strFormat[i++]);
+                    pOperand = DecodeModRM(dataWidth, segmentOverride);
+                    break;
+                case 'O':		// Offset of the operand is encoded directly after the opcode.
+                    width = OperandWidth(strFormat[i++]);
+                    pOperand = memOp = new MemoryOperand(width, rdr.ReadLe(addressWidth));
+                    memOp.SegOverride = segmentOverride;
+                    break;
+                case 'S':		// Segment register encoded by reg field of modRM byte.
+                    Debug.Assert(strFormat[i++] == 'w');
+                    pOperand = new RegisterOperand(SegFromBits(EnsureModRM() >> 3));
+                    break;
+                case 'a':		// Implicit use of accumulator.
+                    pOperand = new RegisterOperand(RegFromBits(0, OperandWidth(strFormat[i++])));
+                    break;
+                case 'b':
+                    iWidth = PrimitiveType.Byte;
+                    pOperand = null;
+                    break;
+                case 'c':		// Implicit use of CL.
+                    pOperand = new RegisterOperand(Registers.cl);
+                    break;
+                case 'd':		// Implicit use of DX or EDX.
+                    width = OperandWidth(strFormat[i++]);
+                    pOperand = new RegisterOperand(RegFromBits(2, width));
+                    break;
+                case 'r':		// Register encoded as last 3 bits of instruction.
+                    width = OperandWidth(strFormat[i++]);
+                    pOperand = new RegisterOperand(RegFromBits(op, width));
+                    break;
+                case 's':		// Segment encoded as next byte of the format string.
+                    pOperand = new RegisterOperand(SegFromBits(strFormat[i++] - '0'));
+                    break;
+                case 'F':		// Floating-point ST(x)
+                    pOperand = new FpuOperand(EnsureModRM() & 0x07);
+                    break;
+                case 'f':		// ST(0)
+                    pOperand = new FpuOperand(0);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("unknown format specifier: " + chFmt.ToString());
+                }
+                if (pOperand != null)
+                {
+                    ops.Add(pOperand);
+                }
+            }
+            return new IntelInstruction(opcode, iWidth, addressWidth, ops.ToArray());
+        }
 
 		/// <summary>
 		/// Returns the operand width of the operand type.
@@ -645,14 +604,14 @@ namespace Decompiler.Arch.Intel
 		// 'X' means the opcode hasn't been tested in the disassembler.
 
 
-		private static OpRec [] s_aOpRec;
-		private static OpRec [] s_aOpRec0F;
-		private static OpRec [] s_aOpRecGrp;
-		private static OpRec [] s_aFpOpRec;
+		private static OpRecBase [] s_aOpRec;
+		private static OpRecBase [] s_aOpRec0F;
+		private static OpRecBase [] s_aOpRecGrp;
+		private static OpRecBase [] s_aFpOpRec;
 
 		static IntelDisassembler()
 		{
-			s_aOpRec = new OpRec[] { 
+			s_aOpRec = new OpRecBase[] { 
 				// 00
 				new OpRec(Opcode.add, "Eb,Gb"),
 				new OpRec(Opcode.add, "Ev,Gv"),
@@ -670,7 +629,7 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.or, "ab,Ib"),
 				new OpRec(Opcode.or, "av,Iv"),
 				new OpRec(Opcode.push, "s1"),
-				new OpRec(Opcode.illegal, null),
+				new TwoByteOpcode(),
 
 				// 10
 				new OpRec(Opcode.adc, "Eb,Gb"),
@@ -698,8 +657,8 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.and, "Gv,Ev"),
 				new OpRec(Opcode.and, "ab,Ib"),
 				new OpRec(Opcode.and, "av,Iv"),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.daa, ""),
+				new SegmentOverrideOprec(0),
+				new OpRec(Opcode.daa),
 
 				new OpRec(Opcode.sub, "Eb,Gb"),
 				new OpRec(Opcode.sub, "Ev,Gv"),
@@ -707,8 +666,8 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.sub, "Gv,Ev"),
 				new OpRec(Opcode.sub, "ab,Ib"),
 				new OpRec(Opcode.sub, "av,Iv"),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.das, ""),
+                new SegmentOverrideOprec(1),
+				new OpRec(Opcode.das),
 
 				// 30
 				new OpRec(Opcode.xor, "Eb,Gb"),
@@ -717,8 +676,8 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.xor, "Gv,Ev"),
 				new OpRec(Opcode.xor, "ab,Ib"),
 				new OpRec(Opcode.xor, "av,Iv"),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.aaa, ""),
+                new SegmentOverrideOprec(2),
+				new OpRec(Opcode.aaa),
 
 				new OpRec(Opcode.cmp, "Eb,Gb"),
 				new OpRec(Opcode.cmp, "Ev,Gv"),
@@ -726,8 +685,8 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.cmp, "Gv,Ev"),
 				new OpRec(Opcode.cmp, "ab,Ib"),
 				new OpRec(Opcode.cmp, "av,Iv"),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.aas, ""),
+                new SegmentOverrideOprec(3),
+				new OpRec(Opcode.aas),
 
 				// 40
 				new OpRec(Opcode.inc, "rv"),
@@ -768,14 +727,14 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.pop, "rv"),
 
 				// 60
-				new OpRec(Opcode.pusha, ""),
-				new OpRec(Opcode.popa, ""),
+				new OpRec(Opcode.pusha),
+				new OpRec(Opcode.popa),
 				new OpRec(Opcode.bound, "Gv,Mv", OpFlag.X),
 				new OpRec(Opcode.arpl, "Ew,rw"),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new SegmentOverrideOprec(4),
+				new SegmentOverrideOprec(5),
+				new ChangeDataWidth(),
+				new ChangeAddressWidth(),
 
 				new OpRec(Opcode.push, "Iv"),
 				new OpRec(Opcode.imul, "Gv,Ev,Iv"),
@@ -783,8 +742,8 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.imul, "Gv,Ev,Ib"),
 				new OpRec(Opcode.insb, "b"),
 				new OpRec(Opcode.ins,  ""),
-				new OpRec(Opcode.outsb,"b"),
-				new OpRec(Opcode.outs, ""),
+				new OpRec(Opcode.outsb, "b"),
+				new OpRec(Opcode.outs),
 
 				// 70
 				new OpRec(Opcode.jo, "Jb"),
@@ -806,10 +765,10 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.jg, "Jb"),
 
 				// 80
-				new OpRec(Opcode.illegal, "Eb,Ib", OpFlag.GRP_1),
-				new OpRec(Opcode.illegal, "Ev,Iv", OpFlag.GRP_1),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, "Ev,Ib", OpFlag.GRP_1),
+				new GroupOpRec(1, "Eb,Ib"),
+				new GroupOpRec(1, "Ev,Iv"),
+				new OpRec(Opcode.illegal),
+				new GroupOpRec(1, "Ev,Ib"),
 				new OpRec(Opcode.test, "Eb,Gb"),
 				new OpRec(Opcode.test, "Ev,Gv"),
 				new OpRec(Opcode.xchg, "Eb,Gb"),
@@ -825,7 +784,7 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.pop, "Ev"),
 
 				// 90
-				new OpRec(Opcode.nop, ""),
+				new OpRec(Opcode.nop),
 				new OpRec(Opcode.xchg, "av,rv"),
 				new OpRec(Opcode.xchg, "av,rv"),
 				new OpRec(Opcode.xchg, "av,rv"),
@@ -834,14 +793,14 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.xchg, "av,rv"),
 				new OpRec(Opcode.xchg, "av,rv"),
 
-				new OpRec(Opcode.cbw, ""),
-				new OpRec(Opcode.cwd, ""),
+				new OpRec(Opcode.cbw),
+				new OpRec(Opcode.cwd),
 				new OpRec(Opcode.call, "Ap"),
-				new OpRec(Opcode.wait, ""),
-				new OpRec(Opcode.pushf, ""),
-				new OpRec(Opcode.popf, ""),
-				new OpRec(Opcode.sahf, ""),
-				new OpRec(Opcode.lahf, ""),
+				new OpRec(Opcode.wait),
+				new OpRec(Opcode.pushf),
+				new OpRec(Opcode.popf),
+				new OpRec(Opcode.sahf),
+				new OpRec(Opcode.lahf),
 
 				// A0
 				new OpRec(Opcode.mov, "ab,Ob"),
@@ -849,18 +808,18 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.mov, "Ob,ab"),
 				new OpRec(Opcode.mov, "Ov,av"),
 				new OpRec(Opcode.movsb, "b"),
-				new OpRec(Opcode.movs, ""),
+				new OpRec(Opcode.movs),
 				new OpRec(Opcode.cmpsb, "b"),
-				new OpRec(Opcode.cmps, ""),
+				new OpRec(Opcode.cmps),
 
 				new OpRec(Opcode.test, "ab,Ib"),
 				new OpRec(Opcode.test, "av,Iv"),
 				new OpRec(Opcode.stosb, "b"),
-				new OpRec(Opcode.stos, ""),
+				new OpRec(Opcode.stos),
 				new OpRec(Opcode.lodsb, "b"),
-				new OpRec(Opcode.lods, ""),
+				new OpRec(Opcode.lods),
 				new OpRec(Opcode.scasb, "b"),
-				new OpRec(Opcode.scas, ""),
+				new OpRec(Opcode.scas),
 
 				// B0
 				new OpRec(Opcode.mov, "rb,Ib"),
@@ -882,17 +841,17 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.mov, "rv,Iv"),
 
 				// C0
-				new OpRec(Opcode.illegal, "Eb,Ib", OpFlag.GRP_2),
-				new OpRec(Opcode.illegal, "Ev,Ib", OpFlag.GRP_2),
+				new GroupOpRec(2, "Eb,Ib"),
+				new GroupOpRec(2, "Ev,Ib"),
 				new OpRec(Opcode.ret,	"Iw"),
-				new OpRec(Opcode.ret,	""),
+				new OpRec(Opcode.ret),
 				new OpRec(Opcode.les,	"Gv,Mp"),
 				new OpRec(Opcode.lds,	"Gv,Mp"),
 				new OpRec(Opcode.mov,	"Eb,Ib"),
 				new OpRec(Opcode.mov,	"Ev,Iv"),
 
 				new OpRec(Opcode.enter, "Iw,Ib"),
-				new OpRec(Opcode.leave, ""),
+				new OpRec(Opcode.leave),
 				new OpRec(Opcode.retf,	"Iw"),
 				new OpRec(Opcode.retf,	""),
 				new OpRec(Opcode.@int,	"3"),
@@ -901,23 +860,23 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.iret,	""),
 
 				// D0
-				new OpRec(Opcode.illegal, "Eb,1", OpFlag.GRP_2),
-				new OpRec(Opcode.illegal, "Ev,1", OpFlag.GRP_2),
-				new OpRec(Opcode.illegal, "Eb,c", OpFlag.GRP_2),
-				new OpRec(Opcode.illegal, "Ev,c", OpFlag.GRP_2),
+				new GroupOpRec(2, "Eb,1"),
+				new GroupOpRec(2, "Ev,1"),
+				new GroupOpRec(2, "Eb,c"),
+				new GroupOpRec(2, "Ev,c"),
 				new OpRec(Opcode.aam, "Ib"),
-				new OpRec(Opcode.illegal, "", OpFlag.X),
-				new OpRec(Opcode.illegal, "", OpFlag.X),
-				new OpRec(Opcode.xlat, ""),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.xlat),
 
-				new OpRec(Opcode.illegal, null, OpFlag.FP),
-				new OpRec(Opcode.illegal, null, OpFlag.FP),
-				new OpRec(Opcode.illegal, null, OpFlag.FP),
-				new OpRec(Opcode.illegal, null, OpFlag.FP),
-				new OpRec(Opcode.illegal, null, OpFlag.FP),
-				new OpRec(Opcode.illegal, null, OpFlag.FP),
-				new OpRec(Opcode.illegal, null, OpFlag.FP),
-				new OpRec(Opcode.illegal, null, OpFlag.FP),
+				new FpuOpRec(),
+				new FpuOpRec(),
+				new FpuOpRec(),
+				new FpuOpRec(),
+				new FpuOpRec(),
+				new FpuOpRec(),
+				new FpuOpRec(),
+				new FpuOpRec(),
 
 				// E0
 				new OpRec(Opcode.loopne,"Jb"),
@@ -925,41 +884,41 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.loop, "Jb"),
 				new OpRec(Opcode.jcxz, "Jb"),
 				new OpRec(Opcode.@in, "ab,Ib"),
-				new OpRec(Opcode.@in, "av,Ib", OpFlag.X),
+				new OpRec(Opcode.@in, "av,Ib"),
 				new OpRec(Opcode.@out, "Ib,ab"),
-				new OpRec(Opcode.@out, "Ib,av", OpFlag.X),
+				new OpRec(Opcode.@out, "Ib,av"),
 
 				new OpRec(Opcode.call, "Jv"),
 				new OpRec(Opcode.jmp, "Jv"),
 				new OpRec(Opcode.jmp, "Ap"),
 				new OpRec(Opcode.jmp, "Jb"),
 				new OpRec(Opcode.@in, "ab,dw"),
-				new OpRec(Opcode.@in, "av,dw", OpFlag.X),
+				new OpRec(Opcode.@in, "av,dw"),
 				new OpRec(Opcode.@out, "dw,ab"),
 				new OpRec(Opcode.@out, "dw,av"),
 
 				// F0
-				new OpRec(Opcode.@lock, ""),
-				new OpRec(Opcode.illegal, "", OpFlag.X),
-				new OpRec(Opcode.repne, ""),
-				new OpRec(Opcode.rep, ""),
-				new OpRec(Opcode.illegal, "", OpFlag.X),
-				new OpRec(Opcode.cmc, ""),
-				new OpRec(Opcode.illegal, "Eb", OpFlag.GRP_3),
-				new OpRec(Opcode.illegal, "Ev", OpFlag.GRP_3),
+				new OpRec(Opcode.@lock),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.repne),
+				new OpRec(Opcode.rep),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.cmc),
+				new GroupOpRec(3, "Eb"),
+				new GroupOpRec(3, "Ev"),
 
-				new OpRec(Opcode.clc, ""),
-				new OpRec(Opcode.stc, ""),
-				new OpRec(Opcode.cli, ""),
-				new OpRec(Opcode.sti, ""),
-				new OpRec(Opcode.cld, ""),
-				new OpRec(Opcode.std, ""),
-				new OpRec(Opcode.illegal, "", OpFlag.GRP_4),
-				new OpRec(Opcode.illegal, "", OpFlag.GRP_5),
+				new OpRec(Opcode.clc),
+				new OpRec(Opcode.stc),
+				new OpRec(Opcode.cli),
+				new OpRec(Opcode.sti),
+				new OpRec(Opcode.cld),
+				new OpRec(Opcode.std),
+				new GroupOpRec(4, ""),
+				new GroupOpRec(5, "")
 			};
 		
 
-			s_aOpRec0F = new OpRec[]
+			s_aOpRec0F = new OpRecBase[]
 			{
 				// 00
 				new OpRec(Opcode.illegal, "", OpFlag.X),
@@ -971,147 +930,147 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.illegal, "", OpFlag.X),
 				new OpRec(Opcode.illegal, "", OpFlag.X),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// 10
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// 20
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// 30
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// 40
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// 50
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 					
 				// 60
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// 70
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// 80
 				new OpRec(Opcode.jo,	"Jv"),
@@ -1154,50 +1113,50 @@ namespace Decompiler.Arch.Intel
 				// A0
 				new OpRec(Opcode.push, "s4"),
 				new OpRec(Opcode.pop, "s4"),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
 				new OpRec(Opcode.bt, "Ev,Gv"),
 				new OpRec(Opcode.shld, "Ev,Gv,Ib"),
 				new OpRec(Opcode.shld, "Ev,Gv,c"),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				new OpRec(Opcode.push, "s5"),
 				new OpRec(Opcode.pop, "s5"),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 				new OpRec(Opcode.shrd, "Ev,Gv,Ib"),
 				new OpRec(Opcode.shrd, "Ev,Gv,c"),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
 				new OpRec(Opcode.imul, "Gv,Ev"),
 
 				// B0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 				new OpRec(Opcode.lss, "Gv,Mp"),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
 				new OpRec(Opcode.lfs, "Gv,Mp"),
 				new OpRec(Opcode.lgs, "Gv,Mp"),
 				new OpRec(Opcode.movzx, "Gv,Eb"),
 				new OpRec(Opcode.movzx, "Gv,Ew"),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, "Ev,Ib", OpFlag.GRP_8),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new GroupOpRec(8, "Ev,Ib"),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 				new OpRec(Opcode.bsr, "Gv,Ev"),
 				new OpRec(Opcode.movsx, "Gv,Eb"),
 				new OpRec(Opcode.movsx, "Gv,Ew"),
 
 				// C0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				new OpRec(Opcode.bswap, "rv"),
 				new OpRec(Opcode.bswap, "rv"),
@@ -1209,104 +1168,104 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.bswap, "rv"),
 
 				// D0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// E0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// F0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 			};
 
 			s_aOpRecGrp = new OpRec[] 
 			{
 				// group 1
-				new OpRec(Opcode.add, null),
-				new OpRec(Opcode.or, null),
-				new OpRec(Opcode.adc, null),
-				new OpRec(Opcode.sbb, null),
-				new OpRec(Opcode.and, null),
-				new OpRec(Opcode.sub, null),
-				new OpRec(Opcode.xor, null),
-				new OpRec(Opcode.cmp, null),
+				new OpRec(Opcode.add),
+				new OpRec(Opcode.or),
+				new OpRec(Opcode.adc),
+				new OpRec(Opcode.sbb),
+				new OpRec(Opcode.and),
+				new OpRec(Opcode.sub),
+				new OpRec(Opcode.xor),
+				new OpRec(Opcode.cmp),
 
 				// group 2
-				new OpRec(Opcode.rol, null),
-				new OpRec(Opcode.ror, null),
-				new OpRec(Opcode.rcl, null),
-				new OpRec(Opcode.rcr, null),
-				new OpRec(Opcode.shl, null),
-				new OpRec(Opcode.shr, null),
-				new OpRec(Opcode.shl, null),
-				new OpRec(Opcode.sar, null),
+				new OpRec(Opcode.rol),
+				new OpRec(Opcode.ror),
+				new OpRec(Opcode.rcl),
+				new OpRec(Opcode.rcr),
+				new OpRec(Opcode.shl),
+				new OpRec(Opcode.shr),
+				new OpRec(Opcode.shl),
+				new OpRec(Opcode.sar),
 
 				// group 3
-				new OpRec(Opcode.test, "Ix"),
-				new OpRec(Opcode.test, "Ix", OpFlag.X),
-				new OpRec(Opcode.not, null),
-				new OpRec(Opcode.neg, null),
-				new OpRec(Opcode.mul, null),
-				new OpRec(Opcode.imul, null),
-				new OpRec(Opcode.div, null),
-				new OpRec(Opcode.idiv, null),
+				new OpRec(Opcode.test, ",Ix"),
+				new OpRec(Opcode.test, ",Ix", OpFlag.X),
+				new OpRec(Opcode.not),
+				new OpRec(Opcode.neg),
+				new OpRec(Opcode.mul),
+				new OpRec(Opcode.imul),
+				new OpRec(Opcode.div),
+				new OpRec(Opcode.idiv),
 				
 				// group 4
 				new OpRec(Opcode.inc, "Eb"),
 				new OpRec(Opcode.dec, "Eb"),
-				new OpRec(Opcode.illegal, "", OpFlag.X),
-				new OpRec(Opcode.illegal, "", OpFlag.X),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal), 
 
 				// group 5
 				new OpRec(Opcode.inc, "Ev"),
@@ -1316,37 +1275,37 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.jmp, "Ev"),
 				new OpRec(Opcode.jmp, "Ep"),
 				new OpRec(Opcode.push, "Ev"),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
 
 				// group 6
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// group 7
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 
 				// group 8
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.bt, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.bt),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 			};
 
 			s_aFpOpRec = new OpRec[]  
@@ -1437,7 +1396,7 @@ namespace Decompiler.Arch.Intel
 				// D9 ////////////////////////////////
 				
 				new OpRec(Opcode.fld, "Mf"),
-				new OpRec(Opcode.illegal, null, OpFlag.X),
+				new OpRec(Opcode.illegal, "", OpFlag.X),
 				new OpRec(Opcode.fst, "Mf"),
 				new OpRec(Opcode.fstp, "Mf"),
 				new OpRec(Opcode.fldenv, "Mw", OpFlag.X),
@@ -1466,41 +1425,41 @@ namespace Decompiler.Arch.Intel
 						
 				// D9 D0
 				new OpRec(Opcode.fnop, "", OpFlag.X),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
 				// E0
-				new OpRec(Opcode.fchs, ""),
+				new OpRec(Opcode.fchs),
 				new OpRec(Opcode.fabs, "", OpFlag.X),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.ftst, ""),
-				new OpRec(Opcode.fxam, ""),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.ftst),
+				new OpRec(Opcode.fxam),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
-				new OpRec(Opcode.fld1, ""),
+				new OpRec(Opcode.fld1),
 				new OpRec(Opcode.fldl2t, "", OpFlag.X),
 				new OpRec(Opcode.fldl2e, "", OpFlag.X),
-				new OpRec(Opcode.fldpi, ""),
+				new OpRec(Opcode.fldpi),
 				new OpRec(Opcode.fldlg2, "", OpFlag.X),
-				new OpRec(Opcode.fldln2, ""),
-				new OpRec(Opcode.fldz, ""),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.fldln2),
+				new OpRec(Opcode.fldz),
+				new OpRec(Opcode.illegal),
 						
 				// D9 F0
 				new OpRec(Opcode.f2xm1, "F,f", OpFlag.X),
@@ -1514,12 +1473,12 @@ namespace Decompiler.Arch.Intel
 						
 				new OpRec(Opcode.fprem, "F,f", OpFlag.X),
 				new OpRec(Opcode.fyl2xp1, "F,f", OpFlag.X),
-				new OpRec(Opcode.fsqrt, ""),
-				new OpRec(Opcode.fsincos, ""),
-				new OpRec(Opcode.frndint, ""),
+				new OpRec(Opcode.fsqrt),
+				new OpRec(Opcode.fsincos),
+				new OpRec(Opcode.frndint),
 				new OpRec(Opcode.fscale, "F,f", OpFlag.X),
-				new OpRec(Opcode.fsin, ""),
-				new OpRec(Opcode.fcos, ""),
+				new OpRec(Opcode.fsin),
+				new OpRec(Opcode.fcos),
 				
 				// DA //////////////
 				
@@ -1534,162 +1493,162 @@ namespace Decompiler.Arch.Intel
 				
 				// C0 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
 				// DB ///////////////////////////
 				
 				new OpRec(Opcode.fild, "Md"),
-				new OpRec(Opcode.illegal, null, OpFlag.X),
+				new OpRec(Opcode.illegal, "", OpFlag.X),
 				new OpRec(Opcode.fist, "Md", OpFlag.X),
 				new OpRec(Opcode.fistp, "Md"),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
 				new OpRec(Opcode.fld, "Mh"),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
 				new OpRec(Opcode.fstp, "Mh", OpFlag.X),
 						
 				// C0, Conditional moves.
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.fclex, ""), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.fclex), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
-				new OpRec(Opcode.illegal, null), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
+				new OpRec(Opcode.illegal), 
 					
 				// DC ////////////////////
 
@@ -1777,11 +1736,11 @@ namespace Decompiler.Arch.Intel
 				// DD ////////////////
 
 				new OpRec(Opcode.fld, "Mg"),
-				new OpRec(Opcode.illegal, null, OpFlag.X),
+				new OpRec(Opcode.illegal, "", OpFlag.X),
 				new OpRec(Opcode.fst, "Mg"),
 				new OpRec(Opcode.fstp, "Mg"),
 				new OpRec(Opcode.frstor, "Mw", OpFlag.X),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
 				new OpRec(Opcode.fsave, "Mw", OpFlag.X),
 				new OpRec(Opcode.fstsw, "Mw"),
 						
@@ -1795,14 +1754,14 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.ffree, "F", OpFlag.X),
 				new OpRec(Opcode.ffree, "F", OpFlag.X),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 				// DD D0
 				new OpRec(Opcode.fst, "F", OpFlag.X),
 				new OpRec(Opcode.fst, "F", OpFlag.X),
@@ -1823,42 +1782,42 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.fstp, "F"),
 						
 				// E0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
 				// F0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
 				// DE //////////////////////////
 
@@ -1889,23 +1848,23 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.fmulp, "F,f"),
 				new OpRec(Opcode.fmulp, "F,f"),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.fcompp, ""),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.fcompp),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 				// DE E0	
 				new OpRec(Opcode.fsubrp, "F,f", OpFlag.X),
 				new OpRec(Opcode.fsubrp, "F,f"),
@@ -1946,7 +1905,7 @@ namespace Decompiler.Arch.Intel
 				// DF //////////////////////
 
 				new OpRec(Opcode.fild, "Mw"),
-				new OpRec(Opcode.illegal, null, OpFlag.X),
+				new OpRec(Opcode.illegal, "", OpFlag.X),
 				new OpRec(Opcode.fist, "Mw", OpFlag.X),
 				new OpRec(Opcode.fistp, "Mw"),
 				new OpRec(Opcode.fbld, "MB", OpFlag.X),
@@ -1955,80 +1914,80 @@ namespace Decompiler.Arch.Intel
 				new OpRec(Opcode.fistp, "Mq"),
 
 				// C0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
 				// C0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
 				// E0
 				new OpRec(Opcode.fstsw, "aw"),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
 				// F0
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 						
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
-				new OpRec(Opcode.illegal, null),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
+				new OpRec(Opcode.illegal),
 			};
 			Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
 		}

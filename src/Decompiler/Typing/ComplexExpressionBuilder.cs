@@ -49,23 +49,6 @@ namespace Decompiler.Typing
 		private bool seenPtr;
         private DataTypeComparer comp; 
 
-        [Obsolete("", true)]
-		public ComplexExpressionBuilder(DataType dtResult, DataType dt, DataType dtOrig, Expression b, int offset) 
-			: this(dtResult, dt, dtOrig, null, b, null, offset)
-		{
-		}
-
-        [Obsolete]
-		public ComplexExpressionBuilder(DataType dtResult, DataType dt, DataType dtOrig, Expression basePointer, Expression b, int offset)
-		{
-            this.dtResult = dtResult;
-			this.dt = dt;
-			this.dtOriginal = dtOrig;
-			this.basePointer = basePointer;
-			this.complexExp = b;
-			this.offset = offset;
-            this.comp = new DataTypeComparer();
-		}
 
         public ComplexExpressionBuilder(DataType dtResult, DataType dt, DataType dtOrig, Expression basePointer, Expression complexExp, Expression indexExp, int offset)
         {

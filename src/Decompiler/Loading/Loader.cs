@@ -47,13 +47,6 @@ namespace Decompiler.Loading
 		/// <remarks>
 		/// The file can either be an executable or a decompiler project file.
 		/// </remarks>
-		/// <param name="file"></param>
-        [Obsolete]
-		public DecompilerProject Load(string file, Address addrLoad)
-        {
-            return Load(addrLoad);
-        }
-
         public override DecompilerProject Load(Address addrLoad)
 		{
     		DecompilerProject project;

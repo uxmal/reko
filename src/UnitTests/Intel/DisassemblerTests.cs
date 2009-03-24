@@ -271,7 +271,7 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void TestWithImmediateOperands()
         {
-            byte[] image = new byte[] { 0xF6, 0x06, 0x26, 0x54, 0x01 };
+            byte[] image = new byte[] { 0xF6, 0x06, 0x26, 0x54, 0x01 };     // test byte ptr [5426],01
             ProgramImage img = new ProgramImage(new Address(0x900, 0), image);
             ImageReader rdr = img.CreateReader(img.BaseAddress);
             IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
