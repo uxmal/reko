@@ -37,7 +37,7 @@ namespace Decompiler.Arch.Intel
 		private PrimitiveType defaultAddressWidth;
 		private byte m_modrm;
 		private bool isModrmValid;
-		private IntelRegister segmentOverride;
+		private MachineRegister segmentOverride;
 		private ImageReader	rdr;
 
 		/// <summary>
@@ -281,7 +281,7 @@ namespace Decompiler.Arch.Intel
 			dataWidth = defaultDataWidth;
 			addressWidth = defaultAddressWidth;
 			isModrmValid = false;
-			segmentOverride = Registers.None;
+			segmentOverride = MachineRegister.None;
 
             byte op = rdr.ReadByte();
 			OpRecBase opRec = s_aOpRec[op];
@@ -290,11 +290,11 @@ namespace Decompiler.Arch.Intel
 
         private IntelInstruction DecodeOperands(Opcode opcode, byte op, string strFormat)
         {
-            Operand pOperand;
+            MachineOperand pOperand;
             PrimitiveType width = null;
             PrimitiveType iWidth = dataWidth;
 
-            List<Operand> ops = new List<Operand>();
+            List<MachineOperand> ops = new List<MachineOperand>();
             int i = 0;
             while (i != strFormat.Length)
             {
@@ -458,16 +458,16 @@ namespace Decompiler.Arch.Intel
 			Registers.bx,
 		};
 
-		private static IntelRegister [] s_ma16Index =
+		private static MachineRegister [] s_ma16Index =
 		{
 			Registers.si,	 
 			Registers.di,	 
 			Registers.si,	 
 			Registers.di,	 
-			Registers.None,
-			Registers.None,
-			Registers.None,
-			Registers.None,
+			MachineRegister.None,
+			MachineRegister.None,
+			MachineRegister.None,
+			MachineRegister.None,
 		};
 
 
@@ -476,15 +476,15 @@ namespace Decompiler.Arch.Intel
 			return new ImmediateOperand(rdr.ReadLe(immWidth));
 		}
 
-		private Operand DecodeModRM(PrimitiveType dataWidth, IntelRegister segOverride)
+		private MachineOperand DecodeModRM(PrimitiveType dataWidth, MachineRegister segOverride)
 		{
 			EnsureModRM();
 
 			int  rm = m_modrm & 0x07;
 			int  mod = m_modrm >> 6;
 
-			IntelRegister b;
-			IntelRegister idx;
+			MachineRegister b;
+            MachineRegister idx;
 			byte scale = 1;
 			PrimitiveType offsetWidth = null;
 
@@ -502,8 +502,8 @@ namespace Decompiler.Arch.Intel
 					if (rm == 0x06)
 					{
 						offsetWidth = PrimitiveType.Word16;
-						b = Registers.None;
-						idx = Registers.None;
+						b = MachineRegister.None;
+						idx = MachineRegister.None;
 					}
 					else
 					{
@@ -523,7 +523,7 @@ namespace Decompiler.Arch.Intel
 			else 
 			{
 				b = RegFromBits(rm, addressWidth);
-				idx = Registers.None;
+				idx = MachineRegister.None;
 
 				switch (mod)
 				{
@@ -531,7 +531,7 @@ namespace Decompiler.Arch.Intel
 					if (rm == 0x05)
 					{
 						offsetWidth = PrimitiveType.Word32;
-						b = Registers.None;
+						b = MachineRegister.None;
 					}
 					else
 					{
@@ -558,7 +558,7 @@ namespace Decompiler.Arch.Intel
 					if (((m_modrm & 0xC0) == 0) && ((sib & 0x7) == 5))
 					{
 						offsetWidth = PrimitiveType.Word32;
-						b = Registers.None;
+						b = MachineRegister.None;
 					}
 					else
 					{
@@ -566,7 +566,7 @@ namespace Decompiler.Arch.Intel
 					}
 			
 					int i = (sib >> 3) & 0x7;
-					idx = (i == 0x04) ? Registers.None : RegFromBits(i, addressWidth);
+					idx = (i == 0x04) ? MachineRegister.None : RegFromBits(i, addressWidth);
 					scale = (byte) (1 << (sib >> 6));
 				}
 			}
@@ -590,7 +590,7 @@ namespace Decompiler.Arch.Intel
 		}
 
 
-		private bool ImplicitWidth(Operand op)
+		private bool ImplicitWidth(MachineOperand op)
 		{
 			return op is RegisterOperand || op is AddressOperand;
 		}

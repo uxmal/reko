@@ -30,7 +30,7 @@ namespace Decompiler.Arch.Intel.Assembler
 	/// </summary>
 	public class Emitter
 	{
-		private IntelRegister segOverride;
+		private MachineRegister segOverride;
 		private PrimitiveType dataWidthSeg;	// Default data width for this segment.
 		private PrimitiveType addrWidthSeg;	// Default address width for this segment.
 		private PrimitiveType addrWidth;	// width of the address of this opcode.
@@ -39,7 +39,7 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		public Emitter()
 		{
-			segOverride = Registers.None;
+			segOverride = MachineRegister.None;
 		}
 
 		public PrimitiveType AddressWidth
@@ -104,7 +104,7 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		public void EmitOpcode(int b, PrimitiveType dataWidth)
 		{
-			if (SegmentOverride != Registers.None)
+			if (SegmentOverride != MachineRegister.None)
 			{
 				byte bOv;
 				if (SegmentOverride == Registers.es) bOv = 0x26; else
@@ -115,7 +115,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				if (SegmentOverride == Registers.gs) bOv = 0x65; else
 				throw new ArgumentOutOfRangeException("Invalid segment register: " + SegmentOverride);
 				EmitByte(bOv);
-				SegmentOverride = Registers.None;
+				SegmentOverride = MachineRegister.None;
 			}
 			if (IsDataWidthOverridden(dataWidth))
 			{
@@ -219,7 +219,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			set { dataWidthSeg = value; }
 		}
 
-		public IntelRegister SegmentOverride
+		public MachineRegister SegmentOverride
 		{
 			get { return segOverride; }
 			set { segOverride = value; }

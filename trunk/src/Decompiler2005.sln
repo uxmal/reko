@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler", "Window
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pdp11", "Arch\Pdp11\Pdp11.csproj", "{2312D2BC-4994-413B-BCBD-ECF39AA90638}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPC", "Arch\PowerPC\PowerPC.csproj", "{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}"
+EndProject
 Global
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
@@ -85,6 +87,16 @@ Global
 		{2312D2BC-4994-413B-BCBD-ECF39AA90638}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2312D2BC-4994-413B-BCBD-ECF39AA90638}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2312D2BC-4994-413B-BCBD-ECF39AA90638}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Release|.NET.ActiveCfg = Release|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

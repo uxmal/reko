@@ -72,7 +72,7 @@ namespace Decompiler.Arch.Intel
 			return -1;
 		}
 
-		public Expression MakeMatch(Operand opLo, Operand opHi, DataType totalSize, bool isDef)
+		public Expression MakeMatch(MachineOperand opLo, MachineOperand opHi, DataType totalSize, bool isDef)
 		{
 			RegisterOperand regDstLo = opLo as RegisterOperand;
 			RegisterOperand regDstHi = opHi as RegisterOperand;

@@ -31,7 +31,7 @@ namespace Decompiler.Arch.Intel
 		private Frame frame;
 		private int cbStackDepth;
 		private int fpuStackDepth;
-		private IntelRegister frameReg;
+		private MachineRegister frameReg;
 		private Address addrCur;
 
 		public RewriterState(Frame frame)
@@ -39,7 +39,7 @@ namespace Decompiler.Arch.Intel
 			this.frame = frame;
 			cbStackDepth = 0;
 			fpuStackDepth = 0;
-			frameReg = Registers.None;
+			frameReg = MachineRegister.None;
 		}
 
 		public Address InstructionAddress
@@ -68,7 +68,7 @@ namespace Decompiler.Arch.Intel
 		/// Implements a frame shift.
 		/// </summary>
 		/// <param name="regFrame">Register used as a frame register</param>
-		public void EnterFrame(IntelRegister regFrame)
+		public void EnterFrame(MachineRegister regFrame)
 		{
 			FrameRegister = regFrame;
 			frame.FrameOffset = StackBytes;
@@ -76,8 +76,8 @@ namespace Decompiler.Arch.Intel
 
 		public void LeaveFrame()
 		{
-			Debug.Assert(FrameRegister != Registers.None);
-			FrameRegister = Registers.None;
+			Debug.Assert(FrameRegister != MachineRegister.None);
+			FrameRegister = MachineRegister.None;
 			StackBytes = frame.FrameOffset;
 		}
 
@@ -87,7 +87,7 @@ namespace Decompiler.Arch.Intel
 			set { fpuStackDepth = value; }
 		}
 
-		public IntelRegister FrameRegister
+		public MachineRegister FrameRegister
 		{
 			get { return frameReg; }
 			set { frameReg = value; }

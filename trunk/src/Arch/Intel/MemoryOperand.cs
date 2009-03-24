@@ -24,39 +24,39 @@ using System.Text;
 
 namespace Decompiler.Arch.Intel
 {
-	public class MemoryOperand : Operand
+	public class MemoryOperand : MachineOperand
 	{
-		public IntelRegister SegOverride = Registers.None;
-		public IntelRegister Base;
-		public IntelRegister Index;
+		public MachineRegister SegOverride = MachineRegister.None;
+		public MachineRegister Base;
+		public MachineRegister Index;
 		public byte Scale;
 		private Constant offset;
 
 		public MemoryOperand(PrimitiveType width) : base(width)
 		{
-			Base = Registers.None;
-			Index = Registers.None;
-			SegOverride = Registers.None;
+			Base = MachineRegister.None;
+            Index = MachineRegister.None;
+            SegOverride = MachineRegister.None;
 			Scale = 1;
 		}
 
 		public MemoryOperand(PrimitiveType width, Constant off) : base(width)
 		{
 			offset = off;
-			Base = Registers.None;
-			Index = Registers.None;
+            Base = MachineRegister.None;
+            Index = MachineRegister.None;
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, IntelRegister @base, Constant off) : base(width)
+		public MemoryOperand(PrimitiveType width, MachineRegister @base, Constant off) : base(width)
 		{
 			offset = off;
 			Base = @base;
-			Index = Registers.None;
+            Index = MachineRegister.None;
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, IntelRegister @base, IntelRegister index, byte scale,  Constant off) : base(width)
+		public MemoryOperand(PrimitiveType width, MachineRegister @base, MachineRegister index, byte scale,  Constant off) : base(width)
 		{
 			offset = off;
 			Base = @base;
@@ -66,7 +66,7 @@ namespace Decompiler.Arch.Intel
 
 		public bool IsAbsolute
 		{
-			get { return offset.IsValid && Base == Registers.None && Index == Registers.None; }
+            get { return offset.IsValid && Base == MachineRegister.None && Index == MachineRegister.None; }
 		}
 
 		public Constant Offset
@@ -105,13 +105,13 @@ namespace Decompiler.Arch.Intel
 				sb.Append(s);
 			}
 
-			if (SegOverride != Registers.None)
+            if (SegOverride != MachineRegister.None)
 			{
 				sb.Append(SegOverride.ToString());
 				sb.Append(":");
 			}
 			sb.Append("[");
-			if (Base != Registers.None)
+			if (Base != MachineRegister.None)
 			{
 				sb.Append(Base.ToString());
 			}
@@ -120,7 +120,7 @@ namespace Decompiler.Arch.Intel
 				sb.AppendFormat(FormatUnsignedValue(offset));
 			}
 
-			if (Index != Registers.None)
+			if (Index != MachineRegister.None)
 			{
 				sb.Append("+");
 				sb.Append(Index.ToString());
@@ -130,7 +130,7 @@ namespace Decompiler.Arch.Intel
 					sb.Append(Scale);
 				}
 			}
-			if (Base != Registers.None && offset != null && offset.IsValid)
+			if (Base != MachineRegister.None && offset != null && offset.IsValid)
 			{
 				if (offset.DataType == PrimitiveType.Byte || offset.DataType == PrimitiveType.SByte)
 				{
@@ -148,11 +148,11 @@ namespace Decompiler.Arch.Intel
 
 		// Given an instruction and an operand, returns the segment to use when referring to data.
 
-		public IntelRegister DefaultSegment
+		public MachineRegister DefaultSegment
 		{					 
 			get 
 			{
-				if (SegOverride != Registers.None)
+				if (SegOverride != MachineRegister.None)
 					return SegOverride;
 				if (Base == Registers.bp || Base == Registers.ebp || Base == Registers.sp || Base == Registers.esp)
 					return Registers.ss;

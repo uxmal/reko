@@ -137,5 +137,12 @@ namespace Decompiler.Core
 			}
 			throw new ArgumentOutOfRangeException();
 		}
-	}
+
+        public uint ReadBeUint32()
+        {
+            uint u = ProgramImage.ReadBeUint32(img, off);
+            off += 4;
+            return u;
+        }
+    }
 }

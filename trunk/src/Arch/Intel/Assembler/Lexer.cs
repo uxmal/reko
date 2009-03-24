@@ -34,7 +34,7 @@ namespace Decompiler.Arch.Intel.Assembler
 		private Token tok;
 		private int lineNumber;
 		private StringBuilder sb;
-		private IntelRegister reg;
+		private MachineRegister reg;
 		private int integer;
 
         private static SortedList<string, Token> keywords = new SortedList<string, Token>(StringComparer.InvariantCultureIgnoreCase);
@@ -208,8 +208,8 @@ namespace Decompiler.Arch.Intel.Assembler
             Token tok;
             if (keywords.TryGetValue(s, out tok))
                 return tok;
-			IntelRegister reg = Registers.GetRegister(s);
-			if (reg != Registers.None)
+			MachineRegister reg = Registers.GetRegister(s);
+			if (reg != MachineRegister.None)
 			{
 				this.reg = reg;
 				return Token.REGISTER;
@@ -371,7 +371,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			return tok;
 		}
 
-		public IntelRegister Register
+		public MachineRegister Register
 		{
 			get { return reg; }
 		}

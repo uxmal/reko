@@ -56,7 +56,7 @@ namespace Decompiler.Arch.Intel
 		}
 
 		//$REVIEW: consider passing an operator instead, and use "Apply".
-		private Constant ExecuteAluOp(Opcode code, Operand op1, Operand op2)
+		private Constant ExecuteAluOp(Opcode code, MachineOperand op1, MachineOperand op2)
 		{
 			Constant v1 = GetValue(op1);
 			Constant v2 = GetValue(op2);
@@ -84,7 +84,7 @@ namespace Decompiler.Arch.Intel
 			return new Constant(v1.DataType, v);
 		}
 
-		public Constant GetValue(Operand op)
+		public Constant GetValue(MachineOperand op)
 		{
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)
@@ -112,7 +112,7 @@ namespace Decompiler.Arch.Intel
 
 			Address addr; 
 
-			Operand op = instr.op1;
+			MachineOperand op = instr.op1;
 			AddressOperand addrOp = op as AddressOperand;
 			if (addrOp != null)
 			{
@@ -340,14 +340,14 @@ namespace Decompiler.Arch.Intel
 			return (addr.Selector == 0xFFFF && addr.Offset == 0x0000);
 		}
 
-		private bool IsSameRegister(Operand op1, Operand op2)
+		private bool IsSameRegister(MachineOperand op1, MachineOperand op2)
 		{
 			RegisterOperand r1 = op1 as RegisterOperand;
 			RegisterOperand r2 = op2 as RegisterOperand;
 			return (r1 != null && r2 != null && r1.Register == r2.Register);
 		}
 
-		public void SetValue(Operand op, Constant c)
+		public void SetValue(MachineOperand op, Constant c)
 		{
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)

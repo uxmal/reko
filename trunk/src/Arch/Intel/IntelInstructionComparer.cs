@@ -16,14 +16,11 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using System;
 
 using IComparer = System.Collections.IComparer;
-#if VS2003 || MONO
-using IHashCodeProvider = System.Collections.IHashCodeProvider;
-#else
 using IEqualityComparer = System.Collections.IEqualityComparer;
-#endif
 
 namespace Decompiler.Arch.Intel
 {
@@ -36,13 +33,9 @@ namespace Decompiler.Arch.Intel
 	/// 
 	public class IntelInstructionComparer : 
 		IComparer,
-#if VS2003 || MONO
-		IHashCodeProvider
-#else
 		IEqualityComparer
-#endif
 	{
-		private int CompareOperands(Operand opA, Operand opB)
+		private int CompareOperands(MachineOperand opA, MachineOperand opB)
 		{
 			if (!opA.GetType().IsAssignableFrom(opB.GetType()))
 				return -1;
@@ -115,7 +108,7 @@ namespace Decompiler.Arch.Intel
 		}
 
 
-		private int GetHashCode(Operand op)
+		private int GetHashCode(MachineOperand op)
 		{
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)

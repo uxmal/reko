@@ -188,6 +188,8 @@
     <Compile Include="Mocks\Reg00011Mock.cs" />
     <Compile Include="Mocks\SegmentedDoubleReference.cs" />
     <Compile Include="Mocks\TreeFindMock.cs" />
+    <Compile Include="PowerPC\PowerPcArchitectureTests.cs" />
+    <Compile Include="PowerPC\PowerPcDisassemblerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
@@ -257,6 +259,10 @@
     <ProjectReference Include="..\Arch\Intel\Intel.csproj">
       <Project>{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}</Project>
       <Name>Intel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
+      <Project>{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}</Project>
+      <Name>PowerPC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</Project>

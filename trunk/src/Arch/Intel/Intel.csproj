@@ -163,9 +163,6 @@
     <Compile Include="Opcode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Operand.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="OperandRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
