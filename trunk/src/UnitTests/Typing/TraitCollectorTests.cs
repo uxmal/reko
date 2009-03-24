@@ -20,6 +20,7 @@ using Decompiler;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using Decompiler.Analysis;
 using Decompiler.Arch.Intel;
@@ -37,7 +38,7 @@ namespace Decompiler.UnitTests.Typing
 	{
 		private TraitCollector coll;
         private MockTraitHandler handler;
-		private ExpressionNormalizer aen;
+		private ExpressionNormalizer en;
 		private EquivalenceClassBuilder eqb;
 		private readonly string nl;
 
@@ -116,7 +117,7 @@ namespace Decompiler.UnitTests.Typing
 			Program prog = mock.BuildProgram();
             coll = CreateCollector(prog);
 
-			aen.Transform(prog);
+			en.Transform(prog);
 			eqb.Build(prog);
 			coll.CollectProgramTraits(prog);
 
@@ -138,7 +139,7 @@ namespace Decompiler.UnitTests.Typing
 				m.Add(m.Add(b, Constant.Word32(0x10030000)),
 				m.Muls(i, s)));
             coll = CreateCollector();
-			e = e.Accept(aen);
+			e = e.Accept(en);
 			e.Accept(eqb);
 			e.Accept(coll);
 			Verify(null, "Typing/TrcoArrayExpression.txt");
@@ -187,7 +188,7 @@ namespace Decompiler.UnitTests.Typing
             Expression e = m.Load(PrimitiveType.Int32, ea);
 
             coll = CreateCollector(prog);
-			e = e.Accept(aen);
+			e = e.Accept(en);
 			e.Accept(eqb);
 			e.Accept(coll);
 			Verify(null, "Typing/TrcoGlobalArray.txt");
@@ -204,7 +205,7 @@ namespace Decompiler.UnitTests.Typing
 			Expression e = m.Load(PrimitiveType.Byte, mps);
 
             coll = CreateCollector();
-			e = e.Accept(aen);
+			e = e.Accept(en);
 			e.Accept(eqb);
 			e.Accept(coll);
 			Assert.IsNotNull(mps.BasePointer.TypeVariable, "Base pointer should have type variable");
@@ -221,7 +222,7 @@ namespace Decompiler.UnitTests.Typing
 			Expression e = m.SegMem(PrimitiveType.Word16, ds, m.Add(bx, 4));
 
             coll = CreateCollector();
-			e = e.Accept(aen);
+			e = e.Accept(en);
 			e.Accept(eqb);
 			e.Accept(coll);
 			Verify(null, "Typing/TrcoSegmentedAccess.txt");
@@ -238,7 +239,7 @@ namespace Decompiler.UnitTests.Typing
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));
 
             coll = CreateCollector(prog);
-			e = e.Accept(aen);
+			e = e.Accept(en);
 			e.Accept(eqb);
 			e.Accept(coll);
 			Verify(null, "Typing/TrcoSegmentedDirectAddress.txt");
@@ -442,6 +443,43 @@ namespace Decompiler.UnitTests.Typing
             Assert.AreEqual(exp, sb.ToString());
         }
 
+        [Test]
+        [Ignore("Complete the test by seeing the return type T_5 to be of type 'struct 3'")]
+        public void TrcoCallFunctionWithArraySize()
+        {
+            ProcedureMock m = new ProcedureMock();
+            ProcedureSignature sig = new ProcedureSignature(null, 
+                m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
+            ExternalProcedure ex = new ExternalProcedure("malloc", sig);
+            ex.Characteristics.ArraySize = new ArraySizeCharacteristic();
+            ex.Characteristics.ArraySize.Argument = "r";
+            ex.Characteristics.ArraySize.Factors = new ArraySizeFactor[1];
+            ex.Characteristics.ArraySize.Factors[0] = new ArraySizeFactor();
+            ex.Characteristics.ArraySize.Factors[0].Constant = "1";
+
+            Identifier eax = m.Local32("eax");
+            Statement call = m.Assign(eax, m.Fn(new ProcedureConstant(PrimitiveType.Word32, ex), m.Word32(3)));
+
+            coll = CreateCollector();
+            call.Instruction.Accept(eqb);
+            call.Instruction.Accept(coll);
+            StringWriter sw = new StringWriter();
+            handler.Traits.Write(sw);
+            string sExp =
+                "T_1 (in malloc : word32)" + nl +
+                "\ttrait_func(T_4 -> T_5)" + nl +
+                "T_3 (in dwArg00 : word32)" + nl +
+                "\ttrait_primitive(word32)" + nl +
+                "T_4 (in 0x00000003 : word32)" + nl +
+                "\ttrait_primitive(word32)" + nl +
+                "\ttrait_equal(T_3)" + nl +
+                "T_5 (in malloc(0x00000003) : word32)" + nl +
+                "\ttrait_primitive(word32)"; 
+            Console.WriteLine(sw.ToString());
+            Assert.AreEqual(sExp, sw.ToString());
+
+        }
+
         private TraitCollector CreateCollector()
         {
             return CreateCollector(CreateProgram());
@@ -449,7 +487,7 @@ namespace Decompiler.UnitTests.Typing
 
         private TraitCollector CreateCollector(Program prog)
         {
-            aen = new ExpressionNormalizer(prog.Architecture.PointerType);
+            en = new ExpressionNormalizer(prog.Architecture.PointerType);
             eqb = new EquivalenceClassBuilder(prog.TypeFactory, prog.TypeStore);
             handler = new MockTraitHandler(prog.TypeStore);
             return new TraitCollector(prog.TypeFactory, prog.TypeStore, handler, prog);
@@ -463,7 +501,7 @@ namespace Decompiler.UnitTests.Typing
         protected override void RunTest(Program prog, string outFile)
 		{
             coll = CreateCollector(prog);
-            aen.Transform(prog);
+            en.Transform(prog);
             eqb.Build(prog);
 			coll.CollectProgramTraits(prog);
 

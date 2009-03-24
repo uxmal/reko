@@ -56,9 +56,11 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void RewriteIndirectCall()
 		{
-			IntelInstruction instr = new IntelInstruction();
-			instr.code = Opcode.call;
-			instr.op1 = new MemoryOperand(PrimitiveType.Word16, Registers.bx, new Constant(PrimitiveType.Word16, 4));
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.call,
+                PrimitiveType.Word16,
+                PrimitiveType.Word16,
+                new MemoryOperand(PrimitiveType.Word16, Registers.bx, new Constant(PrimitiveType.Word16, 4)));
 			Address addr = new Address(0x0C00, 0x0100);
 
 			host.AddCallSignature(addr, new ProcedureSignature(
@@ -78,10 +80,12 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void RewriteLesBxStack()
 		{
-			IntelInstruction instr = new IntelInstruction();
-			instr.code = Opcode.les;
-			instr.op1 = new RegisterOperand(Registers.bx);
-			instr.op2 = new MemoryOperand(PrimitiveType.Word32, Registers.bp, new Constant(PrimitiveType.Word16, 6));
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.les,
+                PrimitiveType.Word16,
+                PrimitiveType.Word16,
+                new RegisterOperand(Registers.bx),
+                new MemoryOperand(PrimitiveType.Word32, Registers.bp, new Constant(PrimitiveType.Word16, 6)));
 
 			state.FrameRegister = Registers.bp;
 			rw.ConvertInstructions(instr);
@@ -93,9 +97,11 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void RewriteBswap()
 		{
-			IntelInstruction instr = new IntelInstruction();
-			instr.code = Opcode.bswap;
-			instr.op1 = new RegisterOperand(Registers.ebx);
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.bswap,
+                PrimitiveType.Word32,
+                PrimitiveType.Word32,
+                new RegisterOperand(Registers.ebx));
 
 			rw.ConvertInstructions(instr);
 			Assert.AreEqual("ebx = __bswap(ebx)", rw.Block.Statements.Last.Instruction.ToString());
@@ -104,8 +110,10 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void RewriterNearReturn()
 		{
-			IntelInstruction instr = new IntelInstruction();
-			instr.code = Opcode.ret;
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.ret,
+                PrimitiveType.Word16,
+                PrimitiveType.Word16);
 
 			proc.Frame.ReturnAddressSize = 2;
 			rw.ConvertInstructions(instr);

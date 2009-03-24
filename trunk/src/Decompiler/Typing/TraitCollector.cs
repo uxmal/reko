@@ -531,6 +531,11 @@ namespace Decompiler.Typing
 			}
 		}
 
+        private void CollectProcedureCharacteristics()
+        {
+
+        }
+
 		public override void VisitSlice(Slice slice)
 		{
 			slice.Expression.Accept(this);

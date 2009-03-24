@@ -201,6 +201,7 @@
     <Compile Include="Code\Declaration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Code\DelegatedInstructionVisitor.cs" />
     <Compile Include="Code\DepositBits.cs">
       <SubType>Code</SubType>
     </Compile>

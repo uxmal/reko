@@ -72,6 +72,11 @@ namespace Decompiler.Core
 			return b;
 		}
 
+        /// <summary>
+        /// Little-endian read.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
 		public Constant ReadLe(PrimitiveType type)
 		{
 			Constant c = image.ReadLe(off, type);

@@ -154,12 +154,6 @@ namespace Decompiler.Gui.Windows.Forms
 			set { currentPage = value; }
 		}
 
-        [Obsolete("User decompilerService instead", true)]
-		public DecompilerDriver Decompiler
-		{
-			get { return decompilerSvc.Decompiler; }
-		}
-
         protected override object GetService(Type service)
         {
             object svc = sc.GetService(service);
@@ -205,12 +199,6 @@ namespace Decompiler.Gui.Windows.Forms
 				Cursor.Current = Cursors.Arrow;
 				form.SetStatus("");
 			}
-		}
-
-        [Obsolete("Use decompilerservice", true)]
-		public Program Program
-		{
-			get { return decompilerSvc.Decompiler.Program; }
 		}
 
 		public InitialPageInteractor InitialPageInteractor

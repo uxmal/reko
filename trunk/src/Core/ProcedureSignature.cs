@@ -49,7 +49,7 @@ namespace Decompiler.Core
 		{
 		}
 
-		public ProcedureSignature(Identifier returnId, Identifier [] formalArguments)
+		public ProcedureSignature(Identifier returnId, params Identifier [] formalArguments)
 		{
 			this.ret = returnId;
 			this.formals = formalArguments;
@@ -112,19 +112,6 @@ namespace Decompiler.Core
                 fmt.Write("// stackDelta: {0}; fpuStackDelta: {1}; fpuMaxParam: {2}", stackDelta, FpuStackDelta, FpuStackArgumentMax);
                 fmt.WriteLine();
             }
-        }
-
-        [Obsolete("use CodeWriter.WriteFormalArgument")]
-		private void EmitArgument(Identifier arg, bool writeStorage, CodeFormatter writer, TypeFormatter t)
-		{
-            writer.WriteFormalArgument(arg, writeStorage, t);
-        }
-
-
-        [Obsolete("use CodeWriter.WriteFormalArgumentType", true)]
-        public void WriteType(Identifier arg, bool writeStorage, CodeFormatter writer)
-        {
-            throw new NotImplementedException();
         }
 
 		/// <summary>

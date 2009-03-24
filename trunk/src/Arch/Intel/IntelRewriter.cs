@@ -764,7 +764,7 @@ namespace Decompiler.Arch.Intel
 						return;		
 					case Opcode.retf:
 					case Opcode.ret:
-						if (instrCur.cOperands == 1)
+						if (instrCur.Operands == 1)
 						{
 							// RET pops values off stack: this must be a 'pascal' function.
 							proc.Signature.StackDelta = ((ImmediateOperand) instrCur.op1).Value.ToInt32();
@@ -772,7 +772,7 @@ namespace Decompiler.Arch.Intel
 
 						EmitReturnInstruction(
 							this.arch.WordWidth.Size + (instrCur.code == Opcode.retf ? PrimitiveType.Word16.Size : 0),
-							instrCur.cOperands == 1 ? ((ImmediateOperand) instrCur.op1).Value.ToInt32() : 0);
+							instrCur.Operands == 1 ? ((ImmediateOperand) instrCur.op1).Value.ToInt32() : 0);
 						break;
 
 					case Opcode.rcl:
@@ -1208,7 +1208,7 @@ namespace Decompiler.Arch.Intel
 			bool fPopStack,
 			DataType cast)
 		{
-			switch (instrCur.cOperands)
+			switch (instrCur.Operands)
 			{
 				default:
 					throw new ArgumentOutOfRangeException("instrCur", "Instruction must have 1 or 2 operands");
@@ -1261,7 +1261,7 @@ namespace Decompiler.Arch.Intel
 		private Assignment EmitDivide(BinaryOperator op, Domain domain)
 		{
 			Assignment ass = null;
-			if (instrCur.cOperands != 1)
+			if (instrCur.Operands != 1)
 				throw new ArgumentOutOfRangeException("Intel DIV/IDIV instructions only take one operand");
 			Identifier regDividend;
 			Identifier regQuotient;
@@ -1502,7 +1502,7 @@ namespace Decompiler.Arch.Intel
 		private Assignment EmitMultiply(BinaryOperator op, Domain resultDomain)
 		{
 			Assignment ass; 
-			switch (instrCur.cOperands)
+			switch (instrCur.Operands)
 			{
 				case 1:
 				{
