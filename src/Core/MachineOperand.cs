@@ -50,6 +50,14 @@ namespace Decompiler.Core
 			return s + tmp.ToString(FormatString(c.DataType));
 		}
 
+        public string FormatValue(Constant c)
+        {
+            if (((PrimitiveType)c.DataType).Domain == Domain.SignedInt)
+                return FormatSignedValue(c);
+            else
+                return FormatUnsignedValue(c);
+        }
+
 		private string FormatString(DataType dt)
 		{
 			switch (dt.Size)
@@ -112,7 +120,7 @@ namespace Decompiler.Core
 
 		public override string ToString()
 		{
-			return FormatUnsignedValue(value);
+			return FormatValue(value);
 		}
 
 		public Constant Value
