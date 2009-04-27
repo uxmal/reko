@@ -39,6 +39,10 @@ namespace Decompiler.Core.Lib
 			this.nodeCollection = new NodeCollection(this);
 		}
 
+        /// <summary>
+        /// Adds a node to the graph. If the node already exists, nothing changes.
+        /// </summary>
+        /// <param name="n">Node to be added.</param>
 		public void AddNode(T n)
 		{
 			if (mpobjectNode.ContainsKey(n))

@@ -36,12 +36,12 @@ namespace Decompiler.Structure
 
 		public void Add(Interval i)
 		{
-			items.Add(i.Header.RpoNumber, i);
+			items.Add(i.HeaderBlock.RpoNumber, i);
 		}
 
         public bool Remove(Interval i)
         {
-            return items.Remove(i.Header.RpoNumber);
+            return items.Remove(i.HeaderBlock.RpoNumber);
         }
 
 		#region ICollection Members
@@ -63,7 +63,7 @@ namespace Decompiler.Structure
 
         public bool Contains(Interval interval)
         {
-            return items.ContainsKey(interval.Header.RpoNumber);
+            return items.ContainsKey(interval.HeaderBlock.RpoNumber);
         }
 
 		public int Count

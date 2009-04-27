@@ -86,7 +86,6 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 txt.SelectedText = "\n";
             }
-
         }
 
 

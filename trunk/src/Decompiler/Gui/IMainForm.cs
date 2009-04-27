@@ -18,6 +18,7 @@
 
 using System;
 using System.ComponentModel.Design;
+using System.Windows.Forms;
 
 namespace Decompiler.Gui
 {
@@ -27,29 +28,28 @@ namespace Decompiler.Gui
 	public interface IMainForm : IDisposable
 	{
 		/// <summary>
-		/// The text of the windows's title bar.
+		/// The text of the window's title bar.
 		/// </summary>
 		string TitleText { get; set; }
         void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
 
         void AddDiagnostic(Decompiler.Core.Diagnostic d, string format, params object[] args);
         void BuildPhases();
-        System.Windows.Forms.ListView BrowserList { get; }
-        System.Windows.Forms.ListView FindResultsList { get; }
-        System.Windows.Forms.ListView DiagnosticsList { get; }
-        System.Windows.Forms.OpenFileDialog OpenFileDialog { get; }
+        ListView BrowserList { get; }
+        ListView FindResultsList { get; }
+        ListView DiagnosticsList { get; }
+        OpenFileDialog OpenFileDialog { get; }
         IProgressBar ProgressBar { get; }
-        System.Windows.Forms.SaveFileDialog SaveFileDialog { get; }
+        SaveFileDialog SaveFileDialog { get; }
         void SetStatus(string txt);
         void SetStatusDetails(string txt);
-        System.Windows.Forms.ToolStrip ToolBar { get; }
-        System.Windows.Forms.MainMenu Menu { get; set; }
+        ToolStrip ToolBar { get; }
+        MainMenu Menu { get; set; }
 
         IStartPage StartPage { get; }
         ILoadedPage LoadedPage { get; }
         Decompiler.Gui.Windows.Forms.AnalyzedPage AnalyzedPage { get; }
         Decompiler.Gui.Windows.Forms.FinalPage FinalPage { get; }
-
 
         event EventHandler Closed;
 
@@ -62,9 +62,6 @@ namespace Decompiler.Gui
         void Close();
 
         void SetCurrentPage(object page);
-
-
-
     }
 
 	public delegate void MenuCommandHandler(object sender, MenuCommandArgs arg);

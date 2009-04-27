@@ -79,8 +79,6 @@
       <HintPath>..\..\..\..\Program Files\NUnit 2.2\bin\nunit.framework.dll</HintPath>
       <AssemblyFolderKey>hklm\dn\nunit.framework</AssemblyFolderKey>
     </Reference>
-    <Reference Include="PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86" />
-    <Reference Include="PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -96,8 +94,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="UIAutomationProvider, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <ProjectReference Include="..\Arch\Intel\Intel.csproj">
       <Name>Intel</Name>
       <Project>{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}</Project>
@@ -425,21 +421,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\StrengthReduction.cs" />
+    <Compile Include="Structure\AbsynCodeGenerator.cs" />
     <Compile Include="Structure\ast\Ast.cs" />
-    <Compile Include="Structure\ast\CfgNode.cs" />
+    <Compile Include="Structure\ast\CaseFinder.cs" />
     <Compile Include="Structure\ast\DerivedGraph.cs" />
     <Compile Include="Structure\ast\DerivedSequenceBuilder.cs" />
-    <Compile Include="Structure\ast\Dominators.cs" />
     <Compile Include="Structure\ast\Graphs.cs" />
-    <Compile Include="Structure\ast\GraphsCodeGen.cs" />
-    <Compile Include="Structure\ast\Interval.cs" />
     <Compile Include="Structure\ast\IntervalBuilder.cs" />
-    <Compile Include="Structure\ast\LoopFinder.cs" />
-    <Compile Include="Structure\ast\NodeCodeGen.cs" />
-    <Compile Include="Structure\ast\Options.cs" />
+    <Compile Include="Structure\ast\LoopBuilder.cs" />
+    <Compile Include="Structure\PostDominatorGraph.cs" />
     <Compile Include="Structure\ast\ProcHeader.cs" />
     <Compile Include="Structure\ast\StringFunctions.cs" />
-    <Compile Include="Structure\ast\TypeDefs.cs" />
+    <Compile Include="Structure\StructuredGraph.cs" />
     <Compile Include="Structure\BlockLinearizer.cs">
       <SubType>Code</SubType>
     </Compile>

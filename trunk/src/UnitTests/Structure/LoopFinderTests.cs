@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Structure
 			e.MoveNext();
 			e.MoveNext();
 			Interval i = (Interval) e.Current;
-			List<Block> preds = lf.BackEdges(i.Header);
+			List<Block> preds = lf.BackEdges(i.EntryBlock);
 			Assert.AreEqual(3, preds.Count);
 		}
 

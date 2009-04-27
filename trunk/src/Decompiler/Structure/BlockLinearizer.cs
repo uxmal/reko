@@ -223,6 +223,11 @@ namespace Decompiler.Structure
 			abs = brk;
 		}
 
+        public void VisitCase(AbsynCase c)
+        {
+            abs = c;
+        }
+
 		public void VisitContinue(AbsynContinue cont)
 		{
 			abs = cont;

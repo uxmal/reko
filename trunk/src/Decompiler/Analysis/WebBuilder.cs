@@ -72,7 +72,7 @@ namespace Decompiler.Analysis
 			DeclarationInserter deci = new DeclarationInserter(ssaIds, doms);
 			foreach (Web web in this.webs)
 			{
-				if (!(web.id is MemoryIdentifier))
+				if (!(web.Identifier is MemoryIdentifier))
 					deci.InsertDeclaration(web);
 			}
 		}
@@ -108,7 +108,7 @@ namespace Decompiler.Analysis
 			{
 				if (w.InductionVariable != null)
 				{
-					ivs.Add(w.id, w.InductionVariable);
+					ivs.Add(w.Identifier, w.InductionVariable);
 				}
 			}
 		}
@@ -120,17 +120,17 @@ namespace Decompiler.Analysis
 			{
 				c.Add(sid);
 				webOf[sid.Identifier.Number] = c;
-				foreach (Statement u in a.uses)
-					if (!c.uses.Contains(u))
-						c.uses.Add(u);
+				foreach (Statement u in a.Uses)
+					if (!c.Uses.Contains(u))
+						c.Uses.Add(u);
 			}
 			foreach (SsaIdentifier sid in b.Members)
 			{
 				c.Add(sid);
 				webOf[sid.Identifier.Number] = c;
-				foreach (Statement u in b.uses)
-					if (!c.uses.Contains(u))
-						c.uses.Add(u);
+				foreach (Statement u in b.Uses)
+					if (!c.Uses.Contains(u))
+						c.Uses.Add(u);
 			}
 			webs.Remove(a);
 			webs.Remove(b);
@@ -183,7 +183,7 @@ namespace Decompiler.Analysis
 
 			public override Expression TransformIdentifier(Identifier id)
 			{
-				return bld.webOf[id.Number].id;
+				return bld.webOf[id.Number].Identifier;
 			}
 
 			public override Instruction TransformAssignment(Assignment a)
@@ -197,8 +197,6 @@ namespace Decompiler.Analysis
                 else
 					return a;
 			}
-
 		}
-
 	}
 }

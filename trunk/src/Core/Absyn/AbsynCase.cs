@@ -1,5 +1,5 @@
-ï»¿/* 
- * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
+/* 
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,15 +16,31 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Gui.Windows.Controls;
+using Decompiler.Core.Code;
 using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Gui
+namespace Decompiler.Core.Absyn
 {
-    public interface ILoadedPage
+    public class AbsynCase : AbsynStatement
     {
-        TextBox Disassembly { get; }
-        MemoryControl MemoryControl { get; }
+        private int i;
+
+        //$REVIEW: Should take an expression.
+        public AbsynCase(int i)
+        {
+            this.i = i;
+        }
+
+        public override void Accept(IAbsynVisitor visitor)
+        {
+            visitor.VisitCase(this);
+        }
+
+        public int Number
+        {
+            get { return i; }
+        }
     }
 }

@@ -28,13 +28,9 @@ namespace Decompiler.Arch.Intel
 	/// </summary>
 	public class IntelInstruction : MachineInstruction
 	{
-		public FlagM DefCc()  { return DefCc(code); }		// Condition codes defined by this instruction.
-		public FlagM UseCc()  { return UseCc(code); }		// Condition codes used by this instruction.
-
 		public Opcode code;		// Opcode of the instruction.
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
-
 		public MachineOperand		op1;
 		public MachineOperand		op2;
 		public MachineOperand		op3;
@@ -57,6 +53,9 @@ namespace Decompiler.Arch.Intel
 				}
 			}
 		}
+
+        public FlagM DefCc() { return DefCc(code); }		// Condition codes defined by this instruction.
+        public FlagM UseCc() { return UseCc(code); }		// Condition codes used by this instruction.
 
 
 		private bool NeedsExplicitMemorySize()

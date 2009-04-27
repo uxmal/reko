@@ -26,10 +26,10 @@ namespace Decompiler.Analysis
 {
 	public class Web
 	{
-		public Identifier id;
+        private Identifier id;
 		private List<SsaIdentifier> members;
-		public List<Statement> defs;
-        public List<Statement> uses;
+		private List<Statement> defs;
+        private List<Statement> uses;
 		private LinearInductionVariable iv;
 
 		public Web()
@@ -39,7 +39,7 @@ namespace Decompiler.Analysis
 			uses = new List<Statement>();
 		}
 
-		public void Add(SsaIdentifier sid)
+        public void Add(SsaIdentifier sid)
 		{
             if (members.Contains(sid))		// should be a set!
                 return;
@@ -51,7 +51,7 @@ namespace Decompiler.Analysis
 			}
 			else
 			{
-				if (sid.Identifier.Number < this.id.Number)
+				if (sid.Identifier.Number < this.Identifier.Number)
 				{
 					this.id = sid.Identifier;
 				}
@@ -79,6 +79,16 @@ namespace Decompiler.Analysis
 				uses.Add(u);
 		}
 
+        public List<Statement> Definitions
+        {
+            get { return defs; }
+        }
+
+        public Identifier Identifier
+        {
+            get { return id; }
+        }
+        
 		public LinearInductionVariable InductionVariable
 		{
 			get { return iv; }
@@ -89,9 +99,14 @@ namespace Decompiler.Analysis
 			get { return members; }
 		}
 
+        public List<Statement> Uses
+        {
+            get { return uses; }
+        }
+
 		public void Write(TextWriter writer)
 		{
-			writer.Write("{0}: {{ ", id.Name);
+			writer.Write("{0}: {{ ", Identifier.Name);
 			foreach (SsaIdentifier m in members)
 			{
 				writer.Write("{0} ", m.Identifier.Name);

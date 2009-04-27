@@ -129,16 +129,13 @@ namespace Decompiler.Loading
 		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, ProgramImage pgmImgNew, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = pgmImgNew.Map;
-
-			ushort span;
-			int ifile = lzHdrOffset + 0x158;
-
-			// 0x158=compressed relocation table address 
+            const int CompressedRelocationTableAddress = 158;
+			int ifile = lzHdrOffset + CompressedRelocationTableAddress;
 
 			int rel_off=0;
 			for (;;)
 			{
-				span = abUncompressed[ifile++];
+    			ushort span = abUncompressed[ifile++];
 				if (span == 0)
 				{
 					span = abUncompressed[ifile++];

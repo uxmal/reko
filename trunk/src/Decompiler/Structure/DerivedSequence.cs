@@ -38,7 +38,7 @@ namespace Decompiler.Structure
 
 		public StructureNode NewNode(int i, Block entry, BitSet blocks)
 		{
-			StructureNode n = new StructureNode(i, entry, blocks);
+			StructureNode n = new StructureNode(i, entry);
 			return n;
 		}
 
@@ -63,10 +63,10 @@ namespace Decompiler.Structure
 			{
 				foreach (StructureNode n in nodes)
 				{
-					Debug.Write(n.Number + ": [ ");
+					Debug.Write(n.Ident + ": [ ");
 					foreach (StructureNode s in n.Succ)
 					{
-						Debug.Write(s.Number + " ");
+						Debug.Write(s.Ident + " ");
 					}
 					Debug.WriteLine("]");
 				}

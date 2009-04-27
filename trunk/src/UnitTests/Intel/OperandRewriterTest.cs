@@ -22,7 +22,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Intel
 {
@@ -174,14 +174,14 @@ namespace Decompiler.UnitTests.Intel
 	public class FakeRewriterHost : IRewriterHost
 	{
         private Program prog;
-		private Hashtable callSignatures;
-		private Hashtable procedures;
+		private Dictionary<Address,ProcedureSignature> callSignatures;
+		private Dictionary<Address,Procedure> procedures;
 
 		public FakeRewriterHost(Program prog)
 		{
             this.prog = prog;
-			callSignatures = new Hashtable();
-			procedures = new Hashtable();
+			callSignatures = new Dictionary<Address,ProcedureSignature>();
+			procedures = new Dictionary<Address,Procedure>();
 		}
 
 

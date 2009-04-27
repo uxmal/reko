@@ -30,7 +30,5 @@ namespace Decompiler.Core
         /// <param name="block"></param>
         /// <returns></returns>
         CodeEmitter CreateEmitter(Block block);
-
-
 	}
 }

@@ -97,6 +97,7 @@
     <Compile Include="Absyn\AbsynBreak.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Absyn\AbsynCase.cs" />
     <Compile Include="Absyn\AbsynContinue.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -25,7 +25,6 @@ using Decompiler.Arch.Intel;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using System.IO;
-using System.Collections;
 
 namespace Decompiler.UnitTests.Analysis
 {

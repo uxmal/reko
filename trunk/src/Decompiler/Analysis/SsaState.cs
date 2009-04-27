@@ -67,8 +67,6 @@ namespace Decompiler.Analysis
 			proc.ExitBlock.Statements.Clear();
 		}
 
-
-
 #if DEBUG
 		public void DebugDump(bool trace)
 		{
@@ -91,18 +89,16 @@ namespace Decompiler.Analysis
 		/// from SSA state, then removes the statement itself from code.
 		/// </summary>
 		/// <param name="pstm"></param>
- 		public void DeleteStatement(Statement pstm)
+ 		public void DeleteStatement(Statement stm)
 		{
 			// Remove all definitions and uses.
-
-			ReplaceDefinitions(pstm, null);
+			ReplaceDefinitions(stm, null);
 
 			// For each used identifier remove this statement from its uses.
-
-			RemoveUses(pstm);
+			RemoveUses(stm);
 
 			// Remove the statement itself.
-			pstm.Block.Statements.Remove(pstm);
+			stm.Block.Statements.Remove(stm);
 		}
 
 
@@ -171,6 +167,5 @@ namespace Decompiler.Analysis
 				return ssa.Identifiers[id].OriginalIdentifier;
 			}
 		}
-
 	}
 }

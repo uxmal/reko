@@ -63,17 +63,17 @@ namespace Decompiler.Analysis
 						Assignment ass = sid.DefStatement.Instruction as Assignment;
 						if (ass != null && ass.Dst == sid.Identifier)
 						{
-							sid.DefStatement.Instruction = new Declaration(web.id, ass.Src);
+							sid.DefStatement.Instruction = new Declaration(web.Identifier, ass.Src);
 						}
 						else
 						{
 							int idx = dominator.Statements.IndexOf(sid.DefStatement);
-							dominator.Statements.Insert(idx, new Declaration(web.id, null));
+							dominator.Statements.Insert(idx, new Declaration(web.Identifier, null));
 						}
 						return;
 					}
 				}
-				dominator.Statements.Insert(0, new Declaration(web.id, null));
+				dominator.Statements.Insert(0, new Declaration(web.Identifier, null));
 			}
 		}
 	}

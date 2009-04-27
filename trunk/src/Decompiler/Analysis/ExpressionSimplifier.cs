@@ -29,7 +29,6 @@ namespace Decompiler.Analysis
 	/// Simplifies expressions by using common algebraic tricks and 
 	/// other well known formulae.
 	/// </summary>
-
 	public class ExpressionSimplifier : IExpressionTransformer
 	{
 		private ValueNumbering dad;
@@ -87,7 +86,8 @@ namespace Decompiler.Analysis
 			{
 				if (IsZero(cRight))
 					return left;
-			} else if (binOp == Operator.and)
+			} 
+            else if (binOp == Operator.and)
 			{
 				if (IsZero(cRight))
 					return MakeZero(left.DataType);

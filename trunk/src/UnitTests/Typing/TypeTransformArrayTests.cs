@@ -21,7 +21,6 @@ using Decompiler.Core.Types;
 using Decompiler.Typing;
 using NUnit.Framework;
 using System;
-using System.Collections;
 
 namespace Decompiler.UnitTests.Typing
 {

@@ -61,6 +61,8 @@ namespace Decompiler.Gui.Windows.Forms
             get { return txtIL; }
         }
 
+        public event EventHandler IsDirtyChanged;
+
         public bool IsDirty
         {
             get
@@ -71,8 +73,6 @@ namespace Decompiler.Gui.Windows.Forms
             {
             }
         }
-
-        public event EventHandler IsDirtyChanged;
 
         public TextBox LoadAddress
         {

@@ -12,11 +12,11 @@ l0C00_0006:		// block 2, pred: 1 2
 	bx = bx + 0x0004
 	di = di + 0x0004
 	cx_22 = cx_22 - 0x0001
-	branch cx_22 != 0x0000
+	branch cx_22 != 0x0000 l0C00_0006
 	// succ:  3 2
 l0C00_001A:		// block 3, pred: 2
 	dx_12 = dx_12 - 0x0001
-	branch dx_12 != 0x0000
+	branch dx_12 != 0x0000 l0C00_0003
 	// succ:  4 1
 l0C00_001D:		// block 4, pred: 3
 	return

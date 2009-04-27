@@ -53,7 +53,7 @@ namespace Decompiler.Structure
             Block h;
             while (wlIntHeaders.GetWorkItem(out h))
             {
-                Interval interval = new Interval(h, blocks.Count);
+                Interval interval = new Interval(intervals.Count, h);
                 interval.AddBlock(h);
                 intervalOf[h.RpoNumber] = interval;
 
@@ -96,7 +96,7 @@ namespace Decompiler.Structure
                         {
                             if (linksFollowed[s.RpoNumber] == s.Pred.Count &&
                                 intervalOf[s.RpoNumber] == interval &&
-                                intervalOf[s.RpoNumber].Header == h)
+                                intervalOf[s.RpoNumber].HeaderBlock == h)
                             {
                                 if (s != h)  // Don't add the back edge to header again, since it's already in the interval.
                                 {
@@ -125,7 +125,7 @@ namespace Decompiler.Structure
 
         public bool IsIntervalHeader(Block b)
         {
-            return intervalOf[b.RpoNumber].Header == b;
+            return intervalOf[b.RpoNumber].HeaderBlock == b;
         }
     }
 
