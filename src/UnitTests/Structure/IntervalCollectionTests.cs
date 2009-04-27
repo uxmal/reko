@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Structure
 			IntervalCollection info = new IntervalCollection(1);
 			Block head = new Block(null, "foo");
 			head.RpoNumber = 0;
-			Interval i = new Interval(head, 2);
+			Interval i = new Interval(2, head);
 
 			info.Add(i);
 			Assert.AreEqual(1, info.Count);
@@ -51,10 +51,10 @@ namespace Decompiler.UnitTests.Structure
 			IntervalCollection ints = new IntervalCollection(2);
 			Block b1 = new Block(null, "b1");
 			b1.RpoNumber = 0;
-			Interval i1 = new Interval(b1, 2);
+			Interval i1 = new Interval(2, b1);
 			Block b2 = new Block(null, "b2");
 			b2.RpoNumber = 1;
-			Interval i2 = new Interval(b2, 2);
+			Interval i2 = new Interval(2, b2);
 
 			ints.Add(i2);
 			ints.Add(i1);

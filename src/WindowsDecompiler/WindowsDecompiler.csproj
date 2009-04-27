@@ -89,12 +89,6 @@
     <Compile Include="Driver.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Froz.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Froz.Designer.cs">
-      <DependentUpon>Froz.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -111,12 +105,6 @@
       <Project>{7A9440A2-7692-4F74-BFFE-23741DE81C61}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Froz.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>Froz.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

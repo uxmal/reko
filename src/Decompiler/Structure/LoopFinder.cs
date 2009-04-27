@@ -374,7 +374,7 @@ namespace Decompiler.Structure
 		public Loop FindLoop(Interval interval)
 		{
 			DumpBlockSetIf(trace.TraceVerbose, "Finding loop in interval", interval.Blocks);
-			Block blockHead = interval.Header;
+			Block blockHead = interval.HeaderBlock;
 
 			// If we found an end node, we have a loop.
 

@@ -89,8 +89,6 @@ namespace Decompiler.Core
 			dump.Dump(this, Image.Map, wr);
 		}
 
-
-
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
 		{
             PseudoProcedure p;
@@ -111,7 +109,8 @@ namespace Decompiler.Core
                         throw new InvalidOperationException("The program's Architecture property must be set before accessing the Globals property.");
                     globals = new Identifier("globals", 0, arch.PointerType, new MemoryStorage()); 
                 }
-                return globals; } 
+                return globals; 
+            } 
 		}
 		
         /// <summary>

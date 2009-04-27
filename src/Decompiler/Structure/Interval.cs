@@ -25,21 +25,18 @@ using System.IO;
 
 namespace Decompiler.Structure
 {
-	public class Interval
+	public class Interval : StructureNode
 	{
 		private Block header;
-		public int OutEdges;
-		public List<StructureNode> Nodes;			// nodes in the interval
-		public BitSet Blocks;			// blocks of the interval
+		private List<StructureNode> nodes;	// nodes in the interval
 
-		public Interval(Block header, int cBlocks) 
+		public Interval(int id, Block header) : base(id, header)
 		{
 			this.header = header;
-			Nodes = new List<StructureNode>();
-			Blocks = new BitSet(cBlocks);
+			nodes = new List<StructureNode>();
 		}
 		
-		public StructureNode HeadNode
+		public StructureNode HeaderNode
 		{ 
 			get { return Nodes[0]; }
 		}
@@ -53,21 +50,73 @@ namespace Decompiler.Structure
 		{
 			Nodes.Add(n);
 			n.Interval = this;
-			Blocks |= n.Blocks;
 		}
 
-		public Block Header
+        public BitSet Blocks
+        {
+            get { return null; }
+        }
+
+        /// <summary>
+        /// A list of the nodes that are part of this interval.
+        /// </summary>
+        public List<StructureNode> Nodes
+        {
+            get { return nodes; }
+        }
+
+        [Obsolete]
+        public void FindNodesInInterval(bool[] cfgNodes)
+        {
+            foreach (StructureNode node in this.Nodes)
+            {
+                Interval innerInt = node as Interval;
+                if (innerInt == null)
+                {
+                    cfgNodes[node.Order] = true;
+                }
+                else
+                {
+                    innerInt.FindNodesInInterval(cfgNodes);
+                }
+            }
+        }
+
+        public void FindNodesInInterval(IDictionary<int, StructureNode> nodes)
+        {
+            foreach (StructureNode node in this.Nodes)
+            {
+                Interval innerInt = node as Interval;
+                if (innerInt == null)
+                {
+                    nodes.Add(node.Order, node);
+                }
+                else
+                {
+                    innerInt.FindNodesInInterval(nodes);
+                }
+            }
+        }
+
+
+        public Block HeaderBlock
 		{
 			get { return header; }
 		}
 
-		public void Write(TextWriter tw)
+		public override void Write(TextWriter writer)
 		{
-			tw.Write("Header {0}, blocks:", (Header != null ? Header.RpoNumber.ToString() : "<none>"));
-			foreach (int i in Blocks)
+            writer.Write("Interval {0}: [", this.Ident);
+            SortedDictionary<int, StructureNode> nodes = new SortedDictionary<int, StructureNode>();
+            FindNodesInInterval(nodes);
+            string sep = "";
+			foreach (StructureNode sn in nodes.Values)
 			{
-				tw.Write(" {0}", i);
+                writer.Write(sep);
+				writer.Write(sn.EntryBlock.Name);
+                sep = ",";
 			}
+            writer.Write("]");
 		}
 
 		public override string ToString()

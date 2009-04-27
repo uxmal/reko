@@ -196,8 +196,10 @@
     <Compile Include="Scanning\RewriterHostTests.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\WorkItemTests.cs" />
+    <Compile Include="Structure\ast\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\ast\DerivedSequenceBuilderTests.cs" />
     <Compile Include="Structure\ast\IntervalBuilderTests.cs" />
+    <Compile Include="Structure\PostDominatorGraphTests.cs" />
     <Compile Include="Structure\ast\TestBase.cs" />
     <Compile Include="Structure\BlockLinearizerTests.cs" />
     <Compile Include="Structure\CaseStatementRewriterTests.cs" />

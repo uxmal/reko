@@ -26,7 +26,7 @@ using System.Collections.Generic;
 namespace Decompiler.Loading
 {
 	/// <summary>
-	/// A loader that understands how to unpack a binary packed with PkLite
+	/// A loader that understands how to unpack a binary packed with PkLite.
 	/// </summary>
 	public class PkLiteUnpacker : ImageLoader
 	{

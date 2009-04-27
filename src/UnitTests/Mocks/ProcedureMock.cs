@@ -180,6 +180,10 @@ namespace Decompiler.UnitTests.Mocks
 			Assign(Flags(flags), new ConditionOf(Sub(a, b)));
 		}
 
+        public Block CurrentBlock
+        {
+            get { return this.block; }
+        }
 
 		public Identifier Declare(DataType dt, string name)
 		{
@@ -663,6 +667,7 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			return new Constant(PrimitiveType.Word32, n);
 		}
+
 
     }
 }

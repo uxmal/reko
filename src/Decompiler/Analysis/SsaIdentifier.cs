@@ -83,9 +83,10 @@ namespace Decompiler.Analysis
         {
             get { return isSideEffect; }
         }
-        ///<summary>
-        ///If not null, the induction variable associated with this identifier.
-        ///</summary>
+
+        /// <summary>
+        /// If not null, the induction variable associated with this identifier.
+        /// </summary>
         public LinearInductionVariable InductionVariable
         {
             get { return iv; }

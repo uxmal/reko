@@ -47,7 +47,12 @@ namespace Decompiler.Core.Absyn
             get { return @else; }
         }
 
-        public AbsynIf(Expression e, List<AbsynStatement> then) : this(e, then, null)
+        public AbsynIf()
+            : this(null, new List<AbsynStatement>(), new List<AbsynStatement>())
+        {
+        }
+
+        public AbsynIf(Expression e, List<AbsynStatement> then) : this(e, then, new List<AbsynStatement>())
 		{
 		}
 

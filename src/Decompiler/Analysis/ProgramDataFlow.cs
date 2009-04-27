@@ -18,7 +18,7 @@
 
 using Decompiler.Core;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
@@ -27,41 +27,47 @@ namespace Decompiler.Analysis
 	/// </summary>
 	public class ProgramDataFlow
 	{
-		private Hashtable flow;
+		private Dictionary<Procedure,ProcedureFlow> procFlow;
+        private Dictionary<Block, BlockFlow> blockFlow;
 
 		public ProgramDataFlow()
 		{
-			flow = new Hashtable();
+			procFlow = new Dictionary<Procedure,ProcedureFlow>();
+            blockFlow = new Dictionary<Block,BlockFlow>();
 		}
 
-		public ProgramDataFlow(Program prog)
+		public ProgramDataFlow(Program prog) : this()
 		{
-			flow = new Hashtable();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				flow[proc] = new ProcedureFlow(proc, prog.Architecture);
+				procFlow[proc] = new ProcedureFlow(proc, prog.Architecture);
 				foreach (Block block in proc.RpoBlocks)
 				{
-					flow[block] = new BlockFlow(block, prog.Architecture.CreateRegisterBitset());
+					blockFlow[block] = new BlockFlow(block, prog.Architecture.CreateRegisterBitset());
 				}
 			}
 		}
 
 		public ProcedureFlow this[Procedure proc]
 		{
-			get { return (ProcedureFlow) flow[proc]; }
-			set { flow[proc] = value; }
+			get { return procFlow[proc]; }
+			set { procFlow[proc] = value; }
 		}
 
 		public BlockFlow this[Block block]
 		{
-			get { return (BlockFlow) flow[block]; }
-			set { flow[block] = value; }
+			get { return (BlockFlow) blockFlow[block]; }
+            set { blockFlow[block] = value; }
 		}
 
-		public ICollection Values
+		public ICollection<BlockFlow> BlockFlows
 		{
-			get { return flow.Values; }
+			get { return blockFlow.Values; }
 		}
+
+        public ICollection<ProcedureFlow> ProcedureFlows
+        {
+            get { return procFlow.Values; }
+        }
 	}
 }

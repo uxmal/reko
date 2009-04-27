@@ -27,6 +27,7 @@ namespace Decompiler.Core.Absyn
 	{
 		void VisitAssignment(AbsynAssignment expr);
 		void VisitBreak(AbsynBreak brk);
+        void VisitCase(AbsynCase absynCase);
 		void VisitContinue(AbsynContinue cont);
 		void VisitDeclaration(AbsynDeclaration decl);
 		void VisitDoWhile(AbsynDoWhile loop);
@@ -35,8 +36,7 @@ namespace Decompiler.Core.Absyn
 		void VisitLabel(AbsynLabel lbl);
 		void VisitReturn(AbsynReturn ret);
 		void VisitSideEffect(AbsynSideEffect side);
-		void VisitWhile(AbsynWhile loop);
-
         void VisitSwitch(AbsynSwitch absynSwitch);
+        void VisitWhile(AbsynWhile loop);
     }
 }

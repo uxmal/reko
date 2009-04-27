@@ -304,5 +304,3 @@ namespace Decompiler.Analysis
 		}
 	}
 }
-
-

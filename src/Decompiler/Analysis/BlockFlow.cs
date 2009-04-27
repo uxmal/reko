@@ -17,7 +17,6 @@
  */
 
 using System;
-using System.Collections;
 using BitSet = Decompiler.Core.Lib.BitSet;
 using Block = Decompiler.Core.Block;
 using Identifier = Decompiler.Core.Code.Identifier;

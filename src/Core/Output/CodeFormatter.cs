@@ -463,7 +463,17 @@ namespace Decompiler.Core.Output
 			writer.Terminate(";");
 		}
 
-		public void VisitContinue(AbsynContinue cont)
+        public void VisitCase(AbsynCase c)
+        {
+            writer.Indentation -= writer.TabSize;
+            writer.WriteKeyword("case");
+            writer.Write(" ");
+            writer.Write("{0}", c.Number);
+            writer.Terminate(":");
+            writer.Indentation += writer.TabSize;
+        }
+		
+        public void VisitContinue(AbsynContinue cont)
 		{
 			writer.WriteKeyword("continue");
             writer.WriteLine();

@@ -128,6 +128,8 @@ namespace Decompiler.Core
 			get { return frame; }
 		}
 		
+        //$REVIEW: this causes a lot of bugs. It's needed to generate dominator trees, but not much used elsewhere.
+        // Consider moving numbering into dominator graph generation.
 		public void RenumberBlocks()
 		{
 			BlockRenumbering br = new BlockRenumbering();

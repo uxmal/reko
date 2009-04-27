@@ -162,14 +162,11 @@ namespace Decompiler.Analysis
 
 		private void InitializeWorkList()
 		{
-			foreach (object b in mpprocData.Values)
-			{
-                BlockFlow bf = b as BlockFlow;
-                if (bf != null)
-					worklist.Add(bf);
-			}
+            foreach (BlockFlow bf in mpprocData.BlockFlows)
+            {
+                worklist.Add(bf);
+            }
 		}
-
 
 		private void Iterate()
 		{
@@ -279,7 +276,6 @@ namespace Decompiler.Analysis
 				worklist.Add(blockFlow);
 			}
 		}
-
 		
 		public bool MergeIntoProcedureFlow(IdentifierLiveness varLive, ProcedureFlow item)
 		{
@@ -433,7 +429,6 @@ namespace Decompiler.Analysis
 			}
 		}
 
-
 		public override void VisitApplication(Application appl)
 		{
 			appl.Procedure.Accept(this);
@@ -571,29 +566,22 @@ namespace Decompiler.Analysis
 
 		#endregion // Visitor Methods //////////////////////////////////////
 
-		public State CurrentState
-		{
-			get { return state; }
-			set
-			{
-				state = value;
-				foreach (object o in mpprocData.Values)
-				{
-					ProcedureFlow pi = o as ProcedureFlow;
-					if (pi != null)
-					{
-						state.InitializeProcedureFlow(pi);
-						continue;
-					}
-					BlockFlow bi = o as BlockFlow;
-					if (bi != null)
-					{
-						state.InitializeBlockFlow(bi.Block, mpprocData, bi.Block.Procedure.ExitBlock == bi.Block);
-						continue;
-					}
-				}
-			}
-		}
+        public State CurrentState
+        {
+            get { return state; }
+            set
+            {
+                state = value;
+                foreach (ProcedureFlow pi in mpprocData.ProcedureFlows)
+                {
+                    state.InitializeProcedureFlow(pi);
+                }
+                foreach (BlockFlow bi in mpprocData.BlockFlows)
+                {
+                    state.InitializeBlockFlow(bi.Block, mpprocData, bi.Block.Procedure.ExitBlock == bi.Block);
+                }
+            }
+        }
 
 		public abstract class State
 		{
