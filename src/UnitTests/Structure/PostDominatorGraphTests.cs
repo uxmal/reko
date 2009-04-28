@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using ast;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
@@ -30,7 +31,7 @@ namespace Decompiler.UnitTests.Structure
     [TestFixture]
     public class PostDominatorGraphTests
     {
-        private global::ast.ProcHeader h;
+        private ProcedureStructure h;
 
         [SetUp]
         public void Setup()
@@ -60,17 +61,9 @@ namespace Decompiler.UnitTests.Structure
 
         private void BuildPostdominatorGraph(ProcedureMock m)
         {
-            m.Procedure.RenumberBlocks();
-
-            Dictionary<Block, StructureNode> blocks = new Dictionary<Block, StructureNode>();
-            Graphs g = new Graphs();
-            g.BuildNodes(m.Procedure, blocks);
-            g.DefineEdges(m.Procedure, blocks);
-            
-            h = g.DefineCfgs(m.Procedure, blocks);
-            g.SetTimeStamps(h);
+            h = new ProcedureStructure(m.Procedure);
             PostDominatorGraph gr = new PostDominatorGraph();
-            gr.FindImmediatePostDominators(h.Ordering, h.RevOrdering);
+            gr.FindImmediatePostDominators(h);
         }
 
         [Test]

@@ -284,19 +284,16 @@ namespace Decompiler
 				}
 			}
 		}
-
-		public void StructureProgram()
+        /// <summary>
+        /// Extracts structured program constructs out of snarled goto nests, if possible.
+        /// Since procedures are now independent of each other, this analysis
+        /// is done one procedure at a time.
+        /// </summary>
+        public void StructureProgram()
 		{
-			// At this point, the functions are unsnarled from each other, and 
-			// can be analyzed separately.
-
-			// Extracts structured program constructs out of snarled goto nests, if possible.
-			// Since procedures are now independent of each other, this analysis
-			// is done one procedure at a time.
-
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				StructureAnalysis sa = new StructureAnalysis(proc);
+				StructureAnalysisOld sa = new StructureAnalysisOld(proc);
 				sa.FindStructures();
 			}
 			host.CodeStructuringComplete();

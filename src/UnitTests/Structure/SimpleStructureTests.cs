@@ -125,7 +125,7 @@ namespace Decompiler.UnitTests.Structure
 				proc.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 
-				StructureAnalysis sa = new StructureAnalysis(proc);
+				StructureAnalysisOld sa = new StructureAnalysisOld(proc);
 				sa.FindStructures();
 				CodeFormatter fmt = new CodeFormatter(fut.TextWriter);
 				fmt.Write(proc);
@@ -147,7 +147,7 @@ namespace Decompiler.UnitTests.Structure
 					proc.Write(false, fut.TextWriter);
 					fut.TextWriter.WriteLine();
 
-					StructureAnalysis sa = new StructureAnalysis(proc);
+					StructureAnalysisOld sa = new StructureAnalysisOld(proc);
 					sa.FindStructures();
 					CodeFormatter fmt = new CodeFormatter(fut.TextWriter);
 					fmt.Write(proc);

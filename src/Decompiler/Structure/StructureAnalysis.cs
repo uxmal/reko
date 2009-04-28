@@ -26,7 +26,7 @@ using System.IO;
 
 namespace Decompiler.Structure
 {
-	public class StructureAnalysis
+	public class StructureAnalysisOld
 	{
 		private Procedure proc;
 		private DominatorGraph domGraph;
@@ -34,7 +34,7 @@ namespace Decompiler.Structure
 
 		private static TraceSwitch trace = new TraceSwitch("CodeStructure", "Traces the flow of code structuring");
 
-		public StructureAnalysis(Procedure proc)
+		public StructureAnalysisOld(Procedure proc)
 		{
 			int cBlocks = proc.RpoBlocks.Count;
 			this.proc = proc;

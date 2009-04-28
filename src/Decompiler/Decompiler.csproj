@@ -426,11 +426,11 @@
     <Compile Include="Structure\ast\CaseFinder.cs" />
     <Compile Include="Structure\ast\DerivedGraph.cs" />
     <Compile Include="Structure\ast\DerivedSequenceBuilder.cs" />
-    <Compile Include="Structure\ast\Graphs.cs" />
+    <Compile Include="Structure\ast\StructureAnalysis.cs" />
     <Compile Include="Structure\ast\IntervalBuilder.cs" />
     <Compile Include="Structure\ast\LoopBuilder.cs" />
     <Compile Include="Structure\PostDominatorGraph.cs" />
-    <Compile Include="Structure\ast\ProcHeader.cs" />
+    <Compile Include="Structure\ProcedureStructure.cs" />
     <Compile Include="Structure\ast\StringFunctions.cs" />
     <Compile Include="Structure\StructuredGraph.cs" />
     <Compile Include="Structure\BlockLinearizer.cs">
@@ -475,7 +475,6 @@
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\StructureAnalysis2.cs" />
     <Compile Include="Structure\StructureBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
