@@ -30,7 +30,6 @@ namespace Decompiler.Structure
 	{
         private int id;
         private Block entryBlock;
-        private BitSet blocks;
         private Interval interval;
         private int entryStamp, exitStamp;
         private int revEntryStamp, revExitStamp;
@@ -44,6 +43,7 @@ namespace Decompiler.Structure
         private StructureNode condFollow;
         private StructureNode loopFollow;
         private StructureNode latchNode;
+        private Loop loop;                      // the loop this node belongs to.
 
         // Structured type of the node      //$REFACTOR: this should be encapsulated in the StructuredGraph subclasses.
         private StructuredGraph sType;					// the structuring class (Loop, Cond , etc)
@@ -76,11 +76,6 @@ namespace Decompiler.Structure
 			this.Succ.Add(to);
 			to.Pred.Add(this);
 		}
-
-        public BitSet Blocks
-        {
-            get { return blocks; }
-        }
 
         // returns the type of the basic block that underlies this node.
         public bbType BlockType
@@ -351,6 +346,7 @@ namespace Decompiler.Structure
         // Return the structured type of this node
         public StructuredGraph GetStructType() { return sType; }
 
+        public bool IsStructType(StructuredGraph graph) { return sType == graph; }
 
         public List<StructureNode> Succ
         {
@@ -379,31 +375,24 @@ namespace Decompiler.Structure
 
 
 
-		public virtual void Write(TextWriter tw)
+		public virtual void Write(TextWriter writer)
 		{
-			tw.Write("node {0}: entry {1}, blocks: [", Ident, EntryBlock.RpoNumber);
-			foreach (int i in Blocks)
-			{
-				tw.Write(" {0}", i);
-			}
-			tw.WriteLine(" ]");
-			tw.Write("  pred:");
+			writer.WriteLine("node {0}: entry {1}", Ident, EntryBlock.RpoNumber);
+			writer.Write("  pred:");
 			foreach (StructureNode p in pred)
 			{
-				tw.Write(" {0}", p.Ident);
+				writer.Write(" {0}", p.Ident);
 			}
-			tw.WriteLine();
-			tw.Write("  succ: ");
+			writer.WriteLine();
+            writer.WriteLine("    GraphType: {0}", this.sType.GetType().Name);
+			writer.Write("  succ: ");
 			foreach (StructureNode s in succ)
 			{
-				tw.Write(" {0}", s.Ident);
+				writer.Write(" {0}", s.Ident);
 			}
 
-			tw.WriteLine();
-
-
+			writer.WriteLine();
 		}
-
 	}
 
     // an enumerated type for the type of loop headers

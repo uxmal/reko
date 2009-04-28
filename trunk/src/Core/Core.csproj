@@ -119,6 +119,7 @@
     <Compile Include="Absyn\AbsynLoop.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Absyn\AbsynProcedure.cs" />
     <Compile Include="Absyn\AbsynReturn.cs">
       <SubType>Code</SubType>
     </Compile>
