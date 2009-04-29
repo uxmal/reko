@@ -422,8 +422,7 @@
     </Compile>
     <Compile Include="Analysis\StrengthReduction.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs" />
-    <Compile Include="Structure\ast\Ast.cs" />
-    <Compile Include="Structure\ast\CaseFinder.cs" />
+    <Compile Include="Structure\CaseFinder.cs" />
     <Compile Include="Structure\ast\DerivedGraph.cs" />
     <Compile Include="Structure\ast\DerivedSequenceBuilder.cs" />
     <Compile Include="Structure\ast\StructureAnalysis.cs" />

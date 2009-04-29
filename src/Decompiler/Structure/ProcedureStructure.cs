@@ -23,6 +23,7 @@ using Decompiler.Structure;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Structure
@@ -33,13 +34,11 @@ namespace Decompiler.Structure
     public class ProcedureStructure
     {
         private Procedure proc;
-        private Dictionary<Block, StructureNode> nodes;               // The nodes of the procedure.
         private StructureNode entryNode;					// The node at the head of the graph
         private StructureNode exitNode;			// the node at the bottom of the graph
         private List<StructureNode> ordering;
         private List<StructureNode> revOrdering;
         private List<ast.DerivedGraph> derivedGraphs;	// the derived graphs for this procedure
-        private List<StructureNode> nodeList;			// head of the linked list of nodes
 
         public ProcedureStructure(Procedure proc)
         {
@@ -52,18 +51,6 @@ namespace Decompiler.Structure
             this.entryNode = blocks[proc.EntryBlock];
             this.exitNode = blocks[proc.ExitBlock];
             SetTimeStamps();
-        }
-
-        [Obsolete]
-        public ProcedureStructure(Procedure proc, Dictionary<Block, StructureNode> blocks)
-        {
-            this.proc = proc;
-            this.nodes = blocks;
-            this.ordering = new List<StructureNode>();
-            this.revOrdering = new List<StructureNode>();
-            this.derivedGraphs = new List<ast.DerivedGraph>();
-            this.entryNode = blocks[proc.EntryBlock];
-            this.exitNode = blocks[proc.ExitBlock];
         }
 
         private void BuildNodes(Block block, Dictionary<Block, StructureNode> blockNodes)
@@ -115,11 +102,6 @@ namespace Decompiler.Structure
             get { return derivedGraphs; }
         }
 
-        public ICollection<StructureNode> Nodes
-        {
-            get { return nodes.Values; }
-        }
-
         /// <summary>
         /// The nodes of the procedure in post-order. Nodes "further down" in the graph
         /// have lower numbers.
@@ -158,9 +140,6 @@ namespace Decompiler.Structure
             //recurse on unvisited children and set inedges for all children
             foreach (StructureNode outEdge in node.Succ)
             {
-                // set the in edge from this child to its parent (the current node)
-                outEdge.Pred.Add(node);
-
                 // recurse on this child if it hasn't already been visited
                 if (!visited.Contains(outEdge))
                 {
@@ -236,5 +215,13 @@ namespace Decompiler.Structure
         }
 
 
+
+        public void Write(TextWriter writer)
+        {
+            for (int i = ordering.Count; --i >= 0; )
+            {
+                ordering[i].Write(writer);
+            }
+        }
     }
 }

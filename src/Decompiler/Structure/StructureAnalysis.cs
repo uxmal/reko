@@ -39,7 +39,6 @@ namespace Decompiler.Structure
 			int cBlocks = proc.RpoBlocks.Count;
 			this.proc = proc;
 			domGraph = new DominatorGraph(proc);
-			itvf = new IntervalFinder(proc);
 		}
 
 		private BitSet AllBlocks(Procedure proc)
@@ -61,21 +60,21 @@ namespace Decompiler.Structure
 		{
 			DominatorGraph dom = new DominatorGraph(proc);
 			int intCount = -1;
-			IntervalFinder intf = new IntervalFinder(proc);
-			while (intf.Intervals.Count != intCount)
-			{
-				intCount = intf.Intervals.Count;
-				foreach (Interval I in intf.Intervals)
-				{
-					LoopFinder lrw = new LoopFinder(proc, dom);
-					Loop loop = lrw.FindLoop(I);
-					if (loop != null)
-						lrw.BuildLoop(loop);
-				}
-				proc.Dump(trace.TraceVerbose, false);
-				dom = new DominatorGraph(proc);
-				intf = new IntervalFinder(proc);
-			} 
+//			IntervalFinder intf = new IntervalFinder(proc);
+            //while (intf.Intervals.Count != intCount)
+            //{
+            //    intCount = intf.Intervals.Count;
+            //    foreach (Interval I in intf.Intervals)
+            //    {
+            //        LoopFinder lrw = new LoopFinder(proc, dom);
+            //        Loop loop = lrw.FindLoop(I);
+            //        if (loop != null)
+            //            lrw.BuildLoop(loop);
+            //    }
+            //    proc.Dump(trace.TraceVerbose, false);
+            //    dom = new DominatorGraph(proc);
+            //    intf = new IntervalFinder(proc);
+			//} 
 		}
 		
 		public void FindStructures()
