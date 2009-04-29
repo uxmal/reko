@@ -2,6 +2,8 @@ using Decompiler.Core.Absyn;
 using Decompiler.Structure;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Structure
@@ -14,6 +16,8 @@ namespace Decompiler.Structure
         public static StructuredGraph LoopCond = new LoopCondStructType();			    // Header of a loop and a conditional
 
         public abstract void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode);
+
+        public abstract void WriteDetails(StructureNode structureNode, TextWriter writer);
     }
 
     public class SeqStructType : StructuredGraph
@@ -22,11 +26,20 @@ namespace Decompiler.Structure
         {
             gen.WriteSequentialCode(node, latch, followSet, gotoSet, HLLCode);
         }
+
+        public override void WriteDetails(StructureNode structureNode, TextWriter writer)
+        {
+        }
     }
 
     public class LoopStructType : StructuredGraph
     {
         public override void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public override void WriteDetails(StructureNode structureNode, TextWriter writer)
         {
             throw new Exception("The method or operation is not implemented.");
         }
@@ -38,10 +51,21 @@ namespace Decompiler.Structure
         {
             gen.WriteCondCode(node, latch, followSet, gotoSet, HLLCode);
         }
+
+        public override void WriteDetails(StructureNode structureNode, TextWriter writer)
+        {
+            Debug.Assert(structureNode.CondFollow != null);
+            writer.WriteLine("    follow: {0}", structureNode.CondFollow.Ident);
+        }
     }
+
     public class LoopCondStructType : StructuredGraph
     {
         public override void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+        public override void WriteDetails(StructureNode structureNode, TextWriter writer)
         {
             throw new Exception("The method or operation is not implemented.");
         }

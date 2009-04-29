@@ -41,11 +41,6 @@ namespace Decompiler.Structure
 			get { return Nodes[0]; }
 		}
 
-		public void AddBlock(Block block)
-		{
-			Blocks[block.RpoNumber] = true;
-		}
-
 		public void AddNode(StructureNode n)
 		{
 			Nodes.Add(n);

@@ -377,15 +377,16 @@ namespace Decompiler.Structure
 
 		public virtual void Write(TextWriter writer)
 		{
-			writer.WriteLine("node {0}: entry {1}", Ident, EntryBlock.RpoNumber);
-			writer.Write("  pred:");
+			writer.WriteLine("node {0}: entry: \"{1}\"", Ident, EntryBlock.Name);
+			writer.Write("    pred:");
 			foreach (StructureNode p in pred)
 			{
 				writer.Write(" {0}", p.Ident);
 			}
 			writer.WriteLine();
             writer.WriteLine("    GraphType: {0}", this.sType.GetType().Name);
-			writer.Write("  succ: ");
+            sType.WriteDetails(this, writer);
+			writer.Write("    succ: ");
 			foreach (StructureNode s in succ)
 			{
 				writer.Write(" {0}", s.Ident);

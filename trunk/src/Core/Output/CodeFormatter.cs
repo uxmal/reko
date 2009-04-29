@@ -466,6 +466,7 @@ namespace Decompiler.Core.Output
         public void VisitCase(AbsynCase c)
         {
             writer.Indentation -= writer.TabSize;
+            writer.Indent();
             writer.WriteKeyword("case");
             writer.Write(" ");
             writer.Write("{0}", c.Number);
@@ -599,8 +600,9 @@ namespace Decompiler.Core.Output
             writer.Write(" (");
             WriteExpression(s.Expression);
             writer.Terminate(")");
-            throw new NotImplementedException();
+            WriteIndentedStatements(s.Statements);
         }
+
 		public void VisitWhile(AbsynWhile loop)
 		{
 			writer.Indent();

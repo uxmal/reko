@@ -589,7 +589,8 @@ namespace Decompiler.UnitTests.Mocks
 			{
 				Block.AddEdge(this.block, blox[i]);
 			}
-            TerminateBlock();
+            lastBlock = null;
+            block = null;
 		}
 
 		public Identifier Local(PrimitiveType primitiveType, string name)

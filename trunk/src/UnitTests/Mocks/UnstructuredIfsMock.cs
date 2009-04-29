@@ -16,36 +16,39 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Core.Absyn
+namespace Decompiler.UnitTests.Mocks
 {
-    public class AbsynSwitch : AbsynStatement
+    // Implements the following graph:
+    // if (foo) {
+    //     if (bar) 
+    //        goto inside;
+    //     baz();
+    // } else {
+    //    quux();
+    // inside:
+    //    niz();
+    // }
+    public class UnstructuredIfsMock : ProcedureMock
     {
-        private Expression expr;
-        private List<AbsynStatement> statements;
-
-        public AbsynSwitch(Expression expr)
+        protected override void BuildBody()
         {
-            this.expr = expr;
-            this.statements = new List<AbsynStatement>();
-        }
-
-        public override void Accept(IAbsynVisitor visitor)
-        {
-            visitor.VisitSwitch(this);
-        }
-
-        public Expression Expression
-        {
-            get { return expr; }
-        }
-
-        public List<AbsynStatement> Statements
-        {
-            get { return statements; }
+            BranchIf(Declare(PrimitiveType.Bool, "foo"), "else1");
+            BranchIf(Declare(PrimitiveType.Bool, "bar"), "inside");
+            SideEffect(Fn("baz"));
+            Jump("done");
+            Label("else1");
+            SideEffect(Fn("quux"));
+            Label("inside");
+            SideEffect(Fn("niz"));
+            Label("done");
+            Return();
         }
     }
 }

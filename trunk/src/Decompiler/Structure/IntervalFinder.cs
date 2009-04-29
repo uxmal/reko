@@ -54,7 +54,7 @@ namespace Decompiler.Structure
             while (wlIntHeaders.GetWorkItem(out h))
             {
                 Interval interval = new Interval(intervals.Count, h);
-                interval.AddBlock(h);
+               // interval.AddBlock(h);
                 intervalOf[h.RpoNumber] = interval;
 
                 wlIntMembers.Add(h);
@@ -78,7 +78,7 @@ namespace Decompiler.Structure
                                 wlIntHeaders.Remove(s);
 
                                 // And add it to this interval.
-                                interval.AddBlock(s);
+                                //interval.AddBlock(s);
                                 wlIntMembers.Add(s);
                                 intervalOf[s.RpoNumber] = interval;
                             }
@@ -100,7 +100,7 @@ namespace Decompiler.Structure
                             {
                                 if (s != h)  // Don't add the back edge to header again, since it's already in the interval.
                                 {
-                                    interval.AddBlock(s);
+                                    //interval.AddBlock(s);
                                     intervalOf[s.RpoNumber] = interval;
                                     wlIntHeaders.Remove(s);
                                     wlIntMembers.Add(s);

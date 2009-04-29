@@ -118,7 +118,7 @@ namespace Decompiler.UnitTests.Structure
 
         private string PostDom(string s)
         {
-            foreach (StructureNode node in h.Nodes)
+            foreach (StructureNode node in h.Ordering)
             {
                 if (s == node.EntryBlock.Name)
                     return PostDom(node);
