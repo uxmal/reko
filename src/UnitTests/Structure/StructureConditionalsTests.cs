@@ -62,41 +62,40 @@ namespace Decompiler.UnitTests.Structure
         public void UnstructuredIfs()
         {
             string sExp =
-                "node 0: entry: \"UnstructuredIfsMock_entry\"" + nl +
-                "    pred:" + nl +
-                "    GraphType: SeqStructType" + nl +
-                "    succ:  1" + nl +
-                "node 1: entry: \"l1\"" + nl +
-                "    pred: 0" + nl +
-                "    GraphType: CondStructType" + nl +
-                "    follow: 4" + nl +
-                "    succ:  2 7" + nl +
-                "node 7: entry: \"else1\"" + nl +
-                "    pred: 1" + nl +
-                "    GraphType: SeqStructType" + nl +
-                "    succ:  6" + nl +
-                "node 2: entry: \"l2\"" + nl +
-                "    pred: 1" + nl +
-                "    GraphType: CondStructType" + nl +
-                "    follow: 4" + nl +
-                "    succ:  3 6" + nl +
-                "node 6: entry: \"inside\"" + nl +
-                "    pred: 2 7" + nl +
-                "    GraphType: SeqStructType" + nl +
-                "    succ:  4" + nl +
-                "node 3: entry: \"l3\"" + nl +
-                "    pred: 2" + nl +
-                "    GraphType: SeqStructType" + nl +
-                "    succ:  4" + nl +
-                "node 4: entry: \"done\"" + nl +
-                "    pred: 3 6" + nl +
-                "    GraphType: SeqStructType" + nl +
-                "    succ:  5" + nl +
-                "node 5: entry: \"UnstructuredIfsMock_exit\"" + nl +
-                "    pred: 4" + nl +
-                "    GraphType: SeqStructType" + nl +
-                "    succ: " + nl;
-
+"node 0: entry: \"UnstructuredIfsMock_entry\"" + nl +
+"    pred:" + nl +
+"    GraphType: SeqStructType" + nl +
+"    succ:  1" + nl +
+"node 1: entry: \"l1\"" + nl +
+"    pred: 0" + nl +
+"    GraphType: CondStructType" + nl +
+"    follow: 4" + nl +
+"    succ:  2 6" + nl +
+"node 6: entry: \"then1\"" + nl +
+"    pred: 1" + nl +
+"    GraphType: CondStructType" + nl +
+"    follow: 4" + nl +
+"    succ:  7 3" + nl +
+"node 7: entry: \"l2\"" + nl +
+"    pred: 6" + nl +
+"    GraphType: SeqStructType" + nl +
+"    succ:  4" + nl +
+"node 2: entry: \"else1\"" + nl +
+"    pred: 1" + nl +
+"    GraphType: SeqStructType" + nl +
+"    succ:  3" + nl +
+"node 3: entry: \"inside\"" + nl +
+"    pred: 2 6" + nl +
+"    GraphType: SeqStructType" + nl +
+"    succ:  4" + nl +
+"node 4: entry: \"done\"" + nl +
+"    pred: 3 7" + nl +
+"    GraphType: SeqStructType" + nl +
+"    succ:  5" + nl +
+"node 5: entry: \"UnstructuredIfsMock_exit\"" + nl +
+"    pred: 4" + nl +
+"    GraphType: SeqStructType" + nl +
+"    succ: " + nl;
             RunTest(new UnstructuredIfsMock(), sExp);
         }
 
