@@ -1,4 +1,5 @@
 using Decompiler.Core.Absyn;
+using Decompiler.Core.Code;
 using Decompiler.Structure;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,12 @@ namespace Decompiler.Structure
         public static StructuredGraph Cond = new CondStructType();					// Header of a conditional only (if-then-else or switch)
         public static StructuredGraph LoopCond = new LoopCondStructType();			    // Header of a loop and a conditional
 
+
+        public virtual void GenerateCode(StructureNode node, AbsynCodeGeneratorState state)         //$TODO: make this abstract.
+        {
+        }
+
+        [Obsolete]
         public abstract void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode);
 
         public abstract void WriteDetails(StructureNode structureNode, TextWriter writer);
@@ -24,8 +31,10 @@ namespace Decompiler.Structure
     {
         public override void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode)
         {
-            gen.WriteSequentialCode(node, latch, followSet, gotoSet, HLLCode);
+            gen.GenerateSequentialCode(node, new AbsynCodeGeneratorState(latch, followSet, gotoSet, HLLCode));
         }
+
+
 
         public override void WriteDetails(StructureNode structureNode, TextWriter writer)
         {

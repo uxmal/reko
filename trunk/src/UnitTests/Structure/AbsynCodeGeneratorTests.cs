@@ -41,32 +41,6 @@ namespace Decompiler.UnitTests.Structure
         }
 
         [Test]
-        public void GenerateBasicBlock()
-        {
-            ProcedureMock m = new ProcedureMock();
-            m.Assign(m.Local32("foo"), m.Local32("bar"));
-            StructureNode node = new StructureNode(1, m.CurrentBlock);
-            AbsynCodeGenerator gen = new AbsynCodeGenerator();
-            List<AbsynStatement> stms = new List<AbsynStatement>();
-            gen.GenerateBlockCode(node, stms);
-            Assert.AreEqual(1, stms.Count);
-            Assert.AreEqual("foo = bar;", stms[0].ToString());
-        }
-
-        [Test]
-        public void GenerateReturn()
-        {
-            ProcedureMock m = new ProcedureMock();
-            m.Return(m.Int32(42));
-            StructureNode node = new StructureNode(1, m.Procedure.EntryBlock.Succ[0]);
-            AbsynCodeGenerator gen = new AbsynCodeGenerator();
-            List<AbsynStatement> stms = new List<AbsynStatement>();
-            AbsynStatement stm = gen.GenerateBlockCode(node, stms);
-            Assert.AreEqual("return 0x0000002A;", stm.ToString());
-            Assert.AreEqual(1, stms.Count);
-        }
-
-        [Test]
         public void GenerateIf()
         {
             ProcedureStructure h = new ProcedureStructure(new CmpMock().Procedure);
@@ -110,6 +84,28 @@ namespace Decompiler.UnitTests.Structure
                 "\t\t}" + nl +
                 "\treturn r2;" + nl;
 
+            Assert.AreEqual(sExp, s);
+        }
+
+        [Test]
+        public void UnstructuredIfs()
+        {
+            string s = RunTest(new UnstructuredIfsMock().Procedure);
+            string sExp =
+                "\tif (foo)" + nl +
+                "\t\tif (bar)" + nl +
+                "\t\t{" + nl +
+                "\t\tinside:" + nl +
+                "\t\t\tniz();" + nl +
+                "\t\t}" + nl +
+                "\t\telse" + nl +
+                "\t\t\tbaz();" + nl +
+                "\telse" + nl +
+                "\t{" + nl +
+                "\t\tquux();" + nl +
+                "\t\tgoto inside:" + nl +
+                "\t}" + nl +
+                "\treturn;" + nl;
             Console.WriteLine(s);
             Assert.AreEqual(sExp, s);
         }

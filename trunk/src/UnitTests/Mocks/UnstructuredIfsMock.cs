@@ -39,14 +39,16 @@ namespace Decompiler.UnitTests.Mocks
     {
         protected override void BuildBody()
         {
-            BranchIf(Declare(PrimitiveType.Bool, "foo"), "else1");
-            BranchIf(Declare(PrimitiveType.Bool, "bar"), "inside");
-            SideEffect(Fn("baz"));
-            Jump("done");
+            BranchIf(Declare(PrimitiveType.Bool, "foo"), "then1");
             Label("else1");
             SideEffect(Fn("quux"));
             Label("inside");
             SideEffect(Fn("niz"));
+            Jump("done");
+
+            Label("then1");
+            BranchIf(Declare(PrimitiveType.Bool, "bar"), "inside");
+            SideEffect(Fn("baz"));
             Label("done");
             Return();
         }
