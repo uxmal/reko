@@ -112,7 +112,7 @@ namespace Decompiler.Core.Code
 
 		public virtual void VisitSwitchInstruction(SwitchInstruction si)
 		{
-			si.expr.Accept(this);
+			si.Expression.Accept(this);
 		}
 
 		public virtual void VisitUseInstruction(UseInstruction u)

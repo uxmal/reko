@@ -315,8 +315,18 @@ namespace Decompiler.Analysis
 			}
 		}
 
+        public IEnumerable<SsaIdentifier> GetSuccessors(SsaIdentifier sidDef)
+        {
+            this.operands = new List<SsaIdentifier>();
+            if (sidDef.DefStatement != null)
+            {
+                sidDef.DefStatement.Instruction.Accept(this);
+            }
+            return operands;
+        }
 
-		public virtual void ProcessScc(ICollection<SsaIdentifier> scc)
+
+		public virtual void ProcessScc(IList<SsaIdentifier> scc)
 		{
 			if (scc.Count <= 1)
 				return;

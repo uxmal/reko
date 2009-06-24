@@ -420,7 +420,7 @@ namespace Decompiler.Core.Output
 			writer.Indent();
 			writer.WriteKeyword("switch");
             writer.Write(" (");
-			si.expr.Accept(this);
+			si.Expression.Accept(this);
 			writer.Write(") { ");
 			foreach (Block b in si.targets)
 			{

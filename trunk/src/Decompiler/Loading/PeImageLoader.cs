@@ -46,7 +46,7 @@ namespace Decompiler.Loading
 		private const short ImageFileExecutable = 0x0002;
 
 
-		public PeImageLoader(Program prog, byte [] img, uint peOffset) : base(img)
+		public PeImageLoader(Program prog, byte [] img, uint peOffset) : base(prog, img)
 		{
 			this.prog = prog;
 			ImageReader rdr = new ImageReader(RawImage, peOffset);
@@ -55,7 +55,7 @@ namespace Decompiler.Loading
 				rdr.ReadByte() != 0x0 ||
 				rdr.ReadByte() != 0x0)
 			{
-				throw new ApplicationException("Not a valid PE header");
+				throw new ApplicationException("Not a valid PE header.");
 			}
 			ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr);
@@ -80,20 +80,25 @@ namespace Decompiler.Loading
 			ImageReader rdrNames = imgLoaded.CreateReader(rvaNames);
 			for (int i = 0; i < nNames; ++i)
 			{
-				uint addr = rdrAddrs.ReadLeUint32();
-				int iNameMin = rdrNames.ReadLeInt32();
-				int j;
-				for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
-					;
-				char [] chars = Encoding.ASCII.GetChars(imgLoaded.Bytes, iNameMin, j - iNameMin);
-				Address addrEp = addrLoad + addr;
-				if (imageMap.IsExecutableAddress(addrEp))
+                EntryPoint ep = LoadEntryPoint(addrLoad, rdrAddrs, rdrNames);
+				if (imageMap.IsExecutableAddress(ep.Address))
 				{
-					EntryPoint ep = new EntryPoint(addrLoad + addr, new String(chars), new IntelState());
 					entryPoints.Add(ep);
 				}
 			}
 		}
+
+        private EntryPoint LoadEntryPoint(Address addrLoad, ImageReader rdrAddrs, ImageReader rdrNames)
+        {
+            uint addr = rdrAddrs.ReadLeUint32();
+            int iNameMin = rdrNames.ReadLeInt32();
+            int j;
+            for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
+                ;
+            char[] chars = Encoding.ASCII.GetChars(imgLoaded.Bytes, iNameMin, j - iNameMin);
+            EntryPoint ep = new EntryPoint(addrLoad + addr, new string(chars), new IntelState());
+            return ep;
+        }
 
 		public IProcessorArchitecture CreateArchitecture(short peMachineType)
 		{
@@ -114,6 +119,11 @@ namespace Decompiler.Loading
 			return imgLoaded;
 		}
 
+        public override ProgramImage LoadAtPreferredAddress()
+        {
+            return Load(PreferredBaseAddress);
+        }
+
 		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
 		{
 			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress, s.VirtualSize);
@@ -126,8 +136,6 @@ namespace Decompiler.Loading
 		/// <returns></returns>
 		private void LoadSections(Address addrLoad, uint sectionOffset, int sections)
 		{
-			// Read the sections.
-
 			Section section;
 			ImageReader rdr = new ImageReader(RawImage, sectionOffset);
 			section = ReadSection(rdr);
@@ -180,11 +188,11 @@ namespace Decompiler.Loading
 		public void ReadOptionalHeader(ImageReader rdr)
 		{
 			if (optionalHeaderSize <= 0)
-				throw new ApplicationException("Optional header size should be larger than 0 in a PE image file");
+				throw new ApplicationException("Optional header size should be larger than 0 in a PE executable image file.");
 
 			short magic = rdr.ReadLeInt16();
 			if (magic != 0x010B)
-				throw new ApplicationException("Not a valid PE Header");
+				throw new ApplicationException("Not a valid PE Header.");
 			rdr.ReadByte();		// Linker major version
 			rdr.ReadByte();		// Linker minor version
 			rdr.ReadLeUint32();		// code size (== .text section size)
@@ -237,22 +245,7 @@ namespace Decompiler.Loading
 		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgLoaded.Map;
-			foreach (Section s in sectionMap.Values)
-			{
-				if (!s.IsDiscardable)
-				{
-					AccessMode acc = AccessMode.Read;
-					if ((s.Flags & SectionFlagsWriteable) != 0)
-					{
-						acc |= AccessMode.Write;
-					}
-					if ((s.Flags & SectionFlagsExecutable) != 0)
-					{
-						acc |= AccessMode.Execute;
-					}
-					imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc);
-				}
-			}
+            AddSectionsToImageMap(addrLoad, imageMap);
 			
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
@@ -263,6 +256,26 @@ namespace Decompiler.Loading
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
 		}
+
+        private void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
+        {
+            foreach (Section s in sectionMap.Values)
+            {
+                if (!s.IsDiscardable)
+                {
+                    AccessMode acc = AccessMode.Read;
+                    if ((s.Flags & SectionFlagsWriteable) != 0)
+                    {
+                        acc |= AccessMode.Write;
+                    }
+                    if ((s.Flags & SectionFlagsExecutable) != 0)
+                    {
+                        acc |= AccessMode.Execute;
+                    }
+                    imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc);
+                }
+            }
+        }
 
 		public void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
 		{
@@ -321,9 +334,7 @@ namespace Decompiler.Loading
 				if (bytes.Count == maxLength)
 					break;
 			}
-			byte [] bs = bytes.ToArray();
-			char [] chars = Encoding.ASCII.GetChars(bs);
-			return new String(chars);
+			return Encoding.ASCII.GetString(bytes.ToArray());
 		}
 
 		public ImportDescriptor ReadImportDescriptor(ImageReader rdr, Address addrLoad)

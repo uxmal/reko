@@ -25,7 +25,7 @@ using System.Collections.Generic;
 namespace Decompiler.Loading
 {
 	/// <summary>
-	/// Loads Microsoft EXE image files
+	/// Loads Microsoft EXE image files.
 	/// </summary>
 	public class ExeImageLoader : ImageLoader
 	{
@@ -59,53 +59,51 @@ namespace Decompiler.Loading
 		public const int CbPsp = 0x0100;			// Program segment prefix size in bytes.
 		public const int CbPageSize = 0x0200;		// MSDOS pages are 512 bytes.
 
-		public ExeImageLoader(Program prog, byte [] image) : base(image)
+		public ExeImageLoader(Program prog, byte [] image) : base(prog, image)
 		{
 			ReadCommonExeFields();	
 		
 			if (e_magic != MarkZbikowski)
-				throw new FormatException("Image is not an MSDOS executable image.");
+				throw new FormatException("Image is not an MS-DOS executable image.");
 
 			if (IsPortableExecutable)
 			{
-				// Win32 executable.
 				ldrDeferred = new PeImageLoader(prog, image, e_lfanew);
 			}
 			else if (IsNewExecutable)
 			{
-				// Windows 16-bit or OS/2 executable.
 				prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
 				throw new NotImplementedException("NE executable loading not implemented.");
 			}
 			else
 			{
-				// A real-mode executable (16-bit x86 code).
-
-				IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-				prog.Architecture = arch;
-				prog.Platform = new MsdosPlatform(arch);
-
-				// Detect if it is a compressed image.
-
-				if (LzExeUnpacker.IsCorrectUnpacker(this, image))
-				{
-					ldrDeferred = new LzExeUnpacker(this, image);
-				}
-				else if (PkLiteUnpacker.IsCorrectUnpacker(this, image))
-				{
-					ldrDeferred = new PkLiteUnpacker(this, image);
-				}
-				else if (ExePackLoader.IsCorrectUnpacker(this, image))
-				{
-					ldrDeferred = new ExePackLoader(this, image);
-				}
-				else
-				{
-					// Uncompressed MS-DOS executable.
-					ldrDeferred = new MsdosImageLoader(this);
-				}
+                ldrDeferred = CreateRealModeLoader(prog, image);
 			}
 		}
+
+        private ImageLoader CreateRealModeLoader(Program prog, byte[] image)
+        {
+            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+            prog.Architecture = arch;
+            prog.Platform = new MsdosPlatform(arch);
+
+            if (LzExeUnpacker.IsCorrectUnpacker(this, image))
+            {
+                return new LzExeUnpacker(prog, this, image);
+            }
+            else if (PkLiteUnpacker.IsCorrectUnpacker(this, image))
+            {
+                return new PkLiteUnpacker(prog, this, image);
+            }
+            else if (ExePackLoader.IsCorrectUnpacker(this, image))
+            {
+                return new ExePackLoader(prog, this, image);
+            }
+            else
+            {
+                return new MsdosImageLoader(prog, this);
+            }
+        }
 
 		public bool IsNewExecutable
 		{
@@ -131,6 +129,12 @@ namespace Decompiler.Loading
 		{
 			return ldrDeferred.Load(addrLoad);
 		}
+
+
+        public override ProgramImage LoadAtPreferredAddress()
+        {
+            return Load(ldrDeferred.PreferredBaseAddress);
+        }
 
 		public override Address PreferredBaseAddress
 		{

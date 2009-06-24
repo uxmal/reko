@@ -29,21 +29,9 @@ namespace Decompiler.Loading
 	{
 		private byte [] imgRaw;
 
-		public ImageLoader(byte [] imgRaw)
+		public ImageLoader(Program prog, byte [] imgRaw)
 		{
 			this.imgRaw = imgRaw;
-		}
-
-		public static bool CompareArrays(byte [] src, int iSrc, byte [] dst, int cb)
-		{
-			int iDst = 0;
-			while (cb != 0)
-			{
-				if (src[iSrc++] != dst[iDst++])
-					return false;
-				--cb;
-			}
-			return true;
 		}
 
 		/// <summary>
@@ -51,7 +39,9 @@ namespace Decompiler.Loading
 		/// </summary>
 		/// <param name="addrLoad">Base address of program image</param>
 		/// <returns></returns>
-		public abstract ProgramImage Load(Address addrLoad);
+        public abstract ProgramImage Load(Address addrLoad);
+
+        public abstract ProgramImage LoadAtPreferredAddress();
 
 		public abstract Address PreferredBaseAddress
 		{

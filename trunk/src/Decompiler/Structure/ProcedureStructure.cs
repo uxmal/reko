@@ -33,12 +33,11 @@ namespace Decompiler.Structure
     /// </summary>
     public class ProcedureStructure
     {
-        private Procedure proc;
         private StructureNode entryNode;					// The node at the head of the graph
         private StructureNode exitNode;			// the node at the bottom of the graph
         private List<StructureNode> ordering;
         private List<StructureNode> revOrdering;
-        private List<ast.DerivedGraph> derivedGraphs;	// the derived graphs for this procedure
+        private List<global::ast.DerivedGraph> derivedGraphs;	// the derived graphs for this procedure
 
         public ProcedureStructure(Procedure proc)
         {
@@ -47,7 +46,7 @@ namespace Decompiler.Structure
             BuildEdges(blocks);
             this.ordering = new List<StructureNode>();
             this.revOrdering = new List<StructureNode>();
-            this.derivedGraphs = new List<ast.DerivedGraph>();
+            this.derivedGraphs = new List<global::ast.DerivedGraph>();
             this.entryNode = blocks[proc.EntryBlock];
             this.exitNode = blocks[proc.ExitBlock];
             SetTimeStamps();
@@ -77,16 +76,6 @@ namespace Decompiler.Structure
             }
         }
 
-        public Procedure Procedure
-        {
-            get { return proc; }
-        }
-
-        public string Name
-        {
-            get { return proc.Name; }
-        }
-
         public StructureNode EntryNode
         {
             get { return entryNode; }
@@ -97,7 +86,7 @@ namespace Decompiler.Structure
             get { return exitNode; }
         }
 
-        public List<ast.DerivedGraph> DerivedGraphs
+        public List<global::ast.DerivedGraph> DerivedGraphs
         {
             get { return derivedGraphs; }
         }

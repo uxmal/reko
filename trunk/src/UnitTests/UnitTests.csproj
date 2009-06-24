@@ -33,6 +33,7 @@
       <HintPath>..\..\..\..\..\..\Program Files\NUnit 2.4.8\bin\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -167,6 +168,7 @@
     <Compile Include="Intel\RewriterTests.cs" />
     <Compile Include="Intel\RewriterTests2.cs" />
     <Compile Include="Intel\SymbolTableTests.cs" />
+    <Compile Include="Loading\ImageLoaderHandlerTests.cs" />
     <Compile Include="Loading\LoaderTests.cs" />
     <Compile Include="Loading\PkLiteUnpackerTests.cs" />
     <Compile Include="Mocks\AdcMock.cs" />
@@ -198,8 +200,11 @@
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\WorkItemTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
+    <Compile Include="Structure\ast\CodeGenTests.cs" />
     <Compile Include="Structure\ast\DerivedSequenceBuilderTests.cs" />
     <Compile Include="Structure\ast\IntervalBuilderTests.cs" />
+    <Compile Include="Structure\ast\ProcHeaderTests.cs" />
+    <Compile Include="Structure\ast\SccLoopFinderTests.cs" />
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
     <Compile Include="Structure\PostDominatorGraphTests.cs" />
     <Compile Include="Structure\ast\TestBase.cs" />

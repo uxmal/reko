@@ -38,7 +38,7 @@ namespace Decompiler.Loading
 
 		// Code insipired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
 
-		public LzExeUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
+		public LzExeUnpacker(Program prog, ExeImageLoader exe, byte [] rawImg) : base(prog, rawImg)
 		{
 			this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
 
@@ -46,13 +46,13 @@ namespace Decompiler.Loading
 
 			byte [] abC = RawImage;
 			int entry = lzHdrOffset + exe.e_ip;
-			if (ImageLoader.CompareArrays(abC, entry, s_sig90, s_sig90.Length)) 
+			if (ProgramImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length)) 
 			{
 				// Untested binary version
 				isLz91 = false;
 				throw new NotImplementedException("Untested");
 			}			
-			else if (ImageLoader.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
+			else if (ProgramImage.CompareArrays(abC, entry, s_sig91, s_sig91.Length))
 			{
 				isLz91 = true;
 			}			
@@ -71,8 +71,8 @@ namespace Decompiler.Loading
 
 			int lzHdrOffset = ((int) exe.e_cparHeader + (int) exe.e_cs) << 4;
 			int entry = lzHdrOffset + exe.e_ip;
-			return (ImageLoader.CompareArrays(rawImg, entry, s_sig91, s_sig91.Length) ||
-					ImageLoader.CompareArrays(rawImg, entry, s_sig90, s_sig90.Length));
+			return (ProgramImage.CompareArrays(rawImg, entry, s_sig91, s_sig91.Length) ||
+					ProgramImage.CompareArrays(rawImg, entry, s_sig90, s_sig90.Length));
 		}
 
 		// Fix up the relocations.
@@ -166,6 +166,11 @@ namespace Decompiler.Loading
 			Unpack(RawImage, addrLoad);
 			return imgLoaded;
 		}
+
+        public override ProgramImage LoadAtPreferredAddress()
+        {
+            return Load(PreferredBaseAddress);
+        }
 
 		public override Address PreferredBaseAddress
 		{
