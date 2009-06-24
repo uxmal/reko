@@ -112,7 +112,7 @@ namespace Decompiler.Core.Code
 
 	public class SwitchInstruction : Instruction
 	{
-		public Expression expr;
+        private Expression expr;
 		public Block [] targets;
 
 		public SwitchInstruction(Expression expr, Block [] targets)
@@ -131,7 +131,13 @@ namespace Decompiler.Core.Code
 			v.VisitSwitchInstruction(this);
 		}
 
-		public override bool IsControlFlow
+        public Expression Expression
+        {
+            get { return expr; }
+            set { expr = value; }
+        }
+        
+        public override bool IsControlFlow
 		{
 			get { return true; }
 		}

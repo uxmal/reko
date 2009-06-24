@@ -89,14 +89,12 @@ namespace Decompiler.Core.Lib
 				Dfs(AddNode(start));
 		}
 
-		private ICollection<Node> GetSuccessors(Node node)
+		private IEnumerable<Node> GetSuccessors(Node node)
 		{
-			List<T> succ = new List<T>();
-			host.AddSuccessors(node.o, succ);
-            List<Node> nodes = new List<Node>(succ.Count);
-			for (int i = 0; i < succ.Count; ++i)
-				nodes.Add(AddNode(succ[i]));
-			return nodes;
+            foreach (T successor in host.GetSuccessors(node.o))
+            {
+                yield return AddNode(successor);
+            }
 		}
 
 		private class Node
@@ -118,6 +116,8 @@ namespace Decompiler.Core.Lib
 	{
 		void AddSuccessors(T t, ICollection<T> succ);
 
-		void ProcessScc(ICollection<T> scc);
+        IEnumerable<T> GetSuccessors(T t);
+
+		void ProcessScc(IList<T> scc);
 	}
 }

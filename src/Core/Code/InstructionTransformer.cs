@@ -107,7 +107,7 @@ namespace Decompiler.Core.Code
 
 		public virtual Instruction TransformSwitchInstruction(SwitchInstruction si)
 		{
-			si.expr = si.expr.Accept(this);
+			si.Expression = si.Expression.Accept(this);
 			return si;
 		}
 

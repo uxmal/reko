@@ -31,7 +31,7 @@ namespace Decompiler.Loading
 		private ExeImageLoader exe;
 		private ProgramImage imgLoaded;
 
-		public MsdosImageLoader(ExeImageLoader exe) : base(exe.RawImage)
+		public MsdosImageLoader(Program prog, ExeImageLoader exe) : base(prog, exe.RawImage)
 		{
 			this.exe = exe;
 		}
@@ -77,5 +77,10 @@ namespace Decompiler.Loading
 			imgLoaded = new ProgramImage(addrLoad, bytes);
 			return imgLoaded;
 		}
+
+        public override ProgramImage LoadAtPreferredAddress()
+        {
+            return Load(PreferredBaseAddress);
+        }
 	}
 }

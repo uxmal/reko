@@ -43,7 +43,6 @@ namespace Decompiler.Structure
         private StructureNode condFollow;
         private StructureNode loopFollow;
         private StructureNode latchNode;
-        private Loop loop;                      // the loop this node belongs to.
 
         // Structured type of the node      //$REFACTOR: this should be encapsulated in the StructuredGraph subclasses.
         private StructuredGraph sType;					// the structuring class (Loop, Cond , etc)

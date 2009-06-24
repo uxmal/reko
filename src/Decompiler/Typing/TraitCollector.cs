@@ -222,7 +222,7 @@ namespace Decompiler.Typing
 
 		public override void VisitSwitchInstruction(SwitchInstruction si)
 		{
-			si.expr.Accept(this);
+			si.Expression.Accept(this);
 		}
 
 		public override void VisitUseInstruction(UseInstruction u)

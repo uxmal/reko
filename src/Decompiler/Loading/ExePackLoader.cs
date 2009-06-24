@@ -42,7 +42,7 @@ namespace Decompiler.Loading
 
 		private ProgramImage imgU;
 
-		public ExePackLoader(ExeImageLoader exe, byte [] imgRaw) : base(imgRaw)
+		public ExePackLoader(Program prog, ExeImageLoader exe, byte [] imgRaw) : base(prog, imgRaw)
 		{
 			this.exeHdrSize = (uint) (exe.e_cparHeader * 0x10U);
 			this.hdrOffset = (uint) (exe.e_cparHeader + exe.e_cs) * 0x10U;
@@ -59,7 +59,7 @@ namespace Decompiler.Loading
 		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
 		{
 			int offset = (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
-			return ImageLoader.CompareArrays(rawImg, offset, signature, signature.Length);
+			return ProgramImage.CompareArrays(rawImg, offset, signature, signature.Length);
 		}
 
 
@@ -105,6 +105,11 @@ namespace Decompiler.Loading
 			} while ((op & 1) == 0);
 			return imgU;
 		}
+
+        public override ProgramImage LoadAtPreferredAddress()
+        {
+            return Load(PreferredBaseAddress);
+        }
 
 		public override Address PreferredBaseAddress
 		{

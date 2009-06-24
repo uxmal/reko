@@ -59,7 +59,6 @@ namespace Decompiler.Structure
 		private void FindLoops()
 		{
 			DominatorGraph dom = new DominatorGraph(proc);
-			int intCount = -1;
 //			IntervalFinder intf = new IntervalFinder(proc);
             //while (intf.Intervals.Count != intCount)
             //{

@@ -53,6 +53,18 @@ namespace Decompiler.Core
 			get { return abImage; }
 		}
 
+        public static bool CompareArrays(byte[] src, int iSrc, byte[] dst, int cb)
+        {
+            int iDst = 0;
+            while (cb != 0)
+            {
+                if (src[iSrc++] != dst[iDst++])
+                    return false;
+                --cb;
+            }
+            return true;
+        }
+
 		public ImageReader CreateReader(Address addr)
 		{
 			return new ImageReader(this, addr);

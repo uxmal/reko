@@ -70,10 +70,10 @@ namespace Decompiler.UnitTests.Loading
 				return image;
 			}
 
-			public override void LoadExecutable(string pstrFileName, Address addrLoad)
+			public override void LoadExecutableFile(string pstrFileName, Address addrLoad)
 			{
 				if (allowLoadExecutable)
-					base.LoadExecutable(pstrFileName, addrLoad);
+					base.LoadExecutableFile(pstrFileName, addrLoad);
 			}
 
 		}

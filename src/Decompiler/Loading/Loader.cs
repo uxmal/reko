@@ -41,6 +41,17 @@ namespace Decompiler.Loading
             this.filename = filename;
         }
 
+        private ImageLoader FindImageLoader(Program prog, byte[] rawBytes)
+        {
+            ImageLoaderHandler handler = (ImageLoaderHandler) System.Configuration.ConfigurationManager.GetSection("Decompiler/Loader");
+            if (handler.ImageBeginsWithMagicNumber(rawBytes))
+            {
+                return (ImageLoader) handler.CreateLoaderInstance(prog, rawBytes);
+            }
+            return null;
+        }
+
+
 		/// <summary>
 		/// Loads the file and returns a decompiler project.
 		/// </summary>
@@ -49,57 +60,33 @@ namespace Decompiler.Loading
 		/// </remarks>
         public override DecompilerProject Load(Address addrLoad)
 		{
-    		DecompilerProject project;
 			byte [] image = LoadImageBytes(filename, 0);
 			bool isXmlFile = IsXmlFile(image);
 			if (isXmlFile)
 			{
 				XmlSerializer ser = new XmlSerializer(typeof (DecompilerProject));
-				project = (DecompilerProject) ser.Deserialize(new MemoryStream(image));
+                DecompilerProject project = (DecompilerProject) ser.Deserialize(new MemoryStream(image));
 				addrLoad = project.Input.BaseAddress;
+                LoadExecutableFile(project.Input.Filename, addrLoad);
+                return project;
 			}
 			else
 			{
 				// Wasn't a project, so make a blank one.
 
-				project = new DecompilerProject();
+                DecompilerProject project = new DecompilerProject();
 
                 SetDefaultFilenames(filename, project);
+                LoadExecutableFile(project.Input.Filename, addrLoad);
+                project.Input.BaseAddress = Program.Image.BaseAddress;
+                return project;
 			}
-
-			//$TODO: integrate this.
-			/*
-			switch (project.Input.FileFormat)
-			{
-			case InputFormat.Assembler:
-				loader.Assemble(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
-				break;
-			case InputFormat.AssemblerFragment:
-				loader.AssembleFragment(project.Input.Filename, new IntelArchitecture(ProcessorMode.Real), project.Input.BaseAddress);
-				break;
-			case InputFormat.Binary:
-			case InputFormat.COM:
-				if (project.Input.BaseAddress == null)
-					throw new ArgumentException("Base address must be specified when input format is Binary or COM");
-				loader.LoadBinary(project.Input.Filename, project.Input.BaseAddress);
-				break;
-			default:
-				loader.LoadExecutable(project.Input.Filename, project.Input.BaseAddress);
-				break;
-			}
-			*/
-			LoadExecutable(project.Input.Filename, addrLoad);
-			if (!isXmlFile)
-			{
-				project.Input.BaseAddress = Program.Image.BaseAddress;
-			}
-            return project;
 		}
 
 
 		private static bool IsXmlFile(byte[] image)
 		{
-			bool isXmlFile = ImageLoader.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5);	// <?xml
+			bool isXmlFile = ProgramImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5);	// <?xml
 			return isXmlFile;
 		}
 
@@ -124,29 +111,22 @@ namespace Decompiler.Loading
 		/// Relocation gives us a chance to determine the addresses of interesting items.
 		/// </summary>
 		/// <param name="binaryFile"></param>
-		public virtual void LoadExecutable(string pstrFileName, Address addrLoad)
+		public virtual void LoadExecutableFile(string filename, Address addrLoad)
 		{
-			byte [] rawBytes = LoadImageBytes(pstrFileName, 0);
-			if (rawBytes[0] == 'M' && 
-				rawBytes[1] == 'Z')
+			byte [] rawBytes = LoadImageBytes(filename, 0);
+            ImageLoader loader = FindImageLoader(Program, rawBytes);
+            if (loader == null)
+                throw new ApplicationException("File has an unknown executable format.");
+
+            if (addrLoad == null)
 			{
-				ExeImageLoader ldr = new ExeImageLoader(Program, rawBytes);
-				if (addrLoad == null)
-				{
-					addrLoad = ldr.PreferredBaseAddress;
-				}
-				Program.Image = ldr.Load(addrLoad);
-				relocations = new RelocationDictionary();
-				ldr.Relocate(addrLoad, EntryPoints, relocations);
-				return;
+				addrLoad = loader.PreferredBaseAddress;
 			}
-			throw new ApplicationException("File has an unknown executable format.");
+			Program.Image = loader.Load(addrLoad);
+			relocations = new RelocationDictionary();
+			loader.Relocate(addrLoad, EntryPoints, relocations);
 		}
 
-		public void LoadExecutable(string fileName)
-		{
-			LoadExecutable(fileName, null);
-		}
 
 		/// <summary>
 		/// Loads the contents of a file with the specified filename into an array 

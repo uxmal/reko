@@ -16,25 +16,19 @@ namespace Decompiler.Structure
         public static StructuredGraph Cond = new CondStructType();					// Header of a conditional only (if-then-else or switch)
         public static StructuredGraph LoopCond = new LoopCondStructType();			    // Header of a loop and a conditional
 
-
-        public virtual void GenerateCode(StructureNode node, AbsynCodeGeneratorState state)         //$TODO: make this abstract.
-        {
-        }
-
         [Obsolete]
-        public abstract void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode);
+        public virtual void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode) { return; }
+        public abstract void GenerateCode(AbsynCodeGenerator gen, StructureNode node, AbsynCodeGeneratorState state);
 
         public abstract void WriteDetails(StructureNode structureNode, TextWriter writer);
     }
 
     public class SeqStructType : StructuredGraph
     {
-        public override void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode)
+        public override void GenerateCode(AbsynCodeGenerator gen, StructureNode node, AbsynCodeGeneratorState state)
         {
-            gen.GenerateSequentialCode(node, new AbsynCodeGeneratorState(latch, followSet, gotoSet, HLLCode));
+            gen.GenerateSequentialCode(node, state);
         }
-
-
 
         public override void WriteDetails(StructureNode structureNode, TextWriter writer)
         {
@@ -43,7 +37,7 @@ namespace Decompiler.Structure
 
     public class LoopStructType : StructuredGraph
     {
-        public override void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode)
+        public override void GenerateCode(AbsynCodeGenerator gen, StructureNode node, AbsynCodeGeneratorState state)
         {
             throw new Exception("The method or operation is not implemented.");
         }
@@ -56,9 +50,9 @@ namespace Decompiler.Structure
 
     public class CondStructType : StructuredGraph
     {
-        public override void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode)
+        public override void GenerateCode(AbsynCodeGenerator gen, StructureNode node, AbsynCodeGeneratorState state)
         {
-            gen.WriteCondCode(node, latch, followSet, gotoSet, HLLCode);
+            gen.GenerateCondCode(node, state);
         }
 
         public override void WriteDetails(StructureNode structureNode, TextWriter writer)
@@ -70,10 +64,11 @@ namespace Decompiler.Structure
 
     public class LoopCondStructType : StructuredGraph
     {
-        public override void WriteCode(AbsynCodeGenerator gen, StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> HLLCode)
+        public override void GenerateCode(AbsynCodeGenerator gen, StructureNode node, AbsynCodeGeneratorState state)
         {
-            throw new Exception("The method or operation is not implemented.");
+            gen.GenerateLoopCode(node, state);
         }
+
         public override void WriteDetails(StructureNode structureNode, TextWriter writer)
         {
             throw new Exception("The method or operation is not implemented.");

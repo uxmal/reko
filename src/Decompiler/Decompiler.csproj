@@ -82,6 +82,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
@@ -365,6 +366,7 @@
     <Compile Include="Gui\Windows\ProgramImageBrowserService.cs" />
     <Compile Include="Loading\AssemblerFragmentLoader.cs" />
     <Compile Include="Loading\AssemblerLoader.cs" />
+    <Compile Include="Loading\ImageLoaderHandler.cs" />
     <Compile Include="Loading\ExeImageLoader.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -422,12 +424,27 @@
     </Compile>
     <Compile Include="Analysis\StrengthReduction.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs" />
+    <Compile Include="Structure\ast\AbsynStatementEmitter.cs" />
+    <Compile Include="Structure\ast\Analysis.cs" />
+    <Compile Include="Structure\ast\Ast.cs" />
+    <Compile Include="Structure\ast\CfgNode.cs" />
+    <Compile Include="Structure\ast\DerivedSequenceBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\ast\Dominators.cs" />
+    <Compile Include="Structure\ast\Graphs.cs" />
+    <Compile Include="Structure\ast\GraphsCodeGen.cs" />
+    <Compile Include="Structure\ast\Instruction.cs" />
+    <Compile Include="Structure\ast\Interval.cs" />
+    <Compile Include="Structure\ast\IntervalBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Structure\ast\NodeCodeGen.cs" />
+    <Compile Include="Structure\ast\Options.cs" />
+    <Compile Include="Structure\ast\SccLoopFinder.cs" />
+    <Compile Include="Structure\ast\Stats.cs" />
+    <Compile Include="Structure\ast\TypeDefs.cs" />
     <Compile Include="Structure\CaseFinder.cs" />
-    <Compile Include="Structure\ast\DerivedGraph.cs" />
-    <Compile Include="Structure\ast\DerivedSequenceBuilder.cs" />
-    <Compile Include="Structure\ast\StructureAnalysis.cs" />
-    <Compile Include="Structure\ast\IntervalBuilder.cs" />
-    <Compile Include="Structure\ast\LoopBuilder.cs" />
     <Compile Include="Structure\PostDominatorGraph.cs" />
     <Compile Include="Structure\ProcedureStructure.cs" />
     <Compile Include="Structure\ast\StringFunctions.cs" />

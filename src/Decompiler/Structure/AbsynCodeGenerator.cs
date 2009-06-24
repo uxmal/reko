@@ -138,6 +138,15 @@ namespace Decompiler.Structure
             return last;
         }
 
+        public Instruction LastInstruction(StructureNode node)
+        {
+            if (node.EntryBlock.Statements.Count == 0)
+                return null;
+            else
+                return node.EntryBlock.Statements.Last.Instruction;
+        }
+
+
         public void RequireLabel(StructureNode node, bool require)
         {
             if (!require)
@@ -162,58 +171,11 @@ namespace Decompiler.Structure
         public List<AbsynStatement> GenerateCode(StructureNode node)
         {
             List<AbsynStatement> stms = new List<AbsynStatement>();
-            WriteCode(node, new AbsynCodeGeneratorState(null, new List<StructureNode>(), new List<StructureNode>(), stms));
+            GenerateCode(node, new AbsynCodeGeneratorState(null, new List<StructureNode>(), new List<StructureNode>(), stms));
             return stms;
         }
 
-        [Obsolete("Move to state")]
-        public AbsynStatement GenerateBlockCode(AbsynCodeGeneratorState state, StructureNode node)
-        {
-            return state.GenerateBlockCode(node);
-        }
-
-
-        /// <summary>
-        /// Converts an intermediate code instruction into an AbsynStatement. Instructions that involve control flow,
-        /// that is branches and indirect jumps, return null. Callers must check for a null return that indicates 
-        /// such a flow control instruction.
-        /// </summary>
-        /// <param name="instr"></param>
-        /// <returns></returns>
-        [Obsolete("Moved to State")]
-        public AbsynStatement ConvertInstruction(Instruction instr)
-        {
-            //$REVIEW: this needs to live in a separate class and use the visitor pattern.
-            Assignment ass = instr as Assignment;
-            if (ass != null)
-                return new AbsynAssignment(ass.Dst, ass.Src);
-            Store store = instr as Store;
-            if (store != null)
-                return new AbsynAssignment(store.Dst, store.Src);
-            ReturnInstruction ret = instr as ReturnInstruction;
-            if (ret != null)
-                return new AbsynReturn(ret.Expression);
-            SideEffect se = instr as SideEffect;
-            if (se != null)
-                return new AbsynSideEffect(se.Expression);
-            if (instr is Branch)
-                return null;
-            if (instr is SwitchInstruction)
-                return null;
-            throw new NotImplementedException(instr.GetType().ToString());
-
-        }
-
-
-        [Obsolete]
-        public void WriteCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> stms)
-        {
-            AbsynCodeGeneratorState state = new AbsynCodeGeneratorState(latch, followSet, gotoSet, stms);
-            WriteCode(node, state);
-        }
-
-        //$TODO: "Make this a member of AbsynCodeGeneratorState
-        public void WriteCode(StructureNode node, AbsynCodeGeneratorState state)
+        public void GenerateCode(StructureNode node, AbsynCodeGeneratorState state)
         {
             // If this is the follow for the most nested enclosing conditional, then
             // don't generate anything. Otherwise if it is in the follow set
@@ -252,7 +214,7 @@ namespace Decompiler.Structure
             {
                 if (true) // indLevel == latch.LoopHead.indentLevel + (latch.LoopHead.LoopType == loopType.PreTested ? 1 : 0))
                 {
-                    GenerateBlockCode(state, node);
+                    state.GenerateBlockCode(node);
                     return;
                 }
                 else
@@ -264,14 +226,13 @@ namespace Decompiler.Structure
                     return;
                 }
             }
-
-            node.GetStructType().WriteCode(this, node, state.Latch, state.FollowSet, state.GotoSet, state.Stms);
+            node.GetStructType().GenerateCode(this, node, state);
         }
 
         public void GenerateSequentialCode(StructureNode node, AbsynCodeGeneratorState state)
         {
             state.GenerateBlockCode(node);
-            if (LastInstruction(node) is ReturnInstruction)
+            if (state.LastInstruction(node) is ReturnInstruction)
                 return;
             
             StructureNode child = node.Succ[0];
@@ -281,7 +242,7 @@ namespace Decompiler.Structure
             }
             else
             {
-                WriteCode(child, state);
+                GenerateCode(child, state);
             }
         }
 
@@ -302,22 +263,7 @@ namespace Decompiler.Structure
             return false;
         }
 
-
-        private Instruction LastInstruction(StructureNode node)
-        {
-            if (node.EntryBlock.Statements.Count == 0)
-                return null;
-            else
-                return node.EntryBlock.Statements.Last.Instruction;
-        }
-
-        [Obsolete]
-        public void WriteCondCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> stms)
-        {
-            WriteCondCode(node, new AbsynCodeGeneratorState(latch, followSet, gotoSet, stms));
-        }
-
-        public void WriteCondCode(StructureNode node, AbsynCodeGeneratorState state)
+        public void GenerateCondCode(StructureNode node, AbsynCodeGeneratorState state)
         {
             // reset this back to LoopCond if it was originally of this type
             if (node.LatchNode != null)
@@ -331,7 +277,6 @@ namespace Decompiler.Structure
             // are removed
             int gotoTotal = 0;
 
-            // add the follow to the follow set if this is a case header
             if (node.CondType == condType.Case)
             {
                 state.FollowSet.Add(node.CondFollow);
@@ -346,11 +291,11 @@ namespace Decompiler.Structure
                     state.FollowSet.Add(node.CondFollow);
 
                 }
-                // Otherwise, for a jump into/outof a loop body, the follow is added to the goto set.
-                // The temporary follow is set for any unstructured conditional header
-                // branch that is within the same loop and case.
                 else
                 {
+                    // Otherwise, for a jump into/outof a loop body, the follow is added to the goto set.
+                    // The temporary follow is set for any unstructured conditional header
+                    // branch that is within the same loop and case.
                     if (node.UnstructType == unstructType.JumpInOutLoop)
                     {
                         // define the loop header to be compared against
@@ -386,13 +331,13 @@ namespace Decompiler.Structure
 
             // write the body of the block (excluding the predicate)
             state.GenerateBlockCode(node);
-            Instruction last = LastInstruction(node);
+            Instruction last = state.LastInstruction(node);
             SwitchInstruction sw = last as SwitchInstruction;
             if (sw != null)
             {
-                AbsynSwitch s = new AbsynSwitch(sw.expr);
+                AbsynSwitch s = new AbsynSwitch(sw.Expression);
                 state.Stms.Add(s);
-                WriteCaseCode(node, new AbsynCodeGeneratorState(state.Latch, state.FollowSet, state.GotoSet, s.Statements));
+                GenerateCaseCode(node, new AbsynCodeGeneratorState(state.Latch, state.FollowSet, state.GotoSet, s.Statements));
             }
             else
             {
@@ -400,7 +345,7 @@ namespace Decompiler.Structure
                 AbsynIf i = new AbsynIf();
                 i.Condition = b.Condition;
                 state.Stms.Add(i);
-                WriteIfCode(node, state.Latch, state.FollowSet, state.GotoSet, i);
+                GenerateIfCode(node, state.Latch, state.FollowSet, state.GotoSet, i);
             }
 
 
@@ -426,18 +371,12 @@ namespace Decompiler.Structure
                 if (visited.Contains(tmpCondFollow))
                     EmitGotoAndLabel(state, node, tmpCondFollow);
                 else
-                    WriteCode(tmpCondFollow, state);
+                    GenerateCode(tmpCondFollow, state);
             }
 
         }
 
-        [Obsolete]
-        public void WriteCaseCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynSwitch sw, List<AbsynStatement> stms)
-        {
-            WriteCaseCode(node, new AbsynCodeGeneratorState(latch, followSet, gotoSet, stms));
-        }
-
-        public void WriteCaseCode(StructureNode node, AbsynCodeGeneratorState state)
+        public void GenerateCaseCode(StructureNode node, AbsynCodeGeneratorState state)
         {
             int i = 0;
             foreach (StructureNode succ in node.Succ)
@@ -447,13 +386,13 @@ namespace Decompiler.Structure
                     EmitGotoAndLabel(state, node, succ);     //$REFACTOR: make this a member of state
                 else
                 {
-                    WriteCode(succ, state);
+                    GenerateCode(succ, state);
                     state.Stms.Add(new AbsynBreak());       //$REFACTOR: mmake this a method of state.
                 }
             }
         }
 
-        private void WriteIfCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynIf absynIf)
+        private void GenerateIfCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynIf absynIf)
         {
             StructureNode succ = (node.CondType == condType.IfElse ? node.Else : node.Then);
 
@@ -463,7 +402,7 @@ namespace Decompiler.Structure
             if (visited.Contains(succ) || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
                 EmitGotoAndLabel(thenState, node, succ);
             else
-                WriteCode(succ, thenState);
+                GenerateCode(succ, thenState);
 
             if (node.CondType == condType.IfThenElse)
             {
@@ -472,17 +411,11 @@ namespace Decompiler.Structure
                 if (visited.Contains(succ))
                     EmitGotoAndLabel(elseState, node, succ);
                 else
-                    WriteCode(succ, elseState);
+                    GenerateCode(succ, elseState);
             }
         }
 
-        [Obsolete]
-        private void WriteLoopCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, List<AbsynStatement> stms)
-        {
-            WriteLoopCode(node, new AbsynCodeGeneratorState(latch, followSet, gotoSet, stms));
-        }
-
-        private void WriteLoopCode(StructureNode node, AbsynCodeGeneratorState state)
+        public void GenerateLoopCode(StructureNode node, AbsynCodeGeneratorState state)
         {
             // add the follow of the loop (if it exists) to the follow set
             if (node.LoopFollow != null)            //$TODO make this a method of state. PushFollownode.
@@ -492,7 +425,7 @@ namespace Decompiler.Structure
             {
                 Debug.Assert(node.LatchNode.Succ.Count == 1);
 
-                GenerateBlockCode(state, node);
+                state.GenerateBlockCode(node);
 
                 Branch branch = (Branch) node.LastInstruction;
                 List<AbsynStatement> whileBody = new List<AbsynStatement>();
@@ -505,18 +438,18 @@ namespace Decompiler.Structure
 
                 // write the code for the body of the loop
                 StructureNode loopBody = (node.Else == node.LoopFollow) ? node.Then : node.Else;
-                WriteCode(loopBody, new AbsynCodeGeneratorState(node.LatchNode, state.FollowSet, state.GotoSet, whileBody));
+                GenerateCode(loopBody, new AbsynCodeGeneratorState(node.LatchNode, state.FollowSet, state.GotoSet, whileBody));
 
                 if (!visited.Contains(node.LatchNode))
                 {
                     visited.Add(node.LatchNode);
-                    GenerateBlockCode(state, node.LatchNode);
+                    state.GenerateBlockCode(node.LatchNode);
                 }
 
                 // rewrite the body of the block (excluding the predicate) at the next nesting level
                 // after making sure another label won't be generated
                 state.RequireLabel(node, false);
-                GenerateBlockCode(state, node);
+                state.GenerateBlockCode(node);
             }
             else
             {
@@ -532,12 +465,12 @@ namespace Decompiler.Structure
                     // again on this node
                     node.SetStructType(StructuredGraph.Cond);
                     visited.Remove(node);
-                    WriteCode(node, bodyState);
+                    GenerateCode(node, bodyState);
                 }
                 else
                 {
-                    GenerateBlockCode(bodyState, node);
-                    WriteCode(node.Succ[0], bodyState);
+                    bodyState.GenerateBlockCode(node);
+                    GenerateCode(node.Succ[0], bodyState);
                 }
 
                 AbsynLoop loop;
@@ -548,7 +481,7 @@ namespace Decompiler.Structure
                     if (!visited.Contains(node.LatchNode))
                     {
                         visited.Add(node.LatchNode);
-                        GenerateBlockCode(bodyState, node.LatchNode);
+                        state.GenerateBlockCode(node.LatchNode);
                     }
                 }
                 else
@@ -559,7 +492,7 @@ namespace Decompiler.Structure
                     if (!visited.Contains(node.LatchNode))
                     {
                         visited.Add(node.LatchNode);
-                        GenerateBlockCode(state, node.LatchNode);
+                        state.GenerateBlockCode(node.LatchNode);
                     }
                 }
             }
@@ -571,7 +504,7 @@ namespace Decompiler.Structure
                 state.FollowSet.RemoveAt(state.FollowSet.Count - 1);
 
                 if (!visited.Contains(node.LoopFollow))
-                    WriteCode(node.LoopFollow, state);
+                    GenerateCode(node.LoopFollow, state);
                 else
                     EmitGotoAndLabel(state, node, node.LoopFollow);
             }

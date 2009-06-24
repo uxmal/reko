@@ -39,7 +39,7 @@ namespace Decompiler.Loading
 		private const int signatureOffset = 0x1C;
 		private const int PspSize = 0x0100;
 
-		public PkLiteUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
+		public PkLiteUnpacker(Program prog, ExeImageLoader exe, byte [] rawImg) : base(prog, rawImg)
 		{
 			int pkLiteHdrOffset = exe.e_cparHeader * 0x10;
 
@@ -59,7 +59,7 @@ namespace Decompiler.Loading
 			if (exe.e_ovno != 0)
 				return false;
 
-			return ImageLoader.CompareArrays(rawImg, signatureOffset, signature, signature.Length);
+			return ProgramImage.CompareArrays(rawImg, signatureOffset, signature, signature.Length);
 		}
 
 		public override ProgramImage Load(Address addrLoad)
@@ -195,6 +195,11 @@ l01C8:
 			imgU = new ProgramImage(addrLoad, abU);
 			return imgU;
 		}
+
+        public override ProgramImage LoadAtPreferredAddress()
+        {
+            return Load(PreferredBaseAddress);
+        }
 
 		public int CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, int dst)
 		{
