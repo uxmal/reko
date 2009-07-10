@@ -25,7 +25,7 @@ using System.Text;
 namespace Decompiler.Structure
 {
     ///<summary>
-    /// Tag this node and all its children within the case defined by (head,follow)
+    /// Tags this node and all its children within the case defined by (head,follow)
     /// as belonging to the case. If a node visited in this traversal is already with
     /// a case then it is left untouched.
     ///</summary>

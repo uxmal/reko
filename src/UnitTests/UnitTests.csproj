@@ -200,7 +200,6 @@
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\WorkItemTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
-    <Compile Include="Structure\CodeGenTests.cs" />
     <Compile Include="Structure\DerivedSequenceBuilderTests.cs" />
     <Compile Include="Structure\IntervalBuilderTests.cs" />
     <Compile Include="Structure\IntervalTests.cs" />
@@ -209,12 +208,9 @@
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
     <Compile Include="Structure\PostDominatorGraphTests.cs" />
     <Compile Include="Structure\TestBase.cs" />
-    <Compile Include="Structure\BlockLinearizerTests.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />
     <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />
     <Compile Include="Structure\IntervalCollectionTests.cs" />
-    <Compile Include="Structure\LoopFinderTests.cs" />
-    <Compile Include="Structure\LoopMemberTests.cs" />
     <Compile Include="Structure\LoopTests.cs" />
     <Compile Include="Structure\MockIfElseIf.cs" />
     <Compile Include="Structure\MockSnarl.cs" />
@@ -222,7 +218,6 @@
     <Compile Include="Structure\MockWhileBreak.cs" />
     <Compile Include="Structure\PreferredUnstructuredExitTests.cs" />
     <Compile Include="Structure\SimpleStructureTests.cs" />
-    <Compile Include="Structure\StraightPathWalkerTests.cs" />
     <Compile Include="Structure\StructureConditionalsTests.cs" />
     <Compile Include="Structure\StructureTestBase.cs" />
     <Compile Include="Typing\AddressTraitCollectorTests.cs" />

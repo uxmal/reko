@@ -85,9 +85,15 @@ namespace Decompiler.Structure
 	/// </summary>
     public class LoopFinder
     {
-        public void DetermineLoopType(StructureNode header)
+        private StructureNode header;
+        
+        public LoopFinder(StructureNode header)
         {
-
+            this.header = header;
+        }
+        
+        public void DetermineLoopType()
+        {
             // Pre: The loop induced by (head,latch) has already had all its member nodes tagged
             // Post: The type of loop has been deduced
             Debug.Assert(header.LatchNode != null);
@@ -128,7 +134,7 @@ namespace Decompiler.Structure
             }
         }
 
-        public void FindLoopFollow(StructureNode header, List<StructureNode> order, bool[] loopNodes)
+        public void FindLoopFollow(List<StructureNode> order, bool[] loopNodes)
         // Pre: The loop headed by header has been induced and all it's member nodes have been tagged
         // Post: The follow of the loop has been determined.
         {
@@ -184,7 +190,7 @@ namespace Decompiler.Structure
             }
         }
 
-        public  void TagNodesInLoop(StructureNode header, List<StructureNode> order, bool[] intNodes, bool[] loopNodes)
+        public  void TagNodesInLoop(List<StructureNode> order, bool[] intNodes, bool[] loopNodes)
         // Pre: header has been detected as a loop header and has the details of the latching node
         // Post: the nodes within the loop have been tagged (if they weren't already within a more
         //       deeply nested loop) and are within the returned set of nodes
