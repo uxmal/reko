@@ -1,16 +1,16 @@
 // fn0C00_0000
-void fn0C00_0000(word16 bx, segment ds)
+void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	word16 ax_9 = 0x0000
 	// succ:  2
 l0C00_0019:		// block 2, pred: 1 5 4
-	branch ax_9 < bx
+	branch ax_9 < bx l0C00_0005
 	// succ:  6 3
 l0C00_0005:		// block 3, pred: 2
 	word16 si_16 = Mem0[ds:0x0300:word16]
-	branch si_16 == 0x0000
+	branch si_16 == 0x0000 l0C00_0012
 	// succ:  5 4
 l0C00_0012:		// block 4, pred: 3
 	ax_9 = ax_9 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16]
@@ -24,16 +24,16 @@ l0C00_001D:		// block 6, pred: 2
 fn0C00_0000_exit:		// block 7, pred: 6
 	// succ: 
 // fn0C00_0000
-void fn0C00_0000(word16 bx, segment ds)
+void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	word16 ax_9 = 0x0000
 	// succ:  1
 l0C00_0019:		// block 1, pred: 0 4 3
-	branch ax_9 < bx
+	branch ax_9 < bx l0C00_0005
 	// succ:  5 2
 l0C00_0005:		// block 2, pred: 1
 	word16 si_16 = Mem0[ds:0x0300:word16]
-	branch si_16 == 0x0000
+	branch si_16 == 0x0000 l0C00_0012
 	// succ:  4 3
 l0C00_0012:		// block 3, pred: 2
 	ax_9 = ax_9 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16]
@@ -43,4 +43,6 @@ l0C00_000D:		// block 4, pred: 2
 	// succ:  1
 l0C00_001D:		// block 5, pred: 1
 	return
+	// succ:  6
+fn0C00_0000_exit:		// block 6, pred: 5
 	// succ: 

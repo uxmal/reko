@@ -26,14 +26,17 @@ namespace Decompiler.Structure
 {
     public class ProcedureStructureBuilder
     {
+        private Procedure proc;
         private List<StructureNode> nodeList;			// head of the linked list of nodes
 
-        public ProcedureStructureBuilder()
+        public ProcedureStructureBuilder(Procedure proc)
         {
+            this.proc = proc;
             this.nodeList = new List<StructureNode>();
         }
 
-        public void BuildNodes(Procedure proc, Dictionary<Block, StructureNode> blockNodes)
+
+        public void BuildNodes(Dictionary<Block, StructureNode> blockNodes)
         {
             int bId = 0;
             foreach (Block b in proc.RpoBlocks)
@@ -67,8 +70,7 @@ namespace Decompiler.Structure
         }
 
 
-        // define the edges between these nodes as well as removing any redundant nodes
-        public void DefineEdges(Procedure proc, Dictionary<Block, StructureNode> blockNodes)
+        public void DefineEdges(Dictionary<Block, StructureNode> blockNodes)
         {
             //build the edges
             foreach (StructureNode curNode in nodeList)

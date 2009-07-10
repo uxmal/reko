@@ -22,6 +22,8 @@ l0C00_0014:		// block 4, pred: 3 4
 l0C00_001D:		// block 5, pred: 4
 	store(Mem26[ds:0x0302:word16]) = ax_18
 	return
+	// succ:  6
+fn0C00_0000_exit:		// block 6, pred: 5
 	// succ: 
 
 void fn0C00_0000(word16 bx, word16 si, selector ds)

@@ -476,8 +476,9 @@ namespace Decompiler.Core.Output
 		
         public void VisitContinue(AbsynContinue cont)
 		{
+            writer.Indent();
 			writer.WriteKeyword("continue");
-            writer.WriteLine();
+            writer.Terminate(";");
 		}
 
 		public void VisitDeclaration(AbsynDeclaration decl)

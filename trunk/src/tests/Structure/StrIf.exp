@@ -13,6 +13,8 @@ l0C00_0005:		// block 2, pred: 0
 l0C00_000E:		// block 3, pred: 2 1
 	store(Mem13[ds:si:word16]) = bx_10
 	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
 	// succ: 
 
 void fn0C00_0000(word16 ax, word16 si, selector ds)

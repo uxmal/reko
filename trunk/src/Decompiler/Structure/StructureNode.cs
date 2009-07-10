@@ -65,8 +65,9 @@ namespace Decompiler.Structure
 
         private bbType type;
 
-        public const int THEN = 1;
-        public const int ELSE = 0;
+        public StructureNode Then { get { return OutEdges[1]; } }
+        public StructureNode Else { get { return OutEdges[0]; } }
+
 
         // constructor sets the identity as well as the member instructions
         public StructureNode(int id, List<Instruction> src, int first, int num)
@@ -399,9 +400,9 @@ namespace Decompiler.Structure
             {
                 if (type == bbType.nway)
                     cType = condType.Case;
-                else if (OutEdges[StructureNode.ELSE] == condFollow)
+                else if (Else == condFollow)
                     cType = condType.IfThen;
-                else if (OutEdges[StructureNode.THEN] == condFollow)
+                else if (Then == condFollow)
                     cType = condType.IfElse;
                 else
                     cType = condType.IfThenElse;

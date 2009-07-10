@@ -86,10 +86,10 @@ namespace Decompiler.UnitTests.Structure
         private ProcedureStructure CompileTest(ProcedureMock m)
         {
             m.Procedure.RenumberBlocks();
-            ProcedureStructureBuilder g = new ProcedureStructureBuilder();
+            ProcedureStructureBuilder g = new ProcedureStructureBuilder(m.Procedure);
             Dictionary<Block, StructureNode> nodes = new Dictionary<Block, StructureNode>();
-            g.BuildNodes(m.Procedure, nodes);
-            g.DefineEdges(m.Procedure, nodes);
+            g.BuildNodes(nodes);
+            g.DefineEdges(nodes);
             ProcedureStructure proc = g.DefineCfgs(m.Procedure, nodes);
             g.SetTimeStamps(proc);
 

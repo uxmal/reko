@@ -55,7 +55,7 @@ namespace Decompiler.Structure
         private StructureNode entryNode;
         private List<StructureNode> ordering;
         private List<StructureNode> revOrdering;
-        private List<Decompiler.Structure.DerivedGraph> derivedGraphs;	// the derived graphs for this procedure
+        private List<DerivedGraph> derivedGraphs;	// the derived graphs for this procedure
 
         public ProcedureStructure(Procedure proc, List<StructureNode> nodes)
         {

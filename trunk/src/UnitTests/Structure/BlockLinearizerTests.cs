@@ -29,79 +29,8 @@ using System.Collections.Generic;
 namespace Decompiler.UnitTests.Structure
 {
 	[TestFixture]
+    [Obsolete()]
 	public class BlockLinearizerTests
 	{
-		[Test]
-		public void BlinEnsureLabel()
-		{
-			Procedure proc = new MockSnarl().Procedure;
-			BlockLinearizer blin = new BlockLinearizer(null);
-			Block block = proc.RpoBlocks[1];
-			blin.EnsureLabel(block);
-			Assert.IsTrue(block.Statements.Count > 1);
-			Assert.IsNotNull((AbsynLabel) block.Statements[0].Instruction);
-		}
-		
-		[Test]
-		public void BlinInboundEdges()
-		{
-			Procedure proc = new MockSnarl().Procedure;
-			BlockLinearizer blin = new BlockLinearizer(null);
-			Block block = proc.RpoBlocks[1];
-			blin.ConvertInboundEdgesToGotos(block);
-			Assert.AreEqual(0, block.Pred.Count, "All predecessors converted to gotos");
-			AbsynGoto g = (AbsynGoto) proc.RpoBlocks[0].Statements.Last.Instruction;
-			Assert.AreEqual(block.Name, g.Label);
-			Assert.IsNotNull((AbsynLabel) block.Statements[0].Instruction);
-		}
-
-		[Test]
-		public void BlinInsertBreak()
-		{
-			Procedure proc = new MockSnarl().Procedure;
-			BlockLinearizer blin = new BlockLinearizer(null);
-			Block block = proc.RpoBlocks[4];
-			blin.ConvertInboundEdges(block, new StructureExitCreator(MakeBreak));
-			using (FileUnitTester fut = new FileUnitTester("Structure/BlinInsertBreak.txt"))
-			{
-				CodeFormatter fmt = new CodeFormatter(fut.TextWriter);
-				fmt.Write(proc);
-				proc.Write(false, fut.TextWriter);
-
-				fut.AssertFilesEqual();
-			}
-			Assert.AreEqual("AbsynIf", proc.RpoBlocks[2].Statements.Last.Instruction.GetType().Name);
-			Assert.AreEqual("AbsynBreak", proc.RpoBlocks[3].Statements.Last.Instruction.GetType().Name);
-			Assert.AreEqual(1, proc.RpoBlocks[3].Pred.Count);
-		}
-
-		private AbsynStatement MakeBreak(Block b)
-		{
-			return new AbsynBreak();
-		}
-
-		[Test]
-		public void BlinConvertBlock()
-		{
-			Procedure proc = new MockBlock().Procedure;
-			BlockLinearizer blin = new BlockLinearizer(null);
-			Block block = proc.RpoBlocks[1];
-			Block.RemoveEdge(proc.RpoBlocks[0], proc.RpoBlocks[1]);
-			List<AbsynStatement> stms = blin.ConvertBlock(block);
-			Assert.AreEqual(2, stms.Count);
-			Assert.IsNotNull((AbsynAssignment) stms[0]);
-			Assert.IsNotNull((AbsynReturn) stms[1]);
-		}
-
-
-		private class MockBlock : ProcedureMock
-		{
-			protected override void BuildBody()
-			{
-				Identifier r1 = Local32("r1");
-				Assign(r1, Int32(0));
-				Return(Int32(3));
-			}
-		}
 	}
 }

@@ -210,14 +210,9 @@
     <Compile Include="Structure\PostDominatorGraphTests.cs" />
     <Compile Include="Structure\TestBase.cs" />
     <Compile Include="Structure\BlockLinearizerTests.cs" />
-    <Compile Include="Structure\CaseStatementRewriterTests.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />
     <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />
-    <Compile Include="Structure\IfRewriterTests.cs" />
     <Compile Include="Structure\IntervalCollectionTests.cs" />
-    <Compile Include="Structure\IntervalFinder2Tests.cs" />
-    <Compile Include="Structure\IntervalFinderTests.cs" />
-    <Compile Include="Structure\LinearizerTests.cs" />
     <Compile Include="Structure\LoopFinderTests.cs" />
     <Compile Include="Structure\LoopMemberTests.cs" />
     <Compile Include="Structure\LoopTests.cs" />
@@ -283,9 +278,6 @@
       <Project>{7A9440A2-7692-4F74-BFFE-23741DE81C61}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Structure\ast\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

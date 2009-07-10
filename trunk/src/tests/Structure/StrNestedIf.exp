@@ -13,7 +13,7 @@ l0C00_0019:		// block 2, pred: 1
 	// succ:  5
 l0C00_0005:		// block 3, pred: 0
 	cl_10 = 0x00
-	branch ax <= 0x000C
+	branch ax <= 0x000C l0C00_000F
 	// succ:  4 5
 l0C00_000C:		// block 4, pred: 3
 	ax = 0x000C
@@ -22,6 +22,8 @@ l0C00_001C:		// block 5, pred: 2 1 4 3
 	store(Mem24[ds:0x0300:word16]) = ax
 	store(Mem25[ds:0x0302:byte]) = cl_10
 	return
+	// succ:  6
+fn0C00_0000_exit:		// block 6, pred: 5
 	// succ: 
 
 void fn0C00_0000(word16 ax, selector ds)

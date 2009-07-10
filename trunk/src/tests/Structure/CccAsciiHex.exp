@@ -4,7 +4,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	byte al_5
-	branch fn0C00_000A(al, &al_5)
+	branch fn0C00_000A(al, &al_5) l0C00_0009
 	// succ:  2 3
 l0C00_0005:		// block 2, pred: 1
 	store(Mem7[ds:0x0300:byte]) = al_5
@@ -21,7 +21,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	byte al_5
-	branch fn0C00_000A(al, &al_5)
+	branch fn0C00_000A(al, &al_5) l0C00_0009
 	// succ:  2 3
 l0C00_0005:		// block 2, pred: 1
 	store(Mem7[ds:0x0300:byte]) = al_5
@@ -38,22 +38,22 @@ fn0C00_000A_entry:		// block 0, pred:
 	store(Mem0[alOut:byte]) = al
 	// succ:  1
 l0C00_000A:		// block 1, pred: 0
-	branch al <u 0x30
+	branch al <u 0x30 l0C00_0032
 	// succ:  2 7
 l0C00_000E:		// block 2, pred: 1
-	branch al <=u 0x39
+	branch al <=u 0x39 l0C00_0022
 	// succ:  3 8
 l0C00_0012:		// block 3, pred: 2
-	branch al <u 0x41
+	branch al <u 0x41 l0C00_0032
 	// succ:  4 7
 l0C00_0016:		// block 4, pred: 3
-	branch al <=u 0x46
+	branch al <=u 0x46 l0C00_0022
 	// succ:  5 8
 l0C00_001A:		// block 5, pred: 4
-	branch al <u 0x61
+	branch al <u 0x61 l0C00_0032
 	// succ:  6 7
 l0C00_001E:		// block 6, pred: 5
-	branch al >u 0x66
+	branch al >u 0x66 l0C00_0032
 	// succ:  8 7
 l0C00_0032:		// block 7, pred: 6 5 3 1
 	return true
@@ -61,12 +61,12 @@ l0C00_0032:		// block 7, pred: 6 5 3 1
 l0C00_0022:		// block 8, pred: 6 4 2
 	byte al_20 = al - 0x30
 	store(Mem0[alOut:byte]) = al_20
-	branch al_20 <u 0x0A
+	branch al_20 <u 0x0A l0C00_0030
 	// succ:  9 11
 l0C00_0028:		// block 9, pred: 8
 	byte al_23 = al - 0x37
 	store(Mem0[alOut:byte]) = al_23
-	branch al_23 <u 0x10
+	branch al_23 <u 0x10 l0C00_0030
 	// succ:  10 11
 l0C00_002E:		// block 10, pred: 9
 	byte al_26
@@ -84,7 +84,7 @@ fn0C00_000A_entry:		// block 0, pred:
 	store(Mem0[alOut:byte]) = al
 	// succ:  1
 l0C00_000A:		// block 1, pred: 0
-	branch al <u 0x30 || al >u 0x39 && (al <u 0x41 || al >u 0x46 && (al <u 0x61 || al >u 0x66))
+	branch al <u 0x30 || al >u 0x39 && (al <u 0x41 || al >u 0x46 && (al <u 0x61 || al >u 0x66)) l0C00_0032
 	// succ:  8 7
 l0C00_000E:		// block 2
 l0C00_0012:		// block 3
@@ -97,12 +97,12 @@ l0C00_0032:		// block 7, pred: 1
 l0C00_0022:		// block 8, pred: 1
 	byte al_20 = al - 0x30
 	store(Mem0[alOut:byte]) = al_20
-	branch al_20 <u 0x0A
+	branch al_20 <u 0x0A l0C00_0030
 	// succ:  9 11
 l0C00_0028:		// block 9, pred: 8
 	byte al_23 = al - 0x37
 	store(Mem0[alOut:byte]) = al_23
-	branch al_23 <u 0x10
+	branch al_23 <u 0x10 l0C00_0030
 	// succ:  10 11
 l0C00_002E:		// block 10, pred: 9
 	byte al_26

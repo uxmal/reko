@@ -4,13 +4,13 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	word16 ax_12
-	branch ax != 0x0001
+	branch ax != 0x0001 l0C00_0015
 	// succ:  2 4
 l0C00_0005:		// block 2, pred: 1
-	branch ax != 0x0002
+	branch ax != 0x0002 l0C00_0015
 	// succ:  3 4
 l0C00_000A:		// block 3, pred: 2
-	branch ax != 0x0003
+	branch ax != 0x0003 l0C00_0015
 	// succ:  5 4
 l0C00_0015:		// block 4, pred: 3 2 1
 	ax_12 = 0x0000
@@ -21,10 +21,10 @@ l0C00_000F:		// block 5, pred: 3
 l0C00_001A:		// block 6, pred: 5 4
 	word16 ax_22
 	store(Mem17[ds:0x0300:word16]) = ax_12
-	branch ax_12 != 0x000A
+	branch ax_12 != 0x000A l0C00_002E
 	// succ:  7 8
 l0C00_0023:		// block 7, pred: 6
-	branch ax_12 != 0x000B
+	branch ax_12 != 0x000B l0C00_002E
 	// succ:  9 8
 l0C00_002E:		// block 8, pred: 7 6
 	ax_22 = 0x0000
@@ -44,7 +44,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
 	word16 ax_12
-	branch ax != 0x0001 || ax != 0x0002 || ax != 0x0003
+	branch ax != 0x0001 || ax != 0x0002 || ax != 0x0003 l0C00_0015
 	// succ:  5 4
 l0C00_0005:		// block 2
 l0C00_000A:		// block 3
@@ -57,7 +57,7 @@ l0C00_000F:		// block 5, pred: 1
 l0C00_001A:		// block 6, pred: 5 4
 	word16 ax_22
 	store(Mem17[ds:0x0300:word16]) = ax_12
-	branch ax_12 != 0x000A || ax_12 != 0x000B
+	branch ax_12 != 0x000A || ax_12 != 0x000B l0C00_002E
 	// succ:  9 8
 l0C00_0023:		// block 7
 l0C00_002E:		// block 8, pred: 6

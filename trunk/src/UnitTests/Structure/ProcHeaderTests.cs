@@ -33,11 +33,12 @@ namespace Decompiler.UnitTests.Structure
 
         protected virtual void RunTest(ProcedureMock pm)
         {
-            ProcedureStructureBuilder g = new ProcedureStructureBuilder();
             pm.Procedure.RenumberBlocks();
+
+            ProcedureStructureBuilder g = new ProcedureStructureBuilder(pm.Procedure);
             Dictionary<Block, StructureNode> nodes = new Dictionary<Block, StructureNode>();
-            g.BuildNodes(pm.Procedure, nodes);
-            g.DefineEdges(pm.Procedure, nodes);
+            g.BuildNodes(nodes);
+            g.DefineEdges(nodes);
             
             proc = g.DefineCfgs(pm.Procedure, nodes);
             g.SetTimeStamps(proc);
