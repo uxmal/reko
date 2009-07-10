@@ -311,31 +311,20 @@ namespace Decompiler.UnitTests.Structure
             gen(m);
             m.Procedure.RenumberBlocks();
 
-            ProcedureStructureBuilder g = new ProcedureStructureBuilder(m.Procedure);
-            Dictionary<Block,StructureNode> nodes = new Dictionary<Block,StructureNode>();
-            g.BuildNodes(nodes);
-            g.DefineEdges(nodes);
-            ProcedureStructure proc = g.DefineCfgs(m.Procedure, nodes);
-            g.SetTimeStamps(proc);
-            g.BuildDerivedSequences(proc);
-
+            StructureAnalysis sa = new StructureAnalysis(m.Procedure);
+            sa.Structure();
 
             sb = new StringWriter();
-            GenCode(proc, g, sb);
+            GenCode(sa.Procedure, sb);
         }
 
-        private void GenCode(ProcedureStructure curProc, ProcedureStructureBuilder g, StringWriter sb)
+        private void GenCode(Procedure proc, StringWriter sb)
         {
-            sb.WriteLine("{0}()", curProc.Name);
+            sb.WriteLine("{0}()", proc.Name);
             sb.WriteLine("{");
 
-            StructureAnalysis sa = new StructureAnalysis();
-            sa.FindStructures(curProc);
-            List<AbsynStatement> stms = new List<AbsynStatement>();
-            sa.GenerateHighLevelCode(curProc, stms);
-
             CodeFormatter cf = new CodeFormatter(sb);
-            cf.WriteStatementList(stms);
+            cf.WriteStatementList(proc.Body);
 
             sb.WriteLine("}");
         }

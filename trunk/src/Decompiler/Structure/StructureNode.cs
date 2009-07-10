@@ -65,20 +65,17 @@ namespace Decompiler.Structure
 
         private bbType type;
 
-        public StructureNode Then { get { return OutEdges[1]; } }
-        public StructureNode Else { get { return OutEdges[0]; } }
-
 
         // constructor sets the identity as well as the member instructions
         public StructureNode(int id, List<Instruction> src, int first, int num)
         {
         }
 
-        public StructureNode(Block b, int id)
+        public StructureNode(Block block, int id)
         {
-            if (b == null)
-                throw new ArgumentNullException("b");
-            this.block = b;
+            if (block == null)
+                throw new ArgumentNullException("block");
+            this.block = block;
             this.id = id;
 
             ord = -1;
@@ -86,7 +83,6 @@ namespace Decompiler.Structure
 
             traversed = travType.UNTRAVERSED;
             hllLabel = false;
-
 
             labelStr = null;
             immPDom = null;
@@ -108,7 +104,6 @@ namespace Decompiler.Structure
                 loopStamps[i] = revLoopStamps[i] = -1;
 
 
-            //determine the type of the block
             type = TypeOfBlock(block);
         }
 
@@ -187,6 +182,9 @@ namespace Decompiler.Structure
                     OutEdges[i].DfsTag();
         }
 
+        public StructureNode Then { get { return OutEdges[1]; } }
+
+        public StructureNode Else { get { return OutEdges[0]; } }
 
 
         /// <summary>

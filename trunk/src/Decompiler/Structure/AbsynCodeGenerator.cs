@@ -41,7 +41,6 @@ namespace Decompiler.Structure
             WriteCode(curProc.EntryNode, 1, null, followSet, gotoSet, new AbsynStatementEmitter(stms));
         }
 
-
         public void WriteCode(StructureNode node, int indLevel, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynStatementEmitter emitter)
         {
             // If this is the follow for the most nested enclosing conditional, then

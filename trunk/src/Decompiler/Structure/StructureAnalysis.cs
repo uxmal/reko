@@ -30,6 +30,13 @@ namespace Decompiler.Structure
 {
     public class StructureAnalysis
     {
+        private Procedure proc;
+
+        public StructureAnalysis(Procedure proc)
+        {
+            this.proc = proc;
+        }
+
         // This routine is called after all the other structuring has been done. It detects
         // conditionals that are in fact the head of a jump into/outof a loop or into a case body. 
         // Only forward jumps are considered as unstructured backward jumps will always be generated nicely.
@@ -181,7 +188,7 @@ namespace Decompiler.Structure
         }
 
 
-        public void Structure(Procedure proc)
+        public void Structure()
         {
             CoalesceCompoundConditions(proc);
 
@@ -247,15 +254,11 @@ namespace Decompiler.Structure
 
                     StructureNode latch = FindGreatestEnclosingBackEdgeInInterval(headNode, cfgNodes);
 
-                    // if this is a loop header (i.e. a latch was found) then tag the nodes in the loop
-                    // and determine its type
-                    if (latch != null)
+                    // If a latch was found and it doesn't belong to another loop, 
+                    // tag the loop nodes and classify it.
+                    if (latch != null && latch.LoopHead == null)
                     {
-                        // ensure that the latch does not belong to another loop
-                        if (latch.LoopHead == null)
-                        {
-                            CreateLoop(curProc, headNode, cfgNodes, latch);
-                        }
+                        CreateLoop(curProc, headNode, cfgNodes, latch);
                     }
                 }
             }
@@ -277,6 +280,8 @@ namespace Decompiler.Structure
 
         private void CreateLoop(ProcedureStructure curProc, StructureNode headNode, bool[] cfgNodes, StructureNode latch)
         {
+            LoopFinder lf = new LoopFinder(headNode);
+
             // define the map that maps each node to whether or not it is within the current loop
             bool[] loopNodes = new bool[curProc.Nodes.Count];
 
@@ -307,12 +312,10 @@ namespace Decompiler.Structure
             // set the structured type of this node
             headNode.SetStructType(structType.Loop);
 
-            curProc.Dump();
 
-            LoopFinder lf = new LoopFinder();
-            lf.TagNodesInLoop(headNode, curProc.Ordering, cfgNodes, loopNodes);
-            lf.DetermineLoopType(headNode);
-            lf.FindLoopFollow(headNode, curProc.Ordering, loopNodes);
+            lf.TagNodesInLoop(curProc.Ordering, cfgNodes, loopNodes);
+            lf.DetermineLoopType();
+            lf.FindLoopFollow(curProc.Ordering, loopNodes);
         }
 
         public void GenerateHighLevelCode(ProcedureStructure curProc, List<AbsynStatement> stms)
@@ -325,62 +328,10 @@ namespace Decompiler.Structure
             cg.WriteCode(curProc.EntryNode, 1, null, followSet, gotoSet, emitter);
         }
 
-    }
 
-    public class StructureAnalysisOld
-    {
-        private Procedure proc;
-        private DominatorGraph domGraph;
-
-        private static TraceSwitch trace = new TraceSwitch("CodeStructure", "Traces the flow of code structuring");
-
-        public StructureAnalysisOld(Procedure proc)
+        public Procedure Procedure
         {
-            int cBlocks = proc.RpoBlocks.Count;
-            this.proc = proc;
-            domGraph = new DominatorGraph(proc);
+            get { return proc; }
         }
-
-        private BitSet AllBlocks(Procedure proc)
-        {
-            BitSet b = proc.CreateBlocksBitset();
-            b.SetAll(true);
-#if BOGUS
-			for (int i = 0; i < proc.RpoBlocks.Count; ++i)
-			{
-				Block block = proc.RpoBlocks[i];
-				if (block.Statements.Count > 0)
-					b[i] = true;
-			}
-#endif
-            return b;
-        }
-
-        private void FindLoops()
-        {
-            DominatorGraph dom = new DominatorGraph(proc);
-            //			IntervalFinder intf = new IntervalFinder(proc);
-            //while (intf.Intervals.Count != intCount)
-            //{
-            //    intCount = intf.Intervals.Count;
-            //    foreach (Interval I in intf.Intervals)
-            //    {
-            //        LoopFinder lrw = new LoopFinder(proc, dom);
-            //        Loop loop = lrw.FindLoop(I);
-            //        if (loop != null)
-            //            lrw.BuildLoop(loop);
-            //    }
-            //    proc.Dump(trace.TraceVerbose, false);
-            //    dom = new DominatorGraph(proc);
-            //    intf = new IntervalFinder(proc);
-            //} 
-        }
-
-        [Obsolete("", true)]
-        public void FindStructures()
-        {
-        }
-
-
     }
 }
