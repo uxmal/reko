@@ -434,11 +434,11 @@ namespace Decompiler.Typing
 
 		public override void VisitDeclaration(Declaration decl)
 		{
-            decl.Id.Accept(this);
+            decl.Identifier.Accept(this);
 			if (decl.Expression != null) 
 			{
 				decl.Expression.Accept(this);
-				handler.EqualTrait(decl.Id.TypeVariable, decl.Expression.TypeVariable);
+				handler.EqualTrait(decl.Identifier.TypeVariable, decl.Expression.TypeVariable);
 			}
 		}
 

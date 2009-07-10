@@ -42,9 +42,9 @@ namespace Decompiler.Structure
             while (curImmPDom != null && succImmPDom != null && (curImmPDom != succImmPDom))
             {
                 if (curImmPDom.RevOrder > succImmPDom.RevOrder)
-                    succImmPDom = succImmPDom.ImmPostDominator;
+                    succImmPDom = succImmPDom.ImmPDom;
                 else
-                    curImmPDom = curImmPDom.ImmPostDominator;
+                    curImmPDom = curImmPDom.ImmPDom;
             }
 
             return curImmPDom;
@@ -59,24 +59,24 @@ namespace Decompiler.Structure
         public void FindImmediatePostDominators(ProcedureStructure proc)
         {
             // traverse the nodes in order (i.e from the bottom up)
-            for (int i = proc.RevOrdering.Count - 1; i >= 0; i--)
+            for (int i = proc.ReverseOrdering.Count - 1; i >= 0; i--)
             {
-                StructureNode curNode = proc.RevOrdering[i];
-                foreach (StructureNode succNode in curNode.Succ)
+                StructureNode curNode = proc.ReverseOrdering[i];
+                foreach (StructureNode succNode in curNode.OutEdges)
                 {
                     if (succNode.RevOrder > curNode.RevOrder)
-                        curNode.ImmPostDominator = CommonPostDominator(curNode.ImmPostDominator, succNode);
+                        curNode.ImmPDom = CommonPostDominator(curNode.ImmPDom, succNode);
                 }
             }
 
             // make a second pass but consider the original CFG ordering this time
             foreach (StructureNode curNode in proc.Ordering)
             {
-                if (curNode.Succ.Count > 1)
+                if (curNode.OutEdges.Count > 1)
                 {
-                    foreach (StructureNode succNode in curNode.Succ)
+                    foreach (StructureNode succNode in curNode.OutEdges)
                     {
-                        curNode.ImmPostDominator = CommonPostDominator(curNode.ImmPostDominator, succNode);
+                        curNode.ImmPDom = CommonPostDominator(curNode.ImmPDom, succNode);
                     }
                 }
             }
@@ -84,16 +84,16 @@ namespace Decompiler.Structure
             // one final pass to fix up nodes involved in a loop
             foreach (StructureNode curNode in proc.Ordering)
             {
-                List<StructureNode> oEdges = curNode.Succ;
-                if (curNode.Succ.Count > 1)
+                List<StructureNode> oEdges = curNode.OutEdges;
+                if (curNode.OutEdges.Count > 1)
                 {
-                    foreach (StructureNode succNode in curNode.Succ)
+                    foreach (StructureNode succNode in curNode.OutEdges)
                     {
-                        if (curNode.HasBackEdgeTo(succNode) && curNode.Succ.Count > 1 &&
-                             succNode.ImmPostDominator.Order < curNode.ImmPostDominator.Order)
-                            curNode.ImmPostDominator = CommonPostDominator(succNode.ImmPostDominator, curNode.ImmPostDominator);
+                        if (curNode.HasBackEdgeTo(succNode) && curNode.OutEdges.Count > 1 &&
+                             succNode.ImmPDom.Order < curNode.ImmPDom.Order)
+                            curNode.ImmPDom = CommonPostDominator(succNode.ImmPDom, curNode.ImmPDom);
                         else
-                            curNode.ImmPostDominator = CommonPostDominator(curNode.ImmPostDominator, succNode);
+                            curNode.ImmPDom = CommonPostDominator(curNode.ImmPDom, succNode);
                     }
                 }
             }

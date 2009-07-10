@@ -234,7 +234,7 @@ namespace Decompiler.Typing
 		{
 			base.TransformDeclaration(decl);
 			
-			decl.Id.DataType = decl.Id.TypeVariable.DataType;
+			decl.Identifier.DataType = decl.Identifier.TypeVariable.DataType;
 			return decl;
 		}
 

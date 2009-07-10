@@ -34,22 +34,23 @@ namespace Decompiler.UnitTests.Structure
 		[Test]
 		public void LmWhileGoto()
 		{
-			Procedure proc = new MockWhileGoto().Procedure;
+            throw new NotImplementedException();
+            //Procedure proc = new MockWhileGoto().Procedure;
 
-			IntervalFinder intf = new IntervalFinder(proc);
-			IEnumerator e = intf.Intervals.GetEnumerator();
-			e.MoveNext();
-			e.MoveNext();
-			Interval i = (Interval) e.Current;
-			Assert.AreEqual("0011111111", i.Blocks.ToString());
-			LoopFinder lf = new LoopFinder(proc, new DominatorGraph(proc));
-			Block head = proc.RpoBlocks[2];
-			Block end =  lf.FindLoopEnd(head, i.Blocks);
-			Loop loop =  new WhileLoop(head, end, proc.CreateBlocksBitset());
-			lf.FindBlocksInLoop(loop.HeaderBlock, loop.Blocks, i.Blocks);
-			Assert.AreEqual("0011110000", loop.Blocks.ToString());
-			lf.AbsorbExitingBranches(loop);
-			Assert.AreEqual("0011111000", loop.Blocks.ToString());
+            //IntervalFinder intf = new IntervalFinder(proc);
+            //IEnumerator e = intf.Intervals.GetEnumerator();
+            //e.MoveNext();
+            //e.MoveNext();
+            //IntNode i = (IntNode) e.Current;
+            //Assert.AreEqual("0011111111", i.Blocks.ToString());
+            //LoopFinder lf = new LoopFinder(proc, new DominatorGraph(proc));
+            //Block head = proc.RpoBlocks[2];
+            //Block end =  lf.FindLoopEnd(head, i.Blocks);
+            //Loop loop =  new WhileLoop(head, end, proc.CreateBlocksBitset());
+            //lf.FindBlocksInLoop(loop.HeaderBlock, loop.Blocks, i.Blocks);
+            //Assert.AreEqual("0011110000", loop.Blocks.ToString());
+            //lf.AbsorbExitingBranches(loop);
+            //Assert.AreEqual("0011111000", loop.Blocks.ToString());
 
 		}
 	}

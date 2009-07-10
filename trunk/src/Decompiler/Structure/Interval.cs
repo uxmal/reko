@@ -25,23 +25,116 @@ using System.IO;
 
 namespace Decompiler.Structure
 {
-	public class Interval : StructureNode
+    public class IntNode : StructureNode
+    {
+        private List<StructureNode> nodes = new List<StructureNode>();		// nodes of the interval
+        private List<StructureNode> cfgNodes = new List<StructureNode>();   // list of CFG nodes;
+
+        // Define a global variable to be used when assigning unique id's to new interval nodes
+        static int NewIntId = 0;
+
+        public IntNode(StructureNode node)
+            : base(NewIntId++, bbType.intNode)
+        {
+            AddNode(node);
+        }
+
+        public IntNode(int intervalID, StructureNode headerNode)
+            : base(intervalID, bbType.intNode)
+        {
+            AddNode(headerNode);
+        }
+
+
+        public bool Contains(StructureNode node)
+        {
+            return nodes.Contains(node);
+        }
+
+        public void AddNode(StructureNode node)
+        {
+            nodes.Add(node);
+            cfgNodes.Add(node);
+            node.Interval = this;
+        }
+
+        public override string Name
+        {
+            get { return base.Ident().ToString(); }
+        }
+
+        public List<StructureNode> Nodes
+        {
+            get { return nodes; }
+        }
+
+        public void FindNodesInInt(bool[] cfgNodes, int level)
+        {
+            if (level == 0)
+                for (int i = 0; i < nodes.Count; i++)
+                    cfgNodes[nodes[i].Order] = true;
+            else
+                for (int i = 0; i < nodes.Count; i++)
+                    ((IntNode) nodes[i]).FindNodesInInt(cfgNodes, level - 1);    //$CAST
+        }
+
+        public override void Write(TextWriter writer)
+        {
+            writer.Write("Interval {0}: [", Ident());
+            string sep = "";
+            StructureNode [] ns = nodes.ToArray();
+            Array.Sort(ns, delegate(StructureNode a, StructureNode b)
+            {
+                return string.Compare(a.Name, b.Name);
+            });
+            foreach (StructureNode node in ns)
+            {
+                writer.Write(sep);
+                sep = ",";
+                writer.Write(node.Name);
+            }
+            writer.Write("]");
+        }
+
+        public override string ToString()
+        {
+            StringWriter sw = new StringWriter();
+            Write(sw);
+            return sw.ToString();
+        }
+
+        [Obsolete("Investigate getting rid of this property")]
+        public Block HeaderBlock
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        [Obsolete("Investigate getting rid of this property")]
+        internal BitSet Blocks
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+    }
+
+#if DELETE_ME
+	public class Interval : StructureNode2
 	{
 		private Block header;
-		private List<StructureNode> nodes;	// nodes in the interval
+		private List<StructureNode2> nodes;	// nodes in the interval
 
 		public Interval(int id, Block header) : base(id, header)
 		{
 			this.header = header;
-			nodes = new List<StructureNode>();
+			nodes = new List<StructureNode2>();
 		}
 		
-		public StructureNode HeaderNode
+		public StructureNode2 HeaderNode
 		{ 
 			get { return Nodes[0]; }
 		}
 
-		public void AddNode(StructureNode n)
+		public void AddNode(StructureNode2 n)
 		{
 			Nodes.Add(n);
 			n.Interval = this;
@@ -55,7 +148,7 @@ namespace Decompiler.Structure
         /// <summary>
         /// A list of the nodes that are part of this interval.
         /// </summary>
-        public List<StructureNode> Nodes
+        public List<StructureNode2> Nodes
         {
             get { return nodes; }
         }
@@ -63,7 +156,7 @@ namespace Decompiler.Structure
         [Obsolete]
         public void FindNodesInInterval(bool[] cfgNodes)
         {
-            foreach (StructureNode node in this.Nodes)
+            foreach (StructureNode2 node in this.Nodes)
             {
                 Interval innerInt = node as Interval;
                 if (innerInt == null)
@@ -77,9 +170,9 @@ namespace Decompiler.Structure
             }
         }
 
-        public void FindNodesInInterval(IDictionary<int, StructureNode> nodes)
+        public void FindNodesInInterval(IDictionary<int, StructureNode2> nodes)
         {
-            foreach (StructureNode node in this.Nodes)
+            foreach (StructureNode2 node in this.Nodes)
             {
                 Interval innerInt = node as Interval;
                 if (innerInt == null)
@@ -102,10 +195,10 @@ namespace Decompiler.Structure
 		public override void Write(TextWriter writer)
 		{
             writer.Write("Interval {0}: [", this.Ident);
-            SortedDictionary<int, StructureNode> nodes = new SortedDictionary<int, StructureNode>();
+            SortedDictionary<int, StructureNode2> nodes = new SortedDictionary<int, StructureNode2>();
             FindNodesInInterval(nodes);
             string sep = "";
-			foreach (StructureNode sn in nodes.Values)
+			foreach (StructureNode2 sn in nodes.Values)
 			{
                 writer.Write(sep);
 				writer.Write(sn.EntryBlock.Name);
@@ -121,4 +214,5 @@ namespace Decompiler.Structure
 			return text.ToString();
 		}
 	}
+#endif
 }

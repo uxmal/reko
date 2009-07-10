@@ -46,12 +46,12 @@ namespace Decompiler.Core
 
 		public override int GetHashCode()
 		{
-			return Selector.GetHashCode() ^ Offset.GetHashCode();
+			return 29 * Selector.GetHashCode() ^ Offset.GetHashCode();
 		}
 
 		public int Linear
 		{
-			get  { return (int) (((uint) Selector << 4) + Offset); }
+			get { return (int) (((uint) Selector << 4) + Offset); }
 		}
 
 		public string GenerateName(string prefix, string suffix)

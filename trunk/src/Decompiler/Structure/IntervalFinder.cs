@@ -25,14 +25,87 @@ using System.IO;
 
 namespace Decompiler.Structure
 {
+    public class IntervalBuilder
+    {
+        private int intervalID = 0;
+
+        public void BuildIntervals(DerivedGraph derGraph)
+        {
+            if (derGraph == null)
+                throw new ArgumentNullException("derGraph");
+            if (derGraph.cfg == null)
+                throw new ArgumentException("cfg graph must be non-null", "derGraph");
+
+            List<IntNode> intSeq = derGraph.Intervals;	// The sequence of intervals in this graph
+            WorkList<StructureNode> headerSeq = new WorkList<StructureNode>();	// The sequence of interval header nodes
+            List<StructureNode> beenInH = new List<StructureNode>();	// The set of nodes that have been in the above sequence at some stage
+
+            headerSeq.Add(derGraph.cfg);
+
+            beenInH.Add(derGraph.cfg);
+
+            // Keep processing the header sequence until it is empty
+            StructureNode header;
+            while (headerSeq.GetWorkItem(out header))
+            {
+                // Remove the head of the headers sequence and set it to be the head of a new interval
+                IntNode newInt = new IntNode(intervalID++, header);
+
+                // Process each succesive node in the interval until no more nodes can be added to the interval.
+                for (int i = 0; i < newInt.Nodes.Count; i++)
+                {
+                    StructureNode curNode = newInt.Nodes[i];
+
+                    // Process each child of the current node
+                    for (int j = 0; j < curNode.OutEdges.Count; j++)
+                    {
+                        StructureNode succ = curNode.OutEdges[j];
+
+                        // Only further consider the current child if it isn't already in the interval
+                        if (!newInt.Nodes.Contains(succ))
+                        {
+                            // If the current child has all its parents
+                            // inside the interval, then add it to the interval. Remove it from the header
+                            // sequence if it is on it.
+                            if (SubSetOf(succ.InEdges, newInt))
+                            {
+                                newInt.AddNode(succ);
+                                headerSeq.Remove(succ);
+                            }
+
+                            // Otherwise, add it to the header sequence if it hasn't already been in it.
+                            else if (!beenInH.Contains(succ))
+                            {
+                                headerSeq.Add(succ);
+                                beenInH.Add(succ);
+                            }
+                        }
+                    }
+                }
+
+                // Add the new interval to the sequence of intervals
+                intSeq.Add(/*static_cast<CFGNode>*/(newInt));
+            }
+        }
+
+        private bool SubSetOf(List<StructureNode> iEdges, IntNode newInt)
+        {
+            for (int i = 0; i < iEdges.Count; i++)
+                if (iEdges[i].Interval != newInt)
+                    return false;
+            return true;
+        }
+    }
+
     /// <summary>
     /// Builder class that finds all the intervals of a procedure, resulting in an
     /// IntervalCollection.
     /// </summary>
+    [Obsolete]
     public class IntervalFinder
     {
         private IntervalCollection intervals;
-        private Interval[] intervalOf;
+        private IntNode[] intervalOf;
 
         public IntervalFinder(Procedure proc)
         {
@@ -42,7 +115,7 @@ namespace Decompiler.Structure
         private void ComputeIntervals(Block entry, List<Block> blocks)
         {
             intervals = new IntervalCollection(blocks.Count);
-            intervalOf = new Interval[blocks.Count];
+            intervalOf = new IntNode[blocks.Count];
 
             Dictionary<Block, Block> processed = new Dictionary<Block, Block>();
             WorkList<Block> wlIntHeaders = new WorkList<Block>();		// Possible interval headers
@@ -51,9 +124,10 @@ namespace Decompiler.Structure
 
             wlIntHeaders.Add(entry);
             Block h;
+            int blox = 0;
             while (wlIntHeaders.GetWorkItem(out h))
             {
-                Interval interval = new Interval(intervals.Count, h);
+                IntNode interval = new IntNode(intervals.Count, new StructureNode(h, ++blox));
                // interval.AddBlock(h);
                 intervalOf[h.RpoNumber] = interval;
 
@@ -113,7 +187,7 @@ namespace Decompiler.Structure
         }
 
 
-        public Interval IntervalOf(Block b)
+        public IntNode IntervalOf(Block b)
         {
             return intervalOf[b.RpoNumber];
         }

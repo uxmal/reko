@@ -25,23 +25,23 @@ namespace Decompiler.Structure
 	/// <summary>
 	/// Contains information about what blocks are in what interval and vice versa.
 	/// </summary>
-	public class IntervalCollection : ICollection<Interval>
+	public class IntervalCollection : ICollection<IntNode>
 	{
-		private SortedList<int, Interval> items;
+		private SortedList<int, IntNode> items;
 
 		public IntervalCollection(int initialCapacity)
 		{
-            this.items = new SortedList<int, Interval>(initialCapacity);
+            this.items = new SortedList<int, IntNode>(initialCapacity);
 		}
 
-		public void Add(Interval i)
+		public void Add(IntNode i)
 		{
-			items.Add(i.HeaderBlock.RpoNumber, i);
+            throw new NotImplementedException("items.Add(i.HeaderBlock.RpoNumber, i);");
 		}
 
-        public bool Remove(Interval i)
+        public bool Remove(IntNode i)
         {
-            return items.Remove(i.HeaderBlock.RpoNumber);
+            throw new NotImplementedException("return items.Remove(i.HeaderBlock.RpoNumber);");
         }
 
 		#region ICollection Members
@@ -61,9 +61,9 @@ namespace Decompiler.Structure
             items.Clear();
         }
 
-        public bool Contains(Interval interval)
+        public bool Contains(IntNode interval)
         {
-            return items.ContainsKey(interval.HeaderBlock.RpoNumber);
+            throw new NotImplementedException("return items.ContainsKey(interval.HeaderBlock.RpoNumber);");
         }
 
 		public int Count
@@ -71,7 +71,7 @@ namespace Decompiler.Structure
 			get { return items.Count; }
 		}
 
-		public void CopyTo(Interval [] array, int index)
+		public void CopyTo(IntNode [] array, int index)
 		{
 			items.Values.CopyTo(array, index);
 		}
@@ -90,7 +90,7 @@ namespace Decompiler.Structure
             return items.Values.GetEnumerator();
         }
 
-        public IEnumerator<Interval> GetEnumerator()
+        public IEnumerator<IntNode> GetEnumerator()
 		{
 			return items.Values.GetEnumerator();
 		}

@@ -73,7 +73,7 @@ namespace Decompiler.Structure
                 //   i) isn't on a back-edge,
                 //  ii) hasn't already been traversed in a case tagging traversal and,
                 // iii) isn't the follow node.
-                foreach (StructureNode succ in node.Succ)
+                foreach (StructureNode succ in node.OutEdges)
                 {
                     if (!node.HasBackEdgeTo(succ) &&
                         !visited.Contains(succ) &&

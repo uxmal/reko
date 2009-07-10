@@ -200,14 +200,15 @@
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\WorkItemTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
-    <Compile Include="Structure\ast\CodeGenTests.cs" />
-    <Compile Include="Structure\ast\DerivedSequenceBuilderTests.cs" />
-    <Compile Include="Structure\ast\IntervalBuilderTests.cs" />
-    <Compile Include="Structure\ast\ProcHeaderTests.cs" />
-    <Compile Include="Structure\ast\SccLoopFinderTests.cs" />
+    <Compile Include="Structure\CodeGenTests.cs" />
+    <Compile Include="Structure\DerivedSequenceBuilderTests.cs" />
+    <Compile Include="Structure\IntervalBuilderTests.cs" />
+    <Compile Include="Structure\IntervalTests.cs" />
+    <Compile Include="Structure\ProcHeaderTests.cs" />
+    <Compile Include="Structure\SccLoopFinderTests.cs" />
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
     <Compile Include="Structure\PostDominatorGraphTests.cs" />
-    <Compile Include="Structure\ast\TestBase.cs" />
+    <Compile Include="Structure\TestBase.cs" />
     <Compile Include="Structure\BlockLinearizerTests.cs" />
     <Compile Include="Structure\CaseStatementRewriterTests.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />
@@ -282,6 +283,9 @@
       <Project>{7A9440A2-7692-4F74-BFFE-23741DE81C61}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Structure\ast\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

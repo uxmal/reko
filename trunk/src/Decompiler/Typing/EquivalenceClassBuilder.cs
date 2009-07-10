@@ -172,11 +172,11 @@ namespace Decompiler.Typing
 
 		public override void VisitDeclaration(Declaration decl)
 		{
-			decl.Id.Accept(this);
+			decl.Identifier.Accept(this);
 			if (decl.Expression != null)
 			{
 				decl.Expression.Accept(this);
-				store.MergeClasses(decl.Id.TypeVariable, decl.Expression.TypeVariable);
+				store.MergeClasses(decl.Identifier.TypeVariable, decl.Expression.TypeVariable);
 			}
 		}
 

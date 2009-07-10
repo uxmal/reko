@@ -26,373 +26,177 @@ using System.Diagnostics;
 
 namespace Decompiler.Structure
 {
+    public class SccLoopFinder : ISccFinderHost<StructureNode>
+    {
+        private IntNode interval;
+        private bool[] nodesInInterval;
+        private IList<StructureNode> loopNodes;
+
+        public SccLoopFinder(IntNode i, bool[] nodesInInterval)
+        {
+            this.interval = i;
+            this.nodesInInterval = nodesInInterval;
+        }
+
+        public IList<StructureNode> FindLoop()
+        {
+            loopNodes = new List<StructureNode>();
+            SccFinder<StructureNode> f = new SccFinder<StructureNode>(this);
+            f.Find(interval.Nodes[0]);
+            return loopNodes;
+        }
+
+        #region ISccFinderHost<CFGNode> Members
+
+        void ISccFinderHost<StructureNode>.AddSuccessors(StructureNode t, ICollection<StructureNode> succ)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        IEnumerable<StructureNode> ISccFinderHost<StructureNode>.GetSuccessors(StructureNode t)
+        {
+            foreach (StructureNode s in t.OutEdges)
+            {
+                if (nodesInInterval[s.Order])
+                    yield return s;
+            }
+        }
+
+        void ISccFinderHost<StructureNode>.ProcessScc(IList<StructureNode> scc)
+        {
+            if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
+            {
+                if (loopNodes.Count > 0)
+                    throw new NotSupportedException("Multiple loops in an interval not supported.");
+                loopNodes = scc;
+            }
+        }
+
+        private bool IsSelfLoop(StructureNode node)
+        {
+            return node.OutEdges.Contains(node);
+        }
+
+        #endregion
+    }
+
 	/// <summary>
 	/// Resolves the loop structure of an interval into its respective loop type (while, do/while)
 	/// </summary>
-	public class LoopFinder : StructureTransform
-	{
-		private Procedure proc;
-		private DominatorGraph domGraph;
-
-		public LoopFinder(Procedure proc, DominatorGraph dom) : base(proc)
-		{
-			this.proc = proc;
-			this.domGraph = dom;
-		}
-
-		public void AbsorbExitingBranches(Loop loop)
-		{
-			bool changed;
-			do
-			{
-				changed = false;
-				foreach (int b in loop.Blocks)
-				{
-					if (b == loop.HeaderBlock.RpoNumber)
-						continue;
-
-					foreach (Block s in proc.RpoBlocks[b].Succ)
-					{
-						if (s != loop.FollowBlock && !loop.Blocks[s.RpoNumber] && AllPredecessorsInLoop(s, loop.Blocks))
-						{
-							loop.Blocks[s.RpoNumber] = true;
-							changed = true;
-						}
-					}
-				}
-			} while (changed);
-		}
-
-		private bool AllPredecessorsInLoop(Block block, BitSet loopBlocks)
-		{
-			foreach (Block p in block.Pred)
-			{
-				if (!loopBlocks[p.RpoNumber])
-					return false;
-			}
-			return true;
-		}
-
-		/// <summary>
-		/// Appends the statements of the tail block to the head block.
-		/// </summary>
-		/// <param name="head">Block into which statements are appended</param>
-		/// <param name="tail">Block from which statements are copied</param>
-		private void AppendStatements(Block head, Block tail)
-		{
-			foreach (Statement stm in tail.Statements)
-			{
-				head.Statements.Add(stm.Instruction);
-			}
-		}
-
-		private void InsertStatements(Block into, int iAt, Block from)
-		{
-			foreach (Statement stm in from.Statements)
-			{
-				into.Statements.Insert(iAt, stm);
-				++iAt;
-			}
-		}
-
-		/// <summary>
-		/// Classifies and builds an abstract syntax loop.
-		/// </summary>
-		/// We want to know whether a loop is a  while loop, a repeat loop, or an infinite loop (with
-		/// possible breaks out of the loop).
-		/// <param name="loop">Previously identified loop region</param>
-		public void BuildLoop(Loop loop)
-		{
-			Branch headBranch = GetBranch(loop.HeaderBlock);
-			Branch endBranch = GetBranch(loop.EndBlock);
-
-			if (endBranch != null)
-			{
-				if (headBranch != null)
-				{
-					if (loop.HeaderBlock == loop.EndBlock && loop.HeaderBlock.Statements.Count > 1 || 
-						(IsMemberOf(loop.HeaderBlock.ThenBlock, loop.Blocks) &&	IsMemberOf(loop.HeaderBlock.ElseBlock, loop.Blocks)))
-					{
-						// The block jumps to itself, or the header has jumps
-						// that both go into the loop.
-
-						BuildRepeat(loop);
-					}
-					else
-					{
-						BuildWhile(loop);
-					}
-				}
-				else
-				{
-					BuildRepeat(loop);
-				}
-			}
-			else
-			{
-				if (headBranch != null)
-				{
-					BuildWhile(loop);
-				}
-				else
-				{
-					throw new NotImplementedException("Infinite loop not implemented yet");
-				}
-			}
-		}
-
-		private void BuildRepeat(Loop loop)
-		{
-			Block end = loop.EndBlock;
-			Block head = loop.HeaderBlock;
-			Branch br = GetBranch(loop.EndBlock);
-			Block follow;
-			if (IsMemberOf(end.ElseBlock, loop.Blocks))
-			{
-				br.Condition = br.Condition.Invert();
-				follow = end.ThenBlock;
-			}
-			else
-			{
-				Debug.Assert(IsMemberOf(end.ThenBlock, loop.Blocks));
-				follow = end.ElseBlock;
-			}
-			Debug.WriteLineIf(trace.TraceVerbose, string.Format("Building do/while loop, head {0}, end {1}, follow {2}", head.RpoNumber, end.RpoNumber, follow.RpoNumber));
-
-			// Remove test and back edge to body.
-
-			end.Statements.RemoveAt(end.Statements.Count - 1);
-			Block.RemoveEdge(end, follow);
-
-			Linearizer lin = new Linearizer(proc, new BlockLinearizer(follow));
-			lin.LoopHeader = head;
-			lin.LoopFollow = follow;
-			head.Statements.Add(new AbsynDoWhile(lin.Linearize(loop.Blocks, false), br.Condition));
-			Block.AddEdge(head, follow);
-		}
-
-		private void BuildWhile(Loop loop)
-		{
-			Block head = loop.HeaderBlock;
-			Block end = loop.EndBlock;
-
-			// Locate the follow node. Follow node is the node that follows 
-			// the loop, i.e. the branch of the head that isn't a member of 
-			// the loop.
-
-			Branch br = GetBranch(head);
-			Block follow;
-			Block body;
-			if (IsMemberOf(head.ThenBlock, loop.Blocks))
-			{
-				follow = head.ElseBlock;
-				body = head.ThenBlock;
-			}
-			else
-			{
-				follow = head.ThenBlock;
-				body = head.ElseBlock;
-				br.Condition = br.Condition.Invert();
-			}
-			Debug.WriteLineIf(trace.TraceVerbose, string.Format("Building while loop, head {0}, end {1}, follow {2}", head.RpoNumber, loop.EndBlock.RpoNumber, follow.RpoNumber));
-
-			// Remove the branch of the while loop, and the edge to the body.
-
-			head.Statements.RemoveAt(head.Statements.Count - 1);
-			Block.RemoveEdge(head, body);
-
-			// If after remving the branch of the while loop, we stil lhave
-			// statements in the loop header, we  have:
-			// head:
-			//     headcode()
-			//     <branch follow>	; removed
-			// body:
-			//     bodycode()
-			//     jmp head
-			// follow:
-			//
-			// This needs to change to the following:
-			//     while (1) {
-			//	      headcode();
-			//	      if (...) break;
-			//  	  body() 
-			//     }
-			
-			if (head.Statements.Count > 0)
-			{
-				head.Statements.Add(new AbsynIf(br.Condition.Invert(), SingleStm(new AbsynBreak())));
-				InsertStatements(body, 0, head);
-				br.Condition = Constant.True();
-			}
-			head.Statements.Clear();
-
-			// Linearize the loop body.
-
-			loop.Blocks[head.RpoNumber] = false;			// Exclude the loop header (it's empty anyway).
-			Linearizer lin = new Linearizer(proc, new BlockLinearizer(follow));
-			lin.LoopHeader = head;
-			lin.LoopFollow = follow;
-			AbsynWhile wh = new AbsynWhile(br.Condition, lin.Linearize(loop.Blocks, true));
-			head.Statements.Add(wh);
-		}
-
-
-        //$REVIEW: this occurs in many places, put it in common place.
-        private List<AbsynStatement> SingleStm(AbsynStatement stm)
+    public class LoopFinder
+    {
+        public void DetermineLoopType(StructureNode header)
         {
-            List<AbsynStatement> list = new List<AbsynStatement>();
-            list.Add(stm);
-            return list;
+
+            // Pre: The loop induced by (head,latch) has already had all its member nodes tagged
+            // Post: The type of loop has been deduced
+            Debug.Assert(header.LatchNode != null);
+
+            // if the latch node is a two way node then this must be a post tested loop
+            if (header.LatchNode.BlockType == bbType.cBranch)
+            {
+                header.SetLoopType(loopType.PostTested);
+
+                // if the head of the loop is a two way node and the loop spans more than one block
+                // then it must also be a conditional header
+                if (header.BlockType == bbType.cBranch && header != header.LatchNode)
+                    header.SetStructType(structType.LoopCond);
+            }
+
+            // otherwise it is either a pretested or endless loop
+            else if (header.BlockType == bbType.cBranch)
+            {
+                // if the header is a two way conditional header, then it will be a pretested loop
+                // if one of its children is its conditional follow
+                if (header.OutEdges[0] != header.CondFollow && header.OutEdges[1] != header.CondFollow)
+                {
+                    // neither children are the conditional follow
+                    header.SetLoopType(loopType.Endless);
+
+                    // retain the fact that this is also a conditional header
+                    header.SetStructType(structType.LoopCond);
+                }
+                else
+                    // one child is the conditional follow
+                    header.SetLoopType(loopType.PreTested);
+
+            }
+            // both the header and latch node are one way nodes so this must be an endless loop
+            else
+            {
+                header.SetLoopType(loopType.Endless);
+            }
         }
 
-		/// <summary>
-		/// Returns a list of the blocks that are sources of back edges
-		/// to the specified block.
-		/// </summary>
-		/// <param name="block"></param>
-		/// <returns></returns>
-		public List<Block> BackEdges(Block block)
-		{
-			List<Block> blox = new List<Block>();
-			foreach (Block p in block.Pred)
-			{
-				if (IsBackEdge(p, block))
-					blox.Add(p);
-			}
-			return blox;
-		}
+        public void FindLoopFollow(StructureNode header, List<StructureNode> order, bool[] loopNodes)
+        // Pre: The loop headed by header has been induced and all it's member nodes have been tagged
+        // Post: The follow of the loop has been determined.
+        {
+            Debug.Assert(header.GetStructType() == structType.Loop || header.GetStructType() == structType.LoopCond);
+            loopType lType = header.GetLoopType();
+            StructureNode latch = header.LatchNode;
 
-		public Loop Create(Block head, Block end, BitSet loopBlocks)
-		{
-			Branch headBranch = GetBranch(head);
-			Branch endBranch = GetBranch(end);
+            if (lType == loopType.PreTested)
+            {
+                // the child that is the loop header's conditional follow will be the loop follow
+                if (header.OutEdges[0] == header.CondFollow)
+                    header.LoopFollow = header.OutEdges[0];
+                else
+                    header.LoopFollow = header.OutEdges[1];
+            }
+            else if (lType == loopType.PostTested)
+            {
+                // the follow of a post tested ('repeat') loop is the node on the end of the
+                // non-back edge from the latch node
+                if (latch.OutEdges[0] == header)
+                    header.LoopFollow = latch.OutEdges[1];
+                else
+                    header.LoopFollow = latch.OutEdges[0];
+            }
+            else // endless loop
+            {
+                StructureNode follow = null;
+                // traverse the ordering array between the header and latch nodes.
+                latch = header.LatchNode;
+                for (int i = header.Order - 1; i > latch.Order; i--)
+                {
+                    // using intervals, the follow is determined to be the child outside the loop of a
+                    // 2 way conditional header that is inside the loop such that it (the child) has
+                    // the highest order of all potential follows
+                    StructureNode desc = order[i];
 
-			if (endBranch != null)
-			{
-				if (headBranch != null)
-				{
-					if (head == end && head.Statements.Count > 1 || 
-						(loopBlocks[head.ThenBlock.RpoNumber] && loopBlocks[head.ElseBlock.RpoNumber]))
-					{
-						// The block jumps to itself, or the header has jumps
-						// that both go into the loop.
+                    if (desc.GetStructType() == structType.Cond && desc.CondType != condType.Case && loopNodes[desc.Order])
+                    {
+                        for (int j = 0; j < desc.OutEdges.Count; j++)
+                        {
+                            StructureNode succ = desc.OutEdges[j];
 
-						return new RepeatLoop(head, end, loopBlocks);
-					}
-					else
-					{
-						return new WhileLoop(head, end, loopBlocks);
-					}
-				}
-				else
-				{
-					return new RepeatLoop(head, end, loopBlocks);
-				}
-			}
-			else
-			{
-				if (headBranch != null)
-				{
-					return new WhileLoop(head, end, loopBlocks);
-				}
-				else
-				{
-					throw new NotImplementedException("Infinite loop not implemented yet");
-				}
-			}
-		}
+                            // consider the current child 
+                            if (succ != header && !loopNodes[succ.Order] && (follow == null || succ.Order > follow.Order))
+                                follow = succ;
+                        }
+                    }
+                }
 
+                // if a follow was found, assign it to be the follow of the loop under investigation
+                if (follow != null)
+                    header.LoopFollow = follow;
+            }
+        }
 
-		/// <summary>
-		/// Determines the blocks that are members of a loop.
-		/// </summary>
-		public void FindBlocksInLoop(Block head, BitSet loopBlocks, BitSet interval)
-		{
-			loopBlocks[head.RpoNumber] = true;		// Header is of course part of the loop.
+        public  void TagNodesInLoop(StructureNode header, List<StructureNode> order, bool[] intNodes, bool[] loopNodes)
+        // Pre: header has been detected as a loop header and has the details of the latching node
+        // Post: the nodes within the loop have been tagged (if they weren't already within a more
+        //       deeply nested loop) and are within the returned set of nodes
+        {
+            SccLoopFinder finder = new SccLoopFinder(header.Interval, intNodes);
+            foreach (StructureNode node in finder.FindLoop())
+            {
+                loopNodes[node.Order] = true;
+                if (node.LoopHead == null)
+                    node.LoopHead = header;
+            }
+        }
 
-			// The blocks in the loop are each predecessor to the header p, where p is dominated by the header.
-
-			BitSet visited = proc.CreateBlocksBitset();
-			WorkList<Block> wl = new WorkList<Block>();
-			wl.Add(head);
-            Block b;
-			while (wl.GetWorkItem(out b))
-			{
-				if (visited[b.RpoNumber])
-					continue;
-
-				visited[b.RpoNumber] = true;
-				foreach (Block p in b.Pred)
-				{
-					if (IsMemberOf(p, interval) && 
-						domGraph.DominatesStrictly(head.RpoNumber, p.RpoNumber))
-					{
-						loopBlocks[p.RpoNumber] = true;
-						wl.Add(p);
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Determines whether there is a loop, and if so, locates its end.
-		/// </summary>
-		/// The end of a loop is the back edge to the block <paramref name="head"/> whose 
-		/// start node has the highest RPO number. 
-		/// <param name="head">The loop header</param>
-		/// <param name="intervalBlocks"></param>
-		/// <returns>The loop end block, or null if there is no loop.</returns>
-
-		public Block FindLoopEnd(Block head, BitSet intervalBlocks)
-		{
-			Block end = null;
-			for (int p = 0; p < head.Pred.Count; ++p)
-			{
-				Block prev = head.Pred[p];
-				if (IsBackEdge(prev, head) && IsMemberOf(prev, intervalBlocks))
-				{
-					// This is a back edge.
-					if (end == null || prev.RpoNumber > end.RpoNumber)
-					{
-						end = prev;
-					}
-				}
-			}
-			return end;
-		}
-
-		private static bool IsBackEdge(Block pred, Block succ) 
-		{
-			return (pred.RpoNumber >= succ.RpoNumber); 
-		}
-
-		private bool IsMemberOf(Block b, BitSet s) 
-		{
-			return s[b.RpoNumber]; 
-		}
-
-		public Loop FindLoop(Interval interval)
-		{
-			DumpBlockSetIf(trace.TraceVerbose, "Finding loop in interval", interval.Blocks);
-			Block blockHead = interval.HeaderBlock;
-
-			// If we found an end node, we have a loop.
-
-			Block blockEndLoop = FindLoopEnd(blockHead, interval.Blocks);
-			if (blockEndLoop != null)
-			{
-				Debug.WriteLineIf(trace.TraceVerbose, string.Format("Found loop, head: {0}, end: {1}", blockHead.RpoNumber, blockEndLoop.RpoNumber));
-				BitSet loopBlocks = proc.CreateBlocksBitset();
-				FindBlocksInLoop(blockHead, loopBlocks, interval.Blocks);
-				Loop loop = Create(blockHead, blockEndLoop, loopBlocks);
-				AbsorbExitingBranches(loop);
-				DumpBlockSetIf(trace.TraceVerbose, "Blocks in loop:", loop.Blocks);
-				return loop;
-			}
-			else
-			{
-				return null;
-			}
-		}
-	}
+    }
 }

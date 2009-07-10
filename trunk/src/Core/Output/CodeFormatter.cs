@@ -338,16 +338,16 @@ namespace Decompiler.Core.Output
 		public void VisitDeclaration(Declaration decl)
 		{
 			writer.Indent();
-			if (decl.Id.DataType != null)
+			if (decl.Identifier.DataType != null)
 			{
                 TypeFormatter tf = new TypeFormatter(writer, true);
-                tf.Write(decl.Id.DataType, decl.Id.Name);
+                tf.Write(decl.Identifier.DataType, decl.Identifier.Name);
 			}
 			else
 			{
                 writer.Write("?unknown?");
                 writer.Write(" ");
-                decl.Id.Accept(this);
+                decl.Identifier.Accept(this);
             }
 			if (decl.Expression != null)
 			{

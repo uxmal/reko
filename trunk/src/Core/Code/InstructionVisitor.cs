@@ -72,7 +72,7 @@ namespace Decompiler.Core.Code
 
 		public virtual void VisitDeclaration(Declaration decl)
 		{
-			decl.Id.Accept(this);
+			decl.Identifier.Accept(this);
 			if (decl.Expression != null)
 				decl.Expression.Accept(this);
 		}

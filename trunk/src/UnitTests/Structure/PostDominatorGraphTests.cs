@@ -51,18 +51,24 @@ namespace Decompiler.UnitTests.Structure
 
             BuildPostdominatorGraph(m);
 
-            Assert.AreEqual("l1", h.RevOrdering[0].ImmPostDominator.EntryBlock.Name);
-            Assert.AreEqual("join", h.RevOrdering[1].ImmPostDominator.EntryBlock.Name);
-            Assert.AreEqual("join", h.RevOrdering[2].ImmPostDominator.EntryBlock.Name);
-            Assert.AreEqual("join", h.RevOrdering[3].ImmPostDominator.EntryBlock.Name);
-            Assert.AreSame(m.Procedure.ExitBlock, h.RevOrdering[4].ImmPostDominator.EntryBlock);
+            Assert.AreEqual("l1", h.ReverseOrdering[0].ImmPDom.Block.Name);
+            Assert.AreEqual("join", h.ReverseOrdering[1].ImmPDom.Block.Name);
+            Assert.AreEqual("join", h.ReverseOrdering[2].ImmPDom.Block.Name);
+            Assert.AreEqual("join", h.ReverseOrdering[3].ImmPDom.Block.Name);
+            Assert.AreSame(m.Procedure.ExitBlock, h.ReverseOrdering[4].ImmPDom.Block);
         }
 
         private void BuildPostdominatorGraph(ProcedureMock m)
         {
-            h = new ProcedureStructure(m.Procedure);
+            Dictionary<Block, StructureNode> blocks = new Dictionary<Block, StructureNode>();
+            ProcedureStructureBuilder graphs = new ProcedureStructureBuilder();
+            graphs.BuildNodes(m.Procedure, blocks);
+            graphs.DefineEdges(m.Procedure, blocks);
+            ProcedureStructure proc = graphs.DefineCfgs(m.Procedure, blocks);
+            graphs.SetTimeStamps(proc);
+
             PostDominatorGraph gr = new PostDominatorGraph();
-            gr.FindImmediatePostDominators(h);
+            gr.FindImmediatePostDominators(proc);
         }
 
         [Test]
@@ -80,12 +86,12 @@ namespace Decompiler.UnitTests.Structure
 
             BuildPostdominatorGraph(m);
 
-            Assert.AreEqual("ProcedureMock_entry PD> l1", PostDom(h.RevOrdering[0]));
-            Assert.AreEqual("l1 PD> test", PostDom(h.RevOrdering[1]));
-            Assert.AreEqual("body PD> test", PostDom(h.RevOrdering[2]));
-            Assert.AreEqual("test PD> done", PostDom(h.RevOrdering[3]));
-            Assert.AreEqual("done PD> ProcedureMock_exit", PostDom(h.RevOrdering[4]));
-            Assert.IsNull(h.RevOrdering[5].ImmPostDominator, "exit block shouldn't have an immediate post dominator");
+            Assert.AreEqual("ProcedureMock_entry PD> l1", PostDom(h.ReverseOrdering[0]));
+            Assert.AreEqual("l1 PD> test", PostDom(h.ReverseOrdering[1]));
+            Assert.AreEqual("body PD> test", PostDom(h.ReverseOrdering[2]));
+            Assert.AreEqual("test PD> done", PostDom(h.ReverseOrdering[3]));
+            Assert.AreEqual("done PD> ProcedureMock_exit", PostDom(h.ReverseOrdering[4]));
+            Assert.IsNull(h.ReverseOrdering[5].ImmPDom, "exit block shouldn't have an immediate post dominator");
         }
 
         [Test]
@@ -119,7 +125,7 @@ namespace Decompiler.UnitTests.Structure
         {
             foreach (StructureNode node in h.Ordering)
             {
-                if (s == node.EntryBlock.Name)
+                if (s == node.Block.Name)
                     return PostDom(node);
             }
             throw new InvalidOperationException("Unknown node: " + s);
@@ -127,7 +133,7 @@ namespace Decompiler.UnitTests.Structure
 
         private string PostDom(StructureNode node)
         {
-            return string.Format("{0} PD> {1}", node.EntryBlock.Name, node.ImmPostDominator.EntryBlock.Name);
+            return string.Format("{0} PD> {1}", node.Block.Name, node.ImmPDom.Block.Name);
         }
     }
 }
