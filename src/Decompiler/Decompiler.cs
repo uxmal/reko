@@ -293,8 +293,8 @@ namespace Decompiler
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				StructureAnalysisOld sa = new StructureAnalysisOld(proc);
-				sa.FindStructures();
+                StructureAnalysis sa = new StructureAnalysis();
+                sa.Structure(proc);
 			}
 			host.CodeStructuringComplete();
 		}

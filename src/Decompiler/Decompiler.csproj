@@ -423,32 +423,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\StrengthReduction.cs" />
-    <Compile Include="Structure\AbsynCodeGenerator.cs" />
-    <Compile Include="Structure\ast\AbsynStatementEmitter.cs" />
-    <Compile Include="Structure\ast\Analysis.cs" />
-    <Compile Include="Structure\ast\Ast.cs" />
-    <Compile Include="Structure\ast\CfgNode.cs" />
-    <Compile Include="Structure\ast\DerivedSequenceBuilder.cs">
+    <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\ast\Dominators.cs" />
-    <Compile Include="Structure\ast\Graphs.cs" />
-    <Compile Include="Structure\ast\GraphsCodeGen.cs" />
-    <Compile Include="Structure\ast\Instruction.cs" />
-    <Compile Include="Structure\ast\Interval.cs" />
-    <Compile Include="Structure\ast\IntervalBuilder.cs">
+    <Compile Include="Structure\AbsynStatementEmitter.cs" />
+    <Compile Include="Structure\DerivedGraph.cs" />
+    <Compile Include="Structure\DerivedSequenceBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\ast\NodeCodeGen.cs" />
-    <Compile Include="Structure\ast\Options.cs" />
-    <Compile Include="Structure\ast\SccLoopFinder.cs" />
-    <Compile Include="Structure\ast\Stats.cs" />
-    <Compile Include="Structure\ast\TypeDefs.cs" />
     <Compile Include="Structure\CaseFinder.cs" />
     <Compile Include="Structure\PostDominatorGraph.cs" />
     <Compile Include="Structure\ProcedureStructure.cs" />
-    <Compile Include="Structure\ast\StringFunctions.cs" />
-    <Compile Include="Structure\StructuredGraph.cs" />
     <Compile Include="Structure\BlockLinearizer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -462,9 +447,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\DerivedSequence.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Structure\IfRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\Interval.cs">
@@ -485,6 +467,7 @@
     <Compile Include="Structure\LoopFinder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Structure\ProcedureStructureBuilder.cs" />
     <Compile Include="Structure\StraightPathWalker.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -40,35 +40,37 @@ namespace Decompiler.UnitTests.Structure
 			RunTest("Fragments/nested_ifs.asm", "Structure/IfrNestedIf.txt");
 		}
 
+        [Obsolete]
 		private void RunTest(string sourceFilename, string outFilename)
 		{
-			using (FileUnitTester fut = new FileUnitTester(outFilename))
-			{
-				RewriteProgram(sourceFilename, new Address(0xC00, 0000));
-				foreach (Procedure proc in prog.Procedures.Values)
-				{
-					ControlFlowGraphCleaner cleaner = new ControlFlowGraphCleaner(proc);
-					cleaner.Transform();
-					proc.Write(false, fut.TextWriter);
-					fut.TextWriter.WriteLine("-----------");
+            throw new NotImplementedException();
+            //using (FileUnitTester fut = new FileUnitTester(outFilename))
+            //{
+            //    RewriteProgram(sourceFilename, new Address(0xC00, 0000));
+            //    foreach (Procedure proc in prog.Procedures.Values)
+            //    {
+            //        ControlFlowGraphCleaner cleaner = new ControlFlowGraphCleaner(proc);
+            //        cleaner.Transform();
+            //        proc.Write(false, fut.TextWriter);
+            //        fut.TextWriter.WriteLine("-----------");
 
-					IntervalFinder intf = new IntervalFinder(proc);
-					IntervalCollection ii = intf.Intervals;
-					DominatorGraph dom = new DominatorGraph(proc);
-					foreach (Interval i in ii)
-					{
-						IfRewriter ifr = new IfRewriter(proc, dom, i.Blocks, proc.RpoBlocks[0], null, null);
-						ifr.Transform();
-						fut.TextWriter.WriteLine("{0}()", proc.Name);
-						CodeFormatter fmt = new CodeFormatter(fut.TextWriter);
-                        fmt.WriteIndentedStatements(ifr.LinearizedStatements);
-					}
-					fut.TextWriter.WriteLine("===========");
+            //        IntervalFinder intf = new IntervalFinder(proc);
+            //        IntervalCollection ii = intf.Intervals;
+            //        DominatorGraph dom = new DominatorGraph(proc);
+            //        foreach (IntNode i in ii)
+            //        {
+            //            IfRewriter ifr = new IfRewriter(proc, dom, i.Blocks, proc.RpoBlocks[0], null, null);
+            //            ifr.Transform();
+            //            fut.TextWriter.WriteLine("{0}()", proc.Name);
+            //            CodeFormatter fmt = new CodeFormatter(fut.TextWriter);
+            //            fmt.WriteIndentedStatements(ifr.LinearizedStatements);
+            //        }
+            //        fut.TextWriter.WriteLine("===========");
 
-					fut.AssertFilesEqual();
-				}
+            //        fut.AssertFilesEqual();
+            //    }
 
-			}
+            //}
 		}
 	}
 }

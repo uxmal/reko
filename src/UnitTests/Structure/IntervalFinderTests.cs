@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Structure
 					proc.Write(false, fut.TextWriter);
 					IntervalFinder infi = new IntervalFinder(proc);
 					IntervalCollection ii = infi.Intervals;
-					foreach (Interval i in ii)
+					foreach (IntNode i in ii)
 					{
 						i.Write(fut.TextWriter);
 						fut.TextWriter.WriteLine();

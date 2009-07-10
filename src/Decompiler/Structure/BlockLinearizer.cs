@@ -165,7 +165,7 @@ namespace Decompiler.Structure
 
 		public void VisitDeclaration(Declaration decl)
 		{
-			abs = new AbsynDeclaration(decl.Id, decl.Expression);
+			abs = new AbsynDeclaration(decl.Identifier, decl.Expression);
 		}
 
 		public void VisitDefInstruction(DefInstruction def)

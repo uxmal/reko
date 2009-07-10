@@ -32,27 +32,29 @@ using System.Collections.Generic;
 namespace Decompiler.UnitTests.Structure
 {
 	[TestFixture]
+    [Obsolete("This class is dying")]
 	public class LinearizerTests
 	{
 		[Test]
 		public void LinIfThen()
 		{
-			Procedure proc = new MockIfThen().Procedure;
-			IntervalFinder intf = new IntervalFinder(proc);
-			IntervalCollection ints = intf.Intervals;
-			Assert.AreEqual(1, ints.Count);
+            throw new NotImplementedException();
+            //Procedure proc = new MockIfThen().Procedure;
+            //IntervalFinder intf = new IntervalFinder(proc);
+            //IntervalCollection ints = intf.Intervals;
+            //Assert.AreEqual(1, ints.Count);
 
-			foreach (Interval i in ints)
-			{
-				Linearizer lin = new Linearizer(proc, new BlockLinearizer(null));
-				lin.BuildIfStatements(i.Blocks);
-			}
+            //foreach (Interval i in ints)
+            //{
+            //    Linearizer lin = new Linearizer(proc, new BlockLinearizer(null));
+            //    lin.BuildIfStatements(i.Blocks);
+            //}
 
-			using (FileUnitTester fut = new FileUnitTester("Structure/LinIfThen.txt"))
-			{
-				proc.Write(false, fut.TextWriter);
-				fut.AssertFilesEqual();
-			}
+            //using (FileUnitTester fut = new FileUnitTester("Structure/LinIfThen.txt"))
+            //{
+            //    proc.Write(false, fut.TextWriter);
+            //    fut.AssertFilesEqual();
+            //}
 		}
 
 		[Test]
@@ -160,20 +162,21 @@ namespace Decompiler.UnitTests.Structure
 		[Test]
 		public void LinSnarlGotoIfs()
 		{
-			Procedure proc = new MockSnarl().Procedure;
-			IntervalFinder intf = new IntervalFinder(proc);
-			proc.Dump(true, false);
-			Linearizer lin = new Linearizer(proc, new BlockLinearizer(null));
+            throw new NotImplementedException();
+            //Procedure proc = new MockSnarl().Procedure;
+            //IntervalFinder intf = new IntervalFinder(proc);
+            //proc.Dump(true, false);
+            //Linearizer lin = new Linearizer(proc, new BlockLinearizer(null));
 
-			foreach (Interval i in intf.Intervals)
-			{
-				lin.BuildIfStatements(i.Blocks);
-			}
-			using (FileUnitTester fut = new FileUnitTester("Structure/LinSnarlGotoIfs.txt"))
-			{
-				proc.Write(false, fut.TextWriter);
-				fut.AssertFilesEqual();
-			}
+            //foreach (IntNode i in intf.Intervals)
+            //{
+            //    lin.BuildIfStatements(i.Blocks);
+            //}
+            //using (FileUnitTester fut = new FileUnitTester("Structure/LinSnarlGotoIfs.txt"))
+            //{
+            //    proc.Write(false, fut.TextWriter);
+            //    fut.AssertFilesEqual();
+            //}
 		}
 
 		[Test]

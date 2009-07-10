@@ -55,7 +55,7 @@ namespace Decompiler.Core.Code
 			get { return false; }
 		}
 
-		public Identifier Id
+		public Identifier Identifier
 		{
 			get { return id; }
 			set { id = value; }

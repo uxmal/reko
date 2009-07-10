@@ -90,7 +90,6 @@ namespace Decompiler.Arch.PowerPC
                 RegisterOperand op1 = dasm.RegFromBits(wInstr >> (swapOps? 21 : 16));
                 RegisterOperand op2 = dasm.RegFromBits(wInstr >> (swapOps? 16 : 21));
 
-
                 return new PowerPcInstruction(
                     opcode, op1, op2,
                     Imm(signed ? PrimitiveType.Int16 : PrimitiveType.Word16, wInstr & 0xFFFFU),

@@ -26,108 +26,167 @@ using System.Collections.Generic;
 
 namespace Decompiler.Structure
 {
-	public class StructureNode
-	{
+    internal enum travType
+    {
+        UNTRAVERSED,
+        DFS_TAG,
+        DFS_LNUM,
+        DFS_RNUM,
+        DFS_PDOM,
+        DFS_CODEGEN,
+    }
+
+    public class StructureNode : GraphNode<StructureNode>
+    {
+        private Block block;
         private int id;
-        private Block entryBlock;
-        private Interval interval;
-        private int entryStamp, exitStamp;
-        private int revEntryStamp, revExitStamp;
         private int ord;
         private int revOrd;
-        
-        private StructureNode immPDom;			    // immediate post dominator
 
-        private StructureNode caseHead;     //$REFACTOR: These belong in a separate "conditional" or "loop" builder class.
+        internal travType traversed;          //$REFACTOR: use visited hashtables instead.
+        public bool hllLabel;
+        public string labelStr;
+
+        private StructureNode immPDom;
         private StructureNode loopHead;
+        private StructureNode caseHead;
+
         private StructureNode condFollow;
         private StructureNode loopFollow;
         private StructureNode latchNode;
+        private structType sType;
+        private UnstructuredType usType;
+        private condType cType;
+        private loopType lType;
+        private IntNode interval;
 
-        // Structured type of the node      //$REFACTOR: this should be encapsulated in the StructuredGraph subclasses.
-        private StructuredGraph sType;					// the structuring class (Loop, Cond , etc)
-        private unstructType usType;				// the restructured type of a conditional header
-        private loopType lType;					// the loop type of a loop header
-        private condType cType;					// the conditional type of a conditional header
+        private int[] loopStamps;
+        private int[] revLoopStamps;
 
-        private List<StructureNode> pred;
-        private List<StructureNode> succ;
+        private bbType type;
 
-		public StructureNode(int i, Block entry)
-		{
-			this.id = i;
-			this.entryBlock = entry;
-			this.pred = new List<StructureNode>();
-			this.succ = new List<StructureNode>();
+        public const int THEN = 1;
+        public const int ELSE = 0;
 
-            sType = StructuredGraph.Seq;
-            usType = unstructType.Structured;
-		}
+        // constructor sets the identity as well as the member instructions
+        public StructureNode(int id, List<Instruction> src, int first, int num)
+        {
+        }
 
+        public StructureNode(Block b, int id)
+        {
+            if (b == null)
+                throw new ArgumentNullException("b");
+            this.block = b;
+            this.id = id;
+
+            ord = -1;
+            revOrd = -1;
+
+            traversed = travType.UNTRAVERSED;
+            hllLabel = false;
+
+
+            labelStr = null;
+            immPDom = null;
+            loopHead = null;
+            caseHead = null;
+
+            condFollow = null;
+            loopFollow = null;
+            latchNode = null;
+            sType = structType.Seq;
+
+            usType = UnstructuredType.Structured;
+            interval = null;
+
+            //initialize the two timestamp tuples
+            loopStamps = new int[2];
+            revLoopStamps = new int[2];
+            for (int i = 0; i < 2; i++)
+                loopStamps[i] = revLoopStamps[i] = -1;
+
+
+            //determine the type of the block
+            type = TypeOfBlock(block);
+        }
+
+
+
+                // Constructor used by the IntNode derived class
+        protected StructureNode(int newId, bbType t)
+        {
+            id = newId; type = t;
+        }
+
+        // Add an edge from this node to dest. If this is a cBranch type of node and it already
+        // has an edge to dest then node edge is added and the node type is changed to fall
+        public void AddEdgeTo(StructureNode dest)
+        {
+            if (type != bbType.cBranch || !HasEdgeTo(dest))
+                OutEdges.Add((StructureNode) (dest));      //$CAST
+            else
+                //reset the type to fall if no edge was added (i.e. this edge already existed)
+                type = bbType.fall;
+        }
+
+        // Add an edge from src to this node if it doesn't already exist. NB: only interval
+        // nodes need this routine as the in edges for normal nodes are built in SetLoopStamps
         public void AddEdgeFrom(StructureNode src)
         {
-            if (!Pred.Contains(src))
-                Pred.Add(src);
+            if (!InEdges.Contains(src))
+                InEdges.Add((StructureNode) (src));//$CAST
         }
 
-		public void AddEdgeTo(StructureNode to)
-		{
-			this.Succ.Add(to);
-			to.Pred.Add(this);
-		}
 
-        // returns the type of the basic block that underlies this node.
+        public Block Block
+        {
+            get { return block; }
+        }
+
         public bbType BlockType
         {
-            get
-            {
-                Statement stm = entryBlock.Statements.Last;
-                if (stm == null)
-                    return bbType.fall;
-                Instruction i = stm.Instruction;
-                if (i is Branch)
-                    return bbType.cBranch;
-                if (i is SwitchInstruction)
-                    return bbType.nway;
-                if (i is ReturnInstruction)
-                    return bbType.ret;
-                return bbType.fall;
-            }
+            get { return type; }
         }
 
-        /// <summary>
-        /// The header of the most nested case statement of which this node is a member
-        /// </summary>
         public StructureNode CaseHead
         {
             get { return caseHead; }
             set { caseHead = value; }
         }
 
+        /// <summary>
+        /// The node that follows this conditional or loop.
+        /// </summary>
+        public StructureNode CondFollow
+        {
+            get { return condFollow; }
+            set { condFollow = value; }
+        }
+
         public condType CondType
         {
-            get { return cType; }
-            set { cType = value; }
+            get
+            {
+                return cType;
+            }
+            set
+            {
+                Debug.Assert(sType == structType.Cond || sType == structType.LoopCond);
+                cType = value;
+            }
         }
 
-        public StructureNode Else { get { return succ[0]; } }
-
-        public Block EntryBlock
+        // Do a DFS on the graph headed by this node, simply tagging the nodes visited.  //$move to GraphNode.
+        public void DfsTag()
         {
-            get { return entryBlock; }
+            traversed = travType.DFS_TAG;
+            for (int i = 0; i < OutEdges.Count; i++)
+                if (OutEdges[i].traversed != travType.DFS_TAG)
+                    OutEdges[i].DfsTag();
         }
 
-        public int ExitStamp
-        {
-            get { return exitStamp; }
-            set { exitStamp = value; }
-        }
 
-        public int EntryStamp
-        {
-            get { return entryStamp; }
-            set { entryStamp = value; }
-        }
 
         /// <summary>
         /// Returns true of this node has a back edge to <paramref name="dest"/>.
@@ -140,91 +199,61 @@ namespace Decompiler.Structure
             return (dest == this || dest.IsAncestorOf(this));
         }
 
-
         // Does this node have an edge to dest?
         public bool HasEdgeTo(StructureNode dest)
         {
-            return Succ.Contains(dest);
-        }
-
-        public bool HasABackEdge()
-        {
-            foreach (StructureNode s in Succ)
-                if (HasBackEdgeTo(s))
-                    return true;
-            return false;
+            return OutEdges.Contains(dest);
         }
 
 
+        public int Ident() { return id; }
 
-        public int Ident
-        {
-            get { return id; }
-        }
-
-
-        // Return this node's immediate post dominator
-        public StructureNode ImmPostDominator
+        public StructureNode ImmPDom
         {
             get { return immPDom; }
             set { immPDom = value; }
         }
 
-        // return the member instructions of this block/node
-        public StatementList Instructions { get { return entryBlock.Statements; } }
 
+        public StatementList Instructions
+        {
+            get { return block.Statements; }
+        }
 
-        public StructureNode IntervalHead
-		{
-			get { return interval.HeaderNode; }
-		}
-
-        /// <summary>
-        /// The interval to which this node belongs.
-        /// </summary>
-        public Interval Interval
+        public IntNode Interval
         {
             get { return interval; }
             set { interval = value; }
         }
 
-        /// <summary>
-        /// Is this node an ancestor of <paramref name="other"/>?
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        // Is this node an ancestor of other?
         public bool IsAncestorOf(StructureNode other)
         {
-            return ((EntryStamp < other.EntryStamp &&
-                         ExitStamp > other.ExitStamp) ||
-                        (RevEntryStamp < other.RevEntryStamp &&
-                         RevExitStamp > other.RevExitStamp));
+            return ((loopStamps[0] < other.loopStamps[0] &&
+                         loopStamps[1] > other.loopStamps[1]) ||
+                        (revLoopStamps[0] < other.revLoopStamps[0] &&
+                         revLoopStamps[1] > other.revLoopStamps[1]));
         }
 
         // Is this a latch node?
-        public bool IsLatchNode
+        public bool IsLatchNode()
         {
-            get { return loopHead != null && loopHead.latchNode == this; }
-        }
-
-        public Instruction LastInstruction
-        {
-            get
-            {
-                return entryBlock.Statements.Count > 0
-                  ? entryBlock.Statements.Last.Instruction
-                  : null;
-            }
+            return (loopHead != null && loopHead.latchNode == this);
         }
 
 
-        /// <summary>
-        /// On a loop header, the latching node.        //$REFACTOR: this should be a member of a loop type.
-        /// </summary>
+        // The latch node of a loop header
         public StructureNode LatchNode
         {
             get { return latchNode; }
             set { latchNode = value; }
+        }
+
+
+        public StructureNode LoopFollow
+        {
+            get { return loopFollow; }
+            set { loopFollow = value; }
         }
 
         ///<summary>The header of the innermost loop this node belongs to.</summary>
@@ -234,52 +263,106 @@ namespace Decompiler.Structure
             set { loopHead = value; }
         }
 
-        // Set the node that follows this loop
-        // Return the node that follows this loop
-        public StructureNode LoopFollow
+        // Pre: the structured class of the node must be Loop or LoopCond
+        // Set the loop type of this loop header node
+        public void SetLoopType(loopType l)
         {
-            get { return loopFollow; }
-            set { loopFollow = value; }
+            Debug.Assert(sType == structType.Loop || sType == structType.LoopCond);
+            lType = l;
+
+            //set the structured class (back to) just Loop if the loop type is PreTested OR
+            //it's PostTested and is a single block loop
+            if (lType == loopType.PreTested || (lType == loopType.PostTested && this == latchNode))
+                sType = structType.Loop;
         }
 
-        public loopType LoopType
+        // Do a DFS on the graph headed by this node, giving each node it's time stamp tuple
+        // that will be used for loop structuring as well as building the structure that will
+        // be used for traversing the nodes in linear time. The inedges are also built during
+        // this traversal.
+        public void SetLoopStamps(ref int time, List<StructureNode> order)
         {
-            // Pre: this node must be a loop header and its loop type must be already set.
-            // Return the loop type of this node
-            get
+            //timestamp the current node with the current time and set its traversed flag
+            traversed = travType.DFS_LNUM;
+            loopStamps[0] = time;
+
+            //recurse on unvisited children and set inedges for all children
+            for (int i = 0; i < OutEdges.Count; i++)
             {
-                Debug.Assert(sType == StructuredGraph.Loop || sType == StructuredGraph.LoopCond);
-                return lType;
+                // set the in edge from this child to its parent (the current node)
+                OutEdges[i].InEdges.Add(this);
+
+                // recurse on this child if it hasn't already been visited
+                if (OutEdges[i].traversed != travType.DFS_LNUM)
+                {
+                    ++time;
+                    OutEdges[i].SetLoopStamps(ref time, order);
+                }
             }
 
-            // Pre: the structured class of the node must be Loop or LoopCond
-            // Set the loop type of this loop header node
-            set
-            {
-                Debug.Assert(sType == StructuredGraph.Loop || sType == StructuredGraph.LoopCond);
-                lType = value;
+            //set the the second loopStamp value
+            loopStamps[1] = ++time;
 
-                //set the structured class (back to) just Loop if the loop type is PreTested OR
-                //it's PostTested and is a single block loop
-                if (lType == loopType.PreTested || (lType == loopType.PostTested && this == latchNode))
-                    sType = StructuredGraph.Loop;
-            }
+            //add this node to the ordering structure as well as recording its position within the ordering
+            ord = order.Count;
+            order.Add(this);
         }
 
-        /// <summary>
-        /// The node that follows this conditional.
-        /// </summary>
-        public StructureNode CondFollow
+
+        // This sets the reverse loop stamps for each node. The children are traversed in
+        // reverse order.
+        public void SetRevLoopStamps(ref int time)
         {
-            get { return condFollow; }
-            set { condFollow = value; }
+            //timestamp the current node with the current time and set its traversed flag
+            traversed = travType.DFS_RNUM;
+            revLoopStamps[0] = time;
+
+            //recurse on the unvisited children in reverse order
+            for (int i = OutEdges.Count - 1; i >= 0; i--)
+            {
+                // recurse on this child if it hasn't already been visited
+                if (OutEdges[i].traversed != travType.DFS_RNUM)
+                {
+                    ++time;
+                    OutEdges[i].SetRevLoopStamps(ref time);
+                }
+            }
+
+            //set the the second loopStamp value
+            revLoopStamps[1] = ++time;
+        }
+
+        // Build the ordering of the nodes in the reverse graph that will be used to
+        // determine the immediate post dominators for each node
+        public void SetRevOrder(List<StructureNode> order)
+        {
+            // Set this node as having been traversed during the post domimator 
+            // DFS ordering traversal
+            traversed = travType.DFS_PDOM;
+
+            // recurse on unvisited children 
+            for (int i = 0; i < InEdges.Count; i++)
+                if (InEdges[i].traversed != travType.DFS_PDOM)
+                    InEdges[i].SetRevOrder(order);
+
+            // add this node to the ordering structure and record the post dom. order
+            // of this node as its index within this ordering structure
+            revOrd = order.Count;
+            order.Add(this);
         }
 
 
-        /// <summary>
-        /// Post-order numbering of this node. Can be used to index into the ProcHeader
-        /// ordered array.
-        /// </summary>
+
+        // Pre: this node must be a loop header and its loop type must be already set.
+        // Return the loop type of this node
+        public loopType GetLoopType()
+        {
+            Debug.Assert(sType == structType.Loop || sType == structType.LoopCond);
+            return lType;
+        }
+
+
+        // Return the index of this node within the ordering array
         public int Order
         {
             get
@@ -288,25 +371,6 @@ namespace Decompiler.Structure
                 return ord;
             }
             set { ord = value; }
-        }
-
-
-        public List<StructureNode> Pred
-        {
-            get { return pred; }
-        }
-
-
-        public int RevEntryStamp
-        {
-            get { return revEntryStamp; }
-            set { revEntryStamp = value; }
-        }
-
-        public int RevExitStamp
-        {
-            get { return revExitStamp; }
-            set { revExitStamp = value; }
         }
 
         // Return the index of this node within the post dominator ordering array
@@ -321,79 +385,72 @@ namespace Decompiler.Structure
         }
 
 
+        // Return the structured type of this node
+        public structType GetStructType() { return sType; }
+
         // Pre: if this is to be a cond type then the follow (if any) must have 
         // already been determined for this node
         // Set the class of structure determined for this node. 
-        public void SetStructType(StructuredGraph s)
+        public void SetStructType(structType s)
         {
             // if this is a conditional header, determine exactly which type of 
             // conditional header it is (i.e. switch, if-then, if-then-else etc.)
-            if (s == StructuredGraph.Cond)
+            if (s == structType.Cond)
             {
-                if (BlockType == bbType.nway)
+                if (type == bbType.nway)
                     cType = condType.Case;
-                else if (Else == condFollow)
+                else if (OutEdges[StructureNode.ELSE] == condFollow)
                     cType = condType.IfThen;
-                else if (Then == condFollow)
+                else if (OutEdges[StructureNode.THEN] == condFollow)
                     cType = condType.IfElse;
                 else
                     cType = condType.IfThenElse;
             }
+
             sType = s;
         }
 
-        // Return the structured type of this node
-        public StructuredGraph GetStructType() { return sType; }
-
-        public bool IsStructType(StructuredGraph graph) { return sType == graph; }
-
-        public List<StructureNode> Succ
+        private bbType TypeOfBlock(Block block)
         {
-            get { return succ; }
+            Statement stm = block.Statements.Last;
+            if (stm == null)
+                return bbType.fall;
+            Instruction i = stm.Instruction;
+            if (i is Branch)
+                return bbType.cBranch;
+            if (i is SwitchInstruction)
+                return bbType.nway;
+            if (i is ReturnInstruction)
+                return bbType.ret;
+            return bbType.fall;
         }
 
-        public StructureNode Then { get { return succ[1]; } }
-
-        // Return the restructured type of this node
-        public unstructType UnstructType
+        public UnstructuredType UnstructType
         {
-            get
-            {
-                Debug.Assert((sType == StructuredGraph.Cond || sType == StructuredGraph.LoopCond) && cType != condType.Case);
-                return usType;
-            }
-
-            // Pre: this has already been structured as a two way conditional
-            // Sets the restructured type of a two way conditional
+            get { return usType; }
             set
             {
-                Debug.Assert((sType == StructuredGraph.Cond || sType == StructuredGraph.LoopCond) && cType != condType.Case);
+                Debug.Assert((sType == structType.Cond || sType == structType.LoopCond) && cType != condType.Case);
                 usType = value;
             }
         }
 
 
+        public virtual void Write(TextWriter tw)
+        {
+            tw.Write(Ident());
+            if (Block != null)
+            {
+                tw.Write(" ({0})", Block.Name);
+            }
+        }
 
-		public virtual void Write(TextWriter writer)
-		{
-			writer.WriteLine("node {0}: entry: \"{1}\"", Ident, EntryBlock.Name);
-			writer.Write("    pred:");
-			foreach (StructureNode p in pred)
-			{
-				writer.Write(" {0}", p.Ident);
-			}
-			writer.WriteLine();
-            writer.WriteLine("    GraphType: {0}", this.sType.GetType().Name);
-            sType.WriteDetails(this, writer);
-			writer.Write("    succ: ");
-			foreach (StructureNode s in succ)
-			{
-				writer.Write(" {0}", s.Ident);
-			}
+        public virtual string Name
+        {
+            get { return block.Name; }
+        }
+    }
 
-			writer.WriteLine();
-		}
-	}
 
     // an enumerated type for the type of loop headers
     public class loopType
@@ -429,6 +486,22 @@ namespace Decompiler.Structure
         nway,
         uBranch,
         ret,
+        intNode
     }
 
+    public enum structType
+    {
+        Seq,
+        Cond,
+        Loop,
+        LoopCond,
+    }
+
+    public enum UnstructuredType
+    {
+        None,
+        Structured,
+        JumpInOutLoop,
+        JumpIntoCase
+    }
 }
