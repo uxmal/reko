@@ -33,16 +33,12 @@ namespace Decompiler.Structure
     /// </summary>
     public class AbsynCodeGenerator
     {
-        public List<AbsynStatement> GenerateHighLevelCode(ProcedureStructure curProc)
+        public void GenerateHighLevelCode(ProcedureStructure curProc, List<AbsynStatement> stms)
         {
             List<StructureNode> followSet = new List<StructureNode>();
             List<StructureNode> gotoSet = new List<StructureNode>();
 
-            List<AbsynStatement> stms = new List<AbsynStatement>();
-            AbsynStatementEmitter emitter = new AbsynStatementEmitter(stms);
-            WriteCode(curProc.EntryNode, 1, null, followSet, gotoSet, emitter);
-
-            return stms;
+            WriteCode(curProc.EntryNode, 1, null, followSet, gotoSet, new AbsynStatementEmitter(stms));
         }
 
 
@@ -119,13 +115,13 @@ namespace Decompiler.Structure
                 {
                     Debug.Assert(node.LatchNode.OutEdges.Count == 1);
 
-                    // write the loop header save the predicate.
+                    // write the loop header except the predicate.
                     WriteBB(node, emitter);
 
                     // write the code for the body of the loop
-                    StructureNode loopBody = (node.OutEdges[StructureNode.ELSE] == node.LoopFollow)
-                        ? node.OutEdges[StructureNode.THEN]
-                        : node.OutEdges[StructureNode.ELSE];
+                    StructureNode loopBody = (node.Else == node.LoopFollow)
+                        ? node.Then
+                        : node.Else;
                     List<AbsynStatement> body = new List<AbsynStatement>();
                     AbsynStatementEmitter emitBody = new AbsynStatementEmitter(body);
 
@@ -191,7 +187,6 @@ namespace Decompiler.Structure
                             WriteBB(node.LatchNode, emitter);
                         }
 
-                        // write the closing bracket for an endless loop
                         emitter.EmitForever(node, body);
                     }
                 }
@@ -266,9 +261,9 @@ namespace Decompiler.Structure
                         }
 
                         if (node.CondType == condType.IfThen)
-                            tmpCondFollow = node.OutEdges[StructureNode.ELSE];
+                            tmpCondFollow = node.Else;
                         else
-                            tmpCondFollow = node.OutEdges[StructureNode.THEN];
+                            tmpCondFollow = node.Then;
 
                         // for a jump into a case, the temp follow is added to the follow set
                         if (node.UnstructType == UnstructuredType.JumpIntoCase)
@@ -296,7 +291,7 @@ namespace Decompiler.Structure
                 // write code for the body of the conditional
                 if (node.CondType != condType.Case)
                 {
-                    StructureNode succ = (node.CondType == condType.IfElse ? node.OutEdges[StructureNode.ELSE] : node.OutEdges[StructureNode.THEN]);
+                    StructureNode succ = (node.CondType == condType.IfElse ? node.Else : node.Then);
                     AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
                     // emit a goto statement if the first clause has already been generated or it
                     // is the follow of this node's enclosing loop
@@ -308,7 +303,7 @@ namespace Decompiler.Structure
                     // generate the else clause if necessary
                     if (node.CondType == condType.IfThenElse)
                     {
-                        succ = node.OutEdges[StructureNode.ELSE];
+                        succ = node.Else;
 
                         AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
 

@@ -26,74 +26,8 @@ using System;
 namespace Decompiler.UnitTests.Structure
 {
 	[TestFixture]
+    [Ignore("This class will die")]
 	public class StraightPathWalkerTests
 	{
-		[Test]
-		public void SpwCreate()
-		{
-			StraightPathWalker spw = new StraightPathWalker(null);
-		}
-
-		[Test]
-		public void SpwIfThenCurrent()
-		{
-			Procedure proc = new MockIfThen().Procedure;
-			StraightPathWalker spw = new StraightPathWalker(proc.EntryBlock);
-			Assert.AreSame(proc.EntryBlock, spw.Current);
-			Assert.IsTrue(spw.Advance());
-			Assert.AreEqual(proc.RpoBlocks[1], spw.Current);
-			Assert.AreEqual(1, spw.PathLength);
-
-			Assert.IsFalse(spw.Advance());
-		}
-
-		[Test]
-		public void IsBlockedBecauseBlockIsOutside()
-		{
-			BitSet loopBody = new BitSet(10);
-			loopBody[1] = true;
-			loopBody[2] = true;
-			Block one = new Block(null, "one");
-			Block two = new Block(null, "two");
-			Block outside = new Block(null, "outside");
-			Block.AddEdge(one, two);
-			Block.AddEdge(two, outside);
-			one.RpoNumber = 1;
-			two.RpoNumber = 2;
-			outside.RpoNumber = 3;
-
-			StraightPathWalker spw = new StraightPathWalker(one);
-			Assert.IsFalse(spw.IsBlocked(loopBody));
-			spw.Advance();
-			Assert.AreSame(two, spw.Current);
-			Assert.IsFalse(spw.IsBlocked(loopBody));
-			spw.Advance();
-			Assert.AreEqual(outside, spw.Current);
-			Assert.IsTrue(spw.IsBlocked(loopBody));
-		}
-
-		[Test]
-		public void IsBlockedBecauseBlockIsBackEdgeToRepeat()
-		{
-			BitSet loopBody = new BitSet(10);
-			loopBody[1] = true;
-			loopBody[2] = true;
-			loopBody[3] = true;
-			Block head = new Block(null, "head"); head.RpoNumber = 1;
-			Block body = new Block(null, "body"); body.RpoNumber = 2;
-			Block latch = new Block(null, "latch"); latch.RpoNumber = 3;
-			Block.AddEdge(head, body);		// re
-			Block.AddEdge(body, latch);
-			Block.AddEdge(latch, head);
-
-			StraightPathWalker spw = new StraightPathWalker(head);
-			spw.Advance();
-			spw.Advance();
-			Assert.IsFalse(spw.IsBlocked(loopBody));
-			spw.Advance();
-			Assert.AreSame(head, spw.Current);
-			Assert.IsTrue(spw.IsBlocked(loopBody));
-		}
-
 	}
 }

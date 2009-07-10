@@ -108,7 +108,7 @@ namespace Decompiler.Structure
 							if (Block.ReplaceJumpsTo(block, next))
 								dirty = true;
 						}
-						if (next.Pred.Count == 1)
+						if (next.Pred.Count == 1 && next != proc.ExitBlock)
 						{
 							Coalesce(block, next);
 						}

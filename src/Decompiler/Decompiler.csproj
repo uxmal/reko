@@ -434,12 +434,6 @@
     <Compile Include="Structure\CaseFinder.cs" />
     <Compile Include="Structure\PostDominatorGraph.cs" />
     <Compile Include="Structure\ProcedureStructure.cs" />
-    <Compile Include="Structure\BlockLinearizer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Structure\CaseStatementRewriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structure\CompoundConditionCoalescer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -458,9 +452,6 @@
     <Compile Include="Structure\IntervalFinder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\Linearizer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structure\Loop.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -468,9 +459,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\ProcedureStructureBuilder.cs" />
-    <Compile Include="Structure\StraightPathWalker.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -478,12 +466,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\StructureNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Structure\StructureTransform.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Structure\SwitchRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\AddressTraitCollector.cs">

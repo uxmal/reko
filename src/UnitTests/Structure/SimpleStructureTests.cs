@@ -125,8 +125,8 @@ namespace Decompiler.UnitTests.Structure
 				proc.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 
-				StructureAnalysisOld sa = new StructureAnalysisOld(proc);
-				sa.FindStructures();
+				StructureAnalysis sa = new StructureAnalysis();
+                sa.Structure(proc);
 				CodeFormatter fmt = new CodeFormatter(fut.TextWriter);
 				fmt.Write(proc);
 				fut.TextWriter.WriteLine("===========================");

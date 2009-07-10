@@ -109,10 +109,10 @@ namespace Decompiler.UnitTests.Structure
 
         protected virtual void RunTest(Procedure proc)
         {
-            ProcedureStructureBuilder graphs = new ProcedureStructureBuilder();
+            ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(proc);
             Dictionary<Block, StructureNode> nodes = new Dictionary<Block, StructureNode>();
-            graphs.BuildNodes(proc, nodes);
-            graphs.DefineEdges(proc, nodes);
+            graphs.BuildNodes(nodes);
+            graphs.DefineEdges(nodes);
             ph = graphs.DefineCfgs(proc, nodes);
             graphs.SetTimeStamps(ph);
 
