@@ -31,6 +31,7 @@ namespace Decompiler.Structure
     public class StructureAnalysis
     {
         private Procedure proc;
+        private ProcedureStructure curProc;
 
         public StructureAnalysis(Procedure proc)
         {
@@ -48,7 +49,7 @@ namespace Decompiler.Structure
 
                 // consider only conditional headers that have a follow and aren't case headers
                 if ((curNode.GetStructType() == structType.Cond || curNode.GetStructType() == structType.LoopCond) &&
-                        curNode.CondFollow != null && curNode.CondType != condType.Case)
+                        curNode.CondFollow != null && curNode.Conditional != Conditional.Case)
                 {
                     // define convenient aliases for the relevant loop and case heads and the out edges
                     StructureNode myLoopHead = (curNode.GetStructType() == structType.LoopCond ? curNode : curNode.LoopHead);
@@ -67,13 +68,13 @@ namespace Decompiler.Structure
                             if (curNode.Then.IsAncestorOf(myLoopLatch) || curNode.Then == myLoopLatch)
                             {
                                 curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-                                curNode.CondType = condType.IfElse;
+curNode.Conditional = Conditional.IfElse;;
                             }
                             // does the else branch goto the loop latch?
                             else if (curNode.Else.IsAncestorOf(myLoopLatch) || curNode.Else == myLoopLatch)
                             {
                                 curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-                                curNode.CondType = condType.IfThen;
+curNode.Conditional = Conditional.IfThen;;
                             }
                         }
 
@@ -85,13 +86,13 @@ namespace Decompiler.Structure
                             if (curNode.Then.IsAncestorOf(follLoopHead) || curNode.Then == follLoopHead)
                             {
                                 curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-                                curNode.CondType = condType.IfElse;
+curNode.Conditional = Conditional.IfElse;;
                             }
                             // does the else branch goto the loop head?
                             else if (curNode.Else.IsAncestorOf(follLoopHead) || curNode.Else == follLoopHead)
                             {
                                 curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-                                curNode.CondType = condType.IfThen;
+curNode.Conditional = Conditional.IfThen;;
                             }
                         }
                     }
@@ -108,12 +109,12 @@ namespace Decompiler.Structure
                         if (thenCaseHead == myCaseHead && (myCaseHead == null || elseCaseHead != myCaseHead.CondFollow))
                         {
                             curNode.UnstructType = UnstructuredType.JumpIntoCase;
-                            curNode.CondType = condType.IfElse;
+curNode.Conditional = Conditional.IfElse;;
                         }
                         else if (elseCaseHead == myCaseHead && (myCaseHead == null || thenCaseHead != myCaseHead.CondFollow))
                         {
                             curNode.UnstructType = UnstructuredType.JumpIntoCase;
-                            curNode.CondType = condType.IfThen;
+curNode.Conditional = Conditional.IfThen;;
                         }
                     }
                 }
@@ -122,19 +123,19 @@ namespace Decompiler.Structure
                 // edge) and haven't been structured as latching nodes, set their follow to be the
                 // non-back edge child.
                 if (curNode.GetStructType() == structType.Cond && curNode.CondFollow == null &&
-                     curNode.UnstructType == UnstructuredType.Structured && curNode.CondType != condType.Case)
+                     curNode.UnstructType == UnstructuredType.Structured && curNode.Conditional != Conditional.Case)
                 {
                     // latching nodes will already have been reset to Seq structured type
                     Debug.Assert(HasABackEdge(curNode));
 
                     if (curNode.HasBackEdgeTo(curNode.Then))
                     {
-                        curNode.CondType = condType.IfThen;
+curNode.Conditional = Conditional.IfThen;;
                         curNode.CondFollow = curNode.Else;
                     }
                     else
                     {
-                        curNode.CondType = condType.IfElse;
+curNode.Conditional = Conditional.IfElse;;
                         curNode.CondFollow = curNode.Then;
                     }
                 }
@@ -142,16 +143,10 @@ namespace Decompiler.Structure
         }
 
         // Structures all conditional headers (i.e. nodes with more than one outedge)
-        private void StructConds(ProcedureStructure curProc)
+        private void StructConds()
         {
-            List<StructureNode> order = curProc.Ordering;
-
-            // Process the nodes in order
-            for (int i = 0; i < order.Count; i++)
+            foreach (StructureNode curNode in curProc.Ordering)
             {
-                StructureNode curNode = order[i];
-
-                // does the current node have more than one out edge?
                 if (curNode.OutEdges.Count > 1)
                 {
                     // if the current conditional header is a two way node and has a back edge, 
@@ -170,7 +165,7 @@ namespace Decompiler.Structure
 
                     // if this is an multi-way header, then we have to tag each of the nodes
                     // within the body of the bbType.nway subgraph
-                    if (curNode.CondType == condType.Case)
+                    if (curNode.Conditional == Conditional.Case)
                     {
                         CaseFinder cf = new CaseFinder(curNode, curNode.CondFollow);
                         cf.SetCaseHead(curNode);
@@ -190,44 +185,45 @@ namespace Decompiler.Structure
 
         public void Structure()
         {
-            CoalesceCompoundConditions(proc);
+            CoalesceCompoundConditions();
 
-            ProcedureStructure curProc = BuildProcedureStructure(proc);
+            BuildProcedureStructure();
 
-            FindStructures(curProc);
+            FindStructures();
 
-            GenerateStructuredCode(proc, curProc);
+            GenerateStructuredCode();
         }
 
-        private static void GenerateStructuredCode(Procedure proc, ProcedureStructure curProc)
+        private void GenerateStructuredCode()
         {
             AbsynCodeGenerator codeGen = new AbsynCodeGenerator();
+            curProc.Dump();
             codeGen.GenerateHighLevelCode(curProc, proc.Body);
         }
 
-        private void CoalesceCompoundConditions(Procedure proc)
+        private void CoalesceCompoundConditions()
         {
             CompoundConditionCoalescer ccc = new CompoundConditionCoalescer(proc);
             ccc.Transform();
         }
 
-        private ProcedureStructure BuildProcedureStructure(Procedure proc)
+        private void BuildProcedureStructure()
         {
             ProcedureStructureBuilder cfgs = new ProcedureStructureBuilder(proc);
             Dictionary<Block, StructureNode> blockNodes = new Dictionary<Block, StructureNode>();
             cfgs.BuildNodes(blockNodes);
             cfgs.DefineEdges(blockNodes);
-            ProcedureStructure curProc = cfgs.DefineCfgs(proc, blockNodes);
+            
+            curProc = cfgs.DefineCfgs(proc, blockNodes);
             cfgs.SetTimeStamps(curProc);
             cfgs.BuildDerivedSequences(curProc);
-            return curProc;
         }
 
-        public void FindStructures(ProcedureStructure curProc)
+        public void FindStructures()
         {
             PostDominatorGraph g = new PostDominatorGraph();
             g.FindImmediatePostDominators(curProc);
-            StructConds(curProc);
+            StructConds();
             StructLoops(curProc);
             DetectUnstructuredConditionals(curProc);
         }
@@ -237,11 +233,8 @@ namespace Decompiler.Structure
             for (int gLevel = 0; gLevel < curProc.DerivedGraphs.Count; gLevel++)
             {
                 DerivedGraph curGraph = curProc.DerivedGraphs[gLevel];
-
-                // process each of the intervals in the current derived graph
                 foreach (IntNode curInt in curGraph.Intervals)
                 {
-
                     // find the G0 basic block node at the head of this interval
                     StructureNode headNode = curInt;
                     for (int k = 0; k <= gLevel; k++)
@@ -316,16 +309,6 @@ namespace Decompiler.Structure
             lf.TagNodesInLoop(curProc.Ordering, cfgNodes, loopNodes);
             lf.DetermineLoopType();
             lf.FindLoopFollow(curProc.Ordering, loopNodes);
-        }
-
-        public void GenerateHighLevelCode(ProcedureStructure curProc, List<AbsynStatement> stms)
-        {
-            List<StructureNode> followSet = new List<StructureNode>();
-            List<StructureNode> gotoSet = new List<StructureNode>();
-
-            AbsynCodeGenerator cg = new AbsynCodeGenerator();
-            AbsynStatementEmitter emitter = new AbsynStatementEmitter(stms);
-            cg.WriteCode(curProc.EntryNode, 1, null, followSet, gotoSet, emitter);
         }
 
 

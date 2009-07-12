@@ -301,6 +301,31 @@ namespace Decompiler.UnitTests.Structure
                 "\treturn;" + nl + 
                 "}" + nl;
 
+            Assert.AreEqual(sExp, sb.ToString());
+        }
+
+        [Test]
+        public void DoWhileWithBranch()
+        {
+            RunTest(delegate(ProcedureMock m)
+            {
+                m.Label("DoLoop");
+                m.BranchIf(m.LocalBool("NoGo"), "NoGo");
+                m.Label("Go");
+                m.SideEffect(m.Fn("foo"));
+                m.Label("NoGo");
+                m.BranchIf(m.LocalBool("keepLooping"), "DoLoop");
+                m.Return();
+            });
+            string sExp =
+                "ProcedureMock()" + nl +
+                "{" + nl +
+                "\tdo" + nl +
+                "\t\tif (!NoGo)" + nl +
+                "\t\t\tfoo();" + nl +
+                "\twhile (keepLooping);" + nl +
+                "\treturn;" + nl +
+                "}" + nl;
             Console.WriteLine(sb.ToString());
             Assert.AreEqual(sExp, sb.ToString());
         }

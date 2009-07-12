@@ -128,6 +128,7 @@ namespace Decompiler.Structure
             Debug.Indent();
 
             Debug.WriteLine(string.Format("Order: {0}, RevOrder {1}", node.Order, node.RevOrder));
+            Debug.WriteLine(string.Format("Structure type: {0}", node.GetStructType()));
             if (node.LoopHead != null)
                 Debug.WriteLine("Loop header:" + node.LoopHead.Block.Name);
             if (node.LatchNode != null)

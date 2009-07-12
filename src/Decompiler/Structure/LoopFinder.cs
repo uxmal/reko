@@ -171,7 +171,7 @@ namespace Decompiler.Structure
                     // the highest order of all potential follows
                     StructureNode desc = order[i];
 
-                    if (desc.GetStructType() == structType.Cond && desc.CondType != condType.Case && loopNodes[desc.Order])
+                    if (desc.GetStructType() == structType.Cond && desc.Conditional!= Conditional.Case && loopNodes[desc.Order])
                     {
                         for (int j = 0; j < desc.OutEdges.Count; j++)
                         {

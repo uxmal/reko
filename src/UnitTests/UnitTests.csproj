@@ -216,7 +216,6 @@
     <Compile Include="Structure\MockSnarl.cs" />
     <Compile Include="Structure\MockSwitch.cs" />
     <Compile Include="Structure\MockWhileBreak.cs" />
-    <Compile Include="Structure\PreferredUnstructuredExitTests.cs" />
     <Compile Include="Structure\SimpleStructureTests.cs" />
     <Compile Include="Structure\StructureConditionalsTests.cs" />
     <Compile Include="Structure\StructureTestBase.cs" />

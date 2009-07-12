@@ -18,6 +18,8 @@ l0C00_000D:		// block 4, pred: 2
 	// succ:  1
 l0C00_001D:		// block 5, pred: 1
 	return
+	// succ:  6
+fn0C00_0000_exit:		// block 6, pred: 5
 	// succ: 
 
 void fn0C00_0000(word16 bx, selector ds)

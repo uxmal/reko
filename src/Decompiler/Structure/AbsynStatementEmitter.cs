@@ -19,6 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -41,7 +42,7 @@ namespace Decompiler.Structure
 
         public AbsynIf EmitIfCondition(Expression exp, StructureNode node)
         {
-            if (node.CondType == condType.IfElse)
+            if (node.Conditional == Conditional.IfElse)
             {
                 exp = exp.Invert();
             }
@@ -145,7 +146,7 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitIndirectCall(IndirectCall ic)
         {
-            throw new Exception("The method or operation is not implemented.");
+            stms.Add(new AbsynSideEffect(new Application(ic.Callee, PrimitiveType.Void)));
         }
 
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)
