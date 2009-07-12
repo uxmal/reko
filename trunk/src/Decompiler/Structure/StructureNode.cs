@@ -56,7 +56,7 @@ namespace Decompiler.Structure
         private StructureNode latchNode;
         private structType sType;
         private UnstructuredType usType;
-        private condType cType;
+        private Conditional cond;
         private loopType lType;
         private IntNode interval;
 
@@ -160,18 +160,12 @@ namespace Decompiler.Structure
             set { condFollow = value; }
         }
 
-        public condType CondType
+        public Conditional Conditional
         {
-            get
-            {
-                return cType;
-            }
-            set
-            {
-                Debug.Assert(sType == structType.Cond || sType == structType.LoopCond);
-                cType = value;
-            }
+            get { return cond; }
+            set { cond = value; }
         }
+
 
         // Do a DFS on the graph headed by this node, simply tagging the nodes visited.  //$move to GraphNode.
         public void DfsTag()
@@ -397,13 +391,13 @@ namespace Decompiler.Structure
             if (s == structType.Cond)
             {
                 if (type == bbType.nway)
-                    cType = condType.Case;
+                    cond = Conditional .Case;
                 else if (Else == condFollow)
-                    cType = condType.IfThen;
+                    cond = Conditional.IfThen;
                 else if (Then == condFollow)
-                    cType = condType.IfElse;
+                    cond = Conditional.IfElse;
                 else
-                    cType = condType.IfThenElse;
+                    cond = Conditional.IfThenElse;
             }
 
             sType = s;
@@ -429,7 +423,7 @@ namespace Decompiler.Structure
             get { return usType; }
             set
             {
-                Debug.Assert((sType == structType.Cond || sType == structType.LoopCond) && cType != condType.Case);
+                Debug.Assert((sType == structType.Cond || sType == structType.LoopCond) && cond != Conditional.Case);
                 usType = value;
             }
         }
@@ -468,14 +462,6 @@ namespace Decompiler.Structure
     }
 
 
-    // an enumerated type for the type of conditional headers
-    public enum condType
-    {
-        IfThen,				// conditional with only a then clause
-        IfThenElse,			// conditional with a then and an else clause
-        IfElse,				// conditional with only an else clause
-        Case				// bbType.nway conditional header (case statement)
-    }
 
     public enum bbType
     {

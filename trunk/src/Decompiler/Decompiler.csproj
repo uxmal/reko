@@ -303,6 +303,7 @@
     </Compile>
     <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\CmdIds.cs" />
+    <Compile Include="Structure\Conditional.cs" />
     <Compile Include="Gui\Windows\Forms\DecompilerMenus.cs" />
     <Compile Include="Gui\Windows\Forms\DecompilerPhase.cs" />
     <Compile Include="Gui\Windows\Forms\DiagnosticsInteractor.cs" />

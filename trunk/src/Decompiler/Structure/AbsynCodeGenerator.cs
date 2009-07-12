@@ -38,10 +38,10 @@ namespace Decompiler.Structure
             List<StructureNode> followSet = new List<StructureNode>();
             List<StructureNode> gotoSet = new List<StructureNode>();
 
-            WriteCode(curProc.EntryNode, 1, null, followSet, gotoSet, new AbsynStatementEmitter(stms));
+            WriteCode(curProc.EntryNode, null, followSet, gotoSet, new AbsynStatementEmitter(stms));
         }
 
-        public void WriteCode(StructureNode node, int indLevel, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynStatementEmitter emitter)
+        public void WriteCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynStatementEmitter emitter)
         {
             // If this is the follow for the most nested enclosing conditional, then
             // don't generate anything. Otherwise if it is in the follow set
@@ -76,25 +76,6 @@ namespace Decompiler.Structure
             else
                 node.traversed = travType.DFS_CODEGEN;
 
-            // if this is a latchNode and the current indentation level is
-            // the same as the first node in the loop, then this write out its body and return
-            // otherwise generate a goto
-            if (latch != null && node.IsLatchNode())
-            {
-                if (true)
-                {
-                    WriteBB(node, emitter);
-                    return;
-                }
-                else
-                {
-                    // unset its traversed flag
-                    node.traversed = travType.UNTRAVERSED;
-
-                    EmitGotoAndLabel(node, node, emitter);
-                    return;
-                }
-            }
 
             if (!AllParentsGenerated(node))
             {
@@ -115,7 +96,7 @@ namespace Decompiler.Structure
                     Debug.Assert(node.LatchNode.OutEdges.Count == 1);
 
                     // write the loop header except the predicate.
-                    WriteBB(node, emitter);
+                    WriteBlockExcludingPredicate(node, emitter);
 
                     // write the code for the body of the loop
                     StructureNode loopBody = (node.Else == node.LoopFollow)
@@ -124,19 +105,19 @@ namespace Decompiler.Structure
                     List<AbsynStatement> body = new List<AbsynStatement>();
                     AbsynStatementEmitter emitBody = new AbsynStatementEmitter(body);
 
-                    WriteCode(loopBody, indLevel + 1, node.LatchNode, followSet, gotoSet, emitBody);
+                    WriteCode(loopBody, node.LatchNode, followSet, gotoSet, emitBody);
 
                     // if code has not been generated for the latch node, generate it now
                     if (node.LatchNode.traversed != travType.DFS_CODEGEN)
                     {
                         node.LatchNode.traversed = travType.DFS_CODEGEN;
-                        WriteBB(node.LatchNode, emitBody);
+                        WriteBlockExcludingPredicate(node.LatchNode, emitBody);
                     }
 
                     // rewrite the loop header(excluding the predicate) inside the loop
                     // after making sure another label won't be generated.
                     node.hllLabel = false;
-                    WriteBB(node, emitBody);
+                    WriteBlockExcludingPredicate(node, emitBody);
 
                     emitter.EmitWhile(node, ((Branch) node.Instructions.Last.Instruction).Condition, body);
                 }
@@ -154,12 +135,12 @@ namespace Decompiler.Structure
                         node.SetStructType(structType.Cond);
                         node.traversed = travType.UNTRAVERSED;
 
-                        WriteCode(node, indLevel + 1, node.LatchNode, followSet, gotoSet, emitBody);
+                        WriteCode(node, node.LatchNode, followSet, gotoSet, emitBody);
                     }
                     else
                     {
-                        WriteBB(node, emitBody);
-                        WriteCode(node.OutEdges[0], indLevel + 1, node.LatchNode, followSet, gotoSet, emitBody);
+                        WriteBlockExcludingPredicate(node, emitBody);
+                        WriteCode(node.OutEdges[0], node.LatchNode, followSet, gotoSet, emitBody);
                     }
 
                     if (node.GetLoopType() == loopType.PostTested)
@@ -168,11 +149,9 @@ namespace Decompiler.Structure
                         if (node.LatchNode.traversed != travType.DFS_CODEGEN)
                         {
                             node.LatchNode.traversed = travType.DFS_CODEGEN;
-                            WriteBB(node.LatchNode, emitBody);
+                            WriteBlockExcludingPredicate(node.LatchNode, emitBody);
                         }
-
-                        // write the repeat loop predicate
-                        Expression expr = ((Branch) node.Instructions.Last.Instruction).Condition;
+                        Expression expr = ((Branch) node.LatchNode.Instructions.Last.Instruction).Condition;
                         emitter.EmitDoWhile(node, body, expr);
                     }
                     else
@@ -183,9 +162,8 @@ namespace Decompiler.Structure
                         if (node.LatchNode.traversed != travType.DFS_CODEGEN)
                         {
                             node.LatchNode.traversed = travType.DFS_CODEGEN;
-                            WriteBB(node.LatchNode, emitter);
+                            WriteBlockExcludingPredicate(node.LatchNode, emitter);
                         }
-
                         emitter.EmitForever(node, body);
                     }
                 }
@@ -197,7 +175,7 @@ namespace Decompiler.Structure
                     followSet.RemoveAt(followSet.Count - 1);
 
                     if (node.LoopFollow.traversed != travType.DFS_CODEGEN)
-                        WriteCode(node.LoopFollow, indLevel, latch, followSet, gotoSet, emitter);
+                        WriteCode(node.LoopFollow, latch, followSet, gotoSet, emitter);
                     else
                         EmitGotoAndLabel(node, node.LoopFollow, emitter);
                 }
@@ -211,32 +189,31 @@ namespace Decompiler.Structure
 
                 // for 2 way conditional headers that are effectively jumps into or out of a
                 // loop or case body, we will need a new follow node
-                StructureNode tmpCondFollow;
-                tmpCondFollow = null;
+                StructureNode tmpCondFollow = null;
 
                 // keep track of how many nodes were added to the goto set so that the correct number
                 // are removed
-                int gotoTotal;
-                gotoTotal = 0;
+                int gotoTotal = 0;
 
                 // add the follow to the follow set if this is a case header
-                if (node.CondType == condType.Case)
+                if (node.Conditional == Conditional.Case)
                 {
                     followSet.Add(node.CondFollow);
                 }
-                else if (node.CondType != condType.Case && node.CondFollow != null)
+                else if (node.CondFollow != null)
                 {
                     // For a structured two conditional header, its follow is added to the follow set
                     StructureNode myLoopHead = (node.GetStructType() == structType.LoopCond ? node : node.LoopHead);
 
                     if (node.UnstructType == UnstructuredType.Structured)
+                    {
                         followSet.Add(node.CondFollow);
-
-                    // Otherwise, for a jump into/outof a loop body, the follow is added to the goto set.
-                    // The temporary follow is set for any unstructured conditional header
-                    // branch that is within the same loop and case.
+                    }
                     else
                     {
+                        // Otherwise, for a jump into/outof a loop body, the follow is added to the goto set.
+                        // The temporary follow is set for any unstructured conditional header
+                        // branch that is within the same loop and case.
                         if (node.UnstructType == UnstructuredType.JumpInOutLoop)
                         {
                             // define the loop header to be compared against
@@ -248,7 +225,6 @@ namespace Decompiler.Structure
                             // also add the current latch node, and the loop header of the follow if they exist
                             if (node.LatchNode != null)
                             {
-                                //gotoSet.Add(static_cast<CFGNode>(latch));
                                 gotoSet.Add(node.LatchNode);
                                 gotoTotal++;
                             }
@@ -259,7 +235,7 @@ namespace Decompiler.Structure
                             }
                         }
 
-                        if (node.CondType == condType.IfThen)
+                        if (node.Conditional == Conditional.IfThen)
                             tmpCondFollow = node.Else;
                         else
                             tmpCondFollow = node.Then;
@@ -270,68 +246,18 @@ namespace Decompiler.Structure
                     }
                 }
 
-                // write the body of the block (excluding the predicate)
-                WriteBB(node, emitter);
+                WriteBlockExcludingPredicate(node, emitter);
 
-                AbsynIf ifStm = null;
-                AbsynSwitch switchStm = null;
+                Conditional cond = node.Conditional;
                 // write the conditional header
-                if (node.CondType == condType.Case)
+                if (cond == Conditional.Case)
                 {
-                    Expression exp = ((SwitchInstruction) node.Instructions.Last.Instruction).Expression;
-                    switchStm = emitter.EmitSwitch(node, exp);
+                    cond.GenerateCode(node, latch, followSet, gotoSet, this, emitter);
                 }
                 else
                 {
-                    Expression exp = ((Branch) node.Instructions.Last.Instruction).Condition;
-                    ifStm = emitter.EmitIfCondition(exp, node);
-                }
+                    cond.GenerateCode(node, latch, followSet, gotoSet, this, emitter);
 
-                // write code for the body of the conditional
-                if (node.CondType != condType.Case)
-                {
-                    StructureNode succ = (node.CondType == condType.IfElse ? node.Else : node.Then);
-                    AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
-                    // emit a goto statement if the first clause has already been generated or it
-                    // is the follow of this node's enclosing loop
-                    if (succ.traversed == travType.DFS_CODEGEN || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
-                        EmitGotoAndLabel(node, succ, emitThen);
-                    else
-                        WriteCode(succ, indLevel + 1, latch, followSet, gotoSet, emitThen);
-
-                    // generate the else clause if necessary
-                    if (node.CondType == condType.IfThenElse)
-                    {
-                        succ = node.Else;
-
-                        AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
-
-                        // emit a goto statement if the second clause has already been generated
-                        if (succ.traversed == travType.DFS_CODEGEN)
-                            EmitGotoAndLabel(node, succ, emitElse);
-                        else
-                            WriteCode(succ, indLevel + 1, latch, followSet, gotoSet, emitElse);
-                    }
-                }
-                else		// case header
-                {
-                    AbsynStatementEmitter emitSwitchBranches = new AbsynStatementEmitter(switchStm.Statements);
-                    // generate code for each out branch
-                    for (int i = 0; i < node.OutEdges.Count; i++)
-                    {
-                        emitSwitchBranches.EmitCaseLabel(node, i);
-
-                        // generate code for the current outedge
-                        StructureNode succ = node.OutEdges[i];
-                        //				Debug.Assert(succ.node.CaseHead == this || succ == condFollow || HasBackEdgeTo(succ));
-                        if (succ.traversed == travType.DFS_CODEGEN)
-                            EmitGotoAndLabel(node, succ, emitSwitchBranches);
-                        else
-                        {
-                            WriteCode(succ, indLevel + 1, latch, followSet, gotoSet, emitSwitchBranches);
-                            emitSwitchBranches.EmitBreak(node);
-                        }
-                    }
                 }
 
                 // do all the follow stuff if this conditional had one
@@ -343,7 +269,6 @@ namespace Decompiler.Structure
                         Debug.Assert(gotoTotal == 0);
                         followSet.RemoveAt(followSet.Count - 1);
                     }
-
                     // else remove all the nodes added to the goto set
                     else
                     {
@@ -355,22 +280,25 @@ namespace Decompiler.Structure
                     // otherwise do it for the original follow
                     if (tmpCondFollow == null)
                         tmpCondFollow = node.CondFollow;
-
+                    if (node.LoopHead == tmpCondFollow)
+                        break;
                     if (tmpCondFollow.traversed == travType.DFS_CODEGEN)
                         EmitGotoAndLabel(node, tmpCondFollow, emitter);
                     else
-                        WriteCode(tmpCondFollow, indLevel, latch, followSet, gotoSet, emitter);
+                        WriteCode(tmpCondFollow, latch, followSet, gotoSet, emitter);
                 }
-
                 break;
 
             case structType.Seq:
-                WriteBB(node, emitter);
+                WriteBlockExcludingPredicate(node, emitter);
                 if (node.BlockType == bbType.ret)
                 {
                     emitter.EmitReturn(((ReturnInstruction)node.Instructions.Last.Instruction).Expression); //$REVIEW: Awkward.
                     return;
                 }
+
+                if (node.LoopHead != null && node == node.LoopHead.LatchNode)
+                    break;
 
                 // generate code for its successor if it hasn't already been visited and is in the same loop/case
                 // and is not the latch for the current most enclosing loop. 
@@ -381,15 +309,17 @@ namespace Decompiler.Structure
 
                     EmitGotoAndLabel(node, child, emitter);
                 else
-                    WriteCode(child, indLevel, latch, followSet, gotoSet, emitter);
+                    WriteCode(child, latch, followSet, gotoSet, emitter);
 
                 break;
             }
         }
 
+
+
         public bool ShouldNotGenerateCodeForSuccessor(StructureNode node, List<StructureNode> followSet, StructureNode child)
         {
-            if (child.traversed == travType.DFS_CODEGEN)
+            if (child.traversed == travType.DFS_CODEGEN && (followSet.Count == 0 || followSet[followSet.Count-1] != child))
                 return true;
             if ((child.LoopHead != node.LoopHead) &&
                              (!AllParentsGenerated(child) || followSet.Contains(child)))
@@ -401,7 +331,7 @@ namespace Decompiler.Structure
             return false;
         }
 
-        void WriteBB(StructureNode node, AbsynStatementEmitter emitter)
+        void WriteBlockExcludingPredicate(StructureNode node, AbsynStatementEmitter emitter)
         {
             if (node.hllLabel)
                 emitter.EmitLabel(node);
