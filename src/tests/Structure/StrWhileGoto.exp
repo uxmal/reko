@@ -33,11 +33,10 @@ l0C00_0024:		// block 7, pred: 6 5
 
 void fn0C00_0000(word16 si, word16 di, selector ds)
 {
-	si_13 = si;
+	word16 si_13 = si;
 	while (true)
 	{
 		word16 ax_27;
-		word16 si_13;
 		word16 ax_15 = Mem14[ds:si_13:word16];
 		si_13 = si_13 + 0x0002;
 		if (ax_15 == 0x0020)

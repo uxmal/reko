@@ -188,8 +188,8 @@ namespace Decompiler.Arch.Intel
             {
                 this.Group = group;
                 this.format = format;
-
             }
+
             public override IntelInstruction Decode(IntelDisassembler disasm, byte op, string opFormat)
             {
                 int grp = Group - 1;

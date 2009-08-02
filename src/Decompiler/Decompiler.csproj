@@ -74,11 +74,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <Name>nunit.framework</Name>
-      <HintPath>..\..\..\..\Program Files\NUnit 2.2\bin\nunit.framework.dll</HintPath>
-      <AssemblyFolderKey>hklm\dn\nunit.framework</AssemblyFolderKey>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -303,13 +298,37 @@
     </Compile>
     <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\CmdIds.cs" />
+    <Compile Include="Gui\Windows\Forms\FinalPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\InitialPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\InitialPage.Designer.cs">
+      <DependentUpon>InitialPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\LoadedPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\ScanPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\StartPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\StartPage.Designer.cs">
+      <DependentUpon>StartPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Structure\Conditional.cs" />
     <Compile Include="Gui\Windows\Forms\DecompilerMenus.cs" />
     <Compile Include="Gui\Windows\Forms\DecompilerPhase.cs" />
     <Compile Include="Gui\Windows\Forms\DiagnosticsInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\FinalPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Gui\Windows\Forms\FinalPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\FindDialog.cs">
       <SubType>Form</SubType>
@@ -323,23 +342,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\GotoDialogInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\InitialPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\InitialPage.Designer.cs">
-      <DependentUpon>InitialPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Gui\Windows\Forms\InitialPageInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\LoadedPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Gui\Windows\Forms\LoadedPageInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Gui\Windows\Forms\MainFormInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\PhasePage.cs">
       <SubType>UserControl</SubType>
@@ -353,15 +357,6 @@
     </Compile>
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\RicheditFormatter.cs" />
-    <Compile Include="Gui\Windows\Forms\ScanPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\StartPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\StartPage.Designer.cs">
-      <DependentUpon>StartPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Gui\Windows\ListViewItemWrapper.cs" />
     <Compile Include="Gui\Windows\MruList.cs" />
     <Compile Include="Gui\Windows\ProgramImageBrowserService.cs" />
@@ -598,16 +593,6 @@
       <DependentUpon>StartPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui.Controls.ImageMapControl.resources" />
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui.Controls.MemoryControl.resources" />
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui.Controls.MemoryControl2.resources" />
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui.Driver.resources" />
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui.Forms.AnalysePage.resources" />
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui.Forms.LoadPage.resources" />
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui.Forms.MainForm.resources" />
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui.Forms.PhasePage.resources" />
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui.Forms.ScanPage.resources" />
-    <EmbeddedResource Include="Gui\Windows\obj\Debug\Grovel.MainForm.resources" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Gui\decompiler-menus.xml" />
@@ -624,18 +609,11 @@
     <Content Include="Gui\Windows\bin\Debug\wininet.xml" />
     <Content Include="Gui\Windows\Forms\cmdids.xslt" />
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
-    <Content Include="Gui\Windows\obj\Debug\Decompiler.WindowsGui2003.exe" />
-    <Content Include="Gui\Windows\obj\WindowsGui2005.csproj.FileList.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Gui\Windows\bin\Debug\Decompiler.WindowsGui2003.exe.config" />
     <None Include="Gui\Windows\bin\Debug\Grovel.exe.config" />
     <None Include="Gui\Windows\bin\Debug\Grovel.vshost.exe.config" />
-    <None Include="Gui\Windows\obj\Debug\WindowsGui2003.projdata" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Gui\Windows\obj\Debug\TempPE\" />
-    <Folder Include="Gui\Windows\obj\Debug\temp\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

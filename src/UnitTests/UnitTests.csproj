@@ -281,4 +281,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>copy /y $(SolutionDir)Arch\Intel\MsDos\*.xml $(TargetDir)
+copy /y $(SolutionDir)Arch\Intel\Win32\*.xml $(TargetDir)</PreBuildEvent>
+  </PropertyGroup>
 </Project>
