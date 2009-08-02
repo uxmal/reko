@@ -52,11 +52,7 @@ namespace Decompiler.Structure
             get { return Conditional.@case; }
         }
 
-        [Obsolete("Should be abstract")]
-        public virtual void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
+        public abstract void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter);
     }
 
     public abstract class IfConditional : Conditional
@@ -74,13 +70,10 @@ namespace Decompiler.Structure
             else
                 codeGen.WriteCode(succ, latch, followSet, gotoSet, emitThen);
 
-            // generate the else clause if necessary
             if (node.Conditional == Conditional.IfThenElse)
             {
                 succ = node.Else;
                 AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
-
-                // emit a goto statement if the second clause has already been generated
                 if (succ.traversed == travType.DFS_CODEGEN)
                     codeGen.EmitGotoAndLabel(node, succ, emitElse);
                 else
@@ -98,7 +91,6 @@ namespace Decompiler.Structure
         {
             return node.Then;
         }
-
     }
 
     public class IfElse : IfConditional
@@ -131,11 +123,11 @@ namespace Decompiler.Structure
             {
                 emitSwitchBranches.EmitCaseLabel(node, i);
 
-                // generate code for the current outedge
                 StructureNode succ = node.OutEdges[i];
-                //				Debug.Assert(succ.node.CaseHead == this || succ == condFollow || HasBackEdgeTo(succ));
                 if (succ.traversed == travType.DFS_CODEGEN)
+                {
                     codeGen.EmitGotoAndLabel(node, succ, emitSwitchBranches);
+                }
                 else
                 {
                     codeGen.WriteCode(succ, latch, followSet, gotoSet, emitSwitchBranches);
