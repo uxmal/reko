@@ -26,7 +26,7 @@ namespace Decompiler.Core.Code
 	public class UnaryExpression : Expression
 	{
 		public UnaryOperator op;
-		public Expression Expression;
+		private Expression expression;
 
 		public UnaryExpression(UnaryOperator op, DataType type, Expression expr) : base(type)
 		{
@@ -47,6 +47,12 @@ namespace Decompiler.Core.Code
 		{
 			throw new NotImplementedException();
 		}
+
+        public Expression Expression
+        {
+            get { return expression; }
+            set { expression = value; }
+        }
 
 		public override Expression Invert()
 		{

@@ -29,6 +29,8 @@ l2:		// block 8, pred: 0
 	// succ:  9
 done:		// block 9, pred: 8 7 6 5 4
 	return x
+	// succ:  10
+MockIfElseIf_exit:		// block 10, pred: 9
 	// succ: 
 
 void MockIfElseIf()
@@ -39,10 +41,10 @@ void MockIfElseIf()
 		x = 0x00000001;
 	else if (r == 0x00000002)
 		x = 0x00000002;
-	else if (r == 0x00000003)
-		x = 0x00000003;
-	else
+	else if (r != 0x00000003)
 		x = 0xFFFFFFFF;
+	else
+		x = 0x00000003;
 	return x;
 }
 ===========================

@@ -249,16 +249,7 @@ namespace Decompiler.Structure
                 WriteBlockExcludingPredicate(node, emitter);
 
                 Conditional cond = node.Conditional;
-                // write the conditional header
-                if (cond == Conditional.Case)
-                {
-                    cond.GenerateCode(node, latch, followSet, gotoSet, this, emitter);
-                }
-                else
-                {
-                    cond.GenerateCode(node, latch, followSet, gotoSet, this, emitter);
-
-                }
+                cond.GenerateCode(node, latch, followSet, gotoSet, this, emitter);
 
                 // do all the follow stuff if this conditional had one
                 if (node.CondFollow != null)

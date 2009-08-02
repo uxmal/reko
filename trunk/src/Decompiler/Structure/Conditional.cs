@@ -78,7 +78,22 @@ namespace Decompiler.Structure
                     codeGen.EmitGotoAndLabel(node, succ, emitElse);
                 else
                     codeGen.WriteCode(succ, latch, followSet, gotoSet, emitElse);
+
+                if (HasSingleIfThenElseStatement(ifStm.Then))
+                {
+                    ifStm.InvertCondition();
+                }
             }
+        }
+
+        private bool HasSingleIfThenElseStatement(List<AbsynStatement> stms)
+        {
+            if (stms.Count == 0)
+                return false;
+            AbsynIf ifStm = stms[0] as AbsynIf;
+            if (ifStm == null)
+                return false;
+            return ifStm.Then.Count > 0 && ifStm.Else.Count > 0;
         }
 
         public abstract StructureNode FirstBranch(StructureNode node);

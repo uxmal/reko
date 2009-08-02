@@ -132,6 +132,26 @@ namespace Decompiler.Typing
 
 		#region InstructionTransformer methods //////////////////////
 
+        public override Expression TransformArrayAccess(ArrayAccess acc)
+        {
+            acc.Array = NormalizeArrayPointer(acc.Array.Accept(this));
+            acc.Index = acc.Index.Accept(this);
+            return acc;
+        }
+
+        private Expression NormalizeArrayPointer(Expression arrayExp)
+        {
+            UnaryExpression u = arrayExp as UnaryExpression;
+            if (u == null)
+                return arrayExp;
+            if (u.op != Operator.addrOf)
+                return arrayExp;
+            ArrayAccess a = u.Expression as ArrayAccess;
+            if (a == null)
+                return arrayExp;
+            return a.Array;
+        }
+
 		public override Instruction TransformAssignment(Assignment a)
 		{
 			return MakeAssignment(a.Dst, a.Src);
@@ -249,6 +269,29 @@ namespace Decompiler.Typing
 			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, globals);
 			return tmer.Rewrite(access);
 		}
+
+        public override Expression TransformMkSequence(MkSequence seq)
+        {
+            seq.Head = seq.Head.Accept(this);
+            seq.Tail = seq.Tail.Accept(this);
+            Constant c = seq.Tail as Constant;
+            if (c == null)
+                return seq;
+            if (seq.Head.DataType is Pointer)
+            {
+                    ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
+                        seq.TypeVariable.DataType,
+                        seq.Head.DataType,
+                        seq.Head.TypeVariable.OriginalDataType,
+                        null,
+                        seq.Head,
+                        null,
+                        StructureField.ToOffset(c));
+                    return ceb.BuildComplex();
+
+            }
+            return seq;
+        }
 
 		#endregion
 	}
