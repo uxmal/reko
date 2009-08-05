@@ -73,7 +73,7 @@ namespace Decompiler.Loading
         {
             Type t = Type.GetType(this.LoaderType);
             ConstructorInfo ci = t.GetConstructor(new Type[] { typeof (Program), typeof(byte[]) });
-            return (ImageLoader) ci.Invoke(new object[] { bytes });
+            return (ImageLoader) ci.Invoke(new object[] { prog, bytes });
         }
     }
 }
