@@ -60,6 +60,15 @@ namespace Decompiler.Arch.Intel
 			get { return wordSize; }
 		}
 
+
+        public virtual bool IsPointerRegister(MachineRegister machineRegister)
+        {
+            return machineRegister == Registers.bx ||
+                machineRegister == Registers.sp ||
+                machineRegister == Registers.bp ||
+                machineRegister == Registers.si ||
+                machineRegister == Registers.di;
+        }
     }
 
 	internal class FlatMode : ProcessorMode
@@ -72,5 +81,10 @@ namespace Decompiler.Arch.Intel
 		{
 			return new Address(offset);
 		}
+
+        public override bool IsPointerRegister(MachineRegister machineRegister)
+        {
+            return machineRegister.DataType.BitSize == PointerType.BitSize;
+        }
 	}
 }

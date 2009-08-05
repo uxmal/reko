@@ -215,7 +215,11 @@ namespace Decompiler.UnitTests.Intel
 
 		public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
 		{
-			return (ProcedureSignature) callSignatures[addrCallInstruction];
+            ProcedureSignature sig;
+            if (callSignatures.TryGetValue(addrCallInstruction, out sig))
+                return sig;
+            else
+                return null;
 		}
 
 

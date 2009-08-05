@@ -278,6 +278,17 @@ namespace Decompiler.UnitTests.Intel
             Assert.AreEqual("icall Mem0[ds:bx + 0x0000:ptr32]", rw.Block.Statements[2].Instruction.ToString());
         }
 
+        [Test]
+        public void AssignSpToBxShouldMakeBxFramePointer()
+        {
+            RegisterOperand bx = new RegisterOperand(Registers.bx);
+            RegisterOperand sp = new RegisterOperand(Registers.sp);
+            rw.ConvertInstructions(
+                new IntelInstruction(
+                    Opcode.mov, PrimitiveType.Word16, PrimitiveType.Word16, bx, sp));
+            Assert.AreSame(Registers.bx, state.FrameRegister);
+        }
+
         public class TestRewriter : IntelRewriter
         {
             private FakeRewriterHost host;
