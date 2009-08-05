@@ -44,7 +44,7 @@ namespace Decompiler.Arch.Intel
 
 		public Address InstructionAddress
 		{
-			get { return addrCur; }
+			get { return addrCur; } 
 			set { addrCur = value; }
 		}
 

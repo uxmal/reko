@@ -589,24 +589,8 @@ namespace Decompiler.Arch.Intel
 						EmitLxs(Registers.ss);
 						break;
 					case Opcode.mov:
-						if (IsBpRegister(instrCur.op1) && IsStackRegister(instrCur.op2))
-						{
-							state.EnterFrame(((RegisterOperand)instrCur.op1).Register);
-							frame.SetFramePointerWidth(instrCur.dataWidth);
-						}
-						else if (IsStackRegister(instrCur.op1) && IsBpRegister(instrCur.op2))
-						{
-							if (state.FrameRegister != MachineRegister.None)
-							{
-								state.LeaveFrame();
-							}
-						}
-						else
-						{
-							EmitCopy(instrCur.op1, SrcOp(instrCur.op2, instrCur.op1.Width), false);
-						}
-						break;
-
+                        RewriteMov();
+                        break;
 					case Opcode.movs:
 					case Opcode.movsb:
 						siw.EmitStringInstruction(instrCur, emitter);
@@ -1785,17 +1769,6 @@ namespace Decompiler.Arch.Intel
 			return null;
 		}
 
-		private bool IsBpRegister(MachineOperand op)
-		{
-			RegisterOperand reg = op as RegisterOperand;
-			return reg != null && IsBpRegister(reg.Register);
-		}
-
-		private bool IsBpRegister(MachineRegister reg)
-		{
-			return (reg == Registers.bp || reg == Registers.ebp);
-		}
-
 		private bool IsSameRegister(MachineOperand op1, MachineOperand op2)
 		{
 			RegisterOperand r1 = op1 as RegisterOperand;
@@ -1857,6 +1830,28 @@ namespace Decompiler.Arch.Intel
 				instrCur.dataWidth.Size * ((ImmediateOperand)instrCur.op2).Value.ToInt32() + 
 				((ImmediateOperand)instrCur.op1).Value.ToInt32());
 		}
+
+        private void RewriteMov()
+        {
+            RegisterOperand regOp = instrCur.op1 as RegisterOperand;
+            if (regOp != null &&  arch.ProcessorMode.IsPointerRegister(regOp.Register) && IsStackRegister(instrCur.op2))
+            {
+                state.EnterFrame(regOp.Register);
+                frame.SetFramePointerWidth(instrCur.dataWidth);
+                return;
+            }
+            regOp = instrCur.op2 as RegisterOperand;
+            if (regOp != null && IsStackRegister(instrCur.op1))
+            {
+                if (state.FrameRegister != MachineRegister.None)
+                {
+                    state.LeaveFrame();
+                    return;
+                }
+            }
+
+            EmitCopy(instrCur.op1, SrcOp(instrCur.op2, instrCur.op1.Width), false);
+        }
 
 		public override void RewriteInstructions(Address addrStart, int length, Block block)
 		{
