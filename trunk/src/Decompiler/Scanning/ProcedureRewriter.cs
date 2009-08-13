@@ -67,42 +67,44 @@ namespace Decompiler.Scanning
 			return block.Succ.Count == 0;
 		}
 
-		public Block RewriteBlock(Address addr, Block pred)
-		{
-			Block block;
+        public Block RewriteBlock(Address addr, Block pred)
+        {
+            Block block;
             if (blocksVisited.TryGetValue(addr, out block))
-			{
-				Block.AddEdge(pred, block);
-				return block;
-			}
+            {
+                Block.AddEdge(pred, block);
+                return block;
+            }
 
-			// Locate the image map block corresponding to the address.
+            // Locate the image map block corresponding to the address.
 
             ImageMapItem item;
             if (host.Image.Map.TryFindItemExact(addr, out item))
             {
-                ImageMapBlock raw = (ImageMapBlock) item;
-				// Create a new block in the procedure.
+                ImageMapBlock raw = item as ImageMapBlock;
+                if (raw != null)
+                {
 
-				block = new Block(proc, addr);
-				blocksVisited.Add(addr, block);
-				Block.AddEdge(pred, block);
+                    // Create a new block in the procedure.
 
-				rewriter.RewriteInstructions(addr, raw.Size, block);
+                    block = new Block(proc, addr);
+                    blocksVisited.Add(addr, block);
+                    Block.AddEdge(pred, block);
 
-				if (IsBlockFallThrough(block))
-				{
-					HandleFallThrough(block, raw.Address + raw.Size);
-				}
-			}
-			else
-			{
-				block = proc.ExitBlock;
-				Block.AddEdge(pred, block);
-			}
-			return block;
-		}
+                    rewriter.RewriteInstructions(addr, raw.Size, block);
 
+                    if (IsBlockFallThrough(block))
+                    {
+                        HandleFallThrough(block, raw.Address + raw.Size);
+                    }
+                    return block;
+                }
+            }
+
+            block = proc.ExitBlock;
+            Block.AddEdge(pred, block);
+            return block;
+        }
 
         public Rewriter Rewriter
         {

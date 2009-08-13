@@ -46,7 +46,7 @@ namespace Decompiler.Core
 
 		public override int GetHashCode()
 		{
-			return 29 * Selector.GetHashCode() ^ Offset.GetHashCode();
+			return Linear.GetHashCode();
 		}
 
 		public int Linear
