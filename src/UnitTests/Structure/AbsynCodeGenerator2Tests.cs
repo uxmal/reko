@@ -83,6 +83,29 @@ namespace Decompiler.UnitTests.Structure
                 "}" + nl);
         }
 
+        [Test]
+        public void NestedIfs()
+        {
+            CompileTest(new NestedIfs());
+            RunTest(
+                "NestedIfs()" + nl +
+                "{" + nl +
+                "	if (ax >= 0)" + nl +
+                "	{" + nl +
+                "		cl = 0x00;" + nl +
+                "		if (ax > 12)" + nl +
+                "			ax = 12;" + nl +
+                "	}" + nl +
+                "	else" + nl +
+                "	{" + nl +
+                "		cl = 0x01;" + nl +
+                "		if (ax < -12)" + nl +
+                "			ax = -12;" + nl +
+                "	}" + nl +
+                "	return;" + nl +
+                "}" + nl);
+
+        }
 
         private void CompileTest(ProcGenerator gen)
         {
