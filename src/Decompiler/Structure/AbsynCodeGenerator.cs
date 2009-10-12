@@ -152,7 +152,7 @@ namespace Decompiler.Structure
                             WriteBlockExcludingPredicate(node.LatchNode, emitBody);
                         }
                         Expression expr = ((Branch) node.LatchNode.Instructions.Last.Instruction).Condition;
-                        emitter.EmitDoWhile(node, body, expr);
+                        emitter.EmitDoWhile(body, expr);
                     }
                     else
                     {

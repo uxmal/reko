@@ -39,6 +39,12 @@ namespace Decompiler.Structure
         {
             if (followStack.Contains(node))
                 return;
+            if (IsVisited(node))
+                return;
+            visited.Add(node);
+
+            if (NeedsLabel(node))
+                GenerateLabel(node,emitter);
 
             switch (node.GetStructType())
             {
@@ -63,9 +69,87 @@ namespace Decompiler.Structure
                 this.followStack.Pop();
                 GenerateCode(node.CondFollow, latchNode, emitter);
                 break;
+            case structType.Loop:
+            case structType.LoopCond:
+                if (node.LoopFollow != null)
+                    followStack.Push(node.LoopFollow);
+
+                if (node.GetLoopType() == loopType.PreTested)
+                {
+                    EmitLinearBlockStatements(node, emitter);
+                    List<AbsynStatement> loopBody = new List<AbsynStatement>();
+                    StructureNode bodyNode = (node.Else == node.LoopFollow)
+                        ? node.Then
+                        : node.Else;
+                    AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
+                    GenerateCode(bodyNode, node.LatchNode, bodyEmitter);
+                    EmitLinearBlockStatements(node, bodyEmitter);
+
+                    emitter.EmitWhile(node, BranchCondition(node), loopBody);
+                }
+                else if (node.GetLoopType() == loopType.PostTested)
+                {
+                    List<AbsynStatement> loopBody = new List<AbsynStatement>();
+                    AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
+                    if (node == node.LatchNode)
+                    {
+                        EmitLinearBlockStatements(node, bodyEmitter);
+                    }
+                    else
+                    {
+                        if (node.GetStructType() == structType.LoopCond)
+                        {
+                            visited.Remove(node);
+                            node.SetStructType(structType.Cond);
+                            GenerateCode(node, node.LatchNode, bodyEmitter);
+                        }
+                        else
+                        {
+                            EmitLinearBlockStatements(node, bodyEmitter);
+                            if (node.OutEdges.Count != 1)
+                                throw new NotSupportedException(string.Format("Node {0} has {1} out edges.", node.Name, node.OutEdges.Count));
+                            GenerateCode(node.OutEdges[0], node.LatchNode, bodyEmitter);
+                        }
+                    }
+                    emitter.EmitDoWhile(loopBody, BranchCondition(node.LatchNode));
+                    
+                }
+                if (node.LoopFollow != null)
+                {
+                    followStack.Pop();
+                    GenerateCode(node.LoopFollow, latchNode, emitter);
+                }
+
+                break;
             default:
                 throw new NotImplementedException();
             }
+        }
+
+        private bool NeedsLabel(StructureNode node)
+        {
+            foreach (StructureNode pred in node.InEdges)
+            {
+                if (IsVisited(pred))
+                    continue;
+                if (node.IsAncestorOf(pred))
+                    continue;
+                return true;
+            }
+            return false;
+        }
+
+        private void GenerateLabel(StructureNode node, AbsynStatementEmitter emitter)
+        {
+            emitter.EmitLabel(node);
+        }
+
+        private bool AllPrecessorsVisited(StructureNode node)
+        {
+            foreach (StructureNode pred in node.InEdges)
+                if (!IsVisited(pred))
+                    return false;
+            return true;
         }
 
 
