@@ -144,7 +144,7 @@ namespace Decompiler.Structure
             emitter.EmitLabel(node);
         }
 
-        private bool AllPrecessorsVisited(StructureNode node)
+        private bool AllPredecessorsVisited(StructureNode node)
         {
             foreach (StructureNode pred in node.InEdges)
                 if (!IsVisited(pred))

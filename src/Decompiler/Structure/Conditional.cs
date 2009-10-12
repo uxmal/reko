@@ -27,36 +27,47 @@ namespace Decompiler.Structure
 {
     public abstract class Conditional
     {
-        private static Conditional ifThen = new IfThen();
-        private static Conditional ifElse = new IfElse();
-        private static Conditional ifThenElse = new IfThenElse();
-        private static Conditional @case = new Case();
+        private StructureNode follow;
 
-        public static Conditional IfThen
+        public StructureNode Follow
         {
-            get { return Conditional.ifThen; }
-        }
-
-        public static Conditional IfElse
-        {
-            get { return Conditional.ifElse; }
-        }
-
-        public static Conditional IfThenElse
-        {
-            get { return Conditional.ifThenElse; }
-        }
-
-        public static Conditional Case
-        {
-            get { return Conditional.@case; }
+            get { return follow; }
+            set { follow = value; }
         }
 
         [Obsolete]
         public abstract void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter);
 
-
         public abstract void GenerateCode(AbsynCodeGenerator2 absynCodeGenerator2, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter);
+
+        private static Conditional ifThen = new IfThen();
+        private static Conditional ifElse = new IfElse();
+        private static Conditional ifThenElse = new IfThenElse();
+        private static Conditional @case = new Case();
+
+        [Obsolete("Use 'is' syntax for the time being.", true)]
+        public static Conditional IfThen
+        {
+            get { return Conditional.ifThen; }
+        }
+
+        [Obsolete("Use 'is' syntax for the time being.", true)]
+        public static Conditional IfElse
+        {
+            get { return Conditional.ifElse; }
+        }
+
+        [Obsolete("Use 'is' syntax for the time being.", true)]
+        public static Conditional IfThenElse
+        {
+            get { return Conditional.ifThenElse; }
+        }
+
+        [Obsolete("Use 'is' syntax for the time being.", true)]
+        public static Conditional Case
+        {
+            get { return Conditional.@case; }
+        }
     }
 
     public abstract class IfConditional : Conditional
@@ -75,7 +86,7 @@ namespace Decompiler.Structure
             else
                 codeGen.GenerateCode(succ, latchNode, emitThen);
 
-            if (node.Conditional == Conditional.IfThenElse)
+            if (node.Conditional is IfThenElse)
             {
                 succ = node.Then;
                 AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);

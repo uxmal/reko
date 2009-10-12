@@ -73,8 +73,7 @@ namespace Decompiler.Structure
                 Debug.Assert(node.GetStructType() == structType.Loop && node.GetLoopType() == loopType.PostTested && node.LatchNode == node);
                 return;
             }
-            else
-                node.traversed = travType.DFS_CODEGEN;
+            node.traversed = travType.DFS_CODEGEN;
 
 
             if (!AllParentsGenerated(node))
@@ -197,7 +196,7 @@ namespace Decompiler.Structure
                 int gotoTotal = 0;
 
                 // add the follow to the follow set if this is a case header
-                if (node.Conditional == Conditional.Case)
+                if (node.Conditional is Case)
                 {
                     followSet.Add(node.CondFollow);
                 }
@@ -236,7 +235,7 @@ namespace Decompiler.Structure
                             }
                         }
 
-                        if (node.Conditional == Conditional.IfThen)
+                        if (node.Conditional is IfThen)
                             tmpCondFollow = node.Else;
                         else
                             tmpCondFollow = node.Then;
@@ -309,16 +308,16 @@ namespace Decompiler.Structure
 
 
 
-        public bool ShouldNotGenerateCodeForSuccessor(StructureNode node, List<StructureNode> followSet, StructureNode child)
+        public bool ShouldNotGenerateCodeForSuccessor(StructureNode node, List<StructureNode> followSet, StructureNode nextNode)
         {
-            if (child.traversed == travType.DFS_CODEGEN && (followSet.Count == 0 || followSet[followSet.Count-1] != child))
+            if (nextNode.traversed == travType.DFS_CODEGEN && (followSet.Count == 0 || followSet[followSet.Count-1] != nextNode))
                 return true;
-            if ((child.LoopHead != node.LoopHead) &&
-                             (!AllParentsGenerated(child) || followSet.Contains(child)))
+            if ((nextNode.LoopHead != node.LoopHead) &&
+                             (!AllParentsGenerated(nextNode) || followSet.Contains(nextNode)))
                 return true;
-            if (node.LatchNode != null && node.LatchNode.LoopHead.LoopFollow == child)
+            if (node.LatchNode != null && node.LatchNode.LoopHead.LoopFollow == nextNode)
                 return true;
-            if (node.CaseHead != child.CaseHead && (node.CaseHead == null || child != node.CaseHead.CondFollow))
+            if (node.CaseHead != nextNode.CaseHead && (node.CaseHead == null || nextNode != node.CaseHead.CondFollow))
                 return true;
             return false;
         }

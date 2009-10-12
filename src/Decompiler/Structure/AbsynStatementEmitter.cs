@@ -49,8 +49,7 @@ namespace Decompiler.Structure
         //$REVIEW: consider moving this to Conditional.
         public AbsynIf EmitIfCondition(Expression exp, Conditional cond)
         {
-            if (cond == Conditional.IfElse ||
-                cond == Conditional.IfThenElse)
+            if (cond is IfElse || cond is IfThenElse)
             {
                 exp = exp.Invert();
             }
