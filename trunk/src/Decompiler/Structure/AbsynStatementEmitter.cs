@@ -97,7 +97,7 @@ namespace Decompiler.Structure
             stms.Add(whileStm);
         }
 
-        public void EmitDoWhile(StructureNode node, List<AbsynStatement> body, Expression expr)
+        public void EmitDoWhile(List<AbsynStatement> body, Expression expr)
         {
             AbsynDoWhile doWhile = new AbsynDoWhile(body, expr);
             stms.Add(doWhile);
