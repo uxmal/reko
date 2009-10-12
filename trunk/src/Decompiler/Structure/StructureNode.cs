@@ -151,9 +151,7 @@ namespace Decompiler.Structure
             set { caseHead = value; }
         }
 
-        /// <summary>
-        /// The node that follows this conditional or loop.
-        /// </summary>
+        [Obsolete]
         public StructureNode CondFollow
         {
             get { return condFollow; }
@@ -391,13 +389,13 @@ namespace Decompiler.Structure
             if (s == structType.Cond)
             {
                 if (type == bbType.nway)
-                    cond = Conditional .Case;
+                    cond = new Case();
                 else if (Else == condFollow)
-                    cond = Conditional.IfThen;
+                    cond = new IfThen();
                 else if (Then == condFollow)
-                    cond = Conditional.IfElse;
+                    cond = new IfElse();
                 else
-                    cond = Conditional.IfThenElse;
+                    cond = new IfThenElse();
             }
 
             sType = s;
@@ -423,7 +421,7 @@ namespace Decompiler.Structure
             get { return usType; }
             set
             {
-                Debug.Assert((sType == structType.Cond || sType == structType.LoopCond) && cond != Conditional.Case);
+                Debug.Assert((sType == structType.Cond || sType == structType.LoopCond) && !(cond is Case));
                 usType = value;
             }
         }
