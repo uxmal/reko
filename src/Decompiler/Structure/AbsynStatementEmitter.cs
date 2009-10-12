@@ -40,6 +40,7 @@ namespace Decompiler.Structure
             stm.Instruction.Accept(this);
         }
 
+        [Obsolete]
         public AbsynIf EmitIfCondition(Expression exp, StructureNode node)
         {
             if (node.Conditional == Conditional.IfElse)
@@ -54,6 +55,19 @@ namespace Decompiler.Structure
             return ifStm;
         }
 
+        //$REVIEW: consider moving this to Conditional.
+        public AbsynIf EmitIfCondition(Expression exp, Conditional cond)
+        {
+            if (cond == Conditional.IfElse)
+            {
+                exp = exp.Invert();
+            }
+            AbsynIf ifStm = new AbsynIf();
+            ifStm.Condition = exp;
+            stms.Add(ifStm);
+
+            return ifStm;
+        }
 
         public void EmitCaseLabel(StructureNode node, int i)
         {
@@ -151,7 +165,7 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)
         {
-            throw new Exception("The method or operation is not implemented.");
+            stms.Add(new AbsynReturn(ret.Expression));
         }
 
         void InstructionVisitor.VisitSideEffect(SideEffect side)

@@ -53,6 +53,15 @@ namespace Decompiler.Core.Types
 			}
 		}
 
+        public UnionType(string name, DataType preferredType, params DataType [] alternatives) : base(name)
+        {
+            this.PreferredType = preferredType;
+            foreach (DataType dt in alternatives)
+            {
+                Alternatives.Add(new UnionAlternative(dt));
+            }
+        }
+
 		public override DataType Accept(DataTypeTransformer t)
 		{
 			return t.TransformUnionType(this);

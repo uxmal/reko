@@ -624,6 +624,12 @@ namespace Decompiler.UnitTests.Mocks
 		}
 
 
+        public Slice Slice(PrimitiveType primitiveType, Identifier value, uint bitOffset)
+        {
+            return new Slice(primitiveType, value, bitOffset);
+        }
+
+
 		private void TerminateBlock()
 		{
 			if (block != null)
@@ -668,6 +674,7 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			return new Constant(PrimitiveType.Word32, n);
 		}
+
 
 
     }

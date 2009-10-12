@@ -109,47 +109,52 @@ namespace Decompiler.Structure
             get { return revOrdering; }
         }
 
-
         [Conditional("DEBUG")]
         public void Dump()
         {
-            DumpNode(this.entryNode, new HashSet<StructureNode>());
+            StringWriter sw = new StringWriter();
+            Write(sw);
+            Debug.WriteLine(sw.ToString());
+        }
+
+        public void Write(System.IO.TextWriter writer)
+        {
+            WriteNode(this.entryNode, new HashSet<StructureNode>(), writer);
         }
 
         [Conditional("DEBUG")]
-        private void DumpNode(StructureNode node, HashSet<StructureNode> visited)
+        private void WriteNode(StructureNode node, HashSet<StructureNode> visited, System.IO.TextWriter writer)
         {
             if (visited.Contains(node))
                 return;
             visited.Add(node);
-            Debug.WriteLine(string.Format("Node {0}: Block: {1}",
+            writer.WriteLine("Node {0}: Block: {1}",
                 node.Ident(),
-                node.Block != null ? node.Block.Name : "<none>"));
-            Debug.Indent();
+                node.Block != null ? node.Block.Name : "<none>");
 
-            Debug.WriteLine(string.Format("Order: {0}, RevOrder {1}", node.Order, node.RevOrder));
-            Debug.WriteLine(string.Format("Structure type: {0}", node.GetStructType()));
+            writer.WriteLine("    Order: {0}, RevOrder {1}", node.Order, node.RevOrder);
+            writer.WriteLine("    Structure type: {0}", node.GetStructType());
             if (node.LoopHead != null)
-                Debug.WriteLine("Loop header:" + node.LoopHead.Block.Name);
+                writer.WriteLine("    Loop header:" + node.LoopHead.Block.Name);
             if (node.LatchNode != null)
-                Debug.WriteLine("latch:" + node.LatchNode.Block.Name);
+                writer.WriteLine("    Latch: {0}", node.LatchNode.Block.Name);
             if (node.CondFollow != null)
-                Debug.WriteLine("Cond follow:" + node.CondFollow.Block.Name);
+                writer.WriteLine("    Cond follow: {0}", node.CondFollow.Block.Name);
+            writer.WriteLine("    Unstructured type: {0}", node.UnstructType);
 
-            Debug.Write("Succ: ");
+            writer.Write("    Succ: ");
             string sep = "";
             foreach (StructureNode s in node.OutEdges)
             {
-                Debug.Write(sep);
-                Debug.Write(s.Block.Name);
+                writer.Write(sep);
+                writer.Write(s.Block.Name);
                 sep = ",";
             }
-            Debug.WriteLine("");
-            Debug.Unindent();
+            writer.WriteLine();
 
             foreach (StructureNode s in node.OutEdges)
             {
-                DumpNode(s, visited);
+                WriteNode(s, visited, writer);
             }
         }
 

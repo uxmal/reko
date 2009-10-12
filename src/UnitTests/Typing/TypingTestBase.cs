@@ -75,6 +75,17 @@ namespace Decompiler.UnitTests.Typing
             RunTest(prog, outputFile);
         }
 
+        protected void RunTest(ProcGenerator pg, string outputFile)
+        {
+            ProcedureMock m = new ProcedureMock();
+            pg(m);
+            m.Procedure.RenumberBlocks();
+            ProgramMock prog = new ProgramMock();
+            prog.Add(m);
+            RunTest(prog, outputFile);
+        }
+
+
         protected abstract void RunTest(Program prog, string outputFile);
 
 		protected void DumpSsaInfo(Procedure proc, SsaState ssa, TextWriter writer)

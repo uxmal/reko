@@ -52,15 +52,20 @@ namespace Decompiler.Structure
             get { return Conditional.@case; }
         }
 
+        [Obsolete]
         public abstract void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter);
+
+
+        public abstract void GenerateCode(AbsynCodeGenerator2 absynCodeGenerator2, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter);
     }
 
     public abstract class IfConditional : Conditional
     {
-        public override void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter)
+        public override void GenerateCode(AbsynCodeGenerator2 codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
         {
-            Expression exp = ((Branch) node.Instructions.Last.Instruction).Condition;
-            AbsynIf ifStm = emitter.EmitIfCondition(exp, node);
+            Expression exp = codeGen.BranchCondition(node);
+            AbsynIf ifStm = emitter.EmitIfCondition(exp, node.Conditional);
+
             StructureNode succ = FirstBranch(node);
             AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
             // emit a goto statement if the first clause has already been generated or it
@@ -68,7 +73,7 @@ namespace Decompiler.Structure
             if (succ.traversed == travType.DFS_CODEGEN || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
                 codeGen.EmitGotoAndLabel(node, succ, emitThen);
             else
-                codeGen.WriteCode(succ, latch, followSet, gotoSet, emitThen);
+                codeGen.GenerateCode(succ, latchNode, emitThen);
 
             if (node.Conditional == Conditional.IfThenElse)
             {
@@ -77,11 +82,44 @@ namespace Decompiler.Structure
                 if (succ.traversed == travType.DFS_CODEGEN)
                     codeGen.EmitGotoAndLabel(node, succ, emitElse);
                 else
-                    codeGen.WriteCode(succ, latch, followSet, gotoSet, emitElse);
+                    codeGen.GenerateCode(succ, latchNode, emitElse);
 
                 if (HasSingleIfThenElseStatement(ifStm.Then))
                 {
                     ifStm.InvertCondition();
+                }
+            }
+        }
+
+        [Obsolete]
+        public override void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter)
+        {
+            Expression exp = ((Branch) node.Instructions.Last.Instruction).Condition;
+            {
+                AbsynIf ifStm = emitter.EmitIfCondition(exp, node);
+
+                StructureNode succ = FirstBranch(node);
+                AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
+                // emit a goto statement if the first clause has already been generated or it
+                // is the follow of this node's enclosing loop
+                if (succ.traversed == travType.DFS_CODEGEN || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
+                    codeGen.EmitGotoAndLabel(node, succ, emitThen);
+                else
+                    codeGen.WriteCode(succ, latch, followSet, gotoSet, emitThen);
+
+                if (node.Conditional == Conditional.IfThenElse)
+                {
+                    succ = node.Else;
+                    AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
+                    if (succ.traversed == travType.DFS_CODEGEN)
+                        codeGen.EmitGotoAndLabel(node, succ, emitElse);
+                    else
+                        codeGen.WriteCode(succ, latch, followSet, gotoSet, emitElse);
+
+                    if (HasSingleIfThenElseStatement(ifStm.Then))
+                    {
+                        ifStm.InvertCondition();
+                    }
                 }
             }
         }
@@ -127,6 +165,30 @@ namespace Decompiler.Structure
 
     public class Case : Conditional
     {
+        public override void GenerateCode(AbsynCodeGenerator2 codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
+        {
+            Expression exp = ((SwitchInstruction) node.Instructions.Last.Instruction).Expression;
+            AbsynSwitch switchStm = emitter.EmitSwitch(node, exp);
+            AbsynStatementEmitter emitSwitchBranches = new AbsynStatementEmitter(switchStm.Statements);
+
+            for (int i = 0; i < node.OutEdges.Count; i++)
+            {
+                emitSwitchBranches.EmitCaseLabel(node, i);
+
+                StructureNode succ = node.OutEdges[i];
+                if (succ.traversed == travType.DFS_CODEGEN)
+                {
+                    codeGen.EmitGotoAndLabel(node, succ, emitSwitchBranches);
+                }
+                else
+                {
+                    codeGen.GenerateCode(succ, latchNode, emitSwitchBranches);
+                    emitSwitchBranches.EmitBreak(node);
+                }
+            }
+        }
+
+        [Obsolete]
         public override void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, 
             AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter)
         {

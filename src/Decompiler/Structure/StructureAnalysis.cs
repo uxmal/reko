@@ -38,70 +38,50 @@ namespace Decompiler.Structure
             this.proc = proc;
         }
 
+        public void Structure()
+        {
+            CoalesceCompoundConditions();
+            BuildProcedureStructure();
+            FindStructures();
+            GenerateStructuredCode();
+        }
+
+
         // This routine is called after all the other structuring has been done. It detects
         // conditionals that are in fact the head of a jump into/outof a loop or into a case body. 
         // Only forward jumps are considered as unstructured backward jumps will always be generated nicely.
-        private void DetectUnstructuredConditionals(ProcedureStructure curProc)
+        public void DetectUnstructuredConditionals(ProcedureStructure curProc)
         {
             foreach (StructureNode curNode in curProc.Ordering)
             {
-                List<StructureNode> oEdges = curNode.OutEdges;
-
-                // consider only conditional headers that have a follow and aren't case headers
-                if ((curNode.GetStructType() == structType.Cond || curNode.GetStructType() == structType.LoopCond) &&
-                        curNode.CondFollow != null && curNode.Conditional != Conditional.Case)
+                if (IsTwoWayBranchWithFollow(curNode))
                 {
-                    // define convenient aliases for the relevant loop and case heads and the out edges
                     StructureNode myLoopHead = (curNode.GetStructType() == structType.LoopCond ? curNode : curNode.LoopHead);
                     StructureNode follLoopHead = curNode.CondFollow.LoopHead;
 
                     // analyse whether this is a jump into/outof a loop
                     if (myLoopHead != follLoopHead)
                     {
-                        // we want to find the branch that the latch node is on for a jump
-                        // out of a loop
+                        // we want to find the branch that the latch node is on for a jump out of a loop
                         if (myLoopHead != null)
                         {
-                            StructureNode myLoopLatch = myLoopHead.LatchNode;
-
-                            // does the then branch goto the loop latch?
-                            if (curNode.Then.IsAncestorOf(myLoopLatch) || curNode.Then == myLoopLatch)
-                            {
-                                curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-curNode.Conditional = Conditional.IfElse;;
-                            }
-                            // does the else branch goto the loop latch?
-                            else if (curNode.Else.IsAncestorOf(myLoopLatch) || curNode.Else == myLoopLatch)
-                            {
-                                curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-curNode.Conditional = Conditional.IfThen;;
-                            }
+                            SetUnstructuredLoopTransfer(curNode, myLoopHead.LatchNode);
                         }
 
-                        if (curNode.UnstructType == UnstructuredType.Structured && follLoopHead != null)
-                        // find the branch that the loop head is on for a jump into a loop body. If a branch has
-                        // already been found, then it will match this one anyway
+                        if (follLoopHead != null)
                         {
-                            // does the else branch goto the loop head?
-                            if (curNode.Then.IsAncestorOf(follLoopHead) || curNode.Then == follLoopHead)
+                            if (curNode.UnstructType == UnstructuredType.Structured)
+                            // find the branch that the loop head is on for a jump into a loop body. If a branch has
+                            // already been found, then it will match this one anyway
                             {
-                                curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-curNode.Conditional = Conditional.IfElse;;
-                            }
-                            // does the else branch goto the loop head?
-                            else if (curNode.Else.IsAncestorOf(follLoopHead) || curNode.Else == follLoopHead)
-                            {
-                                curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-curNode.Conditional = Conditional.IfThen;;
+                                SetUnstructuredLoopTransfer(curNode, follLoopHead);
                             }
                         }
                     }
 
                     // this is a jump into a case body if either of its children don't have the same
                     // same case header as itself
-                    if (curNode.UnstructType == UnstructuredType.Structured &&
-                         (curNode.CaseHead != curNode.Then.CaseHead ||
-                          curNode.CaseHead != curNode.Else.CaseHead))
+                    if (IsJumpIntoCaseBody(curNode))
                     {
                         StructureNode myCaseHead = curNode.CaseHead;
                         StructureNode thenCaseHead = curNode.Then.CaseHead;
@@ -109,12 +89,12 @@ curNode.Conditional = Conditional.IfThen;;
                         if (thenCaseHead == myCaseHead && (myCaseHead == null || elseCaseHead != myCaseHead.CondFollow))
                         {
                             curNode.UnstructType = UnstructuredType.JumpIntoCase;
-curNode.Conditional = Conditional.IfElse;;
+                            curNode.Conditional = Conditional.IfElse;
                         }
                         else if (elseCaseHead == myCaseHead && (myCaseHead == null || thenCaseHead != myCaseHead.CondFollow))
                         {
                             curNode.UnstructType = UnstructuredType.JumpIntoCase;
-curNode.Conditional = Conditional.IfThen;;
+                            curNode.Conditional = Conditional.IfThen;
                         }
                     }
                 }
@@ -130,16 +110,43 @@ curNode.Conditional = Conditional.IfThen;;
 
                     if (curNode.HasBackEdgeTo(curNode.Then))
                     {
-curNode.Conditional = Conditional.IfThen;;
+                        curNode.Conditional = Conditional.IfThen;
                         curNode.CondFollow = curNode.Else;
                     }
                     else
                     {
-curNode.Conditional = Conditional.IfElse;;
+                        curNode.Conditional = Conditional.IfElse;
                         curNode.CondFollow = curNode.Then;
                     }
                 }
             }
+        }
+
+        private  bool IsJumpIntoCaseBody(StructureNode curNode)
+        {
+            return curNode.UnstructType == UnstructuredType.Structured &&
+                                     (curNode.CaseHead != curNode.Then.CaseHead ||
+                                      curNode.CaseHead != curNode.Else.CaseHead);
+        }
+
+        private void SetUnstructuredLoopTransfer(StructureNode curNode, StructureNode loopNode)
+        {
+            if (curNode.Then == loopNode || curNode.Then.IsAncestorOf(loopNode))
+            {
+                curNode.UnstructType = UnstructuredType.JumpInOutLoop;
+                curNode.Conditional = Conditional.IfElse;
+            }
+            else if (curNode.Else == loopNode || curNode.Else.IsAncestorOf(loopNode))
+            {
+                curNode.UnstructType = UnstructuredType.JumpInOutLoop;
+                curNode.Conditional = Conditional.IfThen;
+            }
+        }
+
+        private bool IsTwoWayBranchWithFollow(StructureNode curNode)
+        {
+            return (curNode.GetStructType() == structType.Cond || curNode.GetStructType() == structType.LoopCond) &&
+                                    curNode.CondFollow != null && curNode.Conditional != Conditional.Case;
         }
 
         // Structures all conditional headers (i.e. nodes with more than one outedge)
@@ -157,14 +164,9 @@ curNode.Conditional = Conditional.IfElse;;
                         continue;
                     }
 
-                    // set the follow of a node to be its immediate post dominator
                     curNode.CondFollow = curNode.ImmPDom;
-
-                    // set the structured type of this node
                     curNode.SetStructType(structType.Cond);
 
-                    // if this is an multi-way header, then we have to tag each of the nodes
-                    // within the body of the bbType.nway subgraph
                     if (curNode.Conditional == Conditional.Case)
                     {
                         CaseFinder cf = new CaseFinder(curNode, curNode.CondFollow);
@@ -182,18 +184,6 @@ curNode.Conditional = Conditional.IfElse;;
             return false;
         }
 
-
-        public void Structure()
-        {
-            CoalesceCompoundConditions();
-
-            BuildProcedureStructure();
-
-            FindStructures();
-
-            GenerateStructuredCode();
-        }
-
         private void GenerateStructuredCode()
         {
             AbsynCodeGenerator codeGen = new AbsynCodeGenerator();
@@ -207,16 +197,11 @@ curNode.Conditional = Conditional.IfElse;;
             ccc.Transform();
         }
 
-        private void BuildProcedureStructure()
+        [Obsolete("Call the strcturebuilder directly.")]
+        public void BuildProcedureStructure()
         {
             ProcedureStructureBuilder cfgs = new ProcedureStructureBuilder(proc);
-            Dictionary<Block, StructureNode> blockNodes = new Dictionary<Block, StructureNode>();
-            cfgs.BuildNodes(blockNodes);
-            cfgs.DefineEdges(blockNodes);
-            
-            curProc = cfgs.DefineCfgs(proc, blockNodes);
-            cfgs.SetTimeStamps(curProc);
-            cfgs.BuildDerivedSequences(curProc);
+            curProc = cfgs.Build();
         }
 
         public void FindStructures()
@@ -240,43 +225,39 @@ curNode.Conditional = Conditional.IfElse;;
                     for (int k = 0; k <= gLevel; k++)
                         headNode = ((IntNode) headNode).Nodes[0];
 
-                    // find the cfg nodes that belong in the current interval.
-                    bool[] cfgNodes = new bool[curProc.Nodes.Count];
+                    HashSet<StructureNode> intNodes = curInt.FindIntervalNodes(gLevel);
 
-                    curInt.FindNodesInInt(cfgNodes, gLevel);
-
-                    StructureNode latch = FindGreatestEnclosingBackEdgeInInterval(headNode, cfgNodes);
+                    StructureNode latch = FindGreatestEnclosingBackEdgeInInterval(headNode, intNodes);
 
                     // If a latch was found and it doesn't belong to another loop, 
                     // tag the loop nodes and classify it.
                     if (latch != null && latch.LoopHead == null)
                     {
-                        CreateLoop(curProc, headNode, cfgNodes, latch);
+                        CreateLoop(curProc, headNode, intNodes, latch);
                     }
                 }
             }
         }
 
-        private StructureNode FindGreatestEnclosingBackEdgeInInterval(StructureNode headNode, bool[] cfgNodes)
+        private StructureNode FindGreatestEnclosingBackEdgeInInterval(StructureNode headNode, HashSet<StructureNode> intNodes)
         {
             StructureNode latch = null;
-            // find the greatest enclosing back edge (if any) from a node within the same interval
-            for (int k = 0; k < headNode.InEdges.Count; k++)
+            foreach (StructureNode pred in headNode.InEdges)
             {
-                StructureNode pred = headNode.InEdges[k];
-                if (pred.HasBackEdgeTo(headNode) && cfgNodes[pred.Order] &&
-                    (latch == null || latch.Order > pred.Order))
+                if (!pred.HasBackEdgeTo(headNode))
+                    continue;
+                if (!intNodes.Contains(pred))
+                    continue;
+                if (latch == null || latch.Order > pred.Order)
                     latch = pred;
             }
             return latch;
         }
 
-        private void CreateLoop(ProcedureStructure curProc, StructureNode headNode, bool[] cfgNodes, StructureNode latch)
+
+        private void CreateLoop(ProcedureStructure curProc, StructureNode headNode, HashSet<StructureNode> cfgNodes, StructureNode latch)
         {
             LoopFinder lf = new LoopFinder(headNode);
-
-            // define the map that maps each node to whether or not it is within the current loop
-            bool[] loopNodes = new bool[curProc.Nodes.Count];
 
             // if the head node has already been determined as a loop header then the nodes
             // within this loop have to be untagged and the latch reset to its original type
@@ -306,15 +287,14 @@ curNode.Conditional = Conditional.IfElse;;
             headNode.SetStructType(structType.Loop);
 
 
-            lf.TagNodesInLoop(curProc.Ordering, cfgNodes, loopNodes);
+            HashSet<StructureNode> loopNodes = lf.TagNodesInLoop(curProc.Ordering, cfgNodes);
             lf.DetermineLoopType();
             lf.FindLoopFollow(curProc.Ordering, loopNodes);
         }
 
-
-        public Procedure Procedure
+        public ProcedureStructure ProcedureStructure
         {
-            get { return proc; }
+            get { return curProc; }
         }
     }
 }

@@ -483,7 +483,6 @@ namespace Decompiler.UnitTests.Typing
             RunTest(prog.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
         }
 
-
 		protected override void RunTest(Program prog, string outputFile)
 		{
 			aen.Transform(prog);

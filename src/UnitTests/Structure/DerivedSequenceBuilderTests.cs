@@ -87,10 +87,10 @@ namespace Decompiler.UnitTests.Structure
             pm.Procedure.RenumberBlocks();
             ProcedureStructureBuilder g = new ProcedureStructureBuilder(pm.Procedure);
             Dictionary<Block,StructureNode> nodes = new Dictionary<Block,StructureNode>();
-            g.BuildNodes(nodes);
-            g.DefineEdges(nodes);
-            proc = g.DefineCfgs(pm.Procedure, nodes);
-            g.SetTimeStamps(proc);
+            g.BuildNodes();
+            g.DefineEdges();
+            proc = g.CreateProcedureStructure();
+            g.SetTimeStamps();
 
             DerivedSequenceBuilder gr = new DerivedSequenceBuilder();
             gr.BuildDerivedSequence(proc);

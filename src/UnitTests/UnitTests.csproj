@@ -187,6 +187,7 @@
     <Compile Include="Mocks\ProcedureMock.cs" />
     <Compile Include="Mocks\ProcedureMockTest.cs" />
     <Compile Include="Mocks\ProgramMock.cs" />
+    <Compile Include="Mocks\ProcGenerator.cs" />
     <Compile Include="Mocks\Reg00011Mock.cs" />
     <Compile Include="Mocks\SegmentedDoubleReference.cs" />
     <Compile Include="Mocks\TreeFindMock.cs" />
@@ -199,14 +200,18 @@
     <Compile Include="Scanning\RewriterHostTests.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\WorkItemTests.cs" />
+    <Compile Include="Structure\AbsynCodeGenerator2Tests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\DerivedSequenceBuilderTests.cs" />
     <Compile Include="Structure\IntervalBuilderTests.cs" />
     <Compile Include="Structure\IntervalTests.cs" />
+    <Compile Include="Structure\LoopFinderTests.cs" />
+    <Compile Include="Structure\MockWhileGoto.cs" />
     <Compile Include="Structure\ProcHeaderTests.cs" />
     <Compile Include="Structure\SccLoopFinderTests.cs" />
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
     <Compile Include="Structure\PostDominatorGraphTests.cs" />
+    <Compile Include="Structure\StructureAnalysisTests.cs" />
     <Compile Include="Structure\TestBase.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />
     <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />
@@ -232,6 +237,7 @@
     <Compile Include="Typing\NestedComplexTypeExtractorTests.cs" />
     <Compile Include="Typing\PtrPrimitiveReplacerTests.cs" />
     <Compile Include="Typing\PtrPtrIntMock.cs" />
+    <Compile Include="Typing\StructureFieldMergerTests.cs" />
     <Compile Include="Typing\StructureMergerTests.cs" />
     <Compile Include="Typing\Trait.cs" />
     <Compile Include="Typing\TraitCollectorTests.cs" />
@@ -282,7 +288,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>copy /y $(SolutionDir)Arch\Intel\MsDos\*.xml $(TargetDir)
-copy /y $(SolutionDir)Arch\Intel\Win32\*.xml $(TargetDir)</PreBuildEvent>
+    <PreBuildEvent>xcopy /y /d $(SolutionDir)Arch\Intel\MsDos\*.xml $(TargetDir)
+xcopy /y /d $(SolutionDir)Arch\Intel\Win32\*.xml $(TargetDir)</PreBuildEvent>
   </PropertyGroup>
 </Project>

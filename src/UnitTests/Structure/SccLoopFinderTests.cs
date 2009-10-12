@@ -1,4 +1,5 @@
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -22,11 +23,9 @@ namespace Decompiler.UnitTests.Structure
             node.Order = 0;
             IntNode interval = new IntNode(1, node);
 
-            bool [] nodesInInterval = new bool[30];
-            interval.FindNodesInInt(nodesInInterval, 0);
+            HashSet<StructureNode> nodesInInterval = interval.FindIntervalNodes(0);
             SccLoopFinder finder = new SccLoopFinder(interval, nodesInInterval);
-            IList<StructureNode> loopNodes = finder.FindLoop();
-
+            HashSet<StructureNode> loopNodes = finder.FindLoop();
             Assert.AreEqual(0, loopNodes.Count);
         }
 
@@ -41,16 +40,15 @@ namespace Decompiler.UnitTests.Structure
             });
 
             SccLoopFinder finder = CreateSccLoopFinder(proc, proc.DerivedGraphs[0].Intervals[1], 0);
-            IList<StructureNode> loopNodes = finder.FindLoop();
+            HashSet<StructureNode> loopNodes = finder.FindLoop();
             Assert.AreEqual(1, loopNodes.Count);
-            Assert.AreEqual("lupe", loopNodes[0].Block.Name);
+            Assert.AreEqual("lupe", loopNodes.ToArray()[0].Block.Name);
         }
 
         private SccLoopFinder CreateSccLoopFinder(ProcedureStructure proc, IntNode intNode, int graphLevel)
         {
-            bool [] nodes = new bool[proc.Ordering.Count];
-            intNode.FindNodesInInt(nodes, graphLevel);
-            return new SccLoopFinder(intNode, nodes);
+            HashSet<StructureNode> nodesInInterval = intNode.FindIntervalNodes(graphLevel);
+            return new SccLoopFinder(intNode, nodesInInterval);
         }
 
 
@@ -61,6 +59,7 @@ namespace Decompiler.UnitTests.Structure
             {
                 m.Label("lupe");
                 m.BranchIf(m.LocalBool("a"), "branch_true");
+
                 m.SideEffect(m.Fn("foo"));
                 m.Jump("join");
                 m.Label("branch_true");
@@ -71,9 +70,9 @@ namespace Decompiler.UnitTests.Structure
             });
 
             SccLoopFinder finder = CreateSccLoopFinder(proc, proc.DerivedGraphs[0].Intervals[1], 0);
-            IList<StructureNode> loopNodes = finder.FindLoop();
+            HashSet<StructureNode> loopNodes = finder.FindLoop();
             Assert.AreEqual(4, loopNodes.Count);
-            Assert.AreEqual("branch_true", loopNodes[0].Block.Name);
+            Assert.IsTrue(loopNodes.Contains(proc.Nodes[2]));
         }
 
         private ProcedureStructure CompileTest(ProcGenerator g)
@@ -87,11 +86,10 @@ namespace Decompiler.UnitTests.Structure
         {
             m.Procedure.RenumberBlocks();
             ProcedureStructureBuilder g = new ProcedureStructureBuilder(m.Procedure);
-            Dictionary<Block, StructureNode> nodes = new Dictionary<Block, StructureNode>();
-            g.BuildNodes(nodes);
-            g.DefineEdges(nodes);
-            ProcedureStructure proc = g.DefineCfgs(m.Procedure, nodes);
-            g.SetTimeStamps(proc);
+            g.BuildNodes();
+            g.DefineEdges();
+            ProcedureStructure proc = g.CreateProcedureStructure();
+            g.SetTimeStamps();
 
             DerivedSequenceBuilder gr = new DerivedSequenceBuilder();
             gr.BuildDerivedSequence(proc);

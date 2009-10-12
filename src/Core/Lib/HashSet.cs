@@ -26,7 +26,7 @@ namespace Decompiler.Core.Lib
     /// Provides an unordered set with an O(1) contains method.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class HashSet<T>
+    public class HashSet<T> : ICollection<T>
     {
         private Dictionary<T, int> set;
 
@@ -49,6 +49,51 @@ namespace Decompiler.Core.Lib
         {
             return set.Remove(t);
         }
-    }
 
+        public void Clear()
+        {
+            set.Clear();
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            set.Keys.CopyTo(array, arrayIndex);
+        }
+
+        public int Count
+        {
+            get { return set.Count; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return set.Keys.GetEnumerator();
+        }
+
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void AddRange(IEnumerable<T> items)
+        {
+            foreach (T item in items)
+            {
+                Add(item);
+            }
+        }
+
+        public T [] ToArray()
+        {
+            T[] items = new T[set.Keys.Count];
+            set.Keys.CopyTo(items, 0);
+            return items;
+        }
+    }
 }

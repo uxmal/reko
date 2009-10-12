@@ -29,21 +29,21 @@ namespace Decompiler.Structure
     public class SccLoopFinder : ISccFinderHost<StructureNode>
     {
         private IntNode interval;
-        private bool[] nodesInInterval;
-        private IList<StructureNode> loopNodes;
+        private HashSet<StructureNode> intervalNodes;
+        private HashSet<StructureNode> loopNodeSet;
 
-        public SccLoopFinder(IntNode i, bool[] nodesInInterval)
+        public SccLoopFinder(IntNode i, HashSet<StructureNode> nodesInInterval)
         {
             this.interval = i;
-            this.nodesInInterval = nodesInInterval;
+            this.intervalNodes = nodesInInterval;
         }
 
-        public IList<StructureNode> FindLoop()
+        public HashSet<StructureNode> FindLoop()
         {
-            loopNodes = new List<StructureNode>();
+            loopNodeSet = new HashSet<StructureNode>();
             SccFinder<StructureNode> f = new SccFinder<StructureNode>(this);
             f.Find(interval.Nodes[0]);
-            return loopNodes;
+            return loopNodeSet;
         }
 
         #region ISccFinderHost<CFGNode> Members
@@ -57,18 +57,23 @@ namespace Decompiler.Structure
         {
             foreach (StructureNode s in t.OutEdges)
             {
-                if (nodesInInterval[s.Order])
+                if (IsNodeInInterval(s))
                     yield return s;
             }
+        }
+
+        private bool IsNodeInInterval(StructureNode s)
+        {
+            return intervalNodes.Contains(s);
         }
 
         void ISccFinderHost<StructureNode>.ProcessScc(IList<StructureNode> scc)
         {
             if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
             {
-                if (loopNodes.Count > 0)
+                if (loopNodeSet.Count > 0)
                     throw new NotSupportedException("Multiple loops in an interval not supported.");
-                loopNodes = scc;
+                loopNodeSet.AddRange(scc);
             }
         }
 
@@ -94,13 +99,13 @@ namespace Decompiler.Structure
         
         public void DetermineLoopType()
         {
-            // Pre: The loop induced by (head,latch) has already had all its member nodes tagged
-            // Post: The type of loop has been deduced
-            Debug.Assert(header.LatchNode != null);
+            if (header.LatchNode == null)
+                throw new InvalidOperationException("Header node must have determined a latch node.");
 
             // if the latch node is a two way node then this must be a post tested loop
             if (header.LatchNode.BlockType == bbType.cBranch)
             {
+
                 header.SetLoopType(loopType.PostTested);
 
                 // if the head of the loop is a two way node and the loop spans more than one block
@@ -108,10 +113,11 @@ namespace Decompiler.Structure
                 if (header.BlockType == bbType.cBranch && header != header.LatchNode)
                     header.SetStructType(structType.LoopCond);
             }
-
             // otherwise it is either a pretested or endless loop
             else if (header.BlockType == bbType.cBranch)
             {
+                header.SetLoopType(loopType.PreTested);
+#if NOT_WORKING // This code fails for while_goto because the condfollow doesn't coincide with the end of the loop.
                 // if the header is a two way conditional header, then it will be a pretested loop
                 // if one of its children is its conditional follow
                 if (header.OutEdges[0] != header.CondFollow && header.OutEdges[1] != header.CondFollow)
@@ -125,7 +131,7 @@ namespace Decompiler.Structure
                 else
                     // one child is the conditional follow
                     header.SetLoopType(loopType.PreTested);
-
+#endif
             }
             // both the header and latch node are one way nodes so this must be an endless loop
             else
@@ -134,8 +140,8 @@ namespace Decompiler.Structure
             }
         }
 
-        public void FindLoopFollow(List<StructureNode> order, bool[] loopNodes)
-        // Pre: The loop headed by header has been induced and all it's member nodes have been tagged
+        public void FindLoopFollow(List<StructureNode> order, HashSet<StructureNode> loopNodes)
+        // Pre: The loop headed by header has been induced and all its member nodes have been tagged
         // Post: The follow of the loop has been determined.
         {
             Debug.Assert(header.GetStructType() == structType.Loop || header.GetStructType() == structType.LoopCond);
@@ -171,14 +177,14 @@ namespace Decompiler.Structure
                     // the highest order of all potential follows
                     StructureNode desc = order[i];
 
-                    if (desc.GetStructType() == structType.Cond && desc.Conditional!= Conditional.Case && loopNodes[desc.Order])
+                    if (desc.GetStructType() == structType.Cond && desc.Conditional != Conditional.Case && loopNodes.Contains(desc))
                     {
                         for (int j = 0; j < desc.OutEdges.Count; j++)
                         {
                             StructureNode succ = desc.OutEdges[j];
 
                             // consider the current child 
-                            if (succ != header && !loopNodes[succ.Order] && (follow == null || succ.Order > follow.Order))
+                            if (succ != header && !loopNodes.Contains(succ) && (follow == null || succ.Order > follow.Order))
                                 follow = succ;
                         }
                     }
@@ -190,10 +196,8 @@ namespace Decompiler.Structure
             }
         }
 
-        public  void TagNodesInLoop(List<StructureNode> order, bool[] intNodes, bool[] loopNodes)
-        // Pre: header has been detected as a loop header and has the details of the latching node
-        // Post: the nodes within the loop have been tagged (if they weren't already within a more
-        //       deeply nested loop) and are within the returned set of nodes
+
+        public void TagNodesInLoop(List<StructureNode> nodes, HashSet<StructureNode> intNodes, bool[] loopNodes)
         {
             SccLoopFinder finder = new SccLoopFinder(header.Interval, intNodes);
             foreach (StructureNode node in finder.FindLoop())
@@ -204,5 +208,16 @@ namespace Decompiler.Structure
             }
         }
 
+        public HashSet<StructureNode> TagNodesInLoop(List<StructureNode> nodes, HashSet<StructureNode> intNodes)
+        {
+            SccLoopFinder finder = new SccLoopFinder(header.Interval, intNodes);
+            HashSet<StructureNode> loopNodes = finder.FindLoop();
+            foreach (StructureNode node in loopNodes)
+            {
+                if (node.LoopHead == null)
+                    node.LoopHead = header;
+            }
+            return loopNodes;
+        }
     }
 }
