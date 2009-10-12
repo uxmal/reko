@@ -121,5 +121,10 @@ namespace Decompiler.Structure
         {
             throw new Exception("The method or operation is not implemented.");
         }
+
+        public bool IsVisited(StructureNode succ)
+        {
+            return visited.Contains(succ);
+        }
     }
 }

@@ -43,22 +43,14 @@ namespace Decompiler.Structure
         [Obsolete]
         public AbsynIf EmitIfCondition(Expression exp, StructureNode node)
         {
-            if (node.Conditional == Conditional.IfElse)
-            {
-                exp = exp.Invert();
-            }
-
-            AbsynIf ifStm = new AbsynIf();
-            ifStm.Condition = exp;
-            stms.Add(ifStm);
-
-            return ifStm;
+            return EmitIfCondition(exp, node.Conditional);
         }
 
         //$REVIEW: consider moving this to Conditional.
         public AbsynIf EmitIfCondition(Expression exp, Conditional cond)
         {
-            if (cond == Conditional.IfElse)
+            if (cond == Conditional.IfElse ||
+                cond == Conditional.IfThenElse)
             {
                 exp = exp.Invert();
             }

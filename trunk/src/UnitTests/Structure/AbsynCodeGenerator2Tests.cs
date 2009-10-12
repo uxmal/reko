@@ -57,6 +57,33 @@ namespace Decompiler.UnitTests.Structure
                 "}" + nl);
         }
 
+        [Test]
+        public void IfThenElse()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                m.BranchIf(m.Fn("foo"), "else");
+                m.Label("then");
+                    m.SideEffect(m.Fn("Then"));
+                    m.Jump("end");
+                m.Label("else");
+                    m.SideEffect(m.Fn("Else"));
+                m.Label("end");
+                m.Return();
+            });
+
+            RunTest(
+                "ProcedureMock()" + nl +
+                "{" + nl +
+                "\tif (!foo())" + nl +
+                "\t\tThen();" + nl +
+                "\telse"  + nl +
+                "\t\tElse();" + nl +
+                "\treturn;" + nl +
+                "}" + nl);
+        }
+
+
         private void CompileTest(ProcGenerator gen)
         {
             ProcedureMock mock = new ProcedureMock();

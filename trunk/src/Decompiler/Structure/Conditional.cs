@@ -70,14 +70,14 @@ namespace Decompiler.Structure
             AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
             // emit a goto statement if the first clause has already been generated or it
             // is the follow of this node's enclosing loop
-            if (succ.traversed == travType.DFS_CODEGEN || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
+            if (codeGen.IsVisited(succ) || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
                 codeGen.EmitGotoAndLabel(node, succ, emitThen);
             else
                 codeGen.GenerateCode(succ, latchNode, emitThen);
 
             if (node.Conditional == Conditional.IfThenElse)
             {
-                succ = node.Else;
+                succ = node.Then;
                 AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
                 if (succ.traversed == travType.DFS_CODEGEN)
                     codeGen.EmitGotoAndLabel(node, succ, emitElse);
@@ -109,7 +109,7 @@ namespace Decompiler.Structure
 
                 if (node.Conditional == Conditional.IfThenElse)
                 {
-                    succ = node.Else;
+                    succ = node.Then;
                     AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
                     if (succ.traversed == travType.DFS_CODEGEN)
                         codeGen.EmitGotoAndLabel(node, succ, emitElse);
@@ -159,7 +159,7 @@ namespace Decompiler.Structure
     {
         public override StructureNode FirstBranch(StructureNode node)
         {
-            return node.Then;
+            return node.Else;
         }
     }
 
