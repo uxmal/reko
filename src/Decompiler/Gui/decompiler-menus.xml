@@ -78,7 +78,7 @@
   <placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
 	<placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
-  <placement item="ActionEditSignature" container="GrpBrowser"
+  <placement item="ActionEditSignature" container="GrpBrowser"/>
   <placement item="ActionEditSignature" container="GrpActionsRewritten" />
 </menu-definitions>
  

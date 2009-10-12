@@ -33,7 +33,7 @@ namespace Decompiler.Gui.Windows.Forms
 {
     public class DecompilerMenus : MenuSystem   
     {
-    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;	public readonly System.Windows.Forms.ToolStrip MainToolbar;
+    	public readonly System.Windows.Forms.MainMenu MainMenu;	public readonly System.Windows.Forms.ContextMenu CtxMemoryControl;	public readonly System.Windows.Forms.ContextMenu CtxBrowser;	public readonly System.Windows.Forms.ToolStrip MainToolbar;
     
         public DecompilerMenus(ICommandTarget target) : base(target)
         {
@@ -44,6 +44,7 @@ namespace Decompiler.Gui.Windows.Forms
 			SortedList slActionMenu = CreatePriorityList();
 			SortedList slHelpMenu = CreatePriorityList();
 			SortedList slCtxMemoryControl = CreatePriorityList();
+			SortedList slCtxBrowser = CreatePriorityList();
 			SortedList slMainToolbar = CreatePriorityList();
 			
 			// Create groups
@@ -70,6 +71,8 @@ namespace Decompiler.Gui.Windows.Forms
 			slHelpMenu.Add(0, slGrpHelp);
 			SortedList slGrpMemoryControl = CreatePriorityList();
 			slCtxMemoryControl.Add(0, slGrpMemoryControl);
+			SortedList slGrpBrowser = CreatePriorityList();
+			slCtxBrowser.Add(0, slGrpBrowser);
 			SortedList slGrpToolbarFileOps = CreatePriorityList();
 			slMainToolbar.Add(0, slGrpToolbarFileOps);
 			SortedList slGrpToolbarActions = CreatePriorityList();
@@ -141,6 +144,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);
+			slGrpBrowser.Add(0, slActionEditSignature);
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
 			this.MainMenu = new System.Windows.Forms.MainMenu();
 			BuildMenu(slMainMenu, MainMenu.MenuItems);
@@ -157,6 +161,9 @@ namespace Decompiler.Gui.Windows.Forms
 			
 			this.CtxMemoryControl = new System.Windows.Forms.ContextMenu();
 			BuildMenu(slCtxMemoryControl, CtxMemoryControl.MenuItems);
+  
+			this.CtxBrowser = new System.Windows.Forms.ContextMenu();
+			BuildMenu(slCtxBrowser, CtxBrowser.MenuItems);
   
 			this.MainToolbar = new System.Windows.Forms.ToolStrip();
 			BuildMenu(slMainToolbar, MainToolbar.Items);
@@ -179,6 +186,7 @@ namespace Decompiler.Gui.Windows.Forms
 			switch (menuId)
 			{
 				case MenuIds.CtxMemoryControl: return this.CtxMemoryControl;
+				case MenuIds.CtxBrowser: return this.CtxBrowser;
 			}
 			throw new ArgumentException(string.Format("There is no context menu with id {0}.", menuId));
 		}
