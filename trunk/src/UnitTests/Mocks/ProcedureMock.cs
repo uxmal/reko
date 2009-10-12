@@ -306,7 +306,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Expression Ge(Expression a, int b)
 		{
-			return Ge(a, Int32(b));
+			return Ge(a, new Constant(a.DataType, b));
 		}
 
 		public Expression Gt(Expression a, Expression b)
@@ -394,6 +394,16 @@ namespace Decompiler.UnitTests.Mocks
 			return new MemoryAccess(MemoryIdentifier.GlobalMemory, new Constant(i), PrimitiveType.Word16);
 		}
 
+        public BinaryExpression Le(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.le, PrimitiveType.Bool, a, b);
+        }
+
+        public BinaryExpression Le(Expression a, int b)
+        {
+            return Le(a, new Constant(a.DataType, b));
+        }
+
 		public BinaryExpression Lt(Expression a, Expression b)
 		{
 			return new BinaryExpression(Operator.lt, PrimitiveType.Bool, a, b);
@@ -403,6 +413,7 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			return Lt(a, new Constant(a.DataType, b));
 		}
+
 
 		public MemberPointerSelector MembPtrW(Expression ptr, Expression membPtr)
 		{
