@@ -28,15 +28,29 @@ namespace Decompiler.Structure
     {
         private Procedure proc;
         private List<StructureNode> nodeList;			// head of the linked list of nodes
+        private Dictionary<Block, StructureNode> blockNodes;
+        private ProcedureStructure curProc;
 
         public ProcedureStructureBuilder(Procedure proc)
         {
             this.proc = proc;
             this.nodeList = new List<StructureNode>();
+            this.blockNodes = new Dictionary<Block, StructureNode>();
         }
 
 
-        public void BuildNodes(Dictionary<Block, StructureNode> blockNodes)
+        public ProcedureStructure Build()
+        {
+            BuildNodes();
+            DefineEdges();
+
+            curProc = CreateProcedureStructure();
+            SetTimeStamps();
+            BuildDerivedSequences(curProc);
+            return curProc;
+        }
+
+        public void BuildNodes()
         {
             int bId = 0;
             foreach (Block b in proc.RpoBlocks)
@@ -69,8 +83,7 @@ namespace Decompiler.Structure
             }
         }
 
-
-        public void DefineEdges(Dictionary<Block, StructureNode> blockNodes)
+        public void DefineEdges()
         {
             //build the edges
             foreach (StructureNode curNode in nodeList)
@@ -113,19 +126,18 @@ namespace Decompiler.Structure
             }
         }
 
-        // build the headers for each cfg within the program
-        public ProcedureStructure DefineCfgs(Procedure proc, Dictionary<Block, StructureNode> blocks)
+        public ProcedureStructure CreateProcedureStructure()
         {
             List<StructureNode> nodes = new List<StructureNode>();
-            foreach (StructureNode node in blocks.Values)
+            foreach (StructureNode node in blockNodes.Values)
             {
                 nodes.Add(node);
             }
 
             ProcedureStructure newProc = new ProcedureStructure(proc, nodes);
-            StructureNode curNode = blocks[proc.EntryBlock];
-            newProc.EntryNode = curNode;
-            newProc.ExitNode = blocks[proc.ExitBlock];
+            newProc.EntryNode = blockNodes[proc.EntryBlock];
+            newProc.ExitNode = blockNodes[proc.ExitBlock];
+            this.curProc = newProc;
             return newProc;
         }
 
@@ -179,9 +191,11 @@ namespace Decompiler.Structure
 
 
 
-
-        // Give each node its DFS generated orderings.
-        public void SetTimeStamps(ProcedureStructure curProc)
+        /// <summary>
+        /// Assign nodes their PostOrder and reverse PostOrder numbers.
+        /// </summary>
+        /// <param name="curProc"></param>
+        public void SetTimeStamps()
         {
             //do the time stamping used for loop structuring 
             int time = 1;
@@ -200,6 +214,7 @@ namespace Decompiler.Structure
             Debug.Assert(curProc.ExitNode != null);
             curProc.ExitNode.SetRevOrder(rorder);
         }
+
     }
 
 }

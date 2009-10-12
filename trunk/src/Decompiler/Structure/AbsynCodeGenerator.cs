@@ -187,6 +187,7 @@ namespace Decompiler.Structure
                 if (node.LatchNode != null)
                     node.SetStructType(structType.LoopCond);
 
+
                 // for 2 way conditional headers that are effectively jumps into or out of a
                 // loop or case body, we will need a new follow node
                 StructureNode tmpCondFollow = null;

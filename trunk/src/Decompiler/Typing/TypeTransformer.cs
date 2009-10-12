@@ -127,9 +127,11 @@ namespace Decompiler.Typing
 
 		public StructureType MergeStructureFields(StructureType str)
 		{
+
 			if (!HasCoincidentFields(str))
 				return str;
 			StructureType strNew = new StructureType(str.Name, str.Size);
+            strNew.IsSegment = str.IsSegment;
 			UnionType ut = new UnionType(null, null);
 			int offset = 0;
 			foreach (StructureField f in str.Fields)
@@ -168,6 +170,9 @@ namespace Decompiler.Typing
 			{
 				strNew.Fields.Add(offset, ut.Simplify());
 			}
+
+            StructureFieldMerger sfm = new StructureFieldMerger();
+            strNew = sfm.Merge(strNew);
 			return strNew;
 		}
 

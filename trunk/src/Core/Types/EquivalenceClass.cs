@@ -31,13 +31,18 @@ namespace Decompiler.Core.Types
 		private DataType dataType;
 		private TypeVariableSet types = new TypeVariableSet();
 
-		public EquivalenceClass(TypeVariable rep)
+		public EquivalenceClass(TypeVariable rep) : this(rep, null)
 		{
-			representative = rep;
-			types.Add(rep);
 		}
 
-		public override DataType Accept(DataTypeTransformer t)
+        public EquivalenceClass(TypeVariable rep, DataType dt)
+        {
+            representative = rep;
+            dataType = dt;
+            types.Add(rep);
+        }
+
+        public override DataType Accept(DataTypeTransformer t)
 		{
 			return t.TransformEquivalenceClass(this);
 		}

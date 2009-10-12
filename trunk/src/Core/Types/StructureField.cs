@@ -127,6 +127,12 @@ namespace Decompiler.Core.Types
 			innerList.Insert(i, f);
 		}
 
+        /// <summary>
+        /// Gets the field with the highest offset that is less than or equal to the
+        /// specified <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <returns></returns>
 		public StructureField LowerBound(int offset)
 		{
 			StructureField fPrev = null;

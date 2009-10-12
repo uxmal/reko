@@ -68,6 +68,7 @@ namespace Decompiler.Structure
             get { return nodes; }
         }
 
+        [Obsolete]
         public void FindNodesInInt(bool[] cfgNodes, int level)
         {
             if (level == 0)
@@ -76,6 +77,28 @@ namespace Decompiler.Structure
             else
                 for (int i = 0; i < nodes.Count; i++)
                     ((IntNode) nodes[i]).FindNodesInInt(cfgNodes, level - 1);    //$CAST
+        }
+
+        public HashSet<StructureNode> FindIntervalNodes(int level)
+        {
+            HashSet<StructureNode> nodes = new HashSet<StructureNode>();
+            FindIntervalNodes(level, nodes);
+            return nodes;
+        }
+
+        private void FindIntervalNodes(int level, HashSet<StructureNode> intervalMembers)
+        {
+            if (level == 0)
+                for (int i = 0; i < nodes.Count; ++i)
+                    intervalMembers.Add(nodes[i]);
+            else
+                for (int i = 0; i < nodes.Count; ++i)
+                    ((IntNode) nodes[i]).FindIntervalNodes(level - 1, intervalMembers);
+        }
+
+        public StructureNode Header
+        {
+            get { return nodes[0]; }
         }
 
         public override void Write(TextWriter writer)

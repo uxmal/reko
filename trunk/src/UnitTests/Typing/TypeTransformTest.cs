@@ -223,6 +223,20 @@ namespace Decompiler.UnitTests.Typing
 			Assert.IsFalse(trans.HasCoincidentFields(s));
 		}
 
+        [Test]
+        public void HasCoincidentUnion()
+        {
+            EquivalenceClass eq = new EquivalenceClass(
+                new TypeVariable(42),
+                new UnionType(null, null,
+                    PrimitiveType.Pointer32, PrimitiveType.Word16));
+            StructureType s = new StructureType(null, 0);
+            s.Fields.Add(0, eq);
+            s.Fields.Add(2, PrimitiveType.SegmentSelector);
+            TypeTransformer trans = new TypeTransformer(factory, null, null);
+            Assert.IsTrue(trans.HasCoincidentFields(s));
+        }
+
 		[Test]
 		public void TtranIntelIndexedAddressingMode()
 		{
@@ -238,6 +252,26 @@ namespace Decompiler.UnitTests.Typing
 			m.Add(new TreeFindMock());
 			RunTest(m.BuildProgram(), "Typing/TtranTreeFind.txt");
 		}
+
+        [Test]
+        public void TtranSegmentedPointer()
+        {
+            RunTest(delegate(ProcedureMock m)
+            {
+                Identifier es = m.Frame.EnsureRegister(new MachineRegister("es", 1, PrimitiveType.SegmentSelector));
+                Identifier bx = m.Frame.EnsureRegister(new MachineRegister("bx", 2, PrimitiveType.Word16));
+                Identifier es_bx = m.Frame.EnsureSequence(es, bx, PrimitiveType.Pointer32);
+                m.Store(m.Word16(0x300), m.Word16(0));
+                m.Store(m.Word16(0x302), m.Word16(0));
+                m.Assign(es_bx, m.Load(PrimitiveType.Pointer32, m.Word16(0x300)));
+                m.Store(m.Word16(0x304), m.SegMem(
+                    PrimitiveType.Word16,
+                    m.Slice(PrimitiveType.SegmentSelector, es_bx, 8),
+                    m.Add(m.Slice(PrimitiveType.Word16, es_bx, 0), 4)));
+            }, "Typing/TtranSegmentedPointer.txt");
+        }
+
+
 
 		protected override void RunTest(Program prog, string outputFileName)
 		{

@@ -60,12 +60,11 @@ namespace Decompiler.UnitTests.Structure
 
         private void BuildPostdominatorGraph(ProcedureMock m)
         {
-            Dictionary<Block, StructureNode> blocks = new Dictionary<Block, StructureNode>();
             ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);
-            graphs.BuildNodes(blocks);
-            graphs.DefineEdges(blocks);
-            h = graphs.DefineCfgs(m.Procedure, blocks);
-            graphs.SetTimeStamps(h);
+            graphs.BuildNodes();
+            graphs.DefineEdges();
+            h = graphs.CreateProcedureStructure();
+            graphs.SetTimeStamps();
 
             PostDominatorGraph gr = new PostDominatorGraph();
             gr.FindImmediatePostDominators(h);

@@ -110,8 +110,9 @@ namespace Decompiler.UnitTests.Structure
             {
                 m.Label("head");
                 m.BranchIf(m.Local32("done"), "done");
-                m.Assign(m.Local32("done"), m.Fn("fn"));
-                m.Jump("head");
+                    m.Label("loopBody");
+                    m.Assign(m.Local32("done"), m.Fn("fn"));
+                    m.Jump("head");
                 m.Label("done");
                 m.Return();
             });
@@ -330,17 +331,49 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual(sExp, sb.ToString());
         }
 
+        [Test]
+        public void WhileGoto()
+        {
+            RunTest(new MockWhileGoto());
+            string sExp =
+           "MockWhileGoto()" + nl +
+           "{" + nl +
+           "\twhile (foo())" + nl +
+           "\t{" + nl +
+           "\t\tbar();" + nl +
+           "\t\tif (foo())" + nl +
+           "\t\t{" + nl +
+           "\t\t\textraordinary();" + nl +
+           "\t\t\tgoto end;" + nl +
+           "\t\t}" + nl +
+           "\t\tbar2();" + nl +
+           "\t}" + nl +
+           "\tbar3();" + nl +
+           "end:" + nl +
+           "\tbar4();" + nl +
+           "\treturn;" + nl;
+
+
+            Console.WriteLine(sb.ToString());
+            Assert.AreEqual(sExp, sb.ToString());
+        }
+
         private void RunTest(ProcGenerator gen)
         {
             ProcedureMock m = new ProcedureMock();
             gen(m);
+            RunTest(m);
+        }
+
+        private void RunTest(ProcedureMock m)
+        {
             m.Procedure.RenumberBlocks();
 
             StructureAnalysis sa = new StructureAnalysis(m.Procedure);
             sa.Structure();
 
             sb = new StringWriter();
-            GenCode(sa.Procedure, sb);
+            GenCode(m.Procedure, sb);
         }
 
         private void GenCode(Procedure proc, StringWriter sb)
