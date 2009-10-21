@@ -57,7 +57,7 @@ namespace Decompiler.Structure
                 if (IsTwoWayBranchWithFollow(curNode))
                 {
                     Loop myLoop = curNode.GetLoopType();
-                    Loop follLoop = curNode.CondFollow.Loop;
+                    Loop follLoop = curNode.Conditional.Follow.Loop;
 
                     // analyse whether this is a jump into/outof a loop
                     if (myLoop != follLoop)
@@ -86,15 +86,15 @@ namespace Decompiler.Structure
                         StructureNode myCaseHead = curNode.CaseHead;
                         StructureNode thenCaseHead = curNode.Then.CaseHead;
                         StructureNode elseCaseHead = curNode.Else.CaseHead;
-                        if (thenCaseHead == myCaseHead && (myCaseHead == null || elseCaseHead != myCaseHead.CondFollow))
+                        if (thenCaseHead == myCaseHead && (myCaseHead == null || elseCaseHead != myCaseHead.Conditional.Follow))
                         {
                             curNode.UnstructType = UnstructuredType.JumpIntoCase;
-                            curNode.Conditional = new IfElse();
+                            curNode.Conditional = new IfElse(null);
                         }
-                        else if (elseCaseHead == myCaseHead && (myCaseHead == null || thenCaseHead != myCaseHead.CondFollow))
+                        else if (elseCaseHead == myCaseHead && (myCaseHead == null || thenCaseHead != myCaseHead.Conditional.Follow))
                         {
                             curNode.UnstructType = UnstructuredType.JumpIntoCase;
-                            curNode.Conditional = new IfThen();
+                            curNode.Conditional = new IfThen(null);
                         }
                     }
                 }
@@ -102,7 +102,7 @@ namespace Decompiler.Structure
                 // for 2 way conditional headers that don't have a follow (i.e. are the source of a back
                 // edge) and haven't been structured as latching nodes, set their follow to be the
                 // non-back edge child.
-                if (curNode.GetStructType() == structType.Cond && curNode.CondFollow == null &&
+                if (curNode.Conditional != null && curNode.Conditional.Follow == null &&
                      curNode.UnstructType == UnstructuredType.Structured && !(curNode.Conditional is Case))
                 {
                     // latching nodes will already have been reset to Seq structured type
@@ -110,13 +110,11 @@ namespace Decompiler.Structure
 
                     if (curNode.HasBackEdgeTo(curNode.Then))
                     {
-                        curNode.Conditional = new IfThen();
-                        curNode.CondFollow = curNode.Else;
+                        curNode.Conditional = new IfThen(curNode.Else);
                     }
                     else
                     {
-                        curNode.Conditional = new IfElse();
-                        curNode.CondFollow = curNode.Then;
+                        curNode.Conditional = new IfElse(curNode.Then);
                     }
                 }
             }
@@ -134,19 +132,18 @@ namespace Decompiler.Structure
             if (curNode.Then == loopNode || curNode.Then.IsAncestorOf(loopNode))
             {
                 curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-                curNode.Conditional = new IfElse();
+                curNode.Conditional = new IfElse(null);
             }
             else if (curNode.Else == loopNode || curNode.Else.IsAncestorOf(loopNode))
             {
                 curNode.UnstructType = UnstructuredType.JumpInOutLoop;
-                curNode.Conditional = new IfThen();
+                curNode.Conditional = new IfThen(null);
             }
         }
 
         private bool IsTwoWayBranchWithFollow(StructureNode curNode)
         {
-            return (curNode.GetStructType() == structType.Cond || curNode.GetStructType() == structType.LoopCond) &&
-                                    curNode.CondFollow != null && !(curNode.Conditional is Case);
+            return curNode.Conditional != null && curNode.Conditional.Follow != null && !(curNode.Conditional is Case);
         }
 
         // Structures all conditional headers (i.e. nodes with more than one outedge)
@@ -161,19 +158,33 @@ namespace Decompiler.Structure
                     if (HasABackEdge(curNode) && curNode.BlockType == bbType.cBranch)
                     {
                         curNode.SetStructType(structType.Cond);
-                        continue;
+                        curNode.Conditional = CreateConditional(curNode, null);
                     }
-
-                    curNode.CondFollow = curNode.ImmPDom;
-                    curNode.SetStructType(structType.Cond);
-
-                    if (curNode.Conditional is Case)
+                    else
                     {
-                        CaseFinder cf = new CaseFinder(curNode, curNode.CondFollow);
-                        cf.SetCaseHead(curNode);
+                        curNode.SetStructType(structType.Cond);
+                        curNode.Conditional = CreateConditional(curNode, curNode.ImmPDom);
+
+                        if (curNode.Conditional is Case)
+                        {
+                            CaseFinder cf = new CaseFinder(curNode, curNode.Conditional.Follow);
+                            cf.SetCaseHead(curNode);
+                        }
                     }
                 }
             }
+        }
+
+        private Conditional CreateConditional(StructureNode node, StructureNode follow)
+        {
+            if (node.BlockType == bbType.nway)
+                return new Case(follow);
+            else if (node.Else == follow)
+                return new IfThen(follow);
+            else if (node.Then == follow)
+                return new IfElse(follow);
+            else
+                return new IfThenElse(follow);
         }
 
         private bool HasABackEdge(StructureNode curNode)
@@ -264,8 +275,8 @@ namespace Decompiler.Structure
                 StructureNode oldLatch = headNode.Loop.Latch;
 
                 // reset the latch node's structured class. Only need to do this for a 2 way latch
-                if (oldLatch.BlockType == bbType.cBranch)
-                    oldLatch.SetStructType(structType.Cond);
+//                if (oldLatch.BlockType == bbType.cBranch)
+//                    oldLatch.SetStructType(structType.Cond);
 
                 // untag the nodes
                 for (int i = headNode.Order - 1; i >= oldLatch.Order; i--)

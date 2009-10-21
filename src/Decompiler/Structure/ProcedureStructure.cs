@@ -133,14 +133,22 @@ namespace Decompiler.Structure
                 node.Block != null ? node.Block.Name : "<none>");
 
             writer.WriteLine("    Order: {0}, RevOrder {1}", node.Order, node.RevOrder);
-            writer.WriteLine("    Structure type: {0}", node.GetStructType());
+            writer.Write("    Structure type:");
+            if (node.Loop != null)
+                writer.Write(" {0}", node.Loop.GetType().Name);
+            if (node.Conditional != null)
+                writer.Write(" {0}", node.Conditional.GetType().Name);
+
             if (node.Loop != null)
             {
                 writer.WriteLine("    Loop header:" + node.Loop.Header.Block.Name);
                 writer.WriteLine("    Latch: {0}", node.Loop.Latch.Block.Name);
             }
-            if (node.CondFollow != null)
-                writer.WriteLine("    Cond follow: {0}", node.CondFollow.Block.Name);
+            if (node.Conditional != null)
+            {
+                if (node.Conditional.Follow != null)
+                    writer.WriteLine("    Cond follow: {0}", node.Conditional.Follow.Block.Name);
+            }
             writer.WriteLine("    Unstructured type: {0}", node.UnstructType);
             foreach (Statement stm in node.Block.Statements)
             {

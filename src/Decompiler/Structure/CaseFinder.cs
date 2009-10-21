@@ -61,10 +61,10 @@ namespace Decompiler.Structure
             // tagged so skip straight to its follow
             if (node.BlockType == bbType.nway && node != head)
             {
-                if (!visited.Contains(node.CondFollow) &&
-                    node.CondFollow != follow)
+                if (!visited.Contains(node.Conditional.Follow) &&
+                    node.Conditional.Follow != follow)
                 {
-                    SetCaseHead(node.CondFollow);
+                    SetCaseHead(node.Conditional.Follow);
                 }
             }
             else
