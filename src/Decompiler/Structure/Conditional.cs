@@ -57,7 +57,7 @@ namespace Decompiler.Structure
                 return;
 
             Expression exp = codeGen.BranchCondition(node);
-            AbsynIf ifStm = emitter.EmitIfCondition(exp, node.Conditional);
+            AbsynIf ifStm = EmitIfCondition(exp, this, emitter);
 
             StructureNode succ = FirstBranch(node);
             AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
@@ -97,13 +97,13 @@ namespace Decompiler.Structure
             }
         }
 
-
+        #region Obsolete
         [Obsolete]
         public override void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter)
         {
             Expression exp = ((Branch) node.Instructions.Last.Instruction).Condition;
             {
-                AbsynIf ifStm = emitter.EmitIfCondition(exp, node);
+                AbsynIf ifStm = EmitIfCondition(exp, this, emitter);
 
                 StructureNode succ = FirstBranch(node);
                 AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
@@ -130,6 +130,21 @@ namespace Decompiler.Structure
                 }
             }
         }
+        #endregion
+
+        private AbsynIf EmitIfCondition(Expression exp, Conditional cond, AbsynStatementEmitter emitter)
+        {
+            if (cond is IfElse || cond is IfThenElse)
+            {
+                exp = exp.Invert();
+            }
+            AbsynIf ifStm = new AbsynIf();
+            ifStm.Condition = exp;
+            emitter.EmitStatement(ifStm);
+
+            return ifStm;
+        }
+
 
         private bool HasSingleIfThenElseStatement(List<AbsynStatement> stms)
         {
@@ -202,12 +217,15 @@ namespace Decompiler.Structure
             AbsynSwitch switchStm = emitter.EmitSwitch(node, exp);
             AbsynStatementEmitter emitSwitchBranches = new AbsynStatementEmitter(switchStm.Statements);
 
+            if (Follow == null)
+                throw new NotSupportedException(string.Format("Null follow node for case statement at {0} is not supported.", node.Name));
+            codeGen.PushFollow(Follow);
             for (int i = 0; i < node.OutEdges.Count; i++)
             {
                 emitSwitchBranches.EmitCaseLabel(node, i);
 
                 StructureNode succ = node.OutEdges[i];
-                if (succ.traversed == travType.DFS_CODEGEN)
+                if (codeGen.IsVisited(succ))
                 {
                     codeGen.EmitGotoAndForceLabel(node, succ, emitSwitchBranches);
                 }
@@ -217,8 +235,11 @@ namespace Decompiler.Structure
                     emitSwitchBranches.EmitBreak();
                 }
             }
+            codeGen.PopFollow();
+            codeGen.GenerateCode(Follow, latchNode, emitter);
         }
 
+        #region Obsolete 
         [Obsolete]
         public override void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, 
             AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter)
@@ -226,7 +247,7 @@ namespace Decompiler.Structure
             Expression exp = ((SwitchInstruction) node.Instructions.Last.Instruction).Expression;
             AbsynSwitch switchStm = emitter.EmitSwitch(node, exp);
             AbsynStatementEmitter emitSwitchBranches = new AbsynStatementEmitter(switchStm.Statements);
-            // generate code for each out branch
+
             for (int i = 0; i < node.OutEdges.Count; i++)
             {
                 emitSwitchBranches.EmitCaseLabel(node, i);
@@ -243,5 +264,6 @@ namespace Decompiler.Structure
                 }
             }
         }
+        #endregion 
     }
 }

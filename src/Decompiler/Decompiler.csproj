@@ -325,6 +325,9 @@
     <Compile Include="Gui\Windows\Forms\StartPage.Designer.cs">
       <DependentUpon>StartPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Structure\AbsynCodeGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Structure\AbsynCodeGenerator2.cs" />
     <Compile Include="Structure\Conditional.cs" />
     <Compile Include="Gui\Windows\Forms\DecompilerMenus.cs" />
@@ -420,9 +423,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\StrengthReduction.cs" />
-    <Compile Include="Structure\AbsynCodeGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structure\AbsynStatementEmitter.cs" />
     <Compile Include="Structure\DerivedGraph.cs" />
     <Compile Include="Structure\DerivedSequenceBuilder.cs">

@@ -1,4 +1,5 @@
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -65,6 +66,7 @@ namespace Decompiler.UnitTests.Structure
             bool [] blocks = new bool[proc.Nodes.Count];
             i.FindNodesInInt(blocks, 1);
             Assert.AreEqual("111111100", DumpBoolArray(blocks));
+            HashSet<StructureNode> intervalMembers = i.FindIntervalNodes(1);
         }
 
         private string DumpBoolArray(bool[] blocks)

@@ -60,12 +60,6 @@ namespace Decompiler.Structure
 
         private bbType type;
 
-
-        // constructor sets the identity as well as the member instructions
-        public StructureNode(int id, List<Instruction> src, int first, int num)
-        {
-        }
-
         public StructureNode(Block block, int id)
         {
             if (block == null)
@@ -230,6 +224,9 @@ namespace Decompiler.Structure
         // that will be used for loop structuring as well as building the structure that will
         // be used for traversing the nodes in linear time. The inedges are also built during
         // this traversal.
+        public void SetLoopStamps()
+        {
+        }
         public void SetLoopStamps(ref int time, List<StructureNode> order)
         {
             //timestamp the current node with the current time and set its traversed flag
@@ -301,34 +298,17 @@ namespace Decompiler.Structure
             order.Add(this);
         }
 
-
-
-        [Obsolete("", true)]
-        public Loop GetLoopType()
-        {
-            return lType;
-        }
-
-
         // Return the index of this node within the ordering array
         public int Order
         {
-            get
-            {
-                Debug.Assert(ord != -1);
-                return ord;
-            }
+            get { return ord; }
             set { ord = value; }
         }
 
         // Return the index of this node within the post dominator ordering array
         public int RevOrder
         {
-            get
-            {
-                Debug.Assert(revOrd != -1);
-                return revOrd;
-            }
+            get { return revOrd; }
             set { revOrd = value; }
         }
 
@@ -374,18 +354,6 @@ namespace Decompiler.Structure
         }
     }
 
-
-
-    // an type for the class of unstructured conditional jumps
-    public enum unstructType
-    {
-        Structured,
-        JumpInOutLoop,
-        JumpIntoCase
-    }
-
-
-
     public enum bbType
     {
         none,
@@ -395,15 +363,6 @@ namespace Decompiler.Structure
         uBranch,
         ret,
         intNode
-    }
-
-    [Obsolete]
-    public enum structType
-    {
-        Seq,
-        Cond,
-        Loop,
-        LoopCond,
     }
 
     public enum UnstructuredType

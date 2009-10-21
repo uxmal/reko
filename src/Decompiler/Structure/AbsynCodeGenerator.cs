@@ -81,10 +81,10 @@ namespace Decompiler.Structure
                 emitter.EmitLabel(node);
             }
 
-            switch ((structType) 0)// node.GetStructType())
+            switch (0)// node.GetStructType())
             {
-            case structType.Loop:
-            case structType.LoopCond:
+            case 0: // structType.Loop:
+            case 1: // structType.LoopCond:
 
                 // add the follow of the loop (if it exists) to the follow set
                 if (node.Loop.Follow != null)
@@ -179,7 +179,7 @@ namespace Decompiler.Structure
                 }
                 break;
 
-            case structType.Cond:
+            case 3: // structType.Cond:
 
                 // reset this back to LoopCond if it was originally of this type
                 if (node.Loop.Latch != null)
@@ -278,7 +278,7 @@ namespace Decompiler.Structure
                 }
                 break;
 
-            case structType.Seq:
+            case 2: //structType.Seq:
                 WriteBlockExcludingPredicate(node, emitter);
                 if (node.BlockType == bbType.ret)
                 {

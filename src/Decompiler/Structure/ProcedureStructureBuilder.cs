@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -160,7 +161,6 @@ namespace Decompiler.Structure
 
 
 
-
         //********************************************************************************
         // Post-processing structuring routines
         //********************************************************************************
@@ -214,7 +214,5 @@ namespace Decompiler.Structure
             Debug.Assert(curProc.ExitNode != null);
             curProc.ExitNode.SetRevOrder(rorder);
         }
-
     }
-
 }
