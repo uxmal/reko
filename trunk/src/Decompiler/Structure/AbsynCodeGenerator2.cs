@@ -37,14 +37,14 @@ namespace Decompiler.Structure
             if (node == null)
                 throw new InvalidOperationException("A goto must have a starting point.");
 
-            if (node.LoopHead != null)
+            if (node.Loop != null)
             {
-                if (node.LoopHead.LoopFollow == succ)
+                if (node.Loop.Follow == succ)
                 {
                     emitter.EmitBreak();
                     return;
                 }
-                if (node.LoopHead == succ)
+                if (node.Loop.Header == succ)
                 {
                     emitter.EmitContinue();
                     return;
@@ -110,18 +110,18 @@ namespace Decompiler.Structure
                 break;
             case structType.Loop:
             case structType.LoopCond:
-                if (node.LoopFollow != null)
-                    followStack.Push(node.LoopFollow);
+                if (node.Loop.Follow != null)
+                    followStack.Push(node.Loop.Follow);
 
                 if (node.GetLoopType() is PreTestedLoop)
                 {
                     EmitLinearBlockStatements(node, emitter);
                     List<AbsynStatement> loopBody = new List<AbsynStatement>();
-                    StructureNode bodyNode = (node.Else == node.LoopFollow)
+                    StructureNode bodyNode = (node.Else == node.Loop.Follow)
                         ? node.Then
                         : node.Else;
                     AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
-                    GenerateCode(bodyNode, node.LatchNode, bodyEmitter);
+                    GenerateCode(bodyNode, node.Loop.Latch, bodyEmitter);
                     EmitLinearBlockStatements(node, bodyEmitter);
 
                     emitter.EmitWhile(node, BranchCondition(node), loopBody);
@@ -130,7 +130,7 @@ namespace Decompiler.Structure
                 {
                     List<AbsynStatement> loopBody = new List<AbsynStatement>();
                     AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
-                    if (node == node.LatchNode)
+                    if (node == node.Loop.Latch)
                     {
                         EmitLinearBlockStatements(node, bodyEmitter);
                     }
@@ -140,23 +140,23 @@ namespace Decompiler.Structure
                         {
                             visited.Remove(node);
                             node.SetStructType(structType.Cond);
-                            GenerateCode(node, node.LatchNode, bodyEmitter);
+                            GenerateCode(node, node.Loop.Latch, bodyEmitter);
                         }
                         else
                         {
                             EmitLinearBlockStatements(node, bodyEmitter);
                             if (node.OutEdges.Count != 1)
                                 throw new NotSupportedException(string.Format("Node {0} has {1} out edges.", node.Name, node.OutEdges.Count));
-                            GenerateCode(node.OutEdges[0], node.LatchNode, bodyEmitter);
+                            GenerateCode(node.OutEdges[0], node.Loop.Latch, bodyEmitter);
                         }
                     }
-                    emitter.EmitDoWhile(loopBody, BranchCondition(node.LatchNode));
+                    emitter.EmitDoWhile(loopBody, BranchCondition(node.Loop.Latch));
                     
                 }
-                if (node.LoopFollow != null)
+                if (node.Loop.Follow != null)
                 {
                     followStack.Pop();
-                    GenerateCode(node.LoopFollow, latchNode, emitter);
+                    GenerateCode(node.Loop.Follow, latchNode, emitter);
                 }
 
                 break;

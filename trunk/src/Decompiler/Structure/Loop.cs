@@ -32,6 +32,7 @@ namespace Decompiler.Structure
     {
         private StructureNode header;
         private StructureNode latch;
+        private StructureNode follow;
         private HashSet<StructureNode> loopNodes;
 
         public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
@@ -41,7 +42,13 @@ namespace Decompiler.Structure
             this.loopNodes = loopNodes;
         }
 
-        public abstract StructureNode FindFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, List<StructureNode> order);
+        public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
+        {
+            this.header = header;
+            this.latch = latch;
+            this.loopNodes = loopNodes;
+            this.follow = follow;
+        }
 
         public StructureNode Header
         {
@@ -57,77 +64,34 @@ namespace Decompiler.Structure
         {
             get { return loopNodes; }
         }
+
+        public StructureNode Follow
+        {
+            get { return follow; }
+        }
     }
 
 
     public class PreTestedLoop : Loop
     {
-        public PreTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes) : base(header, latch, loopNodes)
+        public PreTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow) : base(header, latch, loopNodes, follow)
         {
-        }
-
-
-        public override StructureNode FindFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, List<StructureNode> order)
-        {
-            // the child that is the loop header's conditional follow will be the loop follow
-            if (header.OutEdges[0] == header.CondFollow)
-                return header.OutEdges[0];
-            else
-                return header.OutEdges[1];
         }
     }
 
     public class PostTestedLoop : Loop
     {
-        public PostTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes) : base(header, latch, loopNodes)
+        public PostTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow) : base(header, latch, loopNodes, follow)
         {
-        }
-
-        public override StructureNode FindFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, List<StructureNode> order)
-        {
-            // the follow of a post tested ('repeat') loop is the node on the end of the
-            // non-back edge from the latch node
-            if (latch.OutEdges[0] == header)
-                return latch.OutEdges[1];
-            else
-                return latch.OutEdges[0];
         }
     }
 
     public class EndLessLoop : Loop
     {
-        public EndLessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes) : base(header, latch, loopNodes)
+        public EndLessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow) : base(header, latch, loopNodes, follow)
         {
-        }
-
-        public override StructureNode FindFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, List<StructureNode> order)
-        {
-            StructureNode follow = null;
-            // traverse the ordering array between the header and latch nodes.
-            for (int i = header.Order - 1; i > latch.Order; i--)
-            {
-                // using intervals, the follow is determined to be the child outside the loop of a
-                // 2 way conditional header that is inside the loop such that it (the child) has
-                // the highest order of all potential follows
-                StructureNode desc = order[i];
-
-                if (desc.GetStructType() == structType.Cond && !(desc.Conditional is Case) && loopNodes.Contains(desc))
-                {
-                    for (int j = 0; j < desc.OutEdges.Count; j++)
-                    {
-                        StructureNode succ = desc.OutEdges[j];
-
-                        // consider the current child 
-                        if (succ != header && !loopNodes.Contains(succ) && (follow == null || succ.Order > follow.Order))
-                            follow = succ;
-                    }
-                }
-            }
-
-            return follow;
         }
     }
-
 
 
 	/// <summary>

@@ -104,7 +104,7 @@ namespace Decompiler.Structure
 
         public void EmitWhile(StructureNode node, Expression expr, List<AbsynStatement> body)
         {
-            if (node.Then == node.LoopFollow)
+            if (node.Then == node.Loop.Follow)
                 expr = expr.Invert();
             stms.Add(new AbsynWhile(expr, body));
         }

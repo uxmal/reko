@@ -56,25 +56,25 @@ namespace Decompiler.Structure
             {
                 if (IsTwoWayBranchWithFollow(curNode))
                 {
-                    StructureNode myLoopHead = (curNode.GetStructType() == structType.LoopCond ? curNode : curNode.LoopHead);
-                    StructureNode follLoopHead = curNode.CondFollow.LoopHead;
+                    Loop myLoop = curNode.GetLoopType();
+                    Loop follLoop = curNode.CondFollow.Loop;
 
                     // analyse whether this is a jump into/outof a loop
-                    if (myLoopHead != follLoopHead)
+                    if (myLoop != follLoop)
                     {
                         // we want to find the branch that the latch node is on for a jump out of a loop
-                        if (myLoopHead != null)
+                        if (myLoop != null)
                         {
-                            SetUnstructuredLoopTransfer(curNode, myLoopHead.LatchNode);
+                            SetUnstructuredLoopTransfer(curNode, myLoop.Latch);
                         }
 
-                        if (follLoopHead != null)
+                        if (follLoop != null)
                         {
                             if (curNode.UnstructType == UnstructuredType.Structured)
                             // find the branch that the loop head is on for a jump into a loop body. If a branch has
                             // already been found, then it will match this one anyway
                             {
-                                SetUnstructuredLoopTransfer(curNode, follLoopHead);
+                                SetUnstructuredLoopTransfer(curNode, follLoop.Header);
                             }
                         }
                     }
@@ -231,7 +231,7 @@ namespace Decompiler.Structure
 
                     // If a latch was found and it doesn't belong to another loop, 
                     // tag the loop nodes and classify it.
-                    if (latch != null && latch.LoopHead == null)
+                    if (latch != null && latch.Loop == null)
                     {
                         CreateLoop(curProc, headNode, intNodes, latch);
                     }
@@ -255,15 +255,13 @@ namespace Decompiler.Structure
         }
 
 
-        private void CreateLoop(ProcedureStructure curProc, StructureNode headNode, HashSet<StructureNode> cfgNodes, StructureNode latch)
+        private void CreateLoop(ProcedureStructure curProc, StructureNode headNode, HashSet<StructureNode> intervalNodes, StructureNode latch)
         {
-            LoopFinder lf = new LoopFinder(headNode);
-
             // if the head node has already been determined as a loop header then the nodes
             // within this loop have to be untagged and the latch reset to its original type
-            if (headNode.LatchNode != null)
+            if (headNode.Loop != null && headNode.Loop.Latch != null)
             {
-                StructureNode oldLatch = headNode.LatchNode;
+                StructureNode oldLatch = headNode.Loop.Latch;
 
                 // reset the latch node's structured class. Only need to do this for a 2 way latch
                 if (oldLatch.BlockType == bbType.cBranch)
@@ -271,11 +269,10 @@ namespace Decompiler.Structure
 
                 // untag the nodes
                 for (int i = headNode.Order - 1; i >= oldLatch.Order; i--)
-                    if (curProc.Ordering[i].LoopHead == headNode)
-                        curProc.Ordering[i].LoopHead = null;
+                    if (curProc.Ordering[i].Loop.Header == headNode)
+                        curProc.Ordering[i].Loop = null;
             }
 
-            headNode.LatchNode = latch;
 
             // the latching node will already have been structured as a conditional header. If it is not
             // also the loop header (i.e. the loop is over more than one block) then reset
@@ -287,9 +284,10 @@ namespace Decompiler.Structure
             headNode.SetStructType(structType.Loop);
 
 
-            HashSet<StructureNode> loopNodes = lf.TagNodesInLoop(curProc.Ordering, cfgNodes);
-            lf.DetermineLoopType(loopNodes);
-            headNode.LoopFollow = lf.FindLoopFollow(curProc.Ordering, loopNodes);
+            LoopFinder lf = new LoopFinder(headNode, latch, curProc.Ordering);
+            HashSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
+            Loop loop = lf.DetermineLoopType(loopNodes);
+            lf.TagNodesInLoop(loop, loopNodes);
         }
 
         public ProcedureStructure ProcedureStructure

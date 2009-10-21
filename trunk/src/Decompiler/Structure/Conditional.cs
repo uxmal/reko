@@ -69,7 +69,7 @@ namespace Decompiler.Structure
                 codeGen.PushFollow(node.CondFollow);
 
 
-                if (codeGen.IsVisited(succ) || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
+                if (codeGen.IsVisited(succ) || (node.Loop != null && succ == node.Loop.Follow))
                     codeGen.EmitGotoAndForceLabel(node, succ, emitThen);
                 else
                     codeGen.GenerateCode(succ, latchNode, emitThen);
@@ -92,8 +92,6 @@ namespace Decompiler.Structure
                 codeGen.PopFollow();
                 codeGen.GenerateCode(node.CondFollow, latchNode, emitter);
             }
-
-
         }
 
 
@@ -108,7 +106,7 @@ namespace Decompiler.Structure
                 AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
                 // emit a goto statement if the first clause has already been generated or it
                 // is the follow of this node's enclosing loop
-                if (succ.traversed == travType.DFS_CODEGEN || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
+                if (succ.traversed == travType.DFS_CODEGEN || (node.Loop != null && succ == node.Loop.Follow))
                     codeGen.EmitGotoAndLabel(node, succ, emitThen);
                 else
                     codeGen.WriteCode(succ, latch, followSet, gotoSet, emitThen);
