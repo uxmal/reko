@@ -70,7 +70,7 @@ namespace Decompiler.Structure
             if (node.traversed == travType.DFS_CODEGEN)
             {
                 // this should only occur for a loop over a single block
-                Debug.Assert(node.GetStructType() == structType.Loop && node.GetLoopType() == loopType.PostTested && node.LatchNode == node);
+                Debug.Assert(node.GetStructType() == structType.Loop && node.GetLoopType() is PostTestedLoop && node.LatchNode == node);
                 return;
             }
             node.traversed = travType.DFS_CODEGEN;
@@ -90,7 +90,7 @@ namespace Decompiler.Structure
                 if (node.LoopFollow != null)
                     followSet.Add(node.LoopFollow);
 
-                if (node.GetLoopType() == loopType.PreTested)
+                if (node.GetLoopType() is PreTestedLoop)
                 {
                     Debug.Assert(node.LatchNode.OutEdges.Count == 1);
 
@@ -142,7 +142,7 @@ namespace Decompiler.Structure
                         WriteCode(node.OutEdges[0], node.LatchNode, followSet, gotoSet, emitBody);
                     }
 
-                    if (node.GetLoopType() == loopType.PostTested)
+                    if (node.GetLoopType() is PostTestedLoop)
                     {
                         // if code has not been generated for the latch node, generate it now
                         if (node.LatchNode.traversed != travType.DFS_CODEGEN)
@@ -155,7 +155,7 @@ namespace Decompiler.Structure
                     }
                     else
                     {
-                        Debug.Assert(node.GetLoopType() == loopType.Endless);
+                        Debug.Assert(node.GetLoopType() is EndLessLoop);
 
                         // if code has not been generated for the latch node, generate it now
                         if (node.LatchNode.traversed != travType.DFS_CODEGEN)

@@ -57,7 +57,7 @@ namespace Decompiler.Structure
         private structType sType;
         private UnstructuredType usType;
         private Conditional cond;
-        private loopType lType;
+        private Loop lType;
         private IntNode interval;
 
         private int[] loopStamps;
@@ -231,10 +231,9 @@ namespace Decompiler.Structure
                          revLoopStamps[1] > other.revLoopStamps[1]));
         }
 
-        // Is this a latch node?
         public bool IsLatchNode()
         {
-            return (loopHead != null && loopHead.latchNode == this);
+            return (loopHead != null && loopHead.LatchNode == this);
         }
 
 
@@ -261,14 +260,15 @@ namespace Decompiler.Structure
 
         // Pre: the structured class of the node must be Loop or LoopCond
         // Set the loop type of this loop header node
-        public void SetLoopType(loopType l)
+        public void SetLoopType(Loop l)
         {
-            Debug.Assert(sType == structType.Loop || sType == structType.LoopCond);
+            if (sType != structType.Loop && sType != structType.LoopCond)
+                throw new InvalidOperationException("A node must be a Loop or a LoopCond before you can set its loop type.");
             lType = l;
 
             //set the structured class (back to) just Loop if the loop type is PreTested OR
             //it's PostTested and is a single block loop
-            if (lType == loopType.PreTested || (lType == loopType.PostTested && this == latchNode))
+            if (lType is PreTestedLoop || (lType is PostTestedLoop && this == LatchNode))
                 sType = structType.Loop;
         }
 
@@ -351,7 +351,7 @@ namespace Decompiler.Structure
 
         // Pre: this node must be a loop header and its loop type must be already set.
         // Return the loop type of this node
-        public loopType GetLoopType()
+        public Loop GetLoopType()
         {
             Debug.Assert(sType == structType.Loop || sType == structType.LoopCond);
             return lType;
@@ -448,25 +448,6 @@ namespace Decompiler.Structure
     }
 
 
-    // an enumerated type for the type of loop headers
-    public class loopType
-    {
-        public static readonly loopType PreTested = new PreTestedLoop();				// Header of a while loop
-        public static readonly loopType PostTested = new PostTestedLoop();			// Header of a repeat loop
-        public static readonly loopType Endless = new EndLessLoop(); // Header of an endless loop
-    }
-
-    public class PreTestedLoop : loopType
-    {
-    }
-
-    public class PostTestedLoop : loopType
-    {
-    }
-
-    public class EndLessLoop : loopType
-    {
-    }
 
     // an type for the class of unstructured conditional jumps
     public enum unstructType

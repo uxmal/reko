@@ -44,30 +44,6 @@ namespace Decompiler.Structure
         private static Conditional ifElse = new IfElse();
         private static Conditional ifThenElse = new IfThenElse();
         private static Conditional @case = new Case();
-
-        [Obsolete("Use 'is' syntax for the time being.", true)]
-        public static Conditional IfThen
-        {
-            get { return Conditional.ifThen; }
-        }
-
-        [Obsolete("Use 'is' syntax for the time being.", true)]
-        public static Conditional IfElse
-        {
-            get { return Conditional.ifElse; }
-        }
-
-        [Obsolete("Use 'is' syntax for the time being.", true)]
-        public static Conditional IfThenElse
-        {
-            get { return Conditional.ifThenElse; }
-        }
-
-        [Obsolete("Use 'is' syntax for the time being.", true)]
-        public static Conditional Case
-        {
-            get { return Conditional.@case; }
-        }
     }
 
     public abstract class IfConditional : Conditional
@@ -137,7 +113,7 @@ namespace Decompiler.Structure
                 else
                     codeGen.WriteCode(succ, latch, followSet, gotoSet, emitThen);
 
-                if (node.Conditional == Conditional.IfThenElse)
+                if (node.Conditional is IfThenElse)
                 {
                     succ = SecondBranch(node);
                     AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);

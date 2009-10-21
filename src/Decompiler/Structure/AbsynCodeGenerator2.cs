@@ -93,7 +93,7 @@ namespace Decompiler.Structure
                     emitter.EmitStatement(node.Instructions.Last);
                     return;
                 }
-                if (node.LoopHead != null && node == node.LoopHead.LatchNode)
+                if (node.IsLatchNode())
                     break;
 
                 if (node.OutEdges.Count == 1)
@@ -113,7 +113,7 @@ namespace Decompiler.Structure
                 if (node.LoopFollow != null)
                     followStack.Push(node.LoopFollow);
 
-                if (node.GetLoopType() == loopType.PreTested)
+                if (node.GetLoopType() is PreTestedLoop)
                 {
                     EmitLinearBlockStatements(node, emitter);
                     List<AbsynStatement> loopBody = new List<AbsynStatement>();
@@ -126,7 +126,7 @@ namespace Decompiler.Structure
 
                     emitter.EmitWhile(node, BranchCondition(node), loopBody);
                 }
-                else if (node.GetLoopType() == loopType.PostTested)
+                else if (node.GetLoopType() is PostTestedLoop)
                 {
                     List<AbsynStatement> loopBody = new List<AbsynStatement>();
                     AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
