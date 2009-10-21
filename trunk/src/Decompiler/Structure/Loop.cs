@@ -20,21 +20,128 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Decompiler.Structure
 {
+    /// <summary>
+    /// A loop is described by its header, its latch node, its members, and a follow node.
+    /// </summary>
+    public abstract class Loop
+    {
+        private StructureNode header;
+        private StructureNode latch;
+        private HashSet<StructureNode> loopNodes;
+
+        public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
+        {
+            this.header = header;
+            this.latch = latch;
+            this.loopNodes = loopNodes;
+        }
+
+        public abstract StructureNode FindFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, List<StructureNode> order);
+
+        public StructureNode Header
+        {
+            get { return header; }
+        }
+
+        public StructureNode Latch
+        {
+            get { return latch; }
+        }
+
+        public HashSet<StructureNode> Nodes
+        {
+            get { return loopNodes; }
+        }
+    }
+
+
+    public class PreTestedLoop : Loop
+    {
+        public PreTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes) : base(header, latch, loopNodes)
+        {
+        }
+
+
+        public override StructureNode FindFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, List<StructureNode> order)
+        {
+            // the child that is the loop header's conditional follow will be the loop follow
+            if (header.OutEdges[0] == header.CondFollow)
+                return header.OutEdges[0];
+            else
+                return header.OutEdges[1];
+        }
+    }
+
+    public class PostTestedLoop : Loop
+    {
+        public PostTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes) : base(header, latch, loopNodes)
+        {
+        }
+
+        public override StructureNode FindFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, List<StructureNode> order)
+        {
+            // the follow of a post tested ('repeat') loop is the node on the end of the
+            // non-back edge from the latch node
+            if (latch.OutEdges[0] == header)
+                return latch.OutEdges[1];
+            else
+                return latch.OutEdges[0];
+        }
+    }
+
+    public class EndLessLoop : Loop
+    {
+        public EndLessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes) : base(header, latch, loopNodes)
+        {
+        }
+
+        public override StructureNode FindFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, List<StructureNode> order)
+        {
+            StructureNode follow = null;
+            // traverse the ordering array between the header and latch nodes.
+            for (int i = header.Order - 1; i > latch.Order; i--)
+            {
+                // using intervals, the follow is determined to be the child outside the loop of a
+                // 2 way conditional header that is inside the loop such that it (the child) has
+                // the highest order of all potential follows
+                StructureNode desc = order[i];
+
+                if (desc.GetStructType() == structType.Cond && !(desc.Conditional is Case) && loopNodes.Contains(desc))
+                {
+                    for (int j = 0; j < desc.OutEdges.Count; j++)
+                    {
+                        StructureNode succ = desc.OutEdges[j];
+
+                        // consider the current child 
+                        if (succ != header && !loopNodes.Contains(succ) && (follow == null || succ.Order > follow.Order))
+                            follow = succ;
+                    }
+                }
+            }
+
+            return follow;
+        }
+    }
+
+
+
 	/// <summary>
 	/// Describes a loop.
 	/// </summary>
-	public abstract class Loop
+    [Obsolete]
+	public abstract class LoopObsolete
 	{
 		private BitSet blocks;
 		private Block header;
 		private Block end;
 		protected Block follow;
 
-		public Loop(Block header, Block end, BitSet blocks)
+		public LoopObsolete(Block header, Block end, BitSet blocks)
 		{
 			this.header = header;
 			this.end = end;
@@ -96,18 +203,20 @@ namespace Decompiler.Structure
 		}
 	}
 
-	public class WhileLoop : Loop
+    [Obsolete]
+	public class WhileLoopObsolete : LoopObsolete
 	{
-		public WhileLoop(Block head, Block end, BitSet blocks) : base(head, end, blocks)
+		public WhileLoopObsolete(Block head, Block end, BitSet blocks) : base(head, end, blocks)
 		{
 			follow = GetFollowBlock(head);
 		}
 
 	}
 
-	public class RepeatLoop : Loop
+    [Obsolete]
+	public class RepeatLoopObsolete : LoopObsolete
 	{
-		public RepeatLoop(Block head, Block end, BitSet blocks) : base(head, end, blocks)
+		public RepeatLoopObsolete(Block head, Block end, BitSet blocks) : base(head, end, blocks)
 		{
 			follow = GetFollowBlock(end);
 		}

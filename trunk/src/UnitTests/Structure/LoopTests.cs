@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Structure
 
 			BitSet s = new BitSet(2);
 			s[0] = true;
-			RepeatLoop loop = new RepeatLoop(b, b, s);
+			RepeatLoopObsolete loop = new RepeatLoopObsolete(b, b, s);
 			Assert.IsNotNull(loop);
 			Assert.AreSame(x, loop.FollowBlock);
 		}
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Structure
 			BitSet s = new BitSet(m.Procedure.RpoBlocks.Count);
 			s[b.RpoNumber] = true;
 
-			RepeatLoop loop = new RepeatLoop(b, b, s);
+			RepeatLoopObsolete loop = new RepeatLoopObsolete(b, b, s);
 			Assert.IsNotNull(loop);
 			Assert.AreSame(x, loop.FollowBlock);
 		}
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Structure
 			BitSet s = new BitSet(3);
 			s[0] = true;
 			s[1] = true;
-			WhileLoop loop = new WhileLoop(h, b, s);
+			WhileLoopObsolete loop = new WhileLoopObsolete(h, b, s);
 			Assert.IsNotNull(loop);
 			Assert.AreSame(x, loop.FollowBlock);
 		}

@@ -288,7 +288,7 @@ namespace Decompiler.Structure
 
 
             HashSet<StructureNode> loopNodes = lf.TagNodesInLoop(curProc.Ordering, cfgNodes);
-            lf.DetermineLoopType();
+            lf.DetermineLoopType(loopNodes);
             headNode.LoopFollow = lf.FindLoopFollow(curProc.Ordering, loopNodes);
         }
 
