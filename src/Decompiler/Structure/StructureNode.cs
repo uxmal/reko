@@ -48,12 +48,9 @@ namespace Decompiler.Structure
         public string labelStr;
 
         private StructureNode immPDom;
-        private StructureNode loopHead;
         private StructureNode caseHead;
 
         private StructureNode condFollow;
-        private StructureNode loopFollow;
-        private StructureNode latchNode;
         private structType sType;
         private UnstructuredType usType;
         private Conditional cond;
@@ -86,12 +83,9 @@ namespace Decompiler.Structure
 
             labelStr = null;
             immPDom = null;
-            loopHead = null;
             caseHead = null;
 
             condFollow = null;
-            loopFollow = null;
-            latchNode = null;
             sType = structType.Seq;
 
             usType = UnstructuredType.Structured;
@@ -233,29 +227,15 @@ namespace Decompiler.Structure
 
         public bool IsLatchNode()
         {
-            return (loopHead != null && loopHead.LatchNode == this);
+            return (lType != null && lType.Latch == this);
         }
 
 
-        // The latch node of a loop header
-        public StructureNode LatchNode
+        ///<summary>The innermost loop this node belongs to.</summary>
+        public Loop Loop
         {
-            get { return latchNode; }
-            set { latchNode = value; }
-        }
-
-
-        public StructureNode LoopFollow
-        {
-            get { return loopFollow; }
-            set { loopFollow = value; }
-        }
-
-        ///<summary>The header of the innermost loop this node belongs to.</summary>
-        public StructureNode LoopHead
-        {
-            get { return loopHead; }
-            set { loopHead = value; }
+            get { return lType; }
+            set { lType = value; }
         }
 
         // Pre: the structured class of the node must be Loop or LoopCond
@@ -268,7 +248,7 @@ namespace Decompiler.Structure
 
             //set the structured class (back to) just Loop if the loop type is PreTested OR
             //it's PostTested and is a single block loop
-            if (lType is PreTestedLoop || (lType is PostTestedLoop && this == LatchNode))
+            if (lType is PreTestedLoop || (lType is PostTestedLoop && this == Loop.Latch))
                 sType = structType.Loop;
         }
 
@@ -349,11 +329,8 @@ namespace Decompiler.Structure
 
 
 
-        // Pre: this node must be a loop header and its loop type must be already set.
-        // Return the loop type of this node
         public Loop GetLoopType()
         {
-            Debug.Assert(sType == structType.Loop || sType == structType.LoopCond);
             return lType;
         }
 

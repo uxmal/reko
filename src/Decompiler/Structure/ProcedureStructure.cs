@@ -134,10 +134,11 @@ namespace Decompiler.Structure
 
             writer.WriteLine("    Order: {0}, RevOrder {1}", node.Order, node.RevOrder);
             writer.WriteLine("    Structure type: {0}", node.GetStructType());
-            if (node.LoopHead != null)
-                writer.WriteLine("    Loop header:" + node.LoopHead.Block.Name);
-            if (node.LatchNode != null)
-                writer.WriteLine("    Latch: {0}", node.LatchNode.Block.Name);
+            if (node.Loop != null)
+            {
+                writer.WriteLine("    Loop header:" + node.Loop.Header.Block.Name);
+                writer.WriteLine("    Latch: {0}", node.Loop.Latch.Block.Name);
+            }
             if (node.CondFollow != null)
                 writer.WriteLine("    Cond follow: {0}", node.CondFollow.Block.Name);
             writer.WriteLine("    Unstructured type: {0}", node.UnstructType);

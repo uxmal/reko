@@ -91,31 +91,36 @@ namespace Decompiler.Structure
     public class LoopFinder
     {
         private StructureNode header;
+        private StructureNode latch;
+        private List<StructureNode> order;
         
-        public LoopFinder(StructureNode header)
+        public LoopFinder(StructureNode header, StructureNode latch, List<StructureNode> order)
         {
+            if (latch == null)
+                throw new InvalidOperationException("A loop must have a latch node.");
+
             this.header = header;
+            this.latch = latch;
+            this.order = order;
         }
         
-        public void DetermineLoopType(HashSet<StructureNode> loopNodes)
+        public Loop DetermineLoopType(HashSet<StructureNode> loopNodes)
         {
-            if (header.LatchNode == null)
-                throw new InvalidOperationException("Header node must have determined a latch node.");
 
             // if the latch node is a two way node then this must be a post tested loop
-            if (header.LatchNode.BlockType == bbType.cBranch)
+            if (latch.BlockType == bbType.cBranch)
             {
-                header.SetLoopType(new PostTestedLoop(header, header.LatchNode, loopNodes));
+                header.SetLoopType(CreatePostTestedLoop(loopNodes));
 
                 // if the head of the loop is a two way node and the loop spans more than one block
                 // then it must also be a conditional header
-                if (header.BlockType == bbType.cBranch && header != header.LatchNode)
+                if (header.BlockType == bbType.cBranch && header != latch)
                     header.SetStructType(structType.LoopCond);
             }
             // otherwise it is either a pretested or endless loop
             else if (header.BlockType == bbType.cBranch)
             {
-                header.SetLoopType(new PreTestedLoop(header, header.LatchNode, loopNodes));
+                header.SetLoopType(CreatePreTestedLoop(loopNodes));
                 bool WORKING = false;
                 if (WORKING)
                 {
@@ -126,39 +131,108 @@ namespace Decompiler.Structure
                 if (header.OutEdges[0] != header.CondFollow && header.OutEdges[1] != header.CondFollow)
                 {
                     // neither children are the conditional follow
-                    header.SetLoopType(new EndLessLoop(header, header.LatchNode, loopNodes));
+                    header.SetLoopType(CreateEndLessLoop(loopNodes));
 
                     // retain the fact that this is also a conditional header
                     header.SetStructType(structType.LoopCond);
                 }
                 else
                     // one child is the conditional follow
-                    header.SetLoopType(new PreTestedLoop(header, header.LatchNode, loopNodes));
+                    header.SetLoopType(CreatePreTestedLoop(loopNodes));
                 }
             }
             // both the header and latch node are one way nodes so this must be an endless loop
             else
             {
-                header.SetLoopType(new EndLessLoop(header, header.LatchNode, loopNodes));
+                header.SetLoopType(CreateEndLessLoop(loopNodes));
             }
+            return header.GetLoopType();
         }
 
-        public StructureNode FindLoopFollow(List<StructureNode> order, HashSet<StructureNode> loopNodes)
+        private EndLessLoop CreateEndLessLoop(HashSet<StructureNode> loopNodes)
         {
-            Debug.Assert(header.GetStructType() == structType.Loop || header.GetStructType() == structType.LoopCond);
-            return header.GetLoopType().FindFollowNode(header, header.LatchNode, loopNodes, order);
+            StructureNode follow = FindEndLessFollowNode(header, latch, loopNodes);
+            EndLessLoop loop = new EndLessLoop(header, latch, loopNodes, follow);
+            return loop;
+
         }
 
-        public HashSet<StructureNode> TagNodesInLoop(List<StructureNode> nodes, HashSet<StructureNode> intNodes)
+        private PreTestedLoop CreatePreTestedLoop(HashSet<StructureNode> loopNodes)
+        {
+            StructureNode follow = FindPreTestedFollowNode(header);
+            PreTestedLoop loop = new PreTestedLoop(header, latch, loopNodes, follow);
+            return loop;
+
+        }
+
+        private PostTestedLoop CreatePostTestedLoop(HashSet<StructureNode> loopNodes)
+        {
+            StructureNode follow = FindPostTestedFollowNode(header, latch);
+            PostTestedLoop loop = new PostTestedLoop(header, latch, loopNodes, follow);
+            return loop;
+
+        }
+
+        private StructureNode FindEndLessFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
+        {
+            StructureNode follow = null;
+            // traverse the ordering array between the header and latch nodes.
+            for (int i = header.Order - 1; i > latch.Order; i--)
+            {
+                // using intervals, the follow is determined to be the child outside the loop of a
+                // 2 way conditional header that is inside the loop such that it (the child) has
+                // the highest order of all potential follows
+                StructureNode desc = order[i];
+
+                if (desc.GetStructType() == structType.Cond && !(desc.Conditional is Case) && loopNodes.Contains(desc))
+                {
+                    for (int j = 0; j < desc.OutEdges.Count; j++)
+                    {
+                        StructureNode succ = desc.OutEdges[j];
+
+                        // consider the current child 
+                        if (succ != header && !loopNodes.Contains(succ) && (follow == null || succ.Order > follow.Order))
+                            follow = succ;
+                    }
+                }
+            }
+            return follow;
+        }
+
+
+        private StructureNode FindPostTestedFollowNode(StructureNode header, StructureNode latch)
+        {
+            // the follow of a post tested ('repeat') loop is the node on the end of the
+            // non-back edge from the latch node
+            if (latch.OutEdges[0] == header)
+                return latch.OutEdges[1];
+            else
+                return latch.OutEdges[0];
+        }
+
+        private StructureNode FindPreTestedFollowNode(StructureNode header)
+        {
+            // the child that is the loop header's conditional follow will be the loop follow
+            if (header.OutEdges[0] == header.CondFollow)
+                return header.OutEdges[0];
+            else
+                return header.OutEdges[1];
+        }
+
+        public HashSet<StructureNode> FindNodesInLoop(HashSet<StructureNode> intNodes)
         {
             SccLoopFinder finder = new SccLoopFinder(header.Interval, intNodes);
-            HashSet<StructureNode> loopNodes = finder.FindLoop();
+            return finder.FindLoop();
+        }
+
+        //$REVIEW: add to Loop class instead?
+        public void TagNodesInLoop(Loop loop, HashSet<StructureNode> loopNodes)
+        {
             foreach (StructureNode node in loopNodes)
             {
-                if (node.LoopHead == null)
-                    node.LoopHead = header;
+                if (node.Loop == null)
+                    node.Loop = loop;
             }
-            return loopNodes;
         }
     }
 }

@@ -45,8 +45,8 @@ namespace Decompiler.UnitTests.Structure
             IntNode i = proc.DerivedGraphs[0].Intervals[1];
             Assert.AreEqual("LoopHead", i.Header.Name);
 
-            LoopFinder lf = new LoopFinder(proc.Ordering[6]);
-            HashSet<StructureNode> loopNodes = lf.TagNodesInLoop(null, i.FindIntervalNodes(0));
+            LoopFinder lf = new LoopFinder(proc.Ordering[6], proc.Ordering[2], proc.Ordering);
+            HashSet<StructureNode> loopNodes = lf.FindNodesInLoop(i.FindIntervalNodes(0));
             Assert.AreEqual(3, loopNodes.Count);
 
         }
