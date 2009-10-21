@@ -44,7 +44,7 @@ namespace Decompiler.Structure
         private int revOrd;
 
         internal travType traversed;          //$REFACTOR: use visited hashtables instead.
-        public bool hllLabel;
+        private bool forceLabel;
         public string labelStr;
 
         private StructureNode immPDom;
@@ -82,7 +82,7 @@ namespace Decompiler.Structure
             revOrd = -1;
 
             traversed = travType.UNTRAVERSED;
-            hllLabel = false;
+            forceLabel = false;
 
             labelStr = null;
             immPDom = null;
@@ -109,7 +109,7 @@ namespace Decompiler.Structure
 
 
 
-                // Constructor used by the IntNode derived class
+        // Constructor used by the IntNode derived class
         protected StructureNode(int newId, bbType t)
         {
             id = newId; type = t;
@@ -178,6 +178,11 @@ namespace Decompiler.Structure
 
         public StructureNode Else { get { return OutEdges[0]; } }
 
+        public bool ForceLabel
+        {
+            get { return forceLabel; }
+            set { forceLabel = value; }
+        }
 
         /// <summary>
         /// Returns true of this node has a back edge to <paramref name="dest"/>.
@@ -446,9 +451,21 @@ namespace Decompiler.Structure
     // an enumerated type for the type of loop headers
     public class loopType
     {
-        public static loopType PreTested = new loopType();				// Header of a while loop
-        public static loopType PostTested = new loopType();			// Header of a repeat loop
-        public static loopType Endless = new loopType(); // Header of an endless loop
+        public static readonly loopType PreTested = new PreTestedLoop();				// Header of a while loop
+        public static readonly loopType PostTested = new PostTestedLoop();			// Header of a repeat loop
+        public static readonly loopType Endless = new EndLessLoop(); // Header of an endless loop
+    }
+
+    public class PreTestedLoop : loopType
+    {
+    }
+
+    public class PostTestedLoop : loopType
+    {
+    }
+
+    public class EndLessLoop : loopType
+    {
     }
 
     // an type for the class of unstructured conditional jumps

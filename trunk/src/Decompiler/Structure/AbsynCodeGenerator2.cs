@@ -22,25 +22,39 @@ namespace Decompiler.Structure
         }
 
 
-        public void DeferRendering(StructureNode node, AbsynStatementEmitter emitter)
+        public void DeferRendering(StructureNode predecessor, StructureNode node, AbsynStatementEmitter emitter)
         {
             foreach (NodeEmitter ne in nodesToRender)
             {
                 if (ne.Node == node)
                     return;
             }
-            nodesToRender.Enqueue(new NodeEmitter(node, emitter));
+            nodesToRender.Enqueue(new NodeEmitter(predecessor, node, emitter));
         }
 
-        public void PushFollow(StructureNode followNode)
+        public void EmitGotoAndForceLabel(StructureNode node, StructureNode succ, AbsynStatementEmitter emitter)
         {
-            followStack.Push(followNode);
+            if (node == null)
+                throw new InvalidOperationException("A goto must have a starting point.");
+
+            if (node.LoopHead != null)
+            {
+                if (node.LoopHead.LoopFollow == succ)
+                {
+                    emitter.EmitBreak();
+                    return;
+                }
+                if (node.LoopHead == succ)
+                {
+                    emitter.EmitContinue();
+                    return;
+                }
+            }
+
+            succ.ForceLabel = true;
+            emitter.EmitGoto(succ);
         }
 
-        public StructureNode PopFollow()
-        {
-            return followStack.Pop();
-        }
 
 
 
@@ -50,6 +64,8 @@ namespace Decompiler.Structure
             while (nodesToRender.Count > 0)
             {
                 NodeEmitter ne = nodesToRender.Dequeue();
+                if (IsVisited(ne.Node))
+                    EmitGotoAndForceLabel(ne.Predecessor, ne.Node, ne.Emitter);
                 GenerateCode(ne.Node, null, ne.Emitter);
             }
         }
@@ -84,7 +100,7 @@ namespace Decompiler.Structure
                 {
                     StructureNode succ = node.OutEdges[0];
                     if (IsVisited(succ))
-                        EmitGotoAndLabel(node, succ, emitter);
+                        EmitGotoAndForceLabel(node, succ, emitter);
                     else
                         GenerateCode(succ, latchNode, emitter);
                 }
@@ -169,6 +185,17 @@ namespace Decompiler.Structure
             emitter.EmitLabel(node);
         }
 
+        public void PushFollow(StructureNode followNode)
+        {
+            followStack.Push(followNode);
+        }
+
+        public StructureNode PopFollow()
+        {
+            return followStack.Pop();
+        }
+
+
         private bool AllPredecessorsVisited(StructureNode node)
         {
             foreach (StructureNode pred in node.InEdges)
@@ -205,12 +232,6 @@ namespace Decompiler.Structure
 
 
 
-        public void EmitGotoAndLabel(StructureNode node, StructureNode succ, AbsynStatementEmitter emitter)
-        {
-            succ.ForceLabel = true;
-            emitter.EmitGoto(succ);
-        }
-
         public bool IsVisited(StructureNode succ)
         {
             return visited.Contains(succ);
@@ -220,9 +241,18 @@ namespace Decompiler.Structure
         {
             private AbsynStatementEmitter emitter;
             private StructureNode node;
+            private StructureNode pred;
 
             public NodeEmitter(StructureNode node, AbsynStatementEmitter emitter)
             {
+                this.node = node;
+                this.pred = null;
+                this.emitter = emitter;
+            }
+
+            public NodeEmitter(StructureNode pred, StructureNode node, AbsynStatementEmitter emitter)
+            {
+                this.pred = pred;
                 this.node = node;
                 this.emitter = emitter;
             }
@@ -235,6 +265,11 @@ namespace Decompiler.Structure
             public AbsynStatementEmitter Emitter
             {
                 get { return emitter; }
+            }
+
+            public StructureNode Predecessor
+            {
+                get { return pred; } 
             }
         }
 

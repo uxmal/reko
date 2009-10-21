@@ -115,7 +115,7 @@ namespace Decompiler.Structure
 
                     // rewrite the loop header(excluding the predicate) inside the loop
                     // after making sure another label won't be generated.
-                    node.hllLabel = false;
+                    node.ForceLabel = false;
                     WriteBlockExcludingPredicate(node, emitBody);
 
                     emitter.EmitWhile(node, ((Branch) node.Instructions.Last.Instruction).Condition, body);
@@ -324,7 +324,7 @@ namespace Decompiler.Structure
 
         void WriteBlockExcludingPredicate(StructureNode node, AbsynStatementEmitter emitter)
         {
-            if (node.hllLabel)
+            if (node.ForceLabel)
                 emitter.EmitLabel(node);
 
             for (int i = 0; i < node.Instructions.Count; i++)
@@ -364,9 +364,9 @@ namespace Decompiler.Structure
                 if (node.LoopHead != null && (node.LoopHead == dest || node.LoopHead.LoopFollow == dest))
                 {
                     if (node.LoopHead == dest)
-                        emitter.EmitContinue(node);
+                        emitter.EmitContinue();
                     else
-                        emitter.EmitBreak(node);
+                        emitter.EmitBreak();
                 }
                 else
                 {
@@ -374,10 +374,10 @@ namespace Decompiler.Structure
 
                     // don't emit the label if it already has been emitted or the code 
                     // for the destination has not yet been generated
-                    if (!dest.hllLabel && dest.traversed == travType.DFS_CODEGEN)
+                    if (!dest.ForceLabel && dest.traversed == travType.DFS_CODEGEN)
                         dest.labelStr = string.Format("L{0}:{1}", dest.Order, Environment.NewLine);
 
-                    dest.hllLabel = true;
+                    dest.ForceLabel = true;
                 }
             }
         }
