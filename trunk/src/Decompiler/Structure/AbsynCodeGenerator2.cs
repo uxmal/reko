@@ -22,6 +22,28 @@ namespace Decompiler.Structure
         }
 
 
+        public void DeferRendering(StructureNode node, AbsynStatementEmitter emitter)
+        {
+            foreach (NodeEmitter ne in nodesToRender)
+            {
+                if (ne.Node == node)
+                    return;
+            }
+            nodesToRender.Enqueue(new NodeEmitter(node, emitter));
+        }
+
+        public void PushFollow(StructureNode followNode)
+        {
+            followStack.Push(followNode);
+        }
+
+        public StructureNode PopFollow()
+        {
+            return followStack.Pop();
+        }
+
+
+
         public void GenerateCode(ProcedureStructure proc, List<AbsynStatement> stms)
         {
             nodesToRender.Enqueue(new NodeEmitter(proc.EntryNode, new AbsynStatementEmitter(stms)));
@@ -37,7 +59,7 @@ namespace Decompiler.Structure
             StructureNode latchNode,
             AbsynStatementEmitter emitter)
         {
-            if (followStack.Contains(node))
+            if (followStack.Contains(node) && followStack.Peek() == node)
                 return;
             if (IsVisited(node))
                 return;
@@ -55,19 +77,20 @@ namespace Decompiler.Structure
                     emitter.EmitStatement(node.Instructions.Last);
                     return;
                 }
+                if (node.LoopHead != null && node == node.LoopHead.LatchNode)
+                    break;
+
                 if (node.OutEdges.Count == 1)
                 {
-                    GenerateCode(node.OutEdges[0], latchNode, emitter);
+                    StructureNode succ = node.OutEdges[0];
+                    if (IsVisited(succ))
+                        EmitGotoAndLabel(node, succ, emitter);
+                    else
+                        GenerateCode(succ, latchNode, emitter);
                 }
                 break;
             case structType.Cond:
-                EmitLinearBlockStatements(node, emitter);
-                if (node.CondFollow == null)
-                    throw new NotSupportedException("Null condfollow");
-                this.followStack.Push(node.CondFollow);
                 node.Conditional.GenerateCode(this, node, latchNode, emitter);
-                this.followStack.Pop();
-                GenerateCode(node.CondFollow, latchNode, emitter);
                 break;
             case structType.Loop:
             case structType.LoopCond:
@@ -128,6 +151,8 @@ namespace Decompiler.Structure
 
         private bool NeedsLabel(StructureNode node)
         {
+            if (node.ForceLabel)
+                return true;
             foreach (StructureNode pred in node.InEdges)
             {
                 if (IsVisited(pred))
@@ -168,7 +193,7 @@ namespace Decompiler.Structure
             return node.Instructions.Last.Instruction is ReturnInstruction;
         }
 
-        private void EmitLinearBlockStatements(StructureNode node, AbsynStatementEmitter emitter)
+        public void EmitLinearBlockStatements(StructureNode node, AbsynStatementEmitter emitter)
         {
             foreach (Statement stm in node.Instructions)
             {
@@ -178,6 +203,18 @@ namespace Decompiler.Structure
             }
         }
 
+
+
+        public void EmitGotoAndLabel(StructureNode node, StructureNode succ, AbsynStatementEmitter emitter)
+        {
+            succ.ForceLabel = true;
+            emitter.EmitGoto(succ);
+        }
+
+        public bool IsVisited(StructureNode succ)
+        {
+            return visited.Contains(succ);
+        }
 
         private class NodeEmitter
         {
@@ -201,14 +238,5 @@ namespace Decompiler.Structure
             }
         }
 
-        internal void EmitGotoAndLabel(StructureNode node, StructureNode succ, AbsynStatementEmitter emitSwitchBranches)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public bool IsVisited(StructureNode succ)
-        {
-            return visited.Contains(succ);
-        }
     }
 }

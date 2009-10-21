@@ -141,7 +141,11 @@ namespace Decompiler.Structure
             if (node.CondFollow != null)
                 writer.WriteLine("    Cond follow: {0}", node.CondFollow.Block.Name);
             writer.WriteLine("    Unstructured type: {0}", node.UnstructType);
-
+            foreach (Statement stm in node.Block.Statements)
+            {
+                writer.Write("\t");
+                writer.WriteLine(stm);
+            }
             writer.Write("    Succ: ");
             string sep = "";
             foreach (StructureNode s in node.OutEdges)

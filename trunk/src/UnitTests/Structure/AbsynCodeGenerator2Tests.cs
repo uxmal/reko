@@ -107,6 +107,122 @@ namespace Decompiler.UnitTests.Structure
 
         }
 
+        [Test]
+        public void WhileLoop()
+        {
+            CompileTest(new WhileLoopFragment());
+            RunTest(
+                "WhileLoopFragment()" + nl + 
+                "{" + nl + 
+                "	i = 0;" + nl + 
+                "	sum = 0;" + nl + 
+                "	while (i < 100)" + nl + 
+                "	{" + nl + 
+                "		sum = sum + i;" + nl + 
+                "		i = i + 1;" + nl + 
+                "	}" + nl + 
+                "	return sum;" + nl + 
+                "}" + nl );
+        }
+        
+        [Test]
+        public void BigLoopHead()
+        {
+            CompileTest(new BigLoopHeadFragment());
+            RunTest(
+                "BigLoopHeadFragment()" + nl + 
+                "{" + nl + 
+                "	DoSomething();" + nl + 
+                "	DoSomethingelse();" + nl + 
+                "	while (!IsDone())" + nl + 
+                "	{" + nl +
+                "		LoopWork();" + nl + 
+                "		DoSomething();" + nl + 
+                "		DoSomethingelse();" + nl + 
+                "	}" + nl +
+                "	return;" + nl + 
+                "}" + nl);
+
+        }
+
+        [Test]
+        public void DoWhile()
+        {
+            CompileTest(new DoWhileFragment());
+            RunTest(
+                "DoWhileFragment()" + nl + 
+                "{" + nl + 
+                "	do" + nl +
+                "		Frobulate();" + nl +
+                "	while (!DoneFrobbing());" + nl +
+                "	return;" + nl + 
+                "}" + nl);
+        }
+
+        [Test]
+        public void DoWhileIf()
+        {
+            CompileTest(new DoWhileIfFragment());
+            RunTest(
+                "DoWhileIfFragment()" + nl + 
+                "{" + nl + 
+                "	do" + nl + 
+                "	{" + nl + 
+                "		DoStuff();" + nl + 
+                "		if (NeedsBork())" + nl + 
+                "			Bork();" + nl + 
+                "	}" + nl + 
+                "	while (!Done());" + nl + 
+                "	return;" + nl + 
+                "}" + nl);
+        }
+
+        [Test]
+        public void WhileGoto()
+        {
+            CompileTest(new MockWhileGoto());
+            RunTest(
+                "MockWhileGoto()" + nl +
+                "{" + nl +
+                "	while (foo())" + nl +
+                "	{" + nl +
+                "		bar();" + nl +
+                "		if (foo())" + nl +
+                "		{" + nl +
+                "			extraordinary();" + nl +
+                "			goto end;" + nl +
+                "		}" + nl +
+                "		bar2();" + nl +
+                "	}" + nl +
+                "	bar3();" + nl +
+                "end:" + nl + 
+                "	bar4();" + nl +
+                "\treturn;" + nl +
+                "}" + nl);
+        }
+
+        [Test]
+        public void UnstructuredIfs()
+        {
+            CompileTest(new UnstructuredIfsMock());
+            RunTest(
+                "UnstructuredIfsMock()" + nl +
+                "{" + nl +
+                "	if (!foo)" + nl +
+                "	{" + nl +
+                "		quux();" + nl +
+                "inside:" + nl +
+                "		niz();" + nl +
+                "	}" + nl +
+                "	else if (!bar)" + nl +
+                "\t\tbaz();" + nl +
+                "\telse" + nl +
+                "\t\tgoto inside;" + nl +
+                "	return;" + nl +
+                "}" + nl);
+        }
+
+
         private void CompileTest(ProcGenerator gen)
         {
             ProcedureMock mock = new ProcedureMock();
@@ -131,6 +247,7 @@ namespace Decompiler.UnitTests.Structure
             GenCode(proc, sb);
             if (sExp != sb.ToString())
             {
+                curProc.Dump();
                 Console.WriteLine(sb.ToString());
                 Assert.AreEqual(sExp, sb.ToString());
             }

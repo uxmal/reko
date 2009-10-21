@@ -48,6 +48,7 @@ namespace Decompiler.UnitTests.Structure
             BranchIf(Not(Fn("foo")), "LoopFollow");
                 SideEffect(Fn("bar"));
                 BranchIf(Not(Fn("foo")), "skip");
+                    Label("unstruct_branch");
                     SideEffect(Fn("extraordinary"));
                     Jump("end");
                 Label("skip");

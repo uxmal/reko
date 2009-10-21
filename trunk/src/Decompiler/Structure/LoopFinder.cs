@@ -105,7 +105,6 @@ namespace Decompiler.Structure
             // if the latch node is a two way node then this must be a post tested loop
             if (header.LatchNode.BlockType == bbType.cBranch)
             {
-
                 header.SetLoopType(loopType.PostTested);
 
                 // if the head of the loop is a two way node and the loop spans more than one block
@@ -140,9 +139,7 @@ namespace Decompiler.Structure
             }
         }
 
-        public void FindLoopFollow(List<StructureNode> order, HashSet<StructureNode> loopNodes)
-        // Pre: The loop headed by header has been induced and all its member nodes have been tagged
-        // Post: The follow of the loop has been determined.
+        public StructureNode FindLoopFollow(List<StructureNode> order, HashSet<StructureNode> loopNodes)
         {
             Debug.Assert(header.GetStructType() == structType.Loop || header.GetStructType() == structType.LoopCond);
             loopType lType = header.GetLoopType();
@@ -152,18 +149,18 @@ namespace Decompiler.Structure
             {
                 // the child that is the loop header's conditional follow will be the loop follow
                 if (header.OutEdges[0] == header.CondFollow)
-                    header.LoopFollow = header.OutEdges[0];
+                    return header.OutEdges[0];
                 else
-                    header.LoopFollow = header.OutEdges[1];
+                    return header.OutEdges[1];
             }
             else if (lType == loopType.PostTested)
             {
                 // the follow of a post tested ('repeat') loop is the node on the end of the
                 // non-back edge from the latch node
                 if (latch.OutEdges[0] == header)
-                    header.LoopFollow = latch.OutEdges[1];
+                    return latch.OutEdges[1];
                 else
-                    header.LoopFollow = latch.OutEdges[0];
+                    return latch.OutEdges[0];
             }
             else // endless loop
             {
@@ -190,21 +187,7 @@ namespace Decompiler.Structure
                     }
                 }
 
-                // if a follow was found, assign it to be the follow of the loop under investigation
-                if (follow != null)
-                    header.LoopFollow = follow;
-            }
-        }
-
-
-        public void TagNodesInLoop(List<StructureNode> nodes, HashSet<StructureNode> intNodes, bool[] loopNodes)
-        {
-            SccLoopFinder finder = new SccLoopFinder(header.Interval, intNodes);
-            foreach (StructureNode node in finder.FindLoop())
-            {
-                loopNodes[node.Order] = true;
-                if (node.LoopHead == null)
-                    node.LoopHead = header;
+                return follow;
             }
         }
 
