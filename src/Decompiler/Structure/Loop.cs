@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
@@ -69,6 +70,59 @@ namespace Decompiler.Structure
         {
             get { return follow; }
         }
+
+        public void GenerateCode(AbsynCodeGenerator2 codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
+        {
+            if (Follow != null)
+                codeGen.PushFollow(Follow);
+
+            if (node.GetLoopType() is PreTestedLoop)
+            {
+                codeGen.EmitLinearBlockStatements(node, emitter);
+                List<AbsynStatement> loopBody = new List<AbsynStatement>();
+                StructureNode bodyNode = (node.Else == node.Loop.Follow)
+                    ? node.Then
+                    : node.Else;
+                AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
+                codeGen.GenerateCode(bodyNode, node.Loop.Latch, bodyEmitter);
+                codeGen.EmitLinearBlockStatements(node, bodyEmitter);
+
+                emitter.EmitWhile(node, codeGen.BranchCondition(node), loopBody);
+            }
+            else if (node.GetLoopType() is PostTestedLoop)
+            {
+                List<AbsynStatement> loopBody = new List<AbsynStatement>();
+                AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
+                if (node == node.Loop.Latch)
+                {
+                    codeGen.EmitLinearBlockStatements(node, bodyEmitter);
+                }
+                else
+                {
+                    if (node.GetStructType() == structType.LoopCond)
+                    {
+                        codeGen.IsVisited(node, false);
+                        node.SetStructType(structType.Cond);
+                        codeGen.GenerateCode(node, node.Loop.Latch, bodyEmitter);
+                    }
+                    else
+                    {
+                        codeGen.EmitLinearBlockStatements(node, bodyEmitter);
+                        if (node.OutEdges.Count != 1)
+                            throw new NotSupportedException(string.Format("Node {0} has {1} out edges.", node.Name, node.OutEdges.Count));
+                        codeGen.GenerateCode(node.OutEdges[0], Latch, bodyEmitter);
+                    }
+                }
+                emitter.EmitDoWhile(loopBody, codeGen.BranchCondition(Latch));
+
+            }
+            if (Follow != null)
+            {
+                codeGen.PopFollow();
+                codeGen.GenerateCode(Follow, latchNode, emitter);
+            }
+        }
+
     }
 
 

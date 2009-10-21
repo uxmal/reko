@@ -110,55 +110,7 @@ namespace Decompiler.Structure
                 break;
             case structType.Loop:
             case structType.LoopCond:
-                if (node.Loop.Follow != null)
-                    followStack.Push(node.Loop.Follow);
-
-                if (node.GetLoopType() is PreTestedLoop)
-                {
-                    EmitLinearBlockStatements(node, emitter);
-                    List<AbsynStatement> loopBody = new List<AbsynStatement>();
-                    StructureNode bodyNode = (node.Else == node.Loop.Follow)
-                        ? node.Then
-                        : node.Else;
-                    AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
-                    GenerateCode(bodyNode, node.Loop.Latch, bodyEmitter);
-                    EmitLinearBlockStatements(node, bodyEmitter);
-
-                    emitter.EmitWhile(node, BranchCondition(node), loopBody);
-                }
-                else if (node.GetLoopType() is PostTestedLoop)
-                {
-                    List<AbsynStatement> loopBody = new List<AbsynStatement>();
-                    AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
-                    if (node == node.Loop.Latch)
-                    {
-                        EmitLinearBlockStatements(node, bodyEmitter);
-                    }
-                    else
-                    {
-                        if (node.GetStructType() == structType.LoopCond)
-                        {
-                            visited.Remove(node);
-                            node.SetStructType(structType.Cond);
-                            GenerateCode(node, node.Loop.Latch, bodyEmitter);
-                        }
-                        else
-                        {
-                            EmitLinearBlockStatements(node, bodyEmitter);
-                            if (node.OutEdges.Count != 1)
-                                throw new NotSupportedException(string.Format("Node {0} has {1} out edges.", node.Name, node.OutEdges.Count));
-                            GenerateCode(node.OutEdges[0], node.Loop.Latch, bodyEmitter);
-                        }
-                    }
-                    emitter.EmitDoWhile(loopBody, BranchCondition(node.Loop.Latch));
-                    
-                }
-                if (node.Loop.Follow != null)
-                {
-                    followStack.Pop();
-                    GenerateCode(node.Loop.Follow, latchNode, emitter);
-                }
-
+                node.Loop.GenerateCode(this, node, latchNode, emitter);
                 break;
             default:
                 throw new NotImplementedException();
@@ -235,6 +187,14 @@ namespace Decompiler.Structure
         public bool IsVisited(StructureNode succ)
         {
             return visited.Contains(succ);
+        }
+
+        public void IsVisited(StructureNode succ, bool flag)
+        {
+            if (flag)
+                visited.Add(succ);
+            else
+                visited.Remove(succ);
         }
 
         private class NodeEmitter
