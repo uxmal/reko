@@ -65,12 +65,12 @@ namespace Decompiler.Structure
             stms.Add(new AbsynCase(i));
         }
 
-        public void EmitBreak(StructureNode node)
+        public void EmitBreak()
         {
             stms.Add(new AbsynBreak());
         }
 
-        public void EmitContinue(StructureNode node)
+        public void EmitContinue()
         {
             stms.Add(new AbsynContinue());
         }

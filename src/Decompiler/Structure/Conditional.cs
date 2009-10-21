@@ -83,7 +83,7 @@ namespace Decompiler.Structure
             AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
             if (node.UnstructType == UnstructuredType.JumpInOutLoop)
             {
-                codeGen.DeferRendering(succ, emitThen);
+                codeGen.DeferRendering(node, succ, emitThen);
                 codeGen.GenerateCode(SecondBranch(node), latchNode, emitter);
             }
             else
@@ -94,7 +94,7 @@ namespace Decompiler.Structure
 
 
                 if (codeGen.IsVisited(succ) || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
-                    codeGen.EmitGotoAndLabel(node, succ, emitThen);
+                    codeGen.EmitGotoAndForceLabel(node, succ, emitThen);
                 else
                     codeGen.GenerateCode(succ, latchNode, emitThen);
 
@@ -103,7 +103,7 @@ namespace Decompiler.Structure
                     succ = node.Then;
                     AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
                     if (codeGen.IsVisited(succ))
-                        codeGen.EmitGotoAndLabel(node, succ, emitElse);
+                        codeGen.EmitGotoAndForceLabel(node, succ, emitElse);
                     else
                         codeGen.GenerateCode(succ, latchNode, emitElse);
 
@@ -224,12 +224,12 @@ namespace Decompiler.Structure
                 StructureNode succ = node.OutEdges[i];
                 if (succ.traversed == travType.DFS_CODEGEN)
                 {
-                    codeGen.EmitGotoAndLabel(node, succ, emitSwitchBranches);
+                    codeGen.EmitGotoAndForceLabel(node, succ, emitSwitchBranches);
                 }
                 else
                 {
                     codeGen.GenerateCode(succ, latchNode, emitSwitchBranches);
-                    emitSwitchBranches.EmitBreak(node);
+                    emitSwitchBranches.EmitBreak();
                 }
             }
         }
@@ -254,7 +254,7 @@ namespace Decompiler.Structure
                 else
                 {
                     codeGen.WriteCode(succ, latch, followSet, gotoSet, emitSwitchBranches);
-                    emitSwitchBranches.EmitBreak(node);
+                    emitSwitchBranches.EmitBreak();
                 }
             }
         }

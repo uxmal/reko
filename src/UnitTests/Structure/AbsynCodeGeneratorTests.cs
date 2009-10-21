@@ -31,6 +31,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Structure
 {
     [TestFixture]
+    [Ignore("Use AbsynCodeGenerator2")]
     public class AbsynCodeGeneratorTests
     {
         private StringWriter sb;
