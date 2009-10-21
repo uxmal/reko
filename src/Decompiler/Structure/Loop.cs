@@ -130,15 +130,13 @@ namespace Decompiler.Structure
             {
                 if (node.Conditional != null)
                 {
-                    codeGen.IsVisited(node, false);
-                    node.SetStructType(structType.Cond);        //$REVIEW: awkward and weird.
-                    codeGen.GenerateCode(node, node.Loop.Latch, bodyEmitter);
+                    node.Conditional.GenerateCode(codeGen, node, node.Loop.Latch, bodyEmitter);
                 }
                 else
                 {
                     codeGen.EmitLinearBlockStatements(node, bodyEmitter);
                     if (node.OutEdges.Count != 1)
-                        throw new NotSupportedException(string.Format("Node {0} has {1} out edges.", node.Name, node.OutEdges.Count));
+                        throw new NotSupportedException(string.Format("Expected top of PostTestedLoop {0} to have only 1 out edge, but found {1} out edges.", node.Name, node.OutEdges.Count));
                     codeGen.GenerateCode(node.OutEdges[0], Latch, bodyEmitter);
                 }
             }

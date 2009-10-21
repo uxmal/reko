@@ -56,7 +56,7 @@ namespace Decompiler.Structure
             {
                 if (IsTwoWayBranchWithFollow(curNode))
                 {
-                    Loop myLoop = curNode.GetLoopType();
+                    Loop myLoop = curNode.Loop;
                     Loop follLoop = curNode.Conditional.Follow.Loop;
 
                     // analyse whether this is a jump into/outof a loop
@@ -157,12 +157,10 @@ namespace Decompiler.Structure
                     // then it won't have a follow
                     if (HasABackEdge(curNode) && curNode.BlockType == bbType.cBranch)
                     {
-                        curNode.SetStructType(structType.Cond);
                         curNode.Conditional = CreateConditional(curNode, null);
                     }
                     else
                     {
-                        curNode.SetStructType(structType.Cond);
                         curNode.Conditional = CreateConditional(curNode, curNode.ImmPDom);
 
                         if (curNode.Conditional is Case)
@@ -288,11 +286,8 @@ namespace Decompiler.Structure
             // the latching node will already have been structured as a conditional header. If it is not
             // also the loop header (i.e. the loop is over more than one block) then reset
             // it to be a sequential node otherwise it will be correctly set as a loop header only later
-            if (latch != headNode)
-                latch.SetStructType(structType.Seq);
-
-            // set the structured type of this node
-            headNode.SetStructType(structType.Loop);
+//            if (latch != headNode)
+//                latch.SetStructType(structType.Seq);
 
 
             LoopFinder lf = new LoopFinder(headNode, latch, curProc.Ordering);
