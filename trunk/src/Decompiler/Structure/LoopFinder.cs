@@ -106,47 +106,38 @@ namespace Decompiler.Structure
         
         public Loop DetermineLoopType(HashSet<StructureNode> loopNodes)
         {
-
             // if the latch node is a two way node then this must be a post tested loop
             if (latch.BlockType == bbType.cBranch)
             {
-                header.SetLoopType(CreatePostTestedLoop(loopNodes));
-
-                // if the head of the loop is a two way node and the loop spans more than one block
-                // then it must also be a conditional header
-                if (header.BlockType == bbType.cBranch && header != latch)
-                    header.SetStructType(structType.LoopCond);
+                header.Loop = CreatePostTestedLoop(loopNodes);
             }
             // otherwise it is either a pretested or endless loop
             else if (header.BlockType == bbType.cBranch)
             {
-                header.SetLoopType(CreatePreTestedLoop(loopNodes));
+                header.Loop = CreatePreTestedLoop(loopNodes);
                 bool WORKING = false;
                 if (WORKING)
                 {
                     // This code fails for while_goto because the condfollow doesn't coincide with the end of the loop.
 
-                // if the header is a two way conditional header, then it will be a pretested loop
-                // if one of its children is its conditional follow
-                if (header.OutEdges[0] != header.Conditional.Follow && header.OutEdges[1] != header.Conditional.Follow)
-                {
-                    // neither children are the conditional follow
-                    header.SetLoopType(CreateEndLessLoop(loopNodes));
-
-                    // retain the fact that this is also a conditional header
-                    header.SetStructType(structType.LoopCond);
-                }
-                else
-                    // one child is the conditional follow
-                    header.SetLoopType(CreatePreTestedLoop(loopNodes));
+                    // if the header is a two way conditional header, then it will be a pretested loop
+                    // if one of its children is its conditional follow
+                    if (header.OutEdges[0] != header.Conditional.Follow && header.OutEdges[1] != header.Conditional.Follow)
+                    {
+                        // neither children are the conditional follow
+                        header.Loop = CreateEndLessLoop(loopNodes);
+                    }
+                    else
+                        // one child is the conditional follow
+                        header.Loop = CreatePreTestedLoop(loopNodes);
                 }
             }
             // both the header and latch node are one way nodes so this must be an endless loop
             else
             {
-                header.SetLoopType(CreateEndLessLoop(loopNodes));
+                header.Loop = CreateEndLessLoop(loopNodes);
             }
-            return header.GetLoopType();
+            return header.Loop;
         }
 
         private EndLessLoop CreateEndLessLoop(HashSet<StructureNode> loopNodes)

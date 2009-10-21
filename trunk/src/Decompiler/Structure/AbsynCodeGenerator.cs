@@ -81,7 +81,7 @@ namespace Decompiler.Structure
                 emitter.EmitLabel(node);
             }
 
-            switch (node.GetStructType())
+            switch ((structType) 0)// node.GetStructType())
             {
             case structType.Loop:
             case structType.LoopCond:
@@ -90,7 +90,7 @@ namespace Decompiler.Structure
                 if (node.Loop.Follow != null)
                     followSet.Add(node.Loop.Follow);
 
-                if (node.GetLoopType() is PreTestedLoop)
+                if (node.Loop is PreTestedLoop)
                 {
                     Debug.Assert(node.Loop.Latch.OutEdges.Count == 1);
 
@@ -127,11 +127,10 @@ namespace Decompiler.Structure
 
                     // if this is also a conditional header, then generate code for the
                     // conditional. Otherwise generate code for the loop body.
-                    if (node.GetStructType() == structType.LoopCond)
+                    if (node.Loop !=null && node.Conditional != null)
                     {
                         // set the necessary flags so that WriteCode can successfully be called
                         // again on this node
-                        node.SetStructType(structType.Cond);
                         node.traversed = travType.UNTRAVERSED;
 
                         WriteCode(node, node.Loop.Latch, followSet, gotoSet, emitBody);
@@ -142,7 +141,7 @@ namespace Decompiler.Structure
                         WriteCode(node.OutEdges[0], node.Loop.Latch, followSet, gotoSet, emitBody);
                     }
 
-                    if (node.GetLoopType() is PostTestedLoop)
+                    if (node.Loop is PostTestedLoop)
                     {
                         // if code has not been generated for the latch node, generate it now
                         if (node.Loop.Latch.traversed != travType.DFS_CODEGEN)
@@ -155,7 +154,7 @@ namespace Decompiler.Structure
                     }
                     else
                     {
-                        Debug.Assert(node.GetLoopType() is EndLessLoop);
+                        Debug.Assert(node.Loop is EndLessLoop);
 
                         // if code has not been generated for the latch node, generate it now
                         if (node.Loop.Latch.traversed != travType.DFS_CODEGEN)
@@ -184,8 +183,7 @@ namespace Decompiler.Structure
 
                 // reset this back to LoopCond if it was originally of this type
                 if (node.Loop.Latch != null)
-                    node.SetStructType(structType.LoopCond);
-
+                    ;
 
                 // for 2 way conditional headers that are effectively jumps into or out of a
                 // loop or case body, we will need a new follow node
@@ -203,7 +201,7 @@ namespace Decompiler.Structure
                 else if (node.Conditional.Follow != null)
                 {
                     // For a structured two conditional header, its follow is added to the follow set
-                    StructureNode myLoopHead = (node.GetStructType() == structType.LoopCond ? node : node.Loop.Header);
+                    StructureNode myLoopHead = (node.Loop != null ? node : node.Loop.Header);
 
                     if (node.UnstructType == UnstructuredType.Structured)
                     {
@@ -217,7 +215,7 @@ namespace Decompiler.Structure
                         if (node.UnstructType == UnstructuredType.JumpInOutLoop)
                         {
                             // define the loop header to be compared against
-                            myLoopHead = (node.GetStructType() == structType.LoopCond ? node : node.Loop.Header);
+                            myLoopHead = (node.Loop != null  ? node : node.Loop.Header);
 
                             gotoSet.Add(node.Conditional.Follow);
                             gotoTotal++;

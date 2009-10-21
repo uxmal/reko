@@ -50,7 +50,6 @@ namespace Decompiler.Structure
         private StructureNode immPDom;
         private StructureNode caseHead;
 
-        private structType sType;
         private UnstructuredType usType;
         private Conditional cond;
         private Loop lType;
@@ -83,8 +82,6 @@ namespace Decompiler.Structure
             labelStr = null;
             immPDom = null;
             caseHead = null;
-
-            sType = structType.Seq;
 
             usType = UnstructuredType.Structured;
             interval = null;
@@ -229,20 +226,6 @@ namespace Decompiler.Structure
             set { lType = value; }
         }
 
-        // Pre: the structured class of the node must be Loop or LoopCond
-        // Set the loop type of this loop header node
-        public void SetLoopType(Loop l)
-        {
-            if (sType != structType.Loop && sType != structType.LoopCond)
-                throw new InvalidOperationException("A node must be a Loop or a LoopCond before you can set its loop type.");
-            lType = l;
-
-            //set the structured class (back to) just Loop if the loop type is PreTested OR
-            //it's PostTested and is a single block loop
-            if (lType is PreTestedLoop || (lType is PostTestedLoop && this == Loop.Latch))
-                sType = structType.Loop;
-        }
-
         // Do a DFS on the graph headed by this node, giving each node it's time stamp tuple
         // that will be used for loop structuring as well as building the structure that will
         // be used for traversing the nodes in linear time. The inedges are also built during
@@ -320,6 +303,7 @@ namespace Decompiler.Structure
 
 
 
+        [Obsolete("", true)]
         public Loop GetLoopType()
         {
             return lType;
@@ -348,17 +332,6 @@ namespace Decompiler.Structure
             set { revOrd = value; }
         }
 
-
-        [Obsolete]
-        public structType GetStructType() { return sType; }
-
-        // Pre: if this is to be a cond type then the follow (if any) must have 
-        // already been determined for this node
-        // Set the class of structure determined for this node. 
-        public void SetStructType(structType s)
-        {
-            sType = s;
-        }
 
         private bbType TypeOfBlock(Block block)
         {
@@ -424,6 +397,7 @@ namespace Decompiler.Structure
         intNode
     }
 
+    [Obsolete]
     public enum structType
     {
         Seq,

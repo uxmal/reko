@@ -29,21 +29,14 @@ namespace Decompiler.Structure
     {
         private StructureNode follow;
 
-        [Obsolete]
-        public Conditional()
-        {
-        }
-
         public Conditional(StructureNode follow)
         {
             this.follow = follow;
         }
 
-        [Obsolete("Don't use the setter, pass it into the constructor.")]
         public StructureNode Follow
         {
             get { return follow; }
-            set { follow = value; }
         }
 
         [Obsolete]
@@ -60,6 +53,8 @@ namespace Decompiler.Structure
         public override void GenerateCode(AbsynCodeGenerator2 codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
         {
             codeGen.EmitLinearBlockStatements(node, emitter);
+            if (node == latchNode)
+                return;
 
             Expression exp = codeGen.BranchCondition(node);
             AbsynIf ifStm = emitter.EmitIfCondition(exp, node.Conditional);
@@ -76,8 +71,7 @@ namespace Decompiler.Structure
                 if (Follow == null)
                     throw new NotSupportedException("Null condfollow");
                 codeGen.PushFollow(Follow);
-
-
+                
                 if (codeGen.IsVisited(succ) || (node.Loop != null && succ == node.Loop.Follow))
                     codeGen.EmitGotoAndForceLabel(node, succ, emitThen);
                 else

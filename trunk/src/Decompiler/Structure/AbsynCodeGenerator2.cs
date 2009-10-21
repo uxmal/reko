@@ -84,9 +84,16 @@ namespace Decompiler.Structure
             if (NeedsLabel(node))
                 GenerateLabel(node,emitter);
 
-            switch (node.GetStructType())
+            if (node.Loop != null && node.Loop.Header == node)
             {
-            case structType.Seq:
+                node.Loop.GenerateCode(this, node, latchNode, emitter);
+            }
+            else if (node.Conditional != null)
+            {
+                node.Conditional.GenerateCode(this, node, latchNode, emitter);
+            }
+            else 
+            {
                 EmitLinearBlockStatements(node, emitter);
                 if (EndsWithReturnInstruction(node))
                 {
@@ -94,7 +101,7 @@ namespace Decompiler.Structure
                     return;
                 }
                 if (node.IsLatchNode())
-                    break;
+                    return;
 
                 if (node.OutEdges.Count == 1)
                 {
@@ -104,16 +111,6 @@ namespace Decompiler.Structure
                     else
                         GenerateCode(succ, latchNode, emitter);
                 }
-                break;
-            case structType.Cond:
-                node.Conditional.GenerateCode(this, node, latchNode, emitter);
-                break;
-            case structType.Loop:
-            case structType.LoopCond:
-                node.Loop.GenerateCode(this, node, latchNode, emitter);
-                break;
-            default:
-                throw new NotImplementedException();
             }
         }
 
