@@ -29,6 +29,17 @@ namespace Decompiler.Structure
     {
         private StructureNode follow;
 
+        [Obsolete]
+        public Conditional()
+        {
+        }
+
+        public Conditional(StructureNode follow)
+        {
+            this.follow = follow;
+        }
+
+        [Obsolete("Don't use the setter, pass it into the constructor.")]
         public StructureNode Follow
         {
             get { return follow; }
@@ -40,14 +51,12 @@ namespace Decompiler.Structure
 
         public abstract void GenerateCode(AbsynCodeGenerator2 absynCodeGenerator2, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter);
 
-        private static Conditional ifThen = new IfThen();
-        private static Conditional ifElse = new IfElse();
-        private static Conditional ifThenElse = new IfThenElse();
-        private static Conditional @case = new Case();
     }
 
     public abstract class IfConditional : Conditional
     {
+        public IfConditional(StructureNode follow) : base(follow) { } 
+
         public override void GenerateCode(AbsynCodeGenerator2 codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
         {
             codeGen.EmitLinearBlockStatements(node, emitter);
@@ -64,9 +73,9 @@ namespace Decompiler.Structure
             }
             else
             {
-                if (node.CondFollow == null)
+                if (Follow == null)
                     throw new NotSupportedException("Null condfollow");
-                codeGen.PushFollow(node.CondFollow);
+                codeGen.PushFollow(Follow);
 
 
                 if (codeGen.IsVisited(succ) || (node.Loop != null && succ == node.Loop.Follow))
@@ -90,7 +99,7 @@ namespace Decompiler.Structure
                 }
 
                 codeGen.PopFollow();
-                codeGen.GenerateCode(node.CondFollow, latchNode, emitter);
+                codeGen.GenerateCode(Follow, latchNode, emitter);
             }
         }
 
@@ -145,6 +154,8 @@ namespace Decompiler.Structure
 
     public class IfThen : IfConditional
     {
+        public IfThen(StructureNode follow) : base(follow) { } 
+        
         public override StructureNode FirstBranch(StructureNode node)
         {
             return node.Then;
@@ -158,6 +169,8 @@ namespace Decompiler.Structure
 
     public class IfElse : IfConditional
     {
+        public IfElse(StructureNode follow) : base(follow) { } 
+        
         public override StructureNode FirstBranch(StructureNode node)
         {
             return node.Else;
@@ -172,6 +185,8 @@ namespace Decompiler.Structure
 
     public class IfThenElse : IfConditional
     {
+        public IfThenElse(StructureNode follow) : base(follow) { } 
+
         public override StructureNode FirstBranch(StructureNode node)
         {
             return node.Else;
@@ -185,6 +200,8 @@ namespace Decompiler.Structure
 
     public class Case : Conditional
     {
+        public Case(StructureNode follow) : base(follow) { } 
+
         public override void GenerateCode(AbsynCodeGenerator2 codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
         {
             Expression exp = ((SwitchInstruction) node.Instructions.Last.Instruction).Expression;

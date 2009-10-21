@@ -70,7 +70,7 @@ namespace Decompiler.Structure
             if (node.traversed == travType.DFS_CODEGEN)
             {
                 // this should only occur for a loop over a single block
-                Debug.Assert(node.GetStructType() == structType.Loop && node.GetLoopType() is PostTestedLoop && node.Loop.Latch == node);
+                Debug.Assert(node.Loop != null && node.Loop is PostTestedLoop && node.Loop.Latch == node);
                 return;
             }
             node.traversed = travType.DFS_CODEGEN;
@@ -198,16 +198,16 @@ namespace Decompiler.Structure
                 // add the follow to the follow set if this is a case header
                 if (node.Conditional is Case)
                 {
-                    followSet.Add(node.CondFollow);
+                    followSet.Add(node.Conditional.Follow);
                 }
-                else if (node.CondFollow != null)
+                else if (node.Conditional.Follow != null)
                 {
                     // For a structured two conditional header, its follow is added to the follow set
                     StructureNode myLoopHead = (node.GetStructType() == structType.LoopCond ? node : node.Loop.Header);
 
                     if (node.UnstructType == UnstructuredType.Structured)
                     {
-                        followSet.Add(node.CondFollow);
+                        followSet.Add(node.Conditional.Follow);
                     }
                     else
                     {
@@ -219,7 +219,7 @@ namespace Decompiler.Structure
                             // define the loop header to be compared against
                             myLoopHead = (node.GetStructType() == structType.LoopCond ? node : node.Loop.Header);
 
-                            gotoSet.Add(node.CondFollow);
+                            gotoSet.Add(node.Conditional.Follow);
                             gotoTotal++;
 
                             // also add the current latch node, and the loop header of the follow if they exist
@@ -228,9 +228,9 @@ namespace Decompiler.Structure
                                 gotoSet.Add(node.Loop.Latch);
                                 gotoTotal++;
                             }
-                            if (node.CondFollow.Loop.Header != null && node.CondFollow.Loop.Header != myLoopHead)
+                            if (node.Conditional.Follow.Loop.Header != null && node.Conditional.Follow.Loop.Header != myLoopHead)
                             {
-                                gotoSet.Add(node.CondFollow.Loop.Header);
+                                gotoSet.Add(node.Conditional.Follow.Loop.Header);
                                 gotoTotal++;
                             }
                         }
@@ -252,7 +252,7 @@ namespace Decompiler.Structure
                 cond.GenerateCode(node, latch, followSet, gotoSet, this, emitter);
 
                 // do all the follow stuff if this conditional had one
-                if (node.CondFollow != null)
+                if (node.Conditional.Follow != null)
                 {
                     // remove the original follow from the follow set if it was added by this header
                     if (node.UnstructType == UnstructuredType.Structured || node.UnstructType == UnstructuredType.JumpIntoCase)
@@ -270,7 +270,7 @@ namespace Decompiler.Structure
                     // do the code generation (or goto emitting) for the new conditional follow if it exists
                     // otherwise do it for the original follow
                     if (tmpCondFollow == null)
-                        tmpCondFollow = node.CondFollow;
+                        tmpCondFollow = node.Conditional.Follow;
                     if (node.Loop.Header == tmpCondFollow)
                         break;
                     if (tmpCondFollow.traversed == travType.DFS_CODEGEN)
@@ -317,7 +317,7 @@ namespace Decompiler.Structure
                 return true;
             if (node.Loop.Latch != null && node.Loop.Latch.Loop.Follow == nextNode)
                 return true;
-            if (node.CaseHead != nextNode.CaseHead && (node.CaseHead == null || nextNode != node.CaseHead.CondFollow))
+            if (node.CaseHead != nextNode.CaseHead && (node.CaseHead == null || nextNode != node.CaseHead.Conditional.Follow))
                 return true;
             return false;
         }

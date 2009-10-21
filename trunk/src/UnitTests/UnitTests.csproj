@@ -221,7 +221,6 @@
     <Compile Include="Structure\CfgCleanerTests.cs" />
     <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />
     <Compile Include="Structure\IntervalCollectionTests.cs" />
-    <Compile Include="Structure\LoopTests.cs" />
     <Compile Include="Structure\MockIfElseIf.cs" />
     <Compile Include="Structure\MockSnarl.cs" />
     <Compile Include="Structure\MockSwitch.cs" />

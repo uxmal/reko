@@ -128,7 +128,7 @@ namespace Decompiler.Structure
 
                 // if the header is a two way conditional header, then it will be a pretested loop
                 // if one of its children is its conditional follow
-                if (header.OutEdges[0] != header.CondFollow && header.OutEdges[1] != header.CondFollow)
+                if (header.OutEdges[0] != header.Conditional.Follow && header.OutEdges[1] != header.Conditional.Follow)
                 {
                     // neither children are the conditional follow
                     header.SetLoopType(CreateEndLessLoop(loopNodes));
@@ -184,7 +184,7 @@ namespace Decompiler.Structure
                 // the highest order of all potential follows
                 StructureNode desc = order[i];
 
-                if (desc.GetStructType() == structType.Cond && !(desc.Conditional is Case) && loopNodes.Contains(desc))
+                if (desc.Conditional != null && desc.Conditional is Case && loopNodes.Contains(desc))
                 {
                     for (int j = 0; j < desc.OutEdges.Count; j++)
                     {
@@ -213,7 +213,7 @@ namespace Decompiler.Structure
         private StructureNode FindPreTestedFollowNode(StructureNode header)
         {
             // the child that is the loop header's conditional follow will be the loop follow
-            if (header.OutEdges[0] == header.CondFollow)
+            if (header.OutEdges[0] == header.Conditional.Follow)
                 return header.OutEdges[0];
             else
                 return header.OutEdges[1];

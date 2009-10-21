@@ -76,46 +76,7 @@ namespace Decompiler.Structure
             if (Follow != null)
                 codeGen.PushFollow(Follow);
 
-            if (node.GetLoopType() is PreTestedLoop)
-            {
-                codeGen.EmitLinearBlockStatements(node, emitter);
-                List<AbsynStatement> loopBody = new List<AbsynStatement>();
-                StructureNode bodyNode = (node.Else == node.Loop.Follow)
-                    ? node.Then
-                    : node.Else;
-                AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
-                codeGen.GenerateCode(bodyNode, node.Loop.Latch, bodyEmitter);
-                codeGen.EmitLinearBlockStatements(node, bodyEmitter);
-
-                emitter.EmitWhile(node, codeGen.BranchCondition(node), loopBody);
-            }
-            else if (node.GetLoopType() is PostTestedLoop)
-            {
-                List<AbsynStatement> loopBody = new List<AbsynStatement>();
-                AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
-                if (node == node.Loop.Latch)
-                {
-                    codeGen.EmitLinearBlockStatements(node, bodyEmitter);
-                }
-                else
-                {
-                    if (node.GetStructType() == structType.LoopCond)
-                    {
-                        codeGen.IsVisited(node, false);
-                        node.SetStructType(structType.Cond);
-                        codeGen.GenerateCode(node, node.Loop.Latch, bodyEmitter);
-                    }
-                    else
-                    {
-                        codeGen.EmitLinearBlockStatements(node, bodyEmitter);
-                        if (node.OutEdges.Count != 1)
-                            throw new NotSupportedException(string.Format("Node {0} has {1} out edges.", node.Name, node.OutEdges.Count));
-                        codeGen.GenerateCode(node.OutEdges[0], Latch, bodyEmitter);
-                    }
-                }
-                emitter.EmitDoWhile(loopBody, codeGen.BranchCondition(Latch));
-
-            }
+            GenerateCodeInner(codeGen, node, emitter);
             if (Follow != null)
             {
                 codeGen.PopFollow();
@@ -123,120 +84,78 @@ namespace Decompiler.Structure
             }
         }
 
+        protected abstract void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter);
+
     }
 
 
     public class PreTestedLoop : Loop
     {
-        public PreTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow) : base(header, latch, loopNodes, follow)
+        public PreTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
+            : base(header, latch, loopNodes, follow)
         {
+        }
+
+        protected override void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter)
+        {
+            codeGen.EmitLinearBlockStatements(node, emitter);
+            List<AbsynStatement> loopBody = new List<AbsynStatement>();
+            StructureNode bodyNode = (node.Else == node.Loop.Follow)
+                ? node.Then
+                : node.Else;
+            AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
+            codeGen.GenerateCode(bodyNode, node.Loop.Latch, bodyEmitter);
+            codeGen.EmitLinearBlockStatements(node, bodyEmitter);
+
+            emitter.EmitWhile(node, codeGen.BranchCondition(node), loopBody);
         }
     }
 
     public class PostTestedLoop : Loop
     {
-        public PostTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow) : base(header, latch, loopNodes, follow)
+        public PostTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
+            : base(header, latch, loopNodes, follow)
         {
+        }
+
+        protected override void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter)
+        {
+            List<AbsynStatement> loopBody = new List<AbsynStatement>();
+            AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
+            if (node.IsLatchNode())
+            {
+                codeGen.EmitLinearBlockStatements(node, bodyEmitter);
+            }
+            else
+            {
+                if (node.Conditional != null)
+                {
+                    codeGen.IsVisited(node, false);
+                    node.SetStructType(structType.Cond);        //$REVIEW: awkward and weird.
+                    codeGen.GenerateCode(node, node.Loop.Latch, bodyEmitter);
+                }
+                else
+                {
+                    codeGen.EmitLinearBlockStatements(node, bodyEmitter);
+                    if (node.OutEdges.Count != 1)
+                        throw new NotSupportedException(string.Format("Node {0} has {1} out edges.", node.Name, node.OutEdges.Count));
+                    codeGen.GenerateCode(node.OutEdges[0], Latch, bodyEmitter);
+                }
+            }
+            emitter.EmitDoWhile(loopBody, codeGen.BranchCondition(Latch));
         }
     }
 
     public class EndLessLoop : Loop
     {
-        public EndLessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow) : base(header, latch, loopNodes, follow)
+        public EndLessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
+            : base(header, latch, loopNodes, follow)
         {
         }
+
+        protected override void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter)
+        {
+            throw new NotImplementedException();
+        }
     }
-
-
-	/// <summary>
-	/// Describes a loop.
-	/// </summary>
-    [Obsolete]
-	public abstract class LoopObsolete
-	{
-		private BitSet blocks;
-		private Block header;
-		private Block end;
-		protected Block follow;
-
-		public LoopObsolete(Block header, Block end, BitSet blocks)
-		{
-			this.header = header;
-			this.end = end;
-			this.blocks = blocks;
-		}
-
-		public BitSet Blocks
-		{
-			get { return blocks; }
-		}
-
-
-		public Block EndBlock
-		{
-			get { return end; }
-		}
-		
-		public Block FollowBlock
-		{
-			get { return follow; }
-		}
-
-		protected static Branch GetBranch(Block block)
-		{
-			if (block.Statements.Count == 0)
-				return null;
-			return block.Statements.Last.Instruction as Branch;
-		}
-
-		public Block GetFollowBlock(Block b)
-		{
-			if (Blocks[b.ElseBlock.RpoNumber])
-			{
-				return b.ThenBlock;
-			}
-			else
-			{
-				return b.ElseBlock;
-			}
-		}
-
-		public Block HeaderBlock
-		{
-			get { return header; }
-		}
-
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("hdr: {0}, end: {1} [", header.RpoNumber, end.RpoNumber);
-			string fmt = "{0}";
-			foreach (int i in blocks)
-			{
-				sb.AppendFormat(fmt, i);
-				fmt = ", {0}";
-			}
-			sb.Append("]");
-			return sb.ToString();
-		}
-	}
-
-    [Obsolete]
-	public class WhileLoopObsolete : LoopObsolete
-	{
-		public WhileLoopObsolete(Block head, Block end, BitSet blocks) : base(head, end, blocks)
-		{
-			follow = GetFollowBlock(head);
-		}
-
-	}
-
-    [Obsolete]
-	public class RepeatLoopObsolete : LoopObsolete
-	{
-		public RepeatLoopObsolete(Block head, Block end, BitSet blocks) : base(head, end, blocks)
-		{
-			follow = GetFollowBlock(end);
-		}
-	}
 }

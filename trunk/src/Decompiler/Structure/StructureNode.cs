@@ -50,7 +50,6 @@ namespace Decompiler.Structure
         private StructureNode immPDom;
         private StructureNode caseHead;
 
-        private StructureNode condFollow;
         private structType sType;
         private UnstructuredType usType;
         private Conditional cond;
@@ -85,7 +84,6 @@ namespace Decompiler.Structure
             immPDom = null;
             caseHead = null;
 
-            condFollow = null;
             sType = structType.Seq;
 
             usType = UnstructuredType.Structured;
@@ -143,13 +141,6 @@ namespace Decompiler.Structure
         {
             get { return caseHead; }
             set { caseHead = value; }
-        }
-
-        [Obsolete]
-        public StructureNode CondFollow
-        {
-            get { return condFollow; }
-            set { condFollow = value; }
         }
 
         public Conditional Conditional
@@ -358,7 +349,7 @@ namespace Decompiler.Structure
         }
 
 
-        // Return the structured type of this node
+        [Obsolete]
         public structType GetStructType() { return sType; }
 
         // Pre: if this is to be a cond type then the follow (if any) must have 
@@ -366,20 +357,6 @@ namespace Decompiler.Structure
         // Set the class of structure determined for this node. 
         public void SetStructType(structType s)
         {
-            // if this is a conditional header, determine exactly which type of 
-            // conditional header it is (i.e. switch, if-then, if-then-else etc.)
-            if (s == structType.Cond)
-            {
-                if (type == bbType.nway)
-                    cond = new Case();
-                else if (Else == condFollow)
-                    cond = new IfThen();
-                else if (Then == condFollow)
-                    cond = new IfElse();
-                else
-                    cond = new IfThenElse();
-            }
-
             sType = s;
         }
 
@@ -403,7 +380,7 @@ namespace Decompiler.Structure
             get { return usType; }
             set
             {
-                Debug.Assert((sType == structType.Cond || sType == structType.LoopCond) && !(cond is Case));
+                Debug.Assert(Conditional != null && !(cond is Case));
                 usType = value;
             }
         }
