@@ -175,8 +175,11 @@
     <Compile Include="Mocks\ArchitectureMock.cs" />
     <Compile Include="Mocks\ArrayLoopMock.cs" />
     <Compile Include="Mocks\ArrayMock.cs" />
+    <Compile Include="Mocks\BigLoopHeadFragment.cs" />
     <Compile Include="Mocks\ByteArrayLoopMock.cs" />
     <Compile Include="Mocks\CmpMock.cs" />
+    <Compile Include="Mocks\DoWhileFragment.cs" />
+    <Compile Include="Mocks\DoWhileIfFragment.cs" />
     <Compile Include="Mocks\FactorialMock.cs" />
     <Compile Include="Mocks\FakeComponentSite.cs" />
     <Compile Include="Mocks\FakeLoader.cs" />
@@ -193,6 +196,7 @@
     <Compile Include="Mocks\SegmentedDoubleReference.cs" />
     <Compile Include="Mocks\TreeFindMock.cs" />
     <Compile Include="Mocks\UnstructuredIfsMock.cs" />
+    <Compile Include="Mocks\WhileLoopFragment.cs" />
     <Compile Include="PowerPC\PowerPcArchitectureTests.cs" />
     <Compile Include="PowerPC\PowerPcDisassemblerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -351,7 +351,8 @@ namespace Decompiler.UnitTests.Structure
            "\tbar3();" + nl +
            "end:" + nl +
            "\tbar4();" + nl +
-           "\treturn;" + nl;
+           "\treturn;" + nl +
+           "}" + nl;
 
 
             Console.WriteLine(sb.ToString());

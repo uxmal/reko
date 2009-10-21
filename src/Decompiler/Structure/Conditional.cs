@@ -74,33 +74,52 @@ namespace Decompiler.Structure
     {
         public override void GenerateCode(AbsynCodeGenerator2 codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
         {
+            codeGen.EmitLinearBlockStatements(node, emitter);
+
             Expression exp = codeGen.BranchCondition(node);
             AbsynIf ifStm = emitter.EmitIfCondition(exp, node.Conditional);
 
             StructureNode succ = FirstBranch(node);
             AbsynStatementEmitter emitThen = new AbsynStatementEmitter(ifStm.Then);
-            // emit a goto statement if the first clause has already been generated or it
-            // is the follow of this node's enclosing loop
-            if (codeGen.IsVisited(succ) || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
-                codeGen.EmitGotoAndLabel(node, succ, emitThen);
-            else
-                codeGen.GenerateCode(succ, latchNode, emitThen);
-
-            if (node.Conditional is IfThenElse)
+            if (node.UnstructType == UnstructuredType.JumpInOutLoop)
             {
-                succ = node.Then;
-                AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
-                if (succ.traversed == travType.DFS_CODEGEN)
-                    codeGen.EmitGotoAndLabel(node, succ, emitElse);
-                else
-                    codeGen.GenerateCode(succ, latchNode, emitElse);
-
-                if (HasSingleIfThenElseStatement(ifStm.Then))
-                {
-                    ifStm.InvertCondition();
-                }
+                codeGen.DeferRendering(succ, emitThen);
+                codeGen.GenerateCode(SecondBranch(node), latchNode, emitter);
             }
+            else
+            {
+                if (node.CondFollow == null)
+                    throw new NotSupportedException("Null condfollow");
+                codeGen.PushFollow(node.CondFollow);
+
+
+                if (codeGen.IsVisited(succ) || (node.LoopHead != null && succ == node.LoopHead.LoopFollow))
+                    codeGen.EmitGotoAndLabel(node, succ, emitThen);
+                else
+                    codeGen.GenerateCode(succ, latchNode, emitThen);
+
+                if (node.Conditional is IfThenElse)
+                {
+                    succ = node.Then;
+                    AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
+                    if (codeGen.IsVisited(succ))
+                        codeGen.EmitGotoAndLabel(node, succ, emitElse);
+                    else
+                        codeGen.GenerateCode(succ, latchNode, emitElse);
+
+                    if (HasSingleIfThenElseStatement(ifStm.Then))
+                    {
+                        ifStm.InvertCondition();
+                    }
+                }
+
+                codeGen.PopFollow();
+                codeGen.GenerateCode(node.CondFollow, latchNode, emitter);
+            }
+
+
         }
+
 
         [Obsolete]
         public override void GenerateCode(StructureNode node, StructureNode latch, List<StructureNode> followSet, List<StructureNode> gotoSet, AbsynCodeGenerator codeGen, AbsynStatementEmitter emitter)
@@ -120,7 +139,7 @@ namespace Decompiler.Structure
 
                 if (node.Conditional == Conditional.IfThenElse)
                 {
-                    succ = node.Then;
+                    succ = SecondBranch(node);
                     AbsynStatementEmitter emitElse = new AbsynStatementEmitter(ifStm.Else);
                     if (succ.traversed == travType.DFS_CODEGEN)
                         codeGen.EmitGotoAndLabel(node, succ, emitElse);
@@ -146,6 +165,7 @@ namespace Decompiler.Structure
         }
 
         public abstract StructureNode FirstBranch(StructureNode node);
+        public abstract StructureNode SecondBranch(StructureNode node);
 
     }
 
@@ -154,6 +174,11 @@ namespace Decompiler.Structure
         public override StructureNode FirstBranch(StructureNode node)
         {
             return node.Then;
+        }
+
+        public override StructureNode SecondBranch(StructureNode node)
+        {
+            return node.Else;
         }
     }
 
@@ -164,6 +189,11 @@ namespace Decompiler.Structure
             return node.Else;
         }
 
+        public override StructureNode SecondBranch(StructureNode node)
+        {
+            return node.Then;
+        }
+
     }
 
     public class IfThenElse : IfConditional
@@ -171,6 +201,11 @@ namespace Decompiler.Structure
         public override StructureNode FirstBranch(StructureNode node)
         {
             return node.Else;
+        }
+
+        public override StructureNode SecondBranch(StructureNode node)
+        {
+            return node.Then;
         }
     }
 

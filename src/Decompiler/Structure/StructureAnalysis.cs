@@ -289,7 +289,7 @@ namespace Decompiler.Structure
 
             HashSet<StructureNode> loopNodes = lf.TagNodesInLoop(curProc.Ordering, cfgNodes);
             lf.DetermineLoopType();
-            lf.FindLoopFollow(curProc.Ordering, loopNodes);
+            headNode.LoopFollow = lf.FindLoopFollow(curProc.Ordering, loopNodes);
         }
 
         public ProcedureStructure ProcedureStructure
