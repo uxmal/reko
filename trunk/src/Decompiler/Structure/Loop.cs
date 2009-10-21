@@ -153,7 +153,17 @@ namespace Decompiler.Structure
 
         protected override void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter)
         {
-            throw new NotImplementedException();
+            codeGen.EmitLinearBlockStatements(node, emitter);
+            List<AbsynStatement> loopBody = new List<AbsynStatement>();
+            StructureNode bodyNode = (node.Else == node.Loop.Follow)
+                ? node.Then
+                : node.Else;
+            AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
+            codeGen.GenerateCode(bodyNode, node.Loop.Latch, bodyEmitter);
+            codeGen.EmitLinearBlockStatements(node, bodyEmitter);
+
+            emitter.EmitWhile(node, Constant.True(), loopBody);
+
         }
     }
 }

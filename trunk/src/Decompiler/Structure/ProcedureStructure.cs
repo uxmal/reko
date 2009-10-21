@@ -138,7 +138,7 @@ namespace Decompiler.Structure
                 writer.Write(" {0}", node.Loop.GetType().Name);
             if (node.Conditional != null)
                 writer.Write(" {0}", node.Conditional.GetType().Name);
-
+            writer.WriteLine();
             if (node.Loop != null)
             {
                 writer.WriteLine("    Loop header:" + node.Loop.Header.Block.Name);

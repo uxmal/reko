@@ -40,24 +40,9 @@ namespace Decompiler.Structure
             stm.Instruction.Accept(this);
         }
 
-        [Obsolete]
-        public AbsynIf EmitIfCondition(Expression exp, StructureNode node)
+        public void EmitStatement(AbsynStatement stm)
         {
-            return EmitIfCondition(exp, node.Conditional);
-        }
-
-        //$REVIEW: consider moving this to Conditional.
-        public AbsynIf EmitIfCondition(Expression exp, Conditional cond)
-        {
-            if (cond is IfElse || cond is IfThenElse)
-            {
-                exp = exp.Invert();
-            }
-            AbsynIf ifStm = new AbsynIf();
-            ifStm.Condition = exp;
-            stms.Add(ifStm);
-
-            return ifStm;
+            stms.Add(stm);
         }
 
         public void EmitCaseLabel(StructureNode node, int i)

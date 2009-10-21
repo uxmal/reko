@@ -262,6 +262,54 @@ namespace Decompiler.UnitTests.Structure
 
         }
 
+        [Test]
+        public void CaseJumpsBack()
+        {
+            CompileTest(new MockCaseJumpsBack());
+            RunTest(
+"MockCaseJumpsBack()" + nl +
+"{" + nl +
+"	Beginning();" + nl +
+"	DoWorkBeforeSwitch();" + nl +
+"	while (true)" + nl +
+"	{" + nl +
+"		switch (n)" + nl +
+"		{" + nl +
+"		case 0:" + nl +
+"		print(n);" + nl +
+"done:" + nl +
+"		return;" + nl +
+"		DoWorkBeforeSwitch();" + nl +
+"	}" + nl +
+"}" + nl);
+
+
+        }
+
+        [Test]
+        public void CaseStatement()
+        {
+            CompileTest(new MockCaseStatement());
+            RunTest(
+                "MockCaseStatement()" + nl +
+                "{" + nl +
+                "	switch (w)" + nl +
+                "	{" + nl +
+                "	case 0:" + nl +
+                "		fn0();" + nl +
+                "		break;" + nl +
+                "	case 1:" + nl +
+                "		fn1();" + nl +
+                "		break;" + nl +
+                "	case 2:" + nl +
+                "		fn2();" + nl +
+                "		break;" + nl +
+                "	}" + nl +
+                "\treturn;" + nl +
+                "}" + nl);
+
+        }
+
         private void CompileTest(ProcGenerator gen)
         {
             ProcedureMock mock = new ProcedureMock();
@@ -281,14 +329,18 @@ namespace Decompiler.UnitTests.Structure
 
         private void RunTest(string sExp)
         {
-            AbsynCodeGenerator2 acg = new AbsynCodeGenerator2();
-            acg.GenerateCode(curProc, proc.Body);
-            GenCode(proc, sb);
-            if (sExp != sb.ToString())
+            try
+            {
+                AbsynCodeGenerator2 acg = new AbsynCodeGenerator2();
+                acg.GenerateCode(curProc, proc.Body);
+                GenCode(proc, sb);
+                Assert.AreEqual(sExp, sb.ToString());
+            }
+            catch
             {
                 curProc.Dump();
                 Console.WriteLine(sb.ToString());
-                Assert.AreEqual(sExp, sb.ToString());
+                throw;
             }
         }
 
