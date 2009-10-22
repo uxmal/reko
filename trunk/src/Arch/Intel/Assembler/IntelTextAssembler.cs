@@ -82,20 +82,18 @@ namespace Decompiler.Arch.Intel.Assembler
 			{
 				ProcessLine();
 			}
-			
-			Symbol [] syms = asm.SymbolTable.GetUndefinedSymbols();
-			if (syms.Length > 0)
-			{
-				ReportUnresolvedSymbols(syms);
-			}
+
+            asm.ReportUnresolvedSymbols();
+            Address a;
 			if (m_symOrigin != null && m_symOrigin.fResolved)
 			{
-				addrStart = new Address(addrBase.Selector, (ushort) m_symOrigin.offset);
+				a = new Address(addrBase.Selector, (ushort) m_symOrigin.offset);
 			}
 			else
 			{
-				addrStart = addrBase;
+                a = addrBase;
 			}
+            addrStart = a;
 			return new ProgramImage(addrBase, emitter.Bytes);
 		}
 
@@ -229,38 +227,18 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessBitOp()
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			ImmediateOperand imm2 = ops[1].Operand as ImmediateOperand;
-			if (imm2 != null)
-			{
-				emitter.EmitOpcode(0x0F, dataWidth);
-				emitter.EmitByte(0xBA);
-				EmitModRM(0x04, ops[0]);
-				emitter.EmitByte(imm2.Value.ToInt32());
-			}
-			else
-			{
-				emitter.EmitOpcode(0x0F, dataWidth);
-				emitter.EmitByte(0xA3);
-				EmitModRM(RegisterEncoding(((RegisterOperand) ops[1].Operand).Register), ops[0]);
-			}
+            asm.ProcessBitOp(ops);
 		}
 
 		private void ProcessBitScan(byte opCode)
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[1]);
-			RegisterOperand regDst = ops[0].Operand as RegisterOperand;
-			if (regDst == null)
-				Error("First operand of bit scan instruction must be a register");
-			emitter.EmitOpcode(0x0F, dataWidth);
-			emitter.EmitByte(opCode);
-			EmitModRM(RegisterEncoding(regDst.Register), ops[1]); 
+            asm.ProcessBitScan(opCode, ops[0], ops[1]);
 		}
 
 		private void ProcessBranch(int cc)
 		{
-                string destination;
+            string destination;
 
 			Token token = lexer.GetToken();
 			switch (token)
@@ -305,8 +283,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			{
 				// Indirect jump.
 				ParsedOperand [] ops = ParseOperandList(1);
-				emitter.EmitOpcode(0xFF, emitter.SegmentDataWidth);
-				EmitModRM(indirect, ops[0]);
+                asm.ProcessCallJmp(indirect, ops[0]);
 				break;
 			}
 			case Token.ID:
@@ -335,7 +312,7 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		private void ProcessCwd(PrimitiveType width)
 		{
-			emitter.EmitOpcode(0x99, width);
+            asm.ProcessCwd(width);
 		}
 
 		private void ProcessDB()
@@ -702,9 +679,7 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessLea()
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
-			RegisterOperand ropLhs = (RegisterOperand) ops[0].Operand;
-			emitter.EmitOpcode(0x8D, ropLhs.Width);
-			EmitModRM(RegisterEncoding(ropLhs.Register), ops[1]);
+            asm.Lea(ops[0], ops[1]);
 		}
 
 		private void ProcessLeave()
@@ -777,7 +752,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				ProcessCallJmp(0xE8, 0x02);
 				break;
 			case Token.CDQ:
-				ProcessCwd(PrimitiveType.Word32);
+				asm.ProcessCwd(PrimitiveType.Word32);
 				break;
 			case Token.CLC:
 				emitter.EmitOpcode(0xF8, null);
@@ -786,7 +761,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				emitter.EmitOpcode(0xF5, null);
 				break;
 			case Token.CWD:
-				ProcessCwd(PrimitiveType.Word16);
+				asm.ProcessCwd(PrimitiveType.Word16);
 				break;
 			case Token.DEC:
 				ProcessIncDec(true);
@@ -986,10 +961,10 @@ namespace Decompiler.Arch.Intel.Assembler
 				ProcessMov();
 				break;
 			case Token.MOVSB:
-				ProcessStringInstruction(0xA4, PrimitiveType.Byte);
+				asm.ProcessStringInstruction(0xA4, PrimitiveType.Byte);
 				break;
 			case Token.MOVSW:
-				ProcessStringInstruction(0xA4, PrimitiveType.Word16);
+                asm.ProcessStringInstruction(0xA4, PrimitiveType.Word16);
 				break;
 			case Token.MOVSX:
 				ProcessMovx(0xBE);
@@ -998,10 +973,10 @@ namespace Decompiler.Arch.Intel.Assembler
 				ProcessMovx(0xB6);
 				break;
 			case Token.SCASB:
-				ProcessStringInstruction(0xAE, PrimitiveType.Byte);
+                asm.ProcessStringInstruction(0xAE, PrimitiveType.Byte);
 				break;
 			case Token.SCASW:
-				ProcessStringInstruction(0xAE, PrimitiveType.Word16);
+                asm.ProcessStringInstruction(0xAE, PrimitiveType.Word16);
 				break;
 			case Token.SETNZ:
 				ProcessSetCc(0x05);
@@ -1013,19 +988,19 @@ namespace Decompiler.Arch.Intel.Assembler
 				emitter.EmitOpcode(0xF9, null);
 				break;
 			case Token.STOSB:
-				ProcessStringInstruction(0xAA, PrimitiveType.Byte);
+                asm.ProcessStringInstruction(0xAA, PrimitiveType.Byte);
 				break;
 			case Token.STOSW:
-				ProcessStringInstruction(0xAA, PrimitiveType.Word16);
+                asm.ProcessStringInstruction(0xAA, PrimitiveType.Word16);
 				break;
 			case Token.LODSB:
-				ProcessStringInstruction(0xAC, PrimitiveType.Byte);
+                asm.ProcessStringInstruction(0xAC, PrimitiveType.Byte);
 				break;
 			case Token.LODSW:
-				ProcessStringInstruction(0xAC, PrimitiveType.Word16);
+                asm.ProcessStringInstruction(0xAC, PrimitiveType.Word16);
 				break;
 			case Token.LODSD:
-				ProcessStringInstruction(0xAC, PrimitiveType.Word32);
+                asm.ProcessStringInstruction(0xAC, PrimitiveType.Word32);
 				break;
 			case Token.MUL:
 				ProcessMul();
@@ -1127,34 +1102,19 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessMovx(int opcode)
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[1]);
-
-			RegisterOperand regDst = ops[0].Operand as RegisterOperand;
-			if (regDst == null)
-				Error("First operand must be a register");
-			emitter.EmitOpcode(0x0F, regDst.Width);
-			emitter.EmitByte(opcode | IsWordWidth(dataWidth));
-			EmitModRM(RegisterEncoding(regDst.Register), ops[1]);
+            asm.ProcessMovx(opcode, ops);
 		}
 
 		private void ProcessMul()
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			// Single operand doesn't accept immediate values.
-			if (ops[0].Operand is ImmediateOperand)
-				Error("Immediate operand not allowed for single-argument multiplication");
-
-			emitter.EmitOpcode(0xF6 | IsWordWidth(dataWidth), dataWidth);
-			EmitModRM(4, ops[0]);
+            asm.ProcessMul(ops[0]);
 		}
 
 		private void ProcessUnary(int operation)
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			emitter.EmitOpcode(0xF6 | IsWordWidth(dataWidth), dataWidth);
-			EmitModRM(operation, ops[0]);
+            asm.ProcessUnary(operation, ops[0]);
 		}
 
 		public void ProcessPublic()
@@ -1166,7 +1126,6 @@ namespace Decompiler.Arch.Intel.Assembler
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
             asm.ProcessPushPop(fPop, ops[0]);
-
         }
 
 
@@ -1198,16 +1157,11 @@ namespace Decompiler.Arch.Intel.Assembler
 			lexer.SkipUntil(Token.EOL);
 		}
 
-		private void ProcessSetCc(byte bits)
-		{
-			ParsedOperand [] ops = ParseOperandList(1);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			if (dataWidth != PrimitiveType.Byte)
-				Error("Instruction takes only a byte operand");
-			emitter.EmitOpcode(0x0F, dataWidth);
-			emitter.EmitByte(0x90 | (bits & 0xF));
-			EmitModRM(0, ops[0]);
-		}
+        private void ProcessSetCc(byte bits)
+        {
+            ParsedOperand[] ops = ParseOperandList(1);
+            asm.ProcessSetCc(bits, ops[0]);
+        }
 
 		private void ProcessShiftRotation(byte bits)
 		{
@@ -1291,11 +1245,6 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 		}
 
-		private void ProcessStringInstruction(byte opcode, PrimitiveType width)
-		{
-			emitter.EmitOpcode(opcode|IsWordWidth(width), width);
-		}
-
 
         [Obsolete]
 		public static byte RegisterEncoding(MachineRegister reg)
@@ -1303,16 +1252,6 @@ namespace Decompiler.Arch.Intel.Assembler
             return IntelAssembler.RegisterEncoding(reg);
 		}
 
-		public void ReportUnresolvedSymbols(Symbol [] s)
-		{
-			StringWriter writer = new StringWriter();
-			writer.WriteLine("The following symbols were undefined:");
-			for (int i = 0; i < s.Length; ++i)
-			{
-				writer.WriteLine("  {0}", s[i].ToString());
-			}
-			throw new ApplicationException(writer.ToString());
-		}
 
 
 		public Address StartAddress
