@@ -77,6 +77,16 @@ namespace Decompiler.Arch.Intel.Assembler
                 new MemoryOperand(PrimitiveType.Byte, new Constant(emitter.AddressWidth, offset)));
         }
 
+        internal PrimitiveType EnsureValidOperandSize(ParsedOperand op)
+        {
+            PrimitiveType w = op.Operand.Width;
+            if (w == null)
+                Error("Width of the operand is unknown");
+            return w;
+        }
+
+
+
         internal void ProcessComm(string sym)
         {
             DefineSymbol(sym);
@@ -337,6 +347,29 @@ namespace Decompiler.Arch.Intel.Assembler
                 emitter.EmitImmediate(immOpSrc.Value, dataWidth);
             }
         }
+        internal void ProcessMovx(int opcode, ParsedOperand[] ops)
+        {
+            PrimitiveType dataWidth = EnsureValidOperandSize(ops[1]);
+            RegisterOperand regDst = ops[0].Operand as RegisterOperand;
+            if (regDst == null)
+                Error("First operand must be a register");
+            emitter.EmitOpcode(0x0F, regDst.Width);
+            emitter.EmitByte(opcode | IsWordWidth(dataWidth));
+            EmitModRM(RegisterEncoding(regDst.Register), ops[1]);
+        }
+
+        internal void ProcessMul(ParsedOperand op)
+        {
+            PrimitiveType dataWidth = EnsureValidOperandSize(op);
+            // Single operand doesn't accept immediate values.
+            if (op.Operand is ImmediateOperand)
+                Error("Immediate operand not allowed for single-argument multiplication");
+
+            emitter.EmitOpcode(0xF6 | IsWordWidth(dataWidth), dataWidth);
+            EmitModRM(4, op);
+        }
+
+
 
         internal void ProcessPushPop(bool fPop, ParsedOperand op)
         {
@@ -386,14 +419,21 @@ namespace Decompiler.Arch.Intel.Assembler
             EmitModRM(fPop ? 0 : 6, op);
 		}
 
-        internal PrimitiveType EnsureValidOperandSize(ParsedOperand op)
+        internal void ProcessSetCc(byte bits, ParsedOperand op)
         {
-            PrimitiveType w = op.Operand.Width;
-            if (w == null)
-                Error("Width of the operand is unknown");
-            return w;
+            PrimitiveType dataWidth = EnsureValidOperandSize(op);
+            if (dataWidth != PrimitiveType.Byte)
+                Error("Instruction takes only a byte operand");
+            emitter.EmitOpcode(0x0F, dataWidth);
+            emitter.EmitByte(0x90 | (bits & 0xF));
+            EmitModRM(0, op);
         }
 
+
+        internal void ProcessStringInstruction(byte opcode, PrimitiveType width)
+        {
+            emitter.EmitOpcode(opcode | IsWordWidth(width), width);
+        }
 
         internal void ProcessTest(params ParsedOperand[] ops)
         {
@@ -459,7 +499,14 @@ namespace Decompiler.Arch.Intel.Assembler
             }
         }
 
-        internal void DefineSymbol(string pstr)
+        internal void ProcessUnary(int operation, ParsedOperand op)
+        {
+            PrimitiveType dataWidth = EnsureValidOperandSize(op);
+            emitter.EmitOpcode(0xF6 | IsWordWidth(dataWidth), dataWidth);
+            EmitModRM(operation, op);
+        }
+
+        private void DefineSymbol(string pstr)
         {
             ResolveSymbol(symtab.DefineSymbol(pstr, emitter.Position));
         }
@@ -786,6 +833,18 @@ namespace Decompiler.Arch.Intel.Assembler
             ProcessShortBranch(0x04, destination);
         }
 
+        public void Lea(ParsedOperand dst, ParsedOperand addr)
+        {
+            RegisterOperand ropLhs = (RegisterOperand) dst.Operand;
+            emitter.EmitOpcode(0x8D, ropLhs.Width);
+            EmitModRM(RegisterEncoding(ropLhs.Register), addr);
+        }
+
+        public void ProcessCwd(PrimitiveType width)
+        {
+            emitter.EmitOpcode(0x99, width);
+        }
+
         public void Dec(ParsedOperand op)
         {
             ProcessIncDec(true, op);
@@ -910,11 +969,47 @@ namespace Decompiler.Arch.Intel.Assembler
             }
         }
 
+        internal void ProcessBitOp(ParsedOperand[] ops)
+        {
+            PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
+            ImmediateOperand imm2 = ops[1].Operand as ImmediateOperand;
+            if (imm2 != null)
+            {
+                emitter.EmitOpcode(0x0F, dataWidth);
+                emitter.EmitByte(0xBA);
+                EmitModRM(0x04, ops[0]);
+                emitter.EmitByte(imm2.Value.ToInt32());
+            }
+            else
+            {
+                emitter.EmitOpcode(0x0F, dataWidth);
+                emitter.EmitByte(0xA3);
+                EmitModRM(RegisterEncoding(((RegisterOperand) ops[1].Operand).Register), ops[0]);
+            }
+        }
+
+        internal void ProcessBitScan(byte opCode, ParsedOperand dst, ParsedOperand src)
+        {
+            PrimitiveType dataWidth = EnsureValidOperandSize(src);
+            RegisterOperand regDst = dst.Operand as RegisterOperand;
+            if (regDst == null)
+                Error("First operand of bit scan instruction must be a register");
+            emitter.EmitOpcode(0x0F, dataWidth);
+            emitter.EmitByte(opCode);
+            EmitModRM(RegisterEncoding(regDst.Register), src);
+        }
+
 
         internal void ProcessCallJmp(int direct, string destination)
         {
             emitter.EmitOpcode(direct, null);
             EmitRelativeTarget(destination, emitter.SegmentAddressWidth);
+        }
+
+        internal void ProcessCallJmp(int indirect, ParsedOperand op)
+        {
+            emitter.EmitOpcode(0xFF, emitter.SegmentDataWidth);
+            EmitModRM(indirect, op);
         }
 
         [Obsolete]
@@ -935,8 +1030,7 @@ namespace Decompiler.Arch.Intel.Assembler
             return new OperandParser(lexer, symtab, addrBase, emitter.SegmentDataWidth, emitter.SegmentAddressWidth);
         }
 
-
-        internal void Dw(string symbolText)
+        public void Dw(string symbolText)
         {
             DefineWord(PrimitiveType.Word16, symbolText);
         }
@@ -947,5 +1041,21 @@ namespace Decompiler.Arch.Intel.Assembler
             emitter.EmitInteger(width, (int) addrBase.Offset);
             ReferToSymbol(sym, emitter.Length - (int) width.Size, emitter.SegmentAddressWidth);
         }
+
+        internal void ReportUnresolvedSymbols()
+        {
+            Symbol[] s = symtab.GetUndefinedSymbols();
+            if (s.Length > 0)
+            {
+                StringWriter writer = new StringWriter();
+                writer.WriteLine("The following symbols were undefined:");
+                for (int i = 0; i < s.Length; ++i)
+                {
+                    writer.WriteLine("  {0}", s[i].ToString());
+                }
+                throw new ApplicationException(writer.ToString());
+            }
+        }
+
     }
 }
