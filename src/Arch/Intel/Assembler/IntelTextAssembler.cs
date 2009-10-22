@@ -39,7 +39,6 @@ namespace Decompiler.Arch.Intel.Assembler
 		private Address addrBase;
 		private Address addrStart;
 		private Program prog;
-		private ModRmBuilder modRm;
 		private List<EntryPoint> entryPoints;
         private IntelAssembler asm;
 
@@ -95,39 +94,6 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
             addrStart = a;
 			return new ProgramImage(addrBase, emitter.Bytes);
-		}
-
-        private void EmitOffset(Constant v)
-		{
-			if (v == null)
-				return;
-			emitter.EmitInteger((PrimitiveType)v.DataType, v.ToInt32());
-		}
-
-		private void EmitModRM(int reg, ParsedOperand op)
-		{
-            asm.EmitModRM(reg, op);
-		}
-
-		private void EmitModRM(int reg, ParsedOperand op, byte b)
-		{
-            asm.EmitModRM(reg, op, b);
-		}
-
-
-		private void EmitModRM(int reg, MemoryOperand memOp, Symbol sym)
-		{
-            asm.EmitModRM(reg, memOp, sym);
-		}
-
-		private void EmitModRM(int reg, MemoryOperand memOp, byte b, Symbol sym)
-		{
-            asm.EmitModRM(reg, memOp, b, sym);
-		}
-
-		private PrimitiveType EnsureValidOperandSize(ParsedOperand op)
-		{
-            return asm.EnsureValidOperandSize(op);
 		}
 
 		private bool Error(string pstr)
@@ -199,19 +165,6 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 		}
 
-		private int IsWordWidth(MachineOperand op)
-		{
-			return IsWordWidth(op.Width);
-		}
-
-		private int IsWordWidth(PrimitiveType width)
-		{
-			if (width == null)
-				Error("Operand width is undefined");
-			if (width.Size == 1)
-				return 0;
-			return 1;
-		}
 
 		public void ProcessAssume()
 		{
@@ -323,16 +276,20 @@ namespace Decompiler.Arch.Intel.Assembler
 				switch (tok)
 				{
 				case Token.INTEGER:
-					emitter.EmitByte(lexer.Integer);
-					if (lexer.PeekToken() == Token.DUP)
-					{
-						lexer.DiscardToken();
-						Expect(Token.INTEGER, "expected count to follow 'dup'");
-						emitter.EmitBytes(0, lexer.Integer);
-					}
+                    int by = lexer.Integer;
+                    if (lexer.PeekToken() == Token.DUP)
+                    {
+                        lexer.DiscardToken();
+                        Expect(Token.INTEGER, "expected count to follow 'dup'");
+                        asm.DbDup(by, lexer.Integer);
+                    }
+                    else
+                    {
+                        asm.Db(by);
+                    }
 					break;
 				case Token.STRINGLITERAL:
-					emitter.EmitString(lexer.StringLiteral);
+					asm.Db(lexer.StringLiteral);
 					break;
 				default:
 					Error("unexpected tokens following 'db'");
@@ -368,7 +325,7 @@ namespace Decompiler.Arch.Intel.Assembler
 					Expect(Token.ID);
 					goto case Token.ID;
 				case Token.INTEGER:
-					emitter.EmitInteger(width, lexer.Integer);
+					asm.DefineWord(width, lexer.Integer);
 					break;
 				case Token.ID:
 				{
@@ -413,9 +370,8 @@ namespace Decompiler.Arch.Intel.Assembler
 					nLevel = lexer.Integer;
 				}
 			}
-			emitter.EmitOpcode(0xC8, null);
-			emitter.EmitWord(cbStack);
-			emitter.EmitByte(nLevel);
+
+            asm.Enter(cbStack, nLevel);
 		}
 
 		private void ProcessIncDec(bool fDec)
@@ -438,9 +394,7 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessDiv(int operation)
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			emitter.EmitOpcode(0xF6|IsWordWidth(dataWidth), dataWidth);
-			EmitModRM(operation, ops[0]);
+            asm.ProcessDiv(operation, ops[0]);
 		}
 
 		private void ProcessExtrn()
@@ -454,35 +408,13 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessFild()
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			int opCode;
-			int reg;
-			switch (dataWidth.Size)
-			{
-			case 2: opCode = 0xDF; reg = 0x00; break;
-			case 4: opCode = 0xDD; reg = 0x00; break;
-			case 8: opCode = 0xDF; reg = 0x05; break;
-			default: Error(string.Format("Instruction doesn't support {0}-byte operands", dataWidth.Size)); return;
-			}
-			emitter.EmitOpcode(opCode, dataWidth);
-			EmitModRM(reg, ops[0]);
+            asm.ProcessFild(ops[0]);
 		}
 
 		private void ProcessFistp()
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			int opCode;
-			int reg;
-			switch (dataWidth.Size)
-			{
-			case 2: opCode = 0xDF; reg = 0x03; break;
-			case 4: opCode = 0xDB; reg = 0x03; break;
-			case 8: opCode = 0xDF; reg = 0x07; break;
-			default: Error(string.Format("Instruction doesn't support {0}-byte operands", dataWidth.Size)); return;
-			}
-			emitter.EmitOpcode(opCode, null);
-			EmitModRM(reg, ops[0]);
+            asm.Fistp(ops[0]);
 		}
 
 		/// <summary>
@@ -495,81 +427,13 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessFpuCommon(int opcodeFreg, int opcodeMem, int fpuOperation, bool isPop, bool fixedOrder)
 		{
 			ParsedOperand [] ops = ParseOperandList(0,2);
-			if (ops.Length == 0)
-			{
-				ops = new ParsedOperand[] { new ParsedOperand(new FpuOperand(0)), new ParsedOperand(new FpuOperand(1)) };
-			}
-			else if (ops.Length == 1 && ops[0].Operand is FpuOperand)
-			{
-				ops = new ParsedOperand[] { new ParsedOperand(new FpuOperand(0)), ops[0] };
-			}
-
-			FpuOperand fop1 = ops[0].Operand as FpuOperand;
-			FpuOperand fop2 = ops.Length > 1 ? ops[1].Operand as FpuOperand : null;
-			MemoryOperand mop = ops[0].Operand as MemoryOperand;
-			if (mop == null && ops.Length > 1)
-				mop = ops[1].Operand as MemoryOperand;
-			if (mop != null)
-			{
-				emitter.EmitOpcode(opcodeMem|(mop.Width == PrimitiveType.Word64?4:0), null);
-				EmitModRM(fpuOperation, mop, null);
-				return;
-			}
-			if (isPop)
-			{
-				if (fop1 == null)
-					Error("First operand must be of type ST(n)");
-				emitter.EmitOpcode(opcodeFreg, null);
-				if (fixedOrder)
-					fpuOperation ^= 1;
-				if (fop1.StNumber == 0)
-					EmitModRM(fpuOperation, new ParsedOperand(fop2, null));
-				else
-					EmitModRM(fpuOperation, new ParsedOperand(fop1, null));
-				return;
-			}
-			if (fop1 != null)
-			{
-				fop2 = (FpuOperand) ops[1].Operand;
-				if (fop1.StNumber != 0)
-				{
-					if (fop2.StNumber != 0)
-						Error("at least one of the floating point stack arguments must be ST(0)");
-					if (fixedOrder)
-						fpuOperation ^= 1;
-					fop2 = fop1;
-				}
-				emitter.EmitOpcode(opcodeFreg, null);
-				EmitModRM(fpuOperation, new ParsedOperand(fop2, null));
-				return;
-			}
-			throw new NotImplementedException("NYI");
-		}
-
+            asm.ProcessFpuCommon(opcodeFreg, opcodeMem, fpuOperation, isPop, fixedOrder, ops);
+        }
 
 		private void ProcessFst(bool pop)
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-			FpuOperand fop = ops[0].Operand as FpuOperand;
-			MemoryOperand mop = ops[0].Operand as MemoryOperand;
-			int regBits = pop ? 3 : 2;
-			if (mop != null)
-			{
-				switch (mop.Width.Size)
-				{
-				case 4: emitter.EmitOpcode(0xD9, null); break;
-				case 8: emitter.EmitOpcode(0xDD, null); break;
-				default: Error("Unexpected operator width"); break;
-				}
-				EmitModRM(regBits, ops[0]);
-			}
-			else if (fop != null)
-			{
-				emitter.EmitOpcode(0xDD, null);
-				EmitModRM(regBits, new ParsedOperand(fop, null));
-			}
-			else
-				Error("Unexpected operator type");
+            asm.ProcessFst(pop, ops[0]);
 		}
 
 		private void ProcessImport(string s)
@@ -597,13 +461,10 @@ namespace Decompiler.Arch.Intel.Assembler
             asm.ProcessInOut(fOut, ops);
         }
 
-
 		private void ProcessInt()
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-			ImmediateOperand op = (ImmediateOperand) ops[0].Operand;
-			emitter.EmitOpcode(0xCD, null);
-			emitter.EmitByte(op.Value.ToInt32());
+            asm.ProcessInt(ops[0]);
 		}
 
 		private void ProcessLabel()
@@ -684,7 +545,7 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		private void ProcessLeave()
 		{
-			emitter.EmitOpcode(0xC9, null);
+            asm.Leave();
 		}
 
 		private void ProcessLine()
@@ -700,15 +561,12 @@ namespace Decompiler.Arch.Intel.Assembler
 				return;
 				/* puppen: q11111111111` */
 			case Token.i86:
-			{
                 asm.i86();
 				lexer.SkipUntil(Token.EOL);
 				break;
-			}
 			case Token.i386:
 			case Token.i386p:
-				prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-				asm.SetDefaultWordWidth(PrimitiveType.Word32);
+                asm.i386();
 				lexer.SkipUntil(Token.EOL);
 				break;
 			case Token.ASSUME:
@@ -755,10 +613,10 @@ namespace Decompiler.Arch.Intel.Assembler
 				asm.ProcessCwd(PrimitiveType.Word32);
 				break;
 			case Token.CLC:
-				emitter.EmitOpcode(0xF8, null);
+                asm.Clc();
 				break;
 			case Token.CMC:
-				emitter.EmitOpcode(0xF5, null);
+                asm.Cmc();
 				break;
 			case Token.CWD:
 				asm.ProcessCwd(PrimitiveType.Word16);
@@ -822,12 +680,10 @@ namespace Decompiler.Arch.Intel.Assembler
 				ProcessFpuCommon(0xD9, 0xD9, 0, false, false);
 				break;
 			case Token.FLD1:
-				emitter.EmitByte(0xD9);
-				emitter.EmitByte(0xE8);
+                asm.Fld1();
 				break;
 			case Token.FLDZ:
-				emitter.EmitOpcode(0xD9, null);
-				emitter.EmitByte(0xEE);
+                asm.Fldz();
 				break;
 			case Token.FMUL:
 				ProcessFpuCommon(0xD8, 0xD8, 1, false, false);
@@ -985,7 +841,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				ProcessSetCc(0x04);
 				break;
 			case Token.STC:
-				emitter.EmitOpcode(0xF9, null);
+                asm.Stc();
 				break;
 			case Token.STOSB:
                 asm.ProcessStringInstruction(0xAA, PrimitiveType.Byte);
@@ -1027,7 +883,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				ProcessShiftRotation(3);
 				break;
 			case Token.REP:
-				emitter.EmitByte(0xF3);
+                asm.Rep();
 				ProcessLine();
 				return;
 			case Token.RET:
@@ -1128,8 +984,6 @@ namespace Decompiler.Arch.Intel.Assembler
             asm.ProcessPushPop(fPop, ops[0]);
         }
 
-
-
 		private void ProcessRet()
 		{
 			//$BUGBUG: far / near
@@ -1166,92 +1020,20 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessShiftRotation(byte bits)
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			
-			ImmediateOperand immOp = ops[1].Operand as ImmediateOperand;
-			if (immOp != null)
-			{
-				int imm = immOp.Value.ToInt32();
-				if (imm == 1)
-				{
-					emitter.EmitOpcode(0xD0 | IsWordWidth(dataWidth), dataWidth);
-					EmitModRM(bits, ops[0]);
-				}
-				else
-				{
-					emitter.EmitOpcode(0xC0 | IsWordWidth(dataWidth), dataWidth);
-					EmitModRM(bits, ops[0], (byte) immOp.Value.ToInt32());
-				}
-				return;
-			}
-
-			RegisterOperand regOp = ops[1].Operand as RegisterOperand;
-			if (regOp != null && regOp.Register == Registers.cl)
-			{
-				emitter.EmitOpcode(0xD2 | IsWordWidth(dataWidth), dataWidth);
-				EmitModRM(bits, ops[0]);
-				return;
-			}
-
-			throw new ApplicationException("Shift/rotate instructions must be followed by a constant or CL");
-		}
+            asm.ProcessShiftRotation(bits, ops[0], ops[1]);
+        }
 
 		private void ProcessDoubleShift(byte bits)
 		{
 			ParsedOperand [] ops = ParseOperandList(3);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-
-			RegisterOperand regSrc = ops[1].Operand as RegisterOperand;
-			if (regSrc == null)
-				Error("Second operand of SHLD/SHRD must be a register");
-
-			ImmediateOperand immShift = ops[2].Operand as ImmediateOperand;
-			RegisterOperand regShift = ops[2].Operand as RegisterOperand;
-			if (regShift != null && regShift.Register == Registers.cl)
-			{
-				bits |= 0x01;
-			}
-			else if (immShift == null)
-			{
-				Error("SHLD/SHRD instruction must be followed by a constant or CL");
-			}
-
-			emitter.EmitOpcode(0x0F, dataWidth);
-			emitter.EmitByte(0xA4|bits);
-			EmitModRM(RegisterEncoding(regSrc.Register), ops[0]);
-			if (immShift != null)
-				emitter.EmitByte((byte)immShift.Value.ToUInt32());
+            asm.ProcessDoubleShift(bits, ops[0], ops[1], ops[2]);
 		}
 
 		private void ProcessFstsw()
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			RegisterOperand regOp = ops[0].Operand as RegisterOperand;
-			if (regOp != null)
-			{
-				if (regOp.Register != Registers.ax)
-					Error("Register operand must be AX");
-				emitter.EmitOpcode(0xDF, dataWidth);
-				emitter.EmitByte(0xE0);
-			}
-			MemoryOperand mop = ops[0].Operand as MemoryOperand;
-			if (mop != null)
-			{
-				if (dataWidth != PrimitiveType.Word16)
-					Error("Destination must be two bytes");
-				emitter.EmitOpcode(0xDD, dataWidth);
-				EmitModRM(0x07, ops[0]);
-			}
-		}
-
-
-        [Obsolete]
-		public static byte RegisterEncoding(MachineRegister reg)
-		{
-            return IntelAssembler.RegisterEncoding(reg);
-		}
-
+            asm.Fstsw(ops[0]);
+        }
 
 
 		public Address StartAddress
