@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
 			sigser = new ProcedureSerializer(arch, "stdapi");
-			argser = new ArgumentSerializer(sigser, arch, new Frame(PrimitiveType.Word32));
+            argser = new ArgumentSerializer(sigser, arch, arch.CreateFrame());
 		}
 
         [Test]

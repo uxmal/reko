@@ -27,16 +27,6 @@ namespace Decompiler.UnitTests.Core
 	[TestFixture]
 	public class BlockTests
 	{
-		public BlockTests()
-		{
-		}
-
-		[Test]
-		public void Creation()
-		{
-			Block bl = new Block(null, "foo");
-		}
-
 		[Test]
 		public void CreateStatements()
 		{

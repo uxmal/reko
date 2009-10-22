@@ -95,8 +95,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private void AddProcedure(Address addr, string procName)
         {
             Program prog = decSvc.Decompiler.Program;
-            decSvc.Decompiler.Program.Procedures.Add(addr, 
-                new Procedure(procName, new Frame(prog.Architecture.WordWidth)));
+            decSvc.Decompiler.Program.Procedures.Add(addr,
+                new Procedure(procName, prog.Architecture.CreateFrame()));
         }
 
 		[Test]

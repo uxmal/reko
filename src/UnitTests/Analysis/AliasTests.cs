@@ -30,6 +30,16 @@ namespace Decompiler.UnitTests.Analysis
 	[TestFixture]
 	public class AliasTests : AnalysisTestBase
 	{
+        private Procedure proc;
+        private Aliases alias;
+
+        [SetUp]
+        public void Setup()
+        {
+            IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+            proc = new Procedure("foo", arch.CreateFrame());
+            alias = new Aliases(proc, arch);
+        }
 		[Test]
 		public void AlFactorialReg()
 		{
@@ -57,8 +67,6 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void AliasWideToNarrow()
 		{
-			Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Int16));
-			Aliases alias = new Aliases(proc, new IntelArchitecture(ProcessorMode.Real));
 			Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
 			Identifier ax =  proc.Frame.EnsureRegister(Registers.ax);
 			Assignment ass = alias.CreateAliasInstruction(eax.Number, ax.Number);
@@ -68,8 +76,6 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void AliasWideToNarrowSlice()
 		{
-			Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Int16));
-			Aliases alias = new Aliases(proc, new IntelArchitecture(ProcessorMode.Real));
 			Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
 			Identifier ah =  proc.Frame.EnsureRegister(Registers.ah);
 			Assignment ass = alias.CreateAliasInstruction(eax.Number, ah.Number);
@@ -79,8 +85,6 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void AliasSequenceToElement()
 		{
-			Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Int16));
-			Aliases alias = new Aliases(proc, new IntelArchitecture(ProcessorMode.Real));
 			Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
 			Identifier edx = proc.Frame.EnsureRegister(Registers.edx);
 			Identifier edx_eax = proc.Frame.EnsureSequence(edx, eax, PrimitiveType.Word64);
@@ -91,8 +95,6 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void AliasSequenceToSlice()
 		{
-			Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Int16));
-			Aliases alias = new Aliases(proc, new IntelArchitecture(ProcessorMode.Real));
 			Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
 			Identifier edx = proc.Frame.EnsureRegister(Registers.edx);
 			Identifier edx_eax = proc.Frame.EnsureSequence(edx, eax, PrimitiveType.Word64);
@@ -104,8 +106,6 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void AliasSequenceToMkSequence()
 		{
-			Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Word16));
-			Aliases alias = new Aliases(proc, new IntelArchitecture(ProcessorMode.Real));
 			Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
 			Identifier edx = proc.Frame.EnsureRegister(Registers.edx);
 			Identifier edx_eax = proc.Frame.EnsureSequence(edx, eax, PrimitiveType.Word64);
@@ -117,8 +117,6 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void AliasStackArgument()
 		{
-			Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Word16));
-			Aliases alias = new Aliases(proc, new IntelArchitecture(ProcessorMode.Real));
 			Identifier argOff = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word16);
 			Identifier argSeg = proc.Frame.EnsureStackArgument(6, PrimitiveType.Word16);
 			Identifier argPtr = proc.Frame.EnsureStackArgument(4, PrimitiveType.Pointer32);

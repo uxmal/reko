@@ -41,10 +41,10 @@ void MockIfElseIf()
 		x = 0x00000001;
 	else if (r == 0x00000002)
 		x = 0x00000002;
-	else if (r != 0x00000003)
-		x = 0xFFFFFFFF;
-	else
+	else if (r == 0x00000003)
 		x = 0x00000003;
+	else
+		x = 0xFFFFFFFF;
 	return x;
 }
 ===========================

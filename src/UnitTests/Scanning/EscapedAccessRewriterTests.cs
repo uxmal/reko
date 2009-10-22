@@ -47,8 +47,8 @@ namespace Decompiler.UnitTests.Scanning
 		{
 			Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Word32));
 			Block b = new Block(proc, "foo_1");
-			Block.AddEdge(proc.EntryBlock, b);
-			Block.AddEdge(b, proc.ExitBlock);
+			proc.AddEdge(proc.EntryBlock, b);
+			proc.AddEdge(b, proc.ExitBlock);
 			EscapedAccessRewriter ear = new EscapedAccessRewriter(proc);
 			ear.InsertFramePointerAssignment(new Mocks.ArchitectureMock());
 			Block x = proc.EntryBlock.Succ[0];

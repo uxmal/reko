@@ -137,8 +137,7 @@ namespace Decompiler.Scanning
             Procedure proc;
 			if (!program.Procedures.TryGetValue(addr, out proc))
 			{
-				Frame f = new Frame(program.Architecture.WordWidth);
-				proc = Procedure.Create(procedureName, wi.Address, f);
+				proc = Procedure.Create(procedureName, wi.Address, program.Architecture.CreateFrame());
 				program.Procedures[wi.Address] = proc;
 				program.CallGraph.AddProcedure(proc);
 			}
@@ -503,7 +502,7 @@ namespace Decompiler.Scanning
 		{
 			if (!program.Procedures.ContainsKey(bl.Address))
 			{
-				Procedure procNew = Procedure.Create(null, bl.Address, new Frame(program.Architecture.WordWidth));
+				Procedure procNew = Procedure.Create(null, bl.Address, program.Architecture.CreateFrame());
 				program.Procedures[bl.Address] = procNew;
 				program.CallGraph.AddProcedure(procNew);
 				bl.Procedure = procNew;

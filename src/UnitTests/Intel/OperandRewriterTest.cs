@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Intel
             prog = new Program();
             prog.Image = new ProgramImage(new Address(0x10000), new byte[4]);
             Address procAddress = new Address(0x10000000);
-			proc = Procedure.Create(procAddress, new Frame(PrimitiveType.Word32));
+            proc = Procedure.Create(procAddress, arch.CreateFrame());
 			state = new RewriterState(proc.Frame);
 			orw = new OperandRewriter(new FakeRewriterHost(prog), arch, proc.Frame);
 		}

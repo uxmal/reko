@@ -127,7 +127,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void CallInstruction()
 		{
-			Procedure callee = new Procedure("Callee", new Frame(PrimitiveType.Word32));
+            Procedure callee = new Procedure("Callee", prog.Architecture.CreateFrame());
             CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), 0, 0);
 			ProgramDataFlow flow = new ProgramDataFlow();
 			ProcedureFlow pf = new ProcedureFlow(callee, prog.Architecture);
@@ -143,14 +143,15 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void PropagateToSuccessorBlocks()
 		{
+            Procedure proc = new Procedure("test", prog.Architecture.CreateFrame());
 			Identifier r1 = m.Register(1);
 			Identifier r2 = m.Register(2);
 			Identifier r3 = m.Register(3);
-			Block b = new Block(null, "b");
-			Block t = new Block(null, "t");
-			Block e = new Block(null, "e");
-			Block.AddEdge(b, e);
-			Block.AddEdge(b, t);
+			Block b = proc.AddBlock("b");
+			Block t = proc.AddBlock("t");
+			Block e = proc.AddBlock("e");
+			m.Procedure.AddEdge(b, e);
+            m.Procedure.AddEdge(b, t);
 			ProgramDataFlow pdf = new ProgramDataFlow();
 			pdf[t] = new BlockFlow(t, null);
 			pdf[e] = new BlockFlow(e, null);
@@ -177,7 +178,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void PropagateToProcedureSummary()
 		{
-			Procedure proc = new Procedure("proc", new Frame(PrimitiveType.Word32));
+            Procedure proc = new Procedure("proc", prog.Architecture.CreateFrame());
 			Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
 			Identifier ebx = proc.Frame.EnsureRegister(Registers.ebx);
 			Identifier ecx = proc.Frame.EnsureRegister(Registers.ecx);
@@ -197,7 +198,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void PropagateFlagsToProcedureSummary()
 		{
-			Procedure proc = new Procedure("proc", new Frame(PrimitiveType.Word32));
+            Procedure proc = new Procedure("proc", prog.Architecture.CreateFrame());
 			MachineFlags flags = prog.Architecture.GetFlagGroup("SZ");
 			Identifier sz = m.Frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
 			ProgramDataFlow flow = new ProgramDataFlow();

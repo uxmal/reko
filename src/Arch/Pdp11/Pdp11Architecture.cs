@@ -64,6 +64,11 @@ namespace Decompiler.Arch.Pdp11
             return new Pdp11Dumper();
         }
 
+        public Frame CreateFrame()
+        {
+            return new Frame(PrimitiveType.Word16);
+        }
+
         public ProcessorState CreateProcessorState()
         {
             return new Pdp11ProcessorState();

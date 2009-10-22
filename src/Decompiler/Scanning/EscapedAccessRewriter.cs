@@ -77,11 +77,11 @@ namespace Decompiler.Scanning
 		/// </remarks>
 		public void InsertFramePointerAssignment(IProcessorArchitecture arch)
 		{
-			Block b = new Block(proc, proc.Name + "_frame_asgn");
+			Block b = proc.AddBlock(proc.Name + "_frame_asgn");
 			Block s = proc.EntryBlock.Succ[0];
-			Block.RemoveEdge(proc.EntryBlock, s);
-            Block.AddEdge(proc.EntryBlock, b);
-			Block.AddEdge(b, s);
+			proc.RemoveEdge(proc.EntryBlock, s);
+            proc.AddEdge(proc.EntryBlock, b);
+			proc.AddEdge(b, s);
 			StructureType st = new StructureType(proc.Name + "_frame_t", 0);
 			Identifier frame = proc.Frame.CreateTemporary(proc.Name + "_frame", st);
 			b.Statements.Add(

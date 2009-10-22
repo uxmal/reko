@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			prog = new Program();
             prog.Architecture = arch;
-			proc = new Procedure("test", new Frame(PrimitiveType.Word16));
+            proc = new Procedure("test", arch.CreateFrame());
             host = new FakeRewriterHost(prog);
 			state = new RewriterState(proc.Frame);
 
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Intel
                 Reg(Registers.ax),
 				new Identifier[] { Reg(Registers.cx) }));
 
-			Procedure proc = new Procedure("test", new Frame(arch.WordWidth));
+            Procedure proc = new Procedure("test", arch.CreateFrame());
             rw.ConvertInstructions(instr);
 			Assert.AreEqual("ax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)", rw.Block.Statements[0].Instruction.ToString());
 		}
@@ -171,7 +171,7 @@ namespace Decompiler.UnitTests.Intel
 		public void RewritePushCsCallNear()
 		{
 			Address addrProc = new Address(0xC00, 0x1234);
-			host.AddProcedureAtAddress(addrProc, new Procedure("test", new Frame(PrimitiveType.Word16)));
+            host.AddProcedureAtAddress(addrProc, new Procedure("test", arch.CreateFrame()));
 			state.InstructionAddress = new Address(addrProc.Selector, 0);
 
 			IntelInstruction push = new IntelInstruction(
@@ -299,7 +299,7 @@ namespace Decompiler.UnitTests.Intel
                 : base(prw, proc, host, arch, state)
             {
                 this.host = host;
-                block = new Block(proc, new Address(0x0C00, 0x0030));
+                block = proc.AddBlock(new Address(0x0C00, 0x0030).ToString());
             }
 
             public Block Block

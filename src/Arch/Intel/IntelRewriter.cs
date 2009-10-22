@@ -1087,8 +1087,8 @@ namespace Decompiler.Arch.Intel
 				// A branch to a procedure header other than the current procedure 
 				// is translated into a CALL proc, RETURN sequence.
 				Block block = emitter.Block;
-				blockTo = new Block(proc, state.InstructionAddress.GenerateName("l", "_branch"));
-				Block.AddEdge(block, blockTo);
+				blockTo = proc.AddBlock(state.InstructionAddress.GenerateName("l", "_branch"));
+				proc.AddEdge(block, blockTo);
                 CodeEmitter e = emitter;
                 emitter = prw.CreateEmitter(blockTo);
 				EmitCallAndReturn(p);       //$REFACTOR: pass emitter.
@@ -1350,7 +1350,7 @@ namespace Decompiler.Arch.Intel
 				emitter.Emit(BuildApplication(fn, ep.Signature));
 				if (svc.Characteristics.Terminates)
 				{
-					Block.AddEdge(emitter.Block, proc.ExitBlock);
+					proc.AddEdge(emitter.Block, proc.ExitBlock);
 				}
 			}
 			else
@@ -1447,8 +1447,8 @@ namespace Decompiler.Arch.Intel
 
 				// Splice in a new block.
 
-				blockNew = new Block(proc, state.InstructionAddress.GenerateName("l","_loop"));
-				Block.AddEdge(blockHead, blockNew);
+				blockNew = proc.AddBlock(state.InstructionAddress.GenerateName("l","_loop"));
+				proc.AddEdge(blockHead, blockNew);
 
 				emitter = prw.CreateEmitter(blockNew);
 				Block tgt = EmitBranchInstruction(emitter.Eq0(cx), instrCur.op1);
@@ -1462,7 +1462,7 @@ namespace Decompiler.Arch.Intel
 			}
 			if (blockNew != null)
 			{
-				Block.AddEdge(blockHead, blockNew.Succ[1]);
+				proc.AddEdge(blockHead, blockNew.Succ[1]);
 			}
 		}
 
@@ -1602,8 +1602,8 @@ namespace Decompiler.Arch.Intel
 			// Terminate the header block & create a new block for the repeated string instruction.
 
 			Block blockFollow = EmitBranchPath(blockHead, this.addrEnd);
-			Block blockStringInstr = new Block(proc, state.InstructionAddress.GenerateName("l", "_rep"));
-			Block.AddEdge(blockHead, blockStringInstr);
+			Block blockStringInstr = proc.AddBlock(state.InstructionAddress.GenerateName("l", "_rep"));
+			proc.AddEdge(blockHead, blockStringInstr);
             emitter.Branch(emitter.Eq0(regCX), blockStringInstr);
 
 			// Decrement the [E]CX register.
@@ -1629,13 +1629,13 @@ namespace Decompiler.Arch.Intel
 						? ConditionCode.NE
 						: ConditionCode.EQ;
                     emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)), blockHead);
-					Block.AddEdge(blockStringInstr, blockFollow);
+					proc.AddEdge(blockStringInstr, blockFollow);
 					break;
 				}
 				default:
 					break;
 			}
-			Block.AddEdge(blockStringInstr, blockHead);
+			proc.AddEdge(blockStringInstr, blockHead);
 		}
 
 		public void EmitReturnInstruction(int cbReturnAddress, int cbBytesPop)
@@ -1663,7 +1663,7 @@ namespace Decompiler.Arch.Intel
 			proc.Signature.FpuStackDelta = state.FpuStackItems;
 			proc.Signature.FpuStackArgumentMax = maxFpuStackRead;
 			proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;
-			Block.AddEdge(emitter.Block, proc.ExitBlock);
+			proc.AddEdge(emitter.Block, proc.ExitBlock);
 		}
 
 		public void EmitRotation(string operation, bool useCarry, bool left, FlagM defFlags, FlagM deadFlags)

@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         [Test]
         public void SerializeProcedure()
         {
-            Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Word32));
+            Procedure proc = new Procedure("foo", arch.CreateFrame());
             Address addr = new Address(0x12345);
             ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
             SerializedProcedure sproc =  ser.Serialize(proc, addr);
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         [Test]
         public void SerializeProcedureWithSignature()
         {
-            Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Word32));
+            Procedure proc = new Procedure("foo", arch.CreateFrame());
             proc.Signature = new ProcedureSignature(
                 new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
                 new Identifier[] {

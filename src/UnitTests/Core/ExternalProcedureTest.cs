@@ -41,9 +41,10 @@ namespace Decompiler.UnitTests.Core
 			ExternalProcedure ep = new ExternalProcedure("foo", sig);
 			Assert.AreEqual("Register word16 foo(Register word16 bx, Register byte cl)", ep.ToString());
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, ep);
-			Frame frame = new Frame(PrimitiveType.Word16);
+            IProcessorArchitecture arch = new ArchitectureMock();
+            Frame frame = arch.CreateFrame();
 			ApplicationBuilder ab = new ApplicationBuilder(frame);
-			Instruction instr = ab.BuildApplication(new CallSite(0, 0), new ArchitectureMock(), fn, ep.Signature);
+			Instruction instr = ab.BuildApplication(new CallSite(0, 0), arch, fn, ep.Signature);
 			Assert.AreEqual("ax = foo(bx, cl)", instr.ToString());
 
 		}

@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 				ssig = (SerializedSignature) ser.Deserialize(rdr);
 			}
 			ProcedureSerializer sser = new ProcedureSerializer(this.arch, "stdapi");
-			Assert.AreEqual("Register word16 AxBxCl(Register word16 bx, Register byte cl)", sser.Deserialize(ssig, new Frame(null)).ToString("AxBxCl"));
+			Assert.AreEqual("Register word16 AxBxCl(Register word16 bx, Register byte cl)", sser.Deserialize(ssig, arch.CreateFrame()).ToString("AxBxCl"));
 		}
 
 		[Test]
@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			SerializedSignature ssig = BuildSsigAxBxCl();
 			ProcedureSerializer sser = new ProcedureSerializer(arch, "stdapi");
-			ProcedureSignature sig = sser.Deserialize(ssig, new Frame(null));
+            ProcedureSignature sig = sser.Deserialize(ssig, arch.CreateFrame());
 			Assert.AreEqual("Register word16 AxBxCl(Register word16 bx, Register byte cl)", sig.ToString("AxBxCl"));
 			Assert.AreEqual(PrimitiveType.Word16, sig.ReturnValue.DataType);
 		}
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			SerializedSignature sig = new SerializedSignature();
 			sig.Arguments = new SerializedArgument[] { arg };
 			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
-			ProcedureSignature ps =  ser.Deserialize(sig, new Frame(null));
+            ProcedureSignature ps = ser.Deserialize(sig, arch.CreateFrame());
 			Assert.AreEqual("void foo(Register out ptr16 bpOut)", ps.ToString("foo"));
 		}
 

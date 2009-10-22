@@ -35,6 +35,7 @@ namespace Decompiler.Core
 	{
 		private List<AbsynStatement> body;
 		private List<Block> rpoBlocks;
+        private DirectedGraph<Block> controlGraph;
 		private Block blockEntry;
 		private Block blockExit;
 		private Frame frame;
@@ -45,10 +46,11 @@ namespace Decompiler.Core
 		{
             this.body = new List<AbsynStatement>();
 			this.rpoBlocks = new List<Block>();
+            this.controlGraph = new DirectedGraph<Block>();
 			this.frame = frame;
 			this.signature = new ProcedureSignature();
-			this.blockEntry = new Block(this, Name + "_entry");		// Entry block
-			this.blockExit = new Block(this, Name + "_exit");		// Exit block.
+			this.blockEntry = AddBlock(Name + "_entry");		// Entry block
+			this.blockExit = AddBlock(Name + "_exit");		// Exit block.
 		}
 
 		public List<AbsynStatement> Body
@@ -76,11 +78,6 @@ namespace Decompiler.Core
 		public static Procedure Create(Address addr, Frame f)
 		{
 			return new Procedure(addr.GenerateName("fn", ""), f);
-		}
-
-		public BitSet CreateBlocksBitset()
-		{
-			return new BitSet(RpoBlocks.Count);
 		}
 
 
@@ -181,7 +178,7 @@ namespace Decompiler.Core
 				visited[block] = block;
 				foreach (Block s in block.Succ)
 				{
-					if (!visited.ContainsKey(s) && !IsEmpty(s))
+					if (!visited.ContainsKey(s)) // && !IsEmpty(s))
 					{
 						DFS(s, visited);
 					}
@@ -228,5 +225,31 @@ namespace Decompiler.Core
 				rpoBlocks[rpo] = block;
 			}
 		}
-	}
+
+        public Block AddBlock(string name)
+        {
+            Block block = new Block(this, name);
+            controlGraph.AddNode(block);
+            return block;
+        }
+
+        [Obsolete("Change references to ControlGraph")]
+        public void AddEdge(Block block, Block blockTo)
+        {
+            block.Succ.Add(blockTo);
+            blockTo.Pred.Add(block);
+        }
+
+        [Obsolete("Change references to ControlGraph")]
+        public void RemoveEdge(Block from, Block to)
+        {
+            if (from.Succ.Contains(to) && to.Pred.Contains(from))
+            {
+                from.Succ.Remove(to);
+                to.Pred.Remove(from);
+            }
+        }
+
+
+    }
 }

@@ -20,10 +20,10 @@ fn0C00_0000_exit:		// block 4, pred: 3
 void fn0C00_0000(word16 ax, word16 si, selector ds)
 {
 	word16 bx_10;
-	if (ax != 0x0000)
-		bx_10 = 0x1211;
-	else
+	if (ax == 0x0000)
 		bx_10 = 0x1234;
+	else
+		bx_10 = 0x1211;
 	Mem13[ds:si:word16] = bx_10;
 	return;
 }

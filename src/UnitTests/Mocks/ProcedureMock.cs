@@ -50,6 +50,17 @@ namespace Decompiler.UnitTests.Mocks
 			Init(name);
 		}
 
+        private void Init(string name)
+        {
+            blocks = new Dictionary<string, Block>();
+            proc = new Procedure(name, new Frame(PrimitiveType.Word32));
+            unresolvedProcedures = new List<ProcUpdater>();
+            BuildBody();
+            proc.RenumberBlocks();
+        }
+
+
+
         public ArrayAccess Array(DataType elemType, Expression arrayPtr, Expression index)
         {
             return new ArrayAccess(elemType, arrayPtr, index);
@@ -127,7 +138,7 @@ namespace Decompiler.UnitTests.Mocks
 			Block b;
             if (!blocks.TryGetValue(label, out b))
 			{
-				b = new Block(proc, label);
+				b = proc.AddBlock(label);
 				blocks.Add(label, b);
 			}
 			return b;
@@ -220,20 +231,20 @@ namespace Decompiler.UnitTests.Mocks
 			block = BlockOf(name);
 			if (proc.EntryBlock.Succ.Count == 0)
 			{
-				Block.AddEdge(proc.EntryBlock, block);
+				proc.AddEdge(proc.EntryBlock, block);
 			}
 			
 			if (lastBlock != null)
 			{
 				if (branchBlock != null)
 				{
-					Block.AddEdge(lastBlock, block);
-					Block.AddEdge(lastBlock, branchBlock);
+					proc.AddEdge(lastBlock, block);
+					proc.AddEdge(lastBlock, branchBlock);
 					branchBlock = null;
 				}
 				else
 				{
-					Block.AddEdge(lastBlock, block);
+					proc.AddEdge(lastBlock, block);
 				}
 				lastBlock = null;
 			}
@@ -320,15 +331,6 @@ namespace Decompiler.UnitTests.Mocks
 		}
 
 
-		private void Init(string name)
-		{
-			blocks = new Dictionary<string,Block>();
-			proc = new Procedure(name, new Frame(PrimitiveType.Word32));
-			unresolvedProcedures = new List<ProcUpdater>();
-			BuildBody();
-			proc.RenumberBlocks();
-		}
-
 
 		public Constant Int8(int n)
 		{
@@ -359,7 +361,7 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			EnsureBlock(null);
 			Block blockTo = BlockOf(name);
-			Block.AddEdge(block, blockTo);
+			proc.AddEdge(block, blockTo);
 			block = null;
 		}
 
@@ -513,7 +515,7 @@ namespace Decompiler.UnitTests.Mocks
 		public void Return(Expression exp)
 		{
 			Emit(new ReturnInstruction(exp));
-			Block.AddEdge(block, proc.ExitBlock);
+			proc.AddEdge(block, proc.ExitBlock);
 			block = null;
 		}
 
@@ -598,7 +600,7 @@ namespace Decompiler.UnitTests.Mocks
 			Emit(new SwitchInstruction(e, blox));
 			for (int i = 0; i < blox.Length; ++i)
 			{
-				Block.AddEdge(this.block, blox[i]);
+				proc.AddEdge(this.block, blox[i]);
 			}
             lastBlock = null;
             block = null;

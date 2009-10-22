@@ -252,6 +252,11 @@ namespace Decompiler.Arch.Intel
 			return new IntelDumper(this);
 		}
 
+        public virtual Frame CreateFrame()
+        {
+            return new Frame(FramePointerType);
+        }
+
 		public virtual BitSet CreateRegisterBitset()
 		{
 			return new BitSet((int) Registers.Max);

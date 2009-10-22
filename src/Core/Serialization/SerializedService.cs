@@ -56,7 +56,7 @@ namespace Decompiler.Core.Serialization
 				svc.SyscallInfo.RegisterValues = new RegValue[0];
 			}
 			ProcedureSerializer sser = new ProcedureSerializer(arch, "stdapi");
-			svc.Signature = sser.Deserialize(Signature, new Frame(null));
+            svc.Signature = sser.Deserialize(Signature, arch.CreateFrame());
 			svc.Characteristics = Characteristics != null ? Characteristics : DefaultProcedureCharacteristics.Instance;
 			return svc;
 		}

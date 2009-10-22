@@ -63,8 +63,7 @@ namespace Decompiler.Core
 			Procedure proc; 
 			if (!procedures.TryGetValue(ep.Address, out proc))
 			{
-				Frame frame = new Frame(arch.WordWidth);
-				proc = Procedure.Create(ep.Name, ep.Address, frame);
+				proc = Procedure.Create(ep.Name, ep.Address, arch.CreateFrame());
 				procedures.Add(ep.Address, proc);
 			}
 			CallGraph.AddEntryPoint(proc);

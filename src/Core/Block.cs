@@ -45,50 +45,6 @@ namespace Decompiler.Core
 			this.stms = new StatementList(this);
 		}
 
-		public Block(Procedure proc, Address addr)
-		{
-			this.proc = proc;
-			this.name = addr.GenerateName("l", "");
-			this.stms = new StatementList(this);
-		}
-
-		public static void AddEdge(Block from, Block to)
-		{
-			from.succ.Add(to);
-			to.pred.Add(from);
-		}
-
-
-		public static void RemoveEdge(Block from, Block to)
-		{
-			Debug.Assert(from.succ.Contains(to));
-			Debug.Assert(to.pred.Contains(from));
-			from.succ.Remove(to);
-			to.pred.Remove(from);
-		}
-
-		public void RemoveAllEdges()
-		{
-			Block [] p = new Block[Pred.Count];
-			Pred.CopyTo(p);
-			for (int i = 0; i < p.Length; ++i)
-			{
-				RemoveEdge(p[i], this);
-			}
-			Block [] s = new Block[Succ.Count];
-			Succ.CopyTo(s);
-			for (int i = 0; i < s.Length; ++i)
-			{
-				RemoveEdge(this, s[i]);
-			}
-		}
-
-		public void Clear()
-		{
-			RemoveAllEdges();
-			Statements.Clear();
-		}
-
 		public static void Coalesce(Block block, Block next)
 		{
 			foreach (Statement stm in next.Statements)

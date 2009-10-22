@@ -28,7 +28,7 @@ namespace Decompiler.Core.Code
 	{
 		public Expression [] Arguments;
 
-		public PhiFunction(DataType joinType, Expression [] arguments) : base(joinType)
+		public PhiFunction(DataType joinType, params Expression [] arguments) : base(joinType)
 		{
 			this.Arguments = arguments;
 		}

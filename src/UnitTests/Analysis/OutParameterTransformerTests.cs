@@ -67,10 +67,11 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpReplaceSimple()
 		{
-			Block block = new Block(null, "block");
+            ProcedureMock m = new ProcedureMock();
+            Block block = m.Label("block");
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			Identifier pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer32, null);
-			Statement stmDef = new Statement(new Assignment(foo, Constant.Word32(3)), block);
+            Statement stmDef = m.Assign(foo, 3);
 			SsaIdentifier sid = new SsaIdentifier(foo, foo, stmDef, null, false);
 
 			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
@@ -85,21 +86,19 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpReplacePhi()
 		{
-			Block block1 = new Block(null, "block1");
-			Block block2 = new Block(null, "block2");
-			Block block3 = new Block(null, "block3");
+            ProcedureMock m = new ProcedureMock();
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			Identifier foo1 = new Identifier("foo1", 0, PrimitiveType.Word32, null);
 			Identifier foo2 = new Identifier("foo2", 1, PrimitiveType.Word32, null);
 			Identifier foo3 = new Identifier("foo3", 2, PrimitiveType.Word32, null);
 			Identifier pfoo = new Identifier("pfoo", 4, PrimitiveType.Pointer32, null);
 
-			Statement stmFoo1 = new Statement(new Assignment(foo1, Constant.Word32(1)), block1);
-			Statement stmFoo2 = new Statement(new Assignment(foo2, Constant.Word32(2)), block2);
-			Statement stmFoo3 = new Statement(new PhiAssignment(foo3, new PhiFunction(foo1.DataType, new Expression[] { foo1, foo2 })), block3);
-			block1.Statements.Add(stmFoo1);
-			block2.Statements.Add(stmFoo2);
-			block3.Statements.Add(stmFoo3);
+            Block block1 = m.Label("block1");
+            Statement stmFoo1 = m.Assign(foo1, Constant.Word32(1));
+            Block block2 = m.Label("block2");
+            Statement stmFoo2 = m.Assign(foo2, Constant.Word32(2));
+            Block block3 = m.Label("block3");
+            Statement stmFoo3 = m.Phi(foo3, foo1, foo2);
 
 			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
 			ssaIds.Add(new SsaIdentifier(foo1, foo, stmFoo1, null, false));
@@ -128,15 +127,14 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpReplaceManyUses()
 		{
-			Block block = new Block(null, "block");
+            ProcedureMock m = new ProcedureMock();
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			Identifier bar = new Identifier("bar", 1, PrimitiveType.Word32, null);
 			Identifier pfoo = new Identifier("pfoo", 2, PrimitiveType.Pointer32, null);
 
-			Statement stmFoo = new Statement(new Assignment(foo, Constant.Word32(1)), block);
-			Statement stmBar = new Statement(new Assignment(bar, foo), block);
-			block.Statements.Add(stmFoo);
-			block.Statements.Add(stmBar);
+            Block block = m.Label("block");
+            Statement stmFoo = m.Assign(foo, 1);
+            Statement stmBar = m.Assign(bar, foo);
 
 			SsaIdentifier ssaFoo = new SsaIdentifier(foo, foo, stmFoo, ((Assignment) stmFoo.Instruction).Src, false);
 			ssaFoo.Uses.Add(stmBar);
@@ -146,7 +144,7 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds.Add(ssaFoo);
 			ssaIds.Add(ssaBar);
 
-			OutParameterTransformer opt = new OutParameterTransformer(null, ssaIds);
+			OutParameterTransformer opt = new OutParameterTransformer(m.Procedure, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 			Assert.AreEqual(3, block.Statements.Count);
 			Assert.AreEqual("foo = 0x00000001", block.Statements[0].Instruction.ToString());

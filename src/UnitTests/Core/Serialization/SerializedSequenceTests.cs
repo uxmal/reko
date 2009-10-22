@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SseqBuildSequence()
 		{
-			Frame f = new Frame(null);
+            Frame f = arch.CreateFrame();
 			Identifier head = f.EnsureRegister(Registers.dx);
 			Identifier tail = f.EnsureRegister(Registers.ax);
 			Identifier seq = f.EnsureSequence(head, tail, PrimitiveType.Word32);
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		{
 			SerializedSignature sig = new SerializedSignature();
 			ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
-			ProcedureSignature ps = ser.Deserialize(sig, new Frame(null));
+            ProcedureSignature ps = ser.Deserialize(sig, arch.CreateFrame());
 			Assert.AreEqual("void foo()", ps.ToString("foo"));
 			Assert.IsTrue(ps.ArgumentsValid);
 		}

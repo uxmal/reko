@@ -72,7 +72,7 @@ namespace Decompiler.Scanning
             Block block;
             if (blocksVisited.TryGetValue(addr, out block))
             {
-                Block.AddEdge(pred, block);
+                proc.AddEdge(pred, block);
                 return block;
             }
 
@@ -87,9 +87,9 @@ namespace Decompiler.Scanning
 
                     // Create a new block in the procedure.
 
-                    block = new Block(proc, addr);
+                    block = proc.AddBlock(addr.GenerateName("l", ""));
                     blocksVisited.Add(addr, block);
-                    Block.AddEdge(pred, block);
+                    proc.AddEdge(pred, block);
 
                     rewriter.RewriteInstructions(addr, raw.Size, block);
 
@@ -102,7 +102,7 @@ namespace Decompiler.Scanning
             }
 
             block = proc.ExitBlock;
-            Block.AddEdge(pred, block);
+            proc.AddEdge(pred, block);
             return block;
         }
 
