@@ -121,6 +121,7 @@
     <Compile Include="DeadConditionFlagsFinder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assembler\IntelAssembler.cs" />
     <Compile Include="IntelBackWalker.cs">
       <SubType>Code</SubType>
     </Compile>

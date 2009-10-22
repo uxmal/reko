@@ -146,17 +146,22 @@
     <Compile Include="Intel\AssemblerAdvanced.cs" />
     <Compile Include="Intel\AssemblerBasic.cs" />
     <Compile Include="Intel\AssemblerData.cs" />
+    <Compile Include="Intel\AssemblerFragment.cs" />
     <Compile Include="Intel\AssemblerOverrides.cs" />
+    <Compile Include="Intel\Assembler\AssembleFragmentTests.cs" />
     <Compile Include="Intel\Assembler\OperandParserTests.cs" />
     <Compile Include="Intel\BackWalkerTests.cs" />
     <Compile Include="Intel\CodeEmitterTests.cs" />
     <Compile Include="Intel\CodeWalkerTests.cs" />
     <Compile Include="Intel\DeadConditionFlagsFinderTests.cs" />
     <Compile Include="Intel\DisassemblerTests.cs" />
+    <Compile Include="Intel\Fragments\Factorial.cs" />
     <Compile Include="Intel\ImportResolution.cs" />
     <Compile Include="Intel\IntelArchitectureTests.cs" />
     <Compile Include="Intel\IntelAssemblerTests.cs" />
-    <Compile Include="Intel\IntelCodeAssemblerTests.cs" />
+    <Compile Include="Intel\Assembler\IntelCodeAssemblerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Intel\IntelInstructionTrieTests.cs" />
     <Compile Include="Intel\IntelRegisterTests.cs" />
     <Compile Include="Intel\IntelRewriterTests.cs" />
