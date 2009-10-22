@@ -69,7 +69,7 @@ namespace Decompiler.Arch.Intel.Assembler
 		public void EmitModRM(int reg, RegisterOperand op)
 		{
 			reg <<= 3;
-			emitter.EmitByte(0xC0 | reg | IntelAssembler.RegisterEncoding(op.Register));
+			emitter.EmitByte(0xC0 | reg | IntelTextAssembler.RegisterEncoding(op.Register));
 		}
 
 		/// <summary>
@@ -124,7 +124,7 @@ namespace Decompiler.Arch.Intel.Assembler
 					{
 						if (memOp.Base != Registers.esp)
 						{
-							reg |= IntelAssembler.RegisterEncoding(memOp.Base);
+							reg |= IntelTextAssembler.RegisterEncoding(memOp.Base);
 							if (memOp.Offset == null && memOp.Base == Registers.ebp)
 							{
 								reg |= 0x40;
@@ -163,12 +163,12 @@ namespace Decompiler.Arch.Intel.Assembler
 						}
 						else
 						{
-							sib |= IntelAssembler.RegisterEncoding(memOp.Base);
+							sib |= IntelTextAssembler.RegisterEncoding(memOp.Base);
 						}
 
 						if (memOp.Index != Registers.esp)
 						{
-							sib |= IntelAssembler.RegisterEncoding(memOp.Index) << 3;
+							sib |= IntelTextAssembler.RegisterEncoding(memOp.Index) << 3;
 						}
 						else
 							throw new ApplicationException("ESP register can't be used as an index register");

@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Intel
 		public void DisassembleSequence()
 		{
 			Program prog = new Program();
-			IntelAssembler asm = new IntelAssembler();
+			IntelTextAssembler asm = new IntelTextAssembler();
 			ProgramImage img = asm.AssembleFragment(
 				prog,
 				new Address(0xB96, 0),
@@ -73,7 +73,7 @@ foo:
 		public void SegmentOverrides()
 		{
 			Program prog = new Program();
-			IntelAssembler asm = new IntelAssembler();
+			IntelTextAssembler asm = new IntelTextAssembler();
 			ProgramImage img = asm.AssembleFragment(
 				prog,
 				new Address(0xB96, 0),
@@ -98,7 +98,7 @@ foo:
 		public void Rotations()
 		{
 			Program prog = new Program();
-			IntelAssembler asm = new IntelAssembler();
+			IntelTextAssembler asm = new IntelTextAssembler();
 			ProgramImage img = asm.AssembleFragment(
 				prog,
 				new Address(0xB96, 0),
@@ -129,7 +129,7 @@ foo:
 		public void Extensions()
 		{
 			Program prog = new Program();
-			IntelAssembler asm = new IntelAssembler();
+			IntelTextAssembler asm = new IntelTextAssembler();
 			ProgramImage img = asm.AssembleFragment(
 				prog,
 				new Address(0xA14, 0),
@@ -159,7 +159,7 @@ movzx	ax,byte ptr [bp+04]
 		[Test]
 		public void DisEdiTimes2()
 		{
-			Program prog = new Program(); IntelAssembler asm = new IntelAssembler();
+			Program prog = new Program(); IntelTextAssembler asm = new IntelTextAssembler();
 			ProgramImage img = asm.AssembleFragment(prog, new Address(0x0B00, 0),
 				@"	.i386
 	mov ebx,[edi*2]
@@ -179,7 +179,7 @@ movzx	ax,byte ptr [bp+04]
 			using (FileUnitTester fut = new FileUnitTester("Intel/DisFpuInstructions.txt"))
 			{
 				Program prog = new Program();
-				IntelAssembler asm = new IntelAssembler();
+				IntelTextAssembler asm = new IntelTextAssembler();
 				ProgramImage img = asm.Assemble(prog, new Address(0xC32, 0), FileUnitTester.MapTestPath("Fragments/fpuops.asm"), null);
 				IntelDisassembler dasm = new IntelDisassembler(img.CreateReader(img.BaseAddress), PrimitiveType.Word16);
 				while (img.IsValidAddress(dasm.Address))

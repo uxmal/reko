@@ -229,7 +229,7 @@ namespace Decompiler.Arch.Intel
 
 		public virtual Decompiler.Core.Assembler CreateAssembler()
 		{
-			return new Assembler.IntelAssembler();
+			return new Assembler.IntelTextAssembler();
 		}
 
 		public BackWalker CreateBackWalker(ProgramImage img)

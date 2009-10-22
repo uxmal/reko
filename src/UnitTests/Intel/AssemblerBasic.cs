@@ -26,27 +26,43 @@ using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Decompiler.UnitTests.Intel
 {
 	public class AssemblerBase
 	{
 		protected IntelArchitecture arch;
-		protected IntelAssembler asm;
+		protected IntelTextAssembler asm;
 
 		[SetUp]
 		public void Setup()
 		{
-			asm = new IntelAssembler();
+			asm = new IntelTextAssembler();
 		}
 
-		protected bool Compare(byte [] a, byte [] b)
+        protected void AssertEqualBytes(string expected, byte[] actual)
+        {
+            Assert.AreEqual(expected, Hexize(actual));
+        }
+
+        private string Hexize(byte[] bytes)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.Length; ++i)
+            {
+                sb.AppendFormat("{0:X2}", (uint) bytes[i]);
+            }
+            return sb.ToString();
+        }
+
+        protected bool Compare(byte[] expected, byte[] actual)
 		{
-			if (a.Length != b.Length)
+			if (expected.Length != actual.Length)
 				return false;
-			for (int i = 0; i != a.Length; ++i)
+			for (int i = 0; i != expected.Length; ++i)
 			{
-				if (a[i] != b[i])
+				if (expected[i] != actual[i])
 					return false;
 			}
 			return true;

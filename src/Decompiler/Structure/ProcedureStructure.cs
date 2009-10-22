@@ -68,6 +68,15 @@ namespace Decompiler.Structure
         }
 
 
+        public StructureNode FindNodeByName(string nodeName)
+        {
+            foreach (StructureNode node in nodes)
+            {
+                if (node.Name == nodeName)
+                    return node;
+            }
+            return null;
+        }
         public List<StructureNode> Nodes
         {
             get { return nodes; }
