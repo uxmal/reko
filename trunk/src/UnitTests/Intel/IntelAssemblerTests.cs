@@ -32,13 +32,13 @@ namespace Decompiler.UnitTests.Intel
 		public void IntegralConstant32()
 		{
 			Constant c;
-			c = IntelTextAssembler.IntegralConstant(-2, PrimitiveType.Word32);
+			c = IntelAssembler.IntegralConstant(-2, PrimitiveType.Word32);
 			Assert.AreSame(PrimitiveType.SByte, c.DataType);
-			c = IntelTextAssembler.IntegralConstant(-128, PrimitiveType.Word32);
+			c = IntelAssembler.IntegralConstant(-128, PrimitiveType.Word32);
 			Assert.AreSame(PrimitiveType.SByte, c.DataType);
-			c = IntelTextAssembler.IntegralConstant(-129, PrimitiveType.Word32);
+			c = IntelAssembler.IntegralConstant(-129, PrimitiveType.Word32);
 			Assert.AreSame(PrimitiveType.Word32, c.DataType);
-			c = IntelTextAssembler.IntegralConstant(-129, PrimitiveType.Word16);
+			c = IntelAssembler.IntegralConstant(-129, PrimitiveType.Word16);
 			Assert.AreSame(PrimitiveType.Word16, c.DataType);
 		}
 	}

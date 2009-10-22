@@ -38,17 +38,16 @@ namespace Decompiler.Arch.Intel.Assembler
 		private Symbol m_symOrigin;
 		private Address addrBase;
 		private Address addrStart;
-		private SymbolTable symtab;
 		private SortedDictionary<string, SignatureLibrary> importLibraries;
 		private Program prog;
 		private ModRmBuilder modRm;
 		private List<EntryPoint> entryPoints;
+        private IntelAssembler asm;
 
 		public IntelTextAssembler()
 		{
 			importLibraries = new SortedDictionary<string, SignatureLibrary>();
 			m_symOrigin = null;
-			symtab = new SymbolTable();
 		}
 
 		public override ProgramImage Assemble(Program prog, Address addr, string file, List<EntryPoint> entryPoints)
@@ -77,7 +76,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			// Default assembler is real-mode.
 
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			SetDefaultWordWidth(prog.Architecture.WordWidth);
+            asm = new IntelAssembler(prog, prog.Architecture.WordWidth, addrBase, emitter, entryPoints);
 
 			// Assemblers are strongly line-oriented.
 
@@ -86,7 +85,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				ProcessLine();
 			}
 			
-			Symbol [] syms = symtab.GetUndefinedSymbols();
+			Symbol [] syms = asm.SymbolTable.GetUndefinedSymbols();
 			if (syms.Length > 0)
 			{
 				ReportUnresolvedSymbols(syms);
@@ -101,13 +100,13 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 			return new ProgramImage(addrBase, emitter.Bytes);
 		}
+        [Obsolete]
+        private void DefineSymbol(string pstr)
+        {
+            asm.DefineSymbol(pstr);
+        }
 
-		private void DefineSymbol(string pstr)
-		{
-			ResolveSymbol(symtab.DefineSymbol(pstr, emitter.Position));
-		}
-
-		private void EmitOffset(Constant v)
+        private void EmitOffset(Constant v)
 		{
 			if (v == null)
 				return;
@@ -116,57 +115,26 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		private void EmitModRM(int reg, ParsedOperand op)
 		{
-			RegisterOperand regOp = op.Operand as RegisterOperand;
-			if (regOp != null)
-			{
-				modRm.EmitModRM(reg, regOp);
-				return;
-			}
-			FpuOperand fpuOp = op.Operand as FpuOperand;
-			if (fpuOp != null)
-			{
-				modRm.EmitModRM(reg, fpuOp);
-			}
-			else
-			{
-				EmitModRM(reg, (MemoryOperand) op.Operand, op.Symbol);
-			}
+            asm.EmitModRM(reg, op);
 		}
 
 		private void EmitModRM(int reg, ParsedOperand op, byte b)
 		{
-			RegisterOperand regOp = op.Operand as RegisterOperand;
-			if (regOp != null)
-			{
-				modRm.EmitModRM(reg, regOp);
-				emitter.EmitByte(b);
-			}
-			else
-			{
-				EmitModRM(reg, (MemoryOperand) op.Operand, b, op.Symbol);
-			}
+            asm.EmitModRM(reg, op, b);
 		}
 
 
 		private void EmitModRM(int reg, MemoryOperand memOp, Symbol sym)
 		{
-			Constant offset = modRm.EmitModRMPrefix(reg, memOp);
-			int offsetPosition = emitter.Position;
-			EmitOffset(offset);
-			if (sym != null)
-				ReferToSymbol(sym, offsetPosition, offset.DataType);
+            asm.EmitModRM(reg, memOp, sym);
 		}
 
 		private void EmitModRM(int reg, MemoryOperand memOp, byte b, Symbol sym)
 		{
-			Constant offset = modRm.EmitModRMPrefix(reg, memOp);
-			emitter.EmitByte(b);
-			int offsetPosition = emitter.Position;
-			EmitOffset(offset);
-			if (sym != null)
-				ReferToSymbol(sym, emitter.Position, offset.DataType);
+            asm.EmitModRM(reg, memOp, b, sym);
 		}
 
+        [Obsolete]
 		private void EmitRelativeTarget(string target, PrimitiveType offsetSize)
 		{
 			int offBytes = (int) offsetSize.Size;
@@ -176,45 +144,20 @@ namespace Decompiler.Arch.Intel.Assembler
 			case 2: emitter.EmitWord(-(emitter.Length + 2)); break;
 			case 4: emitter.EmitDword((uint)-(emitter.Length + 4)); break;
 			}
-			ReferToSymbol(symtab.CreateSymbol(lexer.StringLiteral),
+			ReferToSymbol(asm.SymbolTable.CreateSymbol(lexer.StringLiteral),
 				emitter.Length - offBytes, offsetSize);
 		}
 
 		private PrimitiveType EnsureValidOperandSize(ParsedOperand op)
 		{
-			PrimitiveType w = op.Operand.Width;
-			if (w == null)
-				Error("Width of the operand is unknown");
-			return w;
+            return asm.EnsureValidOperandSize(op);
 		}
 
+        [Obsolete]
 		private PrimitiveType EnsureValidOperandSizes(ParsedOperand [] ops, int count)
 		{
-			if (count == 0)
-				return null;
-			PrimitiveType w = ops[0].Operand.Width;
-			if (count == 1 && ops[0].Operand.Width == null)
-				Error("Width of the first operand is unknown");
-			if (count == 2)
-			{
-				if (w == null)
-				{
-					w = ops[1].Operand.Width;
-					if (w == null)
-						Error("Width of the first operand is unknown");
-					else
-						ops[0].Operand.Width = w;
-				}
-				else
-				{
-					if (ops[1].Operand.Width == null)
-						ops[1].Operand.Width = w;
-					else if (ops[0].Operand.Width != ops[0].Operand.Width)
-						Error("Operand widths don't match");
-				}
-			}
-			return w;
-		}
+            return asm.EnsureValidOperandSizes(ops, count);
+        }
 
 		private bool Error(string pstr)
 		{
@@ -234,6 +177,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				Error(msg);
 		}
 
+        [Obsolete]
 		private bool IsSignedByte(int n) 
 		{
 			return -128 <= n && n < 128; 
@@ -247,7 +191,7 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		public ParsedOperand [] ParseOperandList(int min, int max)
 		{
-			OperandParser opp = new OperandParser(lexer, symtab, addrBase, emitter.SegmentDataWidth, emitter.SegmentAddressWidth);
+            OperandParser opp = asm.CreateOperandParser(lexer);
             List<ParsedOperand> ops = new List<ParsedOperand>();
 			emitter.SegmentOverride = MachineRegister.None;
 			emitter.AddressWidth = emitter.SegmentAddressWidth;
@@ -291,32 +235,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 		}
 
-		public static Constant IntegralConstant(int i)
-		{
-			PrimitiveType width; 
-			if (-0x80 <= i && i < 0x80)
-				width = PrimitiveType.Byte;
-			else if (-0x8000 <= i && i < 0x8000)
-				width = PrimitiveType.Word16;
-			else 
-				width = PrimitiveType.Word32;
-			return new Constant(width, i);
-		}
-
-		public static Constant IntegralConstant(int i, PrimitiveType width)
-		{
-			if (-0x80 <= i && i < 0x80)
-				width = PrimitiveType.SByte;
-			else if (width == null)
-			{
-				if (-0x8000 <= i && i < 0x8000)
-					width = PrimitiveType.Word16;
-				else 
-					width = PrimitiveType.Word32;
-			}
-			return new Constant(width, i);
-		}
-	
+        [Obsolete]
 		private int IsAccumulator(MachineRegister reg)
 		{
 			return (reg == Registers.eax || reg == Registers.ax || reg == Registers.al) ? 1 : 0;
@@ -344,62 +263,8 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessBinop(int binop)
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
-			PrimitiveType dataWidth = EnsureValidOperandSizes(ops, 2);
-			ImmediateOperand immOp = ops[1].Operand as ImmediateOperand;
-			if (immOp != null)
-			{
-				int imm = immOp.Value.ToInt32();
-				RegisterOperand regOpDst = ops[0].Operand as RegisterOperand;
-				if (regOpDst != null && IsAccumulator(regOpDst.Register) != 0)
-				{
-					emitter.EmitOpcode((binop << 3) | 0x04 | IsWordWidth(ops[0].Operand), dataWidth);
-					emitter.EmitImmediate(immOp.Value, dataWidth);
-					return;
-				}
-
-				switch (dataWidth.Size)
-				{
-				default: 
-					Error("Must specify operand width");
-					return;
-				case 1:
-					emitter.EmitOpcode(0x80, dataWidth);
-					EmitModRM(binop, ops[0]);
-					emitter.EmitByte(imm);
-					break;
-				case 2:
-				case 4:
-					if (IsSignedByte(imm))
-					{
-						emitter.EmitOpcode(0x83, dataWidth);
-						EmitModRM(binop, ops[0]);
-						emitter.EmitByte(imm);
-					}
-					else
-					{
-						emitter.EmitOpcode(0x81, dataWidth);
-						EmitModRM(binop, ops[0]);
-						emitter.EmitImmediate(immOp.Value, dataWidth);
-					}
-					break;
-				}
-				return;
-			}
-
-			MemoryOperand memOpDst = ops[0].Operand as MemoryOperand;
-			if (memOpDst != null)
-			{
-				RegisterOperand regOpSrc = (RegisterOperand) ops[1].Operand;
-				emitter.EmitOpcode((binop << 3) | 0x00 | IsWordWidth(ops[1].Operand), dataWidth);
-				EmitModRM(RegisterEncoding(regOpSrc.Register), ops[0]);
-			}
-			else
-			{
-				RegisterOperand regOpDst = ops[0].Operand as RegisterOperand;
-				emitter.EmitOpcode((binop << 3) | 0x02 | IsWordWidth(regOpDst), dataWidth);
-				EmitModRM(RegisterEncoding(regOpDst.Register), ops[1]);
-			}
-		}
+            asm.ProcessBinop(binop, ops);
+        }
 		
 		private void ProcessBitOp()
 		{
@@ -435,6 +300,8 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		private void ProcessBranch(int cc)
 		{
+                string destination;
+
 			Token token = lexer.GetToken();
 			switch (token)
 			{
@@ -442,14 +309,13 @@ namespace Decompiler.Arch.Intel.Assembler
 				Expect(Token.ID);
 				goto case Token.ID;
 			case Token.ID:
-				emitter.EmitOpcode(0x70 | cc, null);
-				EmitRelativeTarget(lexer.StringLiteral, PrimitiveType.Byte);
+                destination = lexer.StringLiteral;
+                asm.ProcessShortBranch(cc, destination);
 				break;				
 			case Token.LONG:
 				Expect(Token.ID);
-				emitter.EmitOpcode(0x0F, null);
-				emitter.EmitByte(0x80 | cc);
-				EmitRelativeTarget(lexer.StringLiteral, emitter.SegmentAddressWidth);
+                destination = lexer.StringLiteral;
+                asm.ProcessLongBranch(cc, destination);
 				break;
 			}
 		}
@@ -459,7 +325,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			Expect(Token.ID);
 			emitter.EmitOpcode(0xE0 | opcode, null);
 			emitter.EmitByte(-(emitter.Length + 1));
-			ReferToSymbol(symtab.CreateSymbol(lexer.StringLiteral),
+			ReferToSymbol(asm.SymbolTable.CreateSymbol(lexer.StringLiteral),
 				emitter.Length - 1, PrimitiveType.Byte);
 		}
 
@@ -485,8 +351,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 			case Token.ID:
 				lexer.DiscardToken();
-				emitter.EmitOpcode(direct, null);
-				EmitRelativeTarget(lexer.StringLiteral, emitter.SegmentAddressWidth);
+                asm.ProcessCallJmp(direct, lexer.StringLiteral);
 				break;
 			}
 		}
@@ -544,71 +409,11 @@ namespace Decompiler.Arch.Intel.Assembler
 				Expect(Token.COMMA, "expected ','");
 			}
 		}
-
-		private void ProcessTest()
-		{
-			ParsedOperand [] ops = ParseOperandList(2);
-			PrimitiveType dataWidth = EnsureValidOperandSizes(ops, 2);
-
-			RegisterOperand regOpSrc;
-
-			byte isWord = (byte)((dataWidth != PrimitiveType.Byte) ? 0xFF : 0);
-
-			RegisterOperand regOpDst = ops[0].Operand as RegisterOperand;
-			if (regOpDst != null)	//$BUG: what about segment registers?
-			{
-				byte reg = RegisterEncoding(regOpDst.Register);
-				regOpSrc = ops[1].Operand as RegisterOperand;
-				if (regOpSrc != null)
-				{
-					if (regOpSrc.Width != regOpDst.Width)
-						Error("Operand size mismatch");
-					emitter.EmitOpcode(0x84 | (isWord & 1), dataWidth);
-					modRm.EmitModRM(reg, regOpSrc);
-					return;
-				}
-
-				MemoryOperand memOpSrc = ops[1].Operand as MemoryOperand;
-				if (memOpSrc != null)
-				{
-					emitter.EmitOpcode(0x84 | (isWord & 1), dataWidth);
-					EmitModRM(reg, ops[1]);
-					return;
-				}
-
-				ImmediateOperand immOpSrc = ops[1].Operand as ImmediateOperand;
-				if (immOpSrc != null)
-				{
-					emitter.EmitOpcode(0xF6 | (isWord & 1), dataWidth);
-					EmitModRM(0, ops[0]);
-					if (isWord != 0)
-						emitter.EmitInteger(dataWidth, immOpSrc.Value.ToInt32());
-					else
-						emitter.EmitByte(immOpSrc.Value.ToInt32());
-
-					if (ops[1].Symbol != null && isWord != 0)
-					{
-						Debug.Assert(immOpSrc.Value.ToUInt32() == 0);
-						ReferToSymbol(ops[1].Symbol, emitter.Length - 2, PrimitiveType.Word16);
-					}
-					return;
-				}
-				throw new ApplicationException("unexpected");
-			}	
-			
-			ImmediateOperand immOp = (ImmediateOperand) ops[1].Operand;
-			emitter.EmitOpcode(0xF6 | (isWord & 1), dataWidth);
-			EmitModRM(0, ops[0]);
-			if (isWord != 0)
-				emitter.EmitImmediate(immOp.Value, dataWidth);
-			else
-				emitter.EmitByte(immOp.Value.ToInt32());
-
-			if (ops[1].Symbol != null && isWord != 0)
-			{
-				ReferToSymbol(ops[1].Symbol, emitter.Length - 2, PrimitiveType.Word16);
-			}
-		}
+        private void ProcessTest()
+        {
+            ParsedOperand[] ops = ParseOperandList(2);
+            asm.ProcessTest(ops);
+        }
 
 		public void ProcessTitle()
 		{
@@ -630,7 +435,7 @@ namespace Decompiler.Arch.Intel.Assembler
 					break;
 				case Token.ID:
 				{
-					Symbol sym = symtab.CreateSymbol(lexer.StringLiteral);
+					Symbol sym = asm.SymbolTable.CreateSymbol(lexer.StringLiteral);
 					emitter.EmitInteger(width, (int)addrBase.Offset);
 					ReferToSymbol(sym, emitter.Length - (int) width.Size, emitter.SegmentAddressWidth);
 					break;
@@ -680,33 +485,9 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessIncDec(bool fDec)
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			RegisterOperand regOp = ops[0].Operand as RegisterOperand;
-			if (regOp != null)
-			{
-				if (IsWordWidth(dataWidth) != 0)
-				{
-					emitter.EmitOpcode((fDec ? 0x48 : 0x40) | RegisterEncoding(regOp.Register), dataWidth);
-				}
-				else
-				{
-					emitter.EmitOpcode(0xFE | IsWordWidth(dataWidth), dataWidth);
-					EmitModRM(fDec ? 1 : 0, ops[0]);
-				}
-				return;
-			}
+            asm.ProcessIncDec(fDec, ops[0]);
+        }
 
-			MemoryOperand memOp = ops[0].Operand as MemoryOperand;
-			if (memOp != null)
-			{
-				emitter.EmitOpcode(0xFE | IsWordWidth(dataWidth), dataWidth);
-				EmitModRM(fDec ? 1 : 0, ops[0]);
-			}
-			else
-			{
-				throw new ApplicationException("constant operator illegal");
-			}
-		}
 
 		public void ProcessInclude()
 		{
@@ -884,48 +665,9 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessImul()
 		{
 			ParsedOperand [] ops = ParseOperandList(1, 3);
-			PrimitiveType dataWidth;
-			if (ops.Length == 1)
-			{
-				dataWidth = EnsureValidOperandSize(ops[0]);
-				emitter.EmitOpcode(0xF6|IsWordWidth(ops[0].Operand), dataWidth);
-				EmitModRM(0x05, ops[0]);
-			}
-			else
-			{
-				dataWidth = EnsureValidOperandSizes(ops, 2);
-				RegisterOperand regOp = ops[0].Operand as RegisterOperand;
-				if (regOp == null)
-					throw new ApplicationException("First operand must be a register");
-				if (IsWordWidth(regOp) == 0)
-					throw new ApplicationException("Destination register must be word-width");
+            asm.ProcessImul(ops);
+        }
 
-				if (ops.Length == 2)
-				{
-					emitter.EmitOpcode(0x0F, dataWidth);
-					emitter.EmitByte(0xAF);
-					EmitModRM(RegisterEncoding(regOp.Register), ops[1]);
-				}
-				else
-				{
-					ImmediateOperand op3 = ops[2].Operand as ImmediateOperand;
-					if (op3 == null)
-						throw new ApplicationException("Third operand must be an immediate value");
-					if (IsSignedByte(op3.Value.ToInt32()))
-					{
-						emitter.EmitOpcode(0x6B, dataWidth);
-						EmitModRM(RegisterEncoding(regOp.Register), ops[1]);
-						emitter.EmitByte(op3.Value.ToInt32());
-					}
-					else
-					{
-						emitter.EmitOpcode(0x69, dataWidth);
-						EmitModRM(RegisterEncoding(regOp.Register), ops[1]);
-						emitter.EmitImmediate(op3.Value, dataWidth);
-					}
-				}
-			}
-		}
 
 		private void ProcessInOut(bool fOut)
 		{
@@ -1026,17 +768,15 @@ namespace Decompiler.Arch.Intel.Assembler
 			case Token.EQUALS:
 				lexer.DiscardToken();
 				Expect(Token.INTEGER);
-				symtab.Equates[s] = lexer.Integer;
+				asm.SymbolTable.Equates[s] = lexer.Integer;
 				break;
 			case Token.PROC:
-				DefineSymbol(s);
 				lexer.SkipUntil(Token.EOL);		// TODO: keep track of procedures on a stack?
 				Expect(Token.EOL);
-				if (entryPoints != null && entryPoints.Count == 0)
-					entryPoints.Add(new EntryPoint(addrBase + emitter.Position, new IntelState()));
+                asm.Proc(s);
 				break;
 			case Token.COLON:
-				DefineSymbol(s);
+				asm.Label(s);
 				lexer.DiscardToken();
 				ProcessLine();
 				break;
@@ -1089,17 +829,14 @@ namespace Decompiler.Arch.Intel.Assembler
 				/* puppen: q11111111111` */
 			case Token.i86:
 			{
-				IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-				prog.Architecture = arch;
-				prog.Platform = new MsDos.MsdosPlatform(arch);
-				SetDefaultWordWidth(PrimitiveType.Word16);
+                asm.i86();
 				lexer.SkipUntil(Token.EOL);
 				break;
 			}
 			case Token.i386:
 			case Token.i386p:
 				prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-				SetDefaultWordWidth(PrimitiveType.Word32);
+				asm.SetDefaultWordWidth(PrimitiveType.Word32);
 				lexer.SkipUntil(Token.EOL);
 				break;
 			case Token.ASSUME:
@@ -1495,95 +1232,9 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		private void ProcessMov()
 		{
-			ParsedOperand [] ops = ParseOperandList(2);
-			PrimitiveType dataWidth = EnsureValidOperandSizes(ops, 2);
+            asm.ProcessMov(ParseOperandList(2));
+        }
 
-			RegisterOperand regOpSrc = ops[1].Operand as RegisterOperand;
-			RegisterOperand regOpDst = ops[0].Operand as RegisterOperand;
-			if (regOpDst != null)	//$BUG: what about segment registers?
-			{
-				byte reg = RegisterEncoding(regOpDst.Register);
-				if (regOpDst.Register is SegmentRegister)
-				{
-					if (regOpSrc.Register is SegmentRegister)
-						Error("Cannot assign between two segment registers");
-					if (ops[1].Operand.Width != PrimitiveType.Word16)
-						Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
-					emitter.EmitOpcode(0x8E, PrimitiveType.Word16);
-					EmitModRM(reg, ops[1]);
-					return;
-				}
-
-				if (regOpSrc != null && regOpSrc.Register is SegmentRegister)
-				{
-					if (regOpDst.Register is SegmentRegister)
-						Error("Cannot assign between two segment registers");
-					if (ops[0].Operand.Width != PrimitiveType.Word16)
-						Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
-					emitter.EmitOpcode(0x8C, PrimitiveType.Word16);
-					EmitModRM(RegisterEncoding(regOpSrc.Register), ops[0]);
-					return;
-				}
-
-				int isWord = IsWordWidth(regOpDst);
-				if (regOpSrc != null)
-				{
-					if (regOpSrc.Width != regOpDst.Width)
-						this.Error(string.Format("size mismatch between {0} and {1}", regOpSrc.Register, regOpDst.Register));
-					emitter.EmitOpcode(0x8A | (isWord & 1), dataWidth);
-					modRm.EmitModRM(reg, regOpSrc);
-					return;
-				}
-
-				MemoryOperand memOpSrc = ops[1].Operand as MemoryOperand;
-				if (memOpSrc != null)
-				{
-					emitter.EmitOpcode(0x8A | (isWord & 1), dataWidth);
-					EmitModRM(reg, memOpSrc, ops[1].Symbol);
-					return;
-				}
-
-				ImmediateOperand immOpSrc = ops[1].Operand as ImmediateOperand;
-				if (immOpSrc != null)
-				{
-					emitter.EmitOpcode(0xB0 | (isWord << 3) | reg, dataWidth);
-					if (isWord != 0)
-						emitter.EmitInteger(dataWidth, immOpSrc.Value.ToInt32());
-					else
-						emitter.EmitByte(immOpSrc.Value.ToInt32());
-
-					if (ops[1].Symbol != null && isWord != 0)
-					{
-						ReferToSymbol(ops[1].Symbol, emitter.Length - (int) immOpSrc.Width.Size, immOpSrc.Width);
-					}
-					return;
-				}
-				throw new ApplicationException("unexpected");
-			}
-
-			MemoryOperand memOpDst = (MemoryOperand) ops[0].Operand;
-			regOpSrc = ops[1].Operand as RegisterOperand;
-			if (regOpSrc != null)
-			{
-				if (regOpSrc.Register is SegmentRegister)
-				{
-					emitter.EmitOpcode(0x8C, PrimitiveType.Word16);
-				}
-				else
-				{
-					emitter.EmitOpcode(0x88 | IsWordWidth(ops[1].Operand), dataWidth);
-				}
-				EmitModRM(RegisterEncoding(regOpSrc.Register), memOpDst, ops[0].Symbol);
-			}
-			else
-			{
-				ImmediateOperand immOpSrc = (ImmediateOperand) ops[1].Operand;
-				int isWord = (dataWidth != PrimitiveType.Byte) ? 1 : 0;
-				emitter.EmitOpcode(0xC6 | IsWordWidth(dataWidth), dataWidth);
-				EmitModRM(0, memOpDst, ops[0].Symbol);
-				emitter.EmitImmediate(immOpSrc.Value, dataWidth);
-			}
-		}
 
 		private void ProcessMovx(int opcode)
 		{
@@ -1625,52 +1276,11 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		private void ProcessPushPop(bool fPop)
 		{
-			int imm;
 			ParsedOperand [] ops = ParseOperandList(1);
-			ImmediateOperand immOp = ops[0].Operand as ImmediateOperand;
-			if (immOp != null)
-			{
-				if (fPop)
-					throw new ApplicationException("Can't pop an immediate value");
-				imm = immOp.Value.ToInt32();
-				if (IsSignedByte(imm))
-				{
-					emitter.EmitOpcode(0x6A, PrimitiveType.Byte);
-					emitter.EmitByte(imm);
-				}
-				else
-				{
-					emitter.EmitOpcode(0x68, emitter.SegmentDataWidth);
-					emitter.EmitInteger(emitter.SegmentDataWidth, imm);
-				}
-				return;
-			}
+            asm.ProcessPushPop(fPop, ops[0]);
 
-			PrimitiveType dataWidth = EnsureValidOperandSize(ops[0]);
-			RegisterOperand regOp = ops[0].Operand as RegisterOperand;
-			if (regOp != null)
-			{
-                IntelRegister rrr = (IntelRegister) regOp.Register;
-				if (rrr.IsBaseRegister)
-				{
-					emitter.EmitOpcode(0x50 | (fPop ? 8 : 0) | RegisterEncoding(regOp.Register), dataWidth);
-				}
-				else
-				{
-					int mask = (fPop ? 1 : 0);
-					if (regOp.Register == Registers.es) emitter.EmitByte(0x06|mask); else
-						if (regOp.Register == Registers.cs) emitter.EmitByte(0x0E|mask); else
-						if (regOp.Register == Registers.ss) emitter.EmitByte(0x16|mask); else
-						if (regOp.Register == Registers.ds) emitter.EmitByte(0x1E|mask); else
-						if (regOp.Register == Registers.fs) { emitter.EmitByte(0x0F); emitter.EmitByte(0xA0|mask); } else
-						if (regOp.Register == Registers.gs) { emitter.EmitByte(0x0F); emitter.EmitByte(0xA8|mask); } 
-				}
-				return;
-			}
+        }
 
-			emitter.EmitOpcode(fPop ? 0x8F : 0xFF, dataWidth);
-			EmitModRM(fPop ? 0 : 6, ops[0]);
-		}
 
 
 		private void ProcessRet()
@@ -1682,17 +1292,16 @@ namespace Decompiler.Arch.Intel.Assembler
 				lexer.DiscardToken();
 				if (n != 0)
 				{
-					emitter.EmitOpcode(0xC2, null);
-					emitter.EmitWord(n);
+                    asm.Ret(n);
 				}
 				else
 				{
-					emitter.EmitOpcode(0xC3, null);
+                    asm.Ret();
 				}
 			}
 			else
 			{
-				emitter.EmitOpcode(0xC3, null);
+                asm.Ret();
 			}
 		}
 
@@ -1799,14 +1408,16 @@ namespace Decompiler.Arch.Intel.Assembler
 			emitter.EmitOpcode(opcode|IsWordWidth(width), width);
 		}
 
+        [Obsolete]
 		public static byte RegisterEncoding(byte b)
 		{
-			return s_aregisterEncodings[b];
+			return IntelAssembler.RegisterEncoding(b);
 		}
 
+        [Obsolete]
 		public static byte RegisterEncoding(MachineRegister reg)
 		{
-			return s_aregisterEncodings[reg.Number];
+            return IntelAssembler.RegisterEncoding(reg);
 		}
 
 		public void ReportUnresolvedSymbols(Symbol [] s)
@@ -1820,14 +1431,12 @@ namespace Decompiler.Arch.Intel.Assembler
 			throw new ApplicationException(writer.ToString());
 		}
 
-		public void ResolveSymbol(Symbol psym)
-		{
-			Debug.Assert(psym.fResolved);
-			foreach (BackPatch patch in psym.patches)
-			{
-				emitter.Patch(patch.offset, psym.offset, patch.Size);
-			}
-		}
+        [Obsolete]
+        public void ResolveSymbol(Symbol psym)
+        {
+            asm.ResolveSymbol(psym);
+        }
+
 
 		private void ReferToSymbol(Symbol psym, int off, DataType width)
 		{
@@ -1842,55 +1451,11 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 		}
 
-		private void SetDefaultWordWidth(PrimitiveType width)
-		{
-			emitter.SegmentDataWidth = width;
-			emitter.SegmentAddressWidth = width;
-			modRm = new ModRmBuilder(width, emitter);
-			modRm.Error += new ErrorEventHandler(modRm_Error);
-		}
-
 		public override Address StartAddress
 		{
 			get { return addrStart; }
 		}
 
-		private static readonly byte [] s_aregisterEncodings = 
-		{
-			0x00, // eax
-			0x01, // ecx
-			0x02, // edx
-			0x03, // ebx
-			0x04, // esp
-			0x05, // ebp
-			0x06, // esi
-			0x07, // edi
-
-			0x00, // ax
-			0x01, // cx
-			0x02, // dx
-			0x03, // bx
-			0x04, // sp
-			0x05, // bp
-			0x06, // si
-			0x07, // di
-
-			0x00, // al
-			0x01, // cl
-			0x02, // dl
-			0x03, // bl
-			0x04, // ah
-			0x05, // ch
-			0x06, // dh
-			0x07, // bh
-
-			0x00, // es
-			0x01, // cs
-			0x02, // ss
-			0x03, // ds
-			0x04, // fs
-			0x05, // gs
-		};
 
 		private void modRm_Error(object sender, ErrorEventArgs args)
 		{
