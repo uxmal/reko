@@ -156,6 +156,7 @@
     <Compile Include="Intel\ImportResolution.cs" />
     <Compile Include="Intel\IntelArchitectureTests.cs" />
     <Compile Include="Intel\IntelAssemblerTests.cs" />
+    <Compile Include="Intel\IntelCodeAssemblerTests.cs" />
     <Compile Include="Intel\IntelInstructionTrieTests.cs" />
     <Compile Include="Intel\IntelRegisterTests.cs" />
     <Compile Include="Intel\IntelRewriterTests.cs" />

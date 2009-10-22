@@ -181,7 +181,7 @@ namespace Decompiler.Arch.Intel.Assembler
 						if (addrWidth == null || sym != null)
 							memOp.Offset = new Constant(defaultAddressWidth, totalInt);
 						else
-							memOp.Offset = IntelAssembler.IntegralConstant(totalInt, addrWidth);
+							memOp.Offset = IntelTextAssembler.IntegralConstant(totalInt, addrWidth);
 					}
 					return new ParsedOperand(memOp, sym);
 				case Token.PLUS:
@@ -225,7 +225,7 @@ namespace Decompiler.Arch.Intel.Assembler
 				}
 				else
 				{
-					return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(totalInt, defaultWordWidth)));
+					return new ParsedOperand(new ImmediateOperand(IntelTextAssembler.IntegralConstant(totalInt, defaultWordWidth)));
 				}
 			case Token.REGISTER:
 			{

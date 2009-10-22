@@ -96,9 +96,7 @@
     <Compile Include="Assembler\ErrorEvent.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Assembler\IntelAssembler.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Assembler\IntelTextAssembler.cs" />
     <Compile Include="Assembler\Lexer.cs">
       <SubType>Code</SubType>
     </Compile>

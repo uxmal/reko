@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Intel
 		private Program BuildProgram()
 		{
 			Program prog = new Program();
-			IntelAssembler asm = new IntelAssembler();
+			IntelTextAssembler asm = new IntelTextAssembler();
 			ProgramImage img = asm.AssembleFragment(
 				prog,
 				new Address(0xB96, 0),

@@ -31,7 +31,7 @@ namespace Decompiler.Arch.Intel.Assembler
 	/// <summary>
 	/// A crude MASM-style assembler for x86 opcodes.
 	/// </summary>
-	public class IntelAssembler : Decompiler.Core.Assembler
+	public class IntelTextAssembler : Decompiler.Core.Assembler
 	{
 		private Lexer lexer;
 		private Emitter emitter;
@@ -44,7 +44,7 @@ namespace Decompiler.Arch.Intel.Assembler
 		private ModRmBuilder modRm;
 		private List<EntryPoint> entryPoints;
 
-		public IntelAssembler()
+		public IntelTextAssembler()
 		{
 			importLibraries = new SortedDictionary<string, SignatureLibrary>();
 			m_symOrigin = null;
