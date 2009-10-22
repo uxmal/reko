@@ -582,18 +582,13 @@
     <Compile Include="WorkList.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="Schemata\decompiler.xsd" />
-    <Content Include="Schemata\test.xsd" />
     <Content Include="Serialization\test.xml" />
-    <None Include="Schemata\decompiler.xsx">
-      <DependentUpon>decompiler.xsd</DependentUpon>
-    </None>
-    <None Include="Schemata\test.xsx">
-      <DependentUpon>test.xsd</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Schemata\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

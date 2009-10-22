@@ -33,7 +33,7 @@ namespace Decompiler.Core
 	/// </summary>
 	public class Procedure : ProcedureBase
 	{
-		private List<AbsynStatement> body = new List<AbsynStatement>();
+		private List<AbsynStatement> body;
 		private List<Block> rpoBlocks;
 		private Block blockEntry;
 		private Block blockExit;
@@ -41,9 +41,9 @@ namespace Decompiler.Core
 		private ProcedureSignature signature;
         private bool userSpecified;
 
-
 		public Procedure(string name, Frame frame) : base(name)
 		{
+            this.body = new List<AbsynStatement>();
 			this.rpoBlocks = new List<Block>();
 			this.frame = frame;
 			this.signature = new ProcedureSignature();

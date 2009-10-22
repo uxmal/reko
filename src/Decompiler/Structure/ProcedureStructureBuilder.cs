@@ -93,37 +93,6 @@ namespace Decompiler.Structure
                     curNode.AddEdgeTo(blockNodes[s]);
                 }
             }
-
-            //tag the nodes that are reachable from the head of a procedure.
-            blockNodes[proc.EntryBlock].DfsTag();
-
-            DebugDefineEdges();
-        }
-
-        private void DebugDefineEdges()
-        {
-            foreach (StructureNode curNode in nodeList)
-            {
-                List<StructureNode> oEdges = curNode.OutEdges;
-                List<StructureNode> iEdges = curNode.InEdges;
-                Console.Error.Write("Node #" + curNode.Ident() + ": ");
-                if (oEdges.Count > 0)
-                {
-                    Console.Error.Write(" outedges = {");
-                    for (int i = 0; i < oEdges.Count; i++)
-                        Console.Error.Write(oEdges[i].Ident() + " ");
-                    Console.Error.Write("}");
-                }
-
-                if (iEdges.Count > 0)
-                {
-                    Console.Error.Write(" inedges = {");
-                    for (int i = 0; i < iEdges.Count; i++)
-                        Console.Error.Write(iEdges[i].Ident() + " ");
-                    Console.Error.Write("}");
-                }
-                Console.Error.WriteLine();
-            }
         }
 
         public ProcedureStructure CreateProcedureStructure()

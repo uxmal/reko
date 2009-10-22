@@ -219,6 +219,7 @@
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
     <Compile Include="Structure\PostDominatorGraphTests.cs" />
     <Compile Include="Structure\StructureAnalysisTests.cs" />
+    <Compile Include="Structure\StructureNodeTests.cs" />
     <Compile Include="Structure\TestBase.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />
     <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />
