@@ -21,6 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Diagnostics;
 using System.Text;
 
@@ -37,7 +38,7 @@ namespace Decompiler.Arch.Intel.Assembler
         private Emitter emitter;
         private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
-
+        private SortedDictionary<string, SignatureLibrary> importLibraries;
 
         public IntelAssembler(Program prog, PrimitiveType defaultWordSize, Address addrBase, Emitter emitter, List<EntryPoint> entryPoints)
         {
@@ -47,6 +48,8 @@ namespace Decompiler.Arch.Intel.Assembler
             this.entryPoints = entryPoints;
             modRm = new ModRmBuilder(defaultWordSize, emitter);
             symtab = new SymbolTable();
+            importLibraries = new SortedDictionary<string, SignatureLibrary>();
+
             SetDefaultWordWidth(defaultWordSize);
         }
 
@@ -72,6 +75,12 @@ namespace Decompiler.Arch.Intel.Assembler
         {
             return new ParsedOperand(
                 new MemoryOperand(PrimitiveType.Byte, new Constant(emitter.AddressWidth, offset)));
+        }
+
+        internal void ProcessComm(string sym)
+        {
+            DefineSymbol(sym);
+            emitter.EmitDword(0);
         }
 
         public void ProcessImul(params ParsedOperand[] ops)
@@ -149,6 +158,58 @@ namespace Decompiler.Arch.Intel.Assembler
             }
         }
 
+        public void ProcessInOut(bool fOut, ParsedOperand[] ops)
+        {
+            ParsedOperand opPort;
+            ParsedOperand opData;
+
+            if (fOut)
+            {
+                opPort = ops[0];
+                opData = ops[1];
+            }
+            else
+            {
+                opData = ops[0];
+                opPort = ops[1];
+            }
+
+            RegisterOperand regOpData = opData.Operand as RegisterOperand;
+            if (regOpData == null || IsAccumulator(regOpData.Register) == 0)
+                throw new ApplicationException("invalid register for in or out instruction");
+
+            int opcode = IsWordWidth(regOpData) | (fOut ? 0xE6 : 0xE4);
+
+            RegisterOperand regOpPort = opPort.Operand as RegisterOperand;
+            if (regOpPort != null)
+            {
+                if (regOpPort.Register == Registers.dx || regOpPort.Register == Registers.edx)
+                {
+                    emitter.EmitOpcode(8 | opcode, regOpPort.Width);
+                }
+                else
+                    throw new ApplicationException("port must be specified with 'immediate', dx, or edx register");
+                return;
+            }
+
+            ImmediateOperand immOp = opPort.Operand as ImmediateOperand;
+            if (immOp != null)
+            {
+                if (immOp.Value.ToUInt32() > 0xFF)
+                {
+                    throw new ApplicationException("port number must be between 0 and 255");
+                }
+                else
+                {
+                    emitter.EmitOpcode(opcode, regOpPort.Width);
+                    emitter.EmitByte(immOp.Value.ToInt32());
+                }
+            }
+            else
+            {
+                throw new ApplicationException("port must be specified with 'immediate', dx, or edx register");
+            }
+        }
 
         internal void ProcessLongBranch(int cc, string destination)
         {
@@ -161,6 +222,28 @@ namespace Decompiler.Arch.Intel.Assembler
         {
             emitter.EmitOpcode(0x70 | cc, null);
             EmitRelativeTarget(destination, PrimitiveType.Byte);
+        }
+
+        internal void ProcessLoop(int opcode, string destination)
+        {
+            emitter.EmitOpcode(0xE0 | opcode, null);
+            emitter.EmitByte(-(emitter.Length + 1));
+            ReferToSymbol(symtab.CreateSymbol(destination),
+                emitter.Length - 1, PrimitiveType.Byte);
+        }
+
+        public void ProcessLxs(int prefix, int b, params ParsedOperand[] ops)
+        {
+            RegisterOperand opDst = (RegisterOperand) ops[0].Operand;
+
+            if (prefix > 0)
+            {
+                emitter.EmitOpcode(prefix, opDst.Width);
+                emitter.EmitByte(b);
+            }
+            else
+                emitter.EmitOpcode(b, emitter.SegmentDataWidth);
+            EmitModRM(RegisterEncoding(opDst.Register), ops[1]);
         }
 
 
@@ -708,14 +791,34 @@ namespace Decompiler.Arch.Intel.Assembler
             ProcessIncDec(true, op);
         }
 
-        public void Inc(ParsedOperand op)
+        public void Import(string s, string fnName, string dllName)
         {
-            ProcessIncDec(false, op);
+            DefineSymbol(s);
+            SignatureLibrary lib;
+            if (!importLibraries.TryGetValue(dllName, out lib))
+            {
+                lib = new SignatureLibrary(prog.Architecture);
+                lib.Load(Path.ChangeExtension(dllName, ".xml"));
+                importLibraries[dllName] = lib;
+            }
+            AddImport(fnName, lib.Lookup(fnName));
         }
 
         public void Imul(ParsedOperand dx)
         {
             ProcessImul(dx);
+        }
+
+        public void Inc(ParsedOperand op)
+        {
+            ProcessIncDec(false, op);
+        }
+
+
+        public void Jcxz(string destination)
+        {
+            emitter.EmitOpcode(0xE3, null);
+            EmitRelativeTarget(destination, PrimitiveType.Byte);
         }
 
         public void Jmp(string destination)
@@ -730,6 +833,17 @@ namespace Decompiler.Arch.Intel.Assembler
 
         public void Endp(string p)
         {
+        }
+
+        public void Equ(string s, int value)
+        {
+            symtab.Equates[s] = value;
+        }
+
+        internal void Extern(string externSymbol)
+        {
+            DefineSymbol(externSymbol);
+            AddImport(externSymbol, null);
         }
 
         public void Pop(ParsedOperand op)
@@ -809,10 +923,29 @@ namespace Decompiler.Arch.Intel.Assembler
             get { return symtab; }
         }
 
+        public void AddImport(string fnName, ProcedureSignature sig)
+        {
+            uint u = (uint) (addrBase.Linear + emitter.Position);
+            prog.ImportThunks.Add(u, new PseudoProcedure(fnName, sig));
+            emitter.EmitDword(0);
+        }
+
         internal OperandParser CreateOperandParser(Lexer lexer)
         {
             return new OperandParser(lexer, symtab, addrBase, emitter.SegmentDataWidth, emitter.SegmentAddressWidth);
         }
 
+
+        internal void Dw(string symbolText)
+        {
+            DefineWord(PrimitiveType.Word16, symbolText);
+        }
+        
+        internal void DefineWord(PrimitiveType width, string symbolText)
+        {
+            Symbol sym = symtab.CreateSymbol(symbolText);
+            emitter.EmitInteger(width, (int) addrBase.Offset);
+            ReferToSymbol(sym, emitter.Length - (int) width.Size, emitter.SegmentAddressWidth);
+        }
     }
 }

@@ -25,17 +25,17 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Pdp11Assembler : Assembler
     {
-        public override ProgramImage Assemble(Program prog, Address baseAddress, string sourcefile, List<EntryPoint> entryPoints)
+        public ProgramImage Assemble(Program prog, Address baseAddress, string sourcefile, List<EntryPoint> entryPoints)
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override ProgramImage AssembleFragment(Program prog, Address baseAddress, string fragment)
+        public ProgramImage AssembleFragment(Program prog, Address baseAddress, string fragment)
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override Address StartAddress
+        public Address StartAddress
         {
             get { throw new Exception("The method or operation is not implemented."); }
         }

@@ -38,7 +38,6 @@ namespace Decompiler.Arch.Intel.Assembler
 		private Symbol m_symOrigin;
 		private Address addrBase;
 		private Address addrStart;
-		private SortedDictionary<string, SignatureLibrary> importLibraries;
 		private Program prog;
 		private ModRmBuilder modRm;
 		private List<EntryPoint> entryPoints;
@@ -46,11 +45,10 @@ namespace Decompiler.Arch.Intel.Assembler
 
 		public IntelTextAssembler()
 		{
-			importLibraries = new SortedDictionary<string, SignatureLibrary>();
 			m_symOrigin = null;
 		}
 
-		public override ProgramImage Assemble(Program prog, Address addr, string file, List<EntryPoint> entryPoints)
+		public ProgramImage Assemble(Program prog, Address addr, string file, List<EntryPoint> entryPoints)
 		{
 			this.prog = prog;
 			this.entryPoints = entryPoints;
@@ -61,7 +59,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 		}
 
-		public override ProgramImage AssembleFragment(Program prog, Address addr, string fragment)
+		public  ProgramImage AssembleFragment(Program prog, Address addr, string fragment)
 		{
 			this.prog = prog;
 			addrBase = addr;
@@ -100,11 +98,6 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 			return new ProgramImage(addrBase, emitter.Bytes);
 		}
-        [Obsolete]
-        private void DefineSymbol(string pstr)
-        {
-            asm.DefineSymbol(pstr);
-        }
 
         private void EmitOffset(Constant v)
 		{
@@ -134,30 +127,10 @@ namespace Decompiler.Arch.Intel.Assembler
             asm.EmitModRM(reg, memOp, b, sym);
 		}
 
-        [Obsolete]
-		private void EmitRelativeTarget(string target, PrimitiveType offsetSize)
-		{
-			int offBytes = (int) offsetSize.Size;
-			switch (offBytes)
-			{
-			case 1: emitter.EmitByte(-(emitter.Length + 1)); break;
-			case 2: emitter.EmitWord(-(emitter.Length + 2)); break;
-			case 4: emitter.EmitDword((uint)-(emitter.Length + 4)); break;
-			}
-			ReferToSymbol(asm.SymbolTable.CreateSymbol(lexer.StringLiteral),
-				emitter.Length - offBytes, offsetSize);
-		}
-
 		private PrimitiveType EnsureValidOperandSize(ParsedOperand op)
 		{
             return asm.EnsureValidOperandSize(op);
 		}
-
-        [Obsolete]
-		private PrimitiveType EnsureValidOperandSizes(ParsedOperand [] ops, int count)
-		{
-            return asm.EnsureValidOperandSizes(ops, count);
-        }
 
 		private bool Error(string pstr)
 		{
@@ -176,13 +149,6 @@ namespace Decompiler.Arch.Intel.Assembler
 			if (lexer.GetToken() != tok)
 				Error(msg);
 		}
-
-        [Obsolete]
-		private bool IsSignedByte(int n) 
-		{
-			return -128 <= n && n < 128; 
-		}
-
 
 		public ParsedOperand [] ParseOperandList(int count)
 		{
@@ -233,12 +199,6 @@ namespace Decompiler.Arch.Intel.Assembler
 					Error(string.Format("Instruction expects between {0} and {1} operand(s)", min, max));
 				return null;
 			}
-		}
-
-        [Obsolete]
-		private int IsAccumulator(MachineRegister reg)
-		{
-			return (reg == Registers.eax || reg == Registers.ax || reg == Registers.al) ? 1 : 0;
 		}
 
 		private int IsWordWidth(MachineOperand op)
@@ -323,11 +283,11 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessLoop(int opcode)
 		{
 			Expect(Token.ID);
-			emitter.EmitOpcode(0xE0 | opcode, null);
-			emitter.EmitByte(-(emitter.Length + 1));
-			ReferToSymbol(asm.SymbolTable.CreateSymbol(lexer.StringLiteral),
-				emitter.Length - 1, PrimitiveType.Byte);
+            string destination = lexer.StringLiteral;
+
+            asm.ProcessLoop(opcode, destination);
 		}
+
 
 		private void ProcessCallJmp(int direct, int indirect)
 		{
@@ -359,13 +319,13 @@ namespace Decompiler.Arch.Intel.Assembler
 		public void ProcessComm()
 		{
 			Expect(Token.ID);
-			DefineSymbol(lexer.StringLiteral);
+            string sym = lexer.StringLiteral;
 			Expect(Token.COLON);
 			Token t = lexer.GetToken();
 			switch (t)
 			{
 			case Token.DWORD:
-				emitter.EmitDword(0);
+                asm.ProcessComm(sym);
 				break;
 			default:
 				Error("Unexpected token: " + t);
@@ -435,9 +395,8 @@ namespace Decompiler.Arch.Intel.Assembler
 					break;
 				case Token.ID:
 				{
-					Symbol sym = asm.SymbolTable.CreateSymbol(lexer.StringLiteral);
-					emitter.EmitInteger(width, (int)addrBase.Offset);
-					ReferToSymbol(sym, emitter.Length - (int) width.Size, emitter.SegmentAddressWidth);
+                    string symbolText = lexer.StringLiteral;
+                    asm.DefineWord(width, symbolText);
 					break;
 				}
 				default:
@@ -510,8 +469,8 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessExtrn()
 		{
 			Expect(Token.ID);
-			DefineSymbol(lexer.StringLiteral);
-			AddImport(lexer.StringLiteral, null);
+            string externSymbol = lexer.StringLiteral;
+            asm.Extern(externSymbol);
 			lexer.SkipUntil(Token.EOL);
 		}
 
@@ -636,31 +595,17 @@ namespace Decompiler.Arch.Intel.Assembler
 				Error("Unexpected operator type");
 		}
 
-		private void ProcessImport()
+		private void ProcessImport(string s)
 		{
 			Expect(Token.STRINGLITERAL);
 			string fnName = lexer.StringLiteral;
 			Expect(Token.COMMA);
 			Expect(Token.STRINGLITERAL);
-			string dll = lexer.StringLiteral.ToLower();
+			string dllName = lexer.StringLiteral.ToLower();
 
-
-			SignatureLibrary lib;
-            if (!importLibraries.TryGetValue(dll, out lib))
-			{
-				lib = new SignatureLibrary(prog.Architecture);
-				lib.Load(Path.ChangeExtension(dll, ".xml"));
-				importLibraries[dll] = lib;
-			}
-			AddImport(fnName, lib.Lookup(fnName));
+            asm.Import(s, fnName, dllName);
 		}
 
-		public void AddImport(string fnName, ProcedureSignature sig)
-		{
-			uint u = (uint) (addrBase.Linear + emitter.Position);
-			prog.ImportThunks.Add(u, new PseudoProcedure(fnName, sig));
-			emitter.EmitDword(0);
-		}
 
 		private void ProcessImul()
 		{
@@ -672,56 +617,9 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessInOut(bool fOut)
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
-			ParsedOperand opPort;
-			ParsedOperand opData;
+            asm.ProcessInOut(fOut, ops);
+        }
 
-			if (fOut)
-			{
-				opPort = ops[0];
-				opData = ops[1];
-			}
-			else
-			{
-				opData = ops[0];
-				opPort = ops[1];
-			}
-
-			RegisterOperand regOpData = opData.Operand as RegisterOperand;
-			if (regOpData == null || IsAccumulator(regOpData.Register) == 0)
-				throw new ApplicationException("invalid register for in or out instruction");
-
-			int opcode = IsWordWidth(regOpData) | (fOut ? 0xE6 : 0xE4);
-
-			RegisterOperand regOpPort = opPort.Operand as RegisterOperand;
-			if (regOpPort != null)
-			{
-				if (regOpPort.Register == Registers.dx || regOpPort.Register == Registers.edx)
-				{
-					emitter.EmitOpcode(8|opcode, regOpPort.Width);
-				}
-				else
-					throw new ApplicationException("port must be specified with 'immediate', dx, or edx register");
-				return;
-			}
-
-			ImmediateOperand immOp = opPort.Operand as ImmediateOperand;
-			if (immOp != null)
-			{
-				if (immOp.Value.ToUInt32() > 0xFF)
-				{
-					throw new ApplicationException("port number must be between 0 and 255");
-				}
-				else
-				{
-					emitter.EmitOpcode(opcode, regOpPort.Width);
-					emitter.EmitByte(immOp.Value.ToInt32());
-				}
-			}
-			else
-			{
-				throw new ApplicationException("port must be specified with 'immediate', dx, or edx register");
-			}
-		}
 
 		private void ProcessInt()
 		{
@@ -742,17 +640,17 @@ namespace Decompiler.Arch.Intel.Assembler
 				Error("token '" + s + "' unexpected");
 				return;
 			case Token.DB:
-				DefineSymbol(s);
+				asm.Label(s);
 				lexer.DiscardToken();
 				ProcessDB();
 				break;
 			case Token.DW:
-				DefineSymbol(s);
+				asm.Label(s);
 				lexer.DiscardToken();
 				ProcessWords(PrimitiveType.Word16);
 				break;
 			case Token.DD:
-				DefineSymbol(s);
+				asm.Label(s);
 				lexer.DiscardToken();
 				ProcessWords(PrimitiveType.Word32);
 				break;
@@ -768,7 +666,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			case Token.EQUALS:
 				lexer.DiscardToken();
 				Expect(Token.INTEGER);
-				asm.SymbolTable.Equates[s] = lexer.Integer;
+                asm.Equ(s, lexer.Integer);
 				break;
 			case Token.PROC:
 				lexer.SkipUntil(Token.EOL);		// TODO: keep track of procedures on a stack?
@@ -781,18 +679,17 @@ namespace Decompiler.Arch.Intel.Assembler
 				ProcessLine();
 				break;
 			case Token.EOL:
-				DefineSymbol(s);
+				asm.Label(s);
 				break;
 
 			case Token.GROUP:
-				DefineSymbol(s);
+				asm.Label(s);
 				lexer.SkipUntil(Token.EOL);
 				lexer.DiscardToken();
 				break;
 			case Token.IMPORT:
-				DefineSymbol(s);
 				lexer.DiscardToken();
-				ProcessImport();
+				ProcessImport(s);
 				break;
 			case Token.SEGMENT:
 				ProcessSegment();
@@ -1019,9 +916,8 @@ namespace Decompiler.Arch.Intel.Assembler
 				ProcessBranch(0x02);
 				break;
 			case Token.JCXZ:
-				emitter.EmitOpcode(0xE3, null);
 				Expect(Token.ID);
-				EmitRelativeTarget(lexer.StringLiteral, PrimitiveType.Byte);
+                asm.Jcxz(lexer.StringLiteral);
 				break;
 			case Token.JG:
 				ProcessBranch(0x0F);
@@ -1213,17 +1109,9 @@ namespace Decompiler.Arch.Intel.Assembler
 		private void ProcessLxs(int prefix, int b)
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
-			RegisterOperand opDst = (RegisterOperand) ops[0].Operand;
+            asm.ProcessLxs(prefix, b, ops);
+        }
 
-			if (prefix > 0)
-			{
-				emitter.EmitOpcode(prefix, opDst.Width);
-				emitter.EmitByte(b);
-			}
-			else
-				emitter.EmitOpcode(b, emitter.SegmentDataWidth);
-			EmitModRM(RegisterEncoding(opDst.Register), ops[1]);
-		}
 
 		public void ProcessModel()
 		{
@@ -1408,11 +1296,6 @@ namespace Decompiler.Arch.Intel.Assembler
 			emitter.EmitOpcode(opcode|IsWordWidth(width), width);
 		}
 
-        [Obsolete]
-		public static byte RegisterEncoding(byte b)
-		{
-			return IntelAssembler.RegisterEncoding(b);
-		}
 
         [Obsolete]
 		public static byte RegisterEncoding(MachineRegister reg)
@@ -1431,27 +1314,8 @@ namespace Decompiler.Arch.Intel.Assembler
 			throw new ApplicationException(writer.ToString());
 		}
 
-        [Obsolete]
-        public void ResolveSymbol(Symbol psym)
-        {
-            asm.ResolveSymbol(psym);
-        }
 
-
-		private void ReferToSymbol(Symbol psym, int off, DataType width)
-		{
-			if (psym.fResolved)
-			{
-				emitter.Patch(off, psym.offset, width);
-			}
-			else
-			{
-				// Add forward references to the backpatch list.
-				psym.AddForwardReference(off, width);
-			}
-		}
-
-		public override Address StartAddress
+		public Address StartAddress
 		{
 			get { return addrStart; }
 		}
