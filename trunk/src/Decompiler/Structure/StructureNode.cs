@@ -250,7 +250,6 @@ namespace Decompiler.Structure
             order.Add(this);
         }
 
-
         // This sets the reverse loop stamps for each node. The children are traversed in
         // reverse order.
         public void SetRevLoopStamps(ref int time)
@@ -336,17 +335,14 @@ namespace Decompiler.Structure
 
         public virtual void Write(TextWriter tw)
         {
-            tw.Write(Ident());
-            if (Block != null)
-            {
-                tw.Write(" ({0})", Block.Name);
-            }
+            tw.Write("{0} ({1})", Block.Name, Ident());
         }
 
         public virtual string Name
         {
             get { return block.Name; }
         }
+
     }
 
     public enum bbType

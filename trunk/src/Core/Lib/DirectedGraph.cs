@@ -203,13 +203,13 @@ namespace Decompiler.Core.Lib
 			--nodes[iTo].cPred;
 		}
 
-		public IEnumerable<T> Successors(T o)
+		public IEnumerable<T> Successors(T node)
 		{
-			return CreateEdgeCollectionCore(o, true);
+			return CreateEdgeCollectionCore(node, true);
 		}
 
 
-		internal struct Node
+		private struct Node
 		{
 			public T Item;
 			public int firstPred;
@@ -218,7 +218,7 @@ namespace Decompiler.Core.Lib
 			public int cPred;
 		}
 
-		internal struct Edge
+		private struct Edge
 		{
 			public int from;
 			public int to;
