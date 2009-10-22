@@ -48,11 +48,6 @@ namespace Decompiler.Structure
 
         #region ISccFinderHost<CFGNode> Members
 
-        void ISccFinderHost<StructureNode>.AddSuccessors(StructureNode t, ICollection<StructureNode> succ)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
         IEnumerable<StructureNode> ISccFinderHost<StructureNode>.GetSuccessors(StructureNode t)
         {
             foreach (StructureNode s in t.OutEdges)

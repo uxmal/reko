@@ -128,26 +128,32 @@ namespace Decompiler.Structure
             if (visited.Contains(node))
                 return;
             visited.Add(node);
-            writer.WriteLine("Node {0}: Block: {1}",
+            writer.Write("Node {0}: Block: {1}",
                 node.Ident(),
                 node.Block != null ? node.Block.Name : "<none>");
 
-            writer.WriteLine("    Order: {0}, RevOrder {1}", node.Order, node.RevOrder);
+            writer.WriteLine(" Order: {0}, RevOrder {1}", node.Order, node.RevOrder);
+            writer.WriteLine("    Interval: {0}", node.Interval != null ? (object) node.Interval.Ident() : "<none>");
             writer.Write("    Structure type:");
             if (node.Loop != null)
                 writer.Write(" {0}", node.Loop.GetType().Name);
             if (node.Conditional != null)
                 writer.Write(" {0}", node.Conditional.GetType().Name);
             writer.WriteLine();
+
             if (node.Loop != null)
             {
-                writer.WriteLine("    Loop header:" + node.Loop.Header.Block.Name);
-                writer.WriteLine("    Latch: {0}", node.Loop.Latch.Block.Name);
+                writer.WriteLine("    Loop header:" + node.Loop.Header.Name);
+                writer.WriteLine("    Latch: {0}", node.Loop.Latch.Name);
             }
             if (node.Conditional != null)
             {
                 if (node.Conditional.Follow != null)
                     writer.WriteLine("    Cond follow: {0}", node.Conditional.Follow.Block.Name);
+            }
+            if (node.CaseHead != null)
+            {
+                writer.WriteLine("    Case header: {0}", node.CaseHead.Name);
             }
             writer.WriteLine("    Unstructured type: {0}", node.UnstructType);
             foreach (Statement stm in node.Block.Statements)

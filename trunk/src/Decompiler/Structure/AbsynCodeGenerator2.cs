@@ -118,6 +118,7 @@ namespace Decompiler.Structure
         {
             if (node.ForceLabel)
                 return true;
+
             foreach (StructureNode pred in node.InEdges)
             {
                 if (IsVisited(pred))

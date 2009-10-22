@@ -86,7 +86,6 @@ namespace Decompiler.Structure
 
         public void DefineEdges()
         {
-            //build the edges
             foreach (StructureNode curNode in nodeList)
             {
                 foreach (Block s in curNode.Block.Succ)

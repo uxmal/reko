@@ -21,107 +21,81 @@ using System.Collections.Generic;
 
 namespace Decompiler.Core.Lib
 {
-	/// <summary>
-	/// Iterates through a directed graph in Depth-First order.
-	/// </summary>
-	public class DfsIterator<T> //$TODO : IEnumerator<T> where T : class 
-	{
-#if NOTYET
-		private DirectedGraph<T> graph;
-		private Stack<StackItem> stack;
-		private T startNode;
-		private T curNode;
-		private IEnumerator<T> enumCur;
-		private Dictionary<T, T> visited;
+    /// <summary>
+    /// Iterates through a directed graph in Depth-First order.
+    /// </summary>
+    public class DfsIterator<T>
+    {
+        private HashSet<T> visited = new HashSet<T>();
+        private Converter<T, IEnumerable<T>> getSuccessors;
 
-		public DfsIterator(DirectedGraph<T> graph, T startNode)
-		{
-			this.graph = graph;
-			this.startNode = startNode;
-
-			Reset();
-		}
-
-		public DfsIterator(DirectedGraph<T> graph, T startNode, bool reverse)
-		{
-			this.graph = graph;
-			this.startNode = startNode;
-			Reset();
-		}
-
-		private void AddNodeToStack(T node)
-		{
-			stack.Push(new StackItem(node, graph.Successors(node).GetEnumerator()));
-		}
-
-        object IEnumerator.Current
+        public DfsIterator(Converter<T, IEnumerable<T>> getSuccessors)
         {
-            get { return curNode; }
+            this.visited = new HashSet<T>();
+            this.getSuccessors = getSuccessors;
         }
 
-		public T Current
-		{
-			get { return curNode; }
-		}
-
-        public void Dispose()
+        public IEnumerable<T> PreOrder(T item)
         {
-            graph = null;
-            enumCur = null;
-            GC.SuppressFinalize(this);
+            Stack<IEnumerator<T>> stack = new Stack<IEnumerator<T>>();
+            visited.Add(item);
+            yield return item;
+            stack.Push(getSuccessors(item).GetEnumerator());
+            while (stack.Count > 0)
+            {
+                IEnumerator<T> cur = stack.Pop();
+                if (cur.MoveNext())
+                {
+                    stack.Push(cur);
+                    T succ = cur.Current;
+                    if (!visited.Contains(succ))
+                    {
+                        visited.Add(succ);
+                        yield return succ;
+                        stack.Push(getSuccessors(succ).GetEnumerator());
+                    }
+                }
+            }
         }
 
-		public IEnumerator GetEnumerator()
-		{
-			return this; 
-		}
+        private struct PostOrderItem
+        {
+            public T Item;
+            public IEnumerator<T> Children;
+            public PostOrderItem(T item, IEnumerator<T> children) { Item = item; Children = children; }
+        }
 
-		public bool MoveNext()
-		{
-			if (enumCur == null)
-				return false;
-			
-			do
-			{
-				while (!enumCur.MoveNext())
-				{
-					if (stack.Count == 0)
-					{
-						enumCur = null;
-						return false;
-					}
-                    StackItem item = stack.Pop();
-                    enumCur = item.Enum;
-				}
-				curNode = enumCur.Current;
-			} while (visited.ContainsKey(curNode));
+        public IEnumerable<T> PostOrder(T item)
+        {
+            Stack<PostOrderItem> stack = new Stack<PostOrderItem>();
+            visited.Add(item);
+            stack.Push(new PostOrderItem(item, getSuccessors(item).GetEnumerator()));
+            while (stack.Count > 0)
+            {
+                PostOrderItem cur = stack.Pop();
+                if (cur.Children.MoveNext())
+                {
+                    stack.Push(cur);
+                    T succ = cur.Children.Current;
+                    if (!visited.Contains(succ))
+                    {
+                        visited.Add(succ);
+                        stack.Push(new PostOrderItem(succ, getSuccessors(succ).GetEnumerator()));
+                    }
+                }
+                else
+                {
+                    yield return cur.Item;
+                }
 
-			visited[curNode] = curNode;
-			stack.Push(new enumCur);
-			enumCur = graph.Successors(curNode).GetEnumerator();
-			return true;
-		}
+            }
+        }
 
-		public void Reset()
-		{
-			stack = new Stack();
-			visited = new Hashtable();
-			object [] os = new object[] { startNode };
-			enumCur = os.GetEnumerator();
-		}
 
-		private class StackItem
-		{
-			public object Node;
-			public IEnumerator<T> Enum;
+        public virtual IEnumerable<T> GetSuccessors(T item)
+        {
+            return null;
+        }
 
-			public StackItem(object node, IEnumerator e)
-			{
-				Node = node;
-				Enum = e;
-			}
-		}
-#endif
-	}
-
+    }
 }

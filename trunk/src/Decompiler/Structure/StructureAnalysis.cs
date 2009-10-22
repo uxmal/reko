@@ -105,7 +105,6 @@ namespace Decompiler.Structure
                 if (curNode.Conditional != null && curNode.Conditional.Follow == null &&
                      curNode.UnstructType == UnstructuredType.Structured && !(curNode.Conditional is Case))
                 {
-                    // latching nodes will already have been reset to Seq structured type
                     Debug.Assert(HasABackEdge(curNode));
 
                     if (curNode.HasBackEdgeTo(curNode.Then))
@@ -256,6 +255,8 @@ namespace Decompiler.Structure
                 if (!pred.HasBackEdgeTo(headNode))
                     continue;
                 if (!intNodes.Contains(pred))
+                    continue;
+                if (pred.CaseHead != headNode.CaseHead)
                     continue;
                 if (latch == null || latch.Order > pred.Order)
                     latch = pred;

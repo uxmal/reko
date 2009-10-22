@@ -45,7 +45,6 @@ namespace Decompiler.Structure
 
         internal travType traversed;          //$REFACTOR: use visited hashtables instead.
         private bool forceLabel;
-        public string labelStr;
 
         private StructureNode immPDom;
         private StructureNode caseHead;
@@ -73,7 +72,6 @@ namespace Decompiler.Structure
             traversed = travType.UNTRAVERSED;
             forceLabel = false;
 
-            labelStr = null;
             immPDom = null;
             caseHead = null;
 
@@ -224,9 +222,6 @@ namespace Decompiler.Structure
         // that will be used for loop structuring as well as building the structure that will
         // be used for traversing the nodes in linear time. The inedges are also built during
         // this traversal.
-        public void SetLoopStamps()
-        {
-        }
         public void SetLoopStamps(ref int time, List<StructureNode> order)
         {
             //timestamp the current node with the current time and set its traversed flag

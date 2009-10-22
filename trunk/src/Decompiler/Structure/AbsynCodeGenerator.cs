@@ -373,8 +373,7 @@ namespace Decompiler.Structure
                     // don't emit the label if it already has been emitted or the code 
                     // for the destination has not yet been generated
                     if (!dest.ForceLabel && dest.traversed == travType.DFS_CODEGEN)
-                        dest.labelStr = string.Format("L{0}:{1}", dest.Order, Environment.NewLine);
-
+                        ;
                     dest.ForceLabel = true;
                 }
             }
