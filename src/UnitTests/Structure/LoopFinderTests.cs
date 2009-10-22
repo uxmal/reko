@@ -51,6 +51,13 @@ namespace Decompiler.UnitTests.Structure
 
         }
 
+        [Test]
+        public void CaseJumpsBack_LatchNode()
+        {
+            RunTest(new MockCaseJumpsBack());
+
+        }
+
         private void RunTest(ProcedureMock m)
         {
             m.Procedure.RenumberBlocks();

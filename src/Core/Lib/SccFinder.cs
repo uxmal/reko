@@ -114,8 +114,6 @@ namespace Decompiler.Core.Lib
 
 	public interface ISccFinderHost<T>
 	{
-		void AddSuccessors(T t, ICollection<T> succ);
-
         IEnumerable<T> GetSuccessors(T t);
 
 		void ProcessScc(IList<T> scc);

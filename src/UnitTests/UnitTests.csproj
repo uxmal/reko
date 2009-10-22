@@ -86,7 +86,7 @@
     <Compile Include="Core\CastTests.cs" />
     <Compile Include="Core\CodeFormatterTests.cs" />
     <Compile Include="Core\ConstantTests.cs" />
-    <Compile Include="Core\DfsIteratorTests.cs" />
+    <Compile Include="Core\Lib\DfsIteratorTests.cs" />
     <Compile Include="Core\DirectedGraphTests.cs" />
     <Compile Include="Core\ExpressionFactoryTests.cs" />
     <Compile Include="Core\ExpressionTests.cs" />

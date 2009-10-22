@@ -128,35 +128,6 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual(sExp, sb.ToString());
         }
 
-        [Test]
-        public void WhileReturn()
-        {
-            RunTest(delegate(ProcedureMock m)
-            {
-                m.Label("head");
-                m.BranchIf(m.Local32("done"), "done");
-                m.Assign(m.Local32("done"), m.Fn("fn"));
-                m.BranchIf(m.Local32("breakomatic"), "done");
-                m.Assign(m.Local32("grux"), m.Fn("foo"));
-                m.Jump("head");
-                m.Label("done");
-                m.Return();
-            });
-            Console.WriteLine(sb.ToString());
-            string sExp =
-                "ProcedureMock()" + nl +
-                "{" + nl +
-                "	while (!done)" + nl +
-                "	{" + nl +
-                "\t\tdone = fn();" + nl + 
-                "		if (breakomatic)" + nl +
-                "\t\t\treturn;" + nl +
-                "		grux = foo();" + nl +
-                "\t}" + nl +
-                "	return;" + nl +
-                "}" + nl;
-            Assert.AreEqual(sExp, sb.ToString());
-        }
 
         [Test]
         public void Switch()

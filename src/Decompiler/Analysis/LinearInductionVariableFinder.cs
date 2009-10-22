@@ -306,15 +306,6 @@ namespace Decompiler.Analysis
 
 		#region ISccFinderHost Members //////////////////////
 
-		public void AddSuccessors(SsaIdentifier sidDef, ICollection<SsaIdentifier> operands)
-		{
-			this.operands = operands;
-			if (sidDef.DefStatement != null)
-			{
-				sidDef.DefStatement.Instruction.Accept(this);
-			}
-		}
-
         public IEnumerable<SsaIdentifier> GetSuccessors(SsaIdentifier sidDef)
         {
             this.operands = new List<SsaIdentifier>();

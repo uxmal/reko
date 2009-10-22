@@ -130,7 +130,7 @@ namespace Decompiler.Structure
             {
                 if (node.Conditional != null)
                 {
-                    node.Conditional.GenerateCode(codeGen, node, node.Loop.Latch, bodyEmitter);
+                    node.Conditional.GenerateCode(codeGen, node, Latch, bodyEmitter);
                 }
                 else
                 {
@@ -153,14 +153,19 @@ namespace Decompiler.Structure
 
         protected override void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter)
         {
-            codeGen.EmitLinearBlockStatements(node, emitter);
             List<AbsynStatement> loopBody = new List<AbsynStatement>();
-            StructureNode bodyNode = (node.Else == node.Loop.Follow)
-                ? node.Then
-                : node.Else;
             AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
-            codeGen.GenerateCode(bodyNode, node.Loop.Latch, bodyEmitter);
-            codeGen.EmitLinearBlockStatements(node, bodyEmitter);
+            if (node.Conditional != null)
+            {
+                node.Conditional.GenerateCode(codeGen, node, Latch, bodyEmitter);
+            }
+            else
+            {
+                codeGen.EmitLinearBlockStatements(node, bodyEmitter);
+                if (node.OutEdges.Count != 1)
+                    throw new NotSupportedException(string.Format("Expected top of PostTestedLoop {0} to have only 1 out edge, but found {1} out edges.", node.Name, node.OutEdges.Count));
+                codeGen.GenerateCode(node.OutEdges[0], Latch, bodyEmitter);
+            }
 
             emitter.EmitWhile(node, Constant.True(), loopBody);
 

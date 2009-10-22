@@ -310,6 +310,58 @@ namespace Decompiler.UnitTests.Structure
 
         }
 
+        [Test]
+        public void NestedWhileLoops()
+        {
+            CompileTest(new MockNestedWhileLoops());
+            RunTest(
+                "MockNestedWhileLoops()" + nl +
+                "{" + nl +
+                "	int32 i = 0x00000000;" + nl +
+                "	while (i < 10)" + nl +
+                "	{" + nl +
+                "		int32 j = 0x00000000;" + nl +
+                "		while (j < 10)" + nl +
+                "		{" + nl +
+                "			Mem0[0x00001234:int32] = Mem0[0x00001234:int32] + j;" + nl +
+                "			j = j + 1;" + nl +
+                "		}" + nl +
+                "		i = i + 1;" + nl +
+                "	}" + nl +
+                "	return;" + nl +
+                "}" + nl);
+        }
+
+        [Test]
+        public void WhileReturn()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                m.Label("head");
+                m.BranchIf(m.Local32("done"), "loop_done");
+                m.Assign(m.Local32("done"), m.Fn("fn"));
+                m.BranchIf(m.Local32("breakomatic"), "done");
+                m.Assign(m.Local32("grux"), m.Fn("foo"));
+                m.Jump("head");
+                m.Label("loop_done");
+                m.SideEffect(m.Fn("extra"));
+                m.Label("done");
+                m.Return();
+            });
+            RunTest(
+                "ProcedureMock()" + nl +
+                "{" + nl +
+                "	while (!done)" + nl +
+                "	{" + nl +
+                "\t\tdone = fn();" + nl +
+                "		if (breakomatic)" + nl +
+                "\t\t\treturn;" + nl +
+                "		grux = foo();" + nl +
+                "\t}" + nl +
+                "	return;" + nl +
+                "}" + nl);
+        }
+
         private void CompileTest(ProcGenerator gen)
         {
             ProcedureMock mock = new ProcedureMock();

@@ -50,7 +50,6 @@ namespace Decompiler.Structure
         public void SetCaseHead(StructureNode node)
         {
             Debug.Assert(node.CaseHead == null);
-
             visited.Add(node);
 
             // don't tag this node if it is the case header under investigation 
