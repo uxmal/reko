@@ -22,10 +22,10 @@ using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
-	public abstract class Assembler
+	public interface Assembler
 	{
-		public abstract ProgramImage Assemble(Program prog, Address baseAddress, string sourcefile, List<EntryPoint> entryPoints);
-		public abstract ProgramImage AssembleFragment(Program prog, Address baseAddress, string fragment);
-		public abstract Address StartAddress { get; }
+		ProgramImage Assemble(Program prog, Address baseAddress, string sourcefile, List<EntryPoint> entryPoints);
+		ProgramImage AssembleFragment(Program prog, Address baseAddress, string fragment);
+		Address StartAddress { get; }
 	}
 }
