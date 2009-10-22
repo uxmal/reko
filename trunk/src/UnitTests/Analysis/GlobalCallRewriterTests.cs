@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Analysis
 			prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
 			gcr = new GlobalCallRewriter(prog, null);
-			proc = new Procedure("foo", new Frame(PrimitiveType.Word32));
+            proc = new Procedure("foo", prog.Architecture.CreateFrame());
 			flow = new ProcedureFlow(proc, prog.Architecture);
 		}
 
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void GenerateUseInstructionsForSpecifiedSignature()
 		{
-			Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Word32));
+            Procedure proc = new Procedure("foo", prog.Architecture.CreateFrame());
 			proc.Signature = new ProcedureSignature(
 				new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
 				new Identifier [] { 
@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void GcrStackArguments()
 		{
-			Frame f = new Frame(PrimitiveType.Word16);
+            Frame f = prog.Architecture.CreateFrame();
 			f.ReturnAddressSize = PrimitiveType.Word16.Size;
 
 			f.EnsureStackVariable(new Constant(PrimitiveType.Word16, 8), 2, PrimitiveType.Word16);

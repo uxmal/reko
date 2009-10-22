@@ -443,9 +443,6 @@
     <Compile Include="Structure\Interval.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\IntervalCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structure\IntervalFinder.cs">
       <SubType>Code</SubType>
     </Compile>

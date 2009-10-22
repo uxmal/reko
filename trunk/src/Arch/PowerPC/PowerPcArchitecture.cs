@@ -102,6 +102,11 @@ namespace Decompiler.Arch.PowerPC
             throw new Exception("The method or operation is not implemented.");
         }
 
+        public Frame CreateFrame()
+        {
+            return new Frame(FramePointerType); 
+        }
+
         public ProcessorState CreateProcessorState()
         {
             throw new Exception("The method or operation is not implemented.");

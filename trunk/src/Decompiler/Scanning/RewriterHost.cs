@@ -75,7 +75,7 @@ namespace Decompiler.Scanning
 				{
                     Address addr = Address.ToAddress(sc.InstructionAddress, 16);
 					ProcedureSerializer sser = new ProcedureSerializer(prog.Architecture, "stdapi");
-                    callSignatures.Add(addr, sser.Deserialize(sc.Signature, new Frame(null)));
+                    callSignatures.Add(addr, sser.Deserialize(sc.Signature, prog.Architecture.CreateFrame()));
 				}
 			}
 		}

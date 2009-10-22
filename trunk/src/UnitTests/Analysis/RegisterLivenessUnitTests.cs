@@ -250,7 +250,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void MarkLiveStackParameters()
 		{
-			Procedure callee = new Procedure("callee", new Frame(PrimitiveType.Word32));
+            Procedure callee = new Procedure("callee", prog.Architecture.CreateFrame());
 			callee.Frame.ReturnAddressSize = 4;
 			callee.Frame.EnsureStackArgument(0, PrimitiveType.Word32);
 			callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
@@ -296,7 +296,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void ProcedureWithTrashedAndPreservedRegisters()
 		{
-			Procedure proc = new Procedure("test", new Frame(PrimitiveType.Word32));
+            Procedure proc = new Procedure("test", prog.Architecture.CreateFrame());
 			ProcedureFlow pf = new ProcedureFlow(proc, prog.Architecture);
 			mpprocflow[proc] = pf;
 			pf.TrashedRegisters[Registers.eax.Number] = true;

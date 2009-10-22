@@ -30,17 +30,19 @@ namespace Decompiler.UnitTests.Core
 	public class ApplicationBuilderTests
 	{
 		private IntelArchitecture arch;
+        private Frame frame;
 		private Identifier ret;
 		private Identifier arg04;
 		private Identifier arg08;
 		private Identifier arg0C;
 		private Identifier regOut;
 		private ProcedureSignature sig;
+        private ApplicationBuilder ab;
 
 		public ApplicationBuilderTests()
 		{
 			arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-			Frame frame = new Frame(PrimitiveType.Word32);
+            frame = arch.CreateFrame();
 			ret = frame.EnsureRegister(Registers.eax);
 			arg04 = new Identifier("arg04", -1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32));
 			arg08 = new Identifier("arg08", -1, PrimitiveType.Word16, new StackArgumentStorage(8, PrimitiveType.Word16));
@@ -48,13 +50,13 @@ namespace Decompiler.UnitTests.Core
 			regOut = new Identifier("edxOut", -1, PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
 			sig = new ProcedureSignature(ret,
 				new Identifier[] { arg04, arg08, arg0C, regOut });
-		}
+            ab = new ApplicationBuilder(frame);
+		
+        }
 
 		[Test]
 		public void BindReturnValue()
 		{
-			Frame frame = new Frame(PrimitiveType.Word32);
-			ApplicationBuilder ab = new ApplicationBuilder(frame);
 			Identifier r = ab.Bind(ret, new CallSite(0, 0));
 			Assert.AreEqual("eax", r.ToString());
 		}
@@ -62,8 +64,6 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void BindOutParameter()
 		{
-			Frame frame = new Frame(PrimitiveType.Word32);
-			ApplicationBuilder ab = new ApplicationBuilder(frame);
 			Identifier o = ab.Bind(regOut, new CallSite(0, 0));
 			Assert.AreEqual("edx", o.ToString());
 		}
@@ -71,8 +71,6 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void BuildApplication()
 		{
-			Frame frame = new Frame(PrimitiveType.Word32);
-			ApplicationBuilder ab = new ApplicationBuilder(frame);
 			Assert.IsTrue(sig.FormalArguments[3].Storage is OutArgumentStorage);
 			Instruction instr = ab.BuildApplication(new CallSite(16, 0), new Mocks.ArchitectureMock(), new Identifier("foo", -1, PrimitiveType.Word32, null), sig);
 			Assert.AreEqual("eax = foo(dwLoc0C, wLoc08, bLoc04, &edx)", instr.ToString());

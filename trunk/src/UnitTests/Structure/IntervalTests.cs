@@ -10,6 +10,14 @@ namespace Decompiler.UnitTests.Structure
     [TestFixture]
     public class IntervalTests
     {
+        private Procedure proc;
+
+        [SetUp]
+        public void Setup()
+        {
+            proc = new Procedure("test", null);
+        }
+
         [Test]
         public void CreateWithCfgNode()
         {

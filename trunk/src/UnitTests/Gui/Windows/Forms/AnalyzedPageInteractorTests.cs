@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void Populate()
         {
             form.Show();
-            prog.Procedures.Add(new Address(0x12345), new Procedure("foo", new Frame(PrimitiveType.Word32)));
+            prog.Procedures.Add(new Address(0x12345), new Procedure("foo", prog.Architecture.CreateFrame()));
             interactor.EnterPage();
             Assert.IsTrue(form.BrowserList.Visible, "Browserlist should be visible");
 
@@ -90,14 +90,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void SelectProcedure()
         {
             form.Show();
-            Procedure p = new Procedure("foo_proc", new Frame(PrimitiveType.Word32));
+            Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
                 new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
                 new Identifier[] {
                     new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
 
-            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", new Frame(PrimitiveType.Word32)));
+            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", prog.Architecture.CreateFrame()));
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12346), p);
             interactor.EnterPage();
             form.BrowserList.Items[1].Focused = true;
@@ -110,13 +110,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void ShowEditProcedureDialog()
         {
             form.Show();
-            Procedure p = new Procedure("foo_proc", new Frame(PrimitiveType.Word32));
+            Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
                 new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
                 new Identifier[] {
                     new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
-            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", new Frame(PrimitiveType.Word32)));
+            interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", prog.Architecture.CreateFrame()));
             interactor.EnterPage();
             form.BrowserList.Items[0].Selected = true;
             Assert.IsTrue(interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ActionEditSignature), "Should have executed command.");

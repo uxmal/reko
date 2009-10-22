@@ -129,6 +129,11 @@ namespace Decompiler.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateDisassembler implementation");
 		}
 
+        public Frame CreateFrame()
+        {
+            return new Frame(FramePointerType);
+        }
+
 		public ProcessorState CreateProcessorState()
 		{
 			return new FakeProcessorState();

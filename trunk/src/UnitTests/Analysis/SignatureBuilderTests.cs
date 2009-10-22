@@ -34,8 +34,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 			SignatureBuilder sb = new SignatureBuilder(null, arch);
-			Frame frame = new Frame(arch.WordWidth);
-			sb.AddFlagGroupReturnValue((uint)FlagM.CF, frame);
+            sb.AddFlagGroupReturnValue((uint) FlagM.CF, arch.CreateFrame());
 			ProcedureSignature sig = sb.BuildSignature();
 			Assert.AreEqual("bool", sig.ReturnValue.DataType.ToString());
 		}

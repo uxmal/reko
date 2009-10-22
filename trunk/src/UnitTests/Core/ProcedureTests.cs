@@ -52,15 +52,6 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual(proc3.Name, proc3.ToString());
 		}
 
-		[Test]
-		public void ProcCreateBlockBitset()
-		{
-			Procedure proc = Procedure.Create(new Address(0x0F00, 0x123), null);
-			proc.RpoBlocks.Add(new Block(proc, "foo"));
-			proc.RpoBlocks.Add(new Block(proc, "bar"));
-			BitSet region = proc.CreateBlocksBitset();
-			Assert.AreEqual(2, region.Count);
-		}
 
 		[Test]
 		public void ProcCharacteristicIsAlloca()

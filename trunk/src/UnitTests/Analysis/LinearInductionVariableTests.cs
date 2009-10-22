@@ -35,6 +35,7 @@ namespace Decompiler.UnitTests.Analysis
 		private SsaIdentifierCollection ssaIds;
 		private DominatorGraph doms;
 
+
 		/// <summary>
 		/// Builds a strongly connected component corresponding to:
 		/// a1 = 0
@@ -46,9 +47,10 @@ namespace Decompiler.UnitTests.Analysis
 		/// </summary>
 		private List<SsaIdentifier> BuildScc()
 		{
-			Block b1 = new Block(null, "b1");
+            proc = new Procedure("test", new Frame(PrimitiveType.Word32));
+			Block b1 = proc.AddBlock("b1");
 			b1.RpoNumber = 1;
-			Block b2 = new Block(null, "b2");
+			Block b2 = proc.AddBlock("b2");
 			b2.RpoNumber = 2;
 
 			Identifier a1 = new Identifier("a1", 0, PrimitiveType.Word32, null);
@@ -92,7 +94,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void FindLinearIncrement()
 		{
-			List<SsaIdentifier> a = BuildScc();
+            List<SsaIdentifier> a = BuildScc();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
 			Constant c = liv.FindLinearIncrement(a);
 			Assert.AreEqual(4, c.ToInt32());

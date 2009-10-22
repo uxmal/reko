@@ -187,7 +187,7 @@ namespace Decompiler.Structure
 			ReplaceBlock(blockChain.Pred, blockRedundant, block);
 			blockRedundant.Succ.Remove(blockChain);
 
-			Block.RemoveEdge(blockRedundant, blockCommon);
+			proc.RemoveEdge(blockRedundant, blockCommon);
 
 			blockRedundant.Statements.Clear();
 		}

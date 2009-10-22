@@ -194,9 +194,9 @@ namespace Decompiler.Structure
 
         private void GenerateStructuredCode()
         {
-            AbsynCodeGenerator codeGen = new AbsynCodeGenerator();
+            AbsynCodeGenerator2 codeGen = new AbsynCodeGenerator2();
             curProc.Dump();
-            codeGen.GenerateHighLevelCode(curProc, proc.Body);
+            codeGen.GenerateCode(curProc, proc.Body);
         }
 
         private void CoalesceCompoundConditions()

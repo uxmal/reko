@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Structure
 
         private StructureNode NewNode(string name)
         {
-            return new StructureNode(new Block(proc, name), nodeCount++);
+            return new StructureNode(proc.AddBlock(name), nodeCount++);
         }
     }
 }

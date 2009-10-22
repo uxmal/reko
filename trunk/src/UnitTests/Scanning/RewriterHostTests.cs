@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Scanning
 			Program prog = new Program();
 			prog.Architecture = arch;
 			TestRewriterHost host = new TestRewriterHost(prog);
-			Procedure proc = new Procedure("test", new Frame(PrimitiveType.Word16));
+            Procedure proc = new Procedure("test", arch.CreateFrame());
 			host.RewriteProcedure(proc, new Address(0xC00, 0x000), 2);
 			Assert.AreEqual(proc.Frame.ReturnAddressSize, 2);
 		}

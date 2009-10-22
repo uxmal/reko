@@ -71,7 +71,7 @@ namespace Decompiler.Core
 				{
 					string key = caseInsensitive ? sp.Name.ToUpper() : sp.Name;
 					ProcedureSerializer sser = new ProcedureSerializer(arch, this.defaultConvention);
-					hash[key] = sser.Deserialize(sp.Signature, new Frame(null));
+                    hash[key] = sser.Deserialize(sp.Signature, arch.CreateFrame());
 				}
 			}
 		}

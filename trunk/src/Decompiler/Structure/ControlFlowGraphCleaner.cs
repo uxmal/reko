@@ -66,7 +66,7 @@ namespace Decompiler.Structure
 		private void ReplaceBranchWithJump(Block block)
 		{
 			block.Statements.RemoveAt(block.Statements.Count - 1);
-			Block.RemoveEdge(block, block.Succ[0]);
+			proc.RemoveEdge(block, block.Succ[0]);
 			dirty = true;
 		}
 
@@ -74,10 +74,10 @@ namespace Decompiler.Structure
 		private void ReplaceJumpWithBranch(Block b1, Block b2)
 		{
 			Branch br = b2.Statements.Last.Instruction as Branch;
-			Block.RemoveEdge(b1, b2);
+			proc.RemoveEdge(b1, b2);
 			b1.Statements.Add(new Branch(br.Condition, b2.Succ[1]));
-			Block.AddEdge(b1, b2.Succ[0]);
-			Block.AddEdge(b1, b2.Succ[1]);
+			proc.AddEdge(b1, b2.Succ[0]);
+			proc.AddEdge(b1, b2.Succ[1]);
 		}
 
 		public void Transform()

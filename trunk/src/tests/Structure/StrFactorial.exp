@@ -38,10 +38,10 @@ word16 fn0C00_000F(word16 wArg00)
 {
 	word16 ax_18;
 	word16 ax_14 = wArg00 - 0x0001;
-	if (ax_14 == 0x0000)
-		ax_18 = 0x0001;
-	else
+	if (ax_14 != 0x0000)
 		ax_18 = (word16) (wArg00 *s fn0C00_000F(ax_14));
+	else
+		ax_18 = 0x0001;
 	return ax_18;
 }
 ===========================
