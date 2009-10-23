@@ -105,6 +105,7 @@ namespace Decompiler.Structure
                 : node.Else;
             AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
             codeGen.GenerateCode(bodyNode, node.Loop.Latch, bodyEmitter);
+            bodyEmitter.StripDeclarations = true;
             codeGen.EmitLinearBlockStatements(node, bodyEmitter);
 
             emitter.EmitWhile(node, codeGen.BranchCondition(node), loopBody);
@@ -168,7 +169,6 @@ namespace Decompiler.Structure
             }
 
             emitter.EmitWhile(node, Constant.True(), loopBody);
-
         }
     }
 }

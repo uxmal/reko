@@ -29,17 +29,17 @@ fn0C00_0000_exit:		// block 6, pred: 5
 void fn0C00_0000(word16 ax, selector ds)
 {
 	byte cl_10;
-	if (ax < 0x0000)
-	{
-		cl_10 = 0x01;
-		if (ax < 0xFFF4)
-			ax = 0xFFF4;
-	}
-	else
+	if (ax >= 0x0000)
 	{
 		cl_10 = 0x00;
 		if (ax > 0x000C)
 			ax = 0x000C;
+	}
+	else
+	{
+		cl_10 = 0x01;
+		if (ax < 0xFFF4)
+			ax = 0xFFF4;
 	}
 	Mem24[ds:0x0300:word16] = ax;
 	Mem25[ds:0x0302:byte] = cl_10;

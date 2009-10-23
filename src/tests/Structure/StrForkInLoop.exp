@@ -28,10 +28,10 @@ void fn0C00_0000(word16 bx, selector ds)
 	while (ax_9 < bx)
 	{
 		word16 si_16 = Mem0[ds:0x0300:word16];
-		if (si_16 == 0x0000)
-			ax_9 = ax_9 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16];
-		else
+		if (si_16 != 0x0000)
 			ax_9 = ax_9 + Mem0[ds:si_16:word16];
+		else
+			ax_9 = ax_9 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16];
 	}
 	return;
 }

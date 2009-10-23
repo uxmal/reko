@@ -209,9 +209,9 @@ namespace Decompiler.UnitTests.Mocks
 		}
 
 
-		public void Declare(Identifier id, Expression initial)
+		public Statement Declare(Identifier id, Expression initial)
 		{
-			Emit(new Declaration(id, initial));
+			return Emit(new Declaration(id, initial));
 		}
 
 		public Statement Dpb(Identifier dst, Expression src, int offset, int bitCount)

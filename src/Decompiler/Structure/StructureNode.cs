@@ -51,7 +51,7 @@ namespace Decompiler.Structure
 
         private UnstructuredType usType;
         private Conditional cond;
-        private Loop lType;
+        private Loop loop;
         private IntNode interval;
 
         private int[] loopStamps;
@@ -207,15 +207,20 @@ namespace Decompiler.Structure
 
         public bool IsLatchNode()
         {
-            return (lType != null && lType.Latch == this);
+            return (loop != null && loop.Latch == this);
+        }
+
+        public bool IsLoopHeader()
+        {
+            return Loop != null && Loop.Header == this;
         }
 
 
         ///<summary>The innermost loop this node belongs to.</summary>
         public Loop Loop
         {
-            get { return lType; }
-            set { lType = value; }
+            get { return loop; }
+            set { loop = value; }
         }
 
         // Do a DFS on the graph headed by this node, giving each node it's time stamp tuple
@@ -342,6 +347,7 @@ namespace Decompiler.Structure
         {
             get { return block.Name; }
         }
+
 
     }
 
