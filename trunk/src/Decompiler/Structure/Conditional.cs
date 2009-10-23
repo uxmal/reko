@@ -213,6 +213,8 @@ namespace Decompiler.Structure
 
         public override void GenerateCode(AbsynCodeGenerator2 codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
         {
+            codeGen.EmitLinearBlockStatements(node, emitter);
+
             Expression exp = ((SwitchInstruction) node.Instructions.Last.Instruction).Expression;
             AbsynSwitch switchStm = emitter.EmitSwitch(node, exp);
             AbsynStatementEmitter emitSwitchBranches = new AbsynStatementEmitter(switchStm.Statements);

@@ -267,23 +267,26 @@ namespace Decompiler.UnitTests.Structure
         {
             CompileTest(new MockCaseJumpsBack());
             RunTest(
-"MockCaseJumpsBack()" + nl +
-"{" + nl +
-"	Beginning();" + nl +
-"	DoWorkBeforeSwitch();" + nl +
-"	while (true)" + nl +
-"	{" + nl +
-"		switch (n)" + nl +
-"		{" + nl +
-"		case 0:" + nl +
-"		print(n);" + nl +
-"done:" + nl +
-"		return;" + nl +
-"		DoWorkBeforeSwitch();" + nl +
-"	}" + nl +
-"}" + nl);
-
-
+                "MockCaseJumpsBack()" + nl +
+                "{" + nl +
+                "	Beginning();" + nl +
+                "JumpBack:" + nl +
+                "	DoWorkBeforeSwitch();" + nl +
+                "	switch (n)" + nl +
+                "	{" + nl +
+                "	case 0:" + nl +
+                "		print(n);" + nl +
+                "		break;" + nl +
+                "	case 1:" + nl +
+                "		n = n + 0x00000001;" + nl +
+                "		goto JumpBack;" + nl +
+                "		break;" + nl +
+                "	case 2:" + nl +
+                "		print(n);" + nl +
+                "		break;" + nl +
+                "	}" + nl +
+                "	return;" + nl +
+                "}" + nl);
         }
 
         [Test]
@@ -362,6 +365,26 @@ namespace Decompiler.UnitTests.Structure
                 "}" + nl);
         }
 
+
+        [Test]
+        public void WhileWithDeclarations()
+        {
+            CompileTest(new MockWhileWithDeclarations());
+            RunTest(
+                "MockWhileWithDeclarations()" + nl +
+                "{" + nl +
+                "	byte v = Mem0[i:byte];" + nl +
+                "	i = i + 0x00000001;" + nl +
+                "	while (v != 0x20)" + nl +
+                "	{" + nl +
+                "		Mem0[0x00300000:byte] = v;" + nl +
+                "		v = Mem0[i:byte];" + nl +
+                "		i = i + 0x00000001;" + nl +
+                "	}" + nl +
+                "	return;" + nl +
+                "}" + nl);
+        }
+
         private void CompileTest(ProcGenerator gen)
         {
             ProcedureMock mock = new ProcedureMock();
@@ -406,7 +429,5 @@ namespace Decompiler.UnitTests.Structure
 
             sb.WriteLine("}");
         }
-
-
     }
 }

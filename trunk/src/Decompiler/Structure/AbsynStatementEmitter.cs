@@ -29,11 +29,13 @@ namespace Decompiler.Structure
     public class AbsynStatementEmitter : InstructionVisitor
     {
         private List<AbsynStatement> stms;
+        private bool stripDeclarations;
 
         public AbsynStatementEmitter(List<AbsynStatement> stms)
         {
             this.stms = stms;
         }
+
 
         public void EmitStatement(Statement stm)
         {
@@ -101,6 +103,12 @@ namespace Decompiler.Structure
             return switchStm;
         }
 
+        public bool StripDeclarations
+        {
+            get { return stripDeclarations; }
+            set { stripDeclarations = value; }
+        }
+
 
         #region InstructionVisitor Members
 
@@ -111,27 +119,37 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitBranch(Branch b)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitCallInstruction(CallInstruction ci)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitDeclaration(Declaration decl)
         {
-            stms.Add(new AbsynDeclaration(decl.Identifier, decl.Expression));
+            if (stripDeclarations)
+            {
+                if (decl.Expression != null)
+                {
+                    stms.Add(new AbsynAssignment(decl.Identifier, decl.Expression));
+                }
+            }
+            else
+            {
+                stms.Add(new AbsynDeclaration(decl.Identifier, decl.Expression));
+            }
         }
 
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitIndirectCall(IndirectCall ic)
@@ -156,14 +174,15 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitSwitchInstruction(SwitchInstruction si)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitUseInstruction(UseInstruction u)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         #endregion
+
     }
 }

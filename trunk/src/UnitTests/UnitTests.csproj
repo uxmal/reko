@@ -213,6 +213,7 @@
     <Compile Include="Scanning\WorkItemTests.cs" />
     <Compile Include="Structure\AbsynCodeGenerator2Tests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
+    <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
     <Compile Include="Structure\DerivedSequenceBuilderTests.cs" />
     <Compile Include="Structure\IntervalBuilderTests.cs" />
     <Compile Include="Structure\IntervalTests.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
     <Compile Include="Structure\MockCaseStatement.cs" />
     <Compile Include="Structure\MockWhileGoto.cs" />
+    <Compile Include="Structure\MockWhileWithDeclarations.cs" />
     <Compile Include="Structure\ProcHeaderTests.cs" />
     <Compile Include="Structure\SccLoopFinderTests.cs" />
     <Compile Include="Structure\MockNestedWhileLoops.cs" />

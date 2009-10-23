@@ -1,3 +1,21 @@
+/* 
+ * Copyright (C) 1999-2009 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
 using Decompiler.Core;
 using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
@@ -50,7 +68,6 @@ namespace Decompiler.Structure
                     return;
                 }
             }
-
             succ.ForceLabel = true;
             emitter.EmitGoto(succ);
         }
@@ -84,7 +101,7 @@ namespace Decompiler.Structure
             if (NeedsLabel(node))
                 GenerateLabel(node,emitter);
 
-            if (node.Loop != null && node.Loop.Header == node)
+            if (node.IsLoopHeader())
             {
                 node.Loop.GenerateCode(this, node, latchNode, emitter);
             }
@@ -106,12 +123,21 @@ namespace Decompiler.Structure
                 if (node.OutEdges.Count == 1)
                 {
                     StructureNode succ = node.OutEdges[0];
-                    if (IsVisited(succ))
+                    if (ShouldJumpFromSequentialNode(node, succ))
                         EmitGotoAndForceLabel(node, succ, emitter);
                     else
                         GenerateCode(succ, latchNode, emitter);
                 }
             }
+        }
+
+        private bool ShouldJumpFromSequentialNode(StructureNode node, StructureNode succ)
+        {
+            if (IsVisited(succ))
+            {
+                return (followStack.Count == 0 || followStack.Peek() != succ);
+            }
+            return false;
         }
 
         private bool NeedsLabel(StructureNode node)
@@ -123,7 +149,7 @@ namespace Decompiler.Structure
             {
                 if (IsVisited(pred))
                     continue;
-                if (node.IsAncestorOf(pred))
+                if (node.IsLoopHeader() && node.IsAncestorOf(pred))
                     continue;
                 return true;
             }
