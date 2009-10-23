@@ -313,10 +313,10 @@ namespace Decompiler.Arch.Intel
                 switch (chFmt)
                 {
                 case '1':
-                    pOperand = immOp = new ImmediateOperand(PrimitiveType.Byte, 1);
+                    pOperand = immOp = new ImmediateOperand(Constant.Byte(1));
                     break;
                 case '3':
-                    pOperand = immOp = new ImmediateOperand(PrimitiveType.Byte, 3);
+                    pOperand = immOp = new ImmediateOperand(Constant.Byte(3));
                     break;
                 case 'A':		// Absolute memory address.
                     ++i;
@@ -349,7 +349,7 @@ namespace Decompiler.Arch.Intel
                 case 'J':		// Relative jump.
                     width = OperandWidth(strFormat[i++]);
                     offset = rdr.ReadLeSigned(width);
-                    pOperand = new ImmediateOperand(defaultDataWidth, (uint) (rdr.Address.Offset + offset));
+                    pOperand = new ImmediateOperand(new Constant(defaultDataWidth, (uint) (rdr.Address.Offset + offset)));
                     break;
                 case 'M':		// modRM may only refer to memory.
                     width = OperandWidth(strFormat[i++]);

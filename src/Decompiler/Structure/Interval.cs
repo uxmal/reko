@@ -105,7 +105,7 @@ namespace Decompiler.Structure
         {
             writer.Write("Interval {0}: [", Ident());
             string sep = "";
-            StructureNode [] ns = nodes.ToArray();
+            StructureNode[] ns = nodes.ToArray();
             Array.Sort(ns, delegate(StructureNode a, StructureNode b)
             {
                 return string.Compare(a.Name, b.Name);
@@ -125,117 +125,5 @@ namespace Decompiler.Structure
             Write(sw);
             return sw.ToString();
         }
-
-        [Obsolete("Investigate getting rid of this property")]
-        public Block HeaderBlock
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        [Obsolete("Investigate getting rid of this property")]
-        internal BitSet Blocks
-        {
-            get { throw new NotImplementedException(); }
-        }
-
     }
-
-#if DELETE_ME
-	public class Interval : StructureNode2
-	{
-		private Block header;
-		private List<StructureNode2> nodes;	// nodes in the interval
-
-		public Interval(int id, Block header) : base(id, header)
-		{
-			this.header = header;
-			nodes = new List<StructureNode2>();
-		}
-		
-		public StructureNode2 HeaderNode
-		{ 
-			get { return Nodes[0]; }
-		}
-
-		public void AddNode(StructureNode2 n)
-		{
-			Nodes.Add(n);
-			n.Interval = this;
-		}
-
-        public BitSet Blocks
-        {
-            get { return null; }
-        }
-
-        /// <summary>
-        /// A list of the nodes that are part of this interval.
-        /// </summary>
-        public List<StructureNode2> Nodes
-        {
-            get { return nodes; }
-        }
-
-        [Obsolete]
-        public void FindNodesInInterval(bool[] cfgNodes)
-        {
-            foreach (StructureNode2 node in this.Nodes)
-            {
-                Interval innerInt = node as Interval;
-                if (innerInt == null)
-                {
-                    cfgNodes[node.Order] = true;
-                }
-                else
-                {
-                    innerInt.FindNodesInInterval(cfgNodes);
-                }
-            }
-        }
-
-        public void FindNodesInInterval(IDictionary<int, StructureNode2> nodes)
-        {
-            foreach (StructureNode2 node in this.Nodes)
-            {
-                Interval innerInt = node as Interval;
-                if (innerInt == null)
-                {
-                    nodes.Add(node.Order, node);
-                }
-                else
-                {
-                    innerInt.FindNodesInInterval(nodes);
-                }
-            }
-        }
-
-
-        public Block HeaderBlock
-		{
-			get { return header; }
-		}
-
-		public override void Write(TextWriter writer)
-		{
-            writer.Write("Interval {0}: [", this.Ident);
-            SortedDictionary<int, StructureNode2> nodes = new SortedDictionary<int, StructureNode2>();
-            FindNodesInInterval(nodes);
-            string sep = "";
-			foreach (StructureNode2 sn in nodes.Values)
-			{
-                writer.Write(sep);
-				writer.Write(sn.EntryBlock.Name);
-                sep = ",";
-			}
-            writer.Write("]");
-		}
-
-		public override string ToString()
-		{
-			StringWriter text = new StringWriter();
-			Write(text);
-			return text.ToString();
-		}
-	}
-#endif
 }

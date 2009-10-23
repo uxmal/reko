@@ -140,10 +140,10 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void RewriteAnd()
 		{
-			IntelInstruction instr = new IntelInstruction(
-				Opcode.and, PrimitiveType.Word16, PrimitiveType.Word16,
-				new RegisterOperand(Registers.ax),
-				new ImmediateOperand(PrimitiveType.Word16, 0x08));
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.and, PrimitiveType.Word16, PrimitiveType.Word16,
+                new RegisterOperand(Registers.ax),
+                new ImmediateOperand(Constant.Word16(0x08)));
 			rw.ConvertInstructions(instr);
 			Assert.AreEqual(3, rw.Block.Statements.Count);
 			Assert.AreEqual("ax = ax & 0x0008", rw.Block.Statements[0].Instruction.ToString());
@@ -160,7 +160,7 @@ namespace Decompiler.UnitTests.Intel
 			IntelInstruction instr = new IntelInstruction(
 				Opcode.test, PrimitiveType.Word16, PrimitiveType.Word16,
 				new RegisterOperand(Registers.ax),
-				new ImmediateOperand(PrimitiveType.Word16, 0x08));
+				new ImmediateOperand(Constant.Word16(0x08)));
 			rw.ConvertInstructions(instr);
 			Assert.AreEqual(2, rw.Block.Statements.Count);
 			Assert.AreEqual("SCZO = cond(ax & 0x0008)", rw.Block.Statements[0].Instruction.ToString());

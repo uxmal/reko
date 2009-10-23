@@ -74,12 +74,12 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void MatchAddRecConst()
 		{
-			IntelInstruction i1 = new IntelInstruction(Opcode.add, w16, w16,
-				ax,
-				new ImmediateOperand(w16, 0x5678));
+            IntelInstruction i1 = new IntelInstruction(Opcode.add, w16, w16,
+                ax,
+                new ImmediateOperand(Constant.Word16(0x5678)));
 			IntelInstruction i2 = new IntelInstruction(Opcode.adc, w16, w16,
 				dx,
-				new ImmediateOperand(w16, 0x1234));
+				new ImmediateOperand(Constant.Word16(0x1234)));
 			Assert.IsTrue(rw.Match(i1, i2));
 			Assert.AreEqual("0x12345678", rw.Src.ToString());
 		}
@@ -89,9 +89,9 @@ namespace Decompiler.UnitTests.Intel
 		public void Adc1()
 		{
 			IntelInstruction in1 = new IntelInstruction(Opcode.add, w16, w16,
-				ax, new ImmediateOperand(w16, 0x0001));
+				ax, new ImmediateOperand(Constant.Word16(0x0001)));
 			IntelInstruction in2 = new IntelInstruction(Opcode.adc, w16, w16,
-				dx, new ImmediateOperand(PrimitiveType.Byte, 0));
+				dx, new ImmediateOperand(Constant.Byte(0)));
 			Assert.IsTrue(rw.Match(in1, in2));
 			Assert.AreEqual("dx_ax", rw.Dst.ToString());
 			Assert.AreEqual("0x00000001", rw.Src.ToString());

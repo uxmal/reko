@@ -197,7 +197,7 @@ namespace Decompiler.Analysis
 			}
 			else
 			{
-				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, new Constant(bin.Left.DataType, 0));
+				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, Constant.Zero(bin.Left.DataType));
 			}		
 			return e;
 		}

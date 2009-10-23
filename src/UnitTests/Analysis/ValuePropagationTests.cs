@@ -213,7 +213,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void VpSliceConstant()
 		{
 			ValuePropagator vp = new ValuePropagator(ssaIds, null);
-			Expression c = vp.TransformSlice(new Slice(PrimitiveType.Byte, new Constant(PrimitiveType.Word32, 0x10FF), 0));
+			Expression c = vp.TransformSlice(new Slice(PrimitiveType.Byte, Constant.Word32(0x10FF), 0));
 			Assert.AreEqual("0xFF", c.ToString());
 		}
 

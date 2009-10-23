@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Typing
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
 			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
 
-			Constant c = new Constant(PrimitiveType.Word32,0x10000000);
+			Constant c = Constant.Word32(0x10000000);
 			MemoryAccess mem = new MemoryAccess(c, PrimitiveType.Real32);
 
 			prog.Globals.Accept(eqb);

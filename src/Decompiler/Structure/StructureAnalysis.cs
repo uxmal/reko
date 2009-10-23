@@ -205,7 +205,6 @@ namespace Decompiler.Structure
             ccc.Transform();
         }
 
-        [Obsolete("Call the strcturebuilder directly.")]
         public void BuildProcedureStructure()
         {
             ProcedureStructureBuilder cfgs = new ProcedureStructureBuilder(proc);

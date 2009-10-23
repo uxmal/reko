@@ -18,6 +18,7 @@
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -45,7 +46,7 @@ namespace Decompiler.UnitTests.Intel
 			IntelInstruction [] instrs =
 				new IntelInstruction[] {
 										   new IntelInstruction(Opcode.cmp, PrimitiveType.Word32, PrimitiveType.Word32, new RegisterOperand(Registers.eax), new RegisterOperand(Registers.eax)),
-										   new IntelInstruction(Opcode.jnz, PrimitiveType.Word32, PrimitiveType.Word32, new ImmediateOperand(PrimitiveType.Word32, 0x10001010))
+										   new IntelInstruction(Opcode.jnz, PrimitiveType.Word32, PrimitiveType.Word32, new ImmediateOperand(Constant.Word32(0x10001010)))
 									   };
 			FlagM [] deadOut = dcff.DeadOutFlags(instrs);
 			Assert.AreEqual(0, (int) deadOut[0]);
@@ -59,9 +60,9 @@ namespace Decompiler.UnitTests.Intel
 		{
 			IntelInstruction [] instrs = 
 				new IntelInstruction[] {
-										   new IntelInstruction(Opcode.add, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.bx), new ImmediateOperand(PrimitiveType.Word16, 0x10)),
+										   new IntelInstruction(Opcode.add, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.bx), new ImmediateOperand(Constant.Word16(0x10))),
 										   new IntelInstruction(Opcode.mov, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.si), new RegisterOperand(Registers.bx)),
-										   new IntelInstruction(Opcode.add, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx), new ImmediateOperand(PrimitiveType.Word16, 1))
+										   new IntelInstruction(Opcode.add, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx), new ImmediateOperand(Constant.Word16(1)))
 									   };
 			FlagM [] deadOut = dcff.DeadOutFlags(instrs);
 			Assert.AreEqual(FlagM.SF|FlagM.CF|FlagM.ZF|FlagM.OF, deadOut[0], "Item 0");

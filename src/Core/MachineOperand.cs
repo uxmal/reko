@@ -103,16 +103,6 @@ namespace Decompiler.Core
 	{
 		private Constant value;
 
-		public ImmediateOperand(PrimitiveType  t, int v) : base(t)
-		{
-			value = new Constant(t, v);
-		}
-
-		public ImmediateOperand(PrimitiveType t, uint v) : base(t)
-		{
-			value = new Constant(t, v);
-		}
-
 		public ImmediateOperand(Constant c) : base((PrimitiveType)c.DataType)
 		{
 			value = c;

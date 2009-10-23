@@ -328,11 +328,34 @@ namespace Decompiler.Core.Code
 			return new Constant(PrimitiveType.Bool, 1);
 		}
 
+        public static Constant SByte(sbyte p)
+        {
+            return new Constant(PrimitiveType.SByte, p);
+        }
+
+        public static Constant Word16(ushort n)
+        {
+            return new Constant(PrimitiveType.Word16, n);
+        }
+
 		public static Constant Word32(int n)
 		{
 			return new Constant(PrimitiveType.Word32, n); 
 		}
 
+        public static Constant Word32(uint n)
+        {
+            return new Constant(PrimitiveType.Word32, n);
+        }
+
+        public static Expression Zero(DataType dataType)
+        {
+            return new Constant(dataType, 0);
+        }
+
 		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0);
+
+
+
     }
 }

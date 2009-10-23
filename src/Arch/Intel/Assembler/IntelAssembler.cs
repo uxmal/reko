@@ -708,11 +708,7 @@ namespace Decompiler.Arch.Intel.Assembler
                 emitter.Length - offBytes, offsetSize);
         }
 
-
-
-
-        [Obsolete("Should be private")]
-        internal PrimitiveType EnsureValidOperandSizes(ParsedOperand[] ops, int count)
+        private PrimitiveType EnsureValidOperandSizes(ParsedOperand[] ops, int count)
         {
             if (count == 0)
                 return null;

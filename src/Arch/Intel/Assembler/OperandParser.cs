@@ -245,7 +245,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			case Token.OFFSET:
 				Expect(Token.ID);
 				return new ParsedOperand(
-					new ImmediateOperand(defaultWordWidth, addrBase.Offset),
+					new ImmediateOperand(new Constant(defaultWordWidth, addrBase.Offset)),
 					symtab.CreateSymbol(lexer.StringLiteral));
 				
 			case Token.ID:
