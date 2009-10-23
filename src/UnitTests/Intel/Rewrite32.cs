@@ -93,7 +93,8 @@ namespace Decompiler.UnitTests.Intel
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
 			Decompiler.Core.Assembler asm = prog.Architecture.CreateAssembler();
-			prog.Image = asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(sourceFile), null);
+			asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(sourceFile));
+            prog.Image = asm.Image;
 			Scanner scan = new Scanner(prog, null);
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);

@@ -42,7 +42,8 @@ namespace Decompiler.Loading
         public override DecompilerProject Load(Address addrLoad)
         {
             Assembler asm = arch.CreateAssembler();
-            Program.Image = asm.AssembleFragment(null, addrLoad, asmFragment);
+            asm.AssembleFragment(null, addrLoad, asmFragment);
+            Program.Image = asm.Image;
             EntryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
             return new DecompilerProject();
         }

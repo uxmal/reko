@@ -71,7 +71,8 @@ namespace Decompiler.UnitTests.Intel
 		protected void RunTest(string sourceFile, string outputFile, Address addrBase)
 		{
 			Program prog = new Program();
-			prog.Image = asm.Assemble(prog, addrBase, FileUnitTester.MapTestPath(sourceFile), null);
+			asm.Assemble(prog, addrBase, FileUnitTester.MapTestPath(sourceFile));
+            prog.Image = asm.Image;
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				Dumper dumper = prog.Architecture.CreateDumper();
@@ -101,7 +102,7 @@ namespace Decompiler.UnitTests.Intel
 		public void AsFragment()
 		{
 			Program prog = new Program();
-			ProgramImage img = asm.AssembleFragment(prog,
+			asm.AssembleFragment(prog,
 				new Address(0xC00, 0),
 @"		.i86
 hello	proc
@@ -109,6 +110,7 @@ hello	proc
 		mov	bx,0x40
 hello	endp
 ");
+            ProgramImage img = asm.Image;
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
 				prog.Image = img;
@@ -124,7 +126,7 @@ hello	endp
 		public void AssembleLoopFragment()
 		{
 			Program prog = new Program();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xC00, 0),
 
@@ -139,7 +141,7 @@ l:		add		ax,cx
 		ret
 hello	endp
 ");
-			Assert.IsTrue(Compare(img.Bytes, new byte [] 
+			Assert.IsTrue(Compare(asm.Image.Bytes, new byte [] 
 				{ 0x33, 0xC0, 0xB9, 0x0a, 0x00, 0x03, 0xC1, 0xE2, 0xFC, 0xC3 }));
 
 		}
@@ -148,7 +150,7 @@ hello	endp
 		public void Extensions()
 		{
 			Program prog = new Program();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xC00, 0),
 				@"		.i86
@@ -160,7 +162,7 @@ hello	proc
 		ret
 hello   endp
 ");
-			Assert.IsTrue(Compare(img.Bytes, new byte[]
+			Assert.IsTrue(Compare(asm.Image.Bytes, new byte[]
 				{
 						0xB1, 0x03,
 					0x66, 0x0F, 0xB6, 0xC1,
@@ -173,7 +175,7 @@ hello   endp
 		public void Rotations()
 		{
 			Program prog = new Program();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xC00, 0),
 				@"	.i86
@@ -184,7 +186,7 @@ foo		proc
 		ret
 foo		endp
 ");
-			Assert.IsTrue(Compare(img.Bytes, new byte []
+			Assert.IsTrue(Compare(asm.Image.Bytes, new byte []
 					{ 0xD3, 0xC0, 0xD0, 0x47, 0x02, 0xC1, 0x5E, 0x4, 0x4, 0xC3}));
 		}
 		
@@ -192,7 +194,7 @@ foo		endp
 		public void Shifts()
 		{
 			Program prog = new Program();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0x0C00, 0),
 				@"	.i86
@@ -203,7 +205,7 @@ foo		proc
 		ret
 foo		endp
 ");
-			Assert.IsTrue(Compare(img.Bytes, new byte []
+			Assert.IsTrue(Compare(asm.Image.Bytes, new byte []
 				{ 0x66, 0xD3, 0xE0, 0xD0, 0x6C, 0x03, 0xC1, 0x7C, 0x06, 0x04, 0xC3 }));
 		}
 
@@ -211,7 +213,7 @@ foo		endp
 		public void StringInstruction()
 		{
 			Program prog = new Program();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xC00, 0),
 				@"	.i86
@@ -223,7 +225,7 @@ foo		proc
 		ret
 foo		endp
 ");
-			Assert.IsTrue(Compare(img.Bytes, new byte []
+			Assert.IsTrue(Compare(asm.Image.Bytes, new byte []
 				{ 0xBE, 0x34, 0x12, 0xBF, 0x41, 0x32, 0xB9, 0x32, 0x00, 0xF3, 0xA4, 0xC3 }));
 		}
 
@@ -231,11 +233,11 @@ foo		endp
 		public void AsCarryInstructions()
 		{
 			Program prog = new Program();
-			prog.Image = asm.Assemble(prog, new Address(0xBAC, 0), FileUnitTester.MapTestPath("Fragments/carryinsts.asm"), null);
+			asm.Assemble(prog, new Address(0xBAC, 0), FileUnitTester.MapTestPath("Fragments/carryinsts.asm"));
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
 				IntelDumper dump = new IntelDumper(arch);
-				dump.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
+				dump.DumpData(asm.Image, asm.Image.BaseAddress, asm.Image.Bytes.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -309,15 +311,15 @@ foo		endp
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program prog = new Program();
-			prog.Image = asm.Assemble(prog, new Address(0x0C00, 0), FileUnitTester.MapTestPath(sourceFile), null);
+			asm.Assemble(prog, new Address(0x0C00, 0), FileUnitTester.MapTestPath(sourceFile));
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				Dumper dump = prog.Architecture.CreateDumper();
-				dump.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
+				dump.DumpData(asm.Image, asm.Image.BaseAddress, asm.Image.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
+				dump.DumpAssembler(asm.Image, asm.Image.BaseAddress, asm.Image.BaseAddress + asm.Image.Bytes.Length, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}	

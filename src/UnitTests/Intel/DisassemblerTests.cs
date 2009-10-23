@@ -30,6 +30,8 @@ namespace Decompiler.UnitTests.Intel
 	[TestFixture]
 	public class DisassemblerTests
 	{
+        private IntelDisassembler dasm;
+
 		public DisassemblerTests()
 		{
 		}
@@ -39,7 +41,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xB96, 0),
 				@"	mov	ax,0
@@ -49,8 +51,8 @@ foo:
 	dec		cx
 	jnz		foo
 ");
-			
-			IntelDisassembler dasm = new IntelDisassembler(img.CreateReader(img.BaseAddress), PrimitiveType.Word16);
+
+            CreateDisassembler(asm, PrimitiveType.Word16);
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i != 5; ++i)
 			{
@@ -69,12 +71,17 @@ foo:
 				s);
 		}
 
+        private void CreateDisassembler(IntelTextAssembler asm, PrimitiveType width)
+        {
+            dasm = new IntelDisassembler(asm.Image.CreateReader(asm.Image.BaseAddress), width);
+        }
+
 		[Test]
 		public void SegmentOverrides()
 		{
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xB96, 0),
 				"foo	proc\r\n" +
@@ -82,8 +89,8 @@ foo:
 				"		mov	ax,[bx+4]\r\n" +
 				"		mov cx,cs:[si+4]\r\n");
 
-			IntelDisassembler dasm = new IntelDisassembler(img.CreateReader(img.BaseAddress), PrimitiveType.Word16);
-			IntelInstruction [] instrs = new IntelInstruction[3];
+            CreateDisassembler(asm, PrimitiveType.Word16);
+            IntelInstruction[] instrs = new IntelInstruction[3];
 			for (int i = 0; i != instrs.Length; ++i)
 			{
 				instrs[i] = dasm.Disassemble();
@@ -99,7 +106,7 @@ foo:
 		{
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xB96, 0),
 				"foo	proc\r\n" +
@@ -108,6 +115,7 @@ foo:
 				"rcr	word ptr [bp+4],4\r\n" +
 				"rcl	ax,1\r\n");
 
+            ProgramImage img = asm.Image;
 			IntelDisassembler dasm = new IntelDisassembler(img.CreateReader(img.BaseAddress), PrimitiveType.Word16);
 			IntelInstruction [] instrs = new IntelInstruction[4];
 			StringBuilder sb = new StringBuilder();
@@ -130,7 +138,7 @@ foo:
 		{
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xA14, 0),
 @"		.i86
@@ -140,8 +148,8 @@ foo		proc
 		movsx	ebx,bx
 		movzx	ax,byte ptr [bp+04]
 ");
-			IntelDisassembler dasm = new IntelDisassembler(img.CreateReader(img.BaseAddress), PrimitiveType.Word16);
-			StringBuilder sb = new StringBuilder();
+            CreateDisassembler(asm, PrimitiveType.Word16);
+            StringBuilder sb = new StringBuilder();
 			for (int i = 0; i != 4; ++i)
 			{
 				IntelInstruction ii = dasm.Disassemble();
@@ -160,13 +168,12 @@ movzx	ax,byte ptr [bp+04]
 		public void DisEdiTimes2()
 		{
 			Program prog = new Program(); IntelTextAssembler asm = new IntelTextAssembler();
-			ProgramImage img = asm.AssembleFragment(prog, new Address(0x0B00, 0),
+			asm.AssembleFragment(prog, new Address(0x0B00, 0),
 				@"	.i386
 	mov ebx,[edi*2]
 ");
-
-			IntelDisassembler dasm = new IntelDisassembler(img.CreateReader(img.BaseAddress), PrimitiveType.Word32);
-			IntelInstruction instr = dasm.Disassemble();
+            CreateDisassembler(asm, PrimitiveType.Word32);
+            IntelInstruction instr = dasm.Disassemble();
 			MemoryOperand mem = (MemoryOperand) instr.op2;
 			Assert.AreEqual(2, mem.Scale);
 			Assert.AreEqual(MachineRegister.None, mem.Base);
@@ -180,14 +187,14 @@ movzx	ax,byte ptr [bp+04]
 			{
 				Program prog = new Program();
 				IntelTextAssembler asm = new IntelTextAssembler();
-				ProgramImage img = asm.Assemble(prog, new Address(0xC32, 0), FileUnitTester.MapTestPath("Fragments/fpuops.asm"), null);
-				IntelDisassembler dasm = new IntelDisassembler(img.CreateReader(img.BaseAddress), PrimitiveType.Word16);
-				while (img.IsValidAddress(dasm.Address))
+				asm.Assemble(prog, new Address(0xC32, 0), FileUnitTester.MapTestPath("Fragments/fpuops.asm"));
+				CreateDisassembler(asm, PrimitiveType.Word16);
+                throw new ApplicationException("Busted");
+//				while (img.IsValidAddress(dasm.Address))
 				{
 					IntelInstruction instr = dasm.Disassemble();
 					fut.TextWriter.WriteLine("{0}", instr.ToString());
 				}
-
 				fut.AssertFilesEqual();
 			}
 		}

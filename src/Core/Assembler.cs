@@ -24,8 +24,10 @@ namespace Decompiler.Core
 {
 	public interface Assembler
 	{
-		ProgramImage Assemble(Program prog, Address baseAddress, string sourcefile, List<EntryPoint> entryPoints);
-		ProgramImage AssembleFragment(Program prog, Address baseAddress, string fragment);
+        void Assemble(Program prog, Address baseAddress, string sourcefile);
+		void AssembleFragment(Program prog, Address baseAddress, string fragment);
+        ProgramImage Image { get; }
 		Address StartAddress { get; }
+        ICollection<EntryPoint> EntryPoints { get; }
 	}
 }

@@ -25,19 +25,30 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Pdp11Assembler : Assembler
     {
-        public ProgramImage Assemble(Program prog, Address baseAddress, string sourcefile, List<EntryPoint> entryPoints)
+        public void Assemble(Program prog, Address baseAddress, string sourcefile)
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public ProgramImage AssembleFragment(Program prog, Address baseAddress, string fragment)
+        public void AssembleFragment(Program prog, Address baseAddress, string fragment)
         {
             throw new Exception("The method or operation is not implemented.");
+        }
+
+        public ICollection<EntryPoint> EntryPoints
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public ProgramImage Image
+        {
+            get { throw new NotImplementedException(); }
         }
 
         public Address StartAddress
         {
             get { throw new Exception("The method or operation is not implemented."); }
         }
+
     }
 }

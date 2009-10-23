@@ -100,6 +100,7 @@ namespace Decompiler.UnitTests.Intel.Assembler
 			Assert.IsNotNull(po.Symbol, "Should have defined symbol foo");
 			Assert.AreEqual("[0000]", mop.ToString(false));
 		}
+
 		private OperandParser Create16BitParser(string data)
 		{
 			return new OperandParser(new Lexer(new StringReader(data)), symtab, new Address(0x0C00, 0x0000), PrimitiveType.Word16, PrimitiveType.Word16);

@@ -32,7 +32,7 @@ namespace Decompiler.UnitTests.Intel
 		public void DataOverrides()
 		{
 			Program prog = new Program();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xC00, 0),
 				@".86
@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Intel
 		add	eax,0x12345678
 		add ebx,0x87654321
 ");
-			Assert.IsTrue(Compare(img.Bytes, new byte[]
+			Assert.IsTrue(Compare(asm.Image.Bytes, new byte[]
 				{	0x66,0xb8,0x20,0x00,0x00,0x00,0xbe,0x34,
 					0x22,0x66,0xbb,0x34,0x22,0x00,0x00,0x66,
 					0x05,0x78,0x56,0x34,0x12,0x66,0x81,0xC3,

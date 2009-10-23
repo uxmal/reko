@@ -35,35 +35,51 @@ namespace Decompiler.Arch.Intel.Assembler
 	{
 		private Lexer lexer;
 		private Emitter emitter;
-		private Symbol m_symOrigin;
 		private Address addrBase;
 		private Address addrStart;
 		private Program prog;
-		private List<EntryPoint> entryPoints;
+        private List<EntryPoint> entryPoints;
         private IntelAssembler asm;
+        private ProgramImage image;
 
 		public IntelTextAssembler()
 		{
-			m_symOrigin = null;
 		}
 
-		public ProgramImage Assemble(Program prog, Address addr, string file, List<EntryPoint> entryPoints)
+		public void Assemble(Program prog, Address addr, string file)
 		{
 			this.prog = prog;
-			this.entryPoints = entryPoints;
+            this.entryPoints = new List<EntryPoint>();
 			using (StreamReader rdr = new StreamReader(file))
 			{
 				addrBase = addr;
-				return Assemble(rdr);
+                image = Assemble(rdr);
 			}
 		}
 
-		public  ProgramImage AssembleFragment(Program prog, Address addr, string fragment)
+		public void AssembleFragment(Program prog, Address addr, string fragment)
 		{
 			this.prog = prog;
 			addrBase = addr;
-			return Assemble(new StringReader(fragment));
+			image = Assemble(new StringReader(fragment));
 		}
+
+        public ICollection<EntryPoint> EntryPoints
+        {
+            get { return entryPoints; }
+        }
+
+
+        public ProgramImage Image
+        {
+            get { return image; }
+        }
+
+        public Address StartAddress
+        {
+            get { return addrStart; }
+        }
+
 
 		private ProgramImage Assemble(TextReader rdr)
 		{
@@ -83,16 +99,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 
             asm.ReportUnresolvedSymbols();
-            Address a;
-			if (m_symOrigin != null && m_symOrigin.fResolved)
-			{
-				a = new Address(addrBase.Selector, (ushort) m_symOrigin.offset);
-			}
-			else
-			{
-                a = addrBase;
-			}
-            addrStart = a;
+            addrStart = addrBase;
 			return new ProgramImage(addrBase, emitter.Bytes);
 		}
 
@@ -1036,16 +1043,5 @@ namespace Decompiler.Arch.Intel.Assembler
         }
 
 
-		public Address StartAddress
-		{
-			get { return addrStart; }
-		}
-
-
-		private void modRm_Error(object sender, ErrorEventArgs args)
-		{
-			args.LineNumber = lexer.LineNumber;
-			Error(args.Message);
-		}
 	}
 }

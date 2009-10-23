@@ -54,7 +54,6 @@ namespace Decompiler.Arch.Intel.Assembler
 		}
 
 
-
 		public void EmitByte(int b)
 		{
 			stmOut.WriteByte((byte) b);

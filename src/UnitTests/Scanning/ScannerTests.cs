@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Scanning
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			Assembler asm = prog.Architecture.CreateAssembler();
-			prog.Image = asm.AssembleFragment(prog, new Address(0xC00, 0), 
+			asm.AssembleFragment(prog, new Address(0xC00, 0), 
 				@".i86
 main proc
 	call baz
@@ -106,6 +106,7 @@ baz proc
 	jmp		foo
 baz endp
 ");
+            prog.Image = asm.Image;
 			Scanner scan = new Scanner(prog, null);
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
@@ -138,7 +139,8 @@ baz endp
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			Assembler asm = prog.Architecture.CreateAssembler();
-			prog.Image = asm.Assemble(prog, new Address(0xC00, 0x0000), FileUnitTester.MapTestPath("Fragments/multiple/jumpintoproc.asm"), null);
+			asm.Assemble(prog, new Address(0xC00, 0x0000), FileUnitTester.MapTestPath("Fragments/multiple/jumpintoproc.asm"));
+            prog.Image = asm.Image;
 			Scanner scan = new Scanner(prog, null);
 			scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, new IntelState()));
 			scan.ProcessQueues();
@@ -243,8 +245,8 @@ baz endp
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			Assembler asm = prog.Architecture.CreateAssembler();
-			List<EntryPoint> entryPoints = new List<EntryPoint>();
-			prog.Image = asm.Assemble(prog, new Address(0x0C00, 0x0000), FileUnitTester.MapTestPath(srcFile), entryPoints);
+			asm.Assemble(prog, new Address(0x0C00, 0x0000), FileUnitTester.MapTestPath(srcFile));
+            prog.Image = asm.Image;
 			return prog;
 		}
 

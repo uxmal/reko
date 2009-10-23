@@ -59,7 +59,8 @@ namespace Decompiler.UnitTests.Intel
 
 		protected Procedure DoRewrite(string code)
 		{
-			prog.Image = asm.AssembleFragment(prog, baseAddress, code);
+            asm.AssembleFragment(prog, baseAddress, code);
+            prog.Image = asm.Image;
 			DoRewriteCore();
 			return prog.Procedures.Values[0];
 		}
@@ -87,7 +88,8 @@ namespace Decompiler.UnitTests.Intel
 
 		protected void DoRewriteFile(string relativePath)
 		{
-			prog.Image = asm.Assemble(prog, baseAddress, FileUnitTester.MapTestPath(relativePath), null);
+			asm.Assemble(prog, baseAddress, FileUnitTester.MapTestPath(relativePath));
+            prog.Image = asm.Image;
 			DoRewriteCore();
 		}
 	}
