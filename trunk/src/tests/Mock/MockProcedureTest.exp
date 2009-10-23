@@ -14,7 +14,7 @@ l1:		// block 1, pred: 0
 	// succ:  2
 test:		// block 2, pred: 1 5
 	Z = cond(r2 - 0x00000000)
-	branch Test(EQ,Z)
+	branch Test(EQ,Z) done
 	// succ:  5 3
 done:		// block 3, pred: 2
 	return r3

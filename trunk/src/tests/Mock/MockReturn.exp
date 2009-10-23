@@ -7,7 +7,7 @@ void ReturnMock()
 ReturnMock_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
-	branch r1 == 0x00000000
+	branch r1 == 0x00000000 zero
 	// succ:  3 2
 zero:		// block 2, pred: 1
 	return 0x00000001
