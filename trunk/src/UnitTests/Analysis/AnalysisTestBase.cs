@@ -79,7 +79,8 @@ namespace Decompiler.UnitTests.Analysis
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			prog.Platform = new Arch.Intel.MsDos.MsdosPlatform(prog.Architecture);
 			Assembler asm = prog.Architecture.CreateAssembler();
-			prog.Image = asm.Assemble(prog, new Address(0xC00, 0), FileUnitTester.MapTestPath(relativePath), null);
+			asm.Assemble(prog, new Address(0xC00, 0), FileUnitTester.MapTestPath(relativePath));
+            prog.Image = asm.Image;
 			Rewrite(prog, asm, configFile);
 			return prog;
 		}
@@ -99,7 +100,8 @@ namespace Decompiler.UnitTests.Analysis
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
 			Assembler asm = prog.Architecture.CreateAssembler();
-			prog.Image = asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(relativePath), null);
+			asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(relativePath));
+            prog.Image = asm.Image;
 			Rewrite(prog, asm, configFile);
 			return prog;
 		}
@@ -109,7 +111,8 @@ namespace Decompiler.UnitTests.Analysis
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			Assembler asm = prog.Architecture.CreateAssembler();
-			prog.Image = asm.AssembleFragment(prog, new Address(0xC00, 0), s);
+			asm.AssembleFragment(prog, new Address(0xC00, 0), s);
+            prog.Image = asm.Image;
 			Rewrite(prog, asm, null);
 			return prog;
 		}

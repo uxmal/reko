@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
-			ProgramImage img = asm.AssembleFragment(
+			asm.AssembleFragment(
 				prog,
 				new Address(0xB96, 0),
 				"       .i86\r\n" +
@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Intel
 				"		jnz foo\r\n" +
 				"		ret\r\n");
 
-			prog.Image = img;
+            prog.Image = asm.Image;
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			return prog; 
 		}

@@ -285,7 +285,6 @@ namespace Decompiler.Arch.Intel
 			addressWidth = defaultAddressWidth;
 			isModrmValid = false;
 			segmentOverride = MachineRegister.None;
-
             byte op = rdr.ReadByte();
 			OpRec opRec = s_aOpRec[op];
             return opRec.Decode(this, op, "");
