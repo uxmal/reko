@@ -28,9 +28,9 @@ namespace Decompiler.Core.Code
 
 		public ExpressionFactory()
 		{
-			this.trueValue = new Constant(PrimitiveType.Bool, true);
-			this.falseValue = new Constant(PrimitiveType.Bool, false);
-		}
+            this.trueValue = Decompiler.Core.Code.Constant.True();
+            this.falseValue = Decompiler.Core.Code.Constant.False();
+        }
 
 		public Identifier Identifier(DataType type, int id, string name, Storage storage) 
 		{

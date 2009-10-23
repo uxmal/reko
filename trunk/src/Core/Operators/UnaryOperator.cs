@@ -44,7 +44,7 @@ namespace Decompiler.Core.Operators
 	{
 		public override Constant ApplyConstant(Constant c)
 		{
-			return new Constant(c.DataType, -c.ToInt32());
+            return c.Negate();
 		}
 
 		public override string ToString()

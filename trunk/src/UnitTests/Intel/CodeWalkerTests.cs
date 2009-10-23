@@ -124,12 +124,12 @@ namespace Decompiler.UnitTests.Intel
 		{
 			// Checks to see if a sequence return value (es:bx) trashes the state appropriately.
 			IntelState state = new IntelState();
-			state.Set(Registers.es, new Constant(PrimitiveType.Word16, 0));	
-			state.Set(Registers.es, new Constant(PrimitiveType.Word16, 0));
+			state.Set(Registers.es, Constant.Word16(0));	
+			state.Set(Registers.es, Constant.Word16(0));
 
 			state.Set(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
-			IntelInstruction instr = new IntelInstruction(Opcode.@int, PrimitiveType.Word16, PrimitiveType.Word16,
-				new ImmediateOperand(PrimitiveType.Byte, 0x21));
+            IntelInstruction instr = new IntelInstruction(Opcode.@int, PrimitiveType.Word16, PrimitiveType.Word16,
+                new ImmediateOperand(Constant.Byte(0x21)));
 
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 			TestCodeWalkerListener listener = new TestCodeWalkerListener();

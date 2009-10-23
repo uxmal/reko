@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void RewriteWord32()
 		{
-			Constant c = new Constant(PrimitiveType.Word32, 0x0131230);
+			Constant c = Constant.Word32(0x0131230);
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Word32;
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void RewriterRealBitpattern()
 		{
-			Constant c = new Constant(PrimitiveType.Word32, 0x3F800000);
+			Constant c = Constant.Word32(0x3F800000);
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Real32;
 			c.TypeVariable.OriginalDataType = c.DataType;
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void RewritePointer()
 		{
-			Constant c = new Constant(PrimitiveType.Word32, 0x00100000);
+			Constant c = Constant.Word32(0x00100000);
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 4);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;

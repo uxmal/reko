@@ -54,7 +54,7 @@ namespace Decompiler.Arch.Intel.Assembler
 			{
 				reg |= 0x5;
 				emitter.EmitByte(reg);
-				return new Constant(PrimitiveType.Word32, memOp.Offset.ToUInt32());
+				return Constant.Word32(memOp.Offset.ToUInt32());
 			}
 		}
 

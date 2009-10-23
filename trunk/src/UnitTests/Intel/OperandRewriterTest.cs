@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void OrwImmediate()
 		{
-			ImmediateOperand imm = new ImmediateOperand(PrimitiveType.Word16, 0x0003);
+			ImmediateOperand imm = new ImmediateOperand(Constant.Word16(0x0003));
 			Constant c = (Constant) orw.Transform(imm, imm.Width, imm.Width, state);
 			Assert.AreEqual("0x0003", c.ToString());
 		}
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void OrwImmediateExtend()
 		{
-			ImmediateOperand imm = new ImmediateOperand(PrimitiveType.SByte, -1);
+			ImmediateOperand imm = new ImmediateOperand(Constant.SByte(-1));
 			Constant c = (Constant) orw.Transform(imm, PrimitiveType.Word16, PrimitiveType.Word16, state);
 			Assert.AreEqual("0xFFFF", c.ToString());
 		}
@@ -85,7 +85,7 @@ namespace Decompiler.UnitTests.Intel
 		[Test]
 		public void OrwOperandAsCodeAddress()
 		{
-			ImmediateOperand imm = new ImmediateOperand(PrimitiveType.Word32, 0x100F0000);
+            ImmediateOperand imm = new ImmediateOperand(Constant.Word32(0x100F0000));
 			Address addr = orw.OperandAsCodeAddress(imm, null);
 			Assert.AreEqual(imm.Value.ToUInt32(), addr.Offset);
 		}
@@ -143,7 +143,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
 			mem.Base = Registers.ecx;
-			mem.Offset = new Constant(PrimitiveType.Word32, 4);
+			mem.Offset = Constant.Word32(4);
 			Expression expr = orw.Transform(mem, PrimitiveType.Word32, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[ecx + 0x00000004:word32]", expr.ToString());
 		}	

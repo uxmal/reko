@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Typing
 			ptr.TypeVariable.OriginalDataType = new Pointer(point, 4);
 			ptr.TypeVariable.DataType = new Pointer(eqPtr, 4);
 
-			Constant c = new Constant(PrimitiveType.Word32, 4);
+			Constant c = Constant.Word32(4);
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
 			c.TypeVariable.DataType = PrimitiveType.Word32;

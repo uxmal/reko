@@ -31,6 +31,7 @@ namespace Decompiler.Structure
     /// <summary>
     /// Generates abstract syntax from intermediate level instructions.
     /// </summary>
+    [Obsolete]
     public class AbsynCodeGenerator
     {
         public void GenerateHighLevelCode(ProcedureStructure curProc, List<AbsynStatement> stms)
