@@ -50,6 +50,8 @@ namespace Decompiler
 	/// </summary>
 	public class NullDecompilerHost : DecompilerHost
 	{
+        public static readonly DecompilerHost Instance = new NullDecompilerHost();
+
 		#region DecompilerHost Members
 
 

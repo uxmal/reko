@@ -59,26 +59,15 @@ namespace Decompiler.Loading
 		public const int CbPsp = 0x0100;			// Program segment prefix size in bytes.
 		public const int CbPageSize = 0x0200;		// MSDOS pages are 512 bytes.
 
+        private Program prog;
+
 		public ExeImageLoader(Program prog, byte [] image) : base(prog, image)
 		{
-			ReadCommonExeFields();	
+            this.prog = prog;
+            ReadCommonExeFields();	
 		
 			if (e_magic != MarkZbikowski)
 				throw new FormatException("Image is not an MS-DOS executable image.");
-
-			if (IsPortableExecutable)
-			{
-				ldrDeferred = new PeImageLoader(prog, image, e_lfanew);
-			}
-			else if (IsNewExecutable)
-			{
-				prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
-				throw new NotImplementedException("NE executable loading not implemented.");
-			}
-			else
-			{
-                ldrDeferred = CreateRealModeLoader(prog, image);
-			}
 		}
 
         private ImageLoader CreateRealModeLoader(Program prog, byte[] image)
@@ -127,6 +116,20 @@ namespace Decompiler.Loading
 		/// </summary>
 		public override ProgramImage Load(Address addrLoad)
 		{
+            if (IsPortableExecutable)
+            {
+                ldrDeferred = new PeImageLoader(prog, base.RawImage, e_lfanew);
+            }
+            else if (IsNewExecutable)
+            {
+                prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
+                throw new NotImplementedException("NE executable loading not implemented.");
+            }
+            else
+            {
+                ldrDeferred = CreateRealModeLoader(prog, RawImage);
+            }
+
 			return ldrDeferred.Load(addrLoad);
 		}
 

@@ -310,6 +310,7 @@
     <Compile Include="ImageReader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ImageWriter.cs" />
     <Compile Include="IProcedureRewriter.cs">
       <SubType>Code</SubType>
     </Compile>

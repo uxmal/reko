@@ -20,7 +20,9 @@ using Decompiler.Core;
 using Decompiler.Loading;
 using NUnit.Framework;
 using System;
+using System.IO;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Decompiler.UnitTests.Loading
 {
@@ -28,6 +30,7 @@ namespace Decompiler.UnitTests.Loading
 	public class PkLiteUnpackerTests
 	{
 		[Test]
+        [Ignore("Don't rely on external files in unit tests.")]
 		public void PkLiteLoad()
 		{
 			Program prog = new Program();
@@ -40,5 +43,40 @@ namespace Decompiler.UnitTests.Loading
 			Assert.AreEqual(0x19EC0, img.Bytes.Length);
 			ldr.Relocate(new Address(0xC00, 0), new List<EntryPoint>(), new RelocationDictionary());
 		}
+
+        [Test]
+        public void ValidateImage()
+        {
+            Program prog = new Program();
+            ProgramImage rawImage = new ProgramImage(new Address(0x0C00, 0), CreateMsdosHeader());
+            ExeImageLoader exe = new ExeImageLoader(prog, rawImage.Bytes);
+            Assert.IsTrue(PkLiteUnpacker.IsCorrectUnpacker(exe, rawImage.Bytes));
+        }
+
+
+        private byte[] CreateMsdosHeader()
+        {
+            using (MemoryStream s = new MemoryStream())
+            {
+                ImageWriter stm = new ImageWriter(s);
+                stm.WriteByte(0x4D);    // MZ
+                stm.WriteByte(0x5A);
+                stm.WriteBytes(0xCC, 4);
+                stm.WriteLeUint16(0x0090);
+                stm.WriteBytes(0xCC, 0x12);
+                Console.WriteLine("{0:X}", s.Position);
+                stm.WriteByte(0x00);
+                stm.WriteByte(0x00);
+                stm.WriteByte(0x05);
+                stm.WriteByte(0x21);
+                stm.WriteString("PKLITE", Encoding.ASCII);
+                stm.WriteBytes(0xCC, 0x0C);
+                s.Flush();
+                Console.WriteLine("{0:X}", s.Position);
+                return s.GetBuffer();
+            }
+        }
+
+
 	}
 }
