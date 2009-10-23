@@ -64,6 +64,7 @@ namespace Decompiler.UnitTests.Mocks
 
 			// DataOut: eax ecx edx esi ax cx sp bp di es cs ss ds fs
 			// LocalsOut: loc02(16)l1B96_2DCF:		// block 6, pred: 5 4
+			Label("block6");
 			SideEffect(Fn(LoadW(Add(Mulu(ax_36, 0x0002), 0x841A))));
 			Identifier loc04_63 = Local16("loc04_63");
 			Assign(loc04_63, LoadW(0x0048));
@@ -107,5 +108,12 @@ namespace Decompiler.UnitTests.Mocks
 			Label("block11");
 			Return(ax_88);
 		}
+
+        private MemoryAccess LoadW(int i)
+        {
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, new Constant(PrimitiveType.Word16, i), PrimitiveType.Word16);
+        }
+
+
 	}
 }

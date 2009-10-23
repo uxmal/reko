@@ -391,11 +391,6 @@ namespace Decompiler.UnitTests.Mocks
 			return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word16);
 		}
 
-		public MemoryAccess LoadW(int i)
-		{
-			return new MemoryAccess(MemoryIdentifier.GlobalMemory, new Constant(i), PrimitiveType.Word16);
-		}
-
         public BinaryExpression Le(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.le, PrimitiveType.Bool, a, b);
