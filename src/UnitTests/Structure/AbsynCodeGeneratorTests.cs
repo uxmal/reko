@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Output;
 using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
@@ -27,7 +28,7 @@ using System.IO;
 namespace Decompiler.UnitTests.Structure
 {
     [TestFixture]
-    public class AbsynCodeGenerator2Tests
+    public class AbsynCodeGeneratorTests
     {
         private string nl = Environment.NewLine;
         private Procedure proc;
@@ -385,7 +386,56 @@ namespace Decompiler.UnitTests.Structure
                 "}" + nl);
         }
 
-        private void CompileTest(ProcGenerator gen)
+        [Test]
+        public void BranchesToReturns()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                Identifier a1 = m.Local16("a1"); 
+                m.Assign(a1, m.Fn("fn0540"));
+                Identifier tmp = m.Local16("tmp");
+                m.Assign(tmp, m.LoadW(m.Word16(0x8416)));
+                m.BranchIf(m.Ne(tmp, 0), "branch_c");
+
+                m.Label("Branch_a");
+                    m.Store(m.Word16(0x8414), m.Word16(0));
+                    m.BranchIf(m.Eq(m.Word16(0x8414), 0x0000), "branch_c");
+
+                m.Label("Branch_b");
+                    Identifier ax_96 = m.Local16("ax_96");
+                    m.SideEffect(m.Fn("fn02A9", m.AddrOf(ax_96)));
+                    m.Return(ax_96);
+
+                m.Label("branch_c");
+	                m.Return(a1);
+            });
+            RunTest(
+"ProcedureMock()" + nl +
+"{" + nl +
+"	a1 = fn0540();" + nl +
+"	tmp = Mem0[0x8416:word16];" + nl +
+"	if (tmp == 0x0000)" + nl +
+"	{" + nl +
+"		Mem0[0x8414:word16] = 0x0000;" + nl +
+"		if (0x8414 != 0x0000)" + nl +
+"		{" + nl +
+"			fn02A9(&ax_96);" + nl +
+"			return ax_96;" + nl +
+"		}" + nl +
+"		else" + nl +
+"		{" + nl +
+"branch_c:" + nl + 
+"			return a1;" + nl +
+"		}" + nl +
+"	}" + nl +
+"	else" + nl +
+"		goto branch_c;" + nl +
+"}" + nl);
+
+
+        }
+
+        private void CompileTest(Action<ProcedureMock> gen)
         {
             ProcedureMock mock = new ProcedureMock();
             gen(mock);
@@ -432,65 +482,6 @@ namespace Decompiler.UnitTests.Structure
     }
 }
 #if OLD
-/* 
- * Copyright (C) 1999-2009 John Källén.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; see the file COPYING.  If not, write to
- * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
- */
-
-using Decompiler.Core;
-using Decompiler.Core.Absyn;
-using Decompiler.Core.Output;
-using Decompiler.Core.Types;
-using Decompiler.Structure;
-using Decompiler.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-namespace Decompiler.UnitTests.Structure
-{
-    [TestFixture]
-    [Ignore("Use AbsynCodeGenerator2")]
-    public class AbsynCodeGeneratorTests
-    {
-        private StringWriter sb;
-        private string nl = Environment.NewLine;
-
-        [SetUp]
-        public void Setup()
-        {
-        }
-
-        [Test]
-        public void Test()
-        {
-            RunTest(delegate(ProcedureMock m)
-            {
-                m.Return();
-            });
-            string sExp =
-                "ProcedureMock()" + nl +
-                "{" + nl +
-                "\treturn;" + nl +
-                "}" + nl;
-
-            Assert.AreEqual(sExp, sb.ToString());
-        }
 
         [Test]
         public void IfThen()

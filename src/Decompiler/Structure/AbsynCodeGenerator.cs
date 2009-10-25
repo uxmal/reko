@@ -26,17 +26,19 @@ using System.Text;
 
 namespace Decompiler.Structure
 {
-    public class AbsynCodeGenerator2
+    public class AbsynCodeGenerator
     {
         private Stack<StructureNode> followStack;
         private Queue<NodeEmitter> nodesToRender;
         private HashSet<StructureNode> visited;
+        private HashSet<StructureNode> incomplete;
 
-        public AbsynCodeGenerator2()
+        public AbsynCodeGenerator()
         {
             followStack = new Stack<StructureNode>();
             nodesToRender = new Queue<NodeEmitter>();
             visited = new HashSet<StructureNode>();
+            incomplete = new HashSet<StructureNode>();
         }
 
 
@@ -145,9 +147,12 @@ namespace Decompiler.Structure
             if (node.ForceLabel)
                 return true;
 
+            if (node.InEdges.Count == 1)
+                return false;
+
             foreach (StructureNode pred in node.InEdges)
             {
-                if (IsVisited(pred))
+                if (IsVisited(pred) && !IncompleteNodes.Contains(pred))
                     continue;
                 if (node.IsLoopHeader() && node.IsAncestorOf(pred))
                     continue;
@@ -206,7 +211,10 @@ namespace Decompiler.Structure
             }
         }
 
-
+        public HashSet<StructureNode> IncompleteNodes
+        {
+            get { return incomplete; }
+        }
 
         public bool IsVisited(StructureNode succ)
         {

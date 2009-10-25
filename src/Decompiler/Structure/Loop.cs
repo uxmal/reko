@@ -71,7 +71,7 @@ namespace Decompiler.Structure
             get { return follow; }
         }
 
-        public void GenerateCode(AbsynCodeGenerator2 codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
+        public void GenerateCode(AbsynCodeGenerator codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
         {
             if (Follow != null)
                 codeGen.PushFollow(Follow);
@@ -84,7 +84,7 @@ namespace Decompiler.Structure
             }
         }
 
-        protected abstract void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter);
+        protected abstract void GenerateCodeInner(AbsynCodeGenerator codeGen, StructureNode node, AbsynStatementEmitter emitter);
 
     }
 
@@ -96,7 +96,7 @@ namespace Decompiler.Structure
         {
         }
 
-        protected override void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter)
+        protected override void GenerateCodeInner(AbsynCodeGenerator codeGen, StructureNode node, AbsynStatementEmitter emitter)
         {
             codeGen.EmitLinearBlockStatements(node, emitter);
             List<AbsynStatement> loopBody = new List<AbsynStatement>();
@@ -119,7 +119,7 @@ namespace Decompiler.Structure
         {
         }
 
-        protected override void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter)
+        protected override void GenerateCodeInner(AbsynCodeGenerator codeGen, StructureNode node, AbsynStatementEmitter emitter)
         {
             List<AbsynStatement> loopBody = new List<AbsynStatement>();
             AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
@@ -152,7 +152,7 @@ namespace Decompiler.Structure
         {
         }
 
-        protected override void GenerateCodeInner(AbsynCodeGenerator2 codeGen, StructureNode node, AbsynStatementEmitter emitter)
+        protected override void GenerateCodeInner(AbsynCodeGenerator codeGen, StructureNode node, AbsynStatementEmitter emitter)
         {
             List<AbsynStatement> loopBody = new List<AbsynStatement>();
             AbsynStatementEmitter bodyEmitter = new AbsynStatementEmitter(loopBody);
