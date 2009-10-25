@@ -19,7 +19,6 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
-using Decompiler.Arch.Intel;
 using System;
 using System.Collections.Generic;
 
