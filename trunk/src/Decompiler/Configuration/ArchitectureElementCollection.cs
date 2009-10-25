@@ -16,19 +16,28 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.Configuration
 {
-	public interface Assembler
-	{
-        void Assemble(Program prog, Address baseAddress, string sourcefile);
-		void AssembleFragment(Program prog, Address baseAddress, string fragment);
-        ProgramImage Image { get; }
-		Address StartAddress { get; }
-        ICollection<EntryPoint> EntryPoints { get; }
-        Platform Platform { get; }
+    public class ArchitectureElementCollection : ConfigurationElementCollection
+    {
+        public ArchitectureElementCollection()
+        {
+            AddElementName = "Architecture";
+        }
+
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new ArchitectureElement();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((Architecture) element).Name;
+        }
     }
 }

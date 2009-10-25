@@ -16,10 +16,13 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Configuration;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -33,19 +36,21 @@ namespace Decompiler.Loading
 	{
         private string filename;
 		private RelocationDictionary relocations;
+        private DecompilerHost host;
 
-        public Loader(string filename, Program prog) :
+        public Loader(string filename, Program prog, DecompilerHost host) :
             base(prog)
         {
             this.filename = filename;
+            this.host = host;
         }
 
         private ImageLoader FindImageLoader(Program prog, byte[] rawBytes)
         {
-            ImageLoaderHandler handler = (ImageLoaderHandler) System.Configuration.ConfigurationManager.GetSection("Decompiler/Loader");
-            if (handler.ImageBeginsWithMagicNumber(rawBytes))
+            foreach (LoaderElement e in host.Configuration.GetImageLoaders())
             {
-                return (ImageLoader) handler.CreateLoaderInstance(prog, rawBytes);
+                if (ImageBeginsWithMagicNumber(rawBytes, e.MagicNumber))
+                    return CreateImageLoader(e.TypeName, prog, rawBytes);
             }
             return null;
         }
@@ -144,6 +149,58 @@ namespace Decompiler.Loading
 				return bytes;
 			}
 		}
+
+        public bool ImageBeginsWithMagicNumber(byte [] image, string magicNumber)
+        {
+            byte[] magic = ConvertHexStringToBytes(magicNumber);
+            if (image.Length < magic.Length)
+                return false;
+            for (int i = 0; i < magic.Length; ++i)
+            {
+                if (magic[i] != image[i])
+                    return false;
+            }
+            return true;
+
+        }
+
+        private byte[] ConvertHexStringToBytes(string hexString)
+        {
+            List<byte> bytes = new List<byte>();
+            for (int i = 0; i < hexString.Length; i += 2)
+            {
+                uint hi = HexDigit(hexString[i]);
+                uint lo = HexDigit(hexString[i + 1]);
+                bytes.Add((byte) ((hi << 4) | lo));
+            }
+            return bytes.ToArray();
+        }
+
+        private uint HexDigit(char digit)
+        {
+            switch (digit)
+            {
+            case '0': case '1': case '2': case '3': case '4': 
+            case '5': case '6': case '7': case '8': case '9':
+                return (uint) (digit - '0');
+            case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
+                return (uint) ((digit - 'A') + 10);
+            case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
+                return (uint) ((digit - 'a') + 10);
+            default:
+                throw new ArgumentException(string.Format("Invalid hexadecimal digit '{0}'.", digit));
+            }
+        }
+
+        public virtual ImageLoader CreateImageLoader(string typeName, Program prog, byte[] bytes)
+        {
+            Type t = Type.GetType(typeName);
+            if (t == null)
+                throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
+            ConstructorInfo ci = t.GetConstructor(new Type[] { typeof(Program), typeof(byte[]) });
+            return (ImageLoader) ci.Invoke(new object[] { prog, bytes });
+        }
+
 
 	}
 }

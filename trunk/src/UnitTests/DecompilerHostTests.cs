@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Configuration;
 using Decompiler.Core;
 using DecompilerHost = Decompiler.DecompilerHost;
 using NUnit.Framework;
@@ -86,6 +87,7 @@ namespace Decompiler.UnitTests
 		private StringWriter disassembly = new StringWriter();
 		private StringWriter decompiled = new StringWriter();
 		private StringWriter typesWriter = new StringWriter();
+        private DecompilerConfiguration config = new DecompilerConfiguration();
 
 		public void WriteDiagnostic(Diagnostic d, Address addr, string format, params object[] args)
 		{
@@ -112,6 +114,11 @@ namespace Decompiler.UnitTests
 		{
 			return null;
 		}
+
+        DecompilerConfiguration DecompilerHost.Configuration
+        {
+            get { return config; }
+        }
 
 		public TextWriter CreateTypesWriter(string fileName)
 		{

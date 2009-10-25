@@ -12,25 +12,6 @@ namespace Decompiler.UnitTests.Loading
         public void Setup()
         {
         }
-
-        [Test]
-        public void Match()
-        {
-            ImageLoaderHandler h = new ImageLoaderHandler();
-            h.MagicNumber = "4711";
-            Assert.IsTrue(h.ImageBeginsWithMagicNumber(new byte[] { 0x47, 0x11 }));
-        }
-
-        [Test]
-        public void CreateInstance()
-        {
-            ImageLoaderHandler h = new ImageLoaderHandler();
-            h.MagicNumber = "0FCD";
-            h.LoaderType = "Decompiler.UnitTests.Loading.FakeImageLoader,Decompiler.UnitTests";
-            ImageLoader ldr = h.CreateLoaderInstance(new Program(), new byte[] { 0x0F, 0xCD, 0x48, 0x65 });
-            Console.WriteLine(ldr.GetType().ToString());
-            Assert.AreEqual("Decompiler.UnitTests.Loading.FakeImageLoader", ldr.GetType().ToString());
-        }
     }
 
     public class FakeImageLoader : ImageLoader

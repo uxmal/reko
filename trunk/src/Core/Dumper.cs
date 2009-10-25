@@ -27,8 +27,8 @@ namespace Decompiler.Core
 	/// </summary>
 	public class Dumper
 	{
-		private bool fShowAddr;
-		private bool fShowBytes;
+		private bool showAddress;
+		private bool showBytes;
 
 		public Dumper()
 		{
@@ -48,14 +48,13 @@ namespace Decompiler.Core
 					ImageMapBlock block = i as ImageMapBlock;
 					if (block != null)
 					{
-						if (program.Procedures.ContainsKey(block.Address))
+                        stm.WriteLine();
+                        if (program.Procedures.ContainsKey(block.Address))
 						{
-							stm.WriteLine();
 							stm.WriteLine(block.Address.GenerateName("fn","()"));
 						}
 						else																			 
 						{
-							stm.WriteLine();
 							stm.WriteLine(block.Address.GenerateName("l",":"));
 						}
 						DumpAssembler(program.Image, block.Address, block.Address + block.Size, stm);
@@ -133,14 +132,14 @@ namespace Decompiler.Core
 
 		public bool ShowAddresses
 		{
-			get { return fShowAddr; }
-			set { fShowAddr = value; }
+			get { return showAddress; }
+			set { showAddress = value; }
 		}
 
 		public bool ShowCodeBytes
 		{
-			get { return fShowBytes; }
-			set { fShowBytes = value; }
+			get { return showBytes; }
+			set { showBytes = value; }
 		}
 
 		public void WriteByteRange(ProgramImage image, Address begin, Address addrEnd, TextWriter writer)

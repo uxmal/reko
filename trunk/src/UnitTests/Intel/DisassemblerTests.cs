@@ -189,8 +189,7 @@ movzx	ax,byte ptr [bp+04]
 				IntelTextAssembler asm = new IntelTextAssembler();
 				asm.Assemble(prog, new Address(0xC32, 0), FileUnitTester.MapTestPath("Fragments/fpuops.asm"));
 				CreateDisassembler(asm, PrimitiveType.Word16);
-                throw new ApplicationException("Busted");
-//				while (img.IsValidAddress(dasm.Address))
+				while (asm.Image.IsValidAddress(dasm.Address))
 				{
 					IntelInstruction instr = dasm.Disassemble();
 					fut.TextWriter.WriteLine("{0}", instr.ToString());

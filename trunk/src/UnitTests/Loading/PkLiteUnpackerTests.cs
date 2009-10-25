@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Loading
 		public void PkLiteLoad()
 		{
 			Program prog = new Program();
-			Loader l = new Loader("foo", prog);
+			Loader l = new Loader("foo", prog, new FakeDecompilerHost());
 			
 			prog.Image = new ProgramImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
 			ExeImageLoader exe = new ExeImageLoader(prog, prog.Image.Bytes);

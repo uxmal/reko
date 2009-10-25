@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Configuration;
 using Decompiler.Core;
 using System;
 using System.IO;
@@ -31,6 +32,8 @@ namespace Decompiler
 		TextWriter GetIntermediateCodeWriter();
 		TextWriter CreateTypesWriter(string filename);				// TextWriter into which the reconstructed types are written.
 		TextWriter CreateDecompiledCodeWriter(string filename);	// Textwriter into which the Data is written
+
+        DecompilerConfiguration Configuration { get; }
 
 		void ProgramLoaded();
 		void ProgramScanned();
@@ -74,6 +77,11 @@ namespace Decompiler
 		{
 			throw new Exception("The method or operation is not implemented."); 
 		}
+
+        public DecompilerConfiguration Configuration
+        {
+            get { throw new NotImplementedException(); }
+        }
 
 		public void ProgramLoaded()
 		{

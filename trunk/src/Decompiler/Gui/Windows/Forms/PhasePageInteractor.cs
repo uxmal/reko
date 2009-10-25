@@ -68,7 +68,7 @@ namespace Decompiler.Gui.Windows.Forms
         /// <summary>
         /// Derived classes should copy any values out of controls.
         /// </summary>
-        /// <returns>False if derived class wants to cancel leaving the page due to errors.</returns>
+        /// <returns>False if derived class wants to cancel leaving the page.</returns>
         public abstract bool LeavePage();
 
         public abstract object Page { get; }
