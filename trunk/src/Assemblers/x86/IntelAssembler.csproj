@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>bfd1d55d-71dd-40e2-ae76-2ce1327f7ea7</ProjectGuid>
+    <ProjectGuid>{3ADF9BD2-4179-451A-815A-D041EB128E13}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>x86</RootNamespace>
-    <AssemblyName>x86</AssemblyName>
+    <RootNamespace>Decompiler.Assemblers.x86</RootNamespace>
+    <AssemblyName>Decompiler.Assemblers.x86</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,8 +33,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Emitter.cs" />
+    <Compile Include="ErrorEvent.cs" />
+    <Compile Include="IntelAssembler.cs" />
+    <Compile Include="IntelTextAssembler.cs" />
+    <Compile Include="Lexer.cs" />
+    <Compile Include="ModRmBuilder.cs" />
+    <Compile Include="OperandParser.cs" />
+    <Compile Include="ParsedOperand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Symbol.cs" />
+    <Compile Include="Token.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Intel\Intel.csproj">
+      <Project>{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}</Project>
+      <Name>Intel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Msdos\Msdos.csproj">
+      <Project>{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}</Project>
+      <Name>Msdos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Win32\Win32.csproj">
+      <Project>{DE889E18-A3F8-4AD8-88CA-A48D52634A05}</Project>
+      <Name>Win32</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

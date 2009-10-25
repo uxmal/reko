@@ -17,7 +17,7 @@
  */
 
 using Decompiler.Arch.Intel;
-using Decompiler.Arch.Intel.Assembler;
+using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using Decompiler.UnitTests.Intel;
@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Intel.Assembler
+namespace Decompiler.UnitTests.Assemblers.x86
 {
     [TestFixture]
     public class AssembleFragmentTests
@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Intel.Assembler
             Emitter emitter = new Emitter();
             Address addrBase=  new Address(0xC00, 0);
             Program prog = new Program();
-            IntelAssembler asm = new IntelAssembler(prog, PrimitiveType.Word16, addrBase, emitter, new List<EntryPoint>());
+            IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), PrimitiveType.Word16, addrBase, emitter, new List<EntryPoint>());
             fragment.Build(asm);
             ProgramImage img = new ProgramImage(addrBase, emitter.Bytes);
 

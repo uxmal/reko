@@ -21,14 +21,14 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using Decompiler.Arch.Intel;
-using Decompiler.Arch.Intel.Assembler;
+using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Assemblers.x86
 {
 	public class AssemblerBase
 	{
@@ -73,9 +73,14 @@ namespace Decompiler.UnitTests.Intel
 			Program prog = new Program();
 			asm.Assemble(prog, addrBase, FileUnitTester.MapTestPath(sourceFile));
             prog.Image = asm.Image;
+            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
+            {
+                prog.ImportThunks.Add(item.Key, item.Value);
+            }
+
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Dumper dumper = prog.Architecture.CreateDumper();
+				Dumper dumper = asm.Architecture.CreateDumper();
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
 				dumper.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
@@ -314,7 +319,7 @@ foo		endp
 			asm.Assemble(prog, new Address(0x0C00, 0), FileUnitTester.MapTestPath(sourceFile));
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Dumper dump = prog.Architecture.CreateDumper();
+				Dumper dump = asm.Architecture.CreateDumper();
 				dump.DumpData(asm.Image, asm.Image.BaseAddress, asm.Image.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;

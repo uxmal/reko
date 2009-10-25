@@ -17,10 +17,11 @@
  */
 
 using Decompiler;
+using Decompiler.Arch.Intel;
+using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
-using Decompiler.Arch.Intel;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
@@ -47,7 +48,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			asm = prog.Architecture.CreateAssembler();
+            asm = new IntelTextAssembler();
 			configFile = null;
 		}
 

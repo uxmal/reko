@@ -19,13 +19,13 @@
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using Decompiler.Arch.Intel;
-using Decompiler.Arch.Intel.Assembler;
+using Decompiler.Assemblers.x86;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Intel.Assembler
+namespace Decompiler.UnitTests.Assemblers.x86
 {
     [TestFixture]
     public class IntelCodeAssemblerTests : AssemblerBase
@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Intel.Assembler
         {
             base.Setup();
             emitter = new Emitter();
-            m = new IntelAssembler(new Program(), PrimitiveType.Word16, new Address(0x100, 0x0100), emitter, new List<EntryPoint>());
+            m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), PrimitiveType.Word16, new Address(0x100, 0x0100), emitter, new List<EntryPoint>());
         }
 
         [Test]

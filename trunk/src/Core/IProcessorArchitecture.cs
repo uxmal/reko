@@ -30,7 +30,6 @@ namespace Decompiler.Core
     /// </summary>
 	public interface IProcessorArchitecture
 	{
-		Assembler CreateAssembler();
 		Disassembler CreateDisassembler(ProgramImage img, Address addr);
 		Dumper CreateDumper();
 		ProcessorState CreateProcessorState();

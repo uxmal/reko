@@ -72,11 +72,6 @@ namespace Decompiler.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateRewriter implementation");
 		}
 
-		public Assembler CreateAssembler()
-		{
-			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateAssembler implementation");
-		}
-
 		public Dumper CreateDumper()
 		{
 			return new Dumper();

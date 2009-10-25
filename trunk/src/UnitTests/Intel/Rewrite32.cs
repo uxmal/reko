@@ -19,8 +19,10 @@
 using Decompiler;
 using Decompiler.Core;
 using Decompiler.Arch.Intel;
+using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Intel
 {
@@ -91,11 +93,16 @@ namespace Decompiler.UnitTests.Intel
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-			Decompiler.Core.Assembler asm = prog.Architecture.CreateAssembler();
+            Decompiler.Core.Assembler asm = new IntelTextAssembler();
 			asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(sourceFile));
             prog.Image = asm.Image;
-			Scanner scan = new Scanner(prog, null);
+            prog.Platform = new Decompiler.Environments.Win32.Win32Platform(asm.Architecture);
+            prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
+            {
+                prog.ImportThunks.Add(item.Key, item.Value);
+            }
+            Scanner scan = new Scanner(prog, null);
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			scan.EnqueueEntryPoint(ep);

@@ -23,7 +23,7 @@ using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Assemblers.x86
 {
 	[TestFixture]
 	public class AssemblerData : AssemblerBase

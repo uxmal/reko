@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Arch.Intel.Assembler
+namespace Decompiler.Assemblers.x86
 {
 	/// <summary>
 	/// Performs lexical analysis of x86 assembler, MASM-style.

@@ -29,6 +29,8 @@ namespace Decompiler.Core
         ProgramImage Image { get; }
 		Address StartAddress { get; }
         ICollection<EntryPoint> EntryPoints { get; }
+        IProcessorArchitecture Architecture { get; }
         Platform Platform { get; }
+        Dictionary<uint, PseudoProcedure> ImportThunks { get; }
     }
 }

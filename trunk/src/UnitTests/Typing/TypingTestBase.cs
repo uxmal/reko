@@ -19,6 +19,7 @@
 using Decompiler;
 using Decompiler.Analysis;
 using Decompiler.Arch.Intel;
+using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
@@ -41,10 +42,10 @@ namespace Decompiler.UnitTests.Typing
 		{
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			AssemblerLoader ldr = new AssemblerLoader(
-			    FileUnitTester.MapTestPath(relativePath),
-                prog,
-                prog.Architecture);
+            AssemblerLoader ldr = new AssemblerLoader(
+                new IntelTextAssembler(),
+                FileUnitTester.MapTestPath(relativePath),
+                prog);
             ldr.Load(new Address(0xC00, 0));
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);

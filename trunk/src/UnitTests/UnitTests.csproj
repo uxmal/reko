@@ -78,6 +78,14 @@
     <Compile Include="Analysis\ValuePropagationTests.cs" />
     <Compile Include="Analysis\VariableLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
+    <Compile Include="Assemblers\x86\AssembleFragmentTests.cs" />
+    <Compile Include="Assemblers\x86\AssemblerAdvanced.cs" />
+    <Compile Include="Assemblers\x86\AssemblerBasic.cs" />
+    <Compile Include="Assemblers\x86\AssemblerData.cs" />
+    <Compile Include="Assemblers\x86\AssemblerOverrides.cs" />
+    <Compile Include="Assemblers\x86\IntelCodeAssemblerTests.cs" />
+    <Compile Include="Assemblers\x86\OperandParserTests.cs" />
+    <Compile Include="Assemblers\x86\SymbolTableTests.cs" />
     <Compile Include="Core\AddressTests.cs" />
     <Compile Include="Core\ApplicationBuilderTests.cs" />
     <Compile Include="Core\BitSetTests.cs" />
@@ -143,13 +151,7 @@
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs" />
     <Compile Include="Gui\Windows\MruListTests.cs" />
     <Compile Include="Gui\Windows\WindowsApplication.cs" />
-    <Compile Include="Intel\AssemblerAdvanced.cs" />
-    <Compile Include="Intel\AssemblerBasic.cs" />
-    <Compile Include="Intel\AssemblerData.cs" />
     <Compile Include="Intel\AssemblerFragment.cs" />
-    <Compile Include="Intel\AssemblerOverrides.cs" />
-    <Compile Include="Intel\Assembler\AssembleFragmentTests.cs" />
-    <Compile Include="Intel\Assembler\OperandParserTests.cs" />
     <Compile Include="Intel\BackWalkerTests.cs" />
     <Compile Include="Intel\CodeEmitterTests.cs" />
     <Compile Include="Intel\CodeWalkerTests.cs" />
@@ -159,9 +161,6 @@
     <Compile Include="Intel\ImportResolution.cs" />
     <Compile Include="Intel\IntelArchitectureTests.cs" />
     <Compile Include="Intel\IntelAssemblerTests.cs" />
-    <Compile Include="Intel\Assembler\IntelCodeAssemblerTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Intel\IntelInstructionTrieTests.cs" />
     <Compile Include="Intel\IntelRegisterTests.cs" />
     <Compile Include="Intel\IntelRewriterTests.cs" />
@@ -173,8 +172,6 @@
     <Compile Include="Intel\Rewrite32.cs" />
     <Compile Include="Intel\RewriterTests.cs" />
     <Compile Include="Intel\RewriterTests2.cs" />
-    <Compile Include="Intel\SymbolTableTests.cs" />
-    <Compile Include="Loading\ImageLoaderHandlerTests.cs" />
     <Compile Include="Loading\LoaderTests.cs" />
     <Compile Include="Loading\PkLiteUnpackerTests.cs" />
     <Compile Include="Mocks\AdcMock.cs" />
@@ -288,6 +285,10 @@
       <Project>{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}</Project>
       <Name>PowerPC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Assemblers\x86\IntelAssembler.csproj">
+      <Project>{3ADF9BD2-4179-451A-815A-D041EB128E13}</Project>
+      <Name>IntelAssembler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</Project>
       <Name>Core</Name>
@@ -312,6 +313,7 @@
   <ItemGroup>
     <Folder Include="Arch\" />
     <Folder Include="Environment\" />
+    <Folder Include="Intel\Assembler\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

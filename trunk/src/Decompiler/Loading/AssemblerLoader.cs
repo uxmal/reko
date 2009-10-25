@@ -30,22 +30,30 @@ namespace Decompiler.Loading
     public class AssemblerLoader : LoaderBase
     {
         private string asmfile;
-        private IProcessorArchitecture arch;
+        private Assembler asm;
 
+        [Obsolete("Use other constructor. Architecture is obtained from the assembler, not vice versa.", true)]
         public AssemblerLoader(string asmfile, Program prog, IProcessorArchitecture arch) :
             base(prog)
         {
             this.asmfile = asmfile;
-            this.arch = arch;
+        }
+
+        public AssemblerLoader(Assembler asm, string asmfile, Program prog)
+            : base(prog)
+        {
+            this.asm = asm;
+            this.asmfile = asmfile;
         }
 
         public override DecompilerProject Load(Address addrLoad)
         {
-            Assembler asm = arch.CreateAssembler();
             asm.Assemble(Program, addrLoad, asmfile);
             Program.Image = asm.Image;
+            Program.Architecture = asm.Architecture;
+            Program.Platform = asm.Platform;
             EntryPoints.AddRange(asm.EntryPoints);
-            EntryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
+            EntryPoints.Add(new EntryPoint(asm.StartAddress, Program.Architecture.CreateProcessorState()));
             return new DecompilerProject();
         }
     }

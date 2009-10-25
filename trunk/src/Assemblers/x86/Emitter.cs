@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
@@ -23,7 +24,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Arch.Intel.Assembler
+namespace Decompiler.Assemblers.x86
 {
 	/// <summary>
 	/// Emits bytes into a bytestream belonging to a segment/section.

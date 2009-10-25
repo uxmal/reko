@@ -18,6 +18,7 @@
 
 using Decompiler;
 using Decompiler.Analysis;
+using Decompiler.Assemblers.x86;
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Loading;
@@ -33,10 +34,10 @@ namespace Decompiler.UnitTests.Structure
 		protected void RewriteProgram(string sourceFilename, Address addrBase)
 		{
 			prog = new Program();
-			AssemblerLoader ldr = new AssemblerLoader(
+            AssemblerLoader ldr = new AssemblerLoader(
+                new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(sourceFilename),
-                prog,
-                new IntelArchitecture(addrBase.Selector != 0 ? ProcessorMode.Real : ProcessorMode.ProtectedFlat));
+                prog);
             ldr.Load(addrBase);
 			Scanner scan = new Scanner(prog,  null);
 			foreach (EntryPoint ep in ldr.EntryPoints)

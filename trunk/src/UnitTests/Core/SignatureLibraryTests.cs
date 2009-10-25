@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Core
 				{
 					fut.TextWriter.WriteLine("** {0} ****", s);
 					SignatureLibrary lib = new SignatureLibrary(new IntelArchitecture(ProcessorMode.Real));
-					lib.Load(FileUnitTester.MapTestPath("../arch/intel/Win32/" + s));
+					lib.Load(FileUnitTester.MapTestPath("../Environments/Win32/" + s));
 					lib.Write(fut.TextWriter);
 				}
 				fut.AssertFilesEqual();
@@ -50,10 +50,10 @@ namespace Decompiler.UnitTests.Core
 			{
 				IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 				SignatureLibrary kernel = new SignatureLibrary(arch);
-				kernel.Load(FileUnitTester.MapTestPath("../arch/intel/Win32/kernel32.xml"));
+				kernel.Load(FileUnitTester.MapTestPath("../Environments/Win32/kernel32.xml"));
 
 				SignatureLibrary crt = new SignatureLibrary(arch);
-				crt.Load(FileUnitTester.MapTestPath("../arch/intel/Win32/msvcrt.xml"));
+                crt.Load(FileUnitTester.MapTestPath("../Environments/Win32/msvcrt.xml"));
 
 				kernel.Lookup("CreateFileA").Emit("CreateFileA", ProcedureSignature.EmitFlags.ArgumentKind, fut.TextWriter);
 				fut.TextWriter.WriteLine();
@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Core
 			{
 				IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 				SignatureLibrary user32 = new SignatureLibrary(arch);
-				user32.Load(FileUnitTester.MapTestPath("../arch/intel/Win32/user32.xml"));
+                user32.Load(FileUnitTester.MapTestPath("../Environments/Win32/user32.xml"));
 				SortedList<string,ProcedureSignature> sigs = new SortedList<string,ProcedureSignature>(user32.Signatures);
 				foreach (KeyValuePair<string,ProcedureSignature> de in sigs)
 				{
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Core
 			{
 				IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
 				SignatureLibrary kernel32 = new SignatureLibrary(arch);
-				kernel32.Load(FileUnitTester.MapTestPath("../arch/intel/Win32/kernel32.xml"));
+                kernel32.Load(FileUnitTester.MapTestPath("../Environments/Win32/kernel32.xml"));
 				EmitSignature(kernel32, "GlobalHandle", fut.TextWriter);
 				fut.AssertFilesEqual();
 			}

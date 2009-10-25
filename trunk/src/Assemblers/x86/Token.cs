@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Decompiler.Arch.Intel.Assembler
+namespace Decompiler.Assemblers.x86
 {
 	public enum Token
 	{
