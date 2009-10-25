@@ -17,48 +17,39 @@
  */
 
 using System;
-using Decompiler.Core;
 
-namespace Decompiler.Arch.Intel.Assembler
+namespace Decompiler.Assemblers.x86
 {
-	public class ParsedOperand
+	public delegate void ErrorEventHandler(object sender, ErrorEventArgs args);
+
+	/// <summary>
+	/// Encapsulates information about an assembler error.
+	/// </summary>
+	public class ErrorEventArgs
 	{
-		private MachineOperand op;
-		private Symbol sym;
-		private bool longJmp;
+		private string message;
+		private int lineNumber;
 
-		public ParsedOperand(MachineOperand op, Symbol sym, bool l)
+		public ErrorEventArgs(string message)
 		{
-			this.op = op;
-			this.sym = sym;
-			this.longJmp = l;
+			this.message = message;
 		}
 
-		public ParsedOperand(MachineOperand op, Symbol sym)
+		public ErrorEventArgs(int lineNumber, string message)
 		{
-			this.op = op;
-			this.sym = sym;
+			this.message = message;
+			this.lineNumber = lineNumber;
 		}
 
-		public ParsedOperand(MachineOperand op)
+		public int LineNumber
 		{
-			this.op = op;
-			this.sym = null;
+			get { return lineNumber; }
+			set { lineNumber = value; }
 		}
 
-		public bool Long
+		public string Message
 		{
-			get { return longJmp; }
-		}
-
-		public MachineOperand Operand
-		{
-			get { return op; }
-		}
-
-		public Symbol Symbol
-		{
-			get { return sym; }
+			get { return message; }
 		}
 	}
 }

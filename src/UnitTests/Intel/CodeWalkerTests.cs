@@ -17,7 +17,7 @@
  */
 
 using Decompiler.Arch.Intel;
-using Decompiler.Arch.Intel.Assembler;
+using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
@@ -86,9 +86,9 @@ namespace Decompiler.UnitTests.Intel
 			{
 				Program prog = new Program();
                 AssemblerLoader ld = new AssemblerLoader(
+                    new IntelTextAssembler(),
                     FileUnitTester.MapTestPath("fragments/Factorial.asm"),
-                    prog,
-                    new IntelArchitecture(ProcessorMode.Real));
+                    prog);
                 ld.Load(new Address(0x0C00, 0));
 				Scanner sc = new Scanner(prog, null);
 				foreach (EntryPoint ep in ld.EntryPoints)
@@ -241,7 +241,9 @@ namespace Decompiler.UnitTests.Intel
 				Program prog = new Program();
 				prog.Architecture = new IntelArchitecture(mode);
 				AssemblerLoader ld = new AssemblerLoader(
-				    FileUnitTester.MapTestPath(sourceFile), prog, prog.Architecture);
+                    new IntelTextAssembler(),
+				    FileUnitTester.MapTestPath(sourceFile),
+                    prog);
                 ld.Load(addrBase);
 				Scanner sc = new Scanner(prog, null);
 				foreach (EntryPoint ep in ld.EntryPoints)

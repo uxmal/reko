@@ -19,12 +19,14 @@
 using Decompiler;
 using Decompiler.Analysis;
 using Decompiler.Arch.Intel;
+using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
 using Decompiler.Environments.Msdos;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
@@ -79,7 +81,7 @@ namespace Decompiler.UnitTests.Analysis
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			prog.Platform = new MsdosPlatform(prog.Architecture);
-			Assembler asm = prog.Architecture.CreateAssembler();
+            Assembler asm = new IntelTextAssembler();
 			asm.Assemble(prog, new Address(0xC00, 0), FileUnitTester.MapTestPath(relativePath));
             prog.Image = asm.Image;
 			Rewrite(prog, asm, configFile);
@@ -100,10 +102,15 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-			Assembler asm = prog.Architecture.CreateAssembler();
+            Assembler asm = new IntelTextAssembler();
 			asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(relativePath));
             prog.Image = asm.Image;
-			Rewrite(prog, asm, configFile);
+            prog.Architecture = asm.Architecture;
+            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
+            {
+                prog.ImportThunks.Add(item.Key, item.Value);
+            }
+            Rewrite(prog, asm, configFile);
 			return prog;
 		}
 
@@ -111,7 +118,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			Assembler asm = prog.Architecture.CreateAssembler();
+            Assembler asm = new IntelTextAssembler();
 			asm.AssembleFragment(prog, new Address(0xC00, 0), s);
             prog.Image = asm.Image;
 			Rewrite(prog, asm, null);

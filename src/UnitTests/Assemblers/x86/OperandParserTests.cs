@@ -17,7 +17,7 @@
  */
 
 using Decompiler.Arch.Intel;
-using Decompiler.Arch.Intel.Assembler;
+using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
@@ -26,7 +26,7 @@ using System.IO;
 using System.Text;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Intel.Assembler
+namespace Decompiler.UnitTests.Assemblers.x86
 {
 	[TestFixture]
 	public class OperandParserTests

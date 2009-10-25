@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32", "Environments\Win32
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msdos", "Environments\Msdos\Msdos.csproj", "{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelAssembler", "Assemblers\x86\IntelAssembler.csproj", "{3ADF9BD2-4179-451A-815A-D041EB128E13}"
+EndProject
 Global
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
@@ -151,6 +153,16 @@ Global
 		{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Release|.NET.ActiveCfg = Release|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3ADF9BD2-4179-451A-815A-D041EB128E13}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

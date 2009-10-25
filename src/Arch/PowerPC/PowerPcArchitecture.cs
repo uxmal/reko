@@ -87,11 +87,6 @@ namespace Decompiler.Arch.PowerPC
 
         #region IProcessorArchitecture Members
 
-        public Assembler CreateAssembler()
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
         public Disassembler CreateDisassembler(ProgramImage img, Address addr)
         {
             return new PowerPcDisassembler(this, img.CreateReader(addr), WordWidth);

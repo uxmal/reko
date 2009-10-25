@@ -16,37 +16,49 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
-using Decompiler.Core;
-using Decompiler.Arch.Intel;
-using Decompiler.Scanning;
-using NUnit.Framework;
 using System;
+using Decompiler.Core;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.Assemblers.x86
 {
-	[TestFixture]
-	public class AssemblerOverrides : AssemblerBase
+	public class ParsedOperand
 	{
-		[Test]
-		public void DataOverrides()
+		private MachineOperand op;
+		private Symbol sym;
+		private bool longJmp;
+
+		public ParsedOperand(MachineOperand op, Symbol sym, bool l)
 		{
-			Program prog = new Program();
-			asm.AssembleFragment(
-				prog,
-				new Address(0xC00, 0),
-				@".86
-		mov	eax,32
-		mov si,0x2234
-		mov ebx,0x2234
-		add	eax,0x12345678
-		add ebx,0x87654321
-");
-			Assert.IsTrue(Compare(asm.Image.Bytes, new byte[]
-				{	0x66,0xb8,0x20,0x00,0x00,0x00,0xbe,0x34,
-					0x22,0x66,0xbb,0x34,0x22,0x00,0x00,0x66,
-					0x05,0x78,0x56,0x34,0x12,0x66,0x81,0xC3,
-					0x21,0x43,0x65,0x87}));
+			this.op = op;
+			this.sym = sym;
+			this.longJmp = l;
+		}
+
+		public ParsedOperand(MachineOperand op, Symbol sym)
+		{
+			this.op = op;
+			this.sym = sym;
+		}
+
+		public ParsedOperand(MachineOperand op)
+		{
+			this.op = op;
+			this.sym = null;
+		}
+
+		public bool Long
+		{
+			get { return longJmp; }
+		}
+
+		public MachineOperand Operand
+		{
+			get { return op; }
+		}
+
+		public Symbol Symbol
+		{
+			get { return sym; }
 		}
 	}
 }

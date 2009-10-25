@@ -16,40 +16,37 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler;
+using Decompiler.Core;
+using Decompiler.Arch.Intel;
+using Decompiler.Scanning;
+using NUnit.Framework;
 using System;
 
-namespace Decompiler.Arch.Intel.Assembler
+namespace Decompiler.UnitTests.Assemblers.x86
 {
-	public delegate void ErrorEventHandler(object sender, ErrorEventArgs args);
-
-	/// <summary>
-	/// Encapsulates information about an assembler error.
-	/// </summary>
-	public class ErrorEventArgs
+	[TestFixture]
+	public class AssemblerOverrides : AssemblerBase
 	{
-		private string message;
-		private int lineNumber;
-
-		public ErrorEventArgs(string message)
+		[Test]
+		public void DataOverrides()
 		{
-			this.message = message;
-		}
-
-		public ErrorEventArgs(int lineNumber, string message)
-		{
-			this.message = message;
-			this.lineNumber = lineNumber;
-		}
-
-		public int LineNumber
-		{
-			get { return lineNumber; }
-			set { lineNumber = value; }
-		}
-
-		public string Message
-		{
-			get { return message; }
+			Program prog = new Program();
+			asm.AssembleFragment(
+				prog,
+				new Address(0xC00, 0),
+				@".86
+		mov	eax,32
+		mov si,0x2234
+		mov ebx,0x2234
+		add	eax,0x12345678
+		add ebx,0x87654321
+");
+			Assert.IsTrue(Compare(asm.Image.Bytes, new byte[]
+				{	0x66,0xb8,0x20,0x00,0x00,0x00,0xbe,0x34,
+					0x22,0x66,0xbb,0x34,0x22,0x00,0x00,0x66,
+					0x05,0x78,0x56,0x34,0x12,0x66,0x81,0xC3,
+					0x21,0x43,0x65,0x87}));
 		}
 	}
 }

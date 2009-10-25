@@ -16,13 +16,14 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.Arch.Intel.Assembler
+namespace Decompiler.Assemblers.x86
 {
 	/// <summary>
 	/// Accumulates information to generate a ModRm byte(and possibly SIB byte) 

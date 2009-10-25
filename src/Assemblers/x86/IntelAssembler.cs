@@ -16,6 +16,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
+using Decompiler.Environments.Msdos;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
@@ -25,32 +27,51 @@ using System.IO;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Arch.Intel.Assembler
+namespace Decompiler.Assemblers.x86
 {
     /// <summary>
     /// A crude MASM-style assembler for x86 opcodes.
     /// </summary>
     public class IntelAssembler
     {
-        private Program prog;
+        private IntelArchitecture arch;
+        private Platform platform;
         private Address addrBase;
         private ModRmBuilder modRm;
         private Emitter emitter;
         private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
         private SortedDictionary<string, SignatureLibrary> importLibraries;
+        private Dictionary<uint, PseudoProcedure> importThunks;
 
-        public IntelAssembler(Program prog, PrimitiveType defaultWordSize, Address addrBase, Emitter emitter, List<EntryPoint> entryPoints)
+        public IntelAssembler(IntelArchitecture arch, PrimitiveType defaultWordSize, Address addrBase, Emitter emitter, List<EntryPoint> entryPoints)
         {
-            this.prog = prog;
+            this.arch = new IntelArchitecture(ProcessorMode.Real);
+            this.platform = new MsdosPlatform(arch);
             this.addrBase = addrBase;
             this.emitter = emitter;
             this.entryPoints = entryPoints;
             modRm = new ModRmBuilder(defaultWordSize, emitter);
             symtab = new SymbolTable();
             importLibraries = new SortedDictionary<string, SignatureLibrary>();
+            importThunks = new Dictionary<uint, PseudoProcedure>();
 
             SetDefaultWordWidth(defaultWordSize);
+        }
+
+        public IntelArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        public Platform Platform
+        {
+            get { return platform; }
+        }
+
+        public Dictionary<uint, PseudoProcedure> ImportThunks
+        {
+            get { return importThunks; }
         }
 
         public ProgramImage GetImage()
@@ -884,15 +905,14 @@ namespace Decompiler.Arch.Intel.Assembler
 
         internal void i386()
         {
-            prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             SetDefaultWordWidth(PrimitiveType.Word32);
         }
 
         public void i86()
         {
-            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-            prog.Architecture = arch;
-//$REVIEW            prog.Platform = new MsDos.MsdosPlatform(arch);
+            arch = new IntelArchitecture(ProcessorMode.Real);
+            platform = new MsdosPlatform(arch);
             SetDefaultWordWidth(PrimitiveType.Word16);
         }
 
@@ -1040,7 +1060,7 @@ namespace Decompiler.Arch.Intel.Assembler
             SignatureLibrary lib;
             if (!importLibraries.TryGetValue(dllName, out lib))
             {
-                lib = new SignatureLibrary(prog.Architecture);
+                lib = new SignatureLibrary(arch);
                 lib.Load(Path.ChangeExtension(dllName, ".xml"));
                 importLibraries[dllName] = lib;
             }
@@ -1239,7 +1259,7 @@ namespace Decompiler.Arch.Intel.Assembler
         public void AddImport(string fnName, ProcedureSignature sig)
         {
             uint u = (uint) (addrBase.Linear + emitter.Position);
-            prog.ImportThunks.Add(u, new PseudoProcedure(fnName, sig));
+            ImportThunks.Add(u, new PseudoProcedure(fnName, sig));
             emitter.EmitDword(0);
         }
 

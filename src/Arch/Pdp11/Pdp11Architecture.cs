@@ -49,11 +49,6 @@ namespace Decompiler.Arch.Pdp11
         }
         #region IProcessorArchitecture Members
 
-        public Assembler CreateAssembler()
-        {
-            return new Pdp11Assembler();
-        }
-
         public Disassembler CreateDisassembler(ProgramImage img, Address addr)
         {
             return new Pdp11Disassembler(img.CreateReader(addr), addr);

@@ -17,7 +17,7 @@
  */
 
 using Decompiler.Arch.Intel;
-using Decompiler.Arch.Intel.Assembler;
+using Decompiler.Assemblers.x86;
 using System;
 using System.Collections.Generic;
 using System.Text;

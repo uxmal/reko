@@ -35,6 +35,11 @@ namespace Decompiler.Arch.Pdp11
             throw new Exception("The method or operation is not implemented.");
         }
 
+        public IProcessorArchitecture Architecture
+        {
+            get { return new Pdp11Architecture(); }
+        }
+
         public ICollection<EntryPoint> EntryPoints
         {
             get { throw new NotImplementedException(); }
@@ -45,10 +50,19 @@ namespace Decompiler.Arch.Pdp11
             get { throw new NotImplementedException(); }
         }
 
+        public Platform Platform
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public Address StartAddress
         {
             get { throw new Exception("The method or operation is not implemented."); }
         }
 
+        public Dictionary<uint, PseudoProcedure> ImportThunks
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
     }
 }

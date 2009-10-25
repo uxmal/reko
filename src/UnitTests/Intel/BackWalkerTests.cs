@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Arch.Intel;
+using Decompiler.Assemblers.x86;
 using Decompiler.Loading;
 using NUnit.Framework;
 using System;
@@ -84,7 +85,9 @@ namespace Decompiler.UnitTests.Intel
 			{
 				Program prog = new Program();
 				AssemblerLoader ld = new AssemblerLoader(
-				    FileUnitTester.MapTestPath(sourceFile), prog, arch);
+                    new IntelTextAssembler(),
+				    FileUnitTester.MapTestPath(sourceFile),
+                    prog);
                 ld.Load(addrBase);
 				prog.Architecture = arch;
 				IntelDumper dumper = new IntelDumper(arch);

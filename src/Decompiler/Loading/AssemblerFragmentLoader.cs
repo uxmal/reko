@@ -41,11 +41,11 @@ namespace Decompiler.Loading
 
         public override DecompilerProject Load(Address addrLoad)
         {
-            Assembler asm = arch.CreateAssembler();
-            asm.AssembleFragment(null, addrLoad, asmFragment);
-            Program.Image = asm.Image;
-            EntryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
-            return new DecompilerProject();
+            throw new NotImplementedException("Assembler asm = arch.CreateAssembler();");
+            //asm.AssembleFragment(null, addrLoad, asmFragment);
+            //Program.Image = asm.Image;
+            //EntryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
+            //return new DecompilerProject();
         }
 
     }

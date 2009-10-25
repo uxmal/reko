@@ -19,6 +19,7 @@
 using Decompiler;
 using Decompiler.Core;
 using Decompiler.Arch.Intel;
+using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
@@ -84,7 +85,7 @@ namespace Decompiler.UnitTests.Scanning
 		{
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			Assembler asm = prog.Architecture.CreateAssembler();
+			Assembler asm = new IntelTextAssembler();
 			asm.AssembleFragment(prog, new Address(0xC00, 0), 
 				@".i86
 main proc
@@ -138,7 +139,7 @@ baz endp
 		{
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			Assembler asm = prog.Architecture.CreateAssembler();
+			Assembler asm = new IntelTextAssembler();
 			asm.Assemble(prog, new Address(0xC00, 0x0000), FileUnitTester.MapTestPath("Fragments/multiple/jumpintoproc.asm"));
             prog.Image = asm.Image;
 			Scanner scan = new Scanner(prog, null);
@@ -244,7 +245,7 @@ baz endp
 		{
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			Assembler asm = prog.Architecture.CreateAssembler();
+            Assembler asm = new IntelTextAssembler();
 			asm.Assemble(prog, new Address(0x0C00, 0x0000), FileUnitTester.MapTestPath(srcFile));
             prog.Image = asm.Image;
 			return prog;

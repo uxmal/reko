@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
@@ -26,7 +27,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Arch.Intel.Assembler
+namespace Decompiler.Assemblers.x86
 {
 	/// <summary>
 	/// A crude MASM-style assembler for x86 opcodes.
@@ -64,6 +65,11 @@ namespace Decompiler.Arch.Intel.Assembler
 			image = Assemble(new StringReader(fragment));
 		}
 
+        public IProcessorArchitecture Architecture
+        {
+            get { return asm.Architecture; }
+        }
+
         public ICollection<EntryPoint> EntryPoints
         {
             get { return entryPoints; }
@@ -80,6 +86,11 @@ namespace Decompiler.Arch.Intel.Assembler
             get { return addrStart; }
         }
 
+        public Dictionary<uint, PseudoProcedure> ImportThunks
+        {
+            get { return asm.ImportThunks; }
+        }
+
 
 		private ProgramImage Assemble(TextReader rdr)
 		{
@@ -88,8 +99,8 @@ namespace Decompiler.Arch.Intel.Assembler
 
 			// Default assembler is real-mode.
 
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            asm = new IntelAssembler(prog, prog.Architecture.WordWidth, addrBase, emitter, entryPoints);
+            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+            asm = new IntelAssembler(arch, arch.WordWidth, addrBase, emitter, entryPoints);
 
 			// Assemblers are strongly line-oriented.
 
@@ -165,16 +176,16 @@ namespace Decompiler.Arch.Intel.Assembler
 			else
 			{
 				if (min == max)
-					Error(string.Format("Instruction expects {0} operand(s)", min));
+					Error(string.Format("Instruction expects {0} operand(s).", min));
 				else
-					Error(string.Format("Instruction expects between {0} and {1} operand(s)", min, max));
+					Error(string.Format("Instruction expects between {0} and {1} operand(s).", min, max));
 				return null;
 			}
 		}
 
         public Platform Platform
         {
-            get { throw new NotImplementedException(); }
+            get { return asm.Platform; }
         }
 
 		public void ProcessAssume()
@@ -1046,6 +1057,5 @@ namespace Decompiler.Arch.Intel.Assembler
             asm.Fstsw(ops[0]);
         }
 
-
-	}
+    }
 }
