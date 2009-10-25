@@ -17,8 +17,6 @@
  */
 
 using Decompiler.Core;
-using Decompiler.Arch.Intel;		
-using Decompiler.Arch.Intel.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -96,7 +94,7 @@ namespace Decompiler.Loading
             for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
                 ;
             char[] chars = Encoding.ASCII.GetChars(imgLoaded.Bytes, iNameMin, j - iNameMin);
-            EntryPoint ep = new EntryPoint(addrLoad + addr, new string(chars), new IntelState());
+            EntryPoint ep = new EntryPoint(addrLoad + addr, new string(chars), prog.Architecture.CreateProcessorState());
             return ep;
         }
 
@@ -105,7 +103,7 @@ namespace Decompiler.Loading
 			switch (peMachineType)
 			{
 			case MACHINE_i386: return new IntelArchitecture(ProcessorMode.ProtectedFlat);
-			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header", peMachineType));
+			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
 		}
 

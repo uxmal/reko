@@ -16,8 +16,6 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Arch.Intel;
-using Decompiler.Arch.Intel.MsDos;
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;

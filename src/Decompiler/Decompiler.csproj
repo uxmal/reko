@@ -90,11 +90,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\Arch\Intel\Intel.csproj">
-      <Name>Intel</Name>
-      <Project>{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Name>Core</Name>
       <Project>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</Project>
