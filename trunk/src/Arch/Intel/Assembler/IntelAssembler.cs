@@ -892,7 +892,7 @@ namespace Decompiler.Arch.Intel.Assembler
         {
             IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
             prog.Architecture = arch;
-            prog.Platform = new MsDos.MsdosPlatform(arch);
+//$REVIEW            prog.Platform = new MsDos.MsdosPlatform(arch);
             SetDefaultWordWidth(PrimitiveType.Word16);
         }
 

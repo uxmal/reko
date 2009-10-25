@@ -16,13 +16,14 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Loading
+namespace Decompiler.ImageLoaders.MzExe
 {
 	/// <summary>
 	/// A loader that understands how to unpack a binary packed with PkLite.

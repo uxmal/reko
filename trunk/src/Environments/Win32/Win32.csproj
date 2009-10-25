@@ -7,8 +7,8 @@
     <ProjectGuid>{DE889E18-A3F8-4AD8-88CA-A48D52634A05}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Environment.Win32</RootNamespace>
-    <AssemblyName>Decompiler.Environment.Win32</AssemblyName>
+    <RootNamespace>Decompiler.Environments.Win32</RootNamespace>
+    <AssemblyName>Decompiler.Environments.Win32</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,9 +34,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Win32Platform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="advapi32.xml" />
+    <Content Include="comdlg32.xml" />
+    <Content Include="gdi32.xml" />
+    <Content Include="kernel32.xml" />
+    <Content Include="msvcrt.xml" />
+    <Content Include="shell32.xml" />
+    <Content Include="user32.xml" />
+    <Content Include="wininet.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Intel\Intel.csproj">
+      <Project>{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}</Project>
+      <Name>Intel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -361,31 +361,10 @@
     <Compile Include="Loading\AssemblerFragmentLoader.cs" />
     <Compile Include="Loading\AssemblerLoader.cs" />
     <Compile Include="Loading\ImageLoaderHandler.cs" />
-    <Compile Include="Loading\ExeImageLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Loading\ExePackLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Loading\ImageLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Loading\Loader.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Loading\LoaderBase.cs" />
-    <Compile Include="Loading\LzExeUnpacker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Loading\MsdosImageLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Loading\PeImageLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Loading\PkLiteUnpacker.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Scanning\EscapedAccessRewriter.cs">
       <SubType>Code</SubType>
     </Compile>

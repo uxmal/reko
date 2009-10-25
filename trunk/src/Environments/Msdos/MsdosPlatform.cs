@@ -22,7 +22,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Decompiler.Arch.Intel.MsDos
+namespace Decompiler.Environments.Msdos
 {
 	public class MsdosPlatform : Platform
 	{

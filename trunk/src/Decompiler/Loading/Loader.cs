@@ -96,14 +96,15 @@ namespace Decompiler.Loading
 		/// </summary>
 		/// <param name="binaryFile"></param>
 		/// <param name="addrBase"></param>
-		public void LoadComBinary(string binaryFile, Address addrBase)
-		{
-			byte [] rawBytes = LoadImageBytes(binaryFile, 0x100);
-			Program.Image = new ProgramImage(addrBase, rawBytes);
-			Program.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			Program.Platform = new Arch.Intel.MsDos.MsdosPlatform(Program.Architecture);
-			EntryPoints.Add(new EntryPoint(addrBase + 0x0100, Program.Architecture.CreateProcessorState()));
-		}
+        //$REVIEW: move to platform-specific place.
+        //public void LoadComBinary(string binaryFile, Address addrBase)
+        //{
+        //    byte [] rawBytes = LoadImageBytes(binaryFile, 0x100);
+        //    Program.Image = new ProgramImage(addrBase, rawBytes);
+        //    Program.Architecture = new IntelArchitecture(ProcessorMode.Real);
+        //    Program.Platform = new Arch.Intel.MsDos.MsdosPlatform(Program.Architecture);
+        //    EntryPoints.Add(new EntryPoint(addrBase + 0x0100, Program.Architecture.CreateProcessorState()));
+        //}
 
 		/// <summary>
 		/// Loads the image into memory, unpacking it if necessary. Then, relocate the image.

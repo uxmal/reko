@@ -17,11 +17,12 @@
  */
 
 using Decompiler;
+using Decompiler.Analysis;
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
-using Decompiler.Analysis;
-using Decompiler.Arch.Intel;
+using Decompiler.Environments.Msdos;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using System.IO;
@@ -77,7 +78,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			prog.Platform = new Arch.Intel.MsDos.MsdosPlatform(prog.Architecture);
+			prog.Platform = new MsdosPlatform(prog.Architecture);
 			Assembler asm = prog.Architecture.CreateAssembler();
 			asm.Assemble(prog, new Address(0xC00, 0), FileUnitTester.MapTestPath(relativePath));
             prog.Image = asm.Image;

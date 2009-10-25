@@ -388,9 +388,6 @@ namespace Decompiler.Gui.Windows.Forms
 			return CreateTextWriter(filename);
 		}
 
-        public IProcessorArchitecture GetArchitecture(string architectureName)
-        {
-        }
 
 		public void ShowProgress(string caption, int numerator, int denominator)
 		{

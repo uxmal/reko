@@ -21,7 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
 using System;
 
-namespace Decompiler.Arch.Intel.Win32
+namespace Decompiler.Environments.Win32
 {
 	public class Win32Platform : Platform
 	{

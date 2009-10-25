@@ -16,13 +16,15 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Environments.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Decompiler.Loading
+namespace Decompiler.ImageLoaders.MzExe
 {
 	public class PeImageLoader : ImageLoader
 	{

@@ -16,16 +16,17 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Loading
+namespace Decompiler.ImageLoaders.MzExe
 {
 	/// <summary>
 	/// Loads Microsoft EXE image files. 
 	/// </summary>
-    //$RENAME: MzExeImageLoader.
 	public class ExeImageLoader : ImageLoader
 	{
 		private ImageLoader ldrDeferred;
