@@ -13,11 +13,11 @@ l2:		// block 2, pred: 1
 l3:		// block 3, pred: 2
 	fs_41 = Mem0[0x7E50:word16]
 	branch Mem0[0x7E50:word16] != Mem0[0x53C2:word16] block6
-	// succ:  5 4
-block6:		// block 4, pred: 3
-	// succ: 
-l4:		// block 5, pred: 3
+	// succ:  4 5
+l4:		// block 4, pred: 3
 	fn1B96_0540(Mem0[0x7E52:word16], ds, &dx_49, &bx_50)
+	// succ:  5
+block6:		// block 5, pred: 3 4
 	Mem0[ax_36 *u 0x0002 + 0x841A:word16]()
 	loc04_63 = Mem0[0x0048:word16]
 	store(Mem0[0x004A:word16]) = Mem0[0x004A:word16]
@@ -61,9 +61,8 @@ void Reg00011Mock()
 			if (__bt(Mem0[0x8418:word16], ax_36))
 				continue;
 			fs_41 = Mem0[0x7E50:word16];
-			if (Mem0[0x7E50:word16] != Mem0[0x53C2:word16])
-				;
-			fn1B96_0540(Mem0[0x7E52:word16], ds, &dx_49, &bx_50);
+			if (Mem0[0x7E50:word16] == Mem0[0x53C2:word16])
+				fn1B96_0540(Mem0[0x7E52:word16], ds, &dx_49, &bx_50);
 			Mem0[ax_36 *u 0x0002 + 0x841A:word16]();
 			loc04_63 = Mem0[0x0048:word16];
 			Mem0[0x004A:word16] = Mem0[0x004A:word16];
@@ -88,7 +87,10 @@ void Reg00011Mock()
 			return ax_96;
 		}
 		else
+		{
+block11:
 			return ax_88;
+		}
 	}
 	else
 		goto block11;

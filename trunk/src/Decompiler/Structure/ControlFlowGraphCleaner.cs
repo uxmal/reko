@@ -86,32 +86,32 @@ namespace Decompiler.Structure
 			{
 				dirty = false;
 
-				for (int i = proc.RpoBlocks.Count - 1; i >= 0; --i)
-				{
-					Block block = proc.RpoBlocks[i];
-					if (block == null)
-						continue;
+                for (int i = proc.RpoBlocks.Count - 1; i >= 0; --i)
+                {
+                    Block block = proc.RpoBlocks[i];
+                    if (block == null)
+                        continue;
 
-					if (EndsInBranch(block))
-					{
-						if (BranchTargetsEqual(block))
-						{
-							ReplaceBranchWithJump(block);
-						}
-					}
+                    if (EndsInBranch(block))
+                    {
+                        if (BranchTargetsEqual(block))
+                        {
+                            ReplaceBranchWithJump(block);
+                        }
+                    }
 
-					if (EndsInJump(block))
-					{
-						Block next = block.Succ[0];
-						if (block != proc.EntryBlock && block.Statements.Count == 0)
-						{
-							if (Block.ReplaceJumpsTo(block, next))
-								dirty = true;
-						}
-						if (next.Pred.Count == 1 && next != proc.ExitBlock)
-						{
-							Coalesce(block, next);
-						}
+                    if (EndsInJump(block))
+                    {
+                        Block next = block.Succ[0];
+                        if (block != proc.EntryBlock && block.Statements.Count == 0)
+                        {
+                            if (Block.ReplaceJumpsTo(block, next))
+                                dirty = true;
+                        }
+                        if (next.Pred.Count == 1 && next != proc.ExitBlock)
+                        {
+                            Coalesce(block, next);
+                        }
 #if IGNORE
 						// This bollixes up the graphs for ForkedLoop.asm, so we can't use it.		
 						// It's not as important as the other three clean stages.
@@ -121,11 +121,8 @@ namespace Decompiler.Structure
 							ReplaceJumpWithBranch(block, next);
 						}
 #endif
-					}
-
-					Debug.WriteLine("================");
-					proc.Dump(true, false);
-				}
+                    }
+                }
 			} while (dirty);
 
 			proc.RenumberBlocks();

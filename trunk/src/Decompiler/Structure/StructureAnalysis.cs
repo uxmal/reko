@@ -194,7 +194,7 @@ namespace Decompiler.Structure
 
         private void GenerateStructuredCode()
         {
-            AbsynCodeGenerator2 codeGen = new AbsynCodeGenerator2();
+            AbsynCodeGenerator codeGen = new AbsynCodeGenerator();
             curProc.Dump();
             codeGen.GenerateCode(curProc, proc.Body);
         }

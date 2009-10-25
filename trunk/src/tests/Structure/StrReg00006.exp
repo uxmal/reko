@@ -140,14 +140,14 @@ l100048CE:		// block 34, pred: 33 6
 fn100048B0_exit:		// block 35, pred: 34 32 31
 	// succ: 
 
-void fn100048B0(word32 esi, word32 edi, word16 arg04, word32 arg08, word32 arg0C, word32 arg10)
+void fn100048B0(word16 wArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
 {
 	byte bl_50 = 0x00;
 	if (wArg04 == 0x0000)
 	{
 		Mem270[0x1006B8E0:byte] = 0x00;
 		fn10004B48();
-	{
+l100048CE:
 		return;
 	}
 	else
@@ -160,18 +160,16 @@ void fn100048B0(word32 esi, word32 edi, word16 arg04, word32 arg08, word32 arg0C
 		{
 			Mem282[arg10:word16] = 0xFF94;
 			return;
-			goto fn100048B0_exit;
 		}
-		if (arg04 == 0x0001)
-			Mem80[eax_72 + 0x00000204:byte] = bl_48;
-		fn10004ADD(eax_72);
-		word32 eax_83 = Mem81[eax_72:word32];
-		word16 ax_84 = (word16) eax_83;
-		if (Mem81[eax_83:word16] != 0x0000)
+		else
 		{
-l100048CE:
-			return;
-			goto fn100048B0_exit;
+			if (arg04 == 0x0001)
+				Mem80[eax_72 + 0x00000204:byte] = bl_48;
+			fn10004ADD(eax_72);
+			word32 eax_83 = Mem81[eax_72:word32];
+			word16 ax_84 = (word16) eax_83;
+			if (Mem81[eax_83:word16] != 0x0000)
+				goto l100048CE:
 		}
 		if (arg04 <= 0x0000 || arg04 > 0x0005)
 			goto l100049AC;

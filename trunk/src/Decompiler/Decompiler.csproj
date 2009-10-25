@@ -328,7 +328,6 @@
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\AbsynCodeGenerator2.cs" />
     <Compile Include="Structure\Conditional.cs" />
     <Compile Include="Gui\Windows\Forms\DecompilerMenus.cs" />
     <Compile Include="Gui\Windows\Forms\DecompilerPhase.cs" />
