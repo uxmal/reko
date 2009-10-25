@@ -175,12 +175,12 @@ namespace Decompiler.Gui.Windows.Forms
                 LoaderBase ldr = CreateLoader(file, prog);
 				decompilerSvc.Decompiler = CreateDecompiler(ldr, prog);
 				decompilerSvc.Decompiler.LoadProgram();
-			} 
+                SwitchInteractor(pageLoaded);
+            } 
 			catch (Exception ex)
 			{
 				uiSvc.ShowError("Couldn't open file '{0}'. {1}", file, ex.Message + ex.StackTrace);
 			}
-            SwitchInteractor(pageLoaded);
 		}
 
 		public void OpenBinaryWithPrompt()

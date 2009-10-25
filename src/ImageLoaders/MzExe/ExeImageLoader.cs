@@ -29,7 +29,7 @@ namespace Decompiler.ImageLoaders.MzExe
 	/// </summary>
 	public class ExeImageLoader : ImageLoader
 	{
-		private ImageLoader ldrDeferred;
+        private ImageLoader ldrDeferred;
 
 		public ushort	e_magic;                     // Magic number
 		public ushort   e_cbLastPage;                // Bytes on last page of file
@@ -94,6 +94,16 @@ namespace Decompiler.ImageLoaders.MzExe
             }
         }
 
+        private ImageLoader DeferredLoader
+        {
+            get
+            {
+                if (ldrDeferred == null)
+                    ldrDeferred = CreateDeferredLoader();
+                return ldrDeferred;
+            }
+        }
+
 		public bool IsNewExecutable
 		{
 			get { return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'N' && RawImage[e_lfanew+1] == 'E'; }
@@ -116,9 +126,16 @@ namespace Decompiler.ImageLoaders.MzExe
 		/// </summary>
 		public override ProgramImage Load(Address addrLoad)
 		{
+
+
+			return DeferredLoader.Load(addrLoad);
+		}
+
+        private ImageLoader CreateDeferredLoader()
+        {
             if (IsPortableExecutable)
             {
-                ldrDeferred = new PeImageLoader(prog, base.RawImage, e_lfanew);
+                return new PeImageLoader(prog, base.RawImage, e_lfanew);
             }
             else if (IsNewExecutable)
             {
@@ -127,21 +144,18 @@ namespace Decompiler.ImageLoaders.MzExe
             }
             else
             {
-                ldrDeferred = CreateRealModeLoader(prog, RawImage);
+                return CreateRealModeLoader(prog, RawImage);
             }
-
-			return ldrDeferred.Load(addrLoad);
-		}
-
+        }
 
         public override ProgramImage LoadAtPreferredAddress()
         {
-            return Load(ldrDeferred.PreferredBaseAddress);
+            return Load(DeferredLoader.PreferredBaseAddress);
         }
 
 		public override Address PreferredBaseAddress
 		{
-			get { return ldrDeferred.PreferredBaseAddress; }
+			get { return DeferredLoader.PreferredBaseAddress; }
 		}
 
 		public void ReadCommonExeFields()
@@ -179,7 +193,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
-			ldrDeferred.Relocate(addrLoad, entryPoints, relocations);
+			DeferredLoader.Relocate(addrLoad, entryPoints, relocations);
 		}
 
 		void RelocateNewExe(object neHeader)
