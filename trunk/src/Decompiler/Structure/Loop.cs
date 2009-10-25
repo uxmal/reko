@@ -168,7 +168,7 @@ namespace Decompiler.Structure
                 codeGen.GenerateCode(node.OutEdges[0], Latch, bodyEmitter);
             }
 
-            emitter.EmitWhile(node, Constant.True(), loopBody);
+            emitter.EmitForever(node, loopBody);
         }
     }
 }
