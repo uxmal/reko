@@ -172,6 +172,10 @@ namespace Decompiler.Arch.Intel.Assembler
 			}
 		}
 
+        public Platform Platform
+        {
+            get { throw new NotImplementedException(); }
+        }
 
 		public void ProcessAssume()
 		{
