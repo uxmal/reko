@@ -23,8 +23,9 @@ using System.Collections.Generic;
 namespace Decompiler.Loading
 {
 	/// <summary>
-	/// Loads Microsoft EXE image files.
+	/// Loads Microsoft EXE image files. 
 	/// </summary>
+    //$RENAME: MzExeImageLoader.
 	public class ExeImageLoader : ImageLoader
 	{
 		private ImageLoader ldrDeferred;

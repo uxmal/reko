@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32", "Environment\Win32\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msdos", "Environment\Msdos\Msdos.csproj", "{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MsiInstaller", "MsiInstaller\MsiInstaller.vdproj", "{F7B0F39E-8E66-4081-A131-BC233A0B70B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MzExe", "ImageLoaders\MzExe\MzExe.csproj", "{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}"
+EndProject
 Global
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
@@ -132,6 +136,22 @@ Global
 		{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F7B0F39E-8E66-4081-A131-BC233A0B70B4}.Debug|.NET.ActiveCfg = Debug
+		{F7B0F39E-8E66-4081-A131-BC233A0B70B4}.Debug|Any CPU.ActiveCfg = Debug
+		{F7B0F39E-8E66-4081-A131-BC233A0B70B4}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{F7B0F39E-8E66-4081-A131-BC233A0B70B4}.Release|.NET.ActiveCfg = Release
+		{F7B0F39E-8E66-4081-A131-BC233A0B70B4}.Release|Any CPU.ActiveCfg = Release
+		{F7B0F39E-8E66-4081-A131-BC233A0B70B4}.Release|Mixed Platforms.ActiveCfg = Release
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Release|.NET.ActiveCfg = Release|Any CPU
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
