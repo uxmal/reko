@@ -21,7 +21,73 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_53D3DD6758C55C8B919AA39143437632"
+        "OwnerKey" = "8:_05AB1519236C4843A52A15F134882441"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_53D3DD6758C55C8B919AA39143437632"
+        "OwnerKey" = "8:_9780F50471E84FAF8118ECDA10A2A61A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_53D3DD6758C55C8B919AA39143437632"
+        "OwnerKey" = "8:_71BFC262600E0CD515F67EDFBD867315"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_53D3DD6758C55C8B919AA39143437632"
+        "OwnerKey" = "8:_695D2820E40F46CDA60DEB34FCE53628"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_53D3DD6758C55C8B919AA39143437632"
+        "OwnerKey" = "8:_E3470A1043134FEFAA6C6E6C5E26C159"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_53D3DD6758C55C8B919AA39143437632"
+        "OwnerKey" = "8:_A71A977F21E541D780F8D06393322241"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_53D3DD6758C55C8B919AA39143437632"
+        "OwnerKey" = "8:_5560662154BD5B8F422FA478BA470E59"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5560662154BD5B8F422FA478BA470E59"
+        "OwnerKey" = "8:_05AB1519236C4843A52A15F134882441"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_571730A13FFD44B0B42D1B6DF56F5E2A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_695D2820E40F46CDA60DEB34FCE53628"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_71BFC262600E0CD515F67EDFBD867315"
+        "OwnerKey" = "8:_9780F50471E84FAF8118ECDA10A2A61A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9780F50471E84FAF8118ECDA10A2A61A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -41,6 +107,36 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_571730A13FFD44B0B42D1B6DF56F5E2A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9780F50471E84FAF8118ECDA10A2A61A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_71BFC262600E0CD515F67EDFBD867315"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_695D2820E40F46CDA60DEB34FCE53628"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5560662154BD5B8F422FA478BA470E59"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_53D3DD6758C55C8B919AA39143437632"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -88,6 +184,11 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.2.0"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 2.0"
+                    "ProductCode" = "8:Microsoft.Net.Framework.2.0"
+                    }
                 }
             }
         }
@@ -146,6 +247,99 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_53D3DD6758C55C8B919AA39143437632"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Core, Version=0.1.3585.24019, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_53D3DD6758C55C8B919AA39143437632"
+                    {
+                    "Name" = "8:Decompiler.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Decompiler.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_AD756F3B1B5443EDBD23314A24B4FC1C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5560662154BD5B8F422FA478BA470E59"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Decompiler, Version=0.1.3585.24338, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5560662154BD5B8F422FA478BA470E59"
+                    {
+                    "Name" = "8:Decompiler.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Decompiler.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_AD756F3B1B5443EDBD23314A24B4FC1C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_71BFC262600E0CD515F67EDFBD867315"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Arch.Intel, Version=0.1.3585.24019, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_71BFC262600E0CD515F67EDFBD867315"
+                    {
+                    "Name" = "8:Decompiler.Arch.Intel.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Decompiler.Arch.Intel.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_AD756F3B1B5443EDBD23314A24B4FC1C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -201,23 +395,23 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MsiInstaller"
-        "ProductCode" = "8:{40839C05-8A16-400A-9AE8-5663B23DC8CD}"
-        "PackageCode" = "8:{C3D5EE0B-F893-4797-8E60-9D95437C37E0}"
+        "ProductCode" = "8:{EBFE5795-EE4F-43C0-A494-4AF204E59FF0}"
+        "PackageCode" = "8:{9BFA7580-1611-4339-92BD-8E945AFE2F8C}"
         "UpgradeCode" = "8:{267A75B3-F33E-4987-9BF6-114D1A6CE44E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:0.1.0"
         "Manufacturer" = "8:Default Company Name"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:MsiInstaller"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Default Company Name"
+        "ARPCONTACT" = "8:John Källén"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:"
-        "ARPURLINFOABOUT" = "8:"
+        "ARPCOMMENTS" = "8:Decompiler for Windows"
+        "ARPURLINFOABOUT" = "8:https://sourceforge.net/projects/decompiler/"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
@@ -776,6 +970,62 @@
                 {
                 }
             }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_695D2820E40F46CDA60DEB34FCE53628"
+            {
+            "SourcePath" = "8:..\\Environments\\Msdos\\obj\\Debug\\Decompiler.Environments.Msdos.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_AD756F3B1B5443EDBD23314A24B4FC1C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9780F50471E84FAF8118ECDA10A2A61A"
+            {
+            "SourcePath" = "8:..\\Environments\\Win32\\obj\\Debug\\Decompiler.Environments.Win32.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_AD756F3B1B5443EDBD23314A24B4FC1C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{DE889E18-A3F8-4AD8-88CA-A48D52634A05}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A71A977F21E541D780F8D06393322241"
             {
             "SourcePath" = "8:..\\Decompiler\\obj\\Debug\\Decompiler.dll"
@@ -806,7 +1056,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E3470A1043134FEFAA6C6E6C5E26C159"
             {
-            "SourcePath" = "8:..\\Arch\\Intel\\obj\\Debug\\Decomp.Arch.Intel.dll"
+            "SourcePath" = "8:..\\Arch\\Intel\\obj\\Debug\\Decompiler.Arch.Intel.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_AD756F3B1B5443EDBD23314A24B4FC1C"
