@@ -90,6 +90,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			asm.Assemble(prog, baseAddress, FileUnitTester.MapTestPath(relativePath));
             prog.Image = asm.Image;
+            prog.Platform = asm.Platform;
 			DoRewriteCore();
 		}
 	}

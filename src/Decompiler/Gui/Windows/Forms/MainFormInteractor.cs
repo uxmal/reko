@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Configuration;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
@@ -54,6 +55,7 @@ namespace Decompiler.Gui.Windows.Forms
         private string projectFileName;
         private ServiceContainer sc;
         private Dictionary<PhasePageInteractor, PhasePageInteractor> nextPage;
+        private DecompilerConfiguration config;
 
 		private static string dirSettings;
 		
@@ -65,6 +67,7 @@ namespace Decompiler.Gui.Windows.Forms
 			mru.Load(MruListFile);
             sc = new ServiceContainer();
             nextPage = new Dictionary<PhasePageInteractor, PhasePageInteractor>();
+            config = new DecompilerConfiguration();
 		}
 
 		private void AttachInteractors(DecompilerMenus dm)
@@ -113,7 +116,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         protected virtual LoaderBase CreateLoader(string filename, Program prog)
         {
-            return new Loader(filename, prog);
+            return new Loader(filename, prog, this);
         }
 
 		public virtual Program CreateProgram()
@@ -290,8 +293,11 @@ namespace Decompiler.Gui.Windows.Forms
 
 		public void SwitchInteractor(PhasePageInteractor interactor)
 		{
-			if (CurrentPage != null)
-				CurrentPage.LeavePage();
+            if (CurrentPage != null)
+            {
+                if (!CurrentPage.LeavePage())
+                    return;
+            }
             form.SetCurrentPage(interactor.Page);
 			CurrentPage = interactor;
 			interactor.EnterPage();
@@ -388,6 +394,10 @@ namespace Decompiler.Gui.Windows.Forms
 			return CreateTextWriter(filename);
 		}
 
+        public DecompilerConfiguration Configuration
+        {
+            get { return config; }
+        }
 
 		public void ShowProgress(string caption, int numerator, int denominator)
 		{

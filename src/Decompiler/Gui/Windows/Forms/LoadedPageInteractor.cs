@@ -22,6 +22,7 @@ using Decompiler.Gui;
 using Decompiler.Gui.Windows.Controls;
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Windows.Forms;
@@ -195,7 +196,7 @@ namespace Decompiler.Gui.Windows.Forms
 			return false;
 		}
 
-        public override System.ComponentModel.ISite Site
+        public override ISite Site
         {
             set
             {
@@ -212,6 +213,7 @@ namespace Decompiler.Gui.Windows.Forms
                 }
             }
         }
+
         // Event handlers /////////////////////////
 
         private void memctl_SelectionChanged(object sender, System.EventArgs e)

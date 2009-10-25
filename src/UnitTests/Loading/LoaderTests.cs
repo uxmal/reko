@@ -37,16 +37,23 @@ namespace Decompiler.UnitTests.Loading
 		{
 			byte [] image = new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
 				"<input><filename>foo.bar</filename></input></project>");
-			TestLoader ldr = new TestLoader(new Program());
+            TestLoader ldr = new TestLoader(new Program(), new FakeDecompilerHost());
 			ldr.Image = image;
 			DecompilerProject project = ldr.Load(null);
 			Assert.AreEqual("foo.bar", project.Input.Filename);
 		}
 
+        [Test]
+        public void Match()
+        {
+            TestLoader ldr = new TestLoader(new Program(), new FakeDecompilerHost());
+            Assert.IsTrue(ldr.ImageBeginsWithMagicNumber(new byte[] { 0x47, 0x11 }, "4711"));
+        }
+
 		private class TestLoader : Loader
 		{
-			public TestLoader(Program prog)
-				: base("", prog)
+			public TestLoader(Program prog, DecompilerHost host)
+				: base("", prog, host)
 			{
 			}
 

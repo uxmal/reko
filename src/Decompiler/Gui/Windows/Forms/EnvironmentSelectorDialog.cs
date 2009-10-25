@@ -16,19 +16,21 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.Core
+namespace Decompiler.Gui.Windows.Forms
 {
-	public interface Assembler
-	{
-        void Assemble(Program prog, Address baseAddress, string sourcefile);
-		void AssembleFragment(Program prog, Address baseAddress, string fragment);
-        ProgramImage Image { get; }
-		Address StartAddress { get; }
-        ICollection<EntryPoint> EntryPoints { get; }
-        Platform Platform { get; }
+    public partial class EnvironmentSelectorDialog : Form
+    {
+        public EnvironmentSelectorDialog()
+        {
+            InitializeComponent();
+        }
     }
 }
