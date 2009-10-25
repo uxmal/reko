@@ -219,6 +219,7 @@
     <Compile Include="Structure\LoopFinderTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
     <Compile Include="Structure\MockCaseStatement.cs" />
+    <Compile Include="Structure\MockInfiniteLoop.cs" />
     <Compile Include="Structure\MockWhileGoto.cs" />
     <Compile Include="Structure\MockWhileWithDeclarations.cs" />
     <Compile Include="Structure\ProcHeaderTests.cs" />

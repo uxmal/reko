@@ -435,6 +435,13 @@ namespace Decompiler.UnitTests.Structure
 
         }
 
+        [Test]
+        public void InfiniteLoop()
+        {
+            CompileTest(new MockInfiniteLoop());
+            RunTest("@@@");
+        }
+
         private void CompileTest(Action<ProcedureMock> gen)
         {
             ProcedureMock mock = new ProcedureMock();

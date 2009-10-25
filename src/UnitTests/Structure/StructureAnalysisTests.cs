@@ -77,18 +77,32 @@ unstructuredexit
 
         }
 
+        [Test]
+        public void InfiniteLoop()
+        {
+            StructureAnalysis sa = CompileTest(new MockInfiniteLoop());
+            Assert.AreEqual("Infinite", sa.ProcedureStructure.Nodes[1].Name);
+            Assert.IsNotNull(sa.ProcedureStructure.Nodes[1].Loop, "Should be part of loop.");
+            Assert.IsTrue(sa.ProcedureStructure.Nodes[1].Loop is EndLessLoop);
+        }
+
         private void RunTest(ProcGenerator gen, string sExp)
         {
             ProcedureMock mock = new ProcedureMock();
             gen(mock);
-            mock.Procedure.RenumberBlocks();
+            StructureAnalysis sa = CompileTest(mock);
+            string s = Dump(sa.ProcedureStructure);
+            Console.WriteLine(s);
+            Assert.AreEqual(sExp, s);
+        }
 
+        private static StructureAnalysis CompileTest(ProcedureMock mock)
+        {
+            mock.Procedure.RenumberBlocks();
             StructureAnalysis sa = new StructureAnalysis(mock.Procedure);
             sa.BuildProcedureStructure();
             sa.FindStructures();
-            string s = Dump(sa.ProcedureStructure);
-            Console.WriteLine(s);
-            Assert.AreEqual(sExp, s) ;
+            return sa;
         }
 
         private string Dump(ProcedureStructure str)
