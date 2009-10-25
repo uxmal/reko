@@ -156,9 +156,6 @@
     <Compile Include="MemoryOperand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MsDos\MsdosPlatform.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Opcode.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -174,18 +171,6 @@
     <Compile Include="StringInstructionRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Win32\Win32Platform.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Content Include="MsDos\realmodeintservices.xml" />
-    <Content Include="Win32\advapi32.xml" />
-    <Content Include="Win32\comdlg32.xml" />
-    <Content Include="Win32\gdi32.xml" />
-    <Content Include="Win32\kernel32.xml" />
-    <Content Include="Win32\msvcrt.xml" />
-    <Content Include="Win32\shell32.xml" />
-    <Content Include="Win32\user32.xml" />
-    <Content Include="Win32\wininet.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

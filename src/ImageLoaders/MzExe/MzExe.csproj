@@ -33,7 +33,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExeImageLoader.cs" />
+    <Compile Include="ExePackLoader.cs" />
+    <Compile Include="LzExeUnpacker.cs" />
+    <Compile Include="MsdosImageLoader.cs" />
+    <Compile Include="PeImageLoader.cs" />
+    <Compile Include="PkLiteUnpacker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Intel\Intel.csproj">
+      <Project>{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}</Project>
+      <Name>Intel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Msdos\Msdos.csproj">
+      <Project>{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}</Project>
+      <Name>Msdos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Win32\Win32.csproj">
+      <Project>{DE889E18-A3F8-4AD8-88CA-A48D52634A05}</Project>
+      <Name>Win32</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

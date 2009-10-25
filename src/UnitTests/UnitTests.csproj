@@ -279,6 +279,10 @@
       <Project>{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}</Project>
       <Name>Intel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
+      <Project>{2312D2BC-4994-413B-BCBD-ECF39AA90638}</Project>
+      <Name>Pdp11</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Project>{E9FEA865-EAF1-477D-AC43-5A3BECCD3232}</Project>
       <Name>PowerPC</Name>
@@ -290,6 +294,18 @@
     <ProjectReference Include="..\Decompiler\Decompiler.csproj">
       <Project>{7A9440A2-7692-4F74-BFFE-23741DE81C61}</Project>
       <Name>Decompiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
+      <Project>{2D4287F5-15F7-4B1F-961F-82ED5C6F3EF3}</Project>
+      <Name>Msdos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Win32\Win32.csproj">
+      <Project>{DE889E18-A3F8-4AD8-88CA-A48D52634A05}</Project>
+      <Name>Win32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj">
+      <Project>{051F1ECC-F1C8-4360-A211-5FC4C3D88E53}</Project>
+      <Name>MzExe</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

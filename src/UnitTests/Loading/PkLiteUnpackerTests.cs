@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Loading;
+using Decompiler.ImageLoaders.MzExe;
 using NUnit.Framework;
 using System;
 using System.IO;

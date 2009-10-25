@@ -20,7 +20,7 @@ using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Loading
+namespace Decompiler.Core
 {
 	/// <summary>
 	/// Abstract base class for image loaders. These examine a raw image, and generate a new, relocated image.

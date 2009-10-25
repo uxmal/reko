@@ -32,8 +32,6 @@ namespace Decompiler
 		TextWriter CreateTypesWriter(string filename);				// TextWriter into which the reconstructed types are written.
 		TextWriter CreateDecompiledCodeWriter(string filename);	// Textwriter into which the Data is written
 
-        IProcessorArchitecture GetArchitecture(string architectureName);
-
 		void ProgramLoaded();
 		void ProgramScanned();
 		void MachineCodeRewritten();
@@ -77,10 +75,6 @@ namespace Decompiler
 			throw new Exception("The method or operation is not implemented."); 
 		}
 
-        public IProcessorArchitecture GetArchitecture(string architectureName)
-        {
-            throw new NotImplementedException();
-        }
 		public void ProgramLoaded()
 		{
 			throw new Exception("The method or operation is not implemented.");

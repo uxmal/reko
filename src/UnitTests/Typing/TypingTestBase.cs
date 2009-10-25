@@ -19,7 +19,6 @@
 using Decompiler;
 using Decompiler.Analysis;
 using Decompiler.Arch.Intel;
-using Decompiler.Arch.Intel.MsDos;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;

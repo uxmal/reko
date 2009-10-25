@@ -16,11 +16,12 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Loading
+namespace Decompiler.ImageLoaders.MzExe
 {
 	/// <summary>
 	/// Loads MS-DOS images.

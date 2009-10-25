@@ -16,13 +16,14 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Loading
+namespace Decompiler.ImageLoaders.MzExe
 {
 	/// <summary>
 	/// An image loader that understands the LzExe packing algorithms. 
