@@ -72,6 +72,8 @@ namespace Decompiler.Loading
         public ImageLoader CreateLoaderInstance(Program prog, byte [] bytes)
         {
             Type t = Type.GetType(this.LoaderType);
+            if (t == null)
+                throw new ApplicationException(string.Format("Unable to find loader {0}.", LoaderType));
             ConstructorInfo ci = t.GetConstructor(new Type[] { typeof (Program), typeof(byte[]) });
             return (ImageLoader) ci.Invoke(new object[] { prog, bytes });
         }

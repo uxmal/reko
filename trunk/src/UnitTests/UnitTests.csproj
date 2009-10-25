@@ -321,7 +321,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>xcopy /y /d $(SolutionDir)Arch\Intel\MsDos\*.xml $(TargetDir)
-xcopy /y /d $(SolutionDir)Arch\Intel\Win32\*.xml $(TargetDir)</PreBuildEvent>
+    <PreBuildEvent>xcopy /y /d $(SolutionDir)Environments\MsDos\*.xml $(TargetDir)
+xcopy /y /d $(SolutionDir)Environments\Win32\*.xml $(TargetDir)</PreBuildEvent>
   </PropertyGroup>
 </Project>
