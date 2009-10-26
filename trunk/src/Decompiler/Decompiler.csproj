@@ -338,6 +338,7 @@
       <DependentUpon>StartPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Configuration\ArchitectureSectionHandler.cs" />
+    <Compile Include="Loading\NullLoader.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -378,7 +379,6 @@
     <Compile Include="Gui\Windows\ProgramImageBrowserService.cs" />
     <Compile Include="Loading\AssemblerFragmentLoader.cs" />
     <Compile Include="Loading\AssemblerLoader.cs" />
-    <Compile Include="Loading\ImageLoaderHandler.cs" />
     <Compile Include="Loading\Loader.cs">
       <SubType>Code</SubType>
     </Compile>
