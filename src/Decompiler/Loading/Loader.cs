@@ -52,7 +52,8 @@ namespace Decompiler.Loading
                 if (ImageBeginsWithMagicNumber(rawBytes, e.MagicNumber))
                     return CreateImageLoader(e.TypeName, prog, rawBytes);
             }
-            return null;
+            host.WriteDiagnostic(Diagnostic.Warning, new Address(0), "The format of the file {0} is unknown; you will need to specify it manually.", filename);
+            return new NullLoader(prog, rawBytes);
         }
 
 
@@ -120,8 +121,6 @@ namespace Decompiler.Loading
 		{
 			byte [] rawBytes = LoadImageBytes(filename, 0);
             ImageLoader loader = FindImageLoader(Program, rawBytes);
-            if (loader == null)
-                throw new ApplicationException("File has an unknown executable format.");
 
             if (addrLoad == null)
 			{

@@ -50,21 +50,29 @@ namespace Decompiler.UnitTests.Loading
             Assert.IsTrue(ldr.ImageBeginsWithMagicNumber(new byte[] { 0x47, 0x11 }, "4711"));
         }
 
+        [Test]
+        public void LoadUnknownImageType()
+        {
+            FakeDecompilerHost host = new FakeDecompilerHost();
+            Program prog = new Program();
+            TestLoader ldr = new TestLoader(prog, host);
+            ldr.Image = new byte[] { 42, 42, 42, 42, };
+            DecompilerProject project = ldr.Load(null);
+            Assert.AreEqual("Warning - 00000000: The format of the file test.bin is unknown; you will need to specify it manually." , host.LastDiagnostic);
+            Assert.AreEqual(0, ldr.Program.Image.BaseAddress.Offset);
+            Assert.IsNull(ldr.Program.Architecture);
+            Assert.IsNull(ldr.Program.Platform);
+
+        }
+
 		private class TestLoader : Loader
 		{
 			public TestLoader(Program prog, DecompilerHost host)
-				: base("", prog, host)
+				: base("test.bin", prog, host)
 			{
 			}
 
-			private bool allowLoadExecutable;
 			private byte [] image;
-
-			public bool AllowLoadExecutable
-			{
-				get { return allowLoadExecutable; }
-				set { allowLoadExecutable = value; }
-			}
 
 			public byte [] Image
 			{
@@ -75,12 +83,6 @@ namespace Decompiler.UnitTests.Loading
 			public override byte[] LoadImageBytes(string fileName, int offset)
 			{
 				return image;
-			}
-
-			public override void LoadExecutableFile(string pstrFileName, Address addrLoad)
-			{
-				if (allowLoadExecutable)
-					base.LoadExecutableFile(pstrFileName, addrLoad);
 			}
 
 		}

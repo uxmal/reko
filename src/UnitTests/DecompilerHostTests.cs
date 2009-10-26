@@ -78,6 +78,15 @@ namespace Decompiler.UnitTests
 		}
 
 	}
+    public class FakeDecompilerConfiguration : DecompilerConfiguration
+    {
+        private System.Collections.ArrayList imageLoaders = new System.Collections.ArrayList();
+
+        public override System.Collections.ICollection GetImageLoaders()
+        {
+            return imageLoaders;
+        }
+    }
 
 	public class FakeDecompilerHost : DecompilerHost
 	{
@@ -87,7 +96,7 @@ namespace Decompiler.UnitTests
 		private StringWriter disassembly = new StringWriter();
 		private StringWriter decompiled = new StringWriter();
 		private StringWriter typesWriter = new StringWriter();
-        private DecompilerConfiguration config = new DecompilerConfiguration();
+        private DecompilerConfiguration config = new FakeDecompilerConfiguration();
 
 		public void WriteDiagnostic(Diagnostic d, Address addr, string format, params object[] args)
 		{
