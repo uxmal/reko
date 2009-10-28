@@ -123,6 +123,108 @@ namespace Decompiler.UnitTests.Core.Output
             VerifyTest(sExp); 
         }
 
+        [Test]
+        public void Declaration()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                Identifier id = m.Local16("id");
+                m.Declare(id, m.Word16(0x1234));
+                m.Return();
+            });
+            string sExp = 
+"public class MockProcedure : ProcedureMock" + nl + 
+"{" + nl + 
+"    Identifier id = Local(PrimitiveType.Word16, \"id\");" + nl + 
+"    " + nl + 
+"    Label(\"l1\");" + nl + 
+"    Declare(id, Word16(0x1234));" + nl + 
+"    Return();" + nl + 
+"}" + nl + 
+"" + nl;
+            VerifyTest(sExp);
+        }
+
+        [Test]
+        public void Application()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                Identifier inp = m.Local32("inp");
+                Identifier outp = m.Local32("outp");
+                m.Assign(inp, 0);
+                m.Assign(inp, m.Fn("foo", inp, m.AddrOf(outp)));
+                m.Return();
+            });
+            string sExp =
+"public class MockProcedure : ProcedureMock" + nl + 
+"{" + nl + 
+"    Identifier inp = Local(PrimitiveType.Word32, \"inp\");" + nl + 
+"    Identifier outp = Local(PrimitiveType.Word32, \"outp\");" + nl + 
+"    " + nl + 
+"    Label(\"l1\");" + nl + 
+"    Assign(inp, Word32(0x0));" + nl + 
+"    Assign(inp, Fn(\"foo\", inp, AddrOf(outp)));" + nl + 
+"    Return();" + nl + 
+"}" + nl + 
+"" + nl;
+            VerifyTest(sExp);
+        }
+
+        [Test]
+        public void SelectorSideEffect()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                Identifier es = m.Local(PrimitiveType.SegmentSelector, "es");
+                m.SideEffect(m.Fn("foo", es));
+            });
+            string sExp = 
+"public class MockProcedure : ProcedureMock" + nl + 
+"{" + nl + 
+"    Identifier es = Local(PrimitiveType.SegmentSelector, \"es\");" + nl + 
+"    " + nl + 
+"    Label(\"l1\");" + nl + 
+"    SideEffect(Fn(\"foo\", es));" + nl + 
+"}" + nl + 
+"" + nl;
+            VerifyTest(sExp);
+
+        }
+
+        [Test]
+        public void Branch()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                Identifier i = m.Local(PrimitiveType.Int32, "i");
+
+                m.BranchIf(m.Eq(i, 0), "skip");
+                m.Label("fade");
+                m.Store(m.Word32(0x123456), i);
+                m.Label("skip");
+                m.Return(i);
+            });
+            string sExp = 
+"public class MockProcedure : ProcedureMock" + nl + 
+"{" + nl + 
+"    Identifier i = Local(PrimitiveType.Int32, \"i\");" + nl + 
+"    " + nl + 
+"    Label(\"l1\");" + nl + 
+"    BranchIf(Eq(i, new Constant(Primitive.Int32, 0x0)), \"skip\");" + nl + 
+"    " + nl + 
+"    Label(\"fade\");" + nl + 
+"    Store(Word32(0x123456), i);" + nl + 
+"    " + nl + 
+"    Label(\"skip\");" + nl + 
+"    Return(i);" + nl + 
+"}" + nl + 
+"" + nl;
+
+            VerifyTest(sExp);
+
+        }
+
         private void CompileTest(Action<ProcedureMock> buildMock)
         {
             ProcedureMock m = new ProcedureMock();

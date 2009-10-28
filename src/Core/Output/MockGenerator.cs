@@ -30,10 +30,18 @@ namespace Decompiler.Core.Output
     public class MockGenerator : InstructionVisitor, IExpressionVisitor, IDataTypeVisitor
     {
         private IndentingTextWriter writer;
+        private Dictionary<Operator, string> mpopstr;
 
         public MockGenerator(TextWriter writer)
         {
             this.writer = new IndentingTextWriter(writer, false, 4);
+            this.mpopstr = new Dictionary<Operator, string>();
+            mpopstr.Add(Operator.add, "Add");
+            mpopstr.Add(Operator.eq, "Eq");
+            mpopstr.Add(Operator.mul, "Mul");
+            mpopstr.Add(Operator.muls, "Muls");
+            mpopstr.Add(Operator.mulu, "Mulu");
+            mpopstr.Add(Operator.sub, "Sub");
         }
 
         private IEnumerable<Identifier> CollectLocalIdentifiers(Procedure proc)
@@ -144,7 +152,11 @@ namespace Decompiler.Core.Output
 
         void InstructionVisitor.VisitBranch(Branch b)
         {
-            throw new Exception("The method or operation is not implemented.");
+            writer.Write("BranchIf(");
+            b.Condition.Accept(this);
+            writer.Write(", \"");
+            writer.Write(b.Target.Name);
+            writer.WriteLine("\");");
         }
 
         void InstructionVisitor.VisitCallInstruction(CallInstruction ci)
@@ -154,7 +166,11 @@ namespace Decompiler.Core.Output
 
         void InstructionVisitor.VisitDeclaration(Declaration decl)
         {
-            throw new Exception("The method or operation is not implemented.");
+            writer.Write("Declare(");
+            writer.Write(decl.Identifier.Name);
+            writer.Write(", ");
+            decl.Expression.Accept(this);
+            writer.WriteLine(");");
         }
 
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
@@ -184,7 +200,9 @@ namespace Decompiler.Core.Output
 
         void InstructionVisitor.VisitSideEffect(SideEffect side)
         {
-            throw new Exception("The method or operation is not implemented.");
+            writer.Write("SideEffect(");
+            side.Expression.Accept(this);
+            writer.WriteLine(");");
         }
 
         void InstructionVisitor.VisitStore(Store store)
@@ -220,7 +238,14 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitApplication(Application appl)
         {
-            throw new Exception("The method or operation is not implemented.");
+            writer.Write("Fn(");
+            appl.Procedure.Accept(this);
+            foreach (Expression arg in appl.Arguments)
+            {
+                writer.Write(", ");
+                arg.Accept(this);
+            }
+            writer.Write(")");
         }
 
         void IExpressionVisitor.VisitArrayAccess(ArrayAccess acc)
@@ -230,30 +255,10 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitBinaryExpression(BinaryExpression binExp)
         {
-            if (binExp.op == Operator.add)
-            {
-                writer.Write("Add");
-            }
-            else if (binExp.op == Operator.mul)
-            {
-                writer.Write("Mul");
-            }
-            else if (binExp.op == Operator.muls)
-            {
-                writer.Write("Muls");
-            }
-            else if (binExp.op == Operator.mulu)
-            {
-                writer.Write("Mulu");
-            }
-            else if (binExp.op == Operator.sub)
-            {
-                writer.Write("Sub");
-            }
-
-            else
-                throw new NotImplementedException();
-
+            string str;
+            if (!mpopstr.TryGetValue(binExp.op, out str))
+                throw new NotImplementedException(binExp.op.ToString());
+            writer.Write(str);
             writer.Write("(");
             binExp.Left.Accept(this);
             writer.Write(", ");
@@ -273,9 +278,17 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitConstant(Constant c)
         {
-            if (c.DataType.Size == 4)
+            if (c.DataType == PrimitiveType.Word32)
             {
                 writer.Write("Word32(");
+
+            }
+            else if (c.DataType==PrimitiveType.Int32)
+            {
+                writer.Write("new Constant(Primitive.Int32, ");
+            } else if (c.DataType == PrimitiveType.Word16)
+            {
+                writer.Write("Word16(");
             }
             else
             {
@@ -337,7 +350,9 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitProcedureConstant(ProcedureConstant pc)
         {
-            throw new Exception("The method or operation is not implemented.");
+            writer.Write("\"");
+            writer.Write(pc.Procedure.Name);
+            writer.Write("\"");
         }
 
         void IExpressionVisitor.VisitScopeResolution(ScopeResolution scopeResolution)
@@ -362,7 +377,12 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitUnaryExpression(UnaryExpression unary)
         {
-            throw new Exception("The method or operation is not implemented.");
+            if (unary.op == Operator.addrOf)
+                writer.Write("AddrOf(");
+            else
+                throw new NotImplementedException(unary.ToString());
+            unary.Expression.Accept(this);
+            writer.Write(")");
         }
 
         #endregion
@@ -389,8 +409,14 @@ namespace Decompiler.Core.Output
             writer.Write("PrimitiveType.");
             if (pt == PrimitiveType.Word32)
                 writer.Write("Word32");
+            else if (pt == PrimitiveType.Int32)
+                writer.Write("Int32");
+            else if (pt == PrimitiveType.Word16)
+                writer.Write("Word16");
             else if (pt == PrimitiveType.Byte)
                 writer.Write("Byte");
+            else if (pt == PrimitiveType.SegmentSelector)
+                writer.Write("SegmentSelector");
             else
                 throw new NotSupportedException(pt.ToString());
         }
