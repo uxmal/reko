@@ -327,7 +327,7 @@ namespace Decompiler.Arch.Intel
 			} 
 			else if (arch.WordWidth == PrimitiveType.Word32)
 			{
-				System.Diagnostics.Debug.Assert(segBase == 0);
+				Debug.Assert(segBase == 0);
 				return new Address(rdr.ReadLeUint32());
 			}
 			else 

@@ -30,8 +30,8 @@ namespace Decompiler.Core
 	public class CallGraph
 	{
 		private List<Procedure> entryPoints = new List<Procedure>();	
-		private DirectedGraph<Procedure> graphProcs = new DirectedGraph<Procedure>();
-		private DirectedGraph<object> graphStms = new DirectedGraph<object>();
+		private DirectedGraphImpl<Procedure> graphProcs = new DirectedGraphImpl<Procedure>();
+		private DirectedGraphImpl<object> graphStms = new DirectedGraphImpl<object>();
 
 		public void AddEdge(Statement stmCaller, Procedure callee)
 		{

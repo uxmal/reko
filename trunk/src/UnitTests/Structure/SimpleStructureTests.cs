@@ -110,7 +110,14 @@ namespace Decompiler.UnitTests.Structure
 			RunTest(new Reg00011Mock(), "Structure/StrReg00011.txt");
 		}
 
-		private void RunTest(string sourceFilename, string outFilename)
+        [Test]
+        public void StrReg00013()
+        {
+            RunTest("Fragments/regressions/r00013.asm", "Structure/StrReg00013.txt");
+        }
+
+
+        private void RunTest(string sourceFilename, string outFilename)
 		{
 			RunTest(sourceFilename, outFilename, new Address(0xC00, 0));
 		}

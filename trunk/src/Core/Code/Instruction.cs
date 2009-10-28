@@ -79,7 +79,7 @@ namespace Decompiler.Core.Code
 	
 	public class ReturnInstruction : Instruction
 	{
-        public Expression expr;
+        private Expression expr;
 
         public Expression Expression
         {

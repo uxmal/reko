@@ -26,13 +26,13 @@ namespace Decompiler.Core.Lib
     /// </summary>
     public class DfsIterator<T>
     {
+        private DirectedGraph<T> graph;
         private HashSet<T> visited = new HashSet<T>();
-        private Converter<T, IEnumerable<T>> getSuccessors;
 
-        public DfsIterator(Converter<T, IEnumerable<T>> getSuccessors)
+        public DfsIterator(DirectedGraph<T> graph)
         {
+            this.graph = graph;
             this.visited = new HashSet<T>();
-            this.getSuccessors = getSuccessors;
         }
 
         public IEnumerable<T> PreOrder(T item)
@@ -40,7 +40,7 @@ namespace Decompiler.Core.Lib
             Stack<IEnumerator<T>> stack = new Stack<IEnumerator<T>>();
             visited.Add(item);
             yield return item;
-            stack.Push(getSuccessors(item).GetEnumerator());
+            stack.Push(graph.Successors(item).GetEnumerator());
             while (stack.Count > 0)
             {
                 IEnumerator<T> cur = stack.Pop();
@@ -52,7 +52,7 @@ namespace Decompiler.Core.Lib
                     {
                         visited.Add(succ);
                         yield return succ;
-                        stack.Push(getSuccessors(succ).GetEnumerator());
+                        stack.Push(graph.Successors(succ).GetEnumerator());
                     }
                 }
             }
@@ -69,7 +69,7 @@ namespace Decompiler.Core.Lib
         {
             Stack<PostOrderItem> stack = new Stack<PostOrderItem>();
             visited.Add(item);
-            stack.Push(new PostOrderItem(item, getSuccessors(item).GetEnumerator()));
+            stack.Push(new PostOrderItem(item, graph.Successors(item).GetEnumerator()));
             while (stack.Count > 0)
             {
                 PostOrderItem cur = stack.Pop();
@@ -80,7 +80,7 @@ namespace Decompiler.Core.Lib
                     if (!visited.Contains(succ))
                     {
                         visited.Add(succ);
-                        stack.Push(new PostOrderItem(succ, getSuccessors(succ).GetEnumerator()));
+                        stack.Push(new PostOrderItem(succ, graph.Successors(succ).GetEnumerator()));
                     }
                 }
                 else
@@ -90,12 +90,5 @@ namespace Decompiler.Core.Lib
 
             }
         }
-
-
-        public virtual IEnumerable<T> GetSuccessors(T item)
-        {
-            return null;
-        }
-
     }
 }

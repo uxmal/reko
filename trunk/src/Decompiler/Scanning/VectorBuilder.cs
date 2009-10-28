@@ -34,9 +34,9 @@ namespace Decompiler.Scanning
 		private ImageMap imageMap;
 		private int cbTable;
 		private BackWalker bw;
-		private DirectedGraph<object> jumpGraph;        //$TODO:
+		private DirectedGraphImpl<object> jumpGraph;        //$TODO:
 
-		public VectorBuilder(Program prog, ImageMap imageMap, DirectedGraph<object> jumpGraph)
+		public VectorBuilder(Program prog, ImageMap imageMap, DirectedGraphImpl<object> jumpGraph)
 		{
 			this.prog = prog;
 			this.imageMap = imageMap;

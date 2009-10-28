@@ -182,7 +182,7 @@ namespace Decompiler.Gui.Windows.Forms
             } 
 			catch (Exception ex)
 			{
-				uiSvc.ShowError("Couldn't open file '{0}'. {1}", file, ex.Message + ex.StackTrace);
+				uiSvc.ShowError("Couldn't open file '{0}'. {1}", file, ex.Message);
 			}
 		}
 

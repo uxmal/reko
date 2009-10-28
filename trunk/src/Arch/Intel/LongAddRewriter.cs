@@ -42,6 +42,18 @@ namespace Decompiler.Arch.Intel
 			this.state = state;
 		}
 
+        public void EmitInstruction(BinaryOperator op, CodeEmitter emitter)
+        {
+            BinaryExpression b = new BinaryExpression(op, dst.DataType, dst, src);
+            if (useStore)
+            {
+                emitter.Store((MemoryAccess) dst.CloneExpression(), b);
+            }
+            else
+                emitter.Assign((Identifier) dst, b);
+        }
+
+        [Obsolete]
 		public Instruction CreateInstruction(BinaryOperator op)
 		{
 			BinaryExpression b = new BinaryExpression(op, dst.DataType, dst, src);

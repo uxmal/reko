@@ -423,7 +423,7 @@ namespace Decompiler.Assemblers.x86
 		{
 			Expect(Token.ID);
             string externSymbol = lexer.StringLiteral;
-            asm.Extern(externSymbol);
+            asm.Extern(externSymbol, emitter.SegmentAddressWidth);     //$REVIEW: doesn't take into account NEAR, FAR for real mode.
 			lexer.SkipUntil(Token.EOL);
 		}
 
@@ -838,10 +838,13 @@ namespace Decompiler.Assemblers.x86
 			case Token.MOV:
 				ProcessMov();
 				break;
-			case Token.MOVSB:
-				asm.ProcessStringInstruction(0xA4, PrimitiveType.Byte);
-				break;
-			case Token.MOVSW:
+            case Token.MOVSB:
+                asm.ProcessStringInstruction(0xA4, PrimitiveType.Byte);
+                break;
+            case Token.MOVSD:
+                asm.ProcessStringInstruction(0xA4, PrimitiveType.Word32);
+                break;
+            case Token.MOVSW:
                 asm.ProcessStringInstruction(0xA4, PrimitiveType.Word16);
 				break;
 			case Token.MOVSX:
@@ -949,7 +952,10 @@ namespace Decompiler.Assemblers.x86
 			case Token.TITLE:
 				ProcessTitle();
 				break;
-			case Token.XOR:
+            case Token.XCHG:
+                ProcessXchg();
+                break;
+            case Token.XOR:
 				ProcessBinop(0x06);
 				break;
 			case Token.CMP:
@@ -1057,5 +1063,10 @@ namespace Decompiler.Assemblers.x86
             asm.Fstsw(ops[0]);
         }
 
+        private void ProcessXchg()
+        {
+            ParsedOperand[] ops = ParseOperandList(2);
+            asm.Xchg(ops);
+        }
     }
 }

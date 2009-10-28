@@ -35,7 +35,7 @@ namespace Decompiler.Core
 	{
 		private List<AbsynStatement> body;
 		private List<Block> rpoBlocks;
-        private DirectedGraph<Block> controlGraph;
+        private DirectedGraphImpl<Block> controlGraph;
 		private Block blockEntry;
 		private Block blockExit;
 		private Frame frame;
@@ -46,7 +46,7 @@ namespace Decompiler.Core
 		{
             this.body = new List<AbsynStatement>();
 			this.rpoBlocks = new List<Block>();
-            this.controlGraph = new DirectedGraph<Block>();
+            this.controlGraph = new DirectedGraphImpl<Block>();
 			this.frame = frame;
 			this.signature = new ProcedureSignature();
 			this.blockEntry = AddBlock(Name + "_entry");		// Entry block

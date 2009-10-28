@@ -24,13 +24,20 @@ namespace Decompiler.Core.Code
 	public abstract class CallBase : Instruction
 	{
 		protected Expression expr;
-		protected CallSite site;
+		private CallSite site;
 
-		public CallBase(Expression expr, int stackDepth, int fpuStackDepth)
+		public CallBase(Expression expr, CallSite site)
 		{
 			this.expr = expr;
-			this.site = new CallSite(stackDepth, fpuStackDepth);
+            this.site = site;
 		}
+
+        [Obsolete("", true)]
+        public CallBase(Expression expr, int stackDepth, int fpuStackDepth)
+        {
+            this.expr = expr;
+            this.site = new CallSite(stackDepth, fpuStackDepth);
+        }
 
 		public CallSite CallSite
 		{
@@ -41,6 +48,11 @@ namespace Decompiler.Core.Code
 	public class IndirectCall : CallBase
 	{
 
+        public IndirectCall(Expression expr, CallSite site) : base(expr, site)
+        {
+        }
+
+        [Obsolete("", true)]
 		public IndirectCall(Expression expr, int stackDepth, int fpuStackDepth) : base(expr, stackDepth, fpuStackDepth)
 		{
 		}
@@ -71,8 +83,15 @@ namespace Decompiler.Core.Code
 	{
 		private Procedure proc;
 
+        [Obsolete("", true)]
         public CallInstruction(ProcedureConstant pc, int stackDepth, int fpuStackDepth)
             : base(pc, stackDepth, fpuStackDepth)
+        {
+            this.proc = (Procedure) pc.Procedure;
+        }
+
+        public CallInstruction(ProcedureConstant pc, CallSite site)
+            : base(pc, site)
         {
             this.proc = (Procedure) pc.Procedure;
         }

@@ -247,6 +247,23 @@ foo		endp
 			}
 		}
 
+        [Test]
+        public void MovMemoryToSegmentRegister()
+        {
+            Program prog = new Program();
+            asm.AssembleFragment(prog, new Address(0x0C00, 0),
+                "    mov es,[0x4080]\r\n");
+            Assert.IsTrue(Compare(asm.Image.Bytes, new byte[] { 0x8E, 0x06, 0x80, 0x40 }));
+        }
+
+        [Test]
+        public void XchgMem()
+        {
+            Program prog = new Program();
+            asm.AssembleFragment(prog, new Address(0x0C00, 0), "xchg word ptr [0x1234],bx\r\n");
+            Assert.IsTrue(Compare(asm.Image.Bytes, new byte[] { 0x87, 0x1E, 0x34, 0x12 }));
+        }
+
 		[Test]
 		public void AsJa()
 		{

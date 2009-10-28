@@ -311,6 +311,12 @@ namespace Decompiler.Structure
             set { revOrd = value; }
         }
 
+        public override string ToString()
+        {
+            StringWriter sw = new StringWriter();
+            Write(sw);
+            return sw.ToString();
+        }
 
         private bbType TypeOfBlock(Block block)
         {

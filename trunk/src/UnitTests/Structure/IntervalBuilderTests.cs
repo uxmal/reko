@@ -10,9 +10,8 @@ namespace Decompiler.UnitTests.Structure
 {
 
     [TestFixture]
-    public class IntervalBuilderTests
+    public class IntervalBuilderTests : StructureTestBase
     {
-
         private DerivedGraph g;
         private ProcedureStructure ph;
 
@@ -120,5 +119,6 @@ namespace Decompiler.UnitTests.Structure
             g.cfg = ph.EntryNode;
             ib.BuildIntervals(g);
         }
+
     }
 }

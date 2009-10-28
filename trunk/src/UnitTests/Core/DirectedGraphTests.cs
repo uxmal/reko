@@ -31,9 +31,9 @@ namespace Decompiler.UnitTests.Core
 		{
 		}
 
-		private DirectedGraph<string> CreateAcyclicGraph()
+		private DirectedGraphImpl<string> CreateAcyclicGraph()
 		{
-			DirectedGraph<string> gr = new DirectedGraph<string>();
+			DirectedGraphImpl<string> gr = new DirectedGraphImpl<string>();
 			gr.AddNode("0");
 			gr.AddNode("1");
 			gr.AddNode("2");
@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Core
 			return gr;
 		}
 
-		private string DumpGraph(DirectedGraph<string> gr)
+		private string DumpGraph(DirectedGraphImpl<string> gr)
 		{
 			StringBuilder sb = new StringBuilder();
 			foreach (string n in gr.Nodes)
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void SimpleGraph()
 		{
-			DirectedGraph<string> gr = CreateAcyclicGraph();
+			DirectedGraphImpl<string> gr = CreateAcyclicGraph();
 			string sExp = "(0 s:(1 2 ) p:( )) (1 s:(2 ) p:( 0 2 )) (2 s:(1 ) p:( 0 1 )) ";
 			string s = DumpGraph(gr);
 
@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void ModifyGraph()
 		{
-			DirectedGraph<string> gr = CreateAcyclicGraph();
+			DirectedGraphImpl<string> gr = CreateAcyclicGraph();
 
 			gr.AddNode("3");
 			gr.AddEdge("0", "3");

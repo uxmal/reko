@@ -162,7 +162,8 @@ namespace Decompiler.Assemblers.x86
 			keywords["lss"] = Token.LSS;
 
 			keywords["mov"] = Token.MOV;
-			keywords["movsb"] = Token.MOVSB;
+            keywords["movsb"] = Token.MOVSB;
+            keywords["movsd"] = Token.MOVSD;
 			keywords["movsw"] = Token.MOVSW;
 			keywords["movsx"] = Token.MOVSX;
 			keywords["movzx"] = Token.MOVZX;
@@ -200,6 +201,7 @@ namespace Decompiler.Assemblers.x86
 			keywords["test"] = Token.TEST;
 			keywords["title"] = Token.TITLE;
 			keywords["word"] = Token.WORD;
+            keywords["xchg"] = Token.XCHG;
 			keywords["xor"] = Token.XOR;
 		}
 

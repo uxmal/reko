@@ -107,6 +107,7 @@
     <Compile Include="Core\Lib\DisjointPartitionTests.cs" />
     <Compile Include="Core\MapTests.cs" />
     <Compile Include="Core\OperatorTests.cs" />
+    <Compile Include="Core\Output\MockGeneratorTests.cs" />
     <Compile Include="Core\PrimitiveTypeTests.cs" />
     <Compile Include="Core\ProcedureSignatureTests.cs" />
     <Compile Include="Core\ProcedureTests.cs" />
