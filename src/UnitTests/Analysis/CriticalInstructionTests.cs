@@ -95,13 +95,13 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void TestCallInstruction()
 		{
-			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(null, null), 0, 0)));
+			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(null, null), new CallSite(0, 0))));
 		}
 
 		[Test]
 		public void TestIndirectCall()
 		{
-			Assert.IsTrue(ci.IsCritical(new IndirectCall(null, 0, 0)));
+			Assert.IsTrue(ci.IsCritical(new IndirectCall(null, new CallSite(0, 0))));
 		}
 
 		[Test]

@@ -30,12 +30,61 @@ namespace Decompiler.Core
 	/// </summary>
 	public class ApplicationBuilder
 	{
-		private Frame frame;
+        private Identifier idOut;
+        private Application appl;
+        [Obsolete] Frame frame;
 
+        [Obsolete]
 		public ApplicationBuilder(Frame f)
 		{
 			this.frame = f;
 		}
+
+        public ApplicationBuilder(Frame frame, CallSite cs, IProcessorArchitecture arch, Expression callee, ProcedureSignature sigCallee)
+        {
+            this.frame = frame;
+			if (sigCallee == null || !sigCallee.ArgumentsValid)
+				throw new InvalidOperationException("No signature available; application cannot be constructed.");
+
+			List<Expression> actuals = new List<Expression>();
+
+			idOut = null;
+			if (sigCallee.ReturnValue != null)
+			{
+				idOut = Bind(sigCallee.ReturnValue, cs);
+			}
+
+			for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
+			{
+				Identifier formalArg = sigCallee.FormalArguments[i];
+				Identifier actualArg = formalArg.Storage.BindFormalArgumentToFrame(frame, cs);
+				if (formalArg.Storage is OutArgumentStorage)
+				{
+					actuals.Add(new UnaryExpression(UnaryOperator.addrOf, arch.FramePointerType, actualArg));
+				}
+				else
+				{
+					actuals.Add(actualArg);
+				}
+			}
+
+			appl = new Application(
+                callee, 
+                (idOut == null ? PrimitiveType.Void : idOut.DataType),
+                actuals.ToArray());
+        }
+
+        public Instruction Emit(CodeEmitter emitter)
+        {
+			if (idOut == null)
+			{
+                return emitter.SideEffect(appl);
+			}
+			else
+			{
+                return emitter.Assign(idOut, appl);
+			}
+        }
 
 		public Identifier Bind(Identifier id, CallSite cs)
 		{
@@ -57,6 +106,7 @@ namespace Decompiler.Core
 		/// </remarks>
 		/// <param name="callee"></param>
 		/// <returns></returns>
+        [Obsolete]
 		public Instruction BuildApplication(CallSite cs, IProcessorArchitecture arch, Expression callee, ProcedureSignature sigCallee)
 		{
 			if (sigCallee == null || !sigCallee.ArgumentsValid)

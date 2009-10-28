@@ -174,7 +174,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Statement Call(string procedureName)
 		{
-			CallInstruction ci = new CallInstruction(null, 0, 0);
+			CallInstruction ci = new CallInstruction(null, new CallSite(0, 0));
 			unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
 			return Emit(ci);
 		}
@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Mocks
 		public Statement Call(Procedure callee)
 		{
             ProcedureConstant c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
-			CallInstruction ci = new CallInstruction(c, 0, 0);
+			CallInstruction ci = new CallInstruction(c, new CallSite(0, 0));
 			return Emit(ci);
 		}
 
@@ -467,7 +467,12 @@ namespace Decompiler.UnitTests.Mocks
 			return new BinaryExpression(Operator.muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
 		}
 
-		public Expression Mulu(Expression left, int c)
+        public Expression Mulu(Expression left, Expression right)
+        {
+            return new BinaryExpression(Operator.mulu, left.DataType, left, right);
+        }
+
+        public Expression Mulu(Expression left, int c)
 		{
 			return new BinaryExpression(Operator.mulu, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
 		}

@@ -53,7 +53,6 @@ namespace Decompiler.Typing
         {
             List<StructureType> types = new List<StructureType>();
             int commonOffset = CommonOffset(fields);
-            Console.WriteLine("Common offset: {0}, {1} fields", commonOffset, fields.Count);
             StructureField field;
             WorkList<StructureField> worklist = new WorkList<StructureField>(fields);
             while (worklist.GetWorkItem(out field))

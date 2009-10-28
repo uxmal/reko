@@ -56,7 +56,7 @@ namespace Decompiler.Core.Output
 			if (tabStops < 0)
 			{
 				tabStops = 0;
-				throw new InvalidOperationException("Can't have a negative indentation");
+				throw new InvalidOperationException("Can't have a negative indentation.");
 			}
 			MakePrefix();
 		}

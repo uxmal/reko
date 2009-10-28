@@ -100,7 +100,7 @@ namespace Decompiler.Structure
             set { name = value; }
         }
 
-        public List<Decompiler.Structure.DerivedGraph> DerivedGraphs
+        public List<DerivedGraph> DerivedGraphs
         {
             get { return derivedGraphs; }
         }
@@ -185,6 +185,24 @@ namespace Decompiler.Structure
                 WriteNode(s, visited, writer);
             }
         }
+
+        [Conditional("DEBUG")]
+        public void DumpDerivedSequence(TextWriter writer)
+        {
+            WriteDerivedSequence(Console.Out);
+        }
+
+        [Conditional("DEBUG")]
+        public void WriteDerivedSequence(TextWriter writer)
+        {
+            for (int i = 0; i < this.derivedGraphs.Count; ++i)
+            {
+                writer.WriteLine("Graph level {0}", i);
+                derivedGraphs[i].Write(writer);
+            }
+
+        }
+
 
     }
 }

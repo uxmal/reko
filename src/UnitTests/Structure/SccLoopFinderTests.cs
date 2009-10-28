@@ -10,7 +10,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Structure
 {
     [TestFixture]
-    public class SccLoopFinderTests
+    public class SccLoopFinderTests : StructureTestBase
     {
         [Test]
         public void FindNoLoopInInterval()
@@ -75,25 +75,56 @@ namespace Decompiler.UnitTests.Structure
             Assert.IsTrue(loopNodes.Contains(proc.Nodes[2]));
         }
 
+        [Test]
+        public void Reg00013()
+        {
+            ProcedureStructure proc = CompileTest("Fragments/regressions/r00013.asm");
+
+            for (int j = 0; j < proc.DerivedGraphs.Count; ++j)
+            {
+                for (int i = 0; i < proc.DerivedGraphs[j].Intervals.Count; ++i)
+                {
+                    IntNode interval = proc.DerivedGraphs[0].Intervals[i];
+                    Console.WriteLine("Interval #{0}: {1}", i, proc.DerivedGraphs[j].Intervals[i]);
+                    SccLoopFinder finder = CreateSccLoopFinder(proc, interval, j);
+                    HashSet<StructureNode> loopNodes = finder.FindLoop();
+                    StructureNode[] items = loopNodes.ToArray();
+                    Array.Sort<StructureNode>(items, delegate(StructureNode a, StructureNode b) { return string.Compare(a.Name, b.Name); });
+                    foreach (StructureNode sn in items)
+                    {
+                        Console.Out.Write(sn.Name + " ");
+                    }
+                    Console.Out.WriteLine();
+                }
+            }
+        }
+
         private ProcedureStructure CompileTest(ProcGenerator g)
         {
             ProcedureMock m = new ProcedureMock();
             g(m);
-            return CompileTest(m);
+            return CompileTest(m.Procedure);
         }
 
-        private ProcedureStructure CompileTest(ProcedureMock m)
+        private ProcedureStructure CompileTest(Procedure proc)
         {
-            m.Procedure.RenumberBlocks();
-            ProcedureStructureBuilder g = new ProcedureStructureBuilder(m.Procedure);
+            proc.RenumberBlocks();
+            ProcedureStructureBuilder g = new ProcedureStructureBuilder(proc);
             g.BuildNodes();
             g.DefineEdges();
-            ProcedureStructure proc = g.CreateProcedureStructure();
+            ProcedureStructure ps = g.CreateProcedureStructure();
             g.SetTimeStamps();
 
             DerivedSequenceBuilder gr = new DerivedSequenceBuilder();
-            gr.BuildDerivedSequence(proc);
-            return proc;
+            gr.BuildDerivedSequence(ps);
+            return ps;
         }
+
+        private ProcedureStructure CompileTest(string asmfile)
+        {
+            RewriteProgram(asmfile, new Address(0x0C00, 0));
+            return CompileTest(prog.Procedures.Values[0]);
+        }
+
     }
 }

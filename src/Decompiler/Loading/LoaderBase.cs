@@ -47,6 +47,7 @@ namespace Decompiler.Loading
 
         public abstract DecompilerProject Load(Address userSpecifiedAddress);
 
+        [Obsolete("")]
         public Program Program
         {
             get { return prog; }

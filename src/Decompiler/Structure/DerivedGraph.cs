@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Structure
@@ -34,21 +35,25 @@ namespace Decompiler.Structure
             get { return intervals; }
         }
 
-        public void DisplayIntervals()
+        public void Dump()
+        {
+            Write(Console.Out);
+        }
+
+        public void Write(TextWriter writer)
         {
             foreach (IntNode curInt in intervals)
             {
-                Console.Out.WriteLine("   Interval #{0}:", curInt.Ident());
+                writer.WriteLine("   Interval #{0}:", curInt.Ident());
 
                 for (int j = 0; j < curInt.Nodes.Count; j++)
                 {
                     StructureNode curNode = curInt.Nodes[j];
-                    Console.Out.Write("      ");
-                    Console.Out.Write((curNode.BlockType != bbType.intNode) ? "BB node #" : "IntNode #");
-                    Console.Out.WriteLine((curNode.BlockType != bbType.intNode) ? curNode.Order : curNode.Ident());
+                    writer.Write("      ");
+                    writer.Write((curNode.BlockType != bbType.intNode) ? "BB node #" : "IntNode #");
+                    writer.WriteLine((curNode.BlockType != bbType.intNode) ? curNode.Order : curNode.Ident());
                 }
             }
         }
-
     }
 }

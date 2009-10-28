@@ -128,7 +128,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void CallInstruction()
 		{
             Procedure callee = new Procedure("Callee", prog.Architecture.CreateFrame());
-            CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), 0, 0);
+            CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(0, 0));
 			ProgramDataFlow flow = new ProgramDataFlow();
 			ProcedureFlow pf = new ProcedureFlow(callee, prog.Architecture);
 			pf.TrashedRegisters[Registers.ebx.Number] = true;

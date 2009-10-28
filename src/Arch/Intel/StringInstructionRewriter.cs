@@ -71,8 +71,8 @@ namespace Decompiler.Arch.Intel
 				case Opcode.movsb:
 				{
 					Identifier tmp = orw.CreateTemporary(instrCur.dataWidth);
-					emitter.Emit(new Assignment(tmp, MemSi()));
-					emitter.Emit(new Store(MemDi(), tmp));
+					emitter.Assign(tmp, MemSi());
+					emitter.Store(MemDi(), tmp);
 					incSi = true;
 					incDi = true;
 					break;
@@ -81,7 +81,7 @@ namespace Decompiler.Arch.Intel
 				case Opcode.insb:
 				{
 					Identifier regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
-					emitter.Emit(new Store(MemDi(), emitter.PseudoProc("__in", instrCur.dataWidth, regDX)));
+					emitter.Store(MemDi(), emitter.PseudoProc("__in", instrCur.dataWidth, regDX));
 					incDi = true;
 					break;
 				}
@@ -106,7 +106,7 @@ namespace Decompiler.Arch.Intel
 					break;
 				case Opcode.stos:
 				case Opcode.stosb:
-					emitter.Emit(new Store(MemDi(), RegAl));
+                    emitter.Store(MemDi(), RegAl);
 					incDi = true;
 					break;
 			}

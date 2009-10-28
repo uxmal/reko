@@ -124,8 +124,10 @@ namespace Decompiler.UnitTests.Core
 
 			CallSite cs = new CallSite(stack + f.ReturnAddressSize, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
-			ApplicationBuilder ab = new ApplicationBuilder(f);
-			Instruction instr = ab.BuildApplication(cs, new IntelArchitecture(ProcessorMode.Real), fn, sig);
+            Procedure proc = new Procedure("test", f);
+            CodeEmitter emitter = new CodeEmitter(new IntelArchitecture(ProcessorMode.Real), null, proc, new Block(proc, "@"));
+			ApplicationBuilder ab = new ApplicationBuilder(f, cs, new IntelArchitecture(ProcessorMode.Real), fn, sig);
+            Instruction instr = ab.Emit(emitter);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
 			{
 				f.Write(fut.TextWriter);

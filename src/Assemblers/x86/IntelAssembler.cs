@@ -369,13 +369,23 @@ namespace Decompiler.Assemblers.x86
                 byte reg = RegisterEncoding(regOpDst.Register);
                 if (regOpDst.Register is SegmentRegister)
                 {
-                    if (regOpSrc.Register is SegmentRegister)
-                        Error("Cannot assign between two segment registers");
-                    if (ops[1].Operand.Width != PrimitiveType.Word16)
-                        Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
-                    emitter.EmitOpcode(0x8E, PrimitiveType.Word16);
-                    EmitModRM(reg, ops[1]);
-                    return;
+                    if (regOpSrc != null)
+                    {
+                        if (regOpSrc.Register is SegmentRegister)
+                            Error("Cannot assign between two segment registers");
+                        if (ops[1].Operand.Width != PrimitiveType.Word16)
+                            Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
+                        emitter.EmitOpcode(0x8E, PrimitiveType.Word16);
+                        EmitModRM(reg, ops[1]);
+                        return;
+                    }
+                    MemoryOperand mopSrc = ops[1].Operand as MemoryOperand;
+                    if (mopSrc != null)
+                    {
+                        emitter.EmitOpcode(0x8E, PrimitiveType.Word16);
+                        EmitModRM(reg, mopSrc, ops[1].Symbol);
+                        return;
+                    }
                 }
 
                 if (regOpSrc != null && regOpSrc.Register is SegmentRegister)
@@ -1064,7 +1074,7 @@ namespace Decompiler.Assemblers.x86
                 lib.Load(Path.ChangeExtension(dllName, ".xml"));
                 importLibraries[dllName] = lib;
             }
-            AddImport(fnName, lib.Lookup(fnName));
+            AddImport(fnName, lib.Lookup(fnName), PrimitiveType.Word32);
         }
 
         public void Imul(ParsedOperand dx)
@@ -1110,10 +1120,10 @@ namespace Decompiler.Assemblers.x86
             symtab.Equates[s] = value;
         }
 
-        internal void Extern(string externSymbol)
+        internal void Extern(string externSymbol, PrimitiveType size)
         {
             DefineSymbol(externSymbol);
-            AddImport(externSymbol, null);
+            AddImport(externSymbol, null, size);
         }
 
         public void Pop(ParsedOperand op)
@@ -1256,11 +1266,11 @@ namespace Decompiler.Assemblers.x86
                 emitter.EmitByte((byte) immShift.Value.ToUInt32());
         }
 
-        public void AddImport(string fnName, ProcedureSignature sig)
+        public void AddImport(string fnName, ProcedureSignature sig, PrimitiveType size)
         {
             uint u = (uint) (addrBase.Linear + emitter.Position);
             ImportThunks.Add(u, new PseudoProcedure(fnName, sig));
-            emitter.EmitDword(0);
+            emitter.EmitInteger(size, 0);
         }
 
         internal OperandParser CreateOperandParser(Lexer lexer)
@@ -1339,6 +1349,24 @@ namespace Decompiler.Assemblers.x86
         internal void DbDup(int by, int count)
         {
             emitter.EmitBytes((byte) by, count);
+        }
+
+        internal void Xchg(ParsedOperand[] ops)
+        {
+            PrimitiveType dataWidth = EnsureValidOperandSizes(ops, 2);
+            RegisterOperand regOp = ops[0].Operand as RegisterOperand;
+            ParsedOperand otherOp = ops[1];
+            if (regOp == null)
+            {
+                regOp = ops[1].Operand as RegisterOperand;
+                if (regOp == null)
+                {
+                    Error("One operand must be a register.");
+                }
+                otherOp = ops[0];
+            }
+            emitter.EmitOpcode(0x86 | IsWordWidth(regOp), dataWidth);
+            EmitModRM(RegisterEncoding(regOp.Register), otherOp);
         }
     }
 }

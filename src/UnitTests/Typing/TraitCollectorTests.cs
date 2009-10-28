@@ -330,7 +330,7 @@ namespace Decompiler.UnitTests.Typing
 			ProcedureMock m = new ProcedureMock();
 			Identifier pfn = m.Local32("pfn");
 			Expression l = m.Load(PrimitiveType.Word32, pfn);
-			IndirectCall icall = new IndirectCall(l, 0, 0);
+			IndirectCall icall = new IndirectCall(l, new CallSite(0, 0));
 
             coll = CreateCollector();
 			icall.Accept(eqb);

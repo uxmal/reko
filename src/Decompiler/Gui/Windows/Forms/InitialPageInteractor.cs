@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using System.ComponentModel;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
@@ -43,7 +44,7 @@ namespace Decompiler.Gui.Windows.Forms
 			browserSvc.Enabled = false;
 		}
 
-        public override System.ComponentModel.ISite Site
+        public override ISite Site
         {
             get { return base.Site; }
             set
@@ -64,31 +65,42 @@ namespace Decompiler.Gui.Windows.Forms
 		{
 			if (Decompiler != null && Decompiler.Project != null)
 			{
-				DecompilerProject project = Decompiler.Project;
-				page.InputFile.Text = project.Input.Filename;
-				page.LoadAddress.Text = project.Input.BaseAddress.ToString();
-				page.SourceFile.Text = project.Output.OutputFilename;
-				page.HeaderFile.Text = project.Output.TypesFilename;
-				page.IntermediateFile.Text = project.Output.IntermediateFilename;
-				page.AssemblerFile.Text = project.Output.DisassemblyFilename;
+                LoadFieldsFromProject();
 			}
 			EnableControls();
 		}
 
-		public override bool LeavePage()
-		{
-			if (page.IsDirty)
-			{
-				DecompilerProject project = Decompiler.Project;
-				project.Input.Filename = page.InputFile.Text;
-				project.Input.BaseAddress = Address.ToAddress(page.LoadAddress.Text, 16);
-				project.Output.OutputFilename = page.SourceFile.Text;
-				project.Output.TypesFilename = page.HeaderFile.Text;
-				project.Output.IntermediateFilename = page.IntermediateFile.Text;
-				project.Output.DisassemblyFilename = page.AssemblerFile.Text;
-			}
-			return true;
-		}
+        public override bool LeavePage()
+        {
+            if (page.IsDirty)
+            {
+                SaveFieldsToProject();
+            }
+            return true;
+        }
+
+        private void LoadFieldsFromProject()
+        {
+            DecompilerProject project = Decompiler.Project;
+            page.InputFile.Text = project.Input.Filename;
+            page.LoadAddress.Text = project.Input.BaseAddress.ToString();
+            page.SourceFile.Text = project.Output.OutputFilename;
+            page.HeaderFile.Text = project.Output.TypesFilename;
+            page.IntermediateFile.Text = project.Output.IntermediateFilename;
+            page.AssemblerFile.Text = project.Output.DisassemblyFilename;
+        }
+
+
+        private void SaveFieldsToProject()
+        {
+            DecompilerProject project = Decompiler.Project;
+            project.Input.Filename = page.InputFile.Text;
+            project.Input.BaseAddress = Address.ToAddress(page.LoadAddress.Text, 16);
+            project.Output.OutputFilename = page.SourceFile.Text;
+            project.Output.TypesFilename = page.HeaderFile.Text;
+            project.Output.IntermediateFilename = page.IntermediateFile.Text;
+            project.Output.DisassemblyFilename = page.AssemblerFile.Text;
+        }
 
         public override object Page
         {

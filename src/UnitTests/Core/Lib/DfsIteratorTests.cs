@@ -37,18 +37,12 @@ namespace Decompiler.UnitTests.Core.Lib
 
         private DfsIterator<TreeNode> CreateTreeNodeIterator()
         {
-            return new DfsIterator<TreeNode>(delegate(TreeNode node)
-            {
-                return node.Children;
-            });
+            return new DfsIterator<TreeNode>(new TreeNodeGraph());
         }
 
         private DfsIterator<T> CreateGraphIterator<T>(DirectedGraph<T> graph) where T : class
         {
-            return new DfsIterator<T>(delegate(T item)
-            {
-                return graph.Successors(item);
-            });
+            return new DfsIterator<T>(graph);
         }
 
 
@@ -84,7 +78,7 @@ namespace Decompiler.UnitTests.Core.Lib
         [Test]
         public void PreorderGraph()
         {
-            DirectedGraph<string> graph = new DirectedGraph<string>();
+            DirectedGraphImpl<string> graph = new DirectedGraphImpl<string>();
             graph.AddNode("a");
             graph.AddNode("b");
             graph.AddNode("c");
@@ -98,7 +92,7 @@ namespace Decompiler.UnitTests.Core.Lib
         [Test]
         public void PostOrderGraph()
         {
-            DirectedGraph<string> graph = new DirectedGraph<string>();
+            DirectedGraphImpl<string> graph = new DirectedGraphImpl<string>();
             graph.AddNode("a");
             graph.AddNode("b");
             graph.AddNode("c");
@@ -110,9 +104,9 @@ namespace Decompiler.UnitTests.Core.Lib
         }
 
         [Test]
-        public void PostOrdeGraph2()
+        public void PostOrderGraph2()
         {
-            DirectedGraph<string> graph = new DirectedGraph<string>();
+            DirectedGraphImpl<string> graph = new DirectedGraphImpl<string>();
             graph.AddNode("a");
             graph.AddNode("b");
             graph.AddEdge("a", "a");
@@ -136,6 +130,38 @@ namespace Decompiler.UnitTests.Core.Lib
             {
                 return Str;
             }
+        }
+
+        private class TreeNodeGraph : DirectedGraph<TreeNode>
+        {
+            #region DirectedGraph<TreeNode> Members
+
+            public ICollection<TreeNode> Predecessors(TreeNode node)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ICollection<TreeNode> Successors(TreeNode node)
+            {
+                return node.Children;
+            }
+
+            public ICollection<TreeNode> Nodes
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public void AddEdge(TreeNode nodeFrom, TreeNode nodeTo)
+            {
+                throw new Exception("The method or operation is not implemented.");
+            }
+
+            public void RemoveEdge(TreeNode nodeFrom, TreeNode nodeTo)
+            {
+                throw new Exception("The method or operation is not implemented.");
+            }
+
+            #endregion
         }
 
         private void DumpPreOrderIterator<T>(T tree, DfsIterator<T> iterator)

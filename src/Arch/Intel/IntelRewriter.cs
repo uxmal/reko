@@ -45,7 +45,7 @@ namespace Decompiler.Arch.Intel
 		private StringInstructionRewriter siw;
 		private CodeEmitter emitter;
 		private LongAddRewriter larw;
-		private ApplicationBuilder ab;
+		[Obsolete("Remove this")]private ApplicationBuilder ab;
 		
 		public IntelRewriter(
 			IProcedureRewriter prw,
@@ -164,13 +164,13 @@ namespace Decompiler.Arch.Intel
 						{
 							emitter.Assign(
 								orw.AluRegister(Registers.eax),
-								new Cast(PrimitiveType.Int32, orw.AluRegister(Registers.ax)));
+								emitter.Cast(PrimitiveType.Int32, orw.AluRegister(Registers.ax)));
 						}
 						else
 						{
 							emitter.Assign(
 								orw.AluRegister(Registers.ax),
-								new Cast(PrimitiveType.Int16, orw.AluRegister(Registers.al)));
+								emitter.Cast(PrimitiveType.Int16, orw.AluRegister(Registers.al)));
 						}
 						break;
 					}
@@ -183,10 +183,7 @@ namespace Decompiler.Arch.Intel
 					case Opcode.cmc:
 						emitter.Assign(
 							orw.FlagGroup(FlagM.CF),
-							new UnaryExpression(
-							Operator.not,
-							PrimitiveType.Bool,
-							orw.FlagGroup(FlagM.CF)));
+                            emitter.Not(orw.FlagGroup(FlagM.CF)));
 						break;
 					case Opcode.cmp:
 						EmitCmp(defFlags);
@@ -203,7 +200,7 @@ namespace Decompiler.Arch.Intel
 								orw.AluRegister(Registers.eax),
 								PrimitiveType.Int64);
 							emitter.Assign(
-								edx_eax, new Cast(edx_eax.DataType, orw.AluRegister(Registers.eax)));
+								edx_eax, emitter.Cast(edx_eax.DataType, orw.AluRegister(Registers.eax)));
 						}
 						else
 						{
@@ -212,7 +209,7 @@ namespace Decompiler.Arch.Intel
 								orw.AluRegister(Registers.ax),
 								PrimitiveType.Int32);
 							emitter.Assign(
-								dx_ax, new Cast(dx_ax.DataType, orw.AluRegister(Registers.ax)));
+								dx_ax, emitter.Cast(dx_ax.DataType, orw.AluRegister(Registers.ax)));
 						}
 						break;
 
@@ -228,7 +225,7 @@ namespace Decompiler.Arch.Intel
 							instrCur.op1,
 							instrCur.op1.Width,
 							instrCur.op1,
-							new Constant(instrCur.op1.Width, 1));
+							emitter.Constant(instrCur.op1.Width, 1));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.div:
@@ -245,12 +242,14 @@ namespace Decompiler.Arch.Intel
 							false,
 							instrCur.code == Opcode.faddp);
 						break;
-					case Opcode.fchs:
-						emitter.Assign(
-							orw.FpuRegister(0, state),
-							new UnaryExpression(Operator.neg, PrimitiveType.Real64, orw.FpuRegister(0, state)));		//$BUGBUG: should be Real, since we don't know the actual size.
-						WriteFpuStack(0);
-						break;
+                    case Opcode.fchs:
+                        {
+                            emitter.Assign(
+                                orw.FpuRegister(0, state),
+                                emitter.Neg(orw.FpuRegister(0, state)));		//$BUGBUG: should be Real, since we don't know the actual size.
+                        }
+                        WriteFpuStack(0);
+                        break;
 					case Opcode.fclex:
 						emitter.SideEffect(host.EnsurePseudoProcedure("__fclex", PrimitiveType.Void, 0));
 						break;
@@ -302,7 +301,7 @@ namespace Decompiler.Arch.Intel
 						state.GrowFpuStack(addrs[i]);
 						emitter.Assign(
 							orw.FpuRegister(0, state),
-							new Cast(PrimitiveType.Real64, SrcOp(instrCur.op1)));
+							emitter.Cast(PrimitiveType.Real64, SrcOp(instrCur.op1)));
 						WriteFpuStack(0);
 						break;
 					case Opcode.fimul:
@@ -313,7 +312,7 @@ namespace Decompiler.Arch.Intel
 							PrimitiveType.Real64);
 						break;
 					case Opcode.fistp:
-						EmitCopy(instrCur.op1, new Cast(instrCur.op1.Width, orw.FpuRegister(0, state)), false);
+						EmitCopy(instrCur.op1, emitter.Cast(instrCur.op1.Width, orw.FpuRegister(0, state)), false);
 						state.ShrinkFpuStack(1);
 						break;
 					case Opcode.fisub:
@@ -429,10 +428,7 @@ namespace Decompiler.Arch.Intel
 						break;
 					case Opcode.ftst:
 						emitter.Assign(orw.FlagGroup(FlagM.CF),
-							new BinaryExpression(Operator.sub, 
-							PrimitiveType.Real64,
-							FpuRegister(0), 
-							new Constant(0.0)));
+							emitter.Sub(FpuRegister(0), new Constant(0.0)));
 						break;
 					case Opcode.fxam:		//$TODO: need to make this an assignment to C0|C1|C2|C3 = __fxam();
 						// idiomatically followed by fstsw &c.
@@ -443,11 +439,7 @@ namespace Decompiler.Arch.Intel
 					{
 						Identifier op1 = FpuRegister(0);
 						Identifier op2 = FpuRegister(1);
-						emitter.Assign(op1, new BinaryExpression(
-							Operator.sub, 
-							PrimitiveType.Real64,		
-							op2, 
-							emitter.PseudoProc("lg2", PrimitiveType.Real64, op1)));
+						emitter.Assign(op1, emitter.Sub(op2, emitter.PseudoProc("lg2", PrimitiveType.Real64, op1)));
 						state.ShrinkFpuStack(1);
 						WriteFpuStack(0);
 						break;
@@ -478,7 +470,7 @@ namespace Decompiler.Arch.Intel
 								instrCur.op1,
 								instrCur.op1.Width, 
 								instrCur.op1, 
-								new Constant(instrCur.op1.Width, 1));
+								emitter.Constant(instrCur.op1.Width, 1));
 							EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						}
 						break;
@@ -596,10 +588,10 @@ namespace Decompiler.Arch.Intel
 						siw.EmitStringInstruction(instrCur, emitter);
 						break;
 					case Opcode.movsx:
-						EmitCopy(instrCur.op1, new Cast(PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size), SrcOp(instrCur.op2)), false);
+						EmitCopy(instrCur.op1, emitter.Cast(PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size), SrcOp(instrCur.op2)), false);
 						break;
 					case Opcode.movzx:
-						EmitCopy(instrCur.op1, new Cast(instrCur.op1.Width, SrcOp(instrCur.op2)), false);
+						EmitCopy(instrCur.op1, emitter.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)), false);
 						break;
 					case Opcode.mul:
 						ass = EmitMultiply(Operator.mulu, Domain.UnsignedInt);
@@ -918,8 +910,7 @@ namespace Decompiler.Arch.Intel
 						emitter.Assign(
 							orw.AluRegister(Registers.al),
 							orw.MemoryAccess(
-							new BinaryExpression(Operator.add,
-							instrCur.addrWidth,
+							emitter.Add(
 							orw.AluRegister(Registers.bx),
 							orw.AluRegister(Registers.al)), PrimitiveType.Byte));			//$REVIEW: should zero-extend al
 						break;
@@ -939,18 +930,23 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
-		private Instruction BuildApplication(PseudoProcedure ppp)
+		private void BuildApplication(PseudoProcedure ppp)
 		{
 			Expression e = new ProcedureConstant(PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), ppp);
-			return BuildApplication(e, ppp.Signature);
+			BuildApplication(e, ppp.Signature);
 		}
 
-		private Instruction BuildApplication(Expression fn, ProcedureSignature sig)
+		private void BuildApplication(Expression fn, ProcedureSignature sig)
 		{
-			Instruction instr = ab.BuildApplication(new CallSite(state.StackBytes, state.FpuStackItems), arch, fn, sig);
-			state.ShrinkStack(sig.StackDelta);
-			state.ShrinkFpuStack(sig.FpuStackDelta);
-			return instr;
+            ApplicationBuilder ab = new ApplicationBuilder(
+                frame, 
+                new CallSite(state.StackBytes, state.FpuStackItems),
+                arch, 
+                fn,
+                sig);
+            state.ShrinkStack(sig.StackDelta);
+            state.ShrinkFpuStack(sig.FpuStackDelta);
+            ab.Emit(emitter);
 		}
 
 		private Assignment EmitAdcSbb(BinaryOperator opr)
@@ -961,7 +957,7 @@ namespace Decompiler.Arch.Intel
 				instrCur.op1.Width,
 				SrcOp(instrCur.op1),
 				SrcOp(instrCur.op2)));
-			Cast c = new Cast(instrCur.op1.Width, orw.FlagGroup(FlagM.CF));
+			Cast c = emitter.Cast(instrCur.op1.Width, orw.FlagGroup(FlagM.CF));
 			return EmitCopy(instrCur.op1, new BinaryExpression(opr, tmp.DataType, tmp, c), true);
 		}
 
@@ -979,7 +975,7 @@ namespace Decompiler.Arch.Intel
 			if (iUse >= 0 && larw.Match(instrCur, instrs[iUse]))
 			{
 				instrs[iUse].code = Opcode.nop;
-				emitter.Emit(larw.CreateInstruction(op));
+                larw.EmitInstruction(op, emitter);
 				return larw.Dst;
 			}
 			Assignment ass = EmitBinOp(op, instrCur.op1, instrCur.op1.Width, instrCur.op1, instrCur.op2);
@@ -1037,7 +1033,7 @@ namespace Decompiler.Arch.Intel
 			{
 				if (c.DataType == PrimitiveType.Byte && eLeft.DataType != c.DataType)
 				{
-					right = new Constant(eLeft.DataType, c.ToInt32());
+					right = emitter.Constant(eLeft.DataType, c.ToInt32());
 				}
 			}
 
@@ -1106,14 +1102,13 @@ namespace Decompiler.Arch.Intel
 
 		private void EmitCall(Procedure procCallee)
 		{
-            ProcedureConstant pc = new ProcedureConstant(arch.PointerType, procCallee);
-			CallInstruction call = new CallInstruction(pc, state.StackBytes, state.FpuStackItems);
+            CallSite site = new CallSite(state.StackBytes, state.FpuStackItems);
 			if (procCallee.Characteristics.IsAlloca)
 			{
 				if (procCallee.Signature == null)
 					throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", proc.Name));
 				Identifier id = 
-					procCallee.Signature.FormalArguments[0].Storage.BindFormalArgumentToFrame(this.frame, call.CallSite);
+					procCallee.Signature.FormalArguments[0].Storage.BindFormalArgumentToFrame(this.frame, site);
 				Constant c = SearchBackForConstantAssignment(id);
 				if (c != null)
 				{
@@ -1124,9 +1119,9 @@ namespace Decompiler.Arch.Intel
 					return;
 				}
 			}
+			emitter.Call(procCallee, site);
 			state.ShrinkStack(procCallee.Signature.StackDelta);
 			state.ShrinkFpuStack(-procCallee.Signature.FpuStackDelta);
-			emitter.Emit(call);
 			host.AddCallEdge(this.proc, emitter.Block.Statements.Last, procCallee);
 		}
 
@@ -1166,7 +1161,7 @@ namespace Decompiler.Arch.Intel
 			Constant c = op2 as Constant;
 			if (c != null && op1.DataType != op2.DataType)
 			{
-				op2 = new Constant(op1.DataType, c.ToInt32());
+				op2 = emitter.Constant(op1.DataType, c.ToInt32());
 			}
 
 			emitter.Assign(
@@ -1302,7 +1297,7 @@ namespace Decompiler.Arch.Intel
 			if (pc != null)
 			{
 				PseudoProcedure ppp = (PseudoProcedure) pc.Procedure;
-				emitter.Emit(BuildApplication(ppp));
+				BuildApplication(ppp);
 				return;
 			}
 
@@ -1312,7 +1307,7 @@ namespace Decompiler.Arch.Intel
 				PseudoProcedure ppp = SearchBackForProcedureConstant(id);
 				if (ppp != null)
 				{
-					emitter.Emit(BuildApplication(ppp));
+					BuildApplication(ppp);
 					return;
 				}
 			}
@@ -1327,11 +1322,11 @@ namespace Decompiler.Arch.Intel
 			ProcedureSignature sig = host.GetCallSignatureAtAddress(addrInstr);
 			if (sig != null)
 			{
-				emitter.Emit(BuildApplication(e, sig));
+                BuildApplication(e, sig);
 			}
 			else
 			{
-				emitter.Emit(new IndirectCall(e, state.StackBytes, state.FpuStackItems));
+                emitter.IndirectCall(e, new CallSite(state.StackBytes, state.FpuStackItems));
 			}
 			Procedure [] procs = host.GetProceduresFromVector(addrInstr, instrCur.op1.Width.Size);
 			for (int j = 0; j < procs.Length; ++j)
@@ -1347,7 +1342,7 @@ namespace Decompiler.Arch.Intel
 			{
 				ExternalProcedure ep = svc.CreateExternalProcedure(arch);
 				ProcedureConstant fn = new ProcedureConstant(arch.PointerType, ep);
-				emitter.Emit(BuildApplication(fn, ep.Signature));
+				BuildApplication(fn, ep.Signature);
 				if (svc.Characteristics.Terminates)
 				{
 					proc.AddEdge(emitter.Block, proc.ExitBlock);
@@ -1690,11 +1685,7 @@ namespace Decompiler.Arch.Intel
 					new Constant(instrCur.op1.Width, 1),
 					sh);
 				t = frame.CreateTemporary(PrimitiveType.Bool);
-				emitter.Assign(t, new BinaryExpression(
-					Operator.ne, 
-					PrimitiveType.Bool,
-					new BinaryExpression(Operator.and, instrCur.op1.Width, SrcOp(instrCur.op1), sh),
-					new Constant(instrCur.op1.Width, 0)));
+                emitter.Assign(t, emitter.Ne0(emitter.And(SrcOp(instrCur.op1), sh)));
 			}
 			Expression p;
 			if (useCarry)
@@ -1728,7 +1719,7 @@ namespace Decompiler.Arch.Intel
 				++i;
 			}
 			emitter = prw.CreateEmitter(block);
-			emitter.Emit(new SwitchInstruction(orw.AluRegister(register), jumps));
+            emitter.Switch(orw.AluRegister(register), jumps);
 		}
 
 		private Expression EmitUnaryOperator(UnaryOperator op, MachineOperand opDst, MachineOperand opSrc)
@@ -1803,7 +1794,7 @@ namespace Decompiler.Arch.Intel
 				PseudoProcedure ppp = host.TrampolineAt(addr);
 				if (ppp != null)
 				{
-					emitter.Emit(BuildApplication(ppp));
+					BuildApplication(ppp);
 				}
 				else
 				{

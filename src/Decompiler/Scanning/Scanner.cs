@@ -47,7 +47,7 @@ namespace Decompiler.Scanning
 		private Map<Address,VectorUse> vectorUses;
 		private SortedList<Address,SystemService> syscalls;
 		private WorkItem wiCur;
-		private DirectedGraph<object> jumpGraph;    //$TODO: what is the right type? This is a bipartite graph with statements and procedures.
+		private DirectedGraphImpl<object> jumpGraph;    //$TODO: what is the right type? This is a bipartite graph with statements and procedures.
 
 		private Queue<WorkItem> qProcs;
 		private Queue<WorkItem> qJumps;
@@ -72,7 +72,7 @@ namespace Decompiler.Scanning
 			qSegments = new Queue<WorkItem>();
 			qVectors = new Queue<VectorWorkItem>();
             this.blocksVisited = new Dictionary<ImageMapBlock, ImageMapBlock>();
-			this.jumpGraph = new DirectedGraph<object>();
+			this.jumpGraph = new DirectedGraphImpl<object>();
 		}
 
 		public virtual CodeWalker CreateCodeWalker(Address addr, ProcessorState state)
@@ -102,7 +102,9 @@ namespace Decompiler.Scanning
 		/// <param name="proc"></param>
 		private void EnqueueJumpTarget(Address addrTarget, ProcessorState st, Procedure proc)
 		{
-			Debug.Assert(program.Image.IsValidAddress(addrTarget));
+            if (addrTarget.Offset == 0x28D)
+                addrTarget.ToString();
+			Debug.Assert(program.Image.IsValidAddress(addrTarget), string.Format("{0} is not a valid address.", addrTarget));
 
 			Debug.Assert(proc != null);
 			WorkItem wi = new WorkItem(wiCur, BlockType.JumpTarget, addrTarget);
@@ -411,8 +413,10 @@ namespace Decompiler.Scanning
                         bl.Procedure = null;				// means that this is a block that is jumped into.
                 }
             }
-			Procedure proc = program.Procedures[wi.Address];
-			EnqueueJumpTarget(wi.Address, wi.state, proc);
+            if (program.Image.IsValidAddress(wi.Address))
+            {
+                EnqueueJumpTarget(wi.Address, wi.state, program.Procedures[wi.Address]);
+            }
 		}
 
 		private void ParseSegment(WorkItem wi)

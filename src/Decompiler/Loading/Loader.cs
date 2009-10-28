@@ -35,7 +35,6 @@ namespace Decompiler.Loading
 	public class Loader : LoaderBase
 	{
         private string filename;
-		private RelocationDictionary relocations;
         private DecompilerHost host;
 
         public Loader(string filename, Program prog, DecompilerHost host) :
@@ -72,7 +71,9 @@ namespace Decompiler.Loading
 				XmlSerializer ser = new XmlSerializer(typeof (DecompilerProject));
                 DecompilerProject project = (DecompilerProject) ser.Deserialize(new MemoryStream(image));
 				addrLoad = project.Input.BaseAddress;
-                LoadExecutableFile(project.Input.Filename, addrLoad);
+                LoadExecutableFile(
+                    LoadImageBytes(project.Input.Filename, 0), 
+                    project.Input.BaseAddress);
                 return project;
 			}
 			else
@@ -82,7 +83,7 @@ namespace Decompiler.Loading
                 DecompilerProject project = new DecompilerProject();
 
                 SetDefaultFilenames(filename, project);
-                LoadExecutableFile(project.Input.Filename, addrLoad);
+                LoadExecutableFile(image, addrLoad);
                 project.Input.BaseAddress = Program.Image.BaseAddress;
                 return project;
 			}
@@ -112,23 +113,32 @@ namespace Decompiler.Loading
         //    EntryPoints.Add(new EntryPoint(addrBase + 0x0100, Program.Architecture.CreateProcessorState()));
         //}
 
+
+        [Obsolete]
+        public Program LoadExecutableFile(string filename, Address addrLoad)
+        {
+            byte[] rawBytes = LoadImageBytes(filename, 0);
+            LoadExecutableFile(rawBytes, addrLoad);
+            return Program;
+        }
+
 		/// <summary>
 		/// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
 		/// Relocation gives us a chance to determine the addresses of interesting items.
 		/// </summary>
-		/// <param name="binaryFile"></param>
-		public virtual void LoadExecutableFile(string filename, Address addrLoad)
+        /// <param name="rawBytes">Image of the executeable file.</param>
+        /// <param name="addrLoad">Address into which to load the file.</param>
+		public Program LoadExecutableFile(byte [] rawBytes, Address addrLoad)
 		{
-			byte [] rawBytes = LoadImageBytes(filename, 0);
             ImageLoader loader = FindImageLoader(Program, rawBytes);
-
             if (addrLoad == null)
 			{
-				addrLoad = loader.PreferredBaseAddress;
+				addrLoad = loader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
 			}
 			Program.Image = loader.Load(addrLoad);
-			relocations = new RelocationDictionary();
+		    RelocationDictionary relocations = new RelocationDictionary();
 			loader.Relocate(addrLoad, EntryPoints, relocations);
+            return Program;
 		}
 
 

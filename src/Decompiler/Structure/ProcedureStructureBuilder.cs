@@ -146,7 +146,7 @@ namespace Decompiler.Structure
                 DerivedGraph curGraph = proc.DerivedGraphs[i];
                 Console.Out.WriteLine();
                 Console.Out.WriteLine("\nDerived graph #{0}:", i);
-                curGraph.DisplayIntervals();
+                curGraph.Dump();
             }
 
             // Indicate whether or not the graph was reducible
