@@ -28,7 +28,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Arch.Intel
 {
 	public class RewriterTestBase
 	{

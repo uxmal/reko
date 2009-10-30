@@ -25,7 +25,7 @@ using System.Diagnostics;
 using System.Text;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class DisassemblerTests

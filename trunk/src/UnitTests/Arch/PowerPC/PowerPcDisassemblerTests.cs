@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.PowerPC
+namespace Decompiler.UnitTests.Arch.PowerPC
 {
     [TestFixture]
     public class PowerPcDisassemblerTests
