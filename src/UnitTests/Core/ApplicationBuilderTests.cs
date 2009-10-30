@@ -50,13 +50,13 @@ namespace Decompiler.UnitTests.Core
 			regOut = new Identifier("edxOut", -1, PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
 			sig = new ProcedureSignature(ret,
 				new Identifier[] { arg04, arg08, arg0C, regOut });
-            ab = new ApplicationBuilder(frame);
 		
         }
 
 		[Test]
 		public void BindReturnValue()
 		{
+            ab  = new ApplicationBuilder(frame, new CallSite(16, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig);
 			Identifier r = ab.Bind(ret, new CallSite(0, 0));
 			Assert.AreEqual("eax", r.ToString());
 		}
@@ -64,7 +64,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void BindOutParameter()
 		{
-			Identifier o = ab.Bind(regOut, new CallSite(0, 0));
+            ab = new ApplicationBuilder(frame, new CallSite(16, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig);
+            Identifier o = ab.Bind(regOut, new CallSite(0, 0));
 			Assert.AreEqual("edx", o.ToString());
 		}
 
@@ -72,7 +73,8 @@ namespace Decompiler.UnitTests.Core
 		public void BuildApplication()
 		{
 			Assert.IsTrue(sig.FormalArguments[3].Storage is OutArgumentStorage);
-			Instruction instr = ab.BuildApplication(new CallSite(16, 0), new Mocks.ArchitectureMock(), new Identifier("foo", -1, PrimitiveType.Word32, null), sig);
+            ab  = new ApplicationBuilder(frame, new CallSite(16, 0), new Identifier("foo", -1, PrimitiveType.Word32, null), sig);
+            Instruction instr = ab.CreateInstruction();
 			Assert.AreEqual("eax = foo(dwLoc0C, wLoc08, bLoc04, &edx)", instr.ToString());
 		}
 	}

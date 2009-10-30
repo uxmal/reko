@@ -37,11 +37,26 @@ namespace Decompiler.Core.Output
             this.writer = new IndentingTextWriter(writer, false, 4);
             this.mpopstr = new Dictionary<Operator, string>();
             mpopstr.Add(Operator.add, "Add");
+            mpopstr.Add(Operator.and, "And");
+            mpopstr.Add(Operator.cand, "Cand");
+            mpopstr.Add(Operator.cor, "Cor");
+
             mpopstr.Add(Operator.eq, "Eq");
+            mpopstr.Add(Operator.ge, "Ge");
+            mpopstr.Add(Operator.gt, "Gt");
+            mpopstr.Add(Operator.le, "Le");
+            mpopstr.Add(Operator.lt, "Lt");
             mpopstr.Add(Operator.mul, "Mul");
             mpopstr.Add(Operator.muls, "Muls");
             mpopstr.Add(Operator.mulu, "Mulu");
+            mpopstr.Add(Operator.or, "Or");
             mpopstr.Add(Operator.sub, "Sub");
+            mpopstr.Add(Operator.uge, "Uge");
+            mpopstr.Add(Operator.ugt, "Ugt");
+            mpopstr.Add(Operator.ule, "Ule");
+            mpopstr.Add(Operator.ult, "Ult");
+            mpopstr.Add(Operator.xor, "Xor");
+
         }
 
         private IEnumerable<Identifier> CollectLocalIdentifiers(Procedure proc)
@@ -301,7 +316,11 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitDepositBits(DepositBits d)
         {
-            throw new Exception("The method or operation is not implemented.");
+            writer.Write("Dpb(");
+            d.Source.Accept(this);
+            writer.Write(", ");
+            d.InsertedBits.Accept(this);
+            writer.Write(", {0}, {1})", d.BitPosition, d.BitCount);
         }
 
         void IExpressionVisitor.VisitDereference(Dereference deref)
@@ -367,7 +386,11 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitSlice(Slice slice)
         {
-            throw new Exception("The method or operation is not implemented.");
+            writer.Write("Slice(");
+            slice.DataType.Accept(this);
+            writer.Write(", ");
+            slice.Expression.Accept(this);
+            writer.Write(", {0})", slice.Offset);
         }
 
         void IExpressionVisitor.VisitTestCondition(TestCondition tc)
@@ -417,6 +440,8 @@ namespace Decompiler.Core.Output
                 writer.Write("Byte");
             else if (pt == PrimitiveType.SegmentSelector)
                 writer.Write("SegmentSelector");
+            else if (pt == PrimitiveType.Bool)
+                writer.Write("Bool");
             else
                 throw new NotSupportedException(pt.ToString());
         }

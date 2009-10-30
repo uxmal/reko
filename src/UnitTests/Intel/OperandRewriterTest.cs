@@ -125,7 +125,6 @@ namespace Decompiler.UnitTests.Intel
 
 			state.GrowStack(4);
 			state.EnterFrame(Registers.ebp);
-			proc.Frame.SetFramePointerWidth(PrimitiveType.Word32);
 			Assert.AreEqual("fp", proc.Frame.FramePointer.Name);
 
 			MemoryOperand m = new MemoryOperand(PrimitiveType.Word32);

@@ -43,8 +43,8 @@ namespace Decompiler.UnitTests.Core
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, ep);
             IProcessorArchitecture arch = new ArchitectureMock();
             Frame frame = arch.CreateFrame();
-			ApplicationBuilder ab = new ApplicationBuilder(frame);
-			Instruction instr = ab.BuildApplication(new CallSite(0, 0), arch, fn, ep.Signature);
+			ApplicationBuilder ab = new ApplicationBuilder(frame, new CallSite(0, 0), fn, ep.Signature);
+            Instruction instr = ab.CreateInstruction();
 			Assert.AreEqual("ax = foo(bx, cl)", instr.ToString());
 
 		}

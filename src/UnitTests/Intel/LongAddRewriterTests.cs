@@ -40,6 +40,8 @@ namespace Decompiler.UnitTests.Intel
 		private PrimitiveType w16 = PrimitiveType.Word16;
 		private IntelInstruction addAxMem;
 		private IntelInstruction adcDxMem;
+        private CodeEmitter emitter;
+        private Block block;
 
 		public LongAddRewriterTests()
 		{
@@ -61,6 +63,9 @@ namespace Decompiler.UnitTests.Intel
             frame = arch.CreateFrame();
 			orw = new OperandRewriter(null, arch, frame);
 			rw = new LongAddRewriter(frame, orw, null);
+            Procedure proc = new Procedure("test", frame);
+            block = new Block(proc, "bloke");
+            emitter = new CodeEmitter(arch, null, proc, block); 
 		}
 
 		[Test]
@@ -101,7 +106,8 @@ namespace Decompiler.UnitTests.Intel
 		public void CreateInstruction()
 		{
 			rw.Match(addAxMem, adcDxMem);
-			Assert.AreEqual("dx_ax = dx_ax + Mem0[ds:bx + 0x0300:ui32]", rw.CreateInstruction(Operator.add).ToString());
+            rw.EmitInstruction(Operator.add, emitter);
+			Assert.AreEqual("dx_ax = dx_ax + Mem0[ds:bx + 0x0300:ui32]", block.Statements[0].ToString());
 		}
 	}
 }

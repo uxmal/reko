@@ -124,10 +124,8 @@ namespace Decompiler.UnitTests.Core
 
 			CallSite cs = new CallSite(stack + f.ReturnAddressSize, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
-            Procedure proc = new Procedure("test", f);
-            CodeEmitter emitter = new CodeEmitter(new IntelArchitecture(ProcessorMode.Real), null, proc, new Block(proc, "@"));
-			ApplicationBuilder ab = new ApplicationBuilder(f, cs, new IntelArchitecture(ProcessorMode.Real), fn, sig);
-            Instruction instr = ab.Emit(emitter);
+			ApplicationBuilder ab = new ApplicationBuilder(f, cs, fn, sig);
+            Instruction instr = ab.CreateInstruction(); 
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
 			{
 				f.Write(fut.TextWriter);
@@ -148,14 +146,13 @@ namespace Decompiler.UnitTests.Core
 
 			ProcedureSignature sig = new ProcedureSignature(
 				ax,
-				new Identifier [] {
-					cx,
-					new Identifier("arg0", 0, PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)) } );
+			    cx,
+			    new Identifier("arg0", 0, PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)));
 			
 			CallSite cs = new CallSite(stack, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));
-			ApplicationBuilder ab = new ApplicationBuilder(f);
-			Instruction instr = ab.BuildApplication(cs, arch, fn, sig);
+			ApplicationBuilder ab = new ApplicationBuilder(f, cs, fn, sig);
+            Instruction instr = ab.CreateInstruction();
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindMixedParameters.txt"))
 			{
 				f.Write(fut.TextWriter);

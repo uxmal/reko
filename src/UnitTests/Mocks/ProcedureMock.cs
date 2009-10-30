@@ -107,8 +107,13 @@ namespace Decompiler.UnitTests.Mocks
 
 		public BinaryExpression And(Expression left, int right)
 		{
-			return new BinaryExpression(Operator.and, left.DataType, left, new Constant(left.DataType, right));
+			return And(left, new Constant(left.DataType, right));
 		}
+
+        public BinaryExpression And(Expression left, Expression right)
+        {
+            return new BinaryExpression(Operator.and, left.DataType, left, right);
+        }
 
 		public virtual Statement Assign(Identifier dst, Expression src)
 		{
@@ -186,6 +191,18 @@ namespace Decompiler.UnitTests.Mocks
 			return Emit(ci);
 		}
 
+        public Expression Cand(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.cand, PrimitiveType.Bool, a, b);
+        }
+
+        public Expression Cor(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.cor, PrimitiveType.Bool, a, b);
+        }
+
+
+
 		public void Compare(string flags, Expression a, Expression b)
 		{
 			Assign(Flags(flags), new ConditionOf(Sub(a, b)));
@@ -214,10 +231,10 @@ namespace Decompiler.UnitTests.Mocks
 			return Emit(new Declaration(id, initial));
 		}
 
-		public Statement Dpb(Identifier dst, Expression src, int offset, int bitCount)
-		{
-			return Assign(dst, new DepositBits(dst, src, offset, bitCount));
-		}
+        public DepositBits Dpb(Expression dst, Expression src, int offset, int bitCount)
+        {
+            return new DepositBits(dst, src, offset, bitCount);
+        }
 
 		private Block EnsureBlock(string name)
 		{
@@ -261,20 +278,7 @@ namespace Decompiler.UnitTests.Mocks
 			return new BinaryExpression(Operator.eq, PrimitiveType.Bool, a, new Constant(a.DataType, b));
 		}
 
-		public BinaryExpression Ugt(Expression a, Expression b)
-		{
-			return new BinaryExpression(Operator.ugt, PrimitiveType.Bool, a, b);
-		}
 
-		public BinaryExpression Uge(Expression a, Expression b)
-		{
-			return new BinaryExpression(Operator.uge, PrimitiveType.Bool, a, b);
-		}
-
-		public BinaryExpression Uge(Expression a, int n)
-		{
-			return new BinaryExpression(Operator.uge, PrimitiveType.Bool, a, new Constant(a.DataType, n));
-		}
 
 		public Identifier Flags(string s)
 		{
@@ -657,14 +661,35 @@ namespace Decompiler.UnitTests.Mocks
 			get { return unresolvedProcedures; }
 		}
 
+
+        public BinaryExpression Ugt(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.ugt, PrimitiveType.Bool, a, b);
+        }
+
+        public BinaryExpression Uge(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.uge, PrimitiveType.Bool, a, b);
+        }
+
+        public BinaryExpression Uge(Expression a, int n)
+        {
+            return new BinaryExpression(Operator.uge, PrimitiveType.Bool, a, new Constant(a.DataType, n));
+        }
+
+        public BinaryExpression Ule(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.ule, PrimitiveType.Bool, a, b);
+        }
+
         public Expression Ult(Expression a, Expression b)
         {
-			return new BinaryExpression(Operator.lt, PrimitiveType.Bool, a, b);
+			return new BinaryExpression(Operator.ult, PrimitiveType.Bool, a, b);
         }
 
         public Expression Ult(Expression a, int b)
         {
-            return new BinaryExpression(Operator.lt, PrimitiveType.Bool, a, new Constant(PrimitiveType.CreateWord(a.DataType.Size), b));
+            return new BinaryExpression(Operator.ult, PrimitiveType.Bool, a, new Constant(PrimitiveType.CreateWord(a.DataType.Size), b));
         }
 
 		public Statement Use(Identifier id)
@@ -688,7 +713,9 @@ namespace Decompiler.UnitTests.Mocks
 			return new Constant(PrimitiveType.Word32, n);
 		}
 
-
-
+        public Expression Xor(Identifier a, Expression b)
+        {
+            return new BinaryExpression(Operator.xor, a.DataType, a, b);
+        }
     }
 }

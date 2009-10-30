@@ -327,12 +327,12 @@ namespace Decompiler.UnitTests.Analysis
 
 
 				Assign(edx, Int32(0x0AAA00AA));
-				Dpb(edx, Int8(0x55), 8, 8);
+				Assign(edx, Dpb(edx, Int8(0x55), 8, 8));
 				Store(Int32(0x1000000), edx);
 
 
 				Assign(edx, Int32(0));
-				Dpb(edx, dl, 0, 8);
+                Assign(edx, Dpb(edx, dl, 0, 8));
 				Return(edx);
 			}
 		}
