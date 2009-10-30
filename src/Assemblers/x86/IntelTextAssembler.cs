@@ -38,7 +38,6 @@ namespace Decompiler.Assemblers.x86
 		private Emitter emitter;
 		private Address addrBase;
 		private Address addrStart;
-		private Program prog;
         private List<EntryPoint> entryPoints;
         private IntelAssembler asm;
         private ProgramImage image;
@@ -47,9 +46,8 @@ namespace Decompiler.Assemblers.x86
 		{
 		}
 
-		public void Assemble(Program prog, Address addr, string file)
+		public void Assemble(Address addr, string file)
 		{
-			this.prog = prog;
             this.entryPoints = new List<EntryPoint>();
 			using (StreamReader rdr = new StreamReader(file))
 			{
@@ -58,9 +56,8 @@ namespace Decompiler.Assemblers.x86
 			}
 		}
 
-		public void AssembleFragment(Program prog, Address addr, string fragment)
+		public void AssembleFragment(Address addr, string fragment)
 		{
-			this.prog = prog;
 			addrBase = addr;
 			image = Assemble(new StringReader(fragment));
 		}

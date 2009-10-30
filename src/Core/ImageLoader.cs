@@ -29,7 +29,7 @@ namespace Decompiler.Core
 	{
 		private byte [] imgRaw;
 
-		public ImageLoader(Program prog, byte [] imgRaw)
+		public ImageLoader(byte [] imgRaw)
 		{
 			this.imgRaw = imgRaw;
 		}

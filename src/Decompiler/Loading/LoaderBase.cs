@@ -26,17 +26,15 @@ using System.Text;
 namespace Decompiler.Loading
 {
     /// <summary>
-    /// Base class that abstracts the process of loading the "code", in whatever shape it is in,
+    /// Base class that abstracts the process of loading the "code", in whatever format it is in,
     /// into a program.
     /// </summary>
     public abstract class LoaderBase
     {
         private List<EntryPoint> entryPoints;
-        private Program prog;
 
-		public LoaderBase(Program prog)
+		public LoaderBase()
 		{
-			this.prog = prog;
 			this.entryPoints = new List<EntryPoint>();
 		}
 
@@ -45,13 +43,11 @@ namespace Decompiler.Loading
             get { return entryPoints; }
         }
 
-        public abstract DecompilerProject Load(Address userSpecifiedAddress);
+        public abstract void Load(Address userSpecifiedAddress);
 
-        [Obsolete("")]
-        public Program Program
-        {
-            get { return prog; }
-        }
+        public abstract DecompilerProject Project { get; }
+
+        public abstract Program Program { get; }
 
         protected void SetDefaultFilenames(string inputFilename, DecompilerProject project)
         {

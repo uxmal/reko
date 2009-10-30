@@ -33,7 +33,6 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		{
 			Program prog = new Program();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xC00, 0),
 				@".86
 		mov	eax,32

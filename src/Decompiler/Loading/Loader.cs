@@ -36,58 +36,67 @@ namespace Decompiler.Loading
 	{
         private string filename;
         private DecompilerHost host;
+        private DecompilerProject project;
+        private Program prog;
 
-        public Loader(string filename, Program prog, DecompilerHost host) :
-            base(prog)
+        public Loader(string filename, DecompilerHost host)
         {
             this.filename = filename;
             this.host = host;
         }
 
-        private ImageLoader FindImageLoader(Program prog, byte[] rawBytes)
+        /// <summary>
+        /// Loads the file and returns a decompiler project.
+        /// </summary>
+        /// <remarks>
+        /// The file can either be an executable or a decompiler project file.
+        /// </remarks>
+        public override void Load(Address addrLoad)
+        {
+            byte[] image = LoadImageBytes(filename, 0);
+            bool isXmlFile = IsXmlFile(image);
+            if (isXmlFile)
+            {
+                XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
+                this.project = (DecompilerProject) ser.Deserialize(new MemoryStream(image));
+                addrLoad = project.Input.BaseAddress;
+                prog = LoadExecutableFile(
+                    LoadImageBytes(project.Input.Filename, 0),
+                    project.Input.BaseAddress);
+            }
+            else
+            {
+                // Wasn't a project, so make a blank one.
+
+                this.project = new DecompilerProject();
+
+                SetDefaultFilenames(filename, project);
+                this.prog = LoadExecutableFile(image, addrLoad);
+                project.Input.BaseAddress = prog.Image.BaseAddress;
+            }
+        }
+
+        public override Program Program
+        {
+            get { return prog; }
+        }
+
+        public override DecompilerProject Project
+        {
+            get { return project; }
+        }
+
+        private ImageLoader FindImageLoader(byte[] rawBytes)
         {
             foreach (LoaderElement e in host.Configuration.GetImageLoaders())
             {
                 if (ImageBeginsWithMagicNumber(rawBytes, e.MagicNumber))
-                    return CreateImageLoader(e.TypeName, prog, rawBytes);
+                    return CreateImageLoader(e.TypeName, rawBytes);
             }
             host.WriteDiagnostic(Diagnostic.Warning, new Address(0), "The format of the file {0} is unknown; you will need to specify it manually.", filename);
-            return new NullLoader(prog, rawBytes);
+            return new NullLoader(rawBytes);
         }
 
-
-		/// <summary>
-		/// Loads the file and returns a decompiler project.
-		/// </summary>
-		/// <remarks>
-		/// The file can either be an executable or a decompiler project file.
-		/// </remarks>
-        public override DecompilerProject Load(Address addrLoad)
-		{
-			byte [] image = LoadImageBytes(filename, 0);
-			bool isXmlFile = IsXmlFile(image);
-			if (isXmlFile)
-			{
-				XmlSerializer ser = new XmlSerializer(typeof (DecompilerProject));
-                DecompilerProject project = (DecompilerProject) ser.Deserialize(new MemoryStream(image));
-				addrLoad = project.Input.BaseAddress;
-                LoadExecutableFile(
-                    LoadImageBytes(project.Input.Filename, 0), 
-                    project.Input.BaseAddress);
-                return project;
-			}
-			else
-			{
-				// Wasn't a project, so make a blank one.
-
-                DecompilerProject project = new DecompilerProject();
-
-                SetDefaultFilenames(filename, project);
-                LoadExecutableFile(image, addrLoad);
-                project.Input.BaseAddress = Program.Image.BaseAddress;
-                return project;
-			}
-		}
 
 
 		private static bool IsXmlFile(byte[] image)
@@ -121,15 +130,17 @@ namespace Decompiler.Loading
         /// <param name="addrLoad">Address into which to load the file.</param>
 		public Program LoadExecutableFile(byte [] rawBytes, Address addrLoad)
 		{
-            ImageLoader loader = FindImageLoader(Program, rawBytes);
+            ImageLoader loader = FindImageLoader(rawBytes);
             if (addrLoad == null)
 			{
 				addrLoad = loader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
 			}
-			Program.Image = loader.Load(addrLoad);
+            
+            prog = new Program();
+			prog.Image = loader.Load(addrLoad);
 		    RelocationDictionary relocations = new RelocationDictionary();
 			loader.Relocate(addrLoad, EntryPoints, relocations);
-            return Program;
+            return prog;
 		}
 
 
@@ -192,13 +203,13 @@ namespace Decompiler.Loading
             }
         }
 
-        public virtual ImageLoader CreateImageLoader(string typeName, Program prog, byte[] bytes)
+        public virtual ImageLoader CreateImageLoader(string typeName, byte[] bytes)
         {
             Type t = Type.GetType(typeName);
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            ConstructorInfo ci = t.GetConstructor(new Type[] { typeof(Program), typeof(byte[]) });
-            return (ImageLoader) ci.Invoke(new object[] { prog, bytes });
+            ConstructorInfo ci = t.GetConstructor(new Type[] { typeof(byte[]) });
+            return (ImageLoader) ci.Invoke(new object[] { bytes });
         }
 
 

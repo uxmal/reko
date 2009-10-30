@@ -46,6 +46,14 @@ namespace Decompiler
 		private Scanner scanner;
 		private RewriterHost rewriterHost;
 
+
+        public DecompilerDriver(LoaderBase ldr, DecompilerHost host)
+        {
+            this.loader = ldr;
+            this.host = host;
+        }
+
+        [Obsolete]
         public DecompilerDriver(LoaderBase ldr, Program prog, DecompilerHost host)
         {
             this.loader = ldr;
@@ -144,7 +152,9 @@ namespace Decompiler
 		/// <param name="cfg"></param>
 		public void LoadProgram()
 		{
-            project = loader.Load(null);
+            loader.Load(null);
+            project = loader.Project;
+            prog = loader.Program;
 			host.ProgramLoaded();
 		}
 

@@ -33,7 +33,6 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		{
 			Program prog = new Program();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xC00, 0),
 				@"	.i86
 foo		proc
@@ -55,7 +54,6 @@ data	db	'Hello',0
 		{
 			Program prog = new Program();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xC00, 0),
 				@"	.i86
 foo		proc
@@ -98,7 +96,6 @@ foo		endp
 		{
 			Program prog = new Program();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xC00, 0),
 				@"	.i86
 		mov word ptr [bx+2],3
@@ -121,7 +118,8 @@ foo		endp
 		public void AssignPseudo()
 		{
 			Program prog = new Program();
-			asm.AssembleFragment(prog, new Address(0xC00, 0), 
+			asm.AssembleFragment(
+                new Address(0xC00, 0), 
 				@".i86
 		f = 4
 		mov byte ptr [bx + f],3

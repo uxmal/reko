@@ -88,9 +88,9 @@ namespace Decompiler.Gui.Windows.Forms
 		}
 
 
-		public virtual DecompilerDriver CreateDecompiler(LoaderBase ldr, Program prog)
+		public virtual DecompilerDriver CreateDecompiler(LoaderBase ldr)
 		{
-            return new DecompilerDriver(ldr, prog, this);
+            return new DecompilerDriver(ldr, this);
 		}
 
         public MainForm CreateForm()
@@ -114,9 +114,9 @@ namespace Decompiler.Gui.Windows.Forms
             return form;
         }
 
-        protected virtual LoaderBase CreateLoader(string filename, Program prog)
+        protected virtual LoaderBase CreateLoader(string filename)
         {
-            return new Loader(filename, prog, this);
+            return new Loader(filename, this);
         }
 
 		public virtual Program CreateProgram()
@@ -175,8 +175,8 @@ namespace Decompiler.Gui.Windows.Forms
 			try 
 			{
 				Program prog = CreateProgram();
-                LoaderBase ldr = CreateLoader(file, prog);
-				decompilerSvc.Decompiler = CreateDecompiler(ldr, prog);
+                LoaderBase ldr = CreateLoader(file);
+				decompilerSvc.Decompiler = CreateDecompiler(ldr);
 				decompilerSvc.Decompiler.LoadProgram();
                 SwitchInteractor(pageLoaded);
             } 

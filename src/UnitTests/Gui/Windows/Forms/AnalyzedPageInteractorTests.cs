@@ -52,11 +52,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             uiSvc = new FakeUiService();
             site.AddService(typeof(IDecompilerUIService), uiSvc);
 
-            prog = new Program();
-            TestLoader ldr = new TestLoader(prog);
+            TestLoader ldr = new TestLoader();
             DecompilerService decSvc = new DecompilerService();
-            decSvc.Decompiler = new DecompilerDriver(ldr, prog, new FakeDecompilerHost());
+            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost());
             decSvc.Decompiler.LoadProgram();
+            prog = decSvc.Decompiler.Program;
             decSvc.Decompiler.ScanProgram();
             site.AddService(typeof(IDecompilerService), decSvc);
 
@@ -126,16 +126,29 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestLoader : LoaderBase
         {
-            public TestLoader(Program prog)
-                : base(prog)
+            private Program prog;
+            private DecompilerProject project;
+
+            public TestLoader()
             {
             }
 
-            public override DecompilerProject Load(Address userSpecifiedAddress)
+            public override Program Program
             {
+                get { return prog; }
+            }
+
+            public override DecompilerProject Project
+            {
+                get { return project; }
+            }
+
+            public override void Load(Address userSpecifiedAddress)
+            {
+                prog = new Program();
                 Program.Image = new ProgramImage(new Address(0x1234), new byte[4211]);
                 Program.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-                return new DecompilerProject();
+                project = new DecompilerProject();
             }
         }
     }

@@ -82,7 +82,7 @@ namespace Decompiler.UnitTests.Analysis
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
 			prog.Platform = new MsdosPlatform(prog.Architecture);
             Assembler asm = new IntelTextAssembler();
-			asm.Assemble(prog, new Address(0xC00, 0), FileUnitTester.MapTestPath(relativePath));
+			asm.Assemble(new Address(0xC00, 0), FileUnitTester.MapTestPath(relativePath));
             prog.Image = asm.Image;
 			Rewrite(prog, asm, configFile);
 			return prog;
@@ -103,7 +103,7 @@ namespace Decompiler.UnitTests.Analysis
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             Assembler asm = new IntelTextAssembler();
-			asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(relativePath));
+			asm.Assemble(new Address(0x10000000), FileUnitTester.MapTestPath(relativePath));
             prog.Image = asm.Image;
             prog.Architecture = asm.Architecture;
             foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
@@ -119,7 +119,7 @@ namespace Decompiler.UnitTests.Analysis
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             Assembler asm = new IntelTextAssembler();
-			asm.AssembleFragment(prog, new Address(0xC00, 0), s);
+			asm.AssembleFragment(new Address(0xC00, 0), s);
             prog.Image = asm.Image;
 			Rewrite(prog, asm, null);
 			return prog;

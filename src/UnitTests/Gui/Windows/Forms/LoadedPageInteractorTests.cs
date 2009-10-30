@@ -59,9 +59,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             prog.Image.Map.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
             prog.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
 
-            TestLoader ldr = new TestLoader(prog);
+            TestLoader ldr = new TestLoader(new DecompilerProject(), prog);
             decSvc = new DecompilerService();
-            decSvc.Decompiler = new DecompilerDriver(ldr, prog, new FakeDecompilerHost());
+            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost());
             decSvc.Decompiler.LoadProgram();
             site.AddService(typeof(IDecompilerService), decSvc);
 
@@ -134,15 +134,27 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestLoader : LoaderBase
         {
-            public TestLoader(Program prog)
-                : base(prog)
+            private DecompilerProject project;
+            private Program prog;
+
+            public TestLoader(DecompilerProject project, Program prog)
             {
+                this.project = project;
+                this.prog = prog;
             }
 
-            public override DecompilerProject Load(Address userSpecifiedAddress)
+            public override DecompilerProject Project
             {
-                return new DecompilerProject();
+                get { return project; }
+            }
 
+            public override Program Program
+            {
+                get { return prog; }
+            }
+
+            public override void Load(Address userSpecifiedAddress)
+            {
             }
         }
 	}

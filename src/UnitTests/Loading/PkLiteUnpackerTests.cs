@@ -34,12 +34,11 @@ namespace Decompiler.UnitTests.Loading
         [Ignore("Don't rely on external files in unit tests.")]
 		public void PkLiteLoad()
 		{
-			Program prog = new Program();
-			Loader l = new Loader("foo", prog, new FakeDecompilerHost());
-			
+			Loader l = new Loader("foo", new FakeDecompilerHost());
+            Program prog = l.Program;
 			prog.Image = new ProgramImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
-			ExeImageLoader exe = new ExeImageLoader(prog, prog.Image.Bytes);
-			PkLiteUnpacker ldr = new PkLiteUnpacker(prog, exe, prog.Image.Bytes);
+			ExeImageLoader exe = new ExeImageLoader(prog.Image.Bytes);
+			PkLiteUnpacker ldr = new PkLiteUnpacker(exe, prog.Image.Bytes);
 			ProgramImage img = ldr.Load(new Address(0xC00, 0));
 			Assert.AreEqual(0x19EC0, img.Bytes.Length);
 			ldr.Relocate(new Address(0xC00, 0), new List<EntryPoint>(), new RelocationDictionary());
@@ -50,7 +49,7 @@ namespace Decompiler.UnitTests.Loading
         {
             Program prog = new Program();
             ProgramImage rawImage = new ProgramImage(new Address(0x0C00, 0), CreateMsdosHeader());
-            ExeImageLoader exe = new ExeImageLoader(prog, rawImage.Bytes);
+            ExeImageLoader exe = new ExeImageLoader(rawImage.Bytes);
             Assert.IsTrue(PkLiteUnpacker.IsCorrectUnpacker(exe, rawImage.Bytes));
         }
 

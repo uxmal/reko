@@ -31,10 +31,11 @@ namespace Decompiler.UnitTests.Mocks
         private string filename;
         private IProcessorArchitecture arch;
         private ProgramImage image;
+        private Program prog;
+        private DecompilerProject project;
 
 
-        public FakeLoader(string filename, Program p)
-            : base(p)
+        public FakeLoader(string filename)
         {
             this.filename = filename;
         }
@@ -44,21 +45,27 @@ namespace Decompiler.UnitTests.Mocks
             get { return arch; }
         }
 
-
-        public ProgramImage Image
+        public override Program Program
         {
-            get { return Image; }
+            get { return prog; }
         }
 
-        public override DecompilerProject Load(Address addrLoad)
+
+        public override DecompilerProject Project
         {
-            DecompilerProject project = new DecompilerProject();
+            get { return project; }
+        }
+
+        public override void Load(Address addrLoad)
+        {
+            project = new DecompilerProject();
+            prog = new Program();
             SetDefaultFilenames(filename, project);
             if (arch == null)
             {
                 arch = new IntelArchitecture(ProcessorMode.Real);
             }
-            Program.Architecture = Architecture;
+            prog.Architecture = Architecture;
 
             if (addrLoad == null)
             {
@@ -68,9 +75,7 @@ namespace Decompiler.UnitTests.Mocks
             {
                 image = new ProgramImage(addrLoad, new byte[300]);
             }
-            Program.Image = image;
-            return project;
-
+            prog.Image = image;
         }
     }
 }

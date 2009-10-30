@@ -31,7 +31,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private ExeImageLoader exe;
 		private ProgramImage imgLoaded;
 
-		public MsdosImageLoader(Program prog, ExeImageLoader exe) : base(prog, exe.RawImage)
+		public MsdosImageLoader(ExeImageLoader exe) : base(exe.RawImage)
 		{
 			this.exe = exe;
 		}
