@@ -39,7 +39,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const int signatureOffset = 0x1C;
 		private const int PspSize = 0x0100;
 
-		public PkLiteUnpacker(Program prog, ExeImageLoader exe, byte [] rawImg) : base(prog, rawImg)
+		public PkLiteUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
 		{
 			int pkLiteHdrOffset = exe.e_cparHeader * 0x10;
 

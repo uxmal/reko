@@ -38,10 +38,9 @@ namespace WindowsDecompiler
             }
 			else
 			{
-				Program prog = new Program();
                 DecompilerHost host = NullDecompilerHost.Instance;
-                Loader ldr = new Loader(args[0], prog, host);
-				DecompilerDriver dec = new DecompilerDriver(ldr, prog, host);
+                Loader ldr = new Loader(args[0], host);
+				DecompilerDriver dec = new DecompilerDriver(ldr, host);
 				dec.Decompile();
 			}
 		}

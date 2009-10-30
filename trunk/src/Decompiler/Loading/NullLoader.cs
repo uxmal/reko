@@ -27,7 +27,7 @@ namespace Decompiler.Loading
     {
         private byte[] imageBytes;
 
-        public NullLoader(Program prog, byte[] image) : base(prog,image)
+        public NullLoader(byte[] image) : base(image)
         {
             this.imageBytes = image;
         }

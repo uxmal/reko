@@ -46,7 +46,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const short ImageFileExecutable = 0x0002;
 
 
-		public PeImageLoader(Program prog, byte [] img, uint peOffset) : base(prog, img)
+		public PeImageLoader(byte [] img, uint peOffset) : base(img)
 		{
 			this.prog = prog;
 			ImageReader rdr = new ImageReader(RawImage, peOffset);

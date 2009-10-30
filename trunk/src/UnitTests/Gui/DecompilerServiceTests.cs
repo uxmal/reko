@@ -58,8 +58,7 @@ namespace Decompiler.UnitTests.Gui
         {
             IDecompilerService svc = new DecompilerService();
             
-            Program prog = new Program();
-            svc.Decompiler = new DecompilerDriver(new FakeLoader("foo\\bar\\baz.exe", prog), prog, new FakeDecompilerHost());
+            svc.Decompiler = new DecompilerDriver(new FakeLoader("foo\\bar\\baz.exe"), new FakeDecompilerHost());
             svc.Decompiler.LoadProgram();
             Assert.IsNotNull(svc.Decompiler.Project);
             Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");

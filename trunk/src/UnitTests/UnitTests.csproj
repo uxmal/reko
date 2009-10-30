@@ -149,6 +149,7 @@
     <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\MainFormTests.cs" />
+    <Compile Include="Gui\Windows\Forms\PhaseProgressInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs" />
     <Compile Include="Gui\Windows\MruListTests.cs" />
     <Compile Include="Gui\Windows\WindowsApplication.cs" />

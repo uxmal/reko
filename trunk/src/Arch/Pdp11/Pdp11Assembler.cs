@@ -25,12 +25,12 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Pdp11Assembler : Assembler
     {
-        public void Assemble(Program prog, Address baseAddress, string sourcefile)
+        public void Assemble(Address baseAddress, string sourcefile)
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public void AssembleFragment(Program prog, Address baseAddress, string fragment)
+        public void AssembleFragment(Address baseAddress, string fragment)
         {
             throw new Exception("The method or operation is not implemented.");
         }

@@ -41,7 +41,6 @@ namespace Decompiler.UnitTests.Intel
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xB96, 0),
 				"       .i86\r\n" +
 				"mane	proc\r\n" +
@@ -84,19 +83,17 @@ namespace Decompiler.UnitTests.Intel
 		{
 			using (FileUnitTester fut = new FileUnitTester("intel/WalkFactorial.txt"))
 			{
-				Program prog = new Program();
                 AssemblerLoader ld = new AssemblerLoader(
                     new IntelTextAssembler(),
-                    FileUnitTester.MapTestPath("fragments/Factorial.asm"),
-                    prog);
+                    FileUnitTester.MapTestPath("fragments/Factorial.asm"));
                 ld.Load(new Address(0x0C00, 0));
-				Scanner sc = new Scanner(prog, null);
+				Scanner sc = new Scanner(ld.Program, null);
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
 					sc.EnqueueEntryPoint(ep);
 				}
 				sc.ProcessQueues();
-				prog.DumpAssembler(fut.TextWriter);
+				ld.Program.DumpAssembler(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -238,13 +235,11 @@ namespace Decompiler.UnitTests.Intel
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Program prog = new Program();
-				prog.Architecture = new IntelArchitecture(mode);
-				AssemblerLoader ld = new AssemblerLoader(
+                AssemblerLoader ld = new AssemblerLoader(
                     new IntelTextAssembler(),
-				    FileUnitTester.MapTestPath(sourceFile),
-                    prog);
+                    FileUnitTester.MapTestPath(sourceFile));
                 ld.Load(addrBase);
+                Program prog = ld.Program;
 				Scanner sc = new Scanner(prog, null);
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{

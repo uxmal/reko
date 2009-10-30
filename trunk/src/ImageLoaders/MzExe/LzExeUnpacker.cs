@@ -38,7 +38,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		// Code insipired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
 
-		public LzExeUnpacker(Program prog, ExeImageLoader exe, byte [] rawImg) : base(prog, rawImg)
+		public LzExeUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
 		{
 			this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
 

@@ -30,16 +30,25 @@ namespace Decompiler.Loading
     public class AssemblerFragmentLoader : LoaderBase
     {
         private string asmFragment;
-        private IProcessorArchitecture arch;
+        private Assembler asm;
 
-        public AssemblerFragmentLoader(string asmFragment, Program prog, IProcessorArchitecture arch)
-            : base(prog)
+        public AssemblerFragmentLoader(string asmFragment, Assembler asm)
         {
             this.asmFragment = asmFragment;
-            this.arch = arch;
+            this.asm = asm;
         }
 
-        public override DecompilerProject Load(Address addrLoad)
+        public override Program Program
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        public override DecompilerProject Project
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        public override void Load(Address addrLoad)
         {
             throw new NotImplementedException("Assembler asm = arch.CreateAssembler();");
             //asm.AssembleFragment(null, addrLoad, asmFragment);

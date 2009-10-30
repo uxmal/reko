@@ -40,14 +40,13 @@ namespace Decompiler.UnitTests.Typing
 	{
 		protected Program RewriteFile(string relativePath)
 		{
-			Program prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             AssemblerLoader ldr = new AssemblerLoader(
                 new IntelTextAssembler(),
-                FileUnitTester.MapTestPath(relativePath),
-                prog);
+                FileUnitTester.MapTestPath(relativePath));
+
             ldr.Load(new Address(0xC00, 0));
-			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
+            Program prog = ldr.Program;
+            EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			
 			Scanner scan = new Scanner(prog, null);

@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		protected void RunTest(string sourceFile, string outputFile, Address addrBase)
 		{
 			Program prog = new Program();
-			asm.Assemble(prog, addrBase, FileUnitTester.MapTestPath(sourceFile));
+			asm.Assemble(addrBase, FileUnitTester.MapTestPath(sourceFile));
             prog.Image = asm.Image;
             foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
             {
@@ -107,7 +107,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		public void AsFragment()
 		{
 			Program prog = new Program();
-			asm.AssembleFragment(prog,
+			asm.AssembleFragment(
 				new Address(0xC00, 0),
 @"		.i86
 hello	proc
@@ -132,7 +132,6 @@ hello	endp
 		{
 			Program prog = new Program();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xC00, 0),
 
 				@"		.i86
@@ -156,7 +155,6 @@ hello	endp
 		{
 			Program prog = new Program();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xC00, 0),
 				@"		.i86
 hello	proc
@@ -181,7 +179,6 @@ hello   endp
 		{
 			Program prog = new Program();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xC00, 0),
 				@"	.i86
 foo		proc
@@ -200,7 +197,6 @@ foo		endp
 		{
 			Program prog = new Program();
 			asm.AssembleFragment(
-				prog,
 				new Address(0x0C00, 0),
 				@"	.i86
 foo		proc
@@ -219,7 +215,6 @@ foo		endp
 		{
 			Program prog = new Program();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xC00, 0),
 				@"	.i86
 foo		proc
@@ -238,7 +233,7 @@ foo		endp
 		public void AsCarryInstructions()
 		{
 			Program prog = new Program();
-			asm.Assemble(prog, new Address(0xBAC, 0), FileUnitTester.MapTestPath("Fragments/carryinsts.asm"));
+			asm.Assemble(new Address(0xBAC, 0), FileUnitTester.MapTestPath("Fragments/carryinsts.asm"));
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
 				IntelDumper dump = new IntelDumper(arch);
@@ -250,8 +245,7 @@ foo		endp
         [Test]
         public void MovMemoryToSegmentRegister()
         {
-            Program prog = new Program();
-            asm.AssembleFragment(prog, new Address(0x0C00, 0),
+            asm.AssembleFragment(new Address(0x0C00, 0),
                 "    mov es,[0x4080]\r\n");
             Assert.IsTrue(Compare(asm.Image.Bytes, new byte[] { 0x8E, 0x06, 0x80, 0x40 }));
         }
@@ -259,8 +253,7 @@ foo		endp
         [Test]
         public void XchgMem()
         {
-            Program prog = new Program();
-            asm.AssembleFragment(prog, new Address(0x0C00, 0), "xchg word ptr [0x1234],bx\r\n");
+            asm.AssembleFragment(new Address(0x0C00, 0), "xchg word ptr [0x1234],bx\r\n");
             Assert.IsTrue(Compare(asm.Image.Bytes, new byte[] { 0x87, 0x1E, 0x34, 0x12 }));
         }
 
@@ -333,7 +326,7 @@ foo		endp
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program prog = new Program();
-			asm.Assemble(prog, new Address(0x0C00, 0), FileUnitTester.MapTestPath(sourceFile));
+			asm.Assemble(new Address(0x0C00, 0), FileUnitTester.MapTestPath(sourceFile));
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				Dumper dump = asm.Architecture.CreateDumper();

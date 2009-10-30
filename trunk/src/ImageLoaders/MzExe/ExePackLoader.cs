@@ -42,7 +42,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		private ProgramImage imgU;
 
-		public ExePackLoader(Program prog, ExeImageLoader exe, byte [] imgRaw) : base(prog, imgRaw)
+		public ExePackLoader(ExeImageLoader exe, byte [] imgRaw) : base(imgRaw)
 		{
 			this.exeHdrSize = (uint) (exe.e_cparHeader * 0x10U);
 			this.hdrOffset = (uint) (exe.e_cparHeader + exe.e_cs) * 0x10U;

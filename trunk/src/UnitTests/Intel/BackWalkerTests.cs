@@ -83,13 +83,13 @@ namespace Decompiler.UnitTests.Intel
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Program prog = new Program();
 				AssemblerLoader ld = new AssemblerLoader(
                     new IntelTextAssembler(),
-				    FileUnitTester.MapTestPath(sourceFile),
-                    prog);
+				    FileUnitTester.MapTestPath(sourceFile));
                 ld.Load(addrBase);
-				prog.Architecture = arch;
+
+                Program prog = ld.Program;
+                Assert.IsTrue(prog.Architecture is IntelArchitecture);
 				IntelDumper dumper = new IntelDumper(arch);
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;

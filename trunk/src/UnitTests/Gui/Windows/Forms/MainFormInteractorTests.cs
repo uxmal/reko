@@ -163,7 +163,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private void CreateMainFormInteractorWithLoader()
         {
             Program prog = new Program();
-            interactor = new TestMainFormInteractor(prog, new FakeLoader("fake.exe", prog));
+            interactor = new TestMainFormInteractor(prog, new FakeLoader("fake.exe"));
             form = interactor.CreateForm();
         }
 
@@ -213,18 +213,18 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
 
-        public override DecompilerDriver CreateDecompiler(LoaderBase ldr, Program prog)
+        public override DecompilerDriver CreateDecompiler(LoaderBase ldr)
 		{
             if (decompiler != null)
                 return decompiler;
-            return base.CreateDecompiler(ldr, prog);
+            return base.CreateDecompiler(ldr);
 		}
 
-        protected override LoaderBase CreateLoader(string filename, Program prog)
+        protected override LoaderBase CreateLoader(string filename)
         {
             if (ldr != null)
                 return ldr;
-            return new FakeLoader(filename, prog);
+            return new FakeLoader(filename);
         }
 
         public override Program CreateProgram()

@@ -39,8 +39,8 @@ namespace Decompiler.UnitTests.Loading
 				"<input><filename>foo.bar</filename></input></project>");
             TestLoader ldr = new TestLoader(new Program(), new FakeDecompilerHost());
 			ldr.Image = image;
-			DecompilerProject project = ldr.Load(null);
-			Assert.AreEqual("foo.bar", project.Input.Filename);
+			ldr.Load(null);
+			Assert.AreEqual("foo.bar", ldr.Project.Input.Filename);
 		}
 
         [Test]
@@ -57,7 +57,8 @@ namespace Decompiler.UnitTests.Loading
             Program prog = new Program();
             TestLoader ldr = new TestLoader(prog, host);
             ldr.Image = new byte[] { 42, 42, 42, 42, };
-            DecompilerProject project = ldr.Load(null);
+            ldr.Load(null);
+
             Assert.AreEqual("Warning - 00000000: The format of the file test.bin is unknown; you will need to specify it manually." , host.LastDiagnostic);
             Assert.AreEqual(0, ldr.Program.Image.BaseAddress.Offset);
             Assert.IsNull(ldr.Program.Architecture);
@@ -68,7 +69,7 @@ namespace Decompiler.UnitTests.Loading
 		private class TestLoader : Loader
 		{
 			public TestLoader(Program prog, DecompilerHost host)
-				: base("test.bin", prog, host)
+				: base("test.bin", host)
 			{
 			}
 

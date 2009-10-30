@@ -61,7 +61,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private Program prog;
 
-		public ExeImageLoader(Program prog, byte [] image) : base(prog, image)
+		public ExeImageLoader(byte [] image) : base(image)
 		{
             this.prog = prog;
             ReadCommonExeFields();	
@@ -78,19 +78,19 @@ namespace Decompiler.ImageLoaders.MzExe
 
             if (LzExeUnpacker.IsCorrectUnpacker(this, image))
             {
-                return new LzExeUnpacker(prog, this, image);
+                return new LzExeUnpacker(this, image);
             }
             else if (PkLiteUnpacker.IsCorrectUnpacker(this, image))
             {
-                return new PkLiteUnpacker(prog, this, image);
+                return new PkLiteUnpacker(this, image);
             }
             else if (ExePackLoader.IsCorrectUnpacker(this, image))
             {
-                return new ExePackLoader(prog, this, image);
+                return new ExePackLoader(this, image);
             }
             else
             {
-                return new MsdosImageLoader(prog, this);
+                return new MsdosImageLoader(this);
             }
         }
 
@@ -135,7 +135,7 @@ namespace Decompiler.ImageLoaders.MzExe
         {
             if (IsPortableExecutable)
             {
-                return new PeImageLoader(prog, base.RawImage, e_lfanew);
+                return new PeImageLoader(base.RawImage, e_lfanew);
             }
             else if (IsNewExecutable)
             {

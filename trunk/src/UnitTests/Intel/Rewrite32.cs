@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Intel
 		{
 			Program prog = new Program();
             Decompiler.Core.Assembler asm = new IntelTextAssembler();
-			asm.Assemble(prog, new Address(0x10000000), FileUnitTester.MapTestPath(sourceFile));
+			asm.Assemble(new Address(0x10000000), FileUnitTester.MapTestPath(sourceFile));
             prog.Image = asm.Image;
             prog.Platform = new Decompiler.Environments.Win32.Win32Platform(asm.Architecture);
             prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);

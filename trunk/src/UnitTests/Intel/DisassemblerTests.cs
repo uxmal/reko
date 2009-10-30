@@ -42,7 +42,6 @@ namespace Decompiler.UnitTests.Intel
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xB96, 0),
 				@"	mov	ax,0
 	cwd
@@ -82,7 +81,6 @@ foo:
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xB96, 0),
 				"foo	proc\r\n" +
 				"		mov	bx,[bp+4]\r\n" +
@@ -107,7 +105,6 @@ foo:
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xB96, 0),
 				"foo	proc\r\n" +
 				"rol	ax,cl\r\n" +
@@ -139,7 +136,6 @@ foo:
 			Program prog = new Program();
 			IntelTextAssembler asm = new IntelTextAssembler();
 			asm.AssembleFragment(
-				prog,
 				new Address(0xA14, 0),
 @"		.i86
 foo		proc
@@ -168,7 +164,7 @@ movzx	ax,byte ptr [bp+04]
 		public void DisEdiTimes2()
 		{
 			Program prog = new Program(); IntelTextAssembler asm = new IntelTextAssembler();
-			asm.AssembleFragment(prog, new Address(0x0B00, 0),
+			asm.AssembleFragment(new Address(0x0B00, 0),
 				@"	.i386
 	mov ebx,[edi*2]
 ");
@@ -187,7 +183,7 @@ movzx	ax,byte ptr [bp+04]
 			{
 				Program prog = new Program();
 				IntelTextAssembler asm = new IntelTextAssembler();
-				asm.Assemble(prog, new Address(0xC32, 0), FileUnitTester.MapTestPath("Fragments/fpuops.asm"));
+				asm.Assemble(new Address(0xC32, 0), FileUnitTester.MapTestPath("Fragments/fpuops.asm"));
 				CreateDisassembler(asm, PrimitiveType.Word16);
 				while (asm.Image.IsValidAddress(dasm.Address))
 				{
