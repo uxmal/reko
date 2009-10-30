@@ -28,62 +28,65 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Builds a function application from a call site and a callee.
 	/// </summary>
-	public class ApplicationBuilder
+    /// <summary>
+    /// <remarks>
+    /// liveIn registers that are passed in and out are marked as 'out arguments'
+    ///
+    /// If there is only one 'out' argument, then it is returned as the return value of the
+    /// function. If there are several return values:
+    ///   If one and only one of them is a flag register, it becomes the return value
+    ///     ingelsta.
+    ///   If more registers are returned, they all become out registers and the function
+    ///    is declared void, unless flags are returned.
+    /// </remarks>
+    public class ApplicationBuilder
 	{
         private Identifier idOut;
         private Application appl;
-        [Obsolete] Frame frame;
+        private Frame frame;
 
-        [Obsolete]
-		public ApplicationBuilder(Frame f)
-		{
-			this.frame = f;
-		}
-
-        public ApplicationBuilder(Frame frame, CallSite cs, IProcessorArchitecture arch, Expression callee, ProcedureSignature sigCallee)
+        public ApplicationBuilder(Frame frame, CallSite cs, Expression callee, ProcedureSignature sigCallee)
         {
             this.frame = frame;
 			if (sigCallee == null || !sigCallee.ArgumentsValid)
 				throw new InvalidOperationException("No signature available; application cannot be constructed.");
 
-			List<Expression> actuals = new List<Expression>();
 
-			idOut = null;
-			if (sigCallee.ReturnValue != null)
-			{
-				idOut = Bind(sigCallee.ReturnValue, cs);
-			}
-
-			for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
-			{
-				Identifier formalArg = sigCallee.FormalArguments[i];
-				Identifier actualArg = formalArg.Storage.BindFormalArgumentToFrame(frame, cs);
-				if (formalArg.Storage is OutArgumentStorage)
-				{
-					actuals.Add(new UnaryExpression(UnaryOperator.addrOf, arch.FramePointerType, actualArg));
-				}
-				else
-				{
-					actuals.Add(actualArg);
-				}
-			}
-
+            FindReturnValue(cs, sigCallee);
+            List<Expression> actuals = BindArguments(frame, cs, sigCallee);
 			appl = new Application(
                 callee, 
                 (idOut == null ? PrimitiveType.Void : idOut.DataType),
                 actuals.ToArray());
         }
 
-        public Instruction Emit(CodeEmitter emitter)
+        private List<Expression> BindArguments(Frame frame, CallSite cs, ProcedureSignature sigCallee)
         {
-			if (idOut == null)
-			{
-                return emitter.SideEffect(appl);
-			}
-			else
-			{
-                return emitter.Assign(idOut, appl);
-			}
+            List<Expression> actuals = new List<Expression>();
+            for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
+            {
+                Identifier formalArg = sigCallee.FormalArguments[i];
+                Identifier actualArg = formalArg.Storage.BindFormalArgumentToFrame(frame, cs);
+                if (formalArg.Storage is OutArgumentStorage)
+                {
+                    actuals.Add(new UnaryExpression(UnaryOperator.addrOf, frame.FramePointer.DataType, actualArg));
+                }
+                else
+                {
+                    actuals.Add(actualArg);
+                }
+            }
+            return actuals;
+        }
+
+        private void FindReturnValue(CallSite cs, ProcedureSignature sigCallee)
+        {
+            idOut = null;
+            if (sigCallee.ReturnValue != null)
+            {
+                idOut = Bind(sigCallee.ReturnValue, cs);
+            }
+
         }
 
 		public Identifier Bind(Identifier id, CallSite cs)
@@ -91,21 +94,6 @@ namespace Decompiler.Core
 			return id.Storage.BindFormalArgumentToFrame(frame, cs);
 		}
 
-		/// <summary>
-		/// Builds actual argument bindings from a callee.
-		/// </summary>
-		/// <remarks>
-		/// liveIn registers that are passed in and out are marked as 'out arguments'
-		///
-		/// If there is only one 'out' argument, then it is returned as the return value of the
-		/// function. If there are several return values:
-		///   If one and only one of them is a flag register, it becomes the return value
-		///     ingelsta.
-		///   If more registers are returned, they all become out registers and the function
-		///    is declared void, unless flags are returned.
-		/// </remarks>
-		/// <param name="callee"></param>
-		/// <returns></returns>
         [Obsolete]
 		public Instruction BuildApplication(CallSite cs, IProcessorArchitecture arch, Expression callee, ProcedureSignature sigCallee)
 		{
@@ -149,5 +137,17 @@ namespace Decompiler.Core
 				return new Assignment((Identifier) idOut, appl);
 			}
 		}
-	}
+
+        public Instruction CreateInstruction()
+        {
+			if (idOut == null)
+			{
+                return new SideEffect(appl);
+			}
+			else
+			{
+                return new Assignment(idOut, appl);
+			}
+        }
+    }
 }

@@ -53,18 +53,6 @@ namespace Decompiler.Arch.Intel
                 emitter.Assign((Identifier) dst, b);
         }
 
-        [Obsolete]
-		public Instruction CreateInstruction(BinaryOperator op)
-		{
-			BinaryExpression b = new BinaryExpression(op, dst.DataType, dst, src);
-			if (useStore)
-			{
-				return new Store(dst.CloneExpression(), b);
-			}
-			else
-				return new Assignment((Identifier) dst, b);
-		}
-
 		/// <summary>
 		/// Determines if the carry flag reaches a using instruction.
 		/// </summary>

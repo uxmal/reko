@@ -32,13 +32,6 @@ namespace Decompiler.Loading
         private string asmfile;
         private Assembler asm;
 
-        [Obsolete("Use other constructor. Architecture is obtained from the assembler, not vice versa.", true)]
-        public AssemblerLoader(string asmfile, Program prog, IProcessorArchitecture arch) :
-            base(prog)
-        {
-            this.asmfile = asmfile;
-        }
-
         public AssemblerLoader(Assembler asm, string asmfile, Program prog)
             : base(prog)
         {

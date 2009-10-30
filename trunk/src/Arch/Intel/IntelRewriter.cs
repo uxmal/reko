@@ -45,7 +45,6 @@ namespace Decompiler.Arch.Intel
 		private StringInstructionRewriter siw;
 		private CodeEmitter emitter;
 		private LongAddRewriter larw;
-		[Obsolete("Remove this")]private ApplicationBuilder ab;
 		
 		public IntelRewriter(
 			IProcedureRewriter prw,
@@ -64,7 +63,6 @@ namespace Decompiler.Arch.Intel
 			this.orw = new OperandRewriter(host, arch, frame);
 			this.siw = new StringInstructionRewriter(arch, orw);
 			this.larw = new LongAddRewriter(frame, orw, state);
-			this.ab = new ApplicationBuilder(frame);
 			maxFpuStackRead = -1;
 			maxFpuStackWrite = -1;
 		}
@@ -941,12 +939,11 @@ namespace Decompiler.Arch.Intel
             ApplicationBuilder ab = new ApplicationBuilder(
                 frame, 
                 new CallSite(state.StackBytes, state.FpuStackItems),
-                arch, 
                 fn,
                 sig);
             state.ShrinkStack(sig.StackDelta);
             state.ShrinkFpuStack(sig.FpuStackDelta);
-            ab.Emit(emitter);
+            emitter.Emit(ab.CreateInstruction());
 		}
 
 		private Assignment EmitAdcSbb(BinaryOperator opr)
@@ -1816,7 +1813,6 @@ namespace Decompiler.Arch.Intel
 			IntelRegister freg = (IntelRegister) Registers.ebp.GetPart(instrCur.dataWidth);
 			EmitPush(freg);
 			state.EnterFrame(freg);
-			frame.SetFramePointerWidth(instrCur.dataWidth);
 			state.GrowStack(
 				instrCur.dataWidth.Size * ((ImmediateOperand)instrCur.op2).Value.ToInt32() + 
 				((ImmediateOperand)instrCur.op1).Value.ToInt32());
@@ -1828,7 +1824,6 @@ namespace Decompiler.Arch.Intel
             if (regOp != null &&  arch.ProcessorMode.IsPointerRegister(regOp.Register) && IsStackRegister(instrCur.op2))
             {
                 state.EnterFrame(regOp.Register);
-                frame.SetFramePointerWidth(instrCur.dataWidth);
                 return;
             }
             regOp = instrCur.op2 as RegisterOperand;

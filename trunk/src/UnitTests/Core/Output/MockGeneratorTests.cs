@@ -222,6 +222,118 @@ namespace Decompiler.UnitTests.Core.Output
 "" + nl;
 
             VerifyTest(sExp);
+        }
+
+        [Test]
+        public void ComparisonOperators()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                Identifier f = m.Local(PrimitiveType.Bool, "f");
+                Identifier a = m.Local(PrimitiveType.Word32, "a");
+                Identifier b = m.Local(PrimitiveType.Word32, "b");
+
+                m.Assign(f, m.Le(a, b)); 
+                m.Assign(f, m.Ge(a, b)); 
+                m.Assign(f, m.Uge(a, b)); 
+                m.Assign(f, m.Ule(a, b)); 
+                m.Assign(f, m.Lt(a, b)); 
+                m.Assign(f, m.Gt(a, b)); 
+                m.Assign(f, m.Ugt(a, b)); 
+                m.Assign(f, m.Ult(a, b)); 
+            });
+            VerifyTest(
+                "public class MockProcedure : ProcedureMock" + nl +
+                "{" + nl +
+                "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
+                "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
+                "    Identifier f = Local(PrimitiveType.Bool, \"f\");" + nl +
+                "    " + nl +
+                "    Label(\"l1\");" + nl +
+                "    Assign(f, Le(a, b));" + nl +
+                "    Assign(f, Ge(a, b));" + nl +
+                "    Assign(f, Uge(a, b));" + nl +
+                "    Assign(f, Ule(a, b));" + nl +
+                "    Assign(f, Lt(a, b));" + nl +
+                "    Assign(f, Gt(a, b));" + nl +
+                "    Assign(f, Ugt(a, b));" + nl +
+                "    Assign(f, Ult(a, b));" + nl +
+                "}" + nl +
+                "" + nl);
+
+
+        }
+
+        [Test]
+        public void LogicalOperators()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                Identifier f = m.Local(PrimitiveType.Bool, "f");
+                Identifier a = m.Local(PrimitiveType.Word32, "a");
+                Identifier b = m.Local(PrimitiveType.Word32, "b");
+
+                m.Assign(f, m.Cand(a, m.Cor(a, b)));
+            });
+            VerifyTest(
+                "public class MockProcedure : ProcedureMock" + nl +
+                "{" + nl +
+                "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
+                "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
+                "    Identifier f = Local(PrimitiveType.Bool, \"f\");" + nl +
+                "    " + nl +
+                "    Label(\"l1\");" + nl +
+                "    Assign(f, Cand(a, Cor(a, b)));" + nl +
+                "}" + nl +
+                "" + nl);
+
+        }
+
+        [Test]
+        public void BitwiseOperators()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                Identifier a = m.Local(PrimitiveType.Word32, "a");
+                Identifier b = m.Local(PrimitiveType.Word32, "b");
+                Identifier c = m.Local(PrimitiveType.Word32, "c");
+
+                m.Assign(c, m.Xor(a, m.Or(a, m.And(a, b))));
+            });
+            VerifyTest(
+                "public class MockProcedure : ProcedureMock" + nl +
+                "{" + nl +
+                "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
+                "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
+                "    Identifier c = Local(PrimitiveType.Word32, \"c\");" + nl +
+                "    " + nl +
+                "    Label(\"l1\");" + nl +
+                "    Assign(c, Xor(a, Or(a, And(a, b))));" + nl +
+                "}" + nl +
+                "" + nl);
+
+        }
+
+        [Test]
+        public void SliceDpb()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                Identifier a = m.Local(PrimitiveType.Word32, "a");
+                Identifier b = m.Local(PrimitiveType.Word32, "b");
+
+                m.Assign(a, m.Dpb(a, m.Slice(PrimitiveType.Word16, b, 16), 0, 16));
+            });
+            VerifyTest(
+                "public class MockProcedure : ProcedureMock" + nl +
+                "{" + nl +
+                "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
+                "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
+                "    " + nl +
+                "    Label(\"l1\");" + nl +
+                "    Assign(a, Dpb(a, Slice(PrimitiveType.Word16, b, 16), 0, 16));" + nl +
+                "}" + nl +
+                "" + nl);
 
         }
 

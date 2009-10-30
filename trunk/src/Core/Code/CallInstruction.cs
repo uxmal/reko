@@ -32,13 +32,6 @@ namespace Decompiler.Core.Code
             this.site = site;
 		}
 
-        [Obsolete("", true)]
-        public CallBase(Expression expr, int stackDepth, int fpuStackDepth)
-        {
-            this.expr = expr;
-            this.site = new CallSite(stackDepth, fpuStackDepth);
-        }
-
 		public CallSite CallSite
 		{
 			get { return site; }
@@ -51,11 +44,6 @@ namespace Decompiler.Core.Code
         public IndirectCall(Expression expr, CallSite site) : base(expr, site)
         {
         }
-
-        [Obsolete("", true)]
-		public IndirectCall(Expression expr, int stackDepth, int fpuStackDepth) : base(expr, stackDepth, fpuStackDepth)
-		{
-		}
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{
@@ -82,13 +70,6 @@ namespace Decompiler.Core.Code
 	public class CallInstruction : CallBase
 	{
 		private Procedure proc;
-
-        [Obsolete("", true)]
-        public CallInstruction(ProcedureConstant pc, int stackDepth, int fpuStackDepth)
-            : base(pc, stackDepth, fpuStackDepth)
-        {
-            this.proc = (Procedure) pc.Procedure;
-        }
 
         public CallInstruction(ProcedureConstant pc, CallSite site)
             : base(pc, site)

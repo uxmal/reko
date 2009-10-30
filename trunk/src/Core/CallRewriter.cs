@@ -24,7 +24,6 @@ namespace Decompiler.Core
 {
 	public class CallRewriter
 	{
-		private ApplicationBuilder ab;
 
 		public CallRewriter()
 		{
@@ -59,14 +58,12 @@ namespace Decompiler.Core
 			Procedure procCallee = call.Callee;
 			ProcedureSignature sigCallee = GetProcedureSignature(procCallee);
 			ProcedureConstant fn = new ProcedureConstant(arch.PointerType, procCallee);
-			Instruction instr = ab.BuildApplication(call.CallSite, arch, fn, sigCallee);
-			if (instr != null)
-			{
-				stm.Instruction = instr;
-				return true;
-			}
-			else
-				return false;
+            if (sigCallee == null || !sigCallee.ArgumentsValid)
+                return false;
+
+            ApplicationBuilder ab = new ApplicationBuilder(proc.Frame, call.CallSite, fn, sigCallee);
+			stm.Instruction = ab.CreateInstruction();
+            return true;
 		}
 
 		/// <summary>
@@ -81,7 +78,6 @@ namespace Decompiler.Core
 		/// <returns>The number of calls that couldn't be converted</returns>
 		public int RewriteCalls(Procedure proc, IProcessorArchitecture arch)
 		{
-			ab = new ApplicationBuilder(proc.Frame);
 			int unConverted = 0;
 			foreach (Block b in proc.RpoBlocks)
 			{
@@ -90,6 +86,7 @@ namespace Decompiler.Core
 					CallInstruction ci = stm.Instruction as CallInstruction;
 					if (ci != null)
 					{
+
 						if (!RewriteCall(proc, arch, stm, ci))
 							++unConverted;
 					}

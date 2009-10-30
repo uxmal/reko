@@ -424,7 +424,7 @@ namespace Decompiler.UnitTests.Typing
             ProcedureMock m = new ProcedureMock();
             Identifier a = m.Local32("a");
             Identifier b = m.LocalByte("b");
-            Statement s = m.Dpb(a, b, 0, 8);
+            Statement s = m.Assign(a, m.Dpb(a, b, 0, 8));
             coll = CreateCollector();
             s.Instruction.Accept(eqb);
             s.Instruction.Accept(coll);

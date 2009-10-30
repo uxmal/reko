@@ -113,15 +113,6 @@ namespace Decompiler.Loading
         //    EntryPoints.Add(new EntryPoint(addrBase + 0x0100, Program.Architecture.CreateProcessorState()));
         //}
 
-
-        [Obsolete]
-        public Program LoadExecutableFile(string filename, Address addrLoad)
-        {
-            byte[] rawBytes = LoadImageBytes(filename, 0);
-            LoadExecutableFile(rawBytes, addrLoad);
-            return Program;
-        }
-
 		/// <summary>
 		/// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
 		/// Relocation gives us a chance to determine the addresses of interesting items.

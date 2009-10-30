@@ -65,7 +65,6 @@ namespace Decompiler.Core
 		private Identifier framePointer;
 		private int frameOffset;				// frame offset from stack pointer in bytes.
 
-		//$REFACTOR: perhaps we can get rid of framePointerSize? It's only used by the constructor.
 		public Frame(PrimitiveType framePointerSize)
 		{
 			identifiers = new List<Identifier>();
@@ -388,18 +387,6 @@ namespace Decompiler.Core
 		{
 			get { return returnAddressSize; }
 			set { returnAddressSize = value; }
-		}
-
-		public void SetFramePointerWidth(DataType width)
-		{
-			if (framePointer != null)
-			{
-				if (framePointer.DataType.Size != width.Size)
-					throw new InvalidOperationException("Frame pointer must have only one width");
-			}
-			else
-			{
-			}
 		}
 
 		public List<Identifier> Identifiers

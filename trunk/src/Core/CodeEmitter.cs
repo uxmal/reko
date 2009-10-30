@@ -59,7 +59,7 @@ namespace Decompiler.Core
 		/// Appends the instruction to the end of the list of intstructions of the current block.
 		/// </summary>
 		/// <param name="instr"></param>
-		private void Emit(Instruction instr)
+		public void Emit(Instruction instr)
 		{
 			blockCur.Statements.Add(instr);
 		}
