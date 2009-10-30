@@ -24,7 +24,7 @@ using Decompiler.Environments.Msdos;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class MsDosPlatformTests

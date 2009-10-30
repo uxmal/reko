@@ -24,7 +24,7 @@ using NUnit.Framework;
 using System;
 using System.Text;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class IntelRegisterTests

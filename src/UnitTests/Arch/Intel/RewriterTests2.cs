@@ -26,7 +26,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class RewriterTests2 : RewriterTestBase

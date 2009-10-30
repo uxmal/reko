@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.UnitTests.Intel.Fragments
+namespace Decompiler.UnitTests.Arch.Intel.Fragments
 {
     public class Factorial : AssemblerFragment
     {

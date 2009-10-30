@@ -27,7 +27,7 @@ using System.Xml;
 using System.Text;
 using BitSet = Decompiler.Core.Lib.BitSet;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Arch.Intel
 {
 
 	[TestFixture]

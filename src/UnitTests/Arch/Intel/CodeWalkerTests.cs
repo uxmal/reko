@@ -31,7 +31,7 @@ using System.Text;
 using NUnit.Framework;
 using ProcessorState = Decompiler.Core.ProcessorState;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Arch.Intel
 {
 	[TestFixture]	
 	public class CodeWalkerTests

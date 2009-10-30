@@ -23,7 +23,7 @@ using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Intel
+namespace Decompiler.UnitTests.Arch.Intel
 {
 	[TestFixture]
 	public class IntelAssemblerTests
