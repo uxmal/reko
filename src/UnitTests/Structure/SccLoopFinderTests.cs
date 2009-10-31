@@ -115,8 +115,7 @@ namespace Decompiler.UnitTests.Structure
             ProcedureStructure ps = g.CreateProcedureStructure();
             g.SetTimeStamps();
 
-            DerivedSequenceBuilder gr = new DerivedSequenceBuilder();
-            gr.BuildDerivedSequence(ps);
+            DerivedSequenceBuilder gr = new DerivedSequenceBuilder(ps);
             return ps;
         }
 

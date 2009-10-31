@@ -26,21 +26,26 @@ namespace Decompiler.Structure
 {
     public class DerivedGraph
     {
-        public StructureNode cfg;				// head of derived graph
-        public int Count;			    // number of nodes in this graph
+        private StructureNode entry;
+
+        public StructureNode cfg				// head of derived graph
+        {
+            get { return entry; }
+        }
+
+        [Obsolete]
+        public int Count			    // number of nodes in this graph
+        {
+            get { return graph.Nodes.Count; }
+        }
+
         private List<IntNode> intervals;
         private DirectedGraph<StructureNode> graph;
-
-        public DerivedGraph()
-        {
-            this.intervals = new List<IntNode>();
-            this.graph = new DirectedGraphImpl<StructureNode>();
-        }
 
         public DerivedGraph(DirectedGraph<StructureNode> graph, StructureNode entry, List<IntNode> intervals)
         {
             this.graph = graph;
-            this.cfg = entry;
+            this.entry = entry;
             this.intervals = intervals;
         }
         

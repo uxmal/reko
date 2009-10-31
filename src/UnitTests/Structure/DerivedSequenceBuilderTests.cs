@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Structure
                 m.Return();
             });
 
-            DerivedSequenceBuilder2 seq = new DerivedSequenceBuilder2(proc);
+            DerivedSequenceBuilder seq = new DerivedSequenceBuilder(proc);
             Assert.AreEqual(3, proc.Nodes.Count);
             Assert.AreEqual(2, proc.DerivedGraphs.Count);
 
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Structure
                 m.Return();
             });
 
-            DerivedSequenceBuilder2 seq = new DerivedSequenceBuilder2(proc);
+            DerivedSequenceBuilder seq = new DerivedSequenceBuilder(proc);
             proc.Dump();
 
             Assert.AreEqual(4, proc.DerivedGraphs[0].Graph.Nodes.Count);
@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Structure
 
                 m.Return();
             });
-            DerivedSequenceBuilder2 seq = new DerivedSequenceBuilder2(proc);
+            DerivedSequenceBuilder seq = new DerivedSequenceBuilder(proc);
             Assert.AreEqual(2, proc.DerivedGraphs.Count, "Expected 2 graphs");
             Assert.AreEqual(6, proc.DerivedGraphs[0].Graph.Nodes.Count);
             Assert.AreEqual(3, proc.DerivedGraphs[1].Graph.Nodes.Count, "Expected 3 nodes in top level graph");
@@ -131,8 +131,7 @@ namespace Decompiler.UnitTests.Structure
         protected virtual void RunTest(ProcedureMock pm)
         {
             CompileTest(pm);
-            DerivedSequenceBuilder gr = new DerivedSequenceBuilder();
-            gr.BuildDerivedSequence(proc);
+            DerivedSequenceBuilder gr = new DerivedSequenceBuilder(proc);
         }
 
 

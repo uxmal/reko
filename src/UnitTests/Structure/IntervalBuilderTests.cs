@@ -12,8 +12,8 @@ namespace Decompiler.UnitTests.Structure
     [TestFixture]
     public class IntervalBuilderTests : StructureTestBase
     {
-        private DerivedGraph g;
         private ProcedureStructure ph;
+        private List<IntNode> intervals;
 
         [Test]
         public void SimpleGraph()
@@ -24,7 +24,7 @@ namespace Decompiler.UnitTests.Structure
                 m.Return();
             });
 
-            Assert.AreEqual(1, g.Intervals.Count);
+            Assert.AreEqual(1, intervals.Count);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Structure
                 m.Label("join");
                 m.Return();
             });
-            Assert.AreEqual(1, g.Intervals.Count);
+            Assert.AreEqual(1, intervals.Count);
         }
 
         [Test]
@@ -54,9 +54,9 @@ namespace Decompiler.UnitTests.Structure
                 m.Label("done");
                 m.Return();
             });
-            Assert.AreEqual(2, g.Intervals.Count, "Expected 2 intervals");
-            Assert.AreEqual("Interval 0: [ProcedureMock_entry]", g.Intervals[0].ToString());
-            Assert.AreEqual("Interval 1: [done,l1,loop,ProcedureMock_exit]", g.Intervals[1].ToString());
+            Assert.AreEqual(2, intervals.Count, "Expected 2 intervals");
+            Assert.AreEqual("Interval 0: [ProcedureMock_entry]", intervals[0].ToString());
+            Assert.AreEqual("Interval 1: [done,l1,loop,ProcedureMock_exit]", intervals[1].ToString());
         }
 
         [Test]
@@ -79,18 +79,18 @@ namespace Decompiler.UnitTests.Structure
                 m.Label("done");
                 m.Return();
             });
-            Assert.AreEqual(3, g.Intervals.Count);
-            Assert.AreEqual("Interval 0: [ProcedureMock_entry]", g.Intervals[0].ToString());
-            Assert.AreEqual("Interval 1: [l1,loop1]", g.Intervals[1].ToString());
-            Assert.AreEqual("Interval 2: [done,l2,loop2,ProcedureMock_exit]", g.Intervals[2].ToString());
+            Assert.AreEqual(3, intervals.Count);
+            Assert.AreEqual("Interval 0: [ProcedureMock_entry]", intervals[0].ToString());
+            Assert.AreEqual("Interval 1: [l1,loop1]", intervals[1].ToString());
+            Assert.AreEqual("Interval 2: [done,l2,loop2,ProcedureMock_exit]", intervals[2].ToString());
         }
 
         [Test]
         public void Switch()
         {
             RunTest(new MockSwitch());
-            Assert.AreEqual("Interval 0: [case0,case1,case2,case3,default,done,l1,l2,MockSwitch_entry,MockSwitch_exit]", g.Intervals[0].ToString());
-            Assert.AreEqual(1, g.Intervals.Count);
+            Assert.AreEqual(1, intervals.Count);
+            Assert.AreEqual("Interval 0: [case0,case1,case2,case3,default,done,l1,l2,MockSwitch_entry,MockSwitch_exit]", intervals[0].ToString());
         }
 
         protected virtual void RunTest(ProcGenerator pg)
@@ -115,9 +115,7 @@ namespace Decompiler.UnitTests.Structure
             graphs.SetTimeStamps();
 
             IntervalBuilder ib = new IntervalBuilder();
-            g = new DerivedGraph();
-            g.cfg = ph.EntryNode;
-            ib.BuildIntervals(g);
+            intervals = ib.BuildIntervals(new StructureGraphAdapter(ph.Nodes), ph.EntryNode);
         }
 
     }

@@ -114,8 +114,7 @@ namespace Decompiler.Structure
         // Build the sequence of derived graphs for each procedure
         public void BuildDerivedSequences(ProcedureStructure curProc)
         {
-            DerivedSequenceBuilder d = new DerivedSequenceBuilder();
-            d.BuildDerivedSequence(curProc);
+            DerivedSequenceBuilder d = new DerivedSequenceBuilder(curProc);
         }
 
         // Display the sequence of derived graphs for each procedure
