@@ -28,16 +28,6 @@ namespace Decompiler.Structure
     public class IntNode : StructureNode
     {
         private List<StructureNode> nodes = new List<StructureNode>();		// nodes of the interval
-        private List<StructureNode> cfgNodes = new List<StructureNode>();   // list of CFG nodes;
-
-        // Define a global variable to be used when assigning unique id's to new interval nodes
-        static int NewIntId = 0;
-
-        public IntNode(StructureNode node)
-            : base(NewIntId++, bbType.intNode)
-        {
-            AddNode(node);
-        }
 
         public IntNode(int intervalID, StructureNode headerNode)
             : base(intervalID, bbType.intNode)
@@ -54,7 +44,6 @@ namespace Decompiler.Structure
         public void AddNode(StructureNode node)
         {
             nodes.Add(node);
-            cfgNodes.Add(node);
             node.Interval = this;
         }
 

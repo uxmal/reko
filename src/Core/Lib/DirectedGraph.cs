@@ -29,5 +29,6 @@ namespace Decompiler.Core.Lib
         ICollection<T> Nodes { get; }
         void AddEdge(T nodeFrom, T nodeTo);
         void RemoveEdge(T nodeFrom, T nodeTo);
+        bool ContainsEdge(T nodeFrom, T NodeTo);
     }
 }

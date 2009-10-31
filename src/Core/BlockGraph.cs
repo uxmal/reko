@@ -61,6 +61,11 @@ namespace Decompiler.Core
             nodeTo.Pred.Remove(nodeFrom);
         }
 
+        public bool ContainsEdge(Block from, Block to)
+        {
+            return from.Succ.Contains(to);
+        }
+
         #endregion
     }
 }

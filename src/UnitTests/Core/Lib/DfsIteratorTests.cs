@@ -161,6 +161,11 @@ namespace Decompiler.UnitTests.Core.Lib
                 throw new Exception("The method or operation is not implemented.");
             }
 
+            public bool ContainsEdge(TreeNode nodeFrom, TreeNode nodeTo)
+            {
+                throw new Exception("The method or operation is not implemented.");
+            }
+
             #endregion
         }
 
