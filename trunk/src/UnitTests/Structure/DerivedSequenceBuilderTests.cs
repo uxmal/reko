@@ -16,7 +16,7 @@ namespace Decompiler.UnitTests.Structure
         private ProcedureStructure proc;
 
         [Test]
-        public void LoopTest()
+        public void LoopTestdead()
         {
             RunTest(delegate(ProcedureMock m)
             {
@@ -30,29 +30,9 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual(1, proc.DerivedGraphs[2].Count);
         }
 
-        [Test]
-        public void NonReducible()
-        {
-            RunTest(delegate(ProcedureMock m)
-            {
-                m.BranchIf(m.Fn("foo"), "right");
-
-                m.Label("left");
-                m.SideEffect(m.Fn("Left"));
-                m.Jump("right");
-
-                m.Label("right");
-                m.SideEffect(m.Fn("Right"));
-                m.BranchIf(m.Fn("exitTest"), "left");
-
-                m.Return();
-            });
-            Assert.AreEqual(2, proc.DerivedGraphs.Count, "Expected 2 graphs");
-            Assert.AreEqual(6, proc.DerivedGraphs[0].Count);
-            Assert.AreEqual(3, proc.DerivedGraphs[1].Count, "Expected 3 nodes in top level graph");
-        }
 
         [Test]
+        [Ignore]
         public void NestedWhileLoops()
         {
             RunTest(new MockNestedWhileLoops());
@@ -69,6 +49,70 @@ namespace Decompiler.UnitTests.Structure
             HashSet<StructureNode> intervalMembers = i.FindIntervalNodes(1);
         }
 
+        [Test]
+        public void BuildSingleNodeGraph()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                m.Return();
+            });
+
+            DerivedSequenceBuilder2 seq = new DerivedSequenceBuilder2(proc);
+            Assert.AreEqual(3, proc.Nodes.Count);
+            Assert.AreEqual(2, proc.DerivedGraphs.Count);
+
+            Assert.AreEqual(3, proc.DerivedGraphs[0].Graph.Nodes.Count);
+            Assert.AreEqual(1, proc.DerivedGraphs[0].Intervals.Count);
+            Assert.AreEqual(1, proc.DerivedGraphs[1].Graph.Nodes.Count);
+            Assert.AreEqual(1, proc.DerivedGraphs[1].Intervals.Count);
+        }
+
+        [Test]
+        public void LoopTest()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                m.Label("loop");
+                m.SideEffect(m.Fn("foo", m.Int32(4)));
+                m.BranchIf(m.LocalBool("f"), "loop");
+                m.Return();
+            });
+
+            DerivedSequenceBuilder2 seq = new DerivedSequenceBuilder2(proc);
+            proc.Dump();
+
+            Assert.AreEqual(4, proc.DerivedGraphs[0].Graph.Nodes.Count);
+            Assert.AreEqual(2, proc.DerivedGraphs[0].Intervals.Count);
+            Assert.AreEqual(2, proc.DerivedGraphs[1].Graph.Nodes.Count);
+            Assert.AreEqual(1, proc.DerivedGraphs[1].Intervals.Count);
+            Assert.AreEqual(1, proc.DerivedGraphs[2].Graph.Nodes.Count);
+            Assert.AreEqual(1, proc.DerivedGraphs[2].Intervals.Count);
+        }
+
+        [Test]
+        public void NonReducible()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                m.BranchIf(m.Fn("foo"), "right");
+
+                m.Label("left");
+                m.SideEffect(m.Fn("Left"));
+                m.Jump("right");
+
+                m.Label("right");
+                m.SideEffect(m.Fn("Right"));
+                m.BranchIf(m.Fn("exitTest"), "left");
+
+                m.Return();
+            });
+            DerivedSequenceBuilder2 seq = new DerivedSequenceBuilder2(proc);
+            Assert.AreEqual(2, proc.DerivedGraphs.Count, "Expected 2 graphs");
+            Assert.AreEqual(6, proc.DerivedGraphs[0].Graph.Nodes.Count);
+            Assert.AreEqual(3, proc.DerivedGraphs[1].Graph.Nodes.Count, "Expected 3 nodes in top level graph");
+        }
+
+
         private string DumpBoolArray(bool[] blocks)
         {
             StringBuilder sb = new StringBuilder();
@@ -77,7 +121,7 @@ namespace Decompiler.UnitTests.Structure
             return sb.ToString();
         }
 
-        protected virtual void RunTest(ProcGenerator pg)
+        protected virtual void RunTest(Action<ProcedureMock> pg)
         {
             ProcedureMock pm = new ProcedureMock();
             pg(pm);
@@ -86,16 +130,29 @@ namespace Decompiler.UnitTests.Structure
 
         protected virtual void RunTest(ProcedureMock pm)
         {
+            CompileTest(pm);
+            DerivedSequenceBuilder gr = new DerivedSequenceBuilder();
+            gr.BuildDerivedSequence(proc);
+        }
+
+
+        protected virtual void CompileTest(Action<ProcedureMock> pg)
+        {
+            ProcedureMock pm = new ProcedureMock();
+            pg(pm);
+            CompileTest(pm);
+        }
+
+        private void CompileTest(ProcedureMock pm)
+        {
             pm.Procedure.RenumberBlocks();
             ProcedureStructureBuilder g = new ProcedureStructureBuilder(pm.Procedure);
-            Dictionary<Block,StructureNode> nodes = new Dictionary<Block,StructureNode>();
+            Dictionary<Block, StructureNode> nodes = new Dictionary<Block, StructureNode>();
             g.BuildNodes();
             g.DefineEdges();
             proc = g.CreateProcedureStructure();
             g.SetTimeStamps();
 
-            DerivedSequenceBuilder gr = new DerivedSequenceBuilder();
-            gr.BuildDerivedSequence(proc);
         }
 
         private void Dump(List<DerivedGraph> gr, TextWriter writer)

@@ -44,11 +44,9 @@ namespace Decompiler.Structure
 
             beenInH.Add(derGraph.cfg);
 
-            // Keep processing the header sequence until it is empty
             StructureNode header;
             while (headerSeq.GetWorkItem(out header))
             {
-                // Remove the head of the headers sequence and set it to be the head of a new interval
                 IntNode newInt = new IntNode(intervalID++, header);
 
                 // Process each succesive node in the interval until no more nodes can be added to the interval.
@@ -84,14 +82,68 @@ namespace Decompiler.Structure
                 }
 
                 // Add the new interval to the sequence of intervals
-                intSeq.Add(/*static_cast<CFGNode>*/(newInt));
+                intSeq.Add(newInt);
             }
         }
 
-        private bool SubSetOf(List<StructureNode> iEdges, IntNode newInt)
+        public List<IntNode> BuildIntervals(DirectedGraph<StructureNode> graph, StructureNode entry)
         {
-            for (int i = 0; i < iEdges.Count; i++)
-                if (iEdges[i].Interval != newInt)
+            if (graph == null)
+                throw new ArgumentNullException("graph");
+            if (entry == null)
+                throw new ArgumentNullException("entry");
+
+            List<IntNode> intSeq = new List<IntNode>();	// The sequence of intervals in this graph
+            WorkList<StructureNode> headerSeq = new WorkList<StructureNode>();	// The sequence of interval header nodes
+            List<StructureNode> beenInH = new List<StructureNode>();	// The set of nodes that have been in the above sequence at some stage
+
+            headerSeq.Add(entry);
+            beenInH.Add(entry);
+
+            StructureNode header;
+            while (headerSeq.GetWorkItem(out header))
+            {
+                IntNode newInt = new IntNode(intervalID++, header);
+
+                // Process each succesive node in the interval until no more nodes can be added to the interval.
+                for (int i = 0; i < newInt.Nodes.Count; i++)
+                {
+                    StructureNode curNode = newInt.Nodes[i];
+
+                    foreach (StructureNode succ in graph.Successors(curNode))
+                    {
+                        // Only further consider the current child if it isn't already in the interval
+                        if (!newInt.Nodes.Contains(succ))
+                        {
+                            // If the current child has all its parents
+                            // inside the interval, then add it to the interval. Remove it from the header
+                            // sequence if it is on it.
+                            if (SubSetOf(graph.Predecessors(succ), newInt))
+                            {
+                                newInt.AddNode(succ);
+                                headerSeq.Remove(succ);
+                            }
+
+                            // Otherwise, add it to the header sequence if it hasn't already been in it.
+                            else if (!beenInH.Contains(succ))
+                            {
+                                headerSeq.Add(succ);
+                                beenInH.Add(succ);
+                            }
+                        }
+                    }
+                }
+
+                // Add the new interval to the sequence of intervals
+                intSeq.Add(newInt);
+            }
+            return intSeq;
+        }
+
+        private bool SubSetOf(IEnumerable <StructureNode> inEdges, IntNode newInt)
+        {
+            foreach (StructureNode inEdge in inEdges)
+                if (inEdge.Interval != newInt)
                     return false;
             return true;
         }

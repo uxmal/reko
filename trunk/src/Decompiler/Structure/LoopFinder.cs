@@ -66,10 +66,26 @@ namespace Decompiler.Structure
         {
             if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
             {
+                Dump(scc);
                 if (loopNodeSet.Count > 0)
                     throw new NotSupportedException("Multiple loops in an interval not supported.");
                 loopNodeSet.AddRange(scc);
             }
+        }
+
+        private void Dump(IList<StructureNode> scc)
+        {
+            Console.WriteLine("===");
+            foreach (StructureNode s in scc)
+            {
+                Console.Write(" {0} ", s.Name);
+            }
+            Console.WriteLine();
+            foreach (StructureNode s in loopNodeSet)
+            {
+                Console.Write(" {0} ", s.Name);
+            }
+            Console.WriteLine();
         }
 
         private bool IsSelfLoop(StructureNode node)

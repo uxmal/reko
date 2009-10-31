@@ -129,6 +129,27 @@ namespace Decompiler.Core.Lib
 			++nodes[iTo].cPred;
 		}
 
+        public bool ContainsEdge(T from, T to)
+        {
+            if (edges == null)
+                return false;
+            int iFrom = NodeIndex(from);
+            if (iFrom < 0)
+                return false;
+            int iTo = NodeIndex(to);
+            if (iTo < 0)
+                return false;
+
+            int iEdge = nodes[iFrom].firstSucc;
+            while (iEdge >= 0)
+            {
+                if (edges[iEdge].to == iTo)
+                    return true;
+                iEdge = edges[iEdge].nextSucc;
+            }
+            return false;
+        }
+
 		private ICollection<T> CreateEdgeCollectionCore(T o, bool fSuccessors)
 		{
             int iNode;
@@ -391,7 +412,7 @@ namespace Decompiler.Core.Lib
 
             public void Add(T node)
             {
-                throw new NotSupportedException();
+                graph.AddNode(node);
             }
 
 			public bool IsSynchronized

@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,15 +26,29 @@ namespace Decompiler.Structure
 {
     public class DerivedGraph
     {
-        private List<IntNode> intervals = new List<IntNode>();	// intervals of derived graph
-
         public StructureNode cfg;				// head of derived graph
         public int Count;			    // number of nodes in this graph
+        private List<IntNode> intervals;
+        private DirectedGraph<StructureNode> graph;
 
+        public DerivedGraph()
+        {
+            this.intervals = new List<IntNode>();
+            this.graph = new DirectedGraphImpl<StructureNode>();
+        }
+
+        public DerivedGraph(DirectedGraph<StructureNode> graph, StructureNode entry, List<IntNode> intervals)
+        {
+            this.graph = graph;
+            this.cfg = entry;
+            this.intervals = intervals;
+        }
+        
         public List<IntNode> Intervals
         {
             get { return intervals; }
         }
+
 
         public void Dump()
         {
@@ -54,6 +69,11 @@ namespace Decompiler.Structure
                     writer.WriteLine((curNode.BlockType != bbType.intNode) ? curNode.Order : curNode.Ident());
                 }
             }
+        }
+
+        public DirectedGraph<StructureNode> Graph
+        {
+            get { return graph; }
         }
     }
 }
