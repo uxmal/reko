@@ -52,7 +52,7 @@ namespace Decompiler.Structure
         private UnstructuredType usType;
         private Conditional cond;
         private Loop loop;
-        private IntNode interval;
+        private Interval interval;
 
         private int[] loopStamps;
         private int[] revLoopStamps;
@@ -190,7 +190,7 @@ namespace Decompiler.Structure
             get { return block.Statements; }
         }
 
-        public IntNode Interval
+        public Interval Interval
         {
             get { return interval; }
             set { interval = value; }

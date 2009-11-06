@@ -21,7 +21,7 @@ namespace Decompiler.UnitTests.Structure
 
             StructureNode node = new StructureNode(m.Procedure.RpoBlocks[1], 3);
             node.Order = 0;
-            IntNode interval = new IntNode(1, node);
+            Interval interval = new Interval(1, node);
 
             HashSet<StructureNode> nodesInInterval = interval.FindIntervalNodes(0);
             SccLoopFinder finder = new SccLoopFinder(interval, nodesInInterval);
@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual("lupe", loopNodes.ToArray()[0].Block.Name);
         }
 
-        private SccLoopFinder CreateSccLoopFinder(ProcedureStructure proc, IntNode intNode, int graphLevel)
+        private SccLoopFinder CreateSccLoopFinder(ProcedureStructure proc, Interval intNode, int graphLevel)
         {
             HashSet<StructureNode> nodesInInterval = intNode.FindIntervalNodes(graphLevel);
             return new SccLoopFinder(intNode, nodesInInterval);
@@ -79,12 +79,12 @@ namespace Decompiler.UnitTests.Structure
         public void Reg00013()
         {
             ProcedureStructure proc = CompileTest("Fragments/regressions/r00013.asm");
-
+            proc.DumpDerivedSequence(Console.Out);
             for (int j = 0; j < proc.DerivedGraphs.Count; ++j)
             {
                 for (int i = 0; i < proc.DerivedGraphs[j].Intervals.Count; ++i)
                 {
-                    IntNode interval = proc.DerivedGraphs[0].Intervals[i];
+                    Interval interval = proc.DerivedGraphs[j].Intervals[i];
                     Console.WriteLine("Interval #{0}: {1}", i, proc.DerivedGraphs[j].Intervals[i]);
                     SccLoopFinder finder = CreateSccLoopFinder(proc, interval, j);
                     HashSet<StructureNode> loopNodes = finder.FindLoop();

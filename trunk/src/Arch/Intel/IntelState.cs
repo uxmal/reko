@@ -46,7 +46,7 @@ namespace Decompiler.Arch.Intel
 
 		public Address AddressFromSegOffset(MachineRegister seg, uint offset)
 		{
-			Constant c = GetV(seg);
+			Constant c = Get(seg);
 			if (c.IsValid)
 			{
 				return new Address((ushort) c.ToUInt32(), offset & 0xFFFF);
@@ -57,7 +57,7 @@ namespace Decompiler.Arch.Intel
 
 		public Address AddressFromSegReg(MachineRegister seg, MachineRegister reg)
 		{
-			Constant c = GetV(reg);
+			Constant c = Get(reg);
 			if (c.IsValid)
 			{
 				return AddressFromSegOffset(seg, c.ToUInt32());
@@ -66,12 +66,12 @@ namespace Decompiler.Arch.Intel
 				return null;
 		}
 
-		public override object Clone()
+		public ProcessorState Clone()
 		{
 			return new IntelState(this);
 		}
 
-		public override void Set(MachineRegister reg, Constant c)
+		public void Set(MachineRegister reg, Constant c)
 		{
 			if (!c.IsValid)
 			{
@@ -83,12 +83,12 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
-		public override void SetInstructionPointer(Address addr)
+		public void SetInstructionPointer(Address addr)
 		{
 			Set(Registers.cs, new Constant(PrimitiveType.Word16, addr.Selector));
 		}
 
-		public override Constant GetV(MachineRegister reg)
+		public Constant Get(MachineRegister reg)
 		{
 			if (valid[reg.Number])
 				return new Constant(reg.DataType, regs[reg.Number]);

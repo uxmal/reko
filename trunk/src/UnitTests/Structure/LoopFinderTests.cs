@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Structure
             proc.Write(sw);
             Console.WriteLine(sw.ToString());
             Assert.AreEqual("LoopHead", proc.Ordering[6].Block.Name);
-            IntNode i = proc.DerivedGraphs[0].Intervals[1];
+            Interval i = proc.DerivedGraphs[0].Intervals[1];
             Assert.AreEqual("LoopHead", i.Header.Name);
 
             LoopFinder lf = new LoopFinder(proc.Ordering[6], proc.Ordering[2], proc.Ordering);

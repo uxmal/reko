@@ -36,7 +36,7 @@ namespace Decompiler.Structure
             if (derGraph.cfg == null)
                 throw new ArgumentException("cfg graph must be non-null", "derGraph");
 
-            List<IntNode> intSeq = derGraph.Intervals;	// The sequence of intervals in this graph
+            List<Interval> intSeq = derGraph.Intervals;	// The sequence of intervals in this graph
             WorkList<StructureNode> headerSeq = new WorkList<StructureNode>();	// The sequence of interval header nodes
             List<StructureNode> beenInH = new List<StructureNode>();	// The set of nodes that have been in the above sequence at some stage
 
@@ -47,7 +47,7 @@ namespace Decompiler.Structure
             StructureNode header;
             while (headerSeq.GetWorkItem(out header))
             {
-                IntNode newInt = new IntNode(intervalID++, header);
+                Interval newInt = new Interval(intervalID++, header);
 
                 // Process each succesive node in the interval until no more nodes can be added to the interval.
                 for (int i = 0; i < newInt.Nodes.Count; i++)
@@ -86,14 +86,14 @@ namespace Decompiler.Structure
             }
         }
 
-        public List<IntNode> BuildIntervals(DirectedGraph<StructureNode> graph, StructureNode entry)
+        public List<Interval> BuildIntervals(DirectedGraph<StructureNode> graph, StructureNode entry)
         {
             if (graph == null)
                 throw new ArgumentNullException("graph");
             if (entry == null)
                 throw new ArgumentNullException("entry");
 
-            List<IntNode> intSeq = new List<IntNode>();	// The sequence of intervals in this graph
+            List<Interval> intSeq = new List<Interval>();	// The sequence of intervals in this graph
             WorkList<StructureNode> headerSeq = new WorkList<StructureNode>();	// The sequence of interval header nodes
             List<StructureNode> beenInH = new List<StructureNode>();	// The set of nodes that have been in the above sequence at some stage
 
@@ -103,7 +103,7 @@ namespace Decompiler.Structure
             StructureNode header;
             while (headerSeq.GetWorkItem(out header))
             {
-                IntNode newInt = new IntNode(intervalID++, header);
+                Interval newInt = new Interval(intervalID++, header);
 
                 // Process each succesive node in the interval until no more nodes can be added to the interval.
                 for (int i = 0; i < newInt.Nodes.Count; i++)
@@ -140,7 +140,7 @@ namespace Decompiler.Structure
             return intSeq;
         }
 
-        private bool SubSetOf(IEnumerable <StructureNode> inEdges, IntNode newInt)
+        private bool SubSetOf(IEnumerable <StructureNode> inEdges, Interval newInt)
         {
             foreach (StructureNode inEdge in inEdges)
                 if (inEdge.Interval != newInt)

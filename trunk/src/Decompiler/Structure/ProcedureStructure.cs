@@ -200,9 +200,6 @@ namespace Decompiler.Structure
                 writer.WriteLine("Graph level {0}", i);
                 derivedGraphs[i].Write(writer);
             }
-
         }
-
-
     }
 }

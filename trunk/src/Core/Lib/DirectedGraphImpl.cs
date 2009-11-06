@@ -265,14 +265,38 @@ namespace Decompiler.Core.Lib
 			#region IEnumerable Members
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
-                return new EdgeEnumerator(graph, iNode, fSuccessor);
+                return GetEnumerator();
             }
 
 			public IEnumerator<T> GetEnumerator()
 			{
-				return new EdgeEnumerator(graph, iNode, fSuccessor);
+                if (fSuccessor)
+                    return GetSuccessorEnumerator();
+                else
+                    return GetPredecessorEnumerator();
 			}
-			#endregion
+
+            private IEnumerator<T> GetSuccessorEnumerator()
+            {
+                int iEdge = graph.nodes[iNode].firstSucc;
+                while (iEdge >= 0)
+                {
+                    yield return graph.nodes[graph.edges[iEdge].to].Item;
+                    iEdge = graph.edges[iEdge].nextSucc;
+                }
+            }
+
+            private IEnumerator<T> GetPredecessorEnumerator()
+            {
+                int iEdge = graph.nodes[iNode].firstPred;
+                while (iEdge >= 0)
+                {
+                    yield return graph.nodes[graph.edges[iEdge].from].Item;
+                    iEdge = graph.edges[iEdge].nextPred;
+                }
+            }
+
+            #endregion
 
 
             #region ICollection<T> Members
@@ -299,7 +323,13 @@ namespace Decompiler.Core.Lib
 
             public int Count
             {
-                get { throw new NotImplementedException(); }
+                get
+                {
+                    if (fSuccessor)
+                        return graph.nodes[iNode].cSucc;
+                    else
+                        return graph.nodes[iNode].cPred;
+                }
             }
 
             public bool IsReadOnly
@@ -314,92 +344,6 @@ namespace Decompiler.Core.Lib
 
             #endregion
         }
-
-
-		private class EdgeEnumerator : 
-			IEnumerator<T>
-		{
-			private DirectedGraphImpl<T> graph;
-			private int iEdge = -1;
-			private int iNode;
-			private bool fSuccessor;
-
-			public EdgeEnumerator(DirectedGraphImpl<T> graph, int iNode, bool fSuccessor)
-			{
-				this.graph = graph;
-				this.iNode = iNode;
-				this.fSuccessor = fSuccessor;
-			}
-
-			public void Reset()
-			{
-				iEdge = -1;
-			}
-
-			public int Count
-			{
-				get { return fSuccessor ? graph.nodes[iNode].cSucc : graph.nodes[iNode].cPred; }
-			}
-
-            object System.Collections.IEnumerator.Current
-            {
-                get { return GetCurrent(); }
-            }
-
-            public T Current
-            {
-                get
-                {
-                    return GetCurrent();
-                }
-            }
-
-            public void Dispose()
-            {
-                GC.SuppressFinalize(this);
-            }
-
-            private T GetCurrent()
-            {
-                if (iEdge == -1)
-                    throw new InvalidOperationException("MoveNext must be called before Current");
-
-                if (fSuccessor)
-                {
-                    return graph.nodes[graph.edges[iEdge].to].Item;
-                }
-                else
-                {
-                    return graph.nodes[graph.edges[iEdge].from].Item;
-                }
-            }
-
-			public System.Collections.IEnumerator GetEnumerator()
-			{
-				return this;
-			}
-
-			public bool MoveNext()
-			{
-				if (iNode == -1)
-					return false;
-				
-				if (iEdge == -1)
-				{
-					
-					iEdge = fSuccessor
-						? graph.nodes[iNode].firstSucc
-						: graph.nodes[iNode].firstPred;
-				}
-				else
-				{
-					iEdge = fSuccessor 
-						? graph.edges[iEdge].nextSucc
-						: graph.edges[iEdge].nextPred;
-				}
-				return iEdge != -1;
-			}
-		}
 
 		private class NodeCollection : ICollection<T>
 		{

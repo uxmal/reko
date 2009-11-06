@@ -34,12 +34,12 @@ namespace Decompiler.UnitTests.Arch.Intel
 			IntelState st = new IntelState();
 			st.Set(Registers.cs, new Constant(PrimitiveType.Word16, 0xC00));
 			st.Set(Registers.ax, new Constant(PrimitiveType.Word16, 0x1234));
-			Assert.IsTrue(!st.GetV(Registers.bx).IsValid);
-			Assert.IsTrue(st.GetV(Registers.ax).IsValid);
-			Assert.IsTrue(st.GetV(Registers.al).IsValid);
-			Assert.AreEqual(0x34, st.GetV(Registers.al).ToUInt32());
-			Assert.IsTrue(st.GetV(Registers.ah).IsValid);
-			Assert.AreEqual(0x12, st.GetV(Registers.ah).ToUInt32());
+			Assert.IsTrue(!st.Get(Registers.bx).IsValid);
+			Assert.IsTrue(st.Get(Registers.ax).IsValid);
+			Assert.IsTrue(st.Get(Registers.al).IsValid);
+			Assert.AreEqual(0x34, st.Get(Registers.al).ToUInt32());
+			Assert.IsTrue(st.Get(Registers.ah).IsValid);
+			Assert.AreEqual(0x12, st.Get(Registers.ah).ToUInt32());
 		}
 	}
 }

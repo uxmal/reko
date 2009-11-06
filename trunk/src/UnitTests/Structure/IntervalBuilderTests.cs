@@ -13,7 +13,7 @@ namespace Decompiler.UnitTests.Structure
     public class IntervalBuilderTests : StructureTestBase
     {
         private ProcedureStructure ph;
-        private List<IntNode> intervals;
+        private List<Interval> intervals;
 
         [Test]
         public void SimpleGraph()

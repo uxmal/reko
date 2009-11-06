@@ -323,6 +323,15 @@ foo		endp
 			Assert.AreEqual(7, mrm.Get16AddressingModeMask(m));
 		}
 
+        [Test]
+        public void AsConstantStore()
+        {
+            Address addr = new Address(0x0C00, 0);
+            asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
+            Disassembler dasm = new IntelDisassembler(asm.Image.CreateReader(addr), PrimitiveType.Word16);
+            Assert.AreEqual("mov\tword ptr [0400],1234", dasm.DisassembleInstruction().ToString());
+        }
+
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program prog = new Program();

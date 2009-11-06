@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual(3, proc.DerivedGraphs[1].Count);
             Assert.AreEqual(2, proc.DerivedGraphs[2].Count);
             Assert.AreEqual(1, proc.DerivedGraphs[3].Count);
-            IntNode i = proc.DerivedGraphs[1].Intervals[1];
+            Interval i = proc.DerivedGraphs[1].Intervals[1];
             Assert.AreEqual(4, i.Ident());
             bool [] blocks = new bool[proc.Nodes.Count];
             i.FindNodesInInt(blocks, 1);
@@ -162,7 +162,7 @@ namespace Decompiler.UnitTests.Structure
                 writer.Write("Graph #");
                 writer.Write(gNum++);
                 writer.WriteLine(":");
-                foreach (IntNode i in g.Intervals)
+                foreach (Interval i in g.Intervals)
                 {
                     i.Write(writer);
                     writer.WriteLine();

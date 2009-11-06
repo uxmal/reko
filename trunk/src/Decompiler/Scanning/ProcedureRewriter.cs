@@ -84,7 +84,6 @@ namespace Decompiler.Scanning
                 ImageMapBlock raw = item as ImageMapBlock;
                 if (raw != null)
                 {
-
                     // Create a new block in the procedure.
 
                     block = proc.AddBlock(addr.GenerateName("l", ""));

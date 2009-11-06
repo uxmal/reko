@@ -28,7 +28,7 @@ namespace Decompiler.Structure
     public class ProcedureStructureBuilder
     {
         private Procedure proc;
-        private List<StructureNode> nodeList;			// head of the linked list of nodes
+        private List<StructureNode> nodeList;
         private Dictionary<Block, StructureNode> blockNodes;
         private ProcedureStructure curProc;
 

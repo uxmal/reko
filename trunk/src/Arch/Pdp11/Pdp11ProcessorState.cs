@@ -25,22 +25,22 @@ namespace Decompiler.Arch.Pdp11
 {
     class Pdp11ProcessorState : ProcessorState
     {
-        public override object Clone()
+        public ProcessorState Clone()
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void Set(MachineRegister r, Constant v)
+        public void Set(MachineRegister r, Constant v)
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void SetInstructionPointer(Address addr)
+        public void SetInstructionPointer(Address addr)
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override Decompiler.Core.Code.Constant GetV(MachineRegister r)
+        public Constant Get(MachineRegister r)
         {
             throw new Exception("The method or operation is not implemented.");
         }

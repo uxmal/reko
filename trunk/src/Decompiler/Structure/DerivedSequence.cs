@@ -29,11 +29,11 @@ namespace Decompiler.Structure
 	{
 		public StructureNode G;			// graph entry
 		public StructureNode [] nodes;	// storage for graph nodes.
-		public List<IntNode> I;				// Intervals.
+		public List<Interval> I;				// Intervals.
 
 		public DerivedSequence()
 		{
-			I = new List<IntNode>();
+			I = new List<Interval>();
 		}
 
 		public StructureNode NewNode(int i, Block entry, BitSet blocks)
@@ -83,7 +83,7 @@ namespace Decompiler.Structure
 
 		public void Write(TextWriter tw)
 		{
-			foreach (IntNode i in I)
+			foreach (Interval i in I)
 			{
 				i.Write(tw);
 			}

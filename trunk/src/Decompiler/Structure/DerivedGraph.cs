@@ -39,17 +39,17 @@ namespace Decompiler.Structure
             get { return graph.Nodes.Count; }
         }
 
-        private List<IntNode> intervals;
+        private List<Interval> intervals;
         private DirectedGraph<StructureNode> graph;
 
-        public DerivedGraph(DirectedGraph<StructureNode> graph, StructureNode entry, List<IntNode> intervals)
+        public DerivedGraph(DirectedGraph<StructureNode> graph, StructureNode entry, List<Interval> intervals)
         {
             this.graph = graph;
             this.entry = entry;
             this.intervals = intervals;
         }
         
-        public List<IntNode> Intervals
+        public List<Interval> Intervals
         {
             get { return intervals; }
         }
@@ -62,17 +62,20 @@ namespace Decompiler.Structure
 
         public void Write(TextWriter writer)
         {
-            foreach (IntNode curInt in intervals)
+            foreach (StructureNode node in new DfsIterator<StructureNode>(graph).PreOrder(entry))
             {
-                writer.WriteLine("   Interval #{0}:", curInt.Ident());
-
-                for (int j = 0; j < curInt.Nodes.Count; j++)
+                writer.WriteLine("   Node {0}", node);
+                foreach (StructureNode succ in graph.Successors(node))
                 {
-                    StructureNode curNode = curInt.Nodes[j];
-                    writer.Write("      ");
-                    writer.Write((curNode.BlockType != bbType.intNode) ? "BB node #" : "IntNode #");
-                    writer.WriteLine((curNode.BlockType != bbType.intNode) ? curNode.Order : curNode.Ident());
+                    writer.Write("     Succ: ");
+                    writer.Write(" ");
+                    writer.Write(succ.Name);
+                    writer.WriteLine();
                 }
+            }
+            foreach (Interval interval in intervals)
+            {
+                writer.WriteLine("   Interval #{0}: {1}", interval.Ident(), interval.ToString());
             }
         }
 

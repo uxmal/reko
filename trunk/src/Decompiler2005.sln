@@ -1,11 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intel", "Arch\Intel\Intel.csproj", "{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{B9AF7BF2-A947-458C-A905-44E8C4E55C62}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
@@ -97,16 +91,6 @@ Global
 		Release|Mixed Platforms = Release|Mixed Platforms
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Release|.NET.ActiveCfg = Release|Any CPU
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{CA32E7CC-DCB4-4636-82FE-E1059CFE49C7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B9AF7BF2-A947-458C-A905-44E8C4E55C62}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{B9AF7BF2-A947-458C-A905-44E8C4E55C62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B9AF7BF2-A947-458C-A905-44E8C4E55C62}.Debug|Any CPU.Build.0 = Debug|Any CPU

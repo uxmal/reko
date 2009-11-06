@@ -132,8 +132,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 			TestCodeWalkerListener listener = new TestCodeWalkerListener();
 			IntelCodeWalker cw = new IntelCodeWalker(arch, new MsdosPlatform(arch), null, state, listener);
 			cw.WalkInstruction(new Address(0x100, 0x100), instr, null);
-			Assert.IsFalse(state.GetV(Registers.es).IsValid, "should have trashed ES");
-			Assert.IsFalse(state.GetV(Registers.bx).IsValid, "should have trashed BX");
+			Assert.IsFalse(state.Get(Registers.es).IsValid, "should have trashed ES");
+			Assert.IsFalse(state.Get(Registers.bx).IsValid, "should have trashed BX");
 			Assert.AreEqual(1, listener.SystemCalls.Count);
 		}
 
@@ -148,7 +148,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
 			IntelCodeWalker cw = new IntelCodeWalker(arch, null, null, state, null);
 			cw.WalkInstruction(new Address(0x100000), instr, null);
-			Assert.AreSame(Constant.Invalid, state.GetV(Registers.ebp));
+			Assert.AreSame(Constant.Invalid, state.Get(Registers.ebp));
 		}
 
 		private class TestCodeWalkerListener : ICodeWalkerListener

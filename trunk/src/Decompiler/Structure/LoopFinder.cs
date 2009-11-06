@@ -28,11 +28,11 @@ namespace Decompiler.Structure
 {
     public class SccLoopFinder : ISccFinderHost<StructureNode>
     {
-        private IntNode interval;
+        private Interval interval;
         private HashSet<StructureNode> intervalNodes;
         private HashSet<StructureNode> loopNodeSet;
 
-        public SccLoopFinder(IntNode i, HashSet<StructureNode> nodesInInterval)
+        public SccLoopFinder(Interval i, HashSet<StructureNode> nodesInInterval)
         {
             this.interval = i;
             this.intervalNodes = nodesInInterval;
@@ -42,7 +42,7 @@ namespace Decompiler.Structure
         {
             loopNodeSet = new HashSet<StructureNode>();
             SccFinder<StructureNode> f = new SccFinder<StructureNode>(this);
-            f.Find(interval.Nodes[0]);
+            f.Find(interval.Header);
             return loopNodeSet;
         }
 
@@ -67,8 +67,6 @@ namespace Decompiler.Structure
             if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
             {
                 Dump(scc);
-                if (loopNodeSet.Count > 0)
-                    throw new NotSupportedException("Multiple loops in an interval not supported.");
                 loopNodeSet.AddRange(scc);
             }
         }
@@ -76,11 +74,13 @@ namespace Decompiler.Structure
         private void Dump(IList<StructureNode> scc)
         {
             Console.WriteLine("===");
+            Console.Write("scc nodes:");
             foreach (StructureNode s in scc)
             {
                 Console.Write(" {0} ", s.Name);
             }
             Console.WriteLine();
+            Console.Write("accumulated loop nodes:");
             foreach (StructureNode s in loopNodeSet)
             {
                 Console.Write(" {0} ", s.Name);

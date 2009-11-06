@@ -21,16 +21,12 @@ using System;
 
 namespace Decompiler.Core
 {
-	public abstract class ProcessorState : ICloneable
+	public interface ProcessorState
 	{
-		public ProcessorState()
-		{
-		}
+		ProcessorState Clone();
+		void Set(MachineRegister r, Constant v);
 
-		public abstract object Clone();
-		public abstract void Set(MachineRegister r, Constant v);
-
-		public abstract void SetInstructionPointer(Address addr);
-		public abstract Constant GetV(MachineRegister r);		//$REVIEW: rename to Get once the obsolete Get => Value method is gone
+		void SetInstructionPointer(Address addr);
+		Constant Get(MachineRegister r);
 	}
 }
