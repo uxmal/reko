@@ -53,7 +53,7 @@ l0078:
 
 l0093:
 	call	fn13DA
-	jc	l047A
+	jc	long l047A
 
 l009A:
 	cmp	word ptr [0x81B0],0x00
@@ -69,7 +69,7 @@ l00A8:
 	mov	word ptr [0x5404],0x0000
 	call	fn04BA
 	cmp	word ptr [0x53B8],0x04
-	jl	l049E
+	jl	long l049E
 
 l00C1:
 	mov	bx,[0x53B8]
@@ -144,8 +144,6 @@ l0154:
 l015B:
 	mov	dx,0x53E7
 	call	fnC54C
-
-l0169:
 	call	fnA3AA
 	call	fn2900
 	call	fn2A90
@@ -236,7 +234,7 @@ l023F:
 	mov	ax,[0x919E]
 	and	ax,0x05FF
 	cmp	ax,0x0400
-	jz	l0178
+	jz	long l0178
 
 l024C:
 	cmp	word ptr [0x632E],0x00
@@ -274,9 +272,10 @@ l0288:
 
 l047A:
 l049E:
+	mov  al,0x01
 	mov  ah,0x4C
 	int	 0x21
-	
+
 fn02B9 proc
 	ret
 	endp
@@ -290,6 +289,7 @@ fn04BA proc
 	endp
 
 fn0540 proc
+	mov [0x540],bx
 	ret
 	endp
 	
@@ -388,6 +388,7 @@ fn2C30 proc
 
 
 fn4AFB proc
+	mov	[0x4AFB],si
 	ret
 	endp
 
@@ -428,6 +429,7 @@ fnC489 proc
 
 
 fnC54C proc
+	mov [0xC54C],dx
 	ret
 	endp
 

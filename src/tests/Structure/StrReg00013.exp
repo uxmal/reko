@@ -1,0 +1,858 @@
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	store(Mem35[0x0C00:0x0001:word16]) = 0x0800
+	store(Mem36[0x0800:0x5422:word16]) = ds
+	store(Mem40[0x0800:0x0066:word16]) = Mem36[0x0800:0x5420:word16]
+	selector es_43 = Mem40[0x0800:0x5422:word16]
+	word16 bx_44
+	msdos_resize_memory_block(es_43, 0xFFFF, &bx_44)
+	store(Mem49[0x0800:0x53CD:word16]) = Mem40[0x0800:0x5422:word16] + bx_44
+	word16 bx_51
+	msdos_resize_memory_block(es_43, bx_44, &bx_51)
+	store(Mem53[0x0800:0x0400:word16]) = 0x1758
+	fn0C00_0286()
+	msdos_set_interrupt_vector(0x24, 0x0C000293)
+	fn0C00_0260()
+	fn0C00_025E()
+	branch Mem53[0x0800:0x541E:word16] == 0x0000 l0C00_0062
+	// succ:  1 2
+l0C00_005F:		// block 1, pred: 0
+	fn0C00_028C()
+	// succ:  2
+l0C00_0062:		// block 2, pred: 1 0
+	fn0C00_027C()
+	fn0C00_028D(0x53F4, 0x0800)
+	store(Mem67[0x0800:0x53FE:word16]) = 0x0001
+	fn0C00_025F()
+	store(Mem68[0x0800:0x53C2:word16]) = 0x4AF3
+	fn0C00_0281(0x5447, 0x0800)
+	branch fn0C00_026F(0x0800) l0C00_008D
+	// succ:  3 4
+l0C00_0086:		// block 3, pred: 2
+	branch fn0C00_0265(0x0800) l0C00_024F
+	// succ:  4 7
+l0C00_008D:		// block 4, pred: 3 5 2
+	branch Mem68[0x0800:0x81B0:word16] == 0x0000 l0C00_009B
+	// succ:  5 6
+l0C00_0094:		// block 5, pred: 4
+	branch Mem68[0x0800:0x5404:word16] < 0x0020 l0C00_008D
+	// succ:  6 4
+l0C00_009B:		// block 6, pred: 5 4
+	fn0C00_0281(0x5450, 0x0800)
+	store(Mem79[0x0800:0x5404:word16]) = 0x0000
+	fn0C00_0257()
+	branch Mem79[0x0800:0x53B8:word16] < 0x0004 l0C00_024F
+	// succ:  8 7
+l0C00_024F:		// block 7, pred: 6 3
+	msdos_terminate(0x01)
+	// succ:  37
+l0C00_00B4:		// block 8, pred: 6
+	word16 bx_82 = Mem79[0x0800:0x53B8:word16]
+	store(Mem84[0x0800:0x53BE:word16]) = bx_82 - 0x0001
+	store(Mem87[0x0800:0x53C0:word16]) = bx_82 - 0x0002
+	fn0C00_0258(Mem87[0x0800:0x53C0:word16], 0x0800)
+	selector es_89 = Mem87[0x0800:0x53C2:word16]
+	word16 di_90 = 0x0000
+	word16 si_94 = 0x0000
+	word16 cx_96 = 0x4000
+	// succ:  9
+l0C00_00D8:		// block 9, pred: 8 10
+	branch cx_96 == 0x0000 l0C00_00D8_rep
+	// succ:  11 10
+l0C00_00D8_rep:		// block 10, pred: 9
+	store(Mem103[es_89:di_90:word32]) = Mem100[0x6C34:si_94:word32]
+	cx_96 = cx_96 - 0x0001
+	si_94 = si_94 + 0x0004
+	di_90 = di_90 + 0x0004
+	// succ:  9
+l0C00_00DB:		// block 11, pred: 9
+	fn0C00_0258(Mem100[0x0800:0x53BE:word16], 0x0800)
+	selector es_109 = Mem100[0x0800:0x53C2:word16]
+	word16 di_110 = 0x0000
+	word16 si_114 = 0x0000
+	word16 cx_116 = 0x4000
+	// succ:  12
+l0C00_00F5:		// block 12, pred: 11 13
+	branch cx_116 == 0x0000 l0C00_00F5_rep
+	// succ:  14 13
+l0C00_00F5_rep:		// block 13, pred: 12
+	store(Mem123[es_109:di_110:word32]) = Mem120[0x5D02:si_114:word32]
+	cx_116 = cx_116 - 0x0001
+	si_114 = si_114 + 0x0004
+	di_110 = di_110 + 0x0004
+	// succ:  12
+l0C00_00F8:		// block 14, pred: 12
+	store(Mem130[0x0800:0x7E52:word16]) = Mem120[0x0800:0x53BE:word16]
+	word16 ax_131 = Mem130[0x0800:0x53C2:word16]
+	store(Mem132[0x0800:0x7E50:word16]) = ax_131
+	store(Mem133[0x0800:0x5380:word16]) = ax_131
+	word16 ax_135 = Mem133[0x0800:0x53B8:word16] - 0x0002
+	store(Mem143[0x0800:0x53BC:word16]) = ax_135
+	fn0C00_025D()
+	fn0C00_0280()
+	branch Mem143[0x0800:0x54A6:word16] == 0x0000 l0C00_0144
+	// succ:  15 16
+l0C00_0128:		// block 15, pred: 14
+	fn0C00_027B()
+	word64 edx_eax_148 = (int32) Mem143[0x0800:0x5418:word16] *s 0x0000F000
+	store(Mem155[0x0800:0x6FF0:ui64]) = Mem143[0x0800:0x6FF0:ui64] - edx_eax_148
+	ax_135 = (word16) edx_eax_148 (alias)
+	// succ:  16
+l0C00_0144:		// block 16, pred: 15 14
+	fn0C00_0263()
+	// succ:  17
+l0C00_0147:		// block 17, pred: 16 18
+	branch Mem165[0x0800:0x81B0:word16] == 0x0000 l0C00_0155
+	// succ:  18 19
+l0C00_014E:		// block 18, pred: 17
+	branch Mem165[0x0800:0x5404:word16] < 0x0046 l0C00_0147
+	// succ:  19 17
+l0C00_0155:		// block 19, pred: 18 17
+	fn0C00_028D(0x53E7, 0x0800)
+	fn0C00_0289()
+	fn0C00_027D()
+	fn0C00_027E()
+	fn0C00_0279()
+	fn0C00_0264()
+	// succ:  20
+l0C00_016A:		// block 20, pred: 19 45
+	branch (Mem191[0x0800:0x919E:word16] & 0x01FF) == 0x0000 l0C00_01B7
+	// succ:  21 30
+l0C00_0172:		// block 21, pred: 20
+	fn0C00_0287()
+	branch Mem191[0x0800:0x0480:word16] == 0x0000 l0C00_0182
+	// succ:  23 22
+l0C00_0182:		// block 22, pred: 21
+	store(Mem197[0x0800:0xC3CF:word16]) = 0x0000
+	// succ:  24
+l0C00_017C:		// block 23, pred: 21
+	fn0C00_028B()
+	// succ:  24
+l0C00_0188:		// block 24, pred: 23 22
+	branch Mem198[0x0800:0x542C:word16] != 0x0000 l0C00_0198
+	// succ:  26 25
+l0C00_0198:		// block 25, pred: 24
+	store(Mem201[0x0800:0x540C:word32]) = 0x00000000
+	fn0C00_0262()
+	// succ:  27
+l0C00_018F:		// block 26, pred: 24
+	fn0C00_0255()
+	fn0C00_0262()
+	// succ:  27
+l0C00_01A4:		// block 27, pred: 26 25
+	branch Mem202[0x0800:0xC3CF:word16] == 0x0000 l0C00_01B1
+	// succ:  28 29
+l0C00_01AB:		// block 28, pred: 27
+	store(Mem205[0x0800:0x0412:word16]) = 0x0000
+	// succ:  29
+l0C00_01B1:		// block 29, pred: 28 27
+	store(Mem207[0x0800:0x5376:word16]) = 0x0000
+	// succ:  30
+l0C00_01B7:		// block 30, pred: 29 20
+	fn0C00_027A()
+	fn0C00_0261()
+	word16 v25_210 = Mem208[0x0800:0x5404:word16]
+	store(Mem211[0x0800:0x5404:word16]) = 0x0000
+	word16 dx_213 = Mem211[0x0800:0x541A:word16]
+	store(Mem215[0x0800:0x541A:word16]) = ax_135
+	word16 ax_216 = ax_135 - dx_213
+	store(Mem229[0x0800:0x5408:word16]) = SLICE(DPB(ax_216, (byte) (v25_210 - (word16) (ax_216 <u 0x0000)), 8, 8) *u 0x3865, word16, 16)
+	branch (Mem229[0x0800:Mem229[0x0800:0x5A02:word16] + 0x0094:word16] & 0xFFFF) != 0x0000 l0C00_01FA
+	// succ:  31 32
+l0C00_01EC:		// block 31, pred: 30
+	branch (Mem229[0x0800:Mem229[0x0800:0x5BD8:word16] + 0x0094:word16] & 0xFFFF) == 0x0000 l0C00_0200
+	// succ:  32 33
+l0C00_01FA:		// block 32, pred: 31 30
+	store(Mem245[0x0800:0x5408:word16]) = 0x0000
+	// succ:  33
+l0C00_0200:		// block 33, pred: 32 31
+	branch (Mem248[0x0800:0x919E:word16] & 0x02FF) != 0x0000 l0C00_020E
+	// succ:  34 35
+l0C00_0208:		// block 34, pred: 33
+	store(Mem252[0x0800:0x5408:word16]) = 0x0044
+	// succ:  35
+l0C00_020E:		// block 35, pred: 34 33
+	ax_135 = Mem253[0x0800:0x919E:word16] & 0x05FF
+	branch ax_135 == 0x0400 l0C00_026A
+	// succ:  38 36
+l0C00_026A:		// block 36, pred: 35
+	return
+	// succ:  37
+fn0C00_0000_exit:		// block 37, pred: 36 7
+	// succ: 
+l0C00_021A:		// block 38, pred: 35
+	branch Mem253[0x0800:0x632E:word16] != 0x0000 l0C00_022B
+	// succ:  39 41
+l0C00_0221:		// block 39, pred: 38
+	branch Mem253[0x0800:0xD10E:word16] == 0x0000 l0C00_022B
+	// succ:  40 41
+l0C00_0228:		// block 40, pred: 39
+	fn0C00_028A()
+	// succ:  41
+l0C00_022B:		// block 41, pred: 40 39 38
+	fn0C00_027F()
+	branch (Mem253[0x0800:0x6FCA:byte] & 0x10) == 0x00 l0C00_023B
+	// succ:  42 43
+l0C00_0235:		// block 42, pred: 41
+	store(Mem273[0x0800:0x5376:word16]) = 0x0001
+	// succ:  43
+l0C00_023B:		// block 43, pred: 42 41
+	fn0C00_0288()
+	branch (Mem274[0x0800:0x0412:word16] & 0xFFFF) == 0x0000 l0C00_0249
+	// succ:  44 45
+l0C00_0246:		// block 44, pred: 43
+	fn0C00_0256()
+	// succ:  45
+l0C00_0249:		// block 45, pred: 44 43
+	fn0C00_0292()
+	// succ:  20
+
+void fn0C00_0000(selector ds)
+{
+	Mem35[0x0C00:0x0001:word16] = 0x0800;
+	Mem36[0x0800:0x5422:word16] = ds;
+	Mem40[0x0800:0x0066:word16] = Mem36[0x0800:0x5420:word16];
+	selector es_43 = Mem40[0x0800:0x5422:word16];
+	word16 bx_44;
+	msdos_resize_memory_block(es_43, 0xFFFF, &bx_44);
+	Mem49[0x0800:0x53CD:word16] = Mem40[0x0800:0x5422:word16] + bx_44;
+	word16 bx_51;
+	msdos_resize_memory_block(es_43, bx_44, &bx_51);
+	Mem53[0x0800:0x0400:word16] = 0x1758;
+	fn0C00_0286();
+	msdos_set_interrupt_vector(0x24, 0x0C000293);
+	fn0C00_0260();
+	fn0C00_025E();
+	if (Mem53[0x0800:0x541E:word16] != 0x0000)
+		fn0C00_028C();
+	fn0C00_027C();
+	fn0C00_028D(0x53F4, 0x0800);
+	Mem67[0x0800:0x53FE:word16] = 0x0001;
+	fn0C00_025F();
+	Mem68[0x0800:0x53C2:word16] = 0x4AF3;
+	fn0C00_0281(0x5447, 0x0800);
+	if (!fn0C00_026F(0x0800) && fn0C00_0265(0x0800))
+	{
+l0C00_024F:
+		msdos_terminate(0x01);
+	}
+	else
+	{
+		do
+			;
+		while (Mem68[0x0800:0x81B0:word16] == 0x0000 || Mem68[0x0800:0x5404:word16] >= 0x0020);
+		fn0C00_0281(0x5450, 0x0800);
+		Mem79[0x0800:0x5404:word16] = 0x0000;
+		fn0C00_0257();
+		if (Mem79[0x0800:0x53B8:word16] >= 0x0004)
+		{
+			word16 bx_82 = Mem79[0x0800:0x53B8:word16];
+			Mem84[0x0800:0x53BE:word16] = bx_82 - 0x0001;
+			Mem87[0x0800:0x53C0:word16] = bx_82 - 0x0002;
+			fn0C00_0258(Mem87[0x0800:0x53C0:word16], 0x0800);
+			selector es_89 = Mem87[0x0800:0x53C2:word16];
+			word16 di_90 = 0x0000;
+			word16 si_94 = 0x0000;
+			word16 cx_96 = 0x4000;
+			while (cx_96 == 0x0000)
+			{
+				Mem103[es_89:di_90:word32] = Mem100[0x6C34:si_94:word32];
+				cx_96 = cx_96 - 0x0001;
+				si_94 = si_94 + 0x0004;
+				di_90 = di_90 + 0x0004;
+			}
+			fn0C00_0258(Mem100[0x0800:0x53BE:word16], 0x0800);
+			selector es_109 = Mem100[0x0800:0x53C2:word16];
+			word16 di_110 = 0x0000;
+			word16 si_114 = 0x0000;
+			word16 cx_116 = 0x4000;
+			while (cx_116 == 0x0000)
+			{
+				Mem123[es_109:di_110:word32] = Mem120[0x5D02:si_114:word32];
+				cx_116 = cx_116 - 0x0001;
+				si_114 = si_114 + 0x0004;
+				di_110 = di_110 + 0x0004;
+			}
+			Mem130[0x0800:0x7E52:word16] = Mem120[0x0800:0x53BE:word16];
+			word16 ax_131 = Mem130[0x0800:0x53C2:word16];
+			Mem132[0x0800:0x7E50:word16] = ax_131;
+			Mem133[0x0800:0x5380:word16] = ax_131;
+			word16 ax_135 = Mem133[0x0800:0x53B8:word16] - 0x0002;
+			Mem143[0x0800:0x53BC:word16] = ax_135;
+			fn0C00_025D();
+			fn0C00_0280();
+			if (Mem143[0x0800:0x54A6:word16] != 0x0000)
+			{
+				fn0C00_027B();
+				word64 edx_eax_148 = (int32) Mem143[0x0800:0x5418:word16] *s 0x0000F000;
+				Mem155[0x0800:0x6FF0:ui64] = Mem143[0x0800:0x6FF0:ui64] - edx_eax_148;
+				ax_135 = (word16) edx_eax_148;
+			}
+			fn0C00_0263();
+			do
+				;
+			while (Mem165[0x0800:0x81B0:word16] == 0x0000 || Mem165[0x0800:0x5404:word16] >= 0x0046);
+			fn0C00_028D(0x53E7, 0x0800);
+			fn0C00_0289();
+			fn0C00_027D();
+			fn0C00_027E();
+			fn0C00_0279();
+			fn0C00_0264();
+			while ((Mem191[0x0800:0x919E:word16] & 0x01FF) != 0x0000)
+			{
+				fn0C00_0287();
+				if (Mem191[0x0800:0x0480:word16] != 0x0000)
+					fn0C00_028B();
+				else
+					Mem197[0x0800:0xC3CF:word16] = 0x0000;
+				if (Mem198[0x0800:0x542C:word16] == 0x0000)
+				{
+					fn0C00_0255();
+					fn0C00_0262();
+				}
+				else
+				{
+					Mem201[0x0800:0x540C:word32] = 0x00000000;
+					fn0C00_0262();
+				}
+				if (Mem202[0x0800:0xC3CF:word16] != 0x0000)
+					Mem205[0x0800:0x0412:word16] = 0x0000;
+				Mem207[0x0800:0x5376:word16] = 0x0000;
+			}
+			fn0C00_027A();
+			fn0C00_0261();
+			word16 v25_210 = Mem208[0x0800:0x5404:word16];
+			Mem211[0x0800:0x5404:word16] = 0x0000;
+			word16 dx_213 = Mem211[0x0800:0x541A:word16];
+			Mem215[0x0800:0x541A:word16] = ax_135;
+			word16 ax_216 = ax_135 - dx_213;
+			Mem229[0x0800:0x5408:word16] = SLICE(DPB(ax_216, (byte) (v25_210 - (word16) (ax_216 <u 0x0000)), 8, 8) *u 0x3865, word16, 16);
+			if ((Mem229[0x0800:Mem229[0x0800:0x5A02:word16] + 0x0094:word16] & 0xFFFF) != 0x0000 || (Mem229[0x0800:Mem229[0x0800:0x5BD8:word16] + 0x0094:word16] & 0xFFFF) != 0x0000)
+				Mem245[0x0800:0x5408:word16] = 0x0000;
+			if ((Mem248[0x0800:0x919E:word16] & 0x02FF) == 0x0000)
+				Mem252[0x0800:0x5408:word16] = 0x0044;
+			ax_135 = Mem253[0x0800:0x919E:word16] & 0x05FF;
+			if (ax_135 == 0x0400)
+				return;
+			if (Mem253[0x0800:0x632E:word16] == 0x0000 && Mem253[0x0800:0xD10E:word16] != 0x0000)
+				fn0C00_028A();
+			fn0C00_027F();
+			if ((Mem253[0x0800:0x6FCA:byte] & 0x10) != 0x00)
+				Mem273[0x0800:0x5376:word16] = 0x0001;
+			fn0C00_0288();
+			if ((Mem274[0x0800:0x0412:word16] & 0xFFFF) != 0x0000)
+				fn0C00_0256();
+			fn0C00_0292();
+		}
+		else
+			goto l0C00_024F;
+	}
+fn0C00_0000_exit:
+}
+===========================
+// fn0C00_0255
+void fn0C00_0255()
+fn0C00_0255_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0255:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0255_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0255()
+{
+	return;
+}
+===========================
+// fn0C00_0256
+void fn0C00_0256()
+fn0C00_0256_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0256:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0256_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0256()
+{
+	return;
+}
+===========================
+// fn0C00_0257
+void fn0C00_0257()
+fn0C00_0257_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0257:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0257_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0257()
+{
+	return;
+}
+===========================
+// fn0C00_0258
+void fn0C00_0258(word16 bx, selector ds)
+fn0C00_0258_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0258:		// block 1, pred: 0
+	store(Mem4[ds:0x0540:word16]) = bx
+	return
+	// succ:  2
+fn0C00_0258_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0258(word16 bx, selector ds)
+{
+	Mem4[ds:0x0540:word16] = bx;
+	return;
+}
+===========================
+// fn0C00_025D
+void fn0C00_025D()
+fn0C00_025D_entry:		// block 0, pred:
+	// succ:  1
+l0C00_025D:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_025D_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_025D()
+{
+	return;
+}
+===========================
+// fn0C00_025E
+void fn0C00_025E()
+fn0C00_025E_entry:		// block 0, pred:
+	// succ:  1
+l0C00_025E:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_025E_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_025E()
+{
+	return;
+}
+===========================
+// fn0C00_025F
+void fn0C00_025F()
+fn0C00_025F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_025F:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_025F_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_025F()
+{
+	return;
+}
+===========================
+// fn0C00_0260
+void fn0C00_0260()
+fn0C00_0260_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0260:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0260_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0260()
+{
+	return;
+}
+===========================
+// fn0C00_0261
+void fn0C00_0261()
+fn0C00_0261_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0261:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0261_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0261()
+{
+	return;
+}
+===========================
+// fn0C00_0262
+void fn0C00_0262()
+fn0C00_0262_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0262:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0262_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0262()
+{
+	return;
+}
+===========================
+// fn0C00_0263
+void fn0C00_0263()
+fn0C00_0263_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0263:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0263_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0263()
+{
+	return;
+}
+===========================
+// fn0C00_0264
+void fn0C00_0264()
+fn0C00_0264_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0264:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0264_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0264()
+{
+	return;
+}
+===========================
+// fn0C00_0265
+bool fn0C00_0265(selector ds)
+fn0C00_0265_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0265:		// block 1, pred: 0
+	word16 ax_8 = Mem0[ds:0x1234:word16]
+	// succ:  2
+l0C00_026A:		// block 2, pred: 1
+	return cond(ax_8 - Mem0[ds:0x1236:word16])
+	// succ:  3
+fn0C00_0265_exit:		// block 3, pred: 2
+	// succ: 
+
+bool fn0C00_0265(selector ds)
+{
+	word16 ax_8 = Mem0[ds:0x1234:word16];
+	return cond(ax_8 - Mem0[ds:0x1236:word16]);
+}
+===========================
+// fn0C00_026F
+bool fn0C00_026F(selector ds)
+fn0C00_026F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_026F:		// block 1, pred: 0
+	return cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16])
+	// succ:  2
+fn0C00_026F_exit:		// block 2, pred: 1
+	// succ: 
+
+bool fn0C00_026F(selector ds)
+{
+	return cond(Mem0[ds:0x1234:word16] - Mem0[ds:0x1236:word16]);
+}
+===========================
+// fn0C00_0279
+void fn0C00_0279()
+fn0C00_0279_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0279:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0279_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0279()
+{
+	return;
+}
+===========================
+// fn0C00_027A
+void fn0C00_027A()
+fn0C00_027A_entry:		// block 0, pred:
+	// succ:  1
+l0C00_027A:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_027A_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_027A()
+{
+	return;
+}
+===========================
+// fn0C00_027B
+void fn0C00_027B()
+fn0C00_027B_entry:		// block 0, pred:
+	// succ:  1
+l0C00_027B:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_027B_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_027B()
+{
+	return;
+}
+===========================
+// fn0C00_027C
+void fn0C00_027C()
+fn0C00_027C_entry:		// block 0, pred:
+	// succ:  1
+l0C00_027C:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_027C_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_027C()
+{
+	return;
+}
+===========================
+// fn0C00_027D
+void fn0C00_027D()
+fn0C00_027D_entry:		// block 0, pred:
+	// succ:  1
+l0C00_027D:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_027D_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_027D()
+{
+	return;
+}
+===========================
+// fn0C00_027E
+void fn0C00_027E()
+fn0C00_027E_entry:		// block 0, pred:
+	// succ:  1
+l0C00_027E:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_027E_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_027E()
+{
+	return;
+}
+===========================
+// fn0C00_027F
+void fn0C00_027F()
+fn0C00_027F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_027F:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_027F_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_027F()
+{
+	return;
+}
+===========================
+// fn0C00_0280
+void fn0C00_0280()
+fn0C00_0280_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0280:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0280_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0280()
+{
+	return;
+}
+===========================
+// fn0C00_0281
+void fn0C00_0281(word16 si, selector ds)
+fn0C00_0281_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0281:		// block 1, pred: 0
+	store(Mem4[ds:0x4AFB:word16]) = si
+	return
+	// succ:  2
+fn0C00_0281_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0281(word16 si, selector ds)
+{
+	Mem4[ds:0x4AFB:word16] = si;
+	return;
+}
+===========================
+// fn0C00_0286
+void fn0C00_0286()
+fn0C00_0286_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0286:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0286_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0286()
+{
+	return;
+}
+===========================
+// fn0C00_0287
+void fn0C00_0287()
+fn0C00_0287_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0287:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0287_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0287()
+{
+	return;
+}
+===========================
+// fn0C00_0288
+void fn0C00_0288()
+fn0C00_0288_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0288:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0288_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0288()
+{
+	return;
+}
+===========================
+// fn0C00_0289
+void fn0C00_0289()
+fn0C00_0289_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0289:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0289_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0289()
+{
+	return;
+}
+===========================
+// fn0C00_028A
+void fn0C00_028A()
+fn0C00_028A_entry:		// block 0, pred:
+	// succ:  1
+l0C00_028A:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_028A_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_028A()
+{
+	return;
+}
+===========================
+// fn0C00_028B
+void fn0C00_028B()
+fn0C00_028B_entry:		// block 0, pred:
+	// succ:  1
+l0C00_028B:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_028B_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_028B()
+{
+	return;
+}
+===========================
+// fn0C00_028C
+void fn0C00_028C()
+fn0C00_028C_entry:		// block 0, pred:
+	// succ:  1
+l0C00_028C:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_028C_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_028C()
+{
+	return;
+}
+===========================
+// fn0C00_028D
+void fn0C00_028D(word16 dx, selector ds)
+fn0C00_028D_entry:		// block 0, pred:
+	// succ:  1
+l0C00_028D:		// block 1, pred: 0
+	store(Mem4[ds:0xC54C:word16]) = dx
+	return
+	// succ:  2
+fn0C00_028D_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_028D(word16 dx, selector ds)
+{
+	Mem4[ds:0xC54C:word16] = dx;
+	return;
+}
+===========================
+// fn0C00_0292
+void fn0C00_0292()
+fn0C00_0292_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0292:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0292_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0292()
+{
+	return;
+}
+===========================
+// fn0C00_0293
+void fn0C00_0293()
+fn0C00_0293_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0293:		// block 1, pred: 0
+	return
+	// succ:  2
+fn0C00_0293_exit:		// block 2, pred: 1
+	// succ: 
+
+void fn0C00_0293()
+{
+	return;
+}
+===========================

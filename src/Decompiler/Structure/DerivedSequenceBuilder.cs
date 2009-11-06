@@ -50,12 +50,12 @@ namespace Decompiler.Structure
             DirectedGraph<StructureNode> newGraph = new DirectedGraphImpl<StructureNode>();
             StructureNode newEntry = gr.Intervals[0];
 
-            foreach (IntNode interval in gr.Intervals)
+            foreach (Interval interval in gr.Intervals)
             {
                 newGraph.Nodes.Add(interval);
             }
 
-            foreach (IntNode interval in gr.Intervals)
+            foreach (Interval interval in gr.Intervals)
             {
                 foreach (StructureNode node in interval.Nodes)
                 {

@@ -58,17 +58,6 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreSame(m.Procedure.ExitBlock, h.ReverseOrdering[4].ImmPDom.Block);
         }
 
-        private void BuildPostdominatorGraph(ProcedureMock m)
-        {
-            ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);
-            graphs.BuildNodes();
-            graphs.DefineEdges();
-            h = graphs.CreateProcedureStructure();
-            graphs.SetTimeStamps();
-
-            PostDominatorGraph gr = new PostDominatorGraph();
-            gr.FindImmediatePostDominators(h);
-        }
 
         [Test]
         public void PostdominateLoop()
@@ -118,6 +107,36 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual("then PD> loopHead", PostDom("then"));
             Assert.AreEqual("l1 PD> loopHead", PostDom("l1"));
             Assert.AreEqual("done PD> ProcedureMock_exit", PostDom("done"));
+        }
+
+        [Test]
+        public void InfiniteLoop()
+        {
+            ProcedureMock m = new ProcedureMock();
+            m.Label("Infinity");
+            m.BranchIf(m.Eq(m.LoadW(m.Word16(0x1234)), 0), "hop");
+            m.SideEffect(m.Fn("foo"));
+            m.Label("hop");
+            m.BranchIf(m.Eq(m.LoadW(m.Word16(0x5123)), 1), "Infinity");
+            m.SideEffect(m.Fn("bar"));
+            m.Jump("Infinity");
+            m.Return();
+
+            BuildPostdominatorGraph(m);
+
+
+        }
+        private void BuildPostdominatorGraph(ProcedureMock m)
+        {
+            m.Procedure.RenumberBlocks();
+            ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);
+            graphs.BuildNodes();
+            graphs.DefineEdges();
+            h = graphs.CreateProcedureStructure();
+            graphs.SetTimeStamps();
+
+            PostDominatorGraph gr = new PostDominatorGraph();
+            gr.FindImmediatePostDominators(h);
         }
 
         private string PostDom(string s)

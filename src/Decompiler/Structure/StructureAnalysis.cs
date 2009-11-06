@@ -222,15 +222,19 @@ namespace Decompiler.Structure
 
         private void StructLoops(ProcedureStructure curProc)
         {
-            for (int gLevel = 0; gLevel < curProc.DerivedGraphs.Count; gLevel++)
+            curProc.Write(Console.Out);
+
+            for (int gLevel = 0; gLevel < curProc.DerivedGraphs.Count; ++gLevel)
             {
+                Console.Out.WriteLine("= Graph level {0} ===", gLevel);
+
                 DerivedGraph curGraph = curProc.DerivedGraphs[gLevel];
-                foreach (IntNode curInt in curGraph.Intervals)
+                foreach (Interval curInt in curGraph.Intervals)
                 {
                     // find the G0 basic block node at the head of this interval
                     StructureNode headNode = curInt;
                     for (int k = 0; k <= gLevel; k++)
-                        headNode = ((IntNode) headNode).Nodes[0];
+                        headNode = ((Interval) headNode).Nodes[0];
 
                     HashSet<StructureNode> intNodes = curInt.FindIntervalNodes(gLevel);
 
@@ -266,6 +270,8 @@ namespace Decompiler.Structure
 
         private void CreateLoop(ProcedureStructure curProc, StructureNode headNode, HashSet<StructureNode> intervalNodes, StructureNode latch)
         {
+            Debug.WriteLine(string.Format("Creating loop {0}-{1}", headNode.Name, latch.Name));
+
             // if the head node has already been determined as a loop header then the nodes
             // within this loop have to be untagged and the latch reset to its original type
             if (headNode.Loop != null && headNode.Loop.Latch != null)

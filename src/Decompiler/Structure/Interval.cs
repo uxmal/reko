@@ -25,16 +25,15 @@ using System.IO;
 
 namespace Decompiler.Structure
 {
-    public class IntNode : StructureNode
+    public class Interval : StructureNode
     {
         private List<StructureNode> nodes = new List<StructureNode>();		// nodes of the interval
 
-        public IntNode(int intervalID, StructureNode headerNode)
+        public Interval(int intervalID, StructureNode headerNode)
             : base(intervalID, bbType.intNode)
         {
             AddNode(headerNode);
         }
-
 
         public bool Contains(StructureNode node)
         {
@@ -65,7 +64,7 @@ namespace Decompiler.Structure
                     cfgNodes[nodes[i].Order] = true;
             else
                 for (int i = 0; i < nodes.Count; i++)
-                    ((IntNode) nodes[i]).FindNodesInInt(cfgNodes, level - 1);    //$CAST
+                    ((Interval) nodes[i]).FindNodesInInt(cfgNodes, level - 1);    //$CAST
         }
 
         public HashSet<StructureNode> FindIntervalNodes(int level)
@@ -78,11 +77,11 @@ namespace Decompiler.Structure
         private void FindIntervalNodes(int level, HashSet<StructureNode> intervalMembers)
         {
             if (level == 0)
-                for (int i = 0; i < nodes.Count; ++i)
-                    intervalMembers.Add(nodes[i]);
+                foreach (StructureNode node in nodes)
+                    intervalMembers.Add(node);
             else
-                for (int i = 0; i < nodes.Count; ++i)
-                    ((IntNode) nodes[i]).FindIntervalNodes(level - 1, intervalMembers);
+                foreach (Interval i in nodes)
+                    i.FindIntervalNodes(level - 1, intervalMembers);
         }
 
         public StructureNode Header

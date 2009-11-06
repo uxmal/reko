@@ -423,6 +423,7 @@
     <Compile Include="Platform.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Lib\DominatorGraph.cs" />
     <Compile Include="Procedure.cs">
       <SubType>Code</SubType>
     </Compile>

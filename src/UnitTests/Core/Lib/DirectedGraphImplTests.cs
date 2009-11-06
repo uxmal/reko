@@ -20,14 +20,14 @@ using Decompiler.Core.Lib;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Core
+namespace Decompiler.UnitTests.Core.Lib
 {
 	using StringBuilder = System.Text.StringBuilder;
 
 	[TestFixture]
-	public class DirectedGraphTests
+	public class DirectedGraphImplTests
 	{
-		public DirectedGraphTests()
+		public DirectedGraphImplTests()
 		{
 		}
 
@@ -101,5 +101,31 @@ namespace Decompiler.UnitTests.Core
 			s = DumpGraph(gr);
 			Assert.AreEqual(sExp, s);
 		}
-	}
+
+        [Test]
+        public void EdgeCountAfterAdd()
+        {
+            DirectedGraphImpl<string> gr = new DirectedGraphImpl<string>();
+            gr.AddNode("a");
+            gr.AddNode("b");
+            Assert.AreEqual(0, gr.Successors("a").Count);
+            gr.AddEdge("a", "b");
+            Assert.AreEqual(1, gr.Successors("a").Count);
+            Assert.AreEqual(1, gr.Predecessors("b").Count);
+
+        }
+
+        [Test]
+        public void EdgeCountAfterRemove()
+        {
+            DirectedGraphImpl<string> gr = new DirectedGraphImpl<string>();
+            gr.AddNode("a");
+            gr.AddNode("b");
+            Assert.AreEqual(0, gr.Successors("a").Count);
+            gr.AddEdge("a", "b");
+            gr.RemoveEdge("a", "b");
+            Assert.AreEqual(0, gr.Successors("a").Count);
+            Assert.AreEqual(0, gr.Predecessors("b").Count);
+        }    
+    }
 }

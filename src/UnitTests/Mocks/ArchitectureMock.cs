@@ -182,23 +182,23 @@ namespace Decompiler.UnitTests.Mocks
 
 	public class FakeProcessorState : ProcessorState
 	{
-		public override object Clone()
+		public ProcessorState Clone()
 		{
 			return new FakeProcessorState();
 		}
 
-		public override Constant GetV(MachineRegister r)
+		public Constant Get(MachineRegister r)
 		{
 			return Constant.Invalid;
 		}
 
-		public override void Set(MachineRegister r, Decompiler.Core.Code.Constant v)
+		public void Set(MachineRegister r, Decompiler.Core.Code.Constant v)
 		{
 			throw new NotImplementedException();
 		}
 
 
-		public override void SetInstructionPointer(Address addr)
+		public void SetInstructionPointer(Address addr)
 		{
 		}
 	}

@@ -88,7 +88,7 @@ namespace Decompiler.Arch.Intel
 		{
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)
-				return state.GetV(regOp.Register);
+				return state.Get(regOp.Register);
 			ImmediateOperand immOp = op as ImmediateOperand;
 			if (immOp != null)
 				return immOp.Value;
@@ -170,7 +170,7 @@ namespace Decompiler.Arch.Intel
 				break;
 			case 0x21:				// MS-DOS interrupt.
 			{
-				Constant ah = state.GetV(Registers.ah);
+				Constant ah = state.Get(Registers.ah);
 				if (ah.IsValid)
 				{
 					switch (ah.ToUInt32())
@@ -178,8 +178,8 @@ namespace Decompiler.Arch.Intel
 					case 0x25:				// Set interrupt vector
 					{
 						// DS:DX contain the address of an interrupt routine.
-						Constant ds = state.GetV(Registers.ds);
-						Constant dx = state.GetV(Registers.dx);
+						Constant ds = state.Get(Registers.ds);
+						Constant dx = state.Get(Registers.dx);
 						if (ds.IsValid && dx.IsValid)
 						{
 							Listener.OnProcedure(
@@ -304,7 +304,7 @@ namespace Decompiler.Arch.Intel
 			{
 				Address addrGlob = AddressFromSegOffset(memOp.DefaultSegment, memOp.Offset.ToUInt32());
 				ushort segBase = (memOp.Width == PrimitiveType.Word16)
-					? (ushort) state.GetV(Registers.cs).ToUInt32()
+					? (ushort) state.Get(Registers.cs).ToUInt32()
 					: (ushort) 0;
 				if (memOp.IsAbsolute)
 				{
@@ -439,7 +439,7 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.cbw:
 			{
-				Constant t = state.GetV(Registers.al);
+				Constant t = state.Get(Registers.al);
 				if (t.IsValid)
 				{
 					t = new Constant(PrimitiveType.Word16, t.ToInt32());
@@ -471,7 +471,7 @@ namespace Decompiler.Arch.Intel
 			case Opcode.cwd:
 			{
 				//$BUG: 32-bit registers?
-				Constant t = state.GetV(Registers.ax);
+				Constant t = state.Get(Registers.ax);
 				if (t.IsValid)
 				{
 					t = new Constant(PrimitiveType.Word16, t.ToInt32() < 0 ? -1 : 0);
@@ -487,8 +487,8 @@ namespace Decompiler.Arch.Intel
 			case Opcode.idiv:
 				break;		//$BUGBUG: trashes many registers in some cases!
 			case Opcode.enter:
-				state.Push(instr.dataWidth, state.GetV(Registers.bp));
-				state.Set(Registers.bp, state.GetV(Registers.sp));
+				state.Push(instr.dataWidth, state.Get(Registers.bp));
+				state.Set(Registers.bp, state.Get(Registers.sp));
 				break;
 			case Opcode.fadd:
 			case Opcode.faddp:
@@ -584,7 +584,7 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.leave:
 				state.Set(Registers.bp, state.Pop(instr.dataWidth));
-				state.Set(Registers.sp, state.GetV(Registers.bp));
+				state.Set(Registers.sp, state.Get(Registers.bp));
 				break;
 			case Opcode.les:
 				HandleLxsInstruction(instr, Registers.es);

@@ -38,15 +38,24 @@ namespace Decompiler.UnitTests.Structure
                 FileUnitTester.MapTestPath(sourceFilename));
             ldr.Load(addrBase);
             prog = ldr.Program;
+
+            prog.DumpAssembler(Console.Out);
+
             Scanner scan = new Scanner(prog, null);
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);
 			}
 			scan.ProcessQueues();
+
+            prog.DumpAssembler(Console.Out);
+
 			DecompilerHost host = new FakeDecompilerHost();
 			RewriterHost rw = new RewriterHost(prog, host, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
+
+            prog.Procedures.Values[0].Write(false, Console.Out);
+
 			DataFlowAnalysis da = new DataFlowAnalysis(prog, host);
 			da.AnalyzeProgram();
 		}

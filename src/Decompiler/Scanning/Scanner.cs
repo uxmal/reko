@@ -108,7 +108,7 @@ namespace Decompiler.Scanning
 
 			Debug.Assert(proc != null);
 			WorkItem wi = new WorkItem(wiCur, BlockType.JumpTarget, addrTarget);
-			wi.state = (ProcessorState) st.Clone();
+			wi.state = st.Clone();
 			qJumps.Enqueue(wi);
 			ImageMapBlock bl = new ImageMapBlock();
 			bl.Procedure = proc;
@@ -135,7 +135,7 @@ namespace Decompiler.Scanning
 		public Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state)
 		{
 			WorkItem wi = new WorkItem(wiPrev, BlockType.Procedure, addr);
-			wi.state = (ProcessorState) state.Clone();
+			wi.state = state.Clone();
             Procedure proc;
 			if (!program.Procedures.TryGetValue(addr, out proc))
 			{
@@ -204,7 +204,7 @@ namespace Decompiler.Scanning
 			{
 				table = new ImageMapVectorTable(calltable);
 				VectorWorkItem wi = new VectorWorkItem(wiCur, blockCur.Procedure, addrTable);
-				wi.state = (ProcessorState) state.Clone();
+				wi.state = state.Clone();
 				wi.reader = program.Image.CreateReader(addrTable);
 				wi.stride = stride;
 				wi.segBase = segBase;
@@ -445,7 +445,7 @@ namespace Decompiler.Scanning
 			item.Addresses.AddRange(vector);
 			for (int i = 0; i < vector.Length; ++i)
 			{
-				ProcessorState st = (ProcessorState) wi.state.Clone();
+				ProcessorState st = wi.state.Clone();
 				if (wi.table.IsCallTable)
 				{
 					EnqueueProcedure(wiCur, vector[i], null, st);
