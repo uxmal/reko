@@ -48,7 +48,6 @@ namespace Decompiler.Structure
     /// </summary>
     public class ProcedureStructure
     {
-        private Procedure proc;
         private string name;
         private List<StructureNode> nodes;
         private StructureNode exitNode;
@@ -57,10 +56,9 @@ namespace Decompiler.Structure
         private List<StructureNode> revOrdering;
         private List<DerivedGraph> derivedGraphs;	// the derived graphs for this procedure
 
-        public ProcedureStructure(Procedure proc, List<StructureNode> nodes)
+        public ProcedureStructure(string name, List<StructureNode> nodes)
         {
-            this.proc = proc;
-            this.name = proc.Name;
+            this.name = name;
             this.nodes = nodes;
             this.derivedGraphs = new List<DerivedGraph>();
             this.ordering = new List<StructureNode>();

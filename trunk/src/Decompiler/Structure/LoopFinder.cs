@@ -26,6 +26,10 @@ using System.Diagnostics;
 
 namespace Decompiler.Structure
 {
+    /// <summary>
+    /// Given an interval and its constituent nodes, finds a strongly connected component entirely within the interval. That
+    /// SCC is a loop.
+    /// </summary>
     public class SccLoopFinder : ISccFinderHost<StructureNode>
     {
         private Interval interval;
@@ -42,7 +46,7 @@ namespace Decompiler.Structure
         {
             loopNodeSet = new HashSet<StructureNode>();
             SccFinder<StructureNode> f = new SccFinder<StructureNode>(this);
-            f.Find(interval.Header);
+            f.FindOld(interval.Header);
             return loopNodeSet;
         }
 
@@ -151,10 +155,10 @@ namespace Decompiler.Structure
             return header.Loop;
         }
 
-        private EndLessLoop CreateEndLessLoop(HashSet<StructureNode> loopNodes)
+        private TestlessLoop CreateEndLessLoop(HashSet<StructureNode> loopNodes)
         {
             StructureNode follow = FindEndLessFollowNode(header, latch, loopNodes);
-            EndLessLoop loop = new EndLessLoop(header, latch, loopNodes, follow);
+            TestlessLoop loop = new TestlessLoop(header, latch, loopNodes, follow);
             return loop;
 
         }

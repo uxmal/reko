@@ -87,8 +87,23 @@ namespace Decompiler.UnitTests.Core.Lib
             Assert.AreEqual("c", pdg.ImmediateDominator("a"));
             Assert.AreEqual("a", pdg.ImmediateDominator("b"));
             Assert.IsNull(pdg.ImmediateDominator("c"));
-
         }
+
+        [Test]
+        public void InfiniteLoop()
+        {
+            graph.AddNode("a");
+            graph.AddNode("b");
+            graph.AddNode("c");
+            graph.AddEdge("a", "b");
+            graph.AddEdge("b", "a");
+
+            CompileTest(graph, "c");
+
+            Assert.AreEqual("a", pdg.ImmediateDominator("b"));
+            Assert.AreEqual("b", pdg.ImmediateDominator("a"));
+        }
+
         private void CompileTest(DirectedGraphImpl<string> e, string entry)
         {
             pdg = new DominatorGraph<string>(e, entry);

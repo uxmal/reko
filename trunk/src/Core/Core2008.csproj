@@ -1,0 +1,607 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5C315C78-1F97-4B16-81AA-917284969DFE}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Decompiler.Core</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Decompiler.Core</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Absyn\AbsynAssignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynBreak.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynCase.cs" />
+    <Compile Include="Absyn\AbsynContinue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynDeclaration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynDoWhile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynGoto.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynIf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynLabel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynLoop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynProcedure.cs" />
+    <Compile Include="Absyn\AbsynReturn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynSideEffect.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynStatement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\AbsynSwitch.cs" />
+    <Compile Include="Absyn\AbsynWhile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Absyn\IAbsynVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Address.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AddressRange.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ApplicationBuilder.cs" />
+    <Compile Include="Assembler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BackWalker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BackwalkOperation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Block.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BlockGraph.cs" />
+    <Compile Include="CallGraph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CallRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CodeEmitter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CodeWalker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Application.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ArrayAccess.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Assignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\BinaryExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Branch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\CallInstruction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\CallSite.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Cast.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ConditionOf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Constant.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Declaration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\DelegatedInstructionVisitor.cs" />
+    <Compile Include="Code\DepositBits.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Dereference.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Expression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ExpressionFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ExpressionValueComparer.cs" />
+    <Compile Include="Code\ExpressionVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\FieldAccess.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Identifier.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\IExpressionTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Instruction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\InstructionTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\InstructionVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\MemberPointerSelector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\MemoryAccess.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\MkSequence.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\PhiAssignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\PhiFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\PointerAddition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ProcedureConstant.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\ScopeResolution.cs" />
+    <Compile Include="Code\SideEffect.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Slice.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\TestCondition.cs" />
+    <Compile Include="Code\UnaryExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Diagnostic.cs" />
+    <Compile Include="Disassembler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DominatorGraph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dumper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EntryPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExternalProcedure.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Frame.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IBackWalkHost.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ICodeWalkerListener.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ImageLoader.cs" />
+    <Compile Include="ImageMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ImageMapBlock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ImageMapSegment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ImageMapVectorTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ImageReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ImageWriter.cs" />
+    <Compile Include="IProcedureRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IProcessorArchitecture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IRewriterHost.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\BitSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\DfsIterator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\DirectedGraph.cs" />
+    <Compile Include="Lib\DirectedGraphImpl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\DisjointPartition.cs" />
+    <Compile Include="Lib\DominatorGraph.cs" />
+    <Compile Include="Lib\HashSet.cs" />
+    <Compile Include="Lib\IntSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\Map.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\SccFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LinearInductionVariable.cs" />
+    <Compile Include="MachineFlags.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MachineInstruction.cs" />
+    <Compile Include="MachineOperand.cs" />
+    <Compile Include="MachineRegister.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\AddOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\AndOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\BinaryOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\ConditionalOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\DivsOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\DivuOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\ModOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\MulOperator.cs" />
+    <Compile Include="Operators\MulsOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\MuluOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\Operator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\OrOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\RealConditionalOperators.cs" />
+    <Compile Include="Operators\SarOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\ShlOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\ShrOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\SignedIntOperators.cs" />
+    <Compile Include="Operators\SubOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\UnaryOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\UnsignedIntOperators.cs" />
+    <Compile Include="Operators\XorOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Output\CodeFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Output\Formatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Output\IndentingTextWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Output\MockGenerator.cs" />
+    <Compile Include="Output\TypeFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Platform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Procedure.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProcedureBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProcedureSignature.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProcessorInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProcessorState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Program.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProgramImage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PseudoProcedure.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RelocationDictionary.cs" />
+    <Compile Include="Rewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\ArgumentSerializer.cs" />
+    <Compile Include="Serialization\ArraySizeCharacteristic.cs" />
+    <Compile Include="Serialization\DecompilerInput.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\DecompilerOutput.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\DecompilerProject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\InputFormat.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\ProcedureCharacteristics.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedCall.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedFlag.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedFpuStackVariable.cs" />
+    <Compile Include="Serialization\SerializedKind.cs" />
+    <Compile Include="Serialization\SerializedLibrary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedLibraryDefaults.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedPointerType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedPrimitiveType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedProcedure.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedProcedureBase.cs" />
+    <Compile Include="Serialization\SerializedRegister.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedSequence.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedSignature.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedStackVariable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedStructType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\SerializedType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\ProcedureSerializer.cs" />
+    <Compile Include="SignatureBuilder.cs" />
+    <Compile Include="SignatureLibrary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Statement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StatementList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Storage.cs" />
+    <Compile Include="StorageVisitor.cs" />
+    <Compile Include="SystemService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\ArrayType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\DataType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\DataTypeComparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\DataTypeTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\DataTypeVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\EquivalenceClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\FunctionType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\MemberPointer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\Pointer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\PrimitiveType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\StructureField.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\StructureType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\TypeFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\TypeStore.cs" />
+    <Compile Include="Types\TypeVariable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\TypeVarSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\UnionType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\UnknownType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WorkList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="Serialization\test.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Schemata\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

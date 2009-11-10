@@ -63,7 +63,6 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public ExeImageLoader(byte [] image) : base(image)
 		{
-            this.prog = prog;
             ReadCommonExeFields();	
 		
 			if (e_magic != MarkZbikowski)
@@ -73,6 +72,7 @@ namespace Decompiler.ImageLoaders.MzExe
         private ImageLoader CreateRealModeLoader(Program prog, byte[] image)
         {
             IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+            this.prog = prog;
             prog.Architecture = arch;
             prog.Platform = new MsdosPlatform(arch);
 

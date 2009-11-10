@@ -1,3 +1,5 @@
+;;; the infinite loop starting at l016A causes the structuring phase to keel over.
+
 fn1796_0003 proc
 	db      0x90
 	db      0x90
@@ -150,7 +152,7 @@ l015B:
 	call	fn1760
 	call	fn1370
 
-l0178:
+l016A:
 	test	word ptr [0x919E],0x01FF
 	jz	l01E0
 
@@ -234,7 +236,7 @@ l023F:
 	mov	ax,[0x919E]
 	and	ax,0x05FF
 	cmp	ax,0x0400
-	jz	long l0178
+	jz	long l016A
 
 l024C:
 	cmp	word ptr [0x632E],0x00
@@ -267,7 +269,7 @@ l027D:
 	call	fnC721
 
 l0288:
-	jmp	l0178
+	jmp	l016A
 
 
 l047A:

@@ -209,12 +209,86 @@ namespace Decompiler.Structure
         {
             ProcedureStructureBuilder cfgs = new ProcedureStructureBuilder(proc);
             curProc = cfgs.Build();
+
+            StructureGraphAdapter graph = new StructureGraphAdapter(curProc.Nodes);
+            ICollection<StructureNode> infiniteLoops = FindInfiniteLoops(graph, curProc.EntryNode);
+            AddPseudoEdgeFromInfiniteLoopsToExitNode(graph, infiniteLoops, curProc.ExitNode);
+
+            // (re)set the reverse ordering of the nodes.
+            curProc.ReverseOrdering.Clear();
+            curProc.ExitNode.SetRevOrder(curProc.ReverseOrdering, new HashSet<StructureNode>());
+
+            curProc.Dump();
+
+            PostDominatorGraph g = new PostDominatorGraph(curProc);
+            g.FindImmediatePostDominators();
+
+            RemovePseudoEdgeFromInfiniteLoopsToExitNode(graph, infiniteLoops, curProc.ExitNode);
+
+        }
+
+        private void AddPseudoEdgeFromInfiniteLoopsToExitNode(DirectedGraph<StructureNode> graph, ICollection<StructureNode> infiniteLoops, StructureNode exitNode)
+        {
+            foreach (StructureNode infLoopHeader in infiniteLoops)
+            {
+                Debug.Assert(!infLoopHeader.OutEdges.Contains(exitNode));
+                graph.AddEdge(infLoopHeader, exitNode);
+            }
+        }
+
+        private void RemovePseudoEdgeFromInfiniteLoopsToExitNode(DirectedGraph<StructureNode> graph, ICollection<StructureNode> infiniteLoops, StructureNode exitNode)
+        {
+            foreach (StructureNode infLoopHeader in infiniteLoops)
+            {
+                graph.RemoveEdge(infLoopHeader, exitNode);
+            }
+        }
+
+        public ICollection<StructureNode> FindInfiniteLoops(DirectedGraph<StructureNode> graph, StructureNode entry)
+        {
+            List<StructureNode> infiniteLoopHeaders = new List<StructureNode>();
+            SccFinder<StructureNode> finder = new SccFinder<StructureNode>(graph, delegate(ICollection<StructureNode> scc)
+            {
+                if (IsInfiniteLoop(graph, scc))
+                {
+                    infiniteLoopHeaders.Add(FindNodeWithHighestPostOrderNumber(scc));
+                }
+            });
+            finder.Find(entry);
+            return infiniteLoopHeaders;
+        }
+
+        private StructureNode FindNodeWithHighestPostOrderNumber(ICollection<StructureNode> scc)
+        {
+            StructureNode nodeHi = null;
+            foreach (StructureNode node in scc)
+            {
+                if (nodeHi == null)
+                    nodeHi = node;
+                else if (node.Order > nodeHi.Order)
+                    nodeHi = node;
+
+            }
+            return nodeHi;
+        }
+
+        private bool IsInfiniteLoop(DirectedGraph<StructureNode> graph, ICollection<StructureNode> scc)
+        {
+            HashSet<StructureNode> members = new HashSet<StructureNode>();
+            members.AddRange(scc);
+            foreach (StructureNode node in scc)
+            {
+                foreach (StructureNode succ in graph.Successors(node))
+                {
+                    if (!members.Contains(succ))
+                        return false;
+                }
+            }
+            return true;
         }
 
         public void FindStructures()
         {
-            PostDominatorGraph g = new PostDominatorGraph();
-            g.FindImmediatePostDominators(curProc);
             StructConds();
             StructLoops(curProc);
             DetectUnstructuredConditionals(curProc);

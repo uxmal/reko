@@ -101,7 +101,7 @@ namespace Decompiler.Structure
         public void AddEdgeTo(StructureNode dest)
         {
             if (type != bbType.cBranch || !HasEdgeTo(dest))
-                OutEdges.Add((StructureNode) (dest));      //$CAST
+                OutEdges.Add(dest);    
             else
                 //reset the type to fall if no edge was added (i.e. this edge already existed)
                 type = bbType.fall;
@@ -112,7 +112,7 @@ namespace Decompiler.Structure
         public void AddEdgeFrom(StructureNode src)
         {
             if (!InEdges.Contains(src))
-                InEdges.Add((StructureNode) (src));//$CAST
+                InEdges.Add(src);
         }
 
 
@@ -255,22 +255,22 @@ namespace Decompiler.Structure
             order.Add(this);
         }
 
-        // This sets the reverse loop stamps for each node. The children are traversed in
+        // Sets the reverse loop stamps for each node. The children are traversed in
         // reverse order.
-        public void SetRevLoopStamps(ref int time)
+        public void SetRevLoopStamps(ref int time, HashSet<StructureNode> visited)
         {
             //timestamp the current node with the current time and set its traversed flag
-            traversed = travType.DFS_RNUM;
+            visited.Add(this);
             revLoopStamps[0] = time;
 
             //recurse on the unvisited children in reverse order
             for (int i = OutEdges.Count - 1; i >= 0; i--)
             {
                 // recurse on this child if it hasn't already been visited
-                if (OutEdges[i].traversed != travType.DFS_RNUM)
+                if (!visited.Contains(OutEdges[i]))
                 {
                     ++time;
-                    OutEdges[i].SetRevLoopStamps(ref time);
+                    OutEdges[i].SetRevLoopStamps(ref time, visited);
                 }
             }
 
@@ -280,16 +280,16 @@ namespace Decompiler.Structure
 
         // Build the ordering of the nodes in the reverse graph that will be used to
         // determine the immediate post dominators for each node
-        public void SetRevOrder(List<StructureNode> order)
+        public void SetRevOrder(List<StructureNode> order, HashSet<StructureNode> visited)
         {
-            // Set this node as having been traversed during the post domimator 
-            // DFS ordering traversal
-            traversed = travType.DFS_PDOM;
-
-            // recurse on unvisited children 
+            visited.Add(this);
             for (int i = 0; i < InEdges.Count; i++)
-                if (InEdges[i].traversed != travType.DFS_PDOM)
-                    InEdges[i].SetRevOrder(order);
+            {
+                if (!visited.Contains(InEdges[i]))
+                {
+                    InEdges[i].SetRevOrder(order, visited);
+                }
+            }
 
             // add this node to the ordering structure and record the post dom. order
             // of this node as its index within this ordering structure

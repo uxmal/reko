@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,29 +26,16 @@ namespace Decompiler.Structure
 {
     public class PostDominatorGraph
     {
-        /// <summary>
-        /// Finds the common post dominator of the current immediate post dominator
-        /// and its successor's immediate post dominator
-        /// </summary>
-        /// <param name="curImmPDom"></param>
-        /// <param name="succImmPDom"></param>
-        /// <returns></returns>
-        private StructureNode CommonPostDominator(StructureNode curImmPDom, StructureNode succImmPDom)
+        private ProcedureStructure proc;
+        private StructureGraphAdapter graph;
+
+        public PostDominatorGraph()
+        { }
+
+        public PostDominatorGraph(ProcedureStructure proc)
         {
-            if (curImmPDom == null)
-                return succImmPDom;
-            if (succImmPDom == null)
-                return curImmPDom;
-
-            while (curImmPDom != null && succImmPDom != null && (curImmPDom != succImmPDom))
-            {
-                if (curImmPDom.RevOrder > succImmPDom.RevOrder)
-                    succImmPDom = succImmPDom.ImmPDom;
-                else
-                    curImmPDom = curImmPDom.ImmPDom;
-            }
-
-            return curImmPDom;
+            this.proc = proc;
+            this.graph = new StructureGraphAdapter(proc.Nodes);
         }
 
         /// <summary>Finds the immediate post dominator of each node in the graph.</summary>
@@ -56,7 +44,15 @@ namespace Decompiler.Structure
         /// immediate post dominators only.
         /// Note: graph should be reducible
         /// </remarks>
+        [Obsolete]
         public void FindImmediatePostDominators(ProcedureStructure proc)
+        {
+            this.proc = proc;
+
+            FindImmediatePostDominators();
+        }
+
+        public void FindImmediatePostDominators()
         {
             // traverse the nodes in order (i.e from the bottom up)
             for (int i = proc.ReverseOrdering.Count - 1; i >= 0; i--)
@@ -98,5 +94,32 @@ namespace Decompiler.Structure
                 }
             }
         }
+        /// <summary>
+        /// Finds the common post dominator of the current immediate post dominator
+        /// and its successor's immediate post dominator
+        /// </summary>
+        /// <param name="curImmPDom"></param>
+        /// <param name="succImmPDom"></param>
+        /// <returns></returns>
+        private StructureNode CommonPostDominator(StructureNode curImmPDom, StructureNode succImmPDom)
+        {
+            if (curImmPDom == null)
+                return succImmPDom;
+            if (succImmPDom == null)
+                return curImmPDom;
+
+            while (curImmPDom != null && succImmPDom != null && (curImmPDom != succImmPDom))
+            {
+                if (curImmPDom.RevOrder > succImmPDom.RevOrder)
+                    succImmPDom = succImmPDom.ImmPDom;
+                else
+                    curImmPDom = curImmPDom.ImmPDom;
+            }
+
+            return curImmPDom;
+        }
+
+
+
     }
 }
