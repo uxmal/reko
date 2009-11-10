@@ -24,6 +24,10 @@ using System.Text;
 
 namespace Decompiler.Structure
 {
+    /// <summary>
+    /// Builds the derived graph sequence. At each step, the intervals of the graph are found. A new graph is then
+    /// built, where the vertices are the intervals and the edges consist of transitions between different intervals.
+    /// </summary>
     public class DerivedSequenceBuilder
     {
         private List<DerivedGraph> graphs;
@@ -37,7 +41,7 @@ namespace Decompiler.Structure
             graphs.Add(gr);
             while (gr.Graph.Nodes.Count > 1)
             {
-                DerivedGraph newGr = BuildNextOrderGraph2(gr);
+                DerivedGraph newGr = BuildNextOrderGraph(gr);
                 if (newGr.Graph.Nodes.Count == gr.Graph.Nodes.Count)
                     return;
                 graphs.Add(newGr);
@@ -45,7 +49,7 @@ namespace Decompiler.Structure
             }
         }
 
-        private DerivedGraph BuildNextOrderGraph2(DerivedGraph gr)
+        private DerivedGraph BuildNextOrderGraph(DerivedGraph gr)
         {
             DirectedGraph<StructureNode> newGraph = new DirectedGraphImpl<StructureNode>();
             StructureNode newEntry = gr.Intervals[0];
@@ -83,7 +87,9 @@ namespace Decompiler.Structure
         }
     }
 
-    [Obsolete("Move to using DirectedGraphImp<structureNode> everywhere.")]
+    /// <summary>
+    /// Wraps the graph of structurenodes in an interface so generic algorithms can use it.
+    /// </summary>
         public class StructureGraphAdapter : DirectedGraph<StructureNode>
         {
             private ICollection<StructureNode> nodes;

@@ -88,7 +88,9 @@ namespace Decompiler.Structure
 
     }
 
-
+    /// <summary>
+    /// Pre-tested loops correspond to 'while' loops.
+    /// </summary>
     public class PreTestedLoop : Loop
     {
         public PreTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
@@ -112,6 +114,9 @@ namespace Decompiler.Structure
         }
     }
 
+    /// <summary>
+    /// Post-tested loops correspond to do/while or repeat/until loops.
+    /// </summary>
     public class PostTestedLoop : Loop
     {
         public PostTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
@@ -145,9 +150,12 @@ namespace Decompiler.Structure
         }
     }
 
-    public class EndLessLoop : Loop
+    /// <summary>
+    /// Testless loops don't have an exit in their header nor their latch node. Either exits need to be modelled with a break/goto/return (in C) or the loop is infinite.
+    /// </summary>
+    public class TestlessLoop : Loop
     {
-        public EndLessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
+        public TestlessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
             : base(header, latch, loopNodes, follow)
         {
         }

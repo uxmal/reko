@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Gui
         [Test]
         public void NotifyOnChangedDecompiler()
         {
-            DecompilerDriver d = new DecompilerDriver(null, null,  null);
+            DecompilerDriver d = new DecompilerDriver(null, null);
             IDecompilerService svc = new DecompilerService();
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)

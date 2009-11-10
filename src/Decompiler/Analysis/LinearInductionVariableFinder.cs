@@ -146,7 +146,7 @@ namespace Decompiler.Analysis
 			SccFinder<SsaIdentifier> sccFinder = new SccFinder<SsaIdentifier>(this);
 			foreach (SsaIdentifier sid in ssaIds)
 			{
-				sccFinder.Find(sid);
+				sccFinder.FindOld(sid);
 			}
 		}
 

@@ -26,6 +26,9 @@ using System.Text;
 
 namespace Decompiler.Structure
 {
+    /// <summary>
+    /// Generates Abstract syntax trees of high-level statements from the given StructureNodes.
+    /// </summary>
     public class AbsynCodeGenerator
     {
         private Stack<StructureNode> followStack;

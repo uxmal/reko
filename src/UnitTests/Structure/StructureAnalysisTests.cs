@@ -83,7 +83,7 @@ unstructuredexit
             StructureAnalysis sa = CompileTest(new MockInfiniteLoop());
             Assert.AreEqual("Infinite", sa.ProcedureStructure.Nodes[1].Name);
             Assert.IsNotNull(sa.ProcedureStructure.Nodes[1].Loop, "Should be part of loop.");
-            Assert.IsTrue(sa.ProcedureStructure.Nodes[1].Loop is EndLessLoop);
+            Assert.IsTrue(sa.ProcedureStructure.Nodes[1].Loop is TestlessLoop);
         }
 
         private void RunTest(ProcGenerator gen, string sExp)

@@ -95,7 +95,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				else
 				{
 					if ((op & 0xFE) != 0xB2)
-						throw new ApplicationException("Packed file is corrupt");
+						throw new ApplicationException("Packed file is corrupt.");
 					while (cx != 0)
 					{
 						abU[DI--] = abC[SI--];

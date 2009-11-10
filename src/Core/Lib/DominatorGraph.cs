@@ -40,6 +40,16 @@ namespace Decompiler.Core.Lib
             this.idoms[entryNode] = null;		// No-one postdominates the root node.
         }
 
+        public Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph)
+        {
+            Dictionary<T, int> postorder = new Dictionary<T, int>();
+            foreach (T node in new DfsIterator<T>(graph).PostOrder())
+            {
+                postorder.Add(node, graph.Nodes.Count - (postorder.Count + 1));
+            }
+            return postorder;
+        }
+
         public Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph, T entry)
         {
             Dictionary<T, int> postorder = new Dictionary<T, int>();
@@ -105,11 +115,14 @@ namespace Decompiler.Core.Lib
             return idoms[node];
         }
 
+        // Postdominators
+        // http://www.lib.ncsu.edu/theses/available/etd-05022008-163037/unrestricted/etd.pdf
+
         public Dictionary<T, T> Build(DirectedGraph<T> graph, T entryNode)
         {
             Dictionary<T, T> idoms = new Dictionary<T, T>();
             idoms[entryNode] = entryNode;
-            Dictionary<T, int> postorder = ReversePostorderNumbering(graph, entryNode);
+            Dictionary<T, int> postorder = ReversePostorderNumbering(graph);
             SortedList<int, T> nodes = new SortedList<int, T>();
             foreach (KeyValuePair<T, int> de in postorder)
             {
@@ -139,7 +152,7 @@ namespace Decompiler.Core.Lib
                     }
 
                     T oldIdom;
-                    if (!idoms.TryGetValue(b, out oldIdom) || oldIdom != newIdom)
+                    if ((!idoms.TryGetValue(b, out oldIdom) || oldIdom != newIdom) && newIdom != null)
                     {
                         idoms[b] = newIdom;
                         changed = true;

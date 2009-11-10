@@ -35,6 +35,17 @@ namespace Decompiler.Core.Lib
             this.visited = new HashSet<T>();
         }
 
+        public IEnumerable<T> PreOrder()
+        {
+            foreach (T node in graph.Nodes)
+            {
+                if (visited.Contains(node))
+                    continue;
+                foreach (T n in PreOrder(node))
+                    yield return n;
+            }
+        }
+
         public IEnumerable<T> PreOrder(T item)
         {
             Stack<IEnumerator<T>> stack = new Stack<IEnumerator<T>>();
@@ -63,6 +74,17 @@ namespace Decompiler.Core.Lib
             public T Item;
             public IEnumerator<T> Children;
             public PostOrderItem(T item, IEnumerator<T> children) { Item = item; Children = children; }
+        }
+
+        public IEnumerable<T> PostOrder()
+        {
+            foreach (T item in graph.Nodes)
+            {
+                if (visited.Contains(item))
+                    continue;
+                foreach (T node in PostOrder(item))
+                    yield return node;
+            }
         }
 
         public IEnumerable<T> PostOrder(T item)

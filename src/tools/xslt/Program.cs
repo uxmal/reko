@@ -30,8 +30,11 @@ namespace Decompiler.Tools.Xslt
 	{
 		static int Main(string[] args)
 		{
-			if (args.Length != 3)
-				Usage();
+            if (args.Length != 3)
+            {
+                Usage();
+                return 1;
+            }
 			if (!File.Exists(args[0]))
 			{
 				Console.Out.WriteLine("Transform file {0} is missing.", args[0]);

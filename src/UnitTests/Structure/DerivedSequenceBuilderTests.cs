@@ -25,9 +25,9 @@ namespace Decompiler.UnitTests.Structure
                 m.BranchIf(m.LocalBool("f"), "loop");
                 m.Return();
             });
-            Assert.AreEqual(4, proc.DerivedGraphs[0].Count);
-            Assert.AreEqual(2, proc.DerivedGraphs[1].Count);
-            Assert.AreEqual(1, proc.DerivedGraphs[2].Count);
+            Assert.AreEqual(4, proc.DerivedGraphs[0].Graph.Nodes.Count);
+            Assert.AreEqual(2, proc.DerivedGraphs[1].Graph.Nodes.Count);
+            Assert.AreEqual(1, proc.DerivedGraphs[2].Graph.Nodes.Count);
         }
 
 
@@ -37,10 +37,10 @@ namespace Decompiler.UnitTests.Structure
         {
             RunTest(new MockNestedWhileLoops());
             Dump(proc.DerivedGraphs, Console.Out);
-            Assert.AreEqual(9, proc.DerivedGraphs[0].Count);
-            Assert.AreEqual(3, proc.DerivedGraphs[1].Count);
-            Assert.AreEqual(2, proc.DerivedGraphs[2].Count);
-            Assert.AreEqual(1, proc.DerivedGraphs[3].Count);
+            Assert.AreEqual(9, proc.DerivedGraphs[0].Graph.Nodes.Count);
+            Assert.AreEqual(3, proc.DerivedGraphs[1].Graph.Nodes.Count);
+            Assert.AreEqual(2, proc.DerivedGraphs[2].Graph.Nodes.Count);
+            Assert.AreEqual(1, proc.DerivedGraphs[3].Graph.Nodes.Count);
             Interval i = proc.DerivedGraphs[1].Intervals[1];
             Assert.AreEqual(4, i.Ident());
             bool [] blocks = new bool[proc.Nodes.Count];

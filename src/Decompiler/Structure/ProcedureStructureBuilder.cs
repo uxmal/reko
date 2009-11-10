@@ -103,7 +103,7 @@ namespace Decompiler.Structure
                 nodes.Add(node);
             }
 
-            ProcedureStructure newProc = new ProcedureStructure(proc, nodes);
+            ProcedureStructure newProc = new ProcedureStructure(proc.Name, nodes);
             newProc.EntryNode = blockNodes[proc.EntryBlock];
             newProc.ExitNode = blockNodes[proc.ExitBlock];
             this.curProc = newProc;
@@ -115,45 +115,6 @@ namespace Decompiler.Structure
         public void BuildDerivedSequences(ProcedureStructure curProc)
         {
             DerivedSequenceBuilder d = new DerivedSequenceBuilder(curProc);
-        }
-
-        // Display the sequence of derived graphs for each procedure
-        public void DisplayDerivedSequences(ProcedureStructure curProc)
-        {
-            DisplayDerivedSequence(curProc);
-        }
-
-
-
-
-
-
-        //********************************************************************************
-        // Post-processing structuring routines
-        //********************************************************************************
-
-
-
-
-
-        private void DisplayDerivedSequence(ProcedureStructure proc)
-        {
-            Console.Out.WriteLine("Derived sequence intervals for procedure {0}", proc.Name);
-
-            for (int i = 0; i < proc.DerivedGraphs.Count; i++)
-            {
-                DerivedGraph curGraph = proc.DerivedGraphs[i];
-                Console.Out.WriteLine();
-                Console.Out.WriteLine("\nDerived graph #{0}:", i);
-                curGraph.Dump();
-            }
-
-            // Indicate whether or not the graph was reducible
-            if (proc.DerivedGraphs[proc.DerivedGraphs.Count - 1].Count == 1)
-                Console.Out.WriteLine("The graph is reducible.");
-            else
-                Console.Out.WriteLine("The graph is not reducible.");
-
         }
 
 
@@ -174,12 +135,12 @@ namespace Decompiler.Structure
 
             // set the reverse parenthesis for the nodes
             time = 1;
-            curProc.EntryNode.SetRevLoopStamps(ref time);
+            curProc.EntryNode.SetRevLoopStamps(ref time, new HashSet<StructureNode>());
 
             // do the ordering of nodes within the reverse graph 
             List<StructureNode> rorder = curProc.ReverseOrdering;
             Debug.Assert(curProc.ExitNode != null);
-            curProc.ExitNode.SetRevOrder(rorder);
+            curProc.ExitNode.SetRevOrder(rorder, new HashSet<StructureNode>());
         }
     }
 }

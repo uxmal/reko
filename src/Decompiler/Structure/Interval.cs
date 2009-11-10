@@ -25,6 +25,9 @@ using System.IO;
 
 namespace Decompiler.Structure
 {
+    /// <summary>
+    /// Represents an interval.
+    /// </summary>
     public class Interval : StructureNode
     {
         private List<StructureNode> nodes = new List<StructureNode>();		// nodes of the interval

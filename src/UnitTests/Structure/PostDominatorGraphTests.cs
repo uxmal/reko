@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Structure
             m.Label("join");
             m.Return();
 
-            BuildPostdominatorGraph(m);
+            FindPostDominators(m);
 
             Assert.AreEqual("l1", h.ReverseOrdering[0].ImmPDom.Block.Name);
             Assert.AreEqual("join", h.ReverseOrdering[1].ImmPDom.Block.Name);
@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Structure
             m.Label("done");
             m.Return();
 
-            BuildPostdominatorGraph(m);
+            FindPostDominators(m);
 
             Assert.AreEqual("ProcedureMock_entry PD> l1", PostDom(h.ReverseOrdering[0]));
             Assert.AreEqual("l1 PD> test", PostDom(h.ReverseOrdering[1]));
@@ -100,7 +100,7 @@ namespace Decompiler.UnitTests.Structure
             m.Label("done");
             m.Return();
 
-            BuildPostdominatorGraph(m);
+            FindPostDominators(m);
 
             Assert.AreEqual("loopHead PD> done", PostDom("loopHead"));
             Assert.AreEqual("else PD> loopHead", PostDom("else"));
@@ -122,11 +122,16 @@ namespace Decompiler.UnitTests.Structure
             m.Jump("Infinity");
             m.Return();
 
-            BuildPostdominatorGraph(m);
-
-
+            FindPostDominators(m);
         }
-        private void BuildPostdominatorGraph(ProcedureMock m)
+
+        private void FindPostDominators(ProcedureMock m)
+        {
+            PostDominatorGraph gr = BuildPostDominatorGraph(m); 
+            gr.FindImmediatePostDominators();
+        }
+
+        private PostDominatorGraph BuildPostDominatorGraph(ProcedureMock m)
         {
             m.Procedure.RenumberBlocks();
             ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);
@@ -135,8 +140,9 @@ namespace Decompiler.UnitTests.Structure
             h = graphs.CreateProcedureStructure();
             graphs.SetTimeStamps();
 
-            PostDominatorGraph gr = new PostDominatorGraph();
-            gr.FindImmediatePostDominators(h);
+            PostDominatorGraph gr = new PostDominatorGraph(h);
+
+            return gr;
         }
 
         private string PostDom(string s)
