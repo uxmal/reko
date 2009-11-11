@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Structure
 	{
 		protected Program prog;
 
-		protected void RewriteProgram(string sourceFilename, Address addrBase)
+		protected Program RewriteProgram(string sourceFilename, Address addrBase)
 		{
             AssemblerLoader ldr = new AssemblerLoader(
                 new IntelTextAssembler(),
@@ -54,10 +54,10 @@ namespace Decompiler.UnitTests.Structure
 			RewriterHost rw = new RewriterHost(prog, host, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 
-            prog.Procedures.Values[0].Write(false, Console.Out);
-
 			DataFlowAnalysis da = new DataFlowAnalysis(prog, host);
 			da.AnalyzeProgram();
+
+            return prog;
 		}
 	}
 }

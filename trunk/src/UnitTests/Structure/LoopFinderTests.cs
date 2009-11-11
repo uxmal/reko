@@ -30,7 +30,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Structure
 {
     [TestFixture]
-    public class LoopFinderTests
+    public class LoopFinderTests : StructureTestBase
     {
         private ProcedureStructure proc;
 
@@ -57,6 +57,23 @@ namespace Decompiler.UnitTests.Structure
             RunTest(new MockCaseJumpsBack());
 
         }
+
+        [Test]
+        public void Reg00013()
+        {
+            Program prog = RewriteProgram("Fragments/regressions/r00013.asm", new Address(0x800, 0));
+            ProcedureStructureBuilder psb = new ProcedureStructureBuilder(prog.Procedures.Values[0]);
+            proc = psb.Build();
+            psb.AnalyzeGraph();
+
+            LoopFinder lf = new LoopFinder(proc.Ordering[23], proc.Ordering[0], proc.Ordering);
+            HashSet<StructureNode> intervalNodes = proc.Nodes[23].Interval.FindIntervalNodes(0);
+            HashSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
+            proc.Dump();
+            Loop loop = lf.DetermineLoopType(loopNodes);
+            Assert.AreEqual("@@@", loop.GetType().Name);
+        }
+        
 
         private void RunTest(ProcedureMock m)
         {
