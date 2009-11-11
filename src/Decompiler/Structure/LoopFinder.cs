@@ -129,33 +129,22 @@ namespace Decompiler.Structure
             // otherwise it is either a pretested or endless loop
             else if (header.BlockType == bbType.cBranch)
             {
-                header.Loop = CreatePreTestedLoop(loopNodes);
-                bool WORKING = false;
-                if (WORKING)
-                {
-                    // This code fails for while_goto because the condfollow doesn't coincide with the end of the loop.
-
-                    // if the header is a two way conditional header, then it will be a pretested loop
-                    // if one of its children is its conditional follow
-                    if (header.OutEdges[0] != header.Conditional.Follow && header.OutEdges[1] != header.Conditional.Follow)
-                    {
-                        // neither children are the conditional follow
-                        header.Loop = CreateEndLessLoop(loopNodes);
-                    }
-                    else
-                        // one child is the conditional follow
-                        header.Loop = CreatePreTestedLoop(loopNodes);
-                }
+                if (loopNodes.Contains(header.OutEdges[0]) && !loopNodes.Contains(header.OutEdges[1]))
+                    header.Loop = CreatePreTestedLoop(loopNodes);
+                else if (loopNodes.Contains(header.OutEdges[1]) && !loopNodes.Contains(header.OutEdges[0]))
+                    header.Loop = CreatePreTestedLoop(loopNodes);
+                else
+                    header.Loop = CreateTestlessLoop(loopNodes);
             }
             // both the header and latch node are one way nodes so this must be an endless loop
             else
             {
-                header.Loop = CreateEndLessLoop(loopNodes);
+                header.Loop = CreateTestlessLoop(loopNodes);
             }
             return header.Loop;
         }
 
-        private TestlessLoop CreateEndLessLoop(HashSet<StructureNode> loopNodes)
+        private TestlessLoop CreateTestlessLoop(HashSet<StructureNode> loopNodes)
         {
             StructureNode follow = FindEndLessFollowNode(header, latch, loopNodes);
             TestlessLoop loop = new TestlessLoop(header, latch, loopNodes, follow);

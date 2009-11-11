@@ -440,7 +440,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\ProcedureStructureBuilder.cs" />
-    <Compile Include="Structure\ReverseStructureGraph.cs" />
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
