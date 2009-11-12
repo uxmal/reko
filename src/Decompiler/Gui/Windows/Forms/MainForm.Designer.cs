@@ -56,6 +56,10 @@ namespace Decompiler.Gui.Windows.Forms
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listBrowser = new System.Windows.Forms.ListView();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.finalPage1 = new Decompiler.Gui.Windows.Forms.FinalPage();
+            this.analyzedPage1 = new Decompiler.Gui.Windows.Forms.AnalyzedPage();
+            this.startPage = new Decompiler.Gui.Windows.Forms.StartPage();
+            this.loadedPage1 = new Decompiler.Gui.Windows.Forms.LoadedPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabDiagnostics = new System.Windows.Forms.TabPage();
             this.listDiagnostics = new System.Windows.Forms.ListView();
@@ -68,10 +72,6 @@ namespace Decompiler.Gui.Windows.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
-            this.finalPage1 = new Decompiler.Gui.Windows.Forms.FinalPage();
-            this.analyzedPage1 = new Decompiler.Gui.Windows.Forms.AnalyzedPage();
-            this.startPage = new Decompiler.Gui.Windows.Forms.StartPage();
-            this.loadedPage1 = new Decompiler.Gui.Windows.Forms.LoadedPage();
             this.statusStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -166,6 +166,40 @@ namespace Decompiler.Gui.Windows.Forms
             // 
             this.columnHeader2.Text = "Item";
             // 
+            // finalPage1
+            // 
+            this.finalPage1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.finalPage1.Location = new System.Drawing.Point(0, 0);
+            this.finalPage1.Name = "finalPage1";
+            this.finalPage1.Size = new System.Drawing.Size(552, 345);
+            this.finalPage1.TabIndex = 3;
+            // 
+            // analyzedPage1
+            // 
+            this.analyzedPage1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.analyzedPage1.Location = new System.Drawing.Point(0, 0);
+            this.analyzedPage1.Name = "analyzedPage1";
+            this.analyzedPage1.Size = new System.Drawing.Size(552, 345);
+            this.analyzedPage1.TabIndex = 2;
+            // 
+            // startPage
+            // 
+            this.startPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.startPage.IsDirty = false;
+            this.startPage.Location = new System.Drawing.Point(0, 0);
+            this.startPage.Name = "startPage";
+            this.startPage.Size = new System.Drawing.Size(552, 345);
+            this.startPage.TabIndex = 0;
+            // 
+            // loadedPage1
+            // 
+            this.loadedPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.loadedPage1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.loadedPage1.Location = new System.Drawing.Point(0, 0);
+            this.loadedPage1.Name = "loadedPage1";
+            this.loadedPage1.Size = new System.Drawing.Size(552, 345);
+            this.loadedPage1.TabIndex = 1;
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabDiagnostics);
@@ -220,7 +254,7 @@ namespace Decompiler.Gui.Windows.Forms
             this.tabFindResults.Location = new System.Drawing.Point(4, 22);
             this.tabFindResults.Name = "tabFindResults";
             this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFindResults.Size = new System.Drawing.Size(717, 107);
+            this.tabFindResults.Size = new System.Drawing.Size(717, 115);
             this.tabFindResults.TabIndex = 1;
             this.tabFindResults.Text = "Search Results";
             this.tabFindResults.UseVisualStyleBackColor = true;
@@ -232,53 +266,19 @@ namespace Decompiler.Gui.Windows.Forms
             this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listFindResults.Location = new System.Drawing.Point(3, 3);
             this.listFindResults.Name = "listFindResults";
-            this.listFindResults.Size = new System.Drawing.Size(711, 101);
+            this.listFindResults.Size = new System.Drawing.Size(711, 109);
             this.listFindResults.TabIndex = 0;
             this.listFindResults.UseCompatibleStateImageBehavior = false;
             this.listFindResults.View = System.Windows.Forms.View.Details;
             // 
             // imageList
             // 
-            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer) (resources.GetObject("imageList.ImageStream")));
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList.Images.SetKeyName(0, "Open.ico");
             this.imageList.Images.SetKeyName(1, "Save.ico");
             this.imageList.Images.SetKeyName(2, "NextPhase.ico");
             this.imageList.Images.SetKeyName(3, "FinishDecompilation.ico");
-            // 
-            // finalPage1
-            // 
-            this.finalPage1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.finalPage1.Location = new System.Drawing.Point(0, 0);
-            this.finalPage1.Name = "finalPage1";
-            this.finalPage1.Size = new System.Drawing.Size(552, 345);
-            this.finalPage1.TabIndex = 3;
-            // 
-            // analyzedPage1
-            // 
-            this.analyzedPage1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.analyzedPage1.Location = new System.Drawing.Point(0, 0);
-            this.analyzedPage1.Name = "analyzedPage1";
-            this.analyzedPage1.Size = new System.Drawing.Size(552, 345);
-            this.analyzedPage1.TabIndex = 2;
-            // 
-            // startPage
-            // 
-            this.startPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.startPage.IsDirty = false;
-            this.startPage.Location = new System.Drawing.Point(0, 0);
-            this.startPage.Name = "startPage";
-            this.startPage.Size = new System.Drawing.Size(552, 345);
-            this.startPage.TabIndex = 0;
-            // 
-            // loadedPage1
-            // 
-            this.loadedPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.loadedPage1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.loadedPage1.Location = new System.Drawing.Point(0, 0);
-            this.loadedPage1.Name = "loadedPage1";
-            this.loadedPage1.Size = new System.Drawing.Size(552, 345);
-            this.loadedPage1.TabIndex = 1;
             // 
             // MainForm
             // 
@@ -287,6 +287,7 @@ namespace Decompiler.Gui.Windows.Forms
             this.ClientSize = new System.Drawing.Size(725, 512);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Decompiler";
             this.statusStrip1.ResumeLayout(false);

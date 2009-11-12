@@ -59,12 +59,10 @@ namespace Decompiler.Loading
             Program.Platform = asm.Platform;
             EntryPoints.AddRange(asm.EntryPoints);
             EntryPoints.Add(new EntryPoint(asm.StartAddress, Program.Architecture.CreateProcessorState()));
-            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
-            {
-                Program.ImportThunks.Add(item.Key, item.Value);
-            }
+            CopyImportThunks(asm.ImportThunks, Program);
             project = new DecompilerProject();
             project.Input.BaseAddress = addrLoad;
         }
+
     }
 }

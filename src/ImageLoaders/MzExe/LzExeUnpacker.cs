@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Arch.Intel;
+using Decompiler.Environments.Msdos;
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
@@ -30,6 +31,9 @@ namespace Decompiler.ImageLoaders.MzExe
 	/// </summary>
 	public class LzExeUnpacker : ImageLoader
 	{
+        private IProcessorArchitecture arch;
+        private Platform platform;
+
 		private int lzHdrOffset;
 		private bool isLz91;
 		private ProgramImage imgLoaded;
@@ -40,6 +44,9 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public LzExeUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
 		{
+            this.arch = new IntelArchitecture(ProcessorMode.Real);
+            this.platform = new MsdosPlatform(arch);
+
 			this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
 
 			// Locate the LzExe header and verify signature.
@@ -61,6 +68,16 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new ApplicationException("Image is not an LzExe-compressed binary");
 			}
 		}
+
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        public override Platform Platform
+        {
+            get { return platform; }
+        }
 
 		// EXE header test (is it LZEXE file?) 
 

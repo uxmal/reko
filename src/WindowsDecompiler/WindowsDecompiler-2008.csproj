@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -98,13 +98,13 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{B9AF7BF2-A947-458C-A905-44E8C4E55C62}</Project>
-      <Name>Core</Name>
+    <ProjectReference Include="..\Core\Core2008.csproj">
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
+      <Name>Core2008</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Decompiler\Decompiler.csproj">
-      <Project>{7A9440A2-7692-4F74-BFFE-23741DE81C61}</Project>
-      <Name>Decompiler</Name>
+    <ProjectReference Include="..\Decompiler\Decompiler2008.csproj">
+      <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
+      <Name>Decompiler2008</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
