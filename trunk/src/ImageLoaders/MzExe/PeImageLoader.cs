@@ -20,6 +20,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Environments.Win32;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -28,7 +29,10 @@ namespace Decompiler.ImageLoaders.MzExe
 {
 	public class PeImageLoader : ImageLoader
 	{
-		private Program prog;
+        private IProcessorArchitecture arch;
+        private Platform platform;
+        private Dictionary<uint, PseudoProcedure> importThunks;
+
 		private short optionalHeaderSize;
 		private int sections;
 		private uint sectionOffset;
@@ -48,7 +52,6 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public PeImageLoader(byte [] img, uint peOffset) : base(img)
 		{
-			this.prog = prog;
 			ImageReader rdr = new ImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
 				rdr.ReadByte() != 'E' ||
@@ -60,6 +63,16 @@ namespace Decompiler.ImageLoaders.MzExe
 			ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr);
 		}
+
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        public override Platform Platform
+        {
+            get { return platform; }
+        }
 
 		private void AddExportedEntryPoints(Address addrLoad, ImageMap imageMap, List<EntryPoint> entryPoints)
 		{
@@ -96,7 +109,7 @@ namespace Decompiler.ImageLoaders.MzExe
             for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
                 ;
             char[] chars = Encoding.ASCII.GetChars(imgLoaded.Bytes, iNameMin, j - iNameMin);
-            EntryPoint ep = new EntryPoint(addrLoad + addr, new string(chars), prog.Architecture.CreateProcessorState());
+            EntryPoint ep = new EntryPoint(addrLoad + addr, new string(chars), arch.CreateProcessorState());
             return ep;
         }
 
@@ -172,8 +185,8 @@ namespace Decompiler.ImageLoaders.MzExe
 			// Read COFF header.
 
 			short machine = rdr.ReadLeInt16();
-			prog.Architecture = CreateArchitecture(machine);
-			prog.Platform = new Win32Platform(prog.Architecture);
+			arch = CreateArchitecture(machine);
+			platform = new Win32Platform(arch);
 
 			sections = rdr.ReadLeInt16();
 			sectionMap = new SortedDictionary<string, Section>();
@@ -317,9 +330,17 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 		}
 
+        public override Dictionary<uint, PseudoProcedure> ImportThunks
+        {
+            get
+            {
+                return importThunks;
+            }
+        }
+
 		public string ImportFileLocation(string dllName)
 		{
-			string assemblyDir = System.IO.Path.GetDirectoryName(GetType().Assembly.Location);
+			string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);
 			return System.IO.Path.Combine(assemblyDir, System.IO.Path.ChangeExtension(dllName, ".xml"));
 		}
 
@@ -348,11 +369,12 @@ namespace Decompiler.ImageLoaders.MzExe
 			id.DllName = ReadAsciiString(rdr.ReadLeUint32(), 0);		// DLL name
 			id.RvaThunks = rdr.ReadLeUint32();		// first thunk
 
-			SignatureLibrary lib = new SignatureLibrary(prog.Architecture);
+			SignatureLibrary lib = new SignatureLibrary(arch);
 			
 			lib.Load(ImportFileLocation(id.DllName));
 			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
 			ImageReader rdrThunks  = imgLoaded.CreateReader(id.RvaThunks);
+            importThunks = new Dictionary<uint, PseudoProcedure>();
 			for (;;)
 			{
 				Address addrThunk = imgLoaded.BaseAddress + rdrThunks.Offset;
@@ -362,7 +384,7 @@ namespace Decompiler.ImageLoaders.MzExe
 					break;
 			
 				string fnName = ReadAsciiString(rvaEntry + 2, 0);
-				prog.ImportThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, lib.Lookup(fnName)));
+				importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, lib.Lookup(fnName)));
 			}
 			return id;
 		}
@@ -443,5 +465,6 @@ namespace Decompiler.ImageLoaders.MzExe
 				get { return (Flags & SectionFlagsDiscardable) != 0; }
 			}
 		}
-	}
+
+    }
 }

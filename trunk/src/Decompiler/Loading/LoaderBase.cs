@@ -38,6 +38,7 @@ namespace Decompiler.Loading
 			this.entryPoints = new List<EntryPoint>();
 		}
 
+
         public List<EntryPoint> EntryPoints
         {
             get { return entryPoints; }
@@ -48,6 +49,17 @@ namespace Decompiler.Loading
         public abstract DecompilerProject Project { get; }
 
         public abstract Program Program { get; }
+
+        protected void CopyImportThunks(Dictionary<uint, PseudoProcedure> importThunks, Program prog)
+        {
+            if (importThunks == null)
+                return;
+
+            foreach (KeyValuePair<uint, PseudoProcedure> item in importThunks)
+            {
+                prog.ImportThunks.Add(item.Key, item.Value);
+            }
+        }
 
         protected void SetDefaultFilenames(string inputFilename, DecompilerProject project)
         {

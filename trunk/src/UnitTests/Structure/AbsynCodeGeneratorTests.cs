@@ -439,7 +439,12 @@ namespace Decompiler.UnitTests.Structure
         public void InfiniteLoop()
         {
             CompileTest(new MockInfiniteLoop());
-            RunTest("@@@");
+            RunTest(
+                "MockInfiniteLoop()" + nl +
+                "{" + nl +
+                "	while (true)" + nl +
+                "		DispatchEvents();" + nl +
+                "}" + nl);             
         }
 
         private void CompileTest(Action<ProcedureMock> gen)

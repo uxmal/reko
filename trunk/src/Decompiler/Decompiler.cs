@@ -53,14 +53,6 @@ namespace Decompiler
             this.host = host;
         }
 
-        [Obsolete]
-        public DecompilerDriver(LoaderBase ldr, Program prog, DecompilerHost host)
-        {
-            this.loader = ldr;
-            this.prog = prog;
-            this.host = host;
-        }
-
 		///<summary>
         /// Determines the signature of the procedures,
 		/// the locations and types of all the values in the program.

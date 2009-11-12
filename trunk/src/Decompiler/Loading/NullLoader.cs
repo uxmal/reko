@@ -32,6 +32,11 @@ namespace Decompiler.Loading
             this.imageBytes = image;
         }
 
+        public override IProcessorArchitecture Architecture
+        {
+            get { return null; }
+        }
+
         public override ProgramImage Load(Address addrLoad)
         {
             return new ProgramImage(addrLoad, imageBytes);
@@ -42,6 +47,10 @@ namespace Decompiler.Loading
             return new ProgramImage(PreferredBaseAddress, imageBytes);
         }
 
+        public override Platform Platform
+        {
+            get { return null; }
+        }
         public override Address PreferredBaseAddress
         {
             get { return new Address(0); }

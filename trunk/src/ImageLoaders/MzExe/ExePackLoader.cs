@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Arch.Intel;
+using Decompiler.Environments.Msdos;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
@@ -30,6 +31,9 @@ namespace Decompiler.ImageLoaders.MzExe
 	/// </summary>
 	public class ExePackLoader : ImageLoader
 	{
+        private IProcessorArchitecture arch;
+        private Platform platform;
+
 		private uint exeHdrSize;
 		private uint hdrOffset;
 
@@ -56,7 +60,17 @@ namespace Decompiler.ImageLoaders.MzExe
 			this.cpUncompressed = rdr.ReadLeUint16();
 		}
 
-		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
+        public override IProcessorArchitecture Architecture
+        {
+            get { return new IntelArchitecture(ProcessorMode.Real); }
+        }
+
+        public override Platform Platform
+        {
+            get { return platform; }
+        }
+
+        static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
 		{
 			int offset = (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
 			return ProgramImage.CompareArrays(rawImg, offset, signature, signature.Length);

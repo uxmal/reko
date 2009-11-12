@@ -85,5 +85,6 @@ namespace Decompiler.Gui.Windows.Forms
         }
 
         #endregion
+
     }
 }

@@ -34,7 +34,14 @@ namespace Decompiler.Core
 			this.imgRaw = imgRaw;
 		}
 
-		/// <summary>
+        public abstract IProcessorArchitecture Architecture { get; }
+
+        public virtual Dictionary<uint, PseudoProcedure> ImportThunks
+        {
+            get { return null; }
+        }
+
+        /// <summary>
 		/// Loads the image into memory starting at the specified address
 		/// </summary>
 		/// <param name="addrLoad">Base address of program image</param>
@@ -42,6 +49,8 @@ namespace Decompiler.Core
         public abstract ProgramImage Load(Address addrLoad);
 
         public abstract ProgramImage LoadAtPreferredAddress();
+
+        public abstract Platform Platform { get; }
 
 		public abstract Address PreferredBaseAddress
 		{
@@ -60,5 +69,5 @@ namespace Decompiler.Core
 		/// <param name="entryPoints">Collection into which any found entry points found should be added.</param>
 		public abstract void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations);
 
-	}
+    }
 }

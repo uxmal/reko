@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Arch.Intel;
+using Decompiler.Environments.Msdos;
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
@@ -28,13 +29,28 @@ namespace Decompiler.ImageLoaders.MzExe
 	/// </summary>
 	public class MsdosImageLoader : ImageLoader
 	{
+        private IProcessorArchitecture arch;
+        private Platform platform;
 		private ExeImageLoader exe;
 		private ProgramImage imgLoaded;
+
 
 		public MsdosImageLoader(ExeImageLoader exe) : base(exe.RawImage)
 		{
 			this.exe = exe;
+            this.arch = new IntelArchitecture(ProcessorMode.Real);
+            this.platform = new MsdosPlatform(arch);
 		}
+
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        public override Platform Platform
+        {
+            get { return platform; }
+        }
 
 		public override Address PreferredBaseAddress
 		{

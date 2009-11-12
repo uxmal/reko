@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Arch.Intel;
+using Decompiler.Environments.Msdos;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
@@ -30,6 +31,9 @@ namespace Decompiler.ImageLoaders.MzExe
 	/// </summary>
 	public class PkLiteUnpacker : ImageLoader
 	{
+        private IntelArchitecture arch;
+        private Platform platform;
+
 		private byte [] abU;
 		private ProgramImage imgU;
 		private ushort pklCs;
@@ -41,6 +45,9 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public PkLiteUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
 		{
+            arch = new IntelArchitecture(ProcessorMode.Real);
+            platform = new MsdosPlatform(arch);
+
 			int pkLiteHdrOffset = exe.e_cparHeader * 0x10;
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
@@ -53,6 +60,16 @@ namespace Decompiler.ImageLoaders.MzExe
 			int offCompressedData = pkLiteHdrOffset + RawImage[pkLiteHdrOffset + 0x04E] * 0x10 - PspSize;
 			bitStm = new BitStream(RawImage, offCompressedData);
 		}
+
+        public override IProcessorArchitecture Architecture
+        {
+            get { return arch; }
+        }
+
+        public override Platform Platform
+        {
+            get { return platform; }
+        }
 
 		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
 		{
