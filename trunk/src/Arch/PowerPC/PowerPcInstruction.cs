@@ -23,7 +23,7 @@ using System.Text;
 
 namespace Decompiler.Arch.PowerPC
 {
-    public class PowerPcInstruction
+    public class PowerPcInstruction : MachineInstruction
     {
         private Opcode opcode;
         private MachineOperand op1;
@@ -86,6 +86,16 @@ namespace Decompiler.Arch.PowerPC
                 }
             }
             return sb.ToString();
+        }
+
+        public override uint DefCc()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override uint UseCc()
+        {
+            throw new NotImplementedException();
         }
     }
 

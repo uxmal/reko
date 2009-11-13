@@ -147,6 +147,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_82C31595251F418B9987C35BD55BDD2D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8DDEA38E32E2CAE98916CBE189BB01C9"
         "OwnerKey" = "8:_97895F7211CC4B9DA509664D620534C3"
         "MsmSig" = "8:_UNDEFINED"
@@ -184,13 +190,7 @@
         "Entry"
         {
         "MsmKey" = "8:_F8C25B1509373026DF045E38BAC78727"
-        "OwnerKey" = "8:_5DADA88A7DDD4ECEE88ABEFB7A689E89"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F8C25B1509373026DF045E38BAC78727"
-        "OwnerKey" = "8:_092DA91F0DD44B73BB8AD49816E57BFA"
+        "OwnerKey" = "8:_CC62FE8A932F4BE1BE08F4776D942538"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -203,12 +203,6 @@
         {
         "MsmKey" = "8:_F8C25B1509373026DF045E38BAC78727"
         "OwnerKey" = "8:_8DDEA38E32E2CAE98916CBE189BB01C9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F8C25B1509373026DF045E38BAC78727"
-        "OwnerKey" = "8:_CC62FE8A932F4BE1BE08F4776D942538"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -239,6 +233,18 @@
         {
         "MsmKey" = "8:_F8C25B1509373026DF045E38BAC78727"
         "OwnerKey" = "8:_1F8685324EAB433C9923CBE134D4E10D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F8C25B1509373026DF045E38BAC78727"
+        "OwnerKey" = "8:_5DADA88A7DDD4ECEE88ABEFB7A689E89"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F8C25B1509373026DF045E38BAC78727"
+        "OwnerKey" = "8:_092DA91F0DD44B73BB8AD49816E57BFA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -268,13 +274,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_092DA91F0DD44B73BB8AD49816E57BFA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5DADA88A7DDD4ECEE88ABEFB7A689E89"
+        "OwnerKey" = "8:_CC62FE8A932F4BE1BE08F4776D942538"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -287,12 +287,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_8DDEA38E32E2CAE98916CBE189BB01C9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CC62FE8A932F4BE1BE08F4776D942538"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -323,6 +317,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_44A40DF1BB01F2D225C8CF3E5E5E04A5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_092DA91F0DD44B73BB8AD49816E57BFA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5DADA88A7DDD4ECEE88ABEFB7A689E89"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -489,7 +495,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.Win32, Version=0.1.3603.1843, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.Win32, Version=0.1.3603.19322, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_44A40DF1BB01F2D225C8CF3E5E5E04A5"
@@ -520,7 +526,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Arch.Intel, Version=0.1.3603.1842, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Arch.Intel, Version=0.1.3603.19322, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_51D1372F3209AD9429019B40609533BA"
@@ -551,7 +557,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.Msdos, Version=0.1.3603.1842, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.Msdos, Version=0.1.3603.19322, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_552E10CACC5923B2D794D696FCC87863"
@@ -602,7 +608,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler, Version=0.1.3603.2149, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler, Version=0.1.3603.20709, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5DADA88A7DDD4ECEE88ABEFB7A689E89"
@@ -673,6 +679,26 @@
             {
             "SourcePath" = "8:..\\Environments\\Win32\\advapi32.xml"
             "TargetName" = "8:advapi32.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_AD756F3B1B5443EDBD23314A24B4FC1C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_82C31595251F418B9987C35BD55BDD2D"
+            {
+            "SourcePath" = "8:..\\WindowsDecompiler\\App.ico"
+            "TargetName" = "8:App.ico"
             "Tag" = "8:"
             "Folder" = "8:_AD756F3B1B5443EDBD23314A24B4FC1C"
             "Condition" = "8:"
@@ -764,7 +790,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Core, Version=0.1.3603.1841, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Core, Version=0.1.3603.19321, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_F8C25B1509373026DF045E38BAC78727"
@@ -848,7 +874,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Decompiler"
         "ProductCode" = "8:{EBFE5795-EE4F-43C0-A494-4AF204E59FF0}"
-        "PackageCode" = "8:{42DD8EF5-D0FE-4500-8B77-7BBA53BB1B8A}"
+        "PackageCode" = "8:{79775C16-E617-48AB-B94C-DEEFD145A50C}"
         "UpgradeCode" = "8:{267A75B3-F33E-4987-9BF6-114D1A6CE44E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
@@ -864,7 +890,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Decompiler for Windows"
         "ARPURLINFOABOUT" = "8:https://sourceforge.net/projects/decompiler/"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_82C31595251F418B9987C35BD55BDD2D"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"

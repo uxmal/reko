@@ -18,7 +18,7 @@
 
 using Decompiler.Core.Code;
 using System;
-
+using System.Collections.Generic;
 namespace Decompiler.Core
 {
 	/// <summary>
@@ -27,10 +27,12 @@ namespace Decompiler.Core
 	public abstract class Rewriter
 	{
         private IProcessorArchitecture arch;
+        private IProcedureRewriter prw;
 
-        public Rewriter(IProcessorArchitecture arch)
+        public Rewriter(IProcessorArchitecture arch, IProcedureRewriter prw)
         {
             this.arch = arch;
+            this.prw = prw;
         }
 
         public IProcessorArchitecture Architecture
@@ -38,8 +40,17 @@ namespace Decompiler.Core
             get { return arch; }
         }
 
+        public IProcedureRewriter ProcedureRewriter
+        {
+            get { return prw; }
+        }
+
+        public abstract void ConvertInstructions(MachineInstruction [] instrs, Address [] addrs, uint [] deadOutFlags,  Address addrEnd, CodeEmitter emitter);
+
 		public abstract void EmitCallAndReturn(Procedure callee);
 
-		public abstract void RewriteInstructions(Address addr, int length, Block block);
-	}
+        public virtual void RewriteInstructions(Address addr, int length, Block block)
+        { 
+        }
+    }
 }

@@ -55,6 +55,8 @@ namespace Decompiler.Core
 
         public static bool CompareArrays(byte[] src, int iSrc, byte[] dst, int cb)
         {
+            if (iSrc + cb > src.Length)
+                return false;
             int iDst = 0;
             while (cb != 0)
             {
@@ -239,6 +241,15 @@ namespace Decompiler.Core
 			return w;
 		}
 
+
+
+        internal static ushort ReadBeUint16(byte[] img, int offset)
+        {
+            ushort w = (ushort) (img[offset] << 8 | img[offset + 1]);
+            return w;
+        }
+
+
 		public RelocationDictionary Relocations
 		{
 			get { return relocations; }
@@ -265,7 +276,6 @@ namespace Decompiler.Core
             abImage[offset + 2] = (byte) (dw >> 16);
             abImage[offset + 3] = (byte) (dw >> 24);
         }
-
 
     }
 }

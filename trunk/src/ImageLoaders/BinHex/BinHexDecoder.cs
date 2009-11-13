@@ -1,21 +1,32 @@
+/* 
+ * Copyright (C) 1999-2009 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Decompiler.ImageLoaders.BinHex
+namespace Decompiler.ImageLoaders. BinHex
 {
+    // Classic Mac resource header format http://developer.apple.com/legacy/mac/library/documentation/mac/MoreToolbox/MoreToolbox-99.html
     public class BinHexDecoder
     {
         private TextReader input;
-        // '!', '"', '#', '$', '%', '&', '\'', '(',  
-        // ')', '*', '+', ',', '-', '0', '1', '2', 
-        // '3', '4', '5', '6', '8', '9', '@', 'A', 
-        // 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 
-        // 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R',
-        // 'S', 'T', 'U', 'V', 'X', 'Y', 'Z', '[', 
-        // '`', 'a', 'b', 'c', 'd', 'e', 'f', 'h',
-        // 'i', 'j', 'k', 'l', 'm', 'p', 'q', 'r' 
         private readonly sbyte [] mpchartobits = new sbyte[] 
         {
             -1, -1, -1, -1, -1, -1, -1, -1,  -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -28,24 +39,58 @@ namespace Decompiler.ImageLoaders.BinHex
             61, 62, 63, -1, -1, -1, -1, -1,  -1, -1, -1, -1, -1, -1, -1, -1, 
         };
 
-        private const string binhex4header = "(This file must be converted with BinHex 4.0)";
+        public const string binhex4header = "(This file must be converted with BinHex 4.0)";
 
         public BinHexDecoder(TextReader input)
         {
             this.input = input;
             FindBinhexHeader();
+            EatNewline();
             EatColon();
+        }
+
+        private void EatNewline()
+        {
+            while (input.Peek() >= 0)
+            {
+                char ch = (char)input.Peek();
+                if (ch != '\r' && ch != '\n')
+                    return;
+                input.Read();
+            }
         }
 
         public IEnumerable<byte> GetBytes()
         {
-            foreach (byte b in GetUnexpandedBytes())
+            int lastByte = -1;
+            IEnumerator<byte> unexpanded = GetUnexpandedBytes().GetEnumerator();
+            while (unexpanded.MoveNext())
             {
+                byte b = unexpanded.Current;
+                if (b == 0x90 && lastByte != -1)
+                {
+                    if (unexpanded.MoveNext())
+                    {
+                        int count = unexpanded.Current;
+                        if (count > 0)
+                        {
+                            for (int i = 0; i < count-1; ++i)
+                            {
+                                yield return (byte)lastByte;
+                            }
+                            lastByte = -1;
+                            continue;
+                        }
+                        else
+                            b = 0x90;
+                    }
+                }
                 yield return b;
+                lastByte = b;
             }
         }
 
-        private IEnumerable<byte> GetUnexpandedBytes()
+        protected virtual IEnumerable<byte> GetUnexpandedBytes()
         {
             byte[] buf = new byte[6];
             byte bits;
@@ -98,7 +143,12 @@ namespace Decompiler.ImageLoaders.BinHex
                 if (ch == -1)
                     return -1;
                 if (ch < mpchartobits.Length)
-                    return mpchartobits[ch];
+                {
+                    sbyte sb = mpchartobits[ch];
+                    if (sb < 0)
+                        continue;
+                        return sb;
+                }
             }
         }
 
@@ -109,7 +159,8 @@ namespace Decompiler.ImageLoaders.BinHex
 
         private void Expect(char ch)
         {
-            if (input.Read() != ch)
+            int c = input.Read();
+            if (c != ch)
                 throw new FormatException(string.Format("Expected '{0}'.", (char) ch));
         }
 

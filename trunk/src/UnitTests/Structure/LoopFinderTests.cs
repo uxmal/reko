@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Structure
             HashSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
             proc.Dump();
             Loop loop = lf.DetermineLoopType(loopNodes);
-            Assert.AreEqual("@@@", loop.GetType().Name);
+            Assert.IsTrue(loop is TestlessLoop);
         }
         
 

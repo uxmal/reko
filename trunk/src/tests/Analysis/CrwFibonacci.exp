@@ -33,7 +33,6 @@ l10000011:		// block 2, pred: 1
 	dwLoc10 = eax
 	eax = fn10000000(dwLoc10)
 	esi = esi - 0x00000001
-	SZO = cond(esi)
 	dwLoc14 = esi
 	edi = eax
 	eax = fn10000000(dwLoc14)

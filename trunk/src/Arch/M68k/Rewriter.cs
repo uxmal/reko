@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,19 +16,33 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.Arch.M68k
 {
-    /// <summary>
-    /// Abstract base class for low-level machine instructions.
-    /// </summary>
-    public abstract class MachineInstruction
+    public class Rewriter : Decompiler.Core.Rewriter
     {
-        public abstract uint DefCc();
+        public Rewriter(M68kArchitecture arch, IProcedureRewriter prw)
+            : base(arch, prw)
+        {
+        }
 
-        public abstract uint UseCc();
+        public override void EmitCallAndReturn(Procedure callee)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RewriteInstructions(Address addr, int length, Block block)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitter emitter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

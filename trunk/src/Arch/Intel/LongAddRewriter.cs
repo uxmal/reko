@@ -66,7 +66,7 @@ namespace Decompiler.Arch.Intel
 			{
 				if (instrs[i].code == next)
 					return i;
-				if ((instrs[i].DefCc() & FlagM.CF) != 0)
+				if ((instrs[i].DefCc() & (uint) FlagM.CF) != 0)
 					break;
 			}
 			return -1;

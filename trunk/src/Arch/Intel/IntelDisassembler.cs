@@ -443,7 +443,7 @@ namespace Decompiler.Arch.Intel
 			return dataWidth;
 		}
 
-		public override object DisassembleInstruction()
+		public override MachineInstruction DisassembleInstruction()
 		{
 			return Disassemble();
 		}

@@ -25,6 +25,7 @@ using System;
 
 namespace Decompiler.UnitTests.Arch.Intel
 {
+#if BORKED      //$ Move to Decompiler.UnitTests.Scanning.Rewriter
 	[TestFixture]
 	public class DeadConditionFlagsFinderTests
 	{
@@ -70,4 +71,5 @@ namespace Decompiler.UnitTests.Arch.Intel
 			Assert.AreEqual(0, (int) deadOut[2], "Item 2");
 		}
 	}
+#endif
 }

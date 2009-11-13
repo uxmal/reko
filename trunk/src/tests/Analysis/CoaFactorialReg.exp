@@ -22,7 +22,7 @@ Mem0: Mem0:Global memory
 fp: fp:Temporary
 si: si:Register si
 wLoc04: wLoc04:Local -0004
-cx: cx:Register cx, def: {def cx}, uses: {branch cx <= 0x0001 l0C00_001C}{ax_20 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}{ax_20 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}
+cx: cx:Register cx, def: {def cx}, uses: {branch cx <= 0x0001 l0C00_001C}{ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}{ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}
 SCZO: SCZO:Flags
 SZO: SZO:Flags
 ax: ax:Register ax
@@ -31,24 +31,23 @@ dx_ax: dx_ax:Sequence dx:ax
 wLoc04_10: orig: wLoc04
 SCZO_11: orig: SCZO
 SZO_12: orig: SZO
-ax_13: orig: ax, def: {ax_13 = 0x0001}, uses: {ax_26 = PHI(ax_20, ax_13)}
+ax_13: orig: ax, def: {ax_13 = 0x0001}, uses: {ax_25 = PHI(ax_19, ax_13)}
 dx_ax_14: orig: dx_ax
 si_15: orig: si
 cx_16: orig: cx
-SZO_17: orig: SZO
-ax_18: orig: ax
-dx_ax_19: orig: dx_ax, uses: {ax_20 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}
-ax_20: orig: ax, def: {ax_20 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}, uses: {ax_26 = PHI(ax_20, ax_13)}
-dx_21: orig: dx
-SCZO_22: orig: SCZO
-SZO_23: orig: SZO
-dx_ax_24: orig: dx_ax
-dx_25: orig: dx
-ax_26: orig: ax, def: {ax_26 = PHI(ax_20, ax_13)}, uses: {return ax_26}
-SZO_27: orig: SZO
-SCZO_28: orig: SCZO
-cx_29: orig: cx
-si_30: orig: si
+ax_17: orig: ax
+dx_ax_18: orig: dx_ax, uses: {ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}
+ax_19: orig: ax, def: {ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}, uses: {ax_25 = PHI(ax_19, ax_13)}
+dx_20: orig: dx
+SCZO_21: orig: SCZO
+SZO_22: orig: SZO
+dx_ax_23: orig: dx_ax
+dx_24: orig: dx
+ax_25: orig: ax, def: {ax_25 = PHI(ax_19, ax_13)}, uses: {return ax_25}
+SZO_26: orig: SZO
+SCZO_27: orig: SCZO
+cx_28: orig: cx
+si_29: orig: si
 // fn0C00_000B
 word16 fn0C00_000B(word16 cx)
 fn0C00_000B_entry:		// block 0, pred:
@@ -61,11 +60,11 @@ l0C00_001C:		// block 2, pred: 1
 	ax_13 = 0x0001
 	// succ:  4
 l0C00_0011:		// block 3, pred: 1
-	ax_20 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+	ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
 	// succ:  4
 l0C00_001F:		// block 4, pred: 3 2
-	ax_26 = PHI(ax_20, ax_13)
-	return ax_26
+	ax_25 = PHI(ax_19, ax_13)
+	return ax_25
 	// succ:  5
 fn0C00_000B_exit:		// block 5, pred: 4
 	// succ: 

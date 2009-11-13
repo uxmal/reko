@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler-2008", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinHex2008", "ImageLoaders\BinHex\BinHex2008.csproj", "{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M68k-2008", "Arch\M68k\M68k-2008.csproj", "{38A94634-B2B2-4A89-AF02-2A2898B93343}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -175,6 +177,16 @@ Global
 		{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Release|.NET.ActiveCfg = Release|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{38A94634-B2B2-4A89-AF02-2A2898B93343}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

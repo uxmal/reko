@@ -179,7 +179,8 @@ namespace Decompiler.UnitTests.Analysis
 		public void PropagateToProcedureSummary()
 		{
             Procedure proc = new Procedure("proc", prog.Architecture.CreateFrame());
-			Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
+            prog.CallGraph.AddProcedure(proc);
+            Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
 			Identifier ebx = proc.Frame.EnsureRegister(Registers.ebx);
 			Identifier ecx = proc.Frame.EnsureRegister(Registers.ecx);
 			Identifier esi = proc.Frame.EnsureRegister(Registers.esi);
@@ -199,6 +200,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void PropagateFlagsToProcedureSummary()
 		{
             Procedure proc = new Procedure("proc", prog.Architecture.CreateFrame());
+            prog.CallGraph.AddProcedure(proc);
 			MachineFlags flags = prog.Architecture.GetFlagGroup("SZ");
 			Identifier sz = m.Frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
 			ProgramDataFlow flow = new ProgramDataFlow();
@@ -224,6 +226,7 @@ namespace Decompiler.UnitTests.Analysis
 			Procedure proc = m.Procedure;
 			proc.RenumberBlocks();
 			prog.Procedures.Add(new Address(0x10000),  proc);
+            prog.CallGraph.AddProcedure(proc);
 			ProgramDataFlow flow = new ProgramDataFlow(prog);
 			trf = new TrashedRegisterFinder(prog, flow);
 			trf.Compute();

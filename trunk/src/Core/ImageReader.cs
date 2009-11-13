@@ -144,5 +144,12 @@ namespace Decompiler.Core
             off += 4;
             return u;
         }
+
+        public ushort ReadBeUint16()
+        {
+            ushort u = ProgramImage.ReadBeUint16(img, off);
+            off += 2;
+            return u;
+        }
     }
 }
