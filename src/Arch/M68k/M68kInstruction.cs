@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,27 +17,38 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Decompiler.Arch.M68k
 {
-    public class Pdp11Rewriter : Rewriter
+    public class M68kInstruction : MachineInstruction
     {
-        public Pdp11Rewriter(Pdp11Architecture arch, IProcedureRewriter prw)
-            : base(arch, prw)
-        {
-        }
+        public Opcode code;
+        public PrimitiveType dataWidth;
+        public MachineOperand op1;
+        public MachineOperand op2;
+        public MachineOperand op3;
 
-        public override void EmitCallAndReturn(Procedure callee)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
 
-        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitter emitter)
+        public override uint DefCc()
         {
             throw new NotImplementedException();
+        }
+
+        public override uint UseCc()
+        {
+            return 0;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            InstructionFormatter fmt = new InstructionFormatter(sb);
+            fmt.Write(this);
+            return sb.ToString();
         }
     }
 }

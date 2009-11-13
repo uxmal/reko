@@ -87,9 +87,9 @@ namespace Decompiler.Arch.PowerPC
 
         #region IProcessorArchitecture Members
 
-        public Disassembler CreateDisassembler(ProgramImage img, Address addr)
+        public Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new PowerPcDisassembler(this, img.CreateReader(addr), WordWidth);
+            return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
         public Dumper CreateDumper()

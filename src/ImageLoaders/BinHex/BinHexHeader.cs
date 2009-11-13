@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,20 +17,20 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.ImageLoaders.BinHex
 {
-	public abstract class Disassembler
-	{
-		public Disassembler()
-		{
-		}
+    public class BinHexHeader
+    {
+        public string FileName;
+        public string FileType;
+        public string FileCreator;
+        public ushort Flags;
+        public int DataForkLength;
+        public int ResourceForkLength;
+        public ushort HeaderCRC;
 
-		public abstract Address Address
-		{
-			get; 
-		}
-
-		public abstract MachineInstruction DisassembleInstruction();
-	}
+    }
 }

@@ -90,7 +90,7 @@ namespace Decompiler.Scanning
                     blocksVisited.Add(addr, block);
                     proc.AddEdge(pred, block);
 
-                    rewriter.RewriteInstructions(addr, raw.Size, block);
+                    RewriteInstructions(addr, raw.Size, block);
 
                     if (IsBlockFallThrough(block))
                     {
@@ -104,6 +104,48 @@ namespace Decompiler.Scanning
             proc.AddEdge(pred, block);
             return block;
         }
+
+        public void RewriteInstructions(Address addrStart, int length, Block block)
+        {
+            Address addrEnd = addrStart + length;
+
+            List<MachineInstruction> instrs = new List<MachineInstruction>();
+            List<Address> addrs = new List<Address>();
+            DisassembleInstructions(addrStart, addrEnd, instrs, addrs);
+
+            uint[] deadOutFlags = DeadOutFlags(instrs);
+
+            rewriter.ConvertInstructions(instrs.ToArray(), addrs.ToArray(), deadOutFlags, addrEnd, CreateEmitter(block));
+        }
+
+        protected virtual void DisassembleInstructions(
+            Address addrStart,
+            Address addrEnd,
+            List<MachineInstruction> instrs,
+            List<Address> addrs)
+        {
+            Disassembler dasm = rewriter.Architecture.CreateDisassembler(host.CreateImageReader(addrStart));
+            while (dasm.Address < addrEnd)
+            {
+                addrs.Add(dasm.Address);
+                instrs.Add(dasm.DisassembleInstruction());
+            }
+        }
+
+        private uint[] DeadOutFlags(IList<MachineInstruction> instrs)
+        {
+            uint[] deadOutflags = new uint[instrs.Count];
+            uint grfDeadIn = 0;
+            for (int i = instrs.Count - 1; i > 0; )
+            {
+                grfDeadIn |= instrs[i].DefCc();
+                grfDeadIn &= ~instrs[i].UseCc();
+
+                deadOutflags[--i] = grfDeadIn;
+            }
+            return deadOutflags;
+        }
+
 
         public Rewriter Rewriter
         {

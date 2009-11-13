@@ -71,6 +71,7 @@ namespace Decompiler.UnitTests.Analysis
 			ProgramMock m = new ProgramMock();
 			m.Add(mock);
 			Program prog = m.BuildProgram();
+            prog.CallGraph.AddProcedure(mock.Procedure);
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
 			dfa.UntangleProcedures();
 			return prog;

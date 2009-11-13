@@ -237,9 +237,9 @@ namespace Decompiler.Arch.Intel
 			return new IntelCodeWalker(this, platform, new IntelDisassembler(img.CreateReader(addr), this.WordWidth), (IntelState) st, list);
 		}
 
-		public virtual Disassembler CreateDisassembler(ProgramImage img, Address addr)
+		public virtual Disassembler CreateDisassembler(ImageReader imageReader)
 		{
-			return new IntelDisassembler(img.CreateReader(addr), WordWidth);
+			return new IntelDisassembler(imageReader, WordWidth);
 		}
 
 		public virtual Dumper CreateDumper()

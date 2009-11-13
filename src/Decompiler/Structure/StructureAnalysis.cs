@@ -223,8 +223,6 @@ namespace Decompiler.Structure
 
         private void StructLoops(ProcedureStructure curProc)
         {
-            curProc.Write(Console.Out);
-
             for (int gLevel = 0; gLevel < curProc.DerivedGraphs.Count; ++gLevel)
             {
                 Console.Out.WriteLine("= Graph level {0} ===", gLevel);

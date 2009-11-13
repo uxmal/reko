@@ -292,14 +292,15 @@ namespace Decompiler.UnitTests.Arch.Intel
         public class TestRewriter : IntelRewriter
         {
             private FakeRewriterHost host;
-            private IntelInstruction[] testInstrs;
             private Block block;
+            private CodeEmitter emitter;
 
             public TestRewriter(IProcedureRewriter prw, Procedure proc, FakeRewriterHost host, IntelArchitecture arch, RewriterState state)
                 : base(prw, proc, host, arch, state)
             {
                 this.host = host;
                 block = proc.AddBlock(new Address(0x0C00, 0x0030).ToString());
+                emitter = prw.CreateEmitter(block);
             }
 
             public Block Block
@@ -309,18 +310,13 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             public void ConvertInstructions(params IntelInstruction[] instrs)
             {
-                this.testInstrs = instrs;
-                base.RewriteInstructions(new Address(0x0C00, 0x0100), 42, block);
-            }
-
-            protected override void DisassembleInstructions(Address addrStart, List<IntelInstruction> instrs, List<Address> addrs)
-            {
-                for (int i = 0; i < this.testInstrs.Length; ++i)
+                Address addrStart = new Address(0x0C00, 0x0100);
+                List<Address> addrs = new List<Address>();
+                for (int i = 0; i < instrs.Length; i++)
                 {
-                    instrs.Add(testInstrs[i]);
-                    addrs.Add(addrStart);
-                    addrStart += 3;
+                    addrs.Add(addrStart + i * 3);
                 }
+                base.ConvertInstructions(instrs, addrs.ToArray(), new uint[instrs.Length], addrStart + instrs.Length * 3, emitter);
             }
 
             public FakeRewriterHost Host

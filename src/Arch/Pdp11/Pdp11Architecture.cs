@@ -49,9 +49,9 @@ namespace Decompiler.Arch.Pdp11
         }
         #region IProcessorArchitecture Members
 
-        public Disassembler CreateDisassembler(ProgramImage img, Address addr)
+        public Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new Pdp11Disassembler(img.CreateReader(addr), addr);
+            return new Pdp11Disassembler(rdr);
         }
 
         public Dumper CreateDumper()
@@ -86,7 +86,7 @@ namespace Decompiler.Arch.Pdp11
 
         public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
         {
-            return new Pdp11Rewriter(this);
+            return new Pdp11Rewriter(this, prw);
         }
 
         public MachineRegister GetRegister(int i)

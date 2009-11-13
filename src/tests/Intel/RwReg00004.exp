@@ -23,9 +23,9 @@
 // dwLoc14:Local -0014
 // rArg08:Stack +0008
 // rLoc2:FPU stack
-// SZO:Flags
 // ax:Register ax
 // ah:Register ah
+// SZO:Flags
 // rArg00:Stack +0000
 // rLoc3:FPU stack
 // rLoc4:FPU stack
@@ -68,7 +68,6 @@ l10000048:		// block 3, pred: 2 11
 	rLoc2 = dwArg00
 	rLoc2 = rLoc2 *s Mem0[0x0099188A:real64]
 	esi = esi + 0x00000001
-	SZO = cond(esi)
 	dwArg00 = rLoc2
 	call fn10000108 (depth: 20; FPU: 2;)
 	ecx = eax

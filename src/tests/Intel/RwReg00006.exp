@@ -166,7 +166,6 @@ l100001A2:		// block 22, pred: 21
 	dwLoc24 = ebp
 	dwLoc28 = ebp
 	eax = eax + 0x00000034
-	SCZO = cond(eax)
 	dwLoc2C = ebp
 	dwLoc30 = eax
 	call fn10000299 (depth: 48;)
@@ -175,7 +174,6 @@ l100001A2:		// block 22, pred: 21
 	dwLoc38 = ebp
 	dwLoc3C = ebp
 	ecx = ecx + 0x00000040
-	SCZO = cond(ecx)
 	dwLoc40 = ebp
 	dwLoc44 = ecx
 	call fn10000299 (depth: 68;)
@@ -184,7 +182,6 @@ l100001A2:		// block 22, pred: 21
 	dwLoc4C = ebp
 	dwLoc50 = ebp
 	edx = edx + 0x00000060
-	SCZO = cond(edx)
 	dwLoc54 = ebp
 	dwLoc58 = edx
 	call fn10000299 (depth: 88;)
@@ -235,7 +232,6 @@ l100000E8:		// block 28, pred: 27 13
 	// succ:  29
 l100000FC:		// block 29, pred: 28 9 8
 	eax = eax + 0x00000010
-	SCZO = cond(eax)
 	dwLoc20 = eax
 	dwLoc24 = esi
 	call fn10000250 (depth: 36;)

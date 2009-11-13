@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,20 +17,16 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.Arch.M68k
 {
-	public abstract class Disassembler
-	{
-		public Disassembler()
-		{
-		}
+    public enum Opcode : short
+    {
+        illegal,
 
-		public abstract Address Address
-		{
-			get; 
-		}
-
-		public abstract MachineInstruction DisassembleInstruction();
-	}
+        addq,
+        moveq,
+    }
 }

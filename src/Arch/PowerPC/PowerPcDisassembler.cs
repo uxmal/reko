@@ -49,7 +49,7 @@ namespace Decompiler.Arch.PowerPC
             return oprecs[wInstr >> 26].Decode(this, wInstr);
         }
 
-        public override object DisassembleInstruction()
+        public override MachineInstruction DisassembleInstruction()
         {
             return Disassemble();
         }

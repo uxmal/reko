@@ -119,7 +119,7 @@ namespace Decompiler.UnitTests.Mocks
 			return new MockCodeWalker(addr, list);
 		}
 
-		public Disassembler CreateDisassembler(ProgramImage img, Address addr)
+		public Disassembler CreateDisassembler(ImageReader rdr)
 		{
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateDisassembler implementation");
 		}

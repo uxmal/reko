@@ -101,6 +101,7 @@
     <Compile Include="Arch\Intel\Rewrite32.cs" />
     <Compile Include="Arch\Intel\RewriterTests.cs" />
     <Compile Include="Arch\Intel\RewriterTests2.cs" />
+    <Compile Include="Arch\M68k\M68kDisassemblerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcArchitectureTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.cs" />
     <Compile Include="Assemblers\x86\AssembleFragmentTests.cs" />
@@ -178,6 +179,8 @@
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs" />
     <Compile Include="Gui\Windows\MruListTests.cs" />
     <Compile Include="Gui\Windows\WindowsApplication.cs" />
+    <Compile Include="ImageLoaders\BinHex\BinHexDecoderTests.cs" />
+    <Compile Include="ImageLoaders\BinHex\BinHexImageLoaderTests.cs" />
     <Compile Include="Loading\LoaderTests.cs" />
     <Compile Include="Loading\PkLiteUnpackerTests.cs" />
     <Compile Include="Mocks\AdcMock.cs" />
@@ -281,6 +284,10 @@
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
       <Name>Intel2008</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\M68k\M68k-2008.csproj">
+      <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
+      <Name>M68k-2008</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11-2008.csproj">
       <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
       <Name>Pdp11-2008</Name>
@@ -308,6 +315,10 @@
     <ProjectReference Include="..\Environments\Win32\Win32-2008.csproj">
       <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
       <Name>Win32-2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\BinHex\BinHex2008.csproj">
+      <Project>{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}</Project>
+      <Name>BinHex2008</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\MzExe\MzExe-2008.csproj">
       <Project>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</Project>

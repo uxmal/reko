@@ -25,7 +25,7 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Pdp11Disassembler : Disassembler
     {
-        public Pdp11Disassembler(ImageReader rdr, Address addr)
+        public Pdp11Disassembler(ImageReader rdr)
         {
         }
 
@@ -34,7 +34,7 @@ namespace Decompiler.Arch.Pdp11
             get { throw new Exception("The method or operation is not implemented."); }
         }
 
-        public override object DisassembleInstruction()
+        public override MachineInstruction DisassembleInstruction()
         {
             throw new Exception("The method or operation is not implemented.");
         }

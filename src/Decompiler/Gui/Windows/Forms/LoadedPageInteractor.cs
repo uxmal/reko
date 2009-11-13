@@ -119,7 +119,7 @@ namespace Decompiler.Gui.Windows.Forms
                 lines = 1;
             StringWriter writer = new StringWriter();
             Dumper dumper = Decompiler.Program.Architecture.CreateDumper();
-            Disassembler dasm = Decompiler.Program.Architecture.CreateDisassembler(Decompiler.Program.Image, pageLoaded.MemoryControl.SelectedAddress);
+            Disassembler dasm = Decompiler.Program.Architecture.CreateDisassembler(Decompiler.Program.Image.CreateReader(pageLoaded.MemoryControl.SelectedAddress));
             while (lines != 0)
             {
                 dumper.DumpAssemblerLine(Decompiler.Program.Image, dasm, true, true, writer);

@@ -54,8 +54,8 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
-        public FlagM DefCc() { return DefCc(code); }		// Condition codes defined by this instruction.
-        public FlagM UseCc() { return UseCc(code); }		// Condition codes used by this instruction.
+        public override uint DefCc() { return (uint) DefCc(code); }		// Condition codes defined by this instruction.
+        public override uint UseCc() { return (uint) UseCc(code); }		// Condition codes used by this instruction.
 
 
 		private bool NeedsExplicitMemorySize()

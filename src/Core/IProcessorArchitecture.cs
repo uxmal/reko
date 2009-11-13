@@ -30,7 +30,8 @@ namespace Decompiler.Core
     /// </summary>
 	public interface IProcessorArchitecture
 	{
-		Disassembler CreateDisassembler(ProgramImage img, Address addr);
+        Disassembler CreateDisassembler(ImageReader imageReader);
+
 		Dumper CreateDumper();
 		ProcessorState CreateProcessorState();
 		BackWalker CreateBackWalker(ProgramImage img);
@@ -58,6 +59,7 @@ namespace Decompiler.Core
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
+
 
     }
 }

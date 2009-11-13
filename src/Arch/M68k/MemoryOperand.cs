@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,21 +16,26 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
+using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.Arch.M68k
 {
-	public abstract class Disassembler
-	{
-		public Disassembler()
-		{
-		}
+    public class MemoryOperand : MachineOperand
+    {
+        public MachineRegister Base;
 
-		public abstract Address Address
-		{
-			get; 
-		}
+        public MemoryOperand(PrimitiveType dataWidth, MachineRegister baseReg) : base(dataWidth)
+        {
+            this.Base = baseReg;
+        }
 
-		public abstract MachineInstruction DisassembleInstruction();
-	}
+        public static MemoryOperand Indirect(PrimitiveType dataWidth, MachineRegister baseReg)
+        {
+            return new MemoryOperand(dataWidth, baseReg);
+        }
+    }
 }
