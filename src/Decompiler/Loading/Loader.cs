@@ -95,7 +95,7 @@ namespace Decompiler.Loading
                 if (ImageBeginsWithMagicNumber(rawBytes, e.MagicNumber))
                     return CreateImageLoader(e.TypeName, rawBytes);
             }
-            eventListener.WriteDiagnostic(DiagnosticOld.Warning, new Address(0), "The format of the file {0} is unknown; you will need to specify it manually.", filename);
+            eventListener.AddDiagnostic(new WarningDiagnostic(new Address(0), "The format of the file {0} is unknown; you will need to specify it manually.", filename));
             return new NullLoader(rawBytes);
         }
 

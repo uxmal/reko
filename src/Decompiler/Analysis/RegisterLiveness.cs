@@ -175,8 +175,7 @@ namespace Decompiler.Analysis
             BlockFlow item;
             while (worklist.GetWorkItem(out item))
 			{
-				if (eventListener != null)
-					eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
+			    eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
 				ProcessBlock(item);
 			}
 		}

@@ -342,7 +342,7 @@
     <Compile Include="Gui\Windows\Forms\WorkerDialog.Designer.cs">
       <DependentUpon>WorkerDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\Windows\WindowsDecompilerHost.cs" />
+    <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
     <Compile Include="Loading\NullLoader.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>

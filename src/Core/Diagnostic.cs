@@ -17,18 +17,10 @@
  */
 
 using System;
+using System.Text;
 
 namespace Decompiler.Core
 {
-    [Obsolete("Use the subclasses of Diagnostic instead.")]
-    public enum DiagnosticOld
-    {
-        FatalError,
-        Error,
-        Warning,
-        Info
-    }
-
     public class Diagnostic
     {
         private Address addr;
@@ -55,6 +47,24 @@ namespace Decompiler.Core
     {
         public ErrorDiagnostic(Address addr, string messageFormat, params object[] args)
             : base(addr, messageFormat, args)
+        {
+        }
+
+        private static string GetExceptionString(Exception ex)
+        {
+            StringBuilder sb = new StringBuilder();
+            Exception e = ex;
+            while (e != null)
+            {
+                sb.Append(e.Message);
+                sb.Append(" ");
+                e = e.InnerException;
+            }
+            return sb.ToString();
+        }
+
+        public ErrorDiagnostic(Address addr, Exception ex, string messageFormat, params object[] args)
+            : base(addr, messageFormat + GetExceptionString(ex), args)
         {
         }
 

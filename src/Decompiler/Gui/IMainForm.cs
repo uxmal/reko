@@ -33,7 +33,6 @@ namespace Decompiler.Gui
 		string TitleText { get; set; }
         void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
 
-        void AddDiagnostic(Decompiler.Core.DiagnosticOld d, string format, params object[] args);
         void BuildPhases();
         ListView BrowserList { get; }
         ListView FindResultsList { get; }

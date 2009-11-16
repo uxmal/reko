@@ -25,8 +25,6 @@ namespace Decompiler.Gui
 {
     public interface IDiagnosticsService
     {
-        [Obsolete]
-        void AddDiagnostic(DiagnosticOld d, Address addr, string format, params object[] args);
         void AddDiagnostic(Diagnostic diagnostic);
     }
 }

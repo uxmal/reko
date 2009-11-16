@@ -24,6 +24,7 @@ using Decompiler.Core.Types;
 using Decompiler.Environments.Msdos;
 using Decompiler.Loading;
 using Decompiler.Scanning;
+using Decompiler.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -240,7 +241,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                     FileUnitTester.MapTestPath(sourceFile));
                 ld.Load(addrBase);
                 Program prog = ld.Program;
-				Scanner sc = new Scanner(prog, null);
+				Scanner sc = new Scanner(prog, new FakeDecompilerEventListener());
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
 					sc.EnqueueEntryPoint(ep);

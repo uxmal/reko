@@ -60,9 +60,9 @@ namespace Decompiler
 		///</summary>
 		public virtual DataFlowAnalysis AnalyzeDataFlow()
 		{
+            eventListener.ShowStatus("Performing interprocedural analysis.");
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, eventListener);
 			dfa.UntangleProcedures();
-			eventListener.InterproceduralAnalysisComplete();
 
 			dfa.BuildExpressionTrees();
 			using (TextWriter textWriter = host.GetIntermediateCodeWriter())
@@ -70,7 +70,7 @@ namespace Decompiler
 				if (textWriter != null)
 					EmitProgram(dfa, textWriter);
 			}
-			eventListener.ProceduresTransformed();
+			eventListener.ShowStatus("Analysis complete.");
             return dfa;
 		}
 
@@ -91,11 +91,11 @@ namespace Decompiler
 			} 
 			catch (Exception e)
 			{
-				eventListener.WriteDiagnostic(DiagnosticOld.FatalError, null, "{0}", e.Message + Environment.NewLine + e.StackTrace);
+                eventListener.AddDiagnostic(new ErrorDiagnostic(null, "{0}", e.Message + Environment.NewLine + e.StackTrace));
 			}				
 			finally
 			{
-				eventListener.DecompilationFinished();
+				eventListener.ShowStatus("Decompilation finished.");
 			}
 		}
 
@@ -145,10 +145,11 @@ namespace Decompiler
 		/// <param name="cfg"></param>
 		public void LoadProgram()
 		{
+            eventListener.ShowStatus("Loading source program.");
             loader.Load(null);
             project = loader.Project;
             prog = loader.Program;
-			eventListener.ProgramLoaded();
+            eventListener.ShowStatus("Source program loaded.");
 		}
 
 		public Program Program
@@ -191,6 +192,7 @@ namespace Decompiler
 		/// <param name="cfg">configuration information</param>
 		public virtual void RewriteMachineCode()
 		{
+            eventListener.ShowStatus("Rewriting machine code to intermediate code.");
             if (scanner == null)
                 throw new InvalidOperationException("Program must be scanned before it can be rewritten.");
 			rewriterHost = new RewriterHost(prog, eventListener, scanner.SystemCalls, scanner.VectorUses);
@@ -198,7 +200,7 @@ namespace Decompiler
 			rewriterHost.RewriteProgram();
 
 			EmitProgram(null, host.GetIntermediateCodeWriter());
-			eventListener.MachineCodeRewritten();
+			eventListener.ShowStatus("Machine code rewritten.");
 		}
 
 		public void WriteDecompiledProcedures(DecompilerHost host)
@@ -264,6 +266,7 @@ namespace Decompiler
 
 			try
 			{
+                eventListener.ShowStatus("Tracing reachable machine code.");
 				scanner = new Scanner(prog, eventListener);
 				foreach (EntryPoint ep in loader.EntryPoints)
 				{
@@ -275,7 +278,8 @@ namespace Decompiler
 					scanner.EnqueueUserProcedure(sp);
 				}
 				scanner.ProcessQueues();
-				eventListener.ProgramScanned();
+                eventListener.ShowStatus("Finished tracing reachable machine code.");
+
 			}
 			finally
 			{
@@ -293,12 +297,23 @@ namespace Decompiler
         /// </summary>
         public void StructureProgram()
 		{
+            int i = 0;
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-                StructureAnalysis sa = new StructureAnalysis(proc);
-                sa.Structure();
+                try
+                {
+                    eventListener.ShowProgress("Rewriting procedures to high-level language.", i, prog.Procedures.Values.Count);
+                    ++i;
+
+                    StructureAnalysis sa = new StructureAnalysis(proc);
+                    sa.Structure();
+                }
+                catch (Exception e)
+                {
+                    eventListener.AddDiagnostic(new ErrorDiagnostic(null, e, "An error occurred while rewriting procedure {0} to high-level language.", proc.Name));
+                }
 			}
-			eventListener.CodeStructuringComplete();
+			eventListener.ShowStatus("Rewriting complete.");
 		}
 
 

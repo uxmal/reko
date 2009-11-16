@@ -94,50 +94,6 @@ namespace Decompiler.Core
 			return id.Storage.BindFormalArgumentToFrame(frame, cs);
 		}
 
-        [Obsolete]
-		public Instruction BuildApplication(CallSite cs, IProcessorArchitecture arch, Expression callee, ProcedureSignature sigCallee)
-		{
-			if (sigCallee == null || !sigCallee.ArgumentsValid)
-				return null;
-
-			List<Expression> actuals = new List<Expression>();
-
-			Expression idOut = null;
-			if (sigCallee.ReturnValue != null)
-			{
-				idOut = Bind(sigCallee.ReturnValue, cs);
-			}
-
-			for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
-			{
-				Identifier formalArg = sigCallee.FormalArguments[i];
-				Identifier actualArg = formalArg.Storage.BindFormalArgumentToFrame(frame, cs);
-				if (formalArg.Storage is OutArgumentStorage)
-				{
-					actuals.Add(new UnaryExpression(UnaryOperator.addrOf, arch.FramePointerType, actualArg));
-				}
-				else
-				{
-					actuals.Add(actualArg);
-				}
-			}
-
-			Application appl = new Application(
-                callee, 
-                (idOut == null ? null : idOut.DataType),
-                actuals.ToArray());
-
-			if (idOut == null)
-			{
-				appl.DataType = PrimitiveType.Void;
-				return new SideEffect(appl);
-			}
-			else
-			{
-				return new Assignment((Identifier) idOut, appl);
-			}
-		}
-
         public Instruction CreateInstruction()
         {
 			if (idOut == null)

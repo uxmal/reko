@@ -35,7 +35,7 @@ namespace Decompiler.Typing
 	public class TypeAnalyzer
 	{
 		private Program prog;
-        private DecompilerEventListener host;
+        private DecompilerEventListener eventListener;
 
 		private TypeFactory factory;
 		private TypeStore store;
@@ -49,10 +49,10 @@ namespace Decompiler.Typing
 		private ComplexTypeNamer ctn;
 		private TypedExpressionRewriter ter;
 
-		public TypeAnalyzer(Program prog, DecompilerEventListener host)
+		public TypeAnalyzer(Program prog, DecompilerEventListener eventListener)
 		{
 			this.prog = prog;
-			this.host = host;
+			this.eventListener = eventListener;
 
 			factory = prog.TypeFactory;
 			store = prog.TypeStore;
@@ -63,7 +63,7 @@ namespace Decompiler.Typing
 			trco = new TraitCollector(factory, store, dtb, prog);
 			dpa = new DerivedPointerAnalysis(factory, store, dtb, prog.Architecture);
 			tvr = new TypeVariableReplacer(store);
-			trans = new TypeTransformer(factory, store, host);
+			trans = new TypeTransformer(factory, store, eventListener);
 			ctn = new ComplexTypeNamer();
 			ter = new TypedExpressionRewriter(store, prog.Globals);
 		}
@@ -81,27 +81,21 @@ namespace Decompiler.Typing
             RestrictProcedures(0, 64, true);
 			aen.Transform(prog);
 			eqb.Build(prog);
-			Debug.WriteLine("= Collecting traits ========================================");
-            host.WriteDiagnostic(DiagnosticOld.Info, null, "Collecting traits");
+            eventListener.ShowStatus("Collecting datatype traits.");
 			trco.CollectProgramTraits(prog);
-			Debug.WriteLine("= Building equivalence classes =============================");
-            host.WriteDiagnostic(DiagnosticOld.Info, null, "Building equivalence classes");
+            eventListener.ShowStatus("Building equivalence classes.");
 			dtb.BuildEquivalenceClassDataTypes();
 			dpa.FollowConstantPointers(prog);
 			tvr.ReplaceTypeVariables();
-			Debug.WriteLine("= replaced type variables ==================================");
 
-            host.WriteDiagnostic(DiagnosticOld.Info, null, "Transforming types");
+            eventListener.ShowStatus("Transforming datatypes.");
 			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
 			ppr.ReplaceAll();
 
-			Debug.WriteLine("= Transforming types =======================================");
 			trans.Transform();
 			ctn.RenameAllTypes(store);
-			Debug.WriteLine("= transformed types ========================================");
-			Debug.WriteLine("= Rewriting expressions ====================================");
 			store.Dump();
-            host.WriteDiagnostic(DiagnosticOld.Info, null, "Rewriting expressions");
+            eventListener.ShowStatus("Rewriting expressions.");
 			ter.RewriteProgram(prog);
 		}
 

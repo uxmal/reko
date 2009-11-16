@@ -208,9 +208,8 @@ namespace Decompiler.Gui.Windows.Forms
                 base.Site = value;
                 if (value != null)
                 {
-                    browserSvc = (IProgramImageBrowserService) EnsureService(typeof(IProgramImageBrowserService));
-                    pageLoaded.MemoryControl.ContextMenu  = base.UIService.GetContextMenu(MenuIds.CtxMemoryControl);
-
+                    browserSvc = EnsureService <IProgramImageBrowserService>();
+                    pageLoaded.MemoryControl.ContextMenu  = UIService.GetContextMenu(MenuIds.CtxMemoryControl);
                 }
                 else
                 {

@@ -333,12 +333,11 @@ namespace Decompiler.Scanning
 			}
 		}
 
-        //$REFACTOR: pass the service down.
         public void Warn(Address addr, string format, params object[] args)
 		{
-			if (eventListener != null)
-				eventListener.WriteDiagnostic(DiagnosticOld.Warning, addr, format, args);
+            eventListener.AddDiagnostic(new WarningDiagnostic(addr, format, args));
 		}
+
 		#endregion
 
 		public void ProcessQueues()

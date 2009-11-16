@@ -51,14 +51,6 @@ namespace Decompiler.Gui.Windows.Forms
             set { Text = value; }
         }
         
-        //$REFACTOR: this should be a service.
-        public void AddDiagnostic(Decompiler.Core.DiagnosticOld d, string format, params object[] args)
-        {
-            ListViewItem li = new ListViewItem();
-            li.SubItems.Add(string.Format(format, args));
-            this.listDiagnostics.Items.Add(li);
-        }
-
         public ListView BrowserList
         {
             get { return listBrowser; }

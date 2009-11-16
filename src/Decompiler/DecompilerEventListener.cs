@@ -23,18 +23,11 @@ using System.Text;
 
 namespace Decompiler
 {
-    public interface DecompilerEventListener
+    public interface 
+        DecompilerEventListener
     {
-        void ProgramLoaded();
-        void ProgramScanned();
-        void MachineCodeRewritten();
-        void InterproceduralAnalysisComplete();
-        void ProceduresTransformed();
-        void TypeReconstructionComplete();
-        void CodeStructuringComplete();
-        void DecompilationFinished();
-
-        void WriteDiagnostic(DiagnosticOld d, Address addr, string format, params object[] args);
+        void AddDiagnostic(Diagnostic d);
+        void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
     }
 
@@ -86,7 +79,12 @@ namespace Decompiler
             throw new NotImplementedException();
         }
 
-        public void WriteDiagnostic(DiagnosticOld d, Address addr, string format, params object[] args)
+        public void AddDiagnostic(Diagnostic d)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowStatus(string caption)
         {
             throw new NotImplementedException();
         }

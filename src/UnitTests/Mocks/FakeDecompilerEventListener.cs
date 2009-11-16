@@ -28,17 +28,17 @@ namespace Decompiler.UnitTests.Mocks
         private string lastDiagnostic;
         private string lastProgress;
         private bool finishedCalled;
+        private string lastStatus;
 
         public void Finished()
         {
             finishedCalled = true;
         }
 
-        public void WriteDiagnostic(DiagnosticOld d, Address addr, string format, params object[] args)
+        public void AddDiagnostic(Diagnostic d)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0} - {1}: ", d, addr);
-            sb.AppendFormat(format, args);
+            sb.AppendFormat("{0} - {1}: {2}", d.GetType().Name, d.Address, d.Message);
             lastDiagnostic = sb.ToString();
             Console.Out.WriteLine(lastDiagnostic);
             System.Diagnostics.Debug.WriteLine(lastDiagnostic);
@@ -47,6 +47,11 @@ namespace Decompiler.UnitTests.Mocks
         public void ShowProgress(string caption, int numerator, int denominator)
         {
             lastProgress = string.Format("{0}: {1}%", caption, (numerator * 100) / denominator);
+        }
+
+        public void ShowStatus(string status)
+        {
+            lastStatus = status;
         }
 
         public void CodeStructuringComplete()

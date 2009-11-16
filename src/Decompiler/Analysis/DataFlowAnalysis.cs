@@ -60,8 +60,12 @@ namespace Decompiler.Analysis
         /// <param name="rl"></param>
 		public void BuildExpressionTrees()
 		{
+            int i = 0;
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
+                eventListener.ShowProgress("Building complex expressions.", i, prog.Procedures.Values.Count);
+                ++i;
+
 				Aliases alias = new Aliases(proc, prog.Architecture, flow);
 				alias.Transform();
 				DominatorGraph doms = new DominatorGraph(proc);
@@ -152,13 +156,12 @@ namespace Decompiler.Analysis
         /// </returns>
 		public void UntangleProcedures()
 		{
-			eventListener.WriteDiagnostic(DiagnosticOld.Info, null, "Finding trashed registers");
-			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
-            trf.DecompilerHost = eventListener;
+			eventListener.ShowStatus("Finding trashed registers.");
+            TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow, eventListener);
 			trf.Compute();
-            eventListener.WriteDiagnostic(DiagnosticOld.Info, null, "Computing register liveness");
+            eventListener.ShowStatus("Computing register liveness.");
             RegisterLiveness rl = RegisterLiveness.Compute(prog, flow, eventListener);
-            eventListener.WriteDiagnostic(DiagnosticOld.Info, null, "Rewriting calls");
+            eventListener.ShowStatus("Rewriting calls.");
 			GlobalCallRewriter.Rewrite(prog, flow);
 		}
 	}

@@ -85,13 +85,6 @@ namespace Decompiler.ImageLoaders.BinHex
         {
         }
 
-        [Obsolete]
-        public BinHexHeader LoadBinHexHeader(BinHexDecoder decoder)
-        {
-            IEnumerator<byte> stm = decoder.GetBytes().GetEnumerator();
-            return LoadBinHexHeader(stm);
-        }
-
         public BinHexHeader LoadBinHexHeader(IEnumerator<byte> stm)
         {
             BinHexHeader hdr = new BinHexHeader();
