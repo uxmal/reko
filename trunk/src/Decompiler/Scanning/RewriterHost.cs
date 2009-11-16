@@ -178,7 +178,7 @@ namespace Decompiler.Scanning
 			} 
 			catch (Exception ex)
 			{
-				if (eventListener != null) eventListener.WriteDiagnostic(DiagnosticOld.FatalError, null, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message);
+                if (eventListener != null) eventListener.AddDiagnostic(new ErrorDiagnostic(null, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message));
 				throw;
 			}
 		}
@@ -209,7 +209,7 @@ namespace Decompiler.Scanning
 			SystemService svc = null;
             if (!syscalls.TryGetValue(addrInstr, out svc))
             {
-				eventListener.WriteDiagnostic(DiagnosticOld.Warning, addrInstr, "System call at this address wasn't previously recorded.");
+                eventListener.AddDiagnostic(new WarningDiagnostic(addrInstr, "No system call at this address was recorded previously."));
 			}
 			return svc;
 		}
@@ -232,11 +232,9 @@ namespace Decompiler.Scanning
                 return null;
 		}
 
-        //$REVIEW: another place where calling the diagnostic service directly would be better.
-		public void WriteDiagnostic(DiagnosticOld diagnostic, Address addr, string format, params object [] args)
+		public void AddDiagnostic(Diagnostic diagnostic)
 		{
-			if (eventListener != null)
-				eventListener.WriteDiagnostic(diagnostic, addr, format, args);
+			eventListener.AddDiagnostic(diagnostic);
 		}
 	}
 }

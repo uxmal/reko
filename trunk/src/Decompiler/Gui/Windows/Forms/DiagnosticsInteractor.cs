@@ -36,23 +36,6 @@ namespace Decompiler.Gui.Windows.Forms
 
         #region IDiagnosticsService Members
 
-        [Obsolete]
-        public void AddDiagnostic(DiagnosticOld d, Address addr, string format, params object[] args)
-        {
-            ListViewItem li = new ListViewItem();
-            li.Text = d.ToString();
-            ListViewItem.ListViewSubItem si = li.SubItems.Add(addr != null
-                ? addr.ToString()
-                : "");
-            si.Tag = addr;
-            li.SubItems.Add(string.Format(format, args));
-            Action<ListViewItem> action = delegate(ListViewItem item)
-            {
-                this.listView.Items.Add(item);
-            };
-            listView.Invoke(action, li);
-        }
-
         public void AddDiagnostic(Diagnostic d)
         {
             ListViewItem li = new ListViewItem();

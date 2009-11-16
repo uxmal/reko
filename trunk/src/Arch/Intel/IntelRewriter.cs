@@ -1641,19 +1641,17 @@ namespace Decompiler.Arch.Intel
 		{
             if (frame.ReturnAddressSize != cbReturnAddress)
             {
-                host.WriteDiagnostic(
-                    DiagnosticOld.Warning,
+                host.AddDiagnostic(new WarningDiagnostic(
                     state.InstructionAddress,
                     "Return instruction expects a return address of {0} bytes, but procedure {1} was called with a return address of {2} bytes.",
-                    cbReturnAddress, this.proc, frame.ReturnAddressSize);
+                    cbReturnAddress, this.proc, frame.ReturnAddressSize));
             }
 			emitter.Return();
             if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != cbBytesPop)
             {
-                host.WriteDiagnostic(
-                    DiagnosticOld.Warning,
+                host.AddDiagnostic(new WarningDiagnostic(
                     state.InstructionAddress,
-                    "Multiple values of stack delta in procedure {0} when processung RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta);
+                    "Multiple values of stack delta in procedure {0} when processung RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta));
             }
             else
             {

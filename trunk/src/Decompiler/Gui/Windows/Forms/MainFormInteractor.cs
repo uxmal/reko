@@ -414,63 +414,6 @@ namespace Decompiler.Gui.Windows.Forms
             get { return config; }
         }
 
-		public void ShowProgress(string caption, int numerator, int denominator)
-		{
-			form.SetStatus(caption);
-			form.ProgressBar.Value = numerator;
-			form.ProgressBar.Minimum = 0;
-			form.ProgressBar.Maximum = denominator;
-            form.ProgressBar.Update();
-		}
-
-
-		public void CodeStructuringComplete()
-		{
-		}
-
-		public void DecompilationFinished()
-		{
-			form.SetStatus("Finished");
-		}
-
-		public void InterproceduralAnalysisComplete()
-		{
-		}
-
-		public void MachineCodeRewritten()
-		{
-			form.SetStatus("Machine code rewritten.");
-		}
-
-		public void ProceduresTransformed()
-		{
-			form.SetStatus("Procedures transformed.");
-		}
-
-		public void ProgramLoaded()
-		{
-			form.SetStatus("Program loaded.");
-		}
-
-		public void ProgramScanned()
-		{
-			form.SetStatus("Program scanned.");
-		}
-
-		public void TypeReconstructionComplete()
-		{
-			form.SetStatus("Data types reconstructed.");
-		}
-
-		public void WriteDiagnostic(DiagnosticOld d, Address addr, string format, params object[] args)
-		{
-            IDiagnosticsService svc = (IDiagnosticsService) GetService(typeof(IDiagnosticsService));
-            if (svc != null)
-            {
-                svc.AddDiagnostic(d, addr, format, args);
-            }
-		}
-
 		public TextWriter CreateDecompiledCodeWriter(string fileName)
 		{
 			return new StreamWriter(fileName, false, new UTF8Encoding(false));

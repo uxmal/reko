@@ -128,7 +128,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		private void Rewrite(Program prog, Assembler asm, string configFile)
 		{
-			Scanner scan = new Scanner(prog, null);
+			Scanner scan = new Scanner(prog, new FakeDecompilerEventListener());
 			DecompilerProject project = new DecompilerProject();
 			if (configFile != null)
 			{

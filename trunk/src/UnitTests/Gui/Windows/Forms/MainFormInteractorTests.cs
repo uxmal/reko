@@ -134,7 +134,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             object oSvc = interactor.ProbeGetService(typeof(IDiagnosticsService));
             Assert.IsNotNull(oSvc, "IDiagnosticsService should be available!");
             IDiagnosticsService svc = (IDiagnosticsService) oSvc;
-            svc.AddDiagnostic(DiagnosticOld.Warning, new Address(0x30000), "Whoa");
+            svc.AddDiagnostic(new WarningDiagnostic(new Address(0x30000), "Whoa"));
             Assert.AreEqual(1, form.DiagnosticsList.Items.Count, "Should have added an item to diagnostics list.");
         }
 

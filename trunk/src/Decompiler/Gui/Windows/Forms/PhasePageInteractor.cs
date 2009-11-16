@@ -61,16 +61,6 @@ namespace Decompiler.Gui.Windows.Forms
             return svc;
         }
 
-        [Obsolete]
-        protected object EnsureService(Type svcType)
-        {
-            object svc = site.GetService(svcType);
-            if (svc == null)
-                throw new InvalidOperationException(string.Format(
-                    "Attempt to obtain {0} service interface failed.", svcType.FullName));
-            return svc;
-        }
-
         /// <summary>
         /// Derived classes should copy populate editable controls with initial values.
         /// </summary>

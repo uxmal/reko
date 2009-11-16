@@ -19,6 +19,7 @@
 using Decompiler.Core.Serialization;
 using System;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
@@ -44,8 +45,14 @@ namespace Decompiler.Gui.Windows.Forms
 			SetTextBoxes(Decompiler.Project.Output);
             try
             {
-                Decompiler.ReconstructTypes();
-                Decompiler.StructureProgram();
+                WorkerDialogService.StartBackgroundWork("Reconstructing datatypes.", delegate()
+                {
+                    Decompiler.ReconstructTypes();
+                });
+                WorkerDialogService.StartBackgroundWork("Structuring program.", delegate()
+                {
+                    Decompiler.StructureProgram();
+                });
             }
             catch (Exception ex)
             {

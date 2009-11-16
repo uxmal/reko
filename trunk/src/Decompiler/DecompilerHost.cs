@@ -111,7 +111,7 @@ namespace Decompiler
 			throw new Exception("The method or operation is not implemented.");
 		}
 
-		public void WriteDiagnostic(DiagnosticOld d, Address address, string format, params object[] args)
+		public void AddDiagnostic(Diagnostic d)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}

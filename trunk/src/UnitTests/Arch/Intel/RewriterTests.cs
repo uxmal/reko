@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			DecompilerProject project = (configFile != null)
 				? DecompilerProject.Load(FileUnitTester.MapTestPath(configFile))
 				: null;
-			scanner = new Scanner(prog, null);
+			scanner = new Scanner(prog, new FakeDecompilerEventListener());
 			EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
 			prog.AddEntryPoint(ep);
 			scanner.EnqueueEntryPoint(ep);

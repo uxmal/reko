@@ -19,6 +19,7 @@ namespace Decompiler.Gui.Windows
         private IDiagnosticsService diagnosticService;
 
         private string status;
+        private const int STATUS_UPDATE_ONLY = -4711;
 
         public WindowsDecompilerEventListener(IServiceProvider sp)
         {
@@ -86,7 +87,10 @@ namespace Decompiler.Gui.Windows
         {
             if (dlg == null)
                 return;
-            dlg.ProgressBar.Value = e.ProgressPercentage;
+            if (e.ProgressPercentage != STATUS_UPDATE_ONLY)
+            {
+                dlg.ProgressBar.Value = e.ProgressPercentage;
+            }
             dlg.Detail.Text = status;
         }
 
@@ -111,74 +115,25 @@ namespace Decompiler.Gui.Windows
 
         #region DecompilerEventListener Members
 
-        void DecompilerEventListener.ProgramLoaded()
+        void DecompilerEventListener.AddDiagnostic(Diagnostic d)
         {
-            Interlocked.Exchange<string>(ref status, "Source program loaded.");
-            dlg.Worker.ReportProgress(100);
+            dlg.Invoke(new Action<Diagnostic>(diagnosticService.AddDiagnostic), d);
         }
 
-        void DecompilerEventListener.ProgramScanned()
+        void DecompilerEventListener.ShowStatus(string caption)
         {
-            Interlocked.Exchange<string>(ref status, "Program scanned.");
-            dlg.Worker.ReportProgress(100);
+            ShowStatus(caption);
         }
 
-        void DecompilerEventListener.MachineCodeRewritten()
+        private void ShowStatus(string caption)
         {
-            Interlocked.Exchange<string>(ref status, "Intermediate code generated.");
-            dlg.Worker.ReportProgress(100);
-        }
-
-        void DecompilerEventListener.InterproceduralAnalysisComplete()
-        {
-            Interlocked.Exchange<string>(ref status, "Interprocedural analysis complete.");
-            dlg.Worker.ReportProgress(100);
-        }
-
-        void DecompilerEventListener.ProceduresTransformed()
-        {
-            Interlocked.Exchange<string>(ref status, "Interprocedural analysis complete.");
-            dlg.Worker.ReportProgress(100);
-        }
-
-        void DecompilerEventListener.TypeReconstructionComplete()
-        {
-            throw new NotImplementedException();
-        }
-
-        void DecompilerEventListener.CodeStructuringComplete()
-        {
-            throw new NotImplementedException();
-        }
-
-        void DecompilerEventListener.DecompilationFinished()
-        {
-            throw new NotImplementedException();
-        }
-
-        void DecompilerEventListener.WriteDiagnostic(Decompiler.Core.DiagnosticOld d, Decompiler.Core.Address addr, string format, params object[] args)
-        {
-            Diagnostic di = null;
-            switch (d)
-            {
-                case DiagnosticOld.Error:
-                case DiagnosticOld.FatalError:
-                    di = new ErrorDiagnostic(addr, format, args);
-                    break;
-                case DiagnosticOld.Warning:
-                    di = new WarningDiagnostic(addr, format, args);
-                    break;
-                case DiagnosticOld.Info:
-                    status = string.Format(format, args);
-                    dlg.Worker.ReportProgress(0);
-                    return;
-            }
-            dlg.Invoke(new Action<Diagnostic>(diagnosticService.AddDiagnostic), di);
+            Interlocked.Exchange<string>(ref status, caption);
+            dlg.Worker.ReportProgress(STATUS_UPDATE_ONLY);
         }
 
         void DecompilerEventListener.ShowProgress(string caption, int numerator, int denominator)
         {
-            status = caption;
+            Interlocked.Exchange<string>(ref status, caption);
             dlg.Worker.ReportProgress((int)((numerator * 100L) / denominator));
         }
 

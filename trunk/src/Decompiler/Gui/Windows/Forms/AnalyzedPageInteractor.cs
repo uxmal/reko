@@ -106,7 +106,7 @@ namespace Decompiler.Gui.Windows.Forms
             set 
             {
                 base.Site = value;
-                browserSvc = (IProgramImageBrowserService) EnsureService(typeof(IProgramImageBrowserService));
+                browserSvc = EnsureService<IProgramImageBrowserService>();
             }
         }
 

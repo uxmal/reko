@@ -24,6 +24,12 @@ using System.IO;
 
 namespace Decompiler.Structure
 {
+    /// <summary>Finds the immediate post dominator of each node in the graph.</summary>
+    /// <remarks>
+    /// Adapted version of the dominators algorithm by Hecht and Ullman; finds
+    /// immediate post dominators only.
+    /// Note: graph should be reducible
+    /// </remarks>
     public class PostDominatorGraph
     {
         private ProcedureStructure proc;
@@ -36,20 +42,6 @@ namespace Decompiler.Structure
         {
             this.proc = proc;
             this.graph = new StructureGraphAdapter(proc.Nodes);
-        }
-
-        /// <summary>Finds the immediate post dominator of each node in the graph.</summary>
-        /// <remarks>
-        /// Adapted version of the dominators algorithm by Hecht and Ullman; finds
-        /// immediate post dominators only.
-        /// Note: graph should be reducible
-        /// </remarks>
-        [Obsolete]
-        public void FindImmediatePostDominators(ProcedureStructure proc)
-        {
-            this.proc = proc;
-
-            FindImmediatePostDominators();
         }
 
         public void FindImmediatePostDominators()

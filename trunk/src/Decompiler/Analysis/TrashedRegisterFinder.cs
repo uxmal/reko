@@ -41,7 +41,7 @@ namespace Decompiler.Analysis
         private readonly TrashStorage trash;
 		private DecompilerEventListener eventListener;
 
-		public TrashedRegisterFinder(Program prog, ProgramDataFlow flow)
+		public TrashedRegisterFinder(Program prog, ProgramDataFlow flow, DecompilerEventListener eventListener)
 		{
 			this.prog = prog;
 			this.flow = flow;
@@ -75,14 +75,6 @@ namespace Decompiler.Analysis
 				ProcessBlock(block);
 			}
 			CompleteWork();
-		}
-
-
-        [Obsolete("Pass in as a constructor parameter.")]
-		public DecompilerEventListener DecompilerHost
-		{
-			get { return eventListener; }
-			set { eventListener = value; }
 		}
 
 		public void FillWorklist()

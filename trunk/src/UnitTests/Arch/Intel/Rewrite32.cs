@@ -21,6 +21,7 @@ using Decompiler.Core;
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -102,7 +103,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 prog.ImportThunks.Add(item.Key, item.Value);
             }
-            Scanner scan = new Scanner(prog, null);
+            Scanner scan = new Scanner(prog, new FakeDecompilerEventListener());
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			scan.EnqueueEntryPoint(ep);

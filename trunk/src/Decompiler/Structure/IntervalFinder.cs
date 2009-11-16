@@ -33,16 +33,16 @@ namespace Decompiler.Structure
         {
             if (derGraph == null)
                 throw new ArgumentNullException("derGraph");
-            if (derGraph.cfg == null)
+            if (derGraph.Entry == null)
                 throw new ArgumentException("cfg graph must be non-null", "derGraph");
 
             List<Interval> intSeq = derGraph.Intervals;	// The sequence of intervals in this graph
             WorkList<StructureNode> headerSeq = new WorkList<StructureNode>();	// The sequence of interval header nodes
             List<StructureNode> beenInH = new List<StructureNode>();	// The set of nodes that have been in the above sequence at some stage
 
-            headerSeq.Add(derGraph.cfg);
+            headerSeq.Add(derGraph.Entry);
 
-            beenInH.Add(derGraph.cfg);
+            beenInH.Add(derGraph.Entry);
 
             StructureNode header;
             while (headerSeq.GetWorkItem(out header))
