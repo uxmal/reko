@@ -36,6 +36,7 @@ namespace Decompiler.Gui.Windows.Forms
         private ISite site;
         private IDecompilerService decompilerSvc;
         private IDecompilerUIService decompilerUiSvc;
+        private IWorkerDialogService workerDlgSvc;
 
         public PhasePageInteractor()
         {
@@ -51,6 +52,16 @@ namespace Decompiler.Gui.Windows.Forms
             get { return decompilerSvc.Decompiler; }
         }
 
+        protected T EnsureService<T>()
+        {
+            T svc = (T) site.GetService(typeof(T));
+            if (svc == null)
+                throw new InvalidOperationException(string.Format(
+                    "Attempt to obtain {0} service interface failed.", typeof(T).FullName));
+            return svc;
+        }
+
+        [Obsolete]
         protected object EnsureService(Type svcType)
         {
             object svc = site.GetService(svcType);
@@ -78,6 +89,11 @@ namespace Decompiler.Gui.Windows.Forms
             get { return decompilerUiSvc; }
         }
 
+        protected IWorkerDialogService WorkerDialogService
+        {
+            get { return workerDlgSvc; }
+        }
+
 
         #region ICommandTarget Members
 
@@ -102,8 +118,9 @@ namespace Decompiler.Gui.Windows.Forms
                 site = value;
                 if (site != null)
                 {
-                    decompilerSvc = (IDecompilerService) EnsureService(typeof(IDecompilerService));
-                    decompilerUiSvc = (IDecompilerUIService) EnsureService(typeof(IDecompilerUIService));
+                    decompilerSvc = EnsureService<IDecompilerService>();
+                    decompilerUiSvc = EnsureService<IDecompilerUIService>();
+                    workerDlgSvc = EnsureService<IWorkerDialogService>();
                 }
                 else
                 {

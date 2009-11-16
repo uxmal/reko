@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Gui
         [Test]
         public void NotifyOnChangedDecompiler()
         {
-            DecompilerDriver d = new DecompilerDriver(null, null);
+            DecompilerDriver d = new DecompilerDriver(null, null, null);
             IDecompilerService svc = new DecompilerService();
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Gui
         {
             IDecompilerService svc = new DecompilerService();
             
-            svc.Decompiler = new DecompilerDriver(new FakeLoader("foo\\bar\\baz.exe"), new FakeDecompilerHost());
+            svc.Decompiler = new DecompilerDriver(new FakeLoader("foo\\bar\\baz.exe"), new FakeDecompilerHost(), new FakeDecompilerEventListener());
             svc.Decompiler.LoadProgram();
             Assert.IsNotNull(svc.Decompiler.Project);
             Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");

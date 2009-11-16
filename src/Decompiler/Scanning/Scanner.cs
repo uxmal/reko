@@ -41,7 +41,7 @@ namespace Decompiler.Scanning
 	{
 		private Program program;
 		private ImageMap map;			// cached copy of program.Image.Map; it's used very often.
-		private DecompilerHost host;
+		private DecompilerEventListener eventListener;
 		private ImageMapBlock blockCur;
 		private Dictionary<ImageMapBlock,ImageMapBlock> blocksVisited;
 		private Map<Address,VectorUse> vectorUses;
@@ -57,13 +57,13 @@ namespace Decompiler.Scanning
 
 		private static TraceSwitch trace = new TraceSwitch("Scanner", "Enables tracing in the scanning phase");
 
-		public Scanner(Program program, DecompilerHost host)
+        public Scanner(Program program, DecompilerEventListener eventListener)
 		{
 			if (program.Image == null)
 				throw new InvalidOperationException("Program.Image must be defined.");
 			this.program = program;
 			this.map = program.Image.Map;
-			this.host = host;
+			this.eventListener = eventListener;
 			this.vectorUses = new Map<Address,VectorUse>();
             this.syscalls = new SortedList<Address, SystemService>();
 			qStarts = new Queue<WorkItem>();
@@ -336,8 +336,8 @@ namespace Decompiler.Scanning
         //$REFACTOR: pass the service down.
         public void Warn(Address addr, string format, params object[] args)
 		{
-			if (host != null)
-				host.WriteDiagnostic(Diagnostic.Warning, addr, format, args);
+			if (eventListener != null)
+				eventListener.WriteDiagnostic(DiagnosticOld.Warning, addr, format, args);
 		}
 		#endregion
 

@@ -42,6 +42,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             uiSvc = new FakeUiService();
             site.AddService(typeof(IDecompilerUIService), uiSvc);
             site.AddService(typeof(IDecompilerService), new DecompilerService());
+            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             i.Site = site;
 		}
 

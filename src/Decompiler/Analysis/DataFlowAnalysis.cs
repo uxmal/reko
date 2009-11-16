@@ -37,13 +37,13 @@ namespace Decompiler.Analysis
 	public class DataFlowAnalysis
 	{
 		private Program prog;
-		private DecompilerHost host;
+		private DecompilerEventListener eventListener;
 		private ProgramDataFlow flow;
-	
-		public DataFlowAnalysis(Program prog, DecompilerHost host)
+
+        public DataFlowAnalysis(Program prog, DecompilerEventListener eventListener)
 		{
 			this.prog = prog;
-			this.host = host;
+            this.eventListener = eventListener;
 			this.flow = new ProgramDataFlow(prog);
 		}
 
@@ -152,13 +152,13 @@ namespace Decompiler.Analysis
         /// </returns>
 		public void UntangleProcedures()
 		{
-			host.WriteDiagnostic(Diagnostic.Info, null, "Finding trashed registers");
+			eventListener.WriteDiagnostic(DiagnosticOld.Info, null, "Finding trashed registers");
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow);
-			trf.DecompilerHost = host;
+            trf.DecompilerHost = eventListener;
 			trf.Compute();
-			host.WriteDiagnostic(Diagnostic.Info, null, "Computing register liveness");
-			RegisterLiveness rl = RegisterLiveness.Compute(prog, flow, host);
-			host.WriteDiagnostic(Diagnostic.Info, null, "Rewriting calls");
+            eventListener.WriteDiagnostic(DiagnosticOld.Info, null, "Computing register liveness");
+            RegisterLiveness rl = RegisterLiveness.Compute(prog, flow, eventListener);
+            eventListener.WriteDiagnostic(DiagnosticOld.Info, null, "Rewriting calls");
 			GlobalCallRewriter.Rewrite(prog, flow);
 		}
 	}

@@ -42,7 +42,7 @@ namespace Decompiler.Analysis
 	public class RegisterLiveness : InstructionVisitorBase		//$REFACTOR: should be called InterproceduralLiveness
 	{
 		private Program prog;
-		private DecompilerHost host;
+		private DecompilerEventListener eventListener;
 		private Procedure proc;
 		private WorkList<BlockFlow> worklist;
 		private ProgramDataFlow mpprocData;
@@ -55,10 +55,10 @@ namespace Decompiler.Analysis
 
 		private static TraceSwitch trace = new TraceSwitch("RegisterLiveness", "Details of register liveness analysis");
 
-		public RegisterLiveness(Program prog, ProgramDataFlow procFlow, DecompilerHost host)
+		public RegisterLiveness(Program prog, ProgramDataFlow procFlow, DecompilerEventListener eventListener)
 		{
 			this.prog = prog;
-			this.host = host;
+			this.eventListener = eventListener;
 			this.mpprocData = procFlow;
 			this.worklist = new WorkList<BlockFlow>();
 			this.varLive = new IdentifierLiveness(prog.Architecture);
@@ -85,9 +85,9 @@ namespace Decompiler.Analysis
 		/// <param name="p"></param>
 		/// <param name="procFlow"></param>
 		/// <returns></returns>
-		public static RegisterLiveness Compute(Program p, ProgramDataFlow procFlow, DecompilerHost host)
+		public static RegisterLiveness Compute(Program p, ProgramDataFlow procFlow, DecompilerEventListener eventListener)
 		{
-			RegisterLiveness live = new RegisterLiveness(p, procFlow, host);
+			RegisterLiveness live = new RegisterLiveness(p, procFlow, eventListener);
 			Debug.WriteLineIf(trace.TraceError, "** Computing ByPass ****");
 			live.CurrentState = new ByPassState();
 			live.Iterate();
@@ -175,8 +175,8 @@ namespace Decompiler.Analysis
             BlockFlow item;
             while (worklist.GetWorkItem(out item))
 			{
-				if (host != null)
-					host.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
+				if (eventListener != null)
+					eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
 				ProcessBlock(item);
 			}
 		}

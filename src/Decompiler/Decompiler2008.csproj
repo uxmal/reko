@@ -262,6 +262,7 @@
     <Compile Include="Decompiler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DecompilerEventListener.cs" />
     <Compile Include="DecompilerHost.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -275,6 +276,7 @@
     <Compile Include="Gui\IProgramImageBrowserService.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
     <Compile Include="Gui\IStartPage.cs" />
+    <Compile Include="Gui\IWorkerDialogService.cs" />
     <Compile Include="Gui\MenuBuilder.cs" />
     <Compile Include="Gui\Windows\Controls\CodeControl.cs" />
     <Compile Include="Gui\Windows\Controls\CommandMenuItem.cs">
@@ -334,6 +336,13 @@
       <DependentUpon>StartPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Configuration\ArchitectureSectionHandler.cs" />
+    <Compile Include="Gui\Windows\Forms\WorkerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\WorkerDialog.Designer.cs">
+      <DependentUpon>WorkerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\WindowsDecompilerHost.cs" />
     <Compile Include="Loading\NullLoader.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>
@@ -424,9 +433,6 @@
     <Compile Include="Structure\ControlFlowGraphCleaner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\DerivedSequence.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Structure\Interval.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -441,9 +447,6 @@
     </Compile>
     <Compile Include="Structure\ProcedureStructureBuilder.cs" />
     <Compile Include="Structure\StructureAnalysis.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Structure\StructureBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\StructureFieldMerger.cs" />
@@ -583,27 +586,14 @@
       <DependentUpon>StartPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\WorkerDialog.resx">
+      <DependentUpon>WorkerDialog.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Gui\decompiler-menus.xml" />
-    <Content Include="Gui\Windows\bin\Debug\advapi32.xml" />
-    <Content Include="Gui\Windows\bin\Debug\comdlg32.xml" />
-    <Content Include="Gui\Windows\bin\Debug\Decompiler.WindowsGui2003.exe" />
-    <Content Include="Gui\Windows\bin\Debug\gdi32.xml" />
-    <Content Include="Gui\Windows\bin\Debug\Grovel.vshost.exe" />
-    <Content Include="Gui\Windows\bin\Debug\kernel32.xml" />
-    <Content Include="Gui\Windows\bin\Debug\msvcrt.xml" />
-    <Content Include="Gui\Windows\bin\Debug\realmodeintservices.xml" />
-    <Content Include="Gui\Windows\bin\Debug\shell32.xml" />
-    <Content Include="Gui\Windows\bin\Debug\user32.xml" />
-    <Content Include="Gui\Windows\bin\Debug\wininet.xml" />
     <Content Include="Gui\Windows\Forms\cmdids.xslt" />
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Gui\Windows\bin\Debug\Decompiler.WindowsGui2003.exe.config" />
-    <None Include="Gui\Windows\bin\Debug\Grovel.exe.config" />
-    <None Include="Gui\Windows\bin\Debug\Grovel.vshost.exe.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core2008.csproj">

@@ -102,7 +102,7 @@ namespace Decompiler.Core
 				case ConditionCode.UGT:
 					return ++limit;
 				default:
-					throw new NotImplementedException("NYI");
+					throw new NotImplementedException();
 			}
 		}
 

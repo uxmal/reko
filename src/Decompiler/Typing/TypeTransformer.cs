@@ -37,15 +37,15 @@ namespace Decompiler.Typing
 		private Unifier unifier;
 		private DataTypeComparer comparer;
 		private TypeVariable tvCur;
-		private DecompilerHost host;
+        private DecompilerEventListener eventListener;
 
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types");
 
-		public TypeTransformer(TypeFactory factory, TypeStore store, DecompilerHost host)
+		public TypeTransformer(TypeFactory factory, TypeStore store, DecompilerEventListener eventListener)
 		{
 			this.factory = factory;
 			this.store = store;
-			this.host = host;
+			this.eventListener = eventListener;
 			this.unifier = new Unifier(factory);
 			this.comparer = new DataTypeComparer();
 		}

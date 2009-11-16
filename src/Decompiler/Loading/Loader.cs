@@ -35,14 +35,16 @@ namespace Decompiler.Loading
 	public class Loader : LoaderBase
 	{
         private string filename;
-        private DecompilerHost host;
+        private DecompilerConfiguration config;
+        private DecompilerEventListener eventListener;
         private DecompilerProject project;
         private Program prog;
 
-        public Loader(string filename, DecompilerHost host)
+        public Loader(string filename, DecompilerConfiguration config, DecompilerEventListener eventListener)
         {
             this.filename = filename;
-            this.host = host;
+            this.config = config;
+            this.eventListener = eventListener;
         }
 
         /// <summary>
@@ -88,12 +90,12 @@ namespace Decompiler.Loading
 
         private ImageLoader FindImageLoader(byte[] rawBytes)
         {
-            foreach (LoaderElement e in host.Configuration.GetImageLoaders())
+            foreach (LoaderElement e in config.GetImageLoaders())
             {
                 if (ImageBeginsWithMagicNumber(rawBytes, e.MagicNumber))
                     return CreateImageLoader(e.TypeName, rawBytes);
             }
-            host.WriteDiagnostic(Diagnostic.Warning, new Address(0), "The format of the file {0} is unknown; you will need to specify it manually.", filename);
+            eventListener.WriteDiagnostic(DiagnosticOld.Warning, new Address(0), "The format of the file {0} is unknown; you will need to specify it manually.", filename);
             return new NullLoader(rawBytes);
         }
 

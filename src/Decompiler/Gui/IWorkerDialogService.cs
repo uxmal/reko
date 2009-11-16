@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,15 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
-namespace Decompiler.Structure
+namespace Decompiler.Gui
 {
-	public class StructureBuilder
-	{
-	}
+    public interface IWorkerDialogService
+    {
+        bool StartBackgroundWork(string caption, ThreadStart backgroundWork);
+    }
 }

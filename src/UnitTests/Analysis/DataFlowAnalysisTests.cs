@@ -20,6 +20,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Lib;
 using Decompiler.Analysis;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
@@ -169,7 +170,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
-			dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
+			dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{

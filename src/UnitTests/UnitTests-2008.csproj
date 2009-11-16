@@ -189,13 +189,17 @@
     <Compile Include="Mocks\ArrayMock.cs" />
     <Compile Include="Mocks\BigLoopHeadFragment.cs" />
     <Compile Include="Mocks\ByteArrayLoopMock.cs" />
+    <Compile Include="Mocks\FakeDecompilerConfiguration.cs" />
+    <Compile Include="Mocks\FakeDecompilerEventListener.cs" />
     <Compile Include="Mocks\CmpMock.cs" />
     <Compile Include="Mocks\DoWhileFragment.cs" />
     <Compile Include="Mocks\DoWhileIfFragment.cs" />
     <Compile Include="Mocks\FactorialMock.cs" />
     <Compile Include="Mocks\FakeComponentSite.cs" />
+    <Compile Include="Mocks\FakeDecompilerHost.cs" />
     <Compile Include="Mocks\FakeLoader.cs" />
     <Compile Include="Mocks\FakeUiService.cs" />
+    <Compile Include="Mocks\FakeWorkerDialogService.cs" />
     <Compile Include="Mocks\LiveCopyMock.cs" />
     <Compile Include="Mocks\LiveLoopMock.cs" />
     <Compile Include="Mocks\MockCodeWalker.cs" />

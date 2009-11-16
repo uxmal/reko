@@ -75,6 +75,7 @@ namespace Decompiler.Structure
             }
             return null;
         }
+
         public List<StructureNode> Nodes
         {
             get { return nodes; }

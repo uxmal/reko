@@ -33,7 +33,7 @@ namespace Decompiler.Scanning
 	public class RewriterHost : IRewriterHost
 	{
 		private Program prog;
-		private DecompilerHost host;
+		private DecompilerEventListener eventListener;
 		private Map<Address,VectorUse> vectorUses;
 		private Dictionary<Procedure, Procedure> proceduresRewritten;
         private SortedList<Address, SystemService> syscalls;
@@ -41,14 +41,18 @@ namespace Decompiler.Scanning
 		private Dictionary<Address,ProcedureSignature> callSignatures;
 		private ProcedureRewriter prw;
 
-		public RewriterHost(Program prog, DecompilerHost host, SortedList<Address,SystemService> syscalls, Map<Address,VectorUse> vectorUses)
+		public RewriterHost(
+            Program prog, 
+            DecompilerEventListener eventListener,
+            SortedList<Address,SystemService> syscalls,
+            Map<Address,VectorUse> vectorUses)
 		{
 			this.prog = prog;
             this.proceduresRewritten = new Dictionary<Procedure, Procedure>();
 			this.vectorUses = vectorUses;
 			this.syscalls = syscalls;
 			this.crw = new CallRewriter();
-			this.host = host;
+			this.eventListener = eventListener;
             this.callSignatures = new Dictionary<Address, ProcedureSignature>();
 		}
 
@@ -174,7 +178,7 @@ namespace Decompiler.Scanning
 			} 
 			catch (Exception ex)
 			{
-				if (host != null) host.WriteDiagnostic(Diagnostic.FatalError, null, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message);
+				if (eventListener != null) eventListener.WriteDiagnostic(DiagnosticOld.FatalError, null, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message);
 				throw;
 			}
 		}
@@ -183,7 +187,7 @@ namespace Decompiler.Scanning
 		{
 			// Rewrite the blocks in the procedure.
 
-			prw = new ProcedureRewriter(this, proc);
+			prw = new ProcedureRewriter(this, arch, proc);
             Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, this);
 			prw.Rewriter = rw;
 			prw.RewriteBlock(addrProc, proc.EntryBlock);
@@ -205,7 +209,7 @@ namespace Decompiler.Scanning
 			SystemService svc = null;
             if (!syscalls.TryGetValue(addrInstr, out svc))
             {
-				host.WriteDiagnostic(Diagnostic.Warning, addrInstr, "System call at this address wasn't previously recorded.");
+				eventListener.WriteDiagnostic(DiagnosticOld.Warning, addrInstr, "System call at this address wasn't previously recorded.");
 			}
 			return svc;
 		}
@@ -229,10 +233,10 @@ namespace Decompiler.Scanning
 		}
 
         //$REVIEW: another place where calling the diagnostic service directly would be better.
-		public void WriteDiagnostic(Diagnostic diagnostic, Address addr, string format, params object [] args)
+		public void WriteDiagnostic(DiagnosticOld diagnostic, Address addr, string format, params object [] args)
 		{
-			if (host != null)
-				host.WriteDiagnostic(diagnostic, addr, format, args);
+			if (eventListener != null)
+				eventListener.WriteDiagnostic(diagnostic, addr, format, args);
 		}
 	}
 }

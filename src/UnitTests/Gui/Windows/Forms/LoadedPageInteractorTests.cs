@@ -61,9 +61,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             TestLoader ldr = new TestLoader(new DecompilerProject(), prog);
             decSvc = new DecompilerService();
-            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost());
+            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), new FakeDecompilerEventListener());
             decSvc.Decompiler.LoadProgram();
             site.AddService(typeof(IDecompilerService), decSvc);
+            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
 
             interactor.Site = site;
 		}

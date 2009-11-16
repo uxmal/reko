@@ -52,10 +52,10 @@ namespace Decompiler.UnitTests.Typing
 			Scanner scan = new Scanner(prog, null);
 			scan.EnqueueEntryPoint(ep);
 			scan.ProcessQueues();
-			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerHost(), scan.SystemCalls, scan.VectorUses);
+			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerEventListener(), scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
             return prog;
 		}
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Typing
         protected void RunTest(ProgramMock mock, string outputFile)
         {
             Program prog = mock.BuildProgram();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
+            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
             dfa.DumpProgram();
             dfa.BuildExpressionTrees();
             RunTest(prog, outputFile);

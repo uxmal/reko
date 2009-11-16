@@ -21,6 +21,7 @@ using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Loading;
 using Decompiler.Scanning;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Text;
@@ -37,7 +38,7 @@ namespace Decompiler.UnitTests.Loading
 		{
 			byte [] image = new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
 				"<input><filename>foo.bar</filename></input></project>");
-            TestLoader ldr = new TestLoader(new Program(), new FakeDecompilerHost());
+            TestLoader ldr = new TestLoader(new Program(), new FakeDecompilerEventListener());
 			ldr.Image = image;
 			ldr.Load(null);
 			Assert.AreEqual("foo.bar", ldr.Project.Input.Filename);
@@ -46,20 +47,20 @@ namespace Decompiler.UnitTests.Loading
         [Test]
         public void Match()
         {
-            TestLoader ldr = new TestLoader(new Program(), new FakeDecompilerHost());
+            TestLoader ldr = new TestLoader(new Program(), new FakeDecompilerEventListener());
             Assert.IsTrue(ldr.ImageBeginsWithMagicNumber(new byte[] { 0x47, 0x11 }, "4711"));
         }
 
         [Test]
         public void LoadUnknownImageType()
         {
-            FakeDecompilerHost host = new FakeDecompilerHost();
+            FakeDecompilerEventListener eventListener = new FakeDecompilerEventListener();
             Program prog = new Program();
-            TestLoader ldr = new TestLoader(prog, host);
+            TestLoader ldr = new TestLoader(prog, eventListener);
             ldr.Image = new byte[] { 42, 42, 42, 42, };
             ldr.Load(null);
 
-            Assert.AreEqual("Warning - 00000000: The format of the file test.bin is unknown; you will need to specify it manually." , host.LastDiagnostic);
+            Assert.AreEqual("Warning - 00000000: The format of the file test.bin is unknown; you will need to specify it manually." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, ldr.Program.Image.BaseAddress.Offset);
             Assert.IsNull(ldr.Program.Architecture);
             Assert.IsNull(ldr.Program.Platform);
@@ -68,8 +69,8 @@ namespace Decompiler.UnitTests.Loading
 
 		private class TestLoader : Loader
 		{
-			public TestLoader(Program prog, DecompilerHost host)
-				: base("test.bin", host)
+			public TestLoader(Program prog, DecompilerEventListener eventListener)
+				: base("test.bin", new FakeDecompilerConfiguration(), eventListener)
 			{
 			}
 

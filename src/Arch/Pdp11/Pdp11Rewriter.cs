@@ -26,13 +26,13 @@ namespace Decompiler.Arch.Pdp11
     public class Pdp11Rewriter : Rewriter
     {
         public Pdp11Rewriter(Pdp11Architecture arch, IProcedureRewriter prw)
-            : base(arch, prw)
+            : base(prw)
         {
         }
 
         public override void EmitCallAndReturn(Procedure callee)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitter emitter)

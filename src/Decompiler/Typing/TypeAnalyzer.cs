@@ -35,7 +35,7 @@ namespace Decompiler.Typing
 	public class TypeAnalyzer
 	{
 		private Program prog;
-		private DecompilerHost host;
+        private DecompilerEventListener host;
 
 		private TypeFactory factory;
 		private TypeStore store;
@@ -49,7 +49,7 @@ namespace Decompiler.Typing
 		private ComplexTypeNamer ctn;
 		private TypedExpressionRewriter ter;
 
-		public TypeAnalyzer(Program prog, DecompilerHost host)
+		public TypeAnalyzer(Program prog, DecompilerEventListener host)
 		{
 			this.prog = prog;
 			this.host = host;
@@ -82,16 +82,16 @@ namespace Decompiler.Typing
 			aen.Transform(prog);
 			eqb.Build(prog);
 			Debug.WriteLine("= Collecting traits ========================================");
-            host.WriteDiagnostic(Diagnostic.Info, null, "Collecting traits");
+            host.WriteDiagnostic(DiagnosticOld.Info, null, "Collecting traits");
 			trco.CollectProgramTraits(prog);
 			Debug.WriteLine("= Building equivalence classes =============================");
-            host.WriteDiagnostic(Diagnostic.Info, null, "Building equivalence classes");
+            host.WriteDiagnostic(DiagnosticOld.Info, null, "Building equivalence classes");
 			dtb.BuildEquivalenceClassDataTypes();
 			dpa.FollowConstantPointers(prog);
 			tvr.ReplaceTypeVariables();
 			Debug.WriteLine("= replaced type variables ==================================");
 
-            host.WriteDiagnostic(Diagnostic.Info, null, "Transforming types");
+            host.WriteDiagnostic(DiagnosticOld.Info, null, "Transforming types");
 			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
 			ppr.ReplaceAll();
 
@@ -101,7 +101,7 @@ namespace Decompiler.Typing
 			Debug.WriteLine("= transformed types ========================================");
 			Debug.WriteLine("= Rewriting expressions ====================================");
 			store.Dump();
-            host.WriteDiagnostic(Diagnostic.Info, null, "Rewriting expressions");
+            host.WriteDiagnostic(DiagnosticOld.Info, null, "Rewriting expressions");
 			ter.RewriteProgram(prog);
 		}
 

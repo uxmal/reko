@@ -23,6 +23,10 @@ using System.Text;
 
 namespace Decompiler.Loading
 {
+    /// <summary>
+    /// The NullLoader is used when the decompiler is unable to determine what image loader to use.
+    /// It supports no disassembly.
+    /// </summary>
     public class NullLoader : ImageLoader
     {
         private byte[] imageBytes;
