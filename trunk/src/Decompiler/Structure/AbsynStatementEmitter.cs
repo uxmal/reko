@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Decompiler.Structure
 {
-    public class AbsynStatementEmitter : InstructionVisitor
+    public class AbsynStatementEmitter : InstructionVisitor, IAbsynVisitor
     {
         private List<AbsynStatement> stms;
         private bool stripDeclarations;
@@ -184,5 +184,74 @@ namespace Decompiler.Structure
 
         #endregion
 
+
+        #region IAbsynVisitor Members
+
+        public void VisitAssignment(AbsynAssignment ass)
+        {
+            stms.Add(ass);
+        }
+
+        public void VisitBreak(AbsynBreak brk)
+        {
+            stms.Add(brk);
+        }
+
+        public void VisitCase(AbsynCase absynCase)
+        {
+            stms.Add(absynCase);
+        }
+
+        public void VisitContinue(AbsynContinue cont)
+        {
+            stms.Add(cont);
+        }
+
+        public void VisitDeclaration(AbsynDeclaration decl)
+        {
+            stms.Add(decl);
+        }
+
+        public void VisitDoWhile(AbsynDoWhile loop)
+        {
+            stms.Add(loop);
+        }
+
+        public void VisitGoto(AbsynGoto gotoStm)
+        {
+            stms.Add(gotoStm);
+        }
+
+        public void VisitIf(AbsynIf ifStm)
+        {
+            stms.Add(ifStm);
+        }
+
+        public void VisitLabel(AbsynLabel lbl)
+        {
+            stms.Add(lbl);
+        }
+
+        public void VisitReturn(AbsynReturn ret)
+        {
+            stms.Add(ret);
+        }
+
+        public void VisitSideEffect(AbsynSideEffect side)
+        {
+            stms.Add(side);
+        }
+
+        public void VisitSwitch(AbsynSwitch absynSwitch)
+        {
+            stms.Add(absynSwitch);
+        }
+
+        public void VisitWhile(AbsynWhile loop)
+        {
+            stms.Add(loop);
+        }
+
+        #endregion
     }
 }

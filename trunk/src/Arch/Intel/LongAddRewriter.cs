@@ -29,13 +29,13 @@ namespace Decompiler.Arch.Intel
 	{
 		private Frame frame;
 		private OperandRewriter orw;
-		private RewriterState state;
+		private IntelRewriterState state;
 
 		private Expression dst;
 		private Expression src;
 		private bool useStore;
 
-		public LongAddRewriter(Frame frame, OperandRewriter orw, RewriterState state)
+		public LongAddRewriter(Frame frame, OperandRewriter orw, IntelRewriterState state)
 		{
 			this.frame = frame;
 			this.orw = orw;

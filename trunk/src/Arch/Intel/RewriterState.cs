@@ -26,7 +26,7 @@ namespace Decompiler.Arch.Intel
 	/// Keeps track of internal state for the IntelRewriter. Useful when forking at the
 	/// rewriting of branches and switch statements.
 	/// </summary>
-	public class RewriterState
+	public class IntelRewriterState : RewriterState
 	{
 		private Frame frame;
 		private int cbStackDepth;
@@ -34,7 +34,7 @@ namespace Decompiler.Arch.Intel
 		private MachineRegister frameReg;
 		private Address addrCur;
 
-		public RewriterState(Frame frame)
+		public IntelRewriterState(Frame frame)
 		{
 			this.frame = frame;
 			cbStackDepth = 0;
@@ -48,9 +48,9 @@ namespace Decompiler.Arch.Intel
 			set { addrCur = value; }
 		}
 
-		public RewriterState Clone()
+		public IntelRewriterState Clone()
 		{
-			RewriterState state = new RewriterState(frame);
+			IntelRewriterState state = new IntelRewriterState(frame);
 			state.cbStackDepth = cbStackDepth;
 			state.fpuStackDepth = fpuStackDepth;
 			state.frameReg = frameReg;

@@ -69,6 +69,7 @@ namespace Decompiler.Scanning
 			return block.Succ.Count == 0;
 		}
 
+
         public Block RewriteBlock(Address addr, Block pred)
         {
             Block block;

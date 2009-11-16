@@ -72,7 +72,7 @@ namespace Decompiler.Arch.Intel
 		/// <param name="opSrc"></param>
 		/// <param name="fDefined"></param>
 		/// <returns></returns>
-		private Expression ConvertNonMemoryOperand(MachineOperand op, PrimitiveType dataWidth, RewriterState state)
+		private Expression ConvertNonMemoryOperand(MachineOperand op, PrimitiveType dataWidth, IntelRewriterState state)
 		{
 			RegisterOperand reg = op as RegisterOperand;
 			if (reg != null)
@@ -124,7 +124,7 @@ namespace Decompiler.Arch.Intel
 			return frame.EnsureFlagGroup((uint) flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
 		}
 
-		public Address OperandAsCodeAddress(MachineOperand op, RewriterState state)
+		public Address OperandAsCodeAddress(MachineOperand op, IntelRewriterState state)
 		{
 			AddressOperand ado = op as AddressOperand;
 			if (ado != null)
@@ -142,7 +142,7 @@ namespace Decompiler.Arch.Intel
 			return null;
 		}
 
-		public Expression Transform(MachineOperand opSrc, PrimitiveType dataWidth, PrimitiveType addrWidth, RewriterState state)
+		public Expression Transform(MachineOperand opSrc, PrimitiveType dataWidth, PrimitiveType addrWidth, IntelRewriterState state)
 		{
 			Expression e = ConvertNonMemoryOperand(opSrc, dataWidth, state);
 			if (e != null)
@@ -167,12 +167,12 @@ namespace Decompiler.Arch.Intel
 		// o => o
 
 
-		public MemoryAccess CreateMemoryAccess(MemoryOperand mem, RewriterState state)
+		public MemoryAccess CreateMemoryAccess(MemoryOperand mem, IntelRewriterState state)
 		{
 			return CreateMemoryAccess(mem, mem.Width, state);
 		}
 
-		public MemoryAccess CreateMemoryAccess(MemoryOperand mem, DataType dt, RewriterState state)
+		public MemoryAccess CreateMemoryAccess(MemoryOperand mem, DataType dt, IntelRewriterState state)
 		{
 			Expression expr = EffectiveAddressExpression(mem, state);
 			if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
@@ -188,7 +188,7 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
-		public Expression EffectiveAddressExpression(MemoryOperand mem, RewriterState state)
+		public Expression EffectiveAddressExpression(MemoryOperand mem, IntelRewriterState state)
 		{
 			// Memory accesses are translated into expressions.
 
@@ -268,7 +268,7 @@ namespace Decompiler.Arch.Intel
 		/// </summary>
 		/// <param name="reg"></param>
 		/// <returns></returns>
-		public Identifier FpuRegister(int reg, RewriterState state)
+		public Identifier FpuRegister(int reg, IntelRewriterState state)
 		{
 			return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
 		}
@@ -283,7 +283,7 @@ namespace Decompiler.Arch.Intel
 			return null;
 		}
 
-		public bool IsFrameRegisterReference(MachineRegister reg, RewriterState state)
+		public bool IsFrameRegisterReference(MachineRegister reg, IntelRewriterState state)
 		{
 			return IsStackRegister(reg) || 
 				(state.FrameRegister != MachineRegister.None && state.FrameRegister == reg);
@@ -300,7 +300,7 @@ namespace Decompiler.Arch.Intel
 			return frame.CreateTemporary(width);
 		}
 	
-		public Constant ReplaceCodeSegment(MachineRegister reg, RewriterState state)
+		public Constant ReplaceCodeSegment(MachineRegister reg, IntelRewriterState state)
 		{
 			if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
 				return new Constant(PrimitiveType.Word16, state.CodeSegment);

@@ -37,7 +37,7 @@ namespace Decompiler.Arch.Intel
 		private Address addrEnd;			// address of the end of this block.
 		private IntelInstruction instrCur;	// current instruction being rewritten.
 
-		private RewriterState state;
+		private IntelRewriterState state;
 		private int maxFpuStackRead;
 		private int maxFpuStackWrite;
 		private OperandRewriter orw;
@@ -50,7 +50,7 @@ namespace Decompiler.Arch.Intel
 			Procedure proc,
 			IRewriterHost host,
 			IntelArchitecture arch,
-			RewriterState state) : base(prw)
+			IntelRewriterState state) : base(prw)
 		{
 			this.host = host;
 			this.proc = proc;
@@ -1073,7 +1073,6 @@ namespace Decompiler.Arch.Intel
             Block blockTarget = EmitBranchPath(blockHead, orw.OperandAsCodeAddress(opTarget, state));
             e.Branch(branchCondition, blockTarget);
             return blockTarget;
-
         }
 
         //$REFACTOR: move to ProcedureRewriter.
@@ -1096,7 +1095,7 @@ namespace Decompiler.Arch.Intel
 			}
 			else
 			{
-				RewriterState savedState = state.Clone();
+				IntelRewriterState savedState = state.Clone();
 				blockTo = ProcedureRewriter.RewriteBlock(addrTo, blockHead);
 				state = savedState;
 			}
