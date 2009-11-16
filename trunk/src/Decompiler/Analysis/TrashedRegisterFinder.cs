@@ -39,7 +39,7 @@ namespace Decompiler.Analysis
 		private WorkList<Block> worklist;
 		private TrashStorageHelper tsh;
         private readonly TrashStorage trash;
-		private DecompilerHost decompilerHost;
+		private DecompilerEventListener eventListener;
 
 		public TrashedRegisterFinder(Program prog, ProgramDataFlow flow)
 		{
@@ -69,8 +69,8 @@ namespace Decompiler.Analysis
             Block block;
 			while (worklist.GetWorkItem(out block))
 			{
-				if (decompilerHost != null)
-					decompilerHost.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
+				if (eventListener != null)
+					eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
 
 				ProcessBlock(block);
 			}
@@ -78,10 +78,11 @@ namespace Decompiler.Analysis
 		}
 
 
-		public DecompilerHost DecompilerHost
+        [Obsolete("Pass in as a constructor parameter.")]
+		public DecompilerEventListener DecompilerHost
 		{
-			get { return decompilerHost; }
-			set { decompilerHost = value; }
+			get { return eventListener; }
+			set { eventListener = value; }
 		}
 
 		public void FillWorklist()

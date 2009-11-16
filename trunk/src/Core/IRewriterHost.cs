@@ -34,6 +34,6 @@ namespace Decompiler.Core
 		SystemService SystemCallAt(Address addr);
 		PseudoProcedure TrampolineAt(Address addr);
 		ProgramImage Image { get; }
-		void WriteDiagnostic(Diagnostic d, Address addr, string format, params object [] args);     //$REVIEW: callers should use IDiagnosticService
+		void WriteDiagnostic(DiagnosticOld d, Address addr, string format, params object [] args);     //$REVIEW: callers should use IDiagnosticService
 	}
 }

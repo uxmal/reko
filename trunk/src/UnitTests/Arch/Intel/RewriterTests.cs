@@ -23,6 +23,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
 using Decompiler.Scanning;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
@@ -83,7 +84,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 				}
 			}
 			scanner.ProcessQueues();
-			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerHost(), scanner.SystemCalls, scanner.VectorUses);
+			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerEventListener(), scanner.SystemCalls, scanner.VectorUses);
 			rw.RewriteProgram();
 		}
 

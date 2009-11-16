@@ -50,7 +50,7 @@ namespace Decompiler.Arch.Intel
 			Procedure proc,
 			IRewriterHost host,
 			IntelArchitecture arch,
-			RewriterState state) : base(arch, prw)
+			RewriterState state) : base(prw)
 		{
 			this.host = host;
 			this.proc = proc;
@@ -1642,7 +1642,7 @@ namespace Decompiler.Arch.Intel
             if (frame.ReturnAddressSize != cbReturnAddress)
             {
                 host.WriteDiagnostic(
-                    Diagnostic.Warning,
+                    DiagnosticOld.Warning,
                     state.InstructionAddress,
                     "Return instruction expects a return address of {0} bytes, but procedure {1} was called with a return address of {2} bytes.",
                     cbReturnAddress, this.proc, frame.ReturnAddressSize);
@@ -1651,7 +1651,7 @@ namespace Decompiler.Arch.Intel
             if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != cbBytesPop)
             {
                 host.WriteDiagnostic(
-                    Diagnostic.Warning,
+                    DiagnosticOld.Warning,
                     state.InstructionAddress,
                     "Multiple values of stack delta in procedure {0} when processung RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta);
             }

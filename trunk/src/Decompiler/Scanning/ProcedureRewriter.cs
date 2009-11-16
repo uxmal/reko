@@ -31,17 +31,19 @@ namespace Decompiler.Scanning
 		private Procedure proc;
 		private Rewriter rewriter; 
 		private Dictionary<Address,Block> blocksVisited;
+        private IProcessorArchitecture arch;
 
-        public ProcedureRewriter(IRewriterHost host, Procedure proc)
+        public ProcedureRewriter(IRewriterHost host, IProcessorArchitecture arch, Procedure proc)
         {
             this.host = host;
+            this.arch = arch;
             this.proc = proc;
             this.blocksVisited = new Dictionary<Address, Block>();
         }
 
         public CodeEmitter CreateEmitter(Block block)
         {
-            return new CodeEmitter(rewriter.Architecture, host, proc, block);
+            return new CodeEmitter(arch, host, proc, block);
         }
 
 		public void HandleFallThrough(Block block, Address addr)
@@ -124,7 +126,7 @@ namespace Decompiler.Scanning
             List<MachineInstruction> instrs,
             List<Address> addrs)
         {
-            Disassembler dasm = rewriter.Architecture.CreateDisassembler(host.CreateImageReader(addrStart));
+            Disassembler dasm = arch.CreateDisassembler(host.CreateImageReader(addrStart));
             while (dasm.Address < addrEnd)
             {
                 addrs.Add(dasm.Address);

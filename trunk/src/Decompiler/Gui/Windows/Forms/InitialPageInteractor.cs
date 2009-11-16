@@ -26,7 +26,7 @@ using System.Windows.Forms;
 namespace Decompiler.Gui.Windows.Forms
 {
 	/// <summary>
-	/// Handles interactions on InitialPage
+	/// Handles interactions on InitialPage.
 	/// </summary>
 	public class InitialPageInteractor : PhasePageInteractor
 	{

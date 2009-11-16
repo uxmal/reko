@@ -34,18 +34,6 @@ namespace Decompiler
 		TextWriter CreateDecompiledCodeWriter(string filename);	// Textwriter into which the Data is written
 
         DecompilerConfiguration Configuration { get; }
-
-		void ProgramLoaded();
-		void ProgramScanned();
-		void MachineCodeRewritten();
-		void InterproceduralAnalysisComplete();
-		void ProceduresTransformed();
-		void TypeReconstructionComplete();
-		void CodeStructuringComplete();
-		void DecompilationFinished();
- 
-		void WriteDiagnostic(Diagnostic d, Address addr, string format, params object [] args);
-		void ShowProgress(string caption, int numerator, int denominator);
 	}
 
 	/// <summary>
@@ -123,7 +111,7 @@ namespace Decompiler
 			throw new Exception("The method or operation is not implemented.");
 		}
 
-		public void WriteDiagnostic(Diagnostic d, Address address, string format, params object[] args)
+		public void WriteDiagnostic(DiagnosticOld d, Address address, string format, params object[] args)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}

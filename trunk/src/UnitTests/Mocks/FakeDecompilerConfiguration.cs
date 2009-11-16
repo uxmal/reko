@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,30 +16,21 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core.Code;
+using Decompiler.Configuration;
 using System;
 using System.Collections.Generic;
-namespace Decompiler.Core
+using System.Text;
+
+namespace Decompiler.UnitTests.Mocks
 {
-	/// <summary>
-	/// Rewrites code from machine-specific to machine-independent IL codes.
-	/// </summary>
-	public abstract class Rewriter
-	{
-        private IProcedureRewriter prw;
+    public class FakeDecompilerConfiguration : DecompilerConfiguration
+    {
+        private System.Collections.ArrayList imageLoaders = new System.Collections.ArrayList();
 
-        public Rewriter(IProcedureRewriter prw)
+        public override System.Collections.ICollection GetImageLoaders()
         {
-            this.prw = prw;
+            return imageLoaders;
         }
-
-        public IProcedureRewriter ProcedureRewriter
-        {
-            get { return prw; }
-        }
-
-        public abstract void ConvertInstructions(MachineInstruction [] instrs, Address [] addrs, uint [] deadOutFlags,  Address addrEnd, CodeEmitter emitter);
-
-		public abstract void EmitCallAndReturn(Procedure callee);
     }
+
 }

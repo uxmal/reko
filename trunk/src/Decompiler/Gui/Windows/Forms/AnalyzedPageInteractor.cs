@@ -50,17 +50,22 @@ namespace Decompiler.Gui.Windows.Forms
         }
 
 
-		public override void EnterPage()
-		{
+        public override void EnterPage()
+        {
             browserSvc.Enabled = true;
 
-			Decompiler.RewriteMachineCode();
-			Decompiler.AnalyzeDataFlow();
+            WorkerDialogService.StartBackgroundWork(
+                "Generating intermediate code",
+                delegate()
+                {
+                    Decompiler.RewriteMachineCode();
+                    Decompiler.AnalyzeDataFlow();
+                });
 
             PopulateBrowserListWithProcedures();
-			page.PerformTypeRecovery.Checked = Decompiler.Project.Output.TypeInference;
+            page.PerformTypeRecovery.Checked = Decompiler.Project.Output.TypeInference;
             browserSvc.SelectionChanged += new EventHandler(BrowserList_SelectedIndexChanged);
-		}
+        }
 
 
 		public override bool LeavePage()

@@ -16,9 +16,10 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Output;
-using Decompiler.Analysis;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -143,7 +144,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
-			dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
+			dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{

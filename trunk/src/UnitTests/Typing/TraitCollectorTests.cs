@@ -300,7 +300,7 @@ namespace Decompiler.UnitTests.Typing
 			ProgramMock m = new ProgramMock();
 			m.Add(new IntelIndexedAddressingMode());
 			Program prog = m.BuildProgram();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			RunTest(prog, "Typing/TrcoIntelIndexedAddressingMode.txt");
 		}
@@ -311,7 +311,7 @@ namespace Decompiler.UnitTests.Typing
 			ProgramMock m = new ProgramMock();
 			m.Add(new TreeFindMock());
 			Program prog = m.BuildProgram();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			RunTest(prog, "Typing/TrcoTreeFind.txt");
 		}

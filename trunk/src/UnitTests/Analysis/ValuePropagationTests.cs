@@ -293,7 +293,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{

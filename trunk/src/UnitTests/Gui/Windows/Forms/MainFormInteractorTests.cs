@@ -22,6 +22,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
+using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using System;
@@ -129,10 +130,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void GetDiagnostics()
         {
             CreateMainFormInteractorWithLoader();
+            form.Show();
             object oSvc = interactor.ProbeGetService(typeof(IDiagnosticsService));
             Assert.IsNotNull(oSvc, "IDiagnosticsService should be available!");
             IDiagnosticsService svc = (IDiagnosticsService) oSvc;
-            svc.AddDiagnostic(Diagnostic.Warning, new Address(0x30000), "Whoa");
+            svc.AddDiagnostic(DiagnosticOld.Warning, new Address(0x30000), "Whoa");
             Assert.AreEqual(1, form.DiagnosticsList.Items.Count, "Should have added an item to diagnostics list.");
         }
 
@@ -152,6 +154,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(MenuStatus.Visible, status.Status);
         }
 
+        [Test]
+        public void GetWorkerService()
+        {
+            CreateMainFormInteractor();
+            Assert.IsNotNull(interactor.ProbeGetService(typeof(IWorkerDialogService)));
+
+        }
         private Program CreateFakeProgram()
         {
             Program prog = new Program();

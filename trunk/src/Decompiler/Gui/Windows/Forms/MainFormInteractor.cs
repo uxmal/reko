@@ -90,7 +90,7 @@ namespace Decompiler.Gui.Windows.Forms
 
 		public virtual DecompilerDriver CreateDecompiler(LoaderBase ldr)
 		{
-            return new DecompilerDriver(ldr, this);
+            return  new DecompilerDriver(ldr, this, GetService<DecompilerEventListener>());
 		}
 
         public MainForm CreateForm()
@@ -116,7 +116,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         protected virtual LoaderBase CreateLoader(string filename)
         {
-            return new Loader(filename, this);
+            return new Loader(filename, this.Configuration, GetService<DecompilerEventListener>());
         }
 
 		public virtual Program CreateProgram()
@@ -142,7 +142,12 @@ namespace Decompiler.Gui.Windows.Forms
 
             ProgramImageBrowserService pibSvc = new ProgramImageBrowserService(form.BrowserList);
             sc.AddService(typeof(IProgramImageBrowserService), pibSvc);
+
+            WindowsDecompilerEventListener wdel = new WindowsDecompilerEventListener(sc);
+            sc.AddService(typeof(IWorkerDialogService), wdel);
+            sc.AddService(typeof(DecompilerEventListener), wdel);       
         }
+
 
 		public virtual TextWriter CreateTextWriter(string filename)
 		{
@@ -177,7 +182,12 @@ namespace Decompiler.Gui.Windows.Forms
 				Program prog = CreateProgram();
                 LoaderBase ldr = CreateLoader(file);
 				decompilerSvc.Decompiler = CreateDecompiler(ldr);
-				decompilerSvc.Decompiler.LoadProgram();
+                IWorkerDialogService svc = GetService<IWorkerDialogService>();
+                    svc.StartBackgroundWork("Loading program", 
+                        delegate()
+                    {
+                        decompilerSvc.Decompiler.LoadProgram();
+                    });
                 SwitchInteractor(pageLoaded);
             } 
 			catch (Exception ex)
@@ -185,6 +195,11 @@ namespace Decompiler.Gui.Windows.Forms
 				uiSvc.ShowError("Couldn't open file '{0}'. {1}", file, ex.Message);
 			}
 		}
+
+        private T GetService<T>()
+        {
+            return (T)GetService(typeof(T));
+        }
 
 		public void OpenBinaryWithPrompt()
 		{
@@ -447,7 +462,7 @@ namespace Decompiler.Gui.Windows.Forms
 			form.SetStatus("Data types reconstructed.");
 		}
 
-		public void WriteDiagnostic(Diagnostic d, Address addr, string format, params object[] args)
+		public void WriteDiagnostic(DiagnosticOld d, Address addr, string format, params object[] args)
 		{
             IDiagnosticsService svc = (IDiagnosticsService) GetService(typeof(IDiagnosticsService));
             if (svc != null)
@@ -496,7 +511,7 @@ namespace Decompiler.Gui.Windows.Forms
 		private void toolBar_ItemClicked(object sender, System.Windows.Forms.ToolStripItemClickedEventArgs e)
 		{
 			MenuCommand cmd = e.ClickedItem.Tag as MenuCommand;
-			if (cmd == null) throw new NotImplementedException("Button not hooked up");
+			if (cmd == null) throw new NotImplementedException("Button not hooked up.");
 			Guid g = cmd.CommandID.Guid;
 			Execute(ref g, cmd.CommandID.ID);
 		}

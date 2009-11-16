@@ -26,16 +26,11 @@ namespace Decompiler.Arch.M68k
     public class Rewriter : Decompiler.Core.Rewriter
     {
         public Rewriter(M68kArchitecture arch, IProcedureRewriter prw)
-            : base(arch, prw)
+            : base(prw)
         {
         }
 
         public override void EmitCallAndReturn(Procedure callee)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void RewriteInstructions(Address addr, int length, Block block)
         {
             throw new NotImplementedException();
         }

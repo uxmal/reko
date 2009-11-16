@@ -23,6 +23,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Loading;
 using Decompiler.Scanning;
+using Decompiler.UnitTests.Mocks;
 using System;
 
 namespace Decompiler.UnitTests.Structure
@@ -50,11 +51,11 @@ namespace Decompiler.UnitTests.Structure
 
             prog.DumpAssembler(Console.Out);
 
-			DecompilerHost host = new FakeDecompilerHost();
-			RewriterHost rw = new RewriterHost(prog, host, scan.SystemCalls, scan.VectorUses);
+            DecompilerEventListener eventListener = new FakeDecompilerEventListener();
+			RewriterHost rw = new RewriterHost(prog, eventListener, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 
-			DataFlowAnalysis da = new DataFlowAnalysis(prog, host);
+			DataFlowAnalysis da = new DataFlowAnalysis(prog, eventListener);
 			da.AnalyzeProgram();
 
             return prog;

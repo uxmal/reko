@@ -45,12 +45,13 @@ namespace Decompiler
 		private LoaderBase loader;
 		private Scanner scanner;
 		private RewriterHost rewriterHost;
+        private DecompilerEventListener eventListener;
 
-
-        public DecompilerDriver(LoaderBase ldr, DecompilerHost host)
+        public DecompilerDriver(LoaderBase ldr, DecompilerHost host, DecompilerEventListener eventListener)
         {
             this.loader = ldr;
             this.host = host;
+            this.eventListener = eventListener;
         }
 
 		///<summary>
@@ -59,9 +60,9 @@ namespace Decompiler
 		///</summary>
 		public virtual DataFlowAnalysis AnalyzeDataFlow()
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, host);
+			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, eventListener);
 			dfa.UntangleProcedures();
-			host.InterproceduralAnalysisComplete();
+			eventListener.InterproceduralAnalysisComplete();
 
 			dfa.BuildExpressionTrees();
 			using (TextWriter textWriter = host.GetIntermediateCodeWriter())
@@ -69,7 +70,7 @@ namespace Decompiler
 				if (textWriter != null)
 					EmitProgram(dfa, textWriter);
 			}
-			host.ProceduresTransformed();
+			eventListener.ProceduresTransformed();
             return dfa;
 		}
 
@@ -90,11 +91,11 @@ namespace Decompiler
 			} 
 			catch (Exception e)
 			{
-				host.WriteDiagnostic(Diagnostic.FatalError, null, "{0}", e.Message + Environment.NewLine + e.StackTrace);
+				eventListener.WriteDiagnostic(DiagnosticOld.FatalError, null, "{0}", e.Message + Environment.NewLine + e.StackTrace);
 			}				
 			finally
 			{
-				host.DecompilationFinished();
+				eventListener.DecompilationFinished();
 			}
 		}
 
@@ -147,7 +148,7 @@ namespace Decompiler
             loader.Load(null);
             project = loader.Project;
             prog = loader.Program;
-			host.ProgramLoaded();
+			eventListener.ProgramLoaded();
 		}
 
 		public Program Program
@@ -169,7 +170,7 @@ namespace Decompiler
 		{
 			if (project.Output.TypeInference)
 			{
-				TypeAnalyzer analyzer = new TypeAnalyzer(prog, host);
+				TypeAnalyzer analyzer = new TypeAnalyzer(prog, eventListener);
 				analyzer.RewriteProgram();
 				using (TextWriter w = host.CreateTypesWriter(project.Output.TypesFilename))
 				{
@@ -192,12 +193,12 @@ namespace Decompiler
 		{
             if (scanner == null)
                 throw new InvalidOperationException("Program must be scanned before it can be rewritten.");
-			rewriterHost = new RewriterHost(prog, host, scanner.SystemCalls, scanner.VectorUses);
+			rewriterHost = new RewriterHost(prog, eventListener, scanner.SystemCalls, scanner.VectorUses);
 			rewriterHost.LoadCallSignatures(this.project.UserCalls);
 			rewriterHost.RewriteProgram();
 
 			EmitProgram(null, host.GetIntermediateCodeWriter());
-			host.MachineCodeRewritten();
+			eventListener.MachineCodeRewritten();
 		}
 
 		public void WriteDecompiledProcedures(DecompilerHost host)
@@ -245,7 +246,7 @@ namespace Decompiler
 		public Procedure ScanProcedure(Address addr)
 		{
 			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-				scanner = new Scanner(prog, host);
+				scanner = new Scanner(prog, eventListener);
 			Procedure proc = scanner.EnqueueProcedure(null, addr, null);
 			scanner.ProcessQueues();
             return proc;
@@ -263,7 +264,7 @@ namespace Decompiler
 
 			try
 			{
-				scanner = new Scanner(prog, host);
+				scanner = new Scanner(prog, eventListener);
 				foreach (EntryPoint ep in loader.EntryPoints)
 				{
 					prog.AddEntryPoint(ep);
@@ -274,7 +275,7 @@ namespace Decompiler
 					scanner.EnqueueUserProcedure(sp);
 				}
 				scanner.ProcessQueues();
-				host.ProgramScanned();
+				eventListener.ProgramScanned();
 			}
 			finally
 			{
@@ -297,7 +298,7 @@ namespace Decompiler
                 StructureAnalysis sa = new StructureAnalysis(proc);
                 sa.Structure();
 			}
-			host.CodeStructuringComplete();
+			eventListener.CodeStructuringComplete();
 		}
 
 

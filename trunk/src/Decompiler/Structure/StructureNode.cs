@@ -32,8 +32,6 @@ namespace Decompiler.Structure
         DFS_TAG,
         DFS_LNUM,
         DFS_RNUM,
-        DFS_PDOM,
-        DFS_CODEGEN,
     }
 
     public class StructureNode : GraphNode<StructureNode>
@@ -216,14 +214,21 @@ namespace Decompiler.Structure
         }
 
 
-        ///<summary>The innermost loop this node belongs to.</summary>
+        ///<summary>
+        ///The innermost loop this node belongs to.
+        ///</summary>
         public Loop Loop
         {
             get { return loop; }
             set { loop = value; }
         }
 
-        // Do a DFS on the graph headed by this node, giving each node it's time stamp tuple
+        public virtual string Name
+        {
+            get { return block.Name; }
+        }
+
+        // Do a DFS on the graph headed by this node, giving each node its time stamp tuple
         // that will be used for loop structuring as well as building the structure that will
         // be used for traversing the nodes in linear time. The inedges are also built during
         // this traversal.
@@ -297,14 +302,18 @@ namespace Decompiler.Structure
             order.Add(this);
         }
 
-        // Return the index of this node within the ordering array
+        /// <summary>
+        /// The index of this node within the ordering array.
+        /// </summary>
         public int Order
         {
             get { return ord; }
             set { ord = value; }
         }
 
-        // Return the index of this node within the post dominator ordering array
+        /// <summary>
+        /// The index of this node within the post dominator ordering array
+        /// </summary>
         public int RevOrder
         {
             get { return revOrd; }
@@ -348,12 +357,6 @@ namespace Decompiler.Structure
         {
             tw.Write("{0} ({1})", Block.Name, Ident());
         }
-
-        public virtual string Name
-        {
-            get { return block.Name; }
-        }
-
 
     }
 

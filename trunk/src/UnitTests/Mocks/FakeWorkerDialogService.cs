@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,30 +16,21 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core.Code;
+using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
-namespace Decompiler.Core
+using System.Text;
+using System.Threading;
+
+namespace Decompiler.UnitTests.Mocks
 {
-	/// <summary>
-	/// Rewrites code from machine-specific to machine-independent IL codes.
-	/// </summary>
-	public abstract class Rewriter
-	{
-        private IProcedureRewriter prw;
-
-        public Rewriter(IProcedureRewriter prw)
+    public class FakeWorkerDialogService : IWorkerDialogService
+    {
+        public bool StartBackgroundWork(string caption, ThreadStart backgroundWork)
         {
-            this.prw = prw;
+            backgroundWork();
+            return true;
         }
 
-        public IProcedureRewriter ProcedureRewriter
-        {
-            get { return prw; }
-        }
-
-        public abstract void ConvertInstructions(MachineInstruction [] instrs, Address [] addrs, uint [] deadOutFlags,  Address addrEnd, CodeEmitter emitter);
-
-		public abstract void EmitCallAndReturn(Procedure callee);
     }
 }

@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		private void Build(Program prog)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerHost());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{

@@ -137,18 +137,23 @@ namespace Decompiler.Gui.Windows.Forms
                 pageLoaded.MemoryControl.SelectedAddress != null;
         }
 
-		public override void EnterPage()
-		{
+        public override void EnterPage()
+        {
             browserSvc.Enabled = true;
             browserSvc.SelectionChanged += BrowserItemSelected;
 
-			Decompiler.ScanProgram();
+            WorkerDialogService.StartBackgroundWork(
+                "Scanning source program.",
+                delegate()
+                {
+                    Decompiler.ScanProgram();
+                });
 
-			pageLoaded.MemoryControl.ProgramImage = Decompiler.Program.Image;
-			pageLoaded.Disassembly.Text = "";
+            pageLoaded.MemoryControl.ProgramImage = Decompiler.Program.Image;
+            pageLoaded.Disassembly.Text = "";
 
-			PopulateBrowser();
-		}
+            PopulateBrowser();
+        }
 
 		public override bool LeavePage()
 		{

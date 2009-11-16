@@ -54,11 +54,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             TestLoader ldr = new TestLoader();
             DecompilerService decSvc = new DecompilerService();
-            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost());
+            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), new FakeDecompilerEventListener());
             decSvc.Decompiler.LoadProgram();
             prog = decSvc.Decompiler.Program;
             decSvc.Decompiler.ScanProgram();
             site.AddService(typeof(IDecompilerService), decSvc);
+
+            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
 
             ProgramImageBrowserService brSvc = new ProgramImageBrowserService(form.BrowserList);
             site.AddService(typeof(IProgramImageBrowserService), brSvc);
