@@ -133,6 +133,8 @@ namespace Decompiler.Gui.Windows
 
         void DecompilerEventListener.ShowProgress(string caption, int numerator, int denominator)
         {
+            if (dlg == null)
+                return;
             Interlocked.Exchange<string>(ref status, caption);
             dlg.Worker.ReportProgress((int)((numerator * 100L) / denominator));
         }

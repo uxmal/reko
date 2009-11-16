@@ -264,7 +264,7 @@ namespace Decompiler.Arch.Intel
 
 		public virtual Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
 		{
-			return new IntelRewriter(prw, proc, host, this, new RewriterState(proc.Frame));
+			return new IntelRewriter(prw, proc, host, this, new IntelRewriterState(proc.Frame));
 		}
 
 		public MachineFlags GetFlagGroup(uint grf)

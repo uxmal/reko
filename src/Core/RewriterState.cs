@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,12 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Core.Absyn
+namespace Decompiler.Core
 {
-	/// <summary>
-	/// Interface for visiting abstract syntax nodes.
-	/// </summary>
-	public interface IAbsynVisitor
-	{
-		void VisitAssignment(AbsynAssignment ass);
-		void VisitBreak(AbsynBreak brk);
-        void VisitCase(AbsynCase absynCase);
-		void VisitContinue(AbsynContinue cont);
-		void VisitDeclaration(AbsynDeclaration decl);
-		void VisitDoWhile(AbsynDoWhile loop);
-		void VisitGoto(AbsynGoto gotoStm);
-		void VisitIf(AbsynIf ifStm);
-		void VisitLabel(AbsynLabel lbl);
-		void VisitReturn(AbsynReturn ret);
-		void VisitSideEffect(AbsynSideEffect side);
-        void VisitSwitch(AbsynSwitch absynSwitch);
-        void VisitWhile(AbsynWhile loop);
+    public class RewriterState
+    {
     }
 }

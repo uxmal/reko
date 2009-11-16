@@ -249,7 +249,5 @@ namespace Decompiler.Core
                 to.Pred.Remove(from);
             }
         }
-
-
     }
 }

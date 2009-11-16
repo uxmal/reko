@@ -217,7 +217,7 @@ namespace Decompiler.Arch.Intel
 					}
 					break;
 				default:
-					System.Diagnostics.Debug.WriteLine("Not supported: " + instr.code);
+					System.Diagnostics.Debug.WriteLine("Backwalking not supported: " + instr.code);
 					DumpInstructions(instrs, i);
 					break;
 				}

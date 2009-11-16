@@ -32,7 +32,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private IntelArchitecture arch;
 		private Procedure proc;
         private FakeRewriterHost host;
-        private RewriterState state;
+        private IntelRewriterState state;
 		private Program prog;
 		private TestRewriter rw;
 
@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             prog.Architecture = arch;
             proc = new Procedure("test", arch.CreateFrame());
             host = new FakeRewriterHost(prog);
-			state = new RewriterState(proc.Frame);
+			state = new IntelRewriterState(proc.Frame);
 
 			rw = new TestRewriter(new FakeProcedureRewriter(arch, host, proc), proc, host, arch, state);
 		}
@@ -295,7 +295,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             private Block block;
             private CodeEmitter emitter;
 
-            public TestRewriter(IProcedureRewriter prw, Procedure proc, FakeRewriterHost host, IntelArchitecture arch, RewriterState state)
+            public TestRewriter(IProcedureRewriter prw, Procedure proc, FakeRewriterHost host, IntelArchitecture arch, IntelRewriterState state)
                 : base(prw, proc, host, arch, state)
             {
                 this.host = host;
