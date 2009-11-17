@@ -34,6 +34,6 @@ namespace Decompiler.Core.Archives
 
     public interface ArchivedFolder : ArchiveDirectoryEntry
     {
-        ArchiveDirectory Items { get; }
+        ICollection<ArchiveDirectoryEntry> Items { get; }
     }
 }
