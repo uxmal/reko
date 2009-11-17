@@ -23,6 +23,7 @@ using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Decompiler.UnitTests.Gui
@@ -30,11 +31,22 @@ namespace Decompiler.UnitTests.Gui
     [TestFixture]
     public class DecompilerServiceTests
     {
+        ServiceContainer sc;
+        IDecompilerService svc;
+
+        [SetUp]
+        public void Setup()
+        {
+            sc = new ServiceContainer();
+            svc = new DecompilerService();
+            sc.AddService(typeof(IDecompilerService), svc);
+            sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+        }
+        
         [Test]
         public void NotifyOnChangedDecompiler()
         {
-            DecompilerDriver d = new DecompilerDriver(null, null, null);
-            IDecompilerService svc = new DecompilerService();
+            DecompilerDriver d = new DecompilerDriver(null, null, sc);
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)
             {
@@ -58,7 +70,7 @@ namespace Decompiler.UnitTests.Gui
         {
             IDecompilerService svc = new DecompilerService();
             
-            svc.Decompiler = new DecompilerDriver(new FakeLoader("foo\\bar\\baz.exe"), new FakeDecompilerHost(), new FakeDecompilerEventListener());
+            svc.Decompiler = new DecompilerDriver(new FakeLoader("foo\\bar\\baz.exe"), new FakeDecompilerHost(), sc);
             svc.Decompiler.LoadProgram();
             Assert.IsNotNull(svc.Decompiler.Project);
             Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");

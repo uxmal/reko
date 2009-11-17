@@ -200,5 +200,24 @@ struct a {
             Console.WriteLine(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
+
+        [Test]
+        public void TyfoMemberPointerCycle()
+        {
+            StructureType seg = new StructureType("seg", 100);
+
+            StructureType a = new StructureType("a", 0);
+            StructureType b = new StructureType("b", 0);
+
+            a.Fields.Add(0, new MemberPointer(seg, b, 2));
+            b.Fields.Add(0, new MemberPointer(seg, a, 2));
+
+            tyfo.WriteTypes(new DataType[] { a, b });
+
+            string sExp = "@@@";
+            Console.WriteLine(sw.ToString());
+            Assert.AreEqual(sExp, sw.ToString());
+
+        }
 	}
 }

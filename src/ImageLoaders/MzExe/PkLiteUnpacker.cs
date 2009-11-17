@@ -79,7 +79,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			return ProgramImage.CompareArrays(rawImg, signatureOffset, signature, signature.Length);
 		}
 
-		public override ProgramImage Load(Address addrLoad)
+        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
 		{
 			int dst = PspSize;
 
@@ -213,9 +213,9 @@ l01C8:
 			return imgU;
 		}
 
-        public override ProgramImage LoadAtPreferredAddress()
+        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
         {
-            return Load(PreferredBaseAddress);
+            return Load(PreferredBaseAddress, services);
         }
 
 		public int CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, int dst)

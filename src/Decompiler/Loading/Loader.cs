@@ -38,13 +38,16 @@ namespace Decompiler.Loading
         private DecompilerConfiguration config;
         private DecompilerEventListener eventListener;
         private DecompilerProject project;
+        private IServiceProvider serviceProvider;
         private Program prog;
 
-        public Loader(string filename, DecompilerConfiguration config, DecompilerEventListener eventListener)
+        public Loader(string filename, DecompilerConfiguration config, IServiceProvider services)
         {
             this.filename = filename;
             this.config = config;
-            this.eventListener = eventListener;
+            this.serviceProvider = services;
+            this.eventListener = (DecompilerEventListener) services.GetService(typeof(DecompilerEventListener));
+
         }
 
         /// <summary>
@@ -139,7 +142,7 @@ namespace Decompiler.Loading
 			}
 
             prog = new Program();
-            prog.Image = loader.Load(addrLoad);
+            prog.Image = loader.Load(addrLoad, serviceProvider);
             prog.Architecture = loader.Architecture;
             prog.Platform = loader.Platform;
 

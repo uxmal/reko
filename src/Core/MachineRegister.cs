@@ -117,7 +117,7 @@ namespace Decompiler.Core
         public static MachineRegister None { get { return none; } }
 
         private static MachineRegister none = new MachineRegister("None", -1, PrimitiveType.Void);
-	}
+    }
 
 	public abstract class MachineRegisterBase
 	{

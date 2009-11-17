@@ -83,7 +83,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			entryPoints.Add(new EntryPoint(addrStart, new IntelState()));
 		}
 
-		public override ProgramImage Load(Address addrLoad)
+        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
 		{
 			int iImageStart = (exe.e_cparHeader * 0x10);
 			int cbImageSize = exe.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
@@ -94,9 +94,9 @@ namespace Decompiler.ImageLoaders.MzExe
 			return imgLoaded;
 		}
 
-        public override ProgramImage LoadAtPreferredAddress()
+        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
         {
-            return Load(PreferredBaseAddress);
+            return Load(PreferredBaseAddress, services);
         }
 	}
 }

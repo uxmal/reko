@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,17 +16,14 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Decompiler.Core.Archives
 {
-    public interface IDiagnosticsService
+    public interface ArchiveDirectory : ICollection<ArchiveDirectoryEntry>
     {
-        void AddDiagnostic(Diagnostic diagnostic);
-
-        void ClearDiagnostics();
+        ArchiveDirectoryEntry this[string entryName] { get; }
     }
 }

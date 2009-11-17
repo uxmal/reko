@@ -162,5 +162,23 @@ namespace Decompiler.Arch.Intel
 				break;
 			}
 		}
-	}
+
+        public bool HasSameValues(IntelState st2)
+        {
+            for (int i = 0; i < valid.Length; ++i)
+            {
+                if (valid[i] != st2.valid[i])
+                    return false;
+                if (valid[i])
+                {
+                    MachineRegister reg = Registers.GetRegister(i);
+                    ulong u1 = (ulong)(regs[reg.Number] & ((1UL << reg.DataType.BitSize) - 1UL));
+                    ulong u2 = (ulong)(st2.regs[reg.Number] & ((1UL << reg.DataType.BitSize) - 1UL));
+                    if (u1 != u2)
+                        return false;
+                }
+            }
+            return true;
+        }
+    }
 }

@@ -178,15 +178,15 @@ namespace Decompiler.ImageLoaders.MzExe
 		}
 
 
-		public override ProgramImage Load(Address addrLoad)
+        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
 		{
 			Unpack(RawImage, addrLoad);
 			return imgLoaded;
 		}
 
-        public override ProgramImage LoadAtPreferredAddress()
+        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
         {
-            return Load(PreferredBaseAddress);
+            return Load(PreferredBaseAddress, services);
         }
 
 		public override Address PreferredBaseAddress

@@ -18,6 +18,7 @@
 
 using Decompiler.Configuration;
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.Loading;
@@ -46,6 +47,7 @@ namespace Decompiler.Gui.Windows.Forms
 		private MainForm form;		
 		private IDecompilerService decompilerSvc;
         private IDecompilerUIService uiSvc;
+        private IDiagnosticsService diagnosticsSvc;
 		private PhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
 		private LoadedPageInteractor pageLoaded;
@@ -90,7 +92,7 @@ namespace Decompiler.Gui.Windows.Forms
 
 		public virtual DecompilerDriver CreateDecompiler(LoaderBase ldr)
 		{
-            return  new DecompilerDriver(ldr, this, GetService<DecompilerEventListener>());
+            return new DecompilerDriver(ldr, this, sc);
 		}
 
         public MainForm CreateForm()
@@ -116,7 +118,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         protected virtual LoaderBase CreateLoader(string filename)
         {
-            return new Loader(filename, this.Configuration, GetService<DecompilerEventListener>());
+            return new Loader(filename, this.Configuration, sc);
         }
 
 		public virtual Program CreateProgram()
@@ -132,6 +134,7 @@ namespace Decompiler.Gui.Windows.Forms
 
             DiagnosticsInteractor d = new DiagnosticsInteractor();
             d.Attach(form.DiagnosticsList);
+            diagnosticsSvc = d;
             sc.AddService(typeof(IDiagnosticsService), d);
 
             decompilerSvc = new DecompilerService();
@@ -145,7 +148,10 @@ namespace Decompiler.Gui.Windows.Forms
 
             WindowsDecompilerEventListener wdel = new WindowsDecompilerEventListener(sc);
             sc.AddService(typeof(IWorkerDialogService), wdel);
-            sc.AddService(typeof(DecompilerEventListener), wdel);       
+            sc.AddService(typeof(DecompilerEventListener), wdel);
+
+            ArchiveBrowserService abSvc = new ArchiveBrowserService(sc);
+            sc.AddService(typeof(IArchiveBrowserService), abSvc);
         }
 
 
@@ -179,6 +185,8 @@ namespace Decompiler.Gui.Windows.Forms
 		{
 			try 
 			{
+                diagnosticsSvc.ClearDiagnostics();
+
 				Program prog = CreateProgram();
                 LoaderBase ldr = CreateLoader(file);
 				decompilerSvc.Decompiler = CreateDecompiler(ldr);

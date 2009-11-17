@@ -18,6 +18,9 @@
 
 using Decompiler.Arch.M68k;
 using Decompiler.Core;
+using Decompiler.Core.Archives;
+using Decompiler.Core.Services;
+using Decompiler.Environments.MacOS;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,7 +40,7 @@ namespace Decompiler.ImageLoaders.BinHex
             get { return new M68kArchitecture(); }
         }
 
-        public override ProgramImage Load(Address addrLoad)
+        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
         {
             BinHexDecoder dec = new BinHexDecoder(new StringReader(Encoding.ASCII.GetString(RawImage)));
             IEnumerator<byte> stm = dec.GetBytes().GetEnumerator();
@@ -47,9 +50,17 @@ namespace Decompiler.ImageLoaders.BinHex
 
             if (hdr.FileType == "PACT")
             {
-//                Cpt.CptCompressor comp = new Cpt.CptCompressor(dataFork);
-//                comp.cpt();
+                Cpt.CompactProArchive archive = new Decompiler.ImageLoaders.BinHex.Cpt.CompactProArchive();
+                List<ArchiveDirectoryEntry> items = archive.Load(new MemoryStream(dataFork));
+                IArchiveBrowserService abSvc = (IArchiveBrowserService) services.GetService(typeof(IArchiveBrowserService));
+                if (abSvc != null)
+                {
+                    byte[] image = abSvc.UserSelectFileFromArchive(items);
+                    if (image != null)
+                        return new ProgramImage(addrLoad, image);
+                }
             }
+
             return new ProgramImage(addrLoad, dataFork);
         }
 
@@ -66,14 +77,14 @@ namespace Decompiler.ImageLoaders.BinHex
             return fork;
         }
 
-        public override ProgramImage LoadAtPreferredAddress()
+        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
         {
-            throw new NotImplementedException();
+            return Load(PreferredBaseAddress, services);
         }
 
         public override Platform Platform
         {
-            get { return null; }        //$TODO: should be MacOsClassic
+            get { return new MacOSClassic(); }        
         }
 
         public override Address PreferredBaseAddress

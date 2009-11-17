@@ -29,6 +29,7 @@ using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.Gui.Windows.Forms
@@ -53,8 +54,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             site.AddService(typeof(IDecompilerUIService), uiSvc);
 
             TestLoader ldr = new TestLoader();
+            ServiceContainer sc = new ServiceContainer();
+            sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             DecompilerService decSvc = new DecompilerService();
-            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), new FakeDecompilerEventListener());
+            decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
             decSvc.Decompiler.LoadProgram();
             prog = decSvc.Decompiler.Program;
             decSvc.Decompiler.ScanProgram();

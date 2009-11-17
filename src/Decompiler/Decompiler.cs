@@ -46,15 +46,17 @@ namespace Decompiler
 		private Scanner scanner;
 		private RewriterHost rewriterHost;
         private DecompilerEventListener eventListener;
+        private IServiceProvider services;
 
-        public DecompilerDriver(LoaderBase ldr, DecompilerHost host, DecompilerEventListener eventListener)
+        public DecompilerDriver(LoaderBase ldr, DecompilerHost host, IServiceProvider services)
         {
             this.loader = ldr;
             this.host = host;
-            this.eventListener = eventListener;
+            this.services = services;
+            this.eventListener = (DecompilerEventListener)services.GetService(typeof(DecompilerEventListener));
         }
 
-		///<summary>
+        ///<summary>
         /// Determines the signature of the procedures,
 		/// the locations and types of all the values in the program.
 		///</summary>

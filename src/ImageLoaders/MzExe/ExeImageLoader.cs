@@ -134,9 +134,9 @@ namespace Decompiler.ImageLoaders.MzExe
 		/// Loads a Microsoft .EXE file. There are several widely varying sub-formats,
 		/// so we need to discover what flavour it is before we can proceed.
 		/// </summary>
-		public override ProgramImage Load(Address addrLoad)
+        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
 		{
-			return DeferredLoader.Load(addrLoad);
+			return DeferredLoader.Load(addrLoad, services);
 		}
 
         private ImageLoader CreateDeferredLoader()
@@ -156,9 +156,9 @@ namespace Decompiler.ImageLoaders.MzExe
             }
         }
 
-        public override ProgramImage LoadAtPreferredAddress()
+        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
         {
-            return Load(DeferredLoader.PreferredBaseAddress);
+            return Load(DeferredLoader.PreferredBaseAddress, services);
         }
 
 		public override Address PreferredBaseAddress

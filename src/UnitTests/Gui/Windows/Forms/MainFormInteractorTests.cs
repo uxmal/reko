@@ -69,6 +69,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 			Assert.IsTrue(form.BrowserList.Enabled, "Browser list should have been enabled after opening binary.");
 		}
 
+        [Test]
+        public void OpenBinaryShouldClearDiagnostics()
+        {
+            CreateMainFormInteractor();
+            IDiagnosticsService svc = (IDiagnosticsService) interactor.ProbeGetService(typeof(IDiagnosticsService));
+            svc.AddDiagnostic(new ErrorDiagnostic(null, "test"));
+            interactor.OpenBinary(null);
+            Assert.AreEqual(0, form.DiagnosticsList.Items.Count);
+        }
+
 		[Test]
 		public void NextPhase()
 		{

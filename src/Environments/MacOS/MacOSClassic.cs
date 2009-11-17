@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Decompiler.Environments.MacOS
 {
-    public interface IDiagnosticsService
+    public class MacOSClassic : Platform
     {
-        void AddDiagnostic(Diagnostic diagnostic);
-
-        void ClearDiagnostics();
+        public override SystemService FindService(int vector, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

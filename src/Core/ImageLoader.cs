@@ -46,9 +46,9 @@ namespace Decompiler.Core
 		/// </summary>
 		/// <param name="addrLoad">Base address of program image</param>
 		/// <returns></returns>
-        public abstract ProgramImage Load(Address addrLoad);
+        public abstract ProgramImage Load(Address addrLoad, IServiceProvider services);
 
-        public abstract ProgramImage LoadAtPreferredAddress();
+        public abstract ProgramImage LoadAtPreferredAddress(IServiceProvider services);
 
         public abstract Platform Platform { get; }
 

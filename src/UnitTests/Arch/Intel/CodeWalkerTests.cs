@@ -152,6 +152,21 @@ namespace Decompiler.UnitTests.Arch.Intel
 			Assert.AreSame(Constant.Invalid, state.Get(Registers.ebp));
 		}
 
+        [Test]
+        public void WalkMovConst()
+        {
+            IntelState state = new IntelState();
+            state.Set(Registers.esi, new Constant(PrimitiveType.Word32, 0x42424242));
+            IntelInstruction instr = new IntelInstruction(Opcode.mov, PrimitiveType.Word16, PrimitiveType.Word32,
+                new RegisterOperand(Registers.si),
+                new ImmediateOperand(new Constant(0x0606)));
+
+            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            IntelCodeWalker cw = new IntelCodeWalker(arch, null, null, state, null);
+            cw.WalkInstruction(new Address(0x0100000), instr, null);
+            Assert.AreEqual(0x42420606, state.Get(Registers.esi).ToInt32());
+        }
+
 		private class TestCodeWalkerListener : ICodeWalkerListener
 		{
             private SortedList<Address, SystemService> syscalls = new SortedList<Address, SystemService>();

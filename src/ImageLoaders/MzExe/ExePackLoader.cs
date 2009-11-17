@@ -77,7 +77,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		}
 
 
-		public override ProgramImage Load(Address addr)
+        public override ProgramImage Load(Address addr, IServiceProvider services)
 		{
 			byte [] abC = RawImage;
 			byte [] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
@@ -120,9 +120,9 @@ namespace Decompiler.ImageLoaders.MzExe
 			return imgU;
 		}
 
-        public override ProgramImage LoadAtPreferredAddress()
+        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
         {
-            return Load(PreferredBaseAddress);
+            return Load(PreferredBaseAddress, services);
         }
 
 		public override Address PreferredBaseAddress

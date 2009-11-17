@@ -41,5 +41,13 @@ namespace Decompiler.UnitTests.Arch.Intel
 			Assert.IsTrue(st.Get(Registers.ah).IsValid);
 			Assert.AreEqual(0x12, st.Get(Registers.ah).ToUInt32());
 		}
+
+        [Test]
+        public void AreEqual()
+        {
+            IntelState st1 = new IntelState();
+            IntelState st2 = new IntelState();
+            Assert.IsTrue(st1.HasSameValues(st2));
+        }
 	}
 }

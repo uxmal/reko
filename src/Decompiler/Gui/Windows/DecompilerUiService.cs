@@ -52,7 +52,11 @@ namespace Decompiler.Gui.Windows
 
         public virtual DialogResult ShowModalDialog(Form dlg)
         {
-            return dlg.ShowDialog(mainForm);
+            return (DialogResult)
+                mainForm.Invoke(new Converter<Form, DialogResult>(delegate(Form dlgToShow)
+                {
+                    return dlgToShow.ShowDialog(mainForm);
+                }), dlg);
         }
 
         public virtual string ShowOpenFileDialog(string fileName)

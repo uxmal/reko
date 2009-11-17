@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,42 +16,31 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core;
-using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-    public class DiagnosticsInteractor : IDiagnosticsService
+    public partial class ArchiveBrowserDialog : Form
     {
-        private ListView listView;
-
-        public void Attach(ListView listView)
+        public ArchiveBrowserDialog()
         {
-            this.listView = listView;
+            InitializeComponent();
         }
 
-        #region IDiagnosticsService Members
-
-        public void AddDiagnostic(Diagnostic d)
+        public TreeView ArchiveTree
         {
-            ListViewItem li = new ListViewItem();
-            li.Text = d.ToString();
-            ListViewItem.ListViewSubItem si = li.SubItems.Add(d.Address != null
-                ? d.Address.ToString()
-                : "");
-            si.Tag = d.Address;
-            li.SubItems.Add(d.Message);
-            this.listView.Items.Add(li);
+            get { return archiveTree; }
         }
 
-        public void ClearDiagnostics()
+        public Button OkButton
         {
-            listView.Items.Clear();
+            get { return btnOK; }
         }
-        #endregion
     }
 }
