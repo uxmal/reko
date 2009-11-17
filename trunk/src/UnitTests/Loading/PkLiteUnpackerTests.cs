@@ -22,6 +22,7 @@ using Decompiler.ImageLoaders.MzExe;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
@@ -35,12 +36,14 @@ namespace Decompiler.UnitTests.Loading
         [Ignore("Don't rely on external files in unit tests.")]
 		public void PkLiteLoad()
 		{
-			Loader l = new Loader("foo", new FakeDecompilerConfiguration(), new FakeDecompilerEventListener());
+            ServiceContainer sc = new ServiceContainer();
+            sc.AddService(typeof (DecompilerEventListener), new FakeDecompilerEventListener());
+			Loader l = new Loader("foo", new FakeDecompilerConfiguration(), sc);
             Program prog = l.Program;
 			prog.Image = new ProgramImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
 			ExeImageLoader exe = new ExeImageLoader(prog.Image.Bytes);
 			PkLiteUnpacker ldr = new PkLiteUnpacker(exe, prog.Image.Bytes);
-			ProgramImage img = ldr.Load(new Address(0xC00, 0));
+			ProgramImage img = ldr.Load(new Address(0xC00, 0), null);
 			Assert.AreEqual(0x19EC0, img.Bytes.Length);
 			ldr.Relocate(new Address(0xC00, 0), new List<EntryPoint>(), new RelocationDictionary());
 		}

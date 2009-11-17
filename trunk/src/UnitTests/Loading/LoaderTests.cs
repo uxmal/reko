@@ -24,21 +24,33 @@ using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Text;
 using System.Collections;
+using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Text;
 
 namespace Decompiler.UnitTests.Loading
 {
 	[TestFixture]
 	public class LoaderTests
 	{
+        private IServiceContainer sc;
+        FakeDecompilerEventListener eventListener;
+
+        [SetUp]
+        public void Setup()
+        {
+            sc = new ServiceContainer();
+            eventListener = new FakeDecompilerEventListener();
+            sc.AddService(typeof(DecompilerEventListener), eventListener);
+        }
+
 		[Test]
 		public void LoadProjectFileNoBom()
 		{
 			byte [] image = new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
 				"<input><filename>foo.bar</filename></input></project>");
-            TestLoader ldr = new TestLoader(new Program(), new FakeDecompilerEventListener());
+            TestLoader ldr = new TestLoader(new Program(), sc);
 			ldr.Image = image;
 			ldr.Load(null);
 			Assert.AreEqual("foo.bar", ldr.Project.Input.Filename);
@@ -47,20 +59,19 @@ namespace Decompiler.UnitTests.Loading
         [Test]
         public void Match()
         {
-            TestLoader ldr = new TestLoader(new Program(), new FakeDecompilerEventListener());
+            TestLoader ldr = new TestLoader(new Program(), sc);
             Assert.IsTrue(ldr.ImageBeginsWithMagicNumber(new byte[] { 0x47, 0x11 }, "4711"));
         }
 
         [Test]
         public void LoadUnknownImageType()
         {
-            FakeDecompilerEventListener eventListener = new FakeDecompilerEventListener();
             Program prog = new Program();
-            TestLoader ldr = new TestLoader(prog, eventListener);
+            TestLoader ldr = new TestLoader(prog, sc);
             ldr.Image = new byte[] { 42, 42, 42, 42, };
             ldr.Load(null);
 
-            Assert.AreEqual("Warning - 00000000: The format of the file test.bin is unknown; you will need to specify it manually." , eventListener.LastDiagnostic);
+            Assert.AreEqual("WarningDiagnostic - 00000000: The format of the file test.bin is unknown; you will need to specify it manually." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, ldr.Program.Image.BaseAddress.Offset);
             Assert.IsNull(ldr.Program.Architecture);
             Assert.IsNull(ldr.Program.Platform);
@@ -69,8 +80,8 @@ namespace Decompiler.UnitTests.Loading
 
 		private class TestLoader : Loader
 		{
-			public TestLoader(Program prog, DecompilerEventListener eventListener)
-				: base("test.bin", new FakeDecompilerConfiguration(), eventListener)
+			public TestLoader(Program prog, IServiceProvider services)
+                : base("test.bin", new FakeDecompilerConfiguration(), services)
 			{
 			}
 

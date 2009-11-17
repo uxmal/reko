@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;
 using System;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace WindowsDecompiler
@@ -40,8 +41,11 @@ namespace WindowsDecompiler
 			{
                 DecompilerHost host = NullDecompilerHost.Instance;
                 DecompilerEventListener listener = NullDecompilerEventListener.Instance;
-                Loader ldr = new Loader(args[0], null, listener);
-				DecompilerDriver dec = new DecompilerDriver(ldr, host, listener);
+
+                ServiceContainer sc = new ServiceContainer();
+                sc.AddService(typeof (DecompilerEventListener), listener);
+                Loader ldr = new Loader(args[0], null, sc);
+				DecompilerDriver dec = new DecompilerDriver(ldr, host, sc);
 				dec.Decompile();
 			}
 		}

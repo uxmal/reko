@@ -14,6 +14,9 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -164,12 +167,14 @@
     <Compile Include="Core\VariableVisitorTests.cs" />
     <Compile Include="Core\WorkListTests.cs" />
     <Compile Include="DecompilerHostTests.cs" />
+    <Compile Include="Environments\MacOS\ResourceForkTests.cs" />
     <Compile Include="FileUnitTester.cs" />
     <Compile Include="Gui\DecompilerServiceTests.cs" />
     <Compile Include="Gui\MenuBuilderTests.cs" />
     <Compile Include="Gui\Windows\Controls\MemoryControlTests.cs" />
     <Compile Include="Gui\Windows\Controls\MenuSystemTests.cs" />
     <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\DiagnosticsInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\FinalPageInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\FindDialogInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs" />
@@ -312,6 +317,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler2008</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
+      <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
+      <Name>MacOS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\Msdos\Msdos-2008.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
       <Name>Msdos-2008</Name>
@@ -331,7 +340,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Arch\Intel\Assembler\" />
-    <Folder Include="Environment\" />
     <Folder Include="ImageLoaders\MzExe\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

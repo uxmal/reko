@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.ImageLoaders.BinHex
             enc.Encode(0x00);
             enc.Encode(ascii.GetBytes("FTYP"));
             enc.Encode(ascii.GetBytes("CREA"));
-            enc.Encode(ascii.GetBytes("FLAG"));
+            enc.Encode(ascii.GetBytes("FL"));
             enc.Encode(new byte[] { 0x01, 0x02, 0x03, 0x04 });
             enc.Encode(new byte[] { 0x05, 0x06, 0x07, 0x08 });
             enc.Encode(0x00);
@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.ImageLoaders.BinHex
             Assert.AreEqual("foo.bar", hdr.FileName);
             Assert.AreEqual("FTYP", hdr.FileType);
             Assert.AreEqual("CREA", hdr.FileCreator);
-            Assert.AreEqual(0x01020304, hdr.DataForkLength);
+            Assert.AreEqual(0x01020304, hdr.DataForkLength, string.Format("{0:X8}:{1:X8}", 0x01020304, hdr.DataForkLength));
             Assert.AreEqual(0x05060708, hdr.ResourceForkLength);
 
         }

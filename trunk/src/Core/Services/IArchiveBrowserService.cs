@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,17 +16,18 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core;
-using System;
+using Decompiler.Core.Archives;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Gui
+namespace Decompiler.Core.Services
 {
-    public interface IDiagnosticsService
+    /// <summary>
+    /// Used by loaders that have encountered an archive and need the user to select the file in the archive that is to be 
+    /// decompiled.
+    /// </summary>
+    public interface IArchiveBrowserService
     {
-        void AddDiagnostic(Diagnostic diagnostic);
-
-        void ClearDiagnostics();
+        byte [] UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
     }
 }

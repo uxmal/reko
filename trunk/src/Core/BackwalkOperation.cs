@@ -41,7 +41,7 @@ namespace Decompiler.Core
 			case BackwalkOperator.mul: return n * operand;
 			case BackwalkOperator.and: return n & operand;
 			case BackwalkOperator.deref: return n;
-			default: throw new NotImplementedException("NYI");
+			default: throw new NotImplementedException();
 			}
 		}
 

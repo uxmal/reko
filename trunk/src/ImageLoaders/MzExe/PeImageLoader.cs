@@ -122,7 +122,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 		}
 
-		public override ProgramImage Load(Address addrLoad)
+        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
 		{
 			if (sections > 0)
 			{
@@ -132,9 +132,9 @@ namespace Decompiler.ImageLoaders.MzExe
 			return imgLoaded;
 		}
 
-        public override ProgramImage LoadAtPreferredAddress()
+        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
         {
-            return Load(PreferredBaseAddress);
+            return Load(PreferredBaseAddress, services);
         }
 
 		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)

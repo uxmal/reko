@@ -242,8 +242,7 @@ namespace Decompiler.Core
 		}
 
 
-
-        internal static ushort ReadBeUint16(byte[] img, int offset)
+        public static ushort ReadBeUint16(byte[] img, int offset)
         {
             ushort w = (ushort) (img[offset] << 8 | img[offset + 1]);
             return w;
@@ -276,6 +275,7 @@ namespace Decompiler.Core
             abImage[offset + 2] = (byte) (dw >> 16);
             abImage[offset + 3] = (byte) (dw >> 24);
         }
+
 
     }
 }

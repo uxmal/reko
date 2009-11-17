@@ -127,10 +127,12 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
+
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
-			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow, new FakeDecompilerEventListener());
+            FakeDecompilerEventListener eventListener = new FakeDecompilerEventListener();
+			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
-			RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, null);
+            RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);

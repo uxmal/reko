@@ -41,12 +41,12 @@ namespace Decompiler.Loading
             get { return null; }
         }
 
-        public override ProgramImage Load(Address addrLoad)
+        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
         {
             return new ProgramImage(addrLoad, imageBytes);
         }
 
-        public override ProgramImage LoadAtPreferredAddress()
+        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
         {
             return new ProgramImage(PreferredBaseAddress, imageBytes);
         }

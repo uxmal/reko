@@ -1,10 +1,29 @@
+/* 
+ * Copyright (C) 1999-2009 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+using Decompiler.Core.Archives;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace Decompiler.ImageLoaders.BinHex.Cpt
 {
-
     using OSType = System.Int32;
 
     public class CptCompressor
@@ -15,6 +34,11 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
         public CptCompressor(byte[] dataFork)
         {
             infp = new MemoryStream(dataFork);
+        }
+
+        public CptCompressor(Stream stm)
+        {
+            infp = stm;
         }
 
         class HuffNode
@@ -192,7 +216,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
         const int F_COMPDLENGTH = 76;
         const int FILEHDRSIZE = 80;
 
-
+        
         class CptHdr
         {			/* 8 bytes */
             public byte signature;	/* = 1 -- for verification */
@@ -205,9 +229,131 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             public byte commentsize;	/* number of bytes comment that follow*/
         }
 
-        class FileHdr
+        public class MacFileEntry : ArchivedFolder
+        {
+            private FileHdr hdr;
+            private ForkFolder forks;
+
+            public MacFileEntry(FileHdr hdr, byte[] data, byte [] rsrc)
+            {
+                this.hdr = hdr;
+                this.forks = new ForkFolder(data, rsrc);
+            }
+
+            public string Name { get { return hdr.fName; } set { hdr.fName = value; } }
+
+            public ArchiveDirectory Items { get { return forks; } }
+
+            private class ForkEntry : ArchivedFile
+            {
+                private string name;
+                private byte[] data;
+
+                public ForkEntry(string name, byte[] data)
+                {
+                    this.name = name;
+                    this.data = data;
+                }
+
+                public string Name { get { return name; } }
+
+                public byte[] GetBytes() { return data; }
+            }
+
+            public class ForkFolder : ArchiveDirectory
+            {
+                private byte[] dataFork;
+                private byte[] rsrcFork;
+
+                public ForkFolder(byte[] dataFork, byte[] rsrcFork)
+                {
+                    this.dataFork = dataFork;
+                    this.rsrcFork = rsrcFork;
+                }
+
+                public IEnumerator<ArchiveDirectoryEntry> GetEnumerator()
+                {
+                    if (dataFork != null)
+                        yield return new ForkEntry("data", dataFork);
+                    if (rsrcFork != null)
+                        yield return new ForkEntry("rsrc", rsrcFork);
+                }
+
+                public int Count
+                {
+                    get { return (dataFork != null ? 1 : 0 )+ (rsrcFork != null ? 1 : 0); }
+                }
+
+                public ArchiveDirectoryEntry this[string entryName]
+                {
+                    get { if (entryName == "data")
+                        return new ForkEntry("data", dataFork);
+                    else if (entryName == "rsrc")
+                    return new ForkEntry("rsrc", rsrcFork); 
+                    else 
+                    return null;
+                    }
+                }
+
+                #region IEnumerable Members
+
+                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+                {
+                    return GetEnumerator();
+                }
+
+                #endregion
+
+                #region ArchiveDirectory Members
+
+                ArchiveDirectoryEntry ArchiveDirectory.this[string entryName]
+                {
+                    get { throw new NotImplementedException(); }
+                }
+
+                #endregion
+
+                #region ICollection<ArchiveDirectoryEntry> Members
+
+                void ICollection<ArchiveDirectoryEntry>.Add(ArchiveDirectoryEntry item)
+                {
+                    throw new NotImplementedException();
+                }
+
+                void ICollection<ArchiveDirectoryEntry>.Clear()
+                {
+                    throw new NotImplementedException();
+                }
+
+                bool ICollection<ArchiveDirectoryEntry>.Contains(ArchiveDirectoryEntry item)
+                {
+                    throw new NotImplementedException();
+                }
+
+                void ICollection<ArchiveDirectoryEntry>.CopyTo(ArchiveDirectoryEntry[] array, int arrayIndex)
+                {
+                    throw new NotImplementedException();
+                }
+
+                bool ICollection<ArchiveDirectoryEntry>.IsReadOnly
+                {
+                    get { return true; }
+                }
+
+                bool ICollection<ArchiveDirectoryEntry>.Remove(ArchiveDirectoryEntry item)
+                {
+                    throw new NotImplementedException();
+                }
+
+                #endregion
+            }
+        }
+
+        
+
+        public class FileHdr
         {		/* 78 bytes */
-            public byte[] fName;	/* a STR32 */
+            public string fName;	/* a STR32 */
             public byte folder;		/* set to 1 if a folder */
             public ushort foldersize;	/* number of entries in folder */
             public byte volume;		/* for multi-file archives */
@@ -247,10 +393,10 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
 
 
 
-        /* cpt flags */
-        const int encryp = 1	/* file is encrypted */;
-        const int crsrc = 2	/* resource fork is compressed */;
-        const int cdata = 4	/* data fork is compressed */;
+        // cpt flags
+        const int encryp = 1;	/* file is encrypted */
+        const int crsrc = 2;	/* resource fork is compressed */
+        const int cdata = 4;	/* data fork is compressed */
         /*      ????	8	/* unknown */
 
         const int CIRCSIZE = 8192;
@@ -277,7 +423,8 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
         private uint cpt_newbits;
         private int cpt_bitsavail;
         private int cpt_blocksize;
-        /* Lengths is twice the max number of entries, and include slack. */
+
+        // Lengths are twice the max number of entries, and include slack. 
         const int SLACK = 6;
         HuffNode[] cpt_Hufftree = new HuffNode[512 + SLACK];
         HuffNode[] cpt_LZlength = new HuffNode[128 + SLACK];
@@ -292,7 +439,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             return crc;
         }
 
-        public void cpt()
+        public List<ArchiveDirectoryEntry> cpt()
         {
             CptHdr cpthdr;
             FileHdr filehdr;
@@ -306,8 +453,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             //    cpt_crc = INIT_CRC;
             if (readcpthdr(out cpthdr) == 0)
             {
-                Console.Error.WriteLine("Can't read archive header");
-                exit(1);
+                throw new ApplicationException("Can't read archive header..");
             }
 
             cptindsize = cpthdr.entries * FILEHDRSIZE;
@@ -319,9 +465,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             cptptr = 0; //  cptindex;
             if (infp.Read(cptindex, cptptr, cpthdr.commentsize) != cpthdr.commentsize)
             {
-                Console.Error.WriteLine("Can't read comment.");
-
-                exit(1);
+                throw new ApplicationException("Can't read comment..");
             }
             cpt_crc = updcrc(cpt_crc, cptindex, cptptr, cpthdr.commentsize);
 
@@ -340,18 +484,14 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
                 }
                 if (infp.Read(cptindex, cptptr + 1, cptindex[cptptr]) != cptindex[cptptr])
                 {
-                    Console.Error.WriteLine("Can't read file header #%d", i + 1);
-
-                    exit(1);
+                    throw new ApplicationException(string.Format("Can't read file header #{0}.", i + 1));
                 }
                 cpt_crc = updcrc(cpt_crc, cptindex, cptptr + 1, cptindex[cptptr]);
                 if (cptindex[cptptr + F_FOLDER] != 0)
                 {
                     if (infp.Read(cptindex, cptptr + F_FOLDERSIZE, 2) != 2)
                     {
-                        Console.Error.WriteLine("Can't read file header #%d", i + 1);
-
-                        exit(1);
+                        throw new ApplicationException(string.Format("Can't read file header #{0}.", i + 1));
                     }
                     cpt_crc = updcrc(cpt_crc, cptindex, cptptr + F_FOLDERSIZE, 2);
                 }
@@ -360,9 +500,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
                     if (infp.Read(cptindex, cptptr + F_VOLUME, FILEHDRSIZE - F_VOLUME) !=
                     FILEHDRSIZE - F_VOLUME)
                     {
-                        Console.Error.WriteLine("Can't read file header #%d", i + 1);
-
-                        exit(1);
+                        throw new ApplicationException(string.Format("Can't read file header #{0}.", i + 1));
                     }
                     cpt_crc = updcrc(cpt_crc, cptindex, cptptr + F_VOLUME,
                             FILEHDRSIZE - F_VOLUME);
@@ -370,20 +508,19 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
                 cptptr += FILEHDRSIZE;
             }
             //if(cpt_crc != cpthdr.hdrcrc) {
-            //Console.Error.WriteLine("Header CRC mismatch: got 0x%08x, need 0x%08x",
+            //Console.Error.WriteLine("Header CRC mismatch: got 0x{0:X8}, need 0x{1:X8}",
             //    (int)cpthdr.hdrcrc, (int)cpt_crc);
 
             //exit(1);
             //}
 
+            List<ArchiveDirectoryEntry> entries = new List<ArchiveDirectoryEntry>();
             cptptr = 0; // cptindex;
             for (i = 0; i < cpthdr.entries; i++)
             {
                 if (cpt_filehdr(out filehdr, cptindex, cptptr) == -1)
                 {
-                    Console.Error.WriteLine("Can't read file header #%d", i + 1);
-
-                    exit(1);
+                    throw new ApplicationException(string.Format("Can't read file header #{0}", i + 1));
                 }
                 if (filehdr.folder != 0)
                 {
@@ -394,9 +531,12 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
                 else
                 {
                     cpt_uncompact(filehdr);
+                    entries.Add(new MacFileEntry(filehdr, dbuffer, rbuffer));
+
                 }
                 cptptr += FILEHDRSIZE;
             }
+            return entries;
         }
 
         private int readcpthdr(out CptHdr s)
@@ -462,7 +602,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
 
         private string transname(byte[] buf, int offset, int length)
         {
-            return Encoding.ASCII.GetString(buf, 0, length);
+            return Encoding.ASCII.GetString(buf, offset, length);
         }
 
         string text;
@@ -471,13 +611,11 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
         {
             f = new FileHdr();
 
-            int i;
-            int n;
             string ftype, fauth;
 
             info = new byte[INFOBYTES];
 
-            n = hdr[hdrOff + F_FNAME] & BYTEMASK;
+            int n = hdr[hdrOff + F_FNAME] & BYTEMASK;
             if (n > F_NAMELEN)
             {
                 n = F_NAMELEN;
@@ -487,12 +625,14 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             text = transname(hdr, hdrOff + F_FNAME + 1, n);
 
             f.folder = hdr[hdrOff + F_FOLDER];
+            f.fName = text;
             if (f.folder != 0)
             {
                 f.foldersize = get2(hdr, hdrOff + F_FOLDERSIZE);
             }
             else
             {
+                f.fName = text;
                 f.cptFlag = get2(hdr, hdrOff + F_CPTFLAG);
                 f.rsrcLength = get4(hdr, hdrOff + F_RSRCLENGTH);
                 f.dataLength = get4(hdr, hdrOff + F_DATALENGTH);
@@ -507,19 +647,18 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             write_it = true;
             if (list)
             {
-                //        do_indent(indent);
                 if (f.folder != 0)
                 {
-                    Console.Error.Write("folder=\"%s\"", text);
+                    Console.Error.Write("folder=\"{0}\"", text);
                 }
                 else
                 {
                     ftype = transname(hdr, hdrOff + F_FTYPE, 4);
                     fauth = transname(hdr, hdrOff + F_CREATOR, 4);
                     Console.Error.Write(
-                        "name=\"%s\", type=%4.4s, author=%4.4s, data=%ld, rsrc=%ld",
+                        "name=\"{0}\", type={1:4}, author={2:4}, data={3}, rsrc={4}",
                         text, ftype, fauth,
-                        (long)f.dataLength, (long)f.rsrcLength);
+                        f.dataLength, f.rsrcLength);
                 }
                 if (info_only)
                 {
@@ -582,8 +721,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
                 {
                     if (cpt_filehdr(out filehdr, cptindex, cptptr) == -1)
                     {
-                        Console.Error.WriteLine("Can't read file header #%d", i + 1);
-
+                        Console.Error.WriteLine("Can't read file header #{0}", i + 1);
                         exit(1);
                     }
                     if (filehdr.folder != 0)
@@ -606,7 +744,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
                 if (list)
                 {
                     //	    do_indent(indent);
-                    Console.Error.WriteLine("leaving folder \"%s\"", loc_name);
+                    Console.Error.WriteLine("leaving folder \"{0}\"", loc_name);
                 }
             }
         }
@@ -692,7 +830,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
 
                 //    exit(1);
                 //}
-                end_file();
+//                end_file();
             }
             if (verbose)
             {
@@ -914,9 +1052,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             treeBytes = cpt_data[cpt_char++];
             if (size < treeBytes * 2)
             { /* too many entries, something is wrong! */
-                Console.Error.WriteLine("Bytes is: %d, expected: %d", treeBytes,
-                    size / 2);
-
+                Console.Error.WriteLine("Bytes is: {0}, expected: {1}", treeBytes, size / 2);
                 exit(1);
             }
             for (i = 0; i < 32; i++)
@@ -1254,508 +1390,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             }
         }
 
-#if NYI
-void do_mkdir(name, header)
-char *name, *header;
-{
-struct stat sbuf;
-FILE *fp;
-#if NOMKDIR
-char command[21]; /* Systems without mkdir system call but more than 14
-		     char file names?  Ridiculous! */
-int sysreturn;
-#endif
-#if APPLESHARE
-char dirinfo[I_NAMELEN*3+INFOSZ+10];
-#endif
 
-#if !SCAN
-    if(mode == MACS) {
-#else
-    if(mode == MACS || mode == MACI) {
-#endif
-        header[I_NAMEOFF] |= 0x80;
-	fwrite(header, 1, INFOBYTES, stdout);
-	header[I_NAMEOFF] &= 0x7f;
-	return;
-    }
-#if APPLESHARE
-    if(mode == APSH) {
-	bcopy(header, buffer, INFOBYTES);
-	mk_share_name();
-    } else {
-	strcpy(share_name, name);
-    }
-#else 
-    strcpy(share_name, name);
-#endif
-    if(stat(share_name, &sbuf) == -1) {  /* directory doesn't exist */
-#if !NOMKDIR
-	if(mkdir(share_name, 0777) == -1) {
-	    Console.Error.WriteLine("Can't create subdirectory %s", share_name);
-	    exit(1);
-	}
-#else 
-	sprintf(command, "mkdir %s", share_name);
-	if((sysreturn = system(command)) != 0) {
-	    Console.Error.WriteLine("Can't create subdirectory %s", share_name);
-	    exit(sysreturn);
-	}
-#endif 
-    } else {		/* something exists with this name */
-	if((sbuf.st_mode & S_IFMT) != S_IFDIR) {
-	    Console.Error.WriteLine("Directory name %s already in use",
-		share_name);
-	    exit(1);
-	}
-    }
-    chdir(share_name);
-#if APPLESHARE
-#if AUFS
-    if(mode == APSH) {
-	if(stat(rsrcdir, &sbuf) == -1) {  /* directory doesn't exist */
-	    if(mkdir(rsrcdir, 0777) == -1) {
-	 	Console.Error.WriteLine("Can't create subdirectory %s",
-			rsrcdir);
-	 	exit(1);
-	    }
-	} else {
-	    if((sbuf.st_mode & S_IFMT) != S_IFDIR) {
-		Console.Error.WriteLine("Directory name %s already in use",
-			rsrcdir);
-		exit(1);
-	    }
-	}
-	if(stat(infodir, &sbuf) == -1) {  /* directory doesn't exist */
-	    if(mkdir(infodir, 0777) == -1) {
-	 	Console.Error.WriteLine("Can't create subdirectory %s",
-			infodir);
-	 	exit(1);
-	    }
-	} else {
-	    if((sbuf.st_mode & S_IFMT) != S_IFDIR) {
-		Console.Error.WriteLine("Directory name %s already in use",
-			infodir);
-		exit(1);
-	    }
-	}
-	dirinfo[0] = 0;
-	strcat(dirinfo, "../");
-	strcat(dirinfo, infodir);
-	strcat(dirinfo, "/");
-	strcat(dirinfo, share_name);
-	fp = fopen(dirinfo, "w");
-	if(fp == NULL) {
-	    perror(dirinfo);
-	    exit(1);
-	}
-	wr_aufs_info(fp);
-	fclose(fp);
-    } else {
-	fp = fopen(f_folder, "w");
-	if(fp == NULL) {
-	    perror(f_folder);
-	    exit(1);
-	}
-        header[I_NAMEOFF] |= 0x80;
-	fwrite(header, 1, INFOBYTES, fp);
-	header[I_NAMEOFF] &= 0x7f;
-	fclose(fp);
-    }
-#endif
-#if APPLEDOUBLE
-    if(mode == APSH) {
-	if(stat(infodir, &sbuf) == -1) {  /* directory doesn't exist */
-	    if(mkdir(infodir, 0777) == -1) {
-	 	Console.Error.WriteLine("Can't create subdirectory %s",
-			infodir);
-	 	exit(1);
-	    }
-	} else {
-	    if((sbuf.st_mode & S_IFMT) != S_IFDIR) {
-		Console.Error.WriteLine("Directory name %s already in use",
-			infodir);
-		exit(1);
-	    }
-	}
-	dirinfo[0] = 0;
-	strcat(dirinfo, infodir);
-	strcat(dirinfo, "/.Parent");
-	fp = fopen(dirinfo, "w");
-	if(fp == NULL) {
-	    perror(dirinfo);
-	    exit(1);
-	}
-	rsz = 0;
-	wr_appledouble_info(fp);
-	fclose(fp);
-    } else {
-	fp = fopen(f_folder, "w");
-	if(fp == NULL) {
-	    perror(f_folder);
-	    exit(1);
-	}
-	header[I_NAMEOFF] |= 0x80;
-	fwrite(header, 1, INFOBYTES, fp);
-	header[I_NAMEOFF] &= 0x7f;
-	fclose(fp);
-    }
-#endif
-#else
-    fp = fopen(f_folder, "w");
-    if(fp == NULL) {
-	perror(f_folder);
-	exit(1);
-    }
-    header[I_NAMEOFF] |= 0x80;
-    fwrite(header, 1, INFOBYTES, fp);
-    header[I_NAMEOFF] &= 0x7f;
-    fclose(fp);
-#endif
-}
-
-void enddir()
-{
-char header[INFOBYTES];
-int i;
-
-#if !SCAN
-    if(mode == MACS) {
-#else
-    if(mode == MACS || mode == MACI) {
-#endif
-	for(i = 0; i < INFOBYTES; i++) {
-	    header[i] = 0;
-	}
-	header[I_NAMEOFF] = 0x80;
-	fwrite(header, 1, INFOBYTES, stdout);
-    } else {
-	chdir("..");
-    }
-}
-
-#if APPLESHARE
-#if AUFS
-private void check_aufs()
-{
-    /* check for .resource/ and .finderinfo/ */
-    struct stat stbuf;
-    int error = 0;
-
-    if(stat(rsrcdir,&stbuf) < 0) {
-	error ++;
-    } else {
-	if((stbuf.st_mode & S_IFMT) != S_IFDIR) {
-		  error ++;
-	}
-    }
-    if(stat(infodir,&stbuf) < 0) {
-	error ++;
-    } else {
-	if((stbuf.st_mode & S_IFMT) != S_IFDIR) {
-		  error++;
-	}
-    }
-    if(error) {
-	Console.Error.WriteLine("Not in an Aufs folder.");
-	exit(1);
-    }
-}
-
-private void aufs_namings()
-{
-    mk_share_name();
-    sprintf(f_info_aufs, "%s/%s", infodir, share_name);
-    sprintf(f_rsrc_aufs, "%s/%s", rsrcdir, share_name);
-    sprintf(f_data, "%s", share_name);
-}
-
-private void wr_aufs_info(fp)
-FILE *fp;
-{
-    FileInfo theinfo;
-    int n;
-
-    bzero((char *) &theinfo, sizeof theinfo);
-    theinfo.fi_magic1 = FI_MAGIC1;
-    theinfo.fi_version = FI_VERSION;
-    theinfo.fi_magic = FI_MAGIC;
-    theinfo.fi_bitmap = FI_BM_MACINTOSHFILENAME;
-
-    /* AUFS stores Unix times. */
-#if AUFSPLUS
-    theinfo.fi_datemagic = FI_MAGIC;
-    theinfo.fi_datevalid = FI_CDATE | FI_MDATE;
-    put4(theinfo.fi_ctime, get4(buffer + I_CTIMOFF) - TIMEDIFF);
-    put4(theinfo.fi_mtime, get4(buffer + I_MTIMOFF) - TIMEDIFF);
-    put4(theinfo.fi_utime, (uint)time((time_t *)0));
-#endif
-    bcopy(buffer + I_TYPEOFF, theinfo.fi_fndr, 4);
-    bcopy(buffer + I_AUTHOFF, theinfo.fi_fndr + 4, 4);
-    bcopy(buffer + I_FLAGOFF, theinfo.fi_fndr + 8, 2);
-    if((n = buffer[I_NAMEOFF] & 0xff) > F_NAMELEN) {
-	n = F_NAMELEN;
-    }
-    strncpy((char *)theinfo.fi_macfilename, buffer + I_NAMEOFF + 1,n);
-    /* theinfo.fi_macfilename[n] = '\0'; */
-    strcpy((char *)theinfo.fi_comnt,
-	"Converted by Unix utility to Aufs format");
-    theinfo.fi_comln = strlen((char *)theinfo.fi_comnt);
-    fwrite((char *) &theinfo, 1, sizeof theinfo, fp);
-}
-#endif
-
-#if APPLEDOUBLE
-private void check_appledouble()
-{
-    /* check for .AppleDouble/ */
-    struct stat stbuf;
-    int error = 0;
-
-    if(stat(infodir,&stbuf) < 0) {
-	error ++;
-    } else {
-	if((stbuf.st_mode & S_IFMT) != S_IFDIR) {
-		  error++;
-	}
-    }
-    if(error) {
-	Console.Error.WriteLine("Not in an AppleDouble folder.");
-	exit(1);
-    }
-}
-
-private void appledouble_namings()
-{
-    mk_share_name();
-    sprintf(f_info_appledouble, "%s/%s", infodir, share_name);
-    sprintf(f_data, "%s", share_name);
-}
-
-private void wr_appledouble_info(fp)
-FILE *fp;
-{
-    FileInfo theinfo;
-    int n;
-
-    bzero((char *) &theinfo, sizeof theinfo);
-    put4(theinfo.fi_magic, (uint)FI_MAGIC);
-    put2(theinfo.fi_version, (uint)FI_VERSION);
-    put4(theinfo.fi_fill5, (uint)FI_FILL5);
-    put4(theinfo.fi_fill6, (uint)FI_FILL6);
-    put4(theinfo.fi_hlen, (uint)FI_HLEN);
-    put4(theinfo.fi_fill7, (uint)FI_FILL7);
-    put4(theinfo.fi_namptr, (uint)FI_NAMPTR);
-    put4(theinfo.fi_fill9, (uint)FI_FILL9);
-    put4(theinfo.fi_commptr, (uint)FI_COMMPTR);
-    put4(theinfo.fi_fill12, (uint)FI_FILL12);
-    put4(theinfo.fi_timeptr, (uint)FI_TIMEPTR);
-    put4(theinfo.fi_timesize, (uint)FI_TIMESIZE);
-    put4(theinfo.fi_fill15, (uint)FI_FILL15);
-    put4(theinfo.fi_infoptr, (uint)FI_INFOPTR);
-    put4(theinfo.fi_infosize, (uint)FI_INFOSIZE);
-
-    bcopy(buffer + I_TYPEOFF, theinfo.fi_type, 4);
-    bcopy(buffer + I_AUTHOFF, theinfo.fi_auth, 4);
-    bcopy(buffer + I_FLAGOFF, theinfo.fi_finfo, 2);
-    /* AppleDouble stores Unix times. */
-    put4(theinfo.fi_ctime, get4(buffer + I_CTIMOFF) - TIMEDIFF);
-    put4(theinfo.fi_mtime, get4(buffer + I_MTIMOFF) - TIMEDIFF);
-    if((n = buffer[I_NAMEOFF] & 0xff) > F_NAMELEN) {
-	n = F_NAMELEN;
-    }
-    put4(theinfo.fi_namlen, (uint)n);
-    strncpy((char *)theinfo.fi_name, buffer + I_NAMEOFF + 1,n);
-    /* theinfo.fi_macfilename[n] = '\0'; */
-    strcpy((char *)theinfo.fi_comment,
-	"Converted by Unix utility to AppleDouble format");
-    put4(theinfo.fi_commsize, (uint)strlen(theinfo.fi_comment));
-    put4(theinfo.fi_rsrc, (uint)rsz);
-    /*  Still TODO */
-    /*  char	fi_ctime[4];	/* Creation time (Unix time) */
-    /*  char	fi_mtime[4];	/* Modification time (Unix time) */
-    fwrite((char *) &theinfo, 1, sizeof theinfo, fp);
-}
-#endif
-
-private void mk_share_name()
-{
-    int ch;
-    char *mp, *up;
-
-    mp = buffer + 2;
-    up = &(share_name[0]);
-    while(ch = *mp++) {
-	if(isascii(ch) && ! iscntrl(ch) && isprint(ch) && ch != '/') {
-	    *up++ = ch;
-	} else {
-	    *up++ = ':';
-	    *up++ = hex[(ch >> 4) & 0xf];
-	    *up++ = hex[ch & 0xf];
-	}
-    }
-    *up = 0;
-}
-#endif
-
-#endif
-
-        int wrfileopt(char c)
-        {
-            switch (c)
-            {
-                case 'b':
-                    mode = MACB;
-                    break;
-                case 'r':
-                    if (mode_restricted)
-                    {
-                        return 0;
-                    }
-                    mode = RSRC;
-                    break;
-                case 'd':
-                    if (mode_restricted)
-                    {
-                        return 0;
-                    }
-                    mode = DATA;
-                    break;
-                case 'u':
-                    if (mode_restricted)
-                    {
-                        return 0;
-                    }
-                    mode = TEXT;
-                    break;
-                case 'U':
-                    if (mode_restricted)
-                    {
-                        return 0;
-                    }
-                    mode = UNIX;
-                    break;
-                case 'f':
-                    mode = FORK;
-                    break;
-                case '3':
-                    mode = FULL;
-                    break;
-                case 's':
-                    if (mode_s_restricted)
-                    {
-                        return 0;
-                    }
-                    mode = MACS;
-                    break;
-#if SCAN
-    case 'S':
-	if(mode_s_restricted) {
-	    return 0;
-	}
-	mode = MACI;
-	break;
-#endif
-                case 'a':
-#if APPLESHARE
-#if AUFS
-	check_aufs();
-	mode = APSH;
-	break;
-#endif
-#if APPLEDOUBLE
-	check_appledouble();
-	mode = APSH;
-	break;
-#endif
-#else
-                    Console.Error.WriteLine("Sorry, Apple-Unix sharing is not supported.");
-                    Console.Error.WriteLine("Recompile or omit -a option.");
-                    exit(1);
-                    break;
-#endif
-                default:
-                    return 0;
-            }
-            return 1;
-        }
-
-        void give_wrfileopt()
-        {
-            Console.Error.WriteLine("File output options:");
-            Console.Error.WriteLine("-b:\tMacBinary (default)");
-            if (!mode_s_restricted)
-            {
-                Console.Error.WriteLine("-s:\tMacBinary stream to standard output");
-#if SCAN
-	fprintf(stderr,
-	    "-S:\tas -s but with indication of orignal Unix filename\n");
-#endif
-            }
-            Console.Error.WriteLine("-f:\tthree fork mode, skipping empty forks");
-            Console.Error.WriteLine("-3:\tthe same, writing also empty forks");
-            if (!mode_restricted)
-            {
-                Console.Error.WriteLine("-r:\tresource forks only");
-                Console.Error.WriteLine("-d:\tdata forks only");
-                Console.Error.WriteLine("-u:\tdata forks only with Mac -> Unix text file translation");
-                Console.Error.WriteLine("-U:\tas -u, but filename will not have an extension");
-            }
-#if APPLESHARE
-#if AUFS
-    Console.Error.WriteLine("-a:\tAUFS format");
-#endif
-#if APPLEDOUBLE
-    Console.Error.WriteLine("-a:\tAppleDouble format");
-#endif
-#else
-            Console.Error.WriteLine("-a:\tnot supported, needs recompilation");
-#endif
-        }
-
-        void set_wrfileopt(bool restricted)
-        {
-            mode_restricted = restricted;
-        }
-
-        void set_s_wrfileopt(bool restricted)
-        {
-            mode_s_restricted = restricted;
-        }
-
-        private string options;
-
-        string get_wrfileopt()
-        {
-
-            options = "b";
-            if (!mode_s_restricted)
-            {
-                options += "s";
-
-            }
-            options += "f3";
-            if (!mode_restricted)
-            {
-                options += "rduU";
-            }
-            options += "a";
-            return options;
-        }
-
-        string get_mina()
-        {
-#if APPLESHARE
-#if AUFS
-    return ", AUFS supported";
-#endif
-#if APPLEDOUBLE
-    return ", AppleDouble supported";
-#endif
-#else
-            return ", no Apple-Unix sharing supported";
-#endif
-        }
 
         const int INFOBYTES = 128;
 
