@@ -35,7 +35,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private ProgramImage imgLoaded;
 
 
-		public MsdosImageLoader(ExeImageLoader exe) : base(exe.RawImage)
+		public MsdosImageLoader(IServiceProvider services, ExeImageLoader exe) : base(services, exe.RawImage)
 		{
 			this.exe = exe;
             this.arch = new IntelArchitecture(ProcessorMode.Real);
@@ -83,7 +83,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			entryPoints.Add(new EntryPoint(addrStart, new IntelState()));
 		}
 
-        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
+        public override ProgramImage Load(Address addrLoad)
 		{
 			int iImageStart = (exe.e_cparHeader * 0x10);
 			int cbImageSize = exe.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
@@ -94,9 +94,5 @@ namespace Decompiler.ImageLoaders.MzExe
 			return imgLoaded;
 		}
 
-        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
-        {
-            return Load(PreferredBaseAddress, services);
-        }
 	}
 }

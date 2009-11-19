@@ -31,7 +31,7 @@ namespace Decompiler.ImageLoaders.BinHex
 {
     public class BinHexImageLoader : ImageLoader
     {
-        public BinHexImageLoader(byte [] imgRaw) : base(imgRaw)
+        public BinHexImageLoader(IServiceProvider services, byte [] imgRaw) : base(services, imgRaw)
         {
         }
 
@@ -40,7 +40,7 @@ namespace Decompiler.ImageLoaders.BinHex
             get { return new M68kArchitecture(); }
         }
 
-        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
+        public override ProgramImage Load(Address addrLoad)
         {
             BinHexDecoder dec = new BinHexDecoder(new StringReader(Encoding.ASCII.GetString(RawImage)));
             IEnumerator<byte> stm = dec.GetBytes().GetEnumerator();
@@ -50,9 +50,9 @@ namespace Decompiler.ImageLoaders.BinHex
 
             if (hdr.FileType == "PACT")
             {
-                Cpt.CompactProArchive archive = new Decompiler.ImageLoaders.BinHex.Cpt.CompactProArchive();
+                Cpt.CompactProArchive archive = new Cpt.CompactProArchive();
                 List<ArchiveDirectoryEntry> items = archive.Load(new MemoryStream(dataFork));
-                IArchiveBrowserService abSvc = (IArchiveBrowserService) services.GetService(typeof(IArchiveBrowserService));
+                IArchiveBrowserService abSvc = GetService<IArchiveBrowserService>();
                 if (abSvc != null)
                 {
                     byte[] image = abSvc.UserSelectFileFromArchive(items);
@@ -75,11 +75,6 @@ namespace Decompiler.ImageLoaders.BinHex
             }
             ReadUInt16BE(stm);      // CRC
             return fork;
-        }
-
-        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
-        {
-            return Load(PreferredBaseAddress, services);
         }
 
         public override Platform Platform

@@ -145,7 +145,6 @@
     </Compile>
     <Compile Include="ApplicationBuilder.cs" />
     <Compile Include="Archives\Archive.cs" />
-    <Compile Include="Archives\ArchiveDirectory.cs" />
     <Compile Include="Archives\ArchiveDirectoryEntry.cs" />
     <Compile Include="Assembler.cs">
       <SubType>Code</SubType>

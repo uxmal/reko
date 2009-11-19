@@ -42,7 +42,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		// Code insipired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
 
-		public LzExeUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
+		public LzExeUnpacker(IServiceProvider services, ExeImageLoader exe, byte [] rawImg) : base(services, rawImg)
 		{
             this.arch = new IntelArchitecture(ProcessorMode.Real);
             this.platform = new MsdosPlatform(arch);
@@ -178,16 +178,11 @@ namespace Decompiler.ImageLoaders.MzExe
 		}
 
 
-        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
+        public override ProgramImage Load(Address addrLoad)
 		{
 			Unpack(RawImage, addrLoad);
 			return imgLoaded;
 		}
-
-        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
-        {
-            return Load(PreferredBaseAddress, services);
-        }
 
 		public override Address PreferredBaseAddress
 		{

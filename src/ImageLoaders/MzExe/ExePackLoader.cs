@@ -46,7 +46,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		private ProgramImage imgU;
 
-		public ExePackLoader(ExeImageLoader exe, byte [] imgRaw) : base(imgRaw)
+		public ExePackLoader(IServiceProvider services, ExeImageLoader exe, byte [] imgRaw) : base(services, imgRaw)
 		{
 			this.exeHdrSize = (uint) (exe.e_cparHeader * 0x10U);
 			this.hdrOffset = (uint) (exe.e_cparHeader + exe.e_cs) * 0x10U;
@@ -77,7 +77,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		}
 
 
-        public override ProgramImage Load(Address addr, IServiceProvider services)
+        public override ProgramImage Load(Address addr)
 		{
 			byte [] abC = RawImage;
 			byte [] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
@@ -119,11 +119,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			} while ((op & 1) == 0);
 			return imgU;
 		}
-
-        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
-        {
-            return Load(PreferredBaseAddress, services);
-        }
 
 		public override Address PreferredBaseAddress
 		{

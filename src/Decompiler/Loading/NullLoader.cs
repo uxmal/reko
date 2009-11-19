@@ -31,7 +31,7 @@ namespace Decompiler.Loading
     {
         private byte[] imageBytes;
 
-        public NullLoader(byte[] image) : base(image)
+        public NullLoader(IServiceProvider services, byte[] image) : base(services, image)
         {
             this.imageBytes = image;
         }
@@ -41,14 +41,9 @@ namespace Decompiler.Loading
             get { return null; }
         }
 
-        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
+        public override ProgramImage Load(Address addrLoad)
         {
             return new ProgramImage(addrLoad, imageBytes);
-        }
-
-        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
-        {
-            return new ProgramImage(PreferredBaseAddress, imageBytes);
         }
 
         public override Platform Platform

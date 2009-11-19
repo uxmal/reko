@@ -99,7 +99,7 @@ namespace Decompiler.Loading
                     return CreateImageLoader(e.TypeName, rawBytes);
             }
             eventListener.AddDiagnostic(new WarningDiagnostic(new Address(0), "The format of the file {0} is unknown; you will need to specify it manually.", filename));
-            return new NullLoader(rawBytes);
+            return new NullLoader(null, rawBytes);
         }
 
 
@@ -142,7 +142,7 @@ namespace Decompiler.Loading
 			}
 
             prog = new Program();
-            prog.Image = loader.Load(addrLoad, serviceProvider);
+            prog.Image = loader.Load(addrLoad);
             prog.Architecture = loader.Architecture;
             prog.Platform = loader.Platform;
 
@@ -217,8 +217,8 @@ namespace Decompiler.Loading
             Type t = Type.GetType(typeName);
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            ConstructorInfo ci = t.GetConstructor(new Type[] { typeof(byte[]) });
-            return (ImageLoader) ci.Invoke(new object[] { bytes });
+            ConstructorInfo ci = t.GetConstructor(new Type[] { typeof (IServiceProvider), typeof(byte[]) });
+            return (ImageLoader) ci.Invoke(new object[] { this.serviceProvider, bytes });
         }
 	}
 }

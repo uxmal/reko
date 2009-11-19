@@ -32,6 +32,7 @@ namespace Decompiler.ImageLoaders.MzExe
         private IProcessorArchitecture arch;
         private Platform platform;
         private Dictionary<uint, PseudoProcedure> importThunks;
+        private List<ImportedFunction> unresolvedImports;
 
 		private short optionalHeaderSize;
 		private int sections;
@@ -50,7 +51,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const short ImageFileExecutable = 0x0002;
 
 
-		public PeImageLoader(byte [] img, uint peOffset) : base(img)
+		public PeImageLoader(IServiceProvider services, byte [] img, uint peOffset) : base(services, img)
 		{
 			ImageReader rdr = new ImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
@@ -122,7 +123,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			}
 		}
 
-        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
+        public override ProgramImage Load(Address addrLoad)
 		{
 			if (sections > 0)
 			{
@@ -132,10 +133,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			return imgLoaded;
 		}
 
-        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
-        {
-            return Load(PreferredBaseAddress, services);
-        }
 
 		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
 		{
@@ -263,7 +260,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
 			{
-				ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint) addrLoad.Linear, relocations);
+				ApplyRelocations(relocSection.OffsetRawData, relocSection.VirtualSize, (uint) addrLoad.Linear, relocations);
 			}
 			entryPoints.Add(new EntryPoint(addrLoad + rvaStartAddress, new IntelState()));
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
@@ -346,7 +343,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public string ReadAsciiString(uint rva, int maxLength)
 		{
-			ImageReader rdr = new ImageReader(RawImage, rva);
+			ImageReader rdr = imgLoaded.CreateReader(rva);
 			List<byte> bytes = new List<byte>();
 			byte b;
 			while ((b = rdr.ReadByte()) != 0)
@@ -369,9 +366,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			id.DllName = ReadAsciiString(rdr.ReadLeUint32(), 0);		// DLL name
 			id.RvaThunks = rdr.ReadLeUint32();		// first thunk
 
-			SignatureLibrary lib = new SignatureLibrary(arch);
-			
-			lib.Load(ImportFileLocation(id.DllName));
+            SignatureLibrary lib = LoadSignatureLibrary(arch, id.DllName);
 			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
 			ImageReader rdrThunks  = imgLoaded.CreateReader(id.RvaThunks);
             importThunks = new Dictionary<uint, PseudoProcedure>();
@@ -384,14 +379,26 @@ namespace Decompiler.ImageLoaders.MzExe
 					break;
 			
 				string fnName = ReadAsciiString(rvaEntry + 2, 0);
-				importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, lib.Lookup(fnName)));
+                ProcedureSignature sig = lib.Lookup(fnName);
+                if (sig != null)
+                    importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));
+                else
+                    unresolvedImports.Add(new ImportedFunction(id, fnName));
 			}
 			return id;
 		}
 
+        protected virtual SignatureLibrary LoadSignatureLibrary(IProcessorArchitecture arch, string dllName)
+        {
+            SignatureLibrary lib = new SignatureLibrary(arch);
+            lib.Load(ImportFileLocation(dllName));
+            return lib;
+        }
+
 		private void ReadImportDescriptors(Address addrLoad)
 		{
-			ImageReader rdr = new ImageReader(RawImage, rvaImportTable);
+            unresolvedImports = new List<ImportedFunction>();
+			ImageReader rdr = imgLoaded.CreateReader(rvaImportTable);
 			for (;;)
 			{
 				ImportDescriptor id = ReadImportDescriptor(rdr, addrLoad);
@@ -450,6 +457,18 @@ namespace Decompiler.ImageLoaders.MzExe
 			public string DllName;
 			public uint RvaThunks;
 		}
+
+        public class ImportedFunction
+        {
+            public ImportDescriptor ImportDescriptor;
+            public string FunctionName;
+
+            public ImportedFunction(ImportDescriptor id, string functionName)
+            {
+                this.ImportDescriptor = id;
+                this.FunctionName = functionName;
+            }
+        }
 
 		public class Section
 		{

@@ -6,6 +6,15 @@
 	</signature>
   </default>
 
+  <procedure name="IsTextUnicode">
+    <signature>
+      <return type="BOOL"><reg>eax</reg></return>
+      <arg type="VOID *" name="lpv"><stack size="4"/></arg>
+      <arg type="int32" name="iSize"><stack size="4"/></arg>
+      <arg type="int32 *" name="lpiResult"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+
   <procedure name="RegSetValueExA">
     <signature>  
 	  <return type="LONG"><reg>eax</reg></return>
@@ -17,25 +26,49 @@
     <arg type="DWORD" name="cbData"><stack size="4"/></arg>
     </signature>
   </procedure>
+  <procedure name="RegSetValueExW">
+    <signature>  
+	  <return type="LONG"><reg>eax</reg></return>
+    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+    <arg type="LPCWSTR" name="lpValueName"><stack size="4"/></arg>
+    <arg type="DWORD" name="Reserved"><stack size="4"/></arg>
+    <arg type="DWORD" name="dwType"><stack size="4"/></arg>
+    <arg type="CONST BYTE *" name="lpData"><stack size="4"/></arg>
+    <arg type="DWORD" name="cbData"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+
+  
   <procedure name="RegQueryValueExA">
     <signature>  
-
-<return type="LONG"><reg>eax</reg></return>
-    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
-    <arg type="LPCSTR" name="lpValueName"><stack size="4"/></arg>
-    <arg type="LPDWORD" name="lpReserved"><stack size="4"/></arg>
-    <arg type="LPDWORD" name="lpType"><stack size="4"/></arg>
-    <arg type="LPBYTE" name="lpData"><stack size="4"/></arg>
-    <arg type="LPDWORD" name="lpcbData"><stack size="4"/></arg>
+      <return type="LONG"><reg>eax</reg></return>
+      <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+      <arg type="LPCSTR" name="lpValueName"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpReserved"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpType"><stack size="4"/></arg>
+      <arg type="LPBYTE" name="lpData"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpcbData"><stack size="4"/></arg>
     </signature>
   </procedure>
+  <procedure name="RegQueryValueExW">
+    <signature>  
+      <return type="LONG"><reg>eax</reg></return>
+      <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+      <arg type="LPCWSTR" name="lpValueName"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpReserved"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpType"><stack size="4"/></arg>
+      <arg type="LPBYTE" name="lpData"><stack size="4"/></arg>
+      <arg type="LPDWORD" name="lpcbData"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  
   <procedure name="RegCloseKey">
     <signature>  
-
-<return type="LONG"><reg>eax</reg></return>
-    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+      <return type="LONG"><reg>eax</reg></return>
+      <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     </signature>
   </procedure>
+  
   <procedure name="RegFlushKey">
     <signature>  
 
@@ -43,21 +76,42 @@
     <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     </signature>
   </procedure>
+  
   <procedure name="RegCreateKeyA">
     <signature>  
-<return type="LONG"><reg>eax</reg></return>
+    <return type="LONG"><reg>eax</reg></return>
     <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     <arg type="LPCSTR" name="lpSubKey"><stack size="4"/></arg>
     <arg type="PHKEY" name="phkResult"><stack size="4"/></arg>
     </signature>
   </procedure>
+  <procedure name="RegCreateKeyW">
+    <signature>  
+    <return type="LONG"><reg>eax</reg></return>
+    <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+    <arg type="LPCWSTR" name="lpSubKey"><stack size="4"/></arg>
+    <arg type="PHKEY" name="phkResult"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+  
   <procedure name="RegOpenKeyA">
     <signature>  
-
-<return type="LONG"><reg>eax</reg></return>
+    <return type="LONG"><reg>eax</reg></return>
     <arg type="HKEY" name="hKey"><stack size="4"/></arg>
     <arg type="LPCSTR" name="lpSubKey"><stack size="4"/></arg>
     <arg type="PHKEY" name="phkResult"><stack size="4"/></arg>
     </signature>
   </procedure>
+  
+  <procedure name="RegOpenKeyExW">
+    <signature>  
+      <return type="LONG"><reg>eax</reg></return>
+      <arg type="HKEY" name="hKey"><stack size="4"/></arg>
+      <arg type="LPCWSTR" name="lpSubKey"><stack size="4"/></arg>
+      <arg type="DWORD" name="ulOptions"><stack size="4"/></arg>
+      <arg type="REGSAM" name="samDesired"><stack size="4"/></arg>
+      <arg type="PHKEY" name="phkResult"><stack size="4"/></arg>
+    </signature>
+  </procedure>
+
 </library>
