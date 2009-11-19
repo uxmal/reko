@@ -27,14 +27,27 @@ namespace Decompiler.Core
 	/// </summary>
 	public abstract class ImageLoader
 	{
+        private IServiceProvider services;
 		private byte [] imgRaw;
 
+        [Obsolete("", true)]
 		public ImageLoader(byte [] imgRaw)
 		{
 			this.imgRaw = imgRaw;
 		}
 
+        public ImageLoader(IServiceProvider services, byte[] imgRaw)
+        {
+            this.services = services;
+            this.imgRaw = imgRaw;
+        }
+
         public abstract IProcessorArchitecture Architecture { get; }
+
+        public T GetService<T>()
+        {
+            return (T)services.GetService(typeof(T));
+        }
 
         public virtual Dictionary<uint, PseudoProcedure> ImportThunks
         {
@@ -46,9 +59,7 @@ namespace Decompiler.Core
 		/// </summary>
 		/// <param name="addrLoad">Base address of program image</param>
 		/// <returns></returns>
-        public abstract ProgramImage Load(Address addrLoad, IServiceProvider services);
-
-        public abstract ProgramImage LoadAtPreferredAddress(IServiceProvider services);
+        public abstract ProgramImage Load(Address addrLoad);
 
         public abstract Platform Platform { get; }
 

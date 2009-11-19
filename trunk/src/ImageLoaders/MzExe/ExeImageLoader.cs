@@ -30,6 +30,7 @@ namespace Decompiler.ImageLoaders.MzExe
 	public class ExeImageLoader : ImageLoader
 	{
         private ImageLoader ldrDeferred;
+        private IServiceProvider services;
 
 		public ushort	e_magic;                     // Magic number
 		public ushort   e_cbLastPage;                // Bytes on last page of file
@@ -61,8 +62,9 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private Program prog;
 
-		public ExeImageLoader(byte [] image) : base(image)
+		public ExeImageLoader(IServiceProvider services, byte [] image) : base(services, image)
 		{
+            this.services = services;
             ReadCommonExeFields();	
 		
 			if (e_magic != MarkZbikowski)
@@ -88,19 +90,19 @@ namespace Decompiler.ImageLoaders.MzExe
 
             if (LzExeUnpacker.IsCorrectUnpacker(this, image))
             {
-                return new LzExeUnpacker(this, image);
+                return new LzExeUnpacker(services, this, image);
             }
             else if (PkLiteUnpacker.IsCorrectUnpacker(this, image))
             {
-                return new PkLiteUnpacker(this, image);
+                return new PkLiteUnpacker(services, this, image);
             }
             else if (ExePackLoader.IsCorrectUnpacker(this, image))
             {
-                return new ExePackLoader(this, image);
+                return new ExePackLoader(services, this, image);
             }
             else
             {
-                return new MsdosImageLoader(this);
+                return new MsdosImageLoader(services, this);
             }
         }
 
@@ -134,16 +136,16 @@ namespace Decompiler.ImageLoaders.MzExe
 		/// Loads a Microsoft .EXE file. There are several widely varying sub-formats,
 		/// so we need to discover what flavour it is before we can proceed.
 		/// </summary>
-        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
+        public override ProgramImage Load(Address addrLoad)
 		{
-			return DeferredLoader.Load(addrLoad, services);
+			return DeferredLoader.Load(addrLoad);
 		}
 
         private ImageLoader CreateDeferredLoader()
         {
             if (IsPortableExecutable)
             {
-                return new PeImageLoader(base.RawImage, e_lfanew);
+                return new PeImageLoader(services, base.RawImage, e_lfanew);
             }
             else if (IsNewExecutable)
             {
@@ -154,11 +156,6 @@ namespace Decompiler.ImageLoaders.MzExe
             {
                 return CreateRealModeLoader(RawImage);
             }
-        }
-
-        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
-        {
-            return Load(DeferredLoader.PreferredBaseAddress, services);
         }
 
 		public override Address PreferredBaseAddress

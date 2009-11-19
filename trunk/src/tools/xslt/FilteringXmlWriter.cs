@@ -38,5 +38,13 @@ namespace Decompiler.Tools.Xslt
 		public override void WriteProcessingInstruction(string name, string text)
 		{
 		}
+
+        public override void WriteCharEntity(char ch)
+        {
+            if (ch == '&')
+                base.WriteRaw("&");
+            else
+                base.WriteCharEntity(ch);
+        }
 	}
 }

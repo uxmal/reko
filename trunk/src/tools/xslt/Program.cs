@@ -30,7 +30,10 @@ namespace Decompiler.Tools.Xslt
 	{
 		static int Main(string[] args)
 		{
-            if (args.Length != 3)
+            TextReader input = Console.In;
+            TextWriter output = Console.Out;
+
+            if (args.Length > 3 || args.Length < 1)
             {
                 Usage();
                 return 1;
@@ -40,47 +43,39 @@ namespace Decompiler.Tools.Xslt
 				Console.Out.WriteLine("Transform file {0} is missing.", args[0]);
 				return 1;
 			}
-			if (!File.Exists(args[1]))
-			{
-				Console.Out.WriteLine("Source file {0} is missing.", args[1]);
-				return 1;
+            if (args.Length >= 2)
+            {
+                try
+                {
+                    input = new StreamReader(args[1]);
+                }
+                catch (Exception ex)
+                {
+                    Console.Out.WriteLine("Cannot open source file {0} for reading. {1}", args[1], ex.Message);
+                    return 1;
+                }
 			}
+            if (args.Length == 3)
+            {
+                try
+                {
+                    output = new StreamWriter(args[2]);
+                }
+                catch (Exception ex)
+                {
+                    Console.Out.WriteLine("Cannot open destination file {0} for writing. {1}", args[2], ex.Message);
+                }
+            }
 			try
 			{
-				StringWriter sw = new StringWriter();
-				using (Stream stmSheet = new FileStream(args[0], FileMode.Open, FileAccess.Read, FileShare.Read))
+                XslCompiledTransform xslt = new XslCompiledTransform();
+                using (Stream stmSheet = new FileStream(args[0], FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
 					XmlTextReader rdrSheet = new XmlTextReader(stmSheet);
-					FilteringXmlWriter wrtOut = new FilteringXmlWriter(sw);
-#if VS2003 || MONO
-
-					XslTransform xslt = new XslTransform();
-					xslt.Load(rdrSheet, null, null);
-					using (FileStream stm = new FileStream(args[1], FileMode.Open, FileAccess.Read))
-					{
-						XPathDocument doc = new XPathDocument(stm);
-						xslt.Transform(doc, null, wrtOut);
-					}
-				
-#else
-					XslCompiledTransform xslt = new XslCompiledTransform();
 					xslt.Load(rdrSheet);
-					xslt.Transform(args[1], wrtOut);
-#endif
 				}
 
-				StringReader rdr = new StringReader(sw.ToString().Replace("&amp;", "&")); 
-				using (Stream stm = new FileStream(args[2], FileMode.Create, FileAccess.Write, FileShare.Read))
-				{
-					StreamWriter sw2 = new StreamWriter(stm);
-					int ch = rdr.Read();
-					while (ch >= 0)
-					{
-						sw2.Write((char)ch);
-						ch = rdr.Read();
-					}
-					sw2.Close();
-				}
+                xslt.Transform(new XmlTextReader(input), new FilteringXmlWriter(output));
 			}
 			catch (Exception e)
 			{

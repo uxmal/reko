@@ -41,9 +41,9 @@ namespace Decompiler.UnitTests.Loading
 			Loader l = new Loader("foo", new FakeDecompilerConfiguration(), sc);
             Program prog = l.Program;
 			prog.Image = new ProgramImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
-			ExeImageLoader exe = new ExeImageLoader(prog.Image.Bytes);
-			PkLiteUnpacker ldr = new PkLiteUnpacker(exe, prog.Image.Bytes);
-			ProgramImage img = ldr.Load(new Address(0xC00, 0), null);
+			ExeImageLoader exe = new ExeImageLoader(sc, prog.Image.Bytes);
+			PkLiteUnpacker ldr = new PkLiteUnpacker(sc, exe, prog.Image.Bytes);
+			ProgramImage img = ldr.Load(new Address(0xC00, 0));
 			Assert.AreEqual(0x19EC0, img.Bytes.Length);
 			ldr.Relocate(new Address(0xC00, 0), new List<EntryPoint>(), new RelocationDictionary());
 		}
@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Loading
         {
             Program prog = new Program();
             ProgramImage rawImage = new ProgramImage(new Address(0x0C00, 0), CreateMsdosHeader());
-            ExeImageLoader exe = new ExeImageLoader(rawImage.Bytes);
+            ExeImageLoader exe = new ExeImageLoader(null, rawImage.Bytes);
             Assert.IsTrue(PkLiteUnpacker.IsCorrectUnpacker(exe, rawImage.Bytes));
         }
 

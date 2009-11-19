@@ -92,7 +92,7 @@ namespace Decompiler.Core
 				procedureName = procedureName.ToUpper();
 			ProcedureSignature sig;
             if (!hash.TryGetValue(procedureName, out sig))
-				throw new ArgumentException(string.Format("The imported function '{0}' was not found.", procedureName));
+                return null;
 			return sig;
 		}
 

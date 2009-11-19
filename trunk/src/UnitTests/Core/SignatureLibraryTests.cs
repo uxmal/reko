@@ -59,16 +59,8 @@ namespace Decompiler.UnitTests.Core
 				fut.TextWriter.WriteLine();
 				crt.Lookup("malloc").Emit("malloc", ProcedureSignature.EmitFlags.ArgumentKind, fut.TextWriter);
 				fut.TextWriter.WriteLine();
-				try
-				{
-					crt.Lookup("MaLloc").Emit("MaLloc", ProcedureSignature.EmitFlags.ArgumentKind, fut.TextWriter);
-				} 
-				catch (Exception ex)
-				{
-					fut.TextWriter.WriteLine(ex.Message);
-				}
+                Assert.IsNull(crt.Lookup("MaLloc"));
 				fut.AssertFilesEqual();
-
 			}
 		}
 

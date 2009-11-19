@@ -43,7 +43,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const int signatureOffset = 0x1C;
 		private const int PspSize = 0x0100;
 
-		public PkLiteUnpacker(ExeImageLoader exe, byte [] rawImg) : base(rawImg)
+		public PkLiteUnpacker(IServiceProvider services, ExeImageLoader exe, byte [] rawImg) : base(services, rawImg)
 		{
             arch = new IntelArchitecture(ProcessorMode.Real);
             platform = new MsdosPlatform(arch);
@@ -79,7 +79,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			return ProgramImage.CompareArrays(rawImg, signatureOffset, signature, signature.Length);
 		}
 
-        public override ProgramImage Load(Address addrLoad, IServiceProvider services)
+        public override ProgramImage Load(Address addrLoad)
 		{
 			int dst = PspSize;
 
@@ -212,11 +212,6 @@ l01C8:
 			imgU = new ProgramImage(addrLoad, abU);
 			return imgU;
 		}
-
-        public override ProgramImage LoadAtPreferredAddress(IServiceProvider services)
-        {
-            return Load(PreferredBaseAddress, services);
-        }
 
 		public int CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, int dst)
 		{
