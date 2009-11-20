@@ -23,12 +23,13 @@ using System.Text;
 
 namespace Decompiler
 {
-    public interface 
-        DecompilerEventListener
+    public interface DecompilerEventListener
     {
         void AddDiagnostic(Diagnostic d);
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
+        void AddErrorDiagnostic(Address address, string format, params object [] args);
+        void AddWarningDiagnostic(Address address, string format, params object[] args);
     }
 
     public class NullDecompilerEventListener : DecompilerEventListener
@@ -39,42 +40,12 @@ namespace Decompiler
 
         #region DecompilerEventListener Members
 
-        public void ProgramLoaded()
+        public void AddErrorDiagnostic(Address address, string format, params object [] args)
         {
             throw new NotImplementedException();
         }
 
-        public void ProgramScanned()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MachineCodeRewritten()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InterproceduralAnalysisComplete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ProceduresTransformed()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void TypeReconstructionComplete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CodeStructuringComplete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DecompilationFinished()
+        public void AddWarningDiagnostic(Address address, string format, params object[] args)
         {
             throw new NotImplementedException();
         }

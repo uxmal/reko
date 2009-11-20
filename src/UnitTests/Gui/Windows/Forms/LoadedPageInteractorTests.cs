@@ -53,6 +53,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             ProgramImageBrowserService svc = new ProgramImageBrowserService(form.BrowserList);
             site.AddService(typeof(IProgramImageBrowserService), svc);
 
+            decSvc = new DecompilerService();
+            site.AddService(typeof(IDecompilerService), decSvc);
+
+            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
+            site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+
             prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[10000]);
@@ -60,11 +66,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             prog.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
 
             TestLoader ldr = new TestLoader(new DecompilerProject(), prog);
-            decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), site);
             decSvc.Decompiler.LoadProgram();
-            site.AddService(typeof(IDecompilerService), decSvc);
-            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
 
             interactor.Site = site;
 		}
