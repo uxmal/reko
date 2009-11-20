@@ -144,18 +144,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 this.prog = prog;
             }
 
-            public override DecompilerProject Project
+            public override LoadedProject Load(Address userSpecifiedAddress)
             {
-                get { return project; }
-            }
-
-            public override Program Program
-            {
-                get { return prog; }
-            }
-
-            public override void Load(Address userSpecifiedAddress)
-            {
+                return new LoadedProject(prog, project);
             }
         }
 	}

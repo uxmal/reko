@@ -45,7 +45,7 @@ namespace Decompiler.Gui
         ToolStrip ToolBar { get; }
         MainMenu Menu { get; set; }
 
-        IStartPage StartPage { get; }
+        IStartPage InitialPage { get; }
         ILoadedPage LoadedPage { get; }
         Decompiler.Gui.Windows.Forms.AnalyzedPage AnalyzedPage { get; }
         Decompiler.Gui.Windows.Forms.FinalPage FinalPage { get; }

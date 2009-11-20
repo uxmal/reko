@@ -38,17 +38,21 @@ namespace Decompiler.Loading
 			this.entryPoints = new List<EntryPoint>();
 		}
 
+        protected DecompilerProject CreateDefaultProject(string filename, Program prog)
+        {
+            DecompilerProject project = new DecompilerProject();
+            SetDefaultFilenames(filename, project);
+            project.Input.BaseAddress = prog.Image.BaseAddress;
+            return project;
+        }
 
         public List<EntryPoint> EntryPoints
         {
             get { return entryPoints; }
         }
 
-        public abstract void Load(Address userSpecifiedAddress);
 
-        public abstract DecompilerProject Project { get; }
-
-        public abstract Program Program { get; }
+        public abstract LoadedProject Load(Address userSpecifiedAddress);
 
         protected void CopyImportThunks(Dictionary<uint, PseudoProcedure> importThunks, Program prog)
         {

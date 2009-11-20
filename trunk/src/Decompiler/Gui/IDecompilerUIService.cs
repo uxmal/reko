@@ -28,11 +28,12 @@ namespace Decompiler.Gui
     /// </summary>
     public interface IDecompilerUIService
     {
-        void ShowError(string format, params object[] args);
+        void ShowError(Exception ex, string format, params object[] args);
         DialogResult ShowModalDialog(Form dlg);
         string ShowOpenFileDialog(string fileName);
         string ShowSaveFileDialog(string fileName);
 
         ContextMenu GetContextMenu(int p);
+
     }
 }

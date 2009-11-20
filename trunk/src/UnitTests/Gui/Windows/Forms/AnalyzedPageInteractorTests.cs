@@ -39,14 +39,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     {
         private Program prog;
         private MainForm form;
-        private AnalyzedPageInteractor interactor;
+        private AnalyzedPageInteractorImpl interactor;
         private FakeUiService uiSvc;
 
         [SetUp]
         public void Setup()
         {
             form = new MainForm();
-            interactor = new AnalyzedPageInteractor(form.AnalyzedPage);
+            interactor = new AnalyzedPageInteractorImpl(form.AnalyzedPage);
 
             FakeComponentSite site = new FakeComponentSite(interactor);
 
@@ -131,29 +131,18 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestLoader : LoaderBase
         {
-            private Program prog;
-            private DecompilerProject project;
-
             public TestLoader()
             {
             }
 
-            public override Program Program
+            public override LoadedProject Load(Address userSpecifiedAddress)
             {
-                get { return prog; }
-            }
+                Program prog = new Program();
+                prog.Image = new ProgramImage(new Address(0x1234), new byte[4211]);
+                prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+                DecompilerProject project = new DecompilerProject();
 
-            public override DecompilerProject Project
-            {
-                get { return project; }
-            }
-
-            public override void Load(Address userSpecifiedAddress)
-            {
-                prog = new Program();
-                Program.Image = new ProgramImage(new Address(0x1234), new byte[4211]);
-                Program.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-                project = new DecompilerProject();
+                return new LoadedProject(prog, project);
             }
         }
     }

@@ -29,7 +29,11 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-	public class LoadedPageInteractor : PhasePageInteractor
+    public interface ILoadedPageInteractor : IPhasePageInteractor
+    {
+    }
+
+	public class LoadedPageInteractor : PhasePageInteractorImpl, ILoadedPageInteractor
 	{
 		private ILoadedPage pageLoaded;
 		private Hashtable mpCmdidToCommand;
@@ -236,6 +240,5 @@ namespace Decompiler.Gui.Windows.Forms
             pageLoaded.MemoryControl.TopAddress = segment.Address;
             pageLoaded.MemoryControl.SelectedAddress = segment.Address;
         }
-
-	}
+    }
 }

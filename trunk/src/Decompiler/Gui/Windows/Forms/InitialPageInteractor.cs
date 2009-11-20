@@ -16,28 +16,56 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using System.ComponentModel;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Configuration;
 using Decompiler.Gui;
+using Decompiler.Loading;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
+    public interface InitialPageInteractor : IPhasePageInteractor
+    {
+        void OpenBinary(string file, DecompilerHost host);
+    }
+
 	/// <summary>
 	/// Handles interactions on InitialPage.
 	/// </summary>
-	public class InitialPageInteractor : PhasePageInteractor
+	public class InitialPageInteractorImpl : PhasePageInteractorImpl, InitialPageInteractor
 	{
 		private IStartPage page;
         private IProgramImageBrowserService browserSvc;
 
-		public InitialPageInteractor(IStartPage page)
+		public InitialPageInteractorImpl(IStartPage page)
 		{
 			this.page = page;
 			page.BrowseInputFile.Click += new EventHandler(BrowseInputFile_Click);
 		}
+
+
+        public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdSet == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId)
+                {
+                case CmdIds.EditFind:
+                case CmdIds.ViewGoToAddress:
+                case CmdIds.ViewShowAllFragments:
+                case CmdIds.ViewShowUnscanned:
+                case CmdIds.ActionEditSignature:
+                case CmdIds.ActionMarkProcedure:
+                    status.Status = 0;
+                    return true;
+                }
+            }
+            return base.QueryStatus(ref cmdSet, cmdId, status, text);
+        }
 
 		public void EnableControls()
 		{
@@ -79,6 +107,16 @@ namespace Decompiler.Gui.Windows.Forms
             return true;
         }
 
+        public void OpenBinary(string file, DecompilerHost host)
+        {
+            var sc = GetService<IServiceContainer>();
+            LoaderBase ldr = CreateLoader(file, sc);
+            Decompiler = new DecompilerDriver(ldr, host, sc) ;
+            IWorkerDialogService svc = GetService<IWorkerDialogService>();
+            svc.StartBackgroundWork("Loading program", Decompiler.LoadProgram);
+            LoadFieldsFromProject();
+        }
+
         private void LoadFieldsFromProject()
         {
             DecompilerProject project = Decompiler.Project;
@@ -105,6 +143,14 @@ namespace Decompiler.Gui.Windows.Forms
         public override object Page
         {
             get { return page; }
+        }
+
+        protected virtual LoaderBase CreateLoader(string filename, IServiceContainer sc)
+        {
+            return new Loader(
+                filename, 
+                GetService<IDecompilerConfigurationService>(),
+                sc);
         }
 
         // Event handlers. 

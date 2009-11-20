@@ -86,9 +86,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 				AssemblerLoader ld = new AssemblerLoader(
                     new IntelTextAssembler(),
 				    FileUnitTester.MapTestPath(sourceFile));
-                ld.Load(addrBase);
-
-                Program prog = ld.Program;
+                Program prog = ld.Load(addrBase).Program;
                 Assert.IsTrue(prog.Architecture is IntelArchitecture);
 				IntelDumper dumper = new IntelDumper(arch);
 				dumper.ShowAddresses = true;

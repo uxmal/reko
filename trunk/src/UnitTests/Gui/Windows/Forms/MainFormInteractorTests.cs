@@ -26,6 +26,7 @@ using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -52,12 +53,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		public void CreateForm()
 		{
             CreateMainFormInteractor();
-
-			// When opening the application for the very first time, we should be on the initial page, and 
-			// most controls on the mainform should be disabled.
-
-			Assert.IsFalse(form.BrowserList.Enabled, "Browser list should be disabled");
-
 			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPage);
 		}
 
@@ -65,8 +60,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		public void OpenBinary()
 		{
             CreateMainFormInteractor();
-			interactor.OpenBinary(null);
-			Assert.IsTrue(form.BrowserList.Enabled, "Browser list should have been enabled after opening binary.");
+			interactor.OpenBinary("floxie.exe");
+            Assert.AreSame(interactor.CurrentPage, interactor.InitialPageInteractor);
+            Assert.IsTrue(((FakeInitialPageInteractor)interactor.InitialPageInteractor).OpenBinaryCalled);
 		}
 
         [Test]
@@ -84,9 +80,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		{
             CreateMainFormInteractor();
 			interactor.OpenBinary(null);
-			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPage);
+			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPage);
 			interactor.NextPhase();
-			Assert.AreSame(interactor.AnalyzedPageInteractor, interactor.CurrentPage);
+			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPage);
 		}
 
 
@@ -95,18 +91,21 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             CreateMainFormInteractor();
 
-            interactor.OpenBinary("foo.exe");
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader("foo.exe"));
+            svc.Decompiler.LoadProgram();
             Decompiler.Core.Serialization.SerializedProcedure p = new Decompiler.Core.Serialization.SerializedProcedure();
             p.Address = "12345";
             p.Name = "MyProc";
-            IDecompilerService svc = (IDecompilerService) interactor.ProbeGetService(typeof(IDecompilerService));
             svc.Decompiler.Project.UserProcedures.Add(p);
+
             interactor.Save();
             string s =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Decompiler"">
   <input>
     <filename>foo.exe</filename>
+    <address>0C00:0000</address>
   </input>
   <output>
     <disassembly>foo.asm</disassembly>
@@ -129,7 +128,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             CreateMainFormInteractor();
             Assert.IsNull(interactor.ProjectFileName);
-            interactor.OpenBinary("foo.exe");
+
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader("foo.exe"));
+            svc.Decompiler.LoadProgram();
+
             Assert.IsTrue(string.IsNullOrEmpty(interactor.ProjectFileName), "project filename should be clear");
             interactor.Save();
             Assert.IsTrue(interactor.ProbePromptedForSaving, "Should have prompted for saving as no file name was supplied.");
@@ -159,9 +162,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void IsNextPhaseEnabled()
         {
             CreateMainFormInteractorWithLoader();
-            CommandStatus status = QueryStatus(CmdIds.ActionNextPhase);
+            var page = new FakePhasePageInteractor(form.InitialPage);
+            interactor.SwitchInteractor(page);
+            CommandStatus status;
+            page.CanAdvance = false;
+            status = QueryStatus(CmdIds.ActionNextPhase);
             Assert.IsNotNull(status, "MainFormInteractor should know this command.");
             Assert.AreEqual(MenuStatus.Visible, status.Status);
+            page.CanAdvance = true;
+            status = QueryStatus(CmdIds.ActionNextPhase);
+            Assert.IsNotNull(status, "MainFormInteractor should know this command.");
+            Assert.AreEqual(MenuStatus.Visible|MenuStatus.Enabled, status.Status);
         }
 
         [Test]
@@ -214,6 +225,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private StringWriter sw;
         private string testFilename;
         private bool promptedForSaving;
+        private FakeInitialPageInteractor testInitialPageInteractor;
 
 		public TestMainFormInteractor(Program prog)
 		{
@@ -231,6 +243,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             this.ldr = ldr;
         }
 
+        // Overrides of creation methods.
 
         public override DecompilerDriver CreateDecompiler(LoaderBase ldr)
 		{
@@ -239,17 +252,30 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return base.CreateDecompiler(ldr);
 		}
 
-        protected override LoaderBase CreateLoader(string filename)
+        protected override DecompilerEventListener CreateDecompilerListener()
         {
-            if (ldr != null)
-                return ldr;
-            return new FakeLoader(filename);
+            return new FakeDecompilerEventListener();
+        }
+
+        protected override InitialPageInteractor CreateInitialPageInteractor(IStartPage page)
+        {
+            return new FakeInitialPageInteractor(page);
+        }
+
+        protected override ILoadedPageInteractor CreateLoadedPageInteractor(ILoadedPage page)
+        {
+            return new FakeLoadedPageInteractor(page);
         }
 
         public override Program CreateProgram()
 		{
 			return program;
 		}
+
+        protected override IDecompilerUIService CreateUiService(DecompilerMenus dm)
+        {
+            return new FakeUiService();
+        }
 
         public override TextWriter CreateTextWriter(string filename)
         {

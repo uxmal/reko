@@ -119,7 +119,7 @@ namespace Decompiler.Gui.Windows.Forms
             get { return toolBar; }
         }
 
-        public IStartPage StartPage
+        public IStartPage InitialPage
         {
             get { return startPage; }
         }

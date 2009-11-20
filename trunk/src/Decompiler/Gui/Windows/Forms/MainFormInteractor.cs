@@ -48,16 +48,16 @@ namespace Decompiler.Gui.Windows.Forms
 		private IDecompilerService decompilerSvc;
         private IDecompilerUIService uiSvc;
         private IDiagnosticsService diagnosticsSvc;
-		private PhasePageInteractor currentPage;
+		private IPhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
-		private LoadedPageInteractor pageLoaded;
-		private AnalyzedPageInteractor pageAnalyzed;
-		private FinalPageInteractor pageFinal;
+		private ILoadedPageInteractor pageLoaded;
+		private IAnalyzedPageInteractor pageAnalyzed;
+		private IFinalPageInteractor pageFinal;
 		private MruList mru;
         private string projectFileName;
         private ServiceContainer sc;
-        private Dictionary<PhasePageInteractor, PhasePageInteractor> nextPage;
-        private DecompilerConfiguration config;
+        private Dictionary<IPhasePageInteractor, IPhasePageInteractor> nextPage;
+        private IDecompilerConfigurationService config;
 
 		private static string dirSettings;
 		
@@ -68,15 +68,14 @@ namespace Decompiler.Gui.Windows.Forms
 			mru = new MruList(MaxMruItems);
 			mru.Load(MruListFile);
             sc = new ServiceContainer();
-            nextPage = new Dictionary<PhasePageInteractor, PhasePageInteractor>();
-            config = new DecompilerConfiguration();
+            nextPage = new Dictionary<IPhasePageInteractor, IPhasePageInteractor>();
 		}
 
 		private void AttachInteractors(DecompilerMenus dm)
 		{
-            pageInitial = new InitialPageInteractor(form.StartPage);
-            pageLoaded = new LoadedPageInteractor(form.LoadedPage);
-            pageAnalyzed = new AnalyzedPageInteractor(form.AnalyzedPage);
+            pageInitial = CreateInitialPageInteractor(form.InitialPage);
+            pageLoaded = CreateLoadedPageInteractor(form.LoadedPage);
+            pageAnalyzed = new AnalyzedPageInteractorImpl(form.AnalyzedPage);
             pageFinal = new FinalPageInteractor(form.FinalPage, this);
 
             Add(pageInitial);
@@ -89,6 +88,16 @@ namespace Decompiler.Gui.Windows.Forms
             nextPage[pageAnalyzed] = pageFinal;
 		}
 
+
+        protected virtual InitialPageInteractor CreateInitialPageInteractor(IStartPage initialPage)
+        {
+            return new InitialPageInteractorImpl(initialPage); 
+        }
+
+        protected virtual ILoadedPageInteractor CreateLoadedPageInteractor(ILoadedPage iLoadedPage)
+        {
+            return new LoadedPageInteractor(form.LoadedPage);
+        }
 
 		public virtual DecompilerDriver CreateDecompiler(LoaderBase ldr)
 		{
@@ -116,11 +125,6 @@ namespace Decompiler.Gui.Windows.Forms
             return form;
         }
 
-        protected virtual LoaderBase CreateLoader(string filename)
-        {
-            return new Loader(filename, this.Configuration, sc);
-        }
-
 		public virtual Program CreateProgram()
 		{
 			return new Program();
@@ -128,6 +132,9 @@ namespace Decompiler.Gui.Windows.Forms
 
         private void CreateServices(DecompilerMenus dm)
         {
+            config = new DecompilerConfiguration();
+            sc.AddService(typeof(IDecompilerConfigurationService), config);
+
             FindResultsInteractor f = new FindResultsInteractor();
             f.Attach(form.FindResultsList);
             sc.AddService(typeof(IFindResultsService), f);
@@ -140,20 +147,29 @@ namespace Decompiler.Gui.Windows.Forms
             decompilerSvc = new DecompilerService();
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
-            uiSvc = new DecompilerUiService(this.form, dm, form.OpenFileDialog, form.SaveFileDialog);
+            uiSvc = CreateUiService(dm);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
             ProgramImageBrowserService pibSvc = new ProgramImageBrowserService(form.BrowserList);
             sc.AddService(typeof(IProgramImageBrowserService), pibSvc);
 
-            WindowsDecompilerEventListener wdel = new WindowsDecompilerEventListener(sc);
-            sc.AddService(typeof(IWorkerDialogService), wdel);
+            DecompilerEventListener wdel = CreateDecompilerListener();
+            sc.AddService(typeof(IWorkerDialogService), (IWorkerDialogService) wdel);
             sc.AddService(typeof(DecompilerEventListener), wdel);
 
             ArchiveBrowserService abSvc = new ArchiveBrowserService(sc);
             sc.AddService(typeof(IArchiveBrowserService), abSvc);
         }
 
+        protected virtual DecompilerEventListener CreateDecompilerListener()
+        {
+            return new WindowsDecompilerEventListener(sc);
+        }
+
+        protected virtual IDecompilerUIService CreateUiService(DecompilerMenus dm)
+        {
+            return new DecompilerUiService(this.form, dm, form.OpenFileDialog, form.SaveFileDialog);
+        }
 
 		public virtual TextWriter CreateTextWriter(string filename)
 		{
@@ -162,7 +178,7 @@ namespace Decompiler.Gui.Windows.Forms
 			return new StreamWriter(new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write));
 		}
 
-		public PhasePageInteractor CurrentPage
+		public IPhasePageInteractor CurrentPage
 		{
 			get { return currentPage; }
 			set { currentPage = value; }
@@ -186,21 +202,12 @@ namespace Decompiler.Gui.Windows.Forms
 			try 
 			{
                 diagnosticsSvc.ClearDiagnostics();
-
-				Program prog = CreateProgram();
-                LoaderBase ldr = CreateLoader(file);
-				decompilerSvc.Decompiler = CreateDecompiler(ldr);
-                IWorkerDialogService svc = GetService<IWorkerDialogService>();
-                    svc.StartBackgroundWork("Loading program", 
-                        delegate()
-                    {
-                        decompilerSvc.Decompiler.LoadProgram();
-                    });
-                SwitchInteractor(pageLoaded);
+                SwitchInteractor(InitialPageInteractor);
+                pageInitial.OpenBinary(file, this);
             } 
 			catch (Exception ex)
 			{
-				uiSvc.ShowError("Couldn't open file '{0}'. {1}", file, ex.Message);
+                uiSvc.ShowError(ex, "Couldn't open file '{0}'.", file);
 			}
 		}
 
@@ -232,17 +239,17 @@ namespace Decompiler.Gui.Windows.Forms
 			get { return pageInitial; }
 		}
 
-		public LoadedPageInteractor LoadedPageInteractor
+		public ILoadedPageInteractor LoadedPageInteractor
 		{
 			get { return pageLoaded; }
 		}
 
-        public AnalyzedPageInteractor AnalyzedPageInteractor
+        public IAnalyzedPageInteractor AnalyzedPageInteractor
         {
             get { return pageAnalyzed; }
         }
 
-		public FinalPageInteractor FinalPageInteractor
+		public IFinalPageInteractor FinalPageInteractor
 		{
 			get { return pageFinal; }
 		}
@@ -254,11 +261,18 @@ namespace Decompiler.Gui.Windows.Forms
 
 		public void NextPhase()
 		{
-            PhasePageInteractor next;
-            if (nextPage.TryGetValue(CurrentPage, out next))
-			{
-                SwitchInteractor(next);
-			}
+            try
+            {
+                IPhasePageInteractor next;
+                if (nextPage.TryGetValue(CurrentPage, out next))
+                {
+                    SwitchInteractor(next);
+                }
+            }
+            catch (Exception ex)
+            {
+                uiSvc.ShowError(ex, "Unable to proceed.");
+            }
 		}
 
 		public void FinishDecompilation()
@@ -314,8 +328,11 @@ namespace Decompiler.Gui.Windows.Forms
 			}
 		}
 
-		public void SwitchInteractor(PhasePageInteractor interactor)
+		public void SwitchInteractor(IPhasePageInteractor interactor)
 		{
+            if (interactor == CurrentPage)
+                return;
+
             if (CurrentPage != null)
             {
                 if (!CurrentPage.LeavePage())
@@ -417,7 +434,7 @@ namespace Decompiler.Gui.Windows.Forms
 			return CreateTextWriter(filename);
 		}
 
-        public DecompilerConfiguration Configuration
+        public IDecompilerConfigurationService Configuration
         {
             get { return config; }
         }

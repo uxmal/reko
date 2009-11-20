@@ -149,7 +149,7 @@ namespace Decompiler.ImageLoaders.MzExe
             }
             else if (IsNewExecutable)
             {
-                prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
+                // http://support.microsoft.com/kb/65122
                 throw new NotImplementedException("NE executable loading not implemented.");
             }
             else

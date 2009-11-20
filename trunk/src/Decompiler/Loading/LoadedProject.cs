@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,14 +16,33 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Gui.Windows.Forms;
-using NUnit.Framework;
+using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows.Forms
+namespace Decompiler.Loading
 {
-	[TestFixture]
-	public class MainFormTests
-	{
-	}
+    public class LoadedProject
+    {
+        private Program prog;
+        private DecompilerProject project;
+
+        public LoadedProject(Program prog, DecompilerProject project)
+        {
+            this.prog = prog;
+            this.project = project;
+        }
+
+        public Program Program
+        {
+            get { return prog; }
+        }
+
+        public DecompilerProject Project
+        {
+            get { return project; }
+        }
+    }
 }

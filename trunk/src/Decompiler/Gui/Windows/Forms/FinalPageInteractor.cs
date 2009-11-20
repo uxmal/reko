@@ -24,7 +24,11 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-	public class FinalPageInteractor : PhasePageInteractor
+    public interface IFinalPageInteractor : IPhasePageInteractor
+    {
+    }
+
+	public class FinalPageInteractor : PhasePageInteractorImpl, IFinalPageInteractor
 	{
 		private FinalPage finalPage;
 
@@ -56,7 +60,7 @@ namespace Decompiler.Gui.Windows.Forms
             }
             catch (Exception ex)
             {
-                UIService.ShowError("An error occurred while reconstructing types. {0}", ex.Message);
+                UIService.ShowError(ex, "An error occurred while reconstructing types.");
             }
 		}
 

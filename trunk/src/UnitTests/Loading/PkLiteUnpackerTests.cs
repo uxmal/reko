@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Loading
             ServiceContainer sc = new ServiceContainer();
             sc.AddService(typeof (DecompilerEventListener), new FakeDecompilerEventListener());
 			Loader l = new Loader("foo", new FakeDecompilerConfiguration(), sc);
-            Program prog = l.Program;
+            Program prog = new Program();
 			prog.Image = new ProgramImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
 			ExeImageLoader exe = new ExeImageLoader(sc, prog.Image.Bytes);
 			PkLiteUnpacker ldr = new PkLiteUnpacker(sc, exe, prog.Image.Bytes);

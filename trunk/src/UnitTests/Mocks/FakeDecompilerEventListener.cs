@@ -17,13 +17,14 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class FakeDecompilerEventListener : DecompilerEventListener
+    public class FakeDecompilerEventListener : DecompilerEventListener, IWorkerDialogService
     {
         private string lastDiagnostic;
         private string lastProgress;
@@ -103,5 +104,15 @@ namespace Decompiler.UnitTests.Mocks
             get { return lastProgress; }
         }
 
+
+        #region IWorkerDialogService Members
+
+        public bool StartBackgroundWork(string caption, System.Threading.ThreadStart backgroundWork)
+        {
+            backgroundWork();
+            return true;
+        }
+
+        #endregion
     }
 }

@@ -38,17 +38,7 @@ namespace Decompiler.Loading
             this.asm = asm;
         }
 
-        public override Program Program
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        public override DecompilerProject Project
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        public override void Load(Address addrLoad)
+        public override LoadedProject Load(Address addrLoad)
         {
             throw new NotImplementedException("Assembler asm = arch.CreateAssembler();");
             //asm.AssembleFragment(null, addrLoad, asmFragment);

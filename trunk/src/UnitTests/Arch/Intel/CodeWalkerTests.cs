@@ -87,14 +87,14 @@ namespace Decompiler.UnitTests.Arch.Intel
                 AssemblerLoader ld = new AssemblerLoader(
                     new IntelTextAssembler(),
                     FileUnitTester.MapTestPath("fragments/Factorial.asm"));
-                ld.Load(new Address(0x0C00, 0));
-				Scanner sc = new Scanner(ld.Program, null);
+                Program prog = ld.Load(new Address(0x0C00, 0)).Program;
+				Scanner sc = new Scanner(prog, null);
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
 					sc.EnqueueEntryPoint(ep);
 				}
 				sc.ProcessQueues();
-				ld.Program.DumpAssembler(fut.TextWriter);
+				prog.DumpAssembler(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -254,8 +254,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 AssemblerLoader ld = new AssemblerLoader(
                     new IntelTextAssembler(),
                     FileUnitTester.MapTestPath(sourceFile));
-                ld.Load(addrBase);
-                Program prog = ld.Program;
+                Program prog = ld.Load(addrBase).Program;
 				Scanner sc = new Scanner(prog, new FakeDecompilerEventListener());
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{

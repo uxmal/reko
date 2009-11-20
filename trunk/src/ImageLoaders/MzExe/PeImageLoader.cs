@@ -377,22 +377,53 @@ namespace Decompiler.ImageLoaders.MzExe
 				uint rvaThunk = rdrThunks.ReadLeUint32();
 				if (rvaEntry == 0)
 					break;
-			
-				string fnName = ReadAsciiString(rvaEntry + 2, 0);
-                ProcedureSignature sig = lib.Lookup(fnName);
-                if (sig != null)
-                    importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));
-                else
-                    unresolvedImports.Add(new ImportedFunction(id, fnName));
+
+                ResolveImportedFunction(id, lib, rvaEntry, addrThunk);
 			}
 			return id;
 		}
 
+
+        private void ResolveImportedFunction(ImportDescriptor id, SignatureLibrary lib, uint rvaEntry, Address addrThunk)
+        {
+            if (!ImportedFunctionNameSpecified(rvaEntry))
+            {
+                unresolvedImports.Add(new ImportedFunction(id, string.Format("Ordinal_{0}", rvaEntry & 0x7FFFFFF)));
+                return;
+            }
+            string fnName = ReadAsciiString(rvaEntry + 2, 0);
+            if (lib == null)
+            {
+                unresolvedImports.Add(new ImportedFunction(id, fnName));
+                return;
+            }
+            ProcedureSignature sig = lib.Lookup(fnName);
+            if (sig == null)
+            {
+                unresolvedImports.Add(new ImportedFunction(id, fnName));
+                return;
+            }
+
+            importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));
+        }
+
+        private bool ImportedFunctionNameSpecified(uint rvaEntry)
+        {
+            return (rvaEntry & 0x80000000) == 0;
+        }
+
         protected virtual SignatureLibrary LoadSignatureLibrary(IProcessorArchitecture arch, string dllName)
         {
-            SignatureLibrary lib = new SignatureLibrary(arch);
-            lib.Load(ImportFileLocation(dllName));
-            return lib;
+            try
+            {
+                SignatureLibrary lib = new SignatureLibrary(arch);
+                lib.Load(ImportFileLocation(dllName));
+                return lib;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
 		private void ReadImportDescriptors(Address addrLoad)

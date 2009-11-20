@@ -21,6 +21,7 @@ using Decompiler.Analysis;
 using Decompiler.Assemblers.x86;
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
@@ -37,10 +38,9 @@ namespace Decompiler.UnitTests.Structure
             AssemblerLoader ldr = new AssemblerLoader(
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(sourceFilename));
-            ldr.Load(addrBase);
-            prog = ldr.Program;
 
-            prog.DumpAssembler(Console.Out);
+            
+            prog = ldr.Load(addrBase).Program;
 
             Scanner scan = new Scanner(prog, null);
 			foreach (EntryPoint ep in ldr.EntryPoints)
@@ -48,8 +48,6 @@ namespace Decompiler.UnitTests.Structure
 				scan.EnqueueEntryPoint(ep);
 			}
 			scan.ProcessQueues();
-
-            prog.DumpAssembler(Console.Out);
 
             DecompilerEventListener eventListener = new FakeDecompilerEventListener();
 			RewriterHost rw = new RewriterHost(prog, eventListener, scan.SystemCalls, scan.VectorUses);

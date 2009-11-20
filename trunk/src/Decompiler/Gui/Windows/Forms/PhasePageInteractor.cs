@@ -23,13 +23,24 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
+    public interface IPhasePageInteractor : IComponent, ICommandTarget
+    {
+        bool CanAdvance { get; }
+
+        void EnterPage();
+
+        bool LeavePage();
+
+        object Page { get; }
+
+    }
+
     /// <summary>
     /// Base class for all interactors in charge of phase pages. Provides common functionality
     /// such as command routing.
     /// </summary>
-    public abstract class PhasePageInteractor : 
-        IComponent,
-        ICommandTarget
+    public abstract class PhasePageInteractorImpl : 
+        IPhasePageInteractor
     {
         public event EventHandler Disposed;
 
@@ -38,7 +49,7 @@ namespace Decompiler.Gui.Windows.Forms
         private IDecompilerUIService decompilerUiSvc;
         private IWorkerDialogService workerDlgSvc;
 
-        public PhasePageInteractor()
+        public PhasePageInteractorImpl()
         {
         }
 
@@ -50,15 +61,21 @@ namespace Decompiler.Gui.Windows.Forms
         public virtual DecompilerDriver Decompiler
         {
             get { return decompilerSvc.Decompiler; }
+            set { decompilerSvc.Decompiler = value; }
         }
 
         protected T EnsureService<T>()
         {
-            T svc = (T) site.GetService(typeof(T));
+            var svc = GetService<T>();
             if (svc == null)
                 throw new InvalidOperationException(string.Format(
                     "Attempt to obtain {0} service interface failed.", typeof(T).FullName));
             return svc;
+        }
+
+        protected T GetService<T>()
+        {
+            return (T)site.GetService(typeof(T));
         }
 
         /// <summary>

@@ -44,8 +44,7 @@ namespace Decompiler.UnitTests.Typing
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(relativePath));
 
-            ldr.Load(new Address(0xC00, 0));
-            Program prog = ldr.Program;
+            Program prog = ldr.Load(new Address(0xC00, 0)).Program;
             EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			

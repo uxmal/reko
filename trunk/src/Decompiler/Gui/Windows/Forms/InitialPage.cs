@@ -29,31 +29,7 @@ namespace Decompiler.Gui.Windows.Forms
 	{
 		public event EventHandler IsDirtyChanged;
 
-        //private DirtyManager dirtyManager;
-        //private RegexValidator addressValidator;
-        //private System.Windows.Forms.Button btnBrowseInputFile;
-        //private System.Windows.Forms.Button btnBrowseSourceFile;
-        //private System.Windows.Forms.TextBox txtSourceFile;
-        //private System.Windows.Forms.Label label2;
-        //private System.Windows.Forms.Button btnBrowseHeaderFile;
-        //private System.Windows.Forms.TextBox txtHeaderFile;
-        //private System.Windows.Forms.Label label1;
-        //private System.Windows.Forms.GroupBox groupBox1;
-        //private System.Windows.Forms.GroupBox groupBox2;
-        //private System.Windows.Forms.CheckBox chkAssemblerFile;
-        //private System.Windows.Forms.TextBox txtAssemblerFile;
-        //private System.Windows.Forms.Label label3;
-        //private System.Windows.Forms.CheckBox chkIntermediateFile;
-        //private System.Windows.Forms.TextBox txtInputFile;
-        //private System.Windows.Forms.Button btnBrowseAssemblerFile;
-        //private System.Windows.Forms.TextBox txtIntermediateFile;
-        //private System.Windows.Forms.Button btnBrowseIntermediateFile;
-        //private System.Windows.Forms.Label label4;
-        //private System.Windows.Forms.TextBox txtLoadAddress;
-        //private System.Windows.Forms.Label label5;
-        //private OpenFileDialog openFileDialog;
-
-		public InitialPage()
+        public InitialPage()
 		{
 			// This call is required by the Windows Form Designer.
 			InitializeComponent();

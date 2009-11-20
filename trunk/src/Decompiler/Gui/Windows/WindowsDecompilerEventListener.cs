@@ -17,6 +17,7 @@ namespace Decompiler.Gui.Windows
         private ThreadStart worker;
         private IDecompilerUIService uiSvc;
         private IDiagnosticsService diagnosticService;
+        private Exception lastException;
 
         private string status;
         private const int STATUS_UPDATE_ONLY = -4711;
@@ -47,12 +48,17 @@ namespace Decompiler.Gui.Windows
 
         public bool StartBackgroundWork(string caption, ThreadStart backgroundworker)
         {
+            lastException = null;
             try
             {
                 this.worker = backgroundworker;
                 using (dlg = CreateDialog(caption))
                 {
-                    return uiSvc.ShowModalDialog(dlg) == DialogResult.OK;
+                    if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                        return true;
+                    if (lastException != null)
+                        throw new ApplicationException("An fatal internal error occurred; decompilation has been stopped.", lastException);
+                    return false;
                 }
             }
             finally
@@ -103,7 +109,8 @@ namespace Decompiler.Gui.Windows
             }
             else if (e.Error != null)
             {
-                //$REVIEW: drops it on the floor.;
+                lastException = e.Error;
+                dlg.DialogResult = DialogResult.Cancel;
             }
             else
             {
