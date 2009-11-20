@@ -127,6 +127,20 @@ namespace Decompiler.Gui.Windows
             dlg.Invoke(new Action<Diagnostic>(diagnosticService.AddDiagnostic), d);
         }
 
+        void DecompilerEventListener.AddErrorDiagnostic(Address address, string format, params object[] args)
+        {
+            dlg.Invoke(new Action<Diagnostic>(
+                diagnosticService.AddDiagnostic),
+                new ErrorDiagnostic(address, format, args));
+        }
+
+        void DecompilerEventListener.AddWarningDiagnostic(Address address, string format, params object[] args)
+        {
+            dlg.Invoke(new Action<Diagnostic>(
+                diagnosticService.AddDiagnostic), 
+                new WarningDiagnostic(address, format, args));
+        }
+
         void DecompilerEventListener.ShowStatus(string caption)
         {
             ShowStatus(caption);
