@@ -34,19 +34,19 @@ namespace Decompiler.Gui
         /// </summary>
         event EventHandler DecompilerChanged;
 
-        DecompilerDriver Decompiler{ get; set; }
+        IDecompiler Decompiler{ get; set; }
 
         string ProjectName { get; }
     }
 
     public class DecompilerService : IDecompilerService
     {
-        private DecompilerDriver decompiler;
+        private IDecompiler decompiler;
 
         public event EventHandler DecompilerChanged;
         #region IDecompilerService Members
 
-        public DecompilerDriver Decompiler
+        public IDecompiler Decompiler
         {
             get { return decompiler; }
             set

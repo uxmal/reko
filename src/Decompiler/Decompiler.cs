@@ -30,6 +30,21 @@ using System.IO;
 
 namespace Decompiler
 {
+    public interface IDecompiler
+    {
+        Program Program { get; }
+        DecompilerProject Project { get; }
+
+        void LoadProgram();
+        void ScanProgram();
+        Procedure ScanProcedure(Address procAddress);
+        void RewriteMachineCode();
+        DataFlowAnalysis AnalyzeDataFlow();
+        void ReconstructTypes();
+        void StructureProgram();
+        void WriteDecompilerProducts();
+    }
+
 	/// <summary>
 	/// The main driver class for decompilation of binaries. 
 	/// </summary>
@@ -37,7 +52,7 @@ namespace Decompiler
 	/// This class is named this way as the previous name 'Decompiler' caused C# 1.1 to get confused
 	/// between the namespace and the class name.
 	/// </remarks>
-	public class DecompilerDriver
+	public class DecompilerDriver : IDecompiler
 	{
 		private Program prog;
 		private DecompilerProject project;

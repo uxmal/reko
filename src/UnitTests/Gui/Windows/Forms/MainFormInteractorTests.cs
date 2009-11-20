@@ -245,7 +245,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         // Overrides of creation methods.
 
-        public override DecompilerDriver CreateDecompiler(LoaderBase ldr)
+        public override IDecompiler CreateDecompiler(LoaderBase ldr)
 		{
             if (decompiler != null)
                 return decompiler;
