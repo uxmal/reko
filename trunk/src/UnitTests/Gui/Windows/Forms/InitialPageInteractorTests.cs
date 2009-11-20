@@ -110,6 +110,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
         }
 
+        [Test]
+        public void LeavePage()
+        {
+            i.OpenBinary("foo.exe", new FakeDecompilerHost());
+            Assert.IsTrue(i.FakeDecompiler.LoadProgram_Called, "LoadProgram should have been called");
+            Assert.IsTrue(i.LeavePage());
+            Assert.IsTrue(i.FakeDecompiler.ScanProgram_Called, "ScanProgram should have been called");
+        }
+
         //$REFACTOR: copied from LoadedPageInteractor, should
         // push to base class or utility class.
         private MenuStatus QueryStatus(int cmdId)
@@ -121,6 +130,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestInitialPageInteractor : InitialPageInteractorImpl
         {
+            public FakeDecompiler FakeDecompiler;
+
             public TestInitialPageInteractor(IStartPage page)
                 : base(page)
             {
@@ -129,6 +140,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             protected override LoaderBase CreateLoader(string filename, IServiceContainer sc)
             {
                 return new FakeLoader(filename);
+            }
+
+            protected override IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host, IServiceProvider sp)
+            {
+                FakeDecompiler = new FakeDecompiler(ldr);
+                return FakeDecompiler;
             }
         }
 	}

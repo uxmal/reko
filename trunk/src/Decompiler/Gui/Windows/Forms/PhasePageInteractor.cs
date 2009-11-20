@@ -58,7 +58,7 @@ namespace Decompiler.Gui.Windows.Forms
             get { return decompilerSvc.Decompiler != null; }
         }
 
-        public virtual DecompilerDriver Decompiler
+        public virtual IDecompiler Decompiler
         {
             get { return decompilerSvc.Decompiler; }
             set { decompilerSvc.Decompiler = value; }

@@ -99,7 +99,7 @@ namespace Decompiler.Gui.Windows.Forms
             return new LoadedPageInteractor(form.LoadedPage);
         }
 
-		public virtual DecompilerDriver CreateDecompiler(LoaderBase ldr)
+		public virtual IDecompiler CreateDecompiler(LoaderBase ldr)
 		{
             return new DecompilerDriver(ldr, this, sc);
 		}

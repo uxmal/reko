@@ -47,6 +47,19 @@ namespace Decompiler.Gui.Windows.Forms
 			page.BrowseInputFile.Click += new EventHandler(BrowseInputFile_Click);
 		}
 
+        protected virtual IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host, IServiceProvider sp)
+        {
+            return new DecompilerDriver(ldr, host, sp);
+        }
+
+        protected virtual LoaderBase CreateLoader(string filename, IServiceContainer sc)
+        {
+            return new Loader(
+                filename,
+                GetService<IDecompilerConfigurationService>(),
+                sc);
+        }
+
 
         public override bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
         {
@@ -80,7 +93,7 @@ namespace Decompiler.Gui.Windows.Forms
                 base.Site = value;
                 if (value != null)
                 {
-                    browserSvc = (IProgramImageBrowserService) value.GetService(typeof(IProgramImageBrowserService));
+                    browserSvc = GetService<IProgramImageBrowserService>();
                 }
                 else
                 {
@@ -104,14 +117,15 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 SaveFieldsToProject();
             }
-            return true;
+            IWorkerDialogService svc = GetService<IWorkerDialogService>();
+            return svc.StartBackgroundWork("Scanning source program.", Decompiler.ScanProgram);
         }
 
         public void OpenBinary(string file, DecompilerHost host)
         {
             var sc = GetService<IServiceContainer>();
             LoaderBase ldr = CreateLoader(file, sc);
-            Decompiler = new DecompilerDriver(ldr, host, sc) ;
+            Decompiler = CreateDecompiler(ldr, host, sc) ;
             IWorkerDialogService svc = GetService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", Decompiler.LoadProgram);
             LoadFieldsFromProject();
@@ -145,13 +159,6 @@ namespace Decompiler.Gui.Windows.Forms
             get { return page; }
         }
 
-        protected virtual LoaderBase CreateLoader(string filename, IServiceContainer sc)
-        {
-            return new Loader(
-                filename, 
-                GetService<IDecompilerConfigurationService>(),
-                sc);
-        }
 
         // Event handlers. 
 		public void BrowseInputFile_Click(object sender, EventArgs e)

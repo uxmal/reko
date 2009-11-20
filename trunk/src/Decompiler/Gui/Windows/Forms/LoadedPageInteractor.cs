@@ -146,13 +146,6 @@ namespace Decompiler.Gui.Windows.Forms
             browserSvc.Enabled = true;
             browserSvc.SelectionChanged += BrowserItemSelected;
 
-            WorkerDialogService.StartBackgroundWork(
-                "Scanning source program.",
-                delegate()
-                {
-                    Decompiler.ScanProgram();
-                });
-
             pageLoaded.MemoryControl.ProgramImage = Decompiler.Program.Image;
             pageLoaded.Disassembly.Text = "";
 

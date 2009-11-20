@@ -30,12 +30,6 @@ namespace Decompiler.Core
         private IServiceProvider services;
 		private byte [] imgRaw;
 
-        [Obsolete("", true)]
-		public ImageLoader(byte [] imgRaw)
-		{
-			this.imgRaw = imgRaw;
-		}
-
         public ImageLoader(IServiceProvider services, byte[] imgRaw)
         {
             this.services = services;
