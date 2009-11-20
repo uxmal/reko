@@ -57,7 +57,11 @@ namespace Decompiler.ImageLoaders.BinHex
                 {
                     byte[] image = abSvc.UserSelectFileFromArchive(items);
                     if (image != null)
+                    {
+                        ResourceFork fork = new ResourceFork(image);
+                        fork.Dump();
                         return new ProgramImage(addrLoad, image);
+                    }
                 }
             }
 

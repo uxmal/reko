@@ -68,6 +68,17 @@ namespace Decompiler.Gui.Windows.Controls
 			cbRow = 16;
 		}
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                const int WS_EX_CLIENTEDGE = 0x00000200;
+                CreateParams c = base.CreateParams;
+                c.ExStyle |= WS_EX_CLIENTEDGE;
+                return c;
+            }
+        }
+
 		public int BytesPerRow
 		{
 			get { return cbRow; }
@@ -93,16 +104,6 @@ namespace Decompiler.Gui.Windows.Controls
 			get { return cellSize; }
 		}
 
-		protected override CreateParams CreateParams
-		{
-			get
-			{
-				const int WS_EX_CLIENTEDGE = 0x00000200;
-				CreateParams c = base.CreateParams;
-				c.ExStyle |= WS_EX_CLIENTEDGE;
-				return c;
-			}
-		}
 
 		private Brush GetBackgroundBrush(ImageMapItem item, bool selected)
 		{
@@ -199,13 +200,13 @@ namespace Decompiler.Gui.Windows.Controls
 
 		protected override void OnPaint(PaintEventArgs pea)
 		{
+            CacheCellSize();
 			if (image == null)
 			{
 				pea.Graphics.FillRectangle(SystemBrushes.Window, ClientRectangle);
 			}
 			else
 			{
-				CacheCellSize();
 				PaintWindow(pea.Graphics, true);
 			}
 		}
@@ -413,7 +414,7 @@ namespace Decompiler.Gui.Windows.Controls
 
 		private void UpdateScroll()
 		{
-			if (addrTopVisible == null || image == null)
+			if (addrTopVisible == null || image == null || CellSize.Height <= 0)
 			{
 				vscroller.Enabled = false;
 				return;
@@ -425,9 +426,9 @@ namespace Decompiler.Gui.Windows.Controls
 
 			vscroller.Minimum = 0;
 			int h = Font.Height;
-			cyPage = Math.Max((ClientRectangle.Height / Font.Height) - 1, 1);
+			cyPage = Math.Max((Height / CellSize.Height) - 1, 1);
 			vscroller.LargeChange = cyPage;
-			vscroller.Maximum = Math.Max(0, cRows - cyPage);
+            vscroller.Maximum = cRows;
 			vscroller.Value = (addrTopVisible.Linear - image.BaseAddress.Linear) / cbRow;
 		}
 

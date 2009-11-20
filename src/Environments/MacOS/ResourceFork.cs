@@ -158,7 +158,7 @@ namespace Decompiler.Environments.MacOS
                 {
                     string rsrcTypeName = Encoding.ASCII.GetString(bytes, offset, 4);
                     int crsrc = ProgramImage.ReadBeUint16(bytes, offset + 4) + 1;
-                    uint rsrcReferenceListOffset = rsrcTypeListOff + ProgramImage.ReadBeUint16(bytes, offset + 6);
+                    uint rsrcReferenceListOffset = rsrcTypeListOff + ProgramImage.ReadBeUint16(bytes, offset + 6) - 2;
                     yield return new ResourceType(bytes, rsrcTypeName, rsrcReferenceListOffset, rsrcNameListOff, crsrc);
                     offset += 8;
                 }
@@ -238,12 +238,21 @@ namespace Decompiler.Environments.MacOS
                 for (int i = 0; i < count; ++i)
                 {
                     ushort rsrcID = ProgramImage.ReadBeUint16(bytes, offset);
-                    uint nameOff = nameListOffset + ProgramImage.ReadBeUint16(bytes, offset + 2);
-                    uint dataOff = ProgramImage.ReadBeUint32(bytes, offset + 4);
-                    yield return new ResourceReference(rsrcID, "", dataOff);
+                    string name = ReadName(ProgramImage.ReadBeUint16(bytes, offset + 2));
+                    uint dataOff = ProgramImage.ReadBeUint32(bytes, offset + 4) & 0x00FFFFFFU;
+                    yield return new ResourceReference(rsrcID, name, dataOff);
 
                     offset += 0x0C;
                 }
+            }
+
+            private string ReadName(ushort rsrcInstanceNameOffset)
+            {
+                if (rsrcInstanceNameOffset == 0xFFFF)
+                    return null;
+                uint nameOff = this.nameListOffset + rsrcInstanceNameOffset;
+                byte length = bytes[nameOff];
+                return Encoding.ASCII.GetString(bytes, (int) nameOff + 1, length);
             }
 
             #endregion
