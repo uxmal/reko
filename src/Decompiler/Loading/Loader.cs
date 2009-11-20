@@ -35,13 +35,11 @@ namespace Decompiler.Loading
 	public class Loader : LoaderBase
 	{
         private string filename;
-        private DecompilerConfiguration config;
+        private IDecompilerConfigurationService config;
         private DecompilerEventListener eventListener;
-        private DecompilerProject project;
         private IServiceProvider serviceProvider;
-        private Program prog;
 
-        public Loader(string filename, DecompilerConfiguration config, IServiceProvider services)
+        public Loader(string filename, IDecompilerConfigurationService config, IServiceProvider services)
         {
             this.filename = filename;
             this.config = config;
@@ -56,39 +54,26 @@ namespace Decompiler.Loading
         /// <remarks>
         /// The file can either be an executable or a decompiler project file.
         /// </remarks>
-        public override void Load(Address addrLoad)
+        public override LoadedProject Load(Address addrLoad)
         {
+            Program prog;
+            DecompilerProject project;
             byte[] image = LoadImageBytes(filename, 0);
             bool isXmlFile = IsXmlFile(image);
             if (isXmlFile)
             {
                 XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
-                this.project = (DecompilerProject) ser.Deserialize(new MemoryStream(image));
-                addrLoad = project.Input.BaseAddress;
+                project = (DecompilerProject) ser.Deserialize(new MemoryStream(image));
                 prog = LoadExecutableFile(
                     LoadImageBytes(project.Input.Filename, 0),
                     project.Input.BaseAddress);
             }
             else
             {
-                // Wasn't a project, so make a blank one.
-
-                this.project = new DecompilerProject();
-
-                SetDefaultFilenames(filename, project);
-                this.prog = LoadExecutableFile(image, addrLoad);
-                project.Input.BaseAddress = prog.Image.BaseAddress;
+                prog = LoadExecutableFile(image, addrLoad);
+                project = CreateDefaultProject(filename, prog);
             }
-        }
-
-        public override Program Program
-        {
-            get { return prog; }
-        }
-
-        public override DecompilerProject Project
-        {
-             get { return project; }
+            return new LoadedProject(prog, project);
         }
 
         private ImageLoader FindImageLoader(byte[] rawBytes)
@@ -141,7 +126,7 @@ namespace Decompiler.Loading
 				addrLoad = loader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
 			}
 
-            prog = new Program();
+            Program prog = new Program();
             prog.Image = loader.Load(addrLoad);
             prog.Architecture = loader.Architecture;
             prog.Platform = loader.Platform;

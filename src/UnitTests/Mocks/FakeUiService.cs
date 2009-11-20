@@ -35,9 +35,9 @@ namespace Decompiler.UnitTests.Mocks
             return new ContextMenu();
         }
 
-        public void ShowError(string format, params object[] args)
+        public void ShowError(Exception ex, string format, params object[] args)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new ApplicationException(string.Format(format, args), ex);
         }
 
         public DialogResult ShowModalDialog(Form dlg)

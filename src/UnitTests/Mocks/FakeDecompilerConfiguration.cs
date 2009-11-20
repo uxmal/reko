@@ -23,14 +23,23 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class FakeDecompilerConfiguration : DecompilerConfiguration
+    public class FakeDecompilerConfiguration : IDecompilerConfigurationService
     {
         private System.Collections.ArrayList imageLoaders = new System.Collections.ArrayList();
 
-        public override System.Collections.ICollection GetImageLoaders()
+        public System.Collections.ICollection GetImageLoaders()
         {
             return imageLoaders;
         }
-    }
 
+        public System.Collections.ICollection GetArchitectures()
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.Collections.ICollection GetEnvironments()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

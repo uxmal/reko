@@ -24,7 +24,17 @@ using System.Text;
 
 namespace Decompiler.Configuration
 {
-    public class DecompilerConfiguration
+    /// <summary>
+    /// Provides access to information stored in the configuration file.
+    /// </summary>
+    public interface IDecompilerConfigurationService
+    {
+         ICollection GetImageLoaders();
+         ICollection GetArchitectures();
+         ICollection GetEnvironments();
+    }
+
+    public class DecompilerConfiguration : IDecompilerConfigurationService
     {
         public virtual ICollection GetImageLoaders()
         {

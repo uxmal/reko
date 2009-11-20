@@ -145,14 +145,15 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="program"></param>
 		/// <param name="cfg"></param>
-		public void LoadProgram()
-		{
+        public void LoadProgram()
+        {
+            //$REVIEW: probing for project file should happen here. Loaders should not be concerned with project files.
             eventListener.ShowStatus("Loading source program.");
-            loader.Load(null);
-            project = loader.Project;
-            prog = loader.Program;
+            LoadedProject lp = loader.Load(null);
+            prog = lp.Program;
+            project = lp.Project;
             eventListener.ShowStatus("Source program loaded.");
-		}
+        }
 
 		public Program Program
 		{

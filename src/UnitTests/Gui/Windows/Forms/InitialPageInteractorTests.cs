@@ -16,11 +16,15 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Services;
 using Decompiler.Gui;
+using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
+using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
 using System;
+using System.ComponentModel.Design;
 
 namespace Decompiler.UnitTests.Gui.Windows.Forms
 {
@@ -29,20 +33,22 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 	{
 		private IMainForm form;
 		private IStartPage page;
-		private InitialPageInteractor i;
+		private TestInitialPageInteractor i;
         private FakeUiService uiSvc;
 
 		[SetUp]
 		public void Setup()
 		{
 			form = new MainForm();
-            page = form.StartPage;
-			i = new InitialPageInteractor(page);
+            page = form.InitialPage;
+            i = new TestInitialPageInteractor(page);
             FakeComponentSite site = new FakeComponentSite(i);
             uiSvc = new FakeUiService();
             site.AddService(typeof(IDecompilerUIService), uiSvc);
             site.AddService(typeof(IDecompilerService), new DecompilerService());
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
+            site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            site.AddService(typeof(IProgramImageBrowserService), new ProgramImageBrowserService(form.BrowserList));
             i.Site = site;
 		}
 
@@ -51,6 +57,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		{
 			form.Dispose();
 		}
+
+        [Test]
+        public void InitialControls()
+        {
+            i.EnterPage();
+            // When opening the application for the very first time, we should be on the initial page, and 
+            // most controls on the mainform should be disabled.
+
+            Assert.IsFalse(form.BrowserList.Enabled, "Browser list should be disabled");
+        }
 
 		[Test]
 		public void ClickOnBrowseBinaryFile()
@@ -77,6 +93,21 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void CanAdvance()
         {
             Assert.IsFalse(i.CanAdvance);
+            i.OpenBinary("floxe.exe", new FakeDecompilerHost());
+            Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
+        }
+
+        [Test]
+        public void OpenBinary_ShouldPopulateFields()
+        {
+            Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
+            i.OpenBinary("floxe.exe", new FakeDecompilerHost());
+            Assert.AreEqual("floxe.exe", page.InputFile.Text);
+            Assert.AreEqual("floxe.asm", page.AssemblerFile.Text);
+            Assert.AreEqual("floxe.dis", page.IntermediateFile.Text);
+            Assert.AreEqual("floxe.c", page.SourceFile.Text);
+            Assert.AreEqual("floxe.h", page.HeaderFile.Text);
+            Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
         }
 
         //$REFACTOR: copied from LoadedPageInteractor, should
@@ -88,5 +119,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return status.Status;
         }
 
+        private class TestInitialPageInteractor : InitialPageInteractorImpl
+        {
+            public TestInitialPageInteractor(IStartPage page)
+                : base(page)
+            {
+            }
+
+            protected override LoaderBase CreateLoader(string filename, IServiceContainer sc)
+            {
+                return new FakeLoader(filename);
+            }
+        }
 	}
 }

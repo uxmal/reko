@@ -33,7 +33,7 @@ namespace Decompiler
 		TextWriter CreateTypesWriter(string filename);				// TextWriter into which the reconstructed types are written.
 		TextWriter CreateDecompiledCodeWriter(string filename);	// Textwriter into which the Data is written
 
-        DecompilerConfiguration Configuration { get; }
+        IDecompilerConfigurationService Configuration { get; }
 	}
 
 	/// <summary>
@@ -66,60 +66,10 @@ namespace Decompiler
 			throw new Exception("The method or operation is not implemented."); 
 		}
 
-        public DecompilerConfiguration Configuration
+        public IDecompilerConfigurationService Configuration
         {
             get { throw new NotImplementedException(); }
         }
-
-		public void ProgramLoaded()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public void ProgramScanned()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public void MachineCodeRewritten()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public void InterproceduralAnalysisComplete()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public void ProceduresTransformed()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public void TypeReconstructionComplete()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public void CodeStructuringComplete()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public void DecompilationFinished()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public void AddDiagnostic(Diagnostic d)
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public void ShowProgress(string caption, int numerator, int denominator)
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
 
 		#endregion
 	}

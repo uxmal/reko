@@ -31,8 +31,6 @@ namespace Decompiler.Loading
     {
         private string asmfile;
         private Assembler asm;
-        private DecompilerProject project;
-        private Program prog;
 
         public AssemblerLoader(Assembler asm, string asmfile)
         {
@@ -40,28 +38,19 @@ namespace Decompiler.Loading
             this.asmfile = asmfile;
         }
 
-        public override DecompilerProject Project
-        {
-            get { return project; }
-        }
-
-        public override Program Program
-        {
-            get { return prog; }
-        }
-
-        public override void Load(Address addrLoad)
+        public override LoadedProject Load(Address addrLoad)
         {
             asm.Assemble(addrLoad, asmfile);
-            prog = new Program();
-            Program.Image = asm.Image;
-            Program.Architecture = asm.Architecture;
-            Program.Platform = asm.Platform;
+            Program prog = new Program();
+            prog.Image = asm.Image;
+            prog.Architecture = asm.Architecture;
+            prog.Platform = asm.Platform;
             EntryPoints.AddRange(asm.EntryPoints);
-            EntryPoints.Add(new EntryPoint(asm.StartAddress, Program.Architecture.CreateProcessorState()));
-            CopyImportThunks(asm.ImportThunks, Program);
-            project = new DecompilerProject();
+            EntryPoints.Add(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
+            CopyImportThunks(asm.ImportThunks, prog);
+            DecompilerProject project = new DecompilerProject();
             project.Input.BaseAddress = addrLoad;
+            return new LoadedProject(prog, project);
         }
 
     }

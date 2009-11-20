@@ -27,13 +27,17 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-	public class AnalyzedPageInteractor : PhasePageInteractor
+    public interface IAnalyzedPageInteractor : IPhasePageInteractor
+    {
+    }
+
+	public class AnalyzedPageInteractorImpl : PhasePageInteractorImpl, IAnalyzedPageInteractor
 	{
 		private AnalyzedPage page;
         private RichEditFormatter formatter;
         private IProgramImageBrowserService browserSvc;
 
-		public AnalyzedPageInteractor(AnalyzedPage page)
+		public AnalyzedPageInteractorImpl(AnalyzedPage page)
 		{
 			this.page = page;
             page.ProcedureText.MouseClick += new MouseEventHandler(ProcedureText_MouseClick);

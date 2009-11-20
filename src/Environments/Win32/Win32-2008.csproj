@@ -52,6 +52,7 @@
     <Content Include="msvcrt.xml" />
     <Content Include="shell32.xml" />
     <Content Include="user32.xml" />
+    <Content Include="win32.xml" />
     <Content Include="wininet.xml" />
   </ItemGroup>
   <ItemGroup>

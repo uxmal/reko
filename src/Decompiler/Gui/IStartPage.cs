@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Windows.Forms;
 
 namespace Decompiler.Gui
 {
@@ -29,7 +30,7 @@ namespace Decompiler.Gui
         System.Windows.Forms.Button BrowseInputFile { get; }
         System.Windows.Forms.TextBox HeaderFile { get; }
         System.Windows.Forms.TextBox InputFile { get; }
-        System.Windows.Forms.TextBox IntermediateFile { get; }
+        TextBox IntermediateFile { get; }
         bool IsDirty { get; set; }
         event EventHandler IsDirtyChanged;
         System.Windows.Forms.TextBox LoadAddress { get; }

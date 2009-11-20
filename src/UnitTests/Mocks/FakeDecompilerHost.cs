@@ -29,7 +29,7 @@ namespace Decompiler.UnitTests.Mocks
         private StringWriter disassembly = new StringWriter();
         private StringWriter decompiled = new StringWriter();
         private StringWriter typesWriter = new StringWriter();
-        private DecompilerConfiguration config = new FakeDecompilerConfiguration();
+        private IDecompilerConfigurationService config = new FakeDecompilerConfiguration();
 
         public TextWriter CreateDecompiledCodeWriter(string file)
         {
@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Mocks
             return null;
         }
 
-        DecompilerConfiguration DecompilerHost.Configuration
+        IDecompilerConfigurationService DecompilerHost.Configuration
         {
             get { return config; }
         }

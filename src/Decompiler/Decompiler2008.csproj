@@ -350,6 +350,7 @@
       <DependentUpon>WorkerDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
+    <Compile Include="Loading\LoadedProject.cs" />
     <Compile Include="Loading\NullLoader.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>

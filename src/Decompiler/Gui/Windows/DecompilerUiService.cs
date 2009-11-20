@@ -83,6 +83,19 @@ namespace Decompiler.Gui.Windows
                 return null;
         }
 
+        public virtual void ShowError(Exception ex, string format, params object[] args)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(format, args);
+            Exception e = ex;
+            while (e != null)
+            {
+                sb.Append(" ");
+                sb.Append(e.Message);
+                e = e.InnerException;
+            }
+            MessageBox.Show(mainForm, sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
 		public virtual void ShowError(string format, params object [] args)
 		{
