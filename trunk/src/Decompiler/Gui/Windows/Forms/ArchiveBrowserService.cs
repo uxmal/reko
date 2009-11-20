@@ -80,6 +80,16 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 this.dlg = dlg;
                 dlg.Load += new EventHandler(dlg_Load);
+                dlg.ArchiveTree.DoubleClick += new EventHandler(ArchiveTree_DoubleClick);
+            }
+
+            void ArchiveTree_DoubleClick(object sender, EventArgs e)
+            {
+                if (SelectedArchiveEntry != null)
+                {
+                    dlg.DialogResult = DialogResult.OK;
+                    dlg.Close();
+                }
             }
 
             private ArchiveDirectoryEntry SelectedArchiveEntry

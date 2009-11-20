@@ -357,7 +357,6 @@
     </Compile>
     <Compile Include="Structure\Conditional.cs" />
     <Compile Include="Gui\Windows\Forms\DecompilerMenus.cs" />
-    <Compile Include="Gui\Windows\Forms\DecompilerPhase.cs" />
     <Compile Include="Gui\Windows\Forms\DiagnosticsInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\FinalPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\FindDialog.cs">

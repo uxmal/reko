@@ -109,9 +109,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>copy /y $(SolutionDir)Arch\Intel\$(OutDir)Decompiler.Arch.Intel.*
+    <PreBuildEvent>copy /y $(SolutionDir)Arch\Intel\$(OutDir)Decompiler.Arch.Intel.*
 copy /y $(SolutionDir)Arch\m68k\$(OutDir)Decompiler.Arch.M68*
 copy /y $(SolutionDir)Environments\MacOS\$(OutDir)Decompiler.Environments.MacOS.*
 copy /y $(SolutionDir)Environments\Msdos\$(OutDir)Decompiler.Environments.Msdos.*
@@ -121,6 +119,8 @@ copy /y $(SolutionDir)ImageLoaders\BinHex\$(OutDir)Decompiler.ImageLoaders.BinHe
 copy /y $(SolutionDir)Environments\Msdos\*.xml 
 copy /y $(SolutionDir)Environments\Win32\*.xml 
 
-</PostBuildEvent>
+</PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
