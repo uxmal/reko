@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Code;
 using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
@@ -27,15 +28,27 @@ namespace Decompiler.Arch.M68k
     public class MemoryOperand : MachineOperand
     {
         public MachineRegister Base;
+        public Constant Offset;
 
         public MemoryOperand(PrimitiveType dataWidth, MachineRegister baseReg) : base(dataWidth)
         {
             this.Base = baseReg;
         }
+        public MemoryOperand(PrimitiveType dataWidth, MachineRegister baseReg, Constant offset)
+            : base(dataWidth)
+        {
+            this.Base = baseReg;
+            this.Offset = offset;
+        }
 
         public static MemoryOperand Indirect(PrimitiveType dataWidth, MachineRegister baseReg)
         {
             return new MemoryOperand(dataWidth, baseReg);
+        }
+
+        public static MachineOperand Indirect(PrimitiveType dataWidth, MachineRegister baseReg, Constant offset)
+        {
+            return new MemoryOperand(dataWidth, baseReg, offset);
         }
     }
 }

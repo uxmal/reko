@@ -84,6 +84,13 @@ namespace Decompiler.Arch.M68k
             MemoryOperand mop = op as MemoryOperand;
             if (mop != null)
             {
+                if (mop.Offset != null)
+                {
+                    writer.Write('$');
+                    writer.Write(mop.Offset.IsNegative
+                        ? mop.FormatSignedValue(mop.Offset)
+                        : mop.FormatUnsignedValue(mop.Offset));
+                }
                 writer.Write("(");
                 writer.Write(mop.Base.Name);
                 writer.Write(")");

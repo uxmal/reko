@@ -44,6 +44,9 @@ namespace Decompiler.Arch.M68k
         public static  MachineRegister a6;
         public static  MachineRegister a7;
 
+        public static readonly MachineRegister ccr;
+        public static readonly MachineRegister sr;
+
         private static MachineRegister[] regs;
 
         static Registers()
@@ -65,6 +68,9 @@ namespace Decompiler.Arch.M68k
             a5 = new MachineRegister("a5", 13, PrimitiveType.Word32);
             a6 = new MachineRegister("a6", 14, PrimitiveType.Word32);
             a7 = new MachineRegister("a7", 15, PrimitiveType.Word32);
+
+            ccr = new MachineRegister("ccr", 16, PrimitiveType.Byte);
+            sr = new MachineRegister("sr", 17, PrimitiveType.Byte);
 
             regs = new MachineRegister[] { 
                 d0, 

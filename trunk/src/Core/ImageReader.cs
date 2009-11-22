@@ -84,6 +84,13 @@ namespace Decompiler.Core
 			return c;
 		}
 
+        public Constant ReadBe(PrimitiveType type)
+        {
+            Constant c = image.ReadBe(off, type);
+            off += type.Size;
+            return c;
+        }
+
 		public short ReadLeInt16()
 		{
 			return (short) ReadLeUint16();
@@ -151,5 +158,12 @@ namespace Decompiler.Core
             off += 2;
             return u;
         }
+
+        public short ReadBeInt16()
+        {
+            return (short)ReadBeUint16();
+        }
+
+
     }
 }

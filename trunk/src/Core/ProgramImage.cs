@@ -154,6 +154,19 @@ namespace Decompiler.Core
 			throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
 		}
 
+        public Constant ReadBe(int imageOffset, PrimitiveType type)
+        {
+            Constant c = relocations[imageOffset];
+            if (c != null && c.DataType.Size == type.Size)
+                return c;
+            switch (type.Size)
+            {
+            case 1: return new Constant(type, abImage[imageOffset]);
+            case 2: return new Constant(type, ReadBeUint16(abImage, imageOffset));
+            case 4: return new Constant(type, ReadBeUint32(abImage, imageOffset));
+            }
+            throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
+        }
 
 		public Constant ReadLeDouble(int off)
 		{

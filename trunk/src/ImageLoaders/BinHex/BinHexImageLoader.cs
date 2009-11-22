@@ -31,6 +31,9 @@ namespace Decompiler.ImageLoaders.BinHex
 {
     public class BinHexImageLoader : ImageLoader
     {
+        private ResourceFork rsrcFork;
+        private ProgramImage image;
+
         public BinHexImageLoader(IServiceProvider services, byte [] imgRaw) : base(services, imgRaw)
         {
         }
@@ -58,9 +61,9 @@ namespace Decompiler.ImageLoaders.BinHex
                     byte[] image = abSvc.UserSelectFileFromArchive(items);
                     if (image != null)
                     {
-                        ResourceFork fork = new ResourceFork(image);
-                        fork.Dump();
-                        return new ProgramImage(addrLoad, image);
+                        this.rsrcFork = new ResourceFork(image);
+                        this.image = new ProgramImage(addrLoad, image);
+                        return this.image;
                     }
                 }
             }
@@ -93,6 +96,8 @@ namespace Decompiler.ImageLoaders.BinHex
 
         public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
         {
+            if (rsrcFork != null)
+                rsrcFork.AddResourcesToImageMap(addrLoad, image.Map, entryPoints);
         }
 
         public BinHexHeader LoadBinHexHeader(IEnumerator<byte> stm)

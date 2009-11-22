@@ -16,20 +16,37 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
+using Decompiler.Core.Code;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
-    public enum Opcode : short
+    public class M68kState : ProcessorState
     {
-        illegal,
+        #region ProcessorState Members
 
-        addq,
-        lea,
-        move,
-        moveq,
-        ori,
+        public ProcessorState Clone()
+        {
+            return new M68kState();
+        }
+
+        public void Set(MachineRegister r, Constant v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetInstructionPointer(Address addr)
+        {
+        }
+
+        public Constant Get(MachineRegister r)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

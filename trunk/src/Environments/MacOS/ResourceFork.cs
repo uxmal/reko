@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.M68k;
 using Decompiler.Core;
 using System;
 using System.Collections.Generic;
@@ -280,6 +281,36 @@ namespace Decompiler.Environments.MacOS
                     Debug.WriteLine("    ====");
                 }
             }
+        }
+
+        public void AddResourcesToImageMap(Address addrLoad, ImageMap imageMap, List<EntryPoint> entryPoints)
+        {
+            foreach (ResourceType type in ResourceTypes)
+            {
+                foreach (ResourceReference rsrc in type.References)
+                {
+                    Address addrSegment = addrLoad + rsrc.DataOffset + rsrcDataOff;
+                    imageMap.AddSegment(addrSegment, ResourceDescriptiveName(type, rsrc), AccessMode.Read);
+                    if (type.Name == "CODE")
+                    {
+                        entryPoints.Add(new EntryPoint(addrSegment + 4, new M68kState()));
+                    }
+                }
+            }
+        }
+
+        private string ResourceDescriptiveName(ResourceType type, ResourceReference rsrc)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(type.Name);
+            sb.Append(':');
+            if (rsrc.Name != null)
+            {
+                sb.Append(rsrc.Name);
+            }
+            sb.Append('#');
+            sb.Append(rsrc.ResourceID);
+            return sb.ToString();
         }
     }
 }

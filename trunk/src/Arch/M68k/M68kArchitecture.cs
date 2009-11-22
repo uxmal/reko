@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -50,7 +51,7 @@ namespace Decompiler.Arch.M68k
 
         public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list)
         {
-            throw new NotImplementedException();
+            return new M68kCodeWalker(img, platform, addr, st, list);
         }
 
         public BitSet CreateRegisterBitset()
@@ -65,7 +66,7 @@ namespace Decompiler.Arch.M68k
 
         public Frame CreateFrame()
         {
-            throw new NotImplementedException();
+            return new Frame(FramePointerType);
         }
 
         public MachineRegister GetRegister(int i)
@@ -88,7 +89,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Lib.BitSet ImplicitArgumentRegisters
+        public BitSet ImplicitArgumentRegisters
         {
             get { throw new NotImplementedException(); }
         }
@@ -98,19 +99,19 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Types.PrimitiveType FramePointerType
+        public PrimitiveType FramePointerType
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Pointer32; }
         }
 
-        public Decompiler.Core.Types.PrimitiveType PointerType
+        public PrimitiveType PointerType
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Pointer32; }
         }
 
-        public Decompiler.Core.Types.PrimitiveType WordWidth
+        public PrimitiveType WordWidth
         {
-            get { throw new NotImplementedException(); }
+            get { return PrimitiveType.Word32; }
         }
 
         #endregion
