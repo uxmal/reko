@@ -25,6 +25,8 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
+    // M68k opcode map in http://www.freescale.com/files/archives/doc/ref_manual/M68000PRM.pdf
+
     public class M68kDisassembler : Disassembler
     {
         private ImageReader rdr;
@@ -36,7 +38,7 @@ namespace Decompiler.Arch.M68k
 
         public override Address Address
         {
-            get { throw new NotImplementedException(); }
+            get { return rdr.Address; }
         }
 
         public override MachineInstruction DisassembleInstruction()
@@ -44,67 +46,71 @@ namespace Decompiler.Arch.M68k
             return Disassemble();
         }
 
+        private Decoder FindDecoder(ushort opcode)
+        {
+            int l = 0;
+            int h = oprecs.Count - 1;
+            int m;
+            while (l <= h)
+            {
+                m = l + (h - l) / 2;
+                Opmask d = oprecs.Keys[m];
+                int c = d.Compare(opcode);
+                if (c == 0)
+                    return oprecs.Values[m];
+                else if (c < 0)
+                    h = m - 1;
+                else
+                    l = m + 1;
+            }
+            return null;
+        }
+
         public M68kInstruction Disassemble()
         {
-            M68kInstruction instr = new M68kInstruction();
-
             ushort opcode = rdr.ReadBeUint16();
-            switch (opcode >> 12)
+            Decoder decoder = FindDecoder(opcode);
+            if (decoder == null)
+                throw new InvalidOperationException(string.Format("Unknown 680x0 opcode {0:X4}.", opcode));
+            return decoder.Decode(opcode, rdr);
+        }
+    
+
+        private class Opmask: IComparable<Opmask>
+        {
+            ushort opcode;
+            ushort mask;
+
+            public Opmask(ushort code, ushort mask)
             {
-                case 0x05:
-                    instr.code = Opcode.addq;
-                    instr.dataWidth = SizeField(opcode, 6); ;
-                    instr.op1 = SignedImmediateByte(opcode, 9, 0x07);
-                    instr.op2 = ParseOperand(opcode, 0, instr.dataWidth);
-                    break;
-                case 0x7:
-                    instr.code = Opcode.moveq;
-                    instr.op1 = SignedImmediateByte(opcode, 0, 0xFF);
-                    instr.op2 = DataRegister(opcode, 9);
-                    break;
-                default:
-                    throw new InvalidOperationException(string.Format("Unknown 680x0 opcode {0:X4}.", opcode));
+                this.opcode = code;
+                this.mask = mask;
+            }
+ 
+            public int Compare(ushort value)
+            {
+                return (value & mask) - (this.opcode & mask);
             }
 
-            return instr;
-        }
-
-        private PrimitiveType SizeField(ushort opcode, int bitOffset)
-        {
-            switch ((opcode >> bitOffset) & 3)
+            public int CompareTo(Opmask other)
             {
-                case 0: return PrimitiveType.Byte;
-                case 1: return PrimitiveType.Word16;
-                case 2: return PrimitiveType.Word32;
-                default: throw new InvalidOperationException(string.Format("Illegal size field in opcode {0:X4}.", opcode));
+                return (mask & opcode) - (other.mask & other.opcode);
             }
         }
-        private MachineOperand ParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth)
-        {
-            int operandBits = opcode >> bitOffset;
-            int addressMode = (operandBits >> 3 )& 0x07;
-            switch (addressMode)
-            {
-                case 2:  // Address register indirect
-                    return MemoryOperand.Indirect(dataWidth, AddressRegister(opcode, bitOffset));
-                default: throw new NotImplementedException();
-            }
 
-        }
 
-        private static MachineRegister AddressRegister(ushort opcode, int bitOffset)
-        {
-            return Registers.GetRegister(8 + ((opcode >> bitOffset) & 0x7));
-        }
+        private static SortedList<Opmask, Decoder> oprecs;
 
-        private static RegisterOperand DataRegister(ushort opcode, int bitOffset)
+        static M68kDisassembler()
         {
-            return new RegisterOperand(Registers.GetRegister((opcode >> bitOffset) & 0x7));
-        }
-
-        private static ImmediateOperand SignedImmediateByte(ushort opcode, int bitOffset, int mask)
-        {
-            return new ImmediateOperand(new Constant(PrimitiveType.SByte, (opcode >> bitOffset) & mask));
+            oprecs = new SortedList<Opmask, Decoder>();
+            oprecs.Add(new Opmask(0x0000, 0xFF00), new Decoder(Opcode.ori, "s6:Iv,e0"));
+            oprecs.Add(new Opmask(0x003C, 0xFFFF), new Decoder(Opcode.ori, "sb:Ib,c"));
+            oprecs.Add(new Opmask(0x007C, 0xFFFF), new Decoder(Opcode.ori, "sw:Iw,s"));
+            oprecs.Add(new Opmask(0x3000, 0xF000), new Decoder(Opcode.move, "sw:E0,e6"));
+            oprecs.Add(new Opmask(0x41C0, 0xF1C0), new Decoder(Opcode.lea, "E0,A9"));
+            oprecs.Add(new Opmask(0x5000, 0xF100), new Decoder(Opcode.addq, "s6:q9,E0"));
+            oprecs.Add(new Opmask(0x7000, 0xF100), new Decoder(Opcode.moveq, "Q0,D9"));
         }
     }
 }

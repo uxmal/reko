@@ -28,16 +28,18 @@ namespace Decompiler.UnitTests.Arch.M68k
     [TestFixture]
     public class M68kDisassemblerTests
     {
+        private M68kInstruction instr;
+
         [Test]
         public void MoveQ()
         {
             byte[] bytes = new byte[] {
                 0x72, 0x01
             };
-            M68kDisassembler dasm = CreateDasm(bytes, 0x10000000);
-            M68kInstruction instr = dasm.Disassemble();
+            DasmSingleInstruction(bytes);
             Assert.AreEqual("moveq\t#$+01,d1", instr.ToString());
         }
+
 
         [Test]
         public void AddQ()
@@ -45,9 +47,58 @@ namespace Decompiler.UnitTests.Arch.M68k
             byte[] bytes = new byte[] {
                 0x5E, 0x92
             };
-            M68kDisassembler dasm = CreateDasm(bytes, 0x10000000);
-            M68kInstruction instr = dasm.Disassemble();
+            DasmSingleInstruction(bytes);
             Assert.AreEqual( "addq.l\t#$+07,(a2)", instr.ToString());
+        }
+
+        [Test]
+        public void Ori()
+        {
+            byte[] bytes = new byte[] {
+                0x00, 0x00, 0x00, 0x12
+            };
+            DasmSingleInstruction(bytes);
+            Assert.AreEqual("ori.b\t#$12,d0", instr.ToString());
+        }
+
+        [Test]
+        public void OriCcr()
+        {
+            byte[] bytes = new byte[] {
+                0x00, 0x3C, 0x00, 0x42
+                };
+            DasmSingleInstruction(bytes);
+            Assert.AreEqual("ori.b\t#$42,ccr", instr.ToString());
+        }
+
+        [Test]
+        public void OriSr()
+        {
+            byte[] bytes = new byte[] {
+                0x00, 0x7C, 0x00, 0x42
+                };
+            DasmSingleInstruction(bytes);
+            Assert.AreEqual("ori.w\t#$0042,sr", instr.ToString());
+        }
+
+        [Test]
+        public void MoveW()
+        {
+            DasmSingleInstruction(0x30, 0x2F, 0x47, 0x11);
+            Assert.AreEqual("move.w\t$4711(a7),d0", instr.ToString());
+        }
+
+        [Test]
+        public void Lea()
+        {
+            DasmSingleInstruction(0x43, 0xEF, 0x00, 0x04);
+            Assert.AreEqual("lea\t$0004(a7),a1", instr.ToString());
+        }
+
+        private void DasmSingleInstruction(params byte[] bytes)
+        {
+            M68kDisassembler dasm = CreateDasm(bytes, 0x10000000);
+            instr = dasm.Disassemble();
         }
 
         private M68kDisassembler CreateDasm(byte[] bytes, uint addr)

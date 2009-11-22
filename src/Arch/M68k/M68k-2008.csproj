@@ -38,10 +38,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decoder.cs" />
     <Compile Include="InstructionFormatter.cs" />
     <Compile Include="M68kArchitecture.cs" />
+    <Compile Include="M68kCodeWalker.cs" />
     <Compile Include="M68kDisassembler.cs" />
     <Compile Include="M68kInstruction.cs" />
+    <Compile Include="M68kState.cs" />
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
