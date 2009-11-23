@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressOperand.cs" />
     <Compile Include="Decoder.cs" />
     <Compile Include="InstructionFormatter.cs" />
     <Compile Include="M68kArchitecture.cs" />

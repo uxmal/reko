@@ -17,20 +17,21 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
 
 namespace Decompiler.Scanning
 {
-	/// <summary>
-	/// Rewrites the code of a scanned procedure into intermediate code.
-	/// </summary>
-	public class ProcedureRewriter : IProcedureRewriter
-	{
-		private IRewriterHost host;
-		private Procedure proc;
-		private Rewriter rewriter; 
-		private Dictionary<Address,Block> blocksVisited;
+    /// <summary>
+    /// Rewrites the code of a scanned procedure into intermediate code.
+    /// </summary>
+    public class ProcedureRewriter : IProcedureRewriter
+    {
+        private IRewriterHost host;
+        private Procedure proc;
+        private Rewriter rewriter;
+        private Dictionary<Address, Block> blocksVisited;
         private IProcessorArchitecture arch;
 
         public ProcedureRewriter(IRewriterHost host, IProcessorArchitecture arch, Procedure proc)
@@ -46,28 +47,28 @@ namespace Decompiler.Scanning
             return new CodeEmitter(arch, host, proc, block);
         }
 
-		public void HandleFallThrough(Block block, Address addr)
-		{
-			Procedure procTarget = host.GetProcedureAtAddress(addr, proc.Frame.ReturnAddressSize);
-			if (procTarget != null)
-			{
-				rewriter.EmitCallAndReturn(procTarget);
-			}
-			else
-			{
-				RewriteBlock(addr, block);
-			}
-		}
+        public void HandleFallThrough(Block block, Address addr)
+        {
+            Procedure procTarget = host.GetProcedureAtAddress(addr, proc.Frame.ReturnAddressSize);
+            if (procTarget != null)
+            {
+                rewriter.EmitCallAndReturn(procTarget);
+            }
+            else
+            {
+                RewriteBlock(addr, block);
+            }
+        }
 
-		/// <summary>
-		/// A block is fallthrough if there are no edges leaving it.
-		/// </summary>
-		/// <param name="block">Block to be tested for fall-through-ness</param>
-		/// <returns>true if the block is fallthrough</returns>
-		private bool IsBlockFallThrough(Block block)
-		{
-			return block.Succ.Count == 0;
-		}
+        /// <summary>
+        /// A block is fallthrough if there are no edges leaving it.
+        /// </summary>
+        /// <param name="block">Block to be tested for fall-through-ness</param>
+        /// <returns>true if the block is fallthrough</returns>
+        private bool IsBlockFallThrough(Block block)
+        {
+            return block.Succ.Count == 0;
+        }
 
 
         public Block RewriteBlock(Address addr, Block pred)
@@ -155,5 +156,5 @@ namespace Decompiler.Scanning
             get { return rewriter; }
             set { rewriter = value; }
         }
-	}
+    }
 }

@@ -1,5 +1,5 @@
-ï»¿/* 
- * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
+/* 
+ * Copyright (C) 1999-2009 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,38 +16,19 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core;
-using Decompiler.Core.Code;
-using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.M68k
+namespace Decompiler.Core.Machine
 {
-    public class M68kState : ProcessorState
+    /// <summary>
+    /// Abstract base class for low-level machine instructions.
+    /// </summary>
+    public abstract class MachineInstruction
     {
-        #region ProcessorState Members
+        public abstract uint DefCc();
 
-        public ProcessorState Clone()
-        {
-            return new M68kState();
-        }
-
-        public void Set(MachineRegister r, Constant v)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetInstructionPointer(Address addr)
-        {
-        }
-
-        public Constant Get(MachineRegister r)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
+        public abstract uint UseCc();
     }
 }

@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -43,14 +44,10 @@ namespace Decompiler.Arch.M68k
             get { return dasm.Address; }
         }
 
-        public override void WalkInstruction()
+        public override MachineInstruction WalkInstruction()
         {
-            int i = 30;
-            while (img.IsValidAddress(dasm.Address) && --i > 0)
-            {
-                dasm.Disassemble();
-            }
-            Listener.OnProcessExit(dasm.Address);
+            M68kInstruction instr = dasm.Disassemble();
+            return instr;
         }
     }
 }

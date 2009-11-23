@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Machine;
 using System;
 
 namespace Decompiler.Core
@@ -41,7 +42,7 @@ namespace Decompiler.Core
 		/// the appropriate method of ICodeWalkerListener will be called.
 		/// </summary>
 		/// <param name="listener"></param>
-		public abstract void WalkInstruction();
+		public abstract MachineInstruction WalkInstruction();
 
 	}
 }

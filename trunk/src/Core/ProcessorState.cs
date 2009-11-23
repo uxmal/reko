@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using System;
 
 namespace Decompiler.Core

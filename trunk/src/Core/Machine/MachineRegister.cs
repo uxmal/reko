@@ -20,7 +20,7 @@ using Decompiler.Core.Lib;
 using Decompiler.Core.Types;
 using System;
 
-namespace Decompiler.Core
+namespace Decompiler.Core.Machine
 {
 	/// <summary>
 	/// Flyweight representation of a machine register.

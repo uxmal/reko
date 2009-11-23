@@ -19,6 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;

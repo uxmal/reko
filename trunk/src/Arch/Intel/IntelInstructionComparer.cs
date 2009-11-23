@@ -17,10 +17,9 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using System;
-
-using IComparer = System.Collections.IComparer;
-using IEqualityComparer = System.Collections.IEqualityComparer;
+using System.Collections;
 
 namespace Decompiler.Arch.Intel
 {
@@ -63,8 +62,8 @@ namespace Decompiler.Arch.Intel
 		/// <returns></returns>
 		public int Compare(object oInstrA, object oInstrB)
 		{
-			IntelInstruction instrA = (IntelInstruction) oInstrA;
-			IntelInstruction instrB = (IntelInstruction) oInstrB;
+            IntelInstruction instrA = (IntelInstruction)oInstrA;
+            IntelInstruction instrB = (IntelInstruction)oInstrB;
 			if (instrA.code != instrB.code)
 				return (int) instrB.code - (int) instrA.code;
 			if (instrA.Operands != instrB.Operands)
@@ -120,7 +119,7 @@ namespace Decompiler.Arch.Intel
 			{
 				return 0;			// disregard immediate values.
 			}
-			throw new NotImplementedException("NYI");
+			throw new NotImplementedException();
 		}
 
 

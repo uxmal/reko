@@ -19,6 +19,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;

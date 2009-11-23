@@ -22,7 +22,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.Core.Machine
 {
 	public abstract class MachineOperand
 	{
@@ -119,6 +119,7 @@ namespace Decompiler.Core
 		}
 	}
 
+    //$TODO: move into intel assembly.
 	public class AddressOperand : MachineOperand
 	{
 		public Address addr;

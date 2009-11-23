@@ -18,6 +18,7 @@
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Scanning;
 using NUnit.Framework; 

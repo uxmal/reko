@@ -26,9 +26,16 @@ namespace Decompiler.Arch.M68k
     {
         illegal,
 
+        add,
+        adda,
+        addi,    
         addq,
+        bra,
         lea,
+        lsl,
         move,
+        movea,
+        movem,
         moveq,
         ori,
     }
