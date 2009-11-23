@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Serialization;
 using System;
 

@@ -164,6 +164,9 @@ namespace Decompiler.Core
             return (short)ReadBeUint16();
         }
 
-
+        public int ReadBeInt32()
+        {
+            return (int) ReadBeUint32();
+        }
     }
 }

@@ -16,19 +16,39 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.Core.Machine
 {
-    /// <summary>
-    /// Abstract base class for low-level machine instructions.
-    /// </summary>
-    public abstract class MachineInstruction
-    {
-        public abstract uint DefCc();
+	/// <summary>
+	/// Flyweight representation of processor condition codes/flags
+	/// </summary>
+	public class MachineFlags : MachineRegisterBase
+	{
+		private uint grf;
 
-        public abstract uint UseCc();
-    }
+		public MachineFlags(string name, uint grfBits, PrimitiveType dt) : base(name, dt)
+		{
+			this.grf = grfBits;
+		}
+
+		public uint FlagGroupBits
+		{
+			get { return grf; }
+		}
+
+
+		public override int SubregisterOffset(MachineRegisterBase subReg)
+		{
+			MachineFlags subFlags = subReg as MachineFlags;
+			if (subFlags != null)
+			{
+				if ((grf & subFlags.grf) != 0)
+					return 0;
+			}
+			return -1;
+		}
+
+	}
 }

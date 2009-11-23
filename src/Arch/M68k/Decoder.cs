@@ -18,17 +18,19 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using M68kAddressOperand = Decompiler.Arch.M68k.AddressOperand;
 
 namespace Decompiler.Arch.M68k
 {
     public class Decoder
     {
-        Opcode opcode;
-        string args;
+        public readonly Opcode opcode;
+        public readonly string args;
 
         public Decoder(Opcode opcode, string args)
         {
@@ -89,6 +91,14 @@ namespace Decompiler.Arch.M68k
                     return ParseSwappedOperand(opcode, GetOpcodeOffset(args[i++]), dataWidth, rdr);
                 case 'I':
                     return GetImmediate(rdr, GetSizeType(0, args[i++], dataWidth));
+                case 'J':
+                    Address addr = rdr.Address;
+                    int offset = opcode & 0xFF;
+                    if (offset == 0xFF)
+                        offset = rdr.ReadBeInt32();
+                    else if (offset == 0x00)
+                        offset = rdr.ReadBeInt16();
+                    return new M68kAddressOperand(addr + offset);
                 case 'q':
                     return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.SByte);
                 case 'Q':
@@ -175,8 +185,12 @@ namespace Decompiler.Arch.M68k
             {
             case 0: // Data register direct.
                 return DataRegisterOperand(operandBits, 0);
+            case 1: // Address register direct
+                return new RegisterOperand(AddressRegister(operandBits, 0));
             case 2:  // Address register indirect
                 return MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0));
+            case 4:  // Address register indirect with predecrement.
+                return MemoryOperand.PreDecrement(dataWidth, AddressRegister(operandBits, 0));
             case 5: // Address register indirect with displacement.
                 offset = new Constant(PrimitiveType.Int16, rdr.ReadBeInt16());
                 return MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0), offset);

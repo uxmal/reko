@@ -19,6 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Analysis;
 using Decompiler.UnitTests.Mocks;

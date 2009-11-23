@@ -16,9 +16,10 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-	using Decompiler.Analysis;
+using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;

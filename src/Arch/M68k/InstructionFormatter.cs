@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
@@ -26,8 +27,7 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
-
-    public class InstructionFormatter 
+    public class InstructionFormatter : M68kOperandVisitor<M68kOperand>
     {
         private StringWriter writer;
 
@@ -94,8 +94,26 @@ namespace Decompiler.Arch.M68k
                 writer.Write("(");
                 writer.Write(mop.Base.Name);
                 writer.Write(")");
+                return;
             }
+            M68kOperand m68kop = op as M68kOperand;
+            m68kop.Accept<M68kOperand>(this);
 
+        }
+
+        public M68kOperand Visit(PredecrementMemoryOperand pre)
+        {
+            writer.Write("-(");
+            writer.Write(pre.Register.Name);
+            writer.Write(")");
+            return pre;
+        }
+
+        public M68kOperand Visit(AddressOperand addr)
+        {
+            writer.Write("$");
+            writer.Write("{0:X8}", addr.Address.Offset);
+            return addr;
         }
 
     }

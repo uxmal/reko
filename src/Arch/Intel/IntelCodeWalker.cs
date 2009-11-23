@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
@@ -377,15 +378,15 @@ namespace Decompiler.Arch.Intel
 		/// Simulates the execution of an Intel x86 instruction.
 		/// </summary>
 		/// <returns>The simulated instruction.</returns>
-		public override void WalkInstruction()
+		public override MachineInstruction WalkInstruction()
 		{
 			Address addrStart = dasm.Address;
 			IntelInstruction instr = dasm.Disassemble();
 			Address addrTerm = dasm.Address;
-			WalkInstruction(addrStart, instr, addrTerm);
+			return WalkInstruction(addrStart, instr, addrTerm);
 		}
 
-		public object WalkInstruction(Address addrStart, IntelInstruction instr, Address addrTerm)
+		public MachineInstruction WalkInstruction(Address addrStart, IntelInstruction instr, Address addrTerm)
 		{
 			switch (instr.code)
 			{

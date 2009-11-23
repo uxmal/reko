@@ -48,7 +48,8 @@
   
 	<!-- Commands ========================================================== -->
 	
-	<cmd id="FileOpen" cmdSet="Decompiler" container="FileOpen" image="0">_Open</cmd>
+	<cmd id="FileOpen" cmdSet="Decompiler" container="FileOpen" image="0">_Open...</cmd>
+  <cmd id="FileOpenAs" cmdSet="Decompiler" container="FileOpenAs">Op_en As...</cmd>
 	<cmd id="FileSave" cmdSet="Decompiler" container="FileSave" image="1">_Save</cmd>
 	<cmd id="FileMru"  cmdSet="Decompiler" container="GrpFileMru" dynamic-item-id="2200"/>
 	<cmd id="FileExit" cmdSet="Decompiler" container="GrpFileEnd">E_xit</cmd>
@@ -69,6 +70,7 @@
 	<!-- Placements ======================================================= -->
 
   <placement item="FileOpen" container="GrpFile" />
+  <placement item="FileOpenAs" container="GrpFile" />
   <placement item="FileSave" container="GrpFile" />
   <placement item="FileOpen" container="GrpToolbarFileOps"/>
   <placement item="FileSave" container="GrpToolbarFileOps"/>

@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Text;

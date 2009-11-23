@@ -182,6 +182,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.IsNotNull(interactor.ProbeGetService(typeof(IWorkerDialogService)));
 
         }
+
+        [Test]
         private Program CreateFakeProgram()
         {
             Program prog = new Program();

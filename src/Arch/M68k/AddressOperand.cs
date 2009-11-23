@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2009 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2009 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,39 +16,26 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.Arch.M68k
 {
-	/// <summary>
-	/// Flyweight representation of processor condition codes/flags
-	/// </summary>
-	public class MachineFlags : MachineRegisterBase
-	{
-		private uint grf;
+    public class AddressOperand : M68kOperandImpl
+    {
+        public readonly Address Address;
 
-		public MachineFlags(string name, uint grfBits, PrimitiveType dt) : base(name, dt)
-		{
-			this.grf = grfBits;
-		}
+        public AddressOperand(Address addr) : base(PrimitiveType.Pointer32)
+        {
+            this.Address = addr;
+        }
 
-		public uint FlagGroupBits
-		{
-			get { return grf; }
-		}
-
-
-		public override int SubregisterOffset(MachineRegisterBase subReg)
-		{
-			MachineFlags subFlags = subReg as MachineFlags;
-			if (subFlags != null)
-			{
-				if ((grf & subFlags.grf) != 0)
-					return 0;
-			}
-			return -1;
-		}
-
-	}
+        public override T Accept<T>(M68kOperandVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+        }
+    }
 }

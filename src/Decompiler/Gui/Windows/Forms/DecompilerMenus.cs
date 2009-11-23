@@ -80,9 +80,12 @@ namespace Decompiler.Gui.Windows.Forms
     
 			// Create commands in containers.
             
-            CommandMenuItem slFileOpen = new CommandMenuItem("_Open", new Guid(CmdSets.Decompiler), CmdIds.FileOpen);
+            CommandMenuItem slFileOpen = new CommandMenuItem("_Open...", new Guid(CmdSets.Decompiler), CmdIds.FileOpen);
             slFileOpen.IsDynamic = false;
             slFileOpen.ImageIndex = 0;
+            CommandMenuItem slFileOpenAs = new CommandMenuItem("Op_en As...", new Guid(CmdSets.Decompiler), CmdIds.FileOpenAs);
+            slFileOpenAs.IsDynamic = false;
+            
             CommandMenuItem slFileSave = new CommandMenuItem("_Save", new Guid(CmdSets.Decompiler), CmdIds.FileSave);
             slFileSave.IsDynamic = false;
             slFileSave.ImageIndex = 1;
@@ -136,6 +139,7 @@ namespace Decompiler.Gui.Windows.Forms
 			// Place commands.
 			
 			slGrpFile.Add(0, slFileOpen);
+			slGrpFile.Add(0, slFileOpenAs);
 			slGrpFile.Add(0, slFileSave);
 			slGrpToolbarFileOps.Add(0, slFileOpen);
 			slGrpToolbarFileOps.Add(0, slFileSave);

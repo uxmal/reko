@@ -16,9 +16,10 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core;
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
+using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Loading;
 using NUnit.Framework;
 using System;

@@ -18,7 +18,7 @@
 
 using System;
 using BitSet = Decompiler.Core.Lib.BitSet;
-using MachineRegister = Decompiler.Core.MachineRegister;
+using MachineRegister = Decompiler.Core.Machine.MachineRegister;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
 using SortedList = System.Collections.SortedList;
 using StringWriter = System.IO.StringWriter;

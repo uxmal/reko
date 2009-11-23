@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
 using System;
 using System.Diagnostics;

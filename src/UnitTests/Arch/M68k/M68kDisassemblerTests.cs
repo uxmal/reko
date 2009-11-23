@@ -95,16 +95,54 @@ namespace Decompiler.UnitTests.Arch.M68k
             Assert.AreEqual("lea\t$0004(a7),a1", instr.ToString());
         }
 
+        [Test]
+        public void LslD()
+        {
+            DasmSingleInstruction(0xE5, 0x49, 0x00, 0x04);
+            Assert.AreEqual("lsl.w\t#$+02,d1", instr.ToString());
+        }
+
+        [Test]
+        public void AddaW()
+        {
+            DasmSingleInstruction(0xD2, 0xC1, 0x00, 0x04);
+            Assert.AreEqual("adda.w\td1,a1", instr.ToString());
+        }
+
+        [Test]
+        public void MoveA()
+        {
+            DasmSingleInstruction(0x20, 0x51, 0x00, 0x04);
+            Assert.AreEqual("movea.l\t(a1),a0", instr.ToString());
+        }
+
+        [Test]
+        public void MoveM()
+        {
+            DasmSingleInstruction(0x48, 0xE7, 0x00, 0x04);
+            Assert.AreEqual("movem.l\t#$0004,-(a7)", instr.ToString());
+        }
+
+
+        [Test]
+        public void BraB()
+        {
+            DasmSingleInstruction(0x60, 0x1A);
+            Assert.AreEqual("bra\t$1000001C", instr.ToString());
+        }
+
+
         private void DasmSingleInstruction(params byte[] bytes)
         {
             M68kDisassembler dasm = CreateDasm(bytes, 0x10000000);
             instr = dasm.Disassemble();
         }
 
-        private M68kDisassembler CreateDasm(byte[] bytes, uint addr)
+        private M68kDisassembler CreateDasm(byte[] bytes, uint address)
         {
-            ProgramImage img = new ProgramImage(new Address(addr), bytes);
-            return new M68kDisassembler(img.CreateReader(0));
+            Address addr = new Address(address);
+            ProgramImage img = new ProgramImage(addr, bytes);
+            return new M68kDisassembler(img.CreateReader(addr));
         }
     }
 }

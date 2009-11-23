@@ -17,10 +17,11 @@
  */
 
 using Decompiler.Arch.Intel;
-using Decompiler.Environments.Msdos;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
+using Decompiler.Environments.Msdos;
 using System;
 using System.Collections.Generic;
 

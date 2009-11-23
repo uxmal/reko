@@ -67,17 +67,18 @@ namespace Decompiler.Gui.Windows.Forms
 	public class CmdIds
 	{
 		public const int FileOpen = 1 + 2000;
-		public const int FileSave = 2 + 2000;
-		public const int FileExit = 3 + 2000;
-		public const int EditFind = 4 + 2000;
-		public const int ViewGoToAddress = 5 + 2000;
-		public const int ViewShowAllFragments = 6 + 2000;
-		public const int ViewShowUnscanned = 7 + 2000;
-		public const int ViewFindFragments = 8 + 2000;
-		public const int ActionNextPhase = 9 + 2000;
-		public const int ActionFinishDecompilation = 10 + 2000;
-		public const int ActionMarkProcedure = 11 + 2000;
-		public const int ActionEditSignature = 12 + 2000;
+		public const int FileOpenAs = 2 + 2000;
+		public const int FileSave = 3 + 2000;
+		public const int FileExit = 4 + 2000;
+		public const int EditFind = 5 + 2000;
+		public const int ViewGoToAddress = 6 + 2000;
+		public const int ViewShowAllFragments = 7 + 2000;
+		public const int ViewShowUnscanned = 8 + 2000;
+		public const int ViewFindFragments = 9 + 2000;
+		public const int ActionNextPhase = 10 + 2000;
+		public const int ActionFinishDecompilation = 11 + 2000;
+		public const int ActionMarkProcedure = 12 + 2000;
+		public const int ActionEditSignature = 13 + 2000;
 		public const int FileMru = 2200;
 	}
 

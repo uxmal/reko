@@ -21,6 +21,7 @@ using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
+using Decompiler.Core.Machine;
 using Decompiler.Environments.Msdos;
 using Decompiler.Loading;
 using Decompiler.Scanning;

@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using System;
 using System.Collections;
 
@@ -78,7 +79,7 @@ namespace Decompiler.UnitTests.Mocks
 			address = addr; 
 		}
 		
-		public override void WalkInstruction()
+		public override MachineInstruction WalkInstruction()
 		{
 			Console.WriteLine("Walking {0}", address);
 			MockInstruction i = (MockInstruction) callbacks[address];
@@ -88,11 +89,21 @@ namespace Decompiler.UnitTests.Mocks
 				i.Execute(Listener);
 			}
 			address = address + 1;
+            return i;
 		}
 
-		private abstract class MockInstruction
+		private abstract class MockInstruction : MachineInstruction
 		{
 			public abstract void Execute(ICodeWalkerListener listener);
+            public override uint DefCc()
+            {
+                return 0;
+            }
+
+            public override uint UseCc()
+            {
+                return 0;
+            }
 		}
 
 		private class Return : MockInstruction

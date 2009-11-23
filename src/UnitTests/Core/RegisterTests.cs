@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 
