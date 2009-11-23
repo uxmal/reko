@@ -16,7 +16,6 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
@@ -25,30 +24,15 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Assemblers.x86
+namespace Decompiler.Core.Assemblers
 {
 	/// <summary>
 	/// Emits bytes into a bytestream belonging to a segment/section.
 	/// </summary>
 	public class Emitter
 	{
-		private MachineRegister segOverride;
-		private PrimitiveType dataWidthSeg;	// Default data width for this segment.
-		private PrimitiveType addrWidthSeg;	// Default address width for this segment.
-		private PrimitiveType addrWidth;	// width of the address of this opcode.
-
 		private MemoryStream stmOut = new MemoryStream();
 
-		public Emitter()
-		{
-			segOverride = MachineRegister.None;
-		}
-
-		public PrimitiveType AddressWidth
-		{
-			get { return addrWidth; }
-			set { addrWidth = value; }
-		}
 
 		public byte [] Bytes
 		{
@@ -70,7 +54,13 @@ namespace Decompiler.Assemblers.x86
 			}
 		}
 
-		public void EmitDword(uint l)
+        [Obsolete("use EmitLeUint32")]
+        public void EmitDword(uint l)
+        {
+            EmitLeUint32(l);
+        }
+
+		public void EmitLeUint32(uint l)
 		{
 			stmOut.WriteByte((byte)(l));
 			l >>= 8;
@@ -81,7 +71,13 @@ namespace Decompiler.Assemblers.x86
 			stmOut.WriteByte((byte)(l));
 		}
 
-		public void EmitImmediate(Constant c, PrimitiveType dt)
+        [Obsolete]
+        public void EmitImmediate(Constant c, PrimitiveType dt)
+        {
+            EmitLeImmediate(c, dt);
+        }
+
+		public void EmitLeImmediate(Constant c, PrimitiveType dt)
 		{
 			switch (dt.Size)
 			{
@@ -92,42 +88,23 @@ namespace Decompiler.Assemblers.x86
 			}
 		}
 
+        [Obsolete]
 		public void EmitInteger(PrimitiveType vt, int v)
+        {
+            EmitLe(vt, v);
+        }
+
+		public void EmitLe(PrimitiveType vt, int v)
 		{
 			switch (vt.Size)
 			{
 			case 1: EmitByte(v); return;
 			case 2: EmitWord(v); return;
-			case 4: EmitDword((uint) v); return;
+			case 4: EmitLeUint32((uint) v); return;
 			default: throw new ArgumentException();
 			}
 		}
 
-		public void EmitOpcode(int b, PrimitiveType dataWidth)
-		{
-			if (SegmentOverride != MachineRegister.None)
-			{
-				byte bOv;
-				if (SegmentOverride == Registers.es) bOv = 0x26; else
-				if (SegmentOverride == Registers.cs) bOv = 0x2E; else
-				if (SegmentOverride == Registers.ss) bOv = 0x36; else
-				if (SegmentOverride == Registers.ds) bOv = 0x3E; else
-				if (SegmentOverride == Registers.fs) bOv = 0x64; else
-				if (SegmentOverride == Registers.gs) bOv = 0x65; else
-				throw new ArgumentOutOfRangeException("Invalid segment register: " + SegmentOverride);
-				EmitByte(bOv);
-				SegmentOverride = MachineRegister.None;
-			}
-			if (IsDataWidthOverridden(dataWidth))
-			{
-				EmitByte(0x66);
-			}
-			if (AddressWidth != null && AddressWidth != SegmentAddressWidth)
-			{
-				EmitByte(0x67);
-			}
-			EmitByte(b);
-		}
 
 		public void EmitString(string pstr)
 		{
@@ -137,19 +114,23 @@ namespace Decompiler.Assemblers.x86
 			}
 		}
 
-		public void EmitWord(int s)
+        [Obsolete]
+        public void EmitWord(int s)
+        {
+            EmitLeUint16(s);
+        }
+
+        public void EmitLeUint16(int s)
 		{
 			stmOut.WriteByte((byte)(s & 0xFF));
 			stmOut.WriteByte((byte)(s >> 8));
 		}
 
-		private bool IsDataWidthOverridden(PrimitiveType dataWidth)
-		{
-			return dataWidth != null && 
-				dataWidth.Domain != Domain.Real &&
-				dataWidth.Size != 1 && 
-				dataWidth != SegmentDataWidth;
-		}
+        public void EmitBeUint16(int s)
+        {
+            stmOut.WriteByte((byte)(s >> 8));
+            stmOut.WriteByte((byte)(s & 0xFF));
+        }
 
 
 		public int Length
@@ -157,13 +138,20 @@ namespace Decompiler.Assemblers.x86
 			get { return (int) stmOut.Length; }
 		}
 
+        [Obsolete]
+        public void Patch(int offsetPatch, int offsetRef, DataType width)
+        {
+            PatchLe(offsetPatch, offsetRef, width);
+        }
+
+
 		/// <summary>
 		/// Patches a value by fetching it from the stream and adding an offset.
 		/// </summary>
 		/// <param name="offsetPatch"></param>
 		/// <param name="offsetRef"></param>
 		/// <param name="width"></param>
-		public void Patch(int offsetPatch, int offsetRef, DataType width)
+		public void PatchLe(int offsetPatch, int offsetRef, DataType width)
 		{
 			Debug.Assert(offsetPatch < stmOut.Length);
 			long posOrig = stmOut.Position;
@@ -208,22 +196,5 @@ namespace Decompiler.Assemblers.x86
 			get { return (int) stmOut.Position; }
 		}
 
-		public PrimitiveType SegmentAddressWidth
-		{
-			get { return addrWidthSeg; }
-			set { addrWidthSeg = value; }
-		}
-
-		public PrimitiveType SegmentDataWidth
-		{
-			get { return dataWidthSeg; }
-			set { dataWidthSeg = value; }
-		}
-
-		public MachineRegister SegmentOverride
-		{
-			get { return segOverride; }
-			set { segOverride = value; }
-		}
-	}
+    }
 }

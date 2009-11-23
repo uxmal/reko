@@ -20,6 +20,7 @@ using Decompiler;
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
 using Decompiler.Scanning;
@@ -34,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 	public class RewriterTestBase
 	{
 		private string configFile;
-		protected Decompiler.Core.Assembler asm; 
+		protected Assembler asm; 
 		protected Program prog;
 		protected Scanner scanner;
 		protected Address baseAddress;

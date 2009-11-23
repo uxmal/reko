@@ -1,19 +1,19 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3805DE2C-659A-442D-8C34-E88822A4D27C}</ProjectGuid>
+    <ProjectGuid>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Decompiler.Assemblers.x86</RootNamespace>
-    <AssemblyName>Decompiler.Assemblers.x86</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
+    <RootNamespace>Decompiler.Assemblers.M68k</RootNamespace>
+    <AssemblyName>Decompiler.Assemblers.M68k</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,41 +34,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntelEmitter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ErrorEvent.cs" />
-    <Compile Include="IntelAssembler.cs" />
-    <Compile Include="IntelTextAssembler.cs" />
-    <Compile Include="Lexer.cs" />
-    <Compile Include="ModRmBuilder.cs" />
-    <Compile Include="OperandParser.cs" />
-    <Compile Include="ParsedOperand.cs" />
+    <Compile Include="Assembler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Arch\Intel\Intel2008.csproj">
-      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
-      <Name>Intel2008</Name>
+    <ProjectReference Include="..\..\Arch\M68k\M68k-2008.csproj">
+      <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
+      <Name>M68k-2008</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core2008.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core2008</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Msdos\Msdos-2008.csproj">
-      <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
-      <Name>Msdos-2008</Name>
-    </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

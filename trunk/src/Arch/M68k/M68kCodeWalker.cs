@@ -28,15 +28,14 @@ namespace Decompiler.Arch.M68k
     {
         ProgramImage img;
         Platform platform;
-        Address addr; 
         ProcessorState st;
         M68kDisassembler dasm;
 
-        public M68kCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener listener)
-            : base(listener)
+        public M68kCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
         {
             this.img = img;
             this.dasm = new M68kDisassembler(img.CreateReader(addr));
+            this.st = st;
         }
 
         public override Address Address
@@ -44,9 +43,28 @@ namespace Decompiler.Arch.M68k
             get { return dasm.Address; }
         }
 
-        public override MachineInstruction WalkInstruction()
+        public override MachineInstruction WalkInstruction(ICodeWalkerListener listener)
         {
+            Address addrInstr = dasm.Address;
             M68kInstruction instr = dasm.Disassemble();
+            switch (instr.code)
+            {
+            default: throw new NotImplementedException(string.Format("Walking {0} not implemented yet.", instr.code));
+            case Opcode.adda:
+            case Opcode.addi:
+            case Opcode.addq:
+            case Opcode.lea:
+            case Opcode.lsl:
+            case Opcode.move:
+            case Opcode.movea:
+            case Opcode.movem:
+            case Opcode.moveq:
+            case Opcode.ori:
+                break;
+            case Opcode.bra:
+                listener.OnJump(st, addrInstr, dasm.Address, ((AddressOperand)instr.op1).Address);
+                break;
+            }
             return instr;
         }
     }

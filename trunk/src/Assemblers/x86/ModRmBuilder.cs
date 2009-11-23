@@ -33,11 +33,11 @@ namespace Decompiler.Assemblers.x86
 	{
 		public event ErrorEventHandler Error;
 
-		private Emitter emitter;
+		private IntelEmitter emitter;
 		private PrimitiveType defaultWordSize;
 		private Constant offset;
 
-		public ModRmBuilder(PrimitiveType defaultWordSize, Emitter emitter)
+		public ModRmBuilder(PrimitiveType defaultWordSize, IntelEmitter emitter)
 		{
 			this.emitter = emitter;
 			this.defaultWordSize = defaultWordSize;

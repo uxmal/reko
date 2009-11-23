@@ -16,12 +16,12 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Assemblers.x86;
+using Decompiler.Core.Assemblers;
 using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Decompiler.UnitTests.Assemblers.x86
+namespace Decompiler.UnitTests.Core.Assemblers
 {
 	[TestFixture]
 	public class SymbolTableTests

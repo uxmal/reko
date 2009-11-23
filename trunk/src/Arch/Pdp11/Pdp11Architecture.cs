@@ -75,9 +75,9 @@ namespace Decompiler.Arch.Pdp11
             return new Pdp11BackWalker(img);
         }
 
-        public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list)
+        public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
         {
-            return new Pdp11CodeWalker(list);
+            return new Pdp11CodeWalker();
         }
 
         public BitSet CreateRegisterBitset()

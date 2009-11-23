@@ -26,8 +26,7 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Pdp11CodeWalker : CodeWalker
     {
-        public Pdp11CodeWalker(ICodeWalkerListener listener)
-            : base(listener)
+        public Pdp11CodeWalker()
         {
         }
 
@@ -36,7 +35,7 @@ namespace Decompiler.Arch.Pdp11
             get { throw new NotImplementedException(); }
         }
 
-        public override MachineInstruction WalkInstruction()
+        public override MachineInstruction WalkInstruction(ICodeWalkerListener listener)
         {
             throw new NotImplementedException();
         }

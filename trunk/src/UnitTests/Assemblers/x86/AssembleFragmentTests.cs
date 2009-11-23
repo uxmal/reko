@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 
         private void RunTest(AssemblerFragment fragment, string sExp)
         {
-            Emitter emitter = new Emitter();
+            IntelEmitter emitter = new IntelEmitter();
             Address addrBase=  new Address(0xC00, 0);
             Program prog = new Program();
             IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), PrimitiveType.Word16, addrBase, emitter, new List<EntryPoint>());

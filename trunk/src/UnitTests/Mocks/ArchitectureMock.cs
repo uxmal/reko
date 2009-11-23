@@ -115,9 +115,9 @@ namespace Decompiler.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateBackWalker implementation");
 		}
 
-		public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list)
+		public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
 		{
-			return new MockCodeWalker(addr, list);
+			return new MockCodeWalker(addr);
 		}
 
 		public Disassembler CreateDisassembler(ImageReader rdr)

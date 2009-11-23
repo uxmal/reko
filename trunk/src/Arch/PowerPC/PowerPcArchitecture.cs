@@ -113,7 +113,7 @@ namespace Decompiler.Arch.PowerPC
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list)
+        public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
         {
             throw new Exception("The method or operation is not implemented.");
         }

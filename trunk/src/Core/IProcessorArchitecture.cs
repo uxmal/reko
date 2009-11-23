@@ -36,7 +36,7 @@ namespace Decompiler.Core
 		Dumper CreateDumper();
 		ProcessorState CreateProcessorState();
 		BackWalker CreateBackWalker(ProgramImage img);
-		CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list);
+		CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st);
 		BitSet CreateRegisterBitset();
 		Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host);
         Frame CreateFrame();

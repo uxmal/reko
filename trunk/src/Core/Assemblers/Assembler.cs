@@ -20,7 +20,7 @@ using Decompiler;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Core
+namespace Decompiler.Core.Assemblers
 {
 	public interface Assembler
 	{
