@@ -53,6 +53,7 @@ namespace Decompiler.Arch.M68k
             case Opcode.adda:
             case Opcode.addi:
             case Opcode.addq:
+            case Opcode.bchg:
             case Opcode.lea:
             case Opcode.lsl:
             case Opcode.move:

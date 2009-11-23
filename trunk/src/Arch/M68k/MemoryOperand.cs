@@ -36,14 +36,17 @@ namespace Decompiler.Arch.M68k
         T Visit(PredecrementMemoryOperand pre);
 
         T Visit(AddressOperand addressOperand);
+
+        T Visit(PostIncrementMemoryOperand post);
     }
 
     public abstract class M68kOperandImpl : MachineOperand, M68kOperand
     {
-        public M68kOperandImpl(PrimitiveType dataWidth) : base(dataWidth)
+        public M68kOperandImpl(PrimitiveType dataWidth)
+            : base(dataWidth)
         {
         }
-        
+
         public abstract T Accept<T>(M68kOperandVisitor<T> visitor);
     }
 
@@ -52,7 +55,8 @@ namespace Decompiler.Arch.M68k
         public MachineRegister Base;
         public Constant Offset;
 
-        public MemoryOperand(PrimitiveType dataWidth, MachineRegister baseReg) : base(dataWidth)
+        public MemoryOperand(PrimitiveType dataWidth, MachineRegister baseReg)
+            : base(dataWidth)
         {
             this.Base = baseReg;
         }
@@ -77,13 +81,20 @@ namespace Decompiler.Arch.M68k
         {
             return new PredecrementMemoryOperand(dataWidth, baseReg);
         }
+
+        public static MachineOperand PostIncrement(PrimitiveType dataWidth, MachineRegister baseReg)
+        {
+            return new PostIncrementMemoryOperand(dataWidth, baseReg);
+        }
     }
+
 
     public class PredecrementMemoryOperand : M68kOperandImpl
     {
         public readonly MachineRegister Register;
 
-        public PredecrementMemoryOperand(PrimitiveType dataWidth, MachineRegister areg) : base(dataWidth)
+        public PredecrementMemoryOperand(PrimitiveType dataWidth, MachineRegister areg)
+            : base(dataWidth)
         {
             this.Register = areg;
         }
@@ -93,4 +104,22 @@ namespace Decompiler.Arch.M68k
             return visitor.Visit(this);
         }
     }
+
+    public class PostIncrementMemoryOperand : M68kOperandImpl
+    {
+        public readonly MachineRegister Register;
+
+        public PostIncrementMemoryOperand(PrimitiveType dataWidth, MachineRegister areg)
+            : base(dataWidth)
+        {
+            this.Register = areg;
+        }
+
+        public override T Accept<T>(M68kOperandVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+        }
+    }
+
+
 }
