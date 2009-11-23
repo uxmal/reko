@@ -109,6 +109,14 @@ namespace Decompiler.Arch.M68k
             return pre;
         }
 
+        public M68kOperand Visit(PostIncrementMemoryOperand post)
+        {
+            writer.Write("(");
+            writer.Write(post.Register.Name);
+            writer.Write(")+");
+            return post;
+        }
+
         public M68kOperand Visit(AddressOperand addr)
         {
             writer.Write("$");

@@ -189,6 +189,8 @@ namespace Decompiler.Arch.M68k
                 return new RegisterOperand(AddressRegister(operandBits, 0));
             case 2:  // Address register indirect
                 return MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0));
+            case 3:  // Address register indirect with postincrement.
+                return MemoryOperand.PostIncrement(dataWidth, AddressRegister(operandBits, 0));
             case 4:  // Address register indirect with predecrement.
                 return MemoryOperand.PreDecrement(dataWidth, AddressRegister(operandBits, 0));
             case 5: // Address register indirect with displacement.

@@ -30,6 +30,7 @@ namespace Decompiler.Arch.M68k
         adda,
         addi,    
         addq,
+        bchg,
         bra,
         lea,
         lsl,

@@ -116,6 +116,7 @@ namespace Decompiler.Arch.M68k
             oprecs.Add(new Opmask(0x0030, 0xFF3C), new Decoder(Opcode.ori, "s6:Iv,e0"));
             oprecs.Add(new Opmask(0x003C, 0xFFFF), new Decoder(Opcode.ori, "sb:Ib,c"));
             oprecs.Add(new Opmask(0x007C, 0xFFFF), new Decoder(Opcode.ori, "sw:Iw,s"));
+            oprecs.Add(new Opmask(0x0140, 0xF1C0), new Decoder(Opcode.bchg, "D9,E0"));
             oprecs.Add(new Opmask(0x2000, 0xF000), new Decoder(Opcode.movea, "sl:E0,A9"));
             oprecs.Add(new Opmask(0x3000, 0xF000), new Decoder(Opcode.move, "sw:E0,e6"));
             oprecs.Add(new Opmask(0x41C0, 0xFFC0), new Decoder(Opcode.lea, "E0,A9"));

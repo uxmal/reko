@@ -131,6 +131,13 @@ namespace Decompiler.UnitTests.Arch.M68k
             Assert.AreEqual("bra\t$1000001C", instr.ToString());
         }
 
+        [Test]
+        public void Bchg()
+        {
+            DasmSingleInstruction(0x01, 0x40);
+            Assert.AreEqual("bchg\td0,d0", instr.ToString());
+        }
+
 
         private void DasmSingleInstruction(params byte[] bytes)
         {
