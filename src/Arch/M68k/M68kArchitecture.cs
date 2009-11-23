@@ -50,9 +50,9 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list)
+        public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
         {
-            return new M68kCodeWalker(img, platform, addr, st, list);
+            return new M68kCodeWalker(img, platform, addr, st);
         }
 
         public BitSet CreateRegisterBitset()

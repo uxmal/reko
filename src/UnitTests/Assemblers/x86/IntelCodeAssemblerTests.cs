@@ -31,14 +31,14 @@ namespace Decompiler.UnitTests.Assemblers.x86
     [TestFixture]
     public class IntelCodeAssemblerTests : AssemblerBase
     {
-        Emitter emitter;
+        IntelEmitter emitter;
         IntelAssembler m;
 
         [SetUp]
         public new void Setup()
         {
             base.Setup();
-            emitter = new Emitter();
+            emitter = new IntelEmitter();
             m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), PrimitiveType.Word16, new Address(0x100, 0x0100), emitter, new List<EntryPoint>());
         }
 

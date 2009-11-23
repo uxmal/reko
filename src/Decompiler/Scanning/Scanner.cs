@@ -77,7 +77,7 @@ namespace Decompiler.Scanning
 
 		public virtual CodeWalker CreateCodeWalker(Address addr, ProcessorState state)
 		{
-			return program.Architecture.CreateCodeWalker(program.Image, program.Platform, addr, state, this);
+			return program.Architecture.CreateCodeWalker(program.Image, program.Platform, addr, state);
 		}
 
 		/// <summary>
@@ -377,7 +377,7 @@ namespace Decompiler.Scanning
 				CodeWalker cw = CreateCodeWalker(wi.Address, wi.state);
 				do
 				{
-					cw.WalkInstruction();
+					cw.WalkInstruction(this);
 				} while (blockCur.IsInRange(cw.Address));
 			}
 		}

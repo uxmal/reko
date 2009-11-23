@@ -146,9 +146,9 @@
     <Compile Include="ApplicationBuilder.cs" />
     <Compile Include="Archives\Archive.cs" />
     <Compile Include="Archives\ArchiveDirectoryEntry.cs" />
-    <Compile Include="Assembler.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Assemblers\Assembler.cs" />
+    <Compile Include="Assemblers\Emitter.cs" />
+    <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

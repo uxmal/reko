@@ -233,9 +233,9 @@ namespace Decompiler.Arch.Intel
 			return new IntelBackWalker(this, img);
 		}
 
-		public virtual CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st, ICodeWalkerListener list)
+		public virtual CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
 		{
-			return new IntelCodeWalker(this, platform, new IntelDisassembler(img.CreateReader(addr), this.WordWidth), (IntelState) st, list);
+			return new IntelCodeWalker(this, platform, new IntelDisassembler(img.CreateReader(addr), this.WordWidth), (IntelState) st);
 		}
 
 		public virtual Disassembler CreateDisassembler(ImageReader imageReader)

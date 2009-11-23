@@ -18,6 +18,7 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
@@ -47,7 +48,7 @@ namespace Decompiler.UnitTests.Scanning
 			prog.Architecture = new ArchitectureMock();
 			prog.Image = new ProgramImage(new Address(0x1000), new byte[0x4000]);
 			scanner = new TestScanner(prog);
-			scanner.MockCodeWalker = new MockCodeWalker(new Address(0x1000), scanner);
+			scanner.MockCodeWalker = new MockCodeWalker(new Address(0x1000));
 			scanner.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), prog.Architecture.CreateProcessorState()));
 		}
 

@@ -19,6 +19,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Environments.Msdos;
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
@@ -39,13 +40,13 @@ namespace Decompiler.Assemblers.x86
         private Platform platform;
         private Address addrBase;
         private ModRmBuilder modRm;
-        private Emitter emitter;
+        private IntelEmitter emitter;
         private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
         private SortedDictionary<string, SignatureLibrary> importLibraries;
         private Dictionary<uint, PseudoProcedure> importThunks;
 
-        public IntelAssembler(IntelArchitecture arch, PrimitiveType defaultWordSize, Address addrBase, Emitter emitter, List<EntryPoint> entryPoints)
+        public IntelAssembler(IntelArchitecture arch, PrimitiveType defaultWordSize, Address addrBase, IntelEmitter emitter, List<EntryPoint> entryPoints)
         {
             this.arch = new IntelArchitecture(ProcessorMode.Real);
             this.platform = new MsdosPlatform(arch);
@@ -724,7 +725,7 @@ namespace Decompiler.Assemblers.x86
         {
             if (v == null)
                 return;
-            emitter.EmitInteger((PrimitiveType) v.DataType, v.ToInt32());
+            emitter.EmitLe((PrimitiveType) v.DataType, v.ToInt32());
         }
 
         private void EmitRelativeTarget(string target, PrimitiveType offsetSize)
@@ -733,11 +734,10 @@ namespace Decompiler.Assemblers.x86
             switch (offBytes)
             {
             case 1: emitter.EmitByte(-(emitter.Length + 1)); break;
-            case 2: emitter.EmitWord(-(emitter.Length + 2)); break;
-            case 4: emitter.EmitDword((uint) -(emitter.Length + 4)); break;
+            case 2: emitter.EmitLeUint16(-(emitter.Length + 2)); break;
+            case 4: emitter.EmitLeUint32((uint)-(emitter.Length + 4)); break;
             }
-            ReferToSymbol(symtab.CreateSymbol(target),
-                emitter.Length - offBytes, offsetSize);
+            symtab.CreateSymbol(target).ReferTo(emitter.Length - offBytes, offsetSize, emitter);
         }
 
         private PrimitiveType EnsureValidOperandSizes(ParsedOperand[] ops, int count)
@@ -834,13 +834,10 @@ namespace Decompiler.Assemblers.x86
             return registerEncodings[reg.Number];
         }
 
+        [Obsolete]
         public void ResolveSymbol(Symbol psym)
         {
-            Debug.Assert(psym.fResolved);
-            foreach (BackPatch patch in psym.patches)
-            {
-                emitter.Patch(patch.offset, psym.offset, patch.Size);
-            }
+            psym.Resolve(emitter);
         }
 
         public static Constant IntegralConstant(int i, PrimitiveType width)

@@ -20,9 +20,10 @@ using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
-namespace Decompiler.Assemblers.x86
+namespace Decompiler.Core.Assemblers
 {
 	public class Symbol
 	{
@@ -44,12 +45,33 @@ namespace Decompiler.Assemblers.x86
 			patches.Add(new BackPatch(offset, width));
 		}
 
+        public void ReferTo(int off, DataType width, Emitter emitter)
+        {
+            if (fResolved)
+            {
+                emitter.Patch(off, offset, width);
+            }
+            else
+            {
+                // Add forward references to the backpatch list.
+                AddForwardReference(off, width);
+            }
+        }
+
+        public void Resolve(Emitter emitter)
+        {
+            Debug.Assert(fResolved);
+            foreach (BackPatch patch in patches)
+            {
+                emitter.PatchLe(patch.offset, offset, patch.Size);
+            }
+        }
+
 		public override string ToString()
 		{
 			return sym;
 		}
-
-	}
+    }
 
 
 	public class BackPatch
@@ -132,6 +154,8 @@ namespace Decompiler.Assemblers.x86
 			}
             return undef.ToArray();
 		}
+
+
 
 		public void Write(TextWriter txt)
 		{

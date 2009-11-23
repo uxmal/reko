@@ -21,6 +21,7 @@ using Decompiler.Analysis;
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
 using Decompiler.Environments.Msdos;

@@ -18,6 +18,7 @@
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
@@ -33,10 +34,10 @@ namespace Decompiler.Assemblers.x86
 	/// <summary>
 	/// A crude MASM-style assembler for x86 opcodes.
 	/// </summary>
-	public class IntelTextAssembler : Decompiler.Core.Assembler
+	public class IntelTextAssembler : Assembler
 	{
 		private Lexer lexer;
-		private Emitter emitter;
+		private IntelEmitter emitter;
 		private Address addrBase;
 		private Address addrStart;
         private List<EntryPoint> entryPoints;
@@ -93,7 +94,7 @@ namespace Decompiler.Assemblers.x86
 		private ProgramImage Assemble(TextReader rdr)
 		{
 			lexer = new Lexer(rdr);
-			emitter = new Emitter();
+			emitter = new IntelEmitter();
 
 			// Default assembler is real-mode.
 

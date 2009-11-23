@@ -35,11 +35,8 @@ namespace Decompiler.UnitTests.Mocks
 		private Address address;
 		private SortedList callbacks;
 
-
-		public MockCodeWalker(Address addr, ICodeWalkerListener listener) : base(listener)
+		public MockCodeWalker(Address addr)
 		{
-			if (listener == null)
-				throw new ArgumentNullException("listener");
 			address = addr;
 			callbacks = new SortedList();
 		}
@@ -79,14 +76,14 @@ namespace Decompiler.UnitTests.Mocks
 			address = addr; 
 		}
 		
-		public override MachineInstruction WalkInstruction()
+		public override MachineInstruction WalkInstruction(ICodeWalkerListener listener)
 		{
 			Console.WriteLine("Walking {0}", address);
 			MockInstruction i = (MockInstruction) callbacks[address];
 			if (i != null)
 			{
 				Console.WriteLine(" executing {0}", i.GetType().Name);
-				i.Execute(Listener);
+				i.Execute(listener);
 			}
 			address = address + 1;
             return i;
