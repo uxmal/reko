@@ -1,0 +1,27 @@
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	bx = Mem0[ds:bx + 0x0002:word16]
+	SCZO = cond(bx - ax)
+	branch Test(GT,SZO) l0C00_000F
+	// succ:  3 2
+l0C00_000F:		// block 2, pred: 1
+	store(Mem0[ds:bx + 0x0004:word16]) = 0x0000
+	ax = Mem0[ds:bx + 0x0004:word16]
+	store(Mem0[ds:bx + 0x0006:word16]) = ax
+	eax = (word32) Mem0[ds:bx + 0x0008:word16]
+	ecx = (int32) Mem0[ds:bx + 0x000A:word16]
+	eax = eax + ecx
+	SCZO = cond(eax)
+	store(Mem0[ds:bx + 0x000C:word32]) = eax
+	// succ:  4
+l0C00_0007:		// block 3, pred: 1
+	store(Mem0[ds:bx + 0x0004:word16]) = 0x0001
+	// succ:  4
+l0C00_002B:		// block 4, pred: 3 2
+	return
+	// succ:  5
+fn0C00_0000_exit:		// block 5, pred: 4
+	// succ: 

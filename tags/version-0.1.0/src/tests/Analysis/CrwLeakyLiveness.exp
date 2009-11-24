@@ -1,0 +1,72 @@
+void fn0C00_0000(Register selector ds)
+// MayUse:  ds
+// LiveOut:
+// Trashed: SCZO ax si al ah
+// Preserved:
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// C:Flags
+// ax:Register ax
+// ds:Register ds
+// v5:Temporary
+// SCZO:Flags
+// return address size: 2
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	C = fn0C00_000A(ds, &ax)
+	branch Test(ULT,C) l0C00_0009
+	// succ:  2 3
+l0C00_0005:		// block 2, pred: 1
+	v5 = Mem0[ds:0x0300:word16] + ax
+	store(Mem0[ds:0x0300:word16]) = v5
+	SCZO = cond(v5)
+	// succ:  3
+l0C00_0009:		// block 3, pred: 2 1
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 
+FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
+// MayUse:  ds
+// LiveOut: C ax
+// Trashed: SCZO ax si al ah
+// Preserved:
+// fn0C00_000A
+// Mem0:Global memory
+// fp:Temporary
+// ds:Register ds
+// si:Register si
+// SCZO:Flags
+// Z:Flags
+// ax:Register ax
+// SZO:Flags
+// C:Flags
+// axOut:Out:Register ax
+// return address size: 2
+byte fn0C00_000A(selector ds, ptr16 axOut)
+fn0C00_000A_entry:		// block 0, pred:
+	// succ:  1
+l0C00_000A:		// block 1, pred: 0
+	si = Mem0[ds:0x0100:word16]
+	SCZO = cond(si - Mem0[ds:0x0102:word16])
+	branch Test(EQ,Z) l0C00_001E
+	// succ:  3 2
+l0C00_001E:		// block 2, pred: 1
+	C = true
+	return C
+	// succ:  4
+l0C00_0014:		// block 3, pred: 1
+	ax = Mem0[ds:si:word16]
+	si = si + 0x0001
+	si = si + 0x0001
+	SZO = cond(si)
+	store(Mem0[ds:0x0100:word16]) = si
+	C = false
+	return C
+	// succ:  4
+fn0C00_000A_exit:		// block 4, pred: 3 2
+	use ax (=> axOut)
+	// succ: 

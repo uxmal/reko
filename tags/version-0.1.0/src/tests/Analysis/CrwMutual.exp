@@ -1,0 +1,94 @@
+void fn0C00_0000(Register word16 dx)
+// MayUse:  dx
+// LiveOut:
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved:
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// dx:Register dx
+// ax:Register ax
+// return address size: 2
+void fn0C00_0000(word16 dx)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax = fn0C00_0004(dx, &dx)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
+// MayUse:  dx
+// LiveOut: ax dx
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved:
+// fn0C00_0004
+// Mem0:Global memory
+// fp:Temporary
+// dx:Register dx
+// SCZO:Flags
+// Z:Flags
+// ax:Register ax
+// SZO:Flags
+// dxOut:Out:Register dx
+// return address size: 2
+word16 fn0C00_0004(word16 dx, ptr16 dxOut)
+fn0C00_0004_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0004:		// block 1, pred: 0
+	SCZO = cond(dx - 0x001E)
+	branch Test(NE,Z) l0C00_000F
+	// succ:  3 2
+l0C00_000F:		// block 2, pred: 1
+	dx = dx - 0x0001
+	SZO = cond(dx)
+	// succ:  4
+l0C00_0009:		// block 3, pred: 1
+	dx = fn0C00_0013(dx)
+	// succ:  4
+l0C00_0010:		// block 4, pred: 3 2
+	ax = dx
+	return ax
+	// succ:  5
+fn0C00_0004_exit:		// block 5, pred: 4
+	use dx (=> dxOut)
+	// succ: 
+Register word16 fn0C00_0013(Register word16 dx)
+// MayUse:  dx
+// LiveOut: dx
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved:
+// fn0C00_0013
+// Mem0:Global memory
+// fp:Temporary
+// dx:Register dx
+// SCZO:Flags
+// SO:Flags
+// SZO:Flags
+// ax:Register ax
+// return address size: 2
+word16 fn0C00_0013(word16 dx)
+fn0C00_0013_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0013:		// block 1, pred: 0
+	SCZO = cond(dx - 0x0014)
+	branch Test(LT,SO) l0C00_001F
+	// succ:  3 2
+l0C00_001F:		// block 2, pred: 1
+	dx = dx - 0x000A
+	SCZO = cond(dx)
+	ax = fn0C00_0004(dx, &dx)
+	// succ:  4
+l0C00_0018:		// block 3, pred: 1
+	dx = dx - 0x0001
+	SZO = cond(dx)
+	ax = fn0C00_0004(dx, &dx)
+	// succ:  4
+l0C00_0025:		// block 4, pred: 3 2
+	ax = ax + 0x0001
+	SZO = cond(ax)
+	return dx
+	// succ:  5
+fn0C00_0013_exit:		// block 5, pred: 4
+	// succ: 

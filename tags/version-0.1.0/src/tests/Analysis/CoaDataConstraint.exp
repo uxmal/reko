@@ -1,0 +1,59 @@
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {ax_7 = Mem0[ds:si + 0x0200:word16]}
+fp: fp:Temporary
+si: si:Register si, def: {def si}, uses: {ax_7 = Mem0[ds:si + 0x0200:word16]}{store(Mem11[ds:0x0202:word16]) = Mem9[ds:si + 0x0202:word16]}{store(Mem14[ds:0x0204:word16]) = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]}
+ds: ds:Register ds, def: {def ds}, uses: {ax_7 = Mem0[ds:si + 0x0200:word16]}{store(Mem8[ds:0x0200:word16]) = 0x0000}{store(Mem9[ds:0x0300:word16]) = ax_7}{store(Mem11[ds:0x0202:word16]) = Mem9[ds:si + 0x0202:word16]}{store(Mem11[ds:0x0202:word16]) = Mem9[ds:si + 0x0202:word16]}{store(Mem14[ds:0x0204:word16]) = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]}{store(Mem14[ds:0x0204:word16]) = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]}{store(Mem14[ds:0x0204:word16]) = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]}{ax_16 = Mem14[ds:0x0200:word16]}{fn0C00_002A(ds)}{store(Mem17[ds:0x0200:word16]) = ax_16}
+ax: ax:Register ax
+v5: v5:Temporary
+SCZO: SCZO:Flags
+ax_7: orig: ax, def: {ax_7 = Mem0[ds:si + 0x0200:word16]}, uses: {store(Mem9[ds:0x0300:word16]) = ax_7}
+Mem8: orig: Mem0, def: {store(Mem8[ds:0x0200:word16]) = 0x0000}
+Mem9: orig: Mem0, def: {store(Mem9[ds:0x0300:word16]) = ax_7}, uses: {store(Mem11[ds:0x0202:word16]) = Mem9[ds:si + 0x0202:word16]}
+ax_10: orig: ax, uses: {store(Mem11[ds:0x0202:word16]) = Mem9[ds:si + 0x0202:word16]}
+Mem11: orig: Mem0, def: {store(Mem11[ds:0x0202:word16]) = Mem9[ds:si + 0x0202:word16]}, uses: {store(Mem14[ds:0x0204:word16]) = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]}{store(Mem14[ds:0x0204:word16]) = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]}
+ax_12: orig: ax
+v5_13: orig: v5, uses: {store(Mem14[ds:0x0204:word16]) = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]}
+Mem14: orig: Mem0, def: {store(Mem14[ds:0x0204:word16]) = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]}, uses: {ax_16 = Mem14[ds:0x0200:word16]}
+SCZO_15: orig: SCZO
+ax_16: orig: ax, def: {ax_16 = Mem14[ds:0x0200:word16]}, uses: {store(Mem17[ds:0x0200:word16]) = ax_16}
+Mem17: orig: Mem0, def: {store(Mem17[ds:0x0200:word16]) = ax_16}
+// fn0C00_0000
+void fn0C00_0000(word16 si, selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def si
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax_7 = Mem0[ds:si + 0x0200:word16]
+	store(Mem8[ds:0x0200:word16]) = 0x0000
+	store(Mem9[ds:0x0300:word16]) = ax_7
+	store(Mem11[ds:0x0202:word16]) = Mem9[ds:si + 0x0202:word16]
+	store(Mem14[ds:0x0204:word16]) = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
+	ax_16 = Mem14[ds:0x0200:word16]
+	fn0C00_002A(ds)
+	store(Mem17[ds:0x0200:word16]) = ax_16
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+ax: ax:Register ax
+wLoc04: wLoc04:Local -0004
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem6[ds:0x0200:word16]) = 0xFFFF}
+wLoc04_5: orig: wLoc04
+Mem6: orig: Mem0, def: {store(Mem6[ds:0x0200:word16]) = 0xFFFF}
+ax_7: orig: ax
+// fn0C00_002A
+void fn0C00_002A(selector ds)
+fn0C00_002A_entry:		// block 0, pred:
+	def ds
+	// succ:  1
+l0C00_002A:		// block 1, pred: 0
+	store(Mem6[ds:0x0200:word16]) = 0xFFFF
+	return
+	// succ:  2
+fn0C00_002A_exit:		// block 2, pred: 1
+	// succ: 
+

@@ -1,0 +1,32 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// ax:Register ax
+// SCZO:Flags
+// bx:Register bx
+// ds:Register ds
+// cx:Register cx
+// Z:Flags
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax = 0x0000
+	SCZO = cond(ax)
+	cx = Mem0[ds:bx:word16]
+	// succ:  2
+l0C00_0004:		// block 2, pred: 1 2
+	ax = ax + cx
+	ax = ax + cx
+	SCZO = cond(ax)
+	cx = cx - 0x0001
+	Z = cond(cx)
+	branch Test(NE,Z) l0C00_0004
+	// succ:  3 2
+l0C00_000A:		// block 3, pred: 2
+	store(Mem0[ds:0x0300:word16]) = ax
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 

@@ -1,0 +1,492 @@
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {ecx_35 = (int32) Mem0[eax_31 + 0x00000006:word16]}{edx_36 = (int32) Mem0[eax_31 + 0x00000002:word16]}
+fp: fp:Temporary, def: {def fp}
+dwArg00: dwArg00:Stack +0000, def: {def dwArg00}, uses: {eax_31 = dwArg00}{dwArg00_206 = PHI(dwArg00_106, dwArg00_106, dwArg00)}
+eax: eax:Register eax, def: {def eax}
+ebx: ebx:Register ebx, def: {def ebx}, uses: {dwLoc08_32 = ebx}
+dwLoc08: dwLoc08:Local -0008, def: {def dwLoc08}
+dwArg02: dwArg02:Stack +0002, def: {def dwArg02}, uses: {ebx_33 = dwArg02}
+ebp: ebp:Register ebp, def: {def ebp}, uses: {dwLoc0C_34 = ebp}
+dwLoc0C: dwLoc0C:Local -000C, def: {def dwLoc0C}
+ecx: ecx:Register ecx, def: {def ecx}
+edx: edx:Register edx, def: {def edx}
+dwArg04: dwArg04:Stack +0004, def: {def dwArg04}, uses: {ebp_37 = dwArg04}
+dwArg0C: dwArg0C:Stack +000C, def: {def dwArg0C}, uses: {edx_39 = dwArg0C}{ecx_174 = dwArg0C}
+SCZO: SCZO:Flags, def: {def SCZO}
+C: C:Flags, def: {def C}
+dwArg08: dwArg08:Stack +0008, def: {def dwArg08}
+Z: Z:Flags, def: {def Z}
+rLoc1: rLoc1:FPU stack, def: {def rLoc1}, uses: {rLoc1_198 = PHI(rLoc1_107, rLoc1_107, rLoc1)}
+esi: esi:Register esi, def: {def esi}, uses: {esi_197 = PHI(esi_181, esi_181, esi)}{dwLoc10_56 = esi}
+dwLoc10: dwLoc10:Local -0010, def: {def dwLoc10}, uses: {dwLoc10_196 = PHI(dwLoc10_56, dwLoc10_56, dwLoc10)}
+edi: edi:Register edi, def: {def edi}, uses: {edi_195 = PHI(edi_180, edi_180, edi)}{dwLoc14_57 = edi}
+dwLoc14: dwLoc14:Local -0014, def: {def dwLoc14}, uses: {dwLoc14_194 = PHI(dwLoc14_57, dwLoc14_57, dwLoc14)}
+rArg08: rArg08:Stack +0008, def: {def rArg08}, uses: {rArg08_53 = DPB(rArg08, dwArg08_52, 0, 32) (alias)}
+rLoc2: rLoc2:FPU stack, def: {def rLoc2}, uses: {rLoc2_192 = PHI(rLoc2_112, rLoc2_112, rLoc2)}
+ax: ax:Register ax, def: {def ax}
+ah: ah:Register ah, def: {def ah}
+SZO: SZO:Flags, def: {def SZO}
+rArg00: rArg00:Stack +0000, def: {def rArg00}, uses: {rArg00_188 = PHI(rArg00_104, rArg00_104, rArg00)}{rArg00_66 = DPB(rArg00, dwArg00_65, 0, 32) (alias)}
+rLoc3: rLoc3:FPU stack, def: {def rLoc3}, uses: {rLoc3_187 = PHI(rLoc3_132, rLoc3_132, rLoc3)}{rLoc3_69 = PHI(rLoc3, rLoc3_132)}
+rLoc4: rLoc4:FPU stack, def: {def rLoc4}, uses: {rLoc4_186 = PHI(rLoc4_172, rLoc4_172, rLoc4)}{rLoc4_68 = PHI(rLoc4, rLoc4_136)}
+SO: SO:Flags, def: {def SO}
+eax_31: orig: eax, def: {eax_31 = dwArg00}, uses: {ecx_35 = (int32) Mem0[eax_31 + 0x00000006:word16]}{edx_36 = (int32) Mem0[eax_31 + 0x00000002:word16]}{ecx_41 = (int32) Mem40[eax_31 + 0x00000004:word16]}{eax_42 = (int32) Mem40[eax_31:word16]}
+dwLoc08_32: orig: dwLoc08, def: {dwLoc08_32 = ebx}, uses: {ebx_209 = dwLoc08_32}
+ebx_33: orig: ebx, def: {ebx_33 = dwArg02}, uses: {store(Mem40[ebx_33:word32]) = ecx_38}{rLoc1_55 = Mem54[ebx_33:real64]}{call fn10000108 (depth: 20; FPU: 2;)}{call fn10000108 (depth: 20; FPU: 2;)}{call fn10000108 (depth: 20; FPU: 4;)}{store(Mem173[ebx_33:word32]) = eax_166}{call fn10000108 (depth: 20; FPU: 3;)}{store(Mem183[ebx_33:word32]) = 0x00000000}
+dwLoc0C_34: orig: dwLoc0C, def: {dwLoc0C_34 = ebp}, uses: {ebp_208 = dwLoc0C_34}
+ecx_35: orig: ecx, def: {ecx_35 = (int32) Mem0[eax_31 + 0x00000006:word16]}, uses: {ecx_38 = ecx_35 - edx_36}
+edx_36: orig: edx, def: {edx_36 = (int32) Mem0[eax_31 + 0x00000002:word16]}, uses: {ecx_38 = ecx_35 - edx_36}
+ebp_37: orig: ebp, def: {ebp_37 = dwArg04}, uses: {SCZO_46 = cond(ebp_37 - 0x00000000)}{call fn10000108 (depth: 20; FPU: 2;)}{call fn10000108 (depth: 20; FPU: 2;)}{SCZO_167 = cond(esi_77 - ebp_37)}{call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}{SCZO_175 = cond(ebp_37 - edi_165)}
+ecx_38: orig: ecx, def: {ecx_38 = ecx_35 - edx_36}, uses: {store(Mem40[ebx_33:word32]) = ecx_38}
+edx_39: orig: edx, def: {edx_39 = dwArg0C}, uses: {store(Mem54[edx_39:word32]) = ecx_45}{edx_203 = PHI(edx_39, edx_39, edx_39)}{call fn10000108 (depth: 20; FPU: 2;)}{call fn10000108 (depth: 20; FPU: 2;)}{call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}{edx_203 = PHI(edx_39, edx_39, edx_39)}{edx_203 = PHI(edx_39, edx_39, edx_39)}
+Mem40: orig: Mem0, def: {store(Mem40[ebx_33:word32]) = ecx_38}, uses: {ecx_41 = (int32) Mem40[eax_31 + 0x00000004:word16]}{eax_42 = (int32) Mem40[eax_31:word16]}
+ecx_41: orig: ecx, def: {ecx_41 = (int32) Mem40[eax_31 + 0x00000004:word16]}, uses: {ecx_45 = ecx_41 - eax_42}
+eax_42: orig: eax, def: {eax_42 = (int32) Mem40[eax_31:word16]}, uses: {ax_43 = (word16) eax_42 (alias)}{ah_44 = SLICE(eax_42, byte, 8) (alias)}{ecx_45 = ecx_41 - eax_42}{eax_205 = PHI(eax_166, eax_166, eax_42)}{call fn10000108 (depth: 20; FPU: 2;)}{ecx_80 = eax_42}{eax_86 = DPB(eax_42, ax_85, 0, 16) (alias)}
+ax_43: orig: ax, def: {ax_43 = (word16) eax_42 (alias)}, uses: {ax_191 = PHI(ax_164, ax_164, ax_43)}{call fn10000108 (depth: 20; FPU: 2;)}
+ah_44: orig: ah, def: {ah_44 = SLICE(eax_42, byte, 8) (alias)}, uses: {ah_190 = PHI(ah_163, ah_163, ah_44)}{call fn10000108 (depth: 20; FPU: 2;)}
+ecx_45: orig: ecx, def: {ecx_45 = ecx_41 - eax_42}, uses: {dwArg08_52 = ecx_45}{store(Mem54[edx_39:word32]) = ecx_45}{ecx_204 = PHI(ecx_174, ecx_174, ecx_45)}{call fn10000108 (depth: 20; FPU: 2;)}
+SCZO_46: orig: SCZO, def: {SCZO_46 = cond(ebp_37 - 0x00000000)}, uses: {Z_47 = SCZO_46 (alias)}{SZO_48 = SCZO_46 (alias)}{SO_49 = SCZO_46 (alias)}
+Z_47: orig: Z, def: {Z_47 = SCZO_46 (alias)}, uses: {branch Test(EQ,Z_47) l10000105}{Z_199 = PHI(Z_177, Z_177, Z_47)}
+SZO_48: orig: SZO, def: {SZO_48 = SCZO_46 (alias)}, uses: {SZO_189 = PHI(SZO_178, SZO_178, SZO_48)}
+SO_49: orig: SO, def: {SO_49 = SCZO_46 (alias)}, uses: {SO_185 = PHI(SO_179, SO_179, SO_49)}
+C_50: orig: C, def: {C_50 = false}, uses: {SCZO_51 = C_50 (alias)}{C_201 = PHI(C_176, C_176, C_50)}
+SCZO_51: orig: SCZO, def: {SCZO_51 = C_50 (alias)}, uses: {SCZO_202 = PHI(SCZO_175, SCZO_175, SCZO_51)}
+dwArg08_52: orig: dwArg08, def: {dwArg08_52 = ecx_45}, uses: {rArg08_53 = DPB(rArg08, dwArg08_52, 0, 32) (alias)}{dwArg08_200 = PHI(dwArg08_134, dwArg08_134, dwArg08_52)}
+rArg08_53: orig: rArg08, def: {rArg08_53 = DPB(rArg08, dwArg08_52, 0, 32) (alias)}, uses: {rArg08_193 = PHI(rArg08_133, rArg08_133, rArg08_53)}{rLoc1_67 = rArg08_53}{rArg08_71 = PHI(rArg08_53, rArg08_133)}
+Mem54: orig: Mem0, def: {store(Mem54[edx_39:word32]) = ecx_45}, uses: {Mem207 = PHI(Mem184, Mem182, Mem54)}{rLoc1_55 = Mem54[ebx_33:real64]}{rLoc2_76 = rLoc2_75 *s Mem54[0x0099188A:real64]}{rLoc1_107 = rLoc1_73 *s Mem54[0x10033290:real64]}{C_137 = rLoc4_136 - Mem54[0x10033298:real64]}{C_147 = rLoc3_132 - Mem54[0x10033298:real64]}
+rLoc1_55: orig: rLoc1, def: {rLoc1_55 = Mem54[ebx_33:real64]}, uses: {dwArg00_65 = rLoc1_55}
+dwLoc10_56: orig: dwLoc10, def: {dwLoc10_56 = esi}, uses: {esi_181 = dwLoc10_56}{dwLoc10_196 = PHI(dwLoc10_56, dwLoc10_56, dwLoc10)}{dwLoc10_196 = PHI(dwLoc10_56, dwLoc10_56, dwLoc10)}
+dwLoc14_57: orig: dwLoc14, def: {dwLoc14_57 = edi}, uses: {edi_180 = dwLoc14_57}{dwLoc14_194 = PHI(dwLoc14_57, dwLoc14_57, dwLoc14)}{dwLoc14_194 = PHI(dwLoc14_57, dwLoc14_57, dwLoc14)}
+esi_58: orig: esi, def: {esi_58 = 0x00000000}, uses: {SCZO_59 = cond(esi_58)}{esi_72 = PHI(esi_58, esi_77)}
+SCZO_59: orig: SCZO, def: {SCZO_59 = cond(esi_58)}, uses: {C_60 = SCZO_59 (alias)}{Z_61 = SCZO_59 (alias)}{SZO_62 = SCZO_59 (alias)}{SO_63 = SCZO_59 (alias)}{call fn10000108 (depth: 20; FPU: 2;)}
+C_60: orig: C, def: {C_60 = SCZO_59 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 2;)}
+Z_61: orig: Z, def: {Z_61 = SCZO_59 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 2;)}
+SZO_62: orig: SZO, def: {SZO_62 = SCZO_59 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 2;)}
+SO_63: orig: SO, def: {SO_63 = SCZO_59 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 2;)}
+edi_64: orig: edi, def: {edi_64 = 0x000186A0}, uses: {call fn10000108 (depth: 20; FPU: 2;)}{call fn10000108 (depth: 20; FPU: 2;)}{edi_165 = PHI(edi_162, edi_64, edi_64, edi_64)}{edi_165 = PHI(edi_162, edi_64, edi_64, edi_64)}{SCZO_157 = cond(edi_64 - 0x000186A0)}{edi_165 = PHI(edi_162, edi_64, edi_64, edi_64)}
+dwArg00_65: orig: dwArg00, def: {dwArg00_65 = rLoc1_55}, uses: {rArg00_66 = DPB(rArg00, dwArg00_65, 0, 32) (alias)}{dwArg00_74 = PHI(dwArg00_65, dwArg00_106)}
+rArg00_66: orig: rArg00, def: {rArg00_66 = DPB(rArg00, dwArg00_65, 0, 32) (alias)}, uses: {rArg00_70 = PHI(rArg00_66, rArg00_104)}
+rLoc1_67: orig: rLoc1, def: {rLoc1_67 = rArg08_53}, uses: {rLoc1_73 = PHI(rLoc1_67, rLoc1_107)}
+rLoc4_68: orig: rLoc4, def: {rLoc4_68 = PHI(rLoc4, rLoc4_136)}
+rLoc3_69: orig: rLoc3, def: {rLoc3_69 = PHI(rLoc3, rLoc3_132)}
+rArg00_70: orig: rArg00, def: {rArg00_70 = PHI(rArg00_66, rArg00_104)}, uses: {rArg00_79 = DPB(rArg00_70, dwArg00_78, 0, 32) (alias)}
+rArg08_71: orig: rArg08, def: {rArg08_71 = PHI(rArg08_53, rArg08_133)}, uses: {rArg08_82 = DPB(rArg08_71, dwArg08_81, 0, 32) (alias)}
+esi_72: orig: esi, def: {esi_72 = PHI(esi_58, esi_77)}, uses: {esi_77 = esi_72 + 0x00000001}
+rLoc1_73: orig: rLoc1, def: {rLoc1_73 = PHI(rLoc1_67, rLoc1_107)}, uses: {rLoc1_107 = rLoc1_73 *s Mem54[0x10033290:real64]}
+dwArg00_74: orig: dwArg00, def: {dwArg00_74 = PHI(dwArg00_65, dwArg00_106)}, uses: {rLoc2_75 = dwArg00_74}
+rLoc2_75: orig: rLoc2, def: {rLoc2_75 = dwArg00_74}, uses: {rLoc2_76 = rLoc2_75 *s Mem54[0x0099188A:real64]}
+rLoc2_76: orig: rLoc2, def: {rLoc2_76 = rLoc2_75 *s Mem54[0x0099188A:real64]}, uses: {dwArg00_78 = rLoc2_76}
+esi_77: orig: esi, def: {esi_77 = esi_72 + 0x00000001}, uses: {call fn10000108 (depth: 20; FPU: 2;)}{call fn10000108 (depth: 20; FPU: 2;)}{edi_162 = esi_77}{SCZO_167 = cond(esi_77 - ebp_37)}{esi_72 = PHI(esi_58, esi_77)}{call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}
+dwArg00_78: orig: dwArg00, def: {dwArg00_78 = rLoc2_76}, uses: {rArg00_79 = DPB(rArg00_70, dwArg00_78, 0, 32) (alias)}{C_84 = rLoc2_83 - dwArg00_78}{dwArg00_106 = PHI(dwArg00_102, dwArg00_78)}
+rArg00_79: orig: rArg00, def: {rArg00_79 = DPB(rArg00_70, dwArg00_78, 0, 32) (alias)}, uses: {rArg00_104 = PHI(rArg00_103, rArg00_79)}{rArg00_100 = DPB(rArg00_79, dwArg00_99, 0, 32) (alias)}
+ecx_80: orig: ecx, def: {ecx_80 = eax_42}, uses: {dwArg08_81 = ecx_80}{ecx_94 = ecx_80 + 0x00000001}{call fn10000108 (depth: 20; FPU: 2;)}
+dwArg08_81: orig: dwArg08, def: {dwArg08_81 = ecx_80}, uses: {rArg08_82 = DPB(rArg08_71, dwArg08_81, 0, 32) (alias)}
+rArg08_82: orig: rArg08, def: {rArg08_82 = DPB(rArg08_71, dwArg08_81, 0, 32) (alias)}, uses: {rLoc2_83 = rArg08_82}{rArg08_111 = DPB(rArg08_82, dwArg08_110, 0, 32) (alias)}
+rLoc2_83: orig: rLoc2, def: {rLoc2_83 = rArg08_82}, uses: {C_84 = rLoc2_83 - dwArg00_78}{rLoc2_105 = PHI(rLoc2_101, rLoc2_83)}
+C_84: orig: C, def: {C_84 = rLoc2_83 - dwArg00_78}, uses: {ax_85 = C_84}
+ax_85: orig: ax, def: {ax_85 = C_84}, uses: {eax_86 = DPB(eax_42, ax_85, 0, 16) (alias)}{ah_87 = SLICE(ax_85, byte, 8) (alias)}{call fn10000108 (depth: 20; FPU: 2;)}
+eax_86: orig: eax, def: {eax_86 = DPB(eax_42, ax_85, 0, 16) (alias)}, uses: {call fn10000108 (depth: 20; FPU: 2;)}{ecx_109 = eax_86}{eax_115 = DPB(eax_86, ax_114, 0, 16) (alias)}
+ah_87: orig: ah, def: {ah_87 = SLICE(ax_85, byte, 8) (alias)}, uses: {SCZO_88 = cond(ah_87 & 0x40)}{call fn10000108 (depth: 20; FPU: 2;)}
+SCZO_88: orig: SCZO, def: {SCZO_88 = cond(ah_87 & 0x40)}, uses: {Z_89 = SCZO_88 (alias)}{SZO_90 = SCZO_88 (alias)}{SO_91 = SCZO_88 (alias)}
+Z_89: orig: Z, def: {Z_89 = SCZO_88 (alias)}, uses: {branch Test(NE,Z_89) l1000007F}{call fn10000108 (depth: 20; FPU: 2;)}
+SZO_90: orig: SZO, def: {SZO_90 = SCZO_88 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 2;)}
+SO_91: orig: SO, def: {SO_91 = SCZO_88 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 2;)}
+C_92: orig: C, def: {C_92 = false}, uses: {SCZO_93 = C_92 (alias)}{call fn10000108 (depth: 20; FPU: 2;)}{ax_114 = C_92}
+SCZO_93: orig: SCZO, def: {SCZO_93 = C_92 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 2;)}
+ecx_94: orig: ecx, def: {ecx_94 = ecx_80 + 0x00000001}, uses: {SZO_95 = cond(ecx_94)}{dwArg00_99 = ecx_94}
+SZO_95: orig: SZO, def: {SZO_95 = cond(ecx_94)}, uses: {SCZO_96 = SZO_95 (alias)}{Z_97 = SZO_95 (alias)}{SO_98 = SZO_95 (alias)}
+SCZO_96: orig: SCZO, def: {SCZO_96 = SZO_95 (alias)}
+Z_97: orig: Z, def: {Z_97 = SZO_95 (alias)}
+SO_98: orig: SO, def: {SO_98 = SZO_95 (alias)}
+dwArg00_99: orig: dwArg00, def: {dwArg00_99 = ecx_94}, uses: {rArg00_100 = DPB(rArg00_79, dwArg00_99, 0, 32) (alias)}
+rArg00_100: orig: rArg00, def: {rArg00_100 = DPB(rArg00_79, dwArg00_99, 0, 32) (alias)}, uses: {rLoc2_101 = rArg00_100}{rArg00_103 = DPB(rArg00_100, dwArg00_102, 0, 32) (alias)}
+rLoc2_101: orig: rLoc2, def: {rLoc2_101 = rArg00_100}, uses: {dwArg00_102 = rLoc2_101}{rLoc2_105 = PHI(rLoc2_101, rLoc2_83)}
+dwArg00_102: orig: dwArg00, def: {dwArg00_102 = rLoc2_101}, uses: {rArg00_103 = DPB(rArg00_100, dwArg00_102, 0, 32) (alias)}{dwArg00_106 = PHI(dwArg00_102, dwArg00_78)}
+rArg00_103: orig: rArg00, def: {rArg00_103 = DPB(rArg00_100, dwArg00_102, 0, 32) (alias)}, uses: {rArg00_104 = PHI(rArg00_103, rArg00_79)}
+rArg00_104: orig: rArg00, def: {rArg00_104 = PHI(rArg00_103, rArg00_79)}, uses: {rArg00_70 = PHI(rArg00_66, rArg00_104)}{rArg00_188 = PHI(rArg00_104, rArg00_104, rArg00)}{rArg00_188 = PHI(rArg00_104, rArg00_104, rArg00)}
+rLoc2_105: orig: rLoc2, def: {rLoc2_105 = PHI(rLoc2_101, rLoc2_83)}, uses: {rLoc2_108 = rLoc2_105}
+dwArg00_106: orig: dwArg00, def: {dwArg00_106 = PHI(dwArg00_102, dwArg00_78)}, uses: {rLoc4_136 = dwArg00_106}{dwArg00_74 = PHI(dwArg00_65, dwArg00_106)}{rLoc4_172 = dwArg00_106}{dwArg00_206 = PHI(dwArg00_106, dwArg00_106, dwArg00)}{dwArg00_206 = PHI(dwArg00_106, dwArg00_106, dwArg00)}
+rLoc1_107: orig: rLoc1, def: {rLoc1_107 = rLoc1_73 *s Mem54[0x10033290:real64]}, uses: {rLoc1_73 = PHI(rLoc1_67, rLoc1_107)}{rLoc1_198 = PHI(rLoc1_107, rLoc1_107, rLoc1)}{rLoc1_198 = PHI(rLoc1_107, rLoc1_107, rLoc1)}
+rLoc2_108: orig: rLoc2, def: {rLoc2_108 = rLoc2_105}
+ecx_109: orig: ecx, def: {ecx_109 = eax_86}, uses: {dwArg08_110 = ecx_109}{ecx_135 = PHI(ecx_123, ecx_109)}{ecx_123 = ecx_109 + 0x00000001}
+dwArg08_110: orig: dwArg08, def: {dwArg08_110 = ecx_109}, uses: {rArg08_111 = DPB(rArg08_82, dwArg08_110, 0, 32) (alias)}{dwArg08_134 = PHI(dwArg08_129, dwArg08_110)}
+rArg08_111: orig: rArg08, def: {rArg08_111 = DPB(rArg08_82, dwArg08_110, 0, 32) (alias)}, uses: {rLoc2_112 = rArg08_111}{rArg08_133 = PHI(rArg08_130, rArg08_111)}{rArg08_130 = DPB(rArg08_111, dwArg08_129, 0, 32) (alias)}
+rLoc2_112: orig: rLoc2, def: {rLoc2_112 = rArg08_111}, uses: {rLoc3_113 = rLoc2_112}{rLoc2_192 = PHI(rLoc2_112, rLoc2_112, rLoc2)}{rLoc2_192 = PHI(rLoc2_112, rLoc2_112, rLoc2)}
+rLoc3_113: orig: rLoc3, def: {rLoc3_113 = rLoc2_112}, uses: {rLoc3_132 = PHI(rLoc3_131, rLoc3_113)}{rLoc3_128 = rLoc3_113}
+ax_114: orig: ax, def: {ax_114 = C_92}, uses: {eax_115 = DPB(eax_86, ax_114, 0, 16) (alias)}{ah_116 = SLICE(ax_114, byte, 8) (alias)}
+eax_115: orig: eax, def: {eax_115 = DPB(eax_86, ax_114, 0, 16) (alias)}, uses: {eax_139 = DPB(eax_115, ax_138, 0, 16) (alias)}
+ah_116: orig: ah, def: {ah_116 = SLICE(ax_114, byte, 8) (alias)}, uses: {SCZO_117 = cond(ah_116 & 0x40)}
+SCZO_117: orig: SCZO, def: {SCZO_117 = cond(ah_116 & 0x40)}, uses: {Z_118 = SCZO_117 (alias)}{SZO_119 = SCZO_117 (alias)}{SO_120 = SCZO_117 (alias)}
+Z_118: orig: Z, def: {Z_118 = SCZO_117 (alias)}, uses: {branch Test(NE,Z_118) l100000AB}
+SZO_119: orig: SZO, def: {SZO_119 = SCZO_117 (alias)}
+SO_120: orig: SO, def: {SO_120 = SCZO_117 (alias)}
+C_121: orig: C, def: {C_121 = false}, uses: {SCZO_122 = C_121 (alias)}
+SCZO_122: orig: SCZO, def: {SCZO_122 = C_121 (alias)}
+ecx_123: orig: ecx, def: {ecx_123 = ecx_109 + 0x00000001}, uses: {SZO_124 = cond(ecx_123)}{dwArg08_129 = ecx_123}{ecx_135 = PHI(ecx_123, ecx_109)}
+SZO_124: orig: SZO, def: {SZO_124 = cond(ecx_123)}, uses: {SCZO_125 = SZO_124 (alias)}{Z_126 = SZO_124 (alias)}{SO_127 = SZO_124 (alias)}
+SCZO_125: orig: SCZO, def: {SCZO_125 = SZO_124 (alias)}
+Z_126: orig: Z, def: {Z_126 = SZO_124 (alias)}
+SO_127: orig: SO, def: {SO_127 = SZO_124 (alias)}
+rLoc3_128: orig: rLoc3, def: {rLoc3_128 = rLoc3_113}
+dwArg08_129: orig: dwArg08, def: {dwArg08_129 = ecx_123}, uses: {rArg08_130 = DPB(rArg08_111, dwArg08_129, 0, 32) (alias)}{dwArg08_134 = PHI(dwArg08_129, dwArg08_110)}
+rArg08_130: orig: rArg08, def: {rArg08_130 = DPB(rArg08_111, dwArg08_129, 0, 32) (alias)}, uses: {rLoc3_131 = rArg08_130}{rArg08_133 = PHI(rArg08_130, rArg08_111)}
+rLoc3_131: orig: rLoc3, def: {rLoc3_131 = rArg08_130}, uses: {rLoc3_132 = PHI(rLoc3_131, rLoc3_113)}
+rLoc3_132: orig: rLoc3, def: {rLoc3_132 = PHI(rLoc3_131, rLoc3_113)}, uses: {C_147 = rLoc3_132 - Mem54[0x10033298:real64]}{rLoc3_69 = PHI(rLoc3, rLoc3_132)}{rLoc3_187 = PHI(rLoc3_132, rLoc3_132, rLoc3)}{rLoc3_187 = PHI(rLoc3_132, rLoc3_132, rLoc3)}
+rArg08_133: orig: rArg08, def: {rArg08_133 = PHI(rArg08_130, rArg08_111)}, uses: {rArg08_71 = PHI(rArg08_53, rArg08_133)}{rArg08_193 = PHI(rArg08_133, rArg08_133, rArg08_53)}{rArg08_193 = PHI(rArg08_133, rArg08_133, rArg08_53)}
+dwArg08_134: orig: dwArg08, def: {dwArg08_134 = PHI(dwArg08_129, dwArg08_110)}, uses: {dwArg08_200 = PHI(dwArg08_134, dwArg08_134, dwArg08_52)}{dwArg08_200 = PHI(dwArg08_134, dwArg08_134, dwArg08_52)}
+ecx_135: orig: ecx, def: {ecx_135 = PHI(ecx_123, ecx_109)}, uses: {call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}
+rLoc4_136: orig: rLoc4, def: {rLoc4_136 = dwArg00_106}, uses: {C_137 = rLoc4_136 - Mem54[0x10033298:real64]}{rLoc4_68 = PHI(rLoc4, rLoc4_136)}
+C_137: orig: C, def: {C_137 = rLoc4_136 - Mem54[0x10033298:real64]}, uses: {ax_138 = C_137}
+ax_138: orig: ax, def: {ax_138 = C_137}, uses: {eax_139 = DPB(eax_115, ax_138, 0, 16) (alias)}{ah_140 = SLICE(ax_138, byte, 8) (alias)}{ax_164 = PHI(ax_148, ax_148, ax_148, ax_138)}
+eax_139: orig: eax, def: {eax_139 = DPB(eax_115, ax_138, 0, 16) (alias)}, uses: {eax_166 = PHI(eax_149, eax_149, eax_149, eax_139)}{eax_149 = DPB(eax_139, ax_148, 0, 16) (alias)}
+ah_140: orig: ah, def: {ah_140 = SLICE(ax_138, byte, 8) (alias)}, uses: {SCZO_141 = cond(ah_140 & 0x40)}{ah_163 = PHI(ah_150, ah_150, ah_150, ah_140)}
+SCZO_141: orig: SCZO, def: {SCZO_141 = cond(ah_140 & 0x40)}, uses: {Z_142 = SCZO_141 (alias)}{SZO_143 = SCZO_141 (alias)}{SO_144 = SCZO_141 (alias)}
+Z_142: orig: Z, def: {Z_142 = SCZO_141 (alias)}, uses: {branch Test(EQ,Z_142) l100000D5}
+SZO_143: orig: SZO, def: {SZO_143 = SCZO_141 (alias)}
+SO_144: orig: SO, def: {SO_144 = SCZO_141 (alias)}
+C_145: orig: C, def: {C_145 = false}, uses: {SCZO_146 = C_145 (alias)}
+SCZO_146: orig: SCZO, def: {SCZO_146 = C_145 (alias)}
+C_147: orig: C, def: {C_147 = rLoc3_132 - Mem54[0x10033298:real64]}, uses: {ax_148 = C_147}
+ax_148: orig: ax, def: {ax_148 = C_147}, uses: {eax_149 = DPB(eax_139, ax_148, 0, 16) (alias)}{ah_150 = SLICE(ax_148, byte, 8) (alias)}{ax_164 = PHI(ax_148, ax_148, ax_148, ax_138)}{ax_164 = PHI(ax_148, ax_148, ax_148, ax_138)}{ax_164 = PHI(ax_148, ax_148, ax_148, ax_138)}
+eax_149: orig: eax, def: {eax_149 = DPB(eax_139, ax_148, 0, 16) (alias)}, uses: {eax_166 = PHI(eax_149, eax_149, eax_149, eax_139)}{eax_166 = PHI(eax_149, eax_149, eax_149, eax_139)}{eax_166 = PHI(eax_149, eax_149, eax_149, eax_139)}
+ah_150: orig: ah, def: {ah_150 = SLICE(ax_148, byte, 8) (alias)}, uses: {SCZO_151 = cond(ah_150 & 0x40)}{ah_163 = PHI(ah_150, ah_150, ah_150, ah_140)}{ah_163 = PHI(ah_150, ah_150, ah_150, ah_140)}{ah_163 = PHI(ah_150, ah_150, ah_150, ah_140)}
+SCZO_151: orig: SCZO, def: {SCZO_151 = cond(ah_150 & 0x40)}, uses: {Z_152 = SCZO_151 (alias)}{SZO_153 = SCZO_151 (alias)}{SO_154 = SCZO_151 (alias)}
+Z_152: orig: Z, def: {Z_152 = SCZO_151 (alias)}, uses: {branch Test(EQ,Z_152) l100000D5}
+SZO_153: orig: SZO, def: {SZO_153 = SCZO_151 (alias)}
+SO_154: orig: SO, def: {SO_154 = SCZO_151 (alias)}
+C_155: orig: C, def: {C_155 = false}, uses: {SCZO_156 = C_155 (alias)}
+SCZO_156: orig: SCZO, def: {SCZO_156 = C_155 (alias)}
+SCZO_157: orig: SCZO, def: {SCZO_157 = cond(edi_64 - 0x000186A0)}, uses: {C_158 = SCZO_157 (alias)}{Z_159 = SCZO_157 (alias)}{SZO_160 = SCZO_157 (alias)}{SO_161 = SCZO_157 (alias)}
+C_158: orig: C, def: {C_158 = SCZO_157 (alias)}
+Z_159: orig: Z, def: {Z_159 = SCZO_157 (alias)}, uses: {branch Test(NE,Z_159) l100000D5}
+SZO_160: orig: SZO, def: {SZO_160 = SCZO_157 (alias)}
+SO_161: orig: SO, def: {SO_161 = SCZO_157 (alias)}
+edi_162: orig: edi, def: {edi_162 = esi_77}, uses: {edi_165 = PHI(edi_162, edi_64, edi_64, edi_64)}
+ah_163: orig: ah, def: {ah_163 = PHI(ah_150, ah_150, ah_150, ah_140)}, uses: {call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}{ah_190 = PHI(ah_163, ah_163, ah_44)}{ah_190 = PHI(ah_163, ah_163, ah_44)}
+ax_164: orig: ax, def: {ax_164 = PHI(ax_148, ax_148, ax_148, ax_138)}, uses: {call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}{ax_191 = PHI(ax_164, ax_164, ax_43)}{ax_191 = PHI(ax_164, ax_164, ax_43)}
+edi_165: orig: edi, def: {edi_165 = PHI(edi_162, edi_64, edi_64, edi_64)}, uses: {call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}{SCZO_175 = cond(ebp_37 - edi_165)}
+eax_166: orig: eax, def: {eax_166 = PHI(eax_149, eax_149, eax_149, eax_139)}, uses: {call fn10000108 (depth: 20; FPU: 4;)}{store(Mem173[ebx_33:word32]) = eax_166}{call fn10000108 (depth: 20; FPU: 3;)}{store(Mem182[ecx_174:word32]) = eax_166}{eax_205 = PHI(eax_166, eax_166, eax_42)}{eax_205 = PHI(eax_166, eax_166, eax_42)}
+SCZO_167: orig: SCZO, def: {SCZO_167 = cond(esi_77 - ebp_37)}, uses: {C_168 = SCZO_167 (alias)}{Z_169 = SCZO_167 (alias)}{SZO_170 = SCZO_167 (alias)}{SO_171 = SCZO_167 (alias)}{call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}
+C_168: orig: C, def: {C_168 = SCZO_167 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}
+Z_169: orig: Z, def: {Z_169 = SCZO_167 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}
+SZO_170: orig: SZO, def: {SZO_170 = SCZO_167 (alias)}, uses: {call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}
+SO_171: orig: SO, def: {SO_171 = SCZO_167 (alias)}, uses: {branch Test(LT,SO_171) l10000048}{call fn10000108 (depth: 20; FPU: 4;)}{call fn10000108 (depth: 20; FPU: 3;)}
+rLoc4_172: orig: rLoc4, def: {rLoc4_172 = dwArg00_106}, uses: {rLoc4_186 = PHI(rLoc4_172, rLoc4_172, rLoc4)}{rLoc4_186 = PHI(rLoc4_172, rLoc4_172, rLoc4)}
+Mem173: orig: Mem0, def: {store(Mem173[ebx_33:word32]) = eax_166}
+ecx_174: orig: ecx, def: {ecx_174 = dwArg0C}, uses: {store(Mem182[ecx_174:word32]) = eax_166}{ecx_204 = PHI(ecx_174, ecx_174, ecx_45)}{store(Mem184[ecx_174:word32]) = 0x00000000}{ecx_204 = PHI(ecx_174, ecx_174, ecx_45)}
+SCZO_175: orig: SCZO, def: {SCZO_175 = cond(ebp_37 - edi_165)}, uses: {C_176 = SCZO_175 (alias)}{Z_177 = SCZO_175 (alias)}{SZO_178 = SCZO_175 (alias)}{SO_179 = SCZO_175 (alias)}{SCZO_202 = PHI(SCZO_175, SCZO_175, SCZO_51)}{SCZO_202 = PHI(SCZO_175, SCZO_175, SCZO_51)}
+C_176: orig: C, def: {C_176 = SCZO_175 (alias)}, uses: {C_201 = PHI(C_176, C_176, C_50)}{C_201 = PHI(C_176, C_176, C_50)}
+Z_177: orig: Z, def: {Z_177 = SCZO_175 (alias)}, uses: {Z_199 = PHI(Z_177, Z_177, Z_47)}{Z_199 = PHI(Z_177, Z_177, Z_47)}
+SZO_178: orig: SZO, def: {SZO_178 = SCZO_175 (alias)}, uses: {branch Test(LE,SZO_178) l10000105}{SZO_189 = PHI(SZO_178, SZO_178, SZO_48)}{SZO_189 = PHI(SZO_178, SZO_178, SZO_48)}
+SO_179: orig: SO, def: {SO_179 = SCZO_175 (alias)}, uses: {SO_185 = PHI(SO_179, SO_179, SO_49)}{SO_185 = PHI(SO_179, SO_179, SO_49)}
+edi_180: orig: edi, def: {edi_180 = dwLoc14_57}, uses: {edi_195 = PHI(edi_180, edi_180, edi)}{edi_195 = PHI(edi_180, edi_180, edi)}
+esi_181: orig: esi, def: {esi_181 = dwLoc10_56}, uses: {esi_197 = PHI(esi_181, esi_181, esi)}{esi_197 = PHI(esi_181, esi_181, esi)}
+Mem182: orig: Mem0, def: {store(Mem182[ecx_174:word32]) = eax_166}, uses: {Mem207 = PHI(Mem184, Mem182, Mem54)}
+Mem183: orig: Mem0, def: {store(Mem183[ebx_33:word32]) = 0x00000000}
+Mem184: orig: Mem0, def: {store(Mem184[ecx_174:word32]) = 0x00000000}, uses: {Mem207 = PHI(Mem184, Mem182, Mem54)}
+SO_185: orig: SO, def: {SO_185 = PHI(SO_179, SO_179, SO_49)}
+rLoc4_186: orig: rLoc4, def: {rLoc4_186 = PHI(rLoc4_172, rLoc4_172, rLoc4)}
+rLoc3_187: orig: rLoc3, def: {rLoc3_187 = PHI(rLoc3_132, rLoc3_132, rLoc3)}
+rArg00_188: orig: rArg00, def: {rArg00_188 = PHI(rArg00_104, rArg00_104, rArg00)}
+SZO_189: orig: SZO, def: {SZO_189 = PHI(SZO_178, SZO_178, SZO_48)}
+ah_190: orig: ah, def: {ah_190 = PHI(ah_163, ah_163, ah_44)}
+ax_191: orig: ax, def: {ax_191 = PHI(ax_164, ax_164, ax_43)}
+rLoc2_192: orig: rLoc2, def: {rLoc2_192 = PHI(rLoc2_112, rLoc2_112, rLoc2)}
+rArg08_193: orig: rArg08, def: {rArg08_193 = PHI(rArg08_133, rArg08_133, rArg08_53)}
+dwLoc14_194: orig: dwLoc14, def: {dwLoc14_194 = PHI(dwLoc14_57, dwLoc14_57, dwLoc14)}
+edi_195: orig: edi, def: {edi_195 = PHI(edi_180, edi_180, edi)}
+dwLoc10_196: orig: dwLoc10, def: {dwLoc10_196 = PHI(dwLoc10_56, dwLoc10_56, dwLoc10)}
+esi_197: orig: esi, def: {esi_197 = PHI(esi_181, esi_181, esi)}
+rLoc1_198: orig: rLoc1, def: {rLoc1_198 = PHI(rLoc1_107, rLoc1_107, rLoc1)}
+Z_199: orig: Z, def: {Z_199 = PHI(Z_177, Z_177, Z_47)}
+dwArg08_200: orig: dwArg08, def: {dwArg08_200 = PHI(dwArg08_134, dwArg08_134, dwArg08_52)}
+C_201: orig: C, def: {C_201 = PHI(C_176, C_176, C_50)}
+SCZO_202: orig: SCZO, def: {SCZO_202 = PHI(SCZO_175, SCZO_175, SCZO_51)}
+edx_203: orig: edx, def: {edx_203 = PHI(edx_39, edx_39, edx_39)}
+ecx_204: orig: ecx, def: {ecx_204 = PHI(ecx_174, ecx_174, ecx_45)}
+eax_205: orig: eax, def: {eax_205 = PHI(eax_166, eax_166, eax_42)}
+dwArg00_206: orig: dwArg00, def: {dwArg00_206 = PHI(dwArg00_106, dwArg00_106, dwArg00)}
+Mem207: orig: Mem0, def: {Mem207 = PHI(Mem184, Mem182, Mem54)}
+ebp_208: orig: ebp, def: {ebp_208 = dwLoc0C_34}
+ebx_209: orig: ebx, def: {ebx_209 = dwLoc08_32}
+// fn10000000
+void fn10000000()
+fn10000000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def dwArg00
+	def eax
+	def ebx
+	def dwLoc08
+	def dwArg02
+	def ebp
+	def dwLoc0C
+	def ecx
+	def edx
+	def dwArg04
+	def dwArg0C
+	def SCZO
+	def C
+	def dwArg08
+	def Z
+	def rLoc1
+	def esi
+	def dwLoc10
+	def edi
+	def dwLoc14
+	def rArg08
+	def rLoc2
+	def ax
+	def ah
+	def SZO
+	def rArg00
+	def rLoc3
+	def rLoc4
+	def SO
+	// succ:  1
+l10000000:		// block 1, pred: 0
+	eax_31 = dwArg00
+	dwLoc08_32 = ebx
+	ebx_33 = dwArg02
+	dwLoc0C_34 = ebp
+	ecx_35 = (int32) Mem0[eax_31 + 0x00000006:word16]
+	edx_36 = (int32) Mem0[eax_31 + 0x00000002:word16]
+	ebp_37 = dwArg04
+	ecx_38 = ecx_35 - edx_36
+	edx_39 = dwArg0C
+	store(Mem40[ebx_33:word32]) = ecx_38
+	ecx_41 = (int32) Mem40[eax_31 + 0x00000004:word16]
+	eax_42 = (int32) Mem40[eax_31:word16]
+	ax_43 = (word16) eax_42 (alias)
+	ah_44 = SLICE(eax_42, byte, 8) (alias)
+	ecx_45 = ecx_41 - eax_42
+	SCZO_46 = cond(ebp_37 - 0x00000000)
+	Z_47 = SCZO_46 (alias)
+	SZO_48 = SCZO_46 (alias)
+	SO_49 = SCZO_46 (alias)
+	C_50 = false
+	SCZO_51 = C_50 (alias)
+	dwArg08_52 = ecx_45
+	rArg08_53 = DPB(rArg08, dwArg08_52, 0, 32) (alias)
+	store(Mem54[edx_39:word32]) = ecx_45
+	branch Test(EQ,Z_47) l10000105
+	// succ:  2 14
+l10000035:		// block 2, pred: 1
+	rLoc1_55 = Mem54[ebx_33:real64]
+	dwLoc10_56 = esi
+	dwLoc14_57 = edi
+	esi_58 = 0x00000000
+	SCZO_59 = cond(esi_58)
+	C_60 = SCZO_59 (alias)
+	Z_61 = SCZO_59 (alias)
+	SZO_62 = SCZO_59 (alias)
+	SO_63 = SCZO_59 (alias)
+	edi_64 = 0x000186A0
+	dwArg00_65 = rLoc1_55
+	rArg00_66 = DPB(rArg00, dwArg00_65, 0, 32) (alias)
+	rLoc1_67 = rArg08_53
+	// succ:  3
+l10000048:		// block 3, pred: 2 11
+	rLoc4_68 = PHI(rLoc4, rLoc4_136)
+	rLoc3_69 = PHI(rLoc3, rLoc3_132)
+	rArg00_70 = PHI(rArg00_66, rArg00_104)
+	rArg08_71 = PHI(rArg08_53, rArg08_133)
+	esi_72 = PHI(esi_58, esi_77)
+	rLoc1_73 = PHI(rLoc1_67, rLoc1_107)
+	dwArg00_74 = PHI(dwArg00_65, dwArg00_106)
+	rLoc2_75 = dwArg00_74
+	rLoc2_76 = rLoc2_75 *s Mem54[0x0099188A:real64]
+	esi_77 = esi_72 + 0x00000001
+	dwArg00_78 = rLoc2_76
+	rArg00_79 = DPB(rArg00_70, dwArg00_78, 0, 32) (alias)
+	call fn10000108 (depth: 20; FPU: 2;)
+	ecx_80 = eax_42
+	dwArg08_81 = ecx_80
+	rArg08_82 = DPB(rArg08_71, dwArg08_81, 0, 32) (alias)
+	rLoc2_83 = rArg08_82
+	C_84 = rLoc2_83 - dwArg00_78
+	ax_85 = C_84
+	eax_86 = DPB(eax_42, ax_85, 0, 16) (alias)
+	ah_87 = SLICE(ax_85, byte, 8) (alias)
+	SCZO_88 = cond(ah_87 & 0x40)
+	Z_89 = SCZO_88 (alias)
+	SZO_90 = SCZO_88 (alias)
+	SO_91 = SCZO_88 (alias)
+	C_92 = false
+	SCZO_93 = C_92 (alias)
+	branch Test(NE,Z_89) l1000007F
+	// succ:  4 5
+l10000072:		// block 4, pred: 3
+	ecx_94 = ecx_80 + 0x00000001
+	SZO_95 = cond(ecx_94)
+	SCZO_96 = SZO_95 (alias)
+	Z_97 = SZO_95 (alias)
+	SO_98 = SZO_95 (alias)
+	dwArg00_99 = ecx_94
+	rArg00_100 = DPB(rArg00_79, dwArg00_99, 0, 32) (alias)
+	rLoc2_101 = rArg00_100
+	dwArg00_102 = rLoc2_101
+	rArg00_103 = DPB(rArg00_100, dwArg00_102, 0, 32) (alias)
+	// succ:  5
+l1000007F:		// block 5, pred: 4 3
+	rArg00_104 = PHI(rArg00_103, rArg00_79)
+	rLoc2_105 = PHI(rLoc2_101, rLoc2_83)
+	dwArg00_106 = PHI(dwArg00_102, dwArg00_78)
+	rLoc1_107 = rLoc1_73 *s Mem54[0x10033290:real64]
+	rLoc2_108 = rLoc2_105
+	call fn10000108 (depth: 20; FPU: 2;)
+	ecx_109 = eax_86
+	dwArg08_110 = ecx_109
+	rArg08_111 = DPB(rArg08_82, dwArg08_110, 0, 32) (alias)
+	rLoc2_112 = rArg08_111
+	rLoc3_113 = rLoc2_112
+	ax_114 = C_92
+	eax_115 = DPB(eax_86, ax_114, 0, 16) (alias)
+	ah_116 = SLICE(ax_114, byte, 8) (alias)
+	SCZO_117 = cond(ah_116 & 0x40)
+	Z_118 = SCZO_117 (alias)
+	SZO_119 = SCZO_117 (alias)
+	SO_120 = SCZO_117 (alias)
+	C_121 = false
+	SCZO_122 = C_121 (alias)
+	branch Test(NE,Z_118) l100000AB
+	// succ:  6 7
+l100000A0:		// block 6, pred: 5
+	ecx_123 = ecx_109 + 0x00000001
+	SZO_124 = cond(ecx_123)
+	SCZO_125 = SZO_124 (alias)
+	Z_126 = SZO_124 (alias)
+	SO_127 = SZO_124 (alias)
+	rLoc3_128 = rLoc3_113
+	dwArg08_129 = ecx_123
+	rArg08_130 = DPB(rArg08_111, dwArg08_129, 0, 32) (alias)
+	rLoc3_131 = rArg08_130
+	// succ:  7
+l100000AB:		// block 7, pred: 6 5
+	rLoc3_132 = PHI(rLoc3_131, rLoc3_113)
+	rArg08_133 = PHI(rArg08_130, rArg08_111)
+	dwArg08_134 = PHI(dwArg08_129, dwArg08_110)
+	ecx_135 = PHI(ecx_123, ecx_109)
+	rLoc4_136 = dwArg00_106
+	C_137 = rLoc4_136 - Mem54[0x10033298:real64]
+	ax_138 = C_137
+	eax_139 = DPB(eax_115, ax_138, 0, 16) (alias)
+	ah_140 = SLICE(ax_138, byte, 8) (alias)
+	SCZO_141 = cond(ah_140 & 0x40)
+	Z_142 = SCZO_141 (alias)
+	SZO_143 = SCZO_141 (alias)
+	SO_144 = SCZO_141 (alias)
+	C_145 = false
+	SCZO_146 = C_145 (alias)
+	branch Test(EQ,Z_142) l100000D5
+	// succ:  8 11
+l100000BD:		// block 8, pred: 7
+	C_147 = rLoc3_132 - Mem54[0x10033298:real64]
+	ax_148 = C_147
+	eax_149 = DPB(eax_139, ax_148, 0, 16) (alias)
+	ah_150 = SLICE(ax_148, byte, 8) (alias)
+	SCZO_151 = cond(ah_150 & 0x40)
+	Z_152 = SCZO_151 (alias)
+	SZO_153 = SCZO_151 (alias)
+	SO_154 = SCZO_151 (alias)
+	C_155 = false
+	SCZO_156 = C_155 (alias)
+	branch Test(EQ,Z_152) l100000D5
+	// succ:  9 11
+l100000CB:		// block 9, pred: 8
+	SCZO_157 = cond(edi_64 - 0x000186A0)
+	C_158 = SCZO_157 (alias)
+	Z_159 = SCZO_157 (alias)
+	SZO_160 = SCZO_157 (alias)
+	SO_161 = SCZO_157 (alias)
+	branch Test(NE,Z_159) l100000D5
+	// succ:  10 11
+l100000D3:		// block 10, pred: 9
+	edi_162 = esi_77
+	// succ:  11
+l100000D5:		// block 11, pred: 10 9 8 7
+	ah_163 = PHI(ah_150, ah_150, ah_150, ah_140)
+	ax_164 = PHI(ax_148, ax_148, ax_148, ax_138)
+	edi_165 = PHI(edi_162, edi_64, edi_64, edi_64)
+	eax_166 = PHI(eax_149, eax_149, eax_149, eax_139)
+	SCZO_167 = cond(esi_77 - ebp_37)
+	C_168 = SCZO_167 (alias)
+	Z_169 = SCZO_167 (alias)
+	SZO_170 = SCZO_167 (alias)
+	SO_171 = SCZO_167 (alias)
+	branch Test(LT,SO_171) l10000048
+	// succ:  12 3
+l100000DD:		// block 12, pred: 11
+	rLoc4_172 = dwArg00_106
+	call fn10000108 (depth: 20; FPU: 4;)
+	store(Mem173[ebx_33:word32]) = eax_166
+	call fn10000108 (depth: 20; FPU: 3;)
+	ecx_174 = dwArg0C
+	SCZO_175 = cond(ebp_37 - edi_165)
+	C_176 = SCZO_175 (alias)
+	Z_177 = SCZO_175 (alias)
+	SZO_178 = SCZO_175 (alias)
+	SO_179 = SCZO_175 (alias)
+	edi_180 = dwLoc14_57
+	esi_181 = dwLoc10_56
+	store(Mem182[ecx_174:word32]) = eax_166
+	branch Test(LE,SZO_178) l10000105
+	// succ:  13 14
+l100000F9:		// block 13, pred: 12
+	store(Mem183[ebx_33:word32]) = 0x00000000
+	store(Mem184[ecx_174:word32]) = 0x00000000
+	// succ:  14
+l10000105:		// block 14, pred: 13 12 1
+	SO_185 = PHI(SO_179, SO_179, SO_49)
+	rLoc4_186 = PHI(rLoc4_172, rLoc4_172, rLoc4)
+	rLoc3_187 = PHI(rLoc3_132, rLoc3_132, rLoc3)
+	rArg00_188 = PHI(rArg00_104, rArg00_104, rArg00)
+	SZO_189 = PHI(SZO_178, SZO_178, SZO_48)
+	ah_190 = PHI(ah_163, ah_163, ah_44)
+	ax_191 = PHI(ax_164, ax_164, ax_43)
+	rLoc2_192 = PHI(rLoc2_112, rLoc2_112, rLoc2)
+	rArg08_193 = PHI(rArg08_133, rArg08_133, rArg08_53)
+	dwLoc14_194 = PHI(dwLoc14_57, dwLoc14_57, dwLoc14)
+	edi_195 = PHI(edi_180, edi_180, edi)
+	dwLoc10_196 = PHI(dwLoc10_56, dwLoc10_56, dwLoc10)
+	esi_197 = PHI(esi_181, esi_181, esi)
+	rLoc1_198 = PHI(rLoc1_107, rLoc1_107, rLoc1)
+	Z_199 = PHI(Z_177, Z_177, Z_47)
+	dwArg08_200 = PHI(dwArg08_134, dwArg08_134, dwArg08_52)
+	C_201 = PHI(C_176, C_176, C_50)
+	SCZO_202 = PHI(SCZO_175, SCZO_175, SCZO_51)
+	edx_203 = PHI(edx_39, edx_39, edx_39)
+	ecx_204 = PHI(ecx_174, ecx_174, ecx_45)
+	eax_205 = PHI(eax_166, eax_166, eax_42)
+	dwArg00_206 = PHI(dwArg00_106, dwArg00_106, dwArg00)
+	Mem207 = PHI(Mem184, Mem182, Mem54)
+	ebp_208 = dwLoc0C_34
+	ebx_209 = dwLoc08_32
+	return
+	// succ:  15
+fn10000000_exit:		// block 15, pred: 14
+	// succ: 
+
+Mem0: Mem0:Global memory, def: {def Mem0}
+fp: fp:Temporary, def: {def fp}
+rArg0: rArg0:FPU stack, def: {def rArg0}, uses: {rLoc08_5 = rArg0}
+rLoc08: rLoc08:Local -0008, def: {def rLoc08}
+eax: eax:Register eax, def: {def eax}
+rLoc08_5: orig: rLoc08, def: {rLoc08_5 = rArg0}, uses: {eax_6 = rLoc08_5}
+eax_6: orig: eax, def: {eax_6 = rLoc08_5}
+// fn10000108
+void fn10000108()
+fn10000108_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def rArg0
+	def rLoc08
+	def eax
+	// succ:  1
+l10000108:		// block 1, pred: 0
+	rLoc08_5 = rArg0
+	eax_6 = rLoc08_5
+	return
+	// succ:  2
+fn10000108_exit:		// block 2, pred: 1
+	// succ: 
+

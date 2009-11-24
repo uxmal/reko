@@ -1,0 +1,35 @@
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def bp
+	def ss
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	bx_12 = 0x0000
+	ax_13 = Mem0[ss:bp + 0x0006:word16]
+	branch ax_13 <= 0x0000 l0C00_0012
+	// succ:  3 2
+l0C00_0012:		// block 2, pred: 1
+	bx_23 = -ax_13
+	// succ:  6
+l0C00_0009:		// block 3, pred: 1
+	cx_24 = ax_13
+	// succ:  4
+l0C00_000B:		// block 4, pred: 3 4
+	cx_25 = PHI(cx_24, cx_30)
+	bx_26 = PHI(bx_12, bx_27)
+	bx_27 = bx_26 + cx_25
+	cx_30 = cx_25 - 0x0001
+	branch cx_30 != 0x0000 l0C00_000B
+	// succ:  5 4
+l0C00_000F:		// block 5, pred: 4
+	// succ:  6
+l0C00_0016:		// block 6, pred: 5 2
+	bx_40 = PHI(bx_27, bx_23)
+	store(Mem41[ds:0x0300:word16]) = bx_40
+	return
+	// succ:  7
+fn0C00_0000_exit:		// block 7, pred: 6
+	// succ: 

@@ -1,0 +1,36 @@
+// void fn10000000(Stack word32 dwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO eax ecx edi ax cx di al cl ah ch
+// Preserved:
+// Stack args: Stack +0000(32)
+// fn10000000
+void fn10000000(word32 dwArg00)
+fn10000000_entry:		// block 0, pred:
+	// succ:  1
+fn10000000_frame_asgn:		// block 1, pred: 0
+	(struct "fn10000000_frame_t") fn10000000_frame_13
+	word32 fp_14 = &fn10000000_frame_13
+	// succ:  2
+l10000000:		// block 2, pred: 1
+	store(Mem18[fp_14 - 16:word32]) = 0x00000001
+	store(Mem19[fp_14 - 12:word32]) = 0x00000002
+	store(Mem20[fp_14 - 8:word32]) = 0x00000003
+	word32 eax_15 = 0x00000000
+	word32 ecx_16 = 0x00000000
+	// succ:  3
+l10000027:		// block 3, pred: 2 4
+	branch ecx_16 <= 0x00000003
+	// succ:  5 4
+l10000023:		// block 4, pred: 3
+	eax_15 = eax_15 + Mem20[fp_14 + 0xFFFFFFF0 + ecx_16 * 0x00000004:word32]
+	ecx_16 = ecx_16 + 0x00000001
+	// succ:  3
+l1000002C:		// block 5, pred: 3
+	store(Mem30[dwArg00:word32]) = eax_15
+	return
+	// succ:  6
+fn10000000_exit:		// block 6, pred: 5
+	// succ: 
+

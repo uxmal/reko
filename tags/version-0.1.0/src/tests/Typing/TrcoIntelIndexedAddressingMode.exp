@@ -1,0 +1,38 @@
+// IntelIndexedAddressingMode
+void IntelIndexedAddressingMode()
+IntelIndexedAddressingMode_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	store((Mem0[0x0CA4:word16] + 0x000A)[Mem0[0x1C0A:word16] * 0x004A]) = 0xF8
+	return
+	// succ:  2
+IntelIndexedAddressingMode_exit:		// block 2, pred: 1
+	// succ: 
+
+Globals (in globals : ptr32)
+	trait_mem(T_4, CA4)
+	trait_mem(T_8, 1C0A)
+T_2 (in 0xF8 : byte)
+	trait_primitive(byte)
+T_3 (in 0x0CA4 : word16)
+	trait_primitive(word16)
+	trait_mem(T_4, 0)
+T_4 (in Mem0[0x0CA4:word16] : word16)
+	trait_primitive(word16)
+	trait_mem_array(A, 74, 0, T_11)
+T_5 (in 0x000A : word16)
+	trait_primitive(word16)
+T_6 (in Mem0[0x0CA4:word16] + 0x000A : word16)
+	trait_primitive(word16)
+T_7 (in 0x1C0A : word16)
+	trait_primitive(word16)
+	trait_mem(T_8, 0)
+T_8 (in Mem0[0x1C0A:word16] : word16)
+	trait_primitive(word16)
+T_9 (in 0x004A : word16)
+	trait_primitive(word16)
+T_10 (in Mem0[0x1C0A:word16] * 0x004A : word16)
+	trait_primitive(uis16)
+T_11 (in (Mem0[0x0CA4:word16] + 0x000A)[Mem0[0x1C0A:word16] * 0x004A] : byte)
+	trait_primitive(byte)
+	trait_equal(T_2)

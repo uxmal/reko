@@ -1,0 +1,40 @@
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	word16 ax_8 = 0x0000
+	word16 bx_10 = Mem0[ds:0x0200:word16]
+	// succ:  1
+l0C00_0006:		// block 1, pred: 0 5
+	branch bx_10 == 0x0000 l0C00_001A
+	// succ:  2 3
+l0C00_000A:		// block 2, pred: 1
+	store(Mem17[ds:0x0204:word16]) = bx_10
+	branch Mem17[ds:bx_10:word16] == 0xFFFF l0C00_001A
+	// succ:  5 3
+l0C00_001A:		// block 3, pred: 2 1
+	store(Mem26[ds:0x0300:word16]) = ax_8
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 
+l0C00_0013:		// block 5, pred: 2
+	bx_10 = Mem17[ds:bx_10 + 0x0004:word16]
+	ax_8 = ax_8 + 0x0001
+	// succ:  1
+
+void fn0C00_0000(selector ds)
+{
+	word16 ax_8 = 0x0000;
+	word16 bx_10 = Mem0[ds:0x0200:word16];
+	while (bx_10 != 0x0000)
+	{
+		Mem17[ds:0x0204:word16] = bx_10;
+		if (Mem17[ds:bx_10:word16] == 0xFFFF)
+			break;
+		bx_10 = Mem17[ds:bx_10 + 0x0004:word16];
+		ax_8 = ax_8 + 0x0001;
+	}
+	Mem26[ds:0x0300:word16] = ax_8;
+	return;
+}
+===========================

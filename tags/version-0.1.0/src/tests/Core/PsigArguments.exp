@@ -1,0 +1,2 @@
+FlagGroup bool CZ
+Register word16 ax

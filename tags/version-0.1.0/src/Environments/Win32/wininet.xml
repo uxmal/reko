@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <includefile>wininet.h</includefile>
+  <default>
+	<signature convention="stdapi"></signature>
+  </default>
+  <procedure name="InternetCloseHandle">
+	<signature>
+	  <return type="BOOLAPI">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HINTERNET">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InternetReadFile">
+	<signature>
+	  <return type="BOOLAPI">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HINTERNET" name="hFile">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPVOID" name="lpBuffer">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwNumberOfBytesToRead">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPDWORD" name="lpdwNumberOfBytesRead">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InternetOpenA">
+	<signature>
+	  <return type="HINTERNET">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="LPCSTR" name="lpszAgent">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwAccessType">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR" name="lpszProxy">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR" name="lpszProxyBypass">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwFlags">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InternetAutodial">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="DWORD" name="dwFlags">
+		<stack size="4" />
+	  </arg>
+	  <arg type="HWND" name="hwndParent">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InternetGoOnline">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="LPSTR" name="lpszURL">
+		<stack size="4" />
+	  </arg>
+	  <arg type="HWND" name="hwndParent">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwFlags">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InternetGetConnectedState">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="LPDWORD" name="lpdwFlags">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwReserved">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InternetGetConnectedState">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="LPDWORD" name="lpdwFlags">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwReserved">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InternetQueryDataAvailable">
+	<signature>
+	  <return type="BOOLAPI">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HINTERNET" name="hFile">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPDWORD" name="lpdwNumberOfBytesAvailable">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwFlags">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD_PTR" name="dwContext">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InternetQueryDataAvailable">
+	<signature>
+	  <return type="BOOLAPI">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HINTERNET" name="hFile">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPDWORD" name="lpdwNumberOfBytesAvailable">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwFlags">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD_PTR" name="dwContext">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InternetOpenUrlA">
+	<signature>
+	  <return type="HINTERNET">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HINTERNET" name="hInternet">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR" name="lpszUrl">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR" name="lpszHeaders">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwHeadersLength">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwFlags">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD_PTR" name="dwContext">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="DeleteUrlCacheEntry">
+	<signature>
+	  <return type="BOOLAPI">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="LPCSTR" name="lpszUrlName">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="HttpQueryInfoA">
+	<signature>
+	  <return type="BOOLAPI">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HINTERNET" name="hRequest">
+		<stack size="4" />
+	  </arg>
+	  <arg type="DWORD" name="dwInfoLevel">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPVOID" name="lpBuffer">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPDWORD" name="lpdwBufferLength">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPDWORD" name="lpdwIndex">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+</library>

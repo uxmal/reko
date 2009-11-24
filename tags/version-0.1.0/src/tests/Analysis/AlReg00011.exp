@@ -1,0 +1,67 @@
+Mem0:Global memory (aliases:)
+fp:Temporary (aliases:)
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	call fn0C00_0004 (depth: 2;)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+Mem0:Global memory (aliases:)
+fp:Temporary (aliases:)
+ax:Register ax (aliases: al ah)
+es:Register es (aliases:)
+bx:Register bx (aliases: bh bl)
+bh:Register bh (aliases: bx)
+al:Register al (aliases: ax)
+bl:Register bl (aliases: bx)
+ah:Register ah (aliases: ax)
+C:Flags (aliases: SCZO)
+SCZO:Flags (aliases: C SZO S)
+SZO:Flags (aliases: SCZO S)
+S:Flags (aliases: SCZO SZO)
+// fn0C00_0004
+void fn0C00_0004()
+fn0C00_0004_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0004:		// block 1, pred: 0
+	ax = 0x4DE1
+	es = ax
+	bx = 0x0FFF
+	bh = SLICE(bx, byte, 8) (alias)
+	bl = (byte) bx (alias)
+	// succ:  2
+l0C00_000C:		// block 2, pred: 1 2
+	al = bh
+	al = al + 0x01
+	ah = bl
+	ah = ah & 0x0F
+	C = false
+	ax = ah *u al
+	ax = ax << 0x0004
+	ah = SLICE(ax, byte, 8) (alias)
+	al = bl
+	al = al & 0xF0
+	C = false
+	ah = ah & 0x0F
+	C = false
+	al = al | ah
+	SCZO = cond(al)
+	store(Mem0[es:bx:byte]) = al
+	bx = bx - 0x0001
+	bh = SLICE(bx, byte, 8) (alias)
+	bl = (byte) bx (alias)
+	SZO = cond(bx)
+	S = SZO (alias)
+	branch Test(NS,S) l0C00_000C
+	// succ:  3 2
+l0C00_0029:		// block 3, pred: 2
+	return
+	// succ:  4
+fn0C00_0004_exit:		// block 4, pred: 3
+	// succ: 
+

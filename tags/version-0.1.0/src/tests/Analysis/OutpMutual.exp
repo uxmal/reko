@@ -1,0 +1,161 @@
+// fn0C00_0000
+void fn0C00_0000(word16 dx)
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def dx
+	def ax
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax_5 = fn0C00_0004(dx, &dx_4)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn0C00_0000
+void fn0C00_0000(word16 dx)
+fn0C00_0000_entry:		// block 0, pred:
+	def dx
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	fn0C00_0004(dx, &dx_4)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+====================
+// fn0C00_0004
+word16 fn0C00_0004(word16 dx, ptr16 dxOut)
+fn0C00_0004_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def dx
+	def SCZO
+	def Z
+	def ax
+	def SZO
+	def dxOut
+	// succ:  1
+l0C00_0004:		// block 1, pred: 0
+	SCZO_8 = cond(dx - 0x001E)
+	Z_9 = SCZO_8 (alias)
+	SZO_10 = SCZO_8 (alias)
+	branch Test(NE,Z_9) l0C00_000F
+	// succ:  3 2
+l0C00_000F:		// block 2, pred: 1
+	dx_11 = dx - 0x0001
+	SZO_12 = cond(dx_11)
+	SCZO_13 = SZO_12 (alias)
+	Z_14 = SZO_12 (alias)
+	// succ:  4
+l0C00_0009:		// block 3, pred: 1
+	dx_15 = fn0C00_0013(dx)
+	// succ:  4
+l0C00_0010:		// block 4, pred: 3 2
+	SZO_16 = PHI(SZO_10, SZO_12)
+	Z_17 = PHI(Z_9, Z_14)
+	SCZO_18 = PHI(SCZO_8, SCZO_13)
+	dx_19 = PHI(dx_15, dx_11)
+	ax_20 = dx_19
+	return ax_20
+	// succ:  5
+fn0C00_0004_exit:		// block 5, pred: 4
+	use dx_19 (=> dxOut)
+	// succ: 
+
+// fn0C00_0004
+word16 fn0C00_0004(word16 dx, ptr16 dxOut)
+fn0C00_0004_entry:		// block 0, pred:
+	def Mem0
+	def dx
+	def dxOut
+	// succ:  1
+l0C00_0004:		// block 1, pred: 0
+	SCZO_8 = cond(dx - 0x001E)
+	Z_9 = SCZO_8 (alias)
+	branch Test(NE,Z_9) l0C00_000F
+	// succ:  3 2
+l0C00_000F:		// block 2, pred: 1
+	dx_11 = dx - 0x0001
+	store(Mem0[dxOut:word16]) = dx_11
+	// succ:  4
+l0C00_0009:		// block 3, pred: 1
+	store(Mem0[dxOut:word16]) = fn0C00_0013(dx)
+	// succ:  4
+l0C00_0010:		// block 4, pred: 3 2
+	dx_19 = PHI(dx_15, dx_11)
+	ax_20 = dx_19
+	return ax_20
+	// succ:  5
+fn0C00_0004_exit:		// block 5, pred: 4
+	// succ: 
+====================
+// fn0C00_0013
+word16 fn0C00_0013(word16 dx)
+fn0C00_0013_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def dx
+	def SCZO
+	def SO
+	def SZO
+	def ax
+	// succ:  1
+l0C00_0013:		// block 1, pred: 0
+	SCZO_7 = cond(dx - 0x0014)
+	SO_8 = SCZO_7 (alias)
+	SZO_9 = SCZO_7 (alias)
+	branch Test(LT,SO_8) l0C00_001F
+	// succ:  3 2
+l0C00_001F:		// block 2, pred: 1
+	dx_10 = dx - 0x000A
+	SCZO_11 = cond(dx_10)
+	SO_12 = SCZO_11 (alias)
+	SZO_13 = SCZO_11 (alias)
+	ax_15 = fn0C00_0004(dx_10, &dx_14)
+	// succ:  4
+l0C00_0018:		// block 3, pred: 1
+	dx_16 = dx - 0x0001
+	SZO_17 = cond(dx_16)
+	SCZO_18 = SZO_17 (alias)
+	SO_19 = SZO_17 (alias)
+	ax_21 = fn0C00_0004(dx_16, &dx_20)
+	// succ:  4
+l0C00_0025:		// block 4, pred: 3 2
+	ax_22 = PHI(ax_21, ax_15)
+	dx_23 = PHI(dx_20, dx_14)
+	ax_24 = ax_22 + 0x0001
+	SZO_25 = cond(ax_24)
+	SCZO_26 = SZO_25 (alias)
+	SO_27 = SZO_25 (alias)
+	return dx_23
+	// succ:  5
+fn0C00_0013_exit:		// block 5, pred: 4
+	// succ: 
+
+// fn0C00_0013
+word16 fn0C00_0013(word16 dx)
+fn0C00_0013_entry:		// block 0, pred:
+	def dx
+	// succ:  1
+l0C00_0013:		// block 1, pred: 0
+	SCZO_7 = cond(dx - 0x0014)
+	SO_8 = SCZO_7 (alias)
+	branch Test(LT,SO_8) l0C00_001F
+	// succ:  3 2
+l0C00_001F:		// block 2, pred: 1
+	dx_10 = dx - 0x000A
+	fn0C00_0004(dx_10, &dx_14)
+	// succ:  4
+l0C00_0018:		// block 3, pred: 1
+	dx_16 = dx - 0x0001
+	fn0C00_0004(dx_16, &dx_20)
+	// succ:  4
+l0C00_0025:		// block 4, pred: 3 2
+	dx_23 = PHI(dx_20, dx_14)
+	return dx_23
+	// succ:  5
+fn0C00_0013_exit:		// block 5, pred: 4
+	// succ: 
+====================

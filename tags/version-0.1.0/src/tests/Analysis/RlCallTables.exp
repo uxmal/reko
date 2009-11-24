@@ -1,0 +1,82 @@
+fn0C00_0000
+	LiveIn:    ax
+	LiveOut:  
+	MayUseIn:  ax
+	Trashed:   SCZO bx bl bh
+	Preserved:
+// fn0C00_0000
+void fn0C00_0000()
+block 0, pred:
+	succ:  1
+block 1, pred: 0
+	SCZO = (ax - 0002)
+	branch A (using: CZ)
+	succ:  2 3
+block 2, pred: 1
+	bx = ax
+	bx = (bx + bx)
+	SCZO = cond(bx)
+	icall Mem0[(bx + 000F):I2]
+	succ:  3
+block 3, pred: 2 1
+	return
+	succ:  4
+block 4, pred: 3
+	succ: 
+fn0C00_0015
+	LiveIn:    si
+	LiveOut:  
+	MayUseIn:  si
+	Trashed:   SCZO ax al ah
+	Preserved:
+// fn0C00_0015
+void fn0C00_0015()
+block 0, pred:
+	succ:  1
+block 1, pred: 0
+	ax = Mem0[(si + 02):I2]
+	ax = (ax + Mem0[(si + 04):I2])
+	SCZO = cond(ax)
+	store(Mem0[(si + 06):I2]) = ax
+	return
+	succ:  2
+block 2, pred: 1
+	succ: 
+fn0C00_001F
+	LiveIn:    si
+	LiveOut:  
+	MayUseIn:  si
+	Trashed:   SCZO ax al ah
+	Preserved:
+// fn0C00_001F
+void fn0C00_001F()
+block 0, pred:
+	succ:  1
+block 1, pred: 0
+	ax = Mem0[(si + 02):I2]
+	ax = (ax - Mem0[(si + 04):I2])
+	SCZO = cond(ax)
+	store(Mem0[(si + 06):I2]) = ax
+	return
+	succ:  2
+block 2, pred: 1
+	succ: 
+fn0C00_0029
+	LiveIn:    bx si
+	LiveOut:  
+	MayUseIn:  bx si
+	Trashed:   SCZO ax al ah
+	Preserved:
+// fn0C00_0029
+void fn0C00_0029()
+block 0, pred:
+	succ:  1
+block 1, pred: 0
+	ax = Mem0[(si + 02):I2]
+	ax = (ax & Mem0[(bx + 04):I2])
+	SCZO = cond(ax)
+	store(Mem0[(si + 06):I2]) = ax
+	return
+	succ:  2
+block 2, pred: 1
+	succ: 

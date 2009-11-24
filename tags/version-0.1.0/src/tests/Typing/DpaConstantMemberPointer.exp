@@ -1,0 +1,34 @@
+// Equivalence classes ////////////
+Eq_2: (memptr T_5 (struct (0 T_6 t0000)))
+	T_2 (in 0x1234 : word16)
+	T_3 (in bx : word16)
+Eq_4: word16
+	T_4 (in 0x0042 : word16)
+	T_6 (in Mem0[ds:bx:word16] : word16)
+Eq_5: (ptr (segment (1234 T_6 t1234)))
+	T_5 (in ds : selector)
+// Type Variables ////////////
+Globals: (in globals : ptr32)
+  Class: Eq_1
+  DataType: 
+  OrigDataType: 
+T_2: (in 0x1234 : word16)
+  Class: Eq_2
+  DataType: (memptr T_5 (struct (0 T_6 t0000)))
+  OrigDataType: word16
+T_3: (in bx : word16)
+  Class: Eq_2
+  DataType: (memptr T_5 (struct (0 T_6 t0000)))
+  OrigDataType: (memptr T_5 (struct (0 T_6 t0000)))
+T_4: (in 0x0042 : word16)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_5: (in ds : selector)
+  Class: Eq_5
+  DataType: (ptr (segment (1234 T_6 t1234)))
+  OrigDataType: (ptr (segment (1234 T_6 t1234)))
+T_6: (in Mem0[ds:bx:word16] : word16)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16

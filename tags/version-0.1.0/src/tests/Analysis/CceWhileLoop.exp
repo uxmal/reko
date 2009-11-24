@@ -1,0 +1,72 @@
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {ax_13 = Mem0[ss:bp + 0x0006:word16]}
+fp: fp:Temporary
+bx: bx:Register bx
+bp: bp:Register bp, def: {def bp}, uses: {ax_13 = Mem0[ss:bp + 0x0006:word16]}
+ss: ss:Register ss, def: {def ss}, uses: {ax_13 = Mem0[ss:bp + 0x0006:word16]}
+ax: ax:Register ax
+SCZO: SCZO:Flags
+SZO: SZO:Flags
+cx: cx:Register cx
+Z: Z:Flags
+ds: ds:Register ds, def: {def ds}, uses: {store(Mem34[ds:0x0300:word16]) = bx_33}
+C: C:Flags
+bx_12: orig: bx, def: {bx_12 = 0x0000}, uses: {bx_22 = PHI(bx_12, bx_23)}
+ax_13: orig: ax, def: {ax_13 = Mem0[ss:bp + 0x0006:word16]}, uses: {ax_16 = -ax_13}{cx_20 = ax_13}{branch ax_13 <= 0x0000 l0C00_0012}
+SCZO_14: orig: SCZO
+SZO_15: orig: SZO
+ax_16: orig: ax, def: {ax_16 = -ax_13}, uses: {bx_19 = ax_16}
+SZO_17: orig: SZO
+C_18: orig: C
+bx_19: orig: bx, def: {bx_19 = ax_16}, uses: {bx_33 = PHI(bx_23, bx_19)}
+cx_20: orig: cx, def: {cx_20 = ax_13}, uses: {cx_21 = PHI(cx_20, cx_25)}
+cx_21: orig: cx, def: {cx_21 = PHI(cx_20, cx_25)}, uses: {bx_23 = bx_22 + cx_21}{cx_25 = cx_21 - 0x0001}
+bx_22: orig: bx, def: {bx_22 = PHI(bx_12, bx_23)}, uses: {bx_23 = bx_22 + cx_21}
+bx_23: orig: bx, def: {bx_23 = bx_22 + cx_21}, uses: {bx_22 = PHI(bx_12, bx_23)}{bx_33 = PHI(bx_23, bx_19)}
+SCZO_24: orig: SCZO
+cx_25: orig: cx, def: {cx_25 = cx_21 - 0x0001}, uses: {cx_21 = PHI(cx_20, cx_25)}{branch cx_25 != 0x0000 l0C00_000B}
+Z_26: orig: Z
+C_27: orig: C
+Z_28: orig: Z
+cx_29: orig: cx
+SZO_30: orig: SZO
+SCZO_31: orig: SCZO
+ax_32: orig: ax
+bx_33: orig: bx, def: {bx_33 = PHI(bx_23, bx_19)}, uses: {store(Mem34[ds:0x0300:word16]) = bx_33}
+Mem34: orig: Mem0, def: {store(Mem34[ds:0x0300:word16]) = bx_33}
+// fn0C00_0000
+void fn0C00_0000(word16 bp, selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def bp
+	def ss
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	bx_12 = 0x0000
+	ax_13 = Mem0[ss:bp + 0x0006:word16]
+	branch ax_13 <= 0x0000 l0C00_0012
+	// succ:  3 2
+l0C00_0012:		// block 2, pred: 1
+	ax_16 = -ax_13
+	bx_19 = ax_16
+	// succ:  6
+l0C00_0009:		// block 3, pred: 1
+	cx_20 = ax_13
+	// succ:  4
+l0C00_000B:		// block 4, pred: 3 4
+	cx_21 = PHI(cx_20, cx_25)
+	bx_22 = PHI(bx_12, bx_23)
+	bx_23 = bx_22 + cx_21
+	cx_25 = cx_21 - 0x0001
+	branch cx_25 != 0x0000 l0C00_000B
+	// succ:  5 4
+l0C00_000F:		// block 5, pred: 4
+	// succ:  6
+l0C00_0016:		// block 6, pred: 5 2
+	bx_33 = PHI(bx_23, bx_19)
+	store(Mem34[ds:0x0300:word16]) = bx_33
+	return
+	// succ:  7
+fn0C00_0000_exit:		// block 7, pred: 6
+	// succ: 
+

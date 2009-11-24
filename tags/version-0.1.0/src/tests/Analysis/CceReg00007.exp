@@ -1,0 +1,68 @@
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+al: al:Register al
+C: C:Flags
+ds: ds:Register ds, def: {def ds}, uses: {C_6 = fn0C00_000C(al_5, ds)}{store(Mem7[ds:0x0300:byte]) = al_5}
+al_5: orig: al, def: {al_5 = 0x20}, uses: {C_6 = fn0C00_000C(al_5, ds)}{store(Mem7[ds:0x0300:byte]) = al_5}
+C_6: orig: C, def: {C_6 = fn0C00_000C(al_5, ds)}, uses: {branch C_6 l0C00_000B}
+Mem7: orig: Mem0, def: {store(Mem7[ds:0x0300:byte]) = al_5}
+Mem8: orig: Mem0
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	al_5 = 0x20
+	C_6 = fn0C00_000C(al_5, ds)
+	branch C_6 l0C00_000B
+	// succ:  2 3
+l0C00_0007:		// block 2, pred: 1
+	store(Mem7[ds:0x0300:byte]) = al_5
+	// succ:  3
+l0C00_000B:		// block 3, pred: 2 1
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 
+
+Mem0: Mem0:Global memory, def: {def Mem0}, uses: {v6_11 = Mem0[ds:0x0201:word16] + 0x0001}
+fp: fp:Temporary
+al: al:Register al, def: {def al}, uses: {SCZO_8 = cond(al - 0x20)}{branch al <u 0x20 l0C00_0014}
+SCZO: SCZO:Flags
+C: C:Flags
+ds: ds:Register ds, def: {def ds}, uses: {v6_11 = Mem0[ds:0x0201:word16] + 0x0001}{store(Mem12[ds:0x0201:word16]) = v6_11}
+v6: v6:Temporary
+SZO: SZO:Flags
+SCZO_8: orig: SCZO, def: {SCZO_8 = cond(al - 0x20)}, uses: {C_9 = SCZO_8 (alias)}
+C_9: orig: C, def: {C_9 = SCZO_8 (alias)}, uses: {return C_9}
+SZO_10: orig: SZO
+v6_11: orig: v6, def: {v6_11 = Mem0[ds:0x0201:word16] + 0x0001}, uses: {store(Mem12[ds:0x0201:word16]) = v6_11}
+Mem12: orig: Mem0, def: {store(Mem12[ds:0x0201:word16]) = v6_11}
+SZO_13: orig: SZO
+SCZO_14: orig: SCZO
+SZO_15: orig: SZO
+SCZO_16: orig: SCZO
+Mem17: orig: Mem0
+// fn0C00_000C
+byte fn0C00_000C(byte al, selector ds)
+fn0C00_000C_entry:		// block 0, pred:
+	def Mem0
+	def al
+	def ds
+	// succ:  1
+l0C00_000C:		// block 1, pred: 0
+	SCZO_8 = cond(al - 0x20)
+	C_9 = SCZO_8 (alias)
+	branch al <u 0x20 l0C00_0014
+	// succ:  2 3
+l0C00_0010:		// block 2, pred: 1
+	v6_11 = Mem0[ds:0x0201:word16] + 0x0001
+	store(Mem12[ds:0x0201:word16]) = v6_11
+	// succ:  3
+l0C00_0014:		// block 3, pred: 2 1
+	return C_9
+	// succ:  4
+fn0C00_000C_exit:		// block 4, pred: 3
+	// succ: 
+

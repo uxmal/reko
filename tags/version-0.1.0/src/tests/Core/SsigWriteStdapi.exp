@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SerializedSignature convention="stdapi">
+  <return>
+    <type>int</type>
+    <reg>ax</reg>
+  </return>
+  <arg name="lParam">
+    <stack size="4" />
+  </arg>
+  <arg>
+    <stack size="2" />
+  </arg>
+</SerializedSignature>

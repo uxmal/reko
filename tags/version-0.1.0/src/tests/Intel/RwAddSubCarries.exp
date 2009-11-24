@@ -1,0 +1,55 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// ds:Register ds
+// ax:Register ax
+// dx:Register dx
+// cx:Register cx
+// bx:Register bx
+// bx_cx:Sequence bx:cx
+// dx_ax:Sequence dx:ax
+// SCZO:Flags
+// es:Register es
+// es_cx:Sequence es:cx
+// cl:Register cl
+// v13:Temporary
+// C:Flags
+// v15:Temporary
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax = Mem0[ds:0x0200:word16]
+	dx = Mem0[ds:0x0202:word16]
+	cx = Mem0[ds:0x0204:word16]
+	bx = Mem0[ds:0x0206:word16]
+	dx_ax = dx_ax + bx_cx
+	SCZO = cond(dx_ax)
+	store(Mem0[ds:0x0208:word16]) = ax
+	store(Mem0[ds:0x020A:word16]) = dx
+	ax = Mem0[ds:0x0210:word16]
+	dx = Mem0[ds:0x0212:word16]
+	es_cx = Mem0[ds:0x0214:ptr32]
+	bx = es
+	dx_ax = dx_ax - bx_cx
+	SCZO = cond(dx_ax)
+	store(Mem0[ds:0x0218:word16]) = ax
+	store(Mem0[ds:0x021A:word16]) = dx
+	ax = 0x0000
+	cl = Mem0[ds:0x0220:byte]
+	SCZO = cond(cl - 0x30)
+	v13 = ax + ax
+	ax = v13 + (word16) C
+	cl = Mem0[ds:0x0221:byte]
+	SCZO = cond(cl - 0x3A)
+	C = !C
+	v15 = ax + ax
+	ax = v15 + (word16) C
+	SCZO = cond(ax)
+	store(Mem0[ds:0x0222:word16]) = ax
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
