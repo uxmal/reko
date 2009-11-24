@@ -78,7 +78,7 @@ namespace Decompiler.Typing
 		/// <param name="prog"></param>
 		public void RewriteProgram()
 		{
-            RestrictProcedures(0, 64, true);
+//            RestrictProcedures(0, 64, true);
 			aen.Transform(prog);
 			eqb.Build(prog);
             eventListener.ShowStatus("Collecting datatype traits.");
@@ -108,7 +108,7 @@ namespace Decompiler.Typing
         private void RestrictProcedures(int start, int count, bool dumpProcedures)
         {
             Procedure[] procs = new Procedure[count];
-            for (int i = 0; i < count; ++i)
+            for (int i = 0; i < count && i < prog.Procedures.Values.Count; ++i)
             {
                 procs[i] = prog.Procedures.Values[i + start];
             }
