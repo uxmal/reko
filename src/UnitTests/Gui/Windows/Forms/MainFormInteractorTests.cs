@@ -183,7 +183,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         }
 
-        [Test]
         private Program CreateFakeProgram()
         {
             Program prog = new Program();

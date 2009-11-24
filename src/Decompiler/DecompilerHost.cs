@@ -28,10 +28,10 @@ namespace Decompiler
 	/// </summary>
 	public interface DecompilerHost
 	{
-		TextWriter CreateDisassemblyWriter();
-		TextWriter GetIntermediateCodeWriter();
-		TextWriter CreateTypesWriter(string filename);				// TextWriter into which the reconstructed types are written.
-		TextWriter CreateDecompiledCodeWriter(string filename);	// Textwriter into which the Data is written
+        void WriteDisassembly(Action<TextWriter> writer);
+        void WriteIntermediateCode(Action<TextWriter> writer);
+        void WriteTypes(Action<TextWriter> writer);
+        void WriteDecompiledCode(Action<TextWriter> writer);
 
         IDecompilerConfigurationService Configuration { get; }
 	}
@@ -45,32 +45,35 @@ namespace Decompiler
 
 		#region DecompilerHost Members
 
-
-		public TextWriter CreateDisassemblyWriter()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public TextWriter GetIntermediateCodeWriter()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
-
-		public TextWriter CreateTypesWriter(string filename)
-		{
-			throw new Exception("The method or operation is not implemented."); 
-		}
-
-		public TextWriter CreateDecompiledCodeWriter(string filename)
-		{
-			throw new Exception("The method or operation is not implemented."); 
-		}
-
         public IDecompilerConfigurationService Configuration
         {
             get { throw new NotImplementedException(); }
         }
 
 		#endregion
-	}
+
+        #region DecompilerHost Members
+
+        public void WriteDisassembly(Action<TextWriter> writer)
+        {
+            writer(TextWriter.Null);
+        }
+
+        public void WriteIntermediateCode(Action<TextWriter> writer)
+        {
+            writer(TextWriter.Null);
+        }
+
+        public void WriteTypes(Action<TextWriter> writer)
+        {
+            writer(TextWriter.Null);
+        }
+
+        public void WriteDecompiledCode(Action<TextWriter> writer)
+        {
+            writer(TextWriter.Null);
+        }
+
+        #endregion
+    }
 }

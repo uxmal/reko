@@ -294,7 +294,13 @@ namespace Decompiler.UnitTests.Typing
             RunTest("fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
         }
 
-		[Test]
+        [Test]
+        public void TrcoReg00014()
+        {
+            RunTest("fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
+        }
+
+        [Test]
 		public void TrcoIntelIndexedAddressingMode()
 		{
 			ProgramMock m = new ProgramMock();

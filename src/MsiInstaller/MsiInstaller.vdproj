@@ -627,7 +627,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.Win32, Version=0.1.3615.627, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.Win32, Version=0.1.3615.21500, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_44A40DF1BB01F2D225C8CF3E5E5E04A5"
@@ -658,7 +658,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Arch.Intel, Version=0.1.3615.625, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Arch.Intel, Version=0.1.3615.21498, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_51D1372F3209AD9429019B40609533BA"
@@ -689,7 +689,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.Msdos, Version=0.1.3615.625, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.Msdos, Version=0.1.3615.21498, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_552E10CACC5923B2D794D696FCC87863"
@@ -740,7 +740,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler, Version=0.1.3615.769, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler, Version=0.1.3615.21499, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5DADA88A7DDD4ECEE88ABEFB7A689E89"
@@ -831,7 +831,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Arch.M68k, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Arch.M68k, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_7D560886B45C5AF034FBE85F7AB1D61A"
@@ -882,7 +882,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Arch.PowerPC, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Arch.PowerPC, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_8DDEA38E32E2CAE98916CBE189BB01C9"
@@ -953,7 +953,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.MacOS, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Environments.MacOS, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_BD2E469D3D3BEC9617582CD8DAA84199"
@@ -1004,7 +1004,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler.Core, Version=0.1.3615.623, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Decompiler.Core, Version=0.1.3615.21497, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_F8C25B1509373026DF045E38BAC78727"
@@ -1109,14 +1109,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Decompiler"
-        "ProductCode" = "8:{EBFE5795-EE4F-43C0-A494-4AF204E59FF0}"
-        "PackageCode" = "8:{D90ADA32-04DB-4F11-BA7B-23FFCBC04967}"
+        "ProductCode" = "8:{EDB283A0-C470-4FAF-8698-05BF51C2241B}"
+        "PackageCode" = "8:{6F686EAA-675A-4761-BFD8-15279ED067C3}"
         "UpgradeCode" = "8:{267A75B3-F33E-4987-9BF6-114D1A6CE44E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.1.0"
+        "ProductVersion" = "8:0.1.1"
         "Manufacturer" = "8:jklSoft"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

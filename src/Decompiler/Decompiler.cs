@@ -82,11 +82,10 @@ namespace Decompiler
 			dfa.UntangleProcedures();
 
 			dfa.BuildExpressionTrees();
-			using (TextWriter textWriter = host.GetIntermediateCodeWriter())
-			{
-				if (textWriter != null)
-					EmitProgram(dfa, textWriter);
-			}
+            host.WriteIntermediateCode(delegate(TextWriter writer)
+            {
+                EmitProgram(dfa, writer);
+            });
 			eventListener.ShowStatus("Analysis complete.");
             return dfa;
 		}
@@ -191,10 +190,7 @@ namespace Decompiler
 			{
 				TypeAnalyzer analyzer = new TypeAnalyzer(prog, eventListener);
 				analyzer.RewriteProgram();
-				using (TextWriter w = host.CreateTypesWriter(project.Output.TypesFilename))
-				{
-					analyzer.WriteTypes(w);
-				}
+                host.WriteTypes(analyzer.WriteTypes);
 			}
 			else
 			{
@@ -217,48 +213,42 @@ namespace Decompiler
 			rewriterHost.LoadCallSignatures(this.project.UserCalls);
 			rewriterHost.RewriteProgram();
 
-            using (TextWriter writer = host.GetIntermediateCodeWriter())
+            host.WriteIntermediateCode(delegate(TextWriter writer)
             {
                 EmitProgram(null, writer);
-            }
+            });
 			eventListener.ShowStatus("Machine code rewritten.");
 		}
 
-		public void WriteDecompiledProcedures(DecompilerHost host)
-		{
-			using (TextWriter w = host.CreateDecompiledCodeWriter(project.Output.OutputFilename))
-			{
-				WriteHeaderComment(Path.GetFileName(project.Output.OutputFilename), w);
-				w.WriteLine("#include \"{0}\"", Path.GetFileName(project.Output.TypesFilename));
-				w.WriteLine();
-				CodeFormatter fmt = new CodeFormatter(new Formatter(w));
-				foreach (Procedure proc in prog.Procedures.Values)
-				{
-					fmt.Write(proc);
-					w.WriteLine();
-				}
-			}
-		}
+        public void WriteDecompiledProcedures(TextWriter w)
+        {
+            WriteHeaderComment(Path.GetFileName(project.Output.OutputFilename), w);
+            w.WriteLine("#include \"{0}\"", Path.GetFileName(project.Output.TypesFilename));
+            w.WriteLine();
+            CodeFormatter fmt = new CodeFormatter(new Formatter(w));
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                fmt.Write(proc);
+                w.WriteLine();
+            }
+        }
 
-		public void WriteDecompiledTypes(DecompilerHost host)
-		{
-			using (TextWriter w = host.CreateTypesWriter(project.Output.TypesFilename))
-			{
-				WriteHeaderComment(Path.GetFileName(project.Output.TypesFilename), w);
-				w.WriteLine("/*");prog.TypeStore.Write(w); w.WriteLine("*/");
-				TypeFormatter fmt = new TypeFormatter(new Formatter(w), false);
-				foreach (EquivalenceClass eq in prog.TypeStore.UsedEquivalenceClasses)
-				{
-					if (eq.DataType != null)
-					{
-						w.Write("typedef ");
-						fmt.Write(eq.DataType, eq.Name);
-						w.WriteLine(";");
-						w.WriteLine();
-					}
-				}
-			}
-		}
+        public void WriteDecompiledTypes(TextWriter w)
+        {
+            WriteHeaderComment(Path.GetFileName(project.Output.TypesFilename), w);
+            w.WriteLine("/*"); prog.TypeStore.Write(w); w.WriteLine("*/");
+            TypeFormatter fmt = new TypeFormatter(new Formatter(w), false);
+            foreach (EquivalenceClass eq in prog.TypeStore.UsedEquivalenceClasses)
+            {
+                if (eq.DataType != null)
+                {
+                    w.Write("typedef ");
+                    fmt.Write(eq.DataType, eq.Name);
+                    w.WriteLine(";");
+                    w.WriteLine();
+                }
+            }
+        }
 
 
         /// <summary>
@@ -305,10 +295,7 @@ namespace Decompiler
 			finally
 			{
 				loader = null;
-				using (TextWriter w = host.CreateDisassemblyWriter())
-				{
-					prog.DumpAssembler(w);
-				}
+				host.WriteDisassembly(prog.DumpAssembler);
 			}
 		}
         /// <summary>
@@ -340,8 +327,8 @@ namespace Decompiler
 
 		public void WriteDecompilerProducts()
 		{
-			WriteDecompiledTypes(host);
-			WriteDecompiledProcedures(host);
+			host.WriteTypes(WriteDecompiledTypes);
+            host.WriteDecompiledCode(WriteDecompiledProcedures);
 		}
 
 		public void WriteHeaderComment(string filename, TextWriter w)

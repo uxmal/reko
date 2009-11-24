@@ -27,6 +27,7 @@ namespace Decompiler.UnitTests.Mocks
     public class FakeDecompilerHost : DecompilerHost
     {
         private StringWriter disassembly = new StringWriter();
+        private StringWriter intermediate = new StringWriter();
         private StringWriter decompiled = new StringWriter();
         private StringWriter typesWriter = new StringWriter();
         private IDecompilerConfigurationService config = new FakeDecompilerConfiguration();
@@ -36,24 +37,29 @@ namespace Decompiler.UnitTests.Mocks
             return decompiled;
         }
 
-        public TextWriter CreateDisassemblyWriter()
-        {
-            return disassembly;
-        }
-
-        public TextWriter GetIntermediateCodeWriter()
-        {
-            return null;
-        }
-
         IDecompilerConfigurationService DecompilerHost.Configuration
         {
             get { return config; }
         }
 
-        public TextWriter CreateTypesWriter(string fileName)
+        public void WriteDisassembly(Action<TextWriter> writer)
         {
-            return typesWriter;
+            writer(disassembly);
+        }
+
+        public void WriteIntermediateCode(Action<TextWriter> writer)
+        {
+            writer(intermediate);
+        }
+
+        public void WriteTypes(Action<TextWriter> writer)
+        {
+            writer(typesWriter);
+        }
+
+        public void WriteDecompiledCode(Action<TextWriter> writer)
+        {
+            writer(decompiled);
         }
 
         // probing methods.
