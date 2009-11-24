@@ -217,7 +217,10 @@ namespace Decompiler
 			rewriterHost.LoadCallSignatures(this.project.UserCalls);
 			rewriterHost.RewriteProgram();
 
-			EmitProgram(null, host.GetIntermediateCodeWriter());
+            using (TextWriter writer = host.GetIntermediateCodeWriter())
+            {
+                EmitProgram(null, writer);
+            }
 			eventListener.ShowStatus("Machine code rewritten.");
 		}
 
