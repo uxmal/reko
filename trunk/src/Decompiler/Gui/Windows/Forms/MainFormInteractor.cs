@@ -175,7 +175,7 @@ namespace Decompiler.Gui.Windows.Forms
 		{
             if (string.IsNullOrEmpty(filename))
                 return StreamWriter.Null;
-			return new StreamWriter(new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write));
+			return new StreamWriter(new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write), new UTF8Encoding(false));
 		}
 
 		public IPhasePageInteractor CurrentPage
@@ -424,16 +424,6 @@ namespace Decompiler.Gui.Windows.Forms
 
 		#region DecompilerHost Members //////////////////////////////////
 
-		public TextWriter CreateDisassemblyWriter()
-		{
-            return CreateTextWriter(decompilerSvc.Decompiler.Project.Output.DisassemblyFilename);
-		}
-
-		public TextWriter CreateTypesWriter(string filename)
-		{
-			return CreateTextWriter(filename);
-		}
-
         public IDecompilerConfigurationService Configuration
         {
             get { return config; }
@@ -444,12 +434,39 @@ namespace Decompiler.Gui.Windows.Forms
 			return new StreamWriter(fileName, false, new UTF8Encoding(false));
 		}
 
-		public TextWriter GetIntermediateCodeWriter()
-		{
-			return CreateTextWriter(decompilerSvc.Decompiler.Project.Output.IntermediateFilename);
-		}
+        public void WriteDisassembly(Action<TextWriter> writer)
+        {
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.Output.DisassemblyFilename))
+            {
+                writer(output);
+            }
+        }
 
-		#endregion ////////////////////////////////////////////////////
+        public void WriteIntermediateCode(Action<TextWriter> writer)
+        {
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.Output.IntermediateFilename))
+            {
+                writer(output);
+            }
+        }
+
+        public void WriteTypes(Action<TextWriter> writer)
+        {
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.Output.TypesFilename))
+            {
+                writer(output);
+            }
+        }
+
+        public void WriteDecompiledCode(Action<TextWriter> writer)
+        {
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.Output.OutputFilename))
+            {
+                writer(output);
+            }
+        }
+
+        #endregion ////////////////////////////////////////////////////
 
 
 		// Event handlers //////////////////////////////

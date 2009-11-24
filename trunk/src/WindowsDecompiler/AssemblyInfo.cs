@@ -29,7 +29,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright © 1999-2009 John Källén")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -45,7 +45,7 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("0.1.*")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: AssemblyFileVersion("0.1.1.0")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
