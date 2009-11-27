@@ -128,6 +128,8 @@ namespace Decompiler.Scanning
                     block = proc.AddBlock(addr.GenerateName("l", ""));
                     blocksToRewrite.Push(new WorkItem(block, pred, addr, raw.Size, rewriter));
                 }
+                else
+                    block = proc.ExitBlock;
             }
             else
             {
