@@ -1,4 +1,4 @@
-fn100048B0()
+fn10000000()
 	push	ebx
 	push	ebp
 	push	esi
@@ -6,7 +6,7 @@ fn100048B0()
 	mov	di,[esp+14]
 	xor	bl,bl
 	test	di,di
-	jnz	100048D1
+	jnz	10000021
 
 l100048C0:
 	mov	byte ptr [1006B8E0],00
@@ -17,7 +17,7 @@ l100048C0:
 	pop	ebx
 	ret	
 
-l100048D1:
+l100000021:
 	mov	eax,[esp+1C]
 	cmp	dword ptr [eax],00
 	jnz	100048DC

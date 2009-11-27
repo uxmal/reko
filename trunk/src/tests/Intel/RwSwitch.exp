@@ -31,5 +31,5 @@ l0C00_0017:		// block 6, pred: 3
 	ax = 0x0001
 	return
 	// succ:  7
-fn0C00_0000_exit:		// block 7, pred: 6 5 4 2
+fn0C00_0000_exit:		// block 7, pred: 2 4 5 6
 	// succ: 

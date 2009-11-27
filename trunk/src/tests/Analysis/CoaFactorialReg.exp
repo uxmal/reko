@@ -31,19 +31,19 @@ dx_ax: dx_ax:Sequence dx:ax
 wLoc04_10: orig: wLoc04
 SCZO_11: orig: SCZO
 SZO_12: orig: SZO
-ax_13: orig: ax, def: {ax_13 = 0x0001}, uses: {ax_25 = PHI(ax_19, ax_13)}
+ax_13: orig: ax, def: {ax_13 = 0x0001}, uses: {ax_25 = PHI(ax_13, ax_19)}
 dx_ax_14: orig: dx_ax
 si_15: orig: si
 cx_16: orig: cx
 ax_17: orig: ax
 dx_ax_18: orig: dx_ax, uses: {ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}
-ax_19: orig: ax, def: {ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}, uses: {ax_25 = PHI(ax_19, ax_13)}
+ax_19: orig: ax, def: {ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}, uses: {ax_25 = PHI(ax_13, ax_19)}
 dx_20: orig: dx
 SCZO_21: orig: SCZO
 SZO_22: orig: SZO
 dx_ax_23: orig: dx_ax
 dx_24: orig: dx
-ax_25: orig: ax, def: {ax_25 = PHI(ax_19, ax_13)}, uses: {return ax_25}
+ax_25: orig: ax, def: {ax_25 = PHI(ax_13, ax_19)}, uses: {return ax_25}
 SZO_26: orig: SZO
 SCZO_27: orig: SCZO
 cx_28: orig: cx
@@ -62,8 +62,8 @@ l0C00_001C:		// block 2, pred: 1
 l0C00_0011:		// block 3, pred: 1
 	ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
 	// succ:  4
-l0C00_001F:		// block 4, pred: 3 2
-	ax_25 = PHI(ax_19, ax_13)
+l0C00_001F:		// block 4, pred: 2 3
+	ax_25 = PHI(ax_13, ax_19)
 	return ax_25
 	// succ:  5
 fn0C00_000B_exit:		// block 5, pred: 4

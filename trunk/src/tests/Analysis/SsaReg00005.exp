@@ -33,17 +33,17 @@ al: al:Register al, def: {def al}
 SCZO: SCZO:Flags, def: {def SCZO}
 v8: v8:Temporary, def: {def v8}
 Z: Z:Flags, def: {def Z}
-ah: ah:Register ah, def: {def ah}, uses: {ah_56 = PHI(ah_43, ah)}
-ax: ax:Register ax, def: {def ax}, uses: {ax_20 = DPB(ax, al_19, 0, 8) (alias)}
 bx: bx:Register bx, def: {def bx}
 cl: cl:Register cl, def: {def cl}
+ah: ah:Register ah, def: {def ah}, uses: {ah_54 = PHI(ah, ah_43)}
+ax: ax:Register ax, def: {def ax}, uses: {ax_20 = DPB(ax, al_19, 0, 8) (alias)}
 cx_14: orig: cx, def: {cx_14 = ds}, uses: {es_15 = cx_14}
 es_15: orig: es, def: {es_15 = cx_14}, uses: {SCZO_30 = cond(al_19 - Mem0[es_15:di_26:byte])}
 di_16: orig: di, def: {di_16 = 0x7E0F}, uses: {di_26 = PHI(di_16, di_32)}
 cx_17: orig: cx, def: {cx_17 = 0x000C}, uses: {cl_18 = (byte) cx_17 (alias)}{cx_27 = PHI(cx_17, cx_28)}
 cl_18: orig: cl, def: {cl_18 = (byte) cx_17 (alias)}, uses: {cl_23 = PHI(cl_18, cl_29)}
 al_19: orig: al, def: {al_19 = 0x00}, uses: {ax_20 = DPB(ax, al_19, 0, 8) (alias)}{SCZO_21 = cond(al_19)}{SCZO_30 = cond(al_19 - Mem0[es_15:di_26:byte])}
-ax_20: orig: ax, def: {ax_20 = DPB(ax, al_19, 0, 8) (alias)}, uses: {ax_55 = PHI(ax_44, ax_20)}{ax_44 = DPB(ax_20, ah_43, 8, 8) (alias)}
+ax_20: orig: ax, def: {ax_20 = DPB(ax, al_19, 0, 8) (alias)}, uses: {ax_53 = PHI(ax_20, ax_44)}{ax_44 = DPB(ax_20, ah_43, 8, 8) (alias)}
 SCZO_21: orig: SCZO, def: {SCZO_21 = cond(al_19)}, uses: {Z_22 = SCZO_21 (alias)}{SCZO_25 = PHI(SCZO_21, SCZO_30)}
 Z_22: orig: Z, def: {Z_22 = SCZO_21 (alias)}, uses: {Z_24 = PHI(Z_22, Z_31)}
 cl_23: orig: cl, def: {cl_23 = PHI(cl_18, cl_29)}, uses: {cl_33 = PHI(cl_23, cl_29)}
@@ -61,28 +61,28 @@ Z_34: orig: Z, def: {Z_34 = PHI(Z_24, Z_31)}, uses: {branch Test(EQ,Z_34) l0C00_
 SCZO_35: orig: SCZO, def: {SCZO_35 = PHI(SCZO_25, SCZO_30)}
 di_36: orig: di, def: {di_36 = PHI(di_26, di_32)}, uses: {ah_43 = Mem0[ds:di_36 + 0x0001:byte]}{bx_49 = di_36}
 cx_37: orig: cx, def: {cx_37 = PHI(cx_27, cx_28)}, uses: {cx_40 = DPB(cx_37, cl_39, 0, 8) (alias)}
-bx_38: orig: bx, def: {bx_38 = 0x0000}, uses: {bx_54 = PHI(bx_50, bx_38)}
-cl_39: orig: cl, def: {cl_39 = 0x00}, uses: {cx_40 = DPB(cx_37, cl_39, 0, 8) (alias)}{SCZO_41 = cond(cl_39)}{cl_53 = PHI(cl_48, cl_39)}
-cx_40: orig: cx, def: {cx_40 = DPB(cx_37, cl_39, 0, 8) (alias)}, uses: {cx_59 = PHI(cx_47, cx_40)}
-SCZO_41: orig: SCZO, def: {SCZO_41 = cond(cl_39)}, uses: {Z_42 = SCZO_41 (alias)}{SCZO_58 = PHI(SCZO_51, SCZO_41)}
-Z_42: orig: Z, def: {Z_42 = SCZO_41 (alias)}, uses: {Z_57 = PHI(Z_52, Z_42)}
-ah_43: orig: ah, def: {ah_43 = Mem0[ds:di_36 + 0x0001:byte]}, uses: {ax_44 = DPB(ax_20, ah_43, 8, 8) (alias)}{ah_56 = PHI(ah_43, ah)}
-ax_44: orig: ax, def: {ax_44 = DPB(ax_20, ah_43, 8, 8) (alias)}, uses: {Z_45 = ax_44 == 0x0000}{cx_46 = __bsr(ax_44)}{ax_55 = PHI(ax_44, ax_20)}
+bx_38: orig: bx, def: {bx_38 = 0x0000}, uses: {bx_56 = PHI(bx_38, bx_50)}
+cl_39: orig: cl, def: {cl_39 = 0x00}, uses: {cx_40 = DPB(cx_37, cl_39, 0, 8) (alias)}{SCZO_41 = cond(cl_39)}{cl_55 = PHI(cl_39, cl_48)}
+cx_40: orig: cx, def: {cx_40 = DPB(cx_37, cl_39, 0, 8) (alias)}, uses: {cx_59 = PHI(cx_40, cx_47)}
+SCZO_41: orig: SCZO, def: {SCZO_41 = cond(cl_39)}, uses: {Z_42 = SCZO_41 (alias)}{SCZO_58 = PHI(SCZO_41, SCZO_51)}
+Z_42: orig: Z, def: {Z_42 = SCZO_41 (alias)}, uses: {Z_57 = PHI(Z_42, Z_52)}
+ah_43: orig: ah, def: {ah_43 = Mem0[ds:di_36 + 0x0001:byte]}, uses: {ax_44 = DPB(ax_20, ah_43, 8, 8) (alias)}{ah_54 = PHI(ah, ah_43)}
+ax_44: orig: ax, def: {ax_44 = DPB(ax_20, ah_43, 8, 8) (alias)}, uses: {Z_45 = ax_44 == 0x0000}{cx_46 = __bsr(ax_44)}{ax_53 = PHI(ax_20, ax_44)}
 Z_45: orig: Z, def: {Z_45 = ax_44 == 0x0000}
 cx_46: orig: cx, def: {cx_46 = __bsr(ax_44)}, uses: {cx_47 = cx_46 - 0x0008}
-cx_47: orig: cx, def: {cx_47 = cx_46 - 0x0008}, uses: {cl_48 = (byte) cx_47 (alias)}{cx_59 = PHI(cx_47, cx_40)}
-cl_48: orig: cl, def: {cl_48 = (byte) cx_47 (alias)}, uses: {cl_53 = PHI(cl_48, cl_39)}
+cx_47: orig: cx, def: {cx_47 = cx_46 - 0x0008}, uses: {cl_48 = (byte) cx_47 (alias)}{cx_59 = PHI(cx_40, cx_47)}
+cl_48: orig: cl, def: {cl_48 = (byte) cx_47 (alias)}, uses: {cl_55 = PHI(cl_39, cl_48)}
 bx_49: orig: bx, def: {bx_49 = di_36}, uses: {bx_50 = bx_49 - 0x7E03}
-bx_50: orig: bx, def: {bx_50 = bx_49 - 0x7E03}, uses: {SCZO_51 = cond(bx_50)}{bx_54 = PHI(bx_50, bx_38)}
-SCZO_51: orig: SCZO, def: {SCZO_51 = cond(bx_50)}, uses: {Z_52 = SCZO_51 (alias)}{SCZO_58 = PHI(SCZO_51, SCZO_41)}
-Z_52: orig: Z, def: {Z_52 = SCZO_51 (alias)}, uses: {Z_57 = PHI(Z_52, Z_42)}
-cl_53: orig: cl, def: {cl_53 = PHI(cl_48, cl_39)}
-bx_54: orig: bx, def: {bx_54 = PHI(bx_50, bx_38)}
-ax_55: orig: ax, def: {ax_55 = PHI(ax_44, ax_20)}
-ah_56: orig: ah, def: {ah_56 = PHI(ah_43, ah)}
-Z_57: orig: Z, def: {Z_57 = PHI(Z_52, Z_42)}
-SCZO_58: orig: SCZO, def: {SCZO_58 = PHI(SCZO_51, SCZO_41)}
-cx_59: orig: cx, def: {cx_59 = PHI(cx_47, cx_40)}
+bx_50: orig: bx, def: {bx_50 = bx_49 - 0x7E03}, uses: {SCZO_51 = cond(bx_50)}{bx_56 = PHI(bx_38, bx_50)}
+SCZO_51: orig: SCZO, def: {SCZO_51 = cond(bx_50)}, uses: {Z_52 = SCZO_51 (alias)}{SCZO_58 = PHI(SCZO_41, SCZO_51)}
+Z_52: orig: Z, def: {Z_52 = SCZO_51 (alias)}, uses: {Z_57 = PHI(Z_42, Z_52)}
+ax_53: orig: ax, def: {ax_53 = PHI(ax_20, ax_44)}
+ah_54: orig: ah, def: {ah_54 = PHI(ah, ah_43)}
+cl_55: orig: cl, def: {cl_55 = PHI(cl_39, cl_48)}
+bx_56: orig: bx, def: {bx_56 = PHI(bx_38, bx_50)}
+Z_57: orig: Z, def: {Z_57 = PHI(Z_42, Z_52)}
+SCZO_58: orig: SCZO, def: {SCZO_58 = PHI(SCZO_41, SCZO_51)}
+cx_59: orig: cx, def: {cx_59 = PHI(cx_40, cx_47)}
 // fn0C00_000C
 void fn0C00_000C()
 fn0C00_000C_entry:		// block 0, pred:
@@ -96,10 +96,10 @@ fn0C00_000C_entry:		// block 0, pred:
 	def SCZO
 	def v8
 	def Z
-	def ah
-	def ax
 	def bx
 	def cl
+	def ah
+	def ax
 	// succ:  1
 l0C00_000C:		// block 1, pred: 0
 	cx_14 = ds
@@ -157,13 +157,13 @@ l0C00_001D:		// block 6, pred: 4
 	Z_52 = SCZO_51 (alias)
 	return
 	// succ:  7
-fn0C00_000C_exit:		// block 7, pred: 6 5
-	cl_53 = PHI(cl_48, cl_39)
-	bx_54 = PHI(bx_50, bx_38)
-	ax_55 = PHI(ax_44, ax_20)
-	ah_56 = PHI(ah_43, ah)
-	Z_57 = PHI(Z_52, Z_42)
-	SCZO_58 = PHI(SCZO_51, SCZO_41)
-	cx_59 = PHI(cx_47, cx_40)
+fn0C00_000C_exit:		// block 7, pred: 5 6
+	ax_53 = PHI(ax_20, ax_44)
+	ah_54 = PHI(ah, ah_43)
+	cl_55 = PHI(cl_39, cl_48)
+	bx_56 = PHI(bx_38, bx_50)
+	Z_57 = PHI(Z_42, Z_52)
+	SCZO_58 = PHI(SCZO_41, SCZO_51)
+	cx_59 = PHI(cx_40, cx_47)
 	// succ: 
 

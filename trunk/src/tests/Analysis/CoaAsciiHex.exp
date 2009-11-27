@@ -19,7 +19,7 @@ l0C00_0000:		// block 1, pred: 0
 l0C00_0005:		// block 2, pred: 1
 	store(Mem7[ds:0x0300:byte]) = al_5
 	// succ:  3
-l0C00_0009:		// block 3, pred: 2 1
+l0C00_0009:		// block 3, pred: 1 2
 	return
 	// succ:  4
 fn0C00_0000_exit:		// block 4, pred: 3
@@ -27,7 +27,7 @@ fn0C00_0000_exit:		// block 4, pred: 3
 
 Mem0: Mem0:Global memory
 fp: fp:Temporary
-al: al:Register al, def: {def al}, uses: {al_25 = al - 0x30}{al_47 = PHI(al_37, al)}{branch al <u 0x30 l0C00_0032}{branch al <=u 0x39 l0C00_0022}{branch al <u 0x41 l0C00_0032}{branch al <=u 0x46 l0C00_0022}{branch al <u 0x61 l0C00_0032}{branch al >u 0x66 l0C00_0032}{al_29 = al - 0x37}{al_33 = al - 0x57}
+al: al:Register al, def: {def al}, uses: {al_25 = al - 0x30}{al_47 = PHI(al, al_37)}{branch al <u 0x30 l0C00_0032}{branch al <=u 0x39 l0C00_0022}{branch al <u 0x41 l0C00_0032}{branch al <=u 0x46 l0C00_0022}{branch al <u 0x61 l0C00_0032}{branch al >u 0x66 l0C00_0032}{al_29 = al - 0x37}{al_33 = al - 0x57}
 SCZO: SCZO:Flags
 C: C:Flags
 CZ: CZ:Flags
@@ -50,19 +50,19 @@ CZ_21: orig: CZ
 SCZO_22: orig: SCZO
 C_23: orig: C
 CZ_24: orig: CZ
-al_25: orig: al, def: {al_25 = al - 0x30}, uses: {al_37 = PHI(al_33, al_29, al_25)}{branch al_25 <u 0x0A l0C00_0030}
+al_25: orig: al, def: {al_25 = al - 0x30}, uses: {al_37 = PHI(al_25, al_29, al_33)}{branch al_25 <u 0x0A l0C00_0030}
 SCZO_26: orig: SCZO
 C_27: orig: C
 CZ_28: orig: CZ
-al_29: orig: al, def: {al_29 = al - 0x37}, uses: {al_37 = PHI(al_33, al_29, al_25)}{branch al_29 <u 0x10 l0C00_0030}
+al_29: orig: al, def: {al_29 = al - 0x37}, uses: {al_37 = PHI(al_25, al_29, al_33)}{branch al_29 <u 0x10 l0C00_0030}
 SCZO_30: orig: SCZO
 C_31: orig: C
 CZ_32: orig: CZ
-al_33: orig: al, def: {al_33 = al - 0x57}, uses: {al_37 = PHI(al_33, al_29, al_25)}
+al_33: orig: al, def: {al_33 = al - 0x57}, uses: {al_37 = PHI(al_25, al_29, al_33)}
 SCZO_34: orig: SCZO
 C_35: orig: C
 CZ_36: orig: CZ
-al_37: orig: al, def: {al_37 = PHI(al_33, al_29, al_25)}, uses: {al_47 = PHI(al_37, al)}
+al_37: orig: al, def: {al_37 = PHI(al_25, al_29, al_33)}, uses: {al_47 = PHI(al, al_37)}
 C_38: orig: C
 SCZO_39: orig: SCZO
 CZ_40: orig: CZ
@@ -72,7 +72,7 @@ CZ_43: orig: CZ
 CZ_44: orig: CZ
 C_45: orig: C
 SCZO_46: orig: SCZO
-al_47: orig: al, def: {al_47 = PHI(al_37, al)}, uses: {use al_47 (=> alOut)}
+al_47: orig: al, def: {al_47 = PHI(al, al_37)}, uses: {use al_47 (=> alOut)}
 // fn0C00_000A
 byte fn0C00_000A(byte al, ptr16 alOut)
 fn0C00_000A_entry:		// block 0, pred:
@@ -96,10 +96,10 @@ l0C00_001A:		// block 5, pred: 4
 l0C00_001E:		// block 6, pred: 5
 	branch al >u 0x66 l0C00_0032
 	// succ:  8 7
-l0C00_0032:		// block 7, pred: 6 5 3 1
+l0C00_0032:		// block 7, pred: 1 3 5 6
 	return true
 	// succ:  12
-l0C00_0022:		// block 8, pred: 6 4 2
+l0C00_0022:		// block 8, pred: 2 4 6
 	al_25 = al - 0x30
 	branch al_25 <u 0x0A l0C00_0030
 	// succ:  9 11
@@ -110,12 +110,12 @@ l0C00_0028:		// block 9, pred: 8
 l0C00_002E:		// block 10, pred: 9
 	al_33 = al - 0x57
 	// succ:  11
-l0C00_0030:		// block 11, pred: 10 9 8
-	al_37 = PHI(al_33, al_29, al_25)
+l0C00_0030:		// block 11, pred: 8 9 10
+	al_37 = PHI(al_25, al_29, al_33)
 	return false
 	// succ:  12
-fn0C00_000A_exit:		// block 12, pred: 11 7
-	al_47 = PHI(al_37, al)
+fn0C00_000A_exit:		// block 12, pred: 7 11
+	al_47 = PHI(al, al_37)
 	use al_47 (=> alOut)
 	// succ: 
 

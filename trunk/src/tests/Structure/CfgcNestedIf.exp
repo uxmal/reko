@@ -20,9 +20,9 @@ l0C00_0005:		// block 4, pred: 1
 l0C00_000C:		// block 5, pred: 4
 	ax = 0x000C
 	// succ:  6
-l0C00_000F:		// block 6, pred: 5 4
+l0C00_000F:		// block 6, pred: 4 5
 	// succ:  7
-l0C00_001C:		// block 7, pred: 6 3 2
+l0C00_001C:		// block 7, pred: 2 3 6
 	store(Mem24[ds:0x0300:word16]) = ax
 	store(Mem25[ds:0x0302:byte]) = cl_10
 	return
@@ -49,7 +49,7 @@ l0C00_0005:		// block 3, pred: 0
 l0C00_000C:		// block 4, pred: 3
 	ax = 0x000C
 	// succ:  5
-l0C00_001C:		// block 5, pred: 2 1 4 3
+l0C00_001C:		// block 5, pred: 1 2 3 4
 	store(Mem24[ds:0x0300:word16]) = ax
 	store(Mem25[ds:0x0302:byte]) = cl_10
 	return

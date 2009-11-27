@@ -34,8 +34,8 @@ wLoc06: wLoc06:Local -0006
 cx: cx:Register cx, def: {def cx}, uses: {branch cx == 0x0000 l0C00_001A}
 SCZO: SCZO:Flags
 Z: Z:Flags
-ds: ds:Register ds, def: {def ds}, uses: {si_21 = si_15 + Mem0[ds:di_14:word16]}
 ax: ax:Register ax
+ds: ds:Register ds, def: {def ds}, uses: {si_21 = si_15 + Mem0[ds:di_14:word16]}
 wLoc04_11: orig: wLoc04
 wLoc06_12: orig: wLoc06
 si_13: orig: si, def: {si_13 = 0x0000}, uses: {si_15 = PHI(si_13, si_21)}

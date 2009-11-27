@@ -26,8 +26,8 @@ l0C00_000B:		// block 4, pred: 3 4
 	// succ:  5 4
 l0C00_000F:		// block 5, pred: 4
 	// succ:  6
-l0C00_0016:		// block 6, pred: 5 2
-	bx_40 = PHI(bx_27, bx_23)
+l0C00_0016:		// block 6, pred: 2 5
+	bx_40 = PHI(bx_23, bx_27)
 	store(Mem41[ds:0x0300:word16]) = bx_40
 	return
 	// succ:  7

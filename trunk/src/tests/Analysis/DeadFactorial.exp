@@ -41,13 +41,13 @@ dx_ax_15: orig: dx_ax
 SZO_16: orig: SZO
 Z_17: orig: Z
 SCZO_18: orig: SCZO
-ax_19: orig: ax, def: {ax_19 = 0x0001}, uses: {ax_36 = PHI(ax_25, ax_19)}
+ax_19: orig: ax, def: {ax_19 = 0x0001}, uses: {ax_36 = PHI(ax_19, ax_25)}
 dx_ax_20: orig: dx_ax
 wLoc06_21: orig: wLoc06, def: {wLoc06_21 = ax_14}, uses: {ax_22 = fn0C00_000F(wLoc06_21)}
 ax_22: orig: ax, def: {ax_22 = fn0C00_000F(wLoc06_21)}, uses: {dx_ax_24 = dx_23 *s ax_22}
 dx_23: orig: dx, def: {dx_23 = wArg00}, uses: {dx_ax_24 = dx_23 *s ax_22}
 dx_ax_24: orig: dx_ax, def: {dx_ax_24 = dx_23 *s ax_22}, uses: {ax_25 = (word16) dx_ax_24 (alias)}
-ax_25: orig: ax, def: {ax_25 = (word16) dx_ax_24 (alias)}, uses: {ax_36 = PHI(ax_25, ax_19)}
+ax_25: orig: ax, def: {ax_25 = (word16) dx_ax_24 (alias)}, uses: {ax_36 = PHI(ax_19, ax_25)}
 dx_26: orig: dx
 SCZO_27: orig: SCZO
 SZO_28: orig: SZO
@@ -58,7 +58,7 @@ dx_32: orig: dx
 wLoc06_33: orig: wLoc06
 Z_34: orig: Z
 SZO_35: orig: SZO
-ax_36: orig: ax, def: {ax_36 = PHI(ax_25, ax_19)}, uses: {return ax_36}
+ax_36: orig: ax, def: {ax_36 = PHI(ax_19, ax_25)}, uses: {return ax_36}
 bp_37: orig: bp
 // fn0C00_000F
 word16 fn0C00_000F(word16 wArg00)
@@ -80,8 +80,8 @@ l0C00_0018:		// block 3, pred: 1
 	dx_ax_24 = dx_23 *s ax_22
 	ax_25 = (word16) dx_ax_24 (alias)
 	// succ:  4
-l0C00_0029:		// block 4, pred: 3 2
-	ax_36 = PHI(ax_25, ax_19)
+l0C00_0029:		// block 4, pred: 2 3
+	ax_36 = PHI(ax_19, ax_25)
 	return ax_36
 	// succ:  5
 fn0C00_000F_exit:		// block 5, pred: 4

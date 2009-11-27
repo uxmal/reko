@@ -53,7 +53,7 @@ l0C00_0010:		// block 1, pred: 0
 l0C00_0018:		// block 2, pred: 1
 	store(Mem0[ds:0x0302:word16]) = 0x0000
 	// succ:  3
-l0C00_001E:		// block 3, pred: 2 1
+l0C00_001E:		// block 3, pred: 1 2
 	return
 	// succ:  4
 fn0C00_0010_exit:		// block 4, pred: 3

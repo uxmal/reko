@@ -18,6 +18,6 @@ l10000011:		// block 2, pred: 1
 l1000000A:		// block 3, pred: 1
 	return 0x00000001
 	// succ:  4
-fn10000000_exit:		// block 4, pred: 3 2
+fn10000000_exit:		// block 4, pred: 2 3
 	// succ: 
 

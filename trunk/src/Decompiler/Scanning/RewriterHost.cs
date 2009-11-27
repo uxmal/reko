@@ -39,7 +39,6 @@ namespace Decompiler.Scanning
         private SortedList<Address, SystemService> syscalls;
 		private CallRewriter crw;
 		private Dictionary<Address,ProcedureSignature> callSignatures;
-		private ProcedureRewriter prw;
 
 		public RewriterHost(
             Program prog, 
@@ -187,10 +186,13 @@ namespace Decompiler.Scanning
 		{
 			// Rewrite the blocks in the procedure.
 
-			prw = new ProcedureRewriter(this, arch, proc);
-            Rewriter rw = prog.Architecture.CreateRewriter(prw, proc, this);
+            ProcedureRewriter prw = new ProcedureRewriter(this, arch, proc);
+            Rewriter rw = arch.CreateRewriter(prw, proc, this);
 			prw.Rewriter = rw;
-			prw.RewriteBlock(addrProc, proc.EntryBlock);
+
+            rw.GrowStack(proc.Frame.ReturnAddressSize);
+
+			prw.Rewrite(addrProc, proc.EntryBlock);
 			proc.RenumberBlocks();
 
 			// If the frame escaped, rewrite local/parameter accesses to memory fetches.

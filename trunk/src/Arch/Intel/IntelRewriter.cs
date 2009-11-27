@@ -44,7 +44,6 @@ namespace Decompiler.Arch.Intel
 		private OperandRewriter orw;
 		private StringInstructionRewriter siw;
 		private CodeEmitter emitter;
-		private LongAddRewriter larw;
 		
 		public IntelRewriter(
 			IProcedureRewriter prw,
@@ -58,13 +57,16 @@ namespace Decompiler.Arch.Intel
 			this.frame = proc.Frame;
 			this.arch = arch;
 			this.state = state;
-			state.GrowStack(frame.ReturnAddressSize);
 			this.orw = new OperandRewriter(host, arch, frame);
 			this.siw = new StringInstructionRewriter(arch, orw);
-			this.larw = new LongAddRewriter(frame, orw, state);
 			maxFpuStackRead = -1;
 			maxFpuStackWrite = -1;
 		}
+
+        public override void GrowStack(int bytes)
+        {
+            state.GrowStack(bytes);
+        }
 
 		/// <summary>
 		/// Converts x86 instructions into processor-independent ILCodes. 
@@ -976,6 +978,7 @@ namespace Decompiler.Arch.Intel
 		/// <returns></returns>
 		public Expression EmitAddSub(IntelInstruction [] instrs, int i, Opcode next, BinaryOperator op)
 		{
+            LongAddRewriter larw = new LongAddRewriter(this.frame, orw, state);
 			int iUse = larw.IndexOfUsingOpcode(instrs, i, next);
 			if (iUse >= 0 && larw.Match(instrCur, instrs[iUse]))
 			{
@@ -1096,9 +1099,13 @@ namespace Decompiler.Arch.Intel
 			}
 			else
 			{
-				IntelRewriterState savedState = state.Clone();
-				blockTo = ProcedureRewriter.RewriteBlock(addrTo, blockHead);
-				state = savedState;
+                blockTo = ProcedureRewriter.RewriteBlock(addrTo, blockHead,
+                    new IntelRewriter(
+                        this.ProcedureRewriter,
+                        proc,
+                        host,
+                        arch,
+                        state.Clone()));
 			}
 			return blockTo;
 		}
@@ -1387,7 +1394,8 @@ namespace Decompiler.Arch.Intel
 			{
 				Address addr = orw.OperandAsCodeAddress(instrCur.op1, state);
 				Block blockFrom = emitter.Block;
-				Block blockTo = ProcedureRewriter.RewriteBlock(addr, blockFrom);
+                Block blockTo = ProcedureRewriter.RewriteBlock(addr, blockFrom,
+                    new IntelRewriter(ProcedureRewriter, proc, host, arch, state.Clone()));
 				return;
 			}
 
@@ -1643,7 +1651,7 @@ namespace Decompiler.Arch.Intel
             {
                 host.AddDiagnostic(new WarningDiagnostic(
                     state.InstructionAddress,
-                    "Return instruction expects a return address of {0} bytes, but procedure {1} was called with a return address of {2} bytes.",
+                    "Caller expects a return address of {0} bytes, but procedure {1} was called with a return address of {2} bytes.",
                     cbReturnAddress, this.proc, frame.ReturnAddressSize));
             }
 			emitter.Return();
@@ -1843,38 +1851,6 @@ namespace Decompiler.Arch.Intel
 
             EmitCopy(instrCur.op1, SrcOp(instrCur.op2, instrCur.op1.Width), false);
         }
-
-        //public override void RewriteInstructions(Address addrStart, int length, Block block)
-        //{
-        //    emitter = ProcedureRewriter.CreateEmitter(block);
-        //    this.addrEnd = addrStart + length;
-
-        //    // Extract the instructions.
-
-        //    List<MachineInstruction> instrs = new List<MachineInstruction>();
-        //    List<Address> addrs = new List<Address>();
-        //    DisassembleInstructions(addrStart, addrEnd, instrs, addrs);
-
-        //    DeadConditionFlagsFinder dcff = new DeadConditionFlagsFinder();
-        //    FlagM [] deadOutFlags = dcff.DeadOutFlags(instrs);
-
-        //    ConvertInstructions(instrs.ToArray(), addrs.ToArray(), deadOutFlags, emitter);
-        //}
-
-        protected virtual void DisassembleInstructions(
-            Address addrStart, 
-            Address addrEnd,
-            List<MachineInstruction> instrs, 
-            List<Address> addrs)
-        {
-            IntelDisassembler dasm = new IntelDisassembler(host.CreateImageReader(addrStart), arch.WordWidth);
-            while (dasm.Address < addrEnd)
-            {
-                addrs.Add(dasm.Address);
-                instrs.Add(dasm.Disassemble());
-            }
-        }
-
 
 		/// <summary>
 		/// Searches backwards to find a ProcedureConstant that is assigned to the identifier id.

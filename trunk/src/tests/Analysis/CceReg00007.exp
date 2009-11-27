@@ -20,7 +20,7 @@ l0C00_0000:		// block 1, pred: 0
 l0C00_0007:		// block 2, pred: 1
 	store(Mem7[ds:0x0300:byte]) = al_5
 	// succ:  3
-l0C00_000B:		// block 3, pred: 2 1
+l0C00_000B:		// block 3, pred: 1 2
 	return
 	// succ:  4
 fn0C00_0000_exit:		// block 4, pred: 3
@@ -60,7 +60,7 @@ l0C00_0010:		// block 2, pred: 1
 	v6_11 = Mem0[ds:0x0201:word16] + 0x0001
 	store(Mem12[ds:0x0201:word16]) = v6_11
 	// succ:  3
-l0C00_0014:		// block 3, pred: 2 1
+l0C00_0014:		// block 3, pred: 1 2
 	return C_9
 	// succ:  4
 fn0C00_000C_exit:		// block 4, pred: 3

@@ -9,9 +9,9 @@ fn0C00_0000_entry:		// block 0, pred:
 l0C00_0000:		// block 1, pred: 0
 	si_12 = si
 	// succ:  2
-l0C00_001A:		// block 2, pred: 1 5 4
+l0C00_001A:		// block 2, pred: 1 4 5
 	si_12 = PHI(si_12, si_15, si_15)
-	Mem13 = PHI(Mem0, Mem27, Mem19)
+	Mem13 = PHI(Mem0, Mem19, Mem27)
 	ax_14 = Mem13[ds:si_12:word16]
 	si_15 = si_12 + 0x0002
 	branch ax_14 != 0x0020 l0C00_0005
@@ -32,8 +32,8 @@ l0C00_000B:		// block 6, pred: 3
 l0C00_0020:		// block 7, pred: 2
 	ax_33 = si_15 - si
 	// succ:  8
-l0C00_0024:		// block 8, pred: 7 6
-	ax_40 = PHI(ax_33, ax_31)
+l0C00_0024:		// block 8, pred: 6 7
+	ax_40 = PHI(ax_31, ax_33)
 	store(Mem42[ds:0x0300:word16]) = ax_40
 	return
 	// succ:  9

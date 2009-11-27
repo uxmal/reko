@@ -29,10 +29,10 @@ fn10000000_exit:		// block 2, pred: 1
 // dwArg00:Stack +0000
 // SCZO:Flags
 // Z:Flags
-// ax:Register ax
 // eax:Register eax
 // edx:Register edx
 // C:Flags
+// ax:Register ax
 // SO:Flags
 // cx:Register cx
 // return address size: 4
@@ -59,7 +59,7 @@ l1000003E:		// block 3, pred: 2
 	SCZO = cond(eax - 0x00007FFF)
 	branch Test(GE,SO) l1000005A
 	// succ:  5 4
-l1000005A:		// block 4, pred: 3 2
+l1000005A:		// block 4, pred: 2 3
 	ax = wLoc0C
 	// succ:  7
 l10000049:		// block 5, pred: 3
@@ -72,7 +72,7 @@ l10000027:		// block 6, pred: 1
 	ax = 0x0000
 	SCZO = cond(ax)
 	// succ:  7
-l1000005E:		// block 7, pred: 6 4
+l1000005E:		// block 7, pred: 4 6
 	ebp = dwLoc08
 	return
 	// succ:  8

@@ -56,7 +56,7 @@ l0C00_0011:		// block 3, pred: 1
 	dx_ax = si *s ax
 	SCZO = cond(dx_ax)
 	// succ:  4
-l0C00_001F:		// block 4, pred: 3 2
+l0C00_001F:		// block 4, pred: 2 3
 	si = wLoc04
 	return ax
 	// succ:  5

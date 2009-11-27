@@ -33,6 +33,7 @@ namespace Decompiler.Scanning
         private Rewriter rewriter;
         private Dictionary<Address, Block> blocksVisited;
         private IProcessorArchitecture arch;
+        private Stack<WorkItem> blocksToRewrite;
 
         public ProcedureRewriter(IRewriterHost host, IProcessorArchitecture arch, Procedure proc)
         {
@@ -40,6 +41,7 @@ namespace Decompiler.Scanning
             this.arch = arch;
             this.proc = proc;
             this.blocksVisited = new Dictionary<Address, Block>();
+            this.blocksToRewrite = new Stack<WorkItem>();
         }
 
         public CodeEmitter CreateEmitter(Block block)
@@ -47,17 +49,39 @@ namespace Decompiler.Scanning
             return new CodeEmitter(arch, host, proc, block);
         }
 
-        public void HandleFallThrough(Block block, Address addr)
+
+        private class WorkItem
         {
-            Procedure procTarget = host.GetProcedureAtAddress(addr, proc.Frame.ReturnAddressSize);
-            if (procTarget != null)
+            public Block Block;
+            public Block Pred;
+            public Address Address;
+            public int Size;
+            public Rewriter Rewriter;
+
+            public WorkItem(Block block, Block pred, Address addr, int size, Rewriter rewriter)
             {
-                rewriter.EmitCallAndReturn(procTarget);
+                this.Block = block;
+                this.Pred = pred;
+                this.Address = addr;
+                this.Size = size;
+                this.Rewriter = rewriter;
             }
-            else
+        }
+
+        public Block Rewrite(Address addr, Block pred)
+        {
+            Block block = RewriteBlock(addr, pred, rewriter);
+            while (blocksToRewrite.Count > 0)
             {
-                RewriteBlock(addr, block);
+                WorkItem item = blocksToRewrite.Pop();
+                this.rewriter = item.Rewriter;
+                RewriteInstructions(item.Address, item.Size, item.Block);
+                if (IsBlockFallThrough(item.Block))
+                {
+                    HandleFallThrough(item.Block, item.Address + item.Size, item.Rewriter);
+                }
             }
+            return block;
         }
 
         /// <summary>
@@ -71,7 +95,21 @@ namespace Decompiler.Scanning
         }
 
 
-        public Block RewriteBlock(Address addr, Block pred)
+        public void HandleFallThrough(Block block, Address addr, Rewriter rewriter)
+        {
+            Procedure procTarget = host.GetProcedureAtAddress(addr, proc.Frame.ReturnAddressSize);
+            if (procTarget != null)
+            {
+                rewriter.EmitCallAndReturn(procTarget);
+            }
+            else
+            {
+                RewriteBlock(addr, block, rewriter);
+            }
+        }
+        
+        
+        public Block RewriteBlock(Address addr, Block pred, Rewriter rewriter)
         {
             Block block;
             if (blocksVisited.TryGetValue(addr, out block))
@@ -79,9 +117,6 @@ namespace Decompiler.Scanning
                 proc.AddEdge(pred, block);
                 return block;
             }
-
-            // Locate the image map block corresponding to the address.
-
             ImageMapItem item;
             if (host.Image.Map.TryFindItemExact(addr, out item))
             {
@@ -91,20 +126,14 @@ namespace Decompiler.Scanning
                     // Create a new block in the procedure.
 
                     block = proc.AddBlock(addr.GenerateName("l", ""));
-                    blocksVisited.Add(addr, block);
-                    proc.AddEdge(pred, block);
-
-                    RewriteInstructions(addr, raw.Size, block);
-
-                    if (IsBlockFallThrough(block))
-                    {
-                        HandleFallThrough(block, raw.Address + raw.Size);
-                    }
-                    return block;
+                    blocksToRewrite.Push(new WorkItem(block, pred, addr, raw.Size, rewriter));
                 }
             }
-
-            block = proc.ExitBlock;
+            else
+            {
+                block = proc.ExitBlock;
+            }
+            blocksVisited.Add(addr, block);
             proc.AddEdge(pred, block);
             return block;
         }

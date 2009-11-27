@@ -50,7 +50,7 @@ l0C00_001F:		// block 4, pred: 3
 	ax = 0x4000
 	C = msdos_write_file(bx, cx, ds_dx, &ax)
 	// succ:  2
-l0C00_003E:		// block 5, pred: 3 2
+l0C00_003E:		// block 5, pred: 2 3
 	bp = wLoc04
 	return
 	// succ:  6

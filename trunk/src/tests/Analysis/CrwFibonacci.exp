@@ -47,5 +47,5 @@ l1000000A:		// block 3, pred: 1
 	esi = dwLoc08
 	return eax
 	// succ:  4
-fn10000000_exit:		// block 4, pred: 3 2
+fn10000000_exit:		// block 4, pred: 2 3
 	// succ: 

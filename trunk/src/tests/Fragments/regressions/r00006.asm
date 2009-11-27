@@ -1,7 +1,7 @@
 ;;; Structuring this code causes assertions and general death.
 
 	.i386
-fn100048B0 proc 
+fn10000000 proc 
 	push	ebx
 	push	ebp
 	push	esi
@@ -9,7 +9,7 @@ fn100048B0 proc
 	mov	di,[esp+0x14]
 	xor	bl,bl
 	test	di,di
-	jnz	l100048D1
+	jnz	l10000021
 
 l100048C0:
 	mov	byte ptr [0x1006B8E0],00
@@ -20,15 +20,15 @@ l100048C0:
 	pop	ebx
 	ret	
 
-l100048D1:
+l10000021:
 	mov	eax,[esp+0x1C]
 	cmp	dword ptr [eax],00
-	jnz	l100048DC
+	jnz	l1000002C
 
 l100048DA:
 	mov	bl,01
 
-l100048DC:
+l1000002C:
 	mov	ebp,[esp+0x20]
 	push	0x1000A700
 	push	eax
@@ -38,11 +38,11 @@ l100048DC:
 	push	ecx
 	push	eax
 	push	ebp
-	call	fn10025590
+	call	fn10000267
 	mov	esi,eax
 	add	esp,0x18
 	test	esi,esi
-	jnz	l10004911
+	jnz	l10000061
 
 l10004906:
 	pop	edi
@@ -52,37 +52,37 @@ l10004906:
 	pop	ebx
 	ret	
 
-l10004911:
+l10000061:
 	cmp	di,01
-	jnz	l1000491D
+	jnz	l1000006D
 
-l10004917:
+l10000067:
 	mov	byte ptr [esi+0x00000204],bl
 
-l1000491D:
+l1000006D:
 	push	esi
-	call	fn100058F0
+	call	fn10000022D
 	mov	eax,[esi]
 	xor	ebp,ebp
 	add	esp,04
 	cmp	word ptr [eax],bp
-	jnz	l10004ACF
+	jnz	long l10004ACF
 
 l10004933:
 	cmp	di,bp
-	jle	l10004AAD
+	jle	long l10004AAD
 
 l1000493C:
 	cmp	di,05
-	jg	l10004AAD
+	jg	long l10004AAD
 
 l10004946:
 	cmp	di,01
-	jnz	l10004968
+	jnz	long l10004968
 
 l1000494C:
 	push	esi
-	call	fn100058F0
+	call	fn10000022D
 	mov	edx,[esi+04]
 	add	esp,04
 	mov	eax,[edx+0x0C]
@@ -98,7 +98,7 @@ l1000496E:
 	mov	edx,[esi+04]
 	push	esi
 	mov	dword ptr [edx+0x30],ebp
-	call	fn100058F0
+	call	fn10000022D
 	mov	eax,[esi+04]
 	push	01
 	mov	dword ptr [eax+0x30],ebp
@@ -271,7 +271,7 @@ fn10004EA0 proc
 	ret
 	endp
 	
-fn100058F0 proc
+fn10000022D proc
 	mov	eax,[esp+0x04]
 	ret
 	endp
@@ -323,7 +323,7 @@ fn10025160 proc
 	ret
 	endp
 	
-fn10025590 proc
+fn10000267 proc
 	mov edx,[0x20000000]
 	mov eax,[esp+0x04]
 	mov [edx+0x04],eax

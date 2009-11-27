@@ -102,9 +102,9 @@ l0C00_002D:		// block 2, pred: 1
 	ax_11 = Mem0[ds:si:word16]
 	si_12 = si + 0x0002
 	// succ:  3
-l0C00_002E:		// block 3, pred: 2 1
-	si_13 = PHI(si_12, si)
-	ax_14 = PHI(ax_11, ax_8)
+l0C00_002E:		// block 3, pred: 1 2
+	si_13 = PHI(si, si_12)
+	ax_14 = PHI(ax_8, ax_11)
 	return ax_14
 	// succ:  4
 fn0C00_0027_exit:		// block 4, pred: 3
@@ -130,8 +130,8 @@ l0C00_002D:		// block 2, pred: 1
 	ax_11 = Mem0[ds:si:word16]
 	store(Mem0[siOut:word16]) = si + 0x0002
 	// succ:  3
-l0C00_002E:		// block 3, pred: 2 1
-	ax_14 = PHI(ax_11, ax_8)
+l0C00_002E:		// block 3, pred: 1 2
+	ax_14 = PHI(ax_8, ax_11)
 	return ax_14
 	// succ:  4
 fn0C00_0027_exit:		// block 4, pred: 3

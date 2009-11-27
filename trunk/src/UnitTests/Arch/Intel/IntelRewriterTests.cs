@@ -341,7 +341,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             #region IProcedureRewriter Members
 
-            public Block RewriteBlock(Address addr, Block prev)
+            public Block RewriteBlock(Address addr, Block prev, Rewriter rewriter)
             {
                 throw new Exception("The method or operation is not implemented.");
             }

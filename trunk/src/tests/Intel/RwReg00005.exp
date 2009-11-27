@@ -28,10 +28,10 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // SCZO:Flags
 // v8:Temporary
 // Z:Flags
-// ah:Register ah
-// ax:Register ax
 // bx:Register bx
 // cl:Register cl
+// ah:Register ah
+// ax:Register ax
 // return address size: 2
 void fn0C00_000C()
 fn0C00_000C_entry:		// block 0, pred:
@@ -72,6 +72,6 @@ l0C00_001D:		// block 6, pred: 4
 	SCZO = cond(bx)
 	return
 	// succ:  7
-fn0C00_000C_exit:		// block 7, pred: 6 5
+fn0C00_000C_exit:		// block 7, pred: 5 6
 	// succ: 
 

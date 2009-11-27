@@ -25,11 +25,11 @@
 // rLoc2:FPU stack
 // ax:Register ax
 // ah:Register ah
-// SZO:Flags
-// rArg00:Stack +0000
 // rLoc3:FPU stack
 // rLoc4:FPU stack
 // SO:Flags
+// SZO:Flags
+// rArg00:Stack +0000
 // return address size: 4
 void fn10000000()
 fn10000000_entry:		// block 0, pred:
@@ -86,7 +86,7 @@ l10000072:		// block 4, pred: 3
 	rLoc2 = rArg00
 	dwArg00 = rLoc2
 	// succ:  5
-l1000007F:		// block 5, pred: 4 3
+l1000007F:		// block 5, pred: 3 4
 	rLoc1 = rLoc1 *s Mem0[0x10033290:real64]
 	rLoc2 = rLoc2
 	call fn10000108 (depth: 20; FPU: 2;)
@@ -106,7 +106,7 @@ l100000A0:		// block 6, pred: 5
 	dwArg08 = ecx
 	rLoc3 = rArg08
 	// succ:  7
-l100000AB:		// block 7, pred: 6 5
+l100000AB:		// block 7, pred: 5 6
 	rLoc4 = dwArg00
 	C = rLoc4 - Mem0[0x10033298:real64]
 	ax = C
@@ -128,7 +128,7 @@ l100000CB:		// block 9, pred: 8
 l100000D3:		// block 10, pred: 9
 	edi = esi
 	// succ:  11
-l100000D5:		// block 11, pred: 10 9 8 7
+l100000D5:		// block 11, pred: 7 8 9 10
 	SCZO = cond(esi - ebp)
 	branch Test(LT,SO) l10000048
 	// succ:  12 3
@@ -148,7 +148,7 @@ l100000F9:		// block 13, pred: 12
 	store(Mem0[ebx:word32]) = 0x00000000
 	store(Mem0[ecx:word32]) = 0x00000000
 	// succ:  14
-l10000105:		// block 14, pred: 13 12 1
+l10000105:		// block 14, pred: 1 12 13
 	ebp = dwLoc0C
 	ebx = dwLoc08
 	return

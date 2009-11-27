@@ -40,6 +40,8 @@ namespace Decompiler.Core
             get { return prw; }
         }
 
+        public abstract void GrowStack(int bytes);
+
         public abstract void ConvertInstructions(MachineInstruction [] instrs, Address [] addrs, uint [] deadOutFlags,  Address addrEnd, CodeEmitter emitter);
 
 		public abstract void EmitCallAndReturn(Procedure callee);

@@ -34,7 +34,7 @@ l1000002A:		// block 5, pred: 3
 l10000034:		// block 6, pred: 3 3
 	eax = 0x00000001
 	// succ:  7
-l1000004D:		// block 7, pred: 6 5 4 2
+l1000004D:		// block 7, pred: 2 4 5 6
 	store(Mem0[0x10000054:word32]) = eax
 	return
 	// succ:  8

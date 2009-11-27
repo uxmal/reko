@@ -8,9 +8,9 @@
 // dwLoc0C:Local -000C
 // dwLoc08:Local -0008
 // SZO:Flags
+// esp:Register esp
 // dwArg00:Stack +0000
 // edi:Register edi
-// esp:Register esp
 // fn10000000_frame:Temporary
 // Frame escapes
 // return address size: 4

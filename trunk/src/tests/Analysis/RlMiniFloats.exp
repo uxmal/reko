@@ -57,7 +57,7 @@ l0C00_0022:		// block 3, pred: 1
 	SCZO = cond(bx)
 	// succ:  4
 // DataOut: ax bx cl ch ds
-l0C00_002D:		// block 4, pred: 3 2
+l0C00_002D:		// block 4, pred: 2 3
 	ax = ax + bx
 	cl = cl + ch
 	SCZO = cond(cl)
