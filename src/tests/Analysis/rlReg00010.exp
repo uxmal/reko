@@ -44,7 +44,7 @@ l0C00_0014:		// block 2, pred: 1
 	SCZO = cond(al)
 	// succ:  3
 // DataOut: bp si al ds
-l0C00_0016:		// block 3, pred: 2 1
+l0C00_0016:		// block 3, pred: 1 2
 	ah = Mem0[ds:si:byte]
 	ah = ah & 0x0F
 	C = false
@@ -58,7 +58,7 @@ l0C00_0023:		// block 4, pred: 3
 	SCZO = cond(ah)
 	// succ:  5
 // DataOut: ax bp si ds
-l0C00_0026:		// block 5, pred: 4 3
+l0C00_0026:		// block 5, pred: 3 4
 	store(Mem0[ds:0x5427:word16]) = ax
 	ah = 0x40
 	bx = Mem0[ds:0x5424:word16]

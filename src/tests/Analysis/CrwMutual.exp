@@ -29,8 +29,8 @@ Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
 // dx:Register dx
 // SCZO:Flags
 // Z:Flags
-// ax:Register ax
 // SZO:Flags
+// ax:Register ax
 // dxOut:Out:Register dx
 // return address size: 2
 word16 fn0C00_0004(word16 dx, ptr16 dxOut)
@@ -47,7 +47,7 @@ l0C00_000F:		// block 2, pred: 1
 l0C00_0009:		// block 3, pred: 1
 	dx = fn0C00_0013(dx)
 	// succ:  4
-l0C00_0010:		// block 4, pred: 3 2
+l0C00_0010:		// block 4, pred: 2 3
 	ax = dx
 	return ax
 	// succ:  5
@@ -65,8 +65,8 @@ Register word16 fn0C00_0013(Register word16 dx)
 // dx:Register dx
 // SCZO:Flags
 // SO:Flags
-// SZO:Flags
 // ax:Register ax
+// SZO:Flags
 // return address size: 2
 word16 fn0C00_0013(word16 dx)
 fn0C00_0013_entry:		// block 0, pred:
@@ -85,7 +85,7 @@ l0C00_0018:		// block 3, pred: 1
 	SZO = cond(dx)
 	ax = fn0C00_0004(dx, &dx)
 	// succ:  4
-l0C00_0025:		// block 4, pred: 3 2
+l0C00_0025:		// block 4, pred: 2 3
 	ax = ax + 0x0001
 	SZO = cond(ax)
 	return dx

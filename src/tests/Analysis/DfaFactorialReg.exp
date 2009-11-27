@@ -35,7 +35,7 @@ l0C00_001C:		// block 2, pred: 1
 l0C00_0011:		// block 3, pred: 1
 	ax_13 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
 	// succ:  4
-l0C00_001F:		// block 4, pred: 3 2
+l0C00_001F:		// block 4, pred: 2 3
 	return ax_13
 	// succ:  5
 fn0C00_000B_exit:		// block 5, pred: 4

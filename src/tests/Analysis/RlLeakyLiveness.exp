@@ -20,7 +20,7 @@ l0C00_0005:		// block 2, pred: 1
 	SCZO = cond(v5)
 	// succ:  3
 // DataOut:
-l0C00_0009:		// block 3, pred: 2 1
+l0C00_0009:		// block 3, pred: 1 2
 	return
 	// succ:  4
 // DataOut:
@@ -61,7 +61,7 @@ l0C00_0014:		// block 3, pred: 1
 	// succ:  4
 // DataOut: ax ds// DataOut (flags): C
 
-fn0C00_000A_exit:		// block 4, pred: 3 2
+fn0C00_000A_exit:		// block 4, pred: 2 3
 	// succ: 
 // DataOut: ax ds// DataOut (flags): C
 

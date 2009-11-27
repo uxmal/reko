@@ -55,7 +55,7 @@ l0C00_0018:		// block 3, pred: 1
 	SCZO = cond(dx_ax)
 	// succ:  4
 // DataOut: ax ds
-l0C00_0029:		// block 4, pred: 3 2
+l0C00_0029:		// block 4, pred: 2 3
 	bp = wLoc04
 	return
 	// succ:  5

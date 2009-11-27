@@ -42,7 +42,7 @@ l0C00_0009:		// block 3, pred: 1
 	call fn0C00_0013 (depth: 2;)
 	// succ:  4
 // DataOut: dx
-l0C00_0010:		// block 4, pred: 3 2
+l0C00_0010:		// block 4, pred: 2 3
 	ax = dx
 	return
 	// succ:  5
@@ -78,7 +78,7 @@ l0C00_0018:		// block 3, pred: 1
 	call fn0C00_0004 (depth: 2;)
 	// succ:  4
 // DataOut: ax dx
-l0C00_0025:		// block 4, pred: 3 2
+l0C00_0025:		// block 4, pred: 2 3
 	ax = ax + 0x0001
 	SZO = cond(ax)
 	return

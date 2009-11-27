@@ -32,10 +32,10 @@ wLoc0C: wLoc0C:Local -000C
 dwArg00: dwArg00:Stack +0000, def: {def dwArg00}, uses: {ecx_25 = dwArg00}{branch dwArg00 != 0x00000000 l1000002F}
 SCZO: SCZO:Flags
 Z: Z:Flags
-ax: ax:Register ax
 eax: eax:Register eax
 edx: edx:Register edx
 C: C:Flags
+ax: ax:Register ax
 SO: SO:Flags
 cx: cx:Register cx
 dwLoc08_16: orig: dwLoc08
@@ -62,17 +62,17 @@ wLoc0C_36: orig: wLoc0C, def: {wLoc0C_36 = cx_34}, uses: {wLoc0C_23 = PHI(wLoc0C
 SO_37: orig: SO
 eax_38: orig: eax
 SCZO_39: orig: SCZO
-ax_40: orig: ax, def: {ax_40 = wLoc0C_23}, uses: {ax_50 = PHI(ax_42, ax_40)}
+ax_40: orig: ax, def: {ax_40 = wLoc0C_23}, uses: {ax_47 = PHI(ax_40, ax_42)}
 eax_41: orig: eax
-ax_42: orig: ax, def: {ax_42 = 0x0000}, uses: {ax_50 = PHI(ax_42, ax_40)}
+ax_42: orig: ax, def: {ax_42 = 0x0000}, uses: {ax_47 = PHI(ax_40, ax_42)}
 eax_43: orig: eax
 SCZO_44: orig: SCZO
 cx_45: orig: cx
 SO_46: orig: SO
-C_47: orig: C
-edx_48: orig: edx
-eax_49: orig: eax
-ax_50: orig: ax, def: {ax_50 = PHI(ax_42, ax_40)}, uses: {return ax_50}
+ax_47: orig: ax, def: {ax_47 = PHI(ax_40, ax_42)}, uses: {return ax_47}
+C_48: orig: C
+edx_49: orig: edx
+eax_50: orig: eax
 Z_51: orig: Z
 SCZO_52: orig: SCZO
 wLoc0C_53: orig: wLoc0C
@@ -99,7 +99,7 @@ l1000003E:		// block 3, pred: 2
 	eax_30 = (int32) wLoc0C_23
 	branch eax_30 >= 0x00007FFF l1000005A
 	// succ:  5 4
-l1000005A:		// block 4, pred: 3 2
+l1000005A:		// block 4, pred: 2 3
 	ax_40 = wLoc0C_23
 	// succ:  7
 l10000049:		// block 5, pred: 3
@@ -110,9 +110,9 @@ l10000049:		// block 5, pred: 3
 l10000027:		// block 6, pred: 1
 	ax_42 = 0x0000
 	// succ:  7
-l1000005E:		// block 7, pred: 6 4
-	ax_50 = PHI(ax_42, ax_40)
-	return ax_50
+l1000005E:		// block 7, pred: 4 6
+	ax_47 = PHI(ax_40, ax_42)
+	return ax_47
 	// succ:  8
 fn10000017_exit:		// block 8, pred: 7
 	// succ: 

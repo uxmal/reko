@@ -50,7 +50,6 @@ namespace Decompiler.UnitTests.Mocks
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0} - {1}: {2}", d.GetType().Name, d.Address, d.Message);
             lastDiagnostic = sb.ToString();
-            Console.Out.WriteLine(lastDiagnostic);
             System.Diagnostics.Debug.WriteLine(lastDiagnostic);
         }
 

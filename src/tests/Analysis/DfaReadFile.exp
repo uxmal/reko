@@ -15,7 +15,7 @@ l0C00_0000:		// block 1, pred: 0
 l0C00_0015:		// block 2, pred: 1
 	ax_16 = fn0C00_001F(0x01)
 	// succ:  3
-l0C00_001A:		// block 3, pred: 2 1
+l0C00_001A:		// block 3, pred: 1 2
 	store(Mem25[0x0D00:0x0302:word16]) = ax_16
 	return
 	// succ:  4
@@ -55,7 +55,7 @@ l0C00_0023:		// block 1, pred: 0
 l0C00_0029:		// block 2, pred: 1
 	ax_12 = 0xFFFF
 	// succ:  3
-l0C00_002C:		// block 3, pred: 2 1
+l0C00_002C:		// block 3, pred: 1 2
 	return ax_12
 	// succ:  4
 fn0C00_0023_exit:		// block 4, pred: 3

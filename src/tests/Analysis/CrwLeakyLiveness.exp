@@ -24,7 +24,7 @@ l0C00_0005:		// block 2, pred: 1
 	store(Mem0[ds:0x0300:word16]) = v5
 	SCZO = cond(v5)
 	// succ:  3
-l0C00_0009:		// block 3, pred: 2 1
+l0C00_0009:		// block 3, pred: 1 2
 	return
 	// succ:  4
 fn0C00_0000_exit:		// block 4, pred: 3
@@ -41,9 +41,9 @@ FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // si:Register si
 // SCZO:Flags
 // Z:Flags
+// C:Flags
 // ax:Register ax
 // SZO:Flags
-// C:Flags
 // axOut:Out:Register ax
 // return address size: 2
 byte fn0C00_000A(selector ds, ptr16 axOut)
@@ -67,6 +67,6 @@ l0C00_0014:		// block 3, pred: 1
 	C = false
 	return C
 	// succ:  4
-fn0C00_000A_exit:		// block 4, pred: 3 2
+fn0C00_000A_exit:		// block 4, pred: 2 3
 	use ax (=> axOut)
 	// succ: 

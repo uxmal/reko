@@ -31,10 +31,10 @@ al: al:Register al
 SCZO: SCZO:Flags
 v8: v8:Temporary
 Z: Z:Flags
-ah: ah:Register ah
-ax: ax:Register ax, def: {def ax}, uses: {ax_21 = DPB(ax, al_20, 0, 8) (alias)}
 bx: bx:Register bx
 cl: cl:Register cl
+ah: ah:Register ah
+ax: ax:Register ax, def: {def ax}, uses: {ax_21 = DPB(ax, al_20, 0, 8) (alias)}
 clOut: clOut:Out:Register cl
 cx_15: orig: cx, def: {cx_15 = ds}, uses: {es_16 = cx_15}
 es_16: orig: es, def: {es_16 = cx_15}, uses: {SCZO_31 = cond(al_20 - Mem0[es_16:di_27:byte])}{branch al_20 == Mem0[es_16:di_27:byte] l0C00_0019}
@@ -61,7 +61,7 @@ SCZO_36: orig: SCZO
 di_37: orig: di, def: {di_37 = PHI(di_27, di_33)}, uses: {ah_43 = Mem0[ds:di_37 + 0x0001:byte]}{bx_49 = di_37}
 cx_38: orig: cx
 bx_39: orig: bx, def: {bx_39 = 0x0000}, uses: {return bx_39}
-cl_40: orig: cl, def: {cl_40 = 0x00}, uses: {cl_52 = PHI(cl_48, cl_40)}
+cl_40: orig: cl, def: {cl_40 = 0x00}, uses: {cl_54 = PHI(cl_40, cl_48)}
 cx_41: orig: cx
 SCZO_42: orig: SCZO
 ah_43: orig: ah, def: {ah_43 = Mem0[ds:di_37 + 0x0001:byte]}, uses: {ax_44 = DPB(ax_21, ah_43, 8, 8) (alias)}
@@ -69,14 +69,14 @@ ax_44: orig: ax, def: {ax_44 = DPB(ax_21, ah_43, 8, 8) (alias)}, uses: {cx_46 = 
 Z_45: orig: Z
 cx_46: orig: cx, def: {cx_46 = __bsr(ax_44)}, uses: {cx_47 = cx_46 - 0x0008}
 cx_47: orig: cx, def: {cx_47 = cx_46 - 0x0008}, uses: {cl_48 = (byte) cx_47 (alias)}
-cl_48: orig: cl, def: {cl_48 = (byte) cx_47 (alias)}, uses: {cl_52 = PHI(cl_48, cl_40)}
+cl_48: orig: cl, def: {cl_48 = (byte) cx_47 (alias)}, uses: {cl_54 = PHI(cl_40, cl_48)}
 bx_49: orig: bx, def: {bx_49 = di_37}, uses: {bx_50 = bx_49 - 0x7E03}
 bx_50: orig: bx, def: {bx_50 = bx_49 - 0x7E03}, uses: {return bx_50}
 SCZO_51: orig: SCZO
-cl_52: orig: cl, def: {cl_52 = PHI(cl_48, cl_40)}, uses: {use cl_52 (=> clOut)}
-bx_53: orig: bx
-ax_54: orig: ax
-ah_55: orig: ah
+ax_52: orig: ax
+ah_53: orig: ah
+cl_54: orig: cl, def: {cl_54 = PHI(cl_40, cl_48)}, uses: {use cl_54 (=> clOut)}
+bx_55: orig: bx
 Z_56: orig: Z
 SCZO_57: orig: SCZO
 cx_58: orig: cx
@@ -130,8 +130,8 @@ l0C00_001D:		// block 6, pred: 4
 	bx_50 = bx_49 - 0x7E03
 	return bx_50
 	// succ:  7
-fn0C00_000C_exit:		// block 7, pred: 6 5
-	cl_52 = PHI(cl_48, cl_40)
-	use cl_52 (=> clOut)
+fn0C00_000C_exit:		// block 7, pred: 5 6
+	cl_54 = PHI(cl_40, cl_48)
+	use cl_54 (=> clOut)
 	// succ: 
 

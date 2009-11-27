@@ -33,7 +33,7 @@ l0C00_0007:		// block 1, pred: 0
 l0C00_0019:		// block 2, pred: 1
 	fn0C00_0007(si, Mem14[ds:di + 0x0030:word16], ds)
 	// succ:  3
-l0C00_001F:		// block 3, pred: 2 1
+l0C00_001F:		// block 3, pred: 1 2
 	return
 	// succ:  4
 fn0C00_0007_exit:		// block 4, pred: 3

@@ -14,19 +14,19 @@ l0C00_0013:		// block 3, pred: 2
 l0C00_0005:		// block 4, pred: 1 2
 	store(Mem14[ds:0x0302:word16]) = 0x0000
 	// succ:  5
-l0C00_0019:		// block 5, pred: 4 3
+l0C00_0019:		// block 5, pred: 3 4
 	branch ax == 0x0001 l0C00_002C
 	// succ:  6 7
 l0C00_001E:		// block 6, pred: 5
 	branch bx == 0x0002 l0C00_002C
 	// succ:  8 7
-l0C00_002C:		// block 7, pred: 6 5
+l0C00_002C:		// block 7, pred: 5 6
 	store(Mem23[ds:0x0304:word16]) = 0x0001
 	// succ:  9
 l0C00_0023:		// block 8, pred: 6
 	store(Mem20[ds:0x0304:word16]) = 0x0000
 	// succ:  9
-l0C00_0032:		// block 9, pred: 8 7
+l0C00_0032:		// block 9, pred: 7 8
 	branch ax == 0x0001 l0C00_003C
 	// succ:  10 12
 l0C00_0037:		// block 10, pred: 9
@@ -35,7 +35,7 @@ l0C00_0037:		// block 10, pred: 9
 l0C00_0045:		// block 11, pred: 10
 	store(Mem29[ds:0x0306:word16]) = 0x0001
 	// succ:  13
-l0C00_003C:		// block 12, pred: 10 9
+l0C00_003C:		// block 12, pred: 9 10
 	store(Mem32[ds:0x0306:word16]) = 0x0000
 	// succ:  13
 l0C00_004B:		// block 13, pred: 12 11
@@ -58,7 +58,7 @@ l0C00_0013:		// block 3, pred: 1
 l0C00_0005:		// block 4, pred: 1
 	store(Mem14[ds:0x0302:word16]) = 0x0000
 	// succ:  5
-l0C00_0019:		// block 5, pred: 4 3
+l0C00_0019:		// block 5, pred: 3 4
 	branch ax == 0x0001 || bx == 0x0002 l0C00_002C
 	// succ:  8 7
 l0C00_001E:		// block 6
@@ -68,7 +68,7 @@ l0C00_002C:		// block 7, pred: 5
 l0C00_0023:		// block 8, pred: 5
 	store(Mem20[ds:0x0304:word16]) = 0x0000
 	// succ:  9
-l0C00_0032:		// block 9, pred: 8 7
+l0C00_0032:		// block 9, pred: 7 8
 	branch ax == 0x0001 || bx != 0x0002 l0C00_003C
 	// succ:  11 12
 l0C00_0037:		// block 10

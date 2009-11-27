@@ -33,8 +33,8 @@ fn0C00_0004_entry:		// block 0, pred:
 	def dx
 	def SCZO
 	def Z
-	def ax
 	def SZO
+	def ax
 	def dxOut
 	// succ:  1
 l0C00_0004:		// block 1, pred: 0
@@ -52,11 +52,11 @@ l0C00_000F:		// block 2, pred: 1
 l0C00_0009:		// block 3, pred: 1
 	dx_15 = fn0C00_0013(dx)
 	// succ:  4
-l0C00_0010:		// block 4, pred: 3 2
-	SZO_16 = PHI(SZO_10, SZO_12)
-	Z_17 = PHI(Z_9, Z_14)
-	SCZO_18 = PHI(SCZO_8, SCZO_13)
-	dx_19 = PHI(dx_15, dx_11)
+l0C00_0010:		// block 4, pred: 2 3
+	SZO_16 = PHI(SZO_12, SZO_10)
+	Z_17 = PHI(Z_14, Z_9)
+	SCZO_18 = PHI(SCZO_13, SCZO_8)
+	dx_19 = PHI(dx_11, dx_15)
 	ax_20 = dx_19
 	return ax_20
 	// succ:  5
@@ -83,8 +83,8 @@ l0C00_000F:		// block 2, pred: 1
 l0C00_0009:		// block 3, pred: 1
 	store(Mem0[dxOut:word16]) = fn0C00_0013(dx)
 	// succ:  4
-l0C00_0010:		// block 4, pred: 3 2
-	dx_19 = PHI(dx_15, dx_11)
+l0C00_0010:		// block 4, pred: 2 3
+	dx_19 = PHI(dx_11, dx_15)
 	ax_20 = dx_19
 	return ax_20
 	// succ:  5
@@ -99,8 +99,8 @@ fn0C00_0013_entry:		// block 0, pred:
 	def dx
 	def SCZO
 	def SO
-	def SZO
 	def ax
+	def SZO
 	// succ:  1
 l0C00_0013:		// block 1, pred: 0
 	SCZO_7 = cond(dx - 0x0014)
@@ -122,9 +122,9 @@ l0C00_0018:		// block 3, pred: 1
 	SO_19 = SZO_17 (alias)
 	ax_21 = fn0C00_0004(dx_16, &dx_20)
 	// succ:  4
-l0C00_0025:		// block 4, pred: 3 2
-	ax_22 = PHI(ax_21, ax_15)
-	dx_23 = PHI(dx_20, dx_14)
+l0C00_0025:		// block 4, pred: 2 3
+	ax_22 = PHI(ax_15, ax_21)
+	dx_23 = PHI(dx_14, dx_20)
 	ax_24 = ax_22 + 0x0001
 	SZO_25 = cond(ax_24)
 	SCZO_26 = SZO_25 (alias)
@@ -152,8 +152,8 @@ l0C00_0018:		// block 3, pred: 1
 	dx_16 = dx - 0x0001
 	fn0C00_0004(dx_16, &dx_20)
 	// succ:  4
-l0C00_0025:		// block 4, pred: 3 2
-	dx_23 = PHI(dx_20, dx_14)
+l0C00_0025:		// block 4, pred: 2 3
+	dx_23 = PHI(dx_14, dx_20)
 	return dx_23
 	// succ:  5
 fn0C00_0013_exit:		// block 5, pred: 4

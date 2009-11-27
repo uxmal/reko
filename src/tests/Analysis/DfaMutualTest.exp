@@ -36,7 +36,7 @@ l0C00_000F:		// block 2, pred: 1
 l0C00_0009:		// block 3, pred: 1
 	store(Mem0[dxOut:word16]) = fn0C00_0013(dx)
 	// succ:  4
-l0C00_0010:		// block 4, pred: 3 2
+l0C00_0010:		// block 4, pred: 2 3
 	return dx_10
 	// succ:  5
 fn0C00_0004_exit:		// block 5, pred: 4
@@ -62,7 +62,7 @@ l0C00_001F:		// block 2, pred: 1
 l0C00_0018:		// block 3, pred: 1
 	fn0C00_0004(dx - 0x0001, &dx_11)
 	// succ:  4
-l0C00_0025:		// block 4, pred: 3 2
+l0C00_0025:		// block 4, pred: 2 3
 	return dx_11
 	// succ:  5
 fn0C00_0013_exit:		// block 5, pred: 4

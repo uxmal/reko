@@ -90,8 +90,8 @@ wLoc04: wLoc04:Local -0004, def: {def wLoc04}
 SCZO: SCZO:Flags, def: {def SCZO}
 dx: dx:Register dx, def: {def dx}, uses: {dx_14 = PHI(dx, dx_21)}
 SO: SO:Flags, def: {def SO}
-ax: ax:Register ax, def: {def ax}
 SZO: SZO:Flags, def: {def SZO}
+ax: ax:Register ax, def: {def ax}
 wLoc04_9: orig: wLoc04, def: {wLoc04_9 = si}, uses: {si_26 = wLoc04_9}
 si_10: orig: si, def: {si_10 = 0x0000}, uses: {SCZO_11 = cond(si_10)}{si_15 = PHI(si_10, si_19)}
 SCZO_11: orig: SCZO, def: {SCZO_11 = cond(si_10)}, uses: {SO_12 = SCZO_11 (alias)}{SZO_13 = SCZO_11 (alias)}
@@ -120,8 +120,8 @@ fn0C00_000F_entry:		// block 0, pred:
 	def SCZO
 	def dx
 	def SO
-	def ax
 	def SZO
+	def ax
 	// succ:  1
 l0C00_000F:		// block 1, pred: 0
 	wLoc04_9 = si
@@ -161,8 +161,8 @@ wLoc04: wLoc04:Local -0004
 SCZO: SCZO:Flags
 dx: dx:Register dx, def: {def dx}, uses: {dx_14 = PHI(dx, dx_21)}
 SO: SO:Flags
-ax: ax:Register ax
 SZO: SZO:Flags
+ax: ax:Register ax
 wLoc04_9: orig: wLoc04
 si_10: orig: si, def: {si_10 = 0x0000}, uses: {si_15 = PHI(si_10, si_19)}
 SCZO_11: orig: SCZO

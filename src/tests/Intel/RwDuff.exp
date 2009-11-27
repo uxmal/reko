@@ -16,8 +16,8 @@
 // v14:Temporary
 // v15:Temporary
 // v16:Temporary
-// v17:Temporary
 // SZO:Flags
+// v18:Temporary
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
@@ -36,50 +36,50 @@ l0C00_0000:		// block 1, pred: 0
 	switch (bx) { 2 9 8 7 6 5 4 3 }
 	// succ:  2 9 8 7 6 5 4 3
 l0C00_0020:		// block 2, pred: 1 9
+	v18 = Mem0[ds:si:word16]
+	store(Mem0[es:di:word16]) = v18
+	si = si + 0x0002
+	di = di + 0x0002
+	// succ:  3
+l0C00_0021:		// block 3, pred: 1 2
 	v9 = Mem0[ds:si:word16]
 	store(Mem0[es:di:word16]) = v9
 	si = si + 0x0002
 	di = di + 0x0002
-	// succ:  3
-l0C00_0021:		// block 3, pred: 2 1
+	// succ:  4
+l0C00_0022:		// block 4, pred: 1 3
 	v11 = Mem0[ds:si:word16]
 	store(Mem0[es:di:word16]) = v11
 	si = si + 0x0002
 	di = di + 0x0002
-	// succ:  4
-l0C00_0022:		// block 4, pred: 3 1
+	// succ:  5
+l0C00_0023:		// block 5, pred: 1 4
 	v12 = Mem0[ds:si:word16]
 	store(Mem0[es:di:word16]) = v12
 	si = si + 0x0002
 	di = di + 0x0002
-	// succ:  5
-l0C00_0023:		// block 5, pred: 4 1
+	// succ:  6
+l0C00_0024:		// block 6, pred: 1 5
 	v13 = Mem0[ds:si:word16]
 	store(Mem0[es:di:word16]) = v13
 	si = si + 0x0002
 	di = di + 0x0002
-	// succ:  6
-l0C00_0024:		// block 6, pred: 5 1
+	// succ:  7
+l0C00_0025:		// block 7, pred: 1 6
 	v14 = Mem0[ds:si:word16]
 	store(Mem0[es:di:word16]) = v14
 	si = si + 0x0002
 	di = di + 0x0002
-	// succ:  7
-l0C00_0025:		// block 7, pred: 6 1
+	// succ:  8
+l0C00_0026:		// block 8, pred: 1 7
 	v15 = Mem0[ds:si:word16]
 	store(Mem0[es:di:word16]) = v15
 	si = si + 0x0002
 	di = di + 0x0002
-	// succ:  8
-l0C00_0026:		// block 8, pred: 7 1
+	// succ:  9
+l0C00_0027:		// block 9, pred: 1 8
 	v16 = Mem0[ds:si:word16]
 	store(Mem0[es:di:word16]) = v16
-	si = si + 0x0002
-	di = di + 0x0002
-	// succ:  9
-l0C00_0027:		// block 9, pred: 8 1
-	v17 = Mem0[ds:si:word16]
-	store(Mem0[es:di:word16]) = v17
 	si = si + 0x0002
 	di = di + 0x0002
 	cx = cx - 0x0001

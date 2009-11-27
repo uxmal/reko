@@ -20,7 +20,7 @@ l0C00_000F:		// block 2, pred: 1
 l0C00_0007:		// block 3, pred: 1
 	store(Mem0[ds:bx + 0x0004:word16]) = 0x0001
 	// succ:  4
-l0C00_002B:		// block 4, pred: 3 2
+l0C00_002B:		// block 4, pred: 2 3
 	return
 	// succ:  5
 fn0C00_0000_exit:		// block 5, pred: 4

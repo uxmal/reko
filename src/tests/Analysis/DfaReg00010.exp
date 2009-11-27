@@ -34,7 +34,7 @@ l0C00_0004:		// block 1, pred: 0 5
 l0C00_0014:		// block 2, pred: 1
 	ax_33 = DPB(ax_33, (al_27 >>u 0x04) + 0x37, 0, 8) (alias)
 	// succ:  3
-l0C00_0016:		// block 3, pred: 2 1
+l0C00_0016:		// block 3, pred: 1 2
 	byte ah_41 = Mem26[ds:si:byte]
 	byte ah_44 = (ah_41 & 0x0F) + 0x30
 	word16 ax_45 = DPB(ax_33, ah_44, 8, 8)
@@ -43,7 +43,7 @@ l0C00_0016:		// block 3, pred: 2 1
 l0C00_0023:		// block 4, pred: 3
 	ax_45 = DPB(ax_45, (ah_41 & 0x0F) + 0x37, 8, 8) (alias)
 	// succ:  5
-l0C00_0026:		// block 5, pred: 4 3
+l0C00_0026:		// block 5, pred: 3 4
 	store(Mem53[ds:0x5427:word16]) = ax_45
 	msdos_write_file(Mem53[ds:0x5424:word16], 0x0004, SEQ(ds, 0x5427), &ax)
 	si = si + 0x0001

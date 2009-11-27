@@ -40,5 +40,10 @@ namespace Decompiler.Arch.Pdp11
         {
             throw new NotImplementedException();
         }
+
+        public override void GrowStack(int bytes)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

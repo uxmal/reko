@@ -22,7 +22,7 @@ namespace Decompiler.Core
 {
 	public interface IProcedureRewriter
 	{
-		Block RewriteBlock(Address addr, Block prev);
+        Block RewriteBlock(Address addr, Block prev, Rewriter rewriter);
 
         /// <summary>
         /// Creates a CodeEmitter for block.
