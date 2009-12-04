@@ -216,6 +216,7 @@
     <Compile Include="Analysis\Simplification\SliceMem_Rule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\Simplification\SliceShift.cs" />
     <Compile Include="Analysis\SsaIdentifier.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -297,6 +298,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\Windows\DecompilerUiService.cs" />
+    <Compile Include="Gui\Windows\Forms\AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\Windows\Forms\AnalyzedPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -317,6 +324,9 @@
     <Compile Include="Gui\Windows\Forms\CmdIds.cs" />
     <Compile Include="Gui\Windows\Forms\FinalPage.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\FinalPage.Designer.cs">
+      <DependentUpon>FinalPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\InitialPage.cs">
       <SubType>UserControl</SubType>
@@ -352,6 +362,11 @@
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
     <Compile Include="Loading\LoadedProject.cs" />
     <Compile Include="Loading\NullLoader.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -545,6 +560,9 @@
       <DependentUpon>MemoryControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Windows\Forms\AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\AnalyzedPage.resx">
       <DependentUpon>AnalyzedPage.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -598,6 +616,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\WorkerDialog.resx">
       <DependentUpon>WorkerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -72,9 +72,8 @@ namespace Decompiler.Analysis
 				SsaTransform sst = new SsaTransform(proc, doms, true);
 				SsaState ssa = sst.SsaState;
 
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
 				cce.Transform();
-
 				DeadCode.Eliminate(proc, ssa);
 
 				ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);

@@ -529,6 +529,11 @@ namespace Decompiler.Analysis
 			}
 		}
 
+        public override void VisitCast(Cast cast)
+        {
+            base.VisitCast(cast);
+        }
+
 		public override void VisitConditionOf(ConditionOf cof)
 		{
 			bitUseOffset = 0;

@@ -429,7 +429,8 @@ namespace Decompiler.Gui.Windows.Controls
 			cyPage = Math.Max((Height / CellSize.Height) - 1, 1);
 			vscroller.LargeChange = cyPage;
             vscroller.Maximum = cRows;
-			vscroller.Value = (addrTopVisible.Linear - image.BaseAddress.Linear) / cbRow;
+            int newValue = (addrTopVisible.Linear - image.BaseAddress.Linear) / cbRow;
+            vscroller.Value = Math.Max(Math.Min(newValue, vscroller.Maximum), vscroller.Minimum); 
 		}
 
 		public int WordSize

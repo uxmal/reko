@@ -30,6 +30,11 @@ namespace Decompiler.Analysis
 	/// moves assignment statements (def's) as close to their 
 	/// uses in this block as possible. 
 	/// </summary>
+    /// <remarks>
+    /// This transformation is quite destabiling and ineffective if long chains of expressions are still in their
+    /// 3-address format. Before coalescing, call ValuePropagation to perform constant propagation and 
+    /// other transformations that make the expression trees smaller.
+    /// </remarks>
 	public class Coalescer : InstructionTransformer
 	{
 		private Procedure proc;
@@ -235,72 +240,73 @@ namespace Decompiler.Analysis
 			}
 			return MoveAssignment(initialPosition, block.Statements.Count, block);
 		}
+    }
 
 		/// <summary>
 		/// Replaces all occurences of an identifier with another identifier.
 		/// </summary>
-		public class IdentifierReplacer : InstructionTransformer
-		{
-			private Identifier idOld;
-			private Expression defExpr;
+    public class IdentifierReplacer : InstructionTransformer
+    {
+        private Identifier idOld;
+        private Expression defExpr;
 
-			public IdentifierReplacer(Identifier idOld, Expression defExpr)
-			{
-				this.idOld = idOld;
-				this.defExpr = defExpr;
-			}
+        public IdentifierReplacer(Identifier idOld, Expression defExpr)
+        {
+            this.idOld = idOld;
+            this.defExpr = defExpr;
+        }
 
-			public override Expression TransformIdentifier(Identifier id)
-			{
-				if (idOld == id)
-					return defExpr;
-				else
-					return id;
-			}
-		}
+        public override Expression TransformIdentifier(Identifier id)
+        {
+            if (idOld == id)
+                return defExpr;
+            else
+                return id;
+        }
 
-		/// <summary>
-		/// Replace uses of identifiers in the defined statement to reflect that it
-		/// has been moved into the using statement.
-		/// </summary>
-		public class UsedIdentifierAdjuster : InstructionVisitorBase
-		{
-			private Statement def;
-			private Statement use;
-			private SsaIdentifierCollection ssaIds;
+    }
 
-			public UsedIdentifierAdjuster(Statement def, SsaIdentifierCollection ssaIds, Statement use)
-			{
-				this.def = def;
-				this.use = use;
-				this.ssaIds = ssaIds;
-			}
+    /// <summary>
+    /// Replace uses of identifiers in the defined statement to reflect that it
+    /// has been moved into the using statement.
+    /// </summary>
+    public class UsedIdentifierAdjuster : InstructionVisitorBase
+    {
+        private Statement def;
+        private Statement use;
+        private SsaIdentifierCollection ssaIds;
 
-			public void Transform()
-			{
-				def.Instruction.Accept(this);
-			}
+        public UsedIdentifierAdjuster(Statement def, SsaIdentifierCollection ssaIds, Statement use)
+        {
+            this.def = def;
+            this.use = use;
+            this.ssaIds = ssaIds;
+        }
 
-			public override void VisitAssignment(Assignment a)
-			{
-				a.Src.Accept(this);
-			}
+        public void Transform()
+        {
+            def.Instruction.Accept(this);
+        }
 
-			public override void VisitIdentifier(Identifier id)
-			{
-				SsaIdentifier sid = ssaIds[id];
-				for (int i = 0; i < sid.Uses.Count; ++i)
-				{
-					if (sid.Uses[i] == def)
-						sid.Uses[i] = use;
-				}
-			}
+        public override void VisitAssignment(Assignment a)
+        {
+            a.Src.Accept(this);
+        }
 
-			public override void VisitStore(Store store)
-			{
-				store.Dst.Accept(this);
-				store.Src.Accept(this);
-			}
-		}
-	}
+        public override void VisitIdentifier(Identifier id)
+        {
+            SsaIdentifier sid = ssaIds[id];
+            for (int i = 0; i < sid.Uses.Count; ++i)
+            {
+                if (sid.Uses[i] == def)
+                    sid.Uses[i] = use;
+            }
+        }
+
+        public override void VisitStore(Store store)
+        {
+            store.Dst.Accept(this);
+            store.Src.Accept(this);
+        }
+    }
 }

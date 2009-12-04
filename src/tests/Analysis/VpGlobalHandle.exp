@@ -1,27 +1,63 @@
 = fn10000000 ========================
-Mem0: Mem0:Global memory, def: {def Mem0}
-fp: fp:Temporary, def: {def fp}
-esi: esi:Register esi, def: {def esi}, uses: {dwLoc08_9 = esi}
-dwLoc08: dwLoc08:Local -0008, def: {def dwLoc08}
-dwArg00: dwArg00:Stack +0000, def: {def dwArg00}, uses: {esi_10 = dwArg00}
-edi: edi:Register edi, def: {def edi}, uses: {dwLoc0C_11 = edi}
-dwLoc0C: dwLoc0C:Local -000C, def: {def dwLoc0C}
-dwLoc10: dwLoc10:Local -0010, def: {def dwLoc10}
-eax: eax:Register eax, def: {def eax}
-dwLoc08_9: orig: dwLoc08, def: {dwLoc08_9 = esi}, uses: {esi_22 = dwLoc08_9}
-esi_10: orig: esi, def: {esi_10 = dwArg00}, uses: {dwLoc10_13 = esi_10}{dwLoc10_17 = esi_10}
-dwLoc0C_11: orig: dwLoc0C, def: {dwLoc0C_11 = edi}, uses: {edi_21 = dwLoc0C_11}
-edi_12: orig: edi, def: {edi_12 = GlobalHandle}
-dwLoc10_13: orig: dwLoc10, def: {dwLoc10_13 = esi_10}, uses: {eax_14 = GlobalHandle(dwLoc10_13)}
-eax_14: orig: eax, def: {eax_14 = GlobalHandle(dwLoc10_13)}, uses: {dwLoc10_15 = eax_14}
-dwLoc10_15: orig: dwLoc10, def: {dwLoc10_15 = eax_14}, uses: {eax_16 = GlobalUnlock(dwLoc10_15)}
-eax_16: orig: eax, def: {eax_16 = GlobalUnlock(dwLoc10_15)}
-dwLoc10_17: orig: dwLoc10, def: {dwLoc10_17 = esi_10}, uses: {eax_18 = GlobalHandle(dwLoc10_17)}
-eax_18: orig: eax, def: {eax_18 = GlobalHandle(dwLoc10_17)}, uses: {dwLoc10_19 = eax_18}
-dwLoc10_19: orig: dwLoc10, def: {dwLoc10_19 = eax_18}, uses: {eax_20 = GlobalFree(dwLoc10_19)}
-eax_20: orig: eax, def: {eax_20 = GlobalFree(dwLoc10_19)}
-edi_21: orig: edi, def: {edi_21 = dwLoc0C_11}
-esi_22: orig: esi, def: {esi_22 = dwLoc08_9}
+Mem0:Global memory
+    def:  def Mem0
+fp:Temporary
+    def:  def fp
+esi:Register esi
+    def:  def esi
+    uses: dwLoc08_9 = esi
+dwLoc08:Local -0008
+    def:  def dwLoc08
+dwArg00:Stack +0000
+    def:  def dwArg00
+    uses: esi_10 = dwArg00
+edi:Register edi
+    def:  def edi
+    uses: dwLoc0C_11 = edi
+dwLoc0C:Local -000C
+    def:  def dwLoc0C
+dwLoc10:Local -0010
+    def:  def dwLoc10
+eax:Register eax
+    def:  def eax
+dwLoc08_9: orig: dwLoc08
+    def:  dwLoc08_9 = esi
+    uses: esi_22 = dwLoc08_9
+esi_10: orig: esi
+    def:  esi_10 = dwArg00
+    uses: dwLoc10_13 = esi_10
+          dwLoc10_17 = esi_10
+dwLoc0C_11: orig: dwLoc0C
+    def:  dwLoc0C_11 = edi
+    uses: edi_21 = dwLoc0C_11
+edi_12: orig: edi
+    def:  edi_12 = GlobalHandle
+dwLoc10_13: orig: dwLoc10
+    def:  dwLoc10_13 = esi_10
+    uses: eax_14 = GlobalHandle(dwLoc10_13)
+eax_14: orig: eax
+    def:  eax_14 = GlobalHandle(dwLoc10_13)
+    uses: dwLoc10_15 = eax_14
+dwLoc10_15: orig: dwLoc10
+    def:  dwLoc10_15 = eax_14
+    uses: eax_16 = GlobalUnlock(dwLoc10_15)
+eax_16: orig: eax
+    def:  eax_16 = GlobalUnlock(dwLoc10_15)
+dwLoc10_17: orig: dwLoc10
+    def:  dwLoc10_17 = esi_10
+    uses: eax_18 = GlobalHandle(dwLoc10_17)
+eax_18: orig: eax
+    def:  eax_18 = GlobalHandle(dwLoc10_17)
+    uses: dwLoc10_19 = eax_18
+dwLoc10_19: orig: dwLoc10
+    def:  dwLoc10_19 = eax_18
+    uses: eax_20 = GlobalFree(dwLoc10_19)
+eax_20: orig: eax
+    def:  eax_20 = GlobalFree(dwLoc10_19)
+edi_21: orig: edi
+    def:  edi_21 = dwLoc0C_11
+esi_22: orig: esi
+    def:  esi_22 = dwLoc08_9
 // fn10000000
 void fn10000000(word32 dwArg00)
 fn10000000_entry:		// block 0, pred:
@@ -55,25 +91,32 @@ l10000000:		// block 1, pred: 0
 fn10000000_exit:		// block 2, pred: 1
 	// succ: 
 
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-esi: esi:Register esi
-dwLoc08: dwLoc08:Local -0008
-dwArg00: dwArg00:Stack +0000, def: {def dwArg00}, uses: {eax_14 = GlobalHandle(dwArg00)}{eax_18 = GlobalHandle(dwArg00)}
-edi: edi:Register edi
-dwLoc0C: dwLoc0C:Local -000C
-dwLoc10: dwLoc10:Local -0010
-eax: eax:Register eax
+Mem0:Global memory
+fp:Temporary
+esi:Register esi
+dwLoc08:Local -0008
+dwArg00:Stack +0000
+    def:  def dwArg00
+    uses: eax_14 = GlobalHandle(dwArg00)
+          eax_18 = GlobalHandle(dwArg00)
+edi:Register edi
+dwLoc0C:Local -000C
+dwLoc10:Local -0010
+eax:Register eax
 dwLoc08_9: orig: dwLoc08
 esi_10: orig: esi
 dwLoc0C_11: orig: dwLoc0C
 edi_12: orig: edi
 dwLoc10_13: orig: dwLoc10
-eax_14: orig: eax, def: {eax_14 = GlobalHandle(dwArg00)}, uses: {GlobalUnlock(eax_14)}
+eax_14: orig: eax
+    def:  eax_14 = GlobalHandle(dwArg00)
+    uses: GlobalUnlock(eax_14)
 dwLoc10_15: orig: dwLoc10
 eax_16: orig: eax
 dwLoc10_17: orig: dwLoc10
-eax_18: orig: eax, def: {eax_18 = GlobalHandle(dwArg00)}, uses: {GlobalFree(eax_18)}
+eax_18: orig: eax
+    def:  eax_18 = GlobalHandle(dwArg00)
+    uses: GlobalFree(eax_18)
 dwLoc10_19: orig: dwLoc10
 eax_20: orig: eax
 edi_21: orig: edi

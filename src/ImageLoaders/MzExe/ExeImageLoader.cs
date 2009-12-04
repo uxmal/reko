@@ -60,8 +60,6 @@ namespace Decompiler.ImageLoaders.MzExe
 		public const int CbPsp = 0x0100;			// Program segment prefix size in bytes.
 		public const int CbPageSize = 0x0200;		// MSDOS pages are 512 bytes.
 
-        private Program prog;
-
 		public ExeImageLoader(IServiceProvider services, byte [] image) : base(services, image)
 		{
             this.services = services;
@@ -73,20 +71,18 @@ namespace Decompiler.ImageLoaders.MzExe
 
         public override IProcessorArchitecture Architecture
         {
-            get { return DeferredLoader.Architecture; }
+            get { return GetDeferredLoader().Architecture; }
         }
 
         public override Platform Platform
         {
-            get { return DeferredLoader.Platform; }
+            get { return GetDeferredLoader().Platform; }
         }
 
         private ImageLoader CreateRealModeLoader(byte[] image)
         {
             IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-            this.prog = new Program();
-            prog.Architecture = arch;
-            prog.Platform = new MsdosPlatform(arch);
+            MsdosPlatform platform = new MsdosPlatform(arch);
 
             if (LzExeUnpacker.IsCorrectUnpacker(this, image))
             {
@@ -106,13 +102,18 @@ namespace Decompiler.ImageLoaders.MzExe
             }
         }
 
-        private ImageLoader DeferredLoader
+        private ImageLoader GetDeferredLoader()
+        {
+            if (ldrDeferred == null)
+                ldrDeferred = CreateDeferredLoader();
+            return ldrDeferred;
+        }
+
+        public override Dictionary<uint, PseudoProcedure> ImportThunks
         {
             get
             {
-                if (ldrDeferred == null)
-                    ldrDeferred = CreateDeferredLoader();
-                return ldrDeferred;
+                return GetDeferredLoader().ImportThunks;
             }
         }
 
@@ -138,7 +139,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		/// </summary>
         public override ProgramImage Load(Address addrLoad)
 		{
-			return DeferredLoader.Load(addrLoad);
+			return GetDeferredLoader().Load(addrLoad);
 		}
 
         private ImageLoader CreateDeferredLoader()
@@ -160,7 +161,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public override Address PreferredBaseAddress
 		{
-			get { return DeferredLoader.PreferredBaseAddress; }
+			get { return GetDeferredLoader().PreferredBaseAddress; }
 		}
 
 		public void ReadCommonExeFields()
@@ -198,7 +199,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
-			DeferredLoader.Relocate(addrLoad, entryPoints, relocations);
+			GetDeferredLoader().Relocate(addrLoad, entryPoints, relocations);
 		}
 
 		void RelocateNewExe(object neHeader)

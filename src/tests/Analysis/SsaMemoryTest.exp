@@ -1,22 +1,66 @@
-Mem0: Mem0:Global memory, def: {def Mem0}, uses: {bx_8 = Mem0[ds:bx + 0x0004:word16]}{cx_9 = Mem0[ds:bx_8 + 0x0002:word16]}
-fp: fp:Temporary, def: {def fp}
-bx: bx:Register bx, def: {def bx}, uses: {bx_8 = Mem0[ds:bx + 0x0004:word16]}
-ds: ds:Register ds, def: {def ds}, uses: {bx_8 = Mem0[ds:bx + 0x0004:word16]}{cx_9 = Mem0[ds:bx_8 + 0x0002:word16]}{store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001}{cx_13 = Mem12[ds:si:word16]}{store(Mem14[ds:bx_8 + 0x0006:word16]) = 0x0000}{cx_15 = Mem14[ds:si:word16]}{store(Mem18[ds:0x012C:word16]) = cx_16}
-cx: cx:Register cx, def: {def cx}
-SCZO: SCZO:Flags, def: {def SCZO}
-Z: Z:Flags, def: {def Z}
-si: si:Register si, def: {def si}, uses: {cx_13 = Mem12[ds:si:word16]}{cx_15 = Mem14[ds:si:word16]}
-bx_8: orig: bx, def: {bx_8 = Mem0[ds:bx + 0x0004:word16]}, uses: {cx_9 = Mem0[ds:bx_8 + 0x0002:word16]}{store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001}{store(Mem14[ds:bx_8 + 0x0006:word16]) = 0x0000}
-cx_9: orig: cx, def: {cx_9 = Mem0[ds:bx_8 + 0x0002:word16]}, uses: {SCZO_10 = cond(cx_9 - 0x0000)}
-SCZO_10: orig: SCZO, def: {SCZO_10 = cond(cx_9 - 0x0000)}, uses: {Z_11 = SCZO_10 (alias)}
-Z_11: orig: Z, def: {Z_11 = SCZO_10 (alias)}, uses: {branch Test(NE,Z_11) l0C00_0015}
-Mem12: orig: Mem0, def: {store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001}, uses: {cx_13 = Mem12[ds:si:word16]}{Mem17 = PHI(Mem12, Mem14)}
-cx_13: orig: cx, def: {cx_13 = Mem12[ds:si:word16]}, uses: {cx_16 = PHI(cx_13, cx_15)}
-Mem14: orig: Mem0, def: {store(Mem14[ds:bx_8 + 0x0006:word16]) = 0x0000}, uses: {cx_15 = Mem14[ds:si:word16]}{Mem17 = PHI(Mem12, Mem14)}
-cx_15: orig: cx, def: {cx_15 = Mem14[ds:si:word16]}, uses: {cx_16 = PHI(cx_13, cx_15)}
-cx_16: orig: cx, def: {cx_16 = PHI(cx_13, cx_15)}, uses: {store(Mem18[ds:0x012C:word16]) = cx_16}
-Mem17: orig: Mem0, def: {Mem17 = PHI(Mem12, Mem14)}
-Mem18: orig: Mem0, def: {store(Mem18[ds:0x012C:word16]) = cx_16}
+Mem0:Global memory
+    def:  def Mem0
+    uses: bx_8 = Mem0[ds:bx + 0x0004:word16]
+          cx_9 = Mem0[ds:bx_8 + 0x0002:word16]
+fp:Temporary
+    def:  def fp
+bx:Register bx
+    def:  def bx
+    uses: bx_8 = Mem0[ds:bx + 0x0004:word16]
+ds:Register ds
+    def:  def ds
+    uses: bx_8 = Mem0[ds:bx + 0x0004:word16]
+          cx_9 = Mem0[ds:bx_8 + 0x0002:word16]
+          store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001
+          cx_13 = Mem12[ds:si:word16]
+          store(Mem14[ds:bx_8 + 0x0006:word16]) = 0x0000
+          cx_15 = Mem14[ds:si:word16]
+          store(Mem18[ds:0x012C:word16]) = cx_16
+cx:Register cx
+    def:  def cx
+SCZO:Flags
+    def:  def SCZO
+Z:Flags
+    def:  def Z
+si:Register si
+    def:  def si
+    uses: cx_13 = Mem12[ds:si:word16]
+          cx_15 = Mem14[ds:si:word16]
+bx_8: orig: bx
+    def:  bx_8 = Mem0[ds:bx + 0x0004:word16]
+    uses: cx_9 = Mem0[ds:bx_8 + 0x0002:word16]
+          store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001
+          store(Mem14[ds:bx_8 + 0x0006:word16]) = 0x0000
+cx_9: orig: cx
+    def:  cx_9 = Mem0[ds:bx_8 + 0x0002:word16]
+    uses: SCZO_10 = cond(cx_9 - 0x0000)
+SCZO_10: orig: SCZO
+    def:  SCZO_10 = cond(cx_9 - 0x0000)
+    uses: Z_11 = SCZO_10 (alias)
+Z_11: orig: Z
+    def:  Z_11 = SCZO_10 (alias)
+    uses: branch Test(NE,Z_11) l0C00_0015
+Mem12: orig: Mem0
+    def:  store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001
+    uses: cx_13 = Mem12[ds:si:word16]
+          Mem17 = PHI(Mem12, Mem14)
+cx_13: orig: cx
+    def:  cx_13 = Mem12[ds:si:word16]
+    uses: cx_16 = PHI(cx_13, cx_15)
+Mem14: orig: Mem0
+    def:  store(Mem14[ds:bx_8 + 0x0006:word16]) = 0x0000
+    uses: cx_15 = Mem14[ds:si:word16]
+          Mem17 = PHI(Mem12, Mem14)
+cx_15: orig: cx
+    def:  cx_15 = Mem14[ds:si:word16]
+    uses: cx_16 = PHI(cx_13, cx_15)
+cx_16: orig: cx
+    def:  cx_16 = PHI(cx_13, cx_15)
+    uses: store(Mem18[ds:0x012C:word16]) = cx_16
+Mem17: orig: Mem0
+    def:  Mem17 = PHI(Mem12, Mem14)
+Mem18: orig: Mem0
+    def:  store(Mem18[ds:0x012C:word16]) = cx_16
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:

@@ -113,6 +113,9 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool LeavePage()
         {
+            if (Decompiler == null)
+                return false;
+
             if (page.IsDirty)
             {
                 SaveFieldsToProject();

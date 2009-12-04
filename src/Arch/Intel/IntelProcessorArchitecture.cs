@@ -74,9 +74,11 @@ namespace Decompiler.Arch.Intel
 		public static readonly FlagRegister Z;
 		public static readonly FlagRegister D;
 		public static readonly FlagRegister O;
+        public static readonly FlagRegister P;
 
+        public static readonly MachineRegister FPUF;
 
-		private static readonly IntelRegister[] regs;
+		private static readonly MachineRegister[] regs;
 
 		static Registers()
 		{
@@ -114,9 +116,11 @@ namespace Decompiler.Arch.Intel
 			C = new FlagRegister("C", 33);
 			Z = new FlagRegister("Z", 34);
 			D = new FlagRegister("D", 35);
-			O = new FlagRegister("O", 36);
+            O = new FlagRegister("O", 36);
+            P = new FlagRegister("P", 37);
+            FPUF = new MachineRegister("FPUF", 38, PrimitiveType.Byte);
 
-			regs = new IntelRegister[] {
+			regs = new MachineRegister[] {
 				eax,
 				ecx,
 				edx,
@@ -159,6 +163,8 @@ namespace Decompiler.Arch.Intel
 				D ,
 
 				O ,
+                P,
+                FPUF,
 			};
 		}
 
@@ -190,11 +196,14 @@ namespace Decompiler.Arch.Intel
 	[Flags]
 	public enum FlagM : byte
 	{
-		SF = 1,
-		CF = 2,
-		ZF = 4,
-		DF = 8,
-		OF = 16,
+		SF = 1,             // sign
+		CF = 2,             // carry
+		ZF = 4,             // zero
+		DF = 8,             // direction
+		
+        OF = 16,            // overflow
+        PF = 32,            // parity
+        FPUF = 64,          // FPU flags
 	}
 
 

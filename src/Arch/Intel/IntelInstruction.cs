@@ -279,7 +279,7 @@ namespace Decompiler.Arch.Intel
 			case Opcode.setpe:
 			case Opcode.jpo:
 			case Opcode.setpo:
-				throw new ArgumentOutOfRangeException("NYI");
+                return FlagM.PF;
 			case Opcode.js:
 			case Opcode.sets:
 				return FlagM.SF;

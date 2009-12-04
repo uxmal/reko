@@ -42,7 +42,6 @@ namespace Decompiler
         DataFlowAnalysis AnalyzeDataFlow();
         void ReconstructTypes();
         void StructureProgram();
-        void WriteDecompilerProducts();
     }
 
 	/// <summary>
@@ -71,6 +70,32 @@ namespace Decompiler
             this.eventListener = (DecompilerEventListener)services.GetService(typeof(DecompilerEventListener));
         }
 
+        /// <summary>
+        /// Main entry point of the decompiler. Loads, decompiles, and outputs the results.
+        /// </summary>
+        public void Decompile()
+        {
+            try
+            {
+                LoadProgram();
+                ScanProgram();
+                RewriteMachineCode();
+                AnalyzeDataFlow();
+                ReconstructTypes();
+                StructureProgram();
+                WriteDecompilerProducts();
+            }
+            catch (Exception e)
+            {
+                eventListener.AddDiagnostic(new ErrorDiagnostic(null, "{0}", e.Message + Environment.NewLine + e.StackTrace));
+            }
+            finally
+            {
+                eventListener.ShowStatus("Decompilation finished.");
+            }
+        }
+
+
         ///<summary>
         /// Determines the signature of the procedures,
 		/// the locations and types of all the values in the program.
@@ -89,32 +114,6 @@ namespace Decompiler
 			eventListener.ShowStatus("Analysis complete.");
             return dfa;
 		}
-
-        /// <summary>
-        /// Main entry point of the decompiler. Loads, decompiles, and outputs the results.
-        /// </summary>
-		public void Decompile()
-		{
-			try 
-			{
-				LoadProgram();
-				ScanProgram();
-				RewriteMachineCode();
-				AnalyzeDataFlow();
-				ReconstructTypes();
-				StructureProgram();
-				WriteDecompilerProducts();
-			} 
-			catch (Exception e)
-			{
-                eventListener.AddDiagnostic(new ErrorDiagnostic(null, "{0}", e.Message + Environment.NewLine + e.StackTrace));
-			}				
-			finally
-			{
-				eventListener.ShowStatus("Decompilation finished.");
-			}
-		}
-
 
 		private void EmitProgram(DataFlowAnalysis dfa, TextWriter output)
 		{	
@@ -321,11 +320,12 @@ namespace Decompiler
                     eventListener.AddDiagnostic(new ErrorDiagnostic(null, e, "An error occurred while rewriting procedure {0} to high-level language.", proc.Name));
                 }
 			}
+            WriteDecompilerProducts();
 			eventListener.ShowStatus("Rewriting complete.");
 		}
 
 
-		public void WriteDecompilerProducts()
+		private void WriteDecompilerProducts()
 		{
 			host.WriteTypes(WriteDecompiledTypes);
             host.WriteDecompiledCode(WriteDecompiledProcedures);

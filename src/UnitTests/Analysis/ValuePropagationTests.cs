@@ -283,6 +283,18 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual("0x00010002", e.ToString());
 		}
 
+        [Test]
+        public void SliceShift()
+        {
+            Constant eight = new Constant(PrimitiveType.Word16, 8);
+            Constant ate = new Constant(PrimitiveType.Word32, 8);
+            Identifier C = Reg8("C");
+            Identifier ax = Reg16("ax");
+            Expression e = new Slice(PrimitiveType.Byte, new BinaryExpression(Operator.shl, PrimitiveType.Word16, C, eight), 8);
+            ValuePropagator vp = new ValuePropagator(ssaIds, null);
+            e = e.Accept(vp);
+            Assert.AreEqual("C", e.ToString());
+        }
 		private Identifier Reg32(string name)
 		{
 			MachineRegister mr = new MachineRegister(name, ssaIds.Count, PrimitiveType.Word32);
@@ -292,7 +304,26 @@ namespace Decompiler.UnitTests.Analysis
 			return sid.Identifier;
 		}
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
+        private Identifier Reg16(string name)
+        {
+            MachineRegister mr = new MachineRegister(name, ssaIds.Count, PrimitiveType.Word16);
+            Identifier id = new Identifier(mr.Name, ssaIds.Count, mr.DataType, new RegisterStorage(mr));
+            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
+            ssaIds.Add(sid);
+            return sid.Identifier;
+        }
+
+
+        private Identifier Reg8(string name)
+        {
+            MachineRegister mr = new MachineRegister(name, ssaIds.Count, PrimitiveType.Byte);
+            Identifier id = new Identifier(mr.Name, ssaIds.Count, mr.DataType, new RegisterStorage(mr));
+            SsaIdentifier sid = new SsaIdentifier(id, id, null, null, false);
+            ssaIds.Add(sid);
+            return sid.Identifier;
+        }
+
+        protected override void RunTest(Program prog, FileUnitTester fut)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();

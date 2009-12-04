@@ -30,6 +30,10 @@ namespace Decompiler.Analysis
 	/// Performs propagation by replacing occurences of expressions with simpler expressions if these are beneficial. 
 	/// Constants are folded, and so on.
 	/// </summary>
+    /// <remarks>
+    /// This is a useful transform that doesn't cause too many problems for later transforms. Calling it will flush out
+    /// lots of dead expressions that can be removed with DeadCode.Eliminate()
+    /// </remarks>
 	public class ValuePropagator : InstructionTransformer
 	{
 		private SsaIdentifierCollection ssaIds;
@@ -48,6 +52,7 @@ namespace Decompiler.Analysis
 		private SliceMem_Rule sliceMem;
 		private Shl_mul_e_Rule shMul;
 		private ShiftShift_c_c_Rule  shiftShift;
+        private SliceShift sliceShift;
 		private NegSub_Rule negSub;
 		private Mps_Constant_Rule mpsRule;
 
@@ -72,6 +77,7 @@ namespace Decompiler.Analysis
 			this.shMul = new Shl_mul_e_Rule(ssaIds);
 			this.shiftShift = new ShiftShift_c_c_Rule(ssaIds);
 			this.mpsRule = new Mps_Constant_Rule(ssaIds);
+            this.sliceShift = new SliceShift(ssaIds);
 		}
 
 
@@ -374,6 +380,13 @@ namespace Decompiler.Analysis
 				Changed = true;
 				return sliceMem.Transform(stm);
 			}
+
+            // (slice (shl e n) n) ==> e
+            if (sliceShift.Match(slice))
+            {
+                Changed = true;
+                return sliceShift.Transform(stm);
+            }
 			return slice;
 		}
 

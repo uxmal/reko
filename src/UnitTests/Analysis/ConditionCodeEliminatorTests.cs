@@ -88,6 +88,37 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/regressions/r00007.asm", "Analysis/CceReg00007.txt");
 		}
 
+        [Test]
+        public void CceFstswTestAx()
+        {
+            Program prog = RewriteCodeFragment(@"
+                fcomp   dword ptr [bx]
+                fstsw  ax
+                test    ah,0x41
+                jz      done
+                xor     ecx,ecx
+ done:
+                ret
+");
+            SaveRunOutput(prog, "Analysis/CceFstswTestAx.txt");
+        }
+
+        [Test]
+        public void CceFstswTextAxWithConstantBl()
+        {
+            Program prog = RewriteCodeFragment(@"
+                mov     bx,1
+                fcomp   dword ptr[si]
+                fstsw   ax
+                test    bl,ah
+                jz      done
+                mov     byte ptr [0x0300],1
+done:
+                ret
+");
+            SaveRunOutput(prog, "Analysis/CceFstswTextAxWithConstantBl.txt");
+        }
+
 		[Test]
 		public void CceEqId()
 		{
@@ -170,6 +201,9 @@ namespace Decompiler.UnitTests.Analysis
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, new DominatorGraph(proc), true);
 				SsaState ssa = sst.SsaState;
+
+                ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
+                vp.Transform();
 
 				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
 				cce.Transform();

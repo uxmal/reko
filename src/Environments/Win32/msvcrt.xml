@@ -130,7 +130,17 @@
 	</signature>
   </procedure>
   <procedure name="_CIpow">
-	<signature></signature>
+	<signature>
+    <return type="double">
+      <fpustack />
+    </return>
+    <arg type="double">
+      <fpustack />
+    </arg>
+    <arg type="double">
+      <fpustack />
+    </arg>
+  </signature>
   </procedure>
   <procedure name="strncpy">
 	<signature>

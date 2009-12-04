@@ -133,7 +133,7 @@ namespace Decompiler.Loading
 
 		    RelocationDictionary relocations = new RelocationDictionary();
 			loader.Relocate(addrLoad, EntryPoints, relocations);
-
+            CopyImportThunks(loader.ImportThunks, prog);
             return prog;
         }
 

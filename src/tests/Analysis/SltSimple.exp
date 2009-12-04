@@ -1,11 +1,19 @@
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-a: a:Local -0004, def: {def a}, uses: {store(Mem6[0x10000000:word32]) = a + b}{store(Mem7[0x10000004:word32]) = a}
-b: b:Local -0008, def: {def b}, uses: {store(Mem6[0x10000000:word32]) = a + b}
-c: c:Local -000C
-c_5: orig: c, uses: {store(Mem6[0x10000000:word32]) = a + b}
-Mem6: orig: Mem0, def: {store(Mem6[0x10000000:word32]) = a + b}
-Mem7: orig: Mem0, def: {store(Mem7[0x10000004:word32]) = a}
+Mem0:Global memory
+fp:Temporary
+a:Local -0004
+    def:  def a
+    uses: store(Mem6[0x10000000:word32]) = a + b
+          store(Mem7[0x10000004:word32]) = a
+b:Local -0008
+    def:  def b
+    uses: store(Mem6[0x10000000:word32]) = a + b
+c:Local -000C
+c_5: orig: c
+    uses: store(Mem6[0x10000000:word32]) = a + b
+Mem6: orig: Mem0
+    def:  store(Mem6[0x10000000:word32]) = a + b
+Mem7: orig: Mem0
+    def:  store(Mem7[0x10000004:word32]) = a
 liveIn:  c_5
 SimpleMock_entry:		// block 0, pred:
 	def a

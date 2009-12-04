@@ -74,7 +74,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             ushort type)
         {
             cpt_char = (int)offsetCompressed;
-            byte[] uncompressed = start_decompact(lengthUncompressed);
+            byte[] uncompressed = CreateOutputBuffer(lengthUncompressed);
             cpt_wrfile(
                 lengthCompressed,
                 lengthUncompressed,
@@ -85,7 +85,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
 
         class HuffNode
         {
-            public int flag, @byte;
+            public int flag, Byte;
             public HuffNode one, zero;
         }
 
@@ -93,32 +93,6 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
         BitGetter get_bit;
         HuffNode[] nodelist = new HuffNode[515]; // 515 because StuffIt Classic needs more than the needed 511
         private int nodeptr = 0;
-
-        void read_tree()
-        {
-            nodeptr = 0;  // nodelist;
-            read_sub_tree();
-        }
-
-        // Recursively reads the Huffman encoding table and builds a decoding tree.
-        private HuffNode read_sub_tree()
-        {
-            HuffNode np;
-
-            np = nodelist[nodeptr++];
-            if (get_bit() == 1)
-            {
-                np.flag = 1;
-                np.@byte = getdecodebyte();
-            }
-            else
-            {
-                np.flag = 0;
-                np.zero = read_sub_tree();
-                np.one = read_sub_tree();
-            }
-            return np;
-        }
 
 
         int gethuffbyte(HuffNode l_nodelist)
@@ -130,7 +104,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             {
                 np = get_bit() != 0 ? np.one : np.zero;
             }
-            return np.@byte;
+            return np.Byte;
         }
 
         private int getdecodebyte()
@@ -147,7 +121,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
 
 
 
-        private void cpt_wrfile(uint ibytes, uint obytes, ushort type)
+        private void cpt_wrfile(uint ibytes, uint obytes, ushort compressionType)
         {
             if (ibytes == 0)
             {
@@ -157,8 +131,8 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             cpt_inlength = ibytes;
             cpt_outlength = obytes;
             cpt_LZptr = 0;
-            cpt_blocksize = 0x1fff0;
-            if (type == 0)
+            cpt_blocksize = 0x1FFFF0;
+            if (compressionType == 0)
             {
                 cpt_rle();
             }
@@ -174,69 +148,69 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             cpt_LZbuff[cpt_LZptr++ & (CIRCSIZE - 1)] = ch;
             switch (cpt_outstat)
             {
-                case NONESEEN:
+            case NONESEEN:
+                if (ch == ESC1 && cpt_outlength != 1)
+                {
+                    cpt_outstat = ESC1SEEN;
+                }
+                else
+                {
+                    cpt_savechar = ch;
+                    out_buffer[out_ptr++] = ch;
+                    cpt_outlength--;
+                }
+                break;
+            case ESC1SEEN:
+                if (ch == ESC2)
+                {
+                    cpt_outstat = ESC2SEEN;
+                }
+                else
+                {
+                    cpt_savechar = ESC1;
+                    out_buffer[out_ptr++] = ESC1;
+                    cpt_outlength--;
+                    if (cpt_outlength == 0)
+                    {
+                        return;
+                    }
                     if (ch == ESC1 && cpt_outlength != 1)
                     {
-                        cpt_outstat = ESC1SEEN;
+                        return;
                     }
-                    else
-                    {
-                        cpt_savechar = ch;
-                        out_buffer[out_ptr++] = ch;
-                        cpt_outlength--;
-                    }
-                    break;
-                case ESC1SEEN:
-                    if (ch == ESC2)
-                    {
-                        cpt_outstat = ESC2SEEN;
-                    }
-                    else
-                    {
-                        cpt_savechar = ESC1;
-                        out_buffer[out_ptr++] = ESC1;
-                        cpt_outlength--;
-                        if (cpt_outlength == 0)
-                        {
-                            return;
-                        }
-                        if (ch == ESC1 && cpt_outlength != 1)
-                        {
-                            return;
-                        }
-                        cpt_outstat = NONESEEN;
-                        cpt_savechar = ch;
-                        out_buffer[out_ptr++] = ch;
-                        cpt_outlength--;
-                    }
-                    break;
-                case ESC2SEEN:
                     cpt_outstat = NONESEEN;
-                    if (ch != 0)
+                    cpt_savechar = ch;
+                    out_buffer[out_ptr++] = ch;
+                    cpt_outlength--;
+                }
+                break;
+            case ESC2SEEN:
+                cpt_outstat = NONESEEN;
+                if (ch != 0)
+                {
+                    while (--ch != 0)
                     {
-                        while (--ch != 0)
-                        {
-                            out_buffer[out_ptr++] = cpt_savechar;
-                            cpt_outlength--;
-                            if (cpt_outlength == 0)
-                            {
-                                return;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        out_buffer[out_ptr++] = ESC1;
-                        cpt_outlength--;
-                        if (cpt_outlength == 0)
-                        {
-                            return;
-                        }
-                        cpt_savechar = ESC2;
                         out_buffer[out_ptr++] = cpt_savechar;
                         cpt_outlength--;
+                        if (cpt_outlength == 0)
+                        {
+                            return;
+                        }
                     }
-                    break;
+                }
+                else
+                {
+                    out_buffer[out_ptr++] = ESC1;
+                    cpt_outlength--;
+                    if (cpt_outlength == 0)
+                    {
+                        return;
+                    }
+                    cpt_savechar = ESC2;
+                    out_buffer[out_ptr++] = cpt_savechar;
+                    cpt_outlength--;
+                }
+                break;
             }
         }
 
@@ -306,40 +280,27 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
            declared.  The parameter nodes has been renamed Hufftree.... */
         private void cpt_readHuff(int size, HuffNode[] Hufftree)
         {
-            sf_entry[] tree_entry = new sf_entry[256 + SLACK]; /* maximal number of elements */
+            sf_entry[] tree_entry = new sf_entry[256 + SLACK]; // maximal number of elements 
             int tree_entries;
-            int tree_MaxLength; /* finishes local declaration of tree */
-
-            int len;  /* declarations from ReadLengths */
-
-            /* declarations from SortLengths */
+            int tree_MaxLength; // finishes local declaration of tree 
+            int len;  // declarations from ReadLengths 
             int j;
-            /*  int i already above */
-            sf_entry tmp;
-            int entries;
-            uint a, b;
-
-            /* declarations from GenerateTrees */
             int codelen, lvlstart, next, parents;
-            /*  int i, j already above */
-
-            /* for Compactor */
             int[] tree_count = new int[32];
-            /* end declarations */
 
-            /* next paraphrased from ReadLengths with adaption for Compactor. */
+            // next paraphrased from ReadLengths with adaption for Compactor. 
             int treeBytes = cpt_data[cpt_char++];
             if (size < treeBytes * 2)   // too many entries, something is wrong! 
                 throw new ApplicationException(string.Format("Bytes is: {0}, expected: {1}.", treeBytes, size / 2));
             
-            int i = 0;
             tree_MaxLength = 0;
             tree_entries = 0;
+            int i = 0;
             while (treeBytes-- > 0)
-            { /* adaption for Compactor */
+            { // adaption for Compactor 
                 len = cpt_data[cpt_char] >> 4;
                 if (len != 0)
-                { /* only if length unequal zero */
+                { // only if length unequal zero 
                     if (len > tree_MaxLength)
                     {
                         tree_MaxLength = len;
@@ -352,7 +313,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
                 const int NIBBLEMASK = 0x0F;
                 len = cpt_data[cpt_char++] & NIBBLEMASK;
                 if (len != 0)
-                { /* only if length unequal zero */
+                { // only if length unequal zero 
                     if (len > tree_MaxLength)
                     {
                         tree_MaxLength = len;
@@ -364,50 +325,34 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
                 i++;
             }
 
-            /* Compactor allows unused trailing codes in its Huffman tree! */
+            // Compactor allows unused trailing codes in its Huffman tree! 
             j = 0;
             for (i = 0; i <= tree_MaxLength; i++)
             {
                 j = (j << 1) + tree_count[i];
             }
             j = (1 << tree_MaxLength) - j;
-            /* Insert the unused entries for sorting purposes. */
+            // Insert the unused entries for sorting purposes. 
             for (i = 0; i < j; i++)
             {
                 tree_entry[tree_entries].Value = size;
                 tree_entry[tree_entries++].BitLength = (uint)tree_MaxLength;
             }
 
-            /* adaption from SortLengths */
-            entries = tree_entries;
-            for (i = 0; ++i < entries; )
-            {
-                tmp = tree_entry[i];
-                b = (uint)tmp.BitLength;
-                j = i;
-                while ((j > 0) && ((a = tree_entry[j - 1].BitLength) >= b))
-                {
-                    if ((a == b) && (tree_entry[j - 1].Value <= tmp.Value))
-                    {
-                        break;
-                    }
-                    tree_entry[j] = tree_entry[j - 1];
-                    --j;
-                }
-                tree_entry[j] = tmp;
-            }
+            // adaption from SortLengths 
+            SortEntries(tree_entry, tree_entries);
 
-            /* Adapted from GenerateTrees */
+            // Adapted from GenerateTrees 
             i = tree_entries - 1;
-            /* starting at the upper end (and reversing loop) because of Compactor */
+            // starting at the upper end (and reversing loop) because of Compactor 
             lvlstart = next = size * 2 + SLACK - 1;
-            /* slight adaption because of different node format used */
+            // slight adaption because of different node format used 
             for (codelen = tree_MaxLength; codelen >= 1; --codelen)
             {
                 while ((i >= 0) && (tree_entry[i].BitLength == codelen))
                 {
                     Hufftree[next] = new HuffNode();
-                    Hufftree[next].@byte = tree_entry[i].Value;
+                    Hufftree[next].Byte = tree_entry[i].Value;
                     Hufftree[next].flag = 1;
                     next--;
                     i--;
@@ -415,7 +360,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
                 parents = next;
                 if (codelen > 1)
                 {
-                    /* reversed loop */
+                    // reversed loop 
                     for (j = lvlstart; j > parents + 1; j -= 2)
                     {
                         Hufftree[next] = new HuffNode();
@@ -431,6 +376,27 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             Hufftree[0].one = Hufftree[next + 2];
             Hufftree[0].zero = Hufftree[next + 1];
             Hufftree[0].flag = 0;
+        }
+
+        private void SortEntries(sf_entry[] tree_entry, int entries)
+        {
+            for (int i = 0; ++i < entries; )
+            {
+                sf_entry tmp = tree_entry[i];
+                uint a;
+                uint b = (uint)tmp.BitLength;
+                int j = i;
+                while ((j > 0) && ((a = tree_entry[j - 1].BitLength) >= b))
+                {
+                    if ((a == b) && (tree_entry[j - 1].Value <= tmp.Value))
+                    {
+                        break;
+                    }
+                    tree_entry[j] = tree_entry[j - 1];
+                    --j;
+                }
+                tree_entry[j] = tmp;
+            }
         }
 
         private int cpt_get6bits()
@@ -455,7 +421,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             int b;
 
             b = (int)(cpt_newbits >> 31) & 1;
-            cpt_bitsavail--;
+            --cpt_bitsavail;
             if (cpt_bitsavail < 16)
             {
                 cpt_newbits |= ((uint)cpt_data[cpt_char++] << 8);
@@ -466,7 +432,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
             return b;
         }
 
-        byte[] start_decompact(uint size)
+        private byte[] CreateOutputBuffer(uint size)
         {
             uint s = (((size + 127) >> 7) << 7);
             out_buffer = new byte[s];

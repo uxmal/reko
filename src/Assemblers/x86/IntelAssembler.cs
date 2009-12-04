@@ -40,6 +40,7 @@ namespace Decompiler.Assemblers.x86
         private Platform platform;
         private Address addrBase;
         private ModRmBuilder modRm;
+        private PrimitiveType defaultWordSize;
         private IntelEmitter emitter;
         private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
@@ -53,6 +54,7 @@ namespace Decompiler.Assemblers.x86
             this.addrBase = addrBase;
             this.emitter = emitter;
             this.entryPoints = entryPoints;
+            this.defaultWordSize = defaultWordSize;
             modRm = new ModRmBuilder(defaultWordSize, emitter);
             symtab = new SymbolTable();
             importLibraries = new SortedDictionary<string, SignatureLibrary>();
@@ -94,6 +96,15 @@ namespace Decompiler.Assemblers.x86
         }
 
 
+        public void Sahf()
+        {
+            emitter.EmitByte(0x9E);
+        }
+
+        public void Test(ParsedOperand op1, ParsedOperand op2)
+        {
+            ProcessTest(new ParsedOperand[] { op1, op2 });
+        }
         public ParsedOperand BytePtr(int offset)
         {
             return new ParsedOperand(
@@ -1040,11 +1051,6 @@ namespace Decompiler.Assemblers.x86
                 IntegralConstant(offset, emitter.AddressWidth)));
         }
 
-        public void Jz(string destination)
-        {
-            ProcessShortBranch(0x04, destination);
-        }
-
         public void Lea(ParsedOperand dst, ParsedOperand addr)
         {
             RegisterOperand ropLhs = (RegisterOperand) dst.Operand;
@@ -1091,6 +1097,18 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0xE3, null);
             EmitRelativeTarget(destination, PrimitiveType.Byte);
         }
+
+        public void Jnz(string destination)
+        {
+            ProcessShortBranch(0x05, destination);
+        }
+
+        public void Jz(string destination)
+        {
+            ProcessShortBranch(0x04, destination);
+        }
+
+
 
         public void Jmp(string destination)
         {
@@ -1366,6 +1384,24 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0x86 | IsWordWidth(regOp), dataWidth);
             EmitModRM(RegisterEncoding(regOp.Register), otherOp);
         }
+
+        public ParsedOperand ax
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.ax)); }
+        }
+
+        public ParsedOperand ah
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.ah)); }
+        }
+
+        public ParsedOperand Const(int n)
+        {
+            return new ParsedOperand(new ImmediateOperand(IntegralConstant(n, this.defaultWordSize)));
+        }
+
+
+
     }
 }
 

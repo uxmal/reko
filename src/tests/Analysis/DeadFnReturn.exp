@@ -1,6 +1,6 @@
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-unused: unused:Local -0004
+Mem0:Global memory
+fp:Temporary
+unused:Local -0004
 unused_3: orig: unused
 // foo
 void foo()

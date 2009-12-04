@@ -67,6 +67,8 @@
 	<cmd id="ActionMarkProcedure" cmdSet="Decompiler" container="ActionMarkProcedure">Mark _Procedure Entry</cmd>
   <cmd id="ActionEditSignature" cmdSet="Decompiler" container="ActionEditSignature">Edit _Signature...</cmd>
 
+  <cmd id="HelpAbout" cmdSet="Decompiler" container="GrpHelp">_About Decompiler...</cmd>
+
 	<!-- Placements ======================================================= -->
 
   <placement item="FileOpen" container="GrpFile" />
