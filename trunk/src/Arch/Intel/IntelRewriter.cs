@@ -27,7 +27,7 @@ using System.Diagnostics;
 
 namespace Decompiler.Arch.Intel
 {
-	public class IntelRewriter : Rewriter
+	public partial class IntelRewriter : Rewriter
 	{
 		//$REVIEW: accumulating a lot of members; put this class on diet?
 
@@ -412,13 +412,7 @@ namespace Decompiler.Arch.Intel
 							state.ShrinkFpuStack(1);
 						break;
 					case Opcode.fstsw:
-						//$TODO: need a register for FPU status word.
-						// bit 14: C3: CF
-						// bit 10: C2:
-						// bit 9:  C1: PF
-						// bit 8:  C0: ZF
-					
-						EmitCopy(instrCur.op1, orw.FlagGroup(FlagM.CF), false);
+                        EmitFstsw(instrs, i);
 						break;
 					case Opcode.fsub:
 					case Opcode.fsubp:
@@ -1294,9 +1288,10 @@ namespace Decompiler.Arch.Intel
 			Expression op2 = (instrCur.code == Opcode.fcompp)
 				? FpuRegister(1)
 				: SrcOp(instrCur.op1);
-			emitter.Assign(
-				orw.FlagGroup(FlagM.CF),			//$BUGBUG: need a separate FPU flag register.
-				new BinaryExpression(Operator.sub, instrCur.dataWidth, op1, op2));
+            emitter.Assign(
+                orw.FlagGroup(FlagM.FPUF),
+                new ConditionOf(
+                    new BinaryExpression(Operator.sub, instrCur.dataWidth, op1, op2)));
 			state.ShrinkFpuStack(pops);
 		}
 

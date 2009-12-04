@@ -79,6 +79,7 @@ namespace Decompiler.Gui.Windows.Forms
 		public const int ActionFinishDecompilation = 11 + 2000;
 		public const int ActionMarkProcedure = 12 + 2000;
 		public const int ActionEditSignature = 13 + 2000;
+		public const int HelpAbout = 14 + 2000;
 		public const int FileMru = 2200;
 	}
 

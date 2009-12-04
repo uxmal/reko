@@ -167,6 +167,20 @@ namespace Decompiler.UnitTests.Analysis
             RunTest("Fragments/regressions/r00011.asm", "Analysis/DfaReg00011.txt");
         }
 
+        [Test]
+        public void DfaFstsw()
+        {
+           Program prog = RewriteCodeFragment(@"
+                fcomp   dword ptr [bx]
+                fstsw   ax
+                test    ah,0x41
+                jnz     done
+                mov     word ptr [si],4
+done:   
+                ret
+");
+           SaveRunOutput(prog, "Analysis/DfaFstsw.txt");
+        }
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{

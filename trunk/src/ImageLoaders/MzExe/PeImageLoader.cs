@@ -61,6 +61,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			{
 				throw new ApplicationException("Not a valid PE header.");
 			}
+            importThunks = new Dictionary<uint, PseudoProcedure>();
 			ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr);
 		}
@@ -369,7 +370,6 @@ namespace Decompiler.ImageLoaders.MzExe
             SignatureLibrary lib = LoadSignatureLibrary(arch, id.DllName);
 			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
 			ImageReader rdrThunks  = imgLoaded.CreateReader(id.RvaThunks);
-            importThunks = new Dictionary<uint, PseudoProcedure>();
 			for (;;)
 			{
 				Address addrThunk = imgLoaded.BaseAddress + rdrThunks.Offset;

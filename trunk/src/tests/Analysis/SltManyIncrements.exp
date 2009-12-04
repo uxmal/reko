@@ -1,20 +1,53 @@
-Mem0: Mem0:Global memory, def: {def Mem0}, uses: {Mem5 = PHI(Mem0, Mem16, Mem10)}
-fp: fp:Temporary
-r0: r0:Register r0, def: {def r0}, uses: {r0_4 = PHI(r0, r0_15, r0_9)}
-r1: r1:Register r1
-r0_4: orig: r0, def: {r0_4 = PHI(r0, r0_15, r0_9)}, uses: {r1_6 = Mem5[r0_4:byte]}{r0_7 = r0_4 + 0x00000001}{r0_9 = r0_4 + 0x00000002}{store(Mem16[0x33333331:word32]) = Mem13[r0_4 + 0x00000002:byte]}{r0_15 = r0_4 + 0x00000003}
-Mem5: orig: Mem0, def: {Mem5 = PHI(Mem0, Mem16, Mem10)}, uses: {r1_6 = Mem5[r0_4:byte]}{store(Mem10[0x33333330:word32]) = Mem5[r0_7:byte]}{store(Mem13[0x33333330:word32]) = Mem5[r0_7:byte]}
-r1_6: orig: r1, def: {r1_6 = Mem5[r0_4:byte]}, uses: {branch r1_6 != 0x01 not1}{branch r1_6 != 0x02 done}
-r0_7: orig: r0, def: {r0_7 = r0_4 + 0x00000001}, uses: {store(Mem10[0x33333330:word32]) = Mem5[r0_7:byte]}{store(Mem13[0x33333330:word32]) = Mem5[r0_7:byte]}
-r1_8: orig: r1, uses: {store(Mem10[0x33333330:word32]) = Mem5[r0_7:byte]}
-r0_9: orig: r0, def: {r0_9 = r0_4 + 0x00000002}, uses: {r0_4 = PHI(r0, r0_15, r0_9)}
-Mem10: orig: Mem0, def: {store(Mem10[0x33333330:word32]) = Mem5[r0_7:byte]}, uses: {Mem5 = PHI(Mem0, Mem16, Mem10)}
-r1_11: orig: r1, uses: {store(Mem13[0x33333330:word32]) = Mem5[r0_7:byte]}
+Mem0:Global memory
+    def:  def Mem0
+    uses: Mem5 = PHI(Mem0, Mem16, Mem10)
+fp:Temporary
+r0:Register r0
+    def:  def r0
+    uses: r0_4 = PHI(r0, r0_15, r0_9)
+r1:Register r1
+r0_4: orig: r0
+    def:  r0_4 = PHI(r0, r0_15, r0_9)
+    uses: r1_6 = Mem5[r0_4:byte]
+          r0_7 = r0_4 + 0x00000001
+          r0_9 = r0_4 + 0x00000002
+          store(Mem16[0x33333331:word32]) = Mem13[r0_4 + 0x00000002:byte]
+          r0_15 = r0_4 + 0x00000003
+Mem5: orig: Mem0
+    def:  Mem5 = PHI(Mem0, Mem16, Mem10)
+    uses: r1_6 = Mem5[r0_4:byte]
+          store(Mem10[0x33333330:word32]) = Mem5[r0_7:byte]
+          store(Mem13[0x33333330:word32]) = Mem5[r0_7:byte]
+r1_6: orig: r1
+    def:  r1_6 = Mem5[r0_4:byte]
+    uses: branch r1_6 != 0x01 not1
+          branch r1_6 != 0x02 done
+r0_7: orig: r0
+    def:  r0_7 = r0_4 + 0x00000001
+    uses: store(Mem10[0x33333330:word32]) = Mem5[r0_7:byte]
+          store(Mem13[0x33333330:word32]) = Mem5[r0_7:byte]
+r1_8: orig: r1
+    uses: store(Mem10[0x33333330:word32]) = Mem5[r0_7:byte]
+r0_9: orig: r0
+    def:  r0_9 = r0_4 + 0x00000002
+    uses: r0_4 = PHI(r0, r0_15, r0_9)
+Mem10: orig: Mem0
+    def:  store(Mem10[0x33333330:word32]) = Mem5[r0_7:byte]
+    uses: Mem5 = PHI(Mem0, Mem16, Mem10)
+r1_11: orig: r1
+    uses: store(Mem13[0x33333330:word32]) = Mem5[r0_7:byte]
 r0_12: orig: r0
-Mem13: orig: Mem0, def: {store(Mem13[0x33333330:word32]) = Mem5[r0_7:byte]}, uses: {store(Mem16[0x33333331:word32]) = Mem13[r0_4 + 0x00000002:byte]}
-r1_14: orig: r1, uses: {store(Mem16[0x33333331:word32]) = Mem13[r0_4 + 0x00000002:byte]}
-r0_15: orig: r0, def: {r0_15 = r0_4 + 0x00000003}, uses: {r0_4 = PHI(r0, r0_15, r0_9)}
-Mem16: orig: Mem0, def: {store(Mem16[0x33333331:word32]) = Mem13[r0_4 + 0x00000002:byte]}, uses: {Mem5 = PHI(Mem0, Mem16, Mem10)}
+Mem13: orig: Mem0
+    def:  store(Mem13[0x33333330:word32]) = Mem5[r0_7:byte]
+    uses: store(Mem16[0x33333331:word32]) = Mem13[r0_4 + 0x00000002:byte]
+r1_14: orig: r1
+    uses: store(Mem16[0x33333331:word32]) = Mem13[r0_4 + 0x00000002:byte]
+r0_15: orig: r0
+    def:  r0_15 = r0_4 + 0x00000003
+    uses: r0_4 = PHI(r0, r0_15, r0_9)
+Mem16: orig: Mem0
+    def:  store(Mem16[0x33333331:word32]) = Mem13[r0_4 + 0x00000002:byte]
+    uses: Mem5 = PHI(Mem0, Mem16, Mem10)
 // ManyIncrements
 void ManyIncrements()
 ManyIncrements_entry:		// block 0, pred:

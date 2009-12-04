@@ -114,6 +114,7 @@
     <Compile Include="IntelRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IntelRewriter.Fpu.cs" />
     <Compile Include="IntelState.cs">
       <SubType>Code</SubType>
     </Compile>

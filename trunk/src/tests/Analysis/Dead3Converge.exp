@@ -1,25 +1,41 @@
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-bx: bx:Register bx, def: {def bx}, uses: {branch bx == 0x0000 l0C00_0013}{branch bx > 0x0000 l0C00_000D}
-SCZO: SCZO:Flags
-Z: Z:Flags
-ax: ax:Register ax
-ds: ds:Register ds, def: {def ds}, uses: {store(Mem21[ds:0x0100:word16]) = ax_18}
-SZO: SZO:Flags
+Mem0:Global memory
+fp:Temporary
+bx:Register bx
+    def:  def bx
+    uses: branch bx == 0x0000 l0C00_0013
+          branch bx > 0x0000 l0C00_000D
+SCZO:Flags
+Z:Flags
+ax:Register ax
+ds:Register ds
+    def:  def ds
+    uses: store(Mem21[ds:0x0100:word16]) = ax_18
+SZO:Flags
 SCZO_8: orig: SCZO
 Z_9: orig: Z
+    uses: branch bx == 0x0000 l0C00_0013
 SZO_10: orig: SZO
-ax_11: orig: ax, def: {ax_11 = 0x0000}, uses: {ax_18 = PHI(ax_11, ax_15, ax_16)}
+    uses: branch bx > 0x0000 l0C00_000D
+ax_11: orig: ax
+    def:  ax_11 = 0x0000
+    uses: ax_18 = PHI(ax_11, ax_15, ax_16)
 SCZO_12: orig: SCZO
 Z_13: orig: Z
 SZO_14: orig: SZO
-ax_15: orig: ax, def: {ax_15 = 0x0001}, uses: {ax_18 = PHI(ax_11, ax_15, ax_16)}
-ax_16: orig: ax, def: {ax_16 = 0xFFFF}, uses: {ax_18 = PHI(ax_11, ax_15, ax_16)}
+ax_15: orig: ax
+    def:  ax_15 = 0x0001
+    uses: ax_18 = PHI(ax_11, ax_15, ax_16)
+ax_16: orig: ax
+    def:  ax_16 = 0xFFFF
+    uses: ax_18 = PHI(ax_11, ax_15, ax_16)
 SZO_17: orig: SZO
-ax_18: orig: ax, def: {ax_18 = PHI(ax_11, ax_15, ax_16)}, uses: {store(Mem21[ds:0x0100:word16]) = ax_18}
+ax_18: orig: ax
+    def:  ax_18 = PHI(ax_11, ax_15, ax_16)
+    uses: store(Mem21[ds:0x0100:word16]) = ax_18
 Z_19: orig: Z
 SCZO_20: orig: SCZO
-Mem21: orig: Mem0, def: {store(Mem21[ds:0x0100:word16]) = ax_18}
+Mem21: orig: Mem0
+    def:  store(Mem21[ds:0x0100:word16]) = ax_18
 // fn0C00_0000
 void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:		// block 0, pred:

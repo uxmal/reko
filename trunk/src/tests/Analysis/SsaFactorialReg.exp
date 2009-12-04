@@ -1,10 +1,22 @@
-Mem0: Mem0:Global memory, def: {def Mem0}
-fp: fp:Temporary, def: {def fp}
-cx: cx:Register cx, def: {def cx}
-ax: ax:Register ax, def: {def ax}, uses: {call fn0C00_000B (depth: 2;)}{store(Mem6[ds:0x0064:word16]) = ax}
-ds: ds:Register ds, def: {def ds}, uses: {call fn0C00_000B (depth: 2;)}{store(Mem6[ds:0x0064:word16]) = ax}
-cx_5: orig: cx, def: {cx_5 = 0x0005}, uses: {call fn0C00_000B (depth: 2;)}
-Mem6: orig: Mem0, def: {store(Mem6[ds:0x0064:word16]) = ax}
+Mem0:Global memory
+    def:  def Mem0
+fp:Temporary
+    def:  def fp
+cx:Register cx
+    def:  def cx
+ax:Register ax
+    def:  def ax
+    uses: call fn0C00_000B (depth: 2;)
+          store(Mem6[ds:0x0064:word16]) = ax
+ds:Register ds
+    def:  def ds
+    uses: call fn0C00_000B (depth: 2;)
+          store(Mem6[ds:0x0064:word16]) = ax
+cx_5: orig: cx
+    def:  cx_5 = 0x0005
+    uses: call fn0C00_000B (depth: 2;)
+Mem6: orig: Mem0
+    def:  store(Mem6[ds:0x0064:word16]) = ax
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
@@ -23,35 +35,97 @@ l0C00_0000:		// block 1, pred: 0
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 
-Mem0: Mem0:Global memory, def: {def Mem0}
-fp: fp:Temporary, def: {def fp}
-si: si:Register si, def: {def si}, uses: {wLoc04_10 = si}
-wLoc04: wLoc04:Local -0004, def: {def wLoc04}
-cx: cx:Register cx, def: {def cx}, uses: {SCZO_11 = cond(cx - 0x0001)}{cx_27 = PHI(cx, cx_16)}{si_15 = cx}{cx_16 = cx - 0x0001}
-SCZO: SCZO:Flags, def: {def SCZO}
-SZO: SZO:Flags, def: {def SZO}
-ax: ax:Register ax, def: {def ax}, uses: {call fn0C00_000B (depth: 4;)}{dx_ax_17 = si_15 *s ax}
-dx: dx:Register dx, def: {def dx}, uses: {dx_ax_14 = SEQ(dx, ax_13) (alias)}{dx_23 = PHI(dx, dx_19)}{call fn0C00_000B (depth: 4;)}
-dx_ax: dx_ax:Sequence dx:ax, def: {def dx_ax}
-wLoc04_10: orig: wLoc04, def: {wLoc04_10 = si}, uses: {si_28 = wLoc04_10}
-SCZO_11: orig: SCZO, def: {SCZO_11 = cond(cx - 0x0001)}, uses: {SZO_12 = SCZO_11 (alias)}{SCZO_26 = PHI(SCZO_11, SCZO_20)}{call fn0C00_000B (depth: 4;)}
-SZO_12: orig: SZO, def: {SZO_12 = SCZO_11 (alias)}, uses: {branch Test(LE,SZO_12) l0C00_001C}{SZO_25 = PHI(SZO_12, SZO_21)}{call fn0C00_000B (depth: 4;)}
-ax_13: orig: ax, def: {ax_13 = 0x0001}, uses: {dx_ax_14 = SEQ(dx, ax_13) (alias)}{ax_24 = PHI(ax_13, ax_18)}
-dx_ax_14: orig: dx_ax, def: {dx_ax_14 = SEQ(dx, ax_13) (alias)}, uses: {dx_ax_22 = PHI(dx_ax_14, dx_ax_17)}
-si_15: orig: si, def: {si_15 = cx}, uses: {call fn0C00_000B (depth: 4;)}{dx_ax_17 = si_15 *s ax}
-cx_16: orig: cx, def: {cx_16 = cx - 0x0001}, uses: {call fn0C00_000B (depth: 4;)}{cx_27 = PHI(cx, cx_16)}
-dx_ax_17: orig: dx_ax, def: {dx_ax_17 = si_15 *s ax}, uses: {ax_18 = (word16) dx_ax_17 (alias)}{dx_19 = SLICE(dx_ax_17, word16, 16) (alias)}{SCZO_20 = cond(dx_ax_17)}{dx_ax_22 = PHI(dx_ax_14, dx_ax_17)}
-ax_18: orig: ax, def: {ax_18 = (word16) dx_ax_17 (alias)}, uses: {ax_24 = PHI(ax_13, ax_18)}
-dx_19: orig: dx, def: {dx_19 = SLICE(dx_ax_17, word16, 16) (alias)}, uses: {dx_23 = PHI(dx, dx_19)}
-SCZO_20: orig: SCZO, def: {SCZO_20 = cond(dx_ax_17)}, uses: {SZO_21 = SCZO_20 (alias)}{SCZO_26 = PHI(SCZO_11, SCZO_20)}
-SZO_21: orig: SZO, def: {SZO_21 = SCZO_20 (alias)}, uses: {SZO_25 = PHI(SZO_12, SZO_21)}
-dx_ax_22: orig: dx_ax, def: {dx_ax_22 = PHI(dx_ax_14, dx_ax_17)}
-dx_23: orig: dx, def: {dx_23 = PHI(dx, dx_19)}
-ax_24: orig: ax, def: {ax_24 = PHI(ax_13, ax_18)}
-SZO_25: orig: SZO, def: {SZO_25 = PHI(SZO_12, SZO_21)}
-SCZO_26: orig: SCZO, def: {SCZO_26 = PHI(SCZO_11, SCZO_20)}
-cx_27: orig: cx, def: {cx_27 = PHI(cx, cx_16)}
-si_28: orig: si, def: {si_28 = wLoc04_10}
+Mem0:Global memory
+    def:  def Mem0
+fp:Temporary
+    def:  def fp
+si:Register si
+    def:  def si
+    uses: wLoc04_10 = si
+wLoc04:Local -0004
+    def:  def wLoc04
+cx:Register cx
+    def:  def cx
+    uses: SCZO_11 = cond(cx - 0x0001)
+          cx_27 = PHI(cx, cx_16)
+          si_15 = cx
+          cx_16 = cx - 0x0001
+SCZO:Flags
+    def:  def SCZO
+SZO:Flags
+    def:  def SZO
+ax:Register ax
+    def:  def ax
+    uses: call fn0C00_000B (depth: 4;)
+          dx_ax_17 = si_15 *s ax
+dx:Register dx
+    def:  def dx
+    uses: dx_ax_14 = SEQ(dx, ax_13) (alias)
+          dx_23 = PHI(dx, dx_19)
+          call fn0C00_000B (depth: 4;)
+dx_ax:Sequence dx:ax
+    def:  def dx_ax
+wLoc04_10: orig: wLoc04
+    def:  wLoc04_10 = si
+    uses: si_28 = wLoc04_10
+SCZO_11: orig: SCZO
+    def:  SCZO_11 = cond(cx - 0x0001)
+    uses: SZO_12 = SCZO_11 (alias)
+          SCZO_26 = PHI(SCZO_11, SCZO_20)
+          call fn0C00_000B (depth: 4;)
+SZO_12: orig: SZO
+    def:  SZO_12 = SCZO_11 (alias)
+    uses: branch Test(LE,SZO_12) l0C00_001C
+          SZO_25 = PHI(SZO_12, SZO_21)
+          call fn0C00_000B (depth: 4;)
+ax_13: orig: ax
+    def:  ax_13 = 0x0001
+    uses: dx_ax_14 = SEQ(dx, ax_13) (alias)
+          ax_24 = PHI(ax_13, ax_18)
+dx_ax_14: orig: dx_ax
+    def:  dx_ax_14 = SEQ(dx, ax_13) (alias)
+    uses: dx_ax_22 = PHI(dx_ax_14, dx_ax_17)
+si_15: orig: si
+    def:  si_15 = cx
+    uses: call fn0C00_000B (depth: 4;)
+          dx_ax_17 = si_15 *s ax
+cx_16: orig: cx
+    def:  cx_16 = cx - 0x0001
+    uses: call fn0C00_000B (depth: 4;)
+          cx_27 = PHI(cx, cx_16)
+dx_ax_17: orig: dx_ax
+    def:  dx_ax_17 = si_15 *s ax
+    uses: ax_18 = (word16) dx_ax_17 (alias)
+          dx_19 = SLICE(dx_ax_17, word16, 16) (alias)
+          SCZO_20 = cond(dx_ax_17)
+          dx_ax_22 = PHI(dx_ax_14, dx_ax_17)
+ax_18: orig: ax
+    def:  ax_18 = (word16) dx_ax_17 (alias)
+    uses: ax_24 = PHI(ax_13, ax_18)
+dx_19: orig: dx
+    def:  dx_19 = SLICE(dx_ax_17, word16, 16) (alias)
+    uses: dx_23 = PHI(dx, dx_19)
+SCZO_20: orig: SCZO
+    def:  SCZO_20 = cond(dx_ax_17)
+    uses: SZO_21 = SCZO_20 (alias)
+          SCZO_26 = PHI(SCZO_11, SCZO_20)
+SZO_21: orig: SZO
+    def:  SZO_21 = SCZO_20 (alias)
+    uses: SZO_25 = PHI(SZO_12, SZO_21)
+dx_ax_22: orig: dx_ax
+    def:  dx_ax_22 = PHI(dx_ax_14, dx_ax_17)
+dx_23: orig: dx
+    def:  dx_23 = PHI(dx, dx_19)
+ax_24: orig: ax
+    def:  ax_24 = PHI(ax_13, ax_18)
+SZO_25: orig: SZO
+    def:  SZO_25 = PHI(SZO_12, SZO_21)
+SCZO_26: orig: SCZO
+    def:  SCZO_26 = PHI(SCZO_11, SCZO_20)
+cx_27: orig: cx
+    def:  cx_27 = PHI(cx, cx_16)
+si_28: orig: si
+    def:  si_28 = wLoc04_10
 // fn0C00_000B
 void fn0C00_000B()
 fn0C00_000B_entry:		// block 0, pred:

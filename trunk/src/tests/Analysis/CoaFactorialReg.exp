@@ -1,11 +1,15 @@
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-cx: cx:Register cx
-ax: ax:Register ax
-ds: ds:Register ds, def: {def ds}, uses: {store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)}
+Mem0:Global memory
+fp:Temporary
+cx:Register cx
+ax:Register ax
+ds:Register ds
+    def:  def ds
+    uses: store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)
 cx_5: orig: cx
-ax_6: orig: ax, uses: {store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)}
-Mem7: orig: Mem0, def: {store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)}
+ax_6: orig: ax
+    uses: store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)
+Mem7: orig: Mem0
+    def:  store(Mem7[ds:0x0064:word16]) = fn0C00_000B(0x0005)
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
@@ -18,32 +22,44 @@ l0C00_0000:		// block 1, pred: 0
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
 
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-si: si:Register si
-wLoc04: wLoc04:Local -0004
-cx: cx:Register cx, def: {def cx}, uses: {branch cx <= 0x0001 l0C00_001C}{ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}{ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}
-SCZO: SCZO:Flags
-SZO: SZO:Flags
-ax: ax:Register ax
-dx: dx:Register dx
-dx_ax: dx_ax:Sequence dx:ax
+Mem0:Global memory
+fp:Temporary
+si:Register si
+wLoc04:Local -0004
+cx:Register cx
+    def:  def cx
+    uses: branch cx <= 0x0001 l0C00_001C
+          ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+          ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+SCZO:Flags
+SZO:Flags
+ax:Register ax
+dx:Register dx
+dx_ax:Sequence dx:ax
 wLoc04_10: orig: wLoc04
 SCZO_11: orig: SCZO
 SZO_12: orig: SZO
-ax_13: orig: ax, def: {ax_13 = 0x0001}, uses: {ax_25 = PHI(ax_13, ax_19)}
+    uses: branch cx <= 0x0001 l0C00_001C
+ax_13: orig: ax
+    def:  ax_13 = 0x0001
+    uses: ax_25 = PHI(ax_13, ax_19)
 dx_ax_14: orig: dx_ax
 si_15: orig: si
 cx_16: orig: cx
 ax_17: orig: ax
-dx_ax_18: orig: dx_ax, uses: {ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}
-ax_19: orig: ax, def: {ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)}, uses: {ax_25 = PHI(ax_13, ax_19)}
+dx_ax_18: orig: dx_ax
+    uses: ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+ax_19: orig: ax
+    def:  ax_19 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+    uses: ax_25 = PHI(ax_13, ax_19)
 dx_20: orig: dx
 SCZO_21: orig: SCZO
 SZO_22: orig: SZO
 dx_ax_23: orig: dx_ax
 dx_24: orig: dx
-ax_25: orig: ax, def: {ax_25 = PHI(ax_13, ax_19)}, uses: {return ax_25}
+ax_25: orig: ax
+    def:  ax_25 = PHI(ax_13, ax_19)
+    uses: return ax_25
 SZO_26: orig: SZO
 SCZO_27: orig: SCZO
 cx_28: orig: cx

@@ -290,6 +290,17 @@ namespace Decompiler.UnitTests.Arch.Intel
             Assert.AreSame(Registers.bx, state.FrameRegister);
         }
 
+        [Test]
+        public void RewriteJp()
+        {
+            rw.ConvertInstructions(
+                new IntelInstruction(Opcode.jpe, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word32, 0x100))),
+                new IntelInstruction(Opcode.jpo, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word32, 0x102)))
+                );
+            Assert.AreEqual("@@@", rw.Block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("@@@", rw.Block.Statements[1].Instruction.ToString());
+        }
+
         public class TestRewriter : IntelRewriter
         {
             private FakeRewriterHost host;

@@ -1,13 +1,22 @@
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-cx: cx:Register cx
-wLoc04: wLoc04:Local -0004
-ax: ax:Register ax
-ds: ds:Register ds, def: {def ds}, uses: {store(Mem9[ds:0x0064:word16]) = ax_8}
-cx_6: orig: cx, def: {cx_6 = 0x0064}, uses: {wLoc04_7 = cx_6}
-wLoc04_7: orig: wLoc04, def: {wLoc04_7 = cx_6}, uses: {ax_8 = fn0C00_000F(wLoc04_7)}
-ax_8: orig: ax, def: {ax_8 = fn0C00_000F(wLoc04_7)}, uses: {store(Mem9[ds:0x0064:word16]) = ax_8}
-Mem9: orig: Mem0, def: {store(Mem9[ds:0x0064:word16]) = ax_8}
+Mem0:Global memory
+fp:Temporary
+cx:Register cx
+wLoc04:Local -0004
+ax:Register ax
+ds:Register ds
+    def:  def ds
+    uses: store(Mem9[ds:0x0064:word16]) = ax_8
+cx_6: orig: cx
+    def:  cx_6 = 0x0064
+    uses: wLoc04_7 = cx_6
+wLoc04_7: orig: wLoc04
+    def:  wLoc04_7 = cx_6
+    uses: ax_8 = fn0C00_000F(wLoc04_7)
+ax_8: orig: ax
+    def:  ax_8 = fn0C00_000F(wLoc04_7)
+    uses: store(Mem9[ds:0x0064:word16]) = ax_8
+Mem9: orig: Mem0
+    def:  store(Mem9[ds:0x0064:word16]) = ax_8
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
@@ -22,32 +31,53 @@ l0C00_0000:		// block 1, pred: 0
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1
 	// succ: 
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-bp: bp:Register bp
-wLoc04: wLoc04:Local -0004
-wArg00: wArg00:Stack +0000, def: {def wArg00}, uses: {ax_13 = wArg00}{dx_23 = wArg00}
-ax: ax:Register ax
-SZO: SZO:Flags
-Z: Z:Flags
-wLoc06: wLoc06:Local -0006
-dx: dx:Register dx
-dx_ax: dx_ax:Sequence dx:ax
-SCZO: SCZO:Flags
+Mem0:Global memory
+fp:Temporary
+bp:Register bp
+wLoc04:Local -0004
+wArg00:Stack +0000
+    def:  def wArg00
+    uses: ax_13 = wArg00
+          dx_23 = wArg00
+ax:Register ax
+SZO:Flags
+Z:Flags
+wLoc06:Local -0006
+dx:Register dx
+dx_ax:Sequence dx:ax
+SCZO:Flags
 wLoc04_12: orig: wLoc04
-ax_13: orig: ax, def: {ax_13 = wArg00}, uses: {ax_14 = ax_13 - 0x0001}
-ax_14: orig: ax, def: {ax_14 = ax_13 - 0x0001}, uses: {wLoc06_21 = ax_14}{branch ax_14 == 0x0000 l0C00_0026}
+ax_13: orig: ax
+    def:  ax_13 = wArg00
+    uses: ax_14 = ax_13 - 0x0001
+ax_14: orig: ax
+    def:  ax_14 = ax_13 - 0x0001
+    uses: wLoc06_21 = ax_14
+          branch ax_14 == 0x0000 l0C00_0026
 dx_ax_15: orig: dx_ax
 SZO_16: orig: SZO
 Z_17: orig: Z
+    uses: branch ax_14 == 0x0000 l0C00_0026
 SCZO_18: orig: SCZO
-ax_19: orig: ax, def: {ax_19 = 0x0001}, uses: {ax_36 = PHI(ax_19, ax_25)}
+ax_19: orig: ax
+    def:  ax_19 = 0x0001
+    uses: ax_36 = PHI(ax_19, ax_25)
 dx_ax_20: orig: dx_ax
-wLoc06_21: orig: wLoc06, def: {wLoc06_21 = ax_14}, uses: {ax_22 = fn0C00_000F(wLoc06_21)}
-ax_22: orig: ax, def: {ax_22 = fn0C00_000F(wLoc06_21)}, uses: {dx_ax_24 = dx_23 *s ax_22}
-dx_23: orig: dx, def: {dx_23 = wArg00}, uses: {dx_ax_24 = dx_23 *s ax_22}
-dx_ax_24: orig: dx_ax, def: {dx_ax_24 = dx_23 *s ax_22}, uses: {ax_25 = (word16) dx_ax_24 (alias)}
-ax_25: orig: ax, def: {ax_25 = (word16) dx_ax_24 (alias)}, uses: {ax_36 = PHI(ax_19, ax_25)}
+wLoc06_21: orig: wLoc06
+    def:  wLoc06_21 = ax_14
+    uses: ax_22 = fn0C00_000F(wLoc06_21)
+ax_22: orig: ax
+    def:  ax_22 = fn0C00_000F(wLoc06_21)
+    uses: dx_ax_24 = dx_23 *s ax_22
+dx_23: orig: dx
+    def:  dx_23 = wArg00
+    uses: dx_ax_24 = dx_23 *s ax_22
+dx_ax_24: orig: dx_ax
+    def:  dx_ax_24 = dx_23 *s ax_22
+    uses: ax_25 = (word16) dx_ax_24 (alias)
+ax_25: orig: ax
+    def:  ax_25 = (word16) dx_ax_24 (alias)
+    uses: ax_36 = PHI(ax_19, ax_25)
 dx_26: orig: dx
 SCZO_27: orig: SCZO
 SZO_28: orig: SZO
@@ -58,7 +88,9 @@ dx_32: orig: dx
 wLoc06_33: orig: wLoc06
 Z_34: orig: Z
 SZO_35: orig: SZO
-ax_36: orig: ax, def: {ax_36 = PHI(ax_19, ax_25)}, uses: {return ax_36}
+ax_36: orig: ax
+    def:  ax_36 = PHI(ax_19, ax_25)
+    uses: return ax_36
 bp_37: orig: bp
 // fn0C00_000F
 word16 fn0C00_000F(word16 wArg00)

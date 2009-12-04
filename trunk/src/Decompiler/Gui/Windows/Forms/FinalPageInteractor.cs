@@ -35,18 +35,29 @@ namespace Decompiler.Gui.Windows.Forms
 		public FinalPageInteractor(FinalPage page, MainFormInteractor form)
 		{
 			finalPage = page;
-			finalPage.SourceFile.Click += new EventHandler(BrowseSourceFile_Click);
-			finalPage.HeaderFile.Click += new EventHandler(BrowseHeaderFile_Click);
-			finalPage.SaveButton.Click += new EventHandler(SaveButton_Click);
+            finalPage.DataTypeDefinitionLink.LinkClicked += new LinkLabelLinkClickedEventHandler(DataTypeDefinitionLink_LinkClicked);
+            finalPage.ProgramCodeLink.LinkClicked += new LinkLabelLinkClickedEventHandler(ProgramCodeLink_LinkClicked);
 		}
+
+        void DataTypeDefinitionLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ShowExplorerWindow(Decompiler.Project.Output.TypesFilename);
+        }
+
+        void ProgramCodeLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ShowExplorerWindow(Decompiler.Project.Output.OutputFilename);
+        }
+
+        private void ShowExplorerWindow(string filePath)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,\"{0}\"", filePath));
+
+        }
 
 
 		public override void EnterPage()
 		{
-			finalPage.SourceFile.Text = Decompiler.Project.Output.OutputFilename;
-			finalPage.HeaderFile.Text = Decompiler.Project.Output.TypesFilename;
-
-			SetTextBoxes(Decompiler.Project.Output);
             try
             {
                 WorkerDialogService.StartBackgroundWork("Reconstructing datatypes.", delegate()
@@ -73,45 +84,5 @@ namespace Decompiler.Gui.Windows.Forms
         {
             get { return finalPage; }
         }
-
-		private void SaveButton_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				Decompiler.Project.Output.OutputFilename = finalPage.SourceFile.Text;
-				Decompiler.Project.Output.TypesFilename = finalPage.HeaderFile.Text;
-				Decompiler.WriteDecompilerProducts();
-			} 
-			catch (Exception ex)
-			{
-				MessageBox.Show(finalPage, string.Format("Couldn't save decompilation results. {0}", ex.Message), "Decompiler");
-			}
-		}
-
-		public void SetTextBoxes(DecompilerOutput output)
-		{
-			if (output.TypesFilename == null || output.TypesFilename.Length == 0)
-			{
-			}
-
-		}
-
-		private void BrowseSourceFile_Click(object sender, EventArgs e)
-		{
-            string fileName = UIService.ShowSaveFileDialog(finalPage.SourceFile.Text);
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                finalPage.SourceFile.Text = fileName;
-            }
-		}
-
-		private void BrowseHeaderFile_Click(object sender, EventArgs e)
-		{
-			string fileName = UIService.ShowSaveFileDialog(finalPage.HeaderFile.Text);
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                finalPage.HeaderFile.Text = fileName;
-            }
-		}
 	}
 }

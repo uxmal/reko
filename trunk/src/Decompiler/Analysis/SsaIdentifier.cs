@@ -121,9 +121,7 @@ namespace Decompiler.Analysis
 		{
 			if (IsOriginal)
 			{
-				//$TODO: duplication is completely unnecesary; reduce to
-				//writer.Write(id + ":");
-				writer.Write("{0}: {1}:", id, idOrig);
+				writer.Write("{0}:", id);
 				idOrig.Storage.Write(writer);
 			}
 			else
@@ -132,14 +130,25 @@ namespace Decompiler.Analysis
 			}
 			if (def != null)
 			{
-				writer.Write(", def: {{{0}}}", def.Instruction);
+                writer.WriteLine();
+				writer.Write("    def:  {0}", def.Instruction);
 			}
 			if (uses.Count > 0)
 			{
-				writer.Write(", uses: ");
+                bool first = true;
 				foreach (Statement u in uses)
 				{
-					writer.Write("{{{0}}}", u.Instruction);
+                    writer.WriteLine();
+                    if (first)
+                    {
+                        writer.Write("    uses: ");
+                        first = false;
+                    }
+                    else
+                    {
+                        writer.Write("          ");
+                    }
+					writer.Write(u.Instruction);
 				}
 			}
 		}

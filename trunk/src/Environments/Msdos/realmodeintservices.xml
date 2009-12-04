@@ -129,6 +129,17 @@
 	  </arg>
 	</signature>
   </service>
+  <service name="bios_video_teletype_output">
+    <syscallinfo>
+      <vector>10</vector>
+      <regvalue reg="ah">0E</regvalue>
+    </syscallinfo>
+    <signature>
+      <arg><reg>al</reg></arg>
+      <arg><reg>bh</reg></arg>
+      <arg><reg>bl</reg></arg>
+    </signature>
+  </service>
   <service name="bios_video_load_ROM_8x8_dbl_dot_patterns">
 	<syscallinfo>
 	  <vector>10</vector>
@@ -557,6 +568,15 @@
 	  </arg>
 	</signature>
   </service>
+  <service name="terminate_and_stay_resident">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">31</regvalue>
+    </syscallinfo>
+    <signature>
+      <arg><reg>dx</reg></arg>
+    </signature>
+  </service>
   <service name="msdos_get_interrupt_vector">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -880,6 +900,19 @@
 	  </arg>
 	</signature>
   </service>
+  <service name="msdos_exec">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">4B</regvalue>
+    </syscallinfo>
+    
+    <signature>
+      <return><flag>C</flag></return>
+      <arg><reg>al</reg></arg>
+      <arg><seq><reg>ds</reg><reg>dx</reg></seq></arg>
+      <arg><seq><reg>es</reg><reg>bx</reg></seq></arg>
+    </signature>
+  </service>
   <service name="msdos_terminate">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -893,6 +926,16 @@
 	<characteristics>
 	  <terminates>true</terminates>
 	</characteristics>
+  </service>
+  <service name="msdos_get_return_code">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">4D</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><reg>al</reg></return>
+      <arg out="true"><reg>ah</reg></arg>
+    </signature>
   </service>
   <service name="msdos_find_first_file">
 	<syscallinfo>

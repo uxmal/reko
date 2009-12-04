@@ -1,13 +1,16 @@
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-ax: ax:Register ax
-bx: bx:Register bx
-cx: cx:Register cx
-ds: ds:Register ds, def: {def ds}, uses: {store(Mem9[ds:0x0300:word16]) = 0x0004}
+Mem0:Global memory
+fp:Temporary
+ax:Register ax
+bx:Register bx
+cx:Register cx
+ds:Register ds
+    def:  def ds
+    uses: store(Mem9[ds:0x0300:word16]) = 0x0004
 ax_6: orig: ax
 bx_7: orig: bx
 cx_8: orig: cx
-Mem9: orig: Mem0, def: {store(Mem9[ds:0x0300:word16]) = 0x0004}
+Mem9: orig: Mem0
+    def:  store(Mem9[ds:0x0300:word16]) = 0x0004
 bx_10: orig: bx
 ax_11: orig: ax
 // fn0C00_0000

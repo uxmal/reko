@@ -46,13 +46,10 @@ namespace Decompiler.Core.Code
 		}
 
 
-
 		public Expression Expression
 		{
 			get { return expr; }
 			set { expr = value; }
 		}
-
-
 	}
 }

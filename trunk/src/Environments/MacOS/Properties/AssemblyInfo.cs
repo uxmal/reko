@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MacOS")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Decompiler support for the MacOS operating environment.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MacOS")]

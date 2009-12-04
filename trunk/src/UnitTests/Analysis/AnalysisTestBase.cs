@@ -116,7 +116,7 @@ namespace Decompiler.UnitTests.Analysis
 			return prog;
 		}
 
-		protected Program RewriteCode(string s)
+		protected Program RewriteCodeFragment(string s)
 		{
 			Program prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 		}
 
-		private void SaveRunOutput(Program prog, string outputFile)
+		protected void SaveRunOutput(Program prog, string outputFile)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{

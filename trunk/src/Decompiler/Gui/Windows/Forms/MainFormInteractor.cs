@@ -279,6 +279,15 @@ namespace Decompiler.Gui.Windows.Forms
 		{
 		}
 
+
+        public void ShowAboutBox()
+        {
+            using (AboutDialog dlg = new AboutDialog())
+            {
+                uiSvc.ShowModalDialog(dlg);
+            }
+        }
+
         public string ProjectFileName
         {
             get { return projectFileName; }
@@ -377,6 +386,7 @@ namespace Decompiler.Gui.Windows.Forms
 				{
 				case CmdIds.FileOpen:
 				case CmdIds.FileExit:
+                case CmdIds.HelpAbout:
 					cmdStatus.Status = MenuStatus.Enabled|MenuStatus.Visible;
 					return true;
 				case CmdIds.FileMru:
@@ -415,6 +425,8 @@ namespace Decompiler.Gui.Windows.Forms
 
 				case CmdIds.ActionNextPhase: NextPhase(); return true;
 				case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
+
+                case CmdIds.HelpAbout: ShowAboutBox(); return true;
 				}
 			}
 			return false;

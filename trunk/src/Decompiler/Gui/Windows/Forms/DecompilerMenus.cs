@@ -122,6 +122,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slActionEditSignature = new CommandMenuItem("Edit _Signature...", new Guid(CmdSets.Decompiler), CmdIds.ActionEditSignature);
             slActionEditSignature.IsDynamic = false;
             
+            CommandMenuItem slHelpAbout = new CommandMenuItem("_About Decompiler...", new Guid(CmdSets.Decompiler), CmdIds.HelpAbout);
+            slHelpAbout.IsDynamic = false;
+            slGrpHelp.Add(0, slHelpAbout);
 			
 			// Create submenus
 			

@@ -1,10 +1,19 @@
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-tmp: tmp:Local -0004
-reg: reg:Local -0008, def: {def reg}, uses: {branch (reg & 0x00000001) == 0x00000000 even}{reg_6 = PHI(reg, reg_5)}{reg_5 = reg + 0x00000002}{return reg_6 - reg}
+Mem0:Global memory
+fp:Temporary
+tmp:Local -0004
+reg:Local -0008
+    def:  def reg
+    uses: branch (reg & 0x00000001) == 0x00000000 even
+          reg_6 = PHI(reg, reg_5)
+          reg_5 = reg + 0x00000002
+          return reg_6 - reg
 tmp_4: orig: tmp
-reg_5: orig: reg, def: {reg_5 = reg + 0x00000002}, uses: {reg_6 = PHI(reg, reg_5)}
-reg_6: orig: reg, def: {reg_6 = PHI(reg, reg_5)}, uses: {return reg_6 - reg}
+reg_5: orig: reg
+    def:  reg_5 = reg + 0x00000002
+    uses: reg_6 = PHI(reg, reg_5)
+reg_6: orig: reg
+    def:  reg_6 = PHI(reg, reg_5)
+    uses: return reg_6 - reg
 // LiveCopyMock
 void LiveCopyMock()
 LiveCopyMock_entry:		// block 0, pred:

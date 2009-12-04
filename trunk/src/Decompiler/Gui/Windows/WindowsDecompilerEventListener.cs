@@ -1,4 +1,22 @@
-﻿using Decompiler.Configuration;
+﻿/* 
+ * Copyright (C) 1999-2009 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+using Decompiler.Configuration;
 using Decompiler.Core;
 using Decompiler.Gui.Windows.Forms;
 using System;
@@ -11,6 +29,9 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
+    /// <summary>
+    /// Implements the IWorkerDialogService and DecompilerEventListener services for the Windows Forms GUI.
+    /// </summary>
     public class WindowsDecompilerEventListener : IWorkerDialogService, DecompilerEventListener
     {
         private WorkerDialog dlg;
@@ -124,7 +145,10 @@ namespace Decompiler.Gui.Windows
 
         void DecompilerEventListener.AddDiagnostic(Diagnostic d)
         {
-            dlg.Invoke(new Action<Diagnostic>(diagnosticService.AddDiagnostic), d);
+            if (dlg != null)
+                dlg.Invoke(new Action<Diagnostic>(diagnosticService.AddDiagnostic), d);
+            else
+                diagnosticService.AddDiagnostic(d);
         }
 
         void DecompilerEventListener.AddErrorDiagnostic(Address address, string format, params object[] args)

@@ -21,6 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Decompiler.Analysis
@@ -37,6 +38,9 @@ namespace Decompiler.Analysis
 	///	    cmp ax,0
 	///	    jl less
 	///	    jg greater
+    ///	<para>
+    ///	For best performance, preprocess the intermediate code with the ValuePropgator transformer.
+    ///	</para>
 	/// </remarks>
 	public class ConditionCodeEliminator : InstructionTransformer
 	{
@@ -63,7 +67,13 @@ namespace Decompiler.Analysis
 					if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
 					for (int u = sidGrf.Uses.Count - 1; u >= 0; --u)
 					{
-						useStm = sidGrf.Uses[u];
+						TraverseCopyChain(sidGrf, sidGrf, sidGrf.Uses[u]);
+                    }
+
+                    Statement[] uses = sidGrf.Uses.ToArray();
+                    foreach (var u in uses)
+                    {
+                        useStm = u;
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("   used {0}", useStm.Instruction));
 						useStm.Instruction.Accept(this);
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("    now {0}", useStm.Instruction));
@@ -71,6 +81,35 @@ namespace Decompiler.Analysis
 				}
 			}
 		}
+
+        private void TraverseCopyChain(SsaIdentifier sidGrfOrig, SsaIdentifier sidGrf, Statement stm)
+        {
+            if (!IsCopyWithOptionalCast(sidGrf.Identifier, stm))
+            {
+		        IdentifierReplacer ir = new IdentifierReplacer(sidGrf.Identifier, sidGrfOrig.Identifier);
+		        stm.Instruction.Accept(ir);
+            }
+            else
+            {
+                Assignment ass = (Assignment)stm.Instruction;
+                foreach (Statement use in ssaIds[ass.Dst].Uses)
+                {
+                    TraverseCopyChain(sidGrfOrig, ssaIds[ass.Dst], use);
+                }
+            }
+        }
+
+        private bool IsCopyWithOptionalCast(Identifier grf, Statement stm)
+        {
+            Assignment ass = stm.Instruction as Assignment;
+            if (ass == null)
+                return false;
+            Expression e = ass.Src;
+            Cast cast = ass.Src as Cast;
+            if (cast != null)
+                e = cast.Expression;
+            return (e == grf);
+        }
 
 		private BinaryExpression CmpExpressionToZero(Expression e)
 		{
@@ -229,7 +268,7 @@ namespace Decompiler.Analysis
 			case ConditionCode.EQ:  return ConditionCode.NE; 
 			case ConditionCode.SG:  return ConditionCode.GE; 
 			case ConditionCode.NS:  return ConditionCode.LT; 
-			default: throw new ArgumentException("cc");
+			default: throw new ArgumentException(string.Format("Don't know how to negate ConditionCode.{0}.",  cc), "cc");
 			}
 
 		}

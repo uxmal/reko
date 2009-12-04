@@ -45,6 +45,7 @@ namespace Decompiler.Core
 		{
 			this.image = img;
 			this.img = img.Bytes;
+            this.addrStart = img.BaseAddress + off;
 			this.off = offStart = (int) off;
 		}
 
