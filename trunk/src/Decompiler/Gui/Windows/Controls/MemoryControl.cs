@@ -21,6 +21,7 @@ using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -47,6 +48,7 @@ namespace Decompiler.Gui.Windows.Controls
 		private int cbRow;
 		private ProgramImage image;
 		private Address addrSelected;
+        private Address addrAnchor;
 
 		private int cRows;				// total number of rows.
 		private int yTopRow;			// index of topmost visible row
@@ -144,55 +146,69 @@ namespace Decompiler.Gui.Windows.Controls
 			return (yTopRow <= yRow && yRow < yTopRow + cyPage);
 		}
 
-		private void MoveSelection(int offset)
+		private void MoveSelection(int offset, Keys modifiers)
 		{
 			int linAddr = SelectedAddress.Linear + offset;
-			Address addr = image.Map.MapLinearAddressToAddress(linAddr);
-			if (!image.IsValidAddress(addr))
-				return;
-			if (IsVisible(SelectedAddress))
+            if (!image.IsValidLinearAddress(linAddr))
+                return;
+            Address addr = image.Map.MapLinearAddressToAddress(linAddr);
+			if (!IsVisible(SelectedAddress))
 			{
-				TopAddress += offset;
+                Address newTopAddress = TopAddress + offset;
+                if (image.IsValidAddress(newTopAddress))
+                {
+                    TopAddress = newTopAddress;
+                }
 			}
-			SelectedAddress = addr;
+            if ((modifiers & Keys.Shift) != Keys.Shift)
+            {
+                addrAnchor = addr;
+            }
+            SelectedAddress = addr;
 			Invalidate();
 		}
 
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
+            Debug.WriteLine(string.Format("K: {0}, D: {1}, M: {2}", e.KeyCode, e.KeyData, e.Modifiers));
 			switch (e.KeyCode)
 			{
 			case Keys.Down:
-				MoveSelection(cbRow);
+				MoveSelection(cbRow, e.Modifiers);
 				break;
 			case Keys.Up:
-				MoveSelection(-cbRow);
+                MoveSelection(-cbRow, e.Modifiers);
 				break;
 			case Keys.Left:
-				MoveSelection(-wordSize);
+                MoveSelection(-wordSize, e.Modifiers);
 				break;
 			case Keys.Right:
-				MoveSelection(wordSize);
+                MoveSelection(wordSize, e.Modifiers);
 				break;
-			}
-			base.OnKeyDown(e);
-
+            default:
+			    base.OnKeyDown(e);
+                return;
+            }
+            e.Handled = true;
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
-
+            
 			Focus();
 			CacheCellSize();
 			if (image == null)
 				return;
-
 			ptDown = new Point(e.X, e.Y);
 			using (Graphics g = this.CreateGraphics())
 			{
 				addrSelected = PaintWindow(g, false);
+                if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift)
+                {
+                    addrAnchor = addrSelected;
+                }
 				Invalidate();
 			}
 			OnSelectionChanged();
@@ -256,6 +272,15 @@ namespace Decompiler.Gui.Windows.Controls
 
 			int rowBytesLeft = cbRow;
 			int linearSelected = addrSelected != null ? addrSelected.Linear : -1;
+            int linearAnchor = addrAnchor != null ? addrAnchor.Linear : -1;
+            int linearBeginSelection = Math.Min(linearSelected, linearAnchor);
+            int linearEndSelection = Math.Max(linearSelected, linearAnchor);
+            Debug.WriteLine(string.Format("s: {0:X}, a: {1:X}, [{2:X}-{3:X}]",
+                linearSelected,
+                linearAnchor,
+                linearBeginSelection,
+                linearEndSelection));
+
 			do 
 			{
 				Address addr = rdr.Address;
@@ -277,7 +302,8 @@ namespace Decompiler.Gui.Windows.Controls
 				{
 					Address addrByte = rdr.Address;
 					ProgramImage.Map.TryFindItem(addrByte, out item);
-					bool isSelected = addrByte.Linear == linearSelected;
+					bool isSelected = linearBeginSelection <= addrByte.Linear && addrByte.Linear <= linearEndSelection;
+                    bool isCursor = addrByte.Linear == linearSelected;
 					Brush fg = GetForegroundBrush(item, isSelected);
 					Brush bg = GetBackgroundBrush(item, isSelected);
 
@@ -298,6 +324,10 @@ namespace Decompiler.Gui.Windows.Controls
 
 					g.FillRectangle(bg, rc.Left, rc.Top, cx, rc.Height);
 					g.DrawString(s, Font, fg, rc.Left + cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
+                    if (isCursor)
+                    {
+                        ControlPaint.DrawFocusRectangle(g, rc);
+                    }
 					rc = new Rectangle(rc.X + cx, rc.Y, rc.Width - cx, rc.Height);
 				}
 				rowBytesLeft -= cbToDraw;
@@ -448,14 +478,19 @@ namespace Decompiler.Gui.Windows.Controls
 		{
 			if (e.Type == ScrollEventType.ThumbTrack)
 				return;
+            Address newTopAddress;
 			if (image.BaseAddress.Selector != 0)
 			{
-				TopAddress = image.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
+				newTopAddress = image.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
 			}
 			else
 			{
-				TopAddress = image.BaseAddress + e.NewValue * cbRow;
+				newTopAddress = image.BaseAddress + e.NewValue * cbRow;
 			}
+            if (image.IsValidAddress(newTopAddress))
+            {
+                TopAddress = newTopAddress;
+            }
 		}
 	}
 }
