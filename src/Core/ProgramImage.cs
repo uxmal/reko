@@ -121,9 +121,14 @@ namespace Decompiler.Core
 		{
 			if (addr == null)
 				return false;
-			int offset = addr.Linear - addrBase.Linear;
+            return IsValidLinearAddress(addr.Linear);
+        }
+
+        public bool IsValidLinearAddress(int linearAddr)
+        {
+			int offset = linearAddr - addrBase.Linear;
 			return 0 <= offset && offset < abImage.Length;
-		}
+        }
 
 		public ImageMap Map
 		{
