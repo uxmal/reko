@@ -38,7 +38,6 @@ namespace Decompiler.Gui
         ListView FindResultsList { get; }
         ListView DiagnosticsList { get; }
         OpenFileDialog OpenFileDialog { get; }
-        IProgressBar ProgressBar { get; }
         SaveFileDialog SaveFileDialog { get; }
         void SetStatus(string txt);
         void SetStatusDetails(string txt);

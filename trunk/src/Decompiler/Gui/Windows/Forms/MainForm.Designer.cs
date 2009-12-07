@@ -51,7 +51,6 @@ namespace Decompiler.Gui.Windows.Forms
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatusDetails = new System.Windows.Forms.ToolStripStatusLabel();
-            this.progressStatus = new System.Windows.Forms.ToolStripProgressBar();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listBrowser = new System.Windows.Forms.ListView();
@@ -88,8 +87,7 @@ namespace Decompiler.Gui.Windows.Forms
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
-            this.lblStatusDetails,
-            this.progressStatus});
+            this.lblStatusDetails});
             this.statusStrip1.Location = new System.Drawing.Point(0, 490);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(725, 22);
@@ -105,12 +103,6 @@ namespace Decompiler.Gui.Windows.Forms
             // 
             this.lblStatusDetails.Name = "lblStatusDetails";
             this.lblStatusDetails.Size = new System.Drawing.Size(0, 17);
-            // 
-            // progressStatus
-            // 
-            this.progressStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.progressStatus.Name = "progressStatus";
-            this.progressStatus.Size = new System.Drawing.Size(100, 16);
             // 
             // splitContainer1
             // 
@@ -322,7 +314,6 @@ namespace Decompiler.Gui.Windows.Forms
         private LoadedPage loadedPage1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripStatusLabel lblStatusDetails;
-        private System.Windows.Forms.ToolStripProgressBar progressStatus;
         private AnalyzedPage analyzedPage1;
         private System.Windows.Forms.ListView listDiagnostics;
         private System.Windows.Forms.ColumnHeader colDiagnosticType;
