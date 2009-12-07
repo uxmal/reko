@@ -106,6 +106,10 @@ namespace Decompiler.Gui.Windows.Forms
             return dlg.ShowDialog(this);
         }
 
+        public DialogResult ShowMessageBox(string message, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
+        {
+            return MessageBox.Show(this, message, caption, buttons, icon);
+        }
 
         public ToolStrip ToolBar
         {

@@ -37,8 +37,6 @@ namespace Decompiler.Gui.Windows.Forms
     
         public DecompilerMenus(ICommandTarget target) : base(target)
         {
-      // Create menus
-      
 			SortedList slMainMenu = CreatePriorityList();
 			SortedList slFileMenu = CreatePriorityList();
 			SortedList slEditMenu = CreatePriorityList();

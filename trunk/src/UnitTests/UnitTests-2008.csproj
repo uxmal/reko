@@ -196,6 +196,7 @@
     <Compile Include="Mocks\ArrayMock.cs" />
     <Compile Include="Mocks\BigLoopHeadFragment.cs" />
     <Compile Include="Mocks\ByteArrayLoopMock.cs" />
+    <Compile Include="Mocks\FakeStatusBarService.cs" />
     <Compile Include="Mocks\FakeDecompiler.cs" />
     <Compile Include="Mocks\FakeDecompilerConfiguration.cs" />
     <Compile Include="Mocks\FakeDecompilerEventListener.cs" />

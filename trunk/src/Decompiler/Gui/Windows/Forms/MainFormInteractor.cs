@@ -45,7 +45,7 @@ namespace Decompiler.Gui.Windows.Forms
 		DecompilerHost,
         IStatusBarService
 	{
-		private MainForm form;		
+		private IMainForm form;		
 		private IDecompilerService decompilerSvc;
         private IDecompilerUIService uiSvc;
         private IDiagnosticsService diagnosticsSvc;
@@ -105,9 +105,9 @@ namespace Decompiler.Gui.Windows.Forms
             return new DecompilerDriver(ldr, this, sc);
 		}
 
-        public MainForm CreateForm()
+        public IMainForm LoadForm()
         {
-            this.form = new MainForm();
+            this.form = CreateForm();
 
 			DecompilerMenus dm = new DecompilerMenus(this);
 			form.Menu = dm.MainMenu;
@@ -126,10 +126,10 @@ namespace Decompiler.Gui.Windows.Forms
             return form;
         }
 
-		public virtual Program CreateProgram()
-		{
-			return new Program();
-		}
+        protected virtual IMainForm CreateForm()
+        {
+            return new MainForm();
+        }
 
         private void CreateServices(DecompilerMenus dm)
         {
@@ -540,6 +540,11 @@ namespace Decompiler.Gui.Windows.Forms
 			UpdateWindowTitle();
 		}
 
+
+        public virtual void Run()
+        {
+            Application.Run((Form) LoadForm());
+        }
     }
 
 }

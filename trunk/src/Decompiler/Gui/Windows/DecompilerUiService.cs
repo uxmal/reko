@@ -30,12 +30,12 @@ namespace Decompiler.Gui.Windows
     /// </summary>
     public class DecompilerUiService : IDecompilerUIService
     {
-        private Form mainForm;
+        private IMainForm mainForm;
         private DecompilerMenus dm;
         private OpenFileDialog ofd;
         private SaveFileDialog sfd;
 
-        public DecompilerUiService(Form mainForm, DecompilerMenus dm, OpenFileDialog ofd, SaveFileDialog sfd)
+        public DecompilerUiService(IMainForm mainForm, DecompilerMenus dm, OpenFileDialog ofd, SaveFileDialog sfd)
         {
             this.mainForm = mainForm;
             this.dm = dm;
@@ -55,7 +55,7 @@ namespace Decompiler.Gui.Windows
             return (DialogResult)
                 mainForm.Invoke(new Converter<Form, DialogResult>(delegate(Form dlgToShow)
                 {
-                    return dlgToShow.ShowDialog(mainForm);
+                    return mainForm.ShowDialog(dlgToShow);
                 }), dlg);
         }
 
@@ -63,7 +63,7 @@ namespace Decompiler.Gui.Windows
         {
             if (string.IsNullOrEmpty(fileName))
                 ofd.FileName = fileName;
-            if (ofd.ShowDialog(mainForm) == DialogResult.OK)
+            if (mainForm.ShowDialog(ofd) == DialogResult.OK)
             {
                 return ofd.FileName;
             }
@@ -75,7 +75,7 @@ namespace Decompiler.Gui.Windows
         {
             if (string.IsNullOrEmpty(fileName))
                 sfd.FileName = fileName;
-            if (sfd.ShowDialog(mainForm) == DialogResult.OK)
+            if (mainForm.ShowDialog(sfd) == DialogResult.OK)
             {
                 return sfd.FileName;
             }
@@ -94,14 +94,14 @@ namespace Decompiler.Gui.Windows
                 sb.Append(e.Message);
                 e = e.InnerException;
             }
-            MessageBox.Show(mainForm, sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            mainForm.ShowMessageBox(sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
 		public virtual void ShowError(string format, params object [] args)
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.AppendFormat(format, args);
-            MessageBox.Show(mainForm, sb.ToString(), "Decompiler");
+            mainForm.ShowMessageBox(sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
         #endregion
     }

@@ -189,7 +189,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             CreateMainFormInteractor();
             var sbSvc = (IStatusBarService)interactor.ProbeGetService(typeof(IStatusBarService));
             sbSvc.SetText("Hello!");
-            Assert.AreEqual("Hello!", ((MainForm)form).StatusStrip.Text);
+            Assert.AreEqual("Hello!", form.StatusStrip.Items[0].Text);
         }
 
         private Program CreateFakeProgram()
@@ -204,14 +204,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             Program prog = new Program();
             interactor = new TestMainFormInteractor(prog, new FakeLoader("fake.exe"));
-            form = interactor.CreateForm();
+            form = interactor.LoadForm();
         }
 
         private void CreateMainFormInteractor()
         {
             Program prog = CreateFakeProgram();
             interactor = new TestMainFormInteractor(prog);
-            form = interactor.CreateForm();
+            form = interactor.LoadForm();
         }
 
         //$REFACTOR: copied from LoadedPageInteractor, should
@@ -276,11 +276,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             return new FakeLoadedPageInteractor(page);
         }
-
-        public override Program CreateProgram()
-		{
-			return program;
-		}
 
         protected override IDecompilerUIService CreateUiService(DecompilerMenus dm)
         {

@@ -35,7 +35,7 @@ namespace WindowsDecompiler
 			if (args.Length == 0)
 			{
                 MainFormInteractor interactor = new MainFormInteractor();
-                Application.Run(interactor.CreateForm());
+                interactor.Run();
             }
 			else
 			{
