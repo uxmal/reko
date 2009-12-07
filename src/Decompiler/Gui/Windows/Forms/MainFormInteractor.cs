@@ -42,7 +42,8 @@ namespace Decompiler.Gui.Windows.Forms
 	public class MainFormInteractor : 
         Container,
 		ICommandTarget,
-		DecompilerHost
+		DecompilerHost,
+        IStatusBarService
 	{
 		private MainForm form;		
 		private IDecompilerService decompilerSvc;
@@ -134,6 +135,8 @@ namespace Decompiler.Gui.Windows.Forms
         {
             config = new DecompilerConfiguration();
             sc.AddService(typeof(IDecompilerConfigurationService), config);
+
+            sc.AddService(typeof(IStatusBarService), (IStatusBarService) this);
 
             FindResultsInteractor f = new FindResultsInteractor();
             f.Attach(form.FindResultsList);
@@ -434,6 +437,16 @@ namespace Decompiler.Gui.Windows.Forms
 
 		#endregion
 
+        #region IStatusBarService Members ////////////////////////////////////
+
+        public void SetText(string text)
+        {
+            form.StatusStrip.Items[0].Text = text;
+        }
+
+        #endregion
+
+
 		#region DecompilerHost Members //////////////////////////////////
 
         public IDecompilerConfigurationService Configuration
@@ -528,4 +541,5 @@ namespace Decompiler.Gui.Windows.Forms
 		}
 
     }
+
 }

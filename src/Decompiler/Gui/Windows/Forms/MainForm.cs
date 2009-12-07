@@ -30,13 +30,11 @@ namespace Decompiler.Gui.Windows.Forms
     public partial class MainForm : Form,
         IMainForm
     {
-        private ProgressBarWrapper wrProgress;
         private ToolStrip toolBar;
 
         public MainForm()
         {
             InitializeComponent();
-            wrProgress = new ProgressBarWrapper(progressStatus);
         }
 
         public void AddToolbar(ToolStrip toolBar)
@@ -74,11 +72,6 @@ namespace Decompiler.Gui.Windows.Forms
         public OpenFileDialog OpenFileDialog
         {
             get { return ofd; }
-        }
-
-        public IProgressBar ProgressBar
-        {
-            get { return wrProgress; }
         }
 
         public SaveFileDialog SaveFileDialog
@@ -144,41 +137,9 @@ namespace Decompiler.Gui.Windows.Forms
             get { return this.imageList; }
         }
 
-        private class ProgressBarWrapper : IProgressBar
+        public StatusStrip StatusStrip
         {
-            private ToolStripProgressBar bar;
-            public ProgressBarWrapper(ToolStripProgressBar bar)
-            {
-                this.bar = bar;
-            }
-            #region IProgressBar Members
-
-            public int Value
-            {
-                get { return bar.Value; }
-                set { bar.Value = Value; }
-            }
-
-            public int Minimum
-            {
-                get { return bar.Minimum; }
-                set { bar.Minimum = Value; }
-            }
-
-            public int Maximum
-            {
-                get { return bar.Maximum; }
-                set { bar.Maximum = Value; }
-            }
-
-            public void Update()
-            {
-                bar.Control.Update();
-            }
-
-            #endregion
+            get { return this.statusStrip1; }
         }
-
-
     }
 }

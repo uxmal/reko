@@ -183,6 +183,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         }
 
+        [Test]
+        public void StatusBarServiceSetText()
+        {
+            CreateMainFormInteractor();
+            var sbSvc = (IStatusBarService)interactor.ProbeGetService(typeof(IStatusBarService));
+            sbSvc.SetText("Hello!");
+            Assert.AreEqual("Hello!", ((MainForm)form).StatusStrip.Text);
+        }
+
         private Program CreateFakeProgram()
         {
             Program prog = new Program();
@@ -296,6 +305,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             return base.GetService(service);
         }
+
         public string ProbeSavedProjectXml
         {
             get { return sw.ToString(); }

@@ -70,6 +70,34 @@ namespace Decompiler.Gui.Windows.Controls
 			cbRow = 16;
 		}
 
+        /// <summary>
+        /// Returns the selection as an address range. Note that the range is 
+        /// a closed interval in the address space.
+        /// </summary>
+        /// <param name="addrStart"></param>
+        /// <param name="addrEnd"></param>
+        public void GetAddressRange(out Address addrStart, out Address addrEnd)
+        {
+            if (addrSelected == null || addrAnchor == null)
+            {
+                addrStart = null;
+                addrEnd = null;
+            }
+            else
+            {
+                if (addrSelected <= addrAnchor)
+                {
+                    addrStart = addrSelected;
+                    addrEnd = addrAnchor;
+                }
+                else
+                {
+                    addrStart = addrAnchor;
+                    addrEnd = addrSelected;
+                }
+            }
+        }
+
         protected override CreateParams CreateParams
         {
             get
@@ -105,6 +133,7 @@ namespace Decompiler.Gui.Windows.Controls
 		{
 			get { return cellSize; }
 		}
+
 
 
 		private Brush GetBackgroundBrush(ImageMapItem item, bool selected)
@@ -492,5 +521,6 @@ namespace Decompiler.Gui.Windows.Controls
                 TopAddress = newTopAddress;
             }
 		}
-	}
+
+    }
 }

@@ -38,6 +38,7 @@ namespace Decompiler.Gui.Windows.Forms
 		private ILoadedPage pageLoaded;
 		private Hashtable mpCmdidToCommand;
         private IProgramImageBrowserService browserSvc;
+        private IStatusBarService sbSvc;
 
 		public LoadedPageInteractor(ILoadedPage page) 
 		{
@@ -206,22 +207,48 @@ namespace Decompiler.Gui.Windows.Forms
                 if (value != null)
                 {
                     browserSvc = EnsureService <IProgramImageBrowserService>();
+                    sbSvc = EnsureService<IStatusBarService>();
+
                     pageLoaded.MemoryControl.ContextMenu  = UIService.GetContextMenu(MenuIds.CtxMemoryControl);
                 }
                 else
                 {
                     browserSvc = null;
+                    sbSvc = null;
                 }
             }
         }
+
+        private void ShowMemoryControlRange(IStatusBarService sbSvc)
+        {
+            Address addrStart, addrEnd;
+            pageLoaded.MemoryControl.GetAddressRange(out addrStart, out addrEnd);
+            if (addrStart == null || addrEnd == null)
+                return;
+            if (addrStart.Linear == addrEnd.Linear)
+            {
+                sbSvc.SetText(string.Format("[{0}]", addrStart));
+            }
+            else
+            {
+                sbSvc.SetText(string.Format("[{0}-{1}]", addrStart, addrEnd));
+            }
+        }
+
 
         // Event handlers /////////////////////////
 
         private void memctl_SelectionChanged(object sender, System.EventArgs e)
         {
             DumpAssembler();
+            if (sbSvc != null)
+            {
+                ShowMemoryControlRange(sbSvc);
+            }
         }
 
+
+        //$TODO: have a separate interactor and a disassembler window for this.
         private void txtDisassembly_Resize(object sender, System.EventArgs e)
         {
             DumpAssembler();
