@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 	[TestFixture]
 	public class LoadedPageInteractorTests
 	{
-		private MainForm form;
+		private IMainForm form;
         private FakeUiService uiSvc;
         private Program prog;
         private LoadedPageInteractor interactor;
@@ -58,6 +58,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            site.AddService(typeof(IStatusBarService), new FakeStatusBarService());
 
             prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);

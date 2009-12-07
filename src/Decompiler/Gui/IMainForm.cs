@@ -53,13 +53,21 @@ namespace Decompiler.Gui
 
         void Show();
 
-        System.Windows.Forms.DialogResult ShowDialog(System.Windows.Forms.Form dialog);
+        DialogResult ShowDialog(System.Windows.Forms.Form dialog);
 
-        System.Windows.Forms.DialogResult ShowDialog(System.Windows.Forms.CommonDialog dialog);
+        DialogResult ShowDialog(System.Windows.Forms.CommonDialog dialog);
 
         void Close();
 
         void SetCurrentPage(object page);
+
+        ImageList ImageList { get; }
+
+        object Invoke(Delegate action, params object [] args);
+
+        DialogResult ShowMessageBox(string messageBox, string caption, MessageBoxButtons messageBoxButtons, MessageBoxIcon messageBoxIcon);
+
+        StatusStrip StatusStrip { get; }
     }
 
 	public delegate void MenuCommandHandler(object sender, MenuCommandArgs arg);

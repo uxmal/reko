@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     public class AnalyzedPageInteractorTests
     {
         private Program prog;
-        private MainForm form;
+        private IMainForm form;
         private AnalyzedPageInteractorImpl interactor;
         private FakeUiService uiSvc;
 
