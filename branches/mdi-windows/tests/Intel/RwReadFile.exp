@@ -1,0 +1,79 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// wLoc04:Local -0004
+// ds:Register ds
+// dx:Register dx
+// bx:Register bx
+// cx:Register cx
+// SCZO:Flags
+// ax:Register ax
+// SO:Flags
+// al:Register al
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	wLoc04 = 0x0D00
+	ds = wLoc04
+	dx = 0x3000
+	bx = Mem0[ds:0x0300:word16]
+	cx = 0x0100
+	call fn0C00_0023 (depth: 2;)
+	SCZO = cond(ax - 0x0000)
+	branch Test(GE,SO) l0C00_001A
+	// succ:  2 3
+l0C00_0015:		// block 2, pred: 1
+	al = 0x01
+	call fn0C00_001F (depth: 2;)
+	// succ:  3
+l0C00_001A:		// block 3, pred: 1 2
+	store(Mem0[ds:0x0302:word16]) = ax
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 
+// fn0C00_001F
+// Mem0:Global memory
+// fp:Temporary
+// ah:Register ah
+// al:Register al
+// return address size: 2
+void fn0C00_001F()
+fn0C00_001F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_001F:		// block 1, pred: 0
+	ah = 0x4C
+	msdos_terminate(al)
+	// succ:  2
+fn0C00_001F_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_0023
+// Mem0:Global memory
+// fp:Temporary
+// ah:Register ah
+// C:Flags
+// bx:Register bx
+// cx:Register cx
+// ds:Register ds
+// dx:Register dx
+// ds_dx:Sequence ds:dx
+// ax:Register ax
+// return address size: 2
+void fn0C00_0023()
+fn0C00_0023_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0023:		// block 1, pred: 0
+	ah = 0x3F
+	C = msdos_read_file(bx, cx, ds_dx, &ax)
+	branch Test(UGE,C) l0C00_002C
+	// succ:  2 3
+l0C00_0029:		// block 2, pred: 1
+	ax = 0xFFFF
+	// succ:  3
+l0C00_002C:		// block 3, pred: 1 2
+	return
+	// succ:  4
+fn0C00_0023_exit:		// block 4, pred: 3
+	// succ: 

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <default>
+	<signature convention="stdapi"></signature>
+  </default>
+  <procedure name="GetOpenFileNameA">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="LPOPENFILENAMEA">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetSaveFileNameA">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="LPOPENFILENAMEA">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="ChooseColorA">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="LPCHOOSECOLORA">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+</library>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="MenuDefinitions" targetNamespace="Decompiler.Schemata.MenuDefinitions" elementFormDefault="qualified"
+	xmlns="Decompiler.Schemata.MenuDefinitions" xmlns:mstns="Decompiler.Schemata.MenuDefinitions"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="menu-definitions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="cmdSet" type="xs:string" maxOccurs="unbounded" minOccurs="0" />
+				<xs:element name="menu" type="menu" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="group" type="group" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="cmd" type="cmd" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="placement" type="placement" maxOccurs="unbounded" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="group">
+		<xs:attribute name="id" type="xs:ID" />
+		<xs:attribute name="cmdSet" type="xs:IDREF" />
+		<xs:attribute name="priority" type="xs:string" />
+		<xs:attribute name="container" type="xs:IDREF" />
+	</xs:complexType>
+	<xs:complexType name="cmd" mixed="true">
+		<xs:all />
+		<xs:attribute name="id" type="xs:ID" use="required" />
+		<xs:attribute name="cmdSet" type="xs:IDREF" />
+		<xs:attribute name="priority" type="xs:string" />
+		<xs:attribute name="container" type="xs:IDREF" />
+		<xs:attribute name="dynamic-item-id" type="xs:string" use="optional" />
+	</xs:complexType>
+	<xs:complexType name="placement">
+		<xs:sequence></xs:sequence>
+		<xs:attribute name="item" type="xs:IDREF" />
+		<xs:attribute name="container" type="xs:IDREF" />
+		<xs:attribute name="priority" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="menu" mixed="true">
+		<xs:attribute name="id" type="xs:ID" />
+		<xs:attribute name="cmdSet" type="xs:IDREF" />
+		<xs:attribute name="priority" type="xs:string" />
+		<xs:attribute name="container" type="xs:IDREF" />
+		<xs:attribute name="type" type="menuType" />
+	</xs:complexType>
+	<xs:simpleType name="menuType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MainMenu" />
+			<xs:enumeration value="ContextMenu" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

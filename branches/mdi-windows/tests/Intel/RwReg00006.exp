@@ -1,0 +1,555 @@
+// fn10000000
+// Mem0:Global memory
+// fp:Temporary
+// ebx:Register ebx
+// dwLoc08:Local -0008
+// ebp:Register ebp
+// dwLoc0C:Local -000C
+// esi:Register esi
+// dwLoc10:Local -0010
+// edi:Register edi
+// dwLoc14:Local -0014
+// wArg00:Stack +0000
+// di:Register di
+// bl:Register bl
+// SCZO:Flags
+// C:Flags
+// Z:Flags
+// dwArg08:Stack +0008
+// eax:Register eax
+// dwArg0C:Stack +000C
+// dwLoc18:Local -0018
+// dwLoc1C:Local -001C
+// dwArg04:Stack +0004
+// dwLoc20:Local -0020
+// ecx:Register ecx
+// dwLoc24:Local -0024
+// dwLoc28:Local -0028
+// dwLoc2C:Local -002C
+// bp:Register bp
+// SZO:Flags
+// edx:Register edx
+// dx:Register dx
+// dwLoc30:Local -0030
+// dwLoc34:Local -0034
+// dwLoc38:Local -0038
+// dwLoc3C:Local -003C
+// dwLoc40:Local -0040
+// dwLoc44:Local -0044
+// dwLoc48:Local -0048
+// dwLoc4C:Local -004C
+// dwLoc50:Local -0050
+// dwLoc54:Local -0054
+// dwLoc58:Local -0058
+// ax:Register ax
+// cx:Register cx
+// return address size: 4
+void fn10000000()
+fn10000000_entry:		// block 0, pred:
+	// succ:  1
+l10000000:		// block 1, pred: 0
+	dwLoc08 = ebx
+	dwLoc0C = ebp
+	dwLoc10 = esi
+	dwLoc14 = edi
+	di = wArg00
+	bl = 0x00
+	SCZO = cond(di - 0x0000)
+	C = false
+	branch Test(NE,Z) l10000021
+	// succ:  35 2
+l10000021:		// block 2, pred: 1
+	eax = dwArg08
+	SCZO = cond(Mem0[eax:word32] - 0x00000000)
+	branch Test(NE,Z) l1000002C
+	// succ:  3 4
+l1000002A:		// block 3, pred: 2
+	bl = 0x01
+	// succ:  4
+l1000002C:		// block 4, pred: 2 3
+	ebp = dwArg0C
+	dwLoc18 = 0x1000A700
+	dwLoc1C = eax
+	eax = dwArg04
+	dwLoc20 = 0x00003158
+	ecx = Mem0[eax + 0x000000D0:word32]
+	dwLoc24 = ecx
+	dwLoc28 = eax
+	dwLoc2C = ebp
+	call fn10000277 (depth: 44;)
+	esi = eax
+	SCZO = cond(esi - 0x00000000)
+	C = false
+	branch Test(NE,Z) l10000061
+	// succ:  34 5
+l10000061:		// block 5, pred: 4
+	SCZO = cond(di - 0x0001)
+	branch Test(NE,Z) l1000006D
+	// succ:  6 7
+l10000067:		// block 6, pred: 5
+	store(Mem0[esi + 0x00000204:byte]) = bl
+	// succ:  7
+l1000006D:		// block 7, pred: 5 6
+	dwLoc18 = esi
+	call fn1000023D (depth: 24;)
+	eax = Mem0[esi:word32]
+	ebp = 0x00000000
+	SCZO = cond(Mem0[eax:word16] - bp)
+	branch Test(NE,Z) l1000022E
+	// succ:  8 33
+l10000083:		// block 8, pred: 7
+	SCZO = cond(di - bp)
+	branch Test(LE,SZO) l1000020C
+	// succ:  9 10
+l1000008C:		// block 9, pred: 8
+	SCZO = cond(di - 0x0005)
+	branch Test(GT,SZO) l1000020C
+	// succ:  11 10
+l1000020C:		// block 10, pred: 8 9
+	store(Mem0[eax:word16]) = 0x8A6C
+	// succ:  31
+l10000096:		// block 11, pred: 9
+	SCZO = cond(di - 0x0001)
+	branch Test(NE,Z) l100000BC
+	// succ:  30 12
+l100000BC:		// block 12, pred: 11
+	SCZO = cond(di - 0x0002)
+	branch Test(NE,Z) l10000132
+	// succ:  28 13
+l10000132:		// block 13, pred: 12
+	SCZO = cond(di - 0x0003)
+	branch Test(NE,Z) l10000146
+	// succ:  27 14
+l10000146:		// block 14, pred: 13
+	SCZO = cond(di - 0x0004)
+	branch Test(NE,Z) l100000F8
+	// succ:  15 29
+l1000014C:		// block 15, pred: 14
+	ecx = Mem0[esi + 0x00000004:word32]
+	SCZO = cond(Mem0[ecx + 0x000000E0:word32] - ebp)
+	bl = Test(NE,Z)
+	// succ:  16
+l10000158:		// block 16, pred: 15 26 19
+	dwLoc18 = esi
+	call fn10000251 (depth: 24;)
+	eax = Mem0[esi:word32]
+	SCZO = cond(Mem0[eax:word16] - bp)
+	branch Test(EQ,Z) l1000016F
+	// succ:  17 18
+l10000168:		// block 17, pred: 16
+	store(Mem0[esi + 0x000000AC:byte]) = 0x00
+	// succ:  18
+l1000016F:		// block 18, pred: 16 17
+	SCZO = cond(Mem0[esi + 0x000000AD:byte] - 0x01)
+	branch Test(NE,Z) l1000017D
+	// succ:  19 20
+l10000178:		// block 19, pred: 18
+	SCZO = cond(Mem0[eax:word16] - bp)
+	branch Test(EQ,Z) l10000158
+	// succ:  20 16
+l1000017D:		// block 20, pred: 18 19
+	SCZO = cond(Mem0[eax:word16] - bp)
+	branch Test(NE,Z) l1000018B
+	// succ:  21 22
+l10000182:		// block 21, pred: 20
+	dwLoc18 = esi
+	call fn10000238 (depth: 24;)
+	// succ:  22
+l1000018B:		// block 22, pred: 20 21
+	SCZO = cond(Mem0[esi + 0x000000AC:byte] - 0x01)
+	branch Test(NE,Z) l100001B2
+	// succ:  24 23
+l100001B2:		// block 23, pred: 22
+	dwLoc18 = esi
+	call fn1000024C (depth: 24;)
+	dwLoc1C = esi
+	call fn10000256 (depth: 28;)
+	eax = Mem0[esi + 0x00000004:word32]
+	dwLoc20 = ebp
+	dwLoc24 = ebp
+	dwLoc28 = ebp
+	eax = eax + 0x00000034
+	dwLoc2C = ebp
+	dwLoc30 = eax
+	call fn100002A9 (depth: 48;)
+	ecx = Mem0[esi + 0x00000004:word32]
+	dwLoc34 = ebp
+	dwLoc38 = ebp
+	dwLoc3C = ebp
+	ecx = ecx + 0x00000040
+	dwLoc40 = ebp
+	dwLoc44 = ecx
+	call fn100002A9 (depth: 68;)
+	edx = Mem0[esi + 0x00000004:word32]
+	dwLoc48 = ebp
+	dwLoc4C = ebp
+	dwLoc50 = ebp
+	edx = edx + 0x00000060
+	dwLoc54 = ebp
+	dwLoc58 = edx
+	call fn100002A9 (depth: 88;)
+	// succ:  31
+l10000194:		// block 24, pred: 22
+	SCZO = cond(bl - 0x00000000)
+	C = false
+	branch Test(EQ,Z) l10000211
+	// succ:  25 31
+l10000198:		// block 25, pred: 24
+	edx = Mem0[esi + 0x00000004:word32]
+	icall Mem0[edx + 0x000000E0:word32]
+	ecx = Mem0[esi:word32]
+	store(Mem0[ecx:word16]) = ax
+	edx = Mem0[esi:word32]
+	SCZO = cond(Mem0[edx:word16] - bp)
+	branch Test(NE,Z) l10000211
+	// succ:  26 31
+l100001AD:		// block 26, pred: 25
+	// succ:  16
+l10000138:		// block 27, pred: 13
+	dwLoc18 = esi
+	call fn10000233 (depth: 24;)
+	// succ:  31
+l100000C2:		// block 28, pred: 12
+	edx = Mem0[esi + 0x00000004:word32]
+	dwLoc18 = esi
+	store(Mem0[edx + 0x00000030:word32]) = ebp
+	call fn1000023D (depth: 24;)
+	eax = Mem0[esi + 0x00000004:word32]
+	dwLoc1C = 0x00000001
+	store(Mem0[eax + 0x00000030:word32]) = ebp
+	eax = Mem0[esi + 0x00000004:word32]
+	eax = eax + 0x00000010
+	SCZO = cond(eax)
+	cx = Mem0[eax + 0x00000002:word16]
+	store(Mem0[esi + 0x000000B4:word16]) = cx
+	dx = Mem0[eax:word16]
+	store(Mem0[esi + 0x000000B2:word16]) = dx
+	cx = Mem0[eax + 0x00000006:word16]
+	store(Mem0[esi + 0x000000B8:word16]) = cx
+	// succ:  29
+l100000F8:		// block 29, pred: 14 28
+	store(Mem0[esi + 0x000000B8:word32]) = ecx
+	dx = Mem0[eax + 0x00000004:word16]
+	store(Mem0[esi + 0x000000B6:word16]) = dx
+	eax = Mem0[esi + 0x00000004:word32]
+	eax = eax + 0x00000010
+	dwLoc18 = eax
+	dwLoc1C = esi
+	call fn10000260 (depth: 28;)
+	dwLoc20 = esi
+	call fn1000025B (depth: 32;)
+	dwLoc24 = esi
+	call fn10000269 (depth: 36;)
+	dwLoc28 = esi
+	call fn10000242 (depth: 40;)
+	// succ:  31
+l100000A0:		// block 30, pred: 11
+	dwLoc18 = esi
+	call fn1000023D (depth: 24;)
+	edx = Mem0[esi + 0x00000004:word32]
+	eax = Mem0[edx + 0x0000000C:word32]
+	ecx = Mem0[eax:word32]
+	store(Mem0[ecx:word32]) = 0x00000001
+	// succ:  31
+l10000211:		// block 31, pred: 10 29 23 24 25 27 30
+	eax = dwArg08
+	eax = Mem0[eax:word32]
+	SCZO = cond(eax - ebp)
+	branch Test(EQ,Z) l1000022E
+	// succ:  32 33
+l1000021B:		// block 32, pred: 31
+	ecx = Mem0[esi + 0x00000004:word32]
+	dwLoc18 = eax
+	edx = Mem0[ecx + 0x000000D0:word32]
+	dwLoc1C = edx
+	call fn1000026E (depth: 28;)
+	// succ:  33
+l1000022E:		// block 33, pred: 7 31 32
+	edi = dwLoc14
+	esi = dwLoc10
+	ebp = dwLoc0C
+	ebx = dwLoc08
+	return
+	// succ:  36
+l10000056:		// block 34, pred: 4
+	edi = dwLoc14
+	store(Mem0[ebp + 0x00000000:word16]) = 0xFF94
+	esi = dwLoc10
+	ebp = dwLoc0C
+	ebx = dwLoc08
+	return
+	// succ:  36
+l10000010:		// block 35, pred: 1
+	store(Mem0[0x1006B8E0:byte]) = 0x00
+	call fn100002A8 (depth: 20;)
+	edi = dwLoc14
+	esi = dwLoc10
+	ebp = dwLoc0C
+	ebx = dwLoc08
+	return
+	// succ:  36
+fn10000000_exit:		// block 36, pred: 33 34 35
+	// succ: 
+
+// fn10000233
+// Mem0:Global memory
+// fp:Temporary
+// dwArg00:Stack +0000
+// eax:Register eax
+// return address size: 4
+void fn10000233()
+fn10000233_entry:		// block 0, pred:
+	// succ:  1
+l10000233:		// block 1, pred: 0
+	eax = dwArg00
+	return
+	// succ:  2
+fn10000233_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn10000238
+// Mem0:Global memory
+// fp:Temporary
+// dwArg00:Stack +0000
+// eax:Register eax
+// return address size: 4
+void fn10000238()
+fn10000238_entry:		// block 0, pred:
+	// succ:  1
+l10000238:		// block 1, pred: 0
+	eax = dwArg00
+	return
+	// succ:  2
+fn10000238_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn1000023D
+// Mem0:Global memory
+// fp:Temporary
+// dwArg00:Stack +0000
+// eax:Register eax
+// return address size: 4
+void fn1000023D()
+fn1000023D_entry:		// block 0, pred:
+	// succ:  1
+l1000023D:		// block 1, pred: 0
+	eax = dwArg00
+	return
+	// succ:  2
+fn1000023D_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn10000242
+// Mem0:Global memory
+// fp:Temporary
+// dwArg00:Stack +0000
+// eax:Register eax
+// return address size: 4
+void fn10000242()
+fn10000242_entry:		// block 0, pred:
+	// succ:  1
+l10000242:		// block 1, pred: 0
+	eax = dwArg00
+	return
+	// succ:  2
+fn10000242_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn1000024C
+// Mem0:Global memory
+// fp:Temporary
+// dwArg00:Stack +0000
+// eax:Register eax
+// return address size: 4
+void fn1000024C()
+fn1000024C_entry:		// block 0, pred:
+	// succ:  1
+l1000024C:		// block 1, pred: 0
+	eax = dwArg00
+	return
+	// succ:  2
+fn1000024C_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn10000251
+// Mem0:Global memory
+// fp:Temporary
+// dwArg00:Stack +0000
+// eax:Register eax
+// return address size: 4
+void fn10000251()
+fn10000251_entry:		// block 0, pred:
+	// succ:  1
+l10000251:		// block 1, pred: 0
+	eax = dwArg00
+	return
+	// succ:  2
+fn10000251_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn10000256
+// Mem0:Global memory
+// fp:Temporary
+// dwArg00:Stack +0000
+// eax:Register eax
+// return address size: 4
+void fn10000256()
+fn10000256_entry:		// block 0, pred:
+	// succ:  1
+l10000256:		// block 1, pred: 0
+	eax = dwArg00
+	return
+	// succ:  2
+fn10000256_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn1000025B
+// Mem0:Global memory
+// fp:Temporary
+// dwArg00:Stack +0000
+// eax:Register eax
+// return address size: 4
+void fn1000025B()
+fn1000025B_entry:		// block 0, pred:
+	// succ:  1
+l1000025B:		// block 1, pred: 0
+	eax = dwArg00
+	return
+	// succ:  2
+fn1000025B_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn10000260
+// Mem0:Global memory
+// fp:Temporary
+// dwArg04:Stack +0004
+// eax:Register eax
+// dwArg00:Stack +0000
+// SCZO:Flags
+// return address size: 4
+void fn10000260()
+fn10000260_entry:		// block 0, pred:
+	// succ:  1
+l10000260:		// block 1, pred: 0
+	eax = dwArg04
+	eax = eax + dwArg00
+	SCZO = cond(eax)
+	return
+	// succ:  2
+fn10000260_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn10000269
+// Mem0:Global memory
+// fp:Temporary
+// dwArg00:Stack +0000
+// eax:Register eax
+// return address size: 4
+void fn10000269()
+fn10000269_entry:		// block 0, pred:
+	// succ:  1
+l10000269:		// block 1, pred: 0
+	eax = dwArg00
+	return
+	// succ:  2
+fn10000269_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn1000026E
+// Mem0:Global memory
+// fp:Temporary
+// dwArg04:Stack +0004
+// eax:Register eax
+// dwArg00:Stack +0000
+// SCZO:Flags
+// return address size: 4
+void fn1000026E()
+fn1000026E_entry:		// block 0, pred:
+	// succ:  1
+l1000026E:		// block 1, pred: 0
+	eax = dwArg04
+	eax = eax + dwArg00
+	SCZO = cond(eax)
+	return
+	// succ:  2
+fn1000026E_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn10000277
+// Mem0:Global memory
+// fp:Temporary
+// edx:Register edx
+// dwArg00:Stack +0000
+// eax:Register eax
+// dwArg04:Stack +0004
+// dwArg08:Stack +0008
+// dwArg0C:Stack +000C
+// dwArg10:Stack +0010
+// dwArg14:Stack +0014
+// return address size: 4
+void fn10000277()
+fn10000277_entry:		// block 0, pred:
+	// succ:  1
+l10000277:		// block 1, pred: 0
+	edx = Mem0[0x20000000:word32]
+	eax = dwArg00
+	store(Mem0[edx + 0x00000004:word32]) = eax
+	eax = dwArg04
+	store(Mem0[edx + 0x00000008:word32]) = eax
+	eax = dwArg08
+	store(Mem0[edx + 0x0000000C:word32]) = eax
+	eax = dwArg0C
+	store(Mem0[edx + 0x00000010:word32]) = eax
+	eax = dwArg10
+	store(Mem0[edx + 0x00000014:word32]) = eax
+	eax = dwArg14
+	store(Mem0[edx + 0x0000001C:word32]) = eax
+	return
+	// succ:  2
+fn10000277_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn100002A8
+// Mem0:Global memory
+// fp:Temporary
+// return address size: 4
+void fn100002A8()
+fn100002A8_entry:		// block 0, pred:
+	// succ:  1
+l100002A8:		// block 1, pred: 0
+	return
+	// succ:  2
+fn100002A8_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn100002A9
+// Mem0:Global memory
+// fp:Temporary
+// edx:Register edx
+// dwArg00:Stack +0000
+// eax:Register eax
+// dwArg04:Stack +0004
+// dwArg08:Stack +0008
+// dwArg0C:Stack +000C
+// dwArg10:Stack +0010
+// return address size: 4
+void fn100002A9()
+fn100002A9_entry:		// block 0, pred:
+	// succ:  1
+l100002A9:		// block 1, pred: 0
+	edx = Mem0[0x20000000:word32]
+	eax = dwArg00
+	store(Mem0[edx + 0x00000004:word32]) = eax
+	eax = dwArg04
+	store(Mem0[edx + 0x00000008:word32]) = eax
+	eax = dwArg08
+	store(Mem0[edx + 0x0000000C:word32]) = eax
+	eax = dwArg0C
+	store(Mem0[edx + 0x00000010:word32]) = eax
+	eax = dwArg10
+	store(Mem0[edx + 0x00000014:word32]) = eax
+	return
+	// succ:  2
+fn100002A9_exit:		// block 2, pred: 1
+	// succ: 
+

@@ -1,0 +1,144 @@
+Mem0: Mem0:Global memory, def: {def Mem0}
+fp: fp:Temporary, def: {def fp}
+ax: ax:Register, def: {def ax}
+bx: bx:Register, def: {def bx}
+SCZO: SCZO:Flags, def: {def SCZO}
+Z: Z:Flags, def: {def Z}
+SZO: SZO:Flags, def: {def SZO}
+ax_7: orig: ax, def: {ax_7 = 0x0001}, uses: {ax_10 = PHI(ax_7, ax_16)}
+bx_8: orig: bx, def: {bx_8 = 0x0001}, uses: {bx_9 = PHI(bx_8, bx_17)}
+bx_9: orig: bx, def: {bx_9 = PHI(bx_8, bx_17)}, uses: {store(Mem15[0x0004:word16]) = bx_9}{bx_17 = bx_9 + 0x0001}
+ax_10: orig: ax, def: {ax_10 = PHI(ax_7, ax_16)}, uses: {SCZO_11 = cond(ax_10 - 0x000A)}{store(Mem14[0x0002:word16]) = ax_10}{ax_16 = ax_10 + 0x0001}
+SCZO_11: orig: SCZO, def: {SCZO_11 = cond(ax_10 - 0x000A)}, uses: {Z_12 = SCZO_11 (alias)}{SZO_13 = SCZO_11 (alias)}
+Z_12: orig: Z, def: {Z_12 = SCZO_11 (alias)}, uses: {branch Test(EQ,Z_12)}
+SZO_13: orig: SZO, def: {SZO_13 = SCZO_11 (alias)}
+Mem14: orig: Mem0, def: {store(Mem14[0x0002:word16]) = ax_10}
+Mem15: orig: Mem0, def: {store(Mem15[0x0004:word16]) = bx_9}
+ax_16: orig: ax, def: {ax_16 = ax_10 + 0x0001}, uses: {ax_10 = PHI(ax_7, ax_16)}
+bx_17: orig: bx, def: {bx_17 = bx_9 + 0x0001}, uses: {SZO_18 = cond(bx_17)}{bx_9 = PHI(bx_8, bx_17)}
+SZO_18: orig: SZO, def: {SZO_18 = cond(bx_17)}, uses: {SCZO_19 = SZO_18 (alias)}{Z_20 = SZO_18 (alias)}
+SCZO_19: orig: SCZO, def: {SCZO_19 = SZO_18 (alias)}
+Z_20: orig: Z, def: {Z_20 = SZO_18 (alias)}
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def ax
+	def bx
+	def SCZO
+	def Z
+	def SZO
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax_7 = 0x0001
+	bx_8 = 0x0001
+	// succ:  2
+l0C00_0006:		// block 2, pred: 1 5
+	bx_9 = PHI(bx_8, bx_17)
+	ax_10 = PHI(ax_7, ax_16)
+	SCZO_11 = cond(ax_10 - 0x000A)
+	Z_12 = SCZO_11 (alias)
+	SZO_13 = SCZO_11 (alias)
+	branch Test(EQ,Z_12)
+	// succ:  5 3
+l0C00_0010:		// block 3, pred: 2
+	store(Mem14[0x0002:word16]) = ax_10
+	store(Mem15[0x0004:word16]) = bx_9
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 
+l0C00_000B:		// block 5, pred: 2
+	ax_16 = ax_10 + 0x0001
+	bx_17 = bx_9 + 0x0001
+	SZO_18 = cond(bx_17)
+	SCZO_19 = SZO_18 (alias)
+	Z_20 = SZO_18 (alias)
+	// succ:  2
+Mem0: Mem0:Global memory
+fp: fp:Temporary
+ax: ax:Register
+bx: bx:Register
+SCZO: SCZO:Flags
+Z: Z:Flags
+SZO: SZO:Flags
+ax_7: orig: ax, def: {ax_7 = 0x0001}, uses: {ax_10 = PHI(ax_7, ax_16)}
+bx_8: orig: bx, def: {bx_8 = 0x0001}, uses: {bx_9 = PHI(bx_8, bx_17)}
+bx_9: orig: bx, def: {bx_9 = PHI(bx_8, bx_17)}, uses: {store(Mem15[0x0004:word16]) = bx_9}{bx_17 = bx_9 + 0x0001}
+ax_10: orig: ax, def: {ax_10 = PHI(ax_7, ax_16)}, uses: {SCZO_11 = cond(ax_10 - 0x000A)}{store(Mem14[0x0002:word16]) = ax_10}{ax_16 = ax_10 + 0x0001}
+SCZO_11: orig: SCZO, def: {SCZO_11 = cond(ax_10 - 0x000A)}, uses: {Z_12 = SCZO_11 (alias)}
+Z_12: orig: Z, def: {Z_12 = SCZO_11 (alias)}, uses: {branch Test(EQ,Z_12)}
+SZO_13: orig: SZO
+Mem14: orig: Mem0, def: {store(Mem14[0x0002:word16]) = ax_10}
+Mem15: orig: Mem0, def: {store(Mem15[0x0004:word16]) = bx_9}
+ax_16: orig: ax, def: {ax_16 = ax_10 + 0x0001}, uses: {ax_10 = PHI(ax_7, ax_16)}
+bx_17: orig: bx, def: {bx_17 = bx_9 + 0x0001}, uses: {bx_9 = PHI(bx_8, bx_17)}
+SZO_18: orig: SZO
+SCZO_19: orig: SCZO
+Z_20: orig: Z
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax_7 = 0x0001
+	bx_8 = 0x0001
+	// succ:  2
+l0C00_0006:		// block 2, pred: 1 5
+	bx_9 = PHI(bx_8, bx_17)
+	ax_10 = PHI(ax_7, ax_16)
+	SCZO_11 = cond(ax_10 - 0x000A)
+	Z_12 = SCZO_11 (alias)
+	branch Test(EQ,Z_12)
+	// succ:  5 3
+l0C00_0010:		// block 3, pred: 2
+	store(Mem14[0x0002:word16]) = ax_10
+	store(Mem15[0x0004:word16]) = bx_9
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 
+l0C00_000B:		// block 5, pred: 2
+	ax_16 = ax_10 + 0x0001
+	bx_17 = bx_9 + 0x0001
+	// succ:  2
+Values:
+	0x0001: <ax_7>
+	0x0001: <bx_8>
+	any: <SZO_13>
+	ax: <ax>
+	ax_10 + 0x0001: <ax_16>
+	bx: <bx>
+	bx_9 + 0x0001: <bx_17>
+	cond(ax_10 - 0x000A): <SCZO_11>
+	fp: <fp>
+	Mem0: <Mem0>
+	PHI(ax_7, ax_16): <ax_10>
+	PHI(bx_8, bx_17): <bx_9>
+	SCZO: <SCZO>
+	SCZO_11: <Z_12>
+	SZO: <SZO>
+	Z: <Z>
+Identifiers:
+	Mem0: <Mem0>
+	fp: <fp>
+	ax: <ax>
+	bx: <bx>
+	SCZO: <SCZO>
+	Z: <Z>
+	SZO: <SZO>
+	ax_7: <ax_7>
+	bx_8: <bx_8>
+	bx_9: <bx_9>
+	ax_10: <ax_10>
+	SCZO_11: <SCZO_11>
+	Z_12: <Z_12>
+	SZO_13: <SZO_13>
+	Mem14: <SZO_13>
+	Mem15: <SZO_13>
+	ax_16: <ax_16>
+	bx_17: <bx_17>
+	SZO_18: <SZO_13>
+	SCZO_19: <SZO_13>
+	Z_20: <SZO_13>

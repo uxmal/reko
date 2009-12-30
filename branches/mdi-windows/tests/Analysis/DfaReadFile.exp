@@ -1,0 +1,63 @@
+// void fn0C00_0000()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ax cx dx bx al cl dl bl ah ch dh bh ds
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	word16 ax_16 = fn0C00_0023(0x0100, 0x3000, Mem0[0x0D00:0x0300:word16], 0x0D00)
+	branch ax_16 >= 0x0000 l0C00_001A
+	// succ:  2 3
+l0C00_0015:		// block 2, pred: 1
+	ax_16 = fn0C00_001F(0x01)
+	// succ:  3
+l0C00_001A:		// block 3, pred: 1 2
+	store(Mem25[0x0D00:0x0302:word16]) = ax_16
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 
+
+// Register word16 fn0C00_001F(Register byte al)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  al
+// LiveOut: ax
+// Trashed: ax ah
+// Preserved:
+// fn0C00_001F
+word16 fn0C00_001F(byte al)
+fn0C00_001F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_001F:		// block 1, pred: 0
+	msdos_terminate(al)
+	// succ:  2
+fn0C00_001F_exit:		// block 2, pred: 1
+	// succ: 
+
+// Register word16 fn0C00_0023(Register word16 cx, Register word16 dx, Register word16 bx, Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  cx dx bx ds
+// LiveOut: ax
+// Trashed: C ax al ah
+// Preserved:
+// fn0C00_0023
+word16 fn0C00_0023(word16 cx, word16 dx, word16 bx, selector ds)
+fn0C00_0023_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0023:		// block 1, pred: 0
+	word16 ax_12
+	branch msdos_read_file(bx, cx, ds_dx, &ax_12) l0C00_002C
+	// succ:  2 3
+l0C00_0029:		// block 2, pred: 1
+	ax_12 = 0xFFFF
+	// succ:  3
+l0C00_002C:		// block 3, pred: 1 2
+	return ax_12
+	// succ:  4
+fn0C00_0023_exit:		// block 4, pred: 3
+	// succ: 
+

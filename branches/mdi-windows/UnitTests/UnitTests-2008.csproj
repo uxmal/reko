@@ -1,0 +1,375 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6528DBD9-8129-48D8-AA21-C169F1679646}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Decompiler.UnitTests</RootNamespace>
+    <AssemblyName>Decompiler.UnitTests</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
+    <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analysis\AliasTests.cs" />
+    <Compile Include="Analysis\AnalysisTestBase.cs" />
+    <Compile Include="Analysis\AnalysisTests.cs" />
+    <Compile Include="Analysis\CallRewriterTests.cs" />
+    <Compile Include="Analysis\CoalescerTests.cs" />
+    <Compile Include="Analysis\ConditionCodeEliminatorTests.cs" />
+    <Compile Include="Analysis\CriticalInstructionTests.cs" />
+    <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
+    <Compile Include="Analysis\DeadCodeTests.cs" />
+    <Compile Include="Analysis\DeclarationInserterTests.cs" />
+    <Compile Include="Analysis\DominatorGraphTests.cs" />
+    <Compile Include="Analysis\ExpressionSimplifierTests.cs" />
+    <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
+    <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
+    <Compile Include="Analysis\InterferenceGraphTests.cs" />
+    <Compile Include="Analysis\InterferenceTests.cs" />
+    <Compile Include="Analysis\IsLiveHelperTests.cs" />
+    <Compile Include="Analysis\LinearInductionVariableTests.cs" />
+    <Compile Include="Analysis\LiveCopyInserterTests.cs" />
+    <Compile Include="Analysis\LivenessTests.cs" />
+    <Compile Include="Analysis\OutParameterTransformerTests.cs" />
+    <Compile Include="Analysis\RegisterLivenessTests.cs" />
+    <Compile Include="Analysis\RegisterLivenessUnitTests.cs" />
+    <Compile Include="Analysis\SegmentedAccessClassifierTests.cs" />
+    <Compile Include="Analysis\SideEffectFinderTests.cs" />
+    <Compile Include="Analysis\SignatureBuilderTests.cs" />
+    <Compile Include="Analysis\Simplification\Add_id_c_id_Rule.cs" />
+    <Compile Include="Analysis\Simplification\Add_id_c_id_RuleTest.cs" />
+    <Compile Include="Analysis\Simplification\Shl_mul_e_RuleTest.cs" />
+    <Compile Include="Analysis\Simplification\SliceMem_RuleTest.cs" />
+    <Compile Include="Analysis\SsaLivenessTests.cs" />
+    <Compile Include="Analysis\SsaTests.cs" />
+    <Compile Include="Analysis\StrengthReductionTests.cs" />
+    <Compile Include="Analysis\TrashedRegisterFinderTests.cs" />
+    <Compile Include="Analysis\TrashStorageHelperTests.cs" />
+    <Compile Include="Analysis\ValueNumberingTest.cs" />
+    <Compile Include="Analysis\ValuePropagationTests.cs" />
+    <Compile Include="Analysis\VariableLivenessTests.cs" />
+    <Compile Include="Analysis\WebBuilderTests.cs" />
+    <Compile Include="Arch\Intel\AssemblerFragment.cs" />
+    <Compile Include="Arch\Intel\BackWalkerTests.cs" />
+    <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
+    <Compile Include="Arch\Intel\CodeWalkerTests.cs" />
+    <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />
+    <Compile Include="Arch\Intel\DisassemblerTests.cs" />
+    <Compile Include="Arch\Intel\Fragments\Factorial.cs" />
+    <Compile Include="Arch\Intel\ImportResolution.cs" />
+    <Compile Include="Arch\Intel\IntelArchitectureTests.cs" />
+    <Compile Include="Arch\Intel\IntelAssemblerTests.cs" />
+    <Compile Include="Arch\Intel\IntelInstructionTrieTests.cs" />
+    <Compile Include="Arch\Intel\IntelRegisterTests.cs" />
+    <Compile Include="Arch\Intel\IntelRewriterTests.cs" />
+    <Compile Include="Arch\Intel\LongAddRewriterTests.cs" />
+    <Compile Include="Arch\Intel\MsDosPlatformTests.cs" />
+    <Compile Include="Arch\Intel\OperandRewriterRealModeTests.cs" />
+    <Compile Include="Arch\Intel\OperandRewriterTest.cs" />
+    <Compile Include="Arch\Intel\ProcessorState.cs" />
+    <Compile Include="Arch\Intel\Rewrite32.cs" />
+    <Compile Include="Arch\Intel\RewriterTests.cs" />
+    <Compile Include="Arch\Intel\RewriterTests2.cs" />
+    <Compile Include="Arch\M68k\M68kCodeWalkerTests.cs" />
+    <Compile Include="Arch\M68k\M68kDisassemblerTests.cs" />
+    <Compile Include="Arch\PowerPC\PowerPcArchitectureTests.cs" />
+    <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.cs" />
+    <Compile Include="Assemblers\x86\AssembleFragmentTests.cs" />
+    <Compile Include="Assemblers\x86\AssemblerAdvanced.cs" />
+    <Compile Include="Assemblers\x86\AssemblerBasic.cs" />
+    <Compile Include="Assemblers\x86\AssemblerData.cs" />
+    <Compile Include="Assemblers\x86\AssemblerOverrides.cs" />
+    <Compile Include="Assemblers\x86\IntelCodeAssemblerTests.cs" />
+    <Compile Include="Assemblers\x86\OperandParserTests.cs" />
+    <Compile Include="Core\AddressTests.cs" />
+    <Compile Include="Core\ApplicationBuilderTests.cs" />
+    <Compile Include="Core\Assemblers\SymbolTableTests.cs" />
+    <Compile Include="Core\BitSetTests.cs" />
+    <Compile Include="Core\BlockTests.cs" />
+    <Compile Include="Core\CallGraphTests.cs" />
+    <Compile Include="Core\CastTests.cs" />
+    <Compile Include="Core\CodeFormatterTests.cs" />
+    <Compile Include="Core\ConstantTests.cs" />
+    <Compile Include="Core\Lib\DfsIteratorTests.cs" />
+    <Compile Include="Core\ExpressionFactoryTests.cs" />
+    <Compile Include="Core\ExpressionTests.cs" />
+    <Compile Include="Core\ExpressionValueComparerTests.cs" />
+    <Compile Include="Core\ExternalProcedureTest.cs" />
+    <Compile Include="Core\FieldCollectionTests.cs" />
+    <Compile Include="Core\FrameTests.cs" />
+    <Compile Include="Core\ImageMapTests.cs" />
+    <Compile Include="Core\InstructionTests.cs" />
+    <Compile Include="Core\Lib\DirectedGraphImplTests.cs" />
+    <Compile Include="Core\Lib\DisjointPartitionTests.cs" />
+    <Compile Include="Core\Lib\DominatorGraphTests.cs" />
+    <Compile Include="Core\MapTests.cs" />
+    <Compile Include="Core\OperatorTests.cs" />
+    <Compile Include="Core\Output\MockGeneratorTests.cs" />
+    <Compile Include="Core\PrimitiveTypeTests.cs" />
+    <Compile Include="Core\ProcedureSignatureTests.cs" />
+    <Compile Include="Core\ProcedureTests.cs" />
+    <Compile Include="Core\ProgramImageTests.cs" />
+    <Compile Include="Core\ProgramTests.cs" />
+    <Compile Include="Core\RegisterTests.cs" />
+    <Compile Include="Core\RelocationDictionaryTests.cs" />
+    <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
+    <Compile Include="Core\Serialization\ProcedureCharacteristicsTests.cs" />
+    <Compile Include="Core\Serialization\SerializedArgumentTests.cs" />
+    <Compile Include="Core\Serialization\SerializedCallTests.cs" />
+    <Compile Include="Core\Serialization\SerializedLibraryTests.cs" />
+    <Compile Include="Core\Serialization\SerializedProjectTests.cs" />
+    <Compile Include="Core\Serialization\SerializedSequenceTests.cs" />
+    <Compile Include="Core\Serialization\SerializedServiceTests.cs" />
+    <Compile Include="Core\Serialization\SerializedSignatureTests.cs" />
+    <Compile Include="Core\Serialization\SerializedTypeTests.cs" />
+    <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
+    <Compile Include="Core\SignatureLibraryTests.cs" />
+    <Compile Include="Core\StructureTypeTests.cs" />
+    <Compile Include="Core\TypeComparerTests.cs" />
+    <Compile Include="Core\TypeEqualityTests.cs" />
+    <Compile Include="Core\TypeFactoryTests.cs" />
+    <Compile Include="Core\TypeFormatterTests.cs" />
+    <Compile Include="Core\UseInstructionTests.cs" />
+    <Compile Include="Core\VariableTests.cs" />
+    <Compile Include="Core\VariableVisitorTests.cs" />
+    <Compile Include="Core\WorkListTests.cs" />
+    <Compile Include="DecompilerTests.cs" />
+    <Compile Include="Environments\MacOS\ResourceForkTests.cs" />
+    <Compile Include="FileUnitTester.cs" />
+    <Compile Include="Gui\DecompilerServiceTests.cs" />
+    <Compile Include="Gui\MenuBuilderTests.cs" />
+    <Compile Include="Gui\Windows\CodeViewerPaneTests.cs" />
+    <Compile Include="Gui\Windows\CodeViewerServiceTests.cs" />
+    <Compile Include="Gui\Windows\Controls\MemoryControlTests.cs" />
+    <Compile Include="Gui\Windows\Controls\MenuSystemTests.cs" />
+    <Compile Include="Gui\Windows\DecompilerShellUiTests.cs" />
+    <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\DiagnosticsInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\EditProjectInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\FakePhasePageInteractors.cs" />
+    <Compile Include="Gui\Windows\Forms\FinalPageInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\FindDialogInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs" />
+    <Compile Include="Gui\Windows\MemoryViewInteractorTests.cs" />
+    <Compile Include="Gui\Windows\MemoryViewServiceTests.cs" />
+    <Compile Include="Gui\Windows\MruListTests.cs" />
+    <Compile Include="Gui\Windows\WindowsApplication.cs" />
+    <Compile Include="ImageLoaders\BinHex\BinHexDecoderTests.cs" />
+    <Compile Include="ImageLoaders\BinHex\BinHexImageLoaderTests.cs" />
+    <Compile Include="Loading\LoaderTests.cs" />
+    <Compile Include="Loading\PkLiteUnpackerTests.cs" />
+    <Compile Include="Mocks\AdcMock.cs" />
+    <Compile Include="Mocks\ArchitectureMock.cs" />
+    <Compile Include="Mocks\ArrayLoopMock.cs" />
+    <Compile Include="Mocks\ArrayMock.cs" />
+    <Compile Include="Mocks\BigLoopHeadFragment.cs" />
+    <Compile Include="Mocks\ByteArrayLoopMock.cs" />
+    <Compile Include="Mocks\FakeStatusBarService.cs" />
+    <Compile Include="Mocks\FakeDecompiler.cs" />
+    <Compile Include="Mocks\FakeDecompilerConfiguration.cs" />
+    <Compile Include="Mocks\FakeDecompilerEventListener.cs" />
+    <Compile Include="Mocks\CmpMock.cs" />
+    <Compile Include="Mocks\DoWhileFragment.cs" />
+    <Compile Include="Mocks\DoWhileIfFragment.cs" />
+    <Compile Include="Mocks\FactorialMock.cs" />
+    <Compile Include="Mocks\FakeComponentSite.cs" />
+    <Compile Include="Mocks\FakeDecompilerHost.cs" />
+    <Compile Include="Mocks\FakeLoader.cs" />
+    <Compile Include="Mocks\FakeUiService.cs" />
+    <Compile Include="Mocks\FakeWorkerDialogService.cs" />
+    <Compile Include="Mocks\LiveCopyMock.cs" />
+    <Compile Include="Mocks\LiveLoopMock.cs" />
+    <Compile Include="Mocks\MockCodeWalker.cs" />
+    <Compile Include="Mocks\NestedIfs.cs" />
+    <Compile Include="Mocks\ProcedureMock.cs" />
+    <Compile Include="Mocks\ProcedureMockTest.cs" />
+    <Compile Include="Mocks\ProgramMock.cs" />
+    <Compile Include="Mocks\ProcGenerator.cs" />
+    <Compile Include="Mocks\Reg00011Mock.cs" />
+    <Compile Include="Mocks\SegmentedDoubleReference.cs" />
+    <Compile Include="Mocks\TreeFindMock.cs" />
+    <Compile Include="Mocks\UnstructuredIfsMock.cs" />
+    <Compile Include="Mocks\WhileLoopFragment.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
+    <Compile Include="Scanning\InstructionTrieTests.cs" />
+    <Compile Include="Scanning\RewriterHostTests.cs" />
+    <Compile Include="Scanning\ScannerTests.cs" />
+    <Compile Include="Scanning\WorkItemTests.cs" />
+    <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
+    <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
+    <Compile Include="Structure\DerivedSequenceBuilderTests.cs" />
+    <Compile Include="Structure\IntervalBuilderTests.cs" />
+    <Compile Include="Structure\IntervalTests.cs" />
+    <Compile Include="Structure\LoopFinderTests.cs" />
+    <Compile Include="Structure\MockCaseJumpsBack.cs" />
+    <Compile Include="Structure\MockCaseStatement.cs" />
+    <Compile Include="Structure\MockInfiniteLoop.cs" />
+    <Compile Include="Structure\MockWhileGoto.cs" />
+    <Compile Include="Structure\MockWhileWithDeclarations.cs" />
+    <Compile Include="Structure\ProcHeaderTests.cs" />
+    <Compile Include="Structure\SccLoopFinderTests.cs" />
+    <Compile Include="Structure\MockNestedWhileLoops.cs" />
+    <Compile Include="Structure\PostDominatorGraphTests.cs" />
+    <Compile Include="Structure\StructureAnalysisTests.cs" />
+    <Compile Include="Structure\StructureNodeTests.cs" />
+    <Compile Include="Structure\TestBase.cs" />
+    <Compile Include="Structure\CfgCleanerTests.cs" />
+    <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />
+    <Compile Include="Structure\MockIfElseIf.cs" />
+    <Compile Include="Structure\MockSnarl.cs" />
+    <Compile Include="Structure\MockSwitch.cs" />
+    <Compile Include="Structure\MockWhileBreak.cs" />
+    <Compile Include="Structure\SimpleStructureTests.cs" />
+    <Compile Include="Structure\StructureConditionalsTests.cs" />
+    <Compile Include="Structure\StructureTestBase.cs" />
+    <Compile Include="Typing\AddressTraitCollectorTests.cs" />
+    <Compile Include="Typing\ArrayExpressionMatcherTests.cs" />
+    <Compile Include="Typing\ComplexExpressionBuilderTests.cs" />
+    <Compile Include="Typing\ComplexTypeNamerTests.cs" />
+    <Compile Include="Typing\ConstantUnionMock.cs" />
+    <Compile Include="Typing\DataTypeBuilderTests.cs" />
+    <Compile Include="Typing\DerivedPointerAnalysisTests.cs" />
+    <Compile Include="Typing\EquivalenceClassBuilderTests.cs" />
+    <Compile Include="Typing\ExpressionNormalizerTests.cs" />
+    <Compile Include="Typing\GlobalVariablesMock.cs" />
+    <Compile Include="Typing\NestedComplexTypeExtractorTests.cs" />
+    <Compile Include="Typing\PtrPrimitiveReplacerTests.cs" />
+    <Compile Include="Typing\PtrPtrIntMock.cs" />
+    <Compile Include="Typing\StructureFieldMergerTests.cs" />
+    <Compile Include="Typing\StructureMergerTests.cs" />
+    <Compile Include="Typing\Trait.cs" />
+    <Compile Include="Typing\TraitCollectorTests.cs" />
+    <Compile Include="Typing\TraitMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Typing\TypedConstantRewriterTests.cs" />
+    <Compile Include="Typing\TypedExpressionRewriterTests.cs" />
+    <Compile Include="Typing\TypedMemoryExpressionRewriterTests.cs" />
+    <Compile Include="Typing\TypeStoreTests.cs" />
+    <Compile Include="Typing\TypeTransformArrayTests.cs" />
+    <Compile Include="Typing\TypeTransformTest.cs" />
+    <Compile Include="Typing\TypeVariableReplacerTests.cs" />
+    <Compile Include="Typing\TypeVarReplacerTests.cs" />
+    <Compile Include="Typing\TypingTestBase.cs" />
+    <Compile Include="Typing\UnifierTests.cs" />
+    <Compile Include="Typing\UnionIntRealMock.cs" />
+    <Compile Include="Typing\UnionPointersStructuresMatcherTests.cs" />
+    <Compile Include="Typing\VectorMock.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Arch\Intel\Intel2008.csproj">
+      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
+      <Name>Intel2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\M68k\M68k-2008.csproj">
+      <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
+      <Name>M68k-2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Pdp11\Pdp11-2008.csproj">
+      <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
+      <Name>Pdp11-2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\PowerPC\PowerPC-2008.csproj">
+      <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
+      <Name>PowerPC-2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Assemblers\M68k\M68kAssembler.csproj">
+      <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>
+      <Name>M68kAssembler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Assemblers\x86\IntelAssembler2008.csproj">
+      <Project>{3805DE2C-659A-442D-8C34-E88822A4D27C}</Project>
+      <Name>IntelAssembler2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core2008.csproj">
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
+      <Name>Core2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Decompiler\Decompiler2008.csproj">
+      <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
+      <Name>Decompiler2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
+      <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
+      <Name>MacOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Msdos\Msdos-2008.csproj">
+      <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
+      <Name>Msdos-2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\Win32\Win32-2008.csproj">
+      <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
+      <Name>Win32-2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\BinHex\BinHex2008.csproj">
+      <Project>{3F73B4EB-4EE6-45DF-AA07-06ECDEFA5BD9}</Project>
+      <Name>BinHex2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\MzExe\MzExe-2008.csproj">
+      <Project>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</Project>
+      <Name>MzExe-2008</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Arch\Intel\Assembler\" />
+    <Folder Include="ImageLoaders\MzExe\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>xcopy /y /d $(SolutionDir)Environments\MsDos\*.xml $(TargetDir)
+xcopy /y /d $(SolutionDir)Environments\Win32\*.xml $(TargetDir)</PreBuildEvent>
+  </PropertyGroup>
+</Project>

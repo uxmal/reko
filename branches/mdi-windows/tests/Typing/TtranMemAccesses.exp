@@ -1,0 +1,141 @@
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	fn0C00_000C(ds)
+	fn0C00_0015(ds)
+	store(Mem3[ds:0x0100:word16]) = 0x0000
+	fn0C00_000C(ds)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn0C00_000C
+void fn0C00_000C(selector ds)
+fn0C00_000C_entry:		// block 0, pred:
+	// succ:  1
+l0C00_000C:		// block 1, pred: 0
+	store(Mem5[ds:0x0302:word16]) = Mem0[ds:0x0300:word16]
+	return
+	// succ:  2
+fn0C00_000C_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn0C00_0015
+void fn0C00_0015(selector ds)
+fn0C00_0015_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0015:		// block 1, pred: 0
+	store(Mem5[ds:0x0202:word16]) = Mem0[ds:0x0200:word16]
+	return
+	// succ:  2
+fn0C00_0015_exit:		// block 2, pred: 1
+	// succ: 
+
+// Equivalence classes ////////////
+Eq_2: (fn void ((ptr Eq_4)))
+	T_2 (in fn0C00_000C : ptr32)
+	T_3 (in signature of fn0C00_000C)
+	T_14 (in fn0C00_000C : ptr32)
+Eq_4: (segment (100 word16 w0100) (200 word16 w0200) (202 word16 w0202) (300 word16 w0300) (302 word16 w0302))
+	T_4 (in ds : selector)
+	T_5 (in ds : selector)
+	T_9 (in ds : selector)
+Eq_7: (fn void ((ptr Eq_4)))
+	T_7 (in fn0C00_0015 : ptr32)
+	T_8 (in signature of fn0C00_0015)
+// Type Variables ////////////
+Globals: (in globals : ptr32)
+  Class: Eq_1
+  DataType: Eq_1
+  OrigDataType: 
+T_2: (in fn0C00_000C : ptr32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (fn T_6 (T_5)))
+T_3: (in signature of fn0C00_000C)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: 
+T_4: (in ds : selector)
+  Class: Eq_4
+  DataType: (ptr Eq_4)
+  OrigDataType: (ptr (segment (300 T_17 t0300) (302 T_19 t0302)))
+T_5: (in ds : selector)
+  Class: Eq_4
+  DataType: (ptr Eq_4)
+  OrigDataType: (ptr (segment (100 T_13 t0100)))
+T_6: (in fn0C00_000C(ds) : void)
+  Class: Eq_6
+  DataType: void
+  OrigDataType: void
+T_7: (in fn0C00_0015 : ptr32)
+  Class: Eq_7
+  DataType: (ptr Eq_7)
+  OrigDataType: (ptr (fn T_10 (T_5)))
+T_8: (in signature of fn0C00_0015)
+  Class: Eq_7
+  DataType: (ptr Eq_7)
+  OrigDataType: 
+T_9: (in ds : selector)
+  Class: Eq_4
+  DataType: (ptr Eq_4)
+  OrigDataType: (ptr (segment (200 T_21 t0200) (202 T_23 t0202)))
+T_10: (in fn0C00_0015(ds) : void)
+  Class: Eq_10
+  DataType: void
+  OrigDataType: void
+T_11: (in 0x0000 : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_12: (in 0x0100 : word16)
+  Class: Eq_12
+  DataType: (memptr (ptr Eq_4) word16)
+  OrigDataType: (memptr T_5 (struct (0 T_13 t0000)))
+T_13: (in Mem3[ds:0x0100:word16] : word16)
+  Class: Eq_11
+  DataType: word16
+  OrigDataType: word16
+T_14: (in fn0C00_000C : ptr32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (fn T_15 (T_5)))
+T_15: (in fn0C00_000C(ds) : void)
+  Class: Eq_6
+  DataType: void
+  OrigDataType: void
+T_16: (in 0x0300 : word16)
+  Class: Eq_16
+  DataType: (memptr (ptr Eq_4) word16)
+  OrigDataType: (memptr T_4 (struct (0 T_17 t0000)))
+T_17: (in Mem0[ds:0x0300:word16] : word16)
+  Class: Eq_17
+  DataType: word16
+  OrigDataType: word16
+T_18: (in 0x0302 : word16)
+  Class: Eq_18
+  DataType: (memptr (ptr Eq_4) word16)
+  OrigDataType: (memptr T_4 (struct (0 T_19 t0000)))
+T_19: (in Mem5[ds:0x0302:word16] : word16)
+  Class: Eq_17
+  DataType: word16
+  OrigDataType: word16
+T_20: (in 0x0200 : word16)
+  Class: Eq_20
+  DataType: (memptr (ptr Eq_4) word16)
+  OrigDataType: (memptr T_9 (struct (0 T_21 t0000)))
+T_21: (in Mem0[ds:0x0200:word16] : word16)
+  Class: Eq_21
+  DataType: word16
+  OrigDataType: word16
+T_22: (in 0x0202 : word16)
+  Class: Eq_22
+  DataType: (memptr (ptr Eq_4) word16)
+  OrigDataType: (memptr T_9 (struct (0 T_23 t0000)))
+T_23: (in Mem5[ds:0x0202:word16] : word16)
+  Class: Eq_21
+  DataType: word16
+  OrigDataType: word16

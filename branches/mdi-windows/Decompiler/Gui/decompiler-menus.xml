@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu-definitions xmlns="urn:Decompiler.Schemata.MenuDefinitions">
+  <cmdSet id="Decompiler">6D65B38B-4275-4892-BD3C-05AC0645373F</cmdSet>
+
+  <!-- Menus and Toolbars ========================================================== -->
+
+
+  <!-- Menus -->
+  <menu type="MainMenu" id="MainMenu" cmdSet="GuidCmdSet"/>
+  <menu id="FileMenu" cmdSet="Decompiler" container="GrpMain">_File</menu>
+  <menu id="EditMenu" cmdSet="Decompiler" container="GrpMain">_Edit</menu>
+  <menu id="ViewMenu" cmdSet="Decompiler" container="GrpMain">_View</menu>
+  <menu id="ActionMenu" cmdSet="Decompiler" container="GrpMain">_Actions</menu>
+  <menu id="WindowsMenu" cmdSet="Decompiler" container="GrpMain">_Windows</menu>
+  <menu id="HelpMenu" cmdSet="Decompiler" container="GrpMain">_Help</menu>
+
+  <menu type="ContextMenu" id="CtxMemoryControl" cmdSet="Decompiler"/>
+  <menu type="ContextMenu" id="CtxBrowser" cmdSet="Decompiler"/>
+
+  <!-- Toolbars -->
+  <menu type="ToolStrip" id="MainToolbar" cmdSet="GuidCmdSet"/>
+
+  <!-- Groups ========================================================== -->
+
+  <!-- Menu groups -->
+  <group id="GrpMain" cmdSet="Decompiler" container="MainMenu"/>
+
+  <group id="GrpFile" cmdSet="Decompiler" container="FileMenu" priority="0"/>
+  <group id="GrpFileMru" cmdSet="Decompiler" container="FileMenu" priority="0"/>
+  <group id="GrpFileEnd" cmdSet="Decompiler" container="FileMenu" priority="1000"/>
+
+  <group id="GrpEdit" cmdSet="Decompiler" container="EditMenu" />
+
+  <group id="GrpViewScanned" cmdSet="Decompiler" container="ViewMenu"/>
+
+  <group id="GrpActions" cmdSet="Decompiler" container="ActionMenu"/>
+  <group id="GrpActionsScanned" cmdSet="Decompiler" container="ActionMenu"/>
+  <group id="GrpActionsRewritten" cmdSet="Decompiler" container="ActionMenu"/>
+
+  <group id="GrpWindows" cmdSet="Decompiler" container="WindowsMenu"/>
+
+  <group id="GrpHelp" cmdSet="Decompiler" container="HelpMenu" />
+
+  <group id="GrpMemoryControl" cmdSet="Decompiler" container="CtxMemoryControl"/>
+
+  <group id="GrpBrowser" cmdSet="Decompiler" container="CtxBrowser"/>
+
+  <group id="GrpToolbarFileOps" cmdSet="Decompiler" container="MainToolbar" />
+
+  <group id="GrpToolbarActions" cmdSet="Decompiler" container="MainToolbar" />
+
+  <!-- Commands ========================================================== -->
+
+  <cmd id="FileOpen" cmdSet="Decompiler" container="FileOpen" image="0">_Open...</cmd>
+  <cmd id="FileOpenAs" cmdSet="Decompiler" container="FileOpenAs">Op_en As...</cmd>
+  <cmd id="FileSave" cmdSet="Decompiler" container="FileSave" image="1">_Save</cmd>
+  <cmd id="FileMru"  cmdSet="Decompiler" container="GrpFileMru" dynamic-item-id="2200"/>
+  <cmd id="FileExit" cmdSet="Decompiler" container="GrpFileEnd">E_xit</cmd>
+
+  <cmd id="EditFind" cmdSet="Decompiler" container="GrpEdit">_Find...</cmd>
+
+  <cmd id="ViewGoToAddress" cmdSet="Decompiler" container="GrpViewScanned">_Go to Address...</cmd>
+  <cmd id="ViewShowAllFragments" cmdSet="Decompiler" container="GrpViewScanned">Show _all fragments</cmd>
+  <cmd id="ViewShowUnscanned" cmdSet="Decompiler" container="GrpViewScanned">Show _unscanned fragments</cmd>
+  <cmd id="ViewFindFragments" cmdSet="Decompiler" container="GrpViewScanned">_Find fragments...</cmd>
+
+  <cmd id="ActionNextPhase" cmdSet="Decompiler" container="GrpActions" image="2">_Next Phase</cmd>
+  <cmd id="ActionFinishDecompilation" cmdSet="Decompiler" container="GrpActions" image="3">_Finish Decompilation</cmd>
+
+  <cmd id="ActionMarkProcedure" cmdSet="Decompiler" container="ActionMarkProcedure">Mark _Procedure Entry</cmd>
+  <cmd id="ActionEditSignature" cmdSet="Decompiler" container="ActionEditSignature">Edit _Signature...</cmd>
+
+  <cmd id="WindowsCascade" cmdSet="Decompiler" container="GrpWindows">_Cacade</cmd>
+  <cmd id="WindowsTileVertical" cmdSet="Decompiler" container="GrpWindows">Tile _Vertically</cmd>
+  <cmd id="WindowsTileHorizontal" cmdSet="Decompiler" container="GrpWindows">Tile _Horizontally</cmd>
+  <cmd id="HelpAbout" cmdSet="Decompiler" container="GrpHelp">_About Decompiler...</cmd>
+
+  <!-- Placements ======================================================= -->
+
+  <placement item="FileOpen" container="GrpFile" />
+  <placement item="FileOpenAs" container="GrpFile" />
+  <placement item="FileSave" container="GrpFile" />
+  <placement item="FileOpen" container="GrpToolbarFileOps"/>
+  <placement item="FileSave" container="GrpToolbarFileOps"/>
+  <placement item="ActionNextPhase" container="GrpToolbarActions"/>
+  <placement item="ActionFinishDecompilation" container="GrpToolbarActions"/>
+
+  <placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
+  <placement item="ViewGoToAddress" container="GrpMemoryControl"/>
+  <placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
+  <placement item="ActionEditSignature" container="GrpBrowser"/>
+  <placement item="ActionEditSignature" container="GrpActionsRewritten" />
+</menu-definitions>
+ 

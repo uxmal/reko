@@ -1,0 +1,60 @@
+// fn0C00_0000
+void fn0C00_0000(word16 bx, word16 si, selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	word16 ax_7 = Mem0[ds:bx + 0x0004:word16]
+	store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
+	store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+T_2 (in ax_7 : word16)
+	trait_primitive(word16)
+	trait_equal(T_7)
+	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_primitive(int16)
+	trait_primitive(int16)
+T_3 (in ds : selector)
+	trait_primitive(selector)
+	trait_primitive(selector)
+	trait_primitive(selector)
+T_4 (in bx : word16)
+	trait_primitive(word16)
+	trait_mem(T_3:T_7, 4)
+	trait_primitive(word16)
+	trait_mem(T_3:T_11, 6)
+T_5 (in 0x0004 : word16)
+	trait_primitive(word16)
+T_6 (in bx + 0x0004 : word16)
+	trait_primitive(word16)
+T_7 (in Mem0[ds:bx + 0x0004:word16] : word16)
+	trait_primitive(word16)
+T_8 (in ax_7 *s ax_7 : int16)
+	trait_primitive(int16)
+	trait_primitive(int16)
+T_9 (in 0x0006 : word16)
+	trait_primitive(word16)
+T_10 (in bx + 0x0006 : word16)
+	trait_primitive(word16)
+T_11 (in Mem9[ds:bx + 0x0006:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_8)
+T_12 (in si : word16)
+	trait_primitive(word16)
+	trait_primitive(word16)
+	trait_mem(T_3:T_17, 4D4)
+T_13 (in 0x0002 : word16)
+	trait_primitive(word16)
+T_14 (in si + 0x0002 : word16)
+	trait_primitive(word16)
+T_15 (in 0x04D4 : word16)
+	trait_primitive(word16)
+T_16 (in si + 0x04D4 : word16)
+	trait_primitive(word16)
+T_17 (in Mem11[ds:si + 0x04D4:word16] : word16)
+	trait_primitive(word16)
+	trait_equal(T_14)

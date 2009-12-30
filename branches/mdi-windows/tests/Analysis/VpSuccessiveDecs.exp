@@ -1,0 +1,287 @@
+= fn0C00_0000 ========================
+Mem0:Global memory
+    def:  def Mem0
+    uses: ax_4 = Mem0[ds:0x0300:word16]
+fp:Temporary
+    def:  def fp
+ds:Register ds
+    def:  def ds
+    uses: ax_4 = Mem0[ds:0x0300:word16]
+          store(Mem6[ds:0x0302:word16]) = ax_5
+ax:Register ax
+    def:  def ax
+ax_4: orig: ax
+    def:  ax_4 = Mem0[ds:0x0300:word16]
+    uses: ax_5 = fn0C00_000C(ax_4)
+ax_5: orig: ax
+    def:  ax_5 = fn0C00_000C(ax_4)
+    uses: store(Mem6[ds:0x0302:word16]) = ax_5
+Mem6: orig: Mem0
+    def:  store(Mem6[ds:0x0302:word16]) = ax_5
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def ds
+	def ax
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax_4 = Mem0[ds:0x0300:word16]
+	ax_5 = fn0C00_000C(ax_4)
+	store(Mem6[ds:0x0302:word16]) = ax_5
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+Mem0:Global memory
+    def:  def Mem0
+    uses: ax_4 = Mem0[ds:0x0300:word16]
+fp:Temporary
+ds:Register ds
+    def:  def ds
+    uses: ax_4 = Mem0[ds:0x0300:word16]
+          store(Mem6[ds:0x0302:word16]) = ax_5
+ax:Register ax
+ax_4: orig: ax
+    def:  ax_4 = Mem0[ds:0x0300:word16]
+    uses: ax_5 = fn0C00_000C(ax_4)
+ax_5: orig: ax
+    def:  ax_5 = fn0C00_000C(ax_4)
+    uses: store(Mem6[ds:0x0302:word16]) = ax_5
+Mem6: orig: Mem0
+    def:  store(Mem6[ds:0x0302:word16]) = ax_5
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax_4 = Mem0[ds:0x0300:word16]
+	ax_5 = fn0C00_000C(ax_4)
+	store(Mem6[ds:0x0302:word16]) = ax_5
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+= fn0C00_000C ========================
+Mem0:Global memory
+    def:  def Mem0
+fp:Temporary
+    def:  def fp
+SCZO:Flags
+    def:  def SCZO
+ax:Register ax
+    def:  def ax
+    uses: SCZO_6 = cond(ax - 0x0000)
+          ax_9 = ax - 0x0001
+Z:Flags
+    def:  def Z
+SZO:Flags
+    def:  def SZO
+SCZO_6: orig: SCZO
+    def:  SCZO_6 = cond(ax - 0x0000)
+    uses: Z_7 = SCZO_6 (alias)
+          SZO_8 = SCZO_6 (alias)
+          SCZO_27 = PHI(SCZO_18, SCZO_15, SCZO_11, SCZO_6)
+Z_7: orig: Z
+    def:  Z_7 = SCZO_6 (alias)
+    uses: branch Test(NE,Z_7) l0C00_0014
+          Z_25 = PHI(Z_19, Z_16, Z_12, Z_7)
+SZO_8: orig: SZO
+    def:  SZO_8 = SCZO_6 (alias)
+    uses: SZO_24 = PHI(SZO_20, SZO_14, SZO_10, SZO_8)
+ax_9: orig: ax
+    def:  ax_9 = ax - 0x0001
+    uses: SZO_10 = cond(ax_9)
+          ax_13 = ax_9 - 0x0001
+SZO_10: orig: SZO
+    def:  SZO_10 = cond(ax_9)
+    uses: SCZO_11 = SZO_10 (alias)
+          Z_12 = SZO_10 (alias)
+          SZO_24 = PHI(SZO_20, SZO_14, SZO_10, SZO_8)
+SCZO_11: orig: SCZO
+    def:  SCZO_11 = SZO_10 (alias)
+    uses: SCZO_27 = PHI(SCZO_18, SCZO_15, SCZO_11, SCZO_6)
+Z_12: orig: Z
+    def:  Z_12 = SZO_10 (alias)
+    uses: branch Test(NE,Z_12) l0C00_001B
+          Z_25 = PHI(Z_19, Z_16, Z_12, Z_7)
+ax_13: orig: ax
+    def:  ax_13 = ax_9 - 0x0001
+    uses: SZO_14 = cond(ax_13)
+SZO_14: orig: SZO
+    def:  SZO_14 = cond(ax_13)
+    uses: SCZO_15 = SZO_14 (alias)
+          Z_16 = SZO_14 (alias)
+          SZO_24 = PHI(SZO_20, SZO_14, SZO_10, SZO_8)
+SCZO_15: orig: SCZO
+    def:  SCZO_15 = SZO_14 (alias)
+    uses: SCZO_27 = PHI(SCZO_18, SCZO_15, SCZO_11, SCZO_6)
+Z_16: orig: Z
+    def:  Z_16 = SZO_14 (alias)
+    uses: branch Test(NE,Z_16) l0C00_0022
+          Z_25 = PHI(Z_19, Z_16, Z_12, Z_7)
+ax_17: orig: ax
+    def:  ax_17 = 0x0000
+    uses: SCZO_18 = cond(ax_17)
+          return ax_17
+          ax_26 = PHI(ax_17, ax_21, ax_22, ax_23)
+SCZO_18: orig: SCZO
+    def:  SCZO_18 = cond(ax_17)
+    uses: Z_19 = SCZO_18 (alias)
+          SZO_20 = SCZO_18 (alias)
+          SCZO_27 = PHI(SCZO_18, SCZO_15, SCZO_11, SCZO_6)
+Z_19: orig: Z
+    def:  Z_19 = SCZO_18 (alias)
+    uses: Z_25 = PHI(Z_19, Z_16, Z_12, Z_7)
+SZO_20: orig: SZO
+    def:  SZO_20 = SCZO_18 (alias)
+    uses: SZO_24 = PHI(SZO_20, SZO_14, SZO_10, SZO_8)
+ax_21: orig: ax
+    def:  ax_21 = 0x0127
+    uses: return ax_21
+          ax_26 = PHI(ax_17, ax_21, ax_22, ax_23)
+ax_22: orig: ax
+    def:  ax_22 = 0x0125
+    uses: return ax_22
+          ax_26 = PHI(ax_17, ax_21, ax_22, ax_23)
+ax_23: orig: ax
+    def:  ax_23 = 0x0123
+    uses: return ax_23
+          ax_26 = PHI(ax_17, ax_21, ax_22, ax_23)
+SZO_24: orig: SZO
+    def:  SZO_24 = PHI(SZO_20, SZO_14, SZO_10, SZO_8)
+Z_25: orig: Z
+    def:  Z_25 = PHI(Z_19, Z_16, Z_12, Z_7)
+ax_26: orig: ax
+    def:  ax_26 = PHI(ax_17, ax_21, ax_22, ax_23)
+SCZO_27: orig: SCZO
+    def:  SCZO_27 = PHI(SCZO_18, SCZO_15, SCZO_11, SCZO_6)
+// fn0C00_000C
+word16 fn0C00_000C(word16 ax)
+fn0C00_000C_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def SCZO
+	def ax
+	def Z
+	def SZO
+	// succ:  1
+l0C00_000C:		// block 1, pred: 0
+	SCZO_6 = cond(ax - 0x0000)
+	Z_7 = SCZO_6 (alias)
+	SZO_8 = SCZO_6 (alias)
+	branch Test(NE,Z_7) l0C00_0014
+	// succ:  7 2
+l0C00_0014:		// block 2, pred: 1
+	ax_9 = ax - 0x0001
+	SZO_10 = cond(ax_9)
+	SCZO_11 = SZO_10 (alias)
+	Z_12 = SZO_10 (alias)
+	branch Test(NE,Z_12) l0C00_001B
+	// succ:  6 3
+l0C00_001B:		// block 3, pred: 2
+	ax_13 = ax_9 - 0x0001
+	SZO_14 = cond(ax_13)
+	SCZO_15 = SZO_14 (alias)
+	Z_16 = SZO_14 (alias)
+	branch Test(NE,Z_16) l0C00_0022
+	// succ:  5 4
+l0C00_0022:		// block 4, pred: 3
+	ax_17 = 0x0000
+	SCZO_18 = cond(ax_17)
+	Z_19 = SCZO_18 (alias)
+	SZO_20 = SCZO_18 (alias)
+	return ax_17
+	// succ:  8
+l0C00_001E:		// block 5, pred: 3
+	ax_21 = 0x0127
+	return ax_21
+	// succ:  8
+l0C00_0017:		// block 6, pred: 2
+	ax_22 = 0x0125
+	return ax_22
+	// succ:  8
+l0C00_0010:		// block 7, pred: 1
+	ax_23 = 0x0123
+	return ax_23
+	// succ:  8
+fn0C00_000C_exit:		// block 8, pred: 4 5 6 7
+	SZO_24 = PHI(SZO_20, SZO_14, SZO_10, SZO_8)
+	Z_25 = PHI(Z_19, Z_16, Z_12, Z_7)
+	ax_26 = PHI(ax_17, ax_21, ax_22, ax_23)
+	SCZO_27 = PHI(SCZO_18, SCZO_15, SCZO_11, SCZO_6)
+	// succ: 
+
+Mem0:Global memory
+fp:Temporary
+SCZO:Flags
+ax:Register ax
+    def:  def ax
+    uses: SCZO_6 = cond(ax)
+          SZO_14 = cond(ax - 0x0002)
+          SZO_10 = cond(ax - 0x0001)
+Z:Flags
+SZO:Flags
+SCZO_6: orig: SCZO
+    def:  SCZO_6 = cond(ax)
+    uses: branch Test(NE,SCZO_6) l0C00_0014
+Z_7: orig: Z
+SZO_8: orig: SZO
+ax_9: orig: ax
+SZO_10: orig: SZO
+    def:  SZO_10 = cond(ax - 0x0001)
+    uses: branch Test(NE,SZO_10) l0C00_001B
+SCZO_11: orig: SCZO
+Z_12: orig: Z
+ax_13: orig: ax
+SZO_14: orig: SZO
+    def:  SZO_14 = cond(ax - 0x0002)
+    uses: branch Test(NE,SZO_14) l0C00_0022
+SCZO_15: orig: SCZO
+Z_16: orig: Z
+ax_17: orig: ax
+SCZO_18: orig: SCZO
+Z_19: orig: Z
+SZO_20: orig: SZO
+ax_21: orig: ax
+ax_22: orig: ax
+ax_23: orig: ax
+SZO_24: orig: SZO
+Z_25: orig: Z
+ax_26: orig: ax
+SCZO_27: orig: SCZO
+// fn0C00_000C
+word16 fn0C00_000C(word16 ax)
+fn0C00_000C_entry:		// block 0, pred:
+	def ax
+	// succ:  1
+l0C00_000C:		// block 1, pred: 0
+	SCZO_6 = cond(ax)
+	branch Test(NE,SCZO_6) l0C00_0014
+	// succ:  7 2
+l0C00_0014:		// block 2, pred: 1
+	SZO_10 = cond(ax - 0x0001)
+	branch Test(NE,SZO_10) l0C00_001B
+	// succ:  6 3
+l0C00_001B:		// block 3, pred: 2
+	SZO_14 = cond(ax - 0x0002)
+	branch Test(NE,SZO_14) l0C00_0022
+	// succ:  5 4
+l0C00_0022:		// block 4, pred: 3
+	return 0x0000
+	// succ:  8
+l0C00_001E:		// block 5, pred: 3
+	return 0x0127
+	// succ:  8
+l0C00_0017:		// block 6, pred: 2
+	return 0x0125
+	// succ:  8
+l0C00_0010:		// block 7, pred: 1
+	return 0x0123
+	// succ:  8
+fn0C00_000C_exit:		// block 8, pred: 4 5 6 7
+	// succ: 

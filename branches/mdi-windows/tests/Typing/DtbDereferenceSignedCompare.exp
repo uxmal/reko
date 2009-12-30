@@ -1,0 +1,112 @@
+// ProcedureMock
+void ProcedureMock()
+ProcedureMock_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	ds2 = ds
+	store(Mem0[ds:0x5400:bool]) = Mem0[ds:Mem0[ds:0x5404:word16] + 0x0004:word16] < 0x0014
+	store(Mem0[ds2:Mem0[ds2:0x5404:word16] + 0x0004:word16]) = 0x0000
+	// succ: 
+
+// Equivalence classes ////////////
+Eq_2: (ptr (segment (5400 T_12 t5400) (5404 T_5 t5404)))
+	T_2 (in ds : selector)
+	T_3 (in ds2 : word16)
+Eq_4: (memptr T_2 (struct (0 T_5 t0000)))
+	T_4 (in 0x5404 : word16)
+Eq_5: (memptr T_2 (struct (4 T_8 t0004)))
+	T_5 (in Mem0[ds:0x5404:word16] : word16)
+	T_15 (in Mem0[ds2:0x5404:word16] : word16)
+Eq_6: word16
+	T_6 (in 0x0004 : word16)
+Eq_7: word16
+	T_7 (in Mem0[ds:0x5404:word16] + 0x0004 : word16)
+Eq_8: word16
+	T_8 (in Mem0[ds:Mem0[ds:0x5404:word16] + 0x0004:word16] : word16)
+	T_9 (in 0x0014 : word16)
+	T_13 (in 0x0000 : word16)
+	T_18 (in Mem0[ds2:Mem0[ds2:0x5404:word16] + 0x0004:word16] : word16)
+Eq_10: bool
+	T_10 (in Mem0[ds:Mem0[ds:0x5404:word16] + 0x0004:word16] < 0x0014 : bool)
+	T_12 (in Mem0[ds:0x5400:bool] : bool)
+Eq_11: (memptr T_2 (struct (0 T_12 t0000)))
+	T_11 (in 0x5400 : word16)
+Eq_14: (memptr T_3 (struct (0 T_15 t0000)))
+	T_14 (in 0x5404 : word16)
+Eq_16: word16
+	T_16 (in 0x0004 : word16)
+Eq_17: word16
+	T_17 (in Mem0[ds2:0x5404:word16] + 0x0004 : word16)
+// Type Variables ////////////
+Globals: (in globals : ptr0)
+  Class: Eq_1
+  DataType: 
+  OrigDataType: 
+T_2: (in ds : selector)
+  Class: Eq_2
+  DataType: (ptr (segment (5400 T_12 t5400) (5404 T_5 t5404)))
+  OrigDataType: (ptr (segment (5400 T_12 t5400) (5404 T_5 t5404)))
+T_3: (in ds2 : word16)
+  Class: Eq_2
+  DataType: (ptr (segment (5400 T_12 t5400) (5404 T_5 t5404)))
+  OrigDataType: (ptr (struct (5404 T_15 t5404)))
+T_4: (in 0x5404 : word16)
+  Class: Eq_4
+  DataType: (memptr T_2 (struct (0 T_5 t0000)))
+  OrigDataType: (memptr T_2 (struct (0 T_5 t0000)))
+T_5: (in Mem0[ds:0x5404:word16] : word16)
+  Class: Eq_5
+  DataType: (memptr T_2 (struct (4 T_8 t0004)))
+  OrigDataType: (memptr T_2 (struct (4 T_8 t0004)))
+T_6: (in 0x0004 : word16)
+  Class: Eq_6
+  DataType: word16
+  OrigDataType: word16
+T_7: (in Mem0[ds:0x5404:word16] + 0x0004 : word16)
+  Class: Eq_7
+  DataType: word16
+  OrigDataType: word16
+T_8: (in Mem0[ds:Mem0[ds:0x5404:word16] + 0x0004:word16] : word16)
+  Class: Eq_8
+  DataType: word16
+  OrigDataType: int16
+T_9: (in 0x0014 : word16)
+  Class: Eq_8
+  DataType: word16
+  OrigDataType: int16
+T_10: (in Mem0[ds:Mem0[ds:0x5404:word16] + 0x0004:word16] < 0x0014 : bool)
+  Class: Eq_10
+  DataType: bool
+  OrigDataType: bool
+T_11: (in 0x5400 : word16)
+  Class: Eq_11
+  DataType: (memptr T_2 (struct (0 T_12 t0000)))
+  OrigDataType: (memptr T_2 (struct (0 T_12 t0000)))
+T_12: (in Mem0[ds:0x5400:bool] : bool)
+  Class: Eq_10
+  DataType: bool
+  OrigDataType: bool
+T_13: (in 0x0000 : word16)
+  Class: Eq_8
+  DataType: word16
+  OrigDataType: word16
+T_14: (in 0x5404 : word16)
+  Class: Eq_14
+  DataType: (memptr T_3 (struct (0 T_15 t0000)))
+  OrigDataType: (memptr T_3 (struct (0 T_15 t0000)))
+T_15: (in Mem0[ds2:0x5404:word16] : word16)
+  Class: Eq_5
+  DataType: (memptr T_2 (struct (4 T_8 t0004)))
+  OrigDataType: (memptr T_3 (struct (4 T_18 t0004)))
+T_16: (in 0x0004 : word16)
+  Class: Eq_16
+  DataType: word16
+  OrigDataType: word16
+T_17: (in Mem0[ds2:0x5404:word16] + 0x0004 : word16)
+  Class: Eq_17
+  DataType: word16
+  OrigDataType: word16
+T_18: (in Mem0[ds2:Mem0[ds2:0x5404:word16] + 0x0004:word16] : word16)
+  Class: Eq_8
+  DataType: word16
+  OrigDataType: word16
