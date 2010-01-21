@@ -366,12 +366,6 @@
     <Compile Include="Gui\Windows\Forms\EditProjectDialog.Designer.cs">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\MDIParent1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\MDIParent1.Designer.cs">
-      <DependentUpon>MDIParent1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Gui\Windows\Forms\ScanPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -634,9 +628,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\MainForm2.resx">
       <DependentUpon>MainForm2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\MDIParent1.resx">
-      <DependentUpon>MDIParent1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\PhasePage.resx">
       <DependentUpon>PhasePage.cs</DependentUpon>

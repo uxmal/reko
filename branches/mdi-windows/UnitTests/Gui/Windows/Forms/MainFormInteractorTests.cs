@@ -111,7 +111,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.dis</intermediate-code>
     <output>foo.c</output>
-    <type-inference>false</type-inference>
     <types-file>foo.h</types-file>
   </output>
   <procedure name=""MyProc"">

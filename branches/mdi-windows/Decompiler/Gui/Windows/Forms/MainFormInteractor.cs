@@ -155,6 +155,9 @@ namespace Decompiler.Gui.Windows.Forms
             sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
+            var codeViewSvc = new CodeViewerServiceImpl(sc);
+            sc.AddService(typeof(ICodeViewerService), codeViewSvc);
+
             var pibSvc = new ProgramImageBrowserService(form.BrowserList);
             sc.AddService(typeof(IProgramImageBrowserService), pibSvc);
 
