@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,6 +51,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             var windowFrame = MockRepository.GenerateStub<IWindowFrame>();
             uiSvc.Expect(s => s.CreateWindow(
                     Arg<string>.Is.Equal("codeViewerWindow"),
+                    Arg<string>.Is.Equal("Code Viewer"),
                     Arg<IWindowPane>.Is.Anything))
                 .Return(windowFrame);
             windowFrame.Expect(s => s.Show());

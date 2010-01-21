@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,6 +60,7 @@ namespace Decompiler.UnitTests.Mocks
 
             this.prog = loader.Load(image, null);
             this.project = new DecompilerProject();
+            this.project.Input.Filename = fileName;
         }
 
         public void ScanProgram()

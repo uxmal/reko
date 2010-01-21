@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,9 +60,10 @@ namespace Decompiler.Gui.Windows
                 return null;
         }
 
-        public IWindowFrame CreateWindow(string windowType, IWindowPane pane)
+        public IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane)
         {
             Form mdiForm = new Form();
+            mdiForm.Text = windowTitle;
             WindowFrame frame = new WindowFrame(this, windowType, mdiForm, pane);
             frames.Add(windowType, frame);
             pane.SetSite(sp);

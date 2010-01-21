@@ -130,7 +130,7 @@
 </value>
   </data>
   <data name="lblCopyleft.Text" xml:space="preserve">
-    <value>Decompiler Copyright (C) 1999-2009 John Källén.
+    <value>Decompiler Copyright (C) 1999-2010 John Källén.
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it. The Decompiler project is hosted at SourceForge at the following URL:</value>
   </data>
 </root>

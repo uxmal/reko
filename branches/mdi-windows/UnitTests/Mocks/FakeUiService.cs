@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public IWindowFrame CreateWindow(string windowType, IWindowPane pane)
+        public IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane)
         {
             throw new NotImplementedException();
         }

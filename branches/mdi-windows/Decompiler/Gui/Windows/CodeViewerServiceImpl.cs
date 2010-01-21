@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Decompiler.Gui.Windows
 
         public void DisplayProcedure(Procedure proc)
         {
-            ShowWindow("codeViewerWindow", pane);
+            ShowWindow("codeViewerWindow", "Code Viewer", pane);
             pane.DisplayProcedure(proc);
         }
     }

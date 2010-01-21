@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,15 +38,6 @@ namespace Decompiler.Loading
 			this.entryPoints = new List<EntryPoint>();
 		}
 
-        [Obsolete("Moved to decompilerdriver")]
-        protected DecompilerProject CreateDefaultProject(string filename, Program prog)
-        {
-            DecompilerProject project = new DecompilerProject();
-            SetDefaultFilenames(filename, project);
-            project.Input.BaseAddress = prog.Image.BaseAddress;
-            return project;
-        }
-
         public List<EntryPoint> EntryPoints
         {
             get { return entryPoints; }
@@ -82,17 +73,5 @@ namespace Decompiler.Loading
                 prog.ImportThunks.Add(item.Key, item.Value);
             }
         }
-
-        [Obsolete]
-        protected void SetDefaultFilenames(string inputFilename, DecompilerProject project)
-        {
-            project.Input.Filename = inputFilename;
-
-            project.Output.DisassemblyFilename = Path.ChangeExtension(inputFilename, ".asm");
-            project.Output.IntermediateFilename = Path.ChangeExtension(inputFilename, ".dis");
-            project.Output.OutputFilename = Path.ChangeExtension(inputFilename, ".c");
-            project.Output.TypesFilename = Path.ChangeExtension(inputFilename, ".h");
-        }
-
     }
 }

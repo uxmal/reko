@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,10 +50,11 @@ namespace Decompiler.UnitTests.Gui.Windows
             var service = new MemoryViewServiceImpl(sc);
             var svc = (IMemoryViewService)service;
             Expect.Call(shellUi.FindWindow("memoryViewWindow")).Return(null);
-            Expect.Call(shellUi.CreateWindow(null, null)).Return(windowFrame)
-                .Constraints(
-                    Is.Equal("memoryViewWindow"),
-                    new Anything());
+            Expect.Call(shellUi.CreateWindow(
+                Arg<string>.Is.Anything,
+                Arg<string>.Is.Equal("Memory View"),
+                Arg<IWindowPane>.Is.Anything))
+                .Return(windowFrame);
             Expect.Call(windowFrame.Show);
             repository.ReplayAll();
 

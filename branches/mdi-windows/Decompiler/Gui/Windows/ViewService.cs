@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,12 +46,12 @@ namespace Decompiler.Gui.Windows
             get { return shellUiSvc; }
         }
 
-        protected void ShowWindow(string windowType, IWindowPane innerPane)
+        protected void ShowWindow(string windowType, string windowTitle, IWindowPane innerPane)
         {
             var windowFrame = shellUiSvc.FindWindow(windowType);
             if (windowFrame == null)
             {
-                windowFrame = shellUiSvc.CreateWindow(windowType, innerPane);
+                windowFrame = shellUiSvc.CreateWindow(windowType, windowTitle, innerPane);
             }
             windowFrame.Show();
         }
