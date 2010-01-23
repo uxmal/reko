@@ -31,9 +31,10 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             repository.ReplayAll();
 
-            IWindowFrame window = svc.CreateWindow("testWin", pane);
+            IWindowFrame window = svc.CreateWindow("testWin", "Test Window", pane);
             Assert.IsNotNull(window);
             Assert.AreEqual(1, form.MdiChildren.Length);
+            Assert.AreEqual("Test Window", form.MdiChildren[0].Text);
             window.Show();
             repository.VerifyAll();
         }
@@ -42,8 +43,6 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void UserCloseWindow()
         {
-            Setup();
-
             form.Show();
 
             var pane = repository.StrictMock<IWindowPane>();
@@ -54,12 +53,33 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             repository.ReplayAll();
 
-            var frame = svc.CreateWindow("testWindow", pane);
+            var frame = svc.CreateWindow("testWindow", "Test Window", pane);
             frame.Show();
             Assert.AreEqual(1, form.MdiChildren.Length);
             Assert.IsNotNull(svc.FindWindow("testWindow"));
             frame.Close();
             Assert.IsNull(svc.FindWindow("testWindow"));
+
+            repository.VerifyAll();
+
+        }
+
+        [Test]
+        public void MultipleCallsToShowShouldntCreateNewPaneControl()
+        {
+            form.Show();
+
+            var pane = repository.StrictMock<IWindowPane>();
+            var ctrl1 = new Control();
+            pane.Expect(s => s.SetSite(Arg<IServiceProvider>.Is.Anything));
+            pane.Expect(s => s.CreateControl()).Return(ctrl1);
+            pane.Expect(s => s.Close());
+            repository.ReplayAll();
+
+            var frame = svc.CreateWindow("testWindow", "Test Window", pane);
+            frame.Show();
+            frame.Show();
+            frame.Close();
 
             repository.VerifyAll();
 

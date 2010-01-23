@@ -25,11 +25,15 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
-    public class DecompilerShellUiService : DecompilerUiService, IDecompilerShellUiService
+    public class DecompilerShellUiService : 
+        DecompilerUiService, 
+        IDecompilerShellUiService,
+        ICommandTarget
     {
         private Form form;
         private DecompilerMenus dm;
-        private Dictionary<string, WindowFrame> frames;
+        private Dictionary<string, WindowFrame> framesByName;
+        private Dictionary<Form, WindowFrame> framesByForm;
         private IServiceProvider sp;
 
         public DecompilerShellUiService(
@@ -43,7 +47,8 @@ namespace Decompiler.Gui.Windows
             this.form = form;
             this.dm = dm;
             this.sp = sp;
-            this.frames = new Dictionary<string,WindowFrame>();
+            this.framesByName = new Dictionary<string,WindowFrame>();
+            this.framesByForm = new Dictionary<Form, WindowFrame>();
         }
 
         public virtual ContextMenu GetContextMenu(int menuId)
@@ -54,7 +59,7 @@ namespace Decompiler.Gui.Windows
         public IWindowFrame FindWindow(string windowType)
         {
             WindowFrame frame;
-            if (frames.TryGetValue(windowType, out frame))
+            if (framesByName.TryGetValue(windowType, out frame))
                 return frame;
             else 
                 return null;
@@ -65,10 +70,56 @@ namespace Decompiler.Gui.Windows
             Form mdiForm = new Form();
             mdiForm.Text = windowTitle;
             WindowFrame frame = new WindowFrame(this, windowType, mdiForm, pane);
-            frames.Add(windowType, frame);
+            framesByName.Add(windowType, frame);
+            framesByForm.Add(mdiForm, frame);
             pane.SetSite(sp);
             mdiForm.MdiParent = form;
             return frame;
+        }
+
+        private void RemoveFrame(WindowFrame windowFrame, string key, Form form)
+        {
+            framesByName.Remove(key);
+            framesByForm.Remove(form);
+        }
+
+        private ICommandTarget ActiveMdiCommandTarget()
+        {
+            var activeMdiForm = form.ActiveMdiChild;
+            if (activeMdiForm == null)
+                return null;
+            WindowFrame frame;
+            if (!framesByForm.TryGetValue(activeMdiForm, out frame))
+                return null;
+            return frame.Pane as ICommandTarget;
+        }
+
+
+        #region ICommandTarget Members
+
+        /// <summary>
+        /// Forward the query to the active pane if it also supports ICommandTarget.
+        /// </summary>
+        /// <param name="cmdSet"></param>
+        /// <param name="cmdId"></param>
+        /// <param name="status"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        {
+            ICommandTarget ct = ActiveMdiCommandTarget();
+            if (ct == null)
+                return false;
+            return ct.QueryStatus(ref cmdSet, cmdId, status, text);
+        }
+
+
+        public bool Execute(ref Guid cmdSet, int cmdId)
+        {
+            ICommandTarget ct = ActiveMdiCommandTarget();
+            if (ct == null)
+                return false;
+            return ct.Execute(ref cmdSet, cmdId);
         }
 
         public class WindowFrame : IWindowFrame
@@ -77,6 +128,7 @@ namespace Decompiler.Gui.Windows
             string key;
             Form form;
             IWindowPane pane;
+            Control ctrl;
 
             public WindowFrame(DecompilerShellUiService svc, string key, Form form, IWindowPane pane)
             {
@@ -95,16 +147,27 @@ namespace Decompiler.Gui.Windows
             void form_FormClosed(object sender, FormClosedEventArgs e)
             {
                 pane.Close();
-                svc.frames.Remove(key);
+                svc.RemoveFrame(this, key, form);
             }
 
             public void Show()
             {
-                Control ctrl = pane.CreateControl();
-                ctrl.Dock = DockStyle.Fill;
-                form.Controls.Add(ctrl);
+                if (ctrl == null)
+                {
+                    ctrl = pane.CreateControl();
+                    ctrl.Dock = DockStyle.Fill;
+                    form.Controls.Add(ctrl);
+                }
                 form.Show();
             }
+
+            public IWindowPane Pane
+            {
+                get { return pane; }
+            }
         }
+
+
+        #endregion
     }
 }

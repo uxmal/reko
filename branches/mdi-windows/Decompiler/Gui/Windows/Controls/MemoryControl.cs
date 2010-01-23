@@ -49,6 +49,7 @@ namespace Decompiler.Gui.Windows.Controls
 		private ProgramImage image;
 		private Address addrSelected;
         private Address addrAnchor;
+        private int iCtrl;          //$DEBUG
 
 		private int cRows;				// total number of rows.
 		private int yTopRow;			// index of topmost visible row
@@ -56,6 +57,8 @@ namespace Decompiler.Gui.Windows.Controls
 		private Size cellSize;			// size of cell in pixels.
 		private Point ptDown;			 // point at which mouse was clicked.
 		private VScrollBar vscroller;
+
+        static int ctrlCount;
 
 		public MemoryControl()
 		{
@@ -68,6 +71,7 @@ namespace Decompiler.Gui.Windows.Controls
 			vscroller.Scroll += new ScrollEventHandler(vscroller_Scroll);
 			wordSize = 1;
 			cbRow = 16;
+            this.iCtrl = ctrlCount++;
 		}
 
         /// <summary>
@@ -76,6 +80,8 @@ namespace Decompiler.Gui.Windows.Controls
         /// </summary>
         public AddressRange GetAddressRange()
         {
+            Debug.WriteLine(string.Format("GetAddressRange: ctrl{2}: sel: {0}, anchor {1}", addrSelected, addrAnchor, iCtrl));
+
             if (addrSelected == null || addrAnchor == null)
             {
                 return AddressRange.Empty;
@@ -228,7 +234,7 @@ namespace Decompiler.Gui.Windows.Controls
                 {
                     addrAnchor = addrSelected;
                 }
-                Debug.WriteLine(string.Format("sel: {0}, anchor {1}", addrSelected, addrAnchor));
+                Debug.WriteLine(string.Format("MouseDown: ctrl{2}: sel: {0}, anchor {1}", addrSelected, addrAnchor, iCtrl));
 				Invalidate();
 			}
 			OnSelectionChanged();

@@ -59,6 +59,7 @@ namespace Decompiler.Gui.Windows.Forms
         private ServiceContainer sc;
         private Dictionary<IPhasePageInteractor, IPhasePageInteractor> nextPage;
         private IDecompilerConfigurationService config;
+        private ICommandTarget subWindowCommandTarget;
 
 		private static string dirSettings;
 		
@@ -152,6 +153,7 @@ namespace Decompiler.Gui.Windows.Forms
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
             uiSvc = CreateShellUiService(dm);
+            subWindowCommandTarget = (ICommandTarget)uiSvc;
             sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
@@ -384,6 +386,8 @@ namespace Decompiler.Gui.Windows.Forms
 		#region ICommandTarget members 
 		public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus cmdStatus, CommandText cmdText)
 		{
+            if (subWindowCommandTarget.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
+                return true;
 			if (currentPage != null && currentPage.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
@@ -418,6 +422,8 @@ namespace Decompiler.Gui.Windows.Forms
 
 		public bool Execute(ref Guid cmdSet, int cmdId)
 		{
+            if (subWindowCommandTarget.Execute(ref cmdSet, cmdId))
+                return true;
 			if (currentPage != null && currentPage.Execute(ref cmdSet, cmdId))
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)

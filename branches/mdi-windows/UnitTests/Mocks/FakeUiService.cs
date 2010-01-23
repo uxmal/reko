@@ -86,7 +86,10 @@ namespace Decompiler.UnitTests.Mocks
         }
     }
 
-    public class FakeShellUiService : FakeUiService, IDecompilerShellUiService
+    public class FakeShellUiService : 
+        FakeUiService,
+        IDecompilerShellUiService,
+        ICommandTarget
     {
         public ContextMenu GetContextMenu(int menuId)
         {
@@ -102,6 +105,20 @@ namespace Decompiler.UnitTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        #region ICommandTarget Members
+
+        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        {
+            return false;
+        }
+
+        public bool Execute(ref Guid cmdSet, int cmdId)
+        {
+            return false;
+        }
+
+        #endregion
     }
 
 }

@@ -279,11 +279,14 @@
     <Compile Include="Gui\IMemoryViewService.cs" />
     <Compile Include="Gui\IProgramImageBrowserService.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
+    <Compile Include="Gui\ISearchResultService.cs">
+    </Compile>
     <Compile Include="Gui\IStartPage.cs" />
     <Compile Include="Gui\IStatusBarService.cs" />
     <Compile Include="Gui\IWindowPane.cs" />
     <Compile Include="Gui\IWorkerDialogService.cs" />
     <Compile Include="Gui\MenuBuilder.cs" />
+    <Compile Include="Gui\SearchResult.cs" />
     <Compile Include="Gui\Windows\CodeViewerPane.cs" />
     <Compile Include="Gui\Windows\CodeViewerServiceImpl.cs" />
     <Compile Include="Gui\Windows\Controls\CodeControl.cs" />
@@ -386,6 +389,7 @@
     <Compile Include="Gui\IWindowFrame.cs" />
     <Compile Include="Gui\Windows\MemoryViewInteractor.cs" />
     <Compile Include="Gui\Windows\MemoryViewServiceImpl.cs" />
+    <Compile Include="Gui\Windows\SearchResultServiceImpl.cs" />
     <Compile Include="Gui\Windows\ViewService.cs" />
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
     <Compile Include="Loading\LoadedProject.cs" />
