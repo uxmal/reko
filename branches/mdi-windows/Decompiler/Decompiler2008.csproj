@@ -274,11 +274,11 @@
     <Compile Include="Gui\IDecompilerService.cs" />
     <Compile Include="Gui\IDecompilerUIService.cs" />
     <Compile Include="Gui\IDisassemblyViewService.cs" />
-    <Compile Include="Gui\IFindResultsService.cs" />
     <Compile Include="Gui\IMainForm.cs" />
     <Compile Include="Gui\IMemoryViewService.cs" />
     <Compile Include="Gui\IProgramImageBrowserService.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
+    <Compile Include="Gui\ISearchResult.cs" />
     <Compile Include="Gui\ISearchResultService.cs">
     </Compile>
     <Compile Include="Gui\IStartPage.cs" />
@@ -286,7 +286,8 @@
     <Compile Include="Gui\IWindowPane.cs" />
     <Compile Include="Gui\IWorkerDialogService.cs" />
     <Compile Include="Gui\MenuBuilder.cs" />
-    <Compile Include="Gui\SearchResult.cs" />
+    <Compile Include="Gui\ProcedureSearchResult.cs">
+    </Compile>
     <Compile Include="Gui\Windows\CodeViewerPane.cs" />
     <Compile Include="Gui\Windows\CodeViewerServiceImpl.cs" />
     <Compile Include="Gui\Windows\Controls\CodeControl.cs" />
@@ -413,7 +414,6 @@
       <DependentUpon>FindDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\FindDialogInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\FindResultsInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\GotoDialog.cs">
       <SubType>Form</SubType>
     </Compile>

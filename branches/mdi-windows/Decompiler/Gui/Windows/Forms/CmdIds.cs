@@ -74,17 +74,18 @@ namespace Decompiler.Gui.Windows.Forms
 		public const int FileExit = 4 + 2000;
 		public const int EditFind = 5 + 2000;
 		public const int ViewGoToAddress = 6 + 2000;
-		public const int ViewShowAllFragments = 7 + 2000;
-		public const int ViewShowUnscanned = 8 + 2000;
-		public const int ViewFindFragments = 9 + 2000;
-		public const int ActionNextPhase = 10 + 2000;
-		public const int ActionFinishDecompilation = 11 + 2000;
-		public const int ActionMarkProcedure = 12 + 2000;
-		public const int ActionEditSignature = 13 + 2000;
-		public const int WindowsCascade = 14 + 2000;
-		public const int WindowsTileVertical = 15 + 2000;
-		public const int WindowsTileHorizontal = 16 + 2000;
-		public const int HelpAbout = 17 + 2000;
+		public const int ViewFindAllProcedures = 7 + 2000;
+		public const int ViewShowAllFragments = 8 + 2000;
+		public const int ViewShowUnscanned = 9 + 2000;
+		public const int ViewFindFragments = 10 + 2000;
+		public const int ActionNextPhase = 11 + 2000;
+		public const int ActionFinishDecompilation = 12 + 2000;
+		public const int ActionMarkProcedure = 13 + 2000;
+		public const int ActionEditSignature = 14 + 2000;
+		public const int WindowsCascade = 15 + 2000;
+		public const int WindowsTileVertical = 16 + 2000;
+		public const int WindowsTileHorizontal = 17 + 2000;
+		public const int HelpAbout = 18 + 2000;
 		public const int FileMru = 2200;
 	}
 

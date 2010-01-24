@@ -36,7 +36,6 @@
             this.listBrowser = new System.Windows.Forms.ListView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.listDiagnostics = new System.Windows.Forms.ListView();
             this.listFindResults = new System.Windows.Forms.ListView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitter1 = new System.Windows.Forms.Splitter();
@@ -44,9 +43,11 @@
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.listDiagnostics = new System.Windows.Forms.ListView();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -88,7 +89,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.listDiagnostics);
             this.tabPage1.Controls.Add(this.listFindResults);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -98,20 +98,10 @@
             this.tabPage1.Text = "Find results";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // listDiagnostics
-            // 
-            this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listDiagnostics.FullRowSelect = true;
-            this.listDiagnostics.Location = new System.Drawing.Point(3, 3);
-            this.listDiagnostics.Name = "listDiagnostics";
-            this.listDiagnostics.Size = new System.Drawing.Size(770, 148);
-            this.listDiagnostics.TabIndex = 1;
-            this.listDiagnostics.UseCompatibleStateImageBehavior = false;
-            this.listDiagnostics.View = System.Windows.Forms.View.Details;
-            // 
             // listFindResults
             // 
             this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listFindResults.FullRowSelect = true;
             this.listFindResults.Location = new System.Drawing.Point(3, 3);
             this.listFindResults.Name = "listFindResults";
             this.listFindResults.Size = new System.Drawing.Size(770, 148);
@@ -120,6 +110,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.listDiagnostics);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -159,6 +150,17 @@
             this.imageList.Images.SetKeyName(2, "NextPhase.ico");
             this.imageList.Images.SetKeyName(3, "FinishDecompilation.ico");
             // 
+            // listDiagnostics
+            // 
+            this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listDiagnostics.FullRowSelect = true;
+            this.listDiagnostics.Location = new System.Drawing.Point(3, 3);
+            this.listDiagnostics.Name = "listDiagnostics";
+            this.listDiagnostics.Size = new System.Drawing.Size(770, 148);
+            this.listDiagnostics.TabIndex = 2;
+            this.listDiagnostics.UseCompatibleStateImageBehavior = false;
+            this.listDiagnostics.View = System.Windows.Forms.View.Details;
+            // 
             // MainForm2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -177,6 +179,7 @@
             this.statusStrip.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -193,10 +196,10 @@
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Splitter splitter2;
         private System.Windows.Forms.ListView listFindResults;
-        private System.Windows.Forms.ListView listDiagnostics;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.SaveFileDialog sfd;
         private System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.ListView listDiagnostics;
     }
 }
 

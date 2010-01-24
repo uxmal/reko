@@ -29,44 +29,21 @@ namespace Decompiler.Gui
     /// display items and to navigate to items when requested by the user. Implementations of derived
     /// classes should behave as caches if possible.
     /// </summary>
-    public abstract class SearchResult
+    public interface ISearchResult
     {
-        public abstract int Count { get; }
+        int Count { get; }
 
-        public abstract SearchResultItem this[int i] { get;}
+        void CreateColumns(ISearchResultView view);
 
-        public abstract IEnumerable<SearchResultColumn> GetColumns();
+        int GetItemImageIndex(int i);
+
+        string[] GetItemStrings(int i);
+
+        void NavigateTo(int i);
     }
 
-    public abstract class SearchResultItem
+    public interface ISearchResultView
     {
-        public ListViewItem CreateListViewItem()
-        {
-            var item = new ListViewItem();
-            item.Text = "Yo, sup?";
-            return item;
-        }
-    }
-
-    public class SearchResultColumn
-    {
-        private string text;
-        private int width;
-
-        public SearchResultColumn(string text, int widthInCharacters)
-        {
-            this.text = text;
-            this.width = widthInCharacters;
-        }
-
-        public int WidthInCharacters
-        {
-            get { return width; }
-        }
-
-        public string Text
-        {
-            get { return text; }
-        }
+        void AddColumn(string p, int p_2);
     }
 }

@@ -49,6 +49,7 @@ namespace Decompiler.Gui.Windows.Forms
 		private IDecompilerService decompilerSvc;
         private IDecompilerShellUiService uiSvc;
         private IDiagnosticsService diagnosticsSvc;
+        private ISearchResultService srSvc;
 		private IPhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
 		private ILoadedPageInteractor pageLoaded;
@@ -140,10 +141,6 @@ namespace Decompiler.Gui.Windows.Forms
 
             sc.AddService(typeof(IStatusBarService), (IStatusBarService) this);
 
-            var f = new FindResultsInteractor();
-            f.Attach(form.FindResultsList);
-            sc.AddService(typeof(IFindResultsService), f);
-
             var d = new DiagnosticsInteractor();
             d.Attach(form.DiagnosticsList);
             diagnosticsSvc = d;
@@ -172,6 +169,9 @@ namespace Decompiler.Gui.Windows.Forms
 
             sc.AddService(typeof(IMemoryViewService), new MemoryViewServiceImpl(sc));
             sc.AddService(typeof(IDisassemblyViewService), new DisassemblyViewServiceImpl(sc));
+
+            srSvc = new SearchResultServiceImpl(form.FindResultsList);
+            sc.AddService(typeof(ISearchResultService), srSvc);
         }
 
         protected virtual DecompilerEventListener CreateDecompilerListener()
@@ -311,6 +311,11 @@ namespace Decompiler.Gui.Windows.Forms
             set { projectFileName = value; }
         }
 
+        public void FindProcedures(ISearchResultService svc)
+        {
+            svc.ShowSearchResults(new ProcedureSearchResult(this.sc, this.decompilerSvc.Decompiler.Program.Procedures));
+        }
+
         public void Save()
         {
             if (string.IsNullOrEmpty(this.ProjectFileName))
@@ -320,7 +325,6 @@ namespace Decompiler.Gui.Windows.Forms
                     return;
                 ProjectFileName = newName;
                 mru.Use(newName);
-
             }
 
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
@@ -392,13 +396,8 @@ namespace Decompiler.Gui.Windows.Forms
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{
-				int iMru = cmdId - CmdIds.FileMru;
-				if (0 <= iMru && iMru < mru.Items.Count)
-				{
-					cmdStatus.Status = MenuStatus.Visible|MenuStatus.Enabled;
-					cmdText.Text = (string) mru.Items[iMru];
-					return true;
-				}
+                if (QueryMruItem(cmdId, cmdStatus, cmdText))
+                    return true;
 
 				switch (cmdId)
 				{
@@ -415,10 +414,27 @@ namespace Decompiler.Gui.Windows.Forms
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
+                case CmdIds.ViewFindAllProcedures:
+                    cmdStatus.Status = IsDecompilerLoaded
+                        ? MenuStatus.Enabled | MenuStatus.Visible
+                        : MenuStatus.Visible;
+                    return true;
 				}
 			}
 			return false;
 		}
+
+        private bool QueryMruItem(int cmdId, CommandStatus cmdStatus, CommandText cmdText)
+        {
+            int iMru = cmdId - CmdIds.FileMru;
+            if (0 <= iMru && iMru < mru.Items.Count)
+            {
+                cmdStatus.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                cmdText.Text = (string)mru.Items[iMru];
+                return true;
+            }
+            return false;
+        }
 
 		public bool Execute(ref Guid cmdSet, int cmdId)
 		{
@@ -428,14 +444,8 @@ namespace Decompiler.Gui.Windows.Forms
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{
-				int iMru = cmdId - CmdIds.FileMru;
-				if (0 <= iMru && iMru < mru.Items.Count)
-				{
-					string file = (string) mru.Items[iMru];
-					OpenBinary(file);
-					mru.Use(file);
-					return true;
-				}
+                if (ExecuteMruFile(cmdId))
+                    return false;
 
 				switch (cmdId)
 				{
@@ -445,6 +455,8 @@ namespace Decompiler.Gui.Windows.Forms
 
 				case CmdIds.ActionNextPhase: NextPhase(); return true;
 				case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
+
+                case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); return true;
 
                 case CmdIds.WindowsCascade: LayoutMdi(MdiLayout.Cascade); return true;
                 case CmdIds.WindowsTileVertical: LayoutMdi(MdiLayout.TileVertical); return true;
@@ -456,7 +468,29 @@ namespace Decompiler.Gui.Windows.Forms
 			return false;
 		}
 
+        private bool ExecuteMruFile(int cmdId)
+        {
+            int iMru = cmdId - CmdIds.FileMru;
+            if (0 <= iMru && iMru < mru.Items.Count)
+            {
+                string file = (string)mru.Items[iMru];
+                OpenBinary(file);
+                mru.Use(file);
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsDecompilerLoaded
+        {
+            get {
+                if (decompilerSvc.Decompiler == null)
+                    return false;
+                return decompilerSvc.Decompiler.Program != null;
+            }
+        }
 		#endregion
+
 
         #region IStatusBarService Members ////////////////////////////////////
 

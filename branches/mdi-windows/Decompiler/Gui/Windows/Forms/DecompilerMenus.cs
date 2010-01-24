@@ -104,6 +104,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slViewGoToAddress = new CommandMenuItem("_Go to Address...", new Guid(CmdSets.Decompiler), CmdIds.ViewGoToAddress);
             slViewGoToAddress.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewGoToAddress);
+            CommandMenuItem slViewFindAllProcedures = new CommandMenuItem("Find all _procedures", new Guid(CmdSets.Decompiler), CmdIds.ViewFindAllProcedures);
+            slViewFindAllProcedures.IsDynamic = false;
+            slGrpViewScanned.Add(0, slViewFindAllProcedures);
             CommandMenuItem slViewShowAllFragments = new CommandMenuItem("Show _all fragments", new Guid(CmdSets.Decompiler), CmdIds.ViewShowAllFragments);
             slViewShowAllFragments.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewShowAllFragments);

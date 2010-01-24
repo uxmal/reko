@@ -177,6 +177,7 @@
     <Compile Include="FileUnitTester.cs" />
     <Compile Include="Gui\DecompilerServiceTests.cs" />
     <Compile Include="Gui\MenuBuilderTests.cs" />
+    <Compile Include="Gui\ProcedureSearchResultTests.cs" />
     <Compile Include="Gui\Windows\SearchResultServiceTests.cs" />
     <Compile Include="Gui\Windows\CodeViewerPaneTests.cs" />
     <Compile Include="Gui\Windows\CodeViewerServiceTests.cs" />

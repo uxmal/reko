@@ -27,6 +27,6 @@ namespace Decompiler.Gui
 {
     public interface ISearchResultService 
     {
-        void ShowSearchResults(SearchResult result);
+        void ShowSearchResults(ISearchResult result);
     }
 }

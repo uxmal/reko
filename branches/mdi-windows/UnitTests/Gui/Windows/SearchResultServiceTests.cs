@@ -18,6 +18,7 @@
 
 using Decompiler.Gui;
 using Decompiler.Gui.Windows;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,6 +33,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private Form form;
         private ListView listSearchResults;
         private SearchResultServiceImpl svc;
+        private MockRepository repository;
 
         [SetUp]
         public void Setup()
@@ -40,6 +42,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             listSearchResults = new ListView();
             form.Controls.Add(listSearchResults);
             svc = new SearchResultServiceImpl(listSearchResults);
+            repository = new MockRepository();
         }
 
         [TearDown]
@@ -59,57 +62,61 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void ShowSingleItem()
         {
             form.Show();
-            var result = new TestSearchResult();
-            result.AddItem(new TestSearchResultItem());
+            var result = repository.StrictMock<ISearchResult>();
+            result.Expect(s => s.Count).Return(1);
+            result.Expect(s => s.CreateColumns(
+                Arg<ISearchResultView>.Is.NotNull));
+            result.Expect(s => s.Count).Return(1);
+            result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
+            result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
+            result.Expect(s => s.Count).Return(1);
+            result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
+            result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
+            result.Expect(s => s.Count).Return(1);
+            result.Expect(s => s.GetItemStrings(0)).Return(new string[] { "foo", "bar" });
+            result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
+            repository.ReplayAll();
 
             svc.ShowSearchResults(result);
             Assert.AreEqual(1, listSearchResults.Items.Count);
             Assert.AreEqual(1, listSearchResults.VirtualListSize);
+            Assert.AreEqual(2, listSearchResults.Items[0].SubItems.Count);
+            Assert.AreEqual("foo", listSearchResults.Items[0].SubItems[0].Text);
+            Assert.AreEqual("bar", listSearchResults.Items[0].SubItems[1].Text);
+
+            repository.VerifyAll();
         }
 
         [Test]
         public void CreateColumns()
         {
             form.Show();
-            var result = new TestSearchResult();
+
+            var result = repository.StrictMock<ISearchResult>();
+            result.Expect(s => s.Count).Return(0);
+            result.Expect(s => s.CreateColumns(
+                Arg<ISearchResultView>.Is.NotNull));
+            repository.ReplayAll();
+
             svc.ShowSearchResults(result);
-            Assert.AreEqual(2, listSearchResults.Columns.Count);
-            Assert.AreEqual("col1", listSearchResults.Columns[0].Text);
-            Assert.AreEqual("col2", listSearchResults.Columns[1].Text);
+
+            repository.VerifyAll();
         }
 
-        private class TestSearchResult : SearchResult
+
+        [Test]
+        public void DoubleClickShouldNavigate()
         {
-            private List<TestSearchResultItem> items = new List<TestSearchResultItem>();
+            form.Show();
 
-            public void AddItem(TestSearchResultItem item)
-            {
-                items.Add(item);
-            }
+            var result = repository.DynamicMock<ISearchResult>();
+            result.Expect(s => s.NavigateTo(1));
+            repository.ReplayAll();
 
-            public override int Count
-            {
-                get { return items.Count; }
-            }
+            svc.ShowSearchResults(result);
+            svc.DoubleClickItem(1);
 
-            public override SearchResultItem this[int i]
-            {
-                get { return items[i]; }
-            }
-
-            public override IEnumerable<SearchResultColumn> GetColumns()
-            {
-                var cols = new SearchResultColumn[] {
-                    new SearchResultColumn("col1", 4),
-                    new SearchResultColumn("col2", 8)
-                };
-                return cols;
-            }
+            repository.VerifyAll();
         }
-
-        private class TestSearchResultItem : SearchResultItem
-        {
-        }
-
     }
 }

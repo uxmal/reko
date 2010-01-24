@@ -25,6 +25,7 @@ using Decompiler.UnitTests.Mocks;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,10 +38,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 	{
 		private IMainForm form;
 		private TestMainFormInteractor interactor;
+        private MockRepository repository;
 
 		[SetUp]
 		public void Setup()
 		{
+            repository = new MockRepository();
 		}
 
 		[TearDown]
@@ -157,7 +160,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.IsNotNull(interactor.ProbeGetService(typeof (IDecompilerService)), "Should have IDecompilerService available.");
         }
 
-        [Test]
+        [Test] 
         public void IsNextPhaseEnabled()
         {
             CreateMainFormInteractorWithLoader();
@@ -191,12 +194,51 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.AreEqual("Hello!", form.StatusStrip.Items[0].Text);
         }
 
+        [Test]
+        public void QueryFindProceduresNoProgramLoaded()
+        {
+            CreateMainFormInteractor();
+            CommandStatus status;
+            status = QueryStatus(CmdIds.ViewFindAllProcedures);
+            Assert.AreEqual(MenuStatus.Visible,  status.Status);
+        }
+
+
+        [Test]
+        public void QueryFindProceduresLoaded()
+        {
+            CreateMainFormInteractorWithLoader();
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
+            svc.Decompiler.LoadProgram("foo.exe");
+            var status = QueryStatus(CmdIds.ViewFindAllProcedures);
+            Assert.AreEqual(MenuStatus.Visible|MenuStatus.Enabled, status.Status);
+        }
+
+        [Test]
+        public void ExecuteFindProcedures()
+        {
+            CreateMainFormInteractorWithLoader();
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
+            svc.Decompiler.LoadProgram("foo.exe");
+
+            var srSvc = repository.StrictMock<ISearchResultService>();
+            srSvc.Expect(s => s.ShowSearchResults(
+                Arg<ISearchResult>.Is.Anything));
+            repository.ReplayAll();
+
+            interactor.FindProcedures(srSvc);
+
+            repository.VerifyAll();
+        }
+
         private Program CreateFakeProgram()
         {
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[300]);
-            return prog;
+            return prog; 
         }
 
         private void CreateMainFormInteractorWithLoader()
@@ -234,7 +276,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private StringWriter sw;
         private string testFilename;
         private bool promptedForSaving;
-        private FakeInitialPageInteractor testInitialPageInteractor;
 
 		public TestMainFormInteractor(Program prog)
 		{
@@ -315,6 +356,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             get { return promptedForSaving; }
         }
+
 
     }
 }

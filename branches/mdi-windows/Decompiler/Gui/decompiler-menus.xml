@@ -60,6 +60,7 @@
   <cmd id="EditFind" cmdSet="Decompiler" container="GrpEdit">_Find...</cmd>
 
   <cmd id="ViewGoToAddress" cmdSet="Decompiler" container="GrpViewScanned">_Go to Address...</cmd>
+  <cmd id="ViewFindAllProcedures" cmdSet="Decompiler" container="GrpViewScanned">Find all _procedures</cmd>
   <cmd id="ViewShowAllFragments" cmdSet="Decompiler" container="GrpViewScanned">Show _all fragments</cmd>
   <cmd id="ViewShowUnscanned" cmdSet="Decompiler" container="GrpViewScanned">Show _unscanned fragments</cmd>
   <cmd id="ViewFindFragments" cmdSet="Decompiler" container="GrpViewScanned">_Find fragments...</cmd>
