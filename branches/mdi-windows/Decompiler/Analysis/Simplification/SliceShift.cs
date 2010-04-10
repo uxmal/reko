@@ -65,7 +65,7 @@ namespace Decompiler.Analysis.Simplification
             }
             if (shift == null)
                 return false;
-            if (shift.op != BinaryOperator.shl)
+            if (shift.op != BinaryOperator.Shl)
                 return false;
             Constant c = shift.Right as Constant;
             if (c == null)

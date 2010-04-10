@@ -41,12 +41,12 @@ namespace Decompiler.Analysis.Simplification
 
 		public bool Match(BinaryExpression exp)
 		{
-			if (exp.op != Operator.add)
+			if (exp.op != Operator.Add)
 				return false;
 			id = exp.Left as Identifier;
 			
 			bin = exp.Right as BinaryExpression;
-			if ((id == null || bin == null) && exp.op  == Operator.add)
+			if ((id == null || bin == null) && exp.op  == Operator.Add)
 			{
 				id = exp.Right as Identifier;
 				bin = exp.Left as BinaryExpression;
@@ -54,7 +54,7 @@ namespace Decompiler.Analysis.Simplification
 			if (id == null || bin == null)
 				return false;
 
-			if (bin.op != Operator.muls && bin.op != Operator.mulu && bin.op != Operator.mul)
+			if (bin.op != Operator.Muls && bin.op != Operator.Mulu && bin.op != Operator.Mul)
 				return false;
 
 			Identifier idInner = bin.Left as Identifier;
@@ -71,7 +71,7 @@ namespace Decompiler.Analysis.Simplification
 		public Expression Transform(Statement stm)
 		{
 			ssaIds[id].Uses.Remove(stm);
-			return new BinaryExpression(bin.op, id.DataType, id, Operator.add.ApplyConstants(cInner, new Constant(cInner.DataType, 1)));
+			return new BinaryExpression(bin.op, id.DataType, id, Operator.Add.ApplyConstants(cInner, new Constant(cInner.DataType, 1)));
 		}
 	}
 }

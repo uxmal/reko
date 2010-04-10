@@ -22,46 +22,48 @@ namespace Decompiler.Core.Operators
 {
 	public class Operator
 	{
-		public static readonly BinaryOperator add = new AddOperator();
-		public static readonly BinaryOperator and = new AndOperator();
-		public static readonly BinaryOperator divs = new DivsOperator();
-		public static readonly BinaryOperator divu = new DivuOperator();
-		public static readonly BinaryOperator mod = new ModOperator();
-		public static readonly BinaryOperator mul = new MulOperator();
-		public static readonly BinaryOperator muls = new MulsOperator();
-		public static readonly BinaryOperator mulu = new MuluOperator();
+		public static readonly BinaryOperator Add = new AddOperator();
+		public static readonly BinaryOperator And = new AndOperator();
+		public static readonly BinaryOperator Divs = new DivsOperator();
+		public static readonly BinaryOperator Divu = new DivuOperator();
+		public static readonly BinaryOperator Mod = new ModOperator();
+		public static readonly BinaryOperator Mul = new MulOperator();
+		public static readonly BinaryOperator Muls = new MulsOperator();
+		public static readonly BinaryOperator Mulu = new MuluOperator();
 
-		public static readonly BinaryOperator or = new OrOperator();
-		public static readonly BinaryOperator shr = new ShrOperator();
-		public static readonly BinaryOperator sar = new SarOperator();
+		public static readonly BinaryOperator Or = new OrOperator();
+		public static readonly BinaryOperator Shr = new ShrOperator();
+		public static readonly BinaryOperator Sar = new SarOperator();
 
-		public static readonly BinaryOperator shl = new ShlOperator();
-		public static readonly BinaryOperator sub = new SubOperator();
-		public static readonly BinaryOperator xor = new XorOperator();
+		public static readonly BinaryOperator Shl = new ShlOperator();
+		public static readonly BinaryOperator Sub = new SubOperator();
+		public static readonly BinaryOperator Xor = new XorOperator();
 
-		public static readonly BinaryOperator cand = new CandOperator();
-		public static readonly BinaryOperator cor = new CorOperator();
+		public static readonly BinaryOperator Cand = new CandOperator();
+		public static readonly BinaryOperator Cor = new CorOperator();
 
-		public static readonly BinaryOperator lt = new LtOperator();
-		public static readonly BinaryOperator gt = new GtOperator();
-		public static readonly BinaryOperator le = new LeOperator();
-		public static readonly BinaryOperator ge = new GeOperator();
+		public static readonly BinaryOperator Lt = new LtOperator();
+		public static readonly BinaryOperator Gt = new GtOperator();
+		public static readonly BinaryOperator Le = new LeOperator();
+		public static readonly BinaryOperator Ge = new GeOperator();
 
-		public static readonly BinaryOperator rlt = new RltOperator();
-		public static readonly BinaryOperator rgt = new RgtOperator();
-		public static readonly BinaryOperator rle = new RleOperator();
-		public static readonly BinaryOperator rge = new RgeOperator();
+		public static readonly BinaryOperator Rlt = new RltOperator();
+		public static readonly BinaryOperator Rgt = new RgtOperator();
+		public static readonly BinaryOperator Rle = new RleOperator();
+		public static readonly BinaryOperator Rge = new RgeOperator();
 
-		public static readonly BinaryOperator ult = new UltOperator();
-		public static readonly BinaryOperator ugt = new UgtOperator();
-		public static readonly BinaryOperator ule = new UleOperator();
-		public static readonly BinaryOperator uge = new UgeOperator();
-		public static readonly BinaryOperator eq = new EqOperator();
-		public static readonly BinaryOperator ne = new NeOperator();
-		public static readonly UnaryOperator not = new NotOperator();
-		public static readonly UnaryOperator neg = new NegateOperator();
-		public static readonly UnaryOperator comp = new ComplementOperator();
-		public static readonly UnaryOperator addrOf = new AddressOfOperator();
+		public static readonly BinaryOperator Ult = new UltOperator();
+		public static readonly BinaryOperator Ugt = new UgtOperator();
+		public static readonly BinaryOperator Ule = new UleOperator();
+		public static readonly BinaryOperator Uge = new UgeOperator();
+
+		public static readonly BinaryOperator Eq = new EqOperator();
+		public static readonly BinaryOperator Ne = new NeOperator();
+
+		public static readonly UnaryOperator Not = new NotOperator();
+		public static readonly UnaryOperator Neg = new NegateOperator();
+		public static readonly UnaryOperator Comp = new ComplementOperator();
+		public static readonly UnaryOperator AddrOf = new AddressOfOperator();
 
 		public virtual Operator Invert()
 		{

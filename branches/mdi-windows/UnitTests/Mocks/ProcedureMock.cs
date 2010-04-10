@@ -92,17 +92,17 @@ namespace Decompiler.UnitTests.Mocks
 		
 		public BinaryExpression Add(Expression left, Expression right)
 		{
-			return new BinaryExpression(Operator.add, left.DataType, left, right);
+			return new BinaryExpression(Operator.Add, left.DataType, left, right);
 		}
 
 		public BinaryExpression Add(Expression left, int right)
 		{
-			return new BinaryExpression(Operator.add, left.DataType, left, new Constant(left.DataType, right));
+			return new BinaryExpression(Operator.Add, left.DataType, left, new Constant(left.DataType, right));
 		}
 
 		public UnaryExpression AddrOf(Expression e)
 		{
-			return new UnaryExpression(UnaryOperator.addrOf, PrimitiveType.Pointer32, e);
+			return new UnaryExpression(UnaryOperator.AddrOf, PrimitiveType.Pointer32, e);
 		}
 
 		public BinaryExpression And(Expression left, int right)
@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public BinaryExpression And(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.and, left.DataType, left, right);
+            return new BinaryExpression(Operator.And, left.DataType, left, right);
         }
 
 		public virtual Statement Assign(Identifier dst, Expression src)
@@ -193,12 +193,12 @@ namespace Decompiler.UnitTests.Mocks
 
         public Expression Cand(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.cand, PrimitiveType.Bool, a, b);
+            return new BinaryExpression(Operator.Cand, PrimitiveType.Bool, a, b);
         }
 
         public Expression Cor(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.cor, PrimitiveType.Bool, a, b);
+            return new BinaryExpression(Operator.Cor, PrimitiveType.Bool, a, b);
         }
 
 
@@ -270,12 +270,12 @@ namespace Decompiler.UnitTests.Mocks
 
 		public BinaryExpression Eq(Expression a, Expression b)
 		{
-			return new BinaryExpression(Operator.eq, PrimitiveType.Bool, a, b);
+			return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, a, b);
 		}
 
 		public BinaryExpression Eq(Expression a, int b)
 		{
-			return new BinaryExpression(Operator.eq, PrimitiveType.Bool, a, new Constant(a.DataType, b));
+			return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, a, new Constant(a.DataType, b));
 		}
 
 
@@ -316,7 +316,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Expression Ge(Expression a, Expression b)
 		{
-			return new BinaryExpression(Operator.ge, PrimitiveType.Bool, a, b);
+			return new BinaryExpression(Operator.Ge, PrimitiveType.Bool, a, b);
 		}
 
 		public Expression Ge(Expression a, int b)
@@ -326,7 +326,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Expression Gt(Expression a, Expression b)
 		{
-			return new BinaryExpression(Operator.gt, PrimitiveType.Bool, a, b);
+			return new BinaryExpression(Operator.Gt, PrimitiveType.Bool, a, b);
 		}
 
 		public Expression Gt(Expression a, int b)
@@ -397,7 +397,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public BinaryExpression Le(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.le, PrimitiveType.Bool, a, b);
+            return new BinaryExpression(Operator.Le, PrimitiveType.Bool, a, b);
         }
 
         public BinaryExpression Le(Expression a, int b)
@@ -407,7 +407,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public BinaryExpression Lt(Expression a, Expression b)
 		{
-			return new BinaryExpression(Operator.lt, PrimitiveType.Bool, a, b);
+			return new BinaryExpression(Operator.Lt, PrimitiveType.Bool, a, b);
 		}
 
 		public BinaryExpression Lt(Expression a, int b)
@@ -453,52 +453,52 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Expression Mul(Expression left, Expression right)
 		{
-			return new BinaryExpression(Operator.mul, left.DataType, left, right);
+			return new BinaryExpression(Operator.Mul, left.DataType, left, right);
 		}
 
 		public Expression Mul(Expression left, int c)
 		{
-			return new BinaryExpression(Operator.mul, left.DataType, left, new Constant(left.DataType, c));
+			return new BinaryExpression(Operator.Mul, left.DataType, left, new Constant(left.DataType, c));
 		}
 
 		public Expression Muls(Expression left, Expression right)
 		{
-			return new BinaryExpression(Operator.muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, right);
+			return new BinaryExpression(Operator.Muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, right);
 		}
 
 		public Expression Muls(Expression left, int c)
 		{
-			return new BinaryExpression(Operator.muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
+			return new BinaryExpression(Operator.Muls, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
 		}
 
         public Expression Mulu(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.mulu, left.DataType, left, right);
+            return new BinaryExpression(Operator.Mulu, left.DataType, left, right);
         }
 
         public Expression Mulu(Expression left, int c)
 		{
-			return new BinaryExpression(Operator.mulu, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
+			return new BinaryExpression(Operator.Mulu, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, new Constant(left.DataType, c));
 		}
 
 		public BinaryExpression Ne(Expression a, Expression b)
 		{
-			return new BinaryExpression(Operator.ne, PrimitiveType.Bool, a, b);
+			return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, b);
 		}
 
 		public BinaryExpression Ne(Expression a, int n)
 		{
-			return new BinaryExpression(Operator.ne, PrimitiveType.Bool, a, new Constant(a.DataType, n));
+			return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, new Constant(a.DataType, n));
 		}
 
 		public UnaryExpression Not(Expression exp)
 		{
-			return new UnaryExpression(Operator.not, PrimitiveType.Bool, exp);
+			return new UnaryExpression(Operator.Not, PrimitiveType.Bool, exp);
 		}
 
 		public Expression Or(Expression a, Expression b)
 		{
-			return new BinaryExpression(Operator.or, a.DataType, a, b);
+			return new BinaryExpression(Operator.Or, a.DataType, a, b);
 		}
 
 		public Statement Phi(Identifier idDst, params Identifier [] ids)
@@ -525,25 +525,25 @@ namespace Decompiler.UnitTests.Mocks
 
 		public BinaryExpression Shl(Expression e, Expression sh)
 		{
-			return new BinaryExpression(Operator.shl, e.DataType, e, sh);
+			return new BinaryExpression(Operator.Shl, e.DataType, e, sh);
 		}
 
 		public BinaryExpression Shl(Expression e, int sh)
 		{
-			return new BinaryExpression(Operator.shl, e.DataType, e, new Constant(e.DataType, sh));
+			return new BinaryExpression(Operator.Shl, e.DataType, e, new Constant(e.DataType, sh));
 		}
 
 
 		public BinaryExpression Shl(int c, Expression sh)
 		{
 			Constant cc = Constant.Word32(c);
-			return new BinaryExpression(Operator.shl, cc.DataType, cc, sh);
+			return new BinaryExpression(Operator.Shl, cc.DataType, cc, sh);
 		}
 
         public BinaryExpression Shr(Expression bx, byte c)
         {
             Constant cc = Constant.Byte(c);
-            return new BinaryExpression(Operator.shr, bx.DataType, bx, cc);
+            return new BinaryExpression(Operator.Shr, bx.DataType, bx, cc);
         }
 
 		public Statement SideEffect(Expression side)
@@ -585,7 +585,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public BinaryExpression Sub(Expression left, Expression right)
 		{
-			return new BinaryExpression(Operator.sub, left.DataType, left, right);
+			return new BinaryExpression(Operator.Sub, left.DataType, left, right);
 		}
 
 		public BinaryExpression Sub(Expression left, int right)
@@ -664,32 +664,32 @@ namespace Decompiler.UnitTests.Mocks
 
         public BinaryExpression Ugt(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.ugt, PrimitiveType.Bool, a, b);
+            return new BinaryExpression(Operator.Ugt, PrimitiveType.Bool, a, b);
         }
 
         public BinaryExpression Uge(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.uge, PrimitiveType.Bool, a, b);
+            return new BinaryExpression(Operator.Uge, PrimitiveType.Bool, a, b);
         }
 
         public BinaryExpression Uge(Expression a, int n)
         {
-            return new BinaryExpression(Operator.uge, PrimitiveType.Bool, a, new Constant(a.DataType, n));
+            return new BinaryExpression(Operator.Uge, PrimitiveType.Bool, a, new Constant(a.DataType, n));
         }
 
         public BinaryExpression Ule(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.ule, PrimitiveType.Bool, a, b);
+            return new BinaryExpression(Operator.Ule, PrimitiveType.Bool, a, b);
         }
 
         public Expression Ult(Expression a, Expression b)
         {
-			return new BinaryExpression(Operator.ult, PrimitiveType.Bool, a, b);
+			return new BinaryExpression(Operator.Ult, PrimitiveType.Bool, a, b);
         }
 
         public Expression Ult(Expression a, int b)
         {
-            return new BinaryExpression(Operator.ult, PrimitiveType.Bool, a, new Constant(PrimitiveType.CreateWord(a.DataType.Size), b));
+            return new BinaryExpression(Operator.Ult, PrimitiveType.Bool, a, new Constant(PrimitiveType.CreateWord(a.DataType.Size), b));
         }
 
 		public Statement Use(Identifier id)
@@ -715,7 +715,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public Expression Xor(Identifier a, Expression b)
         {
-            return new BinaryExpression(Operator.xor, a.DataType, a, b);
+            return new BinaryExpression(Operator.Xor, a.DataType, a, b);
         }
     }
 }

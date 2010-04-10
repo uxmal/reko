@@ -107,7 +107,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void CreateInstruction()
 		{
 			rw.Match(addAxMem, adcDxMem);
-            rw.EmitInstruction(Operator.add, emitter);
+            rw.EmitInstruction(Operator.Add, emitter);
 			Assert.AreEqual("dx_ax = dx_ax + Mem0[ds:bx + 0x0300:ui32]", block.Statements[0].ToString());
 		}
 	}

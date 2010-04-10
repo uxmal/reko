@@ -42,7 +42,7 @@ namespace Decompiler.Analysis.Simplification
 		public Expression Transform(Statement stm)
 		{
 			return new BinaryExpression(
-				BinaryOperator.add,
+				BinaryOperator.Add,
 				mps.DataType,
 				null, // mps.Ptr,
 				null); // c

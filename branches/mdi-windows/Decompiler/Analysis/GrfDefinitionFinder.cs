@@ -112,7 +112,7 @@ namespace Decompiler.Analysis
 
 		public override void VisitUnaryExpression(UnaryExpression unary)
 		{
-			if (unary != null && unary.op == Operator.not)
+			if (unary != null && unary.op == Operator.Not)
 			{
 				Identifier id = (Identifier) unary.Expression;
 				negated = !negated;

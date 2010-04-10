@@ -30,7 +30,7 @@ namespace Decompiler.Arch.Intel
         {
             EmitCopy(
                 instrCur.op1,
-                new BinaryExpression(Operator.shl, PrimitiveType.Word16,
+                new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
                         new Cast(PrimitiveType.Word16, orw.FlagGroup(FlagM.FPUF)),
                         new Constant(PrimitiveType.Int16, 8)),
                 false);

@@ -103,8 +103,8 @@ namespace Decompiler.Analysis
         private bool IsSignedOperator(Operator op)
         {
             return
-                op == Operator.lt || op == Operator.le ||
-                op == Operator.gt || op == Operator.ge;
+                op == Operator.Lt || op == Operator.Le ||
+                op == Operator.Gt || op == Operator.Ge;
         }
 
     }

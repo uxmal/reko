@@ -38,7 +38,7 @@ namespace Decompiler.Analysis.Simplification
 		public bool Match(BinaryExpression b)
 		{
 			op = b.op;
-			if (op != Operator.shl && op != Operator.shr && op != Operator.sar)
+			if (op != Operator.Shl && op != Operator.Shr && op != Operator.Sar)
 				return false;
 			c1 = b.Right as Constant;
 			if (c1 == null)
@@ -61,7 +61,7 @@ namespace Decompiler.Analysis.Simplification
 				op,
 				e.DataType,
 				e,
-				Operator.add.ApplyConstants(c1, c2));
+				Operator.Add.ApplyConstants(c1, c2));
 		}
 	}
 }

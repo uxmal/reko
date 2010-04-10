@@ -36,7 +36,7 @@ namespace Decompiler.Analysis.Simplification
 		{
 			cLeft = binExp.Left as Constant; 
 			cRight = binExp.Right as Constant;
-			if (cLeft != null && cRight != null && binExp.op != Operator.eq)
+			if (cLeft != null && cRight != null && binExp.op != Operator.Eq)
 			{
 				if (!cLeft.IsReal && !cRight.IsReal)
 				{

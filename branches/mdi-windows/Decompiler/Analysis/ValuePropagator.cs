@@ -111,16 +111,16 @@ namespace Decompiler.Analysis
 
 		private bool IsAddOrSub(Operator op)
 		{
-			return op == Operator.add || op == Operator.sub; 
+			return op == Operator.Add || op == Operator.Sub; 
 		}
 
 		private bool IsComparison(Operator op)
 		{
-			return op == Operator.eq || op == Operator.ne ||
-				   op == Operator.ge || op == Operator.gt ||
-				   op == Operator.le || op == Operator.lt ||
-				   op == Operator.uge || op == Operator.ugt ||
-				   op == Operator.ule || op == Operator.ult;
+			return op == Operator.Eq || op == Operator.Ne ||
+				   op == Operator.Ge || op == Operator.Gt ||
+				   op == Operator.Le || op == Operator.Lt ||
+				   op == Operator.Uge || op == Operator.Ugt ||
+				   op == Operator.Ule || op == Operator.Ult;
 		}
 
 		private void RemoveUse(Identifier id)
@@ -247,11 +247,11 @@ namespace Decompiler.Analysis
 				Constant c;
 				if (binLeft.op == binExp.op)
 				{
-					c = Operator.add.ApplyConstants(cLeftRight, cRight);
+					c = Operator.Add.ApplyConstants(cLeftRight, cRight);
 				}
 				else
 				{
-					c = Operator.sub.ApplyConstants(cRight, cLeftRight);
+					c = Operator.Sub.ApplyConstants(cRight, cLeftRight);
 				}
 				return new BinaryExpression(binExp.op, binExp.DataType, binLeft.Left, c);
 			}
@@ -263,7 +263,7 @@ namespace Decompiler.Analysis
 				!cLeftRight.IsReal && !cRight.IsReal)
 			{
 				RemoveUse(idLeft);
-				BinaryOperator op = binLeft.op == Operator.add ? Operator.sub : Operator.add;
+				BinaryOperator op = binLeft.op == Operator.Add ? Operator.Sub : Operator.Add;
 				Constant c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
 				return new BinaryExpression(binExp.op, PrimitiveType.Bool, binLeft.Left, c);
 			}

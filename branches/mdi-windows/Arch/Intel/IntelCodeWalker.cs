@@ -262,7 +262,7 @@ namespace Decompiler.Arch.Intel
 			Constant v = GetValue(instr.op2);
 			if (v.IsValid)
 			{
-				SetValue(instr.op1, Operator.neg.ApplyConstant(v));
+				SetValue(instr.op1, Operator.Neg.ApplyConstant(v));
 			}
 		}
 
@@ -621,7 +621,7 @@ namespace Decompiler.Arch.Intel
 				Constant t = GetValue(instr.op1);
 				if (t.IsValid)
 				{
-					t = Operator.comp.ApplyConstant(t);
+					t = Operator.Comp.ApplyConstant(t);
 				}
 				SetValue(instr.op1, t);
 				break;

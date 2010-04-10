@@ -56,10 +56,10 @@ namespace Decompiler.Core.Code
 
 		public override Expression Invert()
 		{
-			if (op == Operator.not)
+			if (op == Operator.Not)
 				return Expression;
 			else 
-				return new UnaryExpression(Operator.not, PrimitiveType.Bool, this);
+				return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
 		}
 	}
 }

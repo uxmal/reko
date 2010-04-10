@@ -50,7 +50,7 @@ namespace Decompiler.Core.Code
 
 		public override Expression Invert()
 		{
-			return new UnaryExpression(Operator.not, PrimitiveType.Bool, this);
+			return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
 		}
 
 	}

@@ -139,7 +139,7 @@ namespace Decompiler.Typing
 				dtPointee.Accept(this);
 				if (!deref)
 				{
-					result = new UnaryExpression(UnaryOperator.addrOf, dtPtr, result);
+					result = new UnaryExpression(UnaryOperator.AddrOf, dtPtr, result);
 				}
 				Dereferenced = deref; 
 			}
@@ -156,13 +156,13 @@ namespace Decompiler.Typing
             }
             else
             {
-                return new BinaryExpression(Operator.add, dtPointer, complexExp, arrayIndex);
+                return new BinaryExpression(Operator.Add, dtPointer, complexExp, arrayIndex);
             }
         }
 
         private static Expression CreateArrayIndexExpression(int offset, Expression arrayIndex, int pointerSize)
         {
-            BinaryOperator op = offset < 0 ? Operator.sub : Operator.add;
+            BinaryOperator op = offset < 0 ? Operator.Sub : Operator.Add;
             offset = Math.Abs(offset);
             Constant cOffset = new Constant(PrimitiveType.Create(Domain.SignedInt, pointerSize), offset);
             if (arrayIndex != null)

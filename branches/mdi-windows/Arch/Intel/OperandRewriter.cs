@@ -50,7 +50,7 @@ namespace Decompiler.Arch.Intel
 
 		public UnaryExpression AddrOf(Expression expr)
 		{
-			return new UnaryExpression(Operator.addrOf, 
+			return new UnaryExpression(Operator.AddrOf, 
                 PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), expr);
 		}
 
@@ -203,7 +203,7 @@ namespace Decompiler.Arch.Intel
 				eBase = AluRegister(mem.Base);
 				if (expr != null)
 				{
-					expr = new BinaryExpression(Operator.add, eBase.DataType, eBase, expr);
+					expr = new BinaryExpression(Operator.Add, eBase.DataType, eBase, expr);
 				}
 				else
 				{
@@ -215,12 +215,12 @@ namespace Decompiler.Arch.Intel
 			{
 				if (expr != null)
 				{
-					BinaryOperator op = Operator.add;
+					BinaryOperator op = Operator.Add;
 					long l = mem.Offset.ToInt64();
 					if (l < 0)
 					{
 						l = -l;
-						op = Operator.sub;
+						op = Operator.Sub;
 					}
 					
 					DataType dt = (eBase != null) ? eBase.DataType : eIndex.DataType;
@@ -239,20 +239,20 @@ namespace Decompiler.Arch.Intel
 				if (mem.Scale != 0 && mem.Scale != 1)
 				{
 					eIndex = new BinaryExpression(
-						Operator.mul, eIndex.DataType, eIndex, new Constant(mem.Width, mem.Scale));
+						Operator.Mul, eIndex.DataType, eIndex, new Constant(mem.Width, mem.Scale));
 				}
 				if (IsFrameRegisterReference(mem.Base, state))
 				{
 					frame.Escapes = true;
 					Identifier fp = frame.FramePointer;
 					int cbOffset = mem.Offset.IsValid ? mem.Offset.ToInt32() : 0;
-					Expression fpOff = new BinaryExpression(Operator.add, fp.DataType,
+					Expression fpOff = new BinaryExpression(Operator.Add, fp.DataType,
 						fp,
 						new Constant(fp.DataType, cbOffset -
 						(IsStackRegister(mem.Base) ? state.StackBytes : frame.FrameOffset)));
-					return new BinaryExpression(Operator.add, mem.Width, fpOff, eIndex);
+					return new BinaryExpression(Operator.Add, mem.Width, fpOff, eIndex);
 				}
-				expr = new BinaryExpression(Operator.add, expr.DataType, expr, eIndex);
+				expr = new BinaryExpression(Operator.Add, expr.DataType, expr, eIndex);
 			}
 			return expr;
 		}

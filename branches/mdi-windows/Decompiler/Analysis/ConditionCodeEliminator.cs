@@ -133,7 +133,7 @@ namespace Decompiler.Analysis
 
 		private BinaryExpression CmpExpressionToZero(Expression e)
 		{
-			return new BinaryExpression(Operator.sub, e.DataType, e, new Constant(e.DataType, 0));
+			return new BinaryExpression(Operator.Sub, e.DataType, e, new Constant(e.DataType, 0));
 		}
 
 		public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc)
@@ -150,7 +150,7 @@ namespace Decompiler.Analysis
 			if (binDef != null)
 			{
 				if (gf.IsNegated)
-					e = new UnaryExpression(Operator.not, PrimitiveType.Bool, e);
+					e = new UnaryExpression(Operator.Not, PrimitiveType.Bool, e);
 				return e;
 			}
 			ConditionOf cof = e as ConditionOf;
@@ -216,7 +216,7 @@ namespace Decompiler.Analysis
 
 		private static bool IsAddOrSub(BinaryOperator op)
 		{
-			return op == Operator.Add || op == Operator.sub;
+			return op == Operator.Add || op == Operator.Sub;
 		}
 
 		public Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)
@@ -230,18 +230,18 @@ namespace Decompiler.Analysis
 			bool isReal = (p != null && p.Domain == Domain.Real);
 			switch (cc)
 			{
-			case ConditionCode.UGT: cmpOp = Operator.ugt; break;
-			case ConditionCode.UGE: cmpOp = Operator.uge; break;
-			case ConditionCode.ULE: cmpOp = Operator.ule; break;
-			case ConditionCode.ULT: cmpOp = Operator.ult; break;
-			case ConditionCode.GT:  cmpOp = isReal ? Operator.rgt : Operator.gt; break;
-			case ConditionCode.GE:  cmpOp = isReal ? Operator.rge : Operator.ge; break;
-			case ConditionCode.LE:  cmpOp = isReal ? Operator.rle : Operator.le; break;
-			case ConditionCode.LT:  cmpOp = isReal ? Operator.rlt : Operator.lt; break;
-			case ConditionCode.NE:  cmpOp = Operator.ne; break;
-			case ConditionCode.EQ:  cmpOp = Operator.eq; break;
-			case ConditionCode.SG:  cmpOp = Operator.lt; break;
-			case ConditionCode.NS:  cmpOp = Operator.ge; break;
+			case ConditionCode.UGT: cmpOp = Operator.Ugt; break;
+			case ConditionCode.UGE: cmpOp = Operator.Uge; break;
+			case ConditionCode.ULE: cmpOp = Operator.Ule; break;
+			case ConditionCode.ULT: cmpOp = Operator.Ult; break;
+			case ConditionCode.GT:  cmpOp = isReal ? Operator.Rgt : Operator.Gt; break;
+			case ConditionCode.GE:  cmpOp = isReal ? Operator.Rge : Operator.Ge; break;
+			case ConditionCode.LE:  cmpOp = isReal ? Operator.Rle : Operator.Le; break;
+			case ConditionCode.LT:  cmpOp = isReal ? Operator.Rlt : Operator.Lt; break;
+			case ConditionCode.NE:  cmpOp = Operator.Ne; break;
+			case ConditionCode.EQ:  cmpOp = Operator.Eq; break;
+			case ConditionCode.SG:  cmpOp = Operator.Lt; break;
+			case ConditionCode.NS:  cmpOp = Operator.Ge; break;
 			case ConditionCode.OV:  
 				return ComparisonFromOverflow(bin, isNegated);
 			case ConditionCode.NO:
@@ -250,7 +250,7 @@ namespace Decompiler.Analysis
 			}
 
 			Expression e;
-			if (bin.op == Operator.sub)
+			if (bin.op == Operator.Sub)
 			{
 				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
 			}
@@ -267,7 +267,7 @@ namespace Decompiler.Analysis
 				PrimitiveType.Bool, bin);
 			if (isNegated)
 			{
-				e = new UnaryExpression(Operator.not, PrimitiveType.Bool, e);
+				e = new UnaryExpression(Operator.Not, PrimitiveType.Bool, e);
 			}
 			return e;
 		}

@@ -77,7 +77,7 @@ namespace Decompiler.Analysis
 				if (IsIdUsedOnlyBy(ctx.PhiIdentifier, ctx.TestStatement, ctx.DeltaStatement))
 				{
 					// The only use inside the loop is the increment, so we never see the initial value.
-					ctx.InitialValue = Operator.add.ApplyConstants(ctx.InitialValue, ctx.DeltaValue);
+					ctx.InitialValue = Operator.Add.ApplyConstants(ctx.InitialValue, ctx.DeltaValue);
 				}
 			}
 
@@ -99,7 +99,7 @@ namespace Decompiler.Analysis
                 DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier) &&
                 BranchTrueIntoLoop())
             {
-                testValue = Operator.add.ApplyConstants(testValue, ctx.DeltaValue);
+                testValue = Operator.Add.ApplyConstants(testValue, ctx.DeltaValue);
             }
             Identifier idNew = (Identifier) ((Assignment) ctx.DeltaStatement.Instruction).Dst;
             if (!IsSingleUsingStatement(ctx.TestStatement, idNew))
@@ -108,7 +108,7 @@ namespace Decompiler.Analysis
                     DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier)))
                 {
                     // A use is made of the variable between increment and test.
-                    testValue = Operator.add.ApplyConstants(testValue, ctx.DeltaValue);
+                    testValue = Operator.Add.ApplyConstants(testValue, ctx.DeltaValue);
                 }
             }
             return testValue;
@@ -127,8 +127,8 @@ namespace Decompiler.Analysis
         /// <returns></returns>
         private bool RelEq(Operator op)
         {
-            return op == Operator.le || op == Operator.ge ||
-                   op == Operator.ule || op == Operator.uge;
+            return op == Operator.Le || op == Operator.Ge ||
+                   op == Operator.Ule || op == Operator.Uge;
         }
 
 		public bool DominatesAllUses(Statement stm, Identifier id)
@@ -215,7 +215,7 @@ namespace Decompiler.Analysis
                 if (ass == null)
                     continue;
                 BinaryExpression bin = ass.Src as BinaryExpression;
-                if (bin != null && (bin.op == Operator.add || bin.op == Operator.sub))
+                if (bin != null && (bin.op == Operator.Add || bin.op == Operator.Sub))
                 {
                     Identifier idLeft = bin.Left as Identifier;
                     if (idLeft != null && IsSccMember(idLeft, sids))
@@ -224,7 +224,7 @@ namespace Decompiler.Analysis
                         if (c != null)
                         {
                             ctx.DeltaStatement = sid.DefStatement;
-                            ctx.DeltaValue = (bin.op == Operator.sub)
+                            ctx.DeltaValue = (bin.op == Operator.Sub)
                                 ? c.Negate()
                                 : c;
                             return ctx.DeltaValue;

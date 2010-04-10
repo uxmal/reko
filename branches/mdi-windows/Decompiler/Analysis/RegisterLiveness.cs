@@ -437,7 +437,7 @@ namespace Decompiler.Analysis
 				bitUseOffset = 0;
 				cbitsUse = 0;
 				UnaryExpression u = appl.Arguments[i] as UnaryExpression;
-				if (u != null && u.op == Operator.addrOf)
+				if (u != null && u.op == Operator.AddrOf)
 				{
 					Identifier id = (Identifier) u.Expression;
 					Def(id);
@@ -446,7 +446,7 @@ namespace Decompiler.Analysis
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{	
 				UnaryExpression u = appl.Arguments[i] as UnaryExpression;
-				if (u == null || u.op != Operator.addrOf)
+				if (u == null || u.op != Operator.AddrOf)
 				{
 					appl.Arguments[i].Accept(this);
 				}
@@ -456,24 +456,24 @@ namespace Decompiler.Analysis
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
 			if (binExp.op is ConditionalOperator ||
-				binExp.op == BinaryOperator.mul ||
-				binExp.op == BinaryOperator.muls ||
-				binExp.op == BinaryOperator.mulu ||
-				binExp.op == BinaryOperator.divs ||
-				binExp.op == BinaryOperator.divu)
+				binExp.op == BinaryOperator.Mul ||
+				binExp.op == BinaryOperator.Muls ||
+				binExp.op == BinaryOperator.Mulu ||
+				binExp.op == BinaryOperator.Divs ||
+				binExp.op == BinaryOperator.Divu)
 			{
 				bitUseOffset = 0;
 				cbitsUse = 0;
 			}
 			binExp.Left.Accept(this);
 
-			if (binExp.op == BinaryOperator.shl ||
-				binExp.op == BinaryOperator.sar ||
-				binExp.op == BinaryOperator.mul ||
-				binExp.op == BinaryOperator.muls ||
-				binExp.op == BinaryOperator.mulu ||
-				binExp.op == BinaryOperator.divs ||
-				binExp.op == BinaryOperator.divu)
+			if (binExp.op == BinaryOperator.Shl ||
+				binExp.op == BinaryOperator.Sar ||
+				binExp.op == BinaryOperator.Mul ||
+				binExp.op == BinaryOperator.Muls ||
+				binExp.op == BinaryOperator.Mulu ||
+				binExp.op == BinaryOperator.Divs ||
+				binExp.op == BinaryOperator.Divu)
 			{
 				bitUseOffset = 0;
 				cbitsUse = 0;

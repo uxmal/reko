@@ -56,7 +56,7 @@ namespace Decompiler.Analysis
 				if (lType.Domain != Domain.Real && lType.Domain != Domain.Real)	
 				{
 					// Only integral values can be safely simplified.
-					if (binOp != Operator.eq)
+					if (binOp != Operator.Eq)
 						return SimplifyTwoConstants(binOp, cLeft, cRight);
 				}
 			}
@@ -70,24 +70,24 @@ namespace Decompiler.Analysis
 
 			//$REVIEW: identity on binaryoperators
 
-			if (binOp == Operator.add)
+			if (binOp == Operator.Add)
 			{
 				if (IsZero(cRight))
 					return left;
 			} 
-			else if (binOp == Operator.sub)
+			else if (binOp == Operator.Sub)
 			{
 				if (left == right)
 					return MakeZero(left.DataType);
 				if (IsZero(cRight))
 					return left;
 			} 
-			else if (binOp == Operator.or || binOp == Operator.xor)
+			else if (binOp == Operator.Or || binOp == Operator.Xor)
 			{
 				if (IsZero(cRight))
 					return left;
 			} 
-            else if (binOp == Operator.and)
+            else if (binOp == Operator.And)
 			{
 				if (IsZero(cRight))
 					return MakeZero(left.DataType);
@@ -109,7 +109,7 @@ namespace Decompiler.Analysis
 			if (binLeft != null)
 			{
 				Constant cLeftRight = binLeft.Right as Constant;
-				if (cLeftRight != null && cRight != null && binLeft.op == Operator.add && binOp == Operator.add)
+				if (cLeftRight != null && cRight != null && binLeft.op == Operator.Add && binOp == Operator.Add)
 				{
 					return new BinaryExpression(binOp, valType, binLeft.Left, SimplifyTwoConstants(binOp, cLeftRight, cRight));
 				}
@@ -310,7 +310,7 @@ namespace Decompiler.Analysis
 
 		public Expression TransformUnaryExpression(UnaryExpression unary)
 		{
-			if (unary.op == Operator.addrOf)
+			if (unary.op == Operator.AddrOf)
 				return unary;
 			Expression u = unary.Expression.Accept(this);
 			if (u is ValueNumbering.AnyValueNumber)

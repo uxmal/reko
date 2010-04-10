@@ -66,17 +66,17 @@ namespace Decompiler.Core
 
         public BinaryExpression Add(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.add, left.DataType, left, right);
+            return new BinaryExpression(Operator.Add, left.DataType, left, right);
         }
 
 		public BinaryExpression Add(Expression left, int right)
 		{
-			return new BinaryExpression(Operator.add, left.DataType, left, new Constant(left.DataType, right));
+			return new BinaryExpression(Operator.Add, left.DataType, left, new Constant(left.DataType, right));
 		}
 
         public BinaryExpression And(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.and, left.DataType, left, right);
+            return new BinaryExpression(Operator.And, left.DataType, left, right);
         }
 
         public void Call(Procedure procCallee, CallSite site)
@@ -98,7 +98,7 @@ namespace Decompiler.Core
 
         public UnaryExpression Neg(Expression expr)
         {
-            return new UnaryExpression(Operator.neg, expr.DataType, expr);
+            return new UnaryExpression(Operator.Neg, expr.DataType, expr);
         }
 
 
@@ -135,18 +135,18 @@ namespace Decompiler.Core
 		public BinaryExpression Eq0(Expression exp)
 		{
 			return new BinaryExpression(
-				Operator.eq, PrimitiveType.Bool, exp, new Constant(exp.DataType, 0));
+				Operator.Eq, PrimitiveType.Bool, exp, new Constant(exp.DataType, 0));
 		}
 
         public BinaryExpression Ne0(Expression expr)
         {
             return new BinaryExpression(
-                Operator.ne, PrimitiveType.Bool, expr, new Constant(expr.DataType, 0));
+                Operator.Ne, PrimitiveType.Bool, expr, new Constant(expr.DataType, 0));
         }
 
         public UnaryExpression Not(Expression expr)
         {
-            return new UnaryExpression(Operator.not, PrimitiveType.Bool, expr);
+            return new UnaryExpression(Operator.Not, PrimitiveType.Bool, expr);
         }
 
 
@@ -203,12 +203,12 @@ namespace Decompiler.Core
 
         public BinaryExpression Sub(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.sub, left.DataType, left, right);
+            return new BinaryExpression(Operator.Sub, left.DataType, left, right);
         }
 
 		public BinaryExpression Sub(Expression left, int right)
 		{
-			return new BinaryExpression(Operator.sub, left.DataType, left, new Constant(left.DataType, right));
+			return new BinaryExpression(Operator.Sub, left.DataType, left, new Constant(left.DataType, right));
 		}
 
 

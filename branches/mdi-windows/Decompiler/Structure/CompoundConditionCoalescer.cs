@@ -102,7 +102,7 @@ namespace Decompiler.Structure
 					BuildCompoundCondition(
 						block,
 						blockThen,
-						Operator.cand, false, false);
+						Operator.Cand, false, false);
 					RebuildCompoundGraph(block, blockThen, blockThen.ThenBlock, blockElse);
 					fChanged = true;
 				}	
@@ -118,7 +118,7 @@ namespace Decompiler.Structure
 					BuildCompoundCondition(
 						block,
 						blockThen,
-						Operator.cand, false, true);
+						Operator.Cand, false, true);
 					RebuildCompoundGraph(block, blockThen, blockThen.ElseBlock, blockElse);
 					fChanged = true;
 				}
@@ -133,7 +133,7 @@ namespace Decompiler.Structure
 					BuildCompoundCondition(
 						block,
 						blockElse,
-						Operator.cor, false, false);
+						Operator.Cor, false, false);
 					RebuildCompoundGraph(block, blockElse, blockElse.ElseBlock, blockThen);
 					fChanged = true;
 				}
@@ -146,7 +146,7 @@ namespace Decompiler.Structure
 					BuildCompoundCondition(
 						block,
 						blockElse,
-						Operator.cor, false, true);
+						Operator.Cor, false, true);
 					RebuildCompoundGraph(block, blockElse, blockElse.ThenBlock, blockThen);
 					fChanged = true;
 				}

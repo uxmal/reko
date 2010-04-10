@@ -42,7 +42,7 @@ namespace Decompiler.Analysis.Simplification
 
 			b = acc.EffectiveAddress;
 			Constant offset = new Constant(b.DataType, 0);
-			BinaryOperator op = Operator.add;
+			BinaryOperator op = Operator.Add;
 			BinaryExpression ea = b as BinaryExpression;
 			if (ea != null)
 			{

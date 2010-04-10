@@ -58,7 +58,7 @@ namespace Decompiler.Arch.Intel
 					emitter.Assign(
 						orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
 						new ConditionOf(
-						new BinaryExpression(Operator.sub, instrCur.dataWidth, MemSi(), MemDi())));
+						new BinaryExpression(Operator.Sub, instrCur.dataWidth, MemSi(), MemDi())));
 					incSi = true;
 					incDi = true;
 					break;
@@ -98,7 +98,7 @@ namespace Decompiler.Arch.Intel
 					emitter.Assign(
 						orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
 						new ConditionOf(
-						new BinaryExpression(Operator.sub, 
+						new BinaryExpression(Operator.Sub, 
 						instrCur.dataWidth,
 						RegAl, 
 						MemDi())));
@@ -114,7 +114,7 @@ namespace Decompiler.Arch.Intel
 			if (incSi)
 			{
 				emitter.Assign(RegSi,
-					new BinaryExpression(Operator.add, 
+					new BinaryExpression(Operator.Add, 
 					instrCur.addrWidth,
 					RegSi, 
 					new Constant(instrCur.addrWidth, instrCur.dataWidth.Size)));
@@ -123,7 +123,7 @@ namespace Decompiler.Arch.Intel
 			if (incDi)
 			{
 				emitter.Assign(RegDi,
-					new BinaryExpression(Operator.add, 
+					new BinaryExpression(Operator.Add, 
 					instrCur.addrWidth,
 					RegDi, 
 					new Constant(instrCur.addrWidth, instrCur.dataWidth.Size)));

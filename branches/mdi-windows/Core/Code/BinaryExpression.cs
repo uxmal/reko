@@ -83,42 +83,42 @@ namespace Decompiler.Core.Code
 
 		public static bool Commutes(BinaryOperator op)
 		{
-			return op == Operator.add ||
-				op == Operator.and ||
-				op == Operator.muls ||
-				op == Operator.mulu ||
-				op == Operator.mul ||
-				op == Operator.or ||
-				op == Operator.xor;
+			return op == Operator.Add ||
+				op == Operator.And ||
+				op == Operator.Muls ||
+				op == Operator.Mulu ||
+				op == Operator.Mul ||
+				op == Operator.Or ||
+				op == Operator.Xor;
 		}
 
 
 		public override Expression Invert()
 		{
-			if (op == Operator.cand)
-				return new BinaryExpression(Operator.cor, this.DataType, Left.Invert(), Right.Invert());
-			if (op == Operator.cor)
-				return new BinaryExpression(Operator.cand, this.DataType, Left.Invert(), Right.Invert());
-			if (op == Operator.le)
-				return new BinaryExpression(Operator.gt, this.DataType, Left, Right);
-			if (op == Operator.lt)
-				return new BinaryExpression(Operator.ge, this.DataType, Left, Right);
-			if (op == Operator.ge)
-				return new BinaryExpression(Operator.lt, this.DataType, Left, Right);
-			if (op == Operator.gt)
-				return new BinaryExpression(Operator.le, this.DataType, Left, Right);
-			if (op == Operator.ule)
-				return new BinaryExpression(Operator.ugt, this.DataType, Left, Right);
-			if (op == Operator.ult)
-				return new BinaryExpression(Operator.uge, this.DataType, Left, Right);
-			if (op == Operator.uge)
-				return new BinaryExpression(Operator.ult, this.DataType, Left, Right);
-			if (op == Operator.ugt)
-				return new BinaryExpression(Operator.ule, this.DataType, Left, Right);
-			if (op == Operator.eq)
-				return new BinaryExpression(Operator.ne, this.DataType, Left, Right);
-			if (op == Operator.ne)
-				return new BinaryExpression(Operator.eq, this.DataType, Left, Right);
+			if (op == Operator.Cand)
+				return new BinaryExpression(Operator.Cor, this.DataType, Left.Invert(), Right.Invert());
+			if (op == Operator.Cor)
+				return new BinaryExpression(Operator.Cand, this.DataType, Left.Invert(), Right.Invert());
+			if (op == Operator.Le)
+				return new BinaryExpression(Operator.Gt, this.DataType, Left, Right);
+			if (op == Operator.Lt)
+				return new BinaryExpression(Operator.Ge, this.DataType, Left, Right);
+			if (op == Operator.Ge)
+				return new BinaryExpression(Operator.Lt, this.DataType, Left, Right);
+			if (op == Operator.Gt)
+				return new BinaryExpression(Operator.Le, this.DataType, Left, Right);
+			if (op == Operator.Ule)
+				return new BinaryExpression(Operator.Ugt, this.DataType, Left, Right);
+			if (op == Operator.Ult)
+				return new BinaryExpression(Operator.Uge, this.DataType, Left, Right);
+			if (op == Operator.Uge)
+				return new BinaryExpression(Operator.Ult, this.DataType, Left, Right);
+			if (op == Operator.Ugt)
+				return new BinaryExpression(Operator.Ule, this.DataType, Left, Right);
+			if (op == Operator.Eq)
+				return new BinaryExpression(Operator.Ne, this.DataType, Left, Right);
+			if (op == Operator.Ne)
+				return new BinaryExpression(Operator.Eq, this.DataType, Left, Right);
 			throw new NotImplementedException();
 		}
 

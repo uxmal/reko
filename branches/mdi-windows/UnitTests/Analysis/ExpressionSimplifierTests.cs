@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void ExsConstants()
 		{
 			BuildExpressionSimplifier();
-			Expression expr = new BinaryExpression(Operator.add, PrimitiveType.Word32, 
+			Expression expr = new BinaryExpression(Operator.Add, PrimitiveType.Word32, 
 				Constant.Word32(1), Constant.Word32(2));
 			Constant c = (Constant) simplifier.Simplify(expr);
 

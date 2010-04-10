@@ -147,7 +147,7 @@ done:
 			Identifier Z = FlagGroup("Z");
 			Identifier f = Reg32("f");
 
-			Statement stmZ = new Statement(new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.sub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
+			Statement stmZ = new Statement(new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.Sub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
 			ssaIds[Z].DefStatement = stmZ;
 			Statement stmF = new Statement(new Assignment(f, new TestCondition(ConditionCode.NE, Z)), null);
 			ssaIds[f].DefStatement = stmF;
@@ -162,7 +162,7 @@ done:
 		public void SignedIntComparisonFromConditionCode()
 		{
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new ArchitectureMock());
-			BinaryExpression bin = new BinaryExpression(Operator.sub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
+			BinaryExpression bin = new BinaryExpression(Operator.Sub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("LtOperator", b.op.GetType().Name);
@@ -172,7 +172,7 @@ done:
 		public void RealComparisonFromConditionCode()
 		{
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new ArchitectureMock());
-			BinaryExpression bin = new BinaryExpression(Operator.sub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
+			BinaryExpression bin = new BinaryExpression(Operator.Sub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("RltOperator", b.op.GetType().Name);

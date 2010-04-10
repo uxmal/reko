@@ -45,13 +45,13 @@ namespace Decompiler.Analysis.Simplification
 			idRight = binExp.Right as Identifier;
 			if (idRight == null)
 				return false;
-			return (idLeft == idRight && binExp.op == Operator.add);
+			return (idLeft == idRight && binExp.op == Operator.Add);
 		}
 
 		public Expression Transform(Statement stm)
 		{
 			ssaIds[idLeft].Uses.Remove(stm);
-			return new BinaryExpression(Operator.mul, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));
+			return new BinaryExpression(Operator.Mul, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));
 		}
 	}
 }

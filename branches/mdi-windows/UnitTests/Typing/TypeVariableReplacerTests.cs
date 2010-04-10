@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Typing
 		private MemoryAccess MemLoad(Identifier id, int offset, PrimitiveType size)
 		{
 			return new MemoryAccess(MemoryIdentifier.GlobalMemory,
-				new BinaryExpression(Operator.add, PrimitiveType.Int32, id, Constant.Word32(offset)),
+				new BinaryExpression(Operator.Add, PrimitiveType.Int32, id, Constant.Word32(offset)),
 				size);
 		}
 

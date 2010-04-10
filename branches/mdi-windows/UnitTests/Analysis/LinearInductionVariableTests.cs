@@ -60,8 +60,8 @@ namespace Decompiler.UnitTests.Analysis
 
 			Statement stm_a1 = new Statement(new Assignment(a1, Constant.Word32(0)), null);
 			Statement stm_a2 = new Statement(new PhiAssignment(a2, new PhiFunction(a1.DataType, new Expression[] { a1, a3 } )), null);
-			Statement stm_ex = new Statement(new Branch(new BinaryExpression(Operator.ne, PrimitiveType.Bool, a2, Constant.Word32(10)), b2), null);
-			Statement stm_a3 = new Statement(new Assignment(a3, new BinaryExpression(Operator.add, a3.DataType, a2, Constant.Word32(4))), null);
+			Statement stm_ex = new Statement(new Branch(new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a2, Constant.Word32(10)), b2), null);
+			Statement stm_a3 = new Statement(new Assignment(a3, new BinaryExpression(Operator.Add, a3.DataType, a2, Constant.Word32(4))), null);
 			b1.Statements.Add(stm_a1);
 			b2.Statements.Add(stm_a2);
 			b2.Statements.Add(stm_a3);
@@ -196,7 +196,7 @@ namespace Decompiler.UnitTests.Analysis
             ssaIds.Add(new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
 			liv.Context.DeltaValue = Constant.Word32(1);
 			liv.Context.DeltaStatement = new Statement(new Assignment(new Identifier("foo_1", 1, PrimitiveType.Word32, null), 
-				new BinaryExpression(Operator.add, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
+				new BinaryExpression(Operator.Add, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
 			ssaIds[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();

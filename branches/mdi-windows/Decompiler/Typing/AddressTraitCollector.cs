@@ -104,7 +104,7 @@ namespace Decompiler.Typing
 
 		public void VisitBinaryExpression(BinaryExpression bin)
 		{
-			if (bin.op == Operator.Add || bin.op == Operator.sub)
+			if (bin.op == Operator.Add || bin.op == Operator.Sub)
 			{
 				// Handle mem[x+const] case. Array accesses of the form
 				// mem[x + (i * const) + const] will have been converted
@@ -113,7 +113,7 @@ namespace Decompiler.Typing
 				Constant offset = bin.Right as Constant;
 				if (offset != null)
 				{
-                    if (bin.op == Operator.sub)
+                    if (bin.op == Operator.Sub)
                         offset = offset.Negate();
 					LinearInductionVariable iv = GetInductionVariable(bin.Left);
                     if (iv != null)

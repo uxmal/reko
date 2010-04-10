@@ -53,7 +53,7 @@ namespace Decompiler.Typing
         private Expression AddZeroToEffectiveAddress(Expression ea)
         {
             BinaryExpression bin = new BinaryExpression(
-                Operator.add,
+                Operator.Add,
                 PrimitiveType.CreateWord(ea.DataType.Size),
                 ea,
                 new Constant(PrimitiveType.CreateWord(ea.DataType.Size), 0));

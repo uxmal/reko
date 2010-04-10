@@ -37,7 +37,7 @@ namespace Decompiler.Analysis.Simplification
 
 		public bool Match(BinaryExpression b)
 		{
-			if (b.op != Operator.shl)
+			if (b.op != Operator.Shl)
 				return false;
 			cShift = b.Right as Constant;
 			if (cShift == null)
@@ -47,7 +47,7 @@ namespace Decompiler.Analysis.Simplification
 			if (b == null)
 				return false;
 
-			if (b.op != Operator.muls && b.op != Operator.mulu && b.op != Operator.mul)
+			if (b.op != Operator.Muls && b.op != Operator.Mulu && b.op != Operator.Mul)
 				return false;
 			op = b.op;
 			cMul = b.Right as Constant;
@@ -61,7 +61,7 @@ namespace Decompiler.Analysis.Simplification
 
 		public Expression Transform(Statement stm)
 		{
-			return new BinaryExpression(op, e.DataType, e, Operator.shl.ApplyConstants(cMul, cShift));
+			return new BinaryExpression(op, e.DataType, e, Operator.Shl.ApplyConstants(cMul, cShift));
 		}
 	}
 }

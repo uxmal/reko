@@ -56,11 +56,11 @@ namespace Decompiler.Scanning
 			if (offset < 0)
 			{
 				offset = -offset;
-				op = Operator.sub;
+				op = Operator.Sub;
 			}
 			else
 			{
-				op = Operator.add;
+				op = Operator.Add;
 			}
 			PrimitiveType p = (PrimitiveType) fp.DataType;
 			Expression ea = new BinaryExpression(op, fp.DataType,
@@ -87,7 +87,7 @@ namespace Decompiler.Scanning
 			b.Statements.Add(
 				new Assignment(
 				proc.Frame.FramePointer,
-				new UnaryExpression(Operator.addrOf, arch.FramePointerType, frame)));
+				new UnaryExpression(Operator.AddrOf, arch.FramePointerType, frame)));
 		}
 
 		private bool IsLocal(Identifier id)

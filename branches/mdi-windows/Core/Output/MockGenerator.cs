@@ -37,25 +37,25 @@ namespace Decompiler.Core.Output
             this.writer = new IndentingTextWriter(writer, false, 4);
             this.mpopstr = new Dictionary<Operator, string>();
             mpopstr.Add(Operator.Add, "Add");
-            mpopstr.Add(Operator.and, "And");
-            mpopstr.Add(Operator.cand, "Cand");
-            mpopstr.Add(Operator.cor, "Cor");
+            mpopstr.Add(Operator.And, "And");
+            mpopstr.Add(Operator.Cand, "Cand");
+            mpopstr.Add(Operator.Cor, "Cor");
 
-            mpopstr.Add(Operator.eq, "Eq");
-            mpopstr.Add(Operator.ge, "Ge");
-            mpopstr.Add(Operator.gt, "Gt");
-            mpopstr.Add(Operator.le, "Le");
-            mpopstr.Add(Operator.lt, "Lt");
-            mpopstr.Add(Operator.mul, "Mul");
-            mpopstr.Add(Operator.muls, "Muls");
-            mpopstr.Add(Operator.mulu, "Mulu");
-            mpopstr.Add(Operator.or, "Or");
-            mpopstr.Add(Operator.sub, "Sub");
-            mpopstr.Add(Operator.uge, "Uge");
-            mpopstr.Add(Operator.ugt, "Ugt");
-            mpopstr.Add(Operator.ule, "Ule");
-            mpopstr.Add(Operator.ult, "Ult");
-            mpopstr.Add(Operator.xor, "Xor");
+            mpopstr.Add(Operator.Eq, "Eq");
+            mpopstr.Add(Operator.Ge, "Ge");
+            mpopstr.Add(Operator.Gt, "Gt");
+            mpopstr.Add(Operator.Le, "Le");
+            mpopstr.Add(Operator.Lt, "Lt");
+            mpopstr.Add(Operator.Mul, "Mul");
+            mpopstr.Add(Operator.Muls, "Muls");
+            mpopstr.Add(Operator.Mulu, "Mulu");
+            mpopstr.Add(Operator.Or, "Or");
+            mpopstr.Add(Operator.Sub, "Sub");
+            mpopstr.Add(Operator.Uge, "Uge");
+            mpopstr.Add(Operator.Ugt, "Ugt");
+            mpopstr.Add(Operator.Ule, "Ule");
+            mpopstr.Add(Operator.Ult, "Ult");
+            mpopstr.Add(Operator.Xor, "Xor");
 
         }
 
@@ -400,7 +400,7 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitUnaryExpression(UnaryExpression unary)
         {
-            if (unary.op == Operator.addrOf)
+            if (unary.op == Operator.AddrOf)
                 writer.Write("AddrOf(");
             else
                 throw new NotImplementedException(unary.ToString());

@@ -79,7 +79,7 @@ namespace Decompiler.Typing
 				if (index != null && index.ToInt32() == 0)
 					return acc.Array;
 			}
-			return new UnaryExpression(Operator.addrOf, dt, e);
+			return new UnaryExpression(Operator.AddrOf, dt, e);
 		}
 
 		/// <summary>
@@ -144,7 +144,7 @@ namespace Decompiler.Typing
             UnaryExpression u = arrayExp as UnaryExpression;
             if (u == null)
                 return arrayExp;
-            if (u.op != Operator.addrOf)
+            if (u.op != Operator.AddrOf)
                 return arrayExp;
             ArrayAccess a = u.Expression as ArrayAccess;
             if (a == null)
@@ -208,7 +208,7 @@ namespace Decompiler.Typing
 
 			DataType dtLeft = DataTypeOf(binExp.Left);
 			DataType dtRight = DataTypeOf(binExp.Right);
-            if (binExp.op == Operator.add)
+            if (binExp.op == Operator.Add)
             {
                 return TransformSum(binExp, dtLeft, dtRight);
             }

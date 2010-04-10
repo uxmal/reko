@@ -29,10 +29,10 @@ namespace Decompiler.Analysis.Simplification
 
 		public bool Match(UnaryExpression unary)
 		{
-			if (unary.op == Operator.neg)
+			if (unary.op == Operator.Neg)
 			{
 				bin = unary.Expression as BinaryExpression;
-				if (bin != null && bin.op == Operator.sub)
+				if (bin != null && bin.op == Operator.Sub)
 					return true;
 			}
 			return false;

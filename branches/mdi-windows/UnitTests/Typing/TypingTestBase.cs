@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Typing
 		protected MemoryAccess MemLoad(Identifier id, int offset, DataType size)
 		{
 			return new MemoryAccess(MemoryIdentifier.GlobalMemory, 
-				new BinaryExpression(Operator.add, PrimitiveType.Word32, id, Constant.Word32(offset)),
+				new BinaryExpression(Operator.Add, PrimitiveType.Word32, id, Constant.Word32(offset)),
 				size);
 		}
 	}

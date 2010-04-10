@@ -124,7 +124,7 @@ namespace Decompiler.Typing
 			}
 			else
 			{
-				ex = new UnaryExpression(Operator.addrOf, memptr, ex);
+				ex = new UnaryExpression(Operator.AddrOf, memptr, ex);
 			}
 			Return(ex);
 		}
@@ -149,7 +149,7 @@ namespace Decompiler.Typing
                 }
                 else
                 {
-                    e = new UnaryExpression(Operator.addrOf, ptr, e);
+                    e = new UnaryExpression(Operator.AddrOf, ptr, e);
                 }
             }
 			Return(e);

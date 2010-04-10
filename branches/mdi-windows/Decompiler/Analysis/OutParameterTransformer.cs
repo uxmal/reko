@@ -126,7 +126,7 @@ namespace Decompiler.Analysis
 
 		public override Expression TransformUnaryExpression(UnaryExpression unary)
 		{
-			if (unary.op == Operator.addrOf)
+			if (unary.op == Operator.AddrOf)
 			{
 				Identifier id = unary.Expression as Identifier;
 				if (id != null && ssa.Identifier == id)
