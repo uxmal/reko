@@ -33,7 +33,7 @@ namespace Decompiler.Core.Lib
         [Obsolete]
 		private ISccFinderHost<T> host;
         private DirectedGraph<T> graph;
-        private Action<ICollection<T>> processScc;
+        private Action<IList<T>> processScc;
 		private int nextDfs = 0;
 		private Stack<Node> stack = new Stack<Node>();
 		private Dictionary<T,Node> map = new Dictionary<T,Node>();
@@ -44,7 +44,8 @@ namespace Decompiler.Core.Lib
             this.host = host;
             this.nextDfs = 0;
         }
-        public SccFinder(DirectedGraph<T> graph, Action<ICollection<T>> processScc)
+
+        public SccFinder(DirectedGraph<T> graph, Action<IList<T>> processScc)
         {
             this.graph = graph;
             this.processScc = processScc;

@@ -28,7 +28,6 @@ namespace Decompiler.Gui.Windows
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
         private MemoryViewInteractor mvi;
-        private IServiceProvider sp;
 
         public const string ViewWindowType = "memoryViewWindow";
 

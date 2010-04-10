@@ -59,17 +59,6 @@ namespace Decompiler.Structure
             get { return nodes; }
         }
 
-        [Obsolete]
-        public void FindNodesInInt(bool[] cfgNodes, int level)
-        {
-            if (level == 0)
-                for (int i = 0; i < nodes.Count; i++)
-                    cfgNodes[nodes[i].Order] = true;
-            else
-                for (int i = 0; i < nodes.Count; i++)
-                    ((Interval) nodes[i]).FindNodesInInt(cfgNodes, level - 1);    //$CAST
-        }
-
         public HashedSet<StructureNode> FindIntervalNodes(int level)
         {
             HashedSet<StructureNode> nodes = new HashedSet<StructureNode>();

@@ -46,13 +46,13 @@ namespace Decompiler.Assemblers.x86
 
 		public IntelTextAssembler()
 		{
-		}
+            this.entryPoints = new List<EntryPoint>();
+        }
 
 		public void Assemble(Address addr, string file)
 		{
 			using (StreamReader rdr = new StreamReader(file))
 			{
-                this.entryPoints = new List<EntryPoint>();
                 Assemble(addr, rdr);
 			}
 		}

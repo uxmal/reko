@@ -36,7 +36,7 @@ namespace Decompiler.Core.Output
         {
             this.writer = new IndentingTextWriter(writer, false, 4);
             this.mpopstr = new Dictionary<Operator, string>();
-            mpopstr.Add(Operator.add, "Add");
+            mpopstr.Add(Operator.Add, "Add");
             mpopstr.Add(Operator.and, "And");
             mpopstr.Add(Operator.cand, "Cand");
             mpopstr.Add(Operator.cor, "Cor");
@@ -176,7 +176,7 @@ namespace Decompiler.Core.Output
 
         void InstructionVisitor.VisitCallInstruction(CallInstruction ci)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitDeclaration(Declaration decl)
@@ -190,17 +190,17 @@ namespace Decompiler.Core.Output
 
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitIndirectCall(IndirectCall ic)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)
@@ -237,12 +237,12 @@ namespace Decompiler.Core.Output
 
         void InstructionVisitor.VisitSwitchInstruction(SwitchInstruction si)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitUseInstruction(UseInstruction u)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -265,7 +265,7 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitArrayAccess(ArrayAccess acc)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitBinaryExpression(BinaryExpression binExp)
@@ -283,12 +283,12 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitCast(Cast cast)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitConditionOf(ConditionOf cof)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitConstant(Constant c)
@@ -325,12 +325,12 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitDereference(Dereference deref)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitFieldAccess(FieldAccess acc)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitIdentifier(Identifier id)
@@ -340,7 +340,7 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitMemberPointerSelector(MemberPointerSelector mps)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitMemoryAccess(MemoryAccess access)
@@ -354,17 +354,17 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitMkSequence(MkSequence seq)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitPhiFunction(PhiFunction phi)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitPointerAddition(PointerAddition pa)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitProcedureConstant(ProcedureConstant pc)
@@ -376,12 +376,12 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitScopeResolution(ScopeResolution scopeResolution)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitSegmentedAccess(SegmentedAccess access)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitSlice(Slice slice)
@@ -395,7 +395,7 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitTestCondition(TestCondition tc)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitUnaryExpression(UnaryExpression unary)
@@ -414,17 +414,17 @@ namespace Decompiler.Core.Output
 
         public void VisitArray(ArrayType at)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void VisitEquivalenceClass(EquivalenceClass eq)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void VisitFunctionType(FunctionType ft)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void VisitPrimitive(PrimitiveType pt)
@@ -448,32 +448,32 @@ namespace Decompiler.Core.Output
 
         public void VisitMemberPointer(MemberPointer memptr)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void VisitPointer(Pointer ptr)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void VisitStructure(StructureType str)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void VisitTypeVar(TypeVariable tv)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void VisitUnion(UnionType ut)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void VisitUnknownType(UnknownType ut)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         #endregion

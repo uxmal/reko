@@ -96,7 +96,8 @@ namespace Decompiler.Analysis
             // <= or >= operators imply an extra spin around the loop.
 
             if (RelEq(ctx.TestOperator) &&
-                DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier))
+                DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier) &&
+                BranchTrueIntoLoop())
             {
                 testValue = Operator.add.ApplyConstants(testValue, ctx.DeltaValue);
             }
@@ -113,6 +114,12 @@ namespace Decompiler.Analysis
             return testValue;
         }
 
+        private bool BranchTrueIntoLoop()
+        {
+            return 
+                ctx.TestStatement.Block.ThenBlock ==
+                ctx.PhiStatement.Block;
+        }
         /// <summary>
         /// Operator is a relation-equals operator.
         /// </summary>
@@ -141,14 +148,14 @@ namespace Decompiler.Analysis
         /// <summary>
         /// Find all linear induction variables in this procedure.
         /// </summary>
-		public void Find()
-		{
-			SccFinder<SsaIdentifier> sccFinder = new SccFinder<SsaIdentifier>(this);
-			foreach (SsaIdentifier sid in ssaIds)
-			{
-				sccFinder.FindOld(sid);
-			}
-		}
+        public void Find()
+        {
+            var sccFinder = new SccFinder<SsaIdentifier>(new SsaGraph(ssaIds), ProcessScc);
+            foreach (SsaIdentifier sid in ssaIds)
+            {
+                sccFinder.Find(sid);
+            }
+        }
 
 		public Constant FindFinalValue(ICollection<SsaIdentifier> scc)
 		{
@@ -157,16 +164,15 @@ namespace Decompiler.Analysis
 				foreach (Statement u in sid.Uses)
 				{
 					Branch b = u.Instruction as Branch;
-					if (b != null)
+                    if (b == null)
+                        continue;
+					BinaryExpression bin = b.Condition as BinaryExpression;
+					if (bin != null && bin.op is ConditionalOperator)
 					{
-						BinaryExpression bin = b.Condition as BinaryExpression;
-						if (bin != null && bin.op is ConditionalOperator)
-						{
-							ctx.TestOperator = bin.op;
-							ctx.TestStatement = u;
-							ctx.TestValue = bin.Right as Constant;
-							return ctx.TestValue;
-						}
+						ctx.TestOperator = bin.op;
+						ctx.TestStatement = u;
+						ctx.TestValue = bin.Right as Constant;
+						return ctx.TestValue;
 					}
 				}
 			}
@@ -175,7 +181,7 @@ namespace Decompiler.Analysis
 
 		public Constant FindInitialValue(PhiFunction phi)
 		{
-			if (phi.Arguments.Length > 2)
+			if (phi.Arguments.Length != 2)
 				return null;
 			Identifier id0 = (Identifier)phi.Arguments[0];
 			Identifier id1 = (Identifier)phi.Arguments[1];
@@ -280,6 +286,92 @@ namespace Decompiler.Analysis
 			return false;
 		}
 
+        public IEnumerable<SsaIdentifier> GetSuccessors(SsaIdentifier sid)
+        {
+            this.operands = new List<SsaIdentifier>();
+            if (sid.DefStatement != null)
+            {
+                sid.DefStatement.Instruction.Accept(this);
+            }
+            return operands;
+        }
+
+        public class SsaGraph : InstructionVisitorBase, DirectedGraph<SsaIdentifier>
+        {
+            private SsaIdentifierCollection ssaIds;
+            private ICollection<SsaIdentifier> operands;
+
+            public SsaGraph(SsaIdentifierCollection ssaIds)
+            {
+                this.ssaIds = ssaIds;
+            }
+
+            #region DirectedGraph<SsaIdentifier> Members
+
+            public ICollection<SsaIdentifier> Predecessors(SsaIdentifier node)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ICollection<SsaIdentifier> Successors(SsaIdentifier sid)
+            {
+                this.operands = new List<SsaIdentifier>();
+                if (sid.DefStatement != null)
+                {
+                    sid.DefStatement.Instruction.Accept(this);
+                }
+                return operands;
+            }
+
+            public ICollection<SsaIdentifier> Nodes
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public void AddEdge(SsaIdentifier nodeFrom, SsaIdentifier nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveEdge(SsaIdentifier nodeFrom, SsaIdentifier nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool ContainsEdge(SsaIdentifier nodeFrom, SsaIdentifier nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+
+            #region InstructionVisitor members //////////////////////
+
+            public override void VisitAssignment(Assignment a)
+            {
+                a.Src.Accept(this);
+            }
+
+            public override void VisitIdentifier(Identifier id)
+            {
+                operands.Add(ssaIds[id]);
+            }
+
+            public override void VisitSideEffect(SideEffect side)
+            {
+                side.Expression.Accept(this);
+            }
+
+            public override void VisitMemoryAccess(MemoryAccess access)
+            {
+                access.EffectiveAddress.Accept(this);
+            }
+
+            #endregion 
+
+
+        }
+
 		#region InstructionVisitor members //////////////////////
 
 		public override void VisitAssignment(Assignment a)
@@ -303,19 +395,6 @@ namespace Decompiler.Analysis
 		}
 
 		#endregion 
-
-		#region ISccFinderHost Members //////////////////////
-
-        public IEnumerable<SsaIdentifier> GetSuccessors(SsaIdentifier sidDef)
-        {
-            this.operands = new List<SsaIdentifier>();
-            if (sidDef.DefStatement != null)
-            {
-                sidDef.DefStatement.Instruction.Accept(this);
-            }
-            return operands;
-        }
-
 
 		public virtual void ProcessScc(IList<SsaIdentifier> scc)
 		{
@@ -342,7 +421,5 @@ namespace Decompiler.Analysis
                 contexts.Add(iv, ctx);
 			}
 		}
-
-		#endregion
 	}
 }

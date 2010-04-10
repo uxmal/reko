@@ -29,22 +29,22 @@ namespace Decompiler.Arch.Pdp11
     {
         public ProcessorState Clone()
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void Set(MachineRegister r, Constant v)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void SetInstructionPointer(Address addr)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public Constant Get(MachineRegister r)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
     }
 }

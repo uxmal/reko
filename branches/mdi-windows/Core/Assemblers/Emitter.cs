@@ -54,12 +54,6 @@ namespace Decompiler.Core.Assemblers
 			}
 		}
 
-        [Obsolete("use EmitLeUint32")]
-        public void EmitDword(uint l)
-        {
-            EmitLeUint32(l);
-        }
-
 		public void EmitLeUint32(uint l)
 		{
 			stmOut.WriteByte((byte)(l));
@@ -71,35 +65,23 @@ namespace Decompiler.Core.Assemblers
 			stmOut.WriteByte((byte)(l));
 		}
 
-        [Obsolete]
-        public void EmitImmediate(Constant c, PrimitiveType dt)
-        {
-            EmitLeImmediate(c, dt);
-        }
-
 		public void EmitLeImmediate(Constant c, PrimitiveType dt)
 		{
 			switch (dt.Size)
 			{
 			case 1: EmitByte(c.ToInt32()); return;
-			case 2: EmitWord(c.ToInt32()); return;
-			case 4: EmitDword(c.ToUInt32()); return;
+			case 2: EmitLeUint16(c.ToInt32()); return;
+			case 4: EmitLeUint32(c.ToUInt32()); return;
 			default: throw new NotSupportedException(string.Format("Unsupported type: {0}", dt));
 			}
 		}
-
-        [Obsolete]
-		public void EmitInteger(PrimitiveType vt, int v)
-        {
-            EmitLe(vt, v);
-        }
 
 		public void EmitLe(PrimitiveType vt, int v)
 		{
 			switch (vt.Size)
 			{
 			case 1: EmitByte(v); return;
-			case 2: EmitWord(v); return;
+			case 2: EmitLeUint16(v); return;
 			case 4: EmitLeUint32((uint) v); return;
 			default: throw new ArgumentException();
 			}
@@ -113,12 +95,6 @@ namespace Decompiler.Core.Assemblers
 				EmitByte(pstr[i]);
 			}
 		}
-
-        [Obsolete]
-        public void EmitWord(int s)
-        {
-            EmitLeUint16(s);
-        }
 
         public void EmitLeUint16(int s)
 		{

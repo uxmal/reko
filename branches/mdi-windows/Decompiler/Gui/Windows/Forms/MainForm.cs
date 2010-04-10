@@ -56,7 +56,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void BuildPhases()
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public ListView DiagnosticsList

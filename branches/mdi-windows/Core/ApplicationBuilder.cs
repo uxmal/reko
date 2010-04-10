@@ -47,11 +47,10 @@ namespace Decompiler.Core
 
         public ApplicationBuilder(Frame frame, CallSite cs, Expression callee, ProcedureSignature sigCallee)
         {
-            this.frame = frame;
 			if (sigCallee == null || !sigCallee.ArgumentsValid)
 				throw new InvalidOperationException("No signature available; application cannot be constructed.");
 
-
+            this.frame = frame;
             FindReturnValue(cs, sigCallee);
             List<Expression> actuals = BindArguments(frame, cs, sigCallee);
 			appl = new Application(

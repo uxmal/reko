@@ -92,7 +92,7 @@ namespace Decompiler.Core.Code
 			else if (dt == PrimitiveType.Real64)
 				return DoubleFromBitpattern(bits);
 			else
-				throw new ArgumentException("Unsupported data type " + dt);
+				throw new ArgumentException(string.Format("Data type {0} is not a floating point type.", dt));
 		}
 
 		public static Constant FloatFromBitpattern(long bits)
@@ -217,7 +217,7 @@ namespace Decompiler.Core.Code
 				else if (p == PrimitiveType.Real64)
 					return ToDouble() < 0.0;
 				else 
-					throw new InvalidOperationException("type can't be negative");
+					throw new InvalidOperationException(string.Format("Type {0} can't be negative", DataType));
 			}
 		}
 
@@ -268,7 +268,7 @@ namespace Decompiler.Core.Code
 
 		public static Constant Pi()
 		{
-			return new Constant(3.1415926535897932384626433832795);
+            return new Constant(Math.PI);
 		}
 
 		public double ToDouble()
@@ -284,6 +284,11 @@ namespace Decompiler.Core.Code
         public ushort ToUInt16()
         {
             return unchecked((ushort) Convert.ToInt64(c));
+        }
+
+        public short ToInt16()
+        {
+            return unchecked((short)Convert.ToInt64(c));
         }
 
 		public int ToInt32()
@@ -354,8 +359,6 @@ namespace Decompiler.Core.Code
         }
 
 		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0);
-
-
 
     }
 }

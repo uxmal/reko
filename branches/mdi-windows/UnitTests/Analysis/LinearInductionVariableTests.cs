@@ -122,7 +122,7 @@ namespace Decompiler.UnitTests.Analysis
 			a.Add(ssaIds[8]);
 			Constant c = liv.FindFinalValue(a);
 			Assert.AreEqual(10, c.ToInt32());
-            Assert.AreEqual("branch i_5 < 0x0000000A", liv.Context.TestStatement.ToString());
+            Assert.AreEqual("branch i_5 < 0x0000000A body", liv.Context.TestStatement.ToString());
 		}
 
 		[Test]
@@ -240,58 +240,41 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void PreTestedUge()
         {
-            ProcedureMock m = new ProcedureMock();
-            Identifier i = m.Local32("i");
-            m.Label("test");
-            m.BranchIf(m.Uge(i, 10), "done");
-            m.Store(m.Word32(0x4204), i);
-            m.Assign(i, m.Add(i, 1));
-            m.Jump("test");
-            m.Label("done");
-            m.Store(m.Word32(0x4200), i);
-            m.Return();
-            m.Procedure.Dump(true, false);
-            m.Procedure.RenumberBlocks();
-            Prepare(m.Procedure);
-            LinearInductionVariableFinder liv = new LinearInductionVariableFinder(m.Procedure, ssaIds, doms);
+            Prepare(delegate(ProcedureMock m)
+            {
+                Identifier i = m.Local32("i");
+                m.Label("test");
+                m.BranchIf(m.Uge(i, 10), "done");
+                m.Store(m.Word32(0x4204), i);
+                m.Assign(i, m.Add(i, 1));
+                m.Jump("test");
+                m.Label("done");
+                m.Store(m.Word32(0x4200), i);
+                m.Return();
+            });
+            LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
             liv.Find();
-            Assert.AreEqual("(? 0x00000001 0x0000000B)", liv.InductionVariables[0].ToString());
+            Assert.AreEqual("(? 0x00000001 0x0000000A)", liv.InductionVariables[0].ToString());
         }
 
 		[Test]
 		public void CreateDecTest()
 		{
-			ProcedureMock m = new ProcedureMock();
-			ssaIds = new SsaIdentifierCollection();
-			Identifier id0 = new Identifier("id0", 0, PrimitiveType.Word32, new TemporaryStorage());
-			Identifier id1 = new Identifier("id1", 1, PrimitiveType.Word32, new TemporaryStorage());
-			ssaIds.Add(new SsaIdentifier(id0, id0, null, null, false));
-			ssaIds.Add(new SsaIdentifier(id1, id1, null, null, false));
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
-
-			liv.Context.InitialValue = Constant.Word32(10);		// id_2 = 10;
-			Identifier id2 = m.Local32("id_2");
-			SsaId(id2, new Statement(null, null), null, false);
-
-			m.Label("loop");
-			Identifier id3 = m.Local32("id_3");		// do {
-			Identifier id4 = m.Local32("id_4");		//   id_3 = phi(id_2, id_4);
-			liv.Context.PhiStatement = m.Phi(id3, id2, id4);
-			liv.Context.PhiIdentifier = id3;
-			SsaId(id3, liv.Context.PhiStatement, ((PhiAssignment) liv.Context.PhiStatement.Instruction).Src, false);
-
-			liv.Context.DeltaValue = m.Int32(-1);				//  id_4 = id_3 - 1;
-			liv.Context.DeltaStatement = m.Sub(id4, id3, m.Int32(1));
-            SsaId(id4, liv.Context.DeltaStatement, ((Assignment) liv.Context.DeltaStatement.Instruction).Src, false);
-			ssaIds[id3].Uses.Add(liv.Context.DeltaStatement);
-
-			liv.Context.TestStatement = m.BranchIf(m.Ge(id4, 0), "loop");
-			liv.Context.TestOperator = Operator.ge;				//  if (id_4 >= 0)
-            liv.Context.TestValue = Constant.Word32(0);
-			ssaIds[id4].Uses.Add(liv.Context.DeltaStatement);
-
-			LinearInductionVariable iv = liv.CreateInductionVariable();
-			Assert.AreEqual("(0 -1 -1 signed)", iv.ToString());
+            Prepare(delegate(ProcedureMock m)
+            {
+                Identifier id = m.Local32("id");
+                m.Assign(id, Constant.Word32(10));
+                m.Label("loop");
+                m.Assign(id, m.Sub(id, 1));
+                m.BranchIf(m.Ge(id, 0), "loop");
+                m.Store(m.Word32(0x4232), id);
+                m.Return(id);
+            });
+            proc.Dump(true, false);
+            var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
+            liv.Find();
+			var iv = liv.InductionVariables[0];
+			Assert.AreEqual("(9 -1 -1 signed)", iv.ToString());
 		}
 
 		[Test]
@@ -329,6 +312,7 @@ namespace Decompiler.UnitTests.Analysis
 		private void Prepare(Procedure proc)
 		{
 			this.proc = proc;
+            proc.RenumberBlocks();
 			doms = new DominatorGraph(proc);
 			SsaTransform sst = new SsaTransform(proc, doms, false);
 			SsaState ssa = sst.SsaState;
@@ -346,6 +330,13 @@ namespace Decompiler.UnitTests.Analysis
 
 			DeadCode.Eliminate(proc, ssa);
 		}
+
+        private void Prepare(Action<ProcedureMock> m)
+        {
+            ProcedureMock mock = new ProcedureMock();
+            m(mock);
+            Prepare(mock.Procedure);
+        }
 
 		private void RunTest(Procedure proc, string outputFile)
 		{

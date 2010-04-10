@@ -1,6 +1,6 @@
-/* 
- * Copyright (C) 1999-2010 John Källén.
- *
+ï»¿/* 
+ * Copyright (C) 1999-2010 John KÃ¤llÃ©n.
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -16,28 +16,18 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Decompiler.Scanning
 {
-    public class Pdp11Disassembler : Disassembler
+    public abstract class StringSearch<C>
     {
-        public Pdp11Disassembler(ImageReader rdr)
+        public StringSearch(C[] pattern)
         {
         }
 
-        public override Address Address
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override MachineInstruction DisassembleInstruction()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract IEnumerator<int> GetMatchPositions(C[] stringToSearch);
     }
 }

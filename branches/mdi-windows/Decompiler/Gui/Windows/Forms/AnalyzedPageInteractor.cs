@@ -22,6 +22,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
@@ -85,12 +86,12 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 if (!browserSvc.IsItemSelected)
                     return new KeyValuePair<Address,Procedure>(null, null);
-                KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) browserSvc.SelectedItem;
+                var entry = (KeyValuePair<Address, Procedure>) browserSvc.SelectedItem;
                 return entry;
             }
         }
 
-        public override System.ComponentModel.ISite Site
+        public override ISite Site
         {
             get { return base.Site; }
             set 
@@ -150,7 +151,5 @@ namespace Decompiler.Gui.Windows.Forms
         {
             DisplayProcedure(SelectedProcedureEntry.Value);
         }
-
-
 	}
 }

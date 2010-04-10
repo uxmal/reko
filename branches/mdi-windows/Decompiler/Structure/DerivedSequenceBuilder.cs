@@ -88,47 +88,47 @@ namespace Decompiler.Structure
     }
 
     /// <summary>
-    /// Wraps the graph of structurenodes in an interface so generic algorithms can use it.
+    /// Wraps the graph of StructureNodes in an interface so generic algorithms can use it.
     /// </summary>
-        public class StructureGraphAdapter : DirectedGraph<StructureNode>
+    public class StructureGraphAdapter : DirectedGraph<StructureNode>
+    {
+        private ICollection<StructureNode> nodes;
+
+        public StructureGraphAdapter(ICollection<StructureNode> nodes)
         {
-            private ICollection<StructureNode> nodes;
+            this.nodes = nodes;
+        }
 
-            public StructureGraphAdapter(ICollection<StructureNode> nodes)
-            {
-                this.nodes = nodes;
-            }
+        public ICollection<StructureNode> Predecessors(StructureNode node)
+        {
+            return node.InEdges;
+        }
 
-            public ICollection<StructureNode> Predecessors(StructureNode node)
-            {
-                return node.InEdges;
-            }
+        public ICollection<StructureNode> Successors(StructureNode node)
+        {
+            return node.OutEdges;
+        }
 
-            public ICollection<StructureNode> Successors(StructureNode node)
-            {
-                return node.OutEdges;
-            }
+        public ICollection<StructureNode> Nodes
+        {
+            get { return nodes; }
+        }
 
-            public ICollection<StructureNode> Nodes
-            {
-                get { return nodes; }
-            }
+        public void AddEdge(StructureNode nodeFrom, StructureNode nodeTo)
+        {
+            nodeFrom.OutEdges.Add(nodeTo);
+            nodeTo.InEdges.Add(nodeFrom);
+        }
 
-            public void AddEdge(StructureNode nodeFrom, StructureNode nodeTo)
-            {
-                nodeFrom.OutEdges.Add(nodeTo);
-                nodeTo.InEdges.Add(nodeFrom);
-            }
+        public void RemoveEdge(StructureNode nodeFrom, StructureNode nodeTo)
+        {
+            nodeFrom.OutEdges.Remove(nodeTo);
+            nodeTo.InEdges.Remove(nodeFrom);
+        }
 
-            public void RemoveEdge(StructureNode nodeFrom, StructureNode nodeTo)
-            {
-                nodeFrom.OutEdges.Remove(nodeTo);
-                nodeTo.InEdges.Remove(nodeFrom);
-            }
-
-            public bool ContainsEdge(StructureNode nodeFrom, StructureNode nodeTo)
-            {
-                return nodeFrom.OutEdges.Contains(nodeTo);
-            }
+        public bool ContainsEdge(StructureNode nodeFrom, StructureNode nodeTo)
+        {
+            return nodeFrom.OutEdges.Contains(nodeTo);
+        }
     }
 }

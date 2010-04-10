@@ -53,35 +53,28 @@ CZ:Flags
 alOut:Out:Register al
 SCZO_7: orig: SCZO
 C_8: orig: C
-    uses: branch al <u 0x30 l0C00_0032
 CZ_9: orig: CZ
 SCZO_10: orig: SCZO
 C_11: orig: C
 CZ_12: orig: CZ
-    uses: branch al <=u 0x39 l0C00_0022
 SCZO_13: orig: SCZO
 C_14: orig: C
-    uses: branch al <u 0x41 l0C00_0032
 CZ_15: orig: CZ
 SCZO_16: orig: SCZO
 C_17: orig: C
 CZ_18: orig: CZ
-    uses: branch al <=u 0x46 l0C00_0022
 SCZO_19: orig: SCZO
 C_20: orig: C
-    uses: branch al <u 0x61 l0C00_0032
 CZ_21: orig: CZ
 SCZO_22: orig: SCZO
 C_23: orig: C
 CZ_24: orig: CZ
-    uses: branch al >u 0x66 l0C00_0032
 al_25: orig: al
     def:  al_25 = al - 0x30
     uses: al_37 = PHI(al_25, al_29, al_33)
           branch al_25 <u 0x0A l0C00_0030
 SCZO_26: orig: SCZO
 C_27: orig: C
-    uses: branch al_25 <u 0x0A l0C00_0030
 CZ_28: orig: CZ
 al_29: orig: al
     def:  al_29 = al - 0x37
@@ -89,7 +82,6 @@ al_29: orig: al
           branch al_29 <u 0x10 l0C00_0030
 SCZO_30: orig: SCZO
 C_31: orig: C
-    uses: branch al_29 <u 0x10 l0C00_0030
 CZ_32: orig: CZ
 al_33: orig: al
     def:  al_33 = al - 0x57

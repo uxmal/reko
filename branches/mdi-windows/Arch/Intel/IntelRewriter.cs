@@ -114,7 +114,7 @@ namespace Decompiler.Arch.Intel
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.adc:
-						ass = EmitAdcSbb(Operator.add);
+						ass = EmitAdcSbb(Operator.Add);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.add:
@@ -128,7 +128,7 @@ namespace Decompiler.Arch.Intel
 						}
 						else 
 						{
-							Expression dst = EmitAddSub(instrs, i, Opcode.adc, Operator.add);
+							Expression dst = EmitAddSub(instrs, i, Opcode.adc, Operator.Add);
 							EmitCcInstr(dst, defFlags, deadFlags);
 						}
 						break;
@@ -246,7 +246,7 @@ namespace Decompiler.Arch.Intel
 					case Opcode.fadd:
 					case Opcode.faddp:
 						EmitCommonFpuInstruction(
-							Operator.add,
+							Operator.Add,
 							false,
 							instrCur.code == Opcode.faddp);
 						break;
@@ -300,7 +300,7 @@ namespace Decompiler.Arch.Intel
 
 					case Opcode.fiadd:
 						EmitCommonFpuInstruction(
-							Operator.add, 
+							Operator.Add, 
 							false,
 							false,
 							PrimitiveType.Real64);
@@ -468,7 +468,7 @@ namespace Decompiler.Arch.Intel
 						}
 						else
 						{
-							ass = EmitBinOp(Operator.add,
+							ass = EmitBinOp(Operator.Add,
 								instrCur.op1,
 								instrCur.op1.Width, 
 								instrCur.op1, 
@@ -1369,10 +1369,7 @@ namespace Decompiler.Arch.Intel
 		
 		private void EmitJump(Address addrInstr)
 		{
-			// Hard-code jumps to 0xFFFF:0x0000 in real mode to reboot.
-
-			AddressOperand addrOp = instrCur.op1 as AddressOperand;
-			if (addrOp != null && addrOp.addr.Linear == 0xFFFF0)
+            if (IsRealModeReboot(instrCur))
 			{
 				PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", PrimitiveType.Void, 0);
 				reboot.Characteristics = new Decompiler.Core.Serialization.ProcedureCharacteristics();
@@ -1381,7 +1378,7 @@ namespace Decompiler.Arch.Intel
 				return;
 			}
 
-			// Jumps to procedure are converted to calls -- but not if they are jumps
+			// Jumps to procedure are converted to call/return sequences -- but not if they are jumps
 			// to the same procedure!
 	
 			Procedure p = GetProcedureFromInstructionAddr(instrCur.op1, frame.ReturnAddressSize, false);
@@ -1415,6 +1412,14 @@ namespace Decompiler.Arch.Intel
 			EmitIndirectCall(addrInstr);
 			EmitReturnInstruction(0, 0);
 		}
+
+        private bool IsRealModeReboot(IntelInstruction instrCur)
+        {
+			// A jumps to 0xFFFF:0x0000 in real mode is a reboot.
+            AddressOperand addrOp = instrCur.op1 as AddressOperand;
+            bool isRealModeReboot = addrOp != null && addrOp.addr.Linear == 0xFFFF0;
+            return isRealModeReboot;
+        }
 
 
 		public void EmitLea()

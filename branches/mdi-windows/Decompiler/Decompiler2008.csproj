@@ -400,6 +400,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Scanning\AhoCorasickSearch.cs" />
+    <Compile Include="Scanning\StringSearch.cs" />
+    <Compile Include="Scanning\KmpStringSearch.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>
     </Compile>

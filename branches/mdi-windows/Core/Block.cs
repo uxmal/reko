@@ -40,6 +40,8 @@ namespace Decompiler.Core
 
 		public Block(Procedure proc, string name)
 		{
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException("Blocks must have a valid name.", "name"); 
 			this.proc = proc;
 			this.name = name;
 			this.stms = new StatementList(this);

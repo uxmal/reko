@@ -104,7 +104,7 @@ namespace Decompiler.Typing
 
 		public void VisitBinaryExpression(BinaryExpression bin)
 		{
-			if (bin.op == Operator.add || bin.op == Operator.sub)
+			if (bin.op == Operator.Add || bin.op == Operator.sub)
 			{
 				// Handle mem[x+const] case. Array accesses of the form
 				// mem[x + (i * const) + const] will have been converted
@@ -133,7 +133,7 @@ namespace Decompiler.Typing
 				EmitAccessTrait(tvBasePointer, bin.Left.TypeVariable, bin.DataType.Size, 0);
 				return;
 			}
-            throw new TypeInferenceException("Couldn't generate traits for {0}.", bin);
+            throw new TypeInferenceException("Couldn't generate address traits for expression {0}.", bin);
 		}
 
 		public void VisitCast(Cast cast)

@@ -23,6 +23,7 @@
 // dwLoc14:Local -0014
 // rArg08:Stack +0008
 // rLoc2:FPU stack
+// FPUF:Flags
 // ax:Register ax
 // ah:Register ah
 // rLoc3:FPU stack
@@ -73,8 +74,8 @@ l10000048:		// block 3, pred: 2 11
 	ecx = eax
 	dwArg08 = ecx
 	rLoc2 = rArg08
-	C = rLoc2 - dwArg00
-	ax = C << 8
+	FPUF = cond(rLoc2 - dwArg00)
+	ax = (word16) FPUF << 8
 	SCZO = cond(ah & 0x40)
 	C = false
 	branch Test(NE,Z) l1000007F
@@ -94,7 +95,7 @@ l1000007F:		// block 5, pred: 3 4
 	dwArg08 = ecx
 	rLoc2 = rArg08
 	rLoc3 = rLoc2
-	ax = C << 8
+	ax = (word16) FPUF << 8
 	SCZO = cond(ah & 0x40)
 	C = false
 	branch Test(NE,Z) l100000AB
@@ -108,15 +109,15 @@ l100000A0:		// block 6, pred: 5
 	// succ:  7
 l100000AB:		// block 7, pred: 5 6
 	rLoc4 = dwArg00
-	C = rLoc4 - Mem0[0x10033298:real64]
-	ax = C << 8
+	FPUF = cond(rLoc4 - Mem0[0x10033298:real64])
+	ax = (word16) FPUF << 8
 	SCZO = cond(ah & 0x40)
 	C = false
 	branch Test(EQ,Z) l100000D5
 	// succ:  8 11
 l100000BD:		// block 8, pred: 7
-	C = rLoc3 - Mem0[0x10033298:real64]
-	ax = C << 8
+	FPUF = cond(rLoc3 - Mem0[0x10033298:real64])
+	ax = (word16) FPUF << 8
 	SCZO = cond(ah & 0x40)
 	C = false
 	branch Test(EQ,Z) l100000D5

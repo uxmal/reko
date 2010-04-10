@@ -57,7 +57,6 @@ ax_14: orig: ax
 dx_ax_15: orig: dx_ax
 SZO_16: orig: SZO
 Z_17: orig: Z
-    uses: branch ax_14 == 0x0000 l0C00_0026
 SCZO_18: orig: SCZO
 ax_19: orig: ax
     def:  ax_19 = 0x0001

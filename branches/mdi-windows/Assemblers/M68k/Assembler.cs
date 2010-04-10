@@ -32,12 +32,14 @@ namespace Decompiler.Assemblers.M68k
         private Address addrBase;
         private Emitter emitter;
         private SymbolTable symtab;
+        private List<EntryPoint> entryPoints;
 
         public AssemblerImpl(Address addr, Emitter emitter)
         {
             this.addrBase = addr;
             this.emitter = emitter;
             this.symtab = new SymbolTable();
+            this.entryPoints = new List<EntryPoint>();
         }
 
         #region Assembler Members
@@ -75,7 +77,7 @@ namespace Decompiler.Assemblers.M68k
 
         public ICollection<EntryPoint> EntryPoints
         {
-            get { throw new NotImplementedException(); }
+            get { return entryPoints; }
         }
 
         public IProcessorArchitecture Architecture

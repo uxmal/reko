@@ -97,11 +97,12 @@ namespace Decompiler.UnitTests.Core.Lib
             graph.AddNode("c");
             graph.AddEdge("a", "b");
             graph.AddEdge("b", "a");
+            graph.AddEdge("c", "a");
 
             CompileTest(graph, "c");
 
             Assert.AreEqual("a", pdg.ImmediateDominator("b"));
-            Assert.AreEqual("b", pdg.ImmediateDominator("a"));
+            Assert.AreEqual("c", pdg.ImmediateDominator("a"));
         }
 
         private void CompileTest(DirectedGraphImpl<string> e, string entry)

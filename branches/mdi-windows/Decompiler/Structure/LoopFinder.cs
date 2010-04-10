@@ -45,9 +45,60 @@ namespace Decompiler.Structure
         public HashedSet<StructureNode> FindLoop()
         {
             loopNodeSet = new HashedSet<StructureNode>();
-            SccFinder<StructureNode> f = new SccFinder<StructureNode>(this);
-            f.FindOld(interval.Header);
+            var f = new SccFinder<StructureNode>(new GraphAdapter(this), ProcessScc);
+            f.Find(interval.Header);
             return loopNodeSet;
+        }
+
+        private class GraphAdapter : DirectedGraph<StructureNode>
+        {
+            private SccLoopFinder slf;
+
+            public GraphAdapter(SccLoopFinder slf)
+            {
+                this.slf = slf;
+            }
+            
+            #region DirectedGraph<StructureNode> Members
+
+            public ICollection<StructureNode> Predecessors(StructureNode node)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ICollection<StructureNode> Successors(StructureNode node)
+            {
+                var succ = new List<StructureNode>();
+                foreach (StructureNode s in node.OutEdges)
+                {
+                    if (slf.IsNodeInInterval(s))
+                        succ.Add(s);
+                }
+                return succ;
+            }
+        
+
+            public ICollection<StructureNode> Nodes
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public void AddEdge(StructureNode nodeFrom, StructureNode nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveEdge(StructureNode nodeFrom, StructureNode nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool ContainsEdge(StructureNode nodeFrom, StructureNode nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
         }
 
         #region ISccFinderHost<CFGNode> Members
@@ -66,6 +117,16 @@ namespace Decompiler.Structure
             return intervalNodes.Contains(s);
         }
 
+        private void ProcessScc(IList<StructureNode> scc)
+        {
+            if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
+            {
+                Dump(scc);
+                loopNodeSet.AddRange(scc);
+            }
+        }
+
+        [Obsolete]
         void ISccFinderHost<StructureNode>.ProcessScc(IList<StructureNode> scc)
         {
             if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
@@ -75,7 +136,7 @@ namespace Decompiler.Structure
             }
         }
 
-        private void Dump(IList<StructureNode> scc)
+        private void Dump(ICollection<StructureNode> scc)
         {
             Console.WriteLine("===");
             Console.Write("scc nodes:");

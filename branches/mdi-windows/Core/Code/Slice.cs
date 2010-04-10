@@ -33,7 +33,7 @@ namespace Decompiler.Core.Code
 		public Slice(DataType dt, Expression i, uint bitOffset) : base(dt)
 		{
 			if (bitOffset > 255)
-				throw new ArgumentOutOfRangeException("Offset is too large");
+				throw new ArgumentOutOfRangeException("bitOffset", "Offset is too large.");
 			expr = i; offset = (byte) bitOffset;
 		}
 
@@ -50,7 +50,7 @@ namespace Decompiler.Core.Code
 
 		public override Expression CloneExpression()
 		{
-			throw new NotImplementedException();
+			return new Slice(DataType, expr, offset);
 		}
 
 		public Expression Expression

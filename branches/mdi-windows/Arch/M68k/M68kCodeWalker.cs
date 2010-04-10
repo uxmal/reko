@@ -34,6 +34,7 @@ namespace Decompiler.Arch.M68k
         public M68kCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
         {
             this.img = img;
+            this.platform = platform;
             this.dasm = new M68kDisassembler(img.CreateReader(addr));
             this.st = st;
         }

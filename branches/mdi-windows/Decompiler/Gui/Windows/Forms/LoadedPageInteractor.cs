@@ -91,7 +91,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         private void FindMatchingBytes(byte [] pattern)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
 		public void GotoAddress()

@@ -109,22 +109,22 @@ namespace Decompiler.Arch.Pdp11
 
         public MachineFlags GetFlagGroup(uint grf)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public MachineFlags GetFlagGroup(string name)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public BitSet ImplicitArgumentRegisters
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public string GrfToString(uint grf)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public PrimitiveType FramePointerType
@@ -139,7 +139,7 @@ namespace Decompiler.Arch.Pdp11
 
         public PrimitiveType WordWidth
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         #endregion

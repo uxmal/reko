@@ -240,7 +240,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		public Procedure GetProcedureAtAddress(Address addr, int cbStackDepth)
 		{
-			return (Procedure) procedures[addr];
+            Procedure proc;
+            return procedures.TryGetValue(addr, out proc) ? proc : null;
 		}
 
 		public Procedure [] GetProceduresFromVector(Address vectorAddress)

@@ -259,12 +259,12 @@ namespace Decompiler.Analysis
 
             public override void Accept(StorageVisitor visitor)
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
 
             public override int OffsetOf(Storage storage)
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
 
             public override void Write(System.IO.TextWriter writer)

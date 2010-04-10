@@ -34,17 +34,17 @@ namespace Decompiler.Arch.Pdp11
 
         public override List<BackwalkOperation> BackWalk(Address addrFrom, IBackWalkHost host)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public override Address MakeAddress(Decompiler.Core.Types.PrimitiveType size, ImageReader rdr, ushort segBase)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public override MachineRegister IndexRegister
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
     }
 }

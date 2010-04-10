@@ -238,6 +238,7 @@ namespace Decompiler.Core
         {
             block.Succ.Add(blockTo);
             blockTo.Pred.Add(block);
+            controlGraph.AddEdge(block, blockTo);
         }
 
         [Obsolete("Change references to ControlGraph")]
@@ -248,6 +249,7 @@ namespace Decompiler.Core
                 from.Succ.Remove(to);
                 to.Pred.Remove(from);
             }
+            controlGraph.RemoveEdge(from, to);
         }
     }
 }

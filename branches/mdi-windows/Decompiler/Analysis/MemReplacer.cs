@@ -75,10 +75,34 @@ namespace Decompiler.Analysis
 			if (b != null)
 			{
 				c = b.Right as Constant;
-				if (c != null && b.op == Operator.add)
+				if (c != null && b.op == Operator.Add)
 					return new FieldAccess(type, new Dereference(type, b.Left), string.Format("{0}{1:X8}", type.Prefix, c.ToUInt32()));
 			}
 			return new Dereference(null, ea);
 		}
+
+        public override Expression TransformSegmentedAccess(SegmentedAccess access)
+        {
+            Expression basePtr = access.BasePointer.Accept(this);
+            Expression ea = access.EffectiveAddress.Accept(this);
+            DataType type = access.DataType;
+
+            Constant c = ea as Constant;
+            if (c != null)
+            {
+                return new FieldAccess(type, new Dereference(type, basePtr), string.Format("{0}{1:X4}", type.Prefix, c.ToInt16()));
+            }
+            BinaryExpression b = ea as BinaryExpression;
+            if (b != null && b.op == Operator.Add)
+            {
+                c = b.Right as Constant;
+                if (c != null)
+                {
+                    return new FieldAccess(type, new MemberPointerSelector(type, basePtr, b.Left),
+                        string.Format("{0}{1:X4}", type.Prefix, c.ToInt16()));
+                }
+            }
+            return new MemberPointerSelector(null, basePtr, ea);
+        }
 	}
 }

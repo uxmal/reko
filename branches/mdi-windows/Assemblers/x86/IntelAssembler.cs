@@ -124,7 +124,7 @@ namespace Decompiler.Assemblers.x86
         internal void ProcessComm(string sym)
         {
             DefineSymbol(sym);
-            emitter.EmitDword(0);
+            emitter.EmitLeUint32(0);
         }
 
         internal void ProcessFpuCommon(int opcodeFreg, int opcodeMem, int fpuOperation, bool isPop, bool fixedOrder, ParsedOperand[] ops)
@@ -244,7 +244,7 @@ namespace Decompiler.Assemblers.x86
                     {
                         emitter.EmitOpcode(0x69, dataWidth);
                         EmitModRM(RegisterEncoding(regOp.Register), ops[1]);
-                        emitter.EmitImmediate(op3.Value, dataWidth);
+                        emitter.EmitLeImmediate(op3.Value, dataWidth);
                     }
                 }
             }
@@ -435,7 +435,7 @@ namespace Decompiler.Assemblers.x86
                 {
                     emitter.EmitOpcode(0xB0 | (isWord << 3) | reg, dataWidth);
                     if (isWord != 0)
-                        emitter.EmitInteger(dataWidth, immOpSrc.Value.ToInt32());
+                        emitter.EmitLe(dataWidth, immOpSrc.Value.ToInt32());
                     else
                         emitter.EmitByte(immOpSrc.Value.ToInt32());
 
@@ -468,7 +468,7 @@ namespace Decompiler.Assemblers.x86
                 int isWord = (dataWidth != PrimitiveType.Byte) ? 1 : 0;
                 emitter.EmitOpcode(0xC6 | IsWordWidth(dataWidth), dataWidth);
                 EmitModRM(0, memOpDst, ops[0].Symbol);
-                emitter.EmitImmediate(immOpSrc.Value, dataWidth);
+                emitter.EmitLeImmediate(immOpSrc.Value, dataWidth);
             }
         }
         internal void ProcessMovx(int opcode, ParsedOperand[] ops)
@@ -512,7 +512,7 @@ namespace Decompiler.Assemblers.x86
                 else
                 {
                     emitter.EmitOpcode(0x68, emitter.SegmentDataWidth);
-                    emitter.EmitInteger(emitter.SegmentDataWidth, imm);
+                    emitter.EmitLe(emitter.SegmentDataWidth, imm);
                 }
                 return;
             }
@@ -638,7 +638,7 @@ namespace Decompiler.Assemblers.x86
                     emitter.EmitOpcode(0xF6 | (isWord & 1), dataWidth);
                     EmitModRM(0, ops[0]);
                     if (isWord != 0)
-                        emitter.EmitInteger(dataWidth, immOpSrc.Value.ToInt32());
+                        emitter.EmitLe(dataWidth, immOpSrc.Value.ToInt32());
                     else
                         emitter.EmitByte(immOpSrc.Value.ToInt32());
 
@@ -656,7 +656,7 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0xF6 | (isWord & 1), dataWidth);
             EmitModRM(0, ops[0]);
             if (isWord != 0)
-                emitter.EmitImmediate(immOp.Value, dataWidth);
+                emitter.EmitLeImmediate(immOp.Value, dataWidth);
             else
                 emitter.EmitByte(immOp.Value.ToInt32());
 
@@ -675,7 +675,7 @@ namespace Decompiler.Assemblers.x86
 
         private void DefineSymbol(string pstr)
         {
-            ResolveSymbol(symtab.DefineSymbol(pstr, emitter.Position));
+            symtab.DefineSymbol(pstr, emitter.Position).Resolve(emitter);
         }
 
 
@@ -845,12 +845,6 @@ namespace Decompiler.Assemblers.x86
             return registerEncodings[reg.Number];
         }
 
-        [Obsolete]
-        public void ResolveSymbol(Symbol psym)
-        {
-            psym.Resolve(emitter);
-        }
-
         public static Constant IntegralConstant(int i, PrimitiveType width)
         {
             if (-0x80 <= i && i < 0x80)
@@ -1013,7 +1007,7 @@ namespace Decompiler.Assemblers.x86
         public void Ret(int n)
         {
             emitter.EmitOpcode(0xC2, null);
-            emitter.EmitWord(n);
+            emitter.EmitLeUint16(n);
         }
 
         public void Proc(string procName)
@@ -1127,7 +1121,7 @@ namespace Decompiler.Assemblers.x86
         public void Enter(int cbStack, int nLevel)
         {
             emitter.EmitOpcode(0xC8, null);
-            emitter.EmitWord(cbStack);
+            emitter.EmitLeUint16(cbStack);
             emitter.EmitByte(nLevel);
         }
 
@@ -1158,7 +1152,7 @@ namespace Decompiler.Assemblers.x86
                 if (regOpDst != null && IsAccumulator(regOpDst.Register) != 0)
                 {
                     emitter.EmitOpcode((binop << 3) | 0x04 | IsWordWidth(ops[0].Operand), dataWidth);
-                    emitter.EmitImmediate(immOp.Value, dataWidth);
+                    emitter.EmitLeImmediate(immOp.Value, dataWidth);
                     return;
                 }
 
@@ -1184,7 +1178,7 @@ namespace Decompiler.Assemblers.x86
                     {
                         emitter.EmitOpcode(0x81, dataWidth);
                         EmitModRM(binop, ops[0]);
-                        emitter.EmitImmediate(immOp.Value, dataWidth);
+                        emitter.EmitLeImmediate(immOp.Value, dataWidth);
                     }
                     break;
                 }
@@ -1286,7 +1280,7 @@ namespace Decompiler.Assemblers.x86
         {
             uint u = (uint) (addrBase.Linear + emitter.Position);
             ImportThunks.Add(u, new PseudoProcedure(fnName, sig));
-            emitter.EmitInteger(size, 0);
+            emitter.EmitLe(size, 0);
         }
 
         internal OperandParser CreateOperandParser(Lexer lexer)
@@ -1312,13 +1306,13 @@ namespace Decompiler.Assemblers.x86
         internal void DefineWord(PrimitiveType width, string symbolText)
         {
             Symbol sym = symtab.CreateSymbol(symbolText);
-            emitter.EmitInteger(width, (int) addrBase.Offset);
+            emitter.EmitLe(width, (int)addrBase.Offset);
             ReferToSymbol(sym, emitter.Length - (int) width.Size, emitter.SegmentAddressWidth);
         }
 
         internal void DefineWord(PrimitiveType width, int value)
         {
-            emitter.EmitInteger(width, value);
+            emitter.EmitLe(width, value);
         }
 
         internal void ReportUnresolvedSymbols()

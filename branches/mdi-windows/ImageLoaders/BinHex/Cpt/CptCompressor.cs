@@ -92,7 +92,6 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
         delegate int BitGetter();
         BitGetter get_bit;
         HuffNode[] nodelist = new HuffNode[515]; // 515 because StuffIt Classic needs more than the needed 511
-        private int nodeptr = 0;
 
 
         int gethuffbyte(HuffNode l_nodelist)

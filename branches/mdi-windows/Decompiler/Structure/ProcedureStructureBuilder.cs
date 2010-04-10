@@ -145,8 +145,8 @@ namespace Decompiler.Structure
 
         public void AnalyzeGraph()
         {
-            StructureGraphAdapter graph = new StructureGraphAdapter(curProc.Nodes);
-            ICollection<StructureNode> infiniteLoops = FindInfiniteLoops(graph, curProc.EntryNode);
+            var graph = new StructureGraphAdapter(curProc.Nodes);
+            var infiniteLoops = FindInfiniteLoops(graph, curProc.EntryNode);
             AddPseudoEdgeFromInfiniteLoopsToExitNode(graph, infiniteLoops, curProc.ExitNode);
 
             // (re)set the reverse ordering of the nodes.
@@ -155,8 +155,8 @@ namespace Decompiler.Structure
 
             curProc.Dump();
 
-            PostDominatorGraph g = new PostDominatorGraph(curProc);
-            g.FindImmediatePostDominators();
+            var pdg = new PostDominatorGraph(curProc);
+            pdg.FindImmediatePostDominators();
 
             RemovePseudoEdgeFromInfiniteLoopsToExitNode(graph, infiniteLoops, curProc.ExitNode);
         }
@@ -181,7 +181,7 @@ namespace Decompiler.Structure
         public ICollection<StructureNode> FindInfiniteLoops(DirectedGraph<StructureNode> graph, StructureNode entry)
         {
             List<StructureNode> infiniteLoopHeaders = new List<StructureNode>();
-            SccFinder<StructureNode> finder = new SccFinder<StructureNode>(graph, delegate(ICollection<StructureNode> scc)
+            SccFinder<StructureNode> finder = new SccFinder<StructureNode>(graph, delegate(IList<StructureNode> scc)
             {
                 if (IsInfiniteLoop(graph, scc))
                 {

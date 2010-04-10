@@ -43,7 +43,6 @@ si_15: orig: si
           ax_33 = si_15 - si
 SCZO_16: orig: SCZO
 Z_17: orig: Z
-    uses: branch ax_14 != 0x0020 l0C00_0005
 SZO_18: orig: SZO
 Mem19: orig: Mem0
     def:  store(Mem19[ds:di:word16]) = ax_14
@@ -51,11 +50,9 @@ Mem19: orig: Mem0
           store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
 SCZO_20: orig: SCZO
 Z_21: orig: Z
-    uses: branch ax_14 != 0x0000 l0C00_0011
 SZO_22: orig: SZO
 SCZO_23: orig: SCZO
 Z_24: orig: Z
-    uses: branch ax_14 != 0x000D l0C00_001A
 SZO_25: orig: SZO
 v9_26: orig: v9
     uses: store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
@@ -96,9 +93,9 @@ liveOut: Mem0 si ds di
 liveIn:  Mem0 si ds di
 l0C00_0000:		// block 1, pred: 0
 	// succ:  2
-liveOut: Mem0 si ds di Z_17 Z_21 Z_24 v9_26
+liveOut: Mem0 si ds di v9_26
 
-liveIn:  si ds di Z_17 Z_21 Z_24 v9_26
+liveIn:  si ds di v9_26
 l0C00_001A:		// block 2, pred: 1 4 5
 	si_12 = PHI(si, si_15, si_15)
 	Mem13 = PHI(Mem0, Mem19, Mem27)
@@ -106,26 +103,26 @@ l0C00_001A:		// block 2, pred: 1 4 5
 	si_15 = si_12 + 0x0002
 	branch ax_14 != 0x0020 l0C00_0005
 	// succ:  7 3
-liveOut: si ds di ax_14 si_15 Z_17 Z_21 Z_24 v9_26
+liveOut: si ds di ax_14 si_15 v9_26
 
-liveIn:  si ds di ax_14 si_15 Z_17 Z_21 Z_24 v9_26
+liveIn:  si ds di ax_14 si_15 v9_26
 l0C00_0005:		// block 3, pred: 2
 	store(Mem19[ds:di:word16]) = ax_14
 	branch ax_14 != 0x0000 l0C00_0011
 	// succ:  6 4
-liveOut: si ds di ax_14 si_15 Z_17 Mem19 Z_21 Z_24 v9_26
+liveOut: si ds di ax_14 si_15 Mem19 v9_26
 
-liveIn:  si ds di ax_14 si_15 Z_17 Mem19 Z_21 Z_24 v9_26
+liveIn:  si ds di ax_14 si_15 Mem19 v9_26
 l0C00_0011:		// block 4, pred: 3
 	branch ax_14 != 0x000D l0C00_001A
 	// succ:  5 2
-liveOut: si ds di si_15 Z_17 Mem19 Z_21 Z_24 v9_26
+liveOut: si ds di si_15 Mem19 v9_26
 
-liveIn:  si ds di Z_17 Mem19 Z_21 Z_24 v9_26
+liveIn:  si ds di Mem19 v9_26
 l0C00_0016:		// block 5, pred: 4
 	store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
 	// succ:  2
-liveOut: si ds di Z_17 Z_21 Z_24 v9_26 Mem27
+liveOut: si ds di v9_26 Mem27
 
 liveIn:  ds
 l0C00_000B:		// block 6, pred: 3

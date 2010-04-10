@@ -57,45 +57,65 @@ namespace Decompiler.Analysis
             this.arch = arch;
 		}
 
-		public void Transform()
-		{
-			for (int i = 0; i < ssaIds.Count; ++i)
-			{	
-				sidGrf = ssaIds[i];
-				if (sidGrf.OriginalIdentifier.Storage is FlagGroupStorage && sidGrf.DefStatement != null)
-				{
-					if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
-					for (int u = sidGrf.Uses.Count - 1; u >= 0; --u)
-					{
-						TraverseCopyChain(sidGrf, sidGrf, sidGrf.Uses[u]);
-                    }
-
-                    Statement[] uses = sidGrf.Uses.ToArray();
-                    foreach (var u in uses)
-                    {
-                        useStm = u;
-						if (trace.TraceInfo) Debug.WriteLine(string.Format("   used {0}", useStm.Instruction));
-						useStm.Instruction.Accept(this);
-						if (trace.TraceInfo) Debug.WriteLine(string.Format("    now {0}", useStm.Instruction));
-					}
-				}
-			}
-		}
-
-        private void TraverseCopyChain(SsaIdentifier sidGrfOrig, SsaIdentifier sidGrf, Statement stm)
+        public void Transform()
         {
-            if (!IsCopyWithOptionalCast(sidGrf.Identifier, stm))
+            for (int i = 0; i < ssaIds.Count; ++i)
             {
-		        IdentifierReplacer ir = new IdentifierReplacer(sidGrf.Identifier, sidGrfOrig.Identifier);
-		        stm.Instruction.Accept(ir);
+                sidGrf = ssaIds[i];
+                if (!IsLocallyDefinedFlagGroup(sidGrf))
+                    continue;
+                ForwardSubstituteDefiningExpression(sidGrf, sidGrf.DefExpression);
+
+                if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
+
+                Statement[] uses = sidGrf.Uses.ToArray();
+                foreach (var u in uses)
+                {
+                    useStm = u;
+                    if (trace.TraceInfo) Debug.WriteLine(string.Format("   used {0}", useStm.Instruction));
+                    useStm.Instruction.Accept(this);
+                    if (trace.TraceInfo) Debug.WriteLine(string.Format("    now {0}", useStm.Instruction));
+                }
+            }
+        }
+
+
+        private bool IsLocallyDefinedFlagGroup(SsaIdentifier sid)
+        {
+            return sid.OriginalIdentifier.Storage is FlagGroupStorage && sid.DefStatement != null;
+        }
+
+        private void ForwardSubstituteDefiningExpression(SsaIdentifier sid, Expression expr)
+        {
+            var condExpr = sidGrf.DefExpression;
+            foreach (Statement use in sid.Uses)
+            {
+                if (IsCopyWithOptionalCast(sid.Identifier, use))
+                {
+                    var ass = (Assignment)use.Instruction;
+                    var ir = new IdentifierReplacer(sid.Identifier, expr);
+                    ass.Accept(ir);
+                    var eua = new ExpressionUseAdder(use, ssaIds);
+                    ass.Src.Accept(eua);
+                    ForwardSubstituteDefiningExpression(ssaIds[ass.Dst], expr);
+                }
+            }
+        }
+
+        private void ReplaceTransitiveUses(SsaIdentifier sidGrfOrig, SsaIdentifier sidGrf, Statement use)
+        {
+            if (IsCopyWithOptionalCast(sidGrf.Identifier, use))
+            {
+                Assignment ass = (Assignment)use.Instruction;
+                foreach (Statement u in ssaIds[ass.Dst].Uses)
+                {
+                    ReplaceTransitiveUses(sidGrfOrig, ssaIds[ass.Dst], u);
+                }
             }
             else
             {
-                Assignment ass = (Assignment)stm.Instruction;
-                foreach (Statement use in ssaIds[ass.Dst].Uses)
-                {
-                    TraverseCopyChain(sidGrfOrig, ssaIds[ass.Dst], use);
-                }
+                IdentifierReplacer ir = new IdentifierReplacer(sidGrf.Identifier, sidGrfOrig.Identifier);
+                use.Instruction.Accept(ir);
             }
         }
 
@@ -196,7 +216,7 @@ namespace Decompiler.Analysis
 
 		private static bool IsAddOrSub(BinaryOperator op)
 		{
-			return op == Operator.add || op == Operator.sub;
+			return op == Operator.Add || op == Operator.sub;
 		}
 
 		public Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)

@@ -294,11 +294,9 @@ namespace Decompiler.UnitTests.Arch.Intel
         public void RewriteJp()
         {
             rw.ConvertInstructions(
-                new IntelInstruction(Opcode.jpe, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word32, 0x100))),
-                new IntelInstruction(Opcode.jpo, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word32, 0x102)))
+                new IntelInstruction(Opcode.jpe, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word32, 0x100)))
                 );
-            Assert.AreEqual("@@@", rw.Block.Statements[0].Instruction.ToString());
-            Assert.AreEqual("@@@", rw.Block.Statements[1].Instruction.ToString());
+            Assert.AreEqual("branch Test(PE,P) l0C00_0100", rw.Block.Statements[0].Instruction.ToString());
         }
 
         public class TestRewriter : IntelRewriter
@@ -354,7 +352,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             public Block RewriteBlock(Address addr, Block prev, Rewriter rewriter)
             {
-                throw new Exception("The method or operation is not implemented.");
+                return new Block(proc, addr.GenerateName("l", ""));
             }
 
             public CodeEmitter CreateEmitter(Block block)

@@ -32,24 +32,6 @@ namespace Decompiler.UnitTests.Structure
 
 
         [Test]
-        [Ignore]
-        public void NestedWhileLoops()
-        {
-            RunTest(new MockNestedWhileLoops());
-            Dump(proc.DerivedGraphs, Console.Out);
-            Assert.AreEqual(9, proc.DerivedGraphs[0].Graph.Nodes.Count);
-            Assert.AreEqual(3, proc.DerivedGraphs[1].Graph.Nodes.Count);
-            Assert.AreEqual(2, proc.DerivedGraphs[2].Graph.Nodes.Count);
-            Assert.AreEqual(1, proc.DerivedGraphs[3].Graph.Nodes.Count);
-            Interval i = proc.DerivedGraphs[1].Intervals[1];
-            Assert.AreEqual(4, i.Ident());
-            bool [] blocks = new bool[proc.Nodes.Count];
-            i.FindNodesInInt(blocks, 1);
-            Assert.AreEqual("111111100", DumpBoolArray(blocks));
-            HashedSet<StructureNode> intervalMembers = i.FindIntervalNodes(1);
-        }
-
-        [Test]
         public void BuildSingleNodeGraph()
         {
             CompileTest(delegate(ProcedureMock m)

@@ -95,7 +95,7 @@ namespace Decompiler.Arch.PowerPC
 
         public Dumper CreateDumper()
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public Frame CreateFrame()
@@ -105,67 +105,67 @@ namespace Decompiler.Arch.PowerPC
 
         public ProcessorState CreateProcessorState()
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public BackWalker CreateBackWalker(ProgramImage img)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public BitSet CreateRegisterBitset()
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public MachineRegister GetRegister(int i)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public MachineRegister GetRegister(string name)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public MachineFlags GetFlagGroup(uint grf)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public MachineFlags GetFlagGroup(string name)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public Decompiler.Core.Lib.BitSet ImplicitArgumentRegisters
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public string GrfToString(uint grf)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public Decompiler.Core.Types.PrimitiveType FramePointerType
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public Decompiler.Core.Types.PrimitiveType PointerType
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public PrimitiveType WordWidth

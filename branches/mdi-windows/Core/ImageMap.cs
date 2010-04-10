@@ -159,6 +159,11 @@ namespace Decompiler.Core
             return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Execute) != 0);
 		}
 
+        /// <summary>
+        /// Given a linear address, returns an address whose selector, if any, contains the linear address.
+        /// </summary>
+        /// <param name="linearAddress"></param>
+        /// <returns></returns>
 		public Address MapLinearAddressToAddress(int linearAddress)
 		{
 			foreach (ImageMapSegment seg in segments.Values)
@@ -173,7 +178,7 @@ namespace Decompiler.Core
                         return new Address((uint)linearAddress);
                 }
 			}			
-			throw new ArgumentOutOfRangeException("linear address {0:X8} exceeeds known address range");
+			throw new ArgumentOutOfRangeException("Linear address {0:X8} exceeeds known address range.");
 		}
 
 		private void OnItemCoincides(ImageMapItem item, ImageMapItem itemNew)

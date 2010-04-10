@@ -153,17 +153,17 @@ namespace Decompiler.UnitTests.Core.Lib
 
             public void AddEdge(TreeNode nodeFrom, TreeNode nodeTo)
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
 
             public void RemoveEdge(TreeNode nodeFrom, TreeNode nodeTo)
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
 
             public bool ContainsEdge(TreeNode nodeFrom, TreeNode nodeTo)
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
 
             #endregion

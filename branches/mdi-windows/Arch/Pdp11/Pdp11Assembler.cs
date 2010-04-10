@@ -64,12 +64,12 @@ namespace Decompiler.Arch.Pdp11
 
         public Address StartAddress
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public Dictionary<uint, PseudoProcedure> ImportThunks
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
     }
 }

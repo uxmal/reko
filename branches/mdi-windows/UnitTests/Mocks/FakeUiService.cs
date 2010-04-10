@@ -55,7 +55,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public string ShowSaveFileDialog(string fileName)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         // Fake members ///////
