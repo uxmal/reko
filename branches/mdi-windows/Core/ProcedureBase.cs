@@ -24,7 +24,7 @@ using System.ComponentModel;
 namespace Decompiler.Core
 {
     /// <summary>
-    /// Abstract base class for all applicable objects.
+    /// Abstract base class for all applicable procedure-like entities.
     /// </summary>
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase

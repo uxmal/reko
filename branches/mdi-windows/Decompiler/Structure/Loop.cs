@@ -151,7 +151,8 @@ namespace Decompiler.Structure
     }
 
     /// <summary>
-    /// Testless loops don't have an exit in their header nor their latch node. Either exits need to be modelled with a break/goto/return (in C) or the loop is infinite.
+    /// Testless loops don't have an exit in their header nor their latch node.
+    /// Either exits need to be modelled with a break/goto/return (in C) or the loop is infinite.
     /// </summary>
     public class TestlessLoop : Loop
     {
@@ -175,7 +176,6 @@ namespace Decompiler.Structure
                     throw new NotSupportedException(string.Format("Expected top of PostTestedLoop {0} to have only 1 out edge, but found {1} out edges.", node.Name, node.OutEdges.Count));
                 codeGen.GenerateCode(node.OutEdges[0], Latch, bodyEmitter);
             }
-
             emitter.EmitForever(node, loopBody);
         }
     }

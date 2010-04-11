@@ -26,6 +26,5 @@ namespace Decompiler.Core.Absyn
 		{
 			visitor.VisitBreak(this);
 		}
-
 	}
 }

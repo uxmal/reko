@@ -30,20 +30,12 @@ namespace Decompiler.Core.Lib
 	/// </remarks>
 	public class SccFinder<T>
 	{
-        [Obsolete]
-		private ISccFinderHost<T> host;
         private DirectedGraph<T> graph;
         private Action<IList<T>> processScc;
 		private int nextDfs = 0;
 		private Stack<Node> stack = new Stack<Node>();
 		private Dictionary<T,Node> map = new Dictionary<T,Node>();
 
-        [Obsolete]
-        public SccFinder(ISccFinderHost<T> host)
-        {
-            this.host = host;
-            this.nextDfs = 0;
-        }
 
         public SccFinder(DirectedGraph<T> graph, Action<IList<T>> processScc)
         {
@@ -94,50 +86,11 @@ namespace Decompiler.Core.Lib
             }
         }
 
-        [Obsolete]
-        private void DfsOld(Node node)
-		{
-			node.dfsNumber = nextDfs++;
-			node.visited = true;
-			node.low = node.dfsNumber;
-			stack.Push(node);
-			foreach (Node o in GetSuccessorsOld(node))
-			{
-				if (!o.visited)
-				{
-					DfsOld(o);
-					node.low = Math.Min(node.low, o.low);
-				}
-				if (o.dfsNumber < node.dfsNumber && stack.Contains(o))
-				{
-					node.low = Math.Min(o.dfsNumber, node.low);
-				}
-			}
-			if (node.low == node.dfsNumber)
-			{
-				List<T> scc = new List<T>();
-				Node x;
-				do
-				{
-					x = stack.Pop();
-					scc.Add(x.o);
-				} while (x != node);
-				host.ProcessScc(scc);
-			}
-		}
-
         public void Find(T start)
         {
             if (!map.ContainsKey(start))
                 Dfs(AddNode(start));
         }
-
-        [Obsolete]
-		public void FindOld(T start)
-		{
-			if (!map.ContainsKey(start))
-				DfsOld(AddNode(start));
-		}
 
         private IEnumerable<Node> GetSuccessors(Node node)
         {
@@ -146,15 +99,6 @@ namespace Decompiler.Core.Lib
                 yield return AddNode(successor);
             }
         }
-
-        [Obsolete]
-        private IEnumerable<Node> GetSuccessorsOld(Node node)
-		{
-            foreach (T successor in host.GetSuccessors(node.o))
-            {
-                yield return AddNode(successor);
-            }
-		}
 
 		private class Node
 		{
@@ -168,13 +112,5 @@ namespace Decompiler.Core.Lib
 				this.o = o;
 			}
 		}
-	}
-
-
-	public interface ISccFinderHost<T>
-	{
-        IEnumerable<T> GetSuccessors(T t);
-
-		void ProcessScc(IList<T> scc);
 	}
 }

@@ -493,7 +493,7 @@
     <Compile Include="Structure\Interval.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Structure\IntervalFinder.cs">
+    <Compile Include="Structure\IntervalBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\Loop.cs">

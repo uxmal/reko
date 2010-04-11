@@ -177,6 +177,7 @@ namespace Decompiler.Typing
 	public class DataTypeBuilderUnifier : Unifier
 	{
 		private TypeStore store;
+        private int nestedCalls;        //$DEBUG
 
 		public DataTypeBuilderUnifier(TypeFactory factory, TypeStore store) : base(factory)
 		{
@@ -185,9 +186,12 @@ namespace Decompiler.Typing
 
 		public override DataType UnifyTypeVariables(TypeVariable tA, TypeVariable tB)
 		{
+            if (++nestedCalls > 300)        //$DEBUG
+                nestedCalls.ToString();
             DataType dt = Unify(tA.Class.DataType, tB.Class.DataType);
             EquivalenceClass eq = store.MergeClasses(tA, tB);
             eq.DataType = dt;
+            --nestedCalls;
             return eq.Representative;
 		}
 	}

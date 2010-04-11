@@ -46,55 +46,57 @@ namespace Decompiler.Structure
             GenerateStructuredCode();
         }
 
-
-        // This routine is called after all the other structuring has been done. It detects
-        // conditionals that are in fact the head of a jump into/outof a loop or into a case body. 
-        // Only forward jumps are considered as unstructured backward jumps will always be generated nicely.
+        /// <summary>
+        /// This routine is called after all the other structuring has been done. It detects
+        /// conditionals that are in fact the head of a jump into/outof a loop or into a case body. 
+        /// Only forward jumps are considered as unstructured backward jumps will always be generated nicely.
+        /// </summary>
+        /// <param name="curProc"></param>
         public void DetectUnstructuredConditionals(ProcedureStructure curProc)
         {
-            foreach (StructureNode curNode in curProc.Ordering)
+            foreach (StructureNode node in curProc.Ordering)
             {
-                if (IsTwoWayBranchWithFollow(curNode))
+                if (IsTwoWayBranchWithFollow(node))
                 {
-                    Loop myLoop = curNode.Loop;
-                    Loop follLoop = curNode.Conditional.Follow.Loop;
+                    Loop myLoop = node.Loop;
+                    Loop follLoop = node.Conditional.Follow.Loop;
 
-                    // analyse whether this is a jump into/outof a loop
+                    // analyze whether this is a jump into/outof a loop
                     if (myLoop != follLoop)
                     {
                         // we want to find the branch that the latch node is on for a jump out of a loop
                         if (myLoop != null)
                         {
-                            SetUnstructuredLoopTransfer(curNode, myLoop.Latch);
+                            SetUnstructuredLoopTransfer(node, myLoop.Latch);
                         }
 
                         if (follLoop != null)
                         {
-                            if (curNode.UnstructType == UnstructuredType.Structured)
+                            if (node.UnstructType == UnstructuredType.Structured)
                             // find the branch that the loop head is on for a jump into a loop body. If a branch has
                             // already been found, then it will match this one anyway
                             {
-                                SetUnstructuredLoopTransfer(curNode, follLoop.Header);
+                                SetUnstructuredLoopTransfer(node, follLoop.Header);
                             }
                         }
                     }
 
                     // this is a jump into a case body if either of its children don't have the same
                     // same case header as itself
-                    if (IsJumpIntoCaseBody(curNode))
+                    if (IsJumpIntoCaseBody(node))
                     {
-                        StructureNode myCaseHead = curNode.CaseHead;
-                        StructureNode thenCaseHead = curNode.Then.CaseHead;
-                        StructureNode elseCaseHead = curNode.Else.CaseHead;
+                        StructureNode myCaseHead = node.CaseHead;
+                        StructureNode thenCaseHead = node.Then.CaseHead;
+                        StructureNode elseCaseHead = node.Else.CaseHead;
                         if (thenCaseHead == myCaseHead && (myCaseHead == null || elseCaseHead != myCaseHead.Conditional.Follow))
                         {
-                            curNode.UnstructType = UnstructuredType.JumpIntoCase;
-                            curNode.Conditional = new IfElse(null);
+                            node.UnstructType = UnstructuredType.JumpIntoCase;
+                            node.Conditional = new IfElse(null);
                         }
                         else if (elseCaseHead == myCaseHead && (myCaseHead == null || thenCaseHead != myCaseHead.Conditional.Follow))
                         {
-                            curNode.UnstructType = UnstructuredType.JumpIntoCase;
-                            curNode.Conditional = new IfThen(null);
+                            node.UnstructType = UnstructuredType.JumpIntoCase;
+                            node.Conditional = new IfThen(null);
                         }
                     }
                 }
@@ -102,18 +104,18 @@ namespace Decompiler.Structure
                 // for 2 way conditional headers that don't have a follow (i.e. are the source of a back
                 // edge) and haven't been structured as latching nodes, set their follow to be the
                 // non-back edge child.
-                if (curNode.Conditional != null && curNode.Conditional.Follow == null &&
-                     curNode.UnstructType == UnstructuredType.Structured && !(curNode.Conditional is Case))
+                if (node.Conditional != null && node.Conditional.Follow == null &&
+                     node.UnstructType == UnstructuredType.Structured && !(node.Conditional is Case))
                 {
-                    Debug.Assert(HasABackEdge(curNode));
+                    Debug.Assert(HasABackEdge(node));
 
-                    if (curNode.HasBackEdgeTo(curNode.Then))
+                    if (node.HasBackEdgeTo(node.Then))
                     {
-                        curNode.Conditional = new IfThen(curNode.Else);
+                        node.Conditional = new IfThen(node.Else);
                     }
                     else
                     {
-                        curNode.Conditional = new IfElse(curNode.Then);
+                        node.Conditional = new IfElse(node.Then);
                     }
                 }
             }
@@ -145,29 +147,25 @@ namespace Decompiler.Structure
             return curNode.Conditional != null && curNode.Conditional.Follow != null && !(curNode.Conditional is Case);
         }
 
-        // Structures all conditional headers (i.e. nodes with more than one outedge)
+        /// <summary>
+        /// Structures all conditional headers (i.e. nodes with more than one out edge)
+        /// </summary>
         private void StructConds()
         {
             foreach (StructureNode curNode in curProc.Ordering)
             {
-                if (curNode.OutEdges.Count > 1)
+                if (curNode.OutEdges.Count < 2)
+                    continue;
+                
+                // if the current conditional header is a two way node and has a back edge, 
+                // then it won't have a follow.
+                if (HasABackEdge(curNode) && curNode.BlockType == bbType.cBranch)
                 {
-                    // if the current conditional header is a two way node and has a back edge, 
-                    // then it won't have a follow
-                    if (HasABackEdge(curNode) && curNode.BlockType == bbType.cBranch)
-                    {
-                        curNode.Conditional = CreateConditional(curNode, null);
-                    }
-                    else
-                    {
-                        curNode.Conditional = CreateConditional(curNode, curNode.ImmPDom);
-
-                        if (curNode.Conditional is Case)
-                        {
-                            CaseFinder cf = new CaseFinder(curNode, curNode.Conditional.Follow);
-                            cf.SetCaseHead(curNode);
-                        }
-                    }
+                    curNode.Conditional = CreateConditional(curNode, null);
+                }
+                else
+                {
+                    curNode.Conditional = CreateConditional(curNode, curNode.ImmPDom);
                 }
             }
         }
@@ -175,7 +173,12 @@ namespace Decompiler.Structure
         private Conditional CreateConditional(StructureNode node, StructureNode follow)
         {
             if (node.BlockType == bbType.nway)
-                return new Case(follow);
+            {
+                var c = new Case(follow);
+                CaseFinder cf = new CaseFinder(node, follow);
+                cf.SetCaseHead(node);
+                return c;
+            }
             else if (node.Else == follow)
                 return new IfThen(follow);
             else if (node.Then == follow)

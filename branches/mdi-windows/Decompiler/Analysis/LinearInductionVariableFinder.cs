@@ -28,7 +28,7 @@ namespace Decompiler.Analysis
 	/// <summary>
 	/// Finds linear induction variables and annotates the identifiers with that information.
 	/// </summary>
-	public class LinearInductionVariableFinder : InstructionVisitorBase, ISccFinderHost<SsaIdentifier>
+	public class LinearInductionVariableFinder : InstructionVisitorBase
 	{
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;

@@ -105,6 +105,31 @@ namespace Decompiler.UnitTests.Core.Lib
             Assert.AreEqual("c", pdg.ImmediateDominator("a"));
         }
 
+        [Test]
+        public void InfiniteLoop2()
+        {
+            graph.AddNode("entry");
+            graph.AddNode("infinity");
+            graph.AddNode("side1");
+            graph.AddNode("hop");
+            graph.AddNode("side2");
+            graph.AddNode("exit");
+
+            graph.AddEdge("infinity", "entry");
+            graph.AddEdge("hop", "infinity");
+            graph.AddEdge("side1", "infinity");
+            graph.AddEdge("hop", "side1");
+            graph.AddEdge("infinity", "hop");
+            graph.AddEdge("side2", "hop");
+            graph.AddEdge("infinity", "side2");
+
+            graph.AddEdge("exit", "infinity");      // pseudo-edge to break the infinite loop.
+            CompileTest(graph, "exit");
+            Assert.AreEqual("infinity", pdg.ImmediateDominator("side2"));
+            Assert.AreEqual("exit", pdg.ImmediateDominator("infinity"));
+
+        }
+
         private void CompileTest(DirectedGraphImpl<string> e, string entry)
         {
             pdg = new DominatorGraph<string>(e, entry);

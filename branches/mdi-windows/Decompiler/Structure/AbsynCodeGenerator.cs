@@ -77,9 +77,6 @@ namespace Decompiler.Structure
             emitter.EmitGoto(succ);
         }
 
-
-
-
         public void GenerateCode(ProcedureStructure proc, List<AbsynStatement> stms)
         {
             nodesToRender.Enqueue(new NodeEmitter(proc.EntryNode, new AbsynStatementEmitter(stms)));

@@ -314,12 +314,12 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
         const int CHDRSIZE = (CPTHDRSIZE + CPTHDR2SIZE);
 
         class CptHdr
-        {			/* 8 bytes */
+        {			// 8 bytes
             public byte signature;	    // = 1 -- for verification 
             public byte volume;		    // for multi-file archives 
             public ushort xmagic;		// verification multi-file consistency
             public uint offset;		    // index offset 
-            /* The following are really in header2 at offset */
+            // The following are really in header2 at offset 
             public uint hdrcrc;		    // header crc 
             public ushort entries;	    // number of index entries
             public byte commentsize;	// number of bytes comment that follow

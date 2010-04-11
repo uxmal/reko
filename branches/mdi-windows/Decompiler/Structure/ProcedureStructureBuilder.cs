@@ -183,15 +183,15 @@ namespace Decompiler.Structure
             List<StructureNode> infiniteLoopHeaders = new List<StructureNode>();
             SccFinder<StructureNode> finder = new SccFinder<StructureNode>(graph, delegate(IList<StructureNode> scc)
             {
-                if (IsInfiniteLoop(graph, scc))
+                if (!IsInfiniteLoop(graph, scc))
+                    return;
+
+                StructureNode header = FindNodeWithHighestPostOrderNumber(scc);
+                foreach (StructureNode tail in graph.Predecessors(header))
                 {
-                    StructureNode header = FindNodeWithHighestPostOrderNumber(scc);
-                    foreach (StructureNode tail in graph.Predecessors(header))
+                    if (scc.Contains(tail))
                     {
-                        if (scc.Contains(tail))
-                        {
-                            infiniteLoopHeaders.Add(tail);
-                        }
+                        infiniteLoopHeaders.Add(tail);
                     }
                 }
             });

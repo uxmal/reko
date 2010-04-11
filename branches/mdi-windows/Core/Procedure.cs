@@ -49,8 +49,8 @@ namespace Decompiler.Core
             this.controlGraph = new DirectedGraphImpl<Block>();
 			this.frame = frame;
 			this.signature = new ProcedureSignature();
-			this.blockEntry = AddBlock(Name + "_entry");		// Entry block
-			this.blockExit = AddBlock(Name + "_exit");		// Exit block.
+			this.blockEntry = AddBlock(Name + "_entry");	
+			this.blockExit = AddBlock(Name + "_exit");
 		}
 
 		public List<AbsynStatement> Body

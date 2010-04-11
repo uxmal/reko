@@ -28,9 +28,9 @@ namespace Decompiler.Core
 	/// </summary>
 	public class LinearInductionVariable
 	{
-        private  Constant initial;		// First value used by induction variable 
-        private  Constant delta;			// Amount incremented or decremented per interation
-        private  Constant final;			// Value not attained by loop since it terminated.
+        private Constant initial;	// First value used by induction variable 
+        private Constant delta;		// Amount incremented or decremented per interation
+        private Constant final;		// Value not attained by loop since it terminated.
         private bool isSigned;
 
 		public LinearInductionVariable(

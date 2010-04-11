@@ -86,6 +86,7 @@ namespace Decompiler.Structure
                 }
             }
         }
+
         /// <summary>
         /// Finds the common post dominator of the current immediate post dominator
         /// and its successor's immediate post dominator
@@ -107,11 +108,7 @@ namespace Decompiler.Structure
                 else
                     curImmPDom = curImmPDom.ImmPDom;
             }
-
             return curImmPDom;
         }
-
-
-
     }
 }

@@ -22,6 +22,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Decompiler.Arch.Intel
 {
@@ -108,14 +109,14 @@ namespace Decompiler.Arch.Intel
 				case 2:
 					if (stack.Count < 1)
 					{
-						System.Diagnostics.Debug.WriteLine("bad pop");
+						Debug.WriteLine("Stack underflow from popping.");
 						return Constant.Invalid;
 					}
 					return stack.Pop();
 				case 4:
 					if (stack.Count < 2)
 					{
-						System.Diagnostics.Debug.WriteLine("bad pop");
+                        System.Diagnostics.Debug.WriteLine("Stack underflow from popping.");
 						return Constant.Invalid;
 					}
 					Constant v = stack.Pop();

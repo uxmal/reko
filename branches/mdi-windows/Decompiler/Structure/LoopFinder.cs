@@ -30,7 +30,7 @@ namespace Decompiler.Structure
     /// Given an interval and its constituent nodes, finds a strongly connected component entirely within the interval. That
     /// SCC is a loop.
     /// </summary>
-    public class SccLoopFinder : ISccFinderHost<StructureNode>
+    public class SccLoopFinder 
     {
         private Interval interval;
         private HashedSet<StructureNode> intervalNodes;
@@ -101,33 +101,12 @@ namespace Decompiler.Structure
             #endregion
         }
 
-        #region ISccFinderHost<CFGNode> Members
-
-        IEnumerable<StructureNode> ISccFinderHost<StructureNode>.GetSuccessors(StructureNode t)
-        {
-            foreach (StructureNode s in t.OutEdges)
-            {
-                if (IsNodeInInterval(s))
-                    yield return s;
-            }
-        }
-
         private bool IsNodeInInterval(StructureNode s)
         {
             return intervalNodes.Contains(s);
         }
 
         private void ProcessScc(IList<StructureNode> scc)
-        {
-            if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
-            {
-                Dump(scc);
-                loopNodeSet.AddRange(scc);
-            }
-        }
-
-        [Obsolete]
-        void ISccFinderHost<StructureNode>.ProcessScc(IList<StructureNode> scc)
         {
             if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
             {
@@ -157,8 +136,6 @@ namespace Decompiler.Structure
         {
             return node.OutEdges.Contains(node);
         }
-
-        #endregion
     }
 
 	/// <summary>
@@ -256,19 +233,29 @@ namespace Decompiler.Structure
         }
 
 
+        /// <summary>
+        /// Finds the follow node of a post tested ('repeat') loop. This is the node on the end of the
+        /// non-back edge from the latch node
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="latch"></param>
+        /// <returns>The follow node</returns>
         private StructureNode FindPostTestedFollowNode(StructureNode header, StructureNode latch)
         {
-            // the follow of a post tested ('repeat') loop is the node on the end of the
-            // non-back edge from the latch node
             if (latch.OutEdges[0] == header)
                 return latch.OutEdges[1];
             else
                 return latch.OutEdges[0];
         }
 
+        /// <summary>
+        /// The follow node of a pre-test ('while') loop is the child that is the loop header's 
+        /// conditional follow.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
         private StructureNode FindPreTestedFollowNode(StructureNode header)
         {
-            // the child that is the loop header's conditional follow will be the loop follow
             if (header.OutEdges[0] == header.Conditional.Follow)
                 return header.OutEdges[0];
             else

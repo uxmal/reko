@@ -30,6 +30,7 @@ namespace Decompiler.Core.Types
 		public int Offset;
         public TypeVariable TypeVariable;
 		public DataType DataType;
+
 		private string name;
 
 		public StructureField(int offset, DataType type)
@@ -54,7 +55,7 @@ namespace Decompiler.Core.Types
 			{ 
 				if (name != null)
 					return name;
-				return string.Format("{0}{1:X4}", DataType.Prefix, Offset);         //$This probably should happen at a different level.
+				return string.Format("{0}{1:X4}", DataType.Prefix, Offset);         //$Naming should be given at a different level.
 			}
 		}
 
