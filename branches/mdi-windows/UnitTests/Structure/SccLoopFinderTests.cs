@@ -85,7 +85,6 @@ namespace Decompiler.UnitTests.Structure
                 for (int i = 0; i < proc.DerivedGraphs[j].Intervals.Count; ++i)
                 {
                     Interval interval = proc.DerivedGraphs[j].Intervals[i];
-                    Console.WriteLine("Interval #{0}: {1}", i, proc.DerivedGraphs[j].Intervals[i]);
                     SccLoopFinder finder = CreateSccLoopFinder(proc, interval, j);
                     HashedSet<StructureNode> loopNodes = finder.FindLoop();
                     StructureNode[] items = loopNodes.ToArray();

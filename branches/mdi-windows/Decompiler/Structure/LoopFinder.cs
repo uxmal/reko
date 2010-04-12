@@ -23,6 +23,7 @@ using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace Decompiler.Structure
 {
@@ -117,19 +118,24 @@ namespace Decompiler.Structure
 
         private void Dump(ICollection<StructureNode> scc)
         {
-            Console.WriteLine("===");
-            Console.Write("scc nodes:");
+            Dump(scc, Console.Out);
+        }
+
+        private void Dump(ICollection<StructureNode> scc, TextWriter writer)
+        {
+            writer.WriteLine("===");
+            writer.Write("scc nodes:");
             foreach (StructureNode s in scc)
             {
-                Console.Write(" {0} ", s.Name);
+                writer.Write(" {0} ", s.Name);
             }
-            Console.WriteLine();
-            Console.Write("accumulated loop nodes:");
+            writer.WriteLine();
+            writer.Write("accumulated loop nodes:");
             foreach (StructureNode s in loopNodeSet)
             {
-                Console.Write(" {0} ", s.Name);
+                writer.Write(" {0} ", s.Name);
             }
-            Console.WriteLine();
+            writer.WriteLine();
         }
 
         private bool IsSelfLoop(StructureNode node)

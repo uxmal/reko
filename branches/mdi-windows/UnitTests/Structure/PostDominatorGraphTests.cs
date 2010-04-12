@@ -93,7 +93,6 @@ namespace Decompiler.UnitTests.Structure
 
             FindPostDominators(m);
 
-            Console.WriteLine(sw.ToString());
             string sExp =
                 "done (6): idom ProcedureMock_exit (7)" + nl +
                 "else (4): idom loopHead (2)" + nl +

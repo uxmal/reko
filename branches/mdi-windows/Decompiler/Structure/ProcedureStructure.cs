@@ -121,16 +121,16 @@ namespace Decompiler.Structure
         }
 
         [Conditional("DEBUG")]
-        private void WriteNode(StructureNode node, HashedSet<StructureNode> visited, System.IO.TextWriter writer)
+        private void WriteNode(StructureNode node, HashedSet<StructureNode> visited, TextWriter writer)
         {
             if (visited.Contains(node))
                 return;
             visited.Add(node);
-            writer.Write("Node {0}: Block: {1}",
+            writer.WriteLine("Node {0}: Block: {1}",
                 node.Number,
                 node.Block != null ? node.Block.Name : "<none>");
 
-            writer.WriteLine(" Order: {0}", node.Order);
+            writer.WriteLine("    Order: {0}", node.Order);
             writer.WriteLine("    Interval: {0}", node.Interval != null ? (object) node.Interval.Number : "<none>");
             writer.Write("    Structure type:");
             if (node.Loop != null)
