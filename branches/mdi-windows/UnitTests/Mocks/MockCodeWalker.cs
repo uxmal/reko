@@ -78,11 +78,9 @@ namespace Decompiler.UnitTests.Mocks
 		
 		public override MachineInstruction WalkInstruction(ICodeWalkerListener listener)
 		{
-			Console.WriteLine("Walking {0}", address);
 			MockInstruction i = (MockInstruction) callbacks[address];
 			if (i != null)
 			{
-				Console.WriteLine(" executing {0}", i.GetType().Name);
 				i.Execute(listener);
 			}
 			address = address + 1;

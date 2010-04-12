@@ -48,7 +48,6 @@ namespace Decompiler.Structure
 
         private UnstructuredType usType;
         private Conditional cond;
-        private Loop loop;
         private Interval interval;
 
         private int[] loopStamps;
@@ -172,7 +171,7 @@ namespace Decompiler.Structure
         }
 
 
-        public int Ident() { return id; }
+        public int Number { get { return id; } }
 
         public StructureNode ImmPDom
         {
@@ -203,7 +202,7 @@ namespace Decompiler.Structure
 
         public bool IsLatchNode()
         {
-            return (loop != null && loop.Latch == this);
+            return (Loop != null && Loop.Latch == this);
         }
 
         public bool IsLoopHeader()
@@ -215,11 +214,7 @@ namespace Decompiler.Structure
         ///<summary>
         ///The innermost loop this node belongs to.
         ///</summary>
-        public Loop Loop
-        {
-            get { return loop; }
-            set { loop = value; }
-        }
+        public Loop Loop { get;set; } 
 
         public virtual string Name
         {
@@ -325,7 +320,7 @@ namespace Decompiler.Structure
 
         public virtual void Write(TextWriter tw)
         {
-            tw.Write("{0} ({1})", Block.Name, Ident());
+            tw.Write("{0} ({1})", Block.Name, Number);
         }
 
     }

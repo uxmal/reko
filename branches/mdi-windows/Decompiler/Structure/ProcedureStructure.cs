@@ -127,11 +127,11 @@ namespace Decompiler.Structure
                 return;
             visited.Add(node);
             writer.Write("Node {0}: Block: {1}",
-                node.Ident(),
+                node.Number,
                 node.Block != null ? node.Block.Name : "<none>");
 
             writer.WriteLine(" Order: {0}", node.Order);
-            writer.WriteLine("    Interval: {0}", node.Interval != null ? (object) node.Interval.Ident() : "<none>");
+            writer.WriteLine("    Interval: {0}", node.Interval != null ? (object) node.Interval.Number : "<none>");
             writer.Write("    Structure type:");
             if (node.Loop != null)
                 writer.Write(" {0}", node.Loop.GetType().Name);

@@ -62,7 +62,6 @@ namespace Decompiler.UnitTests.Core.Serialization
 			ser.Serialize(x, str);
 
 			string s = writer.ToString();
-			Console.WriteLine(s);
 			int b = s.IndexOf("<field");
 			int e = s.IndexOf("</Ser");
 			Assert.AreEqual("<field offset=\"0\"><prim domain=\"SignedInt\" size=\"4\" /></field><field offset=\"4\"><prim domain=\"Real\" size=\"8\" /></field>", s.Substring(b, e-b));

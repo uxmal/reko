@@ -68,7 +68,7 @@ namespace Decompiler.Structure
             }
             foreach (Interval interval in intervals)
             {
-                writer.WriteLine("   Interval #{0}: {1}", interval.Ident(), interval.ToString());
+                writer.WriteLine("   Interval #{0}: {1}", interval.Number, interval.ToString());
             }
         }
 

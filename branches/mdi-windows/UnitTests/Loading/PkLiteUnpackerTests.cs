@@ -68,7 +68,6 @@ namespace Decompiler.UnitTests.Loading
                 stm.WriteBytes(0xCC, 4);
                 stm.WriteLeUint16(0x0090);
                 stm.WriteBytes(0xCC, 0x12);
-                Console.WriteLine("{0:X}", s.Position);
                 stm.WriteByte(0x00);
                 stm.WriteByte(0x00);
                 stm.WriteByte(0x05);
@@ -76,7 +75,6 @@ namespace Decompiler.UnitTests.Loading
                 stm.WriteString("PKLITE", Encoding.ASCII);
                 stm.WriteBytes(0xCC, 0x0C);
                 s.Flush();
-                Console.WriteLine("{0:X}", s.Position);
                 return s.GetBuffer();
             }
         }

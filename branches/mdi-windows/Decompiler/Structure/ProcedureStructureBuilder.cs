@@ -74,7 +74,7 @@ namespace Decompiler.Structure
             foreach (StructureNode newNode in nodeList)
             {
                 List<Statement> ins = newNode.Instructions;
-                Debug.Write("Block #" + newNode.Ident() + " is of type " + newNode.BlockType);
+                Debug.Write("Block #" + newNode.Number + " is of type " + newNode.BlockType);
                 Debug.WriteLine(" and contains:");
 
                 for (int i = 0; i < ins.Count; i++)

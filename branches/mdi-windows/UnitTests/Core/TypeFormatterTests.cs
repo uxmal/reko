@@ -197,7 +197,6 @@ struct a {
 	word32 seg::*ptr002A;	// 2A
 } meeble";
 
-            Console.WriteLine(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -225,7 +224,6 @@ struct a {
                 "\tstruct a seg::*ptr0000;\t// 0" + nl +
                 "};" + nl;
             
-            Console.WriteLine(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
 
         }

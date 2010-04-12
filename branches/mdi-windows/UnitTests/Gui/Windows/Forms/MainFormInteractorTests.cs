@@ -120,8 +120,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     <address>12345</address>
   </procedure>
 </project>";
-            Console.WriteLine(interactor.ProbeSavedProjectXml);
-
             Assert.AreEqual(s, interactor.ProbeSavedProjectXml);
         }
 

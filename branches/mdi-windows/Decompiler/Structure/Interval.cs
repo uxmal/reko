@@ -51,7 +51,7 @@ namespace Decompiler.Structure
 
         public override string Name
         {
-            get { return base.Ident().ToString(); }
+            get { return base.Number.ToString(); }
         }
 
         public List<StructureNode> Nodes
@@ -83,7 +83,7 @@ namespace Decompiler.Structure
 
         public override void Write(TextWriter writer)
         {
-            writer.Write("Interval {0}: [", Ident());
+            writer.Write("Interval {0}: [", Number);
             string sep = "";
             StructureNode[] ns = nodes.ToArray();
             Array.Sort(ns, delegate(StructureNode a, StructureNode b)
