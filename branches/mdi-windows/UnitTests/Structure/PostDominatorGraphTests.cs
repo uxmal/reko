@@ -24,6 +24,7 @@ using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Decompiler.UnitTests.Structure
 {
@@ -31,6 +32,8 @@ namespace Decompiler.UnitTests.Structure
     public class PostDominatorGraphTests
     {
         private ProcedureStructure h;
+        private StringWriter sw;
+        private string nl = Environment.NewLine;
 
         [SetUp]
         public void Setup()
@@ -51,11 +54,6 @@ namespace Decompiler.UnitTests.Structure
 
             FindPostDominators(m);
 
-            Assert.AreEqual("l1", h.ReverseOrdering[0].ImmPDom.Block.Name);
-            Assert.AreEqual("join", h.ReverseOrdering[1].ImmPDom.Block.Name);
-            Assert.AreEqual("join", h.ReverseOrdering[2].ImmPDom.Block.Name);
-            Assert.AreEqual("join", h.ReverseOrdering[3].ImmPDom.Block.Name);
-            Assert.AreSame(m.Procedure.ExitBlock, h.ReverseOrdering[4].ImmPDom.Block);
         }
 
 
@@ -73,13 +71,6 @@ namespace Decompiler.UnitTests.Structure
             m.Return();
 
             FindPostDominators(m);
-
-            Assert.AreEqual("ProcedureMock_entry PD> l1", PostDom(h.ReverseOrdering[0]));
-            Assert.AreEqual("l1 PD> test", PostDom(h.ReverseOrdering[1]));
-            Assert.AreEqual("body PD> test", PostDom(h.ReverseOrdering[2]));
-            Assert.AreEqual("test PD> done", PostDom(h.ReverseOrdering[3]));
-            Assert.AreEqual("done PD> ProcedureMock_exit", PostDom(h.ReverseOrdering[4]));
-            Assert.IsNull(h.ReverseOrdering[5].ImmPDom, "exit block shouldn't have an immediate post dominator");
         }
 
         [Test]
@@ -102,11 +93,16 @@ namespace Decompiler.UnitTests.Structure
 
             FindPostDominators(m);
 
-            Assert.AreEqual("loopHead PD> done", PostDom("loopHead"));
-            Assert.AreEqual("else PD> loopHead", PostDom("else"));
-            Assert.AreEqual("then PD> loopHead", PostDom("then"));
-            Assert.AreEqual("l1 PD> loopHead", PostDom("l1"));
-            Assert.AreEqual("done PD> ProcedureMock_exit", PostDom("done"));
+            Console.WriteLine(sw.ToString());
+            string sExp =
+                "done (6): idom ProcedureMock_exit (7)" + nl +
+                "else (4): idom loopHead (2)" + nl +
+                "l1 (3): idom loopHead (2)" + nl +
+                "loopHead (2): idom done (6)" + nl +
+                "ProcedureMock_entry (1): idom loopHead (2)" + nl +
+                "ProcedureMock_exit (7): idom " + nl +
+                "then (5): idom loopHead (2)" + nl;
+            Assert.AreEqual(sExp, sw.ToString());
         }
 
         [Test]
@@ -123,26 +119,24 @@ namespace Decompiler.UnitTests.Structure
             m.Return();
 
             FindPostDominators(m);
+            string sExp = 
+                "hop (4): idom ProcedureMock_exit (6)" + nl +
+                "Infinity (2): idom hop (4)" + nl +
+                "l1 (3): idom hop (4)" + nl +
+                "l2 (5): idom ProcedureMock_exit (6)" + nl +
+                "ProcedureMock_entry (1): idom Infinity (2)" + nl +
+                "ProcedureMock_exit (6): idom " + nl;
+            Assert.AreEqual(sExp, sw.ToString());
         }
 
         private void FindPostDominators(ProcedureMock m)
         {
-            PostDominatorGraph gr = BuildPostDominatorGraph(m); 
-            gr.FindImmediatePostDominators();
-        }
-
-        private PostDominatorGraph BuildPostDominatorGraph(ProcedureMock m)
-        {
             m.Procedure.RenumberBlocks();
             ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);
-            graphs.BuildNodes();
-            graphs.DefineEdges();
-            h = graphs.CreateProcedureStructure();
-            graphs.SetTimeStamps();
-
-            PostDominatorGraph gr = new PostDominatorGraph(h);
-
-            return gr;
+            h = graphs.Build();
+            sw = new StringWriter();
+            graphs.AnalyzeGraph().Write(sw);
+            
         }
 
         private string PostDom(string s)

@@ -93,15 +93,15 @@ namespace Decompiler.Structure
             if (entry == null)
                 throw new ArgumentNullException("entry");
 
-            List<Interval> intSeq = new List<Interval>();	// The sequence of intervals in this graph
-            WorkList<StructureNode> headerSeq = new WorkList<StructureNode>();	// The sequence of interval header nodes
-            List<StructureNode> beenInH = new List<StructureNode>();	// The set of nodes that have been in the above sequence at some stage
+            var intervalsInGraph = new List<Interval>();	// The sequence of intervals in this graph
+            var headers = new WorkList<StructureNode>();	// The sequence of interval header nodes
+            var beenInH = new HashedSet<StructureNode>();	    // The set of nodes that have been in the above sequence at some stage
 
-            headerSeq.Add(entry);
+            headers.Add(entry);
             beenInH.Add(entry);
 
             StructureNode header;
-            while (headerSeq.GetWorkItem(out header))
+            while (headers.GetWorkItem(out header))
             {
                 Interval newInt = new Interval(intervalID++, header);
 
@@ -121,13 +121,13 @@ namespace Decompiler.Structure
                             if (SubSetOf(graph.Predecessors(succ), newInt))
                             {
                                 newInt.AddNode(succ);
-                                headerSeq.Remove(succ);
+                                headers.Remove(succ);
                             }
 
                             // Otherwise, add it to the header sequence if it hasn't already been in it.
                             else if (!beenInH.Contains(succ))
                             {
-                                headerSeq.Add(succ);
+                                headers.Add(succ);
                                 beenInH.Add(succ);
                             }
                         }
@@ -135,9 +135,9 @@ namespace Decompiler.Structure
                 }
 
                 // Add the new interval to the sequence of intervals
-                intSeq.Add(newInt);
+                intervalsInGraph.Add(newInt);
             }
-            return intSeq;
+            return intervalsInGraph;
         }
 
         private bool SubSetOf(IEnumerable <StructureNode> inEdges, Interval newInt)

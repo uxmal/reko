@@ -190,15 +190,15 @@ namespace Decompiler.Core.Lib
 
         public void Write(TextWriter writer)
         {
-            SortedDictionary<string, string> blocks = new SortedDictionary<string, string>();
+            var blocks = new SortedDictionary<string, T>();
             foreach (KeyValuePair<T,T> node in idoms)
             {
-                blocks.Add(node.Key.ToString(), node.Value.ToString());
+                blocks.Add(node.Key.ToString(), node.Value);
             }
 
-            foreach (KeyValuePair<string,string> b in blocks)
+            foreach (KeyValuePair<string,T> b in blocks)
             {
-                writer.WriteLine("{0}: ipdom {1}", b.Key, b.Value);
+                writer.WriteLine("{0}: idom {1}", b.Key, b.Value);
             }
         }
     }

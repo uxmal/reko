@@ -447,6 +447,34 @@ namespace Decompiler.UnitTests.Structure
                 "}" + nl);             
         }
 
+        [Test]
+        public void InfiniteLoop2()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                m.Label("Infinity");
+                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x1234)), 0), "hop");
+                m.SideEffect(m.Fn("foo"));
+                m.Label("hop");
+                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x5123)), 1), "Infinity");
+                m.SideEffect(m.Fn("bar"));
+                m.Jump("Infinity");
+                m.Return();
+            });
+            RunTest(
+                "ProcedureMock()" + nl +
+                "{" + nl +
+                "\twhile (true)" + nl +
+                "\t{" + nl + 
+                "\t\tif (Mem0[0x1234:word16] != 0x0000)" + nl +
+                "\t\t\tfoo();" + nl + 
+                "\t\tif (Mem0[0x5123:word16] == 0x0001)" + nl +
+                "\t\t\tcontinue;" +nl +
+                "\t\tbar();" + nl +
+                "\t}" + nl +
+                "}" + nl);
+        }
+
         private void CompileTest(Action<ProcedureMock> gen)
         {
             ProcedureMock mock = new ProcedureMock();

@@ -53,7 +53,6 @@ namespace Decompiler.Structure
         private StructureNode exitNode;
         private StructureNode entryNode;
         private List<StructureNode> ordering;
-        private List<StructureNode> revOrdering;
         private List<DerivedGraph> derivedGraphs;	// the derived graphs for this procedure
 
         public ProcedureStructure(string name, List<StructureNode> nodes)
@@ -62,7 +61,6 @@ namespace Decompiler.Structure
             this.nodes = nodes;
             this.derivedGraphs = new List<DerivedGraph>();
             this.ordering = new List<StructureNode>();
-            this.revOrdering = new List<StructureNode>();
         }
 
 
@@ -109,14 +107,6 @@ namespace Decompiler.Structure
             get { return ordering; }
         }
 
-        // within this procedure such that the nodes lower in
-        // graph are earlier in the array
-
-        public List<StructureNode> ReverseOrdering
-        {
-            get { return revOrdering; }
-        }
-
         [Conditional("DEBUG")]
         public void Dump()
         {
@@ -140,7 +130,7 @@ namespace Decompiler.Structure
                 node.Ident(),
                 node.Block != null ? node.Block.Name : "<none>");
 
-            writer.WriteLine(" Order: {0}, RevOrder {1}", node.Order, node.RevOrder);
+            writer.WriteLine(" Order: {0}", node.Order);
             writer.WriteLine("    Interval: {0}", node.Interval != null ? (object) node.Interval.Ident() : "<none>");
             writer.Write("    Structure type:");
             if (node.Loop != null)

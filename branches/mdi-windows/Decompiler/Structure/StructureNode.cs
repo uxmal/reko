@@ -39,7 +39,6 @@ namespace Decompiler.Structure
         private Block block;
         private int id;
         private int ord;
-        private int revOrd;
 
         internal travType traversed;          //$REFACTOR: use visited hashtables instead.
         private bool forceLabel;
@@ -65,7 +64,6 @@ namespace Decompiler.Structure
             this.id = id;
 
             ord = -1;
-            revOrd = -1;
 
             traversed = travType.UNTRAVERSED;
             forceLabel = false;
@@ -283,25 +281,6 @@ namespace Decompiler.Structure
             revLoopStamps[1] = ++time;
         }
 
-        // Build the ordering of the nodes in the reverse graph that will be used to
-        // determine the immediate post dominators for each node
-        public void SetRevOrder(List<StructureNode> order, HashedSet<StructureNode> visited)
-        {
-            visited.Add(this);
-            for (int i = 0; i < InEdges.Count; i++)
-            {
-                if (!visited.Contains(InEdges[i]))
-                {
-                    InEdges[i].SetRevOrder(order, visited);
-                }
-            }
-
-            // add this node to the ordering structure and record the post dom. order
-            // of this node as its index within this ordering structure
-            revOrd = order.Count;
-            order.Add(this);
-        }
-
         /// <summary>
         /// The index of this node within the ordering array.
         /// </summary>
@@ -309,15 +288,6 @@ namespace Decompiler.Structure
         {
             get { return ord; }
             set { ord = value; }
-        }
-
-        /// <summary>
-        /// The index of this node within the post dominator ordering array
-        /// </summary>
-        public int RevOrder
-        {
-            get { return revOrd; }
-            set { revOrd = value; }
         }
 
         public override string ToString()

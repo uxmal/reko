@@ -18,7 +18,7 @@
 
 using System;
 using IComparer = System.Collections.IComparer;
-#if VS2003 || MONO
+#if MONO
 using IHashCodeProvider = System.Collections.IHashCodeProvider;
 #else
 using IEqualityComparer = System.Collections.IEqualityComparer;
@@ -36,7 +36,7 @@ namespace Decompiler.Scanning
 		private TrieNode root;
 
 
-#if VS2003 || MONO
+#if MONO
 		public InstructionTrie(IHashCodeProvider hasher, IComparer comparer)
 #else
 		public InstructionTrie(IEqualityComparer hasher, IComparer comparer)
@@ -80,7 +80,7 @@ namespace Decompiler.Scanning
 		{
 			public object Instruction;
 			public Hashtable Successors;
-#if VS2003 || MONO
+#if MONO
 			public IHashCodeProvider hasher;
 #else
 			public IEqualityComparer hasher;
@@ -88,7 +88,7 @@ namespace Decompiler.Scanning
 			public IComparer cmp;
 			public int Tally;
 
-#if VS2003 || MONO
+#if MONO
 			public TrieNode(IHashCodeProvider hasher, IComparer cmp)
 #else
 			public TrieNode(IEqualityComparer hasher, IComparer cmp)
@@ -97,7 +97,7 @@ namespace Decompiler.Scanning
 				Init(hasher, cmp);
 			}
 
-#if VS2003 || MONO
+#if MONO
 			public TrieNode(object instruction, IHashCodeProvider hasher, IComparer cmp)
 #else
 			public TrieNode(object instruction, IEqualityComparer hasher, IComparer cmp)
@@ -118,7 +118,7 @@ namespace Decompiler.Scanning
 				return subNode;
 			}
 
-#if VS2003 || MONO
+#if MONO
 			private void Init(IHashCodeProvider hasher, IComparer cmp)
 #else
 			private void Init(IEqualityComparer hasher, IComparer cmp)
@@ -126,7 +126,7 @@ namespace Decompiler.Scanning
 			{
 				this.hasher = hasher;
 				this.cmp = cmp;
-#if VS2003 || MONO
+#if MONO
 				Successors = new Hashtable(hasher, cmp);
 #else
 				Successors = new Hashtable(hasher);

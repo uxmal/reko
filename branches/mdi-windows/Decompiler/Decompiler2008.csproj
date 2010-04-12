@@ -482,7 +482,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\CaseFinder.cs" />
-    <Compile Include="Structure\PostDominatorGraph.cs" />
     <Compile Include="Structure\ProcedureStructure.cs" />
     <Compile Include="Structure\CompoundConditionCoalescer.cs">
       <SubType>Code</SubType>

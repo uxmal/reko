@@ -16,15 +16,14 @@ namespace Decompiler.Scanning
     public class AhoCorasickSearch<C> : StringSearch<C> 
         where C : IComparable<C>
     {
-
         private TreeNode _root;
         private C[][] _keywords;
-
 
         public AhoCorasickSearch(C[][] keywords) : base(null)
         {
             Keywords = keywords;
         }
+
         public AhoCorasickSearch() : base(null)
         { 
         }
@@ -116,10 +115,8 @@ namespace Decompiler.Scanning
             }
         }
 
-
         public override IEnumerator<int> GetMatchPositions(C[] text)
         {
-            var ret = new List<object>();
             var ptr = _root;
             for (var index = 0; index < text.Length; ++index)
             {
@@ -141,7 +138,7 @@ namespace Decompiler.Scanning
             }
         }
 
-        class TreeNode
+        private class TreeNode
         {
             private C _char;
             private TreeNode _parent;
@@ -179,7 +176,6 @@ namespace Decompiler.Scanning
                     return null;
             }
 
-
             public bool ContainsTransition(C c)
             {
                 return GetTransition(c) != null;
@@ -216,7 +212,5 @@ namespace Decompiler.Scanning
                 get { return _results; }
             }
         }
-
     }
-
 }
