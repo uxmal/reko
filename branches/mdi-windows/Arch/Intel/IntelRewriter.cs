@@ -412,7 +412,7 @@ namespace Decompiler.Arch.Intel
 							state.ShrinkFpuStack(1);
 						break;
 					case Opcode.fstsw:
-                        EmitFstsw(instrs, i);
+                        RewriteFstsw(instrs, i);
 						break;
 					case Opcode.fsub:
 					case Opcode.fsubp:

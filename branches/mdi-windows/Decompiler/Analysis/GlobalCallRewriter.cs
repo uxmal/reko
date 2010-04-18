@@ -25,7 +25,6 @@ using Block = Decompiler.Core.Block;
 using CallInstruction = Decompiler.Core.Code.CallInstruction;
 using CallRewriter = Decompiler.Core.CallRewriter;
 using CallSite = Decompiler.Core.Code.CallSite;
-using DominatorGraph = Decompiler.Core.DominatorGraph;
 using Debug = System.Diagnostics.Debug;
 using Expression = Decompiler.Core.Code.Expression;
 using FpuStackStorage = Decompiler.Core.FpuStackStorage;

@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +39,7 @@ namespace Decompiler.Analysis
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
 		private SsaLivenessAnalysis sla;
-		private DominatorGraph doms;
+		private BlockDominatorGraph doms;
 		private Dictionary<Identifier,LinearInductionVariable>ivs;
 		private Web [] webOf;
 		private List<Web> webs;
@@ -50,7 +51,7 @@ namespace Decompiler.Analysis
             this.ssaIds = ssaIds;
             this.ivs = ivs;
             this.sla = new SsaLivenessAnalysis(proc, ssaIds);
-            this.doms = new DominatorGraph(proc);
+            this.doms = proc.CreateBlockDominatorGraph();
             this.webs = new List<Web>();
         }
 

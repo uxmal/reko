@@ -32,13 +32,13 @@ namespace Decompiler.Analysis
 	{
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
-		private DominatorGraph doms;
 		private ICollection<SsaIdentifier> operands;
         private List<LinearInductionVariable> ivs;
         private Dictionary<LinearInductionVariable, LinearInductionVariableContext> contexts;
         private LinearInductionVariableContext ctx;
+        private BlockDominatorGraph doms;
 
-		public LinearInductionVariableFinder(Procedure proc, SsaIdentifierCollection ssaIds, DominatorGraph doms)
+        public LinearInductionVariableFinder(Procedure proc, SsaIdentifierCollection ssaIds, BlockDominatorGraph doms)
 		{
 			this.proc = proc;
 			this.ssaIds = ssaIds;

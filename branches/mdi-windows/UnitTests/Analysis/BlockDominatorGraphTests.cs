@@ -19,6 +19,7 @@
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -26,23 +27,23 @@ using System;
 namespace Decompiler.UnitTests.Analysis
 {
 	[TestFixture]
-	public class DominatorGraphTests
+	public class BlockDominatorGraphTests
 	{
 		[Test]
 		public void DomDiamondTest()
 		{
 			Procedure proc = new DiamondMock().Procedure;
-			DominatorGraph doms = new DominatorGraph(proc);
-			Assert.IsTrue(doms.DominatesStrictly(1, 2));
-			Assert.IsTrue(doms.DominatesStrictly(1, 3));
-			Assert.IsTrue(doms.DominatesStrictly(1, 4));
+			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
+            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[1], proc.RpoBlocks[2]));
+            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[1], proc.RpoBlocks[3]));
+            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[1], proc.RpoBlocks[4]));
 		}
 
 		[Test]
 		public void DomDominatorCommon()
 		{
 			Procedure proc = new DiamondMock().Procedure;
-			DominatorGraph doms = new DominatorGraph(proc);
+			var doms = proc.CreateBlockDominatorGraph();
 			Block head = proc.RpoBlocks[1];
 			Block f = proc.RpoBlocks[2];
 			Block t = proc.RpoBlocks[3];
@@ -63,7 +64,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void DomStmDominators()
 		{
 			Procedure proc = new DiamondMock().Procedure;
-			DominatorGraph doms = new DominatorGraph(proc);
+			var doms = proc.CreateBlockDominatorGraph();
 			Block head = proc.RpoBlocks[1];
 			Block f = proc.RpoBlocks[2];
 			Block t = proc.RpoBlocks[3];

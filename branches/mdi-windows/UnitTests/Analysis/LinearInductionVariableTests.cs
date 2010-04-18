@@ -19,6 +19,7 @@
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
@@ -33,7 +34,7 @@ namespace Decompiler.UnitTests.Analysis
 	{
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
-		private DominatorGraph doms;
+		private BlockDominatorGraph doms;
 
 
 		/// <summary>
@@ -146,7 +147,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void Create1()
 		{
 			Prepare(new WhileLtIncMock().Procedure);
-			DominatorGraph doms = new DominatorGraph(proc);
+			var doms = proc.CreateBlockDominatorGraph();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
 			Assert.IsNull(liv.Context.PhiIdentifier);
 			Assert.IsNull(liv.Context.PhiStatement);
@@ -313,7 +314,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			this.proc = proc;
             proc.RenumberBlocks();
-			doms = new DominatorGraph(proc);
+            doms = proc.CreateBlockDominatorGraph();
 			SsaTransform sst = new SsaTransform(proc, doms, false);
 			SsaState ssa = sst.SsaState;
 			ssaIds = ssa.Identifiers;

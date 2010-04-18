@@ -125,7 +125,7 @@ namespace Decompiler.UnitTests.Analysis
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				DominatorGraph gr = new DominatorGraph(proc);
+				var gr = proc.CreateBlockDominatorGraph();
 				SsaTransform sst = new SsaTransform(proc, gr, false);
 				ssa = sst.SsaState;
 				ssa.Write(fut.TextWriter);

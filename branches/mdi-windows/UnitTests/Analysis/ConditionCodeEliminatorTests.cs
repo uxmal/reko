@@ -199,7 +199,7 @@ done:
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, new DominatorGraph(proc), true);
+				SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph(), true);
 				SsaState ssa = sst.SsaState;
 
                 ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);

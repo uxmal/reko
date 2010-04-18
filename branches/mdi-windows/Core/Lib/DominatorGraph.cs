@@ -31,6 +31,7 @@ namespace Decompiler.Core.Lib
     public class DominatorGraph<T> where T : class
     {
         private Dictionary<T, T> idoms;
+        private Dictionary<T, List<T>> domFrontier;
 
         private const int Undefined = -1;
 
@@ -38,16 +39,17 @@ namespace Decompiler.Core.Lib
         {
             this.idoms = Build(graph, entryNode);
             this.idoms[entryNode] = null;		// No-one postdominates the root node.
+            this.domFrontier = BuildDominanceFrontiers(graph, idoms);
         }
 
         public Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph)
         {
-            Dictionary<T, int> postorder = new Dictionary<T, int>();
+            var reversePostOrder = new Dictionary<T, int>();
             foreach (T node in new DfsIterator<T>(graph).PostOrder())
             {
-                postorder.Add(node, graph.Nodes.Count - (postorder.Count + 1));
+                reversePostOrder.Add(node, graph.Nodes.Count - (reversePostOrder.Count + 1));
             }
-            return postorder;
+            return reversePostOrder;
         }
 
         public Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph, T entry)
@@ -96,6 +98,11 @@ namespace Decompiler.Core.Lib
             }
             return dominator;
 
+        }
+
+        public List<T> DominatorFrontier(T node)
+        {
+            return domFrontier[node];
         }
 
         public bool DominatesStrictly(T dominator, T d)
@@ -162,7 +169,38 @@ namespace Decompiler.Core.Lib
             return idoms;
         }
 
+        private Dictionary<T, List<T>> BuildDominanceFrontiers(DirectedGraph<T> graph, Dictionary<T,T> doms)
+        {
+            Dictionary<T, List<T>> fronts = new Dictionary<T, List<T>>();
+            foreach (T node in graph.Nodes)
+            {
+                fronts[node] = new List<T>();
+            }
 
+            foreach (T bb in graph.Nodes)
+            {
+                var pred = graph.Predecessors(bb);
+                if (pred.Count < 2)
+                    continue;
+                foreach (T p in pred)
+                {
+                    T r = p;
+                    while (r != null && r != doms[bb])
+                    {
+                        // Add b to the dominance frontier of r.
+
+                            if (!fronts[r].Contains(bb))
+                                fronts[r].Add(bb);
+
+                        r = doms[r];
+                    }
+                }
+            }
+            return fronts;
+        }
+
+
+        [Conditional("DEBUG")]
         public void Dump()
         {
             StringWriter sw = new StringWriter();

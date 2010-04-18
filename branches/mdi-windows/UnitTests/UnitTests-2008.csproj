@@ -59,7 +59,7 @@
     <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
     <Compile Include="Analysis\DeadCodeTests.cs" />
     <Compile Include="Analysis\DeclarationInserterTests.cs" />
-    <Compile Include="Analysis\DominatorGraphTests.cs" />
+    <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionSimplifierTests.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
@@ -107,6 +107,7 @@
     <Compile Include="Arch\Intel\OperandRewriterTest.cs" />
     <Compile Include="Arch\Intel\ProcessorState.cs" />
     <Compile Include="Arch\Intel\Rewrite32.cs" />
+    <Compile Include="Arch\Intel\RewriteFpuInstructionTests.cs" />
     <Compile Include="Arch\Intel\RewriterTests.cs" />
     <Compile Include="Arch\Intel\RewriterTests2.cs" />
     <Compile Include="Arch\M68k\M68kCodeWalkerTests.cs" />

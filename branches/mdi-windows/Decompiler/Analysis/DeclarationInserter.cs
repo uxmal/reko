@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 
@@ -26,9 +27,9 @@ namespace Decompiler.Analysis
 	public class DeclarationInserter
 	{
 		private SsaIdentifierCollection ssaIds;
-		private DominatorGraph doms;
+		private BlockDominatorGraph doms;
 
-		public DeclarationInserter(SsaIdentifierCollection ssaIds, DominatorGraph doms)
+		public DeclarationInserter(SsaIdentifierCollection ssaIds, BlockDominatorGraph doms)
 		{
 			this.ssaIds = ssaIds;
 			this.doms = doms;

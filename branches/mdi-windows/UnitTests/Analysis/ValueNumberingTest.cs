@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Analysis
 				Procedure proc = prog.Procedures.Values[0];
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				DominatorGraph gr = new DominatorGraph(proc);
+				var gr = proc.CreateBlockDominatorGraph();
 				SsaTransform sst = new SsaTransform(proc, gr, false);
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Analysis
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnMemoryTest.txt"))
 			{
 				Procedure proc = prog.Procedures.Values[0];
-				DominatorGraph gr = new DominatorGraph(proc);
+				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr, false);
@@ -115,7 +115,7 @@ done:
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnLoopTest.txt"))
 			{
 				Procedure proc = prog.Procedures.Values[0];
-				DominatorGraph gr = new DominatorGraph(proc);
+				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr, false);
@@ -152,7 +152,7 @@ done:
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnRedundantStore.txt"))
 			{
 				Procedure proc = prog.Procedures.Values[0];
-				DominatorGraph gr = new DominatorGraph(proc);
+				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr, false);
@@ -185,7 +185,7 @@ looptest:
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnLoop.txt"))
 			{
 				Procedure proc = prog.Procedures.Values[0];
-				DominatorGraph gr = new DominatorGraph(proc);
+				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr, false);
@@ -220,7 +220,7 @@ looptest:
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				DominatorGraph gr = new DominatorGraph(proc);
+				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr, false);

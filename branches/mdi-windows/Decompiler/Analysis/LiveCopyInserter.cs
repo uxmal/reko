@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using System;
 
 namespace Decompiler.Analysis
@@ -27,14 +28,14 @@ namespace Decompiler.Analysis
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
 		private SsaLivenessAnalysis sla;
-		private DominatorGraph doms;
+		private BlockDominatorGraph doms;
 
 		public LiveCopyInserter(Procedure proc, SsaIdentifierCollection ssaIds)
 		{
 			this.proc = proc;
 			this.ssaIds = ssaIds;
 			this.sla = new SsaLivenessAnalysis(proc, ssaIds);
-			this.doms = new DominatorGraph(proc);
+			this.doms = proc.CreateBlockDominatorGraph();
 		}
 
 		public int IndexOfInsertedCopy(Block b)
@@ -128,12 +129,12 @@ namespace Decompiler.Analysis
 
 		public class DominatedUseRenamer : InstructionTransformer
 		{
-			private DominatorGraph domGraph;
+			private BlockDominatorGraph domGraph;
 			private SsaIdentifier sidOld; 
 			private SsaIdentifier sidNew;
 			private Statement stmCur;
 
-			public DominatedUseRenamer(DominatorGraph domGraph)
+			public DominatedUseRenamer(BlockDominatorGraph domGraph)
 			{
 				this.domGraph = domGraph;
 			}

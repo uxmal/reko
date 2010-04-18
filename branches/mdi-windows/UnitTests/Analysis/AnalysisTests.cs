@@ -19,6 +19,7 @@
 using Decompiler;
 using Decompiler.Analysis;
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Scanning;
 using Decompiler.Arch.Intel;
 using NUnit.Framework;
@@ -38,7 +39,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Program prog = RewriteFile("Fragments/diamond.asm");
 			Procedure proc = prog.Procedures.Values[0];
-			DominatorGraph doms = new DominatorGraph(proc);
+			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
 			List<Block> bl = proc.RpoBlocks;
 			Assert.IsTrue(doms.ImmediateDominator(bl[2]) == bl[1]);
 			Assert.IsTrue(doms.ImmediateDominator(bl[3]) != bl[2]);
@@ -49,11 +50,12 @@ namespace Decompiler.UnitTests.Analysis
 		public void LoopDominatorTest()
 		{
 			Program prog = RewriteFile("Fragments/while_loop.asm");
-			DominatorGraph doms = new DominatorGraph(prog.Procedures.Values[0]);
-			Assert.IsTrue(doms.DominatesStrictly(0, 1));
-			Assert.IsTrue(doms.DominatesStrictly(0, 2));
-			Assert.IsTrue(doms.DominatesStrictly(1, 2));
-			Assert.IsTrue(doms.DominatesStrictly(3, 4));
+            var proc = prog.Procedures.Values[0];
+			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
+            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[0], proc.RpoBlocks[1]));
+            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[0], proc.RpoBlocks[2]));
+            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[1], proc.RpoBlocks[2]));
+            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[3], proc.RpoBlocks[4]));
 		}
 
 

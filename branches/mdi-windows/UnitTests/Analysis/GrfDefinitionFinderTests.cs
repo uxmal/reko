@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Analysis
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, new DominatorGraph(proc), true);
+				SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph(), true);
 				SsaState ssa = sst.SsaState;
 				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);
 				foreach (SsaIdentifier sid in ssa.Identifiers)

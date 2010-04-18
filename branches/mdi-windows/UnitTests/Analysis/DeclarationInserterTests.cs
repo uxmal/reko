@@ -18,6 +18,7 @@
 
 using Decompiler.Analysis;
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using NUnit.Framework;
 using System;
 
@@ -27,7 +28,7 @@ namespace Decompiler.UnitTests.Analysis
 	public class DeclarationInserterTests
 	{
 		private Procedure proc;
-		private DominatorGraph doms;
+		private BlockDominatorGraph doms;
 		private SsaIdentifierCollection ssaIds;
 
 		[Test]
@@ -49,7 +50,7 @@ namespace Decompiler.UnitTests.Analysis
 		private void Build(Procedure proc)
 		{
 			this.proc = proc;
-			this.doms = new DominatorGraph(proc);
+			this.doms = proc.CreateBlockDominatorGraph();
 			SsaTransform sst = new SsaTransform(proc, doms, false);
 			
 			this.ssaIds = sst.SsaState.Identifiers;

@@ -299,41 +299,9 @@ namespace Decompiler.UnitTests.Arch.Intel
             Assert.AreEqual("branch Test(PE,P) l0C00_0100", rw.Block.Statements[0].Instruction.ToString());
         }
 
-        public class TestRewriter : IntelRewriter
-        {
-            private FakeRewriterHost host;
-            private Block block;
-            private CodeEmitter emitter;
 
-            public TestRewriter(IProcedureRewriter prw, Procedure proc, FakeRewriterHost host, IntelArchitecture arch, IntelRewriterState state)
-                : base(prw, proc, host, arch, state)
-            {
-                this.host = host;
-                block = proc.AddBlock(new Address(0x0C00, 0x0030).ToString());
-                emitter = prw.CreateEmitter(block);
-            }
 
-            public Block Block
-            {
-                get { return block; }
-            }
 
-            public void ConvertInstructions(params IntelInstruction[] instrs)
-            {
-                Address addrStart = new Address(0x0C00, 0x0100);
-                List<Address> addrs = new List<Address>();
-                for (int i = 0; i < instrs.Length; i++)
-                {
-                    addrs.Add(addrStart + i * 3);
-                }
-                base.ConvertInstructions(instrs, addrs.ToArray(), new uint[instrs.Length], addrStart + instrs.Length * 3, emitter);
-            }
-
-            public FakeRewriterHost Host
-            {
-                get { return host; }
-            }
-        }
 
         public class FakeProcedureRewriter : IProcedureRewriter
         {
@@ -362,5 +330,44 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             #endregion
         }
+
+
 	}
+
+    public class TestRewriter : IntelRewriter
+    {
+        private FakeRewriterHost host;
+        private Block block;
+        private CodeEmitter emitter;
+
+        public TestRewriter(IProcedureRewriter prw, Procedure proc, FakeRewriterHost host, IntelArchitecture arch, IntelRewriterState state)
+            : base(prw, proc, host, arch, state)
+        {
+            this.host = host;
+            block = proc.AddBlock(new Address(0x0C00, 0x0030).ToString());
+            emitter = prw.CreateEmitter(block);
+        }
+
+        public Block Block
+        {
+            get { return block; }
+        }
+
+        public void ConvertInstructions(params IntelInstruction[] instrs)
+        {
+            Address addrStart = new Address(0x0C00, 0x0100);
+            List<Address> addrs = new List<Address>();
+            for (int i = 0; i < instrs.Length; i++)
+            {
+                addrs.Add(addrStart + i * 3);
+            }
+            base.ConvertInstructions(instrs, addrs.ToArray(), new uint[instrs.Length], addrStart + instrs.Length * 3, emitter);
+        }
+
+        public FakeRewriterHost Host
+        {
+            get { return host; }
+        }
+    }
+
 }

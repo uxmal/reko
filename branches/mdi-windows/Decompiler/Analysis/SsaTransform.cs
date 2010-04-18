@@ -33,7 +33,7 @@ namespace Decompiler.Analysis
 		private SsaState ssa;
 		private Identifier [] varsOrig;
 		private Procedure proc;
-		private DominatorGraph domGraph;
+		private DominatorGraph<Block> domGraph;
 
 		private const byte BitDefined = 1;
 		private const byte BitDeadIn = 2;
@@ -45,7 +45,7 @@ namespace Decompiler.Analysis
 		/// <param name="proc"></param>
 		/// <param name="gr"></param>
 		/// <param name="useSignatures">if true, the signature of <paramref>proc</paramref> is used as a source of variables.</param>
-		public SsaTransform(Procedure proc, DominatorGraph gr, bool useSignatures)
+		public SsaTransform(Procedure proc, DominatorGraph<Block> gr, bool useSignatures)
 		{
 			this.proc = proc;
 			this.domGraph = gr;

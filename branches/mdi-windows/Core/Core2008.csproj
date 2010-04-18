@@ -149,6 +149,7 @@
     <Compile Include="Assemblers\Assembler.cs" />
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
+    <Compile Include="Lib\BlockDominatorGraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -276,9 +277,6 @@
     </Compile>
     <Compile Include="Diagnostic.cs" />
     <Compile Include="Disassembler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DominatorGraph.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dumper.cs">

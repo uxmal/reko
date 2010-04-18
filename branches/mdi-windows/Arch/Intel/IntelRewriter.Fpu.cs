@@ -26,7 +26,7 @@ namespace Decompiler.Arch.Intel
 {
     public partial class IntelRewriter
     {
-        private void EmitFstsw(IntelInstruction[] instrs, int iStart)
+        private void RewriteFstsw(IntelInstruction[] instrs, int iStart)
         {
             EmitCopy(
                 instrCur.op1,

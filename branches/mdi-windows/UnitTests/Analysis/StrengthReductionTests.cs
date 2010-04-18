@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Analysis
         {
             Procedure proc = BuildSimpleLoop();
 
-            DominatorGraph dom = new DominatorGraph(proc);
+            var dom = proc.CreateBlockDominatorGraph();
             SsaTransform ssa = new SsaTransform(proc, dom, false);
             proc.Write(false, Console.Out);
             LinearInductionVariableFinder lif = new LinearInductionVariableFinder(proc, ssa.SsaState.Identifiers, dom);

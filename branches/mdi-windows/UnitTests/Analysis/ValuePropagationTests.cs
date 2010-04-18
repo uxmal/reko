@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void VpDbp()
 		{
 			Procedure proc = new DpbMock().Procedure;
-			DominatorGraph gr = new DominatorGraph(proc);
+			var gr = proc.CreateBlockDominatorGraph();
 			SsaTransform sst = new SsaTransform(proc, gr, false);
 			SsaState ssa = sst.SsaState;
 			ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
@@ -330,7 +330,7 @@ namespace Decompiler.UnitTests.Analysis
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				fut.TextWriter.WriteLine("= {0} ========================", proc.Name);
-				DominatorGraph gr = new DominatorGraph(proc);
+				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr, true);

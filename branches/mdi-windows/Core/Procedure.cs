@@ -97,6 +97,11 @@ namespace Decompiler.Core
 		}
 #endif
 
+        public BlockDominatorGraph CreateBlockDominatorGraph()
+        {
+            return new BlockDominatorGraph(new BlockGraph(RpoBlocks), EntryBlock);
+        }
+
 		public Block EntryBlock
 		{
 			get { return blockEntry; }
