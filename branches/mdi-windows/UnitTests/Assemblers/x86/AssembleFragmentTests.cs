@@ -61,6 +61,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
                 "0C00:002A	ret	" + nl);
         }
 
+
         private void RunTest(AssemblerFragment fragment, string sExp)
         {
             IntelEmitter emitter = new IntelEmitter();

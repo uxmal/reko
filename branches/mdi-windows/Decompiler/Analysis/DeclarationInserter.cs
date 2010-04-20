@@ -37,15 +37,14 @@ namespace Decompiler.Analysis
 
 		public void InsertDeclaration(Web web)
 		{
-            List<Block> blocks = new List<Block>();
+            var blocks = new HashedSet<Block>();
 			foreach (SsaIdentifier sid in web.Members)
 			{
 				if (sid.DefStatement != null)
 				{
-					if (sid.DefStatement.Instruction is DefInstruction)
-						blocks.Add(null);
-					else
-						blocks.Add(sid.DefStatement.Block);
+                    if (sid.DefStatement.Instruction is DefInstruction)
+                        return;
+                    blocks.Add(sid.DefStatement.Block);
 					foreach (Statement u in sid.Uses)
 					{
 						blocks.Add(u.Block);

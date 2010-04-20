@@ -158,7 +158,22 @@ done:
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
 
-		[Test]
+        [Test]
+        public void CceReturnCarry()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected Program CompileTest(Action<ProcedureMock> m)
+        {
+            var mock = new ProcedureMock();
+            m(mock);
+            var pmock = new ProgramMock();
+            pmock.Add(mock);
+            return pmock.BuildProgram();
+        }
+
+        [Test]
 		public void SignedIntComparisonFromConditionCode()
 		{
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new ArchitectureMock());

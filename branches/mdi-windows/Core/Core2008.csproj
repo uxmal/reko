@@ -150,6 +150,8 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="Lib\BlockDominatorGraph.cs" />
+    <Compile Include="Lib\Dequeue.cs" />
+    <Compile Include="Output\PrettyPrinter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

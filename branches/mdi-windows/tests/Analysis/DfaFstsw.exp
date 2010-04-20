@@ -1,0 +1,22 @@
+// void fn0C00_0000(Register word16 bx, Register word16 si, Register selector ds, FpuStack real64 rArg0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  bx si ds
+// LiveOut:
+// Trashed: SCZOFPUF ax al ah
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000(word16 bx, word16 si, selector ds, real64 rArg0)
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	branch rArg0 >= Mem0[ds:bx:real32] l0C00_000D
+	// succ:  2 3
+l0C00_0009:		// block 2, pred: 1
+	store(Mem17[ds:si:word16]) = 0x0004
+	// succ:  3
+l0C00_000D:		// block 3, pred: 1 2
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 
+

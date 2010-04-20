@@ -1355,6 +1355,12 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0xF5, null);
         }
 
+        public void Fcompp()
+        {
+            emitter.EmitByte(0xDE);
+            emitter.EmitByte(0xD9);
+        }
+
 
         internal void DbDup(int by, int count)
         {
@@ -1393,8 +1399,6 @@ namespace Decompiler.Assemblers.x86
         {
             return new ParsedOperand(new ImmediateOperand(IntegralConstant(n, this.defaultWordSize)));
         }
-
-
 
     }
 }

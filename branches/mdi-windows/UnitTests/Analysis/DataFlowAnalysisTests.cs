@@ -174,7 +174,7 @@ namespace Decompiler.UnitTests.Analysis
                 fcomp   dword ptr [bx]
                 fstsw   ax
                 test    ah,0x41
-                jnz     done
+                jpo     done
                 mov     word ptr [si],4
 done:   
                 ret

@@ -36,6 +36,8 @@ namespace Decompiler.Arch.Intel
 		private Procedure proc;
 		private Frame frame;
 		private Address addrEnd;			// address of the end of this block.
+        private int i;
+        private IntelInstruction[] instrs;
 		private IntelInstruction instrCur;	// current instruction being rewritten.
 
 		private IntelRewriterState state;
@@ -77,7 +79,7 @@ namespace Decompiler.Arch.Intel
 		/// <param name="aDeadFlags"></param>
         public override void ConvertInstructions(MachineInstruction [] instructions,  Address[] addrs, uint[] aDeadFlags, Address addrEnd, CodeEmitter emitter)
         {
-            IntelInstruction[] instrs = new IntelInstruction[instructions.Length];
+            instrs = new IntelInstruction[instructions.Length];
             for (int x = 0; x < instrs.Length; ++x)
             {
                 instrs[x] = (IntelInstruction)instructions[x];
@@ -86,7 +88,7 @@ namespace Decompiler.Arch.Intel
             this.addrEnd = addrEnd;
 
 
-			for (int i = 0; i < instrs.Length; ++i) 
+			for (i = 0; i < instrs.Length; ++i) 
 			{
 				instrCur = instrs[i];
 				state.InstructionAddress = addrs[i];
@@ -1055,12 +1057,64 @@ namespace Decompiler.Arch.Intel
 
 		private void EmitBranchInstruction(FlagM usedFlags, ConditionCode cc, MachineOperand opTarget)
 		{
-			EmitBranchInstruction(new TestCondition(cc, orw.FlagGroup(usedFlags)), opTarget);
+            var tc = CreateTestCondition(cc, orw.FlagGroup(usedFlags));
+			EmitBranchInstruction(tc, opTarget);
 		}
+
+        /// <summary>
+        /// Creates a test condition, looking for special patterns that apply to x86 FPU tests.
+        /// </summary>
+        /// <param name="cc"></param>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
+        private TestCondition CreateTestCondition(ConditionCode cc, Identifier identifier)
+        {
+            var tc = new TestCondition(cc, identifier);
+            if (i < 2)
+                return tc;
+            if (instrs[i-1].code != Opcode.test)
+                return tc;
+            var ah = instrs[i-1].op1 as RegisterOperand;
+            if (ah == null || ah.Register != Registers.ah)
+                return tc;
+            var m = instrs[i-1].op2 as ImmediateOperand;
+            if (m == null)
+                return tc;
+
+            if (instrs[i-2].code != Opcode.fstsw)
+                return tc;
+            int mask = m.Value.ToInt32();
+
+            var fpuf = orw.FlagGroup(FlagM.FPUF);
+            switch (cc)
+            {
+            case ConditionCode.PE:
+                if (mask == 0x05) return new TestCondition(ConditionCode.LE, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.GE, fpuf);
+                if (mask == 0x44) return new TestCondition(ConditionCode.NE, fpuf);
+                break;
+            case ConditionCode.PO:
+                if (mask == 0x44) return new TestCondition(ConditionCode.EQ, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.GE, fpuf);
+                if (mask == 0x05) return new TestCondition(ConditionCode.GT, fpuf);
+                break;
+            case ConditionCode.EQ:
+                if (mask == 0x40) return new TestCondition(ConditionCode.NE, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.LT, fpuf);
+                break;
+            case ConditionCode.NE:
+                if (mask == 0x40) return new TestCondition(ConditionCode.EQ, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.GE, fpuf);
+                if (mask == 0x01) return new TestCondition(ConditionCode.GT, fpuf);
+                break;
+            }
+            throw new NotImplementedException(string.Format(
+                "FSTSW/TEST AH,0x{0:X2}/J{1} not implemented.", mask, cc));
+        }
 
 		private void EmitBranchInstruction(Identifier idFlag, ConditionCode cc, MachineOperand opTarget)
 		{
-			EmitBranchInstruction(new TestCondition(cc, idFlag), opTarget);
+			EmitBranchInstruction(CreateTestCondition(cc, idFlag), opTarget);
 		}
 
 		

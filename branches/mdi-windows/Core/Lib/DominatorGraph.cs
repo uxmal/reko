@@ -108,7 +108,7 @@ namespace Decompiler.Core.Lib
         public bool DominatesStrictly(T dominator, T d)
         {
             T iDom;
-            while (idoms.TryGetValue(d, out iDom))
+            while (idoms.TryGetValue(d, out iDom) && iDom != null)
             {
                 if (iDom == dominator)
                     return true;

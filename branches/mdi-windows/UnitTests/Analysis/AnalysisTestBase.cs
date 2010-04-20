@@ -27,6 +27,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Environments.Msdos;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -66,6 +67,13 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
+
+        protected Program BuildProgramMock(Action<ProcedureMock> builder)
+        {
+            ProcedureMock m = new ProcedureMock();
+            builder(m);
+            return BuildProgramMock(m);
+        }
 
 		protected Program BuildProgramMock(ProcedureMock mock)
 		{

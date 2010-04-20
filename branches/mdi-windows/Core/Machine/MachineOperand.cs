@@ -117,7 +117,17 @@ namespace Decompiler.Core.Machine
 		{
 			get { return value; }
 		}
-	}
+
+        public static ImmediateOperand Byte(byte value)
+        {
+            return new ImmediateOperand(Constant.Byte(value));
+        }
+
+        public static ImmediateOperand Word32(int value)
+        {
+            return new ImmediateOperand(Constant.Word32(value));
+        }
+    }
 
     //$TODO: move into intel assembly.
 	public class AddressOperand : MachineOperand

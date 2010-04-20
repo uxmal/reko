@@ -679,6 +679,9 @@ namespace Decompiler.Assemblers.x86
 			case Token.FCOMP:
 				ProcessFpuCommon(0xD8, 0xD8, 3, true, false);
 				break;
+            case Token.FCOMPP:
+                asm.Fcompp();
+                break;
 			case Token.FDIV:
 				ProcessFpuCommon(0xD8, 0xD8, 6, false, true);
 				break;
@@ -801,6 +804,9 @@ namespace Decompiler.Assemblers.x86
 			case Token.JO:
 				ProcessBranch(0x00);
 				break;
+            case Token.JPO:
+                ProcessBranch(0x0B);
+                break;
 			case Token.JS:
 				ProcessBranch(0x08);
 				break;

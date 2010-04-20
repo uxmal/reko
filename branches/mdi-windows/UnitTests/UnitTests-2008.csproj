@@ -130,6 +130,7 @@
     <Compile Include="Core\CastTests.cs" />
     <Compile Include="Core\CodeFormatterTests.cs" />
     <Compile Include="Core\ConstantTests.cs" />
+    <Compile Include="Core\Lib\DequeueTests.cs" />
     <Compile Include="Core\Lib\DfsIteratorTests.cs" />
     <Compile Include="Core\ExpressionFactoryTests.cs" />
     <Compile Include="Core\ExpressionTests.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Core\MapTests.cs" />
     <Compile Include="Core\OperatorTests.cs" />
     <Compile Include="Core\Output\MockGeneratorTests.cs" />
+    <Compile Include="Core\Output\PrettyPrinterTests.cs" />
     <Compile Include="Core\PrimitiveTypeTests.cs" />
     <Compile Include="Core\ProcedureSignatureTests.cs" />
     <Compile Include="Core\ProcedureTests.cs" />

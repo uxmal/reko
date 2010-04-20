@@ -299,40 +299,35 @@ namespace Decompiler.UnitTests.Arch.Intel
             Assert.AreEqual("branch Test(PE,P) l0C00_0100", rw.Block.Statements[0].Instruction.ToString());
         }
 
+    }
 
+    public class FakeProcedureRewriter : IProcedureRewriter
+    {
+        private IProcessorArchitecture arch;
+        private IRewriterHost host;
+        private Procedure proc;
 
-
-
-        public class FakeProcedureRewriter : IProcedureRewriter
+        public FakeProcedureRewriter(IProcessorArchitecture arch, IRewriterHost host, Procedure proc)
         {
-            private IProcessorArchitecture arch;
-            private IRewriterHost host;
-            private Procedure proc;
-
-            public FakeProcedureRewriter(IProcessorArchitecture arch, IRewriterHost host, Procedure proc)
-            {
-                this.arch = arch;
-                this.host = host;
-                this.proc = proc;
-            }
-
-            #region IProcedureRewriter Members
-
-            public Block RewriteBlock(Address addr, Block prev, Rewriter rewriter)
-            {
-                return new Block(proc, addr.GenerateName("l", ""));
-            }
-
-            public CodeEmitter CreateEmitter(Block block)
-            {
-                return new CodeEmitter(arch, host, proc, block);
-            }
-
-            #endregion
+            this.arch = arch;
+            this.host = host;
+            this.proc = proc;
         }
 
+        #region IProcedureRewriter Members
 
-	}
+        public Block RewriteBlock(Address addr, Block prev, Rewriter rewriter)
+        {
+            return new Block(proc, addr.GenerateName("l", ""));
+        }
+
+        public CodeEmitter CreateEmitter(Block block)
+        {
+            return new CodeEmitter(arch, host, proc, block);
+        }
+
+        #endregion
+    }
 
     public class TestRewriter : IntelRewriter
     {

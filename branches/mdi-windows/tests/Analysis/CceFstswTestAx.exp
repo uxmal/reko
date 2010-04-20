@@ -1,27 +1,32 @@
 Mem0:Global memory
     def:  def Mem0
-    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 fp:Temporary
 rArg0:FPU stack
     def:  def rArg0
-    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 bx:Register bx
     def:  def bx
-    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 ds:Register ds
     def:  def ds
-    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 FPUF:Flags
+ax:Register ax
+ah:Register ah
 SCZO:Flags
-SZO:Flags
+C:Flags
+Z:Flags
 ecx:Register ecx
-FPUF_9: orig: FPUF
-SCZO_10: orig: SCZO
-SZO_11: orig: SZO
-ecx_12: orig: ecx
-SCZO_13: orig: SCZO
-ecx_14: orig: ecx
+FPUF_12: orig: FPUF
+ax_13: orig: ax
+ah_14: orig: ah
 SCZO_15: orig: SCZO
+C_16: orig: C
+ecx_17: orig: ecx
+SCZO_18: orig: SCZO
+ecx_19: orig: ecx
+SCZO_20: orig: SCZO
 // fn0C00_0000
 void fn0C00_0000(word16 bx, selector ds, real64 rArg0)
 fn0C00_0000_entry:		// block 0, pred:
@@ -31,7 +36,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	def ds
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
+	branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 	// succ:  2 3
 l0C00_0009:		// block 2, pred: 1
 	// succ:  3

@@ -91,7 +91,10 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		protected void DoRewriteFile(string relativePath)
 		{
-			asm.Assemble(baseAddress, FileUnitTester.MapTestPath(relativePath));
+            using (var stm = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
+            {
+                asm.Assemble(baseAddress, stm);
+            }
             prog.Image = asm.Image;
             prog.Platform = asm.Platform;
 			DoRewriteCore();
