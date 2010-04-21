@@ -43,7 +43,6 @@ namespace Decompiler.Core.Output
         private int breakLevel;
         private int totalEnqueuedTokens;
         private int totalFlushedTokens;
-        public int INDENT_WIDTH = 4;
 
         public PrettyPrinter(TextWriter writer, int width)
         {
@@ -66,14 +65,14 @@ namespace Decompiler.Core.Output
                 breakLevel = currentGroupLevel;
         }
 
-        public void Indent()
+        public void Indent(int indentWidth)
         {
-            EnqueueToken(new IndentToken(INDENT_WIDTH, output));
+            EnqueueToken(new IndentToken(indentWidth, output));
         }
 
-        public void Outdent()
+        public void Outdent(int indentWidth)
         {
-            EnqueueToken(new OutdentToken(INDENT_WIDTH, output));
+            EnqueueToken(new OutdentToken(indentWidth, output));
         }
 
         public void ForceLineBreak()
@@ -86,12 +85,13 @@ namespace Decompiler.Core.Output
 
         public void OptionalLineBreak()
         {
+            // discard breaks we are no longer interested in
+
             while (breaks.Count != 0 &&
-                (breaks.PeekFront().level > currentGroupLevel
-                || (breaks.PeekFront().level == currentGroupLevel &&
-                    !breaks.PeekFront().connected)))
+                (breaks.PeekFront().Level > currentGroupLevel
+                || (breaks.PeekFront().Level == currentGroupLevel &&
+                    !breaks.PeekFront().IsConnected)))
             {
-                // discard breaks we are no longer interested in
                 breaks.PopFront();
             }
             EnqueueBreak(false);
@@ -101,10 +101,11 @@ namespace Decompiler.Core.Output
         {
             if (breakLevel < currentGroupLevel)
             {
+                // discard breaks we are no longer interested in.
+
                 while (breaks.Count != 0 &&
-                    breaks.PeekFront().level >= currentGroupLevel)
+                    breaks.PeekFront().Level >= currentGroupLevel)
                 {
-                    // discard breaks we are no longer interested in.
                     breaks.PopFront();
                 }
                 EnqueueToken(new MarkerToken(currentGroupLevel, output));
@@ -126,10 +127,10 @@ namespace Decompiler.Core.Output
                 if (breaks.Count != 0)
                 {
                     // split line at break.
-                    var temp = breaks.PopBack();
-                    breakLevel = temp.level;
-                    PrintBuffer(temp.chars_enqueued - totalFlushedTokens);
-                    if (!temp.connected)
+                    var br = breaks.PopBack();
+                    breakLevel = br.Level;
+                    PrintBuffer(br.TokensEnqueued - totalFlushedTokens);
+                    if (!br.IsConnected)
                     {
                         output.PrintNewLine();
                     }
@@ -137,8 +138,7 @@ namespace Decompiler.Core.Output
                 }
                 else
                 {
-                    // no breaks to make! Oh noes.
-                    throw new NotImplementedException();
+                    // no breaks to make! Oh noes. Just overflow in this case.
                 }
             }
             EnqueueToken(new StringToken(ch, output));
@@ -171,17 +171,14 @@ namespace Decompiler.Core.Output
             breaks.PushFront(new Break(totalEnqueuedTokens, currentGroupLevel, connectedBreak));
         }
 
-
         private abstract class Token
         {
-            public char type { get; private set; }
-            public int value { get; private set; }
-            public PrettyPrinterOutput Output { get; private set; }
-
             protected Token(PrettyPrinterOutput output)
             {
                 this.Output = output;
             }
+
+            public PrettyPrinterOutput Output { get; private set; }
 
             public abstract void Print(int break_level);
         }
@@ -189,6 +186,7 @@ namespace Decompiler.Core.Output
         private class MarkerToken : Token
         {
             private int groupingLevel;
+
             public MarkerToken(int groupingLevel, PrettyPrinterOutput output)
                 : base(output)
             {
@@ -197,7 +195,7 @@ namespace Decompiler.Core.Output
 
             public override void Print(int break_level)
             {
-                if (value <= break_level)
+                if (groupingLevel <= break_level)
                     Output.PrintNewLine();
             }
         }
@@ -257,70 +255,22 @@ namespace Decompiler.Core.Output
 
             public override void Print(int break_level)
             {
-                Output.Print_Character(c);
+                Output.PrintCharacter(c);
             }
         }
 
         public class Break
         {
-            public int chars_enqueued { get; private set; }
-            public int level { get; private set; }
-            public bool connected { get; private set; }
+            public int TokensEnqueued { get; private set; }
+            public int Level { get; private set; }
+            public bool IsConnected { get; private set; }
 
             public Break(int count, int level, bool connected)
             {
-                this.chars_enqueued = count;
-                this.level = level;
-                this.connected = connected;
+                this.TokensEnqueued = count;
+                this.Level = level;
+                this.IsConnected = connected;
             }
-        }
-
-    }
-
-    public class PrettyPrinterOutput
-    {
-        private TextWriter writer;
-
-        public PrettyPrinterOutput(TextWriter writer, int width)
-        {
-            this.writer = writer;
-            this.device_output_width = width;
-        }
-
-        public int device_left_margin { get; set; }
-        public int device_output_width { get; private set; }
-        public int total_pchars_enqueued { get; set; }
-        public int total_pchars_flushed { get; set; }
-
-        public void Indent(int indentAmt)
-        {
-            device_left_margin += indentAmt;
-        }
-
-        public void Outdent(int outdentAmt)
-        {
-            device_left_margin -= outdentAmt;
-        }
-
-        
-        public bool MustSplitLine
-        {
-            get
-            {
-                return (total_pchars_enqueued - total_pchars_flushed) + device_left_margin
-                                >= device_output_width;
-            }
-        }
-
-        public void Print_Character(char c)
-        {
-            writer.Write(c);
-            ++total_pchars_flushed;
-        }
-
-        public void PrintNewLine()
-        {
-            writer.WriteLine();
         }
     }
 }

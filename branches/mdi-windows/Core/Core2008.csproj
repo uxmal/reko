@@ -152,6 +152,7 @@
     <Compile Include="Lib\BlockDominatorGraph.cs" />
     <Compile Include="Lib\Dequeue.cs" />
     <Compile Include="Output\PrettyPrinter.cs" />
+    <Compile Include="Output\PrettyPrinterOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

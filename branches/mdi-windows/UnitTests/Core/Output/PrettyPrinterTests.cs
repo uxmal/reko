@@ -71,6 +71,13 @@ namespace Decompiler.UnitTests.Core.Output
             Assert.AreEqual("abcd" + nl + "e", sw.ToString());
         }
 
+        [Test]
+        public void Indent()
+        {
+            pp = new PrettyPrinter(sw, 4);
+            PrettyPrint("a$tb$oc$od$oe$of$og");
+            Assert.AreEqual("abcd" + nl + "  ef" + nl + "  g", sw.ToString());
+        }
 
         private void PrettyPrint(string str)
         {
@@ -88,10 +95,10 @@ namespace Decompiler.UnitTests.Core.Output
                         pp.EndGroup();
                         break;
                     case 't': 
-                        pp.Indent();
+                        pp.Indent(2);
                         break;
                     case 'b':   
-                        pp.Outdent();
+                        pp.Outdent(2);
                         break;
                     case 'n':  
                         pp.ForceLineBreak();
