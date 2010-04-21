@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,8 +47,9 @@ namespace Decompiler.Gui.Windows.Forms
 	{
 		private IMainForm form;		
 		private IDecompilerService decompilerSvc;
-        private IDecompilerUIService uiSvc;
+        private IDecompilerShellUiService uiSvc;
         private IDiagnosticsService diagnosticsSvc;
+        private ISearchResultService srSvc;
 		private IPhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
 		private ILoadedPageInteractor pageLoaded;
@@ -59,6 +60,7 @@ namespace Decompiler.Gui.Windows.Forms
         private ServiceContainer sc;
         private Dictionary<IPhasePageInteractor, IPhasePageInteractor> nextPage;
         private IDecompilerConfigurationService config;
+        private ICommandTarget subWindowCommandTarget;
 
 		private static string dirSettings;
 		
@@ -72,12 +74,12 @@ namespace Decompiler.Gui.Windows.Forms
             nextPage = new Dictionary<IPhasePageInteractor, IPhasePageInteractor>();
 		}
 
-		private void AttachInteractors(DecompilerMenus dm)
+		private void CreatePhaseInteractors()
 		{
-            pageInitial = CreateInitialPageInteractor(form.InitialPage);
-            pageLoaded = CreateLoadedPageInteractor(form.LoadedPage);
-            pageAnalyzed = new AnalyzedPageInteractorImpl(form.AnalyzedPage);
-            pageFinal = new FinalPageInteractor(form.FinalPage, this);
+            pageInitial = CreateInitialPageInteractor();
+            pageLoaded = CreateLoadedPageInteractor();
+            pageAnalyzed = new AnalyzedPageInteractorImpl();
+            pageFinal = new FinalPageInteractor();
 
             Add(pageInitial);
             Add(pageLoaded);
@@ -90,14 +92,14 @@ namespace Decompiler.Gui.Windows.Forms
 		}
 
 
-        protected virtual InitialPageInteractor CreateInitialPageInteractor(IStartPage initialPage)
+        protected virtual InitialPageInteractor CreateInitialPageInteractor()
         {
-            return new InitialPageInteractorImpl(initialPage); 
+            return new InitialPageInteractorImpl(); 
         }
 
-        protected virtual ILoadedPageInteractor CreateLoadedPageInteractor(ILoadedPage iLoadedPage)
+        protected virtual ILoadedPageInteractor CreateLoadedPageInteractor()
         {
-            return new LoadedPageInteractor(form.LoadedPage);
+            return new LoadedPageInteractor();
         }
 
 		public virtual IDecompiler CreateDecompiler(LoaderBase ldr)
@@ -115,8 +117,9 @@ namespace Decompiler.Gui.Windows.Forms
             dm.MainToolbar.ImageList = form.ImageList;
             form.AddToolbar(dm.MainToolbar);
 
-            CreateServices(dm);
-            AttachInteractors(dm);
+            CreateServices(sc, dm);
+            CreatePhaseInteractors();
+
 			form.Closed += new System.EventHandler(this.MainForm_Closed);
 			form.ToolBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(toolBar_ItemClicked);
 			//form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
@@ -128,21 +131,17 @@ namespace Decompiler.Gui.Windows.Forms
 
         protected virtual IMainForm CreateForm()
         {
-            return new MainForm();
+            return new MainForm2();
         }
 
-        private void CreateServices(DecompilerMenus dm)
+        protected virtual void CreateServices(ServiceContainer sc, DecompilerMenus dm)
         {
             config = new DecompilerConfiguration();
             sc.AddService(typeof(IDecompilerConfigurationService), config);
 
             sc.AddService(typeof(IStatusBarService), (IStatusBarService) this);
 
-            FindResultsInteractor f = new FindResultsInteractor();
-            f.Attach(form.FindResultsList);
-            sc.AddService(typeof(IFindResultsService), f);
-
-            DiagnosticsInteractor d = new DiagnosticsInteractor();
+            var d = new DiagnosticsInteractor();
             d.Attach(form.DiagnosticsList);
             diagnosticsSvc = d;
             sc.AddService(typeof(IDiagnosticsService), d);
@@ -150,18 +149,29 @@ namespace Decompiler.Gui.Windows.Forms
             decompilerSvc = new DecompilerService();
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
-            uiSvc = CreateUiService(dm);
+            uiSvc = CreateShellUiService(dm);
+            subWindowCommandTarget = (ICommandTarget)uiSvc;
+            sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
-            ProgramImageBrowserService pibSvc = new ProgramImageBrowserService(form.BrowserList);
+            var codeViewSvc = new CodeViewerServiceImpl(sc);
+            sc.AddService(typeof(ICodeViewerService), codeViewSvc);
+
+            var pibSvc = new ProgramImageBrowserService(form.BrowserList);
             sc.AddService(typeof(IProgramImageBrowserService), pibSvc);
 
-            DecompilerEventListener wdel = CreateDecompilerListener();
-            sc.AddService(typeof(IWorkerDialogService), (IWorkerDialogService) wdel);
-            sc.AddService(typeof(DecompilerEventListener), wdel);
+            var del = CreateDecompilerListener();
+            sc.AddService(typeof(IWorkerDialogService), (IWorkerDialogService) del);
+            sc.AddService(typeof(DecompilerEventListener), del);
 
             ArchiveBrowserService abSvc = new ArchiveBrowserService(sc);
             sc.AddService(typeof(IArchiveBrowserService), abSvc);
+
+            sc.AddService(typeof(IMemoryViewService), new MemoryViewServiceImpl(sc));
+            sc.AddService(typeof(IDisassemblyViewService), new DisassemblyViewServiceImpl(sc));
+
+            srSvc = new SearchResultServiceImpl(form.FindResultsList);
+            sc.AddService(typeof(ISearchResultService), srSvc);
         }
 
         protected virtual DecompilerEventListener CreateDecompilerListener()
@@ -169,9 +179,9 @@ namespace Decompiler.Gui.Windows.Forms
             return new WindowsDecompilerEventListener(sc);
         }
 
-        protected virtual IDecompilerUIService CreateUiService(DecompilerMenus dm)
+        protected virtual IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)
         {
-            return new DecompilerUiService(this.form, dm, form.OpenFileDialog, form.SaveFileDialog);
+            return new DecompilerShellUiService((Form)this.form, dm, form.OpenFileDialog, form.SaveFileDialog, this.sc);
         }
 
 		public virtual TextWriter CreateTextWriter(string filename)
@@ -282,6 +292,10 @@ namespace Decompiler.Gui.Windows.Forms
 		{
 		}
 
+        public void LayoutMdi(MdiLayout layout)
+        {
+            ((Form)form).LayoutMdi(layout);
+        }
 
         public void ShowAboutBox()
         {
@@ -297,6 +311,11 @@ namespace Decompiler.Gui.Windows.Forms
             set { projectFileName = value; }
         }
 
+        public void FindProcedures(ISearchResultService svc)
+        {
+            svc.ShowSearchResults(new ProcedureSearchResult(this.sc, this.decompilerSvc.Decompiler.Program.Procedures));
+        }
+
         public void Save()
         {
             if (string.IsNullOrEmpty(this.ProjectFileName))
@@ -306,7 +325,6 @@ namespace Decompiler.Gui.Windows.Forms
                     return;
                 ProjectFileName = newName;
                 mru.Use(newName);
-
             }
 
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
@@ -350,7 +368,6 @@ namespace Decompiler.Gui.Windows.Forms
                 if (!CurrentPage.LeavePage())
                     return;
             }
-            form.SetCurrentPage(interactor.Page);
 			CurrentPage = interactor;
 			interactor.EnterPage();
 		}
@@ -373,17 +390,14 @@ namespace Decompiler.Gui.Windows.Forms
 		#region ICommandTarget members 
 		public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus cmdStatus, CommandText cmdText)
 		{
+            if (subWindowCommandTarget.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
+                return true;
 			if (currentPage != null && currentPage.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{
-				int iMru = cmdId - CmdIds.FileMru;
-				if (0 <= iMru && iMru < mru.Items.Count)
-				{
-					cmdStatus.Status = MenuStatus.Visible|MenuStatus.Enabled;
-					cmdText.Text = (string) mru.Items[iMru];
+                if (QueryMruItem(cmdId, cmdStatus, cmdText))
 					return true;
-				}
 
 				switch (cmdId)
 				{
@@ -400,25 +414,38 @@ namespace Decompiler.Gui.Windows.Forms
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
+                case CmdIds.ViewFindAllProcedures:
+                    cmdStatus.Status = IsDecompilerLoaded
+                        ? MenuStatus.Enabled | MenuStatus.Visible
+                        : MenuStatus.Visible;
+                    return true;
 				}
 			}
 			return false;
 		}
 
+        private bool QueryMruItem(int cmdId, CommandStatus cmdStatus, CommandText cmdText)
+		{
+				int iMru = cmdId - CmdIds.FileMru;
+				if (0 <= iMru && iMru < mru.Items.Count)
+				{
+                cmdStatus.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                cmdText.Text = (string)mru.Items[iMru];
+					return true;
+				}
+            return false;
+        }
+
 		public bool Execute(ref Guid cmdSet, int cmdId)
 		{
+            if (subWindowCommandTarget.Execute(ref cmdSet, cmdId))
+                return true;
 			if (currentPage != null && currentPage.Execute(ref cmdSet, cmdId))
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{
-				int iMru = cmdId - CmdIds.FileMru;
-				if (0 <= iMru && iMru < mru.Items.Count)
-				{
-					string file = (string) mru.Items[iMru];
-					OpenBinary(file);
-					mru.Use(file);
-					return true;
-				}
+                if (ExecuteMruFile(cmdId))
+                    return false;
 
 				switch (cmdId)
 				{
@@ -429,13 +456,41 @@ namespace Decompiler.Gui.Windows.Forms
 				case CmdIds.ActionNextPhase: NextPhase(); return true;
 				case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
 
+                case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); return true;
+
+                case CmdIds.WindowsCascade: LayoutMdi(MdiLayout.Cascade); return true;
+                case CmdIds.WindowsTileVertical: LayoutMdi(MdiLayout.TileVertical); return true;
+                case CmdIds.WindowsTileHorizontal: LayoutMdi(MdiLayout.TileHorizontal); return true;
+         
                 case CmdIds.HelpAbout: ShowAboutBox(); return true;
 				}
 			}
 			return false;
 		}
 
+        private bool ExecuteMruFile(int cmdId)
+        {
+            int iMru = cmdId - CmdIds.FileMru;
+            if (0 <= iMru && iMru < mru.Items.Count)
+            {
+                string file = (string)mru.Items[iMru];
+                OpenBinary(file);
+                mru.Use(file);
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsDecompilerLoaded
+        {
+            get {
+                if (decompilerSvc.Decompiler == null)
+                    return false;
+                return decompilerSvc.Decompiler.Program != null;
+            }
+        }
 		#endregion
+
 
         #region IStatusBarService Members ////////////////////////////////////
 

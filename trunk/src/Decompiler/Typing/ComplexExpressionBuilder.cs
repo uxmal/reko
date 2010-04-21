@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -139,7 +139,7 @@ namespace Decompiler.Typing
 				dtPointee.Accept(this);
 				if (!deref)
 				{
-					result = new UnaryExpression(UnaryOperator.addrOf, dtPtr, result);
+					result = new UnaryExpression(UnaryOperator.AddrOf, dtPtr, result);
 				}
 				Dereferenced = deref; 
 			}
@@ -156,13 +156,13 @@ namespace Decompiler.Typing
             }
             else
             {
-                return new BinaryExpression(Operator.add, dtPointer, complexExp, arrayIndex);
+                return new BinaryExpression(Operator.Add, dtPointer, complexExp, arrayIndex);
             }
         }
 
         private static Expression CreateArrayIndexExpression(int offset, Expression arrayIndex, int pointerSize)
         {
-            BinaryOperator op = offset < 0 ? Operator.sub : Operator.add;
+            BinaryOperator op = offset < 0 ? Operator.Sub : Operator.Add;
             offset = Math.Abs(offset);
             Constant cOffset = new Constant(PrimitiveType.Create(Domain.SignedInt, pointerSize), offset);
             if (arrayIndex != null)

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,6 @@ namespace Decompiler.Structure
         private Block block;
         private int id;
         private int ord;
-        private int revOrd;
 
         internal travType traversed;          //$REFACTOR: use visited hashtables instead.
         private bool forceLabel;
@@ -49,7 +48,6 @@ namespace Decompiler.Structure
 
         private UnstructuredType usType;
         private Conditional cond;
-        private Loop loop;
         private Interval interval;
 
         private int[] loopStamps;
@@ -65,7 +63,6 @@ namespace Decompiler.Structure
             this.id = id;
 
             ord = -1;
-            revOrd = -1;
 
             traversed = travType.UNTRAVERSED;
             forceLabel = false;
@@ -174,7 +171,7 @@ namespace Decompiler.Structure
         }
 
 
-        public int Ident() { return id; }
+        public int Number { get { return id; } }
 
         public StructureNode ImmPDom
         {
@@ -205,7 +202,7 @@ namespace Decompiler.Structure
 
         public bool IsLatchNode()
         {
-            return (loop != null && loop.Latch == this);
+            return (Loop != null && Loop.Latch == this);
         }
 
         public bool IsLoopHeader()
@@ -217,11 +214,7 @@ namespace Decompiler.Structure
         ///<summary>
         ///The innermost loop this node belongs to.
         ///</summary>
-        public Loop Loop
-        {
-            get { return loop; }
-            set { loop = value; }
-        }
+        public Loop Loop { get;set; } 
 
         public virtual string Name
         {
@@ -262,7 +255,7 @@ namespace Decompiler.Structure
 
         // Sets the reverse loop stamps for each node. The children are traversed in
         // reverse order.
-        public void SetRevLoopStamps(ref int time, HashSet<StructureNode> visited)
+        public void SetRevLoopStamps(ref int time, HashedSet<StructureNode> visited)
         {
             //timestamp the current node with the current time and set its traversed flag
             visited.Add(this);
@@ -283,25 +276,6 @@ namespace Decompiler.Structure
             revLoopStamps[1] = ++time;
         }
 
-        // Build the ordering of the nodes in the reverse graph that will be used to
-        // determine the immediate post dominators for each node
-        public void SetRevOrder(List<StructureNode> order, HashSet<StructureNode> visited)
-        {
-            visited.Add(this);
-            for (int i = 0; i < InEdges.Count; i++)
-            {
-                if (!visited.Contains(InEdges[i]))
-                {
-                    InEdges[i].SetRevOrder(order, visited);
-                }
-            }
-
-            // add this node to the ordering structure and record the post dom. order
-            // of this node as its index within this ordering structure
-            revOrd = order.Count;
-            order.Add(this);
-        }
-
         /// <summary>
         /// The index of this node within the ordering array.
         /// </summary>
@@ -309,15 +283,6 @@ namespace Decompiler.Structure
         {
             get { return ord; }
             set { ord = value; }
-        }
-
-        /// <summary>
-        /// The index of this node within the post dominator ordering array
-        /// </summary>
-        public int RevOrder
-        {
-            get { return revOrd; }
-            set { revOrd = value; }
         }
 
         public override string ToString()
@@ -355,7 +320,7 @@ namespace Decompiler.Structure
 
         public virtual void Write(TextWriter tw)
         {
-            tw.Write("{0} ({1})", Block.Name, Ident());
+            tw.Write("{0} ({1})", Block.Name, Number);
         }
 
     }

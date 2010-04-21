@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Loading
 		{
             ServiceContainer sc = new ServiceContainer();
             sc.AddService(typeof (DecompilerEventListener), new FakeDecompilerEventListener());
-			Loader l = new Loader("foo", new FakeDecompilerConfiguration(), sc);
+			Loader l = new Loader(new FakeDecompilerConfiguration(), sc);
             Program prog = new Program();
 			prog.Image = new ProgramImage(new Address(0xC00, 0), l.LoadImageBytes(FileUnitTester.MapTestPath("binaries/life.exe"), 0));
 			ExeImageLoader exe = new ExeImageLoader(sc, prog.Image.Bytes);
@@ -68,7 +68,6 @@ namespace Decompiler.UnitTests.Loading
                 stm.WriteBytes(0xCC, 4);
                 stm.WriteLeUint16(0x0090);
                 stm.WriteBytes(0xCC, 0x12);
-                Console.WriteLine("{0:X}", s.Position);
                 stm.WriteByte(0x00);
                 stm.WriteByte(0x00);
                 stm.WriteByte(0x05);
@@ -76,7 +75,6 @@ namespace Decompiler.UnitTests.Loading
                 stm.WriteString("PKLITE", Encoding.ASCII);
                 stm.WriteBytes(0xCC, 0x0C);
                 s.Flush();
-                Console.WriteLine("{0:X}", s.Position);
                 return s.GetBuffer();
             }
         }

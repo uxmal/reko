@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,11 +78,9 @@ namespace Decompiler.UnitTests.Mocks
 		
 		public override MachineInstruction WalkInstruction(ICodeWalkerListener listener)
 		{
-			Console.WriteLine("Walking {0}", address);
 			MockInstruction i = (MockInstruction) callbacks[address];
 			if (i != null)
 			{
-				Console.WriteLine(" executing {0}", i.GetType().Name);
 				i.Execute(listener);
 			}
 			address = address + 1;

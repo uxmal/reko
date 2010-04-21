@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,42 +60,62 @@ namespace Decompiler.Analysis
 		public void Transform()
 		{
 			for (int i = 0; i < ssaIds.Count; ++i)
-			{	
+            {
 				sidGrf = ssaIds[i];
-				if (sidGrf.OriginalIdentifier.Storage is FlagGroupStorage && sidGrf.DefStatement != null)
-				{
-					if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
-					for (int u = sidGrf.Uses.Count - 1; u >= 0; --u)
-					{
-						TraverseCopyChain(sidGrf, sidGrf, sidGrf.Uses[u]);
-                    }
+                if (!IsLocallyDefinedFlagGroup(sidGrf))
+                    continue;
+                ForwardSubstituteDefiningExpression(sidGrf, sidGrf.DefExpression);
 
-                    Statement[] uses = sidGrf.Uses.ToArray();
-                    foreach (var u in uses)
-                    {
-                        useStm = u;
+					if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
+
+                Statement[] uses = sidGrf.Uses.ToArray();
+                foreach (var u in uses)
+					{
+                    useStm = u;
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("   used {0}", useStm.Instruction));
 						useStm.Instruction.Accept(this);
 						if (trace.TraceInfo) Debug.WriteLine(string.Format("    now {0}", useStm.Instruction));
 					}
 				}
 			}
+
+
+        private bool IsLocallyDefinedFlagGroup(SsaIdentifier sid)
+        {
+            return sid.OriginalIdentifier.Storage is FlagGroupStorage && sid.DefStatement != null;
 		}
 
-        private void TraverseCopyChain(SsaIdentifier sidGrfOrig, SsaIdentifier sidGrf, Statement stm)
+        private void ForwardSubstituteDefiningExpression(SsaIdentifier sid, Expression expr)
         {
-            if (!IsCopyWithOptionalCast(sidGrf.Identifier, stm))
+            var condExpr = sidGrf.DefExpression;
+            foreach (Statement use in sid.Uses)
             {
-		        IdentifierReplacer ir = new IdentifierReplacer(sidGrf.Identifier, sidGrfOrig.Identifier);
-		        stm.Instruction.Accept(ir);
+                if (IsCopyWithOptionalCast(sid.Identifier, use))
+                {
+                    var ass = (Assignment)use.Instruction;
+                    var ir = new IdentifierReplacer(sid.Identifier, expr);
+                    ass.Accept(ir);
+                    var eua = new ExpressionUseAdder(use, ssaIds);
+                    ass.Src.Accept(eua);
+                    ForwardSubstituteDefiningExpression(ssaIds[ass.Dst], expr);
+                }
+            }
+        }
+
+        private void ReplaceTransitiveUses(SsaIdentifier sidGrfOrig, SsaIdentifier sidGrf, Statement use)
+        {
+            if (IsCopyWithOptionalCast(sidGrf.Identifier, use))
+            {
+                Assignment ass = (Assignment)use.Instruction;
+                foreach (Statement u in ssaIds[ass.Dst].Uses)
+                {
+                    ReplaceTransitiveUses(sidGrfOrig, ssaIds[ass.Dst], u);
+                }
             }
             else
             {
-                Assignment ass = (Assignment)stm.Instruction;
-                foreach (Statement use in ssaIds[ass.Dst].Uses)
-                {
-                    TraverseCopyChain(sidGrfOrig, ssaIds[ass.Dst], use);
-                }
+                IdentifierReplacer ir = new IdentifierReplacer(sidGrf.Identifier, sidGrfOrig.Identifier);
+                use.Instruction.Accept(ir);
             }
         }
 
@@ -113,7 +133,7 @@ namespace Decompiler.Analysis
 
 		private BinaryExpression CmpExpressionToZero(Expression e)
 		{
-			return new BinaryExpression(Operator.sub, e.DataType, e, new Constant(e.DataType, 0));
+			return new BinaryExpression(Operator.Sub, e.DataType, e, new Constant(e.DataType, 0));
 		}
 
 		public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc)
@@ -130,7 +150,7 @@ namespace Decompiler.Analysis
 			if (binDef != null)
 			{
 				if (gf.IsNegated)
-					e = new UnaryExpression(Operator.not, PrimitiveType.Bool, e);
+					e = new UnaryExpression(Operator.Not, PrimitiveType.Bool, e);
 				return e;
 			}
 			ConditionOf cof = e as ConditionOf;
@@ -196,7 +216,7 @@ namespace Decompiler.Analysis
 
 		private static bool IsAddOrSub(BinaryOperator op)
 		{
-			return op == Operator.add || op == Operator.sub;
+			return op == Operator.Add || op == Operator.Sub;
 		}
 
 		public Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)
@@ -210,18 +230,18 @@ namespace Decompiler.Analysis
 			bool isReal = (p != null && p.Domain == Domain.Real);
 			switch (cc)
 			{
-			case ConditionCode.UGT: cmpOp = Operator.ugt; break;
-			case ConditionCode.UGE: cmpOp = Operator.uge; break;
-			case ConditionCode.ULE: cmpOp = Operator.ule; break;
-			case ConditionCode.ULT: cmpOp = Operator.ult; break;
-			case ConditionCode.GT:  cmpOp = isReal ? Operator.rgt : Operator.gt; break;
-			case ConditionCode.GE:  cmpOp = isReal ? Operator.rge : Operator.ge; break;
-			case ConditionCode.LE:  cmpOp = isReal ? Operator.rle : Operator.le; break;
-			case ConditionCode.LT:  cmpOp = isReal ? Operator.rlt : Operator.lt; break;
-			case ConditionCode.NE:  cmpOp = Operator.ne; break;
-			case ConditionCode.EQ:  cmpOp = Operator.eq; break;
-			case ConditionCode.SG:  cmpOp = Operator.lt; break;
-			case ConditionCode.NS:  cmpOp = Operator.ge; break;
+			case ConditionCode.UGT: cmpOp = Operator.Ugt; break;
+			case ConditionCode.UGE: cmpOp = Operator.Uge; break;
+			case ConditionCode.ULE: cmpOp = Operator.Ule; break;
+			case ConditionCode.ULT: cmpOp = Operator.Ult; break;
+			case ConditionCode.GT:  cmpOp = isReal ? Operator.Rgt : Operator.Gt; break;
+			case ConditionCode.GE:  cmpOp = isReal ? Operator.Rge : Operator.Ge; break;
+			case ConditionCode.LE:  cmpOp = isReal ? Operator.Rle : Operator.Le; break;
+			case ConditionCode.LT:  cmpOp = isReal ? Operator.Rlt : Operator.Lt; break;
+			case ConditionCode.NE:  cmpOp = Operator.Ne; break;
+			case ConditionCode.EQ:  cmpOp = Operator.Eq; break;
+			case ConditionCode.SG:  cmpOp = Operator.Lt; break;
+			case ConditionCode.NS:  cmpOp = Operator.Ge; break;
 			case ConditionCode.OV:  
 				return ComparisonFromOverflow(bin, isNegated);
 			case ConditionCode.NO:
@@ -230,7 +250,7 @@ namespace Decompiler.Analysis
 			}
 
 			Expression e;
-			if (bin.op == Operator.sub)
+			if (bin.op == Operator.Sub)
 			{
 				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
 			}
@@ -247,7 +267,7 @@ namespace Decompiler.Analysis
 				PrimitiveType.Bool, bin);
 			if (isNegated)
 			{
-				e = new UnaryExpression(Operator.not, PrimitiveType.Bool, e);
+				e = new UnaryExpression(Operator.Not, PrimitiveType.Bool, e);
 			}
 			return e;
 		}

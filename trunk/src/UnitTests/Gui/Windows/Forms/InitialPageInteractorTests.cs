@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Decompiler.UnitTests.Mocks;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 
@@ -32,19 +33,19 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 	public class InitialPageInteractorTests
 	{
 		private IMainForm form;
-		private IStartPage page;
 		private TestInitialPageInteractor i;
         private FakeUiService uiSvc;
+        private FakeComponentSite site;
 
 		[SetUp]
 		public void Setup()
 		{
 			form = new MainForm();
-            page = form.InitialPage;
-            i = new TestInitialPageInteractor(page);
-            FakeComponentSite site = new FakeComponentSite(i);
-            uiSvc = new FakeUiService();
+            i = new TestInitialPageInteractor();
+            site = new FakeComponentSite(i);
+            uiSvc = new FakeShellUiService();
             site.AddService(typeof(IDecompilerUIService), uiSvc);
+            site.AddService(typeof(IDecompilerShellUiService), uiSvc);
             site.AddService(typeof(IDecompilerService), new DecompilerService());
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
@@ -68,30 +69,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.IsFalse(form.BrowserList.Enabled, "Browser list should be disabled");
         }
 
-		[Test]
-		public void ClickOnBrowseBinaryFile()
-		{
-			page.InputFile.Text = "foo.bar";
-			uiSvc.OpenFileResult = "baz\\foo.bar";
-			i.BrowseInputFile_Click(null, EventArgs.Empty);
-
-			Assert.AreEqual("baz\\foo.bar", page.InputFile.Text);
-		}
-
-		[Test]
-		public void CancelBrowseBinaryFile()
-		{
-			page.InputFile.Text = "foo.bar";
-			uiSvc.OpenFileResult = "NIX";
-			uiSvc.SimulateUserCancel = true;
-			i.BrowseInputFile_Click(null, EventArgs.Empty);
-
-			Assert.AreEqual("foo.bar", page.InputFile.Text);
-		}
 
         [Test]
-        public void CanAdvance()
+        public void OpenBinary_CanAdvance()
         {
+            AddFakeMemoryViewService();
             Assert.IsFalse(i.CanAdvance);
             i.OpenBinary("floxe.exe", new FakeDecompilerHost());
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
@@ -100,19 +82,28 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void OpenBinary_ShouldPopulateFields()
         {
+            AddFakeMemoryViewService();
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
             i.OpenBinary("floxe.exe", new FakeDecompilerHost());
-            Assert.AreEqual("floxe.exe", page.InputFile.Text);
-            Assert.AreEqual("floxe.asm", page.AssemblerFile.Text);
-            Assert.AreEqual("floxe.dis", page.IntermediateFile.Text);
-            Assert.AreEqual("floxe.c", page.SourceFile.Text);
-            Assert.AreEqual("floxe.h", page.HeaderFile.Text);
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
+        }
+
+        [Test]
+        public void OpenBinary_ShouldShowMemoryWindow()
+        {
+            var memSvc = AddFakeMemoryViewService();
+            memSvc.Expect(s => s.ViewImage(null)).IgnoreArguments();
+
+            i.OpenBinary("floxe.exe", new FakeDecompilerHost());
+
+            memSvc.VerifyAllExpectations();
+
         }
 
         [Test]
         public void LeavePage()
         {
+            AddFakeMemoryViewService();
             i.OpenBinary("foo.exe", new FakeDecompilerHost());
             Assert.IsTrue(i.FakeDecompiler.LoadProgram_Called, "LoadProgram should have been called");
             Assert.IsTrue(i.LeavePage());
@@ -128,18 +119,26 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return status.Status;
         }
 
+        private IMemoryViewService AddFakeMemoryViewService()
+        {
+            var memSvc = MockRepository.GenerateMock<IMemoryViewService>();
+            site.AddService(typeof(IMemoryViewService), memSvc);
+            return memSvc;
+        }
+
+
+
         private class TestInitialPageInteractor : InitialPageInteractorImpl
         {
             public FakeDecompiler FakeDecompiler;
 
-            public TestInitialPageInteractor(IStartPage page)
-                : base(page)
+            public TestInitialPageInteractor()
             {
             }
 
-            protected override LoaderBase CreateLoader(string filename, IServiceContainer sc)
+            protected override LoaderBase CreateLoader(IServiceContainer sc)
             {
-                return new FakeLoader(filename);
+                return new FakeLoader();
             }
 
             protected override IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host, IServiceProvider sp)

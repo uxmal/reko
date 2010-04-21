@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ namespace Decompiler.Analysis
             Constant c = exp.Right as Constant;
             if (c != null)
             {
-                exp.Right = Operator.sub.ApplyConstants(c, use.Increment);
+                exp.Right = Operator.Sub.ApplyConstants(c, use.Increment);
             }
         }
 
@@ -108,13 +108,13 @@ namespace Decompiler.Analysis
             Constant c = ass.Src as Constant;
             if (c != null)
             {
-                ass.Src = Operator.add.ApplyConstants(c, use.Increment);
+                ass.Src = Operator.Add.ApplyConstants(c, use.Increment);
             }
             else
             {
                 // Change expression d = x to d = x + c.
                 ass.Src = new BinaryExpression(
-                    Operator.add,
+                    Operator.Add,
                     ass.Src.DataType,
                     ass.Src,
                     use.Increment);
@@ -174,7 +174,7 @@ namespace Decompiler.Analysis
             public override void VisitBinaryExpression(BinaryExpression binExp)
             {
                 base.VisitBinaryExpression(binExp);
-                if (binExp.op != Operator.add)
+                if (binExp.op != Operator.Add)
                     return;
                 if (binExp.Left != id)
                     return;

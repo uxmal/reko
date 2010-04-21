@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,11 +97,37 @@ namespace Decompiler.UnitTests.Core.Lib
             graph.AddNode("c");
             graph.AddEdge("a", "b");
             graph.AddEdge("b", "a");
+            graph.AddEdge("c", "a");
 
             CompileTest(graph, "c");
 
             Assert.AreEqual("a", pdg.ImmediateDominator("b"));
-            Assert.AreEqual("b", pdg.ImmediateDominator("a"));
+            Assert.AreEqual("c", pdg.ImmediateDominator("a"));
+        }
+
+        [Test]
+        public void InfiniteLoop2()
+        {
+            graph.AddNode("entry");
+            graph.AddNode("infinity");
+            graph.AddNode("side1");
+            graph.AddNode("hop");
+            graph.AddNode("side2");
+            graph.AddNode("exit");
+
+            graph.AddEdge("infinity", "entry");
+            graph.AddEdge("hop", "infinity");
+            graph.AddEdge("side1", "infinity");
+            graph.AddEdge("hop", "side1");
+            graph.AddEdge("infinity", "hop");
+            graph.AddEdge("side2", "hop");
+            graph.AddEdge("infinity", "side2");
+
+            graph.AddEdge("exit", "infinity");      // pseudo-edge to break the infinite loop.
+            CompileTest(graph, "exit");
+            Assert.AreEqual("infinity", pdg.ImmediateDominator("side2"));
+            Assert.AreEqual("exit", pdg.ImmediateDominator("infinity"));
+
         }
 
         private void CompileTest(DirectedGraphImpl<string> e, string entry)

@@ -14,7 +14,7 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
   </PropertyGroup>
@@ -37,8 +37,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
+    <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\external\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -55,7 +62,7 @@
     <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
     <Compile Include="Analysis\DeadCodeTests.cs" />
     <Compile Include="Analysis\DeclarationInserterTests.cs" />
-    <Compile Include="Analysis\DominatorGraphTests.cs" />
+    <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionSimplifierTests.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
@@ -103,6 +110,7 @@
     <Compile Include="Arch\Intel\OperandRewriterTest.cs" />
     <Compile Include="Arch\Intel\ProcessorState.cs" />
     <Compile Include="Arch\Intel\Rewrite32.cs" />
+    <Compile Include="Arch\Intel\RewriteFpuInstructionTests.cs" />
     <Compile Include="Arch\Intel\RewriterTests.cs" />
     <Compile Include="Arch\Intel\RewriterTests2.cs" />
     <Compile Include="Arch\M68k\M68kCodeWalkerTests.cs" />
@@ -125,6 +133,7 @@
     <Compile Include="Core\CastTests.cs" />
     <Compile Include="Core\CodeFormatterTests.cs" />
     <Compile Include="Core\ConstantTests.cs" />
+    <Compile Include="Core\Lib\DequeueTests.cs" />
     <Compile Include="Core\Lib\DfsIteratorTests.cs" />
     <Compile Include="Core\ExpressionFactoryTests.cs" />
     <Compile Include="Core\ExpressionTests.cs" />
@@ -140,6 +149,7 @@
     <Compile Include="Core\MapTests.cs" />
     <Compile Include="Core\OperatorTests.cs" />
     <Compile Include="Core\Output\MockGeneratorTests.cs" />
+    <Compile Include="Core\Output\PrettyPrinterTests.cs" />
     <Compile Include="Core\PrimitiveTypeTests.cs" />
     <Compile Include="Core\ProcedureSignatureTests.cs" />
     <Compile Include="Core\ProcedureTests.cs" />
@@ -168,15 +178,21 @@
     <Compile Include="Core\VariableTests.cs" />
     <Compile Include="Core\VariableVisitorTests.cs" />
     <Compile Include="Core\WorkListTests.cs" />
-    <Compile Include="DecompilerHostTests.cs" />
+    <Compile Include="DecompilerTests.cs" />
     <Compile Include="Environments\MacOS\ResourceForkTests.cs" />
     <Compile Include="FileUnitTester.cs" />
     <Compile Include="Gui\DecompilerServiceTests.cs" />
     <Compile Include="Gui\MenuBuilderTests.cs" />
+    <Compile Include="Gui\ProcedureSearchResultTests.cs" />
+    <Compile Include="Gui\Windows\SearchResultServiceTests.cs" />
+    <Compile Include="Gui\Windows\CodeViewerPaneTests.cs" />
+    <Compile Include="Gui\Windows\CodeViewerServiceTests.cs" />
     <Compile Include="Gui\Windows\Controls\MemoryControlTests.cs" />
     <Compile Include="Gui\Windows\Controls\MenuSystemTests.cs" />
+    <Compile Include="Gui\Windows\DecompilerShellUiTests.cs" />
     <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\DiagnosticsInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\EditProjectInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\FakePhasePageInteractors.cs" />
     <Compile Include="Gui\Windows\Forms\FinalPageInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\FindDialogInteractorTests.cs" />
@@ -184,6 +200,8 @@
     <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs" />
+    <Compile Include="Gui\Windows\MemoryViewInteractorTests.cs" />
+    <Compile Include="Gui\Windows\MemoryViewServiceTests.cs" />
     <Compile Include="Gui\Windows\MruListTests.cs" />
     <Compile Include="Gui\Windows\WindowsApplication.cs" />
     <Compile Include="ImageLoaders\BinHex\BinHexDecoderTests.cs" />

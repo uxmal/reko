@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 
@@ -26,9 +27,9 @@ namespace Decompiler.Analysis
 	public class DeclarationInserter
 	{
 		private SsaIdentifierCollection ssaIds;
-		private DominatorGraph doms;
+		private BlockDominatorGraph doms;
 
-		public DeclarationInserter(SsaIdentifierCollection ssaIds, DominatorGraph doms)
+		public DeclarationInserter(SsaIdentifierCollection ssaIds, BlockDominatorGraph doms)
 		{
 			this.ssaIds = ssaIds;
 			this.doms = doms;
@@ -36,15 +37,14 @@ namespace Decompiler.Analysis
 
 		public void InsertDeclaration(Web web)
 		{
-            List<Block> blocks = new List<Block>();
+            var blocks = new HashedSet<Block>();
 			foreach (SsaIdentifier sid in web.Members)
 			{
 				if (sid.DefStatement != null)
 				{
-					if (sid.DefStatement.Instruction is DefInstruction)
-						blocks.Add(null);
-					else
-						blocks.Add(sid.DefStatement.Block);
+                    if (sid.DefStatement.Instruction is DefInstruction)
+                        return;
+                    blocks.Add(sid.DefStatement.Block);
 					foreach (Statement u in sid.Uses)
 					{
 						blocks.Add(u.Block);

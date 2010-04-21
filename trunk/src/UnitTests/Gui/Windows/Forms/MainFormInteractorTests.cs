@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Decompiler.UnitTests.Mocks;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,10 +38,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 	{
 		private IMainForm form;
 		private TestMainFormInteractor interactor;
+        private MockRepository repository;
 
 		[SetUp]
 		public void Setup()
 		{
+            repository = new MockRepository();
 		}
 
 		[TearDown]
@@ -92,8 +95,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             CreateMainFormInteractor();
 
             IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
-            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader("foo.exe"));
-            svc.Decompiler.LoadProgram();
+            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
+            svc.Decompiler.LoadProgram("foo.exe");
             Decompiler.Core.Serialization.SerializedProcedure p = new Decompiler.Core.Serialization.SerializedProcedure();
             p.Address = "12345";
             p.Name = "MyProc";
@@ -111,15 +114,12 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.dis</intermediate-code>
     <output>foo.c</output>
-    <type-inference>false</type-inference>
     <types-file>foo.h</types-file>
   </output>
   <procedure name=""MyProc"">
     <address>12345</address>
   </procedure>
 </project>";
-            Console.WriteLine(interactor.ProbeSavedProjectXml);
-
             Assert.AreEqual(s, interactor.ProbeSavedProjectXml);
         }
 
@@ -130,8 +130,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.IsNull(interactor.ProjectFileName);
 
             IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
-            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader("foo.exe"));
-            svc.Decompiler.LoadProgram();
+            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
+            svc.Decompiler.LoadProgram("foo.exe");
 
             Assert.IsTrue(string.IsNullOrEmpty(interactor.ProjectFileName), "project filename should be clear");
             interactor.Save();
@@ -158,11 +158,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.IsNotNull(interactor.ProbeGetService(typeof (IDecompilerService)), "Should have IDecompilerService available.");
         }
 
-        [Test]
+        [Test] 
         public void IsNextPhaseEnabled()
         {
             CreateMainFormInteractorWithLoader();
-            var page = new FakePhasePageInteractor(form.InitialPage);
+            var page = new FakePhasePageInteractor();
             interactor.SwitchInteractor(page);
             CommandStatus status;
             page.CanAdvance = false;
@@ -192,18 +192,57 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Assert.AreEqual("Hello!", form.StatusStrip.Items[0].Text);
         }
 
+        [Test]
+        public void QueryFindProceduresNoProgramLoaded()
+        {
+            CreateMainFormInteractor();
+            CommandStatus status;
+            status = QueryStatus(CmdIds.ViewFindAllProcedures);
+            Assert.AreEqual(MenuStatus.Visible,  status.Status);
+        }
+
+
+        [Test]
+        public void QueryFindProceduresLoaded()
+        {
+            CreateMainFormInteractorWithLoader();
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
+            svc.Decompiler.LoadProgram("foo.exe");
+            var status = QueryStatus(CmdIds.ViewFindAllProcedures);
+            Assert.AreEqual(MenuStatus.Visible|MenuStatus.Enabled, status.Status);
+        }
+
+        [Test]
+        public void ExecuteFindProcedures()
+        {
+            CreateMainFormInteractorWithLoader();
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
+            svc.Decompiler.LoadProgram("foo.exe");
+
+            var srSvc = repository.StrictMock<ISearchResultService>();
+            srSvc.Expect(s => s.ShowSearchResults(
+                Arg<ISearchResult>.Is.Anything));
+            repository.ReplayAll();
+
+            interactor.FindProcedures(srSvc);
+
+            repository.VerifyAll();
+        }
+
         private Program CreateFakeProgram()
         {
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[300]);
-            return prog;
+            return prog; 
         }
 
         private void CreateMainFormInteractorWithLoader()
         {
             Program prog = new Program();
-            interactor = new TestMainFormInteractor(prog, new FakeLoader("fake.exe"));
+            interactor = new TestMainFormInteractor(prog, new FakeLoader());
             form = interactor.LoadForm();
         }
 
@@ -235,7 +274,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private StringWriter sw;
         private string testFilename;
         private bool promptedForSaving;
-        private FakeInitialPageInteractor testInitialPageInteractor;
 
 		public TestMainFormInteractor(Program prog)
 		{
@@ -267,19 +305,19 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return new FakeDecompilerEventListener();
         }
 
-        protected override InitialPageInteractor CreateInitialPageInteractor(IStartPage page)
+        protected override InitialPageInteractor CreateInitialPageInteractor()
         {
-            return new FakeInitialPageInteractor(page);
+            return new FakeInitialPageInteractor();
         }
 
-        protected override ILoadedPageInteractor CreateLoadedPageInteractor(ILoadedPage page)
+        protected override ILoadedPageInteractor CreateLoadedPageInteractor()
         {
-            return new FakeLoadedPageInteractor(page);
+            return new FakeLoadedPageInteractor();
         }
 
-        protected override IDecompilerUIService CreateUiService(DecompilerMenus dm)
+        protected override IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)
         {
-            return new FakeUiService();
+            return new FakeShellUiService();
         }
 
         public override TextWriter CreateTextWriter(string filename)
@@ -316,6 +354,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             get { return promptedForSaving; }
         }
+
 
     }
 }

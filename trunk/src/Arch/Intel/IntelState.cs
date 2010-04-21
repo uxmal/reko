@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Decompiler.Arch.Intel
 {
@@ -108,14 +109,14 @@ namespace Decompiler.Arch.Intel
 				case 2:
 					if (stack.Count < 1)
 					{
-						System.Diagnostics.Debug.WriteLine("bad pop");
+						Debug.WriteLine("Stack underflow from popping.");
 						return Constant.Invalid;
 					}
 					return stack.Pop();
 				case 4:
 					if (stack.Count < 2)
 					{
-						System.Diagnostics.Debug.WriteLine("bad pop");
+                        System.Diagnostics.Debug.WriteLine("Stack underflow from popping.");
 						return Constant.Invalid;
 					}
 					Constant v = stack.Pop();

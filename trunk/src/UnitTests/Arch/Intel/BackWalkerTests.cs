@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 				AssemblerLoader ld = new AssemblerLoader(
                     new IntelTextAssembler(),
 				    FileUnitTester.MapTestPath(sourceFile));
-                Program prog = ld.Load(addrBase).Program;
+                Program prog = ld.Load(addrBase);
                 Assert.IsTrue(prog.Architecture is IntelArchitecture);
 				IntelDumper dumper = new IntelDumper(arch);
 				dumper.ShowAddresses = true;

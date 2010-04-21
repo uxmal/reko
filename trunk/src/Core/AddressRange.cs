@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,5 +47,17 @@ namespace Decompiler.Core
 		{
 			get { return addrEnd; }
 		}
-	}
+
+        public bool IsValid
+        {
+            get { return this != e; }
+        }
+
+        public static AddressRange Empty
+        {
+            get { return e; }
+        }
+
+        private static AddressRange e = new AddressRange(new Address(0), new Address(0));
+    }
 }

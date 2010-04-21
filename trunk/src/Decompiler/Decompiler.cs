@@ -1,4 +1,4 @@
-/* Copyright (C) 1999-2009 John Källén.
+/* Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@ using Decompiler.Typing;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Decompiler
 {
@@ -35,7 +37,7 @@ namespace Decompiler
         Program Program { get; }
         DecompilerProject Project { get; }
 
-        void LoadProgram();
+        void LoadProgram(string fileName);
         void ScanProgram();
         Procedure ScanProcedure(Address procAddress);
         void RewriteMachineCode();
@@ -73,11 +75,11 @@ namespace Decompiler
         /// <summary>
         /// Main entry point of the decompiler. Loads, decompiles, and outputs the results.
         /// </summary>
-        public void Decompile()
+        public void Decompile(string filename)
         {
             try
             {
-                LoadProgram();
+                LoadProgram(filename);
                 ScanProgram();
                 RewriteMachineCode();
                 AnalyzeDataFlow();
@@ -94,7 +96,6 @@ namespace Decompiler
                 eventListener.ShowStatus("Decompilation finished.");
             }
         }
-
 
         ///<summary>
         /// Determines the signature of the procedures,
@@ -158,14 +159,57 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="program"></param>
 		/// <param name="cfg"></param>
-        public void LoadProgram()
+        public void LoadProgram(string fileName)
         {
-            //$REVIEW: probing for project file should happen here. Loaders should not be concerned with project files.
             eventListener.ShowStatus("Loading source program.");
-            LoadedProject lp = loader.Load(null);
-            prog = lp.Program;
-            project = lp.Project;
+            byte[] image = loader.LoadImageBytes(fileName, 0);
+            project = DeserializeProject(image);
+            if (project != null)
+            {
+                prog = loader.Load(
+                    loader.LoadImageBytes(project.Input.Filename, 0),
+                    project.Input.BaseAddress);
+            }
+            else
+            {
+                prog = loader.Load(image, null);
+                project = CreateDefaultProject(fileName, prog);
+            }
             eventListener.ShowStatus("Source program loaded.");
+        }
+        
+
+        private DecompilerProject DeserializeProject(byte[] image)
+        {
+            if (IsXmlFile(image))
+            {
+                try
+                {
+                    XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
+                    return (DecompilerProject)ser.Deserialize(new MemoryStream(image));
+                }
+                catch (XmlException)
+                {
+                    return null;
+                }
+            }
+            else
+                return null;
+        }
+
+        private static bool IsXmlFile(byte[] image)
+        {
+            bool isXmlFile = ProgramImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5);	// <?xml
+            return isXmlFile;
+        }
+
+
+        protected DecompilerProject CreateDefaultProject(string filename, Program prog)
+        {
+            DecompilerProject project = new DecompilerProject();
+            project.SetDefaultFileNames(filename);
+            project.Input.BaseAddress = prog.Image.BaseAddress;
+            return project;
         }
 
 		public Program Program
@@ -183,20 +227,12 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="host"></param>
 		/// <param name="ivs"></param>
-		public void ReconstructTypes()
-		{
-			if (project.Output.TypeInference)
-			{
-				TypeAnalyzer analyzer = new TypeAnalyzer(prog, eventListener);
-				analyzer.RewriteProgram();
-                host.WriteTypes(analyzer.WriteTypes);
-			}
-			else
-			{
-				MemReplacer mem = new MemReplacer(prog);
-				mem.RewriteProgram();
-			}
-		}
+        public void ReconstructTypes()
+        {
+            TypeAnalyzer analyzer = new TypeAnalyzer(prog, eventListener);
+            analyzer.RewriteProgram();
+            host.WriteTypes(analyzer.WriteTypes);
+        }
 
 		/// <summary>
 		/// Converts the machine-specific machine code to intermediate format.

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,8 +31,6 @@ namespace Decompiler.Gui.Windows.Forms
 
         bool LeavePage();
 
-        object Page { get; }
-
     }
 
     /// <summary>
@@ -46,7 +44,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         private ISite site;
         private IDecompilerService decompilerSvc;
-        private IDecompilerUIService decompilerUiSvc;
+        private IDecompilerShellUiService decompilerUiSvc;
         private IWorkerDialogService workerDlgSvc;
 
         public PhasePageInteractorImpl()
@@ -89,9 +87,7 @@ namespace Decompiler.Gui.Windows.Forms
         /// <returns>False if derived class wants to cancel leaving the page.</returns>
         public abstract bool LeavePage();
 
-        public abstract object Page { get; }
-
-        protected IDecompilerUIService UIService
+        protected IDecompilerShellUiService UIService
         {
             get { return decompilerUiSvc; }
         }
@@ -126,7 +122,7 @@ namespace Decompiler.Gui.Windows.Forms
                 if (site != null)
                 {
                     decompilerSvc = EnsureService<IDecompilerService>();
-                    decompilerUiSvc = EnsureService<IDecompilerUIService>();
+                    decompilerUiSvc = EnsureService<IDecompilerShellUiService>();
                     workerDlgSvc = EnsureService<IWorkerDialogService>();
                 }
                 else

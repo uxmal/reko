@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -240,7 +240,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		public Procedure GetProcedureAtAddress(Address addr, int cbStackDepth)
 		{
-			return (Procedure) procedures[addr];
+            Procedure proc;
+            return procedures.TryGetValue(addr, out proc) ? proc : null;
 		}
 
 		public Procedure [] GetProceduresFromVector(Address vectorAddress)

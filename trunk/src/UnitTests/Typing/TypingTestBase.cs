@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Typing
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(relativePath));
 
-            Program prog = ldr.Load(new Address(0xC00, 0)).Program;
+            Program prog = ldr.Load(new Address(0xC00, 0));
             EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			
@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Typing
 		protected MemoryAccess MemLoad(Identifier id, int offset, DataType size)
 		{
 			return new MemoryAccess(MemoryIdentifier.GlobalMemory, 
-				new BinaryExpression(Operator.add, PrimitiveType.Word32, id, Constant.Word32(offset)),
+				new BinaryExpression(Operator.Add, PrimitiveType.Word32, id, Constant.Word32(offset)),
 				size);
 		}
 	}

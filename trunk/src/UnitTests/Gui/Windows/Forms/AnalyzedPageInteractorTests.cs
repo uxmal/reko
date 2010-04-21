@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Decompiler.UnitTests.Mocks;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -40,25 +41,28 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private Program prog;
         private IMainForm form;
         private AnalyzedPageInteractorImpl interactor;
-        private FakeUiService uiSvc;
+        private FakeComponentSite site ;
+        private IDecompilerShellUiService uiSvc;
+        private ICodeViewerService codeViewSvc;
 
         [SetUp]
         public void Setup()
         {
             form = new MainForm();
-            interactor = new AnalyzedPageInteractorImpl(form.AnalyzedPage);
+            interactor = new AnalyzedPageInteractorImpl();
 
-            FakeComponentSite site = new FakeComponentSite(interactor);
+            site = new FakeComponentSite(interactor);
 
-            uiSvc = new FakeUiService();
+            uiSvc = AddService<IDecompilerShellUiService>();
             site.AddService(typeof(IDecompilerUIService), uiSvc);
+            codeViewSvc = AddService<ICodeViewerService>();
 
             TestLoader ldr = new TestLoader();
             ServiceContainer sc = new ServiceContainer();
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             DecompilerService decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
-            decSvc.Decompiler.LoadProgram();
+            decSvc.Decompiler.LoadProgram("test.exe");
             prog = decSvc.Decompiler.Program;
             decSvc.Decompiler.ScanProgram();
             site.AddService(typeof(IDecompilerService), decSvc);
@@ -105,10 +109,14 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", prog.Architecture.CreateFrame()));
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12346), p);
             interactor.EnterPage();
+
+            codeViewSvc.Expect(s => s.DisplayProcedure(
+                Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
             form.BrowserList.Items[1].Focused = true;
             form.BrowserList.Items[1].Selected = true;
             Console.WriteLine(form.AnalyzedPage.ProcedureText.Text);
-            Assert.AreEqual("word32 foo_proc", form.AnalyzedPage.ProcedureText.Text.Remove(15));
+
+            codeViewSvc.VerifyAllExpectations();
         }
 
         [Test]
@@ -124,10 +132,23 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12345), new Procedure("bar", prog.Architecture.CreateFrame()));
             interactor.EnterPage();
             form.BrowserList.Items[0].Selected = true;
+
+            uiSvc.Expect(s => s.ShowModalDialog(
+                    Arg<ProcedureDialog>.Is.TypeOf))
+                .Return(DialogResult.Cancel);
+
             Assert.IsTrue(interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ActionEditSignature), "Should have executed command.");
-            Assert.AreSame(typeof(ProcedureDialog), uiSvc.ProbeLastShownDialog.GetType());
+            uiSvc.VerifyAllExpectations();
         }
 
+
+        private T AddService<T>() where T : class
+        {
+            var svc = MockRepository.GenerateMock<T>();
+            site.AddService(typeof(T), svc);
+            return svc;
+
+        }
 
         private class TestLoader : LoaderBase
         {
@@ -135,14 +156,17 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             {
             }
 
-            public override LoadedProject Load(Address userSpecifiedAddress)
+            public override Program Load(byte[] imageFile, Address userSpecifiedAddress)
             {
                 Program prog = new Program();
-                prog.Image = new ProgramImage(new Address(0x1234), new byte[4211]);
+                prog.Image = new ProgramImage(new Address(0x00100000), imageFile);
                 prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-                DecompilerProject project = new DecompilerProject();
+                return prog;
+            }
 
-                return new LoadedProject(prog, project);
+            public override byte[] LoadImageBytes(string fileName, int offset)
+            {
+                return new byte[4711];
             }
         }
     }

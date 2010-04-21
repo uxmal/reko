@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Decompiler.Core.Code
 		public Slice(DataType dt, Expression i, uint bitOffset) : base(dt)
 		{
 			if (bitOffset > 255)
-				throw new ArgumentOutOfRangeException("Offset is too large");
+				throw new ArgumentOutOfRangeException("bitOffset", "Offset is too large.");
 			expr = i; offset = (byte) bitOffset;
 		}
 
@@ -50,7 +50,7 @@ namespace Decompiler.Core.Code
 
 		public override Expression CloneExpression()
 		{
-			throw new NotImplementedException();
+			return new Slice(DataType, expr, offset);
 		}
 
 		public Expression Expression

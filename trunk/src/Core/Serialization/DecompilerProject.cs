@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,6 +62,16 @@ namespace Decompiler.Core.Serialization
         {
             XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
             ser.Serialize(sw, this);
+        }
+
+        public void SetDefaultFileNames(string inputFilename)
+        {
+            Input.Filename = inputFilename;
+
+            Output.DisassemblyFilename = Path.ChangeExtension(inputFilename, ".asm");
+            Output.IntermediateFilename = Path.ChangeExtension(inputFilename, ".dis");
+            Output.OutputFilename = Path.ChangeExtension(inputFilename, ".c");
+            Output.TypesFilename = Path.ChangeExtension(inputFilename, ".h");
         }
     }
 }

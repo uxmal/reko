@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Decompiler.Analysis.Simplification
 		public bool Match(BinaryExpression b)
 		{
 			op = b.op;
-			if (op != Operator.shl && op != Operator.shr && op != Operator.sar)
+			if (op != Operator.Shl && op != Operator.Shr && op != Operator.Sar)
 				return false;
 			c1 = b.Right as Constant;
 			if (c1 == null)
@@ -61,7 +61,7 @@ namespace Decompiler.Analysis.Simplification
 				op,
 				e.DataType,
 				e,
-				Operator.add.ApplyConstants(c1, c2));
+				Operator.Add.ApplyConstants(c1, c2));
 		}
 	}
 }

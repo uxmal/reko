@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,10 +40,11 @@ namespace Decompiler.Gui.Windows.Forms
 		public const int EditMenu = 3;
 		public const int ViewMenu = 4;
 		public const int ActionMenu = 5;
-		public const int HelpMenu = 6;
-		public const int CtxMemoryControl = 7;
-		public const int CtxBrowser = 8;
-		public const int MainToolbar = 9;
+		public const int WindowsMenu = 6;
+		public const int HelpMenu = 7;
+		public const int CtxMemoryControl = 8;
+		public const int CtxBrowser = 9;
+		public const int MainToolbar = 10;
 	}
 	
 	public class GroupIds
@@ -57,11 +58,12 @@ namespace Decompiler.Gui.Windows.Forms
 		public const int GrpActions = 7 + 1000;
 		public const int GrpActionsScanned = 8 + 1000;
 		public const int GrpActionsRewritten = 9 + 1000;
-		public const int GrpHelp = 10 + 1000;
-		public const int GrpMemoryControl = 11 + 1000;
-		public const int GrpBrowser = 12 + 1000;
-		public const int GrpToolbarFileOps = 13 + 1000;
-		public const int GrpToolbarActions = 14 + 1000;
+		public const int GrpWindows = 10 + 1000;
+		public const int GrpHelp = 11 + 1000;
+		public const int GrpMemoryControl = 12 + 1000;
+		public const int GrpBrowser = 13 + 1000;
+		public const int GrpToolbarFileOps = 14 + 1000;
+		public const int GrpToolbarActions = 15 + 1000;
 	}
 	
 	public class CmdIds
@@ -72,14 +74,18 @@ namespace Decompiler.Gui.Windows.Forms
 		public const int FileExit = 4 + 2000;
 		public const int EditFind = 5 + 2000;
 		public const int ViewGoToAddress = 6 + 2000;
-		public const int ViewShowAllFragments = 7 + 2000;
-		public const int ViewShowUnscanned = 8 + 2000;
-		public const int ViewFindFragments = 9 + 2000;
-		public const int ActionNextPhase = 10 + 2000;
-		public const int ActionFinishDecompilation = 11 + 2000;
-		public const int ActionMarkProcedure = 12 + 2000;
-		public const int ActionEditSignature = 13 + 2000;
-		public const int HelpAbout = 14 + 2000;
+		public const int ViewFindAllProcedures = 7 + 2000;
+		public const int ViewShowAllFragments = 8 + 2000;
+		public const int ViewShowUnscanned = 9 + 2000;
+		public const int ViewFindFragments = 10 + 2000;
+		public const int ActionNextPhase = 11 + 2000;
+		public const int ActionFinishDecompilation = 12 + 2000;
+		public const int ActionMarkProcedure = 13 + 2000;
+		public const int ActionEditSignature = 14 + 2000;
+		public const int WindowsCascade = 15 + 2000;
+		public const int WindowsTileVertical = 16 + 2000;
+		public const int WindowsTileHorizontal = 17 + 2000;
+		public const int HelpAbout = 18 + 2000;
 		public const int FileMru = 2200;
 	}
 

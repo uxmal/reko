@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Decompiler.Core.Types;
 using Decompiler.Arch.M68k;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Assemblers.M68k
@@ -31,17 +32,24 @@ namespace Decompiler.Assemblers.M68k
         private Address addrBase;
         private Emitter emitter;
         private SymbolTable symtab;
+        private List<EntryPoint> entryPoints;
 
         public AssemblerImpl(Address addr, Emitter emitter)
         {
             this.addrBase = addr;
             this.emitter = emitter;
             this.symtab = new SymbolTable();
+            this.entryPoints = new List<EntryPoint>();
         }
 
         #region Assembler Members
 
         public void Assemble(Address baseAddress, string sourcefile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Assemble(Address baseAddress, TextReader rdr)
         {
             throw new NotImplementedException();
         }
@@ -69,7 +77,7 @@ namespace Decompiler.Assemblers.M68k
 
         public ICollection<EntryPoint> EntryPoints
         {
-            get { throw new NotImplementedException(); }
+            get { return entryPoints; }
         }
 
         public IProcessorArchitecture Architecture

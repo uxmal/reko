@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,8 +68,8 @@ namespace Decompiler.UnitTests.Core
         public void BinaryExpression()
         {
             Identifier a = new Identifier("a", 1, PrimitiveType.Word32, new TemporaryStorage());
-            BinaryExpression a1 = new BinaryExpression(Operator.add, PrimitiveType.Word32, a, a);
-            BinaryExpression a2 = new BinaryExpression(Operator.add, PrimitiveType.Word32, a, a);
+            BinaryExpression a1 = new BinaryExpression(Operator.Add, PrimitiveType.Word32, a, a);
+            BinaryExpression a2 = new BinaryExpression(Operator.Add, PrimitiveType.Word32, a, a);
             Assert.IsTrue(eq.Equals(a1, a2));
             Assert.AreEqual(eq.GetHashCode(a1), eq.GetHashCode(a2));
 

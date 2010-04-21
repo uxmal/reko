@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 using Decompiler;
 using Decompiler.Loading;
 using Decompiler.Core;
+using Decompiler.Configuration;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;
 using System;
@@ -44,9 +45,9 @@ namespace WindowsDecompiler
 
                 ServiceContainer sc = new ServiceContainer();
                 sc.AddService(typeof (DecompilerEventListener), listener);
-                Loader ldr = new Loader(args[0], null, sc);
+                Loader ldr = new Loader(new DecompilerConfiguration(), sc);
 				DecompilerDriver dec = new DecompilerDriver(ldr, host, sc);
-				dec.Decompile();
+				dec.Decompile(args[0]);
 			}
 		}
 	}

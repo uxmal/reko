@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ using Decompiler.Core.Assemblers;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Loading
@@ -39,9 +40,15 @@ namespace Decompiler.Loading
             this.asmfile = asmfile;
         }
 
-        public override LoadedProject Load(Address addrLoad)
+        public Program Load(Address addrLoad)
         {
-            asm.Assemble(addrLoad, asmfile);
+            byte[] image = LoadImageBytes(asmfile, 0);
+            return Load(image, addrLoad);
+        }
+
+        public override Program Load(byte[] image, Address addrLoad)
+        {
+            asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             Program prog = new Program();
             prog.Image = asm.Image;
             prog.Architecture = asm.Architecture;
@@ -49,10 +56,14 @@ namespace Decompiler.Loading
             EntryPoints.AddRange(asm.EntryPoints);
             EntryPoints.Add(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
             CopyImportThunks(asm.ImportThunks, prog);
-            DecompilerProject project = new DecompilerProject();
-            project.Input.BaseAddress = addrLoad;
-            return new LoadedProject(prog, project);
+            return prog;
         }
+
+        public override byte[] LoadImageBytes(string fileName, int offset)
+        {
+            return base.LoadImageBytes(fileName, offset);
+        }
+
 
     }
 }

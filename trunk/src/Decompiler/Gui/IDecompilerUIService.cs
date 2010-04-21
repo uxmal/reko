@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui
 {
+
     /// <summary>
     /// Provides services for displaying items in the user interface.
     /// </summary>
@@ -33,7 +34,15 @@ namespace Decompiler.Gui
         string ShowOpenFileDialog(string fileName);
         string ShowSaveFileDialog(string fileName);
 
+
+    }
+
+    public interface IDecompilerShellUiService : IDecompilerUIService
+    {
         ContextMenu GetContextMenu(int p);
+
+        IWindowFrame FindWindow(string windowType);
+        IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane);
 
     }
 }

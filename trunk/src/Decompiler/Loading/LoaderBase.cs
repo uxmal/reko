@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,21 +38,30 @@ namespace Decompiler.Loading
 			this.entryPoints = new List<EntryPoint>();
 		}
 
-        protected DecompilerProject CreateDefaultProject(string filename, Program prog)
-        {
-            DecompilerProject project = new DecompilerProject();
-            SetDefaultFilenames(filename, project);
-            project.Input.BaseAddress = prog.Image.BaseAddress;
-            return project;
-        }
-
         public List<EntryPoint> EntryPoints
         {
             get { return entryPoints; }
         }
 
 
-        public abstract LoadedProject Load(Address userSpecifiedAddress);
+        public abstract Program Load(byte[] imageFile, Address userSpecifiedAddress);
+
+        /// <summary>
+        /// Loads the contents of a file with the specified filename into an array 
+        /// of bytes, optionally at the offset <paramref>offset</paramref>.
+        /// </summary>
+        /// <param name="fileName">File to open.</param>
+        /// <param name="offset">The offset into the array into which the file will be loaded.</param>
+        /// <returns>An array of bytes with the file contents at the specified offset.</returns>
+        public virtual byte[] LoadImageBytes(string fileName, int offset)
+        {
+            using (FileStream stm = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                byte[] bytes = new Byte[stm.Length + offset];
+                stm.Read(bytes, offset, (int)stm.Length);
+                return bytes;
+            }
+        }
 
         protected void CopyImportThunks(Dictionary<uint, PseudoProcedure> importThunks, Program prog)
         {
@@ -64,16 +73,5 @@ namespace Decompiler.Loading
                 prog.ImportThunks.Add(item.Key, item.Value);
             }
         }
-
-        protected void SetDefaultFilenames(string inputFilename, DecompilerProject project)
-        {
-            project.Input.Filename = inputFilename;
-
-            project.Output.DisassemblyFilename = Path.ChangeExtension(inputFilename, ".asm");
-            project.Output.IntermediateFilename = Path.ChangeExtension(inputFilename, ".dis");
-            project.Output.OutputFilename = Path.ChangeExtension(inputFilename, ".c");
-            project.Output.TypesFilename = Path.ChangeExtension(inputFilename, ".h");
-        }
-
     }
 }

@@ -6,7 +6,6 @@
   <output>
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.cod</intermediate-code>
-    <type-inference>false</type-inference>
   </output>
   <procedure name="foo">
     <signature>

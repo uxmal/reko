@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,8 @@ namespace Decompiler.Core
 
 		public ImageMap(Address addrBase, int imageSize)
 		{
+            if (addrBase == null)
+                throw new ArgumentNullException("addrBase");
             items = new Map<Address, ImageMapItem>(new ItemComparer());
             segments = new Map<Address, ImageMapSegment>(new ItemComparer());
 			SetAddressSpan(addrBase, imageSize);
@@ -157,6 +159,11 @@ namespace Decompiler.Core
             return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Execute) != 0);
 		}
 
+        /// <summary>
+        /// Given a linear address, returns an address whose selector, if any, contains the linear address.
+        /// </summary>
+        /// <param name="linearAddress"></param>
+        /// <returns></returns>
 		public Address MapLinearAddressToAddress(int linearAddress)
 		{
 			foreach (ImageMapSegment seg in segments.Values)
@@ -171,7 +178,7 @@ namespace Decompiler.Core
                         return new Address((uint)linearAddress);
                 }
 			}			
-			throw new ArgumentOutOfRangeException("linear address {0:X8} exceeeds known address range");
+			throw new ArgumentOutOfRangeException("Linear address {0:X8} exceeeds known address range.");
 		}
 
 		private void OnItemCoincides(ImageMapItem item, ImageMapItem itemNew)

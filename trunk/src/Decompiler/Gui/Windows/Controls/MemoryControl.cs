@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Decompiler.Gui.Windows.Controls
 	/// </remarks>
 	public class MemoryControl : Control
 	{
-		public event EventHandler SelectionChanged;
+		public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
 		private Address addrTopVisible;		// address of topmost visible row.
 		private int wordSize;
@@ -49,6 +49,7 @@ namespace Decompiler.Gui.Windows.Controls
 		private ProgramImage image;
 		private Address addrSelected;
         private Address addrAnchor;
+        private int iCtrl;          //$DEBUG
 
 		private int cRows;				// total number of rows.
 		private int yTopRow;			// index of topmost visible row
@@ -56,6 +57,8 @@ namespace Decompiler.Gui.Windows.Controls
 		private Size cellSize;			// size of cell in pixels.
 		private Point ptDown;			 // point at which mouse was clicked.
 		private VScrollBar vscroller;
+
+        static int ctrlCount;
 
 		public MemoryControl()
 		{
@@ -68,44 +71,31 @@ namespace Decompiler.Gui.Windows.Controls
 			vscroller.Scroll += new ScrollEventHandler(vscroller_Scroll);
 			wordSize = 1;
 			cbRow = 16;
+            this.iCtrl = ctrlCount++;
 		}
 
         /// <summary>
         /// Returns the selection as an address range. Note that the range is 
         /// a closed interval in the address space.
         /// </summary>
-        /// <param name="addrStart"></param>
-        /// <param name="addrEnd"></param>
-        public void GetAddressRange(out Address addrStart, out Address addrEnd)
+        public AddressRange GetAddressRange()
         {
+            Debug.WriteLine(string.Format("GetAddressRange: ctrl{2}: sel: {0}, anchor {1}", addrSelected, addrAnchor, iCtrl));
+
             if (addrSelected == null || addrAnchor == null)
             {
-                addrStart = null;
-                addrEnd = null;
+                return AddressRange.Empty;
             }
             else
             {
                 if (addrSelected <= addrAnchor)
                 {
-                    addrStart = addrSelected;
-                    addrEnd = addrAnchor;
-                }
+                    return new AddressRange(addrSelected, addrAnchor);
+        }
                 else
                 {
-                    addrStart = addrAnchor;
-                    addrEnd = addrSelected;
+                    return new AddressRange(addrAnchor, addrSelected);
                 }
-            }
-        }
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                const int WS_EX_CLIENTEDGE = 0x00000200;
-                CreateParams c = base.CreateParams;
-                c.ExStyle |= WS_EX_CLIENTEDGE;
-                return c;
             }
         }
 
@@ -200,7 +190,7 @@ namespace Decompiler.Gui.Windows.Controls
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-            Debug.WriteLine(string.Format("K: {0}, D: {1}, M: {2}", e.KeyCode, e.KeyData, e.Modifiers));
+//            Debug.WriteLine(string.Format("K: {0}, D: {1}, M: {2}", e.KeyCode, e.KeyData, e.Modifiers));
 			switch (e.KeyCode)
 			{
 			case Keys.Down:
@@ -221,6 +211,11 @@ namespace Decompiler.Gui.Windows.Controls
             }
             e.Handled = true;
 		}
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            CacheCellSize();
+            base.OnHandleCreated(e);
+        }
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
@@ -238,6 +233,7 @@ namespace Decompiler.Gui.Windows.Controls
                 {
                     addrAnchor = addrSelected;
                 }
+                Debug.WriteLine(string.Format("MouseDown: ctrl{2}: sel: {0}, anchor {1}", addrSelected, addrAnchor, iCtrl));
 				Invalidate();
 			}
 			OnSelectionChanged();
@@ -259,7 +255,7 @@ namespace Decompiler.Gui.Windows.Controls
 		protected virtual void OnSelectionChanged()
 		{
 			if (SelectionChanged != null)
-				SelectionChanged(this, EventArgs.Empty);
+                SelectionChanged(this, new SelectionChangedEventArgs(GetAddressRange()));
 		}
 
 		protected override void OnSizeChanged(EventArgs e)
@@ -304,11 +300,7 @@ namespace Decompiler.Gui.Windows.Controls
             int linearAnchor = addrAnchor != null ? addrAnchor.Linear : -1;
             int linearBeginSelection = Math.Min(linearSelected, linearAnchor);
             int linearEndSelection = Math.Max(linearSelected, linearAnchor);
-            Debug.WriteLine(string.Format("s: {0:X}, a: {1:X}, [{2:X}-{3:X}]",
-                linearSelected,
-                linearAnchor,
-                linearBeginSelection,
-                linearEndSelection));
+//            Debug.WriteLine(string.Format("s: {0:X}, a: {1:X}, [{2:X}-{3:X}]", linearSelected, linearAnchor, linearBeginSelection, linearEndSelection));
 
 			do 
 			{

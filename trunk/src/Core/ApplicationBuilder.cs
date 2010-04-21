@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,11 +47,10 @@ namespace Decompiler.Core
 
         public ApplicationBuilder(Frame frame, CallSite cs, Expression callee, ProcedureSignature sigCallee)
         {
-            this.frame = frame;
 			if (sigCallee == null || !sigCallee.ArgumentsValid)
 				throw new InvalidOperationException("No signature available; application cannot be constructed.");
 
-
+            this.frame = frame;
             FindReturnValue(cs, sigCallee);
             List<Expression> actuals = BindArguments(frame, cs, sigCallee);
 			appl = new Application(
@@ -69,7 +68,7 @@ namespace Decompiler.Core
                 Identifier actualArg = formalArg.Storage.BindFormalArgumentToFrame(frame, cs);
                 if (formalArg.Storage is OutArgumentStorage)
                 {
-                    actuals.Add(new UnaryExpression(UnaryOperator.addrOf, frame.FramePointer.DataType, actualArg));
+                    actuals.Add(new UnaryExpression(UnaryOperator.AddrOf, frame.FramePointer.DataType, actualArg));
                 }
                 else
                 {

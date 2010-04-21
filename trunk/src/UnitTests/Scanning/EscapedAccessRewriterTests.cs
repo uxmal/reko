@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Scanning
             AssemblerLoader ldr = new AssemblerLoader(
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(sourceFile));
-            Program prog = ldr.Load(addr).Program;
+            Program prog = ldr.Load(addr);
 			Scanner scan = new Scanner(prog, null);
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{

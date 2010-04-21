@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@ namespace Decompiler.Core
 	/// </summary>
 	public class LinearInductionVariable
 	{
-        private  Constant initial;		// First value used by induction variable 
-        private  Constant delta;			// Amount incremented or decremented per interation
-        private  Constant final;			// Value not attained by loop since it terminated.
+        private Constant initial;	// First value used by induction variable 
+        private Constant delta;		// Amount incremented or decremented per interation
+        private Constant final;		// Value not attained by loop since it terminated.
         private bool isSigned;
 
 		public LinearInductionVariable(
@@ -117,9 +117,9 @@ namespace Decompiler.Core
         public void AddIncrement(Constant c)
         {
             if (initial != null)
-                initial = Operator.add.ApplyConstants(initial, c);
+                initial = Operator.Add.ApplyConstants(initial, c);
             if (final != null)
-                final = Operator.add.ApplyConstants(final, c);
+                final = Operator.Add.ApplyConstants(final, c);
         }
 
 		public LinearInductionVariable Scale(Constant c)
@@ -129,10 +129,10 @@ namespace Decompiler.Core
 			Constant final = Final;
 
 			if (initial != null)
-				initial = Operator.muls.ApplyConstants(initial, c);
-			delta = Operator.muls.ApplyConstants(delta, c);
+				initial = Operator.Muls.ApplyConstants(initial, c);
+			delta = Operator.Muls.ApplyConstants(delta, c);
 			if (final != null)
-				final = Operator.muls.ApplyConstants(final, c);
+				final = Operator.Muls.ApplyConstants(final, c);
 			return new LinearInductionVariable(initial, delta, final, IsSigned);
 		}
 

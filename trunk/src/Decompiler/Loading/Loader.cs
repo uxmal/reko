@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,46 +34,21 @@ namespace Decompiler.Loading
 	/// </summary>
 	public class Loader : LoaderBase
 	{
-        private string filename;
         private IDecompilerConfigurationService config;
         private DecompilerEventListener eventListener;
         private IServiceProvider serviceProvider;
 
-        public Loader(string filename, IDecompilerConfigurationService config, IServiceProvider services)
+        public Loader(IDecompilerConfigurationService config, IServiceProvider services)
         {
-            this.filename = filename;
             this.config = config;
             this.serviceProvider = services;
             this.eventListener = (DecompilerEventListener) services.GetService(typeof(DecompilerEventListener));
 
         }
 
-        /// <summary>
-        /// Loads the file and returns a decompiler project.
-        /// </summary>
-        /// <remarks>
-        /// The file can either be an executable or a decompiler project file.
-        /// </remarks>
-        public override LoadedProject Load(Address addrLoad)
+        public override Program Load(byte[] image, Address addrLoad)
         {
-            Program prog;
-            DecompilerProject project;
-            byte[] image = LoadImageBytes(filename, 0);
-            bool isXmlFile = IsXmlFile(image);
-            if (isXmlFile)
-            {
-                XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
-                project = (DecompilerProject) ser.Deserialize(new MemoryStream(image));
-                prog = LoadExecutableFile(
-                    LoadImageBytes(project.Input.Filename, 0),
-                    project.Input.BaseAddress);
-            }
-            else
-            {
-                prog = LoadExecutableFile(image, addrLoad);
-                project = CreateDefaultProject(filename, prog);
-            }
-            return new LoadedProject(prog, project);
+            return LoadExecutableFile(image, addrLoad);
         }
 
         private ImageLoader FindImageLoader(byte[] rawBytes)
@@ -83,17 +58,11 @@ namespace Decompiler.Loading
                 if (ImageBeginsWithMagicNumber(rawBytes, e.MagicNumber))
                     return CreateImageLoader(e.TypeName, rawBytes);
             }
-            eventListener.AddWarningDiagnostic(new Address(0), "The format of the file {0} is unknown; you will need to specify it manually.", filename);
+            eventListener.AddWarningDiagnostic(new Address(0), "The format of the file is unknown; you will need to specify it manually.");
             return new NullLoader(null, rawBytes);
         }
 
 
-
-		private static bool IsXmlFile(byte[] image)
-		{
-			bool isXmlFile = ProgramImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5);	// <?xml
-			return isXmlFile;
-		}
 
 		/// <summary>
 		/// Loads the <paramref>binaryFile</paramref> into memory without any 
@@ -138,22 +107,6 @@ namespace Decompiler.Loading
         }
 
 
-		/// <summary>
-		/// Loads the contents of a file with the specified filename into an array 
-		/// of bytes, optionally at the offset <paramref>offset</paramref>.
-		/// </summary>
-		/// <param name="fileName">File to open.</param>
-		/// <param name="offset">The offset into the array into which the file will be loaded.</param>
-		/// <returns>An array of bytes with the file contents at the specified offset.</returns>
-		public virtual byte [] LoadImageBytes(string fileName, int offset)
-		{
-			using (FileStream stm = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-			{
-				byte [] bytes = new Byte[stm.Length + offset];
-				stm.Read(bytes, offset, (int) stm.Length);
-				return bytes;
-			}
-		}
 
         public bool ImageBeginsWithMagicNumber(byte [] image, string magicNumber)
         {

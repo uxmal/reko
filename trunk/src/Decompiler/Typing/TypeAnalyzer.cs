@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ namespace Decompiler.Typing
 		/// <param name="prog"></param>
 		public void RewriteProgram()
 		{
-//            RestrictProcedures(0, 64, true);
+            RestrictProcedures(0, 64, true);
 			aen.Transform(prog);
 			eqb.Build(prog);
             eventListener.ShowStatus("Collecting datatype traits.");

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,36 +22,25 @@ using Decompiler.Arch.Intel;
 using Decompiler.Loading;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
     public class FakeLoader : LoaderBase
     {
-        private string filename;
+        internal byte[] ImageBytes;
         private IProcessorArchitecture arch;
         private ProgramImage image;
-
-
-        public FakeLoader(string filename)
-        {
-            this.filename = filename;
-        }
+        private Exception onLoadImageException;
+        private int exceptionDelay;
 
         public IProcessorArchitecture Architecture
         {
             get { return arch; }
         }
 
-        public override LoadedProject Load(Address addrLoad)
-        {
-            Program prog = CreateFakeProgram(addrLoad);
-            return new LoadedProject(
-                prog,
-                CreateDefaultProject(filename, prog));
-        }
-
-        private Program CreateFakeProgram(Address addrLoad)
+        public override Program Load(byte[] imageFile, Address addrLoad)
         {
             Program prog = new Program();
             if (arch == null)
@@ -66,10 +55,30 @@ namespace Decompiler.UnitTests.Mocks
             }
             if (image == null)
             {
-                image = new ProgramImage(addrLoad, new byte[300]);
+                image = new ProgramImage(addrLoad, imageFile);
             }
             prog.Image = image;
             return prog;
+        }
+
+
+        public override byte[] LoadImageBytes(string fileName, int offset)
+        {
+            if (onLoadImageException != null)
+            {
+                if (--exceptionDelay < 0)
+                    throw onLoadImageException;
+            }
+            if (ImageBytes != null)
+                return ImageBytes;
+            else
+                return new byte[300];
+        }
+
+        internal void ThrowOnLoadImage(Exception ex, int exceptionDelay)
+        {
+            this.exceptionDelay = exceptionDelay;
+            onLoadImageException = ex;
         }
     }
 }

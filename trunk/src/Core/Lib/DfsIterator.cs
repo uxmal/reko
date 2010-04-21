@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,12 +27,12 @@ namespace Decompiler.Core.Lib
     public class DfsIterator<T>
     {
         private DirectedGraph<T> graph;
-        private HashSet<T> visited = new HashSet<T>();
+        private HashedSet<T> visited = new HashedSet<T>();
 
         public DfsIterator(DirectedGraph<T> graph)
         {
             this.graph = graph;
-            this.visited = new HashSet<T>();
+            this.visited = new HashedSet<T>();
         }
 
         public IEnumerable<T> PreOrder()

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,6 +60,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
                 "0C00:0029	pop	bp" + nl +
                 "0C00:002A	ret	" + nl);
         }
+
 
         private void RunTest(AssemblerFragment fragment, string sExp)
         {

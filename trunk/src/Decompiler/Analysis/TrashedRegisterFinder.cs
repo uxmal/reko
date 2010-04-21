@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -210,7 +210,7 @@ namespace Decompiler.Analysis
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{
 				UnaryExpression u = appl.Arguments[i] as UnaryExpression;
-				if (u != null && u.op == UnaryOperator.addrOf)
+				if (u != null && u.op == UnaryOperator.AddrOf)
 				{
 					Identifier id = u.Expression as Identifier;
 					if (id != null)
@@ -259,12 +259,12 @@ namespace Decompiler.Analysis
 
             public override void Accept(StorageVisitor visitor)
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
 
             public override int OffsetOf(Storage storage)
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
 
             public override void Write(System.IO.TextWriter writer)

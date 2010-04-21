@@ -1,4 +1,22 @@
-﻿using System;
+﻿/* 
+ * Copyright (C) 1999-2010 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,66 +30,11 @@ namespace Decompiler.Gui.Windows.Forms
         Form,
         IMainForm
     {
-        private int childFormNumber = 0;
+        private ToolStrip toolBar;
 
         public MainForm2()
         {
             InitializeComponent();
-        }
-
-        private void ShowNewForm(object sender, EventArgs e)
-        {
-            Form childForm = new Form();
-            childForm.MdiParent = this;
-            childForm.Text = "Window " + childFormNumber++;
-            childForm.Show();
-        }
-
-        private void OpenFile(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                string FileName = openFileDialog.FileName;
-            }
-        }
-
-        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-            if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                string FileName = saveFileDialog.FileName;
-            }
-        }
-
-        private void ExitToolsStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void CloseAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            foreach (Form childForm in MdiChildren)
-            {
-                childForm.Close();
-            }
         }
 
         #region IMainForm Members
@@ -88,10 +51,12 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-        public void AddToolbar(ToolStrip toolStrip)
+        public void AddToolbar(ToolStrip toolBar)
         {
-            throw new NotImplementedException();
+            this.Controls.Add(toolBar);
+            this.toolBar = toolBar;
         }
+
 
         public void BuildPhases()
         {
@@ -100,7 +65,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public ListView BrowserList
         {
-            get { throw new NotImplementedException(); }
+            get { return listBrowser; }
         }
 
         public ImageList ImageList
@@ -110,27 +75,27 @@ namespace Decompiler.Gui.Windows.Forms
 
         public ListView FindResultsList
         {
-            get { throw new NotImplementedException(); }
+            get { return listFindResults; }
         }
 
         public ListView DiagnosticsList
         {
-            get { throw new NotImplementedException(); }
+            get { return listDiagnostics; }
         }
 
         public OpenFileDialog OpenFileDialog
         {
-            get { throw new NotImplementedException(); }
+            get { return ofd; }
         }
 
         public SaveFileDialog SaveFileDialog
         {
-            get { throw new NotImplementedException(); }
+            get { return sfd; }
         }
 
         public void SetStatus(string txt)
         {
-            throw new NotImplementedException();
+            this.StatusStrip.Items[0].Text = txt;
         }
 
         public void SetStatusDetails(string txt)
@@ -140,7 +105,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public ToolStrip ToolBar
         {
-            get { throw new NotImplementedException(); }
+            get { return toolBar; }
         }
 
         public IStartPage InitialPage
@@ -170,7 +135,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public DialogResult ShowDialog(CommonDialog dialog)
         {
-            throw new NotImplementedException();
+            return dialog.ShowDialog(this);
         }
 
         public DialogResult ShowMessageBox(string message, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)

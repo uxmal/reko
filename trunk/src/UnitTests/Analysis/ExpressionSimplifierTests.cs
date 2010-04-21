@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void ExsConstants()
 		{
 			BuildExpressionSimplifier();
-			Expression expr = new BinaryExpression(Operator.add, PrimitiveType.Word32, 
+			Expression expr = new BinaryExpression(Operator.Add, PrimitiveType.Word32, 
 				Constant.Word32(1), Constant.Word32(2));
 			Constant c = (Constant) simplifier.Simplify(expr);
 

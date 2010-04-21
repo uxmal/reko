@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +91,10 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		protected void DoRewriteFile(string relativePath)
 		{
-			asm.Assemble(baseAddress, FileUnitTester.MapTestPath(relativePath));
+            using (var stm = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
+            {
+                asm.Assemble(baseAddress, stm);
+            }
             prog.Image = asm.Image;
             prog.Platform = asm.Platform;
 			DoRewriteCore();

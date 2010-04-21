@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ namespace Decompiler.Analysis
 
 		public override Expression TransformUnaryExpression(UnaryExpression unary)
 		{
-			if (unary.op == Operator.addrOf)
+			if (unary.op == Operator.AddrOf)
 			{
 				Identifier id = unary.Expression as Identifier;
 				if (id != null && ssa.Identifier == id)

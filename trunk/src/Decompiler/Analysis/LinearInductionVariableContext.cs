@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,8 +103,8 @@ namespace Decompiler.Analysis
         private bool IsSignedOperator(Operator op)
         {
             return
-                op == Operator.lt || op == Operator.le ||
-                op == Operator.gt || op == Operator.ge;
+                op == Operator.Lt || op == Operator.Le ||
+                op == Operator.Gt || op == Operator.Ge;
         }
 
     }

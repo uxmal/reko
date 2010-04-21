@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,16 +34,16 @@ namespace Decompiler.Structure
         private StructureNode header;
         private StructureNode latch;
         private StructureNode follow;
-        private HashSet<StructureNode> loopNodes;
+        private HashedSet<StructureNode> loopNodes;
 
-        public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
+        public Loop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes)
         {
             this.header = header;
             this.latch = latch;
             this.loopNodes = loopNodes;
         }
 
-        public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
+        public Loop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes, StructureNode follow)
         {
             this.header = header;
             this.latch = latch;
@@ -61,7 +61,7 @@ namespace Decompiler.Structure
             get { return latch; }
         }
 
-        public HashSet<StructureNode> Nodes
+        public HashedSet<StructureNode> Nodes
         {
             get { return loopNodes; }
         }
@@ -93,7 +93,7 @@ namespace Decompiler.Structure
     /// </summary>
     public class PreTestedLoop : Loop
     {
-        public PreTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
+        public PreTestedLoop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes, StructureNode follow)
             : base(header, latch, loopNodes, follow)
         {
         }
@@ -119,7 +119,7 @@ namespace Decompiler.Structure
     /// </summary>
     public class PostTestedLoop : Loop
     {
-        public PostTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
+        public PostTestedLoop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes, StructureNode follow)
             : base(header, latch, loopNodes, follow)
         {
         }
@@ -151,11 +151,12 @@ namespace Decompiler.Structure
     }
 
     /// <summary>
-    /// Testless loops don't have an exit in their header nor their latch node. Either exits need to be modelled with a break/goto/return (in C) or the loop is infinite.
+    /// Testless loops don't have an exit in their header nor their latch node.
+    /// Either exits need to be modelled with a break/goto/return (in C) or the loop is infinite.
     /// </summary>
     public class TestlessLoop : Loop
     {
-        public TestlessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
+        public TestlessLoop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes, StructureNode follow)
             : base(header, latch, loopNodes, follow)
         {
         }
@@ -175,7 +176,6 @@ namespace Decompiler.Structure
                     throw new NotSupportedException(string.Format("Expected top of PostTestedLoop {0} to have only 1 out edge, but found {1} out edges.", node.Name, node.OutEdges.Count));
                 codeGen.GenerateCode(node.OutEdges[0], Latch, bodyEmitter);
             }
-
             emitter.EmitForever(node, loopBody);
         }
     }

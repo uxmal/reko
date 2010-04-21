@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,6 @@ namespace Decompiler.UnitTests.Core.Serialization
 			ser.Serialize(x, str);
 
 			string s = writer.ToString();
-			Console.WriteLine(s);
 			int b = s.IndexOf("<field");
 			int e = s.IndexOf("</Ser");
 			Assert.AreEqual("<field offset=\"0\"><prim domain=\"SignedInt\" size=\"4\" /></field><field offset=\"4\"><prim domain=\"Real\" size=\"8\" /></field>", s.Substring(b, e-b));

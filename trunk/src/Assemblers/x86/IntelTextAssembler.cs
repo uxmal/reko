@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,22 +46,43 @@ namespace Decompiler.Assemblers.x86
 
 		public IntelTextAssembler()
 		{
-		}
+            this.entryPoints = new List<EntryPoint>();
+        }
 
 		public void Assemble(Address addr, string file)
 		{
-            this.entryPoints = new List<EntryPoint>();
 			using (StreamReader rdr = new StreamReader(file))
 			{
-				addrBase = addr;
-                image = Assemble(rdr);
+                Assemble(addr, rdr);
 			}
 		}
 
+        public void Assemble(Address addr, TextReader rdr)
+        {
+            addrBase = addr;
+            lexer = new Lexer(rdr);
+            emitter = new IntelEmitter();
+
+            // Default assembler is real-mode.
+
+            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+            asm = new IntelAssembler(arch, arch.WordWidth, addrBase, emitter, entryPoints);
+
+            // Assemblers are strongly line-oriented.
+
+            while (lexer.PeekToken() != Token.EOFile)
+            {
+                ProcessLine();
+            }
+
+            asm.ReportUnresolvedSymbols();
+            addrStart = addrBase;
+            image= new  ProgramImage(addrBase, emitter.Bytes);
+        }
+
 		public void AssembleFragment(Address addr, string fragment)
 		{
-			addrBase = addr;
-			image = Assemble(new StringReader(fragment));
+			Assemble(addr, new StringReader(fragment));
 		}
 
         public IProcessorArchitecture Architecture
@@ -91,27 +112,6 @@ namespace Decompiler.Assemblers.x86
         }
 
 
-		private ProgramImage Assemble(TextReader rdr)
-		{
-			lexer = new Lexer(rdr);
-			emitter = new IntelEmitter();
-
-			// Default assembler is real-mode.
-
-            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-            asm = new IntelAssembler(arch, arch.WordWidth, addrBase, emitter, entryPoints);
-
-			// Assemblers are strongly line-oriented.
-
-			while (lexer.PeekToken() != Token.EOFile)
-			{
-				ProcessLine();
-			}
-
-            asm.ReportUnresolvedSymbols();
-            addrStart = addrBase;
-			return new ProgramImage(addrBase, emitter.Bytes);
-		}
 
 		private bool Error(string pstr)
 		{
@@ -679,6 +679,9 @@ namespace Decompiler.Assemblers.x86
 			case Token.FCOMP:
 				ProcessFpuCommon(0xD8, 0xD8, 3, true, false);
 				break;
+            case Token.FCOMPP:
+                asm.Fcompp();
+                break;
 			case Token.FDIV:
 				ProcessFpuCommon(0xD8, 0xD8, 6, false, true);
 				break;
@@ -801,6 +804,9 @@ namespace Decompiler.Assemblers.x86
 			case Token.JO:
 				ProcessBranch(0x00);
 				break;
+            case Token.JPO:
+                ProcessBranch(0x0B);
+                break;
 			case Token.JS:
 				ProcessBranch(0x08);
 				break;

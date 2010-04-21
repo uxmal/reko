@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -202,17 +202,6 @@ baz endp
 
 			scanner.ProcessQueues();
 
-			foreach (ImageMapItem item in prog.Image.Map.Items.Values)
-			{
-                ImageMapBlock b = item as ImageMapBlock;
-				if (b != null)
-					Console.WriteLine("{0}, part of {1}", b, b.Procedure);
-			}
-
-			foreach (Procedure proc in prog.Procedures.Values)
-			{
-				Console.WriteLine("{0}", proc);
-			}
 			Assert.AreEqual(3, prog.Procedures.Count);
 			Procedure p2000 = prog.Procedures[new Address(0x2000)];
 			Procedure p1100 = prog.Procedures[new Address(0x1100)];

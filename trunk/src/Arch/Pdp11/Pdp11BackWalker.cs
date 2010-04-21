@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,17 +34,17 @@ namespace Decompiler.Arch.Pdp11
 
         public override List<BackwalkOperation> BackWalk(Address addrFrom, IBackWalkHost host)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public override Address MakeAddress(Decompiler.Core.Types.PrimitiveType size, ImageReader rdr, ushort segBase)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public override MachineRegister IndexRegister
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
     }
 }

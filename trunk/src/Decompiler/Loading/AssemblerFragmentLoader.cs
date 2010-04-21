@@ -1,5 +1,5 @@
 /* 
-* Copyright (C) 1999-2009 John Källén.
+* Copyright (C) 1999-2010 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Decompiler.Loading
             this.asm = asm;
         }
 
-        public override LoadedProject Load(Address addrLoad)
+        public override Program Load(byte[] imageFile, Address userSpecifiedAddress)
         {
             throw new NotImplementedException("Assembler asm = arch.CreateAssembler();");
             //asm.AssembleFragment(null, addrLoad, asmFragment);
@@ -47,6 +47,5 @@ namespace Decompiler.Loading
             //EntryPoints.Add(new EntryPoint(asm.StartAddress, arch.CreateProcessorState()));
             //return new DecompilerProject();
         }
-
     }
 }

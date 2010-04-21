@@ -1,6 +1,6 @@
 ** msvcrt.xml ****
 void _CIacos()
-void _CIpow()
+FpuStack real64 _CIpow(FpuStack real64 fpArg1, FpuStack real64 fpArg2)
 Register word32 _ftol(FpuStack real64 fpArg0)
 Register word32 _ltoa(Stack word32 arg0, Stack word32 arg4, Stack word32 arg8)
 Register word32 atol(Stack word32 arg0)

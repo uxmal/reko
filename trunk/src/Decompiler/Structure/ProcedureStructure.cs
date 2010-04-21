@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,6 @@ namespace Decompiler.Structure
         private StructureNode exitNode;
         private StructureNode entryNode;
         private List<StructureNode> ordering;
-        private List<StructureNode> revOrdering;
         private List<DerivedGraph> derivedGraphs;	// the derived graphs for this procedure
 
         public ProcedureStructure(string name, List<StructureNode> nodes)
@@ -62,7 +61,6 @@ namespace Decompiler.Structure
             this.nodes = nodes;
             this.derivedGraphs = new List<DerivedGraph>();
             this.ordering = new List<StructureNode>();
-            this.revOrdering = new List<StructureNode>();
         }
 
 
@@ -109,14 +107,6 @@ namespace Decompiler.Structure
             get { return ordering; }
         }
 
-        // within this procedure such that the nodes lower in
-        // graph are earlier in the array
-
-        public List<StructureNode> ReverseOrdering
-        {
-            get { return revOrdering; }
-        }
-
         [Conditional("DEBUG")]
         public void Dump()
         {
@@ -127,21 +117,21 @@ namespace Decompiler.Structure
 
         public void Write(System.IO.TextWriter writer)
         {
-            WriteNode(this.entryNode, new HashSet<StructureNode>(), writer);
+            WriteNode(this.entryNode, new HashedSet<StructureNode>(), writer);
         }
 
         [Conditional("DEBUG")]
-        private void WriteNode(StructureNode node, HashSet<StructureNode> visited, System.IO.TextWriter writer)
+        private void WriteNode(StructureNode node, HashedSet<StructureNode> visited, TextWriter writer)
         {
             if (visited.Contains(node))
                 return;
             visited.Add(node);
-            writer.Write("Node {0}: Block: {1}",
-                node.Ident(),
+            writer.WriteLine("Node {0}: Block: {1}",
+                node.Number,
                 node.Block != null ? node.Block.Name : "<none>");
 
-            writer.WriteLine(" Order: {0}, RevOrder {1}", node.Order, node.RevOrder);
-            writer.WriteLine("    Interval: {0}", node.Interval != null ? (object) node.Interval.Ident() : "<none>");
+            writer.WriteLine("    Order: {0}", node.Order);
+            writer.WriteLine("    Interval: {0}", node.Interval != null ? (object) node.Interval.Number : "<none>");
             writer.Write("    Structure type:");
             if (node.Loop != null)
                 writer.Write(" {0}", node.Loop.GetType().Name);

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace Decompiler.Analysis.Simplification
 
 		private bool IsAddOrSub(Operator op)
 		{
-			return op == Operator.add || op == Operator.sub;
+			return op == Operator.Add || op == Operator.Sub;
 		}
 
 		public bool Match(BinaryExpression binExp, Expression left, Expression right)
@@ -65,17 +65,17 @@ namespace Decompiler.Analysis.Simplification
 
 		public Expression Transform(Statement stm)
 		{
-			if (binLeft.op == Operator.sub)
+			if (binLeft.op == Operator.Sub)
 				cLeftRight = cLeftRight.Negate();
-			if (bin.op == Operator.sub)
+			if (bin.op == Operator.Sub)
 				cRight = cRight.Negate();
 
-			BinaryOperator op = Operator.add;
+			BinaryOperator op = Operator.Add;
 			Constant c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
 			if (c.IsNegative)
 			{
 				c = c.Negate();
-				op = Operator.sub;
+				op = Operator.Sub;
 			}
 			return new BinaryExpression(op, bin.DataType, binLeft.Left, c);
 		}

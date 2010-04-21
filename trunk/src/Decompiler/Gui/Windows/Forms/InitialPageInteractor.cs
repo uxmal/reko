@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,29 +33,26 @@ namespace Decompiler.Gui.Windows.Forms
         void OpenBinary(string file, DecompilerHost host);
     }
 
-	/// <summary>
-	/// Handles interactions on InitialPage.
-	/// </summary>
-	public class InitialPageInteractorImpl : PhasePageInteractorImpl, InitialPageInteractor
-	{
-		private IStartPage page;
+    /// <summary>
+    /// Handles interactions on InitialPage.
+    /// </summary>
+    public class InitialPageInteractorImpl : PhasePageInteractorImpl, InitialPageInteractor
+    {
+        private IStartPage page;
         private IProgramImageBrowserService browserSvc;
 
-		public InitialPageInteractorImpl(IStartPage page)
-		{
-			this.page = page;
-			page.BrowseInputFile.Click += new EventHandler(BrowseInputFile_Click);
-		}
+        public InitialPageInteractorImpl()
+        {
+        }
 
         protected virtual IDecompiler CreateDecompiler(LoaderBase ldr, DecompilerHost host, IServiceProvider sp)
         {
             return new DecompilerDriver(ldr, host, sp);
         }
 
-        protected virtual LoaderBase CreateLoader(string filename, IServiceContainer sc)
+        protected virtual LoaderBase CreateLoader(IServiceContainer sc)
         {
             return new Loader(
-                filename,
                 GetService<IDecompilerConfigurationService>(),
                 sc);
         }
@@ -80,10 +77,10 @@ namespace Decompiler.Gui.Windows.Forms
             return base.QueryStatus(ref cmdSet, cmdId, status, text);
         }
 
-		public void EnableControls()
-		{
-			browserSvc.Enabled = false;
-		}
+        public void EnableControls()
+        {
+            browserSvc.Enabled = false;
+        }
 
         public override ISite Site
         {
@@ -102,24 +99,15 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-		public override void EnterPage()
-		{
-			if (Decompiler != null && Decompiler.Project != null)
-			{
-                LoadFieldsFromProject();
-			}
-			EnableControls();
-		}
+        public override void EnterPage()
+        {
+            EnableControls();
+        }
 
         public override bool LeavePage()
         {
             if (Decompiler == null)
                 return false;
-
-            if (page.IsDirty)
-            {
-                SaveFieldsToProject();
-            }
             IWorkerDialogService svc = GetService<IWorkerDialogService>();
             return svc.StartBackgroundWork("Scanning source program.", Decompiler.ScanProgram);
         }
@@ -127,50 +115,17 @@ namespace Decompiler.Gui.Windows.Forms
         public void OpenBinary(string file, DecompilerHost host)
         {
             var sc = GetService<IServiceContainer>();
-            LoaderBase ldr = CreateLoader(file, sc);
-            Decompiler = CreateDecompiler(ldr, host, sc) ;
-            IWorkerDialogService svc = GetService<IWorkerDialogService>();
-            svc.StartBackgroundWork("Loading program", Decompiler.LoadProgram);
-            LoadFieldsFromProject();
-        }
-
-        private void LoadFieldsFromProject()
+            LoaderBase ldr = CreateLoader(sc);
+            Decompiler = CreateDecompiler(ldr, host, sc);
+            IWorkerDialogService svc = EnsureService<IWorkerDialogService>();
+            svc.StartBackgroundWork("Loading program", delegate()
         {
-            DecompilerProject project = Decompiler.Project;
-            page.InputFile.Text = project.Input.Filename;
-            page.LoadAddress.Text = project.Input.BaseAddress.ToString();
-            page.SourceFile.Text = project.Output.OutputFilename;
-            page.HeaderFile.Text = project.Output.TypesFilename;
-            page.IntermediateFile.Text = project.Output.IntermediateFilename;
-            page.AssemblerFile.Text = project.Output.DisassemblyFilename;
+            Decompiler.LoadProgram(file);
+        });
+            var memSvc = EnsureService<IMemoryViewService>();
+            memSvc.ViewImage(Decompiler.Program.Image);
         }
 
 
-        private void SaveFieldsToProject()
-        {
-            DecompilerProject project = Decompiler.Project;
-            project.Input.Filename = page.InputFile.Text;
-            project.Input.BaseAddress = Address.ToAddress(page.LoadAddress.Text, 16);
-            project.Output.OutputFilename = page.SourceFile.Text;
-            project.Output.TypesFilename = page.HeaderFile.Text;
-            project.Output.IntermediateFilename = page.IntermediateFile.Text;
-            project.Output.DisassemblyFilename = page.AssemblerFile.Text;
-        }
-
-        public override object Page
-        {
-            get { return page; }
-        }
-
-
-        // Event handlers. 
-		public void BrowseInputFile_Click(object sender, EventArgs e)
-		{
-			string sNew = UIService.ShowOpenFileDialog(page.InputFile.Text);
-			if (sNew != null)
-			{
-				page.InputFile.Text = sNew;
-			}
-		}
-	}
+    }
 }

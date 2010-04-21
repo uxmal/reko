@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Decompiler.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace Decompiler.Structure
 {
@@ -30,35 +31,75 @@ namespace Decompiler.Structure
     /// Given an interval and its constituent nodes, finds a strongly connected component entirely within the interval. That
     /// SCC is a loop.
     /// </summary>
-    public class SccLoopFinder : ISccFinderHost<StructureNode>
+    public class SccLoopFinder 
     {
         private Interval interval;
-        private HashSet<StructureNode> intervalNodes;
-        private HashSet<StructureNode> loopNodeSet;
+        private HashedSet<StructureNode> intervalNodes;
+        private HashedSet<StructureNode> loopNodeSet;
 
-        public SccLoopFinder(Interval i, HashSet<StructureNode> nodesInInterval)
+        public SccLoopFinder(Interval i, HashedSet<StructureNode> nodesInInterval)
         {
             this.interval = i;
             this.intervalNodes = nodesInInterval;
         }
 
-        public HashSet<StructureNode> FindLoop()
+        public HashedSet<StructureNode> FindLoop()
         {
-            loopNodeSet = new HashSet<StructureNode>();
-            SccFinder<StructureNode> f = new SccFinder<StructureNode>(this);
-            f.FindOld(interval.Header);
+            loopNodeSet = new HashedSet<StructureNode>();
+            var f = new SccFinder<StructureNode>(new GraphAdapter(this), ProcessScc);
+            f.Find(interval.Header);
             return loopNodeSet;
         }
 
-        #region ISccFinderHost<CFGNode> Members
-
-        IEnumerable<StructureNode> ISccFinderHost<StructureNode>.GetSuccessors(StructureNode t)
+        private class GraphAdapter : DirectedGraph<StructureNode>
         {
-            foreach (StructureNode s in t.OutEdges)
+            private SccLoopFinder slf;
+
+            public GraphAdapter(SccLoopFinder slf)
             {
-                if (IsNodeInInterval(s))
-                    yield return s;
+                this.slf = slf;
             }
+            
+            #region DirectedGraph<StructureNode> Members
+
+            public ICollection<StructureNode> Predecessors(StructureNode node)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ICollection<StructureNode> Successors(StructureNode node)
+            {
+                var succ = new List<StructureNode>();
+                foreach (StructureNode s in node.OutEdges)
+                {
+                    if (slf.IsNodeInInterval(s))
+                        succ.Add(s);
+                }
+                return succ;
+            }
+        
+
+            public ICollection<StructureNode> Nodes
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public void AddEdge(StructureNode nodeFrom, StructureNode nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveEdge(StructureNode nodeFrom, StructureNode nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool ContainsEdge(StructureNode nodeFrom, StructureNode nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
         }
 
         private bool IsNodeInInterval(StructureNode s)
@@ -66,7 +107,7 @@ namespace Decompiler.Structure
             return intervalNodes.Contains(s);
         }
 
-        void ISccFinderHost<StructureNode>.ProcessScc(IList<StructureNode> scc)
+        private void ProcessScc(IList<StructureNode> scc)
         {
             if (scc.Count > 1 || (scc.Count == 1 && IsSelfLoop(scc[0])))
             {
@@ -75,29 +116,32 @@ namespace Decompiler.Structure
             }
         }
 
-        private void Dump(IList<StructureNode> scc)
+        private void Dump(ICollection<StructureNode> scc)
         {
-            Console.WriteLine("===");
-            Console.Write("scc nodes:");
+            Dump(scc, Console.Out);
+        }
+
+        private void Dump(ICollection<StructureNode> scc, TextWriter writer)
+        {
+            writer.WriteLine("===");
+            writer.Write("scc nodes:");
             foreach (StructureNode s in scc)
             {
-                Console.Write(" {0} ", s.Name);
+                writer.Write(" {0} ", s.Name);
             }
-            Console.WriteLine();
-            Console.Write("accumulated loop nodes:");
+            writer.WriteLine();
+            writer.Write("accumulated loop nodes:");
             foreach (StructureNode s in loopNodeSet)
             {
-                Console.Write(" {0} ", s.Name);
+                writer.Write(" {0} ", s.Name);
             }
-            Console.WriteLine();
+            writer.WriteLine();
         }
 
         private bool IsSelfLoop(StructureNode node)
         {
             return node.OutEdges.Contains(node);
         }
-
-        #endregion
     }
 
 	/// <summary>
@@ -119,7 +163,7 @@ namespace Decompiler.Structure
             this.order = order;
         }
         
-        public Loop DetermineLoopType(HashSet<StructureNode> loopNodes)
+        public Loop DetermineLoopType(HashedSet<StructureNode> loopNodes)
         {
             // if the latch node is a two way node then this must be a post tested loop
             if (latch.BlockType == bbType.cBranch)
@@ -144,7 +188,7 @@ namespace Decompiler.Structure
             return header.Loop;
         }
 
-        private TestlessLoop CreateTestlessLoop(HashSet<StructureNode> loopNodes)
+        private TestlessLoop CreateTestlessLoop(HashedSet<StructureNode> loopNodes)
         {
             StructureNode follow = FindEndLessFollowNode(header, latch, loopNodes);
             TestlessLoop loop = new TestlessLoop(header, latch, loopNodes, follow);
@@ -152,7 +196,7 @@ namespace Decompiler.Structure
 
         }
 
-        private PreTestedLoop CreatePreTestedLoop(HashSet<StructureNode> loopNodes)
+        private PreTestedLoop CreatePreTestedLoop(HashedSet<StructureNode> loopNodes)
         {
             StructureNode follow = FindPreTestedFollowNode(header);
             PreTestedLoop loop = new PreTestedLoop(header, latch, loopNodes, follow);
@@ -160,7 +204,7 @@ namespace Decompiler.Structure
 
         }
 
-        private PostTestedLoop CreatePostTestedLoop(HashSet<StructureNode> loopNodes)
+        private PostTestedLoop CreatePostTestedLoop(HashedSet<StructureNode> loopNodes)
         {
             StructureNode follow = FindPostTestedFollowNode(header, latch);
             PostTestedLoop loop = new PostTestedLoop(header, latch, loopNodes, follow);
@@ -168,7 +212,7 @@ namespace Decompiler.Structure
 
         }
 
-        private StructureNode FindEndLessFollowNode(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
+        private StructureNode FindEndLessFollowNode(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes)
         {
             StructureNode follow = null;
             // traverse the ordering array between the header and latch nodes.
@@ -195,33 +239,43 @@ namespace Decompiler.Structure
         }
 
 
+        /// <summary>
+        /// Finds the follow node of a post tested ('repeat') loop. This is the node on the end of the
+        /// non-back edge from the latch node
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="latch"></param>
+        /// <returns>The follow node</returns>
         private StructureNode FindPostTestedFollowNode(StructureNode header, StructureNode latch)
         {
-            // the follow of a post tested ('repeat') loop is the node on the end of the
-            // non-back edge from the latch node
             if (latch.OutEdges[0] == header)
                 return latch.OutEdges[1];
             else
                 return latch.OutEdges[0];
         }
 
+        /// <summary>
+        /// The follow node of a pre-test ('while') loop is the child that is the loop header's 
+        /// conditional follow.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
         private StructureNode FindPreTestedFollowNode(StructureNode header)
         {
-            // the child that is the loop header's conditional follow will be the loop follow
             if (header.OutEdges[0] == header.Conditional.Follow)
                 return header.OutEdges[0];
             else
                 return header.OutEdges[1];
         }
 
-        public HashSet<StructureNode> FindNodesInLoop(HashSet<StructureNode> intNodes)
+        public HashedSet<StructureNode> FindNodesInLoop(HashedSet<StructureNode> intNodes)
         {
             SccLoopFinder finder = new SccLoopFinder(header.Interval, intNodes);
             return finder.FindLoop();
         }
 
         //$REVIEW: add to Loop class instead?
-        public void TagNodesInLoop(Loop loop, HashSet<StructureNode> loopNodes)
+        public void TagNodesInLoop(Loop loop, HashedSet<StructureNode> loopNodes)
         {
             foreach (StructureNode node in loopNodes)
             {

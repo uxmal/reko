@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ namespace Decompiler.Analysis.Simplification
 
 			b = acc.EffectiveAddress;
 			Constant offset = new Constant(b.DataType, 0);
-			BinaryOperator op = Operator.add;
+			BinaryOperator op = Operator.Add;
 			BinaryExpression ea = b as BinaryExpression;
 			if (ea != null)
 			{

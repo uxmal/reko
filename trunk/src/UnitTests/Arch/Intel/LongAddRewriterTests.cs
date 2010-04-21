@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,7 +107,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void CreateInstruction()
 		{
 			rw.Match(addAxMem, adcDxMem);
-            rw.EmitInstruction(Operator.add, emitter);
+            rw.EmitInstruction(Operator.Add, emitter);
 			Assert.AreEqual("dx_ax = dx_ax + Mem0[ds:bx + 0x0300:ui32]", block.Statements[0].ToString());
 		}
 	}

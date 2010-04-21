@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ namespace Decompiler.Typing
         private Expression AddZeroToEffectiveAddress(Expression ea)
         {
             BinaryExpression bin = new BinaryExpression(
-                Operator.add,
+                Operator.Add,
                 PrimitiveType.CreateWord(ea.DataType.Size),
                 ea,
                 new Constant(PrimitiveType.CreateWord(ea.DataType.Size), 0));
