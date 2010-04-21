@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,9 +34,6 @@ namespace Decompiler.Core.Serialization
 
 		[XmlElement("output")]
 		public string OutputFilename;
-
-		[XmlElement("type-inference")]
-		public bool TypeInference;
 
 		[XmlElement("types-file")]
 		public string TypesFilename;

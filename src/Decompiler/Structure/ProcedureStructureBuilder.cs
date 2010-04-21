@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,8 @@ namespace Decompiler.Structure
         public void BuildNodes()
         {
             int bId = 0;
-            foreach (Block b in proc.RpoBlocks)
+            var iterator = new DfsIterator<Block>(new BlockGraph(proc.RpoBlocks));
+            foreach (Block b in iterator.PreOrder(proc.EntryBlock))
             {
                 StructureNode cfgNode = new StructureNode(b, ++bId);
                 nodeList.Add(cfgNode);
@@ -73,7 +74,7 @@ namespace Decompiler.Structure
             foreach (StructureNode newNode in nodeList)
             {
                 List<Statement> ins = newNode.Instructions;
-                Debug.Write("Block #" + newNode.Ident() + " is of type " + newNode.BlockType);
+                Debug.Write("Block #" + newNode.Number + " is of type " + newNode.BlockType);
                 Debug.WriteLine(" and contains:");
 
                 for (int i = 0; i < ins.Count; i++)
@@ -135,38 +136,107 @@ namespace Decompiler.Structure
 
             // set the reverse parenthesis for the nodes
             time = 1;
-            curProc.EntryNode.SetRevLoopStamps(ref time, new HashSet<StructureNode>());
-
-            // do the ordering of nodes within the reverse graph 
-            List<StructureNode> rorder = curProc.ReverseOrdering;
+            curProc.EntryNode.SetRevLoopStamps(ref time, new HashedSet<StructureNode>());
             Debug.Assert(curProc.ExitNode != null);
-            curProc.ExitNode.SetRevOrder(rorder, new HashSet<StructureNode>());
         }
 
-        public void AnalyzeGraph()
+        public DominatorGraph<StructureNode> AnalyzeGraph()
         {
-            StructureGraphAdapter graph = new StructureGraphAdapter(curProc.Nodes);
-            ICollection<StructureNode> infiniteLoops = FindInfiniteLoops(graph, curProc.EntryNode);
-            AddPseudoEdgeFromInfiniteLoopsToExitNode(graph, infiniteLoops, curProc.ExitNode);
+            var graph = new StructureGraphAdapter(curProc.Nodes);
+            var reverseGraph = new ReverseGraph(curProc.Nodes);
+            var infiniteLoops = FindInfiniteLoops(graph, curProc.EntryNode);
+            AddPseudoEdgeFromInfiniteLoopsToExitNode(graph, infiniteLoops, curProc.ExitNode, reverseGraph);
 
-            // (re)set the reverse ordering of the nodes.
-            curProc.ReverseOrdering.Clear();
-            curProc.ExitNode.SetRevOrder(curProc.ReverseOrdering, new HashSet<StructureNode>());
-
-            curProc.Dump();
-
-            PostDominatorGraph g = new PostDominatorGraph(curProc);
-            g.FindImmediatePostDominators();
+            var pdg = new DominatorGraph<StructureNode>(reverseGraph, curProc.ExitNode);
+            pdg.Write(Console.Out); 
+            SetImmediatePostDominators(pdg);
 
             RemovePseudoEdgeFromInfiniteLoopsToExitNode(graph, infiniteLoops, curProc.ExitNode);
+            return pdg;
         }
 
-        private void AddPseudoEdgeFromInfiniteLoopsToExitNode(DirectedGraph<StructureNode> graph, ICollection<StructureNode> infiniteLoops, StructureNode exitNode)
+        private void SetImmediatePostDominators(DominatorGraph<StructureNode> reverseDomGraph)
+        {
+            foreach (StructureNode node in curProc.Nodes)
+            {
+                node.ImmPDom = reverseDomGraph.ImmediateDominator(node);
+            }
+        }
+
+        public class ReverseGraph : DirectedGraph<StructureNode>
+        {
+            private ICollection<StructureNode> nodes;
+            private List<Edge> pseudoEdges;
+            
+            private struct Edge
+            {
+                public Edge(StructureNode from, StructureNode to) { this.From = from; this.To = to; }
+
+                public StructureNode From;
+                public StructureNode To;
+            }
+            public ReverseGraph(ICollection<StructureNode> nodes)
+            {
+                this.nodes = nodes;
+                this.pseudoEdges = new List<Edge>();
+            }
+
+            #region DirectedGraph<StructureNode> Members
+
+            public ICollection<StructureNode> Predecessors(StructureNode node)
+            {
+                var preds = new List<StructureNode>(node.OutEdges);
+                foreach (Edge e in pseudoEdges)
+                {
+                    if (e.To == node)
+                        preds.Add(e.From);
+                }
+                return preds;
+            }
+
+            public ICollection<StructureNode> Successors(StructureNode node)
+            {
+                var succs = new List<StructureNode>(node.InEdges);
+                foreach (Edge e in pseudoEdges)
+                {
+                    if (e.From == node)
+                        succs.Add(e.To);
+                }
+                return succs;
+            }
+
+            public ICollection<StructureNode> Nodes
+            {
+                get { return nodes; }
+            }
+
+            public void AddEdge(StructureNode nodeFrom, StructureNode nodeTo)
+            {
+                pseudoEdges.Add(new Edge(nodeFrom, nodeTo));
+            }
+
+            public void RemoveEdge(StructureNode nodeFrom, StructureNode nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool ContainsEdge(StructureNode nodeFrom, StructureNode nodeTo)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+        }
+        private void AddPseudoEdgeFromInfiniteLoopsToExitNode(
+            DirectedGraph<StructureNode> graph,
+            ICollection<StructureNode> infiniteLoops,
+            StructureNode exitNode,
+            DirectedGraph<StructureNode> reverseGraph)
         {
             foreach (StructureNode infLoopHeader in infiniteLoops)
             {
                 Debug.Assert(!infLoopHeader.OutEdges.Contains(exitNode));
-                graph.AddEdge(infLoopHeader, exitNode);
+                reverseGraph.AddEdge(exitNode, infLoopHeader);
             }
         }
 
@@ -181,17 +251,17 @@ namespace Decompiler.Structure
         public ICollection<StructureNode> FindInfiniteLoops(DirectedGraph<StructureNode> graph, StructureNode entry)
         {
             List<StructureNode> infiniteLoopHeaders = new List<StructureNode>();
-            SccFinder<StructureNode> finder = new SccFinder<StructureNode>(graph, delegate(ICollection<StructureNode> scc)
+            SccFinder<StructureNode> finder = new SccFinder<StructureNode>(graph, delegate(IList<StructureNode> scc)
             {
-                if (IsInfiniteLoop(graph, scc))
+                if (!IsInfiniteLoop(graph, scc))
+                    return;
+
+                StructureNode header = FindNodeWithHighestPostOrderNumber(scc);
+                foreach (StructureNode tail in graph.Predecessors(header))
                 {
-                    StructureNode header = FindNodeWithHighestPostOrderNumber(scc);
-                    foreach (StructureNode tail in graph.Predecessors(header))
+                    if (scc.Contains(tail))
                     {
-                        if (scc.Contains(tail))
-                        {
-                            infiniteLoopHeaders.Add(tail);
-                        }
+                        infiniteLoopHeaders.Add(tail);
                     }
                 }
             });
@@ -215,7 +285,7 @@ namespace Decompiler.Structure
 
         private bool IsInfiniteLoop(DirectedGraph<StructureNode> graph, ICollection<StructureNode> scc)
         {
-            HashSet<StructureNode> members = new HashSet<StructureNode>();
+            HashedSet<StructureNode> members = new HashedSet<StructureNode>();
             members.AddRange(scc);
             foreach (StructureNode node in scc)
             {

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,7 +147,7 @@ done:
 			Identifier Z = FlagGroup("Z");
 			Identifier f = Reg32("f");
 
-			Statement stmZ = new Statement(new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.sub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
+			Statement stmZ = new Statement(new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.Sub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
 			ssaIds[Z].DefStatement = stmZ;
 			Statement stmF = new Statement(new Assignment(f, new TestCondition(ConditionCode.NE, Z)), null);
 			ssaIds[f].DefStatement = stmF;
@@ -158,11 +158,26 @@ done:
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
 
-		[Test]
+        [Test]
+        public void CceReturnCarry()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected Program CompileTest(Action<ProcedureMock> m)
+        {
+            var mock = new ProcedureMock();
+            m(mock);
+            var pmock = new ProgramMock();
+            pmock.Add(mock);
+            return pmock.BuildProgram();
+        }
+
+        [Test]
 		public void SignedIntComparisonFromConditionCode()
 		{
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new ArchitectureMock());
-			BinaryExpression bin = new BinaryExpression(Operator.sub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
+			BinaryExpression bin = new BinaryExpression(Operator.Sub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("LtOperator", b.op.GetType().Name);
@@ -172,7 +187,7 @@ done:
 		public void RealComparisonFromConditionCode()
 		{
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new ArchitectureMock());
-			BinaryExpression bin = new BinaryExpression(Operator.sub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
+			BinaryExpression bin = new BinaryExpression(Operator.Sub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("RltOperator", b.op.GetType().Name);
@@ -199,7 +214,7 @@ done:
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, new DominatorGraph(proc), true);
+				SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph(), true);
 				SsaState ssa = sst.SsaState;
 
                 ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);

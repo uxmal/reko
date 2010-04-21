@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,9 +69,9 @@ namespace Decompiler.UnitTests.Gui
         public void DecompilerProjectName()
         {
             IDecompilerService svc = new DecompilerService();
-            
-            svc.Decompiler = new DecompilerDriver(new FakeLoader("foo\\bar\\baz.exe"), new FakeDecompilerHost(), sc);
-            svc.Decompiler.LoadProgram();
+
+            svc.Decompiler = new FakeDecompiler(new FakeLoader());
+            svc.Decompiler.LoadProgram("foo\\bar\\baz.exe");
             Assert.IsNotNull(svc.Decompiler.Project);
             Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");
         }

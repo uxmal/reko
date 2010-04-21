@@ -74,7 +74,6 @@ CZ_21: orig: CZ
 SCZO_22: orig: SCZO
 C_23: orig: C
 CZ_24: orig: CZ
-    uses: branch al >u 0x66 l0C00_0032
 al_25: orig: al
     def:  al_25 = al - 0x30
     uses: al_37 = PHI(al_25, al_29, al_33)

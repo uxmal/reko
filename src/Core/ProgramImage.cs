@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -293,7 +293,5 @@ namespace Decompiler.Core
             abImage[offset + 2] = (byte) (dw >> 16);
             abImage[offset + 3] = (byte) (dw >> 24);
         }
-
-
     }
 }

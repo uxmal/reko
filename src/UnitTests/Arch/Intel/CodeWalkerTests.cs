@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 AssemblerLoader ld = new AssemblerLoader(
                     new IntelTextAssembler(),
                     FileUnitTester.MapTestPath("fragments/Factorial.asm"));
-                Program prog = ld.Load(new Address(0x0C00, 0)).Program;
+                Program prog = ld.Load(new Address(0x0C00, 0));
 				Scanner sc = new Scanner(prog, null);
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
@@ -255,7 +255,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 AssemblerLoader ld = new AssemblerLoader(
                     new IntelTextAssembler(),
                     FileUnitTester.MapTestPath(sourceFile));
-                Program prog = ld.Load(addrBase).Program;
+                Program prog = ld.Load(addrBase);
 				Scanner sc = new Scanner(prog, new FakeDecompilerEventListener());
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{

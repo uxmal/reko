@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -174,7 +174,7 @@ namespace Decompiler.UnitTests.Analysis
                 fcomp   dword ptr [bx]
                 fstsw   ax
                 test    ah,0x41
-                jnz     done
+                jpo     done
                 mov     word ptr [si],4
 done:   
                 ret

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,10 @@ namespace Decompiler.Analysis.Simplification
 
 		public bool Match(UnaryExpression unary)
 		{
-			if (unary.op == Operator.neg)
+			if (unary.op == Operator.Neg)
 			{
 				bin = unary.Expression as BinaryExpression;
-				if (bin != null && bin.op == Operator.sub)
+				if (bin != null && bin.op == Operator.Sub)
 					return true;
 			}
 			return false;

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -179,9 +179,7 @@ namespace Decompiler.Scanning
 				}
 				Debug.WriteLine("t complete: " + t);
 			}
-			State [] dfaStates = new State[dStates.Count];
-			dStates.CopyTo(dfaStates);
-			return dfaStates;
+            return dStates.ToArray(); 
 		}
 
 		private void AddState(List<State> dStates, State s)
@@ -422,7 +420,7 @@ namespace Decompiler.Scanning
 
 		private Node SyntaxError()
 		{
-			throw new ArgumentException("Pattern is malformed: \"" + pattern + "\"");
+			throw new ArgumentException("Pattern is malformed: \"" + pattern + "\".");
 		}
 
 		private abstract class Node

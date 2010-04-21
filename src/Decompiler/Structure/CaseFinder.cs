@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Decompiler.Structure
     {
         private StructureNode head;
         private StructureNode follow;
-        private HashSet<StructureNode> visited = new HashSet<StructureNode>();
+        private HashedSet<StructureNode> visited = new HashedSet<StructureNode>();
 
         public CaseFinder(StructureNode head, StructureNode follow)
         {

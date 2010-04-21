@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,8 @@ namespace Decompiler.Arch.Intel
 		private Procedure proc;
 		private Frame frame;
 		private Address addrEnd;			// address of the end of this block.
+        private int i;
+        private IntelInstruction[] instrs;
 		private IntelInstruction instrCur;	// current instruction being rewritten.
 
 		private IntelRewriterState state;
@@ -77,7 +79,7 @@ namespace Decompiler.Arch.Intel
 		/// <param name="aDeadFlags"></param>
         public override void ConvertInstructions(MachineInstruction [] instructions,  Address[] addrs, uint[] aDeadFlags, Address addrEnd, CodeEmitter emitter)
         {
-            IntelInstruction[] instrs = new IntelInstruction[instructions.Length];
+            instrs = new IntelInstruction[instructions.Length];
             for (int x = 0; x < instrs.Length; ++x)
             {
                 instrs[x] = (IntelInstruction)instructions[x];
@@ -86,7 +88,7 @@ namespace Decompiler.Arch.Intel
             this.addrEnd = addrEnd;
 
 
-			for (int i = 0; i < instrs.Length; ++i) 
+			for (i = 0; i < instrs.Length; ++i) 
 			{
 				instrCur = instrs[i];
 				state.InstructionAddress = addrs[i];
@@ -114,7 +116,7 @@ namespace Decompiler.Arch.Intel
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.adc:
-						ass = EmitAdcSbb(Operator.add);
+						ass = EmitAdcSbb(Operator.Add);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.add:
@@ -128,12 +130,12 @@ namespace Decompiler.Arch.Intel
 						}
 						else 
 						{
-							Expression dst = EmitAddSub(instrs, i, Opcode.adc, Operator.add);
+							Expression dst = EmitAddSub(instrs, i, Opcode.adc, Operator.Add);
 							EmitCcInstr(dst, defFlags, deadFlags);
 						}
 						break;
 					case Opcode.and:
-						ass = EmitBinOp(Operator.and, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
+						ass = EmitBinOp(Operator.And, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
 						break;
@@ -229,7 +231,7 @@ namespace Decompiler.Arch.Intel
 						break;
 					case Opcode.dec:
 						ass = EmitBinOp(
-							Operator.sub,
+							Operator.Sub,
 							instrCur.op1,
 							instrCur.op1.Width,
 							instrCur.op1,
@@ -237,7 +239,7 @@ namespace Decompiler.Arch.Intel
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.div:
-						ass = EmitDivide(Operator.divu, Domain.UnsignedInt);
+						ass = EmitDivide(Operator.Divu, Domain.UnsignedInt);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.enter:
@@ -246,7 +248,7 @@ namespace Decompiler.Arch.Intel
 					case Opcode.fadd:
 					case Opcode.faddp:
 						EmitCommonFpuInstruction(
-							Operator.add,
+							Operator.Add,
 							false,
 							instrCur.code == Opcode.faddp);
 						break;
@@ -279,13 +281,13 @@ namespace Decompiler.Arch.Intel
 					case Opcode.fdiv:
 					case Opcode.fdivp:
 						EmitCommonFpuInstruction(
-							Operator.divs, 
+							Operator.Divs, 
 							false,
 							instrCur.code == Opcode.fdivp);
 						break;
 					case Opcode.fidiv:
 						EmitCommonFpuInstruction(
-							Operator.divs, 
+							Operator.Divs, 
 							false,
 							instrCur.code == Opcode.fdivp,
 							PrimitiveType.Real64);
@@ -293,14 +295,14 @@ namespace Decompiler.Arch.Intel
 					case Opcode.fdivr:
 					case Opcode.fdivrp:
 						EmitCommonFpuInstruction(
-							Operator.divs, 
+							Operator.Divs, 
 							true,
 							instrCur.code == Opcode.fdivrp);
 						break;
 
 					case Opcode.fiadd:
 						EmitCommonFpuInstruction(
-							Operator.add, 
+							Operator.Add, 
 							false,
 							false,
 							PrimitiveType.Real64);
@@ -314,7 +316,7 @@ namespace Decompiler.Arch.Intel
 						break;
 					case Opcode.fimul:
 						EmitCommonFpuInstruction(
-							Operator.muls, 
+							Operator.Muls, 
 							false,
 							false,
 							PrimitiveType.Real64);
@@ -326,7 +328,7 @@ namespace Decompiler.Arch.Intel
 					case Opcode.fisub:
 					case Opcode.fisubr:
 						EmitCommonFpuInstruction(
-							Operator.sub,
+							Operator.Sub,
 							instrCur.code == Opcode.fisubr,
 							false,
 							PrimitiveType.Real64);
@@ -368,7 +370,7 @@ namespace Decompiler.Arch.Intel
 					case Opcode.fmul:
 					case Opcode.fmulp:
 						EmitCommonFpuInstruction(
-							Operator.muls, 
+							Operator.Muls, 
 							false,
 							instrCur.code == Opcode.fmulp);
 						break;
@@ -412,19 +414,19 @@ namespace Decompiler.Arch.Intel
 							state.ShrinkFpuStack(1);
 						break;
 					case Opcode.fstsw:
-                        EmitFstsw(instrs, i);
+                        RewriteFstsw(instrs, i);
 						break;
 					case Opcode.fsub:
 					case Opcode.fsubp:
 						EmitCommonFpuInstruction(
-							Operator.sub, 
+							Operator.Sub, 
 							false,
 							instrCur.code == Opcode.fsubp);
 						break;
 					case Opcode.fsubr:
 					case Opcode.fsubrp:
 						EmitCommonFpuInstruction(
-							Operator.sub, 
+							Operator.Sub, 
 							true,
 							instrCur.code == Opcode.fsubrp);
 						break;
@@ -448,12 +450,12 @@ namespace Decompiler.Arch.Intel
 					}
 
 					case Opcode.idiv:
-						ass = EmitDivide(Operator.divs, Domain.SignedInt);
+						ass = EmitDivide(Operator.Divs, Domain.SignedInt);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 
 					case Opcode.imul:
-						ass = EmitMultiply(Operator.muls, Domain.SignedInt);
+						ass = EmitMultiply(Operator.Muls, Domain.SignedInt);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 
@@ -468,7 +470,7 @@ namespace Decompiler.Arch.Intel
 						}
 						else
 						{
-							ass = EmitBinOp(Operator.add,
+							ass = EmitBinOp(Operator.Add,
 								instrCur.op1,
 								instrCur.op1.Width, 
 								instrCur.op1, 
@@ -529,6 +531,12 @@ namespace Decompiler.Arch.Intel
 					case Opcode.jo:
 						EmitBranchInstruction(useFlags, ConditionCode.OV, instrCur.op1);
 						break;
+                    case Opcode.jpe:
+                        EmitBranchInstruction(useFlags, ConditionCode.PE, instrCur.op1);
+                        break;
+                    case Opcode.jpo:
+                        EmitBranchInstruction(useFlags, ConditionCode.PO, instrCur.op1);
+                        break;
 					case Opcode.js:
 						EmitBranchInstruction(useFlags, ConditionCode.SG, instrCur.op1);
 						break;
@@ -596,12 +604,12 @@ namespace Decompiler.Arch.Intel
 						EmitCopy(instrCur.op1, emitter.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)), false);
 						break;
 					case Opcode.mul:
-						ass = EmitMultiply(Operator.mulu, Domain.UnsignedInt);
+						ass = EmitMultiply(Operator.Mulu, Domain.UnsignedInt);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.neg:
 					{
-						Expression tmp = EmitUnaryOperator(Operator.neg, instrCur.op1, instrCur.op1);
+						Expression tmp = EmitUnaryOperator(Operator.Neg, instrCur.op1, instrCur.op1);
 						defFlags &= ~FlagM.CF;
 						EmitCcInstr(tmp, defFlags, deadFlags);
 						emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Eq0(tmp));
@@ -612,7 +620,7 @@ namespace Decompiler.Arch.Intel
 
 					case Opcode.not:
 					{
-						Expression tmp = EmitUnaryOperator(Operator.comp, instrCur.op1, instrCur.op1);
+						Expression tmp = EmitUnaryOperator(Operator.Comp, instrCur.op1, instrCur.op1);
 						EmitCcInstr(tmp, defFlags, deadFlags);
 						break;
 					}
@@ -622,14 +630,14 @@ namespace Decompiler.Arch.Intel
 							// or X,X ==> cmp X,0
 
 							ass = emitter.Assign(orw.FlagGroup(defFlags),
-								new ConditionOf(new BinaryExpression(Operator.sub, 
+								new ConditionOf(new BinaryExpression(Operator.Sub, 
 								instrCur.op1.Width,
 								SrcOp(instrCur.op1),
 								new Constant(instrCur.op1.Width, 0))));
 						}
 						else
 						{
-							ass = EmitBinOp(Operator.or, instrCur.op1, instrCur.op1.Width, instrCur.op1, instrCur.op2);
+							ass = EmitBinOp(Operator.Or, instrCur.op1, instrCur.op1.Width, instrCur.op1, instrCur.op2);
 							EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						}
 						break;
@@ -769,7 +777,7 @@ namespace Decompiler.Arch.Intel
 						emitter.Assign(orw.FlagGroup(defFlags), orw.AluRegister(Registers.ah));
 						break;
 					case Opcode.sar:
-						ass = EmitBinOp(Operator.sar, instrCur.op1, instrCur.op1.Width, instrCur.op1, instrCur.op2);
+						ass = EmitBinOp(Operator.Sar, instrCur.op1, instrCur.op1.Width, instrCur.op1, instrCur.op2);
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.sbb:
@@ -778,7 +786,7 @@ namespace Decompiler.Arch.Intel
 							// sbb ecx,ecx => ecx = 0 - C
 							ass = EmitCopy(
 								instrCur.op1,
-								new BinaryExpression(Operator.sub,
+								new BinaryExpression(Operator.Sub,
 								instrCur.dataWidth,
 								new Constant(instrCur.dataWidth, 0),
 								orw.FlagGroup(FlagM.CF)),
@@ -786,7 +794,7 @@ namespace Decompiler.Arch.Intel
 						}
 						else
 						{
-							ass = EmitAdcSbb(Operator.sub);
+							ass = EmitAdcSbb(Operator.Sub);
 						}
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;	
@@ -817,7 +825,7 @@ namespace Decompiler.Arch.Intel
 						break;
 
 					case Opcode.shl:
-						ass = EmitBinOp(Operator.shl, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
+						ass = EmitBinOp(Operator.Shl, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.shld:
@@ -827,7 +835,7 @@ namespace Decompiler.Arch.Intel
 							SrcOp(instrCur.op3)), false);
 						break;
 					case Opcode.shr:
-						ass = EmitBinOp(Operator.shr, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
+						ass = EmitBinOp(Operator.Shr, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.shrd:
@@ -868,7 +876,7 @@ namespace Decompiler.Arch.Intel
 							}
 							else
 							{
-								d = EmitAddSub(instrs, i, Opcode.sbb, Operator.sub);
+								d = EmitAddSub(instrs, i, Opcode.sbb, Operator.Sub);
 							}
 							EmitCcInstr(d, defFlags, deadFlags);
 						}
@@ -880,14 +888,14 @@ namespace Decompiler.Arch.Intel
 						if (IsSameRegister(instrCur.op1, instrCur.op2))
 						{
 							// test X,X ==> cmp X,0
-							src = new BinaryExpression(Operator.sub, 
+							src = new BinaryExpression(Operator.Sub, 
 								instrCur.op1.Width,
 								SrcOp(instrCur.op1),
 								new Constant(instrCur.dataWidth, 0));
 						}
 						else
 						{
-							src = new BinaryExpression(Operator.and,
+							src = new BinaryExpression(Operator.And,
 								instrCur.op1.Width,
 								SrcOp(instrCur.op1),
 								SrcOp(instrCur.op2));
@@ -924,7 +932,7 @@ namespace Decompiler.Arch.Intel
 						}
 						else
 						{
-							ass = EmitBinOp(Operator.xor, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
+							ass = EmitBinOp(Operator.Xor, instrCur.op1, instrCur.op1.Width, instrCur.op1, SrcOp(instrCur.op2));
 						}
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
@@ -1049,12 +1057,64 @@ namespace Decompiler.Arch.Intel
 
 		private void EmitBranchInstruction(FlagM usedFlags, ConditionCode cc, MachineOperand opTarget)
 		{
-			EmitBranchInstruction(new TestCondition(cc, orw.FlagGroup(usedFlags)), opTarget);
+            var tc = CreateTestCondition(cc, orw.FlagGroup(usedFlags));
+			EmitBranchInstruction(tc, opTarget);
 		}
+
+        /// <summary>
+        /// Creates a test condition, looking for special patterns that apply to x86 FPU tests.
+        /// </summary>
+        /// <param name="cc"></param>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
+        private TestCondition CreateTestCondition(ConditionCode cc, Identifier identifier)
+        {
+            var tc = new TestCondition(cc, identifier);
+            if (i < 2)
+                return tc;
+            if (instrs[i-1].code != Opcode.test)
+                return tc;
+            var ah = instrs[i-1].op1 as RegisterOperand;
+            if (ah == null || ah.Register != Registers.ah)
+                return tc;
+            var m = instrs[i-1].op2 as ImmediateOperand;
+            if (m == null)
+                return tc;
+
+            if (instrs[i-2].code != Opcode.fstsw)
+                return tc;
+            int mask = m.Value.ToInt32();
+
+            var fpuf = orw.FlagGroup(FlagM.FPUF);
+            switch (cc)
+            {
+            case ConditionCode.PE:
+                if (mask == 0x05) return new TestCondition(ConditionCode.LE, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.GE, fpuf);
+                if (mask == 0x44) return new TestCondition(ConditionCode.NE, fpuf);
+                break;
+            case ConditionCode.PO:
+                if (mask == 0x44) return new TestCondition(ConditionCode.EQ, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.GE, fpuf);
+                if (mask == 0x05) return new TestCondition(ConditionCode.GT, fpuf);
+                break;
+            case ConditionCode.EQ:
+                if (mask == 0x40) return new TestCondition(ConditionCode.NE, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.LT, fpuf);
+                break;
+            case ConditionCode.NE:
+                if (mask == 0x40) return new TestCondition(ConditionCode.EQ, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.GE, fpuf);
+                if (mask == 0x01) return new TestCondition(ConditionCode.GT, fpuf);
+                break;
+            }
+            throw new NotImplementedException(string.Format(
+                "FSTSW/TEST AH,0x{0:X2}/J{1} not implemented.", mask, cc));
+        }
 
 		private void EmitBranchInstruction(Identifier idFlag, ConditionCode cc, MachineOperand opTarget)
 		{
-			EmitBranchInstruction(new TestCondition(cc, idFlag), opTarget);
+			EmitBranchInstruction(CreateTestCondition(cc, idFlag), opTarget);
 		}
 
 		
@@ -1120,7 +1180,7 @@ namespace Decompiler.Arch.Intel
 					int size = c.ToInt32();
 					state.GrowStack(size);
 					Identifier idBuf = frame.EnsureStackLocal(state.StackBytes, new StructureType(null, size));	
-					emitter.Assign(id, new UnaryExpression(Operator.addrOf, id.DataType, idBuf));
+					emitter.Assign(id, new UnaryExpression(Operator.AddrOf, id.DataType, idBuf));
 					return;
 				}
 			}
@@ -1172,7 +1232,7 @@ namespace Decompiler.Arch.Intel
 			emitter.Assign(
 				orw.FlagGroup(defFlags),
 				new ConditionOf(
-				new BinaryExpression(Operator.sub, 
+				new BinaryExpression(Operator.Sub, 
 				instrCur.op1.Width,
 				op1,
 				op2)));
@@ -1273,7 +1333,7 @@ namespace Decompiler.Arch.Intel
 			};
 			PrimitiveType p = ((PrimitiveType) regRemainder.DataType).MaskDomain(domain);
 			emitter.Assign(
-				regRemainder, new BinaryExpression(Operator.mod, p,
+				regRemainder, new BinaryExpression(Operator.Mod, p,
 				regDividend,
 				SrcOp(instrCur.op1)));
 			ass = emitter.Assign(
@@ -1291,7 +1351,7 @@ namespace Decompiler.Arch.Intel
             emitter.Assign(
                 orw.FlagGroup(FlagM.FPUF),
                 new ConditionOf(
-                    new BinaryExpression(Operator.sub, instrCur.dataWidth, op1, op2)));
+                    new BinaryExpression(Operator.Sub, instrCur.dataWidth, op1, op2)));
 			state.ShrinkFpuStack(pops);
 		}
 
@@ -1363,10 +1423,7 @@ namespace Decompiler.Arch.Intel
 		
 		private void EmitJump(Address addrInstr)
 		{
-			// Hard-code jumps to 0xFFFF:0x0000 in real mode to reboot.
-
-			AddressOperand addrOp = instrCur.op1 as AddressOperand;
-			if (addrOp != null && addrOp.addr.Linear == 0xFFFF0)
+            if (IsRealModeReboot(instrCur))
 			{
 				PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", PrimitiveType.Void, 0);
 				reboot.Characteristics = new Decompiler.Core.Serialization.ProcedureCharacteristics();
@@ -1375,7 +1432,7 @@ namespace Decompiler.Arch.Intel
 				return;
 			}
 
-			// Jumps to procedure are converted to calls -- but not if they are jumps
+			// Jumps to procedure are converted to call/return sequences -- but not if they are jumps
 			// to the same procedure!
 	
 			Procedure p = GetProcedureFromInstructionAddr(instrCur.op1, frame.ReturnAddressSize, false);
@@ -1409,6 +1466,14 @@ namespace Decompiler.Arch.Intel
 			EmitIndirectCall(addrInstr);
 			EmitReturnInstruction(0, 0);
 		}
+
+        private bool IsRealModeReboot(IntelInstruction instrCur)
+        {
+			// A jumps to 0xFFFF:0x0000 in real mode is a reboot.
+            AddressOperand addrOp = instrCur.op1 as AddressOperand;
+            bool isRealModeReboot = addrOp != null && addrOp.addr.Linear == 0xFFFF0;
+            return isRealModeReboot;
+        }
 
 
 		public void EmitLea()
@@ -1675,7 +1740,7 @@ namespace Decompiler.Arch.Intel
 				if (left)
 				{
 					sh = new BinaryExpression(
-						Operator.sub,
+						Operator.Sub,
 						instrCur.op2.Width,
 						new Constant(instrCur.op2.Width, instrCur.op1.Width.BitSize),
 						SrcOp(instrCur.op2));
@@ -1685,7 +1750,7 @@ namespace Decompiler.Arch.Intel
 					sh = SrcOp(instrCur.op2);
 				}
 				sh = new BinaryExpression(
-					Operator.shl,
+					Operator.Shl,
 					instrCur.op1.Width,
 					new Constant(instrCur.op1.Width, 1),
 					sh);

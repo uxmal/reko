@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,11 +30,6 @@ namespace Decompiler.UnitTests.Mocks
         private string lastFileName;
         private Form lastDialogShown;
 
-        public ContextMenu GetContextMenu(int menuId)
-        {
-            return new ContextMenu();
-        }
-
         public void ShowError(Exception ex, string format, params object[] args)
         {
             throw new ApplicationException(string.Format(format, args), ex);
@@ -60,12 +55,18 @@ namespace Decompiler.UnitTests.Mocks
 
         public string ShowSaveFileDialog(string fileName)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         // Fake members ///////
 
         public string OpenFileResult
+        {
+            get { return lastFileName; }
+            set { lastFileName = value; }
+        }
+
+        public string SaveFileResult
         {
             get { return lastFileName; }
             set { lastFileName = value; }
@@ -84,4 +85,40 @@ namespace Decompiler.UnitTests.Mocks
             get { return lastDialogShown; }
         }
     }
+
+    public class FakeShellUiService : 
+        FakeUiService,
+        IDecompilerShellUiService,
+        ICommandTarget
+    {
+        public ContextMenu GetContextMenu(int menuId)
+        {
+            return new ContextMenu();
+        }
+
+        public IWindowFrame FindWindow(string windowType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane)
+        {
+            throw new NotImplementedException();
+        }
+
+        #region ICommandTarget Members
+
+        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        {
+            return false;
+        }
+
+        public bool Execute(ref Guid cmdSet, int cmdId)
+        {
+            return false;
+        }
+
+        #endregion
+    }
+
 }

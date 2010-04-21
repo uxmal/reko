@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,60 +27,60 @@ using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Arch.Intel
 {
-	[TestFixture]
-	public class IntelRewriterTests
-	{
-		private IntelArchitecture arch;
-		private Procedure proc;
+    [TestFixture]
+    public class IntelRewriterTests
+    {
+        private IntelArchitecture arch;
+        private Procedure proc;
         private FakeRewriterHost host;
         private IntelRewriterState state;
-		private Program prog;
-		private TestRewriter rw;
+        private Program prog;
+        private TestRewriter rw;
 
-		public IntelRewriterTests()
-		{
-			 arch = new IntelArchitecture(ProcessorMode.Real);
-		}
+        public IntelRewriterTests()
+        {
+            arch = new IntelArchitecture(ProcessorMode.Real);
+        }
 
-		[SetUp]
-		public void Setup()
-		{
-			prog = new Program();
+        [SetUp]
+        public void Setup()
+        {
+            prog = new Program();
             prog.Architecture = arch;
             proc = new Procedure("test", arch.CreateFrame());
             host = new FakeRewriterHost(prog);
-			state = new IntelRewriterState(proc.Frame);
+            state = new IntelRewriterState(proc.Frame);
 
-			rw = new TestRewriter(new FakeProcedureRewriter(arch, host, proc), proc, host, arch, state);
-		}
+            rw = new TestRewriter(new FakeProcedureRewriter(arch, host, proc), proc, host, arch, state);
+        }
 
-		[Test]
-		public void RewriteIndirectCall()
-		{
+        [Test]
+        public void RewriteIndirectCall()
+        {
             IntelInstruction instr = new IntelInstruction(
                 Opcode.call,
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 new MemoryOperand(PrimitiveType.Word16, Registers.bx, new Constant(PrimitiveType.Word16, 4)));
-			Address addr = new Address(0x0C00, 0x0100);
+            Address addr = new Address(0x0C00, 0x0100);
 
-			host.AddCallSignature(addr, new ProcedureSignature(
+            host.AddCallSignature(addr, new ProcedureSignature(
                 Reg(Registers.ax),
-				new Identifier[] { Reg(Registers.cx) }));
+                new Identifier[] { Reg(Registers.cx) }));
 
             Procedure proc = new Procedure("test", arch.CreateFrame());
             rw.ConvertInstructions(instr);
-			Assert.AreEqual("ax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)", rw.Block.Statements[0].Instruction.ToString());
-		}
+            Assert.AreEqual("ax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)", rw.Block.Statements[0].Instruction.ToString());
+        }
 
         private Identifier Reg(IntelRegister r)
         {
             return new Identifier(r.Name, 0, r.DataType, new RegisterStorage(r));
         }
 
-		[Test]
-		public void RewriteLesBxStack()
-		{
+        [Test]
+        public void RewriteLesBxStack()
+        {
             IntelInstruction instr = new IntelInstruction(
                 Opcode.les,
                 PrimitiveType.Word16,
@@ -88,178 +88,178 @@ namespace Decompiler.UnitTests.Arch.Intel
                 new RegisterOperand(Registers.bx),
                 new MemoryOperand(PrimitiveType.Word32, Registers.bp, new Constant(PrimitiveType.Word16, 6)));
 
-			state.FrameRegister = Registers.bp;
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual("es_bx = dwArg06", rw.Block.Statements.Last.Instruction.ToString());
-			Assignment ass = (Assignment) rw.Block.Statements.Last.Instruction;
-			Assert.AreSame(PrimitiveType.Pointer32, ass.Src.DataType);
-		}
+            state.FrameRegister = Registers.bp;
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual("es_bx = dwArg06", rw.Block.Statements.Last.Instruction.ToString());
+            Assignment ass = (Assignment)rw.Block.Statements.Last.Instruction;
+            Assert.AreSame(PrimitiveType.Pointer32, ass.Src.DataType);
+        }
 
-		[Test]
-		public void RewriteBswap()
-		{
+        [Test]
+        public void RewriteBswap()
+        {
             IntelInstruction instr = new IntelInstruction(
                 Opcode.bswap,
                 PrimitiveType.Word32,
                 PrimitiveType.Word32,
                 new RegisterOperand(Registers.ebx));
 
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual("ebx = __bswap(ebx)", rw.Block.Statements.Last.Instruction.ToString());
-		}
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual("ebx = __bswap(ebx)", rw.Block.Statements.Last.Instruction.ToString());
+        }
 
-		[Test]
-		public void RewriterNearReturn()
-		{
+        [Test]
+        public void RewriterNearReturn()
+        {
             IntelInstruction instr = new IntelInstruction(
                 Opcode.ret,
                 PrimitiveType.Word16,
                 PrimitiveType.Word16);
 
-			proc.Frame.ReturnAddressSize = 2;
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual(2, proc.Frame.ReturnAddressSize);
-		}
+            proc.Frame.ReturnAddressSize = 2;
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual(2, proc.Frame.ReturnAddressSize);
+        }
 
 
-		[Test]
-		public void RewriteFiadd()
-		{
-			IntelInstruction instr = new IntelInstruction(
-				Opcode.fiadd,
-				PrimitiveType.Word16,
-				PrimitiveType.Word16,
-				new MemoryOperand(PrimitiveType.Word16, Registers.bx, Constant.Invalid));
+        [Test]
+        public void RewriteFiadd()
+        {
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.fiadd,
+                PrimitiveType.Word16,
+                PrimitiveType.Word16,
+                new MemoryOperand(PrimitiveType.Word16, Registers.bx, Constant.Invalid));
 
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual("rArg0 = rArg0 + (real64) Mem0[ds:bx:word16]", rw.Block.Statements[0].Instruction.ToString());
-		}
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual("rArg0 = rArg0 + (real64) Mem0[ds:bx:word16]", rw.Block.Statements[0].Instruction.ToString());
+        }
 
-		/// <summary>
-		/// Captures the side effect of setting CF = 0
-		/// </summary>
-		[Test]
-		public void RewriteAnd()
-		{
+        /// <summary>
+        /// Captures the side effect of setting CF = 0
+        /// </summary>
+        [Test]
+        public void RewriteAnd()
+        {
             IntelInstruction instr = new IntelInstruction(
                 Opcode.and, PrimitiveType.Word16, PrimitiveType.Word16,
                 new RegisterOperand(Registers.ax),
                 new ImmediateOperand(Constant.Word16(0x08)));
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual(3, rw.Block.Statements.Count);
-			Assert.AreEqual("ax = ax & 0x0008", rw.Block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("SCZO = cond(ax)", rw.Block.Statements[1].Instruction.ToString());
-			Assert.AreEqual("C = false", rw.Block.Statements[2].Instruction.ToString());
-		}
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual(3, rw.Block.Statements.Count);
+            Assert.AreEqual("ax = ax & 0x0008", rw.Block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("SCZO = cond(ax)", rw.Block.Statements[1].Instruction.ToString());
+            Assert.AreEqual("C = false", rw.Block.Statements[2].Instruction.ToString());
+        }
 
-		/// <summary>
-		/// Captures the side effect of setting CF = 0
-		/// </summary>
-		[Test]
-		public void RewriteTest()
-		{
-			IntelInstruction instr = new IntelInstruction(
-				Opcode.test, PrimitiveType.Word16, PrimitiveType.Word16,
-				new RegisterOperand(Registers.ax),
-				new ImmediateOperand(Constant.Word16(0x08)));
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual(2, rw.Block.Statements.Count);
-			Assert.AreEqual("SCZO = cond(ax & 0x0008)", rw.Block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("C = false", rw.Block.Statements[1].Instruction.ToString());
-		}
+        /// <summary>
+        /// Captures the side effect of setting CF = 0
+        /// </summary>
+        [Test]
+        public void RewriteTest()
+        {
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.test, PrimitiveType.Word16, PrimitiveType.Word16,
+                new RegisterOperand(Registers.ax),
+                new ImmediateOperand(Constant.Word16(0x08)));
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual(2, rw.Block.Statements.Count);
+            Assert.AreEqual("SCZO = cond(ax & 0x0008)", rw.Block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("C = false", rw.Block.Statements[1].Instruction.ToString());
+        }
 
-		[Test]
-		public void RewritePushCsCallNear()
-		{
-			Address addrProc = new Address(0xC00, 0x1234);
+        [Test]
+        public void RewritePushCsCallNear()
+        {
+            Address addrProc = new Address(0xC00, 0x1234);
             host.AddProcedureAtAddress(addrProc, new Procedure("test", arch.CreateFrame()));
-			state.InstructionAddress = new Address(addrProc.Selector, 0);
+            state.InstructionAddress = new Address(addrProc.Selector, 0);
 
-			IntelInstruction push = new IntelInstruction(
-				Opcode.push, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cs));
-			IntelInstruction call = new IntelInstruction(
-				Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word16, addrProc.Offset)));
-			rw.ConvertInstructions(push, call);
-			Assert.AreEqual(1, rw.Block.Statements.Count);
-			Assert.AreEqual("call test (depth: 2;)", rw.Block.Statements[0].Instruction.ToString());
-		}
+            IntelInstruction push = new IntelInstruction(
+                Opcode.push, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cs));
+            IntelInstruction call = new IntelInstruction(
+                Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word16, addrProc.Offset)));
+            rw.ConvertInstructions(push, call);
+            Assert.AreEqual(1, rw.Block.Statements.Count);
+            Assert.AreEqual("call test (depth: 2;)", rw.Block.Statements[0].Instruction.ToString());
+        }
 
-		[Test]
-		public void RewriteImul()
-		{
-			IntelInstruction instr = new IntelInstruction(
-				Opcode.imul, PrimitiveType.Word32, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual(2, rw.Block.Statements.Count);
-			Assignment ass = (Assignment) rw.Block.Statements[0].Instruction;
-			Assert.AreEqual("dx_ax = cx *s ax", ass.ToString());
-			BinaryExpression bin = (BinaryExpression) ass.Src;
-			Assert.AreEqual("int32", bin.DataType.ToString());
-		}
+        [Test]
+        public void RewriteImul()
+        {
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.imul, PrimitiveType.Word32, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual(2, rw.Block.Statements.Count);
+            Assignment ass = (Assignment)rw.Block.Statements[0].Instruction;
+            Assert.AreEqual("dx_ax = cx *s ax", ass.ToString());
+            BinaryExpression bin = (BinaryExpression)ass.Src;
+            Assert.AreEqual("int32", bin.DataType.ToString());
+        }
 
-		[Test]
-		public void RewriteMul()
-		{
-			IntelInstruction instr = new IntelInstruction(
-				Opcode.mul, PrimitiveType.Word32, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual(2, rw.Block.Statements.Count);
-			Assignment ass = (Assignment) rw.Block.Statements[0].Instruction;
-			Assert.AreEqual("dx_ax = cx *u ax", ass.ToString());
-			BinaryExpression bin = (BinaryExpression) ass.Src;
-			Assert.AreEqual("uint32", bin.DataType.ToString());
-		}
+        [Test]
+        public void RewriteMul()
+        {
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.mul, PrimitiveType.Word32, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual(2, rw.Block.Statements.Count);
+            Assignment ass = (Assignment)rw.Block.Statements[0].Instruction;
+            Assert.AreEqual("dx_ax = cx *u ax", ass.ToString());
+            BinaryExpression bin = (BinaryExpression)ass.Src;
+            Assert.AreEqual("uint32", bin.DataType.ToString());
+        }
 
-		[Test]
-		public void RewriteFmul()
-		{
-			IntelInstruction instr = new IntelInstruction(
-				Opcode.fmul, PrimitiveType.Real64, PrimitiveType.Word16, new FpuOperand(1));
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual(1, rw.Block.Statements.Count);
-			Assignment ass = (Assignment) rw.Block.Statements[0].Instruction;
-			Assert.AreEqual("rArg0 = rArg0 *s rArg1", ass.ToString());
-			BinaryExpression bin = (BinaryExpression) ass.Src;
-			Assert.AreEqual("real64", bin.DataType.ToString());
-		}
+        [Test]
+        public void RewriteFmul()
+        {
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.fmul, PrimitiveType.Real64, PrimitiveType.Word16, new FpuOperand(1));
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual(1, rw.Block.Statements.Count);
+            Assignment ass = (Assignment)rw.Block.Statements[0].Instruction;
+            Assert.AreEqual("rArg0 = rArg0 *s rArg1", ass.ToString());
+            BinaryExpression bin = (BinaryExpression)ass.Src;
+            Assert.AreEqual("real64", bin.DataType.ToString());
+        }
 
-		[Test]
-		public void RewriteDivWithRemainder()
-		{
-			IntelInstruction instr = new IntelInstruction(
-				Opcode.div, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual(3, rw.Block.Statements.Count);
-			Assignment a2 = (Assignment) rw.Block.Statements[0].Instruction;
-			Assert.AreEqual("dx = dx_ax % cx", a2.ToString());
-			BinaryExpression mod = (BinaryExpression) a2.Src;
-			Assert.AreEqual("uint16", mod.DataType.ToString());
-		}
+        [Test]
+        public void RewriteDivWithRemainder()
+        {
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.div, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual(3, rw.Block.Statements.Count);
+            Assignment a2 = (Assignment)rw.Block.Statements[0].Instruction;
+            Assert.AreEqual("dx = dx_ax % cx", a2.ToString());
+            BinaryExpression mod = (BinaryExpression)a2.Src;
+            Assert.AreEqual("uint16", mod.DataType.ToString());
+        }
 
-		[Test]
-		public void RewriteIdivWithRemainder()
-		{
-			IntelInstruction instr = new IntelInstruction(
-				Opcode.idiv, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
-			rw.ConvertInstructions(instr);
-			Assert.AreEqual(3, rw.Block.Statements.Count);
-			Assignment a2 = (Assignment) rw.Block.Statements[0].Instruction;
-			Assert.AreEqual("dx = dx_ax % cx", a2.ToString());
-			BinaryExpression mod = (BinaryExpression) a2.Src;
-			Assert.AreEqual("int16", mod.DataType.ToString());
+        [Test]
+        public void RewriteIdivWithRemainder()
+        {
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.idiv, PrimitiveType.Word16, PrimitiveType.Word16, new RegisterOperand(Registers.cx));
+            rw.ConvertInstructions(instr);
+            Assert.AreEqual(3, rw.Block.Statements.Count);
+            Assignment a2 = (Assignment)rw.Block.Statements[0].Instruction;
+            Assert.AreEqual("dx = dx_ax % cx", a2.ToString());
+            BinaryExpression mod = (BinaryExpression)a2.Src;
+            Assert.AreEqual("int16", mod.DataType.ToString());
 
-		}
+        }
 
-		[Test]
-		public void RewriteBsr()
-		{
-			IntelInstruction instr = new IntelInstruction(
-				Opcode.bsr, PrimitiveType.Word32, PrimitiveType.Word32, new RegisterOperand(Registers.ecx), new RegisterOperand(Registers.eax));
-			rw.ConvertInstructions(instr);
-//			Assert.AreEqual(1, rw.Block.Statements.Count);
-			Assert.AreEqual("Z = eax == 0x00000000", rw.Block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("ecx = __bsr(eax)", rw.Block.Statements[1].Instruction.ToString());
-		}
+        [Test]
+        public void RewriteBsr()
+        {
+            IntelInstruction instr = new IntelInstruction(
+                Opcode.bsr, PrimitiveType.Word32, PrimitiveType.Word32, new RegisterOperand(Registers.ecx), new RegisterOperand(Registers.eax));
+            rw.ConvertInstructions(instr);
+            //			Assert.AreEqual(1, rw.Block.Statements.Count);
+            Assert.AreEqual("Z = eax == 0x00000000", rw.Block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("ecx = __bsr(eax)", rw.Block.Statements[1].Instruction.ToString());
+        }
 
         [Test]
         public void RewriteIndirectCalls()
@@ -273,7 +273,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 new IntelInstruction(
                     Opcode.call, PrimitiveType.Word16, PrimitiveType.Word16, new MemoryOperand(PrimitiveType.Pointer32, Registers.bx, new Constant(PrimitiveType.Word16, 0)))
             });
-        
+
             Assert.AreEqual("icall SEQ(cs, bx)", rw.Block.Statements[0].Instruction.ToString());
             Assert.AreEqual("icall SEQ(cs, Mem0[ds:bx + 0x0000:word16])", rw.Block.Statements[1].Instruction.ToString());
             Assert.AreEqual("icall Mem0[ds:bx + 0x0000:ptr32]", rw.Block.Statements[2].Instruction.ToString());
@@ -297,9 +297,38 @@ namespace Decompiler.UnitTests.Arch.Intel
                 new IntelInstruction(Opcode.jpe, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word32, 0x100))),
                 new IntelInstruction(Opcode.jpo, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word32, 0x102)))
                 );
-            Assert.AreEqual("@@@", rw.Block.Statements[0].Instruction.ToString());
-            Assert.AreEqual("@@@", rw.Block.Statements[1].Instruction.ToString());
+            Assert.AreEqual("branch Test(PE,P) l0C00_0100", rw.Block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("branch Test(PO,P) l0C00_0102", rw.Block.Statements[1].Instruction.ToString());
         }
+    }
+
+    public class FakeProcedureRewriter : IProcedureRewriter
+    {
+        private IProcessorArchitecture arch;
+        private IRewriterHost host;
+        private Procedure proc;
+
+        public FakeProcedureRewriter(IProcessorArchitecture arch, IRewriterHost host, Procedure proc)
+        {
+            this.arch = arch;
+            this.host = host;
+            this.proc = proc;
+        }
+
+        #region IProcedureRewriter Members
+
+        public Block RewriteBlock(Address addr, Block prev, Rewriter rewriter)
+        {
+            return new Block(proc, addr.GenerateName("l", ""));
+        }
+
+        public CodeEmitter CreateEmitter(Block block)
+        {
+            return new CodeEmitter(arch, host, proc, block);
+        }
+
+        #endregion
+    }
 
         public class TestRewriter : IntelRewriter
         {
@@ -337,32 +366,4 @@ namespace Decompiler.UnitTests.Arch.Intel
             }
         }
 
-        public class FakeProcedureRewriter : IProcedureRewriter
-        {
-            private IProcessorArchitecture arch;
-            private IRewriterHost host;
-            private Procedure proc;
-
-            public FakeProcedureRewriter(IProcessorArchitecture arch, IRewriterHost host, Procedure proc)
-            {
-                this.arch = arch;
-                this.host = host;
-                this.proc = proc;
-            }
-
-            #region IProcedureRewriter Members
-
-            public Block RewriteBlock(Address addr, Block prev, Rewriter rewriter)
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-
-            public CodeEmitter CreateEmitter(Block block)
-            {
-                return new CodeEmitter(arch, host, proc, block);
-            }
-
-            #endregion
-        }
-	}
 }

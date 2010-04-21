@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,8 @@ namespace Decompiler.UnitTests.Core
 			Identifier id2 = new Identifier("v2", 2, PrimitiveType.Word16, null);
 
 			Expression e = new BinaryExpression(
-				Operator.mul, PrimitiveType.Word16, new BinaryExpression(
-				Operator.add, PrimitiveType.Word16, id1, id2), new Constant(PrimitiveType.Word16, 2));
+				Operator.Mul, PrimitiveType.Word16, new BinaryExpression(
+				Operator.Add, PrimitiveType.Word16, id1, id2), new Constant(PrimitiveType.Word16, 2));
 			e.Accept(cf);
 
 			Assert.AreEqual("(v1 + v2) * 0x0002", sw.ToString());
@@ -57,8 +57,8 @@ namespace Decompiler.UnitTests.Core
 			Identifier id2 = new Identifier("v2", 2, PrimitiveType.Word16, null);
 
 			Expression e = new BinaryExpression(
-				Operator.add, PrimitiveType.Word16, new BinaryExpression(
-				Operator.mul, PrimitiveType.Word16, id1, id2), new Constant(PrimitiveType.Word16, 2));
+				Operator.Add, PrimitiveType.Word16, new BinaryExpression(
+				Operator.Mul, PrimitiveType.Word16, id1, id2), new Constant(PrimitiveType.Word16, 2));
 			e.Accept(cf);
 
 			Assert.AreEqual("v1 * v2 + 0x0002", sw.ToString());

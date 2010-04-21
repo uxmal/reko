@@ -39,7 +39,6 @@ dx_ax:Sequence dx:ax
 wLoc04_10: orig: wLoc04
 SCZO_11: orig: SCZO
 SZO_12: orig: SZO
-    uses: branch cx <= 0x0001 l0C00_001C
 ax_13: orig: ax
     def:  ax_13 = 0x0001
     uses: ax_25 = PHI(ax_13, ax_19)

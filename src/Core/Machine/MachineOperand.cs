@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -117,7 +117,17 @@ namespace Decompiler.Core.Machine
 		{
 			get { return value; }
 		}
-	}
+
+        public static ImmediateOperand Byte(byte value)
+        {
+            return new ImmediateOperand(Constant.Byte(value));
+        }
+
+        public static ImmediateOperand Word32(int value)
+        {
+            return new ImmediateOperand(Constant.Word32(value));
+        }
+    }
 
     //$TODO: move into intel assembly.
 	public class AddressOperand : MachineOperand

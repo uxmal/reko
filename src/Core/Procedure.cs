@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,8 +49,8 @@ namespace Decompiler.Core
             this.controlGraph = new DirectedGraphImpl<Block>();
 			this.frame = frame;
 			this.signature = new ProcedureSignature();
-			this.blockEntry = AddBlock(Name + "_entry");		// Entry block
-			this.blockExit = AddBlock(Name + "_exit");		// Exit block.
+			this.blockEntry = AddBlock(Name + "_entry");	
+			this.blockExit = AddBlock(Name + "_exit");
 		}
 
 		public List<AbsynStatement> Body
@@ -96,6 +96,11 @@ namespace Decompiler.Core
 		{
 		}
 #endif
+
+        public BlockDominatorGraph CreateBlockDominatorGraph()
+        {
+            return new BlockDominatorGraph(new BlockGraph(RpoBlocks), EntryBlock);
+        }
 
 		public Block EntryBlock
 		{
@@ -238,6 +243,7 @@ namespace Decompiler.Core
         {
             block.Succ.Add(blockTo);
             blockTo.Pred.Add(block);
+            controlGraph.AddEdge(block, blockTo);
         }
 
         [Obsolete("Change references to ControlGraph")]
@@ -248,6 +254,7 @@ namespace Decompiler.Core
                 from.Succ.Remove(to);
                 to.Pred.Remove(from);
             }
+            controlGraph.RemoveEdge(from, to);
         }
     }
 }

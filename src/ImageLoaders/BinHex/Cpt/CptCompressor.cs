@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,7 +92,6 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
         delegate int BitGetter();
         BitGetter get_bit;
         HuffNode[] nodelist = new HuffNode[515]; // 515 because StuffIt Classic needs more than the needed 511
-        private int nodeptr = 0;
 
 
         int gethuffbyte(HuffNode l_nodelist)

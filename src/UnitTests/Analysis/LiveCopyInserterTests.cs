@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -167,7 +167,7 @@ namespace Decompiler.UnitTests.Analysis
 			this.proc = proc;
 			Aliases alias = new Aliases(proc, arch);
 			alias.Transform();
-			DominatorGraph gr = new DominatorGraph(proc);
+			var gr = proc.CreateBlockDominatorGraph();
 			SsaTransform sst = new SsaTransform(proc, gr, false);
 			SsaState ssa = sst.SsaState;
 			this.ssaIds = ssa.Identifiers;

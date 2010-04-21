@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Assemblers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Arch.Pdp11
@@ -28,12 +29,17 @@ namespace Decompiler.Arch.Pdp11
     {
         public void Assemble(Address baseAddress, string sourcefile)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
+        }
+
+        public void Assemble(Address baseAddress, TextReader rdr)
+        {
+            throw new NotImplementedException();
         }
 
         public void AssembleFragment(Address baseAddress, string fragment)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public IProcessorArchitecture Architecture
@@ -58,12 +64,12 @@ namespace Decompiler.Arch.Pdp11
 
         public Address StartAddress
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public Dictionary<uint, PseudoProcedure> ImportThunks
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
     }
 }

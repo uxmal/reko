@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace Decompiler.Assemblers.x86
 		CALL, RET, INT,
 		ENTER, LEAVE,
 		JMP,
-		JZ, JNZ, JA, JBE, JC, JCXZ, JNC, JNS, JL, JLE, JG, JGE, JS, JO, JNO, LOOP, LOOPE, LOOPNE,
+		JZ, JNZ, JA, JBE, JC, JCXZ, JNC, JNS, JL, JLE, JG, JGE, JS, JO, JNO, JPO, JPE, LOOP, LOOPE, LOOPNE,
 		SETNZ, SETZ,
 		IN, OUT,			
 		CMPSB, CMPSW, MOVSB, MOVSD, MOVSW, LODSB, LODSW, LODSD, SCASB, SCASW, STOSB, STOSW, REP,

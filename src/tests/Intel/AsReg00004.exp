@@ -1,21 +1,21 @@
 10000000 8B 44 24 04 53 8B 5C 24 0A 55 0F BF 48 06 0F BF .D$.S.\$.U..H...
 10000010 50 02 8B 6C 24 10 2B CA 8B 54 24 18 89 0B 0F BF P..l$.+..T$.....
 10000020 48 04 0F BF 00 2B C8 85 ED 89 4C 24 14 89 0A 0F H....+....L$....
-10000030 84 D0 00 00 00 DD 03 56 57 33 F6 BF A0 86 01 00 .......VW3......
+10000030 84 D2 00 00 00 DD 03 56 57 33 F6 BF A0 86 01 00 .......VW3......
 10000040 D9 5C 24 14 DD 44 24 1C D9 44 24 14 DC 0D 8A 18 .\$..D$..D$.....
-10000050 99 00 46 D9 54 24 14 E8 AC 00 00 00 8B C8 89 4C ..F.T$.........L
+10000050 99 00 46 D9 54 24 14 E8 AE 00 00 00 8B C8 89 4C ..F.T$.........L
 10000060 24 1C DD 44 24 1C D8 5C 24 14 66 DF E0 F6 C4 40 $..D$..\$.f....@
 10000070 75 0D 41 89 4C 24 14 DD 44 24 14 D9 5C 24 14 DC u.A.L$..D$..\$..
-10000080 0D 90 32 03 10 D9 C0 E8 7C 00 00 00 8B C8 89 4C ..2.....|......L
-10000090 24 1C DD 44 24 1C D9 C1 66 DF E0 F6 C4 40 75 0B $..D$...f....@u.
-100000A0 41 DD D8 89 4C 24 1C DD 44 24 1C D9 44 24 14 DC A...L$..D$..D$..
-100000B0 1D 98 32 03 10 66 DF E0 F6 C4 40 74 18 DC 15 98 ..2..f....@t....
-100000C0 32 03 10 66 DF E0 F6 C4 40 74 0A 81 FF A0 86 01 2..f....@t......
-100000D0 00 75 02 8B FE 3B F5 0F 8C 6B FF FF FF D9 44 24 .u...;...k....D$
-100000E0 14 E8 22 00 00 00 89 03 E8 1B 00 00 00 8B 4C 24 .."...........L$
-100000F0 20 3B EF 5F 5E 89 01 7E 0C C7 03 00 00 00 00 C7  ;._^..~........
-10000100 01 00 00 00 00 5D 5B C3 D9 5C 24 FC 8B 44 24 FC .....][..\$..D$.
-10000110 C3                                              .
+10000080 0D 90 32 03 10 D9 C0 E8 7E 00 00 00 8B C8 89 4C ..2.....~......L
+10000090 24 1C DD 44 24 1C D9 C1 DE D9 66 DF E0 F6 C4 40 $..D$.....f....@
+100000A0 75 0B 41 DD D8 89 4C 24 1C DD 44 24 1C D9 44 24 u.A...L$..D$..D$
+100000B0 14 DC 1D 98 32 03 10 66 DF E0 F6 C4 40 74 18 DC ....2..f....@t..
+100000C0 15 98 32 03 10 66 DF E0 F6 C4 40 74 0A 81 FF A0 ..2..f....@t....
+100000D0 86 01 00 75 02 8B FE 3B F5 0F 8C 69 FF FF FF D9 ...u...;...i....
+100000E0 44 24 14 E8 22 00 00 00 89 03 E8 1B 00 00 00 8B D$.."...........
+100000F0 4C 24 20 3B EF 5F 5E 89 01 7E 0C C7 03 00 00 00 L$ ;._^..~......
+10000100 00 C7 01 00 00 00 00 5D 5B C3 D9 5C 24 FC 8B 44 .......][..\$..D
+10000110 24 FC C3                                        $..
 
 10000000 8B 44 24 04     	mov	eax,[esp+04]
 10000004 53              	push	ebx
@@ -33,7 +33,7 @@
 10000027 85 ED           	test	ebp,ebp
 10000029 89 4C 24 14     	mov	dword ptr [esp+14],ecx
 1000002D 89 0A           	mov	dword ptr [edx],ecx
-1000002F 0F 84 D0 00 00 00 	jz	10000105
+1000002F 0F 84 D2 00 00 00 	jz	10000107
 10000035 DD 03           	fld	double ptr [ebx]
 10000037 56              	push	esi
 10000038 57              	push	edi
@@ -45,7 +45,7 @@
 1000004C DC 0D 8A 18 99 00 	fmul	double ptr [0099188A]
 10000052 46              	inc	esi
 10000053 D9 54 24 14     	fst	dword ptr [esp+14]
-10000057 E8 AC 00 00 00  	call	10000108
+10000057 E8 AE 00 00 00  	call	1000010A
 1000005C 8B C8           	mov	ecx,eax
 1000005E 89 4C 24 1C     	mov	dword ptr [esp+1C],ecx
 10000062 DD 44 24 1C     	fld	double ptr [esp+1C]
@@ -59,47 +59,48 @@
 1000007B D9 5C 24 14     	fstp	dword ptr [esp+14]
 1000007F DC 0D 90 32 03 10 	fmul	double ptr [10033290]
 10000085 D9 C0           	fld	st(0)
-10000087 E8 7C 00 00 00  	call	10000108
+10000087 E8 7E 00 00 00  	call	1000010A
 1000008C 8B C8           	mov	ecx,eax
 1000008E 89 4C 24 1C     	mov	dword ptr [esp+1C],ecx
 10000092 DD 44 24 1C     	fld	double ptr [esp+1C]
 10000096 D9 C1           	fld	st(1)
-10000098 66 DF E0        	fstsw	ax
-1000009B F6 C4 40        	test	ah,40
-1000009E 75 0B           	jnz	100000AB
-100000A0 41              	inc	ecx
-100000A1 DD D8           	fstp	st(0)
-100000A3 89 4C 24 1C     	mov	dword ptr [esp+1C],ecx
-100000A7 DD 44 24 1C     	fld	double ptr [esp+1C]
-100000AB D9 44 24 14     	fld	dword ptr [esp+14]
-100000AF DC 1D 98 32 03 10 	fcomp	double ptr [10033298]
-100000B5 66 DF E0        	fstsw	ax
-100000B8 F6 C4 40        	test	ah,40
-100000BB 74 18           	jz	100000D5
-100000BD DC 15 98 32 03 10 	fcom	double ptr [10033298]
-100000C3 66 DF E0        	fstsw	ax
-100000C6 F6 C4 40        	test	ah,40
-100000C9 74 0A           	jz	100000D5
-100000CB 81 FF A0 86 01 00 	cmp	edi,000186A0
-100000D1 75 02           	jnz	100000D5
-100000D3 8B FE           	mov	edi,esi
-100000D5 3B F5           	cmp	esi,ebp
-100000D7 0F 8C 6B FF FF FF 	jl	10000048
-100000DD D9 44 24 14     	fld	dword ptr [esp+14]
-100000E1 E8 22 00 00 00  	call	10000108
-100000E6 89 03           	mov	dword ptr [ebx],eax
-100000E8 E8 1B 00 00 00  	call	10000108
-100000ED 8B 4C 24 20     	mov	ecx,[esp+20]
-100000F1 3B EF           	cmp	ebp,edi
-100000F3 5F              	pop	edi
-100000F4 5E              	pop	esi
-100000F5 89 01           	mov	dword ptr [ecx],eax
-100000F7 7E 0C           	jle	10000105
-100000F9 C7 03 00 00 00 00 	mov	dword ptr [ebx],00000000
-100000FF C7 01 00 00 00 00 	mov	dword ptr [ecx],00000000
-10000105 5D              	pop	ebp
-10000106 5B              	pop	ebx
-10000107 C3              	ret	
-10000108 D9 5C 24 FC     	fstp	dword ptr [esp-04]
-1000010C 8B 44 24 FC     	mov	eax,[esp-04]
-10000110 C3              	ret	
+10000098 DE D9           	fcompp	
+1000009A 66 DF E0        	fstsw	ax
+1000009D F6 C4 40        	test	ah,40
+100000A0 75 0B           	jnz	100000AD
+100000A2 41              	inc	ecx
+100000A3 DD D8           	fstp	st(0)
+100000A5 89 4C 24 1C     	mov	dword ptr [esp+1C],ecx
+100000A9 DD 44 24 1C     	fld	double ptr [esp+1C]
+100000AD D9 44 24 14     	fld	dword ptr [esp+14]
+100000B1 DC 1D 98 32 03 10 	fcomp	double ptr [10033298]
+100000B7 66 DF E0        	fstsw	ax
+100000BA F6 C4 40        	test	ah,40
+100000BD 74 18           	jz	100000D7
+100000BF DC 15 98 32 03 10 	fcom	double ptr [10033298]
+100000C5 66 DF E0        	fstsw	ax
+100000C8 F6 C4 40        	test	ah,40
+100000CB 74 0A           	jz	100000D7
+100000CD 81 FF A0 86 01 00 	cmp	edi,000186A0
+100000D3 75 02           	jnz	100000D7
+100000D5 8B FE           	mov	edi,esi
+100000D7 3B F5           	cmp	esi,ebp
+100000D9 0F 8C 69 FF FF FF 	jl	10000048
+100000DF D9 44 24 14     	fld	dword ptr [esp+14]
+100000E3 E8 22 00 00 00  	call	1000010A
+100000E8 89 03           	mov	dword ptr [ebx],eax
+100000EA E8 1B 00 00 00  	call	1000010A
+100000EF 8B 4C 24 20     	mov	ecx,[esp+20]
+100000F3 3B EF           	cmp	ebp,edi
+100000F5 5F              	pop	edi
+100000F6 5E              	pop	esi
+100000F7 89 01           	mov	dword ptr [ecx],eax
+100000F9 7E 0C           	jle	10000107
+100000FB C7 03 00 00 00 00 	mov	dword ptr [ebx],00000000
+10000101 C7 01 00 00 00 00 	mov	dword ptr [ecx],00000000
+10000107 5D              	pop	ebp
+10000108 5B              	pop	ebx
+10000109 C3              	ret	
+1000010A D9 5C 24 FC     	fstp	dword ptr [esp-04]
+1000010E 8B 44 24 FC     	mov	eax,[esp-04]
+10000112 C3              	ret	

@@ -12,14 +12,16 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void UnstructuredJumpOutOfLoop()
         {
-            string sExp = 
+            string sExp =
 @"Node 1: Block: ProcedureMock_entry
-    Order: 6, RevOrder 0
-    Structure type: Seq
+    Order: 6
+    Interval: 0
+    Structure type:
     Unstructured type: Structured
-loopheader
+    Succ: loopheader
 Node 2: Block: loopheader
-    Order: 5, RevOrder 2
+    Order: 5
+    Interval: 1
     Structure type: LoopCond
     Loop header:loopheader
     Latch: l2
@@ -27,30 +29,30 @@ Node 2: Block: loopheader
     Unstructured type: JumpInOutLoop
 l1,done
 Node 4: Block: l1
-    Order: 3, RevOrder 3
+    Order: 3
     Structure type: Cond
     Loop header:loopheader
     Cond follow: unstructuredexit
     Unstructured type: JumpInOutLoop
 l2,unstructuredexit
 Node 7: Block: l2
-    Order: 0, RevOrder 1
+    Order: 0
     Structure type: Seq
     Loop header:loopheader
     Unstructured type: Structured
 loopheader
 Node 5: Block: unstructuredexit
-    Order: 2, RevOrder 5
+    Order: 2
     Structure type: Seq
     Unstructured type: Structured
 ProcedureMock_exit
 Node 6: Block: ProcedureMock_exit
-    Order: 1, RevOrder 6
+    Order: 1
     Structure type: Seq
     Unstructured type: Structured
 
 Node 3: Block: done
-    Order: 4, RevOrder 4
+    Order: 4
     Structure type: Seq
     Unstructured type: Structured
 unstructuredexit

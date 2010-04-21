@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ using Block = Decompiler.Core.Block;
 using CallInstruction = Decompiler.Core.Code.CallInstruction;
 using CallRewriter = Decompiler.Core.CallRewriter;
 using CallSite = Decompiler.Core.Code.CallSite;
-using DominatorGraph = Decompiler.Core.DominatorGraph;
 using Debug = System.Diagnostics.Debug;
 using Expression = Decompiler.Core.Code.Expression;
 using FpuStackStorage = Decompiler.Core.FpuStackStorage;

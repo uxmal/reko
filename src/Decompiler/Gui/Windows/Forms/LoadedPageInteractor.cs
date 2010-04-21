@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,13 +39,11 @@ namespace Decompiler.Gui.Windows.Forms
 		private Hashtable mpCmdidToCommand;
         private IProgramImageBrowserService browserSvc;
         private IStatusBarService sbSvc;
+        private IMemoryViewService memSvc;
+        private IDisassemblyViewService disSvc;
 
-		public LoadedPageInteractor(ILoadedPage page) 
+		public LoadedPageInteractor() 
 		{
-			this.pageLoaded = page;
-            page.MemoryControl.SelectionChanged += new System.EventHandler(this.memctl_SelectionChanged);
-            page.Disassembly.Resize += new System.EventHandler(this.txtDisassembly_Resize);
-
 			mpCmdidToCommand = new Hashtable();
             AddCommand(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
 			AddCommand(ref CmdSets.GuidDecompiler, CmdIds.ViewShowAllFragments);
@@ -93,7 +91,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         private void FindMatchingBytes(byte [] pattern)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
 		public void GotoAddress()
@@ -109,46 +107,15 @@ namespace Decompiler.Gui.Windows.Forms
 			}
 		}
 
-
-
-
-        public void DumpAssembler()
-        {
-            if (!IsProgramLoaded())
-            {
-                pageLoaded.Disassembly.Text = "";
-                return;
-            }
-            int lines = (pageLoaded.Disassembly.Height + pageLoaded.Disassembly.Font.Height - 1) / pageLoaded.Disassembly.Font.Height;
-            if (lines < 1)
-                lines = 1;
-            StringWriter writer = new StringWriter();
-            Dumper dumper = Decompiler.Program.Architecture.CreateDumper();
-            Disassembler dasm = Decompiler.Program.Architecture.CreateDisassembler(Decompiler.Program.Image.CreateReader(pageLoaded.MemoryControl.SelectedAddress));
-            while (lines != 0)
-            {
-                dumper.DumpAssemblerLine(Decompiler.Program.Image, dasm, true, true, writer);
-                --lines;
-            }
-            pageLoaded.Disassembly.Text = writer.ToString();
-        }
-
-        private bool IsProgramLoaded()
-        {
-            return 
-                Decompiler != null && 
-                Decompiler.Program.Architecture != null && 
-                Decompiler.Program.Image != null &&
-                pageLoaded.MemoryControl.SelectedAddress != null;
-        }
-
         public override void EnterPage()
         {
             browserSvc.Enabled = true;
             browserSvc.SelectionChanged += BrowserItemSelected;
 
-            pageLoaded.MemoryControl.ProgramImage = Decompiler.Program.Image;
-            pageLoaded.Disassembly.Text = "";
+            memSvc.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(memctl_SelectionChanged);
+            memSvc.ViewImage(Decompiler.Program.Image);
+            disSvc.ShowWindow();
+            disSvc.Clear();
 
             PopulateBrowser();
         }
@@ -156,27 +123,25 @@ namespace Decompiler.Gui.Windows.Forms
 		public override bool LeavePage()
 		{
             browserSvc.SelectionChanged -= BrowserItemSelected;
+            memSvc.SelectionChanged -= memctl_SelectionChanged;
+
 			return true;
 		}
 
         public void MarkAndScanProcedure()
         {
-            Address addr = pageLoaded.MemoryControl.SelectedAddress;
-            if (addr != null)
+            AddressRange addrRange = memSvc.GetSelectedAddressRange();
+            if (addrRange.IsValid)
             {
-                Procedure proc = Decompiler.ScanProcedure(addr);
+                Procedure proc = Decompiler.ScanProcedure(addrRange.Begin);
                 SerializedProcedure userp = new SerializedProcedure();
-                userp.Address = addr.ToString();
+                userp.Address = addrRange.Begin.ToString();
                 userp.Name = proc.Name;
                 Decompiler.Project.UserProcedures.Add(userp);
-                pageLoaded.MemoryControl.Invalidate();
+                memSvc.InvalidateWindow();
             }
         }
 
-        public override object Page
-        {
-            get { return pageLoaded; }
-        }
 
 		public void PopulateBrowser()
 		{
@@ -206,10 +171,10 @@ namespace Decompiler.Gui.Windows.Forms
                 base.Site = value;
                 if (value != null)
                 {
-                    browserSvc = EnsureService <IProgramImageBrowserService>();
+                    browserSvc = EnsureService<IProgramImageBrowserService>();
                     sbSvc = EnsureService<IStatusBarService>();
-
-                    pageLoaded.MemoryControl.ContextMenu  = UIService.GetContextMenu(MenuIds.CtxMemoryControl);
+                    memSvc = EnsureService<IMemoryViewService>();
+                    disSvc = EnsureService<IDisassemblyViewService>();
                 }
                 else
                 {
@@ -219,40 +184,33 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-        private void ShowMemoryControlRange(IStatusBarService sbSvc)
+        private void ShowMemoryControlRange(IStatusBarService sbSvc, AddressRange range)
         {
-            Address addrStart, addrEnd;
-            pageLoaded.MemoryControl.GetAddressRange(out addrStart, out addrEnd);
-            if (addrStart == null || addrEnd == null)
+            if (range.Begin == null || range.End == null)
                 return;
-            if (addrStart.Linear == addrEnd.Linear)
+            if (range.Begin.Linear == range.End.Linear)       //$REFACTOR: make bytespan a method of addressrange.
             {
-                sbSvc.SetText(string.Format("[{0}]", addrStart));
+                sbSvc.SetText(string.Format("[{0}]", range.Begin));
             }
             else
             {
-                sbSvc.SetText(string.Format("[{0}-{1}]", addrStart, addrEnd));
+                sbSvc.SetText(string.Format("[{0}-{1}]", range.Begin, range.End));
             }
         }
 
 
         // Event handlers /////////////////////////
 
-        private void memctl_SelectionChanged(object sender, System.EventArgs e)
+        private void memctl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DumpAssembler();
             if (sbSvc != null)
             {
-                ShowMemoryControlRange(sbSvc);
+                ShowMemoryControlRange(sbSvc, e.AddressRange);
+                disSvc.DisassembleStartingAtAddress(e.AddressRange.Begin);
+
             }
         }
 
-
-        //$TODO: have a separate interactor and a disassembler window for this.
-        private void txtDisassembly_Resize(object sender, System.EventArgs e)
-        {
-            DumpAssembler();
-        }
 
         public void BrowserItemSelected(object sender, EventArgs e)
         {

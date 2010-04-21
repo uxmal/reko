@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,7 +123,7 @@ namespace Decompiler.UnitTests.Analysis
 		private void Prepare(ProcedureMock mock)
 		{
 			proc = mock.Procedure;
-			SsaTransform tr = new SsaTransform(proc, new DominatorGraph(proc), false);
+			SsaTransform tr = new SsaTransform(proc, proc.CreateBlockDominatorGraph(), false);
 			ssaIds = tr.SsaState.Identifiers;
 		}
 

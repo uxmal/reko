@@ -74,7 +74,6 @@ si_15: orig: si
           si_21 = si_15 + Mem0[ds:di_14:word16]
 SCZO_16: orig: SCZO
 Z_17: orig: Z
-    uses: branch cx == 0x0000 l0C00_001A
 ax_18: orig: ax
     def:  ax_18 = si_15
     uses: return ax_18

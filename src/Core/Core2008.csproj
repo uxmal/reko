@@ -149,7 +149,11 @@
     <Compile Include="Assemblers\Assembler.cs" />
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Lib\BlockDominatorGraph.cs" />
+    <Compile Include="Lib\Dequeue.cs" />
+    <Compile Include="Output\PrettyPrinter.cs" />
+    <Compile Include="Output\PrettyPrinterOutput.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BackWalker.cs">
@@ -276,9 +280,6 @@
     </Compile>
     <Compile Include="Diagnostic.cs" />
     <Compile Include="Disassembler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DominatorGraph.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dumper.cs">

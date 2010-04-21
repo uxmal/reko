@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,7 +124,7 @@ namespace Decompiler.Typing
 			}
 			else
 			{
-				ex = new UnaryExpression(Operator.addrOf, memptr, ex);
+				ex = new UnaryExpression(Operator.AddrOf, memptr, ex);
 			}
 			Return(ex);
 		}
@@ -149,7 +149,7 @@ namespace Decompiler.Typing
                 }
                 else
                 {
-                    e = new UnaryExpression(Operator.addrOf, ptr, e);
+                    e = new UnaryExpression(Operator.AddrOf, ptr, e);
                 }
             }
 			Return(e);

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ namespace Decompiler.Structure
 
         public override string Name
         {
-            get { return base.Ident().ToString(); }
+            get { return base.Number.ToString(); }
         }
 
         public List<StructureNode> Nodes
@@ -59,25 +59,14 @@ namespace Decompiler.Structure
             get { return nodes; }
         }
 
-        [Obsolete]
-        public void FindNodesInInt(bool[] cfgNodes, int level)
+        public HashedSet<StructureNode> FindIntervalNodes(int level)
         {
-            if (level == 0)
-                for (int i = 0; i < nodes.Count; i++)
-                    cfgNodes[nodes[i].Order] = true;
-            else
-                for (int i = 0; i < nodes.Count; i++)
-                    ((Interval) nodes[i]).FindNodesInInt(cfgNodes, level - 1);    //$CAST
-        }
-
-        public HashSet<StructureNode> FindIntervalNodes(int level)
-        {
-            HashSet<StructureNode> nodes = new HashSet<StructureNode>();
+            HashedSet<StructureNode> nodes = new HashedSet<StructureNode>();
             FindIntervalNodes(level, nodes);
             return nodes;
         }
 
-        private void FindIntervalNodes(int level, HashSet<StructureNode> intervalMembers)
+        private void FindIntervalNodes(int level, HashedSet<StructureNode> intervalMembers)
         {
             if (level == 0)
                 foreach (StructureNode node in nodes)
@@ -94,7 +83,7 @@ namespace Decompiler.Structure
 
         public override void Write(TextWriter writer)
         {
-            writer.Write("Interval {0}: [", Ident());
+            writer.Write("Interval {0}: [", Number);
             string sep = "";
             StructureNode[] ns = nodes.ToArray();
             Array.Sort(ns, delegate(StructureNode a, StructureNode b)

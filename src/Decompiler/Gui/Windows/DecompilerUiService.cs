@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,36 +26,29 @@ using System.Windows.Forms;
 namespace Decompiler.Gui.Windows
 {
     /// <summary>
-    /// Windows Forms implementation of the IDecompulerUIService service.
+    /// Windows Forms implementation of the IDecompilerUIService service.
     /// </summary>
     public class DecompilerUiService : IDecompilerUIService
     {
-        private IMainForm mainForm;
-        private DecompilerMenus dm;
+        private Form form;
         private OpenFileDialog ofd;
         private SaveFileDialog sfd;
 
-        public DecompilerUiService(IMainForm mainForm, DecompilerMenus dm, OpenFileDialog ofd, SaveFileDialog sfd)
+        public DecompilerUiService(Form form, OpenFileDialog ofd, SaveFileDialog sfd)
         {
-            this.mainForm = mainForm;
-            this.dm = dm;
+            this.form = form;
             this.ofd = ofd;
             this.sfd = sfd;
         }
 
         #region IDecompilerUIService Members
 
-        public virtual ContextMenu GetContextMenu(int menuId)
-        {
-            return dm.GetContextMenu(menuId);
-        }
-
         public virtual DialogResult ShowModalDialog(Form dlg)
         {
             return (DialogResult)
-                mainForm.Invoke(new Converter<Form, DialogResult>(delegate(Form dlgToShow)
+                form.Invoke(new Converter<Form, DialogResult>(delegate(Form dlgToShow)
                 {
-                    return mainForm.ShowDialog(dlgToShow);
+                    return dlgToShow.ShowDialog(form);
                 }), dlg);
         }
 
@@ -63,7 +56,7 @@ namespace Decompiler.Gui.Windows
         {
             if (string.IsNullOrEmpty(fileName))
                 ofd.FileName = fileName;
-            if (mainForm.ShowDialog(ofd) == DialogResult.OK)
+            if (ofd.ShowDialog(form) == DialogResult.OK)
             {
                 return ofd.FileName;
             }
@@ -75,7 +68,7 @@ namespace Decompiler.Gui.Windows
         {
             if (string.IsNullOrEmpty(fileName))
                 sfd.FileName = fileName;
-            if (mainForm.ShowDialog(sfd) == DialogResult.OK)
+            if (sfd.ShowDialog(form) == DialogResult.OK)
             {
                 return sfd.FileName;
             }
@@ -94,15 +87,16 @@ namespace Decompiler.Gui.Windows
                 sb.Append(e.Message);
                 e = e.InnerException;
             }
-            mainForm.ShowMessageBox(sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(form, sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-		public virtual void ShowError(string format, params object [] args)
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat(format, args);
-            mainForm.ShowMessageBox(sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-		}
+        public virtual void ShowError(string format, params object[] args)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(format, args);
+            MessageBox.Show(form, sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         #endregion
     }
+
 }

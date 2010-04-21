@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
@@ -26,11 +27,11 @@ namespace Decompiler.Arch.Intel
 {
     public partial class IntelRewriter
     {
-        private void EmitFstsw(IntelInstruction[] instrs, int iStart)
+        private void RewriteFstsw(IntelInstruction[] instrs, int iStart)
         {
             EmitCopy(
                 instrCur.op1,
-                new BinaryExpression(Operator.shl, PrimitiveType.Word16,
+                new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
                         new Cast(PrimitiveType.Word16, orw.FlagGroup(FlagM.FPUF)),
                         new Constant(PrimitiveType.Int16, 8)),
                 false);

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("M68k-2008")]
+[assembly: AssemblyTitle("M68k Decompiler Plugin")]
 [assembly: AssemblyDescription("Decompiler support for the M68000 processor architecture family.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("M68k-2008")]
-[assembly: AssemblyCopyright("Copyright © 1999-2009 John Källén")]
+[assembly: AssemblyProduct("Decompiler")]
+[assembly: AssemblyCopyright("Copyright © 1999-2010 John Källén")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.1.0")]
-[assembly: AssemblyFileVersion("0.1.1.0")]
+[assembly: AssemblyVersion(Decompiler.AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(Decompiler.AssemblyMetadata.AssemblyFileVersion)]

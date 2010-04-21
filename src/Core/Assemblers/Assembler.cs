@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,23 @@
 
 using Decompiler;
 using System;
+using System.IO;
 using System.Collections.Generic;
 
 namespace Decompiler.Core.Assemblers
 {
 	public interface Assembler
 	{
+        [Obsolete]
         void Assemble(Address baseAddress, string sourcefile);
-		void AssembleFragment(Address baseAddress, string fragment);
+        void Assemble(Address baseAddress, TextReader reader);
+        void AssembleFragment(Address baseAddress, string fragment);
         ProgramImage Image { get; }
 		Address StartAddress { get; }
         ICollection<EntryPoint> EntryPoints { get; }
         IProcessorArchitecture Architecture { get; }
         Platform Platform { get; }
         Dictionary<uint, PseudoProcedure> ImportThunks { get; }
+
     }
 }

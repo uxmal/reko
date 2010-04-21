@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Decompiler.Gui
 		/// appropriate bits on <paramref>cmd</paramref> and return true; higher level command targets will
 		/// then respect this selection. If the command target doesn't know what the 
 		/// menu command is, return false from this method. This allows higher-level command targets to set
-		/// set command statues
+		/// set command statues.
 		/// </remarks>
 		/// <param name="cmd"></param>
 		/// <param name="info">collecting parameter. If not null, asks for the text of the command item (for

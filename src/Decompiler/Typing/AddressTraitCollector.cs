@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ namespace Decompiler.Typing
 
 		public void VisitBinaryExpression(BinaryExpression bin)
 		{
-			if (bin.op == Operator.add || bin.op == Operator.sub)
+			if (bin.op == Operator.Add || bin.op == Operator.Sub)
 			{
 				// Handle mem[x+const] case. Array accesses of the form
 				// mem[x + (i * const) + const] will have been converted
@@ -113,7 +113,7 @@ namespace Decompiler.Typing
 				Constant offset = bin.Right as Constant;
 				if (offset != null)
 				{
-                    if (bin.op == Operator.sub)
+                    if (bin.op == Operator.Sub)
                         offset = offset.Negate();
 					LinearInductionVariable iv = GetInductionVariable(bin.Left);
                     if (iv != null)
@@ -133,7 +133,7 @@ namespace Decompiler.Typing
 				EmitAccessTrait(tvBasePointer, bin.Left.TypeVariable, bin.DataType.Size, 0);
 				return;
 			}
-            throw new TypeInferenceException("Couldn't generate traits for {0}.", bin);
+            throw new TypeInferenceException("Couldn't generate address traits for expression {0}.", bin);
 		}
 
 		public void VisitCast(Cast cast)

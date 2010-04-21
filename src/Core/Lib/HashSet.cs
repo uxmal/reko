@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,11 +26,11 @@ namespace Decompiler.Core.Lib
     /// Provides an unordered set with an O(1) contains method.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class HashSet<T> : ICollection<T>
+    public class HashedSet<T> : ICollection<T>
     {
         private Dictionary<T, int> set;
 
-        public HashSet()
+        public HashedSet()
         {
             set = new Dictionary<T, int>();
         }

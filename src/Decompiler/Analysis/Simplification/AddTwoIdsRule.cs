@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,13 +45,13 @@ namespace Decompiler.Analysis.Simplification
 			idRight = binExp.Right as Identifier;
 			if (idRight == null)
 				return false;
-			return (idLeft == idRight && binExp.op == Operator.add);
+			return (idLeft == idRight && binExp.op == Operator.Add);
 		}
 
 		public Expression Transform(Statement stm)
 		{
 			ssaIds[idLeft].Uses.Remove(stm);
-			return new BinaryExpression(Operator.mul, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));
+			return new BinaryExpression(Operator.Mul, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));
 		}
 	}
 }

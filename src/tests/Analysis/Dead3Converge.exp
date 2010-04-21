@@ -13,9 +13,7 @@ ds:Register ds
 SZO:Flags
 SCZO_8: orig: SCZO
 Z_9: orig: Z
-    uses: branch bx == 0x0000 l0C00_0013
 SZO_10: orig: SZO
-    uses: branch bx > 0x0000 l0C00_000D
 ax_11: orig: ax
     def:  ax_11 = 0x0000
     uses: ax_18 = PHI(ax_11, ax_15, ax_16)

@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual("LoopHead", i.Header.Name);
 
             LoopFinder lf = new LoopFinder(proc.Ordering[6], proc.Ordering[2], proc.Ordering);
-            HashSet<StructureNode> loopNodes = lf.FindNodesInLoop(i.FindIntervalNodes(0));
+            HashedSet<StructureNode> loopNodes = lf.FindNodesInLoop(i.FindIntervalNodes(0));
             Assert.AreEqual(3, loopNodes.Count);
 
         }
@@ -67,8 +67,8 @@ namespace Decompiler.UnitTests.Structure
             psb.AnalyzeGraph();
 
             LoopFinder lf = new LoopFinder(proc.Ordering[23], proc.Ordering[0], proc.Ordering);
-            HashSet<StructureNode> intervalNodes = proc.Nodes[23].Interval.FindIntervalNodes(0);
-            HashSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
+            HashedSet<StructureNode> intervalNodes = proc.Nodes[23].Interval.FindIntervalNodes(0);
+            HashedSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
             proc.Dump();
             Loop loop = lf.DetermineLoopType(loopNodes);
             Assert.IsTrue(loop is TestlessLoop);

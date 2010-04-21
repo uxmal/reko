@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,15 +33,15 @@ namespace Decompiler.Structure
     {
         private Stack<StructureNode> followStack;
         private Queue<NodeEmitter> nodesToRender;
-        private HashSet<StructureNode> visited;
-        private HashSet<StructureNode> incomplete;
+        private HashedSet<StructureNode> visited;
+        private HashedSet<StructureNode> incomplete;
 
         public AbsynCodeGenerator()
         {
             followStack = new Stack<StructureNode>();
             nodesToRender = new Queue<NodeEmitter>();
-            visited = new HashSet<StructureNode>();
-            incomplete = new HashSet<StructureNode>();
+            visited = new HashedSet<StructureNode>();
+            incomplete = new HashedSet<StructureNode>();
         }
 
 
@@ -76,9 +76,6 @@ namespace Decompiler.Structure
             succ.ForceLabel = true;
             emitter.EmitGoto(succ);
         }
-
-
-
 
         public void GenerateCode(ProcedureStructure proc, List<AbsynStatement> stms)
         {
@@ -214,7 +211,7 @@ namespace Decompiler.Structure
             }
         }
 
-        public HashSet<StructureNode> IncompleteNodes
+        public HashedSet<StructureNode> IncompleteNodes
         {
             get { return incomplete; }
         }

@@ -1,5 +1,5 @@
 /* 
-* Copyright (C) 1999-2009 John Källén.
+* Copyright (C) 1999-2010 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
@@ -33,24 +34,16 @@ namespace Decompiler.Gui.Windows.Forms
 
 	public class AnalyzedPageInteractorImpl : PhasePageInteractorImpl, IAnalyzedPageInteractor
 	{
-		private AnalyzedPage page;
-        private RichEditFormatter formatter;
         private IProgramImageBrowserService browserSvc;
+        private ICodeViewerService codeViewerSvc;
 
-		public AnalyzedPageInteractorImpl(AnalyzedPage page)
+		public AnalyzedPageInteractorImpl()
 		{
-			this.page = page;
-            page.ProcedureText.MouseClick += new MouseEventHandler(ProcedureText_MouseClick);
 		}
 
         private void DisplayProcedure(Procedure proc)
         {
-            page.ProcedureText.Text = "";
-            if (proc != null)
-            {
-                formatter = new RichEditFormatter(page.ProcedureText);
-                formatter.Write(proc);
-            }
+            codeViewerSvc.DisplayProcedure(proc);
         }
 
 
@@ -67,7 +60,6 @@ namespace Decompiler.Gui.Windows.Forms
                 });
 
             PopulateBrowserListWithProcedures();
-            page.PerformTypeRecovery.Checked = Decompiler.Project.Output.TypeInference;
             browserSvc.SelectionChanged += new EventHandler(BrowserList_SelectedIndexChanged);
         }
 
@@ -75,14 +67,9 @@ namespace Decompiler.Gui.Windows.Forms
 		public override bool LeavePage()
 		{
             browserSvc.SelectionChanged -= new EventHandler(BrowserList_SelectedIndexChanged);
-			Decompiler.Project.Output.TypeInference = page.PerformTypeRecovery.Checked;
 			return true;
         }
 
-        public override object Page
-        {
-            get { return page; }
-        }
 
         private void PopulateBrowserListWithProcedures()
         {
@@ -99,18 +86,19 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 if (!browserSvc.IsItemSelected)
                     return new KeyValuePair<Address,Procedure>(null, null);
-                KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) browserSvc.SelectedItem;
+                var entry = (KeyValuePair<Address, Procedure>) browserSvc.SelectedItem;
                 return entry;
             }
         }
 
-        public override System.ComponentModel.ISite Site
+        public override ISite Site
         {
             get { return base.Site; }
             set 
             {
                 base.Site = value;
                 browserSvc = EnsureService<IProgramImageBrowserService>();
+                codeViewerSvc = EnsureService<ICodeViewerService>();
             }
         }
 
@@ -163,15 +151,5 @@ namespace Decompiler.Gui.Windows.Forms
         {
             DisplayProcedure(SelectedProcedureEntry.Value);
         }
-
-        private void ProcedureText_MouseClick(object sender, MouseEventArgs e)
-        {
-            int i = page.ProcedureText.GetCharIndexFromPosition(e.Location);
-            Procedure proc = formatter.GetProcedureAtIndex(i);
-            if (proc == null)
-                return;
-            DisplayProcedure(proc);
-        }
-
 	}
 }

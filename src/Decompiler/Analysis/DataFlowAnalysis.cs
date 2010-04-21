@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Output;
 using System;
 using System.Collections.Generic;
@@ -68,8 +69,8 @@ namespace Decompiler.Analysis
 
 				Aliases alias = new Aliases(proc, prog.Architecture, flow);
 				alias.Transform();
-				DominatorGraph doms = new DominatorGraph(proc);
-				SsaTransform sst = new SsaTransform(proc, doms, true);
+                var doms = new DominatorGraph<Block>(new BlockGraph(proc.RpoBlocks), proc.EntryBlock);
+                SsaTransform sst = new SsaTransform(proc, doms, true);
 				SsaState ssa = sst.SsaState;
 
                 ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
@@ -87,10 +88,13 @@ namespace Decompiler.Analysis
 				coa.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
-				LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssa.Identifiers, doms);
-				liv.Find();
-
-                foreach (KeyValuePair<LinearInductionVariable,LinearInductionVariableContext> de in liv.Contexts)
+                var liv = new LinearInductionVariableFinder(
+                    proc, 
+                    ssa.Identifiers, 
+                    new BlockDominatorGraph(new BlockGraph(proc.RpoBlocks), proc.EntryBlock));
+                liv.Find();
+     
+                foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
                 {
                     StrengthReduction str = new StrengthReduction(ssa, de.Key, de.Value);
                     str.ClassifyUses();

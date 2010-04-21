@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -445,6 +445,34 @@ namespace Decompiler.UnitTests.Structure
                 "	while (true)" + nl +
                 "		DispatchEvents();" + nl +
                 "}" + nl);             
+        }
+
+        [Test]
+        public void InfiniteLoop2()
+        {
+            CompileTest(delegate(ProcedureMock m)
+            {
+                m.Label("Infinity");
+                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x1234)), 0), "hop");
+                m.SideEffect(m.Fn("foo"));
+                m.Label("hop");
+                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x5123)), 1), "Infinity");
+                m.SideEffect(m.Fn("bar"));
+                m.Jump("Infinity");
+                m.Return();
+            });
+            RunTest(
+                "ProcedureMock()" + nl +
+                "{" + nl +
+                "\twhile (true)" + nl +
+                "\t{" + nl + 
+                "\t\tif (Mem0[0x1234:word16] != 0x0000)" + nl +
+                "\t\t\tfoo();" + nl + 
+                "\t\tif (Mem0[0x5123:word16] == 0x0001)" + nl +
+                "\t\t\tcontinue;" +nl +
+                "\t\tbar();" + nl +
+                "\t}" + nl +
+                "}" + nl);
         }
 
         private void CompileTest(Action<ProcedureMock> gen)

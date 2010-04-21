@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,7 +102,8 @@ namespace Decompiler.Assemblers.x86
 			keywords["fadd"] = Token.FADD;
 			keywords["faddp"] = Token.FADDP;
 			keywords["fcom"] = Token.FCOM;
-			keywords["fcomp"] = Token.FCOMP;
+            keywords["fcomp"] = Token.FCOMP;
+            keywords["fcompp"] = Token.FCOMPP;
 			keywords["fdiv"] = Token.FDIV;
 			keywords["fdivp"] = Token.FDIVP;
 			keywords["fdivr"] = Token.FDIVR;
@@ -144,6 +145,7 @@ namespace Decompiler.Assemblers.x86
 			keywords["jno"] = Token.JNO;
 			keywords["jns"] = Token.JNS;
 			keywords["jnz"] = Token.JNZ;
+            keywords["jpo"] = Token.JPO;
 			keywords["jo"] = Token.JO;
 			keywords["js"] = Token.JS;
 			keywords["jz"] = Token.JZ;

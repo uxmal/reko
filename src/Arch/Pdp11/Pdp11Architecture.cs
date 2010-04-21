@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,22 +109,22 @@ namespace Decompiler.Arch.Pdp11
 
         public MachineFlags GetFlagGroup(uint grf)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public MachineFlags GetFlagGroup(string name)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public BitSet ImplicitArgumentRegisters
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public string GrfToString(uint grf)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public PrimitiveType FramePointerType
@@ -139,7 +139,7 @@ namespace Decompiler.Arch.Pdp11
 
         public PrimitiveType WordWidth
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         #endregion

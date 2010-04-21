@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -255,6 +255,22 @@ foo		endp
         {
             asm.AssembleFragment(new Address(0x0C00, 0), "xchg word ptr [0x1234],bx\r\n");
             Assert.IsTrue(Compare(asm.Image.Bytes, new byte[] { 0x87, 0x1E, 0x34, 0x12 }));
+        }
+
+        [Test]
+        public void Fcompp()
+        {
+            asm.AssembleFragment(new Address(0x0C00, 0x0100), "fcompp\r\n");
+            Assert.AreEqual(new byte[] { 0xDE, 0xD9 }, asm.Image.Bytes);
+        }
+
+        [Test]
+        public void Jpo()
+        {
+            asm.AssembleFragment(new Address(0xC00, 0x0100),
+                "jpo label\r\n" +
+                "label: xor ax,ax\r\n");
+            Assert.AreEqual(new byte[] { 0x7B, 0x00, 0x33, 0xC0 }, asm.Image.Bytes); 
         }
 
 		[Test]

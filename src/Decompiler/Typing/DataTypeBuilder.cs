@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -177,6 +177,7 @@ namespace Decompiler.Typing
 	public class DataTypeBuilderUnifier : Unifier
 	{
 		private TypeStore store;
+        private int nestedCalls;        //$DEBUG
 
 		public DataTypeBuilderUnifier(TypeFactory factory, TypeStore store) : base(factory)
 		{
@@ -185,9 +186,12 @@ namespace Decompiler.Typing
 
 		public override DataType UnifyTypeVariables(TypeVariable tA, TypeVariable tB)
 		{
+            if (++nestedCalls > 300)        //$DEBUG
+                nestedCalls.ToString();
             DataType dt = Unify(tA.Class.DataType, tB.Class.DataType);
             EquivalenceClass eq = store.MergeClasses(tA, tB);
             eq.DataType = dt;
+            --nestedCalls;
             return eq.Representative;
 		}
 	}

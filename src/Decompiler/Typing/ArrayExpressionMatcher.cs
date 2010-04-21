@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ namespace Decompiler.Typing
 
 		public bool MatchMul(BinaryExpression b)
 		{
-			if (b.op == Operator.muls || b.op == Operator.mulu || b.op == Operator.mul)
+			if (b.op == Operator.Muls || b.op == Operator.Mulu || b.op == Operator.Mul)
 			{
 				Constant c = b.Left as Constant;
 				Expression e = b.Right;
@@ -66,7 +66,7 @@ namespace Decompiler.Typing
 					return true;
 				}
 			}
-			if (b.op == Operator.shl)
+			if (b.op == Operator.Shl)
 			{
 				Constant c = b.Right as Constant;
 				if (c != null)
@@ -92,7 +92,7 @@ namespace Decompiler.Typing
 				return true;
 
 			// (+ x y)
-			if (b.op == Operator.add)
+			if (b.op == Operator.Add)
 			{
 				BinaryExpression bInner = b.Left as BinaryExpression;
 				if (bInner != null)
@@ -113,7 +113,7 @@ namespace Decompiler.Typing
 						arrayPtr = b.Left;
 						return true;
 					}
-					if (bInner.op == Operator.add)
+					if (bInner.op == Operator.Add)
 					{
 						// (+ x (+ a b)) 
 						BinaryExpression bbInner = bInner.Left as BinaryExpression;
@@ -125,7 +125,7 @@ namespace Decompiler.Typing
 								// (+ (* i c) (+ x y))
 
 								b.Right = new BinaryExpression(
-									Operator.add, 
+									Operator.Add, 
 									b.Left.DataType,
 									b.Left,
 									bInner.Right);
@@ -150,7 +150,7 @@ namespace Decompiler.Typing
                 dtAccess, 
                 arrayPtr,
                 new BinaryExpression(
-                    BinaryOperator.mul, 
+                    BinaryOperator.Mul, 
                     index.DataType,
                     index,
                     ElementSize));

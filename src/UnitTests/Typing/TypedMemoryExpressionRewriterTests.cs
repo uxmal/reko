@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
 			c.TypeVariable.DataType = PrimitiveType.Word32;
-			BinaryExpression bin = new BinaryExpression(BinaryOperator.add, PrimitiveType.Word32, ptr, c);
+			BinaryExpression bin = new BinaryExpression(BinaryOperator.Add, PrimitiveType.Word32, ptr, c);
 			store.EnsureExpressionTypeVariable(factory, bin, null);
 			bin.TypeVariable.DataType = bin.DataType;
 			bin.TypeVariable.OriginalDataType = bin.DataType;

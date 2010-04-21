@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ namespace Decompiler.Gui.Windows.Forms
 			SortedList slEditMenu = CreatePriorityList();
 			SortedList slViewMenu = CreatePriorityList();
 			SortedList slActionMenu = CreatePriorityList();
+			SortedList slWindowsMenu = CreatePriorityList();
 			SortedList slHelpMenu = CreatePriorityList();
 			SortedList slCtxMemoryControl = CreatePriorityList();
 			SortedList slCtxBrowser = CreatePriorityList();
@@ -67,6 +68,8 @@ namespace Decompiler.Gui.Windows.Forms
 			slActionMenu.Add(0, slGrpActionsScanned);
 			SortedList slGrpActionsRewritten = CreatePriorityList();
 			slActionMenu.Add(0, slGrpActionsRewritten);
+			SortedList slGrpWindows = CreatePriorityList();
+			slWindowsMenu.Add(0, slGrpWindows);
 			SortedList slGrpHelp = CreatePriorityList();
 			slHelpMenu.Add(0, slGrpHelp);
 			SortedList slGrpMemoryControl = CreatePriorityList();
@@ -101,6 +104,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slViewGoToAddress = new CommandMenuItem("_Go to Address...", new Guid(CmdSets.Decompiler), CmdIds.ViewGoToAddress);
             slViewGoToAddress.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewGoToAddress);
+            CommandMenuItem slViewFindAllProcedures = new CommandMenuItem("Find all _procedures", new Guid(CmdSets.Decompiler), CmdIds.ViewFindAllProcedures);
+            slViewFindAllProcedures.IsDynamic = false;
+            slGrpViewScanned.Add(0, slViewFindAllProcedures);
             CommandMenuItem slViewShowAllFragments = new CommandMenuItem("Show _all fragments", new Guid(CmdSets.Decompiler), CmdIds.ViewShowAllFragments);
             slViewShowAllFragments.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewShowAllFragments);
@@ -112,16 +118,25 @@ namespace Decompiler.Gui.Windows.Forms
             slGrpViewScanned.Add(0, slViewFindFragments);
             CommandMenuItem slActionNextPhase = new CommandMenuItem("_Next Phase", new Guid(CmdSets.Decompiler), CmdIds.ActionNextPhase);
             slActionNextPhase.IsDynamic = false;
-            slGrpActions.Add(0, slActionNextPhase);
+            slActionNextPhase.ImageIndex = 2;slGrpActions.Add(0, slActionNextPhase);
             CommandMenuItem slActionFinishDecompilation = new CommandMenuItem("_Finish Decompilation", new Guid(CmdSets.Decompiler), CmdIds.ActionFinishDecompilation);
             slActionFinishDecompilation.IsDynamic = false;
-            slGrpActions.Add(0, slActionFinishDecompilation);
+            slActionFinishDecompilation.ImageIndex = 3;slGrpActions.Add(0, slActionFinishDecompilation);
             CommandMenuItem slActionMarkProcedure = new CommandMenuItem("Mark _Procedure Entry", new Guid(CmdSets.Decompiler), CmdIds.ActionMarkProcedure);
             slActionMarkProcedure.IsDynamic = false;
             
             CommandMenuItem slActionEditSignature = new CommandMenuItem("Edit _Signature...", new Guid(CmdSets.Decompiler), CmdIds.ActionEditSignature);
             slActionEditSignature.IsDynamic = false;
             
+            CommandMenuItem slWindowsCascade = new CommandMenuItem("_Cacade", new Guid(CmdSets.Decompiler), CmdIds.WindowsCascade);
+            slWindowsCascade.IsDynamic = false;
+            slGrpWindows.Add(0, slWindowsCascade);
+            CommandMenuItem slWindowsTileVertical = new CommandMenuItem("Tile _Vertically", new Guid(CmdSets.Decompiler), CmdIds.WindowsTileVertical);
+            slWindowsTileVertical.IsDynamic = false;
+            slGrpWindows.Add(0, slWindowsTileVertical);
+            CommandMenuItem slWindowsTileHorizontal = new CommandMenuItem("Tile _Horizontally", new Guid(CmdSets.Decompiler), CmdIds.WindowsTileHorizontal);
+            slWindowsTileHorizontal.IsDynamic = false;
+            slGrpWindows.Add(0, slWindowsTileHorizontal);
             CommandMenuItem slHelpAbout = new CommandMenuItem("_About Decompiler...", new Guid(CmdSets.Decompiler), CmdIds.HelpAbout);
             slHelpAbout.IsDynamic = false;
             slGrpHelp.Add(0, slHelpAbout);
@@ -136,6 +151,8 @@ namespace Decompiler.Gui.Windows.Forms
             slGrpMain.Add(0, miViewMenu);
             CommandMenuItem miActionMenu = new CommandMenuItem("_Actions");
             slGrpMain.Add(0, miActionMenu);
+            CommandMenuItem miWindowsMenu = new CommandMenuItem("_Windows");
+            slGrpMain.Add(0, miWindowsMenu);
             CommandMenuItem miHelpMenu = new CommandMenuItem("_Help");
             slGrpMain.Add(0, miHelpMenu);
     
@@ -163,6 +180,8 @@ namespace Decompiler.Gui.Windows.Forms
 			BuildMenu(slViewMenu, miViewMenu.MenuItems);
 			
 			BuildMenu(slActionMenu, miActionMenu.MenuItems);
+			
+			BuildMenu(slWindowsMenu, miWindowsMenu.MenuItems);
 			
 			BuildMenu(slHelpMenu, miHelpMenu.MenuItems);
 			

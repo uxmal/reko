@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,16 +45,6 @@ namespace Decompiler.UnitTests.Loading
             sc.AddService(typeof(DecompilerEventListener), eventListener);
         }
 
-		[Test]
-		public void LoadProjectFileNoBom()
-		{
-			byte [] image = new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
-				"<input><filename>foo.bar</filename></input></project>");
-            TestLoader ldr = new TestLoader(new Program(), sc);
-			ldr.Image = image;
-            Assert.AreEqual("foo.bar", ldr.Load(null).Project.Input.Filename);
-		}
-
         [Test]
         public void Match()
         {
@@ -65,22 +55,21 @@ namespace Decompiler.UnitTests.Loading
         [Test]
         public void LoadUnknownImageType()
         {
-            Program prog = new Program();
-            TestLoader ldr = new TestLoader(prog, sc);
+            TestLoader ldr = new TestLoader(new Program(), sc);
             ldr.Image = new byte[] { 42, 42, 42, 42, };
-            LoadedProject lpr = ldr.Load(null);
+            Program prog = ldr.Load(ldr.Image, null);
 
-            Assert.AreEqual("WarningDiagnostic - 00000000: The format of the file test.bin is unknown; you will need to specify it manually." , eventListener.LastDiagnostic);
-            Assert.AreEqual(0, lpr.Program.Image.BaseAddress.Offset);
-            Assert.IsNull(lpr.Program.Architecture);
-            Assert.IsNull(lpr.Program.Platform);
+            Assert.AreEqual("WarningDiagnostic - 00000000: The format of the file is unknown; you will need to specify it manually." , eventListener.LastDiagnostic);
+            Assert.AreEqual(0, prog.Image.BaseAddress.Offset);
+            Assert.IsNull(prog.Architecture);
+            Assert.IsNull(prog.Platform);
 
         }
 
 		private class TestLoader : Loader
 		{
 			public TestLoader(Program prog, IServiceProvider services)
-                : base("test.bin", new FakeDecompilerConfiguration(), services)
+                : base(new FakeDecompilerConfiguration(), services)
 			{
 			}
 

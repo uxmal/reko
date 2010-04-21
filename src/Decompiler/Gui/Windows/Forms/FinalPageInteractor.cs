@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,10 @@ namespace Decompiler.Gui.Windows.Forms
 	{
 		private FinalPage finalPage;
 
-		public FinalPageInteractor(FinalPage page, MainFormInteractor form)
+		public FinalPageInteractor()
 		{
-			finalPage = page;
-            finalPage.DataTypeDefinitionLink.LinkClicked += new LinkLabelLinkClickedEventHandler(DataTypeDefinitionLink_LinkClicked);
-            finalPage.ProgramCodeLink.LinkClicked += new LinkLabelLinkClickedEventHandler(ProgramCodeLink_LinkClicked);
+            // finalPage.DataTypeDefinitionLink.LinkClicked += new LinkLabelLinkClickedEventHandler(DataTypeDefinitionLink_LinkClicked);
+            // finalPage.ProgramCodeLink.LinkClicked += new LinkLabelLinkClickedEventHandler(ProgramCodeLink_LinkClicked);
 		}
 
         void DataTypeDefinitionLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -80,9 +79,5 @@ namespace Decompiler.Gui.Windows.Forms
 			return true;
 		}
 
-        public override object Page
-        {
-            get { return finalPage; }
         }
-	}
 }

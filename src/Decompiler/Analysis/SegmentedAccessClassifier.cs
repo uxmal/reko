@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@ namespace Decompiler.Analysis
 			if (bin != null)
 			{
 				Identifier mp = bin.Left as Identifier;
-				if (bin.op == BinaryOperator.add && mp != null)
+				if (bin.op == BinaryOperator.Add && mp != null)
 				{
 					Associate(pointer, mp);
 				}

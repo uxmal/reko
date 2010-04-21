@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1999-2009 John Källén.
+ * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,12 +34,12 @@ namespace Decompiler.Gui.Windows.Controls
 	{
 		public event EventHandler IsDirtyChanged;
 
-		private HashSet<object> trackedControls; 
+		private HashedSet<object> trackedControls; 
 		private bool isDirty;
 
 		public DirtyManager()
 		{
-			trackedControls = new HashSet<object>();
+			trackedControls = new HashedSet<object>();
 		}
 
 		[DefaultValue(false)]
