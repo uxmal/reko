@@ -31,6 +31,7 @@
 
   <group id="GrpEdit" cmdSet="Decompiler" container="EditMenu" />
 
+  <group id="GrpLowLevel" cmdSet="Decompiler" container="ViewMenu" />
 	<group id="GrpViewScanned" cmdSet="Decompiler" container="ViewMenu"/>
 
 	<group id="GrpActions" cmdSet="Decompiler" container="ActionMenu"/>
@@ -59,7 +60,10 @@
 
   <cmd id="EditFind" cmdSet="Decompiler" container="GrpEdit">_Find...</cmd>
 
-	<cmd id="ViewGoToAddress" cmdSet="Decompiler" container="GrpViewScanned">_Go to Address...</cmd>
+  <cmd id="ViewMemory" cmdSet="Decompiler" container="GrpLowLevel">_Memory</cmd>
+  <cmd id="ViewDisassembly" cmdSet="Decompiler" container="GrpLowLevel">_Disassembly</cmd>
+
+  <cmd id="ViewGoToAddress" cmdSet="Decompiler" container="GrpViewScanned">_Go to Address...</cmd>
   <cmd id="ViewFindAllProcedures" cmdSet="Decompiler" container="GrpViewScanned">Find all _procedures</cmd>
 	<cmd id="ViewShowAllFragments" cmdSet="Decompiler" container="GrpViewScanned">Show _all fragments</cmd>
 	<cmd id="ViewShowUnscanned" cmdSet="Decompiler" container="GrpViewScanned">Show _unscanned fragments</cmd>

@@ -69,6 +69,7 @@ namespace Decompiler.Gui.Windows
             }
             ShowWindow(ViewWindowType, "Memory View", mvi);
         }
+
         #endregion
 
         void mvi_SelectionChanged(object sender, SelectionChangedEventArgs e)

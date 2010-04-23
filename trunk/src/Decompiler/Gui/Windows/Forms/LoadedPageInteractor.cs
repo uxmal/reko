@@ -96,13 +96,12 @@ namespace Decompiler.Gui.Windows.Forms
 
 		public void GotoAddress()
 		{
-			using (GotoDialog dlg = new GotoDialog())
+			using (IAddressPromptDialog dlg = new AddressPromptDialog())
 			{
-				GotoDialogInteractor i = new GotoDialogInteractor(dlg);
 				if (UIService.ShowModalDialog(dlg) == DialogResult.OK)
 				{
-					pageLoaded.MemoryControl.SelectedAddress = i.Address;
-					pageLoaded.MemoryControl.TopAddress = i.Address;
+					pageLoaded.MemoryControl.SelectedAddress = dlg.Address;
+					pageLoaded.MemoryControl.TopAddress = dlg.Address;
 				}
 			}
 		}

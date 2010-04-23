@@ -60,6 +60,8 @@ namespace Decompiler.Gui.Windows.Forms
 			slFileMenu.Add(1000, slGrpFileEnd);
 			SortedList slGrpEdit = CreatePriorityList();
 			slEditMenu.Add(0, slGrpEdit);
+			SortedList slGrpLowLevel = CreatePriorityList();
+			slViewMenu.Add(0, slGrpLowLevel);
 			SortedList slGrpViewScanned = CreatePriorityList();
 			slViewMenu.Add(0, slGrpViewScanned);
 			SortedList slGrpActions = CreatePriorityList();
@@ -101,6 +103,12 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slEditFind = new CommandMenuItem("_Find...", new Guid(CmdSets.Decompiler), CmdIds.EditFind);
             slEditFind.IsDynamic = false;
             slGrpEdit.Add(0, slEditFind);
+            CommandMenuItem slViewMemory = new CommandMenuItem("_Memory", new Guid(CmdSets.Decompiler), CmdIds.ViewMemory);
+            slViewMemory.IsDynamic = false;
+            slGrpLowLevel.Add(0, slViewMemory);
+            CommandMenuItem slViewDisassembly = new CommandMenuItem("_Disassembly", new Guid(CmdSets.Decompiler), CmdIds.ViewDisassembly);
+            slViewDisassembly.IsDynamic = false;
+            slGrpLowLevel.Add(0, slViewDisassembly);
             CommandMenuItem slViewGoToAddress = new CommandMenuItem("_Go to Address...", new Guid(CmdSets.Decompiler), CmdIds.ViewGoToAddress);
             slViewGoToAddress.IsDynamic = false;
             slGrpViewScanned.Add(0, slViewGoToAddress);

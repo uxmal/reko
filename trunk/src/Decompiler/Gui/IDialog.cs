@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2010 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2010 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,29 +18,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Decompiler.Gui
 {
     /// <summary>
-    /// Provides services for displaying items in the user interface.
+    /// Abstracts the notion of a dialog for assistance when unit testing.
     /// </summary>
-    public interface IDecompilerUIService
+    public interface IDialog : IDisposable
     {
-        void ShowError(Exception ex, string format, params object[] args);
-        [Obsolete("Use IDialog instead")] DialogResult ShowModalDialog(Form dlg);
-        DialogResult ShowModalDialog(IDialog dlg);
-        string ShowOpenFileDialog(string fileName);
-        string ShowSaveFileDialog(string fileName);
-    }
-
-    public interface IDecompilerShellUiService : IDecompilerUIService
-    {
-        ContextMenu GetContextMenu(int p);
-
-        IWindowFrame FindWindow(string windowType);
-        IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane);
-
     }
 }

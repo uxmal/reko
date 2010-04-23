@@ -25,22 +25,21 @@ namespace Decompiler.Gui.Windows.Forms
 	/// <summary>
 	/// Summary description for GotoDialogInteractor.
 	/// </summary>
-	public class GotoDialogInteractor
+	public class AddressPromptInteractor
 	{
-		private GotoDialog dlg;
-		private Address addr;
+		private AddressPromptDialog dlg;
 
-		public GotoDialogInteractor(GotoDialog dlg)
+		public AddressPromptInteractor()
 		{
-			this.dlg = dlg;
-			dlg.OKButton.Click += new System.EventHandler(this.btnOK_Click);
 		}
 
-		public Address Address
-		{
-			get { return addr; }
-			set { addr = value; }
-		}
+        public void Attach(AddressPromptDialog dlg)
+        {
+            this.dlg = dlg;
+            dlg.OKButton.Click += new System.EventHandler(this.btnOK_Click);
+        }
+
+		public Address Address { get;set; }
 
 		// Event handlers //////////////////
 
@@ -48,12 +47,13 @@ namespace Decompiler.Gui.Windows.Forms
 		{
 			try
 			{
-				addr = Address.ToAddress(dlg.Address.Text, 16);
+				Address = Address.ToAddress(dlg.MemoryAddress.Text, 16);
 			} 
 			catch 
 			{
 				MessageBox.Show(dlg, "The address is in an invalid format. Please use only hexadecimal digits.", dlg.Text);
 			}
 		}
-	}
+
+    }
 }

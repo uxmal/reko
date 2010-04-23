@@ -17,6 +17,9 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Gui;
+using Decompiler.Gui.Windows;
+using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,30 +28,15 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
-    public class DisassemblyViewInteractor : IWindowPane
+    public class DisassemblyViewInteractor : IWindowPane, ICommandTarget
     {
+        private Address startAddress;
         private TextBox txtDisassembly;
         private IServiceProvider sp;
 
-        #region IWindowPane Members
-
-        public Control CreateControl()
-        {
-            txtDisassembly = new TextBox();
-            this.txtDisassembly.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-            this.txtDisassembly.Multiline = true;
-            this.txtDisassembly.Name = "txtDisassembly";
-            this.txtDisassembly.ReadOnly = true;
-            this.txtDisassembly.WordWrap = false;
-            txtDisassembly.Resize += new EventHandler(txtDisassembly_Resize);
-            return txtDisassembly;
-        }
-
-        public Address SelectedAddress { get; set;}  //$RENAME: StartAddress
-        
         public void DumpAssembler()
         {
-            var decSvc = (IDecompilerService) sp.GetService(typeof(IDecompilerService));
+            var decSvc = sp.GetService<IDecompilerService>();
             if (decSvc == null)
                 throw new InvalidOperationException("Expected IDecompilerService to be available.");
             var Decompiler = decSvc.Decompiler;
@@ -66,7 +54,7 @@ namespace Decompiler.Gui.Windows
                 StringWriter writer = new StringWriter();
                 var arch = Decompiler.Program.Architecture;
                 Dumper dumper = arch.CreateDumper();
-                Disassembler dasm = arch.CreateDisassembler(Decompiler.Program.Image.CreateReader(SelectedAddress));
+                Disassembler dasm = arch.CreateDisassembler(Decompiler.Program.Image.CreateReader(StartAddress));
                 while (lines > 0)
                 {
                     dumper.DumpAssemblerLine(Decompiler.Program.Image, dasm, true, true, writer);
@@ -76,11 +64,24 @@ namespace Decompiler.Gui.Windows
             }
         }
 
+        public Address StartAddress { get { return startAddress; }
+            set
+            {
+                startAddress = value;
+                DumpAssembler();
+            }
+        } 
+
+
         private int CountVisibleLines()
         {
             return (txtDisassembly.Height + txtDisassembly.Font.Height - 1) / txtDisassembly.Font.Height;
         }
 
+        internal void ClearText()
+        {
+            txtDisassembly.Text = "";
+        }
 
         private bool IsProgramLoaded(IDecompiler decompiler)
         {
@@ -88,8 +89,42 @@ namespace Decompiler.Gui.Windows
                 decompiler != null &&
                 decompiler.Program.Architecture != null &&
                 decompiler.Program.Image != null &&
-                SelectedAddress != null;
+                StartAddress != null;
         }
+
+        private void GotoAddress()
+        {
+            using (IAddressPromptDialog dlg = CreateAddressPromptDialog())
+            {
+                if (sp.GetService<IDecompilerShellUiService>().ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    StartAddress = dlg.Address;
+                    DumpAssembler();
+                }
+            }
+        }
+
+        public virtual IAddressPromptDialog CreateAddressPromptDialog()
+        {
+            return new AddressPromptDialog();
+        }
+
+
+        #region IWindowPane Members
+
+        public Control CreateControl()
+        {
+            txtDisassembly = new TextBox();
+            this.txtDisassembly.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+            this.txtDisassembly.Multiline = true;
+            this.txtDisassembly.Name = "txtDisassembly";
+            this.txtDisassembly.ReadOnly = true;
+            this.txtDisassembly.WordWrap = false;
+            txtDisassembly.Resize += txtDisassembly_Resize;
+            return txtDisassembly;
+        }
+
+
 
         public void SetSite(IServiceProvider sp)
         {
@@ -102,16 +137,42 @@ namespace Decompiler.Gui.Windows
 
         #endregion
 
-        internal void ClearText()
+
+
+
+
+        #region ICommandTarget Members
+
+        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
         {
-            txtDisassembly.Text = "";
+            if (cmdSet == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId)
+                {
+                case CmdIds.ViewGoToAddress: status.Status = MenuStatus.Enabled | MenuStatus.Visible; return true;
+                }
+            }
+            return false;
         }
+
+        public bool Execute(ref Guid cmdSet, int cmdId)
+        {
+            if (cmdSet == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId)
+                {
+                case CmdIds.ViewGoToAddress: GotoAddress(); return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
 
         void txtDisassembly_Resize(object sender, EventArgs e)
         {
             DumpAssembler();
         }
-    
-    
+
     }
 }

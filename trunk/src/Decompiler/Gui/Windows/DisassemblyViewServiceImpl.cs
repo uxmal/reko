@@ -39,7 +39,7 @@ namespace Decompiler.Gui.Windows
 
         public void DisassembleStartingAtAddress(Address addr)
         {
-            dvi.SelectedAddress = addr;
+            dvi.StartAddress = addr;
             dvi.DumpAssembler();
         }
 
