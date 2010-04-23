@@ -43,6 +43,11 @@ namespace Decompiler.UnitTests.Mocks
                     : DialogResult.OK;
         }
 
+        public DialogResult ShowModalDialog(IDialog dlg)
+        {
+            return ShowModalDialog((Form)dlg);
+        }
+
         public string ShowOpenFileDialog(string fileName)
         {
             if (!simulateUserCancel)

@@ -28,6 +28,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Windows.Forms;
 
@@ -72,7 +73,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void OpenBinaryShouldClearDiagnostics()
         {
             CreateMainFormInteractor();
-            IDiagnosticsService svc = (IDiagnosticsService) interactor.ProbeGetService(typeof(IDiagnosticsService));
+            var svc = interactor.ProbeGetService<IDiagnosticsService>();
             svc.AddDiagnostic(new ErrorDiagnostic(null, "test"));
             interactor.OpenBinary(null);
             Assert.AreEqual(0, form.DiagnosticsList.Items.Count);
@@ -231,6 +232,41 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             repository.VerifyAll();
         }
 
+        [Test]
+        public void ViewMemoryWindow()
+        {
+            CreateMainFormInteractorWithLoader();
+            var memSvc = repository.StrictMock<IMemoryViewService>();
+            ReplaceService(memSvc);
+            memSvc.Expect(x => x.ShowWindow());
+            repository.ReplayAll();
+            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewMemory);
+
+            repository.ReplayAll();
+        }
+
+        private void ReplaceService<T>(T svcInstance)
+        {
+            var sc = interactor.ProbeGetService<IServiceContainer>();
+            sc.RemoveService(typeof(T));
+            sc.AddService(typeof(T), svcInstance);
+        }
+
+        [Test]
+        public void ViewDisassemblyWindow()
+        {
+            CreateMainFormInteractorWithLoader();
+            var disSvc = repository.StrictMock<IDisassemblyViewService>();
+            ReplaceService(disSvc);
+            using (repository.Record())
+            {
+                disSvc.Expect(x => x.ShowWindow());
+            }
+            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewDisassembly);
+
+            repository.VerifyAll();
+        }
+
         private Program CreateFakeProgram()
         {
             Program prog = new Program();
@@ -334,9 +370,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             return suggestedName;
         }
 
+        [Obsolete]
         public object ProbeGetService(Type service)
         {
             return base.GetService(service);
+        }
+
+        public T ProbeGetService<T>()
+        {
+            return (T)base.GetService(typeof(T));
         }
 
         public string ProbeSavedProjectXml

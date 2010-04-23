@@ -27,24 +27,23 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
-    public class MemoryViewInteractor : IWindowPane
+    public class MemoryViewInteractor : IWindowPane, ICommandTarget
     {
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
         private IServiceProvider sp;
-        private MemoryControl ctl;
-
-
+        
         public Control CreateControl()
         {
-            ctl = new MemoryControl();
-            ctl.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
-            ctl.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(ctl_SelectionChanged);
+            Control = new MemoryControl();
+            Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
+            Control.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(ctl_SelectionChanged);
             var uiService = (IDecompilerShellUiService)sp.GetService(typeof(IDecompilerShellUiService));
-            ctl.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
-            return ctl;
+            Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
+            return Control;
         }
 
+        public MemoryControl Control { get; private set; }
 
         public void SetSite(IServiceProvider sp)
         {
@@ -58,8 +57,8 @@ namespace Decompiler.Gui.Windows
 
         public ProgramImage ProgramImage
         {
-            get { return ctl.ProgramImage; }
-            set { ctl.ProgramImage = value; }
+            get { return Control.ProgramImage; }
+            set { Control.ProgramImage = value; }
         }
 
         void ctl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -70,12 +69,58 @@ namespace Decompiler.Gui.Windows
 
         public void InvalidateControl()
         {
-            ctl.Invalidate();
+            Control.Invalidate();
         }
 
         public AddressRange GetSelectedAddressRange()
         {
-            return ctl.GetAddressRange();
+            return Control.GetAddressRange();
         }
+
+        public void GotoAddress()
+        {
+            var uiSvc = sp.GetService<IDecompilerShellUiService>();
+            using (IAddressPromptDialog dlg = CreateAddressPromptDialog())
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    Control.SelectedAddress = dlg.Address;
+                }
+            }
+        }
+
+        //$REVIEW: consider moving this to a ICommonDialogFactoryService
+        public virtual IAddressPromptDialog CreateAddressPromptDialog()
+        {
+            return new AddressPromptDialog();
+        }
+
+        #region ICommandTarget Members
+
+        public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdSet == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId)
+                {
+                case CmdIds.ViewGoToAddress: status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Execute(ref Guid cmdSet, int cmdId)
+        {
+            if (cmdSet == CmdSets.GuidDecompiler)
+            {
+                switch (cmdId)
+                {
+                case CmdIds.ViewGoToAddress: GotoAddress(); return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
     }
 }

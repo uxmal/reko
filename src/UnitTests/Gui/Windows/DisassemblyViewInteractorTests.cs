@@ -21,7 +21,6 @@ using Decompiler.Core;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
-using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -33,21 +32,22 @@ using System.Windows.Forms;
 namespace Decompiler.UnitTests.Gui.Windows
 {
     [TestFixture]
-    public class MemoryViewInteractorTests
+    public class DisassemblyViewInteractorTests
     {
-        private MemoryViewInteractor interactor;
+        private DisassemblyViewInteractor interactor;
         private MockRepository repository;
-        private IDecompilerShellUiService decShellUiSvc;
-        private ServiceContainer sp;
+        private IDecompilerShellUiService uiSvc;
+        private IServiceContainer sp;
 
         [SetUp]
         public void Setup()
         {
             repository = new MockRepository();
+            interactor = repository.Stub<DisassemblyViewInteractor>();
             sp = new ServiceContainer();
-            decShellUiSvc = repository.DynamicMock<IDecompilerShellUiService>();
-            sp.AddService(typeof(IDecompilerShellUiService), decShellUiSvc);
-            interactor = repository.Stub<MemoryViewInteractor>();
+            uiSvc = repository.DynamicMock<IDecompilerShellUiService>();
+            sp.AddService<IDecompilerShellUiService>(uiSvc);
+            sp.AddService<IDecompilerService>(repository.Stub<IDecompilerService>());
         }
 
         private void Initialize()
@@ -68,9 +68,9 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void GotoAddress()
         {
             var dlg = repository.Stub<IAddressPromptDialog>();
-            dlg.Stub(x => dlg.Address).Return(new Address(0x12345678));
+            dlg.Stub(x => dlg.Address).Return(new Address(0x41104110));
             interactor.Stub(x => x.CreateAddressPromptDialog()).Return(dlg);
-            decShellUiSvc.Expect(x => x.ShowModalDialog(
+            uiSvc.Expect(x => uiSvc.ShowModalDialog(
                     Arg<IAddressPromptDialog>.Is.Same(dlg)))
                 .Return(DialogResult.OK);
             dlg.Expect(x => x.Dispose());
@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
 
             repository.VerifyAll();
-            Assert.AreEqual(0x12345678, interactor.Control.SelectedAddress.Linear);
+            Assert.AreEqual(0x41104110, interactor.StartAddress.Linear);
         }
     }
 }

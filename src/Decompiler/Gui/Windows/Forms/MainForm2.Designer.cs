@@ -38,12 +38,12 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listFindResults = new System.Windows.Forms.ListView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.listDiagnostics = new System.Windows.Forms.ListView();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
-            this.listDiagnostics = new System.Windows.Forms.ListView();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -119,6 +119,17 @@
             this.tabPage2.Text = "Diagostics";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // listDiagnostics
+            // 
+            this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listDiagnostics.FullRowSelect = true;
+            this.listDiagnostics.Location = new System.Drawing.Point(3, 3);
+            this.listDiagnostics.Name = "listDiagnostics";
+            this.listDiagnostics.Size = new System.Drawing.Size(770, 148);
+            this.listDiagnostics.TabIndex = 2;
+            this.listDiagnostics.UseCompatibleStateImageBehavior = false;
+            this.listDiagnostics.View = System.Windows.Forms.View.Details;
+            // 
             // splitter1
             // 
             this.splitter1.Location = new System.Drawing.Point(200, 0);
@@ -149,17 +160,6 @@
             this.imageList.Images.SetKeyName(1, "Save.ico");
             this.imageList.Images.SetKeyName(2, "NextPhase.ico");
             this.imageList.Images.SetKeyName(3, "FinishDecompilation.ico");
-            // 
-            // listDiagnostics
-            // 
-            this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listDiagnostics.FullRowSelect = true;
-            this.listDiagnostics.Location = new System.Drawing.Point(3, 3);
-            this.listDiagnostics.Name = "listDiagnostics";
-            this.listDiagnostics.Size = new System.Drawing.Size(770, 148);
-            this.listDiagnostics.TabIndex = 2;
-            this.listDiagnostics.UseCompatibleStateImageBehavior = false;
-            this.listDiagnostics.View = System.Windows.Forms.View.Details;
             // 
             // MainForm2
             // 

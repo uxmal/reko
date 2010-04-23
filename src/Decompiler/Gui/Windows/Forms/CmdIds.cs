@@ -54,16 +54,17 @@ namespace Decompiler.Gui.Windows.Forms
 		public const int GrpFileMru = 3 + 1000;
 		public const int GrpFileEnd = 4 + 1000;
 		public const int GrpEdit = 5 + 1000;
-		public const int GrpViewScanned = 6 + 1000;
-		public const int GrpActions = 7 + 1000;
-		public const int GrpActionsScanned = 8 + 1000;
-		public const int GrpActionsRewritten = 9 + 1000;
-		public const int GrpWindows = 10 + 1000;
-		public const int GrpHelp = 11 + 1000;
-		public const int GrpMemoryControl = 12 + 1000;
-		public const int GrpBrowser = 13 + 1000;
-		public const int GrpToolbarFileOps = 14 + 1000;
-		public const int GrpToolbarActions = 15 + 1000;
+		public const int GrpLowLevel = 6 + 1000;
+		public const int GrpViewScanned = 7 + 1000;
+		public const int GrpActions = 8 + 1000;
+		public const int GrpActionsScanned = 9 + 1000;
+		public const int GrpActionsRewritten = 10 + 1000;
+		public const int GrpWindows = 11 + 1000;
+		public const int GrpHelp = 12 + 1000;
+		public const int GrpMemoryControl = 13 + 1000;
+		public const int GrpBrowser = 14 + 1000;
+		public const int GrpToolbarFileOps = 15 + 1000;
+		public const int GrpToolbarActions = 16 + 1000;
 	}
 	
 	public class CmdIds
@@ -73,19 +74,21 @@ namespace Decompiler.Gui.Windows.Forms
 		public const int FileSave = 3 + 2000;
 		public const int FileExit = 4 + 2000;
 		public const int EditFind = 5 + 2000;
-		public const int ViewGoToAddress = 6 + 2000;
-		public const int ViewFindAllProcedures = 7 + 2000;
-		public const int ViewShowAllFragments = 8 + 2000;
-		public const int ViewShowUnscanned = 9 + 2000;
-		public const int ViewFindFragments = 10 + 2000;
-		public const int ActionNextPhase = 11 + 2000;
-		public const int ActionFinishDecompilation = 12 + 2000;
-		public const int ActionMarkProcedure = 13 + 2000;
-		public const int ActionEditSignature = 14 + 2000;
-		public const int WindowsCascade = 15 + 2000;
-		public const int WindowsTileVertical = 16 + 2000;
-		public const int WindowsTileHorizontal = 17 + 2000;
-		public const int HelpAbout = 18 + 2000;
+		public const int ViewMemory = 6 + 2000;
+		public const int ViewDisassembly = 7 + 2000;
+		public const int ViewGoToAddress = 8 + 2000;
+		public const int ViewFindAllProcedures = 9 + 2000;
+		public const int ViewShowAllFragments = 10 + 2000;
+		public const int ViewShowUnscanned = 11 + 2000;
+		public const int ViewFindFragments = 12 + 2000;
+		public const int ActionNextPhase = 13 + 2000;
+		public const int ActionFinishDecompilation = 14 + 2000;
+		public const int ActionMarkProcedure = 15 + 2000;
+		public const int ActionEditSignature = 16 + 2000;
+		public const int WindowsCascade = 17 + 2000;
+		public const int WindowsTileVertical = 18 + 2000;
+		public const int WindowsTileHorizontal = 19 + 2000;
+		public const int HelpAbout = 20 + 2000;
 		public const int FileMru = 2200;
 	}
 

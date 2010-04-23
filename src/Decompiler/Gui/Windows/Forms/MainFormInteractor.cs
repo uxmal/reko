@@ -205,6 +205,11 @@ namespace Decompiler.Gui.Windows.Forms
             return base.GetService(service);
         }
 
+        private T GetService<T>()
+        {
+            return (T)GetService(typeof(T));
+        }
+
 		public IMainForm MainForm
 		{
 			get { return form; }
@@ -223,11 +228,6 @@ namespace Decompiler.Gui.Windows.Forms
                 uiSvc.ShowError(ex, "Couldn't open file '{0}'.", file);
 			}
 		}
-
-        private T GetService<T>()
-        {
-            return (T)GetService(typeof(T));
-        }
 
 		public void OpenBinaryWithPrompt()
 		{
@@ -316,6 +316,18 @@ namespace Decompiler.Gui.Windows.Forms
             svc.ShowSearchResults(new ProcedureSearchResult(this.sc, this.decompilerSvc.Decompiler.Program.Procedures));
         }
 
+        public void ViewDisassemblyWindow()
+        {
+            var dasmService = GetService<IDisassemblyViewService>();
+            dasmService.ShowWindow();
+        }
+
+        public void ViewMemoryWindow()
+        {
+            var memService = GetService<IMemoryViewService>();
+            memService.ShowWindow();
+        }
+
         public void Save()
         {
             if (string.IsNullOrEmpty(this.ProjectFileName))
@@ -388,6 +400,7 @@ namespace Decompiler.Gui.Windows.Forms
 		}
 
 		#region ICommandTarget members 
+
 		public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus cmdStatus, CommandText cmdText)
 		{
             if (subWindowCommandTarget.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
@@ -456,6 +469,8 @@ namespace Decompiler.Gui.Windows.Forms
 				case CmdIds.ActionNextPhase: NextPhase(); return true;
 				case CmdIds.ActionFinishDecompilation: FinishDecompilation(); return true;
 
+                case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); return true;
+                case CmdIds.ViewMemory: ViewMemoryWindow(); return true;
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); return true;
 
                 case CmdIds.WindowsCascade: LayoutMdi(MdiLayout.Cascade); return true;

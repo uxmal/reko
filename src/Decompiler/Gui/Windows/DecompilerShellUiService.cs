@@ -98,7 +98,7 @@ namespace Decompiler.Gui.Windows
         #region ICommandTarget Members
 
         /// <summary>
-        /// Forward the query to the active pane if it also supports ICommandTarget.
+        /// Forward the query to the active IWindowPane -- if it in turn supports ICommandTarget.
         /// </summary>
         /// <param name="cmdSet"></param>
         /// <param name="cmdId"></param>
@@ -122,6 +122,10 @@ namespace Decompiler.Gui.Windows
             return ct.Execute(ref cmdSet, cmdId);
         }
 
+
+        /// <summary>
+        /// Window frames host IWindowPanes.
+        /// </summary>
         public class WindowFrame : IWindowFrame
         {
             DecompilerShellUiService svc;
@@ -159,6 +163,8 @@ namespace Decompiler.Gui.Windows
                     form.Controls.Add(ctrl);
                 }
                 form.Show();
+                if (form.WindowState == FormWindowState.Minimized)
+                    form.WindowState = FormWindowState.Normal;
             }
 
             public IWindowPane Pane

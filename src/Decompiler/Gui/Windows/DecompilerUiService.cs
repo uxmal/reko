@@ -52,6 +52,11 @@ namespace Decompiler.Gui.Windows
                 }), dlg);
         }
 
+        public virtual DialogResult ShowModalDialog(IDialog dlg)
+        {
+            return ShowModalDialog((Form)dlg);
+        }
+
         public virtual string ShowOpenFileDialog(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))

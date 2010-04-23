@@ -27,6 +27,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -79,6 +80,9 @@
       <Name>System</Name>
     </Reference>
     <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
@@ -273,6 +277,7 @@
     <Compile Include="Gui\ICommandTarget.cs" />
     <Compile Include="Gui\IDecompilerService.cs" />
     <Compile Include="Gui\IDecompilerUIService.cs" />
+    <Compile Include="Gui\IDialog.cs" />
     <Compile Include="Gui\IDisassemblyViewService.cs" />
     <Compile Include="Gui\IMainForm.cs" />
     <Compile Include="Gui\IMemoryViewService.cs" />
@@ -288,6 +293,7 @@
     <Compile Include="Gui\MenuBuilder.cs" />
     <Compile Include="Gui\ProcedureSearchResult.cs">
     </Compile>
+    <Compile Include="Gui\TypedServiceProvider.cs" />
     <Compile Include="Gui\Windows\CodeViewerPane.cs" />
     <Compile Include="Gui\Windows\CodeViewerServiceImpl.cs" />
     <Compile Include="Gui\Windows\Controls\CodeControl.cs" />
@@ -317,6 +323,9 @@
     </Compile>
     <Compile Include="Gui\Windows\Forms\AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AddressPromptDialog.Designer.cs">
+      <DependentUpon>AddressPromptDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\AnalyzedPage.cs">
       <SubType>UserControl</SubType>
@@ -417,10 +426,10 @@
       <DependentUpon>FindDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\FindDialogInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\GotoDialog.cs">
+    <Compile Include="Gui\Windows\Forms\AddressPromptDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\GotoDialogInteractor.cs" />
+    <Compile Include="Gui\Windows\Forms\AddressPromptInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\InitialPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\LoadedPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\MainFormInteractor.cs" />
@@ -616,8 +625,8 @@
       <DependentUpon>FindDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\GotoDialog.resx">
-      <DependentUpon>GotoDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Gui\Windows\Forms\AddressPromptDialog.resx">
+      <DependentUpon>AddressPromptDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\InitialPage.resx">
