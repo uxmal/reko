@@ -1,0 +1,24 @@
+// ProcedureMock
+void ProcedureMock()
+ProcedureMock_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def p
+	// succ:  1
+l1:		// block 1, pred: 0
+	p_3 = 0x00003000
+	// succ:  2
+loop:		// block 2, pred: 1 5
+	p_4 = PHI(p_3, p_7)
+	Mem5 = PHI(Mem0, Mem6)
+	branch p_4 == 0x00001000 done
+	// succ:  5 3
+done:		// block 3, pred: 2
+	return
+	// succ:  4
+ProcedureMock_exit:		// block 4, pred: 3
+	// succ: 
+l2:		// block 5, pred: 2
+	store(Mem6[p_4 + 0x00000000:word32]) = 0x00000000
+	p_7 = p_4 + 0x00000004
+	// succ:  2

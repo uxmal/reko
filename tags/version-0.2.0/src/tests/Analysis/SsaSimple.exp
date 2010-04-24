@@ -1,0 +1,54 @@
+Mem0:Global memory
+    def:  def Mem0
+fp:Temporary
+    def:  def fp
+wArg04:Stack +0004
+    def:  def wArg04
+    uses: ax_6 = wArg04
+ax:Register ax
+    def:  def ax
+SCZO:Flags
+    def:  def SCZO
+Z:Flags
+    def:  def Z
+ax_6: orig: ax
+    def:  ax_6 = wArg04
+    uses: SCZO_7 = cond(ax_6 - 0x0000)
+          ax_10 = PHI(ax_6, ax_9)
+SCZO_7: orig: SCZO
+    def:  SCZO_7 = cond(ax_6 - 0x0000)
+    uses: Z_8 = SCZO_7 (alias)
+Z_8: orig: Z
+    def:  Z_8 = SCZO_7 (alias)
+    uses: branch Test(NE,Z_8) l0C00_000C
+ax_9: orig: ax
+    def:  ax_9 = 0xFFFF
+    uses: ax_10 = PHI(ax_6, ax_9)
+ax_10: orig: ax
+    def:  ax_10 = PHI(ax_6, ax_9)
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def wArg04
+	def ax
+	def SCZO
+	def Z
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax_6 = wArg04
+	SCZO_7 = cond(ax_6 - 0x0000)
+	Z_8 = SCZO_7 (alias)
+	branch Test(NE,Z_8) l0C00_000C
+	// succ:  2 3
+l0C00_0009:		// block 2, pred: 1
+	ax_9 = 0xFFFF
+	// succ:  3
+l0C00_000C:		// block 3, pred: 1 2
+	ax_10 = PHI(ax_6, ax_9)
+	return
+	// succ:  4
+fn0C00_0000_exit:		// block 4, pred: 3
+	// succ: 
+

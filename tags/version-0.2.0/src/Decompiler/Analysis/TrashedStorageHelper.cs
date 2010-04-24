@@ -1,0 +1,177 @@
+/* 
+ * Copyright (C) 1999-2010 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+using Decompiler.Core;
+using Decompiler.Core.Code;
+using System;
+using System.Collections.Generic;
+
+namespace Decompiler.Analysis
+{
+	public class TrashStorageHelper : StorageVisitor
+	{
+		private uint grfDefs;
+		private Dictionary<Storage, Storage> regDefs;
+		private bool defining;
+		private Storage value;
+		private readonly Storage trash;
+
+		public TrashStorageHelper(Storage trash) : this(new Dictionary<Storage, Storage>(), 0, trash)
+		{
+		}
+
+
+		public TrashStorageHelper(Dictionary<Storage,Storage> defs, uint grfDefs, Storage trash)
+		{
+			this.regDefs = defs;
+			this.grfDefs = grfDefs;
+            this.trash = trash;
+		}
+
+		public TrashStorageHelper Clone()
+		{
+			return new TrashStorageHelper(new Dictionary<Storage,Storage>(), grfDefs, trash);
+		}
+
+		public void Copy(Identifier dst, Identifier src)
+		{
+			defining = false;
+			value = null;
+			src.Storage.Accept(this);
+			if (value == null)
+				value = src.Storage;
+			Trash(dst, value);
+		}
+
+        public Storage TrashedStorage
+        {
+            get { return trash; }
+        }
+
+		public void Trash(Identifier dst, Storage v)
+		{
+			defining = true;
+			value = v;
+			dst.Storage.Accept(this);
+		}
+
+
+		public Dictionary<Storage,Storage> TrashedRegisters
+		{
+			get { return regDefs; }
+		}
+
+		public uint TrashedFlags
+		{
+			get { return grfDefs; }
+			set { grfDefs = value; }
+		}
+
+		#region StorageVisitor Members
+
+		public void VisitFlagGroupStorage(FlagGroupStorage grf)
+		{
+			if (defining)
+				this.grfDefs |= grf.FlagGroup;
+		}
+
+		public void VisitFpuStackStorage(FpuStackStorage fpu)
+		{
+            if (defining)
+                regDefs[fpu] = value;
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(fpu, out value);
+            }
+		}
+
+		public void VisitMemoryStorage(MemoryStorage global)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void VisitOutArgumentStorage(OutArgumentStorage arg)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void VisitRegisterStorage(RegisterStorage reg)
+		{
+            if (defining)
+            {
+                regDefs[reg] = value;
+            }
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(reg, out value);
+            }
+		}
+
+		public void VisitSequenceStorage(SequenceStorage seq)
+		{
+			seq.Head.Storage.Accept(this);
+			seq.Tail.Storage.Accept(this);
+			if (defining)
+			{
+				regDefs[seq] = value;
+			}
+			else
+			{
+				value = regDefs[seq];
+			}
+		}
+
+		public void VisitStackArgumentStorage(StackArgumentStorage stack)
+		{
+            if (defining)
+                regDefs[stack] = value;
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(stack, out value);
+            }
+		}
+
+		public void VisitStackLocalStorage(StackLocalStorage local)
+		{
+            if (defining)
+                regDefs[local] = value;
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(local, out value);
+            }
+		}
+
+		public void VisitTemporaryStorage(TemporaryStorage temp)
+		{
+            if (defining)
+                regDefs[temp] = value;
+            else
+            {
+                value = null;
+                regDefs.TryGetValue(temp, out value);
+            }
+		}
+
+		#endregion
+
+    }
+}

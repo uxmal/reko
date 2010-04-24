@@ -1,0 +1,2 @@
+Register word32 GlobalHandle(Stack word32 pMem)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: 0

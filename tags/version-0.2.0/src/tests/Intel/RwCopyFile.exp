@@ -1,0 +1,58 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// ax:Register ax
+// wArg00:Stack +0000
+// dx:Register dx
+// C:Flags
+// ds:Register ds
+// ds_dx:Sequence ds:dx
+// al:Register al
+// wLoc06:Local -0006
+// wArg02:Stack +0002
+// wLoc08:Local -0008
+// bx:Register bx
+// cx:Register cx
+// SCZO:Flags
+// Z:Flags
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	wLoc04 = bp
+	ax = 0x3D00
+	dx = wArg00
+	C = msdos_open_file(ds_dx, al, &ax)
+	wLoc06 = ax
+	ax = 0x3D01
+	dx = wArg02
+	C = msdos_open_file(ds_dx, al, &ax)
+	wLoc08 = ax
+	// succ:  2
+l0C00_002A:		// block 2, pred: 1 4
+	bx = wLoc06
+	dx = 0x0800
+	cx = 0x0800
+	ax = 0x3F00
+	C = msdos_read_file(bx, cx, ds_dx, &ax)
+	branch Test(ULT,C) l0C00_003E
+	// succ:  3 5
+l0C00_003A:		// block 3, pred: 2
+	SCZO = cond(ax - 0x0000)
+	branch Test(NE,Z) l0C00_001F
+	// succ:  5 4
+l0C00_001F:		// block 4, pred: 3
+	bx = wLoc08
+	dx = 0x0800
+	ax = 0x4000
+	C = msdos_write_file(bx, cx, ds_dx, &ax)
+	// succ:  2
+l0C00_003E:		// block 5, pred: 2 3
+	bp = wLoc04
+	return
+	// succ:  6
+fn0C00_0000_exit:		// block 6, pred: 5
+	// succ: 

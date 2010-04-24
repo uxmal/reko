@@ -1,0 +1,69 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  eax si es ds
+	BypassIn: 
+	Trashed:   SCZO eax ax cx si di al cl ah ch
+	Preserved:
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: eax si es ds
+l0C00_0000:		// block 1, pred: 0
+	eax = eax + eax * 0x00000004
+	store(Mem0[ds:0x02FC:word32]) = eax
+	eax = Mem0[ds:si:word32]
+	si = si + 0x0004
+	store(Mem0[ds:0x0300:word32]) = eax
+	eax = Mem0[ds:si:word32]
+	si = si + 0x0004
+	store(Mem0[ds:0x0304:word32]) = eax
+	ax = Mem0[ds:si:word16]
+	si = si + 0x0002
+	store(Mem0[ds:0x0308:word16]) = ax
+	ax = Mem0[ds:si:word16]
+	si = si + 0x0002
+	store(Mem0[ds:0x030A:word16]) = ax
+	call fn0C00_0026 (depth: 2;)
+	return
+	// succ:  2
+// DataOut:
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// DataOut:
+// fn0C00_0026 /////////////////////
+	LiveOut:  
+	MayUseIn:  es ds
+	BypassIn: 
+	Trashed:   SCZO ax cx di al cl ch
+	Preserved:
+// fn0C00_0026
+void fn0C00_0026()
+fn0C00_0026_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: es ds
+l0C00_0026:		// block 1, pred: 0
+	cx = Mem0[ds:0x0400:word16]
+	al = 0x00
+	di = Mem0[ds:0x0402:word16]
+	// succ:  2
+// DataOut: cx di al es ds
+l0C00_0030:		// block 2, pred: 1 3
+	branch cx == 0x0000 l0C00_0030_rep
+	// succ:  4 3
+// DataOut: cx di al es ds
+l0C00_0030_rep:		// block 3, pred: 2
+	cx = cx - 0x0001
+	SCZO = cond(al - Mem0[es:di:byte])
+	di = di + 0x0001
+	branch Test(EQ,Z) l0C00_0030
+	// succ:  4 2
+// DataOut: cx di al es ds
+l0C00_0032:		// block 4, pred: 2 3
+	store(Mem0[ds:0x0404:word16]) = di
+	return
+	// succ:  5
+// DataOut:
+fn0C00_0026_exit:		// block 5, pred: 4
+	// succ: 
+// DataOut:

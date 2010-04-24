@@ -1,0 +1,212 @@
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def ds
+	def si
+	def ax
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	si_5 = Mem0[ds:0x0200:word16]
+	ax_7 = fn0C00_0025(si_5, ds, &si_6)
+	store(Mem8[ds:0x0310:word16]) = ax_7
+	ax_10 = fn0C00_0027(si_6, ds, &si_9)
+	store(Mem11[ds:0x0320:word16]) = ax_10
+	ax_13 = fn0C00_002F(si_9, ds, &si_12)
+	store(Mem14[ds:0x0330:word16]) = ax_13
+	ax_16 = fn0C00_0036(si_12, ds, &si_15)
+	store(Mem17[ds:0x0340:word16]) = ax_16
+	store(Mem18[ds:0x0400:word16]) = si_15
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def ds
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	si_5 = Mem0[ds:0x0200:word16]
+	ax_7 = fn0C00_0025(si_5, ds, &si_6)
+	store(Mem8[ds:0x0310:word16]) = ax_7
+	ax_10 = fn0C00_0027(si_6, ds, &si_9)
+	store(Mem11[ds:0x0320:word16]) = ax_10
+	ax_13 = fn0C00_002F(si_9, ds, &si_12)
+	store(Mem14[ds:0x0330:word16]) = ax_13
+	ax_16 = fn0C00_0036(si_12, ds, &si_15)
+	store(Mem17[ds:0x0340:word16]) = ax_16
+	store(Mem18[ds:0x0400:word16]) = si_15
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+====================
+// fn0C00_0025
+word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
+fn0C00_0025_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def ax
+	def ds
+	def si
+	def siOut
+	// succ:  1
+l0C00_0025:		// block 1, pred: 0
+	ax_6 = Mem0[ds:si:word16]
+	si_7 = si + 0x0002
+	return ax_6
+	// succ:  2
+fn0C00_0025_exit:		// block 2, pred: 1
+	use si_7 (=> siOut)
+	// succ: 
+
+// fn0C00_0025
+word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
+fn0C00_0025_entry:		// block 0, pred:
+	def Mem0
+	def ds
+	def si
+	def siOut
+	// succ:  1
+l0C00_0025:		// block 1, pred: 0
+	ax_6 = Mem0[ds:si:word16]
+	store(Mem0[siOut:word16]) = si + 0x0002
+	return ax_6
+	// succ:  2
+fn0C00_0025_exit:		// block 2, pred: 1
+	// succ: 
+====================
+// fn0C00_0027
+word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
+fn0C00_0027_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def ax
+	def SCZO
+	def si
+	def Z
+	def ds
+	def siOut
+	// succ:  1
+l0C00_0027:		// block 1, pred: 0
+	ax_8 = 0x0000
+	SCZO_9 = cond(si - 0x0000)
+	Z_10 = SCZO_9 (alias)
+	branch Test(EQ,Z_10) l0C00_002E
+	// succ:  2 3
+l0C00_002D:		// block 2, pred: 1
+	ax_11 = Mem0[ds:si:word16]
+	si_12 = si + 0x0002
+	// succ:  3
+l0C00_002E:		// block 3, pred: 1 2
+	si_13 = PHI(si, si_12)
+	ax_14 = PHI(ax_8, ax_11)
+	return ax_14
+	// succ:  4
+fn0C00_0027_exit:		// block 4, pred: 3
+	use si_13 (=> siOut)
+	// succ: 
+
+// fn0C00_0027
+word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
+fn0C00_0027_entry:		// block 0, pred:
+	def Mem0
+	def si
+	store(Mem0[siOut:word16]) = si
+	def ds
+	def siOut
+	// succ:  1
+l0C00_0027:		// block 1, pred: 0
+	ax_8 = 0x0000
+	SCZO_9 = cond(si - 0x0000)
+	Z_10 = SCZO_9 (alias)
+	branch Test(EQ,Z_10) l0C00_002E
+	// succ:  2 3
+l0C00_002D:		// block 2, pred: 1
+	ax_11 = Mem0[ds:si:word16]
+	store(Mem0[siOut:word16]) = si + 0x0002
+	// succ:  3
+l0C00_002E:		// block 3, pred: 1 2
+	ax_14 = PHI(ax_8, ax_11)
+	return ax_14
+	// succ:  4
+fn0C00_0027_exit:		// block 4, pred: 3
+	// succ: 
+====================
+// fn0C00_002F
+word16 fn0C00_002F(word16 si, selector ds, ptr16 siOut)
+fn0C00_002F_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def ax
+	def ds
+	def si
+	def siOut
+	// succ:  1
+l0C00_002F:		// block 1, pred: 0
+	ax_6 = Mem0[ds:si:word16]
+	si_7 = si + 0x0002
+	store(Mem8[ds:si_7 + 0x0002:word16]) = 0x0000
+	return ax_6
+	// succ:  2
+fn0C00_002F_exit:		// block 2, pred: 1
+	use si_7 (=> siOut)
+	// succ: 
+
+// fn0C00_002F
+word16 fn0C00_002F(word16 si, selector ds, ptr16 siOut)
+fn0C00_002F_entry:		// block 0, pred:
+	def Mem0
+	def ds
+	def si
+	def siOut
+	// succ:  1
+l0C00_002F:		// block 1, pred: 0
+	ax_6 = Mem0[ds:si:word16]
+	si_7 = si + 0x0002
+	store(Mem0[siOut:word16]) = si_7
+	store(Mem8[ds:si_7 + 0x0002:word16]) = 0x0000
+	return ax_6
+	// succ:  2
+fn0C00_002F_exit:		// block 2, pred: 1
+	// succ: 
+====================
+// fn0C00_0036
+word16 fn0C00_0036(word16 si, selector ds, ptr16 siOut)
+fn0C00_0036_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def ax
+	def ds
+	def si
+	def siOut
+	// succ:  1
+l0C00_0036:		// block 1, pred: 0
+	ax_6 = Mem0[ds:si:word16]
+	si_7 = si + 0x0002
+	ax_9 = fn0C00_0025(si_7, ds, &si_8)
+	return ax_9
+	// succ:  2
+fn0C00_0036_exit:		// block 2, pred: 1
+	use si_8 (=> siOut)
+	// succ: 
+
+// fn0C00_0036
+word16 fn0C00_0036(word16 si, selector ds, ptr16 siOut)
+fn0C00_0036_entry:		// block 0, pred:
+	def ds
+	def si
+	def siOut
+	// succ:  1
+l0C00_0036:		// block 1, pred: 0
+	si_7 = si + 0x0002
+	ax_9 = fn0C00_0025(si_7, ds, siOut)
+	return ax_9
+	// succ:  2
+fn0C00_0036_exit:		// block 2, pred: 1
+	// succ: 
+====================

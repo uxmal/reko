@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+	<includefile>shellapi.h</includefile>
+  <default>
+	<signature convention="stdapi">
+	</signature>
+  </default>
+  <procedure name="ShellExecuteA">
+	<signature>
+	  <return type="HINSTANCE"><reg>eax</reg></return>
+	  <arg type="HWND" name= "hwnd"><stack size="4"/></arg>
+	  <arg type="LPCSTR" name= "lpOperation"><stack size="4"/></arg>
+	  <arg type="LPCSTR" name= "lpFile"><stack size="4"/></arg>
+	  <arg type="LPCSTR" name= "lpParameters"><stack size="4"/></arg>
+	  <arg type="LPCSTR" name= "lpDirectory"><stack size="4"/></arg>
+	  <arg type="INT" name= "nShowCmd"><stack size="4"/></arg>
+	</signature>
+  </procedure>
+</library>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SerializedSignature>
+  <return name="ax">
+    <reg>ax</reg>
+  </return>
+  <arg name="bx">
+    <reg>bx</reg>
+  </arg>
+  <arg name="cl">
+    <reg>cl</reg>
+  </arg>
+</SerializedSignature>

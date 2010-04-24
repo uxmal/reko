@@ -1,0 +1,48 @@
+Mem0:Global memory
+fp:Temporary
+edx:Register edx
+    def:  def edx
+    uses: store(Mem9[ds:0x7960:word32]) = edx
+          store(Mem15[ds:si + 0x00C8:word32]) = -edx
+ds:Register ds
+    def:  def ds
+    uses: store(Mem9[ds:0x7960:word32]) = edx
+          store(Mem10[ds:0x7964:byte]) = cl
+          store(Mem15[ds:si + 0x00C8:word32]) = -edx
+cl:Register cl
+    def:  def cl
+    uses: store(Mem10[ds:0x7964:byte]) = cl
+eax:Register eax
+SZO:Flags
+C:Flags
+si:Register si
+    def:  def si
+    uses: store(Mem15[ds:si + 0x00C8:word32]) = -edx
+Mem9: orig: Mem0
+    def:  store(Mem9[ds:0x7960:word32]) = edx
+Mem10: orig: Mem0
+    def:  store(Mem10[ds:0x7964:byte]) = cl
+eax_11: orig: eax
+eax_12: orig: eax
+    uses: store(Mem15[ds:si + 0x00C8:word32]) = -edx
+SZO_13: orig: SZO
+C_14: orig: C
+Mem15: orig: Mem0
+    def:  store(Mem15[ds:si + 0x00C8:word32]) = -edx
+// fn0C00_0000
+void fn0C00_0000(word32 edx, word16 si, byte cl, selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	def edx
+	def ds
+	def cl
+	def si
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	store(Mem9[ds:0x7960:word32]) = edx
+	store(Mem10[ds:0x7964:byte]) = cl
+	store(Mem15[ds:si + 0x00C8:word32]) = -edx
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+
