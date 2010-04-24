@@ -32,10 +32,11 @@ namespace Decompiler.Gui.Windows
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
         private IServiceProvider sp;
-        
+        private MemoryControl ctrl;
+
         public Control CreateControl()
         {
-            Control = new MemoryControl();
+            ctrl = new MemoryControl();
             Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
             Control.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(ctl_SelectionChanged);
             var uiService = (IDecompilerShellUiService)sp.GetService(typeof(IDecompilerShellUiService));
@@ -43,7 +44,7 @@ namespace Decompiler.Gui.Windows
             return Control;
         }
 
-        public MemoryControl Control { get; private set; }
+        public virtual MemoryControl Control { get { return ctrl; } }
 
         public void SetSite(IServiceProvider sp)
         {
@@ -95,6 +96,15 @@ namespace Decompiler.Gui.Windows
             return new AddressPromptDialog();
         }
 
+        public virtual Address SelectedAddress
+        {
+            get { return Control.SelectedAddress; }
+            set
+            {
+                Control.SelectedAddress = value;
+                Control.TopAddress = value;
+            }
+        }
         #region ICommandTarget Members
 
         public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)

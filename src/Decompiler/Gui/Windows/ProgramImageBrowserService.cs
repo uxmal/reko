@@ -30,6 +30,7 @@ namespace Decompiler.Gui.Windows
     public class ProgramImageBrowserService : IProgramImageBrowserService
     {
         private ListView list;
+
         public ProgramImageBrowserService(ListView list)
         {
             this.list = list;
@@ -39,6 +40,12 @@ namespace Decompiler.Gui.Windows
         #region IProgramImageBrowserService Members
 
         public event EventHandler SelectionChanged;
+
+        public string Caption
+        {
+            get { return list.Columns[0].Text; }
+            set { list.Columns[0].Text = value; }
+        }
 
         public bool Enabled
         {

@@ -108,17 +108,7 @@ namespace Decompiler.Gui.Windows.Forms
             get { return toolBar; }
         }
 
-        public IStartPage InitialPage
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public ILoadedPage LoadedPage
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public AnalyzedPage AnalyzedPage
         {
             get { throw new NotImplementedException(); }
         }

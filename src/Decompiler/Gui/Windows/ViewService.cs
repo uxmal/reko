@@ -35,7 +35,7 @@ namespace Decompiler.Gui.Windows
 
         protected T RequireService<T>()
         {
-            T svc = (T)sp.GetService(typeof(T));
+            T svc = sp.GetService<T>();
             if (svc == null)
                 throw new InvalidOperationException(string.Format("Service {0} unavailable at this time.", typeof(T).FullName));
             return svc;

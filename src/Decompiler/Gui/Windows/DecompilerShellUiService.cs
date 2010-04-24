@@ -77,6 +77,17 @@ namespace Decompiler.Gui.Windows
             return frame;
         }
 
+        public IWindowFrame FindDocumentWindow(string documentType, object docItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IWindowFrame CreateDocumentWindow(string documentType, string documentTitle, object docItem, IWindowPane pane)
+        {
+            throw new NotImplementedException();
+        }
+
+
         private void RemoveFrame(WindowFrame windowFrame, string key, Form form)
         {
             framesByName.Remove(key);
@@ -172,7 +183,6 @@ namespace Decompiler.Gui.Windows
                 get { return pane; }
             }
         }
-
 
         #endregion
     }

@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		[SetUp]
 		public void Setup()
 		{
-			form = new MainForm();
+			form = new MainForm2();
             i = new TestInitialPageInteractor();
             site = new FakeComponentSite(i);
             uiSvc = new FakeShellUiService();

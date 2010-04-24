@@ -430,6 +430,7 @@ namespace Decompiler.Gui.Windows.Controls
 			set 
 			{
 				addrSelected = value;
+                addrAnchor = value;
 				if (IsVisible(value) || IsVisible(addrSelected))
 					Invalidate();
 				OnSelectionChanged();

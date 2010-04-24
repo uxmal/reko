@@ -40,6 +40,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     {
         private Program prog;
         private IMainForm form;
+        private MockRepository repository;
         private AnalyzedPageInteractorImpl interactor;
         private FakeComponentSite site ;
         private IDecompilerShellUiService uiSvc;
@@ -48,9 +49,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [SetUp]
         public void Setup()
         {
-            form = new MainForm();
+            form = new MainForm2();
             interactor = new AnalyzedPageInteractorImpl();
-
+            repository = new MockRepository();
             site = new FakeComponentSite(interactor);
 
             uiSvc = AddService<IDecompilerShellUiService>();
@@ -98,6 +99,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void SelectProcedure()
         {
+            codeViewSvc.Expect(s => s.DisplayProcedure(
+                Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
+            repository.ReplayAll();
+
             form.Show();
             Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
@@ -110,18 +115,20 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.Decompiler.Program.Procedures.Add(new Address(0x12346), p);
             interactor.EnterPage();
 
-            codeViewSvc.Expect(s => s.DisplayProcedure(
-                Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
             form.BrowserList.Items[1].Focused = true;
             form.BrowserList.Items[1].Selected = true;
-            Console.WriteLine(form.AnalyzedPage.ProcedureText.Text);
 
-            codeViewSvc.VerifyAllExpectations();
+            repository.VerifyAll();
         }
 
         [Test]
         public void ShowEditProcedureDialog()
         {
+            uiSvc.Expect(s => s.ShowModalDialog(
+                    Arg<ProcedureDialog>.Is.TypeOf))
+                .Return(DialogResult.Cancel);
+            repository.ReplayAll();
+
             form.Show();
             Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
@@ -133,21 +140,16 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.EnterPage();
             form.BrowserList.Items[0].Selected = true;
 
-            uiSvc.Expect(s => s.ShowModalDialog(
-                    Arg<ProcedureDialog>.Is.TypeOf))
-                .Return(DialogResult.Cancel);
-
             Assert.IsTrue(interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ActionEditSignature), "Should have executed command.");
-            uiSvc.VerifyAllExpectations();
+            repository.VerifyAll();
         }
 
 
         private T AddService<T>() where T : class
         {
-            var svc = MockRepository.GenerateMock<T>();
+            var svc = repository.DynamicMock<T>();
             site.AddService(typeof(T), svc);
             return svc;
-
         }
 
         private class TestLoader : LoaderBase

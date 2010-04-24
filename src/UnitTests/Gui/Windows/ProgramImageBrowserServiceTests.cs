@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2010 John Källén.
+ï»¿/* 
+ * Copyright (C) 1999-2010 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,29 +16,30 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Gui;
+using Decompiler.Gui.Windows;
+using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Decompiler.UnitTests.Gui.Windows
 {
-    /// <summary>
-    /// Services for interacting with the ProgramImage browser.
-    /// </summary>
-    public interface IProgramImageBrowserService
+    [TestFixture]
+    public class ProgramImageBrowserServiceTests
     {
-        event EventHandler SelectionChanged;
+        private ListView listView;
 
-        bool Enabled { get; set; }
-
-        object FocusedItem { get; }
-
-        bool IsItemSelected { get; }
-
-        object SelectedItem { get; }
-
-        void Populate(IEnumerable items, ListViewItemDecoratorHandler handler);
-
-        string Caption { get; set; }
+        [Test]
+        public void CaptionProperty()
+        {
+            listView = new ListView();
+            listView.View = View.Details;
+            listView.Columns.Add("");
+            IProgramImageBrowserService svc = new ProgramImageBrowserService(listView);
+            svc.Caption = "Test";
+            Assert.AreEqual("Test", listView.Columns[0].Text);
+        }
     }
 }
