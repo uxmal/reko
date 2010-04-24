@@ -39,15 +39,26 @@ namespace Decompiler.UnitTests.Gui.Windows
     {
         private MockRepository repository;
 
+        [SetUp]
+        public void Setup()
+        {
+            repository = new MockRepository();
+        }
+
         [Test]
-        public void ObtainService()
+        public void ShowingWindowCreatesWindowFrame()
         {
             ServiceContainer sc = new ServiceContainer();
-            IDecompilerShellUiService shellUi = repository.StrictMock<IDecompilerShellUiService>();
-            var windowFrame = repository.StrictMock<IWindowFrame>();
+            var shellUi = repository.DynamicMock<IDecompilerShellUiService>();
+            var windowFrame = repository.DynamicMock<IWindowFrame>();
             sc.AddService(typeof(IDecompilerShellUiService), shellUi);
 
-            var service = new MemoryViewServiceImpl(sc);
+            var interactor = repository.DynamicMock<MemoryViewInteractor>();
+            interactor.Stub(x => x.Control).Return(new MemoryControl());
+
+            var service = repository.Stub<MemoryViewServiceImpl>(sc);
+            service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
+
             var svc = (IMemoryViewService)service;
             Expect.Call(shellUi.FindWindow("memoryViewWindow")).Return(null);
             Expect.Call(shellUi.CreateWindow(
@@ -62,11 +73,37 @@ namespace Decompiler.UnitTests.Gui.Windows
             repository.VerifyAll();
         }
 
-        [SetUp]
-        public void Setup()
+        private T AddStubService<T>(IServiceContainer sc)
         {
-            repository = new MockRepository();
+            var svc = repository.Stub<T>();
+            sc.AddService<T>(svc);
+            return svc;
         }
+
+        [Test]
+        public void ShowMemoryAtAddressShouldChangeMemoryControl()
+        {
+            ServiceContainer sc = new ServiceContainer();
+            MemoryControl ctrl = new MemoryControl();
+            var interactor = repository.DynamicMock<MemoryViewInteractor>();
+            interactor.Expect(x => x.SelectedAddress).SetPropertyWithArgument(new Address(0x4711));
+            interactor.Stub(x => x.Control).Return(ctrl);
+            var uiSvc = AddStubService<IDecompilerShellUiService>(sc);
+            uiSvc.Stub(x => x.FindWindow(Arg<string>.Is.Anything)).Return(null);
+            uiSvc.Stub(x => x.CreateWindow("", "", null))
+                .IgnoreArguments()
+                .Return(repository.Stub<IWindowFrame>());
+
+            var service = repository.Stub<MemoryViewServiceImpl>(sc);
+            service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
+            repository.ReplayAll();
+
+            service.ShowMemoryAtAddress(new Address(0x4711));
+
+            repository.VerifyAll();
+
+        }
+
 
         private class TestMainFormInteractor : MainFormInteractor
         {

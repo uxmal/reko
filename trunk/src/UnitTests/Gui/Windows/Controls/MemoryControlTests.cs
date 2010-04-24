@@ -59,6 +59,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Controls
             memctl.Invalidate();
         }
 
+        [Test]
+        public void SetSelectedAddressShouldResetAnchor()
+        {
+            memctl.SelectedAddress = new Address(0x010);
+            AddressRange ar = memctl.GetAddressRange();
+            Assert.AreEqual(0x010, ar.Begin.Linear);
+            Assert.AreEqual(0x010, ar.End.Linear);
+
+        }
 		private byte [] GenerateTestMemory()
 		{
 			System.IO.MemoryStream stm = new System.IO.MemoryStream();

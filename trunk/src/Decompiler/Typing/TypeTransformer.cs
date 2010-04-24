@@ -193,6 +193,8 @@ namespace Decompiler.Typing
 			do
 			{
 				++iteration;
+                if (iteration > 500)
+                    eventListener.AddWarningDiagnostic(null, "Type transformer has looped {0} times, quitting prematurely.", iteration);
 				Changed = false;
 				foreach (TypeVariable tv in store.TypeVariables)
 				{

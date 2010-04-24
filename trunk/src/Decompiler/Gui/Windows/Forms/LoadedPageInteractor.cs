@@ -35,7 +35,6 @@ namespace Decompiler.Gui.Windows.Forms
 
 	public class LoadedPageInteractor : PhasePageInteractorImpl, ILoadedPageInteractor
 	{
-		private ILoadedPage pageLoaded;
 		private Hashtable mpCmdidToCommand;
         private IProgramImageBrowserService browserSvc;
         private IStatusBarService sbSvc;
@@ -96,22 +95,23 @@ namespace Decompiler.Gui.Windows.Forms
 
 		public void GotoAddress()
 		{
-			using (IAddressPromptDialog dlg = new AddressPromptDialog())
-			{
-				if (UIService.ShowModalDialog(dlg) == DialogResult.OK)
-				{
-					pageLoaded.MemoryControl.SelectedAddress = dlg.Address;
-					pageLoaded.MemoryControl.TopAddress = dlg.Address;
-				}
-			}
+            using (IAddressPromptDialog dlg = new AddressPromptDialog())
+            {
+                if (UIService.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    memSvc.ShowMemoryAtAddress(dlg.Address);
+                    memSvc.ShowWindow();
+                }
+            }
 		}
 
         public override void EnterPage()
         {
             browserSvc.Enabled = true;
             browserSvc.SelectionChanged += BrowserItemSelected;
+            browserSvc.Caption = "Segments";
+            memSvc.SelectionChanged += memctl_SelectionChanged;
 
-            memSvc.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(memctl_SelectionChanged);
             memSvc.ViewImage(Decompiler.Program.Image);
             disSvc.ShowWindow();
             disSvc.Clear();
@@ -210,12 +210,11 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-
         public void BrowserItemSelected(object sender, EventArgs e)
         {
             ImageMapSegment segment = (ImageMapSegment) browserSvc.FocusedItem;
-            pageLoaded.MemoryControl.TopAddress = segment.Address;
-            pageLoaded.MemoryControl.SelectedAddress = segment.Address;
+            memSvc.ShowMemoryAtAddress(segment.Address);
+            memSvc.ShowWindow();
         }
     }
 }

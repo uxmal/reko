@@ -111,6 +111,16 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public IWindowFrame FindDocumentWindow(string documentType, object docItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IWindowFrame CreateDocumentWindow(string documentType, string documentTitle, object docItem, IWindowPane pane)
+        {
+            throw new NotImplementedException();
+        }
+
         #region ICommandTarget Members
 
         public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
@@ -122,6 +132,12 @@ namespace Decompiler.UnitTests.Mocks
         {
             return false;
         }
+
+        #endregion
+
+        #region IDecompilerShellUiService Members
+
+
 
         #endregion
     }

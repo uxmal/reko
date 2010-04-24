@@ -52,6 +52,7 @@ namespace Decompiler.Gui.Windows
         public void ShowMemoryAtAddress(Address addr)
         {
             ShowWindow();
+            mvi.SelectedAddress = addr;
         }
 
 
@@ -64,13 +65,18 @@ namespace Decompiler.Gui.Windows
         {
             if (mvi == null)
             {
-                mvi = new MemoryViewInteractor();
+                mvi = CreateMemoryViewInteractor();
                 mvi.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(mvi_SelectionChanged);
             }
             ShowWindow(ViewWindowType, "Memory View", mvi);
         }
 
         #endregion
+
+        public virtual MemoryViewInteractor CreateMemoryViewInteractor()
+        {
+            return new MemoryViewInteractor();
+        }
 
         void mvi_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

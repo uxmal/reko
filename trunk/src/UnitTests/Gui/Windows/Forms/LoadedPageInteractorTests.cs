@@ -31,85 +31,92 @@ using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.Gui.Windows.Forms
 {
-	[TestFixture]
-	public class LoadedPageInteractorTests
-	{
-		private IMainForm form;
+    [TestFixture]
+    public class LoadedPageInteractorTests
+    {
+        private IMainForm form;
         private Program prog;
         private LoadedPageInteractor interactor;
         private DecompilerService decSvc;
         private FakeComponentSite site;
+        private MockRepository repository;
+        private ImageMapSegment mapSegment1;
+        private ImageMapSegment mapSegment2;
 
-		[SetUp]
-		public void Setup()
-		{
-            form = new MainForm();
-            interactor = new LoadedPageInteractor();
+        [SetUp]
+        public void Setup()
+        {
+            repository = new MockRepository();
 
-            site = new FakeComponentSite(interactor);
-
-            ProgramImageBrowserService svc = new ProgramImageBrowserService(form.BrowserList);
-            site.AddService(typeof(IProgramImageBrowserService), svc);
-
-            decSvc = new DecompilerService();
-            site.AddService(typeof(IDecompilerService), decSvc);
-
-            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
-            site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
-            site.AddService(typeof(IStatusBarService), new FakeStatusBarService());
+            form = new MainForm2();
 
             prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
             prog.Image = new ProgramImage(new Address(0xC00, 0), new byte[10000]);
+
             prog.Image.Map.AddSegment(new Address(0x0C10, 0), "0C10", AccessMode.ReadWrite);
             prog.Image.Map.AddSegment(new Address(0x0C20, 0), "0C20", AccessMode.ReadWrite);
+            mapSegment1 = prog.Image.Map.Segments.Values[0];
+            mapSegment2 = prog.Image.Map.Segments.Values[1];
 
+            interactor = new LoadedPageInteractor();
+            site = new FakeComponentSite(interactor);
+            decSvc = new DecompilerService();
+
+            site.AddService(typeof(IDecompilerService), decSvc);
+            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
+            site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            site.AddService(typeof(IStatusBarService), new FakeStatusBarService());
             TestLoader ldr = new TestLoader(new DecompilerProject(), prog);
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), site);
             decSvc.Decompiler.LoadProgram("test.exe");
 
-		}
+        }
 
-		[TearDown]
-		public void Teardown()
-		{
-			form.Dispose();
-		}
+        [TearDown]
+        public void Teardown()
+        {
+            form.Dispose();
+        }
 
-		[Test]
-		public void Populate()
-		{
+        [Test]
+        public void Populate()
+        {
             var memSvc = AddService<IMemoryViewService>();
             var disSvc = AddService<IDisassemblyViewService>();
             var uiSvc = AddService<IDecompilerShellUiService>();
+            site.AddService(typeof(IProgramImageBrowserService), new ProgramImageBrowserService(form.BrowserList));    //$REVIEW: we end up testing ProgramImageBrowserService here, not intended.
             interactor.Site = site;
 
             interactor.EnterPage();
-			ListView lv = form.BrowserList;
-			Assert.AreEqual(3, lv.Items.Count, "There should be three segments in the image.");
-		}
+            ListView lv = form.BrowserList;
+            Assert.AreEqual(3, lv.Items.Count, "There should be three segments in the image.");
+        }
 
         private T AddService<T>() where T : class
         {
-            var svc = MockRepository.GenerateMock<T>();
+            var svc = repository.DynamicMock<T>();
             site.AddService(typeof(T), svc);
             return svc;
         }
 
-		[Test]
-		public void PopulateBrowserWithScannedProcedures()
-		{
+        [Test]
+        public void PopulateBrowserWithScannedProcedures()
+        {
             var memSvc = AddService<IMemoryViewService>();
             var disSvc = AddService<IDisassemblyViewService>();
             var uiSvc = AddService<IDecompilerShellUiService>();
+            site.AddService(typeof(IProgramImageBrowserService), new ProgramImageBrowserService(form.BrowserList));    //$REVIEW: we end up testing ProgramImageBrowserService here, not intended.
+            // Instead write expectations for the two added items.
+
             interactor.Site = site;
 
             AddProcedure(new Address(0xC20, 0x0000), "Test1");
             AddProcedure(new Address(0xC20, 0x0002), "Test2");
             interactor.EnterPage();
             Assert.AreEqual(3, form.BrowserList.Items.Count);
-			Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
-		}
+            Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
+        }
 
         private void AddProcedure(Address addr, string procName)
         {
@@ -118,31 +125,33 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 new Procedure(procName, prog.Architecture.CreateFrame()));
         }
 
-		[Test]
-		public void MarkingProceduresShouldAddToUserProceduresList()
-		{
+        [Test]
+        public void MarkingProceduresShouldAddToUserProceduresList()
+        {
             var memSvc = AddService<IMemoryViewService>();
             var uiSvc = AddService<IDecompilerShellUiService>();
             var disSvc = AddService<IDisassemblyViewService>();
+            var browserSvc = AddService<IProgramImageBrowserService>();
             interactor.Site = site;
-			Assert.AreEqual(0, decSvc.Decompiler.Project.UserProcedures.Count);
+            Assert.AreEqual(0, decSvc.Decompiler.Project.UserProcedures.Count);
             var addr = new Address(0x0C20, 0);
-            memSvc.ShowMemoryAtAddress(addr);
             memSvc.Expect(s => s.GetSelectedAddressRange()).Return(new AddressRange(addr, addr));
             memSvc.Expect(s => s.InvalidateWindow()).IgnoreArguments();
-			interactor.MarkAndScanProcedure();
+            repository.ReplayAll();
 
-            memSvc.VerifyAllExpectations();
-			Assert.AreEqual(1, decSvc.Decompiler.Project.UserProcedures.Count);
-			SerializedProcedure uproc = (SerializedProcedure) decSvc.Decompiler.Project.UserProcedures[0];
-			Assert.AreEqual("0C20:0000", uproc.Address);
-		}
+            interactor.MarkAndScanProcedure();
 
-		[Test]
-		public void QueryStatus()
-		{
-			Assert.AreEqual(MenuStatus.Enabled|MenuStatus.Visible, QueryStatus(CmdIds.ViewFindFragments));
-		}
+            repository.VerifyAll();
+            Assert.AreEqual(1, decSvc.Decompiler.Project.UserProcedures.Count);
+            SerializedProcedure uproc = (SerializedProcedure)decSvc.Decompiler.Project.UserProcedures[0];
+            Assert.AreEqual("0C20:0000", uproc.Address);
+        }
+
+        [Test]
+        public void QueryStatus()
+        {
+            Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, QueryStatus(CmdIds.ViewFindFragments));
+        }
 
         [Test]
         public void ShowEditFindDialogButDontRunIt()
@@ -150,21 +159,52 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var memSvc = AddService<IMemoryViewService>();
             var disSvc = AddService<IDisassemblyViewService>();
             var uiSvc = AddService<IDecompilerShellUiService>();
+            var browserService = AddService<IProgramImageBrowserService>();
             interactor.Site = site;
 
             uiSvc.Expect(s => s.ShowModalDialog(
                 Arg<FindDialog>.Is.TypeOf))
                 .Return(DialogResult.Cancel);
+            repository.ReplayAll();
+
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.EditFind);
             uiSvc.VerifyAllExpectations();
         }
 
-		private MenuStatus QueryStatus(int cmdId)
-		{
-			CommandStatus status = new CommandStatus();
-			interactor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
-			return status.Status;
-		}
+        [Test]
+        public void BrowserItemSelectedShouldUpdateMemoryWindow()
+        {
+            var browserService = AddService<IProgramImageBrowserService>();
+            browserService.Stub(x => x.SelectedItem).Return(mapSegment2);
+            var memSvc = AddService<IMemoryViewService>();
+            memSvc.Expect(x => x.ShowMemoryAtAddress(mapSegment2.Address));
+            repository.ReplayAll();
+
+            browserService.Raise(x => x.SelectionChanged += null, this, EventArgs.Empty);
+        }
+
+        [Test]
+        public void SetBrowserCaptionWhenEnteringPage()
+        {
+            AddService<IDecompilerShellUiService>();
+            AddService<IMemoryViewService>();
+            AddService<IDisassemblyViewService>();
+            var browserService = AddService<IProgramImageBrowserService>();
+            browserService.Expect(x => x.Caption).SetPropertyWithArgument("Segments");
+            repository.ReplayAll();
+
+            interactor.Site = site;
+            interactor.EnterPage();
+
+            repository.VerifyAll();
+        }
+
+        private MenuStatus QueryStatus(int cmdId)
+        {
+            CommandStatus status = new CommandStatus();
+            interactor.QueryStatus(ref CmdSets.GuidDecompiler, cmdId, status, null);
+            return status.Status;
+        }
 
 
         private class TestLoader : LoaderBase
@@ -186,7 +226,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             public override byte[] LoadImageBytes(string fileName, int offset)
             {
                 return new byte[400];
+            }
         }
-	}
-	}
+    }
 }

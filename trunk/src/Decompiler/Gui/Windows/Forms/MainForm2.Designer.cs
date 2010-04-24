@@ -34,10 +34,11 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.listBrowser = new System.Windows.Forms.ListView();
+            this.colBrowserHeader = new System.Windows.Forms.ColumnHeader();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabFindResults = new System.Windows.Forms.TabPage();
             this.listFindResults = new System.Windows.Forms.ListView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabDiagnostics = new System.Windows.Forms.TabPage();
             this.listDiagnostics = new System.Windows.Forms.ListView();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.splitter2 = new System.Windows.Forms.Splitter();
@@ -46,8 +47,8 @@
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabFindResults.SuspendLayout();
+            this.tabDiagnostics.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -68,18 +69,25 @@
             // 
             // listBrowser
             // 
+            this.listBrowser.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colBrowserHeader});
             this.listBrowser.Dock = System.Windows.Forms.DockStyle.Left;
-            this.listBrowser.Location = new System.Drawing.Point(0, 0);
+            this.listBrowser.Location = new System.Drawing.Point(3, 0);
             this.listBrowser.Name = "listBrowser";
-            this.listBrowser.Size = new System.Drawing.Size(200, 331);
+            this.listBrowser.Size = new System.Drawing.Size(200, 328);
             this.listBrowser.TabIndex = 4;
             this.listBrowser.UseCompatibleStateImageBehavior = false;
             this.listBrowser.View = System.Windows.Forms.View.Details;
             // 
+            // colBrowserHeader
+            // 
+            this.colBrowserHeader.Text = "";
+            this.colBrowserHeader.Width = 196;
+            // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabFindResults);
+            this.tabControl1.Controls.Add(this.tabDiagnostics);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tabControl1.Location = new System.Drawing.Point(0, 331);
             this.tabControl1.Name = "tabControl1";
@@ -87,16 +95,16 @@
             this.tabControl1.Size = new System.Drawing.Size(784, 180);
             this.tabControl1.TabIndex = 5;
             // 
-            // tabPage1
+            // tabFindResults
             // 
-            this.tabPage1.Controls.Add(this.listFindResults);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(776, 154);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Find results";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabFindResults.Controls.Add(this.listFindResults);
+            this.tabFindResults.Location = new System.Drawing.Point(4, 22);
+            this.tabFindResults.Name = "tabFindResults";
+            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFindResults.Size = new System.Drawing.Size(776, 154);
+            this.tabFindResults.TabIndex = 0;
+            this.tabFindResults.Text = "Find results";
+            this.tabFindResults.UseVisualStyleBackColor = true;
             // 
             // listFindResults
             // 
@@ -108,16 +116,16 @@
             this.listFindResults.TabIndex = 0;
             this.listFindResults.UseCompatibleStateImageBehavior = false;
             // 
-            // tabPage2
+            // tabDiagnostics
             // 
-            this.tabPage2.Controls.Add(this.listDiagnostics);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(776, 154);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Diagostics";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabDiagnostics.Controls.Add(this.listDiagnostics);
+            this.tabDiagnostics.Location = new System.Drawing.Point(4, 22);
+            this.tabDiagnostics.Name = "tabDiagnostics";
+            this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDiagnostics.Size = new System.Drawing.Size(776, 154);
+            this.tabDiagnostics.TabIndex = 1;
+            this.tabDiagnostics.Text = "Diagostics";
+            this.tabDiagnostics.UseVisualStyleBackColor = true;
             // 
             // listDiagnostics
             // 
@@ -132,7 +140,7 @@
             // 
             // splitter1
             // 
-            this.splitter1.Location = new System.Drawing.Point(200, 0);
+            this.splitter1.Location = new System.Drawing.Point(0, 0);
             this.splitter1.Name = "splitter1";
             this.splitter1.Size = new System.Drawing.Size(3, 331);
             this.splitter1.TabIndex = 6;
@@ -142,9 +150,9 @@
             // 
             this.splitter2.Cursor = System.Windows.Forms.Cursors.HSplit;
             this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter2.Location = new System.Drawing.Point(203, 328);
+            this.splitter2.Location = new System.Drawing.Point(3, 328);
             this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(581, 3);
+            this.splitter2.Size = new System.Drawing.Size(781, 3);
             this.splitter2.TabIndex = 7;
             this.splitter2.TabStop = false;
             // 
@@ -166,9 +174,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 533);
+            this.Controls.Add(this.listBrowser);
             this.Controls.Add(this.splitter2);
             this.Controls.Add(this.splitter1);
-            this.Controls.Add(this.listBrowser);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -178,8 +186,8 @@
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.tabFindResults.ResumeLayout(false);
+            this.tabDiagnostics.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,8 +199,8 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ListView listBrowser;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabFindResults;
+        private System.Windows.Forms.TabPage tabDiagnostics;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Splitter splitter2;
         private System.Windows.Forms.ListView listFindResults;
@@ -200,6 +208,7 @@
         private System.Windows.Forms.SaveFileDialog sfd;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ListView listDiagnostics;
+        private System.Windows.Forms.ColumnHeader colBrowserHeader;
     }
 }
 
