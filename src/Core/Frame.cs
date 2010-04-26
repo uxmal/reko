@@ -395,6 +395,7 @@ namespace Decompiler.Core
 			get { return identifiers; }
 		}
 
+
 		public void Write(TextWriter text)
 		{
 			foreach (Identifier id in identifiers)

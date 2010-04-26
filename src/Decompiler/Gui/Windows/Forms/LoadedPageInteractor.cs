@@ -142,7 +142,7 @@ namespace Decompiler.Gui.Windows.Forms
                 SerializedProcedure userp = new SerializedProcedure();
                 userp.Address = addrRange.Begin.ToString();
                 userp.Name = proc.Name;
-                Decompiler.Project.UserProcedures.Add(userp);
+                Decompiler.Project.UserProcedures.Add(addrRange.Begin, userp);
                 memSvc.InvalidateWindow();
             }
         }

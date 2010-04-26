@@ -43,7 +43,6 @@ namespace Decompiler.Gui
             idx = 0;
             try
             {
-
                 var ret = ParseReturn();
                 var procName = ParseProcedureName();
                 if (procName == null)
@@ -135,7 +134,9 @@ namespace Decompiler.Gui
                 if (w == null)
                     return null;
                 if (!arch.TryGetRegister(w, out reg))
-                    throw new NotImplementedException();
+                {
+                    return CreateStackArgument(type, w);
+                }
             }
 
             var arg = new SerializedArgument();
@@ -143,6 +144,27 @@ namespace Decompiler.Gui
             arg.Kind = new SerializedRegister(reg.Name);
             arg.OutParameter = false;
             arg.Type = type;
+            return arg;
+        }
+
+        private SerializedArgument CreateStackArgument(string typeName, string argName)
+        {
+            PrimitiveType p;
+            int sizeInWords;
+            int wordSize = arch.WordWidth.Size;
+            if (PrimitiveType.TryParse(typeName, out p))
+            {
+                sizeInWords = (p.Size + (wordSize - 1))/wordSize;
+            }
+            else
+            {
+                sizeInWords = 1;      // A reasonable guess, but is it a good one?
+            }
+
+            SerializedArgument arg = new SerializedArgument();
+            arg.Name= argName;
+            arg.Type = typeName;
+            arg.Kind = new SerializedStackVariable(sizeInWords * wordSize);
             return arg;
         }
 

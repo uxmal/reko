@@ -24,11 +24,10 @@ namespace Decompiler.Core.Serialization
 	public class SerializedProcedure : SerializedProcedureBase
 	{
         /// <summary>
-        /// Address of procedure.
+        /// Address of the procedure.
         /// </summary>
 		[XmlElement("address")]
 		public string Address;
-
 
         /// <summary>
         /// Property that indicated whether the procedure body is to be decompiled or not. If false, it is recommended

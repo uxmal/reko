@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -96,9 +97,13 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-        public void ApplyChangesToProcedure(Procedure selectedProcedure)
+        public void ApplyChangesToProcedure(Procedure procedure)
         {
-            //$TODO: actually apply changes!
+            var ser = new ProcedureSerializer(arch, "stdapi");          //$Where does convetion come from? Platform?
+            var sp = new SignatureParser(arch);
+            sp.Parse(dlg.Signature.Text);
+            Debug.Assert(sp.IsValid);
+            procedure.Signature = ser.Deserialize(sp.Signature, procedure.Frame);
         }
 
         private void EnableControls(bool signatureIsValid)

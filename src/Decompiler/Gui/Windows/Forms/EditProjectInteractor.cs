@@ -35,8 +35,8 @@ namespace Decompiler.Gui.Windows.Forms
         /// <param name="project"></param>
         public bool EditProjectProperties(
             IDecompilerUIService uiSvc,
-            DecompilerProject project,
-            Action<DecompilerProject> updater)
+            SerializedProject project,
+            Action<SerializedProject> updater)
         {
             using (var dlg = new EditProjectDialog())
             {
@@ -114,9 +114,9 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-        private DecompilerProject CreateProjectFromFields()
+        private SerializedProject CreateProjectFromFields()
         {
-            DecompilerProject project = new DecompilerProject();
+            SerializedProject project = new SerializedProject();
 
             project.Input.Filename = dlg.BinaryFilename.Text;
             project.Input.Address = dlg.BaseAddress.Text;
@@ -128,7 +128,7 @@ namespace Decompiler.Gui.Windows.Forms
             return project;
         }
 
-        private void LoadFieldsFromProject(DecompilerProject project)
+        private void LoadFieldsFromProject(SerializedProject project)
         {
             dlg.BinaryFilename.Text = project.Input.Filename;
             dlg.BaseAddress.Text = project.Input.Address;

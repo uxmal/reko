@@ -30,27 +30,22 @@ namespace Decompiler.Core
 	public abstract class ProcedureBase
 	{
 		private string name;
-		private ProcedureCharacteristics characteristics;
 		private TypeVariable tv;
 
 		public ProcedureBase(string name)
 		{
 			this.name = name;
-			this.characteristics = DefaultProcedureCharacteristics.Instance;
+			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
 
-		public string Name
-		{
+		public string Name 
+        {
 			get { return name; }
 		}
 
 		public abstract ProcedureSignature Signature { get; set; }
 
-		public ProcedureCharacteristics Characteristics
-		{
-			get { return characteristics; }
-			set { characteristics = value; }
-		}
+		public ProcedureCharacteristics Characteristics { get; set; }
 
 		public TypeVariable TypeVariable
 		{

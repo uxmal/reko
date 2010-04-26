@@ -357,7 +357,10 @@ namespace Decompiler.Gui.Windows.Forms
         {
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
-                string newName = PromptForFilename(Path.ChangeExtension(decompilerSvc.Decompiler.Project.Input.Filename, DecompilerProject.FileExtension));
+                string newName = PromptForFilename(
+                    Path.ChangeExtension(
+                        decompilerSvc.Decompiler.Project.InputFilename,
+                        SerializedProject.FileExtension));
                 if (newName == null)
                     return;
                 ProjectFileName = newName;
@@ -367,7 +370,8 @@ namespace Decompiler.Gui.Windows.Forms
             using (TextWriter sw = CreateTextWriter(ProjectFileName))
             {
                 //$REFACTOR: rule of demeter, push this into a Save() method.
-                decompilerSvc.Decompiler.Project.Save(sw);
+                var sp = decompilerSvc.Decompiler.Project.Save();
+                sp.Save(sw);
             }
         }
 
@@ -560,7 +564,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void WriteDisassembly(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.Output.DisassemblyFilename))
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.DisassemblyFilename))
             {
                 writer(output);
             }
@@ -568,7 +572,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void WriteIntermediateCode(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.Output.IntermediateFilename))
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.IntermediateFilename))
             {
                 writer(output);
             }
@@ -576,7 +580,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void WriteTypes(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.Output.TypesFilename))
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.TypesFilename))
             {
                 writer(output);
             }
@@ -584,7 +588,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void WriteDecompiledCode(Action<TextWriter> writer)
         {
-            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.Output.OutputFilename))
+            using (TextWriter output = CreateTextWriter(decompilerSvc.Decompiler.Project.OutputFilename))
             {
                 writer(output);
             }

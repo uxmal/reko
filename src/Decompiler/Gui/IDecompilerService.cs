@@ -67,7 +67,7 @@ namespace Decompiler.Gui
                     return "";
                 if (decompiler.Project== null)
                     return "";
-                return Path.GetFileName(decompiler.Project.Input.Filename);
+                return Path.GetFileName(decompiler.Project.InputFilename);
             }
         }
         #endregion

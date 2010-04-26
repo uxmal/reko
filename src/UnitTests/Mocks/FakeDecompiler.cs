@@ -32,7 +32,7 @@ namespace Decompiler.UnitTests.Mocks
         public bool LoadProgram_Called;
         public bool ScanProgram_Called;
 
-        private DecompilerProject project;
+        private Project project;
         private Program prog;
         private LoaderBase loader;
 
@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Mocks
             get { return prog; }
         }
 
-        public DecompilerProject Project
+        public Project Project
         {
             get { return project; }
         }
@@ -59,8 +59,8 @@ namespace Decompiler.UnitTests.Mocks
             byte [] image = loader.LoadImageBytes(fileName, 0);
 
             this.prog = loader.Load(image, null);
-            this.project = new DecompilerProject();
-            this.project.Input.Filename = fileName;
+            this.project = new Project();
+            this.project.InputFilename = fileName;
         }
 
         public void ScanProgram()

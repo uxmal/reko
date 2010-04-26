@@ -138,10 +138,10 @@ namespace Decompiler.UnitTests.Analysis
 		private void Rewrite(Program prog, Assembler asm, string configFile)
 		{
 			Scanner scan = new Scanner(prog, new FakeDecompilerEventListener());
-			DecompilerProject project = new DecompilerProject();
+			SerializedProject project = new SerializedProject();
 			if (configFile != null)
 			{
-				project = DecompilerProject.Load(FileUnitTester.MapTestPath(configFile));
+				project = SerializedProject.Load(FileUnitTester.MapTestPath(configFile));
 			}
 			EntryPoint ep = new EntryPoint(asm.StartAddress, new IntelState());
 			prog.AddEntryPoint(ep);

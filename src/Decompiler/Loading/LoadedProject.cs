@@ -27,9 +27,9 @@ namespace Decompiler.Loading
     public class LoadedProject
     {
         private Program prog;
-        private DecompilerProject project;
+        private SerializedProject project;
 
-        public LoadedProject(Program prog, DecompilerProject project)
+        public LoadedProject(Program prog, SerializedProject project)
         {
             this.prog = prog;
             this.project = project;
@@ -40,7 +40,7 @@ namespace Decompiler.Loading
             get { return prog; }
         }
 
-        public DecompilerProject Project
+        public SerializedProject Project
         {
             get { return project; }
         }

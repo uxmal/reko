@@ -154,6 +154,7 @@
     <Compile Include="Output\PrettyPrinter.cs" />
     <Compile Include="Output\PrettyPrinterOutput.cs" />
     <Compile Include="Output\RtfCodeFormatter.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -462,7 +463,7 @@
     <Compile Include="Serialization\DecompilerOutput.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\DecompilerProject.cs">
+    <Compile Include="Serialization\SerializedProject.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\InputFormat.cs">

@@ -40,12 +40,12 @@ namespace Decompiler.Gui.Windows.Forms
 
         void DataTypeDefinitionLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ShowExplorerWindow(Decompiler.Project.Output.TypesFilename);
+            ShowExplorerWindow(Decompiler.Project.TypesFilename);
         }
 
         void ProgramCodeLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ShowExplorerWindow(Decompiler.Project.Output.OutputFilename);
+            ShowExplorerWindow(Decompiler.Project.OutputFilename);
         }
 
         private void ShowExplorerWindow(string filePath)

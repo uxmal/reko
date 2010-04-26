@@ -70,8 +70,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 		private void DoRewriteCore()
 		{
-			DecompilerProject project = (configFile != null)
-				? DecompilerProject.Load(FileUnitTester.MapTestPath(configFile))
+			SerializedProject project = (configFile != null)
+				? SerializedProject.Load(FileUnitTester.MapTestPath(configFile))
 				: null;
 			scanner = new Scanner(prog, new FakeDecompilerEventListener());
 			EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());

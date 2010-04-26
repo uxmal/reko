@@ -16,7 +16,11 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Arch.Intel;
+using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -30,7 +34,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SudWrite()
 		{
-			DecompilerProject ud = new DecompilerProject();
+			SerializedProject ud = new SerializedProject();
 			ud.Input.Address = "0x1000:0x0";
 			ud.Output.DisassemblyFilename = "foo.asm";
 			ud.Output.IntermediateFilename = "foo.cod";
@@ -50,20 +54,52 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
 				writer.Formatting = System.Xml.Formatting.Indented;
-				XmlSerializer ser = new XmlSerializer(typeof (DecompilerProject));
+				XmlSerializer ser = new XmlSerializer(typeof (SerializedProject));
 				ser.Serialize(writer, ud);
 				fut.AssertFilesEqual();
 			}
 		}
 
-		[Test]
+        [Test]
+        public void SudSaveProject()
+        {
+            Project project = new Project();
+            project.BaseAddress = new Address(0x1000, 0);
+            project.DisassemblyFilename = "foo.asm";
+            project.IntermediateFilename = "foo.cod";
+
+            var addr = new Address(0x1000, 0x10);
+            SerializedProcedure proc = new SerializedProcedure();
+            proc.Name = "foo";
+            proc.Signature = new SerializedSignature();
+            proc.Signature.ReturnValue = new SerializedArgument();
+            proc.Signature.ReturnValue.Kind = new SerializedRegister("eax");
+            proc.Signature.Arguments = new SerializedArgument[2];
+            proc.Signature.Arguments[0] = new SerializedArgument();
+            proc.Signature.Arguments[0].Kind = new SerializedStackVariable(4);
+            proc.Signature.Arguments[1] = new SerializedArgument();
+            proc.Signature.Arguments[1].Kind = new SerializedStackVariable(4);
+            project.UserProcedures.Add(addr, proc);
+
+            using (FileUnitTester fut = new FileUnitTester("Core/SudSaveProject.txt"))
+            {
+                FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
+                writer.Formatting = System.Xml.Formatting.Indented;
+                XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
+                SerializedProject ud = project.Save();
+                ser.Serialize(writer, ud);
+                fut.AssertFilesEqual();
+            }
+        }
+		
+        [Test]
 		public void SudRead()
 		{
-			DecompilerProject proj = null;
+			SerializedProject proj = null;
 			using (FileStream stm = new FileStream(FileUnitTester.MapTestPath("Core/SudRead.xml"), FileMode.Open))
 			{
-				XmlSerializer ser = new XmlSerializer(typeof (DecompilerProject));
-				proj = (DecompilerProject) ser.Deserialize(stm);
+				XmlSerializer ser = new XmlSerializer(typeof (SerializedProject));
+				proj = (SerializedProject) ser.Deserialize(stm);
 			}
 			Assert.AreEqual("10003330", proj.Input.Address);
 			Assert.AreEqual(2, proj.UserProcedures.Count);
@@ -71,10 +107,58 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Assert.IsNull(proc.Signature.ReturnValue);
 		}
 
+        [Test]
+        public void SudLoadProject()
+        {
+            string input = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <input>
+    <address>10003330</address>
+  </input>
+  <output>
+    <disassembly>foo.asm</disassembly>
+    <intermediate-code>foo.cod</intermediate-code>
+  </output>
+  <procedure name=""foo"">
+    <address>10004000</address>
+    <signature>
+      <arg>
+        <stack size=""4"" />
+      </arg>
+      <arg>
+        <stack size=""4"" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name=""bar"">
+    <signature>
+      <return><reg>eax</reg></return>
+      <arg><reg>ecx</reg></arg>
+    </signature>
+  </procedure>
+</project>";
+            SerializedProject proj = null;
+            using (StringReader rdr = new StringReader(input))
+            {
+                var ser = new XmlSerializer(typeof(SerializedProject));
+                proj = (SerializedProject)ser.Deserialize(rdr);
+            }
+            var project = new Project();
+            project.Load(proj);
+            Assert.AreEqual(0x10003330, project.BaseAddress.Linear);
+            Assert.AreEqual("foo.cod", project.IntermediateFilename);
+            Assert.AreEqual(2, proj.UserProcedures.Count);
+            Assert.AreEqual("foo.asm", project.DisassemblyFilename);
+            Assert.AreEqual(0x10004000, project.UserProcedures.Keys[0].Linear);
+            SerializedProcedure proc = project.UserProcedures.Values[0];
+            Assert.IsNull(proc.Signature.ReturnValue);
+
+        }
+
 		[Test]
 		public void SudReadAlloca()
 		{
-			DecompilerProject proj = DecompilerProject.Load(FileUnitTester.MapTestPath("Fragments/multiple/alloca.xml"));
+			SerializedProject proj = SerializedProject.Load(FileUnitTester.MapTestPath("Fragments/multiple/alloca.xml"));
 			SerializedProcedure proc = (SerializedProcedure) proj.UserProcedures[0];
 			Assert.AreEqual("alloca", proc.Name);
 			Assert.IsTrue(proc.Characteristics.IsAlloca);
