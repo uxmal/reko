@@ -55,6 +55,7 @@ namespace Decompiler.Gui.Windows.Forms
             base.VisitProcedureConstant(pc);
             txt.SelectionColor = old;
             txt.SelectionFont = oldFont;
+            txt.SuspendLayout();
         }
 
         private class InnerFormatter : Formatter

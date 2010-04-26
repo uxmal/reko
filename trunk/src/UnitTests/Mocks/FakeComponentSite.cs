@@ -30,13 +30,23 @@ namespace Decompiler.UnitTests.Mocks
     /// any services the component might
     /// want to use. Finally set the Site property of the component to this object.
     /// </summary>
-    public class FakeComponentSite : ISite
+    public class FakeComponentSite : ISite, IServiceContainer
     {
-        private ServiceContainer sc;
+        private IServiceContainer sc;
 
-        public FakeComponentSite(IComponent component)
+        public FakeComponentSite(IComponent component) : this(component, new ServiceContainer())
         {
             sc = new ServiceContainer();
+        }
+
+        public FakeComponentSite(IComponent component, IServiceContainer sc)
+        {
+            this.sc = sc;
+        }
+
+        public FakeComponentSite(IServiceContainer sc)
+        {
+            this.sc = sc;
         }
 
         public void AddService(Type svc, object impl)
@@ -76,5 +86,34 @@ namespace Decompiler.UnitTests.Mocks
             return sc.GetService(serviceType);
         }
 
+
+        #region IServiceContainer Members
+
+        public void AddService(Type serviceType, ServiceCreatorCallback callback, bool promote)
+        {
+            sc.AddService(serviceType, callback, promote);
+        }
+
+        public void AddService(Type serviceType, ServiceCreatorCallback callback)
+        {
+            sc.AddService(serviceType, callback);
+        }
+
+        public void AddService(Type serviceType, object serviceInstance, bool promote)
+        {
+            sc.AddService(serviceType, serviceInstance, promote);
+        }
+
+        public void RemoveService(Type serviceType, bool promote)
+        {
+            sc.RemoveService(serviceType, promote);
+        }
+
+        public void RemoveService(Type serviceType)
+        {
+            sc.RemoveService(serviceType);
+        }
+
+        #endregion
     }
 }

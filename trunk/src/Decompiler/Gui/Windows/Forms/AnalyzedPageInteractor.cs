@@ -73,6 +73,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         private void PopulateBrowserListWithProcedures()
         {
+            browserSvc.Caption = "Procedures";
             browserSvc.Populate(Decompiler.Program.Procedures, delegate(object item, IListViewItem listItem)
             {
                 KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) item;

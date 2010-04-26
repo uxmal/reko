@@ -107,8 +107,9 @@ namespace Decompiler.Typing
         /// <param name="p_2"></param>
         private void RestrictProcedures(int start, int count, bool dumpProcedures)
         {
+            count = Math.Min(count, prog.Procedures.Values.Count);
             Procedure[] procs = new Procedure[count];
-            for (int i = 0; i < count && i < prog.Procedures.Values.Count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 procs[i] = prog.Procedures.Values[i + start];
             }

@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
@@ -42,6 +43,7 @@ namespace Decompiler.Gui.Windows
             this.txtProcedure = new RichTextBox();
             this.txtProcedure.Dock = DockStyle.Fill;
             this.txtProcedure.Name = "txtProcedure";
+            this.txtProcedure.Font = new Font("Lucida Console", 9F, FontStyle.Regular, GraphicsUnit.Point);    //$REVIEW: should be a user setting
             this.txtProcedure.Text = "";
             this.txtProcedure.MouseClick += new MouseEventHandler(ProcedureText_MouseClick);
 
@@ -64,15 +66,18 @@ namespace Decompiler.Gui.Windows
             if (txtProcedure == null)
                 return;
 
+            txtProcedure.Clear();
             formatter = new RichEditFormatter(txtProcedure);
             if (proc != null)
             {
                 formatter.Write(proc);
             }
+            txtProcedure.Select(0, 0);
         }
 
         private void ProcedureText_MouseClick(object sender, MouseEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine(txtProcedure.Rtf);
             int i = txtProcedure.GetCharIndexFromPosition(e.Location);
             Procedure proc = formatter.GetProcedureAtIndex(i);
             if (proc == null)
