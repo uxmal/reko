@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using System;
 using System.IO;
@@ -28,15 +29,15 @@ namespace Decompiler.Gui.Windows.Forms
     {
     }
 
-	public class FinalPageInteractor : PhasePageInteractorImpl, IFinalPageInteractor
-	{
-		private FinalPage finalPage;
+    public class FinalPageInteractor : PhasePageInteractorImpl, IFinalPageInteractor
+    {
+        IProgramImageBrowserService browserService;
 
-		public FinalPageInteractor()
-		{
+        public FinalPageInteractor()
+        {
             // finalPage.DataTypeDefinitionLink.LinkClicked += new LinkLabelLinkClickedEventHandler(DataTypeDefinitionLink_LinkClicked);
             // finalPage.ProgramCodeLink.LinkClicked += new LinkLabelLinkClickedEventHandler(ProgramCodeLink_LinkClicked);
-		}
+        }
 
         void DataTypeDefinitionLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -55,8 +56,34 @@ namespace Decompiler.Gui.Windows.Forms
         }
 
 
-		public override void EnterPage()
-		{
+        public override System.ComponentModel.ISite Site
+        {
+            get
+            {
+                return base.Site;
+            }
+            set
+            {
+                base.Site = value;
+            }
+        }
+
+        public void ConnectToBrowserService()
+        {
+            browserService = GetService<IProgramImageBrowserService>();
+            browserService.SelectionChanged += browserService_SelectionChanged;
+            browserService.Caption = "Procedures";
+            browserService.SelectionChanged += new EventHandler(browserService_SelectionChanged);
+        }
+
+        public void DisconnectFromBrowserService()
+        {
+            browserService.SelectionChanged -= browserService_SelectionChanged;
+        }
+
+        public override void EnterPage()
+        {
+            ConnectToBrowserService();
             try
             {
                 WorkerDialogService.StartBackgroundWork("Reconstructing datatypes.", delegate()
@@ -72,12 +99,20 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 UIService.ShowError(ex, "An error occurred while reconstructing types.");
             }
-		}
-
-		public override bool LeavePage()
-		{
-			return true;
-		}
-
         }
+
+
+        public override bool LeavePage()
+        {
+            DisconnectFromBrowserService();
+            return true;
+        }
+
+        void browserService_SelectionChanged(object sender, EventArgs e)
+        {
+            var proc = (Procedure) browserService.SelectedItem;
+            var codeSvc = GetService<ICodeViewerService>();
+            codeSvc.DisplayProcedure(proc);
+        }
+    }
 }

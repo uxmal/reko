@@ -40,5 +40,13 @@ namespace Decompiler.WindowsItp
                 dlg.ShowDialog(this);
             }
         }
+
+        private void rTFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new RtfDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
     }
 }

@@ -50,6 +50,7 @@ namespace Decompiler.Core.Output
             this.writer = writer;
 		}
 
+        [Obsolete("", true)]
         public CodeFormatter(TextWriter writer)
         {
             this.writer = new Formatter(writer);

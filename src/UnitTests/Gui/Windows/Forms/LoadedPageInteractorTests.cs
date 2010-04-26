@@ -181,6 +181,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             repository.ReplayAll();
 
             browserService.Raise(x => x.SelectionChanged += null, this, EventArgs.Empty);
+            repository.VerifyAll();
         }
 
         [Test]

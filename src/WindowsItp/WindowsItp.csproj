@@ -71,6 +71,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="RtfDialog.resx">
+      <DependentUpon>RtfDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -85,6 +88,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="RtfDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RtfDialog.Designer.cs">
+      <DependentUpon>RtfDialog.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
