@@ -322,6 +322,13 @@ namespace Decompiler.Arch.Intel
 			return r;
 		}
 
+        public bool TryGetRegister(string name, out MachineRegister reg)
+        {
+            reg = Registers.GetRegister(name);
+            return (reg != MachineRegister.None);
+        }
+
+
 		public BitSet ImplicitArgumentRegisters
 		{
 			get { return implicitRegs; }

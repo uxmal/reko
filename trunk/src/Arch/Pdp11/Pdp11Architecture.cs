@@ -107,6 +107,20 @@ namespace Decompiler.Arch.Pdp11
             return null;
         }
 
+        public bool TryGetRegister(string name, out MachineRegister result)
+        {
+            result = null;
+            foreach (MachineRegister reg in regs)
+            {
+                if (string.Compare(reg.Name, name, StringComparison.InvariantCultureIgnoreCase) != 0)
+                {
+                    result = reg;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public MachineFlags GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();

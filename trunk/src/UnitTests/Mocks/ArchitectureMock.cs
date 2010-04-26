@@ -88,12 +88,18 @@ namespace Decompiler.UnitTests.Mocks
 			return null;
 		}
 
-		public MachineRegister GetRegister(int i)
-		{
-			if (0 <= i && i < registers.Length)
-				return registers[i];
-			return null;
-		}
+        public MachineRegister GetRegister(int i)
+        {
+            if (0 <= i && i < registers.Length)
+                return registers[i];
+            return null;
+        }
+
+        public bool TryGetRegister(string name, out MachineRegister result)
+        {
+            result = null;
+            return false;
+        }
 
 		public MachineRegister GetRegister(string s)
 		{

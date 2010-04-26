@@ -99,6 +99,7 @@ namespace Decompiler.Core.Types
 				shared = p;
 				shared.Name = name != null ? name : GenerateName(dom, p.BitSize);
                 cache.Add(shared, shared);
+                lookupByName.Add(shared.Name, shared);
 			}
 			return shared;
 		}
@@ -186,6 +187,11 @@ namespace Decompiler.Core.Types
 			}
 		}
 
+        public bool TryParse(string primitiveTypeName, out PrimitiveType type)
+        {
+            return lookupByName.TryGetValue(primitiveTypeName, out type);
+        }
+
 		public override int GetHashCode()
 		{
 			return byteSize * 256 ^ domain.GetHashCode();
@@ -246,10 +252,12 @@ namespace Decompiler.Core.Types
 		}
 
 		private static Dictionary<PrimitiveType,PrimitiveType> cache;
+        private static Dictionary<string, PrimitiveType> lookupByName;
 
 		static PrimitiveType()
 		{
 			cache = new Dictionary<PrimitiveType,PrimitiveType>();
+            lookupByName = new Dictionary<string, PrimitiveType>();
 
 			_void = Create(Domain.Void, 0);
 

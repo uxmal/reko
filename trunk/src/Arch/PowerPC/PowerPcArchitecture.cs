@@ -138,6 +138,11 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
+        public bool TryGetRegister(string name, out MachineRegister reg)
+        {
+            throw new NotImplementedException();
+        }
+
         public MachineFlags GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();

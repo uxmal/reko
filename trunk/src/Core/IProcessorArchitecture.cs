@@ -43,7 +43,8 @@ namespace Decompiler.Core
 
 		MachineRegister GetRegister(int i);			// Returns register corresponding to number i.
 		MachineRegister GetRegister(string name);	// Returns register whose name is 'name'
-		MachineFlags GetFlagGroup(uint grf);		// Returns flag group matching the bitflags.
+        bool TryGetRegister(string name, out MachineRegister reg); // Attempts to find a register with name <paramref>name</paramref>
+        MachineFlags GetFlagGroup(uint grf);		// Returns flag group matching the bitflags.
 		MachineFlags GetFlagGroup(string name);	
 
 		/// <summary>
@@ -60,6 +61,7 @@ namespace Decompiler.Core
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
+
 
 
     }
