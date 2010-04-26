@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             get { return canAdvance; }
             set { canAdvance = value; }
+        }
+
+        public virtual void PerformWork(IWorkerDialogService svc)
+        {
         }
 
         public virtual void EnterPage()

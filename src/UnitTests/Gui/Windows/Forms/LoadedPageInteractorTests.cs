@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IMainForm form;
         private Program prog;
         private LoadedPageInteractor interactor;
-        private DecompilerService decSvc;
+        private IDecompilerService decSvc;
         private FakeComponentSite site;
         private MockRepository repository;
         private ImageMapSegment mapSegment1;
@@ -95,6 +95,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private T AddService<T>() where T : class
         {
+            var oldSvc = site.GetService(typeof(T));
+            if (oldSvc != null)
+                site.RemoveService(typeof(T));
             var svc = repository.DynamicMock<T>();
             site.AddService(typeof(T), svc);
             return svc;
@@ -174,13 +177,20 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void BrowserItemSelectedShouldUpdateMemoryWindow()
         {
+            AddService<IDecompilerShellUiService>();
+            AddService<IMemoryViewService>();
+            AddService<IDisassemblyViewService>();
             var browserService = AddService<IProgramImageBrowserService>();
             browserService.Stub(x => x.SelectedItem).Return(mapSegment2);
+            browserService.Stub(x => x.FocusedItem).Return(mapSegment2);
             var memSvc = AddService<IMemoryViewService>();
             memSvc.Expect(x => x.ShowMemoryAtAddress(mapSegment2.Address));
             repository.ReplayAll();
 
+            interactor.Site = site;
+            interactor.EnterPage();
             browserService.Raise(x => x.SelectionChanged += null, this, EventArgs.Empty);
+
             repository.VerifyAll();
         }
 
@@ -198,6 +208,29 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor.EnterPage();
 
             repository.VerifyAll();
+        }
+
+        [Test]
+        public void CallScanProgramWhenenteringPage()
+        {
+            var decSvc = AddService<IDecompilerService>();
+            var decompiler = repository.Stub<IDecompiler>();
+            var prog = new Program();
+            prog.Image = new ProgramImage(new Address(0x3000), new byte[10]);
+            decompiler.Stub(x => x.Program).Return(prog);
+            decSvc.Stub(x => x.Decompiler).Return(decompiler);
+            AddService<IDecompilerShellUiService>();
+            AddService<IMemoryViewService>();
+            AddService<IDisassemblyViewService>();
+            var browserService = AddService<IProgramImageBrowserService>();
+            repository.ReplayAll();
+
+            Assert.IsNotNull(site);
+            interactor.Site = site;
+            interactor.EnterPage();
+
+            repository.VerifyAll();
+
         }
 
         private MenuStatus QueryStatus(int cmdId)

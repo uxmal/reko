@@ -32,5 +32,9 @@ namespace Decompiler.UnitTests.Mocks
             return true;
         }
 
+        public void FinishBackgroundWork()
+        {
+        }
+
     }
 }

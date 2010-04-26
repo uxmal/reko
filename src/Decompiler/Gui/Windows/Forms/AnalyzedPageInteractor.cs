@@ -46,20 +46,20 @@ namespace Decompiler.Gui.Windows.Forms
             codeViewerSvc.DisplayProcedure(proc);
         }
 
+        public override void PerformWork(IWorkerDialogService workerDlgSvc)
+        {
+            workerDlgSvc.StartBackgroundWork("Generating intermediate code", delegate()
+            {
+                Decompiler.RewriteMachineCode();
+                Decompiler.AnalyzeDataFlow();
+            });
+        }
 
         public override void EnterPage()
         {
             browserSvc.Enabled = true;
-
-            WorkerDialogService.StartBackgroundWork(
-                "Generating intermediate code",
-                delegate()
-                {
-                    Decompiler.RewriteMachineCode();
-                    Decompiler.AnalyzeDataFlow();
-                });
-
             PopulateBrowserListWithProcedures();
+
             browserSvc.SelectionChanged += new EventHandler(BrowserList_SelectedIndexChanged);
         }
 

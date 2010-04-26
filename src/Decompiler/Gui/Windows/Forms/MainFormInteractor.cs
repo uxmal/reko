@@ -50,7 +50,9 @@ namespace Decompiler.Gui.Windows.Forms
         private IDecompilerShellUiService uiSvc;
         private IDiagnosticsService diagnosticsSvc;
         private ISearchResultService srSvc;
-		private IPhasePageInteractor currentPage;
+        private IWorkerDialogService workerDlgSvc;
+        
+        private IPhasePageInteractor currentPage;
 		private InitialPageInteractor pageInitial;
 		private ILoadedPageInteractor pageLoaded;
 		private IAnalyzedPageInteractor pageAnalyzed;
@@ -161,7 +163,8 @@ namespace Decompiler.Gui.Windows.Forms
             sc.AddService(typeof(IProgramImageBrowserService), pibSvc);
 
             var del = CreateDecompilerListener();
-            sc.AddService(typeof(IWorkerDialogService), (IWorkerDialogService) del);
+            workerDlgSvc = (IWorkerDialogService)del;
+            sc.AddService(typeof(IWorkerDialogService), workerDlgSvc);
             sc.AddService(typeof(DecompilerEventListener), del);
 
             ArchiveBrowserService abSvc = new ArchiveBrowserService(sc);
@@ -381,7 +384,9 @@ namespace Decompiler.Gui.Windows.Forms
                     return;
             }
 			CurrentPage = interactor;
+            interactor.PerformWork(workerDlgSvc);
 			interactor.EnterPage();
+            workerDlgSvc.FinishBackgroundWork();
 		}
 
 		public void UpdateWindowTitle()
@@ -390,7 +395,7 @@ namespace Decompiler.Gui.Windows.Forms
 			if (!string.IsNullOrEmpty(decompilerSvc.ProjectName))
 			{
 				sb.Append(decompilerSvc.ProjectName);
-                //$REFACTOR: dirtiness of project is not limiited to first page.
+                //$REFACTOR: dirtiness of project is not limited to first page.
                 //if (MainForm.InitialPage.IsDirty)
                 //    sb.Append('*');
 				sb.Append(" - ");
