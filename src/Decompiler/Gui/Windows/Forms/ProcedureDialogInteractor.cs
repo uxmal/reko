@@ -69,7 +69,7 @@ namespace Decompiler.Gui.Windows.Forms
             if (sig.ReturnValue == null)
                 sb.Append("void");
             else
-                sb.Append(sig.ReturnValue.Type);
+                sb.Append(sig.ReturnValue.Name);
             sb.Append(" ");
             sb.Append(name);
             sb.Append("(");
