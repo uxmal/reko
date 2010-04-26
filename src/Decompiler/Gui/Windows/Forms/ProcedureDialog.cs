@@ -38,6 +38,12 @@ namespace Decompiler.Gui.Windows.Forms
             get { return txtName; }
         }
 
+        public TextBox Signature
+        {
+            get { return txtSignature; }
+        }
+
+
         public ListView ArgumentList
         {
             get { return listArguments; }
@@ -53,6 +59,9 @@ namespace Decompiler.Gui.Windows.Forms
             get { return tabControl1; }
         }
 
+        public Button OkButton { get { return btnOK; } }
+
+
         private void txtComment_TextChanged(object sender, EventArgs e)
         {
 
@@ -62,5 +71,7 @@ namespace Decompiler.Gui.Windows.Forms
         {
 
         }
+
+
     }
 }

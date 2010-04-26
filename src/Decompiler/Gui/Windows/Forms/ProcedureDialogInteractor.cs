@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
@@ -28,12 +29,19 @@ namespace Decompiler.Gui.Windows.Forms
     public class ProcedureDialogInteractor
     {
         protected ProcedureDialog dlg;
+
+        private IProcessorArchitecture arch;
         private SerializedProcedure proc;
 
 
-        public ProcedureDialogInteractor(SerializedProcedure proc)
+        public ProcedureDialogInteractor(IProcessorArchitecture arch, SerializedProcedure proc)
         {
+            this.arch = arch;
             this.proc = proc;
+            if (proc.Signature != null && proc.Signature.Arguments == null)
+            {
+                proc.Signature.Arguments = new SerializedArgument[0];
+            }
         }
 
         public ProcedureDialog CreateDialog()
@@ -41,6 +49,7 @@ namespace Decompiler.Gui.Windows.Forms
             dlg = new ProcedureDialog();
             PopulateFields();
             dlg.ArgumentList.SelectedIndexChanged += new EventHandler(ArgumentList_SelectedIndexChanged);
+            dlg.Signature.TextChanged += new EventHandler(Signature_TextChanged);
             return dlg;
         }
 
@@ -49,8 +58,32 @@ namespace Decompiler.Gui.Windows.Forms
             dlg.ProcedureName.Text = proc.Name.Trim();
             if (proc.Signature != null)
             {
+                dlg.Signature.Text = StringizeSignature(proc.Signature, proc.Name);
                 PopulateSignatureFields(proc.Signature);
             }
+        }
+
+        private string StringizeSignature(SerializedSignature sig, string name)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (sig.ReturnValue == null)
+                sb.Append("void");
+            else
+                sb.Append(sig.ReturnValue.Type);
+            sb.Append(" ");
+            sb.Append(name);
+            sb.Append("(");
+            string sep = "";
+            foreach (var arg in sig.Arguments)
+            {
+                sb.Append(sep);
+                sep = ", ";
+                sb.Append(arg.Type);
+                sb.Append(" ");
+                sb.Append(arg.Name);
+            }
+            sb.Append(")");
+            return sb.ToString();
         }
 
         private void PopulateSignatureFields(SerializedSignature sig)
@@ -68,6 +101,12 @@ namespace Decompiler.Gui.Windows.Forms
             //$TODO: actually apply changes!
         }
 
+        private void EnableControls(bool signatureIsValid)
+        {
+            dlg.OkButton.Enabled = signatureIsValid;
+            dlg.Signature.ForeColor = signatureIsValid ? SystemColors.WindowText : Color.Red;
+        }
+
         protected void ArgumentList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (dlg.ArgumentList.SelectedItems.Count != 0)
@@ -79,5 +118,14 @@ namespace Decompiler.Gui.Windows.Forms
             else
                 dlg.ArgumentProperties.SelectedObjects = new object[0];
         }
+
+        protected void Signature_TextChanged(object sender, EventArgs e)
+        {
+            var parser = new SignatureParser(arch);
+            parser.Parse(dlg.Signature.Text);
+            EnableControls(parser.IsValid);
+        }
+
+
     }
 }

@@ -41,15 +41,27 @@ namespace Decompiler.Gui
         {
             this.str = signatureString;
             idx = 0;
+            try
+            {
 
-            var ret = ParseReturn();
-            var procName = ParseProcedureName();
-            var procArgs = ParseProcedureArgs();
-            ProcedureName = procName;
-            Signature = new SerializedSignature();
-            Signature.ReturnValue = ret;
-            Signature.Arguments = procArgs;
-            IsValid = true;
+                var ret = ParseReturn();
+                var procName = ParseProcedureName();
+                if (procName == null)
+                    return;
+                var procArgs = ParseProcedureArgs();
+                if (procArgs == null)
+                    return;
+
+                ProcedureName = procName;
+                Signature = new SerializedSignature();
+                Signature.ReturnValue = ret;
+                Signature.Arguments = procArgs;
+                IsValid = true;
+            }
+            catch
+            {
+                IsValid = false;
+            }
         }
 
         public string ProcedureName { get; private set;}
