@@ -126,9 +126,10 @@ namespace Decompiler.Gui.Windows.Forms
                 {
                 case CmdIds.ActionEditSignature:
                     {
-                        ProcedureSerializer ser = new ProcedureSerializer(Decompiler.Program.Architecture, "stdapi");
+                        var arch = Decompiler.Program.Architecture;
+                        ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
                         SerializedProcedure proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
-                        ProcedureDialogInteractor i = new ProcedureDialogInteractor(proc);
+                        ProcedureDialogInteractor i = new ProcedureDialogInteractor(arch, proc);
                         using (ProcedureDialog dlg = i.CreateDialog())
                         {
                             if (DialogResult.OK == UIService.ShowModalDialog(dlg))
