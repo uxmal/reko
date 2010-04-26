@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SerializedSignature>
   <return name="ax">
+    <type>word16</type>
     <reg>ax</reg>
   </return>
   <arg name="bx">
+    <type>word16</type>
     <reg>bx</reg>
   </arg>
   <arg name="cl">
+    <type>byte</type>
     <reg>cl</reg>
   </arg>
 </SerializedSignature>
