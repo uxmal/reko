@@ -35,7 +35,7 @@ namespace Decompiler
     public interface IDecompiler
     {
         Program Program { get; }
-        DecompilerProject Project { get; }
+        Project Project { get; }
 
         void LoadProgram(string fileName);
         void ScanProgram();
@@ -50,13 +50,13 @@ namespace Decompiler
 	/// The main driver class for decompilation of binaries. 
 	/// </summary>
 	/// <remarks>
-	/// This class is named this way as the previous name 'Decompiler' caused C# 1.1 to get confused
+	/// This class is named this way as the previous name 'Decompiler' causes C# to get confused
 	/// between the namespace and the class name.
 	/// </remarks>
 	public class DecompilerDriver : IDecompiler
 	{
 		private Program prog;
-		private DecompilerProject project;
+		private Project project;
 		private DecompilerHost host;
 		private LoaderBase loader;
 		private Scanner scanner;
@@ -166,9 +166,10 @@ namespace Decompiler
             project = DeserializeProject(image);
             if (project != null)
             {
+                
                 prog = loader.Load(
-                    loader.LoadImageBytes(project.Input.Filename, 0),
-                    project.Input.BaseAddress);
+                    loader.LoadImageBytes(project.InputFilename, 0),
+                    project.BaseAddress);
             }
             else
             {
@@ -179,14 +180,16 @@ namespace Decompiler
         }
         
 
-        private DecompilerProject DeserializeProject(byte[] image)
+        private Project DeserializeProject(byte[] image)
         {
             if (IsXmlFile(image))
             {
                 try
                 {
-                    XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
-                    return (DecompilerProject)ser.Deserialize(new MemoryStream(image));
+                    var project = new Project();
+                    XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
+                    project.Load((SerializedProject)ser.Deserialize(new MemoryStream(image)));
+                    return project;
                 }
                 catch (XmlException)
                 {
@@ -204,11 +207,11 @@ namespace Decompiler
         }
 
 
-        protected DecompilerProject CreateDefaultProject(string filename, Program prog)
+        protected Project CreateDefaultProject(string filename, Program prog)
         {
-            DecompilerProject project = new DecompilerProject();
+            var project = new Project();
             project.SetDefaultFileNames(filename);
-            project.Input.BaseAddress = prog.Image.BaseAddress;
+            project.BaseAddress = prog.Image.BaseAddress;
             return project;
         }
 
@@ -217,7 +220,7 @@ namespace Decompiler
 			get { return prog; }
 		}
 
-		public DecompilerProject Project
+		public Project Project
 		{
 			get { return project; }
 		}
@@ -245,7 +248,7 @@ namespace Decompiler
             if (scanner == null)
                 throw new InvalidOperationException("Program must be scanned before it can be rewritten.");
 			rewriterHost = new RewriterHost(prog, eventListener, scanner.SystemCalls, scanner.VectorUses);
-			rewriterHost.LoadCallSignatures(this.project.UserCalls);
+			rewriterHost.LoadCallSignatures(this.project.UserCalls.Values);
 			rewriterHost.RewriteProgram();
 
             host.WriteIntermediateCode(delegate(TextWriter writer)
@@ -257,10 +260,10 @@ namespace Decompiler
 
         public void WriteDecompiledProcedures(TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(project.Output.OutputFilename), w);
-            w.WriteLine("#include \"{0}\"", Path.GetFileName(project.Output.TypesFilename));
+            WriteHeaderComment(Path.GetFileName(project.OutputFilename), w);
+            w.WriteLine("#include \"{0}\"", Path.GetFileName(project.TypesFilename));
             w.WriteLine();
-            CodeFormatter fmt = new CodeFormatter(new Formatter(w));
+            var fmt = new CodeFormatter(new Formatter(w));
             foreach (Procedure proc in prog.Procedures.Values)
             {
                 fmt.Write(proc);
@@ -270,7 +273,7 @@ namespace Decompiler
 
         public void WriteDecompiledTypes(TextWriter w)
         {
-            WriteHeaderComment(Path.GetFileName(project.Output.TypesFilename), w);
+            WriteHeaderComment(Path.GetFileName(project.TypesFilename), w);
             w.WriteLine("/*"); prog.TypeStore.Write(w); w.WriteLine("*/");
             TypeFormatter fmt = new TypeFormatter(new Formatter(w), false);
             foreach (EquivalenceClass eq in prog.TypeStore.UsedEquivalenceClasses)
@@ -319,7 +322,7 @@ namespace Decompiler
 					prog.AddEntryPoint(ep);
 					scanner.EnqueueEntryPoint(ep);
 				}
-				foreach (SerializedProcedure sp in project.UserProcedures)
+				foreach (SerializedProcedure sp in project.UserProcedures.Values)
 				{
 					scanner.EnqueueUserProcedure(sp);
 				}
@@ -370,7 +373,7 @@ namespace Decompiler
 		public void WriteHeaderComment(string filename, TextWriter w)
 		{
 			w.WriteLine("// {0}", filename);
-			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, project.Input.Filename);
+			w.WriteLine("// Generated on {0} by decompiling {1}", DateTime.Now, project.InputFilename);
 			w.WriteLine("// using Decompiler.");
 			w.WriteLine();
 		}

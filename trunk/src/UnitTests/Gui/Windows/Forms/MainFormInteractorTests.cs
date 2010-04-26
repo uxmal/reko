@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             Decompiler.Core.Serialization.SerializedProcedure p = new Decompiler.Core.Serialization.SerializedProcedure();
             p.Address = "12345";
             p.Name = "MyProc";
-            svc.Decompiler.Project.UserProcedures.Add(p);
+            svc.Decompiler.Project.UserProcedures.Add(new Address(0x12345), p);
 
             interactor.Save();
             string s =

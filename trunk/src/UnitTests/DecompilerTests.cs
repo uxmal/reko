@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests
             catch
             {
                 Assert.IsNotNull(decompiler.Project);
-                Assert.IsTrue(string.IsNullOrEmpty(decompiler.Project.Input.Filename));
+                Assert.IsTrue(string.IsNullOrEmpty(decompiler.Project.InputFilename));
                 Assert.IsNull(decompiler.Program);
             }
         }
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests
             loader.ImageBytes = new UTF8Encoding(false).GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><project xmlns=\"http://schemata.jklnet.org/Decompiler\">" +
                 "<input><filename>foo.bar</filename></input></project>");
             decompiler.LoadProgram("test.dcproject");
-            Assert.AreEqual("foo.bar", decompiler.Project.Input.Filename);
+            Assert.AreEqual("foo.bar", decompiler.Project.InputFilename);
         }
 
     }

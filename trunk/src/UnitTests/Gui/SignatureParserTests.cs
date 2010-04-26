@@ -101,5 +101,21 @@ namespace Decompiler.UnitTests.Gui
             Assert.AreEqual("byte", sp.Signature.Arguments[1].Type);
         }
 
+        [Test]
+        public void ParseStackParameter()
+        {
+            sp.Parse("void zzz(word32 stackie, byte stackb)");
+            Assert.IsNotNull(sp.Signature.Arguments);
+            Assert.AreEqual(2, sp.Signature.Arguments.Length);
+            Assert.IsAssignableFrom<SerializedStackVariable>(sp.Signature.Arguments[0].Kind);
+            Assert.IsAssignableFrom<SerializedStackVariable>(sp.Signature.Arguments[1].Kind);
+            Assert.AreEqual("stackie", sp.Signature.Arguments[0].Name);
+            Assert.AreEqual("stackb", sp.Signature.Arguments[1].Name);
+            var k0 = (SerializedStackVariable)sp.Signature.Arguments[0].Kind;
+            var k1 = (SerializedStackVariable)sp.Signature.Arguments[1].Kind;
+            Assert.AreEqual(4, k0.ByteSize);
+            Assert.AreEqual(4, k1.ByteSize);
+        }
+
     }
 }

@@ -25,11 +25,11 @@ using System.Xml.Serialization;
 namespace Decompiler.Core.Serialization
 {
     [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Decompiler")]
-    public class DecompilerProject
+    public class SerializedProject
     {
         public const string FileExtension = ".dcproject";
 
-        public DecompilerProject()
+        public SerializedProject()
         {
             this.Input = new DecompilerInput();
             this.Output = new DecompilerOutput();
@@ -49,29 +49,20 @@ namespace Decompiler.Core.Serialization
         [XmlElement("call", typeof(SerializedCall))]
         public List<SerializedCall> UserCalls;
 
-        public static DecompilerProject Load(string file)
+        public static SerializedProject Load(string file)
         {
             using (FileStream stm = new FileStream(file, FileMode.Open))
             {
-                XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
-                return (DecompilerProject) ser.Deserialize(stm);
+                XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
+                return (SerializedProject) ser.Deserialize(stm);
             }
         }
 
         public void Save(TextWriter sw)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(DecompilerProject));
+            XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
             ser.Serialize(sw, this);
         }
 
-        public void SetDefaultFileNames(string inputFilename)
-        {
-            Input.Filename = inputFilename;
-
-            Output.DisassemblyFilename = Path.ChangeExtension(inputFilename, ".asm");
-            Output.IntermediateFilename = Path.ChangeExtension(inputFilename, ".dis");
-            Output.OutputFilename = Path.ChangeExtension(inputFilename, ".c");
-            Output.TypesFilename = Path.ChangeExtension(inputFilename, ".h");
-        }
     }
 }

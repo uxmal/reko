@@ -27,7 +27,7 @@ namespace Decompiler.Core
     /// Models a procedure in an API, whose signature is known, but whose code is 
     /// irrelevant to the decompilation.
     /// </summary>
-	public class ExternalProcedure : ProcedureBase
+	public class ExternalProcedure :  ProcedureBase
 	{
 		private ProcedureSignature signature;
 

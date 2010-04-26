@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
             site.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             site.AddService(typeof(IStatusBarService), new FakeStatusBarService());
-            TestLoader ldr = new TestLoader(new DecompilerProject(), prog);
+            TestLoader ldr = new TestLoader(new SerializedProject(), prog);
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), site);
             decSvc.Decompiler.LoadProgram("test.exe");
 
@@ -146,7 +146,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             repository.VerifyAll();
             Assert.AreEqual(1, decSvc.Decompiler.Project.UserProcedures.Count);
-            SerializedProcedure uproc = (SerializedProcedure)decSvc.Decompiler.Project.UserProcedures[0];
+            SerializedProcedure uproc = (SerializedProcedure)decSvc.Decompiler.Project.UserProcedures.Values[0];
             Assert.AreEqual("0C20:0000", uproc.Address);
         }
 
@@ -243,10 +243,10 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         private class TestLoader : LoaderBase
         {
-            private DecompilerProject project;
+            private SerializedProject project;
             private Program prog;
 
-            public TestLoader(DecompilerProject project, Program prog)
+            public TestLoader(SerializedProject project, Program prog)
             {
                 this.project = project;
                 this.prog = prog;

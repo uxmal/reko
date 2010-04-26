@@ -187,7 +187,7 @@ namespace Decompiler.Core.Types
 			}
 		}
 
-        public bool TryParse(string primitiveTypeName, out PrimitiveType type)
+        public static bool TryParse(string primitiveTypeName, out PrimitiveType type)
         {
             return lookupByName.TryGetValue(primitiveTypeName, out type);
         }
