@@ -52,5 +52,15 @@ namespace Decompiler.Gui.Windows.Forms
         {
             get { return tabControl1; }
         }
+
+        private void txtComment_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
