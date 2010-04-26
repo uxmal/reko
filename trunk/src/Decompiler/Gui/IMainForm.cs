@@ -33,7 +33,6 @@ namespace Decompiler.Gui
 		string TitleText { get; set; }
         void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
 
-        void BuildPhases();
         ListView BrowserList { get; }
         ListView FindResultsList { get; }
         ListView DiagnosticsList { get; }
@@ -44,10 +43,8 @@ namespace Decompiler.Gui
         ToolStrip ToolBar { get; }
         MainMenu Menu { get; set; }
 
-        ILoadedPage LoadedPage { get; }
-        Decompiler.Gui.Windows.Forms.FinalPage FinalPage { get; }
-
         event EventHandler Closed;
+        event EventHandler Load;
 
         void Show();
 

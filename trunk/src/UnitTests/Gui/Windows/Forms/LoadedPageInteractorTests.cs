@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             repository = new MockRepository();
 
-            form = new MainForm2();
+            form = new MainForm();
 
             prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);

@@ -26,13 +26,13 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-    public partial class MainForm2 :
+    public partial class MainForm :
         Form,
         IMainForm
     {
         private ToolStrip toolBar;
 
-        public MainForm2()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -41,26 +41,14 @@ namespace Decompiler.Gui.Windows.Forms
 
         public string TitleText
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get { return Text; }
+            set { Text = value; }
         }
 
         public void AddToolbar(ToolStrip toolBar)
         {
             this.Controls.Add(toolBar);
             this.toolBar = toolBar;
-        }
-
-
-        public void BuildPhases()
-        {
-            throw new NotImplementedException();
         }
 
         public ListView BrowserList
@@ -106,16 +94,6 @@ namespace Decompiler.Gui.Windows.Forms
         public ToolStrip ToolBar
         {
             get { return toolBar; }
-        }
-
-        public ILoadedPage LoadedPage
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public FinalPage FinalPage
-        {
-            get { throw new NotImplementedException(); }
         }
 
         public DialogResult ShowDialog(Form dialog)

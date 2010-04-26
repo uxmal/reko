@@ -122,10 +122,11 @@ namespace Decompiler.Gui.Windows.Forms
             CreateServices(sc, dm);
             CreatePhaseInteractors();
 
+
+            form.Load += this.MainForm_Loaded;
 			form.Closed += new System.EventHandler(this.MainForm_Closed);
 			form.ToolBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(toolBar_ItemClicked);
 			//form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
-			SwitchInteractor(pageInitial);
 			//MainForm.InitialPage.IsDirty = false;         //$REENABLE
 
             return form;
@@ -133,7 +134,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         protected virtual IMainForm CreateForm()
         {
-            return new MainForm2();
+            return new MainForm();
         }
 
         protected virtual void CreateServices(ServiceContainer sc, DecompilerMenus dm)
@@ -194,7 +195,7 @@ namespace Decompiler.Gui.Windows.Forms
 			return new StreamWriter(new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write), new UTF8Encoding(false));
 		}
 
-		public IPhasePageInteractor CurrentPage
+		public IPhasePageInteractor CurrentPhase
 		{
 			get { return currentPage; }
 			set { currentPage = value; }
@@ -280,7 +281,7 @@ namespace Decompiler.Gui.Windows.Forms
             try
             {
                 IPhasePageInteractor next;
-                if (nextPage.TryGetValue(CurrentPage, out next))
+                if (nextPage.TryGetValue(CurrentPhase, out next))
                 {
                     SwitchInteractor(next);
                 }
@@ -289,10 +290,31 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 uiSvc.ShowError(ex, "Unable to proceed.");
             }
+            workerDlgSvc.FinishBackgroundWork();
 		}
 
 		public void FinishDecompilation()
 		{
+            try
+            {
+                IPhasePageInteractor prev = CurrentPhase;
+                workerDlgSvc.StartBackgroundWork("Finishing decompilation.", delegate()
+                {
+                    IPhasePageInteractor next;
+                    while (nextPage.TryGetValue(prev, out next))
+                    {
+                        next.PerformWork(workerDlgSvc);
+                        prev = next;
+                    }
+                });
+                prev.EnterPage();
+
+            }
+            catch (Exception ex)
+            {
+                uiSvc.ShowError(ex, "An error occurred while finishing decompilation.");
+            }
+            workerDlgSvc.FinishBackgroundWork();
 		}
 
         public void LayoutMdi(MdiLayout layout)
@@ -375,18 +397,20 @@ namespace Decompiler.Gui.Windows.Forms
 
 		public void SwitchInteractor(IPhasePageInteractor interactor)
 		{
-            if (interactor == CurrentPage)
+            if (interactor == CurrentPhase)
                 return;
 
-            if (CurrentPage != null)
+            if (CurrentPhase != null)
             {
-                if (!CurrentPage.LeavePage())
+                if (!CurrentPhase.LeavePage())
                     return;
             }
-			CurrentPage = interactor;
-            interactor.PerformWork(workerDlgSvc);
+			CurrentPhase = interactor;
+            workerDlgSvc.StartBackgroundWork("Entering next phase...", delegate()
+            {
+                interactor.PerformWork(workerDlgSvc);
+            });
 			interactor.EnterPage();
-            workerDlgSvc.FinishBackgroundWork();
 		}
 
 		public void UpdateWindowTitle()
@@ -575,6 +599,11 @@ namespace Decompiler.Gui.Windows.Forms
 		{
 			form.Close();
 		}
+
+        private void MainForm_Loaded(object sender, System.EventArgs e)
+        {
+            SwitchInteractor(pageInitial);
+        }
 
 		private void MainForm_Closed(object sender, System.EventArgs e)
 		{

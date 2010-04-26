@@ -36,5 +36,9 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
+        public void SetCaption(string newCaption)
+        {
+        }
+
     }
 }

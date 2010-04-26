@@ -126,6 +126,11 @@ namespace Decompiler.UnitTests.Mocks
         public void FinishBackgroundWork()
         { 
         }
+
+        public void SetCaption(string newCaption)
+        {
+        }
+
         #endregion
     }
 }

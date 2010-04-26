@@ -53,6 +53,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             interactor = new FinalPageInteractor();
             var brSvc = repository.DynamicMock<IProgramImageBrowserService>();
             site.AddService<IProgramImageBrowserService>(brSvc);
+            brSvc.Expect(x => x.Enabled).SetPropertyWithArgument(true);
             brSvc.Expect(x => x.Caption).SetPropertyWithArgument("Procedures");
             repository.ReplayAll();
 

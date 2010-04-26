@@ -48,11 +48,9 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override void PerformWork(IWorkerDialogService workerDlgSvc)
         {
-            workerDlgSvc.StartBackgroundWork("Generating intermediate code", delegate()
-            {
-                Decompiler.RewriteMachineCode();
-                Decompiler.AnalyzeDataFlow();
-            });
+            workerDlgSvc.SetCaption("Generating intermediate code");
+            Decompiler.RewriteMachineCode();
+            Decompiler.AnalyzeDataFlow();
         }
 
         public override void EnterPage()

@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [SetUp]
         public void Setup()
         {
-            form = new MainForm2();
+            form = new MainForm();
             interactor = new AnalyzedPageInteractorImpl();
             repository = new MockRepository();
             site = new FakeComponentSite(interactor);
