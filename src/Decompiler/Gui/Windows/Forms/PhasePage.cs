@@ -29,6 +29,7 @@ namespace Decompiler.Gui.Windows.Forms
 	/// <summary>
 	/// Base class for the user interfaces of all the phases
 	/// </summary>
+    [Obsolete("", true)]
 	public class PhasePage : System.Windows.Forms.UserControl
 	{
 		/// <summary> 

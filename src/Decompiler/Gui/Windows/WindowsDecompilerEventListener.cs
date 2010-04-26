@@ -88,6 +88,14 @@ namespace Decompiler.Gui.Windows
             }
         }
 
+        public void SetCaption(string newCaption)
+        {
+            dlg.Invoke(new Action<string>(delegate(string c)
+                {
+                    dlg.Caption.Text = c;
+                }),
+                newCaption);
+        }
 
         public void FinishBackgroundWork()
         {

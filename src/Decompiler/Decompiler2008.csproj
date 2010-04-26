@@ -327,9 +327,6 @@
     <Compile Include="Gui\Windows\Forms\AddressPromptDialog.Designer.cs">
       <DependentUpon>AddressPromptDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\AnalyzedPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\ArchiveBrowserDialog.cs">
       <SubType>Form</SubType>
@@ -346,35 +343,17 @@
       <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\CmdIds.cs" />
-    <Compile Include="Gui\Windows\Forms\FinalPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\FinalPage.Designer.cs">
-      <DependentUpon>FinalPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\InitialPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\InitialPage.Designer.cs">
-      <DependentUpon>InitialPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\LoadedPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\MainForm2.cs">
+    <Compile Include="Gui\Windows\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\MainForm2.Designer.cs">
-      <DependentUpon>MainForm2.cs</DependentUpon>
+    <Compile Include="Gui\Windows\Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\Windows\Forms\EditProjectDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\EditProjectDialog.Designer.cs">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\ScanPage.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\StartPage.cs">
       <SubType>UserControl</SubType>
@@ -600,20 +579,12 @@
     <EmbeddedResource Include="Gui\Windows\Forms\AboutDialog.resx">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\AnalyzedPage.resx">
-      <DependentUpon>AnalyzedPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\ArchiveBrowserDialog.resx">
       <DependentUpon>ArchiveBrowserDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\EnvironmentSelectorDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\FinalPage.resx">
-      <DependentUpon>FinalPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\FindDialog.resx">
       <DependentUpon>FindDialog.cs</DependentUpon>
@@ -623,16 +594,8 @@
       <DependentUpon>AddressPromptDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\InitialPage.resx">
-      <DependentUpon>InitialPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\LoadedPage.resx">
-      <DependentUpon>LoadedPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\MainForm2.resx">
-      <DependentUpon>MainForm2.cs</DependentUpon>
+    <EmbeddedResource Include="Gui\Windows\Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\PhasePage.resx">
       <DependentUpon>PhasePage.cs</DependentUpon>
@@ -644,10 +607,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\EditProjectDialog.resx">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\ScanPage.resx">
-      <DependentUpon>ScanPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\StartPage.resx">
       <DependentUpon>StartPage.cs</DependentUpon>

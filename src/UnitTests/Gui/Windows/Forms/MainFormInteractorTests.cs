@@ -54,18 +54,11 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		}
 
 		[Test]
-		public void CreateForm()
-		{
-            CreateMainFormInteractor();
-			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPage);
-		}
-
-		[Test]
 		public void OpenBinary()
 		{
             CreateMainFormInteractor();
 			interactor.OpenBinary("floxie.exe");
-            Assert.AreSame(interactor.CurrentPage, interactor.InitialPageInteractor);
+            Assert.AreSame(interactor.CurrentPhase, interactor.InitialPageInteractor);
             Assert.IsTrue(((FakeInitialPageInteractor)interactor.InitialPageInteractor).OpenBinaryCalled);
 		}
 
@@ -84,9 +77,9 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 		{
             CreateMainFormInteractor();
 			interactor.OpenBinary(null);
-			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPage);
+			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
 			interactor.NextPhase();
-			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPage);
+			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPhase);
 		}
 
 

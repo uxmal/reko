@@ -57,6 +57,7 @@ namespace Decompiler.Gui.Windows.Forms
         public void ConnectToBrowserService()
         {
             browserService = GetService<IProgramImageBrowserService>();
+            browserService.Enabled = true;
             browserService.SelectionChanged += browserService_SelectionChanged;
             browserService.Caption = "Procedures";
             browserService.SelectionChanged += new EventHandler(browserService_SelectionChanged);
@@ -71,17 +72,14 @@ namespace Decompiler.Gui.Windows.Forms
         {
             try
             {
-                workerDialogSvc.StartBackgroundWork("Reconstructing datatypes.", delegate()
-                {
-                    Decompiler.ReconstructTypes();
-                });
-                workerDialogSvc.StartBackgroundWork("Structuring program.", delegate()
-                {
-                    Decompiler.StructureProgram();
-                });
+                workerDialogSvc.SetCaption("Reconstructing datatypes.");
+                Decompiler.ReconstructTypes();
+                workerDialogSvc.SetCaption("Structuring program.");
+                Decompiler.StructureProgram();
             }
             catch (Exception ex)
             {
+                //$REVIEW: need a new exception type which when thrown contains the activity we were doing.
                 UIService.ShowError(ex, "An error occurred while reconstructing types.");
             }
         }
