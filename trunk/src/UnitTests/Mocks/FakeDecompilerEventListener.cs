@@ -21,6 +21,7 @@ using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Decompiler.UnitTests.Mocks
 {
@@ -45,6 +46,7 @@ namespace Decompiler.UnitTests.Mocks
         {
             AddDiagnostic(new WarningDiagnostic(addr, format, args));
         }
+
         public void AddDiagnostic(Diagnostic d)
         {
             StringBuilder sb = new StringBuilder();
@@ -115,12 +117,15 @@ namespace Decompiler.UnitTests.Mocks
 
         #region IWorkerDialogService Members
 
-        public bool StartBackgroundWork(string caption, System.Threading.ThreadStart backgroundWork)
+        public bool StartBackgroundWork(string caption, ThreadStart backgroundWork)
         {
             backgroundWork();
             return true;
         }
 
+        public void FinishBackgroundWork()
+        { 
+        }
         #endregion
     }
 }

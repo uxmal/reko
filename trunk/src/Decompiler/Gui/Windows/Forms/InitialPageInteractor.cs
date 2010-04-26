@@ -99,6 +99,10 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
+        public override void PerformWork(IWorkerDialogService workerDlgSvc)
+        {
+        }
+
         public override void EnterPage()
         {
             EnableControls();
@@ -106,10 +110,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool LeavePage()
         {
-            if (Decompiler == null)
-                return false;
-            IWorkerDialogService svc = GetService<IWorkerDialogService>();
-            return svc.StartBackgroundWork("Scanning source program.", Decompiler.ScanProgram);
+            return (Decompiler != null);
         }
 
         public void OpenBinary(string file, DecompilerHost host)

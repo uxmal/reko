@@ -27,6 +27,8 @@ namespace Decompiler.Gui.Windows.Forms
     {
         bool CanAdvance { get; }
 
+        void PerformWork(IWorkerDialogService workerDialogSvc);
+
         void EnterPage();
 
         bool LeavePage();
@@ -81,6 +83,8 @@ namespace Decompiler.Gui.Windows.Forms
         /// </summary>
         public abstract void EnterPage();
 
+        public abstract void PerformWork(IWorkerDialogService workerDlgSvc);
+
         /// <summary>
         /// Derived classes should copy any values out of controls.
         /// </summary>
@@ -92,6 +96,7 @@ namespace Decompiler.Gui.Windows.Forms
             get { return decompilerUiSvc; }
         }
 
+        [Obsolete]
         protected IWorkerDialogService WorkerDialogService
         {
             get { return workerDlgSvc; }

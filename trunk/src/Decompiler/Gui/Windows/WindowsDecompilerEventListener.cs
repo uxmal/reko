@@ -88,6 +88,11 @@ namespace Decompiler.Gui.Windows
             }
         }
 
+
+        public void FinishBackgroundWork()
+        {
+        }
+
         void dlg_Load(object sender, EventArgs e)
         {
             dlg.Worker.RunWorkerAsync(worker);

@@ -107,7 +107,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             i.OpenBinary("foo.exe", new FakeDecompilerHost());
             Assert.IsTrue(i.FakeDecompiler.LoadProgram_Called, "LoadProgram should have been called");
             Assert.IsTrue(i.LeavePage());
-            Assert.IsTrue(i.FakeDecompiler.ScanProgram_Called, "ScanProgram should have been called");
         }
 
         //$REFACTOR: copied from LoadedPageInteractor, should

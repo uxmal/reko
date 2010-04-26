@@ -19,6 +19,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -35,8 +36,6 @@ namespace Decompiler.Gui.Windows.Forms
 
         public FinalPageInteractor()
         {
-            // finalPage.DataTypeDefinitionLink.LinkClicked += new LinkLabelLinkClickedEventHandler(DataTypeDefinitionLink_LinkClicked);
-            // finalPage.ProgramCodeLink.LinkClicked += new LinkLabelLinkClickedEventHandler(ProgramCodeLink_LinkClicked);
         }
 
         void DataTypeDefinitionLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -51,22 +50,9 @@ namespace Decompiler.Gui.Windows.Forms
 
         private void ShowExplorerWindow(string filePath)
         {
-            System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,\"{0}\"", filePath));
-
+            Process.Start("explorer.exe", string.Format("/select,\"{0}\"", filePath));
         }
 
-
-        public override System.ComponentModel.ISite Site
-        {
-            get
-            {
-                return base.Site;
-            }
-            set
-            {
-                base.Site = value;
-            }
-        }
 
         public void ConnectToBrowserService()
         {
@@ -81,16 +67,15 @@ namespace Decompiler.Gui.Windows.Forms
             browserService.SelectionChanged -= browserService_SelectionChanged;
         }
 
-        public override void EnterPage()
+        public override void PerformWork(IWorkerDialogService workerDialogSvc)
         {
-            ConnectToBrowserService();
             try
             {
-                WorkerDialogService.StartBackgroundWork("Reconstructing datatypes.", delegate()
+                workerDialogSvc.StartBackgroundWork("Reconstructing datatypes.", delegate()
                 {
                     Decompiler.ReconstructTypes();
                 });
-                WorkerDialogService.StartBackgroundWork("Structuring program.", delegate()
+                workerDialogSvc.StartBackgroundWork("Structuring program.", delegate()
                 {
                     Decompiler.StructureProgram();
                 });
@@ -99,6 +84,20 @@ namespace Decompiler.Gui.Windows.Forms
             {
                 UIService.ShowError(ex, "An error occurred while reconstructing types.");
             }
+        }
+
+        public override void EnterPage()
+        {
+            ConnectToBrowserService();
+            PopulateBrowserService();
+        }
+
+        private void PopulateBrowserService()
+        {
+            browserService.Populate(Decompiler.Program.Procedures.Values, delegate(object o, IListViewItem item)
+            {
+                item.Text = o.ToString();
+            });
         }
 
 
