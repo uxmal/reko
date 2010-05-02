@@ -117,5 +117,42 @@ namespace Decompiler.UnitTests.Gui
             Assert.AreEqual(4, k1.ByteSize);
         }
 
+        [Test]
+        public void ParseSequence()
+        {
+            sp.Parse("void foo(ptr32 ss:di)");
+            Assert.IsTrue(sp.IsValid);
+            Assert.AreEqual(1, sp.Signature.Arguments.Length);
+            Assert.AreEqual("ss_di", sp.Signature.Arguments[0].Name);
+            var seq = (SerializedSequence) sp.Signature.Arguments[0].Kind;
+            Assert.AreEqual("ss", seq.Registers[0].Name);
+            Assert.AreEqual("di", seq.Registers[1].Name);
+        }
+
+        [Test]
+        public void ParseUnderscoreSequence()
+        {
+            sp.Parse("void foo(ptr32 ss_di)");
+            Assert.IsTrue(sp.IsValid);
+            Assert.AreEqual(1, sp.Signature.Arguments.Length);
+            Assert.AreEqual("ss_di", sp.Signature.Arguments[0].Name);
+            var seq = (SerializedSequence)sp.Signature.Arguments[0].Kind;
+            Assert.AreEqual("ss", seq.Registers[0].Name);
+            Assert.AreEqual("di", seq.Registers[1].Name);
+        }
+        [Test]
+        public void ParseReturnedSequence()
+        {
+            sp.Parse("dx_ax foo()");
+            Assert.IsTrue(sp.IsValid);
+            var ret = sp.Signature.ReturnValue;
+            Assert.IsNotNull(ret);
+            Assert.AreEqual("dx_ax", ret.Name);
+            var seq = (SerializedSequence) ret.Kind;
+            Assert.AreEqual("dx", seq.Registers[0].Name);
+            Assert.AreEqual("ax", seq.Registers[1].Name);
+        }
+
+
     }
 }

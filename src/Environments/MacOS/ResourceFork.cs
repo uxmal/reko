@@ -293,9 +293,51 @@ namespace Decompiler.Environments.MacOS
                     imageMap.AddSegment(addrSegment, ResourceDescriptiveName(type, rsrc), AccessMode.Read);
                     if (type.Name == "CODE")
                     {
-                        entryPoints.Add(new EntryPoint(addrSegment + 4, new M68kState()));
+                        if (rsrc.ResourceID == 0)
+                        {
+                            ProcessJumpTable(rsrcDataOff + rsrc.DataOffset + 4);
+                        }
+                        else
+                        {
+                            entryPoints.Add(new EntryPoint(addrSegment + 4, new M68kState()));
+                        }
                     }
                 }
+            }
+        }
+
+        public class JumpTable
+        {
+            public uint AboveA5Size;
+            public uint BelowA5Size;
+            public uint JumpTableSize;
+            public uint JumpTableOffset;
+        }
+
+        public class JumpTableEntry
+        {
+            public ushort RoutineOffsetFromSegmentStart;
+            public ulong Instruction;
+            public ushort LoadSegTrapNumber;
+        }
+
+        private void ProcessJumpTable(uint jtOffset)
+        {
+            var j = new JumpTable();
+            ImageReader ir = new ImageReader(image, jtOffset);
+            j.AboveA5Size = ir.ReadBeUint32();
+            j.BelowA5Size = ir.ReadBeUint32();
+            j.JumpTableSize = ir.ReadBeUint32();
+            j.JumpTableOffset = ir.ReadBeUint32();
+            uint size = j.JumpTableSize;
+            while (size > 0)
+            {
+                JumpTableEntry jte = new JumpTableEntry();
+                jte.RoutineOffsetFromSegmentStart = ir.ReadBeUint16();
+                jte.Instruction = ir.ReadBeUint32();
+                jte.LoadSegTrapNumber = ir.ReadBeUint16();
+                Debug.WriteLine(string.Format("Jump table entry: {0:x2} {1:X4} {2:X2}", jte.RoutineOffsetFromSegmentStart, jte.Instruction, jte.LoadSegTrapNumber));
+                size -= 8;
             }
         }
 

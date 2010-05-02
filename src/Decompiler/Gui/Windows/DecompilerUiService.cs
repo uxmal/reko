@@ -99,7 +99,9 @@ namespace Decompiler.Gui.Windows
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(format, args);
-            MessageBox.Show(form, sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            form.Invoke(new Action<StringBuilder>(delegate(StringBuilder s)
+                { MessageBox.Show(form, s.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
+                sb);
         }
         #endregion
     }

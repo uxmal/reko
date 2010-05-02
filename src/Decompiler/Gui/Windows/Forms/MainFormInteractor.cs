@@ -52,7 +52,7 @@ namespace Decompiler.Gui.Windows.Forms
         private ISearchResultService srSvc;
         private IWorkerDialogService workerDlgSvc;
         
-        private IPhasePageInteractor currentPage;
+        private IPhasePageInteractor currentPhase;
 		private InitialPageInteractor pageInitial;
 		private ILoadedPageInteractor pageLoaded;
 		private IAnalyzedPageInteractor pageAnalyzed;
@@ -192,13 +192,13 @@ namespace Decompiler.Gui.Windows.Forms
 		{
             if (string.IsNullOrEmpty(filename))
                 return StreamWriter.Null;
-			return new StreamWriter(new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write), new UTF8Encoding(false));
+			return new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
 		}
 
 		public IPhasePageInteractor CurrentPhase
 		{
-			get { return currentPage; }
-			set { currentPage = value; }
+			get { return currentPhase; }
+			set { currentPhase = value; }
 		}
 
         protected override object GetService(Type service)
@@ -438,7 +438,7 @@ namespace Decompiler.Gui.Windows.Forms
 		{
             if (subWindowCommandTarget.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
                 return true;
-			if (currentPage != null && currentPage.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
+			if (currentPhase != null && currentPhase.QueryStatus(ref cmdSet, cmdId, cmdStatus, cmdText))
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{
@@ -456,7 +456,7 @@ namespace Decompiler.Gui.Windows.Forms
 					cmdStatus.Status = MenuStatus.Visible;
 					return true;
                 case CmdIds.ActionNextPhase:
-                    cmdStatus.Status = currentPage.CanAdvance
+                    cmdStatus.Status = currentPhase.CanAdvance
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
@@ -471,14 +471,14 @@ namespace Decompiler.Gui.Windows.Forms
 		}
 
         private bool QueryMruItem(int cmdId, CommandStatus cmdStatus, CommandText cmdText)
-		{
-				int iMru = cmdId - CmdIds.FileMru;
-				if (0 <= iMru && iMru < mru.Items.Count)
-				{
+        {
+            int iMru = cmdId - CmdIds.FileMru;
+            if (0 <= iMru && iMru < mru.Items.Count)
+            {
                 cmdStatus.Status = MenuStatus.Visible | MenuStatus.Enabled;
                 cmdText.Text = (string)mru.Items[iMru];
-					return true;
-				}
+                return true;
+            }
             return false;
         }
 
@@ -486,7 +486,7 @@ namespace Decompiler.Gui.Windows.Forms
 		{
             if (subWindowCommandTarget.Execute(ref cmdSet, cmdId))
                 return true;
-			if (currentPage != null && currentPage.Execute(ref cmdSet, cmdId))
+			if (currentPhase != null && currentPhase.Execute(ref cmdSet, cmdId))
 				return true;
 			if (cmdSet == CmdSets.GuidDecompiler)
 			{

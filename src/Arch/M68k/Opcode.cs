@@ -32,6 +32,7 @@ namespace Decompiler.Arch.M68k
         addq,
         bchg,
         bra,
+        dbf,
         lea,
         lsl,
         move,

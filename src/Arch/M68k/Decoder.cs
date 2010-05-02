@@ -76,7 +76,7 @@ namespace Decompiler.Arch.M68k
                     return null;
                 if (args[i] == ',')
                     ++i;
-
+                Address addr;
                 switch (args[i++])
                 {
                 case 'A':
@@ -92,7 +92,7 @@ namespace Decompiler.Arch.M68k
                 case 'I':
                     return GetImmediate(rdr, GetSizeType(0, args[i++], dataWidth));
                 case 'J':
-                    Address addr = rdr.Address;
+                    addr = rdr.Address;
                     int offset = opcode & 0xFF;
                     if (offset == 0xFF)
                         offset = rdr.ReadBeInt32();
@@ -103,6 +103,16 @@ namespace Decompiler.Arch.M68k
                     return GetQuickImmediate(GetOpcodeOffset(args[i++]), 7, 8, PrimitiveType.SByte);
                 case 'Q':
                     return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0xFF, 0, PrimitiveType.SByte);
+                case 'R': // relative 
+                    addr = rdr.Address;
+                    int relative = 0;
+                    switch (args[i++])
+                    {
+                    case 'w': relative = rdr.ReadBeInt16(); break;
+                    case 'l': relative = rdr.ReadBeInt32(); break;
+                    default: throw new NotImplementedException();
+                    }
+                    return new M68kAddressOperand(addr + relative);
                 case 's':
                     return new RegisterOperand(Registers.sr);
 

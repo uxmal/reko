@@ -369,17 +369,24 @@ namespace Decompiler.Scanning
 			}
 
             blockCur = SetCurrentBlock(wi.Address);
-			if (!blocksVisited.ContainsKey(blockCur))
-			{
-				blocksVisited.Add(blockCur,blockCur);
+            if (blocksVisited.ContainsKey(blockCur))
+                return;
 
-				wi.state.SetInstructionPointer(wi.Address);
-				CodeWalker cw = CreateCodeWalker(wi.Address, wi.state);
-				do
-				{
-					cw.WalkInstruction(this);
-				} while (blockCur.IsInRange(cw.Address));
-			}
+            blocksVisited.Add(blockCur, blockCur);
+            wi.state.SetInstructionPointer(wi.Address);
+            CodeWalker cw = CreateCodeWalker(wi.Address, wi.state);
+            try
+            {
+                do
+                {
+                    cw.WalkInstruction(this);
+                } while (blockCur.IsInRange(cw.Address));
+            }
+            catch (Exception ex)
+            {
+                map.AddItem(cw.Address, new ImageMapItem());
+                Warn(cw.Address, "Error occurred while disassembling. {0}", ex.Message);
+            }
 		}
 
         private ImageMapBlock SetCurrentBlock(Address addr)

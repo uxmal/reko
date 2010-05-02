@@ -66,6 +66,9 @@ namespace Decompiler.Arch.M68k
             case Opcode.bra:
                 listener.OnJump(st, addrInstr, dasm.Address, ((AddressOperand)instr.op1).Address);
                 break;
+            case Opcode.dbf:
+                listener.OnBranch(st, addrInstr, dasm.Address, ((AddressOperand)instr.op2).Address);
+                break;
             }
             return instr;
         }
