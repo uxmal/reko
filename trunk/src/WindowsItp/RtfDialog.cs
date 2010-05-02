@@ -13,6 +13,13 @@ namespace Decompiler.WindowsItp
         public RtfDialog()
         {
             InitializeComponent();
+            txtRich.LinkClicked += new LinkClickedEventHandler(txtRich_LinkClicked);
+        }
+
+        void txtRich_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            string s = e.LinkText;
+            s.ToCharArray();
         }
 
         private void btnCopy_Click(object sender, EventArgs e)

@@ -31,18 +31,21 @@ namespace Decompiler.Core.Serialization
 	/// </summary>
 	public class SerializedArgument
 	{
-        private string name;
-        private string type;
-        private SerializedKind kind;
-        private bool outParameter;
-
         public SerializedArgument() { }
 
-		[XmlAttribute("name")]
-		public string Name { get { return name; } set { name = value; } }
+        public SerializedArgument(string name, string type, SerializedKind kind, bool outParameter)
+        {
+            Name = name;
+            Type = type;
+            Kind = kind;
+            OutParameter = outParameter;
+        }
+
+        [XmlAttribute("name")]
+        public string Name { get; set; }
 
         [XmlElement("type")]
-        public string Type { get { return type; } set { type = value; } }		//$REVIEW: this needs to be SerializedType.
+        public string Type { get;set; }		//$REVIEW: this needs to be SerializedType.
 
         [XmlElement("reg", typeof(SerializedRegister))]
         [XmlElement("stack", typeof(SerializedStackVariable))]
@@ -50,11 +53,11 @@ namespace Decompiler.Core.Serialization
         [XmlElement("seq", typeof(SerializedSequence))]
         [XmlElement("flag", typeof(SerializedFlag))]
         [ReadOnly(true)]
-        public SerializedKind Kind { get { return kind; } set { kind = value; } }
+        public SerializedKind Kind { get; set; }
 
         [XmlAttribute("out")]
         [DefaultValue(false)]
-        public bool OutParameter { get { return outParameter; } set { outParameter = value; } }
+        public bool OutParameter { get; set; }
 
 	}
 }

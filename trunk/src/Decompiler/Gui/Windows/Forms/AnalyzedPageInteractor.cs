@@ -36,9 +36,11 @@ namespace Decompiler.Gui.Windows.Forms
 	{
         private IProgramImageBrowserService browserSvc;
         private ICodeViewerService codeViewerSvc;
+        private bool canAdvance;
 
 		public AnalyzedPageInteractorImpl()
 		{
+            this.canAdvance = true;
 		}
 
         private void DisplayProcedure(Procedure proc)
@@ -51,6 +53,11 @@ namespace Decompiler.Gui.Windows.Forms
             workerDlgSvc.SetCaption("Generating intermediate code");
             Decompiler.RewriteMachineCode();
             Decompiler.AnalyzeDataFlow();
+        }
+
+        public override bool CanAdvance
+        {
+            get { return canAdvance; }
         }
 
         public override void EnterPage()
@@ -77,6 +84,27 @@ namespace Decompiler.Gui.Windows.Forms
                 KeyValuePair<Address, Procedure> entry = (KeyValuePair<Address, Procedure>) item;
                 listItem.Text = entry.Value.Name;
             });
+        }
+
+        private void EditSignature()
+        {
+            var arch = Decompiler.Program.Architecture;
+            ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
+            SerializedProcedure proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
+            ProcedureDialogInteractor i = new ProcedureDialogInteractor(arch, proc);
+            using (ProcedureDialog dlg = i.CreateDialog())
+            {
+                if (DialogResult.OK == UIService.ShowModalDialog(dlg))
+                {
+                    Decompiler.Project.UserProcedures[SelectedProcedureEntry.Key] =
+                        i.SerializedProcedure;
+                    ser = new ProcedureSerializer(arch, "stdapi");
+                    SelectedProcedureEntry.Value.Signature =
+                        ser.Deserialize(i.SerializedProcedure.Signature, SelectedProcedureEntry.Value.Frame);
+
+                    canAdvance = false;
+                }
+            }
         }
 
         public KeyValuePair<Address, Procedure> SelectedProcedureEntry
@@ -125,25 +153,13 @@ namespace Decompiler.Gui.Windows.Forms
                 switch (cmdId)
                 {
                 case CmdIds.ActionEditSignature:
-                    {
-                        var arch = Decompiler.Program.Architecture;
-                        ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
-                        SerializedProcedure proc = ser.Serialize(SelectedProcedureEntry.Value, SelectedProcedureEntry.Key);
-                        ProcedureDialogInteractor i = new ProcedureDialogInteractor(arch, proc);
-                        using (ProcedureDialog dlg = i.CreateDialog())
-                        {
-                            if (DialogResult.OK == UIService.ShowModalDialog(dlg))
-                            {
-                                i.ApplyChangesToProcedure(SelectedProcedureEntry.Value);
-                                //$TODO: prohibit stepping forward, only go back to previous steps.
-                            }
-                        }
-                    }
+                    EditSignature();
                     return true;
                 }
             }
             return base.Execute(ref cmdSet, cmdId);
         }
+
 
         #endregion
 

@@ -97,7 +97,10 @@ namespace Decompiler.ImageLoaders.BinHex
         public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
         {
             if (rsrcFork != null)
+            {
+                rsrcFork.Dump();
                 rsrcFork.AddResourcesToImageMap(addrLoad, image.Map, entryPoints);
+            }
         }
 
         public BinHexHeader LoadBinHexHeader(IEnumerator<byte> stm)

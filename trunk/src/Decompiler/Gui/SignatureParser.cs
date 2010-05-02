@@ -63,6 +63,30 @@ namespace Decompiler.Gui
             }
         }
 
+        public static string UnparseSignature(SerializedSignature sig, string procName)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (sig.ReturnValue == null)
+                sb.Append("void");
+            else
+                sb.Append(sig.ReturnValue.Name);
+            sb.Append(" ");
+            sb.Append(procName);
+            sb.Append("(");
+            string sep = "";
+            foreach (var arg in sig.Arguments)
+            {
+                sb.Append(sep);
+                sep = ", ";
+                sb.Append(arg.Type);
+                sb.Append(" ");
+                sb.Append(arg.Name);
+            }
+            sb.Append(")");
+            return sb.ToString();
+        }
+
+
         public string ProcedureName { get; private set;}
 
         public SerializedSignature Signature { get; private set; }
@@ -75,16 +99,40 @@ namespace Decompiler.Gui
             if (w == "void")
                 return null;
             Console.WriteLine(w);
-            var reg = arch.GetRegister(w);
-            if (reg != null)
+            MachineRegister reg;
+            if (arch.TryGetRegister(w, out reg))
             {
-                var arg = new SerializedArgument();
-                arg.Name = reg.Name;
-                arg.Kind = new RegisterStorage(reg).Serialize();
-                arg.OutParameter = false;
-                return arg;
+                return new SerializedArgument(
+                    reg.Name,
+                    null,
+                    new SerializedRegister(reg.Name),
+                    true);
+            }
+            if (w.Contains("_"))
+            {
+                return ParseRegisterSequenceWithUnderscore(w);
             }
             throw new NotImplementedException();
+        }
+
+        private SerializedArgument ParseRegisterSequenceWithUnderscore(string w)
+        {
+            string[] subregs = w.Split('_');
+            var regs = new List<SerializedRegister>();
+            foreach (string subReg in subregs)
+            {
+                MachineRegister r;
+                if (!arch.TryGetRegister(subReg, out r))
+                    return null;
+                regs.Add(new SerializedRegister(r.Name));
+            }
+            var seq = new SerializedSequence();
+            seq.Registers = regs.ToArray();
+            return new SerializedArgument(
+                w,
+                null,
+                seq,
+                true);
         }
 
         private string ParseProcedureName()
@@ -133,10 +181,21 @@ namespace Decompiler.Gui
                 w = GetNextWord();
                 if (w == null)
                     return null;
+                if (w.Contains("_"))
+                {
+                    var retval = ParseRegisterSequenceWithUnderscore(w);
+                    if (retval != null)
+                        return retval;
+                }
                 if (!arch.TryGetRegister(w, out reg))
                 {
-                    return CreateStackArgument(type, w);
+                    return ParseStackArgument(type, w);
                 }
+            }
+
+            if (PeekChar(':') || PeekChar('_'))
+            {
+                return ParseRegisterSequence(reg, type);
             }
 
             var arg = new SerializedArgument();
@@ -147,7 +206,31 @@ namespace Decompiler.Gui
             return arg;
         }
 
-        private SerializedArgument CreateStackArgument(string typeName, string argName)
+        private SerializedArgument ParseRegisterSequence(MachineRegister reg, string type)
+        {
+            ++idx;
+            string w2 = GetNextWord();
+            if (w2 == null)
+                return null;
+            MachineRegister reg2;
+            if (!arch.TryGetRegister(w2, out reg2))
+                return null;
+            var seqArgName = reg.Name + "_" + reg2.Name;
+            var seqArgType = type;
+            var seqKind = new SerializedSequence();
+            seqKind.Registers = new SerializedRegister[]{ 
+                    new SerializedRegister(reg.Name), 
+                    new SerializedRegister(reg2.Name)
+                };
+            return new SerializedArgument(seqArgName, seqArgType, seqKind, false);
+        }
+
+        private bool PeekChar(char cha)
+        {
+            return idx < str.Length && str[idx] == cha;
+        }
+
+        private SerializedArgument ParseStackArgument(string typeName, string argName)
         {
             PrimitiveType p;
             int sizeInWords;

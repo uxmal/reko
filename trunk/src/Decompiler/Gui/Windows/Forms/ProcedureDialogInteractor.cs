@@ -34,7 +34,6 @@ namespace Decompiler.Gui.Windows.Forms
         private IProcessorArchitecture arch;
         private SerializedProcedure proc;
 
-
         public ProcedureDialogInteractor(IProcessorArchitecture arch, SerializedProcedure proc)
         {
             this.arch = arch;
@@ -54,37 +53,23 @@ namespace Decompiler.Gui.Windows.Forms
             return dlg;
         }
 
+        public SerializedProcedure SerializedProcedure { get { return proc; } }
+
         private void PopulateFields()
         {
             dlg.ProcedureName.Text = proc.Name.Trim();
             if (proc.Signature != null)
             {
-                dlg.Signature.Text = StringizeSignature(proc.Signature, proc.Name);
+                dlg.Signature.Text = SignatureParser.UnparseSignature(proc.Signature, proc.Name);
                 PopulateSignatureFields(proc.Signature);
             }
         }
 
+
+
         private string StringizeSignature(SerializedSignature sig, string name)
         {
-            StringBuilder sb = new StringBuilder();
-            if (sig.ReturnValue == null)
-                sb.Append("void");
-            else
-                sb.Append(sig.ReturnValue.Name);
-            sb.Append(" ");
-            sb.Append(name);
-            sb.Append("(");
-            string sep = "";
-            foreach (var arg in sig.Arguments)
-            {
-                sb.Append(sep);
-                sep = ", ";
-                sb.Append(arg.Type);
-                sb.Append(" ");
-                sb.Append(arg.Name);
-            }
-            sb.Append(")");
-            return sb.ToString();
+            return SignatureParser.UnparseSignature(sig, name);
         }
 
         private void PopulateSignatureFields(SerializedSignature sig)
@@ -129,8 +114,11 @@ namespace Decompiler.Gui.Windows.Forms
             var parser = new SignatureParser(arch);
             parser.Parse(dlg.Signature.Text);
             EnableControls(parser.IsValid);
+            if (parser.IsValid)
+            {
+                proc.Signature = parser.Signature;
+            }
         }
-
 
     }
 }

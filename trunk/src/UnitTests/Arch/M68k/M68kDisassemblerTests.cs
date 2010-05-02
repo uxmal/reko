@@ -28,6 +28,7 @@ namespace Decompiler.UnitTests.Arch.M68k
     [TestFixture]
     public class M68kDisassemblerTests
     {
+        private M68kDisassembler dasm;
         private M68kInstruction instr;
 
         [Test]
@@ -138,10 +139,42 @@ namespace Decompiler.UnitTests.Arch.M68k
             Assert.AreEqual("bchg\td0,d0", instr.ToString());
         }
 
+        [Test]
+        public void Dbf()
+        {
+            DasmSingleInstruction(0x51, 0xCA, 0xFF, 0xE4);
+            Assert.AreEqual("dbf\td2,$0FFFFFE6", instr.ToString());
+        }
+
+        [Test]
+        public void Moveb()
+        {
+            DasmSingleInstruction(0x14, 0x1A);
+            Assert.AreEqual("move.b\t(a2)+,d2", instr.ToString());
+        }
+
+        [Test]
+        public void ManyMoves()
+        {
+            dasm = CreateDasm(new byte[] { 0x20, 0x00, 0x20, 0x27, 0x20, 0x40, 0x20, 0x67, 0x20, 0x80, 0x21, 0x40, 0x00, 0x00 }, 0x10000000);
+            Assert.AreEqual("move.l\td0,d0", dasm.Disassemble().ToString());
+            Assert.AreEqual("move.l\t-(a7),d0", dasm.Disassemble().ToString());
+            Assert.AreEqual("movea.l\td0,a0", dasm.Disassemble().ToString());
+            Assert.AreEqual("movea.l\t-(a7),a0", dasm.Disassemble().ToString());
+            Assert.AreEqual("move.l\td0,(a0)", dasm.Disassemble().ToString());
+            Assert.AreEqual("move.l\td0,$0000(a0)", dasm.Disassemble().ToString());
+        }
+
+        [Test]
+        public void AddB()
+        {
+            DasmSingleInstruction(0xD2, 0x02);
+            Assert.AreEqual("add.b\td2,d1", instr.ToString());
+        }
 
         private void DasmSingleInstruction(params byte[] bytes)
         {
-            M68kDisassembler dasm = CreateDasm(bytes, 0x10000000);
+            dasm = CreateDasm(bytes, 0x10000000);
             instr = dasm.Disassemble();
         }
 

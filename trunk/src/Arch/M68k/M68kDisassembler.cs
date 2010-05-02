@@ -73,8 +73,12 @@ namespace Decompiler.Arch.M68k
             ushort opcode = rdr.ReadBeUint16();
             Decoder decoder = FindDecoder(opcode);
             if (decoder == null)
-                throw new InvalidOperationException(string.Format("Unknown 680x0 opcode {0:X4}.", opcode));
-            System.Diagnostics.Debug.WriteLine(string.Format("{0:X4}->{1} {2}", opcode, decoder.opcode, decoder.args));
+            {
+                string msg = string.Format("Unknown 680x0 opcode {0:X4}.", opcode);
+                Debug.WriteLine(msg);
+                throw new InvalidOperationException(msg);
+            }
+            Debug.WriteLine(string.Format("{0:X4}->{1} {2}", opcode, decoder.opcode, decoder.args));
             return decoder.Decode(opcode, rdr);
         }
     
@@ -117,7 +121,12 @@ namespace Decompiler.Arch.M68k
             oprecs.Add(new Opmask(0x003C, 0xFFFF), new Decoder(Opcode.ori, "sb:Ib,c"));
             oprecs.Add(new Opmask(0x007C, 0xFFFF), new Decoder(Opcode.ori, "sw:Iw,s"));
             oprecs.Add(new Opmask(0x0140, 0xF1C0), new Decoder(Opcode.bchg, "D9,E0"));
-            oprecs.Add(new Opmask(0x2000, 0xF000), new Decoder(Opcode.movea, "sl:E0,A9"));
+            oprecs.Add(new Opmask(0x1000, 0xF000), new Decoder(Opcode.move, "sb:E0,e6"));
+            oprecs.Add(new Opmask(0x2000, 0xF1C0), new Decoder(Opcode.move, "sl:E0,e6"));
+            oprecs.Add(new Opmask(0x2040, 0xF1C0), new Decoder(Opcode.movea, "sl:E0,A9"));
+            oprecs.Add(new Opmask(0x2080, 0xF080), new Decoder(Opcode.move, "sl:E0,e6"));
+            oprecs.Add(new Opmask(0x2100, 0xF100), new Decoder(Opcode.move, "sl:E0,e6"));
+
             oprecs.Add(new Opmask(0x3000, 0xF000), new Decoder(Opcode.move, "sw:E0,e6"));
             oprecs.Add(new Opmask(0x41C0, 0xFFC0), new Decoder(Opcode.lea, "E0,A9"));
             oprecs.Add(new Opmask(0x43C0, 0xFFC0), new Decoder(Opcode.lea, "E0,A9"));
@@ -128,9 +137,13 @@ namespace Decompiler.Arch.M68k
             oprecs.Add(new Opmask(0x4FC0, 0xFFC0), new Decoder(Opcode.lea, "E0,A9"));
             oprecs.Add(new Opmask(0x48C0, 0xFFC0), new Decoder(Opcode.movem, "sl:Iw,E0"));
             oprecs.Add(new Opmask(0x5000, 0xF100), new Decoder(Opcode.addq, "s6:q9,E0"));
+            oprecs.Add(new Opmask(0x51C8, 0xFFF8), new Decoder(Opcode.dbf, "D0,Rw"));
             oprecs.Add(new Opmask(0x6000, 0xFF00), new Decoder(Opcode.bra, "J"));
             oprecs.Add(new Opmask(0x7000, 0xF100), new Decoder(Opcode.moveq, "Q0,D9"));
-            oprecs.Add(new Opmask(0xD2C1, 0xF0C0), new Decoder(Opcode.adda, "sw:E0,A9"));
+            oprecs.Add(new Opmask(0xD000, 0xF100), new Decoder(Opcode.add, "s6:E0,D9"));
+            oprecs.Add(new Opmask(0xD0C0, 0xF1C0), new Decoder(Opcode.adda, "sw:E0,A9"));
+            oprecs.Add(new Opmask(0xD100, 0xF1C0), new Decoder(Opcode.add, "D9,s6:E0"));
+            oprecs.Add(new Opmask(0xD1C0, 0xF1C0), new Decoder(Opcode.adda, "sl:E0,A9"));
             oprecs.Add(new Opmask(0xE108, 0xF138), new Decoder(Opcode.lsl, "s6:q9,D0"));
 
             foreach (KeyValuePair<Opmask, Decoder> item in oprecs)
