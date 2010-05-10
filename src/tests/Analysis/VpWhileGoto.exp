@@ -138,7 +138,7 @@ Mem42: orig: Mem0
     def:  store(Mem42[ds:0x0300:word16]) = ax_40
 // fn0C00_0000
 void fn0C00_0000(word16 si, word16 di, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def Mem0
 	def fp
 	def si
@@ -150,11 +150,11 @@ fn0C00_0000_entry:		// block 0, pred:
 	def di
 	def v9
 	def SZO
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	bx_11 = si
-	// succ:  2
-l0C00_001A:		// block 2, pred: 1 4 5
+	// succ:  l0C00_001A
+l0C00_001A:		// pred: l0C00_0000 l0C00_0011 l0C00_0016
 	si_12 = PHI(si, si_15, si_15)
 	Mem13 = PHI(Mem0, Mem19, Mem27)
 	ax_14 = Mem13[ds:si_12:word16]
@@ -163,38 +163,15 @@ l0C00_001A:		// block 2, pred: 1 4 5
 	Z_17 = SCZO_16 (alias)
 	SZO_18 = SCZO_16 (alias)
 	branch Test(NE,Z_17) l0C00_0005
-	// succ:  7 3
-l0C00_0005:		// block 3, pred: 2
-	store(Mem19[ds:di:word16]) = ax_14
-	SCZO_20 = cond(ax_14 - 0x0000)
-	Z_21 = SCZO_20 (alias)
-	SZO_22 = SCZO_20 (alias)
-	branch Test(NE,Z_21) l0C00_0011
-	// succ:  6 4
-l0C00_0011:		// block 4, pred: 3
-	SCZO_23 = cond(ax_14 - 0x000D)
-	Z_24 = SCZO_23 (alias)
-	SZO_25 = SCZO_23 (alias)
-	branch Test(NE,Z_24) l0C00_001A
-	// succ:  5 2
-l0C00_0016:		// block 5, pred: 4
-	v9_26 = Mem19[ds:0x0302:word16] + 0x0001
-	store(Mem27[ds:0x0302:word16]) = v9_26
-	SZO_28 = cond(v9_26)
-	SCZO_29 = SZO_28 (alias)
-	Z_30 = SZO_28 (alias)
-	// succ:  2
-l0C00_000B:		// block 6, pred: 3
-	ax_31 = 0xFFFF
-	// succ:  8
-l0C00_0020:		// block 7, pred: 2
+	// succ:  l0C00_0020 l0C00_0005
+l0C00_0020:		// pred: l0C00_001A
 	ax_32 = si_15
 	ax_33 = ax_32 - bx_11
 	SCZO_34 = cond(ax_33)
 	Z_35 = SCZO_34 (alias)
 	SZO_36 = SCZO_34 (alias)
-	// succ:  8
-l0C00_0024:		// block 8, pred: 6 7
+	// succ:  l0C00_0024
+l0C00_0024:		// pred: l0C00_000B l0C00_0020
 	SZO_37 = PHI(SZO_22, SZO_36)
 	Z_38 = PHI(Z_21, Z_35)
 	SCZO_39 = PHI(SCZO_20, SCZO_34)
@@ -202,9 +179,32 @@ l0C00_0024:		// block 8, pred: 6 7
 	Mem41 = PHI(Mem19, Mem13)
 	store(Mem42[ds:0x0300:word16]) = ax_40
 	return
-	// succ:  9
-fn0C00_0000_exit:		// block 9, pred: 8
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0024
 	// succ: 
+l0C00_0005:		// pred: l0C00_001A
+	store(Mem19[ds:di:word16]) = ax_14
+	SCZO_20 = cond(ax_14 - 0x0000)
+	Z_21 = SCZO_20 (alias)
+	SZO_22 = SCZO_20 (alias)
+	branch Test(NE,Z_21) l0C00_0011
+	// succ:  l0C00_000B l0C00_0011
+l0C00_000B:		// pred: l0C00_0005
+	ax_31 = 0xFFFF
+	// succ:  l0C00_0024
+l0C00_0011:		// pred: l0C00_0005
+	SCZO_23 = cond(ax_14 - 0x000D)
+	Z_24 = SCZO_23 (alias)
+	SZO_25 = SCZO_23 (alias)
+	branch Test(NE,Z_24) l0C00_001A
+	// succ:  l0C00_0016 l0C00_001A
+l0C00_0016:		// pred: l0C00_0011
+	v9_26 = Mem19[ds:0x0302:word16] + 0x0001
+	store(Mem27[ds:0x0302:word16]) = v9_26
+	SZO_28 = cond(v9_26)
+	SCZO_29 = SZO_28 (alias)
+	Z_30 = SZO_28 (alias)
+	// succ:  l0C00_001A
 
 Mem0:Global memory
     def:  def Mem0
@@ -298,45 +298,45 @@ Mem42: orig: Mem0
     def:  store(Mem42[ds:0x0300:word16]) = ax_40
 // fn0C00_0000
 void fn0C00_0000(word16 si, word16 di, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def Mem0
 	def si
 	def ds
 	def di
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
-	// succ:  2
-l0C00_001A:		// block 2, pred: 1 4 5
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	// succ:  l0C00_001A
+l0C00_001A:		// pred: l0C00_0000 l0C00_0011 l0C00_0016
 	si_12 = PHI(si, si_15, si_15)
 	Mem13 = PHI(Mem0, Mem19, Mem27)
 	ax_14 = Mem13[ds:si_12:word16]
 	si_15 = si_12 + 0x0002
 	SCZO_16 = cond(ax_14 - 0x0020)
 	branch Test(NE,SCZO_16) l0C00_0005
-	// succ:  7 3
-l0C00_0005:		// block 3, pred: 2
-	store(Mem19[ds:di:word16]) = ax_14
-	SCZO_20 = cond(ax_14)
-	branch Test(NE,SCZO_20) l0C00_0011
-	// succ:  6 4
-l0C00_0011:		// block 4, pred: 3
-	SCZO_23 = cond(ax_14 - 0x000D)
-	branch Test(NE,SCZO_23) l0C00_001A
-	// succ:  5 2
-l0C00_0016:		// block 5, pred: 4
-	v9_26 = Mem19[ds:0x0302:word16] + 0x0001
-	store(Mem27[ds:0x0302:word16]) = v9_26
-	// succ:  2
-l0C00_000B:		// block 6, pred: 3
-	ax_31 = 0xFFFF
-	// succ:  8
-l0C00_0020:		// block 7, pred: 2
+	// succ:  l0C00_0020 l0C00_0005
+l0C00_0020:		// pred: l0C00_001A
 	ax_33 = si_15 - si
-	// succ:  8
-l0C00_0024:		// block 8, pred: 6 7
+	// succ:  l0C00_0024
+l0C00_0024:		// pred: l0C00_000B l0C00_0020
 	ax_40 = PHI(ax_31, ax_33)
 	store(Mem42[ds:0x0300:word16]) = ax_40
 	return
-	// succ:  9
-fn0C00_0000_exit:		// block 9, pred: 8
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0024
 	// succ: 
+l0C00_0005:		// pred: l0C00_001A
+	store(Mem19[ds:di:word16]) = ax_14
+	SCZO_20 = cond(ax_14)
+	branch Test(NE,SCZO_20) l0C00_0011
+	// succ:  l0C00_000B l0C00_0011
+l0C00_000B:		// pred: l0C00_0005
+	ax_31 = 0xFFFF
+	// succ:  l0C00_0024
+l0C00_0011:		// pred: l0C00_0005
+	SCZO_23 = cond(ax_14 - 0x000D)
+	branch Test(NE,SCZO_23) l0C00_001A
+	// succ:  l0C00_0016 l0C00_001A
+l0C00_0016:		// pred: l0C00_0011
+	v9_26 = Mem19[ds:0x0302:word16] + 0x0001
+	store(Mem27[ds:0x0302:word16]) = v9_26
+	// succ:  l0C00_001A

@@ -24,22 +24,22 @@ Mem8: orig: Mem0
     def:  store(Mem8[ds:0x0064:word16]) = ax
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def Mem0
 	def fp
 	def cx
 	def wLoc04
 	def ax
 	def ds
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	cx_6 = 0x0064
 	wLoc04_7 = cx_6
 	call fn0C00_000F (depth: 4;)
 	store(Mem8[ds:0x0064:word16]) = ax
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 Mem0:Global memory
@@ -159,7 +159,7 @@ bp_36: orig: bp
     def:  bp_36 = wLoc04_12
 // fn0C00_000F
 void fn0C00_000F()
-fn0C00_000F_entry:		// block 0, pred:
+fn0C00_000F_entry:		// pred:
 	def Mem0
 	def fp
 	def bp
@@ -172,8 +172,8 @@ fn0C00_000F_entry:		// block 0, pred:
 	def dx
 	def dx_ax
 	def SCZO
-	// succ:  1
-l0C00_000F:		// block 1, pred: 0
+	// succ:  l0C00_000F
+l0C00_000F:		// pred: fn0C00_000F_entry
 	wLoc04_12 = bp
 	ax_13 = wArg00
 	ax_14 = ax_13 - 0x0001
@@ -182,12 +182,8 @@ l0C00_000F:		// block 1, pred: 0
 	Z_17 = SZO_16 (alias)
 	SCZO_18 = SZO_16 (alias)
 	branch Test(EQ,Z_17) l0C00_0026
-	// succ:  3 2
-l0C00_0026:		// block 2, pred: 1
-	ax_19 = 0x0001
-	dx_ax_20 = SEQ(dx, ax_19) (alias)
-	// succ:  4
-l0C00_0018:		// block 3, pred: 1
+	// succ:  l0C00_0018 l0C00_0026
+l0C00_0018:		// pred: l0C00_000F
 	wLoc06_21 = ax_14
 	call fn0C00_000F (depth: 6;)
 	dx_22 = wArg00
@@ -197,8 +193,8 @@ l0C00_0018:		// block 3, pred: 1
 	SCZO_26 = cond(dx_ax_23)
 	SZO_27 = SCZO_26 (alias)
 	Z_28 = SCZO_26 (alias)
-	// succ:  4
-l0C00_0029:		// block 4, pred: 2 3
+	// succ:  l0C00_0029
+l0C00_0029:		// pred: l0C00_0026 l0C00_0018
 	SCZO_29 = PHI(SCZO_18, SCZO_26)
 	dx_ax_30 = PHI(dx_ax_20, dx_ax_23)
 	dx_31 = PHI(dx, dx_25)
@@ -208,7 +204,11 @@ l0C00_0029:		// block 4, pred: 2 3
 	ax_35 = PHI(ax_19, ax_24)
 	bp_36 = wLoc04_12
 	return
-	// succ:  5
-fn0C00_000F_exit:		// block 5, pred: 4
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:		// pred: l0C00_0029
 	// succ: 
+l0C00_0026:		// pred: l0C00_000F
+	ax_19 = 0x0001
+	dx_ax_20 = SEQ(dx, ax_19) (alias)
+	// succ:  l0C00_0029
 

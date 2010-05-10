@@ -118,14 +118,22 @@ namespace Decompiler.Typing
 
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-                RewriteFormals(proc.Signature);
-				foreach (Block b in proc.RpoBlocks)
-				{
-					foreach (Statement stm in b.Statements)
-					{
-						stm.Instruction = stm.Instruction.Accept(this);
-					}
-				}
+                try
+                {
+                    RewriteFormals(proc.Signature);
+                    foreach (Block b in proc.RpoBlocks)
+                    {
+                        foreach (Statement stm in b.Statements)
+                        {
+                            stm.Instruction = stm.Instruction.Accept(this);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
+                }
 			}
 		}
 

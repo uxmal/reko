@@ -23,6 +23,7 @@ using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -81,7 +82,7 @@ namespace Decompiler.Core
 		}
 
 
-#if DEBUG
+        [Conditional("DEBUG")]
 		public void Dump(bool dump, bool emitFrame)
 		{
 			if (!dump)
@@ -89,13 +90,8 @@ namespace Decompiler.Core
 			
 			StringWriter sb = new StringWriter();
 			Write(emitFrame, sb);
-			System.Diagnostics.Debug.WriteLine(sb.ToString());
+			Debug.WriteLine(sb.ToString());
 		}
-#else
-		public void Dump(bool dump, bool emitFrame)
-		{
-		}
-#endif
 
         public BlockDominatorGraph CreateBlockDominatorGraph()
         {
@@ -119,7 +115,9 @@ namespace Decompiler.Core
 				frame.Write(writer);
             Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(writer));
 			writer.WriteLine();
-			foreach (Block block in RpoBlocks)
+
+            var it = new DfsIterator<Block>(controlGraph);
+            foreach (Block block in it.PreOrder(EntryBlock)) 
 			{
 				if (block != null) block.Write(writer);
 			}

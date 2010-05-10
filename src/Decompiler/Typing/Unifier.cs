@@ -130,9 +130,11 @@ namespace Decompiler.Typing
 
 		public bool IsCompatibleWithMemberPointer(MemberPointer mpA, DataType b)
 		{
-			MemberPointer ptrB = b as MemberPointer;
-			if (ptrB != null)
-				return AreCompatible(mpA.Pointee, ptrB.Pointee);
+			MemberPointer mpB = b as MemberPointer;
+            if (mpB != null)
+                return
+                    AreCompatible(mpA.BasePointer, mpB.BasePointer) && 
+				    AreCompatible(mpA.Pointee, mpB.Pointee);
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
 			{

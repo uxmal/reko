@@ -19,20 +19,20 @@ Mem6: orig: Mem0
     def:  store(Mem6[ds:0x0064:word16]) = ax
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def Mem0
 	def fp
 	def cx
 	def ax
 	def ds
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	cx_5 = 0x0005
 	call fn0C00_000B (depth: 2;)
 	store(Mem6[ds:0x0064:word16]) = ax
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 Mem0:Global memory
@@ -128,7 +128,7 @@ si_28: orig: si
     def:  si_28 = wLoc04_10
 // fn0C00_000B
 void fn0C00_000B()
-fn0C00_000B_entry:		// block 0, pred:
+fn0C00_000B_entry:		// pred:
 	def Mem0
 	def fp
 	def si
@@ -139,18 +139,14 @@ fn0C00_000B_entry:		// block 0, pred:
 	def ax
 	def dx
 	def dx_ax
-	// succ:  1
-l0C00_000B:		// block 1, pred: 0
+	// succ:  l0C00_000B
+l0C00_000B:		// pred: fn0C00_000B_entry
 	wLoc04_10 = si
 	SCZO_11 = cond(cx - 0x0001)
 	SZO_12 = SCZO_11 (alias)
 	branch Test(LE,SZO_12) l0C00_001C
-	// succ:  3 2
-l0C00_001C:		// block 2, pred: 1
-	ax_13 = 0x0001
-	dx_ax_14 = SEQ(dx, ax_13) (alias)
-	// succ:  4
-l0C00_0011:		// block 3, pred: 1
+	// succ:  l0C00_0011 l0C00_001C
+l0C00_0011:		// pred: l0C00_000B
 	si_15 = cx
 	cx_16 = cx - 0x0001
 	call fn0C00_000B (depth: 4;)
@@ -159,8 +155,8 @@ l0C00_0011:		// block 3, pred: 1
 	dx_19 = SLICE(dx_ax_17, word16, 16) (alias)
 	SCZO_20 = cond(dx_ax_17)
 	SZO_21 = SCZO_20 (alias)
-	// succ:  4
-l0C00_001F:		// block 4, pred: 2 3
+	// succ:  l0C00_001F
+l0C00_001F:		// pred: l0C00_001C l0C00_0011
 	dx_ax_22 = PHI(dx_ax_14, dx_ax_17)
 	dx_23 = PHI(dx, dx_19)
 	ax_24 = PHI(ax_13, ax_18)
@@ -169,7 +165,11 @@ l0C00_001F:		// block 4, pred: 2 3
 	cx_27 = PHI(cx, cx_16)
 	si_28 = wLoc04_10
 	return
-	// succ:  5
-fn0C00_000B_exit:		// block 5, pred: 4
+	// succ:  fn0C00_000B_exit
+fn0C00_000B_exit:		// pred: l0C00_001F
 	// succ: 
+l0C00_001C:		// pred: l0C00_000B
+	ax_13 = 0x0001
+	dx_ax_14 = SEQ(dx, ax_13) (alias)
+	// succ:  l0C00_001F
 

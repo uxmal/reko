@@ -97,6 +97,15 @@ namespace Decompiler.Gui.Windows
                 newCaption);
         }
 
+        public void ShowError(string failedOperation, Exception ex)
+        {
+            dlg.Invoke(new Action<Exception>(delegate(Exception exc)
+                {
+                    uiSvc.ShowError(ex, failedOperation);
+                }),
+                ex);
+        }
+
         public void FinishBackgroundWork()
         {
         }

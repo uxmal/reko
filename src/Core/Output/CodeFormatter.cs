@@ -425,7 +425,7 @@ namespace Decompiler.Core.Output
 			writer.Write(") { ");
 			foreach (Block b in si.targets)
 			{
-				writer.Write("{0} ", b.RpoNumber);
+				writer.Write("{0} ", b.Name);
 			}
 			writer.Write("}");
 			writer.Terminate();

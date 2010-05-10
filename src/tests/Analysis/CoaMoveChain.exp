@@ -15,13 +15,13 @@ bx_10: orig: bx
 ax_11: orig: ax
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def ds
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	store(Mem9[ds:0x0300:word16]) = 0x0004
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 

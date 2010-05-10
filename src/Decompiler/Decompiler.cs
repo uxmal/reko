@@ -266,8 +266,16 @@ namespace Decompiler
             var fmt = new CodeFormatter(new Formatter(w));
             foreach (Procedure proc in prog.Procedures.Values)
             {
-                fmt.Write(proc);
-                w.WriteLine();
+                try
+                {
+                    fmt.Write(proc);
+                    w.WriteLine();
+                }
+                catch (Exception ex)
+                {
+                    w.WriteLine();
+                    w.WriteLine("// Exception {0} when writing procedure.", ex.Message);
+                }
             }
         }
 

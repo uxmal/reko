@@ -80,7 +80,7 @@ namespace Decompiler.Gui.Windows.Forms
             catch (Exception ex)
             {
                 //$REVIEW: need a new exception type which when thrown contains the activity we were doing.
-                UIService.ShowError(ex, "An error occurred while reconstructing types.");
+                workerDialogSvc.ShowError("An error occurred while reconstructing types.", ex);
             }
         }
 

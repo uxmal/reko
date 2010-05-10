@@ -63,7 +63,7 @@ Mem18: orig: Mem0
     def:  store(Mem18[ds:0x012C:word16]) = cx_16
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def Mem0
 	def fp
 	def bx
@@ -72,27 +72,27 @@ fn0C00_0000_entry:		// block 0, pred:
 	def SCZO
 	def Z
 	def si
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	bx_8 = Mem0[ds:bx + 0x0004:word16]
 	cx_9 = Mem0[ds:bx_8 + 0x0002:word16]
 	SCZO_10 = cond(cx_9 - 0x0000)
 	Z_11 = SCZO_10 (alias)
 	branch Test(NE,Z_11) l0C00_0015
-	// succ:  3 2
-l0C00_0015:		// block 2, pred: 1
-	store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001
-	cx_13 = Mem12[ds:si:word16]
-	// succ:  4
-l0C00_000B:		// block 3, pred: 1
+	// succ:  l0C00_000B l0C00_0015
+l0C00_000B:		// pred: l0C00_0000
 	store(Mem14[ds:bx_8 + 0x0006:word16]) = 0x0000
 	cx_15 = Mem14[ds:si:word16]
-	// succ:  4
-l0C00_001C:		// block 4, pred: 2 3
+	// succ:  l0C00_001C
+l0C00_001C:		// pred: l0C00_0015 l0C00_000B
 	cx_16 = PHI(cx_13, cx_15)
 	Mem17 = PHI(Mem12, Mem14)
 	store(Mem18[ds:0x012C:word16]) = cx_16
-	// succ:  5
-fn0C00_0000_exit:		// block 5, pred: 4
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_001C
 	// succ: 
+l0C00_0015:		// pred: l0C00_0000
+	store(Mem12[ds:bx_8 + 0x0006:word16]) = 0x0001
+	cx_13 = Mem12[ds:si:word16]
+	// succ:  l0C00_001C
 

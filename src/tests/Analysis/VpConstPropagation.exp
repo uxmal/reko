@@ -28,22 +28,22 @@ Mem9: orig: Mem0
     def:  store(Mem9[ds:0x0304:word16]) = ax_5
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def Mem0
 	def fp
 	def ax
 	def SCZO
 	def ds
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	ax_5 = 0x0000
 	SCZO_6 = cond(ax_5)
 	store(Mem7[ds:0x0300:word16]) = ax_5
 	store(Mem8[ds:0x0302:word16]) = ax_5
 	store(Mem9[ds:0x0304:word16]) = ax_5
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 Mem0:Global memory
@@ -65,14 +65,14 @@ Mem9: orig: Mem0
     def:  store(Mem9[ds:0x0304:word16]) = 0x0000
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def ds
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	store(Mem7[ds:0x0300:word16]) = 0x0000
 	store(Mem8[ds:0x0302:word16]) = 0x0000
 	store(Mem9[ds:0x0304:word16]) = 0x0000
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 

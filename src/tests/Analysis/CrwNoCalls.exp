@@ -13,21 +13,21 @@ void fn0C00_0000(Register word16 ax, Register word16 bx, Register selector ds)
 // ds:Register ds
 // return address size: 2
 void fn0C00_0000(word16 ax, word16 bx, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	SCZO = cond(ax - bx)
 	branch Test(EQ,Z) l0C00_000A
-	// succ:  3 2
-l0C00_000A:		// block 2, pred: 1
-	ax = 0x0001
-	// succ:  4
-l0C00_0004:		// block 3, pred: 1
+	// succ:  l0C00_0004 l0C00_000A
+l0C00_0004:		// pred: l0C00_0000
 	ax = 0x0000
-	// succ:  4
-l0C00_000D:		// block 4, pred: 2 3
+	// succ:  l0C00_000D
+l0C00_000D:		// pred: l0C00_000A l0C00_0004
 	store(Mem0[ds:0x0064:word16]) = ax
 	return
-	// succ:  5
-fn0C00_0000_exit:		// block 5, pred: 4
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_000D
 	// succ: 
+l0C00_000A:		// pred: l0C00_0000
+	ax = 0x0001
+	// succ:  l0C00_000D

@@ -116,7 +116,7 @@ namespace Decompiler.Gui.Windows.Forms
             browserSvc.Enabled = true;
             browserSvc.SelectionChanged += BrowserItemSelected;
             browserSvc.Caption = "Segments";
-            memSvc.SelectionChanged += memctl_SelectionChanged;
+            memSvc.SelectionChanged += memSvc_SelectionChanged;
 
             memSvc.ViewImage(Decompiler.Program.Image);
             disSvc.ShowWindow();
@@ -128,7 +128,7 @@ namespace Decompiler.Gui.Windows.Forms
 		public override bool LeavePage()
 		{
             browserSvc.SelectionChanged -= BrowserItemSelected;
-            memSvc.SelectionChanged -= memctl_SelectionChanged;
+            memSvc.SelectionChanged -= memSvc_SelectionChanged;
 
 			return true;
 		}
@@ -206,7 +206,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         // Event handlers /////////////////////////
 
-        private void memctl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void memSvc_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sbSvc != null)
             {

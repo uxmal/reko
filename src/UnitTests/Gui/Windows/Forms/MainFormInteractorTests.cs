@@ -111,7 +111,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     <types-file>foo.h</types-file>
   </output>
   <procedure name=""MyProc"">
-    <address>12345</address>
+    <address>00012345</address>
   </procedure>
 </project>";
             Assert.AreEqual(s, interactor.ProbeSavedProjectXml);

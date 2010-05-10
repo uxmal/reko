@@ -20,21 +20,21 @@ Mem8: orig: Mem0
     def:  store(Mem8[0x10003000:word32]) = r0_7
 // CmpMock
 void CmpMock(word32 r0, word32 r1)
-CmpMock_entry:		// block 0, pred:
+CmpMock_entry:		// pred:
 	def r0
 	def r1
-	// succ:  1
-l1:		// block 1, pred: 0
+	// succ:  l1
+l1:		// pred: CmpMock_entry
 	branch r0 == 0x00000000 skip
-	// succ:  2 3
-l2:		// block 2, pred: 1
+	// succ:  l2 skip
+l2:		// pred: l1
 	r0_6 = r0 + r1
-	// succ:  3
-skip:		// block 3, pred: 1 2
+	// succ:  skip
+skip:		// pred: l1 l2
 	r0_7 = PHI(r0, r0_6)
 	store(Mem8[0x10003000:word32]) = r0_7
 	return
-	// succ:  4
-CmpMock_exit:		// block 4, pred: 3
+	// succ:  CmpMock_exit
+CmpMock_exit:		// pred: skip
 	// succ: 
 

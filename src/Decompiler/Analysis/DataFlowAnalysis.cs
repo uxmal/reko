@@ -96,7 +96,7 @@ namespace Decompiler.Analysis
      
                 foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
                 {
-                    StrengthReduction str = new StrengthReduction(ssa, de.Key, de.Value);
+                    var str = new StrengthReduction(ssa, de.Key, de.Value);
                     str.ClassifyUses();
                     str.ModifyUses();
                 }

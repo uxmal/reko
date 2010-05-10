@@ -6,14 +6,14 @@
 // Preserved:
 // fn0C00_0000
 void fn0C00_0000(word16 dx)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	word16 dx_4
 	fn0C00_0004(dx, &dx_4)
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 // Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
@@ -24,23 +24,23 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // Preserved:
 // fn0C00_0004
 word16 fn0C00_0004(word16 dx, ptr16 dxOut)
-fn0C00_0004_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0004:		// block 1, pred: 0
+fn0C00_0004_entry:		// pred:
+	// succ:  l0C00_0004
+l0C00_0004:		// pred: fn0C00_0004_entry
 	word16 dx_10
 	branch dx != 0x001E l0C00_000F
-	// succ:  3 2
-l0C00_000F:		// block 2, pred: 1
-	store(Mem0[dxOut:word16]) = dx - 0x0001
-	// succ:  4
-l0C00_0009:		// block 3, pred: 1
+	// succ:  l0C00_0009 l0C00_000F
+l0C00_0009:		// pred: l0C00_0004
 	store(Mem0[dxOut:word16]) = fn0C00_0013(dx)
-	// succ:  4
-l0C00_0010:		// block 4, pred: 2 3
+	// succ:  l0C00_0010
+l0C00_0010:		// pred: l0C00_000F l0C00_0009
 	return dx_10
-	// succ:  5
-fn0C00_0004_exit:		// block 5, pred: 4
+	// succ:  fn0C00_0004_exit
+fn0C00_0004_exit:		// pred: l0C00_0010
 	// succ: 
+l0C00_000F:		// pred: l0C00_0004
+	store(Mem0[dxOut:word16]) = dx - 0x0001
+	// succ:  l0C00_0010
 
 // Register word16 fn0C00_0013(Register word16 dx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
@@ -50,21 +50,21 @@ fn0C00_0004_exit:		// block 5, pred: 4
 // Preserved:
 // fn0C00_0013
 word16 fn0C00_0013(word16 dx)
-fn0C00_0013_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0013:		// block 1, pred: 0
+fn0C00_0013_entry:		// pred:
+	// succ:  l0C00_0013
+l0C00_0013:		// pred: fn0C00_0013_entry
 	word16 dx_11
 	branch dx < 0x0014 l0C00_001F
-	// succ:  3 2
-l0C00_001F:		// block 2, pred: 1
-	fn0C00_0004(dx - 0x000A, &dx_11)
-	// succ:  4
-l0C00_0018:		// block 3, pred: 1
+	// succ:  l0C00_0018 l0C00_001F
+l0C00_0018:		// pred: l0C00_0013
 	fn0C00_0004(dx - 0x0001, &dx_11)
-	// succ:  4
-l0C00_0025:		// block 4, pred: 2 3
+	// succ:  l0C00_0025
+l0C00_0025:		// pred: l0C00_001F l0C00_0018
 	return dx_11
-	// succ:  5
-fn0C00_0013_exit:		// block 5, pred: 4
+	// succ:  fn0C00_0013_exit
+fn0C00_0013_exit:		// pred: l0C00_0025
 	// succ: 
+l0C00_001F:		// pred: l0C00_0013
+	fn0C00_0004(dx - 0x000A, &dx_11)
+	// succ:  l0C00_0025
 

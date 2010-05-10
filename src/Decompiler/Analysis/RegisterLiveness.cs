@@ -439,8 +439,11 @@ namespace Decompiler.Analysis
 				UnaryExpression u = appl.Arguments[i] as UnaryExpression;
 				if (u != null && u.op == Operator.AddrOf)
 				{
-					Identifier id = (Identifier) u.Expression;
-					Def(id);
+					Identifier id = u.Expression as Identifier;
+                    if (id != null)
+                    {
+                        Def(id);
+                    }
 				}
 			}
 			for (int i = 0; i < appl.Arguments.Length; ++i)

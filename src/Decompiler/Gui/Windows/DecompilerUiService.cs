@@ -92,6 +92,9 @@ namespace Decompiler.Gui.Windows
                 sb.Append(e.Message);
                 e = e.InnerException;
             }
+            form.Invoke(new Action<string>(delegate(string s)
+                { MessageBox.Show(form, s, "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
+                sb.ToString() );
             MessageBox.Show(form, sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 

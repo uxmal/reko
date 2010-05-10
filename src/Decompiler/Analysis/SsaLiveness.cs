@@ -27,33 +27,42 @@ namespace Decompiler.Analysis
 {
 	public class SsaLivenessAnalysis : InstructionVisitorBase
 	{
+        private class Record
+        {
+            public Record()
+            {
+                this.LiveIn = new List<SsaIdentifier>();
+                this.LiveOut = new List<SsaIdentifier>();
+            }
+
+            public List<SsaIdentifier> LiveIn { get; private set; }
+            public List<SsaIdentifier> LiveOut { get; private set; }
+        }
+
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
-		private BitSet visited;
+        private HashSet<Block> visited;
 		private Dictionary<Statement, List<Identifier>> defined;		// maps statement to -> List of identifiers
-		private InterferenceGraph interference; 
-		private List<SsaIdentifier> [] liveInBlocks;
-		private List<SsaIdentifier> [] liveOutBlocks;
+		private InterferenceGraph interference;
+        private Dictionary<Block, Record> records;
 
 		public SsaLivenessAnalysis(Procedure proc, SsaIdentifierCollection ssaIds)
 		{
 			this.proc = proc;
 			this.ssaIds = ssaIds;
-			visited = new BitSet(proc.RpoBlocks.Count);
-			this.liveInBlocks = BuildLiveSet(proc.RpoBlocks.Count);
-			this.liveOutBlocks = BuildLiveSet(proc.RpoBlocks.Count);
+            this.visited = new HashSet<Block>();
+            BuildRecords(proc.RpoBlocks);
 			BuildDefinedMap(ssaIds);
 			BuildInterferenceGraph(ssaIds);
 		}
 
-		private List<SsaIdentifier> [] BuildLiveSet(int size)
+		private void BuildRecords(IEnumerable<Block> blocks)
 		{
-			List<SsaIdentifier> [] arr = new List<SsaIdentifier>[size];
-			for (int i = 0; i < size; ++i)
-			{
-				arr[i] = new List<SsaIdentifier>();
+            records = new Dictionary<Block, Record>();
+            foreach (Block b in blocks)
+            {
+                records.Add(b, new Record());
 			}
-			return arr;
 		}
 
 		public void BuildDefinedMap(SsaIdentifierCollection ssaIds)
@@ -79,7 +88,7 @@ namespace Decompiler.Analysis
 			interference = new InterferenceGraph();
 			foreach (SsaIdentifier v in ssaIds)
 			{
-				visited.SetAll(false);
+				visited = new HashSet<Block>();
 				foreach (Statement s in v.Uses)
 				{
 					PhiFunction phi = GetPhiFunction(s);
@@ -121,7 +130,7 @@ namespace Decompiler.Analysis
 
 		public bool IsLiveIn(Identifier id, Statement stm)
 		{
-			bool live = liveOutBlocks[stm.Block.RpoNumber].Contains(ssaIds[id]);
+			bool live = records[stm.Block].LiveOut.Contains(ssaIds[id]);
 			for (int i = stm.Block.Statements.Count - 1; i >= 0; --i)
 			{
 				Statement s = stm.Block.Statements[i];
@@ -139,12 +148,12 @@ namespace Decompiler.Analysis
 
 		public bool IsLiveOut(Identifier id, Block b)
 		{
-			return liveOutBlocks[b.RpoNumber].Contains(ssaIds[id]);
+			return records[b].LiveOut.Contains(ssaIds[id]);
 		}
 
 		public bool IsLiveOut(Identifier id, Statement stm)
 		{
-			bool live = liveOutBlocks[stm.Block.RpoNumber].Contains(ssaIds[id]);
+			bool live = records[stm.Block].LiveOut.Contains(ssaIds[id]);
 			for (int i = stm.Block.Statements.Count - 1; i >= 0; --i)
 			{
 				Statement s = stm.Block.Statements[i];
@@ -162,10 +171,10 @@ namespace Decompiler.Analysis
 
 		public void LiveOutAtBlock(Block b, SsaIdentifier v)
 		{
-			Set(liveOutBlocks[b.RpoNumber], v);
-			if (!visited[b.RpoNumber])
+			Set(records[b].LiveOut, v);
+			if (!visited.Contains(b))
 			{
-				visited[b.RpoNumber] = true;
+				visited.Add(b);
 				Statement s = b.Statements.Last;
 				if (!IsDefinedAtStatement(v, s))
 					LiveInAtStatement(b, b.Statements.Count - 1, v);
@@ -185,7 +194,7 @@ namespace Decompiler.Analysis
 			}
 		
 			// v is live-in at the header of this block!
-			Set(liveInBlocks[b.RpoNumber], v);
+			Set(records[b].LiveIn, v);
 			foreach (Block p in b.Pred)
 			{
 				LiveOutAtBlock(p, v);
@@ -198,7 +207,7 @@ namespace Decompiler.Analysis
 			{
 				Block b = proc.RpoBlocks[i];
 				writer.Write("liveIn: ");
-				foreach (SsaIdentifier v in liveInBlocks[b.RpoNumber])
+				foreach (SsaIdentifier v in records[b].LiveIn)
 				{
 					writer.Write(" {0}", v.Identifier.Name);
 				}
@@ -207,7 +216,7 @@ namespace Decompiler.Analysis
 				b.Write(writer);
 
 				writer.Write("liveOut:");
-				foreach (SsaIdentifier v in liveOutBlocks[b.RpoNumber])
+				foreach (SsaIdentifier v in records[b].LiveOut)
 				{
 					writer.Write(" {0}", v.Identifier.Name);
 				}

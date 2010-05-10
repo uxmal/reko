@@ -22,9 +22,9 @@ void fn0C00_0000(Register selector ds, Stack ptr32 ptrArg02)
 // ptrLoc0A:Local -000A
 // return address size: 2
 void fn0C00_0000(selector ds, ptr32 ptrArg02)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	wLoc04 = bp
 	es_bx = ptrArg02
 	wLoc06 = es
@@ -38,8 +38,8 @@ l0C00_0000:		// block 1, pred: 0
 	store(Mem0[ds:0x0200:word16]) = ax
 	bp = wLoc04
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 Register word16 fn0C00_0020(Stack ptr32 ptrArg00)
 // MayUse: 
@@ -59,16 +59,16 @@ Register word16 fn0C00_0020(Stack ptr32 ptrArg00)
 // ax:Register ax
 // return address size: 2
 word16 fn0C00_0020(ptr32 ptrArg00)
-fn0C00_0020_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0020:		// block 1, pred: 0
+fn0C00_0020_entry:		// pred:
+	// succ:  l0C00_0020
+l0C00_0020:		// pred: fn0C00_0020_entry
 	wLoc04 = bp
 	es_bx = ptrArg00
 	ax = Mem0[es:bx + 0x0004:word16]
 	bp = wLoc04
 	return ax
-	// succ:  2
-fn0C00_0020_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0020_exit
+fn0C00_0020_exit:		// pred: l0C00_0020
 	// succ: 
 Register word16 fn0C00_002E(Stack ptr32 ptrArg00, Stack word16 wArg04)
 // MayUse: 
@@ -90,9 +90,9 @@ Register word16 fn0C00_002E(Stack ptr32 ptrArg00, Stack word16 wArg04)
 // SCZO:Flags
 // return address size: 2
 word16 fn0C00_002E(ptr32 ptrArg00, word16 wArg04)
-fn0C00_002E_entry:		// block 0, pred:
-	// succ:  1
-l0C00_002E:		// block 1, pred: 0
+fn0C00_002E_entry:		// pred:
+	// succ:  l0C00_002E
+l0C00_002E:		// pred: fn0C00_002E_entry
 	wLoc04 = bp
 	es_bx = ptrArg00
 	ax = wArg04
@@ -100,6 +100,6 @@ l0C00_002E:		// block 1, pred: 0
 	SCZO = cond(ax)
 	bp = wLoc04
 	return ax
-	// succ:  2
-fn0C00_002E_exit:		// block 2, pred: 1
+	// succ:  fn0C00_002E_exit
+fn0C00_002E_exit:		// pred: l0C00_002E
 	// succ: 

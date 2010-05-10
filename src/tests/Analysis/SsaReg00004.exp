@@ -768,7 +768,7 @@ ebx_210: orig: ebx
     def:  ebx_210 = dwLoc08_32
 // fn10000000
 void fn10000000()
-fn10000000_entry:		// block 0, pred:
+fn10000000_entry:		// pred:
 	def Mem0
 	def fp
 	def dwArg00
@@ -800,8 +800,8 @@ fn10000000_entry:		// block 0, pred:
 	def SO
 	def SZO
 	def rArg00
-	// succ:  1
-l10000000:		// block 1, pred: 0
+	// succ:  l10000000
+l10000000:		// pred: fn10000000_entry
 	eax_31 = dwArg00
 	dwLoc08_32 = ebx
 	ebx_33 = dwArg02
@@ -827,8 +827,8 @@ l10000000:		// block 1, pred: 0
 	rArg08_53 = DPB(rArg08, dwArg08_52, 0, 32) (alias)
 	store(Mem54[edx_39:word32]) = ecx_45
 	branch Test(EQ,Z_47) l10000107
-	// succ:  2 14
-l10000035:		// block 2, pred: 1
+	// succ:  l10000035 l10000107
+l10000035:		// pred: l10000000
 	rLoc1_55 = Mem54[ebx_33:real64]
 	dwLoc10_56 = esi
 	dwLoc14_57 = edi
@@ -842,8 +842,8 @@ l10000035:		// block 2, pred: 1
 	dwArg00_65 = rLoc1_55
 	rArg00_66 = DPB(rArg00, dwArg00_65, 0, 32) (alias)
 	rLoc1_67 = rArg08_53
-	// succ:  3
-l10000048:		// block 3, pred: 2 11
+	// succ:  l10000048
+l10000048:		// pred: l10000035 l100000D7
 	rArg00_68 = PHI(rArg00_66, rArg00_103)
 	rLoc3_69 = PHI(rLoc3, rLoc3_112)
 	rArg08_70 = PHI(rArg08_53, rArg08_132)
@@ -871,8 +871,8 @@ l10000048:		// block 3, pred: 2 11
 	C_91 = false
 	SCZO_92 = C_91 (alias)
 	branch Test(EQ,FPUF_83) l1000007F
-	// succ:  4 5
-l10000072:		// block 4, pred: 3
+	// succ:  l10000072 l1000007F
+l10000072:		// pred: l10000048
 	ecx_93 = ecx_79 + 0x00000001
 	SZO_94 = cond(ecx_93)
 	SCZO_95 = SZO_94 (alias)
@@ -883,8 +883,8 @@ l10000072:		// block 4, pred: 3
 	rLoc2_100 = rArg00_99
 	dwArg00_101 = rLoc2_100
 	rArg00_102 = DPB(rArg00_99, dwArg00_101, 0, 32) (alias)
-	// succ:  5
-l1000007F:		// block 5, pred: 3 4
+	// succ:  l1000007F
+l1000007F:		// pred: l10000048 l10000072
 	rArg00_103 = PHI(rArg00_78, rArg00_102)
 	rLoc2_104 = PHI(rLoc2_82, rLoc2_100)
 	dwArg00_105 = PHI(dwArg00_77, dwArg00_101)
@@ -907,8 +907,8 @@ l1000007F:		// block 5, pred: 3 4
 	C_121 = false
 	SCZO_122 = C_121 (alias)
 	branch Test(EQ,FPUF_113) l100000AD
-	// succ:  6 7
-l100000A2:		// block 6, pred: 5
+	// succ:  l100000A2 l100000AD
+l100000A2:		// pred: l1000007F
 	ecx_123 = ecx_108 + 0x00000001
 	SZO_124 = cond(ecx_123)
 	SCZO_125 = SZO_124 (alias)
@@ -918,8 +918,8 @@ l100000A2:		// block 6, pred: 5
 	dwArg08_129 = ecx_123
 	rArg08_130 = DPB(rArg08_110, dwArg08_129, 0, 32) (alias)
 	rLoc1_131 = rArg08_130
-	// succ:  7
-l100000AD:		// block 7, pred: 5 6
+	// succ:  l100000AD
+l100000AD:		// pred: l1000007F l100000A2
 	rArg08_132 = PHI(rArg08_110, rArg08_130)
 	rLoc1_133 = PHI(rLoc1_106, rLoc1_131)
 	dwArg08_134 = PHI(dwArg08_109, dwArg08_129)
@@ -936,8 +936,8 @@ l100000AD:		// block 7, pred: 5 6
 	C_145 = false
 	SCZO_146 = C_145 (alias)
 	branch Test(NE,FPUF_137) l100000D7
-	// succ:  8 11
-l100000BF:		// block 8, pred: 7
+	// succ:  l100000BF l100000D7
+l100000BF:		// pred: l100000AD
 	FPUF_147 = cond(rLoc1_133 - Mem54[0x10033298:real64])
 	ax_148 = (word16) FPUF_147 << 8
 	eax_149 = DPB(eax_139, ax_148, 0, 16) (alias)
@@ -949,19 +949,19 @@ l100000BF:		// block 8, pred: 7
 	C_155 = false
 	SCZO_156 = C_155 (alias)
 	branch Test(NE,FPUF_147) l100000D7
-	// succ:  9 11
-l100000CD:		// block 9, pred: 8
+	// succ:  l100000CD l100000D7
+l100000CD:		// pred: l100000BF
 	SCZO_157 = cond(edi_64 - 0x000186A0)
 	C_158 = SCZO_157 (alias)
 	Z_159 = SCZO_157 (alias)
 	SO_160 = SCZO_157 (alias)
 	SZO_161 = SCZO_157 (alias)
 	branch Test(NE,Z_159) l100000D7
-	// succ:  10 11
-l100000D5:		// block 10, pred: 9
+	// succ:  l100000D5 l100000D7
+l100000D5:		// pred: l100000CD
 	edi_162 = esi_76
-	// succ:  11
-l100000D7:		// block 11, pred: 7 8 9 10
+	// succ:  l100000D7
+l100000D7:		// pred: l100000AD l100000BF l100000CD l100000D5
 	ah_163 = PHI(ah_140, ah_150, ah_150, ah_150)
 	ax_164 = PHI(ax_138, ax_148, ax_148, ax_148)
 	FPUF_165 = PHI(FPUF_137, FPUF_147, FPUF_147, FPUF_147)
@@ -973,8 +973,8 @@ l100000D7:		// block 11, pred: 7 8 9 10
 	SO_171 = SCZO_168 (alias)
 	SZO_172 = SCZO_168 (alias)
 	branch Test(LT,SO_171) l10000048
-	// succ:  12 3
-l100000DF:		// block 12, pred: 11
+	// succ:  l100000DF l10000048
+l100000DF:		// pred: l100000D7
 	rLoc2_173 = dwArg00_105
 	call fn1000010A (depth: 20; FPU: 2;)
 	store(Mem174[ebx_33:word32]) = eax_167
@@ -989,12 +989,12 @@ l100000DF:		// block 12, pred: 11
 	esi_182 = dwLoc10_56
 	store(Mem183[ecx_175:word32]) = eax_167
 	branch Test(LE,SZO_180) l10000107
-	// succ:  13 14
-l100000FB:		// block 13, pred: 12
+	// succ:  l100000FB l10000107
+l100000FB:		// pred: l100000DF
 	store(Mem184[ebx_33:word32]) = 0x00000000
 	store(Mem185[ecx_175:word32]) = 0x00000000
-	// succ:  14
-l10000107:		// block 14, pred: 1 12 13
+	// succ:  l10000107
+l10000107:		// pred: l10000000 l100000DF l100000FB
 	rArg00_186 = PHI(rArg00, rArg00_103, rArg00_103)
 	SZO_187 = PHI(SZO_49, SZO_180, SZO_180)
 	SO_188 = PHI(SO_48, SO_179, SO_179)
@@ -1021,8 +1021,8 @@ l10000107:		// block 14, pred: 1 12 13
 	ebp_209 = dwLoc0C_34
 	ebx_210 = dwLoc08_32
 	return
-	// succ:  15
-fn10000000_exit:		// block 15, pred: 14
+	// succ:  fn10000000_exit
+fn10000000_exit:		// pred: l10000107
 	// succ: 
 
 Mem0:Global memory
@@ -1043,18 +1043,18 @@ eax_6: orig: eax
     def:  eax_6 = rLoc08_5
 // fn1000010A
 void fn1000010A()
-fn1000010A_entry:		// block 0, pred:
+fn1000010A_entry:		// pred:
 	def Mem0
 	def fp
 	def rArg0
 	def rLoc08
 	def eax
-	// succ:  1
-l1000010A:		// block 1, pred: 0
+	// succ:  l1000010A
+l1000010A:		// pred: fn1000010A_entry
 	rLoc08_5 = rArg0
 	eax_6 = rLoc08_5
 	return
-	// succ:  2
-fn1000010A_exit:		// block 2, pred: 1
+	// succ:  fn1000010A_exit
+fn1000010A_exit:		// pred: l1000010A
 	// succ: 
 

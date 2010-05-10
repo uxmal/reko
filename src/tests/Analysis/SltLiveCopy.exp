@@ -16,18 +16,18 @@ reg_6: orig: reg
     uses: return reg_6 - reg
 // LiveCopyMock
 void LiveCopyMock()
-LiveCopyMock_entry:		// block 0, pred:
+LiveCopyMock_entry:		// pred:
 	def reg
-	// succ:  1
-l1:		// block 1, pred: 0
+	// succ:  l1
+l1:		// pred: LiveCopyMock_entry
 	branch (reg & 0x00000001) == 0x00000000 even
-	// succ:  2 3
-l2:		// block 2, pred: 1
+	// succ:  l2 even
+l2:		// pred: l1
 	reg_5 = reg + 0x00000002
-	// succ:  3
-even:		// block 3, pred: 1 2
+	// succ:  even
+even:		// pred: l1 l2
 	reg_6 = PHI(reg, reg_5)
 	return reg_6 - reg
-	// succ:  4
-LiveCopyMock_exit:		// block 4, pred: 3
+	// succ:  LiveCopyMock_exit
+LiveCopyMock_exit:		// pred: even
 	// succ: 

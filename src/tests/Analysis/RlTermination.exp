@@ -6,10 +6,10 @@
 	Preserved:
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
 // DataOut: ds
-l0C00_0000:		// block 1, pred: 0
+l0C00_0000:		// pred: fn0C00_0000_entry
 	cx = 0x007B
 	ax = 0x0020
 	bx = 0x3212
@@ -17,9 +17,9 @@ l0C00_0000:		// block 1, pred: 0
 	store(Mem0[ds:0x0230:word16]) = ax
 	store(Mem0[ds:0x0234:word16]) = cx
 	return
-	// succ:  2
+	// succ:  fn0C00_0000_exit
 // DataOut:
-fn0C00_0000_exit:		// block 2, pred: 1
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 // DataOut:
 // maybeterminate /////////////////////
@@ -30,34 +30,34 @@ fn0C00_0000_exit:		// block 2, pred: 1
 	Preserved:
 // maybeterminate
 word16 maybeterminate(word16 ax, word16 bx)
-maybeterminate_entry:		// block 0, pred:
-	// succ:  1
+maybeterminate_entry:		// pred:
+	// succ:  l0C00_0015
 // DataOut: ax bx ds
-l0C00_0015:		// block 1, pred: 0
+l0C00_0015:		// pred: maybeterminate_entry
 	SCZO = cond(ax - Mem0[ds:bx:word16])
 	branch Test(ULT,C) l0C00_0023
-	// succ:  2 3
+	// succ:  l0C00_0019 l0C00_0023
 // DataOut: ax bx ds
-l0C00_0019:		// block 2, pred: 1
+l0C00_0019:		// pred: l0C00_0015
 	SCZO = cond(ax - Mem0[ds:bx + 0x0002:word16])
 	branch Test(UGE,C) l0C00_0023
-	// succ:  4 3
+	// succ:  l0C00_001E l0C00_0023
 // DataOut: ax bx ds
-l0C00_0023:		// block 3, pred: 1 2
+l0C00_0023:		// pred: l0C00_0015 l0C00_0019
 	cx = 0x0000
 	SCZO = cond(cx)
 	store(Mem0[ds:0x0232:word16]) = cx
 	ax = 0x4C00
 	msdos_terminate(al)
-	// succ:  5
+	// succ:  maybeterminate_exit
 // DataOut:
-l0C00_001E:		// block 4, pred: 2
+l0C00_001E:		// pred: l0C00_0019
 	bx = bx + ax
 	SCZO = cond(bx)
 	ax = Mem0[ds:bx:word16]
 	return
-	// succ:  5
+	// succ:  maybeterminate_exit
 // DataOut:
-maybeterminate_exit:		// block 5, pred: 3 4
+maybeterminate_exit:		// pred: l0C00_0023 l0C00_001E
 	// succ: 
 // DataOut:

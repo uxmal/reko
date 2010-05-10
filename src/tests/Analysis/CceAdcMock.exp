@@ -22,16 +22,16 @@ Mem12: orig: Mem0
     def:  store(Mem12[0x01001004:word32]) = r0_11
 // AdcMock
 void AdcMock(word32 r1)
-AdcMock_entry:		// block 0, pred:
+AdcMock_entry:		// pred:
 	def Mem0
 	def r1
-	// succ:  1
-l1:		// block 1, pred: 0
+	// succ:  l1
+l1:		// pred: AdcMock_entry
 	r0_7 = Mem0[0x01001000:word32]
 	r0_11 = r0_7 * 0x00000002 + (r1 <u 0x00000002)
 	store(Mem12[0x01001004:word32]) = r0_11
 	return
-	// succ:  2
-AdcMock_exit:		// block 2, pred: 1
+	// succ:  AdcMock_exit
+AdcMock_exit:		// pred: l1
 	// succ: 
 

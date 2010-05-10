@@ -30,32 +30,32 @@ Z_10: orig: Z
     uses: branch Test(NE,Z_10) top
 // SsaMock
 void SsaMock(word32 r1)
-SsaMock_entry:		// block 0, pred:
+SsaMock_entry:		// pred:
 	def Mem0
 	def fp
 	def r0
 	def r1
 	def Z
-	// succ:  1
-l1:		// block 1, pred: 0
+	// succ:  l1
+l1:		// pred: SsaMock_entry
 	r0_5 = 0x00000000
-	// succ:  2
-top:		// block 2, pred: 1 4
+	// succ:  top
+top:		// pred: l1 skip
 	r0_6 = PHI(r0_5, r0_9)
 	Z_7 = cond(r0_6 - 0x00000002)
 	branch Test(NE,Z_7) skip
-	// succ:  3 4
-l2:		// block 3, pred: 2
+	// succ:  l2 skip
+l2:		// pred: top
 	r0_8 = 0x00000000
-	// succ:  4
-skip:		// block 4, pred: 2 3
+	// succ:  skip
+skip:		// pred: top l2
 	r0_9 = PHI(r0_6, r0_8)
 	Z_10 = cond(r1 - 0x00000003)
 	branch Test(NE,Z_10) top
-	// succ:  5 2
-l3:		// block 5, pred: 4
+	// succ:  l3 top
+l3:		// pred: skip
 	return
-	// succ:  6
-SsaMock_exit:		// block 6, pred: 5
+	// succ:  SsaMock_exit
+SsaMock_exit:		// pred: l3
 	// succ: 
 
