@@ -11,9 +11,9 @@
 // Z:Flags
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	wLoc04 = cx
 	cl = 0x03
 	cx = DPB(cx, cl, 0, 8) (alias)
@@ -22,8 +22,8 @@ l0C00_0000:		// block 1, pred: 0
 	SCZO = cond(ax)
 	SZO = SCZO (alias)
 	Z = SCZO (alias)
-	// succ:  2
-l0C00_0005:		// block 2, pred: 1 2
+	// succ:  l0C00_0005
+l0C00_0005:		// pred: l0C00_0000 l0C00_0005
 	al = al + cl
 	ax = DPB(ax, al, 0, 8) (alias)
 	SCZO = cond(al)
@@ -33,11 +33,11 @@ l0C00_0005:		// block 2, pred: 1 2
 	SCZO = SZO (alias)
 	Z = SZO (alias)
 	branch Test(NE,Z) l0C00_0005
-	// succ:  3 2
-l0C00_000B:		// block 3, pred: 2
+	// succ:  l0C00_000B l0C00_0005
+l0C00_000B:		// pred: l0C00_0005
 	cx = wLoc04
 	cl = (byte) cx (alias)
 	return
-	// succ:  4
-fn0C00_0000_exit:		// block 4, pred: 3
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_000B
 	// succ: 

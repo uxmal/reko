@@ -30,6 +30,7 @@ namespace Decompiler.Core
 	/// </summary>
 	public class Block
 	{
+        [Obsolete]
 		public int RpoNumber;			// Reverse post order number.
 
 		private string name;
@@ -149,22 +150,22 @@ namespace Decompiler.Core
 		{
 			if (pred.Count == 0 && succ.Count == 0)
 			{
-				sb.WriteLine("{0}:\t\t// block {1}", Name, RpoNumber);
+				sb.WriteLine("{0}:", Name);
 				WriteStatements(sb);
 			}
 			else
 			{
-				sb.Write("{0}:\t\t// block {1}, pred:", Name, RpoNumber);
+				sb.Write("{0}:\t\t// pred:", Name);
 				foreach (Block p in Pred)
 				{
-					sb.Write(" {0}", p.RpoNumber);
+					sb.Write(" {0}", p.Name);
 				}
 				sb.WriteLine();
 				WriteStatements(sb);
 				sb.Write("\t// succ: ");
 				foreach (Block s in Succ)
 				{
-					sb.Write(" {0}", s.RpoNumber);
+					sb.Write(" {0}", s.Name);
 				}
 				sb.WriteLine();
 			}

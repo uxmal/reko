@@ -36,6 +36,10 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
+        public void ShowError(string context, Exception ex)
+        {
+        }
+
         public void SetCaption(string newCaption)
         {
         }

@@ -33,5 +33,7 @@ namespace Decompiler.Gui
         void SetCaption(string newCaption);
 
         void FinishBackgroundWork();
+
+        void ShowError(string p, Exception ex);
     }
 }

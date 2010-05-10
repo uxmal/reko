@@ -14,9 +14,9 @@ void fn0C00_0000(Register selector ds)
 // wLoc06:Local -0006
 // return address size: 2
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	rLoc1 = Mem0[ds:0x0300:real32]
 	rLoc2 = Mem0[ds:0x0304:real32]
 	wLoc04 = 0x0308
@@ -28,8 +28,8 @@ l0C00_0000:		// block 1, pred: 0
 	rLoc1 = fn0C00_0031(ds, wLoc06)
 	store(Mem0[ds:0x030C:real32]) = rLoc1
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 void fn0C00_0024(Register selector ds, Stack word16 wArg00, FpuStack real64 rArg0, FpuStack real64 rArg1)
 // MayUse:  ds
@@ -49,17 +49,17 @@ void fn0C00_0024(Register selector ds, Stack word16 wArg00, FpuStack real64 rArg
 // rArg1:FPU stack
 // return address size: 2
 void fn0C00_0024(selector ds, word16 wArg00, real64 rArg0, real64 rArg1)
-fn0C00_0024_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0024:		// block 1, pred: 0
+fn0C00_0024_entry:		// pred:
+	// succ:  l0C00_0024
+l0C00_0024:		// pred: fn0C00_0024_entry
 	wLoc04 = bp
 	bx = wArg00
 	store(Mem0[ds:bx:real32]) = rArg0
 	store(Mem0[ds:bx + 0x0004:real32]) = rArg1
 	bp = wLoc04
 	return
-	// succ:  2
-fn0C00_0024_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0024_exit
+fn0C00_0024_exit:		// pred: l0C00_0024
 	// succ: 
 FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg00)
 // MayUse:  ds
@@ -78,14 +78,14 @@ FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg00)
 // ds:Register ds
 // return address size: 2
 real64 fn0C00_0031(selector ds, word16 wArg00)
-fn0C00_0031_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0031:		// block 1, pred: 0
+fn0C00_0031_entry:		// pred:
+	// succ:  l0C00_0031
+l0C00_0031:		// pred: fn0C00_0031_entry
 	wLoc04 = bp
 	bx = wArg00
 	rLoc1 = Mem0[ds:bx:real32]
 	bp = wLoc04
 	return rLoc1
-	// succ:  2
-fn0C00_0031_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0031_exit
+fn0C00_0031_exit:		// pred: l0C00_0031
 	// succ: 

@@ -19,15 +19,22 @@ Register word32 fn10000000(Stack word32 dwArg00)
 // dwLoc14:Local -0014
 // return address size: 4
 word32 fn10000000(word32 dwArg00)
-fn10000000_entry:		// block 0, pred:
-	// succ:  1
-l10000000:		// block 1, pred: 0
+fn10000000_entry:		// pred:
+	// succ:  l10000000
+l10000000:		// pred: fn10000000_entry
 	dwLoc08 = esi
 	esi = dwArg00
 	SCZO = cond(esi - 0x00000001)
 	branch Test(GT,SZO) l10000011
-	// succ:  3 2
-l10000011:		// block 2, pred: 1
+	// succ:  l1000000A l10000011
+l1000000A:		// pred: l10000000
+	eax = 0x00000001
+	esi = dwLoc08
+	return eax
+	// succ:  fn10000000_exit
+fn10000000_exit:		// pred: l10000011 l1000000A
+	// succ: 
+l10000011:		// pred: l10000000
 	eax = esi - 0x00000002
 	dwLoc0C = edi
 	dwLoc10 = eax
@@ -41,11 +48,4 @@ l10000011:		// block 2, pred: 1
 	edi = dwLoc0C
 	esi = dwLoc08
 	return eax
-	// succ:  4
-l1000000A:		// block 3, pred: 1
-	eax = 0x00000001
-	esi = dwLoc08
-	return eax
-	// succ:  4
-fn10000000_exit:		// block 4, pred: 2 3
-	// succ: 
+	// succ:  fn10000000_exit

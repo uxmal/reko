@@ -36,6 +36,8 @@ namespace Decompiler.Gui.Windows.Forms
 	{
         private IProgramImageBrowserService browserSvc;
         private ICodeViewerService codeViewerSvc;
+        private IMemoryViewService memViewerSvc;
+        private IDisassemblyViewService disasmViewerSvc;
         private bool canAdvance;
 
 		public AnalyzedPageInteractorImpl()
@@ -43,9 +45,14 @@ namespace Decompiler.Gui.Windows.Forms
             this.canAdvance = true;
 		}
 
-        private void DisplayProcedure(Procedure proc)
+        private void DisplayProcedure(Address addr, Procedure proc)
         {
-            codeViewerSvc.DisplayProcedure(proc);
+            if (addr != null && proc != null)
+            {
+                memViewerSvc.ShowMemoryAtAddress(addr);
+                disasmViewerSvc.DisassembleStartingAtAddress(addr);
+                codeViewerSvc.DisplayProcedure(proc);
+            }
         }
 
         public override void PerformWork(IWorkerDialogService workerDlgSvc)
@@ -126,6 +133,9 @@ namespace Decompiler.Gui.Windows.Forms
                 base.Site = value;
                 browserSvc = EnsureService<IProgramImageBrowserService>();
                 codeViewerSvc = EnsureService<ICodeViewerService>();
+                memViewerSvc = EnsureService<IMemoryViewService>();
+                memViewerSvc.SelectionChanged += memViewerSvc_SelectionChanged;
+                disasmViewerSvc = EnsureService<IDisassemblyViewService>();
             }
         }
 
@@ -165,7 +175,12 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void BrowserList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayProcedure(SelectedProcedureEntry.Value);
+            DisplayProcedure(SelectedProcedureEntry.Key, SelectedProcedureEntry.Value);
+        }
+
+        public void memViewerSvc_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            disasmViewerSvc.DisassembleStartingAtAddress(e.AddressRange.Begin);
         }
 	}
 }

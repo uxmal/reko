@@ -12,16 +12,16 @@ void fn0C00_0000(Register selector ds)
 // ds:Register ds
 // return address size: 2
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	cx = 0x0064
 	wLoc04 = cx
 	ax = fn0C00_000F(wLoc04)
 	store(Mem0[ds:0x0064:word16]) = ax
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 Register word16 fn0C00_000F(Stack word16 wArg00)
 // MayUse: 
@@ -44,28 +44,28 @@ Register word16 fn0C00_000F(Stack word16 wArg00)
 // SCZO:Flags
 // return address size: 2
 word16 fn0C00_000F(word16 wArg00)
-fn0C00_000F_entry:		// block 0, pred:
-	// succ:  1
-l0C00_000F:		// block 1, pred: 0
+fn0C00_000F_entry:		// pred:
+	// succ:  l0C00_000F
+l0C00_000F:		// pred: fn0C00_000F_entry
 	wLoc04 = bp
 	ax = wArg00
 	ax = ax - 0x0001
 	SZO = cond(ax)
 	branch Test(EQ,Z) l0C00_0026
-	// succ:  3 2
-l0C00_0026:		// block 2, pred: 1
-	ax = 0x0001
-	// succ:  4
-l0C00_0018:		// block 3, pred: 1
+	// succ:  l0C00_0018 l0C00_0026
+l0C00_0018:		// pred: l0C00_000F
 	wLoc06 = ax
 	ax = fn0C00_000F(wLoc06)
 	dx = wArg00
 	dx_ax = dx *s ax
 	SCZO = cond(dx_ax)
-	// succ:  4
-l0C00_0029:		// block 4, pred: 2 3
+	// succ:  l0C00_0029
+l0C00_0029:		// pred: l0C00_0026 l0C00_0018
 	bp = wLoc04
 	return ax
-	// succ:  5
-fn0C00_000F_exit:		// block 5, pred: 4
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:		// pred: l0C00_0029
 	// succ: 
+l0C00_0026:		// pred: l0C00_000F
+	ax = 0x0001
+	// succ:  l0C00_0029

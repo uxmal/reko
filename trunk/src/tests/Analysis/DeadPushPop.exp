@@ -26,19 +26,19 @@ Mem9: orig: Mem0
 ax_10: orig: ax
 // fn0C00_0000
 void fn0C00_0000(word16 si, word16 di, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def si
 	def ds
 	def di
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	cx_7 = 0x0014
 	ax_8 = fn0C00_0008(cx_7, di, ds)
 	store(Mem9[ds:si:word16]) = ax_8
 	fn0C00_0008(cx_7, di, ds)
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 Mem0:Global memory
     def:  def Mem0
@@ -89,27 +89,27 @@ SCZO_23: orig: SCZO
 Z_24: orig: Z
 // fn0C00_0008
 word16 fn0C00_0008(word16 cx, word16 di, selector ds)
-fn0C00_0008_entry:		// block 0, pred:
+fn0C00_0008_entry:		// pred:
 	def Mem0
 	def di
 	def cx
 	def ds
-	// succ:  1
-l0C00_0008:		// block 1, pred: 0
+	// succ:  l0C00_0008
+l0C00_0008:		// pred: fn0C00_0008_entry
 	si_13 = 0x0000
-	// succ:  2
-l0C00_000D:		// block 2, pred: 1 5
+	// succ:  l0C00_000D
+l0C00_000D:		// pred: l0C00_0008 l0C00_0012
 	di_14 = PHI(di, di_22)
 	si_15 = PHI(si_13, si_21)
 	branch cx == 0x0000 l0C00_001A
-	// succ:  5 3
-l0C00_001A:		// block 3, pred: 2
-	ax_18 = si_15
-	return ax_18
-	// succ:  4
-fn0C00_0008_exit:		// block 4, pred: 3
-	// succ: 
-l0C00_0012:		// block 5, pred: 2
+	// succ:  l0C00_0012 l0C00_001A
+l0C00_0012:		// pred: l0C00_000D
 	si_21 = si_15 + Mem0[ds:di_14:word16]
 	di_22 = di_14 + 0x0002
-	// succ:  2
+	// succ:  l0C00_000D
+l0C00_001A:		// pred: l0C00_000D
+	ax_18 = si_15
+	return ax_18
+	// succ:  fn0C00_0008_exit
+fn0C00_0008_exit:		// pred: l0C00_001A
+	// succ: 

@@ -42,37 +42,38 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private IMainForm form;
         private MockRepository repository;
         private AnalyzedPageInteractorImpl interactor;
-        private FakeComponentSite site ;
         private IDecompilerShellUiService uiSvc;
         private ICodeViewerService codeViewSvc;
+        private IMemoryViewService memViewSvc;
+        private IDisassemblyViewService disasmViewSvc;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
             form = new MainForm();
-            interactor = new AnalyzedPageInteractorImpl();
             repository = new MockRepository();
-            site = new FakeComponentSite(interactor);
 
+            sc = new ServiceContainer();
             uiSvc = AddService<IDecompilerShellUiService>();
-            site.AddService(typeof(IDecompilerUIService), uiSvc);
+            sc.AddService(typeof(IDecompilerUIService), uiSvc);
             codeViewSvc = AddService<ICodeViewerService>();
+            memViewSvc = AddService<IMemoryViewService>();
+            disasmViewSvc = AddService<IDisassemblyViewService>();
 
             TestLoader ldr = new TestLoader();
-            ServiceContainer sc = new ServiceContainer();
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
             DecompilerService decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, new FakeDecompilerHost(), sc);
             decSvc.Decompiler.LoadProgram("test.exe");
             prog = decSvc.Decompiler.Program;
             decSvc.Decompiler.ScanProgram();
-            site.AddService(typeof(IDecompilerService), decSvc);
+            sc.AddService(typeof(IDecompilerService), decSvc);
 
-            site.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
+            sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
 
             ProgramImageBrowserService brSvc = new ProgramImageBrowserService(form.BrowserList);
-            site.AddService(typeof(IProgramImageBrowserService), brSvc);
-            interactor.Site = site;
+            sc.AddService(typeof(IProgramImageBrowserService), brSvc);
         }
 
         [TearDown]
@@ -84,6 +85,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void Populate()
         {
+            CreateInteractor();
             form.Show();
             prog.Procedures.Add(new Address(0x12345), new Procedure("foo", prog.Architecture.CreateFrame()));
             interactor.EnterPage();
@@ -96,13 +98,27 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
         }
 
+        private void CreateInteractor()
+        {
+            interactor = new AnalyzedPageInteractorImpl();
+            var site = new FakeComponentSite(interactor, sc);
+            interactor.Site = site;
+        }
+
         [Test]
         public void SelectProcedure()
         {
             codeViewSvc.Expect(s => s.DisplayProcedure(
                 Arg<Procedure>.Matches(proc => proc.Name == "foo_proc")));
+            memViewSvc.Expect(s => s.ShowMemoryAtAddress(
+                Arg<Address>.Matches(address => address.Linear == 0x12346)));
+
+            disasmViewSvc.Expect(s => s.DisassembleStartingAtAddress(
+                Arg<Address>.Matches(address => address.Linear == 0x12346)));
             repository.ReplayAll();
 
+
+            CreateInteractor();
             form.Show();
             Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
@@ -129,6 +145,8 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
                 .Return(DialogResult.Cancel);
             repository.ReplayAll();
 
+            CreateInteractor();
+
             form.Show();
             Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
@@ -148,7 +166,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         private T AddService<T>() where T : class
         {
             var svc = repository.DynamicMock<T>();
-            site.AddService(typeof(T), svc);
+            sc.AddService(typeof(T), svc);
             return svc;
         }
 

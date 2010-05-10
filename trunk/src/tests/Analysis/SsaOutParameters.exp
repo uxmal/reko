@@ -10,15 +10,15 @@ Mem4: orig: Mem0
     def:  store(Mem4[0x00000400:word32]) = foo(&r4_3)
 // foo
 void foo()
-foo_entry:		// block 0, pred:
+foo_entry:		// pred:
 	def Mem0
 	def fp
 	def r4
-	// succ:  1
-l1:		// block 1, pred: 0
+	// succ:  l1
+l1:		// pred: foo_entry
 	store(Mem4[0x00000400:word32]) = foo(&r4_3)
 	return
-	// succ:  2
-foo_exit:		// block 2, pred: 1
+	// succ:  foo_exit
+foo_exit:		// pred: l1
 	// succ: 
 

@@ -37,6 +37,10 @@ namespace Decompiler.UnitTests.Mocks
             finishedCalled = true;
         }
 
+        public void ShowError(string context, Exception ex)
+        {
+        }
+
         public void AddErrorDiagnostic(Address addr, string format, params object[] args)
         {
             AddDiagnostic(new ErrorDiagnostic(addr, format, args));

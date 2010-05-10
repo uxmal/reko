@@ -71,6 +71,7 @@ namespace Decompiler.Arch.M68k
         public M68kInstruction Disassemble()
         {
             ushort opcode = rdr.ReadBeUint16();
+            DumpOprecs();
             Decoder decoder = FindDecoder(opcode);
             if (decoder == null)
             {
@@ -124,8 +125,9 @@ namespace Decompiler.Arch.M68k
             oprecs.Add(new Opmask(0x1000, 0xF000), new Decoder(Opcode.move, "sb:E0,e6"));
             oprecs.Add(new Opmask(0x2000, 0xF1C0), new Decoder(Opcode.move, "sl:E0,e6"));
             oprecs.Add(new Opmask(0x2040, 0xF1C0), new Decoder(Opcode.movea, "sl:E0,A9"));
-            oprecs.Add(new Opmask(0x2080, 0xF080), new Decoder(Opcode.move, "sl:E0,e6"));
-            oprecs.Add(new Opmask(0x2100, 0xF100), new Decoder(Opcode.move, "sl:E0,e6"));
+            oprecs.Add(new Opmask(0x2080, 0xF1C0), new Decoder(Opcode.move, "sl:E0,e6"));
+            oprecs.Add(new Opmask(0x20C0, 0xF1C0), new Decoder(Opcode.move, "sl:E0,e6"));
+            oprecs.Add(new Opmask(0x2100, 0xF1C0), new Decoder(Opcode.move, "sl:E0,e6"));
 
             oprecs.Add(new Opmask(0x3000, 0xF000), new Decoder(Opcode.move, "sw:E0,e6"));
             oprecs.Add(new Opmask(0x41C0, 0xFFC0), new Decoder(Opcode.lea, "E0,A9"));
@@ -146,6 +148,12 @@ namespace Decompiler.Arch.M68k
             oprecs.Add(new Opmask(0xD1C0, 0xF1C0), new Decoder(Opcode.adda, "sl:E0,A9"));
             oprecs.Add(new Opmask(0xE108, 0xF138), new Decoder(Opcode.lsl, "s6:q9,D0"));
 
+
+            DumpOprecs();
+        }
+
+        private static void DumpOprecs()
+        {
             foreach (KeyValuePair<Opmask, Decoder> item in oprecs)
             {
                 Debug.WriteLine(string.Format("{0:X4},{1:x4}:{2},{3}", item.Key.opcode, item.Key.mask, item.Value.opcode, item.Value.args));

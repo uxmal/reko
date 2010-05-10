@@ -33,18 +33,18 @@ ax_12: orig: ax
 SCZO_13: orig: SCZO
 // fn0C00_0000
 void fn0C00_0000(word16 bx, word16 si, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def Mem0
 	def bx
 	def ds
 	def si
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	ax_7 = Mem0[ds:bx + 0x0004:word16]
 	store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
 	store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 

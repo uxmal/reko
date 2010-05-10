@@ -31,7 +31,7 @@ namespace Decompiler.Gui.Windows.Forms
         /// Performs the work of this phase, before showing the results (in EnterPage).
         /// </summary>
         /// <remarks>This method is always called from a background thread. Do not call the UI directly from here; instead
-        /// use the Diagnnostic service or the IWorkerDialogService.SetCaption() to indicate progress.</remarks>
+        /// use the Diagnostic service or the IWorkerDialogService.SetCaption() to indicate progress.</remarks>
         /// <param name="workerDialogSvc"></param>
         void PerformWork(IWorkerDialogService workerDialogSvc);
 

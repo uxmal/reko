@@ -13,7 +13,6 @@ ds:Register ds
 SZO:Flags
 SCZO_8: orig: SCZO
 Z_9: orig: Z
-    uses: branch bx == 0x0000 l0C00_0013
 SZO_10: orig: SZO
 ax_11: orig: ax
     def:  ax_11 = 0x0000
@@ -37,30 +36,30 @@ Mem21: orig: Mem0
     def:  store(Mem21[ds:0x0100:word16]) = ax_18
 // fn0C00_0000
 void fn0C00_0000(word16 bx, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	def bx
 	def ds
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	branch bx == 0x0000 l0C00_0013
-	// succ:  3 2
-l0C00_0013:		// block 2, pred: 1
-	ax_11 = 0x0000
-	// succ:  6
-l0C00_0005:		// block 3, pred: 1
+	// succ:  l0C00_0005 l0C00_0013
+l0C00_0005:		// pred: l0C00_0000
 	branch bx > 0x0000 l0C00_000D
-	// succ:  5 4
-l0C00_000D:		// block 4, pred: 3
-	ax_15 = 0x0001
-	// succ:  6
-l0C00_0007:		// block 5, pred: 3
+	// succ:  l0C00_0007 l0C00_000D
+l0C00_0007:		// pred: l0C00_0005
 	ax_16 = 0xFFFF
-	// succ:  6
-l0C00_0015:		// block 6, pred: 2 4 5
+	// succ:  l0C00_0015
+l0C00_0015:		// pred: l0C00_0013 l0C00_000D l0C00_0007
 	ax_18 = PHI(ax_11, ax_15, ax_16)
 	store(Mem21[ds:0x0100:word16]) = ax_18
 	return
-	// succ:  7
-fn0C00_0000_exit:		// block 7, pred: 6
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0015
 	// succ: 
+l0C00_000D:		// pred: l0C00_0005
+	ax_15 = 0x0001
+	// succ:  l0C00_0015
+l0C00_0013:		// pred: l0C00_0000
+	ax_11 = 0x0000
+	// succ:  l0C00_0015
 

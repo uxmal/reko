@@ -50,9 +50,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
             proc = new Procedure("test", new Frame(PrimitiveType.Word32));
 			Block b1 = proc.AddBlock("b1");
-			b1.RpoNumber = 1;
 			Block b2 = proc.AddBlock("b2");
-			b2.RpoNumber = 2;
 
 			Identifier a1 = new Identifier("a1", 0, PrimitiveType.Word32, null);
 			Identifier a2 = new Identifier("a2", 1, PrimitiveType.Word32, null);

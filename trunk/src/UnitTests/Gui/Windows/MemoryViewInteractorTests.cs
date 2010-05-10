@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Gui.Windows
     [TestFixture]
     public class MemoryViewInteractorTests
     {
-        private MemoryViewInteractor interactor;
+        private TestMemoryViewInteractor interactor;
         private MockRepository repository;
         private IDecompilerShellUiService decShellUiSvc;
         private ServiceContainer sp;
@@ -47,7 +47,6 @@ namespace Decompiler.UnitTests.Gui.Windows
             sp = new ServiceContainer();
             decShellUiSvc = repository.DynamicMock<IDecompilerShellUiService>();
             sp.AddService(typeof(IDecompilerShellUiService), decShellUiSvc);
-            interactor = repository.Stub<MemoryViewInteractor>();
         }
 
         private void Initialize()
@@ -59,6 +58,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void GotoAddressEnabled()
         {
+            interactor = new TestMemoryViewInteractor();
             var status = new CommandStatus();
             Assert.IsTrue(interactor.QueryStatus(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress, status, null));
             Assert.AreEqual(status.Status, MenuStatus.Enabled | MenuStatus.Visible);
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var dlg = repository.Stub<IAddressPromptDialog>();
             dlg.Stub(x => dlg.Address).Return(new Address(0x12345678));
-            interactor.Stub(x => x.CreateAddressPromptDialog()).Return(dlg);
+            interactor = new TestMemoryViewInteractor(dlg);
             decShellUiSvc.Expect(x => x.ShowModalDialog(
                     Arg<IAddressPromptDialog>.Is.Same(dlg)))
                 .Return(DialogResult.OK);
@@ -81,6 +81,27 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             repository.VerifyAll();
             Assert.AreEqual(0x12345678, interactor.Control.SelectedAddress.Linear);
+        }
+
+        private class TestMemoryViewInteractor : MemoryViewInteractor
+        {
+            private IAddressPromptDialog dlg;
+
+            public TestMemoryViewInteractor()
+            {
+            }
+            public TestMemoryViewInteractor(IAddressPromptDialog dlg)
+            {
+                this.dlg = dlg;
+            }
+
+            public override IAddressPromptDialog CreateAddressPromptDialog()
+            {
+                if (dlg != null)
+                    return dlg;
+                else
+                    return base.CreateAddressPromptDialog();
+            }
         }
     }
 }
