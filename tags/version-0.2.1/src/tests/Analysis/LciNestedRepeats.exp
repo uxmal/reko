@@ -1,0 +1,33 @@
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// pred:
+	def Mem0
+	def ds
+	def si
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	dx_11 = 0x0000
+	cx_15 = 0x0004
+	di_16 = 0x0004
+	// succ:  l0C00_0008
+l0C00_0008:		// pred: l0C00_0000 l0C00_0008 l0C00_000D
+	si_17 = PHI(si, si_22, si_22)
+	di_18 = PHI(di_16, di_18, di_30)
+	cx_19 = PHI(cx_15, cx_25, cx_29)
+	dx_20 = PHI(dx_11, dx_23, dx_23)
+	si_22 = si_17 + 0x0002
+	dx_23 = dx_20 + Mem0[ds:si_17:word16]
+	cx_25 = cx_19 - 0x0001
+	branch cx_25 != 0x0000 l0C00_0008
+	// succ:  l0C00_000D l0C00_0008
+l0C00_000D:		// pred: l0C00_0008
+	cx_29 = 0x0004
+	di_30 = di_18 - 0x0001
+	branch di_30 != 0x0000 l0C00_0008
+	// succ:  l0C00_0013 l0C00_0008
+l0C00_0013:		// pred: l0C00_000D
+	store(Mem34[ds:0x0300:word16]) = dx_23
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0013
+	// succ: 

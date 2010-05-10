@@ -1,0 +1,92 @@
+// ProcedureMock
+void ProcedureMock()
+ProcedureMock_entry:		// block 0, pred:
+	// succ:  1
+l1:		// block 1, pred: 0
+	store(Mem5[0x0300:word16]) = 0x0000
+	store(Mem6[0x0302:word16]) = 0x0000
+	ptr32 es_bx_7 = Mem6[0x0300:ptr32]
+	store(Mem8[0x0304:word16]) = Mem6[SLICE(es_bx_7, selector, 8):SLICE(es_bx_7, word16, 0) + 0x0004:word16]
+	// succ: 
+
+// Equivalence classes ////////////
+Eq_1: (struct (300 Eq_2 t0300) (302 word16 w0302) (304 word16 w0304))
+	Globals (in globals : ptr32)
+Eq_2: (struct (0 memptr16 mp0000) (2 segment seg0000))
+	T_2 (in 0x0000 : word16)
+	T_4 (in Mem5[0x0300:word16] : word16)
+	T_8 (in es_bx_7 : ptr32)
+	T_10 (in Mem6[0x0300:ptr32] : ptr32)
+Eq_11: (segment)
+	T_11 (in SLICE(es_bx_7, selector, 8) : selector)
+Eq_12: (struct (4 word16 w0004))
+	T_12 (in SLICE(es_bx_7, word16, 0) : word16)
+// Type Variables ////////////
+Globals: (in globals : ptr32)
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct (300 T_2 t0300) (302 T_7 t0302) (304 T_17 t0304)))
+T_2: (in 0x0000 : word16)
+  Class: Eq_2
+  DataType: Eq_2
+  OrigDataType: word16
+T_3: (in 0x0300 : word16)
+  Class: Eq_3
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (struct (0 T_4 t0000)))
+T_4: (in Mem5[0x0300:word16] : word16)
+  Class: Eq_2
+  DataType: Eq_2
+  OrigDataType: word16
+T_5: (in 0x0000 : word16)
+  Class: Eq_5
+  DataType: word16
+  OrigDataType: word16
+T_6: (in 0x0302 : word16)
+  Class: Eq_6
+  DataType: (ptr word16)
+  OrigDataType: (ptr (struct (0 T_7 t0000)))
+T_7: (in Mem6[0x0302:word16] : word16)
+  Class: Eq_5
+  DataType: word16
+  OrigDataType: word16
+T_8: (in es_bx_7 : ptr32)
+  Class: Eq_2
+  DataType: Eq_2
+  OrigDataType: ptr32
+T_9: (in 0x0300 : word16)
+  Class: Eq_9
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (struct (0 T_10 t0000)))
+T_10: (in Mem6[0x0300:ptr32] : ptr32)
+  Class: Eq_2
+  DataType: Eq_2
+  OrigDataType: ptr32
+T_11: (in SLICE(es_bx_7, selector, 8) : selector)
+  Class: Eq_11
+  DataType: (ptr Eq_11)
+  OrigDataType: (ptr (segment))
+T_12: (in SLICE(es_bx_7, word16, 0) : word16)
+  Class: Eq_12
+  DataType: (memptr (ptr Eq_11) Eq_12)
+  OrigDataType: (memptr T_11 (struct (4 T_15 t0004)))
+T_13: (in 0x0004 : word16)
+  Class: Eq_13
+  DataType: word16
+  OrigDataType: word16
+T_14: (in SLICE(es_bx_7, word16, 0) + 0x0004 : word16)
+  Class: Eq_14
+  DataType: word16
+  OrigDataType: word16
+T_15: (in Mem6[SLICE(es_bx_7, selector, 8):SLICE(es_bx_7, word16, 0) + 0x0004:word16] : word16)
+  Class: Eq_15
+  DataType: word16
+  OrigDataType: word16
+T_16: (in 0x0304 : word16)
+  Class: Eq_16
+  DataType: (ptr word16)
+  OrigDataType: (ptr (struct (0 T_17 t0000)))
+T_17: (in Mem8[0x0304:word16] : word16)
+  Class: Eq_15
+  DataType: word16
+  OrigDataType: word16

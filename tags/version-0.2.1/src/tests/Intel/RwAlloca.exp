@@ -1,0 +1,108 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// ds:Register ds
+// ax:Register ax
+// wLoc04:Local -0004
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	ax = Mem0[ds:0x0300:word16]
+	wLoc04 = ax
+	call fn0C00_001F (depth: 4;)
+	call fn0C00_000C (depth: 4;)
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_000C
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// ax:Register ax
+// tLoc0104:Local -0104
+// wLoc0106:Local -0106
+// return address size: 2
+void fn0C00_000C()
+fn0C00_000C_entry:		// block 0, pred:
+	// succ:  1
+l0C00_000C:		// block 1, pred: 0
+	wLoc04 = bp
+	ax = 0x0100
+	ax = &tLoc0104
+	wLoc0106 = 0x1000
+	call fn0C00_003A (depth: 262;)
+	bp = wLoc04
+	return
+	// succ:  2
+fn0C00_000C_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_001F
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// wArg00:Stack +0000
+// bx:Register bx
+// ds:Register ds
+// ax:Register ax
+// wLoc06:Local -0006
+// return address size: 2
+void fn0C00_001F()
+fn0C00_001F_entry:		// block 0, pred:
+	// succ:  1
+l0C00_001F:		// block 1, pred: 0
+	wLoc04 = bp
+	bx = wArg00
+	ax = Mem0[ds:bx + 0x0002:word16]
+	alloca(ax)
+	wLoc06 = ax
+	call fn0C00_003A (depth: 6;)
+	bp = wLoc04
+	return
+	// succ:  2
+fn0C00_001F_exit:		// block 2, pred: 1
+	// succ: 
+// alloca
+// Mem0:Global memory
+// fp:Temporary
+// ax:Register ax
+// wLoc02:Local -0002
+// cx:Register cx
+// sp:Register sp
+// return address size: 2
+void alloca(word16 ax)
+alloca_entry:		// block 0, pred:
+	// succ:  1
+l0C00_0033:		// block 1, pred: 0
+	cx = wLoc02
+	ax = sp
+	wLoc02 = cx
+	return
+	// succ:  2
+alloca_exit:		// block 2, pred: 1
+	// succ: 
+// fn0C00_003A
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// wArg00:Stack +0000
+// bx:Register bx
+// ds:Register ds
+// return address size: 2
+void fn0C00_003A()
+fn0C00_003A_entry:		// block 0, pred:
+	// succ:  1
+l0C00_003A:		// block 1, pred: 0
+	wLoc04 = bp
+	bx = wArg00
+	store(Mem0[ds:bx:word16]) = 0x0000
+	bp = wLoc04
+	return
+	// succ:  2
+fn0C00_003A_exit:		// block 2, pred: 1
+	// succ: 

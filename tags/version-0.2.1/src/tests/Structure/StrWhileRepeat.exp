@@ -1,0 +1,48 @@
+// fn0C00_0000
+void fn0C00_0000(word16 bx, word16 si, selector ds)
+fn0C00_0000_entry:		// block 0, pred:
+	word16 ax_8 = 0x0000
+	// succ:  1
+l0C00_000A:		// block 1, pred: 0 2
+	branch bx != 0x0000 l0C00_0005
+	// succ:  3 2
+l0C00_0005:		// block 2, pred: 1
+	ax_8 = ax_8 + Mem0[ds:bx:word16]
+	bx = Mem0[ds:bx + 0x0002:word16]
+	// succ:  1
+l0C00_000E:		// block 3, pred: 1
+	store(Mem17[ds:0x0300:word16]) = ax_8
+	word16 ax_18 = 0x0000
+	// succ:  4
+l0C00_0014:		// block 4, pred: 3 4
+	ax_18 = ax_18 + Mem17[ds:si:word16]
+	si = Mem17[ds:si + 0x0002:word16]
+	branch si != 0x0000 l0C00_0014
+	// succ:  5 4
+l0C00_001D:		// block 5, pred: 4
+	store(Mem26[ds:0x0302:word16]) = ax_18
+	return
+	// succ:  6
+fn0C00_0000_exit:		// block 6, pred: 5
+	// succ: 
+
+void fn0C00_0000(word16 bx, word16 si, selector ds)
+{
+	word16 ax_8 = 0x0000;
+	while (bx != 0x0000)
+	{
+		ax_8 = ax_8 + Mem0[ds:bx:word16];
+		bx = Mem0[ds:bx + 0x0002:word16];
+	}
+	Mem17[ds:0x0300:word16] = ax_8;
+	word16 ax_18 = 0x0000;
+	do
+	{
+		ax_18 = ax_18 + Mem17[ds:si:word16];
+		si = Mem17[ds:si + 0x0002:word16];
+	}
+	while (si != 0x0000);
+	Mem26[ds:0x0302:word16] = ax_18;
+	return;
+}
+===========================

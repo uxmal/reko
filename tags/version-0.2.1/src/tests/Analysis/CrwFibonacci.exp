@@ -1,0 +1,51 @@
+Register word32 fn10000000(Stack word32 dwArg00)
+// MayUse: 
+// LiveOut: eax
+// Trashed: SCZO eax ax al ah
+// Preserved: esi edi
+// Stack args: Stack +0000(32)
+// fn10000000
+// Mem0:Global memory
+// fp:Temporary
+// esi:Register esi
+// dwLoc08:Local -0008
+// dwArg00:Stack +0000
+// SCZO:Flags
+// SZO:Flags
+// eax:Register eax
+// edi:Register edi
+// dwLoc0C:Local -000C
+// dwLoc10:Local -0010
+// dwLoc14:Local -0014
+// return address size: 4
+word32 fn10000000(word32 dwArg00)
+fn10000000_entry:		// pred:
+	// succ:  l10000000
+l10000000:		// pred: fn10000000_entry
+	dwLoc08 = esi
+	esi = dwArg00
+	SCZO = cond(esi - 0x00000001)
+	branch Test(GT,SZO) l10000011
+	// succ:  l1000000A l10000011
+l1000000A:		// pred: l10000000
+	eax = 0x00000001
+	esi = dwLoc08
+	return eax
+	// succ:  fn10000000_exit
+fn10000000_exit:		// pred: l10000011 l1000000A
+	// succ: 
+l10000011:		// pred: l10000000
+	eax = esi - 0x00000002
+	dwLoc0C = edi
+	dwLoc10 = eax
+	eax = fn10000000(dwLoc10)
+	esi = esi - 0x00000001
+	dwLoc14 = esi
+	edi = eax
+	eax = fn10000000(dwLoc14)
+	eax = eax + edi
+	SCZO = cond(eax)
+	edi = dwLoc0C
+	esi = dwLoc08
+	return eax
+	// succ:  fn10000000_exit

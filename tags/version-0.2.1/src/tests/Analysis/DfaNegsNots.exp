@@ -1,0 +1,24 @@
+// void fn0C00_0000(Register word32 eax, Register word16 bx, Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: 0
+// MayUse:  eax bx ds
+// LiveOut:
+// Trashed: SCZO eax ecx ax cx bx al cl bl ah ch bh
+// Preserved:
+// fn0C00_0000
+void fn0C00_0000(word32 eax, word16 bx, selector ds)
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	store(Mem15[ds:0x0300:word32]) = 0x00000000 - (-eax == 0x00000000)
+	store(Mem17[ds:0x0202:word16]) = -Mem15[ds:0x0202:word16]
+	word16 v6_19 = Mem17[ds:0x0200:word16]
+	store(Mem20[ds:0x0200:word16]) = -v6_19
+	store(Mem23[ds:0x0308:word32]) = 0x00000000 - (v6_19 == 0x0000)
+	store(Mem25[ds:0x0304:word16]) = ~bx
+	store(Mem27[ds:0x0204:word16]) = ~Mem25[ds:0x0204:word16]
+	store(Mem33[ds:0x0306:word16]) = 0x03E8 - Mem27[ds:0x0304:word16]
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 
+

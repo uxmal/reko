@@ -1,0 +1,29 @@
+// fn0C00_0000 /////////////////////
+	LiveOut:  
+	MayUseIn:  ax ds
+	BypassIn: 
+	Trashed:   SCZO ax si al ah
+	Preserved: bp
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	// succ:  1
+// DataOut: ax ds
+// LocalsOut: Stack +0002(16)
+
+l0C00_0000:		// block 1, pred: 0
+	wLoc04 = bp
+	si = ax
+	ax = Mem0[ds:si + 0x0004:word16]
+	ax = ax + Mem0[ds:si + 0x0006:word16]
+	si = wArg02
+	ax = ax + Mem0[ds:si + 0x0004:word16]
+	ax = ax + Mem0[ds:si + 0x0006:word16]
+	SCZO = cond(ax)
+	bp = wLoc04
+	return
+	// succ:  2
+// DataOut:
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+// DataOut:

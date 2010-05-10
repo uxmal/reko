@@ -1,0 +1,43 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// cx:Register cx
+// wLoc04:Local -0004
+// cl:Register cl
+// ax:Register ax
+// SCZO:Flags
+// al:Register al
+// SZO:Flags
+// Z:Flags
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	wLoc04 = cx
+	cl = 0x03
+	cx = DPB(cx, cl, 0, 8) (alias)
+	ax = 0x0000
+	al = (byte) ax (alias)
+	SCZO = cond(ax)
+	SZO = SCZO (alias)
+	Z = SCZO (alias)
+	// succ:  l0C00_0005
+l0C00_0005:		// pred: l0C00_0000 l0C00_0005
+	al = al + cl
+	ax = DPB(ax, al, 0, 8) (alias)
+	SCZO = cond(al)
+	cl = cl - 0x01
+	cx = DPB(cx, cl, 0, 8) (alias)
+	SZO = cond(cl)
+	SCZO = SZO (alias)
+	Z = SZO (alias)
+	branch Test(NE,Z) l0C00_0005
+	// succ:  l0C00_000B l0C00_0005
+l0C00_000B:		// pred: l0C00_0005
+	cx = wLoc04
+	cl = (byte) cx (alias)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_000B
+	// succ: 
