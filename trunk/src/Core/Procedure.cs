@@ -153,10 +153,6 @@ namespace Decompiler.Core
 			set { signature = value; }
 		}
 
-		public override string ToString()
-		{
-			return Name;
-		}
 
         /// <summary>
         /// True if the user specified this procedure by adding it to the project

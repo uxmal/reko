@@ -553,7 +553,7 @@ namespace Decompiler.Arch.Intel
 						EmitLxs(Registers.ds);
 						break;
 					case Opcode.lea:
-						EmitLea();
+						RewriteLea();
 						break;
 					case Opcode.leave:
 					{
@@ -857,29 +857,7 @@ namespace Decompiler.Arch.Intel
 						siw.EmitStringInstruction(instrCur, emitter);
 						break;			
 					case Opcode.sub:
-						if (IsStackRegister(instrCur.op1))
-						{
-							ImmediateOperand imm = instrCur.op2 as ImmediateOperand;
-							if (imm != null)
-							{
-								state.GrowStack(imm.Value.ToInt32());
-							}
-						}
-						else 
-						{
-							Expression d;
-							if (IsSameRegister(instrCur.op1, instrCur.op2))
-							{
-								// sub r,r ==>  mov r,0
-								ass = EmitCopy(instrCur.op1, new Constant(instrCur.op1.Width, 0), false);
-								d = ass.Dst;
-							}
-							else
-							{
-								d = EmitAddSub(instrs, i, Opcode.sbb, Operator.Sub);
-							}
-							EmitCcInstr(d, defFlags, deadFlags);
-						}
+                        ass = RewriteSub(ass, defFlags, deadFlags);
 						break;
 
 					case Opcode.test:
@@ -939,6 +917,33 @@ namespace Decompiler.Arch.Intel
 				}
 			}
 		}
+
+        private Assignment RewriteSub(Assignment ass, FlagM defFlags, FlagM deadFlags)
+        {
+            var imm = instrCur.op2 as ImmediateOperand;
+            if (imm!=null && IsStackRegister(instrCur.op1))
+            {
+                state.GrowStack(imm.Value.ToInt32());
+                return ass;
+            }
+            else if (imm != null && IsFrameRegister(instrCur.op1))
+            {
+                state.FrameOffset += imm.Value.ToInt32();
+            }
+            Expression d;
+            if (IsSameRegister(instrCur.op1, instrCur.op2))
+            {
+                // sub r,r ==>  mov r,0
+                ass = EmitCopy(instrCur.op1, new Constant(instrCur.op1.Width, 0), false);
+                d = ass.Dst;
+            }
+            else
+            {
+                d = EmitAddSub(instrs, i, Opcode.sbb, Operator.Sub);
+            }
+            EmitCcInstr(d, defFlags, deadFlags);
+            return ass;
+        }
 
 		private void BuildApplication(PseudoProcedure ppp)
 		{
@@ -1476,7 +1481,7 @@ namespace Decompiler.Arch.Intel
         }
 
 
-		public void EmitLea()
+		public void RewriteLea()
 		{
 			Expression src;
 			MemoryOperand mem = (MemoryOperand) instrCur.op2;
@@ -1486,6 +1491,13 @@ namespace Decompiler.Arch.Intel
 			}
 			else
 			{
+                int newOffset;
+                if (IsAdjustStackPointerByLea(instrCur, out newOffset))
+                {
+                    state.StackBytes = newOffset;
+                    return;
+                }
+
 				src = SrcOp(instrCur.op2);
 				MemoryAccess load = src as MemoryAccess;
 				if (load != null)
@@ -1499,6 +1511,18 @@ namespace Decompiler.Arch.Intel
 			}
 			EmitCopy(instrCur.op1, src, false);
 		}
+
+        private bool IsAdjustStackPointerByLea(IntelInstruction instrCur, out int offset)
+        {
+            offset = 0;
+            var ea = instrCur.op2 as MemoryOperand;
+            if (ea == null)
+                return false;
+            if (ea.Base != state.FrameRegister|| ea.Index != MachineRegister.None || ea.Offset == null)
+                return false;
+            offset = state.FrameOffset - ea.Offset.ToInt32();
+            return true;
+        }
 
 		private void EmitLoopInstruction(FlagM useFlags, ConditionCode cc)
 		{
@@ -1829,6 +1853,13 @@ namespace Decompiler.Arch.Intel
 			}
 			return null;
 		}
+
+
+        private bool IsFrameRegister(MachineOperand op)
+        {
+            var reg = op as RegisterOperand;
+            return reg != null && reg.Register == state.FrameRegister;
+        }
 
 		private bool IsSameRegister(MachineOperand op1, MachineOperand op2)
 		{

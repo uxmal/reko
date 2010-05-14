@@ -67,7 +67,7 @@ bx_20: orig: bx
           bx_28 = PHI(bx_14, bx_20, bx_20, bx_20)
 bl_21: orig: bl
     def:  bl_21 = (byte) bx_20 (alias)
-    uses: switch (bl_21) { 6 5 4 }
+    uses: switch (bl_21) { l0C00_0017 l0C00_001B l0C00_001F }
           bl_33 = PHI(bl_13, bl_21, bl_21, bl_21)
           bl_33 = PHI(bl_13, bl_21, bl_21, bl_21)
           bl_33 = PHI(bl_13, bl_21, bl_21, bl_21)
@@ -140,7 +140,7 @@ l0C00_0009:		// pred: l0C00_0000
 	bh_22 = SLICE(bx_20, byte, 8) (alias)
 	SCZO_23 = cond(bx_20)
 	CZ_24 = SCZO_23 (alias)
-	switch (bl_21) { 6 5 4 }
+	switch (bl_21) { l0C00_0017 l0C00_001B l0C00_001F }
 	// succ:  l0C00_0017 l0C00_001B l0C00_001F
 l0C00_0017:		// pred: l0C00_0009
 	ax_27 = 0x0001

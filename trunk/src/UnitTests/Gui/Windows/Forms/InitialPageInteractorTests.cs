@@ -101,6 +101,30 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
+        public void OpenBinary_ShouldPopulateProgramBrowser()
+        {
+            MockRepository repository = new MockRepository();
+            var browserSvc = repository.DynamicMock<IProgramImageBrowserService>();
+            site.RemoveService(typeof(IProgramImageBrowserService));
+            site.AddService<IProgramImageBrowserService>(browserSvc);
+            site.AddService<IMemoryViewService>(repository.Stub<IMemoryViewService>());
+
+            using (repository.Record())
+            {
+                browserSvc.Expect(s => s.Populate(
+                    Arg<System.Collections.IEnumerable>.Is.Anything,
+                    Arg<ListViewItemDecoratorHandler>.Is.Anything));
+                browserSvc.Expect(s => s.Enabled).SetPropertyWithArgument(true);
+                browserSvc.Expect(s => s.Caption).SetPropertyWithArgument("Segments");
+            }
+            form.BrowserList.Enabled = false;
+
+            i.OpenBinary("foo.exe", new FakeDecompilerHost());
+            repository.VerifyAll();
+        }
+
+
+        [Test]
         public void LeavePage()
         {
             AddFakeMemoryViewService();

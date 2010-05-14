@@ -18,8 +18,10 @@
 
 using Decompiler.Core.Types;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Output;
 using System;
 using System.ComponentModel;
+using System.IO;
 
 namespace Decompiler.Core
 {
@@ -30,7 +32,6 @@ namespace Decompiler.Core
 	public abstract class ProcedureBase
 	{
 		private string name;
-		private TypeVariable tv;
 
 		public ProcedureBase(string name)
 		{
@@ -47,10 +48,13 @@ namespace Decompiler.Core
 
 		public ProcedureCharacteristics Characteristics { get; set; }
 
-		public TypeVariable TypeVariable
-		{
-			get { return tv; }
-			set { tv = value; }
-		}
+        public override string ToString()
+        {
+            StringWriter sw = new StringWriter();
+            Signature.Emit(this.Name, ProcedureSignature.EmitFlags.ArgumentKind, new Formatter(sw));
+            return sw.ToString();
+        }
+
+		public TypeVariable TypeVariable { get; set; }
 	}
 }

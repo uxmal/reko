@@ -78,6 +78,7 @@
   <cmd id="WindowsCascade" cmdSet="Decompiler" container="GrpWindows">_Cacade</cmd>
   <cmd id="WindowsTileVertical" cmdSet="Decompiler" container="GrpWindows">Tile _Vertically</cmd>
   <cmd id="WindowsTileHorizontal" cmdSet="Decompiler" container="GrpWindows">Tile _Horizontally</cmd>
+  <cmd id="WindowsCloseAll" cmdSet="Decompiler" container="GrpWindows">C_lose All Windows</cmd>
   <cmd id="HelpAbout" cmdSet="Decompiler" container="GrpHelp">_About Decompiler...</cmd>
 
 	<!-- Placements ======================================================= -->

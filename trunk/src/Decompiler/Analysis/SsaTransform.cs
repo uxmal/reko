@@ -55,6 +55,11 @@ namespace Decompiler.Analysis
 			Transform(useSignatures);
 		}
 
+        private int RpoNumber(Block b)
+        {
+            return b.RpoNumber;
+        }
+
 		/// <summary>
 		/// Creates a phi statement with slots for each predecessor block, then
 		/// inserts the phi statement as the first statement of the block.
@@ -116,7 +121,7 @@ namespace Decompiler.Analysis
 				WorkList<Block> W = new WorkList<Block>();
 				foreach (Block b in proc.RpoBlocks)
 				{
-					if ((AOrig[a, b.RpoNumber] & BitDefined) != 0)
+					if ((AOrig[a, RpoNumber(b)] & BitDefined) != 0)
 						W.Add(b);
 				}
                 Block n;
@@ -127,11 +132,11 @@ namespace Decompiler.Analysis
                         // Only add phi functions if theere is no
                         // phi already and variable is not deadIn.
 
-                        if ((AOrig[a, y.RpoNumber] & (BitHasPhi | BitDeadIn)) == 0)
+                        if ((AOrig[a, RpoNumber(y)] & (BitHasPhi | BitDeadIn)) == 0)
                         {
-                            AOrig[a, y.RpoNumber] |= BitHasPhi;
+                            AOrig[a, RpoNumber(y)] |= BitHasPhi;
                             InsertPhiStatement(y, a);
-                            if ((AOrig[a, y.RpoNumber] & BitDefined) == 0)
+                            if ((AOrig[a, RpoNumber(y)] & BitDefined) == 0)
                             {
                                 W.Add(y);
                             }
@@ -171,10 +176,14 @@ namespace Decompiler.Analysis
 				defVars = defOrig;
 			}
 
+            private int RpoNumber(Block b)
+            {
+                return b.RpoNumber;
+            }
 			private void MarkDefined(Identifier id)
 			{
 				Debug.Assert(id.Number >= 0);
-				defVars[id.Number, block.RpoNumber] |= (BitDefined | BitDeadIn);
+				defVars[id.Number, RpoNumber(block)] |= (BitDefined | BitDeadIn);
 			}
 
 			public void LocateDefs(Block b)
@@ -197,9 +206,9 @@ namespace Decompiler.Analysis
 			public override void VisitStore(Store store)
 			{
 				MemoryAccess access = (MemoryAccess) store.Dst;
-				int grf = defVars[access.MemoryId.Number, block.RpoNumber];
+                int grf = defVars[access.MemoryId.Number, RpoNumber(block)];
 				grf = (grf & ~BitDeadIn) | BitDefined;
-				defVars[access.MemoryId.Number, block.RpoNumber] = (byte) grf;
+				defVars[access.MemoryId.Number, RpoNumber(block)] = (byte) grf;
 
 				store.Dst.Accept(this);
 				store.Src.Accept(this);
@@ -254,7 +263,7 @@ namespace Decompiler.Analysis
 			/// <returns></returns>
 			public override void VisitIdentifier(Identifier id)
 			{
-				defVars[id.Number, block.RpoNumber] &= unchecked((byte)~BitDeadIn);
+                defVars[id.Number, RpoNumber(block)] &= unchecked((byte)~BitDeadIn);
 			}
 		}
 
@@ -298,6 +307,11 @@ namespace Decompiler.Analysis
 				}
 			}
 
+            private int RpoNumber(Block block)
+            {
+                return block.RpoNumber;
+            }
+
 			/// <summary>
 			/// Renames all variables in a block to use their SSA names
 			/// </summary>
@@ -310,7 +324,7 @@ namespace Decompiler.Analysis
 				// Rename variables in all blocks except the starting block which
 				// only contains dummy 'def' variables.
 
-				if (n.RpoNumber != 0)
+				if (RpoNumber(n) != 0)
 				{
 					foreach (Statement stm in n.Statements)
 					{
@@ -326,9 +340,9 @@ namespace Decompiler.Analysis
 				{
 					for (int j = 0; j < y.Pred.Count; ++j)
 					{
-						if (y.Pred[j] == n && !visited[y.RpoNumber])
+						if (y.Pred[j] == n && !visited[RpoNumber(y)])
 						{
-							visited[y.RpoNumber] = true;
+							visited[RpoNumber(y)] = true;
 
 							// For each phi function in y...
 
@@ -349,7 +363,7 @@ namespace Decompiler.Analysis
 				}
 				foreach (Block c in proc.RpoBlocks)
 				{
-					if (c.RpoNumber != 0 && ssa.domGraph.ImmediateDominator(c) == n)
+					if (RpoNumber(c) != 0 && ssa.domGraph.ImmediateDominator(c) == n)
 						RenameBlock(c);
 				}
 				wasonentry.CopyTo(rename, 0);

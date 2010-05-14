@@ -356,12 +356,6 @@
     <Compile Include="Gui\Windows\Forms\EditProjectDialog.Designer.cs">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\StartPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\StartPage.Designer.cs">
-      <DependentUpon>StartPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Configuration\ArchitectureSectionHandler.cs" />
     <Compile Include="Gui\Windows\Forms\WorkerDialog.cs">
       <SubType>Form</SubType>
@@ -407,9 +401,6 @@
     <Compile Include="Gui\Windows\Forms\InitialPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\LoadedPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\MainFormInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\PhasePage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Gui\Windows\Forms\PhasePageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\ProcedureDialog.cs">
       <SubType>Form</SubType>
@@ -598,20 +589,12 @@
     <EmbeddedResource Include="Gui\Windows\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\PhasePage.resx">
-      <DependentUpon>PhasePage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\ProcedureDialog.resx">
       <DependentUpon>ProcedureDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\EditProjectDialog.resx">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Windows\Forms\StartPage.resx">
-      <DependentUpon>StartPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\WorkerDialog.resx">
       <DependentUpon>WorkerDialog.cs</DependentUpon>

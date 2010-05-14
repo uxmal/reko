@@ -300,6 +300,45 @@ namespace Decompiler.UnitTests.Arch.Intel
             Assert.AreEqual("branch Test(PE,P) l0C00_0100", rw.Block.Statements[0].Instruction.ToString());
             Assert.AreEqual("branch Test(PO,P) l0C00_0102", rw.Block.Statements[1].Instruction.ToString());
         }
+
+        [Test]
+        public void AdjustFramePointer()
+        {
+            var bp = new RegisterOperand(Registers.bp);
+            var sp = new RegisterOperand(Registers.sp);
+            rw.ConvertInstructions(Instr(Opcode.mov, Word16, Word16, bp, sp));
+            Assert.AreEqual(0, state.FrameOffset);
+            rw.ConvertInstructions(Instr(Opcode.sub, Word16, Word16, bp, Imm16(0x080)));
+            Assert.AreEqual(0x80, state.FrameOffset);
+        }
+
+        [Test]
+        public void AdjustStackPointerWithLea()
+        {
+            var bp = new RegisterOperand(Registers.bp);
+            var sp = new RegisterOperand(Registers.sp);
+            rw.ConvertInstructions(
+                Instr(Opcode.push, Word16, Word16, bp),
+                Instr(Opcode.mov, Word16, Word16, bp, sp),
+                Instr(Opcode.sub, Word16, Word16, sp, Imm16(0x1A)),
+                Instr(Opcode.sub, Word16, Word16, bp, Imm16(0x80)),
+                Instr(Opcode.lea, Word16, Word16, sp, Mem16(bp, 0x80)));
+            Assert.AreEqual(2, state.StackBytes);
+        }
+
+        private MemoryOperand Mem16(RegisterOperand reg, int offset)
+        {
+            return new MemoryOperand(PrimitiveType.Word16, reg.Register, new Constant(reg.Register.DataType, offset));
+        }
+
+        private ImmediateOperand Imm16(ushort u) { return new ImmediateOperand(new Constant(PrimitiveType.Word16, u)); } 
+
+        private PrimitiveType Word16 { get { return PrimitiveType.Word16; } }
+
+        private IntelInstruction Instr(Opcode op, PrimitiveType dSize, PrimitiveType aSize, params MachineOperand[] ops)
+        {
+            return new IntelInstruction(op, dSize, aSize, ops);
+        }
     }
 
     public class FakeProcedureRewriter : IProcedureRewriter

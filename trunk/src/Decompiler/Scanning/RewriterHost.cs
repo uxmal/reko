@@ -196,7 +196,8 @@ namespace Decompiler.Scanning
 			proc.RenumberBlocks();
 
 			// If the frame escaped, rewrite local/parameter accesses to memory fetches.
-
+            //$REVIEW: this probably should be the other way round: have the rewriter generate memory
+            // fetches, then convert those that *don't* escape into local stack variables.
 			if (proc.Frame.Escapes)
 			{
 				EscapedAccessRewriter esc = new EscapedAccessRewriter(proc);

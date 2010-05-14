@@ -107,8 +107,6 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
         {
-            workerDialogSvc.SetCaption("Scanning source program.");
-            Decompiler.ScanProgram();
         }
 
         public override void EnterPage()
