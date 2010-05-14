@@ -65,9 +65,7 @@ namespace Decompiler.Core
 		{
 			if (Signature != null)
 			{
-				StringWriter sw = new StringWriter();
-				sig.Emit(this.Name, ProcedureSignature.EmitFlags.ArgumentKind, new Formatter(sw));
-				return sw.ToString();
+                return base.ToString();
 			}
 			else
 			{

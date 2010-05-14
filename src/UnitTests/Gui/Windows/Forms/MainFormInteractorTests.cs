@@ -260,6 +260,19 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             repository.VerifyAll();
         }
 
+
+        [Test]
+        public void CloseAllWindows()
+        {
+            CreateMainFormInteractor();
+            var f = (Form)this.form;
+            var mdi = new Form();
+            mdi.MdiParent = f;
+            Assert.AreEqual(1, f.MdiChildren.Length);
+            interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.WindowsCloseAll);
+            Assert.AreEqual(0, f.MdiChildren.Length);
+        }
+
         private Program CreateFakeProgram()
         {
             Program prog = new Program();

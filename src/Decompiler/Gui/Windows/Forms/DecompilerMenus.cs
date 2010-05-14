@@ -145,6 +145,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slWindowsTileHorizontal = new CommandMenuItem("Tile _Horizontally", new Guid(CmdSets.Decompiler), CmdIds.WindowsTileHorizontal);
             slWindowsTileHorizontal.IsDynamic = false;
             slGrpWindows.Add(0, slWindowsTileHorizontal);
+            CommandMenuItem slWindowsCloseAll = new CommandMenuItem("C_lose All Windows", new Guid(CmdSets.Decompiler), CmdIds.WindowsCloseAll);
+            slWindowsCloseAll.IsDynamic = false;
+            slGrpWindows.Add(0, slWindowsCloseAll);
             CommandMenuItem slHelpAbout = new CommandMenuItem("_About Decompiler...", new Guid(CmdSets.Decompiler), CmdIds.HelpAbout);
             slHelpAbout.IsDynamic = false;
             slGrpHelp.Add(0, slHelpAbout);

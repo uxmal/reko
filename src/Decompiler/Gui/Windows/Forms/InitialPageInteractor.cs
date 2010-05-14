@@ -38,7 +38,6 @@ namespace Decompiler.Gui.Windows.Forms
     /// </summary>
     public class InitialPageInteractorImpl : PhasePageInteractorImpl, InitialPageInteractor
     {
-        private IStartPage page;
         private IProgramImageBrowserService browserSvc;
 
         public InitialPageInteractorImpl()
@@ -120,13 +119,26 @@ namespace Decompiler.Gui.Windows.Forms
             Decompiler = CreateDecompiler(ldr, host, sc);
             IWorkerDialogService svc = EnsureService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
-        {
-            Decompiler.LoadProgram(file);
-        });
+            {
+                Decompiler.LoadProgram(file);
+                svc.SetCaption("Scanning source program.");
+                Decompiler.ScanProgram();
+            });
+
             var memSvc = EnsureService<IMemoryViewService>();
             memSvc.ViewImage(Decompiler.Program.Image);
+            PopulateBrowserServiceWithSegments();
         }
 
-
+        private void PopulateBrowserServiceWithSegments()
+        {
+            var browserSvc = EnsureService<IProgramImageBrowserService>();
+            browserSvc.Populate(Decompiler.Program.Image.Map.Segments.Values, delegate(object item, IListViewItem listItem)
+            {
+                listItem.Text = ((ImageMapSegment)item).Name;
+            });
+            browserSvc.Enabled = true;
+            browserSvc.Caption = "Segments";
+        }
     }
 }

@@ -30,17 +30,14 @@ namespace Decompiler.Arch.Intel
 	public class IntelRewriterState : RewriterState
 	{
 		private Frame frame;
-		private int cbStackDepth;
 		private int fpuStackDepth;
-		private MachineRegister frameReg;
 		private Address addrCur;
 
 		public IntelRewriterState(Frame frame)
 		{
 			this.frame = frame;
-			cbStackDepth = 0;
 			fpuStackDepth = 0;
-			frameReg = MachineRegister.None;
+			FrameRegister = MachineRegister.None;
 		}
 
 		public Address InstructionAddress
@@ -52,9 +49,9 @@ namespace Decompiler.Arch.Intel
 		public IntelRewriterState Clone()
 		{
 			IntelRewriterState state = new IntelRewriterState(frame);
-			state.cbStackDepth = cbStackDepth;
+			state.StackBytes = StackBytes;
 			state.fpuStackDepth = fpuStackDepth;
-			state.frameReg = frameReg;
+			state.FrameRegister = FrameRegister;
 			if (addrCur != null)
 				state.addrCur = new Address(addrCur.Selector, addrCur.Offset);
 			return state;
@@ -71,8 +68,12 @@ namespace Decompiler.Arch.Intel
 		/// <param name="regFrame">Register used as a frame register</param>
 		public void EnterFrame(MachineRegister regFrame)
 		{
+            if (FrameRegister == MachineRegister.None)
+            {
+                frame.FrameOffset = StackBytes;
+            }
+            FrameOffset = StackBytes;
 			FrameRegister = regFrame;
-			frame.FrameOffset = StackBytes;
 		}
 
 		public void LeaveFrame()
@@ -80,6 +81,7 @@ namespace Decompiler.Arch.Intel
 			Debug.Assert(FrameRegister != MachineRegister.None);
 			FrameRegister = MachineRegister.None;
 			StackBytes = frame.FrameOffset;
+            FrameOffset = 0;
 		}
 
 		public int FpuStackItems
@@ -88,11 +90,12 @@ namespace Decompiler.Arch.Intel
 			set { fpuStackDepth = value; }
 		}
 
-		public MachineRegister FrameRegister
-		{
-			get { return frameReg; }
-			set { frameReg = value; }
-		}
+        /// <summary>
+        /// The difference between the frame pointer and the stack pointer at the time the procedure was entered.
+        /// </summary>
+        public int FrameOffset { get; set; }
+
+        public MachineRegister FrameRegister { get; set; }
 
 		public void GrowFpuStack(Address addrInstr)
 		{
@@ -105,7 +108,7 @@ namespace Decompiler.Arch.Intel
 
 		public void GrowStack(int cb)
 		{
-			cbStackDepth += cb;
+			StackBytes += cb;
 		}
 
 
@@ -116,16 +119,12 @@ namespace Decompiler.Arch.Intel
 
 		public void ShrinkStack(int cb)
 		{
-			cbStackDepth -= cb;
+			StackBytes -= cb;
 		}
 
 		/// <summary>
 		/// Number of bytes on the processor stack.
 		/// </summary>
-		public int StackBytes
-		{
-			get { return cbStackDepth; }
-			set { cbStackDepth = value; }
-		}
+		public int StackBytes { get; set; }
 	}
 }

@@ -224,6 +224,7 @@ namespace Decompiler.Gui.Windows.Forms
 			try 
 			{
                 diagnosticsSvc.ClearDiagnostics();
+                CloseAllMdiWindows();
                 SwitchInteractor(InitialPageInteractor);
                 pageInitial.OpenBinary(file, this);
             } 
@@ -320,6 +321,14 @@ namespace Decompiler.Gui.Windows.Forms
         public void LayoutMdi(MdiLayout layout)
         {
             ((Form)form).LayoutMdi(layout);
+        }
+
+        public void CloseAllMdiWindows()
+        {
+            foreach (Form mdi in ((Form)form).MdiChildren)
+            {
+                mdi.Close();
+            }
         }
 
         public void ShowAboutBox()
@@ -509,7 +518,8 @@ namespace Decompiler.Gui.Windows.Forms
                 case CmdIds.WindowsCascade: LayoutMdi(MdiLayout.Cascade); return true;
                 case CmdIds.WindowsTileVertical: LayoutMdi(MdiLayout.TileVertical); return true;
                 case CmdIds.WindowsTileHorizontal: LayoutMdi(MdiLayout.TileHorizontal); return true;
-         
+                case CmdIds.WindowsCloseAll: CloseAllMdiWindows(); return true;
+
                 case CmdIds.HelpAbout: ShowAboutBox(); return true;
 				}
 			}

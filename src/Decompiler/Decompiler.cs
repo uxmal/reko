@@ -127,9 +127,9 @@ namespace Decompiler
 						ProcedureFlow flow = dfa.ProgramDataFlow[proc];
                         Formatter f = new Formatter(output);
 						if (flow.Signature != null)
-							flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+							flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
 						else if (proc.Signature != null)
-							proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+							proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
 						else
 							output.Write("Warning: no signature found for {0}", proc.Name);
 						output.WriteLine();
@@ -149,6 +149,7 @@ namespace Decompiler
 						proc.Write(false, output);
 					}
 					output.WriteLine();
+                    output.WriteLine();
 				}
 				output.Flush();
 			}

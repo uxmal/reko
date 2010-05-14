@@ -21,6 +21,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.IO;
 
 namespace Decompiler.Analysis
@@ -66,6 +67,13 @@ namespace Decompiler.Analysis
 
 			StackArguments = new Hashtable();
 		}
+
+        public void Dump(IProcessorArchitecture arch)
+        {
+            var sb = new StringWriter();
+            Emit(arch, sb);
+            Debug.WriteLine(sb.ToString());
+        }
 
 		public override void Emit(IProcessorArchitecture arch, TextWriter sb)
 		{
@@ -120,5 +128,5 @@ namespace Decompiler.Analysis
 		{
 			get { return proc; } 
 		}
-	}
+    }
 }

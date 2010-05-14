@@ -121,6 +121,7 @@ namespace Decompiler.Analysis
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = (ProcedureFlow) crw.mpprocflow[proc];
+                flow.Dump(prog.Architecture);
 				crw.AdjustLiveOut(flow);
 				crw.EnsureSignature(proc, flow);
 				crw.AddUseInstructionsForOutArguments(proc);

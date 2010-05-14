@@ -56,7 +56,39 @@ namespace Decompiler.Analysis
 
 		private static TraceSwitch trace = new TraceSwitch("RegisterLiveness", "Details of register liveness analysis");
 
-		public RegisterLiveness(Program prog, ProgramDataFlow procFlow, DecompilerEventListener eventListener)
+        /// <summary>
+        /// Computes intraprocedural liveness of the program <paramref name="p"/>,
+        /// storing the results in <paramref name="procFlow"/>.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="procFlow"></param>
+        /// <returns></returns>
+        public static RegisterLiveness Compute(Program p, ProgramDataFlow procFlow, DecompilerEventListener eventListener)
+        {
+            RegisterLiveness live = new RegisterLiveness(p, procFlow, eventListener);
+            Debug.WriteLineIf(trace.TraceError, "** Computing ByPass ****");
+            live.CurrentState = new ByPassState();
+            live.ProcessWorklist();
+
+            Debug.WriteLineIf(trace.TraceError, "** Computing MayUse ****");
+            live.CurrentState = new MayUseState();
+            if (trace.TraceInfo) live.Dump();
+            live.ProcessWorklist();
+
+            //$REVIEW: since we never use the liveinstate, can we get rid of the following
+            // four statements?
+            Debug.WriteLineIf(trace.TraceError, "** Computing LiveIn ****");
+            live.CurrentState = new LiveInState();
+            if (trace.TraceInfo) live.Dump();
+            live.ProcessWorklist();
+
+            live.CompleteWork();
+            if (trace.TraceInfo) live.Dump();
+
+            return live;
+        }
+
+        public RegisterLiveness(Program prog, ProgramDataFlow procFlow, DecompilerEventListener eventListener)
 		{
 			this.prog = prog;
 			this.eventListener = eventListener;
@@ -64,11 +96,11 @@ namespace Decompiler.Analysis
 			this.worklist = new WorkList<BlockFlow>();
 			this.varLive = new IdentifierLiveness(prog.Architecture);
 			this.isLiveHelper = new IsLiveHelper();
-			CollectBasicBlocks();
+			AddAllBasicBlocksToWorklist();
 			if (trace.TraceInfo) Dump();
 		}
 
-		private void CollectBasicBlocks()
+		private void AddAllBasicBlocksToWorklist()
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
@@ -79,37 +111,6 @@ namespace Decompiler.Analysis
 			}
 		}
 		
-		/// <summary>
-		/// Computes intraprocedural liveness of the program <paramref name="p"/>,
-		/// storing the results in <paramref name="procFlow"/>.
-		/// </summary>
-		/// <param name="p"></param>
-		/// <param name="procFlow"></param>
-		/// <returns></returns>
-		public static RegisterLiveness Compute(Program p, ProgramDataFlow procFlow, DecompilerEventListener eventListener)
-		{
-			RegisterLiveness live = new RegisterLiveness(p, procFlow, eventListener);
-			Debug.WriteLineIf(trace.TraceError, "** Computing ByPass ****");
-			live.CurrentState = new ByPassState();
-			live.Iterate();
-
-			Debug.WriteLineIf(trace.TraceError, "** Computing MayUse ****");
-			live.CurrentState = new MayUseState();
-			if (trace.TraceInfo) live.Dump();
-			live.Iterate();
-			
-			//$REVIEW: since we never use the liveinstate, can we get rid of the following
-			// four statements?
-			Debug.WriteLineIf(trace.TraceError, "** Computing LiveIn ****");
-			live.CurrentState = new LiveInState();
-			if (trace.TraceInfo) live.Dump();
-			live.Iterate();
-
-			live.CompleteWork();
-			if (trace.TraceInfo) live.Dump();
-
-			return live;
-		}
 
 		/// <summary>
 		/// Make summary information available in LiveIn and LiveOut for each procedure.
@@ -169,7 +170,7 @@ namespace Decompiler.Analysis
             }
 		}
 
-		private void Iterate()
+		private void ProcessWorklist()
 		{
 			InitializeWorkList();
 			int initial = worklist.Count;
@@ -208,20 +209,19 @@ namespace Decompiler.Analysis
             varLive.LiveStorages = new Dictionary<Storage, int>(item.StackVarsOut);
 
 			Debug.WriteLineIf(t, string.Format("   out: {0}", DumpRegisters(varLive.BitSet)));
-			Procedure = item.Block.Procedure;		// Used by statements because we need to lookup registers using identifiers and the procedure frame.
+			Procedure = item.Block.Procedure;		// Used by statements because we need to look up registers using identifiers and the procedure frame.
 			StatementList stms = item.Block.Statements;
 			for (int i = stms.Count - 1; i >= 0; --i)
 			{
 				stmCur = stms[i];
 				Debug.WriteLineIf(t, stms[i].Instruction);
 				stmCur.Instruction.Accept(this);
-				if (t)
-					Debug.WriteLineIf(t, string.Format("\tin: {0}", DumpRegisters(varLive.BitSet)));
+				if (t) Debug.WriteLineIf(t, string.Format("\tin: {0}", DumpRegisters(varLive.BitSet)));
 			}
 
 			if (item.Block == item.Block.Procedure.EntryBlock)
 			{
-				PropagateToProcedureSummary(item.Block.Procedure);
+				PropagateToProcedureSummary(varLive, item.Block.Procedure);
 			}
 			else
 			{
@@ -269,25 +269,25 @@ namespace Decompiler.Analysis
 		}
 
 		public void MergeBlockInfo(Block block)
-		{
-			BlockFlow blockFlow = mpprocData[block];
+        {
+            BlockFlow blockFlow = mpprocData[block];
 			if (state.MergeBlockInfo(varLive, blockFlow))
 			{
-				worklist.Add(blockFlow);
-			}
+                worklist.Add(blockFlow);
+            }
 		}
 		
-		public bool MergeIntoProcedureFlow(IdentifierLiveness varLive, ProcedureFlow item)
+		public bool MergeIntoProcedureFlow(IdentifierLiveness varLive, ProcedureFlow flow)
 		{
 			bool fChange = false;
-			if (!(varLive.BitSet & ~item.Summary).IsEmpty)
+			if (!(varLive.BitSet & ~flow.Summary).IsEmpty)
 			{
-				item.Summary |= varLive.BitSet;
+				flow.Summary |= varLive.BitSet;
 				fChange = true;
 			}
-			if ((varLive.Grf & ~item.grfSummary) != 0)
+			if ((varLive.Grf & ~flow.grfSummary) != 0)
 			{
-				item.grfSummary |= varLive.Grf;
+				flow.grfSummary |= varLive.Grf;
 				fChange = true;
 			}
 			foreach (KeyValuePair<Storage,int> de in varLive.LiveStorages)
@@ -297,19 +297,19 @@ namespace Decompiler.Analysis
 					continue;
 				int bits = de.Value;
 
-				object o = item.StackArguments[sa];
+				object o = flow.StackArguments[sa];
 				if (o != null)
 				{
 					int bitsOld = (int) o;
 					if (bitsOld < bits)
 					{
-						item.StackArguments[sa] = bits;
+						flow.StackArguments[sa] = bits;
 						fChange = true;
 					}
 				}
 				else
 				{
-					item.StackArguments[sa] = bits;
+					flow.StackArguments[sa] = bits;
 					fChange = true;
 				}
 			}
@@ -357,20 +357,20 @@ namespace Decompiler.Analysis
 		/// live registers.
 		/// </summary>
 		/// <param name="p"></param>
-		public void PropagateToProcedureSummary(Procedure p)
+		public void PropagateToProcedureSummary(IdentifierLiveness varLive, Procedure p)
 		{
 			bool fChange = false;
-			ProcedureFlow item = mpprocData[p];
-			
-			state.ApplySavedRegisters(item, varLive);
-			fChange = MergeIntoProcedureFlow(varLive, item);
+			ProcedureFlow flow = mpprocData[p];
+
+            state.ApplySavedRegisters(flow, varLive);
+			fChange = MergeIntoProcedureFlow(varLive, flow);
 			if (fChange)
 			{
-				if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, item.EmitRegisters(prog.Architecture, p.Name + " summary:", item.Summary));
-				state.UpdateSummary(item);
-				foreach (Statement stmCaller in prog.CallGraph.CallerStatements(p))
+				Debug.WriteLineIf(trace.TraceInfo, flow.EmitRegisters(prog.Architecture, p.Name + " summary:", flow.Summary));
+				state.UpdateSummary(flow);
+                foreach (Statement stmCaller in prog.CallGraph.CallerStatements(p))
 				{
-					if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceVerbose, string.Format("Propagating to {0} (block {1} in {2}", stmCaller.Instruction.ToString(), stmCaller.Block.RpoNumber, stmCaller.Block.Procedure.Name));
+					Debug.WriteLineIf(trace.TraceVerbose, string.Format("Propagating to {0} (block {1} in {2}", stmCaller.Instruction.ToString(), stmCaller.Block.RpoNumber, stmCaller.Block.Procedure.Name));
 					worklist.Add(mpprocData[stmCaller.Block]);
 				}
 			}

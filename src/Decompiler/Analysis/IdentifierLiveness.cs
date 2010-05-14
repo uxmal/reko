@@ -22,6 +22,7 @@ using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Decompiler.Analysis
@@ -83,6 +84,12 @@ namespace Decompiler.Analysis
 			id.Storage.Accept(this);
 		}
 
+        public void Dump()
+        {
+            StringWriter sw = new StringWriter();
+            Write(sw, "varLive");
+            Debug.WriteLine(sw.ToString());
+        }
 
 		public BitSet BitSet
 		{
@@ -265,7 +272,7 @@ namespace Decompiler.Analysis
 					if (bits[i])
 					{
 						MachineRegister reg = arch.GetRegister(i);
-						if (reg.IsAluRegister)
+                        if (reg != null && reg.IsAluRegister)
 						{
 							writer.Write(' ');
 							writer.Write(reg.ToString());
