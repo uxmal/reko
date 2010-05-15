@@ -141,7 +141,11 @@ namespace Decompiler
 
 							block.Write(output); output.Flush();
 							BlockFlow bf = dfa.ProgramDataFlow[block];
-							if (bf != null) bf.Emit(prog.Architecture, output);
+                            if (bf != null)
+                            {
+                                bf.Emit(prog.Architecture, output);
+                                output.WriteLine();
+                            }
 						}
 					}
 					else
