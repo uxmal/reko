@@ -52,6 +52,7 @@ namespace Decompiler.Arch.Intel
 			state.StackBytes = StackBytes;
 			state.fpuStackDepth = fpuStackDepth;
 			state.FrameRegister = FrameRegister;
+            state.FrameOffset = FrameOffset;
 			if (addrCur != null)
 				state.addrCur = new Address(addrCur.Selector, addrCur.Offset);
 			return state;

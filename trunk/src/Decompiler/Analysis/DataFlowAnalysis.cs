@@ -165,7 +165,6 @@ namespace Decompiler.Analysis
             eventListener.ShowStatus("Computing register liveness.");
             RegisterLiveness rl = RegisterLiveness.Compute(prog, flow, eventListener);
 
-            flow[p].Dump(prog.Architecture);
             eventListener.ShowStatus("Rewriting calls.");
 			GlobalCallRewriter.Rewrite(prog, flow);
 		}

@@ -1,189 +1,146 @@
-main proc
-	push 0
-	push 1
-	push 2
-	call fn0800_2E62
-	ret
-	
-proc fn0800_2E62
+; r00015: odd stack layout by watcom
+
+fn025C proc 
 	push	si
+
+l025D:
 	push	di
 	push	bp
 	mov	bp,sp
-	sub	sp,0x08
+	sub	sp,08
 	mov	si,ax
-	mov	word ptr [bp-0x04],bx
-	mov	word ptr [bp-0x08],cx
-	test	dx,dx
-	jnz	l2E7A
-
-l2E76:
-	mov	dx,[0x0568]
-
-l2E7A:
-	mov	word ptr [bp-0x02],0x0000
-	test	dx,dx
-	jz	l2E97
-
-l2E83:
-	mov	bx,dx
-	jmp	l2E92
-
-l2E87:
-	mov	ax,[bx]
-	call	fn0589
-	inc	ax
-	inc	bx
-	inc	bx
-	add	word ptr [bp-0x02],ax
-
-l2E92:
-	cmp	word ptr [bx],0x00
-	jnz	l2E87
-
-l2E97:
-	inc	word ptr [bp-0x02]
-	cmp	word ptr [bp+0x0C],0x00
-	jz	l2EAB
-
-l2EA0:
-	mov	ax,[si]
-	call	fn0589
-	add	ax,0x0003
-	add	word ptr [bp-0x02],ax
-
-l2EAB:
-	mov	ax,[0x0574]
-	add	word ptr [bp-0x02],0x0F
-	mov	word ptr [bp-0x06],ax
-	mov	ax,[bp-0x02]
-	mov	word ptr [0x0574],0x0010
-	call	fn1004
-	test	ax,ax
-	jnz	l2EE9
-
-l2EC5:
-	mov	ax,[bp-0x02]
-	call	fn1004
-	mov	bx,ax
-	test	ax,ax
-	jnz	l2EEB
-
-l2ED1:
-	mov	ax,0x0005
-	call	fn2A7F
-	mov	ax,0x0008
-	call	fn2A9C
-	mov	ax,[bp-0x06]
-	mov	word ptr [0x0574],ax
-
-l2EE3:
-	mov	ax,0xFFFF
-	jmp	l2F84
-
-l2EE9:
-	mov	bx,ax
-
-l2EEB:
-	mov	ax,[bp-0x06]
-	mov	di,[bp-0x04]
-	mov	word ptr [0x0574],ax
-	mov	word ptr [di],bx
-	add	bx,0x0F
-	and	bl,0xF0
-	mov	cl,0x04
-	mov	di,bx
-	shr	di,cl
-	mov	ax,ds
-	mov	cx,di
-	mov	di,[bp+0x08]
-	add	cx,ax
-	mov	word ptr [di],cx
-	mov	di,[bp-0x08]
-	mov	word ptr [di],bx
-	test	dx,dx
-	jz	l2F2B
-
-l2F16:
 	mov	di,dx
-	jmp	l2F26
 
-l2F1A:
-	mov	ax,bx
-	mov	dx,[di]
-	call	fn2E4B
-	mov	bx,ax
-	inc	di
-	inc	di
-	inc	bx
+l0267:
+	xlat	
+	mov	word ptr [bp-08],bx
 
-l2F26:
-	cmp	word ptr [di],0x00
-	jnz	l2F1A
+l026A:
+	clc	
+	mov	word ptr [bp-06],cx
+	cmp	byte ptr [si],00
+	jz	l0291
 
-l2F2B:
-	mov	byte ptr [bx],0x00
-	inc	bx
-	cmp	word ptr [bp+0x0C],0x00
-	jz	l2F3D
+l0273:
+	mov	al,[si+01]
+	xor	ah,ah
+	cmp	ax,0x003A
+	jnz	l0291
 
-l2F35:
-	lea	ax,[bx+0x02]
-	mov	dx,[si]
-	call	fn0517
-
-l2F3D:
-	xor	dx,dx
-	cmp	word ptr [si],0x00
-	jz	l2F5A
-
-l2F44:
-	inc	si
-	inc	si
-	jmp	l2F54
-
-l2F48:
+l027D:
 	test	dx,dx
-	jz	l2F4D
+	jz	l028C
 
-l2F4C:
-	inc	dx
+l0281:
+	mov	al,[si]
+	mov	byte ptr [di+01],0x3A
+	mov	byte ptr [di],al
+	mov	byte ptr [di+02],ah
 
-l2F4D:
-	call	fn0589
+l028C:
+	add	si,02
+	jmp	l0298
+
+l0291:
+	test	di,di
+	jz	l0298
+
+l0295:
+	mov	byte ptr [di],00
+
+l0298:
+	mov	word ptr [bp-02],si
+	mov	word ptr [bp-04],si
+
+l029E:
+	xor	di,di
+
+l02A0:
+	cmp	byte ptr [si],00
+	jz	l02DF
+
+l02A5:
+	mov	ax,si
+	call	fn0E18
+	mov	dx,ax
+	cmp	ax,0x002E
+	jnz	l02B6
+
+l02B1:
+	mov	di,si
 	inc	si
+	jmp	l02A0
+
+l02B6:
+	cmp	word ptr [0464],00
+	jz	l02CB
+
+l02BD:
+	mov	bl,[si]
+	xor	bh,bh
+	mov	al,[bx+0467]
+	and	al,01
+	xor	ah,ah
+	jmp	l02CD
+
+l02CB:
+	xor	ax,ax
+
+l02CD:
 	inc	si
-	add	dx,ax
+	add	si,ax
+	cmp	dx,0x5C
+	jz	l02DA
 
-l2F54:
-	mov	ax,[si]
-	test	ax,ax
-	jnz	l2F48
+l02D5:
+	cmp	dx,0x2F
+	jnz	l02A0
 
-l2F5A:
-	cmp	dx,0x7E
-	jbe	l2F76
+l02DA:
+	mov	word ptr [bp-02],si
+	jmp	l029E
 
-l2F5F:
-	mov	ax,0x0002
-	call	fn2A7F
-	mov	ax,0x000A
-	mov	bx,[bp-0x04]
-	call	fn2A9C
-	mov	ax,[bx]
-	call	fn1174
-	jmp	ll2EE3
+l02DF:
+	mov	bx,[bp-02]
+	mov	cx,0x0081
+	mov	dx,[bp-04]
+	mov	ax,[bp-08]
+	sub	bx,[bp-04]
+	call	fn022B
+	test	di,di
+	jnz	l02F7
 
-l2F76:
-	mov	bx,[bp+0x0A]
-	mov	cl,0x04
-	mov	ax,[bp-0x02]
-	mov	word ptr [bx],0x0090
-	shr	ax,cl
+l02F5:
+	mov	di,si
 
-l2F84:
+l02F7:
+	mov	cx,0008
+	mov	dx,[bp-02]
+	mov	bx,di
+	mov	ax,[bp-06]
+	sub	bx,[bp-02]
+	call	fn022B
+	mov	cx,0004
+	mov	ax,[bp+08]
+	mov	bx,si
+	mov	dx,di
+	sub	bx,di
+	call	fn022B
 	mov	sp,bp
 	pop	bp
 	pop	di
 	pop	si
-	ret	0x0006
+	ret	0002
+
+fn022B proc
+	mov [0x300],ax
+	mov [0x302],bx
+	mov [0x304],cx
+	mov [0x306],dx
+	ret
+	
+fn0E18 proc
+	mov [0x400],ax
+	mov ax,0x32
+	ret
+	
