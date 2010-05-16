@@ -112,7 +112,7 @@ namespace Decompiler.Arch.Intel
 						mem.Offset,
 						IsStackRegister(mem.Base) 
 							? state.StackBytes
-							: frame.FrameOffset,
+                            : state.FrameOffset,      
 						mem.Width);
 				}
 				return null;

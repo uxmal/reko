@@ -164,6 +164,13 @@ namespace Decompiler.UnitTests.Analysis
             RunTest("Fragments/multiple/pushed_registers.asm", "Analysis/RlPushedRegisters.txt");
         }
 
+
+        [Test]
+        public void RlReg00015()
+        {
+            RunTest("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");
+        }
+
         protected override void RunTest(Program prog, FileUnitTester fut)
 		{
             FakeDecompilerEventListener eventListener = new FakeDecompilerEventListener();

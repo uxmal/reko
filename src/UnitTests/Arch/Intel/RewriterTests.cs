@@ -243,6 +243,7 @@ join:
 			RunTest("Fragments/fpureversibles.asm", "Intel/RwFpuReversibles.txt");
 		}
 
+
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			DoRewriteFile(sourceFile);

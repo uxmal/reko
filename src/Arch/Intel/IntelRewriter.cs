@@ -929,6 +929,7 @@ namespace Decompiler.Arch.Intel
             else if (imm != null && IsFrameRegister(instrCur.op1))
             {
                 state.FrameOffset += imm.Value.ToInt32();
+                return ass;
             }
             Expression d;
             if (IsSameRegister(instrCur.op1, instrCur.op2))
