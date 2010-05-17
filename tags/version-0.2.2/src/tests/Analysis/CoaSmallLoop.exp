@@ -1,0 +1,71 @@
+Mem0:Global memory
+    def:  def Mem0
+    uses: cx_11 = Mem0[ds:bx:word16]
+fp:Temporary
+ax:Register ax
+SCZO:Flags
+bx:Register bx
+    def:  def bx
+    uses: cx_11 = Mem0[ds:bx:word16]
+ds:Register ds
+    def:  def ds
+    uses: cx_11 = Mem0[ds:bx:word16]
+          store(Mem20[ds:0x0300:word16]) = ax_15
+cx:Register cx
+Z:Flags
+ax_8: orig: ax
+    def:  ax_8 = 0x0000
+    uses: ax_13 = PHI(ax_8, ax_15)
+SCZO_9: orig: SCZO
+Z_10: orig: Z
+cx_11: orig: cx
+    def:  cx_11 = Mem0[ds:bx:word16]
+    uses: cx_12 = PHI(cx_11, cx_17)
+cx_12: orig: cx
+    def:  cx_12 = PHI(cx_11, cx_17)
+    uses: ax_15 = ax_13 + cx_12 + cx_12
+          ax_15 = ax_13 + cx_12 + cx_12
+          cx_17 = cx_12 - 0x0001
+ax_13: orig: ax
+    def:  ax_13 = PHI(ax_8, ax_15)
+    uses: ax_15 = ax_13 + cx_12 + cx_12
+ax_14: orig: ax
+    uses: ax_15 = ax_13 + cx_12 + cx_12
+ax_15: orig: ax
+    def:  ax_15 = ax_13 + cx_12 + cx_12
+    uses: ax_13 = PHI(ax_8, ax_15)
+          store(Mem20[ds:0x0300:word16]) = ax_15
+SCZO_16: orig: SCZO
+cx_17: orig: cx
+    def:  cx_17 = cx_12 - 0x0001
+    uses: cx_12 = PHI(cx_11, cx_17)
+          branch cx_17 != 0x0000 l0C00_0004
+Z_18: orig: Z
+SCZO_19: orig: SCZO
+Mem20: orig: Mem0
+    def:  store(Mem20[ds:0x0300:word16]) = ax_15
+// fn0C00_0000
+void fn0C00_0000(word16 bx, selector ds)
+fn0C00_0000_entry:		// pred:
+	def Mem0
+	def bx
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	ax_8 = 0x0000
+	cx_11 = Mem0[ds:bx:word16]
+	// succ:  l0C00_0004
+l0C00_0004:		// pred: l0C00_0000 l0C00_0004
+	cx_12 = PHI(cx_11, cx_17)
+	ax_13 = PHI(ax_8, ax_15)
+	ax_15 = ax_13 + cx_12 + cx_12
+	cx_17 = cx_12 - 0x0001
+	branch cx_17 != 0x0000 l0C00_0004
+	// succ:  l0C00_000A l0C00_0004
+l0C00_000A:		// pred: l0C00_0004
+	store(Mem20[ds:0x0300:word16]) = ax_15
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_000A
+	// succ: 
+

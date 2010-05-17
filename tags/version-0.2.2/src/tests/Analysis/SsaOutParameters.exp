@@ -1,0 +1,24 @@
+Mem0:Global memory
+    def:  def Mem0
+fp:Temporary
+    def:  def fp
+r4:Register r4
+    def:  def r4
+r4_3: orig: r4
+    def:  store(Mem4[0x00000400:word32]) = foo(&r4_3)
+Mem4: orig: Mem0
+    def:  store(Mem4[0x00000400:word32]) = foo(&r4_3)
+// foo
+void foo()
+foo_entry:		// pred:
+	def Mem0
+	def fp
+	def r4
+	// succ:  l1
+l1:		// pred: foo_entry
+	store(Mem4[0x00000400:word32]) = foo(&r4_3)
+	return
+	// succ:  foo_exit
+foo_exit:		// pred: l1
+	// succ: 
+

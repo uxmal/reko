@@ -1,0 +1,27 @@
+
+fn0C00_0000()
+	mov	bx,1234
+	call	000C
+	mov	bx,5678
+	call	0018
+
+fn0C00_000C()
+	cmp	word ptr [bx],7B
+	jle	0014
+
+l0C00_0011:
+	xor	ax,ax
+	ret	
+
+fn0C00_0014()
+	mov	ax,[bx]
+	inc	ax
+	ret	
+
+fn0C00_0018()
+	add	bx,04
+	jmp	0014
+fn0C00_0000 (@ 0C00:0000)
+fn0C00_000C (@ 0C00:000C)
+fn0C00_0014 (@ 0C00:0014)
+fn0C00_0018 (@ 0C00:0018)

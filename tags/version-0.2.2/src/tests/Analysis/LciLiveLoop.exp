@@ -1,0 +1,17 @@
+// LiveLoopMock
+void LiveLoopMock()
+LiveLoopMock_entry:		// pred:
+	def Mem0
+	def i
+	// succ:  loop
+loop:		// pred: LiveLoopMock_entry loop
+	i_4 = PHI(i, i_6)
+	i_6 = i_7 + 0x00000001
+	i_7 = i_4
+	branch Mem0[i_6:byte] != 0x00 loop
+	// succ:  l1 loop
+l1:		// pred: loop
+	return i_7
+	// succ:  LiveLoopMock_exit
+LiveLoopMock_exit:		// pred: l1
+	// succ: 
