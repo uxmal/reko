@@ -1,26 +1,27 @@
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	word16 ax_8 = 0x0000
 	word16 bx_10 = Mem0[ds:0x0200:word16]
-	// succ:  1
-l0C00_0006:		// block 1, pred: 0 5
+	// succ:  l0C00_0006
+l0C00_0000:
+l0C00_0006:		// pred: fn0C00_0000_entry l0C00_0013
 	branch bx_10 == 0x0000 l0C00_001A
-	// succ:  2 3
-l0C00_000A:		// block 2, pred: 1
+	// succ:  l0C00_000A l0C00_001A
+l0C00_000A:		// pred: l0C00_0006
 	store(Mem17[ds:0x0204:word16]) = bx_10
 	branch Mem17[ds:bx_10:word16] == 0xFFFF l0C00_001A
-	// succ:  5 3
-l0C00_001A:		// block 3, pred: 1 2
-	store(Mem26[ds:0x0300:word16]) = ax_8
-	return
-	// succ:  4
-fn0C00_0000_exit:		// block 4, pred: 3
-	// succ: 
-l0C00_0013:		// block 5, pred: 2
+	// succ:  l0C00_0013 l0C00_001A
+l0C00_0013:		// pred: l0C00_000A
 	bx_10 = Mem17[ds:bx_10 + 0x0004:word16]
 	ax_8 = ax_8 + 0x0001
-	// succ:  1
+	// succ:  l0C00_0006
+l0C00_001A:		// pred: l0C00_0006 l0C00_000A
+	store(Mem26[ds:0x0300:word16]) = ax_8
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_001A
+	// succ: 
 
 void fn0C00_0000(selector ds)
 {
