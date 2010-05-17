@@ -63,9 +63,12 @@ namespace Decompiler.Analysis
         /// <param name="p"></param>
         /// <param name="procFlow"></param>
         /// <returns></returns>
-        public static RegisterLiveness Compute(Program p, ProgramDataFlow procFlow, DecompilerEventListener eventListener)
+        public static RegisterLiveness Compute(
+            Program p, 
+            ProgramDataFlow procFlow, 
+            DecompilerEventListener eventListener)
         {
-            RegisterLiveness live = new RegisterLiveness(p, procFlow, eventListener);
+            var live = new RegisterLiveness(p, procFlow, eventListener);
             Debug.WriteLineIf(trace.TraceError, "** Computing ByPass ****");
             live.CurrentState = new ByPassState();
             live.ProcessWorklist();
@@ -88,12 +91,15 @@ namespace Decompiler.Analysis
             return live;
         }
 
-        public RegisterLiveness(Program prog, ProgramDataFlow procFlow, DecompilerEventListener eventListener)
+        public RegisterLiveness(
+            Program prog, 
+            ProgramDataFlow progFlow, 
+            DecompilerEventListener eventListener)
 		{
 			this.prog = prog;
-			this.eventListener = eventListener;
-			this.mpprocData = procFlow;
-			this.worklist = new WorkList<BlockFlow>();
+			this.mpprocData = progFlow;
+            this.eventListener = eventListener;
+            this.worklist = new WorkList<BlockFlow>();
 			this.varLive = new IdentifierLiveness(prog.Architecture);
 			this.isLiveHelper = new IsLiveHelper();
 			AddAllBasicBlocksToWorklist();
@@ -684,7 +690,11 @@ namespace Decompiler.Analysis
 						}
 					}
 				}
-				else
+                else if (bf.TerminatesProcess)
+                {
+                    bf.DataOut.SetAll(false);
+                }
+                else
 				{
 					bf.DataOut.SetAll(isExitBlock);
 					bf.DataOut &= ~flow[block.Procedure].PreservedRegisters;

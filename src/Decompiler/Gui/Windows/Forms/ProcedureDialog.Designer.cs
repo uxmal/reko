@@ -67,6 +67,7 @@ namespace Decompiler.Gui.Windows.Forms
             this.label2 = new System.Windows.Forms.Label();
             this.btnRemoveArgument = new System.Windows.Forms.Button();
             this.btnAddArgument = new System.Windows.Forms.Button();
+            this.chkTerminates = new System.Windows.Forms.CheckBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -210,6 +211,7 @@ namespace Decompiler.Gui.Windows.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkTerminates);
             this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Controls.Add(this.chkMalloc);
             this.groupBox1.Location = new System.Drawing.Point(6, 219);
@@ -300,6 +302,16 @@ namespace Decompiler.Gui.Windows.Forms
             this.btnAddArgument.Text = "&Add";
             this.btnAddArgument.UseVisualStyleBackColor = true;
             // 
+            // chkTerminates
+            // 
+            this.chkTerminates.AutoSize = true;
+            this.chkTerminates.Location = new System.Drawing.Point(7, 67);
+            this.chkTerminates.Name = "chkTerminates";
+            this.chkTerminates.Size = new System.Drawing.Size(211, 17);
+            this.chkTerminates.TabIndex = 8;
+            this.chkTerminates.Text = "Procedure terminates process or thread";
+            this.chkTerminates.UseVisualStyleBackColor = true;
+            // 
             // ProcedureDialog
             // 
             this.AcceptButton = this.btnOK;
@@ -354,5 +366,6 @@ namespace Decompiler.Gui.Windows.Forms
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtSignature;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkTerminates;
     }
 }

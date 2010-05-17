@@ -54,6 +54,8 @@ namespace Decompiler.Analysis
 
 		public ProcedureSignature Signature;
 
+        public bool TerminatesProcess;          // True if calling this procedure terminates the thread/process.
+
 		public ProcedureFlow(Procedure proc, IProcessorArchitecture arch)
 		{
 			this.proc = proc;
@@ -75,17 +77,19 @@ namespace Decompiler.Analysis
             Debug.WriteLine(sb.ToString());
         }
 
-		public override void Emit(IProcessorArchitecture arch, TextWriter sb)
+		public override void Emit(IProcessorArchitecture arch, TextWriter writer)
 		{
-			EmitRegisters(arch, "// MayUse: ", grfMayUse, MayUse, sb);
-			sb.WriteLine();
-			EmitRegisters(arch, "// LiveOut:", grfLiveOut, LiveOut, sb);
-			sb.WriteLine();
-			EmitRegisters(arch, "// Trashed:", grfTrashed, TrashedRegisters, sb);
-			sb.WriteLine();
-			EmitRegisters(arch, "// Preserved:", grfPreserved, PreservedRegisters, sb);
-			sb.WriteLine();
-			EmitStackArguments(StackArguments, sb);
+			EmitRegisters(arch, "// MayUse: ", grfMayUse, MayUse, writer);
+			writer.WriteLine();
+			EmitRegisters(arch, "// LiveOut:", grfLiveOut, LiveOut, writer);
+			writer.WriteLine();
+			EmitRegisters(arch, "// Trashed:", grfTrashed, TrashedRegisters, writer);
+			writer.WriteLine();
+			EmitRegisters(arch, "// Preserved:", grfPreserved, PreservedRegisters, writer);
+			writer.WriteLine();
+			EmitStackArguments(StackArguments, writer);
+            if (TerminatesProcess)
+                writer.WriteLine("// Terminates process");
 		}
 
 		public void EmitStackArguments(Hashtable args, TextWriter sb)

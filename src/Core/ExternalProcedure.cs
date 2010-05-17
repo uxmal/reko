@@ -16,8 +16,9 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-using Decompiler.Core.Output;
 using Decompiler.Core.Code;
+using Decompiler.Core.Output;
+using Decompiler.Core.Serialization;
 using System;
 using System.IO;
 
@@ -35,6 +36,12 @@ namespace Decompiler.Core
 		{
 			this.signature = signature;
 		}
+
+        public ExternalProcedure(string name, ProcedureSignature signature, ProcedureCharacteristics chars) : base(name)
+        {
+            this.signature = signature;
+            this.Characteristics = chars;
+        }
 
 		public override ProcedureSignature Signature
 		{

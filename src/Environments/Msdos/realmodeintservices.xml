@@ -594,6 +594,29 @@
 	  </arg>
 	</signature>
   </service>
+  <service name="msdos_get_switch_character">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">37</regvalue>
+      <regvalue reg="al">00</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><reg>dl</reg></return>
+    </signature>
+  </service>
+  <service name="msdos_set_switch_character">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">37</regvalue>
+      <regvalue reg="al">01</regvalue>
+    </syscallinfo>
+    <signature>
+      <arg>
+        <reg>dl</reg>
+      </arg>
+    </signature>
+  </service>
+
   <service name="msdos_create_truncate_file">
 	<syscallinfo>
 	  <vector>21</vector>

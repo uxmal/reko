@@ -41,10 +41,14 @@ namespace Decompiler.Analysis
         private readonly TrashStorage trash;
 		private DecompilerEventListener eventListener;
 
-		public TrashedRegisterFinder(Program prog, ProgramDataFlow flow, DecompilerEventListener eventListener)
+		public TrashedRegisterFinder(
+            Program prog, 
+            ProgramDataFlow flow, 
+            DecompilerEventListener eventListener)
 		{
 			this.prog = prog;
 			this.flow = flow;
+            this.eventListener = eventListener;
             this.trash = new TrashStorage();
             this.tsh = new TrashStorageHelper(trash);
 			this.worklist = new WorkList<Block>();
@@ -112,39 +116,54 @@ namespace Decompiler.Analysis
 			ProcedureFlow pf = flow[proc];
 			BitSet tr = prog.Architecture.CreateRegisterBitset();
 			BitSet pr = prog.Architecture.CreateRegisterBitset();
-			foreach (KeyValuePair<Storage,Storage> de in tsh.TrashedRegisters)
-			{
-				RegisterStorage r = de.Key as RegisterStorage;
-				if (r == null)
-					continue;
+            if (pf.TerminatesProcess)
+            {
+                if (!pf.TrashedRegisters.IsEmpty)
+                {
+                    changed = true;
+                    pf.TrashedRegisters.SetAll(false);
+                }
+                if (pf.grfTrashed != 0)
+                {
+                    changed = true;
+                    pf.grfTrashed = 0;
+                }
+            }
+            else
+            {
+                foreach (KeyValuePair<Storage, Storage> de in tsh.TrashedRegisters)
+                {
+                    RegisterStorage r = de.Key as RegisterStorage;
+                    if (r == null)
+                        continue;
 
-				if (de.Key != de.Value)
-				{
-					tr[r.Register.Number] = true;
-				}
-				else
-				{
-					pr[r.Register.Number] = true;
-				}
-			}
+                    if (de.Key != de.Value)
+                    {
+                        tr[r.Register.Number] = true;
+                    }
+                    else
+                    {
+                        pr[r.Register.Number] = true;
+                    }
+                }
 
-			if (!(tr & ~pf.TrashedRegisters).IsEmpty)
-			{
-				pf.TrashedRegisters |= tr;
-				changed = true;
-			}
-			if (!(pr & ~pf.PreservedRegisters).IsEmpty)
-			{
-				pf.PreservedRegisters |= pr;
-				changed = true;
-			}
-			uint grfNew = pf.grfTrashed | tsh.TrashedFlags;
-			if (grfNew != pf.grfTrashed)
-			{
-				pf.grfTrashed = grfNew;
-				changed = true;
-			}
-
+                if (!(tr & ~pf.TrashedRegisters).IsEmpty)
+                {
+                    pf.TrashedRegisters |= tr;
+                    changed = true;
+                }
+                if (!(pr & ~pf.PreservedRegisters).IsEmpty)
+                {
+                    pf.PreservedRegisters |= pr;
+                    changed = true;
+                }
+                uint grfNew = pf.grfTrashed | tsh.TrashedFlags;
+                if (grfNew != pf.grfTrashed)
+                {
+                    pf.grfTrashed = grfNew;
+                    changed = true;
+                }
+            }
 
 			if (changed)
 			{
@@ -207,6 +226,16 @@ namespace Decompiler.Analysis
 
 		public override void VisitApplication(Application appl)
 		{
+            var pc = appl.Procedure as ProcedureConstant;
+            if (pc != null)
+            {
+                if (ProcedureTerminates(pc.Procedure))
+                {
+                    tsh.TrashedFlags = 0;
+                    tsh.TrashedRegisters.Clear();
+                    return;
+                }
+            }
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{
 				UnaryExpression u = appl.Arguments[i] as UnaryExpression;
@@ -235,13 +264,28 @@ namespace Decompiler.Analysis
 			}
 		}
 
+        private bool ProcedureTerminates(ProcedureBase proc)
+        {
+            if (proc.Characteristics.Terminates)
+                return true;
+            var p = proc as Procedure;
+            return (p != null && flow[p].TerminatesProcess);
+        }
+
 		public override void VisitCallInstruction(CallInstruction ci)
 		{
 			base.VisitCallInstruction(ci);
+            if (ProcedureTerminates(ci.Callee))
+            {
+                tsh.TrashedFlags = 0;
+                tsh.TrashedRegisters.Clear();
+                return;                     // a terminating procedure has no trashed registers because caller will never see those effects!
+            }
+
             var callee = ci.Callee as Procedure;
             if (callee == null)
                 return;             //$TODO: get trash information from signature?
-			ProcedureFlow pf = flow[callee];
+            ProcedureFlow pf = flow[callee];
 			foreach (int r in pf.TrashedRegisters)
 			{
 				RegisterStorage reg = new RegisterStorage(prog.Architecture.GetRegister(r));

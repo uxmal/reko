@@ -32,7 +32,10 @@ namespace Decompiler.Core
 
 		public ExternalProcedure CreateExternalProcedure(IProcessorArchitecture arch)
 		{
-			return new ExternalProcedure(Name, Signature);
+            if (Characteristics == null)
+                return new ExternalProcedure(Name, Signature);
+            else
+                return new ExternalProcedure(Name, Signature, Characteristics);
 		}
 	}
 

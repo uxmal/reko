@@ -25,6 +25,7 @@ using Decompiler.UnitTests;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -127,7 +128,6 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
-
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
             FakeDecompilerEventListener eventListener = new FakeDecompilerEventListener();
 			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow, eventListener);

@@ -147,6 +147,7 @@ done:
 			Identifier Z = FlagGroup("Z");
 			Identifier f = Reg32("f");
 
+            
 			Statement stmZ = new Statement(new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.Sub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
 			ssaIds[Z].DefStatement = stmZ;
 			Statement stmF = new Statement(new Assignment(f, new TestCondition(ConditionCode.NE, Z)), null);
@@ -158,7 +159,9 @@ done:
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
 
+        
         [Test]
+        [Ignore("TODO: what happens when a function returns carry when SCZO is aliased to the return value?")]
         public void CceReturnCarry()
         {
             throw new NotImplementedException();
