@@ -1,37 +1,38 @@
 // MockIfElseIf
 void MockIfElseIf()
-MockIfElseIf_entry:		// block 0, pred:
+MockIfElseIf_entry:		// pred:
 	branch r != 0x00000000 not_0
-	// succ:  8 1
-not_0:		// block 1, pred: 0
-	branch r != 0x00000001 not_1
-	// succ:  7 2
-not_1:		// block 2, pred: 1
-	branch r != 0x00000002 not_2
-	// succ:  6 3
-not_2:		// block 3, pred: 2
-	branch r != 0x00000003 default
-	// succ:  5 4
-default:		// block 4, pred: 3
-	x = 0xFFFFFFFF
-	// succ:  9
-l5:		// block 5, pred: 3
-	x = 0x00000003
-	// succ:  9
-l4:		// block 6, pred: 2
-	x = 0x00000002
-	// succ:  9
-l3:		// block 7, pred: 1
-	x = 0x00000001
-	// succ:  9
-l2:		// block 8, pred: 0
+	// succ:  l2 not_0
+l1:
+l2:		// pred: MockIfElseIf_entry
 	x = 0x00000000
-	// succ:  9
-done:		// block 9, pred: 8 7 6 5 4
+	// succ:  done
+done:		// pred: l2 l3 l4 l5 default
 	return x
-	// succ:  10
-MockIfElseIf_exit:		// block 10, pred: 9
+	// succ:  MockIfElseIf_exit
+MockIfElseIf_exit:		// pred: done
 	// succ: 
+not_0:		// pred: MockIfElseIf_entry
+	branch r != 0x00000001 not_1
+	// succ:  l3 not_1
+l3:		// pred: not_0
+	x = 0x00000001
+	// succ:  done
+not_1:		// pred: not_0
+	branch r != 0x00000002 not_2
+	// succ:  l4 not_2
+l4:		// pred: not_1
+	x = 0x00000002
+	// succ:  done
+not_2:		// pred: not_1
+	branch r != 0x00000003 default
+	// succ:  l5 default
+l5:		// pred: not_2
+	x = 0x00000003
+	// succ:  done
+default:		// pred: not_2
+	x = 0xFFFFFFFF
+	// succ:  done
 
 void MockIfElseIf()
 {

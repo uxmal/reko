@@ -1,38 +1,39 @@
 // fn0C00_0000
 void fn0C00_0000(word16 ax, word16 si, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	word16 bx_10
 	branch ax != 0x0000 l0C00_000B
-	// succ:  3 2
-l0C00_000B:		// block 2, pred: 1
-	bx_10 = 0x1211
-	// succ:  4
-l0C00_0005:		// block 3, pred: 1
+	// succ:  l0C00_0005 l0C00_000B
+l0C00_0005:		// pred: l0C00_0000
 	bx_10 = 0x1234
-	// succ:  4
-l0C00_000E:		// block 4, pred: 2 3
+	// succ:  l0C00_000E
+l0C00_000E:		// pred: l0C00_000B l0C00_0005
 	store(Mem13[ds:si:word16]) = bx_10
 	return
-	// succ:  5
-fn0C00_0000_exit:		// block 5, pred: 4
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_000E
 	// succ: 
+l0C00_000B:		// pred: l0C00_0000
+	bx_10 = 0x1211
+	// succ:  l0C00_000E
 // fn0C00_0000
 void fn0C00_0000(word16 ax, word16 si, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	word16 bx_10
 	branch ax != 0x0000 l0C00_000B
-	// succ:  2 1
-l0C00_000B:		// block 1, pred: 0
-	bx_10 = 0x1211
-	// succ:  3
-l0C00_0005:		// block 2, pred: 0
+	// succ:  l0C00_0005 l0C00_000B
+l0C00_0000:
+l0C00_0005:		// pred: fn0C00_0000_entry
 	bx_10 = 0x1234
-	// succ:  3
-l0C00_000E:		// block 3, pred: 1 2
+	// succ:  l0C00_000E
+l0C00_000E:		// pred: l0C00_000B l0C00_0005
 	store(Mem13[ds:si:word16]) = bx_10
 	return
-	// succ:  4
-fn0C00_0000_exit:		// block 4, pred: 3
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_000E
 	// succ: 
+l0C00_000B:		// pred: fn0C00_0000_entry
+	bx_10 = 0x1211
+	// succ:  l0C00_000E

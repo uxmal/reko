@@ -1,98 +1,70 @@
 // fn100048B0
 void fn100048B0(word16 wArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
-fn100048B0_entry:		// block 0, pred:
+fn100048B0_entry:		// pred:
 	byte bl_50 = 0x00
 	branch wArg04 != 0x0000 l100048D1
-	// succ:  33 1
-l100048D1:		// block 1, pred: 0
+	// succ:  l100048C0 l100048D1
+l100048B0:
+l100048C0:		// pred: fn100048B0_entry
+	store(Mem281[0x1006B8E0:byte]) = 0x00
+	fn10004B58()
+	return
+	// succ:  fn100048B0_exit
+fn100048B0_exit:		// pred: l10004ADE l10004906 l100048C0
+	// succ: 
+l100048D1:		// pred: fn100048B0_entry
 	branch Mem0[dwArg0C:word32] != 0x00000000 l100048DC
-	// succ:  2 3
-l100048DA:		// block 2, pred: 1
+	// succ:  l100048DA l100048DC
+l100048DA:		// pred: l100048D1
 	bl_50 = 0x01
-	// succ:  3
-l100048DC:		// block 3, pred: 1 2
+	// succ:  l100048DC
+l100048DC:		// pred: l100048D1 l100048DA
 	word32 ecx_69 = Mem0[dwArg08 + 0x000000D0:word32]
 	word32 eax_74 = fn10004B27(dwArg10, dwArg08, ecx_69, 0x00003158, dwArg0C, 0x1000A700)
 	branch eax_74 != 0x00000000 l10004911
-	// succ:  32 4
-l10004911:		// block 4, pred: 3
+	// succ:  l10004906 l10004911
+l10004906:		// pred: l100048DC
+	store(Mem277[dwArg10:word16]) = 0xFF94
+	return
+	// succ:  fn100048B0_exit
+l10004911:		// pred: l100048DC
 	branch wArg04 != 0x0001 l1000491D
-	// succ:  5 6
-l10004917:		// block 5, pred: 4
+	// succ:  l10004917 l1000491D
+l10004917:		// pred: l10004911
 	store(Mem81[eax_74 + 0x00000204:byte]) = bl_50
-	// succ:  6
-l1000491D:		// block 6, pred: 4 5
+	// succ:  l1000491D
+l1000491D:		// pred: l10004911 l10004917
 	fn10004AED(eax_74)
 	word32 eax_84 = Mem82[eax_74:word32]
 	branch Mem82[eax_84:word16] != 0x0000 l10004ADE
-	// succ:  7 31
-l10004933:		// block 7, pred: 6
+	// succ:  l10004933 l10004ADE
+l10004933:		// pred: l1000491D
 	branch wArg04 <= 0x0000 l10004ABC
-	// succ:  8 9
-l1000493C:		// block 8, pred: 7
+	// succ:  l1000493C l10004ABC
+l1000493C:		// pred: l10004933
 	branch wArg04 > 0x0005 l10004ABC
-	// succ:  10 9
-l10004ABC:		// block 9, pred: 7 8
-	store(Mem207[eax_84:word16]) = 0x8A6C
-	// succ:  29
-l10004946:		// block 10, pred: 8
+	// succ:  l10004946 l10004ABC
+l10004946:		// pred: l1000493C
 	branch wArg04 != 0x0001 l1000496C
-	// succ:  28 11
-l1000496C:		// block 11, pred: 10
+	// succ:  l10004950 l1000496C
+l10004950:		// pred: l10004946
+	fn10004AED(eax_74)
+	store(Mem204[Mem82[Mem82[Mem82[eax_74 + 0x00000004:word32] + 0x0000000C:word32]:word32]:word32]) = 0x00000001
+	// succ:  l10004AC1
+l10004AC1:		// pred: l10004ABC l100049A8 l10004A62 l10004A44 l10004A48 l100049E8 l10004950
+	word32 eax_235 = Mem233[dwArg0C:word32]
+	branch eax_235 == 0x00000000 l10004ADE
+	// succ:  l10004ACB l10004ADE
+l10004ACB:		// pred: l10004AC1
+	fn10004B1E(Mem233[Mem233[eax_74 + 0x00000004:word32] + 0x000000D0:word32], eax_235)
+	// succ:  l10004ADE
+l10004ADE:		// pred: l1000491D l10004AC1 l10004ACB
+	return
+	// succ:  fn100048B0_exit
+l1000496C:		// pred: l10004946
 	branch wArg04 != 0x0002 l100049E2
-	// succ:  26 12
-l100049E2:		// block 12, pred: 11
-	branch wArg04 != 0x0003 l100049F6
-	// succ:  25 13
-l100049F6:		// block 13, pred: 12
-	branch wArg04 != 0x0004 l100049A8
-	// succ:  14 27
-l100049FC:		// block 14, pred: 13
-	byte bl_105 = Mem82[Mem82[eax_74 + 0x00000004:word32] + 0x000000E0:word32] != 0x00000000
-	// succ:  15
-l10004A08:		// block 15, pred: 14 18 24
-	fn10004B01(eax_74)
-	word32 eax_112 = Mem110[eax_74:word32]
-	word16 ax_113 = (word16) eax_112
-	branch Mem110[eax_112:word16] == 0x0000 l10004A1F
-	// succ:  16 17
-l10004A18:		// block 16, pred: 15
-	store(Mem116[eax_74 + 0x000000AC:byte]) = 0x00
-	// succ:  17
-l10004A1F:		// block 17, pred: 15 16
-	branch Mem117[eax_74 + 0x000000AD:byte] != 0x01 l10004A2D
-	// succ:  18 19
-l10004A28:		// block 18, pred: 17
-	branch Mem117[eax_112:word16] == 0x0000 l10004A08
-	// succ:  19 15
-l10004A2D:		// block 19, pred: 17 18
-	branch Mem117[eax_112:word16] != 0x0000 l10004A3B
-	// succ:  20 21
-l10004A32:		// block 20, pred: 19
-	ax_113 = fn10004AE8(eax_74)
-	// succ:  21
-l10004A3B:		// block 21, pred: 19 20
-	branch Mem117[eax_74 + 0x000000AC:byte] != 0x01 l10004A62
-	// succ:  23 22
-l10004A62:		// block 22, pred: 21
-	fn10004AFC(eax_74)
-	fn10004B06(eax_74)
-	fn10004B59(Mem117[eax_74 + 0x00000004:word32] + 0x00000034, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
-	fn10004B59(Mem117[eax_74 + 0x00000004:word32] + 0x00000040, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
-	fn10004B59(Mem117[eax_74 + 0x00000004:word32] + 0x00000060, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
-	// succ:  29
-l10004A44:		// block 23, pred: 21
-	branch bl_105 == 0x00000000 l10004AC1
-	// succ:  24 29
-l10004A48:		// block 24, pred: 23
-	icall Mem117[Mem117[eax_74 + 0x00000004:word32] + 0x000000E0:word32]
-	store(Mem160[Mem117[eax_74:word32]:word16]) = ax_113
-	branch Mem160[Mem160[eax_74:word32]:word16] != 0x0000 l10004AC1
-	// succ:  15 29
-l100049E8:		// block 25, pred: 12
-	fn10004AE3(eax_74)
-	// succ:  29
-l10004972:		// block 26, pred: 11
+	// succ:  l10004972 l100049E2
+l10004972:		// pred: l1000496C
 	store(Mem167[Mem82[eax_74 + 0x00000004:word32] + 0x00000030:word32]) = 0x00000000
 	fn10004AED(eax_74)
 	store(Mem170[Mem167[eax_74 + 0x00000004:word32] + 0x00000030:word32]) = 0x00000000
@@ -103,40 +75,71 @@ l10004972:		// block 26, pred: 11
 	word16 cx_179 = Mem178[eax_171 + 0x00000016:word16]
 	store(Mem181[eax_74 + 0x000000B8:word16]) = cx_179
 	ecx_69 = DPB(ecx_69, cx_179, 0, 16) (alias)
-	// succ:  27
-l100049A8:		// block 27, pred: 13 26
+	// succ:  l100049A8
+l100049A8:		// pred: l100049F6 l10004972
 	store(Mem190[eax_74 + 0x000000B8:word32]) = ecx_69
 	store(Mem192[eax_74 + 0x000000B6:word16]) = Mem190[eax_84 + 0x00000004:word16]
 	fn10004B10(eax_74, Mem192[eax_74 + 0x00000004:word32] + 0x00000010)
 	fn10004B0B(eax_74)
 	fn10004B19(eax_74)
 	fn10004AF2(eax_74)
-	// succ:  29
-l10004950:		// block 28, pred: 10
-	fn10004AED(eax_74)
-	store(Mem204[Mem82[Mem82[Mem82[eax_74 + 0x00000004:word32] + 0x0000000C:word32]:word32]:word32]) = 0x00000001
-	// succ:  29
-l10004AC1:		// block 29, pred: 9 27 22 23 24 25 28
-	word32 eax_235 = Mem233[dwArg0C:word32]
-	branch eax_235 == 0x00000000 l10004ADE
-	// succ:  30 31
-l10004ACB:		// block 30, pred: 29
-	fn10004B1E(Mem233[Mem233[eax_74 + 0x00000004:word32] + 0x000000D0:word32], eax_235)
-	// succ:  31
-l10004ADE:		// block 31, pred: 6 29 30
-	return
-	// succ:  34
-l10004906:		// block 32, pred: 3
-	store(Mem277[dwArg10:word16]) = 0xFF94
-	return
-	// succ:  34
-l100048C0:		// block 33, pred: 0
-	store(Mem281[0x1006B8E0:byte]) = 0x00
-	fn10004B58()
-	return
-	// succ:  34
-fn100048B0_exit:		// block 34, pred: 31 32 33
-	// succ: 
+	// succ:  l10004AC1
+l100049E2:		// pred: l1000496C
+	branch wArg04 != 0x0003 l100049F6
+	// succ:  l100049E8 l100049F6
+l100049E8:		// pred: l100049E2
+	fn10004AE3(eax_74)
+	// succ:  l10004AC1
+l100049F6:		// pred: l100049E2
+	branch wArg04 != 0x0004 l100049A8
+	// succ:  l100049FC l100049A8
+l100049FC:		// pred: l100049F6
+	byte bl_105 = Mem82[Mem82[eax_74 + 0x00000004:word32] + 0x000000E0:word32] != 0x00000000
+	// succ:  l10004A08
+l10004A08:		// pred: l100049FC l10004A28 l10004A48
+	fn10004B01(eax_74)
+	word32 eax_112 = Mem110[eax_74:word32]
+	word16 ax_113 = (word16) eax_112
+	branch Mem110[eax_112:word16] == 0x0000 l10004A1F
+	// succ:  l10004A18 l10004A1F
+l10004A18:		// pred: l10004A08
+	store(Mem116[eax_74 + 0x000000AC:byte]) = 0x00
+	// succ:  l10004A1F
+l10004A1F:		// pred: l10004A08 l10004A18
+	branch Mem117[eax_74 + 0x000000AD:byte] != 0x01 l10004A2D
+	// succ:  l10004A28 l10004A2D
+l10004A28:		// pred: l10004A1F
+	branch Mem117[eax_112:word16] == 0x0000 l10004A08
+	// succ:  l10004A2D l10004A08
+l10004A2D:		// pred: l10004A1F l10004A28
+	branch Mem117[eax_112:word16] != 0x0000 l10004A3B
+	// succ:  l10004A32 l10004A3B
+l10004A32:		// pred: l10004A2D
+	ax_113 = fn10004AE8(eax_74)
+	// succ:  l10004A3B
+l10004A3B:		// pred: l10004A2D l10004A32
+	branch Mem117[eax_74 + 0x000000AC:byte] != 0x01 l10004A62
+	// succ:  l10004A44 l10004A62
+l10004A44:		// pred: l10004A3B
+	branch bl_105 == 0x00000000 l10004AC1
+	// succ:  l10004A48 l10004AC1
+l10004A48:		// pred: l10004A44
+	icall Mem117[Mem117[eax_74 + 0x00000004:word32] + 0x000000E0:word32]
+	store(Mem160[Mem117[eax_74:word32]:word16]) = ax_113
+	branch Mem160[Mem160[eax_74:word32]:word16] != 0x0000 l10004AC1
+	// succ:  l10004A08 l10004AC1
+l10004A5D:		// pred:
+	// succ:  l10004A08
+l10004A62:		// pred: l10004A3B
+	fn10004AFC(eax_74)
+	fn10004B06(eax_74)
+	fn10004B59(Mem117[eax_74 + 0x00000004:word32] + 0x00000034, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
+	fn10004B59(Mem117[eax_74 + 0x00000004:word32] + 0x00000040, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
+	fn10004B59(Mem117[eax_74 + 0x00000004:word32] + 0x00000060, 0x00000000, 0x00000000, 0x00000000, 0x00000000)
+	// succ:  l10004AC1
+l10004ABC:		// pred: l10004933 l1000493C
+	store(Mem207[eax_84:word16]) = 0x8A6C
+	// succ:  l10004AC1
 
 void fn100048B0(word16 wArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
 {
@@ -239,12 +242,12 @@ l10004AC1:
 ===========================
 // fn10004AE3
 void fn10004AE3(word32 dwArg00)
-fn10004AE3_entry:		// block 0, pred:
-	// succ:  1
-l10004AE3:		// block 1, pred: 0
+fn10004AE3_entry:		// pred:
+	// succ:  l10004AE3
+l10004AE3:		// pred: fn10004AE3_entry
 	return
-	// succ:  2
-fn10004AE3_exit:		// block 2, pred: 1
+	// succ:  fn10004AE3_exit
+fn10004AE3_exit:		// pred: l10004AE3
 	// succ: 
 
 void fn10004AE3(word32 dwArg00)
@@ -254,12 +257,12 @@ void fn10004AE3(word32 dwArg00)
 ===========================
 // fn10004AE8
 word16 fn10004AE8(word32 dwArg00)
-fn10004AE8_entry:		// block 0, pred:
-	// succ:  1
-l10004AE8:		// block 1, pred: 0
+fn10004AE8_entry:		// pred:
+	// succ:  l10004AE8
+l10004AE8:		// pred: fn10004AE8_entry
 	return (word16) dwArg00
-	// succ:  2
-fn10004AE8_exit:		// block 2, pred: 1
+	// succ:  fn10004AE8_exit
+fn10004AE8_exit:		// pred: l10004AE8
 	// succ: 
 
 word16 fn10004AE8(word32 dwArg00)
@@ -269,12 +272,12 @@ word16 fn10004AE8(word32 dwArg00)
 ===========================
 // fn10004AED
 void fn10004AED(word32 dwArg00)
-fn10004AED_entry:		// block 0, pred:
-	// succ:  1
-l10004AED:		// block 1, pred: 0
+fn10004AED_entry:		// pred:
+	// succ:  l10004AED
+l10004AED:		// pred: fn10004AED_entry
 	return
-	// succ:  2
-fn10004AED_exit:		// block 2, pred: 1
+	// succ:  fn10004AED_exit
+fn10004AED_exit:		// pred: l10004AED
 	// succ: 
 
 void fn10004AED(word32 dwArg00)
@@ -284,12 +287,12 @@ void fn10004AED(word32 dwArg00)
 ===========================
 // fn10004AF2
 void fn10004AF2(word32 dwArg00)
-fn10004AF2_entry:		// block 0, pred:
-	// succ:  1
-l10004AF2:		// block 1, pred: 0
+fn10004AF2_entry:		// pred:
+	// succ:  l10004AF2
+l10004AF2:		// pred: fn10004AF2_entry
 	return
-	// succ:  2
-fn10004AF2_exit:		// block 2, pred: 1
+	// succ:  fn10004AF2_exit
+fn10004AF2_exit:		// pred: l10004AF2
 	// succ: 
 
 void fn10004AF2(word32 dwArg00)
@@ -299,12 +302,12 @@ void fn10004AF2(word32 dwArg00)
 ===========================
 // fn10004AFC
 void fn10004AFC(word32 dwArg00)
-fn10004AFC_entry:		// block 0, pred:
-	// succ:  1
-l10004AFC:		// block 1, pred: 0
+fn10004AFC_entry:		// pred:
+	// succ:  l10004AFC
+l10004AFC:		// pred: fn10004AFC_entry
 	return
-	// succ:  2
-fn10004AFC_exit:		// block 2, pred: 1
+	// succ:  fn10004AFC_exit
+fn10004AFC_exit:		// pred: l10004AFC
 	// succ: 
 
 void fn10004AFC(word32 dwArg00)
@@ -314,12 +317,12 @@ void fn10004AFC(word32 dwArg00)
 ===========================
 // fn10004B01
 void fn10004B01(word32 dwArg00)
-fn10004B01_entry:		// block 0, pred:
-	// succ:  1
-l10004B01:		// block 1, pred: 0
+fn10004B01_entry:		// pred:
+	// succ:  l10004B01
+l10004B01:		// pred: fn10004B01_entry
 	return
-	// succ:  2
-fn10004B01_exit:		// block 2, pred: 1
+	// succ:  fn10004B01_exit
+fn10004B01_exit:		// pred: l10004B01
 	// succ: 
 
 void fn10004B01(word32 dwArg00)
@@ -329,12 +332,12 @@ void fn10004B01(word32 dwArg00)
 ===========================
 // fn10004B06
 void fn10004B06(word32 dwArg00)
-fn10004B06_entry:		// block 0, pred:
-	// succ:  1
-l10004B06:		// block 1, pred: 0
+fn10004B06_entry:		// pred:
+	// succ:  l10004B06
+l10004B06:		// pred: fn10004B06_entry
 	return
-	// succ:  2
-fn10004B06_exit:		// block 2, pred: 1
+	// succ:  fn10004B06_exit
+fn10004B06_exit:		// pred: l10004B06
 	// succ: 
 
 void fn10004B06(word32 dwArg00)
@@ -344,12 +347,12 @@ void fn10004B06(word32 dwArg00)
 ===========================
 // fn10004B0B
 void fn10004B0B(word32 dwArg00)
-fn10004B0B_entry:		// block 0, pred:
-	// succ:  1
-l10004B0B:		// block 1, pred: 0
+fn10004B0B_entry:		// pred:
+	// succ:  l10004B0B
+l10004B0B:		// pred: fn10004B0B_entry
 	return
-	// succ:  2
-fn10004B0B_exit:		// block 2, pred: 1
+	// succ:  fn10004B0B_exit
+fn10004B0B_exit:		// pred: l10004B0B
 	// succ: 
 
 void fn10004B0B(word32 dwArg00)
@@ -359,12 +362,12 @@ void fn10004B0B(word32 dwArg00)
 ===========================
 // fn10004B10
 void fn10004B10(word32 dwArg00, word32 dwArg04)
-fn10004B10_entry:		// block 0, pred:
-	// succ:  1
-l10004B10:		// block 1, pred: 0
+fn10004B10_entry:		// pred:
+	// succ:  l10004B10
+l10004B10:		// pred: fn10004B10_entry
 	return
-	// succ:  2
-fn10004B10_exit:		// block 2, pred: 1
+	// succ:  fn10004B10_exit
+fn10004B10_exit:		// pred: l10004B10
 	// succ: 
 
 void fn10004B10(word32 dwArg00, word32 dwArg04)
@@ -374,12 +377,12 @@ void fn10004B10(word32 dwArg00, word32 dwArg04)
 ===========================
 // fn10004B19
 void fn10004B19(word32 dwArg00)
-fn10004B19_entry:		// block 0, pred:
-	// succ:  1
-l10004B19:		// block 1, pred: 0
+fn10004B19_entry:		// pred:
+	// succ:  l10004B19
+l10004B19:		// pred: fn10004B19_entry
 	return
-	// succ:  2
-fn10004B19_exit:		// block 2, pred: 1
+	// succ:  fn10004B19_exit
+fn10004B19_exit:		// pred: l10004B19
 	// succ: 
 
 void fn10004B19(word32 dwArg00)
@@ -389,12 +392,12 @@ void fn10004B19(word32 dwArg00)
 ===========================
 // fn10004B1E
 void fn10004B1E(word32 dwArg00, word32 dwArg04)
-fn10004B1E_entry:		// block 0, pred:
-	// succ:  1
-l10004B1E:		// block 1, pred: 0
+fn10004B1E_entry:		// pred:
+	// succ:  l10004B1E
+l10004B1E:		// pred: fn10004B1E_entry
 	return
-	// succ:  2
-fn10004B1E_exit:		// block 2, pred: 1
+	// succ:  fn10004B1E_exit
+fn10004B1E_exit:		// pred: l10004B1E
 	// succ: 
 
 void fn10004B1E(word32 dwArg00, word32 dwArg04)
@@ -404,9 +407,9 @@ void fn10004B1E(word32 dwArg00, word32 dwArg04)
 ===========================
 // fn10004B27
 word32 fn10004B27(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, word32 dwArg14)
-fn10004B27_entry:		// block 0, pred:
-	// succ:  1
-l10004B27:		// block 1, pred: 0
+fn10004B27_entry:		// pred:
+	// succ:  l10004B27
+l10004B27:		// pred: fn10004B27_entry
 	word32 edx_10 = Mem0[0x20000000:word32]
 	store(Mem12[edx_10 + 0x00000004:word32]) = dwArg00
 	store(Mem14[edx_10 + 0x00000008:word32]) = dwArg04
@@ -415,8 +418,8 @@ l10004B27:		// block 1, pred: 0
 	store(Mem20[edx_10 + 0x00000014:word32]) = dwArg10
 	store(Mem22[edx_10 + 0x0000001C:word32]) = dwArg14
 	return dwArg14
-	// succ:  2
-fn10004B27_exit:		// block 2, pred: 1
+	// succ:  fn10004B27_exit
+fn10004B27_exit:		// pred: l10004B27
 	// succ: 
 
 word32 fn10004B27(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, word32 dwArg14)
@@ -433,12 +436,12 @@ word32 fn10004B27(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C
 ===========================
 // fn10004B58
 void fn10004B58()
-fn10004B58_entry:		// block 0, pred:
-	// succ:  1
-l10004B58:		// block 1, pred: 0
+fn10004B58_entry:		// pred:
+	// succ:  l10004B58
+l10004B58:		// pred: fn10004B58_entry
 	return
-	// succ:  2
-fn10004B58_exit:		// block 2, pred: 1
+	// succ:  fn10004B58_exit
+fn10004B58_exit:		// pred: l10004B58
 	// succ: 
 
 void fn10004B58()
@@ -448,9 +451,9 @@ void fn10004B58()
 ===========================
 // fn10004B59
 void fn10004B59(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
-fn10004B59_entry:		// block 0, pred:
-	// succ:  1
-l10004B59:		// block 1, pred: 0
+fn10004B59_entry:		// pred:
+	// succ:  l10004B59
+l10004B59:		// pred: fn10004B59_entry
 	word32 edx_9 = Mem0[0x20000000:word32]
 	store(Mem11[edx_9 + 0x00000004:word32]) = dwArg00
 	store(Mem13[edx_9 + 0x00000008:word32]) = dwArg04
@@ -458,8 +461,8 @@ l10004B59:		// block 1, pred: 0
 	store(Mem17[edx_9 + 0x00000010:word32]) = dwArg0C
 	store(Mem19[edx_9 + 0x00000014:word32]) = dwArg10
 	return
-	// succ:  2
-fn10004B59_exit:		// block 2, pred: 1
+	// succ:  fn10004B59_exit
+fn10004B59_exit:		// pred: l10004B59
 	// succ: 
 
 void fn10004B59(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
