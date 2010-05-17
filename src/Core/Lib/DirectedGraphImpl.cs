@@ -318,7 +318,12 @@ namespace Decompiler.Core.Lib
 
             public void CopyTo(T[] array, int arrayIndex)
             {
-                throw new NotImplementedException();
+                var e = GetEnumerator();
+                int i = arrayIndex;
+                while (e.MoveNext() && i < array.Length)
+                {
+                    array[i++] = e.Current;
+                }
             }
 
             public int Count

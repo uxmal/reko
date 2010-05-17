@@ -69,12 +69,12 @@ namespace Decompiler.Core.Code
 
 	public class CallInstruction : CallBase
 	{
-		private Procedure proc;
+		private ProcedureBase proc;
 
         public CallInstruction(ProcedureConstant pc, CallSite site)
             : base(pc, site)
         {
-            this.proc = (Procedure) pc.Procedure;
+            this.proc = pc.Procedure;
         }
 
 
@@ -88,7 +88,7 @@ namespace Decompiler.Core.Code
 			v.VisitCallInstruction(this);
 		}
 
-		public Procedure Callee
+		public ProcedureBase Callee
 		{
 			get { return proc; }
 			set { proc = value; }

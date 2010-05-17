@@ -62,7 +62,10 @@ namespace Decompiler.UnitTests.Mocks
 						CallInstruction call = stm.Instruction as CallInstruction;
 						if (call == null)
 							continue;
-						prog.CallGraph.AddEdge(stm, call.Callee);
+                        var callee = call.Callee as Procedure;
+                        if (callee == null)
+                            continue;
+						prog.CallGraph.AddEdge(stm, callee);
 					}
 				}
 			}

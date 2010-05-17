@@ -238,7 +238,10 @@ namespace Decompiler.Analysis
 		public override void VisitCallInstruction(CallInstruction ci)
 		{
 			base.VisitCallInstruction(ci);
-			ProcedureFlow pf = flow[ci.Callee];
+            var callee = ci.Callee as Procedure;
+            if (callee == null)
+                return;             //$TODO: get trash information from signature?
+			ProcedureFlow pf = flow[callee];
 			foreach (int r in pf.TrashedRegisters)
 			{
 				RegisterStorage reg = new RegisterStorage(prog.Architecture.GetRegister(r));
