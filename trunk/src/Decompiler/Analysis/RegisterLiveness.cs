@@ -255,7 +255,10 @@ namespace Decompiler.Analysis
 
 		public void MarkLiveStackParameters(CallInstruction ci)
 		{
-			int cBegin = ci.Callee.Frame.GetStackArgumentSpace();
+            var callee = ci.Callee as Procedure;
+            if (callee == null)
+                return;         //$TODO: use signature to mark stack liveness.
+			int cBegin = callee.Frame.GetStackArgumentSpace();
 			foreach (Identifier id in Procedure.Frame.Identifiers)
 			{
 				StackLocalStorage sl = id.Storage as StackLocalStorage;
@@ -518,7 +521,7 @@ namespace Decompiler.Analysis
 
 				// Update trash information.
 
-				ProcedureFlow pi = mpprocData[ci.Callee];
+				ProcedureFlow pi = mpprocData[(Procedure)ci.Callee];
 				ProcedureFlow item = mpprocData[proc];
 
 				// The registers that are still live before a call are those

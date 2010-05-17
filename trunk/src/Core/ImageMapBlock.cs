@@ -26,8 +26,6 @@ namespace Decompiler.Core
 
 	public class ImageMapBlock : ImageMapItem
 	{
-		public ImageMapBlock	blockNext;
-		public ImageMapBlock	blockIf;
 		private Procedure		proc;
 
 		public Procedure Procedure

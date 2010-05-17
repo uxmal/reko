@@ -66,6 +66,8 @@ namespace Decompiler.Scanning
 			this.eventListener = eventListener;
 			this.vectorUses = new Map<Address,VectorUse>();
             this.syscalls = new SortedList<Address, SystemService>();
+
+            //$REVIEW: All these queues... could they be replaced with a priority queue?
 			qStarts = new Queue<WorkItem>();
 			qProcs = new Queue<WorkItem>();
 			qJumps = new Queue<WorkItem>();
@@ -102,8 +104,6 @@ namespace Decompiler.Scanning
 		/// <param name="proc"></param>
 		private void EnqueueJumpTarget(Address addrTarget, ProcessorState st, Procedure proc)
 		{
-            if (addrTarget.Offset == 0x28D)
-                addrTarget.ToString();
 			Debug.Assert(program.Image.IsValidAddress(addrTarget), string.Format("{0} is not a valid address.", addrTarget));
 
 			Debug.Assert(proc != null);
@@ -416,7 +416,7 @@ namespace Decompiler.Scanning
                 {
                     // We've already parsed this code, so it must be part of another procedure.
                     if (blocksVisited.ContainsKey(bl))
-                        bl.Procedure = null;				// means that this is a block that is jumped into.
+                        bl. Procedure = null;				// means that this is a block that is jumped into.
                 }
             }
             if (program.Image.IsValidAddress(wi.Address))

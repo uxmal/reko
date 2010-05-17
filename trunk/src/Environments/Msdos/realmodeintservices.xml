@@ -858,12 +858,8 @@
 	  <regvalue reg="ah">48</regvalue>
 	</syscallinfo>
 	<signature>
-	  <return>
-		<flag>C</flag>
-	  </return>
-	  <arg>
-		<reg>es</reg>
-	  </arg>
+	  <return><flag>C</flag></return>
+	  <arg><reg>bx</reg></arg>
 	</signature>
   </service>
   <service name="msdos_free_memory_block">

@@ -29,7 +29,7 @@ namespace Decompiler.Core
 		{
 		}
 
-		public virtual ProcedureSignature GetProcedureSignature(Procedure proc)
+		public virtual ProcedureSignature GetProcedureSignature(ProcedureBase proc)
 		{
 			return proc.Signature;
 		}
@@ -55,7 +55,7 @@ namespace Decompiler.Core
 		/// a signature yet.</returns>
 		public bool RewriteCall(Procedure proc, IProcessorArchitecture arch, Statement stm, CallInstruction call)
 		{
-			Procedure procCallee = call.Callee;
+			ProcedureBase procCallee = call.Callee;
 			ProcedureSignature sigCallee = GetProcedureSignature(procCallee);
 			ProcedureConstant fn = new ProcedureConstant(arch.PointerType, procCallee);
             if (sigCallee == null || !sigCallee.ArgumentsValid)

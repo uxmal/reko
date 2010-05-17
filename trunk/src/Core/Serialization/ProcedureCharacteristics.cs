@@ -31,7 +31,6 @@ namespace Decompiler.Core.Serialization
 	{
         private bool allocator;
 		private bool isAlloca;
-		private bool terminates;
         private ArraySizeCharacteristic arraySize;
 
 		public ProcedureCharacteristics()
@@ -48,11 +47,7 @@ namespace Decompiler.Core.Serialization
 
 		[XmlElement("terminates")]
 		[DefaultValue(false)]
-		public virtual bool Terminates
-		{
-			get { return terminates; }
-			set { terminates = value; }
-		}
+		public virtual bool Terminates { get;set;} 
 
 		public void Write()
 		{

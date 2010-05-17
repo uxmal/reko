@@ -160,7 +160,7 @@ namespace Decompiler.Analysis
 		public void UntangleProcedures()
 		{
 			eventListener.ShowStatus("Finding trashed registers.");
-            TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, flow, eventListener);
+            var trf = new TrashedRegisterFinder(prog, flow, eventListener);
 			trf.Compute();
             eventListener.ShowStatus("Computing register liveness.");
             RegisterLiveness rl = RegisterLiveness.Compute(prog, flow, eventListener);

@@ -184,7 +184,7 @@ namespace Decompiler.UnitTests.Mocks
 			return Emit(ci);
 		}
 
-		public Statement Call(Procedure callee)
+		public Statement Call(ProcedureBase callee)
 		{
             ProcedureConstant c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
 			CallInstruction ci = new CallInstruction(c, new CallSite(0, 0));
@@ -656,6 +656,12 @@ namespace Decompiler.UnitTests.Mocks
 			}
 		}
 
+        public void TerminateProcedure()
+        {
+            TerminateBlock();
+            proc.AddEdge(lastBlock, proc.ExitBlock);
+        }
+
 		public ICollection<ProcUpdater> UnresolvedProcedures
 		{
 			get { return unresolvedProcedures; }
@@ -697,11 +703,15 @@ namespace Decompiler.UnitTests.Mocks
 			return Emit(new UseInstruction(id));
 		}
 
+        public Constant Byte(byte b)
+        {
+            return new Constant(PrimitiveType.Byte, b);
+        }
+
 		public Constant Word16(short n)
 		{
 			return new Constant(PrimitiveType.Word16, n);
 		}
-
 
 		public Constant Word16(uint n)
 		{
@@ -717,5 +727,6 @@ namespace Decompiler.UnitTests.Mocks
         {
             return new BinaryExpression(Operator.Xor, a.DataType, a, b);
         }
+
     }
 }
