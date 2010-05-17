@@ -28,14 +28,12 @@ namespace Decompiler.Analysis
 {
     public class TerminationAnalysis : InstructionVisitorBase
     {
-        private HashSet<Block> terminatingBlocks;
-        private HashSet<Procedure> terminatingProcedures;
         private Block curBlock;
+        private ProgramDataFlow flow;
 
-        public TerminationAnalysis()
+        public TerminationAnalysis(ProgramDataFlow flow)
         {
-            this.terminatingBlocks = new HashSet<Block>();
-            this.terminatingProcedures = new HashSet<Procedure>();
+            this.flow = flow;
         }
 
 
@@ -44,37 +42,49 @@ namespace Decompiler.Analysis
             curBlock = b;
             foreach (var stm in b.Statements)
             {
-                if (terminatingBlocks.Contains(b))
+                if (flow[b].TerminatesProcess)
                     return;
                 stm.Instruction.Accept(this);
             }
         }
 
-        public override void VisitCallInstruction(CallInstruction ci)
+        public override void VisitApplication(Application appl)
         {
-            base.VisitCallInstruction(ci);
-            if (ci.Callee.Characteristics.Terminates)
+            base.VisitApplication(appl);
+            var pc = appl.Procedure as ProcedureConstant;
+            if (pc == null)
+                return;
+            if (ProcedureTerminates(pc.Procedure))
             {
-                terminatingBlocks.Add(curBlock);
-            }
-            else
-            {
-                var callee = ci.Callee as Procedure;
-                if (callee != null && Terminates(callee))
-                    terminatingBlocks.Add(curBlock);
+                flow[curBlock].TerminatesProcess = true;
             }
         }
 
-        public bool Terminates(Block b)
+        private bool ProcedureTerminates(ProcedureBase proc)
         {
-            return terminatingBlocks.Contains(b);
+            if (proc.Name.Contains("msdos_terminate"))//$DEBUG
+                proc.ToString();
+            if (proc.Characteristics.Terminates)
+                return true;
+            var callee = proc as Procedure;
+            return (callee != null && flow[callee].TerminatesProcess);
         }
+
+        public override void VisitCallInstruction(CallInstruction ci)
+        {
+            base.VisitCallInstruction(ci);
+            if (ProcedureTerminates(ci.Callee))
+            {
+                flow[curBlock].TerminatesProcess = true;
+            }
+        }
+
 
         public void Analyze(Procedure procedure)
         {
             Debug.WriteLine("Analyzing: " + procedure.Name);
             if (!CanReachEntryFromExit(procedure))
-                terminatingProcedures.Add(procedure);
+                flow[procedure].TerminatesProcess = true;
         }
 
         private bool CanReachEntryFromExit(Procedure procedure)
@@ -89,18 +99,15 @@ namespace Decompiler.Analysis
                     return true;
                 if (visited.Contains(b))
                     continue;
+                visited.Add(b);
                 Analyze(b);
-                if (Terminates(b))
-                    continue;
-                foreach (var p in b.Pred)
-                    stack.Push(p);
+                if (!flow[b].TerminatesProcess)
+                {
+                    foreach (var p in b.Pred)
+                        stack.Push(p);
+                }
             }
             return false;
-        }
-
-        public bool Terminates(Procedure proc)
-        {
-            return terminatingProcedures.Contains(proc);
         }
 
         public void Analyze(Program program)

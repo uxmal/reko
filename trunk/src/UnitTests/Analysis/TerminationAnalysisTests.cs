@@ -34,6 +34,7 @@ namespace Decompiler.UnitTests.Analysis
     {
         ProcedureBase exit;
         ProgramMock progMock;
+        private ProgramDataFlow flow;
 
         [SetUp]
         public void Setup()
@@ -44,7 +45,9 @@ namespace Decompiler.UnitTests.Analysis
             exit.Characteristics.Terminates = true;
 
             progMock = new ProgramMock();
+            flow = new ProgramDataFlow();
         }
+
         [Test]
         public void BlockTerminates()
         {
@@ -53,9 +56,10 @@ namespace Decompiler.UnitTests.Analysis
             var b = m.CurrentBlock;
             m.Return();
 
-            var a = new TerminationAnalysis();
+            var a = new TerminationAnalysis(flow);
+            flow[b] = new BlockFlow(b, null);
             a.Analyze(b);
-            Assert.IsTrue(a.Terminates(b));
+            Assert.IsTrue(flow[b].TerminatesProcess);
         }
 
         [Test]
@@ -65,54 +69,63 @@ namespace Decompiler.UnitTests.Analysis
             m.Store(m.Word32(0x1231), m.Byte(0));
             var b = m.Block;
             m.Return();
-            var a = new TerminationAnalysis();
+            var a = new TerminationAnalysis(flow);
+            flow[b] = new BlockFlow(b, null);
             a.Analyze(b);
-            Assert.IsFalse(a.Terminates(b));
+            Assert.IsFalse(flow[b].TerminatesProcess);
         }
 
         [Test]
         public void ProcedureTerminatesIfBlockTerminates()
         {
-            var m = new ProcedureMock();
-            m.Call(exit);
-            m.Return();
-            var proc = m.Procedure;
+            var proc = CompileProcedure("proc", delegate(ProcedureMock m)
+            {
+                m.Call(exit);
+                m.Return();
+            });
+            var prog = progMock.BuildProgram();
 
-            var a = new TerminationAnalysis();
+            flow = new ProgramDataFlow(prog);
+            var a = new TerminationAnalysis(flow);
             a.Analyze(proc);
-            Assert.IsTrue(a.Terminates(proc));
+            Assert.IsTrue(flow[proc].TerminatesProcess);
         }
 
         [Test]
         public void ProcedureDoesntTerminatesIfOneBranchDoesnt()
         {
-            var m = new ProcedureMock();
-            m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "bye");
-            m.Call(exit);
-            m.Label("bye");
-            m.Return();
+            var proc = CompileProcedure("proc", delegate(ProcedureMock m)
+            {
+                m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "bye");
+                m.Call(exit);
+                m.Label("bye");
+                m.Return();
+            });
+            var prog = progMock.BuildProgram();
 
-            var proc = m.Procedure;
-            var a = new TerminationAnalysis();
+            flow = new ProgramDataFlow(prog);
+            var a = new TerminationAnalysis(flow);
             a.Analyze(proc);
-            Assert.IsFalse(a.Terminates(proc));
+            Assert.IsFalse(flow[proc].TerminatesProcess);
         }
 
         [Test]
         public void ProcedureTerminatesIfAllBranchesDo()
         {
-            var m = new ProcedureMock();
-            m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "whee");
-            m.Call(exit);
-            m.TerminateProcedure();
-            m.Label("whee");
-            m.Call(exit);
-            m.TerminateProcedure();
-
-            var proc = m.Procedure;
-            var a = new TerminationAnalysis();
+            var proc = CompileProcedure("proc", delegate(ProcedureMock m)
+            {
+                m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "whee");
+                m.Call(exit);
+                m.FinishProcedure();
+                m.Label("whee");
+                m.Call(exit);
+                m.FinishProcedure();
+            });
+            var prog = progMock.BuildProgram();
+            flow = new ProgramDataFlow(prog);
+            var a = new TerminationAnalysis(flow);
             a.Analyze(proc);
-            Assert.IsTrue(a.Terminates(proc));
+            Assert.IsTrue(flow[proc].TerminatesProcess);
         }
 
         [Test]
@@ -121,7 +134,7 @@ namespace Decompiler.UnitTests.Analysis
             var sub = CompileProcedure("sub", delegate(ProcedureMock m)
             {
                 m.Call(exit);
-                m.TerminateProcedure();
+                m.FinishProcedure();
             });
 
             Procedure caller = CompileProcedure("caller", delegate(ProcedureMock m)
@@ -130,12 +143,27 @@ namespace Decompiler.UnitTests.Analysis
                 m.Return();
             });
 
-            var a = new TerminationAnalysis();
-            a.Analyze(progMock.BuildProgram());
-            Assert.IsTrue(a.Terminates(sub));
-            Assert.IsTrue(a.Terminates(caller));
+            var prog = progMock.BuildProgram();
+            flow = new ProgramDataFlow(prog);
+            var a = new TerminationAnalysis(flow);
+            a.Analyze(prog);
+            Assert.IsTrue(flow[sub].TerminatesProcess);
+            Assert.IsTrue(flow[caller].TerminatesProcess);
+        }
 
-
+        [Test]
+        public void TerminatingApplication()
+        {
+            var test= CompileProcedure("test", delegate(ProcedureMock m)
+            {
+                m.SideEffect(m.Fn(new ProcedureConstant(PrimitiveType.Pointer32, exit)));
+                m.FinishProcedure();
+            });
+            var prog = progMock.BuildProgram();
+            flow = new ProgramDataFlow(prog);
+            var a = new TerminationAnalysis(flow);
+            a.Analyze(test);
+            Assert.IsTrue(flow[test].TerminatesProcess);
         }
 
         private Procedure CompileProcedure(string procName, Action<ProcedureMock> builder)

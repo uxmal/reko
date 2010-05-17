@@ -159,12 +159,14 @@ namespace Decompiler.Analysis
         /// </returns>
 		public void UntangleProcedures()
 		{
+            eventListener.ShowStatus("Finding terminating procedures.");
+            var term = new TerminationAnalysis(flow);
+            term.Analyze(prog);
 			eventListener.ShowStatus("Finding trashed registers.");
             var trf = new TrashedRegisterFinder(prog, flow, eventListener);
 			trf.Compute();
             eventListener.ShowStatus("Computing register liveness.");
-            RegisterLiveness rl = RegisterLiveness.Compute(prog, flow, eventListener);
-
+            var rl = RegisterLiveness.Compute(prog, flow, eventListener);
             eventListener.ShowStatus("Rewriting calls.");
 			GlobalCallRewriter.Rewrite(prog, flow);
 		}

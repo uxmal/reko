@@ -26,7 +26,7 @@ using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
@@ -40,6 +40,7 @@ namespace Decompiler.UnitTests.Analysis
 		private ProgramDataFlow mpprocflow;
 		private RegisterLiveness rl;
 		private ProcedureMock m;
+        private HashSet<Procedure> terminates;
 
 		[SetUp]
 		public void Setup()
@@ -50,6 +51,7 @@ namespace Decompiler.UnitTests.Analysis
 			proc = m.Procedure;
 			f = proc.Frame;
 			mpprocflow = new ProgramDataFlow();
+            terminates = new HashSet<Procedure>();
 			rl = new RegisterLiveness(prog, mpprocflow, null);
 			rl.Procedure = proc;
 			rl.IdentifierLiveness.BitSet = prog.Architecture.CreateRegisterBitset();
@@ -315,7 +317,6 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.IsTrue(bf.DataOut[Registers.esi.Number], "Unmentioned registers may be live out");
 		}
 
-		[Ignore("Decide how to implement this")]
 		[Test]
 		public void TerminatingProcedure()
 		{
@@ -339,8 +340,8 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			StringWriter sw = new StringWriter();
 			vl.Write(sw, "");
-			SortedList sl = new SortedList();
-			foreach (object o in vl.LiveStorages.Keys)
+            var sl = new SortedList<string, string>();
+			foreach (Storage o in vl.LiveStorages.Keys)
 			{
 				string s = o.ToString();
 				sl.Add(s, s);

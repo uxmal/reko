@@ -39,17 +39,21 @@ namespace Decompiler.UnitTests.Mocks
 			prog = new Program();
 		}
 
-		public void Add(ProcedureMock mock)
-		{
-			++procCount;
-			mock.ProgramMock = this;
-			Procedure proc = mock.Procedure;
-			proc.RenumberBlocks();
-			prog.Procedures[new Address(procCount)] = proc;
-			nameToProcedure.Add(mock.Procedure.Name, proc);
-			Console.WriteLine(mock.GetType().Name);
-			unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
-		}
+        public void Add(Procedure proc)
+        {
+            ++procCount;
+            prog.Procedures[new Address(procCount)] = proc;
+            nameToProcedure.Add(proc.Name, proc);
+        }
+
+        public void Add(ProcedureMock mock)
+        {
+            mock.ProgramMock = this;
+            Procedure proc = mock.Procedure;
+            proc.RenumberBlocks();
+            Add(proc);
+            unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
+        }
 
 		public void BuildCallgraph()
 		{

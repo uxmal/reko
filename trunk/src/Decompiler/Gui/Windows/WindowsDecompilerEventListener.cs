@@ -167,7 +167,7 @@ namespace Decompiler.Gui.Windows
 
         #region DecompilerEventListener Members
 
-        void DecompilerEventListener.AddDiagnostic(Diagnostic d)
+        public void AddDiagnostic(Diagnostic d)
         {
             if (dlg != null)
                 dlg.Invoke(new Action<Diagnostic>(diagnosticService.AddDiagnostic), d);
@@ -177,16 +177,14 @@ namespace Decompiler.Gui.Windows
 
         void DecompilerEventListener.AddErrorDiagnostic(Address address, string format, params object[] args)
         {
-            dlg.Invoke(new Action<Diagnostic>(
-                diagnosticService.AddDiagnostic),
-                new ErrorDiagnostic(address, format, args));
+            var e = new ErrorDiagnostic(address, format, args);
+            AddDiagnostic(e);
         }
 
         void DecompilerEventListener.AddWarningDiagnostic(Address address, string format, params object[] args)
         {
-            dlg.Invoke(new Action<Diagnostic>(
-                diagnosticService.AddDiagnostic), 
-                new WarningDiagnostic(address, format, args));
+            var w = new WarningDiagnostic(address, format, args);
+            AddDiagnostic(w);
         }
 
         void DecompilerEventListener.ShowStatus(string caption)
@@ -196,6 +194,8 @@ namespace Decompiler.Gui.Windows
 
         private void ShowStatus(string caption)
         {
+            if (dlg == null)
+                return;
             Interlocked.Exchange<string>(ref status, caption);
             dlg.Worker.ReportProgress(STATUS_UPDATE_ONLY);
         }

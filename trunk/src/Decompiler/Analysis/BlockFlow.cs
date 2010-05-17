@@ -40,6 +40,7 @@ namespace Decompiler.Analysis
 		public Dictionary<Storage,int> StackVarsOut;    // stack-based storages that are live at the end of the block.
 		public uint grfTrashedIn;					    // each bit corresnpots to a condition code register that is trashed on entrance.
 		public Dictionary<Storage, Storage> TrashedIn;	// maps which identifiers are trashed on entrance to the block.
+        public bool TerminatesProcess;                  // True if entering this block means the process/thread is terminated.
 
 		public BlockFlow(Block block, BitSet dataOut)
 		{
@@ -52,10 +53,11 @@ namespace Decompiler.Analysis
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)
 		{
 			EmitRegisters(arch, "// DataOut:", DataOut, writer);
+            writer.WriteLine();
 			EmitFlagGroup(arch, "// DataOut (flags):", grfOut, writer);
+            writer.WriteLine();
 			if (StackVarsOut.Count > 0)
 			{
-				writer.WriteLine();
 				writer.Write("// LocalsOut:");
 				SortedList<string,string> list = new SortedList<string,string>();
 				foreach (KeyValuePair<Storage,int> de in StackVarsOut)
@@ -74,6 +76,8 @@ namespace Decompiler.Analysis
 				}
 				writer.WriteLine();
 			}
+            if (TerminatesProcess)
+                writer.WriteLine("// Terminates process");
 		}
 	}
 }

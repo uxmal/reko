@@ -656,7 +656,7 @@ namespace Decompiler.UnitTests.Mocks
 			}
 		}
 
-        public void TerminateProcedure()
+        public void FinishProcedure()
         {
             TerminateBlock();
             proc.AddEdge(lastBlock, proc.ExitBlock);
