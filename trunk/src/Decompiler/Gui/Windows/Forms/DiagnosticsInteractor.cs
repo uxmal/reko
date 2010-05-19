@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -32,6 +33,7 @@ namespace Decompiler.Gui.Windows.Forms
         public void Attach(ListView listView)
         {
             this.listView = listView;
+            listView.DoubleClick += listView_DoubleClick;
         }
 
         #region IDiagnosticsService Members
@@ -51,5 +53,21 @@ namespace Decompiler.Gui.Windows.Forms
             listView.Items.Clear();
         }
         #endregion
+
+        public virtual ListViewItem FocusedListItem
+        {
+            get { return listView.FocusedItem; }
+            set { listView.FocusedItem = value; }
+        }
+
+        protected void listView_DoubleClick(object sender, EventArgs e)
+        {
+            var item = FocusedListItem;
+            if (item == null)
+                return;
+            var location = item.Tag as ICodeLocation;
+            if (location != null)
+                location.NavigateTo();
+        }
     }
 }

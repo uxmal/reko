@@ -27,9 +27,12 @@ namespace Decompiler.Gui
 {
     public class AddressNavigator : ICodeLocation
     {
-        public AddressNavigator(Address addr)
+        private IServiceProvider sp;
+
+        public AddressNavigator(Address addr, IServiceProvider sp)
         {
             this.Address = addr;
+            this.sp = sp;
         }
 
         public Address Address { get; private set; }
@@ -43,7 +46,9 @@ namespace Decompiler.Gui
 
         public void NavigateTo()
         {
-            throw new NotImplementedException();
+            var svc = sp.GetService<IMemoryViewService>();
+            if (svc != null)
+                svc.ShowMemoryAtAddress(Address);
         }
 
         #endregion

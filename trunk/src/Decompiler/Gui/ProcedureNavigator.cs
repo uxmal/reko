@@ -27,9 +27,12 @@ namespace Decompiler.Gui
 {
     public class ProcedureNavigator : ICodeLocation
     {
-        public ProcedureNavigator(Procedure proc)
+        private IServiceProvider sp;
+
+        public ProcedureNavigator(Procedure proc, IServiceProvider sp)
         {
             this.Procedure = proc;
+            this.sp = sp;
         }
 
         public Procedure Procedure { get; private set; }
@@ -43,9 +46,10 @@ namespace Decompiler.Gui
 
         public void NavigateTo()
         {
-            throw new NotImplementedException();
+            var codeSvc = sp.GetService<ICodeViewerService>();
+            if (codeSvc != null)
+                codeSvc.DisplayProcedure(Procedure);
         }
-
         #endregion
     }
 }

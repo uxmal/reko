@@ -32,13 +32,13 @@ namespace Decompiler.Gui.Windows
         public DisassemblyViewServiceImpl(IServiceProvider sp)
             : base(sp)
         {
-            dvi = new DisassemblyViewInteractor();
         }
 
         #region IDisassemblyViewService Members
 
         public void DisassembleStartingAtAddress(Address addr)
         {
+            ShowWindow();
             dvi.StartAddress = addr;
             dvi.DumpAssembler();
         }
@@ -50,6 +50,10 @@ namespace Decompiler.Gui.Windows
 
         public void ShowWindow()
         {
+            if (dvi == null)
+            {
+                dvi = new DisassemblyViewInteractor();
+            }
             base.ShowWindow(ViewWindowType, "Disassembly", dvi);
         }
 
