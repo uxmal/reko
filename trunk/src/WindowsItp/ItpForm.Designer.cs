@@ -32,6 +32,7 @@
             this.controlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.memoryControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rTFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.webControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,7 +50,8 @@
             // 
             this.controlsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.memoryControlToolStripMenuItem,
-            this.rTFToolStripMenuItem});
+            this.rTFToolStripMenuItem,
+            this.webControlToolStripMenuItem});
             this.controlsToolStripMenuItem.Name = "controlsToolStripMenuItem";
             this.controlsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.controlsToolStripMenuItem.Text = "&Controls";
@@ -67,6 +69,13 @@
             this.rTFToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.rTFToolStripMenuItem.Text = "&RTF ";
             this.rTFToolStripMenuItem.Click += new System.EventHandler(this.rTFToolStripMenuItem_Click);
+            // 
+            // webControlToolStripMenuItem
+            // 
+            this.webControlToolStripMenuItem.Name = "webControlToolStripMenuItem";
+            this.webControlToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.webControlToolStripMenuItem.Text = "&Web Control";
+            this.webControlToolStripMenuItem.Click += new System.EventHandler(this.webControlToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -90,6 +99,7 @@
         private System.Windows.Forms.ToolStripMenuItem controlsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem memoryControlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rTFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem webControlToolStripMenuItem;
     }
 }
 

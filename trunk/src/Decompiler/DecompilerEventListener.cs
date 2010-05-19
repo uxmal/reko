@@ -25,22 +25,24 @@ namespace Decompiler
 {
     public interface DecompilerEventListener
     {
-        void AddDiagnostic(Diagnostic d);
+        ICodeLocation CreateAddressNavigator(Address address);
+        ICodeLocation CreateProcedureNavigator(Procedure proc);
+        ICodeLocation CreateBlockNavigator(Block block);
+        void AddDiagnostic(ICodeLocation location, Diagnostic d);
+
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
-        void AddErrorDiagnostic(Address address, string format, params object [] args);
-        void AddWarningDiagnostic(Address address, string format, params object[] args);
     }
 
     public class NullDecompilerEventListener : DecompilerEventListener
     {
-        private  static NullDecompilerEventListener e = new NullDecompilerEventListener();
+        private static NullDecompilerEventListener e = new NullDecompilerEventListener();
 
         public static DecompilerEventListener Instance { get { return e; } }
 
         #region DecompilerEventListener Members
 
-        public void AddErrorDiagnostic(Address address, string format, params object [] args)
+        public void AddErrorDiagnostic(Address address, string format, params object[] args)
         {
             throw new NotImplementedException();
         }
@@ -65,6 +67,40 @@ namespace Decompiler
             throw new NotImplementedException();
         }
 
+        public ICodeLocation CreateAddressNavigator(Address address)
+        {
+            return new NullCodeLocation(address.ToString());
+        }
+
+        public ICodeLocation CreateProcedureNavigator(Procedure proc)
+        {
+            return new NullCodeLocation(proc.Name);
+        }
+
+        public ICodeLocation CreateBlockNavigator(Block block)
+        {
+            return new NullCodeLocation(block.Name);
+        }
+
+        public void AddDiagnostic(ICodeLocation location, Diagnostic d)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
+    }
+
+    public class NullCodeLocation : ICodeLocation
+    {
+        public NullCodeLocation(string text)
+        {
+            this.Text = text;
+        }
+
+        public string Text { get; private set; }
+
+        public void NavigateTo()
+        {
+        }
     }
 }

@@ -1,8 +1,8 @@
 // VectorMock
 void VectorMock()
-VectorMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+VectorMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: VectorMock_entry
 	mod = v->r0000 + v->r0004 + v->r0008;
 	// succ: 
 

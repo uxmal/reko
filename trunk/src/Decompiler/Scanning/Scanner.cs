@@ -335,7 +335,9 @@ namespace Decompiler.Scanning
 
         public void Warn(Address addr, string format, params object[] args)
 		{
-            eventListener.AddDiagnostic(new WarningDiagnostic(addr, format, args));
+            eventListener.AddDiagnostic(
+                eventListener.CreateAddressNavigator(addr),
+                new WarningDiagnostic(string.Format(format, args)));
 		}
 
 		#endregion

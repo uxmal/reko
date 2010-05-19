@@ -61,6 +61,7 @@ namespace Decompiler.Gui.Windows.Forms
         private class InnerFormatter : Formatter
         {
             private RichTextBox txt;
+            private WebBrowser wb;
 
             public InnerFormatter(RichTextBox txt) : base(StringWriter.Null)
             {

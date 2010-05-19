@@ -319,7 +319,7 @@ namespace Decompiler.Core.Output
 			dt.Accept(this);
 		}
 
-		public void WriteTypes(ICollection<DataType> datatypes)
+		public void WriteTypes(IEnumerable<DataType> datatypes)
 		{
 			foreach (DataType dt in datatypes)
 			{

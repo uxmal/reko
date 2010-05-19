@@ -1,34 +1,34 @@
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	store(Mem9[ds:0x0064:word16]) = fn0C00_000F(0x0064)
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 // fn0C00_000F
 word16 fn0C00_000F(word16 wArg00)
-fn0C00_000F_entry:		// block 0, pred:
-	// succ:  1
-l0C00_000F:		// block 1, pred: 0
+fn0C00_000F_entry:		// pred:
+	// succ:  l0C00_000F
+l0C00_000F:		// pred: fn0C00_000F_entry
 	word16 ax_18
 	word16 ax_14 = wArg00 - 0x0001
 	branch ax_14 == 0x0000 l0C00_0026
-	// succ:  3 2
-l0C00_0026:		// block 2, pred: 1
-	ax_18 = 0x0001
-	// succ:  4
-l0C00_0018:		// block 3, pred: 1
+	// succ:  l0C00_0018 l0C00_0026
+l0C00_0018:		// pred: l0C00_000F
 	ax_18 = (word16) (wArg00 *s fn0C00_000F(ax_14)) (alias)
-	// succ:  4
-l0C00_0029:		// block 4, pred: 3 2
+	// succ:  l0C00_0029
+l0C00_0029:		// pred: l0C00_0026 l0C00_0018
 	return ax_18
-	// succ:  5
-fn0C00_000F_exit:		// block 5, pred: 4
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:		// pred: l0C00_0029
 	// succ: 
+l0C00_0026:		// pred: l0C00_000F
+	ax_18 = 0x0001
+	// succ:  l0C00_0029
 
 T_2 (in fn0C00_000F : ptr32)
 	trait_func(T_5 -> T_6)

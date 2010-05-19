@@ -1,8 +1,8 @@
 // ProcedureMock
 void ProcedureMock()
-ProcedureMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+ProcedureMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: ProcedureMock_entry
 	ds2 = ds;
 	ds->f5400 = (ds->*ds->ptr5404).w0004 < 0x0014;
 	(ds2->*ds2->ptr5404).w0004 = 0x0000;

@@ -41,20 +41,11 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
-        public void AddErrorDiagnostic(Address addr, string format, params object[] args)
-        {
-            AddDiagnostic(new ErrorDiagnostic(addr, format, args));
-        }
 
-        public void AddWarningDiagnostic(Address addr, string format, params object [] args)
-        {
-            AddDiagnostic(new WarningDiagnostic(addr, format, args));
-        }
-
-        public void AddDiagnostic(Diagnostic d)
+        public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0} - {1}: {2}", d.GetType().Name, d.Address, d.Message);
+            sb.AppendFormat("{0} - {1} - {2}", d.GetType().Name, location.Text, d.Message);
             lastDiagnostic = sb.ToString();
             System.Diagnostics.Debug.WriteLine(lastDiagnostic);
         }
@@ -119,6 +110,22 @@ namespace Decompiler.UnitTests.Mocks
         }
 
 
+        public ICodeLocation CreateAddressNavigator(Address address)
+        {
+            return new NullCodeLocation(address.ToString());
+        }
+
+        public ICodeLocation CreateProcedureNavigator(Procedure proc)
+        {
+            return new NullCodeLocation(proc.Name);
+        }
+
+        public ICodeLocation CreateBlockNavigator(Block block)
+        {
+            return new NullCodeLocation(block.Name);
+        }
+
+
         #region IWorkerDialogService Members
 
         public bool StartBackgroundWork(string caption, ThreadStart backgroundWork)
@@ -136,5 +143,7 @@ namespace Decompiler.UnitTests.Mocks
         }
 
         #endregion
+
+
     }
 }

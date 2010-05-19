@@ -32,9 +32,9 @@
 // rArg00:Stack +0000
 // return address size: 4
 void fn10000000()
-fn10000000_entry:		// block 0, pred:
-	// succ:  1
-l10000000:		// block 1, pred: 0
+fn10000000_entry:		// pred:
+	// succ:  l10000000
+l10000000:		// pred: fn10000000_entry
 	eax = dwArg00
 	dwLoc08 = ebx
 	ebx = dwArg02
@@ -53,8 +53,8 @@ l10000000:		// block 1, pred: 0
 	dwArg08 = ecx
 	store(Mem0[edx:word32]) = ecx
 	branch Test(EQ,Z) l10000107
-	// succ:  2 14
-l10000035:		// block 2, pred: 1
+	// succ:  l10000035 l10000107
+l10000035:		// pred: l10000000
 	rLoc1 = Mem0[ebx:real64]
 	dwLoc10 = esi
 	dwLoc14 = edi
@@ -63,8 +63,8 @@ l10000035:		// block 2, pred: 1
 	edi = 0x000186A0
 	dwArg00 = rLoc1
 	rLoc1 = rArg08
-	// succ:  3
-l10000048:		// block 3, pred: 2 11
+	// succ:  l10000048
+l10000048:		// pred: l10000035 l100000D7
 	rLoc2 = dwArg00
 	rLoc2 = rLoc2 *s Mem0[0x0099188A:real64]
 	esi = esi + 0x00000001
@@ -78,15 +78,15 @@ l10000048:		// block 3, pred: 2 11
 	SCZO = cond(ah & 0x40)
 	C = false
 	branch Test(EQ,FPUF) l1000007F
-	// succ:  4 5
-l10000072:		// block 4, pred: 3
+	// succ:  l10000072 l1000007F
+l10000072:		// pred: l10000048
 	ecx = ecx + 0x00000001
 	SZO = cond(ecx)
 	dwArg00 = ecx
 	rLoc2 = rArg00
 	dwArg00 = rLoc2
-	// succ:  5
-l1000007F:		// block 5, pred: 3 4
+	// succ:  l1000007F
+l1000007F:		// pred: l10000048 l10000072
 	rLoc1 = rLoc1 *s Mem0[0x10033290:real64]
 	rLoc2 = rLoc2
 	call fn1000010A (depth: 20; FPU: 2;)
@@ -99,41 +99,41 @@ l1000007F:		// block 5, pred: 3 4
 	SCZO = cond(ah & 0x40)
 	C = false
 	branch Test(EQ,FPUF) l100000AD
-	// succ:  6 7
-l100000A2:		// block 6, pred: 5
+	// succ:  l100000A2 l100000AD
+l100000A2:		// pred: l1000007F
 	ecx = ecx + 0x00000001
 	SZO = cond(ecx)
 	rLoc1 = rLoc1
 	dwArg08 = ecx
 	rLoc1 = rArg08
-	// succ:  7
-l100000AD:		// block 7, pred: 5 6
+	// succ:  l100000AD
+l100000AD:		// pred: l1000007F l100000A2
 	rLoc2 = dwArg00
 	FPUF = cond(rLoc2 - Mem0[0x10033298:real64])
 	ax = (word16) FPUF << 8
 	SCZO = cond(ah & 0x40)
 	C = false
 	branch Test(NE,FPUF) l100000D7
-	// succ:  8 11
-l100000BF:		// block 8, pred: 7
+	// succ:  l100000BF l100000D7
+l100000BF:		// pred: l100000AD
 	FPUF = cond(rLoc1 - Mem0[0x10033298:real64])
 	ax = (word16) FPUF << 8
 	SCZO = cond(ah & 0x40)
 	C = false
 	branch Test(NE,FPUF) l100000D7
-	// succ:  9 11
-l100000CD:		// block 9, pred: 8
+	// succ:  l100000CD l100000D7
+l100000CD:		// pred: l100000BF
 	SCZO = cond(edi - 0x000186A0)
 	branch Test(NE,Z) l100000D7
-	// succ:  10 11
-l100000D5:		// block 10, pred: 9
+	// succ:  l100000D5 l100000D7
+l100000D5:		// pred: l100000CD
 	edi = esi
-	// succ:  11
-l100000D7:		// block 11, pred: 7 8 9 10
+	// succ:  l100000D7
+l100000D7:		// pred: l100000AD l100000BF l100000CD l100000D5
 	SCZO = cond(esi - ebp)
 	branch Test(LT,SO) l10000048
-	// succ:  12 3
-l100000DF:		// block 12, pred: 11
+	// succ:  l100000DF l10000048
+l100000DF:		// pred: l100000D7
 	rLoc2 = dwArg00
 	call fn1000010A (depth: 20; FPU: 2;)
 	store(Mem0[ebx:word32]) = eax
@@ -144,17 +144,17 @@ l100000DF:		// block 12, pred: 11
 	esi = dwLoc10
 	store(Mem0[ecx:word32]) = eax
 	branch Test(LE,SZO) l10000107
-	// succ:  13 14
-l100000FB:		// block 13, pred: 12
+	// succ:  l100000FB l10000107
+l100000FB:		// pred: l100000DF
 	store(Mem0[ebx:word32]) = 0x00000000
 	store(Mem0[ecx:word32]) = 0x00000000
-	// succ:  14
-l10000107:		// block 14, pred: 1 12 13
+	// succ:  l10000107
+l10000107:		// pred: l10000000 l100000DF l100000FB
 	ebp = dwLoc0C
 	ebx = dwLoc08
 	return
-	// succ:  15
-fn10000000_exit:		// block 15, pred: 14
+	// succ:  fn10000000_exit
+fn10000000_exit:		// pred: l10000107
 	// succ: 
 
 // fn1000010A
@@ -165,13 +165,13 @@ fn10000000_exit:		// block 15, pred: 14
 // eax:Register eax
 // return address size: 4
 void fn1000010A()
-fn1000010A_entry:		// block 0, pred:
-	// succ:  1
-l1000010A:		// block 1, pred: 0
+fn1000010A_entry:		// pred:
+	// succ:  l1000010A
+l1000010A:		// pred: fn1000010A_entry
 	rLoc08 = rArg0
 	eax = rLoc08
 	return
-	// succ:  2
-fn1000010A_exit:		// block 2, pred: 1
+	// succ:  fn1000010A_exit
+fn1000010A_exit:		// pred: l1000010A
 	// succ: 
 

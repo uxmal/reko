@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             });
             Assert.IsFalse(ret);
             Assert.AreEqual("test.exe", project.Input.Filename);
-            Assert.AreEqual("00010000", project.Input.Address);
+            Assert.AreEqual("10000", project.Input.Address);
             Assert.AreEqual("test.asm", project.Output.DisassemblyFilename);
             Assert.AreEqual("test.dis", project.Output.IntermediateFilename);
             Assert.AreEqual("test.h", project.Output.TypesFilename);
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             var ret = epi.EditProjectProperties(uiSvc, p, delegate(SerializedProject project)
             {
                 Assert.AreEqual("test.exe", project.Input.Filename);
-                Assert.AreEqual("00010000", project.Input.Address);
+                Assert.AreEqual("10000", project.Input.Address);
                 Assert.AreEqual("test.asm", project.Output.DisassemblyFilename);
                 Assert.AreEqual("test.dis", project.Output.IntermediateFilename);
                 Assert.AreEqual("test.h", project.Output.TypesFilename);
@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             var project = new SerializedProject();
             project.Input.Filename = "test.exe";
-            project.Input.BaseAddress = new Address(0x10000);
+            project.Input.Address = "10000";
             project.Output.DisassemblyFilename = "test.asm";
             project.Output.IntermediateFilename = "test.dis";
             project.Output.TypesFilename = "test.h";

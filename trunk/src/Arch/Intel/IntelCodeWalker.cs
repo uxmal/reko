@@ -153,7 +153,7 @@ namespace Decompiler.Arch.Intel
 			int vector = ((ImmediateOperand) instr.op1).Value.ToInt32();
             if (platform == null)
             {
-                listener.Warn(addrStart, "Unknown service: INT {0:X2}.", vector);
+                listener.Warn(addrStart, "Unknown service: INT {0:X2}", vector);
                 return;
             }
             SystemService svc = platform.FindService(vector, state);

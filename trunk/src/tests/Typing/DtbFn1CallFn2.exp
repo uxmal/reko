@@ -1,23 +1,23 @@
 // Fn1
 void Fn1()
-Fn1_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+Fn1_entry:		// pred:
+	// succ:  l1
+l1:		// pred: Fn1_entry
 	loc2 = Fn2(loc1)
 	return
-	// succ:  2
-Fn1_exit:		// block 2, pred: 1
+	// succ:  Fn1_exit
+Fn1_exit:		// pred: l1
 	// succ: 
 
 // Fn2
 word32 Fn2(word32 arg1)
-Fn2_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+Fn2_entry:		// pred:
+	// succ:  l1
+l1:		// pred: Fn2_entry
 	r1 = arg1 + 0x00000001
 	return r1
-	// succ:  2
-Fn2_exit:		// block 2, pred: 1
+	// succ:  Fn2_exit
+Fn2_exit:		// pred: l1
 	// succ: 
 
 // Equivalence classes ////////////

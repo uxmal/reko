@@ -1,34 +1,34 @@
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	fn0C00_0004()
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 // fn0C00_0004
 void fn0C00_0004()
-fn0C00_0004_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0004:		// block 1, pred: 0
+fn0C00_0004_entry:		// pred:
+	// succ:  l0C00_0004
+l0C00_0004:		// pred: fn0C00_0004_entry
 	word16 bx_15 = 0x0FFF
 	byte bh_16 = 0x0F
 	byte bl_17 = 0xFF
-	// succ:  2
-l0C00_000C:		// block 2, pred: 1 2
+	// succ:  l0C00_000C
+l0C00_000C:		// pred: l0C00_0004 l0C00_000C
 	store(Mem37[0x4DE1:bx_15 + 0x0000:byte]) = bl_17 & 0xF0 | SLICE((bl_17 & 0x0F) *u (bh_16 + 0x01) << 0x0004, byte, 8) & 0x0F
 	bx_15 = bx_15 - 0x0001
 	bh_16 = SLICE(bx_15, byte, 8) (alias)
 	bl_17 = (byte) bx_15 (alias)
 	branch bx_15 >= 0x0000 l0C00_000C
-	// succ:  3 2
-l0C00_0029:		// block 3, pred: 2
+	// succ:  l0C00_0029 l0C00_000C
+l0C00_0029:		// pred: l0C00_000C
 	return
-	// succ:  4
-fn0C00_0004_exit:		// block 4, pred: 3
+	// succ:  fn0C00_0004_exit
+fn0C00_0004_exit:		// pred: l0C00_0029
 	// succ: 
 
 // Equivalence classes ////////////

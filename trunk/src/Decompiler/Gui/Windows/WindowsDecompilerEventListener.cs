@@ -47,8 +47,8 @@ namespace Decompiler.Gui.Windows
 
         public WindowsDecompilerEventListener(IServiceProvider sp)
         {
-            uiSvc = (IDecompilerUIService)sp.GetService(typeof(IDecompilerUIService));
-            diagnosticService = (IDiagnosticsService)sp.GetService(typeof(IDiagnosticsService));
+            uiSvc = sp.GetService<IDecompilerUIService>();
+            diagnosticService = sp.GetService<IDiagnosticsService>();
         }
 
         private WorkerDialog CreateDialog(string caption)
@@ -167,30 +167,35 @@ namespace Decompiler.Gui.Windows
 
         #region DecompilerEventListener Members
 
-        public void AddDiagnostic(Diagnostic d)
+        public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             if (dlg != null)
-                dlg.Invoke(new Action<Diagnostic>(diagnosticService.AddDiagnostic), d);
+                dlg.Invoke(new Action<ICodeLocation, Diagnostic>(diagnosticService.AddDiagnostic), location, d);
             else
-                diagnosticService.AddDiagnostic(d);
-        }
-
-        void DecompilerEventListener.AddErrorDiagnostic(Address address, string format, params object[] args)
-        {
-            var e = new ErrorDiagnostic(address, format, args);
-            AddDiagnostic(e);
-        }
-
-        void DecompilerEventListener.AddWarningDiagnostic(Address address, string format, params object[] args)
-        {
-            var w = new WarningDiagnostic(address, format, args);
-            AddDiagnostic(w);
+                diagnosticService.AddDiagnostic(location, d);
+                    
         }
 
         void DecompilerEventListener.ShowStatus(string caption)
         {
             ShowStatus(caption);
         }
+
+        ICodeLocation DecompilerEventListener.CreateAddressNavigator(Address addr)
+        {
+            return new AddressNavigator(addr);
+        }
+
+        ICodeLocation DecompilerEventListener.CreateBlockNavigator(Block block)
+        {
+            return new BlockNavigator(block);
+        }
+
+        ICodeLocation DecompilerEventListener.CreateProcedureNavigator(Procedure proc)
+        {
+            return new ProcedureNavigator(proc);
+        }
+
 
         private void ShowStatus(string caption)
         {

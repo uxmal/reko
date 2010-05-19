@@ -1,8 +1,8 @@
 // FnPointerMock
 void FnPointerMock()
-FnPointerMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+FnPointerMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: FnPointerMock_entry
 	pfn = 0x01213130
 	store(Mem0[0x10000000:word32]) = pfn
 	icall Mem0[0x10000000:word32]

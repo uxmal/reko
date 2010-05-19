@@ -56,28 +56,35 @@ namespace Decompiler.Analysis
             writer.WriteLine();
 			EmitFlagGroup(arch, "// DataOut (flags):", grfOut, writer);
             writer.WriteLine();
-			if (StackVarsOut.Count > 0)
-			{
-				writer.Write("// LocalsOut:");
-				SortedList<string,string> list = new SortedList<string,string>();
-				foreach (KeyValuePair<Storage,int> de in StackVarsOut)
-				{
-					Storage id = (Storage) de.Key;
-					StringWriter sb = new StringWriter();
-					id.Write(sb);
-					string sName = sb.ToString();
 
-					list[sName] = string.Format("{0}({1})", sName, de.Value);
-				}
-				foreach (string s in list.Values)
-				{
-					writer.Write(" ");
-					writer.Write(s);
-				}
-				writer.WriteLine();
-			}
+            EmitLocals("// LocalsOut:", writer);
             if (TerminatesProcess)
                 writer.WriteLine("// Terminates process");
 		}
+
+        private void EmitLocals(string caption, TextWriter writer)
+        {
+            if (StackVarsOut.Count <= 0)
+                return;
+
+            writer.Write(caption);
+            SortedList<string, string> list = new SortedList<string, string>();
+            foreach (KeyValuePair<Storage, int> de in StackVarsOut)
+            {
+                Storage id = (Storage)de.Key;
+                StringWriter sb = new StringWriter();
+                id.Write(sb);
+                string sName = sb.ToString();
+
+                list[sName] = string.Format("{0}({1})", sName, de.Value);
+            }
+            foreach (string s in list.Values)
+            {
+                writer.Write(" ");
+                writer.Write(s);
+            }
+            writer.WriteLine();
+
+        }
 	}
 }

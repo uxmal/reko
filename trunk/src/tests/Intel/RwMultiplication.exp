@@ -11,9 +11,9 @@
 // SCZO:Flags
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	al = Mem0[ds:0x0300:byte]
 	ax = Mem0[ds:0x0301:byte] *u al
 	store(Mem0[ds:0x0302:word16]) = ax
@@ -37,6 +37,6 @@ l0C00_0000:		// block 1, pred: 0
 	ax = Mem0[ds:0x0304:word16] *s 0x0114
 	SCZO = cond(ax)
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 

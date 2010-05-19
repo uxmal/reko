@@ -67,9 +67,20 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             CreateMainFormInteractor();
             var svc = interactor.ProbeGetService<IDiagnosticsService>();
-            svc.AddDiagnostic(new ErrorDiagnostic(null, "test"));
+            svc.AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic("test"));
             interactor.OpenBinary(null);
             Assert.AreEqual(0, form.DiagnosticsList.Items.Count);
+        }
+
+        [Test]
+        public void OpenBinaryShouldCloseAllWindows()
+        {
+            CreateMainFormInteractor();
+
+            AddMdiForm(new Form());
+            Assert.AreEqual(1, ((Form)form).MdiChildren.Length);
+            interactor.OpenBinary("");
+            Assert.AreEqual(0, ((Form)form).MdiChildren.Length);
         }
 
 		[Test]
@@ -141,7 +152,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             object oSvc = interactor.ProbeGetService(typeof(IDiagnosticsService));
             Assert.IsNotNull(oSvc, "IDiagnosticsService should be available!");
             IDiagnosticsService svc = (IDiagnosticsService) oSvc;
-            svc.AddDiagnostic(new WarningDiagnostic(new Address(0x30000), "Whoa"));
+            svc.AddDiagnostic(new NullCodeLocation("30000"), new WarningDiagnostic("Whoa"));
             Assert.AreEqual(1, form.DiagnosticsList.Items.Count, "Should have added an item to diagnostics list.");
         }
 
@@ -265,12 +276,18 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void CloseAllWindows()
         {
             CreateMainFormInteractor();
-            var f = (Form)this.form;
             var mdi = new Form();
-            mdi.MdiParent = f;
+            var f = AddMdiForm(mdi);
             Assert.AreEqual(1, f.MdiChildren.Length);
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.WindowsCloseAll);
             Assert.AreEqual(0, f.MdiChildren.Length);
+        }
+
+        private Form AddMdiForm(Form mdi)
+        {
+            var f = (Form)this.form;
+            mdi.MdiParent = f;
+            return f;
         }
 
         private Program CreateFakeProgram()

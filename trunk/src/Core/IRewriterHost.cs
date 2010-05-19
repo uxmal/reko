@@ -34,6 +34,6 @@ namespace Decompiler.Core
 		SystemService SystemCallAt(Address addr);
 		PseudoProcedure TrampolineAt(Address addr);
 		ProgramImage Image { get; }
-		void AddDiagnostic(Diagnostic diagnostic);
+        void AddDiagnostic(Address addr, Diagnostic diagnostic);
     }
 }

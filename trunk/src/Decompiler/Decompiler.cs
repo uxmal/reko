@@ -87,9 +87,11 @@ namespace Decompiler
                 StructureProgram();
                 WriteDecompilerProducts();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                eventListener.AddDiagnostic(new ErrorDiagnostic(null, "{0}", e.Message + Environment.NewLine + e.StackTrace));
+                eventListener.AddDiagnostic(
+                    new NullCodeLocation(filename),
+                    new ErrorDiagnostic(string.Format("{0}{1}{2}", ex.Message + Environment.NewLine + ex.StackTrace)));
             }
             finally
             {
@@ -369,7 +371,9 @@ namespace Decompiler
                 }
                 catch (Exception e)
                 {
-                    eventListener.AddDiagnostic(new ErrorDiagnostic(null, e, "An error occurred while rewriting procedure {0} to high-level language.", proc.Name));
+                    eventListener.AddDiagnostic(
+                        eventListener.CreateProcedureNavigator(proc),
+                        new ErrorDiagnostic("An error occurred while rewriting procedure to high-level language."));
                 }
 			}
             WriteDecompilerProducts();

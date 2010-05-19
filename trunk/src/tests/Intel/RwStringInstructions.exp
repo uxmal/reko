@@ -7,9 +7,9 @@
 // ax:Register ax
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	eax = eax + eax * 0x00000004
 	store(Mem0[ds:0x02FC:word32]) = eax
 	eax = Mem0[ds:si:word32]
@@ -26,8 +26,8 @@ l0C00_0000:		// block 1, pred: 0
 	store(Mem0[ds:0x030A:word16]) = ax
 	call fn0C00_0026 (depth: 2;)
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 // fn0C00_0026
 // Mem0:Global memory
@@ -42,25 +42,25 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // Z:Flags
 // return address size: 2
 void fn0C00_0026()
-fn0C00_0026_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0026:		// block 1, pred: 0
+fn0C00_0026_entry:		// pred:
+	// succ:  l0C00_0026
+l0C00_0026:		// pred: fn0C00_0026_entry
 	cx = Mem0[ds:0x0400:word16]
 	al = 0x00
 	di = Mem0[ds:0x0402:word16]
-	// succ:  2
-l0C00_0030:		// block 2, pred: 1 3
+	// succ:  l0C00_0030
+l0C00_0030:		// pred: l0C00_0026 l0C00_0030_rep
 	branch cx == 0x0000 l0C00_0030_rep
-	// succ:  4 3
-l0C00_0030_rep:		// block 3, pred: 2
+	// succ:  l0C00_0032 l0C00_0030_rep
+l0C00_0032:		// pred: l0C00_0030 l0C00_0030_rep
+	store(Mem0[ds:0x0404:word16]) = di
+	return
+	// succ:  fn0C00_0026_exit
+fn0C00_0026_exit:		// pred: l0C00_0032
+	// succ: 
+l0C00_0030_rep:		// pred: l0C00_0030
 	cx = cx - 0x0001
 	SCZO = cond(al - Mem0[es:di:byte])
 	di = di + 0x0001
 	branch Test(EQ,Z) l0C00_0030
-	// succ:  4 2
-l0C00_0032:		// block 4, pred: 2 3
-	store(Mem0[ds:0x0404:word16]) = di
-	return
-	// succ:  5
-fn0C00_0026_exit:		// block 5, pred: 4
-	// succ: 
+	// succ:  l0C00_0032 l0C00_0030

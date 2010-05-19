@@ -1,12 +1,12 @@
 // fn0C00_0000
 void fn0C00_0000(word16 bx, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	store(Mem6[ds:bx + 0x0000:word32]) = Mem0[ds:bx + 0x0004:word32]
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 T_2 (in ds : selector)

@@ -1,8 +1,8 @@
 // ConstantUnionMock
 void ConstantUnionMock()
-ConstantUnionMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+ConstantUnionMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: ConstantUnionMock_entry
 	x.u0 = 3;
 	x.u1 = 3F;
 	// succ: 

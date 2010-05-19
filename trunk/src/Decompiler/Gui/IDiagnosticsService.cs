@@ -25,8 +25,7 @@ namespace Decompiler.Gui
 {
     public interface IDiagnosticsService
     {
-        void AddDiagnostic(Diagnostic diagnostic);
-
+        void AddDiagnostic(ICodeLocation location, Diagnostic diagnostic);
         void ClearDiagnostics();
     }
 }

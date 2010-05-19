@@ -74,6 +74,9 @@
     <EmbeddedResource Include="RtfDialog.resx">
       <DependentUpon>RtfDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WebDialog.resx">
+      <DependentUpon>WebDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -94,6 +97,12 @@
     </Compile>
     <Compile Include="RtfDialog.Designer.cs">
       <DependentUpon>RtfDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WebDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WebDialog.Designer.cs">
+      <DependentUpon>WebDialog.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

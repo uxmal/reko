@@ -1,16 +1,16 @@
 // IntelIndexedAddressingMode
 void IntelIndexedAddressingMode()
-IntelIndexedAddressingMode_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+IntelIndexedAddressingMode_entry:		// pred:
+	// succ:  l1
+l1:		// pred: IntelIndexedAddressingMode_entry
 	es = Mem0[0x7070:word16]
 	ax = 0x004A
 	si = ax *s Mem0[0x1C0A:word16]
 	bx = Mem0[0x0CA4:word16]
 	store(Mem0[bx + 0x000A + si:byte]) = 0xF8
 	return
-	// succ:  2
-IntelIndexedAddressingMode_exit:		// block 2, pred: 1
+	// succ:  IntelIndexedAddressingMode_exit
+IntelIndexedAddressingMode_exit:		// pred: l1
 	// succ: 
 
 // Equivalence classes ////////////

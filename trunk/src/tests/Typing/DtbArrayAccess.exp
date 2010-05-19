@@ -1,12 +1,12 @@
 // ArrayAccess
 void ArrayAccess()
-ArrayAccess_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+ArrayAccess_entry:		// pred:
+	// succ:  l1
+l1:		// pred: ArrayAccess_entry
 	store((r + 0x00000014)[i * 0x0000000A]) = 0x00000000
 	return (r + 0x00000010)[i * 0x0000000A]
-	// succ:  2
-ArrayAccess_exit:		// block 2, pred: 1
+	// succ:  ArrayAccess_exit
+ArrayAccess_exit:		// pred: l1
 	// succ: 
 
 // Equivalence classes ////////////

@@ -4,12 +4,12 @@
 // r0:Local -0004
 // return address size: 0
 void StoreMock()
-StoreMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+StoreMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: StoreMock_entry
 	r0 = Mem0[0x20000000:word32]
 	store(Mem0[0x20000000:word32]) = r0
 	return
-	// succ:  2
-StoreMock_exit:		// block 2, pred: 1
+	// succ:  StoreMock_exit
+StoreMock_exit:		// pred: l1
 	// succ: 

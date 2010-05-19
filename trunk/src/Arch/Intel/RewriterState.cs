@@ -79,7 +79,6 @@ namespace Decompiler.Arch.Intel
 
 		public void LeaveFrame()
 		{
-			Debug.Assert(FrameRegister != MachineRegister.None);
 			FrameRegister = MachineRegister.None;
 			StackBytes = frame.FrameOffset;
             FrameOffset = 0;

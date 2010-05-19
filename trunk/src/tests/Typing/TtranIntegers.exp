@@ -1,31 +1,31 @@
 // fn0C00_0000
 void fn0C00_0000(word16 bx, word16 si, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	byte al_29
 	store(Mem20[ds:bx + 0x0004:word32]) = Mem0[ds:bx + 0x0000:word32] & 0x000000FF | Mem0[ds:si + 0x0000:word32] & 0xFFFFFF00
 	byte al_21 = Mem20[ds:bx + 0x0008:byte]
 	branch al_21 <u 0x30 l0C00_002A
-	// succ:  2 3
-l0C00_0021:		// block 2, pred: 1
+	// succ:  l0C00_0021 l0C00_002A
+l0C00_0021:		// pred: l0C00_0000
 	branch al_21 >=u 0x3A l0C00_002A
-	// succ:  4 3
-l0C00_002A:		// block 3, pred: 2 1
-	al_29 = 0x00
-	// succ:  5
-l0C00_0025:		// block 4, pred: 2
+	// succ:  l0C00_0025 l0C00_002A
+l0C00_0025:		// pred: l0C00_0021
 	al_29 = 0x01
-	// succ:  5
-l0C00_002C:		// block 5, pred: 4 3
+	// succ:  l0C00_002C
+l0C00_002C:		// pred: l0C00_002A l0C00_0025
 	store(Mem42[ds:bx + 0x0009:byte]) = al_29
 	word32 dx_ax_44 = Mem42[ds:bx + 0x000C:word16] *s Mem42[ds:bx + 0x000A:word16]
 	store(Mem48[ds:bx + 0x000E:word16]) = (word16) dx_ax_44
 	store(Mem49[ds:bx + 0x0010:word16]) = SLICE(dx_ax_44, word16, 16)
 	return
-	// succ:  6
-fn0C00_0000_exit:		// block 6, pred: 5
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_002C
 	// succ: 
+l0C00_002A:		// pred: l0C00_0000 l0C00_0021
+	al_29 = 0x00
+	// succ:  l0C00_002C
 
 // Equivalence classes ////////////
 Eq_3: (segment)

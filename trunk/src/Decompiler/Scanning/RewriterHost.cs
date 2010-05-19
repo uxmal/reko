@@ -177,7 +177,12 @@ namespace Decompiler.Scanning
 			} 
 			catch (Exception ex)
 			{
-                if (eventListener != null) eventListener.AddDiagnostic(new ErrorDiagnostic(null, "An error occurred while rewriting {0}. {1}", proc.Name, ex.Message));
+                if (eventListener != null)
+                {
+                    eventListener.AddDiagnostic(
+                        eventListener.CreateAddressNavigator(addrProc),
+                        new ErrorDiagnostic(string.Format("An error occurred while rewriting {0}. {1}", proc.Name), ex));
+                }
 				throw;
 			}
 		}
@@ -212,7 +217,9 @@ namespace Decompiler.Scanning
 			SystemService svc = null;
             if (!syscalls.TryGetValue(addrInstr, out svc))
             {
-                eventListener.AddDiagnostic(new WarningDiagnostic(addrInstr, "No system call at this address was recorded previously."));
+                eventListener.AddDiagnostic(
+                    eventListener.CreateAddressNavigator(addrInstr),
+                    new WarningDiagnostic("No system call at this address was recorded previously."));
 			}
 			return svc;
 		}
@@ -235,9 +242,10 @@ namespace Decompiler.Scanning
                 return null;
 		}
 
-		public void AddDiagnostic(Diagnostic diagnostic)
-		{
-			eventListener.AddDiagnostic(diagnostic);
-		}
+        public void AddDiagnostic(Address address, Diagnostic diagnostic)
+        {
+            eventListener.AddDiagnostic(eventListener.CreateAddressNavigator(address), diagnostic);
+        }
+
 	}
 }
