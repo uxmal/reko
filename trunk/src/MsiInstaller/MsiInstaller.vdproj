@@ -232,12 +232,6 @@
         "Entry"
         {
         "MsmKey" = "8:_74F0C772DFA439831FA123952CA44A8C"
-        "OwnerKey" = "8:_EA9043F8F90B0428C5F36EB119867DC7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_74F0C772DFA439831FA123952CA44A8C"
         "OwnerKey" = "8:_092DA91F0DD44B73BB8AD49816E57BFA"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -405,12 +399,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_EA9043F8F90B0428C5F36EB119867DC7"
-        "OwnerKey" = "8:_092DA91F0DD44B73BB8AD49816E57BFA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_EC72C491BA194B47BEE38AE8D29D1AB2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -545,12 +533,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_E6B6AA546C785A73149D48CBB6C9016D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EA9043F8F90B0428C5F36EB119867DC7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -893,11 +875,6 @@
             "AssemblyAsmDisplayName" = "8:Decompiler.Core, Version=0.2.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_74F0C772DFA439831FA123952CA44A8C"
-                    {
-                    "Name" = "8:Decompiler.Core.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Decompiler.Core.dll"
             "TargetName" = "8:"
@@ -1194,37 +1171,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EA9043F8F90B0428C5F36EB119867DC7"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Decompiler, Version=0.2.2.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_EA9043F8F90B0428C5F36EB119867DC7"
-                    {
-                    "Name" = "8:Decompiler.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Decompiler.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_AD756F3B1B5443EDBD23314A24B4FC1C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F1236C3E1D2646F99B9BECC35C04D650"
             {
             "SourcePath" = "8:..\\Environments\\Win32\\kernel32.xml"
@@ -1323,21 +1269,21 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Decompiler"
-        "ProductCode" = "8:{4199F0B3-784B-4E97-8559-4638D099FEA3}"
-        "PackageCode" = "8:{CEF62D69-E9B6-4C09-8DEE-0EDBAFDDF1A5}"
+        "ProductCode" = "8:{674EFC36-91F2-4537-A0BC-4B64786BC282}"
+        "PackageCode" = "8:{F25B4236-DC47-4E58-9B3C-EEFFA0C8C6B2}"
         "UpgradeCode" = "8:{267A75B3-F33E-4987-9BF6-114D1A6CE44E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.2.2"
+        "ProductVersion" = "8:0.2.3"
         "Manufacturer" = "8:jklSoft"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:Decompiler"
         "Subject" = "8:"
         "ARPCONTACT" = "8:John Källén"
-        "Keywords" = "8:"
+        "Keywords" = "8:Decompiler"
         "ARPCOMMENTS" = "8:Decompiler for Windows"
         "ARPURLINFOABOUT" = "8:https://sourceforge.net/projects/decompiler/"
         "ARPPRODUCTICON" = "8:_82C31595251F418B9987C35BD55BDD2D"
