@@ -1,0 +1,39 @@
+// fn0C00_0000
+void fn0C00_0000(word16 bx, selector ds)
+fn0C00_0000_entry:		// pred:
+	word16 ax_9 = 0x0000
+	// succ:  l0C00_0019
+l0C00_0000:
+l0C00_0019:		// pred: fn0C00_0000_entry l0C00_0012 l0C00_000D
+	branch ax_9 < bx l0C00_0005
+	// succ:  l0C00_001D l0C00_0005
+l0C00_001D:		// pred: l0C00_0019
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_001D
+	// succ: 
+l0C00_0005:		// pred: l0C00_0019
+	word16 si_16 = Mem0[ds:0x0300:word16]
+	branch si_16 == 0x0000 l0C00_0012
+	// succ:  l0C00_000D l0C00_0012
+l0C00_000D:		// pred: l0C00_0005
+	ax_9 = ax_9 + Mem0[ds:si_16:word16]
+	// succ:  l0C00_0019
+l0C00_0012:		// pred: l0C00_0005
+	ax_9 = ax_9 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16]
+	// succ:  l0C00_0019
+
+void fn0C00_0000(word16 bx, selector ds)
+{
+	word16 ax_9 = 0x0000;
+	while (ax_9 < bx)
+	{
+		word16 si_16 = Mem0[ds:0x0300:word16];
+		if (si_16 != 0x0000)
+			ax_9 = ax_9 + Mem0[ds:si_16:word16];
+		else
+			ax_9 = ax_9 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16];
+	}
+	return;
+}
+===========================

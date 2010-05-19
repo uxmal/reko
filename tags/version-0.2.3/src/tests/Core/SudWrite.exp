@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://schemata.jklnet.org/Decompiler">
+  <input>
+    <address>0x1000:0x0</address>
+  </input>
+  <output>
+    <disassembly>foo.asm</disassembly>
+    <intermediate-code>foo.cod</intermediate-code>
+  </output>
+  <procedure name="foo">
+    <signature>
+      <return>
+        <reg>eax</reg>
+      </return>
+      <arg>
+        <stack size="4" />
+      </arg>
+      <arg>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+</project>

@@ -1,0 +1,23 @@
+// WhileLtIncMock
+void WhileLtIncMock()
+WhileLtIncMock_entry:		// pred:
+	def a
+	// succ:  l1
+l1:		// pred: WhileLtIncMock_entry
+	i_4 = 0x00000000
+	// succ:  loopHdr
+loopHdr:		// pred: l1 loop
+	i_5 = PHI(i_4, i_8)
+	branch i_5 < 0x00000064 loop
+	// succ:  l2 loop
+l2:		// pred: loopHdr
+	return
+	// succ:  WhileLtIncMock_exit
+WhileLtIncMock_exit:		// pred: l2
+	// succ: 
+loop:		// pred: loopHdr
+	store(Mem7[a + i_5 * 0x00000004:word32]) = 0x00000000
+	i_8 = i_5 + 0x00000001
+	// succ:  loopHdr
+
+(0x00000000 0x00000001 0x00000064 signed)

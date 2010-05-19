@@ -1,0 +1,74 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// wLoc04:Local -0004
+// wLoc06:Local -0006
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	wLoc04 = 0x0320
+	wLoc06 = 0x0300
+	call fn0C00_0010 (depth: 6;)
+	call fn0C00_0037 (depth: 6;)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 
+
+// fn0C00_0010
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// wLoc04:Local -0004
+// wArg00:Stack +0000
+// bx:Register bx
+// rLoc1:FPU stack
+// ds:Register ds
+// rLoc2:FPU stack
+// wArg02:Stack +0002
+// return address size: 2
+void fn0C00_0010()
+fn0C00_0010_entry:		// pred:
+	// succ:  l0C00_0010
+l0C00_0010:		// pred: fn0C00_0010_entry
+	wLoc04 = bp
+	bx = wArg00
+	rLoc1 = Mem0[ds:bx:real64]
+	rLoc1 = rLoc1 *s rLoc1
+	rLoc2 = Mem0[ds:bx + 0x0008:real64]
+	rLoc2 = rLoc2 *s rLoc2
+	rLoc1 = rLoc1 + rLoc2
+	rLoc2 = Mem0[ds:bx + 0x0010:real64]
+	rLoc2 = rLoc2 *s rLoc2
+	rLoc1 = rLoc1 + rLoc2
+	bx = wArg02
+	store(Mem0[ds:bx:real64]) = rLoc1
+	rLoc1 = (real64) Mem0[ds:bx + 0x0020:word16]
+	store(Mem0[ds:bx + 0x0028:real64]) = rLoc1
+	bp = wLoc04
+	return
+	// succ:  fn0C00_0010_exit
+fn0C00_0010_exit:		// pred: l0C00_0010
+	// succ: 
+
+// fn0C00_0037
+// Mem0:Global memory
+// fp:Temporary
+// rLoc1:FPU stack
+// ds:Register ds
+// return address size: 2
+void fn0C00_0037()
+fn0C00_0037_entry:		// pred:
+	// succ:  l0C00_0037
+l0C00_0037:		// pred: fn0C00_0037_entry
+	rLoc1 = 0
+	store(Mem0[ds:0x0400:real64]) = rLoc1
+	rLoc1 = 1
+	store(Mem0[ds:0x0408:word32]) = (word32) rLoc1
+	return
+	// succ:  fn0C00_0037_exit
+fn0C00_0037_exit:		// pred: l0C00_0037
+	// succ: 
+

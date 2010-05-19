@@ -1,0 +1,47 @@
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// bp:Register bp
+// ss:Register ss
+// si:Register si
+// dx:Register dx
+// al:Register al
+// v7:Temporary
+// bx:Register bx
+// C:Flags
+// cx:Register cx
+// SZO:Flags
+// es:Register es
+// di:Register di
+// ds:Register ds
+// ax:Register ax
+// Z:Flags
+// eax:Register eax
+// ecx:Register ecx
+// return address size: 2
+void fn0C00_0000()
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	si = bp + 0x000C
+	__outb(dx, al)
+	v7 = (bx & 0x0001 << 0x01) != 0x0000
+	bx = __ror(bx, 0x01)
+	C = v7
+	cx = __rcr(cx, 0x01, C)
+	dx = dx + 0x0001
+	SZO = cond(dx)
+	al = __in(dx)
+	store(Mem0[es:di:byte]) = al
+	di = di + 0x0001
+	C = __bt(Mem0[ds:0x3000:word16], ax)
+	C = __bt(cx, ax)
+	C = __bt(cx, 0x02)
+	Z = Mem0[ds:si:word16] == 0x0000
+	cx = __bsr(Mem0[ds:si:word16])
+	Z = eax == 0x00000000
+	ecx = __bsr(eax)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 

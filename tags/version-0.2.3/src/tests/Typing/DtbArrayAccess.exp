@@ -1,0 +1,94 @@
+// ArrayAccess
+void ArrayAccess()
+ArrayAccess_entry:		// pred:
+	// succ:  l1
+l1:		// pred: ArrayAccess_entry
+	store((r + 0x00000014)[i * 0x0000000A]) = 0x00000000
+	return (r + 0x00000010)[i * 0x0000000A]
+	// succ:  ArrayAccess_exit
+ArrayAccess_exit:		// pred: l1
+	// succ: 
+
+// Equivalence classes ////////////
+Eq_2: word32
+	T_2 (in 0x00000000 : word32)
+	T_9 (in (r + 0x00000014)[i * 0x0000000A] : word32)
+Eq_3: (ptr (struct (10 (arr (struct A (0 T_14 t0000))) a0010) (14 (arr (struct A (0 T_9 t0000))) a0014)))
+	T_3 (in r : word32)
+Eq_4: word32
+	T_4 (in 0x00000014 : word32)
+Eq_5: word32
+	T_5 (in r + 0x00000014 : word32)
+Eq_6: word32
+	T_6 (in i : word32)
+Eq_7: word32
+	T_7 (in 0x0000000A : word32)
+Eq_8: uir32
+	T_8 (in i * 0x0000000A : word32)
+Eq_10: word32
+	T_10 (in 0x00000010 : word32)
+Eq_11: word32
+	T_11 (in r + 0x00000010 : word32)
+Eq_12: word32
+	T_12 (in 0x0000000A : word32)
+Eq_13: uir32
+	T_13 (in i * 0x0000000A : word32)
+Eq_14: word16
+	T_14 (in (r + 0x00000010)[i * 0x0000000A] : word16)
+// Type Variables ////////////
+Globals: (in globals : ptr32)
+  Class: Eq_1
+  DataType: 
+  OrigDataType: 
+T_2: (in 0x00000000 : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_3: (in r : word32)
+  Class: Eq_3
+  DataType: (ptr (struct (10 (arr (struct A (0 T_14 t0000))) a0010) (14 (arr (struct A (0 T_9 t0000))) a0014)))
+  OrigDataType: (ptr (struct (10 (arr (struct A (0 T_14 t0000))) a0010) (14 (arr (struct A (0 T_9 t0000))) a0014)))
+T_4: (in 0x00000014 : word32)
+  Class: Eq_4
+  DataType: word32
+  OrigDataType: word32
+T_5: (in r + 0x00000014 : word32)
+  Class: Eq_5
+  DataType: word32
+  OrigDataType: word32
+T_6: (in i : word32)
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32
+T_7: (in 0x0000000A : word32)
+  Class: Eq_7
+  DataType: word32
+  OrigDataType: word32
+T_8: (in i * 0x0000000A : word32)
+  Class: Eq_8
+  DataType: uir32
+  OrigDataType: uir32
+T_9: (in (r + 0x00000014)[i * 0x0000000A] : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_10: (in 0x00000010 : word32)
+  Class: Eq_10
+  DataType: word32
+  OrigDataType: word32
+T_11: (in r + 0x00000010 : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32
+T_12: (in 0x0000000A : word32)
+  Class: Eq_12
+  DataType: word32
+  OrigDataType: word32
+T_13: (in i * 0x0000000A : word32)
+  Class: Eq_13
+  DataType: uir32
+  OrigDataType: uir32
+T_14: (in (r + 0x00000010)[i * 0x0000000A] : word16)
+  Class: Eq_14
+  DataType: word16
+  OrigDataType: word16

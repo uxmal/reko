@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<library xmlns="http://schemata.jklnet.org/Decompiler">
+  <default>
+	<signature convention="stdapi"></signature>
+  </default>
+  <procedure name="SetRect">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="lprc" type="LPRECT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="xLeft" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="yTop" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="xRight" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="yBottom" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetFocus">
+	<signature>
+	  <return type="HWND">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="MessageBeep">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="uType" type="UINT">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="CreateWindowExA">
+	<signature>
+	  <return type="HWND">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="dwExStyle" type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpClassName" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpWindowName" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg name="dwStyle" type="DWORD">
+		<stack size="4" />
+	  </arg>
+	  <arg name="X" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="Y" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nWidth" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nHeight" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="hWndParent" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="hMenu" type="HMENU">
+		<stack size="4" />
+	  </arg>
+	  <arg name="hInstance" type="HINSTANCE">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpParam" type="LPVOID">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="ShowWindow">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nCmdShow" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetClientRect">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpRect" type="LPRECT">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="MoveWindow">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="X" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="Y" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nWidth" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nHeight" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="bRepaint" type="BOOL">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetWindowLongA">
+	<signature>
+	  <return type="LONG">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nIndex" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SendMessageA">
+	<signature>
+	  <return type="LRESULT">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="Msg" type="UINT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="wParam" type="WPARAM">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lParam" type="LPARAM">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetWindowLongA">
+	<signature>
+	  <return type="LONG">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nIndex" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="dwNewLong" type="LONG">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetParent">
+	<signature>
+	  <return type="HWND">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetDesktopWindow">
+	<signature>
+	  <return type="HWND">
+		<reg>eax</reg>
+	  </return>
+	</signature>
+  </procedure>
+  <procedure name="SetWindowPos">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="hWndInsertAfter" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="X" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="Y" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="cx" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="cy" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="uFlags" type="UINT">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="RegisterClassExA">
+	<signature>
+	  <return type="ATOM">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="WNDCLASSEXA *" type="CONST">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="BeginPaint">
+	<signature>
+	  <return type="HDC">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpPaint" type="PAINTSTRUCT *">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="EndPaint">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpPaint" type="PAINTSTRUCT *">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="DefWindowProcA">
+	<signature>
+	  <return type="LRESULT">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="Msg" type="UINT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="wParam" type="WPARAM">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lParam" type="LPARAM">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="DestroyWindow">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetSystemMetrics">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="nIndex" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetMenuCheckMarkDimensions">
+	<signature>
+	  <return type="LONG">
+		<reg>eax</reg>
+	  </return>
+	</signature>
+  </procedure>
+  <procedure name="DestroyMenu">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hMenu" type="HMENU">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="CreatePopupMenu">
+	<signature>
+	  <return type="HMENU">
+		<reg>eax</reg>
+	  </return>
+	</signature>
+  </procedure>
+  <procedure name="AppendMenuA">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hMenu" type="HMENU">
+		<stack size="4" />
+	  </arg>
+	  <arg name="uFlags" type="UINT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="uIDNewItem" type="UINT_PTR">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR" name="lpNewItem">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetAsyncKeyState">
+	<signature>
+	  <return type="SHORT">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="vKey" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="DrawFocusRect">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hDC" type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lprc" type="CONST RECT *">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="LoadIconA">
+	<signature>
+	  <return type="HICON">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hInstance" type="HINSTANCE">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpIconName" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="DrawIcon">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hDC" type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg name="X" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="Y" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="hIcon" type="HICON">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="LoadBitmapA">
+	<signature>
+	  <return type="HBITMAP">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hInstance" type="HINSTANCE">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpBitmapName" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SendDlgItemMessageA">
+	<signature>
+	  <return type="LRESULT">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hDlg" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nIDDlgItem" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="Msg" type="UINT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="wParam" type="WPARAM">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lParam" type="LPARAM">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="DrawTextA">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hDC" type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpString" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nCount" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpRect" type="LPRECT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="uFormat" type="UINT">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InvalidateRect">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpRect" type="CONST RECT *">
+		<stack size="4" />
+	  </arg>
+	  <arg name="bErase" type="BOOL">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="CheckRadioButton">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hDlg" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nIDFirstButton" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nIDLastButton" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nIDCheckButton" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetCapture">
+	<signature>
+	  <return type="HWND">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="UnregisterClassA">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="lpClassName" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg name="hInstance" type="HINSTANCE">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="PostMessageA">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="Msg" type="UINT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="wParam" type="WPARAM">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lParam" type="LPARAM">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="ReleaseCapture">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	</signature>
+  </procedure>
+  <procedure name="GetSysColor">
+	<signature>
+	  <return type="DWORD">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="nIndex" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="LoadCursorA">
+	<signature>
+	  <return type="HCURSOR">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hInstance" type="HINSTANCE">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpCursorName" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetCursor">
+	<signature>
+	  <return type="HCURSOR">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hCursor" type="HCURSOR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetCursor">
+	<signature>
+	  <return type="HCURSOR">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hCursor" type="HCURSOR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetCursor">
+	<signature>
+	  <return type="HCURSOR">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hCursor" type="HCURSOR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="ScreenToClient">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpPoint" type="LPPOINT">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="OffsetRect">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="lprc" type="LPRECT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="dx" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="dy" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetDC">
+	<signature convention="stdapi">
+	  <return type="HDC">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="ClientToScreen">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpPoint" type="LPPOINT">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetWindowRect">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpRect" type="LPRECT">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="InflateRect">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="lprc" type="LPRECT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="dx" type="int">
+		<stack size="4" />
+	  </arg>
+	  <arg name="dy" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="FillRect">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hDC" type="HDC">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lprc" type="CONST RECT *">
+		<stack size="4" />
+	  </arg>
+	  <arg name="hbr" type="HBRUSH">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="ReleaseDC">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="hDC" type="HDC">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="MessageBoxA">
+	<signature>
+	  <return type="int">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpText" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpCaption" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg name="uType" type="UINT">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="BringWindowToTop">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="DialogBoxParamA">
+	<signature>
+	  <return type="INT_PTR">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hInstance" type="HINSTANCE">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpTemplateName" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	  <arg name="hWndParent" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpDialogFunc" type="DLGPROC">
+		<stack size="4" />
+	  </arg>
+	  <arg name="dwInitParam" type="LPARAM">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetTimer">
+	<signature>
+	  <return type="UINT_PTR">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nIDEvent" type="UINT_PTR">
+		<stack size="4" />
+	  </arg>
+	  <arg name="uElapse" type="UINT">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpTimerFunc" type="TIMERPROC">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="KillTimer">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="uIDEvent" type="UINT_PTR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="EndDialog">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hDlg" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nResult" type="INT_PTR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetDlgItem">
+	<signature>
+	  <return type="HWND">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hDlg" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="nIDDlgItem" type="int">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetWindowTextA">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	  <arg name="lpString" type="LPCSTR">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="UpdateWindow">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg name="hWnd" type="HWND">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="GetDlgItemTextA">
+	<signature>
+	  <return type="UINT">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HWND" name="hDlg">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int" name="nIDDlgItem">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPSTR" name="lpString">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int" name="nMaxCount">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+  <procedure name="SetDlgItemTextA">
+	<signature>
+	  <return type="BOOL">
+		<reg>eax</reg>
+	  </return>
+	  <arg type="HWND" name="hDlg">
+		<stack size="4" />
+	  </arg>
+	  <arg type="int" name="nIDDlgItem">
+		<stack size="4" />
+	  </arg>
+	  <arg type="LPCSTR" name="lpString">
+		<stack size="4" />
+	  </arg>
+	</signature>
+  </procedure>
+</library>

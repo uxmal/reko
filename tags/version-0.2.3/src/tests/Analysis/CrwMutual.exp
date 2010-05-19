@@ -1,0 +1,94 @@
+void fn0C00_0000(Register word16 dx)
+// MayUse:  dx
+// LiveOut:
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved:
+// fn0C00_0000
+// Mem0:Global memory
+// fp:Temporary
+// dx:Register dx
+// ax:Register ax
+// return address size: 2
+void fn0C00_0000(word16 dx)
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	ax = fn0C00_0004(dx, &dx)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 
+Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
+// MayUse:  dx
+// LiveOut: ax dx
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved:
+// fn0C00_0004
+// Mem0:Global memory
+// fp:Temporary
+// dx:Register dx
+// SCZO:Flags
+// Z:Flags
+// SZO:Flags
+// ax:Register ax
+// dxOut:Out:Register dx
+// return address size: 2
+word16 fn0C00_0004(word16 dx, ptr16 dxOut)
+fn0C00_0004_entry:		// pred:
+	// succ:  l0C00_0004
+l0C00_0004:		// pred: fn0C00_0004_entry
+	SCZO = cond(dx - 0x001E)
+	branch Test(NE,Z) l0C00_000F
+	// succ:  l0C00_0009 l0C00_000F
+l0C00_0009:		// pred: l0C00_0004
+	dx = fn0C00_0013(dx)
+	// succ:  l0C00_0010
+l0C00_0010:		// pred: l0C00_000F l0C00_0009
+	ax = dx
+	return ax
+	// succ:  fn0C00_0004_exit
+fn0C00_0004_exit:		// pred: l0C00_0010
+	use dx (=> dxOut)
+	// succ: 
+l0C00_000F:		// pred: l0C00_0004
+	dx = dx - 0x0001
+	SZO = cond(dx)
+	// succ:  l0C00_0010
+Register word16 fn0C00_0013(Register word16 dx)
+// MayUse:  dx
+// LiveOut: dx
+// Trashed: SCZO ax dx al dl ah dh
+// Preserved:
+// fn0C00_0013
+// Mem0:Global memory
+// fp:Temporary
+// dx:Register dx
+// SCZO:Flags
+// SO:Flags
+// ax:Register ax
+// SZO:Flags
+// return address size: 2
+word16 fn0C00_0013(word16 dx)
+fn0C00_0013_entry:		// pred:
+	// succ:  l0C00_0013
+l0C00_0013:		// pred: fn0C00_0013_entry
+	SCZO = cond(dx - 0x0014)
+	branch Test(LT,SO) l0C00_001F
+	// succ:  l0C00_0018 l0C00_001F
+l0C00_0018:		// pred: l0C00_0013
+	dx = dx - 0x0001
+	SZO = cond(dx)
+	ax = fn0C00_0004(dx, &dx)
+	// succ:  l0C00_0025
+l0C00_0025:		// pred: l0C00_001F l0C00_0018
+	ax = ax + 0x0001
+	SZO = cond(ax)
+	return dx
+	// succ:  fn0C00_0013_exit
+fn0C00_0013_exit:		// pred: l0C00_0025
+	// succ: 
+l0C00_001F:		// pred: l0C00_0013
+	dx = dx - 0x000A
+	SCZO = cond(dx)
+	ax = fn0C00_0004(dx, &dx)
+	// succ:  l0C00_0025

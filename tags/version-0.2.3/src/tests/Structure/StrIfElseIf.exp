@@ -1,0 +1,51 @@
+// MockIfElseIf
+void MockIfElseIf()
+MockIfElseIf_entry:		// pred:
+	branch r != 0x00000000 not_0
+	// succ:  l2 not_0
+l1:
+l2:		// pred: MockIfElseIf_entry
+	x = 0x00000000
+	// succ:  done
+done:		// pred: l2 l3 l4 l5 default
+	return x
+	// succ:  MockIfElseIf_exit
+MockIfElseIf_exit:		// pred: done
+	// succ: 
+not_0:		// pred: MockIfElseIf_entry
+	branch r != 0x00000001 not_1
+	// succ:  l3 not_1
+l3:		// pred: not_0
+	x = 0x00000001
+	// succ:  done
+not_1:		// pred: not_0
+	branch r != 0x00000002 not_2
+	// succ:  l4 not_2
+l4:		// pred: not_1
+	x = 0x00000002
+	// succ:  done
+not_2:		// pred: not_1
+	branch r != 0x00000003 default
+	// succ:  l5 default
+l5:		// pred: not_2
+	x = 0x00000003
+	// succ:  done
+default:		// pred: not_2
+	x = 0xFFFFFFFF
+	// succ:  done
+
+void MockIfElseIf()
+{
+	if (r == 0x00000000)
+		x = 0x00000000;
+	else if (r == 0x00000001)
+		x = 0x00000001;
+	else if (r == 0x00000002)
+		x = 0x00000002;
+	else if (r == 0x00000003)
+		x = 0x00000003;
+	else
+		x = 0xFFFFFFFF;
+	return x;
+}
+===========================

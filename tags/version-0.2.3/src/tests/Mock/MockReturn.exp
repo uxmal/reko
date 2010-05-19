@@ -1,0 +1,19 @@
+// ReturnMock
+// Mem0:Global memory
+// fp:Temporary
+// r1:Local -0004
+// return address size: 0
+void ReturnMock()
+ReturnMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: ReturnMock_entry
+	branch r1 == 0x00000000 zero
+	// succ:  l2 zero
+l2:		// pred: l1
+	return 0x00000000
+	// succ:  ReturnMock_exit
+ReturnMock_exit:		// pred: l2 zero
+	// succ: 
+zero:		// pred: l1
+	return 0x00000001
+	// succ:  ReturnMock_exit

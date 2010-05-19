@@ -1,0 +1,19 @@
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	ebx = 0x00000020
+	eax = 0x00000064
+	edx_eax = (int64) eax
+	edx = edx_eax % ebx
+	eax = edx_eax / ebx
+	cx = Mem0[ds:si:word16]
+	ax = Mem0[ds:si + 0x0002:word16]
+	dx = Mem0[ds:si + 0x0004:word16]
+	dx = dx_ax % cx
+	ax = dx_ax /u cx
+	SCZO = cond(ax)
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 

@@ -1,0 +1,65 @@
+Mem0: Mem0:Global memory, def: {def Mem0}
+fp: fp:Temporary, def: {def fp}
+bp: bp:Register, def: {def bp}, uses: {loc02_7 = bp}
+loc02: loc02:Local -0002 (temp), def: {def loc02}
+dx: dx:Register, def: {def dx}
+SCZO: SCZO:Flags, def: {def SCZO}
+bx: bx:Register, def: {def bx}
+loc02_7: orig: loc02, def: {loc02_7 = bp}, uses: {bp_13 = loc02_7}
+dx_8: orig: dx, def: {dx_8 = 0x0003}, uses: {dx_9 = dx_8 + dx_8}{dx_9 = dx_8 + dx_8}
+dx_9: orig: dx, def: {dx_9 = dx_8 + dx_8}, uses: {SCZO_10 = cond(dx_9)}
+SCZO_10: orig: SCZO, def: {SCZO_10 = cond(dx_9)}
+bx_11: orig: bx, def: {bx_11 = 0x0003}, uses: {dx_12 = bx_11 + 0x0003}
+dx_12: orig: dx, def: {dx_12 = bx_11 + 0x0003}
+bp_13: orig: bp, def: {bp_13 = loc02_7}
+// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:		// block 0, pred:
+	def Mem0
+	def fp
+	def bp
+	def loc02
+	def dx
+	def SCZO
+	def bx
+	// succ:  1
+l0C00_0000:		// block 1, pred: 0
+	loc02_7 = bp
+	dx_8 = 0x0003
+	dx_9 = dx_8 + dx_8
+	SCZO_10 = cond(dx_9)
+	bx_11 = 0x0003
+	dx_12 = bx_11 + 0x0003
+	bp_13 = loc02_7
+	return
+	// succ:  2
+fn0C00_0000_exit:		// block 2, pred: 1
+	// succ: 
+Values:
+	0x0003: <bx_11>
+	0x0003: <dx_8>
+	0x0006: <dx_12>
+	0x0006: <dx_9>
+	bp: <bp>
+	bx: <bx>
+	cond(dx_9): <SCZO_10>
+	dx: <dx>
+	fp: <fp>
+	loc02: <loc02>
+	Mem0: <Mem0>
+	SCZO: <SCZO>
+Identifiers:
+	Mem0: <Mem0>
+	fp: <fp>
+	bp: <bp>
+	loc02: <loc02>
+	dx: <dx>
+	SCZO: <SCZO>
+	bx: <bx>
+	loc02_7: <bp>
+	dx_8: <dx_8>
+	dx_9: <dx_9>
+	SCZO_10: <SCZO_10>
+	bx_11: <bx_11>
+	dx_12: <dx_12>
+	bp_13: <bp>

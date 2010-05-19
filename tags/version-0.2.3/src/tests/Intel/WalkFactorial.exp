@@ -1,0 +1,31 @@
+
+fn0C00_0000()
+	mov	cx,0064
+	push	cx
+	call	000F
+	add	sp,02
+	mov	word ptr [0064],ax
+	ret	
+
+fn0C00_000F()
+	push	bp
+	mov	bp,sp
+	mov	ax,[bp+04]
+	dec	ax
+	jz	0026
+
+l0C00_0018:
+	push	ax
+	call	000F
+	inc	sp
+	inc	sp
+	mov	dx,[bp+04]
+	imul	dx
+	jmp	0029
+
+l0C00_0026:
+	mov	ax,0001
+
+l0C00_0029:
+	pop	bp
+	ret	

@@ -1,0 +1,87 @@
+Mem0:Global memory
+fp:Temporary
+bx:Register bx
+ds:Register ds
+    def:  def ds
+    uses: store(Mem7[ds:0x0300:word16]) = bx_5
+          fn0C00_0015(ax_9, bx_8, ds)
+ax:Register ax
+bx_5: orig: bx
+    def:  fn0C00_000E(&bx_5)
+    uses: store(Mem7[ds:0x0300:word16]) = bx_5
+ax_6: orig: ax
+Mem7: orig: Mem0
+    def:  store(Mem7[ds:0x0300:word16]) = bx_5
+bx_8: orig: bx
+    def:  ax_9 = fn0C00_000E(&bx_8)
+    uses: fn0C00_0015(ax_9, bx_8, ds)
+ax_9: orig: ax
+    def:  ax_9 = fn0C00_000E(&bx_8)
+    uses: fn0C00_0015(ax_9, bx_8, ds)
+// fn0C00_0000
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:		// pred:
+	def ds
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
+	fn0C00_000E(&bx_5)
+	store(Mem7[ds:0x0300:word16]) = bx_5
+	ax_9 = fn0C00_000E(&bx_8)
+	fn0C00_0015(ax_9, bx_8, ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
+	// succ: 
+
+Mem0:Global memory
+fp:Temporary
+ax:Register ax
+bx:Register bx
+bxOut:Out:Register bx
+ax_5: orig: ax
+bx_6: orig: bx
+    def:  bx_6 = 0x002B
+    uses: use bx_6 (=> bxOut)
+// fn0C00_000E
+word16 fn0C00_000E(ptr16 bxOut)
+fn0C00_000E_entry:		// pred:
+	// succ:  l0C00_000E
+l0C00_000E:		// pred: fn0C00_000E_entry
+	bx_6 = 0x002B
+	return 0x002A
+	// succ:  fn0C00_000E_exit
+fn0C00_000E_exit:		// pred: l0C00_000E
+	use bx_6 (=> bxOut)
+	// succ: 
+
+Mem0:Global memory
+fp:Temporary
+ax:Register ax
+    def:  def ax
+    uses: store(Mem5[ds:0x0400:word16]) = ax
+ds:Register ds
+    def:  def ds
+    uses: store(Mem5[ds:0x0400:word16]) = ax
+          store(Mem6[ds:0x0402:word16]) = bx
+bx:Register bx
+    def:  def bx
+    uses: store(Mem6[ds:0x0402:word16]) = bx
+Mem5: orig: Mem0
+    def:  store(Mem5[ds:0x0400:word16]) = ax
+Mem6: orig: Mem0
+    def:  store(Mem6[ds:0x0402:word16]) = bx
+// fn0C00_0015
+void fn0C00_0015(word16 ax, word16 bx, selector ds)
+fn0C00_0015_entry:		// pred:
+	def ax
+	def ds
+	def bx
+	// succ:  l0C00_0015
+l0C00_0015:		// pred: fn0C00_0015_entry
+	store(Mem5[ds:0x0400:word16]) = ax
+	store(Mem6[ds:0x0402:word16]) = bx
+	return
+	// succ:  fn0C00_0015_exit
+fn0C00_0015_exit:		// pred: l0C00_0015
+	// succ: 
+
