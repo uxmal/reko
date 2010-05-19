@@ -1,37 +1,37 @@
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	fn0C00_000C(ds)
 	fn0C00_0015(ds)
 	store(Mem3[ds:0x0100:word16]) = 0x0000
 	fn0C00_000C(ds)
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 // fn0C00_000C
 void fn0C00_000C(selector ds)
-fn0C00_000C_entry:		// block 0, pred:
-	// succ:  1
-l0C00_000C:		// block 1, pred: 0
+fn0C00_000C_entry:		// pred:
+	// succ:  l0C00_000C
+l0C00_000C:		// pred: fn0C00_000C_entry
 	store(Mem5[ds:0x0302:word16]) = Mem0[ds:0x0300:word16]
 	return
-	// succ:  2
-fn0C00_000C_exit:		// block 2, pred: 1
+	// succ:  fn0C00_000C_exit
+fn0C00_000C_exit:		// pred: l0C00_000C
 	// succ: 
 
 // fn0C00_0015
 void fn0C00_0015(selector ds)
-fn0C00_0015_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0015:		// block 1, pred: 0
+fn0C00_0015_entry:		// pred:
+	// succ:  l0C00_0015
+l0C00_0015:		// pred: fn0C00_0015_entry
 	store(Mem5[ds:0x0202:word16]) = Mem0[ds:0x0200:word16]
 	return
-	// succ:  2
-fn0C00_0015_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0015_exit
+fn0C00_0015_exit:		// pred: l0C00_0015
 	// succ: 
 
 // Equivalence classes ////////////

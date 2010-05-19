@@ -36,16 +36,14 @@ namespace Decompiler.Gui.Windows.Forms
 
         #region IDiagnosticsService Members
 
-        public void AddDiagnostic(Diagnostic d)
+        public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
-            ListViewItem li = new ListViewItem();
-            li.Text = d.ToString();
-            ListViewItem.ListViewSubItem si = li.SubItems.Add(d.Address != null
-                ? d.Address.ToString()
-                : "");
-            si.Tag = d.Address;
+            var li = new ListViewItem();
+            li.Text = location.Text;
+            li.Tag = location;
+            li.ImageKey = d.ImageKey;
             li.SubItems.Add(d.Message);
-            this.listView.Items.Add(li);
+            listView.Items.Add(li);
         }
 
         public void ClearDiagnostics()

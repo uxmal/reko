@@ -45,6 +45,8 @@
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabFindResults.SuspendLayout();
@@ -86,8 +88,8 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabFindResults);
             this.tabControl1.Controls.Add(this.tabDiagnostics);
+            this.tabControl1.Controls.Add(this.tabFindResults);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tabControl1.Location = new System.Drawing.Point(0, 331);
             this.tabControl1.Name = "tabControl1";
@@ -129,11 +131,15 @@
             // 
             // listDiagnostics
             // 
+            this.listDiagnostics.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
             this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listDiagnostics.FullRowSelect = true;
             this.listDiagnostics.Location = new System.Drawing.Point(3, 3);
             this.listDiagnostics.Name = "listDiagnostics";
             this.listDiagnostics.Size = new System.Drawing.Size(770, 148);
+            this.listDiagnostics.SmallImageList = this.imageList;
             this.listDiagnostics.TabIndex = 2;
             this.listDiagnostics.UseCompatibleStateImageBehavior = false;
             this.listDiagnostics.View = System.Windows.Forms.View.Details;
@@ -168,8 +174,20 @@
             this.imageList.Images.SetKeyName(1, "Save.ico");
             this.imageList.Images.SetKeyName(2, "NextPhase.ico");
             this.imageList.Images.SetKeyName(3, "FinishDecompilation.ico");
+            this.imageList.Images.SetKeyName(4, "Error");
+            this.imageList.Images.SetKeyName(5, "Warning");
             // 
-            // MainForm2
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Address";
+            this.columnHeader1.Width = 95;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Description";
+            this.columnHeader2.Width = 624;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -181,7 +199,7 @@
             this.Controls.Add(this.statusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
-            this.Name = "MainForm2";
+            this.Name = "MainForm";
             this.Text = "Decompiler";
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
@@ -209,6 +227,8 @@
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ListView listDiagnostics;
         private System.Windows.Forms.ColumnHeader colBrowserHeader;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
     }
 }
 

@@ -271,14 +271,15 @@ namespace Decompiler.UnitTests.Arch.Intel
 			return null;
 		}
 
-		public void AddDiagnostic(Diagnostic d)
-		{
-			Console.Write(d.GetType().Name);
-			Console.Write(" - ");
-            Console.WriteLine(d.Address.ToString());
+        public void AddDiagnostic(Address addr, Diagnostic d)
+        {
+            Console.Write(d.GetType().Name);
+            Console.Write(" - ");
+            Console.WriteLine(addr.ToString());
             Console.Write(": ");
-			Console.WriteLine(d.Message);
-		}
+            Console.WriteLine(d.Message);
+        }
+
 		#endregion
 
 	}

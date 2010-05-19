@@ -48,5 +48,13 @@ namespace Decompiler.WindowsItp
                 dlg.ShowDialog(this);
             }
         }
+
+        private void webControlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new WebDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
     }
 }

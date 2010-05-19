@@ -16,6 +16,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;
@@ -195,7 +196,8 @@ namespace Decompiler.Typing
 				++iteration;
                 if (iteration > 500)
                 {
-                    eventListener.AddWarningDiagnostic(null, "Type transformer has looped {0} times, quitting prematurely.", iteration);
+                    eventListener.AddDiagnostic(new NullCodeLocation(""),
+                        new WarningDiagnostic(string.Format("Type transformer has looped {0} times, quitting prematurely.", iteration)));
                     return;
                 }
 				Changed = false;

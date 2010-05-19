@@ -417,6 +417,8 @@ namespace Decompiler.ImageLoaders.MzExe
             try
             {
                 SignatureLibrary lib = new SignatureLibrary(arch);
+                if (!File.Exists(dllName))
+                    return null;
                 lib.Load(ImportFileLocation(dllName));
                 return lib;
             }

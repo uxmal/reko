@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Decompiler.Analysis
 {
@@ -81,6 +82,20 @@ namespace Decompiler.Analysis
 			get { return grfDefs; }
 			set { grfDefs = value; }
 		}
+
+        public void Write(TextWriter writer)
+        {
+            var sortedList = new SortedList<string, string>();
+            foreach (KeyValuePair<Storage,Storage> de in TrashedRegisters)
+            {
+                sortedList[de.Key.ToString()] = de.Value.ToString();
+            }
+            foreach (string s in sortedList.Keys)
+            {
+                writer.Write(" ");
+                writer.Write(s);
+            }
+        }
 
 		#region StorageVisitor Members
 

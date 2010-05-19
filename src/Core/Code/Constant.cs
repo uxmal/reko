@@ -23,6 +23,24 @@ using System.Globalization;
 
 namespace Decompiler.Core.Code
 {
+    public class ByteConstant : Constant
+    {
+        private byte b;
+        public ByteConstant(byte b) : base(PrimitiveType.Byte, b) { this.b = b; }
+    }
+
+    public class FloatConstant : Constant
+    {
+        private float f;
+        public FloatConstant(float f) : base(PrimitiveType.Real32, f) { this.f = f; }
+    }
+
+    public class DoubleConstant : Constant
+    {
+        private double d;
+        public DoubleConstant(double d) : base(PrimitiveType.Real64, d) { this.d = d; }
+    }
+
 	public class Constant : Expression
 	{
 		private object c;
@@ -235,10 +253,6 @@ namespace Decompiler.Core.Code
 			get { return !Object.ReferenceEquals(this, Constant.Invalid); }
 		}
 
-		public static Constant Ln2()
-		{
-			return new Constant(0.69314718055994530941723212145818);
-		}
 
 		public Constant Negate()
 		{
@@ -270,6 +284,11 @@ namespace Decompiler.Core.Code
 		{
             return new Constant(Math.PI);
 		}
+
+        public static Constant Ln2()
+        {
+            return new Constant(0.69314718055994530941723212145818);
+        }
 
 		public double ToDouble()
 		{

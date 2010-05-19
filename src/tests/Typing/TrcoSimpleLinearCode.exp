@@ -1,14 +1,14 @@
 // fn0C00_0000
 void fn0C00_0000(word16 bx, word16 si, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	word16 ax_7 = Mem0[ds:bx + 0x0004:word16]
 	store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
 	store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 T_2 (in ax_7 : word16)

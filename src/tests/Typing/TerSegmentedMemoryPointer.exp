@@ -1,8 +1,8 @@
 // SegmentedMemoryPointerMock
 void SegmentedMemoryPointerMock()
-SegmentedMemoryPointerMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+SegmentedMemoryPointerMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: SegmentedMemoryPointerMock_entry
 	si = &Eq_4::w0001;
 	ax = (cs->*si).w0000;
 	si2 = &Eq_4::w0005;

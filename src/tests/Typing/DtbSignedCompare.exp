@@ -1,8 +1,8 @@
 // ProcedureMock
 void ProcedureMock()
-ProcedureMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+ProcedureMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: ProcedureMock_entry
 	ds2 = ds
 	store(Mem0[ds:0x5400:bool]) = Mem0[ds:0x5404:word16] < 0x0014
 	store(Mem0[ds2:0x5404:word16]) = 0x0000

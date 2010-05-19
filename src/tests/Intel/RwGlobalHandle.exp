@@ -10,9 +10,9 @@
 // eax:Register eax
 // return address size: 4
 void fn10000000()
-fn10000000_entry:		// block 0, pred:
-	// succ:  1
-l10000000:		// block 1, pred: 0
+fn10000000_entry:		// pred:
+	// succ:  l10000000
+l10000000:		// pred: fn10000000_entry
 	dwLoc08 = esi
 	esi = dwArg00
 	dwLoc0C = edi
@@ -28,7 +28,7 @@ l10000000:		// block 1, pred: 0
 	edi = dwLoc0C
 	esi = dwLoc08
 	return
-	// succ:  2
-fn10000000_exit:		// block 2, pred: 1
+	// succ:  fn10000000_exit
+fn10000000_exit:		// pred: l10000000
 	// succ: 
 

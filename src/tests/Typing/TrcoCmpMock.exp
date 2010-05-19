@@ -1,19 +1,19 @@
 // CmpMock
 void CmpMock()
-CmpMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+CmpMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: CmpMock_entry
 	Z = cond(r0 - 0x00000000)
 	branch Test(EQ,Z) skip
-	// succ:  2 3
-l2:		// block 2, pred: 1
+	// succ:  l2 skip
+l2:		// pred: l1
 	r0 = r0 + r1
-	// succ:  3
-skip:		// block 3, pred: 1 2
+	// succ:  skip
+skip:		// pred: l1 l2
 	store(Mem0[0x10003000:word32]) = r0
 	return
-	// succ:  4
-CmpMock_exit:		// block 4, pred: 3
+	// succ:  CmpMock_exit
+CmpMock_exit:		// pred: skip
 	// succ: 
 
 Globals (in globals : ptr32)

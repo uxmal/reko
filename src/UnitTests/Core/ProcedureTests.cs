@@ -43,13 +43,13 @@ namespace Decompiler.UnitTests.Core
 		{
 			Procedure proc1 = Procedure.Create(new Address(0x0F00, 0x0BA9), null);
 			Assert.AreEqual("fn0F00_0BA9", proc1.Name);
-			Assert.AreEqual(proc1.Name, proc1.ToString());
+			Assert.AreEqual("void fn0F00_0BA9()", proc1.ToString());
 			Procedure proc2 = Procedure.Create(new Address(0x0F000BA9), null);
 			Assert.AreEqual("fn0F000BA9", proc2.Name);
-			Assert.AreEqual(proc2.Name, proc2.ToString());
+			Assert.AreEqual("void fn0F000BA9()", proc2.ToString());
 			Procedure proc3 = new Procedure("foo", null);
 			Assert.AreEqual("foo", proc3.Name);
-			Assert.AreEqual(proc3.Name, proc3.ToString());
+			Assert.AreEqual("void foo()", proc3.ToString());
 		}
 
 

@@ -1,8 +1,8 @@
 // StaggeredArraysMock
 void StaggeredArraysMock()
-StaggeredArraysMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+StaggeredArraysMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: StaggeredArraysMock_entry
 	x = p[i * 0x00000008]
 	x = (p + 4)[i * 0x00000008]
 	// succ: 

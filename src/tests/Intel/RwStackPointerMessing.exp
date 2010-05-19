@@ -5,14 +5,14 @@
 // ds:Register ds
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	call fn0C00_0008 (depth: 2;)
 	store(Mem0[ds:0x0306:word16]) = ax
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 // fn0C00_0008
 // Mem0:Global memory
@@ -25,15 +25,15 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // ss_sp:Sequence ss:sp
 // return address size: 2
 void fn0C00_0008()
-fn0C00_0008_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0008:		// block 1, pred: 0
+fn0C00_0008_entry:		// pred:
+	// succ:  l0C00_0008
+l0C00_0008:		// pred: fn0C00_0008_entry
 	store(Mem0[ds:0x0300:word16]) = sp
 	store(Mem0[ds:0x0302:word16]) = ss
 	store(Mem0[ds:0x0308:word16]) = bx
 	ax = Mem0[ds:0x0304:word16]
 	ss_sp = Mem0[ds:0x0300:ptr32]
 	return
-	// succ:  2
-fn0C00_0008_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0008_exit
+fn0C00_0008_exit:		// pred: l0C00_0008
 	// succ: 

@@ -7,9 +7,9 @@
 // ds:Register ds
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	call fn0C00_000F (depth: 2;)
 	wLoc04 = di
 	ax = 0x0100
@@ -18,8 +18,8 @@ l0C00_0000:		// block 1, pred: 0
 	di = wLoc04
 	call fn0C00_000F (depth: 2;)
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 // fn0C00_000F
 // Mem0:Global memory
@@ -28,13 +28,13 @@ fn0C00_0000_exit:		// block 2, pred: 1
 // ds:Register ds
 // return address size: 2
 void fn0C00_000F()
-fn0C00_000F_entry:		// block 0, pred:
-	// succ:  1
-l0C00_000F:		// block 1, pred: 0
+fn0C00_000F_entry:		// pred:
+	// succ:  l0C00_000F
+l0C00_000F:		// pred: fn0C00_000F_entry
 	store(Mem0[ds:di:word16]) = 0x0000
 	return
-	// succ:  2
-fn0C00_000F_exit:		// block 2, pred: 1
+	// succ:  fn0C00_000F_exit
+fn0C00_000F_exit:		// pred: l0C00_000F
 	// succ: 
 // fn0C00_0014
 // Mem0:Global memory
@@ -45,14 +45,14 @@ fn0C00_000F_exit:		// block 2, pred: 1
 // SZO:Flags
 // return address size: 2
 void fn0C00_0014()
-fn0C00_0014_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0014:		// block 1, pred: 0
+fn0C00_0014_entry:		// pred:
+	// succ:  l0C00_0014
+l0C00_0014:		// pred: fn0C00_0014_entry
 	di = 0x0000
 	SCZO = cond(di)
 	ax = ax - 0x0001
 	SZO = cond(ax)
 	return
-	// succ:  2
-fn0C00_0014_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0014_exit
+fn0C00_0014_exit:		// pred: l0C00_0014
 	// succ: 

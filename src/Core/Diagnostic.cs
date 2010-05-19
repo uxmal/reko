@@ -23,30 +23,28 @@ namespace Decompiler.Core
 {
     public class Diagnostic
     {
-        private Address addr;
         private string message;
 
-        public Diagnostic(Address addr, string messageFormat, params object[] args)
+        public Diagnostic(string message)
         {
-            this.addr = addr;
-            this.message = string.Format(messageFormat, args);
-        }
-
-        public Address Address
-        {
-            get { return addr; }
+            this.message = message;
         }
 
         public string Message
         {
             get { return message; }
         }
+
+        //$REVIEW: this is being used as a type code. Be careful...
+        public virtual string ImageKey
+        {
+            get { return ""; }
+        }
     }
 
     public class ErrorDiagnostic : Diagnostic
     {
-        public ErrorDiagnostic(Address addr, string messageFormat, params object[] args)
-            : base(addr, messageFormat, args)
+        public ErrorDiagnostic(string message) : base(message)
         {
         }
 
@@ -63,21 +61,25 @@ namespace Decompiler.Core
             return sb.ToString();
         }
 
-        public ErrorDiagnostic(Address addr, Exception ex, string messageFormat, params object[] args)
-            : base(addr, messageFormat + GetExceptionString(ex), args)
+        public ErrorDiagnostic(string message, Exception ex) : base(message +  " " + GetExceptionString(ex))
         {
         }
 
+        public override string ImageKey
+        {
+            get { return "Error"; }
+        }
     }
 
 
     public class WarningDiagnostic : Diagnostic
     {
-        public WarningDiagnostic(Address addr, string messageFormat, params object[] args)
-            : base(addr, messageFormat, args)
-        {
-        }
+        public WarningDiagnostic(string message) : base(message) { }
 
+        public override string ImageKey
+        {
+            get { return "Warning"; }
+        }
     }
 }
 

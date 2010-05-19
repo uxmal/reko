@@ -4,11 +4,11 @@
 // a:Local -0004
 // return address size: 0
 void NotMock()
-NotMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+NotMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: NotMock_entry
 	a = !a
 	return
-	// succ:  2
-NotMock_exit:		// block 2, pred: 1
+	// succ:  NotMock_exit
+NotMock_exit:		// pred: l1
 	// succ: 

@@ -168,6 +168,12 @@ namespace Decompiler.UnitTests.Analysis
         }
 
         [Test]
+        public void DfaReg00015()
+        {
+            RunTest("Fragments/regressions/r00015.asm", "Analysis/DfaReg00015.txt");
+        }
+
+        [Test]
         public void DfaFstsw()
         {
            Program prog = RewriteCodeFragment(@"

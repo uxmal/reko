@@ -1,8 +1,8 @@
 // GlobalVariablesMock
 void GlobalVariablesMock()
-GlobalVariablesMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+GlobalVariablesMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: GlobalVariablesMock_entry
 	word32 ptr = 0x10000004
 	store(Mem0[ptr + 0x00000000:real32]) = 0.75F
 	store(Mem0[0x10000000:real32]) = 0.5F

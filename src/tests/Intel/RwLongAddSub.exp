@@ -15,9 +15,9 @@
 // edx_eax:Sequence edx:eax
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	ax = Mem0[ds:0x0300:word16]
 	dx = Mem0[ds:0x0302:word16]
 	dx_ax = dx_ax + Mem0[ds:0x0304:ui32]
@@ -33,7 +33,7 @@ l0C00_0000:		// block 1, pred: 0
 	SCZO = cond(dx_ax)
 	bx = Mem0[ds:si + 0x030E:word16]
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 

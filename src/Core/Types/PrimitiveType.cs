@@ -220,6 +220,7 @@ namespace Decompiler.Core.Types
 				switch (domain)
 				{
 				case Domain.None:
+                case Domain.Void:
 					return "v";
 				case Domain.Boolean:
 					return "f";

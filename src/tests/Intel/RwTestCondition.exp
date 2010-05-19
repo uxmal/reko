@@ -11,9 +11,9 @@
 // SO:Flags
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	ecx = 0x00000000
 	ax = ax - bx
 	SCZO = cond(ax)
@@ -21,12 +21,12 @@ l0C00_0000:		// block 1, pred: 0
 	store(Mem0[ds:0x0300:word32]) = ecx
 	SCZO = cond(ax - 0x0030)
 	branch Test(LT,SO) l0C00_0016
-	// succ:  2 3
-l0C00_0012:		// block 2, pred: 1
+	// succ:  l0C00_0012 l0C00_0016
+l0C00_0012:		// pred: l0C00_0000
 	store(Mem0[ds:0x0302:word16]) = ax
-	// succ:  3
-l0C00_0016:		// block 3, pred: 1 2
+	// succ:  l0C00_0016
+l0C00_0016:		// pred: l0C00_0000 l0C00_0012
 	return
-	// succ:  4
-fn0C00_0000_exit:		// block 4, pred: 3
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0016
 	// succ: 

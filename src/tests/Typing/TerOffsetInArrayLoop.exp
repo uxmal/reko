@@ -1,20 +1,20 @@
 // ProcedureMock
 void ProcedureMock()
-ProcedureMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+ProcedureMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: ProcedureMock_entry
 	word16 Eq_5::*di_5 = &Eq_5::a5388[0]
-	// succ:  2
-lupe:		// block 2, pred: 1 2
+	// succ:  lupe
+lupe:		// pred: l1 lupe
 	ds->*di_5 = 0x0000;
 	di_5 = di_5 + 1;
 	cx = cx - 0x0001;
 	branch cx != 0x0000 lupe
-	// succ:  3 2
-l2:		// block 3, pred: 2
+	// succ:  l2 lupe
+l2:		// pred: lupe
 	return
-	// succ:  4
-ProcedureMock_exit:		// block 4, pred: 3
+	// succ:  ProcedureMock_exit
+ProcedureMock_exit:		// pred: l2
 	// succ: 
 
 // Equivalence classes ////////////

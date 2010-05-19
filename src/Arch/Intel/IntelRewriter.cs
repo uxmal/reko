@@ -558,6 +558,10 @@ namespace Decompiler.Arch.Intel
 					case Opcode.leave:
 					{
 						MachineRegister fp = state.FrameRegister;
+                        if (state.FrameRegister == MachineRegister.None)
+                        {
+                            host.AddDiagnostic(state.InstructionAddress, new WarningDiagnostic("LEAVE instruction was encountered without an established frame register."));
+                        }
 						state.LeaveFrame();
 						EmitPop(fp);
 						break;
@@ -1734,17 +1738,19 @@ namespace Decompiler.Arch.Intel
 		{
             if (frame.ReturnAddressSize != cbReturnAddress)
             {
-                host.AddDiagnostic(new WarningDiagnostic(
+                host.AddDiagnostic(
                     state.InstructionAddress,
-                    "Caller expects a return address of {0} bytes, but procedure {1} was called with a return address of {2} bytes.",
-                    cbReturnAddress, this.proc, frame.ReturnAddressSize));
+                    new WarningDiagnostic(string.Format(
+                    "Caller expects a return address of {0} bytes, but procedure {1} was previously called with a return address of {2} bytes.",
+                    cbReturnAddress, this.proc.Name, frame.ReturnAddressSize)));
             }
 			emitter.Return();
             if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != cbBytesPop)
             {
-                host.AddDiagnostic(new WarningDiagnostic(
+                host.AddDiagnostic(
                     state.InstructionAddress,
-                    "Multiple values of stack delta in procedure {0} when processung RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta));
+                    new WarningDiagnostic(string.Format(
+                    "Multiple values of stack delta in procedure {0} when processung RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
             }
             else
             {

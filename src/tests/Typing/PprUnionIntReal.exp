@@ -1,15 +1,15 @@
 // UnionIntRealMock
 void UnionIntRealMock()
-UnionIntRealMock_entry:		// block 0, pred:
-	// succ:  1
-l1:		// block 1, pred: 0
+UnionIntRealMock_entry:		// pred:
+	// succ:  l1
+l1:		// pred: UnionIntRealMock_entry
 	x = i
 	x = r
 	store(Mem0[ptr:int32]) = i
 	store(Mem0[ptr + 0x00000004:real32]) = r
 	return
-	// succ:  2
-UnionIntRealMock_exit:		// block 2, pred: 1
+	// succ:  UnionIntRealMock_exit
+UnionIntRealMock_exit:		// pred: l1
 	// succ: 
 
 // Equivalence classes ////////////

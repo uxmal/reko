@@ -1,23 +1,23 @@
 // fn0C00_0000
 void fn0C00_0000(Eq_3 * ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	ds->w9A2E = 0x0000;
 	ds->w9A26 = 0x0100;
 	Eq_9 Eq_12::*si_16 = &Eq_12::a0000[0]
-	// succ:  2
-l0C00_0015:		// block 2, pred: 1 2
+	// succ:  l0C00_0015
+l0C00_0015:		// pred: l0C00_0000 l0C00_0015
 	(0x5CE1->*si_16).w0000 = 0xFFFF;
 	word16 v8_22 = ds->w9A26 - 0x0001
 	ds->w9A26 = v8_22;
 	si_16 = si_16 + 1;
 	branch v8_22 != 0x0000 l0C00_0015
-	// succ:  3 2
-l0C00_0023:		// block 3, pred: 2
+	// succ:  l0C00_0023 l0C00_0015
+l0C00_0023:		// pred: l0C00_0015
 	return
-	// succ:  4
-fn0C00_0000_exit:		// block 4, pred: 3
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0023
 	// succ: 
 
 // Equivalence classes ////////////

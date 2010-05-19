@@ -1,28 +1,28 @@
 // TreeFindMock
 void TreeFindMock()
-TreeFindMock_entry:		// block 0, pred:
-	// succ:  1
-seek:		// block 1, pred: 0 7
+TreeFindMock_entry:		// pred:
+	// succ:  seek
+seek:		// pred: TreeFindMock_entry l3
 	branch t == 0x00000000 found
-	// succ:  2 5
-l1:		// block 2, pred: 1
+	// succ:  l1 found
+l1:		// pred: seek
 	vv = Mem0[t + 0x00000000:word32]
 	branch v == vv found
-	// succ:  3 5
-l2:		// block 3, pred: 2
+	// succ:  l2 found
+l2:		// pred: l1
 	branch v < vv lt
-	// succ:  7 4
-lt:		// block 4, pred: 3
-	t = Mem0[t + 0x00000004:word32]
-	// succ:  5
-found:		// block 5, pred: 1 2 4
-	return t
-	// succ:  6
-TreeFindMock_exit:		// block 6, pred: 5
-	// succ: 
-l3:		// block 7, pred: 3
+	// succ:  l3 lt
+l3:		// pred: l2
 	t = Mem0[t + 0x00000008:word32]
-	// succ:  1
+	// succ:  seek
+lt:		// pred: l2
+	t = Mem0[t + 0x00000004:word32]
+	// succ:  found
+found:		// pred: seek l1 lt
+	return t
+	// succ:  TreeFindMock_exit
+TreeFindMock_exit:		// pred: found
+	// succ: 
 
 // Equivalence classes ////////////
 Eq_2: (struct (0 int32 dw0000) (4 (ptr Eq_2) ptr0004) (8 (ptr Eq_2) ptr0008))

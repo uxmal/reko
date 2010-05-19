@@ -52,14 +52,15 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         [Test]
         public void AddDiagnostic()
         {
-            svc.AddDiagnostic(new WarningDiagnostic(new Address(0x100), "test"));
+            svc.AddDiagnostic(new NullCodeLocation("01000"), new WarningDiagnostic("test"));
             Assert.AreEqual(1, lv.Items.Count);
+            Assert.AreEqual("01000", lv.Items[0].Text);
         }
 
         [Test]
         public void ClearDiagnostics()
         {
-            svc.AddDiagnostic(new WarningDiagnostic(new Address(0x100), "test"));
+            svc.AddDiagnostic(new NullCodeLocation("01000"), new WarningDiagnostic("test"));
             svc.ClearDiagnostics();
             Assert.AreEqual(0, lv.Items.Count);
         }

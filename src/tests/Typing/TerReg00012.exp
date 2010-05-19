@@ -1,77 +1,77 @@
 // fn0C00_0000
 void fn0C00_0000(word16 cx, int16 bx, Eq_5 * ds)
-fn0C00_0000_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
+fn0C00_0000_entry:		// pred:
+	// succ:  l0C00_0000
+l0C00_0000:		// pred: fn0C00_0000_entry
 	fn0C00_0007(cx, ds)
 	fn0C00_001D(bx, ds)
 	return
-	// succ:  2
-fn0C00_0000_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 
 // fn0C00_0007
 void fn0C00_0007(word16 cx, Eq_5 * ds)
-fn0C00_0007_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0007:		// block 1, pred: 0
+fn0C00_0007_entry:		// pred:
+	// succ:  l0C00_0007
+l0C00_0007:		// pred: fn0C00_0007_entry
 	word16 Eq_5::*di_11 = &Eq_5::a5388[0]
-	// succ:  2
-l0C00_000A:		// block 2, pred: 1 2
+	// succ:  l0C00_000A
+l0C00_000A:		// pred: l0C00_0007 l0C00_000A
 	fn0C00_003D(ds->*di_11, 0x2D, ds)
 	di_11 = di_11 + 1;
 	cx = cx - 0x0001;
 	branch cx != 0x0000 l0C00_000A
-	// succ:  3 2
-l0C00_001C:		// block 3, pred: 2
+	// succ:  l0C00_001C l0C00_000A
+l0C00_001C:		// pred: l0C00_000A
 	return
-	// succ:  4
-fn0C00_0007_exit:		// block 4, pred: 3
+	// succ:  fn0C00_0007_exit
+fn0C00_0007_exit:		// pred: l0C00_001C
 	// succ: 
 
 // fn0C00_001D
 void fn0C00_001D(int16 bx, Eq_5 * ds)
-fn0C00_001D_entry:		// block 0, pred:
-	// succ:  1
-l0C00_001D:		// block 1, pred: 0
+fn0C00_001D_entry:		// pred:
+	// succ:  l0C00_001D
+l0C00_001D:		// pred: fn0C00_001D_entry
 	branch bx == ds->w53BA l0C00_003C
-	// succ:  2 4
-l0C00_0023:		// block 2, pred: 1
+	// succ:  l0C00_0023 l0C00_003C
+l0C00_0023:		// pred: l0C00_001D
 	branch bx >= ds->w53B8 l0C00_003C
-	// succ:  3 4
-l0C00_0029:		// block 3, pred: 2
+	// succ:  l0C00_0029 l0C00_003C
+l0C00_0029:		// pred: l0C00_0023
 	ds->w53BA = bx;
 	fn0C00_0046(0x4400, ds->a5388[bx * 0x0002], 0x0000, ds)
-	// succ:  4
-l0C00_003C:		// block 4, pred: 3 2 1
+	// succ:  l0C00_003C
+l0C00_003C:		// pred: l0C00_001D l0C00_0023 l0C00_0029
 	return
-	// succ:  5
-fn0C00_001D_exit:		// block 5, pred: 4
+	// succ:  fn0C00_001D_exit
+fn0C00_001D_exit:		// pred: l0C00_003C
 	// succ: 
 
 // fn0C00_003D
 void fn0C00_003D(word16 dx, byte ah, Eq_5 * ds)
-fn0C00_003D_entry:		// block 0, pred:
-	// succ:  1
-l0C00_003D:		// block 1, pred: 0
+fn0C00_003D_entry:		// pred:
+	// succ:  l0C00_003D
+l0C00_003D:		// pred: fn0C00_003D_entry
 	ds->b0110 = ah;
 	ds->w0112 = dx;
 	return
-	// succ:  2
-fn0C00_003D_exit:		// block 2, pred: 1
+	// succ:  fn0C00_003D_exit
+fn0C00_003D_exit:		// pred: l0C00_003D
 	// succ: 
 
 // fn0C00_0046
 void fn0C00_0046(word16 ax, word16 dx, word16 bx, Eq_5 * ds)
-fn0C00_0046_entry:		// block 0, pred:
-	// succ:  1
-l0C00_0046:		// block 1, pred: 0
+fn0C00_0046_entry:		// pred:
+	// succ:  l0C00_0046
+l0C00_0046:		// pred: fn0C00_0046_entry
 	ds->w0114 = ax;
 	ds->w0116 = bx;
 	ds->w0118 = dx;
 	return
-	// succ:  2
-fn0C00_0046_exit:		// block 2, pred: 1
+	// succ:  fn0C00_0046_exit
+fn0C00_0046_exit:		// pred: l0C00_0046
 	// succ: 
 
 // Equivalence classes ////////////
