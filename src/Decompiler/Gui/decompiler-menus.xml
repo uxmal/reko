@@ -70,7 +70,7 @@
 	<cmd id="ViewFindFragments" cmdSet="Decompiler" container="GrpViewScanned">_Find fragments...</cmd>
 
   <cmd id="ActionNextPhase" cmdSet="Decompiler" container="GrpActions" image="2">_Next Phase</cmd>
-  <cmd id="ActionFinishDecompilation" cmdSet="Decompiler" container="GrpActions" image="3">_Finish Decompilation</cmd>
+  <cmd id="ActionFinishDecompilation" cmdSet="Decompiler" container="GrpActions" image="3">Finish _Decompilation</cmd>
 
 	<cmd id="ActionMarkProcedure" cmdSet="Decompiler" container="ActionMarkProcedure">Mark _Procedure Entry</cmd>
   <cmd id="ActionEditSignature" cmdSet="Decompiler" container="ActionEditSignature">Edit _Signature...</cmd>

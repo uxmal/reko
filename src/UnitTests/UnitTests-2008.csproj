@@ -182,6 +182,7 @@
     <Compile Include="DecompilerTests.cs" />
     <Compile Include="Environments\MacOS\ResourceForkTests.cs" />
     <Compile Include="FileUnitTester.cs" />
+    <Compile Include="Gui\CodeLocationTests.cs" />
     <Compile Include="Gui\DecompilerServiceTests.cs" />
     <Compile Include="Gui\MenuBuilderTests.cs" />
     <Compile Include="Gui\ProcedureSearchResultTests.cs" />

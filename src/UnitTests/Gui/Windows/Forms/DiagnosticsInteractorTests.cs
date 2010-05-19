@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,16 +32,18 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
     public class DiagnosticsInteractorTests
     {
         private ListView lv;
-        private DiagnosticsInteractor interactor;
+        private TestDiagnosticsInteractor interactor;
         private IDiagnosticsService svc;
+        private MockRepository repository;
 
         [SetUp]
         public void Setup()
         {
             lv = new ListView();
-            interactor = new DiagnosticsInteractor();
+            interactor = new TestDiagnosticsInteractor();
             interactor.Attach(lv);
             svc = interactor;
+            repository = new MockRepository();
         }
 
         [TearDown]
@@ -63,6 +66,33 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             svc.AddDiagnostic(new NullCodeLocation("01000"), new WarningDiagnostic("test"));
             svc.ClearDiagnostics();
             Assert.AreEqual(0, lv.Items.Count);
+        }
+
+        [Test]
+        public void NavigateOnDoubleClick()
+        {
+            var location = repository.DynamicMock<ICodeLocation>();
+            location.Expect(x => x.NavigateTo());
+            repository.ReplayAll();
+
+            svc.AddDiagnostic(location, new Diagnostic("Hello"));
+            interactor.FocusedListItem = lv.Items[0];
+            interactor.UserDoubleClicked();
+
+            repository.VerifyAll();
+        }
+
+        private class TestDiagnosticsInteractor : DiagnosticsInteractor
+        {
+            public void UserDoubleClicked()
+            {
+                base.listView_DoubleClick(null, EventArgs.Empty);
+            }
+
+            public override ListViewItem FocusedListItem
+            {
+                get; set;
+            }
         }
     }
 }

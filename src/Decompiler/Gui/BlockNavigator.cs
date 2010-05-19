@@ -27,9 +27,12 @@ namespace Decompiler.Gui
 {
     public class BlockNavigator : ICodeLocation
     {
-        public BlockNavigator(Block block)
+        private IServiceProvider sp;
+
+        public BlockNavigator(Block block, IServiceProvider sp)
         {
             this.Block = block;
+            this.sp = sp;
         }
 
         public Block Block { get; private set; }
@@ -43,7 +46,9 @@ namespace Decompiler.Gui
 
         public void NavigateTo()
         {
-            throw new NotImplementedException();
+            var codeSvc = sp.GetService<ICodeViewerService>();
+            if (codeSvc != null)
+                codeSvc.DisplayProcedure(Block.Procedure);
         }
 
         #endregion

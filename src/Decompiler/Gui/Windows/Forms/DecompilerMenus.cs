@@ -127,7 +127,7 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slActionNextPhase = new CommandMenuItem("_Next Phase", new Guid(CmdSets.Decompiler), CmdIds.ActionNextPhase);
             slActionNextPhase.IsDynamic = false;
             slActionNextPhase.ImageIndex = 2;slGrpActions.Add(0, slActionNextPhase);
-            CommandMenuItem slActionFinishDecompilation = new CommandMenuItem("_Finish Decompilation", new Guid(CmdSets.Decompiler), CmdIds.ActionFinishDecompilation);
+            CommandMenuItem slActionFinishDecompilation = new CommandMenuItem("Finish _Decompilation", new Guid(CmdSets.Decompiler), CmdIds.ActionFinishDecompilation);
             slActionFinishDecompilation.IsDynamic = false;
             slActionFinishDecompilation.ImageIndex = 3;slGrpActions.Add(0, slActionFinishDecompilation);
             CommandMenuItem slActionMarkProcedure = new CommandMenuItem("Mark _Procedure Entry", new Guid(CmdSets.Decompiler), CmdIds.ActionMarkProcedure);

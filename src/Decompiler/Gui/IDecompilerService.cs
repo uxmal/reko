@@ -44,6 +44,7 @@ namespace Decompiler.Gui
         private IDecompiler decompiler;
 
         public event EventHandler DecompilerChanged;
+
         #region IDecompilerService Members
 
         public IDecompiler Decompiler

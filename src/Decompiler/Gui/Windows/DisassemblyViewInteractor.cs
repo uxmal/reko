@@ -124,8 +124,6 @@ namespace Decompiler.Gui.Windows
             return txtDisassembly;
         }
 
-
-
         public void SetSite(IServiceProvider sp)
         {
             this.sp = sp;

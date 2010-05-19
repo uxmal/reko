@@ -38,6 +38,7 @@ namespace Decompiler.Gui.Windows
     {
         private WorkerDialog dlg;
         private ThreadStart worker;
+        private IServiceProvider sp;
         private IDecompilerUIService uiSvc;
         private IDiagnosticsService diagnosticService;
         private Exception lastException;
@@ -47,6 +48,7 @@ namespace Decompiler.Gui.Windows
 
         public WindowsDecompilerEventListener(IServiceProvider sp)
         {
+            this.sp = sp;
             uiSvc = sp.GetService<IDecompilerUIService>();
             diagnosticService = sp.GetService<IDiagnosticsService>();
         }
@@ -183,17 +185,17 @@ namespace Decompiler.Gui.Windows
 
         ICodeLocation DecompilerEventListener.CreateAddressNavigator(Address addr)
         {
-            return new AddressNavigator(addr);
+            return new AddressNavigator(addr, sp);
         }
 
         ICodeLocation DecompilerEventListener.CreateBlockNavigator(Block block)
         {
-            return new BlockNavigator(block);
+            return new BlockNavigator(block, sp);
         }
 
         ICodeLocation DecompilerEventListener.CreateProcedureNavigator(Procedure proc)
         {
-            return new ProcedureNavigator(proc);
+            return new ProcedureNavigator(proc, sp);
         }
 
 

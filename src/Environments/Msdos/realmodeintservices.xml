@@ -506,6 +506,36 @@
 	  </arg>
 	</signature>
   </service>
+  <service name="msdos_parse_filename_into_fcb">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">29</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><reg>al</reg></return>
+      <arg>
+        <reg>al</reg>
+      </arg>
+      <arg>
+        <seq>
+          <reg>ds</reg>
+          <reg>si</reg>
+        </seq>
+      </arg>
+      <arg>
+        <seq>
+          <reg>es</reg>
+          <reg>di</reg>
+        </seq>
+      </arg>
+      <arg out="true">
+        <seq>
+          <reg>ds</reg>
+          <reg>si</reg>
+        </seq>
+      </arg>
+    </signature>
+  </service>
   <service name="msdos_get_system_date">
 	<syscallinfo>
 	  <vector>21</vector>
