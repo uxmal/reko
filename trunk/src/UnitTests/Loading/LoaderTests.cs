@@ -19,6 +19,7 @@
 using Decompiler;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;

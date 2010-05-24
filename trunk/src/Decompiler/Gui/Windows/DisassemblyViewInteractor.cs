@@ -22,6 +22,7 @@ using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -121,7 +122,19 @@ namespace Decompiler.Gui.Windows
             this.txtDisassembly.ReadOnly = true;
             this.txtDisassembly.WordWrap = false;
             txtDisassembly.Resize += txtDisassembly_Resize;
+            txtDisassembly.KeyDown += txtDisassembly_KeyDown;
+            txtDisassembly.KeyPress += txtDisassembly_KeyPress;
             return txtDisassembly;
+        }
+
+        void txtDisassembly_KeyDown(object sender, KeyEventArgs e)
+        {
+            Debug.WriteLine(string.Format("Down:  c:{0} d:{1} v:{2}", e.KeyCode, e.KeyData, e.KeyValue));
+        }
+
+        void txtDisassembly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Debug.WriteLine(string.Format("Press: ch:{0}", e.KeyChar));
         }
 
         public void SetSite(IServiceProvider sp)

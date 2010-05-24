@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;

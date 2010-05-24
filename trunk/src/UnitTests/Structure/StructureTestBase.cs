@@ -22,6 +22,7 @@ using Decompiler.Assemblers.x86;
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;

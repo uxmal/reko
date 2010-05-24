@@ -18,6 +18,7 @@
 
 using Decompiler.Configuration;
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Core.Serialization;
 using System;
 using System.Collections.Generic;

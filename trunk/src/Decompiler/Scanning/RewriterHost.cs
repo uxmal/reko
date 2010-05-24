@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 
 namespace Decompiler.Scanning

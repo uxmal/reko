@@ -18,6 +18,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using Decompiler.Scanning;
 using Decompiler.Loading;

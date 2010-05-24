@@ -20,6 +20,7 @@
 
 using Decompiler.Configuration;
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
