@@ -183,8 +183,9 @@ namespace Decompiler.Gui.Windows.Controls
             {
                 addrAnchor = addr;
             }
-            SelectedAddress = addr;
-			Invalidate();
+            addrSelected = addr;
+            Invalidate();
+            OnSelectionChanged();
 		}
 
 
@@ -211,6 +212,7 @@ namespace Decompiler.Gui.Windows.Controls
             }
             e.Handled = true;
 		}
+
         protected override void OnHandleCreated(EventArgs e)
         {
             CacheCellSize();

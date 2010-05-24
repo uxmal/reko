@@ -19,11 +19,12 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using Decompiler.Gui;
-using Decompiler.Loading;
-using Decompiler.UnitTests.Mocks;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
+using Decompiler.Loading;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;

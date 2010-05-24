@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler
+namespace Decompiler.Core.Services
 {
     public interface DecompilerEventListener
     {

@@ -268,7 +268,6 @@
     <Compile Include="Decompiler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DecompilerEventListener.cs" />
     <Compile Include="DecompilerHost.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -374,7 +373,6 @@
     <Compile Include="Gui\Windows\SearchResultServiceImpl.cs" />
     <Compile Include="Gui\Windows\ViewService.cs" />
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
-    <Compile Include="ICodeLocation.cs" />
     <Compile Include="Loading\LoadedProject.cs" />
     <Compile Include="Loading\NullLoader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

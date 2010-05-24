@@ -82,7 +82,6 @@ namespace Decompiler.Analysis
 
         public void Analyze(Procedure procedure)
         {
-            Debug.WriteLine("Analyzing: " + procedure.Name);
             if (!CanReachEntryFromExit(procedure))
                 flow[procedure].TerminatesProcess = true;
         }

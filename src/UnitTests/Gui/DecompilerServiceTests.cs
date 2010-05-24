@@ -18,6 +18,7 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Gui;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;

@@ -20,6 +20,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Services;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;

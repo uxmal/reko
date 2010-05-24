@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Loading;
 using Decompiler.ImageLoaders.MzExe;
 using Decompiler.UnitTests.Mocks;

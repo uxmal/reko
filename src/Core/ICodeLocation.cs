@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler
+namespace Decompiler.Core
 {
     /// <summary>
     /// A LocationNavigator is used by the GUI front-end to navigate to a given location. Locations can be Addresses,

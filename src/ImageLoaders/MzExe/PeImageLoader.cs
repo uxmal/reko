@@ -18,6 +18,7 @@
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Environments.Win32;
 using System;
 using System.IO;
@@ -339,7 +340,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		public string ImportFileLocation(string dllName)
 		{
 			string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);
-			return System.IO.Path.Combine(assemblyDir, System.IO.Path.ChangeExtension(dllName, ".xml"));
+			return Path.Combine(assemblyDir, Path.ChangeExtension(dllName, ".xml"));
 		}
 
 		public string ReadAsciiString(uint rva, int maxLength)
@@ -368,6 +369,11 @@ namespace Decompiler.ImageLoaders.MzExe
 			id.RvaThunks = rdr.ReadLeUint32();		// first thunk
 
             SignatureLibrary lib = LoadSignatureLibrary(arch, id.DllName);
+            if (lib == null)
+            {
+                GetService<DecompilerEventListener>().AddDiagnostic(new NullCodeLocation(""),
+                    new Diagnostic(string.Format("Unable to locate signature library for {0}.", id.DllName)));
+            }
 			ImageReader rdrEntries = imgLoaded.CreateReader(id.RvaEntries);
 			ImageReader rdrThunks  = imgLoaded.CreateReader(id.RvaThunks);
 			for (;;)
@@ -417,9 +423,10 @@ namespace Decompiler.ImageLoaders.MzExe
             try
             {
                 SignatureLibrary lib = new SignatureLibrary(arch);
-                if (!File.Exists(dllName))
+                string libFileName = ImportFileLocation(dllName);
+                if (!File.Exists(libFileName))
                     return null;
-                lib.Load(ImportFileLocation(dllName));
+                lib.Load(libFileName);
                 return lib;
             }
             catch

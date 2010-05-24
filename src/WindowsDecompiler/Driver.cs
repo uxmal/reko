@@ -19,6 +19,7 @@
 using Decompiler;
 using Decompiler.Loading;
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Configuration;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;

@@ -17,6 +17,7 @@
  */
 
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;

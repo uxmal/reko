@@ -20,6 +20,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using Decompiler.Gui;
 using Decompiler.Loading;

@@ -18,6 +18,7 @@
 
 using Decompiler.Configuration;
 using Decompiler.Core;
+using Decompiler.Core.Services;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
 using DecompilerHost = Decompiler.DecompilerHost;
