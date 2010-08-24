@@ -27,7 +27,7 @@ namespace Decompiler.Tools.C2Xml
     public class Initializer : CSyntax
     {
         public Declarator Declarator;
-        public Initializer Initializer;
+        public Initializer Init { get; set; }
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -45,14 +45,34 @@ namespace Decompiler.Tools.C2Xml
 
     public class ExternalDeclaration : CSyntax
     {
+        public override T Accept<T>(CSyntaxVisitor<T> visitor)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
-    public class Typedef : CSyntax
+    public class Typedef : ExternalDeclaration
     {
+        public Declaration decl;
+
+        public Typedef(Declaration decl)
+        {
+            this.decl = decl;
+        }
+
+        public Typedef(TypeSpecifier typeSpec, List<Initializer> decls)
+        {
+            TypeSpecifier = typeSpec;
+            Declarators = decls;
+        }
+
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
             return visitor.VisitTypedef(this);
         }
+
+        public TypeSpecifier TypeSpecifier { get; private set;}
+        public List<Initializer> Declarators { get; private set; }
     }
 }

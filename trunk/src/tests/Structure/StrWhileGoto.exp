@@ -1,46 +1,47 @@
 // fn0C00_0000
 void fn0C00_0000(word16 si, word16 di, selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:		// pred:
 	si_13 = si
-	// succ:  1
-l0C00_001A:		// block 1, pred: 0 4 3
+	// succ:  l0C00_001A
+l0C00_0000:
+l0C00_001A:		// pred: fn0C00_0000_entry l0C00_0011 l0C00_0016
 	word16 ax_27
 	word16 si_13
 	word16 ax_15 = Mem14[ds:si_13:word16]
 	si_13 = si_13 + 0x0002
 	branch ax_15 != 0x0020 l0C00_0005
-	// succ:  6 2
-l0C00_0005:		// block 2, pred: 1
-	store(Mem19[ds:di:word16]) = ax_15
-	branch ax_15 != 0x0000 l0C00_0011
-	// succ:  5 3
-l0C00_0011:		// block 3, pred: 2
-	branch ax_15 != 0x000D l0C00_001A
-	// succ:  4 1
-l0C00_0016:		// block 4, pred: 3
-	store(Mem25[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
-	// succ:  1
-l0C00_000B:		// block 5, pred: 2
-	ax_27 = 0xFFFF
-	// succ:  7
-l0C00_0020:		// block 6, pred: 1
+	// succ:  l0C00_0020 l0C00_0005
+l0C00_0020:		// pred: l0C00_001A
 	ax_27 = si_13 - si
-	// succ:  7
-l0C00_0024:		// block 7, pred: 6 5
+	// succ:  l0C00_0024
+l0C00_0024:		// pred: l0C00_000B l0C00_0020
 	store(Mem35[ds:0x0300:word16]) = ax_27
 	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:		// pred: l0C00_0024
 	// succ: 
+l0C00_0005:		// pred: l0C00_001A
+	store(Mem19[ds:di:word16]) = ax_15
+	branch ax_15 != 0x0000 l0C00_0011
+	// succ:  l0C00_000B l0C00_0011
+l0C00_000B:		// pred: l0C00_0005
+	ax_27 = 0xFFFF
+	// succ:  l0C00_0024
+l0C00_0011:		// pred: l0C00_0005
+	branch ax_15 != 0x000D l0C00_001A
+	// succ:  l0C00_0016 l0C00_001A
+l0C00_0016:		// pred: l0C00_0011
+	store(Mem25[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
+	// succ:  l0C00_001A
 
 void fn0C00_0000(word16 si, word16 di, selector ds)
 {
-	word16 si_13 = si;
-	while (true)
-	{
-		word16 ax_27;
-		word16 ax_15 = Mem14[ds:si_13:word16];
-		si_13 = si_13 + 0x0002;
-		if (ax_15 == 0x0020)
-			break;
+	si_13 = si;
+	word16 ax_27;
+	word16 ax_15 = Mem14[ds:si_13:word16];
+	si_13 = si_13 + 0x0002;
+	while (ax_15 != 0x0020)
+    {
 		Mem19[ds:di:word16] = ax_15;
 		if (ax_15 == 0x0000)
 		{

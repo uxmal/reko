@@ -381,6 +381,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Scanning\AhoCorasickSearch.cs" />
+    <Compile Include="Scanning\Scanner2.cs" />
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs">
@@ -482,6 +483,7 @@
     <Compile Include="Structure\StructureAnalysis.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Structure\UnstructuredConditionalAnalysis.cs" />
     <Compile Include="Typing\StructureFieldMerger.cs" />
     <Compile Include="Structure\StructureNode.cs">
       <SubType>Code</SubType>
@@ -611,6 +613,14 @@
     <Content Include="Gui\decompiler-menus.xml" />
     <Content Include="Gui\Windows\Forms\cmdids.xslt" />
     <Content Include="Gui\Windows\Forms\decompiler-menus.xslt" />
+    <Content Include="Images\Delete.ico" />
+    <Content Include="Images\error.png" />
+    <Content Include="Images\FinishDecompilation.ico" />
+    <Content Include="Images\NewBo.ico" />
+    <Content Include="Images\NextPhase.ico" />
+    <Content Include="Images\Open.ico" />
+    <Content Include="Images\Save.ico" />
+    <Content Include="Images\warning.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core2008.csproj">

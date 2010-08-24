@@ -115,7 +115,7 @@ namespace Decompiler.Structure
             Debug.WriteLine(sw.ToString());
         }
 
-        public void Write(System.IO.TextWriter writer)
+        public void Write(TextWriter writer)
         {
             WriteNode(this.entryNode, new HashedSet<StructureNode>(), writer);
         }
@@ -132,6 +132,7 @@ namespace Decompiler.Structure
 
             writer.WriteLine("    Order: {0}", node.Order);
             writer.WriteLine("    Interval: {0}", node.Interval != null ? (object) node.Interval.Number : "<none>");
+            writer.WriteLine("    iPDom: {0}", node.ImmPDom != null ? node.ImmPDom.Name : "<none>");
             writer.Write("    Structure type:");
             if (node.Loop != null)
                 writer.Write(" {0}", node.Loop.GetType().Name);
@@ -139,10 +140,10 @@ namespace Decompiler.Structure
                 writer.Write(" {0}", node.Conditional.GetType().Name);
             writer.WriteLine();
 
-            if (node.Loop != null)
+            if (node.Loop != null && node.Loop.Header == node)
             {
-                writer.WriteLine("    Loop header:" + node.Loop.Header.Name);
-                writer.WriteLine("    Latch: {0}", node.Loop.Latch.Name);
+                writer.WriteLine("    Loop Latch: {0}", node.Loop.Latch.Name);
+                writer.WriteLine("    Loop Follow: {0}", node.Loop.Follow);
             }
             if (node.Conditional != null)
             {

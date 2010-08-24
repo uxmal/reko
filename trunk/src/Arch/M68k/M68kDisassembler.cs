@@ -38,12 +38,12 @@ namespace Decompiler.Arch.M68k
             this.rdr = rdr;
         }
 
-        public override Address Address
+        public Address Address
         {
             get { return rdr.Address; }
         }
 
-        public override MachineInstruction DisassembleInstruction()
+        public MachineInstruction DisassembleInstruction()
         {
             return Disassemble();
         }
@@ -94,15 +94,21 @@ namespace Decompiler.Arch.M68k
                 this.opcode = code;
                 this.mask = mask;
             }
- 
+
+
+            private ushort Normalize(ushort value)
+            {
+                return (ushort)(value & mask);
+            }
+
             public int Compare(ushort value)
             {
-                return (value & mask) - (this.opcode & mask);
+                return Normalize(value) - Normalize(this.opcode);
             }
 
             public int CompareTo(Opmask other)
             {
-                return (mask & opcode) - (other.mask & other.opcode);
+                return Normalize(opcode) - other.Normalize(other.opcode);
             }
         }
 

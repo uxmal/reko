@@ -61,4 +61,41 @@ namespace Decompiler.UnitTests.Structure
             Return();
         }
     }
+
+    public class MockWhileGoto2 : ProcedureMock
+    {
+        protected override void BuildBody()
+        {
+            var al = LocalByte("al");
+            var si = Local16("si");
+            var ax = Local16("ax");
+            var bx = Local16("bx");
+            var di = Local16("di");
+
+            Assign(bx, si);
+            Jump("LoopTest");
+
+            Label("LoopBody");
+            Store(di, al);
+            BranchIf(Ne(al, 0), "ok");
+
+            Assign(ax, -1);
+            Jump("Done");
+
+            Label("ok");
+            BranchIf(Ne(al,0x0D), "LoopTest");
+            Store(Word16(0x302), Add(LoadW(Word16(0x0302)), 1));
+
+            Label("LoopTest");
+            Assign(al, LoadB(si));
+            Assign(si, Add(si, 1));
+            BranchIf(Eq(al, Byte(0x20)), "LoopBody");
+            Assign(ax, Sub(si,bx)); 
+
+            Label("Done");
+            Store(Word16(0x300), ax);
+            Return(ax);
+        }
+
+    }
 }

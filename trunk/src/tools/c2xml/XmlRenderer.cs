@@ -13,5 +13,19 @@ namespace Decompiler.Tools.C2Xml
        {
            this.writer = writer;
        }
+
+       #region CSyntaxVisitor<CSyntax> Members
+
+       public CSyntax VisitTypedef(Typedef typedef)
+       {
+           throw new NotImplementedException();
+       }
+
+       public CSyntax VisitTypeSpecifier(TypeSpecifier typeSpecifier)
+       {
+           throw new NotImplementedException();
+       }
+
+       #endregion
     }
 }

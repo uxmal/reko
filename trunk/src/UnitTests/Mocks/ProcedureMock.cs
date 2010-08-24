@@ -385,6 +385,11 @@ namespace Decompiler.UnitTests.Mocks
 			return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, dt);
 		}
 
+        public Expression LoadB(Expression ea)
+        {
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Byte);
+        }
+
 		public MemoryAccess LoadDw(Expression ea)
 		{
 			return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word32);

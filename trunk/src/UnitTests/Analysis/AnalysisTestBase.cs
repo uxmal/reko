@@ -137,7 +137,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		private void Rewrite(Program prog, Assembler asm, string configFile)
 		{
-			Scanner scan = new Scanner(prog, new FakeDecompilerEventListener());
+			ScannerImpl scan = new ScannerImpl(prog, new FakeDecompilerEventListener());
 			SerializedProject project = new SerializedProject();
 			if (configFile != null)
 			{
@@ -150,7 +150,7 @@ namespace Decompiler.UnitTests.Analysis
 			{
 				scan.EnqueueUserProcedure(sp);
 			}
-			scan.ProcessQueues();
+			scan.ProcessQueue();
 			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 		}

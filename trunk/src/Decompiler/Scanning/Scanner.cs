@@ -29,6 +29,15 @@ using System.Diagnostics;
 
 namespace Decompiler.Scanning
 {
+    public interface IScanner
+    {
+        void EnqueueEntryPoint(EntryPoint ep);
+        void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc);
+        Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state);
+        void EnqueueUserProcedure(SerializedProcedure sp);
+        void ProcessQueue();
+    }
+
 	/// <summary>
 	/// Scans the binary, locating procedures and basic blocks by following calls, jumps,
 	/// and branches. Simple data type analysis is done as well: for instance, pointers to
@@ -38,7 +47,7 @@ namespace Decompiler.Scanning
 	/// Callers feed the scanner by calling EnqueueXXX methods before calling Scan(). Scan() then
 	/// processes the queues.
 	/// </remarks>
-	public class Scanner : ICodeWalkerListener
+	public class ScannerImpl : IScanner, ICodeWalkerListener
 	{
 		private Program program;
 		private ImageMap map;			// cached copy of program.Image.Map; it's used very often.
@@ -58,7 +67,7 @@ namespace Decompiler.Scanning
 
 		private static TraceSwitch trace = new TraceSwitch("Scanner", "Enables tracing in the scanning phase");
 
-        public Scanner(Program program, DecompilerEventListener eventListener)
+        public ScannerImpl(Program program, DecompilerEventListener eventListener)
 		{
 			if (program.Image == null)
 				throw new InvalidOperationException("Program.Image must be defined.");
@@ -100,14 +109,14 @@ namespace Decompiler.Scanning
 		/// <summary>
 		/// The target of a branch or jump instruction has been found.
 		/// </summary>
-		/// <param name="addr"></param>
+		/// <param name="addrTarget">The address to which we jump</param>
 		/// <param name="st"></param>
 		/// <param name="proc"></param>
 		private void EnqueueJumpTarget(Address addrTarget, ProcessorState st, Procedure proc)
 		{
-			Debug.Assert(program.Image.IsValidAddress(addrTarget), string.Format("{0} is not a valid address.", addrTarget));
-
-			Debug.Assert(proc != null);
+            if (proc == null)
+                throw new ArgumentNullException("proc");
+            Debug.Assert(program.Image.IsValidAddress(addrTarget), string.Format("{0} is not a valid address.", addrTarget));
 			WorkItem wi = new WorkItem(wiCur, BlockType.JumpTarget, addrTarget);
 			wi.state = st.Clone();
 			qJumps.Enqueue(wi);
@@ -343,7 +352,7 @@ namespace Decompiler.Scanning
 
 		#endregion
 
-		public void ProcessQueues()
+		public void ProcessQueue()
 		{
 			map.ItemSplit += new ItemSplitHandler(ImageMap_ItemSplit);
 			map.ItemCoincides += new ItemSplitHandler(ImageMap_ItemCoincides);

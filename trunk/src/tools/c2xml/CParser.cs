@@ -13,7 +13,7 @@ namespace Decompiler.Tools.C2Xml
             this.rdr = rdr;
         }
 
-        public IEnumerator<ExternalDeclaration> ParseTranslationUnit()
+        public IEnumerable<ExternalDeclaration> ParseTranslationUnit()
         {
             ExternalDeclaration ext;
             while ((ext = ParseExternalDeclaration()) != null)
@@ -29,6 +29,7 @@ namespace Decompiler.Tools.C2Xml
                 return new Typedef(ParseDeclaration());
             }
             Unexpected(lastToken.Token);
+            return null;
         }
 
         private Declaration ParseDeclaration()
@@ -38,8 +39,18 @@ namespace Decompiler.Tools.C2Xml
             {
                 tspecifiers.Add(spec);
             }
-            List<Declarator> ParseDeclaratorList();
+            var declarators= ParseDeclaratorList();
             Expect(Token.Semi);
+            return new Declaration();
+        }
+
+        private IEnumerable<TypeSpecifier> ParseTypeSpecifiers()
+        {
+            yield return ParseTypeSpecifier();
+            while (PeekAndEat(Token.Comma))
+            {
+                yield return ParseTypeSpecifier();
+            }
         }
 
         private List<Initializer> ParseDeclaratorList()
@@ -59,16 +70,22 @@ namespace Decompiler.Tools.C2Xml
             var decl = ParseDeclarator();
             if (PeekAndEat(Token.Assign))
             {
-                return new Initializer { Declarator = decl, Initializer = ParseInitializer() };
+                return new Initializer { Declarator = decl, Init = ParseInitializer() };
             }
-            return new Initializer { Declarator = decl; init = null };
+            return new Initializer { Declarator = decl, Init = null };
+        }
+
+        private Initializer ParseInitializer()
+        {
+            throw new NotImplementedException();
         }
 
 private Declarator ParseDeclarator()
 {
-    if (PeekAndEat(Token.Star))
+    if (PeekAndEat(Token.Asterisk))
     {
     }
+    throw new NotImplementedException();
 }
 
         private void Expect(Token token)
@@ -115,6 +132,45 @@ private Declarator ParseDeclarator()
                 }
             }
             return lastToken;
+        }
+
+        public Typedef ParseTypedef()
+        {
+            TypeSpecifier ts = ParseTypeSpecifier();
+            List<Initializer> decls = ParseDeclaratorList();
+            return new Typedef(ts, decls);
+
+        }
+
+        private TypeSpecifier ParseTypeSpecifier()
+        {
+            switch (Peek().Token)
+            {
+            case Token.Void:
+            case Token.Char:
+            case Token.Short:
+            case Token.Int:
+            case Token.Long:
+            case Token.Float:
+            case Token.Double:
+            case Token.Signed:
+            case Token.Unsigned:
+                return PrimitiveTypeSpecifier(Get());
+        type_specifier
+            :
+            VOID
+                | CHAR
+                | SHORT
+                | INT
+                | LONG
+                | FLOAT
+                | DOUBLE
+                | SIGNED
+                | UNSIGNED
+                | struct_or_union_specifier
+                | enum_specifier
+                | TYPE_NAME
+                ;
         }
     }
 

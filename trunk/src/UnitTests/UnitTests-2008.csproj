@@ -147,6 +147,7 @@
     <Compile Include="Core\Lib\DirectedGraphImplTests.cs" />
     <Compile Include="Core\Lib\DisjointPartitionTests.cs" />
     <Compile Include="Core\Lib\DominatorGraphTests.cs" />
+    <Compile Include="Core\Lib\PriorityQueueTests.cs" />
     <Compile Include="Core\MapTests.cs" />
     <Compile Include="Core\OperatorTests.cs" />
     <Compile Include="Core\Output\MockGeneratorTests.cs" />
@@ -219,6 +220,8 @@
     <Compile Include="Mocks\ArrayMock.cs" />
     <Compile Include="Mocks\BigLoopHeadFragment.cs" />
     <Compile Include="Mocks\ByteArrayLoopMock.cs" />
+    <Compile Include="Mocks\FakeDisassembler.cs" />
+    <Compile Include="Mocks\FakeInstruction.cs" />
     <Compile Include="Mocks\FakeStatusBarService.cs" />
     <Compile Include="Mocks\FakeDecompiler.cs" />
     <Compile Include="Mocks\FakeDecompilerConfiguration.cs" />
@@ -249,6 +252,7 @@
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\RewriterHostTests.cs" />
+    <Compile Include="Scanning\Scanner2Tests.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\WorkItemTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />

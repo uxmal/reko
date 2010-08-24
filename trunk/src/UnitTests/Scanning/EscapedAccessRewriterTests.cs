@@ -63,12 +63,12 @@ namespace Decompiler.UnitTests.Scanning
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(sourceFile));
             Program prog = ldr.Load(addr);
-			Scanner scan = new Scanner(prog, null);
+			ScannerImpl scan = new ScannerImpl(prog, null);
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);
 			}
-			scan.ProcessQueues();
+			scan.ProcessQueue();
 			RewriterHost host = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			host.RewriteProgram();
 			return prog;

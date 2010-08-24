@@ -56,10 +56,10 @@ namespace Decompiler.Structure
         {
             foreach (StructureNode node in curProc.Ordering)
             {
+                Loop myLoop = node.Loop;
+                Loop follLoop = node.Conditional.Follow.Loop;
                 if (IsTwoWayBranchWithFollow(node))
                 {
-                    Loop myLoop = node.Loop;
-                    Loop follLoop = node.Conditional.Follow.Loop;
 
                     // analyze whether this is a jump into/outof a loop
                     if (myLoop != follLoop)
@@ -108,7 +108,6 @@ namespace Decompiler.Structure
                      node.UnstructType == UnstructuredType.Structured && !(node.Conditional is Case))
                 {
                     Debug.Assert(HasABackEdge(node));
-
                     if (node.HasBackEdgeTo(node.Then))
                     {
                         node.Conditional = new IfThen(node.Else);
@@ -121,6 +120,7 @@ namespace Decompiler.Structure
             }
         }
 
+        [Obsolete]
         private  bool IsJumpIntoCaseBody(StructureNode curNode)
         {
             return curNode.UnstructType == UnstructuredType.Structured &&
@@ -128,6 +128,7 @@ namespace Decompiler.Structure
                                       curNode.CaseHead != curNode.Else.CaseHead);
         }
 
+        [Obsolete]
         private void SetUnstructuredLoopTransfer(StructureNode curNode, StructureNode loopNode)
         {
             if (curNode.Then == loopNode || curNode.Then.IsAncestorOf(loopNode))
@@ -142,6 +143,7 @@ namespace Decompiler.Structure
             }
         }
 
+        [Obsolete]
         private bool IsTwoWayBranchWithFollow(StructureNode curNode)
         {
             return curNode.Conditional != null && curNode.Conditional.Follow != null && !(curNode.Conditional is Case);
@@ -159,7 +161,7 @@ namespace Decompiler.Structure
                 
                 // if the current conditional header is a two way node and has a back edge, 
                 // then it won't have a follow.
-                if (HasABackEdge(curNode) && curNode.BlockType == bbType.cBranch)
+                if (HasABackEdge(curNode) && curNode.BlockType == BlockTerminationType.cBranch)
                 {
                     curNode.Conditional = CreateConditional(curNode, null);
                 }
@@ -172,10 +174,10 @@ namespace Decompiler.Structure
 
         private Conditional CreateConditional(StructureNode node, StructureNode follow)
         {
-            if (node.BlockType == bbType.nway)
+            if (node.BlockType == BlockTerminationType.nway)
             {
                 var c = new Case(follow);
-                CaseFinder cf = new CaseFinder(node, follow);
+                var cf = new CaseFinder(node, follow);
                 cf.SetCaseHead(node);
                 return c;
             }
@@ -187,13 +189,12 @@ namespace Decompiler.Structure
                 return new IfThenElse(follow);
         }
 
+        [Obsolete]
         private bool HasABackEdge(StructureNode curNode)
         {
-            for (int i = 0; i < curNode.OutEdges.Count; i++)
-                if (curNode.HasBackEdgeTo(curNode.OutEdges[i]))
-                    return true;
-            return false;
+            return curNode.HasABackEdge();
         }
+
 
         private void GenerateStructuredCode()
         {
@@ -204,43 +205,35 @@ namespace Decompiler.Structure
 
         private void CoalesceCompoundConditions()
         {
-            CompoundConditionCoalescer ccc = new CompoundConditionCoalescer(proc);
+            var ccc = new CompoundConditionCoalescer(proc);
             ccc.Transform();
         }
 
         public void BuildProcedureStructure()
         {
-            ProcedureStructureBuilder cfgs = new ProcedureStructureBuilder(proc);
+            var cfgs = new ProcedureStructureBuilder(proc);
             curProc = cfgs.Build();
-
             cfgs.AnalyzeGraph();
-
         }
 
         public void FindStructures()
         {
             StructConds();
             StructLoops(curProc);
-            DetectUnstructuredConditionals(curProc);
+            var uns = new UnstructuredConditionalAnalysis(curProc);
+            uns.Adjust();
         }
 
         private void StructLoops(ProcedureStructure curProc)
         {
             for (int gLevel = 0; gLevel < curProc.DerivedGraphs.Count; ++gLevel)
             {
-                Console.Out.WriteLine("= Graph level {0} ===", gLevel);
-
-                DerivedGraph curGraph = curProc.DerivedGraphs[gLevel];
+                var curGraph = curProc.DerivedGraphs[gLevel];
                 foreach (Interval curInt in curGraph.Intervals)
                 {
-                    // find the G0 basic block node at the head of this interval
-                    StructureNode headNode = curInt;
-                    for (int k = 0; k <= gLevel; k++)
-                        headNode = ((Interval) headNode).Nodes[0];
-
-                    HashedSet<StructureNode> intNodes = curInt.FindIntervalNodes(gLevel);
-
-                    StructureNode latch = FindGreatestEnclosingBackEdgeInInterval(headNode, intNodes);
+                    var headNode = IntervalHeaderNode(curInt);
+                    var intNodes = curInt.FindIntervalNodes(gLevel);
+                    var latch = FindGreatestEnclosingBackEdgeInInterval(headNode, intNodes);
 
                     // If a latch was found and it doesn't belong to another loop, 
                     // tag the loop nodes and classify it.
@@ -252,7 +245,18 @@ namespace Decompiler.Structure
             }
         }
 
-        private StructureNode FindGreatestEnclosingBackEdgeInInterval(StructureNode headNode, HashedSet<StructureNode> intNodes)
+        private StructureNode IntervalHeaderNode(Interval interval)
+        {
+            var headNode = interval.Header as Interval;
+            while (headNode != null)
+            {
+                interval = headNode;
+                headNode = interval.Header as Interval;
+            }
+            return interval.Header;
+        }
+
+        private StructureNode FindGreatestEnclosingBackEdgeInInterval(StructureNode headNode, HashSet<StructureNode> intNodes)
         {
             StructureNode latch = null;
             foreach (StructureNode pred in headNode.InEdges)
@@ -270,7 +274,7 @@ namespace Decompiler.Structure
         }
 
 
-        private void CreateLoop(ProcedureStructure curProc, StructureNode headNode, HashedSet<StructureNode> intervalNodes, StructureNode latch)
+        private void CreateLoop(ProcedureStructure curProc, StructureNode headNode, HashSet<StructureNode> intervalNodes, StructureNode latch)
         {
             Debug.WriteLine(string.Format("Creating loop {0}-{1}", headNode.Name, latch.Name));
 
@@ -299,7 +303,7 @@ namespace Decompiler.Structure
 
 
             LoopFinder lf = new LoopFinder(headNode, latch, curProc.Ordering);
-            HashedSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
+            HashSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
             Loop loop = lf.DetermineLoopType(loopNodes);
             lf.TagNodesInLoop(loop, loopNodes);
         }

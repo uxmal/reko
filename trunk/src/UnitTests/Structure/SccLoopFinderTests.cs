@@ -23,9 +23,9 @@ namespace Decompiler.UnitTests.Structure
             node.Order = 0;
             Interval interval = new Interval(1, node);
 
-            HashedSet<StructureNode> nodesInInterval = interval.FindIntervalNodes(0);
+            var nodesInInterval = interval.FindIntervalNodes(0);
             SccLoopFinder finder = new SccLoopFinder(interval, nodesInInterval);
-            HashedSet<StructureNode> loopNodes = finder.FindLoop();
+            var loopNodes = finder.FindLoop();
             Assert.AreEqual(0, loopNodes.Count);
         }
 
@@ -40,14 +40,15 @@ namespace Decompiler.UnitTests.Structure
             });
 
             SccLoopFinder finder = CreateSccLoopFinder(proc, proc.DerivedGraphs[0].Intervals[1], 0);
-            HashedSet<StructureNode> loopNodes = finder.FindLoop();
+            var loopNodes = finder.FindLoop();
             Assert.AreEqual(1, loopNodes.Count);
-            Assert.AreEqual("lupe", loopNodes.ToArray()[0].Block.Name);
+            var aNodes = new List<StructureNode>(loopNodes);
+            Assert.AreEqual("lupe", aNodes[0].Block.Name);
         }
 
         private SccLoopFinder CreateSccLoopFinder(ProcedureStructure proc, Interval intNode, int graphLevel)
         {
-            HashedSet<StructureNode> nodesInInterval = intNode.FindIntervalNodes(graphLevel);
+            var nodesInInterval = intNode.FindIntervalNodes(graphLevel);
             return new SccLoopFinder(intNode, nodesInInterval);
         }
 
@@ -70,7 +71,7 @@ namespace Decompiler.UnitTests.Structure
             });
 
             SccLoopFinder finder = CreateSccLoopFinder(proc, proc.DerivedGraphs[0].Intervals[1], 0);
-            HashedSet<StructureNode> loopNodes = finder.FindLoop();
+            var loopNodes = finder.FindLoop();
             Assert.AreEqual(4, loopNodes.Count);
             Assert.IsTrue(loopNodes.Contains(proc.Nodes[2]));
         }
@@ -86,9 +87,9 @@ namespace Decompiler.UnitTests.Structure
                 {
                     Interval interval = proc.DerivedGraphs[j].Intervals[i];
                     SccLoopFinder finder = CreateSccLoopFinder(proc, interval, j);
-                    HashedSet<StructureNode> loopNodes = finder.FindLoop();
-                    StructureNode[] items = loopNodes.ToArray();
-                    Array.Sort<StructureNode>(items, delegate(StructureNode a, StructureNode b) { return string.Compare(a.Name, b.Name); });
+                    var loopNodes = finder.FindLoop();
+                    var items = new List<StructureNode>(loopNodes);
+                    items.Sort(delegate(StructureNode a, StructureNode b) { return string.Compare(a.Name, b.Name); });
                     foreach (StructureNode sn in items)
                     {
                         Console.Out.Write(sn.Name + " ");

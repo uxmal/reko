@@ -154,6 +154,8 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="ICodeLocation.cs" />
+    <Compile Include="Lib\PriorityQueue.cs">
+    </Compile>
     <Compile Include="Services\DecompilerEventListener.cs" />
     <Compile Include="Lib\BlockDominatorGraph.cs" />
     <Compile Include="Lib\Dequeue.cs" />

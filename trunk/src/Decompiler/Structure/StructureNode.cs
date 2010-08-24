@@ -53,7 +53,7 @@ namespace Decompiler.Structure
         private int[] loopStamps;
         private int[] revLoopStamps;
 
-        private bbType type;
+        private BlockTerminationType type;
 
         public StructureNode(Block block, int id)
         {
@@ -84,9 +84,8 @@ namespace Decompiler.Structure
         }
 
 
-
         // Constructor used by the IntNode derived class
-        protected StructureNode(int newId, bbType t)
+        protected StructureNode(int newId, BlockTerminationType t)
         {
             id = newId; type = t;
         }
@@ -95,11 +94,11 @@ namespace Decompiler.Structure
         // has an edge to dest then node edge is added and the node type is changed to fall
         public void AddEdgeTo(StructureNode dest)
         {
-            if (type != bbType.cBranch || !HasEdgeTo(dest))
+            if (type != BlockTerminationType.cBranch || !HasEdgeTo(dest))
                 OutEdges.Add(dest);    
             else
                 //reset the type to fall if no edge was added (i.e. this edge already existed)
-                type = bbType.fall;
+                type = BlockTerminationType.fall;
         }
 
         // Add an edge from src to this node if it doesn't already exist. NB: only interval
@@ -116,7 +115,7 @@ namespace Decompiler.Structure
             get { return block; }
         }
 
-        public bbType BlockType
+        public BlockTerminationType BlockType
         {
             get { return type; }
         }
@@ -164,6 +163,15 @@ namespace Decompiler.Structure
             return (dest == this || dest.IsAncestorOf(this));
         }
 
+
+        public bool HasABackEdge()
+        {
+            for (int i = 0; i < this.OutEdges.Count; i++)
+                if (this.HasBackEdgeTo(this.OutEdges[i]))
+                    return true;
+            return false;
+        }
+
         // Does this node have an edge to dest?
         public bool HasEdgeTo(StructureNode dest)
         {
@@ -191,7 +199,12 @@ namespace Decompiler.Structure
             set { interval = value; }
         }
 
-        // Is this node an ancestor of other?
+        /// <summary>
+        /// Is this node an ancestor of <paramref name="other"/>?
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+ 
         public bool IsAncestorOf(StructureNode other)
         {
             return ((loopStamps[0] < other.loopStamps[0] &&
@@ -292,19 +305,19 @@ namespace Decompiler.Structure
             return sw.ToString();
         }
 
-        private bbType TypeOfBlock(Block block)
+        private BlockTerminationType TypeOfBlock(Block block)
         {
             Statement stm = block.Statements.Last;
             if (stm == null)
-                return bbType.fall;
+                return BlockTerminationType.fall;
             Instruction i = stm.Instruction;
             if (i is Branch)
-                return bbType.cBranch;
+                return BlockTerminationType.cBranch;
             if (i is SwitchInstruction)
-                return bbType.nway;
+                return BlockTerminationType.nway;
             if (i is ReturnInstruction)
-                return bbType.ret;
-            return bbType.fall;
+                return BlockTerminationType.ret;
+            return BlockTerminationType.fall;
         }
 
         public UnstructuredType UnstructType
@@ -325,15 +338,15 @@ namespace Decompiler.Structure
 
     }
 
-    public enum bbType
+    public enum BlockTerminationType
     {
-        none,
+        None,
         cBranch,
         fall,
         nway,
         uBranch,
         ret,
-        intNode
+        IntervalNode
     }
 
     public enum UnstructuredType

@@ -22,6 +22,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Core.Lib;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Mocks
 {
@@ -55,6 +56,8 @@ namespace Decompiler.UnitTests.Mocks
 				registers[i] = new MockMachineRegister("r" + i, i, PrimitiveType.Word32);
 			}
 		}
+
+        public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
 
 		public static MachineRegister GetMachineRegister(int i)
 		{
@@ -128,7 +131,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Disassembler CreateDisassembler(ImageReader rdr)
 		{
-			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateDisassembler implementation");
+            return new FakeDisassembler(rdr.Address, DisassemblyStream.GetEnumerator());
 		}
 
         public Frame CreateFrame()
