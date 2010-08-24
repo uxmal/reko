@@ -394,23 +394,29 @@ namespace Decompiler.ImageLoaders.MzExe
         {
             if (!ImportedFunctionNameSpecified(rvaEntry))
             {
-                unresolvedImports.Add(new ImportedFunction(id, string.Format("Ordinal_{0}", rvaEntry & 0x7FFFFFF)));
+                AddUnresolvedImport(id, string.Format("Ordinal_{0}", rvaEntry & 0x7FFFFFF));
                 return;
             }
             string fnName = ReadAsciiString(rvaEntry + 2, 0);
             if (lib == null)
             {
-                unresolvedImports.Add(new ImportedFunction(id, fnName));
+                AddUnresolvedImport(id, fnName);
                 return;
             }
             ProcedureSignature sig = lib.Lookup(fnName);
             if (sig == null)
             {
-                unresolvedImports.Add(new ImportedFunction(id, fnName));
+                AddUnresolvedImport(id, fnName);
                 return;
             }
-
             importThunks.Add(addrThunk.Offset, new PseudoProcedure(fnName, sig));
+        }
+
+        private void AddUnresolvedImport(ImportDescriptor id, string fnName)
+        {
+            unresolvedImports.Add(new ImportedFunction(id, fnName));
+            GetService<DecompilerEventListener>().AddDiagnostic(new NullCodeLocation(""),
+                new Diagnostic(string.Format("Unable to locate signature for {0} ({1}).", fnName, id.DllName)));
         }
 
         private bool ImportedFunctionNameSpecified(uint rvaEntry)

@@ -103,11 +103,11 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 prog.ImportThunks.Add(item.Key, item.Value);
             }
-            Scanner scan = new Scanner(prog, new FakeDecompilerEventListener());
+            ScannerImpl scan = new ScannerImpl(prog, new FakeDecompilerEventListener());
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			scan.EnqueueEntryPoint(ep);
-			scan.ProcessQueues();
+			scan.ProcessQueue();
 			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 

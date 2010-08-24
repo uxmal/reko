@@ -62,10 +62,10 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void FindJumps()
 		{
 			Program pgm = BuildProgram();
-			Scanner sc = new Scanner(pgm, null);
+			ScannerImpl sc = new ScannerImpl(pgm, null);
 
 			sc.EnqueueEntryPoint(new EntryPoint(pgm.Image.BaseAddress, new IntelState()));
-			sc.ProcessQueues();
+			sc.ProcessQueue();
 			Assert.AreEqual(4, pgm.Image.Map.Items.Count);
 			StringBuilder sb = new StringBuilder();
 			foreach (ImageMapItem item in pgm.Image.Map.Items.Values)
@@ -89,12 +89,12 @@ namespace Decompiler.UnitTests.Arch.Intel
                     new IntelTextAssembler(),
                     FileUnitTester.MapTestPath("fragments/Factorial.asm"));
                 Program prog = ld.Load(new Address(0x0C00, 0));
-				Scanner sc = new Scanner(prog, null);
+				ScannerImpl sc = new ScannerImpl(prog, null);
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
 					sc.EnqueueEntryPoint(ep);
 				}
-				sc.ProcessQueues();
+				sc.ProcessQueue();
 				prog.DumpAssembler(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
@@ -256,12 +256,12 @@ namespace Decompiler.UnitTests.Arch.Intel
                     new IntelTextAssembler(),
                     FileUnitTester.MapTestPath(sourceFile));
                 Program prog = ld.Load(addrBase);
-				Scanner sc = new Scanner(prog, new FakeDecompilerEventListener());
+				ScannerImpl sc = new ScannerImpl(prog, new FakeDecompilerEventListener());
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
 					sc.EnqueueEntryPoint(ep);
 				}
-				sc.ProcessQueues();
+				sc.ProcessQueue();
 				Dumper d = prog.Architecture.CreateDumper();
 				d.Dump(prog, prog.Image.Map, fut.TextWriter);
 

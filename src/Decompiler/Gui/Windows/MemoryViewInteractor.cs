@@ -85,7 +85,7 @@ namespace Decompiler.Gui.Windows
             {
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
-                    Control.SelectedAddress = dlg.Address;
+                    Control.ShowAddress(dlg.Address);
                 }
             }
         }

@@ -255,7 +255,7 @@ namespace Decompiler.Arch.Intel
 		/// <summary>
 		/// Current address of the disassembler.
 		/// </summary>
-		public override Address Address
+		public Address Address
 		{
 			get { return rdr.Address; }
 		}
@@ -444,7 +444,7 @@ namespace Decompiler.Arch.Intel
 			return dataWidth;
 		}
 
-		public override MachineInstruction DisassembleInstruction()
+		public MachineInstruction DisassembleInstruction()
 		{
 			return Disassemble();
 		}

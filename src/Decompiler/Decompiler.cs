@@ -1,3 +1,4 @@
+#region License
 /* Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -14,6 +15,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Output;
@@ -60,7 +62,7 @@ namespace Decompiler
 		private Project project;
 		private DecompilerHost host;
 		private LoaderBase loader;
-		private Scanner scanner;
+		private ScannerImpl scanner;
 		private RewriterHost rewriterHost;
         private DecompilerEventListener eventListener;
         private IServiceProvider services;
@@ -313,9 +315,9 @@ namespace Decompiler
 		public Procedure ScanProcedure(Address addr)
 		{
 			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-				scanner = new Scanner(prog, eventListener);
+				scanner = new ScannerImpl(prog, eventListener);
 			Procedure proc = scanner.EnqueueProcedure(null, addr, null);
-			scanner.ProcessQueues();
+			scanner.ProcessQueue();
             return proc;
 		}
 
@@ -332,7 +334,7 @@ namespace Decompiler
 			try
 			{
                 eventListener.ShowStatus("Tracing reachable machine code.");
-				scanner = new Scanner(prog, eventListener);
+				scanner = new ScannerImpl(prog, eventListener);
 				foreach (EntryPoint ep in loader.EntryPoints)
 				{
 					prog.AddEntryPoint(ep);
@@ -342,7 +344,7 @@ namespace Decompiler
 				{
 					scanner.EnqueueUserProcedure(sp);
 				}
-				scanner.ProcessQueues();
+				scanner.ProcessQueue();
                 eventListener.ShowStatus("Finished tracing reachable machine code.");
 
 			}

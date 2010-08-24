@@ -25,6 +25,7 @@ using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
 using Decompiler.Loading;
 using Decompiler.Scanning;
+using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
 using System;
 
@@ -34,6 +35,11 @@ namespace Decompiler.UnitTests.Structure
 	{
 		protected Program prog;
 
+        protected StructureNode GetNode(ProcedureStructure proc, string nodeName)
+        {
+            return proc.Nodes.Find(node => node.Name == nodeName);
+        }
+
 		protected Program RewriteProgram(string sourceFilename, Address addrBase)
 		{
             AssemblerLoader ldr = new AssemblerLoader(
@@ -42,12 +48,12 @@ namespace Decompiler.UnitTests.Structure
 
             prog = ldr.Load(addrBase);
 
-            Scanner scan = new Scanner(prog, new FakeDecompilerEventListener());
+            ScannerImpl scan = new ScannerImpl(prog, new FakeDecompilerEventListener());
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);
 			}
-			scan.ProcessQueues();
+			scan.ProcessQueue();
 
             DecompilerEventListener eventListener = new FakeDecompilerEventListener();
 			RewriterHost rw = new RewriterHost(prog, eventListener, scan.SystemCalls, scan.VectorUses);

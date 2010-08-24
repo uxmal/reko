@@ -167,7 +167,9 @@ namespace Decompiler.Gui.Windows.Controls
 
 		private void MoveSelection(int offset, Keys modifiers)
 		{
-			int linAddr = SelectedAddress.Linear + offset;
+            if (SelectedAddress == null)
+                return;
+            int linAddr = SelectedAddress.Linear + offset;
             if (!image.IsValidLinearAddress(linAddr))
                 return;
             Address addr = image.Map.MapLinearAddressToAddress(linAddr);

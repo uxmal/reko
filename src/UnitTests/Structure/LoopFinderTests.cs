@@ -46,9 +46,17 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual("LoopHead", i.Header.Name);
 
             LoopFinder lf = new LoopFinder(proc.Ordering[6], proc.Ordering[2], proc.Ordering);
-            HashedSet<StructureNode> loopNodes = lf.FindNodesInLoop(i.FindIntervalNodes(0));
+            var loopNodes = lf.FindNodesInLoop(i.FindIntervalNodes(0));
             Assert.AreEqual(3, loopNodes.Count);
+        }
 
+        [Test]
+        public void WhileGoto2_TagNodes()
+        {
+            var sa = new StructureAnalysis(new MockWhileGoto2().Procedure);
+            sa.BuildProcedureStructure();
+            sa.FindStructures();
+            sa.ProcedureStructure.Write(Console.Out);
         }
 
         [Test]
@@ -67,8 +75,8 @@ namespace Decompiler.UnitTests.Structure
             psb.AnalyzeGraph();
 
             LoopFinder lf = new LoopFinder(proc.Ordering[23], proc.Ordering[0], proc.Ordering);
-            HashedSet<StructureNode> intervalNodes = proc.Nodes[23].Interval.FindIntervalNodes(0);
-            HashedSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
+            var intervalNodes = proc.Nodes[23].Interval.FindIntervalNodes(0);
+            var loopNodes = lf.FindNodesInLoop(intervalNodes);
             proc.Dump();
             Loop loop = lf.DetermineLoopType(loopNodes);
             Assert.IsTrue(loop is TestlessLoop);
@@ -78,7 +86,7 @@ namespace Decompiler.UnitTests.Structure
         private void RunTest(ProcedureMock m)
         {
             m.Procedure.RenumberBlocks();
-            ProcedureStructureBuilder psb = new ProcedureStructureBuilder(m.Procedure);
+            var psb = new ProcedureStructureBuilder(m.Procedure);
             proc = psb.Build();
         }
     }

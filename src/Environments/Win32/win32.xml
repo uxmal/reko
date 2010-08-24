@@ -194,20 +194,20 @@
 
   typedef LARGE_INTEGER *PLARGE_INTEGER;
 
-  typedef union _ULARGE_INTEGER {
-<struct>
-  <field name="LowPart">DWORD</field>
-  <field name="HighPart">DWORD</field>
-</struct>
-<struct>
-<field name="LowPart">DWORD</field>
-<field name="HighPart">DWORD</field>
-<field name="u">}</field>
-
-  ULONGLONG QuadPart;
-  } ULARGE_INTEGER;
-
-  typedef ULARGE_INTEGER *PULARGE_INTEGER;
+  <union name="_ULARGE_INTEGER">
+  <struct>
+    <field name="LowPart">DWORD</field>
+    <field name="HighPart">DWORD</field>
+  </struct>
+    <struct>
+      <field name="LowPart">DWORD</field>
+      <field name="HighPart">DWORD</field>
+      <field name="u">}</field>
+    </struct>
+    <field name="QuadPart">ULONGLONG</field> 
+  </union>
+  <typedef alias="ULARGE_INTEGER">_ULARGE_INTEGER</typedef>
+  <typedef alias="PULARGE_INTEGER"><ptr>_ULARGE_INTEGER</ptr></typedef>
 
 <struct name="_LUID">
 <field name="LowPart">DWORD</field>
@@ -313,29 +313,42 @@
 <struct name="_LIST_ENTRY">
   struct _LIST_ENTRY *Flink;
   struct _LIST_ENTRY *Blink;
-  } LIST_ENTRY, *PLIST_ENTRY, * PRLIST_ENTRY;
+</struct>
+  <typedef alias="LIST_ENTRY">_LIST_ENTRY</typedef>
+  <typedef alias="PLIST_ENTRY"><ptr>LIST_ENTRY</ptr></typedef>
+  <typedef alias="PRLIST_ENTRY"><ptr>LIST_ENTRY</ptr></typedef>
 
 <struct name="_SINGLE_LIST_ENTRY">
-  struct _SINGLE_LIST_ENTRY *Next;
-  } SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY;
+	<field name="Next"><ptr>_SINGLE_LIST_ENTRY</ptr></field>
+</struct>
+<typedef alias="SINGLE_LIST_ENTRY">_SINGLE_LIST_ENTRY</typedef>
+<typedef alias="PSINGLE_LIST_ENTRY"><ptr>_SINGLE_LIST_ENTRY</ptr></typedef>
+
 <struct name="LIST_ENTRY32">
 <field name="Flink">DWORD</field>
 <field name="Blink">DWORD</field>
-<field name="LIST_ENTRY32">}</field>
-  typedef LIST_ENTRY32 *PLIST_ENTRY32;
+</struct>
+
+<typedef alias="LIST_ENTRY32">LIST_ENTRY32</typedef>
+<typedef alias="PLIST_ENTRY32"><ptr>LIST_ENTRY32</ptr></typedef>
+
 
 <struct name="LIST_ENTRY64">
 <field name="Flink">ULONGLONG</field>
 <field name="Blink">ULONGLONG</field>
-<field name="LIST_ENTRY64">}</field>
-  typedef LIST_ENTRY64 *PLIST_ENTRY64;
-  #line 1 "\\program files\\Microsoft SDKs\\Windows\\v6.0A\\Include\\guiddef.h"
-<struct name="_GUID">
-  unsigned long  Data1;
-  unsigned short Data2;
-  unsigned short Data3;
-  unsigned char  Data4[ 8 ];
-  } GUID;
+</struct>
+<typedef alias="LIST_ENTRY64">LIST_ENTRY64</typedef>
+<typedef alias="PLIST_ENTRY64"><ptr>LIST_ENTRY64</ptr></typedef>
+  <struct name="_GUID">
+    <field name=" Data1">Uint32</field>
+    unsigned short Data2;
+    unsigned short Data3;
+    unsigned char  Data4[ 8 ];
+  </struct>
+  <typedef alias="GUID">_GUID</typedef>
+  <typedef alias="LPGUID">
+    <ptr>_GUID</ptr>
+  </typedef>
 
   typedef GUID *LPGUID;
 
@@ -350,11 +363,8 @@
 <struct name=" _OBJECTID">
   GUID Lineage;
   DWORD Uniquifier;
-  } OBJECTID;
-
-
-
-
+</struct>
+  <typedef alias="OBJECTID">_OBJECTID</typedef>
 
   typedef ULONG_PTR KSPIN_LOCK;
   typedef KSPIN_LOCK *PKSPIN_LOCK;
@@ -369,41 +379,35 @@
 
   #pragma warning(pop)
 
-  BOOLEAN
-  _bittest (
-  LONG const *Base,
-<arg name="Offset">LONG</arg>
+<function ret="BOOLEAN" name="_bittest">
+  <arg name="Base">LONG const * </arg>
+  <arg name="Offset">LONG</arg>
 </function>
 
-  BOOLEAN
-  _bittestandcomplement (
-  LONG *Base,
-<arg name="Offset">LONG</arg>
+  <function ret="BOOLEAN" name="_bittestandcomplement">
+    <arg name="Base">LONG const * </arg>
+    <arg name="Offset">LONG</arg>
+  </function>
+
+  <function ret="BOOLEAN" name="_bittestandset">
+    <arg name="Base">LONG const * </arg>
+    <arg name="Offset">LONG</arg>
 </function>
 
-  BOOLEAN
-  _bittestandset (
-  LONG *Base,
-<arg name="Offset">LONG</arg>
-</function>
+  <function ret="BOOLEAN" name="_bittestandreset">
+    <arg name="Base">LONG const * </arg>
+    <arg name="Offset">LONG</arg>
+  </function>
 
-  BOOLEAN
-  _bittestandreset (
-  LONG *Base,
-<arg name="Offset">LONG</arg>
-</function>
+  <function ret="BOOLEAN" name="_interlockedbittestandset">
+    <arg name="Base">LONG volatile * </arg>
+    <arg name="Offset">LONG</arg>
+  </function>
 
-  BOOLEAN
-  _interlockedbittestandset (
-  LONG volatile *Base,
-<arg name="Offset">LONG</arg>
-</function>
-
-  BOOLEAN
-  _interlockedbittestandreset (
-  LONG volatile *Base,
-<arg name="Offset">LONG</arg>
-</function>
+  <function ret="BOOLEAN" name="_interlockedbittestandreset ">
+    <arg name="Base">LONG volatile * </arg>
+    <arg name="Offset">LONG</arg>
+  </function>
 
   #pragma intrinsic(_bittest)
   #pragma intrinsic(_bittestandcomplement)
@@ -428,9 +432,9 @@
   #pragma intrinsic(_BitScanReverse)
   SHORT
   _InterlockedCompareExchange16 (
-  SHORT volatile *Destination,
-  SHORT ExChange,
-<arg name="Comperand">SHORT</arg>
+  <arg name="Destination SHORT volatile *,
+  <arg name="ExChange">SHORT</arg>  ,
+  <arg name="Comperand">SHORT</arg>
 </function>
 
   #pragma intrinsic(_InterlockedCompareExchange16)
@@ -577,9 +581,11 @@
 <field name="RegisterArea[80]">BYTE</field>
 <field name="Cr0NpxState">DWORD</field>
 <field name="FLOATING_SAVE_AREA">}</field>
-  typedef FLOATING_SAVE_AREA *PFLOATING_SAVE_AREA;
+  </struct>
 
-<struct name="_CONTEXT">
+  typedef alias="PFLOATING_SAVE_AREA"><ptr>FLOATING_SAVE_AREA</ptr><
+
+  <struct name="_CONTEXT">
 
 
 
@@ -2318,7 +2324,7 @@
   BYTE  Spare;
   union {
   BYTE  AsBYTE ;
-<struct>
+<struct name="PROCESSOR_PERFSTATE_POLICY">
   BYTE  NoDomainAccounting : 1;
   BYTE  IncreasePolicy: 2;
   BYTE  DecreasePolicy: 2;
@@ -2332,7 +2338,8 @@
   DWORD DecreaseTime;
   DWORD IncreasePercent;
   DWORD DecreasePercent;
-  } PROCESSOR_PERFSTATE_POLICY, *PPROCESSOR_PERFSTATE_POLICY;
+</struct>
+  , *PPROCESSOR_PERFSTATE_POLICY;
 <struct name="_ADMINISTRATOR_POWER_POLICY">
 
 
@@ -2780,12 +2787,13 @@
   DWORD   SymbolTableIndex;
   WORD    Type;
   } IMAGE_RELOCATION;
-  typedef IMAGE_RELOCATION  *PIMAGE_RELOCATION;
+  </struct>
+  <typedef alias="PIMAGE_RELOCATION"><ptr>IMAGE_RELOCATION</ptr></typedef>
 
 
 
 
-<struct name="_IMAGE_LINENUMBER">
+  <struct name="_IMAGE_LINENUMBER">
   union {
   DWORD   SymbolTableIndex;
   DWORD   VirtualAddress;
@@ -24422,11 +24430,11 @@ typedef RPC_BINDING_HANDLE handle_t;
 
 typedef GUID UUID;
 <struct name="_RPC_BINDING_VECTOR">
-    unsigned long Count;
+<field name="Count">Uint32</field>
     RPC_BINDING_HANDLE BindingH[1];
 } RPC_BINDING_VECTOR;
 <struct name="_UUID_VECTOR">
-  unsigned long Count;
+<field name="Count">Uint32</field>
   UUID *Uuid[1];
 } UUID_VECTOR;
 typedef void  * RPC_IF_HANDLE;
@@ -24475,7 +24483,7 @@ RPC_SECURITY_CALLBACK_FN (
 } RPC_STATS_VECTOR;
 
 <struct>
-  unsigned long Count;
+<field name="Count">Uint32</field>
   RPC_IF_ID  * IfId[1];
 } RPC_IF_ID_VECTOR;
 <function name="RpcBindingCopy" ret="RPC_STATUS" convention="__stdcall">
@@ -24884,7 +24892,7 @@ RPC_SECURITY_CALLBACK_FN (
 typedef void  * RPC_AUTH_IDENTITY_HANDLE;
 typedef void  * RPC_AUTHZ_HANDLE;
 <struct name="_RPC_SECURITY_QOS">
-  unsigned long Version;
+<field name="Version">Uint32</field>
   unsigned long Capabilities;
   unsigned long IdentityTracking;
   unsigned long ImpersonationType;
@@ -24950,7 +24958,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
     unsigned long *ProxyAuthnSchemes;
 } RPC_HTTP_TRANSPORT_CREDENTIALS_V2_A, *PRPC_HTTP_TRANSPORT_CREDENTIALS_V2_A;
 <struct name="_RPC_SECURITY_QOS_V2_W">
-  unsigned long Version;
+<field name="Version">Uint32</field>
   unsigned long Capabilities;
   unsigned long IdentityTracking;
   unsigned long ImpersonationType;
@@ -24962,7 +24970,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
 } RPC_SECURITY_QOS_V2_W, *PRPC_SECURITY_QOS_V2_W;
 
 <struct name="_RPC_SECURITY_QOS_V2_A">
-  unsigned long Version;
+<field name="Version">Uint32</field>
   unsigned long Capabilities;
   unsigned long IdentityTracking;
   unsigned long ImpersonationType;
@@ -24974,7 +24982,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
 } RPC_SECURITY_QOS_V2_A, *PRPC_SECURITY_QOS_V2_A;
 
 <struct name="_RPC_SECURITY_QOS_V3_W">
-  unsigned long Version;
+<field name="Version">Uint32</field>
   unsigned long Capabilities;
   unsigned long IdentityTracking;
   unsigned long ImpersonationType;
@@ -24987,7 +24995,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
 } RPC_SECURITY_QOS_V3_W, *PRPC_SECURITY_QOS_V3_W;
 
 <struct name="_RPC_SECURITY_QOS_V3_A">
-  unsigned long Version;
+<field name="Version">Uint32</field>
   unsigned long Capabilities;
   unsigned long IdentityTracking;
   unsigned long ImpersonationType;
@@ -24999,7 +25007,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
   void *Sid;
 } RPC_SECURITY_QOS_V3_A, *PRPC_SECURITY_QOS_V3_A;
 <struct name="_RPC_SECURITY_QOS_V4_W">
-  unsigned long Version;
+<field name="Version">Uint32</field>
   unsigned long Capabilities;
   unsigned long IdentityTracking;
   unsigned long ImpersonationType;
@@ -25013,7 +25021,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
 } RPC_SECURITY_QOS_V4_W, *PRPC_SECURITY_QOS_V4_W;
 
 <struct name="_RPC_SECURITY_QOS_V4_A">
-  unsigned long Version;
+<field name="Version">Uint32</field>
   unsigned long Capabilities;
   unsigned long IdentityTracking;
   unsigned long ImpersonationType;
@@ -25027,7 +25035,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
 } RPC_SECURITY_QOS_V4_A, *PRPC_SECURITY_QOS_V4_A;
 
 <struct name="_RPC_BINDING_HANDLE_TEMPLATE_V1_W">
-    unsigned long Version;
+<field name="Version">Uint32</field>
     unsigned long Flags;
     unsigned long ProtocolSequence;
     unsigned short *NetworkAddress;
@@ -25040,7 +25048,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
 } RPC_BINDING_HANDLE_TEMPLATE_V1_W, *PRPC_BINDING_HANDLE_TEMPLATE_V1_W;
 
 <struct name="_RPC_BINDING_HANDLE_TEMPLATE_V1_A">
-    unsigned long Version;
+<field name="Version">Uint32</field>
     unsigned long Flags;
     unsigned long ProtocolSequence;
     unsigned char *NetworkAddress;
@@ -25053,7 +25061,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
 } RPC_BINDING_HANDLE_TEMPLATE_V1_A, *PRPC_BINDING_HANDLE_TEMPLATE_V1_A;
 
 <struct name="_RPC_BINDING_HANDLE_SECURITY_V1_W">
-    unsigned long Version;
+<field name="Version">Uint32</field>
     unsigned short *ServerPrincName;
     unsigned long AuthnLevel;
     unsigned long AuthnSvc;
@@ -25061,7 +25069,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
     RPC_SECURITY_QOS *SecurityQos;
 } RPC_BINDING_HANDLE_SECURITY_V1_W, *PRPC_BINDING_HANDLE_SECURITY_V1_W;
 <struct name="_RPC_BINDING_HANDLE_SECURITY_V1_A">
-    unsigned long Version;
+<field name="Version">Uint32</field>
     unsigned char *ServerPrincName;
     unsigned long AuthnLevel;
     unsigned long AuthnSvc;
@@ -25069,7 +25077,7 @@ typedef void  * RPC_AUTHZ_HANDLE;
     RPC_SECURITY_QOS *SecurityQos;
 } RPC_BINDING_HANDLE_SECURITY_V1_A, *PRPC_BINDING_HANDLE_SECURITY_V1_A;
 <struct name="_RPC_BINDING_HANDLE_OPTIONS_V1">
-    unsigned long Version;
+<field name="Version">Uint32</field>
     unsigned long Flags;
     unsigned long ComTimeout;
     unsigned long CallTimeout;
@@ -25949,7 +25957,7 @@ typedef RPC_STATUS (*RPC_BLOCKING_FN) (
 <arg name="Status">RPC_STATUS</arg>
 </function>
 <struct name="_RPC_C_OPT_METADATA_DESCRIPTOR">
-    unsigned long BufferSize;   
+<field name="BufferSize">Uint32</field>   
      char *Buffer;               
 } RPC_C_OPT_METADATA_DESCRIPTOR;
 
@@ -34083,7 +34091,7 @@ typedef<fnptr name="NDR_NOTIFY2_ROUTINE" ret="void" convention="__stdcall">
 boolean flag);
 
 <struct name="_SCONTEXT_QUEUE">
-    unsigned long   NumberOfObjects;
+<field name="  NumberOfObjects">Uint32</field>
     NDR_SCONTEXT  * ArrayOfObjects;
     } SCONTEXT_QUEUE,  * PSCONTEXT_QUEUE;
 
@@ -34409,7 +34417,7 @@ typedef enum _USER_MARSHAL_CB_TYPE
 } USER_MARSHAL_CB_TYPE;
 
 <struct name="_USER_MARSHAL_CB">
-    unsigned long           Flags;
+<field name="          Flags">Uint32</field>
     PMIDL_STUB_MESSAGE      pStubMsg;
     PFORMAT_STRING          pReserve;
     unsigned long           Signature;
@@ -35616,7 +35624,7 @@ void *);
 
 #pragma warning(disable:4201)
 <struct name="_NDR_USER_MARSHAL_INFO">
-    unsigned long InformationLevel;
+<field name="InformationLevel">Uint32</field>
     union {
         NDR_USER_MARSHAL_INFO_LEVEL1 Level1;
     };
@@ -35755,22 +35763,22 @@ extern RPC_IF_HANDLE __MIDL_itf_wtypes_0000_0000_v0_0_s_ifspec;
     } 	RemHMETAFILEPICT;
 
 <struct name="tagRemHENHMETAFILE">
-    unsigned long cbData;
+<field name="cbData">Uint32</field>
     byte data[ 1 ];
     } 	RemHENHMETAFILE;
 
 <struct name="tagRemHBITMAP">
-    unsigned long cbData;
+<field name="cbData">Uint32</field>
     byte data[ 1 ];
     } 	RemHBITMAP;
 
 <struct name="tagRemHPALETTE">
-    unsigned long cbData;
+<field name="cbData">Uint32</field>
     byte data[ 1 ];
     } 	RemHPALETTE;
 
 <struct name="tagRemBRUSH">
-    unsigned long cbData;
+<field name="cbData">Uint32</field>
     byte data[ 1 ];
     } 	RemHBRUSH;
 
@@ -35903,28 +35911,28 @@ typedef  void *HCONTEXT;
 typedef DWORD LCID;
 typedef USHORT LANGID;
 <struct name="_BYTE_BLOB">
-    unsigned long clSize;
+<field name="clSize">Uint32</field>
     byte abData[ 1 ];
     } 	BYTE_BLOB;
 
 typedef    BYTE_BLOB *UP_BYTE_BLOB;
 
 <struct name="_WORD_BLOB">
-    unsigned long clSize;
+<field name="clSize">Uint32</field>
     unsigned short asData[ 1 ];
     } 	WORD_BLOB;
 
 typedef    WORD_BLOB *UP_WORD_BLOB;
 
 <struct name="_DWORD_BLOB">
-    unsigned long clSize;
+<field name="clSize">Uint32</field>
     unsigned long alData[ 1 ];
     } 	DWORD_BLOB;
 
 typedef    DWORD_BLOB *UP_DWORD_BLOB;
 
 <struct name="_FLAGGED_BYTE_BLOB">
-    unsigned long fFlags;
+<field name="fFlags">Uint32</field>
     unsigned long clSize;
     byte abData[ 1 ];
     } 	FLAGGED_BYTE_BLOB;
@@ -35932,7 +35940,7 @@ typedef    DWORD_BLOB *UP_DWORD_BLOB;
 typedef    FLAGGED_BYTE_BLOB *UP_FLAGGED_BYTE_BLOB;
 
 <struct name="_FLAGGED_WORD_BLOB">
-    unsigned long fFlags;
+<field name="fFlags">Uint32</field>
     unsigned long clSize;
     unsigned short asData[ 1 ];
     } 	FLAGGED_WORD_BLOB;
@@ -35940,22 +35948,22 @@ typedef    FLAGGED_BYTE_BLOB *UP_FLAGGED_BYTE_BLOB;
 typedef    FLAGGED_WORD_BLOB *UP_FLAGGED_WORD_BLOB;
 
 <struct name="_BYTE_SIZEDARR">
-    unsigned long clSize;
+<field name="clSize">Uint32</field>
     byte *pData;
     } 	BYTE_SIZEDARR;
 
 <struct name="_SHORT_SIZEDARR">
-    unsigned long clSize;
+<field name="clSize">Uint32</field>
     unsigned short *pData;
     } 	WORD_SIZEDARR;
 
 <struct name="_LONG_SIZEDARR">
-    unsigned long clSize;
+<field name="clSize">Uint32</field>
     unsigned long *pData;
     } 	DWORD_SIZEDARR;
 
 <struct name="_HYPER_SIZEDARR">
-    unsigned long clSize;
+<field name="clSize">Uint32</field>
     __int64 *pData;
     } 	HYPER_SIZEDARR;
 <struct name="_userCLIPFORMAT">
@@ -44315,7 +44323,7 @@ extern const IID IID_IEnumSTATSTG;
 typedef    IStorage *LPSTORAGE;
 
 <struct name="tagRemSNB">
-    unsigned long ulCntStr;
+<field name="ulCntStr">Uint32</field>
     unsigned long ulCntChar;
     OLECHAR rgString[ 1 ];
     } 	RemSNB;

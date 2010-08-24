@@ -34,16 +34,16 @@ namespace Decompiler.Structure
         private StructureNode header;
         private StructureNode latch;
         private StructureNode follow;
-        private HashedSet<StructureNode> loopNodes;
+        private HashSet<StructureNode> loopNodes;
 
-        public Loop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes)
+        public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
         {
             this.header = header;
             this.latch = latch;
             this.loopNodes = loopNodes;
         }
 
-        public Loop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes, StructureNode follow)
+        public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
         {
             this.header = header;
             this.latch = latch;
@@ -61,7 +61,7 @@ namespace Decompiler.Structure
             get { return latch; }
         }
 
-        public HashedSet<StructureNode> Nodes
+        public HashSet<StructureNode> Nodes
         {
             get { return loopNodes; }
         }
@@ -93,7 +93,7 @@ namespace Decompiler.Structure
     /// </summary>
     public class PreTestedLoop : Loop
     {
-        public PreTestedLoop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes, StructureNode follow)
+        public PreTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
             : base(header, latch, loopNodes, follow)
         {
         }
@@ -119,7 +119,7 @@ namespace Decompiler.Structure
     /// </summary>
     public class PostTestedLoop : Loop
     {
-        public PostTestedLoop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes, StructureNode follow)
+        public PostTestedLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
             : base(header, latch, loopNodes, follow)
         {
         }
@@ -156,7 +156,7 @@ namespace Decompiler.Structure
     /// </summary>
     public class TestlessLoop : Loop
     {
-        public TestlessLoop(StructureNode header, StructureNode latch, HashedSet<StructureNode> loopNodes, StructureNode follow)
+        public TestlessLoop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
             : base(header, latch, loopNodes, follow)
         {
         }

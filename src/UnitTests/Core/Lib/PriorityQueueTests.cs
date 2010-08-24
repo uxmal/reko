@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 1999-2010 John Källén.
+ï»¿#region License
+/* Copyright (C) 1999-2010 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,29 +15,37 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Decompiler.Core.Lib;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Decompiler.UnitTests.Core.Lib
 {
-    public class Pdp11Disassembler : Disassembler
+    [TestFixture]
+    public class PriorityQueueTests
     {
-        public Pdp11Disassembler(ImageReader rdr)
+        [Test]
+        public void AddItem()
         {
+            var pq = new PriorityQueue<string>();
+            pq.Enqueue(1, "foo");
+            Assert.AreEqual(1, pq.Count);
         }
 
-        public Address Address
+        [Test]
+        public void EnqDeq()
         {
-            get { throw new NotImplementedException(); }
+            var pq = new PriorityQueue<string>();
+            pq.Enqueue(1, "world");
+            pq.Enqueue(2, "hello");
+            Assert.AreEqual("hello", pq.Dequeue());
+            Assert.AreEqual("world", pq.Dequeue());
         }
 
-        public MachineInstruction DisassembleInstruction()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

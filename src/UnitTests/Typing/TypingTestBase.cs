@@ -48,9 +48,9 @@ namespace Decompiler.UnitTests.Typing
             EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			
-			Scanner scan = new Scanner(prog, null);
+			ScannerImpl scan = new ScannerImpl(prog, null);
 			scan.EnqueueEntryPoint(ep);
-			scan.ProcessQueues();
+			scan.ProcessQueue();
 			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerEventListener(), scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 

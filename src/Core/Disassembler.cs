@@ -1,3 +1,4 @@
+#region GNU License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,23 +16,20 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Machine;
 using System;
 
 namespace Decompiler.Core
 {
-	public abstract class Disassembler
+	public interface Disassembler
 	{
-		public Disassembler()
-		{
-		}
-
-		public abstract Address Address
+		Address Address
 		{
 			get; 
 		}
 
-		public abstract MachineInstruction DisassembleInstruction();
+		MachineInstruction DisassembleInstruction();
 	}
 }

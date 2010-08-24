@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler;
 using Decompiler.Core;
@@ -109,11 +111,11 @@ baz proc
 baz endp
 ");
             prog.Image = asm.Image;
-			Scanner scan = new Scanner(prog, null);
+			ScannerImpl scan = new ScannerImpl(prog, null);
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			scan.EnqueueEntryPoint(ep);
-			scan.ProcessQueues();
+			scan.ProcessQueue();
 			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 		}
@@ -125,7 +127,7 @@ baz endp
 		public void DontPromoteStumps()
 		{
 			Program prog = BuildTest("Fragments/multiple/jumpintoproc2.asm");
-			Scanner scan = new Scanner(prog, null);
+			ScannerImpl scan = new ScannerImpl(prog, null);
 			scan.EnqueueProcedure(null, prog.Image.BaseAddress, null, prog.Architecture.CreateProcessorState());
 			Assert.IsTrue(scan.ProcessItem());
 			Assert.IsTrue(scan.ProcessItem());
@@ -143,9 +145,9 @@ baz endp
 			Assembler asm = new IntelTextAssembler();
 			asm.Assemble(new Address(0xC00, 0x0000), FileUnitTester.MapTestPath("Fragments/multiple/jumpintoproc.asm"));
             prog.Image = asm.Image;
-			Scanner scan = new Scanner(prog, null);
+			ScannerImpl scan = new ScannerImpl(prog, null);
 			scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, new IntelState()));
-			scan.ProcessQueues();
+			scan.ProcessQueue();
 			using (FileUnitTester fut = new FileUnitTester("Scanning/ScanInterprocedureJump.txt"))
 			{
 				Dumper dumper = prog.Architecture.CreateDumper();
@@ -164,7 +166,7 @@ baz endp
 			SetupMockCodeWalker();
 
 			scanner.MockCodeWalker.AddReturn(new Address(0x1004));
-			scanner.ProcessQueues();
+			scanner.ProcessQueue();
 
 			Assert.AreEqual(1, prog.Procedures.Count);
 
@@ -180,7 +182,7 @@ baz endp
 
 			scanner.MockCodeWalker.AddReturn(new Address(0x2002));
 
-			scanner.ProcessQueues();
+			scanner.ProcessQueue();
 
 			Assert.AreEqual(2, prog.Procedures.Count);
 		}
@@ -195,12 +197,12 @@ baz endp
 			scanner.MockCodeWalker.AddJump(new Address(0x1102), new Address(0x1103)); 
 			scanner.MockCodeWalker.AddReturn(new Address(0x1110));
 
-			scanner.ProcessQueues();
+			scanner.ProcessQueue();
 			scanner.EnqueueProcedure(null, new Address(0x2000), null, new FakeProcessorState());
 			scanner.MockCodeWalker.AddCall(new Address(0x2001), new Address(0x1101));	// calls into middle of procedure already scanned.
 			scanner.MockCodeWalker.AddReturn(new Address(0x2004));
 
-			scanner.ProcessQueues();
+			scanner.ProcessQueue();
 
 			Assert.AreEqual(3, prog.Procedures.Count);
 			Procedure p2000 = prog.Procedures[new Address(0x2000)];
@@ -249,7 +251,7 @@ baz endp
 			}
 		}
 
-		private class TestScanner : Scanner
+		private class TestScanner : ScannerImpl
 		{
 			private MockCodeWalker mcw; 
 

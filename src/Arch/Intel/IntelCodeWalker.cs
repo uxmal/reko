@@ -320,7 +320,7 @@ namespace Decompiler.Arch.Intel
 				}
 				else
 				{
-					if (memOp.Offset.IsValid)
+					if (memOp.Offset.IsValid && memOp.Offset.DataType.Size == memOp.Width.Size)
 					{
 						if (fCall)
 						{

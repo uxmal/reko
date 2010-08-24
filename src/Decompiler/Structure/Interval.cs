@@ -33,7 +33,7 @@ namespace Decompiler.Structure
         private List<StructureNode> nodes = new List<StructureNode>();		// nodes of the interval
 
         public Interval(int intervalID, StructureNode headerNode)
-            : base(intervalID, bbType.intNode)
+            : base(intervalID, BlockTerminationType.IntervalNode)
         {
             AddNode(headerNode);
         }
@@ -59,14 +59,14 @@ namespace Decompiler.Structure
             get { return nodes; }
         }
 
-        public HashedSet<StructureNode> FindIntervalNodes(int level)
+        public HashSet<StructureNode> FindIntervalNodes(int level)
         {
-            HashedSet<StructureNode> nodes = new HashedSet<StructureNode>();
+            var nodes = new HashSet<StructureNode>();
             FindIntervalNodes(level, nodes);
             return nodes;
         }
 
-        private void FindIntervalNodes(int level, HashedSet<StructureNode> intervalMembers)
+        private void FindIntervalNodes(int level, HashSet<StructureNode> intervalMembers)
         {
             if (level == 0)
                 foreach (StructureNode node in nodes)

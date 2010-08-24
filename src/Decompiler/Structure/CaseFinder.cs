@@ -33,7 +33,7 @@ namespace Decompiler.Structure
     {
         private StructureNode head;
         private StructureNode follow;
-        private HashedSet<StructureNode> visited = new HashedSet<StructureNode>();
+        private HashSet<StructureNode> visited = new HashSet<StructureNode>();
 
         public CaseFinder(StructureNode head, StructureNode follow)
         {
@@ -58,7 +58,7 @@ namespace Decompiler.Structure
 
             // if this is a nested case header, then its member nodes will already have been
             // tagged so skip straight to its follow
-            if (node.BlockType == bbType.nway && node != head)
+            if (node.BlockType == BlockTerminationType.nway && node != head)
             {
                 if (!visited.Contains(node.Conditional.Follow) &&
                     node.Conditional.Follow != follow)

@@ -39,7 +39,7 @@ namespace Decompiler.Arch.PowerPC
             this.defaultWordWidth = defaultWordWidth;
         }
 
-        public override Address Address
+        public Address Address
         {
             get { return rdr.Address; }
         }
@@ -50,7 +50,7 @@ namespace Decompiler.Arch.PowerPC
             return oprecs[wInstr >> 26].Decode(this, wInstr);
         }
 
-        public override MachineInstruction DisassembleInstruction()
+        public MachineInstruction DisassembleInstruction()
         {
             return Disassemble();
         }

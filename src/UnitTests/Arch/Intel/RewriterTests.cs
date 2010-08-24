@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private string configFile;
 		protected Assembler asm; 
 		protected Program prog;
-		protected Scanner scanner;
+		protected ScannerImpl scanner;
 		protected Address baseAddress;
 
 		public RewriterTestBase()
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			SerializedProject project = (configFile != null)
 				? SerializedProject.Load(FileUnitTester.MapTestPath(configFile))
 				: null;
-			scanner = new Scanner(prog, new FakeDecompilerEventListener());
+			scanner = new ScannerImpl(prog, new FakeDecompilerEventListener());
 			EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
 			prog.AddEntryPoint(ep);
 			scanner.EnqueueEntryPoint(ep);
@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 					scanner.EnqueueUserProcedure(sp);
 				}
 			}
-			scanner.ProcessQueues();
+			scanner.ProcessQueue();
 			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerEventListener(), scanner.SystemCalls, scanner.VectorUses);
 			rw.RewriteProgram();
 		}

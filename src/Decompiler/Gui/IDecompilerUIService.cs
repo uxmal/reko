@@ -29,7 +29,7 @@ namespace Decompiler.Gui
     public interface IDecompilerUIService
     {
         void ShowError(Exception ex, string format, params object[] args);
-        [Obsolete("Use IDialog instead")] DialogResult ShowModalDialog(Form dlg);
+        DialogResult ShowModalDialog(Form dlg);         // [Obsolete("Use IDialog instead")] 
         DialogResult ShowModalDialog(IDialog dlg);
         string ShowOpenFileDialog(string fileName);
         string ShowSaveFileDialog(string fileName);
