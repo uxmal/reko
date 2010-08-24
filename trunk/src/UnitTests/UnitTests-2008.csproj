@@ -183,33 +183,89 @@
     <Compile Include="DecompilerTests.cs" />
     <Compile Include="Environments\MacOS\ResourceForkTests.cs" />
     <Compile Include="FileUnitTester.cs" />
-    <Compile Include="Gui\CodeLocationTests.cs" />
-    <Compile Include="Gui\DecompilerServiceTests.cs" />
-    <Compile Include="Gui\MenuBuilderTests.cs" />
-    <Compile Include="Gui\ProcedureSearchResultTests.cs" />
-    <Compile Include="Gui\SignatureParserTests.cs" />
-    <Compile Include="Gui\Windows\DisassemblyViewInteractorTests.cs" />
-    <Compile Include="Gui\Windows\ProgramImageBrowserServiceTests.cs" />
-    <Compile Include="Gui\Windows\SearchResultServiceTests.cs" />
-    <Compile Include="Gui\Windows\CodeViewerPaneTests.cs" />
-    <Compile Include="Gui\Windows\CodeViewerServiceTests.cs" />
-    <Compile Include="Gui\Windows\Controls\MemoryControlTests.cs" />
-    <Compile Include="Gui\Windows\Controls\MenuSystemTests.cs" />
-    <Compile Include="Gui\Windows\DecompilerShellUiTests.cs" />
-    <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractorTests.cs" />
-    <Compile Include="Gui\Windows\Forms\DiagnosticsInteractorTests.cs" />
-    <Compile Include="Gui\Windows\Forms\EditProjectInteractorTests.cs" />
-    <Compile Include="Gui\Windows\Forms\FakePhasePageInteractors.cs" />
-    <Compile Include="Gui\Windows\Forms\FinalPageInteractorTests.cs" />
-    <Compile Include="Gui\Windows\Forms\FindDialogInteractorTests.cs" />
-    <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs" />
-    <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs" />
-    <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />
-    <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs" />
-    <Compile Include="Gui\Windows\MemoryViewInteractorTests.cs" />
-    <Compile Include="Gui\Windows\MemoryViewServiceTests.cs" />
-    <Compile Include="Gui\Windows\MruListTests.cs" />
-    <Compile Include="Gui\Windows\WindowsApplication.cs" />
+    <Compile Include="Gui\CodeLocationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\DecompilerServiceTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\HtmlCodeFormatterTests.cs" />
+    <Compile Include="Gui\HtmlFormatterTests.cs" />
+    <Compile Include="Gui\MenuBuilderTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\ProcedureSearchResultTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\SignatureParserTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\CodeViewerPaneTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\CodeViewerServiceTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\MemoryControlTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Controls\MenuSystemTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\DecompilerShellUiTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\DisassemblyViewInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\DiagnosticsInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\EditProjectInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\FakePhasePageInteractors.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\FinalPageInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\FindDialogInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\MemoryViewInteractorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\MemoryViewServiceTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\MruListTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\ProgramImageBrowserServiceTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\SearchResultServiceTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gui\Windows\WindowsApplication.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ImageLoaders\BinHex\BinHexDecoderTests.cs" />
     <Compile Include="ImageLoaders\BinHex\BinHexImageLoaderTests.cs" />
     <Compile Include="Loading\LoaderTests.cs" />

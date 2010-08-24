@@ -274,6 +274,8 @@
     <Compile Include="Gui\BlockNavigator.cs" />
     <Compile Include="Gui\CommandGroup.cs" />
     <Compile Include="Gui\FindResult.cs" />
+    <Compile Include="Gui\HtmlCodeFormatter.cs" />
+    <Compile Include="Gui\HtmlFormatter.cs" />
     <Compile Include="Gui\ICodeViewerService.cs" />
     <Compile Include="Gui\ICommandTarget.cs" />
     <Compile Include="Gui\IDecompilerService.cs" />
