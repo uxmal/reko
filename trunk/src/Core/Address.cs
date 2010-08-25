@@ -144,5 +144,8 @@ namespace Decompiler.Core
 				return new Address(Convert.ToUInt32(s, radix));
 			}
 		}
+
+        public static Address ToAddress(string s) { return ToAddress(s, 16); }
+
 	}
 }

@@ -74,13 +74,13 @@ namespace Decompiler.Core.Output
 
 		public void Terminate()
 		{
-			Write(terminator);
+			writer.Write(terminator);
 		}
 
 		public void Terminate(string s)
 		{
 			Write(s);
-			Write(terminator);
+			writer.Write(terminator);
 		}
 
 		public string Terminator

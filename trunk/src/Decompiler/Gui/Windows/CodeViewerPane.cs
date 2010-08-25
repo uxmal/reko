@@ -1,4 +1,5 @@
-﻿/* 
+﻿#region License
+/* 
  * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -15,75 +16,150 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
+    public interface IWebBrowser
+    {
+        HtmlDocument Document { get; }
+        string DocumentText {get;set;}
+        void SetInnerHtmlOfElement(string elementId, string innerHtml);
+
+        event WebBrowserDocumentCompletedEventHandler DocumentCompleted;
+        event WebBrowserNavigatingEventHandler Navigating;
+    }
+
     public class CodeViewerPane : IWindowPane
     {
-        private RichTextBox txtProcedure;
-        private RichEditFormatter formatter;
+        private IWebBrowser webControl; 
+        private IDecompilerService decompilerSvc;
+        private bool initialLoad;
 
-        public RichTextBox ProcedureText
+        public IWebBrowser WebControl
         {
-            get { return txtProcedure; }
+            get { return webControl; }
+        }
+
+        public HtmlElement Contents
+        {
+            get { return webControl.Document.GetElementById("contents"); }
+        }
+
+        protected virtual IWebBrowser CreateDockedWebBrowser()
+        {
+            return new WebBrowserAdapter();
         }
 
         #region IWindowPane Members
 
         public Control CreateControl()
         {
-            this.txtProcedure = new RichTextBox();
-            this.txtProcedure.Dock = DockStyle.Fill;
-            this.txtProcedure.Name = "txtProcedure";
-            this.txtProcedure.Font = new Font("Lucida Console", 9F, FontStyle.Regular, GraphicsUnit.Point);    //$REVIEW: should be a user setting
-            this.txtProcedure.Text = "";
-            this.txtProcedure.MouseClick += new MouseEventHandler(ProcedureText_MouseClick);
-
-            return txtProcedure;
+            this.webControl = CreateDockedWebBrowser();
+            ((Control) this.webControl).Dock = DockStyle.Fill;
+            ((Control) this.webControl).Name = "webBrowser";
+            this.webControl.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webControl_DocumentCompleted);
+            this.webControl.Navigating += new WebBrowserNavigatingEventHandler(webControl_Navigating);
+            return (Control) webControl;
         }
 
         public void SetSite(IServiceProvider sp)
         {
+            decompilerSvc = sp.GetService<IDecompilerService>();
         }
 
         public void Close()
         {
-            txtProcedure.Dispose();
+            if (webControl!=null)
+                ((Control)webControl).Dispose();
         }
 
         #endregion
 
         public void DisplayProcedure(Procedure proc)
         {
-            if (txtProcedure == null)
+            if (webControl == null)
                 return;
 
-            txtProcedure.Clear();
-            formatter = new RichEditFormatter(txtProcedure);
-            if (proc != null)
+            var sb = new StringWriter();
+            var fmt = new HtmlCodeFormatter(sb, decompilerSvc.Decompiler.Program.Procedures);
+            fmt.Write(proc);
+            if (webControl.Document != null)
             {
-                formatter.Write(proc);
+                webControl.SetInnerHtmlOfElement("contents", sb.ToString());
             }
-            txtProcedure.Select(0, 0);
+            else
+            {
+                SetDocumentText();
+                webControl.Document.Write("<html><head>" +
+                    "<style>.kw { color:blue } " +
+                    "</style>" +
+                    "</head>" + Environment.NewLine +
+                    "<body><pre id=\"contents\">" +
+
+                    "</pre></body></html>");
+                webControl.SetInnerHtmlOfElement("contents", sb.ToString());
+            }
         }
 
-        private void ProcedureText_MouseClick(object sender, MouseEventArgs e)
+        void webControl_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine(txtProcedure.Rtf);
-            int i = txtProcedure.GetCharIndexFromPosition(e.Location);
-            Procedure proc = formatter.GetProcedureAtIndex(i);
-            if (proc == null)
-                return;
-            DisplayProcedure(proc);
+            if (!initialLoad)
+            {
+                initialLoad = true;
+                SetDocumentText();
+            }
+
         }
 
+        private void SetDocumentText()
+        {
+            this.webControl.DocumentText = (
+                    "<html><head>" +
+                    "<style>.kw { color:blue } " +
+                    "</style>" +
+                    "</head>" + Environment.NewLine +
+                    "<body><pre id=\"contents\">" +
+
+                    "</pre></body></html>");
+        }
+
+        void webControl_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            if (webControl.Document == null)
+                return;
+
+            e.Cancel = true;    // this disables the annoying "click" of the IE web control
+            DisplayProcedure(GetProcedureFromUrl(e.Url));
+        }
+
+        private Procedure GetProcedureFromUrl(Uri uri)
+        {
+            Address addr = Address.ToAddress(uri.PathAndQuery, 16);
+            return decompilerSvc.Decompiler.Program.Procedures[addr];
+        }
+
+        private class WebBrowserAdapter : WebBrowser, IWebBrowser
+        {
+            public WebBrowserAdapter()
+            {
+                AllowNavigation = true;
+            }
+
+            public void SetInnerHtmlOfElement(string elementId, string innerHtml)
+            {
+                var contents = Document.GetElementById("contents");
+                contents.InnerHtml = innerHtml;
+            }
+        }
     }
 }

@@ -33,10 +33,11 @@ namespace Decompiler.Gui
         private HtmlFormatter formatter;
         private IDictionary<Address, Procedure> procedureMap;
 
-        public HtmlCodeFormatter(TextWriter writer, Dictionary<Address, Procedure> procedureMap)
+        public HtmlCodeFormatter(TextWriter writer, IDictionary<Address, Procedure> procedureMap)
             : base(new HtmlFormatter(writer))
         {
             this.formatter = (HtmlFormatter)InnerFormatter;
+            this.formatter.Terminator = "<br />" + Environment.NewLine;
             this.procedureMap = procedureMap;
         }
 
