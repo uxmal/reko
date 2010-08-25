@@ -33,6 +33,7 @@ namespace Decompiler.Gui
     {
         public HtmlFormatter(TextWriter writer) : base(writer)
         {
+            base.UseTabs = false;
         }
 
         public override void Write(string text)
@@ -53,6 +54,7 @@ namespace Decompiler.Gui
                 case '>': writer.Write("&gt;"); break;
                 case '&': writer.Write("&amp;"); break;
                 case '"': writer.Write("&quot;"); break;
+                case ' ': writer.Write("&nbsp;"); break;
                 default: writer.Write(ch); break;
                 }
             }
