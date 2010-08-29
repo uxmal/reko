@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Lib;
@@ -124,6 +126,11 @@ namespace Decompiler.Arch.PowerPC
         }
 
         public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Rewriter2 CreateRewriter2(Address addr)
         {
             throw new NotImplementedException();
         }

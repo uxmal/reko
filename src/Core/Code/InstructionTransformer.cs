@@ -69,11 +69,19 @@ namespace Decompiler.Core.Code
 			return def;
 		}
 
+        public virtual Instruction TransformGotoInstruction(GotoInstruction gotoInstruction)
+        {
+            gotoInstruction.Target = gotoInstruction.Target.Accept(this);
+            return gotoInstruction;
+        }
+
 		public virtual Instruction TransformIndirectCall(IndirectCall ic)
 		{
 			ic.Callee = ic.Callee.Accept(this);
 			return ic;
 		}
+
+
 
 		public virtual Instruction TransformPhiAssignment(PhiAssignment phi)
 		{
@@ -259,5 +267,6 @@ namespace Decompiler.Core.Code
 		}
 
 		#endregion
-	}
+
+    }
 }

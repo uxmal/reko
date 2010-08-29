@@ -58,10 +58,16 @@ namespace Decompiler.Core.Code
             d.VisitDefInstruction(def);
         }
 
+        public void VisitGotoInstruction(GotoInstruction g)
+        {
+            d.VisitGotoInstruction(g);
+        }
+
         public void VisitPhiAssignment(PhiAssignment phi)
         {
             d.VisitPhiAssignment(phi);
         }
+
 
         public void VisitIndirectCall(IndirectCall ic)
         {

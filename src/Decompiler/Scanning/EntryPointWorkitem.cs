@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2010 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,17 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.Core
+namespace Decompiler.Scanning
 {
-	public abstract class CodeWalker
-	{
-		public abstract Address Address { get; }
-
-		/// <summary>
-		/// Simulates the next instruction; if interesting instructions are encountered,
-		/// the appropriate method of ICodeWalkerListener will be called.
-		/// </summary>
-		/// <param name="listener"></param>
-        public abstract MachineInstruction WalkInstruction(ICodeWalkerListener listener);
-	}
+    public class EntryPointWorkitem2 : Scanner2.WorkItem2
+    {
+        public override void Process()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

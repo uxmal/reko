@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
@@ -193,6 +195,13 @@ namespace Decompiler.Core.Output
             throw new NotImplementedException();
         }
 
+
+        void InstructionVisitor.VisitGotoInstruction(GotoInstruction def)
+        {
+            writer.Write("Jump");
+            throw new NotImplementedException();
+        }
+
         void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotImplementedException();
@@ -246,8 +255,6 @@ namespace Decompiler.Core.Output
         }
 
         #endregion
-
-
 
         #region IExpressionVisitor Members
 

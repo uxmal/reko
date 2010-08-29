@@ -368,6 +368,14 @@ namespace Decompiler.Core.Output
 			writer.Terminate();
 		}
 
+        public void VisitGotoInstruction(GotoInstruction g)
+        {
+            writer.Indent();
+            writer.WriteKeyword("goto");
+            writer.WriteKeyword(" ");
+            g.Target.Accept(this);
+            writer.Terminate();
+        }
 
 		public void VisitIndirectCall(IndirectCall ic)
 		{

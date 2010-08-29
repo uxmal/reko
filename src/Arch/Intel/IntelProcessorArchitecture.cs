@@ -1,3 +1,4 @@
+#region License 
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
@@ -276,6 +278,11 @@ namespace Decompiler.Arch.Intel
 		{
 			return new IntelRewriter(prw, proc, host, this, new IntelRewriterState(proc.Frame));
 		}
+
+        public virtual Rewriter2 CreateRewriter2(Address addr)
+        {
+            throw new NotImplementedException();
+        }
 
 		public MachineFlags GetFlagGroup(uint grf)
 		{

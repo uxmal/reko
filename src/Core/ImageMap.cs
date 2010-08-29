@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Lib;
 using System;
@@ -33,7 +35,7 @@ namespace Decompiler.Core
 	public class ImageMap
 	{
 		private Map<Address,ImageMapItem> items;
-        private Map<Address, ImageMapSegment> segments;
+        private Map<Address,ImageMapSegment> segments;
 
 		public event ItemSplitHandler ItemSplit;
 		public event ItemSplitHandler ItemCoincides;
@@ -48,6 +50,14 @@ namespace Decompiler.Core
 			SetAddressSpan(addrBase, imageSize);
 		}
 
+        /// <summary>
+        /// Adds an image map item at the specified address. If  <paramref name="addr"/> is 
+        /// located inside of an existing address, a notification is sent that that location has
+        /// been split.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="itemNew"></param>
+        /// <returns></returns>
 		public ImageMapItem AddItem(Address addr, ImageMapItem itemNew)
 		{
 			itemNew.Address = addr;
@@ -61,7 +71,7 @@ namespace Decompiler.Core
             else
             {
                 int delta = addr - item.Address;
-                Debug.Assert(delta >= 0);
+                Debug.Assert(delta >= 0, "TryFindItem is supposed to find a block whose address is <= the supplied address");
                 if (delta > 0)
                 {
                     // Need to split the item.

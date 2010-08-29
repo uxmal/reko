@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler;
 using Decompiler.Core;
@@ -179,8 +181,7 @@ namespace Decompiler.Scanning
 		/// <param name="addr"></param>
 		public void EnqueueSegment(Address addr)
 		{
-			WorkItem wi = new WorkItem(wiCur, BlockType.Segment, addr);
-			qSegments.Enqueue(wi);
+			qSegments.Enqueue(new WorkItem(wiCur, BlockType.Segment, addr));
 		}
 
 
@@ -189,7 +190,7 @@ namespace Decompiler.Scanning
 			Procedure proc = EnqueueProcedure(null, Address.ToAddress(sp.Address, 16), sp.Name);
 			if (sp.Signature != null)
 			{
-				ProcedureSerializer sser = new ProcedureSerializer(program.Architecture, "stdapi"); //$TODO: where do default singatures come from? Platform?
+				var sser = new ProcedureSerializer(program.Architecture, program.Platform.DefaultCallingConvention); //$TODO: where do default signatures come from? Platform? Yes!
 				proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
 			}
 			if (sp.Characteristics != null)
@@ -354,8 +355,8 @@ namespace Decompiler.Scanning
 
 		public void ProcessQueue()
 		{
-			map.ItemSplit += new ItemSplitHandler(ImageMap_ItemSplit);
-			map.ItemCoincides += new ItemSplitHandler(ImageMap_ItemCoincides);
+			map.ItemSplit += ImageMap_ItemSplit;
+			map.ItemCoincides += ImageMap_ItemCoincides;
 
 			while (ProcessItem())
 				;
@@ -547,12 +548,12 @@ namespace Decompiler.Scanning
 
 		private void ImageMap_ItemSplit(object o, ItemSplitArgs e)
 		{
-			ImageMapBlock block = e.ItemOld as ImageMapBlock;
-			ImageMapBlock gnu = e.ItemNew as ImageMapBlock;
-			if (block != null && gnu != null)
+			ImageMapBlock oldBlock = e.ItemOld as ImageMapBlock;
+			ImageMapBlock newBlock = e.ItemNew as ImageMapBlock;
+			if (oldBlock != null && newBlock != null)
 			{
-				Debug.WriteIf(trace.TraceVerbose, string.Format(    "Split into {0} (in {1})", block.Address, block.Procedure != null ? block.Procedure.Name : "<none>"));
-				Debug.WriteLineIf(trace.TraceVerbose, string.Format("       and {0} (in {1})", gnu.Address, gnu.Procedure != null ? gnu.Procedure.Name : "<none>")); 
+				Debug.WriteIf(trace.TraceVerbose, string.Format(    "Split into {0} (in {1})", oldBlock.Address, oldBlock.Procedure != null ? oldBlock.Procedure.Name : "<none>"));
+				Debug.WriteLineIf(trace.TraceVerbose, string.Format("       and {0} (in {1})", newBlock.Address, newBlock.Procedure != null ? newBlock.Procedure.Name : "<none>")); 
 			}
 		}
 

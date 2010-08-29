@@ -45,7 +45,7 @@ namespace Decompiler.Scanning
 
         public void EnqueueEntryPoint(EntryPoint ep)
         {
-            queue = new PriorityQueue<WorkItem2>();
+            queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem2());
         }
 
         public void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc)
@@ -78,7 +78,7 @@ namespace Decompiler.Scanning
 
         public SortedList<Address, Procedure> Procedures { get; private set; }
 
-        private abstract class WorkItem2
+        public abstract class WorkItem2
         {
             public abstract void Process();
         }
@@ -89,6 +89,11 @@ namespace Decompiler.Scanning
             {
                 throw new NotImplementedException();
             }
+        }
+
+        internal void EnqueueJumpTarget(Block block)
+        {
+            throw new NotImplementedException();
         }
     }
 }

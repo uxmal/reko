@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
@@ -39,6 +41,7 @@ namespace Decompiler.Core
 		CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st);
 		BitSet CreateRegisterBitset();
 		Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host);
+        Rewriter2 CreateRewriter2(Address addrStart);
         Frame CreateFrame();
 
 		MachineRegister GetRegister(int i);			// Returns register corresponding to number i.
@@ -61,6 +64,7 @@ namespace Decompiler.Core
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
+
 
 
 
