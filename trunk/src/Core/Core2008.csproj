@@ -153,7 +153,9 @@
     <Compile Include="Assemblers\Assembler.cs" />
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
+    <Compile Include="Code\GotoInstruction.cs" />
     <Compile Include="ICodeLocation.cs" />
+    <Compile Include="Lib\LookaheadEnumerator.cs" />
     <Compile Include="Lib\PriorityQueue.cs">
     </Compile>
     <Compile Include="Services\DecompilerEventListener.cs" />

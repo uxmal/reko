@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
@@ -45,5 +47,21 @@ namespace Decompiler.Core
         public abstract void ConvertInstructions(MachineInstruction [] instrs, Address [] addrs, uint [] deadOutFlags,  Address addrEnd, CodeEmitter emitter);
 
 		public abstract void EmitCallAndReturn(Procedure callee);
+    }
+
+    public abstract class Rewriter2 : IEnumerable<RewrittenInstruction>
+    {
+        public abstract IEnumerator<RewrittenInstruction> GetEnumerator();
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+
+    public struct RewrittenInstruction
+    {
+        public Instruction Instruction;
+        public uint LinearAddress;
     }
 }

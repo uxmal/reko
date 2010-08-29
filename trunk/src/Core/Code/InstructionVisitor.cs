@@ -1,3 +1,4 @@
+#region License 
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 
@@ -32,6 +34,8 @@ namespace Decompiler.Core.Code
 
 		void VisitDefInstruction(DefInstruction def);
 
+        void VisitGotoInstruction(GotoInstruction gotoInstruction);
+
 		void VisitPhiAssignment(PhiAssignment phi);
 
 		void VisitIndirectCall(IndirectCall ic);
@@ -45,7 +49,8 @@ namespace Decompiler.Core.Code
 		void VisitSwitchInstruction(SwitchInstruction si);
 
 		void VisitUseInstruction(UseInstruction u);
-	}
+
+    }
 
 	/// <summary>
 	/// Useful base class when only a few of the methods of InstructionVisitor and IExpressionVisitor 
@@ -81,6 +86,11 @@ namespace Decompiler.Core.Code
 		{
 			def.Expression.Accept(this);
 		}
+
+        public virtual void VisitGotoInstruction(GotoInstruction g)
+        {
+            g.Target.Accept(this);
+        }
 
 		public virtual void VisitPhiAssignment(PhiAssignment phi)
 		{
