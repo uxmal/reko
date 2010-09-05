@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 
@@ -27,7 +29,8 @@ namespace Decompiler.Core.Code
 	/// </summary>
 	public interface IExpressionTransformer
 	{
-		Expression TransformApplication(Application appl);
+        Expression TransformAddress(Address addr);
+        Expression TransformApplication(Application appl);
 		Expression TransformArrayAccess(ArrayAccess acc);
 		Expression TransformBinaryExpression(BinaryExpression binExp);
 		Expression TransformCast(Cast cast);
@@ -49,5 +52,6 @@ namespace Decompiler.Core.Code
 		Expression TransformUnaryExpression(UnaryExpression unary);
 
 		Expression TransformScopeResolution(ScopeResolution scopeResolution);
-	}
+
+    }
 }

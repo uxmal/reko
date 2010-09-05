@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
@@ -60,7 +62,6 @@ namespace Decompiler.Typing
 			effectiveAddress.Accept(this);
 		}
 
-
 		public void CollectArray(TypeVariable tvBasePointer, TypeVariable tvField, Expression arrayBase, int elementSize, int length)
 		{
 			this.tvBasePointer = tvBasePointer;
@@ -91,6 +92,11 @@ namespace Decompiler.Typing
 		}
 
 		#region IExpressionVisitor members
+
+        public void VisitAddress(Address addr)
+        {
+            throw new NotImplementedException();
+        }
 
 		public void VisitApplication(Application appl)
 		{

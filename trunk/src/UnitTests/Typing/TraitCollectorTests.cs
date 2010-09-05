@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler;
 using Decompiler.Core;
@@ -430,10 +432,10 @@ namespace Decompiler.UnitTests.Typing
             ProcedureMock m = new ProcedureMock();
             Identifier a = m.Local32("a");
             Identifier b = m.LocalByte("b");
-            Statement s = m.Assign(a, m.Dpb(a, b, 0, 8));
+            var s = m.Assign(a, m.Dpb(a, b, 0, 8));
             coll = CreateCollector();
-            s.Instruction.Accept(eqb);
-            s.Instruction.Accept(coll);
+            s.Accept(eqb);
+            s.Accept(coll);
             StringWriter sb = new StringWriter();
             handler.Traits.Write(sb);
             Console.WriteLine(sb);
@@ -464,11 +466,11 @@ namespace Decompiler.UnitTests.Typing
             ex.Characteristics.ArraySize.Factors[0].Constant = "1";
 
             Identifier eax = m.Local32("eax");
-            Statement call = m.Assign(eax, m.Fn(new ProcedureConstant(PrimitiveType.Word32, ex), m.Word32(3)));
+            var call = m.Assign(eax, m.Fn(new ProcedureConstant(PrimitiveType.Word32, ex), m.Word32(3)));
 
             coll = CreateCollector();
-            call.Instruction.Accept(eqb);
-            call.Instruction.Accept(coll);
+            call.Accept(eqb);
+            call.Accept(coll);
             StringWriter sw = new StringWriter();
             handler.Traits.Write(sw);
             string sExp =

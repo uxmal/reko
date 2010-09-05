@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
@@ -127,13 +129,13 @@ done:
 			Identifier y = Reg32("y");
 
             ProcedureMock m = new ProcedureMock();
-            Statement stmZ = m.Assign(z, new ConditionOf(r));
-			ssaIds[z].DefStatement = stmZ;
-            Statement stmY = m.Assign(y, z);
-			ssaIds[y].DefStatement = stmY;
-			ssaIds[z].Uses.Add(stmY);
-			Statement stmBr = m.BranchIf(new TestCondition(ConditionCode.EQ, y), "foo");
-			ssaIds[y].Uses.Add(stmBr);
+            m.Assign(z, new ConditionOf(r));
+            ssaIds[z].DefStatement = m.Block.Statements.Last;
+            m.Assign(y, z);
+            ssaIds[y].DefStatement = m.Block.Statements.Last;
+			ssaIds[z].Uses.Add(m.Block.Statements.Last);
+			var stmBr = m.BranchIf(new TestCondition(ConditionCode.EQ, y), "foo");
+            ssaIds[y].Uses.Add(m.Block.Statements.Last);
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new ArchitectureMock());
 			Instruction instr = stmBr.Instruction.Accept(cce);

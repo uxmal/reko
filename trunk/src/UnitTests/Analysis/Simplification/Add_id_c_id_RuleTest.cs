@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 			ProcedureMock m = new ProcedureMock();
 			Identifier id = m.Local32("id");
 			Identifier x = m.Local32("x");
-			Statement stm = m.Assign(x, m.Add(m.Muls(id, 4), id));
+			var stm = m.Assign(x, m.Add(m.Muls(id, 4), id));
 		}
 	}
 }

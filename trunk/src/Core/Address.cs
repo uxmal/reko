@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,29 +16,46 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
+using Decompiler.Core.Code;
+using Decompiler.Core.Types;
 using System;
 
 namespace Decompiler.Core
 {
-	public class Address : IComparable
+	public class Address : Expression, IComparable
 	{
 		public ushort Selector;			// Segment selector.
 		public uint Offset;
 
-		public Address(uint off)
+		public Address(uint off) : base(PrimitiveType.Pointer32)
 		{
 			this.Selector = 0;
 			this.Offset = off;
 		}
 
-		public Address(ushort seg, uint off)
+		public Address(ushort seg, uint off) : base(PrimitiveType.Pointer32)
 		{
 			this.Selector = seg;
 			this.Offset = off;
 			if (seg != 0)
 				this.Offset = (ushort) off;
 		}
+
+        public override Expression Accept(IExpressionTransformer xform)
+        {
+            return xform.TransformAddress(this);
+        }
+
+        public override void Accept(IExpressionVisitor visit)
+        {
+            visit.VisitAddress(this);
+        }
+        public override Expression CloneExpression()
+        {
+            return new Address(this.Selector, this.Offset);
+        }
 
 		public override bool Equals(object obj)
 		{

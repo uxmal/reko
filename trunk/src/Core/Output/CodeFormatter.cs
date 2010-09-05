@@ -119,6 +119,18 @@ namespace Decompiler.Core.Output
 
 		#region IExpressionVisitor members ///////////////////////
 
+        public void VisitAddress(Address addr)
+        {
+            if (addr.Selector == 0)
+            {
+                writer.Write("0x{0:X8}", addr.Offset);
+            }
+            else
+            {
+                writer.Write(addr.ToString());
+            }
+        }
+
 		public void VisitApplication(Application appl)
 		{
 			int prec = SetPrecedence(PrecedenceApplication);

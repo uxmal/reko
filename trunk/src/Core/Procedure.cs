@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
@@ -58,6 +60,11 @@ namespace Decompiler.Core
 		{
 			get { return body; }
 		}
+
+        public DirectedGraph<Block> ControlGraph
+        {
+            get { return controlGraph; }
+        }
 
 		/// <summary>
 		/// Creates a procedure with the specified name; if no name is specified (null string)
@@ -225,6 +232,7 @@ namespace Decompiler.Core
 			}
 		}
 
+        [Obsolete("Use control flow graph for this.")]
         public Block AddBlock(string name)
         {
             Block block = new Block(this, name);

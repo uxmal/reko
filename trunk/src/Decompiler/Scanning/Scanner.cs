@@ -34,10 +34,15 @@ namespace Decompiler.Scanning
     public interface IScanner
     {
         void EnqueueEntryPoint(EntryPoint ep);
+        Block EnqueueJumpTarget(Address addr);
         void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc);
         Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state);
         void EnqueueUserProcedure(SerializedProcedure sp);
         void ProcessQueue();
+
+        Block AddBlock(Address addr);
+        Block FindBlock(Address addr);
+        Block SplitBlock(Block block, Address addr);
     }
 
 	/// <summary>
@@ -565,5 +570,30 @@ namespace Decompiler.Scanning
 				e.ItemNew.Size = e.ItemOld.Size;
 			}
 		}
-	}
+
+        #region IScanner Members
+
+
+        public Block AddBlock(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Block FindBlock(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Block SplitBlock(Block block, Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Block EnqueueJumpTarget(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }

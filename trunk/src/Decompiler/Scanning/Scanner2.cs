@@ -33,6 +33,7 @@ namespace Decompiler.Scanning
         private PriorityQueue<WorkItem2> queue;
 
         private const int PriorityEntryPoint = 5;
+        private const int PriorityJumpTarget = 6;
 
         public Scanner2(IProcessorArchitecture arch)
         {
@@ -42,6 +43,11 @@ namespace Decompiler.Scanning
         }
 
         #region IScanner Members
+
+        public Block AddBlock(Address addr)
+        {
+            throw new NotImplementedException();
+        }
 
         public void EnqueueEntryPoint(EntryPoint ep)
         {
@@ -53,12 +59,37 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
+        public Block EnqueueJumpTarget(Address addrStart)
+        {
+            Block block = FindBlock(addrStart);
+            if (block != null)
+            {
+                block = SplitBlock(block, addrStart);
+            }
+            else
+            {
+                block = AddBlock(addrStart);
+                queue.Enqueue(PriorityJumpTarget, new BlockWorkitem2(this, this.arch, block, addrStart));
+            }
+            return block;
+        }
+
         public Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
         public void EnqueueUserProcedure(SerializedProcedure sp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Block FindBlock(Address address)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Block SplitBlock(Block block, Address addr)
         {
             throw new NotImplementedException();
         }
@@ -91,9 +122,5 @@ namespace Decompiler.Scanning
             }
         }
 
-        internal void EnqueueJumpTarget(Block block)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

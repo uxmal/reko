@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
@@ -71,8 +73,8 @@ namespace Decompiler.UnitTests.Analysis
             Block block = m.Label("block");
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			Identifier pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer32, null);
-            Statement stmDef = m.Assign(foo, 3);
-			SsaIdentifier sid = new SsaIdentifier(foo, foo, stmDef, null, false);
+            var assDef = m.Assign(foo, 3);
+			SsaIdentifier sid = new SsaIdentifier(foo, foo, m.Block.Statements.Last, null, false);
 
 			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
 			ssaIds.Add(sid);
@@ -80,7 +82,7 @@ namespace Decompiler.UnitTests.Analysis
 			OutParameterTransformer opt = new OutParameterTransformer(null, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 
-			Assert.AreEqual("store(Mem0[pfoo:word32]) = 0x00000003", stmDef.Instruction.ToString());
+			Assert.AreEqual("store(Mem0[pfoo:word32]) = 0x00000003", assDef.ToString());
 		}
 
 		[Test]
@@ -94,9 +96,11 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier pfoo = new Identifier("pfoo", 4, PrimitiveType.Pointer32, null);
 
             Block block1 = m.Label("block1");
-            Statement stmFoo1 = m.Assign(foo1, Constant.Word32(1));
+             m.Assign(foo1, Constant.Word32(1));
+             Statement stmFoo1 = m.Block.Statements.Last;
             Block block2 = m.Label("block2");
-            Statement stmFoo2 = m.Assign(foo2, Constant.Word32(2));
+            m.Assign(foo2, Constant.Word32(2));
+            Statement stmFoo2 = m.Block.Statements.Last;
             Block block3 = m.Label("block3");
             Statement stmFoo3 = m.Phi(foo3, foo1, foo2);
 
@@ -133,8 +137,10 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier pfoo = new Identifier("pfoo", 2, PrimitiveType.Pointer32, null);
 
             Block block = m.Label("block");
-            Statement stmFoo = m.Assign(foo, 1);
-            Statement stmBar = m.Assign(bar, foo);
+            m.Assign(foo, 1);
+            Statement stmFoo = m.Block.Statements.Last;
+            m.Assign(bar, foo);
+            Statement stmBar = m.Block.Statements.Last;
 
 			SsaIdentifier ssaFoo = new SsaIdentifier(foo, foo, stmFoo, ((Assignment) stmFoo.Instruction).Src, false);
 			ssaFoo.Uses.Add(stmBar);

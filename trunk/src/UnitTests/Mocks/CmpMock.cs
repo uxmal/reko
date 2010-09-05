@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
@@ -30,7 +32,7 @@ namespace Decompiler.UnitTests.Mocks
 			Identifier r1 = Register(1);
 
 			Compare("Z", r0, Int32(0));
-			Branch(ConditionCode.EQ, "skip");
+			BranchCc(ConditionCode.EQ, "skip");
 
 			Add(r0, r0, r1);
 			Label("skip");

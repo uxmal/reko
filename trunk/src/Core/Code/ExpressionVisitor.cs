@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 
@@ -27,6 +29,7 @@ namespace Decompiler.Core.Code
 	/// </summary>
 	public interface IExpressionVisitor
 	{
+        void VisitAddress(Address addr);
 		void VisitApplication(Application appl);
 		void VisitArrayAccess(ArrayAccess acc);
 		void VisitBinaryExpression(BinaryExpression binExp);
@@ -49,11 +52,16 @@ namespace Decompiler.Core.Code
 		void VisitTestCondition(TestCondition tc);
 		void VisitUnaryExpression(UnaryExpression unary);
 
-	}
+
+    }
 
 	public class ExpressionVisitorBase : IExpressionVisitor
 	{
 		#region IExpressionVisitor Members
+
+        public virtual void VisitAddress(Address addr)
+        {
+        }
 
 		public void VisitApplication(Application appl)
 		{

@@ -134,6 +134,10 @@ namespace Decompiler.Core.Code
 
 		#region IExpressionVisitor Members
 
+        public virtual void VisitAddress(Address addr)
+        {
+        }
+
 		public virtual void VisitApplication(Application appl)
 		{
 			for (int i = 0; i < appl.Arguments.Length; ++i)

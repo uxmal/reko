@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
@@ -37,10 +39,10 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Identifier a = m.Local32("a");
 			Identifier b = m.Local32("b");
-			Statement stm = m.Assign(a, b);
+			var stm = m.Assign(a, b);
 
 			l.Use(a);
-			stm.Instruction.Accept(l);
+			stm.Accept(l);
 			Assert.IsTrue(l.IsLive(b), "b should be live");
 			Assert.IsFalse(l.IsLive(a), "a shouldn't be live");
 		}

@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler;
 using Decompiler.Analysis;
@@ -145,12 +147,12 @@ namespace Decompiler.UnitTests.Analysis
 			
 				Label("top");
 				Compare("Z", r0, Int32(2));
-				Branch(ConditionCode.NE, "skip");
+				BranchCc(ConditionCode.NE, "skip");
 				Assign(r0, Int32(0));
 				
 				Label("skip");
 				Compare("Z", r1, Int32(3));
-				Branch(ConditionCode.NE, "top");
+				BranchCc(ConditionCode.NE, "top");
 				Return();
 			}
 		}
