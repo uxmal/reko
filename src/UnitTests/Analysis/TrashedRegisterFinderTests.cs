@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
@@ -53,11 +55,11 @@ namespace Decompiler.UnitTests.Analysis
         public void TrashRegister()
         {
             Identifier r1 = m.Register(1);
-            Statement stm = m.Assign(r1, m.Int32(0));
+            var stm = m.Assign(r1, m.Int32(0));
 
             trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
 
-            stm.Instruction.Accept(trf);
+            stm.Accept(trf);
             Assert.IsTrue(trf.TrashedRegisters.ContainsKey(r1.Storage));
             //			Assert.AreNotSame(trf.RegisterSet[r1], r1);
         }
@@ -67,10 +69,10 @@ namespace Decompiler.UnitTests.Analysis
         {
             IntelArchitecture arch = new IntelArchitecture(null);
             Identifier scz = m.Frame.EnsureFlagGroup(0x7, arch.GrfToString(0x7), PrimitiveType.Byte);
-            Statement stm = m.Assign(scz, m.Int32(3));
+            var stm = m.Assign(scz, m.Int32(3));
 
             trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
-            stm.Instruction.Accept(trf);
+            stm.Accept(trf);
             Assert.AreEqual(0x7, trf.TrashedFlags);
         }
 
@@ -78,10 +80,10 @@ namespace Decompiler.UnitTests.Analysis
         public void TrashCompoundRegister()
         {
             Identifier ax = m.Frame.EnsureRegister(Registers.ax);
-            Statement stm = m.Assign(ax, 1);
+            var stm = m.Assign(ax, 1);
 
             trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
-            stm.Instruction.Accept(trf);
+            stm.Accept(trf);
             Assert.AreEqual("(ax:TRASH)", DumpRegs(trf.TrashedRegisters));
         }
 
@@ -90,11 +92,11 @@ namespace Decompiler.UnitTests.Analysis
         {
             Identifier r1 = m.Register(1);
             Identifier r2 = m.Register(2);
-            Statement stm = m.Assign(r2, r1);
+            var ass = m.Assign(r2, r1);
 
             trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
 
-            stm.Instruction.Accept(trf);
+            ass.Accept(trf);
             Assert.AreEqual(r1.Storage, trf.TrashedRegisters[r2.Storage]);
         }
 
@@ -104,15 +106,15 @@ namespace Decompiler.UnitTests.Analysis
             ProcedureMock m = new ProcedureMock();
             Identifier tmp = m.Local32("tmp");
             Identifier r2 = m.Register(2);
-            Statement stm1 = m.Assign(tmp, r2);
-            Statement stm2 = m.Assign(r2, m.Int32(0));
-            Statement stm3 = m.Assign(r2, tmp);
+            var stm1 = m.Assign(tmp, r2);
+            var stm2 = m.Assign(r2, m.Int32(0));
+            var stm3 = m.Assign(r2, tmp);
 
             trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
 
-            stm1.Instruction.Accept(trf);
-            stm2.Instruction.Accept(trf);
-            stm3.Instruction.Accept(trf);
+            stm1.Accept(trf);
+            stm2.Accept(trf);
+            stm3.Accept(trf);
 
             Assert.AreEqual(r2.Storage, trf.TrashedRegisters[r2.Storage]);
         }
@@ -207,8 +209,8 @@ namespace Decompiler.UnitTests.Analysis
             Identifier sz = m.Frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
             flow[proc] = new ProcedureFlow(proc, prog.Architecture);
             trf = new TrashedRegisterFinder(prog, flow, new FakeDecompilerEventListener());
-            Statement stm = m.Assign(sz, m.Int32(3));
-            stm.Instruction.Accept(trf);
+            var stm = m.Assign(sz, m.Int32(3));
+            stm.Accept(trf);
             trf.PropagateToProcedureSummary(proc);
             Assert.AreEqual(" SZ" + Environment.NewLine, flow[proc].EmitFlagGroup(prog.Architecture, "", flow[proc].grfTrashed));
 

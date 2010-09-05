@@ -22,9 +22,35 @@ using System;
 
 namespace Decompiler.Core.Code
 {
+    /// <summary>
+    /// This class models both unconditional jumps and conditional jumps. The 
+    /// rewriting phase converts these to Branch instructions as appropriate.
+    /// </summary>
     public class GotoInstruction : Instruction
     {
+        private Expression condition;
         private Expression target;
+
+        /// <summary>
+        /// Use this constructor to create an unconditional transfer instruction.
+        /// </summary>
+        /// <param name="target">The destination, either as a linear address or as an expression.</param>
+        public GotoInstruction(Expression target)
+        {
+            this.target = target;
+            this.condition = Constant.True();
+        }
+
+        /// <summary>
+        /// Use this constructor to crate a conditional branch instruction.
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <param name="target"></param>
+        public GotoInstruction(Expression condition, Expression target)
+        {
+            this.condition = condition;
+            this.target = target;
+        }
 
         public override Instruction Accept(InstructionTransformer xform)
         {
@@ -41,6 +67,16 @@ namespace Decompiler.Core.Code
             get { return true; }
         }
 
+        public Expression Condition
+        {
+            get { return condition; }
+            set { condition = value; }
+        }
+
+        /// <summary>
+        /// The target of the goto instruction. Either a Constant, in which case it should 
+        /// be an address, or 
+        /// </summary>
         public Expression Target
         {
             get { return target; }

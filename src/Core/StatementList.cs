@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Code;
 using System;
@@ -31,15 +33,29 @@ namespace Decompiler.Core
 			this.block = block;
 		}
 
+        [Obsolete("Use other add method")]
 		public void Add(Instruction instr)
 		{
-			Add(new Statement(instr, block));
+            Add(0, instr);
 		}
 
-		public void Insert(int at, Instruction instr)
+        public void Add(uint linearAddress, Instruction instr)
+        {
+            Add(new Statement(linearAddress, instr, block));
+        }
+
+        [Obsolete("Use other Insert method")]
+		public void Insert(int position, Instruction instr)
 		{
-			base.Insert(at, new Statement(instr, block));
+            Insert(position, 0, instr);
 		}
+
+        public void Insert(int position, uint linearAddress, Instruction instr)
+        {
+            base.Insert(position, new Statement(linearAddress, instr, block));
+        }
+
+        
 
 		public Statement Last
 		{

@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Types;
 using System;
@@ -36,6 +38,11 @@ namespace Decompiler.Core.Code
 		{
 			get { return site; }
 		}
+
+        public override bool IsControlFlow
+        {
+            get { return false; }
+        }
 	}
 
 	public class IndirectCall : CallBase
@@ -61,10 +68,6 @@ namespace Decompiler.Core.Code
 			set { expr = value; }
 		}
 
-		public override bool IsControlFlow
-		{
-			get { return false; }
-		}
 	}
 
 	public class CallInstruction : CallBase
@@ -92,11 +95,6 @@ namespace Decompiler.Core.Code
 		{
 			get { return proc; }
 			set { proc = value; }
-		}
-
-		public override bool IsControlFlow
-		{
-			get { return false; }
 		}
 	}
 }

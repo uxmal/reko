@@ -25,44 +25,29 @@ namespace Decompiler.Core
 {
 	public class Statement
 	{
-		private Instruction instruction;
-        private Block block;
-
+        [Obsolete("Use the other constructor")]
 		public Statement(Instruction instr, Block block)
 		{
-			this.instruction = instr;
-			this.block = block;
+            this.LinearAddress = 0;
+			this.Instruction = instr;
+			this.Block = block;
 		}
 
-        public Block Block
-        {
-            get { return block; }
-        }
-
-		public Instruction Instruction
-		{
-			get { return instruction; }
-			set { instruction = value; }
-		}
-
-		public override string ToString()
-		{
-			return instruction.ToString();
-		}
-	}
-
-    public class Statement2 : Statement
-    {
-        public Statement2(uint linearAddress, Instruction instr, Block block)
-            : base(instr, block)
+        public Statement(uint linearAddress, Instruction instr, Block block)
         {
             this.LinearAddress = linearAddress;
             this.Instruction = instr;
-            this.Block = block;
         }
 
         public uint LinearAddress { get; private set; }
+
+        public Block Block {get; private set; }
+
         public Instruction Instruction { get; set; }
-        public Block Block { get; private set; }
-    }
+
+		public override string ToString()
+		{
+			return Instruction.ToString();
+		}
+	}
 }

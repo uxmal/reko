@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
@@ -159,14 +161,14 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier x = Reg32("x");
 			Identifier y = Reg32("y");
             ProcedureMock m = new ProcedureMock();
-            Statement stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
-            Statement stmY = m.Assign(y, m.Sub(x, 2));
-			Statement stm = m.BranchIf(m.Eq(y, 0), "test");
-			ssaIds[x].DefStatement = stmX;
-			ssaIds[y].DefStatement = stmY;
-			Assert.AreEqual("x = Mem0[0x01000300:word32]", stmX.Instruction.ToString());
-			Assert.AreEqual("y = x - 0x00000002", stmY.Instruction.ToString());
-			Assert.AreEqual("branch y == 0x00000000 test", stm.Instruction.ToString());
+            var stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
+			ssaIds[x].DefStatement = m.Block.Statements.Last;
+            var stmY = m.Assign(y, m.Sub(x, 2));
+			ssaIds[y].DefStatement = m.Block.Statements.Last;
+			var stm = m.BranchIf(m.Eq(y, 0), "test");
+			Assert.AreEqual("x = Mem0[0x01000300:word32]", stmX.ToString());
+			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
+			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
 
 			ValuePropagator vp = new ValuePropagator(ssaIds, null);
 			Instruction instr = stm.Instruction.Accept(vp);

@@ -49,14 +49,8 @@ namespace Decompiler.Core
 		public abstract void EmitCallAndReturn(Procedure callee);
     }
 
-    public abstract class Rewriter2 : IEnumerable<RewrittenInstruction>
+    public interface Rewriter2 : IEnumerable<RewrittenInstruction>
     {
-        public abstract IEnumerator<RewrittenInstruction> GetEnumerator();
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
     }
 
     public struct RewrittenInstruction

@@ -258,6 +258,11 @@ namespace Decompiler.Core.Output
 
         #region IExpressionVisitor Members
 
+        void IExpressionVisitor.VisitAddress(Address addr)
+        {
+            writer.Write("new Address(0x{0:X},0x{1:X})", addr.Selector, addr.Offset);
+        }
+
         void IExpressionVisitor.VisitApplication(Application appl)
         {
             writer.Write("Fn(");

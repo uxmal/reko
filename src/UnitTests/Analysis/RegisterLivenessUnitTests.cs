@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Arch.Intel;
@@ -70,7 +72,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			m.Store(m.Int32(0x01F3004), ax).Instruction.Accept(rl);
 			Assert.AreEqual(" ax", Dump(rl.IdentifierLiveness));
-			m.Assign(eax, ecx).Instruction.Accept(rl);
+			m.Assign(eax, ecx).Accept(rl);
 			Assert.AreEqual(16, rl.IdentifierLiveness.DefBitSize);
 			Assert.AreEqual(" cx", Dump(rl.IdentifierLiveness));
 		}
@@ -91,7 +93,7 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual(" al", Dump(rl.IdentifierLiveness));
 			m.Store(m.Int32(0x01F3008), ah).Instruction.Accept(rl);	
 			Assert.AreEqual(" al ah", Dump(rl.IdentifierLiveness));
-			m.Assign(eax, ecx).Instruction.Accept(rl);		
+			m.Assign(eax, ecx).Accept(rl);		
 			Assert.AreEqual(" cx", Dump(rl.IdentifierLiveness));
 		}
 
@@ -108,7 +110,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			m.Store(m.Int32(0x01F3004), ax).Instruction.Accept(rl);	// use al and ah
 			Assert.AreEqual(" ax", Dump(rl.IdentifierLiveness));
-			m.Assign(ah, m.Add(ah, 3)).Instruction.Accept(rl);
+			m.Assign(ah, m.Add(ah, 3)).Accept(rl);
 			Assert.AreEqual(" al ah", Dump(rl.IdentifierLiveness));
 		}
 
@@ -119,7 +121,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier eax = f.EnsureRegister(Registers.eax);
 
 			m.Store(m.Int32(0x01F0300), ax).Instruction.Accept(rl);			// force ax to be live.
-			m.Assign(ax, m.Load(ax.DataType, eax)).Instruction.Accept(rl);	// eax should be live in here.
+			m.Assign(ax, m.Load(ax.DataType, eax)).Accept(rl);	// eax should be live in here.
 			Assert.AreEqual(" eax", Dump(rl.IdentifierLiveness));
 		}
 
@@ -130,7 +132,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier ax = f.EnsureRegister(Registers.ax);
 
 			m.Store(m.Int16(0x01F0300), ax).Instruction.Accept(rl);			// force ax to be live.
-			m.Assign(ax, m.Shl(ax, cl)).Instruction.Accept(rl);				// ax, cl should be live in.
+			m.Assign(ax, m.Shl(ax, cl)).Accept(rl);				// ax, cl should be live in.
 			Assert.AreEqual(" ax cl", Dump(rl.IdentifierLiveness));
 		}
 
@@ -140,7 +142,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier bx = f.EnsureRegister(Registers.bx);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 
-			m.Assign(ax, bx).Instruction.Accept(rl);
+			m.Assign(ax, bx).Accept(rl);
 			Assert.AreEqual("", Dump(rl.IdentifierLiveness), "No identifiers should be live since ax is dead");
 		}
 
@@ -151,7 +153,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier ax = f.EnsureRegister(Registers.ax);
 
 			m.Store(m.Int32(0x12341234), ax).Instruction.Accept(rl);
-			m.Assign(ax, bx).Instruction.Accept(rl);
+			m.Assign(ax, bx).Accept(rl);
 			Assert.AreEqual(" bx", Dump(rl.IdentifierLiveness), "bx should be live since ax was stored");
 		}
 
@@ -163,9 +165,9 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier loc = f.EnsureStackLocal(-8, PrimitiveType.Word32);
 
 			m.Store(m.Int32(0x01DFDF), ax).Instruction.Accept(rl);
-			m.Assign(ax, loc).Instruction.Accept(rl);
+			m.Assign(ax, loc).Accept(rl);
 			Assert.AreEqual(" Local -0008", Dump(rl.IdentifierLiveness));
-			m.Assign(loc, ecx).Instruction.Accept(rl);
+			m.Assign(loc, ecx).Accept(rl);
 			Assert.AreEqual(" cx", Dump(rl.IdentifierLiveness));
 		}
 
@@ -177,7 +179,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier arg = f.EnsureStackArgument(4, PrimitiveType.Word32);
 
 			m.Store(m.Int32(0x102343), ax).Instruction.Accept(rl);
-			m.Assign(eax, arg).Instruction.Accept(rl);
+			m.Assign(eax, arg).Accept(rl);
 			Assert.AreEqual(16, rl.IdentifierLiveness.LiveStorages[arg.Storage]);
 		}
 
@@ -187,8 +189,8 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier bp = f.EnsureRegister(Registers.bp);
 			Identifier loc = f.EnsureStackLocal(-4, PrimitiveType.Word16);
 
-			m.Assign(bp, loc).Instruction.Accept(rl);
-			m.Assign(loc, bp).Instruction.Accept(rl);
+			m.Assign(bp, loc).Accept(rl);
+			m.Assign(loc, bp).Accept(rl);
 			Assert.AreEqual("", Dump(rl.IdentifierLiveness));
 		}
 
@@ -198,9 +200,9 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier bp = f.EnsureRegister(Registers.bp);
 			Identifier loc = f.EnsureStackLocal(-4, PrimitiveType.Word16);
 
-			m.Assign(bp, loc).Instruction.Accept(rl);
+			m.Assign(bp, loc).Accept(rl);
 			m.Store(m.Int32(0x12345678), bp).Instruction.Accept(rl);
-			m.Assign(loc, bp).Instruction.Accept(rl);
+			m.Assign(loc, bp).Accept(rl);
 			Assert.AreEqual(" bp", Dump(rl.IdentifierLiveness));
 		}
 
