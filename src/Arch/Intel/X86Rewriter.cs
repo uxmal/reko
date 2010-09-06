@@ -97,9 +97,12 @@ namespace Decompiler.Arch.Intel
             {
             default:
                 throw new NotImplementedException(string.Format("Intel opcode {0} not supported yet.", di.Instruction.code));
-            case Opcode.mov: RewriteMov(); break;
             case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
+            case Opcode.and: RewriteLogical(BinaryOperator.And); break;
+            case Opcode.mov: RewriteMov(); break;
+            case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
             case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
+            case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
             }
 
             foreach (RewrittenInstruction ri in emitter.Instructions)
@@ -107,6 +110,7 @@ namespace Decompiler.Arch.Intel
                 yield return ri;
             }
         }
+
 
 
         IEnumerator IEnumerable.GetEnumerator()

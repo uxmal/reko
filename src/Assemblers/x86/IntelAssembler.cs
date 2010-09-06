@@ -1045,9 +1045,19 @@ namespace Decompiler.Assemblers.x86
                 new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant))));
         }
 
+        public void And(ParsedOperand dst, ParsedOperand src)
+        {
+            ProcessBinop(0x04, dst, src);
+        }
+
         public ParsedOperand Imm(PrimitiveType width, int constant)
         {
             return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant, width)));
+        }
+
+        public ParsedOperand Imm(int constant)
+        {
+            return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant)));
         }
 
         public ParsedOperand WordPtr(int directOffset)
@@ -1159,6 +1169,11 @@ namespace Decompiler.Assemblers.x86
         {
             DefineSymbol(externSymbol);
             AddImport(externSymbol, null, size);
+        }
+
+        public void Or(ParsedOperand opDst, ParsedOperand opSrc)
+        {
+            ProcessBinop(0x01, opDst, opSrc);
         }
 
         public void Pop(ParsedOperand op)
@@ -1410,6 +1425,11 @@ namespace Decompiler.Assemblers.x86
             EmitModRM(RegisterEncoding(regOp.Register), otherOp);
         }
 
+        public void Xor(ParsedOperand dst, ParsedOperand src)
+        {
+            ProcessBinop(0x06, dst, src);
+        }
+
         public ParsedOperand ax
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.ax)); }
@@ -1420,9 +1440,39 @@ namespace Decompiler.Assemblers.x86
             get { return new ParsedOperand(new RegisterOperand(Registers.bx)); }
         }
 
+        public ParsedOperand cx
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.cx)); }
+        }
+
+        public ParsedOperand dx
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.dx)); }
+        }
+
+        public ParsedOperand si
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.si)); }
+        }
+
+        public ParsedOperand di
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.di)); }
+        }
+
         public ParsedOperand ah
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.ah)); }
+        }
+
+        public ParsedOperand eax
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.eax)); }
+        }
+
+        public ParsedOperand ebx
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.ebx)); }
         }
 
         public ParsedOperand ecx
@@ -1440,6 +1490,8 @@ namespace Decompiler.Assemblers.x86
             return new ParsedOperand(
                 new MemoryOperand(null, @base, IntegralConstant(offset)));
         }
+
+
     }
 }
 

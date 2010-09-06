@@ -86,5 +86,17 @@ namespace Decompiler.Arch.Intel
         {
             emitter.Assign(orw.FlagGroup(defFlags), new ConditionOf(expr.CloneExpression()));
         }
+
+        private void RewriteLogical(BinaryOperator op)
+        {
+            var ass = EmitBinOp(
+                op,
+                di.Instruction.op1,
+                di.Instruction.op1.Width,
+                SrcOp(di.Instruction.op1),
+                SrcOp(di.Instruction.op2));
+            EmitCcInstr(ass.Dst, (IntelInstruction.DefCc(di.Instruction.code)& ~FlagM.CF));
+            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+        }
     }
 }
