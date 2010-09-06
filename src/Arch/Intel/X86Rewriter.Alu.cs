@@ -35,16 +35,15 @@ namespace Decompiler.Arch.Intel
             EmitCopy(di.Instruction.op1, SrcOp(di.Instruction.op2, di.Instruction.op1.Width), false);
         }
 
-
         /// <summary>
-		/// Doesn't handle the x86 idiom add ... adc => long add (and 
-		/// sub ..sbc => long sub)
-		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="next"></param>
-		/// <returns></returns>
-		public Expression RewriteAddSub(BinaryOperator op)
-		{
+        /// Doesn't handle the x86 idiom add ... adc => long add (and 
+        /// sub ..sbc => long sub)
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="next"></param>
+        /// <returns></returns>
+        public Expression RewriteAddSub(BinaryOperator op)
+        {
             //LongAddRewriter larw = new LongAddRewriter(this.frame, orw, state);
             //int iUse = larw.IndexOfUsingOpcode(instrs, i, next);
             //if (iUse >= 0 && larw.Match(instrCur, instrs[iUse]))
@@ -53,7 +52,7 @@ namespace Decompiler.Arch.Intel
             //    larw.EmitInstruction(op, emitter);
             //    return larw.Dst;
             //}
-			Assignment ass = EmitBinOp(
+            Assignment ass = EmitBinOp(
                 op,
                 di.Instruction.op1,
                 di.Instruction.op1.Width,
@@ -61,7 +60,7 @@ namespace Decompiler.Arch.Intel
                 SrcOp(di.Instruction.op2));
             EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
             return ass.Dst;
-		}
+        }
 
         public Assignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right)
         {
@@ -87,6 +86,15 @@ namespace Decompiler.Arch.Intel
             emitter.Assign(orw.FlagGroup(defFlags), new ConditionOf(expr.CloneExpression()));
         }
 
+        private void RewriteCmp()
+        {
+            Expression op1 = SrcOp(di.Instruction.op1);
+            Expression op2 = SrcOp(di.Instruction.op2, di.Instruction.op1.Width);
+            emitter.Assign(
+                orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
+                new ConditionOf(emitter.Sub(op1, op2)));
+        }
+
         private void RewriteLogical(BinaryOperator op)
         {
             var ass = EmitBinOp(
@@ -95,7 +103,18 @@ namespace Decompiler.Arch.Intel
                 di.Instruction.op1.Width,
                 SrcOp(di.Instruction.op1),
                 SrcOp(di.Instruction.op2));
-            EmitCcInstr(ass.Dst, (IntelInstruction.DefCc(di.Instruction.code)& ~FlagM.CF));
+            EmitCcInstr(ass.Dst, (IntelInstruction.DefCc(di.Instruction.code) & ~FlagM.CF));
+            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+        }
+
+        private void RewriteTest()
+        {
+            var src = new BinaryExpression(Operator.And,
+                di.Instruction.op1.Width,
+                SrcOp(di.Instruction.op1),
+                                SrcOp(di.Instruction.op2));
+
+            EmitCcInstr(src, (IntelInstruction.DefCc(di.Instruction.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
     }
