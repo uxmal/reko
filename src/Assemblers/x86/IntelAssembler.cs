@@ -89,18 +89,23 @@ namespace Decompiler.Assemblers.x86
         {
             ProcessMov(
                 op,
-                new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant, op.Operand.Width))));
+                Imm(op.Operand.Width, constant));
         }
+
 
         public void Mov(ParsedOperand dst, ParsedOperand src)
         {
             ProcessMov(dst, src);
         }
 
-
         public void Sahf()
         {
             emitter.EmitByte(0x9E);
+        }
+
+        public void Sub(ParsedOperand op, int constant)
+        {
+            ProcessBinop(0x05, op, Imm(op.Operand.Width, constant));
         }
 
         public void Test(ParsedOperand op1, ParsedOperand op2)
@@ -1040,6 +1045,11 @@ namespace Decompiler.Assemblers.x86
                 new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant))));
         }
 
+        public ParsedOperand Imm(PrimitiveType width, int constant)
+        {
+            return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant, width)));
+        }
+
         public ParsedOperand WordPtr(int directOffset)
         {
             return new ParsedOperand(new MemoryOperand(
@@ -1404,6 +1414,7 @@ namespace Decompiler.Assemblers.x86
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.ax)); }
         }
+
         public ParsedOperand bx
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.bx)); }
@@ -1412,6 +1423,11 @@ namespace Decompiler.Assemblers.x86
         public ParsedOperand ah
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.ah)); }
+        }
+
+        public ParsedOperand ecx
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.ecx)); }
         }
 
         public ParsedOperand Const(int n)
@@ -1424,7 +1440,6 @@ namespace Decompiler.Assemblers.x86
             return new ParsedOperand(
                 new MemoryOperand(null, @base, IntegralConstant(offset)));
         }
-
     }
 }
 

@@ -100,7 +100,18 @@ namespace Decompiler.UnitTests.Arch.Intel
             Assert.AreEqual("store(Mem0[ds:0x1000:word16]) = v3", e.Current.Instruction.ToString());
             e.MoveNext();
             Assert.AreEqual("SCZO = cond(v3)", e.Current.Instruction.ToString());
- 
+        }
+
+        [Test]
+        public void Sub()
+        {
+            var m = Create16bitAssembler();
+            m.Sub(m.ecx, 0x12345);
+            var e = CreateRewriter(m).GetEnumerator();
+            e.MoveNext();
+            Assert.AreEqual("ecx = ecx - 0x00012345", e.Current.Instruction.ToString());
+            e.MoveNext();
+            Assert.AreEqual("SCZO = cond(ecx)", e.Current.Instruction.ToString());
         }
     }
 }
