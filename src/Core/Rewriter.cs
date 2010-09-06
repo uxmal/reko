@@ -55,7 +55,13 @@ namespace Decompiler.Core
 
     public struct RewrittenInstruction
     {
-        public Instruction Instruction;
         public uint LinearAddress;
+        public Instruction Instruction;
+
+        public RewrittenInstruction(uint linearAddress, Instruction instr)
+        {
+            this.LinearAddress = linearAddress;
+            this.Instruction = instr;
+        }
     }
 }

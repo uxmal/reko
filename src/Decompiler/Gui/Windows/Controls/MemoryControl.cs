@@ -44,8 +44,8 @@ namespace Decompiler.Gui.Windows.Controls
 		public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
 		private Address addrTopVisible;		// address of topmost visible row.
-		private int wordSize;
-		private int cbRow;
+		private uint wordSize;
+		private uint cbRow;
 		private ProgramImage image;
 		private Address addrSelected;
         private Address addrAnchor;
@@ -99,11 +99,13 @@ namespace Decompiler.Gui.Windows.Controls
             }
         }
 
-		public int BytesPerRow
+		public uint BytesPerRow
 		{
 			get { return cbRow; }
 			set 
 			{
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException("BytesPerRow must be positive.");
 				UpdateScroll();
 				cbRow = value;
 			}
@@ -161,7 +163,7 @@ namespace Decompiler.Gui.Windows.Controls
 			if (addr == null || TopAddress == null)
 				return false;
 			int cbOffset = addr - TopAddress;
-			int yRow = cbOffset / cbRow;
+			int yRow = cbOffset / (int)cbRow;
 			return (yTopRow <= yRow && yRow < yTopRow + cyPage);
 		}
 
@@ -169,7 +171,7 @@ namespace Decompiler.Gui.Windows.Controls
 		{
             if (SelectedAddress == null)
                 return;
-            int linAddr = SelectedAddress.Linear + offset;
+            uint linAddr = (uint)(SelectedAddress.Linear + offset);
             if (!image.IsValidLinearAddress(linAddr))
                 return;
             Address addr = image.Map.MapLinearAddressToAddress(linAddr);
@@ -197,16 +199,16 @@ namespace Decompiler.Gui.Windows.Controls
 			switch (e.KeyCode)
 			{
 			case Keys.Down:
-				MoveSelection(cbRow, e.Modifiers);
+				MoveSelection((int)cbRow, e.Modifiers);
 				break;
 			case Keys.Up:
-                MoveSelection(-cbRow, e.Modifiers);
+                MoveSelection(-(int)cbRow, e.Modifiers);
 				break;
 			case Keys.Left:
-                MoveSelection(-wordSize, e.Modifiers);
+                MoveSelection(-(int)wordSize, e.Modifiers);
 				break;
 			case Keys.Right:
-                MoveSelection(wordSize, e.Modifiers);
+                MoveSelection((int)wordSize, e.Modifiers);
 				break;
             default:
 			    base.OnKeyDown(e);
@@ -299,23 +301,23 @@ namespace Decompiler.Gui.Windows.Controls
 			cx -= cellSize.Width / 2;
 			rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
 
-			int rowBytesLeft = cbRow;
-			int linearSelected = addrSelected != null ? addrSelected.Linear : -1;
-            int linearAnchor = addrAnchor != null ? addrAnchor.Linear : -1;
-            int linearBeginSelection = Math.Min(linearSelected, linearAnchor);
-            int linearEndSelection = Math.Max(linearSelected, linearAnchor);
+			uint rowBytesLeft = cbRow;
+			uint linearSelected = addrSelected != null ? addrSelected.Linear : ~0U;
+            uint linearAnchor = addrAnchor != null ? addrAnchor.Linear : ~0U;
+            uint linearBeginSelection = Math.Min(linearSelected, linearAnchor);
+            uint linearEndSelection = Math.Max(linearSelected, linearAnchor);
 //            Debug.WriteLine(string.Format("s: {0:X}, a: {1:X}, [{2:X}-{3:X}]", linearSelected, linearAnchor, linearBeginSelection, linearEndSelection));
 
 			do 
 			{
 				Address addr = rdr.Address;
-				int linear = addr.Linear;
+				uint linear = addr.Linear;
 
 				ImageMapItem item;
                 if (!ProgramImage.Map.TryFindItem(addr, out item))
 					break;
-				int cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
-				int cbToDraw = 16; // item.Size - cbIn;
+				uint cbIn = (linear - item.Address.Linear);			// # of bytes 'inside' the block we are.
+				uint cbToDraw = 16; // item.Size - cbIn;
 
 				// See if the chunk goes off the edge of the line. If so, clip it.
 				if (cbToDraw > rowBytesLeft)
@@ -380,9 +382,9 @@ namespace Decompiler.Gui.Windows.Controls
 			Size cell = CellSize;
 			rc.Height = cell.Height;
 
-			int laEnd = image.BaseAddress.Linear + image.Bytes.Length;
+			uint laEnd = image.BaseAddress.Linear + (uint) image.Bytes.Length;
 
-			int laSegEnd = 0;
+			uint laSegEnd = 0;
 			while (rc.Top < this.Height && rdr.Address.Linear < laEnd)
 			{
                 ImageMapSegment seg;
@@ -423,7 +425,7 @@ namespace Decompiler.Gui.Windows.Controls
 
 		private Address RoundToNearestRow(Address addr)
 		{
-			int rows = addr.Linear / cbRow;
+			uint rows = addr.Linear / cbRow;
 			return image.Map.MapLinearAddressToAddress(rows * cbRow);
 		}
 
@@ -455,14 +457,17 @@ namespace Decompiler.Gui.Windows.Controls
 
 		public void ShowAddress(Address addr)
 		{
-			int cbOffset = addr - image.BaseAddress;
+            if (addr < image.BaseAddress)
+                return;
+
+            uint cbOffset = (uint)(addr - image.BaseAddress);
 			if (cbOffset < 0)
 				return;
 
 			if (!IsVisible(addr))
 			{
 				TopAddress = RoundToNearestRow(addr);
-				yTopRow = cbOffset / cbRow;
+                yTopRow = (int)(cbOffset / cbRow);
 				vscroller.Value = yTopRow;
 				Invalidate();
 			}
@@ -477,19 +482,19 @@ namespace Decompiler.Gui.Windows.Controls
 			}
 
 			vscroller.Enabled = true;
-			cRows = (image.Bytes.Length + cbRow - 1) / cbRow;
-			int nChunks = cbRow / wordSize;		// number of chunks per line.
+			cRows = (image.Bytes.Length + (int)cbRow - 1) / (int) cbRow;
+			int nChunks = (int)(cbRow / wordSize);		// number of chunks per line.
 
 			vscroller.Minimum = 0;
 			int h = Font.Height;
 			cyPage = Math.Max((Height / CellSize.Height) - 1, 1);
 			vscroller.LargeChange = cyPage;
             vscroller.Maximum = cRows;
-            int newValue = (addrTopVisible.Linear - image.BaseAddress.Linear) / cbRow;
+            int newValue = (int)((addrTopVisible.Linear - image.BaseAddress.Linear) / cbRow);
             vscroller.Value = Math.Max(Math.Min(newValue, vscroller.Maximum), vscroller.Minimum); 
 		}
 
-		public int WordSize
+		public uint WordSize
 		{
 			get { return wordSize; }
 			set 
@@ -507,11 +512,11 @@ namespace Decompiler.Gui.Windows.Controls
             Address newTopAddress;
 			if (image.BaseAddress.Selector != 0)
 			{
-				newTopAddress = image.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + e.NewValue * cbRow);
+				newTopAddress = image.Map.MapLinearAddressToAddress(image.BaseAddress.Linear + (uint)e.NewValue * cbRow);
 			}
 			else
 			{
-				newTopAddress = image.BaseAddress + e.NewValue * cbRow;
+				newTopAddress = image.BaseAddress + (uint)e.NewValue * cbRow;
 			}
             if (image.IsValidAddress(newTopAddress))
             {

@@ -126,7 +126,7 @@ namespace Decompiler.Scanning
                     // Create a new block in the procedure.
 
                     block = proc.AddBlock(addr.GenerateName("l", ""));
-                    blocksToRewrite.Push(new WorkItem(block, pred, addr, raw.Size, rewriter));
+                    blocksToRewrite.Push(new WorkItem(block, pred, addr, (int)raw.Size, rewriter));
                 }
                 else
                     block = proc.ExitBlock;

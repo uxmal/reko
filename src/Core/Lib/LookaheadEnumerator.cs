@@ -44,6 +44,10 @@ namespace Decompiler.Core.Lib
             this.iPeeked = 0;
         }
 
+        public LookaheadEnumerator(IEnumerable<T> collection) : this(collection.GetEnumerator())
+        {
+        }
+
         #region IEnumerator<T> Members
 
         public T Current

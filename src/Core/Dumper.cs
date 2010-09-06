@@ -81,9 +81,15 @@ namespace Decompiler.Core
 			}
 		}
 
-		public void DumpData(ProgramImage image, Address address, int cbBytes, TextWriter stm)
+        public void DumpData(ProgramImage image, Address address, int cbBytes, TextWriter stm)
+        {
+            if (cbBytes < 0)
+                throw new ArgumentException("Must be a nonnegative number.", "cbBytes"); 
+            DumpData(image, address, (uint)cbBytes, stm);
+        }
+		public void DumpData(ProgramImage image, Address address, uint cbBytes, TextWriter stm)
 		{
-			int cSkip = address.Linear & 0x0F;
+			uint cSkip = address.Linear & 0x0F;
 			ImageReader rdr = image.CreateReader(address);
 			while (cbBytes > 0)
 			{

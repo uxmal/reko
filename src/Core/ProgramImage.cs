@@ -124,10 +124,12 @@ namespace Decompiler.Core
             return IsValidLinearAddress(addr.Linear);
         }
 
-        public bool IsValidLinearAddress(int linearAddr)
+        public bool IsValidLinearAddress(uint linearAddr)
         {
-			int offset = linearAddr - addrBase.Linear;
-			return 0 <= offset && offset < abImage.Length;
+            if (linearAddr < addrBase.Linear)
+                return false;
+			uint offset = (linearAddr - addrBase.Linear);
+			return offset < abImage.Length;
         }
 
 		public ImageMap Map

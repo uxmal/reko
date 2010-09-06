@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core.Code;
@@ -26,18 +28,148 @@ using System;
 
 namespace Decompiler.Arch.Intel
 {
-	public class OperandRewriter
-	{
-		private IRewriterHost host;
-		private IntelArchitecture arch;
-		private Frame frame;
+    public class OperandRewriter2
+    {
+        private IntelArchitecture arch;
+        private Frame frame;
 
-		public OperandRewriter(IRewriterHost host, IntelArchitecture arch, Frame frame)
-		{
-			this.host = host;
-			this.arch = arch;
-			this.frame = frame;
-		}
+        public OperandRewriter2(IntelArchitecture arch, Frame frame)
+        {
+            this.arch = arch;
+            this.frame = frame;
+        }
+
+        public Expression Transform(MachineOperand op, PrimitiveType opWidth)
+        {
+            var reg = op as RegisterOperand;
+            if (reg != null)
+                return AluRegister(reg);
+            var mem = op as MemoryOperand;
+            if (mem != null)
+                return CreateMemoryAccess(mem, null);
+            throw new NotImplementedException(string.Format("Operand {0}", op));
+        }
+
+        private Identifier AluRegister(RegisterOperand reg)
+        {
+            return frame.EnsureRegister(reg.Register);
+        }
+
+        private Identifier AluRegister(MachineRegister reg)
+        {
+            return frame.EnsureRegister(reg);
+        }
+
+        public Identifier AluRegister(IntelRegister reg, PrimitiveType vt)
+        {
+            return frame.EnsureRegister(reg.GetPart(vt));
+        }
+
+        public MemoryAccess CreateMemoryAccess(MemoryOperand mem, DataType dt, IntelRewriterState state)
+        {
+            Expression expr = EffectiveAddressExpression(mem, state);
+            if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+            {
+                Expression seg = ReplaceCodeSegment(mem.DefaultSegment, state);
+                if (seg == null)
+                    seg = AluRegister(mem.DefaultSegment);
+                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, seg, expr, dt);
+            }
+            else
+            {
+                return new MemoryAccess(MemoryIdentifier.GlobalMemory, expr, dt);
+            }
+        }
+
+        public MemoryAccess CreateMemoryAccess(MemoryOperand memoryOperand, IntelRewriterState state)
+        {
+            return CreateMemoryAccess(memoryOperand, memoryOperand.Width, state);
+        }
+
+
+        /// <summary>
+        /// Memory accesses are translated into expressions.
+        /// </summary>
+        /// <param name="mem"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public Expression EffectiveAddressExpression(MemoryOperand mem, IntelRewriterState state)
+        {
+            Expression eIndex = null;
+            Expression eBase = null;
+            Expression expr = null;
+            PrimitiveType type = PrimitiveType.CreateWord(mem.Width.Size);
+
+            if (mem.Base != MachineRegister.None)
+            {
+                eBase = AluRegister(mem.Base);
+                if (expr != null)
+                {
+                    expr = new BinaryExpression(Operator.Add, eBase.DataType, eBase, expr);
+                }
+                else
+                {
+                    expr = eBase;
+                }
+            }
+
+            if (mem.Offset.IsValid)
+            {
+                if (expr != null)
+                {
+                    BinaryOperator op = Operator.Add;
+                    long l = mem.Offset.ToInt64();
+                    if (l < 0)
+                    {
+                        l = -l;
+                        op = Operator.Sub;
+                    }
+
+                    DataType dt = (eBase != null) ? eBase.DataType : eIndex.DataType;
+                    Constant cOffset = new Constant(dt, l);
+                    expr = new BinaryExpression(op, dt, expr, cOffset);
+                }
+                else
+                {
+                    expr = mem.Offset;
+                }
+            }
+
+            if (mem.Index != MachineRegister.None)
+            {
+                eIndex = AluRegister(mem.Index);
+                if (mem.Scale != 0 && mem.Scale != 1)
+                {
+                    eIndex = new BinaryExpression(
+                        Operator.Mul, eIndex.DataType, eIndex, new Constant(mem.Width, mem.Scale));
+                }
+                expr = new BinaryExpression(Operator.Add, expr.DataType, expr, eIndex);
+            }
+            return expr;
+        }
+
+        public Constant ReplaceCodeSegment(MachineRegister reg, IntelRewriterState state)
+        {
+            if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
+                return new Constant(PrimitiveType.Word16, state.CodeSegment);
+            else
+                return null;
+
+        }
+    }
+
+    public class OperandRewriter
+	{
+        private IRewriterHost host;
+        private IntelArchitecture arch;
+        private Frame frame;
+
+        public OperandRewriter(IRewriterHost host, IntelArchitecture arch, Frame frame)
+        {
+            this.host = host;
+            this.arch = arch;
+            this.frame = frame;
+        }
 
 		private Address AbsoluteAddress(MemoryOperand mem)
 		{

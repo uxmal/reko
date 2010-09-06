@@ -115,6 +115,7 @@
     <Compile Include="Arch\Intel\RewriteFpuInstructionTests.cs" />
     <Compile Include="Arch\Intel\RewriterTests.cs" />
     <Compile Include="Arch\Intel\RewriterTests2.cs" />
+    <Compile Include="Arch\Intel\X86RewriterTests.cs" />
     <Compile Include="Arch\M68k\M68kCodeWalkerTests.cs" />
     <Compile Include="Arch\M68k\M68kDisassemblerTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcArchitectureTests.cs" />

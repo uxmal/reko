@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateRewriter implementation");
 		}
 
-        public Rewriter2 CreateRewriter2(Address addr)
+        public Rewriter2 CreateRewriter2(ImageReader rdr, Frame frame)
         {
             throw new NotImplementedException();
         }

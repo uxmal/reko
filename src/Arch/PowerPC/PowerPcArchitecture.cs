@@ -130,7 +130,7 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public Rewriter2 CreateRewriter2(Address addr)
+        public Rewriter2 CreateRewriter2(ImageReader rdr, Frame frame)
         {
             throw new NotImplementedException();
         }

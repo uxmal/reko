@@ -89,6 +89,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DisassembledInstruction.cs" />
     <Compile Include="IntelBackWalker.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -139,6 +140,8 @@
     <Compile Include="StringInstructionRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="X86Rewriter.Alu.cs" />
+    <Compile Include="X86Rewriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

@@ -863,7 +863,7 @@ namespace Decompiler.Assemblers.x86
         {
             PrimitiveType width;
             if (-0x80 <= i && i < 0x80)
-                width = PrimitiveType.Byte;
+                width = PrimitiveType.SByte;
             else if (-0x8000 <= i && i < 0x8000)
                 width = PrimitiveType.Word16;
             else
@@ -1389,6 +1389,10 @@ namespace Decompiler.Assemblers.x86
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.ax)); }
         }
+        public ParsedOperand bx
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.bx)); }
+        }
 
         public ParsedOperand ah
         {
@@ -1400,6 +1404,11 @@ namespace Decompiler.Assemblers.x86
             return new ParsedOperand(new ImmediateOperand(IntegralConstant(n, this.defaultWordSize)));
         }
 
+        public ParsedOperand Mem(MachineRegister @base, int offset)
+        {
+            return new ParsedOperand(
+                new MemoryOperand(null, @base, IntegralConstant(offset)));
+        }
     }
 }
 
