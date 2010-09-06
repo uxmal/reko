@@ -39,11 +39,11 @@ namespace Decompiler.UnitTests.Arch.Intel
         public X86RewriterTests()
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            emitter = new IntelEmitter();
         }
 
         private IntelAssembler Create16bitAssembler()
         {
+            emitter = new IntelEmitter();
             return new IntelAssembler(arch, PrimitiveType.Word16, new Address(0xC00, 0x000), emitter, new List<EntryPoint>());
         }
 
@@ -72,6 +72,35 @@ namespace Decompiler.UnitTests.Arch.Intel
             var e = CreateRewriter(m).GetEnumerator();
             e.MoveNext();
             Assert.AreEqual("ax = Mem0[ss:bp - 0x0008:word16]", e.Current.Instruction.ToString());
+        }
+
+        [Test]
+        public void AddToReg()
+        {
+            var m = Create16bitAssembler();
+            m.Add(m.ax, m.Mem(Registers.si, 4));
+            var e = CreateRewriter(m).GetEnumerator();
+            e.MoveNext();
+            Assert.AreEqual(0x0C000, e.Current.LinearAddress);
+            Assert.AreEqual("ax = ax + Mem0[ds:si + 0x0004:word16]", e.Current.Instruction.ToString());
+            Assert.IsTrue(e.MoveNext());
+            Assert.AreEqual(0xC000, e.Current.LinearAddress);
+            Assert.AreEqual("SCZO = cond(ax)", e.Current.Instruction.ToString());
+        }
+
+        [Test]
+        public void AddToMem()
+        {
+            var m = Create16bitAssembler();
+            m.Add(m.WordPtr(0x1000), 3);
+            var e = CreateRewriter(m).GetEnumerator();
+            e.MoveNext();
+            Assert.AreEqual("v3 = Mem0[ds:0x1000:word16] + 0x0003", e.Current.Instruction.ToString());
+            e.MoveNext();
+            Assert.AreEqual("store(Mem0[ds:0x1000:word16]) = v3", e.Current.Instruction.ToString());
+            e.MoveNext();
+            Assert.AreEqual("SCZO = cond(v3)", e.Current.Instruction.ToString());
+ 
         }
     }
 }
