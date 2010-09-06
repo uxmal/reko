@@ -113,5 +113,53 @@ namespace Decompiler.UnitTests.Arch.Intel
             e.MoveNext();
             Assert.AreEqual("SCZO = cond(ecx)", e.Current.Instruction.ToString());
         }
+
+        [Test]
+        public void Or()
+        {
+            var m = Create16bitAssembler();
+            m.Or(m.ax, m.dx);
+            var e = CreateRewriter(m).GetEnumerator();
+            e.MoveNext();
+            Assert.AreEqual("ax = ax | dx", e.Current.Instruction.ToString());
+            e.MoveNext();
+            Assert.AreEqual("SZO = cond(ax)", e.Current.Instruction.ToString());
+            e.MoveNext();
+            Assert.AreEqual("C = false", e.Current.Instruction.ToString());
+        }
+
+        [Test]
+        public void And()
+        {
+            var m = Create16bitAssembler();
+            m.And(m.si, m.Imm(0x32));
+            var e = CreateRewriter(m).GetEnumerator();
+            AssertCode("si = si & 0x0032", e);
+            AssertCode("SZO = cond(si)", e);
+            AssertCode("C = false", e);
+        }
+
+        private void AssertCode(string expected, IEnumerator<RewrittenInstruction> e)
+        {
+            Assert.IsTrue(e.MoveNext());
+            Assert.AreEqual(expected, e.Current.Instruction.ToString());
+        }
+
+        [Test]
+        public void Xor()
+        {
+            var m = Create16bitAssembler();
+            m.Xor(m.eax, m.eax);
+            var e = CreateRewriter(m).GetEnumerator();
+            AssertCode("eax = eax ^ eax",e);
+            AssertCode("SZO = cond(eax)", e);
+            AssertCode("C = false", e);
+
+        }
+
+        [Test]
+        public void Test()
+        {
+        }
     }
 }
