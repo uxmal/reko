@@ -47,6 +47,9 @@ namespace Decompiler.Arch.Intel
             var mem = op as MemoryOperand;
             if (mem != null)
                 return CreateMemoryAccess(mem, null);
+            var imm = op as ImmediateOperand;
+            if (imm != null)
+                return CreateConstant(imm, opWidth);
             throw new NotImplementedException(string.Format("Operand {0}", op));
         }
 
@@ -63,6 +66,14 @@ namespace Decompiler.Arch.Intel
         public Identifier AluRegister(IntelRegister reg, PrimitiveType vt)
         {
             return frame.EnsureRegister(reg.GetPart(vt));
+        }
+
+        public Constant CreateConstant(ImmediateOperand imm, PrimitiveType dataWidth)
+        {
+            if (dataWidth.BitSize > imm.Width.BitSize)
+                return new Constant(dataWidth, imm.Value.ToInt32());
+            else
+                return new Constant(imm.Width, imm.Value.ToUInt32());
         }
 
         public MemoryAccess CreateMemoryAccess(MemoryOperand mem, DataType dt, IntelRewriterState state)
@@ -146,6 +157,11 @@ namespace Decompiler.Arch.Intel
                 expr = new BinaryExpression(Operator.Add, expr.DataType, expr, eIndex);
             }
             return expr;
+        }
+
+        public Identifier FlagGroup(FlagM flags)
+        {
+            return frame.EnsureFlagGroup((uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
         public Constant ReplaceCodeSegment(MachineRegister reg, IntelRewriterState state)

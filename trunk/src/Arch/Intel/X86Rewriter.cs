@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,7 @@ namespace Decompiler.Arch.Intel
             default:
                 throw new NotImplementedException(string.Format("Intel opcode {0} not supported yet.", di.Instruction.code));
             case Opcode.mov: RewriteMov(); break;
+            case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
             }
 
             foreach (RewrittenInstruction ri in emitter.Instructions)
@@ -149,7 +151,7 @@ namespace Decompiler.Arch.Intel
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
                 ass = emitter.Assign(tmp, src);
                 MemoryAccess ea = orw.CreateMemoryAccess((MemoryOperand)opDst, state);
-                emitter.Store(ea, tmp);
+                emitter.Emit(new Store(ea, tmp));
             }
             return ass;
         }

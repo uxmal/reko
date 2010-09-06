@@ -238,7 +238,7 @@ namespace Decompiler.Arch.Intel
 							instrCur.op1,
 							instrCur.op1.Width,
 							instrCur.op1,
-							emitter.Constant(instrCur.op1.Width, 1));
+							emitter.Const(instrCur.op1.Width, 1));
 						EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						break;
 					case Opcode.div:
@@ -477,7 +477,7 @@ namespace Decompiler.Arch.Intel
 								instrCur.op1,
 								instrCur.op1.Width, 
 								instrCur.op1, 
-								emitter.Constant(instrCur.op1.Width, 1));
+								emitter.Const(instrCur.op1.Width, 1));
 							EmitCcInstr(ass.Dst, defFlags, deadFlags);
 						}
 						break;
@@ -1056,7 +1056,7 @@ namespace Decompiler.Arch.Intel
 			{
 				if (c.DataType == PrimitiveType.Byte && eLeft.DataType != c.DataType)
 				{
-					right = emitter.Constant(eLeft.DataType, c.ToInt32());
+					right = emitter.Const(eLeft.DataType, c.ToInt32());
 				}
 			}
 
@@ -1239,7 +1239,7 @@ namespace Decompiler.Arch.Intel
 			Constant c = op2 as Constant;
 			if (c != null && op1.DataType != op2.DataType)
 			{
-				op2 = emitter.Constant(op1.DataType, c.ToInt32());
+				op2 = emitter.Const(op1.DataType, c.ToInt32());
 			}
 
 			emitter.Assign(

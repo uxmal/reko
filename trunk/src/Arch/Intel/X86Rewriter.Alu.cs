@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -33,5 +35,56 @@ namespace Decompiler.Arch.Intel
             EmitCopy(di.Instruction.op1, SrcOp(di.Instruction.op2, di.Instruction.op1.Width), false);
         }
 
+
+        /// <summary>
+		/// Doesn't handle the x86 idiom add ... adc => long add (and 
+		/// sub ..sbc => long sub)
+		/// </summary>
+		/// <param name="i"></param>
+		/// <param name="next"></param>
+		/// <returns></returns>
+		public Expression RewriteAddSub(BinaryOperator op)
+		{
+            //LongAddRewriter larw = new LongAddRewriter(this.frame, orw, state);
+            //int iUse = larw.IndexOfUsingOpcode(instrs, i, next);
+            //if (iUse >= 0 && larw.Match(instrCur, instrs[iUse]))
+            //{
+            //    instrs[iUse].code = Opcode.nop;
+            //    larw.EmitInstruction(op, emitter);
+            //    return larw.Dst;
+            //}
+			Assignment ass = EmitBinOp(
+                op,
+                di.Instruction.op1,
+                di.Instruction.op1.Width,
+                SrcOp(di.Instruction.op1),
+                SrcOp(di.Instruction.op2));
+            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
+            return ass.Dst;
+		}
+
+        public Assignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right)
+        {
+            Constant c = right as Constant;
+            if (c != null)
+            {
+                if (c.DataType == PrimitiveType.Byte && left.DataType != c.DataType)
+                {
+                    right = emitter.Const(left.DataType, c.ToInt32());
+                }
+            }
+
+            return EmitCopy(dst, new BinaryExpression(binOp, dtDst, left, right), true);
+        }
+
+        /// <summary>
+        /// Emits an assignment to a flag-group pseudoregister.
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="defFlags">flags defined by the intel instruction</param>
+        private void EmitCcInstr(Expression expr, FlagM defFlags)
+        {
+            emitter.Assign(orw.FlagGroup(defFlags), new ConditionOf(expr.CloneExpression()));
+        }
     }
 }

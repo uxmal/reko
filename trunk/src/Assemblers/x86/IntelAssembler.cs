@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Environments.Msdos;
@@ -1030,6 +1032,14 @@ namespace Decompiler.Assemblers.x86
                 new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant))));
         }
 
+        public void Add(ParsedOperand op, int constant)
+        {
+            ProcessBinop(
+                0x00,
+                op,
+                new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant))));
+        }
+
         public ParsedOperand WordPtr(int directOffset)
         {
             return new ParsedOperand(new MemoryOperand(
@@ -1055,6 +1065,11 @@ namespace Decompiler.Assemblers.x86
         public void ProcessCwd(PrimitiveType width)
         {
             emitter.EmitOpcode(0x99, width);
+        }
+
+        public void Add(ParsedOperand dst, ParsedOperand src)
+        {
+            ProcessBinop(0, dst, src);
         }
 
         public void Dec(ParsedOperand op)
@@ -1409,6 +1424,7 @@ namespace Decompiler.Assemblers.x86
             return new ParsedOperand(
                 new MemoryOperand(null, @base, IntegralConstant(offset)));
         }
+
     }
 }
 

@@ -76,10 +76,6 @@ namespace Decompiler.Core
             Emit(new CallInstruction(pc, site));
         }
 
-        public Constant Constant(DataType dataType, int n)
-        {
-            return new Constant(dataType, n);
-        }
 
 
         public UnaryExpression Neg(Expression expr)
@@ -256,6 +252,11 @@ namespace Decompiler.Core
             return new Cast(dataType, expr);
         }
 
+        public Constant Const(DataType dataType, int n)
+        {
+            return new Constant(dataType, n);
+        }
+
         public Expression Cor(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Cor, PrimitiveType.Bool, a, b);
@@ -280,10 +281,8 @@ namespace Decompiler.Core
 
         public BinaryExpression Eq0(Expression exp)
         {
-            return new BinaryExpression(
-                Operator.Eq, PrimitiveType.Bool, exp, new Constant(exp.DataType, 0));
+            return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, exp, new Constant(exp.DataType, 0));
         }
-
 
         public Identifier Flags(uint grf, string name)
         {
@@ -353,9 +352,8 @@ namespace Decompiler.Core
 
         public Constant Int32(int n)
         {
-            return Constant.Word32(n);
+            return new Constant(PrimitiveType.Word32, n);
         }
-
 
         public void Load(Identifier reg, Expression ea)
         {
@@ -518,13 +516,13 @@ namespace Decompiler.Core
 
         public BinaryExpression Shl(int c, Expression sh)
         {
-            Constant cc = Constant.Word32(c);
+            Constant cc = new Constant(PrimitiveType.Word32, c);
             return new BinaryExpression(Operator.Shl, cc.DataType, cc, sh);
         }
 
         public BinaryExpression Shr(Expression bx, byte c)
         {
-            Constant cc = Constant.Byte(c);
+            Constant cc = new Constant(PrimitiveType.Byte, c);
             return new BinaryExpression(Operator.Shr, bx.DataType, bx, cc);
         }
 
