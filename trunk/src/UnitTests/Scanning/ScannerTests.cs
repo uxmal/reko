@@ -48,12 +48,6 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        public void Create()
-        {
-            var sc = new Scanner2(arch);
-        }
-
-        [Test]
         public void AddEntryPoint()
         {
 
@@ -63,7 +57,7 @@ namespace Decompiler.UnitTests.Scanning
                     ImmediateOperand.Word32(1))
             };
 
-            var sc = new Scanner2(arch);
+            var sc = new Scanner2(arch, new ProgramImage(new Address(0x12314), new byte[1]));
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     new Address(0x12314),

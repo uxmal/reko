@@ -36,24 +36,27 @@ namespace Decompiler.Scanning
         private IProcessorArchitecture arch;
         private Address addrStart;
         private Block blockCur;
+        private Frame frame;
 
         private bool processNextInstruction;
 
         public BlockWorkitem2(
             IScanner scanner, 
             IProcessorArchitecture arch, 
-            Block block,
-            Address addr)
+            Address addr,
+            Frame frame,
+            Block block)
         {
             this.scanner = scanner;
             this.arch = arch;
-            this.blockCur =block;
+            this.blockCur = block;
             this.addrStart = addr;
+            this.frame = frame;
         }
 
         public override void Process()
         {
-            var rw = arch.CreateRewriter2(addrStart);
+            var rw = arch.CreateRewriter2(scanner.CreateReader(addrStart), frame);
             processNextInstruction = true;
             foreach (var ri in rw)
             {

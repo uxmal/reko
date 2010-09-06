@@ -31,13 +31,15 @@ namespace Decompiler.Scanning
     {
         private IProcessorArchitecture arch;
         private PriorityQueue<WorkItem2> queue;
+        private ProgramImage image;
 
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
 
-        public Scanner2(IProcessorArchitecture arch)
+        public Scanner2(IProcessorArchitecture arch, ProgramImage image)
         {
             this.arch = arch;
+            this.image = image;
             this.Procedures = new SortedList<Address, Procedure>();
             this.queue = new PriorityQueue<WorkItem2>();
         }
@@ -47,6 +49,11 @@ namespace Decompiler.Scanning
         public Block AddBlock(Address addr)
         {
             throw new NotImplementedException();
+        }
+
+        public ImageReader CreateReader(Address addr)
+        {
+            return image.CreateReader(addr);
         }
 
         public void EnqueueEntryPoint(EntryPoint ep)
@@ -69,7 +76,14 @@ namespace Decompiler.Scanning
             else
             {
                 block = AddBlock(addrStart);
-                queue.Enqueue(PriorityJumpTarget, new BlockWorkitem2(this, this.arch, block, addrStart));
+                queue.Enqueue(
+                    PriorityJumpTarget,
+                    new BlockWorkitem2(
+                        this,
+                        this.arch,
+                        addrStart,
+                        new Frame(arch.FramePointerType),
+                        block));
             }
             return block;
         }

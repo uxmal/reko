@@ -37,7 +37,7 @@ namespace Decompiler.Core
 			this.access = access;
 		}
 
-		public ImageMapSegment(string name, int size, AccessMode access) : base(size) 
+		public ImageMapSegment(string name, uint size, AccessMode access) : base(size) 
 		{
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");

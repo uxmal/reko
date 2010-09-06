@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
@@ -43,6 +45,7 @@ namespace Decompiler.Arch.Intel
 
 		/// <summary>
 		/// Creates a disassember that uses the specified reader to fetch bytes from the program image.
+        /// </summary>
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
 		public IntelDisassembler(ImageReader rdr, PrimitiveType defaultWordSize)

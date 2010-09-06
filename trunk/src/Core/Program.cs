@@ -39,7 +39,7 @@ namespace Decompiler.Core
 		private CallGraph callGraph;
         private SortedList<Address, ImageMapVectorTable> vectors;
         private Dictionary<uint, PseudoProcedure> mpuintfn;
-        private Dictionary<int, PseudoProcedure> trampolines;
+        private Dictionary<uint, PseudoProcedure> trampolines;
 		private Identifier globals;
 		private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Identifier, LinearInductionVariable> ivs;
@@ -52,7 +52,7 @@ namespace Decompiler.Core
             vectors = new SortedList<Address, ImageMapVectorTable>();
 			callGraph = new CallGraph();
             mpuintfn = new Dictionary<uint, PseudoProcedure>();		// uint (offset) -> string
-			trampolines = new Dictionary<int, PseudoProcedure>();	// address -> string
+			trampolines = new Dictionary<uint, PseudoProcedure>();	// linear address -> string
             pseudoProcs = new Dictionary<string, PseudoProcedure>();
             ivs = new Dictionary<Identifier, LinearInductionVariable>();
 			typefactory = new TypeFactory();
@@ -155,7 +155,7 @@ namespace Decompiler.Core
 			get { return pseudoProcs; }
 		}
 
-        public Dictionary<int, PseudoProcedure> Trampolines
+        public Dictionary<uint, PseudoProcedure> Trampolines
 		{
 			get { return trampolines; }
 		}

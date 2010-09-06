@@ -67,9 +67,9 @@ namespace Decompiler.Core
 			return Linear.GetHashCode();
 		}
 
-		public int Linear
+		public uint Linear
 		{
-			get { return (int) (((uint) Selector << 4) + Offset); }
+			get { return (((uint) Selector << 4) + Offset); }
 		}
 
 		public string GenerateName(string prefix, string suffix)

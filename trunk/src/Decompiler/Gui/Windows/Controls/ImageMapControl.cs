@@ -57,18 +57,18 @@ namespace Decompiler.Gui.Windows.Controls
 				return;
 
 			ImageMapSegment [] segs = ExtractSegments();
-			int imageSize = ImageSize(segs);
+			uint imageSize = ImageSize(segs);
 			
 			Matrix m = new Matrix();
 			m.Scale(1.0F, (float)Height / (float) imageSize);
 			pea.Graphics.Transform = m;
 
 			Rectangle rc = ClientRectangle;
-			int start = segs[0].Address.Linear;
+			uint start = segs[0].Address.Linear;
 			foreach (ImageMapSegment seg in segs)
 			{
-				rc.Y = seg.Address.Linear - start;
-				rc.Height = seg.Size;
+				rc.Y = (int) (seg.Address.Linear - start);
+				rc.Height = (int) seg.Size;
 
 				PaintSegment(seg, pea.Graphics, rc);
 			}
@@ -88,11 +88,11 @@ namespace Decompiler.Gui.Windows.Controls
             return segs;
 		}
 
-		private int ImageSize(ImageMapSegment [] segs)
+		private uint ImageSize(ImageMapSegment [] segs)
 		{
 			Address addrStart = segs[0].Address;
 			Address addrEnd = segs[segs.Length - 1].Address;
-			return segs[segs.Length - 1].Size + (addrEnd - addrStart);
+			return segs[segs.Length - 1].Size + (uint) (addrEnd - addrStart);
 		}
 
 		protected override void OnMouseDown(MouseEventArgs me)
@@ -100,7 +100,7 @@ namespace Decompiler.Gui.Windows.Controls
 			base.OnMouseDown(me);
 			ImageMapSegment [] mapSegments = ExtractSegments();
 			float scaleFactor = (float) Height / (float) ImageSize(mapSegments);
-			int start = mapSegments[0].Address.Linear;
+			uint start = mapSegments[0].Address.Linear;
 			foreach (ImageMapSegment seg in mapSegments)
 			{
 				float y = scaleFactor * (seg.Address.Linear - start);

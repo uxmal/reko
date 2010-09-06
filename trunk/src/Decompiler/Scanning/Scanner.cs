@@ -43,6 +43,8 @@ namespace Decompiler.Scanning
         Block AddBlock(Address addr);
         Block FindBlock(Address addr);
         Block SplitBlock(Block block, Address addr);
+
+        ImageReader CreateReader(Address addr);
     }
 
 	/// <summary>
@@ -573,7 +575,6 @@ namespace Decompiler.Scanning
 
         #region IScanner Members
 
-
         public Block AddBlock(Address addr)
         {
             throw new NotImplementedException();
@@ -594,6 +595,11 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
+        public ImageReader CreateReader(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+        
         #endregion
     }
 }

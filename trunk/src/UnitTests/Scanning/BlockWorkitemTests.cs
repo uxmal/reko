@@ -67,11 +67,12 @@ namespace Decompiler.UnitTests.Scanning
             using (repository.Record())
             {
                 arch.Stub(x => x.CreateRewriter2(
-                    Arg<Address>.Is.Anything)).Return(rewriter);
+                    Arg<ImageReader>.Is.Anything,
+                    Arg<Frame>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
             }
 
-            BlockWorkitem2 wi = new BlockWorkitem2(scanner, arch, block, addr);
+            BlockWorkitem2 wi = new BlockWorkitem2(scanner, arch, null, new Frame(arch.FramePointerType), block);
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, proc.ExitBlock));
@@ -84,12 +85,14 @@ namespace Decompiler.UnitTests.Scanning
 
             using (repository.Record())
             {
-                arch.Stub(x => x.CreateRewriter2(Arg<Address>.Is.Anything)).Return(rewriter);
+                arch.Stub(x => x.CreateRewriter2(
+                    Arg<ImageReader>.Is.Anything,
+                    Arg<Frame>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
             }
 
             m.Emit(new Branch(m.Eq0(m.Register(0)), null));
-            var wi = new BlockWorkitem2(scanner, arch, block, addr);
+            var wi = new BlockWorkitem2(scanner, arch, null, new Frame(arch.FramePointerType), block);
             try
             {
                 wi.Process();
@@ -110,11 +113,13 @@ namespace Decompiler.UnitTests.Scanning
             m.Goto(0x4000);
             using (repository.Record())
             {
-                arch.Stub(x => x.CreateRewriter2(Arg<Address>.Is.Anything)).Return(rewriter);
+                arch.Stub(x => x.CreateRewriter2(
+                    Arg<ImageReader>.Is.Anything,
+                    Arg<Frame>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
             }
 
-            var wi = new BlockWorkitem2(scanner, arch, block, new Address(0x1234));
+            var wi = new BlockWorkitem2(scanner, arch, new Address(0x1234), new Frame(arch.FramePointerType), block);
             wi.Process();
             Assert.AreEqual(0, block.Statements.Count);
         }

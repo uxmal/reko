@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,7 +16,9 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
+using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
@@ -28,7 +31,7 @@ using System.Collections.Generic;
 namespace Decompiler.UnitTests.Arch.Intel
 {
     [TestFixture]
-    public class IntelRewriterTests
+    public partial class IntelRewriterTests
     {
         private IntelArchitecture arch;
         private Procedure proc;

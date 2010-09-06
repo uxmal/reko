@@ -47,7 +47,7 @@ namespace Decompiler.Core
                 throw new ArgumentNullException("addrBase");
             items = new Map<Address, ImageMapItem>(new ItemComparer());
             segments = new Map<Address, ImageMapSegment>(new ItemComparer());
-			SetAddressSpan(addrBase, imageSize);
+			SetAddressSpan(addrBase, (uint) imageSize);
 		}
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace Decompiler.Core
                 {
                     // Need to split the item.
 
-                    itemNew.Size = item.Size - delta;
-                    item.Size = delta;
+                    itemNew.Size = (uint) (item.Size - delta);
+                    item.Size = (uint) delta;
                     items.Add(itemNew.Address, itemNew);
 
                     OnSplitItem(item, itemNew);
@@ -98,7 +98,7 @@ namespace Decompiler.Core
 			{
 				ImageMapSegment segNew = new ImageMapSegment(segmentName, access);
 				segNew.Address = addr;
-				segNew.Size = -1;
+				segNew.Size = ~0U;
 				segments.Add(segNew.Address, segNew);
 				return segNew;
 			}
@@ -110,8 +110,8 @@ namespace Decompiler.Core
 
 				ImageMapSegment segNew = new ImageMapSegment(segmentName, access);
 				segNew.Address = addr;
-				segNew.Size = seg.Size - delta;
-				seg.Size = delta;
+				segNew.Size = (uint)(seg.Size - delta);
+				seg.Size = (uint) delta;
 				segments.Add(segNew.Address, segNew);
 				OnSplitSegment(seg, segNew);
 
@@ -123,7 +123,7 @@ namespace Decompiler.Core
 			return seg;
 		}
 
-		public void SetAddressSpan(Address addr, int size)
+		public void SetAddressSpan(Address addr, uint size)
 		{
 			items.Clear();
 			segments.Clear();
@@ -174,7 +174,7 @@ namespace Decompiler.Core
         /// </summary>
         /// <param name="linearAddress"></param>
         /// <returns></returns>
-		public Address MapLinearAddressToAddress(int linearAddress)
+		public Address MapLinearAddressToAddress(uint linearAddress)
 		{
 			foreach (ImageMapSegment seg in segments.Values)
 			{
@@ -242,9 +242,9 @@ namespace Decompiler.Core
 	public class ImageMapItem
 	{
 		public Address Address;
-		public int Size;
+		public uint Size;
 
-		public ImageMapItem(int size)
+		public ImageMapItem(uint size)
 		{
 			Debug.Assert(size > 0);
 			this.Size = size;
@@ -259,9 +259,9 @@ namespace Decompiler.Core
 			return IsInRange(addr.Linear);
 		}
 
-		public bool IsInRange(int linearAddress)
+		public bool IsInRange(uint linearAddress)
 		{
-			int linItem = this.Address.Linear;
+			uint linItem = this.Address.Linear;
 			return (linItem <= linearAddress && linearAddress < linItem + Size);
 		}
 
