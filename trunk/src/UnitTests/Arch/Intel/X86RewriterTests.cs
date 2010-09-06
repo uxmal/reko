@@ -154,12 +154,33 @@ namespace Decompiler.UnitTests.Arch.Intel
             AssertCode("eax = eax ^ eax",e);
             AssertCode("SZO = cond(eax)", e);
             AssertCode("C = false", e);
-
         }
 
         [Test]
         public void Test()
         {
+            var m = Create16bitAssembler();
+            m.Test(m.edi, m.Imm(0xFFFFFFFFu));
+            var e = CreateRewriter(m).GetEnumerator();
+            AssertCode("SZO = cond(edi & 0xFFFFFFFF)", e);
+            AssertCode("C = false", e);
+        }
+
+        private IEnumerator<RewrittenInstruction> Run16bitTest(Action<IntelAssembler> fn)
+        {
+            var m = Create16bitAssembler();
+            fn(m);
+            return CreateRewriter(m).GetEnumerator();
+        }
+
+        [Test]
+        public void Cmp()
+        {
+            var e = Run16bitTest(delegate (IntelAssembler m) 
+            {
+                m.Cmp(m.ebx, 3);
+            });
+            AssertCode("SCZO = cond(ebx - 0x00000003)", e);
         }
     }
 }

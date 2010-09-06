@@ -1050,6 +1050,11 @@ namespace Decompiler.Assemblers.x86
             ProcessBinop(0x04, dst, src);
         }
 
+        public ParsedOperand Imm( uint constant)
+        {
+            return Imm((int)constant);
+        }
+
         public ParsedOperand Imm(PrimitiveType width, int constant)
         {
             return new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant, width)));
@@ -1395,6 +1400,11 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0xF5, null);
         }
 
+        public void Cmp(ParsedOperand src, int dst)
+        {
+            ProcessBinop(0x7, src, Imm(dst));
+        }
+
         public void Fcompp()
         {
             emitter.EmitByte(0xDE);
@@ -1465,6 +1475,12 @@ namespace Decompiler.Assemblers.x86
             get { return new ParsedOperand(new RegisterOperand(Registers.ah)); }
         }
 
+        public ParsedOperand bh
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.bh)); }
+        }
+
+
         public ParsedOperand eax
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.eax)); }
@@ -1479,6 +1495,32 @@ namespace Decompiler.Assemblers.x86
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.ecx)); }
         }
+
+        public ParsedOperand edx
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.edx)); }
+        }
+
+        public ParsedOperand ebp
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.ebp)); }
+        }
+
+        public ParsedOperand esp
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.esp)); }
+        }
+
+        public ParsedOperand esi
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.esi)); }
+        }
+
+        public ParsedOperand edi
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.edi)); }
+        }
+
 
         public ParsedOperand Const(int n)
         {

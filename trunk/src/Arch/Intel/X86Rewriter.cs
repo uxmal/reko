@@ -99,9 +99,11 @@ namespace Decompiler.Arch.Intel
                 throw new NotImplementedException(string.Format("Intel opcode {0} not supported yet.", di.Instruction.code));
             case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
             case Opcode.and: RewriteLogical(BinaryOperator.And); break;
+            case Opcode.cmp: RewriteCmp(); break;
             case Opcode.mov: RewriteMov(); break;
             case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
             case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
+            case Opcode.test: RewriteTest(); break;
             case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
             }
 
