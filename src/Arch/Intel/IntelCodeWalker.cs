@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
@@ -116,7 +118,7 @@ namespace Decompiler.Arch.Intel
 			AddressOperand addrOp = op as AddressOperand;
 			if (addrOp != null)
 			{
-				listener.OnProcedure(state, addrOp.addr);
+				listener.OnProcedure(state, addrOp.Address);
 				return;
 			}
 			ImmediateOperand immOp = op as ImmediateOperand;
@@ -218,7 +220,7 @@ namespace Decompiler.Arch.Intel
 			AddressOperand addrOp = instr.op1 as AddressOperand;
 			if (addrOp != null)
 			{
-				if (IsBiosRebootAddress(addrOp.addr))
+				if (IsBiosRebootAddress(addrOp.Address))
 				{
 					listener.OnProcessExit(addrTerm);
 				}
@@ -226,7 +228,7 @@ namespace Decompiler.Arch.Intel
 				{
 					// FAR jmps are treated like calls. 
 
-					listener.OnProcedure(state, addrOp.addr);
+					listener.OnProcedure(state, addrOp.Address);
 					listener.OnJump(state, addrFrom, addrTerm, addrTerm);
 				}
 				return;

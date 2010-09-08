@@ -378,6 +378,5 @@ namespace Decompiler.Arch.Intel
         {
             get { return mode.FramePointerType; }
         }
-
     }
 }

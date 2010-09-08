@@ -47,6 +47,19 @@ namespace Decompiler.UnitTests.Arch.Intel
             return new IntelAssembler(arch, PrimitiveType.Word16, new Address(0xC00, 0x000), emitter, new List<EntryPoint>());
         }
 
+        private void AssertCode(string expected, IEnumerator<RewrittenInstruction> e)
+        {
+            Assert.IsTrue(e.MoveNext());
+            Assert.AreEqual(expected, e.Current.Instruction.ToString());
+        }
+
+        private void AssertCode(uint expectedAddr, string expected, IEnumerator<RewrittenInstruction> e)
+        {
+            Assert.IsTrue(e.MoveNext());
+            Assert.AreEqual(expectedAddr, e.Current.LinearAddress, "Linear address was not as expected.");
+            Assert.AreEqual(expected, e.Current.Instruction.ToString(), "Instruction was not rewritten as expected");
+        }
+
         [Test]
         public void MovAxBx()
         {
@@ -139,11 +152,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             AssertCode("C = false", e);
         }
 
-        private void AssertCode(string expected, IEnumerator<RewrittenInstruction> e)
-        {
-            Assert.IsTrue(e.MoveNext());
-            Assert.AreEqual(expected, e.Current.Instruction.ToString());
-        }
+
 
         [Test]
         public void Xor()
@@ -181,6 +190,20 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Cmp(m.ebx, 3);
             });
             AssertCode("SCZO = cond(ebx - 0x00000003)", e);
+        }
+
+        [Test]
+        public void PushPop()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Push(m.eax);
+                m.Pop(m.ebx);
+            });
+            AssertCode(0xC000, "sp = sp - 0x0004",e );
+            AssertCode(0xC000, "store(Mem0[ss:sp:word32]) = eax", e);
+            AssertCode(0xC002, "ebx = Mem0[ss:sp:word32]", e);
+            AssertCode(0xC002, "sp = sp + 0x0004", e);
         }
     }
 }

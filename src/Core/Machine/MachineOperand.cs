@@ -134,16 +134,16 @@ namespace Decompiler.Core.Machine
     //$TODO: move into intel assembly.
 	public class AddressOperand : MachineOperand
 	{
-		public Address addr;
+		public Address Address;
 
 		public AddressOperand(Address a) : base(PrimitiveType.Pointer32)	//$BUGBUG: P6 pointers?
 		{
-			addr = a;
+			Address = a;
 		}
 
 		public override string ToString()
 		{
-			return "far " + addr.ToString();
+			return "far " + Address.ToString();
 		}
 	}
 

@@ -87,33 +87,34 @@ namespace Decompiler.Arch.Intel
 
         public IEnumerator<RewrittenInstruction> GetEnumerator()
         {
-            if (!dasm.MoveNext())
-                yield break;
-            emitter = new Emitter(frame);
-            emitter.LinearAddress = dasm.Current.Address.Linear;
-            orw = new OperandRewriter2(arch, frame);
-            di = dasm.Current;
-            switch (di.Instruction.code)
+            while (dasm.MoveNext())
             {
-            default:
-                throw new NotImplementedException(string.Format("Intel opcode {0} not supported yet.", di.Instruction.code));
-            case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
-            case Opcode.and: RewriteLogical(BinaryOperator.And); break;
-            case Opcode.cmp: RewriteCmp(); break;
-            case Opcode.mov: RewriteMov(); break;
-            case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
-            case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
-            case Opcode.test: RewriteTest(); break;
-            case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
-            }
+                emitter = new Emitter(frame);
+                emitter.LinearAddress = dasm.Current.Address.Linear;
+                orw = new OperandRewriter2(arch, frame);
+                di = dasm.Current;
+                switch (di.Instruction.code)
+                {
+                default:
+                    throw new NotImplementedException(string.Format("Intel opcode {0} not supported yet.", di.Instruction.code));
+                case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
+                case Opcode.and: RewriteLogical(BinaryOperator.And); break;
+                case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.mov: RewriteMov(); break;
+                case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
+                case Opcode.push: RewritePush(); break;
+                case Opcode.pop: RewritePop(); break;
+                case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
+                case Opcode.test: RewriteTest(); break;
+                case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
+                }
 
-            foreach (RewrittenInstruction ri in emitter.Instructions)
-            {
-                yield return ri;
+                foreach (RewrittenInstruction ri in emitter.Instructions)
+                {
+                    yield return ri;
+                }
             }
         }
-
-
 
         IEnumerator IEnumerable.GetEnumerator()
         {

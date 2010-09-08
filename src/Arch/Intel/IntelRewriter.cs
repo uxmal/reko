@@ -1484,7 +1484,7 @@ namespace Decompiler.Arch.Intel
         {
 			// A jumps to 0xFFFF:0x0000 in real mode is a reboot.
             AddressOperand addrOp = instrCur.op1 as AddressOperand;
-            bool isRealModeReboot = addrOp != null && addrOp.addr.Linear == 0xFFFF0;
+            bool isRealModeReboot = addrOp != null && addrOp.Address.Linear == 0xFFFF0;
             return isRealModeReboot;
         }
 

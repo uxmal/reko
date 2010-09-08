@@ -24,17 +24,13 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Decompiler.Arch.Intel
 {
     public partial class X86Rewriter
     {
-        private void RewriteMov()
-        {
-            EmitCopy(di.Instruction.op1, SrcOp(di.Instruction.op2, di.Instruction.op1.Width), false);
-        }
-
         /// <summary>
         /// Doesn't handle the x86 idiom add ... adc => long add (and 
         /// sub ..sbc => long sub)
@@ -107,6 +103,73 @@ namespace Decompiler.Arch.Intel
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
+        private void RewriteMov()
+        {
+            EmitCopy(di.Instruction.op1, SrcOp(di.Instruction.op2, di.Instruction.op1.Width), false);
+        }
+
+        private void RewritePush()
+        {
+            RegisterOperand reg = di.Instruction.op1 as RegisterOperand;
+            if (reg != null && reg.Register == Registers.cs)
+            {
+                if (dasm.Peek(1).Instruction.code == Opcode.call &&
+                    dasm.Peek(1).Instruction.op1.Width == PrimitiveType.Word16)
+                {
+                    dasm.MoveNext();
+                    emitter.Assign(StackPointer(), emitter.Sub(StackPointer(), reg.Register.DataType.Size));
+                    throw new NotImplementedException("RewriteCall(dasm.Current.Instruction.op1, PrimitiveType.Word32)");
+                    return;
+                }
+
+                if (
+                    dasm.Peek(1).Instruction.code == Opcode.push &&
+                    (dasm.Peek(1).Instruction.op1 is ImmediateOperand) &&
+                    dasm.Peek(2).Instruction.code == Opcode.push &&
+                    (dasm.Peek(2).Instruction.op1 is ImmediateOperand) &&
+                    dasm.Peek(3).Instruction.code == Opcode.jmp &&
+                    (dasm.Peek(3).Instruction.op1 is AddressOperand))
+                {
+                    // That's actually a far call, but the callee thinks its a near call.
+                    throw new NotImplementedException(" EmitCall(((AddressOperand) dasm.Peek(3).Instruction.op1).addr, 2, true);");
+                    dasm.MoveNext();
+                    dasm.MoveNext();
+                    dasm.MoveNext();
+                    return;
+                }
+            }
+            Debug.Assert(dasm.Current.Instruction.dataWidth == PrimitiveType.Word16 || dasm.Current.Instruction.dataWidth == PrimitiveType.Word32);
+            RewritePush(dasm.Current.Instruction.dataWidth, SrcOp(dasm.Current.Instruction.op1));
+        }
+
+
+        private void RewritePop()
+        {
+            RewritePop(dasm.Current.Instruction.op1, dasm.Current.Instruction.op1.Width);
+        }
+
+        private void RewritePop(MachineOperand op, PrimitiveType width)
+        {
+            var sp = StackPointer();
+            EmitCopy(op, orw.StackAccess(sp, width), false);
+            emitter.Assign(sp, emitter.Add(sp, width.Size));
+        }
+
+        private void RewritePush(PrimitiveType dataWidth, Expression expr)
+        {
+            Constant c = expr as Constant;
+            if (c != null && c.DataType != dataWidth)
+            {
+                expr = new Constant(dataWidth, c.ToInt64());
+            }
+
+            // Allocate an local variable for the push.
+
+            var sp = StackPointer();
+            emitter.Assign(sp, emitter.Sub(sp, dataWidth.Size));
+            emitter.Emit(new Store(orw.StackAccess(sp, dataWidth), expr));
+        }
+
         private void RewriteTest()
         {
             var src = new BinaryExpression(Operator.And,
@@ -116,6 +179,11 @@ namespace Decompiler.Arch.Intel
 
             EmitCcInstr(src, (IntelInstruction.DefCc(di.Instruction.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+        }
+
+        private Identifier StackPointer()
+        {
+            return frame.EnsureRegister(arch.ProcessorMode.StackRegister);
         }
     }
 }
