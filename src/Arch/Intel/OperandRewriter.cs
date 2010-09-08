@@ -175,13 +175,13 @@ namespace Decompiler.Arch.Intel
             return frame.EnsureFlagGroup((uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
+
         public Constant ReplaceCodeSegment(MachineRegister reg, IntelRewriterState state)
         {
             if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
                 return new Constant(PrimitiveType.Word16, state.CodeSegment);
             else
                 return null;
-
         }
     }
 
