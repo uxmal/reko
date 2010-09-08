@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,59 @@ namespace Decompiler.Arch.Intel
 {
     public partial class X86Rewriter
     {
+        private TestCondition CreateTestCondition(ConditionCode cc, Identifier identifier)
+        {
+            var tc = new TestCondition(cc, identifier);
+            return tc;
+            /*
+            if (i < 2)
+                return tc;
+            if (instrs[i-1].code != Opcode.test)
+                return tc;
+            var ah = instrs[i-1].op1 as RegisterOperand;
+            if (ah == null || ah.Register != Registers.ah)
+                return tc;
+            var m = instrs[i-1].op2 as ImmediateOperand;
+            if (m == null)
+                return tc;
+
+            if (instrs[i-2].code != Opcode.fstsw)
+                return tc;
+            int mask = m.Value.ToInt32();
+
+            var fpuf = orw.FlagGroup(FlagM.FPUF);
+            switch (cc)
+            {
+            case ConditionCode.PE:
+                if (mask == 0x05) return new TestCondition(ConditionCode.LE, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.GE, fpuf);
+                if (mask == 0x44) return new TestCondition(ConditionCode.NE, fpuf);
+                break;
+            case ConditionCode.PO:
+                if (mask == 0x44) return new TestCondition(ConditionCode.EQ, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.GE, fpuf);
+                if (mask == 0x05) return new TestCondition(ConditionCode.GT, fpuf);
+                break;
+            case ConditionCode.EQ:
+                if (mask == 0x40) return new TestCondition(ConditionCode.NE, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.LT, fpuf);
+                break;
+            case ConditionCode.NE:
+                if (mask == 0x40) return new TestCondition(ConditionCode.EQ, fpuf);
+                if (mask == 0x41) return new TestCondition(ConditionCode.GE, fpuf);
+                if (mask == 0x01) return new TestCondition(ConditionCode.GT, fpuf);
+                break;
+            }
+            throw new NotImplementedException(string.Format(
+                "FSTSW/TEST AH,0x{0:X2}/J{1} not implemented.", mask, cc));
+             */
+        }
+
+        private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
+        {
+            emitter.IfGoto(CreateTestCondition(cc, orw.FlagGroup(IntelInstruction.UseCc(di.Instruction.code))), OperandAsCodeAddress(op1));
+        }
+
         private void RewriteJmp()
         {
             if (IsRealModeReboot(di.Instruction))
@@ -39,7 +93,6 @@ namespace Decompiler.Arch.Intel
                 //emitter.SideEffect(reboot);
 				return;
 			}
-
 				
 			if (di.Instruction.op1 is ImmediateOperand)
 			{
