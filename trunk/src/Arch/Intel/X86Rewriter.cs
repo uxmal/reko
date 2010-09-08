@@ -100,6 +100,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
                 case Opcode.and: RewriteLogical(BinaryOperator.And); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.mov: RewriteMov(); break;
                 case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
                 case Opcode.push: RewritePush(); break;

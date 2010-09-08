@@ -81,6 +81,8 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -113,9 +115,10 @@
     </Compile>
     <Compile Include="IntelRegister.cs" />
     <Compile Include="IntelRewriter.cs">
-      <SubType>Code</SubType>
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IntelRewriter.Fpu.cs" />
+    <Compile Include="IntelRewriter.Fpu.cs">
+    </Compile>
     <Compile Include="IntelState.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -140,8 +143,11 @@
     <Compile Include="StringInstructionRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="X86Rewriter.Alu.cs" />
-    <Compile Include="X86Rewriter.cs" />
+    <Compile Include="X86Rewriter.Alu.cs">
+    </Compile>
+    <Compile Include="X86Rewriter.Control.cs" />
+    <Compile Include="X86Rewriter.cs">
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

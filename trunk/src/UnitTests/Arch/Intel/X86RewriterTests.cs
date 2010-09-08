@@ -205,5 +205,16 @@ namespace Decompiler.UnitTests.Arch.Intel
             AssertCode(0xC002, "ebx = Mem0[ss:sp:word32]", e);
             AssertCode(0xC002, "sp = sp + 0x0004", e);
         }
+
+        [Test]
+        public void Jmp()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Label("lupe");
+                m.Jmp("lupe");
+            });
+            AssertCode("goto 0C00:0000", e);
+        }
     }
 }
