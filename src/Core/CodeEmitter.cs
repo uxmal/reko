@@ -330,6 +330,13 @@ namespace Decompiler.Core
             return gi;
         }
 
+        public GotoInstruction IfGoto(Expression condition, Address addr)
+        {
+            var gi = new GotoInstruction(condition, addr);
+            Emit(gi);
+            return gi;
+        }
+
         public Constant Int8(int n)
         {
             return new Constant(PrimitiveType.Byte, n);

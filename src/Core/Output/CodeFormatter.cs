@@ -383,6 +383,13 @@ namespace Decompiler.Core.Output
         public void VisitGotoInstruction(GotoInstruction g)
         {
             writer.Indent();
+            if (!(g.Condition is Constant))
+            {
+                writer.WriteKeyword("if");
+                writer.Write(" (");
+                g.Condition.Accept(this);
+                writer.Write(") ");
+            }
             writer.WriteKeyword("goto");
             writer.WriteKeyword(" ");
             g.Target.Accept(this);
