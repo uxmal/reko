@@ -53,12 +53,12 @@ namespace Decompiler.Arch.Intel
             throw new NotImplementedException(string.Format("Operand {0}", op));
         }
 
-        private Identifier AluRegister(RegisterOperand reg)
+        public Identifier AluRegister(RegisterOperand reg)
         {
             return frame.EnsureRegister(reg.Register);
         }
 
-        private Identifier AluRegister(MachineRegister reg)
+        public Identifier AluRegister(MachineRegister reg)
         {
             return frame.EnsureRegister(reg);
         }
@@ -97,6 +97,17 @@ namespace Decompiler.Arch.Intel
             return CreateMemoryAccess(memoryOperand, memoryOperand.Width, state);
         }
 
+        public MemoryAccess StackAccess(Expression expr, DataType dt)
+        {
+            if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+            {
+                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, AluRegister(Registers.ss), expr, dt);
+            }
+            else
+            {
+                return new MemoryAccess(MemoryIdentifier.GlobalMemory, expr, dt);
+            }
+        }
 
         /// <summary>
         /// Memory accesses are translated into expressions.
@@ -277,7 +288,7 @@ namespace Decompiler.Arch.Intel
 		{
 			AddressOperand ado = op as AddressOperand;
 			if (ado != null)
-				return ado.addr;
+				return ado.Address;
 			ImmediateOperand imm = op as ImmediateOperand;
 			if (imm != null)
 			{
