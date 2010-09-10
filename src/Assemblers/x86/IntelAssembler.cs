@@ -1149,6 +1149,11 @@ namespace Decompiler.Assemblers.x86
             ProcessCallJmp(0xE9, destination);
         }
 
+        public void Jmp(ParsedOperand parsedOperand)
+        {
+            ProcessCallJmp(0x04, parsedOperand);
+        }
+
         public void Label(string label)
         {
             DefineSymbol(label);
@@ -1532,7 +1537,6 @@ namespace Decompiler.Assemblers.x86
             return new ParsedOperand(
                 new MemoryOperand(null, @base, IntegralConstant(offset)));
         }
-
 
     }
 }

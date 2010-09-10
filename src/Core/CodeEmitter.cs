@@ -321,9 +321,9 @@ namespace Decompiler.Core
             return Gt(a, Int32(b));
         }
 
-        public GotoInstruction Goto(Address addr)
+        public GotoInstruction Goto(Expression dest)
         {
-            var gi = new GotoInstruction(addr);
+            var gi = new GotoInstruction(dest);
             Emit(gi);
             return gi;
         }

@@ -238,6 +238,16 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
+        public void JmpIndirect()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Jmp(m.WordPtr(m.bx, 0x10));
+            });
+            AssertCode(0xC000, "goto Mem0[ds:bx + 0x0010:word16]", e);
+        }
+
+        [Test]
         public void Jne()
         {
             var e = Run16bitTest(delegate(IntelAssembler m)

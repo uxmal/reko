@@ -116,7 +116,7 @@ namespace Decompiler.Arch.Intel
                 emitter.Goto(addr);
 				return;
 			}
-            throw new NotImplementedException();
+            emitter.Goto(SrcOp(di.Instruction.op1));
         }
 
         private bool IsRealModeReboot(IntelInstruction instrCur)
