@@ -99,6 +99,7 @@ namespace Decompiler.Arch.Intel
                     throw new NotImplementedException(string.Format("Intel opcode {0} not supported yet.", di.Instruction.code));
                 case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
                 case Opcode.and: RewriteLogical(BinaryOperator.And); break;
+                case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.ja: RewriteConditionalGoto(ConditionCode.UGT, di.Instruction.op1); break;
@@ -227,6 +228,7 @@ namespace Decompiler.Arch.Intel
             {
                 throw new NotImplementedException();
             }
+
         }
     }
 }

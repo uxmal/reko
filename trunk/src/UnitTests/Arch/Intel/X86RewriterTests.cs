@@ -34,17 +34,25 @@ namespace Decompiler.UnitTests.Arch.Intel
     public partial class X86RewriterTests
     {
         private IntelArchitecture arch;
+        private IntelArchitecture arch32;
         private IntelEmitter emitter;
 
         public X86RewriterTests()
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
+            arch32 = new IntelArchitecture(ProcessorMode.ProtectedFlat);
         }
 
         private IntelAssembler Create16bitAssembler()
         {
             emitter = new IntelEmitter();
             return new IntelAssembler(arch, PrimitiveType.Word16, new Address(0xC00, 0x000), emitter, new List<EntryPoint>());
+        }
+
+        private IntelAssembler Create32bitAssembler()
+        {
+            emitter = new IntelEmitter();
+            return new IntelAssembler(arch32, PrimitiveType.Word32, new Address(0x10000000), emitter, new List<EntryPoint>());
         }
 
         private void AssertCode(string expected, IEnumerator<RewrittenInstruction> e)
@@ -75,6 +83,11 @@ namespace Decompiler.UnitTests.Arch.Intel
         private X86Rewriter CreateRewriter(IntelAssembler m)
         {
             return new X86Rewriter(arch, m.GetImage().CreateReader(0), new Frame(arch.WordWidth));
+        }
+
+        private X86Rewriter CreateRewriter32(IntelAssembler m)
+        {
+            return new X86Rewriter(arch32, m.GetImage().CreateReader(0), new Frame(arch.WordWidth));
         }
 
         [Test]
@@ -182,6 +195,13 @@ namespace Decompiler.UnitTests.Arch.Intel
             return CreateRewriter(m).GetEnumerator();
         }
 
+        private IEnumerator<RewrittenInstruction> Run32bitTest(Action<IntelAssembler> fn)
+        {
+            var m = Create32bitAssembler();
+            fn(m);
+            return CreateRewriter32(m).GetEnumerator();
+        }
+
         [Test]
         public void Cmp()
         {
@@ -228,6 +248,30 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             AssertCode(0xC000, "if (Test(NE,Z)) goto 0C00:0000", e);
             AssertCode(0xC002, "ax = ax ^ ax", e);
+        }
+
+        [Test]
+        public void Call16bit()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Label("self");
+                m.Call("self");
+            });
+            AssertCode(0x0C000, "sp = sp - 0x0002",e);
+            AssertCode(0x0C000, "icall 0C00:0000", e);
+        }
+
+        [Test]
+        public void Call32Bit()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Label("self");
+                m.Call("self");
+            });
+            AssertCode(0x10000000, "esp = esp - 0x00000004", e);
+            AssertCode(0x10000000, "icall 0x10000000", e);
         }
     }
 }

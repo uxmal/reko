@@ -115,7 +115,6 @@
     </Compile>
     <Compile Include="IntelRegister.cs" />
     <Compile Include="IntelRewriter.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="IntelRewriter.Fpu.cs">
     </Compile>
