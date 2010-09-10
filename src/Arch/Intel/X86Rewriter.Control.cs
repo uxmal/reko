@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -75,6 +76,21 @@ namespace Decompiler.Arch.Intel
             throw new NotImplementedException(string.Format(
                 "FSTSW/TEST AH,0x{0:X2}/J{1} not implemented.", mask, cc));
              */
+        }
+
+        private void RewriteCall(MachineOperand callTarget, PrimitiveType opsize)
+        {
+            var sp = StackPointer();
+            emitter.Assign(sp, emitter.Sub(sp, opsize.Size));
+            Address addr = OperandAsCodeAddress(callTarget);
+            if (addr != null)
+            {
+                emitter.Call(addr);
+            }
+            else
+            {
+                emitter.Call(SrcOp(callTarget));
+            }
         }
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)

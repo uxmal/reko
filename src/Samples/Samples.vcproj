@@ -24,9 +24,9 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake /d /p /f makefile /D Configuration=$(ConfigurationName)"
-				ReBuildCommandLine="nmake /d /p /f makefile /D Configuration=$(ConfigurationName) clean all"
-				CleanCommandLine="nmake /d /p /f makefile /D Configuration=$(ConfigurationName) clean"
+				BuildCommandLine="nmake /p /f makefile /D Configuration=$(ConfigurationName)"
+				ReBuildCommandLine="nmake /p /f makefile /D Configuration=$(ConfigurationName) clean all"
+				CleanCommandLine="nmake  /p /f makefile /D Configuration=$(ConfigurationName) clean"
 				Output=""
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""

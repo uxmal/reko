@@ -242,6 +242,11 @@ namespace Decompiler.Core
             return b;
         }
 
+        public void Call(Expression target)
+        {
+            Emit(new IndirectCall(target, null));
+        }
+
         public Expression Cand(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Cand, PrimitiveType.Bool, a, b);
