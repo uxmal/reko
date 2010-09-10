@@ -55,13 +55,15 @@ namespace Decompiler.Core
 
     public struct RewrittenInstruction
     {
-        public uint LinearAddress;
+        public Address Address;
         public Instruction Instruction;
+        public uint Length;                 // Length of the original instruction in bytes.
 
-        public RewrittenInstruction(uint linearAddress, Instruction instr)
+        public RewrittenInstruction(Address addr, Instruction instr, uint length)
         {
-            this.LinearAddress = linearAddress;
+            this.Address = addr;
             this.Instruction = instr;
+            this.Length = length;
         }
     }
 }

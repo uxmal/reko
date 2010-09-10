@@ -70,7 +70,8 @@ namespace Decompiler.UnitTests.Mocks
             {
                 var i = new RewrittenInstruction();
                 i.Instruction = stm.Instruction;
-                i.LinearAddress = linaddr++;
+                i.Address = new Address(linaddr++);
+                i.Length = 1;
                 yield return i;
             }
         }

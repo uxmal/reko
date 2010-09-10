@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private void AssertCode(uint expectedAddr, string expected, IEnumerator<RewrittenInstruction> e)
         {
             Assert.IsTrue(e.MoveNext());
-            Assert.AreEqual(expectedAddr, e.Current.LinearAddress, "Linear address was not as expected.");
+            Assert.AreEqual(expectedAddr, e.Current.Address.Linear, "Linear address was not as expected.");
             Assert.AreEqual(expected, e.Current.Instruction.ToString(), "Instruction was not rewritten as expected");
         }
 
@@ -75,9 +75,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             m.Mov(m.ax, m.bx);
             var rw = CreateRewriter(m);
             var e = rw.GetEnumerator();
-            Assert.IsTrue(e.MoveNext());
-            Assert.AreEqual(0xC000, e.Current.LinearAddress);
-            Assert.AreEqual("ax = bx", e.Current.Instruction.ToString());
+            AssertCode(0xC000, "ax = bx", e);
         }
 
         private X86Rewriter CreateRewriter(IntelAssembler m)
@@ -96,8 +94,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Mov(m.ax, m.Mem(Registers.bp, -8));
             var e = CreateRewriter(m).GetEnumerator();
-            e.MoveNext();
-            Assert.AreEqual("ax = Mem0[ss:bp - 0x0008:word16]", e.Current.Instruction.ToString());
+            AssertCode("ax = Mem0[ss:bp - 0x0008:word16]", e);
         }
 
         [Test]
@@ -106,12 +103,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Add(m.ax, m.Mem(Registers.si, 4));
             var e = CreateRewriter(m).GetEnumerator();
-            e.MoveNext();
-            Assert.AreEqual(0x0C000, e.Current.LinearAddress);
-            Assert.AreEqual("ax = ax + Mem0[ds:si + 0x0004:word16]", e.Current.Instruction.ToString());
-            Assert.IsTrue(e.MoveNext());
-            Assert.AreEqual(0xC000, e.Current.LinearAddress);
-            Assert.AreEqual("SCZO = cond(ax)", e.Current.Instruction.ToString());
+            AssertCode(0x0C000, "ax = ax + Mem0[ds:si + 0x0004:word16]", e);
+            AssertCode(0x0C000, "SCZO = cond(ax)", e);
         }
 
         [Test]
@@ -120,12 +113,9 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Add(m.WordPtr(0x1000), 3);
             var e = CreateRewriter(m).GetEnumerator();
-            e.MoveNext();
-            Assert.AreEqual("v3 = Mem0[ds:0x1000:word16] + 0x0003", e.Current.Instruction.ToString());
-            e.MoveNext();
-            Assert.AreEqual("store(Mem0[ds:0x1000:word16]) = v3", e.Current.Instruction.ToString());
-            e.MoveNext();
-            Assert.AreEqual("SCZO = cond(v3)", e.Current.Instruction.ToString());
+            AssertCode("v3 = Mem0[ds:0x1000:word16] + 0x0003", e);
+            AssertCode("store(Mem0[ds:0x1000:word16]) = v3", e);
+            AssertCode("SCZO = cond(v3)", e);
         }
 
         [Test]
@@ -134,10 +124,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Sub(m.ecx, 0x12345);
             var e = CreateRewriter(m).GetEnumerator();
-            e.MoveNext();
-            Assert.AreEqual("ecx = ecx - 0x00012345", e.Current.Instruction.ToString());
-            e.MoveNext();
-            Assert.AreEqual("SCZO = cond(ecx)", e.Current.Instruction.ToString());
+            AssertCode("ecx = ecx - 0x00012345", e);
+            AssertCode("SCZO = cond(ecx)", e);
         }
 
         [Test]
@@ -146,12 +134,9 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Or(m.ax, m.dx);
             var e = CreateRewriter(m).GetEnumerator();
-            e.MoveNext();
-            Assert.AreEqual("ax = ax | dx", e.Current.Instruction.ToString());
-            e.MoveNext();
-            Assert.AreEqual("SZO = cond(ax)", e.Current.Instruction.ToString());
-            e.MoveNext();
-            Assert.AreEqual("C = false", e.Current.Instruction.ToString());
+            AssertCode("ax = ax | dx", e);
+            AssertCode("SZO = cond(ax)", e);
+            AssertCode("C = false", e);
         }
 
         [Test]

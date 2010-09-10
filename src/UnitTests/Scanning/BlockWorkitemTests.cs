@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Scanning
             BlockWorkitem2 wi = new BlockWorkitem2(scanner, arch, null, new Frame(arch.FramePointerType), block);
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count);
-            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, proc.ExitBlock));
+            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, proc.ExitBlock), "Expected return to add an edge to the Exit block");
         }
 
         [Test]
@@ -111,17 +111,51 @@ namespace Decompiler.UnitTests.Scanning
         {
             m.Assign(m.Register(0), 3);
             m.Goto(0x4000);
+
+            Block next = new Block(block.Procedure, "next");
             using (repository.Record())
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
                     Arg<Frame>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Is.Anything,
+                    Arg<Procedure>.Is.Same(block.Procedure))).Return(next);
             }
 
             var wi = new BlockWorkitem2(scanner, arch, new Address(0x1234), new Frame(arch.FramePointerType), block);
             wi.Process();
             Assert.AreEqual(0, block.Statements.Count);
+            Assert.AreEqual(1, proc.ControlGraph.Successors(block).Count);
+            var items = new List<Block>(proc.ControlGraph.Successors(block));
+            Assert.AreSame(next, items[0]);
+            repository.VerifyAll();
+        }
+
+        [Test]
+        public void HandleBranch()
+        {
+            m.IfGoto(m.Register(1), new Address(0x4000));
+            m.Assign(m.Register(1), m.Register(2));
+            using (repository.Record())
+            {
+                arch.Stub(x => x.CreateRewriter2(
+                    Arg<ImageReader>.Is.Anything,
+                    Arg<Frame>.Is.Anything)).Return(rewriter);
+                rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Matches(arg => arg.Offset == 0x100001),
+                    Arg<Procedure>.Is.Same(block.Procedure))).Return(null);
+                scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Matches(arg => arg.Offset == 0x4000),
+                    Arg<Procedure>.Is.Same(block.Procedure))).Return(null);
+            }
+            var wi = new BlockWorkitem2(scanner, arch, new Address(0x100000), new Frame(arch.FramePointerType), block);
+            wi.Process();
+            Assert.AreEqual(1, block.Statements.Count);
+
+            repository.VerifyAll();
         }
 
     }

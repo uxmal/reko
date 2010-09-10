@@ -330,7 +330,7 @@ namespace Decompiler.Core
 
         public GotoInstruction Goto(uint linearAddress)
         {
-            var gi = new GotoInstruction(new Constant(PrimitiveType.Word32, linearAddress));
+            var gi = new GotoInstruction(new Address(linearAddress));
             Emit(gi);
             return gi;
         }
@@ -338,6 +338,14 @@ namespace Decompiler.Core
         public GotoInstruction IfGoto(Expression condition, Address addr)
         {
             var gi = new GotoInstruction(condition, addr);
+            Emit(gi);
+            return gi;
+        }
+
+        public GotoInstruction IfGoto(Expression condition, uint linearAddress)
+        {
+            var gi = new GotoInstruction(condition,
+                new Constant(PrimitiveType.Word32, linearAddress));
             Emit(gi);
             return gi;
         }

@@ -89,10 +89,11 @@ namespace Decompiler.Arch.Intel
         {
             while (dasm.MoveNext())
             {
-                emitter = new Emitter(frame);
-                emitter.LinearAddress = dasm.Current.Address.Linear;
-                orw = new OperandRewriter2(arch, frame);
                 di = dasm.Current;
+                emitter = new Emitter(frame);
+                emitter.Address = di.Address;
+                emitter.Length = di.Length;
+                orw = new OperandRewriter2(arch, frame);
                 switch (di.Instruction.code)
                 {
                 default:
@@ -210,11 +211,12 @@ namespace Decompiler.Arch.Intel
 
             public List<RewrittenInstruction> Instructions { get { return ri; } }
 
-            public uint LinearAddress { get; set; }
+            public Address Address { get; set; }
+            public uint Length { get; set; }
 
             public override Statement Emit(Instruction instr)
             {
-                var i = new RewrittenInstruction(LinearAddress, instr);
+                var i = new RewrittenInstruction(Address, instr, Length);
                 ri.Add(i);
                 return null; //$REview: if you really need Statement, get Block.LastSTatement
             }
