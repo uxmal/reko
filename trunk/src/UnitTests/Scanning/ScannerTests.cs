@@ -68,6 +68,13 @@ namespace Decompiler.UnitTests.Scanning
             Assert.AreEqual(0x12314, sc.Procedures.Keys[0].Offset);
         }
 
+        [Test]
+        public void AddBlock()
+        {
+            var sc = new Scanner2(arch, new ProgramImage(new Address(0x0100), new byte[10]));
+            var block = sc.AddBlock(new Address(0x102), new Procedure("bob", null), "l0102");
+            Assert.IsNotNull(sc.FindBlock(new Address(0x0102)));
+        }
     }
 
     [TestFixture]

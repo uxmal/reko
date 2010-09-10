@@ -37,6 +37,7 @@ namespace Decompiler.Scanning
         private Address addrStart;
         private Block blockCur;
         private Frame frame;
+        private RewrittenInstruction ri;
 
         private bool processNextInstruction;
 
@@ -58,11 +59,12 @@ namespace Decompiler.Scanning
         {
             var rw = arch.CreateRewriter2(scanner.CreateReader(addrStart), frame);
             processNextInstruction = true;
-            foreach (var ri in rw)
+            for (var e = rw.GetEnumerator(); e.MoveNext(); )
             {
+                ri = e.Current;
+                ri.Instruction.Accept(this);
                 if (!processNextInstruction)
                     break;
-                ri.Instruction.Accept(this);
             }
         }
 
@@ -77,18 +79,13 @@ namespace Decompiler.Scanning
             uint linAddr = (uint) addrStart.Linear;
         }
 
+        private void TerminateBlock()
+        {
+        }
+
         private Block AddBlock(Block block)
         {
             throw new NotImplementedException();
-        }
-
-        private Block FindBlock(Address addrStart)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void TerminateBlock()
-        {
         }
 
         private Block SplitBlock(Block block, Address addrStart)
@@ -122,8 +119,23 @@ namespace Decompiler.Scanning
 
         public void VisitGotoInstruction(GotoInstruction g)
         {
-            TerminateBlock();
-            this.processNextInstruction = false;
+            if (g.Condition is Constant)
+            {
+                var blockTarget = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure);
+                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockTarget);
+                TerminateBlock();
+                this.processNextInstruction = false;
+            }
+            else
+            {
+                var blockThen = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure);
+                var blockElse = scanner.EnqueueJumpTarget(ri.Address + ri.Length, blockCur.Procedure);
+                this.blockCur.Statements.Add(
+                    ri.Address.Linear,
+                    new Branch(g.Condition, blockThen));
+                TerminateBlock();
+                this.processNextInstruction = false;
+            }
         }
 
         public void VisitPhiAssignment(PhiAssignment phi)
@@ -137,7 +149,8 @@ namespace Decompiler.Scanning
 
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
-            blockCur.Statements.Add(ret);
+            blockCur.Statements.Add(ri.Address.Linear, ret);
+            blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
             TerminateBlock();
             this.processNextInstruction = false;
         }

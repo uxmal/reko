@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 using System.Diagnostics;
@@ -23,8 +25,8 @@ using System.Collections.Generic;
 namespace Decompiler.Core.Lib
 {
 	/// <summary>
-	/// Represents a collection of key-and-value pairs in sorted order. Lookups are just
-	/// as efficient as with the SortedList class, while adding and removing elements are much faster.
+	/// Represents a collection of key-and-value pairs in sorted order, with support for lower bound
+    /// searches.
 	/// </summary>
     public class Map<K,V> : SortedList<K,V>
     {

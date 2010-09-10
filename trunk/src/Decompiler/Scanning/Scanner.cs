@@ -34,17 +34,165 @@ namespace Decompiler.Scanning
     public interface IScanner
     {
         void EnqueueEntryPoint(EntryPoint ep);
-        Block EnqueueJumpTarget(Address addr);
+        Block EnqueueJumpTarget(Address addr, Procedure proc);
         void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc);
         Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state);
         void EnqueueUserProcedure(SerializedProcedure sp);
         void ProcessQueue();
 
-        Block AddBlock(Address addr);
+        Block AddBlock(Address addr, Procedure proc, string blockName);
+
+        /// <summary>
+        /// Find the block that contains the address <paramref name="addr"/>, or return null if there
+        /// is no such block.
+        /// </summary>
+        /// <param name="addrStart"></param>
+        /// <returns></returns>
         Block FindBlock(Address addr);
         Block SplitBlock(Block block, Address addr);
 
         ImageReader CreateReader(Address addr);
+    }
+
+    /// <summary>
+    /// Scans the binary, locating procedures and basic blocks by following calls, jumps,
+    /// and branches. Simple data type analysis is done as well: for instance, pointers to
+    /// code are located, as are global data pointers.
+    /// </summary>
+    /// <remarks>
+    /// Callers feed the scanner by calling EnqueueXXX methods before calling Scan(). Scan() then
+    /// processes the queues.
+    /// </remarks>
+    public class Scanner2 : IScanner
+    {
+        private IProcessorArchitecture arch;
+        private PriorityQueue<WorkItem2> queue;
+        private ProgramImage image;
+        private Map<uint, BlockRange> blocks;
+
+        private const int PriorityEntryPoint = 5;
+        private const int PriorityJumpTarget = 6;
+
+        public Scanner2(IProcessorArchitecture arch, ProgramImage image)
+        {
+            this.arch = arch;
+            this.image = image;
+            this.Procedures = new SortedList<Address, Procedure>();
+            this.queue = new PriorityQueue<WorkItem2>();
+            this.blocks = new Map<uint, BlockRange>();
+            blocks.Add(image.BaseAddress.Linear, new BlockRange
+            {
+                Block = null,
+                Start = image.BaseAddress.Linear,
+                End = image.BaseAddress.Linear + (uint)image.Bytes.Length
+            });
+        }
+
+        private class BlockRange
+        {
+            public Block Block { get; set; }
+            public uint Start { get; set; }
+            public uint End { get; set; }
+        }
+
+        #region IScanner Members
+
+        public Block AddBlock(Address addr, Procedure proc, string blockName)
+        {
+            Block b = new Block(proc, blockName);
+            blocks.Add(addr.Linear, new BlockRange { Block = b, Start = addr.Linear, End = image.BaseAddress.Linear + (uint) image.Bytes.Length });
+            return b;
+        }
+
+        public ImageReader CreateReader(Address addr)
+        {
+            return image.CreateReader(addr);
+        }
+
+        public void EnqueueEntryPoint(EntryPoint ep)
+        {
+            queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem2());
+        }
+
+        public void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Block EnqueueJumpTarget(Address addrStart, Procedure proc)
+        {
+            Block block = FindBlock(addrStart);
+            if (block != null)
+            {
+                block = SplitBlock(block, addrStart);
+            }
+            else
+            {
+                block = AddBlock(addrStart, proc, addrStart.GenerateName("l", ""));
+                queue.Enqueue(
+                    PriorityJumpTarget,
+                    new BlockWorkitem2(
+                        this,
+                        this.arch,
+                        addrStart,
+                        new Frame(arch.FramePointerType),
+                        block));
+            }
+            return block;
+        }
+
+        public Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EnqueueUserProcedure(SerializedProcedure sp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Block FindBlock(Address address)
+        {
+            BlockRange b;
+            if (blocks.TryGetLowerBound(address.Linear, out b))
+                return b.Block;
+            else
+                return null;
+        }
+
+        public Block SplitBlock(Block block, Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ProcessQueue()
+        {
+            while (queue.Count > 0)
+            {
+                var workitem = queue.Dequeue();
+                workitem.Process();
+            }
+            var addr = new Address(0x12314);
+            Procedures.Add(addr, Procedure.Create(addr, new Frame(arch.FramePointerType)));
+        }
+
+        #endregion
+
+        public SortedList<Address, Procedure> Procedures { get; private set; }
+
+        public abstract class WorkItem2
+        {
+            public abstract void Process();
+        }
+
+        private class EntryPointItem : WorkItem2
+        {
+            public override void Process()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
     }
 
 	/// <summary>
@@ -575,7 +723,7 @@ namespace Decompiler.Scanning
 
         #region IScanner Members
 
-        public Block AddBlock(Address addr)
+        public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             throw new NotImplementedException();
         }
@@ -590,7 +738,7 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        public Block EnqueueJumpTarget(Address addr)
+        public Block EnqueueJumpTarget(Address addr, Procedure proc)
         {
             throw new NotImplementedException();
         }
