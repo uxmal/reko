@@ -61,6 +61,8 @@ namespace Decompiler.UnitTests.Mocks
 
         public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
 
+        public IEnumerable<RewrittenInstruction> InstructionStream { get; set; }
+
 		public static MachineRegister GetMachineRegister(int i)
 		{
 			return registers[i];
@@ -80,7 +82,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public Rewriter2 CreateRewriter2(ImageReader rdr, Frame frame)
         {
-            throw new NotImplementedException();
+            return new FakeRewriter(InstructionStream);
         }
 
 		public Dumper CreateDumper()

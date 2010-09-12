@@ -20,25 +20,37 @@
 
 using Decompiler.Core;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Scanning
+namespace Decompiler.UnitTests.Mocks
 {
-    public class EntryPointWorkitem2 : Scanner2.WorkItem2
+    public class FakeRewriter : Rewriter2
     {
-        private IScanner scanner;
-        private EntryPoint ep;
+        IEnumerable<RewrittenInstruction> instrs;
 
-        public EntryPointWorkitem2(IScanner scanner, EntryPoint ep)
+        public FakeRewriter(IEnumerable<RewrittenInstruction> instrs)
         {
-            this.scanner = scanner;
-            this.ep = ep;
+            this.instrs = instrs;
+        }
 
-        }
-        public override void Process()
+        #region IEnumerable<RewrittenInstruction> Members
+
+        public IEnumerator<RewrittenInstruction> GetEnumerator()
         {
-            scanner.EnqueueProcedure(null, ep.Address, ep.Name, ep.ProcessorState);
+            return instrs.GetEnumerator();
         }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 }
