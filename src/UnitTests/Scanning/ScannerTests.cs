@@ -56,7 +56,11 @@ namespace Decompiler.UnitTests.Scanning
                     new RegisterOperand(arch.GetRegister(1)), 
                     ImmediateOperand.Word32(1))
             };
-
+            arch.InstructionStream = new RewrittenInstruction[] { 
+                new RewrittenInstruction(new Address(0x12314),
+                    new ReturnInstruction(null),
+                    1)
+            };
             var sc = new Scanner2(arch, new ProgramImage(new Address(0x12314), new byte[1]));
             sc.EnqueueEntryPoint(
                 new EntryPoint(
@@ -73,7 +77,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             var sc = new Scanner2(arch, new ProgramImage(new Address(0x0100), new byte[10]));
             var block = sc.AddBlock(new Address(0x102), new Procedure("bob", null), "l0102");
-            Assert.IsNotNull(sc.FindBlock(new Address(0x0102)));
+            Assert.IsNotNull(sc.FindExactBlock(new Address(0x0102)));
         }
     }
 

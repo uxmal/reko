@@ -281,6 +281,7 @@
     <Compile Include="Mocks\ByteArrayLoopMock.cs" />
     <Compile Include="Mocks\FakeDisassembler.cs" />
     <Compile Include="Mocks\FakeInstruction.cs" />
+    <Compile Include="Mocks\FakeRewriter.cs" />
     <Compile Include="Mocks\FakeStatusBarService.cs" />
     <Compile Include="Mocks\FakeDecompiler.cs" />
     <Compile Include="Mocks\FakeDecompilerConfiguration.cs" />

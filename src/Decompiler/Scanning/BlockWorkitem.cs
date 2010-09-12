@@ -88,11 +88,6 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        private Block SplitBlock(Block block, Address addrStart)
-        {
-            throw new NotImplementedException();
-        }
-
         #region InstructionVisitor Members
 
         public void VisitAssignment(Assignment a)
