@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,6 +140,18 @@ namespace Decompiler.Scanning
 
         public void VisitIndirectCall(IndirectCall ic)
         {
+            Address addr = ic.Callee as Address;
+            if (addr != null)
+            {
+                var callee = scanner.EnqueueProcedure(this, addr, null, null);
+                blockCur.Statements.Add(
+                    ri.Address.Linear, 
+                    new CallInstruction(
+                        new ProcedureConstant(PrimitiveType.Pointer32, callee),
+                        new CallSite(0, 0)));
+                scanner.CallGraph.AddEdge(blockCur.Statements.Last, callee);
+                return;
+            }
             throw new NotImplementedException();
         }
 

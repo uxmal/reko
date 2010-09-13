@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Scanning
             prog = new Program();
             proc = new Procedure("testProc", new Frame(null));
             block = new Block(proc, "test");
-            m = new LowLevelStatementStream();
+            m = new LowLevelStatementStream(0x1000, block);
 
             scanner = repository.DynamicMock<IScanner>();
             arch = repository.DynamicMock<IProcessorArchitecture>();
@@ -138,6 +138,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             m.IfGoto(m.Register(1), new Address(0x4000));
             m.Assign(m.Register(1), m.Register(2));
+
             using (repository.Record())
             {
                 arch.Stub(x => x.CreateRewriter2(
@@ -145,7 +146,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Frame>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Expect(x => x.EnqueueJumpTarget(
-                    Arg<Address>.Matches(arg => arg.Offset == 0x100001),
+                    Arg<Address>.Matches(arg => arg.Offset == 0x1004),
                     Arg<Procedure>.Is.Same(block.Procedure))).Return(null);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x4000),
@@ -158,5 +159,33 @@ namespace Decompiler.UnitTests.Scanning
             repository.VerifyAll();
         }
 
+        [Test]
+        public void CallInstructionShouldAddNodeToCallgraph()
+        {
+            m.Call(new Address(0x1200));
+            m.Store(m.Word32(0x4000), m.Word32(0));
+            m.Return();
+
+            var cg = new CallGraph();
+            using (repository.Record())
+            {
+                arch.Stub(x => x.CreateRewriter2(
+                    Arg<ImageReader>.Is.Anything,
+                    Arg<Frame>.Is.Anything)).Return(rewriter);
+                rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                scanner.Stub(x => x.CallGraph).Return(cg);
+                scanner.Expect(x => x.EnqueueProcedure(
+                    Arg<Scanner2.WorkItem2>.Is.Anything,
+                    Arg<Address>.Matches(arg => arg.Offset == 0x1200),
+                    Arg<string>.Is.Null,
+                    Arg<ProcessorState>.Is.Anything))
+                        .Return(new Procedure("fn1200", new Frame(null)));
+            }
+            var wi = new BlockWorkitem2(scanner, arch, new Address(0x1000), new Frame(arch.FramePointerType), block);
+            wi.Process();
+            var callees = new List<Procedure>(cg.Callees(block.Procedure));
+            Assert.AreEqual(1, callees.Count);
+            Assert.AreEqual("fn1200", callees[0].Name);
+        }
     }
 }
