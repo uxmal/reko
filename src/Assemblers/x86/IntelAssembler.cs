@@ -1097,6 +1097,13 @@ namespace Decompiler.Assemblers.x86
             ProcessBinop(0, dst, src);
         }
 
+        public void Bswap(ParsedOperand op)
+        {
+            var reg = ((RegisterOperand)op.Operand).Register;
+            emitter.EmitOpcode(0x0F, op.Operand.Width);
+            emitter.EmitByte(0xC8 | RegisterEncoding(reg));
+        }
+
         public void Dec(ParsedOperand op)
         {
             ProcessIncDec(true, op);
@@ -1120,6 +1127,11 @@ namespace Decompiler.Assemblers.x86
             ProcessImul(dx);
         }
 
+        public void Int(int serviceVector)
+        {
+            ProcessInt(Const(serviceVector));
+
+        }
         public void Inc(ParsedOperand op)
         {
             ProcessIncDec(false, op);

@@ -36,11 +36,18 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelArchitecture arch;
         private IntelArchitecture arch32;
         private IntelEmitter emitter;
+        private RewriterHost host;
 
         public X86RewriterTests()
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
             arch32 = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            host = new RewriterHost();
         }
 
         private IntelAssembler Create16bitAssembler()
@@ -68,6 +75,21 @@ namespace Decompiler.UnitTests.Arch.Intel
             Assert.AreEqual(expected, e.Current.Instruction.ToString(), "Instruction was not rewritten as expected");
         }
 
+        private class RewriterHost : IRewriterHost2
+        {
+            private Dictionary<string, PseudoProcedure> ppp = new Dictionary<string,PseudoProcedure>();
+
+            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+            {
+                PseudoProcedure p;
+                if (ppp.TryGetValue(name, out p))
+                    return p;
+                p = new PseudoProcedure(name, returnType, arity);
+                ppp.Add(name, p);
+                return p;
+            }
+        }
+
         [Test]
         public void MovAxBx()
         {
@@ -80,12 +102,12 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private X86Rewriter CreateRewriter(IntelAssembler m)
         {
-            return new X86Rewriter(arch, m.GetImage().CreateReader(0), new Frame(arch.WordWidth));
+            return new X86Rewriter(host, arch, m.GetImage().CreateReader(0), new Frame(arch.WordWidth));
         }
 
         private X86Rewriter CreateRewriter32(IntelAssembler m)
         {
-            return new X86Rewriter(arch32, m.GetImage().CreateReader(0), new Frame(arch.WordWidth));
+            return new X86Rewriter(host, arch32, m.GetImage().CreateReader(0), new Frame(arch32.WordWidth));
         }
 
         [Test]
@@ -267,6 +289,28 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             AssertCode(0x10000000, "esp = esp - 0x00000004", e);
             AssertCode(0x10000000, "icall 0x10000000", e);
+        }
+
+        [Test]
+        public void Bswap()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Bswap(m.ebx);
+            });
+            AssertCode("ebx = __bswap(ebx)",e);
+        }
+
+        [Test]
+        public void IntInstruction()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Mov(m.ax, 0x4C00);
+                m.Int(0x21);
+            });
+            AssertCode("ax = 0x4C00", e);
+            AssertCode("__syscall(0x21)", e);
         }
     }
 }

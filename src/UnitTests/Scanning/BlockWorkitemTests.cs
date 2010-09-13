@@ -18,8 +18,10 @@
  */
 #endregion
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Types;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -56,6 +58,11 @@ namespace Decompiler.UnitTests.Scanning
             rewriter = repository.Stub<Rewriter2>();
         }
 
+        private BlockWorkitem2 CreateWorkItem(Address addr)
+        {
+            return new BlockWorkitem2(scanner, null, arch, addr, proc.Frame, block);
+        }
+
         [Test]
         public void RewriteReturn()
         {
@@ -68,11 +75,12 @@ namespace Decompiler.UnitTests.Scanning
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
-                    Arg<Frame>.Is.Anything)).Return(rewriter);
+                    Arg<Frame>.Is.Anything,
+                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
             }
 
-            BlockWorkitem2 wi = new BlockWorkitem2(scanner, arch, null, new Frame(arch.FramePointerType), block);
+            var wi = CreateWorkItem(new Address(0x1000));
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, proc.ExitBlock), "Expected return to add an edge to the Exit block");
@@ -87,12 +95,13 @@ namespace Decompiler.UnitTests.Scanning
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
-                    Arg<Frame>.Is.Anything)).Return(rewriter);
+                    Arg<Frame>.Is.Anything,
+                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
             }
 
             m.Emit(new Branch(m.Eq0(m.Register(0)), null));
-            var wi = new BlockWorkitem2(scanner, arch, null, new Frame(arch.FramePointerType), block);
+            var wi = CreateWorkItem(new Address(0x1000));
             try
             {
                 wi.Process();
@@ -117,14 +126,15 @@ namespace Decompiler.UnitTests.Scanning
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
-                    Arg<Frame>.Is.Anything)).Return(rewriter);
+                    Arg<Frame>.Is.Anything,
+                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Is.Anything,
                     Arg<Procedure>.Is.Same(block.Procedure))).Return(next);
             }
 
-            var wi = new BlockWorkitem2(scanner, arch, new Address(0x1234), new Frame(arch.FramePointerType), block);
+            var wi = CreateWorkItem(new Address(0x1000));
             wi.Process();
             Assert.AreEqual(0, block.Statements.Count);
             Assert.AreEqual(1, proc.ControlGraph.Successors(block).Count);
@@ -143,7 +153,8 @@ namespace Decompiler.UnitTests.Scanning
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
-                    Arg<Frame>.Is.Anything)).Return(rewriter);
+                    Arg<Frame>.Is.Anything,
+                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x1004),
@@ -152,7 +163,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Matches(arg => arg.Offset == 0x4000),
                     Arg<Procedure>.Is.Same(block.Procedure))).Return(null);
             }
-            var wi = new BlockWorkitem2(scanner, arch, new Address(0x100000), new Frame(arch.FramePointerType), block);
+            var wi = CreateWorkItem(new Address(0x1000));
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count);
 
@@ -171,7 +182,8 @@ namespace Decompiler.UnitTests.Scanning
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
-                    Arg<Frame>.Is.Anything)).Return(rewriter);
+                    Arg<Frame>.Is.Anything,
+                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Stub(x => x.CallGraph).Return(cg);
                 scanner.Expect(x => x.EnqueueProcedure(
@@ -181,11 +193,87 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ProcessorState>.Is.Anything))
                         .Return(new Procedure("fn1200", new Frame(null)));
             }
-            var wi = new BlockWorkitem2(scanner, arch, new Address(0x1000), new Frame(arch.FramePointerType), block);
+            var wi = CreateWorkItem(new Address(0x1000));
             wi.Process();
             var callees = new List<Procedure>(cg.Callees(block.Procedure));
             Assert.AreEqual(1, callees.Count);
             Assert.AreEqual("fn1200", callees[0].Name);
         }
+
+        [Test]
+        [Ignore("Need split to work in scanner first")]
+        public void SplitBlock()
+        {
+            m.Assign(m.Register(0), 0);
+            m.Add(m.Register(0), 1);
+            m.IfGoto(m.Lt(m.Register(0), 10), new Address(0x1004));
+            m.Return();
+
+            using (repository.Record())
+            {
+                arch.Stub(x => x.CreateRewriter2(
+                    Arg<ImageReader>.Is.Anything,
+                    Arg<Frame>.Is.Anything,
+                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
+                rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+            }
+            var wi = CreateWorkItem(new Address(0x1000));
+            wi.Process();
+        }
+
+
+#if NOT_READY_YET
+        [Test]
+        public void WalkServiceCall()
+        {
+            // Checks to see if a sequence return value (es:bx) trashes the state appropriately.
+            IntelState state = new IntelState();
+            state.Set(Registers.es, Constant.Word16(0));
+            state.Set(Registers.es, Constant.Word16(0));
+
+            state.Set(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
+
+            IntelInstruction instr = new IntelInstruction(Opcode.@int, PrimitiveType.Word16, PrimitiveType.Word16,
+                new ImmediateOperand(Constant.Byte(0x21)));
+
+            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+            TestCodeWalkerListener listener = new TestCodeWalkerListener();
+            IntelCodeWalker cw = new IntelCodeWalker(arch, new MsdosPlatform(arch), null, state);
+            cw.WalkInstruction(new Address(0x100, 0x100), instr, null, listener);
+            Assert.IsFalse(state.Get(Registers.es).IsValid, "should have trashed ES");
+            Assert.IsFalse(state.Get(Registers.bx).IsValid, "should have trashed BX");
+            Assert.AreEqual(1, listener.SystemCalls.Count);
+        }
+
+        [Test]
+        public void WalkBswap()
+        {
+            IntelState state = new IntelState();
+            state.Set(Registers.ebp, new Constant(PrimitiveType.Word32, 0x12345678));
+            IntelInstruction instr = new IntelInstruction(Opcode.bswap, PrimitiveType.Word32, PrimitiveType.Word32,
+                new RegisterOperand(Registers.ebp));
+
+            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            IntelCodeWalker cw = new IntelCodeWalker(arch, null, null, state);
+            cw.WalkInstruction(new Address(0x100000), instr, null, null);
+            Assert.AreSame(Constant.Invalid, state.Get(Registers.ebp));
+        }
+
+        [Test]
+        public void WalkMovConst()
+        {
+            IntelState state = new IntelState();
+            state.Set(Registers.esi, new Constant(PrimitiveType.Word32, 0x42424242));
+            IntelInstruction instr = new IntelInstruction(Opcode.mov, PrimitiveType.Word16, PrimitiveType.Word32,
+                new RegisterOperand(Registers.si),
+                new ImmediateOperand(new Constant(0x0606)));
+
+            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            IntelCodeWalker cw = new IntelCodeWalker(arch, null, null, state);
+            cw.WalkInstruction(new Address(0x0100000), instr, null, null);
+            Assert.AreEqual(0x42420606, state.Get(Registers.esi).ToInt32());
+        }
+
+#endif
     }
 }

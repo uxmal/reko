@@ -50,7 +50,6 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void AddEntryPoint()
         {
-
             arch.DisassemblyStream = new MachineInstruction[] {
                 new FakeInstruction(Operation.Add,
                     new RegisterOperand(arch.GetRegister(1)), 
@@ -79,6 +78,30 @@ namespace Decompiler.UnitTests.Scanning
             var sc = new Scanner2(arch, new ProgramImage(new Address(0x0100), new byte[10]));
             var block = sc.AddBlock(new Address(0x102), new Procedure("bob", null), "l0102");
             Assert.IsNotNull(sc.FindExactBlock(new Address(0x0102)));
+        }
+
+        private Scanner2 CreateScanner(uint startAddress, int imageSize)
+        {
+            return new Scanner2(arch, new ProgramImage(new Address(startAddress), new byte[imageSize]));
+        }
+
+        [Test]
+        public void SplitBlock()
+        {
+            var sc = CreateScanner(0x100, 10);
+            var proc = new Procedure("foo", arch.CreateFrame());
+            var b101 = sc.EnqueueJumpTarget(new Address(0x101), proc);
+            b101.Statements.Add(0x101,new DefInstruction(null));
+            var b106 = sc.EnqueueJumpTarget(new Address(0x106), proc);
+            b106.Statements.Add(0x106,new DefInstruction(null));
+            var b104 = sc.EnqueueJumpTarget(new Address(0x104), proc);
+            b104.Statements.Add(0x104, new DefInstruction(null));
+            Assert.IsTrue(proc.ControlGraph.Nodes.Contains(b101));
+            Assert.IsTrue(proc.ControlGraph.Nodes.Contains(b106));
+            Assert.IsTrue(proc.ControlGraph.Nodes.Contains(b104));
+            Assert.AreEqual("l00000101", sc.FindContainingBlock(new Address(0x103)).Name);
+            Assert.AreEqual("l00000104", sc.FindContainingBlock(new Address(0x105)).Name);
+            Assert.AreEqual("l00000106", sc.FindContainingBlock(new Address(0x106)).Name);
         }
     }
 
