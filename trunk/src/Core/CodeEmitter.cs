@@ -298,7 +298,12 @@ namespace Decompiler.Core
 
         public Application Fn(Expression e, params Expression[] exps)
         {
-            return new Application(e, PrimitiveType.Word32, exps);
+            return Fn(e, PrimitiveType.Word32, exps);
+        }
+
+        public Application Fn(Expression fn, DataType retType, params Expression[] exps)
+        {
+            return new Application(fn, retType, exps);
         }
 
         public Expression Ge(Expression a, Expression b)

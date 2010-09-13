@@ -98,6 +98,12 @@ namespace Decompiler.Arch.Intel
             emitter.IfGoto(CreateTestCondition(cc, orw.FlagGroup(IntelInstruction.UseCc(di.Instruction.code))), OperandAsCodeAddress(op1));
         }
 
+
+        private void RewriteInt()
+        {
+            emitter.SideEffect(PseudoProc("__syscall", PrimitiveType.Void, SrcOp(di.Instruction.op1)));
+        }
+
         private void RewriteJmp()
         {
             if (IsRealModeReboot(di.Instruction))

@@ -34,6 +34,7 @@ namespace Decompiler.Scanning
     public class BlockWorkitem2 : Scanner2.WorkItem2, InstructionVisitor
     {
         private IScanner scanner;
+        private IRewriterHost2 host;
         private IProcessorArchitecture arch;
         private Address addrStart;
         private Block blockCur;
@@ -44,12 +45,14 @@ namespace Decompiler.Scanning
 
         public BlockWorkitem2(
             IScanner scanner, 
+            IRewriterHost2 host,
             IProcessorArchitecture arch, 
             Address addr,
             Frame frame,
             Block block)
         {
             this.scanner = scanner;
+            this.host = host;
             this.arch = arch;
             this.blockCur = block;
             this.addrStart = addr;
@@ -58,7 +61,7 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            var rw = arch.CreateRewriter2(scanner.CreateReader(addrStart), frame);
+            var rw = arch.CreateRewriter2(scanner.CreateReader(addrStart), frame, host);
             processNextInstruction = true;
             for (var e = rw.GetEnumerator(); e.MoveNext(); )
             {

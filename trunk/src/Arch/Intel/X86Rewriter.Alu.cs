@@ -58,6 +58,12 @@ namespace Decompiler.Arch.Intel
             return ass.Dst;
         }
 
+        public void RewriteBswap()
+        {
+            Identifier reg = (Identifier)orw.AluRegister(((RegisterOperand)di.Instruction.op1).Register);
+            emitter.Assign(reg, PseudoProc("__bswap", (PrimitiveType)reg.DataType, reg));
+        }
+
         public Assignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right)
         {
             Constant c = right as Constant;

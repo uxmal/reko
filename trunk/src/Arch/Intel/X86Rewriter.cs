@@ -32,8 +32,12 @@ using IEnumerator = System.Collections.IEnumerator;
 
 namespace Decompiler.Arch.Intel
 {
+    /// <summary>
+    /// Rewrites x86 instructions into a stream of low-level RTL-like instructions.
+    /// </summary>
     public partial class X86Rewriter : Rewriter, Rewriter2
     {
+        private IRewriterHost2 host;
         private IntelArchitecture arch;
         private Frame frame;
         private LookaheadEnumerator<DisassembledInstruction> dasm;
@@ -48,9 +52,10 @@ namespace Decompiler.Arch.Intel
         {
         }
 
-        public X86Rewriter(IntelArchitecture arch, ImageReader rdr, Frame frame)
+        public X86Rewriter(IRewriterHost2 host, IntelArchitecture arch, ImageReader rdr, Frame frame)
             : base(null)
         {
+            this.host = host;
             this.arch = arch;
             this.frame = frame;
             this.dasm = new LookaheadEnumerator<DisassembledInstruction>(CreateDisassemblyStream(rdr, arch.WordWidth));
@@ -100,8 +105,10 @@ namespace Decompiler.Arch.Intel
                     throw new NotImplementedException(string.Format("Intel opcode {0} not supported yet.", di.Instruction.code));
                 case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
                 case Opcode.and: RewriteLogical(BinaryOperator.And); break;
+                case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.@int: RewriteInt(); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.ja: RewriteConditionalGoto(ConditionCode.UGT, di.Instruction.op1); break;
                 case Opcode.jbe: RewriteConditionalGoto(ConditionCode.ULE, di.Instruction.op1); break;
@@ -128,12 +135,30 @@ namespace Decompiler.Arch.Intel
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
                 }
-
+                    
                 foreach (RewrittenInstruction ri in emitter.Instructions)
                 {
                     yield return ri;
                 }
             }
+        }
+
+        public Expression PseudoProc(string name, PrimitiveType retType, params Expression[] args)
+        {
+            PseudoProcedure ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
+            return PseudoProc(ppp, retType, args);
+        }
+
+        public Expression PseudoProc(PseudoProcedure ppp, PrimitiveType retType, params Expression[] args)
+        {
+            if (args.Length != ppp.Arity)
+                throw new ArgumentOutOfRangeException(
+                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
+                    ppp.Name,
+                    ppp.Arity,
+                    args.Length));
+
+            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

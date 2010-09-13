@@ -66,13 +66,14 @@ namespace Decompiler.Scanning
     /// Callers feed the scanner by calling EnqueueXXX methods before calling Scan(). Scan() then
     /// processes the queues.
     /// </remarks>
-    public class Scanner2 : IScanner
+    public class Scanner2 : IScanner, IRewriterHost2
     {
         private IProcessorArchitecture arch;
         private PriorityQueue<WorkItem2> queue;
         private ProgramImage image;
         private Map<uint, BlockRange> blocks;
         private CallGraph callgraph;
+        private Dictionary<string, PseudoProcedure> pseudoProcs;
 
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
@@ -84,11 +85,8 @@ namespace Decompiler.Scanning
             this.Procedures = new SortedList<Address, Procedure>();
             this.queue = new PriorityQueue<WorkItem2>();
             this.blocks = new Map<uint, BlockRange>();
-            this.callgraph = new CallGraph(); 
-            //blocks.Add(image.BaseAddress.Linear, new BlockRange(
-            //    new Block(null, "Image"),
-            //    image.BaseAddress.Linear,
-            //    image.BaseAddress.Linear + (uint)image.Bytes.Length));
+            this.callgraph = new CallGraph();
+            this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
         }
 
         private class BlockRange
@@ -118,6 +116,7 @@ namespace Decompiler.Scanning
         {
             Block b = new Block(proc, blockName);
             blocks.Add(addr.Linear, new BlockRange(b, addr.Linear, image.BaseAddress.Linear + (uint) image.Bytes.Length));
+            proc.ControlGraph.Nodes.Add(b);
             return b;
         }
 
@@ -155,6 +154,7 @@ namespace Decompiler.Scanning
             queue.Enqueue(
                 PriorityJumpTarget,
                 new BlockWorkitem2(
+                    this,
                     this,
                     this.arch,
                     addrStart,
@@ -206,10 +206,31 @@ namespace Decompiler.Scanning
             else
                 return null;
         }
-
+        /// <summary>
+        /// Splits the given block at the specified address, yielding two blocks. The first block is the original block,
+        /// now truncated, with a single out edge to the new block. The second block receives the out edges of the first block.
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="addr"></param>
+        /// <returns>The newly created, empty second block</returns>
         public Block SplitBlock(Block block, Address addr)
         {
-            throw new NotImplementedException();
+            var graph = block.Procedure.ControlGraph;
+            var blockNew = AddBlock(addr, block.Procedure, GenerateBlockName(addr));
+            foreach (var succ in graph.Successors(block))
+            {
+                graph.AddEdge(blockNew, succ);
+            }
+            foreach (var succ in graph.Successors(blockNew))
+            {
+                graph.RemoveEdge(block, succ);
+            }
+            graph.AddEdge(block, blockNew);
+
+            var linAddr = addr.Linear;
+            block.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
+            blocks[block.Statements[0].LinearAddress].End = linAddr;
+            return blockNew;
         }
 
         public void ProcessQueue()
@@ -238,6 +259,21 @@ namespace Decompiler.Scanning
             }
         }
 
+
+        #region IRewriterHost2 Members
+
+        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+        {
+            PseudoProcedure p;
+            if (!pseudoProcs.TryGetValue(name, out p))
+            {
+                p = new PseudoProcedure(name, returnType, arity);
+                pseudoProcs[name] = p;
+            }
+            return p;
+        }
+
+        #endregion
     }
 
 	/// <summary>

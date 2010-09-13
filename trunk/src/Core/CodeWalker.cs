@@ -24,6 +24,9 @@ using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
+    /// <summary>
+    /// Simulates execution of instructions, collecting constants, etc.
+    /// </summary>
 	public abstract class CodeWalker
 	{
 		public abstract Address Address { get; }
