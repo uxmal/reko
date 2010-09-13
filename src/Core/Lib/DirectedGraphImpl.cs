@@ -278,6 +278,8 @@ namespace Decompiler.Core.Lib
 
             private IEnumerator<T> GetSuccessorEnumerator()
             {
+                if (graph.nodes == null)
+                    yield break;
                 int iEdge = graph.nodes[iNode].firstSucc;
                 while (iEdge >= 0)
                 {
@@ -288,6 +290,8 @@ namespace Decompiler.Core.Lib
 
             private IEnumerator<T> GetPredecessorEnumerator()
             {
+                if (graph.nodes == null)
+                    yield break;
                 int iEdge = graph.nodes[iNode].firstPred;
                 while (iEdge >= 0)
                 {
@@ -331,9 +335,19 @@ namespace Decompiler.Core.Lib
                 get
                 {
                     if (fSuccessor)
-                        return graph.nodes[iNode].cSucc;
+                    {
+                        if (graph.nodes != null)
+                            return graph.nodes[iNode].cSucc;
+                        else
+                            return 0;
+                    }
                     else
-                        return graph.nodes[iNode].cPred;
+                    {
+                        if (graph.nodes != null)
+                            return graph.nodes[iNode].cPred;
+                        else
+                            return 0;
+                    }
                 }
             }
 

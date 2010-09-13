@@ -37,6 +37,7 @@ namespace Decompiler.Core
         {
             this.LinearAddress = linearAddress;
             this.Instruction = instr;
+            this.Block = block;
         }
 
         public uint LinearAddress { get; private set; }

@@ -70,6 +70,7 @@ namespace Decompiler.UnitTests.Scanning
 
             Assert.AreEqual(1, sc.Procedures.Count);
             Assert.AreEqual(0x12314, sc.Procedures.Keys[0].Offset);
+            Assert.IsTrue(sc.CallGraph.EntryPoints.Contains(sc.Procedures.Values[0]));
         }
 
         [Test]

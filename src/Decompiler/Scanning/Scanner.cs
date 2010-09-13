@@ -40,6 +40,8 @@ namespace Decompiler.Scanning
         void EnqueueUserProcedure(SerializedProcedure sp);
         void ProcessQueue();
 
+        CallGraph CallGraph { get; }
+
         Block AddBlock(Address addr, Procedure proc, string blockName);
 
         /// <summary>
@@ -52,6 +54,7 @@ namespace Decompiler.Scanning
         Block SplitBlock(Block block, Address addr);
 
         ImageReader CreateReader(Address addr);
+
     }
 
     /// <summary>
@@ -81,7 +84,7 @@ namespace Decompiler.Scanning
             this.Procedures = new SortedList<Address, Procedure>();
             this.queue = new PriorityQueue<WorkItem2>();
             this.blocks = new Map<uint, BlockRange>();
-            this.callgraph = new CallGraph();
+            this.callgraph = new CallGraph(); 
             //blocks.Add(image.BaseAddress.Linear, new BlockRange(
             //    new Block(null, "Image"),
             //    image.BaseAddress.Linear,
@@ -102,6 +105,11 @@ namespace Decompiler.Scanning
             public Block Block { get; set; }
             public uint Start { get; set; }
             public uint End { get; set; }
+        }
+
+        public CallGraph CallGraph
+        {
+            get { return callgraph; }
         }
 
         #region IScanner Members
@@ -154,6 +162,7 @@ namespace Decompiler.Scanning
                     block));
             return block;
         }
+
         private static string GenerateBlockName(Address addrStart)
         {
             return addrStart.GenerateName("l", "");
@@ -167,7 +176,7 @@ namespace Decompiler.Scanning
             {
                 proc = Procedure.Create(procedureName, addr, arch.CreateFrame());
                 Procedures.Add(addr, proc);
-                //CallGraph.AddProcedure(proc);
+                CallGraph.AddProcedure(proc);
             }
             var block = EnqueueJumpTarget(addr, proc);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
@@ -794,6 +803,8 @@ namespace Decompiler.Scanning
         {
             throw new NotImplementedException();
         }
+
+        CallGraph IScanner.CallGraph { get { throw new NotImplementedException(); } } 
 
         #endregion
     }

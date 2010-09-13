@@ -29,22 +29,27 @@ namespace Decompiler.UnitTests.Mocks
 {
     public class LowLevelStatementStream : CodeEmitter2
     {
-        private Frame frame;
-        private List<Statement> stms;
         private Block block;
+        private Frame frame;
+        private List<RewrittenInstruction> stms;
         private IProcessorArchitecture arch;
+        private uint linAddress;
 
-        public LowLevelStatementStream()
+        public LowLevelStatementStream(uint address, Block block)
         {
-            this.frame = new Frame(PrimitiveType.Word32);
-            this.block = new Block(null, "test");
+            this.linAddress = address;
+            this.block = block;
+            this.frame = block.Procedure.Frame;
             this.arch = new ArchitectureMock();
+            this.stms = new List<RewrittenInstruction>();   
         }
 
         public override Statement Emit(Instruction instr)
         {
-            block.Statements.Add(instr);
-            return block.Statements.Last;
+            stms.Add(new RewrittenInstruction(new Address(linAddress), instr, 4));
+            var stm = new Statement(linAddress, instr, block);
+            linAddress += 4;
+            return stm;
         }
 
         public Block Block
@@ -65,16 +70,8 @@ namespace Decompiler.UnitTests.Mocks
 
         public IEnumerator<RewrittenInstruction> GetRewrittenInstructions()
         {
-            uint linaddr = 0x100000;
-            foreach (Statement stm in block.Statements)
-            {
-                var i = new RewrittenInstruction();
-                i.Instruction = stm.Instruction;
-                i.Address = new Address(linaddr++);
-                i.Length = 1;
-                yield return i;
-            }
+            foreach (var x in stms)
+                yield return x;
         }
-
     }
 }
