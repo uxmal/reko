@@ -21,6 +21,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -311,6 +312,11 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             AssertCode("ax = 0x4C00", e);
             AssertCode("__syscall(0x21)", e);
+            var s = (SideEffect) e.Current.Instruction;
+            var app = (Application) s.Expression;
+            var pc = (ProcedureConstant) app.Procedure;
+            var ppp = (PseudoProcedure) pc.Procedure;
+            Assert.AreEqual("__syscall", ppp.Name);
         }
     }
 }

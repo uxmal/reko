@@ -34,36 +34,36 @@ namespace Decompiler.Scanning
     public class BlockWorkitem2 : Scanner2.WorkItem2, InstructionVisitor
     {
         private IScanner scanner;
-        private IRewriterHost2 host;
         private IProcessorArchitecture arch;
         private Address addrStart;
         private Block blockCur;
         private Frame frame;
         private RewrittenInstruction ri;
+        private Rewriter2 rewriter;
+        private ProcessorState state;
 
         private bool processNextInstruction;
 
         public BlockWorkitem2(
-            IScanner scanner, 
-            IRewriterHost2 host,
-            IProcessorArchitecture arch, 
-            Address addr,
+            IScanner scanner,
+            IProcessorArchitecture arch,
+            Rewriter2 rewriter,
+            ProcessorState state,
             Frame frame,
             Block block)
         {
             this.scanner = scanner;
-            this.host = host;
             this.arch = arch;
-            this.blockCur = block;
-            this.addrStart = addr;
+            this.rewriter = rewriter;
+            this.state = state;
             this.frame = frame;
+            this.blockCur = block;
         }
 
         public override void Process()
         {
-            var rw = arch.CreateRewriter2(scanner.CreateReader(addrStart), frame, host);
             processNextInstruction = true;
-            for (var e = rw.GetEnumerator(); e.MoveNext(); )
+            for (var e = rewriter.GetEnumerator(); e.MoveNext(); )
             {
                 ri = e.Current;
                 ri.Instruction.Accept(this);
@@ -92,10 +92,40 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
+        public Constant GetValue(Expression op)
+        {
+            var co = op as Constant;
+            if (co != null)
+                return co;
+            var id = op as Identifier;
+            if (id != null)
+            {
+                var reg = id.Storage as RegisterStorage;
+                if (reg != null)
+                {
+                    return state.Get(reg.Register);
+                }
+            }
+            return Constant.Invalid;
+        }
+
+        public void SetValue(Expression op, Constant c)
+        {
+            var id = op as Identifier;
+            if (id == null)
+                return;
+            var reg = id.Storage as RegisterStorage;
+            if (reg != null)
+            {
+                state.Set(reg.Register, c);
+            }
+        }
+
         #region InstructionVisitor Members
 
         public void VisitAssignment(Assignment a)
         {
+            SetValue(a.Dst, GetValue(a.Src));
         }
 
         public void VisitBranch(Branch b)
@@ -120,15 +150,15 @@ namespace Decompiler.Scanning
         {
             if (g.Condition is Constant)
             {
-                var blockTarget = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure);
+                var blockTarget = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure, state);
                 blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockTarget);
                 TerminateBlock();
                 this.processNextInstruction = false;
             }
             else
             {
-                var blockThen = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure);
-                var blockElse = scanner.EnqueueJumpTarget(ri.Address + ri.Length, blockCur.Procedure);
+                var blockThen = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure, state);
+                var blockElse = scanner.EnqueueJumpTarget(ri.Address + ri.Length, blockCur.Procedure, state);
                 this.blockCur.Statements.Add(
                     ri.Address.Linear,
                     new Branch(g.Condition, blockThen));

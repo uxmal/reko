@@ -60,23 +60,17 @@ namespace Decompiler.UnitTests.Scanning
 
         private BlockWorkitem2 CreateWorkItem(Address addr)
         {
-            return new BlockWorkitem2(scanner, null, arch, addr, proc.Frame, block);
+            return new BlockWorkitem2(scanner, arch, rewriter, null, proc.Frame, block);
         }
 
         [Test]
         public void RewriteReturn()
         {
-            var addr = new Address(0x1000);
-
             m.Return();
             m.Fn(m.Int32(0x49242));
 
             using (repository.Record())
             {
-                arch.Stub(x => x.CreateRewriter2(
-                    Arg<ImageReader>.Is.Anything,
-                    Arg<Frame>.Is.Anything,
-                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
             }
 
@@ -131,7 +125,8 @@ namespace Decompiler.UnitTests.Scanning
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Is.Anything,
-                    Arg<Procedure>.Is.Same(block.Procedure))).Return(next);
+                    Arg<Procedure>.Is.Same(block.Procedure),
+                    Arg<ProcessorState>.Is.Anything)).Return(next);
             }
 
             var wi = CreateWorkItem(new Address(0x1000));
@@ -158,10 +153,12 @@ namespace Decompiler.UnitTests.Scanning
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x1004),
-                    Arg<Procedure>.Is.Same(block.Procedure))).Return(null);
+                    Arg<Procedure>.Is.Same(block.Procedure),
+                    Arg<ProcessorState>.Is.Anything)).Return(null);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x4000),
-                    Arg<Procedure>.Is.Same(block.Procedure))).Return(null);
+                    Arg<Procedure>.Is.Same(block.Procedure),
+                    Arg<ProcessorState>.Is.Anything)).Return(null);
             }
             var wi = CreateWorkItem(new Address(0x1000));
             wi.Process();
@@ -221,59 +218,6 @@ namespace Decompiler.UnitTests.Scanning
             wi.Process();
         }
 
-
-#if NOT_READY_YET
-        [Test]
-        public void WalkServiceCall()
-        {
-            // Checks to see if a sequence return value (es:bx) trashes the state appropriately.
-            IntelState state = new IntelState();
-            state.Set(Registers.es, Constant.Word16(0));
-            state.Set(Registers.es, Constant.Word16(0));
-
-            state.Set(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
-
-            IntelInstruction instr = new IntelInstruction(Opcode.@int, PrimitiveType.Word16, PrimitiveType.Word16,
-                new ImmediateOperand(Constant.Byte(0x21)));
-
-            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-            TestCodeWalkerListener listener = new TestCodeWalkerListener();
-            IntelCodeWalker cw = new IntelCodeWalker(arch, new MsdosPlatform(arch), null, state);
-            cw.WalkInstruction(new Address(0x100, 0x100), instr, null, listener);
-            Assert.IsFalse(state.Get(Registers.es).IsValid, "should have trashed ES");
-            Assert.IsFalse(state.Get(Registers.bx).IsValid, "should have trashed BX");
-            Assert.AreEqual(1, listener.SystemCalls.Count);
-        }
-
-        [Test]
-        public void WalkBswap()
-        {
-            IntelState state = new IntelState();
-            state.Set(Registers.ebp, new Constant(PrimitiveType.Word32, 0x12345678));
-            IntelInstruction instr = new IntelInstruction(Opcode.bswap, PrimitiveType.Word32, PrimitiveType.Word32,
-                new RegisterOperand(Registers.ebp));
-
-            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-            IntelCodeWalker cw = new IntelCodeWalker(arch, null, null, state);
-            cw.WalkInstruction(new Address(0x100000), instr, null, null);
-            Assert.AreSame(Constant.Invalid, state.Get(Registers.ebp));
-        }
-
-        [Test]
-        public void WalkMovConst()
-        {
-            IntelState state = new IntelState();
-            state.Set(Registers.esi, new Constant(PrimitiveType.Word32, 0x42424242));
-            IntelInstruction instr = new IntelInstruction(Opcode.mov, PrimitiveType.Word16, PrimitiveType.Word32,
-                new RegisterOperand(Registers.si),
-                new ImmediateOperand(new Constant(0x0606)));
-
-            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-            IntelCodeWalker cw = new IntelCodeWalker(arch, null, null, state);
-            cw.WalkInstruction(new Address(0x0100000), instr, null, null);
-            Assert.AreEqual(0x42420606, state.Get(Registers.esi).ToInt32());
-        }
-
-#endif
     }
+
 }

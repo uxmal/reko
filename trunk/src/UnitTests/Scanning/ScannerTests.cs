@@ -90,11 +90,11 @@ namespace Decompiler.UnitTests.Scanning
         {
             var sc = CreateScanner(0x100, 10);
             var proc = new Procedure("foo", arch.CreateFrame());
-            var b101 = sc.EnqueueJumpTarget(new Address(0x101), proc);
+            var b101 = sc.EnqueueJumpTarget(new Address(0x101), proc, null);
             b101.Statements.Add(0x101,new DefInstruction(null));
-            var b106 = sc.EnqueueJumpTarget(new Address(0x106), proc);
+            var b106 = sc.EnqueueJumpTarget(new Address(0x106), proc, null);
             b106.Statements.Add(0x106,new DefInstruction(null));
-            var b104 = sc.EnqueueJumpTarget(new Address(0x104), proc);
+            var b104 = sc.EnqueueJumpTarget(new Address(0x104), proc, null);
             b104.Statements.Add(0x104, new DefInstruction(null));
             Assert.IsTrue(proc.ControlGraph.Nodes.Contains(b101));
             Assert.IsTrue(proc.ControlGraph.Nodes.Contains(b106));

@@ -34,7 +34,7 @@ namespace Decompiler.Scanning
     public interface IScanner
     {
         void EnqueueEntryPoint(EntryPoint ep);
-        Block EnqueueJumpTarget(Address addr, Procedure proc);
+        Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state);
         void EnqueueProcedure(Scanner2.WorkItem2 wiPrev, Procedure proc, Address addrProc);
         Procedure EnqueueProcedure(Scanner2.WorkItem2 wiPrev, Address addr, string procedureName, ProcessorState state);
         void EnqueueUserProcedure(SerializedProcedure sp);
@@ -135,7 +135,7 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        public Block EnqueueJumpTarget(Address addrStart, Procedure proc)
+        public Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
         {
             Block block = FindExactBlock(addrStart);
             if (block != null)
@@ -155,9 +155,9 @@ namespace Decompiler.Scanning
                 PriorityJumpTarget,
                 new BlockWorkitem2(
                     this,
-                    this,
                     this.arch,
-                    addrStart,
+                    this.arch.CreateRewriter2(CreateReader(addrStart), proc.Frame, this),
+                    state,
                     new Frame(arch.FramePointerType),
                     block));
             return block;
@@ -178,7 +178,7 @@ namespace Decompiler.Scanning
                 Procedures.Add(addr, proc);
                 CallGraph.AddProcedure(proc);
             }
-            var block = EnqueueJumpTarget(addr, proc);
+            var block = EnqueueJumpTarget(addr, proc, state);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             return proc;
         }
@@ -819,7 +819,7 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        public Block EnqueueJumpTarget(Address addr, Procedure proc)
+        public Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state)
         {
             throw new NotImplementedException();
         }
