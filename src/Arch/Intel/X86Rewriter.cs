@@ -64,7 +64,7 @@ namespace Decompiler.Arch.Intel
         protected virtual IEnumerable<DisassembledInstruction> CreateDisassemblyStream(ImageReader rdr, PrimitiveType defaultWordSize)
         {
             var d = new IntelDisassembler(rdr, defaultWordSize);
-            for (; ; )        //$REVIEW: this will walk off the edge of the program image; we're assuming the caller will deal.
+            while (rdr.IsValid)
             {
                 var addr = d.Address;
                 var instr = d.Disassemble();

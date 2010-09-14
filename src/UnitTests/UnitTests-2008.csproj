@@ -435,6 +435,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Arch\Intel\Assembler\" />
     <Folder Include="ImageLoaders\MzExe\" />
   </ItemGroup>
