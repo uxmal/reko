@@ -51,9 +51,8 @@ namespace Decompiler.Core.Code
 		void VisitSlice(Slice slice);
 		void VisitTestCondition(TestCondition tc);
 		void VisitUnaryExpression(UnaryExpression unary);
-
-
     }
+
 
 	public class ExpressionVisitorBase : IExpressionVisitor
 	{
