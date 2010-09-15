@@ -41,6 +41,7 @@ namespace Decompiler.Scanning
         void ProcessQueue();
 
         CallGraph CallGraph { get; }
+        Platform Platform { get; }
 
         Block AddBlock(Address addr, Procedure proc, string blockName);
 
@@ -74,11 +75,12 @@ namespace Decompiler.Scanning
         private Map<uint, BlockRange> blocks;
         private CallGraph callgraph;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
+        private Platform platform;
 
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
 
-        public Scanner2(IProcessorArchitecture arch, ProgramImage image)
+        public Scanner2(IProcessorArchitecture arch, ProgramImage image, Platform platform)
         {
             this.arch = arch;
             this.image = image;
@@ -87,6 +89,7 @@ namespace Decompiler.Scanning
             this.blocks = new Map<uint, BlockRange>();
             this.callgraph = new CallGraph();
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
+            this.platform = platform;
         }
 
         private class BlockRange
@@ -108,6 +111,11 @@ namespace Decompiler.Scanning
         public CallGraph CallGraph
         {
             get { return callgraph; }
+        }
+
+        public Platform Platform
+        {
+            get { return platform; }
         }
 
         #region IScanner Members
@@ -840,7 +848,10 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        CallGraph IScanner.CallGraph { get { throw new NotImplementedException(); } } 
+
+        CallGraph IScanner.CallGraph { get { throw new NotImplementedException(); } }
+
+        Platform IScanner.Platform { get { return program.Platform; } }
 
         #endregion
     }

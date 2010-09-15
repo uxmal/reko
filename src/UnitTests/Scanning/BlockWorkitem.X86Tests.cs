@@ -23,6 +23,7 @@ using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
+using Decompiler.Environments.Msdos;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using Rhino.Mocks;
@@ -55,12 +56,13 @@ namespace Decompiler.UnitTests.Scanning
 
         private void BuildTest32(Action<IntelAssembler> m)
         {
-            BuildTest(new IntelArchitecture(ProcessorMode.ProtectedFlat), new Address(0x10000), m);
+            BuildTest(new IntelArchitecture(ProcessorMode.ProtectedFlat), new Address(0x10000), new FakePlatform(), m);
         }
 
         private void BuildTest16(Action<IntelAssembler> m)
         {
-            BuildTest(new IntelArchitecture(ProcessorMode.Real),new Address(0x0C00,0x000), m);
+            var arch = new IntelArchitecture(ProcessorMode.Real);
+            BuildTest(arch ,new Address(0x0C00,0x000), new MsdosPlatform(arch), m);
         }
 
         private class RewriterHost : IRewriterHost2
@@ -79,7 +81,7 @@ namespace Decompiler.UnitTests.Scanning
             }
         }
 
-        private void BuildTest(IntelArchitecture arch, Address addr, Action<IntelAssembler> m)
+        private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<IntelAssembler> m)
         {
             this.arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             proc = new Procedure("test", arch.CreateFrame());
@@ -93,10 +95,11 @@ namespace Decompiler.UnitTests.Scanning
             using (repository.Record())
             {
                 m(asm);
+                scanner.Stub(x => x.Platform).Return(platform);
             }
             var image = new ProgramImage(addr, emitter.Bytes);
             var rw = arch.CreateRewriter2(new ImageReader(image, addr), proc.Frame, host);
-            wi = new BlockWorkitem2(null, arch, rw, state, proc.Frame,  block);
+            wi = new BlockWorkitem2(scanner, arch, rw, state, proc.Frame,  block);
         }
 
 
@@ -104,18 +107,16 @@ namespace Decompiler.UnitTests.Scanning
         public void WalkX86ServiceCall()
         {
             // Checks to see if a sequence return value (es:bx) trashes the state appropriately.
-            IntelState state = new IntelState();
-            state.Set(Registers.es, Constant.Word16(0));
-            state.Set(Registers.bx, Constant.Word16(0));
-            state.Set(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
-
             BuildTest16(delegate(IntelAssembler m)
             {
                 m.Int(0x21);
+
+                state.Set(Registers.es, Constant.Word16(0));
+                state.Set(Registers.bx, Constant.Word16(0));
+                state.Set(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
             });
 
-            //BlockWorkitem2 wi;
-            //stm.Instruction.Accept(wi);
+            wi.Process();
 
             Assert.IsFalse(state.Get(Registers.es).IsValid, "should have trashed ES");
             Assert.IsFalse(state.Get(Registers.bx).IsValid, "should have trashed BX");

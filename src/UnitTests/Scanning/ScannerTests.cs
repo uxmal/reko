@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Scanning
                     new ReturnInstruction(null),
                     1)
             };
-            var sc = new Scanner2(arch, new ProgramImage(new Address(0x12314), new byte[1]));
+            var sc = new Scanner2(arch, new ProgramImage(new Address(0x12314), new byte[1]), new FakePlatform());
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     new Address(0x12314),
@@ -75,14 +75,14 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void AddBlock()
         {
-            var sc = new Scanner2(arch, new ProgramImage(new Address(0x0100), new byte[10]));
+            var sc = new Scanner2(arch, new ProgramImage(new Address(0x0100), new byte[10]), new FakePlatform());
             var block = sc.AddBlock(new Address(0x102), new Procedure("bob", null), "l0102");
             Assert.IsNotNull(sc.FindExactBlock(new Address(0x0102)));
         }
 
         private Scanner2 CreateScanner(uint startAddress, int imageSize)
         {
-            return new Scanner2(arch, new ProgramImage(new Address(startAddress), new byte[imageSize]));
+            return new Scanner2(arch, new ProgramImage(new Address(startAddress), new byte[imageSize]), new FakePlatform());
         }
 
         [Test]
