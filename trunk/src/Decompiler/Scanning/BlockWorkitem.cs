@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ using System.Text;
 namespace Decompiler.Scanning
 {
     /// <summary>
-    /// Scanner work item for processing (extended) basic blocks: linear sequences of code.
+    /// Scanner work item for processing basic blocks.
     /// </summary>
     public class BlockWorkitem2 : Scanner2.WorkItem2, InstructionVisitor
     {
@@ -118,6 +119,20 @@ namespace Decompiler.Scanning
                     return state.Get(reg.Register);
                 }
             }
+            var bin = op as BinaryExpression;
+            if (bin != null)
+            {
+                // Special case XOR/SUB (self,self)
+                if ((bin.op == Operator.Xor || 
+                    bin.op == Operator.Sub) && bin.Left == bin.Right)
+                    return Constant.Zero(bin.Left.DataType);
+                var c1 = GetValue(bin.Left);
+                var c2 = GetValue(bin.Right);
+                if (c1.IsValid && c2.IsValid)
+                {
+                    return bin.op.ApplyConstants(c1, c2);
+                }
+            }
             return Constant.Invalid;
         }
 
@@ -181,6 +196,7 @@ namespace Decompiler.Scanning
 
         public void VisitPhiAssignment(PhiAssignment phi)
         {
+            throw new InvalidOperationException("Medium-level instruction should not be generated at this stage");
         }
 
         public void VisitIndirectCall(IndirectCall ic)

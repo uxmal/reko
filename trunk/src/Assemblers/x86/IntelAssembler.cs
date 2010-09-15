@@ -105,8 +105,14 @@ namespace Decompiler.Assemblers.x86
 
         public void Sub(ParsedOperand op, int constant)
         {
-            ProcessBinop(0x05, op, Imm(op.Operand.Width, constant));
+            Sub(op, Imm(op.Operand.Width, constant));
         }
+
+        public void Sub(ParsedOperand minuend, ParsedOperand subtrahend)
+        {
+            ProcessBinop(0x05, minuend, subtrahend);
+        }
+
 
         public void Test(ParsedOperand op1, ParsedOperand op2)
         {
@@ -1549,6 +1555,7 @@ namespace Decompiler.Assemblers.x86
             return new ParsedOperand(
                 new MemoryOperand(null, @base, IntegralConstant(offset)));
         }
+
 
     }
 }

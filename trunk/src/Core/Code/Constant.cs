@@ -372,12 +372,12 @@ namespace Decompiler.Core.Code
             return new Constant(PrimitiveType.Word32, n);
         }
 
-        public static Expression Zero(DataType dataType)
+        public static Constant Zero(DataType dataType)
         {
             return new Constant(dataType, 0);
         }
 
-		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0);
+		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0xBADDCAFE);
 
     }
 }
