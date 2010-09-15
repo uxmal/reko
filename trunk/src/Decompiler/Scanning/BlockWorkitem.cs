@@ -36,7 +36,6 @@ namespace Decompiler.Scanning
     {
         private IScanner scanner;
         private IProcessorArchitecture arch;
-        private Address addrStart;
         private Block blockCur;
         private Frame frame;
         private RewrittenInstruction ri;
@@ -107,33 +106,8 @@ namespace Decompiler.Scanning
 
         public Constant GetValue(Expression op)
         {
-            var co = op as Constant;
-            if (co != null)
-                return co;
-            var id = op as Identifier;
-            if (id != null)
-            {
-                var reg = id.Storage as RegisterStorage;
-                if (reg != null)
-                {
-                    return state.Get(reg.Register);
-                }
-            }
-            var bin = op as BinaryExpression;
-            if (bin != null)
-            {
-                // Special case XOR/SUB (self,self)
-                if ((bin.op == Operator.Xor || 
-                    bin.op == Operator.Sub) && bin.Left == bin.Right)
-                    return Constant.Zero(bin.Left.DataType);
-                var c1 = GetValue(bin.Left);
-                var c2 = GetValue(bin.Right);
-                if (c1.IsValid && c2.IsValid)
-                {
-                    return bin.op.ApplyConstants(c1, c2);
-                }
-            }
-            return Constant.Invalid;
+            var eval = new ScannerEvaluator(state);
+            return eval.GetValue(op);
         }
 
         public void SetValue(Expression op, Constant c)
