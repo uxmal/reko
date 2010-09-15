@@ -211,9 +211,8 @@ namespace Decompiler.UnitTests.Mocks
 			return Constant.Invalid;
 		}
 
-		public void Set(MachineRegister r, Decompiler.Core.Code.Constant v)
+		public void Set(MachineRegister r, Constant v)
 		{
-			throw new NotImplementedException();
 		}
 
 

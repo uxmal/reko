@@ -18,42 +18,25 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class FakeInstruction : MachineInstruction
+    public class FakePlatform : Platform
     {
-        private Operation operation;
-        private MachineOperand[] ops;
-
-        public FakeInstruction(Operation operation, params MachineOperand[] ops)
-        {
-            this.operation = operation;
-            this.ops = ops;
-        }
-
-        public Operation Operation { get { return operation; } }
-        public MachineOperand[] Operands { get { return ops; } }
-
-        public override uint DefCc()
+        public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
-        public override uint UseCc()
+        public override string DefaultCallingConvention
         {
-            throw new NotImplementedException();
+            get { throw new NotImplementedException(); }
         }
-    }
-    public enum Operation
-    {
-        Add,
-        Mul,
-        Jump,
-        Branch,
     }
 }
+

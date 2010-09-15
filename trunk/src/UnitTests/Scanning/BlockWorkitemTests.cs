@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private BlockWorkitem2 CreateWorkItem(Address addr)
         {
-            return new BlockWorkitem2(scanner, arch, rewriter, null, proc.Frame, block);
+            return new BlockWorkitem2(scanner, arch, rewriter, new FakeProcessorState(), proc.Frame, block);
         }
 
         [Test]

@@ -92,6 +92,18 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
+        private void BuildApplication(Expression fn, ProcedureSignature sig)
+        {
+            ApplicationBuilder ab = new ApplicationBuilder(
+                frame,
+                new CallSite(0, 0),
+                fn,
+                sig);
+            //state.ShrinkStack(sig.StackDelta);
+            //state.ShrinkFpuStack(sig.FpuStackDelta);
+            blockCur.Statements.Add(ri.Address.Linear, ab.CreateInstruction());
+        }
+
         public Constant GetValue(Expression op)
         {
             var co = op as Constant;
@@ -198,6 +210,72 @@ namespace Decompiler.Scanning
 
         public void VisitSideEffect(SideEffect side)
         {
+            SystemService svc = MatchSyscallToService(side);
+            if (svc != null)
+            {
+                ExternalProcedure ep = svc.CreateExternalProcedure(arch);
+                ProcedureConstant fn = new ProcedureConstant(arch.PointerType, ep);
+                BuildApplication(fn, ep.Signature);
+                if (svc.Characteristics.Terminates)
+                {
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    TerminateBlock();
+                    this.processNextInstruction = false;
+                    return;
+                }
+                AffectProcessorState(svc.Signature);
+            }
+        }
+
+        private void AffectProcessorState(ProcedureSignature sig)
+        {
+            TrashVariable(sig.ReturnValue);
+            for (int i = 0; i < sig.FormalArguments.Length; ++i)
+            {
+                var os = sig.FormalArguments[i].Storage as OutArgumentStorage;
+                if (os != null)
+                {
+                    TrashVariable(os.OriginalIdentifier);
+                }
+            }
+        }
+
+        public void TrashVariable(Identifier id)
+        {
+            if (id == null)
+                return;
+            RegisterStorage reg = id.Storage as RegisterStorage;
+            if (reg != null)
+            {
+                state.Set(reg.Register, Constant.Invalid);
+            }
+            SequenceStorage seq = id.Storage as SequenceStorage;
+            if (seq != null)
+            {
+                TrashVariable(seq.Head);
+                TrashVariable(seq.Tail);
+            }
+        }
+
+
+        private SystemService MatchSyscallToService(SideEffect side)
+        {
+            var fn = side.Expression as Application;
+            if (fn == null)
+                return null;
+            var pc = fn.Procedure as ProcedureConstant;
+            if (pc == null)
+                return null;
+            var ppp = pc.Procedure as PseudoProcedure;
+            if (ppp == null)
+                return null;
+            if (ppp.Name != "__syscall")
+                return null;
+
+            var vector = fn.Arguments[0] as Constant;
+            if (vector == null)
+                return null;
+            return scanner.Platform.FindService(vector.ToInt32(), state);
         }
 
         public void VisitStore(Store store)

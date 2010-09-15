@@ -435,6 +435,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\FakePlatform.cs" />
     <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />
   </ItemGroup>
   <ItemGroup>
