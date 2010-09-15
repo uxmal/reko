@@ -146,5 +146,31 @@ namespace Decompiler.UnitTests.Scanning
             wi.Process();
             Assert.AreEqual(0x42420606, state.Get(Registers.esi).ToInt32());
         }
+
+        [Test]
+        public void XorWithSelf()
+        {
+            BuildTest32(delegate(IntelAssembler m)
+            {
+                m.Xor(m.eax, m.eax);
+            });
+            state.Set(Registers.eax, Constant.Invalid);
+            wi.Process();
+            Assert.AreEqual(0, state.Get(Registers.eax).ToInt32());
+        }
+
+
+        [Test]
+        public void SubWithSelf()
+        {
+            BuildTest32(delegate(IntelAssembler m)
+            {
+                m.Sub(m.eax, m.eax);
+            });
+            state.Set(Registers.eax, Constant.Invalid);
+            wi.Process();
+            Assert.AreEqual(0, state.Get(Registers.eax).ToInt32());
+        }
+
     }
 }
