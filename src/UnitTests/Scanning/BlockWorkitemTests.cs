@@ -89,6 +89,7 @@ namespace Decompiler.UnitTests.Scanning
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
+                    Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
@@ -120,6 +121,7 @@ namespace Decompiler.UnitTests.Scanning
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
+                    Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
@@ -138,31 +140,43 @@ namespace Decompiler.UnitTests.Scanning
             repository.VerifyAll();
         }
 
+        private bool StashArg(ref ProcessorState state, ProcessorState value)
+        {
+            state = value;
+            return true;
+        }
+
         [Test]
         public void HandleBranch()
         {
             m.IfGoto(m.Register(1), new Address(0x4000));
             m.Assign(m.Register(1), m.Register(2));
 
+            ProcessorState s1 = null;
+            ProcessorState s2 = null;
             using (repository.Record())
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
+                    Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x1004),
                     Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Is.Anything)).Return(null);
+                    Arg<ProcessorState>.Matches(arg => StashArg(ref s1, arg)))).Return(null); 
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x4000),
                     Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Is.Anything)).Return(null);
+                    Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(null);
             }
             var wi = CreateWorkItem(new Address(0x1000));
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count);
+            Assert.AreNotSame(s1, s2);
+            Assert.IsNotNull(s1);
+            Assert.IsNotNull(s2);
 
             repository.VerifyAll();
         }
@@ -179,6 +193,7 @@ namespace Decompiler.UnitTests.Scanning
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
+                    Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
@@ -210,6 +225,7 @@ namespace Decompiler.UnitTests.Scanning
             {
                 arch.Stub(x => x.CreateRewriter2(
                     Arg<ImageReader>.Is.Anything,
+                    Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());

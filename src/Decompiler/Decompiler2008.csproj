@@ -383,6 +383,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Scanning\AhoCorasickSearch.cs" />
+    <Compile Include="Scanning\BackWalker.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\EntryPointWorkitem.cs" />
     <Compile Include="Scanning\ScannerEvaluator.cs" />

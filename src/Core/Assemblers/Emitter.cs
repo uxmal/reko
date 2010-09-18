@@ -40,7 +40,6 @@ namespace Decompiler.Core.Assemblers
 			get { return stmOut.ToArray(); }
 		}
 
-
 		public void EmitByte(int b)
 		{
 			stmOut.WriteByte((byte) b);

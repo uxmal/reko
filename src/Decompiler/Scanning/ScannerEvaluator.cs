@@ -160,7 +160,7 @@ namespace Decompiler.Scanning
 
         void IExpressionVisitor.VisitSegmentedAccess(SegmentedAccess access)
         {
-            throw new NotImplementedException();
+            value = Constant.Invalid;
         }
 
         void IExpressionVisitor.VisitSlice(Slice slice)

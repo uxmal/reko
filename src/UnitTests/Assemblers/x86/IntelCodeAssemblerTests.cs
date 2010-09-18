@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
         {
             base.Setup();
             emitter = new IntelEmitter();
-            m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), PrimitiveType.Word16, new Address(0x100, 0x0100), emitter, new List<EntryPoint>());
+            m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), new Address(0x100, 0x0100), emitter, new List<EntryPoint>());
         }
 
         [Test]

@@ -57,24 +57,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             rw = new TestRewriter(new FakeProcedureRewriter(arch, host, proc), proc, host, arch, state);
         }
 
-        [Test]
-        public void RewriteIndirectCall()
-        {
-            IntelInstruction instr = new IntelInstruction(
-                Opcode.call,
-                PrimitiveType.Word16,
-                PrimitiveType.Word16,
-                new MemoryOperand(PrimitiveType.Word16, Registers.bx, new Constant(PrimitiveType.Word16, 4)));
-            Address addr = new Address(0x0C00, 0x0100);
 
-            host.AddCallSignature(addr, new ProcedureSignature(
-                Reg(Registers.ax),
-                new Identifier[] { Reg(Registers.cx) }));
-
-            Procedure proc = new Procedure("test", arch.CreateFrame());
-            rw.ConvertInstructions(instr);
-            Assert.AreEqual("ax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)", rw.Block.Statements[0].Instruction.ToString());
-        }
 
         private Identifier Reg(IntelRegister r)
         {

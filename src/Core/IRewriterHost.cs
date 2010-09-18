@@ -26,6 +26,7 @@ namespace Decompiler.Core
     public interface IRewriterHost2
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
+        ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
     }
 
     public interface IRewriterHost

@@ -62,7 +62,7 @@ namespace Decompiler
 		private Project project;
 		private DecompilerHost host;
 		private LoaderBase loader;
-		private ScannerImpl scanner;
+		private IScanner scanner;
 		private RewriterHost rewriterHost;
         private DecompilerEventListener eventListener;
         private IServiceProvider services;
@@ -121,50 +121,49 @@ namespace Decompiler
             return dfa;
 		}
 
-		private void EmitProgram(DataFlowAnalysis dfa, TextWriter output)
-		{	
-			if (output != null)
-			{
-				foreach (Procedure proc in prog.Procedures.Values)
-				{
-					if (dfa != null)
-					{
-						ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-                        Formatter f = new Formatter(output);
-						if (flow.Signature != null)
-							flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
-						else if (proc.Signature != null)
-							proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
-						else
-							output.Write("Warning: no signature found for {0}", proc.Name);
-						output.WriteLine();
-						flow.Emit(prog.Architecture, output);
-						foreach (Block block in proc.RpoBlocks)
-						{
-							if (block == null)
-								continue;
-
-							block.Write(output); output.Flush();
-							BlockFlow bf = dfa.ProgramDataFlow[block];
-                            if (bf != null)
-                            {
-                                bf.Emit(prog.Architecture, output);
-                                output.WriteLine();
-                            }
-						}
-					}
-					else
-					{
-						proc.Write(false, output);
-					}
-					output.WriteLine();
+        private void EmitProgram(DataFlowAnalysis dfa, TextWriter output)
+        {
+            if (output == null)
+                return;
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                if (dfa != null)
+                {
+                    ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+                    Formatter f = new Formatter(output);
+                    if (flow.Signature != null)
+                        flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
+                    else if (proc.Signature != null)
+                        proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
+                    else
+                        output.Write("Warning: no signature found for {0}", proc.Name);
                     output.WriteLine();
-				}
-				output.Flush();
-			}
-		}
+                    flow.Emit(prog.Architecture, output);
+                    foreach (Block block in proc.RpoBlocks)
+                    {
+                        if (block == null)
+                            continue;
 
-		/// <summary>
+                        block.Write(output); output.Flush();
+                        BlockFlow bf = dfa.ProgramDataFlow[block];
+                        if (bf != null)
+                        {
+                            bf.Emit(prog.Architecture, output);
+                            output.WriteLine();
+                        }
+                    }
+                }
+                else
+                {
+                    proc.Write(false, output);
+                }
+                output.WriteLine();
+                output.WriteLine();
+            }
+            output.Flush();
+        }
+        
+        /// <summary>
 		/// Loads (or assembles) the program in memory, performing relocations as necessary.
 		/// </summary>
 		/// <param name="program"></param>
@@ -176,7 +175,6 @@ namespace Decompiler
             project = DeserializeProject(image);
             if (project != null)
             {
-                
                 prog = loader.Load(
                     loader.LoadImageBytes(project.InputFilename, 0),
                     project.BaseAddress);
@@ -257,7 +255,8 @@ namespace Decompiler
             eventListener.ShowStatus("Rewriting machine code to intermediate code.");
             if (scanner == null)
                 throw new InvalidOperationException("Program must be scanned before it can be rewritten.");
-			rewriterHost = new RewriterHost(prog, eventListener, scanner.SystemCalls, scanner.VectorUses);
+            var sc = (ScannerImpl)scanner;
+			rewriterHost = new RewriterHost(prog, eventListener, sc.SystemCalls, sc.VectorUses);
 			rewriterHost.LoadCallSignatures(this.project.UserCalls.Values);
 			rewriterHost.RewriteProgram();
 
@@ -315,8 +314,8 @@ namespace Decompiler
 		public Procedure ScanProcedure(Address addr)
 		{
 			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-				scanner = new ScannerImpl(prog, eventListener);
-			Procedure proc = scanner.EnqueueProcedure(null, addr, null);
+				scanner = CreateScanner(prog, eventListener);
+			Procedure proc = scanner.EnqueueProcedure(null, addr, null, prog.Architecture.CreateProcessorState());
 			scanner.ProcessQueue();
             return proc;
 		}
@@ -334,7 +333,7 @@ namespace Decompiler
 			try
 			{
                 eventListener.ShowStatus("Tracing reachable machine code.");
-				scanner = new ScannerImpl(prog, eventListener);
+                scanner = CreateScanner(prog, eventListener) ;
 				foreach (EntryPoint ep in loader.EntryPoints)
 				{
 					prog.AddEntryPoint(ep);
@@ -354,6 +353,12 @@ namespace Decompiler
 				host.WriteDisassembly(prog.DumpAssembler);
 			}
 		}
+
+        private IScanner CreateScanner(Program prog, DecompilerEventListener eventListener)
+        {
+            return new Scanner2(prog.Architecture, prog.Image, prog.Platform);
+        }
+
         /// <summary>
         /// Extracts structured program constructs out of snarled goto nests, if possible.
         /// Since procedures are now independent of each other, this analysis

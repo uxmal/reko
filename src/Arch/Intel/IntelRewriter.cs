@@ -1753,7 +1753,7 @@ namespace Decompiler.Arch.Intel
                 host.AddDiagnostic(
                     state.InstructionAddress,
                     new WarningDiagnostic(string.Format(
-                    "Multiple values of stack delta in procedure {0} when processung RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
+                    "Multiple values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
             }
             else
             {

@@ -109,6 +109,26 @@ namespace Decompiler.Arch.Intel
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
+        private void RewriteIn()
+        {
+            var ppName = "__in" + IntelSizeSuffix(di.Instruction.op1.Width.Size);
+            EmitCopy(
+                di.Instruction.op1,
+                PseudoProc(ppName, di.Instruction.op1.Width, SrcOp(di.Instruction.op2)), false);
+        }
+
+        private string IntelSizeSuffix(int size)
+        {
+            switch (size)
+            {
+            case 1: return "b";
+            case 2: return "w";
+            case 4: return "dw";
+            case 8: return "qw";
+            default: throw new ArgumentOutOfRangeException("Size is not 1,2,4 or 8");
+            }
+        }
+
         private void RewriteMov()
         {
             EmitCopy(di.Instruction.op1, SrcOp(di.Instruction.op2, di.Instruction.op1.Width), false);

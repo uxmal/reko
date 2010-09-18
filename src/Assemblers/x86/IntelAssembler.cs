@@ -49,14 +49,19 @@ namespace Decompiler.Assemblers.x86
         private SortedDictionary<string, SignatureLibrary> importLibraries;
         private Dictionary<uint, PseudoProcedure> importThunks;
 
-        public IntelAssembler(IntelArchitecture arch, PrimitiveType defaultWordSize, Address addrBase, IntelEmitter emitter, List<EntryPoint> entryPoints)
+        [Obsolete("", true)]
+        public IntelAssembler(IntelArchitecture arch, PrimitiveType defaultWordSize, Address addrBase, IntelEmitter emitter, List<EntryPoint> entryPoints) 
+        {
+
+        }
+        public IntelAssembler(IntelArchitecture arch, Address addrBase, IntelEmitter emitter, List<EntryPoint> entryPoints)
         {
             this.arch = new IntelArchitecture(ProcessorMode.Real);
             this.platform = new MsdosPlatform(arch);
             this.addrBase = addrBase;
             this.emitter = emitter;
             this.entryPoints = entryPoints;
-            this.defaultWordSize = defaultWordSize;
+            this.defaultWordSize = arch.WordWidth;
             modRm = new ModRmBuilder(defaultWordSize, emitter);
             symtab = new SymbolTable();
             importLibraries = new SortedDictionary<string, SignatureLibrary>();
@@ -293,7 +298,7 @@ namespace Decompiler.Assemblers.x86
             }
         }
 
-        public void ProcessInOut(bool fOut, ParsedOperand[] ops)
+        public void ProcessInOut(bool fOut, params ParsedOperand[] ops)
         {
             ParsedOperand opPort;
             ParsedOperand opData;
@@ -947,6 +952,12 @@ namespace Decompiler.Assemblers.x86
             ProcessCallJmp(0xE8, destination);
         }
 
+
+        public void Call(ParsedOperand parsedOperand)
+        {
+            ProcessCallJmp(0x02, parsedOperand);
+        }
+
         internal void ProcessFild(ParsedOperand op)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(op);
@@ -1138,11 +1149,21 @@ namespace Decompiler.Assemblers.x86
             ProcessInt(Const(serviceVector));
 
         }
+
+        public void In(ParsedOperand dst, ParsedOperand port)
+        {
+            ProcessInOut(false, dst, port);
+        }
+
         public void Inc(ParsedOperand op)
         {
             ProcessIncDec(false, op);
         }
 
+        public void Ja(string destination)
+        {
+            ProcessShortBranch(0x07, destination);
+        }
 
         public void Jcxz(string destination)
         {
@@ -1159,8 +1180,6 @@ namespace Decompiler.Assemblers.x86
         {
             ProcessShortBranch(0x04, destination);
         }
-
-
 
         public void Jmp(string destination)
         {
@@ -1371,6 +1390,12 @@ namespace Decompiler.Assemblers.x86
             DefineWord(PrimitiveType.Word16, symbolText);
         }
 
+        public void Dw(int w)
+        {
+            emitter.EmitByte(w & 0xFF);
+            emitter.EmitByte(w >> 8);
+        }
+
         internal void DefineWord(PrimitiveType width, string symbolText)
         {
             Symbol sym = symtab.CreateSymbol(symbolText);
@@ -1493,10 +1518,23 @@ namespace Decompiler.Assemblers.x86
             get { return new ParsedOperand(new RegisterOperand(Registers.di)); }
         }
 
+
+        public ParsedOperand al
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.al)); }
+        }
+
+        public ParsedOperand bl
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.bl)); }
+        }
+
+
         public ParsedOperand ah
         {
             get { return new ParsedOperand(new RegisterOperand(Registers.ah)); }
         }
+
 
         public ParsedOperand bh
         {
@@ -1544,19 +1582,80 @@ namespace Decompiler.Assemblers.x86
             get { return new ParsedOperand(new RegisterOperand(Registers.edi)); }
         }
 
+        public ParsedOperand cs
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.cs)); }
+        }
+
+        public ParsedOperand ds
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.ds)); }
+        }
 
         public ParsedOperand Const(int n)
         {
             return new ParsedOperand(new ImmediateOperand(IntegralConstant(n, this.defaultWordSize)));
         }
 
-        public ParsedOperand Mem(MachineRegister @base, int offset)
+        public ParsedOperand MemW(SegmentRegister seg, MachineRegister @base, int offset)
         {
-            return new ParsedOperand(
-                new MemoryOperand(null, @base, IntegralConstant(offset)));
+            var mem = new MemoryOperand(PrimitiveType.Word16);
+            mem.Base = @base;
+            mem.Offset = IntegralConstant(offset);
+            mem.SegOverride = seg;
+            return new ParsedOperand(mem);
         }
 
 
+        public ParsedOperand MemW(MachineRegister @base, string offset)
+        {
+            return MemW(null, @base, offset);
+        }
+
+        public ParsedOperand MemW(SegmentRegister seg, MachineRegister @base, string offset)
+        {
+            return Mem(PrimitiveType.Word16, seg, @base, offset);
+        }
+
+        public ParsedOperand MemW(MachineRegister @base, int offset)
+        {
+            return Mem(PrimitiveType.Word16, @base, offset);
+        }
+
+        public ParsedOperand MemB(MachineRegister @base, int offset)
+        {
+            return Mem(PrimitiveType.Byte, @base, offset);
+        }
+
+        private ParsedOperand Mem(PrimitiveType width, SegmentRegister seg, MachineRegister @base, string offset)
+        {
+            int val;
+            MemoryOperand mem;
+            Symbol sym;
+            if (symtab.Equates.TryGetValue(offset, out val))
+            {
+                mem = new MemoryOperand(width, @base, IntegralConstant(val, @base.DataType));
+                sym = null;
+            }
+            else
+            {
+                sym = symtab.CreateSymbol(offset);
+                val = (int)this.addrBase.Offset;
+                mem = new MemoryOperand(width, @base, new Constant(@base.DataType, val));
+            }
+            if (seg != null)
+            {
+                mem.SegOverride = seg;
+                emitter.SegmentOverride = seg;
+            }
+            return new ParsedOperand(mem, sym);
+        }
+
+        private ParsedOperand Mem(PrimitiveType width, MachineRegister @base, int offset)
+        {
+            return new ParsedOperand(
+                new MemoryOperand(width, @base, IntegralConstant(offset)));
+        }
     }
 }
 

@@ -279,9 +279,9 @@ namespace Decompiler.Arch.Intel
 			return new IntelRewriter(prw, proc, host, this, new IntelRewriterState(proc.Frame));
 		}
 
-        public virtual Rewriter2 CreateRewriter2(ImageReader rdr, Frame frame, IRewriterHost2 host)
+        public virtual Rewriter2 CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
-            return new X86Rewriter(host, this, rdr, frame);
+            return new X86Rewriter(this, host, (IntelState) state, rdr, frame);
         }
 
 		public MachineFlags GetFlagGroup(uint grf)

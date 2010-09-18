@@ -29,11 +29,11 @@ namespace Decompiler.Assemblers.x86
 		private Symbol sym;
 		private bool longJmp;
 
-		public ParsedOperand(MachineOperand op, Symbol sym, bool l)
+		public ParsedOperand(MachineOperand op, Symbol sym, bool longJmp)
 		{
 			this.op = op;
 			this.sym = sym;
-			this.longJmp = l;
+			this.longJmp = longJmp;
 		}
 
 		public ParsedOperand(MachineOperand op, Symbol sym)

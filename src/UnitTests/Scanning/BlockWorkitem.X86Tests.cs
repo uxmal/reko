@@ -30,6 +30,7 @@ using Rhino.Mocks;
 using NUnit.Framework;  
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.UnitTests.Scanning
@@ -43,10 +44,11 @@ namespace Decompiler.UnitTests.Scanning
         private LowLevelStatementStream stm;
         private IntelEmitter emitter;
         private IScanner scanner;
-        private IRewriterHost2 host;
+        private RewriterHost host;
         private MockRepository repository;
         private IntelState state;
         private BlockWorkitem2 wi;
+        private string nl = Environment.NewLine;
 
         [SetUp]
         public void Setup()
@@ -68,6 +70,7 @@ namespace Decompiler.UnitTests.Scanning
         private class RewriterHost : IRewriterHost2
         {
             Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string,PseudoProcedure>();
+            Dictionary<uint, ProcedureSignature> sigs = new Dictionary<uint, ProcedureSignature>();
 
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
             {
@@ -79,17 +82,29 @@ namespace Decompiler.UnitTests.Scanning
                 }
                 return p;
             }
+
+            public void SetCallSignatureAdAddress(Address addrCallInstruction, ProcedureSignature signature)
+            {
+                sigs.Add(addrCallInstruction.Linear, signature);
+            }
+
+            public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+            {
+                ProcedureSignature sig = null;
+                sigs.TryGetValue(addrCallInstruction.Linear, out sig);
+                return sig;
+            }
         }
 
         private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<IntelAssembler> m)
         {
             this.arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             proc = new Procedure("test", arch.CreateFrame());
-            block = new Block(proc, "testblock");
+            block = proc.AddBlock("testblock");
             stm = new LowLevelStatementStream(0x1000, block);
             state = new IntelState();
             emitter = new IntelEmitter();
-            var asm = new IntelAssembler(arch, arch.WordWidth, addr, emitter, new List<EntryPoint>());
+            var asm = new IntelAssembler(arch, addr, emitter, new List<EntryPoint>());
             scanner = repository.Stub<IScanner>();
             host = new RewriterHost();
             using (repository.Record())
@@ -98,10 +113,15 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.Platform).Return(platform);
             }
             var image = new ProgramImage(addr, emitter.Bytes);
-            var rw = arch.CreateRewriter2(new ImageReader(image, addr), proc.Frame, host);
+            var rw = arch.CreateRewriter2(new ImageReader(image, addr), state, proc.Frame, host);
             wi = new BlockWorkitem2(scanner, arch, rw, state, proc.Frame,  block);
         }
 
+
+        private Identifier Reg(IntelRegister r)
+        {
+            return new Identifier(r.Name, 0, r.DataType, new RegisterStorage(r));
+        }
 
         [Test]
         public void WalkX86ServiceCall()
@@ -172,5 +192,63 @@ namespace Decompiler.UnitTests.Scanning
             Assert.AreEqual(0, state.Get(Registers.eax).ToInt32());
         }
 
+        [Test]
+        public void PseudoProcsShouldNukeRecipientRegister()
+        {
+            BuildTest16(delegate(IntelAssembler m)
+            {
+                m.In(m.al, m.dx);
+            });
+            state.Set(Registers.al, Constant.Byte(3));
+            wi.Process();
+            Assert.AreSame(Constant.Invalid, state.Get(Registers.al));
+        }
+
+        [Test]
+        public void RewriteIndirectCall()
+        {
+            var addr = new Address(0xC00, 0x0000);
+            BuildTest16(delegate(IntelAssembler m)
+            {
+                this.host.SetCallSignatureAdAddress(addr, new ProcedureSignature(
+                    Reg(Registers.ax),
+                    new Identifier[] { Reg(Registers.cx) }));
+
+                m.Call(m.MemW(Registers.cs, Registers.bx, 4));
+            });
+            wi.Process();
+            var sw = new StringWriter();
+            block.WriteStatements(Console.Out);
+            block.WriteStatements(sw);
+            string sExp = "ax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+
+        [Test]
+        public void IndirectJumpGated()
+        {
+            BuildTest16(delegate(IntelAssembler m)
+            {
+                m.And(m.bx, m.Const(3));
+                m.Jmp(m.MemW(Registers.cs, Registers.bx, "table"));
+                m.Label("table");
+                m.Dw(0x1234);
+                m.Dw(0x1236);
+                m.Dw(0x123F);
+                m.Dw(0x1241);
+                m.Dw(0xCCCC);
+            });
+            wi.Process();
+            var sw = new StringWriter();
+            block.WriteStatements(Console.Out);
+            block.WriteStatements(sw);
+            string sExp = "\tgoto Mem0[0x0C00:bx + 0x0008:word16]" + nl;
+            Assert.AreEqual(sExp, sw.ToString());
+            Assert.IsTrue(proc.ControlGraph.Nodes.Contains(block));
+            var succ = new List<Block>(proc.ControlGraph.Successors(block));
+            Assert.AreEqual(4, succ.Count);
+
+        }
     }
 }

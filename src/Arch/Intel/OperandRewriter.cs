@@ -39,14 +39,14 @@ namespace Decompiler.Arch.Intel
             this.frame = frame;
         }
 
-        public Expression Transform(MachineOperand op, PrimitiveType opWidth)
+        public Expression Transform(MachineOperand op, PrimitiveType opWidth,IntelState state)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
                 return AluRegister(reg);
             var mem = op as MemoryOperand;
             if (mem != null)
-                return CreateMemoryAccess(mem, null);
+                return CreateMemoryAccess(mem, state);
             var imm = op as ImmediateOperand;
             if (imm != null)
                 return CreateConstant(imm, opWidth);
@@ -76,7 +76,7 @@ namespace Decompiler.Arch.Intel
                 return new Constant(imm.Width, imm.Value.ToUInt32());
         }
 
-        public MemoryAccess CreateMemoryAccess(MemoryOperand mem, DataType dt, IntelRewriterState state)
+        public MemoryAccess CreateMemoryAccess(MemoryOperand mem, DataType dt, IntelState state)
         {
             Expression expr = EffectiveAddressExpression(mem, state);
             if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
@@ -92,7 +92,7 @@ namespace Decompiler.Arch.Intel
             }
         }
 
-        public MemoryAccess CreateMemoryAccess(MemoryOperand memoryOperand, IntelRewriterState state)
+        public MemoryAccess CreateMemoryAccess(MemoryOperand memoryOperand, IntelState state)
         {
             return CreateMemoryAccess(memoryOperand, memoryOperand.Width, state);
         }
@@ -115,7 +115,7 @@ namespace Decompiler.Arch.Intel
         /// <param name="mem"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public Expression EffectiveAddressExpression(MemoryOperand mem, IntelRewriterState state)
+        public Expression EffectiveAddressExpression(MemoryOperand mem, IntelState state)
         {
             Expression eIndex = null;
             Expression eBase = null;
@@ -176,10 +176,10 @@ namespace Decompiler.Arch.Intel
         }
 
 
-        public Constant ReplaceCodeSegment(MachineRegister reg, IntelRewriterState state)
+        public Constant ReplaceCodeSegment(MachineRegister reg, IntelState state)
         {
             if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
-                return new Constant(PrimitiveType.Word16, state.CodeSegment);
+                return state.Get(reg);
             else
                 return null;
         }

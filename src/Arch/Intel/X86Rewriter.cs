@@ -44,7 +44,7 @@ namespace Decompiler.Arch.Intel
         private Emitter emitter;
         private OperandRewriter2 orw;
         private DisassembledInstruction di;
-        private IntelRewriterState state;
+        private IntelState state;
 
         [Obsolete("Phasing out old rewriter")]
         public X86Rewriter(IProcedureRewriter prw)
@@ -52,12 +52,18 @@ namespace Decompiler.Arch.Intel
         {
         }
 
-        public X86Rewriter(IRewriterHost2 host, IntelArchitecture arch, ImageReader rdr, Frame frame)
+        public X86Rewriter(
+            IntelArchitecture arch,
+            IRewriterHost2 host,
+            IntelState state,
+            ImageReader rdr, 
+            Frame frame)
             : base(null)
         {
             this.host = host;
             this.arch = arch;
             this.frame = frame;
+            this.state = state;
             this.dasm = new LookaheadEnumerator<DisassembledInstruction>(CreateDisassemblyStream(rdr, arch.WordWidth));
         }
 
@@ -108,6 +114,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.@in: RewriteIn(); break;
                 case Opcode.@int: RewriteInt(); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.ja: RewriteConditionalGoto(ConditionCode.UGT, di.Instruction.op1); break;
@@ -131,6 +138,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pop: RewritePop(); break;
+                case Opcode.ret: RewriteRet(); break;
                 case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
@@ -214,12 +222,12 @@ namespace Decompiler.Arch.Intel
 
         private Expression SrcOp(MachineOperand opSrc)
         {
-            return orw.Transform(opSrc, opSrc.Width);
+            return orw.Transform(opSrc, opSrc.Width, state);
         }
 
         private Expression SrcOp(MachineOperand opSrc, PrimitiveType dstWidth)
         {
-            return orw.Transform(opSrc, dstWidth);
+            return orw.Transform(opSrc, dstWidth, state);
         }
 
 

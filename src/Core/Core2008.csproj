@@ -158,6 +158,14 @@
     <Compile Include="Lib\LookaheadEnumerator.cs" />
     <Compile Include="Lib\PriorityQueue.cs">
     </Compile>
+    <Compile Include="Rtl\RtlAssignment.cs" />
+    <Compile Include="Rtl\RtlBranch.cs" />
+    <Compile Include="Rtl\RtlCall.cs" />
+    <Compile Include="Rtl\RtlGoto.cs" />
+    <Compile Include="Rtl\RtlInstruction.cs" />
+    <Compile Include="Rtl\RtlInstructionVisitor.cs" />
+    <Compile Include="Rtl\RtlReturn.cs" />
+    <Compile Include="Rtl\RtlSideEffect.cs" />
     <Compile Include="Services\DecompilerEventListener.cs" />
     <Compile Include="Lib\BlockDominatorGraph.cs" />
     <Compile Include="Lib\Dequeue.cs" />

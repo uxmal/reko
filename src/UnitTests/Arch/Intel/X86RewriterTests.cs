@@ -38,6 +38,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelArchitecture arch32;
         private IntelEmitter emitter;
         private RewriterHost host;
+        private IntelState state;
 
         public X86RewriterTests()
         {
@@ -49,18 +50,19 @@ namespace Decompiler.UnitTests.Arch.Intel
         public void Setup()
         {
             host = new RewriterHost();
+            state = new IntelState();
         }
 
         private IntelAssembler Create16bitAssembler()
         {
             emitter = new IntelEmitter();
-            return new IntelAssembler(arch, PrimitiveType.Word16, new Address(0xC00, 0x000), emitter, new List<EntryPoint>());
+            return new IntelAssembler(arch, new Address(0xC00, 0x000), emitter, new List<EntryPoint>());
         }
 
         private IntelAssembler Create32bitAssembler()
         {
             emitter = new IntelEmitter();
-            return new IntelAssembler(arch32, PrimitiveType.Word32, new Address(0x10000000), emitter, new List<EntryPoint>());
+            return new IntelAssembler(arch32, new Address(0x10000000), emitter, new List<EntryPoint>());
         }
 
         private void AssertCode(string expected, IEnumerator<RewrittenInstruction> e)
@@ -89,6 +91,11 @@ namespace Decompiler.UnitTests.Arch.Intel
                 ppp.Add(name, p);
                 return p;
             }
+
+            public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [Test]
@@ -103,19 +110,19 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private X86Rewriter CreateRewriter(IntelAssembler m)
         {
-            return new X86Rewriter(host, arch, m.GetImage().CreateReader(0), new Frame(arch.WordWidth));
+            return new X86Rewriter(arch, host, state,  m.GetImage().CreateReader(0),new Frame(arch.WordWidth));
         }
 
         private X86Rewriter CreateRewriter32(IntelAssembler m)
         {
-            return new X86Rewriter(host, arch32, m.GetImage().CreateReader(0), new Frame(arch32.WordWidth));
+            return new X86Rewriter(arch32, host,  state, m.GetImage().CreateReader(0), new Frame(arch32.WordWidth));
         }
 
         [Test]
         public void MovStackArgument()
         {
             var m = Create16bitAssembler();
-            m.Mov(m.ax, m.Mem(Registers.bp, -8));
+            m.Mov(m.ax, m.MemW(Registers.bp, -8));
             var e = CreateRewriter(m).GetEnumerator();
             AssertCode("ax = Mem0[ss:bp - 0x0008:word16]", e);
         }
@@ -124,7 +131,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         public void AddToReg()
         {
             var m = Create16bitAssembler();
-            m.Add(m.ax, m.Mem(Registers.si, 4));
+            m.Add(m.ax, m.MemW(Registers.si, 4));
             var e = CreateRewriter(m).GetEnumerator();
             AssertCode(0x0C000, "ax = ax + Mem0[ds:si + 0x0004:word16]", e);
             AssertCode(0x0C000, "SCZO = cond(ax)", e);
@@ -317,6 +324,37 @@ namespace Decompiler.UnitTests.Arch.Intel
             var pc = (ProcedureConstant) app.Procedure;
             var ppp = (PseudoProcedure) pc.Procedure;
             Assert.AreEqual("__syscall", ppp.Name);
+        }
+
+        [Test]
+        public void InInstruction()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.In(m.al, m.dx);
+            });
+            AssertCode("al = __inb(dx)", e);
+        }
+
+        [Test]
+        public void RetInstruction()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Ret();
+            });
+            AssertCode("return", e);
+        }
+
+        [Test]
+        [Ignore()]
+        public void RetNInstruction()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Ret(8);
+            });
+            AssertCode("Return", e);
         }
     }
 }
