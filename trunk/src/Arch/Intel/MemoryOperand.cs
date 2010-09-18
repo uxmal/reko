@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
@@ -27,14 +29,15 @@ namespace Decompiler.Arch.Intel
 {
 	public class MemoryOperand : MachineOperand
 	{
-		public MachineRegister SegOverride = MachineRegister.None;
-		public MachineRegister Base;
-		public MachineRegister Index;
-		public byte Scale;
-		private Constant offset;
+		public MachineRegister SegOverride  {get;set;}
+        public MachineRegister Base { get; set; }
+        public MachineRegister Index { get; set; }
+        public byte Scale { get; set; }
+		public Constant Offset {get;set;}
 
 		public MemoryOperand(PrimitiveType width) : base(width)
 		{
+            SegOverride = MachineRegister.None;
 			Base = MachineRegister.None;
             Index = MachineRegister.None;
             SegOverride = MachineRegister.None;
@@ -43,37 +46,34 @@ namespace Decompiler.Arch.Intel
 
 		public MemoryOperand(PrimitiveType width, Constant off) : base(width)
 		{
-			offset = off;
+            SegOverride = MachineRegister.None;
             Base = MachineRegister.None;
+			Offset = off;
             Index = MachineRegister.None;
 			Scale = 1;
 		}
 
 		public MemoryOperand(PrimitiveType width, MachineRegister @base, Constant off) : base(width)
 		{
-			offset = off;
+            SegOverride = MachineRegister.None;
 			Base = @base;
+			Offset = off;
             Index = MachineRegister.None;
 			Scale = 1;
 		}
 
 		public MemoryOperand(PrimitiveType width, MachineRegister @base, MachineRegister index, byte scale,  Constant off) : base(width)
 		{
-			offset = off;
+            SegOverride = MachineRegister.None;
 			Base = @base;
+			Offset = off;
 			Index = index;
 			Scale = scale;
 		}
 
 		public bool IsAbsolute
 		{
-            get { return offset.IsValid && Base == MachineRegister.None && Index == MachineRegister.None; }
-		}
-
-		public Constant Offset
-		{
-			get { return offset; }
-			set { offset = value; }
+            get { return Offset.IsValid && Base == MachineRegister.None && Index == MachineRegister.None; }
 		}
 
 		public override string ToString()
@@ -118,7 +118,7 @@ namespace Decompiler.Arch.Intel
 			}
 			else
 			{
-				sb.AppendFormat(FormatUnsignedValue(offset));
+				sb.AppendFormat(FormatUnsignedValue(Offset));
 			}
 
 			if (Index != MachineRegister.None)
@@ -131,24 +131,25 @@ namespace Decompiler.Arch.Intel
 					sb.Append(Scale);
 				}
 			}
-			if (Base != MachineRegister.None && offset != null && offset.IsValid)
+			if (Base != MachineRegister.None && Offset != null && Offset.IsValid)
 			{
-				if (offset.DataType == PrimitiveType.Byte || offset.DataType == PrimitiveType.SByte)
+				if (Offset.DataType == PrimitiveType.Byte || Offset.DataType == PrimitiveType.SByte)
 				{
-					sb.Append(FormatSignedValue(offset));
+					sb.Append(FormatSignedValue(Offset));
 				}
 				else
 				{	
 					sb.Append("+");
-					sb.Append(FormatUnsignedValue(offset));
+					sb.Append(FormatUnsignedValue(Offset));
 				}
 			}
 			sb.Append("]");
 			return sb.ToString();
 		}
 
-		// Given an instruction and an operand, returns the segment to use when referring to data.
-
+		/// <summary>
+        /// Returns the segment to use when referring to data unless an overriding segment was specfied.
+		/// </summary>
 		public MachineRegister DefaultSegment
 		{					 
 			get 

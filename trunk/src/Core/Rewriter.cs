@@ -49,11 +49,14 @@ namespace Decompiler.Core
 		public abstract void EmitCallAndReturn(Procedure callee);
     }
 
+    /// <summary>
+    /// Rewrites code from machine-specific to machine-independent IL codes.
+    /// </summary>
     public interface Rewriter2 : IEnumerable<RewrittenInstruction>
     {
     }
 
-    public struct RewrittenInstruction
+    public class RewrittenInstruction
     {
         public Address Address;
         public Instruction Instruction;

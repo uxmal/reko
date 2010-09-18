@@ -38,7 +38,7 @@ namespace Decompiler.Core.Code
         public GotoInstruction(Expression target)
         {
             this.target = target;
-            this.condition = Constant.True();
+            this.condition = Constant.Invalid;
         }
 
         /// <summary>
@@ -62,10 +62,9 @@ namespace Decompiler.Core.Code
             v.VisitGotoInstruction(this);
         }
 
-        public override bool IsControlFlow
-        {
-            get { return true; }
-        }
+        public bool IsConditional { get { return Condition != Constant.Invalid; } }
+
+        public override bool IsControlFlow { get { return true; } }
 
         public Expression Condition
         {

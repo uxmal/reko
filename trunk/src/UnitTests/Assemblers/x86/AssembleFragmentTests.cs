@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
             IntelEmitter emitter = new IntelEmitter();
             Address addrBase=  new Address(0xC00, 0);
             Program prog = new Program();
-            IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), PrimitiveType.Word16, addrBase, emitter, new List<EntryPoint>());
+            IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addrBase, emitter, new List<EntryPoint>());
             fragment.Build(asm);
             ProgramImage img = new ProgramImage(addrBase, emitter.Bytes);
 

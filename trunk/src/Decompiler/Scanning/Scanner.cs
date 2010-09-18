@@ -164,7 +164,7 @@ namespace Decompiler.Scanning
                 new BlockWorkitem2(
                     this,
                     this.arch,
-                    this.arch.CreateRewriter2(CreateReader(addrStart), proc.Frame, this),
+                    this.arch.CreateRewriter2(CreateReader(addrStart), state, proc.Frame, this),
                     state,
                     new Frame(arch.FramePointerType),
                     block));
@@ -279,6 +279,11 @@ namespace Decompiler.Scanning
                 pseudoProcs[name] = p;
             }
             return p;
+        }
+
+        public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

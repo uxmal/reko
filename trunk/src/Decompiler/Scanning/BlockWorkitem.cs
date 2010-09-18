@@ -66,6 +66,7 @@ namespace Decompiler.Scanning
             for (var e = rewriter.GetEnumerator(); e.MoveNext(); )
             {
                 ri = e.Current;
+                state.SetInstructionPointer(ri.Address);
                 ri.Instruction.Accept(this);
                 if (!processNextInstruction)
                     break;
@@ -127,6 +128,7 @@ namespace Decompiler.Scanning
         public void VisitAssignment(Assignment a)
         {
             SetValue(a.Dst, GetValue(a.Src));
+            blockCur.Statements.Add(ri.Address.Linear, ri.Instruction);
         }
 
         public void VisitBranch(Branch b)
@@ -149,23 +151,28 @@ namespace Decompiler.Scanning
 
         public void VisitGotoInstruction(GotoInstruction g)
         {
-            if (g.Condition is Constant)
+            if (g.Target is Address)
             {
-                var blockTarget = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure, state);
-                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockTarget);
-                TerminateBlock();
-                this.processNextInstruction = false;
+                if (g.IsConditional)
+                {
+                    var blockThen = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure, state.Clone());
+                    var blockElse = scanner.EnqueueJumpTarget(ri.Address + ri.Length, blockCur.Procedure, state);
+                    this.blockCur.Statements.Add(
+                        ri.Address.Linear,
+                        new Branch(g.Condition, blockThen));
+                }
+                else
+                {
+                    var blockTarget = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure, state);
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockTarget);
+                }
             }
             else
             {
-                var blockThen = scanner.EnqueueJumpTarget((Address)g.Target, blockCur.Procedure, state);
-                var blockElse = scanner.EnqueueJumpTarget(ri.Address + ri.Length, blockCur.Procedure, state);
-                this.blockCur.Statements.Add(
-                    ri.Address.Linear,
-                    new Branch(g.Condition, blockThen));
-                TerminateBlock();
-                this.processNextInstruction = false;
+                blockCur.Statements.Add(ri.Address.Linear, ri.Instruction);
             }
+            TerminateBlock();
+            this.processNextInstruction = false;
         }
 
         public void VisitPhiAssignment(PhiAssignment phi)
@@ -187,7 +194,11 @@ namespace Decompiler.Scanning
                 scanner.CallGraph.AddEdge(blockCur.Statements.Last, callee);
                 return;
             }
-            throw new NotImplementedException();
+            blockCur.Statements.Add(
+                ri.Address.Linear,
+                new IndirectCall(
+                    ic.Callee,
+                    ic.CallSite));
         }
 
         public void VisitReturnInstruction(ReturnInstruction ret)

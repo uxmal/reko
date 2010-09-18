@@ -125,9 +125,49 @@ namespace Decompiler.Arch.Intel
             emitter.Goto(SrcOp(di.Instruction.op1));
         }
 
+        public void RewriteRet()
+        {
+            EmitReturnInstruction(
+                this.arch.WordWidth.Size + (di.Instruction.code == Opcode.retf ? PrimitiveType.Word16.Size : 0),
+                di.Instruction.Operands == 1 ? ((ImmediateOperand)di.Instruction.op1).Value.ToInt32() : 0);
+        }
+
+        private void EmitReturnInstruction(int cbReturnAddress, int cbBytesPop)
+        {
+            throw new NotImplementedException("Move to rewriter");
+            //if (frame.ReturnAddressSize != cbReturnAddress)
+            //{
+            //    host.AddDiagnostic(
+            //        di.Address,
+            //        new WarningDiagnostic(string.Format(
+            //        "Caller expects a return address of {0} bytes, but procedure {1} was previously called with a return address of {2} bytes.",
+            //        cbReturnAddress, this.proc.Name, frame.ReturnAddressSize)));
+            //}
+            //emitter.Return();
+            //if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != cbBytesPop)
+            //{
+            //    host.AddDiagnostic(
+            //        di.Address,
+            //        new WarningDiagnostic(string.Format(
+            //        "Multiple differing values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
+            //}
+            //else
+            //{
+            //    proc.Signature.StackDelta = cbBytesPop;
+            //}
+            //proc.Signature.FpuStackDelta = state.FpuStackItems;
+            //proc.Signature.FpuStackArgumentMax = maxFpuStackRead;
+            //proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;
+            //proc.AddEdge(emitter.Block, proc.ExitBlock);
+        }
+
+        /// <summary>
+        /// A jump to 0xFFFF:0x0000 in real mode is a reboot.
+        /// </summary>
+        /// <param name="instrCur"></param>
+        /// <returns></returns>
         private bool IsRealModeReboot(IntelInstruction instrCur)
         {
-            // A jumps to 0xFFFF:0x0000 in real mode is a reboot.
             AddressOperand addrOp = instrCur.op1 as AddressOperand;
             bool isRealModeReboot = addrOp != null && addrOp.Address.Linear == 0xFFFF0;
             return isRealModeReboot;

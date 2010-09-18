@@ -436,6 +436,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mocks\FakePlatform.cs" />
+    <Compile Include="Scanning\BackWalkerTests.cs" />
     <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -89,6 +89,7 @@ namespace Decompiler.Core
 		}
 
 
+
         [Conditional("DEBUG")]
 		public void Dump(bool dump, bool emitFrame)
 		{
@@ -99,6 +100,7 @@ namespace Decompiler.Core
 			Write(emitFrame, sb);
 			Debug.WriteLine(sb.ToString());
 		}
+
 
         public BlockDominatorGraph CreateBlockDominatorGraph()
         {
@@ -232,7 +234,6 @@ namespace Decompiler.Core
 			}
 		}
 
-        [Obsolete("Use control flow graph for this.")]
         public Block AddBlock(string name)
         {
             Block block = new Block(this, name);
@@ -258,5 +259,6 @@ namespace Decompiler.Core
             }
             controlGraph.RemoveEdge(from, to);
         }
+
     }
 }

@@ -66,7 +66,7 @@ namespace Decompiler.Assemblers.x86
             // Default assembler is real-mode.
 
             IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-            asm = new IntelAssembler(arch, arch.WordWidth, addrBase, emitter, entryPoints);
+            asm = new IntelAssembler(arch, addrBase, emitter, entryPoints);
 
             // Assemblers are strongly line-oriented.
 
