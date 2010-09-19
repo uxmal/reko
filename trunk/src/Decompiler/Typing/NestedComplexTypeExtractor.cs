@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,7 +16,9 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
 
@@ -44,7 +47,7 @@ namespace Decompiler.Typing
 
 		public EquivalenceClass CreateEquivalenceClass(DataType dt)
 		{
-			TypeVariable tv = store.EnsureExpressionTypeVariable(factory, (Decompiler.Core.Code.Expression) null);
+			TypeVariable tv = store.EnsureExpressionTypeVariable(factory, (Expression) null);
 			tv.Class.DataType = dt;
 			tv.DataType = tv.Class;
 			return tv.Class;

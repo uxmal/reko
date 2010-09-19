@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -31,12 +33,12 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void InterfSymmetry()
 		{
-			Identifier id1 = new Identifier("id1", 0, PrimitiveType.Word32, null);
-			Identifier id2 = new Identifier("id2", 1, PrimitiveType.Word32, null);
+			var id1 = new Identifier("id1", 0, PrimitiveType.Word32, null);
+			var id2 = new Identifier("id2", 1, PrimitiveType.Word32, null);
 
-			Interference intf1 = new Interference(id1, id2);
-			Interference intf2 = new Interference(id1, id2);
-			Interference intf3 = new Interference(id2, id1);
+			var intf1 = new Interference(id1, id2);
+			var intf2 = new Interference(id1, id2);
+			var intf3 = new Interference(id2, id1);
 			Assert.AreEqual(intf1.GetHashCode(), intf2.GetHashCode());
 			Assert.AreEqual(intf1.GetHashCode(), intf3.GetHashCode());
 			Assert.AreEqual(intf2.GetHashCode(), intf3.GetHashCode());

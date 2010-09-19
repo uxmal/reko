@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 using System.Collections.Generic;
-using Application = Decompiler.Core.Code.Application;
+using Application = Decompiler.Core.Expressions.Application;
 using Assignment = Decompiler.Core.Code.Assignment;
 using BitSet = Decompiler.Core.Lib.BitSet;
 using Block = Decompiler.Core.Block;
@@ -26,10 +28,10 @@ using CallInstruction = Decompiler.Core.Code.CallInstruction;
 using CallRewriter = Decompiler.Core.CallRewriter;
 using CallSite = Decompiler.Core.Code.CallSite;
 using Debug = System.Diagnostics.Debug;
-using Expression = Decompiler.Core.Code.Expression;
+using Expression = Decompiler.Core.Expressions.Expression;
 using FpuStackStorage = Decompiler.Core.FpuStackStorage;
 using Frame = Decompiler.Core.Frame;
-using Identifier = Decompiler.Core.Code.Identifier;
+using Identifier = Decompiler.Core.Expressions.Identifier;
 using Instruction = Decompiler.Core.Code.Instruction;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
 using MachineRegister = Decompiler.Core.Machine.MachineRegister;
@@ -44,7 +46,7 @@ using ReturnInstruction = Decompiler.Core.Code.ReturnInstruction;
 using SignatureBuilder = Decompiler.Core.SignatureBuilder;
 using StackArgumentStorage= Decompiler.Core.StackArgumentStorage;
 using Statement = Decompiler.Core.Statement;
-using UnaryExpr = Decompiler.Core.Code.UnaryExpression;
+using UnaryExpr = Decompiler.Core.Expressions.UnaryExpression;
 using UseInstruction = Decompiler.Core.Code.UseInstruction;
 
 namespace Decompiler.Analysis

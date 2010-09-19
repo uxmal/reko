@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -35,9 +37,9 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void Associate()
 		{
-			Identifier foo = new Identifier("foo", 0, PrimitiveType.SegmentSelector, null);
-			Identifier bar = new Identifier("bar", 1, PrimitiveType.Word16, null);
-			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null, null);
+			var foo = new Identifier("foo", 0, PrimitiveType.SegmentSelector, null);
+			var bar = new Identifier("bar", 1, PrimitiveType.Word16, null);
+			var mpc = new SegmentedAccessClassifier(null, null);
 			mpc.Associate(foo, bar);
 			Assert.IsNotNull(mpc.AssociatedIdentifier(foo), "Bar should be associated");
 			mpc.Associate(foo, bar);

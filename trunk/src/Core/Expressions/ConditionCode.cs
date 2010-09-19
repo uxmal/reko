@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2010 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,28 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
 using System;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Decompiler.Core.Expressions
 {
-	public class ByteArrayLoopMock : ProcedureMock
-	{
-		protected override void BuildBody()
-		{
-			var a = Local32("a");
-			var i = Local32("i");
-			Assign(i, 0);
-			Label("loop");
-			BranchIf(Lt(i,10), "body");
-			Return();
-			Label("body");
-			Store(Add(a, i), Int8(0));
-			Assign(i, Add(i, 1));
-			Jump("loop");
-		}
-	}
+    public enum ConditionCode
+    {
+        None,
+        UGT,	// Unsigned >
+        ULE,	// Unsigned <=
+        ULT,	// Unsigned <
+        GT,		// >
+        GE,		// >=
+        LT,		// <
+        LE,		// <=
+        UGE,	// Unsigned >=
+        NO,		// No overflow
+        NS,		// >= 0
+        NE,		// != 
+        OV,		// Overflow
+        SG,		// < 0
+        EQ,		// ==	
+        PE,     // Parity even
+        PO,     // parity odd
+    }
 }

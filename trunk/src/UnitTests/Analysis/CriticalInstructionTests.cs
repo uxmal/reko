@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -63,7 +66,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DereferenceTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Decompiler.Core.Code.Dereference(null, null)));
+			Assert.IsTrue(ci.IsCritical(new Decompiler.Core.Expressions.Dereference(null, null)));
 		}
 
 		[Test]

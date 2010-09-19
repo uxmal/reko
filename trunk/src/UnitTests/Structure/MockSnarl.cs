@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,8 +16,8 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
-using Decompiler.Core.Code;
 using System;
 using Decompiler.UnitTests.Mocks;
 
@@ -41,9 +42,9 @@ namespace Decompiler.UnitTests.Structure
 		/// </summary>
 		protected override void BuildBody()
 		{
-			Identifier a0 = Local32("a0");
-			Identifier a2 = Local32("a2");
-			Identifier a3 = Local32("a3");
+			var a0 = Local32("a0");
+			var a2 = Local32("a2");
+			var a3 = Local32("a3");
 
 			BranchIf(a0, "b2");
 			SideEffect(Fn("foo", a0));

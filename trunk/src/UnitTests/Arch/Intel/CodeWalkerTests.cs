@@ -21,7 +21,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Core.Machine;
 using Decompiler.Environments.Msdos;

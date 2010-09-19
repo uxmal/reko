@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using NUnit.Framework;
@@ -35,8 +37,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void VisitRegister()
 		{
-			MachineRegister reg = new MachineRegister("r0", 0, PrimitiveType.Word16);
-			Identifier r = new Identifier(reg.Name, 0, reg.DataType, new RegisterStorage(reg));
+			var reg = new MachineRegister("r0", 0, PrimitiveType.Word16);
+			var r = new Identifier(reg.Name, 0, reg.DataType, new RegisterStorage(reg));
 			r.Storage.Accept(this);
 			Assert.AreEqual("reg", type);
 		}
@@ -44,7 +46,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void VisitFlagGroup()
 		{
-			Identifier f = new Identifier("grf", 0, PrimitiveType.Word16, new FlagGroupStorage(0x11, "ZO"));
+			var f = new Identifier("grf", 0, PrimitiveType.Word16, new FlagGroupStorage(0x11, "ZO"));
 			f.Storage.Accept(this);
 			Assert.AreEqual("grf", type);
 		}
@@ -52,9 +54,9 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void VisitSequenceVariable()
 		{
-			Identifier ax = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, new RegisterStorage(Registers.ax));
-			Identifier dx = new Identifier(Registers.dx.Name, 1, Registers.dx.DataType, new RegisterStorage(Registers.dx));
-			Identifier seq = new Identifier("dx_ax", 2, PrimitiveType.Word32, new SequenceStorage(dx, ax));
+			var ax = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, new RegisterStorage(Registers.ax));
+			var dx = new Identifier(Registers.dx.Name, 1, Registers.dx.DataType, new RegisterStorage(Registers.dx));
+			var seq = new Identifier("dx_ax", 2, PrimitiveType.Word32, new SequenceStorage(dx, ax));
 			seq.Storage.Accept(this);
 			Assert.AreEqual("seq", type);
 		}

@@ -21,6 +21,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Analysis;
@@ -54,7 +55,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void TrashRegister()
         {
-            Identifier r1 = m.Register(1);
+            var r1 = m.Register(1);
             var stm = m.Assign(r1, m.Int32(0));
 
             trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
@@ -122,8 +123,8 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void OutParameters()
         {
-            Identifier r2 = m.Register(2);
-            Statement stm = m.SideEffect(m.Fn("Hello", m.AddrOf(r2)));
+            var r2 = m.Register(2);
+            var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(r2)));
 
             trf = new TrashedRegisterFinder(null, flow, new FakeDecompilerEventListener());
 
@@ -134,9 +135,9 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void CallInstruction()
         {
-            Procedure callee = new Procedure("Callee", prog.Architecture.CreateFrame());
-            CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(0, 0));
-            ProcedureFlow pf = new ProcedureFlow(callee, prog.Architecture);
+            var callee = new Procedure("Callee", prog.Architecture.CreateFrame());
+            var ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(0, 0));
+            var pf = new ProcedureFlow(callee, prog.Architecture);
             pf.TrashedRegisters[Registers.ebx.Number] = true;
             flow[callee] = pf;
 

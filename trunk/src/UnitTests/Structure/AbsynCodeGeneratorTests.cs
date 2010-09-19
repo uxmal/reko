@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,10 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Output;
 using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
@@ -391,9 +393,9 @@ namespace Decompiler.UnitTests.Structure
         {
             CompileTest(delegate(ProcedureMock m)
             {
-                Identifier a1 = m.Local16("a1"); 
+                var a1 = m.Local16("a1"); 
                 m.Assign(a1, m.Fn("fn0540"));
-                Identifier tmp = m.Local16("tmp");
+                var tmp = m.Local16("tmp");
                 m.Assign(tmp, m.LoadW(m.Word16(0x8416)));
                 m.BranchIf(m.Ne(tmp, 0), "branch_c");
 

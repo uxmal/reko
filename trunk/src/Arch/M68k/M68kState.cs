@@ -1,4 +1,5 @@
-﻿/* 
+﻿#region License
+/* 
  * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -15,9 +16,10 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;

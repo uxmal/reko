@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,12 +16,12 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 using Decompiler.Analysis;
 using Decompiler.Analysis.Simplification;
 using Decompiler.Core;
-using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -36,9 +37,9 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 		[Test]
 		public void Test1()
 		{
-			ProcedureMock m = new ProcedureMock();
-			Identifier id = m.Local32("id");
-			Identifier x = m.Local32("x");
+			var m = new ProcedureMock();
+			var id = m.Local32("id");
+			var x = m.Local32("x");
 			var stm = m.Assign(x, m.Add(m.Muls(id, 4), id));
 		}
 	}

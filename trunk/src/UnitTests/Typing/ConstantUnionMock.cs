@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,10 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using System;
@@ -28,9 +30,9 @@ namespace Decompiler.UnitTests.Typing
 	{
 		protected override void BuildBody()
 		{
-			Constant i = new Constant(PrimitiveType.Int32, 3);		// signed integer
-			Constant r = new Constant(3.0F);						// single-precision real
-			Identifier x = Local32("x");
+			var i = new Constant(PrimitiveType.Int32, 3);		// signed integer
+			var r = new Constant(3.0F);						// single-precision real
+			var x = Local32("x");
 			Assign(x, i);
 			Assign(x, r);
 		}

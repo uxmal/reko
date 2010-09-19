@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis.Simplification;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -31,24 +33,24 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 		[Test]
 		public void SliceMem()
 		{
-			Slice s = new Slice(PrimitiveType.Byte,
+			var s = new Slice(PrimitiveType.Byte,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory, 
 				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
-			SliceMem_Rule r = new SliceMem_Rule();
+			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
-			Expression e = r.Transform(null);
+			var e = r.Transform(null);
 			Assert.AreEqual("Mem0[ptr + 0x00000002:byte]", e.ToString());
 		}
 
 		[Test]
 		public void SliceMem0()
 		{
-			Slice s = new Slice(PrimitiveType.Word16,
+			var s = new Slice(PrimitiveType.Word16,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory,
 				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
-			SliceMem_Rule r = new SliceMem_Rule();
+			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
-			Expression e = r.Transform(null);
+			var e = r.Transform(null);
 			Assert.AreEqual("Mem0[ptr + 0x00000000:word16]", e.ToString());
 		}
 

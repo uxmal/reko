@@ -21,7 +21,7 @@
 using Decompiler;
 using Decompiler.Analysis;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;

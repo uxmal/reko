@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,11 +16,12 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 using BitSet = Decompiler.Core.Lib.BitSet;
 using Block = Decompiler.Core.Block;
-using Identifier = Decompiler.Core.Code.Identifier;
+using Identifier = Decompiler.Core.Expressions.Identifier;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
 using Storage = Decompiler.Core.Storage;
 using TextWriter = System.IO.TextWriter;

@@ -19,7 +19,7 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
@@ -193,7 +193,6 @@ namespace Decompiler.Arch.Intel
         {
             Expression dst = SrcOp(opDst);
             Identifier idDst = dst as Identifier;
-            Assignment ass;
             if (idDst != null || !forceBreak)
             {
                 MemoryAccess acc = dst as MemoryAccess;

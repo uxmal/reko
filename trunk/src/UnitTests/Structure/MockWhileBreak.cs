@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,8 +16,8 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
-using Decompiler.Core.Code;
 using Decompiler.UnitTests.Mocks;
 using System;
 
@@ -37,9 +38,9 @@ namespace Decompiler.UnitTests.Structure
 		/// </summary>
 		protected override void BuildBody()
 		{
-			Identifier r1 = Local32("r1");
-			Identifier r2 = Local32("r2");
-			Identifier r3 = Local32("r3");
+			var r1 = Local32("r1");
+			var r2 = Local32("r2");
+			var r3 = Local32("r3");
 			Assign(r2, Int32(0));
 			
 			Label("looptest");

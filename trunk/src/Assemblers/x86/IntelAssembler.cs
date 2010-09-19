@@ -22,7 +22,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Environments.Msdos;
 using Decompiler.Core;
 using Decompiler.Core.Assemblers;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
@@ -49,11 +49,6 @@ namespace Decompiler.Assemblers.x86
         private SortedDictionary<string, SignatureLibrary> importLibraries;
         private Dictionary<uint, PseudoProcedure> importThunks;
 
-        [Obsolete("", true)]
-        public IntelAssembler(IntelArchitecture arch, PrimitiveType defaultWordSize, Address addrBase, IntelEmitter emitter, List<EntryPoint> entryPoints) 
-        {
-
-        }
         public IntelAssembler(IntelArchitecture arch, Address addrBase, IntelEmitter emitter, List<EntryPoint> entryPoints)
         {
             this.arch = new IntelArchitecture(ProcessorMode.Real);

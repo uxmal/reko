@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,11 +16,12 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Types;
 using System;
 
-namespace Decompiler.Core.Code
+namespace Decompiler.Core.Expressions
 {
 	public class ExpressionFactory
 	{
@@ -28,8 +30,8 @@ namespace Decompiler.Core.Code
 
 		public ExpressionFactory()
 		{
-            this.trueValue = Decompiler.Core.Code.Constant.True();
-            this.falseValue = Decompiler.Core.Code.Constant.False();
+            this.trueValue = Decompiler.Core.Expressions.Constant.True();
+            this.falseValue = Decompiler.Core.Expressions.Constant.False();
         }
 
 		public Identifier Identifier(DataType type, int id, string name, Storage storage) 
@@ -37,7 +39,7 @@ namespace Decompiler.Core.Code
 			return new Identifier(name, id, type, storage);
 		}
 
-		public Constant Constant(DataType type, object o)
+		public Constant Const(DataType type, object o)
 		{
 			return new Constant(type, o);
 		}

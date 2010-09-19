@@ -21,7 +21,7 @@
 using System;
 using Decompiler.Core.Types;
 
-namespace Decompiler.Core.Code
+namespace Decompiler.Core.Expressions
 {
 	/// <summary>
 	/// Corresponds to the :: operator of C++; 

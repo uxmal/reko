@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,8 +16,8 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
-using Decompiler.Core.Code;
 using Decompiler.UnitTests.Mocks;
 
 using System;
@@ -29,7 +30,7 @@ namespace Decompiler.UnitTests.Structure
     {
         protected override void BuildBody()
         {
-            Identifier w = Local16("w");
+            var w = Local16("w");
             Switch(w, "case0", "case1", "case2");
             Label("case0");
             SideEffect(Fn("fn0"));

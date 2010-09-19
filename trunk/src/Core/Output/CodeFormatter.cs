@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using System;
 using System.Collections.Generic;

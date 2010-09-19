@@ -158,6 +158,7 @@
     <Compile Include="Expressions\ArrayAccess.cs" />
     <Compile Include="Expressions\BinaryExpression.cs" />
     <Compile Include="Expressions\Cast.cs" />
+    <Compile Include="Expressions\ConditionCode.cs" />
     <Compile Include="Expressions\ConditionOf.cs" />
     <Compile Include="Expressions\Constant.cs" />
     <Compile Include="Expressions\DepositBits.cs" />

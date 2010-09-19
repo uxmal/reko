@@ -1,3 +1,4 @@
+#region Licence
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,10 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -30,7 +32,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void PriReadLiterals()
 		{
-			byte [] bytes = new byte [] { 
+			var bytes = new byte [] { 
                 0x01, 0x00, 0xFE, 0x80, 
 				0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xE0, 0x3F,
 				0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF0, 0x3F,
@@ -38,7 +40,7 @@ namespace Decompiler.UnitTests.Core
 				0x27, 0x10, 0x10, 0x10, 0x10, 0x10, 0x80, 0x3F,
 				0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x49, 0x40,
 			};
-			ProgramImage img = new ProgramImage(new Address(0xC00, 0), bytes);
+			var img = new ProgramImage(new Address(0xC00, 0), bytes);
 			Assert.AreEqual(-0x7F01FFFF, img.ReadLeInt32(0));
 			Assert.AreEqual(0.5, img.ReadLeDouble(0x04).ToDouble(), 0.00001);
             Assert.AreEqual(1.0, img.ReadLeDouble(0x0C).ToDouble(), 0.00001);
@@ -50,9 +52,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void UShortFixup()
 		{
-			byte [] bytes = new byte[] { 0x01, 0x02, 0x03 };
-
-			ProgramImage img = new ProgramImage(new Address(0x0C00, 0), bytes);
+			var bytes = new byte[] { 0x01, 0x02, 0x03 };
+			var img = new ProgramImage(new Address(0x0C00, 0), bytes);
 			ushort newSeg = img.FixupLeUint16(1, 0x4444);
 			Assert.AreEqual(0x4746, newSeg);
 		}
@@ -60,7 +61,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void MapTests()
 		{
-			ProgramImage img = new ProgramImage(new Address(0x1231000), new byte [256]);
+			var img = new ProgramImage(new Address(0x1231000), new byte [256]);
 			Assert.IsNotNull(img.Map);
 			Assert.AreEqual(1, img.Map.Items.Count);
 		}
