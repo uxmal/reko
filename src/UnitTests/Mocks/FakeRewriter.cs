@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Rtl;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,16 +29,16 @@ namespace Decompiler.UnitTests.Mocks
 {
     public class FakeRewriter : Rewriter2
     {
-        IEnumerable<RewrittenInstruction> instrs;
+        IEnumerable<RtlInstruction> instrs;
 
-        public FakeRewriter(IEnumerable<RewrittenInstruction> instrs)
+        public FakeRewriter(IEnumerable<RtlInstruction> instrs)
         {
             this.instrs = instrs;
         }
 
         #region IEnumerable<RewrittenInstruction> Members
 
-        public IEnumerator<RewrittenInstruction> GetEnumerator()
+        public IEnumerator<RtlInstruction> GetEnumerator()
         {
             return instrs.GetEnumerator();
         }

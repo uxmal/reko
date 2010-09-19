@@ -95,7 +95,7 @@ namespace Decompiler.Arch.Intel
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
-            emitter.IfGoto(CreateTestCondition(cc, orw.FlagGroup(IntelInstruction.UseCc(di.Instruction.code))), OperandAsCodeAddress(op1));
+            emitter.Branch(CreateTestCondition(cc, orw.FlagGroup(IntelInstruction.UseCc(di.Instruction.code))), OperandAsCodeAddress(op1));
         }
 
 

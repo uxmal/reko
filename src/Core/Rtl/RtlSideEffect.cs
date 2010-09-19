@@ -18,13 +18,32 @@
  */
 #endregion
 
+using Decompiler.Core.Code;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Core.Rtl
 {
-    public class RtlSideEffect
+    public class RtlSideEffect : RtlInstruction
     {
+        public RtlSideEffect(Address addr, uint length, Expression sideEffect)
+            : base(addr, length)
+        {
+            this.Expression = sideEffect;
+        }
+        public override void Accept(RtlInstructionVisitor visitor)
+        {
+            visitor.VisitSideEffect(this);
+        }
+
+        public Expression Expression { get; private set; }
+
+        public override void Write(TextWriter writer)
+        {
+            base.Write(writer);
+            writer.Write(Expression);
+        }
     }
 }

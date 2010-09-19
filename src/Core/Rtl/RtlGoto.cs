@@ -18,13 +18,33 @@
  */
 #endregion
 
+using Decompiler.Core.Code;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Core.Rtl
 {
-    public class RtlGoto
+    public class RtlGoto : RtlInstruction
     {
+        public RtlGoto(Address addr, uint length, Expression target)
+            : base(addr, length)
+        {
+            this.Target = target;
+        }
+
+        public override void Accept(RtlInstructionVisitor visitor)
+        {
+            visitor.VisitGoto(this);
+        }
+
+        public Expression Target { get; private set; }
+
+        public override void Write(TextWriter writer)
+        {
+            base.Write(writer);
+            writer.Write("goto {0}", Target);
+        }
     }
 }

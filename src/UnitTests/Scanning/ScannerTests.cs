@@ -20,9 +20,10 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Assemblers;
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
-using Decompiler.Core.Assemblers;
+using Decompiler.Core.Rtl;
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
@@ -55,10 +56,8 @@ namespace Decompiler.UnitTests.Scanning
                     new RegisterOperand(arch.GetRegister(1)), 
                     ImmediateOperand.Word32(1))
             };
-            arch.InstructionStream = new RewrittenInstruction[] { 
-                new RewrittenInstruction(new Address(0x12314),
-                    new ReturnInstruction(null),
-                    1)
+            arch.InstructionStream = new RtlInstruction[] { 
+                new RtlReturn(new Address(0x12314), 1, 4, 0)
             };
             var sc = new Scanner2(arch, new ProgramImage(new Address(0x12314), new byte[1]), new FakePlatform());
             sc.EnqueueEntryPoint(

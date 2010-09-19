@@ -18,13 +18,34 @@
  */
 #endregion
 
+using Decompiler.Core.Code;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Core.Rtl
 {
-    public class RtlBranch
+    public class RtlBranch : RtlInstruction
     {
+        public RtlBranch(Address addr, uint length, Expression condition, Address target) : base(addr, length)
+        {
+            this.Condition = condition;
+            this.Target = target;
+        }
+        public override void Accept(RtlInstructionVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Condition { get; private set; }
+
+        public Address Target { get; private set; }
+
+        public override void Write(TextWriter writer)
+        {
+            base.Write(writer);
+            writer.Write("branch {0}", Target);
+        }
     }
 }

@@ -18,13 +18,36 @@
  */
 #endregion
 
+using Decompiler.Core.Code;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Core.Rtl
 {
-    public class RtlReturn
+    public class RtlReturn : RtlInstruction
     {
+        public RtlReturn(Address addr, uint length, int returnAddressBytes, int extraBytesPopped) : base(addr, length)
+        {
+            this.ReturnAddressBytes = returnAddressBytes;
+            this.ExtraBytesPopped = extraBytesPopped;
+        }
+
+        public override void Accept(RtlInstructionVisitor visitor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ReturnAddressBytes { get; private set; }
+        public int ExtraBytesPopped { get; private set; }
+
+        public override void Write(TextWriter writer)
+        {
+            base.Write(writer);
+            writer.Write("return ({0},{1})", ReturnAddressBytes, ExtraBytesPopped);
+        }
+
     }
 }
+

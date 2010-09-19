@@ -21,6 +21,7 @@
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace Decompiler.Arch.Intel
             //    larw.EmitInstruction(op, emitter);
             //    return larw.Dst;
             //}
-            Assignment ass = EmitBinOp(
+            RtlAssignment ass = EmitBinOp(
                 op,
                 di.Instruction.op1,
                 di.Instruction.op1.Width,
@@ -64,7 +65,7 @@ namespace Decompiler.Arch.Intel
             emitter.Assign(reg, PseudoProc("__bswap", (PrimitiveType)reg.DataType, reg));
         }
 
-        public Assignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right)
+        public RtlAssignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right)
         {
             Constant c = right as Constant;
             if (c != null)
@@ -74,7 +75,6 @@ namespace Decompiler.Arch.Intel
                     right = emitter.Const(left.DataType, c.ToInt32());
                 }
             }
-
             return EmitCopy(dst, new BinaryExpression(binOp, dtDst, left, right), true);
         }
 
@@ -193,7 +193,7 @@ namespace Decompiler.Arch.Intel
 
             var sp = StackPointer();
             emitter.Assign(sp, emitter.Sub(sp, dataWidth.Size));
-            emitter.Emit(new Store(orw.StackAccess(sp, dataWidth), expr));
+            emitter.Assign(orw.StackAccess(sp, dataWidth), expr);
         }
 
         private void RewriteTest()

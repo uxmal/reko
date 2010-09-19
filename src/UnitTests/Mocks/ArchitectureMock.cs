@@ -20,9 +20,10 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
-using Decompiler.Core.Machine;
-using Decompiler.Core.Types;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 
@@ -61,7 +62,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
 
-        public IEnumerable<RewrittenInstruction> InstructionStream { get; set; }
+        public IEnumerable<RtlInstruction> InstructionStream { get; set; }
 
 		public static MachineRegister GetMachineRegister(int i)
 		{
