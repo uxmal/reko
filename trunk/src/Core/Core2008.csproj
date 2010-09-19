@@ -154,6 +154,7 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
+    <Compile Include="Expressions\ExpressionEmitter.cs" />
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="Lib\LookaheadEnumerator.cs" />
     <Compile Include="Lib\PriorityQueue.cs">
@@ -161,6 +162,7 @@
     <Compile Include="Rtl\RtlAssignment.cs" />
     <Compile Include="Rtl\RtlBranch.cs" />
     <Compile Include="Rtl\RtlCall.cs" />
+    <Compile Include="Rtl\RtlEmitter.cs" />
     <Compile Include="Rtl\RtlGoto.cs" />
     <Compile Include="Rtl\RtlInstruction.cs" />
     <Compile Include="Rtl\RtlInstructionVisitor.cs" />

@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
@@ -41,7 +42,7 @@ namespace Decompiler.Arch.Intel
         private IntelArchitecture arch;
         private Frame frame;
         private LookaheadEnumerator<DisassembledInstruction> dasm;
-        private Emitter emitter;
+        private RtlEmitter emitter;
         private OperandRewriter2 orw;
         private DisassembledInstruction di;
         private IntelState state;
@@ -96,14 +97,13 @@ namespace Decompiler.Arch.Intel
         }
         #endregion
 
-        public IEnumerator<RewrittenInstruction> GetEnumerator()
+        public IEnumerator<RtlInstruction> GetEnumerator()
         {
             while (dasm.MoveNext())
             {
                 di = dasm.Current;
-                emitter = new Emitter(frame);
-                emitter.Address = di.Address;
-                emitter.Length = di.Length;
+                var instrs = new List<RtlInstruction>();
+                emitter = new RtlEmitter(di.Address, di.Length, instrs);
                 orw = new OperandRewriter2(arch, frame);
                 switch (di.Instruction.code)
                 {
@@ -144,7 +144,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
                 }
                     
-                foreach (RewrittenInstruction ri in emitter.Instructions)
+                foreach (var ri in instrs)
                 {
                     yield return ri;
                 }
@@ -189,7 +189,7 @@ namespace Decompiler.Arch.Intel
         /// <param name="src"></param>
         /// <param name="forceBreak">if true, forcibly splits the assignments in two if the destination is a memory store.</param>
         /// <returns></returns>
-        public Assignment EmitCopy(MachineOperand opDst, Expression src, bool forceBreak)
+        public RtlAssignment EmitCopy(MachineOperand opDst, Expression src, bool forceBreak)
         {
             Expression dst = SrcOp(opDst);
             Identifier idDst = dst as Identifier;
@@ -199,22 +199,20 @@ namespace Decompiler.Arch.Intel
                 MemoryAccess acc = dst as MemoryAccess;
                 if (acc != null)
                 {
-                    emitter.Store(acc, src);
-                    ass = null;			//$REVIEW: is this ever used?
+                    return emitter.Assign(acc, src);
                 }
                 else
                 {
-                    ass = emitter.Assign(idDst, src);
+                    return emitter.Assign(idDst, src);
                 }
             }
             else
             {
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
-                ass = emitter.Assign(tmp, src);
+                emitter.Assign(tmp, src);
                 MemoryAccess ea = orw.CreateMemoryAccess((MemoryOperand)opDst, state);
-                emitter.Emit(new Store(ea, tmp));
+                return emitter.Assign(ea, tmp);
             }
-            return ass;
         }
 
 
@@ -228,42 +226,6 @@ namespace Decompiler.Arch.Intel
         private Expression SrcOp(MachineOperand opSrc, PrimitiveType dstWidth)
         {
             return orw.Transform(opSrc, dstWidth, state);
-        }
-
-
-        private class Emitter : CodeEmitter2
-        {
-            private Frame frame;
-            private List<RewrittenInstruction> ri;
-
-            public Emitter(Frame frame)
-            {
-                this.frame = frame;
-                this.ri = new List<RewrittenInstruction>();
-            }
-
-            public List<RewrittenInstruction> Instructions { get { return ri; } }
-
-            public Address Address { get; set; }
-            public uint Length { get; set; }
-
-            public override Statement Emit(Instruction instr)
-            {
-                var i = new RewrittenInstruction(Address, instr, Length);
-                ri.Add(i);
-                return null; //$REview: if you really need Statement, get Block.LastSTatement
-            }
-
-            public override Frame Frame
-            {
-                get { return frame; }
-            }
-
-            public override Identifier Register(int i)
-            {
-                throw new NotImplementedException();
-            }
-
         }
     }
 }

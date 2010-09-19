@@ -22,6 +22,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -65,17 +66,17 @@ namespace Decompiler.UnitTests.Arch.Intel
             return new IntelAssembler(arch32, new Address(0x10000000), emitter, new List<EntryPoint>());
         }
 
-        private void AssertCode(string expected, IEnumerator<RewrittenInstruction> e)
+        private void AssertCode(string expected, IEnumerator<RtlInstruction> e)
         {
             Assert.IsTrue(e.MoveNext());
-            Assert.AreEqual(expected, e.Current.Instruction.ToString());
+            Assert.AreEqual(expected, e.Current.ToString());
         }
 
-        private void AssertCode(uint expectedAddr, string expected, IEnumerator<RewrittenInstruction> e)
+        private void AssertCode(uint expectedAddr, string expected, IEnumerator<RtlInstruction> e)
         {
             Assert.IsTrue(e.MoveNext());
             Assert.AreEqual(expectedAddr, e.Current.Address.Linear, "Linear address was not as expected.");
-            Assert.AreEqual(expected, e.Current.Instruction.ToString(), "Instruction was not rewritten as expected");
+            Assert.AreEqual(expected, e.Current.ToString(), "Instruction was not rewritten as expected");
         }
 
         private class RewriterHost : IRewriterHost2
@@ -203,14 +204,14 @@ namespace Decompiler.UnitTests.Arch.Intel
             AssertCode("C = false", e);
         }
 
-        private IEnumerator<RewrittenInstruction> Run16bitTest(Action<IntelAssembler> fn)
+        private IEnumerator<RtlInstruction> Run16bitTest(Action<IntelAssembler> fn)
         {
             var m = Create16bitAssembler();
             fn(m);
             return CreateRewriter(m).GetEnumerator();
         }
 
-        private IEnumerator<RewrittenInstruction> Run32bitTest(Action<IntelAssembler> fn)
+        private IEnumerator<RtlInstruction> Run32bitTest(Action<IntelAssembler> fn)
         {
             var m = Create32bitAssembler();
             fn(m);
@@ -319,7 +320,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             AssertCode("ax = 0x4C00", e);
             AssertCode("__syscall(0x21)", e);
-            var s = (SideEffect) e.Current.Instruction;
+            var s = (RtlSideEffect) e.Current;
             var app = (Application) s.Expression;
             var pc = (ProcedureConstant) app.Procedure;
             var ppp = (PseudoProcedure) pc.Procedure;

@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
@@ -31,7 +32,7 @@ namespace Decompiler.UnitTests.Mocks
     {
         private Block block;
         private Frame frame;
-        private List<RewrittenInstruction> stms;
+        private List<RtlInstruction> stms;
         private IProcessorArchitecture arch;
         private uint linAddress;
 
@@ -41,15 +42,12 @@ namespace Decompiler.UnitTests.Mocks
             this.block = block;
             this.frame = block.Procedure.Frame;
             this.arch = new ArchitectureMock();
-            this.stms = new List<RewrittenInstruction>();   
+            this.stms = new List<RtlInstruction>();   
         }
 
         public override Statement Emit(Instruction instr)
         {
-            stms.Add(new RewrittenInstruction(new Address(linAddress), instr, 4));
-            var stm = new Statement(linAddress, instr, block);
-            linAddress += 4;
-            return stm;
+            throw new NotImplementedException();
         }
 
         public Block Block
@@ -68,7 +66,7 @@ namespace Decompiler.UnitTests.Mocks
         }
 
 
-        public IEnumerator<RewrittenInstruction> GetRewrittenInstructions()
+        public IEnumerator<RtlInstruction> GetRewrittenInstructions()
         {
             foreach (var x in stms)
                 yield return x;

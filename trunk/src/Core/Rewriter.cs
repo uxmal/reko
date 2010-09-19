@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Code;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -50,23 +50,9 @@ namespace Decompiler.Core
     }
 
     /// <summary>
-    /// Rewrites code from machine-specific to machine-independent IL codes.
+    /// Rewrites code from machine-specific to machine-independent Rlt codes.
     /// </summary>
-    public interface Rewriter2 : IEnumerable<RewrittenInstruction>
+    public interface Rewriter2 : IEnumerable<RtlInstruction>
     {
-    }
-
-    public class RewrittenInstruction
-    {
-        public Address Address;
-        public Instruction Instruction;
-        public uint Length;                 // Length of the original instruction in bytes.
-
-        public RewrittenInstruction(Address addr, Instruction instr, uint length)
-        {
-            this.Address = addr;
-            this.Instruction = instr;
-            this.Length = length;
-        }
     }
 }
