@@ -154,7 +154,31 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
+    <Compile Include="Expressions\Application.cs" />
+    <Compile Include="Expressions\ArrayAccess.cs" />
+    <Compile Include="Expressions\BinaryExpression.cs" />
+    <Compile Include="Expressions\Cast.cs" />
+    <Compile Include="Expressions\ConditionOf.cs" />
+    <Compile Include="Expressions\Constant.cs" />
+    <Compile Include="Expressions\DepositBits.cs" />
+    <Compile Include="Expressions\Dereference.cs" />
+    <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Expressions\ExpressionEmitter.cs" />
+    <Compile Include="Expressions\ExpressionFactory.cs" />
+    <Compile Include="Expressions\ExpressionValueComparer.cs" />
+    <Compile Include="Expressions\ExpressionVisitor.cs" />
+    <Compile Include="Expressions\FieldAccess.cs" />
+    <Compile Include="Expressions\Identifier.cs" />
+    <Compile Include="Expressions\IExpressionTransformer.cs" />
+    <Compile Include="Expressions\MemberPointerSelector.cs" />
+    <Compile Include="Expressions\MemoryAccess.cs" />
+    <Compile Include="Expressions\MkSequence.cs" />
+    <Compile Include="Expressions\PhiFunction.cs" />
+    <Compile Include="Expressions\PointerAddition.cs" />
+    <Compile Include="Expressions\ProcedureConstant.cs" />
+    <Compile Include="Expressions\Slice.cs" />
+    <Compile Include="Expressions\TestCondition.cs" />
+    <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="Lib\LookaheadEnumerator.cs" />
     <Compile Include="Lib\PriorityQueue.cs">
@@ -200,16 +224,7 @@
     <Compile Include="CodeWalker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\Application.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ArrayAccess.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Code\Assignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\BinaryExpression.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Code\Branch.cs">
@@ -221,44 +236,10 @@
     <Compile Include="Code\CallSite.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\Cast.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ConditionOf.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Constant.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Code\Declaration.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Code\DelegatedInstructionVisitor.cs" />
-    <Compile Include="Code\DepositBits.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Dereference.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Expression.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ExpressionFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ExpressionValueComparer.cs" />
-    <Compile Include="Code\ExpressionVisitor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\FieldAccess.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Identifier.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\IExpressionTransformer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Code\Instruction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -268,36 +249,11 @@
     <Compile Include="Code\InstructionVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\MemberPointerSelector.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\MemoryAccess.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\MkSequence.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Code\PhiAssignment.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code\PhiFunction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\PointerAddition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ProcedureConstant.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\ScopeResolution.cs" />
+    <Compile Include="Expressions\ScopeResolution.cs" />
     <Compile Include="Code\SideEffect.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\Slice.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Code\TestCondition.cs" />
-    <Compile Include="Code\UnaryExpression.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Diagnostic.cs" />
