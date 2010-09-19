@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -51,15 +53,15 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void SefConstant()
 		{
-			Constant c = new Constant(PrimitiveType.Byte, 3);
+			var c = new Constant(PrimitiveType.Byte, 3);
 			Assert.IsFalse(sef.HasSideEffect(c));
 		}
 
 		[Test]
 		public void SefApplication()
 		{
-			Procedure p = new Procedure("foo", null);
-			Application a = new Application(
+			var p = new Procedure("foo", null);
+			var a = new Application(
 				new ProcedureConstant(PrimitiveType.Pointer32, p), 
 				PrimitiveType.Word32,
 				Constant.Word32(3));
@@ -100,7 +102,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			protected override void BuildBody()
 			{
-				Identifier id = Local32("id");
+				var id = Local32("id");
 				Assign(id, this.Fn("bar", Int32(3)));
 				Store(Int32(0x10000300), Int32(0));
 				Store(Int32(0x10000304), id);
@@ -111,8 +113,8 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			protected override void BuildBody()
 			{
-				Identifier id = Local32("id");
-				Identifier ix = Local32("ix");
+				var id = Local32("id");
+				var ix = Local32("ix");
 				Load(id, Int32(0x1000000));
 				Load(ix, Int32(0x1000004));
 				Store(Int32(0x10000008), id);

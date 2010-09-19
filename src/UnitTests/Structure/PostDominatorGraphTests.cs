@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,10 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
@@ -53,7 +55,6 @@ namespace Decompiler.UnitTests.Structure
             m.Return();
 
             FindPostDominators(m);
-
         }
 
 
@@ -76,9 +77,9 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void LoopWithIfElse()
         {
-            ProcedureMock m = new ProcedureMock();
-            Identifier c = m.Declare(PrimitiveType.Word32, "c");
-            Identifier f = m.Declare(PrimitiveType.Bool, "f");
+            var m = new ProcedureMock();
+            var c = m.Declare(PrimitiveType.Word32, "c");
+            var f = m.Declare(PrimitiveType.Bool, "f");
             m.Label("loopHead");
             m.BranchIf(m.Eq(c, 0), "done");
             m.BranchIf(f, "then");

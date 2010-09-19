@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,7 +16,9 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
 using NUnit.Framework;
@@ -29,13 +32,13 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void NameStructure()
 		{
-			TypeStore store = new TypeStore();
-			TypeFactory factory = new TypeFactory();
-			TypeVariable tv1 = store.EnsureExpressionTypeVariable(factory, (Decompiler.Core.Code.Expression) null);
+			var store = new TypeStore();
+			var factory = new TypeFactory();
+			var tv1 = store.EnsureExpressionTypeVariable(factory, (Expression) null);
 			tv1.Class.DataType = new StructureType(null, 0);
 			tv1.DataType = tv1.Class.DataType;
 
-			ComplexTypeNamer ctn = new ComplexTypeNamer();
+			var ctn = new ComplexTypeNamer();
 			ctn.RenameAllTypes(store);
 			Assert.AreEqual("Eq_1", tv1.Class.DataType.Name);
 		}

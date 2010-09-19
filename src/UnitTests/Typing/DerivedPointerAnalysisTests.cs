@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;
@@ -36,19 +38,19 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void CpfSimple()
 		{
-			Program prog = new Program();
+			var prog = new Program();
             prog.Architecture = new ArchitectureMock();
 
-			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Architecture);
+			var eqb = new EquivalenceClassBuilder(factory, store);
+			var dtb = new DataTypeBuilder(factory, store, prog.Architecture);
 
-			Constant c = Constant.Word32(0x10000000);
-			MemoryAccess mem = new MemoryAccess(c, PrimitiveType.Real32);
+			var c = Constant.Word32(0x10000000);
+			var mem = new MemoryAccess(c, PrimitiveType.Real32);
 
 			prog.Globals.Accept(eqb);
 			mem.Accept(eqb);
 
-			TraitCollector tc = new TraitCollector(factory, store, dtb, prog);
+			var tc = new TraitCollector(factory, store, dtb, prog);
 			prog.Globals.Accept(tc);
 			mem.Accept(tc);
 			dtb.BuildEquivalenceClassDataTypes();

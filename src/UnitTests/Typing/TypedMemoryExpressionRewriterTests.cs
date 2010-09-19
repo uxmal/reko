@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,10 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Typing;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using NUnit.Framework;
@@ -32,7 +34,6 @@ namespace Decompiler.UnitTests.Typing
 		private TypeFactory  factory;
 		private StructureType point;
 
-
 		[SetUp]
 		public void Setup()
 		{
@@ -46,10 +47,10 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void PointerToSingleItem()
 		{
-			Identifier ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
-			TypeVariable tv = store.EnsureExpressionTypeVariable(factory, ptr);
+			var ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
+			var tv = store.EnsureExpressionTypeVariable(factory, ptr);
 			tv.OriginalDataType = new Pointer(point, 4);
-			EquivalenceClass eq = new EquivalenceClass(tv);
+			var eq = new EquivalenceClass(tv);
 			eq.DataType = point;
 			tv.DataType = new Pointer(eq, 4);
 

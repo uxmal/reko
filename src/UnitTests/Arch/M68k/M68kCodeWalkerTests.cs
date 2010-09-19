@@ -1,4 +1,5 @@
-﻿/* 
+﻿#region License
+/* 
  * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -15,10 +16,12 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.M68k;
 using Decompiler.Assemblers.M68k;
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Assemblers;
 using NUnit.Framework;
 using System;
@@ -60,7 +63,7 @@ namespace Decompiler.UnitTests.Arch.M68k
                 throw new NotImplementedException();
             }
 
-            public void OnGlobalVariable(Address addr, Decompiler.Core.Types.PrimitiveType width, Decompiler.Core.Code.Constant c)
+            public void OnGlobalVariable(Address addr, Decompiler.Core.Types.PrimitiveType width, Constant c)
             {
                 throw new NotImplementedException();
             }

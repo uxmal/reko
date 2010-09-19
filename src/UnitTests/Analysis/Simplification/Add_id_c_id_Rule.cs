@@ -20,8 +20,9 @@
 
 using Decompiler.Analysis;
 using Decompiler.Analysis.Simplification;
-using Decompiler.Core; 
-using Decompiler.Core.Code; 
+using Decompiler.Core;
+using Decompiler.Core.Code;
+using Decompiler.Core.Expressions; 
 using Decompiler.UnitTests.Mocks;
 using System;
 using NUnit.Framework;

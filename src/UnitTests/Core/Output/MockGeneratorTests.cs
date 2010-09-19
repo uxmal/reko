@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,8 +16,9 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Core.Output;
 using Decompiler.UnitTests.Mocks;
@@ -61,7 +63,7 @@ namespace Decompiler.UnitTests.Core.Output
         {
             CompileTest(delegate(ProcedureMock m)
             {
-                Identifier id = m.Local(PrimitiveType.Word32, "id");
+                var id = m.Local(PrimitiveType.Word32, "id");
                 m.Assign(id, 42);
                 m.Return();
             });

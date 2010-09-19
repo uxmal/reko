@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;

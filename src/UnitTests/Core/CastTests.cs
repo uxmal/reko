@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,10 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -32,8 +34,8 @@ namespace Decompiler.UnitTests.Core
 		{
 			TypeFactory typef = new TypeFactory();
 			
-			Cast cast = new Cast(PrimitiveType.Word32, new Constant(PrimitiveType.Real32, 3.0F));
-			PrimitiveType p = (PrimitiveType) cast.DataType;
+			var cast = new Cast(PrimitiveType.Word32, new Constant(PrimitiveType.Real32, 3.0F));
+			var p = (PrimitiveType) cast.DataType;
 			Assert.AreEqual(PrimitiveType.Word32, p);
 			Assert.AreEqual(PrimitiveType.Real32, cast.Expression.DataType);
 		}

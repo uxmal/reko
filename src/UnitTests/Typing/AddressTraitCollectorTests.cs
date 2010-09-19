@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;
@@ -42,8 +44,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void AtrcoTestIdPlusConst()
 		{
-			Identifier r = m.Local32("r");
-			MemoryAccess mem = m.Load(PrimitiveType.Word32, m.Add(r, 4));
+			var r = m.Local32("r");
+			var mem = m.Load(PrimitiveType.Word32, m.Add(r, 4));
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem.TypeVariable, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoTestIdPlusConst.txt");
@@ -52,8 +54,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void AtrcoTestId()
 		{
-			Identifier r = m.Local32("r");
-			MemoryAccess mem = m.Load(PrimitiveType.Byte, r);
+			var r = m.Local32("r");
+			var mem = m.Load(PrimitiveType.Byte, r);
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem.TypeVariable, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoTestId.txt");

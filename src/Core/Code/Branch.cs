@@ -64,25 +64,4 @@ namespace Decompiler.Core.Code
 			set { cond = value; }
 		}
 	}
-
-	public enum ConditionCode
-	{
-		None,
-		UGT,	// Unsigned >
-		ULE,	// Unsigned <=
-		ULT,	// Unsigned <
-		GT,		// >
-		GE,		// >=
-		LT,		// <
-		LE,		// <=
-		UGE,	// Unsigned >=
-		NO,		// No overflow
-		NS,		// >= 0
-		NE,		// != 
-		OV,		// Overflow
-		SG,		// < 0
-		EQ,		// ==	
-        PE,     // Parity even
-        PO,     // parity odd
-	}
 }

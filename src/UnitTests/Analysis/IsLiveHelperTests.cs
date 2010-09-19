@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Analysis
 		[SetUp]
 		public void Setup()
 		{
-            IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            var arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
 			f = arch.CreateFrame();
             liveness = new IdentifierLiveness(arch);
 			isLiveHelper = new RegisterLiveness.IsLiveHelper();
@@ -47,8 +47,8 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			liveness.BitSet = new Decompiler.Core.Lib.BitSet(64);
 			liveness.BitSet[Registers.ecx.Number] = true;
-			Identifier eax = f.EnsureRegister(Registers.eax);
-			Identifier ecx = f.EnsureRegister(Registers.ecx);
+			var eax = f.EnsureRegister(Registers.eax);
+			var ecx = f.EnsureRegister(Registers.ecx);
 			Assert.IsTrue(isLiveHelper.IsLive(ecx, liveness), "ECX should be live");
 			Assert.IsFalse(isLiveHelper.IsLive(eax, liveness), "EAX should be dead");
 		}
@@ -57,8 +57,8 @@ namespace Decompiler.UnitTests.Analysis
 		public void IsFlagGroupLive()
 		{
 			liveness.Grf = (uint)(FlagM.SF|FlagM.OF|FlagM.ZF);
-			Identifier Z = f.EnsureFlagGroup((uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-			Identifier C = f.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool);
+			var Z = f.EnsureFlagGroup((uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+			var C = f.EnsureFlagGroup((uint) FlagM.CF, "C", PrimitiveType.Bool);
 			Assert.IsTrue(isLiveHelper.IsLive(Z, liveness), "Z flag should be live");
 			Assert.IsFalse(isLiveHelper.IsLive(C, liveness), "C flag isn't live");
 		}
@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void IsTemporaryLive()
 		{
-			Identifier id = f.CreateTemporary(PrimitiveType.Word32);
+			var id = f.CreateTemporary(PrimitiveType.Word32);
 			liveness.LiveStorages.Add(id.Storage, id.DataType.BitSize);
 			Assert.IsTrue(isLiveHelper.IsLive(id, liveness));
 		}

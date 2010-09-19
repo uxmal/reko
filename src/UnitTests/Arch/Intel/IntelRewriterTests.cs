@@ -21,6 +21,7 @@
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Arch.Intel;
@@ -56,8 +57,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 
             rw = new TestRewriter(new FakeProcedureRewriter(arch, host, proc), proc, host, arch, state);
         }
-
-
 
         private Identifier Reg(IntelRegister r)
         {

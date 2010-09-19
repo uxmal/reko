@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -40,9 +42,9 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void Setup()
 		{
 			arch = new IntelArchitecture(ProcessorMode.Real);
-			Program prog = new Program();
+			var prog = new Program();
 			prog.Image = new ProgramImage(new Address(0x10000), new byte[4]);
-			Address procAddress = new Address(0x10000000);
+			var procAddress = new Address(0x10000000);
             proc = Procedure.Create(null, procAddress, arch.CreateFrame());
 			orw = new OperandRewriter(new FakeRewriterHost(prog), arch, proc.Frame);
 			state = new IntelRewriterState(proc.Frame);
@@ -51,11 +53,11 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[Test]
 		public void RewriteSegConst()
 		{
-			MemoryOperand m = new MemoryOperand(
+			var m = new MemoryOperand(
 				PrimitiveType.Byte,
 				Registers.bx,
 				new Constant(PrimitiveType.Int32, 32));
-			Expression e = orw.CreateMemoryAccess(m, state);
+			var e = orw.CreateMemoryAccess(m, state);
 			Assert.AreEqual("Mem0[ds:bx + 0x0020:byte]", e.ToString());
 		}
 	}

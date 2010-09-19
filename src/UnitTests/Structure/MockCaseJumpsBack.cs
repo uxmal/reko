@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,8 +16,8 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
-using Decompiler.Core.Code;
 using Decompiler.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Decompiler.UnitTests.Structure
             SideEffect(Fn("Beginning"));
             Label("JumpBack");
             SideEffect(Fn("DoWorkBeforeSwitch"));
-            Identifier n = Local32("n");
+            var n = Local32("n");
             Switch(n, "case0", "case1", "case2");
 
             Label("case0");

@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,11 +16,12 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Analysis;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -85,7 +87,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void NarrowedStackArgument()
 		{
-			Identifier arg = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
+			var arg = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			flow.StackArguments[arg] = 16;
 			gcr.EnsureSignature(proc, flow);
 			Assert.AreEqual("void foo(Stack uipr16 dwArg04)", proc.Signature.ToString(proc.Name));

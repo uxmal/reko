@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,12 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Analysis;
 using Decompiler.UnitTests;
@@ -38,7 +41,7 @@ namespace Decompiler.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+            var arch = new IntelArchitecture(ProcessorMode.Real);
             proc = new Procedure("foo", arch.CreateFrame());
             alias = new Aliases(proc, arch);
         }

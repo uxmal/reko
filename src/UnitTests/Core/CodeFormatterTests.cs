@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Output;
 using Decompiler.Core.Types;
@@ -90,7 +93,7 @@ namespace Decompiler.UnitTests.Core
 			formatter.UseTabs = true;
             formatter.TabSize = 4;
             formatter.Indentation = 6;
-            Instruction b = new Branch(Constant.Word32(0), new Block(null, "target"));
+            var b = new Branch(Constant.Word32(0), new Block(null, "target"));
 			b.Accept(cf);
 			Assert.AreEqual("\t  branch 0x00000000 target" + nl, sw.ToString());
 		}

@@ -19,7 +19,7 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Output;
 using System;
 using System.Collections.Generic;

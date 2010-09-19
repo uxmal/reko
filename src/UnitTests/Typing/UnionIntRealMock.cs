@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,10 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using System;
@@ -31,10 +33,10 @@ namespace Decompiler.UnitTests.Typing
 	{
 		protected override void BuildBody()
 		{
-			Identifier ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
-			Identifier i = new Identifier("i", 2, PrimitiveType.Int32, null);
-			Identifier r = new Identifier("r", 3, PrimitiveType.Real32, null);
-			Identifier x = new Identifier("x", 4, PrimitiveType.Word32, null);
+			var ptr = new Identifier("ptr", 1, PrimitiveType.Word32, null);
+			var i = new Identifier("i", 2, PrimitiveType.Int32, null);
+			var r = new Identifier("r", 3, PrimitiveType.Real32, null);
+			var x = new Identifier("x", 4, PrimitiveType.Word32, null);
 
 			Assign(x, i);
 			Assign(x, r);

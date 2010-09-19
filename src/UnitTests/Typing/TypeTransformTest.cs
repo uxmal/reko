@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,12 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
@@ -59,7 +62,6 @@ namespace Decompiler.UnitTests.Typing
 		{
 			RunTest("Fragments/factorial_reg.asm", "Typing/TtranFactorialReg.txt");
 		}
-
 
 		[Test]
 		public void TtranLength()
@@ -107,7 +109,6 @@ namespace Decompiler.UnitTests.Typing
 			mock.Add(new GlobalVariablesMock());
 			RunTest(mock.BuildProgram(), "Typing/TtranGlobalVariables.txt");
 		}
-
 	
 		[Test]
         [Ignore("Frames require escape and aliasing analysis.")]

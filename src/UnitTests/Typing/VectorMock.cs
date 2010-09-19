@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core.Code;
 using Decompiler.Core.Operators;
@@ -29,8 +31,8 @@ namespace Decompiler.UnitTests.Typing
 		// Compute the sum of the members of a vector.
 		protected override void BuildBody()
 		{
-			Identifier v = Local32("v");
-			Identifier sum = Local32("mod");
+			var v = Local32("v");
+			var sum = Local32("mod");
 			PrimitiveType fl = PrimitiveType.Real32;
 
 			Assign(sum, Add(Load(fl, v),

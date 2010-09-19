@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -35,7 +37,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void LciFindCopyslots()
 		{
 			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
-			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(proc, ssaIds);
 			Assert.AreEqual(2, lci.IndexOfInsertedCopy(proc.RpoBlocks[0]));
 			Assert.AreEqual(2, lci.IndexOfInsertedCopy(proc.RpoBlocks[1]));
 			Assert.AreEqual(0, lci.IndexOfInsertedCopy(proc.RpoBlocks[2]));
@@ -46,10 +48,10 @@ namespace Decompiler.UnitTests.Analysis
 		public void LciLiveAtLoop()
 		{
 			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
-			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(proc, ssaIds);
 
-			Identifier i = ssaIds[2].Identifier;
-			Identifier i_6 = ssaIds[6].Identifier;
+			var i = ssaIds[2].Identifier;
+			var i_6 = ssaIds[6].Identifier;
 			Assert.IsFalse(lci.IsLiveAtCopyPoint(i, proc.RpoBlocks[1]));
 			Assert.IsTrue(lci.IsLiveAtCopyPoint(i_6, proc.RpoBlocks[1]), "i_6 should be live");
 		}
@@ -58,11 +60,11 @@ namespace Decompiler.UnitTests.Analysis
 		public void LciLiveAtCopy()
 		{
 			Build(new LiveCopyMock().Procedure, new ArchitectureMock());
-			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(proc, ssaIds);
 
-			Identifier reg   = ssaIds[3].Identifier;
-			Identifier reg_5 = ssaIds[5].Identifier;
-			Identifier reg_6 = ssaIds[6].Identifier;
+			var reg   = ssaIds[3].Identifier;
+			var reg_5 = ssaIds[5].Identifier;
+			var reg_6 = ssaIds[6].Identifier;
 
 			Assert.AreEqual("reg_6 = PHI(reg, reg_5)", ssaIds[6].DefStatement.Instruction.ToString());
 			Assert.IsTrue(lci.IsLiveOut(reg, ssaIds[6].DefStatement));
@@ -72,11 +74,11 @@ namespace Decompiler.UnitTests.Analysis
 		public void LciInsertAssignmentCopy()
 		{
 			Build(new LiveCopyMock().Procedure, new ArchitectureMock());
-			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(proc, ssaIds);
 
 			int i = lci.IndexOfInsertedCopy(proc.RpoBlocks[1]);
 			Assert.AreEqual(i, 0);
-			Identifier idNew = lci.InsertAssignmentNewId(ssaIds[3].Identifier, proc.RpoBlocks[1], i);
+			var idNew = lci.InsertAssignmentNewId(ssaIds[3].Identifier, proc.RpoBlocks[1], i);
 			Assert.AreEqual("reg_7 = reg", proc.RpoBlocks[1].Statements[0].Instruction.ToString());
 			Assert.AreSame(proc.RpoBlocks[1].Statements[0], ssaIds[idNew].DefStatement);
 		}
@@ -86,9 +88,9 @@ namespace Decompiler.UnitTests.Analysis
 		public void LciInsertAssignmentLiveLoop()
 		{
 			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
-			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(proc, ssaIds);
 
-			Identifier idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.RpoBlocks[1], 2);
+			var idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.RpoBlocks[1], 2);
 			Assert.AreEqual("i_7 = i_4", proc.RpoBlocks[1].Statements[2].Instruction.ToString());
 			Assert.AreEqual(proc.RpoBlocks[1].Statements[2], ssaIds[idNew].DefStatement);
 		}
@@ -97,9 +99,9 @@ namespace Decompiler.UnitTests.Analysis
 		public void LciRenameDominatedIdentifiers()
 		{
 			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
-			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(proc, ssaIds);
 
-			Identifier idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.RpoBlocks[1], 2);
+			var idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.RpoBlocks[1], 2);
 			lci.RenameDominatedIdentifiers(ssaIds[4], ssaIds[idNew]);
 			Assert.AreEqual("return i_7", proc.RpoBlocks[2].Statements[0].Instruction.ToString());
 

@@ -22,6 +22,7 @@ using Decompiler.Analysis;
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;

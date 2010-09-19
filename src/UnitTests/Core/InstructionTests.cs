@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,9 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -30,8 +33,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void InstrDeclaration()
 		{
-			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word16, null);
-			Declaration declFoo = new Declaration(foo, null);
+			var foo = new Identifier("foo", 0, PrimitiveType.Word16, null);
+			var declFoo = new Declaration(foo, null);
 			Assert.AreEqual("word16 foo", declFoo.ToString());
 		}	
 	}

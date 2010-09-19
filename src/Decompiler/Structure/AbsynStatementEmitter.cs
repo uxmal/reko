@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,6 @@ namespace Decompiler.Structure
         {
             this.stms = stms;
         }
-
 
         public void EmitStatement(Statement stm)
         {

@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using NUnit.Framework;
@@ -52,7 +54,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		{
             prog = new Program();
             prog.Image = new ProgramImage(new Address(0x10000), new byte[4]);
-            Address procAddress = new Address(0x10000000);
+            var procAddress = new Address(0x10000000);
             proc = Procedure.Create(procAddress, arch.CreateFrame());
 			state = new IntelRewriterState(proc.Frame);
 			orw = new OperandRewriter(new FakeRewriterHost(prog), arch, proc.Frame);
@@ -61,8 +63,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[Test]
 		public void OrwRegister()
 		{
-			RegisterOperand r = new RegisterOperand(Registers.ebp);
-			Identifier id = (Identifier) orw.Transform(r, r.Width, r.Width, state);
+			var r = new RegisterOperand(Registers.ebp);
+			var id = (Identifier) orw.Transform(r, r.Width, r.Width, state);
 			Assert.AreEqual("ebp", id.Name);
 			Assert.IsNotNull(proc.Frame.FramePointer);
 		}
@@ -70,24 +72,24 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[Test]
 		public void OrwImmediate()
 		{
-			ImmediateOperand imm = new ImmediateOperand(Constant.Word16(0x0003));
-			Constant c = (Constant) orw.Transform(imm, imm.Width, imm.Width, state);
+			var imm = new ImmediateOperand(Constant.Word16(0x0003));
+			var c = (Constant) orw.Transform(imm, imm.Width, imm.Width, state);
 			Assert.AreEqual("0x0003", c.ToString());
 		}
 
 		[Test]
 		public void OrwImmediateExtend()
 		{
-			ImmediateOperand imm = new ImmediateOperand(Constant.SByte(-1));
-			Constant c = (Constant) orw.Transform(imm, PrimitiveType.Word16, PrimitiveType.Word16, state);
+			var imm = new ImmediateOperand(Constant.SByte(-1));
+			var c = (Constant) orw.Transform(imm, PrimitiveType.Word16, PrimitiveType.Word16, state);
 			Assert.AreEqual("0xFFFF", c.ToString());
 		}
 
 		[Test]
 		public void OrwOperandAsCodeAddress()
 		{
-            ImmediateOperand imm = new ImmediateOperand(Constant.Word32(0x100F0000));
-			Address addr = orw.OperandAsCodeAddress(imm, null);
+            var imm = new ImmediateOperand(Constant.Word32(0x100F0000));
+			var addr = orw.OperandAsCodeAddress(imm, null);
 			Assert.AreEqual(imm.Value.ToUInt32(), addr.Offset);
 		}
 

@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,11 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
-using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -87,8 +89,8 @@ namespace Decompiler.UnitTests.Analysis
 		/// </code>
 		protected override void BuildBody()
 		{
-			Identifier f = Local32("f");
-			Identifier r = Local32("r");
+			var f = Local32("f");
+			var r = Local32("r");
 
 			Label("head");
 			BranchIf(f, "false");

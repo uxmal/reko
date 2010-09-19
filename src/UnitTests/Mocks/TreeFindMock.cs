@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,8 +16,8 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
-using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using System;
 
@@ -29,9 +30,9 @@ namespace Decompiler.UnitTests.Mocks
 	{
 		protected override void BuildBody()
 		{
-			Identifier v = Local32("v");
-			Identifier t = Local32("t");
-			Identifier vv = Local32("vv");
+			var v = Local32("v");
+			var t = Local32("t");
+			var vv = Local32("vv");
 
 			Label("seek");
 			BranchIf(Eq(t, 0), "found"); 

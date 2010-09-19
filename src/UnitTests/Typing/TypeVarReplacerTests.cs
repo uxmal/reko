@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,10 +16,12 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;
@@ -39,22 +42,22 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TvrReplaceInMem()
 		{
-			Identifier id1 = new Identifier("pptr", 1, PrimitiveType.Word32, null);
-			Identifier id2 = new Identifier("ptr", 2, PrimitiveType.Word32, null);
-			Identifier id3 = new Identifier("v", 3, PrimitiveType.Word32, null);
-			Assignment ass1 = new Assignment(id2, MemLoad(id1, 0, PrimitiveType.Word32));
-			Assignment ass2 = new Assignment(id3, MemLoad(id2, 0, PrimitiveType.Word32));
+			var id1 = new Identifier("pptr", 1, PrimitiveType.Word32, null);
+			var id2 = new Identifier("ptr", 2, PrimitiveType.Word32, null);
+			var id3 = new Identifier("v", 3, PrimitiveType.Word32, null);
+			var ass1 = new Assignment(id2, MemLoad(id1, 0, PrimitiveType.Word32));
+			var ass2 = new Assignment(id3, MemLoad(id2, 0, PrimitiveType.Word32));
 			eqb.VisitAssignment(ass1);
 			eqb.VisitAssignment(ass2);
 
-            Program prog = new Program();
+            var prog = new Program();
             prog.Architecture = new ArchitectureMock();
             trco = new TraitCollector(factory, store, dtb, prog);
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
 			dtb.BuildEquivalenceClassDataTypes();
 
-			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
+			var tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 			Verify("Typing/TvrReplaceInMem.txt");
 		}
