@@ -20,18 +20,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Decompiler.Core.Rtl
 {
-    public interface RtlInstructionVisitor
+    public interface RtlInstructionVisitor<T>
     {
-        void VisitAssignment(RtlAssignment ass);
-        void VisitBranch(RtlBranch branch);
-        void VisitCall(RtlCall call);
-        void VisitGoto(RtlGoto go);
-        void VisitReturn(RtlReturn ret);
-        void VisitSideEffect(RtlSideEffect side);
+        T VisitAssignment(RtlAssignment ass);
+        T VisitBranch(RtlBranch branch);
+        T VisitCall(RtlCall call);
+        T VisitGoto(RtlGoto go);
+        T VisitReturn(RtlReturn ret);
+        T VisitSideEffect(RtlSideEffect side);
     }
 }

@@ -23,7 +23,7 @@ using System;
 
 namespace Decompiler.Core.Code
 {
-	public interface InstructionVisitor
+    public interface InstructionVisitor
 	{
 		void VisitAssignment(Assignment a);
 
@@ -50,7 +50,6 @@ namespace Decompiler.Core.Code
 		void VisitSwitchInstruction(SwitchInstruction si);
 
 		void VisitUseInstruction(UseInstruction u);
-
     }
 
 	/// <summary>

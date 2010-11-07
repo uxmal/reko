@@ -29,7 +29,7 @@ namespace Decompiler.UnitTests.Scanning
 		[Test]
 		public void WorkItemChain0()
 		{
-			WorkItem w = new WorkItem(null, BlockType.Procedure, new Address(0x10000000));
+			WorkItemOld w = new WorkItemOld(null, BlockType.Procedure, new Address(0x10000000));
 			Assert.AreEqual(@"WorkItem @ 10000000
 ", w.ToString());
 		}

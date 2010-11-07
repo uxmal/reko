@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Mocks
 			Compare("Z", r0, Int32(0));
 			BranchCc(ConditionCode.EQ, "skip");
 
-			Add(r0, r0, r1);
+			Assign(r0, Add(r0, r1));
 			Label("skip");
 			Store(Int32(0x10003000), r0);
 			Return();

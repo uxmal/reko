@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System;
 using System.Collections.Generic;
@@ -31,8 +33,9 @@ namespace Decompiler.Core
         private List<Address> addresses;
         private Dictionary<Address, int> registerUsed = new Dictionary<Address, int>();
 
-        public ImageMapVectorTable(bool fCallTable)
+        public ImageMapVectorTable(Address addrTable, bool fCallTable)
         {
+            this.TableAddress = addrTable;
             this.fCallTable = fCallTable;
             this.addresses = new List<Address>();
         }
@@ -42,6 +45,8 @@ namespace Decompiler.Core
             this.fCallTable = isCallTable;
             this.addresses = new List<Address>(vector);
         }
+
+        public Address TableAddress { get; private set; }
 
         public List<Address> Addresses { get { return addresses; } }
 

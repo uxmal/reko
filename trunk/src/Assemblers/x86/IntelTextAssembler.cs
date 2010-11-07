@@ -310,7 +310,7 @@ namespace Decompiler.Assemblers.x86
                     }
 					break;
 				case Token.STRINGLITERAL:
-					asm.Db(lexer.StringLiteral);
+					asm.Dstring(lexer.StringLiteral);
 					break;
 				default:
 					Error("unexpected tokens following 'db'");

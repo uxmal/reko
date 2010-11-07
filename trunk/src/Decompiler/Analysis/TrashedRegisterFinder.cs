@@ -101,12 +101,6 @@ namespace Decompiler.Analysis
 		{
 			BlockFlow bf = flow[block];
 			tsh = new TrashStorageHelper(new Dictionary<Storage, Storage>(bf.TrashedIn), bf.grfTrashedIn, trash);
-            if (block.Procedure.Name == "fn0800_020B") //$DEBUG
-            {
-                var sb = new StringWriter();
-                sb.Write(block.Name + " ");
-                Debug.WriteLine(sb.ToString());
-            }
 			foreach (Statement stm in block.Statements)
 			{
 				stm.Instruction.Accept(this);
@@ -330,8 +324,5 @@ namespace Decompiler.Analysis
                 writer.Write("TRASH");
             }
         }
-
-
-
     }
 }

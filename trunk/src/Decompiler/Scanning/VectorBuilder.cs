@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Lib;
@@ -31,27 +33,41 @@ namespace Decompiler.Scanning
     /// </summary>
     public class VectorBuilder : IBackWalkHost
     {
-        private Program prog;
+        private IProcessorArchitecture arch;
+        private ProgramImage image;
         private ImageMap imageMap;
         private int cbTable;
         private BackWalker bw;
         private DirectedGraphImpl<object> jumpGraph;        //$TODO:
 
+        [Obsolete]
         public VectorBuilder(Program prog, ImageMap imageMap, DirectedGraphImpl<object> jumpGraph)
         {
-            this.prog = prog;
+            this.arch = prog.Architecture;
             this.imageMap = imageMap;
+            this.jumpGraph = jumpGraph;
+        }
+
+        public VectorBuilder(IProcessorArchitecture arch, ProgramImage image, DirectedGraphImpl<object> jumpGraph)
+        {
+            this.arch = arch;
+            this.imageMap = image.Map;
             this.jumpGraph = jumpGraph;
         }
 
         public Address[] Build(Address addrTable, Address addrFrom, ushort segBase, PrimitiveType stride)
         {
-            bw = prog.Architecture.CreateBackWalker(prog.Image);
+            bw = arch.CreateBackWalker(image);
             if (bw == null)
                 return null;
             List<BackwalkOperation> operations = bw.BackWalk(addrFrom, this);
             if (operations == null)
                 return PostError("Unable to determine limit", addrFrom, addrTable);
+            return BuildAux(operations, addrTable, addrFrom, stride, segBase);
+        }
+
+        private Address[] BuildAux(List<BackwalkOperation> operations, Address addrTable, Address addrFrom, PrimitiveType stride, ushort segBase)
+        {
             int limit = 0;
             int[] permutation = null;
             foreach (BackwalkOperation op in operations)
@@ -75,7 +91,7 @@ namespace Decompiler.Scanning
         private int[] BuildMapping(BackwalkDereference deref, int limit)
         {
             int[] map = new int[limit];
-            ImageReader rdr = this.prog.Image.CreateReader(new Address((uint)deref.TableOffset));
+            var rdr = image.CreateReader(new Address((uint)deref.TableOffset));
             for (int i = 0; i < limit; ++i)
             {
                 map[i] = rdr.ReadByte();
@@ -95,12 +111,12 @@ namespace Decompiler.Scanning
                 {
                     if (permutation[i] > iMax)
                         iMax = permutation[i];
-                    vector[i] = new Address(prog.Image.ReadLeUint32(addrTable + permutation[i] * cbEntry));
+                    vector[i] = new Address(image.ReadLeUint32(addrTable + permutation[i] * cbEntry));      //$BUG: will fail on 64-bit arch.
                 }
             }
             else
             {
-                ImageReader rdr = prog.Image.CreateReader(addrTable);
+                ImageReader rdr = image.CreateReader(addrTable);
                 int cItems = limit / (int)stride.Size;
                 vector = new Address[cItems];
                 for (int i = 0; i < vector.Length; ++i)

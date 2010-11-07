@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Mocks
 
 			Label("loop");
 			Assign(y, i);
-			Add(i, i, Int32(1));
+			Assign(i, Add(i, Int32(1)));
 			BranchIf(Ne(new MemoryAccess(i, PrimitiveType.Byte), Int8(0)), "loop");
 
 			Return(y);

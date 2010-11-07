@@ -33,9 +33,10 @@ namespace Decompiler.Core.Rtl
             this.Condition = condition;
             this.Target = target;
         }
-        public override void Accept(RtlInstructionVisitor visitor)
+
+        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
-            throw new NotImplementedException();
+            return visitor.VisitBranch(this);
         }
 
         public Expression Condition { get; private set; }
@@ -45,6 +46,12 @@ namespace Decompiler.Core.Rtl
         public override void Write(TextWriter writer)
         {
             base.Write(writer);
+            if (Condition != null)
+            {
+                writer.Write("if (");
+                writer.Write(Condition);
+                writer.Write(") ");
+            }
             writer.Write("branch {0}", Target);
         }
     }

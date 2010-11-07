@@ -40,7 +40,7 @@ namespace Decompiler.Core.Rtl
         
         public uint Length { get; private set; }
 
-        public abstract void Accept(RtlInstructionVisitor visitor);
+        public abstract T Accept<T>(RtlInstructionVisitor<T> visitor);
 
         public override string ToString()
         {

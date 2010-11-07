@@ -84,7 +84,6 @@ namespace Decompiler.Core
             return new UnaryExpression(Operator.Neg, expr.DataType, expr);
         }
 
-
 		public Expression PseudoProc(PseudoProcedure ppp, PrimitiveType retType, params Expression [] args)
 		{
             if (args.Length != ppp.Arity)
@@ -147,8 +146,6 @@ namespace Decompiler.Core
 			return s;
 		}
 
-
-
         public void Switch(Expression expr, Block[] jumps)
         {
             Emit(new SwitchInstruction(expr, jumps));
@@ -160,8 +157,6 @@ namespace Decompiler.Core
             Emit(i);
             return i;
         }
-
-
     }
 
     public abstract class CodeEmitter2 : ExpressionEmitter
@@ -169,24 +164,6 @@ namespace Decompiler.Core
         private int localStackOffset;
 
         public abstract Statement Emit(Instruction instr);
-
-        /// <summary>
-        /// Creates a statement that assigns the sum of left and right to sum.
-        /// </summary>
-        /// <param name="sum"></param>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        public Statement Add(Identifier sum, Expression left, Expression right)
-        {
-            return Emit(new Assignment(sum, Add(left, right)));
-        }
-
-        public Statement Add(Identifier sum, Expression left, int n)
-        {
-            return Emit(new Assignment(sum, Add(left, new Constant(left.DataType, n))));
-        }
-
-
 
         public virtual Assignment Assign(Identifier dst, Expression src)
         {

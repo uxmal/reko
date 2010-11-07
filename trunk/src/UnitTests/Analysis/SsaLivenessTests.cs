@@ -177,7 +177,7 @@ namespace Decompiler.UnitTests.Analysis
 				Identifier b  = Local32("b");
 				Identifier c  = Local32("c");
 
-				Add(c, a, b);
+				Assign(c, Add(a, b));
 				Store(Int32(0x10000000), c);
 				Store(Int32(0x10000004), a);
 			}

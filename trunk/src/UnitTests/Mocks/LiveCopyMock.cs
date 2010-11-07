@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Mocks
 			Assign(tmp, reg);
 			BranchIf(Eq(And(reg,1), 0), "even");
 
-			Add(reg, reg, 2);
+			Assign(reg, Add(reg, 2));
 			
 			Label("even");
 			Return(Sub(reg, tmp));

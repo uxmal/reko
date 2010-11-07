@@ -33,9 +33,10 @@ namespace Decompiler.Core.Rtl
         {
             this.Expression = sideEffect;
         }
-        public override void Accept(RtlInstructionVisitor visitor)
+
+        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
-            visitor.VisitSideEffect(this);
+            return visitor.VisitSideEffect(this);
         }
 
         public Expression Expression { get; private set; }

@@ -35,15 +35,20 @@ namespace Decompiler.Scanning
     {
         void EnqueueEntryPoint(EntryPoint ep);
         Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state);
-        void EnqueueProcedure(Scanner2.WorkItem2 wiPrev, Procedure proc, Address addrProc);
-        Procedure EnqueueProcedure(Scanner2.WorkItem2 wiPrev, Address addr, string procedureName, ProcessorState state);
+        void EnqueueProcedure(WorkItem2 wiPrev, Procedure proc, Address addrProc);
+        Procedure EnqueueProcedure(WorkItem2 wiPrev, Address addr, string procedureName, ProcessorState state);
         void EnqueueUserProcedure(SerializedProcedure sp);
+        void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
         void ProcessQueue();
 
         CallGraph CallGraph { get; }
+        IProcessorArchitecture Architecture { get; } 
         Platform Platform { get; }
+        IDictionary<Address, VectorUse> VectorUses { get; } 
 
         Block AddBlock(Address addr, Procedure proc, string blockName);
+        void AddDiagnostic(Address addr, Diagnostic d);
+        ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
 
         /// <summary>
         /// Find the block that contains the address <paramref name="addr"/>, or return null if there
@@ -55,6 +60,7 @@ namespace Decompiler.Scanning
         Block SplitBlock(Block block, Address addr);
 
         ImageReader CreateReader(Address addr);
+
 
     }
 
@@ -76,20 +82,36 @@ namespace Decompiler.Scanning
         private CallGraph callgraph;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Platform platform;
+        private IDictionary<Address, ProcedureSignature> callSigs;
+        private IDictionary<Address, ImageMapVectorTable> vectors;
+
+        private DecompilerEventListener eventListener;
 
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
+        private const int PriorityVector = 7;
 
-        public Scanner2(IProcessorArchitecture arch, ProgramImage image, Platform platform)
+        public Scanner2(
+            IProcessorArchitecture arch, 
+            ProgramImage image, 
+            Platform platform,
+            IDictionary<Address, ProcedureSignature> callSigs,
+            DecompilerEventListener eventListener)
         {
             this.arch = arch;
             this.image = image;
+            this.platform = platform;
+            this.callSigs = callSigs;
+            this.eventListener = eventListener;
+
+
             this.Procedures = new SortedList<Address, Procedure>();
             this.queue = new PriorityQueue<WorkItem2>();
             this.blocks = new Map<uint, BlockRange>();
             this.callgraph = new CallGraph();
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
-            this.platform = platform;
+            this.vectors = new Dictionary<Address, ImageMapVectorTable>();
+            this.VectorUses = new Dictionary<Address, VectorUse>();
         }
 
         private class BlockRange
@@ -108,6 +130,8 @@ namespace Decompiler.Scanning
             public uint End { get; set; }
         }
 
+        public IProcessorArchitecture Architecture { get { return arch; } } 
+
         public CallGraph CallGraph
         {
             get { return callgraph; }
@@ -118,6 +142,7 @@ namespace Decompiler.Scanning
             get { return platform; }
         }
 
+        public IDictionary<Address, VectorUse> VectorUses { get; private set; } 
         #region IScanner Members
 
         public Block AddBlock(Address addr, Procedure proc, string blockName)
@@ -126,6 +151,11 @@ namespace Decompiler.Scanning
             blocks.Add(addr.Linear, new BlockRange(b, addr.Linear, image.BaseAddress.Linear + (uint) image.Bytes.Length));
             proc.ControlGraph.Nodes.Add(b);
             return b;
+        }
+
+        public void AddDiagnostic(Address addr, Diagnostic d)
+        {
+            eventListener.AddDiagnostic(eventListener.CreateAddressNavigator(addr), d);
         }
 
         public ImageReader CreateReader(Address addr)
@@ -163,12 +193,33 @@ namespace Decompiler.Scanning
                 PriorityJumpTarget,
                 new BlockWorkitem2(
                     this,
-                    this.arch,
                     this.arch.CreateRewriter2(CreateReader(addrStart), state, proc.Frame, this),
                     state,
                     new Frame(arch.FramePointerType),
                     block));
             return block;
+        }
+
+
+        public void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
+        {
+            ImageMapVectorTable table;
+            if (!vectors.TryGetValue(addrTable, out table))
+            {
+                table = new ImageMapVectorTable(addrTable, calltable);
+                var wi = new VectorWorkItem(this, image, table, proc);
+                wi.state = state.Clone();
+                wi.reader = image.CreateReader(addrTable);
+                wi.stride = stride;
+                wi.segBase = segBase;
+                wi.table = table;
+                wi.addrFrom = addrUser;
+
+                image.Map.AddItem(addrTable, table);
+                vectors[addrTable] = table;
+                queue.Enqueue(PriorityVector, wi);
+            }
+
         }
 
         private static string GenerateBlockName(Address addrStart)
@@ -197,6 +248,7 @@ namespace Decompiler.Scanning
         }
 
 
+
         public Block FindContainingBlock(Address address)
         {
             BlockRange b;
@@ -214,6 +266,8 @@ namespace Decompiler.Scanning
             else
                 return null;
         }
+
+
         /// <summary>
         /// Splits the given block at the specified address, yielding two blocks. The first block is the original block,
         /// now truncated, with a single out edge to the new block. The second block receives the out edges of the first block.
@@ -254,20 +308,6 @@ namespace Decompiler.Scanning
 
         public SortedList<Address, Procedure> Procedures { get; private set; }
 
-        public abstract class WorkItem2
-        {
-            public abstract void Process();
-        }
-
-        private class EntryPointItem : WorkItem2
-        {
-            public override void Process()
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-
         #region IRewriterHost2 Members
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
@@ -283,7 +323,9 @@ namespace Decompiler.Scanning
 
         public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
         {
-            throw new NotImplementedException();
+            ProcedureSignature sig = null;
+            callSigs.TryGetValue(addrCallInstruction, out sig);
+            return sig;
         }
 
         #endregion
@@ -307,14 +349,14 @@ namespace Decompiler.Scanning
         private Dictionary<ImageMapBlock, ImageMapBlock> blocksVisited;
         private Map<Address, VectorUse> vectorUses;
         private SortedList<Address, SystemService> syscalls;
-        private WorkItem wiCur;
+        private WorkItemOld wiCur;
         private DirectedGraphImpl<object> jumpGraph;    //$TODO: what is the right type? This is a bipartite graph with statements and procedures.
 
-        private Queue<WorkItem> qProcs;
-        private Queue<WorkItem> qJumps;
-        private Queue<WorkItem> qStarts;
-        private Queue<WorkItem> qSegments;
-        private Queue<VectorWorkItem> qVectors;
+        private Queue<WorkItemOld> qProcs;
+        private Queue<WorkItemOld> qJumps;
+        private Queue<WorkItemOld> qStarts;
+        private Queue<WorkItemOld> qSegments;
+        private Queue<VectorWorkItemOld> qVectors;
 
         private static TraceSwitch trace = new TraceSwitch("Scanner", "Enables tracing in the scanning phase");
 
@@ -329,11 +371,11 @@ namespace Decompiler.Scanning
             this.syscalls = new SortedList<Address, SystemService>();
 
             //$REVIEW: All these queues... could they be replaced with a priority queue?
-            qStarts = new Queue<WorkItem>();
-            qProcs = new Queue<WorkItem>();
-            qJumps = new Queue<WorkItem>();
-            qSegments = new Queue<WorkItem>();
-            qVectors = new Queue<VectorWorkItem>();
+            qStarts = new Queue<WorkItemOld>();
+            qProcs = new Queue<WorkItemOld>();
+            qJumps = new Queue<WorkItemOld>();
+            qSegments = new Queue<WorkItemOld>();
+            qVectors = new Queue<VectorWorkItemOld>();
             this.blocksVisited = new Dictionary<ImageMapBlock, ImageMapBlock>();
             this.jumpGraph = new DirectedGraphImpl<object>();
         }
@@ -350,7 +392,7 @@ namespace Decompiler.Scanning
         public void EnqueueEntryPoint(EntryPoint ep)
         {
             Debug.Assert(ep.Address != null);
-            WorkItem wi = new WorkItem(null, BlockType.Procedure, ep.Address);
+            WorkItemOld wi = new WorkItemOld(null, BlockType.Procedure, ep.Address);
             wi.state = ep.ProcessorState;
             EnqueueProcedure(null, ep.Address, ep.Name, wi.state);
             qStarts.Enqueue(wi);
@@ -368,7 +410,7 @@ namespace Decompiler.Scanning
             if (proc == null)
                 throw new ArgumentNullException("proc");
             Debug.Assert(program.Image.IsValidAddress(addrTarget), string.Format("{0} is not a valid address.", addrTarget));
-            WorkItem wi = new WorkItem(wiCur, BlockType.JumpTarget, addrTarget);
+            WorkItemOld wi = new WorkItemOld(wiCur, BlockType.JumpTarget, addrTarget);
             wi.state = st.Clone();
             qJumps.Enqueue(wi);
             ImageMapBlock bl = new ImageMapBlock();
@@ -383,7 +425,7 @@ namespace Decompiler.Scanning
             }
         }
 
-        public Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName)
+        public Procedure EnqueueProcedure(WorkItemOld wiPrev, Address addr, string procedureName)
         {
             return EnqueueProcedure(wiPrev, addr, procedureName, program.Architecture.CreateProcessorState());
         }
@@ -393,9 +435,9 @@ namespace Decompiler.Scanning
         /// </summary>
         /// <param name="addr">The address at which the procedure was found.</param>
         /// <param name="state"></param>
-        public Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state)
+        public Procedure EnqueueProcedure(WorkItemOld wiPrev, Address addr, string procedureName, ProcessorState state)
         {
-            WorkItem wi = new WorkItem(wiPrev, BlockType.Procedure, addr);
+            WorkItemOld wi = new WorkItemOld(wiPrev, BlockType.Procedure, addr);
             wi.state = state.Clone();
             Procedure proc;
             if (!program.Procedures.TryGetValue(addr, out proc))
@@ -412,14 +454,14 @@ namespace Decompiler.Scanning
             return proc;
         }
 
-        public void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc)
+        public void EnqueueProcedure(WorkItemOld wiPrev, Procedure proc, Address addrProc)
         {
             if (program.Procedures[addrProc] == null)
             {
                 program.Procedures[addrProc] = proc;
                 program.CallGraph.AddProcedure(proc);
             }
-            WorkItem wi = new WorkItem(wiPrev, BlockType.Procedure, addrProc);
+            WorkItemOld wi = new WorkItemOld(wiPrev, BlockType.Procedure, addrProc);
             wi.state = program.Architecture.CreateProcessorState();
             qProcs.Enqueue(wi);
         }
@@ -430,7 +472,7 @@ namespace Decompiler.Scanning
         /// <param name="addr"></param>
         public void EnqueueSegment(Address addr)
         {
-            qSegments.Enqueue(new WorkItem(wiCur, BlockType.Segment, addr));
+            qSegments.Enqueue(new WorkItemOld(wiCur, BlockType.Segment, addr));
         }
 
 
@@ -457,13 +499,13 @@ namespace Decompiler.Scanning
         /// <param name="segBase">For x86 16-bit binaries, the code segment of the calling code. For all other architectures, zero.</param>
         /// <param name="calltable"></param>
         /// <param name="state"></param>
-        private void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, ProcessorState state)
+        public void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
         {
             ImageMapVectorTable table;
             if (!program.Vectors.TryGetValue(addrTable, out table))
             {
-                table = new ImageMapVectorTable(calltable);
-                VectorWorkItem wi = new VectorWorkItem(wiCur, blockCur.Procedure, addrTable);
+                table = new ImageMapVectorTable(addrTable, calltable);
+                var wi = new VectorWorkItemOld(wiCur, proc, addrTable);
                 wi.state = state.Clone();
                 wi.reader = program.Image.CreateReader(addrTable);
                 wi.stride = stride;
@@ -534,15 +576,14 @@ namespace Decompiler.Scanning
             map.AddItem(addrFrom, new ImageMapItem());
         }
 
-        public void OnJumpTable(ProcessorState st,
-            Address addrInstr, Address addrTable, ushort segBase, PrimitiveType width)
+        public void OnJumpTable(ProcessorState st, Address addrInstr, Address addrTable, ushort segBase, PrimitiveType width)
         {
             if (!program.Image.IsValidAddress(addrTable))
             {
                 Warn(addrInstr, "Unncertain about table start {0}.", addrTable);
                 return;
             }
-            EnqueueVectorTable(addrInstr, addrTable, width, segBase, false, st);
+            EnqueueVectorTable(addrInstr, addrTable, width, segBase, false, blockCur.Procedure, st);
         }
 
         public void OnProcedure(ProcessorState st, Address addrCallee)
@@ -566,7 +607,7 @@ namespace Decompiler.Scanning
                 this.Warn(addrInstr, "Uncertain about table start {0}.", addrTable);
                 return;
             }
-            EnqueueVectorTable(addrInstr, addrTable, width, segBase, true, st);
+            EnqueueVectorTable(addrInstr, addrTable, width, segBase, true, blockCur.Procedure, st);
         }
 
         public void OnProcessExit(Address addrTerm)
@@ -622,7 +663,7 @@ namespace Decompiler.Scanning
         /// we're currently in (blockCur) is fragmented (due to a backwards jump, for instance).
         /// </remarks>
         /// <param name="wi"></param>
-        public void ParseJumpTarget(WorkItem wi)
+        public void ParseJumpTarget(WorkItemOld wi)
         {
             if (!program.Image.IsValidAddress(wi.Address))
             {
@@ -667,7 +708,7 @@ namespace Decompiler.Scanning
             return b;
         }
 
-        private void ParseProcedure(WorkItem wi)
+        private void ParseProcedure(WorkItemOld wi)
         {
             //$TODO: make Item part of the workItem!
             ImageMapItem item;
@@ -687,11 +728,11 @@ namespace Decompiler.Scanning
             }
         }
 
-        private void ParseSegment(WorkItem wi)
+        private void ParseSegment(WorkItemOld wi)
         {
         }
 
-        private void ProcessVector(VectorWorkItem wi)
+        private void ProcessVector(VectorWorkItemOld wi)
         {
             //$TODO: pass imagemapvectortable in workitem.
             ImageMapItem q;
@@ -726,7 +767,6 @@ namespace Decompiler.Scanning
             }
             vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
             map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
-
         }
 
         public bool ProcessItem()
@@ -762,7 +802,7 @@ namespace Decompiler.Scanning
 
             if (qVectors.Count > 0)
             {
-                VectorWorkItem vwi = qVectors.Dequeue();
+                VectorWorkItemOld vwi = qVectors.Dequeue();
                 wiCur = vwi;
                 ProcessVector(vwi);
                 return true;
@@ -822,6 +862,11 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
+        void IScanner.AddDiagnostic(Address addr, Diagnostic d)
+        {
+            throw new NotImplementedException();
+        }
+
         public Block FindExactBlock(Address addr)
         {
             throw new NotImplementedException();
@@ -842,21 +887,29 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        Procedure IScanner.EnqueueProcedure(Scanner2.WorkItem2 wiPrev, Address addr, string procedureName, ProcessorState state)
+        Procedure IScanner.EnqueueProcedure(WorkItem2 wiPrev, Address addr, string procedureName, ProcessorState state)
         {
             throw new NotImplementedException();
         }
 
 
-        void IScanner.EnqueueProcedure(Scanner2.WorkItem2 wiPrev, Procedure proc, Address addrProc)
+        void IScanner.EnqueueProcedure(WorkItem2 wiPrev, Procedure proc, Address addrProc)
         {
             throw new NotImplementedException();
         }
 
+         IProcessorArchitecture IScanner.Architecture { get { return program.Architecture; } } 
 
         CallGraph IScanner.CallGraph { get { throw new NotImplementedException(); } }
 
         Platform IScanner.Platform { get { return program.Platform; } }
+
+        ProcedureSignature IScanner.GetCallSignatureAtAddress(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        IDictionary<Address, VectorUse> IScanner.VectorUses { get { return vectorUses; } }
 
         #endregion
     }

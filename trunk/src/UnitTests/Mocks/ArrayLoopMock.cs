@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Mocks
 			Label("looptest");
 			BranchIf(Uge(ptr, 0x04001000), "done");
 			Store(ptr, 0);
-			Add(ptr, ptr, 4);
+			Assign(ptr, Add(ptr, 4));
 			Jump("looptest");
 			Label("done");
 			Return();

@@ -231,7 +231,8 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds[id3].Uses.Add(use);
 
 			liv.Context.DeltaValue = m.Int32(1);
-			liv.Context.DeltaStatement = m.Add(id4, id3, liv.Context.DeltaValue);
+            m.Assign(id4, m.Add(id3, liv.Context.DeltaValue));
+            liv.Context.DeltaStatement = m.Block.Statements.Last;
 			ssaIds[id3].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();

@@ -216,7 +216,6 @@ namespace Decompiler.UnitTests.Mocks
 		{
 		}
 
-
 		public void SetInstructionPointer(Address addr)
 		{
 		}

@@ -106,7 +106,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             m.Mov(m.ax, m.bx);
             var rw = CreateRewriter(m);
             var e = rw.GetEnumerator();
-            AssertCode(0xC000, "ax = bx", e);
+            AssertCode("0C00:0000(2) ax = bx", e);
         }
 
         private X86Rewriter CreateRewriter(IntelAssembler m)
@@ -125,7 +125,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Mov(m.ax, m.MemW(Registers.bp, -8));
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode("ax = Mem0[ss:bp - 0x0008:word16]", e);
+            AssertCode("0C00:0000(3) ax = Mem0[ss:bp - 0x0008:word16]", e);
         }
 
         [Test]
@@ -134,8 +134,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Add(m.ax, m.MemW(Registers.si, 4));
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode(0x0C000, "ax = ax + Mem0[ds:si + 0x0004:word16]", e);
-            AssertCode(0x0C000, "SCZO = cond(ax)", e);
+            AssertCode("0C00:0000(3) ax = ax + Mem0[ds:si + 0x0004:word16]", e);
+            AssertCode("0C00:0000(3) SCZO = cond(ax)", e);
         }
 
         [Test]
@@ -144,9 +144,9 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Add(m.WordPtr(0x1000), 3);
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode("v3 = Mem0[ds:0x1000:word16] + 0x0003", e);
-            AssertCode("store(Mem0[ds:0x1000:word16]) = v3", e);
-            AssertCode("SCZO = cond(v3)", e);
+            AssertCode("0C00:0000(5) v3 = Mem0[ds:0x1000:word16] + 0x0003", e);
+            AssertCode("0C00:0000(5) Mem0[ds:0x1000:word16] = v3", e);
+            AssertCode("0C00:0000(5) SCZO = cond(v3)", e);
         }
 
         [Test]
@@ -155,8 +155,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Sub(m.ecx, 0x12345);
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode("ecx = ecx - 0x00012345", e);
-            AssertCode("SCZO = cond(ecx)", e);
+            AssertCode("0C00:0000(7) ecx = ecx - 0x00012345", e);
+            AssertCode("0C00:0000(7) SCZO = cond(ecx)", e);
         }
 
         [Test]
@@ -165,9 +165,9 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Or(m.ax, m.dx);
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode("ax = ax | dx", e);
-            AssertCode("SZO = cond(ax)", e);
-            AssertCode("C = false", e);
+            AssertCode("0C00:0000(2) ax = ax | dx", e);
+            AssertCode("0C00:0000(2) SZO = cond(ax)", e);
+            AssertCode("0C00:0000(2) C = false", e);
         }
 
         [Test]
@@ -176,9 +176,9 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.And(m.si, m.Imm(0x32));
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode("si = si & 0x0032", e);
-            AssertCode("SZO = cond(si)", e);
-            AssertCode("C = false", e);
+            AssertCode("0C00:0000(3) si = si & 0x0032", e);
+            AssertCode("0C00:0000(3) SZO = cond(si)", e);
+            AssertCode("0C00:0000(3) C = false", e);
         }
 
 
@@ -189,9 +189,9 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Xor(m.eax, m.eax);
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode("eax = eax ^ eax", e);
-            AssertCode("SZO = cond(eax)", e);
-            AssertCode("C = false", e);
+            AssertCode("0C00:0000(3) eax = eax ^ eax", e);
+            AssertCode("0C00:0000(3) SZO = cond(eax)", e);
+            AssertCode("0C00:0000(3) C = false", e);
         }
 
         [Test]
@@ -200,8 +200,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             var m = Create16bitAssembler();
             m.Test(m.edi, m.Imm(0xFFFFFFFFu));
             var e = CreateRewriter(m).GetEnumerator();
-            AssertCode("SZO = cond(edi & 0xFFFFFFFF)", e);
-            AssertCode("C = false", e);
+            AssertCode("0C00:0000(7) SZO = cond(edi & 0xFFFFFFFF)", e);
+            AssertCode("0C00:0000(7) C = false", e);
         }
 
         private IEnumerator<RtlInstruction> Run16bitTest(Action<IntelAssembler> fn)
@@ -225,7 +225,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Cmp(m.ebx, 3);
             });
-            AssertCode("SCZO = cond(ebx - 0x00000003)", e);
+            AssertCode("0C00:0000(4) SCZO = cond(ebx - 0x00000003)", e);
         }
 
         [Test]
@@ -236,10 +236,10 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Push(m.eax);
                 m.Pop(m.ebx);
             });
-            AssertCode(0xC000, "sp = sp - 0x0004", e);
-            AssertCode(0xC000, "store(Mem0[ss:sp:word32]) = eax", e);
-            AssertCode(0xC002, "ebx = Mem0[ss:sp:word32]", e);
-            AssertCode(0xC002, "sp = sp + 0x0004", e);
+            AssertCode("0C00:0000(2) sp = sp - 0x0004", e);
+            AssertCode("0C00:0000(2) Mem0[ss:sp:word32] = eax", e);
+            AssertCode("0C00:0002(2) ebx = Mem0[ss:sp:word32]", e);
+            AssertCode("0C00:0002(2) sp = sp + 0x0004", e);
         }
 
         [Test]
@@ -250,7 +250,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Label("lupe");
                 m.Jmp("lupe");
             });
-            AssertCode("goto 0C00:0000", e);
+            AssertCode("0C00:0000(3) goto 0C00:0000", e);
         }
 
         [Test]
@@ -260,7 +260,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Jmp(m.WordPtr(m.bx, 0x10));
             });
-            AssertCode(0xC000, "goto Mem0[ds:bx + 0x0010:word16]", e);
+            AssertCode("0C00:0000(3) goto Mem0[ds:bx + 0x0010:word16]", e);
         }
 
         [Test]
@@ -272,8 +272,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Jnz("lupe");
                 m.Xor(m.ax, m.ax);
             });
-            AssertCode(0xC000, "if (Test(NE,Z)) goto 0C00:0000", e);
-            AssertCode(0xC002, "ax = ax ^ ax", e);
+            AssertCode(0xC000, "0C00:0000(2) if (Test(NE,Z)) branch 0C00:0000", e);
+            AssertCode(0xC002, "0C00:0002(2) ax = ax ^ ax", e);
         }
 
         [Test]
@@ -284,8 +284,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Label("self");
                 m.Call("self");
             });
-            AssertCode(0x0C000, "sp = sp - 0x0002",e);
-            AssertCode(0x0C000, "icall 0C00:0000", e);
+            AssertCode(0x0C000, "0C00:0000(3) sp = sp - 0x0002", e);
+            AssertCode(0x0C000, "0C00:0000(3) call 0C00:0000", e);
         }
 
         [Test]
@@ -296,8 +296,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Label("self");
                 m.Call("self");
             });
-            AssertCode(0x10000000, "esp = esp - 0x00000004", e);
-            AssertCode(0x10000000, "icall 0x10000000", e);
+            AssertCode(0x10000000, "10000000(5) esp = esp - 0x00000004", e);
+            AssertCode(0x10000000, "10000000(5) call 10000000", e);
         }
 
         [Test]
@@ -307,7 +307,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Bswap(m.ebx);
             });
-            AssertCode("ebx = __bswap(ebx)",e);
+            AssertCode("10000000(2) ebx = __bswap(ebx)",e);
         }
 
         [Test]
@@ -318,8 +318,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Mov(m.ax, 0x4C00);
                 m.Int(0x21);
             });
-            AssertCode("ax = 0x4C00", e);
-            AssertCode("__syscall(0x21)", e);
+            AssertCode("0C00:0000(3) ax = 0x4C00", e);
+            AssertCode("0C00:0003(2) __syscall(0x21)", e);
             var s = (RtlSideEffect) e.Current;
             var app = (Application) s.Expression;
             var pc = (ProcedureConstant) app.Procedure;
@@ -334,7 +334,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.In(m.al, m.dx);
             });
-            AssertCode("al = __inb(dx)", e);
+            AssertCode("0C00:0000(1) al = __inb(dx)", e);
         }
 
         [Test]
@@ -344,7 +344,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Ret();
             });
-            AssertCode("return", e);
+            AssertCode("0C00:0000(1) return (2,0)", e);
         }
 
         [Test]
