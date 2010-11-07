@@ -89,7 +89,10 @@ namespace Decompiler.Arch.Intel
             }
             else
             {
-                emitter.Call(SrcOp(callTarget));
+                var target = SrcOp(callTarget);
+                if (target.DataType.Size == 2)
+                    target = emitter.Seq(orw.AluRegister(Registers.cs), target);
+                emitter.Call(target);
             }
         }
 
@@ -134,31 +137,7 @@ namespace Decompiler.Arch.Intel
 
         private void EmitReturnInstruction(int cbReturnAddress, int cbBytesPop)
         {
-            throw new NotImplementedException("Move to rewriter");
-            //if (frame.ReturnAddressSize != cbReturnAddress)
-            //{
-            //    host.AddDiagnostic(
-            //        di.Address,
-            //        new WarningDiagnostic(string.Format(
-            //        "Caller expects a return address of {0} bytes, but procedure {1} was previously called with a return address of {2} bytes.",
-            //        cbReturnAddress, this.proc.Name, frame.ReturnAddressSize)));
-            //}
-            //emitter.Return();
-            //if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != cbBytesPop)
-            //{
-            //    host.AddDiagnostic(
-            //        di.Address,
-            //        new WarningDiagnostic(string.Format(
-            //        "Multiple differing values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
-            //}
-            //else
-            //{
-            //    proc.Signature.StackDelta = cbBytesPop;
-            //}
-            //proc.Signature.FpuStackDelta = state.FpuStackItems;
-            //proc.Signature.FpuStackArgumentMax = maxFpuStackRead;
-            //proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;
-            //proc.AddEdge(emitter.Block, proc.ExitBlock);
+            emitter.Return(cbReturnAddress, cbBytesPop);
         }
 
         /// <summary>

@@ -514,6 +514,7 @@
     <Compile Include="SystemService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TreeMatching\TreeMatcher.cs" />
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>

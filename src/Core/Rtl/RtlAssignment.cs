@@ -35,9 +35,9 @@ namespace Decompiler.Core.Rtl
             this.Src = src;
         }
 
-        public override void Accept(RtlInstructionVisitor visitor)
+        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
-            visitor.VisitAssignment(this);
+            return visitor.VisitAssignment(this);
         }
 
         public Expression Dst { get; private set; }

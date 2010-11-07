@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Types;
@@ -31,14 +33,20 @@ namespace Decompiler.Scanning
 		Vector
 	}
 
-	public class WorkItem
+    public abstract class WorkItem2
+    {
+        public abstract void Process();
+    }
+
+    [Obsolete("Use new workitem class")]
+	public class WorkItemOld
 	{
-		private WorkItem wiPrev;
+		private WorkItemOld wiPrev;
 		private Address addr;
 		public ProcessorState state;
 		public BlockType type;
 
-		public WorkItem(WorkItem wiPrev, BlockType type, Address addr)
+		public WorkItemOld(WorkItemOld wiPrev, BlockType type, Address addr)
 		{
 			this.wiPrev = wiPrev;
 			this.type = type;
@@ -50,7 +58,7 @@ namespace Decompiler.Scanning
 			get { return addr; }
 		}
 
-		public WorkItem Previous
+		public WorkItemOld Previous
 		{
 			get { return wiPrev; }
 		}
@@ -70,8 +78,8 @@ namespace Decompiler.Scanning
 		}
 	}
 
-
-	public class VectorWorkItem : WorkItem
+    [Obsolete]
+	public class VectorWorkItemOld : WorkItemOld
 	{
 		public Address addrFrom;			// address from which the jump is called.
 		public ImageReader reader;
@@ -80,9 +88,10 @@ namespace Decompiler.Scanning
 		public ImageMapVectorTable table;
 		public Procedure proc;
 
-		public VectorWorkItem(WorkItem wiPrev, Procedure proc, Address addrTable) : base(wiPrev, BlockType.Vector, addrTable)
+		public VectorWorkItemOld(WorkItemOld wiPrev, Procedure proc, Address addrTable) : base(wiPrev, BlockType.Vector, addrTable)
 		{
 			this.proc = proc;
 		}
 	}
+
 }

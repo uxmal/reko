@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,6 @@ namespace Decompiler.Scanning
     {
         private IProcessorArchitecture arch;
         private ProgramImage img;
-        private bool returnToCaller;
         private Identifier regIdxDetected;
         private static TraceSwitch trace = new TraceSwitch("IntelBackWalker", "Traces the progress of x86 backward instruction walking");
 
@@ -61,81 +61,41 @@ namespace Decompiler.Scanning
             return n != 0 && (n & (n - 1)) == 0;
         }
 
-        private MachineRegister HandleAddition(
-            MachineRegister regIdx,
-            List<BackwalkOperation> operations,
-            RegisterOperand ropDst,
-            RegisterOperand ropSrc,
-            ImmediateOperand immSrc,
-            bool add)
+        public class Visitor : InstructionVisitor, IExpressionVisitor
         {
-            if (ropSrc != null)
-            {
-                if (ropSrc.Register == ropDst.Register && add)
-                {
-                    operations.Add(new BackwalkOperation(BackwalkOperator.mul, 2));
-                    return regIdx;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else if (immSrc != null)
-            {
-                operations.Add(new BackwalkOperation(
-                    add ? BackwalkOperator.add : BackwalkOperator.sub,
-                    immSrc.Value.ToInt32()));
-                return regIdx;
-            }
-            else
-                return MachineRegister.None;
-        }
+            Identifier regIdx;
+            Identifier regDst;
+            List<BackwalkOperation> operations;
+            Frame frame;
+            uint grfDst;
+            uint grfUsedInBranch;
 
-        public Identifier BackwalkInstructions(
-            Identifier regIdx,
-            StatementList instrs,
-            int i,
-            List<BackwalkOperation> operations)
-        {
-            var bw = new Visitor(regIdx, operations);
-            for (; i >= 0; --i)
+            public Visitor(Identifier regIdx, Frame frame, List<BackwalkOperation> operations)
             {
-                Instruction instr = instrs[i].Instruction;
-                instr.Accept(bw);
-                if (bw.IndexRegister == null)
-                    break;
+                this.regIdx = regIdx;
+                this.frame = frame;
+                this.operations = operations;
             }
-            return bw.IndexRegister;
+
+            public Identifier BackwalkInstructions(StatementList instrs, int i)
+            {
+                for (; i >= 0; --i)
+                {
+                    Instruction instr = instrs[i].Instruction;
+                    instr.Accept(this);
+                    if (IndexRegister == null || ReturnToCaller)
+                        break;
+                }
+                return IndexRegister;
 #if OLD
             switch (instr.code)
             {
-            case Opcode.add:
-            case Opcode.sub:
-                if (ropDst != null && ropDst.Register == regIdx)
-                {
-                    regIdx = HandleAddition(regIdx, operations, ropDst, ropSrc, immSrc, instr.code == Opcode.add);
-                }
+
                 break;
             case Opcode.adc:
                 if (ropDst != null && ropDst.Register == regIdx)
                 {
                     return MachineRegister.None;
-                }
-                break;
-            case Opcode.and:
-                if (ropDst != null && ropDst.Register == regIdx && immSrc != null)
-                {
-                    if (IsEvenPowerOfTwo(immSrc.Value.ToInt32() + 1))
-                    {
-                        operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.Value.ToInt32() + 1));
-                        returnToCaller = true;
-                    }
-                    else
-                    {
-                        regIdx = null;
-                    }
-                    return regIdx;
                 }
                 break;
             case Opcode.inc:
@@ -144,17 +104,6 @@ namespace Decompiler.Scanning
                 {
                     BackwalkOperator op = instr.code == Opcode.inc ? BackwalkOperator.add : BackwalkOperator.sub;
                     operations.Add(new BackwalkOperation(op, 1));
-                }
-                break;
-            case Opcode.cmp:
-                if (ropDst != null &&
-                    (ropDst.Register == regIdx || ropDst.Register == regIdx.GetPart(PrimitiveType.Byte)))
-                {
-                    if (immSrc != null)
-                    {
-                        operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.Value.ToInt32()));
-                        return regIdx;
-                    }
                 }
                 break;
             case Opcode.ja:
@@ -169,13 +118,6 @@ namespace Decompiler.Scanning
                             regIdx = ropSrc.Register;
                         else
                             regIdx = MachineRegister.None;	// haven't seen an immediate compare yet.
-                    }
-                    else if (ropDst.Register == regIdx.GetSubregister(0, 8) &&
-                        memSrc != null && memSrc.Offset != null &&
-                        memSrc.Base != MachineRegister.None)
-                    {
-                        operations.Add(new BackwalkDereference(memSrc.Offset.ToInt32(), memSrc.Scale));
-                        regIdx = memSrc.Base;
                     }
                 }
                 break;
@@ -223,53 +165,357 @@ namespace Decompiler.Scanning
                     regIdx = MachineRegister.None;
                 }
                 break;
-            case Opcode.xor:
-                if (ropDst != null && ropSrc != null &&
-                    ropSrc.Register == ropDst.Register &&
-                    ropDst.Register == regIdx.GetSubregister(8, 8))
-                {
-                    operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));
-                    regIdx = regIdx.GetSubregister(0, 8);
-                }
-                break;
             default:
                 System.Diagnostics.Debug.WriteLine("Backwalking not supported: " + instr.code);
                 DumpInstructions(instrs, i);
                 break;
             }
 #endif
-            return regIdx;
-        }
-
-
-        private class Visitor : InstructionVisitorBase
-        {
-            Identifier regIdx;
-            List<BackwalkOperation> operations;
-            public Visitor(Identifier regIdx, List<BackwalkOperation> operations)
-            {
-                this.regIdx = regIdx;
-                this.operations = operations;
+                return regIdx;
             }
 
+
             public Identifier IndexRegister { get { return regIdx; } }
+
+            public bool ReturnToCaller { get; set; }
+
+            private Identifier HandleAddition(
+                Identifier regIdx,
+                Identifier ropDst,
+                Identifier ropSrc,
+                Constant immSrc,
+                bool add)
+            {
+                if (ropSrc != null)
+                {
+                    if (ropSrc == ropDst && add)
+                    {
+                        operations.Add(new BackwalkOperation(BackwalkOperator.mul, 2));
+                        return regIdx;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else if (ropSrc == ropDst && immSrc != null)
+                {
+                    operations.Add(new BackwalkOperation(
+                        add ? BackwalkOperator.add : BackwalkOperator.sub,
+                        immSrc.ToInt32()));
+                    return regIdx;
+                }
+                else
+                    return null;
+            }
+
+            #region InstructionVisitor Members
+
+            public void VisitAssignment(Assignment a)
+            {
+                if (a.Dst.Storage is RegisterStorage)
+                {
+                    regDst = a.Dst;
+                    grfDst = 0;
+                    a.Src.Accept(this);
+                }
+                var f = a.Dst.Storage as FlagGroupStorage;
+                if (f != null)
+                {
+                    grfDst = f.FlagGroup;
+                    regDst = null;
+                    a.Src.Accept(this);
+                }
+            }
+
+            public void VisitBranch(Branch b)
+            {
+                var cond = b.Condition as TestCondition;
+                if (cond == null)
+                    return;
+                var flags = cond.Expression as Identifier;
+                if (flags == null)
+                    return;
+                var f = flags.Storage as FlagGroupStorage;
+                if (f == null)
+                    return;
+                grfUsedInBranch = f.FlagGroup;
+                operations.Add(new BackwalkBranch(cond.ConditionCode));
+            }
+
+            public void VisitCallInstruction(CallInstruction ci)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitDeclaration(Declaration decl)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitDefInstruction(DefInstruction def)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitGotoInstruction(GotoInstruction gotoInstruction)
+            {
+            }
+
+            public void VisitPhiAssignment(PhiAssignment phi)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitIndirectCall(IndirectCall ic)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitReturnInstruction(ReturnInstruction ret)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitSideEffect(SideEffect side)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitStore(Store store)
+            {
+            }
+
+            public void VisitSwitchInstruction(SwitchInstruction si)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitUseInstruction(UseInstruction u)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+
+            #region IExpressionVisitor Members
+
+            public void VisitAddress(Address addr)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitApplication(Application appl)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitArrayAccess(ArrayAccess acc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitBinaryExpression(BinaryExpression binExp)
+            {
+                var regLeft = binExp.Left as Identifier;
+                var immRight = binExp.Right as Constant;
+                if (binExp.op == Operator.Add || binExp.op == Operator.Sub && regLeft == this.regDst)
+                {
+                    regIdx = HandleAddition(
+                        regIdx,
+                        regDst,
+                        binExp.Left as Identifier,
+                        binExp.Right as Constant,
+                        binExp.op == Operator.Add);
+                    return;
+                }
+                if (binExp.op == Operator.Sub && (grfDst&grfUsedInBranch) == grfUsedInBranch && regLeft != null)
+                {
+                    var rLeft = regLeft.Storage as RegisterStorage;
+                    var rIdx = regIdx.Storage as RegisterStorage;
+                    if (regLeft == regIdx || rLeft.Register == rIdx.Register.GetSubregister(0, 8))
+                    {
+                        if (immRight != null)
+                        {
+                            operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immRight.ToInt32()));
+                            ReturnToCaller = true;
+                        }
+                    }
+                }
+                if (binExp.op == Operator.And && regLeft == this.regDst && immRight != null)
+                {
+                    var mask_plus_1 = immRight.ToInt32() + 1;
+                    if (IsEvenPowerOfTwo(mask_plus_1))
+                    {
+                        operations.Add(new BackwalkOperation(BackwalkOperator.cmp, mask_plus_1));
+                        ReturnToCaller = true;
+                    }
+                    else
+                    {
+                        regIdx = null;
+                    }
+                    return;
+                }
+                if (binExp.op == Operator.Xor)
+                {
+                    if (regDst == null || regLeft == null)
+                        return;
+                    if (regDst != regLeft)
+                        return;
+                    var rSrc = regLeft.Storage as RegisterStorage;
+                    if (rSrc == null)
+                        return;
+                    var rIdx = regIdx.Storage as RegisterStorage;
+                    if (rSrc.Register != rIdx.Register.GetSubregister(8, 8))
+                        return;
+                     
+                    operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));
+                    regIdx = frame.EnsureRegister(rIdx.Register.GetSubregister(0, 8));
+                }
+            }
+
+            public void VisitCast(Cast cast)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitConditionOf(ConditionOf cof)
+            {
+                cof.Expression.Accept(this);
+            }
+
+            public void VisitConstant(Constant c)
+            {
+            }
+
+            public void VisitDepositBits(DepositBits d)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitDereference(Dereference deref)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitFieldAccess(FieldAccess acc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitIdentifier(Identifier id)
+            {
+            }
+
+            public void VisitMemberPointerSelector(MemberPointerSelector mps)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitMemoryAccess(MemoryAccess access)
+            {
+                if (regDst == null)
+                    return;
+                var rDst = regDst.Storage as RegisterStorage;
+                var rIdx = regIdx.Storage as RegisterStorage;
+                if (rDst == null || rIdx == null)
+                    return;
+                if (rDst.Register != rIdx.Register.GetSubregister(0, 8))
+                    return;
+                var binEa = access.EffectiveAddress as BinaryExpression;
+                if (binEa == null)
+                    return;
+                var eaBase = binEa.Left as Identifier;
+                var eaOffset = binEa.Right as Constant;
+                if (eaBase == null || eaOffset == null)
+                    return;
+                operations.Add(new BackwalkDereference(eaOffset.ToInt32(), 1));
+                regIdx = eaBase;
+           }
+
+            public void VisitMkSequence(MkSequence seq)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitPhiFunction(PhiFunction phi)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitPointerAddition(PointerAddition pa)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitProcedureConstant(ProcedureConstant pc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitScopeResolution(ScopeResolution scopeResolution)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitSegmentedAccess(SegmentedAccess access)
+            {
+            }
+
+            public void VisitSlice(Slice slice)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitTestCondition(TestCondition tc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void VisitUnaryExpression(UnaryExpression unary)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
         }
 
-
-
-        public Identifier FindIndexRegister(MemoryAccess mem)
+        public static bool FindIndexRegister(MemoryAccess mem, out Identifier id, out int scale, out Constant tableOffset)
         {
-            throw new NotImplementedException();
-            //if (mem.Base != MachineRegister.None)
-            //{
-            //    if (mem.Index != MachineRegister.None)
-            //    {
-            //        return MachineRegister.None; // Address expression too complex. //$REVIEW: Emit warning and barf.
-            //    }
-            //    return mem.Base;
-            //}
-            //else 
-            //    return mem.Index;
+            id = null;
+            scale = 0;
+            tableOffset = null;
+            var bin = mem.EffectiveAddress as BinaryExpression;
+            if (bin != null && bin.op == Operator.Add)
+            {
+                var i = bin.Left as Identifier;
+                var b2 = bin.Left as BinaryExpression;
+                tableOffset = bin.Right as Constant;
+                if (tableOffset == null)
+                {
+                    i = bin.Right as Identifier;
+                    b2 = bin.Right as BinaryExpression;
+                    tableOffset = bin.Left as Constant;
+                }
+                if (i != null)
+                {
+                    id = i;
+                    scale = 1;
+                    return (tableOffset != null);
+                }
+                if (b2 != null)
+                {
+                    var i2 = b2.Left as Identifier;
+                    var c2 = b2.Right as Constant;
+                    if (i2 != null && c2 != null && b2.op is MulOperator)
+                    {
+                        id = i2;
+                        scale = c2.ToInt32();
+                        return tableOffset != null;
+                    }
+                }
+            }
+            return false;
         }
 
         public List<BackwalkOperation> Backwalk(Address addrCallJump, Block block)
@@ -281,21 +527,20 @@ namespace Decompiler.Scanning
             var mem = GetIndirectTarget(block.Statements[i].Instruction);
             if (mem == null)
                 throw new InvalidOperationException(string.Format("Expected an indirect call or jump at address {0}.", addrCallJump));
-            var regIdx = FindIndexRegister(mem);
-            if (regIdx == null)
-                return operations;
-
-            // Record operations done to the IDX regiister.
-            int scale = FindIndexRegisterScale(mem);
+            Identifier regIdx;
+            int scale;
+            Constant tableOffset;
+            if (!FindIndexRegister(mem, out regIdx, out scale, out tableOffset))
+                return null;
             if (scale > 1)
                 operations.Add(new BackwalkOperation(BackwalkOperator.mul, scale));
 
-            returnToCaller = false;
-            regIdx = BackwalkInstructions(regIdx, block.Statements, i, operations);
+            var w = new Visitor(regIdx, block.Procedure.Frame, operations);
+            regIdx = w.BackwalkInstructions(block.Statements, i);
             if (regIdx == null)
                 return null;
 
-            if (!returnToCaller)
+            if (!w.ReturnToCaller)
             {
                 Block pred = GetSinglePredcessesor(block);
                 if (pred == null)
@@ -303,7 +548,7 @@ namespace Decompiler.Scanning
                     return null;	// seems unguarded to me.	//$REVIEW: emit warning.
                 }
 
-                regIdx = BackwalkInstructions(regIdx, pred.Statements, pred.Statements.Count - 1, operations);
+                regIdx = w.BackwalkInstructions(pred.Statements, pred.Statements.Count - 1);
                 if (regIdx == null)
                 {
                     return null;
@@ -316,27 +561,39 @@ namespace Decompiler.Scanning
 
         private Block GetSinglePredcessesor(Block block)
         {
-            throw new NotImplementedException();
-        }
-
-        private Identifier FindIndexRegister(object mem)
-        {
-            throw new NotImplementedException();
-        }
-
-        private int FindIndexRegisterScale(object mem)
-        {
-            throw new NotImplementedException();
+            Block pred = null;
+            foreach (Block p in block.Procedure.ControlGraph.Predecessors(block))
+            {
+                if (pred == null)
+                    pred = p;
+                else
+                    return null;
+            }
+            return pred;
         }
 
         private MemoryAccess GetIndirectTarget(Instruction instruction)
         {
-            throw new NotImplementedException();
+            var call = instruction as IndirectCall;
+            if (call != null)
+                return call.Callee as MemoryAccess;
+            var computedJump = instruction as GotoInstruction;
+            if (computedJump != null)
+                return computedJump.Target as MemoryAccess;
+            return null;
         }
 
         private int FindLastCallJump(Address addrCallJump, Block block)
         {
-            throw new NotImplementedException();
+            int i;
+            var stms = block.Statements;
+            for (i = stms.Count - 1; i >= 0; --i)
+            {
+                var inst = stms[i].Instruction;
+                if (inst is CallBase || inst is GotoInstruction)
+                    break;
+            }
+            return i;
         }
 
         public Identifier IndexRegister

@@ -36,8 +36,8 @@ namespace Decompiler.UnitTests.Mocks
 			Load(r0, Int32(0x01001000));
 			Compare("SZC", r1, Int32(2));
 			Assign(cf, Flags("SZC"));
-			Add(r0,r0,r0);
-			Add(r0,r0,cf);
+			Assign(r0, Add(r0,r0));
+			Assign(r0, Add(r0,cf));
 			Store(Int32(0x01001004), r0);
 			Return();
 		}

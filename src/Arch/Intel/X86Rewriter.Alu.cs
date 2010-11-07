@@ -55,7 +55,10 @@ namespace Decompiler.Arch.Intel
                 di.Instruction.op1.Width,
                 SrcOp(di.Instruction.op1),
                 SrcOp(di.Instruction.op2));
-            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
+            var ccSrc = ass.Dst;
+            if (ccSrc is MemoryAccess)
+                ccSrc = ass.Src;
+            EmitCcInstr(ccSrc, IntelInstruction.DefCc(di.Instruction.code));
             return ass.Dst;
         }
 

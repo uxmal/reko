@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Scanning
         private IntelArchitecture arch;
         private Procedure proc;
         private Block block;
-        private LowLevelStatementStream stm;
+        private RtlStatementStream stm;
         private IntelEmitter emitter;
         private IScanner scanner;
         private RewriterHost host;
@@ -87,13 +87,6 @@ namespace Decompiler.UnitTests.Scanning
             {
                 sigs.Add(addrCallInstruction.Linear, signature);
             }
-
-            public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
-            {
-                ProcedureSignature sig = null;
-                sigs.TryGetValue(addrCallInstruction.Linear, out sig);
-                return sig;
-            }
         }
 
         private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<IntelAssembler> m)
@@ -101,7 +94,7 @@ namespace Decompiler.UnitTests.Scanning
             this.arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
-            stm = new LowLevelStatementStream(0x1000, block);
+            stm = new RtlStatementStream(0x1000, block);
             state = new IntelState();
             emitter = new IntelEmitter();
             var asm = new IntelAssembler(arch, addr, emitter, new List<EntryPoint>());
@@ -111,10 +104,12 @@ namespace Decompiler.UnitTests.Scanning
             {
                 m(asm);
                 scanner.Stub(x => x.Platform).Return(platform);
+                scanner.Stub(x => x.Architecture).Return(arch);
+
             }
             var image = new ProgramImage(addr, emitter.Bytes);
             var rw = arch.CreateRewriter2(new ImageReader(image, addr), state, proc.Frame, host);
-            wi = new BlockWorkitem2(scanner, arch, rw, state, proc.Frame,  block);
+            wi = new BlockWorkitem2(scanner, rw, state, proc.Frame,  block);
         }
 
 
@@ -210,9 +205,10 @@ namespace Decompiler.UnitTests.Scanning
             var addr = new Address(0xC00, 0x0000);
             BuildTest16(delegate(IntelAssembler m)
             {
-                this.host.SetCallSignatureAdAddress(addr, new ProcedureSignature(
-                    Reg(Registers.ax),
-                    new Identifier[] { Reg(Registers.cx) }));
+                scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(
+                    new ProcedureSignature(
+                        Reg(Registers.ax),
+                        new Identifier[] { Reg(Registers.cx) }));
 
                 m.Call(m.MemW(Registers.cs, Registers.bx, 4));
             });
@@ -220,7 +216,9 @@ namespace Decompiler.UnitTests.Scanning
             var sw = new StringWriter();
             block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
-            string sExp = "ax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
+            string sExp = 
+                "\tsp = sp - 0x0002" + nl + 
+                "\tax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -238,17 +236,26 @@ namespace Decompiler.UnitTests.Scanning
                 m.Dw(0x123F);
                 m.Dw(0x1241);
                 m.Dw(0xCCCC);
+
+                scanner.Expect(x => x.EnqueueVectorTable(
+                    Arg<Address>.Is.Anything,
+                    Arg<Address>.Is.Anything,
+                    Arg<PrimitiveType>.Is.Same(PrimitiveType.Word16),
+                    Arg<ushort>.Is.Anything,
+                    Arg<bool>.Is.Equal(false),
+                    Arg<Procedure>.Is.Anything,
+                    Arg<ProcessorState>.Is.Anything));
             });
             wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
-            string sExp = "\tgoto Mem0[0x0C00:bx + 0x0008:word16]" + nl;
+            string sExp = "\tbx = bx & 0x0003" + nl +
+                "\tSZO = cond(bx)" + nl +
+                "\tC = false" + nl +
+                "\tgoto Mem0[0x0C00:bx + 0x0008:word16]" + nl;
             Assert.AreEqual(sExp, sw.ToString());
             Assert.IsTrue(proc.ControlGraph.Nodes.Contains(block));
-            var succ = new List<Block>(proc.ControlGraph.Successors(block));
-            Assert.AreEqual(4, succ.Count);
-
         }
     }
 }

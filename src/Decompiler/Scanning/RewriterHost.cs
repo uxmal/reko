@@ -192,8 +192,6 @@ namespace Decompiler.Scanning
 
 		public virtual void RewriteProcedureBlocks(Procedure proc, Address addrProc, IProcessorArchitecture arch)
 		{
-			// Rewrite the blocks in the procedure.
-
             ProcedureRewriter prw = new ProcedureRewriter(this, arch, proc);
             Rewriter rw = arch.CreateRewriter(prw, proc, this);
 			prw.Rewriter = rw;

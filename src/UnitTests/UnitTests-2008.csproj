@@ -297,7 +297,7 @@
     <Compile Include="Mocks\FakeWorkerDialogService.cs" />
     <Compile Include="Mocks\LiveCopyMock.cs" />
     <Compile Include="Mocks\LiveLoopMock.cs" />
-    <Compile Include="Mocks\LowLevelStatementStream.cs" />
+    <Compile Include="Mocks\RtlStatementStream.cs" />
     <Compile Include="Mocks\MockCodeWalker.cs" />
     <Compile Include="Mocks\NestedIfs.cs" />
     <Compile Include="Mocks\ProcedureMock.cs" />
@@ -438,6 +438,7 @@
     <Compile Include="Mocks\FakePlatform.cs" />
     <Compile Include="Scanning\BackWalkerTests.cs" />
     <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />
+    <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Arch\Intel\Assembler\" />

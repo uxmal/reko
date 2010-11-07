@@ -28,6 +28,7 @@ using Decompiler.Analysis;
 using Decompiler.Structure;
 using Decompiler.Typing;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
@@ -354,9 +355,30 @@ namespace Decompiler
 			}
 		}
 
+        public IDictionary<Address, ProcedureSignature> LoadCallSignatures(ICollection<SerializedCall> serializedCalls)
+        {
+            var callSignatures = new Dictionary<Address, ProcedureSignature>();
+            foreach (SerializedCall sc in serializedCalls)
+            {
+                if (sc.Signature != null)
+                {
+                    Address addr = Address.ToAddress(sc.InstructionAddress, 16);
+                    ProcedureSerializer sser = new ProcedureSerializer(prog.Architecture, "stdapi");
+                    callSignatures.Add(addr, sser.Deserialize(sc.Signature, prog.Architecture.CreateFrame()));
+                }
+            }
+            return callSignatures;
+        }
+
+
         private IScanner CreateScanner(Program prog, DecompilerEventListener eventListener)
         {
-            return new Scanner2(prog.Architecture, prog.Image, prog.Platform);
+            return new Scanner2(
+                prog.Architecture,
+                prog.Image,
+                prog.Platform, 
+                LoadCallSignatures(project.UserCalls.Values),
+                eventListener);
         }
 
         /// <summary>

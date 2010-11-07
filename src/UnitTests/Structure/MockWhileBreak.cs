@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Structure
 			BranchIf(Eq(r1, Int32(0)), "done");
 
 			Load(r3, r1);
-			Add(r2, r2, r3);
+			Assign(r2, Add(r2, r3));
 			Load(r3, Add(r1, Int32(4)));
 			BranchIf(Eq(r3, Int32(0)), "done");
 

@@ -34,9 +34,9 @@ namespace Decompiler.Core.Rtl
             this.ExtraBytesPopped = extraBytesPopped;
         }
 
-        public override void Accept(RtlInstructionVisitor visitor)
+        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
-            throw new NotImplementedException();
+            return visitor.VisitReturn(this);
         }
 
         public int ReturnAddressBytes { get; private set; }

@@ -130,7 +130,7 @@ namespace Decompiler.Scanning
 
         void IExpressionVisitor.VisitMemoryAccess(MemoryAccess access)
         {
-            throw new NotImplementedException();
+            value = Constant.Invalid;
         }
 
         void IExpressionVisitor.VisitMkSequence(MkSequence seq)

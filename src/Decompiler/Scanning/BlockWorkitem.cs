@@ -33,7 +33,7 @@ namespace Decompiler.Scanning
     /// <summary>
     /// Scanner work item for processing basic blocks.
     /// </summary>
-    public class BlockWorkitem2 : Scanner2.WorkItem2, RtlInstructionVisitor
+    public class BlockWorkitem2 : WorkItem2, RtlInstructionVisitor<bool>
     {
         private IScanner scanner;
         private IProcessorArchitecture arch;
@@ -43,18 +43,15 @@ namespace Decompiler.Scanning
         private Rewriter2 rewriter;
         private ProcessorState state;
 
-        private bool processNextInstruction;
-
         public BlockWorkitem2(
             IScanner scanner,
-            IProcessorArchitecture arch,
             Rewriter2 rewriter,
             ProcessorState state,
             Frame frame,
             Block block)
         {
             this.scanner = scanner;
-            this.arch = arch;
+            this.arch = scanner.Architecture;
             this.rewriter = rewriter;
             this.state = state;
             this.frame = frame;
@@ -63,13 +60,11 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            processNextInstruction = true;
             for (var e = rewriter.GetEnumerator(); e.MoveNext(); )
             {
                 ri = e.Current;
                 state.SetInstructionPointer(ri.Address);
-                ri.Accept(this);
-                if (!processNextInstruction)
+                if (!ri.Accept(this))
                     break;
             }
         }
@@ -83,10 +78,6 @@ namespace Decompiler.Scanning
         private void ResyncBlocks(Block oldBlock, Address addrStart)
         {
             uint linAddr = (uint) addrStart.Linear;
-        }
-
-        private void TerminateBlock()
-        {
         }
 
         private Block AddBlock(Block block)
@@ -124,47 +115,90 @@ namespace Decompiler.Scanning
             }
         }
 
+        private void ProcessVector(VectorWorkItemOld wi)
+        {
+            throw new NotImplementedException();
+            ////$TODO: pass imagemapvectortable in workitem.
+            //ImageMapItem q;
+            //map.TryFindItem(wi.Address, out q);
+            //ImageMapVectorTable item = (ImageMapVectorTable)q;
+            //VectorBuilder builder = new VectorBuilder(program, map, jumpGraph);
+            //Address[] vector = builder.Build(wi.Address, wi.addrFrom, wi.segBase, wi.stride);
+            //if (vector == null)
+            //{
+            //    Address addrNext = wi.Address + wi.stride.Size;
+            //    if (program.Image.IsValidAddress(addrNext))
+            //    {
+            //        // Can't determine the size of the table, but surely it has one entry?
+            //        map.AddItem(addrNext, new ImageMapItem());
+            //    }
+            //    return;
+            //}
+
+            //item.Addresses.AddRange(vector);
+            //for (int i = 0; i < vector.Length; ++i)
+            //{
+            //    ProcessorState st = wi.state.Clone();
+            //    if (wi.table.IsCallTable)
+            //    {
+            //        EnqueueProcedure(wiCur, vector[i], null, st);
+            //    }
+            //    else
+            //    {
+            //        jumpGraph.AddEdge(wi.addrFrom - 1, vector[i]);
+            //        EnqueueJumpTarget(vector[i], st, wi.proc);
+            //    }
+            //}
+            //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
+            //map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
+        }
+
         #region InstructionVisitor Members
 
-        public void VisitAssignment(RtlAssignment a)
+        public bool VisitAssignment(RtlAssignment a)
         {
             SetValue(a.Dst, GetValue(a.Src));
-            Identifier idDst = a.Dst as Identifier;
-            Instruction inst = (idDst != null)
+            var idDst = a.Dst as Identifier;
+            var inst = (idDst != null)
                 ? new Assignment(idDst, a.Src)
                 : (Instruction) new Store(a.Dst, a.Src);
             blockCur.Statements.Add(ri.Address.Linear, inst);
+            return true;
         }
 
 
-        public void VisitBranch(RtlBranch b)
+        public bool VisitBranch(RtlBranch b)
         {
             var blockThen = scanner.EnqueueJumpTarget(b.Target, blockCur.Procedure, state.Clone());
             var blockElse = scanner.EnqueueJumpTarget(ri.Address + ri.Length, blockCur.Procedure, state);
             this.blockCur.Statements.Add(
                 ri.Address.Linear,
                 new Branch(b.Condition, blockThen));
-            TerminateBlock();
-            this.processNextInstruction = false;
+            return false;
         }
 
-        public void VisitGoto(RtlGoto g)
+        public bool VisitGoto(RtlGoto g)
         {
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
-                    var blockTarget = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
-                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockTarget);
-                           }
-            else
-            {
-                blockCur.Statements.Add(ri.Address.Linear, new GotoInstruction(g.Target));
+                var blockTarget = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
+                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockTarget);
+                return false;
             }
-            TerminateBlock();
-            this.processNextInstruction = false;
+
+            blockCur.Statements.Add(ri.Address.Linear, new GotoInstruction(g.Target));
+            var mem = g.Target as MemoryAccess;
+            if (mem == null)
+                return false;
+            var ea = mem.EffectiveAddress as BinaryExpression;
+            if (ea != null)
+                return false;
+            scanner.EnqueueVectorTable(ri.Address, null, null, 0, false, blockCur.Procedure, state);
+            return false;
         }
 
-        public void VisitCall(RtlCall call)
+        public bool VisitCall(RtlCall call)
         {
             Address addr = call.Target as Address;
             if (addr != null)
@@ -176,24 +210,57 @@ namespace Decompiler.Scanning
                         new ProcedureConstant(PrimitiveType.Pointer32, callee),
                         new CallSite(0, 0)));
                 scanner.CallGraph.AddEdge(blockCur.Statements.Last, callee);
-                return;
+                return true;
             }
-            blockCur.Statements.Add(
-                ri.Address.Linear,
-                new IndirectCall(
-                    call.Target,
-                    new CallSite(0,0)));
+
+            var sig = scanner.GetCallSignatureAtAddress(ri.Address);
+            if (sig != null)
+            {
+                BuildApplication(call.Target, sig);
+            }
+            else
+            {
+                blockCur.Statements.Add(
+                    ri.Address.Linear,
+                    new IndirectCall(
+                        call.Target,
+                        new CallSite(0, 0)));
+            }
+            return true;        //$BUGBUG: but may call exit(), or ExitThread(), which should return false.
         }
 
-        public void VisitReturn(RtlReturn ret)
+        public bool VisitReturn(RtlReturn ret)
         {
+            var proc = blockCur.Procedure;
             blockCur.Statements.Add(ri.Address.Linear, new ReturnInstruction(null));
-            blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
-            TerminateBlock();
-            this.processNextInstruction = false;
+            blockCur.Procedure.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
+
+            if (frame.ReturnAddressSize != ret.ReturnAddressBytes)
+            {
+                scanner.AddDiagnostic(
+                    ri.Address,
+                    new WarningDiagnostic(string.Format(
+                    "Caller expects a return address of {0} bytes, but procedure {1} was previously called with a return address of {2} bytes.",
+                    ret.ReturnAddressBytes, proc.Name, frame.ReturnAddressSize)));
+            }
+            if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != ret.ExtraBytesPopped)
+            {
+                scanner.AddDiagnostic(
+                    ri.Address,
+                    new WarningDiagnostic(string.Format(
+                    "Multiple differing values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
+            }
+            else
+            {
+                proc.Signature.StackDelta = ret.ExtraBytesPopped;
+            }
+            //proc.Signature.FpuStackDelta = state.FpuStackItems;       //$REDO
+            //proc.Signature.FpuStackArgumentMax = maxFpuStackRead;     //$REDO
+            //proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;       //$REDO
+            return false;
         }
 
-        public void VisitSideEffect(RtlSideEffect side)
+        public bool VisitSideEffect(RtlSideEffect side)
         {
             SystemService svc = MatchSyscallToService(side);
             if (svc != null)
@@ -204,12 +271,11 @@ namespace Decompiler.Scanning
                 if (svc.Characteristics.Terminates)
                 {
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
-                    TerminateBlock();
-                    this.processNextInstruction = false;
-                    return;
+                    return false;
                 }
                 AffectProcessorState(svc.Signature);
             }
+            return true;
         }
 
         private void AffectProcessorState(ProcedureSignature sig)
@@ -229,7 +295,7 @@ namespace Decompiler.Scanning
         {
             if (id == null)
                 return;
-            RegisterStorage reg = id.Storage as RegisterStorage;
+            var reg = id.Storage as RegisterStorage;
             if (reg != null)
             {
                 state.Set(reg.Register, Constant.Invalid);

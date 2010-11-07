@@ -389,6 +389,7 @@
     <Compile Include="Scanning\ScannerEvaluator.cs" />
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
+    <Compile Include="Scanning\VectorWorkItem.cs" />
     <Compile Include="Structure\AbsynCodeGenerator.cs">
       <SubType>Code</SubType>
     </Compile>

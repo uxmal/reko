@@ -50,7 +50,8 @@ namespace Decompiler.Core
     }
 
     /// <summary>
-    /// Rewrites code from machine-specific to machine-independent Rlt codes.
+    /// A rewriter implements a stream of machine-independent instructions, which it generates by successively disassembling
+    /// machine-specific instractions and rewriting them into one or more machine-independent RtlInstructions codes.
     /// </summary>
     public interface Rewriter2 : IEnumerable<RtlInstruction>
     {
