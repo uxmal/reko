@@ -111,11 +111,10 @@ namespace Decompiler.Arch.Intel
         {
             if (IsRealModeReboot(di.Instruction))
 			{
-                throw new NotImplementedException();
-                //PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", PrimitiveType.Void, 0);
-                //reboot.Characteristics = new Decompiler.Core.Serialization.ProcedureCharacteristics();
-                //reboot.Characteristics.Terminates = true;
-                //emitter.SideEffect(reboot);
+                PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", PrimitiveType.Void, 0);
+                reboot.Characteristics = new Decompiler.Core.Serialization.ProcedureCharacteristics();
+                reboot.Characteristics.Terminates = true;
+                emitter.SideEffect(PseudoProc(reboot, PrimitiveType.Void));
 				return;
 			}
 				

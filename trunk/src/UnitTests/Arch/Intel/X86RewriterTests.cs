@@ -348,6 +348,16 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
+        public void RealModeReboot()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.JmpF(new Address(0xF000, 0xFFF0));
+            });
+            AssertCode("0C00:0000(5) __bios_reboot()", e);
+        }
+
+        [Test]
         [Ignore()]
         public void RetNInstruction()
         {

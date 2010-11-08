@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Decompiler.Scanning
 {
-    public class EntryPointWorkitem2 : WorkItem2
+    public class EntryPointWorkitem2 : WorkItem
     {
         private IScanner scanner;
         private EntryPoint ep;

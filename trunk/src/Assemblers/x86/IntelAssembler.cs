@@ -1722,6 +1722,13 @@ namespace Decompiler.Assemblers.x86
                 new MemoryOperand(width, @base, IntegralConstant(offset)));
         }
 
+
+        public void JmpF(Address address)
+        {
+            emitter.EmitByte(0xEA);
+            emitter.EmitLeUint16((ushort)address.Offset);
+            emitter.EmitLeUint16(address.Selector);
+        }
     }
 }
 
