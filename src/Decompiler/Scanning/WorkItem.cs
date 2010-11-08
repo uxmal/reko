@@ -33,7 +33,7 @@ namespace Decompiler.Scanning
 		Vector
 	}
 
-    public abstract class WorkItem2
+    public abstract class WorkItem
     {
         public abstract void Process();
     }

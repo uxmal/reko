@@ -63,7 +63,7 @@ namespace Decompiler.Core
 	public class Frame
 	{
 		private List<Identifier> identifiers;	// Identifiers for each access.
-		private int returnAddressSize;			// Size of return value on stack -- (some processors pass it in a register or a separate return stack)
+		
 		private bool escapes;
 		private Identifier framePointer;
 		private int frameOffset;				// frame offset from stack pointer in bytes.
@@ -386,11 +386,7 @@ namespace Decompiler.Core
 		/// the return address. Some architectures pass the return address in a register,
 		/// which implies that in those architectures the return address size should be zero.
 		/// </summary>
-		public int ReturnAddressSize
-		{
-			get { return returnAddressSize; }
-			set { returnAddressSize = value; }
-		}
+		public int ReturnAddressSize { get;set; }
 
 		public List<Identifier> Identifiers
 		{

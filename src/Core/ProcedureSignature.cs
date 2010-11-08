@@ -33,14 +33,13 @@ namespace Decompiler.Core
 	/// may be shared by several procedures.
 	/// </summary>
 	/// <remarks>
-	/// Calling a procedure affects a few things: the registers, the stack depth, and in the case of the intel x86
-	/// architecture the fpu stack depth. These effects are summarized by the signature.
+	/// Calling a procedure affects a few things: the registers, the stack depth, and in the case of the Intel x86
+	/// architecture the FPU stack depth. These effects are summarized by the signature.
 	/// </remarks>
 	public class ProcedureSignature
 	{
 		private Identifier ret;
 		private Identifier [] formals;
-		private int stackDelta;
 		private TypeVariable typeVar;
 
 		private int fpuStackDelta;	
@@ -111,7 +110,7 @@ namespace Decompiler.Core
             if ((f & EmitFlags.LowLevelInfo) == EmitFlags.LowLevelInfo)
             {
                 fmt.WriteLine();
-                fmt.Write("// stackDelta: {0}; fpuStackDelta: {1}; fpuMaxParam: {2}", stackDelta, FpuStackDelta, FpuStackArgumentMax);
+                fmt.Write("// stackDelta: {0}; fpuStackDelta: {1}; fpuMaxParam: {2}", StackDelta, FpuStackDelta, FpuStackArgumentMax);
                 fmt.WriteLine();
             }
         }
@@ -153,14 +152,7 @@ namespace Decompiler.Core
 		/// Note that this also includes the return address size, if the return address is 
 		/// passed on the stack.
 		/// </summary>
-		public int StackDelta
-		{
-			get { return stackDelta; }
-			set 
-			{
-				stackDelta = value; 
-			}
-		}
+		public int StackDelta { get;set; }
 
 		public Identifier ReturnValue
 		{

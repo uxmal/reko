@@ -172,7 +172,7 @@ namespace Decompiler.UnitTests.Scanning
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Stub(x => x.CallGraph).Return(cg);
                 scanner.Expect(x => x.EnqueueProcedure(
-                    Arg<WorkItem2>.Is.Anything,
+                    Arg<WorkItem>.Is.Anything,
                     Arg<Address>.Matches(arg => arg.Offset == 0x1200),
                     Arg<string>.Is.Null,
                     Arg<ProcessorState>.Is.Anything))

@@ -33,7 +33,7 @@ namespace Decompiler.Scanning
     /// <summary>
     /// Scanner work item for processing basic blocks.
     /// </summary>
-    public class BlockWorkitem2 : WorkItem2, RtlInstructionVisitor<bool>
+    public class BlockWorkitem2 : WorkItem, RtlInstructionVisitor<bool>
     {
         private IScanner scanner;
         private IProcessorArchitecture arch;
@@ -60,13 +60,18 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            for (var e = rewriter.GetEnumerator(); e.MoveNext(); )
+            var e = rewriter.GetEnumerator();
+            if (!e.MoveNext())
+                return;
+            do
             {
                 ri = e.Current;
                 state.SetInstructionPointer(ri.Address);
                 if (!ri.Accept(this))
+                {
                     break;
-            }
+                }
+            } while (e.MoveNext());
         }
 
         /// <summary>
@@ -78,11 +83,6 @@ namespace Decompiler.Scanning
         private void ResyncBlocks(Block oldBlock, Address addrStart)
         {
             uint linAddr = (uint) addrStart.Linear;
-        }
-
-        private Block AddBlock(Block block)
-        {
-            throw new NotImplementedException();
         }
 
         private void BuildApplication(Expression fn, ProcedureSignature sig)
@@ -203,7 +203,7 @@ namespace Decompiler.Scanning
             Address addr = call.Target as Address;
             if (addr != null)
             {
-                var callee = scanner.EnqueueProcedure(this, addr, null, null);
+                var callee = scanner.EnqueueProcedure(this, addr, null, state);
                 blockCur.Statements.Add(
                     ri.Address.Linear, 
                     new CallInstruction(
@@ -232,18 +232,27 @@ namespace Decompiler.Scanning
         public bool VisitReturn(RtlReturn ret)
         {
             var proc = blockCur.Procedure;
-            blockCur.Statements.Add(ri.Address.Linear, new ReturnInstruction(null));
+            blockCur.Statements.Add(ri.Address.Linear, new ReturnInstruction());
             blockCur.Procedure.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
 
-            if (frame.ReturnAddressSize != ret.ReturnAddressBytes)
+            if (frame.ReturnAddressSize != 0)
             {
-                scanner.AddDiagnostic(
-                    ri.Address,
-                    new WarningDiagnostic(string.Format(
-                    "Caller expects a return address of {0} bytes, but procedure {1} was previously called with a return address of {2} bytes.",
-                    ret.ReturnAddressBytes, proc.Name, frame.ReturnAddressSize)));
+                if (frame.ReturnAddressSize != ret.ReturnAddressBytes)
+                {
+                    scanner.AddDiagnostic(
+                        ri.Address,
+                        new WarningDiagnostic(string.Format(
+                        "Procedure {1} previously had a return address of {2} bytes on the stack, but now seems to have a return address of {0} bytes on the stack.",
+                        ret.ReturnAddressBytes, proc.Name, frame.ReturnAddressSize)));
+                }
             }
-            if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != ret.ExtraBytesPopped)
+            else
+            {
+                frame.ReturnAddressSize = ret.ReturnAddressBytes;
+            }
+
+            int stackDelta = ret.ReturnAddressBytes + ret.ExtraBytesPopped;
+            if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != stackDelta)
             {
                 scanner.AddDiagnostic(
                     ri.Address,
@@ -252,11 +261,12 @@ namespace Decompiler.Scanning
             }
             else
             {
-                proc.Signature.StackDelta = ret.ExtraBytesPopped;
+                proc.Signature.StackDelta = stackDelta;
             }
             //proc.Signature.FpuStackDelta = state.FpuStackItems;       //$REDO
             //proc.Signature.FpuStackArgumentMax = maxFpuStackRead;     //$REDO
             //proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;       //$REDO
+            scanner.TerminateBlock(blockCur, ri.Address + ri.Length);
             return false;
         }
 

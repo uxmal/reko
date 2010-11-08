@@ -39,7 +39,15 @@ namespace Decompiler.Core.Rtl
             return visitor.VisitReturn(this);
         }
 
+        /// <summary>
+        /// The stack size of the return address in bytes.
+        /// </summary>
+        /// <remarks>
+        /// Architectures where the return address is not passed on the stack should specify 0 as the
+        /// size of this property.
+        /// </remarks>
         public int ReturnAddressBytes { get; private set; }
+
         public int ExtraBytesPopped { get; private set; }
 
         public override void Write(TextWriter writer)
