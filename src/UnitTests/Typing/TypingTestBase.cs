@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Typing
             EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			
-			ScannerImpl scan = new ScannerImpl(prog, null);
+			ScannerOld scan = new ScannerOld(prog, null);
 			scan.EnqueueEntryPoint(ep);
 			scan.ProcessQueue();
 			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerEventListener(), scan.SystemCalls, scan.VectorUses);

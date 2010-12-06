@@ -61,6 +61,7 @@ namespace Decompiler.Core
 			typeStore = new TypeStore();
 		}
 
+        [Obsolete("Belongs in the Scanner class")]
 		public void AddEntryPoint(EntryPoint ep)
 		{
 			Procedure proc; 

@@ -58,9 +58,9 @@ namespace Decompiler.UnitTests.Scanning
             rewriter = repository.Stub<Rewriter2>();
         }
 
-        private BlockWorkitem2 CreateWorkItem(Address addr)
+        private BlockWorkitem CreateWorkItem(Address addr)
         {
-            return new BlockWorkitem2(scanner, rewriter, new FakeProcessorState(), proc.Frame, block);
+            return new BlockWorkitem(scanner, rewriter, new FakeProcessorState(), proc.Frame, block);
         }
 
         [Test]

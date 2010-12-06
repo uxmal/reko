@@ -109,12 +109,16 @@ namespace Decompiler.Arch.Intel
                 {
                 default:
                     throw new NotImplementedException(string.Format("Intel opcode {0} not supported yet.", di.Instruction.code));
+                case Opcode.adc: RewriteAdcSbb(BinaryOperator.Add); break;
                 case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
                 case Opcode.and: RewriteLogical(BinaryOperator.And); break;
                 case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.dec: RewriteIncDec(-1); break;
+                case Opcode.enter: RewriteEnter(); break;
                 case Opcode.@in: RewriteIn(); break;
+                case Opcode.inc: RewriteIncDec(1); break;
                 case Opcode.@int: RewriteInt(); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.ja: RewriteConditionalGoto(ConditionCode.UGT, di.Instruction.op1); break;
@@ -133,12 +137,15 @@ namespace Decompiler.Arch.Intel
                 case Opcode.jpo: RewriteConditionalGoto(ConditionCode.PO, di.Instruction.op1); break;
                 case Opcode.js: RewriteConditionalGoto(ConditionCode.SG, di.Instruction.op1); break;
                 case Opcode.jz: RewriteConditionalGoto(ConditionCode.EQ, di.Instruction.op1); break;
-
+                case Opcode.lea: RewriteLea(); break;
+                case Opcode.loop: RewriteLoop(0, ConditionCode.EQ); break;
                 case Opcode.mov: RewriteMov(); break;
+                case Opcode.neg: RewriteNeg(); break;
                 case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.ret: RewriteRet(); break;
+                case Opcode.sbb: RewriteAdcSbb(BinaryOperator.Sub); break;
                 case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;

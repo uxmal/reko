@@ -34,6 +34,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace Decompiler.UnitTests.Scanning
 {
@@ -41,11 +42,26 @@ namespace Decompiler.UnitTests.Scanning
     public class Scanner2Tests
     {
         ArchitectureMock arch;
+        Program prog;
+        Scanner scan;
 
         [SetUp]
         public void Setup()
         {
             arch = new ArchitectureMock();
+        }
+
+        private void BuildX86RealTest(Action<IntelAssembler> test)
+        {
+            prog = new Program();
+            var emitter = new IntelEmitter();
+            var addr = new Address(0xC00, 0);
+            var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, emitter, new List<EntryPoint>());
+            test(m);
+            prog.Image = new ProgramImage(addr, emitter.Bytes);
+            scan = new Scanner(m.Architecture, prog.Image, new FakePlatform(), new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            EntryPoint ep = new EntryPoint(addr, new IntelState());
+            scan.EnqueueEntryPoint(ep);
         }
 
         [Test]
@@ -59,7 +75,7 @@ namespace Decompiler.UnitTests.Scanning
             arch.InstructionStream = new RtlInstruction[] { 
                 new RtlReturn(new Address(0x12314), 1, 4, 0)
             };
-            var sc = new Scanner2(arch, new ProgramImage(new Address(0x12314), new byte[1]), new FakePlatform(), null, new FakeDecompilerEventListener());
+            var sc = new Scanner(arch, new ProgramImage(new Address(0x12314), new byte[1]), new FakePlatform(), null, new FakeDecompilerEventListener());
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     new Address(0x12314),
@@ -79,9 +95,9 @@ namespace Decompiler.UnitTests.Scanning
             Assert.IsNotNull(sc.FindExactBlock(new Address(0x0102)));
         }
 
-        private Scanner2 CreateScanner(uint startAddress, int imageSize)
+        private Scanner CreateScanner(uint startAddress, int imageSize)
         {
-            return new Scanner2(arch, new ProgramImage(new Address(startAddress), new byte[imageSize]), new FakePlatform(), null, new FakeDecompilerEventListener());
+            return new Scanner(arch, new ProgramImage(new Address(startAddress), new byte[imageSize]), new FakePlatform(), null, new FakeDecompilerEventListener());
         }
 
         [Test]
@@ -101,27 +117,6 @@ namespace Decompiler.UnitTests.Scanning
             Assert.AreEqual("l00000101", sc.FindContainingBlock(new Address(0x103)).Name);
             Assert.AreEqual("l00000104", sc.FindContainingBlock(new Address(0x105)).Name);
             Assert.AreEqual("l00000106", sc.FindContainingBlock(new Address(0x106)).Name);
-        }
-    }
-
-    [TestFixture]
-    public class ScannerTests
-    {
-        private Program prog;
-        private TestScanner scanner;
-
-        public ScannerTests()
-        {
-        }
-
-        private void SetupMockCodeWalker()
-        {
-            prog = new Program();
-            prog.Architecture = new ArchitectureMock();
-            prog.Image = new ProgramImage(new Address(0x1000), new byte[0x4000]);
-            scanner = new TestScanner(prog);
-            scanner.MockCodeWalker = new MockCodeWalker(new Address(0x1000));
-            scanner.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), prog.Architecture.CreateProcessorState()));
         }
 
         [Test]
@@ -153,42 +148,106 @@ namespace Decompiler.UnitTests.Scanning
             Assert.IsTrue(re.Match(data, 0), "Should have matched");
         }
 
+
         [Test]
         public void CallGraphTree()
         {
             Program prog = new Program();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            Assembler asm = new IntelTextAssembler();
-            asm.AssembleFragment(new Address(0xC00, 0),
-                @".i86
-main proc
-	call baz
-	ret
-main endp
+            var emitter = new IntelEmitter();
+            var addr = new Address(0xC00, 0);
+            var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, emitter, new List<EntryPoint>());
+            m.i86();
 
-foo proc
-	ret
-foo endp
+            m.Proc("main");
+            m.Call("baz");
+            m.Ret();
+            m.Endp("main");
 
-bar proc
-	ret
-bar endp
+            m.Proc("foo");
+            m.Ret();
+            m.Endp("foo");
 
-baz proc
-	call	foo
-	call	bar
-	jmp		foo
-baz endp
-");
-            prog.Image = asm.Image;
-            ScannerImpl scan = new ScannerImpl(prog, null);
-            EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
-            prog.AddEntryPoint(ep);
+            m.Proc("bar");
+            m.Ret();
+            m.Endp("bar");
+
+            m.Proc("baz");
+            m.Call("foo");
+            m.Call("bar");
+            m.Jmp("foo");
+            m.Endp("baz");
+
+
+            prog.Image = new ProgramImage(addr, emitter.Bytes);
+            var scan = new Scanner(m.Architecture, prog.Image, new FakePlatform(), new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            EntryPoint ep = new EntryPoint(addr, new IntelState());
             scan.EnqueueEntryPoint(ep);
             scan.ProcessQueue();
-            RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
-            rw.RewriteProgram();
+
+            Assert.AreEqual(4, scan.Procedures.Count);
         }
+
+        [Test]
+        public void RepeatUntilBlock()
+        {
+            BuildX86RealTest(delegate (IntelAssembler m)
+            {
+                m.i86();
+                m.Mov(m.ax, 0);         // To ensure we end up with a split block.
+                m.Label("lupe");
+                m.Mov(m.MemB(Registers.si, 0), 0);
+                m.Inc(m.si);
+                m.Dec(m.cx);
+                m.Jnz("lupe");
+                m.Ret();
+            });
+            scan.ProcessQueue();
+            Assert.AreEqual(1, scan.Procedures.Count);
+            var sExp = @"// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:
+l0C00_0000:
+	ax = 0x0000
+l0C00_0003:
+	store(Mem0[ds:si + 0x0000:byte]) = 0x00
+	si = si + 0x0001
+	SZO = cond(si)
+	cx = cx - 0x0001
+	SZO = cond(cx)
+	branch Test(NE,Z) l0C00_0003
+l0C00_000B:
+	return
+fn0C00_0000_exit:
+";
+            var sw = new StringWriter();
+            scan.Procedures.Values[0].Write(false, sw);
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+
+    }
+
+    [TestFixture]
+    public class ScannerOldTests
+    {
+        private Program prog;
+        private TestScanner scanner;
+
+        public ScannerOldTests()
+        {
+        }
+
+        private void SetupMockCodeWalker()
+        {
+            prog = new Program();
+            prog.Architecture = new ArchitectureMock();
+            prog.Image = new ProgramImage(new Address(0x1000), new byte[0x4000]);
+            scanner = new TestScanner(prog);
+            scanner.MockCodeWalker = new MockCodeWalker(new Address(0x1000));
+            scanner.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), prog.Architecture.CreateProcessorState()));
+        }
+
+
 
         /// <summary>
         /// Avoid promoting stumps that contain short sequences of code.
@@ -197,7 +256,7 @@ baz endp
         public void DontPromoteStumps()
         {
             Program prog = BuildTest("Fragments/multiple/jumpintoproc2.asm");
-            ScannerImpl scan = new ScannerImpl(prog, null);
+            ScannerOld scan = new ScannerOld(prog, null);
             scan.EnqueueProcedure(null, prog.Image.BaseAddress, null, prog.Architecture.CreateProcessorState());
             Assert.IsTrue(scan.ProcessItem());
             Assert.IsTrue(scan.ProcessItem());
@@ -215,7 +274,7 @@ baz endp
             Assembler asm = new IntelTextAssembler();
             asm.Assemble(new Address(0xC00, 0x0000), FileUnitTester.MapTestPath("Fragments/multiple/jumpintoproc.asm"));
             prog.Image = asm.Image;
-            ScannerImpl scan = new ScannerImpl(prog, null);
+            ScannerOld scan = new ScannerOld(prog, null);
             scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, new IntelState()));
             scan.ProcessQueue();
             using (FileUnitTester fut = new FileUnitTester("Scanning/ScanInterprocedureJump.txt"))
@@ -321,7 +380,7 @@ baz endp
             }
         }
 
-        private class TestScanner : ScannerImpl
+        private class TestScanner : ScannerOld
         {
             private MockCodeWalker mcw;
 

@@ -33,7 +33,7 @@ namespace Decompiler.Scanning
     /// <summary>
     /// Scanner work item for processing basic blocks.
     /// </summary>
-    public class BlockWorkitem2 : WorkItem, RtlInstructionVisitor<bool>
+    public class BlockWorkitem : WorkItem, RtlInstructionVisitor<bool>
     {
         private IScanner scanner;
         private IProcessorArchitecture arch;
@@ -43,7 +43,7 @@ namespace Decompiler.Scanning
         private Rewriter2 rewriter;
         private ProcessorState state;
 
-        public BlockWorkitem2(
+        public BlockWorkitem(
             IScanner scanner,
             Rewriter2 rewriter,
             ProcessorState state,
@@ -169,12 +169,25 @@ namespace Decompiler.Scanning
 
         public bool VisitBranch(RtlBranch b)
         {
-            var blockThen = scanner.EnqueueJumpTarget(b.Target, blockCur.Procedure, state.Clone());
-            var blockElse = scanner.EnqueueJumpTarget(ri.Address + ri.Length, blockCur.Procedure, state);
-            this.blockCur.Statements.Add(
+            // The following statements may chop up the blockCur, so hang on to the essentials.
+            var proc = blockCur.Procedure;
+            var fallthruAddress = ri.Address + ri.Length;
+            var blockThen = scanner.EnqueueJumpTarget(b.Target, proc, state.Clone());
+            var blockElse = scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
+
+            var branchingBlock = scanner.FindContainingBlock(ri.Address);
+            branchingBlock.Statements.Add(
                 ri.Address.Linear,
                 new Branch(b.Condition, blockThen));
-            return false;
+
+            // Now, switch to the fallthru block.
+            blockCur = blockElse;
+            //$REVIEW: This needs to be changed, so that the block rewriter contiunes rewriting in the "else"
+            // path. Rather than enqueueing a jump target as above, we should immediately continue working on that
+            // path. Problems arise if the instructions in the else path are in a separate procedure. Therefore, 
+            // this code needs to do a fallthrough test and only if we don't fall through to a procedure continue
+            // processing. Until this is implemented, loope/ne on the x86 architecture won't be implementable.
+            return true;
         }
 
         public bool VisitGoto(RtlGoto g)

@@ -62,6 +62,23 @@ namespace Decompiler.Arch.Intel
             return ass.Dst;
         }
 
+        public Expression RewriteAdcSbb(BinaryOperator opr)
+        {
+            Identifier tmp = frame.CreateTemporary(di.Instruction.dataWidth);
+            emitter.Assign(tmp, new BinaryExpression(
+                opr,
+                tmp.DataType,
+                SrcOp(di.Instruction.op1),
+                SrcOp(di.Instruction.op2)));
+            Cast c = emitter.Cast(di.Instruction.op1.Width, orw.FlagGroup(FlagM.CF));
+            var ass = EmitCopy(di.Instruction.op1, new BinaryExpression(opr, tmp.DataType, tmp, c), true);
+            var ccSrc = ass.Dst;
+            if (ccSrc is MemoryAccess)
+                ccSrc = ass.Src;
+            EmitCcInstr(ccSrc, IntelInstruction.DefCc(di.Instruction.code));
+            return ass.Dst;
+        }
+
         public void RewriteBswap()
         {
             Identifier reg = (Identifier)orw.AluRegister(((RegisterOperand)di.Instruction.op1).Register);
@@ -100,6 +117,34 @@ namespace Decompiler.Arch.Intel
                 new ConditionOf(emitter.Sub(op1, op2)));
         }
 
+        private void RewriteEnter()
+        {
+            var bp = orw.AluRegister(Registers.ebp.GetPart(di.Instruction.dataWidth));
+            RewritePush(di.Instruction.dataWidth, bp);
+            var sp = StackPointer();
+            emitter.Assign(bp, sp);
+            emitter.Assign(sp, emitter.Sub(sp,
+                di.Instruction.dataWidth.Size * ((ImmediateOperand)di.Instruction.op2).Value.ToInt32() +
+                ((ImmediateOperand)di.Instruction.op1).Value.ToInt32()));
+        }
+
+        private void RewriteIncDec(int amount)
+        {
+            var op = Operator.Add;
+            if (amount < 0)
+            {
+                op= Operator.Sub;
+                amount = -amount;
+            }
+
+            var ass = EmitBinOp(op,
+                di.Instruction.op1,
+                di.Instruction.op1.Width,
+                SrcOp(di.Instruction.op1),
+                emitter.Const(di.Instruction.op1.Width, amount));
+            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
+        }
+
         private void RewriteLogical(BinaryOperator op)
         {
             var ass = EmitBinOp(
@@ -130,6 +175,31 @@ namespace Decompiler.Arch.Intel
             case 8: return "qw";
             default: throw new ArgumentOutOfRangeException("Size is not 1,2,4 or 8");
             }
+        }
+
+        public void RewriteLea()
+        {
+            Expression src;
+            MemoryOperand mem = (MemoryOperand)di.Instruction.op2;
+            if (mem.Base == MachineRegister.None && mem.Index == MachineRegister.None)
+            {
+                src = mem.Offset;
+            }
+            else
+            {
+                int newOffset;
+                src = SrcOp(di.Instruction.op2);
+                MemoryAccess load = src as MemoryAccess;
+                if (load != null)
+                {
+                    src = load.EffectiveAddress;
+                }
+                else
+                {
+                    src = orw.AddrOf(src);
+                }
+            }
+            EmitCopy(di.Instruction.op1, src, false);
         }
 
         private void RewriteMov()
@@ -172,6 +242,13 @@ namespace Decompiler.Arch.Intel
         }
 
 
+        private void RewriteNeg()
+        {
+            Expression tmp = RewriteUnaryOperator(Operator.Neg, di.Instruction.op1, di.Instruction.op1);
+            EmitCcInstr(tmp, IntelInstruction.DefCc(di.Instruction.code));
+            emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Eq0(tmp));
+        }
+
         private void RewritePop()
         {
             RewritePop(dasm.Current.Instruction.op1, dasm.Current.Instruction.op1.Width);
@@ -208,6 +285,24 @@ namespace Decompiler.Arch.Intel
 
             EmitCcInstr(src, (IntelInstruction.DefCc(di.Instruction.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+        }
+
+        private Expression RewriteUnaryOperator(UnaryOperator op, MachineOperand opDst, MachineOperand opSrc)
+        {
+            Expression src = SrcOp(opSrc);
+            if (src is MemoryAccess)
+            {
+                Identifier tmp = frame.CreateTemporary(opDst.Width);
+                emitter.Assign(tmp, src);
+                MemoryAccess acc = orw.CreateMemoryAccess((MemoryOperand)opDst, state);
+                emitter.Assign(acc, new UnaryExpression(op, opSrc.Width, tmp));
+                return tmp;
+            }
+            else
+            {
+                EmitCopy(opDst, new UnaryExpression(op, opSrc.Width, src), false);
+                return src;
+            }
         }
 
         private Identifier StackPointer()
