@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Scanning
         private RewriterHost host;
         private MockRepository repository;
         private IntelState state;
-        private BlockWorkitem2 wi;
+        private BlockWorkitem wi;
         private string nl = Environment.NewLine;
 
         [SetUp]
@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Scanning
             }
             var image = new ProgramImage(addr, emitter.Bytes);
             var rw = arch.CreateRewriter2(new ImageReader(image, addr), state, proc.Frame, host);
-            wi = new BlockWorkitem2(scanner, rw, state, proc.Frame,  block);
+            wi = new BlockWorkitem(scanner, rw, state, proc.Frame,  block);
         }
 
 

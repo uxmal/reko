@@ -72,6 +72,18 @@ namespace Decompiler.UnitTests.Arch.Intel
             Assert.AreEqual(expected, e.Current.ToString());
         }
 
+        private void AssertCode(IEnumerator<RtlInstruction> e, params string[] expected)
+        {
+            int i = 0;
+            while (i < expected.Length && e.MoveNext())
+            {
+                Assert.AreEqual(expected[i], string.Format("{0}|{1}", i, e.Current.ToString()));
+                ++i;
+            }
+            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions.");
+            Assert.IsFalse(e.MoveNext());
+        }
+
         private void AssertCode(uint expectedAddr, string expected, IEnumerator<RtlInstruction> e)
         {
             Assert.IsTrue(e.MoveNext());
@@ -367,5 +379,146 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             AssertCode("Return", e);
         }
+
+        [Test]
+        public void Loop()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Label("lupe");
+                m.Loop("lupe");
+            });
+            AssertCode("0C00:0000(2) cx = cx - 0x0001", e);
+            AssertCode("0C00:0000(2) Z = cond(cx)", e);
+            AssertCode("0C00:0000(2) if (Test(NE,Z)) branch 0C00:0000", e);
+        }
+
+        [Test]
+        [Ignore("This requires changes in the Scanner/BlockWorkItem interface, because we need to introduce loops.")]
+        public void Loope()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Label("lupe");
+                m.Loope("lupe");
+            });
+            AssertCode("0C00:0000(2) cx = cx - 0x0001", e);
+            AssertCode("0C00:0000(2) Z = cond(cx)", e);
+            AssertCode("@@@@", e);
+        }
+
+        [Test]
+        public void Adc()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Adc(m.WordPtr(0x100), m.ax);
+            });
+            AssertCode("0C00:0000(4) v2 = Mem0[ds:0x0100:word16] + ax", e);
+            AssertCode("0C00:0000(4) v6 = v2 + (word16) C", e);
+            AssertCode("0C00:0000(4) Mem0[ds:0x0100:word16] = v6", e);
+            AssertCode("0C00:0000(4) SCZO = cond(v6)", e);
+        }
+
+        [Test]
+        public void Lea()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Lea(m.bx, m.MemW(Registers.bx, 4));
+            });
+            AssertCode("0C00:0000(3) bx = bx + 0x0004", e);
+        }
+
+        [Test]
+        public void Enter()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Enter(16, 0);
+            });
+            AssertCode(e,
+                "0|0C00:0000(4) sp = sp - 0x0002",
+                "1|0C00:0000(4) Mem0[ss:sp:word16] = bp",
+                "2|0C00:0000(4) bp = sp",
+                "3|0C00:0000(4) sp = sp - 0x0010");
+        }
+
+        [Test]
+        public void Neg()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Neg(m.ecx);
+            });
+            AssertCode(e,
+                "0|0C00:0000(3) ecx = -ecx",
+                "1|0C00:0000(3) SZO = cond(ecx)",
+                "2|0C00:0000(3) C = 0");
+        }
+
+        [Test]
+        public void Not()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Not(m.bx);
+            });
+            AssertCode("@@@", e);
+        }
+
+        [Test]
+        public void Out()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Out(m.dx, m.al);
+            });
+            AssertCode("@@@", e);
+        }
+
+        [Test]
+        public void Jcxz()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Label("lupe");
+                m.Jcxz("lupe");
+                m.Enter(16, 0);
+            });
+            AssertCode("@@@", e);
+        }
+
+        [Test]
+        public void Rep()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Rep();
+                m.Lodsw();
+            });
+            AssertCode("@@@", e);
+        }
+
+        [Test]
+        public void Shld()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Shld(m.edx, m.eax, m.cl);
+            });
+            AssertCode("@@@", e);
+        }
+
+        [Test]
+        public void Shrd()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Shrd(m.eax, m.edx, 4);
+            });
+            AssertCode("@@@", e);
+        }
+
     }
 }

@@ -256,7 +256,7 @@ namespace Decompiler
             eventListener.ShowStatus("Rewriting machine code to intermediate code.");
             if (scanner == null)
                 throw new InvalidOperationException("Program must be scanned before it can be rewritten.");
-            var sc = (ScannerImpl)scanner;
+            var sc = (ScannerOld)scanner;
 			rewriterHost = new RewriterHost(prog, eventListener, sc.SystemCalls, sc.VectorUses);
 			rewriterHost.LoadCallSignatures(this.project.UserCalls.Values);
 			rewriterHost.RewriteProgram();
@@ -373,7 +373,7 @@ namespace Decompiler
 
         private IScanner CreateScanner(Program prog, DecompilerEventListener eventListener)
         {
-            return new Scanner2(
+            return new Scanner(
                 prog.Architecture,
                 prog.Image,
                 prog.Platform, 

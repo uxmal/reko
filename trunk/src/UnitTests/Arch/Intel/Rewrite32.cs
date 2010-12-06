@@ -103,7 +103,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 prog.ImportThunks.Add(item.Key, item.Value);
             }
-            ScannerImpl scan = new ScannerImpl(prog, new FakeDecompilerEventListener());
+            ScannerOld scan = new ScannerOld(prog, new FakeDecompilerEventListener());
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			scan.EnqueueEntryPoint(ep);

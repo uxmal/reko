@@ -183,6 +183,12 @@ namespace Decompiler.Arch.Intel
             else
                 return null;
         }
+
+        public UnaryExpression AddrOf(Expression expr)
+        {
+            return new UnaryExpression(Operator.AddrOf,
+                PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), expr);
+        }
     }
 
     public class OperandRewriter

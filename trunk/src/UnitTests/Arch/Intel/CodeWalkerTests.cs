@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void FindJumps()
 		{
 			Program pgm = BuildProgram();
-			ScannerImpl sc = new ScannerImpl(pgm, null);
+			ScannerOld sc = new ScannerOld(pgm, null);
 
 			sc.EnqueueEntryPoint(new EntryPoint(pgm.Image.BaseAddress, new IntelState()));
 			sc.ProcessQueue();
@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                     new IntelTextAssembler(),
                     FileUnitTester.MapTestPath("fragments/Factorial.asm"));
                 Program prog = ld.Load(new Address(0x0C00, 0));
-				ScannerImpl sc = new ScannerImpl(prog, null);
+				ScannerOld sc = new ScannerOld(prog, null);
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
 					sc.EnqueueEntryPoint(ep);
@@ -259,7 +259,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                     new IntelTextAssembler(),
                     FileUnitTester.MapTestPath(sourceFile));
                 Program prog = ld.Load(addrBase);
-				ScannerImpl sc = new ScannerImpl(prog, new FakeDecompilerEventListener());
+				ScannerOld sc = new ScannerOld(prog, new FakeDecompilerEventListener());
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
 					sc.EnqueueEntryPoint(ep);

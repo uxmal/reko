@@ -103,6 +103,16 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitByte(0x9E);
         }
 
+        public void Shld(ParsedOperand op1, ParsedOperand op2, ParsedOperand op3)
+        {
+            ProcessDoubleShift(0, op1, op2, op3);
+        }
+
+        public void Shrd(ParsedOperand op1, ParsedOperand op2, byte count)
+        {
+            ProcessDoubleShift(4, op1, op2, new ParsedOperand(ImmediateOperand.Byte(count)));
+        }
+
         public void Sub(ParsedOperand op, int constant)
         {
             Sub(op, Imm(op.Operand.Width, constant));
@@ -953,6 +963,10 @@ namespace Decompiler.Assemblers.x86
             ProcessCallJmp(0x02, parsedOperand);
         }
 
+
+
+
+
         internal void ProcessFild(ParsedOperand op)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(op);
@@ -1041,6 +1055,16 @@ namespace Decompiler.Assemblers.x86
             ProcessPushPop(false, op);
         }
 
+        public void Adc(ParsedOperand op, int constant)
+        {
+            Adc(op, new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant))));
+        }
+
+        public void Adc(ParsedOperand op1, ParsedOperand op2)
+        {
+            ProcessBinop(0x02, op1, op2);
+        }
+
         public void Add(IntelRegister reg, int constant)
         {
             ProcessBinop(
@@ -1056,6 +1080,7 @@ namespace Decompiler.Assemblers.x86
                 op,
                 new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant))));
         }
+
 
         public void And(ParsedOperand dst, ParsedOperand src)
         {
@@ -1186,6 +1211,13 @@ namespace Decompiler.Assemblers.x86
             ProcessCallJmp(0x04, parsedOperand);
         }
 
+        public void JmpF(Address address)
+        {
+            emitter.EmitByte(0xEA);
+            emitter.EmitLeUint16((ushort)address.Offset);
+            emitter.EmitLeUint16(address.Selector);
+        }
+
         public IntelAssembler Label(string label)
         {
             DefineSymbol(label);
@@ -1214,9 +1246,24 @@ namespace Decompiler.Assemblers.x86
             AddImport(externSymbol, null, size);
         }
 
+        public void Neg(ParsedOperand op)
+        {
+            ProcessUnary(0x03, op);
+        }
+
+        public void Not(ParsedOperand op)
+        {
+            ProcessUnary(0x02, op);
+        }
+
         public void Or(ParsedOperand opDst, ParsedOperand opSrc)
         {
             ProcessBinop(0x01, opDst, opSrc);
+        }
+
+        public void Out(ParsedOperand op1, ParsedOperand op2)
+        {
+            ProcessInOut(true, op1, op2);
         }
 
         public void Pop(ParsedOperand op)
@@ -1449,22 +1496,43 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0xC9, null);
         }
 
-        internal void Stc()
+        public void Lodsw()
         {
-            emitter.EmitOpcode(0xF9, null);
+            ProcessStringInstruction(0xAC, PrimitiveType.Word16);
         }
 
-        internal void Rep()
+        public void Loop(string target)
+        {
+            ProcessLoop(2, target);
+        }
+
+        public void Loope(string target)
+        {
+            ProcessLoop(1, target);
+        }
+
+        public void Loopne(string target)
+        {
+            ProcessLoop(0, target);
+        }
+
+        public void Rep()
         {
             emitter.EmitByte(0xF3);
         }
 
-        internal void Clc()
+        public void Stc()
+        {
+            emitter.EmitOpcode(0xF9, null);
+        }
+
+
+        public void Clc()
         {
             emitter.EmitOpcode(0xF8, null);
         }
 
-        internal void Cmc()
+        public void Cmc()
         {
             emitter.EmitOpcode(0xF5, null);
         }
@@ -1720,14 +1788,6 @@ namespace Decompiler.Assemblers.x86
         {
             return new ParsedOperand(
                 new MemoryOperand(width, @base, IntegralConstant(offset)));
-        }
-
-
-        public void JmpF(Address address)
-        {
-            emitter.EmitByte(0xEA);
-            emitter.EmitLeUint16((ushort)address.Offset);
-            emitter.EmitLeUint16(address.Selector);
         }
     }
 }

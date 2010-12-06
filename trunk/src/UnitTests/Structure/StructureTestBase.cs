@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Structure
 
             prog = ldr.Load(addrBase);
 
-            ScannerImpl scan = new ScannerImpl(prog, new FakeDecompilerEventListener());
+            ScannerOld scan = new ScannerOld(prog, new FakeDecompilerEventListener());
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);

@@ -57,6 +57,7 @@ namespace Decompiler.Scanning
         /// </summary>
         /// <param name="addrStart"></param>
         /// <returns></returns>
+        Block FindContainingBlock(Address addr);
         Block FindExactBlock(Address addr);
         Block SplitBlock(Block block, Address addr);
 
@@ -72,7 +73,7 @@ namespace Decompiler.Scanning
     /// Callers feed the scanner by calling EnqueueXXX methods before calling Scan(). Scan() then
     /// processes the queues.
     /// </remarks>
-    public class Scanner2 : IScanner, IRewriterHost2
+    public class Scanner : IScanner, IRewriterHost2
     {
         private IProcessorArchitecture arch;
         private PriorityQueue<WorkItem> queue;
@@ -90,7 +91,7 @@ namespace Decompiler.Scanning
         private const int PriorityJumpTarget = 6;
         private const int PriorityVector = 7;
 
-        public Scanner2(
+        public Scanner(
             IProcessorArchitecture arch, 
             ProgramImage image, 
             Platform platform,
@@ -196,15 +197,13 @@ namespace Decompiler.Scanning
             block = FindContainingBlock(addrStart);
             if (block != null)
             {
-                block = SplitBlock(block, addrStart);
+                return SplitBlock(block, addrStart);
             }
-            else
-            {
-                block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
-            }
+
+            block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
             queue.Enqueue(
                 PriorityJumpTarget,
-                new BlockWorkitem2(
+                new BlockWorkitem(
                     this,
                     this.arch.CreateRewriter2(CreateReader(addrStart), state, proc.Frame, this),
                     state,
@@ -298,6 +297,7 @@ namespace Decompiler.Scanning
             graph.AddEdge(block, blockNew);
 
             var linAddr = addr.Linear;
+            blockNew.Statements.AddRange(block.Statements.FindAll(s => s.LinearAddress >= linAddr));
             block.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
             blocks[block.Statements[0].LinearAddress].End = linAddr;
             return blockNew;
@@ -352,7 +352,7 @@ namespace Decompiler.Scanning
 	/// Callers feed the scanner by calling EnqueueXXX methods before calling Scan(). Scan() then
 	/// processes the queues.
 	/// </remarks>
-    public class ScannerImpl : IScanner, ICodeWalkerListener
+    public class ScannerOld : IScanner, ICodeWalkerListener
     {
         private Program program;
         private ImageMap map;			// cached copy of program.Image.Map; it's used very often.
@@ -372,7 +372,7 @@ namespace Decompiler.Scanning
 
         private static TraceSwitch trace = new TraceSwitch("Scanner", "Enables tracing in the scanning phase");
 
-        public ScannerImpl(Program program, DecompilerEventListener eventListener)
+        public ScannerOld(Program program, DecompilerEventListener eventListener)
         {
             if (program.Image == null)
                 throw new InvalidOperationException("Program.Image must be defined.");
@@ -923,6 +923,7 @@ namespace Decompiler.Scanning
 
         IDictionary<Address, VectorUse> IScanner.VectorUses { get { return vectorUses; } }
         void IScanner.TerminateBlock(Block block, Address addr) { }
+        Block IScanner.FindContainingBlock(Address addr) { throw new NotImplementedException(); }
         #endregion
     }
 }

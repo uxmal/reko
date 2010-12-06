@@ -127,6 +127,32 @@ namespace Decompiler.Arch.Intel
             emitter.Goto(SrcOp(di.Instruction.op1));
         }
 
+        private void RewriteLoop(FlagM useFlags, ConditionCode cc)
+        {
+            Identifier cx = orw.AluRegister(Registers.ecx, di.Instruction.dataWidth);
+            emitter.Assign(cx, emitter.Sub(cx, 1));
+            Identifier flag;
+            if (useFlags != 0)
+            {
+                throw new NotImplementedException();
+                //CodeEmitter e = emitter;
+
+                //// Splice in a new block.
+
+                //blockNew = proc.AddBlock(state.InstructionAddress.GenerateName("l", "_loop"));
+                //proc.AddEdge(blockHead, blockNew);
+
+                //emitter = ProcedureRewriter.CreateEmitter(blockNew);
+                //Block tgt = EmitBranchInstruction(emitter.Eq0(cx), instrCur.op1);
+                //e.Branch(new TestCondition(cc, orw.FlagGroup(useFlags)), tgt);
+            }
+            else
+            {
+                EmitCcInstr(cx, FlagM.ZF);
+                emitter.Branch(new TestCondition(ConditionCode.NE, orw.FlagGroup(FlagM.ZF)), OperandAsCodeAddress(di.Instruction.op1));
+            }
+        }
+
         public void RewriteRet()
         {
             EmitReturnInstruction(

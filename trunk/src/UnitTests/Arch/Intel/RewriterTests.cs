@@ -27,6 +27,7 @@ using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -37,7 +38,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private string configFile;
 		protected Assembler asm; 
 		protected Program prog;
-		protected ScannerImpl scanner;
+		protected Scanner scanner;
 		protected Address baseAddress;
 
 		public RewriterTestBase()
@@ -65,7 +66,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             asm.AssembleFragment(baseAddress, code);
             prog.Image = asm.Image;
 			DoRewriteCore();
-			return prog.Procedures.Values[0];
+			return scanner.Procedures.Values[0];
 		}
 
 		private void DoRewriteCore()
@@ -73,20 +74,22 @@ namespace Decompiler.UnitTests.Arch.Intel
 			SerializedProject project = (configFile != null)
 				? SerializedProject.Load(FileUnitTester.MapTestPath(configFile))
 				: null;
-			scanner = new ScannerImpl(prog, new FakeDecompilerEventListener());
+			scanner = new Scanner(
+                prog.Architecture,
+                prog.Image,
+                prog.Platform,
+                null,
+                new FakeDecompilerEventListener());
 			EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
-			prog.AddEntryPoint(ep);
 			scanner.EnqueueEntryPoint(ep);
 			if (project != null)
 			{
-				foreach (SerializedProcedure sp in  project.UserProcedures)
+				foreach (SerializedProcedure sp in project.UserProcedures)
 				{
 					scanner.EnqueueUserProcedure(sp);
 				}
 			}
 			scanner.ProcessQueue();
-			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerEventListener(), scanner.SystemCalls, scanner.VectorUses);
-			rw.RewriteProgram();
 		}
 
 		protected void DoRewriteFile(string relativePath)
@@ -119,16 +122,16 @@ namespace Decompiler.UnitTests.Arch.Intel
 	ret
 ");
 
-			Assert.AreEqual(1, prog.Procedures.Count );
-			Procedure proc = prog.Procedures.Values[0];
-			Assert.AreEqual(3, proc.RpoBlocks.Count);		// Entry, code, Exit
+			Assert.AreEqual(1, scanner.Procedures.Count );
+			Procedure proc = scanner.Procedures.Values[0];
+			Assert.AreEqual(3, proc.ControlGraph.Nodes.Count);		// Entry, code, Exit
 
-			Block block = proc.RpoBlocks[0].Succ[0];
+            Block block = new List<Block>(proc.ControlGraph.Successors(proc.EntryBlock))[0];
 			Assert.AreEqual(5, block.Statements.Count);
 			Assignment instr1 = (Assignment) block.Statements[0].Instruction;
 			Assert.IsTrue(block.Statements[1].Instruction is Assignment);
 
-			Assert.AreSame(block.Succ[0], proc.ExitBlock);
+			Assert.AreSame(new List<Block>(proc.ControlGraph.Successors(block))[0], proc.ExitBlock);
 		}
 
 		[Test]

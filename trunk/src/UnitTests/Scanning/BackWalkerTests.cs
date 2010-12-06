@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Scanning
     {
         private ProgramImage image;
         private IProcessorArchitecture arch;
-        private Scanner2 scanner;
+        private Scanner scanner;
         private readonly string nl = Environment.NewLine;
 
         [Test]
@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private void BuildTest(Address startAddress)
         {
-            scanner = new Scanner2(arch, image, new FakePlatform(), null, new FakeDecompilerEventListener());
+            scanner = new Scanner(arch, image, new FakePlatform(), null, new FakeDecompilerEventListener());
             scanner.EnqueueEntryPoint(new EntryPoint(startAddress, arch.CreateProcessorState()));
             scanner.ProcessQueue();
         }

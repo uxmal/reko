@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
@@ -883,7 +885,7 @@ namespace Decompiler.Assemblers.x86
                 asm.ProcessStringInstruction(0xAC, PrimitiveType.Byte);
 				break;
 			case Token.LODSW:
-                asm.ProcessStringInstruction(0xAC, PrimitiveType.Word16);
+                asm.Lodsw();
 				break;
 			case Token.LODSD:
                 asm.ProcessStringInstruction(0xAC, PrimitiveType.Word32);

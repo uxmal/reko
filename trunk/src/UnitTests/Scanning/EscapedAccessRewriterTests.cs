@@ -63,7 +63,7 @@ namespace Decompiler.UnitTests.Scanning
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(sourceFile));
             Program prog = ldr.Load(addr);
-			ScannerImpl scan = new ScannerImpl(prog, null);
+			ScannerOld scan = new ScannerOld(prog, null);
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);

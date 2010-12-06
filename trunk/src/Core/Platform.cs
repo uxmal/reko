@@ -31,4 +31,5 @@ namespace Decompiler.Core
 
         public abstract string DefaultCallingConvention { get; }
     }
+
 }
