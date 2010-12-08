@@ -24,6 +24,9 @@ using System;
 
 namespace Decompiler.Analysis.Simplification
 {
+    /// <summary>
+    /// Transforms the sequence dpb(constant, constant) with the evaluated dpb.
+    /// </summary>
 	public class DpbConstantRule
 	{
 		private DepositBits dpb;
@@ -42,7 +45,7 @@ namespace Decompiler.Analysis.Simplification
 			return (cSrc.ToInt32() == 0 && dpb.BitPosition == 0);
 		}
 
-		public Expression Transform(Statement stm)
+		public Expression Transform()
 		{
 			if (cBits != null)
 			{

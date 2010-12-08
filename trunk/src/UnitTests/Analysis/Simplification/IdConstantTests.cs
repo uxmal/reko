@@ -35,29 +35,34 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 	public class IdConstantTests
 	{
 		private ProcedureMock m;
+        private SsaIdentifierCollection ssa;
 
 		[SetUp]
 		public void Setup()
 		{
 			m = new ProcedureMock();
+            ssa = new SsaIdentifierCollection();
 		}
 
 		[Test]
 		public void ConstantPropagate()
 		{
 			Identifier ds = m.Frame.EnsureRegister(Registers.ds);
-			m.Assign(ds, new Constant(PrimitiveType.Word16, 0x1234));
+            var c = new Constant(PrimitiveType.Word16, 0x1234);
+            m.Assign(ds, c);
 			m.SideEffect(ds);
             var def = m.Block.Statements[0];
             var use = m.Block.Statements[1];
-			SsaIdentifierCollection ssa = new SsaIdentifierCollection();
-			SsaIdentifier sid_ds = ssa.Add(ds, def, ((Assignment)def.Instruction).Src, false);
+			SsaIdentifier sid_ds = ssa.Add(ds, def, c, false);
+            var ass = (Assignment)def.Instruction;
+            ass.Dst = sid_ds.Identifier;
+            ((SideEffect)use.Instruction).Expression = sid_ds.Identifier;
 			sid_ds.Uses.Add(use);
 
 			IdConstant ic = new IdConstant(new SsaEvaluationContext(ssa), new Decompiler.Typing.Unifier(null));
             Assert.IsTrue(ic.Match(sid_ds.Identifier));
 			Expression e = ic.Transform();
-			Assert.AreEqual("segment", e.DataType.ToString());
+			Assert.AreEqual("selector", e.DataType.ToString());
 		}
 	}
 }

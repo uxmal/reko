@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
         private Identifier id;
         private Identifier x;
         private SsaIdentifierCollection ssaIds;
-
+        private SsaEvaluationContext ctx;
         /// <summary>
         /// (+ (* id c) id) => (* id (+ c 1))
         /// </summary>
@@ -46,13 +46,15 @@ namespace Decompiler.UnitTests.Analysis.Simplification
         {
             BinaryExpression b = m.Add(m.Muls(id, 4), id);
             Assignment ass = new Assignment(x, b);
-            Statement stm = new Statement(ass, null);
+            Statement stm = new Statement(0, ass, null);
             ssaIds[id].Uses.Add(stm);
             ssaIds[id].Uses.Add(stm);
 
-            Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(ssaIds));
+            ctx.Statement = stm;
+            Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule(ctx);
             Assert.IsTrue(rule.Match(b));
-            ass.Src = rule.Transform(stm);
+            Assert.AreEqual(2, ssaIds[id].Uses.Count);
+            ass.Src = rule.Transform();
             Assert.AreEqual("x = id *s 0x00000005", ass.ToString());
             Assert.AreEqual(1, ssaIds[id].Uses.Count);
         }
@@ -65,10 +67,10 @@ namespace Decompiler.UnitTests.Analysis.Simplification
         {
             BinaryExpression b = m.Add(id, m.Mulu(id, 5));
             Assignment ass = new Assignment(x, b);
-            Statement stm = new Statement(ass, null);
+            Statement stm = new Statement(0, ass, null);
             Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(ssaIds));
             Assert.IsTrue(rule.Match(b));
-            ass.Src = rule.Transform(stm);
+            ass.Src = rule.Transform();
             Assert.AreEqual("x = id *u 0x00000006", ass.ToString());
         }
 
@@ -83,6 +85,8 @@ namespace Decompiler.UnitTests.Analysis.Simplification
             {
                 ssaIds.Add(i, null, null, false);
             }
+            ctx = new SsaEvaluationContext(ssaIds);
+
         }
     }
 }
