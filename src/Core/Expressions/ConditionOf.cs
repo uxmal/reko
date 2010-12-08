@@ -25,17 +25,20 @@ namespace Decompiler.Core.Expressions
 {
 	public class ConditionOf : Expression
 	{
-		private Expression expr;
-
 		public ConditionOf(Expression ex) : base(PrimitiveType.Byte)
 		{
-			expr = ex;
+			Expression = ex;
 		}
 
 		public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformConditionOf(this);
 		}
+
+        public override T Accept<T>(ExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitConditionOf(this);
+        }
 
 		public override void Accept(IExpressionVisitor v)
 		{
@@ -44,15 +47,9 @@ namespace Decompiler.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new ConditionOf(expr.CloneExpression());
+			return new ConditionOf(Expression.CloneExpression());
 		}
 
-
-		public Expression Expression
-		{
-			get { return expr; }
-			set { expr = value; }
-		}
-
+        public Expression Expression { get; set; }
 	}
 }

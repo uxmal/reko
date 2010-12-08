@@ -48,7 +48,12 @@ namespace Decompiler.Core.Expressions
 			v.VisitMemoryAccess(this);
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitMemoryAccess(this);
+        }
+
+        public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformMemoryAccess(this);
 		}

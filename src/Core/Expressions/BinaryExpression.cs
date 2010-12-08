@@ -43,6 +43,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformBinaryExpression(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitBinaryExpression(this);
+        }
+
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitBinaryExpression(this);

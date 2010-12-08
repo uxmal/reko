@@ -37,7 +37,9 @@ namespace Decompiler.Core.Code
 		public abstract Instruction Accept(InstructionTransformer xform);
 
 		public abstract void Accept(InstructionVisitor v);
-		
+
+        public abstract T Accept<T>(InstructionVisitor<T> visitor);
+
 		public abstract bool IsControlFlow { get; }
 
 		public override string ToString()
@@ -50,33 +52,32 @@ namespace Decompiler.Core.Code
 			Accept(fmt);
 			return sw.ToString();
 		}
-
-	}
+    }
 
 	public class DefInstruction : Instruction
 	{
-		private Expression expr;
-
 		public DefInstruction(Expression e)
 		{
-			expr = e;
+			Expression = e;
 		}
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformDefInstruction(this);
-		}
+        }
 
-		public override void Accept(InstructionVisitor v)
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitDefInstruction(this);
+        }
+
+
+        public override void Accept(InstructionVisitor v)
 		{
 			v.VisitDefInstruction(this);
 		}
 
-		public Expression Expression
-		{
-			get { return expr; }
-			set { expr = value; }
-		}
+        public Expression Expression { get; set; }
 
 		public override bool IsControlFlow
 		{
@@ -87,72 +88,66 @@ namespace Decompiler.Core.Code
 	
 	public class ReturnInstruction : Instruction
 	{
-        private Expression expr;
-
-        public Expression Expression
-        {
-            get { return expr; }
-            set { expr = value; }
-        }
-
-        public ReturnInstruction(): this(null)
+        public ReturnInstruction()
+            : this(null)
         {
         }
 
-		public ReturnInstruction(Expression v)
-		{
-			expr = v;
-		}
+        public ReturnInstruction(Expression v)
+        {
+            this.Expression = v;
+        }
+
+        public Expression Expression { get; set; }
+        public override bool IsControlFlow { get { return true; } }
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformReturnInstruction(this);
 		}
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitReturnInstruction(this);
+        }
 
 		public override void Accept(InstructionVisitor v)
 		{
 			v.VisitReturnInstruction(this);
 		}
 
-		public override bool IsControlFlow
-		{
-			get { return true; }
-		}
 	}
 
 
 	public class SwitchInstruction : Instruction
 	{
-        private Expression expr;
 		public Block [] targets;
 
 		public SwitchInstruction(Expression expr, Block [] targets)
 		{
-			this.expr = expr;
+			this.Expression = expr;
 			this.targets = targets;
 		}
+
+        public Expression Expression { get; set; }
+        public override bool IsControlFlow { get { return true; } }
+
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformSwitchInstruction(this);
 		}
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitSwitchInstruction(this);
+        }
+
 		public override void Accept(InstructionVisitor v)
 		{
 			v.VisitSwitchInstruction(this);
 		}
 
-        public Expression Expression
-        {
-            get { return expr; }
-            set { expr = value; }
-        }
-        
-        public override bool IsControlFlow
-		{
-			get { return true; }
-		}
 	}
 
 	/// <summary>
@@ -174,30 +169,23 @@ namespace Decompiler.Core.Code
 			this.argOut = argument;
 		}
 
+        public Expression Expression  {get ;set; }
+        public override bool IsControlFlow { get { return false; } }
+        public Identifier OutArgument { get { return argOut; } }
+
 		public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformUseInstruction(this);
 		}
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitUseInstruction(this);
+        }
+
 		public override void Accept(InstructionVisitor v)
 		{
 			v.VisitUseInstruction(this);
-		}
-
-		public Expression Expression
-		{
-			get { return expr; }
-			set { expr = value; }
-		}
-
-		public override bool IsControlFlow
-		{
-			get { return false; }
-		}
-
-		public Identifier OutArgument
-		{
-			get { return argOut; }
 		}
 	}
 

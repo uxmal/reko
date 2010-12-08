@@ -48,6 +48,11 @@ namespace Decompiler.Core
             return xform.TransformAddress(this);
         }
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitAddress(this);
+        }
+
         public override void Accept(IExpressionVisitor visit)
         {
             visit.VisitAddress(this);

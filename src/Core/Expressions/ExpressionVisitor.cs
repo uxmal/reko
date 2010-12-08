@@ -53,6 +53,31 @@ namespace Decompiler.Core.Expressions
 		void VisitUnaryExpression(UnaryExpression unary);
     }
 
+    public interface ExpressionVisitor<T>
+    {
+        T VisitAddress(Address addr);
+        T VisitApplication(Application appl);
+        T VisitArrayAccess(ArrayAccess acc);
+        T VisitBinaryExpression(BinaryExpression binExp);
+        T VisitCast(Cast cast);
+        T VisitConditionOf(ConditionOf cof);
+        T VisitConstant(Constant c);
+        T VisitDepositBits(DepositBits d);
+        T VisitDereference(Dereference deref);
+        T VisitFieldAccess(FieldAccess acc);
+        T VisitIdentifier(Identifier id);
+        T VisitMemberPointerSelector(MemberPointerSelector mps);
+        T VisitMemoryAccess(MemoryAccess access);
+        T VisitMkSequence(MkSequence seq);
+        T VisitPhiFunction(PhiFunction phi);
+        T VisitPointerAddition(PointerAddition pa);
+        T VisitProcedureConstant(ProcedureConstant pc);
+        T VisitScopeResolution(ScopeResolution scopeResolution);
+        T VisitSegmentedAccess(SegmentedAccess access);
+        T VisitSlice(Slice slice);
+        T VisitTestCondition(TestCondition tc);
+        T VisitUnaryExpression(UnaryExpression unary);
+    }
 
 	public class ExpressionVisitorBase : IExpressionVisitor
 	{

@@ -42,6 +42,11 @@ namespace Decompiler.Core.Code
 			return xform.TransformDeclaration(this);
 		}
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitDeclaration(this);
+        }
+
 		public override void Accept(InstructionVisitor v)
 		{
 			v.VisitDeclaration(this);

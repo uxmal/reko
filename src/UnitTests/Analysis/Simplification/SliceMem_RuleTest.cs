@@ -38,7 +38,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
 			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
-			var e = r.Transform(null);
+			var e = r.Transform();
 			Assert.AreEqual("Mem0[ptr + 0x00000002:byte]", e.ToString());
 		}
 
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
 			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
-			var e = r.Transform(null);
+			var e = r.Transform();
 			Assert.AreEqual("Mem0[ptr + 0x00000000:word16]", e.ToString());
 		}
 

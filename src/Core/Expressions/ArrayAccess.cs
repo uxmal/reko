@@ -38,6 +38,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformArrayAccess(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitArrayAccess(this);
+        }
+
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitArrayAccess(this);

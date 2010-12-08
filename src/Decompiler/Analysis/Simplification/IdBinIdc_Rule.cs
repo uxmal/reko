@@ -30,38 +30,29 @@ namespace Decompiler.Analysis.Simplification
 	/// </summary>
 	public class IdBinIdc_Rule
 	{
-		private SsaIdentifierCollection ssaIds;
+		private EvaluationContext ctx;
 		private BinaryExpression bin;
-		private SsaIdentifier sid;
+		private Identifier id;
 
-		public IdBinIdc_Rule(SsaIdentifierCollection ssaIds)
+		public IdBinIdc_Rule(EvaluationContext ctx)
 		{
-			this.ssaIds = ssaIds;
+            this.ctx = ctx;
 		}
 
 		public bool Match(Identifier id)
 		{
-			sid = ssaIds[id];
-			Statement s = sid.DefStatement;
-			if (s == null)
-				return false;
-			if (sid.Uses.Count != 1)
-				return false;
-			Assignment ass = s.Instruction as Assignment;
-			if (ass == null)
-				return false;
-			bin = ass.Src as BinaryExpression;
+            this.id = id;
+            bin = ctx.DefiningExpression(id) as BinaryExpression;
 			if (bin == null)
 				return false;
 			return (bin.Left is Identifier) && (bin.Right is Constant);
 		}
 
-		public Expression Transform(Statement stm)
+		public Expression Transform()
 		{
-			sid.Uses.Remove(stm);
-			ExpressionUseAdder eua = new ExpressionUseAdder(stm, ssaIds);
-			bin.Accept(eua);
-			return bin;
+            ctx.RemoveIdentifierUse(id);
+            ctx.UseExpression(bin);
+            return bin;
 		}
 	}
 }

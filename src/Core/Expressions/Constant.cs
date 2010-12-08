@@ -86,9 +86,15 @@ namespace Decompiler.Core.Expressions
 		public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformConstant(this);
-		}
+        }
 
-		public override void Accept(IExpressionVisitor v)
+
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitConstant(this);
+        }
+
+        public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitConstant(this);
 		}

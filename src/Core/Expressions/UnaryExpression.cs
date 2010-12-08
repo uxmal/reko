@@ -40,6 +40,12 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformUnaryExpression(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitUnaryExpression(this);
+        }
+
+
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitUnaryExpression(this);

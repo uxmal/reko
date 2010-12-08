@@ -37,6 +37,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformProcedureConstant(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitProcedureConstant(this);
+        }
+
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitProcedureConstant(this);

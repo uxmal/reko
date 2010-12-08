@@ -30,14 +30,14 @@ namespace Decompiler.Analysis.Simplification
 	/// </summary>
 	public class AddTwoIdsRule
 	{
-		private SsaIdentifierCollection ssaIds;
+        private EvaluationContext ctx;
 		private Identifier idLeft;
 		private Identifier idRight;
 
-		public AddTwoIdsRule(SsaIdentifierCollection ssaIds)
-		{
-			this.ssaIds = ssaIds;
-		}
+        public AddTwoIdsRule(EvaluationContext ctx)
+        {
+            this.ctx = ctx;
+        }
 
 		public bool Match(BinaryExpression binExp)
 		{
@@ -50,10 +50,10 @@ namespace Decompiler.Analysis.Simplification
 			return (idLeft == idRight && binExp.op == Operator.Add);
 		}
 
-		public Expression Transform(Statement stm)
-		{
-			ssaIds[idLeft].Uses.Remove(stm);
-			return new BinaryExpression(Operator.Mul, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));
-		}
+        public Expression Transform()
+        {
+            ctx.RemoveIdentifierUse(idLeft);
+            return new BinaryExpression(Operator.Mul, idLeft.DataType, idLeft, new Constant(idLeft.DataType, 2));
+        }
 	}
 }

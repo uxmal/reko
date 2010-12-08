@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2010 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,30 @@
  */
 #endregion
 
-using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Decompiler.Analysis
 {
-	public class ExpressionUseAdder : ExpressionVisitorBase
-	{
-		private Statement user;
-		private SsaIdentifierCollection ssaIds;
-
-		public ExpressionUseAdder(Statement user, SsaIdentifierCollection ssaIds)
-		{
-            if (user == null)
-                throw new ArgumentNullException("user");
-			this.user = user; this.ssaIds = ssaIds;
-		}
-
-		public override void VisitIdentifier(Identifier id)
-		{
-			ssaIds[id].Uses.Add(user);
-		}
-	}
+    /// <summary>
+    /// An EvaluationContext is used by the ValuePropagator to provide a statement context for the
+    /// evaluation.
+    /// </summary>
+    /// <remarks>
+    /// For instance, it might be interesting to find the expression currently bound to 
+    /// an identifier, to see if a simplification could be made. The statements
+    /// <code>
+    ///     a = constant
+    ///     b = a + 3
+    /// </code>
+    /// can be merged if we know that a == constant.
+    /// </remarks>
+    public interface EvaluationContext
+    {
+        Expression DefiningExpression(Identifier id);
+        void RemoveIdentifierUse(Identifier id);
+        void UseExpression(Expression expr);
+    }
 }

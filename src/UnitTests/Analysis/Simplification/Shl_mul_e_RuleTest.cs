@@ -49,9 +49,9 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 			ssaIds[id].Uses.Add(stm);
 			ssaIds[id].Uses.Add(stm);
 
-			Shl_mul_e_Rule  rule = new Shl_mul_e_Rule(ssaIds);
+			var rule = new Shl_mul_e_Rule(null);
 			Assert.IsTrue(rule.Match(b));
-			ass.Src = rule.Transform(stm);
+			ass.Src = rule.Transform();
 			Assert.AreEqual("x = id *s 12", ass.ToString());
 		}
 			

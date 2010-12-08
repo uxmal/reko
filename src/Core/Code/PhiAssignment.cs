@@ -51,7 +51,12 @@ namespace Decompiler.Core.Code
 			return xform.TransformPhiAssignment(this);
 		}
 
-		public override void Accept(InstructionVisitor v)
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitPhiAssignment(this);
+        }
+
+        public override void Accept(InstructionVisitor v)
 		{
 			v.VisitPhiAssignment(this);
 		}

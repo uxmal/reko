@@ -29,7 +29,7 @@ namespace Decompiler.Analysis.Simplification
 	{
 		private MemberPointerSelector mps;
 
-		public Mps_Constant_Rule(SsaIdentifierCollection ssaIds)
+		public Mps_Constant_Rule(EvaluationContext ctx)
 		{
 		}
 
@@ -41,7 +41,7 @@ namespace Decompiler.Analysis.Simplification
 			//return (c != null); 				//$REVIEW: disabled. Perhaps we don't want to do this transformation before we detect registerpairs.
 		}
 
-		public Expression Transform(Statement stm)
+		public Expression Transform()
 		{
 			return new BinaryExpression(
 				BinaryOperator.Add,
@@ -49,6 +49,5 @@ namespace Decompiler.Analysis.Simplification
 				null, // mps.Ptr,
 				null); // c
 		}
-
 	}
 }

@@ -435,6 +435,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\Simplification\IdConstantTests.cs" />
+    <Compile Include="Analysis\SymbolicEvaluatorTests.cs" />
     <Compile Include="Mocks\FakePlatform.cs" />
     <Compile Include="Scanning\BackWalkerTests.cs" />
     <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />

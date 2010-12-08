@@ -30,40 +30,34 @@ namespace Decompiler.Analysis.Simplification
 	/// <summary>
 	/// Implements constant propagation.
 	/// </summary>
-	public class IdConstant
-	{
-		private SsaIdentifierCollection ssaIds;
-		private Unifier unifier;
-		private SsaIdentifier sid;
-		private Constant cSrc;
-		private Identifier idDst;
+    public class IdConstant
+    {
+        private EvaluationContext ctx;
+        private Unifier unifier;
+        private Constant cSrc;
+        private Identifier idDst;
 
-		public IdConstant(SsaIdentifierCollection ssaIds, Unifier u)
-		{
-			this.ssaIds = ssaIds;
-			this.unifier = u;
-		}
+        public IdConstant(EvaluationContext ctx, Unifier u)
+        {
+            this.ctx = ctx;
+            this.unifier = u;
+        }
 
-		public bool Match(Identifier id)
-		{
-			sid = ssaIds[id];
-			if (sid.DefStatement == null)
-				return false;
-			Assignment ass = sid.DefStatement.Instruction as Assignment;
-			if (ass == null)
-				return false;
-			cSrc = ass.Src as Constant;
-			idDst = id;
-			return cSrc != null;
-		}
+        public bool Match(Identifier id)
+        {
+            Expression e = ctx.DefiningExpression(id);
+            cSrc = e as Constant;
+            idDst = id;
+            return cSrc != null;
+        }
 
-		public Expression Transform(Statement stm)
-		{
-			sid.Uses.Remove(stm);
-			DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
-			if (dt is PrimitiveType)
-				return new Constant(dt, cSrc.ToInt64());
-			throw new NotSupportedException(string.Format("Resulting type is {0}, which isn't supported yet.", dt));
-		}
-	}
+        public Expression Transform()
+        {
+            ctx.RemoveIdentifierUse(idDst);
+            DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
+            if (dt is PrimitiveType)
+                return new Constant(dt, cSrc.ToInt64());
+            throw new NotSupportedException(string.Format("Resulting type is {0}, which isn't supported yet.", dt));
+        }
+    }
 }

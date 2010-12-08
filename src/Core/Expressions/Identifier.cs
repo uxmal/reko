@@ -47,6 +47,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformIdentifier(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitIdentifier(this);
+        }
+
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitIdentifier(this);

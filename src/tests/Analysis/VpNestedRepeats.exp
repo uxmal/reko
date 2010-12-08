@@ -194,9 +194,11 @@ di_18: orig: di
     def:  di_18 = PHI(di_16, di_18, di_30)
     uses: di_18 = PHI(di_16, di_18, di_30)
           di_30 = di_18 - 0x0001
+          SZO_31 = cond(di_18 - 0x0001)
 cx_19: orig: cx
     def:  cx_19 = PHI(cx_15, cx_25, cx_29)
     uses: cx_25 = cx_19 - 0x0001
+          Z_26 = cond(cx_19 - 0x0001)
 dx_20: orig: dx
     def:  dx_20 = PHI(dx_11, dx_23, dx_23)
     uses: dx_23 = dx_20 + ax_21
@@ -215,10 +217,9 @@ dx_23: orig: dx
 SCZO_24: orig: SCZO
 cx_25: orig: cx
     def:  cx_25 = cx_19 - 0x0001
-    uses: Z_26 = cond(cx_25)
-          cx_19 = PHI(cx_15, cx_25, cx_29)
+    uses: cx_19 = PHI(cx_15, cx_25, cx_29)
 Z_26: orig: Z
-    def:  Z_26 = cond(cx_25)
+    def:  Z_26 = cond(cx_19 - 0x0001)
     uses: branch Test(NE,Z_26) l0C00_0008
 SCZO_27: orig: SCZO
 SZO_28: orig: SZO
@@ -227,10 +228,9 @@ cx_29: orig: cx
     uses: cx_19 = PHI(cx_15, cx_25, cx_29)
 di_30: orig: di
     def:  di_30 = di_18 - 0x0001
-    uses: SZO_31 = cond(di_30)
-          di_18 = PHI(di_16, di_18, di_30)
+    uses: di_18 = PHI(di_16, di_18, di_30)
 SZO_31: orig: SZO
-    def:  SZO_31 = cond(di_30)
+    def:  SZO_31 = cond(di_18 - 0x0001)
     uses: branch Test(NE,SZO_31) l0C00_0008
 SCZO_32: orig: SCZO
 Z_33: orig: Z
@@ -257,13 +257,13 @@ l0C00_0008:		// pred: l0C00_0000 l0C00_0008 l0C00_000D
 	si_22 = si_17 + 0x0002
 	dx_23 = dx_20 + ax_21
 	cx_25 = cx_19 - 0x0001
-	Z_26 = cond(cx_25)
+	Z_26 = cond(cx_19 - 0x0001)
 	branch Test(NE,Z_26) l0C00_0008
 	// succ:  l0C00_000D l0C00_0008
 l0C00_000D:		// pred: l0C00_0008
 	cx_29 = 0x0004
 	di_30 = di_18 - 0x0001
-	SZO_31 = cond(di_30)
+	SZO_31 = cond(di_18 - 0x0001)
 	branch Test(NE,SZO_31) l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:		// pred: l0C00_000D

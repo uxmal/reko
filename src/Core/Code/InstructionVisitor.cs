@@ -26,31 +26,38 @@ namespace Decompiler.Core.Code
     public interface InstructionVisitor
 	{
 		void VisitAssignment(Assignment a);
-
 		void VisitBranch(Branch b);
-
 		void VisitCallInstruction(CallInstruction ci);
-
 		void VisitDeclaration(Declaration decl);
-
 		void VisitDefInstruction(DefInstruction def);
-
         void VisitGotoInstruction(GotoInstruction gotoInstruction);
-
 		void VisitPhiAssignment(PhiAssignment phi);
-
 		void VisitIndirectCall(IndirectCall ic);
-
 		void VisitReturnInstruction(ReturnInstruction ret);
-
 		void VisitSideEffect(SideEffect side);
-
 		void VisitStore(Store store);
-
 		void VisitSwitchInstruction(SwitchInstruction si);
-
 		void VisitUseInstruction(UseInstruction u);
     }
+
+    public interface InstructionVisitor<T>
+    {
+        T VisitAssignment(Assignment a);
+        T VisitBranch(Branch b);
+        T VisitCallInstruction(CallInstruction ci);
+        T VisitDeclaration(Declaration decl);
+        T VisitDefInstruction(DefInstruction def);
+        T VisitGotoInstruction(GotoInstruction gotoInstruction);
+        T VisitPhiAssignment(PhiAssignment phi);
+        T VisitIndirectCall(IndirectCall ic);
+        T VisitReturnInstruction(ReturnInstruction ret);
+        T VisitSideEffect(SideEffect side);
+        T VisitStore(Store store);
+        T VisitSwitchInstruction(SwitchInstruction si);
+        T VisitUseInstruction(UseInstruction u);
+    }
+
+
 
 	/// <summary>
 	/// Useful base class when only a few of the methods of InstructionVisitor and IExpressionVisitor 

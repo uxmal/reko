@@ -44,6 +44,11 @@ namespace Decompiler.Core.Code
 			return xform.TransformAssignment(this);
 		}
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitAssignment(this);
+        }
+
 		public override void Accept(InstructionVisitor v)
 		{
 			v.VisitAssignment(this);
@@ -90,6 +95,12 @@ namespace Decompiler.Core.Code
 		{
 			return xform.TransformStore(this);
 		}
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitStore(this);
+        }
+
 
 		public override void Accept(InstructionVisitor v)
 		{

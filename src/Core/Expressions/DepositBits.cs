@@ -45,6 +45,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformDepositBits(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitDepositBits(this);
+        }
+
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitDepositBits(this);

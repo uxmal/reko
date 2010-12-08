@@ -29,20 +29,24 @@ namespace Decompiler.Core.Expressions
 	/// </summary>
 	public class Slice : Expression
 	{
-		private Expression expr;
 		private byte offset;			// Bit-offset of value
 
 		public Slice(DataType dt, Expression i, uint bitOffset) : base(dt)
 		{
 			if (bitOffset > 255)
 				throw new ArgumentOutOfRangeException("bitOffset", "Offset is too large.");
-			expr = i; offset = (byte) bitOffset;
+			Expression = i; offset = (byte) bitOffset;
 		}
 
 		public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformSlice(this);
 		}
+
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitSlice(this);
+        }
 
 		public override void Accept(IExpressionVisitor v)
 		{
@@ -52,14 +56,10 @@ namespace Decompiler.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new Slice(DataType, expr, offset);
+			return new Slice(DataType, Expression, offset);
 		}
 
-		public Expression Expression
-		{
-			get { return expr; }
-			set { expr = value; }
-		}
+        public Expression Expression { get; set; }
 
 		public int Offset 
 		{
