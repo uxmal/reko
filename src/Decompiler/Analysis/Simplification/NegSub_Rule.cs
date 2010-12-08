@@ -40,7 +40,7 @@ namespace Decompiler.Analysis.Simplification
 			return false;
 		}
 
-		public Expression Transform(Statement stm)
+		public Expression Transform()
 		{
 			return new BinaryExpression(bin.op, bin.DataType, bin.Right, bin.Left);
 		}

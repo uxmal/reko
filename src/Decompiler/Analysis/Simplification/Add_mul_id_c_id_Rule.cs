@@ -70,7 +70,7 @@ namespace Decompiler.Analysis.Simplification
 			return true;
 		}
 
-		public Expression Transform(Statement stm)
+		public Expression Transform()
 		{
             ctx.RemoveIdentifierUse(id);
 			return new BinaryExpression(bin.op, id.DataType, id, Operator.Add.ApplyConstants(cInner, new Constant(cInner.DataType, 1)));

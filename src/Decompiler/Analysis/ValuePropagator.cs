@@ -56,11 +56,7 @@ namespace Decompiler.Analysis
             this.eval = new ExpressionValuePropagator(evalCtx);
         }
 
-        public bool Changed
-        {
-            get { return changed; }
-            set { changed = value; }
-        }
+        public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
 
         public void Transform()
         {
@@ -79,9 +75,7 @@ namespace Decompiler.Analysis
 
         public void Transform(Statement stm)
         {
-            this.stm = stm;
             evalCtx.Statement = stm;
-            eval.Statement = stm;
             if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
             stm.Instruction = stm.Instruction.Accept(this);
             if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
@@ -214,7 +208,6 @@ namespace Decompiler.Analysis
         }
 
         public bool Changed { get; set; }
-        public Statement Statement {get; set; }
 
         private bool IsAddOrSub(Operator op)
         {
@@ -266,7 +259,7 @@ namespace Decompiler.Analysis
 			if (constConstBin.Match(binExp))
 			{
 				Changed = true;
-				return constConstBin.Transform(Statement);
+				return constConstBin.Transform();
 			}
 			Constant cLeft = binExp.Left as Constant; 
 			Constant cRight = binExp.Right as Constant;
@@ -339,7 +332,7 @@ namespace Decompiler.Analysis
 			if (addMici.Match(binExp))
 			{
 				Changed = true;
-				return addMici.Transform(this.Statement);
+				return addMici.Transform();
 			}
 
 			if (shMul.Match(binExp))
@@ -393,7 +386,7 @@ namespace Decompiler.Analysis
 			if (dpbConstantRule.Match(d))
 			{
 				Changed = true;
-				return dpbConstantRule.Transform(Statement);
+				return dpbConstantRule.Transform();
 			}
 			return d;
 		}
@@ -531,7 +524,7 @@ namespace Decompiler.Analysis
 			if (negSub.Match(unary))
 			{
 				Changed = true;
-				return negSub.Transform(Statement);
+				return negSub.Transform();
 			}
 			return unary;
 		}
