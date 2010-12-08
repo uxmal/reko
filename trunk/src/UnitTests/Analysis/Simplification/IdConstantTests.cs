@@ -1,3 +1,4 @@
+#region License
 /* 
  * Copyright (C) 1999-2010 John Källén.
  *
@@ -15,12 +16,14 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Analysis;
 using Decompiler.Analysis.Simplification;
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
@@ -43,15 +46,17 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 		public void ConstantPropagate()
 		{
 			Identifier ds = m.Frame.EnsureRegister(Registers.ds);
-			Statement def = m.Assign(ds, new Constant(PrimitiveType.Word16, 0x1234));
-			Statement use = m.SideEffect(ds);
+			m.Assign(ds, new Constant(PrimitiveType.Word16, 0x1234));
+			m.SideEffect(ds);
+            var def = m.Block.Statements[0];
+            var use = m.Block.Statements[1];
 			SsaIdentifierCollection ssa = new SsaIdentifierCollection();
-			SsaIdentifier sidDs = ssa.Add(ds, def);
-			sidDs.uses.Add(use);
+			SsaIdentifier sid_ds = ssa.Add(ds, def, ((Assignment)def.Instruction).Src, false);
+			sid_ds.Uses.Add(use);
 
-			IdConstant ic = new IdConstant(ssa, new Decompiler.Typing.Unifier(null));
-			Assert.IsTrue(ic.Match(sidDs.id));
-			Expression e = ic.Transform(def);
+			IdConstant ic = new IdConstant(new SsaEvaluationContext(ssa), new Decompiler.Typing.Unifier(null));
+            Assert.IsTrue(ic.Match(sid_ds.Identifier));
+			Expression e = ic.Transform();
 			Assert.AreEqual("segment", e.DataType.ToString());
 		}
 	}

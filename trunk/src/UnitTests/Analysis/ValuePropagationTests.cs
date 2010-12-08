@@ -122,7 +122,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Identifier foo = Reg32("foo");
 
-			ValuePropagator vp = new ValuePropagator(ssaIds, null);
+            var vp = CreatePropagatorWithDummyStatement();
 			BinaryExpression expr = 
 				new BinaryExpression(Operator.Eq, PrimitiveType.Bool, 
 				new BinaryExpression(Operator.Sub, PrimitiveType.Word32, foo,
@@ -130,9 +130,16 @@ namespace Decompiler.UnitTests.Analysis
 				Constant.Word32(0));
 			Assert.AreEqual("foo - 0x00000001 == 0x00000000", expr.ToString());
 
-			Expression simpler = vp.TransformBinaryExpression(expr);
+			Expression simpler = vp.VisitBinaryExpression(expr);
 			Assert.AreEqual("foo == 0x00000001", simpler.ToString());
 		}
+
+        private ExpressionValuePropagator CreatePropagatorWithDummyStatement()
+        {
+            var ctx = new SsaEvaluationContext(ssaIds);
+            ctx.Statement = new Statement(0, new SideEffect(Constant.Word32(32)), null);
+            return new ExpressionValuePropagator(ctx);
+        }
 
 		[Test]
 		public void VpAddZero()
@@ -140,13 +147,10 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier r = Reg32("r");
 			Identifier s = Reg32("s");
 
-			Statement stm = new Statement(
-				new Assignment(s, 
-				new BinaryExpression(Operator.Sub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0))), null);
-
-			ValuePropagator vp = new ValuePropagator(ssaIds, null);
-			Instruction instr = stm.Instruction.Accept(vp);
-			Assert.AreEqual("s = Mem0[r:word32]", instr.ToString());
+            var sub = new BinaryExpression(Operator.Sub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
+            var vp = new ExpressionValuePropagator(new SsaEvaluationContext(ssaIds));
+			var exp = sub.Accept(vp);
+			Assert.AreEqual("Mem0[r:word32]", exp.ToString());
 		}
 
 		[Test]
@@ -171,9 +175,9 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
 			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
 
-			ValuePropagator vp = new ValuePropagator(ssaIds, null);
-			Instruction instr = stm.Instruction.Accept(vp);
-			Assert.AreEqual("branch y == 0x00000000 test", instr.ToString());
+			var vp = new ValuePropagator(ssaIds, null);
+			vp.Transform(stm);
+			Assert.AreEqual("branch x == 0x00000002 test", stm.Instruction.ToString());
 		}
 
 		[Test]
@@ -183,10 +187,10 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier y = Reg32("y");
 			Identifier z = Reg32("z");
 			Identifier w = Reg32("w");
-			Statement stmX = new Statement(new Assignment(x, new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(0x10004000), PrimitiveType.Word32)), null);
-			Statement stmY = new Statement(new Assignment(y, x), null);
-			Statement stmZ = new Statement(new Assignment(z, new BinaryExpression(Operator.Add, PrimitiveType.Word32, y, Constant.Word32(2))), null);
-			Statement stmW = new Statement(new Assignment(w, y), null);
+			Statement stmX = new Statement(0, new Assignment(x, new MemoryAccess(MemoryIdentifier.GlobalMemory, Constant.Word32(0x10004000), PrimitiveType.Word32)), null);
+			Statement stmY = new Statement(1, new Assignment(y, x), null);
+			Statement stmZ = new Statement(2, new Assignment(z, new BinaryExpression(Operator.Add, PrimitiveType.Word32, y, Constant.Word32(2))), null);
+			Statement stmW = new Statement(3, new Assignment(w, y), null);
 			ssaIds[x].DefStatement = stmX;
 			ssaIds[y].DefStatement = stmY;
 			ssaIds[z].DefStatement = stmZ;
@@ -216,8 +220,8 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void VpSliceConstant()
 		{
-			ValuePropagator vp = new ValuePropagator(ssaIds, null);
-			Expression c = vp.TransformSlice(new Slice(PrimitiveType.Byte, Constant.Word32(0x10FF), 0));
+            var vp = new ExpressionValuePropagator(new SsaEvaluationContext(ssaIds));
+            Expression c = new Slice(PrimitiveType.Byte, Constant.Word32(0x10FF), 0).Accept(vp);
 			Assert.AreEqual("0xFF", c.ToString());
 		}
 
@@ -226,8 +230,8 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Identifier x = Reg32("x");
 			Identifier y = Reg32("y");
-			ValuePropagator vp = new ValuePropagator(ssaIds, null);
-			Expression e = vp.TransformUnaryExpression(
+            var vp = new ExpressionValuePropagator(new SsaEvaluationContext(ssaIds));
+			Expression e = vp.VisitUnaryExpression(
 				new UnaryExpression(Operator.Neg, PrimitiveType.Word32, new BinaryExpression(
 				Operator.Sub, PrimitiveType.Word32, x, y)));
 			Assert.AreEqual("y - x", e.ToString());
@@ -241,14 +245,14 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Identifier id = Reg32("id");
 			Identifier x =  Reg32("x");
-			ValuePropagator vp = new ValuePropagator(ssaIds, null);
+            var vp = new ExpressionValuePropagator(new SsaEvaluationContext(ssaIds));
 			PrimitiveType t = PrimitiveType.Int32;
 			BinaryExpression b = new BinaryExpression(Operator.Shl, t, 
 				new BinaryExpression(Operator.Add, t, 
 					new BinaryExpression(Operator.Muls, t, id, new Constant(t, 4)),
 					id),
 				new Constant(t, 2));
-			Expression e = vp.TransformBinaryExpression(b);
+			Expression e = vp.VisitBinaryExpression(b);
 			Assert.AreEqual("id *s 20", e.ToString());
 
 		}
@@ -259,7 +263,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier id = Reg32("id");
 			ProcedureMock m = new ProcedureMock();
 			Expression e = m.Shl(m.Shl(id, 1), 4);
-			ValuePropagator vp = new ValuePropagator(ssaIds, null);
+            var vp = new ExpressionValuePropagator(new SsaEvaluationContext(ssaIds));
 			e = e.Accept(vp);
 			Assert.AreEqual("id << 0x00000005", e.ToString());
 		}
@@ -270,7 +274,7 @@ namespace Decompiler.UnitTests.Analysis
 			Constant c = Constant.Word32(1);
 			ProcedureMock m = new ProcedureMock();
 			Expression e = m.Shl(1, m.Sub(new Constant(PrimitiveType.Byte, 32), 1));
-			ValuePropagator vp = new ValuePropagator(ssaIds, null);
+            var vp = new ExpressionValuePropagator(new SsaEvaluationContext(ssaIds));
 			e = e.Accept(vp);
 			Assert.AreEqual("0x80000000", e.ToString());
 		}
@@ -281,7 +285,7 @@ namespace Decompiler.UnitTests.Analysis
 			Constant pre = new Constant(PrimitiveType.Word16, 0x0001);
 			Constant fix = new Constant(PrimitiveType.Word16, 0x0002);
 			Expression e = new MkSequence(PrimitiveType.Word32, pre, fix);
-			ValuePropagator vp = new ValuePropagator(ssaIds, null);
+            var vp = new ExpressionValuePropagator(new SsaEvaluationContext(ssaIds));
 			e = e.Accept(vp);
 			Assert.AreEqual("0x00010002", e.ToString());
 		}
@@ -294,10 +298,23 @@ namespace Decompiler.UnitTests.Analysis
             Identifier C = Reg8("C");
             Identifier ax = Reg16("ax");
             Expression e = new Slice(PrimitiveType.Byte, new BinaryExpression(Operator.Shl, PrimitiveType.Word16, C, eight), 8);
-            ValuePropagator vp = new ValuePropagator(ssaIds, null);
+            var vp = new ExpressionValuePropagator(new SsaEvaluationContext(ssaIds));
             e = e.Accept(vp);
             Assert.AreEqual("C", e.ToString());
         }
+
+        [Test]
+        public void MkSequenceToAddress()
+        {
+            Constant seg = new Constant(PrimitiveType.SegmentSelector, 0x4711);
+            Constant off = new Constant(PrimitiveType.Word16, 0x4111);
+            Expression e = new MkSequence(PrimitiveType.Word32, seg, off);
+            var vp = new ExpressionValuePropagator(new SsaEvaluationContext(ssaIds));
+            e = e.Accept(vp);
+            Assert.IsInstanceOf(typeof(Address), e);
+            Assert.AreEqual("4711:4111", e.ToString());
+        }
+
 		private Identifier Reg32(string name)
 		{
 			MachineRegister mr = new MachineRegister(name, ssaIds.Count, PrimitiveType.Word32);

@@ -30,33 +30,27 @@ namespace Decompiler.Analysis.Simplification
 	/// </summary>
 	public class IdCopyPropagationRule
 	{
-		private SsaIdentifierCollection ssaIds;
-		private SsaIdentifier sid;
+        private EvaluationContext ctx;
+        private Identifier idOld;
 		private Identifier idNew;
 
-		public IdCopyPropagationRule(SsaIdentifierCollection ssaIds)
-		{
-			this.ssaIds = ssaIds;
-		}
+        public IdCopyPropagationRule(EvaluationContext ctx)
+        {
+            this.ctx = ctx;
+        }
 
-		public bool Match(Identifier id)
-		{
-			sid = ssaIds[id];
-			if (sid.DefStatement == null)
-				return false;
-			Assignment ass = sid.DefStatement.Instruction as Assignment;
-			if (ass == null)
-				return false;
-			idNew = ass.Src as Identifier;
-			return idNew != null;
+        public bool Match(Identifier id)
+        {
+            idOld = id;
+            idNew = ctx.DefiningExpression(id) as Identifier;
+            return idNew != null;
+        }
 
-		}
-
-		public Expression Transform(Statement stm)
-		{
-			sid.Uses.Remove(stm);
-			ssaIds[idNew].Uses.Add(stm);
-			return idNew;
-		}
+        public Expression Transform()
+        {
+            ctx.RemoveIdentifierUse(idOld);
+            ctx.UseExpression(idNew);
+            return idNew;
+        }
 	}
 }

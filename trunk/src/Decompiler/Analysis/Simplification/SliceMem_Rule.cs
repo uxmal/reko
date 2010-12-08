@@ -70,7 +70,7 @@ namespace Decompiler.Analysis.Simplification
 			return false;
 		}
 
-		public Expression Transform(Statement stm)
+		public Expression Transform()
 		{
 			return b;
 		}

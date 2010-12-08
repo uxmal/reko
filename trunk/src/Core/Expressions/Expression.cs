@@ -48,6 +48,8 @@ namespace Decompiler.Core.Expressions
 
 		public abstract void Accept(IExpressionVisitor visit);
 
+        public abstract T Accept<T>(ExpressionVisitor<T> visitor);
+
 		public abstract Expression CloneExpression();
 
 		public DataType DataType

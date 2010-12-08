@@ -58,6 +58,11 @@ namespace Decompiler.Core.Code
             return xform.TransformGotoInstruction(this);
         }
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitGotoInstruction(this);
+        }
+
         public override void Accept(InstructionVisitor v)
         {
             v.VisitGotoInstruction(this);

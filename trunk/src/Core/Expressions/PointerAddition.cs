@@ -38,6 +38,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformPointerAddition(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitPointerAddition(this);
+        }
+
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitPointerAddition(this);

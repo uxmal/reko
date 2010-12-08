@@ -42,6 +42,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformMemberPointerSelector(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitMemberPointerSelector(this);
+        }
+
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitMemberPointerSelector(this);

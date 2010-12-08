@@ -40,6 +40,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformPhiFunction(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitPhiFunction(this);
+        }
+
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitPhiFunction(this);

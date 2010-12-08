@@ -221,6 +221,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\Simplification\SliceShift.cs" />
+    <Compile Include="Analysis\SsaEvaluationContext.cs" />
     <Compile Include="Analysis\SsaIdentifier.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -236,9 +237,11 @@
     <Compile Include="Analysis\SsaTransform.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\SymbolicEvaluator.cs" />
     <Compile Include="Analysis\TerminationAnalysis.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder.cs" />
     <Compile Include="Analysis\TrashedStorageHelper.cs" />
+    <Compile Include="Analysis\EvaluationContext.cs" />
     <Compile Include="Analysis\ValueNumbering.cs">
       <SubType>Code</SubType>
     </Compile>

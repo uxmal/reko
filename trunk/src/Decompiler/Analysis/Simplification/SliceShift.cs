@@ -34,15 +34,15 @@ namespace Decompiler.Analysis.Simplification
     /// </summary>
     public class SliceShift
     {
-        private SsaIdentifierCollection ssaIds;
+        private EvaluationContext ctx;
         private Expression expr;
         private DataType dt;
         private Identifier id;
         private Statement stmShift;
 
-        public SliceShift(SsaIdentifierCollection ssaIds)
+        public SliceShift(EvaluationContext ctx)
         {
-            this.ssaIds = ssaIds;
+            this.ctx = ctx;
         }
 
         public bool Match(Slice slice)
@@ -51,16 +51,7 @@ namespace Decompiler.Analysis.Simplification
             id = slice.Expression as Identifier;
             if (id != null)
             {
-                SsaIdentifier sid = ssaIds[id];
-                if (sid.DefStatement == null)
-                    return false;
-                Assignment ass = sid.DefStatement.Instruction as Assignment;
-                if (ass == null)
-                    return false;
-                if (ass.Dst != id)
-                    return false;
-                shift = ass.Src as BinaryExpression;
-                stmShift = sid.DefStatement;
+                shift = ctx.DefiningExpression(id) as BinaryExpression;
             }
             else
             {
@@ -81,13 +72,12 @@ namespace Decompiler.Analysis.Simplification
             return true;
         }
 
-        public Expression Transform(Statement stm)
+        public Expression Transform()
         {
             if (id != null)
             {
-                ssaIds[id].Uses.Remove(stm);
-                var ur = new UsedIdentifierAdjuster(stmShift, ssaIds, stm);
-                ur.Transform();
+                ctx.RemoveIdentifierUse(id);
+                ctx.UseExpression(expr);
             }
             expr.DataType = dt;
             return expr;

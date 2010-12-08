@@ -42,6 +42,12 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformMkSequence(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitMkSequence(this);
+        }
+
+
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitMkSequence(this);

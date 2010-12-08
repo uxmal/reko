@@ -40,6 +40,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformScopeResolution(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitScopeResolution(this);
+        }
+
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitScopeResolution(this);

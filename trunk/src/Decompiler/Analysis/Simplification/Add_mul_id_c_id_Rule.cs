@@ -31,14 +31,14 @@ namespace Decompiler.Analysis.Simplification
 	/// </summary>
 	public class Add_mul_id_c_id_Rule
 	{
-		private SsaIdentifierCollection ssaIds;
+		private EvaluationContext ctx;
 		private BinaryExpression bin;
 		private Identifier id;
 		private Constant cInner;
 
-		public Add_mul_id_c_id_Rule(SsaIdentifierCollection ssaIds)
+		public Add_mul_id_c_id_Rule(EvaluationContext ctx)
 		{
-			this.ssaIds = ssaIds;
+			this.ctx = ctx;
 		}
 
 		public bool Match(BinaryExpression exp)
@@ -72,7 +72,7 @@ namespace Decompiler.Analysis.Simplification
 
 		public Expression Transform(Statement stm)
 		{
-			ssaIds[id].Uses.Remove(stm);
+            ctx.RemoveIdentifierUse(id);
 			return new BinaryExpression(bin.op, id.DataType, id, Operator.Add.ApplyConstants(cInner, new Constant(cInner.DataType, 1)));
 		}
 	}

@@ -32,7 +32,7 @@ namespace Decompiler.Analysis.Simplification
 		private Expression e;
 		private BinaryOperator op;
 
-		public ShiftShift_c_c_Rule(SsaIdentifierCollection ssaIds)
+		public ShiftShift_c_c_Rule(EvaluationContext ctx)
 		{
 			
 		}
@@ -57,7 +57,7 @@ namespace Decompiler.Analysis.Simplification
 			return true;
 		}
 
-		public Expression Transform(Statement stm)
+		public Expression Transform()
 		{
 			return new BinaryExpression(
 				op,

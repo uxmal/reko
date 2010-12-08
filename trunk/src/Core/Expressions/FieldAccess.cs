@@ -39,6 +39,12 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformFieldAccess(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitFieldAccess(this);
+        }
+
+
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitFieldAccess(this);

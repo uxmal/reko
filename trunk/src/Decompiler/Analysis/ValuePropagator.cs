@@ -37,162 +37,227 @@ namespace Decompiler.Analysis
     /// This is a useful transform that doesn't cause too many problems for later transforms. Calling it will flush out
     /// lots of dead expressions that can be removed with DeadCode.Eliminate()
     /// </remarks>
-	public class ValuePropagator : InstructionTransformer
-	{
-		private SsaIdentifierCollection ssaIds;
-		private Procedure proc;
-		private Statement stm;
-		private bool changed;
-		private AddTwoIdsRule add2ids;
-		private Add_e_c_cRule addEcc;
-		private Add_mul_id_c_id_Rule addMici;
-		private ConstConstBin_Rule constConstBin;
-		private DpbConstantRule dpbConstantRule;
-		private IdConstant idConst;
-		private IdCopyPropagationRule idCopyPropagation;
-		private IdBinIdc_Rule idBinIdc;
-		private SliceConstant_Rule sliceConst;
-		private SliceMem_Rule sliceMem;
-		private Shl_mul_e_Rule shMul;
-		private ShiftShift_c_c_Rule  shiftShift;
+    public class ValuePropagator : InstructionVisitor<Instruction>
+    {
+        private SsaIdentifierCollection ssaIds;
+        private ExpressionValuePropagator eval;
+        private SsaEvaluationContext evalCtx;
+        private Procedure proc;
+        private Statement stm;
+        private bool changed;
+
+        private static TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
+
+        public ValuePropagator(SsaIdentifierCollection ssaIds, Procedure proc)
+        {
+            this.ssaIds = ssaIds;
+            this.proc = proc;
+            this.evalCtx = new SsaEvaluationContext(ssaIds);
+            this.eval = new ExpressionValuePropagator(evalCtx);
+        }
+
+        public bool Changed
+        {
+            get { return changed; }
+            set { changed = value; }
+        }
+
+        public void Transform()
+        {
+            do
+            {
+                Changed = false;
+                foreach (Block block in proc.RpoBlocks)
+                {
+                    for (int i = 0; i < block.Statements.Count; ++i)
+                    {
+                        Transform(block.Statements[i]);
+                    }
+                }
+            } while (Changed);
+        }
+
+        public void Transform(Statement stm)
+        {
+            this.stm = stm;
+            evalCtx.Statement = stm;
+            eval.Statement = stm;
+            if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
+            stm.Instruction = stm.Instruction.Accept(this);
+            if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
+        }
+
+
+        #region InstructionVisitor<Instruction> Members
+
+        public Instruction VisitAssignment(Assignment a)
+        {
+            a.Src = a.Src.Accept(eval);
+            return a;
+        }
+
+        public Instruction VisitBranch(Branch b)
+        {
+            b.Condition = b.Condition.Accept(eval);
+            return b;
+        }
+
+        public Instruction VisitCallInstruction(CallInstruction ci)
+        {
+            return ci;
+        }
+
+        public Instruction VisitDeclaration(Declaration decl)
+        {
+            if (decl.Expression != null)
+                decl.Expression = decl.Expression.Accept(eval);
+            return decl;
+        }
+
+        public Instruction VisitDefInstruction(DefInstruction def)
+        {
+            return def;
+        }
+
+        public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
+        {
+            return gotoInstruction;
+        }
+
+        public Instruction VisitPhiAssignment(PhiAssignment phi)
+        {
+            return phi;
+        }
+
+        public Instruction VisitIndirectCall(IndirectCall ic)
+        {
+            ic.Callee = ic.Callee.Accept(eval);
+            return ic;
+        }
+
+        public Instruction VisitReturnInstruction(ReturnInstruction ret)
+        {
+            if (ret.Expression != null)
+                ret.Expression = ret.Expression.Accept(eval);
+            return ret;
+        }
+
+        public Instruction VisitSideEffect(SideEffect side)
+        {
+            side.Expression = side.Expression.Accept(eval);
+            return side;
+        }
+
+        public Instruction VisitStore(Store store)
+        {
+            store.Src = store.Src.Accept(eval);
+            store.Dst = store.Dst.Accept(eval);
+            return store;
+        }
+
+        public Instruction VisitSwitchInstruction(SwitchInstruction si)
+        {
+            si.Expression = si.Expression.Accept(eval);
+            return si;
+        }
+
+        public Instruction VisitUseInstruction(UseInstruction u)
+        {
+            u.Expression = u.Expression.Accept(eval);
+            return u;
+        }
+
+        #endregion
+    }
+
+
+
+    public class ExpressionValuePropagator : ExpressionVisitor<Expression>
+    {
+        private EvaluationContext ctx;
+
+        private AddTwoIdsRule add2ids;
+        private Add_e_c_cRule addEcc;
+        private Add_mul_id_c_id_Rule addMici;
+        private ConstConstBin_Rule constConstBin;
+        private DpbConstantRule dpbConstantRule;
+        private IdConstant idConst;
+        private IdCopyPropagationRule idCopyPropagation;
+        private IdBinIdc_Rule idBinIdc;
+        private SliceConstant_Rule sliceConst;
+        private SliceMem_Rule sliceMem;
+        private Shl_mul_e_Rule shMul;
+        private ShiftShift_c_c_Rule shiftShift;
         private SliceShift sliceShift;
-		private NegSub_Rule negSub;
-		private Mps_Constant_Rule mpsRule;
+        private NegSub_Rule negSub;
+        private Mps_Constant_Rule mpsRule;
 
-		private static TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
+        public ExpressionValuePropagator(EvaluationContext ctx)
+        {
+            this.ctx = ctx;
 
-		public ValuePropagator(SsaIdentifierCollection ssaIds, Procedure proc)
-		{
-			this.ssaIds = ssaIds;
-			this.proc = proc;
+            this.add2ids = new AddTwoIdsRule(ctx);
+            this.addEcc = new Add_e_c_cRule(ctx);
+            this.addMici = new Add_mul_id_c_id_Rule(ctx);
+            this.dpbConstantRule = new DpbConstantRule();
+            this.idConst = new IdConstant(ctx, new Decompiler.Typing.Unifier(null));
+            this.idCopyPropagation = new IdCopyPropagationRule(ctx);
+            this.idBinIdc = new IdBinIdc_Rule(ctx);
+            this.sliceConst = new SliceConstant_Rule();
+            this.sliceMem = new SliceMem_Rule();
+            this.negSub = new NegSub_Rule();
+            this.constConstBin = new ConstConstBin_Rule();
+            this.shMul = new Shl_mul_e_Rule(ctx);
+            this.shiftShift = new ShiftShift_c_c_Rule(ctx);
+            this.mpsRule = new Mps_Constant_Rule(ctx);
+            this.sliceShift = new SliceShift(ctx);
+        }
 
-			this.add2ids = new AddTwoIdsRule(ssaIds);
-			this.addEcc = new Add_e_c_cRule(ssaIds);
-			this.addMici = new Add_mul_id_c_id_Rule(ssaIds);
-			this.dpbConstantRule = new DpbConstantRule();
-			this.idConst = new IdConstant(ssaIds, new Decompiler.Typing.Unifier(null));
-			this.idCopyPropagation = new IdCopyPropagationRule(ssaIds);
-			this.idBinIdc = new IdBinIdc_Rule(ssaIds);
-			this.sliceConst = new SliceConstant_Rule();
-			this.sliceMem = new SliceMem_Rule();
-			this.negSub = new NegSub_Rule();
-			this.constConstBin = new ConstConstBin_Rule();
-			this.shMul = new Shl_mul_e_Rule(ssaIds);
-			this.shiftShift = new ShiftShift_c_c_Rule(ssaIds);
-			this.mpsRule = new Mps_Constant_Rule(ssaIds);
-            this.sliceShift = new SliceShift(ssaIds);
-		}
+        public bool Changed { get; set; }
+        public Statement Statement {get; set; }
 
+        private bool IsAddOrSub(Operator op)
+        {
+            return op == Operator.Add || op == Operator.Sub;
+        }
 
-		private void AddUses(Expression expr)
-		{
-			ExpressionUseAdder uf = new ExpressionUseAdder(stm, ssaIds);
-			expr.Accept(uf);
-		}
+        private bool IsComparison(Operator op)
+        {
+            return op == Operator.Eq || op == Operator.Ne ||
+                   op == Operator.Ge || op == Operator.Gt ||
+                   op == Operator.Le || op == Operator.Lt ||
+                   op == Operator.Uge || op == Operator.Ugt ||
+                   op == Operator.Ule || op == Operator.Ult;
+        }
 
-		public bool Changed
-		{
-			get { return changed; }
-			set { changed = value; }
-		}
+        public Expression VisitAddress(Address addr)
+        {
+            return addr;
+        }
 
+        public Expression VisitApplication(Application appl)
+        {
+            for (int i = 0; i < appl.Arguments.Length; ++i)
+            {
+                appl.Arguments[i] = appl.Arguments[i].Accept(this);
+            }
+            appl.Procedure = appl.Procedure.Accept(this);
+            return appl;
+        }
 
-		private Expression DefiningExpression(Identifier id)
-		{
-			if (id == null)
-				return null;
-			SsaIdentifier ssaId = ssaIds[id];
-			if (ssaId.DefStatement == null)
-				return null;
-			Assignment ass = ssaId.DefStatement.Instruction as Assignment;
-			if (ass != null && ass.Dst == ssaId.Identifier)
-			{
-				return ass.Src;
-			}
-			return null;
-		}
+        public Expression VisitArrayAccess(ArrayAccess acc)
+        {
+            throw new NotImplementedException();
+        }
 
-		private bool IsAddOrSub(Operator op)
-		{
-			return op == Operator.Add || op == Operator.Sub; 
-		}
-
-		private bool IsComparison(Operator op)
-		{
-			return op == Operator.Eq || op == Operator.Ne ||
-				   op == Operator.Ge || op == Operator.Gt ||
-				   op == Operator.Le || op == Operator.Lt ||
-				   op == Operator.Uge || op == Operator.Ugt ||
-				   op == Operator.Ule || op == Operator.Ult;
-		}
-
-		private void RemoveUse(Identifier id)
-		{
-			if (id != null)
-				ssaIds[id].Uses.Remove(stm);
-		}
-
-		public void Transform()
-		{
-			do
-			{
-				Changed = false;
-				foreach (Block block in proc.RpoBlocks)
-				{
-					for (int i = 0; i < block.Statements.Count; ++i)
-					{
-						Transform(block.Statements[i]);
-					}
-				}
-			} while (Changed);
-		}
-
-		public void Transform(Statement stm)
-		{
-			this.stm = stm;
-			if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
-			stm.Instruction = stm.Instruction.Accept(this);
-			if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
-		}
-
-		public override Instruction TransformAssignment(Assignment a)
-		{
-			a.Src = a.Src.Accept(this);
-			return a;
-		}
-
-		public override Expression TransformCast(Cast cast)
-		{
-			cast.Expression = cast.Expression.Accept(this);
-			Constant c = cast.Expression as Constant;
-			if (c != null)
-			{
-				PrimitiveType p = c.DataType as PrimitiveType;
-				if (p != null && p.IsIntegral)
-				{
-					//$REVIEW: this is fixed to 32 bits; need a general solution to it.
-					return new Constant(cast.DataType, c.ToUInt64());
-				}
-			}
-			return cast;
-		}
-
-
-		public override Instruction TransformStore(Store store)
-		{
-			store.Src = store.Src.Accept(this);
-			store.Dst = store.Dst.Accept(this);
-			return store;
-		}
-
-		public override Expression TransformBinaryExpression(BinaryExpression binExp)
+		public Expression VisitBinaryExpression(BinaryExpression binExp)
 		{
 			// (+ id1 id1) ==> (* id1 2)
 
 			if (add2ids.Match(binExp))
 			{
 				Changed = true;
-				return add2ids.Transform(stm).Accept(this);
+				return add2ids.Transform().Accept(this);
 			}
 
 			binExp.Left = binExp.Left.Accept(this);
@@ -201,7 +266,7 @@ namespace Decompiler.Analysis
 			if (constConstBin.Match(binExp))
 			{
 				Changed = true;
-				return constConstBin.Transform(stm);
+				return constConstBin.Transform(Statement);
 			}
 			Constant cLeft = binExp.Left as Constant; 
 			Constant cRight = binExp.Right as Constant;
@@ -230,7 +295,7 @@ namespace Decompiler.Analysis
 
 			// Replace identifier with its definition if possible.
 
-			Expression left = DefiningExpression(idLeft);
+			Expression left = ctx.DefiningExpression(idLeft);
 			if (left == null)
 				left = binExp.Left;
 			BinaryExpression binLeft = left as BinaryExpression;
@@ -245,8 +310,8 @@ namespace Decompiler.Analysis
 				IsAddOrSub(binExp.op) && IsAddOrSub(binLeft.op) && 
 				!cLeftRight.IsReal && !cRight.IsReal)
 			{
-				RemoveUse(idLeft);
-				AddUses(left);
+                ctx.RemoveIdentifierUse(idLeft);
+                ctx.UseExpression(left);
 				Constant c;
 				if (binLeft.op == binExp.op)
 				{
@@ -265,7 +330,7 @@ namespace Decompiler.Analysis
 				IsComparison(binExp.op) && IsAddOrSub(binLeft.op) &&
 				!cLeftRight.IsReal && !cRight.IsReal)
 			{
-				RemoveUse(idLeft);
+				ctx.RemoveIdentifierUse(idLeft);
 				BinaryOperator op = binLeft.op == Operator.Add ? Operator.Sub : Operator.Add;
 				Constant c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
 				return new BinaryExpression(binExp.op, PrimitiveType.Bool, binLeft.Left, c);
@@ -274,19 +339,19 @@ namespace Decompiler.Analysis
 			if (addMici.Match(binExp))
 			{
 				Changed = true;
-				return addMici.Transform(this.stm);
+				return addMici.Transform(this.Statement);
 			}
 
 			if (shMul.Match(binExp))
 			{
 				Changed = true;
-				return shMul.Transform(stm);
+				return shMul.Transform();
 			}
 
 			if (shiftShift.Match(binExp))
 			{
 				Changed = true;
-				return shiftShift.Transform(stm);
+				return shiftShift.Transform();
 			}
 
 			// No change, just return as is.
@@ -294,56 +359,92 @@ namespace Decompiler.Analysis
 			return binExp;
 		}
 
-		public override Expression TransformDepositBits(DepositBits d)
+        public Expression VisitCast(Cast cast)
+        {
+            cast.Expression = cast.Expression.Accept(this);
+            Constant c = cast.Expression as Constant;
+            if (c != null)
+            {
+                PrimitiveType p = c.DataType as PrimitiveType;
+                if (p != null && p.IsIntegral)
+                {
+                    //$REVIEW: this is fixed to 32 bits; need a general solution to it.
+                    return new Constant(cast.DataType, c.ToUInt64());
+                }
+            }
+            return cast;
+        }
+
+        public Expression VisitConditionOf(ConditionOf c)
+        {
+            c.Expression = c.Expression.Accept(this);
+            return c;
+        }
+
+        public Expression VisitConstant(Constant c)
+        {
+            return c;
+        }
+
+		public Expression VisitDepositBits(DepositBits d)
 		{
 			d.Source = d.Source.Accept(this);
 			d.InsertedBits = d.InsertedBits.Accept(this);
 			if (dpbConstantRule.Match(d))
 			{
 				Changed = true;
-				return dpbConstantRule.Transform(stm);
+				return dpbConstantRule.Transform(Statement);
 			}
 			return d;
 		}
 
+        public Expression VisitDereference(Dereference deref)
+        {
+            throw new NotImplementedException();
+        }
 
-		public override Expression TransformIdentifier(Identifier id)
+        public Expression VisitFieldAccess(FieldAccess acc)
+        {
+            throw new NotImplementedException();
+        }
+
+		public Expression VisitIdentifier(Identifier id)
 		{
 			if (idConst.Match(id))
 			{
 				Changed = true;
-				return idConst.Transform(stm);
+				return idConst.Transform();
 			}
 			if (idCopyPropagation.Match(id))
 			{
 				Changed = true;
-				return idCopyPropagation.Transform(stm);
+				return idCopyPropagation.Transform();
 			}
 			if (idBinIdc.Match(id))
 			{
 				Changed = true;
-				return idBinIdc.Transform(stm);
+				return idBinIdc.Transform();
 			}
 			return id;
 		}
 
-		public override Expression TransformMemberPointerSelector(MemberPointerSelector mps)
+		public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			if (mpsRule.Match(mps))
 			{
 				Changed = true;
-				return mpsRule.Transform(stm);
+				return mpsRule.Transform();
 			}
 			return mps;
 		}
 
-		public override Expression TransformMemoryAccess(MemoryAccess access)
+		public Expression VisitMemoryAccess(MemoryAccess access)
 		{
 			access.EffectiveAddress = access.EffectiveAddress.Accept(this);
 			return access;
 		}
 
-		public override Expression TransformMkSequence(MkSequence seq)
+		public Expression VisitMkSequence(MkSequence seq)
 		{
 			seq.Head = seq.Head.Accept(this);
 			seq.Tail = seq.Tail.Accept(this);
@@ -354,61 +455,85 @@ namespace Decompiler.Analysis
 				PrimitiveType tHead = (PrimitiveType) c1.DataType;
 				PrimitiveType tTail = (PrimitiveType) c2.DataType;
 				PrimitiveType t;
-				if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
-					t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
-				else
-					t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
 				Changed = true;
-				return new Constant(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
+                if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
+                {
+
+                    t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
+                    return new Address(c1.ToUInt16(), c2.ToUInt16());
+                }
+                else
+                {
+                    t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
+                    return new Constant(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
+                }
 			}
 			return seq;
 		}
 
+        public Expression VisitPhiFunction(PhiFunction pc)
+        {
+            throw new NotImplementedException();
+        }
 
-		public override Instruction TransformPhiAssignment(PhiAssignment phi)
-		{
-			return phi;
-		}
+        public Expression VisitPointerAddition(PointerAddition pc)
+        {
+            throw new NotImplementedException();
+        }
 
-		public override Expression TransformSlice(Slice slice)
+        public Expression VisitProcedureConstant(ProcedureConstant pc)
+        {
+            return pc;
+        }
+
+        public Expression VisitScopeResolution(ScopeResolution sc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression VisitSegmentedAccess(SegmentedAccess segMem)
+        {
+            throw new NotImplementedException();
+        }
+
+		public Expression VisitSlice(Slice slice)
 		{
 			slice.Expression = slice.Expression.Accept(this);
 			if (sliceConst.Match(slice))
 			{
 				Changed = true;
-				return sliceConst.Transform(stm);
+				return sliceConst.Transform();
 			}
 			if (sliceMem.Match(slice))
 			{
 				Changed = true;
-				return sliceMem.Transform(stm);
+				return sliceMem.Transform();
 			}
 
             // (slice (shl e n) n) ==> e
             if (sliceShift.Match(slice))
             {
                 Changed = true;
-                return sliceShift.Transform(stm);
+                return sliceShift.Transform();
             }
 			return slice;
 		}
 
+        public Expression VisitTestCondition(TestCondition tc)
+        {
+            tc.Expression = tc.Expression.Accept(this);
+            return tc;
+        }
 
-		public override Expression TransformUnaryExpression(UnaryExpression unary)
+		public Expression VisitUnaryExpression(UnaryExpression unary)
 		{
 			unary.Expression = unary.Expression.Accept(this);
 			if (negSub.Match(unary))
 			{
 				Changed = true;
-				return negSub.Transform(stm);
+				return negSub.Transform(Statement);
 			}
 			return unary;
 		}
-
-		public override Instruction TransformUseInstruction(UseInstruction use)
-		{
-			return use;
-		}
-
 	}
 }

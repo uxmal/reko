@@ -36,18 +36,22 @@ namespace Decompiler.Core.Expressions
     public class TestCondition : Expression
     {
         private ConditionCode cc;
-        private Expression expr;
 
         public TestCondition(ConditionCode cc, Expression expr)
             : base(PrimitiveType.Bool)
         {
             this.cc = cc;
-            this.expr = expr;
+            this.Expression = expr;
         }
 
         public override Expression Accept(IExpressionTransformer xform)
         {
             return xform.TransformTestCondition(this);
+        }
+
+        public override T Accept<T>(ExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitTestCondition(this);
         }
 
         public override void Accept(IExpressionVisitor visitor)
@@ -57,7 +61,7 @@ namespace Decompiler.Core.Expressions
 
         public override Expression CloneExpression()
         {
-            throw new NotImplementedException();
+            return new TestCondition(cc, Expression);
         }
 
         public ConditionCode ConditionCode
@@ -66,11 +70,7 @@ namespace Decompiler.Core.Expressions
             set { cc = value; }
         }
 
-        public Expression Expression
-        {
-            get { return expr; }
-            set { expr = value; }
-        }
+        public Expression Expression { get; set; }
 
         public override Expression Invert()
         {

@@ -29,39 +29,31 @@ namespace Decompiler.Core.Code
 	/// </summary>
 	public class Branch : Instruction
 	{
-		private Expression cond;
-        private Block target;
 
         public Branch(Expression cond, Block target)
         {
-            this.cond = cond;
-            this.target = target;
+            this.Condition = cond;
+            this.Target = target;
         }
+
+        public Expression Condition { get; set; }
+        public override bool IsControlFlow { get { return true; } }
+        public Block Target { get; private set; }
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformBranch(this);
 		}
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitBranch(this);
+        }
+
 		public override void Accept(InstructionVisitor v)
 		{
 			v.VisitBranch(this);
 		}
 
-        public Block Target
-        {
-            get { return target; }
-        }
-
-		public override bool IsControlFlow
-		{
-			get { return true; }
-		}
-
-		public Expression Condition
-		{
-			get { return cond; }
-			set { cond = value; }
-		}
-	}
+    }
 }

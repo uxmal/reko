@@ -26,7 +26,8 @@ namespace Decompiler.Analysis
 {
 	/// <summary>
 	/// Determines whether an instruction is critical or not. Non-critical instructions
-	/// are candidates for dead code elimination.
+	/// are candidates for dead code elimination, if the decompiler can prove they are
+    /// not used.
 	/// </summary>
 	public class CriticalInstruction : InstructionVisitorBase
 	{

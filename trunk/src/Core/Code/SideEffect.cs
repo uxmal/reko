@@ -47,6 +47,11 @@ namespace Decompiler.Core.Code
 			return xform.TransformSideEffect(this);
 		}
 
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitSideEffect(this);
+        }
+
 		public override void Accept(InstructionVisitor v)
 		{
 			v.VisitSideEffect(this);

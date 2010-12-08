@@ -46,6 +46,7 @@ namespace Decompiler.Core.Code
         }
 	}
 
+    [Obsolete("Use Call with a non-procedure constant")]
 	public class IndirectCall : CallBase
 	{
 
@@ -57,6 +58,12 @@ namespace Decompiler.Core.Code
 		{
 			return xform.TransformIndirectCall(this);
 		}
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitIndirectCall(this);
+        }
+
 
 		public override void Accept(InstructionVisitor v)
 		{
@@ -86,6 +93,11 @@ namespace Decompiler.Core.Code
 		{
 			return xform.TransformCallInstruction(this);
 		}
+
+        public override T Accept<T>(InstructionVisitor<T> visitor)
+        {
+            return visitor.VisitCallInstruction(this);
+        }
 
 		public override void Accept(InstructionVisitor v)
 		{

@@ -25,17 +25,20 @@ namespace Decompiler.Core.Expressions
 {
 	public class Cast : Expression
 	{
-		private Expression expr;
-
 		public Cast(DataType dt, Expression expr) : base(dt)
 		{
-			this.expr = expr;
+			this.Expression = expr;
 		}
 
 		public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformCast(this);
 		}
+
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitCast(this);
+        }
 
 		public override void Accept(IExpressionVisitor visit)
 		{
@@ -44,14 +47,9 @@ namespace Decompiler.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new Cast(DataType, expr.CloneExpression());
+			return new Cast(DataType, Expression.CloneExpression());
 		}
 
-
-		public Expression Expression
-		{
-			get { return expr; }
-			set { expr = value; }
-		}
+		public Expression Expression { get;set;}
 	}
 }

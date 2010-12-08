@@ -43,6 +43,11 @@ namespace Decompiler.Core.Expressions
 			return xform.TransformApplication(this);
 		}
 
+        public override T Accept<T>(ExpressionVisitor<T> v)
+        {
+            return v.VisitApplication(this);
+        }
+
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitApplication(this);

@@ -33,7 +33,7 @@ namespace Decompiler.Analysis.Simplification
 		private BinaryOperator op;
 		private Expression e;
 
-		public Shl_mul_e_Rule(SsaIdentifierCollection ssaIds)
+		public Shl_mul_e_Rule(EvaluationContext ctx)
 		{
 		}
 
@@ -61,7 +61,7 @@ namespace Decompiler.Analysis.Simplification
 
 		}
 
-		public Expression Transform(Statement stm)
+		public Expression Transform()
 		{
 			return new BinaryExpression(op, e.DataType, e, Operator.Shl.ApplyConstants(cMul, cShift));
 		}

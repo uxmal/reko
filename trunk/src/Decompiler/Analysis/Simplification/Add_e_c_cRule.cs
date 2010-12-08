@@ -32,15 +32,15 @@ namespace Decompiler.Analysis.Simplification
 	/// </summary>
 	public class Add_e_c_cRule
 	{
-		private SsaIdentifierCollection ssaIds;
+		private EvaluationContext ctx;
 		private BinaryExpression bin;
 		private BinaryExpression binLeft;
 		private Constant cLeftRight;
 		private Constant cRight;
 
-		public Add_e_c_cRule(SsaIdentifierCollection ssaIds)
+        public Add_e_c_cRule(EvaluationContext ctx)
 		{
-			this.ssaIds = ssaIds;
+			this.ctx = ctx;
 		}
 
 		private bool IsAddOrSub(Operator op)
