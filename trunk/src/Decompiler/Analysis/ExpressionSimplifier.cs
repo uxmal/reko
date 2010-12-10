@@ -96,12 +96,25 @@ namespace Decompiler.Analysis
 
         public Expression VisitApplication(Application appl)
         {
+            var args = new Expression[appl.Arguments.Length];
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                appl.Arguments[i] = appl.Arguments[i].Accept(this);
+                var arg = appl.Arguments[i];
+                var outArg = arg as UnaryExpression;
+                if (outArg != null && outArg.op == Operator.AddrOf)
+                {
+                    if (outArg.Expression is Identifier)
+                    {
+                        args[i] = arg;
+                        continue;
+                    }
+                }
+                args[i] = arg.Accept(this);
             }
-            appl.Procedure = appl.Procedure.Accept(this);
-            return appl;
+            appl = new Application(appl.Procedure.Accept(this),
+                appl.DataType,
+                args);
+            return ctx.GetValue(appl);
         }
 
         public Expression VisitArrayAccess(ArrayAccess acc)

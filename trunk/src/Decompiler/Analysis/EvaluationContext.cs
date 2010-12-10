@@ -43,6 +43,7 @@ namespace Decompiler.Analysis
         Expression GetValue(Identifier id);
         Expression GetValue(MemoryAccess access);
         Expression GetValue(SegmentedAccess access);
+        Expression GetValue(Application appl);
         void RemoveIdentifierUse(Identifier id);
         void UseExpression(Expression expr);
     }

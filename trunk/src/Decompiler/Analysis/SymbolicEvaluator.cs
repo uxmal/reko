@@ -88,24 +88,22 @@ namespace Decompiler.Analysis
         public Dictionary<Expression, Expression> RegisterState { get; private set; }
         public Dictionary<int, Expression> StackState { get; private set; }
 
+        public void SetValue(Identifier id, Expression value)
+        {
+            RegisterState[id] = value;
+        }
+
         #region InstructionVisitor Members
 
         void InstructionVisitor.VisitAssignment(Assignment a)
         {
             var valSrc = a.Src.Accept(eval);
-            if (valSrc is MemoryAccess)
-            {
-                RegisterState[a.Dst] = Constant.Invalid;
-            }
-            else
-            {
-                RegisterState[a.Dst] = valSrc;
-            }
+            SetValue(a.Dst, valSrc);
         }
 
         void InstructionVisitor.VisitBranch(Branch b)
         {
-            throw new NotImplementedException();
+            b.Condition.Accept(eval);
         }
 
         void InstructionVisitor.VisitCallInstruction(CallInstruction ci)
@@ -115,37 +113,38 @@ namespace Decompiler.Analysis
 
         void InstructionVisitor.VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            if (decl.Expression != null)
+            {
+                var value = decl.Expression.Accept(eval);
+                SetValue(decl.Identifier, value);
+            }
         }
 
         void InstructionVisitor.VisitDefInstruction(DefInstruction def)
         {
-            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
-            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
         }
 
         void InstructionVisitor.VisitIndirectCall(IndirectCall ic)
         {
-            throw new NotImplementedException();
+            ic.Callee.Accept(eval);
         }
 
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)
         {
-            throw new NotImplementedException();
+            ret.Expression.Accept(eval);
         }
 
         void InstructionVisitor.VisitSideEffect(SideEffect side)
         {
-            throw new NotImplementedException();
+            side.Expression.Accept(eval);
         }
 
         void InstructionVisitor.VisitStore(Store store)
@@ -163,12 +162,12 @@ namespace Decompiler.Analysis
 
         void InstructionVisitor.VisitSwitchInstruction(SwitchInstruction si)
         {
-            throw new NotImplementedException();
+            si.Expression.Accept(eval);
         }
 
         void InstructionVisitor.VisitUseInstruction(UseInstruction u)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
@@ -204,6 +203,21 @@ namespace Decompiler.Analysis
                 Expression value;
                 if (StackState.TryGetValue(offset, out value))
                     return value;
+            }
+            return Constant.Invalid;
+        }
+
+        public Expression GetValue(Application appl)
+        {
+            var args = appl.Arguments;
+            for (int i = 0; i < args.Length; ++i)
+            {
+                var outArg = args[i] as UnaryExpression;
+                if (outArg == null || outArg.op != Operator.AddrOf) continue;
+                var outId = outArg.Expression as Identifier;
+                if (outId != null)
+                    SetValue(outId, Constant.Invalid);
+
             }
             return Constant.Invalid;
         }

@@ -58,6 +58,11 @@ namespace Decompiler.Analysis
             return null;
         }
 
+        public Expression GetValue(Application appl)
+        {
+            return appl;
+        }
+
         public Expression GetValue(MemoryAccess access)
         {
             return access;

@@ -172,7 +172,20 @@ namespace Decompiler.UnitTests.Analysis
                 m.Assign(esp, m.Add(esp, 4));
             });
             Assert.AreEqual("0x00000001", se.RegisterState[eax].ToString());
-            Assert.AreEqual("esp", se.RegisterState[ebp].ToString());
+            Assert.AreEqual("ebp", se.RegisterState[ebp].ToString());
+        }
+
+        [Test]
+        public void ApplWithOutParameter()
+        {
+            Identifier eax = null;
+            RunBlockTest(delegate(ProcedureBuilder m)
+            {
+                eax = m.Register(1);
+                m.Assign(eax, 1);
+                m.SideEffect(m.Fn("foo", m.AddrOf(eax)));
+            });
+            Assert.AreEqual("<void>", se.RegisterState[eax].ToString());
         }
     }
 }
