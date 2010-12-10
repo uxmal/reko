@@ -319,10 +319,11 @@ namespace Decompiler.Analysis
 
         public Expression VisitMemoryAccess(MemoryAccess access)
         {
-            return ctx.GetValue(new MemoryAccess(
+            var value = new MemoryAccess(
                 access.MemoryId,
                 access.EffectiveAddress.Accept(this),
-                access.DataType));
+                access.DataType);
+            return ctx.GetValue(value);
         }
 
         public Expression VisitMkSequence(MkSequence seq)

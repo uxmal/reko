@@ -28,12 +28,12 @@ namespace Decompiler.Core.Expressions
 	/// </summary>
 	public class ScopeResolution : Expression
 	{
-		private string name;
-
 		public ScopeResolution(DataType dt, string typeName) : base(dt)
 		{
-			this.name = typeName;
+			this.TypeName = typeName;
 		}
+
+        public string TypeName { get; private set; }
 
 		public override Expression Accept(IExpressionTransformer xform)
 		{
@@ -52,13 +52,9 @@ namespace Decompiler.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new ScopeResolution(DataType, name);
+			return new ScopeResolution(DataType, TypeName);
 		}
 
-		public string TypeName
-		{
-			get { return name; }
-		}
 	}
 
 }

@@ -20,11 +20,11 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Decompiler.Analysis
@@ -42,9 +42,12 @@ namespace Decompiler.Analysis
         {
             this.arch = arch;
             RegisterState = new Dictionary<Expression, Expression>(new ExpressionValueComparer());
-            StackState = new Dictionary<int, Expression>();
+            StackState = new Map<int, Expression>();
             eval = new ExpressionSimplifier(this);
         }
+
+        public Dictionary<Expression, Expression> RegisterState { get; private set; }
+        public Map<int, Expression> StackState { get; private set; }
 
         public void Evaluate(Instruction instr)
         {
@@ -84,9 +87,6 @@ namespace Decompiler.Analysis
             if (regSp == null) return false;
             return (regSp.Register == arch.StackRegister);
         }
-
-        public Dictionary<Expression, Expression> RegisterState { get; private set; }
-        public Dictionary<int, Expression> StackState { get; private set; }
 
         public void SetValue(Identifier id, Expression value)
         {
@@ -185,26 +185,51 @@ namespace Decompiler.Analysis
 
         public Expression GetValue(MemoryAccess access)
         {
+            return GetValueEa(access);
+        }
+
+        private Expression GetValueEa(MemoryAccess access)
+        {
             int offset;
-            if (GetStackAddressOffset(access.EffectiveAddress, out offset))
+            if (!GetStackAddressOffset(access.EffectiveAddress, out offset))
+                return Constant.Invalid;
+
+            Expression value;
+            if (StackState.TryGetValue(offset, out value))
             {
-                Expression value;
-                if (StackState.TryGetValue(offset, out value))
+                int excess = access.DataType.Size - value.DataType.Size;
+                if (excess == 0)
                     return value;
+                else if (excess > 0)
+                {
+                    int remainder = offset + value.DataType.Size;
+                    Expression v2;
+                    if (StackState.TryGetValue(remainder, out v2))
+                    {
+                        return new MkSequence(access.DataType, v2, value);
+                    }
+                }
+                else
+                {
+                    return new Cast(access.DataType, value);
+                }
+            }
+            else
+            {
+                int offset2;
+                if (StackState.TryGetLowerBoundKey(offset, out offset2))
+                {
+                    var value2 = StackState[offset2];
+                    if (offset2 + value2.DataType.Size > offset)
+                        return new Slice(access.DataType, StackState[offset2], (uint)((offset - offset2) * 8));
+                }
             }
             return Constant.Invalid;
         }
 
         public Expression GetValue(SegmentedAccess access)
         {
-            int offset;
-            if (GetStackAddressOffset(access.EffectiveAddress, out offset))
-            {
-                Expression value;
-                if (StackState.TryGetValue(offset, out value))
-                    return value;
-            }
-            return Constant.Invalid;
+            return GetValueEa(access);
         }
 
         public Expression GetValue(Application appl)

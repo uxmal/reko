@@ -38,6 +38,9 @@ namespace Decompiler.Core.Expressions
 			Expression = i; offset = (byte) bitOffset;
 		}
 
+        public Expression Expression { get; set; }
+        public int Offset { get { return offset; } }
+
 		public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformSlice(this);
@@ -53,17 +56,9 @@ namespace Decompiler.Core.Expressions
 			v.VisitSlice(this);
 		}
 
-
 		public override Expression CloneExpression()
 		{
 			return new Slice(DataType, Expression, offset);
-		}
-
-        public Expression Expression { get; set; }
-
-		public int Offset 
-		{
-			get { return offset; }
 		}
 	}
 }

@@ -299,7 +299,7 @@ namespace Decompiler.Arch.Intel
 
 		private List<IntelInstruction> DisassembleRange(Address addrBegin, Address addrEnd, bool inclusive)
 		{
-			IntelDisassembler dasm = new IntelDisassembler(Image.CreateReader(addrBegin), arch.WordWidth);
+			var dasm = new IntelDisassembler(Image.CreateReader(addrBegin), arch.WordWidth);
             List<IntelInstruction> instrs = new List<IntelInstruction>();
 			do
 			{
