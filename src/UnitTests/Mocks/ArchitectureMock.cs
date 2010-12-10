@@ -25,6 +25,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
+using System.Text;
 using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Mocks
@@ -161,7 +162,11 @@ namespace Decompiler.UnitTests.Mocks
 
 		public string GrfToString(uint grf)
 		{
-			throw new NotImplementedException("// TODO:  Add ArchitectureMock.GrfToString implementation");
+            var sb = new StringBuilder();
+            if ((grf & (uint) StatusFlags.S) != 0) sb.Append('S');
+            if ((grf & (uint) StatusFlags.Z) != 0) sb.Append('Z');
+            if ((grf & (uint) StatusFlags.C) != 0) sb.Append('C');
+            return sb.ToString();
 		}
 
         public PrimitiveType FramePointerType
@@ -222,4 +227,12 @@ namespace Decompiler.UnitTests.Mocks
 		{
 		}
 	}
+
+    [Flags]
+    public enum StatusFlags: uint
+    {
+        S = 1,
+        Z = 2,
+        C = 4,
+    }
 }

@@ -178,14 +178,69 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void ApplWithOutParameter()
         {
-            Identifier eax = null;
+            Identifier r1 = null;
             RunBlockTest(delegate(ProcedureBuilder m)
             {
-                eax = m.Register(1);
-                m.Assign(eax, 1);
-                m.SideEffect(m.Fn("foo", m.AddrOf(eax)));
+                r1 = m.Register(1);
+                m.Assign(r1, 1);
+                m.SideEffect(m.Fn("foo", m.AddrOf(r1)));
             });
-            Assert.AreEqual("<void>", se.RegisterState[eax].ToString());
+            Assert.AreEqual("<void>", se.RegisterState[r1].ToString());
+        }
+
+        [Test]
+        public void Appl()
+        {
+            Identifier r1 = null;
+            RunBlockTest(delegate(ProcedureBuilder m)
+            {
+                r1 = m.Register(1);
+                m.Assign(r1, m.Fn("foo"));
+            });
+            Assert.AreEqual("<void>", se.RegisterState[r1].ToString());
+        }
+
+        [Test]
+        public void RegisterPairStoreLoad()
+        {
+            Identifier ds = null;
+            Identifier ax = null;
+            Identifier eax = null;
+            Identifier esp = null;
+            RunBlockTest(delegate (ProcedureBuilder m)
+            {
+                ds = m.Frame.EnsureRegister(Registers.ds);
+                ax = m.Frame.EnsureRegister(Registers.ax);
+                eax = m.Frame.EnsureRegister(Registers.eax);
+                esp = m.Frame.EnsureRegister(Registers.esp);
+                m.Store(m.Sub(esp, 4), ax);
+                m.Store(m.Sub(esp, 2), ds);
+                m.Assign(eax, m.LoadDw(m.Sub(esp, 4)));
+            });
+            Assert.AreEqual("SEQ(ds, ax)", se.RegisterState[eax].ToString());
+        }
+
+        [Test]
+        public void Slice()
+        {
+            Identifier ax = null;
+            Identifier cx = null;
+            Identifier ebx = null;
+            Identifier esp = null;
+            RunBlockTest(delegate(ProcedureBuilder m)
+            {
+                ax = m.Frame.EnsureRegister(Registers.ax);
+                cx = m.Frame.EnsureRegister(Registers.cx);
+                ebx = m.Frame.EnsureRegister(Registers.ebx);
+                esp = m.Frame.EnsureRegister(Registers.esp);
+
+                m.Store(m.Sub(esp, 4), ebx);
+                m.Assign(ax, m.LoadW(m.Sub(esp, 4)));
+                m.Assign(cx, m.LoadW(m.Sub(esp, 2)));
+            });
+            Assert.AreEqual("ebx", se.StackState[-4].ToString());
+            Assert.AreEqual("(word16) ebx", se.RegisterState[ax].ToString());
+            Assert.AreEqual("SLICE(ebx, word16, 16)", se.RegisterState[cx].ToString());
         }
     }
 }

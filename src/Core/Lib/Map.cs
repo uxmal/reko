@@ -70,5 +70,35 @@ namespace Decompiler.Core.Lib
             }
             return set;
         }
+
+        public bool TryGetLowerBoundKey(K key, out K closestKey)
+        {
+            int lo = 0;
+            int hi = base.Count - 1;
+            closestKey = default(K);
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                K k = base.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    closestKey = k;
+                    return true;
+                }
+                if (c < 0)
+                {
+                    closestKey = k;
+                    set = true;
+                    lo = mid + 1;
+                }
+                else
+                {
+                    hi = mid - 1;
+                }
+            }
+            return set;
+        }
     }
 }

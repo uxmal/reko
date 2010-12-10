@@ -33,7 +33,7 @@ namespace Decompiler.Analysis.Simplification
 		{
 			this.slice = slice;
 			this.c = slice.Expression as Constant;
-			return c != null;
+            return c != null && c != Constant.Invalid;
 		}
 
 		public Expression Transform()

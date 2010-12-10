@@ -28,16 +28,16 @@ namespace Decompiler.Core.Expressions
 	/// </summary>
 	public class MkSequence : Expression
 	{
-		public Expression Head;
-		public Expression Tail;
-
 		public MkSequence(DataType dt, Expression head, Expression tail) : base(dt)
 		{
 			Head = head;
 			Tail = tail;
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
+        public Expression Head { get; set; }
+        public Expression Tail { get; set; }
+
+        public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformMkSequence(this);
 		}

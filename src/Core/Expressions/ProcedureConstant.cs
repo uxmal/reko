@@ -25,12 +25,12 @@ namespace Decompiler.Core.Expressions
 {
 	public class ProcedureConstant : Expression
 	{
-		private ProcedureBase proc;
-
 		public ProcedureConstant(PrimitiveType ptrType, ProcedureBase proc) : base(ptrType)
 		{
-			this.proc = proc;
+            this.Procedure = proc;
 		}
+
+        public ProcedureBase Procedure { get; private set; }
 
 		public override Expression Accept(IExpressionTransformer xform)
 		{
@@ -47,15 +47,9 @@ namespace Decompiler.Core.Expressions
 			visit.VisitProcedureConstant(this);
 		}
 
-		public ProcedureBase Procedure
-		{
-			get { return proc; }
-		}
-
 		public override Expression CloneExpression()
 		{
-			throw new NotImplementedException();
+            return this;
 		}
-
 	}
 }

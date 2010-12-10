@@ -25,8 +25,7 @@ namespace Decompiler.Core.Expressions
 {
 	public class MemoryAccess : Expression
 	{
-		public MemoryIdentifier MemoryId;
-
+        public MemoryIdentifier MemoryId { get; set; }
         public Expression EffectiveAddress { get; set; }
 		
 		public MemoryAccess(Expression ea, DataType dt) : base(dt)

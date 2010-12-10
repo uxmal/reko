@@ -215,6 +215,7 @@ namespace Decompiler.Core
 			return id;
 		}
 
+        [Obsolete("stack variables are not created at Rewrite time anymore. Remove this when the new Scanner is in place.")]
 		public Identifier EnsureStackVariable(Constant imm, int cbOffset, DataType type)
 		{
 			if (imm.IsValid)
@@ -227,6 +228,13 @@ namespace Decompiler.Core
 				? EnsureStackArgument(cbOffset, type)
 				: EnsureStackLocal(cbOffset, type);
 		}
+
+        public Identifier EnsureStackVariable(int byteOffset, DataType type)
+        {
+            return (byteOffset >= 0)
+                ? EnsureStackArgument(byteOffset, type)
+                : EnsureStackLocal(byteOffset, type);
+        }
 
 		public bool Escapes
 		{
