@@ -122,14 +122,14 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.IsNull(a, "ds is used both as ds:[bx+4] and ds:[0x3000], it should't be strongly associated with a register");
 		}
 
-		private void Prepare(ProcedureMock mock)
+		private void Prepare(ProcedureBuilder mock)
 		{
 			proc = mock.Procedure;
 			SsaTransform tr = new SsaTransform(proc, proc.CreateBlockDominatorGraph(), false);
 			ssaIds = tr.SsaState.Identifiers;
 		}
 
-		public class Mp1 : ProcedureMock
+		public class Mp1 : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{
@@ -141,7 +141,7 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
-		public class Mp2 : ProcedureMock
+		public class Mp2 : ProcedureBuilder
 		{
 			// ds:bx is used in both fetches, so ds is strongly associated with bx.
 			protected override void BuildBody()
@@ -155,7 +155,7 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
-		public class Mp3 : ProcedureMock
+		public class Mp3 : ProcedureBuilder
 		{
 			// ds is used both as ds:[bx+4] and ds:[0x3000], which means
 			// it isn't strongly associated with  any register.

@@ -122,7 +122,7 @@ namespace Decompiler.UnitTests.Structure
 			RunTest(sourceFilename, outFilename, new Address(0xC00, 0));
 		}
 		
-		private void RunTest(ProcedureMock mock, string outFilename)
+		private void RunTest(ProcedureBuilder mock, string outFilename)
 		{
 			Procedure proc = mock.Procedure;
 			using (FileUnitTester fut = new FileUnitTester(outFilename))

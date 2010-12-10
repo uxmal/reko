@@ -15,7 +15,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void Create()
         {
-            RunTest(delegate(ProcedureMock m)
+            RunTest(delegate(ProcedureBuilder m)
             {
                 m.Return();
             });
@@ -26,12 +26,12 @@ namespace Decompiler.UnitTests.Structure
 
         protected virtual void RunTest(ProcGenerator pg)
         {
-            ProcedureMock pm = new ProcedureMock();
+            ProcedureBuilder pm = new ProcedureBuilder();
             pg(pm);
             RunTest(pm);
         }
 
-        protected virtual void RunTest(ProcedureMock pm)
+        protected virtual void RunTest(ProcedureBuilder pm)
         {
             pm.Procedure.RenumberBlocks();
 

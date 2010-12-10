@@ -24,7 +24,7 @@ using System;
 
 namespace Decompiler.UnitTests.Typing
 {
-	public class PtrPtrIntMock : ProcedureMock
+	public class PtrPtrIntMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

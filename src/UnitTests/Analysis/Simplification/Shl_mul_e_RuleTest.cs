@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 	public class Shl_mul_e_RuleTest
 	{
 		private Identifier id;
-		private ProcedureMock m;
+		private ProcedureBuilder m;
 		private Identifier x;
 		private SsaIdentifierCollection ssaIds;
 
@@ -59,7 +59,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 		[SetUp]
 		public void SetUp()
 		{
-			m = new ProcedureMock();
+			m = new ProcedureBuilder();
 			id = m.Local32("id");
 			x = m.Local32("x");
 			ssaIds = new SsaIdentifierCollection();

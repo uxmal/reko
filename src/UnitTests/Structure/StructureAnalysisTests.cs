@@ -58,7 +58,7 @@ Node 3: Block: done
 unstructuredexit
 
 ";
-            RunTest(delegate(ProcedureMock m)
+            RunTest(delegate(ProcedureBuilder m)
             {
                 m.Label("loopheader");
                 m.BranchIf(m.Fn("foo"), "done");
@@ -90,7 +90,7 @@ unstructuredexit
 
         private void RunTest(ProcGenerator gen, string sExp)
         {
-            ProcedureMock mock = new ProcedureMock();
+            ProcedureBuilder mock = new ProcedureBuilder();
             gen(mock);
             StructureAnalysis sa = CompileTest(mock);
             string s = Dump(sa.ProcedureStructure);
@@ -98,7 +98,7 @@ unstructuredexit
             Assert.AreEqual(sExp, s);
         }
 
-        private static StructureAnalysis CompileTest(ProcedureMock mock)
+        private static StructureAnalysis CompileTest(ProcedureBuilder mock)
         {
             mock.Procedure.RenumberBlocks();
             StructureAnalysis sa = new StructureAnalysis(mock.Procedure);

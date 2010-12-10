@@ -69,17 +69,23 @@ namespace Decompiler.Core.Expressions
 	/// </summary>
 	public class SegmentedAccess : MemoryAccess
 	{
-		public Expression BasePointer;			// Segment usually goes here
-
 		public SegmentedAccess(MemoryIdentifier id, Expression basePtr, Expression ea, DataType dt) : base(id, ea, dt)
 		{
 			this.BasePointer = basePtr;
 		}
 
+        public Expression BasePointer { get; set; }         // Segment selector
+
+
 		public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformSegmentedAccess(this);
 		}
+
+        public override T Accept<T>(ExpressionVisitor<T> visit)
+        {
+            return visit.VisitSegmentedAccess(this);
+        }
 
 		public override void Accept(IExpressionVisitor visit)
 		{

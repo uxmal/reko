@@ -24,7 +24,7 @@ using System;
 
 namespace Decompiler.UnitTests.Mocks
 {
-	public class AdcMock : ProcedureMock
+	public class AdcMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

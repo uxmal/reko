@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class DoWhileIfFragment : ProcedureMock
+    public class DoWhileIfFragment : ProcedureBuilder
     {
         protected override void BuildBody()
         {

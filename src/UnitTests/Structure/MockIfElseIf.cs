@@ -27,7 +27,7 @@ namespace Decompiler.UnitTests.Structure
 	/// A sequence of nested if-thens that should decompile to a switch-like
 	/// statement.
 	/// </summary>
-	public class MockIfElseIf : ProcedureMock
+	public class MockIfElseIf : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

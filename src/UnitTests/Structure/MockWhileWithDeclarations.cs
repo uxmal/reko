@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Structure
 {
-    public class MockWhileWithDeclarations : ProcedureMock
+    public class MockWhileWithDeclarations : ProcedureBuilder
     {
         protected override void BuildBody()
         {

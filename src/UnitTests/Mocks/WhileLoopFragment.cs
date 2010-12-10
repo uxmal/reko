@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class WhileLoopFragment : ProcedureMock
+    public class WhileLoopFragment : ProcedureBuilder
     {
         protected override void BuildBody()
         {

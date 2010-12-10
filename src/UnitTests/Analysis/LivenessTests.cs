@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Analysis
 	[TestFixture]
 	public class LivenessTests
 	{
-		private ProcedureMock m;
+		private ProcedureBuilder m;
 		private FakeLiveness l;
 
 		[Test]
@@ -72,7 +72,7 @@ namespace Decompiler.UnitTests.Analysis
 		[SetUp]
 		public void Setup()
 		{
-			m = new ProcedureMock();
+			m = new ProcedureBuilder();
 			l = new FakeLiveness();
 		}
 	}

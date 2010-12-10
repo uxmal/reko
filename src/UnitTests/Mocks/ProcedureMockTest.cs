@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Mocks
 			RunTest(new NotMock(), "Mock/MockNot.txt");
 		}
 
-		private class NotMock : ProcedureMock
+		private class NotMock : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Mocks
 			RunTest(new FnMock(), "Mock/MockFn.txt");
 		}
 
-		private class FnMock : ProcedureMock
+		private class FnMock : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Mocks
 			RunTest(new ReturnMock(), "Mock/MockReturn.txt");
 		}
 
-		private class ReturnMock : ProcedureMock
+		private class ReturnMock : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{
@@ -93,7 +93,7 @@ namespace Decompiler.UnitTests.Mocks
 			}
 		}
 
-		private void RunTest(ProcedureMock mock, string outputFile)
+		private void RunTest(ProcedureBuilder mock, string outputFile)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
@@ -102,7 +102,7 @@ namespace Decompiler.UnitTests.Mocks
 			}
 		}
 
-		private class StoreMock : ProcedureMock
+		private class StoreMock : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{

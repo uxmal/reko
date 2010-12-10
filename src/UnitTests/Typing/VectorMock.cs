@@ -26,7 +26,7 @@ using System;
 
 namespace Decompiler.UnitTests.Typing
 {
-	public class VectorMock : ProcedureMock
+	public class VectorMock : ProcedureBuilder
 	{
 		// Compute the sum of the members of a vector.
 		protected override void BuildBody()

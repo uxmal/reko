@@ -59,12 +59,12 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbArrayAccess()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new ArrayAccess());
 			RunTest(mock, "Typing/DtbArrayAccess.txt");
 		}
 
-		private class ArrayAccess : ProcedureMock
+		private class ArrayAccess : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Typing
         [Ignore("Infrastructure needs to be built to handle negative induction variables correctly.")]
         public void DtbArrayLoopMock()
 		{
-			ProgramMock mock = new Mocks.ProgramMock();
+			ProgramBuilder mock = new Mocks.ProgramBuilder();
 			mock.Add(new ArrayLoopMock());
 			RunTest(mock, "Typing/DtbArrayLoopMock.txt");
 		}
@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbGlobalVariables()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new GlobalVariablesMock());
 			RunTest(mock, "Typing/DtbGlobalVariables.txt");
 		}
@@ -135,7 +135,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbArrayAccess2()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             Identifier bx = m.Local16("bx");
             Expression e = m.Array(PrimitiveType.Word32, m.Seq(ds, m.Word16(0x300)), m.Mul(bx, 8));
@@ -151,7 +151,7 @@ namespace Decompiler.UnitTests.Typing
         [Ignore("Frame pointers require escape and alias analysis.")]
 		public void DtbFramePointer()
 		{
-			ProgramMock mock = new Mocks.ProgramMock();
+			ProgramBuilder mock = new Mocks.ProgramBuilder();
 			mock.Add(new FramePointerMock(factory));
 			RunTest(mock, "Typing/DtbFramePointer.txt");
             throw new NotImplementedException();
@@ -160,7 +160,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbFnPointerMock()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new FnPointerMock());
 			RunTest(mock, "Typing/DtbFnPointerMock.txt");
 		}
@@ -288,7 +288,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbGlobalArray()
 		{
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier i = m.Local32("i");
 			Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
 			Expression e = m.Load(PrimitiveType.Int32, ea);
@@ -325,7 +325,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbSegmentedAccess()
 		{
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
 
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
@@ -343,7 +343,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbSegmentedDirectAddress()
 		{
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
             Program prog = new Program();
             prog.Architecture = new Decompiler.Arch.Intel.IntelArchitecture(Decompiler.Arch.Intel.ProcessorMode.Real);
             store.EnsureExpressionTypeVariable(factory, prog.Globals);
@@ -362,7 +362,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbSegmentedDoubleReference()
 		{
-			ProgramMock m = new ProgramMock();
+			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new SegmentedDoubleReferenceMock());
 			RunTest(m, "Typing/DtbSegmentedDoubleReference.txt");
 		}
@@ -389,7 +389,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbTreeFind()
 		{
-			ProgramMock m = new ProgramMock();
+			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new TreeFindMock());
 			RunTest(m, "Typing/DtbTreeFind.txt");
 		}
@@ -397,7 +397,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbSegmentedMemoryPointer()
 		{
-			ProgramMock m = new ProgramMock();
+			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new SegmentedMemoryPointerMock());
 			RunTest(m.BuildProgram(), "Typing/DtbSegmentedMemoryPointer.txt");
 		}
@@ -405,8 +405,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbFn1CallFn2()
 		{
-			ProgramMock pp = new ProgramMock();
-			ProcedureMock m = new ProcedureMock("Fn1");
+			ProgramBuilder pp = new ProgramBuilder();
+			ProcedureBuilder m = new ProcedureBuilder("Fn1");
 			Identifier loc1 = m.Local32("loc1");
 			Identifier loc2 = m.Local32("loc2");
 			m.Assign(loc2, m.Fn("Fn2", loc1));
@@ -414,7 +414,7 @@ namespace Decompiler.UnitTests.Typing
 			m.Procedure.RenumberBlocks();
 			pp.Add(m);
 
-			m = new ProcedureMock("Fn2");
+			m = new ProcedureBuilder("Fn2");
 			Identifier arg1 = m.Local32("arg1");
 			Identifier ret = m.Register(1);
 			m.Procedure.Signature = new ProcedureSignature(ret, new Identifier[] { arg1 });
@@ -430,9 +430,9 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DtbStructurePointerPassedToFunction()
 		{
-			ProgramMock pp = new ProgramMock();
+			ProgramBuilder pp = new ProgramBuilder();
 			
-			ProcedureMock m = new ProcedureMock("Fn1");
+			ProcedureBuilder m = new ProcedureBuilder("Fn1");
 			Identifier p = m.Local32("p");
 			m.Store(m.Add(p, 4), m.Word32(0x42));
 			m.SideEffect(m.Fn("Fn2", p));
@@ -440,7 +440,7 @@ namespace Decompiler.UnitTests.Typing
 			m.Procedure.RenumberBlocks();
 			pp.Add(m);
 
-			m = new ProcedureMock("Fn2");
+			m = new ProcedureBuilder("Fn2");
 			Identifier arg1 = m.Local32("arg1");
 			m.Procedure.Signature = new ProcedureSignature(null, new Identifier[] { arg1 });
 			m.Store(m.Add(arg1, 8), m.Int32(0x23));
@@ -455,7 +455,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbSignedCompare()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier p = m.Local32("p");
             Identifier ds = m.Local16("ds");
             ds.DataType = PrimitiveType.SegmentSelector;
@@ -467,7 +467,7 @@ namespace Decompiler.UnitTests.Typing
                 m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
             m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
 
-            ProgramMock prog = new ProgramMock();
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/DtbSignedCompare.txt");
 
@@ -476,12 +476,12 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void DtbSequenceWithSegment()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local16("ds");
             ds.DataType = PrimitiveType.SegmentSelector;
             m.Store(m.Word16(0x0100), m.Seq(ds, m.Word16(0x1234)));
 
-            ProgramMock prog = new ProgramMock();
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
         }

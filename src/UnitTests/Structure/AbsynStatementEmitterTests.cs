@@ -30,14 +30,14 @@ namespace Decompiler.UnitTests.Structure
     [TestFixture]
     public class AbsynStatementEmitterTests
     {
-        ProcedureMock m;
+        ProcedureBuilder m;
         List<AbsynStatement> stms;
         AbsynStatementEmitter emitter;
 
         [SetUp]
         public void Setup()
         {
-            m = new ProcedureMock();
+            m = new ProcedureBuilder();
             stms = new List<AbsynStatement>();
             emitter = new AbsynStatementEmitter(stms);
         }

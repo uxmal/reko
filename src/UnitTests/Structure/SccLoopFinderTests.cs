@@ -15,7 +15,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void FindNoLoopInInterval()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             m.Return();
             m.Procedure.RenumberBlocks();
 
@@ -32,7 +32,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void FindSelfLoopInInterval()
         {
-            ProcedureStructure proc = CompileTest(delegate(ProcedureMock m)
+            ProcedureStructure proc = CompileTest(delegate(ProcedureBuilder m)
             {
                 m.Label("lupe");
                 m.BranchIf(m.LocalBool("f"), "lupe");
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void FindMultiNodeLoop()
         {
-            ProcedureStructure proc = CompileTest(delegate(ProcedureMock m)
+            ProcedureStructure proc = CompileTest(delegate(ProcedureBuilder m)
             {
                 m.Label("lupe");
                 m.BranchIf(m.LocalBool("a"), "branch_true");
@@ -101,7 +101,7 @@ namespace Decompiler.UnitTests.Structure
 
         private ProcedureStructure CompileTest(ProcGenerator g)
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             g(m);
             return CompileTest(m.Procedure);
         }

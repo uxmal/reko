@@ -40,6 +40,8 @@ namespace Decompiler.Arch.M68k
         T Visit(AddressOperand addressOperand);
 
         T Visit(PostIncrementMemoryOperand post);
+
+        T Visit(RegisterSetOperand registerSet);
     }
 
     public abstract class M68kOperandImpl : MachineOperand, M68kOperand
@@ -122,6 +124,4 @@ namespace Decompiler.Arch.M68k
             return visitor.Visit(this);
         }
     }
-
-
 }

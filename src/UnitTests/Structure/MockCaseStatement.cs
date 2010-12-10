@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Structure
 {
-    public class MockCaseStatement : ProcedureMock
+    public class MockCaseStatement : ProcedureBuilder
     {
         protected override void BuildBody()
         {

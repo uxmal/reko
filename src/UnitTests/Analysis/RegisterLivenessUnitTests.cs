@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Analysis
 		private Frame f;
 		private ProgramDataFlow mpprocflow;
 		private RegisterLiveness rl;
-		private ProcedureMock m;
+		private ProcedureBuilder m;
         private HashSet<Procedure> terminates;
 
 		[SetUp]
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			prog = new Program();
 			prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-			m = new ProcedureMock();
+			m = new ProcedureBuilder();
 			proc = m.Procedure;
 			f = proc.Frame;
 			mpprocflow = new ProgramDataFlow();

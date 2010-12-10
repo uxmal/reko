@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpReplaceSimple()
 		{
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Block block = m.Label("block");
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			Identifier pfoo = new Identifier("pfoo", 0, PrimitiveType.Pointer32, null);
@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpReplacePhi()
 		{
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			Identifier foo1 = new Identifier("foo1", 0, PrimitiveType.Word32, null);
 			Identifier foo2 = new Identifier("foo2", 1, PrimitiveType.Word32, null);
@@ -132,7 +132,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpReplaceManyUses()
 		{
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
 			Identifier foo = new Identifier("foo", 0, PrimitiveType.Word32, null);
 			Identifier bar = new Identifier("bar", 1, PrimitiveType.Word32, null);
 			Identifier pfoo = new Identifier("pfoo", 2, PrimitiveType.Pointer32, null);

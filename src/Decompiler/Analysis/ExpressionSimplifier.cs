@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Analysis.Simplification;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
@@ -27,16 +28,396 @@ using System.Collections.Generic;
 
 namespace Decompiler.Analysis
 {
-	/// <summary>
+    /// <summary>
+    /// Partially evaluates expressions, using an <see cref="EvaluationContext"/> to obtain the values
+    /// of identifiers and optionally modifies the expression being evaluated.
+    /// </summary>
+    public class ExpressionSimplifier : ExpressionVisitor<Expression>
+    {
+        private EvaluationContext ctx;
+
+        private AddTwoIdsRule add2ids;
+        private Add_e_c_cRule addEcc;
+        private Add_mul_id_c_id_Rule addMici;
+        private ConstConstBin_Rule constConstBin;
+        private DpbConstantRule dpbConstantRule;
+        private IdConstant idConst;
+        private IdCopyPropagationRule idCopyPropagation;
+        private IdBinIdc_Rule idBinIdc;
+        private SliceConstant_Rule sliceConst;
+        private SliceMem_Rule sliceMem;
+        private Shl_mul_e_Rule shMul;
+        private ShiftShift_c_c_Rule shiftShift;
+        private SliceShift sliceShift;
+        private NegSub_Rule negSub;
+        private Mps_Constant_Rule mpsRule;
+
+        public ExpressionSimplifier(EvaluationContext ctx)
+        {
+            this.ctx = ctx;
+
+            this.add2ids = new AddTwoIdsRule(ctx);
+            this.addEcc = new Add_e_c_cRule(ctx);
+            this.addMici = new Add_mul_id_c_id_Rule(ctx);
+            this.dpbConstantRule = new DpbConstantRule();
+            this.idConst = new IdConstant(ctx, new Decompiler.Typing.Unifier(null));
+            this.idCopyPropagation = new IdCopyPropagationRule(ctx);
+            this.idBinIdc = new IdBinIdc_Rule(ctx);
+            this.sliceConst = new SliceConstant_Rule();
+            this.sliceMem = new SliceMem_Rule();
+            this.negSub = new NegSub_Rule();
+            this.constConstBin = new ConstConstBin_Rule();
+            this.shMul = new Shl_mul_e_Rule(ctx);
+            this.shiftShift = new ShiftShift_c_c_Rule(ctx);
+            this.mpsRule = new Mps_Constant_Rule(ctx);
+            this.sliceShift = new SliceShift(ctx);
+        }
+
+        public bool Changed { get; set; }
+
+        private bool IsAddOrSub(Operator op)
+        {
+            return op == Operator.Add || op == Operator.Sub;
+        }
+
+        private bool IsComparison(Operator op)
+        {
+            return op == Operator.Eq || op == Operator.Ne ||
+                   op == Operator.Ge || op == Operator.Gt ||
+                   op == Operator.Le || op == Operator.Lt ||
+                   op == Operator.Uge || op == Operator.Ugt ||
+                   op == Operator.Ule || op == Operator.Ult;
+        }
+
+        public Expression VisitAddress(Address addr)
+        {
+            return addr;
+        }
+
+        public Expression VisitApplication(Application appl)
+        {
+            for (int i = 0; i < appl.Arguments.Length; ++i)
+            {
+                appl.Arguments[i] = appl.Arguments[i].Accept(this);
+            }
+            appl.Procedure = appl.Procedure.Accept(this);
+            return appl;
+        }
+
+        public Expression VisitArrayAccess(ArrayAccess acc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression VisitBinaryExpression(BinaryExpression binExp)
+        {
+            // (+ id1 id1) ==> (* id1 2)
+
+            if (add2ids.Match(binExp))
+            {
+                Changed = true;
+                return add2ids.Transform().Accept(this);
+            }
+
+            var left = binExp.Left.Accept(this);
+            var right = binExp.Right.Accept(this);
+            Constant cLeft = left as Constant;
+            Constant cRight = right as Constant;
+
+            if (cLeft != null && BinaryExpression.Commutes(binExp.op))
+            {
+                cRight = cLeft; left = right; right = cLeft;
+            }
+
+            // (- X 0) ==> X
+            // (+ X 0) ==> X
+
+            if (cRight != null && cRight.IsIntegerZero && IsAddOrSub(binExp.op))
+            {
+                Changed = true;
+                return left;
+            }
+            binExp = new BinaryExpression(binExp.op, binExp.DataType, left, right);
+            if (constConstBin.Match(binExp))
+            {
+                Changed = true;
+                return constConstBin.Transform();
+            }
+
+            Identifier idLeft = left as Identifier;
+            Identifier idRight = right as Identifier;
+
+            // (rel? id1 c) should just pass.
+
+            if (IsComparison(binExp.op) && cRight != null && idLeft != null)
+                return binExp;
+
+            // Replace identifier with its definition if possible.
+
+            if (idLeft != null)
+            {
+                var t = ctx.GetValue(idLeft);
+                if (t != null)
+                    left = t;
+            }
+            BinaryExpression binLeft = left as BinaryExpression;
+            Constant cLeftRight = (binLeft != null) ? binLeft.Right as Constant : null;
+
+            // (+ (+ e c1) c2) ==> (+ e (+ c1 c2))
+            // (+ (- e c1) c2) ==> (+ e (- c2 c1))
+            // (- (+ e c1) c2) ==> (- e (- c2 c1))
+            // (- (- e c1) c2) ==> (- e (+ c1 c2))
+
+            if (binLeft != null && cLeftRight != null && cRight != null &&
+                IsAddOrSub(binExp.op) && IsAddOrSub(binLeft.op) &&
+                !cLeftRight.IsReal && !cRight.IsReal)
+            {
+                Changed = true;
+                ctx.RemoveIdentifierUse(idLeft);
+                ctx.UseExpression(left);
+                Constant c;
+                if (binLeft.op == binExp.op)
+                {
+                    c = Operator.Add.ApplyConstants(cLeftRight, cRight);
+                }
+                else
+                {
+                    c = Operator.Sub.ApplyConstants(cRight, cLeftRight);
+                }
+                return new BinaryExpression(binExp.op, binExp.DataType, binLeft.Left, c);
+            }
+
+            // (== (- e c1) c2) => (== e c1+c2)
+
+            if (binLeft != null && cLeftRight != null && cRight != null &&
+                IsComparison(binExp.op) && IsAddOrSub(binLeft.op) &&
+                !cLeftRight.IsReal && !cRight.IsReal)
+            {
+                Changed = true;
+                ctx.RemoveIdentifierUse(idLeft);
+                BinaryOperator op = binLeft.op == Operator.Add ? Operator.Sub : Operator.Add;
+                Constant c = ExpressionSimplifierOld.SimplifyTwoConstants(op, cLeftRight, cRight);
+                return new BinaryExpression(binExp.op, PrimitiveType.Bool, binLeft.Left, c);
+            }
+
+            if (addMici.Match(binExp))
+            {
+                Changed = true;
+                return addMici.Transform();
+            }
+
+            if (shMul.Match(binExp))
+            {
+                Changed = true;
+                return shMul.Transform();
+            }
+
+            if (shiftShift.Match(binExp))
+            {
+                Changed = true;
+                return shiftShift.Transform();
+            }
+
+            // No change, just return as is.
+
+            return binExp;
+        }
+
+        public Expression VisitCast(Cast cast)
+        {
+            var exp = cast.Expression.Accept(this);
+
+            Constant c = exp as Constant;
+            if (c != null)
+            {
+                PrimitiveType p = c.DataType as PrimitiveType;
+                if (p != null && p.IsIntegral)
+                {
+                    //$REVIEW: this is fixed to 32 bits; need a general solution to it.
+                    Changed = true;
+                    return new Constant(cast.DataType, c.ToUInt64());
+                }
+            }
+            return new Cast(cast.DataType, exp);
+        }
+
+        public Expression VisitConditionOf(ConditionOf c)
+        {
+            c.Expression = c.Expression.Accept(this);
+            return c;
+        }
+
+        public Expression VisitConstant(Constant c)
+        {
+            return c;
+        }
+
+        public Expression VisitDepositBits(DepositBits d)
+        {
+            d.Source = d.Source.Accept(this);
+            d.InsertedBits = d.InsertedBits.Accept(this);
+            if (dpbConstantRule.Match(d))
+            {
+                Changed = true;
+                return dpbConstantRule.Transform();
+            }
+            return d;
+        }
+
+        public Expression VisitDereference(Dereference deref)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression VisitFieldAccess(FieldAccess acc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression VisitIdentifier(Identifier id)
+        {
+            if (idConst.Match(id))
+            {
+                Changed = true;
+                return idConst.Transform();
+            }
+            if (idCopyPropagation.Match(id))
+            {
+                Changed = true;
+                return idCopyPropagation.Transform();
+            }
+            if (idBinIdc.Match(id))
+            {
+                Changed = true;
+                return idBinIdc.Transform();
+            }
+            return id;
+        }
+
+        public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
+        {
+            if (mpsRule.Match(mps))
+            {
+                Changed = true;
+                return mpsRule.Transform();
+            }
+            return mps;
+        }
+
+        public Expression VisitMemoryAccess(MemoryAccess access)
+        {
+            return ctx.GetValue(new MemoryAccess(
+                access.MemoryId,
+                access.EffectiveAddress.Accept(this),
+                access.DataType));
+        }
+
+        public Expression VisitMkSequence(MkSequence seq)
+        {
+            var head = seq.Head.Accept(this);
+            var tail = seq.Tail.Accept(this);
+            Constant c1 = seq.Head as Constant;
+            Constant c2 = seq.Tail as Constant;
+            if (c1 != null && c2 != null)
+            {
+                PrimitiveType tHead = (PrimitiveType)c1.DataType;
+                PrimitiveType tTail = (PrimitiveType)c2.DataType;
+                PrimitiveType t;
+                Changed = true;
+                if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
+                {
+                    t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
+                    return new Address(c1.ToUInt16(), c2.ToUInt16());
+                }
+                else
+                {
+                    t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
+                    return new Constant(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
+                }
+            }
+            return new MkSequence(seq.DataType, head, tail);
+        }
+
+        public Expression VisitPhiFunction(PhiFunction pc)
+        {
+            return pc;
+        }
+
+        public Expression VisitPointerAddition(PointerAddition pa)
+        {
+            return pa;
+        }
+
+        public Expression VisitProcedureConstant(ProcedureConstant pc)
+        {
+            return pc;
+        }
+
+        public Expression VisitScopeResolution(ScopeResolution sc)
+        {
+            return sc;
+        }
+
+        public Expression VisitSegmentedAccess(SegmentedAccess segMem)
+        {
+            return ctx.GetValue(new SegmentedAccess(
+                segMem.MemoryId,
+                segMem.BasePointer.Accept(this),
+                segMem.EffectiveAddress.Accept(this),
+                segMem.DataType));
+        }
+
+        public Expression VisitSlice(Slice slice)
+        {
+            slice.Expression = slice.Expression.Accept(this);
+            if (sliceConst.Match(slice))
+            {
+                Changed = true;
+                return sliceConst.Transform();
+            }
+            if (sliceMem.Match(slice))
+            {
+                Changed = true;
+                return sliceMem.Transform();
+            }
+
+            // (slice (shl e n) n) ==> e
+            if (sliceShift.Match(slice))
+            {
+                Changed = true;
+                return sliceShift.Transform();
+            }
+            return slice;
+        }
+
+        public Expression VisitTestCondition(TestCondition tc)
+        {
+            return new TestCondition(tc.ConditionCode, tc.Expression.Accept(this));
+        }
+
+        public Expression VisitUnaryExpression(UnaryExpression unary)
+        {
+            unary = new UnaryExpression(unary.op, unary.DataType, unary.Expression.Accept(this));
+            if (negSub.Match(unary))
+            {
+                Changed = true;
+                return negSub.Transform();
+            }
+            return unary;
+        }
+    }
+
+    #region OLD_SIMPLIFIER
+    /// <summary>
 	/// Simplifies expressions by using common algebraic tricks and 
 	/// other well known formulae.
 	/// </summary>
-	public class ExpressionSimplifier : IExpressionTransformer
+	public class ExpressionSimplifierOld : IExpressionTransformer
 	{
 		private ValueNumbering dad;
 		private Dictionary<Expression,Expression> table;
 
-        public ExpressionSimplifier(ValueNumbering d, Dictionary<Expression, Expression> table)
+        public ExpressionSimplifierOld(ValueNumbering d, Dictionary<Expression, Expression> table)
 		{
 			this.dad = d;
 			this.table = table;
@@ -358,5 +739,6 @@ namespace Decompiler.Analysis
 				throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
 			return op.ApplyConstants(l, r);
 		}
-	}
+    }
+    #endregion
 }

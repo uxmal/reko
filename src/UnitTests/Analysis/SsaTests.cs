@@ -113,7 +113,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void SsaOutParamters()
         {
-            ProcedureMock m = new ProcedureMock("foo");
+            ProcedureBuilder m = new ProcedureBuilder("foo");
             Identifier r4 = m.Register(4);
             m.Store(m.Int32(0x400), m.Fn("foo", m.AddrOf(r4)));
             m.Return();
@@ -136,7 +136,7 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
-		private class SsaMock : ProcedureMock
+		private class SsaMock : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{

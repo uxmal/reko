@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Structure
     ///     bar();
     /// }
     /// </summary>
-    public class MockWhileGoto : ProcedureMock
+    public class MockWhileGoto : ProcedureBuilder
     {
         protected override void BuildBody()
         {
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Structure
         }
     }
 
-    public class MockWhileGoto2 : ProcedureMock
+    public class MockWhileGoto2 : ProcedureBuilder
     {
         protected override void BuildBody()
         {

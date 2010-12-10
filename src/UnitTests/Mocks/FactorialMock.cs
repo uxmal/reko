@@ -23,7 +23,7 @@ using System;
 
 namespace Decompiler.UnitTests.Mocks
 {
-	public class FactorialMock : ProcedureMock
+	public class FactorialMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{
@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Mocks
 		}
 	}
 
-	public class FactorialCallerMock : ProcedureMock
+	public class FactorialCallerMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

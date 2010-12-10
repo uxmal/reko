@@ -64,5 +64,7 @@ namespace Decompiler.Core
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
+
+        MachineRegister StackRegister { get; }               // Stack pointer for this machine. //$REVIEW: push this into rewriter and return instead references to frame.FramePointer?
     }
 }

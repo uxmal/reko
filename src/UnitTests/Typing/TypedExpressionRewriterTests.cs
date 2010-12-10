@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Typing
 
 		[Test] public void TerPtrPtrInt()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new PtrPtrIntMock());
 			RunTest(mock.BuildProgram(), "Typing/TerPtrPtrInt.txt");
 		}
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TerUnionIntReal()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new UnionIntRealMock());
 			RunTest(mock.BuildProgram(), "Typing/TerUnionIntReal.txt");
 		}
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TerConstantUnion()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new ConstantUnionMock());
 			RunTest(mock.BuildProgram(), "Typing/TerConstantUnion.txt");
 		}
@@ -121,7 +121,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TerVector()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new VectorMock());
 			RunTest(mock.BuildProgram(), "Typing/TerVector.txt");
 		}
@@ -129,7 +129,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TerGlobalVariables()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new GlobalVariablesMock());
 			RunTest(mock.BuildProgram(), "Typing/TerGlobalVariables.txt");
 		}
@@ -137,7 +137,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TerSegmentedMemoryPointer()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new SegmentedMemoryPointerMock());
 			RunTest(mock.BuildProgram(), "Typing/TerSegmentedMemoryPointer.txt");
 		}
@@ -145,7 +145,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TerSegMemPtr2()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new SegmentedMemoryPointerMock2());
 			RunTest(mock.BuildProgram(), "Typing/TerSegMemPtr2.txt");
 		}
@@ -153,7 +153,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TerSegMem3()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new SegMem3Mock());
 			RunTest(mock.BuildProgram(), "Typing/TerSegMem3.txt");
 		}
@@ -162,9 +162,9 @@ namespace Decompiler.UnitTests.Typing
         [Ignore("Need a constant pointer analysis phase")]
 		public void TerArrayConstantPointers()
 		{
-			ProgramMock pp = new ProgramMock();
+			ProgramBuilder pp = new ProgramBuilder();
 
-			ProcedureMock m = new ProcedureMock("Fn");
+			ProcedureBuilder m = new ProcedureBuilder("Fn");
 			Identifier a = m.Local32("a");
 			Identifier i = m.Local32("i");
 			m.Assign(a, 0x00123456);		// array pointer
@@ -195,14 +195,14 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerAddNonConstantToPointer()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier i = m.Local16("i");
             Identifier p = m.Local16("p");
 
             m.Store(p, m.Word16(4));
             m.Store(m.Add(p, 4), m.Word16(4));
             m.Assign(p, m.Add(p, i));
-            ProgramMock prog = new ProgramMock();
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
 
             RunTest(prog.BuildProgram(), "Typing/TerAddNonConstantToPointer.txt");
@@ -211,7 +211,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerSignedCompare()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier p = m.Local32("p");
             Identifier ds = m.Local16("ds");
             ds.DataType = PrimitiveType.SegmentSelector;
@@ -223,7 +223,7 @@ namespace Decompiler.UnitTests.Typing
                 m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
             m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
 
-            ProgramMock prog = new ProgramMock();
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/TerSignedCompare.txt");
         }
@@ -231,7 +231,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerDereferenceSignedCompare()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier p = m.Local32("p");
             Identifier ds = m.Local16("ds");
             ds.DataType = PrimitiveType.SegmentSelector;
@@ -245,7 +245,7 @@ namespace Decompiler.UnitTests.Typing
                     m.Word16(20)));
             m.Store(m.SegMemW(ds2, m.Add(m.SegMemW(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
 
-            ProgramMock prog = new ProgramMock();
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/TerDereferenceSignedCompare.txt");
         }
@@ -253,7 +253,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerFlatDereferenceSignedCompare()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local32("ds");
             Identifier ds2 = m.Local32("ds2");
             m.Assign(ds2, ds);
@@ -264,7 +264,7 @@ namespace Decompiler.UnitTests.Typing
                     m.Word16(20)));
             m.Store(m.Add(m.LoadDw(m.Add(ds2, m.Word32(0x5404))), 4), m.Word16(0));
 
-            ProgramMock prog = new ProgramMock();
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/TerFlatDereferenceSignedCompare.txt");
         }
@@ -272,12 +272,12 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerComparison()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier p = m.Local32("p");
             Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.Add(p, 4));
             m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(3)));
 
-            ProgramMock prog = new ProgramMock();
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/TerComparison.txt");
         }
@@ -285,13 +285,13 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerUnionConstants()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier bx = m.Local16("bx");
             m.Assign(bx, m.Shr(bx, 2));     // makes bx unsigned uint16
             m.Assign(m.LocalBool("f"), m.Lt(bx, 4));    // makes bx also signed; assembler bug, but forces a union.
             m.Assign(bx, m.Word16(4));          // what type should 4 have?
 
-            ProgramMock prog = new ProgramMock();
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog.BuildProgram(), "Typing/TerUnionConstants.txt");
         }
@@ -299,7 +299,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerOffsetInArrayLoop()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local16("ds");
             Identifier cx = m.Local16("cx");
             Identifier di = m.Local16("di");
@@ -311,7 +311,7 @@ namespace Decompiler.UnitTests.Typing
             m.BranchIf(m.Ne(cx, 0), "lupe");
             m.Return();
 
-            ProgramMock pm = new ProgramMock();
+            ProgramBuilder pm = new ProgramBuilder();
             pm.Add(m);
             RunTest(pm, "Typing/TerOffsetInArrayLoop.txt");
         }
@@ -319,12 +319,12 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TerSegmentedLoadLoad()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             Identifier bx = m.Local(PrimitiveType.Word16, "bx");
             m.SegStoreW(ds, m.Word16(0x300), m.SegMemW(ds, m.SegMemW(ds, bx)));
 
-            ProgramMock pm = new ProgramMock();
+            ProgramBuilder pm = new ProgramBuilder();
             pm.Add(m);
             RunTest(pm, "Typing/TerSegmentedLoadLoad.txt");
         }
@@ -396,7 +396,7 @@ namespace Decompiler.UnitTests.Typing
         }
 	}
 
-	public class SegmentedMemoryPointerMock : ProcedureMock
+	public class SegmentedMemoryPointerMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{
@@ -414,7 +414,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 	}
 
-	public class SegmentedMemoryPointerMock2 : ProcedureMock
+	public class SegmentedMemoryPointerMock2 : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{
@@ -428,7 +428,7 @@ namespace Decompiler.UnitTests.Typing
 	}
 
 	
-	public class SegMem3Mock : ProcedureMock
+	public class SegMem3Mock : ProcedureBuilder
 	{
 		private Constant Seg(int seg)
 		{

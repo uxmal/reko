@@ -27,7 +27,7 @@ namespace Decompiler.UnitTests.Mocks
 	/// Mock procedure for reading an array of ints of the form:
 	/// i = 0; while (i &lt; 100) { a[i] = 0; ++i }
 	/// </summary>
-	public class WhileLtIncMock : ProcedureMock
+	public class WhileLtIncMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{
@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Mocks
 	/// Mock procedure for reading an array of ints of the form:
 	/// i = 100; while (i &gt; 0) { --i; a[i] = 0; }
 	/// </summary>
-	public class WhileGtDecMock : ProcedureMock
+	public class WhileGtDecMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

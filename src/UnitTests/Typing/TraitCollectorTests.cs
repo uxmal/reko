@@ -102,7 +102,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoCmpMock()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new CmpMock());
 			Program prog = mock.BuildProgram();
             coll = CreateCollector(prog);
@@ -115,7 +115,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoStaggeredArraysMock()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new StaggeredArraysMock());
 			Program prog = mock.BuildProgram();
             coll = CreateCollector(prog);
@@ -134,7 +134,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier i = new Identifier("idx", 1, PrimitiveType.Word32, null);
 			Constant s = Constant.Word32(4);
 
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
 
 			// e ::= Mem[(b+0x1003000)+(i*s):word16]
 			Expression e = m.Load(
@@ -185,7 +185,7 @@ namespace Decompiler.UnitTests.Typing
 		public void TrcoGlobalArray()
 		{
             Program prog = CreateProgram();
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier i = m.Local32("i");
             Expression ea = m.Add(prog.Globals, m.Add(m.Shl(i, 2), 0x3000));
             Expression e = m.Load(PrimitiveType.Int32, ea);
@@ -200,7 +200,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoMemberPointer()
 		{
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			Identifier ax = m.Local16("ax");
@@ -218,7 +218,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoSegmentedAccess()
 		{
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			Identifier ax = m.Local16("ax");
@@ -237,7 +237,7 @@ namespace Decompiler.UnitTests.Typing
             Program prog = CreateProgram();
 			prog.TypeStore.EnsureExpressionTypeVariable(prog.TypeFactory, prog.Globals);
 
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local16("ds");
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));
 
@@ -258,7 +258,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoPtrPtrInt()
 		{
-			ProgramMock p = new ProgramMock();
+			ProgramBuilder p = new ProgramBuilder();
 			p.Add(new PtrPtrIntMock());
 			RunTest(p.BuildProgram(), "Typing/TrcoPtrPtrInt.txt");
 		}
@@ -266,7 +266,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoFnPointerMock()
 		{
-			ProgramMock p = new ProgramMock();
+			ProgramBuilder p = new ProgramBuilder();
 			p.Add(new FnPointerMock());
 			RunTest(p.BuildProgram(), "Typing/TrcoFnPointerMock.txt");
 		}
@@ -274,7 +274,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoSegmentedMemoryPointer()
 		{
-			ProgramMock p = new ProgramMock();
+			ProgramBuilder p = new ProgramBuilder();
 			p.Add(new SegmentedMemoryPointerMock());
 			RunTest(p.BuildProgram(), "Typing/TrcoSegmentedMemoryPointer.txt");
 		}
@@ -306,7 +306,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
 		public void TrcoIntelIndexedAddressingMode()
 		{
-			ProgramMock m = new ProgramMock();
+			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new IntelIndexedAddressingMode());
 			Program prog = m.BuildProgram();
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
@@ -317,7 +317,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoTreeFind()
 		{
-			ProgramMock m = new ProgramMock();
+			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new TreeFindMock());
 			Program prog = m.BuildProgram();
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
@@ -328,7 +328,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoSegmentedDoubleReference()
 		{
-			ProgramMock m = new ProgramMock();
+			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new SegmentedDoubleReferenceMock());
 			RunTest(m.BuildProgram(), "Typing/TrcoSegmentedDoubleReference.txt");
 		}
@@ -336,7 +336,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoIcall()
 		{
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier pfn = m.Local32("pfn");
 			Expression l = m.Load(PrimitiveType.Word32, pfn);
 			IndirectCall icall = new IndirectCall(l, new CallSite(0, 0));
@@ -360,7 +360,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoSegMem()
 		{
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Expression e = m.SegMemW(ds, m.Word16(0xC002U));
 
@@ -373,7 +373,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TrcoUnsignedCompare()
 		{
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Expression e = m.Uge(ds, m.Word16(0x0800));
 
@@ -399,7 +399,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TrcoArrayAccess()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             Identifier bx = m.Local16("bx");
             Expression e = m.Array(PrimitiveType.Word32, m.Seq(ds, m.Word16(0x300)), m.Mul(bx, 8));
@@ -430,7 +430,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TrcoDbp()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier a = m.Local32("a");
             Identifier b = m.LocalByte("b");
             var s = m.Assign(a, m.Dpb(a, b, 0, 8));
@@ -456,7 +456,7 @@ namespace Decompiler.UnitTests.Typing
         [Ignore("Complete the test by seeing the return type T_5 to be of type 'struct 3'")]
         public void TrcoCallFunctionWithArraySize()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             ProcedureSignature sig = new ProcedureSignature(null, 
                 m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
             ExternalProcedure ex = new ExternalProcedure("malloc", sig);
@@ -544,7 +544,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 	}
 
-	public class IntelIndexedAddressingMode : ProcedureMock
+	public class IntelIndexedAddressingMode : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

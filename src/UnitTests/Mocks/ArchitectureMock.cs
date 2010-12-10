@@ -41,14 +41,14 @@ namespace Decompiler.UnitTests.Mocks
 		private BitSet implicitRegs;
 
 		internal const int RegisterCount = 64;
-		private const int StackRegister = 63;
-		private const int ReturnRegister = 62;
+		private const int iStackRegister = 63;
+		private const int iReturnRegister = 62;
 
 		public ArchitectureMock()
 		{
 			this.implicitRegs = new BitSet(RegisterCount);
-			implicitRegs[StackRegister]  = true;
-			implicitRegs[ReturnRegister] = true;
+			implicitRegs[iStackRegister]  = true;
+			implicitRegs[iReturnRegister] = true;
 		}
 
 		static ArchitectureMock()
@@ -178,6 +178,8 @@ namespace Decompiler.UnitTests.Mocks
 		{
 			get { return PrimitiveType.Word32; }
 		}
+
+        public MachineRegister StackRegister { get { return GetRegister(ArchitectureMock.iStackRegister); } }
 
 		#endregion
 

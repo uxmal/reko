@@ -26,7 +26,7 @@ using System;
 
 namespace Decompiler.UnitTests.Typing
 {
-	public class ConstantUnionMock : ProcedureMock
+	public class ConstantUnionMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

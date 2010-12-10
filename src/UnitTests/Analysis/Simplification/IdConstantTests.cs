@@ -34,13 +34,13 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 	[TestFixture]
 	public class IdConstantTests
 	{
-		private ProcedureMock m;
+		private ProcedureBuilder m;
         private SsaIdentifierCollection ssa;
 
 		[SetUp]
 		public void Setup()
 		{
-			m = new ProcedureMock();
+			m = new ProcedureBuilder();
             ssa = new SsaIdentifierCollection();
 		}
 

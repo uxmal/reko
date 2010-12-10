@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
 		[Test]
 		public void Test1()
 		{
-			var m = new ProcedureMock();
+			var m = new ProcedureBuilder();
 			var id = m.Local32("id");
 			var x = m.Local32("x");
 			var stm = m.Assign(x, m.Add(m.Muls(id, 4), id));

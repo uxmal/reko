@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Analysis
     public class TerminationAnalysisTests
     {
         ProcedureBase exit;
-        ProgramMock progMock;
+        ProgramBuilder progMock;
         private ProgramDataFlow flow;
 
         [SetUp]
@@ -46,14 +46,14 @@ namespace Decompiler.UnitTests.Analysis
             exit.Characteristics = new ProcedureCharacteristics();
             exit.Characteristics.Terminates = true;
 
-            progMock = new ProgramMock();
+            progMock = new ProgramBuilder();
             flow = new ProgramDataFlow();
         }
 
         [Test]
         public void BlockTerminates()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             m.Call(exit);
             var b = m.CurrentBlock;
             m.Return();
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void BlockDoesntTerminate()
         {
-            var m = new ProcedureMock();
+            var m = new ProcedureBuilder();
             m.Store(m.Word32(0x1231), m.Byte(0));
             var b = m.Block;
             m.Return();
@@ -80,7 +80,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void ProcedureTerminatesIfBlockTerminates()
         {
-            var proc = CompileProcedure("proc", delegate(ProcedureMock m)
+            var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
             {
                 m.Call(exit);
                 m.Return();
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void ProcedureDoesntTerminatesIfOneBranchDoesnt()
         {
-            var proc = CompileProcedure("proc", delegate(ProcedureMock m)
+            var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
             {
                 m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "bye");
                 m.Call(exit);
@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void ProcedureTerminatesIfAllBranchesDo()
         {
-            var proc = CompileProcedure("proc", delegate(ProcedureMock m)
+            var proc = CompileProcedure("proc", delegate(ProcedureBuilder m)
             {
                 m.BranchIf(m.Eq(m.Local32("foo"), m.Word32(0)), "whee");
                 m.Call(exit);
@@ -133,13 +133,13 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void TerminatingSubProcedure()
         {
-            var sub = CompileProcedure("sub", delegate(ProcedureMock m)
+            var sub = CompileProcedure("sub", delegate(ProcedureBuilder m)
             {
                 m.Call(exit);
                 m.FinishProcedure();
             });
 
-            Procedure caller = CompileProcedure("caller", delegate(ProcedureMock m)
+            Procedure caller = CompileProcedure("caller", delegate(ProcedureBuilder m)
             {
                 m.Call(sub);
                 m.Return();
@@ -156,7 +156,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void TerminatingApplication()
         {
-            var test= CompileProcedure("test", delegate(ProcedureMock m)
+            var test= CompileProcedure("test", delegate(ProcedureBuilder m)
             {
                 m.SideEffect(m.Fn(new ProcedureConstant(PrimitiveType.Pointer32, exit)));
                 m.FinishProcedure();
@@ -168,9 +168,9 @@ namespace Decompiler.UnitTests.Analysis
             Assert.IsTrue(flow[test].TerminatesProcess);
         }
 
-        private Procedure CompileProcedure(string procName, Action<ProcedureMock> builder)
+        private Procedure CompileProcedure(string procName, Action<ProcedureBuilder> builder)
         {
-            var m = new ProcedureMock(procName);
+            var m = new ProcedureBuilder(procName);
             builder(m);
             progMock.Add(m);
             return m.Procedure;

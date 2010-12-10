@@ -24,7 +24,7 @@ using System;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class NestedIfs : ProcedureMock
+    public class NestedIfs : ProcedureBuilder
     {
         protected override void BuildBody()
         {

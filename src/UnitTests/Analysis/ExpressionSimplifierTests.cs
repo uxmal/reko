@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Analysis
 	public class ExpressionSimplifierTests
 	{
 		private Dictionary<Expression, Expression> table;
-		private ExpressionSimplifier simplifier;
+		private ExpressionSimplifierOld simplifier;
 		private Identifier foo;
 		private Identifier bar;
 
@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
 			table = new Dictionary<Expression,Expression>();
-			simplifier = new ExpressionSimplifier(new ValueNumbering(ssaIds), table);
+			simplifier = new ExpressionSimplifierOld(new ValueNumbering(ssaIds), table);
 		}
 
 		private SsaIdentifierCollection BuildSsaIdentifiers()

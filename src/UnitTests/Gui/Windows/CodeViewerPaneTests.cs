@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void SetProcedure()
         {
             codeViewer.CreateControl();
-            var m = new ProcedureMock();
+            var m = new ProcedureBuilder();
             m.Return();
 
             using (repository.Record())

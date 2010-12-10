@@ -139,13 +139,13 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			public static Program Build()
 			{
-				ProgramMock m = new ProgramMock();
+				ProgramBuilder m = new ProgramBuilder();
 				m.Add(new MainFn());
 				m.Add(new Leaf());
 				return m.BuildProgram();
 			}
 
-			public class MainFn : ProcedureMock
+			public class MainFn : ProcedureBuilder
 			{
 				private ArchitectureMock arch = new ArchitectureMock();
 
@@ -156,7 +156,7 @@ namespace Decompiler.UnitTests.Analysis
 				}
 			}
 
-			public class Leaf : ProcedureMock
+			public class Leaf : ProcedureBuilder
 			{
 				protected override void BuildBody()
 				{

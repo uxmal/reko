@@ -26,7 +26,7 @@ namespace Decompiler.UnitTests.Mocks
 	/// <summary>
 	/// Simulates the accessing of a near pointer in a segment from multiple places.
 	/// </summary>
-	public class SegmentedDoubleReferenceMock : ProcedureMock
+	public class SegmentedDoubleReferenceMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

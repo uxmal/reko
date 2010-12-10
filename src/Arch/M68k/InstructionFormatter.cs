@@ -1,4 +1,5 @@
-﻿/* 
+﻿#region License
+/* 
  * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Core.Machine;
@@ -124,5 +126,38 @@ namespace Decompiler.Arch.M68k
             return addr;
         }
 
+        public M68kOperand Visit(RegisterSetOperand registerSet)
+        {
+            uint bitSet = registerSet.BitSet;
+            WriteRegisterSet(bitSet, 0, 1, "D", writer);
+            WriteRegisterSet(bitSet, 8, 1, "A", writer);
+            return registerSet;
+        }
+
+        private static bool bit(uint data, int pos) { return (data & (1 << pos)) != 0; }
+
+        public void WriteRegisterSet(uint data, int bitPos, int incr, string regType, TextWriter writer)
+        {
+            string sep = "";
+            for (int i = 0; i < 8; i++, bitPos += incr)
+            {
+                if (bit(data, bitPos))
+                {
+                    int first = i;
+                    int run_length = 0;
+                    while (i < 7 && bit(data, bitPos + incr))
+                    {
+                        bitPos += incr;
+                        ++i;
+                        ++run_length;
+                    }
+                    writer.Write(sep);
+                    writer.Write("{0}{1}", regType, first);
+                    if (run_length > 0)
+                        writer.Write("-{0}{0}", regType, first + run_length);
+                    sep = "/";
+                }
+            }
+        }
     }
 }

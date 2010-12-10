@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Typing
         private Program prog;
 		private TypeFactory factory;
 		private TypeStore store;
-		private ProcedureMock m;
+		private ProcedureBuilder m;
 		private AddressTraitCollector atrco;
 		private MockTraitHandler handler;
 		private EquivalenceClassBuilder eqb;
@@ -163,7 +163,7 @@ namespace Decompiler.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, prog.Globals);
 			
 			atrco = new AddressTraitCollector(factory, store, handler, prog);
-			m = new ProcedureMock();
+			m = new ProcedureBuilder();
 		}
 
 		private void Verify(Program prog, string outputFilename)

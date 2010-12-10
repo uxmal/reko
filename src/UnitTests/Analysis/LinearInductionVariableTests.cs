@@ -208,7 +208,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void CreateNoincInitialValue()
 		{
-			ProcedureMock m = new ProcedureMock();
+			ProcedureBuilder m = new ProcedureBuilder();
 			ssaIds = new SsaIdentifierCollection();
 			SsaId(new Identifier("id0", 0, PrimitiveType.Word32, new TemporaryStorage()), null, null, false);
 			SsaId(new Identifier("id1", 1, PrimitiveType.Word32, new TemporaryStorage()), null, null, false);
@@ -243,7 +243,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void PreTestedUge()
         {
-            Prepare(delegate(ProcedureMock m)
+            Prepare(delegate(ProcedureBuilder m)
             {
                 Identifier i = m.Local32("i");
                 m.Label("test");
@@ -263,7 +263,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void CreateDecTest()
 		{
-            Prepare(delegate(ProcedureMock m)
+            Prepare(delegate(ProcedureBuilder m)
             {
                 Identifier id = m.Local32("id");
                 m.Assign(id, Constant.Word32(10));
@@ -334,9 +334,9 @@ namespace Decompiler.UnitTests.Analysis
 			DeadCode.Eliminate(proc, ssa);
 		}
 
-        private void Prepare(Action<ProcedureMock> m)
+        private void Prepare(Action<ProcedureBuilder> m)
         {
-            ProcedureMock mock = new ProcedureMock();
+            ProcedureBuilder mock = new ProcedureBuilder();
             m(mock);
             Prepare(mock.Procedure);
         }

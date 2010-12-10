@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Typing
 	[TestFixture]
 	public class ArrayExpressionMatcherTests
 	{
-		private ProcedureMock m;
+		private ProcedureBuilder m;
 		private ArrayExpressionMatcher aem;
 		private Identifier i;
 		private Constant c;
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
-			m = new ProcedureMock();
+			m = new ProcedureBuilder();
 			i = m.Local32("i");
 			c = m.Int32(16);
 			off = m.Int32(42);

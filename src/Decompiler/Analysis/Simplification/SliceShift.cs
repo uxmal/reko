@@ -51,7 +51,7 @@ namespace Decompiler.Analysis.Simplification
             id = slice.Expression as Identifier;
             if (id != null)
             {
-                shift = ctx.DefiningExpression(id) as BinaryExpression;
+                shift = ctx.GetValue(id) as BinaryExpression;
             }
             else
             {

@@ -70,7 +70,7 @@ namespace Decompiler.Core.Expressions
                     BinaryExpression a = (BinaryExpression) ea, b = (BinaryExpression) eb;
                     if (a.op != b.op)
                         return false;
-                    return (Equals(a.Left, b.Left) && Equals(a.Left, b.Right));
+                    return (Equals(a.Left, b.Left) && Equals(a.Right, b.Right));
                 },
                 delegate(Expression obj)
                 {
@@ -151,7 +151,16 @@ namespace Decompiler.Core.Expressions
                     return GetHashCode(m.MemoryId) ^ m.DataType.GetHashCode() ^ 47 * GetHashCode(m.EffectiveAddress);
                 });
 
-
+            Add(typeof(MemoryIdentifier),
+                delegate(Expression ea, Expression eb)
+                {
+                    return ((MemoryIdentifier)ea).Number == ((Identifier)eb).Number;
+                },
+                delegate(Expression x)
+                {
+                    return ((Identifier)x).Number.GetHashCode();
+                });
+            
             Add(typeof(PhiFunction),
                 delegate(Expression ea, Expression eb)
                 {

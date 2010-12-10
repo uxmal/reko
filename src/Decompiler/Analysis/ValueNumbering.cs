@@ -122,7 +122,7 @@ namespace Decompiler.Analysis
 		/// <returns></returns>
 		private bool AssignValueNumber(Node n, Dictionary<Expression,Expression> table)
 		{
-			ExpressionSimplifier simp = new ExpressionSimplifier(this, table);
+			ExpressionSimplifierOld simp = new ExpressionSimplifierOld(this, table);
 			Expression expr;
 			if (n.definingExpr == null)
 			{

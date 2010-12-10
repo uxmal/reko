@@ -97,7 +97,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TtranPtrPtrInt()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new PtrPtrIntMock());
 			RunTest(mock.BuildProgram(), "Typing/TtranPtrPtrInt.txt");
 		}
@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TtranGlobalVariables()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new GlobalVariablesMock());
 			RunTest(mock.BuildProgram(), "Typing/TtranGlobalVariables.txt");
 		}
@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Typing
         [Ignore("Frames require escape and aliasing analysis.")]
 		public void TtranFramePointer()
 		{
-			ProgramMock prog = new ProgramMock();
+			ProgramBuilder prog = new ProgramBuilder();
 			prog.Add(new FramePointerMock(factory));
 			RunTest(prog.BuildProgram(), "Typing/TtranFramePointer.txt");
 		}
@@ -123,7 +123,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TtranRepeatedLoads()
 		{
-			ProgramMock prog = new ProgramMock();
+			ProgramBuilder prog = new ProgramBuilder();
 			prog.Add(new RepeatedLoadsMock());
 			RunTest(prog.BuildProgram(), "Typing/TtranRepeatedLoads.txt");
 		}
@@ -131,7 +131,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TtranStaggeredArrays()
 		{
-			ProgramMock prog = new ProgramMock();
+			ProgramBuilder prog = new ProgramBuilder();
 			prog.Add(new StaggeredArraysMock());
 			RunTest(prog.BuildProgram(), "Typing/TtranStaggeredArrays.txt");
 		}
@@ -139,7 +139,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TtranFnPointerMock()
 		{
-			ProgramMock prog = new ProgramMock();
+			ProgramBuilder prog = new ProgramBuilder();
 			prog.Add(new FnPointerMock());
 			RunTest(prog.BuildProgram(), "Typing/TtranFnPointerMock.txt");
 		}
@@ -242,7 +242,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TtranIntelIndexedAddressingMode()
 		{
-			ProgramMock m = new ProgramMock();
+			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new IntelIndexedAddressingMode());
 			RunTest(m.BuildProgram(), "Typing/TtranIntelIndexedAddressingMode.txt");
 		}
@@ -250,7 +250,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void TtranTreeFind()
 		{
-			ProgramMock m = new ProgramMock();
+			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new TreeFindMock());
 			RunTest(m.BuildProgram(), "Typing/TtranTreeFind.txt");
 		}
@@ -258,7 +258,7 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void TtranSegmentedPointer()
         {
-            RunTest(delegate(ProcedureMock m)
+            RunTest(delegate(ProcedureBuilder m)
             {
                 Identifier es = m.Frame.EnsureRegister(new MachineRegister("es", 1, PrimitiveType.SegmentSelector));
                 Identifier bx = m.Frame.EnsureRegister(new MachineRegister("bx", 2, PrimitiveType.Word16));
@@ -307,7 +307,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 	}
 
-	public class FramePointerMock : ProcedureMock
+	public class FramePointerMock : ProcedureBuilder
 	{
 		private TypeFactory factory;
 
@@ -325,7 +325,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 	}
 
-	public class RepeatedLoadsMock : ProcedureMock
+	public class RepeatedLoadsMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{
@@ -336,7 +336,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 	}
 
-	public class StaggeredArraysMock : ProcedureMock
+	public class StaggeredArraysMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{
@@ -348,7 +348,7 @@ namespace Decompiler.UnitTests.Typing
 		}
 	}
 
-	public class FnPointerMock : ProcedureMock
+	public class FnPointerMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

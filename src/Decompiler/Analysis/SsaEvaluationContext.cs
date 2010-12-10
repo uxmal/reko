@@ -43,7 +43,7 @@ namespace Decompiler.Analysis
             ssaIds[id].Uses.Add(Statement);
         }
 
-        public Expression DefiningExpression(Identifier id)
+        public Expression GetValue(Identifier id)
         {
             if (id == null)
                 return null;
@@ -56,6 +56,16 @@ namespace Decompiler.Analysis
                 return ass.Src;
             }
             return null;
+        }
+
+        public Expression GetValue(MemoryAccess access)
+        {
+            return access;
+        }
+
+        public Expression GetValue(SegmentedAccess access)
+        {
+            return access;
         }
 
         public void RemoveIdentifierUse(Identifier id)
