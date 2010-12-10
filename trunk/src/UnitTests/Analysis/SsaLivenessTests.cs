@@ -169,7 +169,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 
-		public class SimpleMock : ProcedureMock
+		public class SimpleMock : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{
@@ -183,7 +183,7 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
-		public class ManyIncrements : ProcedureMock
+		public class ManyIncrements : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{

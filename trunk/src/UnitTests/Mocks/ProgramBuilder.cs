@@ -28,16 +28,16 @@ using System.Collections.Generic;
 namespace Decompiler.UnitTests.Mocks
 {
 	/// <summary>
-	/// A mock that builds a progam.
+	/// Supports building a intermediate code program directly without having to first generate machine code and scanning it.
 	/// </summary>
-	public class ProgramMock 
+	public class ProgramBuilder 
 	{
 		private Program prog;
 		private uint procCount;
         private Dictionary<string, Procedure> nameToProcedure = new Dictionary<string, Procedure>();
 		private List<ProcUpdater> unresolvedProcedures = new List<ProcUpdater>();
 
-		public ProgramMock()
+		public ProgramBuilder()
 		{
 			prog = new Program();
 		}
@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Mocks
             nameToProcedure.Add(proc.Name, proc);
         }
 
-        public void Add(ProcedureMock mock)
+        public void Add(ProcedureBuilder mock)
         {
             mock.ProgramMock = this;
             Procedure proc = mock.Procedure;

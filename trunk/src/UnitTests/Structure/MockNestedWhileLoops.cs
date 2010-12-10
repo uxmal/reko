@@ -26,7 +26,7 @@ using System;
 
 namespace Decompiler.UnitTests.Structure
 {
-    public class MockNestedWhileLoops : ProcedureMock
+    public class MockNestedWhileLoops : ProcedureBuilder
     {
         protected override void BuildBody()
         {

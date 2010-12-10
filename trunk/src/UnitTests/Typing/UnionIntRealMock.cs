@@ -29,7 +29,7 @@ namespace Decompiler.UnitTests.Typing
 	/// <summary>
 	/// Mock that unifies a signed integer and a real into the same memory slot.
 	/// </summary>
-	public class UnionIntRealMock : ProcedureMock
+	public class UnionIntRealMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

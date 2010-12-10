@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Typing
 		{
             Identifier globals = new Identifier("globals", 3, PrimitiveType.Word32, null);
             Identifier i = new Identifier("i", 4, PrimitiveType.Word32, null);
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             DataType arrayOfBytes = new ArrayType(PrimitiveType.Byte, 0);
             StructureType str = Struct(
                 Fld(0x01000, arrayOfBytes));

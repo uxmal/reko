@@ -22,5 +22,5 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public delegate void ProcGenerator(ProcedureMock m);
+    public delegate void ProcGenerator(ProcedureBuilder m);
 }

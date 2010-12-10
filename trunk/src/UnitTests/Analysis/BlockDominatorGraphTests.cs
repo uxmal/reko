@@ -79,7 +79,7 @@ namespace Decompiler.UnitTests.Analysis
 		}
 	}
 
-	public class DiamondMock : ProcedureMock
+	public class DiamondMock : ProcedureBuilder
 	{
 		/// <code>
 		/// if (x)

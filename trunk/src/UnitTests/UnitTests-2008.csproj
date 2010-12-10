@@ -300,9 +300,9 @@
     <Compile Include="Mocks\RtlStatementStream.cs" />
     <Compile Include="Mocks\MockCodeWalker.cs" />
     <Compile Include="Mocks\NestedIfs.cs" />
-    <Compile Include="Mocks\ProcedureMock.cs" />
+    <Compile Include="Mocks\ProcedureBuilder.cs" />
     <Compile Include="Mocks\ProcedureMockTest.cs" />
-    <Compile Include="Mocks\ProgramMock.cs" />
+    <Compile Include="Mocks\ProgramBuilder.cs" />
     <Compile Include="Mocks\ProcGenerator.cs" />
     <Compile Include="Mocks\Reg00011Mock.cs" />
     <Compile Include="Mocks\SegmentedDoubleReference.cs" />

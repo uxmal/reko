@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
     [TestFixture]
     public class Add_mul_id_c_id_RuleTest
     {
-        private ProcedureMock m;
+        private ProcedureBuilder m;
         private Identifier id;
         private Identifier x;
         private SsaIdentifierCollection ssaIds;
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Analysis.Simplification
         [SetUp]
         public void SetUp()
         {
-            m = new ProcedureMock();
+            m = new ProcedureBuilder();
             id = m.Local32("id");
             x = m.Local32("x");
             ssaIds = new SsaIdentifierCollection();

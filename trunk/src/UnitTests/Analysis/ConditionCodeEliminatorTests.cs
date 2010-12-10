@@ -129,7 +129,7 @@ done:
 			Identifier z = Reg32("z");
 			Identifier y = Reg32("y");
 
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             m.Assign(z, new ConditionOf(r));
             ssaIds[z].DefStatement = m.Block.Statements.Last;
             m.Assign(y, z);
@@ -170,11 +170,11 @@ done:
             throw new NotImplementedException();
         }
 
-        protected Program CompileTest(Action<ProcedureMock> m)
+        protected Program CompileTest(Action<ProcedureBuilder> m)
         {
-            var mock = new ProcedureMock();
+            var mock = new ProcedureBuilder();
             m(mock);
-            var pmock = new ProgramMock();
+            var pmock = new ProgramBuilder();
             pmock.Add(mock);
             return pmock.BuildProgram();
         }

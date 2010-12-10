@@ -29,9 +29,9 @@ using System;
 namespace Decompiler.UnitTests.Mocks
 {
     /// <summary>
-    /// Supports the creation of a procedure without having to go through assembler.
+    /// Supports the building of a procedure without having to go through assembler.
     /// </summary>
-    public class ProcedureMock : CodeEmitter2
+    public class ProcedureBuilder : CodeEmitter2
     {
         private Block block;
         private Dictionary<string, Block> blocks;
@@ -39,16 +39,15 @@ namespace Decompiler.UnitTests.Mocks
         private Block branchBlock;
         private Block lastBlock;
         private int numBlock;
-        private ProgramMock programMock;
+        private ProgramBuilder programMock;
         private List<ProcUpdater> unresolvedProcedures;
 
-
-        public ProcedureMock()
+        public ProcedureBuilder()
         {
             Init(this.GetType().Name);
         }
 
-        public ProcedureMock(string name)
+        public ProcedureBuilder(string name)
         {
             Init(name);
         }
@@ -252,7 +251,7 @@ namespace Decompiler.UnitTests.Mocks
             get { return proc; }
         }
 
-        public ProgramMock ProgramMock
+        public ProgramBuilder ProgramMock
         {
             get { return programMock; }
             set { programMock = value; }

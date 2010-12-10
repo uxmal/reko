@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DpaGlobalVariables()
 		{
-			ProgramMock prog = new ProgramMock();
+			ProgramBuilder prog = new ProgramBuilder();
 			prog.Add(new GlobalVariablesMock());
 			RunTest(prog.BuildProgram(), "Typing/DpaGlobalVariables.txt");
 		}
@@ -72,8 +72,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DpaConstantPointer()
 		{
-			ProgramMock prog = new ProgramMock();
-			ProcedureMock m = new ProcedureMock();
+			ProgramBuilder prog = new ProgramBuilder();
+			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier r1 = m.Register(1);
 			m.Assign(r1, 0x123130);
 			m.Store(r1, m.Int32(0x42));
@@ -85,8 +85,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void DpaConstantMemberPointer()
 		{
-			ProgramMock prog = new ProgramMock();
-			ProcedureMock m = new ProcedureMock();
+			ProgramBuilder prog = new ProgramBuilder();
+			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			ds.DataType = PrimitiveType.SegmentSelector;
 			Identifier bx = m.Local16("bx");

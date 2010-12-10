@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void Return()
         {
-            CompileTest(delegate(ProcedureMock m)
+            CompileTest(delegate(ProcedureBuilder m)
             {
                 m.Return();
             });
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void IfThen()
         {
-            CompileTest(delegate(ProcedureMock m)
+            CompileTest(delegate(ProcedureBuilder m)
             {
                 m.BranchIf(m.Fn("foo"), "skip");
                 m.SideEffect(m.Fn("bar"));
@@ -81,7 +81,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void IfThenElse()
         {
-            CompileTest(delegate(ProcedureMock m)
+            CompileTest(delegate(ProcedureBuilder m)
             {
                 m.BranchIf(m.Fn("foo"), "else");
                 m.Label("then");
@@ -341,7 +341,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void WhileReturn()
         {
-            CompileTest(delegate(ProcedureMock m)
+            CompileTest(delegate(ProcedureBuilder m)
             {
                 m.Label("head");
                 m.BranchIf(m.Local32("done"), "loop_done");
@@ -391,7 +391,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void BranchesToReturns()
         {
-            CompileTest(delegate(ProcedureMock m)
+            CompileTest(delegate(ProcedureBuilder m)
             {
                 var a1 = m.Local16("a1"); 
                 m.Assign(a1, m.Fn("fn0540"));
@@ -452,7 +452,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void InfiniteLoop2()
         {
-            CompileTest(delegate(ProcedureMock m)
+            CompileTest(delegate(ProcedureBuilder m)
             {
                 m.Label("Infinity");
                 m.BranchIf(m.Eq(m.LoadW(m.Word16(0x1234)), 0), "hop");
@@ -477,14 +477,14 @@ namespace Decompiler.UnitTests.Structure
                 "}" + nl);
         }
 
-        private void CompileTest(Action<ProcedureMock> gen)
+        private void CompileTest(Action<ProcedureBuilder> gen)
         {
-            ProcedureMock mock = new ProcedureMock();
+            ProcedureBuilder mock = new ProcedureBuilder();
             gen(mock);
             CompileTest(mock);
         }
 
-        private void CompileTest(ProcedureMock mock)
+        private void CompileTest(ProcedureBuilder mock)
         {
             proc = mock.Procedure;
             proc.RenumberBlocks();

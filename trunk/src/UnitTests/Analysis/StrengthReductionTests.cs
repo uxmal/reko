@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Analysis
 
         private Procedure BuildSimpleLoop()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier p = m.Local32("p");
             m.Assign(p, 0);
 

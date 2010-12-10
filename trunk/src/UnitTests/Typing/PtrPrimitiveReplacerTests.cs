@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void PprPtrPtrInt()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new PtrPtrIntMock());
 			RunTest(mock.BuildProgram(), "Typing/PprPtrPtrInt.txt");
 		}
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void PprUnionIntReal()
 		{
-			ProgramMock mock = new ProgramMock();
+			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new UnionIntRealMock());
 			RunTest(mock.BuildProgram(), "Typing/PprUnionIntReal.txt");
 		}
@@ -85,8 +85,8 @@ namespace Decompiler.UnitTests.Typing
 		[Test]
 		public void PprMemberVars()
 		{
-			ProgramMock mock = new ProgramMock();
-			ProcedureMock p = new ProcedureMock();
+			ProgramBuilder mock = new ProgramBuilder();
+			ProcedureBuilder p = new ProcedureBuilder();
 			Identifier cs = p.Frame.EnsureRegister(Registers.cs);
 			p.Store(p.SegMemW(cs, p.Word32(0x0001)), new Constant(PrimitiveType.SegmentSelector, 0x0800));
 			p.Procedure.RenumberBlocks();
@@ -97,8 +97,8 @@ namespace Decompiler.UnitTests.Typing
         [Test]
         public void PprMemberPointers()
         {
-            ProgramMock mock = new ProgramMock();
-            ProcedureMock m = new ProcedureMock();
+            ProgramBuilder mock = new ProgramBuilder();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             m.SegStoreW(ds, m.Word32(7000), m.SegMemW(ds, m.SegMemW(ds, m.Word32(0x5321))));
             mock.Add(m);

@@ -27,7 +27,7 @@ namespace Decompiler.UnitTests.Structure
 	/// Simple mock to exercise Switch-detection. It is structured in the way that typical compiler output looks like: a 
 	/// guard statement followed by an indexed indirect jump.
 	/// </summary>
-	public class MockSwitch : ProcedureMock
+	public class MockSwitch : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

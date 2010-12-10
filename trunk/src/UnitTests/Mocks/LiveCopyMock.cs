@@ -27,7 +27,7 @@ namespace Decompiler.UnitTests.Mocks
 	/// <summary>
 	/// Simulates a live copy of a register being value-propagated.
 	/// </summary>
-	public class LiveCopyMock : ProcedureMock
+	public class LiveCopyMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

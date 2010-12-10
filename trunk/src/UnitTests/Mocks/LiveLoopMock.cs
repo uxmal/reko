@@ -25,7 +25,7 @@ using System;
 
 namespace Decompiler.UnitTests.Mocks
 {
-	public class LiveLoopMock : ProcedureMock
+	public class LiveLoopMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

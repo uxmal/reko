@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DeadFnReturn()
 		{
-			ProcedureMock m = new ProcedureMock("foo");
+			ProcedureBuilder m = new ProcedureBuilder("foo");
 			Identifier unused = m.Local32("unused");
 			m.Assign(unused, m.Fn("foo", Constant.Word32(1)));
 			m.Return();

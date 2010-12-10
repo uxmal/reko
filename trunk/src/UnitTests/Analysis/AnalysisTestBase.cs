@@ -68,16 +68,16 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 
-        protected Program BuildProgramMock(Action<ProcedureMock> builder)
+        protected Program BuildProgramMock(Action<ProcedureBuilder> builder)
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             builder(m);
             return BuildProgramMock(m);
         }
 
-		protected Program BuildProgramMock(ProcedureMock mock)
+		protected Program BuildProgramMock(ProcedureBuilder mock)
 		{
-			ProgramMock m = new ProgramMock();
+			ProgramBuilder m = new ProgramBuilder();
 			m.Add(mock);
 			Program prog = m.BuildProgram();
             prog.CallGraph.AddProcedure(mock.Procedure);
@@ -162,7 +162,7 @@ namespace Decompiler.UnitTests.Analysis
 			SaveRunOutput(prog, outputFile);
 		}
 
-		protected void RunTest(ProcedureMock mock, string outputFile)
+		protected void RunTest(ProcedureBuilder mock, string outputFile)
 		{
 			Program prog = BuildProgramMock(mock);
 			SaveRunOutput(prog, outputFile);

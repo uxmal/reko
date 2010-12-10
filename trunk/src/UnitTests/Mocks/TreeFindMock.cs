@@ -26,7 +26,7 @@ namespace Decompiler.UnitTests.Mocks
 	/// <summary>
 	/// Mock that implicitly defines a recursive data type, tree.
 	/// </summary>
-	public class TreeFindMock : ProcedureMock
+	public class TreeFindMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

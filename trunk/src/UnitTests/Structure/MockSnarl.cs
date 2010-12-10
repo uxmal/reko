@@ -23,7 +23,7 @@ using Decompiler.UnitTests.Mocks;
 
 namespace Decompiler.UnitTests.Structure
 {
-	public class MockSnarl : ProcedureMock
+	public class MockSnarl : ProcedureBuilder
 	{
 		/// <summary>
 		/// [0]

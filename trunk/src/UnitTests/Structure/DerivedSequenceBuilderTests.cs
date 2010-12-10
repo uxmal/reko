@@ -18,7 +18,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void LoopTestdead()
         {
-            RunTest(delegate(ProcedureMock m)
+            RunTest(delegate(ProcedureBuilder m)
             {
                 m.Label("loop");
                 m.SideEffect(m.Fn("foo", m.Int32(4)));
@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void BuildSingleNodeGraph()
         {
-            CompileTest(delegate(ProcedureMock m)
+            CompileTest(delegate(ProcedureBuilder m)
             {
                 m.Return();
             });
@@ -52,7 +52,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void LoopTest()
         {
-            CompileTest(delegate(ProcedureMock m)
+            CompileTest(delegate(ProcedureBuilder m)
             {
                 m.Label("loop");
                 m.SideEffect(m.Fn("foo", m.Int32(4)));
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void NonReducible()
         {
-            CompileTest(delegate(ProcedureMock m)
+            CompileTest(delegate(ProcedureBuilder m)
             {
                 m.BranchIf(m.Fn("foo"), "right");
 
@@ -103,28 +103,28 @@ namespace Decompiler.UnitTests.Structure
             return sb.ToString();
         }
 
-        protected virtual void RunTest(Action<ProcedureMock> pg)
+        protected virtual void RunTest(Action<ProcedureBuilder> pg)
         {
-            ProcedureMock pm = new ProcedureMock();
+            ProcedureBuilder pm = new ProcedureBuilder();
             pg(pm);
             RunTest(pm);
         }
 
-        protected virtual void RunTest(ProcedureMock pm)
+        protected virtual void RunTest(ProcedureBuilder pm)
         {
             CompileTest(pm);
             DerivedSequenceBuilder gr = new DerivedSequenceBuilder(proc);
         }
 
 
-        protected virtual void CompileTest(Action<ProcedureMock> pg)
+        protected virtual void CompileTest(Action<ProcedureBuilder> pg)
         {
-            ProcedureMock pm = new ProcedureMock();
+            ProcedureBuilder pm = new ProcedureBuilder();
             pg(pm);
             CompileTest(pm);
         }
 
-        private void CompileTest(ProcedureMock pm)
+        private void CompileTest(ProcedureBuilder pm)
         {
             pm.Procedure.RenumberBlocks();
             ProcedureStructureBuilder g = new ProcedureStructureBuilder(pm.Procedure);

@@ -45,7 +45,7 @@ namespace Decompiler.Analysis.Simplification
 
         public bool Match(Identifier id)
         {
-            Expression e = ctx.DefiningExpression(id);
+            Expression e = ctx.GetValue(id);
             cSrc = e as Constant;
             idDst = id;
             return cSrc != null;

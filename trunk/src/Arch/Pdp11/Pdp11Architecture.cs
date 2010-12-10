@@ -36,8 +36,8 @@ namespace Decompiler.Arch.Pdp11
         public static MachineRegister r3 = new MachineRegister("r3", 3, PrimitiveType.Word16);
         public static MachineRegister r4 = new MachineRegister("r4", 4, PrimitiveType.Word16);
         public static MachineRegister r5 = new MachineRegister("r5", 5, PrimitiveType.Word16);
-        public static MachineRegister r6 = new MachineRegister("r6", 6, PrimitiveType.Word16);
-        public static MachineRegister sp = new MachineRegister("sp", 7, PrimitiveType.Word16);
+        public static MachineRegister sp = new MachineRegister("sp", 6, PrimitiveType.Word16);
+        public static MachineRegister pc = new MachineRegister("pc", 7, PrimitiveType.Word16);
     }
 
     public class Pdp11Architecture : IProcessorArchitecture
@@ -48,8 +48,9 @@ namespace Decompiler.Arch.Pdp11
         {
             regs = new MachineRegister[] { 
                 Registers.r0, Registers.r1, Registers.r2, Registers.r3, 
-                Registers.r4, Registers.r5, Registers.r6, Registers.sp, };
+                Registers.r4, Registers.r5, Registers.sp, Registers.pc, };
         }
+
         #region IProcessorArchitecture Members
 
         public Disassembler CreateDisassembler(ImageReader rdr)
@@ -162,6 +163,8 @@ namespace Decompiler.Arch.Pdp11
         {
             get { throw new NotImplementedException(); }
         }
+
+        public MachineRegister StackRegister { get { return Registers.sp; } }
 
         #endregion
     }

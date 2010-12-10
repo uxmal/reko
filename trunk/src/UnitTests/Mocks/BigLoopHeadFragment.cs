@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class BigLoopHeadFragment : ProcedureMock
+    public class BigLoopHeadFragment : ProcedureBuilder
     {
         protected override void BuildBody()
         {

@@ -98,7 +98,7 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.IsFalse(sef.AreConstrained(def, use));
 
 		}
-		public class ConstrainedMock : ProcedureMock
+		public class ConstrainedMock : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{
@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Analysis
 			}
 		}
 
-		public class UnconstrainedMock : ProcedureMock
+		public class UnconstrainedMock : ProcedureBuilder
 		{
 			protected override void BuildBody()
 			{

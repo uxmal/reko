@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2010 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,25 +19,25 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Expressions;
+using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Decompiler.UnitTests.Mocks
+namespace Decompiler.Arch.M68k
 {
-	public class CmpMock : ProcedureBuilder
-	{
-		protected override void BuildBody()
-		{
-			Identifier r0 = Register(0);
-			Identifier r1 = Register(1);
+    public class RegisterSetOperand : M68kOperandImpl
+    {
+        public RegisterSetOperand(uint bitset) : base(PrimitiveType.Word16)
+        {
+            this.BitSet = bitset;
+        }
 
-			Compare("Z", r0, Int32(0));
-			BranchCc(ConditionCode.EQ, "skip");
+        public uint BitSet { get; set; }
 
-			Assign(r0, Add(r0, r1));
-			Label("skip");
-			Store(Int32(0x10003000), r0);
-			Return();
-		}
-	}
+        public override T Accept<T>(M68kOperandVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+        }
+    }
 }

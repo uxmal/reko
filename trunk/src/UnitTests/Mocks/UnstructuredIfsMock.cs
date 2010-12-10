@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Mocks
     // inside:
     //    niz();
     // }
-    public class UnstructuredIfsMock : ProcedureMock
+    public class UnstructuredIfsMock : ProcedureBuilder
     {
         protected override void BuildBody()
         {

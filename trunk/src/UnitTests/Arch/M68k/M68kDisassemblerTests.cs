@@ -1,4 +1,5 @@
-﻿/* 
+﻿#region License
+/* 
  * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Core;
 using Decompiler.Arch.M68k;
@@ -28,7 +30,7 @@ namespace Decompiler.UnitTests.Arch.M68k
     [TestFixture]
     public class M68kDisassemblerTests
     {
-        private M68kDisassembler dasm;
+        private M68kDisassembler2 dasm;
         private M68kInstruction instr;
 
         [Test]
@@ -178,11 +180,11 @@ namespace Decompiler.UnitTests.Arch.M68k
             instr = dasm.Disassemble();
         }
 
-        private M68kDisassembler CreateDasm(byte[] bytes, uint address)
+        private M68kDisassembler2 CreateDasm(byte[] bytes, uint address)
         {
             Address addr = new Address(address);
             ProgramImage img = new ProgramImage(addr, bytes);
-            return new M68kDisassembler(img.CreateReader(addr));
+            return new M68kDisassembler2(img.CreateReader(addr));
         }
     }
 }

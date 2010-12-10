@@ -25,7 +25,7 @@ using System;
 
 namespace Decompiler.UnitTests.Typing
 {
-	public class GlobalVariablesMock : ProcedureMock
+	public class GlobalVariablesMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

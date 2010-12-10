@@ -23,7 +23,7 @@ using System;
 
 namespace Decompiler.UnitTests.Structure
 {
-	public class MockWhileBreak : ProcedureMock
+	public class MockWhileBreak : ProcedureBuilder
 	{
 		/// <summary>
 		/// r2 = 0;

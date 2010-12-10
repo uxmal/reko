@@ -28,8 +28,6 @@ namespace Decompiler.Core.Expressions
 	public class BinaryExpression : Expression
 	{
         public BinaryOperator op;
-		private Expression left;
-		private Expression right;
 
 		public BinaryExpression(BinaryOperator op, DataType dt, Expression left, Expression right) : base(dt)
 		{
@@ -38,7 +36,10 @@ namespace Decompiler.Core.Expressions
 			this.Right = right;
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
+        public Expression Left { get; set; }
+        public Expression Right { get; set; }
+
+        public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformBinaryExpression(this);
 		}
@@ -52,18 +53,6 @@ namespace Decompiler.Core.Expressions
 		{
 			v.VisitBinaryExpression(this);
 		}
-
-        public Expression Left
-        {
-            get { return left; }
-            set { left = value; }
-        }
-
-        public Expression Right
-        {
-            get { return right; }
-            set { right = value; }
-        }
 
 		public override Expression CloneExpression()
 		{
@@ -98,7 +87,6 @@ namespace Decompiler.Core.Expressions
 				op == Operator.Or ||
 				op == Operator.Xor;
 		}
-
 
 		public override Expression Invert()
 		{

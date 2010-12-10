@@ -30,7 +30,7 @@ namespace Decompiler.UnitTests.Typing
 	[TestFixture]
 	public class ExpressionNormalizerTests
 	{
-		private ProcedureMock m;
+		private ProcedureBuilder m;
 		private ExpressionNormalizer aen;
 
 		[Test]
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
-			m = new ProcedureMock();
+			m = new ProcedureBuilder();
 			aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
 		}
 	}

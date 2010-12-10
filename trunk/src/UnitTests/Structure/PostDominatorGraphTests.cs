@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void PostDominateIfElse()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             m.BranchIf(m.Local32("a"), "then");
             m.Assign(m.Local32("b"), m.Int32(0));
             m.Jump("join");
@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void PostdominateLoop()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             m.Jump("test");
             m.Label("test");
             m.BranchIf(m.LocalBool("f"), "done");
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void LoopWithIfElse()
         {
-            var m = new ProcedureMock();
+            var m = new ProcedureBuilder();
             var c = m.Declare(PrimitiveType.Word32, "c");
             var f = m.Declare(PrimitiveType.Bool, "f");
             m.Label("loopHead");
@@ -108,7 +108,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void InfiniteLoop()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             m.Label("Infinity");
             m.BranchIf(m.Eq(m.LoadW(m.Word16(0x1234)), 0), "hop");
             m.SideEffect(m.Fn("foo"));
@@ -129,7 +129,7 @@ namespace Decompiler.UnitTests.Structure
             Assert.AreEqual(sExp, sw.ToString());
         }
 
-        private void FindPostDominators(ProcedureMock m)
+        private void FindPostDominators(ProcedureBuilder m)
         {
             m.Procedure.RenumberBlocks();
             ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);

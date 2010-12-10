@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Typing
             RunTest(RewriteFile(srcfile), outputFile);
         }
         
-        protected void RunTest(ProgramMock mock, string outputFile)
+        protected void RunTest(ProgramBuilder mock, string outputFile)
         {
             Program prog = mock.BuildProgram();
             DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
@@ -77,10 +77,10 @@ namespace Decompiler.UnitTests.Typing
 
         protected void RunTest(ProcGenerator pg, string outputFile)
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             pg(m);
             m.Procedure.RenumberBlocks();
-            ProgramMock prog = new ProgramMock();
+            ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog, outputFile);
         }

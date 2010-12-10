@@ -185,6 +185,8 @@ namespace Decompiler.Arch.PowerPC
             get { return this.wordWidth; } 
         }
 
+        public MachineRegister StackRegister { get { return regs[1]; } }
+
         #endregion
     }
 }

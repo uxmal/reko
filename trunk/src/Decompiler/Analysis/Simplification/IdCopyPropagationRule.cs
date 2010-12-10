@@ -42,7 +42,7 @@ namespace Decompiler.Analysis.Simplification
         public bool Match(Identifier id)
         {
             idOld = id;
-            idNew = ctx.DefiningExpression(id) as Identifier;
+            idNew = ctx.GetValue(id) as Identifier;
             return idNew != null;
         }
 

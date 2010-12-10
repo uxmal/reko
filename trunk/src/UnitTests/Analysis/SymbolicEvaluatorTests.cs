@@ -24,10 +24,12 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
+using Decompiler.Arch.Intel;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.UnitTests.Analysis
@@ -35,9 +37,39 @@ namespace Decompiler.UnitTests.Analysis
     [TestFixture]
     public class SymbolicEvaluatorTests
     {
+        private Identifier esp ;
+        private Identifier ebp;
+        private Identifier eax;
+        private SymbolicEvaluator se;
+        private IProcessorArchitecture arch;
+
+        [SetUp]
+        public void Setup()
+        {
+            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+        }
+
         private static Identifier Reg32(string name)
         {
             return new Identifier(name, 1, PrimitiveType.Word32, new TemporaryStorage());
+        }
+        private static Identifier Reg8(string name)
+        {
+            return new Identifier(name, 1, PrimitiveType.Byte, new TemporaryStorage());
+        }
+
+        private void CreateSymbolicEvaluator()
+        {
+            se = new SymbolicEvaluator(arch);
+        }
+
+        private void RunBlockTest(Action<ProcedureBuilder> testBuilder)
+        {
+            var builder = new ProcedureBuilder(); 
+            testBuilder(builder);
+            var proc = builder.Procedure;
+            CreateSymbolicEvaluator();
+            proc.ControlGraph.Successors(proc.EntryBlock).First().Statements.ForEach(x => se.Evaluate(x.Instruction));
         }
 
         [Test]
@@ -46,10 +78,10 @@ namespace Decompiler.UnitTests.Analysis
             var name = "edx";
             var edx = Reg32(name);
             var ass = new Assignment(edx, Constant.Word32(3));
-            var se = new SymbolicEvaluator();
+            var se = new SymbolicEvaluator(arch);
             se.Evaluate(ass);
-            Assert.IsNotNull(se.State);
-            Assert.IsInstanceOf(typeof(Constant), se.State[edx]);
+            Assert.IsNotNull(se.RegisterState);
+            Assert.IsInstanceOf(typeof(Constant), se.RegisterState[edx]);
         }
 
 
@@ -58,21 +90,89 @@ namespace Decompiler.UnitTests.Analysis
         {
             var esp = Reg32("esp");
             var ebp = Reg32("ebp");
-            var se = new SymbolicEvaluator();
+            CreateSymbolicEvaluator();
             var ass = new Assignment(ebp, esp);
             se.Evaluate(ass);
-            Assert.AreSame(esp, se.State[esp]);
-            Assert.AreSame(esp, se.State[ebp]);
+            Assert.AreSame(esp, se.RegisterState[esp]);
+            Assert.AreSame(esp, se.RegisterState[ebp]);
         }
 
         [Test]
         public void AdjustValue()
         {
             var esp = Reg32("esp");
-            var se = new SymbolicEvaluator();
+            CreateSymbolicEvaluator();
             var ass = new Assignment(esp, new BinaryExpression(BinaryOperator.Add, esp.DataType, esp, Constant.Word32(4)));
             se.Evaluate(ass);
-            Assert.AreEqual("esp + 0x00000004", se.State[esp].ToString());
+            Assert.AreEqual("esp + 0x00000004", se.RegisterState[esp].ToString());
+        }
+
+        [Test]
+        public void LoadFromMemoryTrashes()
+        {
+            var ebx = Reg32("ebx");
+            var al = Reg8("al");
+            CreateSymbolicEvaluator();
+            var ass = new Assignment(al, new MemoryAccess(ebx, al.DataType));
+            se.Evaluate(ass);
+            Assert.AreEqual("<void>", se.RegisterState[al].ToString());
+        }
+
+        [Test]
+        public void PushConstant()
+        {
+            RunBlockTest(delegate(ProcedureBuilder m)
+            {
+                esp = m.Frame.EnsureRegister(Registers.esp);
+                ebp = m.Frame.EnsureRegister(Registers.ebp );
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, ebp);
+                m.Assign(ebp, esp);
+            });
+            Assert.AreEqual("esp - 0x00000004", se.RegisterState[esp].ToString());
+            Assert.AreEqual("esp - 0x00000004", se.RegisterState[ebp].ToString());
+        }
+
+        [Test]
+        public void PushPop()
+        {
+            Identifier eax = null;
+            RunBlockTest(delegate(ProcedureBuilder m)
+            {
+                esp = m.Frame.EnsureRegister(Registers.esp);
+                eax = m.Frame.EnsureRegister(Registers.eax);
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, eax);
+                m.Assign(eax, m.Word32(1));
+                m.Assign(eax, m.LoadDw(esp));
+                m.Assign(esp, m.Add(esp, 4));
+            });
+            Assert.AreEqual("eax", se.RegisterState[eax].ToString());
+        }
+
+        [Test]
+        public void FramePointer()
+        {
+            Identifier eax = null;
+            RunBlockTest(delegate(ProcedureBuilder m)
+            {
+                esp = m.Frame.EnsureRegister(Registers.esp);
+                ebp = m.Frame.EnsureRegister(Registers.ebp);
+                eax = m.Frame.EnsureRegister(Registers.eax);
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, ebp);
+                m.Assign(ebp, esp);
+                m.Assign(esp, m.Sub(esp, 20));
+
+                m.Store(m.Add(ebp, 8), m.Word32(1));
+                m.Assign(eax, m.LoadDw(m.Add(esp, 28)));
+
+                m.Assign(esp, m.Add(esp, 20));
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.Add(esp, 4));
+            });
+            Assert.AreEqual("0x00000001", se.RegisterState[eax].ToString());
+            Assert.AreEqual("esp", se.RegisterState[ebp].ToString());
         }
     }
 }

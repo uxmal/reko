@@ -29,52 +29,40 @@ namespace Decompiler.Core.Expressions
     /// <summary>
     /// Base class for all decompiled expressions.
     /// </summary>
-	public abstract class Expression
-	{
-		private DataType dataType;					// Data type of this expression.
-		private TypeVariable typeVariable;			// index to high-level type of this expression.
+    public abstract class Expression
+    {
+        private TypeVariable typeVariable;			// index to high-level type of this expression. //$REVIEW: only used for typing, perhaps move it to hashtable?
 
-		public Expression(DataType dataType)
-		{
-			this.dataType = dataType;
-		}
+        public Expression(DataType dataType)
+        {
+            this.DataType = dataType;
+        }
 
-		public virtual Expression Invert()
-		{
-			throw new NotSupportedException(string.Format("Expression of type {0} doesn't support Invert.", GetType().Name));
-		}
+        // Data type of this expression.
+        public DataType DataType { get; set; }
+        public TypeVariable TypeVariable { get; set; }
 
-		public abstract Expression Accept(IExpressionTransformer xform);
-
-		public abstract void Accept(IExpressionVisitor visit);
-
+        public abstract Expression Accept(IExpressionTransformer xform);
+        public abstract void Accept(IExpressionVisitor visit);
         public abstract T Accept<T>(ExpressionVisitor<T> visitor);
+        public abstract Expression CloneExpression();
+        
+        public virtual Expression Invert()
+        {
+            throw new NotSupportedException(string.Format("Expression of type {0} doesn't support Invert.", GetType().Name));
+        }
 
-		public abstract Expression CloneExpression();
+        public override string ToString()
+        {
+            var sw = new StringWriter();
+            var fmt = new CodeFormatter(new Formatter(sw));
+            fmt.WriteExpression(this);
+            return sw.ToString();
+        }
 
-		public DataType DataType
-		{
-			get { return dataType; }
-			set { dataType = value; }
-		}
-
-		public TypeVariable TypeVariable
-		{
-			get { return typeVariable; }
-			set { typeVariable = value; }
-		}
-
-		public override string ToString()
-		{
-			StringWriter sw = new StringWriter();
-			CodeFormatter fmt = new CodeFormatter(new Formatter(sw));
-			fmt.WriteExpression(this);
-			return sw.ToString();
-		}
-
-		public static string OperatorToString(Operator op)
-		{
-			return op.ToString();
-		}
-	}
+        public static string OperatorToString(Operator op)
+        {
+            return op.ToString();
+        }
+    }
 }

@@ -25,7 +25,7 @@ using System;
 
 namespace Decompiler.UnitTests.Mocks
 {
-	public class ByteArrayLoopMock : ProcedureMock
+	public class ByteArrayLoopMock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

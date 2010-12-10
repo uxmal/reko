@@ -18,7 +18,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void SimpleGraph()
         {
-            RunTest(delegate(ProcedureMock m)
+            RunTest(delegate(ProcedureBuilder m)
             {
                 m.Assign(m.Local16("a"), m.Word16(42));
                 m.Return();
@@ -30,7 +30,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void IfThen()
         {
-            RunTest(delegate(ProcedureMock m)
+            RunTest(delegate(ProcedureBuilder m)
             {
                 m.BranchIf(m.LocalBool("f"), "join");
                 m.SideEffect(m.Fn("foo", m.Int32(4)));
@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void Loop()
         {
-            RunTest(delegate(ProcedureMock m)
+            RunTest(delegate(ProcedureBuilder m)
             {
                 m.Label("loop");
                 m.BranchIf(m.LocalBool("f"), "done");
@@ -62,7 +62,7 @@ namespace Decompiler.UnitTests.Structure
         [Test]
         public void TwoLoops()
         {
-            RunTest(delegate(ProcedureMock m)
+            RunTest(delegate(ProcedureBuilder m)
             {
                 m.Label("loop1");
                 m.BranchIf(m.LocalBool("f"), "loop2");
@@ -95,13 +95,13 @@ namespace Decompiler.UnitTests.Structure
 
         protected virtual void RunTest(ProcGenerator pg)
         {
-            ProcedureMock pm = new ProcedureMock();
+            ProcedureBuilder pm = new ProcedureBuilder();
             pg(pm);
             pm.Procedure.RenumberBlocks();
             RunTest(pm.Procedure);
         }
 
-        protected virtual void RunTest(ProcedureMock m)
+        protected virtual void RunTest(ProcedureBuilder m)
         {
             RunTest(m.Procedure);
         }

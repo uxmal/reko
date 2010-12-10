@@ -51,8 +51,10 @@
     <Compile Include="M68kState.cs" />
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
+    <Compile Include="OperandFormatDecoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers.cs" />
+    <Compile Include="RegisterSetOperand.cs" />
     <Compile Include="Rewriter.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Analysis
     [TestFixture]
     public class TrashedRegisterFinderTests
     {
-        private ProcedureMock m;
+        private ProcedureBuilder m;
         private Program prog;
         private TrashedRegisterFinder trf;
         private Procedure exit;
@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            m = new ProcedureMock();
+            m = new ProcedureBuilder();
             prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             exit = new Procedure("exit", new Frame(PrimitiveType.Word32));
@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void CopyBack()
         {
-            ProcedureMock m = new ProcedureMock();
+            ProcedureBuilder m = new ProcedureBuilder();
             Identifier tmp = m.Local32("tmp");
             Identifier r2 = m.Register(2);
             var stm1 = m.Assign(tmp, r2);
@@ -273,7 +273,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void TwoProcedures()
         {
-            ProgramMock p = new ProgramMock();
+            ProgramBuilder p = new ProgramBuilder();
 
             Identifier eax = m.Frame.EnsureRegister(Registers.eax);
             Identifier tmp = m.Local32("tmp");
@@ -285,7 +285,7 @@ namespace Decompiler.UnitTests.Analysis
             p.Add(m);
 
 
-            ProcedureMock TrashEaxEbx = new ProcedureMock("TrashEaxEbx");
+            ProcedureBuilder TrashEaxEbx = new ProcedureBuilder("TrashEaxEbx");
             eax = TrashEaxEbx.Frame.EnsureRegister(Registers.eax);
             Identifier ebx = TrashEaxEbx.Frame.EnsureRegister(Registers.ebx);
             TrashEaxEbx.Assign(ebx, m.Int32(0x1231313));

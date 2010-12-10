@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Gui.Windows
                 .Return(windowFrame);
             windowFrame.Expect(s => s.Show());
 
-            var m = new ProcedureMock();
+            var m = new ProcedureBuilder();
             m.Return();
             var codeViewerSvc = new CodeViewerServiceImpl(sc);
             codeViewerSvc.DisplayProcedure(m.Procedure);

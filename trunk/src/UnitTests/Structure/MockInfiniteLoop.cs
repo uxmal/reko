@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Structure
 {
-    public class MockInfiniteLoop : ProcedureMock
+    public class MockInfiniteLoop : ProcedureBuilder
     {
         protected override void BuildBody()
         {

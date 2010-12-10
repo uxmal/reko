@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-	public class Reg00011Mock : ProcedureMock
+	public class Reg00011Mock : ProcedureBuilder
 	{
 		protected override void BuildBody()
 		{

@@ -378,5 +378,7 @@ namespace Decompiler.Arch.Intel
         {
             get { return mode.FramePointerType; }
         }
+
+        public MachineRegister StackRegister { get { return mode.StackRegister; } }
     }
 }

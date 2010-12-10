@@ -40,7 +40,9 @@ namespace Decompiler.Analysis
     /// </remarks>
     public interface EvaluationContext
     {
-        Expression DefiningExpression(Identifier id);
+        Expression GetValue(Identifier id);
+        Expression GetValue(MemoryAccess access);
+        Expression GetValue(SegmentedAccess access);
         void RemoveIdentifierUse(Identifier id);
         void UseExpression(Expression expr);
     }

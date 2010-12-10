@@ -28,18 +28,21 @@ namespace Decompiler.Core.Code
 	/// </summary>
 	public class Assignment : Instruction
 	{
-        private Identifier dst;
-        private Expression src;
-
 		public Assignment(Identifier dst, Expression src)
 		{
 			if (dst == null)
 				throw new ArgumentNullException("dst", "Argument must have a non-null value.");
-			this.dst = dst;
-			this.src = src;
+			this.Dst = dst;
+			this.Src = src;
 		}
 
-		public override Instruction Accept(InstructionTransformer xform)
+        public Identifier Dst { get; set; }
+        public Expression Src { get; set; }
+
+        public virtual bool IsAlias { get { return false; } }
+        public override bool IsControlFlow { get { return false; } }
+        
+        public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformAssignment(this);
 		}
@@ -54,27 +57,6 @@ namespace Decompiler.Core.Code
 			v.VisitAssignment(this);
 		}
 
-        public Identifier Dst 
-        {
-            get { return dst; }
-            set { dst = value; }
-        }
-
-        public Expression Src
-        {
-            get { return src; }
-            set { src = value; }
-        }
-
-		public virtual bool IsAlias
-		{
-			get { return false; }
-		}
-
-		public override bool IsControlFlow
-		{
-			get { return false; }
-		}
 	}
 
 	/// <summary>
@@ -82,16 +64,17 @@ namespace Decompiler.Core.Code
 	/// </summary>
 	public class Store : Instruction
 	{
-		public Expression Dst;
-		public Expression Src;
-
 		public Store(Expression dst, Expression src)
 		{
 			Dst = dst;
 			Src = src;
 		}
 
-		public override Instruction Accept(InstructionTransformer xform)
+        public Expression Dst { get; set; }
+        public Expression Src { get; set; }
+        public override bool IsControlFlow { get { return false; } }
+        
+        public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformStore(this);
 		}
@@ -101,15 +84,10 @@ namespace Decompiler.Core.Code
             return visitor.VisitStore(this);
         }
 
-
 		public override void Accept(InstructionVisitor v)
 		{
 			v.VisitStore(this);
 		}
 
-		public override bool IsControlFlow
-		{
-			get { return false; }
-		}
 	}
 }

@@ -42,7 +42,7 @@ namespace Decompiler.Analysis.Simplification
 		public bool Match(Identifier id)
 		{
             this.id = id;
-            bin = ctx.DefiningExpression(id) as BinaryExpression;
+            bin = ctx.GetValue(id) as BinaryExpression;
 			if (bin == null)
 				return false;
 			return (bin.Left is Identifier) && (bin.Right is Constant);
