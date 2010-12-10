@@ -28,7 +28,7 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlGoto : RtlInstruction
     {
-        public RtlGoto(Address addr, uint length, Expression target)
+        public RtlGoto(Address addr, byte length, Expression target)
             : base(addr, length)
         {
             this.Target = target;

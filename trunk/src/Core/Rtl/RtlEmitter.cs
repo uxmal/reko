@@ -31,12 +31,12 @@ namespace Decompiler.Core.Rtl
     {
         private List<RtlInstruction> instrs;
         private Address addr;
-        private uint length;
+        private byte length;
 
         public RtlEmitter(Address addr, uint length, List<RtlInstruction> instrs)
         {
             this.addr= addr;
-            this.length = length;
+            this.length = (byte) length;
             this.instrs = instrs;
         }
 
@@ -50,6 +50,19 @@ namespace Decompiler.Core.Rtl
         public void Branch(Expression condition, Address target)
         {
             instrs.Add(new RtlBranch(addr, length, condition, target));
+        }
+
+        /// <summary>
+        /// Called when we need to generate an RtlBranch in the middle of an operation. Normally 
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <param name="target"></param>
+        /// <param name="?"></param>
+        public void BranchInMiddleOfInstruction(Expression condition, Address target)
+        {
+            var branch = new RtlBranch(addr, length, condition, target);
+            branch.NextStatementRequiresLabel = true;
+            instrs.Add(branch);
         }
 
         public void Call(Expression target)

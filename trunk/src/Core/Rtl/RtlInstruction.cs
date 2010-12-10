@@ -30,15 +30,27 @@ namespace Decompiler.Core.Rtl
     /// </summary>
     public abstract class RtlInstruction
     {
-        public RtlInstruction(Address addr, uint length)
+        public RtlInstruction(Address addr, byte length)
         {
             this.Address = addr;
             this.Length = length;
         }
-
+        /// <summary>
+        /// The address of the original machine instruction.
+        /// </summary>
         public Address Address { get; private set; }
-        
-        public uint Length { get; private set; }
+
+        /// <summary>
+        /// The length of the original machine instruction, in bytes.
+        /// </summary>
+        public byte Length { get; private set; }
+
+        /// <summary>
+        /// If true, the next statement need a label. This is required in cases where the original machine code 
+        /// maps to many RtlInstructions, some of which are branches (see the X86 REP instruction for a particularly
+        /// hideous example.
+        /// </summary>
+        public bool NextStatementRequiresLabel { get;  set; }
 
         public abstract T Accept<T>(RtlInstructionVisitor<T> visitor);
 
