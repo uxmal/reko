@@ -28,7 +28,7 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlReturn : RtlInstruction
     {
-        public RtlReturn(Address addr, uint length, int returnAddressBytes, int extraBytesPopped) : base(addr, length)
+        public RtlReturn(Address addr, byte length, int returnAddressBytes, int extraBytesPopped) : base(addr, length)
         {
             this.ReturnAddressBytes = returnAddressBytes;
             this.ExtraBytesPopped = extraBytesPopped;

@@ -124,6 +124,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.ja: RewriteConditionalGoto(ConditionCode.UGT, di.Instruction.op1); break;
                 case Opcode.jbe: RewriteConditionalGoto(ConditionCode.ULE, di.Instruction.op1); break;
                 case Opcode.jc: RewriteConditionalGoto(ConditionCode.ULT, di.Instruction.op1); break;
+                case Opcode.jcxz: RewriteJcxz(); break;
                 case Opcode.jge: RewriteConditionalGoto(ConditionCode.GE, di.Instruction.op1); break;
                 case Opcode.jg: RewriteConditionalGoto(ConditionCode.GT, di.Instruction.op1); break;
                 case Opcode.jl: RewriteConditionalGoto(ConditionCode.LT, di.Instruction.op1); break;
@@ -139,13 +140,19 @@ namespace Decompiler.Arch.Intel
                 case Opcode.jz: RewriteConditionalGoto(ConditionCode.EQ, di.Instruction.op1); break;
                 case Opcode.lea: RewriteLea(); break;
                 case Opcode.loop: RewriteLoop(0, ConditionCode.EQ); break;
+                case Opcode.loope: RewriteLoop(FlagM.ZF, ConditionCode.EQ); break;
                 case Opcode.mov: RewriteMov(); break;
+                case Opcode.not: RewriteNot(); break;
                 case Opcode.neg: RewriteNeg(); break;
                 case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
+                case Opcode.@out: RewriteOut(); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pop: RewritePop(); break;
+                case Opcode.rep: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.Sub); break;
+                case Opcode.shld: RewriteShxd("__shld"); break;
+                case Opcode.shrd: RewriteShxd("__shrd"); break;
                 case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;

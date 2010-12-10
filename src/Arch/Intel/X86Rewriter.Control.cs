@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -107,6 +108,11 @@ namespace Decompiler.Arch.Intel
             emitter.SideEffect(PseudoProc("__syscall", PrimitiveType.Void, SrcOp(di.Instruction.op1)));
         }
 
+        private void RewriteJcxz()
+        {
+            emitter.Branch(emitter.Eq0(orw.AluRegister(Registers.ecx, di.Instruction.dataWidth)), OperandAsCodeAddress(di.Instruction.op1));
+        }
+
         private void RewriteJmp()
         {
             if (IsRealModeReboot(di.Instruction))
@@ -131,10 +137,13 @@ namespace Decompiler.Arch.Intel
         {
             Identifier cx = orw.AluRegister(Registers.ecx, di.Instruction.dataWidth);
             emitter.Assign(cx, emitter.Sub(cx, 1));
-            Identifier flag;
             if (useFlags != 0)
             {
-                throw new NotImplementedException();
+                emitter.Branch(new BinaryExpression(Operator.Cand, PrimitiveType.Bool,
+                    new TestCondition(cc, orw.FlagGroup(useFlags)),
+                    emitter.Ne0(cx)),
+                    OperandAsCodeAddress(di.Instruction.op1));
+                // new TestCondition(ConditionCode.NE, orw.FlagGroup(FlagM.ZF)
                 //CodeEmitter e = emitter;
 
                 //// Splice in a new block.
@@ -148,9 +157,49 @@ namespace Decompiler.Arch.Intel
             }
             else
             {
-                EmitCcInstr(cx, FlagM.ZF);
-                emitter.Branch(new TestCondition(ConditionCode.NE, orw.FlagGroup(FlagM.ZF)), OperandAsCodeAddress(di.Instruction.op1));
+                emitter.Branch(emitter.Ne0(cx), OperandAsCodeAddress(di.Instruction.op1));
             }
+        }
+
+
+        ///<summary>
+        /// Converts a rep [string instruction] into a loop: 
+        /// <code>
+        /// while ([e]cx != 0)
+        ///		[string instruction]
+        ///		--ecx;
+        ///		if (zF)				; only cmps[b] and scas[b]
+        ///			goto follow;
+        /// follow: ...	
+        /// </code>
+        ///</summary>
+        private void RewriteRep()
+        {
+            var topOfLoop = di.Address;
+            var regCX = orw.AluRegister(Registers.ecx, di.Instruction.addrWidth);
+            dasm.MoveNext();
+            di = dasm.Current;
+            var strFollow = dasm.Peek(1);
+
+            emitter.Branch(emitter.Eq0(regCX), strFollow.Address);
+            RewriteStringInstruction();
+            emitter.Assign(regCX, emitter.Sub(regCX, 1));
+
+            switch (di.Instruction.code)
+            {
+            case Opcode.cmps:
+            case Opcode.cmpsb:
+            case Opcode.scas:
+            case Opcode.scasb:
+                {
+                    var cc = (di.Instruction.code == Opcode.repne)
+                        ? ConditionCode.NE
+                        : ConditionCode.EQ;
+                    emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)), strFollow.Address);
+                    break;
+                }
+            }
+            emitter.Goto(topOfLoop);
         }
 
         public void RewriteRet()

@@ -31,7 +31,6 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch.Intel
 {
-
     [TestFixture]
     public partial class X86RewriterTests
     {
@@ -370,14 +369,13 @@ namespace Decompiler.UnitTests.Arch.Intel
         }
 
         [Test]
-        [Ignore()]
         public void RetNInstruction()
         {
             var e = Run16bitTest(delegate(IntelAssembler m)
             {
                 m.Ret(8);
             });
-            AssertCode("Return", e);
+            AssertCode("0C00:0000(3) return (2,8)", e);
         }
 
         [Test]
@@ -389,22 +387,22 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Loop("lupe");
             });
             AssertCode("0C00:0000(2) cx = cx - 0x0001", e);
-            AssertCode("0C00:0000(2) Z = cond(cx)", e);
-            AssertCode("0C00:0000(2) if (Test(NE,Z)) branch 0C00:0000", e);
+            AssertCode("0C00:0000(2) if (cx != 0x0000) branch 0C00:0000", e);
         }
 
         [Test]
-        [Ignore("This requires changes in the Scanner/BlockWorkItem interface, because we need to introduce loops.")]
         public void Loope()
         {
             var e = Run16bitTest(delegate(IntelAssembler m)
             {
                 m.Label("lupe");
                 m.Loope("lupe");
+                m.Mov(m.bx, m.ax);
             });
-            AssertCode("0C00:0000(2) cx = cx - 0x0001", e);
-            AssertCode("0C00:0000(2) Z = cond(cx)", e);
-            AssertCode("@@@@", e);
+            AssertCode(e,
+                "0|0C00:0000(2) cx = cx - 0x0001",
+                "1|0C00:0000(2) if (Test(EQ,Z) && cx != 0x0000) branch 0C00:0000",
+                "2|0C00:0002(2) bx = ax");
         }
 
         [Test]
@@ -453,8 +451,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             });
             AssertCode(e,
                 "0|0C00:0000(3) ecx = -ecx",
-                "1|0C00:0000(3) SZO = cond(ecx)",
-                "2|0C00:0000(3) C = 0");
+                "1|0C00:0000(3) SCZO = cond(ecx)",
+                "2|0C00:0000(3) C = ecx == 0x00000000");
         }
 
         [Test]
@@ -464,7 +462,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Not(m.bx);
             });
-            AssertCode("@@@", e);
+            AssertCode(e,
+                "0|0C00:0000(2) bx = ~bx");
         }
 
         [Test]
@@ -474,7 +473,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Out(m.dx, m.al);
             });
-            AssertCode("@@@", e);
+            AssertCode("0C00:0000(1) __outb(dx, al)", e);
         }
 
         [Test]
@@ -486,7 +485,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Jcxz("lupe");
                 m.Enter(16, 0);
             });
-            AssertCode("@@@", e);
+            AssertCode("0C00:0000(2) if (cx == 0x0000) branch 0C00:0000", e);
         }
 
         [Test]
@@ -496,8 +495,17 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Rep();
                 m.Lodsw();
+                m.Xor(m.ax, m.ax);
             });
-            AssertCode("@@@", e);
+            AssertCode(e,
+                "0|0C00:0000(1) if (cx == 0x0000) branch 0C00:0002",
+                "1|0C00:0000(1) ax = Mem0[ds:si:word16]",
+                "2|0C00:0000(1) si = si + 0x0002",
+                "3|0C00:0000(1) cx = cx - 0x0001",
+                "4|0C00:0000(1) goto 0C00:0000",
+                "5|0C00:0002(2) ax = ax ^ ax",
+                "6|0C00:0002(2) SZO = cond(ax)",
+                "7|0C00:0002(2) C = false");
         }
 
         [Test]
@@ -507,7 +515,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Shld(m.edx, m.eax, m.cl);
             });
-            AssertCode("@@@", e);
+            AssertCode(
+                "0C00:0000(4) edx = __shld(edx, eax, cl)", e);
         }
 
         [Test]
@@ -517,7 +526,8 @@ namespace Decompiler.UnitTests.Arch.Intel
             {
                 m.Shrd(m.eax, m.edx, 4);
             });
-            AssertCode("@@@", e);
+            AssertCode(
+                "0C00:0000(5) eax = __shrd(eax, edx, 0x04)", e);
         }
 
     }

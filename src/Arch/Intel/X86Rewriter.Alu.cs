@@ -187,7 +187,6 @@ namespace Decompiler.Arch.Intel
             }
             else
             {
-                int newOffset;
                 src = SrcOp(di.Instruction.op2);
                 MemoryAccess load = src as MemoryAccess;
                 if (load != null)
@@ -249,6 +248,18 @@ namespace Decompiler.Arch.Intel
             emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Eq0(tmp));
         }
 
+        private void RewriteNot()
+        {
+            Expression tmp = RewriteUnaryOperator(Operator.Comp, di.Instruction.op1, di.Instruction.op1);
+        }
+
+        private void RewriteOut()
+        {
+            var ppp = host.EnsurePseudoProcedure("__out" + di.Instruction.op2.Width.Prefix, PrimitiveType.Void, 2);
+            emitter.SideEffect(emitter.Fn(ppp, 
+                SrcOp(di.Instruction.op1),
+                SrcOp(di.Instruction.op2)));
+        }
         private void RewritePop()
         {
             RewritePop(dasm.Current.Instruction.op1, dasm.Current.Instruction.op1.Width);
@@ -274,6 +285,138 @@ namespace Decompiler.Arch.Intel
             var sp = StackPointer();
             emitter.Assign(sp, emitter.Sub(sp, dataWidth.Size));
             emitter.Assign(orw.StackAccess(sp, dataWidth), expr);
+        }
+
+        private void RewriteShxd(string name)
+        {
+            var ppp = host.EnsurePseudoProcedure(name, di.Instruction.op1.Width, 3);
+            EmitCopy(di.Instruction.op1, emitter.Fn(ppp,
+                            SrcOp(di.Instruction.op1),
+                            SrcOp(di.Instruction.op2),
+                            SrcOp(di.Instruction.op3)), false);
+        }
+
+        		public MemoryAccess MemDi()
+		{
+			if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+			{
+				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.es), RegDi, di.Instruction.dataWidth);
+			}
+			else
+				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegDi, di.Instruction.addrWidth);
+		}
+
+		public MemoryAccess MemSi()
+		{
+			if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+			{
+				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.ds), RegSi, di.Instruction.dataWidth);
+			}
+			else
+				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegSi, di.Instruction.dataWidth);
+		}
+		
+		public Identifier RegAl
+		{
+			get { return orw.AluRegister(Registers.eax, di.Instruction.dataWidth); }
+		}
+
+		public Identifier RegDi
+		{
+			get { return orw.AluRegister(Registers.edi, di.Instruction.addrWidth); }
+		}
+
+		public Identifier RegSi
+		{
+			get { return orw.AluRegister(Registers.esi, di.Instruction.addrWidth); }
+		}
+	
+
+        private void RewriteStringInstruction()
+        {
+            bool incSi = false;
+            bool incDi = false;
+            switch (di.Instruction.code)
+            {
+            default:
+                throw new NotSupportedException(string.Format("'{0}' is not an x86 string instruction.", di.Instruction.code));
+            case Opcode.cmps:
+            case Opcode.cmpsb:
+                emitter.Assign(
+                    orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
+                    new ConditionOf(
+                    new BinaryExpression(Operator.Sub, di.Instruction.dataWidth, MemSi(), MemDi())));
+                incSi = true;
+                incDi = true;
+                break;
+            case Opcode.lods:
+            case Opcode.lodsb:
+                emitter.Assign(RegAl, MemSi());
+                incSi = true;
+                break;
+            case Opcode.movs:
+            case Opcode.movsb:
+                {
+                    Identifier tmp = frame.CreateTemporary(di.Instruction.dataWidth);
+                    emitter.Assign(tmp, MemSi());
+                    emitter.Assign(MemDi(), tmp);
+                    incSi = true;
+                    incDi = true;
+                    break;
+                }
+            case Opcode.ins:
+            case Opcode.insb:
+                {
+                    Identifier regDX = orw.AluRegister(Registers.edx, di.Instruction.addrWidth);
+                    var ppp = host.EnsurePseudoProcedure("__in", di.Instruction.dataWidth, 1);
+                    emitter.Assign(MemDi(), emitter.Fn(ppp, regDX));
+                    incDi = true;
+                    break;
+                }
+            case Opcode.outs:
+            case Opcode.outsb:
+                {
+                    Identifier regDX = orw.AluRegister(Registers.edx, di.Instruction.addrWidth);
+                    var ppp = host.EnsurePseudoProcedure("__out" + RegAl.DataType.Prefix, PrimitiveType.Void, 2);
+                    emitter.SideEffect(emitter.Fn(ppp, regDX, RegAl));
+                    incSi = true;
+                    break;
+                }
+            case Opcode.scas:
+            case Opcode.scasb:
+                emitter.Assign(
+                    orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
+                    new ConditionOf(
+                    new BinaryExpression(Operator.Sub,
+                    di.Instruction.dataWidth,
+                    RegAl,
+                    MemDi())));
+                incDi = true;
+                break;
+            case Opcode.stos:
+            case Opcode.stosb:
+                emitter.Assign(MemDi(), RegAl);
+                incDi = true;
+                break;
+            }
+
+            if (incSi)
+            {
+                emitter.Assign(RegSi,
+                    new BinaryExpression(Operator.Add,
+                    di.Instruction.addrWidth,
+                    RegSi,
+                    new Constant(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
+            }
+
+            if (incDi)
+            {
+                emitter.Assign(RegDi,
+                    new BinaryExpression(Operator.Add,
+                    di.Instruction.addrWidth,
+                    RegDi,
+                    new Constant(di.Instruction.addrWidth, di.Instruction.dataWidth.Size)));
+            }
         }
 
         private void RewriteTest()

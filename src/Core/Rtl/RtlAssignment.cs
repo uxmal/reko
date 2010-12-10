@@ -28,7 +28,7 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlAssignment : RtlInstruction
     {
-        public RtlAssignment(Address addr, uint length, Expression dst, Expression src)
+        public RtlAssignment(Address addr, byte length, Expression dst, Expression src)
             : base(addr, length)
         {
             this.Dst = dst;

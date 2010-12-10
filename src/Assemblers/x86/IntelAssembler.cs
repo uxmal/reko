@@ -110,7 +110,7 @@ namespace Decompiler.Assemblers.x86
 
         public void Shrd(ParsedOperand op1, ParsedOperand op2, byte count)
         {
-            ProcessDoubleShift(4, op1, op2, new ParsedOperand(ImmediateOperand.Byte(count)));
+            ProcessDoubleShift(8, op1, op2, new ParsedOperand(ImmediateOperand.Byte(count)));
         }
 
         public void Sub(ParsedOperand op, int constant)

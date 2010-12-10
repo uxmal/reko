@@ -29,7 +29,7 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlCall : RtlInstruction
     {
-        public RtlCall(Address addr, uint length, Expression target) : base(addr, length)
+        public RtlCall(Address addr, byte length, Expression target) : base(addr, length)
         {
             this.Target = target;
         }
