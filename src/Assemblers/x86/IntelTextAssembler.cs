@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -852,7 +852,7 @@ namespace Decompiler.Assemblers.x86
                 asm.ProcessStringInstruction(0xA4, PrimitiveType.Word32);
                 break;
             case Token.MOVSW:
-                asm.ProcessStringInstruction(0xA4, PrimitiveType.Word16);
+                asm.Movsw();
 				break;
 			case Token.MOVSX:
 				ProcessMovx(0xBE);
@@ -864,7 +864,7 @@ namespace Decompiler.Assemblers.x86
                 asm.ProcessStringInstruction(0xAE, PrimitiveType.Byte);
 				break;
 			case Token.SCASW:
-                asm.ProcessStringInstruction(0xAE, PrimitiveType.Word16);
+                asm.Scasw();
 				break;
 			case Token.SETNZ:
 				ProcessSetCc(0x05);

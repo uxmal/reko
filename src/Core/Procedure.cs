@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Core
@@ -117,7 +118,28 @@ namespace Decompiler.Core
 			get { return blockExit; }
 		}
 
-		public void Write(bool emitFrame, TextWriter writer)
+        private class BlockComparer : IComparer<Block>
+        {
+            public int Compare(Block x, Block y)
+            {
+                if (x == y) 
+                    return 0;
+                var eb = x.Procedure.EntryBlock;
+                if (x == eb)
+                    return -1;
+                else if (y == eb) 
+                    return 1;
+                else 
+                    return String.Compare(x.Name, y.Name);
+            }
+        }
+
+        /// <summary>
+        /// Writes the blocks sorted by address ascending.
+        /// </summary>
+        /// <param name="emitFrame"></param>
+        /// <param name="writer"></param>
+		public void  Write(bool emitFrame, TextWriter writer)
 		{
 			writer.WriteLine("// {0}", Name);
 			if (emitFrame)
@@ -125,8 +147,9 @@ namespace Decompiler.Core
             Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(writer));
 			writer.WriteLine();
 
-            var it = new DfsIterator<Block>(controlGraph);
-            foreach (Block block in it.PreOrder(EntryBlock)) 
+            var blocks = controlGraph.Nodes.
+                OrderBy((x => x), new BlockComparer()).ToArray();
+            foreach (Block block in blocks) 
 			{
 				if (block != null) block.Write(writer);
 			}

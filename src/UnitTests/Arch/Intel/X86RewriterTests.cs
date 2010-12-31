@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -498,11 +498,11 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Xor(m.ax, m.ax);
             });
             AssertCode(e,
-                "0|0C00:0000(1) if (cx == 0x0000) branch 0C00:0002",
-                "1|0C00:0000(1) ax = Mem0[ds:si:word16]",
-                "2|0C00:0000(1) si = si + 0x0002",
-                "3|0C00:0000(1) cx = cx - 0x0001",
-                "4|0C00:0000(1) goto 0C00:0000",
+                "0|0C00:0000(2) if (cx == 0x0000) branch 0C00:0002",
+                "1|0C00:0000(2) ax = Mem0[ds:si:word16]",
+                "2|0C00:0000(2) si = si + 0x0002",
+                "3|0C00:0000(2) cx = cx - 0x0001",
+                "4|0C00:0000(2) goto 0C00:0000",
                 "5|0C00:0002(2) ax = ax ^ ax",
                 "6|0C00:0002(2) SZO = cond(ax)",
                 "7|0C00:0002(2) C = false");

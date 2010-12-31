@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,6 @@ namespace Decompiler.Core
         [Obsolete]
 		public int RpoNumber;			// Reverse post order number.
 
-		private string name;
-		private Procedure proc;
 		private List<Block> pred = new List<Block>();
         private List<Block> succ = new List<Block>(2);
 		private StatementList stms;
@@ -45,10 +43,13 @@ namespace Decompiler.Core
 		{
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Blocks must have a valid name.", "name"); 
-			this.proc = proc;
-			this.name = name;
+			this.Procedure = proc;
+			this.Name = name;
 			this.stms = new StatementList(this);
 		}
+
+        public string Name { get; private set; }
+        public Procedure Procedure { get; set; }
 
 		public static void Coalesce(Block block, Block next)
 		{
@@ -64,10 +65,6 @@ namespace Decompiler.Core
 			next.Succ.Clear();
 		}
 
-		public string Name
-		{
-			get { return name; }
-		}
 
 		public static bool ReplaceJumpsFrom(Block block, Block next)
 		{
@@ -127,10 +124,10 @@ namespace Decompiler.Core
 			get { return pred; }
 		}
 
-		public Procedure Procedure
-		{
-			get { return proc; }
-		}
+        //public Procedure Procedure
+        //{
+        //    get { return proc; }
+        //}
 
 		public List<Block> Succ
 		{

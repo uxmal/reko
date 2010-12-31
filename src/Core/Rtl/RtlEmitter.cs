@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,25 +31,26 @@ namespace Decompiler.Core.Rtl
     {
         private List<RtlInstruction> instrs;
         private Address addr;
-        private byte length;
 
         public RtlEmitter(Address addr, uint length, List<RtlInstruction> instrs)
         {
             this.addr= addr;
-            this.length = (byte) length;
+            this.MachineInstructionLength = (byte) length;
             this.instrs = instrs;
         }
 
+        public byte MachineInstructionLength { get; set; }
+
         public RtlAssignment Assign(Expression dst, Expression src)
         {
-            var ass = new RtlAssignment(addr, length, dst, src);
+            var ass = new RtlAssignment(addr, MachineInstructionLength, dst, src);
             instrs.Add(ass);
             return ass;
         }
 
         public void Branch(Expression condition, Address target)
         {
-            instrs.Add(new RtlBranch(addr, length, condition, target));
+            instrs.Add(new RtlBranch(addr, MachineInstructionLength, condition, target));
         }
 
         /// <summary>
@@ -60,31 +61,31 @@ namespace Decompiler.Core.Rtl
         /// <param name="?"></param>
         public void BranchInMiddleOfInstruction(Expression condition, Address target)
         {
-            var branch = new RtlBranch(addr, length, condition, target);
+            var branch = new RtlBranch(addr, MachineInstructionLength, condition, target);
             branch.NextStatementRequiresLabel = true;
             instrs.Add(branch);
         }
 
         public void Call(Expression target)
         {
-            instrs.Add(new RtlCall(addr, length, target));
+            instrs.Add(new RtlCall(addr, MachineInstructionLength, target));
         }
 
         public void Goto(Expression target)
         {
-            instrs.Add(new RtlGoto(addr, length, target));
+            instrs.Add(new RtlGoto(addr, MachineInstructionLength, target));
         }
 
         public void Return(
             int returnAddressBytes,
             int extraBytesPopped)
         {
-            instrs.Add(new RtlReturn(addr, length, returnAddressBytes, extraBytesPopped));
+            instrs.Add(new RtlReturn(addr, MachineInstructionLength, returnAddressBytes, extraBytesPopped));
         }
 
         public void SideEffect(Expression sideEffect)
         {
-            instrs.Add(new RtlSideEffect(addr, length, sideEffect));
+            instrs.Add(new RtlSideEffect(addr, MachineInstructionLength, sideEffect));
         }
     }
 }

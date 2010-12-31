@@ -1,5 +1,6 @@
+#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using Decompiler.Arch.Intel;
 using Decompiler.Analysis;
@@ -176,7 +178,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
             FakeDecompilerEventListener eventListener = new FakeDecompilerEventListener();
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, eventListener);
-			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow, eventListener);
+			TrashedRegisterFinderOld trf = new TrashedRegisterFinderOld(prog, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
 			RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
 			DumpProcedureFlows(prog, dfa, rl, fut.TextWriter);

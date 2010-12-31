@@ -1,15 +1,34 @@
-﻿using Decompiler.Arch.Intel;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2011 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
-using Decompiler.Environments.Msdos;
 using Decompiler.Core;
 using Decompiler.Core.Machine;
+using Decompiler.Environments.Msdos;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
-
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace Decompiler.UnitTests.Scanning
 {
@@ -17,6 +36,7 @@ namespace Decompiler.UnitTests.Scanning
     public class Scanner_x86Tests
     {
         private IntelArchitecture arch;
+        private Scanner scanner;
 
         private void BuildTest16(Action<IntelAssembler> asmProg)
         {
@@ -27,7 +47,7 @@ namespace Decompiler.UnitTests.Scanning
             var asm = new IntelAssembler(arch, addrBase, emitter, entryPoints);
             asmProg(asm);
 
-            var scanner = new Scanner(
+            scanner = new Scanner(
                 arch,
                 new ProgramImage(addrBase, emitter.Bytes),
                 new MsdosPlatform(arch),
@@ -62,6 +82,36 @@ namespace Decompiler.UnitTests.Scanning
                 m.Add(m.ax, 2);
                 m.Ret();
             });
+        }
+
+        [Test]
+        public void RepScasw()
+        {
+            BuildTest16(delegate(IntelAssembler m)
+            {
+                m.Rep();
+                m.Scasw();
+                m.Ret();
+            });
+            var sw = new StringWriter();
+            scanner.Procedures.Values[0].Write(false, sw);
+            Console.WriteLine(sw.ToString());
+            var sExp = @"// fn0C00_0000
+void fn0C00_0000()
+fn0C00_0000_entry:
+l0C00_0000:
+	branch cx == 0x0000 l0C00_0002
+l
+l0C00_0002:
+	v3 = Mem0[ds:si:word16]
+	store(Mem0[es:di:word16]) = v3
+	si = si + 0x0002
+	di = di + 0x0002
+	cx = cx - 0x0001
+	return
+fn0C00_0000_exit:
+";
+            Assert.AreEqual(sExp, sw.ToString());
         }
     }
 }

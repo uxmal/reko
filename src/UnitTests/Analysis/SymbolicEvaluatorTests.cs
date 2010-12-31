@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Analysis
     [TestFixture]
     public class SymbolicEvaluatorTests
     {
-        private Identifier esp ;
+        private Identifier esp;
         private Identifier ebp;
         private Identifier eax;
         private SymbolicEvaluator se;
@@ -49,11 +49,18 @@ namespace Decompiler.UnitTests.Analysis
             arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
         }
 
-        private static Identifier Reg32(string name)
+
+        private Expression GetRegisterState(SymbolicEvaluator se, Identifier id)
+        {
+            return se.RegisterState[(RegisterStorage)id.Storage];
+        }
+
+        private static Identifier Tmp32(string name)
         {
             return new Identifier(name, 1, PrimitiveType.Word32, new TemporaryStorage());
         }
-        private static Identifier Reg8(string name)
+
+        private static Identifier Tmp8(string name)
         {
             return new Identifier(name, 1, PrimitiveType.Byte, new TemporaryStorage());
         }
@@ -76,46 +83,45 @@ namespace Decompiler.UnitTests.Analysis
         public void EvaluateConstantAssignment()
         {
             var name = "edx";
-            var edx = Reg32(name);
+            var edx = Tmp32(name);
             var ass = new Assignment(edx, Constant.Word32(3));
-            var se = new SymbolicEvaluator(arch);
+            CreateSymbolicEvaluator();
             se.Evaluate(ass);
             Assert.IsNotNull(se.RegisterState);
-            Assert.IsInstanceOf(typeof(Constant), se.RegisterState[edx]);
+            Assert.IsInstanceOf(typeof(Constant), se.TemporaryState[edx.Storage]);
         }
 
 
         [Test]
         public void IdentifierCopy()
         {
-            var esp = Reg32("esp");
-            var ebp = Reg32("ebp");
+            var esp = Tmp32("esp");
+            var ebp = Tmp32("ebp");
             CreateSymbolicEvaluator();
             var ass = new Assignment(ebp, esp);
             se.Evaluate(ass);
-            Assert.AreSame(esp, se.RegisterState[esp]);
-            Assert.AreSame(esp, se.RegisterState[ebp]);
+            Assert.AreSame(esp, se.TemporaryState[ebp.Storage], "Expected ebp to have the value of esp");
         }
 
         [Test]
         public void AdjustValue()
         {
-            var esp = Reg32("esp");
+            var esp = Tmp32("esp");
             CreateSymbolicEvaluator();
             var ass = new Assignment(esp, new BinaryExpression(BinaryOperator.Add, esp.DataType, esp, Constant.Word32(4)));
             se.Evaluate(ass);
-            Assert.AreEqual("esp + 0x00000004", se.RegisterState[esp].ToString());
+            Assert.AreEqual("esp + 0x00000004", se.TemporaryState[esp.Storage].ToString());
         }
 
         [Test]
         public void LoadFromMemoryTrashes()
         {
-            var ebx = Reg32("ebx");
-            var al = Reg8("al");
+            var ebx = Tmp32("ebx");
+            var al = Tmp8("al");
             CreateSymbolicEvaluator();
             var ass = new Assignment(al, new MemoryAccess(ebx, al.DataType));
             se.Evaluate(ass);
-            Assert.AreEqual("<void>", se.RegisterState[al].ToString());
+            Assert.AreEqual("<void>", se.TemporaryState[al.Storage].ToString());
         }
 
         [Test]
@@ -129,8 +135,8 @@ namespace Decompiler.UnitTests.Analysis
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
             });
-            Assert.AreEqual("esp - 0x00000004", se.RegisterState[esp].ToString());
-            Assert.AreEqual("esp - 0x00000004", se.RegisterState[ebp].ToString());
+            Assert.AreEqual("esp - 0x00000004", GetRegisterState(se, esp).ToString());
+            Assert.AreEqual("esp - 0x00000004", GetRegisterState(se, ebp).ToString());
         }
 
         [Test]
@@ -147,7 +153,7 @@ namespace Decompiler.UnitTests.Analysis
                 m.Assign(eax, m.LoadDw(esp));
                 m.Assign(esp, m.Add(esp, 4));
             });
-            Assert.AreEqual("eax", se.RegisterState[eax].ToString());
+            Assert.AreEqual("eax", GetRegisterState(se, eax).ToString());
         }
 
         [Test]
@@ -171,8 +177,8 @@ namespace Decompiler.UnitTests.Analysis
                 m.Assign(ebp, m.LoadDw(esp));
                 m.Assign(esp, m.Add(esp, 4));
             });
-            Assert.AreEqual("0x00000001", se.RegisterState[eax].ToString());
-            Assert.AreEqual("ebp", se.RegisterState[ebp].ToString());
+            Assert.AreEqual("0x00000001", GetRegisterState(se, eax).ToString());
+            Assert.AreEqual("ebp", GetRegisterState(se, ebp).ToString());
         }
 
         [Test]
@@ -185,7 +191,7 @@ namespace Decompiler.UnitTests.Analysis
                 m.Assign(r1, 1);
                 m.SideEffect(m.Fn("foo", m.AddrOf(r1)));
             });
-            Assert.AreEqual("<void>", se.RegisterState[r1].ToString());
+            Assert.AreEqual("<void>", GetRegisterState(se, r1).ToString());
         }
 
         [Test]
@@ -197,7 +203,7 @@ namespace Decompiler.UnitTests.Analysis
                 r1 = m.Register(1);
                 m.Assign(r1, m.Fn("foo"));
             });
-            Assert.AreEqual("<void>", se.RegisterState[r1].ToString());
+            Assert.AreEqual("<void>", GetRegisterState(se, r1).ToString());
         }
 
         [Test]
@@ -217,7 +223,7 @@ namespace Decompiler.UnitTests.Analysis
                 m.Store(m.Sub(esp, 2), ds);
                 m.Assign(eax, m.LoadDw(m.Sub(esp, 4)));
             });
-            Assert.AreEqual("SEQ(ds, ax)", se.RegisterState[eax].ToString());
+            Assert.AreEqual("SEQ(ds, ax)", GetRegisterState(se, eax).ToString());
         }
 
         [Test]
@@ -239,8 +245,32 @@ namespace Decompiler.UnitTests.Analysis
                 m.Assign(cx, m.LoadW(m.Sub(esp, 2)));
             });
             Assert.AreEqual("ebx", se.StackState[-4].ToString());
-            Assert.AreEqual("(word16) ebx", se.RegisterState[ax].ToString());
-            Assert.AreEqual("SLICE(ebx, word16, 16)", se.RegisterState[cx].ToString());
+            Assert.AreEqual("(word16) ebx", GetRegisterState(se, ax).ToString());
+            Assert.AreEqual("SLICE(ebx, word16, 16)", GetRegisterState(se, cx).ToString());
+        }
+
+        [Test]
+        public void AssignToTemporary()
+        {
+            Identifier tmp = null;
+            RunBlockTest(delegate(ProcedureBuilder m)
+            {
+                tmp = m.Frame.CreateTemporary(PrimitiveType.Word32);
+                m.Assign(tmp, 3);
+            });
+            Assert.AreEqual("0x00000003", se.TemporaryState[tmp.Storage].ToString());
+        }
+
+        [Test]
+        public void AssignToFlag()
+        {
+            Identifier flag = null;
+            RunBlockTest(delegate(ProcedureBuilder m)
+            {
+                flag = m.Frame.EnsureFlagGroup(0x3, "SZ", PrimitiveType.Byte);
+                m.Assign(flag, 0x03);
+            });
+            Assert.AreEqual(0x03, se.TrashedFlags);
         }
     }
 }

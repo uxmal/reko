@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
-using System;
 using BitSet = Decompiler.Core.Lib.BitSet;
 using Block = Decompiler.Core.Block;
-using Identifier = Decompiler.Core.Expressions.Identifier;
+using Expression = Decompiler.Core.Expressions.Expression;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
 using Storage = Decompiler.Core.Storage;
-using TextWriter = System.IO.TextWriter;
 using StringWriter = System.IO.StringWriter;
+using TextWriter = System.IO.TextWriter;
+using System;
 using System.Collections.Generic;
 
 namespace Decompiler.Analysis
@@ -41,7 +41,8 @@ namespace Decompiler.Analysis
 		public uint grfOut;							    // each bit corresponds to a condition code register that is live at the end of the block
 		public Dictionary<Storage,int> StackVarsOut;    // stack-based storages that are live at the end of the block.
 		public uint grfTrashedIn;					    // each bit corresnpots to a condition code register that is trashed on entrance.
-		public Dictionary<Storage, Storage> TrashedIn;	// maps which identifiers are trashed on entrance to the block.
+        [Obsolete] public Dictionary<Storage, Storage> TrashedIn;  
+        public Dictionary<Storage, Expression> SymbolicIn;        // maps identifiers to symbolic values on entrance to the block.
         public bool TerminatesProcess;                  // True if entering this block means the process/thread is terminated.
 
 		public BlockFlow(Block block, BitSet dataOut)
@@ -50,6 +51,7 @@ namespace Decompiler.Analysis
 			this.DataOut = dataOut;
 			this.StackVarsOut = new Dictionary<Storage,int>();
 			this.TrashedIn = new Dictionary<Storage, Storage>();
+            this.SymbolicIn = new Dictionary<Storage, Expression>();
 		}
 
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)

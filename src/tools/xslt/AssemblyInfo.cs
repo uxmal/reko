@@ -1,5 +1,6 @@
+#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -29,7 +31,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Copyright © 1999-2010 John Källén")]
+[assembly: AssemblyCopyright("Copyright © 1999-2011 John Källén")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

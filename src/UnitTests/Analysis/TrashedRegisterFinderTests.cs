@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,16 +29,345 @@ using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Decompiler.UnitTests.Analysis
 {
-    [TestFixture]
     public class TrashedRegisterFinderTests
     {
         private ProcedureBuilder m;
         private Program prog;
         private TrashedRegisterFinder trf;
+        private Procedure exit;
+        private ProgramDataFlow flow;
+        private IntelArchitecture arch;
+
+        [SetUp]
+        public void Setup()
+        {
+            m = new ProcedureBuilder();
+            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            prog = new Program();
+            prog.Architecture = arch;
+            exit = new Procedure("exit", new Frame(PrimitiveType.Word32));
+            flow = new ProgramDataFlow();
+        }
+
+        [Test]
+        public void TrashRegister()
+        {
+            var r1 = m.Register(1);
+            var stm = m.Assign(r1, m.Int32(0));
+
+            trf = CreateTrashedRegisterFinder();
+
+            stm.Accept(trf);
+            Debug.WriteLine(trf.RegisterSymbolicValues[(RegisterStorage)r1.Storage].ToString());
+            Assert.IsTrue(trf.IsTrashed(r1.Storage), "r1 should have been marked as trashed.");
+            //			Assert.AreNotSame(trf.RegisterSet[r1], r1);
+        }
+
+        private TrashedRegisterFinder CreateTrashedRegisterFinder()
+        {
+            return new TrashedRegisterFinder(prog, this.flow, new FakeDecompilerEventListener());
+        }
+
+        private TrashedRegisterFinder CreateTrashedRegisterFinder(Program prog)
+        {
+            return new TrashedRegisterFinder(prog, this.flow, new FakeDecompilerEventListener());
+        }
+
+        private string DumpValues()
+        {
+            var l = new SortedList<string, string>();
+            foreach (var item in trf.RegisterSymbolicValues)
+            {
+                l.Add(item.Key.Register.Name, item.Value.ToString()); 
+            }
+            foreach (var item in trf.StackSymbolicValues)
+            {
+                l.Add(
+                    string.Format("Stack {0}{1:X}", item.Key >= 0 ? "+" : "-", Math.Abs(item.Key)),
+                    item.Value.ToString());
+            }
+            var sb = new StringBuilder();
+            string sep = "";
+            foreach (KeyValuePair<string, string> de in l)
+            {
+                sb.Append(sep);
+                sb.AppendFormat("({0}:{1})", de.Key, de.Value);
+                sep = ", ";
+            }
+            return sb.ToString();
+        }
+
+        private string TrashToString(Storage o)
+        {
+            RegisterStorage rst = o as RegisterStorage;
+            if (rst != null)
+                return rst.Register.Name;
+            return o.ToString();
+        }
+
+        [Test]
+        public void TrashFlag()
+        {
+            var scz = m.Frame.EnsureFlagGroup(0x7, arch.GrfToString(0x7), PrimitiveType.Byte);
+            var stm = m.Assign(scz, m.Int32(3));
+
+            trf = CreateTrashedRegisterFinder();
+            stm.Accept(trf);
+            Assert.AreEqual(0x7, trf.TrashedFlags);
+        }
+
+        [Test]
+        public void TrashCompoundRegister()
+        {
+            Identifier ax = m.Frame.EnsureRegister(Registers.ax);
+            var stm = m.Assign(ax, 1);
+
+            trf = CreateTrashedRegisterFinder();
+            stm.Accept(trf);
+            Assert.AreEqual("(ax:0x0001)", DumpValues());
+        }
+
+        [Test]
+        public void Copy()
+        {
+            Identifier r1 = m.Register(1);
+            Identifier r2 = m.Register(2);
+            var ass = m.Assign(r2, r1);
+
+            trf = CreateTrashedRegisterFinder();
+
+            ass.Accept(trf);
+            Assert.AreEqual(r1, trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage], "r2 should now be equal to r1");
+        }
+
+        [Test]
+        public void CopyBack()
+        {
+            var m = new ProcedureBuilder();
+            var tmp = m.Local32("tmp");
+            var esp = m.Frame.EnsureRegister(Registers.esp);
+            var r2 = m.Register(2);
+            var stm1 = m.Store(m.Sub(esp, 0x10), r2);
+            var stm2 = m.Assign(r2, m.Int32(0));
+            var stm3 = m.Assign(r2, m.LoadDw(m.Sub(esp, 0x10)));
+
+            trf = CreateTrashedRegisterFinder();
+
+            stm1.Instruction.Accept(trf);
+            stm2.Accept(trf);
+            stm3.Accept(trf);
+
+            Assert.AreEqual(r2, trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage]);
+        }
+
+        [Test]
+        public void OutParameters()
+        {
+            var r2 = m.Register(2);
+            var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(r2)));
+
+            trf = CreateTrashedRegisterFinder();
+
+            stm.Instruction.Accept(trf);
+            Assert.AreEqual("TRASH", trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage].ToString());
+        }
+
+        [Test]
+        public void CallInstruction()
+        {
+            var callee = new Procedure("Callee", prog.Architecture.CreateFrame());
+            var ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(0, 0));
+            var pf = new ProcedureFlow(callee, prog.Architecture);
+            pf.TrashedRegisters[Registers.ebx.Number] = true;
+            flow[callee] = pf;
+
+            trf = CreateTrashedRegisterFinder(prog);
+
+            ci.Accept(trf);
+            Assert.AreEqual("(ebx:<void>)", DumpValues());
+        }
+
+        [Test]
+        public void PropagateToSuccessorBlocks()
+        {
+            Procedure proc = new Procedure("test", prog.Architecture.CreateFrame());
+            Identifier r1 = m.Register(1);
+            Identifier r2 = m.Register(2);
+            Identifier r3 = m.Register(3);
+            Block b = proc.AddBlock("b");
+            Block t = proc.AddBlock("t");
+            Block e = proc.AddBlock("e");
+            proc.ControlGraph.AddEdge(b, e);
+            proc.ControlGraph.AddEdge(b, t);
+            flow[t] = new BlockFlow(t, null);
+            flow[e] = new BlockFlow(e, null);
+
+            trf = CreateTrashedRegisterFinder(prog);
+            trf.RegisterSymbolicValues[(RegisterStorage)r1.Storage] = Constant.Invalid;
+            trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage] = r3;
+
+            flow[e].SymbolicIn[r1.Storage] = r2;
+            flow[e].SymbolicIn[r2.Storage] = r3;
+
+            flow[t].SymbolicIn[r1.Storage] = Constant.Invalid;
+            flow[t].SymbolicIn[r2.Storage] = r2;
+
+            trf.PropagateToSuccessorBlocks(b);
+            Assert.AreEqual(2, proc.ControlGraph.Successors(b).Count);
+            Assert.AreEqual("<void>", flow[e].SymbolicIn[r1.Storage].ToString(), "trash & r2 => trash");
+            Assert.AreEqual("r3", flow[e].SymbolicIn[r2.Storage].ToString(), "r3 & r3 => r3");
+
+
+            Assert.AreEqual("<void>", flow[t].SymbolicIn[r1.Storage].ToString(), "trash & trash => trash");
+            Assert.AreEqual("<void>", flow[t].SymbolicIn[r2.Storage].ToString(), "r3 & r2 => trash");
+        }
+
+        [Test]
+        public void PropagateToProcedureSummary()
+        {
+            Procedure proc = new Procedure("proc", prog.Architecture.CreateFrame());
+            prog.CallGraph.AddProcedure(proc);
+            Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
+            Identifier ebx = proc.Frame.EnsureRegister(Registers.ebx);
+            Identifier ecx = proc.Frame.EnsureRegister(Registers.ecx);
+            Identifier esi = proc.Frame.EnsureRegister(Registers.esi);
+            flow[proc] = new ProcedureFlow(proc, prog.Architecture);
+            trf = CreateTrashedRegisterFinder(prog);
+            trf.RegisterSymbolicValues[(RegisterStorage) eax.Storage] = eax;			// preserved
+            trf.RegisterSymbolicValues[(RegisterStorage)ebx.Storage] = ecx;			// trashed
+            trf.RegisterSymbolicValues[(RegisterStorage)esi.Storage] = Constant.Invalid;				// trashed
+            trf.PropagateToProcedureSummary(proc);
+            ProcedureFlow pf = flow[proc];
+            Assert.AreEqual(" ebx esi", pf.EmitRegisters(prog.Architecture, "", pf.TrashedRegisters));
+            Assert.AreEqual(" eax", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
+        }
+
+        [Test]
+        public void PropagateFlagsToProcedureSummary()
+        {
+            var proc = new Procedure("proc", prog.Architecture.CreateFrame());
+            prog.CallGraph.AddProcedure(proc);
+            var flags = prog.Architecture.GetFlagGroup("SZ");
+            var sz = m.Frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
+            flow[proc] = new ProcedureFlow(proc, prog.Architecture);
+            trf = CreateTrashedRegisterFinder(prog);
+            var stm = m.Assign(sz, m.Int32(3));
+            stm.Accept(trf);
+            trf.PropagateToProcedureSummary(proc);
+            Assert.AreEqual(" SZ" + Environment.NewLine, flow[proc].EmitFlagGroup(prog.Architecture, "", flow[proc].grfTrashed));
+
+        }
+
+        [Test]
+        public void PreserveEbp()
+        {
+            Identifier esp = m.Frame.EnsureRegister(Registers.esp);
+            Identifier ebp = m.Frame.EnsureRegister(Registers.ebp);
+            m.Store(esp, ebp);
+            m.Assign(ebp, m.LoadDw(m.Int32(0x12345678)));
+            m.Assign(ebp, m.LoadDw(esp));
+            m.Return();
+
+            Procedure proc = m.Procedure;
+            proc.RenumberBlocks();
+            prog.Procedures.Add(new Address(0x10000), proc);
+            prog.CallGraph.AddProcedure(proc);
+            flow = new ProgramDataFlow(prog);
+
+            trf = CreateTrashedRegisterFinder(prog);
+            trf.Compute();
+            ProcedureFlow pf = flow[proc];
+            Assert.AreEqual(" ebp", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
+        }
+
+        [Test]
+        public void ProcessBlock()
+        {
+            Identifier eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
+            Identifier esp = m.Procedure.Frame.EnsureRegister(Registers.esp);
+            m.Store(m.Sub(esp, 4), eax);
+            m.Assign(eax, m.Int32(3));
+            m.Assign(eax, m.LoadDw(m.Sub(esp, 4)));
+
+            flow[m.Block] = new BlockFlow(m.Block, prog.Architecture.CreateRegisterBitset());
+            trf = CreateTrashedRegisterFinder(prog);
+            trf.ProcessBlock(m.Block);
+            Assert.AreEqual("(eax:eax), (Stack -4:eax)", DumpValues());
+        }
+
+        [Test]
+        public void TerminatingProcedure()
+        {
+            var eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
+            m.Assign(eax, m.Word32(0x40));
+            m.Call(exit);
+
+            flow[m.Block] = new BlockFlow(m.Block, prog.Architecture.CreateRegisterBitset());
+            flow[exit] = new ProcedureFlow(exit, prog.Architecture);
+            flow[exit].TerminatesProcess = true;
+            trf = CreateTrashedRegisterFinder(prog);
+            trf.ProcessBlock(m.Block);
+            Assert.AreEqual("", DumpValues());
+        }
+
+        [Ignore("Disabled until Identifier/Variable story works out")]
+        [Test]
+        public void TwoProcedures()
+        {
+            ProgramBuilder p = new ProgramBuilder();
+
+            Identifier eax = m.Frame.EnsureRegister(Registers.eax);
+            Identifier tmp = m.Local32("tmp");
+            m.Assign(tmp, eax);
+            m.Call("TrashEaxEbx");
+            m.Assign(eax, tmp);
+            m.Return();
+            m.Procedure.RenumberBlocks();
+            p.Add(m);
+
+
+            var TrashEaxEbx = new ProcedureBuilder("TrashEaxEbx");
+            eax = TrashEaxEbx.Frame.EnsureRegister(Registers.eax);
+            Identifier ebx = TrashEaxEbx.Frame.EnsureRegister(Registers.ebx);
+            TrashEaxEbx.Assign(ebx, m.Int32(0x1231313));
+            TrashEaxEbx.Assign(eax, m.LoadDw(ebx));
+            TrashEaxEbx.Return();
+            TrashEaxEbx.Procedure.RenumberBlocks();
+            p.Add(TrashEaxEbx);
+
+            IProcessorArchitecture arch = prog.Architecture;
+            prog = p.BuildProgram();
+            prog.Architecture = arch;
+            trf = CreateTrashedRegisterFinder(prog);
+            trf.Compute();
+
+            StringBuilder sb = new StringBuilder();
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                sb.Append(flow[proc].EmitRegisters(prog.Architecture, proc.Name, flow[proc].TrashedRegisters));
+                sb.Append(Environment.NewLine);
+            }
+            string exp = @"ProcedureMock ebx bx bl bh
+TrashEaxEbx eax ebx ax bx al bl ah bh
+";
+            Assert.AreEqual(exp, sb.ToString());
+        }
+
+    }
+
+    
+    [Obsolete("Remove these tests once theTrashedRegisterFinder tests all pass.")]
+    [TestFixture]
+    public class TrashedRegisterFinderOldTests
+    {
+        private ProcedureBuilder m;
+        private Program prog;
+        private TrashedRegisterFinderOld trf;
         private Procedure exit;
         private ProgramDataFlow flow;
 
@@ -58,7 +387,7 @@ namespace Decompiler.UnitTests.Analysis
             var r1 = m.Register(1);
             var stm = m.Assign(r1, m.Int32(0));
 
-            trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(null, null, new FakeDecompilerEventListener());
 
             stm.Accept(trf);
             Assert.IsTrue(trf.TrashedRegisters.ContainsKey(r1.Storage));
@@ -72,7 +401,7 @@ namespace Decompiler.UnitTests.Analysis
             Identifier scz = m.Frame.EnsureFlagGroup(0x7, arch.GrfToString(0x7), PrimitiveType.Byte);
             var stm = m.Assign(scz, m.Int32(3));
 
-            trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(null, null, new FakeDecompilerEventListener());
             stm.Accept(trf);
             Assert.AreEqual(0x7, trf.TrashedFlags);
         }
@@ -83,7 +412,7 @@ namespace Decompiler.UnitTests.Analysis
             Identifier ax = m.Frame.EnsureRegister(Registers.ax);
             var stm = m.Assign(ax, 1);
 
-            trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(null, null, new FakeDecompilerEventListener());
             stm.Accept(trf);
             Assert.AreEqual("(ax:TRASH)", DumpRegs(trf.TrashedRegisters));
         }
@@ -95,7 +424,7 @@ namespace Decompiler.UnitTests.Analysis
             Identifier r2 = m.Register(2);
             var ass = m.Assign(r2, r1);
 
-            trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(null, null, new FakeDecompilerEventListener());
 
             ass.Accept(trf);
             Assert.AreEqual(r1.Storage, trf.TrashedRegisters[r2.Storage]);
@@ -111,7 +440,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm2 = m.Assign(r2, m.Int32(0));
             var stm3 = m.Assign(r2, tmp);
 
-            trf = new TrashedRegisterFinder(null, null, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(null, null, new FakeDecompilerEventListener());
 
             stm1.Accept(trf);
             stm2.Accept(trf);
@@ -126,7 +455,7 @@ namespace Decompiler.UnitTests.Analysis
             var r2 = m.Register(2);
             var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(r2)));
 
-            trf = new TrashedRegisterFinder(null, flow, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(null, flow, new FakeDecompilerEventListener());
 
             stm.Instruction.Accept(trf);
             Assert.AreEqual("TRASH", trf.TrashedRegisters[r2.Storage].ToString());
@@ -141,7 +470,7 @@ namespace Decompiler.UnitTests.Analysis
             pf.TrashedRegisters[Registers.ebx.Number] = true;
             flow[callee] = pf;
 
-            trf = new TrashedRegisterFinder(prog, flow, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(prog, flow, new FakeDecompilerEventListener());
 
             ci.Accept(trf);
             Assert.AreEqual("(ebx:TRASH)", DumpRegs(trf.TrashedRegisters));
@@ -162,7 +491,7 @@ namespace Decompiler.UnitTests.Analysis
             flow[t] = new BlockFlow(t, null);
             flow[e] = new BlockFlow(e, null);
 
-            trf = new TrashedRegisterFinder(null, flow, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(null, flow, new FakeDecompilerEventListener());
             trf.TrashedRegisters[r1.Storage] = trf.TrashedStorage;
             trf.TrashedRegisters[r2.Storage] = r3.Storage;
 
@@ -191,7 +520,7 @@ namespace Decompiler.UnitTests.Analysis
             Identifier ecx = proc.Frame.EnsureRegister(Registers.ecx);
             Identifier esi = proc.Frame.EnsureRegister(Registers.esi);
             flow[proc] = new ProcedureFlow(proc, prog.Architecture);
-            trf = new TrashedRegisterFinder(prog, flow, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(prog, flow, new FakeDecompilerEventListener());
             trf.TrashedRegisters[eax.Storage] = eax.Storage;			// preserved
             trf.TrashedRegisters[ebx.Storage] = ecx.Storage;			// trashed
             trf.TrashedRegisters[esi.Storage] = trf.TrashedStorage;				// trashed
@@ -209,7 +538,7 @@ namespace Decompiler.UnitTests.Analysis
             MachineFlags flags = prog.Architecture.GetFlagGroup("SZ");
             Identifier sz = m.Frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
             flow[proc] = new ProcedureFlow(proc, prog.Architecture);
-            trf = new TrashedRegisterFinder(prog, flow, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(prog, flow, new FakeDecompilerEventListener());
             var stm = m.Assign(sz, m.Int32(3));
             stm.Accept(trf);
             trf.PropagateToProcedureSummary(proc);
@@ -233,7 +562,7 @@ namespace Decompiler.UnitTests.Analysis
             prog.CallGraph.AddProcedure(proc);
             flow = new ProgramDataFlow(prog);
 
-            trf = new TrashedRegisterFinder(prog, flow, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(prog, flow, new FakeDecompilerEventListener());
             trf.Compute();
             ProcedureFlow pf = flow[proc];
             Assert.AreEqual(" ebp", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
@@ -249,7 +578,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Assign(eax, tmp);
 
             flow[m.Block] = new BlockFlow(m.Block, prog.Architecture.CreateRegisterBitset());
-            trf = new TrashedRegisterFinder(prog, flow, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(prog, flow, new FakeDecompilerEventListener());
             trf.ProcessBlock(m.Block);
             Assert.AreEqual("(Local -0004:eax), (eax:eax)", DumpRegs(trf.TrashedRegisters));
         }
@@ -264,7 +593,7 @@ namespace Decompiler.UnitTests.Analysis
             flow[m.Block] = new BlockFlow(m.Block, prog.Architecture.CreateRegisterBitset());
             flow[exit] = new ProcedureFlow(exit, prog.Architecture);
             flow[exit].TerminatesProcess = true;
-            trf = new TrashedRegisterFinder(prog, flow, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(prog, flow, new FakeDecompilerEventListener());
             trf.ProcessBlock(m.Block);
             Assert.AreEqual("", DumpRegs(trf.TrashedRegisters));
         }
@@ -297,7 +626,7 @@ namespace Decompiler.UnitTests.Analysis
             IProcessorArchitecture arch = prog.Architecture;
             prog = p.BuildProgram();
             prog.Architecture = arch;
-            trf = new TrashedRegisterFinder(prog, flow, new FakeDecompilerEventListener());
+            trf = new TrashedRegisterFinderOld(prog, flow, new FakeDecompilerEventListener());
             trf.Compute();
 
             StringBuilder sb = new StringBuilder();

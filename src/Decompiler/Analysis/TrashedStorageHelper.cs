@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ namespace Decompiler.Analysis
 		public TrashStorageHelper(Storage trash) : this(new Dictionary<Storage, Storage>(), 0, trash)
 		{
 		}
-
 
 		public TrashStorageHelper(Dictionary<Storage,Storage> defs, uint grfDefs, Storage trash)
 		{
