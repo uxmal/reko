@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1418,51 +1418,6 @@ namespace Decompiler.Assemblers.x86
             return new OperandParser(lexer, symtab, addrBase, emitter.SegmentDataWidth, emitter.SegmentAddressWidth);
         }
 
-        internal void Db(int b)
-        {
-            emitter.EmitByte(b);
-        }
-
-        public void Db(params int [] bytes)
-        {
-            for (int i = 0; i < bytes.Length; ++i)
-            {
-                emitter.EmitByte(bytes[i]);
-            }
-        }
-
-        internal void Dstring(string str)
-        {
-            emitter.EmitString(str);
-        }
-
-        public void Dw(string symbolText)
-        {
-            DefineWord(PrimitiveType.Word16, symbolText);
-        }
-
-        public void Dd(params string[] symbols)
-        {
-            foreach (string sym in symbols)
-            {
-                DefineWord(PrimitiveType.Word32, sym);
-            }
-        }
-
-        public void Dd(params int[] values)
-        {
-            foreach (int n in values)
-            {
-                DefineWord(PrimitiveType.Word32, n);
-            }
-        }
-
-        public void Dw(int w)
-        {
-            emitter.EmitByte(w & 0xFF);
-            emitter.EmitByte(w >> 8);
-        }
-
 
         internal void DefineWord(PrimitiveType width, string symbolText)
         {
@@ -1491,6 +1446,70 @@ namespace Decompiler.Assemblers.x86
             }
         }
 
+
+        public void Clc()
+        {
+            emitter.EmitOpcode(0xF8, null);
+        }
+
+        public void Cmc()
+        {
+            emitter.EmitOpcode(0xF5, null);
+        }
+
+        public void Cmp(ParsedOperand src, int dst)
+        {
+            ProcessBinop(0x7, src, Imm(dst));
+        }
+
+        public void Db(params int[] bytes)
+        {
+            for (int i = 0; i < bytes.Length; ++i)
+            {
+                emitter.EmitByte(bytes[i]);
+            }
+        }
+
+        internal void Db(int b)
+        {
+            emitter.EmitByte(b);
+        }
+
+
+        internal void Dstring(string str)
+        {
+            emitter.EmitString(str);
+        }
+
+
+        public void Dw(int w)
+        {
+            emitter.EmitByte(w & 0xFF);
+            emitter.EmitByte(w >> 8);
+        }
+
+        public void Dw(string symbolText)
+        {
+            DefineWord(PrimitiveType.Word16, symbolText);
+        }
+
+        public void Dd(params string[] symbols)
+        {
+            foreach (string sym in symbols)
+            {
+                DefineWord(PrimitiveType.Word32, sym);
+            }
+        }
+
+        public void Dd(params int[] values)
+        {
+            foreach (int n in values)
+            {
+                DefineWord(PrimitiveType.Word32, n);
+            }
+        }
+
+
         internal void Leave()
         {
             emitter.EmitOpcode(0xC9, null);
@@ -1516,9 +1535,19 @@ namespace Decompiler.Assemblers.x86
             ProcessLoop(0, target);
         }
 
+        public void Movsw()
+        {
+            ProcessStringInstruction(0xA4, PrimitiveType.Word16);
+        }
+
         public void Rep()
         {
             emitter.EmitByte(0xF3);
+        }
+
+        public void Scasw()
+        {
+            ProcessStringInstruction(0xAE, PrimitiveType.Word16);
         }
 
         public void Stc()
@@ -1526,21 +1555,6 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0xF9, null);
         }
 
-
-        public void Clc()
-        {
-            emitter.EmitOpcode(0xF8, null);
-        }
-
-        public void Cmc()
-        {
-            emitter.EmitOpcode(0xF5, null);
-        }
-
-        public void Cmp(ParsedOperand src, int dst)
-        {
-            ProcessBinop(0x7, src, Imm(dst));
-        }
 
         public void Fcompp()
         {

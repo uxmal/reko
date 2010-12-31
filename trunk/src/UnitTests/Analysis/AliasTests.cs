@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -133,7 +133,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
             FakeDecompilerEventListener eventListener = new FakeDecompilerEventListener();
-			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow, eventListener);
+			TrashedRegisterFinderOld trf = new TrashedRegisterFinderOld(prog, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
             RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
 			foreach (Procedure proc in prog.Procedures.Values)

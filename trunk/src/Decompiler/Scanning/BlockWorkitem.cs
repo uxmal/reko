@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -170,24 +170,38 @@ namespace Decompiler.Scanning
         public bool VisitBranch(RtlBranch b)
         {
             // The following statements may chop up the blockCur, so hang on to the essentials.
+            var branchingBlock = blockCur;
             var proc = blockCur.Procedure;
             var fallthruAddress = ri.Address + ri.Length;
             var blockThen = scanner.EnqueueJumpTarget(b.Target, proc, state.Clone());
-            var blockElse = scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
+            var blockElse = FallthroughBlock(proc, fallthruAddress);
 
-            var branchingBlock = scanner.FindContainingBlock(ri.Address);
             branchingBlock.Statements.Add(
                 ri.Address.Linear,
                 new Branch(b.Condition, blockThen));
+            proc.ControlGraph.AddEdge(branchingBlock, blockElse);
+            proc.ControlGraph.AddEdge(branchingBlock, blockThen);
 
             // Now, switch to the fallthru block.
             blockCur = blockElse;
-            //$REVIEW: This needs to be changed, so that the block rewriter contiunes rewriting in the "else"
-            // path. Rather than enqueueing a jump target as above, we should immediately continue working on that
-            // path. Problems arise if the instructions in the else path are in a separate procedure. Therefore, 
-            // this code needs to do a fallthrough test and only if we don't fall through to a procedure continue
-            // processing. Until this is implemented, loope/ne on the x86 architecture won't be implementable.
             return true;
+        }
+
+        private Block FallthroughBlock(Procedure proc, Address fallthruAddress)
+        {
+            if (ri.NextStatementRequiresLabel)
+            {
+                // Some machine instructions, like the X86 'rep' prefix, force the need to generate 
+                // a label where there wouldn't be one normally.
+
+                var fallthru = new Block(proc, blockCur.Name + "x");
+                proc.ControlGraph.Nodes.Add(fallthru);
+                return fallthru;
+            }
+            else
+            {
+                return scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
+            }
         }
 
         public bool VisitGoto(RtlGoto g)

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -180,8 +180,8 @@ namespace Decompiler.Arch.Intel
             dasm.MoveNext();
             di = dasm.Current;
             var strFollow = dasm.Peek(1);
-
-            emitter.Branch(emitter.Eq0(regCX), strFollow.Address);
+            emitter.MachineInstructionLength += (byte) di.Length;
+            emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), strFollow.Address);
             RewriteStringInstruction();
             emitter.Assign(regCX, emitter.Sub(regCX, 1));
 
@@ -195,7 +195,7 @@ namespace Decompiler.Arch.Intel
                     var cc = (di.Instruction.code == Opcode.repne)
                         ? ConditionCode.NE
                         : ConditionCode.EQ;
-                    emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)), strFollow.Address);
+                    emitter.BranchInMiddleOfInstruction(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)), strFollow.Address);
                     break;
                 }
             }

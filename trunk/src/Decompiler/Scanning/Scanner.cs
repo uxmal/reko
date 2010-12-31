@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,6 +79,7 @@ namespace Decompiler.Scanning
         private PriorityQueue<WorkItem> queue;
         private ProgramImage image;
         private Map<uint, BlockRange> blocks;
+        private Dictionary<Block, uint> blockStarts;
         private CallGraph callgraph;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Platform platform;
@@ -104,15 +105,21 @@ namespace Decompiler.Scanning
             this.callSigs = callSigs;
             this.eventListener = eventListener;
 
-
             this.Procedures = new SortedList<Address, Procedure>();
             this.queue = new PriorityQueue<WorkItem>();
             this.blocks = new Map<uint, BlockRange>();
+            this.blockStarts = new Dictionary<Block, uint>();
             this.callgraph = new CallGraph();
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
             this.vectors = new Dictionary<Address, ImageMapVectorTable>();
             this.VectorUses = new Dictionary<Address, VectorUse>();
         }
+
+        public IProcessorArchitecture Architecture { get { return arch; } }
+        public CallGraph CallGraph { get { return callgraph; } }
+        public Platform Platform { get { return platform; } }
+        public SortedList<Address, Procedure> Procedures { get; private set; }
+        public IDictionary<Address, VectorUse> VectorUses { get; private set; } 
 
         private class BlockRange
         {
@@ -130,15 +137,6 @@ namespace Decompiler.Scanning
             public uint End { get; set; }
         }
 
-        public IProcessorArchitecture Architecture { get { return arch; } } 
-
-        public CallGraph CallGraph { get { return callgraph; } }
-
-        public Platform Platform { get { return platform; } }
-
-        public SortedList<Address, Procedure> Procedures { get; private set; }
-
-        public IDictionary<Address, VectorUse> VectorUses { get; private set; } 
 
         #region IScanner Members
 
@@ -146,6 +144,7 @@ namespace Decompiler.Scanning
         {
             Block b = new Block(proc, blockName);
             blocks.Add(addr.Linear, new BlockRange(b, addr.Linear, image.BaseAddress.Linear + (uint) image.Bytes.Length));
+            blockStarts.Add(b, addr.Linear);
             proc.ControlGraph.Nodes.Add(b);
             return b;
         }
@@ -197,10 +196,12 @@ namespace Decompiler.Scanning
             block = FindContainingBlock(addrStart);
             if (block != null)
             {
-                return SplitBlock(block, addrStart);
+                block = SplitBlock(block, addrStart);
             }
-
-            block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
+            else
+            {
+                block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
+            }
             queue.Enqueue(
                 PriorityJumpTarget,
                 new BlockWorkitem(
@@ -211,7 +212,6 @@ namespace Decompiler.Scanning
                     block));
             return block;
         }
-
 
         public void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
         {
@@ -299,7 +299,7 @@ namespace Decompiler.Scanning
             var linAddr = addr.Linear;
             blockNew.Statements.AddRange(block.Statements.FindAll(s => s.LinearAddress >= linAddr));
             block.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
-            blocks[block.Statements[0].LinearAddress].End = linAddr;
+            blocks[blockStarts[block]].End = linAddr;
             return blockNew;
         }
 

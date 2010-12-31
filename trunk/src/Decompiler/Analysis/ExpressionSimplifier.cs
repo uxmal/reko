@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ namespace Decompiler.Analysis
             return addr;
         }
 
-        public Expression VisitApplication(Application appl)
+        public virtual Expression VisitApplication(Application appl)
         {
             var args = new Expression[appl.Arguments.Length];
             for (int i = 0; i < appl.Arguments.Length; ++i)

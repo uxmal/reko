@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2010 John Källén.
+ * Copyright (C) 1999-2011 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Environments.Msdos;
@@ -30,6 +31,7 @@ using Rhino.Mocks;
 using NUnit.Framework;  
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Text;
 
@@ -256,6 +258,39 @@ namespace Decompiler.UnitTests.Scanning
                 "\tgoto Mem0[0x0C00:bx + 0x0008:word16]" + nl;
             Assert.AreEqual(sExp, sw.ToString());
             Assert.IsTrue(proc.ControlGraph.Nodes.Contains(block));
+        }
+
+        [Test]
+        public void RepMovsw()
+        {
+            var follow =  new Block(proc, "follow");
+            BuildTest16(delegate(IntelAssembler m)
+            {
+                m.Rep();
+                m.Movsw();
+                m.Mov(m.bx, m.dx);
+
+                scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Matches(a => a.Offset == 2),
+                    Arg<Procedure>.Is.Same(proc),
+                    Arg<ProcessorState>.Is.Anything)).Return(follow);
+                scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Matches(a => a.Offset == 2),
+                    Arg<Procedure>.Is.Same(proc),
+                    Arg<ProcessorState>.Is.Anything)).Return(block);
+                scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Matches(a => a.Offset == 0),
+                    Arg<Procedure>.Is.Same(proc),
+                    Arg<ProcessorState>.Is.Anything)).Return(block);
+
+                scanner.Expect(x => x.FindContainingBlock(
+                    Arg<Address>.Matches(a => a.Offset == 0x0000))).Return(block);
+
+            });
+            wi.Process();
+            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, follow));
+            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, block));
+
         }
     }
 }
