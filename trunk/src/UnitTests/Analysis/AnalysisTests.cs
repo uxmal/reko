@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void DiamondDominatorTest()
 		{
-			Program prog = RewriteFile("Fragments/diamond.asm");
+			Program prog = RewriteFileOld("Fragments/diamond.asm");
 			Procedure proc = prog.Procedures.Values[0];
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
 			List<Block> bl = proc.RpoBlocks;
@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LoopDominatorTest()
 		{
-			Program prog = RewriteFile("Fragments/while_loop.asm");
+			Program prog = RewriteFileOld("Fragments/while_loop.asm");
             var proc = prog.Procedures.Values[0];
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
             Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[0], proc.RpoBlocks[1]));
@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void AnAliasExpanderTest()
 		{
-			Program prog = RewriteFile("Fragments/alias_regs.asm");
+			Program prog = RewriteFileOld("Fragments/alias_regs.asm");
 			Procedure proc = prog.Procedures.Values[0];
 			Aliases alias = new Aliases(proc, prog.Architecture);
 			alias.Transform();
@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void AliasExpandDeadVars()
 		{
-			Program prog = RewriteFile("Fragments/alias_regs2.asm");
+			Program prog = RewriteFileOld("Fragments/alias_regs2.asm");
 			Procedure proc = prog.Procedures.Values[0];
 			Aliases alias = new Aliases(proc, prog.Architecture);
 			alias.Transform();

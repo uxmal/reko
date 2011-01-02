@@ -99,9 +99,9 @@ namespace Decompiler.Analysis
             {
                 trf.se.UseExpression(expr);
             }
-
             #endregion
         }
+
         public Dictionary<RegisterStorage, Expression> RegisterSymbolicValues { get { return se.RegisterState; } }
         public IDictionary<int, Expression> StackSymbolicValues { get { return se.StackState; } } 
         [Obsolete("Use symbolicvalue collection")]
@@ -290,12 +290,14 @@ namespace Decompiler.Analysis
             }
         }
 
-
-
-
         public override void VisitAssignment(Assignment a)
         {
             a.Accept(se);
+        }
+
+        public override void VisitSideEffect(SideEffect side)
+        {
+            side.Accept(se);
         }
 
         public override void VisitStore(Store store)
@@ -310,7 +312,7 @@ namespace Decompiler.Analysis
             {
                 // A terminating procedure has no trashed registers because caller will never see those effects!
                 tsh.TrashedFlags = 0;
-                tsh.TrashedRegisters.Clear();
+                se.RegisterState.Clear();
                 return;
             }
 
@@ -320,7 +322,7 @@ namespace Decompiler.Analysis
             ProcedureFlow pf = flow[callee];
             foreach (int r in pf.TrashedRegisters)
             {
-                RegisterStorage reg = new RegisterStorage(prog.Architecture.GetRegister(r));
+                var reg = new RegisterStorage(prog.Architecture.GetRegister(r));
                 se.RegisterState[reg] = Constant.Invalid;
             }
             tsh.TrashedFlags |= pf.grfTrashed;

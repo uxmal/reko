@@ -3919,13 +3919,13 @@ namespace Decompiler.Arch.M68k
             {
                 g_instruction_table[i] =  illegalOpcode; //default to illegal
                 opcode = i;
-                /* search through opcode info for a match */
+                // search through opcode info for a match
                 for (ostruct = 0; opcode_info[ostruct].opcode_handler != null; ostruct++)
                 {
-                    /* match opcode mask and allowed ea modes */
+                    // match opcode mask and allowed ea modes
                     if ((opcode & opcode_info[ostruct].mask) == opcode_info[ostruct].match)
                     {
-                        /* Handle destination ea for move instructions */
+                        // Handle destination ea for move instructions 
                         if ((opcode_info[ostruct].opcode_handler == d68000_move_8 ||
                              opcode_info[ostruct].opcode_handler == d68000_move_16 ||
                              opcode_info[ostruct].opcode_handler == d68000_move_32) &&

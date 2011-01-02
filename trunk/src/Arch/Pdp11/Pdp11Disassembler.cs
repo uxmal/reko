@@ -28,8 +28,14 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Pdp11Disassembler : Disassembler
     {
-        public Pdp11Disassembler(ImageReader rdr)
+        private ImageReader rdr;
+        private Pdp11Architecture arch;
+        private Pdp11Instruction instr;
+
+        public Pdp11Disassembler(ImageReader rdr, Pdp11Architecture arch)
         {
+            this.rdr = rdr;
+            this.arch = arch;
         }
 
         public Address Address
@@ -39,7 +45,47 @@ namespace Decompiler.Arch.Pdp11
 
         public MachineInstruction DisassembleInstruction()
         {
+            ushort opcode = rdr.ReadLeUint16();
+            switch ((opcode >> 0x0C) & 7)
+            {
+            case 0: return NonDoubleOperandInstruction(opcode);
+            case 1:
+                return new Pdp11Instruction
+                {
+                    Opcode = Opcodes.mov,
+                    DataWidth = DataWidthFromSizeBit(opcode & 0x8000u),
+                    op1 = DecodeOperand(opcode),
+                    op2 = DecodeOperand(opcode >> 6)
+                };
+            }
+        }
+
+        private MachineInstruction NonDoubleOperandInstruction(ushort opcode)
+        {
             throw new NotImplementedException();
+        }
+
+        private MachineOperand DecodeOperand(ushort operandBits)
+        {
+            MachineRegister reg = arch.GetRegister(operandBits & 7);
+            if (reg == Registers.pc)
+            {
+            }
+            else
+            {
+                switch ((operandBits >> 3) & 7)
+                {
+                case 0: return new RegisterOperand(reg);    //   Reg           Direct addressing of the register
+                case 1: return new MemoryOperand(reg);      //   Reg Def       Contents of Reg is the address
+                case 2:    //   AutoIncr      Contents of Reg is the address, then Reg incremented
+                case 3:    //   AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented
+                case 4:    //   AutoDecr      Reg is decremented then contents is address
+                case 5:    //   AutoDecrDef   Reg is decremented then contents is addr of addr
+                case 6: return new MemoryOperand(reg, rdr.ReadLeUint16());   //   Index         Contents of Reg + Following word is address
+                case 7:   //   IndexDef      Contents of Reg + Following word is addr of addr
+                default: throw new NotSupportedException();
+                }
+            }
         }
     }
 }

@@ -402,7 +402,10 @@ namespace Decompiler.Core.Lib
 
 			public void CopyTo(T [] array, int index)
 			{
-                graph.nodes.CopyTo(array, index);
+                for (int i = 0; i + index < array.Length; ++i)
+                {
+                    array[i + index] = graph.nodes[i].Item;
+                }
 			}
 
             public bool IsReadOnly

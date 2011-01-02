@@ -2,21 +2,22 @@
 // Mem0:Global memory
 // fp:Temporary
 // bp:Register bp
-// wLoc04:Local -0004
-// wArg00:Stack +0000
+// sp:Register sp
+// ss:Register ss
 // bx:Register bx
 // ds:Register ds
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
-	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	wLoc04 = bp
-	bx = wArg00
+fn0C00_0000_entry:
+l0C00_0000:
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = bp
+	bp = sp
+	bx = Mem0[ss:bp + 0x0004:word16]
 	store(Mem0[ds:bx:byte]) = 0x00
-	bp = wLoc04
+	sp = bp
+	bp = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
 	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 

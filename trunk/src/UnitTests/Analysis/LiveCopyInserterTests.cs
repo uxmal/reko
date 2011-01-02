@@ -153,7 +153,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected new void RunTest(string sourceFile, string outputFile)
 		{
-			Program prog = RewriteFile(sourceFile);
+			Program prog = RewriteFileOld(sourceFile);
 			Build(prog.Procedures.Values[0], prog.Architecture);
 			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
 			lci.Transform();

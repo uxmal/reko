@@ -33,14 +33,10 @@ namespace Decompiler.Core.Code
 
 		public SideEffect(Expression expr)
 		{
-			this.expr = expr;
+			this.Expression = expr;
 		}
 
-		public Expression Expression
-		{
-			get { return expr; }
-			set { expr = value; }
-		}
+		public Expression Expression { get;set;}
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{

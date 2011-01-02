@@ -174,7 +174,7 @@ namespace Decompiler.UnitTests.Analysis
             trf = CreateTrashedRegisterFinder();
 
             stm.Instruction.Accept(trf);
-            Assert.AreEqual("TRASH", trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage].ToString());
+            Assert.AreEqual("<void>", trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage].ToString());
         }
 
         [Test]

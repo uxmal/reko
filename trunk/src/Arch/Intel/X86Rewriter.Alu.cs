@@ -79,11 +79,18 @@ namespace Decompiler.Arch.Intel
             return ass.Dst;
         }
 
+        public void RewriteBinOp(BinaryOperator opr)
+        {
+            var ass = EmitBinOp(opr, di.Instruction.op1, di.Instruction.dataWidth, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
+            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
+        }
+
         public void RewriteBswap()
         {
             Identifier reg = (Identifier)orw.AluRegister(((RegisterOperand)di.Instruction.op1).Register);
             emitter.Assign(reg, PseudoProc("__bswap", (PrimitiveType)reg.DataType, reg));
         }
+
 
         public RtlAssignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right)
         {
@@ -123,9 +130,13 @@ namespace Decompiler.Arch.Intel
             RewritePush(di.Instruction.dataWidth, bp);
             var sp = StackPointer();
             emitter.Assign(bp, sp);
-            emitter.Assign(sp, emitter.Sub(sp,
+            var cbExtraSavedBytes = 
                 di.Instruction.dataWidth.Size * ((ImmediateOperand)di.Instruction.op2).Value.ToInt32() +
-                ((ImmediateOperand)di.Instruction.op1).Value.ToInt32()));
+                ((ImmediateOperand)di.Instruction.op1).Value.ToInt32();
+            if (cbExtraSavedBytes != 0)
+            {
+                emitter.Assign(sp, emitter.Sub(sp, cbExtraSavedBytes));
+            }
         }
 
         private void RewriteIncDec(int amount)
@@ -155,6 +166,51 @@ namespace Decompiler.Arch.Intel
                 SrcOp(di.Instruction.op2));
             EmitCcInstr(ass.Dst, (IntelInstruction.DefCc(di.Instruction.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+        }
+
+        private void RewriteMultiply(BinaryOperator op, Domain resultDomain)
+        {
+            RtlAssignment ass;
+            switch (di.Instruction.Operands)
+            {
+            case 1:
+                {
+                    Identifier multiplicator;
+                    Identifier product;
+
+                    switch (di.Instruction.op1.Width.Size)
+                    {
+                    case 1:
+                        multiplicator = orw.AluRegister(Registers.al);
+                        product = orw.AluRegister(Registers.ax);
+                        break;
+                    case 2:
+                        multiplicator = orw.AluRegister(Registers.ax);
+                        product = frame.EnsureSequence(
+                            orw.AluRegister(Registers.dx), multiplicator, PrimitiveType.Word32);
+                        break;
+                    case 4:
+                        multiplicator = orw.AluRegister(Registers.eax);
+                        product = frame.EnsureSequence(
+                            orw.AluRegister(Registers.edx), multiplicator, PrimitiveType.Word64);
+                        break;
+                    default:
+                        throw new ApplicationException(string.Format("Unexpected operand size: {0}", di.Instruction.op1.Width));
+                    };
+                    ass = emitter.Assign(product,
+                        new BinaryExpression(op, PrimitiveType.Create(resultDomain, product.DataType.Size), SrcOp(di.Instruction.op1), multiplicator));
+                }
+                break;
+            case 2:
+                ass = EmitBinOp(op, di.Instruction.op1, di.Instruction.op1.Width.MaskDomain(resultDomain), SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
+                break;
+            case 3:
+                ass = EmitBinOp(op, di.Instruction.op1, di.Instruction.op1.Width.MaskDomain(resultDomain), SrcOp(di.Instruction.op2), SrcOp(di.Instruction.op3));
+                break;
+            default:
+                throw new ArgumentException("Invalid number of operands");
+            }
+            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
         }
 
         private void RewriteIn()
@@ -199,6 +255,31 @@ namespace Decompiler.Arch.Intel
                 }
             }
             EmitCopy(di.Instruction.op1, src, false);
+        }
+
+        private void RewriteLeave()
+        {
+            var sp = orw.AluRegister(arch.StackRegister);
+            var bp = orw.AluRegister(Registers.ebp.GetPart(arch.StackRegister.DataType));
+            emitter.Assign(sp, bp);
+            emitter.Assign(bp, orw.StackAccess(sp, bp.DataType));
+            emitter.Assign(sp, emitter.Add(sp, bp.DataType.Size));
+        }
+
+        private void RewriteLxs(MachineRegister seg)
+        {
+            var reg = (RegisterOperand)di.Instruction.op1;
+            MemoryOperand mem = (MemoryOperand)di.Instruction.op2;
+            if (!mem.Offset.IsValid)
+            {
+                mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, new Constant(di.Instruction.addrWidth, 0));
+            }
+
+            var ass = emitter.Assign(
+                frame.EnsureSequence(orw.AluRegister(seg), orw.AluRegister(reg.Register),
+                PrimitiveType.Pointer32),
+                SrcOp(mem));
+            ass.Src.DataType = PrimitiveType.Pointer32;
         }
 
         private void RewriteMov()

@@ -42,12 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MemoryOperand.cs" />
     <Compile Include="Pdp11Architecture.cs" />
     <Compile Include="Pdp11Assembler.cs" />
     <Compile Include="Pdp11BackWalker.cs" />
     <Compile Include="Pdp11CodeWalker.cs" />
     <Compile Include="Pdp11Disassembler.cs" />
     <Compile Include="Pdp11Dumper.cs" />
+    <Compile Include="Pdp11Instruction.cs" />
     <Compile Include="Pdp11ProcessorState.cs" />
     <Compile Include="Pdp11Rewriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

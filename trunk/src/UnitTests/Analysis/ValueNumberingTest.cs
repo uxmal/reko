@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void VnSumTest()
 		{
-			Program prog = RewriteCodeFragment(
+			Program prog = RewriteCodeFragmentOld(
 				@".i86
 	push bp
 	mov	 bp,sp
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void VnMemoryTest()
 		{
-			Program prog = RewriteCodeFragment(
+			Program prog = RewriteCodeFragmentOld(
 				@".i86
 	mov word ptr [bx+2],0
 	mov si,[bx+4]
@@ -98,7 +98,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void VnLoopTest()
 		{
-			Program prog = this.RewriteCodeFragment(
+			Program prog = this.RewriteCodeFragmentOld(
 				@".i86
 	mov	ax,1
 	mov	bx,1
@@ -138,7 +138,7 @@ done:
 		[Test]
 		public void VnRedundantStore()
 		{
-			Program prog = RewriteCodeFragment(
+			Program prog = RewriteCodeFragmentOld(
 				@".i86
 	mov	ax,2
 isdone:
@@ -170,7 +170,7 @@ done:
 		[Test]
 		public void VnLoop()
 		{
-			Program prog = RewriteCodeFragment(@".i86
+			Program prog = RewriteCodeFragmentOld(@".i86
 	push ax
 	jmp looptest
 again:

@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void CceFstswTestAx()
         {
-            Program prog = RewriteCodeFragment(@"
+            Program prog = RewriteCodeFragmentOld(@"
                 fcomp   dword ptr [bx]
                 fstsw  ax
                 test    ah,0x41
@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void CceFstswTextAxWithConstantBl()
         {
-            Program prog = RewriteCodeFragment(@"
+            Program prog = RewriteCodeFragmentOld(@"
                 mov     bx,1
                 fcomp   dword ptr[si]
                 fstsw   ax

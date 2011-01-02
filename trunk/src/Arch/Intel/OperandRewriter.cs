@@ -50,6 +50,10 @@ namespace Decompiler.Arch.Intel
             var imm = op as ImmediateOperand;
             if (imm != null)
                 return CreateConstant(imm, opWidth);
+            var fpu = op as FpuOperand;
+            if (fpu != null)
+                return FpuRegister(fpu.StNumber, state);
+
             throw new NotImplementedException(string.Format("Operand {0}", op));
         }
 
@@ -175,6 +179,18 @@ namespace Decompiler.Arch.Intel
             return frame.EnsureFlagGroup((uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
+
+        /// <summary>
+        /// Changes the stack-relative address 'reg' into a frame-relative operand.
+        /// If the register number is larger than the stack depth, then
+        /// the register was passed on the stack when the function was called.
+        /// </summary>
+        /// <param name="reg"></param>
+        /// <returns></returns>
+        public Identifier FpuRegister(int reg, IntelState state)
+        {
+            return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
+        }
 
         public Constant ReplaceCodeSegment(MachineRegister reg, IntelState state)
         {
