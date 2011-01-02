@@ -155,9 +155,19 @@ namespace Decompiler.Core
 
             var blocks = controlGraph.Nodes.
                 OrderBy((x => x), new BlockComparer()).ToArray();
-            foreach (Block block in blocks) 
+            Block prev = null;
+            for (var i = 0; i < blocks.Length; ++i)
 			{
-				if (block != null) block.Write(writer);
+                var block = blocks[i];
+				if (block == null)
+                    continue;
+                block.Write(writer);
+                if (block != ExitBlock)
+                {
+                    var succ = controlGraph.Successors(block).ToArray();
+                    if (succ.Length == 1 && succ[0] != blocks[i + 1])
+                        writer.WriteLine("\tgoto {0}", succ[0].Name);
+                }
 			}
 		}
 

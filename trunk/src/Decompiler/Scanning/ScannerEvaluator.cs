@@ -170,7 +170,7 @@ namespace Decompiler.Scanning
 
         void IExpressionVisitor.VisitTestCondition(TestCondition tc)
         {
-            throw new NotImplementedException();
+            value = Constant.Invalid;
         }
 
         void IExpressionVisitor.VisitUnaryExpression(UnaryExpression unary)

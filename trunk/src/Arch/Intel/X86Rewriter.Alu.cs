@@ -43,7 +43,7 @@ namespace Decompiler.Arch.Intel
         {
             //LongAddRewriter larw = new LongAddRewriter(this.frame, orw, state);
             //int iUse = larw.IndexOfUsingOpcode(instrs, i, next);
-            //if (iUse >= 0 && larw.Match(instrCur, instrs[iUse]))
+            //if (iUse >= 0 && larw.Match(di.Instruction, instrs[iUse]))
             //{
             //    instrs[iUse].code = Opcode.nop;
             //    larw.EmitInstruction(op, emitter);
@@ -84,6 +84,14 @@ namespace Decompiler.Arch.Intel
             var ass = EmitBinOp(opr, di.Instruction.op1, di.Instruction.dataWidth, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
             EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
         }
+
+        private void RewriteBsr()
+        {
+            Expression src = SrcOp(di.Instruction.op2);
+            emitter.Assign(orw.FlagGroup(FlagM.ZF), emitter.Eq0(src));
+            EmitCopy(di.Instruction.op1, PseudoProc("__bsr", di.Instruction.op1.Width, src), false);
+        }
+
 
         public void RewriteBswap()
         {
@@ -368,6 +376,48 @@ namespace Decompiler.Arch.Intel
             emitter.Assign(orw.StackAccess(sp, dataWidth), expr);
         }
 
+        private void RewriteRotation(string operation, bool useCarry, bool left)
+        {
+            Identifier t = null;
+            Expression sh;
+            if (left)
+            {
+                sh = new BinaryExpression(
+                    Operator.Sub,
+                    di.Instruction.op2.Width,
+                    new Constant(di.Instruction.op2.Width, di.Instruction.op1.Width.BitSize),
+                    SrcOp(di.Instruction.op2));
+            }
+            else
+            {
+                sh = SrcOp(di.Instruction.op2);
+            }
+            sh = new BinaryExpression(
+                Operator.Shl,
+                di.Instruction.op1.Width,
+                new Constant(di.Instruction.op1.Width, 1),
+                sh);
+            t = frame.CreateTemporary(PrimitiveType.Bool);
+            emitter.Assign(t, emitter.Ne0(emitter.And(SrcOp(di.Instruction.op1), sh)));
+            Expression p;
+            if (useCarry)
+            {
+                p = PseudoProc(operation, di.Instruction.op1.Width, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2), orw.FlagGroup(FlagM.CF));
+            }
+            else
+            {
+                p = PseudoProc(operation, di.Instruction.op1.Width, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
+            }
+            EmitCopy(di.Instruction.op1, p, false);
+            if (t != null)
+                emitter.Assign(orw.FlagGroup(FlagM.CF), t);
+        }
+
+        private void RewriteSet( ConditionCode cc)
+        {
+            EmitCopy(di.Instruction.op1, new TestCondition(cc, orw.FlagGroup(IntelInstruction.UseCc(di.Instruction.code))), false);
+        }
+
         private void RewriteShxd(string name)
         {
             var ppp = host.EnsurePseudoProcedure(name, di.Instruction.op1.Width, 3);
@@ -377,7 +427,7 @@ namespace Decompiler.Arch.Intel
                             SrcOp(di.Instruction.op3)), false);
         }
 
-        		public MemoryAccess MemDi()
+        public MemoryAccess MemDi()
 		{
 			if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
 			{

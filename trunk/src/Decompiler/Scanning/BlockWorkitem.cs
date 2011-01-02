@@ -66,6 +66,8 @@ namespace Decompiler.Scanning
             while (rtlStream.MoveNext())
             {
                 ri = rtlStream.Current;
+                if (blockCur != scanner.FindContainingBlock(ri.Address))
+                    break;
                 state.SetInstructionPointer(ri.Address);
                 if (!ri.Accept(this))
                     break;

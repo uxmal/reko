@@ -20,7 +20,6 @@ l0C00_0000:
 	branch Test(EQ,Z) l0C00_000C
 l0C00_0008:
 	store(Mem0[ds:0x0300:word16]) = ax
-	return
 l0C00_000C:
 	return
 fn0C00_0000_exit:

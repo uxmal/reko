@@ -112,6 +112,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.adc: RewriteAdcSbb(BinaryOperator.Add); break;
                 case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
                 case Opcode.and: RewriteLogical(BinaryOperator.And); break;
+                case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
                 case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
@@ -154,6 +155,8 @@ namespace Decompiler.Arch.Intel
                 case Opcode.les: RewriteLxs(Registers.es); break;
                 case Opcode.lea: RewriteLea(); break;
                 case Opcode.leave: RewriteLeave(); break;
+                case Opcode.lods: RewriteStringInstruction(); break;
+                case Opcode.lodsb: RewriteStringInstruction(); break;
                 case Opcode.loop: RewriteLoop(0, ConditionCode.EQ); break;
                 case Opcode.loope: RewriteLoop(FlagM.ZF, ConditionCode.EQ); break;
                 case Opcode.mov: RewriteMov(); break;
@@ -164,9 +167,24 @@ namespace Decompiler.Arch.Intel
                 case Opcode.@out: RewriteOut(); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pop: RewritePop(); break;
+
+                case Opcode.rcl: RewriteRotation("__rcl", true, true); break;
+                case Opcode.rcr: RewriteRotation("__rcr", true, false); break;
+                case Opcode.rol: RewriteRotation("__rol", false, true); break;
+                case Opcode.ror: RewriteRotation("__ror", false, false); break;
+
                 case Opcode.rep: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.Sub); break;
+                case Opcode.setg: RewriteSet(ConditionCode.GT); break;
+                case Opcode.setge: RewriteSet(ConditionCode.GE); break;
+                case Opcode.setl: RewriteSet(ConditionCode.LT); break;
+                case Opcode.setle: RewriteSet(ConditionCode.LE); break;
+                case Opcode.setnz: RewriteSet(ConditionCode.NE); break;
+                case Opcode.sets: RewriteSet(ConditionCode.SG); break;
+                case Opcode.setz: RewriteSet(ConditionCode.EQ); break;
+
+
                 case Opcode.shld: RewriteShxd("__shld"); break;
                 case Opcode.shl: RewriteBinOp(BinaryOperator.Shl); break;
                 case Opcode.shr: RewriteBinOp(BinaryOperator.Shr); break;
@@ -185,7 +203,7 @@ namespace Decompiler.Arch.Intel
 
         public Expression PseudoProc(string name, PrimitiveType retType, params Expression[] args)
         {
-            PseudoProcedure ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
+            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
             return PseudoProc(ppp, retType, args);
         }
 
