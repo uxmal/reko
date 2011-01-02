@@ -60,18 +60,21 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            var e = rewriter.GetEnumerator();
-            if (!e.MoveNext())
+            var rtlStream = rewriter.GetEnumerator();
+            if (BlockHasBeenScanned(blockCur))
                 return;
-            do
+            while (rtlStream.MoveNext())
             {
-                ri = e.Current;
+                ri = rtlStream.Current;
                 state.SetInstructionPointer(ri.Address);
                 if (!ri.Accept(this))
-                {
                     break;
-                }
-            } while (e.MoveNext());
+            }
+        }
+
+        private bool BlockHasBeenScanned(Block block)
+        {
+            return block.Statements.Count > 0;
         }
 
         /// <summary>

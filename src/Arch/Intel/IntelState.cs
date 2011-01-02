@@ -48,6 +48,8 @@ namespace Decompiler.Arch.Intel
             stack = new Stack<Constant>(st.stack);
 		}
 
+        public int FpuStackItems { get; set; }
+
 		public Address AddressFromSegOffset(MachineRegister seg, uint offset)
 		{
 			Constant c = Get(seg);
@@ -183,6 +185,21 @@ namespace Decompiler.Arch.Intel
                 }
             }
             return true;
+        }
+
+
+		public void GrowFpuStack(Address addrInstr)
+		{
+			++FpuStackItems;
+			if (FpuStackItems > 7)
+			{
+				Debug.WriteLine(string.Format("Possible FPU stack overflow at address {0}", addrInstr));	//$BUGBUG: should be an exception
+			}
+		}
+
+        public void ShrinkFpuStack(int cItems)
+        {
+            FpuStackItems -= cItems;
         }
     }
 }

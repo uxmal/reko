@@ -76,12 +76,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			SerializedProject project = (configFile != null)
 				? SerializedProject.Load(FileUnitTester.MapTestPath(configFile))
 				: null;
-			scanner = new Scanner(
-                prog.Architecture,
-                prog.Image,
-                prog.Platform,
-                null,
-                new FakeDecompilerEventListener());
+			scanner = new Scanner(prog, null, new FakeDecompilerEventListener());
 			EntryPoint ep = new EntryPoint(baseAddress, prog.Architecture.CreateProcessorState());
 			scanner.EnqueueEntryPoint(ep);
 			if (project != null)

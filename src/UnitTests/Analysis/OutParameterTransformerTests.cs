@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpAsciiHex()
 		{
-			prog = RewriteFile("Fragments/ascii_hex.asm");
+			prog = RewriteFileOld("Fragments/ascii_hex.asm");
 			FileUnitTester.RunTest("Analysis/OutpAsciiHex.txt", new FileUnitTestHandler(PerformTest));
 		}
 
@@ -162,14 +162,14 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void OutpParameters()
 		{
-			prog = RewriteFile("Fragments/multiple/outparameters.asm");
+			prog = RewriteFileOld("Fragments/multiple/outparameters.asm");
 			FileUnitTester.RunTest("Analysis/OutpParameters.txt", new FileUnitTestHandler(PerformTest));
 		}
 
 		[Test]
 		public void OutpMutual()
 		{
-			prog = RewriteFile("Fragments/multiple/mutual.asm");
+			prog = RewriteFileOld("Fragments/multiple/mutual.asm");
 			FileUnitTester.RunTest("Analysis/OutpMutual.txt", new FileUnitTestHandler(PerformTest));
 		}
 

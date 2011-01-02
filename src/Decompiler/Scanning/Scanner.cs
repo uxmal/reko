@@ -115,6 +115,24 @@ namespace Decompiler.Scanning
             this.VectorUses = new Dictionary<Address, VectorUse>();
         }
 
+        public Scanner(Program program, IDictionary<Address, ProcedureSignature> callSigs, DecompilerEventListener eventListener)
+        {
+            this.arch = program.Architecture;
+            this.image = program.Image;
+            this.platform = program.Platform;
+            this.callSigs = callSigs;
+            this.eventListener = eventListener;
+
+            this.Procedures = program.Procedures;
+            this.queue = new PriorityQueue<WorkItem>();
+            this.blocks = new Map<uint, BlockRange>();
+            this.blockStarts = new Dictionary<Block, uint>();
+            this.callgraph = program.CallGraph;
+            this.pseudoProcs = program.PseudoProcedures;
+            this.vectors = program.Vectors;
+            this.VectorUses = new Dictionary<Address, VectorUse>();
+        }
+
         public IProcessorArchitecture Architecture { get { return arch; } }
         public CallGraph CallGraph { get { return callgraph; } }
         public Platform Platform { get { return platform; } }
@@ -352,6 +370,7 @@ namespace Decompiler.Scanning
 	/// Callers feed the scanner by calling EnqueueXXX methods before calling Scan(). Scan() then
 	/// processes the queues.
 	/// </remarks>
+    [Obsolete("Use Scanner for all new code")]
     public class ScannerOld : IScanner, ICodeWalkerListener
     {
         private Program program;

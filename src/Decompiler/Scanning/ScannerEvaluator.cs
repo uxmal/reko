@@ -85,7 +85,7 @@ namespace Decompiler.Scanning
 
         void IExpressionVisitor.VisitCast(Cast cast)
         {
-            throw new NotImplementedException();
+            value = Constant.Invalid;
         }
 
         void IExpressionVisitor.VisitConditionOf(ConditionOf cof)
@@ -175,7 +175,11 @@ namespace Decompiler.Scanning
 
         void IExpressionVisitor.VisitUnaryExpression(UnaryExpression unary)
         {
-            throw new NotImplementedException();
+            var c1 = GetValue(unary.Expression);
+            if (c1.IsValid)
+            {
+                value = unary.op.ApplyConstant(c1);
+            }
         }
 
         #endregion

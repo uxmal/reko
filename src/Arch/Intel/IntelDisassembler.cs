@@ -1938,7 +1938,7 @@ namespace Decompiler.Arch.Intel
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 						
-				// C0
+				// D0
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),

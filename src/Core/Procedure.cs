@@ -129,8 +129,14 @@ namespace Decompiler.Core
                     return -1;
                 else if (y == eb) 
                     return 1;
-                else 
-                    return String.Compare(x.Name, y.Name);
+
+                var ex = x.Procedure.ExitBlock;
+                if (x == ex)
+                    return 1;
+                else if (y == ex)
+                    return -1;
+                    
+                return String.Compare(x.Name, y.Name);
             }
         }
 

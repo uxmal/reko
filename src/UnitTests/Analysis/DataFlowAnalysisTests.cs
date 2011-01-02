@@ -178,7 +178,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void DfaFstsw()
         {
-           Program prog = RewriteCodeFragment(@"
+           Program prog = RewriteCodeFragmentOld(@"
                 fcomp   dword ptr [bx]
                 fstsw   ax
                 test    ah,0x41
