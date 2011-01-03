@@ -9,6 +9,7 @@
 // v7:Temporary
 // bx:Register bx
 // C:Flags
+// v10:Temporary
 // cx:Register cx
 // SZO:Flags
 // es:Register es
@@ -20,18 +21,19 @@
 // ecx:Register ecx
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
-	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+fn0C00_0000_entry:
+l0C00_0000:
 	si = bp + 0x000C
 	__outb(dx, al)
 	v7 = (bx & 0x0001 << 0x01) != 0x0000
 	bx = __ror(bx, 0x01)
 	C = v7
+	v10 = (cx & 0x0001 << 0x01) != 0x0000
 	cx = __rcr(cx, 0x01, C)
+	C = v10
 	dx = dx + 0x0001
 	SZO = cond(dx)
-	al = __in(dx)
+	al = __inb(dx)
 	store(Mem0[es:di:byte]) = al
 	di = di + 0x0001
 	C = __bt(Mem0[ds:0x3000:word16], ax)
@@ -42,6 +44,4 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	Z = eax == 0x00000000
 	ecx = __bsr(eax)
 	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:

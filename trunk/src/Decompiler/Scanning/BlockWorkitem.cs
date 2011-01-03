@@ -37,6 +37,7 @@ namespace Decompiler.Scanning
     {
         private IScanner scanner;
         private IProcessorArchitecture arch;
+        private Address addr;
         private Block blockCur;
         private Frame frame;
         private RtlInstruction ri;
@@ -48,19 +49,21 @@ namespace Decompiler.Scanning
             Rewriter2 rewriter,
             ProcessorState state,
             Frame frame,
-            Block block)
+            Address addr)
         {
             this.scanner = scanner;
             this.arch = scanner.Architecture;
             this.rewriter = rewriter;
             this.state = state;
             this.frame = frame;
-            this.blockCur = block;
+            this.addr = addr;
+            this.blockCur = null;
         }
 
         public override void Process()
         {
             var rtlStream = rewriter.GetEnumerator();
+            blockCur = scanner.FindContainingBlock(addr);
             if (BlockHasBeenScanned(blockCur))
                 return;
             while (rtlStream.MoveNext())
@@ -332,6 +335,10 @@ namespace Decompiler.Scanning
                     return false;
                 }
                 AffectProcessorState(svc.Signature);
+            }
+            else
+            {
+                blockCur.Statements.Add(ri.Address.Linear, new SideEffect(side.Expression));
             }
             return true;
         }

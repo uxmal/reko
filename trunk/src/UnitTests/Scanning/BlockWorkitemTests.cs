@@ -21,6 +21,7 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
@@ -60,7 +61,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private BlockWorkitem CreateWorkItem(Address addr)
         {
-            return new BlockWorkitem(scanner, rewriter, new FakeProcessorState(), proc.Frame, block);
+            return new BlockWorkitem(scanner, rewriter, new FakeProcessorState(), proc.Frame, addr);
         }
 
         [Test]
@@ -183,6 +184,13 @@ namespace Decompiler.UnitTests.Scanning
             var callees = new List<Procedure>(cg.Callees(block.Procedure));
             Assert.AreEqual(1, callees.Count);
             Assert.AreEqual("fn1200", callees[0].Name);
+        }
+
+        [Test]
+        public void RewriteSideEffect()
+        {
+            m.SideEffect(m.Register(1));
+            Assert.Fail();
         }
 
         [Test]
