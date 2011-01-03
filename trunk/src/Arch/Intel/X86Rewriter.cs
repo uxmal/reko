@@ -121,6 +121,11 @@ namespace Decompiler.Arch.Intel
                 case Opcode.enter: RewriteEnter(); break;
                 case Opcode.fadd: EmitCommonFpuInstruction(Operator.Add, false, false); break;
                 case Opcode.faddp: EmitCommonFpuInstruction(Operator.Add, false, true); break;
+                case Opcode.fdiv: EmitCommonFpuInstruction(Operator.Divs, false, false); break;
+                case Opcode.fdivp: EmitCommonFpuInstruction(Operator.Divs, false, true); break;
+                case Opcode.fidiv: EmitCommonFpuInstruction(Operator.Divs, false, false, PrimitiveType.Real64); break;
+                case Opcode.fdivr: EmitCommonFpuInstruction(Operator.Divs, true, false); break;
+                case Opcode.fdivrp: EmitCommonFpuInstruction(Operator.Divs, true, true); break;
                 case Opcode.fild: RewriteFild(); break;
                 case Opcode.fistp: RewriteFistp(); break;
                 case Opcode.fld: RewriteFld(); break;
@@ -130,6 +135,10 @@ namespace Decompiler.Arch.Intel
                 case Opcode.fmulp: EmitCommonFpuInstruction(Operator.Muls, false, true); break;
                 case Opcode.fst: RewriteFst(false); break;
                 case Opcode.fstp: RewriteFst(true); break;
+                case Opcode.fsub: EmitCommonFpuInstruction(Operator.Sub, false, false); break;
+                case Opcode.fsubp: EmitCommonFpuInstruction(Operator.Sub, false, true); break;
+                case Opcode.fsubr: EmitCommonFpuInstruction(Operator.Sub, true, false); break;
+                case Opcode.fsubrp: EmitCommonFpuInstruction(Operator.Sub, true, true); break;
                 case Opcode.@in: RewriteIn(); break;
                 case Opcode.imul: RewriteMultiply(Operator.Muls, Domain.SignedInt); break;
                 case Opcode.inc: RewriteIncDec(1); break;

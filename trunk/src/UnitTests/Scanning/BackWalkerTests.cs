@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void Create()
         {
-            BackWalker2 bw = new BackWalker2(arch, image) ;
+            RtlBackWalker bw = new RtlBackWalker(arch, image) ;
         }
 
         private Block FindBlock(string name)
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private void RunTest(Address addrJump, Block block, string sExp)
         {
-            var ibw = new BackWalker2(arch, image);
+            var ibw = new RtlBackWalker(arch, image);
             List<BackwalkOperation> bws = ibw.Backwalk(addrJump, block);
             var sw = new StringWriter();
             foreach (BackwalkOperation bwo in bws)

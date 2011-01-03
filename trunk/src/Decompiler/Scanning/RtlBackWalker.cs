@@ -31,14 +31,14 @@ using System.Text;
 
 namespace Decompiler.Scanning
 {
-    public class BackWalker2
+    public class RtlBackWalker
     {
         private IProcessorArchitecture arch;
         private ProgramImage img;
         private Identifier regIdxDetected;
-        private static TraceSwitch trace = new TraceSwitch("IntelBackWalker", "Traces the progress of x86 backward instruction walking");
+        private static TraceSwitch trace = new TraceSwitch("RtlBackWalker", "Traces the progress of backward Rtl instruction walking");
 
-        public BackWalker2(IProcessorArchitecture arch, ProgramImage img)
+        public RtlBackWalker(IProcessorArchitecture arch, ProgramImage img)
         {
             this.arch = arch;
             this.img = img;

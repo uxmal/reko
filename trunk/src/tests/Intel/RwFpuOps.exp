@@ -1,21 +1,24 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// wLoc04:Local -0004
-// wLoc06:Local -0006
+// sp:Register sp
+// ss:Register ss
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
-	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	wLoc04 = 0x0320
-	wLoc06 = 0x0300
-	call fn0C00_0010 (depth: 6;)
-	call fn0C00_0037 (depth: 6;)
+fn0C00_0000_entry:
+l0C00_0000:
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = 0x0320
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = 0x0300
+	sp = sp - 0x0002
+	call fn0C00_0010 (depth: 0;)
+	sp = sp - 0x0002
+	call fn0C00_0037 (depth: 0;)
+	sp = sp + 0x0004
+	SCZO = cond(sp)
 	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 
 // fn0C00_0010
 // Mem0:Global memory
