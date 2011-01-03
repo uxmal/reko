@@ -107,7 +107,7 @@ namespace Decompiler.UnitTests.Scanning
                 m(asm);
                 scanner.Stub(x => x.Platform).Return(platform);
                 scanner.Stub(x => x.Architecture).Return(arch);
-
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             }
             var image = new ProgramImage(addr, emitter.Bytes);
             var rw = arch.CreateRewriter2(new ImageReader(image, addr), state, proc.Frame, host);

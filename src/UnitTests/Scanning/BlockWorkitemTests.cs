@@ -73,6 +73,8 @@ namespace Decompiler.UnitTests.Scanning
             using (repository.Record())
             {
                 scanner.Stub(x => x.Architecture).Return(arch);
+                scanner.Stub(x => x.FindContainingBlock(
+                    Arg<Address>.Is.Anything)).Return(block);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
             }
 
@@ -98,6 +100,8 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                scanner.Stub(x => x.FindContainingBlock(
+                    Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Is.Anything,
                     Arg<Procedure>.Is.Same(block.Procedure),
@@ -125,7 +129,8 @@ namespace Decompiler.UnitTests.Scanning
         {
             m.Branch(m.Register(1), new Address(0x4000));
             m.Assign(m.Register(1), m.Register(2));
-
+            var blockElse = new Block(proc, "else");
+            var blockThen = new Block(proc, "then");
             ProcessorState s1 = null;
             ProcessorState s2 = null;
             using (repository.Record())
@@ -136,14 +141,16 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                scanner.Stub(x => x.FindContainingBlock(
+                    Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x1004),
                     Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Matches(arg => StashArg(ref s1, arg)))).Return(null); 
+                    Arg<ProcessorState>.Matches(arg => StashArg(ref s1, arg)))).Return(blockElse); 
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x4000),
                     Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(null);
+                    Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(blockThen);
             }
             var wi = CreateWorkItem(new Address(0x1000));
             wi.Process();
@@ -172,6 +179,8 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Stub(x => x.CallGraph).Return(cg);
+                scanner.Stub(x => x.FindContainingBlock(
+                    Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueProcedure(
                     Arg<WorkItem>.Is.Anything,
                     Arg<Address>.Matches(arg => arg.Offset == 0x1200),
@@ -185,36 +194,5 @@ namespace Decompiler.UnitTests.Scanning
             Assert.AreEqual(1, callees.Count);
             Assert.AreEqual("fn1200", callees[0].Name);
         }
-
-        [Test]
-        public void RewriteSideEffect()
-        {
-            m.SideEffect(m.Register(1));
-            Assert.Fail();
-        }
-
-        [Test]
-        [Ignore("Need split to work in scanner first")]
-        public void SplitBlock()
-        {
-            m.Assign(m.Register(0), 0);
-            m.Add(m.Register(0), 1);
-            m.Branch(m.Lt(m.Register(0), 10), new Address(0x1004));
-            m.Return();
-
-            using (repository.Record())
-            {
-                arch.Stub(x => x.CreateRewriter2(
-                    Arg<ImageReader>.Is.Anything,
-                    Arg<ProcessorState>.Is.Anything,
-                    Arg<Frame>.Is.Anything,
-                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
-                rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
-            }
-            var wi = CreateWorkItem(new Address(0x1000));
-            wi.Process();
-        }
-
     }
-
 }

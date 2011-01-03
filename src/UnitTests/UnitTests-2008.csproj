@@ -438,7 +438,7 @@
     <Compile Include="Analysis\Simplification\IdConstantTests.cs" />
     <Compile Include="Analysis\SymbolicEvaluatorTests.cs" />
     <Compile Include="Mocks\FakePlatform.cs" />
-    <Compile Include="Scanning\BackWalkerTests.cs" />
+    <Compile Include="Scanning\RtlBackWalkerTests.cs" />
     <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />
