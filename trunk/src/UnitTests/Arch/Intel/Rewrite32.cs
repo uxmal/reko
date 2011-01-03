@@ -26,6 +26,7 @@ using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Decompiler.UnitTests.Arch.Intel
 {
@@ -96,22 +97,22 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program prog = new Program();
-            Decompiler.Core.Assemblers.Assembler asm = new IntelTextAssembler();
-			asm.Assemble(new Address(0x10000000), FileUnitTester.MapTestPath(sourceFile));
-            prog.Image = asm.Image;
+            var asm = new IntelTextAssembler();
+            using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
+            {
+                asm.Assemble(new Address(0x10000000), rdr);
+                prog.Image = asm.Image;
+            }
             prog.Platform = new Decompiler.Environments.Win32.Win32Platform(asm.Architecture);
             prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
             {
                 prog.ImportThunks.Add(item.Key, item.Value);
             }
-            ScannerOld scan = new ScannerOld(prog, new FakeDecompilerEventListener());
+            Scanner scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
 			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
-			prog.AddEntryPoint(ep);
 			scan.EnqueueEntryPoint(ep);
 			scan.ProcessQueue();
-			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
-			rw.RewriteProgram();
 
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{

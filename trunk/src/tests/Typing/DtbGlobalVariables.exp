@@ -6,6 +6,7 @@ l1:		// pred: GlobalVariablesMock_entry
 	store(Mem3[ptr + 0x00000000:real32]) = 0.75F
 	store(Mem4[0x10000000:real32]) = 0.5F
 	// succ: 
+GlobalVariablesMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (ptr (struct (10000000 T_9 t10000000)))

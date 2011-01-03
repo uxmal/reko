@@ -1,10 +1,11 @@
-// ProcedureMock
-void ProcedureMock()
-ProcedureMock_entry:		// pred:
+// ProcedureBuilder
+void ProcedureBuilder()
+ProcedureBuilder_entry:		// pred:
 	// succ:  l1
-l1:		// pred: ProcedureMock_entry
+l1:		// pred: ProcedureBuilder_entry
 	store(Mem0[ds:0x00001B58:word16]) = Mem0[ds:Mem0[ds:0x00005321:word16]:word16]
 	// succ: 
+ProcedureBuilder_exit:
 
 // Equivalence classes ////////////
 Eq_2: (segment (1B58 word16 w1B58) (5321 (memptr (ptr Eq_2) Eq_4) ptr5321))

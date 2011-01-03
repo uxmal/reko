@@ -12,6 +12,7 @@ l0C00_0006:		// pred: l0C00_0002
 	ax_8 = ax_8 + 0x0001
 	bx = Mem0[ds:bx + 0x0004:word16]
 	// succ:  l0C00_0002
+	goto l0C00_0002
 l0C00_000D:		// pred: l0C00_0002
 	store(Mem15[ds:0x0200:word16]) = ax_8
 	return

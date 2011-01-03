@@ -268,7 +268,16 @@ namespace Decompiler.Scanning
 
         public void EnqueueUserProcedure(SerializedProcedure sp)
         {
-            throw new NotImplementedException();
+            Procedure proc = EnqueueProcedure(null, Address.ToAddress(sp.Address, 16), sp.Name, arch.CreateProcessorState());
+            if (sp.Signature != null)
+            {
+                var sser = new ProcedureSerializer(arch, platform.DefaultCallingConvention);
+                proc.Signature = sser.Deserialize(sp.Signature, proc.Frame);
+            }
+            if (sp.Characteristics != null)
+            {
+                proc.Characteristics = sp.Characteristics;
+            }
         }
 
 

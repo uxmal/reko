@@ -1,10 +1,11 @@
-// ProcedureMock
-void ProcedureMock()
-ProcedureMock_entry:		// pred:
+// ProcedureBuilder
+void ProcedureBuilder()
+ProcedureBuilder_entry:		// pred:
 	// succ:  l1
-l1:		// pred: ProcedureMock_entry
+l1:		// pred: ProcedureBuilder_entry
 	ds->w0300 = ds->*ds->*bx;
 	// succ: 
+ProcedureBuilder_exit:
 
 // Equivalence classes ////////////
 Eq_2: (segment "Eq_2" (300 word16 w0300))

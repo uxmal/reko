@@ -8,6 +8,7 @@ l1:		// pred: SegmentedDoubleReferenceMock_entry
 	si2 = Mem0[ds:0x0300:word16]
 	store(Mem0[ds:0x0102:word16]) = Mem0[ds:si2 + 0x0004:word16]
 	// succ: 
+SegmentedDoubleReferenceMock_exit:
 
 T_2 (in ds : word16)
 	trait_primitive(word16)
