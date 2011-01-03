@@ -5,6 +5,7 @@ VectorMock_entry:		// pred:
 l1:		// pred: VectorMock_entry
 	mod = v->r0000 + v->r0004 + v->r0008;
 	// succ: 
+VectorMock_exit:
 
 // Equivalence classes ////////////
 Eq_2: (struct "Eq_2" (0 real32 r0000) (4 real32 r0004) (8 real32 r0008))

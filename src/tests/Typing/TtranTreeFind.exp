@@ -2,9 +2,11 @@
 void TreeFindMock()
 TreeFindMock_entry:		// pred:
 	// succ:  seek
-seek:		// pred: TreeFindMock_entry l3
-	branch t == 0x00000000 found
-	// succ:  l1 found
+	goto seek
+found:		// pred: seek l1 lt
+	return t
+	// succ:  TreeFindMock_exit
+	goto TreeFindMock_exit
 l1:		// pred: seek
 	vv = Mem0[t + 0x00000000:word32]
 	branch v == vv found
@@ -15,12 +17,14 @@ l2:		// pred: l1
 l3:		// pred: l2
 	t = Mem0[t + 0x00000008:word32]
 	// succ:  seek
+	goto seek
 lt:		// pred: l2
 	t = Mem0[t + 0x00000004:word32]
 	// succ:  found
-found:		// pred: seek l1 lt
-	return t
-	// succ:  TreeFindMock_exit
+	goto found
+seek:		// pred: TreeFindMock_entry l3
+	branch t == 0x00000000 found
+	// succ:  l1 found
 TreeFindMock_exit:		// pred: found
 	// succ: 
 

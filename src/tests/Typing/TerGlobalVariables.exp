@@ -7,6 +7,7 @@ l1:		// pred: GlobalVariablesMock_entry
 	*ptr = 0.75F;
 	globals->r10000000 = 0.5F;
 	// succ: 
+GlobalVariablesMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1" (10000000 real32 r10000000) (10000004 real32 r10000004))

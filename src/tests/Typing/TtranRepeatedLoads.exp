@@ -6,6 +6,7 @@ l1:		// pred: RepeatedLoadsMock_entry
 	x = Mem0[pfoo + 0x00000004:word32]
 	x = Mem0[pfoo + 0x00000004:word32]
 	// succ: 
+RepeatedLoadsMock_exit:
 
 // Equivalence classes ////////////
 Eq_2: (struct (4 word32 dw0004))

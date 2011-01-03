@@ -6,6 +6,7 @@ l1:		// pred: FnPointerMock_entry
 	store(Mem4[0x10000000:word32]) = 0x01213130
 	icall Mem4[0x10000000:word32]
 	// succ: 
+FnPointerMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (ptr (struct (10000000 T_2 t10000000)))
