@@ -34,7 +34,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Scanning
 {
     [TestFixture]
-    public class BackWalkerTests
+    public class RtlBackWalkerTests
     {
         private ProgramImage image;
         private IProcessorArchitecture arch;
