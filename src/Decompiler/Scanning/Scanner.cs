@@ -170,7 +170,7 @@ namespace Decompiler.Scanning
         public void TerminateBlock(Block block, Address addr)
         {
             BlockRange range;
-            if (blocks.TryGetLowerBound(addr.Linear, out range))
+            if (blocks.TryGetLowerBound(addr.Linear, out range) && range.Start < addr.Linear)
                 range.End = addr.Linear;
         }
 
@@ -226,7 +226,7 @@ namespace Decompiler.Scanning
                     this.arch.CreateRewriter2(CreateReader(addrStart), state, proc.Frame, this),
                     state,
                     proc.Frame,
-                    block));
+                    addrStart));
             return block;
         }
 

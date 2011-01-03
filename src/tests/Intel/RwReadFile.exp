@@ -1,54 +1,54 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// wLoc04:Local -0004
+// sp:Register sp
+// ss:Register ss
 // ds:Register ds
 // dx:Register dx
 // bx:Register bx
 // cx:Register cx
-// SCZO:Flags
 // ax:Register ax
+// SZO:Flags
+// C:Flags
 // SO:Flags
 // al:Register al
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
-	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	wLoc04 = 0x0D00
-	ds = wLoc04
+fn0C00_0000_entry:
+l0C00_0000:
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = 0x0D00
+	ds = Mem0[ss:sp:selector]
+	sp = sp + 0x0002
 	dx = 0x3000
 	bx = Mem0[ds:0x0300:word16]
 	cx = 0x0100
-	call fn0C00_0023 (depth: 2;)
-	SCZO = cond(ax - 0x0000)
+	sp = sp - 0x0002
+	call fn0C00_0023 (depth: 0;)
+	ax = ax | ax
+	SZO = cond(ax)
+	C = false
 	branch Test(GE,SO) l0C00_001A
-	// succ:  l0C00_0015 l0C00_001A
-l0C00_0015:		// pred: l0C00_0000
+l0C00_0015:
 	al = 0x01
-	call fn0C00_001F (depth: 2;)
-	// succ:  l0C00_001A
-l0C00_001A:		// pred: l0C00_0000 l0C00_0015
+	sp = sp - 0x0002
+	call fn0C00_001F (depth: 0;)
+l0C00_001A:
 	store(Mem0[ds:0x0302:word16]) = ax
 	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_001A
-	// succ: 
+fn0C00_0000_exit:
 // fn0C00_001F
 // Mem0:Global memory
 // fp:Temporary
 // ah:Register ah
 // al:Register al
-// return address size: 2
+// return address size: 0
 void fn0C00_001F()
-fn0C00_001F_entry:		// pred:
-	// succ:  l0C00_001F
-l0C00_001F:		// pred: fn0C00_001F_entry
+fn0C00_001F_entry:
+l0C00_001F:
 	ah = 0x4C
 	msdos_terminate(al)
-	// succ:  fn0C00_001F_exit
-fn0C00_001F_exit:		// pred: l0C00_001F
-	// succ: 
+fn0C00_001F_exit:
 // fn0C00_0023
 // Mem0:Global memory
 // fp:Temporary
@@ -62,18 +62,13 @@ fn0C00_001F_exit:		// pred: l0C00_001F
 // ax:Register ax
 // return address size: 2
 void fn0C00_0023()
-fn0C00_0023_entry:		// pred:
-	// succ:  l0C00_0023
-l0C00_0023:		// pred: fn0C00_0023_entry
+fn0C00_0023_entry:
+l0C00_0023:
 	ah = 0x3F
 	C = msdos_read_file(bx, cx, ds_dx, &ax)
 	branch Test(UGE,C) l0C00_002C
-	// succ:  l0C00_0029 l0C00_002C
-l0C00_0029:		// pred: l0C00_0023
+l0C00_0029:
 	ax = 0xFFFF
-	// succ:  l0C00_002C
-l0C00_002C:		// pred: l0C00_0023 l0C00_0029
+l0C00_002C:
 	return
-	// succ:  fn0C00_0023_exit
-fn0C00_0023_exit:		// pred: l0C00_002C
-	// succ: 
+fn0C00_0023_exit:

@@ -114,6 +114,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.and: RewriteLogical(BinaryOperator.And); break;
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.bswap: RewriteBswap(); break;
+                case Opcode.bt: RewriteBt(); break;
                 case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
                 case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
                 case Opcode.cmp: RewriteCmp(); break;
@@ -168,6 +169,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.lodsb: RewriteStringInstruction(); break;
                 case Opcode.loop: RewriteLoop(0, ConditionCode.EQ); break;
                 case Opcode.loope: RewriteLoop(FlagM.ZF, ConditionCode.EQ); break;
+                case Opcode.lss: RewriteLxs(Registers.ss); break;
                 case Opcode.mov: RewriteMov(); break;
                 case Opcode.mul: RewriteMultiply(Operator.Mulu, Domain.UnsignedInt); break;
                 case Opcode.not: RewriteNot(); break;
@@ -176,12 +178,10 @@ namespace Decompiler.Arch.Intel
                 case Opcode.@out: RewriteOut(); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pop: RewritePop(); break;
-
                 case Opcode.rcl: RewriteRotation("__rcl", true, true); break;
                 case Opcode.rcr: RewriteRotation("__rcr", true, false); break;
                 case Opcode.rol: RewriteRotation("__rol", false, true); break;
                 case Opcode.ror: RewriteRotation("__ror", false, false); break;
-
                 case Opcode.rep: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.Sub); break;
@@ -192,12 +192,12 @@ namespace Decompiler.Arch.Intel
                 case Opcode.setnz: RewriteSet(ConditionCode.NE); break;
                 case Opcode.sets: RewriteSet(ConditionCode.SG); break;
                 case Opcode.setz: RewriteSet(ConditionCode.EQ); break;
-
-
                 case Opcode.shld: RewriteShxd("__shld"); break;
                 case Opcode.shl: RewriteBinOp(BinaryOperator.Shl); break;
                 case Opcode.shr: RewriteBinOp(BinaryOperator.Shr); break;
                 case Opcode.shrd: RewriteShxd("__shrd"); break;
+                case Opcode.stos: RewriteStringInstruction(); break;
+                case Opcode.stosb: RewriteStringInstruction(); break;
                 case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;

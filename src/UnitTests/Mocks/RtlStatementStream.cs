@@ -94,6 +94,13 @@ namespace Decompiler.UnitTests.Mocks
                 yield return x;
         }
 
+
+        internal RtlInstruction Goto(uint target)
+        {
+            var g = new RtlGoto(new Address(linAddress), 4, new Address(target));
+            return Emit(g);
+        }
+
         public Identifier Register(int iReg)
         {
             return frame.EnsureRegister(arch.GetRegister(iReg));
@@ -105,10 +112,12 @@ namespace Decompiler.UnitTests.Mocks
             return Emit(ret);
         }
 
-        internal RtlInstruction Goto(uint target)
+        internal RtlInstruction SideEffect(Expression exp)
         {
-            var g = new RtlGoto(new Address(linAddress), 4, new Address(target));
-            return Emit(g);
+            var side = new RtlSideEffect(new Address(linAddress), 4, exp);
+            return Emit(side);
         }
+
+
     }
 }

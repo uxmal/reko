@@ -92,6 +92,12 @@ namespace Decompiler.Arch.Intel
             EmitCopy(di.Instruction.op1, PseudoProc("__bsr", di.Instruction.op1.Width, src), false);
         }
 
+        private void RewriteBt()
+        {
+		    emitter.Assign(
+                orw.FlagGroup(FlagM.CF),
+				PseudoProc("__bt", PrimitiveType.Bool, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2)));
+        }
 
         public void RewriteBswap()
         {
