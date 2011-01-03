@@ -146,7 +146,7 @@ not_eq:
 join:
 	ret
 ");
-			Assert.IsTrue(proc.RpoBlocks.Count == 6);
+			Assert.AreEqual(6, proc.ControlGraph.Nodes.Count);
 			StringWriter sb = new StringWriter();
 			proc.Write(true, sb);
 		}
@@ -161,7 +161,7 @@ join:
 				proc.Write(true, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
-			Assert.IsTrue(proc.RpoBlocks.Count == 5);
+			Assert.AreEqual(5, proc.ControlGraph.Nodes.Count);
 		}
 
 		[Test]

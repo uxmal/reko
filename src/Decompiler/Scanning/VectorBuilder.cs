@@ -173,5 +173,10 @@ namespace Decompiler.Scanning
         {
             get { return cbTable; }
         }
+
+        internal Address[] Build(Address addrVector, Address addrSwitch, ushort segBase, int stride)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

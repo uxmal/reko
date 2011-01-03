@@ -207,18 +207,17 @@ namespace Decompiler.Scanning
         public Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
         {
             Block block = FindExactBlock(addrStart);
-            if (block != null)
+            if (block == null)
             {
-                return block;
-            }
-            block = FindContainingBlock(addrStart);
-            if (block != null)
-            {
-                block = SplitBlock(block, addrStart);
-            }
-            else
-            {
-                block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
+                block = FindContainingBlock(addrStart);
+                if (block != null)
+                {
+                    block = SplitBlock(block, addrStart);
+                }
+                else
+                {
+                    block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
+                }
             }
             queue.Enqueue(
                 PriorityJumpTarget,
@@ -312,7 +311,6 @@ namespace Decompiler.Scanning
             {
                 graph.RemoveEdge(block, succ);
             }
-            graph.AddEdge(block, blockNew);
 
             var linAddr = addr.Linear;
             blockNew.Statements.AddRange(block.Statements.FindAll(s => s.LinearAddress >= linAddr));

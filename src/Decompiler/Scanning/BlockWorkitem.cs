@@ -120,26 +120,23 @@ namespace Decompiler.Scanning
             }
         }
 
-        private void ProcessVector(VectorWorkItemOld wi)
+        private void ProcessVector(Address addrSwitch, Address addrVector, ushort segBase, int stride)
         {
-            throw new NotImplementedException();
-            ////$TODO: pass imagemapvectortable in workitem.
-            //ImageMapItem q;
-            //map.TryFindItem(wi.Address, out q);
-            //ImageMapVectorTable item = (ImageMapVectorTable)q;
-            //VectorBuilder builder = new VectorBuilder(program, map, jumpGraph);
-            //Address[] vector = builder.Build(wi.Address, wi.addrFrom, wi.segBase, wi.stride);
-            //if (vector == null)
-            //{
-            //    Address addrNext = wi.Address + wi.stride.Size;
-            //    if (program.Image.IsValidAddress(addrNext))
-            //    {
-            //        // Can't determine the size of the table, but surely it has one entry?
-            //        map.AddItem(addrNext, new ImageMapItem());
-            //    }
-            //    return;
-            //}
+            VectorBuilder builder = new VectorBuilder(arch, null, new Decompiler.Core.Lib.DirectedGraphImpl<object>());
+            Address[] vector = builder.Build(addrVector, addrSwitch, segBase, stride);
+            if (vector == null)
+            {
+                throw new NotImplementedException();
+                //Address addrNext = addrVector + wi.stride.Size;
+                //if (scanner.isprogram.Image.IsValidAddress(addrNext))
+                //{
+                //    // Can't determine the size of the table, but surely it has one entry?
+                //    map.AddItem(addrNext, new ImageMapItem());
+                //}
+                //return;
+            }
 
+            throw new NotImplementedException();
             //item.Addresses.AddRange(vector);
             //for (int i = 0; i < vector.Length; ++i)
             //{
@@ -175,12 +172,11 @@ namespace Decompiler.Scanning
         public bool VisitBranch(RtlBranch b)
         {
             // The following statements may chop up the blockCur, so hang on to the essentials.
-            var branchingBlock = blockCur;
             var proc = blockCur.Procedure;
             var fallthruAddress = ri.Address + ri.Length;
             var blockThen = scanner.EnqueueJumpTarget(b.Target, proc, state.Clone());
             var blockElse = FallthroughBlock(proc, fallthruAddress);
-
+            var branchingBlock = scanner.FindContainingBlock(ri.Address);
             branchingBlock.Statements.Add(
                 ri.Address.Linear,
                 new Branch(b.Condition, blockThen));
@@ -214,8 +210,9 @@ namespace Decompiler.Scanning
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
-                var blockTarget = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
-                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockTarget);
+                var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
+                var blockSource = scanner.FindContainingBlock(ri.Address);
+                blockCur.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
                 return false;
             }
 
@@ -226,8 +223,27 @@ namespace Decompiler.Scanning
             var ea = mem.EffectiveAddress as BinaryExpression;
             if (ea != null)
                 return false;
-            scanner.EnqueueVectorTable(ri.Address, null, null, 0, false, blockCur.Procedure, state);
+            if (ea.op != Operator.Add)
+                return false;
+            var cTableOffset = ea.Right as Constant;
+            if (cTableOffset == null || cTableOffset == Constant.Invalid)
+                return false;
+            ea = ea.Left as BinaryExpression;
+            if (ea == null)
+                return false;
+            if (ea.op != Operator.Muls && ea.op != Operator.Mul && ea.op != Operator.Mulu)
+                return false;
+            var cStride = ea.Right as Constant;
+            if (cStride == null || cStride == Constant.Invalid)
+                return false;
+
+            ProcessVector(ri.Address, OffsetToAddress(mem, cTableOffset), 0, cStride.ToInt32());
             return false;
+        }
+
+        private Address OffsetToAddress(MemoryAccess mem, Constant cTableOffset)
+        {
+            throw new NotImplementedException();
         }
 
         public bool VisitCall(RtlCall call)
