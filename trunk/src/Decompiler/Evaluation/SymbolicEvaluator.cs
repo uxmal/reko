@@ -26,7 +26,7 @@ using Decompiler.Core.Operators;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Decompiler.Evaluation
 {
     /// <summary>
     /// Before we have the luxury of SSA, we need to perform some simplifications. This class keeps a context of symbolic

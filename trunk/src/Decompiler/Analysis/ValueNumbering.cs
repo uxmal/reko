@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
+using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

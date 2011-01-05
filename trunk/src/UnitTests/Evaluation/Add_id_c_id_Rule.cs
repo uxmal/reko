@@ -27,7 +27,7 @@ using Decompiler.UnitTests.Mocks;
 using System;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Analysis.Simplification
+namespace Decompiler.UnitTests.Evaluation
 {
 
     [TestFixture]

@@ -18,28 +18,25 @@
  */
 #endregion
 
-using Decompiler.Analysis;
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
-using Decompiler.Arch.Intel;
+using Decompiler.Evaluation;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Decompiler.UnitTests.Evaluation
 {
     [TestFixture]
     public class SymbolicEvaluatorTests
     {
         private Identifier esp;
         private Identifier ebp;
-        private Identifier eax;
         private SymbolicEvaluator se;
         private SymbolicEvaluationContext ctx;
         private IProcessorArchitecture arch;

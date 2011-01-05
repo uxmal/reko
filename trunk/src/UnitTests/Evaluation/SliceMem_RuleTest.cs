@@ -25,7 +25,7 @@ using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Analysis.Simplification
+namespace Decompiler.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class SliceMem_RuleTest

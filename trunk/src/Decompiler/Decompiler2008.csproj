@@ -127,9 +127,6 @@
     <Compile Include="Analysis\DefinedIdentifierFinder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\ExpressionSimplifier.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\ExpressionUseAdder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -178,51 +175,6 @@
     <Compile Include="Analysis\SideEffectFinder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\Simplification\AddTwoIdsRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\Add_e_c_cRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\Add_mul_id_c_id_Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\ConstConstBin_Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\DpbConstantRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\IdBinIdc_Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\IdConstant.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\IdCopyPropagationRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\Mps_Constant_Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\NegSub_Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\Shl_mul_e_Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\Shl_Shl_c_c_Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\SliceConstant_Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\SliceMem_Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\Simplification\SliceShift.cs" />
-    <Compile Include="Analysis\Simplification\Sub_Xor_Zero_Rule.cs">
-    </Compile>
     <Compile Include="Analysis\SsaEvaluationContext.cs" />
     <Compile Include="Analysis\SsaIdentifier.cs">
       <SubType>Code</SubType>
@@ -239,11 +191,9 @@
     <Compile Include="Analysis\SsaTransform.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\SymbolicEvaluator.cs" />
     <Compile Include="Analysis\TerminationAnalysis.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder.cs" />
     <Compile Include="Analysis\TrashedStorageHelper.cs" />
-    <Compile Include="Analysis\EvaluationContext.cs" />
     <Compile Include="Analysis\ValueNumbering.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -276,6 +226,25 @@
     <Compile Include="DecompilerHost.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Evaluation\AddTwoIdsRule.cs" />
+    <Compile Include="Evaluation\Add_e_c_cRule.cs" />
+    <Compile Include="Evaluation\Add_mul_id_c_id_Rule.cs" />
+    <Compile Include="Evaluation\ConstConstBin_Rule.cs" />
+    <Compile Include="Evaluation\DpbConstantRule.cs" />
+    <Compile Include="Evaluation\EvaluationContext.cs" />
+    <Compile Include="Evaluation\ExpressionSimplifier.cs" />
+    <Compile Include="Evaluation\IdBinIdc_Rule.cs" />
+    <Compile Include="Evaluation\IdConstant.cs" />
+    <Compile Include="Evaluation\IdCopyPropagationRule.cs" />
+    <Compile Include="Evaluation\Mps_Constant_Rule.cs" />
+    <Compile Include="Evaluation\NegSub_Rule.cs" />
+    <Compile Include="Evaluation\Shl_mul_e_Rule.cs" />
+    <Compile Include="Evaluation\Shl_Shl_c_c_Rule.cs" />
+    <Compile Include="Evaluation\SliceConstant_Rule.cs" />
+    <Compile Include="Evaluation\SliceMem_Rule.cs" />
+    <Compile Include="Evaluation\SliceShift.cs" />
+    <Compile Include="Evaluation\Sub_Xor_Zero_Rule.cs" />
+    <Compile Include="Evaluation\SymbolicEvaluator.cs" />
     <Compile Include="Gui\BlockNavigator.cs" />
     <Compile Include="Gui\CommandGroup.cs" />
     <Compile Include="Gui\FindResult.cs" />

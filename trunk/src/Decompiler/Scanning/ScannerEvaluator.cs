@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
+using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,7 +31,7 @@ namespace Decompiler.Scanning
     /// <summary>
     /// Used by the Scanner and related classes to evaluate possibly constant expressions.
     /// </summary>
-    public class ScannerEvaluator : Decompiler.Analysis.EvaluationContext
+    public class ScannerEvaluator : EvaluationContext
     {
         private ProcessorState state;
 
