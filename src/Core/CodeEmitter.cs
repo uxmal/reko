@@ -71,10 +71,10 @@ namespace Decompiler.Core
             return blockCur.Statements.Last;
 		}
 
-        public void Call(Procedure procCallee, CallSite site)
+        public void Call(Procedure procCallee, CallSite site, int stackReturnAddressSize)
         {
             ProcedureConstant pc = new ProcedureConstant(arch.PointerType, procCallee);
-            Emit(new CallInstruction(pc, site));
+            Emit(new CallInstruction(pc, site, stackReturnAddressSize));
         }
 
 

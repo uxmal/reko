@@ -27,23 +27,27 @@ namespace Decompiler.Core.Code
 	public abstract class CallBase : Instruction
 	{
 		protected Expression expr;
-		private CallSite site;
 
-		public CallBase(Expression expr, CallSite site)
+        [Obsolete]
+		public CallBase(Expression expr, CallSite site) : this(expr, site, 0)
+        {
+        }
+
+		public CallBase(Expression expr, CallSite site, int stackReturnAddressSize)
 		{
 			this.expr = expr;
-            this.site = site;
+            this.CallSite = site;
+            this.StackReturnAddressSize = stackReturnAddressSize;
 		}
 
-		public CallSite CallSite
-		{
-			get { return site; }
-		}
+		public CallSite CallSite { get; private set; }
 
         public override bool IsControlFlow
         {
             get { return false; }
         }
+
+        public int StackReturnAddressSize { get ; private set; }
 	}
 
     [Obsolete("Use Call with a non-procedure constant")]
@@ -82,8 +86,8 @@ namespace Decompiler.Core.Code
 	{
 		private ProcedureBase proc;
 
-        public CallInstruction(ProcedureConstant pc, CallSite site)
-            : base(pc, site)
+        public CallInstruction(ProcedureConstant pc, CallSite site, int stackReturnAddressSize)
+            : base(pc, site, stackReturnAddressSize)
         {
             this.proc = pc.Procedure;
         }

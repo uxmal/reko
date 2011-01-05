@@ -81,19 +81,17 @@ namespace Decompiler.Arch.Intel
 
         private void RewriteCall(MachineOperand callTarget, PrimitiveType opsize)
         {
-            var sp = StackPointer();
-            emitter.Assign(sp, emitter.Sub(sp, opsize.Size));
             Address addr = OperandAsCodeAddress(callTarget);
             if (addr != null)
             {
-                emitter.Call(addr);
+                emitter.Call(addr, (byte) opsize.Size);
             }
             else
             {
                 var target = SrcOp(callTarget);
                 if (target.DataType.Size == 2)
                     target = emitter.Seq(orw.AluRegister(Registers.cs), target);
-                emitter.Call(target);
+                emitter.Call(target, (byte) opsize.Size);
             }
         }
 

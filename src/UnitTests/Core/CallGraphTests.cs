@@ -46,22 +46,22 @@ namespace Decompiler.UnitTests.Core
             ProcedureConstant pc3 = new ProcedureConstant(PrimitiveType.Pointer32, p3);
             ProcedureConstant pc4 = new ProcedureConstant(PrimitiveType.Pointer32, p4);
 
-            Statement s11 = new Statement(new CallInstruction(pc2, new CallSite(0, 0)), p1.EntryBlock);
-            Statement s12 = new Statement(new CallInstruction(pc2, new CallSite(0, 0)), p1.EntryBlock);
-            Statement s13 = new Statement(new CallInstruction(pc3, new CallSite(0, 0)), p1.EntryBlock);
+            Statement s11 = new Statement(new CallInstruction(pc2, new CallSite(0, 0), 4), p1.EntryBlock);
+            Statement s12 = new Statement(new CallInstruction(pc2, new CallSite(0, 0), 4), p1.EntryBlock);
+            Statement s13 = new Statement(new CallInstruction(pc3, new CallSite(0, 0), 4), p1.EntryBlock);
 			p1.EntryBlock.Statements.Add(s11);
 			p1.EntryBlock.Statements.Add(s12);
 			p1.EntryBlock.Statements.Add(s13);
 
-            Statement s21 = new Statement(new CallInstruction(pc3, new CallSite(0, 0)), p2.EntryBlock);
-			Statement s22 = new Statement(new CallInstruction(pc4, new CallSite(0, 0)), p2.EntryBlock);
+            Statement s21 = new Statement(new CallInstruction(pc3, new CallSite(0, 0), 4), p2.EntryBlock);
+            Statement s22 = new Statement(new CallInstruction(pc4, new CallSite(0, 0), 4), p2.EntryBlock);
 			p2.EntryBlock.Statements.Add(s21);
 			p2.EntryBlock.Statements.Add(s22);
 
-            Statement s31 = new Statement(new CallInstruction(pc4, new CallSite(0, 0)), p3.EntryBlock);
+            Statement s31 = new Statement(new CallInstruction(pc4, new CallSite(0, 0), 4), p3.EntryBlock);
 			p3.EntryBlock.Statements.Add(s31);
 
-            Statement s41 = new Statement(new CallInstruction(pc4, new CallSite(0, 0)), p4.EntryBlock);
+            Statement s41 = new Statement(new CallInstruction(pc4, new CallSite(0, 0), 4), p4.EntryBlock);
 
 			g.AddEntryPoint(p1);
 			g.AddEdge(s11, p2);

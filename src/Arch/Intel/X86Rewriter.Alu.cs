@@ -138,6 +138,67 @@ namespace Decompiler.Arch.Intel
                 new ConditionOf(emitter.Sub(op1, op2)));
         }
 
+        private void RewriteCwd()
+        {
+            if (di.Instruction.dataWidth == PrimitiveType.Word32)
+            {
+                Identifier edx_eax = frame.EnsureSequence(
+                    orw.AluRegister(Registers.edx),
+                    orw.AluRegister(Registers.eax),
+                    PrimitiveType.Int64);
+                emitter.Assign(
+                    edx_eax, emitter.Cast(edx_eax.DataType, orw.AluRegister(Registers.eax)));
+            }
+            else
+            {
+                Identifier dx_ax = frame.EnsureSequence(
+                    orw.AluRegister(Registers.dx),
+                    orw.AluRegister(Registers.ax),
+                    PrimitiveType.Int32);
+                emitter.Assign(
+                    dx_ax, emitter.Cast(dx_ax.DataType, orw.AluRegister(Registers.ax)));
+            }
+        }
+
+        private void RewriteDivide(BinaryOperator op, Domain domain)
+        {
+            if (di.Instruction.Operands != 1)
+                throw new ArgumentOutOfRangeException("Intel DIV/IDIV instructions only take one operand");
+            Identifier regDividend;
+            Identifier regQuotient;
+            Identifier regRemainder;
+
+            switch (di.Instruction.dataWidth.Size)
+            {
+            case 1:
+                regQuotient = orw.AluRegister(Registers.al);
+                regDividend = orw.AluRegister(Registers.ax);
+                regRemainder = orw.AluRegister(Registers.ah);
+                break;
+            case 2:
+                regQuotient = orw.AluRegister(Registers.ax);
+                regRemainder = orw.AluRegister(Registers.dx);
+                regDividend = frame.EnsureSequence(regRemainder, regQuotient, PrimitiveType.Word32);
+                break;
+            case 4:
+                regQuotient = orw.AluRegister(Registers.eax);
+                regRemainder = orw.AluRegister(Registers.edx);
+                regDividend = frame.EnsureSequence(regRemainder, regQuotient, PrimitiveType.Word64);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported", di.Instruction.dataWidth.Size));
+            };
+            PrimitiveType p = ((PrimitiveType)regRemainder.DataType).MaskDomain(domain);
+            emitter.Assign(
+                regRemainder, new BinaryExpression(Operator.Mod, p,
+                regDividend,
+                SrcOp(di.Instruction.op1)));
+            var ass = emitter.Assign(
+                regQuotient, new BinaryExpression(op, p, regDividend,
+                SrcOp(di.Instruction.op1)));
+            EmitCcInstr(ass.Dst, IntelInstruction.DefCc(di.Instruction.code));
+        }
+
         private void RewriteEnter()
         {
             var bp = orw.AluRegister(Registers.ebp.GetPart(di.Instruction.dataWidth));

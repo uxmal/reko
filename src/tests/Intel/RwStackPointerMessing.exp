@@ -1,14 +1,12 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
 // ax:Register ax
 // ds:Register ds
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 l0C00_0000:
-	sp = sp - 0x0002
 	call fn0C00_0008 (depth: 0;)
 	store(Mem0[ds:0x0306:word16]) = ax
 	return

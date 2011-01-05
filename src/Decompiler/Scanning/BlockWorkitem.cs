@@ -259,7 +259,8 @@ namespace Decompiler.Scanning
                     ri.Address.Linear, 
                     new CallInstruction(
                         new ProcedureConstant(PrimitiveType.Pointer32, callee),
-                        new CallSite(0, 0)));
+                        new CallSite(0, 0),
+                        call.ReturnAddressSize));
                 scanner.CallGraph.AddEdge(blockCur.Statements.Last, callee);
                 return true;
             }
@@ -268,17 +269,39 @@ namespace Decompiler.Scanning
             if (sig != null)
             {
                 BuildApplication(call.Target, sig);
+                return true;
+
             }
-            else
+
+            PseudoProcedure ppp = ImportedProcedureName(call.Target);
+            if (ppp != null)
             {
-                blockCur.Statements.Add(
+                BuildApplication(new ProcedureConstant(arch.PointerType, ppp), ppp.Signature);
+                return true;
+            }
+
+            blockCur.Statements.Add(
                     ri.Address.Linear,
                     new IndirectCall(
                         call.Target,
                         new CallSite(0, 0)));
-            }
             return true;        //$BUGBUG: but may call exit(), or ExitThread(), which should return false.
         }
+
+
+        public PseudoProcedure ImportedProcedureName(Expression callTarget)
+        {
+            var mem = callTarget as MemoryAccess;
+            if (mem == null)
+                return null;
+            if (mem.EffectiveAddress.DataType.Size != PrimitiveType.Word32.Size)
+                return null;
+            var offset = mem.EffectiveAddress as Constant;
+            if (offset == null)
+                return null;
+            return (PseudoProcedure)scanner.GetImportedProcedure(new Address(offset.ToUInt32()));
+        }
+
 
         public bool VisitReturn(RtlReturn ret)
         {

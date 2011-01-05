@@ -108,7 +108,7 @@ namespace Decompiler.Arch.Intel
                 switch (di.Instruction.code)
                 {
                 default:
-                    throw new NotImplementedException(string.Format("Intel opcode {0} not supported yet.", di.Instruction.code));
+                    throw new NotImplementedException(string.Format("x86 opcode '{0}' not supported yet.", di.Instruction.code));
                 case Opcode.adc: RewriteAdcSbb(BinaryOperator.Add); break;
                 case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
                 case Opcode.and: RewriteLogical(BinaryOperator.And); break;
@@ -116,12 +116,18 @@ namespace Decompiler.Arch.Intel
                 case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.bt: RewriteBt(); break;
                 case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
+                case Opcode.clc: emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False()); break;
                 case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.cwd: RewriteCwd(); break;
                 case Opcode.dec: RewriteIncDec(-1); break;
+                case Opcode.div: RewriteDivide(Operator.Divu, Domain.UnsignedInt); break;
                 case Opcode.enter: RewriteEnter(); break;
                 case Opcode.fadd: EmitCommonFpuInstruction(Operator.Add, false, false); break;
                 case Opcode.faddp: EmitCommonFpuInstruction(Operator.Add, false, true); break;
+                case Opcode.fcom: RewriteFcom(0); break;
+                case Opcode.fcomp: RewriteFcom(1); break;
+                case Opcode.fcompp: RewriteFcom(2); break;
                 case Opcode.fdiv: EmitCommonFpuInstruction(Operator.Divs, false, false); break;
                 case Opcode.fdivp: EmitCommonFpuInstruction(Operator.Divs, false, true); break;
                 case Opcode.fidiv: EmitCommonFpuInstruction(Operator.Divs, false, false, PrimitiveType.Real64); break;
@@ -136,10 +142,12 @@ namespace Decompiler.Arch.Intel
                 case Opcode.fmulp: EmitCommonFpuInstruction(Operator.Muls, false, true); break;
                 case Opcode.fst: RewriteFst(false); break;
                 case Opcode.fstp: RewriteFst(true); break;
+                case Opcode.fstsw: RewriteFstsw(); break;
                 case Opcode.fsub: EmitCommonFpuInstruction(Operator.Sub, false, false); break;
                 case Opcode.fsubp: EmitCommonFpuInstruction(Operator.Sub, false, true); break;
                 case Opcode.fsubr: EmitCommonFpuInstruction(Operator.Sub, true, false); break;
                 case Opcode.fsubrp: EmitCommonFpuInstruction(Operator.Sub, true, true); break;
+                case Opcode.idiv: RewriteDivide(Operator.Divs, Domain.SignedInt); break;
                 case Opcode.@in: RewriteIn(); break;
                 case Opcode.imul: RewriteMultiply(Operator.Muls, Domain.SignedInt); break;
                 case Opcode.inc: RewriteIncDec(1); break;
@@ -169,8 +177,11 @@ namespace Decompiler.Arch.Intel
                 case Opcode.lodsb: RewriteStringInstruction(); break;
                 case Opcode.loop: RewriteLoop(0, ConditionCode.EQ); break;
                 case Opcode.loope: RewriteLoop(FlagM.ZF, ConditionCode.EQ); break;
+                case Opcode.loopne: RewriteLoop(FlagM.ZF, ConditionCode.NE); break;
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
                 case Opcode.mov: RewriteMov(); break;
+                case Opcode.movsx: EmitCopy(di.Instruction.op1, emitter.Cast(PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size), SrcOp(di.Instruction.op2)), false); break;
+                case Opcode.movzx: EmitCopy(di.Instruction.op1, emitter.Cast(di.Instruction.op1.Width, SrcOp(di.Instruction.op2)), false); break;
                 case Opcode.mul: RewriteMultiply(Operator.Mulu, Domain.UnsignedInt); break;
                 case Opcode.not: RewriteNot(); break;
                 case Opcode.neg: RewriteNeg(); break;
@@ -196,6 +207,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.shl: RewriteBinOp(BinaryOperator.Shl); break;
                 case Opcode.shr: RewriteBinOp(BinaryOperator.Shr); break;
                 case Opcode.shrd: RewriteShxd("__shrd"); break;
+                case Opcode.stc: emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.True()); break;
                 case Opcode.stos: RewriteStringInstruction(); break;
                 case Opcode.stosb: RewriteStringInstruction(); break;
                 case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
@@ -272,9 +284,6 @@ namespace Decompiler.Arch.Intel
                 return emitter.Assign(ea, tmp);
             }
         }
-
-
-
 
         private Expression SrcOp(MachineOperand opSrc)
         {

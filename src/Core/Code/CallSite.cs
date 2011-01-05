@@ -31,30 +31,21 @@ namespace Decompiler.Core.Code
 	/// </summary>
 	public class CallSite
 	{
-		private int stackDepthBefore;	// Depth of stack before call.
-		private int fpuStackDepthBefore;	// Depth of FPU stack before call.
-
-		public CallSite(int stackDepthBefore, int fpuStackDepthBefore)
-		{
-			this.stackDepthBefore = stackDepthBefore;
-			this.fpuStackDepthBefore = fpuStackDepthBefore;
-		}
+        public CallSite(int stackDepthBefore, int fpuStackDepthBefore)
+        {
+            this.StackDepthBefore = stackDepthBefore;
+            this.FpuStackDepthBefore = fpuStackDepthBefore;
+        }
 
 		/// <summary>
 		/// Depth of FPU stack before call.
 		/// </summary>
-		public int FpuStackDepthBefore
-		{
-			get { return fpuStackDepthBefore; }
-		}
+		public int FpuStackDepthBefore { get; private set; }
 
 		/// <summary>
 		/// Depth of stack before call, including possible return address.
 		/// </summary>
-		public int StackDepthBefore
-		{
-			get { return stackDepthBefore; }
-		}
+		public int StackDepthBefore { get; private set; }
 		
 		public override string ToString()
 		{

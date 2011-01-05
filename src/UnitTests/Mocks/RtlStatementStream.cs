@@ -78,7 +78,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Call(Expression target)
         {
-            var call = new RtlCall(new Address(linAddress), 4, target);
+            var call = new RtlCall(new Address(linAddress), 4, target, 4);
             return Emit(call);
         }
 
