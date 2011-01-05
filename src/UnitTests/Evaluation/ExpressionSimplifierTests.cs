@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Analysis;
+using Decompiler.Evaluation;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
@@ -29,7 +30,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.UnitTests.Analysis
+namespace Decompiler.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class ExpressionSimplifierTests

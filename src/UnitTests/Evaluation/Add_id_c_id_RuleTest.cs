@@ -26,7 +26,7 @@ using Decompiler.Core.Operators;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 
-namespace Decompiler.UnitTests.Analysis.Simplification
+namespace Decompiler.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class Add_id_c_id_RuleTest

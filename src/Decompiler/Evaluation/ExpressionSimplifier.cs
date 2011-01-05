@@ -26,7 +26,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Analysis
+namespace Decompiler.Evaluation 
 {
     /// <summary>
     /// Partially evaluates expressions, using an <see cref="EvaluationContext"/> to obtain the values
@@ -427,6 +427,11 @@ namespace Decompiler.Analysis
             return unary;
         }
     }
+}
+
+namespace Decompiler.Evaluation
+{
+    using Decompiler.Analysis;
 
     #region OLD_SIMPLIFIER
     /// <summary>
@@ -435,10 +440,10 @@ namespace Decompiler.Analysis
 	/// </summary>
 	public class ExpressionSimplifierOld : IExpressionTransformer
 	{
-		private ValueNumbering dad;
+		private Decompiler.Analysis.ValueNumbering dad;
 		private Dictionary<Expression,Expression> table;
 
-        public ExpressionSimplifierOld(ValueNumbering d, Dictionary<Expression, Expression> table)
+        public ExpressionSimplifierOld(Decompiler.Analysis.ValueNumbering d, Dictionary<Expression, Expression> table)
 		{
 			this.dad = d;
 			this.table = table;

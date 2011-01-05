@@ -24,6 +24,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
+using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -43,7 +44,7 @@ namespace Decompiler.Scanning
         private RtlInstruction ri;
         private Rewriter2 rewriter;
         private ProcessorState state;
-        private Decompiler.Analysis.ExpressionSimplifier eval;
+        private ExpressionSimplifier eval;
         private IEnumerator<RtlInstruction> rtlStream;
 
         public BlockWorkitem(
@@ -57,7 +58,7 @@ namespace Decompiler.Scanning
             this.arch = scanner.Architecture;
             this.rewriter = rewriter;
             this.state = state;
-            this.eval = new Decompiler.Analysis.ExpressionSimplifier(new ScannerEvaluator(state));
+            this.eval = new ExpressionSimplifier(new ScannerEvaluator(state));
             this.frame = frame;
             this.addr = addr;
             this.blockCur = null;

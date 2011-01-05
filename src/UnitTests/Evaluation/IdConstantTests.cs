@@ -29,7 +29,7 @@ using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 
-namespace Decompiler.UnitTests.Analysis.Simplification
+namespace Decompiler.UnitTests.Evaluation
 {
 	[TestFixture]
 	public class IdConstantTests

@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Analysis
+namespace Decompiler.Evaluation
 {
     /// <summary>
     /// An EvaluationContext is used by the ValuePropagator to provide a statement context for the

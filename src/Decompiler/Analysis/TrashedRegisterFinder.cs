@@ -25,6 +25,7 @@ using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Services;
 using Decompiler.Core.Types;
+using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
