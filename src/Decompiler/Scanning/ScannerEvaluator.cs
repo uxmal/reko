@@ -30,7 +30,7 @@ namespace Decompiler.Scanning
     /// <summary>
     /// Used by the Scanner and related classes to evaluate possibly constant expressions.
     /// </summary>
-    public class ScannerEvaluator : IExpressionVisitor
+    public class ScannerEvaluator : Decompiler.Analysis.EvaluationContext
     {
         private ProcessorState state;
         private Constant value;
@@ -40,146 +40,52 @@ namespace Decompiler.Scanning
             this.state = state;
         }
 
-        public Constant GetValue(Expression expr)
-        {
-            value = Constant.Invalid;
-            expr.Accept(this);
-            return value;
-        }
+        #region EvaluationContext Members
 
-        #region IExpressionVisitor Members
-
-        void IExpressionVisitor.VisitAddress(Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IExpressionVisitor.VisitApplication(Application appl)
-        {
-            value = Constant.Invalid;
-        }
-
-        void IExpressionVisitor.VisitArrayAccess(ArrayAccess acc)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IExpressionVisitor.VisitBinaryExpression(BinaryExpression bin)
-        {
-            // Special case XOR/SUB (self,self)
-            if ((bin.op == Operator.Xor ||
-                bin.op == Operator.Sub) && bin.Left == bin.Right)
-            {
-                value = Constant.Zero(bin.Left.DataType);
-            }
-            else
-            {
-                var c1 = GetValue(bin.Left);
-                var c2 = GetValue(bin.Right);
-                if (c1.IsValid && c2.IsValid)
-                {
-                    value = bin.op.ApplyConstants(c1, c2);
-                }
-            }
-        }
-
-        void IExpressionVisitor.VisitCast(Cast cast)
-        {
-            value = Constant.Invalid;
-        }
-
-        void IExpressionVisitor.VisitConditionOf(ConditionOf cof)
-        {
-            value = Constant.Invalid;
-        }
-
-
-        void IExpressionVisitor.VisitConstant(Constant c)
-        {
-            value = c;
-        }
-
-        void IExpressionVisitor.VisitDepositBits(DepositBits d)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IExpressionVisitor.VisitDereference(Dereference deref)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IExpressionVisitor.VisitFieldAccess(FieldAccess acc)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IExpressionVisitor.VisitIdentifier(Identifier id)
+        public Expression GetValue(Identifier id)
         {
             var reg = id.Storage as RegisterStorage;
             if (reg != null)
-            {
-                value = state.Get(reg.Register);
-            }
+                return state.Get(reg.Register);
+            else
+                return Constant.Invalid;
         }
 
-        void IExpressionVisitor.VisitMemberPointerSelector(MemberPointerSelector mps)
+        public Expression GetValue(MemoryAccess access)
         {
-            throw new NotImplementedException();
+            return Constant.Invalid;
         }
 
-        void IExpressionVisitor.VisitMemoryAccess(MemoryAccess access)
+        public Expression GetValue(SegmentedAccess access)
         {
-            value = Constant.Invalid;
+            return Constant.Invalid;
         }
 
-        void IExpressionVisitor.VisitMkSequence(MkSequence seq)
+        public Expression GetValue(Application appl)
         {
-            throw new NotImplementedException();
+            return Constant.Invalid;
         }
 
-        void IExpressionVisitor.VisitPhiFunction(PhiFunction phi)
+        public void RemoveIdentifierUse(Identifier id)
         {
-            throw new NotImplementedException();
         }
 
-        void IExpressionVisitor.VisitPointerAddition(PointerAddition pa)
+        public void UseExpression(Expression expr)
         {
-            throw new NotImplementedException();
         }
 
-        void IExpressionVisitor.VisitProcedureConstant(ProcedureConstant pc)
+        public void SetValue(Identifier id, Expression value)
         {
-            throw new NotImplementedException();
+            var constVal = value as Constant;
+            if (constVal == null)
+                return;
+            var reg = id.Storage as RegisterStorage;
+            if (reg != null)
+                state.Set(reg.Register, constVal);
         }
 
-        void IExpressionVisitor.VisitScopeResolution(ScopeResolution scopeResolution)
+        public void SetValueEa(Expression ea, Expression value)
         {
-            throw new NotImplementedException();
-        }
-
-        void IExpressionVisitor.VisitSegmentedAccess(SegmentedAccess access)
-        {
-            value = Constant.Invalid;
-        }
-
-        void IExpressionVisitor.VisitSlice(Slice slice)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IExpressionVisitor.VisitTestCondition(TestCondition tc)
-        {
-            value = Constant.Invalid;
-        }
-
-        void IExpressionVisitor.VisitUnaryExpression(UnaryExpression unary)
-        {
-            var c1 = GetValue(unary.Expression);
-            if (c1.IsValid)
-            {
-                value = unary.op.ApplyConstant(c1);
-            }
         }
 
         #endregion

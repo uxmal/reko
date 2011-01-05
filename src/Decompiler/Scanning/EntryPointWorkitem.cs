@@ -38,7 +38,7 @@ namespace Decompiler.Scanning
         }
         public override void Process()
         {
-            var proc = scanner.EnqueueProcedure(null, ep.Address, ep.Name, ep.ProcessorState);
+            var proc = scanner.ScanProcedure(ep.Address, ep.Name, ep.ProcessorState);
             scanner.CallGraph.AddEntryPoint(proc);
         }
     }

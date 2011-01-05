@@ -32,116 +32,48 @@ namespace Decompiler.Analysis
     /// Before we have the luxury of SSA, we need to perform some simplifications. This class keeps a context of symbolic
     /// expressions for the different registers.
     /// </summary>
-    public class SymbolicEvaluator : InstructionVisitor, EvaluationContext
+    public class SymbolicEvaluator : InstructionVisitor
     {
-        private IProcessorArchitecture arch;
         private ExpressionSimplifier eval;
+        private EvaluationContext ctx;
 
-        public SymbolicEvaluator(IProcessorArchitecture arch)
-            : this(arch, null)
+        public SymbolicEvaluator(ExpressionSimplifier expSimp, EvaluationContext ctx)
         {
-            this.eval = new ExpressionSimplifier(this);
+            this.eval = expSimp;
+            this.ctx = ctx;
         }
 
-        public SymbolicEvaluator(IProcessorArchitecture arch, ExpressionSimplifier eval)
+        public SymbolicEvaluator(EvaluationContext ctx) : this(new ExpressionSimplifier(ctx), ctx)
         {
-            this.arch = arch;
-            this.eval = eval;
-            RegisterState = new Dictionary<RegisterStorage, Expression>();
-            StackState = new Map<int, Expression>();
-            TemporaryState = new Dictionary<Storage, Expression>();
         }
 
-        //$REVIEW: make all states a single collection indexed by storage, and eliminate the map?
-
-        public Dictionary<RegisterStorage, Expression> RegisterState { get; private set; }
-        public Map<int, Expression> StackState { get; private set; }
-        public Dictionary<Storage, Expression> TemporaryState { get; private set; }
-        public uint TrashedFlags { get; set; }
 
         public void Evaluate(Instruction instr)
         {
             instr.Accept(this);
         }
 
-        /// <summary>
-        /// Stack addresses are of the pattern <code>stackpointer+/-const</code>.
-        /// </summary>
-        /// <param name="value">The byte offset of the parameter</param>
-        /// <returns>True if the effective address was a stack access, false if not.</returns>
-        private bool GetStackAddressOffset(Expression effectiveAddress, out int offset)
-        {
-            offset = 0;
-            var ea = effectiveAddress as BinaryExpression;
-            if (ea != null)
-            {
-                if (!IsStackRegister(ea.Left)) 
-                    return false;
-                var o = ea.Right as Constant;
-                if (o == null) return false;
-                offset = o.ToInt32();
-                if (ea.op == Operator.Sub)
-                    offset = -offset;
-                return true;
-            }
-            else
-            {
-                return IsStackRegister(effectiveAddress);
-            }
-        }
+        //public bool IsTrashed(Storage storage)
+        //{
+        //    RegisterStorage reg = storage as RegisterStorage;
+        //    if (reg != null)
+        //    {
+        //        Expression exp;
+        //        if (RegisterState.TryGetValue(reg, out exp))
+        //        {
+        //            return exp == Constant.Invalid;
+        //        }
+        //    }
+        //    throw new NotImplementedException();
+        //}
 
-        private bool IsStackRegister(Expression exp)
-        {
-            var sp = exp as Identifier;
-            if (sp == null) return false;
-            var regSp = sp.Storage as RegisterStorage;
-            if (regSp == null) return false;
-            return (regSp.Register == arch.StackRegister);
-        }
-
-        public bool IsTrashed(Storage storage)
-        {
-            RegisterStorage reg = storage as RegisterStorage;
-            if (reg != null)
-            {
-                Expression exp;
-                if (RegisterState.TryGetValue(reg, out exp))
-                {
-                    return exp == Constant.Invalid;
-                }
-            }
-            throw new NotImplementedException();
-        }
-
-        public void SetValue(Identifier id, Expression value)
-        {
-            var reg = id.Storage as RegisterStorage;
-            if (reg != null)
-            {
-                RegisterState[reg] = value;
-                return;
-            }
-            var tmp = id.Storage as TemporaryStorage;
-            if (tmp != null)
-            {
-                TemporaryState[id.Storage] = value;
-                return;
-            }
-            var grf = id.Storage as FlagGroupStorage;
-            if (grf != null)
-            {
-                TrashedFlags |= grf.FlagGroup;
-                return;
-            }
-            throw new NotImplementedException("Unable to set value for identifier " + id);
-        }
 
         #region InstructionVisitor Members
 
         void InstructionVisitor.VisitAssignment(Assignment a)
         {
             var valSrc = a.Src.Accept(eval);
-            SetValue(a.Dst, valSrc);
+            ctx.SetValue(a.Dst, valSrc);
         }
 
         void InstructionVisitor.VisitBranch(Branch b)
@@ -158,7 +90,7 @@ namespace Decompiler.Analysis
             if (decl.Expression != null)
             {
                 var value = decl.Expression.Accept(eval);
-                SetValue(decl.Identifier, value);
+                ctx.SetValue(decl.Identifier, value);
             }
         }
 
@@ -200,9 +132,7 @@ namespace Decompiler.Analysis
             if (access != null)
             {
                 var ea = access.EffectiveAddress.Accept(eval);
-                int offset;
-                if (GetStackAddressOffset(ea, out offset))
-                    StackState[offset] = valSrc;
+                ctx.SetValueEa(ea, valSrc);
             }
         }
 
@@ -213,11 +143,30 @@ namespace Decompiler.Analysis
 
         void InstructionVisitor.VisitUseInstruction(UseInstruction u)
         {
-            throw new NotSupportedException();
+            throw new NotSupportedException("Use expressions shouldn't have been generated yet.");
         }
 
         #endregion
+    }
 
+    public class SymbolicEvaluationContext : EvaluationContext
+    {
+        private IProcessorArchitecture arch;
+
+        public SymbolicEvaluationContext(IProcessorArchitecture arch)
+        {
+            this.arch = arch;
+            RegisterState = new Dictionary<RegisterStorage, Expression>();
+            StackState = new Map<int, Expression>();
+            TemporaryState = new Dictionary<Storage, Expression>();
+        }
+
+        //$REVIEW: make all states a single collection indexed by storage, and eliminate the map?
+        public Dictionary<RegisterStorage, Expression> RegisterState { get; private set; }
+        public Map<int, Expression> StackState { get; private set; }
+        public Dictionary<Storage, Expression> TemporaryState { get; private set; }
+        public uint TrashedFlags { get; set; }
+        
 
         #region EvaluationContext Members
         /// <summary>
@@ -312,11 +261,75 @@ namespace Decompiler.Analysis
         {
         }
 
+        public void SetValue(Identifier id, Expression value)
+        {
+            var reg = id.Storage as RegisterStorage;
+            if (reg != null)
+            {
+                RegisterState[reg] = value;
+                return;
+            }
+            var tmp = id.Storage as TemporaryStorage;
+            if (tmp != null)
+            {
+                TemporaryState[id.Storage] = value;
+                return;
+            }
+            var grf = id.Storage as FlagGroupStorage;
+            if (grf != null)
+            {
+                TrashedFlags |= grf.FlagGroup;
+                return;
+            }
+            throw new NotImplementedException("Unable to set value for identifier " + id);
+        }
+
+        public void SetValueEa(Expression ea, Expression value)
+        {
+            int offset;
+            if (GetStackAddressOffset(ea, out offset))
+                StackState[offset] = value;
+        }
+
         public void UseExpression(Expression e)
         {
         }
 
         #endregion
 
+        /// <summary>
+        /// Stack addresses are of the pattern <code>stackpointer+/-const</code>.
+        /// </summary>
+        /// <param name="value">The byte offset of the parameter</param>
+        /// <returns>True if the effective address was a stack access, false if not.</returns>
+        private bool GetStackAddressOffset(Expression effectiveAddress, out int offset)
+        {
+            offset = 0;
+            var ea = effectiveAddress as BinaryExpression;
+            if (ea != null)
+            {
+                if (!IsStackRegister(ea.Left))
+                    return false;
+                var o = ea.Right as Constant;
+                if (o == null) return false;
+                offset = o.ToInt32();
+                if (ea.op == Operator.Sub)
+                    offset = -offset;
+                return true;
+            }
+            else
+            {
+                return IsStackRegister(effectiveAddress);
+            }
+        }
+
+        private bool IsStackRegister(Expression exp)
+        {
+            var sp = exp as Identifier;
+            if (sp == null) return false;
+            var regSp = sp.Storage as RegisterStorage;
+            if (regSp == null) return false;
+            return (regSp.Register == arch.StackRegister);
+        }
     }
 }

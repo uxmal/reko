@@ -79,6 +79,17 @@ namespace Decompiler.Analysis
                 ssaIds[id].Uses.Remove(Statement);
         }
 
+
+        public void SetValue(Identifier id, Expression value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void SetValueEa(Expression ea, Expression value)
+        {
+            throw new NotSupportedException();
+        }
+
         public void UseExpression(Expression exp)
         {
             var xu = new ExpressionUseAdder(Statement, ssaIds);

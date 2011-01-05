@@ -47,8 +47,10 @@ namespace Decompiler.Analysis.Simplification
         {
             Expression e = ctx.GetValue(id);
             cSrc = e as Constant;
+            if (cSrc == null || cSrc == Constant.Invalid)
+                return false;
             idDst = id;
-            return cSrc != null;
+            return true;
         }
 
         public Expression Transform()

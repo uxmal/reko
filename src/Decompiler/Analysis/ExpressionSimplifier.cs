@@ -51,6 +51,7 @@ namespace Decompiler.Analysis
         private SliceShift sliceShift;
         private NegSub_Rule negSub;
         private Mps_Constant_Rule mpsRule;
+        private Sub_Xor_Zero_Rule subxorZero;
 
         public ExpressionSimplifier(EvaluationContext ctx)
         {
@@ -60,7 +61,7 @@ namespace Decompiler.Analysis
             this.addEcc = new Add_e_c_cRule(ctx);
             this.addMici = new Add_mul_id_c_id_Rule(ctx);
             this.dpbConstantRule = new DpbConstantRule();
-            this.idConst = new IdConstant(ctx, new Decompiler.Typing.Unifier(null));
+            this.idConst = new IdConstant(ctx, new Decompiler.Typing.Unifier());
             this.idCopyPropagation = new IdCopyPropagationRule(ctx);
             this.idBinIdc = new IdBinIdc_Rule(ctx);
             this.sliceConst = new SliceConstant_Rule();
@@ -71,6 +72,7 @@ namespace Decompiler.Analysis
             this.shiftShift = new ShiftShift_c_c_Rule(ctx);
             this.mpsRule = new Mps_Constant_Rule(ctx);
             this.sliceShift = new SliceShift(ctx);
+            this.subxorZero = new Sub_Xor_Zero_Rule();
         }
 
         public bool Changed { get; set; }
@@ -130,6 +132,11 @@ namespace Decompiler.Analysis
             {
                 Changed = true;
                 return add2ids.Transform().Accept(this);
+            }
+            if (subxorZero.Match(binExp))
+            {
+                Changed = true;
+                return subxorZero.Transform();
             }
 
             var left = binExp.Left.Accept(this);

@@ -43,6 +43,7 @@ namespace Decompiler.Scanning
         private RtlInstruction ri;
         private Rewriter2 rewriter;
         private ProcessorState state;
+        private Decompiler.Analysis.ExpressionSimplifier eval;
         private IEnumerator<RtlInstruction> rtlStream;
 
         public BlockWorkitem(
@@ -56,6 +57,7 @@ namespace Decompiler.Scanning
             this.arch = scanner.Architecture;
             this.rewriter = rewriter;
             this.state = state;
+            this.eval = new Decompiler.Analysis.ExpressionSimplifier(new ScannerEvaluator(state));
             this.frame = frame;
             this.addr = addr;
             this.blockCur = null;
@@ -110,8 +112,7 @@ namespace Decompiler.Scanning
 
         public Constant GetValue(Expression op)
         {
-            var eval = new ScannerEvaluator(state);
-            return eval.GetValue(op);
+            return op.Accept<Expression>(eval) as Constant;
         }
 
         public void SetValue(Expression op, Constant c)
@@ -260,7 +261,7 @@ namespace Decompiler.Scanning
             Address addr = call.Target as Address;
             if (addr != null)
             {
-                var callee = scanner.EnqueueProcedure(this, addr, null, state);
+                var callee = scanner.ScanProcedure(addr, null, state);
                 blockCur.Statements.Add(
                     ri.Address.Linear, 
                     new CallInstruction(

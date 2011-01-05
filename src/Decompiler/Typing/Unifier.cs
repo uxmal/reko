@@ -32,6 +32,10 @@ namespace Decompiler.Typing
 	{
 		private TypeFactory factory;
 
+        public Unifier()
+            : this(new TypeFactory())
+        {
+        }
 		public Unifier(TypeFactory factory)
 		{
 			this.factory = factory;

@@ -238,12 +238,11 @@ namespace Decompiler.UnitTests.Mocks
 
         public CallSite OnBeforeCall()
         {
-            throw new NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public void OnAfterCall(ProcedureSignature sigCallee)
         {
-            throw new NotImplementedException();
         }
 	}
 

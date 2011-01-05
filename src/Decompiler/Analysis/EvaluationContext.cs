@@ -46,5 +46,7 @@ namespace Decompiler.Analysis
         Expression GetValue(Application appl);
         void RemoveIdentifierUse(Identifier id);
         void UseExpression(Expression expr);
+        void SetValue(Identifier id, Expression value);
+        void SetValueEa(Expression ea, Expression value);
     }
 }

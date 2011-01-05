@@ -221,6 +221,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\Simplification\SliceShift.cs" />
+    <Compile Include="Analysis\Simplification\Sub_Xor_Zero_Rule.cs">
+    </Compile>
     <Compile Include="Analysis\SsaEvaluationContext.cs" />
     <Compile Include="Analysis\SsaIdentifier.cs">
       <SubType>Code</SubType>

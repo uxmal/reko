@@ -181,8 +181,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.CallGraph).Return(cg);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
-                scanner.Expect(x => x.EnqueueProcedure(
-                    Arg<WorkItem>.Is.Anything,
+                scanner.Expect(x => x.ScanProcedure(
                     Arg<Address>.Matches(arg => arg.Offset == 0x1200),
                     Arg<string>.Is.Null,
                     Arg<ProcessorState>.Is.Anything))
