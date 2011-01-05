@@ -19,7 +19,7 @@
 #endregion
 
 using Decompiler.Analysis;
-using Decompiler.Analysis.Simplification;
+using Decompiler.Evaluation;
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;

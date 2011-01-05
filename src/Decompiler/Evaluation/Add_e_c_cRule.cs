@@ -22,10 +22,10 @@ using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
-using Decompiler.Analysis.Simplification;
+using Decompiler.Evaluation;
 using System;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
 	/// <summary>
 	/// (+ (+ e c1) c2) ==> (+ e (+ c1 c2))

@@ -23,7 +23,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using System;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
 	/// <summary>
 	/// Rule that matches (+ id1 id1) and generates (* id1 2)

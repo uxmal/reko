@@ -23,7 +23,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core;
 using System;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
 	public class Mps_Constant_Rule
 	{
