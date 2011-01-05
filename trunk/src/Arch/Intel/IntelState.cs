@@ -83,7 +83,7 @@ namespace Decompiler.Arch.Intel
 
 		public void Set(MachineRegister reg, Constant c)
 		{
-			if (!c.IsValid)
+			if (c == null || !c.IsValid)
 			{
 				valid[reg.Number] = false;
 			}

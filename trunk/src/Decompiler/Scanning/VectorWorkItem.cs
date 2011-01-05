@@ -52,7 +52,7 @@ namespace Decompiler.Scanning
                 ProcessorState st = state.Clone();
                 if (table.IsCallTable)
                 {
-                    scanner.EnqueueProcedure(null, vector[i], null, st);
+                    scanner.ScanProcedure(vector[i], null, st);
                 }
                 else
                 {

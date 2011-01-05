@@ -219,7 +219,6 @@ namespace Decompiler.UnitTests.Scanning
             block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
             string sExp =
-                "\tsp = sp - 0x0002" + nl +
                 "\tax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }

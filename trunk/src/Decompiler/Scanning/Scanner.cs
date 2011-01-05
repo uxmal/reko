@@ -36,7 +36,7 @@ namespace Decompiler.Scanning
         void EnqueueEntryPoint(EntryPoint ep);
         Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state);
         void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc);
-        Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state);
+        Procedure ScanProcedure(Address addr, string procedureName, ProcessorState state);
         void EnqueueUserProcedure(SerializedProcedure sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
         void ProcessQueue();
@@ -88,6 +88,7 @@ namespace Decompiler.Scanning
         private IDictionary<Address, ImageMapVectorTable> vectors;
         private Dictionary<uint, PseudoProcedure> importThunks;
         private DecompilerEventListener eventListener;
+        private HashSet<Procedure> visitedProcs;
 
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
@@ -114,6 +115,7 @@ namespace Decompiler.Scanning
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
             this.vectors = new Dictionary<Address, ImageMapVectorTable>();
             this.VectorUses = new Dictionary<Address, VectorUse>();
+            this.visitedProcs = new HashSet<Procedure>();
         }
 
         public Scanner(Program program, IDictionary<Address, ProcedureSignature> callSigs, DecompilerEventListener eventListener)
@@ -133,6 +135,7 @@ namespace Decompiler.Scanning
             this.vectors = program.Vectors;
             this.VectorUses = new Dictionary<Address, VectorUse>();
             this.importThunks = program.ImportThunks;
+            this.visitedProcs = new HashSet<Procedure>();
         }
 
         public IProcessorArchitecture Architecture { get { return arch; } }
@@ -258,7 +261,7 @@ namespace Decompiler.Scanning
         }
 
 
-        public Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state)
+        public Procedure ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             Procedure proc;
             if (!Procedures.TryGetValue(addr, out proc))
@@ -268,6 +271,10 @@ namespace Decompiler.Scanning
                 CallGraph.AddProcedure(proc);
             }
             TerminateAnyBlockAt(addr);
+            if (visitedProcs.Contains(proc))
+                return proc;
+
+            visitedProcs.Add(proc);
             var st = state.Clone();
             st.OnProcedureEntered();
             var block = EnqueueJumpTarget(addr, proc, st);
@@ -277,7 +284,7 @@ namespace Decompiler.Scanning
 
         public void EnqueueUserProcedure(SerializedProcedure sp)
         {
-            Procedure proc = EnqueueProcedure(null, Address.ToAddress(sp.Address, 16), sp.Name, arch.CreateProcessorState());
+            Procedure proc = ScanProcedure(Address.ToAddress(sp.Address, 16), sp.Name, arch.CreateProcessorState());
             if (sp.Signature != null)
             {
                 var sser = new ProcedureSerializer(arch, platform.DefaultCallingConvention);
@@ -942,7 +949,7 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        Procedure IScanner.EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state)
+        Procedure IScanner.ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             throw new NotImplementedException();
         }

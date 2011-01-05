@@ -44,6 +44,7 @@ namespace Decompiler.Analysis
         private WorkList<Block> worklist;
         private TrashStorageHelper tsh;
         private SymbolicEvaluator se;
+        private SymbolicEvaluationContext ctx;
         private DecompilerEventListener eventListener;
 
         public TrashedRegisterFinder(
@@ -54,59 +55,18 @@ namespace Decompiler.Analysis
             this.prog = prog;
             this.flow = flow;
             this.eventListener = eventListener;
-            this.se = new SymbolicEvaluator(prog.Architecture, new TrashedExpressionSimplifier(this, new EvaluationContextImpl(this)));
+            this.ctx = new SymbolicEvaluationContext(prog.Architecture);
+            this.se = new SymbolicEvaluator(new TrashedExpressionSimplifier(this, ctx), ctx);
             this.tsh = new TrashStorageHelper(null);
             this.worklist = new WorkList<Block>();
         }
 
 
-        private class EvaluationContextImpl : EvaluationContext
-        {
-            TrashedRegisterFinder trf;
-
-            public EvaluationContextImpl(TrashedRegisterFinder trf)
-            {
-                this.trf = trf;
-            }
-            #region EvaluationContext Members
-
-            public Expression GetValue(Identifier id)
-            {
-                return trf.se.GetValue(id);
-            }
-
-            public Expression GetValue(MemoryAccess access)
-            {
-                return trf.se.GetValue(access);
-            }
-
-            public Expression GetValue(SegmentedAccess access)
-            {
-                return trf.se.GetValue(access);
-            }
-
-            public Expression GetValue(Application appl)
-            {
-                return trf.se.GetValue(appl);
-            }
-
-            public void RemoveIdentifierUse(Identifier id)
-            {
-                trf.se.RemoveIdentifierUse(id);
-            }
-
-            public void UseExpression(Expression expr)
-            {
-                trf.se.UseExpression(expr);
-            }
-            #endregion
-        }
-
-        public Dictionary<RegisterStorage, Expression> RegisterSymbolicValues { get { return se.RegisterState; } }
-        public IDictionary<int, Expression> StackSymbolicValues { get { return se.StackState; } } 
+        public Dictionary<RegisterStorage, Expression> RegisterSymbolicValues { get { return ctx.RegisterState; } }
+        public IDictionary<int, Expression> StackSymbolicValues { get { return ctx.StackState; } } 
         [Obsolete("Use symbolicvalue collection")]
         public Dictionary<Storage, Storage> TrashedRegisters { get { return tsh.TrashedRegisters; } }
-        public uint TrashedFlags {get { return se.TrashedFlags; } }
+        public uint TrashedFlags {get { return ctx.TrashedFlags; } }
 
 
         public void CompleteWork()
@@ -154,7 +114,7 @@ namespace Decompiler.Analysis
             if (reg != null)
             {
                 Expression regVal;
-                if (!se.RegisterState.TryGetValue(reg, out regVal))
+                if (!ctx.RegisterState.TryGetValue(reg, out regVal))
                     return false;
                 var id = regVal as Identifier;
                 if (id == null)
@@ -208,7 +168,7 @@ namespace Decompiler.Analysis
             }
             else
             {
-                foreach (KeyValuePair<RegisterStorage, Expression> de in se.RegisterState)
+                foreach (KeyValuePair<RegisterStorage, Expression> de in ctx.RegisterState)
                 {
                     var idValue = de.Value as Identifier;
                     if (idValue != null)
@@ -238,7 +198,7 @@ namespace Decompiler.Analysis
                     pf.PreservedRegisters |= pr;
                     changed = true;
                 }
-                uint grfNew = pf.grfTrashed | se.TrashedFlags;
+                uint grfNew = pf.grfTrashed | ctx.TrashedFlags;
                 if (grfNew != pf.grfTrashed)
                 {
                     pf.grfTrashed = grfNew;
@@ -262,7 +222,7 @@ namespace Decompiler.Analysis
                 bool changed = false;
                 BlockFlow sf = flow[s];
                 var successorState = sf.SymbolicIn;
-                foreach (KeyValuePair<RegisterStorage, Expression> de in se.RegisterState)
+                foreach (KeyValuePair<RegisterStorage, Expression> de in ctx.RegisterState)
                 {
                     Expression oldValue;
                     if (!successorState.TryGetValue(de.Key, out oldValue))
@@ -312,7 +272,7 @@ namespace Decompiler.Analysis
             {
                 // A terminating procedure has no trashed registers because caller will never see those effects!
                 tsh.TrashedFlags = 0;
-                se.RegisterState.Clear();
+                ctx.RegisterState.Clear();
                 return;
             }
 
@@ -323,7 +283,7 @@ namespace Decompiler.Analysis
             foreach (int r in pf.TrashedRegisters)
             {
                 var reg = new RegisterStorage(prog.Architecture.GetRegister(r));
-                se.RegisterState[reg] = Constant.Invalid;
+                ctx.RegisterState[reg] = Constant.Invalid;
             }
             tsh.TrashedFlags |= pf.grfTrashed;
         }
@@ -339,11 +299,13 @@ namespace Decompiler.Analysis
         public class TrashedExpressionSimplifier : ExpressionSimplifier
         {
             private TrashedRegisterFinder trf;
+            private SymbolicEvaluationContext ctx;
 
-            public TrashedExpressionSimplifier(TrashedRegisterFinder trf, EvaluationContext ctx)
+            public TrashedExpressionSimplifier(TrashedRegisterFinder trf, SymbolicEvaluationContext ctx)
                 : base(ctx)
             {
                 this.trf = trf;
+                this.ctx = ctx;
             }
 
             public override Expression VisitApplication(Application appl)
@@ -354,8 +316,8 @@ namespace Decompiler.Analysis
                 {
                     if (trf.ProcedureTerminates(pc.Procedure))
                     {
-                        trf.se.TrashedFlags = 0;
-                        trf.se.RegisterState.Clear();
+                        ctx.TrashedFlags = 0;
+                        ctx.RegisterState.Clear();
                         return appl;
                     }
                 }
@@ -367,7 +329,7 @@ namespace Decompiler.Analysis
                         Identifier id = u.Expression as Identifier;
                         if (id != null)
                         {
-                            trf.se.SetValue(id, Constant.Invalid);
+                            ctx.SetValue(id, Constant.Invalid);
                         }
                     }
                 }

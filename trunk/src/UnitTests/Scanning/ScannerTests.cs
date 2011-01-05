@@ -251,7 +251,7 @@ fn0C00_0000_exit:
             var scan = CreateScanner(0x100000, 0x1000);
             IntelState st = new IntelState();
             st.GrowFpuStack(new Address(0x100000));
-            scan.EnqueueProcedure(null, new Address(0x200000), null, st);
+            scan.ScanProcedure(new Address(0x200000), null, st);
             var stNew = (IntelState)scan.Test_LastBlockWorkitem.State;
             Assert.IsNotNull(stNew);
             Assert.AreNotSame(st, stNew);

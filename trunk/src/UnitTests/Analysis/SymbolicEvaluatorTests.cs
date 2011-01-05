@@ -41,6 +41,7 @@ namespace Decompiler.UnitTests.Analysis
         private Identifier ebp;
         private Identifier eax;
         private SymbolicEvaluator se;
+        private SymbolicEvaluationContext ctx;
         private IProcessorArchitecture arch;
 
         [SetUp]
@@ -52,7 +53,7 @@ namespace Decompiler.UnitTests.Analysis
 
         private Expression GetRegisterState(SymbolicEvaluator se, Identifier id)
         {
-            return se.RegisterState[(RegisterStorage)id.Storage];
+            return ctx.RegisterState[(RegisterStorage)id.Storage];
         }
 
         private static Identifier Tmp32(string name)
@@ -67,7 +68,8 @@ namespace Decompiler.UnitTests.Analysis
 
         private void CreateSymbolicEvaluator()
         {
-            se = new SymbolicEvaluator(arch);
+            ctx = new SymbolicEvaluationContext(arch);
+            se = new SymbolicEvaluator(ctx);
         }
 
         private void RunBlockTest(Action<ProcedureBuilder> testBuilder)
@@ -87,8 +89,8 @@ namespace Decompiler.UnitTests.Analysis
             var ass = new Assignment(edx, Constant.Word32(3));
             CreateSymbolicEvaluator();
             se.Evaluate(ass);
-            Assert.IsNotNull(se.RegisterState);
-            Assert.IsInstanceOf(typeof(Constant), se.TemporaryState[edx.Storage]);
+            Assert.IsNotNull(ctx.RegisterState);
+            Assert.IsInstanceOf(typeof(Constant), ctx.TemporaryState[edx.Storage]);
         }
 
 
@@ -100,7 +102,7 @@ namespace Decompiler.UnitTests.Analysis
             CreateSymbolicEvaluator();
             var ass = new Assignment(ebp, esp);
             se.Evaluate(ass);
-            Assert.AreSame(esp, se.TemporaryState[ebp.Storage], "Expected ebp to have the value of esp");
+            Assert.AreSame(esp, ctx.TemporaryState[ebp.Storage], "Expected ebp to have the value of esp");
         }
 
         [Test]
@@ -110,7 +112,7 @@ namespace Decompiler.UnitTests.Analysis
             CreateSymbolicEvaluator();
             var ass = new Assignment(esp, new BinaryExpression(BinaryOperator.Add, esp.DataType, esp, Constant.Word32(4)));
             se.Evaluate(ass);
-            Assert.AreEqual("esp + 0x00000004", se.TemporaryState[esp.Storage].ToString());
+            Assert.AreEqual("esp + 0x00000004", ctx.TemporaryState[esp.Storage].ToString());
         }
 
         [Test]
@@ -121,7 +123,7 @@ namespace Decompiler.UnitTests.Analysis
             CreateSymbolicEvaluator();
             var ass = new Assignment(al, new MemoryAccess(ebx, al.DataType));
             se.Evaluate(ass);
-            Assert.AreEqual("<void>", se.TemporaryState[al.Storage].ToString());
+            Assert.AreEqual("<void>", ctx.TemporaryState[al.Storage].ToString());
         }
 
         [Test]
@@ -244,7 +246,7 @@ namespace Decompiler.UnitTests.Analysis
                 m.Assign(ax, m.LoadW(m.Sub(esp, 4)));
                 m.Assign(cx, m.LoadW(m.Sub(esp, 2)));
             });
-            Assert.AreEqual("ebx", se.StackState[-4].ToString());
+            Assert.AreEqual("ebx", ctx.StackState[-4].ToString());
             Assert.AreEqual("(word16) ebx", GetRegisterState(se, ax).ToString());
             Assert.AreEqual("SLICE(ebx, word16, 16)", GetRegisterState(se, cx).ToString());
         }
@@ -258,7 +260,7 @@ namespace Decompiler.UnitTests.Analysis
                 tmp = m.Frame.CreateTemporary(PrimitiveType.Word32);
                 m.Assign(tmp, 3);
             });
-            Assert.AreEqual("0x00000003", se.TemporaryState[tmp.Storage].ToString());
+            Assert.AreEqual("0x00000003", ctx.TemporaryState[tmp.Storage].ToString());
         }
 
         [Test]
@@ -270,7 +272,7 @@ namespace Decompiler.UnitTests.Analysis
                 flag = m.Frame.EnsureFlagGroup(0x3, "SZ", PrimitiveType.Byte);
                 m.Assign(flag, 0x03);
             });
-            Assert.AreEqual(0x03, se.TrashedFlags);
+            Assert.AreEqual(0x03, ctx.TrashedFlags);
         }
     }
 }
