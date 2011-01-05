@@ -14,7 +14,6 @@ l0C00_0000:
 	cx = 0x0064
 	sp = sp - 0x0002
 	store(Mem0[ss:sp:word16]) = cx
-	sp = sp - 0x0002
 	call fn0C00_000F (depth: 0;)
 	sp = sp + 0x0002
 	SCZO = cond(sp)
@@ -47,7 +46,6 @@ l0C00_000F:
 l0C00_0018:
 	sp = sp - 0x0002
 	store(Mem0[ss:sp:word16]) = ax
-	sp = sp - 0x0002
 	call fn0C00_000F (depth: 0;)
 	sp = sp + 0x0001
 	SZO = cond(sp)

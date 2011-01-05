@@ -1,18 +1,18 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
-// al:Register al
 // eax:Register eax
+// al:Register al
 // v4:Temporary
-// v5:Temporary
+// SCZO:Flags
 // v6:Temporary
 // v7:Temporary
+// v8:Temporary
 // dwLoc08:Local -0008
 // return address size: 4
 void fn10000000()
-fn10000000_entry:		// pred:
-	// succ:  l10000000
-l10000000:		// pred: fn10000000_entry
+fn10000000_entry:
+l10000000:
 	v4 = Mem0[eax:byte] + al
 	store(Mem0[eax:byte]) = v4
 	v5 = Mem0[eax:byte] + al
@@ -28,7 +28,5 @@ l10000000:		// pred: fn10000000_entry
 	dwLoc08 = eax
 	free(dwLoc08)
 	return
-	// succ:  fn10000000_exit
-fn10000000_exit:		// pred: l10000000
-	// succ: 
+fn10000000_exit:
 

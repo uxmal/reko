@@ -65,6 +65,19 @@ namespace Decompiler.Arch.Intel
             }
         }
 
+        private void RewriteFcom(int pops)
+        {
+            Identifier op1 = FpuRegister(0);
+            Expression op2 = (di.Instruction.code == Opcode.fcompp)
+                ? FpuRegister(1)
+                : SrcOp(di.Instruction.op1);
+            emitter.Assign(
+                orw.FlagGroup(FlagM.FPUF),
+                new ConditionOf(
+                    new BinaryExpression(Operator.Sub, di.Instruction.dataWidth, op1, op2)));
+            state.ShrinkFpuStack(pops);
+        }
+
         private void RewriteFild()
         {
             state.GrowFpuStack(di.Address);
@@ -99,6 +112,16 @@ namespace Decompiler.Arch.Intel
             EmitCopy(di.Instruction.op1, FpuRegister(0), false);
             if (pop)
                 state.ShrinkFpuStack(1);
+        }
+
+        private void RewriteFstsw()
+        {
+            EmitCopy(
+                di.Instruction.op1,
+                new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
+                        new Cast(PrimitiveType.Word16, orw.FlagGroup(FlagM.FPUF)),
+                        new Constant(PrimitiveType.Int16, 8)),
+                false);
         }
 
         private Identifier FpuRegister(int reg)

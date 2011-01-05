@@ -29,9 +29,11 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlCall : RtlInstruction
     {
-        public RtlCall(Address addr, byte length, Expression target) : base(addr, length)
+        
+        public RtlCall(Address addr, byte length, Expression target, byte stackPushedReturnAddressSize) : base(addr, length)
         {
             this.Target = target;
+            this.ReturnAddressSize = stackPushedReturnAddressSize;
         }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
@@ -39,12 +41,13 @@ namespace Decompiler.Core.Rtl
             return visitor.VisitCall(this);
         }
 
+        public int ReturnAddressSize { get; private set; }
         public Expression Target { get; private set; }
 
         public override void  Write(TextWriter writer)
         {
             base.Write(writer);
-            writer.Write("call {0}", Target);
+            writer.Write("call {0} ({1})", Target, ReturnAddressSize);
         }
     }
 }

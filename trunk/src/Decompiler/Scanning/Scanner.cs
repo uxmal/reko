@@ -49,6 +49,7 @@ namespace Decompiler.Scanning
         Block AddBlock(Address addr, Procedure proc, string blockName);
         void AddDiagnostic(Address addr, Diagnostic d);
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
+        PseudoProcedure GetImportedProcedure(Address addr);
         void TerminateBlock(Block block, Address addrEnd);
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace Decompiler.Scanning
         private Platform platform;
         private IDictionary<Address, ProcedureSignature> callSigs;
         private IDictionary<Address, ImageMapVectorTable> vectors;
-
+        private Dictionary<uint, PseudoProcedure> importThunks;
         private DecompilerEventListener eventListener;
 
         private const int PriorityEntryPoint = 5;
@@ -131,6 +132,7 @@ namespace Decompiler.Scanning
             this.pseudoProcs = program.PseudoProcedures;
             this.vectors = program.Vectors;
             this.VectorUses = new Dictionary<Address, VectorUse>();
+            this.importThunks = program.ImportThunks;
         }
 
         public IProcessorArchitecture Architecture { get { return arch; } }
@@ -300,6 +302,14 @@ namespace Decompiler.Scanning
                 return null;
         }
 
+        public PseudoProcedure GetImportedProcedure(Address addr)
+        {
+            PseudoProcedure ppp;
+            if (importThunks.TryGetValue(addr.Linear, out ppp))
+                return ppp;
+            else
+                return null;
+        }
 
         /// <summary>
         /// Splits the given block at the specified address, yielding two blocks. The first block is the original block,
@@ -950,6 +960,7 @@ namespace Decompiler.Scanning
         IDictionary<Address, VectorUse> IScanner.VectorUses { get { return vectorUses; } }
         void IScanner.TerminateBlock(Block block, Address addr) { }
         Block IScanner.FindContainingBlock(Address addr) { throw new NotImplementedException(); }
+        PseudoProcedure IScanner.GetImportedProcedure(Address addr) { throw new NotImplementedException(); }
         #endregion
     }
 }

@@ -66,9 +66,9 @@ namespace Decompiler.Core.Rtl
             instrs.Add(branch);
         }
 
-        public void Call(Expression target)
+        public void Call(Expression target, byte retSize)
         {
-            instrs.Add(new RtlCall(addr, MachineInstructionLength, target));
+            instrs.Add(new RtlCall(addr, MachineInstructionLength, target, retSize));
         }
 
         public void Goto(Expression target)

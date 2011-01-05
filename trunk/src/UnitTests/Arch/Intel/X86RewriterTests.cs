@@ -295,8 +295,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Label("self");
                 m.Call("self");
             });
-            AssertCode(0x0C000, "0C00:0000(3) sp = sp - 0x0002", e);
-            AssertCode(0x0C000, "0C00:0000(3) call 0C00:0000", e);
+            AssertCode(0x0C000, "0C00:0000(3) call 0C00:0000 (2)", e);
         }
 
         [Test]
@@ -307,8 +306,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Label("self");
                 m.Call("self");
             });
-            AssertCode(0x10000000, "10000000(5) esp = esp - 0x00000004", e);
-            AssertCode(0x10000000, "10000000(5) call 10000000", e);
+            AssertCode(0x10000000, "10000000(5) call 10000000 (4)", e);
         }
 
         [Test]
