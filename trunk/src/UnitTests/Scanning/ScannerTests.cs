@@ -43,7 +43,22 @@ namespace Decompiler.UnitTests.Scanning
     {
         ArchitectureMock arch;
         Program prog;
-        Scanner scan;
+        TestScanner scan;
+
+        public class TestScanner : Scanner
+        {
+            public TestScanner(Program prog)
+                : base(prog, null, new FakeDecompilerEventListener())
+            {
+            }
+
+            public BlockWorkitem Test_LastBlockWorkitem { get; private set; } 
+            public override BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ProcessorState state)
+            {
+                Test_LastBlockWorkitem = base.CreateBlockWorkItem(addrStart, proc, state);
+                return Test_LastBlockWorkitem;
+            }
+        }
 
         [SetUp]
         public void Setup()
@@ -59,7 +74,9 @@ namespace Decompiler.UnitTests.Scanning
             var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, emitter, new List<EntryPoint>());
             test(m);
             prog.Image = new ProgramImage(addr, emitter.Bytes);
-            scan = new Scanner(m.Architecture, prog.Image, new FakePlatform(), new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            prog.Architecture = m.Architecture;
+            prog.Platform = new FakePlatform();
+            scan = new TestScanner(prog);
             EntryPoint ep = new EntryPoint(addr, new IntelState());
             scan.EnqueueEntryPoint(ep);
         }
@@ -95,9 +112,13 @@ namespace Decompiler.UnitTests.Scanning
             Assert.IsNotNull(sc.FindExactBlock(new Address(0x0102)));
         }
 
-        private Scanner CreateScanner(uint startAddress, int imageSize)
+        private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            return new Scanner(arch, new ProgramImage(new Address(startAddress), new byte[imageSize]), new FakePlatform(), null, new FakeDecompilerEventListener());
+            prog = new Program();
+            prog.Architecture = arch;
+            prog.Platform = new FakePlatform();
+            prog.Image = new ProgramImage(new Address(startAddress), new byte[imageSize]);
+            return new TestScanner(prog);
         }
 
         [Test]
@@ -224,7 +245,19 @@ fn0C00_0000_exit:
             Assert.AreEqual(sExp, sw.ToString());
         }
 
-
+        [Test]
+        public void EnqueueingProcedureShouldResetItsFpuStack()
+        {
+            var scan = CreateScanner(0x100000, 0x1000);
+            IntelState st = new IntelState();
+            st.GrowFpuStack(new Address(0x100000));
+            scan.EnqueueProcedure(null, new Address(0x200000), null, st);
+            var stNew = (IntelState)scan.Test_LastBlockWorkitem.State;
+            Assert.IsNotNull(stNew);
+            Assert.AreNotSame(st, stNew);
+            Assert.AreEqual(1, st.FpuStackItems);
+            Assert.AreEqual(0, stNew.FpuStackItems);
+        }
     }
 
     [TestFixture]
@@ -347,6 +380,8 @@ fn0C00_0000_exit:
             Assert.AreSame(p1101, b1101.Procedure);
             Assert.AreSame(p1101, b1103.Procedure);
         }
+
+
 
         private ImageMapBlock GetBlockAt(uint a)
         {

@@ -83,12 +83,13 @@ namespace Decompiler.Arch.Intel
             state.GrowFpuStack(di.Address);
             emitter.Assign(
                 orw.FpuRegister(0, state),
-                emitter.Cast(PrimitiveType.Real64, SrcOp(di.Instruction.op1)));
+                emitter.Cast(PrimitiveType.Real64, SrcOp(di.Instruction.op1, PrimitiveType.Int32)));
             WriteFpuStack(0);
         }
 
         private void RewriteFistp()
         {
+            di.Instruction.op1.Width = PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size);
             EmitCopy(di.Instruction.op1, emitter.Cast(di.Instruction.op1.Width, orw.FpuRegister(0, state)), false);
             state.ShrinkFpuStack(1);
         }

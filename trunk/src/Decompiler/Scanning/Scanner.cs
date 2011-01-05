@@ -196,6 +196,17 @@ namespace Decompiler.Scanning
             return image.CreateReader(addr);
         }
 
+        public virtual BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ProcessorState state)
+        {
+            return new BlockWorkitem(
+                                this,
+                                this.arch.CreateRewriter2(CreateReader(addrStart), state, proc.Frame, this),
+                                state,
+                                proc.Frame,
+                                addrStart);
+        }
+
+
         public void EnqueueEntryPoint(EntryPoint ep)
         {
             queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem2(this, ep));
@@ -206,7 +217,8 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        public Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
+        // Method is virtual because we want to peek into the parameters being passed to it.
+        public virtual Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
         {
             Block block = FindExactBlock(addrStart);
             if (block == null)
@@ -221,16 +233,10 @@ namespace Decompiler.Scanning
                     block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
                 }
             }
-            queue.Enqueue(
-                PriorityJumpTarget,
-                new BlockWorkitem(
-                    this,
-                    this.arch.CreateRewriter2(CreateReader(addrStart), state, proc.Frame, this),
-                    state,
-                    proc.Frame,
-                    addrStart));
+            queue.Enqueue(PriorityJumpTarget, CreateBlockWorkItem(addrStart, proc, state));
             return block;
         }
+
 
         public void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
         {
@@ -254,7 +260,6 @@ namespace Decompiler.Scanning
 
         public Procedure EnqueueProcedure(WorkItem wiPrev, Address addr, string procedureName, ProcessorState state)
         {
-            var st = state.Clone();
             Procedure proc;
             if (!Procedures.TryGetValue(addr, out proc))
             {
@@ -263,7 +268,9 @@ namespace Decompiler.Scanning
                 CallGraph.AddProcedure(proc);
             }
             TerminateAnyBlockAt(addr);
-            var block = EnqueueJumpTarget(addr, proc, state);
+            var st = state.Clone();
+            st.OnProcedureEntered();
+            var block = EnqueueJumpTarget(addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             return proc;
         }

@@ -42,7 +42,6 @@ namespace Decompiler.Core
 		private Identifier [] formals;
 		private TypeVariable typeVar;
 
-		private int fpuStackDelta;	
 		private int fpuStackMax;
 		private int fpuStackWriteMax;
 
@@ -118,11 +117,7 @@ namespace Decompiler.Core
 		/// <summary>
 		/// Amount by which the FPU stack grows or shrinks after the procedure is called.
 		/// </summary>
-		public int FpuStackDelta 
-		{
-			get { return fpuStackDelta; }
-			set { fpuStackDelta = value; }
-		}
+		public int FpuStackDelta { get;set; }
 
 		/// <summary>
 		/// The index of the 'deepest' FPU stack argument written. -1 means no stack parameters are used.

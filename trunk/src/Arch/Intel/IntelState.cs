@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
@@ -34,6 +35,8 @@ namespace Decompiler.Arch.Intel
 		private bool [] valid;
 		private Stack<Constant> stack;
 
+        private const int StackItemSize = 2;
+
 		public IntelState()
 		{
 			regs = new ulong[(int)Registers.Max];
@@ -46,6 +49,7 @@ namespace Decompiler.Arch.Intel
 			regs = (ulong []) st.regs.Clone();
 			valid = (bool []) st.valid.Clone();
             stack = new Stack<Constant>(st.stack);
+            FpuStackItems = st.FpuStackItems;
 		}
 
         public int FpuStackItems { get; set; }
@@ -101,6 +105,36 @@ namespace Decompiler.Arch.Intel
 			else
 				return Constant.Invalid;
 		}
+
+        public void OnProcedureEntered()
+        {
+            FpuStackItems = 0;
+        }
+
+        public void OnProcedureLeft(ProcedureSignature sig)
+        {
+            sig.FpuStackDelta = FpuStackItems;     
+        }
+
+        public CallSite OnBeforeCall()
+        {
+            return new CallSite(stack.Count * StackItemSize, FpuStackItems);  
+        }
+
+        public void OnAfterCall(ProcedureSignature sig)
+        {
+            ShrinkStack(sig.StackDelta);
+            ShrinkFpuStack(-sig.FpuStackDelta);
+        }
+
+        private void ShrinkStack(int shr)
+        {
+            while (shr > 0)
+            {
+                Pop(PrimitiveType.Word16);
+                shr -= StackItemSize;
+            }
+        }
 
 		public Constant Pop(PrimitiveType t)
 		{

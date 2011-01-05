@@ -2,7 +2,7 @@
 main proc
 	mov	eax,[esp+04]
 	push	ebx
-	mov	ebx,[esp+10]
+	mov	ebx,[esp+0x10]
 	push	ebp
 	movsx	ecx,word ptr [eax+06]
 	movsx	edx,word ptr [eax+02]
@@ -113,7 +113,7 @@ l100202F3:
 	endp
 	
 _ftol proc
-	fstp dword ptr [esp-4]
+	fistp dword ptr [esp-4]
 	mov eax,[esp-4]
 	ret
 	endp

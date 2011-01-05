@@ -7,9 +7,8 @@
 // eax:Register eax
 // return address size: 4
 void fn10000000()
-fn10000000_entry:		// pred:
-	// succ:  l10000000
-l10000000:		// pred: fn10000000_entry
+fn10000000_entry:
+l10000000:
 	edi = 0x10001212
 	rLoc1 = Mem0[edi + 0x00000004:real64]
 	rLoc2 = Mem0[edi + 0x0000000C:real64]
@@ -18,7 +17,5 @@ l10000000:		// pred: fn10000000_entry
 	eax = _ftol(rLoc1)
 	store(Mem0[edi + 0x0000001C:word32]) = eax
 	return
-	// succ:  fn10000000_exit
-fn10000000_exit:		// pred: l10000000
-	// succ: 
+fn10000000_exit:
 

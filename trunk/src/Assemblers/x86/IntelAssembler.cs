@@ -967,7 +967,7 @@ namespace Decompiler.Assemblers.x86
 
 
 
-        internal void ProcessFild(ParsedOperand op)
+        public void Fild(ParsedOperand op)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(op);
             int opCode;
@@ -975,7 +975,7 @@ namespace Decompiler.Assemblers.x86
             switch (dataWidth.Size)
             {
             case 2: opCode = 0xDF; reg = 0x00; break;
-            case 4: opCode = 0xDD; reg = 0x00; break;
+            case 4: opCode = 0xDB; reg = 0x00; break;
             case 8: opCode = 0xDF; reg = 0x05; break;
             default: Error(string.Format("Instruction doesn't support {0}-byte operands", dataWidth.Size)); return;
             }
@@ -983,7 +983,7 @@ namespace Decompiler.Assemblers.x86
             EmitModRM(reg, op);
         }
 
-        internal void Fistp(ParsedOperand src)
+        public void Fistp(ParsedOperand src)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(src);
             int opCode;
@@ -999,13 +999,13 @@ namespace Decompiler.Assemblers.x86
             EmitModRM(reg, src);
         }
 
-        internal void Fld1()
+        public void Fld1()
         {
             emitter.EmitByte(0xD9);
             emitter.EmitByte(0xE8);
         }
 
-        internal void Fldz()
+        public void Fldz()
         {
             emitter.EmitOpcode(0xD9, null);
             emitter.EmitByte(0xEE);

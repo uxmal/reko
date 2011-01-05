@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using System;
@@ -27,9 +28,13 @@ namespace Decompiler.Core
 	public interface ProcessorState
 	{
 		ProcessorState Clone();
-		void Set(MachineRegister r, Constant v);
-
+        Constant Get(MachineRegister r);
+        void Set(MachineRegister r, Constant v);
 		void SetInstructionPointer(Address addr);
-		Constant Get(MachineRegister r);
-	}
+        void OnProcedureEntered();                 // Some registers need to be updated when a procedure is entered.
+
+        void OnProcedureLeft(ProcedureSignature procedureSignature);
+        CallSite OnBeforeCall();
+        void OnAfterCall(ProcedureSignature sigCallee);
+    }
 }

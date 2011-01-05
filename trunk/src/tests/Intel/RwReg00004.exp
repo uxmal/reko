@@ -1,177 +1,161 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
-// dwArg00:Stack +0000
+// esp:Register esp
 // eax:Register eax
 // ebx:Register ebx
-// dwLoc08:Local -0008
-// dwArg02:Stack +0002
 // ebp:Register ebp
-// dwLoc0C:Local -000C
 // ecx:Register ecx
 // edx:Register edx
-// dwArg04:Stack +0004
-// dwArg0C:Stack +000C
 // SCZO:Flags
+// SZO:Flags
 // C:Flags
-// dwArg08:Stack +0008
 // Z:Flags
 // rLoc1:FPU stack
 // esi:Register esi
-// dwLoc10:Local -0010
 // edi:Register edi
-// dwLoc14:Local -0014
-// rArg08:Stack +0008
 // rLoc2:FPU stack
+// rLoc3:FPU stack
 // FPUF:Flags
 // ax:Register ax
 // ah:Register ah
 // rLoc3:FPU stack
 // SO:Flags
-// SZO:Flags
-// rArg00:Stack +0000
 // return address size: 4
 void fn10000000()
-fn10000000_entry:		// pred:
-	// succ:  l10000000
-l10000000:		// pred: fn10000000_entry
-	eax = dwArg00
-	dwLoc08 = ebx
-	ebx = dwArg02
-	dwLoc0C = ebp
+fn10000000_entry:
+l10000000:
+	eax = Mem0[esp + 0x00000004:word32]
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = ebx
+	ebx = Mem0[esp + 0x00000010:word32]
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = ebp
 	ecx = (int32) Mem0[eax + 0x00000006:word16]
 	edx = (int32) Mem0[eax + 0x00000002:word16]
-	ebp = dwArg04
+	ebp = Mem0[esp + 0x00000010:word32]
 	ecx = ecx - edx
-	edx = dwArg0C
+	SCZO = cond(ecx)
+	edx = Mem0[esp + 0x00000018:word32]
 	store(Mem0[ebx:word32]) = ecx
 	ecx = (int32) Mem0[eax + 0x00000004:word16]
 	eax = (int32) Mem0[eax:word16]
 	ecx = ecx - eax
-	SCZO = cond(ebp - 0x00000000)
+	SCZO = cond(ecx)
+	SZO = cond(ebp & ebp)
 	C = false
-	dwArg08 = ecx
+	store(Mem0[esp + 0x00000014:word32]) = ecx
 	store(Mem0[edx:word32]) = ecx
 	branch Test(EQ,Z) l10000107
-	// succ:  l10000035 l10000107
-l10000035:		// pred: l10000000
-	rLoc1 = Mem0[ebx:real64]
-	dwLoc10 = esi
-	dwLoc14 = edi
-	esi = 0x00000000
-	SCZO = cond(esi)
+l10000035:
+	rLoc1 = (real64)Mem0[ebx:int32]
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = esi
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = edi
+	esi = esi ^ esi
+	SZO = cond(esi)
+	C = false
 	edi = 0x000186A0
-	dwArg00 = rLoc1
-	rLoc1 = rArg08
-	// succ:  l10000048
-l10000048:		// pred: l10000035 l100000D7
-	rLoc2 = dwArg00
+	store(Mem0[esp + 0x00000014:real32]) = rLoc1
+	rLoc1 = (real64) Mem0[esp + 0x0000001C:int32]
+l10000048:
+	rLoc2 = Mem0[esp + 0x00000014:real32]
 	rLoc2 = rLoc2 *s Mem0[0x0099188A:real64]
 	esi = esi + 0x00000001
-	dwArg00 = rLoc2
-	call fn1000010A (depth: 20; FPU: 2;)
+	SZO = cond(esi)
+	store(Mem0[esp + 0x00000014:real32]) = rLoc2
+	call fn1000010A (depth: 0;)
 	ecx = eax
-	dwArg08 = ecx
-	rLoc2 = rArg08
-	FPUF = cond(rLoc2 - dwArg00)
+	store(Mem0[esp + 0x0000001C:word32]) = ecx
+	rLoc2 = (real64) Mem0[esp + 0x0000001C:int32]
+	FPUF = cond(rLoc2 - Mem0[esp + 0x0000001C:real32])
 	ax = (word16) FPUF << 8
-	SCZO = cond(ah & 0x40)
+	SZO = cond(ah & 0x40)
 	C = false
-	branch Test(EQ,FPUF) l1000007F
-	// succ:  l10000072 l1000007F
-l10000072:		// pred: l10000048
+	branch Test(NE,Z) l1000007F
+l10000072:
 	ecx = ecx + 0x00000001
 	SZO = cond(ecx)
-	dwArg00 = ecx
-	rLoc2 = rArg00
-	dwArg00 = rLoc2
-	// succ:  l1000007F
-l1000007F:		// pred: l10000048 l10000072
+	store(Mem0[esp + 0x00000014:word32]) = ecx
+	rLoc2 = (real64) Mem0[esp + 0x00000014:int32]
+	store(Mem0[esp + 0x00000014:real32]) = (word32) rLoc2
+l1000007F:
 	rLoc1 = rLoc1 *s Mem0[0x10033290:real64]
 	rLoc2 = rLoc2
-	call fn1000010A (depth: 20; FPU: 2;)
+	call fn1000010A (depth: 0;)
 	ecx = eax
-	dwArg08 = ecx
-	rLoc2 = rArg08
-	rLoc3 = rLoc2
+	store(Mem0[esp + 0x0000001C:word32]) = ecx
+	rLoc2 = (real64) Mem0[esp + 0x0000001C:word32]
+	rLoc3 = rLoc1
 	FPUF = cond(rLoc3 - rLoc2)
 	ax = (word16) FPUF << 8
-	SCZO = cond(ah & 0x40)
+	SZO = cond(ah & 0x40)
 	C = false
-	branch Test(EQ,FPUF) l100000AD
-	// succ:  l100000A2 l100000AD
-l100000A2:		// pred: l1000007F
+	branch Test(NE,Z) l100000AD
+l100000A2:
 	ecx = ecx + 0x00000001
 	SZO = cond(ecx)
 	rLoc1 = rLoc1
-	dwArg08 = ecx
-	rLoc1 = rArg08
-	// succ:  l100000AD
-l100000AD:		// pred: l1000007F l100000A2
-	rLoc2 = dwArg00
+	store(Mem0[esp + 0x0000001C:word32]) = ecx
+	rLoc1 = (real64) Mem0[esp + 0x0000001C:int32]
+l100000AD:
+	rLoc2 = Mem0[esp + 0x00000014:real32]
 	FPUF = cond(rLoc2 - Mem0[0x10033298:real64])
 	ax = (word16) FPUF << 8
-	SCZO = cond(ah & 0x40)
+	SZO = cond(ah & 0x40)
 	C = false
-	branch Test(NE,FPUF) l100000D7
-	// succ:  l100000BF l100000D7
-l100000BF:		// pred: l100000AD
+	branch Test(EQ,Z) l100000D7
+l100000BF:
 	FPUF = cond(rLoc1 - Mem0[0x10033298:real64])
 	ax = (word16) FPUF << 8
-	SCZO = cond(ah & 0x40)
+	SZO = cond(ah & 0x40)
 	C = false
-	branch Test(NE,FPUF) l100000D7
-	// succ:  l100000CD l100000D7
-l100000CD:		// pred: l100000BF
+	branch Test(EQ,Z) l100000D7
+l100000CD:
 	SCZO = cond(edi - 0x000186A0)
 	branch Test(NE,Z) l100000D7
-	// succ:  l100000D5 l100000D7
-l100000D5:		// pred: l100000CD
+l100000D5:
 	edi = esi
-	// succ:  l100000D7
-l100000D7:		// pred: l100000AD l100000BF l100000CD l100000D5
+l100000D7:
 	SCZO = cond(esi - ebp)
 	branch Test(LT,SO) l10000048
-	// succ:  l100000DF l10000048
-l100000DF:		// pred: l100000D7
-	rLoc2 = dwArg00
-	call fn1000010A (depth: 20; FPU: 2;)
+l100000DF:
+	rLoc2 = Mem0[esp + 0x0000014:real32]
+	call fn1000010A (depth: 0;)
 	store(Mem0[ebx:word32]) = eax
-	call fn1000010A (depth: 20; FPU: 1;)
-	ecx = dwArg0C
+	call fn1000010A (depth: 0;)
+	ecx = Mem0[esp + 0x00000020:word32]
 	SCZO = cond(ebp - edi)
-	edi = dwLoc14
-	esi = dwLoc10
+	edi = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	esi = Mem0[esp:word32]
+	esp = esp + 0x00000004
 	store(Mem0[ecx:word32]) = eax
 	branch Test(LE,SZO) l10000107
-	// succ:  l100000FB l10000107
-l100000FB:		// pred: l100000DF
+l100000FB:
 	store(Mem0[ebx:word32]) = 0x00000000
 	store(Mem0[ecx:word32]) = 0x00000000
-	// succ:  l10000107
-l10000107:		// pred: l10000000 l100000DF l100000FB
-	ebp = dwLoc0C
-	ebx = dwLoc08
+l10000107:
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ebx = Mem0[esp:word32]
+	esp = esp + 0x00000004
 	return
-	// succ:  fn10000000_exit
-fn10000000_exit:		// pred: l10000107
-	// succ: 
+fn10000000_exit:
 
 // fn1000010A
 // Mem0:Global memory
 // fp:Temporary
 // rArg0:FPU stack
-// rLoc08:Local -0008
+// esp:Register esp
 // eax:Register eax
 // return address size: 4
 void fn1000010A()
-fn1000010A_entry:		// pred:
-	// succ:  l1000010A
-l1000010A:		// pred: fn1000010A_entry
-	rLoc08 = rArg0
-	eax = rLoc08
+fn1000010A_entry:
+l1000010A:	
+	store(Mem0[esp - 0x00000004:int32]) = (int32) rArg0
+	eax = Mem0[esp - 0x00000004:word32]
 	return
-	// succ:  fn1000010A_exit
-fn1000010A_exit:		// pred: l1000010A
-	// succ: 
+fn1000010A_exit:
 
