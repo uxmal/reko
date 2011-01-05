@@ -23,7 +23,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using System;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
 	public class ShiftShift_c_c_Rule
 	{

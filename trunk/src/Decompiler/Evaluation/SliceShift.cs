@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
     /// <summary>
     /// Converts expressions (slice (shift x c) c) to x

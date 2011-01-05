@@ -24,7 +24,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Analysis;
 using System;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
 	public class Shl_mul_e_Rule
 	{

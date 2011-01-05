@@ -22,7 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using System;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
     /// <summary>
     /// Transforms the sequence dpb(constant, constant) with the evaluated dpb.

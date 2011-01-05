@@ -33,7 +33,6 @@ namespace Decompiler.Scanning
     public class ScannerEvaluator : Decompiler.Analysis.EvaluationContext
     {
         private ProcessorState state;
-        private Constant value;
 
         public ScannerEvaluator(ProcessorState state)
         {

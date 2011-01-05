@@ -25,7 +25,7 @@ using Decompiler.Core.Types;
 using Decompiler.Typing;
 using System;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
 	/// <summary>
 	/// Implements constant propagation.

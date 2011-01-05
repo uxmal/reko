@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Analysis.Simplification;
+using Decompiler.Evaluation;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;

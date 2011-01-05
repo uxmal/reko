@@ -23,7 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using System;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
 	/// <summary>
 	/// Implements copy propagation.

@@ -23,7 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using System;
 
-namespace Decompiler.Analysis.Simplification
+namespace Decompiler.Evaluation
 {
 	/// <summary>
 	/// If we find a = x OP CONST followed by b = a, then replace so that b = x OP CONST.

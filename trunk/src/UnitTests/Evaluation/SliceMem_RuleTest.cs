@@ -18,29 +18,41 @@
  */
 #endregion
 
-using System;
-using Decompiler.Analysis;
-using Decompiler.Analysis.Simplification;
+using Decompiler.Evaluation;
 using Decompiler.Core;
-using Decompiler.Core.Operators;
-using Decompiler.UnitTests.Mocks;
+using Decompiler.Core.Expressions;
+using Decompiler.Core.Types;
 using NUnit.Framework;
+using System;
 
 namespace Decompiler.UnitTests.Analysis.Simplification
 {
 	[TestFixture]
-	public class Add_id_c_id_RuleTest
+	public class SliceMem_RuleTest
 	{
-		/// <summary>
-		/// tests (+ (* id c) id)
-		/// </summary>
 		[Test]
-		public void Test1()
+		public void SliceMem()
 		{
-			var m = new ProcedureBuilder();
-			var id = m.Local32("id");
-			var x = m.Local32("x");
-			var stm = m.Assign(x, m.Add(m.Muls(id, 4), id));
+			var s = new Slice(PrimitiveType.Byte,
+				new MemoryAccess(MemoryIdentifier.GlobalMemory, 
+				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
+			var r = new SliceMem_Rule();
+			Assert.IsTrue(r.Match(s));
+			var e = r.Transform();
+			Assert.AreEqual("Mem0[ptr + 0x00000002:byte]", e.ToString());
 		}
+
+		[Test]
+		public void SliceMem0()
+		{
+			var s = new Slice(PrimitiveType.Word16,
+				new MemoryAccess(MemoryIdentifier.GlobalMemory,
+				new Identifier("ptr", 0, PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
+			var r = new SliceMem_Rule();
+			Assert.IsTrue(r.Match(s));
+			var e = r.Transform();
+			Assert.AreEqual("Mem0[ptr + 0x00000000:word16]", e.ToString());
+		}
+
 	}
 }
