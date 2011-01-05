@@ -128,5 +128,11 @@ namespace Decompiler.Arch.Intel
 		/// Number of bytes on the processor stack.
 		/// </summary>
 		public int StackBytes { get; set; }
-	}
+
+        public void OnReturnFromCall(ProcedureSignature sig)
+        {
+            ShrinkStack(sig.StackDelta);
+            ShrinkFpuStack(-sig.FpuStackDelta);
+        }
+    }
 }

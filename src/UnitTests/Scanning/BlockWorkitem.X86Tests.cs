@@ -66,12 +66,12 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildTest16(Action<IntelAssembler> m)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            BuildTest(arch ,new Address(0x0C00,0x000), new MsdosPlatform(arch), m);
+            BuildTest(arch, new Address(0x0C00, 0x000), new MsdosPlatform(arch), m);
         }
 
         private class RewriterHost : IRewriterHost2
         {
-            Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string,PseudoProcedure>();
+            Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
             Dictionary<uint, ProcedureSignature> sigs = new Dictionary<uint, ProcedureSignature>();
 
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
@@ -218,8 +218,8 @@ namespace Decompiler.UnitTests.Scanning
             var sw = new StringWriter();
             block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
-            string sExp = 
-                "\tsp = sp - 0x0002" + nl + 
+            string sExp =
+                "\tsp = sp - 0x0002" + nl +
                 "\tax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
@@ -263,7 +263,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void RepMovsw()
         {
-            var follow =  new Block(proc, "follow");
+            var follow = new Block(proc, "follow");
             BuildTest16(delegate(IntelAssembler m)
             {
                 m.Rep();
@@ -290,7 +290,6 @@ namespace Decompiler.UnitTests.Scanning
             wi.Process();
             Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, follow));
             Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, block));
-
         }
     }
 }

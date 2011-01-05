@@ -528,5 +528,15 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "0C00:0000(5) eax = __shrd(eax, edx, 0x04)", e);
         }
 
+        [Test]
+        public void Fild()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Fild(m.MemDw(Registers.ebx, 4));
+            });
+            AssertCode(e,
+                "0|10000000(3) rLoc1 = (real64) Mem0[ebx + 0x00000004:int32]");
+        }
     }
 }

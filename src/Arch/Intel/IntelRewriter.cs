@@ -1199,8 +1199,7 @@ namespace Decompiler.Arch.Intel
 				}
 			}
 			emitter.Call(procCallee, site, 0);
-			state.ShrinkStack(procCallee.Signature.StackDelta);
-			state.ShrinkFpuStack(-procCallee.Signature.FpuStackDelta);
+            state.OnReturnFromCall(procCallee.Signature);
 			host.AddCallEdge(this.proc, emitter.Block.Statements.Last, procCallee);
 		}
 

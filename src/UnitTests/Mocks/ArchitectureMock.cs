@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
@@ -219,6 +220,14 @@ namespace Decompiler.UnitTests.Mocks
 			return Constant.Invalid;
 		}
 
+        public void OnProcedureEntered()
+        {
+        }
+
+        public void OnProcedureLeft(ProcedureSignature sig)
+        {
+        }
+
 		public void Set(MachineRegister r, Constant v)
 		{
 		}
@@ -226,6 +235,16 @@ namespace Decompiler.UnitTests.Mocks
 		public void SetInstructionPointer(Address addr)
 		{
 		}
+
+        public CallSite OnBeforeCall()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAfterCall(ProcedureSignature sigCallee)
+        {
+            throw new NotImplementedException();
+        }
 	}
 
     [Flags]

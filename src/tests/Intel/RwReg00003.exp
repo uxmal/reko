@@ -1,7 +1,6 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
 // ecx:Register ecx
 // SZO:Flags
 // C:Flags
@@ -10,9 +9,7 @@
 void fn0C00_0000()
 fn0C00_0000_entry:
 l0C00_0000:
-	sp = sp - 0x0002
 	call fn0C00_000F (depth: 0;)
-	sp = sp - 0x0002
 	call fn0C00_0010 (depth: 0;)
 	ecx = ecx ^ ecx
 	SZO = cond(ecx)

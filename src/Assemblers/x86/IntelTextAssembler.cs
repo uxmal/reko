@@ -431,7 +431,7 @@ namespace Decompiler.Assemblers.x86
 		private void ProcessFild()
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-            asm.ProcessFild(ops[0]);
+            asm.Fild(ops[0]);
 		}
 
 		private void ProcessFistp()

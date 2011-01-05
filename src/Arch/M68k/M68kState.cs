@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using System;
@@ -46,6 +47,24 @@ namespace Decompiler.Arch.M68k
         }
 
         public Constant Get(MachineRegister r)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnProcedureEntered()
+        {
+        }
+
+        public void OnProcedureLeft(ProcedureSignature sig)
+        {
+        }
+
+        public CallSite OnBeforeCall()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAfterCall(ProcedureSignature sigCallee)
         {
             throw new NotImplementedException();
         }

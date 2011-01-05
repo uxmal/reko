@@ -43,6 +43,7 @@ namespace Decompiler.Scanning
         private RtlInstruction ri;
         private Rewriter2 rewriter;
         private ProcessorState state;
+        private IEnumerator<RtlInstruction> rtlStream;
 
         public BlockWorkitem(
             IScanner scanner,
@@ -60,9 +61,11 @@ namespace Decompiler.Scanning
             this.blockCur = null;
         }
 
+        public ProcessorState State { get { return state; } }
+
         public override void Process()
         {
-            var rtlStream = rewriter.GetEnumerator();
+            rtlStream = rewriter.GetEnumerator();
             blockCur = scanner.FindContainingBlock(addr);
             if (BlockHasBeenScanned(blockCur))
                 return;
@@ -93,11 +96,11 @@ namespace Decompiler.Scanning
             uint linAddr = (uint) addrStart.Linear;
         }
 
-        private void BuildApplication(Expression fn, ProcedureSignature sig)
+        private void BuildApplication(Expression fn, ProcedureSignature sig, CallSite site)
         {
             ApplicationBuilder ab = new ApplicationBuilder(
                 frame,
-                new CallSite(0, 0),
+                site,
                 fn,
                 sig);
             //state.ShrinkStack(sig.StackDelta);
@@ -249,8 +252,11 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
+
         public bool VisitCall(RtlCall call)
         {
+            var site = state.OnBeforeCall();
+
             Address addr = call.Target as Address;
             if (addr != null)
             {
@@ -259,24 +265,26 @@ namespace Decompiler.Scanning
                     ri.Address.Linear, 
                     new CallInstruction(
                         new ProcedureConstant(PrimitiveType.Pointer32, callee),
-                        new CallSite(0, 0),
+                        site,
                         call.ReturnAddressSize));
                 scanner.CallGraph.AddEdge(blockCur.Statements.Last, callee);
+                state.OnAfterCall(callee.Signature);
                 return true;
             }
 
             var sig = scanner.GetCallSignatureAtAddress(ri.Address);
             if (sig != null)
             {
-                BuildApplication(call.Target, sig);
+                BuildApplication(call.Target, sig, site);
+                state.OnAfterCall(sig);
                 return true;
-
             }
 
-            PseudoProcedure ppp = ImportedProcedureName(call.Target);
-            if (ppp != null)
+            var imp = ImportedProcedureName(call.Target);
+            if (imp != null)
             {
-                BuildApplication(new ProcedureConstant(arch.PointerType, ppp), ppp.Signature);
+                BuildApplication(new ProcedureConstant(arch.PointerType, imp), imp.Signature, site);
+                state.OnAfterCall(imp.Signature);
                 return true;
             }
 
@@ -284,7 +292,8 @@ namespace Decompiler.Scanning
                     ri.Address.Linear,
                     new IndirectCall(
                         call.Target,
-                        new CallSite(0, 0)));
+                        site));
+            state.OnAfterCall(sig);
             return true;        //$BUGBUG: but may call exit(), or ExitThread(), which should return false.
         }
 
@@ -331,13 +340,13 @@ namespace Decompiler.Scanning
                 scanner.AddDiagnostic(
                     ri.Address,
                     new WarningDiagnostic(string.Format(
-                    "Multiple differing values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
+                    "Multiple different values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
             }
             else
             {
                 proc.Signature.StackDelta = stackDelta;
             }
-            //proc.Signature.FpuStackDelta = state.FpuStackItems;       //$REDO
+            state.OnProcedureLeft(proc.Signature);
             //proc.Signature.FpuStackArgumentMax = maxFpuStackRead;     //$REDO
             //proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;       //$REDO
             scanner.TerminateBlock(blockCur, ri.Address + ri.Length);
@@ -351,7 +360,8 @@ namespace Decompiler.Scanning
             {
                 ExternalProcedure ep = svc.CreateExternalProcedure(arch);
                 ProcedureConstant fn = new ProcedureConstant(arch.PointerType, ep);
-                BuildApplication(fn, ep.Signature);
+                var site = state.OnBeforeCall();
+                BuildApplication(fn, ep.Signature, site);
                 if (svc.Characteristics.Terminates)
                 {
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -366,6 +376,7 @@ namespace Decompiler.Scanning
             return true;
         }
 
+        //$TODO: merge these?
         private void AffectProcessorState(ProcedureSignature sig)
         {
             TrashVariable(sig.ReturnValue);
@@ -418,5 +429,6 @@ namespace Decompiler.Scanning
         }
 
         #endregion
+
     }
 }

@@ -39,14 +39,14 @@ namespace Decompiler.Arch.Intel
             this.frame = frame;
         }
 
-        public Expression Transform(MachineOperand op, PrimitiveType opWidth,IntelState state)
+        public Expression Transform(MachineOperand op, PrimitiveType opWidth, IntelState state)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
                 return AluRegister(reg);
             var mem = op as MemoryOperand;
             if (mem != null)
-                return CreateMemoryAccess(mem, state);
+                return CreateMemoryAccess(mem, opWidth, state);
             var imm = op as ImmediateOperand;
             if (imm != null)
                 return CreateConstant(imm, opWidth);
