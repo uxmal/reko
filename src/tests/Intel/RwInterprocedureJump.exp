@@ -59,9 +59,7 @@ l0C00_0014:		// pred: fn0C00_0014_entry
 	ax = ax + 0x0001
 	SZO = cond(ax)
 	return
-	// succ:  fn0C00_0014_exit
-fn0C00_0014_exit:		// pred: l0C00_0014
-	// succ: 
+fn0C00_0014_exit:
 // fn0C00_0018
 // Mem0:Global memory
 // fp:Temporary
@@ -69,13 +67,10 @@ fn0C00_0014_exit:		// pred: l0C00_0014
 // SCZO:Flags
 // return address size: 2
 void fn0C00_0018()
-fn0C00_0018_entry:		// pred:
-	// succ:  l0C00_0018
-l0C00_0018:		// pred: fn0C00_0018_entry
+fn0C00_0018_entry:	
+l0C00_0018:
 	bx = bx + 0x0004
 	SCZO = cond(bx)
 	call fn0C00_0014 (depth: 2;)
 	return
-	// succ:  fn0C00_0018_exit
-fn0C00_0018_exit:		// pred: l0C00_0018
-	// succ: 
+fn0C00_0018_exit:

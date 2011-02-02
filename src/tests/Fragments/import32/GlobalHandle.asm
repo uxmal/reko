@@ -20,5 +20,5 @@ foo	proc
 	
 _GlobalHandle	.import 'GlobalHandle','kernel32.dll'
 _GlobalUnlock	.import 'GlobalUnlock','kernel32.dll'
-_GlobalFree		.import	'GlobalFree',  'kernel32.dll'
+_GlobalFree	.import	'GlobalFree',  'kernel32.dll'
 

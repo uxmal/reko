@@ -12,23 +12,29 @@
 void fn10000000()
 fn10000000_entry:		// pred:
 	// succ:  l10000000
-l10000000:		// pred: fn10000000_entry
-	dwLoc08 = esi
-	esi = dwArg00
-	dwLoc0C = edi
+l10000000:
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = esi
+	esi = Mem0[esp + 0x00000008:word32]
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = edi
 	edi = GlobalHandle
-	dwLoc10 = esi
-	eax = GlobalHandle(dwLoc10)
-	dwLoc10 = eax
-	eax = GlobalUnlock(dwLoc10)
-	dwLoc10 = esi
-	eax = GlobalHandle(dwLoc10)
-	dwLoc10 = eax
-	eax = GlobalFree(dwLoc10)
-	edi = dwLoc0C
-	esi = dwLoc08
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = esi
+	eax = GlobalHandle(Mem0[esp:word32])
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = eax
+	eax = GlobalUnlock(Mem0[esp:word32])
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = esi
+	eax = GlobalHandle(Mem0[esp:word32])
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = esi
+	eax = GlobalFree((Mem0[esp:word32])
+	edi = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	esi = Mem0[esp:word32]
+	esp = esp + 0x00000004
 	return
-	// succ:  fn10000000_exit
-fn10000000_exit:		// pred: l10000000
-	// succ: 
+fn10000000_exit:
 

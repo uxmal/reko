@@ -73,6 +73,12 @@ namespace Decompiler.UnitTests.Scanning
         {
             Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
             Dictionary<uint, ProcedureSignature> sigs = new Dictionary<uint, ProcedureSignature>();
+            Dictionary<uint, PseudoProcedure> importThunks;
+
+            public RewriterHost(Dictionary<uint, PseudoProcedure> importThunks)
+            {
+                this.importThunks = importThunks;
+            }
 
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
             {
@@ -89,6 +95,16 @@ namespace Decompiler.UnitTests.Scanning
             {
                 sigs.Add(addrCallInstruction.Linear, signature);
             }
+
+
+            public PseudoProcedure GetImportThunkAtAddress(uint addrThunk)
+            {
+                PseudoProcedure p;
+                if (importThunks.TryGetValue(addrThunk, out p))
+                    return p;
+                else
+                    return null;
+            }
         }
 
         private void BuildTest(IntelArchitecture arch, Address addr, Platform platform, Action<IntelAssembler> m)
@@ -101,7 +117,7 @@ namespace Decompiler.UnitTests.Scanning
             emitter = new IntelEmitter();
             var asm = new IntelAssembler(arch, addr, emitter, new List<EntryPoint>());
             scanner = repository.Stub<IScanner>();
-            host = new RewriterHost();
+            host = new RewriterHost(asm.ImportThunks);
             using (repository.Record())
             {
                 m(asm);
@@ -315,6 +331,32 @@ namespace Decompiler.UnitTests.Scanning
                 "\tC = false" + nl +
                 "\tesi = esi + 0x00000001" + nl +
                 "\tSZO = cond(esi)" + nl;
+            var sw = new StringWriter();
+            block.Write(sw);
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void IndirectCallToConstant()
+        {
+            BuildTest32(delegate(IntelAssembler m)
+            {
+                m.Mov(m.ebx, m.MemDw("_GetDC"));
+                m.Call(m.ebx);
+                m.Ret();
+
+                m.Import("_GetDC", "GetDC", "user32.dll");
+
+                scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(null);
+                scanner.Stub(x => x.TerminateBlock(Arg<Block>.Is.Anything, Arg<Address>.Is.Anything));
+            });
+            wi.Process();
+            repository.VerifyAll();
+            var sExp =
+                "testblock:" + nl +
+                "\tebx = GetDC" + nl +
+                "\teax = GetDC(dwLoc00)" + nl +
+                "\treturn" + nl;
             var sw = new StringWriter();
             block.Write(sw);
             Console.WriteLine(sw.ToString());
