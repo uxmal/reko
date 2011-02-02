@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 	public class LongAddRewriterTests
 	{
 		private Frame frame;
-		private OperandRewriter orw;
+		private OperandRewriterOld orw;
 		private LongAddRewriter rw;
 
 		private IntelArchitecture arch;
@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void Setup()
 		{
             frame = arch.CreateFrame();
-			orw = new OperandRewriter(null, arch, frame);
+			orw = new OperandRewriterOld(null, arch, frame);
 			rw = new LongAddRewriter(frame, orw, null);
             Procedure proc = new Procedure("test", frame);
             block = new Block(proc, "bloke");

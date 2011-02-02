@@ -32,6 +32,16 @@ namespace Decompiler.Arch.Pdp11
         public PrimitiveType DataWidth;
         public MachineOperand op1;
         public MachineOperand op2;
+
+        public override uint DefCc()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override uint UseCc()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public enum Opcodes

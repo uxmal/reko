@@ -861,7 +861,7 @@ namespace Decompiler.Assemblers.x86
 				ProcessMovx(0xB6);
 				break;
 			case Token.SCASB:
-                asm.ProcessStringInstruction(0xAE, PrimitiveType.Byte);
+                asm.Scasb();
 				break;
 			case Token.SCASW:
                 asm.Scasw();

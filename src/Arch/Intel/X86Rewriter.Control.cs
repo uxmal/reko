@@ -177,6 +177,7 @@ namespace Decompiler.Arch.Intel
             var regCX = orw.AluRegister(Registers.ecx, di.Instruction.addrWidth);
             dasm.MoveNext();
             di = dasm.Current;
+            ric.Length += (byte) di.Length;
             var strFollow = dasm.Peek(1);
             emitter.MachineInstructionLength += (byte) di.Length;
             emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), strFollow.Address);
@@ -193,11 +194,13 @@ namespace Decompiler.Arch.Intel
                     var cc = (di.Instruction.code == Opcode.repne)
                         ? ConditionCode.NE
                         : ConditionCode.EQ;
-                    emitter.BranchInMiddleOfInstruction(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)), strFollow.Address);
+                    emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop);
                     break;
                 }
+            default:
+                emitter.Goto(topOfLoop);
+                break;
             }
-            emitter.Goto(topOfLoop);
         }
 
         public void RewriteRet()

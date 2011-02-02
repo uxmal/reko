@@ -141,9 +141,10 @@ namespace Decompiler.Evaluation
 
             var left = binExp.Left.Accept(this);
             var right = binExp.Right.Accept(this);
+            if (left == Constant.Invalid || right == Constant.Invalid)
+                return Constant.Invalid;
             Constant cLeft = left as Constant;
             Constant cRight = right as Constant;
-
             if (cLeft != null && BinaryExpression.Commutes(binExp.op))
             {
                 cRight = cLeft; left = right; right = cLeft;
@@ -263,7 +264,9 @@ namespace Decompiler.Evaluation
 
         public Expression VisitConditionOf(ConditionOf c)
         {
-            c.Expression = c.Expression.Accept(this);
+            var e = c.Expression.Accept(this);
+            //$REVIEW: if e == 0, then Z flags could be set to 1. But that's architecture specific, so
+            // we leave that as an exercise to re reader
             return c;
         }
 

@@ -47,7 +47,7 @@ namespace Decompiler.Arch.Intel
 		private IntelRewriterState state;
 		private int maxFpuStackRead;
 		private int maxFpuStackWrite;
-		private OperandRewriter orw;
+		private OperandRewriterOld orw;
 		private StringInstructionRewriter siw;
 		private CodeEmitter emitter;
 		
@@ -63,7 +63,7 @@ namespace Decompiler.Arch.Intel
 			this.frame = proc.Frame;
 			this.arch = arch;
 			this.state = state;
-			this.orw = new OperandRewriter(host, arch, frame);
+			this.orw = new OperandRewriterOld(host, arch, frame);
 			this.siw = new StringInstructionRewriter(arch, orw);
 			maxFpuStackRead = -1;
 			maxFpuStackWrite = -1;

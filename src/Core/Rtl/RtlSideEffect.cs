@@ -41,9 +41,8 @@ namespace Decompiler.Core.Rtl
 
         public Expression Expression { get; private set; }
 
-        public override void Write(TextWriter writer)
+        protected override void WriteInner(TextWriter writer)
         {
-            base.Write(writer);
             writer.Write(Expression);
         }
     }

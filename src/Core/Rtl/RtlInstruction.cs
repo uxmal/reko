@@ -50,7 +50,7 @@ namespace Decompiler.Core.Rtl
         /// maps to many RtlInstructions, some of which are branches (see the X86 REP instruction for a particularly
         /// hideous example.
         /// </summary>
-        public bool NextStatementRequiresLabel { get;  set; }
+        public bool NextStatementRequiresLabel { get; set; }
 
         public abstract T Accept<T>(RtlInstructionVisitor<T> visitor);
 
@@ -61,9 +61,58 @@ namespace Decompiler.Core.Rtl
             return sw.ToString();
         }
 
-        public virtual void Write(TextWriter writer)
+        public void Write(TextWriter writer)
         {
-            writer.Write("{0}({1}) ", Address, Length);
+            WriteInner(writer);
+        }
+
+        protected abstract void WriteInner(TextWriter writer);
+    }
+
+    /// <summary>
+    /// A RtlInstructionCluster contains the RtlInstrctions that are generated when 
+    /// a machine instruction is rewritten.
+    /// </summary>
+    public class RtlInstructionCluster
+    {
+        public RtlInstructionCluster(Address addr, byte instrLength)
+        {
+            this.Address = addr;
+            this.Length = instrLength;
+            this.Instructions = new List<RtlInstruction>();
+        }
+
+        public RtlInstructionCluster(Address addr, byte instrLength, params RtlInstruction [] instrs)
+        {
+            this.Address = addr;
+            this.Length = instrLength;
+            this.Instructions = new List<RtlInstruction>(instrs);
+        }
+        /// <summary>
+        /// The address of the original machine instruction.
+        /// </summary>
+        public Address Address { get; private set; }
+
+        public List<RtlInstruction> Instructions { get; private set; }
+
+        /// <summary>
+        /// The length of the original machine instruction, in bytes.
+        /// </summary>
+        public byte Length { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}({1}): {2} instructions", Address, Length, Instructions.Count);
+        }
+
+        public void Write(TextWriter writer)
+        {
+            writer.WriteLine("{0}({1}):", Address, Length);
+            foreach (var ri in Instructions)
+            {
+                ri.Write(writer);
+                writer.WriteLine();
+            }
         }
     }
 }

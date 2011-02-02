@@ -29,7 +29,6 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlCall : RtlInstruction
     {
-        
         public RtlCall(Address addr, byte length, Expression target, byte stackPushedReturnAddressSize) : base(addr, length)
         {
             this.Target = target;
@@ -44,9 +43,8 @@ namespace Decompiler.Core.Rtl
         public int ReturnAddressSize { get; private set; }
         public Expression Target { get; private set; }
 
-        public override void  Write(TextWriter writer)
+        protected override void WriteInner(TextWriter writer)
         {
-            base.Write(writer);
             writer.Write("call {0} ({1})", Target, ReturnAddressSize);
         }
     }

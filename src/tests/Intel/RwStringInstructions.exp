@@ -33,7 +33,6 @@ fn0C00_0000_exit:
 // cx:Register cx
 // al:Register al
 // di:Register di
-// v6:Temporary
 // SCZO:Flags
 // es:Register es
 // Z:Flags
@@ -45,16 +44,13 @@ l0C00_0026:
 	al = 0x00
 	di = Mem0[ds:0x0402:word16]
 l0C00_0030:
-	branch cx == 0x0000 l0C00_0030_rep
-	// succ:  l0C00_0032 l0C00_0030_rep
-	// succ:  fn0C00_0026_exit
-l0C00_0030_rep:		// pred: l0C00_0030
-	cx = cx - 0x0001
+	branch cx == 0x0000 l0C00_0032
+l0C00_0030_1:
 	SCZO = cond(al - Mem0[es:di:byte])
 	di = di + 0x0001
-	branch Test(EQ,Z) l0C00_0030
+	cx = cx - 0x0001
+	branch Test(NE,Z) l0C00_0030
 l0C00_0032:
 	store(Mem0[ds:0x0404:word16]) = di
 	return
-
 fn0C00_0026_exit:

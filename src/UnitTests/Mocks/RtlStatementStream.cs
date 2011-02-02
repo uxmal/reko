@@ -30,11 +30,10 @@ using System.Text;
 namespace Decompiler.UnitTests.Mocks
 {
     public class RtlStatementStream : ExpressionEmitter
-
     {
         private Block block;
         private Frame frame;
-        private List<RtlInstruction> stms;
+        private List<RtlInstructionCluster> stms;
         private IProcessorArchitecture arch;
         private uint linAddress;
 
@@ -44,12 +43,12 @@ namespace Decompiler.UnitTests.Mocks
             this.block = block;
             this.frame = block.Procedure.Frame;
             this.arch = new ArchitectureMock();
-            this.stms = new List<RtlInstruction>();   
+            this.stms = new List<RtlInstructionCluster>();   
         }
 
         public RtlInstruction Emit(RtlInstruction instr)
         {
-            stms.Add(instr);
+            stms.Add(new RtlInstructionCluster(new Address(linAddress), 4, instr));
             linAddress += 4;
             return instr;
         }
@@ -88,7 +87,7 @@ namespace Decompiler.UnitTests.Mocks
         }
 
 
-        public IEnumerator<RtlInstruction> GetRewrittenInstructions()
+        public IEnumerator<RtlInstructionCluster> GetRewrittenInstructions()
         {
             foreach (var x in stms)
                 yield return x;

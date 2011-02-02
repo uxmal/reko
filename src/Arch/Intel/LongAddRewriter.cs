@@ -30,14 +30,14 @@ namespace Decompiler.Arch.Intel
 	public class LongAddRewriter
 	{
 		private Frame frame;
-		private OperandRewriter orw;
+		private OperandRewriterOld orw;
 		private IntelRewriterState state;
 
 		private Expression dst;
 		private Expression src;
 		private bool useStore;
 
-		public LongAddRewriter(Frame frame, OperandRewriter orw, IntelRewriterState state)
+		public LongAddRewriter(Frame frame, OperandRewriterOld orw, IntelRewriterState state)
 		{
 			this.frame = frame;
 			this.orw = orw;

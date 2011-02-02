@@ -432,6 +432,7 @@
   <ItemGroup>
     <Compile Include="Evaluation\Add_id_c_id_Rule.cs" />
     <Compile Include="Evaluation\Add_id_c_id_RuleTest.cs" />
+    <Compile Include="Evaluation\ExpressionMatcherTests.cs" />
     <Compile Include="Evaluation\ExpressionSimplifierTests.cs" />
     <Compile Include="Evaluation\IdConstantTests.cs" />
     <Compile Include="Evaluation\Shl_mul_e_RuleTest.cs" />

@@ -89,8 +89,9 @@ namespace Decompiler.UnitTests.Scanning
                     new RegisterOperand(arch.GetRegister(1)), 
                     ImmediateOperand.Word32(1))
             };
-            arch.InstructionStream = new RtlInstruction[] { 
-                new RtlReturn(new Address(0x12314), 1, 4, 0)
+            arch.InstructionStream = new RtlInstructionCluster[] {
+                new RtlInstructionCluster(new Address(0x12314), 1, 
+                new RtlReturn(new Address(0x12314), 1, 4, 0)),
             };
             var sc = new Scanner(arch, new ProgramImage(new Address(0x12314), new byte[1]), new FakePlatform(), null, new FakeDecompilerEventListener());
             sc.EnqueueEntryPoint(

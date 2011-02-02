@@ -171,7 +171,6 @@ namespace Decompiler.Scanning
                 break;
             }
 #endif
-                return regIdx;
             }
 
 

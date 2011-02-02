@@ -32,6 +32,12 @@ namespace Decompiler.Core.Rtl
         private List<RtlInstruction> instrs;
         private Address addr;
 
+        public RtlEmitter(List<RtlInstruction> instrs)
+        {
+            this.instrs = instrs;
+        }
+
+        [Obsolete]
         public RtlEmitter(Address addr, uint length, List<RtlInstruction> instrs)
         {
             this.addr= addr;

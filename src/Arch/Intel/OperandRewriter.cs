@@ -28,12 +28,12 @@ using System;
 
 namespace Decompiler.Arch.Intel
 {
-    public class OperandRewriter2
+    public class OperandRewriter
     {
         private IntelArchitecture arch;
         private Frame frame;
 
-        public OperandRewriter2(IntelArchitecture arch, Frame frame)
+        public OperandRewriter(IntelArchitecture arch, Frame frame)
         {
             this.arch = arch;
             this.frame = frame;
@@ -207,13 +207,13 @@ namespace Decompiler.Arch.Intel
         }
     }
 
-    public class OperandRewriter
+    public class OperandRewriterOld
 	{
         private IRewriterHost host;
         private IntelArchitecture arch;
         private Frame frame;
 
-        public OperandRewriter(IRewriterHost host, IntelArchitecture arch, Frame frame)
+        public OperandRewriterOld(IRewriterHost host, IntelArchitecture arch, Frame frame)
         {
             this.host = host;
             this.arch = arch;

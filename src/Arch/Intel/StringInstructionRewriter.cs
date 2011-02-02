@@ -32,12 +32,12 @@ namespace Decompiler.Arch.Intel
 	public class StringInstructionRewriter
 	{
 		private CodeEmitter emitter;
-		private OperandRewriter orw;
+		private OperandRewriterOld orw;
 		private IntelArchitecture arch;
 
 		private IntelInstruction instrCur;
 
-		public StringInstructionRewriter(IntelArchitecture arch, OperandRewriter orw)
+		public StringInstructionRewriter(IntelArchitecture arch, OperandRewriterOld orw)
 		{
 			this.arch = arch;
 			this.orw = orw;
