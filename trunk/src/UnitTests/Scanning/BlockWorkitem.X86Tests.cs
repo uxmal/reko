@@ -287,8 +287,38 @@ namespace Decompiler.UnitTests.Scanning
 
             });
             wi.Process();
-            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, follow));
-            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, block));
+            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, follow), "follow should follow block");
+            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, block), "block should loop back onto itself");
+        }
+
+        [Test]
+        public void XorFlags()
+        {
+            BuildTest16(delegate(IntelAssembler m)
+            {
+                m.Xor(m.esi, m.esi);
+                m.Label("x");
+                m.Inc(m.esi);
+                m.Jmp("x");
+
+                scanner.Expect(x => x.EnqueueJumpTarget(
+                    Arg<Address>.Matches(a => a.Offset == 0x0003),
+                    Arg<Procedure>.Is.Same(proc),
+                    Arg<ProcessorState>.Is.Anything)).Return(new Block(proc, "l0003"));
+
+            });
+            wi.Process();
+            var sExp =
+                "testblock:" + nl +
+                "\tesi = esi ^ esi" + nl +
+                "\tSZO = cond(esi)" + nl +
+                "\tC = false" + nl +
+                "\tesi = esi + 0x00000001" + nl +
+                "\tSZO = cond(esi)" + nl;
+            var sw = new StringWriter();
+            block.Write(sw);
+            Console.WriteLine(sw.ToString());
+            Assert.AreEqual(sExp, sw.ToString());
         }
     }
 }

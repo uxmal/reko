@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Code;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -48,5 +49,30 @@ namespace Decompiler.Arch.Pdp11
         {
             throw new NotImplementedException();
         }
+
+        #region ProcessorState Members
+
+
+        public void OnProcedureEntered()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnProcedureLeft(ProcedureSignature procedureSignature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CallSite OnBeforeCall()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAfterCall(ProcedureSignature sigCallee)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

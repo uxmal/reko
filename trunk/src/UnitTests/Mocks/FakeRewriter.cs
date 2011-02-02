@@ -29,16 +29,16 @@ namespace Decompiler.UnitTests.Mocks
 {
     public class FakeRewriter : Rewriter2
     {
-        IEnumerable<RtlInstruction> instrs;
+        IEnumerable<RtlInstructionCluster> instrs;
 
-        public FakeRewriter(IEnumerable<RtlInstruction> instrs)
+        public FakeRewriter(IEnumerable<RtlInstructionCluster> instrs)
         {
             this.instrs = instrs;
         }
 
         #region IEnumerable<RewrittenInstruction> Members
 
-        public IEnumerator<RtlInstruction> GetEnumerator()
+        public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             return instrs.GetEnumerator();
         }

@@ -51,9 +51,10 @@ namespace Decompiler.Core
 
     /// <summary>
     /// A rewriter implements a stream of machine-independent instructions, which it generates by successively disassembling
-    /// machine-specific instractions and rewriting them into one or more machine-independent RtlInstructions codes.
+    /// machine-specific instractions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
+    /// returned as clusters of RtlInstructions.
     /// </summary>
-    public interface Rewriter2 : IEnumerable<RtlInstruction>
+    public interface Rewriter2 : IEnumerable<RtlInstructionCluster>
     {
     }
 }

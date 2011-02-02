@@ -1545,6 +1545,11 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitByte(0xF3);
         }
 
+        public void Scasb()
+        {
+            ProcessStringInstruction(0xAE, PrimitiveType.Byte);
+        }
+
         public void Scasw()
         {
             ProcessStringInstruction(0xAE, PrimitiveType.Word16);

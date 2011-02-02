@@ -43,9 +43,8 @@ namespace Decompiler.Core.Rtl
 
         public Address Target { get; private set; }
 
-        public override void Write(TextWriter writer)
+        protected override void WriteInner(TextWriter writer)
         {
-            base.Write(writer);
             if (Condition != null)
             {
                 writer.Write("if (");

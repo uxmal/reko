@@ -50,12 +50,10 @@ namespace Decompiler.Core.Rtl
 
         public int ExtraBytesPopped { get; private set; }
 
-        public override void Write(TextWriter writer)
+        protected override void WriteInner(TextWriter writer)
         {
-            base.Write(writer);
             writer.Write("return ({0},{1})", ReturnAddressBytes, ExtraBytesPopped);
         }
-
     }
 }
 

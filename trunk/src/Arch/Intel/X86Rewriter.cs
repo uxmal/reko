@@ -43,8 +43,9 @@ namespace Decompiler.Arch.Intel
         private Frame frame;
         private LookaheadEnumerator<DisassembledInstruction> dasm;
         private RtlEmitter emitter;
-        private OperandRewriter2 orw;
+        private OperandRewriter orw;
         private DisassembledInstruction di;
+        private RtlInstructionCluster ric;
         private IntelState state;
 
         [Obsolete("Phasing out old rewriter")]
@@ -97,14 +98,14 @@ namespace Decompiler.Arch.Intel
         }
         #endregion
 
-        public IEnumerator<RtlInstruction> GetEnumerator()
+        public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())
             {
                 di = dasm.Current;
-                var instrs = new List<RtlInstruction>();
-                emitter = new RtlEmitter(di.Address, di.Length, instrs);
-                orw = new OperandRewriter2(arch, frame);
+                ric = new RtlInstructionCluster(di.Address, (byte)di.Length);
+                emitter = new RtlEmitter(ric.Instructions);
+                orw = new OperandRewriter(arch, frame);
                 switch (di.Instruction.code)
                 {
                 default:
@@ -196,6 +197,8 @@ namespace Decompiler.Arch.Intel
                 case Opcode.rep: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.Sub); break;
+                case Opcode.scas: RewriteStringInstruction(); break;
+                case Opcode.scasb: RewriteStringInstruction(); break;
                 case Opcode.setg: RewriteSet(ConditionCode.GT); break;
                 case Opcode.setge: RewriteSet(ConditionCode.GE); break;
                 case Opcode.setl: RewriteSet(ConditionCode.LT); break;
@@ -214,11 +217,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.test: RewriteTest(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
                 }
-                    
-                foreach (var ri in instrs)
-                {
-                    yield return ri;
-                }
+                yield return ric;
             }
         }
 

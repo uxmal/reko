@@ -42,10 +42,12 @@ namespace Decompiler.Scanning
         private Block blockCur;
         private Frame frame;
         private RtlInstruction ri;
+        private RtlInstructionCluster ric;
         private Rewriter2 rewriter;
         private ProcessorState state;
         private ExpressionSimplifier eval;
-        private IEnumerator<RtlInstruction> rtlStream;
+        private IEnumerator<RtlInstructionCluster> rtlStream;
+        private int extraLabels;
 
         public BlockWorkitem(
             IScanner scanner,
@@ -74,12 +76,16 @@ namespace Decompiler.Scanning
                 return;
             while (rtlStream.MoveNext())
             {
-                ri = rtlStream.Current;
-                if (blockCur != scanner.FindContainingBlock(ri.Address))
+                ric = rtlStream.Current;
+                if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;
-                state.SetInstructionPointer(ri.Address);
-                if (!ri.Accept(this))
-                    break;
+                state.SetInstructionPointer(ric.Address);
+                for (var e = ric.Instructions.GetEnumerator(); e.MoveNext();)
+                {
+                    ri = e.Current;
+                    if (!ri.Accept(this))
+                        return;
+                }
             }
         }
 
@@ -108,7 +114,7 @@ namespace Decompiler.Scanning
                 sig);
             //state.ShrinkStack(sig.StackDelta);
             //state.ShrinkFpuStack(sig.FpuStackDelta);
-            blockCur.Statements.Add(ri.Address.Linear, ab.CreateInstruction());
+            blockCur.Statements.Add(ric.Address.Linear, ab.CreateInstruction());
         }
 
         public Constant GetValue(Expression op)
@@ -172,22 +178,26 @@ namespace Decompiler.Scanning
             var inst = (idDst != null)
                 ? new Assignment(idDst, a.Src)
                 : (Instruction) new Store(a.Dst, a.Src);
-            blockCur.Statements.Add(ri.Address.Linear, inst);
+            blockCur.Statements.Add(ric.Address.Linear, inst);
             return true;
         }
 
 
         public bool VisitBranch(RtlBranch b)
         {
+            // We don't know the 'then' block yet, as the following statements may chop up the block
+            // we're presently in. Back-patch in when the block target is obtained.
+            var branch = new Branch(b.Condition, null);
+            blockCur.Statements.Add(
+                ric.Address.Linear,
+                branch);
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
-            var fallthruAddress = ri.Address + ri.Length;
+            var fallthruAddress = ric.Address + ric.Length;
             var blockThen = scanner.EnqueueJumpTarget(b.Target, proc, state.Clone());
             var blockElse = FallthroughBlock(proc, fallthruAddress);
-            var branchingBlock = scanner.FindContainingBlock(ri.Address);
-            branchingBlock.Statements.Add(
-                ri.Address.Linear,
-                new Branch(b.Condition, blockThen));
+            var branchingBlock = scanner.FindContainingBlock(ric.Address);
+            branch.Target = blockThen;
             proc.ControlGraph.AddEdge(branchingBlock, blockElse);
             proc.ControlGraph.AddEdge(branchingBlock, blockThen);
 
@@ -203,7 +213,7 @@ namespace Decompiler.Scanning
                 // Some machine instructions, like the X86 'rep' prefix, force the need to generate 
                 // a label where there wouldn't be one normally.
 
-                var fallthru = new Block(proc, blockCur.Name + "x");
+                var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
                 proc.ControlGraph.Nodes.Add(fallthru);
                 return fallthru;
             }
@@ -219,12 +229,12 @@ namespace Decompiler.Scanning
             if (addrTarget != null)
             {
                 var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
-                var blockSource = scanner.FindContainingBlock(ri.Address);
+                var blockSource = scanner.FindContainingBlock(ric.Address);
                 blockCur.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
                 return false;
             }
 
-            blockCur.Statements.Add(ri.Address.Linear, new GotoInstruction(g.Target));
+            blockCur.Statements.Add(ric.Address.Linear, new GotoInstruction(g.Target));
             var mem = g.Target as MemoryAccess;
             if (mem == null)
                 return false;
@@ -245,7 +255,7 @@ namespace Decompiler.Scanning
             if (cStride == null || cStride == Constant.Invalid)
                 return false;
 
-            ProcessVector(ri.Address, OffsetToAddress(mem, cTableOffset), 0, cStride.ToInt32());
+            ProcessVector(ric.Address, OffsetToAddress(mem, cTableOffset), 0, cStride.ToInt32());
             return false;
         }
 
@@ -264,7 +274,7 @@ namespace Decompiler.Scanning
             {
                 var callee = scanner.ScanProcedure(addr, null, state);
                 blockCur.Statements.Add(
-                    ri.Address.Linear, 
+                    ric.Address.Linear, 
                     new CallInstruction(
                         new ProcedureConstant(PrimitiveType.Pointer32, callee),
                         site,
@@ -274,7 +284,7 @@ namespace Decompiler.Scanning
                 return true;
             }
 
-            var sig = scanner.GetCallSignatureAtAddress(ri.Address);
+            var sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
                 BuildApplication(call.Target, sig, site);
@@ -291,7 +301,7 @@ namespace Decompiler.Scanning
             }
 
             blockCur.Statements.Add(
-                    ri.Address.Linear,
+                    ric.Address.Linear,
                     new IndirectCall(
                         call.Target,
                         site));
@@ -317,7 +327,7 @@ namespace Decompiler.Scanning
         public bool VisitReturn(RtlReturn ret)
         {
             var proc = blockCur.Procedure;
-            blockCur.Statements.Add(ri.Address.Linear, new ReturnInstruction());
+            blockCur.Statements.Add(ric.Address.Linear, new ReturnInstruction());
             blockCur.Procedure.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
 
             if (frame.ReturnAddressSize != 0)
@@ -325,7 +335,7 @@ namespace Decompiler.Scanning
                 if (frame.ReturnAddressSize != ret.ReturnAddressBytes)
                 {
                     scanner.AddDiagnostic(
-                        ri.Address,
+                        ric.Address,
                         new WarningDiagnostic(string.Format(
                         "Procedure {1} previously had a return address of {2} bytes on the stack, but now seems to have a return address of {0} bytes on the stack.",
                         ret.ReturnAddressBytes, proc.Name, frame.ReturnAddressSize)));
@@ -340,7 +350,7 @@ namespace Decompiler.Scanning
             if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != stackDelta)
             {
                 scanner.AddDiagnostic(
-                    ri.Address,
+                    ric.Address,
                     new WarningDiagnostic(string.Format(
                     "Multiple different values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
             }
@@ -351,17 +361,17 @@ namespace Decompiler.Scanning
             state.OnProcedureLeft(proc.Signature);
             //proc.Signature.FpuStackArgumentMax = maxFpuStackRead;     //$REDO
             //proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;       //$REDO
-            scanner.TerminateBlock(blockCur, ri.Address + ri.Length);
+            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
             return false;
         }
 
         public bool VisitSideEffect(RtlSideEffect side)
         {
-            SystemService svc = MatchSyscallToService(side);
+            var svc = MatchSyscallToService(side);
             if (svc != null)
             {
-                ExternalProcedure ep = svc.CreateExternalProcedure(arch);
-                ProcedureConstant fn = new ProcedureConstant(arch.PointerType, ep);
+                var ep = svc.CreateExternalProcedure(arch);
+                var fn = new ProcedureConstant(arch.PointerType, ep);
                 var site = state.OnBeforeCall();
                 BuildApplication(fn, ep.Signature, site);
                 if (svc.Characteristics.Terminates)
@@ -373,7 +383,7 @@ namespace Decompiler.Scanning
             }
             else
             {
-                blockCur.Statements.Add(ri.Address.Linear, new SideEffect(side.Expression));
+                blockCur.Statements.Add(ric.Address.Linear, new SideEffect(side.Expression));
             }
             return true;
         }

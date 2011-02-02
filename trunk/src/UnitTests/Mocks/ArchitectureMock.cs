@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
 
-        public IEnumerable<RtlInstruction> InstructionStream { get; set; }
+        public IEnumerable<RtlInstructionCluster> InstructionStream { get; set; }
 
 		public static MachineRegister GetMachineRegister(int i)
 		{
