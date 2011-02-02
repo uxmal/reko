@@ -4,37 +4,39 @@
 // edi:Register edi
 // esi:Register esi
 // ebx:Register ebx
-// SCZO:Flags
+// SZO:Flags
+// C:Flags
 // Z:Flags
-// dwLoc08:Local -0008
+// esp:Register esp
 // eax:Register eax
+// dwLoc08:Local -0008
+// SCZO:Flags
 // return address size: 4
 void fn10000000()
-fn10000000_entry:		// pred:
-	// succ:  l10000000
-l10000000:		// pred: fn10000000_entry
+fn10000000_entry:
+l10000000:
 	edi = Mem0[0x1000002C:word32]
 	esi = 0x00000003
 	ebx = GetDC
-	// succ:  l10000027
-l10000027:		// pred: l10000000 l10000016
-	SCZO = cond(esi - 0x00000000)
-	branch Test(NE,Z) l10000016
-	// succ:  l1000002B l10000016
-l1000002B:		// pred: l10000027
-	return
-	// succ:  fn10000000_exit
-fn10000000_exit:		// pred: l1000002B
-	// succ: 
-l10000016:		// pred: l10000027
-	dwLoc08 = Mem0[edi:word32]
-	eax = GetDC(dwLoc08)
+	goto l10000027
+l10000016:
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = Mem0[edi:word32]
+	eax = GetDC(Mem0[esp:word32])
 	store(Mem0[edi:word32]) = eax
-	dwLoc08 = 0x00000000
-	eax = GetDC(dwLoc08)
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = 0x00000000
+	eax = GetDC(Mem0[esp:word32])
 	store(Mem0[edi + 0x00000004:word32]) = eax
 	esi = esi - 0x00000001
+	SZO = cond(esi)
 	edi = edi + 0x00000008
 	SCZO = cond(edi)
-	// succ:  l10000027
-
+l10000027:
+	esi = esi | esi
+	SZO = cond(esi)
+	C = false
+	branch Test(NE,Z) l10000016
+l1000002B:
+	return
+fn10000000_exit:

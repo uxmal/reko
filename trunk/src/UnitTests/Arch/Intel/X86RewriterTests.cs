@@ -49,20 +49,23 @@ namespace Decompiler.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            host = new RewriterHost();
             state = new IntelState();
         }
 
         private IntelAssembler Create16bitAssembler()
         {
             emitter = new IntelEmitter();
-            return new IntelAssembler(arch, new Address(0xC00, 0x000), emitter, new List<EntryPoint>());
+            var asm = new IntelAssembler(arch, new Address(0xC00, 0x000), emitter, new List<EntryPoint>());
+            host = new RewriterHost(asm.ImportThunks);
+            return asm;
         }
 
         private IntelAssembler Create32bitAssembler()
         {
             emitter = new IntelEmitter();
-            return new IntelAssembler(arch32, new Address(0x10000000), emitter, new List<EntryPoint>());
+            var asm = new IntelAssembler(arch32, new Address(0x10000000), emitter, new List<EntryPoint>());
+            host = new RewriterHost(asm.ImportThunks);
+            return asm;
         }
 
         private void AssertCode(string expected, IEnumerator<RtlInstructionCluster> e)
@@ -91,7 +94,14 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private class RewriterHost : IRewriterHost2
         {
-            private Dictionary<string, PseudoProcedure> ppp = new Dictionary<string,PseudoProcedure>();
+            private Dictionary<string, PseudoProcedure> ppp ;
+            private Dictionary<uint, PseudoProcedure> importThunks;
+
+            public RewriterHost(Dictionary<uint, PseudoProcedure> importThunks)
+            {
+                this.importThunks = importThunks;
+                this.ppp = new Dictionary<string, PseudoProcedure>();
+            }
 
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
             {
@@ -106,6 +116,15 @@ namespace Decompiler.UnitTests.Arch.Intel
             public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
             {
                 throw new NotImplementedException();
+            }
+
+            public PseudoProcedure GetImportThunkAtAddress(uint addrThunk)
+            {
+                PseudoProcedure p;
+                if (importThunks.TryGetValue(addrThunk, out p))
+                    return p;
+                else
+                    return null;
             }
         }
 

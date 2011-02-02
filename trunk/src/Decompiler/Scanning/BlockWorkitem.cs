@@ -27,6 +27,7 @@ using Decompiler.Core.Types;
 using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Scanning
@@ -194,7 +195,9 @@ namespace Decompiler.Scanning
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
             var fallthruAddress = ric.Address + ric.Length;
+
             var blockThen = scanner.EnqueueJumpTarget(b.Target, proc, state.Clone());
+
             var blockElse = FallthroughBlock(proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
             branch.Target = blockThen;
@@ -228,9 +231,11 @@ namespace Decompiler.Scanning
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
+                scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
                 var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
-                blockCur.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
+                blockSource.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
+
                 return false;
             }
 
@@ -292,6 +297,18 @@ namespace Decompiler.Scanning
                 return true;
             }
 
+            var id = call.Target as Identifier;
+            if (id != null)
+            {
+                var ppp = SearchBackForProcedureConstant(id);
+                if (ppp != null)
+                {
+                    var e = new ProcedureConstant(PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), ppp);
+                    BuildApplication(e, ppp.Signature, site);
+                    return true;
+                }
+            }
+
             var imp = ImportedProcedureName(call.Target);
             if (imp != null)
             {
@@ -309,6 +326,72 @@ namespace Decompiler.Scanning
             return true;        //$BUGBUG: but may call exit(), or ExitThread(), which should return false.
         }
 
+        /// <summary>
+        /// Searches backwards to find a ProcedureConstant that is assigned to the identifier id.
+        /// </summary>
+        /// <remarks>
+        /// This is a sleazy hack since we pay absolutely no attention to register liveness &c. However,
+        /// the code is written in the spirit of "innocent until proven guilty". If this turns out to be buggy,
+        /// and false positives occur, it will have to be canned and a better solution will have to be invented.
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        //$REVIEW: we're effectively doing constant propagation during scanning, why not use that information?
+        // Because the scanner constant propagation is doing its propagation by bits (see IntelProcessorstate)
+        // but we want to propagate procedure constants. For the future: change processor state to handle
+        // not only numeric constants, but all constants.
+        private PseudoProcedure SearchBackForProcedureConstant(Identifier id)
+        {
+            var visited = new HashSet<Block>();
+            Block block = blockCur;
+            while (block != null && !visited.Contains(block))
+            {
+                visited.Add(block);
+                for (int i = block.Statements.Count - 1; i >= 0; --i)
+                {
+                    Assignment ass = block.Statements[i].Instruction as Assignment;
+                    if (ass != null)
+                    {
+                        Identifier idAss = ass.Dst as Identifier;
+                        if (idAss != null && idAss == id)
+                        {
+                            ProcedureConstant pc = ass.Src as ProcedureConstant;
+                            if (pc != null)
+                            {
+                                return (PseudoProcedure)pc.Procedure;
+                            }
+                            else
+                                return null;
+                        }
+                    }
+                }
+                var pred = block.Procedure.ControlGraph.Predecessors(block).ToArray();
+                if (pred.Length != 1)
+                    return null;
+                block = pred[0];
+            }
+            return null;
+        }
+
+        private void DumpCfg()
+        {
+            foreach (Block block in blockCur.Procedure.ControlGraph.Nodes)
+            {
+                Console.WriteLine("block: {0}", block.Name);
+                Console.Write("\tpred:");
+                foreach (var p in block.Procedure.ControlGraph.Predecessors(block))
+                {
+                    Console.Write(" {0}", p.Name);
+                }
+                Console.WriteLine();
+                Console.Write("\tsucc:");
+                foreach (var s in block.Procedure.ControlGraph.Successors(block))
+                {
+                    Console.Write(" {0}", s.Name);
+                }
+                Console.WriteLine();
+            }
+        }
 
         public PseudoProcedure ImportedProcedureName(Expression callTarget)
         {
@@ -320,7 +403,7 @@ namespace Decompiler.Scanning
             var offset = mem.EffectiveAddress as Constant;
             if (offset == null)
                 return null;
-            return (PseudoProcedure)scanner.GetImportedProcedure(new Address(offset.ToUInt32()));
+            return (PseudoProcedure)scanner.GetImportedProcedure(offset.ToUInt32());
         }
 
 

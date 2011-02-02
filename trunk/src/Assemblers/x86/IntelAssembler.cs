@@ -1146,9 +1146,9 @@ namespace Decompiler.Assemblers.x86
             ProcessIncDec(true, op);
         }
 
-        public void Import(string s, string fnName, string dllName)
+        public void Import(string symbolName, string fnName, string dllName)
         {
-            DefineSymbol(s);
+            DefineSymbol(symbolName);
             SignatureLibrary lib;
             if (!importLibraries.TryGetValue(dllName, out lib))
             {
@@ -1808,6 +1808,7 @@ namespace Decompiler.Assemblers.x86
             return new ParsedOperand(
                 new MemoryOperand(width, @base, IntegralConstant(offset)));
         }
+
     }
 }
 

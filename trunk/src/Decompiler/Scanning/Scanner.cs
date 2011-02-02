@@ -49,7 +49,7 @@ namespace Decompiler.Scanning
         Block AddBlock(Address addr, Procedure proc, string blockName);
         void AddDiagnostic(Address addr, Diagnostic d);
         ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
-        PseudoProcedure GetImportedProcedure(Address addr);
+        PseudoProcedure GetImportedProcedure(uint linAddr);
         void TerminateBlock(Block block, Address addrEnd);
 
         /// <summary>
@@ -316,10 +316,10 @@ namespace Decompiler.Scanning
                 return null;
         }
 
-        public PseudoProcedure GetImportedProcedure(Address addr)
+        public PseudoProcedure GetImportedProcedure(uint linearAddress)
         {
             PseudoProcedure ppp;
-            if (importThunks.TryGetValue(addr.Linear, out ppp))
+            if (importThunks.TryGetValue(linearAddress, out ppp))
                 return ppp;
             else
                 return null;
@@ -387,6 +387,15 @@ namespace Decompiler.Scanning
             ProcedureSignature sig = null;
             callSigs.TryGetValue(addrCallInstruction, out sig);
             return sig;
+        }
+
+        public PseudoProcedure GetImportThunkAtAddress(uint linaddrThunk)
+        {
+            PseudoProcedure ppp;
+            if (importThunks.TryGetValue(linaddrThunk, out ppp))
+                return ppp;
+            else
+                return null;
         }
 
         #endregion
@@ -974,7 +983,7 @@ namespace Decompiler.Scanning
         IDictionary<Address, VectorUse> IScanner.VectorUses { get { return vectorUses; } }
         void IScanner.TerminateBlock(Block block, Address addr) { }
         Block IScanner.FindContainingBlock(Address addr) { throw new NotImplementedException(); }
-        PseudoProcedure IScanner.GetImportedProcedure(Address addr) { throw new NotImplementedException(); }
+        PseudoProcedure IScanner.GetImportedProcedure(uint linaddr) { throw new NotImplementedException(); }
         #endregion
     }
 }

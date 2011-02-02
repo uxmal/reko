@@ -105,7 +105,7 @@ namespace Decompiler.Arch.Intel
                 di = dasm.Current;
                 ric = new RtlInstructionCluster(di.Address, (byte)di.Length);
                 emitter = new RtlEmitter(ric.Instructions);
-                orw = new OperandRewriter(arch, frame);
+                orw = new OperandRewriter(arch, frame, host);
                 switch (di.Instruction.code)
                 {
                 default:
@@ -279,7 +279,7 @@ namespace Decompiler.Arch.Intel
             {
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
                 emitter.Assign(tmp, src);
-                MemoryAccess ea = orw.CreateMemoryAccess((MemoryOperand)opDst, state);
+                var ea = orw.CreateMemoryAccess((MemoryOperand)opDst, state);
                 return emitter.Assign(ea, tmp);
             }
         }

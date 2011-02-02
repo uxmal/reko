@@ -635,7 +635,7 @@ namespace Decompiler.Arch.Intel
             {
                 Identifier tmp = frame.CreateTemporary(opDst.Width);
                 emitter.Assign(tmp, src);
-                MemoryAccess acc = orw.CreateMemoryAccess((MemoryOperand)opDst, state);
+                var acc = orw.CreateMemoryAccess((MemoryOperand)opDst, state);
                 emitter.Assign(acc, new UnaryExpression(op, opSrc.Width, tmp));
                 return tmp;
             }

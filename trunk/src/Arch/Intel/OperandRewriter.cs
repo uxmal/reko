@@ -32,12 +32,15 @@ namespace Decompiler.Arch.Intel
     {
         private IntelArchitecture arch;
         private Frame frame;
+        private IRewriterHost2 host;
 
-        public OperandRewriter(IntelArchitecture arch, Frame frame)
+        public OperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost2 host)
         {
             this.arch = arch;
             this.frame = frame;
+            this.host = host;
         }
+
 
         public Expression Transform(MachineOperand op, PrimitiveType opWidth, IntelState state)
         {
@@ -80,8 +83,12 @@ namespace Decompiler.Arch.Intel
                 return new Constant(imm.Width, imm.Value.ToUInt32());
         }
 
-        public MemoryAccess CreateMemoryAccess(MemoryOperand mem, DataType dt, IntelState state)
+        public Expression CreateMemoryAccess(MemoryOperand mem, DataType dt, IntelState state)
         {
+            PseudoProcedure ppp = ImportedProcedureName(mem.Width, mem);
+            if (ppp != null)
+                return new ProcedureConstant(arch.PointerType, ppp);
+
             Expression expr = EffectiveAddressExpression(mem, state);
             if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
             {
@@ -96,7 +103,7 @@ namespace Decompiler.Arch.Intel
             }
         }
 
-        public MemoryAccess CreateMemoryAccess(MemoryOperand memoryOperand, IntelState state)
+        public Expression CreateMemoryAccess(MemoryOperand memoryOperand, IntelState state)
         {
             return CreateMemoryAccess(memoryOperand, memoryOperand.Width, state);
         }
@@ -192,6 +199,16 @@ namespace Decompiler.Arch.Intel
             return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
         }
 
+        public PseudoProcedure ImportedProcedureName(PrimitiveType addrWidth, MemoryOperand mem)
+        {
+            if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == MachineRegister.None &&
+                mem.Index == MachineRegister.None)
+            {
+                return (PseudoProcedure)host.GetImportThunkAtAddress(mem.Offset.ToUInt32());
+            }
+            return null;
+        }
+
         public Constant ReplaceCodeSegment(MachineRegister reg, IntelState state)
         {
             if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
@@ -206,6 +223,20 @@ namespace Decompiler.Arch.Intel
                 PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), expr);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public class OperandRewriterOld
 	{
