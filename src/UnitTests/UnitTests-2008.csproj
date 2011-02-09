@@ -439,13 +439,13 @@
     <Compile Include="Evaluation\SliceMem_RuleTest.cs" />
     <Compile Include="Evaluation\SymbolicEvaluatorTests.cs" />
     <Compile Include="Mocks\FakePlatform.cs" />
+    <Compile Include="Scanning\ProcedureScannerTests.cs" />
     <Compile Include="Scanning\RtlBackWalkerTests.cs" />
     <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Arch\Intel\Assembler\" />
     <Folder Include="ImageLoaders\MzExe\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

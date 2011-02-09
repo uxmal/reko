@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssembledSegment.cs" />
     <Compile Include="IntelEmitter.cs">
       <SubType>Code</SubType>
     </Compile>

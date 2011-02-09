@@ -298,5 +298,16 @@ movzx	ax,byte ptr [bp+04]
             Assert.AreEqual("call\tF003", instr.ToString());
             Assert.AreSame(PrimitiveType.Word16, instr.op1.Width);
         }
+
+        [Test]
+        public void FarCall()
+        {
+            byte[] image = new byte[] { 0x9A, 0x78, 0x56, 0x34, 0x12, 0x90, 0x90 };
+            var img = new ProgramImage(new Address(0x0C00, 0x0000), image);
+            var rdr = img.CreateReader(img.BaseAddress);
+            IntelDisassembler dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
+            var instr = dasm.Disassemble();
+            Assert.AreEqual("call\tfar 1234:5678", instr.ToString());
+        }
 	}
 }

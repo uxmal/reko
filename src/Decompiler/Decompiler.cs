@@ -402,7 +402,7 @@ namespace Decompiler
                 {
                     eventListener.AddDiagnostic(
                         eventListener.CreateProcedureNavigator(proc),
-                        new ErrorDiagnostic("An error occurred while rewriting procedure to high-level language."));
+                        new ErrorDiagnostic("An error occurred while rewriting procedure to high-level language.", e));
                 }
 			}
             WriteDecompilerProducts();

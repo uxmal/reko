@@ -73,6 +73,7 @@ namespace Decompiler.Assemblers.x86
 			keywords["endp"] = Token.ENDP;
 			keywords["ends"] = Token.ENDS;
 			keywords["extrn"] = Token.EXTRN;
+            keywords["far"] = Token.FAR;
 			keywords["group"] = Token.GROUP;
 			keywords["if"] = Token.IF;
 			keywords["include"] = Token.INCLUDE;
@@ -185,7 +186,8 @@ namespace Decompiler.Assemblers.x86
 			keywords["rcl"] = Token.RCL;
 			keywords["rcr"] = Token.RCR;
 			keywords["rep"] = Token.REP;
-			keywords["ret"] = Token.RET;
+            keywords["ret"] = Token.RET;
+            keywords["retf"] = Token.RETF;
 			keywords["rol"] = Token.ROL;
 			keywords["ror"] = Token.ROR;
 			keywords["sar"] = Token.SAR;

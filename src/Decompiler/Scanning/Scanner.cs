@@ -78,6 +78,7 @@ namespace Decompiler.Scanning
     {
         private IProcessorArchitecture arch;
         private PriorityQueue<WorkItem> queue;
+        private Stack<ProcedureScanner> stack;
         private ProgramImage image;
         private Map<uint, BlockRange> blocks;
         private Dictionary<Block, uint> blockStarts;
@@ -109,6 +110,7 @@ namespace Decompiler.Scanning
 
             this.Procedures = new SortedList<Address, Procedure>();
             this.queue = new PriorityQueue<WorkItem>();
+            this.stack = new Stack<ProcedureScanner>();
             this.blocks = new Map<uint, BlockRange>();
             this.blockStarts = new Dictionary<Block, uint>();
             this.callgraph = new CallGraph();
@@ -141,6 +143,8 @@ namespace Decompiler.Scanning
         public IProcessorArchitecture Architecture { get { return arch; } }
         public CallGraph CallGraph { get { return callgraph; } }
         public Platform Platform { get { return platform; } }
+        public PriorityQueue<WorkItem> Queue { get { return queue; } }
+        public Stack<ProcedureScanner> Stack { get { return stack; } }
         public SortedList<Address, Procedure> Procedures { get; private set; }
         public IDictionary<Address, VectorUse> VectorUses { get; private set; } 
 

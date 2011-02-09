@@ -290,8 +290,7 @@ namespace Decompiler.Arch.Intel
 			isModrmValid = false;
 			segmentOverride = MachineRegister.None;
             byte op = rdr.ReadByte();
-			OpRec opRec = s_aOpRec[op];
-            return opRec.Decode(this, op, "");
+            return s_aOpRec[op].Decode(this, op, "");
         }
 
         private IntelInstruction DecodeOperands(Opcode opcode, byte op, string strFormat)

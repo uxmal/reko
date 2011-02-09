@@ -19,9 +19,10 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Serialization;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -282,6 +283,11 @@ namespace Decompiler.Arch.Intel
         public virtual Rewriter2 CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
             return new X86Rewriter(this, host, (IntelState) state, rdr, frame);
+        }
+
+        public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        {
+            return this.mode.CreateStackAccess(frame, offset, dataType);
         }
 
 		public MachineFlags GetFlagGroup(uint grf)

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
@@ -51,10 +52,12 @@ namespace Decompiler.UnitTests.Core
 		private Identifier argOff;
 		private Identifier argSeg;
 		private Identifier arg_alias;
+        private IntelArchitecture arch;
 
 		[SetUp]
 		public void Setup()
 		{
+            arch = new IntelArchitecture(ProcessorMode.Real);
 			f = new Frame(PrimitiveType.Word16);
 			argOff = f.EnsureStackArgument(4, PrimitiveType.Word16);
 			argSeg = f.EnsureStackArgument(6, PrimitiveType.SegmentSelector);
@@ -84,13 +87,13 @@ namespace Decompiler.UnitTests.Core
 
 			Frame callee = new Frame(PrimitiveType.Word16);
 			callee.EnsureStackArgument(4, PrimitiveType.Word16);
-			Identifier id = callee.EnsureStackArgument(4, PrimitiveType.Word32);
-			Identifier id2 = id.Storage.BindFormalArgumentToFrame(caller, new CallSite(6+2, 0));
-			Assert.AreEqual("bindToArg04", id2.Name);
+			var id = callee.EnsureStackArgument(4, PrimitiveType.Word32);
+			var id2 = id.Storage.BindFormalArgumentToFrame(arch, caller, new CallSite(6+2, 0));
+            Assert.AreEqual("bindToArg04", id2.ToString());
 
 			id = callee.EnsureStackArgument(2, PrimitiveType.Word16);
-			id2 = id.Storage.BindFormalArgumentToFrame(caller, new CallSite(6+2, 0));
-			Assert.AreEqual("bindToArg02", id2.Name);
+			id2 = id.Storage.BindFormalArgumentToFrame(arch, caller, new CallSite(6+2, 0));
+			Assert.AreEqual("bindToArg02", id2.ToString());
 		}
 	}
 

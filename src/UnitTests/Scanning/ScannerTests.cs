@@ -69,11 +69,10 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildX86RealTest(Action<IntelAssembler> test)
         {
             prog = new Program();
-            var emitter = new IntelEmitter();
             var addr = new Address(0xC00, 0);
-            var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, emitter, new List<EntryPoint>());
+            var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             test(m);
-            prog.Image = new ProgramImage(addr, emitter.Bytes);
+            prog.Image = m.GetImage();
             prog.Architecture = m.Architecture;
             prog.Platform = new FakePlatform();
             scan = new TestScanner(prog);
@@ -175,9 +174,8 @@ namespace Decompiler.UnitTests.Scanning
         public void CallGraphTree()
         {
             Program prog = new Program();
-            var emitter = new IntelEmitter();
             var addr = new Address(0xC00, 0);
-            var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, emitter, new List<EntryPoint>());
+            var m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addr, new List<EntryPoint>());
             m.i86();
 
             m.Proc("main");
@@ -200,7 +198,7 @@ namespace Decompiler.UnitTests.Scanning
             m.Endp("baz");
 
 
-            prog.Image = new ProgramImage(addr, emitter.Bytes);
+            prog.Image = m.GetImage();
             var scan = new Scanner(m.Architecture, prog.Image, new FakePlatform(), new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(addr, new IntelState());
             scan.EnqueueEntryPoint(ep);
@@ -259,6 +257,31 @@ fn0C00_0000_exit:
             Assert.AreEqual(1, st.FpuStackItems);
             Assert.AreEqual(0, stNew.FpuStackItems);
         }
+
+        //        [Test(Description="When entrypoints are added they should end up in the top-level scanner queue")]
+        //public void EntryPointsAddedToScanQueue()
+        //{
+        //    scan.EnqueueEntryPoint(new EntryPoint(new Address(0x3123), new IntelState()));
+        //    Assert.AreEqual(1, scan.Queue.Count);
+        //    Assert.AreEqual(0, scan.Stack.Count);
+        //}
+
+        //[Test(Description="Pulling a queue item should create a ProcedureScanner and push it on the stack.")]
+        //public void DequeueingItemShouldPutProcedureScannerOnStack()
+        //{
+        //    scan.EnqueueEntryPoint(new EntryPoint(new Address(0x3123), new IntelState()));
+        //    scan.ProcessQueueItem();
+        //    Assert.AreEqual(1, scan.Stack.Count);
+        //}
+
+        //        [Test(Description="Dequeueing a procedure item should put a block in the scanner queue")] 
+        //public void DequeueingItemShouldPutBlockworkitemOnProcedureScannerQueue()
+        //{
+        //    scan.EnqueueEntryPoint(new EntryPoint(new Address(0x3123), new IntelState()));
+        //    scan.ProcessQueueItem();
+        //    Assert.AreEqual(1, scan.Stack.Peek().Queue.Count);
+        //}
+
     }
 
     [TestFixture]
@@ -381,6 +404,7 @@ fn0C00_0000_exit:
             Assert.AreSame(p1101, b1101.Procedure);
             Assert.AreSame(p1101, b1103.Procedure);
         }
+
 
 
 

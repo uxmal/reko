@@ -36,7 +36,6 @@ namespace Decompiler.UnitTests.Arch.Intel
     {
         private IntelArchitecture arch;
         private IntelArchitecture arch32;
-        private IntelEmitter emitter;
         private RewriterHost host;
         private IntelState state;
 
@@ -54,16 +53,14 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private IntelAssembler Create16bitAssembler()
         {
-            emitter = new IntelEmitter();
-            var asm = new IntelAssembler(arch, new Address(0xC00, 0x000), emitter, new List<EntryPoint>());
+            var asm = new IntelAssembler(arch, new Address(0xC00, 0x000), new List<EntryPoint>());
             host = new RewriterHost(asm.ImportThunks);
             return asm;
         }
 
         private IntelAssembler Create32bitAssembler()
         {
-            emitter = new IntelEmitter();
-            var asm = new IntelAssembler(arch32, new Address(0x10000000), emitter, new List<EntryPoint>());
+            var asm = new IntelAssembler(arch32, new Address(0x10000000), new List<EntryPoint>());
             host = new RewriterHost(asm.ImportThunks);
             return asm;
         }

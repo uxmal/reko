@@ -32,10 +32,16 @@ namespace Decompiler.UnitTests.Core
 	[TestFixture]
 	public class FrameTests
 	{
+        private IntelArchitecture arch;
+
+        [SetUp]
+        public void Setup()
+        {
+            arch = new IntelArchitecture(ProcessorMode.Real);
+        }
 		[Test]
 		public void RegisterTest()
 		{
-			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier id0 = f.EnsureRegister(Registers.ax);
 			Identifier id1 = f.EnsureRegister(Registers.bx);
@@ -94,7 +100,6 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void FrSequenceAccess()
 		{
-			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier dx = f.EnsureRegister(Registers.dx);
@@ -127,7 +132,7 @@ namespace Decompiler.UnitTests.Core
 
 			CallSite cs = new CallSite(stack + f.ReturnAddressSize, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
-			ApplicationBuilder ab = new ApplicationBuilder(f, cs, fn, sig);
+			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig);
             Instruction instr = ab.CreateInstruction(); 
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
 			{
@@ -140,7 +145,6 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void FrBindMixedParameters()
 		{
-			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier cx = f.EnsureRegister(Registers.cx);
@@ -154,7 +158,7 @@ namespace Decompiler.UnitTests.Core
 			
 			CallSite cs = new CallSite(stack, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));
-			ApplicationBuilder ab = new ApplicationBuilder(f, cs, fn, sig);
+			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig);
             Instruction instr = ab.CreateInstruction();
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindMixedParameters.txt"))
 			{
@@ -214,14 +218,14 @@ namespace Decompiler.UnitTests.Core
 			caller.Frame.EnsureStackLocal(-8, PrimitiveType.Word32, "bindToArg04");
 			caller.Frame.EnsureStackLocal(-10, PrimitiveType.Word16, "bindToArg02");
 			CallSite cs = new CallSite(10 + callee.Frame.ReturnAddressSize, 0);
-			Identifier id = arg08.Storage.BindFormalArgumentToFrame(caller.Frame, cs);
-			Assert.AreEqual("bindToArg08", id.Name);
-			id = arg02.Storage.BindFormalArgumentToFrame(caller.Frame, cs);
-			Assert.AreEqual("bindToArg02", id.Name);
-			id = arg04.Storage.BindFormalArgumentToFrame(caller.Frame, cs);
+			var id = arg08.Storage.BindFormalArgumentToFrame(arch, caller.Frame, cs);
+			Assert.AreEqual("bindToArg08", id.ToString());
+			id = arg02.Storage.BindFormalArgumentToFrame(arch, caller.Frame, cs);
+            Assert.AreEqual("bindToArg02", id.ToString());
+			id = arg04.Storage.BindFormalArgumentToFrame(arch, caller.Frame, cs);
 			caller.Frame.Write(Console.Out);
 
-			Assert.AreEqual("bindToArg04", id.Name);
+            Assert.AreEqual("bindToArg04", id.ToString());
 		}
 	}
 }

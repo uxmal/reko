@@ -963,6 +963,7 @@ namespace Decompiler.Arch.Intel
 		private void BuildApplication(Expression fn, ProcedureSignature sig)
 		{
             ApplicationBuilder ab = new ApplicationBuilder(
+                arch,
                 frame, 
                 new CallSite(state.StackBytes, state.FpuStackItems),
                 fn,
@@ -1186,17 +1187,20 @@ namespace Decompiler.Arch.Intel
 			{
 				if (procCallee.Signature == null)
 					throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", proc.Name));
-				Identifier id = 
-					procCallee.Signature.FormalArguments[0].Storage.BindFormalArgumentToFrame(this.frame, site);
-				Constant c = SearchBackForConstantAssignment(id);
-				if (c != null)
-				{
-					int size = c.ToInt32();
-					state.GrowStack(size);
-					Identifier idBuf = frame.EnsureStackLocal(state.StackBytes, new StructureType(null, size));	
-					emitter.Assign(id, new UnaryExpression(Operator.AddrOf, id.DataType, idBuf));
-					return;
-				}
+				var target = procCallee.Signature.FormalArguments[0].Storage.BindFormalArgumentToFrame(arch, this.frame, site);
+                var id = target as Identifier;
+                if (id != null)
+                {
+                    Constant c = SearchBackForConstantAssignment(id);
+                    if (c != null)
+                    {
+                        int size = c.ToInt32();
+                        state.GrowStack(size);
+                        Identifier idBuf = frame.EnsureStackLocal(state.StackBytes, new StructureType(null, size));
+                        emitter.Assign(id, new UnaryExpression(Operator.AddrOf, id.DataType, idBuf));
+                        return;
+                    }
+                }
 			}
 			emitter.Call(procCallee, site, 0);
             state.OnReturnFromCall(procCallee.Signature);

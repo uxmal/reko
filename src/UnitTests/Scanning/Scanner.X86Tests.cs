@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Scanning
             var emitter = new IntelEmitter();
             var entryPoints = new List<EntryPoint>();
             var addrBase = new Address(0xC00, 0);
-            var asm = new IntelAssembler(arch, addrBase, emitter, entryPoints);
+            var asm = new IntelAssembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
             scanner = new Scanner(

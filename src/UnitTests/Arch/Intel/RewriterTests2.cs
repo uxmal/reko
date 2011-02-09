@@ -179,6 +179,12 @@ namespace Decompiler.UnitTests.Arch.Intel
 			RunTest("Fragments/multiple/procisolation.asm", "Intel/RwProcIsolation.txt");
 		}
 
+        [Test]
+        public void RwIntraSegmentFarCall()
+        {
+            RunTest("Fragments/multiple/intrasegmentfarcall.asm", "Intel/RwIntraSegmentFarCall.txt");
+        }
+
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			DoRewriteFile(sourceFile);

@@ -23,29 +23,31 @@ using System;
 
 namespace Decompiler.Core.Expressions
 {
-	public class MemoryAccess : Expression
-	{
+    public class MemoryAccess : Expression
+    {
         public MemoryIdentifier MemoryId { get; set; }
         public Expression EffectiveAddress { get; set; }
-		
-		public MemoryAccess(Expression ea, DataType dt) : base(dt)
-		{
-			this.MemoryId = MemoryIdentifier.GlobalMemory;
-			this.EffectiveAddress = ea;
-		}
 
-		public MemoryAccess(MemoryIdentifier id, Expression ea, DataType dt) : base(dt)
-		{
-			if (dt == null)
-				throw new ArgumentNullException("dt");
-			this.MemoryId = id;
-			this.EffectiveAddress = ea;
-		}
+        public MemoryAccess(Expression ea, DataType dt)
+            : base(dt)
+        {
+            this.MemoryId = MemoryIdentifier.GlobalMemory;
+            this.EffectiveAddress = ea;
+        }
 
-		public override void Accept(IExpressionVisitor v)
-		{
-			v.VisitMemoryAccess(this);
-		}
+        public MemoryAccess(MemoryIdentifier id, Expression ea, DataType dt)
+            : base(dt)
+        {
+            if (dt == null)
+                throw new ArgumentNullException("dt");
+            this.MemoryId = id;
+            this.EffectiveAddress = ea;
+        }
+
+        public override void Accept(IExpressionVisitor v)
+        {
+            v.VisitMemoryAccess(this);
+        }
 
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
@@ -53,15 +55,31 @@ namespace Decompiler.Core.Expressions
         }
 
         public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformMemoryAccess(this);
-		}
+        {
+            return xform.TransformMemoryAccess(this);
+        }
 
-		public override Expression CloneExpression()
-		{
-			return new MemoryAccess(EffectiveAddress.CloneExpression(), DataType);
-		}
-	}
+        public override Expression CloneExpression()
+        {
+            return new MemoryAccess(EffectiveAddress.CloneExpression(), DataType);
+        }
+
+        public static MemoryAccess Create(Expression baseRegister, int offset, DataType dt)
+        {
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, CreateEffectiveAddress(baseRegister, offset), dt);
+        }
+
+        protected static Expression CreateEffectiveAddress(Expression baseRegister, int offset)
+        {
+            if (offset == 0)
+                return baseRegister;
+            else
+                return new BinaryExpression(Operators.Operator.Add,
+                    baseRegister.DataType,
+                    baseRegister,
+                    new Constant(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.Size), offset));
+        }
+    }
 
 	/// <summary>
 	/// Segmented memory access that models x86 segmented memory adderssing.
@@ -95,6 +113,11 @@ namespace Decompiler.Core.Expressions
 		{
 			return new SegmentedAccess(MemoryId, BasePointer.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
 		}
+
+        public static SegmentedAccess Create(Expression segRegister, Expression baseRegister, int offset, DataType dt)
+        {
+            return new SegmentedAccess(MemoryIdentifier.GlobalMemory, segRegister, CreateEffectiveAddress(baseRegister, offset), dt);
+        }
 
 	}
 }

@@ -36,11 +36,11 @@ namespace Decompiler.UnitTests.Core
 			using (FileUnitTester fut = new FileUnitTester("Core/BlockCreateStatements.txt"))
 			{
 				Block bl = new Block(null, "block0");
-				bl.Statements.Add(
+				bl.Statements.Add(0,
 					new Assignment(
 					new Identifier("id3", 3, PrimitiveType.Word16, null),
 					new Identifier("id4", 4, PrimitiveType.Word16, null)));
-				bl.Statements.Add(
+				bl.Statements.Add(4,
 					new Assignment(
 					new Identifier("id4", 4, PrimitiveType.Word16, null),
 					new Constant(PrimitiveType.Word16, 3)));
