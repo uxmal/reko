@@ -39,12 +39,12 @@ namespace Decompiler.Assemblers.x86
 	public class IntelTextAssembler : Assembler
 	{
 		private Lexer lexer;
-		private IntelEmitter emitter;
 		private Address addrBase;
 		private Address addrStart;
         private List<EntryPoint> entryPoints;
         private IntelAssembler asm;
         private ProgramImage image;
+        private IntelEmitter emitter;
 
 		public IntelTextAssembler()
 		{
@@ -63,12 +63,11 @@ namespace Decompiler.Assemblers.x86
         {
             addrBase = addr;
             lexer = new Lexer(rdr);
-            emitter = new IntelEmitter();
 
             // Default assembler is real-mode.
 
             IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-            asm = new IntelAssembler(arch, addrBase, emitter, entryPoints);
+            asm = new IntelAssembler(arch, addrBase, entryPoints);
 
             // Assemblers are strongly line-oriented.
 
@@ -79,7 +78,7 @@ namespace Decompiler.Assemblers.x86
 
             asm.ReportUnresolvedSymbols();
             addrStart = addrBase;
-            image= new  ProgramImage(addrBase, emitter.Bytes);
+            image = asm.GetImage();
         }
 
 		public void AssembleFragment(Address addr, string fragment)
@@ -243,10 +242,26 @@ namespace Decompiler.Assemblers.x86
 		}
 
 
-		private void ProcessCallJmp(int direct, int indirect)
+		private void ProcessCallJmp(bool isCall)
 		{
-			//$NYI: No CALLF/JMPF support
-			Token token = lexer.PeekToken();
+            // call lbl = 0xE8
+            // call [indir] = 0x02
+            // call far lbl = 0x9A
+            // call far [indir] = 0x03
+
+            // jmp lbl = 0xE9
+            // jmp [indir] = 0x04
+            // jmp far lbl = 0x9A
+            // jmp far [indir] = 0x03
+
+            bool far = false;
+            Token token = lexer.PeekToken();
+            if (token == Token.FAR)
+            {
+                lexer.DiscardToken();
+                far = true;
+            }
+			token = lexer.PeekToken();
 			switch (token)
 			{
 			default:
@@ -256,15 +271,18 @@ namespace Decompiler.Assemblers.x86
 			case Token.DWORD:
 			case Token.WORD:
 			case Token.REGISTER:
-			{
-				// Indirect jump.
-				ParsedOperand [] ops = ParseOperandList(1);
-                asm.ProcessCallJmp(indirect, ops[0]);
+                int indirect = isCall
+                    ? (far ? 0x03 : 0x02)
+                    : (far ? 0x05 : 0x04);
+				var ops = ParseOperandList(1);
+                asm.ProcessCallJmp(far, indirect, ops[0]);
 				break;
-			}
 			case Token.ID:
+                int direct = isCall
+                    ? (far ? 0x9A : 0xE8)
+                    : (far ? 0xEA : 0xE9);
 				lexer.DiscardToken();
-                asm.ProcessCallJmp(direct, lexer.StringLiteral);
+                asm.ProcessCallJmp(far, direct, lexer.StringLiteral);
 				break;
 			}
 		}
@@ -573,6 +591,7 @@ namespace Decompiler.Assemblers.x86
 
 		private void ProcessLine()
 		{
+            emitter = asm.Emitter;
 			emitter.AddressWidth = null;
 			Token tok = lexer.GetToken();
 			switch (tok)
@@ -630,7 +649,7 @@ namespace Decompiler.Assemblers.x86
 				ProcessBitOp();
 				break;
 			case Token.CALL:
-				ProcessCallJmp(0xE8, 0x02);
+				ProcessCallJmp(true);
 				break;
 			case Token.CDQ:
 				asm.ProcessCwd(PrimitiveType.Word32);
@@ -789,7 +808,7 @@ namespace Decompiler.Assemblers.x86
 				ProcessBranch(0x0E);
 				break;
 			case Token.JMP:
-				ProcessCallJmp(0xE9, 0x04);
+				ProcessCallJmp(false);
 				break;
 			case Token.JNC:
 				ProcessBranch(0x03);
@@ -918,9 +937,12 @@ namespace Decompiler.Assemblers.x86
                 asm.Rep();
 				ProcessLine();
 				return;
-			case Token.RET:
-				ProcessRet();
-				break;
+            case Token.RET:
+                ProcessRet(false);
+                break;
+            case Token.RETF:
+                ProcessRet(true);
+                break;
 
 			case Token.ROL:
 				ProcessShiftRotation(0x00);
@@ -1019,27 +1041,23 @@ namespace Decompiler.Assemblers.x86
             asm.ProcessPushPop(fPop, ops[0]);
         }
 
-		private void ProcessRet()
+		private void ProcessRet(bool far)
 		{
-			//$BUGBUG: far / near
+            int n = 0;
 			if (lexer.PeekToken() == Token.INTEGER)
 			{
-				int n = lexer.Integer;
+				n = lexer.Integer;
 				lexer.DiscardToken();
-				if (n != 0)
-				{
-                    asm.Ret(n);
-				}
-				else
-				{
-                    asm.Ret();
-				}
 			}
-			else
-			{
-                asm.Ret();
-			}
-		}
+            if (far)
+            {
+                asm.Retf(n);
+            }
+            else
+            {
+                asm.Ret(n);
+            }
+        }
 
 		public void ProcessSegment()
 		{

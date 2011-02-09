@@ -504,13 +504,13 @@ namespace Decompiler.Analysis
 				ProcedureSignature sig = ci.Callee.Signature;
 				if (sig.ReturnValue != null)
 				{
-					varLive.Def(sig.ReturnValue.Storage.BindFormalArgumentToFrame(proc.Frame, ci.CallSite));
+					varLive.Def(sig.ReturnValue.Storage.BindFormalArgumentToFrame(prog.Architecture, proc.Frame, ci.CallSite));
 				}
 				foreach (Identifier arg in sig.FormalArguments)
 				{
 					if (arg.Storage is OutArgumentStorage)
 					{
-						varLive.Def(arg.Storage.BindFormalArgumentToFrame(proc.Frame, ci.CallSite));
+                        varLive.Def(arg.Storage.BindFormalArgumentToFrame(prog.Architecture, proc.Frame, ci.CallSite));
 					}
 				}
 
@@ -518,7 +518,7 @@ namespace Decompiler.Analysis
 				{
 					if (!(arg.Storage is OutArgumentStorage))
 					{
-						varLive.Use(arg.Storage.BindFormalArgumentToFrame(proc.Frame, ci.CallSite));
+                        varLive.Use(arg.Storage.BindFormalArgumentToFrame(prog.Architecture, proc.Frame, ci.CallSite));
 					}
 				}
 			}

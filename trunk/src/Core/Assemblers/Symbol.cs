@@ -32,19 +32,19 @@ namespace Decompiler.Core.Assemblers
 		public string sym;
 		public bool fResolved;
 		public int offset;
-		public List<BackPatch> patches;		
+        public List<BackPatch> Patches { get; private set; }		
 			
 		public Symbol(string s)
 		{
 			sym = s;
 			fResolved = false;
 			offset = 0;
-			patches = new List<BackPatch>();
+			Patches = new List<BackPatch>();
 		}
 
 		public void AddForwardReference(int offset, DataType width)
 		{
-			patches.Add(new BackPatch(offset, width));
+			Patches.Add(new BackPatch(offset, width));
 		}
 
         public void ReferTo(int off, DataType width, Emitter emitter)
@@ -63,7 +63,7 @@ namespace Decompiler.Core.Assemblers
         public void Resolve(Emitter emitter)
         {
             Debug.Assert(fResolved);
-            foreach (BackPatch patch in patches)
+            foreach (BackPatch patch in Patches)
             {
                 emitter.PatchLe(patch.offset, offset, patch.Size);
             }
@@ -115,7 +115,6 @@ namespace Decompiler.Core.Assemblers
             if (!symbols.TryGetValue(s, out sym))
 			{
 				// Forward reference to a symbol. 
-
 				sym = new Symbol(s);
 				symbols.Add(s, sym);
 			}
@@ -167,7 +166,7 @@ namespace Decompiler.Core.Assemblers
 					de.Key, 
 					de.Value.fResolved ? "resolved" : "unresolved",
 					de.Value.offset, 
-                    de.Value.patches.Count,
+                    de.Value.Patches.Count,
 					(de.Value.sym != null ? de.Value.sym : ""));
 			}
 		}

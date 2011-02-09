@@ -55,6 +55,11 @@ namespace Decompiler.Analysis
 			id.Storage.Accept(this);
 		}
 
+        public void Def(Expression e)
+        {
+            throw new NotImplementedException();
+        }
+
 		public int DefBitSize
 		{
 			get { return defBitSize; }
@@ -71,6 +76,10 @@ namespace Decompiler.Analysis
 			define = false;
 			id.Storage.Accept(this);
 		}
+        public void Use(Expression ex)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Marks this identifier as being used.

@@ -114,8 +114,7 @@ namespace Decompiler.UnitTests.Scanning
             block = proc.AddBlock("testblock");
             stm = new RtlStatementStream(0x1000, block);
             state = new IntelState();
-            emitter = new IntelEmitter();
-            var asm = new IntelAssembler(arch, addr, emitter, new List<EntryPoint>());
+            var asm = new IntelAssembler(arch, addr, new List<EntryPoint>());
             scanner = repository.Stub<IScanner>();
             host = new RewriterHost(asm.ImportThunks);
             using (repository.Record())
@@ -125,7 +124,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             }
-            var image = new ProgramImage(addr, emitter.Bytes);
+            var image = asm.GetImage();
             var rw = arch.CreateRewriter2(new ImageReader(image, addr), state, proc.Frame, host);
             wi = new BlockWorkitem(scanner, rw, state, proc.Frame, new Address(0x01000));
         }

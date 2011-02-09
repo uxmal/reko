@@ -33,22 +33,20 @@ namespace Decompiler.UnitTests.Assemblers.x86
     [TestFixture]
     public class IntelCodeAssemblerTests : AssemblerBase
     {
-        IntelEmitter emitter;
         IntelAssembler m;
 
         [SetUp]
         public new void Setup()
         {
             base.Setup();
-            emitter = new IntelEmitter();
-            m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), new Address(0x100, 0x0100), emitter, new List<EntryPoint>());
+            m = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), new Address(0x100, 0x0100), new List<EntryPoint>());
         }
 
         [Test]
         public void MovRegReg()
         {
             m.Mov(Reg(Registers.ax), Reg(Registers.bx));
-            AssertEqualBytes("8BC3", emitter.Bytes);
+            AssertEqualBytes("8BC3", m.GetImage().Bytes);
         }
 
         private ParsedOperand Reg(IntelRegister reg)
@@ -60,15 +58,28 @@ namespace Decompiler.UnitTests.Assemblers.x86
         public void MovRegConst()
         {
             m.Mov(Reg(Registers.ax), 0x300);
-            AssertEqualBytes("B80003", emitter.Bytes);
+            AssertEqualBytes("B80003", m.GetImage().Bytes);
         }
 
         [Test]
         public void MovMemReg()
         {
             m.Mov(m.BytePtr(0x0300), 0x12);
-            AssertEqualBytes("C606000312", emitter.Bytes);
+            AssertEqualBytes("C606000312", m.GetImage().Bytes);
         }
 
+        [Test]
+        public void SegmentDirective()
+        {
+            m.Segment("CODE");
+            m.Db(1, 2, 3, 4);
+            m.Ends();
+
+            m.Segment("DATA");
+            m.Dd(4);
+
+            var bytes = m.GetImage().Bytes;
+            Assert.AreEqual(0x10 + 4, bytes.Length);        // len(CODE) + alignment padding + len(DATA)
+        }
     }
 }

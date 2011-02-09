@@ -46,7 +46,7 @@ namespace Decompiler.UnitTests.Core
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, ep);
             var arch = new ArchitectureMock();
             var frame = arch.CreateFrame();
-			var ab = new ApplicationBuilder(frame, new CallSite(0, 0), fn, ep.Signature);
+			var ab = new ApplicationBuilder(new ArchitectureMock(), frame, new CallSite(0, 0), fn, ep.Signature);
             var instr = ab.CreateInstruction();
 			Assert.AreEqual("ax = foo(bx, cl)", instr.ToString());
 

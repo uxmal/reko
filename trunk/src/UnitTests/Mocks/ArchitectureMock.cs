@@ -93,6 +93,11 @@ namespace Decompiler.UnitTests.Mocks
 			return new Dumper();
 		}
 
+        public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        {
+            throw new NotImplementedException();
+        }
+
 		public MachineFlags GetFlagGroup(uint grf)
 		{
 			return null;

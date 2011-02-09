@@ -46,17 +46,17 @@ namespace Decompiler.UnitTests.Typing
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(relativePath));
 
-            Program prog = ldr.Load(new Address(0xC00, 0));
-            EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
+            var prog = ldr.Load(new Address(0xC00, 0));
+            var ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
 			prog.AddEntryPoint(ep);
 			
-			ScannerOld scan = new ScannerOld(prog, null);
+			var scan = new ScannerOld(prog, null);
 			scan.EnqueueEntryPoint(ep);
 			scan.ProcessQueue();
-			RewriterHost rw = new RewriterHost(prog, new FakeDecompilerEventListener(), scan.SystemCalls, scan.VectorUses);
+			var rw = new RewriterHost(prog, new FakeDecompilerEventListener(), scan.SystemCalls, scan.VectorUses);
 			rw.RewriteProgram();
 
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
             return prog;
 		}

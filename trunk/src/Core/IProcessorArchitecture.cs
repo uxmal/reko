@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
@@ -47,7 +48,8 @@ namespace Decompiler.Core
 		MachineRegister GetRegister(string name);	// Returns register whose name is 'name'
         bool TryGetRegister(string name, out MachineRegister reg); // Attempts to find a register with name <paramref>name</paramref>
         MachineFlags GetFlagGroup(uint grf);		// Returns flag group matching the bitflags.
-		MachineFlags GetFlagGroup(string name);	
+		MachineFlags GetFlagGroup(string name);
+        Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
 
 		/// <summary>
 		/// A bitset that represents those registers that may never be used as arguments to a procedure. 
@@ -66,5 +68,6 @@ namespace Decompiler.Core
 		PrimitiveType WordWidth { get; }					// Processor's native word size
 
         MachineRegister StackRegister { get; }               // Stack pointer for this machine. //$REVIEW: push this into rewriter and return instead references to frame.FramePointer?
+
     }
 }

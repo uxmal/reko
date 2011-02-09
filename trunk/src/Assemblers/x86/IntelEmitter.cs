@@ -99,6 +99,5 @@ namespace Decompiler.Assemblers.x86
             get { return segOverride; }
             set { segOverride = value; }
         }
-
-    }
+	}
 }

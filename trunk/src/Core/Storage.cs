@@ -42,7 +42,7 @@ namespace Decompiler.Core
 
 		public abstract void Accept(StorageVisitor visitor);
 
-		public virtual Identifier BindFormalArgumentToFrame(Frame callingframe, CallSite cs)
+		public virtual Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame callingframe, CallSite cs)
 		{
 			throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", GetType().FullName));
 		}
@@ -86,7 +86,7 @@ namespace Decompiler.Core
 			visitor.VisitFlagGroupStorage(this);
 		}
 
-		public override Identifier BindFormalArgumentToFrame(Frame frame, CallSite cs)
+		public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite cs)
 		{
 			return frame.EnsureFlagGroup(grfMask, name, PrimitiveType.Byte);		//$REVIEW: PrimitiveType.Byte is hard-wired here.
 		}
@@ -144,7 +144,7 @@ namespace Decompiler.Core
 			visitor.VisitFpuStackStorage(this);
 		}
 
-		public override Identifier BindFormalArgumentToFrame(Frame frame, CallSite cs)
+		public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite cs)
 		{
 			return frame.EnsureFpuStackVariable(depth - cs.FpuStackDepthBefore, dataType);
 		}
@@ -220,9 +220,9 @@ namespace Decompiler.Core
 			visitor.VisitOutArgumentStorage(this);
 		}
 
-		public override Identifier BindFormalArgumentToFrame(Frame frame, CallSite cs)
+        public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite cs)
 		{
-			return originalId.Storage.BindFormalArgumentToFrame(frame, cs);
+			return originalId.Storage.BindFormalArgumentToFrame(arch, frame, cs);
 		}
 
 		public override bool Equals(object obj)
@@ -288,7 +288,7 @@ namespace Decompiler.Core
 		}
 
 
-		public override Identifier BindFormalArgumentToFrame(Frame frame, CallSite cs)
+        public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite cs)
 		{
 			return frame.EnsureRegister(reg);
 		}
@@ -341,11 +341,15 @@ namespace Decompiler.Core
 			visitor.VisitSequenceStorage(this);
 		}
 
-		public override Identifier BindFormalArgumentToFrame(Frame callingFrame, CallSite cs)
+        public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame callingFrame, CallSite cs)
 		{
-			Identifier idHead = head.Storage.BindFormalArgumentToFrame(callingFrame, cs);
-			Identifier idTail = tail.Storage.BindFormalArgumentToFrame(callingFrame, cs);
+			var h = head.Storage.BindFormalArgumentToFrame(arch, callingFrame, cs);
+			var t = tail.Storage.BindFormalArgumentToFrame(arch, callingFrame, cs);
+            var idHead = h as Identifier;
+            var idTail = t as Identifier;
+            if (idHead!=null&& idTail!=null)
 			return callingFrame.EnsureSequence(idHead, idTail, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
+            throw new NotImplementedException("Handle case when stack parameter is passed.");
 		}
 
 		public override bool Equals(object obj)
@@ -409,9 +413,9 @@ namespace Decompiler.Core
 			visitor.VisitStackArgumentStorage(this);
 		}
 
-		public override Identifier BindFormalArgumentToFrame(Frame callingFrame, CallSite cs)
+        public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame callingFrame, CallSite cs)
 		{
-			return callingFrame.EnsureStackLocal(cbOffset - cs.StackDepthBefore, DataType);
+            return arch.CreateStackAccess(callingFrame, cbOffset, dataType);
 		}
 
 		public DataType DataType

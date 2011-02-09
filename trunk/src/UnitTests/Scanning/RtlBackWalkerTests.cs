@@ -78,8 +78,7 @@ namespace Decompiler.UnitTests.Scanning
         void BuildTest_x86_16(Action<IntelAssembler> builder)
         {
             var arch = new IntelArchitecture(ProcessorMode.Real);
-            var emitter = new IntelEmitter ();
-            IntelAssembler asm = new IntelAssembler(arch, new Address(0xC00, 0x0000), emitter, new List<EntryPoint>());
+            IntelAssembler asm = new IntelAssembler(arch, new Address(0xC00, 0x0000), new List<EntryPoint>());
             builder(asm);
             this.image = asm.GetImage();
             this.arch = arch;
@@ -89,8 +88,7 @@ namespace Decompiler.UnitTests.Scanning
         void BuildTest_x86_32(Action<IntelAssembler> builder)
         {
             var arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-            var emitter = new IntelEmitter();
-            IntelAssembler asm = new IntelAssembler(arch, new Address(0x10000), emitter, new List<EntryPoint>());
+            IntelAssembler asm = new IntelAssembler(arch, new Address(0x10000), new List<EntryPoint>());
             builder(asm);
             this.image = asm.GetImage();
             this.arch = arch;

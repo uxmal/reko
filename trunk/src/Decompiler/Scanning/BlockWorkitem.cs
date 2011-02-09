@@ -28,7 +28,6 @@ using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Decompiler.Scanning
 {
@@ -109,6 +108,7 @@ namespace Decompiler.Scanning
         private void BuildApplication(Expression fn, ProcedureSignature sig, CallSite site)
         {
             ApplicationBuilder ab = new ApplicationBuilder(
+                arch,
                 frame,
                 site,
                 fn,
@@ -209,29 +209,12 @@ namespace Decompiler.Scanning
             return true;
         }
 
-        private Block FallthroughBlock(Procedure proc, Address fallthruAddress)
-        {
-            if (ri.NextStatementRequiresLabel)
-            {
-                // Some machine instructions, like the X86 'rep' prefix, force the need to generate 
-                // a label where there wouldn't be one normally.
-
-                var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
-                proc.ControlGraph.Nodes.Add(fallthru);
-                return fallthru;
-            }
-            else
-            {
-                return scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
-            }
-        }
-
         public bool VisitGoto(RtlGoto g)
         {
+            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
-                scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
                 var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 blockSource.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
@@ -323,7 +306,88 @@ namespace Decompiler.Scanning
                         call.Target,
                         site));
             state.OnAfterCall(sig);
-            return true;        //$BUGBUG: but may call exit(), or ExitThread(), which should return false.
+            return true;        //$BUGBUG: The called procedure could be exit(), or ExitThread(), in which case we should return false.
+        }
+
+        public bool VisitReturn(RtlReturn ret)
+        {
+            var proc = blockCur.Procedure;
+            blockCur.Statements.Add(ric.Address.Linear, new ReturnInstruction());
+            blockCur.Procedure.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
+
+            if (frame.ReturnAddressSize != 0)
+            {
+                if (frame.ReturnAddressSize != ret.ReturnAddressBytes)
+                {
+                    scanner.AddDiagnostic(
+                        ric.Address,
+                        new WarningDiagnostic(string.Format(
+                        "Procedure {1} previously had a return address of {2} bytes on the stack, but now seems to have a return address of {0} bytes on the stack.",
+                        ret.ReturnAddressBytes, proc.Name, frame.ReturnAddressSize)));
+                }
+            }
+            else
+            {
+                frame.ReturnAddressSize = ret.ReturnAddressBytes;
+            }
+
+            int stackDelta = ret.ReturnAddressBytes + ret.ExtraBytesPopped;
+            if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != stackDelta)
+            {
+                scanner.AddDiagnostic(
+                    ric.Address,
+                    new WarningDiagnostic(string.Format(
+                    "Multiple different values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
+            }
+            else
+            {
+                proc.Signature.StackDelta = stackDelta;
+            }
+            state.OnProcedureLeft(proc.Signature);
+            //proc.Signature.FpuStackArgumentMax = maxFpuStackRead;     //$REDO
+            //proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;       //$REDO
+            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+            return false;
+        }
+
+        public bool VisitSideEffect(RtlSideEffect side)
+        {
+            var svc = MatchSyscallToService(side);
+            if (svc != null)
+            {
+                var ep = svc.CreateExternalProcedure(arch);
+                var fn = new ProcedureConstant(arch.PointerType, ep);
+                var site = state.OnBeforeCall();
+                BuildApplication(fn, ep.Signature, site);
+                if (svc.Characteristics.Terminates)
+                {
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
+                AffectProcessorState(svc.Signature);
+            }
+            else
+            {
+                blockCur.Statements.Add(ric.Address.Linear, new SideEffect(side.Expression));
+            }
+            return true;
+        }
+
+        private Block FallthroughBlock(Procedure proc, Address fallthruAddress)
+        {
+            if (ri.NextStatementRequiresLabel)
+            {
+                // Some machine instructions, like the X86 'rep' prefix, force the need to generate 
+                // a label where there wouldn't be one normally.
+
+                var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
+                proc.ControlGraph.Nodes.Add(fallthru);
+                return fallthru;
+            }
+            else
+            {
+                return scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
+            }
         }
 
         /// <summary>
@@ -407,69 +471,6 @@ namespace Decompiler.Scanning
         }
 
 
-        public bool VisitReturn(RtlReturn ret)
-        {
-            var proc = blockCur.Procedure;
-            blockCur.Statements.Add(ric.Address.Linear, new ReturnInstruction());
-            blockCur.Procedure.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
-
-            if (frame.ReturnAddressSize != 0)
-            {
-                if (frame.ReturnAddressSize != ret.ReturnAddressBytes)
-                {
-                    scanner.AddDiagnostic(
-                        ric.Address,
-                        new WarningDiagnostic(string.Format(
-                        "Procedure {1} previously had a return address of {2} bytes on the stack, but now seems to have a return address of {0} bytes on the stack.",
-                        ret.ReturnAddressBytes, proc.Name, frame.ReturnAddressSize)));
-                }
-            }
-            else
-            {
-                frame.ReturnAddressSize = ret.ReturnAddressBytes;
-            }
-
-            int stackDelta = ret.ReturnAddressBytes + ret.ExtraBytesPopped;
-            if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != stackDelta)
-            {
-                scanner.AddDiagnostic(
-                    ric.Address,
-                    new WarningDiagnostic(string.Format(
-                    "Multiple different values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", proc.Name, proc.Signature.StackDelta)));
-            }
-            else
-            {
-                proc.Signature.StackDelta = stackDelta;
-            }
-            state.OnProcedureLeft(proc.Signature);
-            //proc.Signature.FpuStackArgumentMax = maxFpuStackRead;     //$REDO
-            //proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;       //$REDO
-            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-            return false;
-        }
-
-        public bool VisitSideEffect(RtlSideEffect side)
-        {
-            var svc = MatchSyscallToService(side);
-            if (svc != null)
-            {
-                var ep = svc.CreateExternalProcedure(arch);
-                var fn = new ProcedureConstant(arch.PointerType, ep);
-                var site = state.OnBeforeCall();
-                BuildApplication(fn, ep.Signature, site);
-                if (svc.Characteristics.Terminates)
-                {
-                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
-                    return false;
-                }
-                AffectProcessorState(svc.Signature);
-            }
-            else
-            {
-                blockCur.Statements.Add(ric.Address.Linear, new SideEffect(side.Expression));
-            }
-            return true;
-        }
 
         //$TODO: merge these?
         private void AffectProcessorState(ProcedureSignature sig)

@@ -44,30 +44,49 @@ namespace Decompiler.Assemblers.x86
         private ModRmBuilder modRm;
         private PrimitiveType defaultWordSize;
         private IntelEmitter emitter;
+        private AssembledSegment currentSegment;
+        private AssembledSegment unknownSegment;
         private SymbolTable symtab;
         private List<EntryPoint> entryPoints;
         private SortedDictionary<string, SignatureLibrary> importLibraries;
         private Dictionary<uint, PseudoProcedure> importThunks;
+        private List<AssembledSegment> segments;
+        private Dictionary<string, AssembledSegment> mpNameToSegment;
+        private Dictionary<Symbol, AssembledSegment> symbolSegments;        // The segment to which a symbol belongs.
 
-        public IntelAssembler(IntelArchitecture arch, Address addrBase, IntelEmitter emitter, List<EntryPoint> entryPoints)
+        public IntelAssembler(IntelArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
         {
             this.arch = new IntelArchitecture(ProcessorMode.Real);
             this.platform = new MsdosPlatform(arch);
             this.addrBase = addrBase;
-            this.emitter = emitter;
             this.entryPoints = entryPoints;
             this.defaultWordSize = arch.WordWidth;
-            modRm = new ModRmBuilder(defaultWordSize, emitter);
             symtab = new SymbolTable();
             importLibraries = new SortedDictionary<string, SignatureLibrary>();
             importThunks = new Dictionary<uint, PseudoProcedure>();
+            segments = new List<AssembledSegment>();
+            mpNameToSegment = new Dictionary<string, AssembledSegment>();
+            symbolSegments = new Dictionary<Symbol, AssembledSegment>();
+
+
+            unknownSegment = new AssembledSegment(new IntelEmitter(), symtab.DefineSymbol("", 0));
+            segments.Add(unknownSegment);
+
+            SwitchSegment(unknownSegment);
 
             SetDefaultWordWidth(defaultWordSize);
         }
 
+
         public IntelArchitecture Architecture
         {
             get { return arch; }
+        }
+
+        //$REVIEW: unfortuanately, IntelTextAssembler seems to depend on the state of the emitter. Move that state out?
+        internal IntelEmitter Emitter
+        {
+            get { return emitter; }
         }
 
         public Platform Platform
@@ -82,7 +101,37 @@ namespace Decompiler.Assemblers.x86
 
         public ProgramImage GetImage()
         {
-            return new ProgramImage(addrBase, emitter.Bytes);
+            var stm = new MemoryStream();
+            LoadSegments(stm);
+            var image = new ProgramImage(addrBase, stm.ToArray());
+            RelocateSegmentReferences(image);
+            return image;
+        }
+
+        private void LoadSegments(MemoryStream stm)
+        {
+            foreach (var seg in segments)
+            {
+                while ((stm.Position & 0xF) != 0)
+                {
+                    stm.WriteByte(0x90);        // 1-byte NOP instruction.
+                }
+                var sel = (ushort)(this.addrBase.Selector + (stm.Position >> 4));
+                seg.Selector = sel;
+                var ab = seg.Emitter.Bytes;
+                stm.Write(ab, 0, ab.Length);
+            }
+        }
+
+        private void RelocateSegmentReferences(ProgramImage image)
+        {
+            foreach (var seg in segments)
+            {
+                foreach (var reloc in seg.Relocations)
+                {
+                    image.WriteLeUint16((int)((reloc.Segment.Selector - addrBase.Selector) * 16 + reloc.Offset), seg.Selector);
+                }
+            }
         }
 
         public void Mov(ParsedOperand op, int constant)
@@ -141,8 +190,6 @@ namespace Decompiler.Assemblers.x86
                 Error("Width of the operand is unknown");
             return w;
         }
-
-
 
         internal void ProcessComm(string sym)
         {
@@ -698,8 +745,21 @@ namespace Decompiler.Assemblers.x86
 
         private void DefineSymbol(string pstr)
         {
-            symtab.DefineSymbol(pstr, emitter.Position).Resolve(emitter);
+            var sym = symtab.DefineSymbol(pstr, emitter.Position);
+            sym.Resolve(emitter);
+            ResolveSegmentForwardReferences(sym);
+            symbolSegments[sym] = currentSegment;
         }
+
+        private void ResolveSegmentForwardReferences(Symbol sym)
+        {
+            AssembledSegment tempSeg;
+            if (symbolSegments.TryGetValue(sym, out tempSeg))
+            {
+                currentSegment.Relocations.AddRange(tempSeg.Relocations);
+            }
+        }
+
 
 
         internal void EmitModRM(int reg, ParsedOperand op)
@@ -762,7 +822,7 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitLe((PrimitiveType) v.DataType, v.ToInt32());
         }
 
-        private void EmitRelativeTarget(string target, PrimitiveType offsetSize)
+        private Symbol EmitRelativeTarget(string target, PrimitiveType offsetSize)
         {
             int offBytes = (int) offsetSize.Size;
             switch (offBytes)
@@ -771,7 +831,26 @@ namespace Decompiler.Assemblers.x86
             case 2: emitter.EmitLeUint16(-(emitter.Length + 2)); break;
             case 4: emitter.EmitLeUint32((uint)-(emitter.Length + 4)); break;
             }
-            symtab.CreateSymbol(target).ReferTo(emitter.Length - offBytes, offsetSize, emitter);
+            var sym = symtab.CreateSymbol(target);
+            sym.ReferTo(emitter.Length - offBytes, offsetSize, emitter);
+            return sym;
+        }
+
+        private void EmitReferenceToSymbolSegment(Symbol sym)
+        {
+            var seg = GetSymbolSegmentReference(sym);
+            seg.Relocations.Add(new AssembledSegment.Relocation { Segment=currentSegment, Offset=(uint) emitter.Length });
+            emitter.EmitLeUint16(0);            // make space for the segment selector, will be overwritten at relocation time.
+        }
+
+        private AssembledSegment GetSymbolSegmentReference(Symbol sym)
+        {
+            AssembledSegment seg;
+            if (symbolSegments.TryGetValue(sym, out seg))
+                return seg;
+            seg = new AssembledSegment(emitter, null);
+            symbolSegments.Add(sym, seg);
+            return seg;
         }
 
         private PrimitiveType EnsureValidOperandSizes(ParsedOperand[] ops, int count)
@@ -826,6 +905,12 @@ namespace Decompiler.Assemblers.x86
             modRm.Error += modRm_Error;
         }
 
+        private void SwitchSegment(AssembledSegment unknownSegment)
+        {
+            currentSegment = unknownSegment;
+            emitter = unknownSegment.Emitter;
+            modRm = new ModRmBuilder(defaultWordSize, emitter);
+        }
 
 
         private int IsWordWidth(PrimitiveType width)
@@ -954,18 +1039,26 @@ namespace Decompiler.Assemblers.x86
 
         public void Call(string destination)
         {
-            ProcessCallJmp(0xE8, destination);
+            ProcessCallJmp(false, 0xE8, destination);
         }
 
 
         public void Call(ParsedOperand parsedOperand)
         {
-            ProcessCallJmp(0x02, parsedOperand);
+            ProcessCallJmp(false, 0x02, parsedOperand);
         }
 
 
+        public void CallF(string destination)
+        {
+            ProcessCallJmp(true, 0x9A, destination);
+        }
 
 
+        public void CallF(ParsedOperand parsedOperand)
+        {
+            ProcessCallJmp(true, 0x03, parsedOperand);
+        }
 
         public void Fild(ParsedOperand op)
         {
@@ -1039,8 +1132,31 @@ namespace Decompiler.Assemblers.x86
 
         public void Ret(int n)
         {
-            emitter.EmitOpcode(0xC2, null);
-            emitter.EmitLeUint16(n);
+            if (n == 0)
+            {
+                Ret();
+            }
+            else
+            {
+                emitter.EmitOpcode(0xC2, null);
+                emitter.EmitLeUint16(n);
+            }
+        }
+
+        public void Retf()
+        {
+            emitter.EmitOpcode(0xCB, null);
+        }
+
+        public void Retf(int n)
+        {
+            if (n == 0)
+                Retf();
+            else
+            {
+                emitter.EmitOpcode(0xCA, null);
+                emitter.EmitLeUint16(n);
+            }
         }
 
         public void Proc(string procName)
@@ -1203,12 +1319,12 @@ namespace Decompiler.Assemblers.x86
 
         public void Jmp(string destination)
         {
-            ProcessCallJmp(0xE9, destination);
+            ProcessCallJmp(false, 0xE9, destination);
         }
 
         public void Jmp(ParsedOperand parsedOperand)
         {
-            ProcessCallJmp(0x04, parsedOperand);
+            ProcessCallJmp(false, 0x04, parsedOperand);
         }
 
         public void JmpF(Address address)
@@ -1361,13 +1477,25 @@ namespace Decompiler.Assemblers.x86
         }
 
 
-        internal void ProcessCallJmp(int direct, string destination)
+        internal void ProcessCallJmp(bool far, int direct, string destination)
         {
             emitter.EmitOpcode(direct, null);
-            EmitRelativeTarget(destination, emitter.SegmentAddressWidth);
+            if (far)
+            {
+                var sym = symtab.CreateSymbol(destination);
+                sym.ReferTo(emitter.Length, emitter.SegmentAddressWidth, emitter);
+
+                emitter.EmitLe(emitter.SegmentAddressWidth, 0);
+
+                EmitReferenceToSymbolSegment(sym);
+            }
+            else
+            {
+                EmitRelativeTarget(destination, emitter.SegmentAddressWidth);
+            }
         }
 
-        internal void ProcessCallJmp(int indirect, ParsedOperand op)
+        internal void ProcessCallJmp(bool far, int indirect, ParsedOperand op)
         {
             emitter.EmitOpcode(0xFF, emitter.SegmentDataWidth);
             EmitModRM(indirect, op);
@@ -1809,6 +1937,22 @@ namespace Decompiler.Assemblers.x86
                 new MemoryOperand(width, @base, IntegralConstant(offset)));
         }
 
+        public void Segment(string segmentName)
+        {
+            AssembledSegment seg;
+            if (!mpNameToSegment.TryGetValue(segmentName, out seg))
+            {
+                var sym = symtab.DefineSymbol(segmentName, 0);
+                seg = new AssembledSegment(new IntelEmitter(), sym);
+                segments.Add(seg);
+            }
+            SwitchSegment(seg);
+        }
+
+        public void Ends()
+        {
+            SwitchSegment(unknownSegment);
+        }
     }
 }
 

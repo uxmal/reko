@@ -350,6 +350,12 @@ foo		endp
             Assert.AreEqual("mov\tword ptr [0400],1234", dasm.DisassembleInstruction().ToString());
         }
 
+        [Test]
+        public void AsIntraSegmentFarCall()
+        {
+            RunTest("Fragments/multiple/intrasegmentfarcall.asm", "Intel/AsIntraSegmentFarCall.txt");
+        }
+
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program prog = new Program();

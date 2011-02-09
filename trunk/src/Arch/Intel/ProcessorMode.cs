@@ -19,7 +19,9 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 
@@ -77,6 +79,13 @@ namespace Decompiler.Arch.Intel
         {
             get { return Registers.sp; }
         }
+
+        public virtual Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        {
+            var sp = frame.EnsureRegister(Registers.sp);
+            var ss = frame.EnsureRegister(Registers.ss);
+            return SegmentedAccess.Create(ss, sp, offset, dataType);
+        }
     }
 
 	internal class FlatMode : ProcessorMode
@@ -89,6 +98,12 @@ namespace Decompiler.Arch.Intel
 		{
 			return new Address(offset);
 		}
+
+        public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        {
+            var esp = frame.EnsureRegister(Registers.esp);
+            return MemoryAccess.Create(esp, offset, dataType);
+        }
 
         public override bool IsPointerRegister(MachineRegister machineRegister)
         {

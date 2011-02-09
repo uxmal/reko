@@ -81,9 +81,10 @@ namespace Decompiler.Arch.Intel
         private void RewriteFild()
         {
             state.GrowFpuStack(di.Address);
+            var iType = PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size);
             emitter.Assign(
                 orw.FpuRegister(0, state),
-                emitter.Cast(PrimitiveType.Real64, SrcOp(di.Instruction.op1, PrimitiveType.Int32)));
+                emitter.Cast(PrimitiveType.Real64, SrcOp(di.Instruction.op1, iType)));
             WriteFpuStack(0);
         }
 

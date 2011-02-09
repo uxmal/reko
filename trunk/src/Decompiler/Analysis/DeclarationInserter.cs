@@ -70,12 +70,15 @@ namespace Decompiler.Analysis
 						else
 						{
 							int idx = dominator.Statements.IndexOf(sid.DefStatement);
-							dominator.Statements.Insert(idx, new Declaration(web.Identifier, null));
+							dominator.Statements.Insert(
+                                idx,
+                                sid.DefStatement.LinearAddress, 
+                                new Declaration(web.Identifier, null));
 						}
 						return;
 					}
 				}
-				dominator.Statements.Insert(0, new Declaration(web.Identifier, null));
+				dominator.Statements.Insert(0, 0, new Declaration(web.Identifier, null));
 			}
 		}
 	}

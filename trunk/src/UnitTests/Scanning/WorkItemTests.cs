@@ -29,6 +29,7 @@ namespace Decompiler.UnitTests.Scanning
 	public class WorkItemTests
 	{
 		[Test]
+        [Obsolete]
 		public void WorkItemChain0()
 		{
 			WorkItemOld w = new WorkItemOld(null, BlockType.Procedure, new Address(0x10000000));

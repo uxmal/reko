@@ -57,13 +57,13 @@ namespace Decompiler.Core
 		/// a signature yet.</returns>
 		public bool RewriteCall(Procedure proc, IProcessorArchitecture arch, Statement stm, CallInstruction call)
 		{
-			ProcedureBase procCallee = call.Callee;
-			ProcedureSignature sigCallee = GetProcedureSignature(procCallee);
-			ProcedureConstant fn = new ProcedureConstant(arch.PointerType, procCallee);
+			var procCallee = call.Callee;
+			var sigCallee = GetProcedureSignature(procCallee);
+			var fn = new ProcedureConstant(arch.PointerType, procCallee);
             if (sigCallee == null || !sigCallee.ArgumentsValid)
                 return false;
 
-            var ab = new ApplicationBuilder(proc.Frame, call.CallSite, fn, sigCallee);
+            var ab = new ApplicationBuilder(arch, proc.Frame, call.CallSite, fn, sigCallee);
 			stm.Instruction = ab.CreateInstruction();
             return true;
 		}

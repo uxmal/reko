@@ -20,7 +20,9 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -101,6 +103,14 @@ namespace Decompiler.Arch.M68k
         public MachineFlags GetFlagGroup(string name)
         {
             throw new NotImplementedException();
+        }
+
+        public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        {
+            return new MemoryAccess(new BinaryExpression(
+                Operator.Add, FramePointerType,
+                frame.EnsureRegister(StackRegister), Constant.Word32(offset)),
+                dataType);
         }
 
         public BitSet ImplicitArgumentRegisters

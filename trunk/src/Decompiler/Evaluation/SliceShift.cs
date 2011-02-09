@@ -38,7 +38,6 @@ namespace Decompiler.Evaluation
         private Expression expr;
         private DataType dt;
         private Identifier id;
-        private Statement stmShift;
 
         public SliceShift(EvaluationContext ctx)
         {

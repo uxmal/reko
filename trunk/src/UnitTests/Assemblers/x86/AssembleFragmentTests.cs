@@ -66,12 +66,11 @@ namespace Decompiler.UnitTests.Assemblers.x86
 
         private void RunTest(AssemblerFragment fragment, string sExp)
         {
-            IntelEmitter emitter = new IntelEmitter();
             Address addrBase=  new Address(0xC00, 0);
             Program prog = new Program();
-            IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addrBase, emitter, new List<EntryPoint>());
+            IntelAssembler asm = new IntelAssembler(new IntelArchitecture(ProcessorMode.Real), addrBase, new List<EntryPoint>());
             fragment.Build(asm);
-            ProgramImage img = new ProgramImage(addrBase, emitter.Bytes);
+            ProgramImage img = asm.GetImage();
 
             IntelDisassembler dasm = new IntelDisassembler(img.CreateReader(img.BaseAddress), PrimitiveType.Word16);
             StringBuilder sb = new StringBuilder();

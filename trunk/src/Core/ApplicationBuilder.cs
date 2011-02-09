@@ -37,22 +37,24 @@ namespace Decompiler.Core
     ///
     /// If there is only one 'out' argument, then it is returned as the return value of the
     /// function. If there are several return values:
-    ///   If one and only one of them is a flag register, it becomes the return value
-    ///     ingelsta.
+    ///   If one and only one of them is a flag register, it becomes the return value.
     ///   If more registers are returned, they all become out registers and the function
     ///    is declared void, unless flags are returned.
     /// </remarks>
+    //$TODO: make this a StorageVisitor and move teh Storage.BindFormaArgumentToFrame method here
     public class ApplicationBuilder
 	{
+        private IProcessorArchitecture arch;
         private Identifier idOut;
         private Application appl;
         private Frame frame;
 
-        public ApplicationBuilder(Frame frame, CallSite cs, Expression callee, ProcedureSignature sigCallee)
+        public ApplicationBuilder(IProcessorArchitecture arch, Frame frame, CallSite cs, Expression callee, ProcedureSignature sigCallee)
         {
 			if (sigCallee == null || !sigCallee.ArgumentsValid)
 				throw new InvalidOperationException("No signature available; application cannot be constructed.");
 
+            this.arch = arch;
             this.frame = frame;
             FindReturnValue(cs, sigCallee);
             List<Expression> actuals = BindArguments(frame, cs, sigCallee);
@@ -64,11 +66,11 @@ namespace Decompiler.Core
 
         private List<Expression> BindArguments(Frame frame, CallSite cs, ProcedureSignature sigCallee)
         {
-            List<Expression> actuals = new List<Expression>();
+            var actuals = new List<Expression>();
             for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
             {
-                Identifier formalArg = sigCallee.FormalArguments[i];
-                Identifier actualArg = formalArg.Storage.BindFormalArgumentToFrame(frame, cs);
+                var formalArg = sigCallee.FormalArguments[i];
+                var actualArg = formalArg.Storage.BindFormalArgumentToFrame(arch, frame, cs);
                 if (formalArg.Storage is OutArgumentStorage)
                 {
                     actuals.Add(new UnaryExpression(UnaryOperator.AddrOf, frame.FramePointer.DataType, actualArg));
@@ -86,14 +88,14 @@ namespace Decompiler.Core
             idOut = null;
             if (sigCallee.ReturnValue != null)
             {
-                idOut = Bind(sigCallee.ReturnValue, cs);
+                idOut = (Identifier) Bind(sigCallee.ReturnValue, cs);
             }
 
         }
 
-		public Identifier Bind(Identifier id, CallSite cs)
+		public Expression Bind(Identifier id, CallSite cs)
 		{
-			return id.Storage.BindFormalArgumentToFrame(frame, cs);
+			return id.Storage.BindFormalArgumentToFrame(arch, frame, cs);
 		}
 
         public Instruction CreateInstruction()

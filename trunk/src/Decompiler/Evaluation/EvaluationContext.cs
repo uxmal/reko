@@ -26,7 +26,7 @@ using System.Text;
 namespace Decompiler.Evaluation
 {
     /// <summary>
-    /// An EvaluationContext is used by the ValuePropagator to provide a statement context for the
+    /// An EvaluationContext is used by the SymbolicEvaluator to provide a statement context for the
     /// evaluation.
     /// </summary>
     /// <remarks>
