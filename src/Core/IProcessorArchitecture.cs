@@ -40,8 +40,8 @@ namespace Decompiler.Core
 		BackWalker CreateBackWalker(ProgramImage img);
 		CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st);
 		BitSet CreateRegisterBitset();
-		Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host);
-        Rewriter2 CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host);
+		RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host);
+        Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host);
         Frame CreateFrame();
 
 		MachineRegister GetRegister(int i);			// Returns register corresponding to number i.

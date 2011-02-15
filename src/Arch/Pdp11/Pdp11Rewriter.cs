@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Pdp11
 {
-    public class Pdp11Rewriter : Rewriter
+    public class Pdp11Rewriter : RewriterOld
     {
         public Pdp11Rewriter(Pdp11Architecture arch, IProcedureRewriter prw)
             : base(prw)
@@ -38,7 +38,7 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitter emitter)
+        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitterOld emitter)
         {
             throw new NotImplementedException();
         }

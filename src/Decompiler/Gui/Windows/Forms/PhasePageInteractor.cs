@@ -104,12 +104,6 @@ namespace Decompiler.Gui.Windows.Forms
             get { return decompilerUiSvc; }
         }
 
-        [Obsolete]
-        protected IWorkerDialogService WorkerDialogService
-        {
-            get { return workerDlgSvc; }
-        }
-
 
         #region ICommandTarget Members
 

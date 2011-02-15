@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="nunit.mocks, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -176,7 +176,7 @@
     <Compile Include="Core\TypeFormatterTests.cs" />
     <Compile Include="Core\UseInstructionTests.cs" />
     <Compile Include="Core\VariableTests.cs" />
-    <Compile Include="Core\VariableVisitorTests.cs" />
+    <Compile Include="Core\StorageVisitorTests.cs" />
     <Compile Include="Core\WorkListTests.cs" />
     <Compile Include="DecompilerTests.cs" />
     <Compile Include="Environments\MacOS\ResourceForkTests.cs" />

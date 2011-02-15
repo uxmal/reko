@@ -332,11 +332,10 @@ namespace Decompiler
 
 			try
 			{
-                eventListener.ShowStatus("Tracing reachable machine code.");
+                eventListener.ShowStatus("Rewriting reachable machine code.");
                 scanner = CreateScanner(prog, eventListener) ;
 				foreach (EntryPoint ep in loader.EntryPoints)
 				{
-					prog.AddEntryPoint(ep);
 					scanner.EnqueueEntryPoint(ep);
 				}
 				foreach (SerializedProcedure sp in project.UserProcedures.Values)
@@ -344,7 +343,7 @@ namespace Decompiler
 					scanner.EnqueueUserProcedure(sp);
 				}
 				scanner.ProcessQueue();
-                eventListener.ShowStatus("Finished tracing reachable machine code.");
+                eventListener.ShowStatus("Finished rewriting reachable machine code.");
 
 			}
 			finally

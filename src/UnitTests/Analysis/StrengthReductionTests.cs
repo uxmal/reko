@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Analysis
         private SsaIdentifier AddSid(string name)
         {
             Identifier id = new Identifier(name, -1, null, null);
-            SsaIdentifier sid = sids.Add(id, new Statement(new DefInstruction(id), null), null, false);
+            SsaIdentifier sid = sids.Add(id, new Statement(0, new DefInstruction(id), null), null, false);
             return sid;
         }
     }

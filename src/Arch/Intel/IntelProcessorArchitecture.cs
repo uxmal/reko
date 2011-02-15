@@ -37,8 +37,9 @@ using BitSet = Decompiler.Core.Lib.BitSet;
 
 namespace Decompiler.Arch.Intel
 {
-	// The registers of an Intel ia32 machine.
-
+	/// <summary>
+    /// The registers of an Intel ia32 machine.
+	/// </summary>
 	public class Registers
 	{
 		public static readonly Intel32AccRegister eax;
@@ -275,12 +276,13 @@ namespace Decompiler.Arch.Intel
 			return new IntelState();
 		}
 
-		public virtual Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+        [Obsolete]
+		public virtual RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
 		{
 			return new IntelRewriter(prw, proc, host, this, new IntelRewriterState(proc.Frame));
 		}
 
-        public virtual Rewriter2 CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public virtual Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
             return new X86Rewriter(this, host, (IntelState) state, rdr, frame);
         }

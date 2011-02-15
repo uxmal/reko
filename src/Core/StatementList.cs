@@ -33,7 +33,7 @@ namespace Decompiler.Core
 			this.block = block;
 		}
 
-        [Obsolete("Use other add method")]
+        [Obsolete("Use other add method", true)]
 		public void Add(Instruction instr)
 		{
             Add(0, instr);
@@ -44,7 +44,7 @@ namespace Decompiler.Core
             Add(new Statement(linearAddress, instr, block));
         }
 
-        [Obsolete("Use other Insert method")]
+        [Obsolete("Use other Insert method", true)]
 		public void Insert(int position, Instruction instr)
 		{
             Insert(position, 0, instr);

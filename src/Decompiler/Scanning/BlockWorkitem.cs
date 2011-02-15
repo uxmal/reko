@@ -43,7 +43,7 @@ namespace Decompiler.Scanning
         private Frame frame;
         private RtlInstruction ri;
         private RtlInstructionCluster ric;
-        private Rewriter2 rewriter;
+        private Rewriter rewriter;
         private ProcessorState state;
         private ExpressionSimplifier eval;
         private IEnumerator<RtlInstructionCluster> rtlStream;
@@ -51,7 +51,7 @@ namespace Decompiler.Scanning
 
         public BlockWorkitem(
             IScanner scanner,
-            Rewriter2 rewriter,
+            Rewriter rewriter,
             ProcessorState state,
             Frame frame,
             Address addr)
@@ -107,7 +107,7 @@ namespace Decompiler.Scanning
 
         private void BuildApplication(Expression fn, ProcedureSignature sig, CallSite site)
         {
-            ApplicationBuilder ab = new ApplicationBuilder(
+            var ab = new ApplicationBuilder(
                 arch,
                 frame,
                 site,
@@ -272,6 +272,17 @@ namespace Decompiler.Scanning
                 return true;
             }
 
+            var procCallee = call.Target as ProcedureConstant;
+            if (procCallee != null)
+            {
+                var ppp = procCallee.Procedure as PseudoProcedure;
+                if (ppp != null)
+                {
+                    BuildApplication(procCallee, ppp.Signature, site);
+                    state.OnAfterCall(ppp.Signature);
+                    return !ppp.Characteristics.Terminates;
+                }
+            }
             var sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {

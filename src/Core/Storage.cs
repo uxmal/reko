@@ -40,12 +40,7 @@ namespace Decompiler.Core
 			this.storageKind = storageKind;
 		}
 
-		public abstract void Accept(StorageVisitor visitor);
-
-		public virtual Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame callingframe, CallSite cs)
-		{
-			throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", GetType().FullName));
-		}
+		public abstract T Accept<T>(StorageVisitor<T> visitor);
 
 		public string Kind
 		{
@@ -67,7 +62,13 @@ namespace Decompiler.Core
 		}
 
 		public abstract void Write(TextWriter writer);
-	}
+
+        [Obsolete("Moved to ApplicationBuilder")]
+        public Expression BindFormalArgumentToFrame(IProcessorArchitecture iProcessorArchitecture, Frame frame, CallSite callSite)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 
 	public class FlagGroupStorage : Storage
@@ -81,14 +82,9 @@ namespace Decompiler.Core
 			this.name = name;
 		}
 
-		public override void Accept(StorageVisitor visitor)
-		{
-			visitor.VisitFlagGroupStorage(this);
-		}
-
-		public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite cs)
-		{
-			return frame.EnsureFlagGroup(grfMask, name, PrimitiveType.Byte);		//$REVIEW: PrimitiveType.Byte is hard-wired here.
+        public override T Accept<T>(StorageVisitor<T> visitor)
+        {
+			return visitor.VisitFlagGroupStorage(this);
 		}
 
 		public override bool Equals(object obj)
@@ -103,6 +99,8 @@ namespace Decompiler.Core
 		{
 			get { return grfMask; }
 		}
+
+        public string Name { get { return name; } } 
 
 		public override int GetHashCode()
 		{
@@ -139,15 +137,11 @@ namespace Decompiler.Core
 			this.dataType = dataType;
 		}
 
-		public override void Accept(StorageVisitor visitor)
-		{
-			visitor.VisitFpuStackStorage(this);
+        public override T Accept<T>(StorageVisitor<T> visitor)
+        {
+			return visitor.VisitFpuStackStorage(this);
 		}
 
-		public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite cs)
-		{
-			return frame.EnsureFpuStackVariable(depth - cs.FpuStackDepthBefore, dataType);
-		}
 
 		public override bool Equals(object obj)
 		{
@@ -162,6 +156,8 @@ namespace Decompiler.Core
 			return GetType().GetHashCode() ^ depth.GetHashCode();
 		}
 
+        public DataType DataType { get { return dataType; } } 
+             
 		public int FpuStackOffset
 		{
 			get { return depth; }
@@ -187,9 +183,9 @@ namespace Decompiler.Core
 		{
 		}
 
-		public override void Accept(StorageVisitor visitor)
-		{
-			visitor.VisitMemoryStorage(this);
+        public override T Accept<T>(StorageVisitor<T> visitor)
+        {
+			return visitor.VisitMemoryStorage(this);
 		}
 
 		public override int OffsetOf(Storage stgSub)
@@ -215,15 +211,11 @@ namespace Decompiler.Core
 			this.originalId = originalId;
 		}
 
-		public override void Accept(StorageVisitor visitor)
-		{
-			visitor.VisitOutArgumentStorage(this);
+        public override T Accept<T>(StorageVisitor<T> visitor)
+        {
+			return visitor.VisitOutArgumentStorage(this);
 		}
 
-        public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite cs)
-		{
-			return originalId.Storage.BindFormalArgumentToFrame(arch, frame, cs);
-		}
 
 		public override bool Equals(object obj)
 		{
@@ -269,9 +261,9 @@ namespace Decompiler.Core
 			this.reg = reg;
 		}
 
-		public override void Accept(StorageVisitor visitor)
+		public override T Accept<T>(StorageVisitor<T> visitor)
 		{
-			visitor.VisitRegisterStorage(this);
+			return visitor.VisitRegisterStorage(this);
 		}
 
 		public override bool Equals(object obj)
@@ -288,10 +280,6 @@ namespace Decompiler.Core
 		}
 
 
-        public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite cs)
-		{
-			return frame.EnsureRegister(reg);
-		}
 
 		public override int OffsetOf(Storage stgSub)
 		{
@@ -336,21 +324,11 @@ namespace Decompiler.Core
 			this.tail = tail;
 		}
 
-		public override void Accept(StorageVisitor visitor)
-		{
-			visitor.VisitSequenceStorage(this);
+        public override T Accept<T>(StorageVisitor<T> visitor)
+        {
+			return visitor.VisitSequenceStorage(this);
 		}
 
-        public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame callingFrame, CallSite cs)
-		{
-			var h = head.Storage.BindFormalArgumentToFrame(arch, callingFrame, cs);
-			var t = tail.Storage.BindFormalArgumentToFrame(arch, callingFrame, cs);
-            var idHead = h as Identifier;
-            var idTail = t as Identifier;
-            if (idHead!=null&& idTail!=null)
-			return callingFrame.EnsureSequence(idHead, idTail, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
-            throw new NotImplementedException("Handle case when stack parameter is passed.");
-		}
 
 		public override bool Equals(object obj)
 		{
@@ -408,14 +386,9 @@ namespace Decompiler.Core
 			this.dataType = dataType;
 		}
 
-		public override void Accept(StorageVisitor visitor)
-		{
-			visitor.VisitStackArgumentStorage(this);
-		}
-
-        public override Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame callingFrame, CallSite cs)
-		{
-            return arch.CreateStackAccess(callingFrame, cbOffset, dataType);
+        public override T Accept<T>(StorageVisitor<T> visitor)
+        {
+			return visitor.VisitStackArgumentStorage(this);
 		}
 
 		public DataType DataType
@@ -484,9 +457,9 @@ namespace Decompiler.Core
 			this.dataType = dataType;
 		}
 
-		public override void Accept(StorageVisitor visitor)
-		{
-			visitor.VisitStackLocalStorage(this);
+        public override T Accept<T>(StorageVisitor<T> visitor)
+        {
+			return visitor.VisitStackLocalStorage(this);
 		}
 
 		public override bool Equals(object obj)
@@ -535,9 +508,9 @@ namespace Decompiler.Core
 		{
 		}
 
-		public override void Accept(StorageVisitor visitor)
-		{
-			visitor.VisitTemporaryStorage(this);
+        public override T Accept<T>(StorageVisitor<T> visitor)
+        {
+			return visitor.VisitTemporaryStorage(this);
 		}
 
 		public override int OffsetOf(Storage stgSub)

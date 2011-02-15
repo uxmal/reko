@@ -24,13 +24,13 @@ namespace Decompiler.Core
 {
 	public interface IProcedureRewriter
 	{
-        Block RewriteBlock(Address addr, Block prev, Rewriter rewriter);
+        Block RewriteBlock(Address addr, Block prev, RewriterOld rewriter);
 
         /// <summary>
         /// Creates a CodeEmitter for block.
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
-        CodeEmitter CreateEmitter(Block block);
+        CodeEmitterOld CreateEmitter(Block block);
 	}
 }

@@ -94,7 +94,7 @@ namespace Decompiler.Analysis
 			{
 				if (!deadIn[i])
 				{
-					block.Statements.Insert(++iAt, CreateAliasInstruction(v, i));
+					block.Statements.Insert(++iAt, 0, CreateAliasInstruction(v, i));
 					deadIn[i] = true;
 				}
 			}
@@ -280,89 +280,98 @@ namespace Decompiler.Analysis
 		}
 	}
 
-	
-	public class AliasDeadVariableMarker : StorageVisitor
-	{
-		private Identifier idCur;
-		private BitSet liveRegs;
-		private uint liveGrf;
-		private bool [] liveVars;
 
-		public AliasDeadVariableMarker(BitSet regs, uint grfLive)
-		{
-			this.liveRegs = regs;
-			this.liveGrf = grfLive;
-		}
-		
-		public bool [] Compute(IProcessorArchitecture arch, Frame frame)
-		{
-			this.liveVars = new bool[frame.Identifiers.Count];
+    public class AliasDeadVariableMarker : StorageVisitor<Storage>
+    {
+        private Identifier idCur;
+        private BitSet liveRegs;
+        private uint liveGrf;
+        private bool[] liveVars;
 
-			foreach (Identifier id in frame.Identifiers)
-			{
-				idCur = id;
-				id.Storage.Accept(this);
-			}
-			for (int i = 0; i < liveVars.Length; ++i)
-			{
-				if (liveVars[i])
-				{
-					Identifier v = frame.Identifiers[i];
-					foreach (Identifier w in frame.Identifiers)
-					{
-						if (Aliases.IsAlias(arch, v, w))
-							liveVars[w.Number] = true;
-					}
-				}
-			}
-			bool [] deadVariables = new bool[liveVars.Length];
-			for (int i = 0; i < liveVars.Length; ++i)
-			{
-				deadVariables[i] = !liveVars[i];
-			}
-			return deadVariables;
-		}
+        public AliasDeadVariableMarker(BitSet regs, uint grfLive)
+        {
+            this.liveRegs = regs;
+            this.liveGrf = grfLive;
+        }
 
-		#region StorageVisitor Members
+        public bool[] Compute(IProcessorArchitecture arch, Frame frame)
+        {
+            this.liveVars = new bool[frame.Identifiers.Count];
 
-		public void VisitFpuStackStorage(FpuStackStorage fpu)
-		{
-		}
+            foreach (Identifier id in frame.Identifiers)
+            {
+                idCur = id;
+                id.Storage.Accept(this);
+            }
+            for (int i = 0; i < liveVars.Length; ++i)
+            {
+                if (liveVars[i])
+                {
+                    Identifier v = frame.Identifiers[i];
+                    foreach (Identifier w in frame.Identifiers)
+                    {
+                        if (Aliases.IsAlias(arch, v, w))
+                            liveVars[w.Number] = true;
+                    }
+                }
+            }
+            bool[] deadVariables = new bool[liveVars.Length];
+            for (int i = 0; i < liveVars.Length; ++i)
+            {
+                deadVariables[i] = !liveVars[i];
+            }
+            return deadVariables;
+        }
 
-		public void VisitFlagGroupStorage(FlagGroupStorage grf)
-		{
-			liveVars[idCur.Number] = (grf.FlagGroup & liveGrf) != 0;
-		}
+        #region StorageVisitor Members
 
-		public void VisitTemporaryStorage(TemporaryStorage temp)
-		{
-		}
+        public Storage VisitFpuStackStorage(FpuStackStorage fpu)
+        {
+            return null;
+        }
 
-		public void VisitStackArgumentStorage(StackArgumentStorage stack)
-		{
-		}
+        public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
+        {
+            liveVars[idCur.Number] = (grf.FlagGroup & liveGrf) != 0;
+            return null;
+        }
 
-		public void VisitMemoryStorage(MemoryStorage global)
-		{
-		}
+        public Storage VisitTemporaryStorage(TemporaryStorage temp)
+        {
+            return null;
+        }
 
-		public void VisitSequenceStorage(SequenceStorage seq)
-		{
-		}
+        public Storage VisitStackArgumentStorage(StackArgumentStorage stack)
+        {
+            return null;
+        }
 
-		public void VisitRegisterStorage(RegisterStorage reg)
-		{
-			liveVars[idCur.Number] = liveRegs[reg.Register.Number];
-		}
+        public Storage VisitMemoryStorage(MemoryStorage global)
+        {
+            return null;
+        }
 
-		public void VisitStackLocalStorage(StackLocalStorage local)
-		{
-		}
+        public Storage VisitSequenceStorage(SequenceStorage seq)
+        {
+            return null;
+        }
 
-		public void VisitOutArgumentStorage(OutArgumentStorage arg)
-		{
-			arg.OriginalIdentifier.Storage.Accept(this);
-		}
-		#endregion
-	}
+        public Storage VisitRegisterStorage(RegisterStorage reg)
+        {
+            liveVars[idCur.Number] = liveRegs[reg.Register.Number];
+            return null;
+        }
+
+        public Storage VisitStackLocalStorage(StackLocalStorage local)
+        {
+            return null;
+        }
+
+        public Storage VisitOutArgumentStorage(OutArgumentStorage arg)
+        {
+            arg.OriginalIdentifier.Storage.Accept(this);
+            return null;
+        }
+        #endregion
+    }
 }

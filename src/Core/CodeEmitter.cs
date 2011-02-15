@@ -30,7 +30,8 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Emits code sequences into basic blocks.
 	/// </summary>
-	public class CodeEmitter : CodeEmitter2
+    [Obsolete("Don't use this class anymore; RtlEmitter or ProcedureBuilder are your friends.")]
+	public class CodeEmitterOld : CodeEmitter2
 	{
         private IProcessorArchitecture arch;
 		private IRewriterHost host;
@@ -38,7 +39,7 @@ namespace Decompiler.Core
 
 		private Block blockCur;
 
-		public CodeEmitter(IProcessorArchitecture arch, IRewriterHost host, Procedure proc, Block block)
+		public CodeEmitterOld(IProcessorArchitecture arch, IRewriterHost host, Procedure proc, Block block)
 		{
             this.arch = arch;
 			this.host = host;
@@ -67,7 +68,7 @@ namespace Decompiler.Core
 		/// <param name="instr"></param>
 		public override Statement Emit(Instruction instr)
 		{
-			blockCur.Statements.Add(instr);
+			blockCur.Statements.Add(0, instr);
             return blockCur.Statements.Last;
 		}
 

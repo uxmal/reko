@@ -31,7 +31,7 @@ namespace Decompiler.Arch.Intel
 	/// </summary>
 	public class StringInstructionRewriter
 	{
-		private CodeEmitter emitter;
+		private CodeEmitterOld emitter;
 		private OperandRewriterOld orw;
 		private IntelArchitecture arch;
 
@@ -44,7 +44,7 @@ namespace Decompiler.Arch.Intel
 		}
 
 
-		public void EmitStringInstruction(IntelInstruction instr, CodeEmitter emitter)
+		public void EmitStringInstruction(IntelInstruction instr, CodeEmitterOld emitter)
 		{
             this.emitter = emitter;
 

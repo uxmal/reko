@@ -32,7 +32,7 @@ namespace Decompiler.Scanning
     {
         private IRewriterHost host;
         private Procedure proc;
-        private Rewriter rewriter;
+        private RewriterOld rewriter;
         private Dictionary<Address, Block> blocksVisited;
         private IProcessorArchitecture arch;
         private Stack<WorkItem> blocksToRewrite;
@@ -46,9 +46,9 @@ namespace Decompiler.Scanning
             this.blocksToRewrite = new Stack<WorkItem>();
         }
 
-        public CodeEmitter CreateEmitter(Block block)
+        public CodeEmitterOld CreateEmitter(Block block)
         {
-            return new CodeEmitter(arch, host, proc, block);
+            return new CodeEmitterOld(arch, host, proc, block);
         }
 
 
@@ -58,9 +58,9 @@ namespace Decompiler.Scanning
             public Block Pred;
             public Address Address;
             public int Size;
-            public Rewriter Rewriter;
+            public RewriterOld Rewriter;
 
-            public WorkItem(Block block, Block pred, Address addr, int size, Rewriter rewriter)
+            public WorkItem(Block block, Block pred, Address addr, int size, RewriterOld rewriter)
             {
                 this.Block = block;
                 this.Pred = pred;
@@ -97,7 +97,7 @@ namespace Decompiler.Scanning
         }
 
 
-        public void HandleFallThrough(Block block, Address addr, Rewriter rewriter)
+        public void HandleFallThrough(Block block, Address addr, RewriterOld rewriter)
         {
             Procedure procTarget = host.GetProcedureAtAddress(addr, proc.Frame.ReturnAddressSize);
             if (procTarget != null)
@@ -111,7 +111,7 @@ namespace Decompiler.Scanning
         }
         
         
-        public Block RewriteBlock(Address addr, Block pred, Rewriter rewriter)
+        public Block RewriteBlock(Address addr, Block pred, RewriterOld rewriter)
         {
             Block block;
             if (blocksVisited.TryGetValue(addr, out block))
@@ -184,7 +184,7 @@ namespace Decompiler.Scanning
         }
 
 
-        public Rewriter Rewriter
+        public RewriterOld Rewriter
         {
             get { return rewriter; }
             set { rewriter = value; }

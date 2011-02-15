@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Scanning
         private MockRepository repository;
         private IScanner scanner;
         private IProcessorArchitecture arch;
-        private Rewriter2 rewriter;
+        private Rewriter rewriter;
         private Program prog;
         private Procedure proc;
         private Block block;
@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Scanning
 
             scanner = repository.DynamicMock<IScanner>();
             arch = repository.DynamicMock<IProcessorArchitecture>();
-            rewriter = repository.Stub<Rewriter2>();
+            rewriter = repository.Stub<Rewriter>();
         }
 
         private BlockWorkitem CreateWorkItem(Address addr)
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Scanning
             Block next = new Block(block.Procedure, "next");
             using (repository.Record())
             {
-                arch.Stub(x => x.CreateRewriter2(
+                arch.Stub(x => x.CreateRewriter(
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
@@ -135,7 +135,7 @@ namespace Decompiler.UnitTests.Scanning
             ProcessorState s2 = null;
             using (repository.Record())
             {
-                arch.Stub(x => x.CreateRewriter2(
+                arch.Stub(x => x.CreateRewriter(
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
@@ -172,7 +172,7 @@ namespace Decompiler.UnitTests.Scanning
             var cg = new CallGraph();
             using (repository.Record())
             {
-                arch.Stub(x => x.CreateRewriter2(
+                arch.Stub(x => x.CreateRewriter(
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,

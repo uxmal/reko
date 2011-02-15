@@ -31,6 +31,7 @@ using System.Diagnostics;
 
 namespace Decompiler.Arch.Intel
 {
+    [Obsolete("Use x86Rewriter")]
 	public partial class IntelRewriter : X86Rewriter
 	{
 		//$REVIEW: accumulating a lot of members; put this class on diet?
@@ -49,7 +50,7 @@ namespace Decompiler.Arch.Intel
 		private int maxFpuStackWrite;
 		private OperandRewriterOld orw;
 		private StringInstructionRewriter siw;
-		private CodeEmitter emitter;
+		private CodeEmitterOld emitter;
 		
 		public IntelRewriter(
 			IProcedureRewriter prw,
@@ -81,7 +82,7 @@ namespace Decompiler.Arch.Intel
 		/// <param name="instrs"></param>
 		/// <param name="addrs"></param>
 		/// <param name="aDeadFlags"></param>
-        public override void ConvertInstructions(MachineInstruction [] instructions,  Address[] addrs, uint[] aDeadFlags, Address addrEnd, CodeEmitter emitter)
+        public override void ConvertInstructions(MachineInstruction [] instructions,  Address[] addrs, uint[] aDeadFlags, Address addrEnd, CodeEmitterOld emitter)
         {
             instrs = new IntelInstruction[instructions.Length];
             for (int x = 0; x < instrs.Length; ++x)
@@ -1140,7 +1141,7 @@ namespace Decompiler.Arch.Intel
             // The second (1'th) outward bound branch is the path we take 
             // when the condition the opcode tests for is true.
 
-            CodeEmitter e = emitter;
+            CodeEmitterOld e = emitter;
             Block blockHead = e.Block;
             EmitBranchPath(blockHead, addrEnd);
             Block blockTarget = EmitBranchPath(blockHead, orw.OperandAsCodeAddress(opTarget, state));
@@ -1161,7 +1162,7 @@ namespace Decompiler.Arch.Intel
 				Block block = emitter.Block;
 				blockTo = proc.AddBlock(state.InstructionAddress.GenerateName("l", "_branch"));
 				proc.AddEdge(block, blockTo);
-                CodeEmitter e = emitter;
+                CodeEmitterOld e = emitter;
                 emitter = ProcedureRewriter.CreateEmitter(blockTo);
 				EmitCallAndReturn(p);       //$REFACTOR: pass emitter.
                 emitter = e;
@@ -1187,7 +1188,8 @@ namespace Decompiler.Arch.Intel
 			{
 				if (procCallee.Signature == null)
 					throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", proc.Name));
-				var target = procCallee.Signature.FormalArguments[0].Storage.BindFormalArgumentToFrame(arch, this.frame, site);
+                Expression target = null;
+                throw new NotImplementedException(" procCallee.Signature.FormalArguments[0].Storage.BindFormalArgumentToFrame(arch, this.frame, site);");
                 var id = target as Identifier;
                 if (id != null)
                 {
@@ -1546,7 +1548,7 @@ namespace Decompiler.Arch.Intel
 			Identifier flag;
 			if (useFlags != 0)
 			{
-                CodeEmitter e = emitter;
+                CodeEmitterOld e = emitter;
 
 				// Splice in a new block.
 
@@ -1694,7 +1696,7 @@ namespace Decompiler.Arch.Intel
 		/// follow: ...	
 		/// </code>
 		///</summary>
-		private void EmitRepInstruction(IntelInstruction [] instrs, ref int i, CodeEmitter emitter)
+		private void EmitRepInstruction(IntelInstruction [] instrs, ref int i, CodeEmitterOld emitter)
 		{
 			// Compare [E]CX to 0. If [E]CX isn't 0, fall through to the next block.
 

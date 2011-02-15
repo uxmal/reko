@@ -36,7 +36,7 @@ namespace Decompiler.Arch.Intel
     /// <summary>
     /// Rewrites x86 instructions into a stream of low-level RTL-like instructions.
     /// </summary>
-    public partial class X86Rewriter : Rewriter, Rewriter2
+    public partial class X86Rewriter : RewriterOld, Rewriter
     {
         private IRewriterHost2 host;
         private IntelArchitecture arch;
@@ -87,7 +87,7 @@ namespace Decompiler.Arch.Intel
             throw new NotImplementedException();
         }
 
-        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitter emitter)
+        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitterOld emitter)
         {
             throw new NotImplementedException();
         }

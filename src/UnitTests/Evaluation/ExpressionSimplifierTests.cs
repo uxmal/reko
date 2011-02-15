@@ -65,10 +65,9 @@ namespace Decompiler.UnitTests.Evaluation
 			foo = new Identifier(mrFoo.Name, 1, mrFoo.DataType, new RegisterStorage(mrFoo));
 			bar = new Identifier(mrBar.Name, 2, mrBar.DataType, new RegisterStorage(mrBar));
 
-			SsaIdentifierCollection coll = new SsaIdentifierCollection();
-			
-            Expression src = Constant.Word32(1);
-            coll.Add(foo, new Statement(new Assignment(foo, src), null), src, false);
+			var coll = new SsaIdentifierCollection();
+            var src = Constant.Word32(1);
+            coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false);
 			return coll;
 		}
 	}

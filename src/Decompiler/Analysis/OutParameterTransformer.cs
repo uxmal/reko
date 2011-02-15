@@ -99,7 +99,7 @@ namespace Decompiler.Analysis
 				}
 				else
 				{
-					stmDef.Block.Statements.Insert(iStmDef + 1, new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
+					stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
 				}
 			}
 			return a;
@@ -112,7 +112,7 @@ namespace Decompiler.Analysis
 
 		public override Instruction TransformDefInstruction(DefInstruction def)
 		{
-			stmDef.Block.Statements.Insert(iStmDef + 1, new Store(Dereference(idOut, def.Expression.DataType), def.Expression));
+			stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, def.Expression.DataType), def.Expression));
 			return def;
 		}
 

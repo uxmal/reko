@@ -36,30 +36,53 @@ namespace Decompiler.Core
 	/// Calling a procedure affects a few things: the registers, the stack depth, and in the case of the Intel x86
 	/// architecture the FPU stack depth. These effects are summarized by the signature.
 	/// </remarks>
+    //$REFACTOR: break out CPU-specific stuff like x86 FPU stack gunk into a subclass?
 	public class ProcedureSignature
 	{
-		private Identifier ret;
-		private Identifier [] formals;
-		private TypeVariable typeVar;
-
-		private int fpuStackMax;
-		private int fpuStackWriteMax;
-
 		public ProcedureSignature()
 		{
 		}
 
 		public ProcedureSignature(Identifier returnId, params Identifier [] formalArguments)
 		{
-			this.ret = returnId;
-			this.formals = formalArguments;
-		}
-		
-		public Identifier [] FormalArguments
-		{
-			get { return formals; } 
+			this.ReturnValue = returnId;
+			this.FormalArguments = formalArguments;
 		}
 
+        public TypeVariable TypeVariable { get; set; }
+		public Identifier [] FormalArguments { get; private set; }
+        public Identifier ReturnValue { get; private set; }
+        public int ReturnAddressOnStack { get; set; }           // The size of the return address if pushed on stack.
+        /// <summary>
+        /// Number of slots by which the FPU stack grows or shrinks after the procedure is called.
+        /// </summary>
+        public int FpuStackDelta { get; set; }
+        /// <summary>
+        /// Number of bytes to add to the stack pointer after returning from the procedure.
+        /// Note that this doesn't include the return address size, if the return address is 
+        /// passed on the stack. 
+        /// </summary>
+        public int StackDelta { get; set; }
+        /// <summary>
+        /// The index of the 'deepest' FPU stack argument used. -1 means no stack parameters are used.
+        /// </summary>
+        public int FpuStackArgumentMax { get;set; }
+
+        /// <summary>
+        /// True if the medium-level arguments have been discovered. Otherwise, the signature just contains the net effect
+        /// on the processor state.
+        /// </summary>
+        public bool ArgumentsValid
+        {
+            get { return FormalArguments != null || ReturnValue != null; }
+        }
+
+        /// <summary>
+        /// The index of the 'deepest' FPU stack argument written. -1 means no stack parameters are used.
+        /// </summary>
+        public int FpuStackOutArgumentMax { get;set ; }
+
+        #region Output methods
         public void Emit(string fnName, EmitFlags f, TextWriter writer)
         {
             Emit(fnName, f, new Formatter(writer));
@@ -75,9 +98,9 @@ namespace Decompiler.Core
             bool emitStorage = (f & EmitFlags.ArgumentKind) == EmitFlags.ArgumentKind;
             if (emitStorage)
             {
-                if (ret != null)
+                if (ReturnValue != null)
                 {
-                    w.WriteFormalArgumentType(ret, emitStorage);
+                    w.WriteFormalArgumentType(ReturnValue, emitStorage);
                     fmt.Write(" ");
                 }
                 else
@@ -88,24 +111,26 @@ namespace Decompiler.Core
             }
             else
             {
-                if (ret == null)
+                if (ReturnValue == null)
                     fmt.Write("void {0}", fnName);
                 else
                 {
-                    t.Write(ret.DataType, fnName);           //$TODO: won't work with fn's that return pointers to functions or arrays.
+                    t.Write(ReturnValue.DataType, fnName);           //$TODO: won't work with fn's that return pointers to functions or arrays.
                 }
                 fmt.Write("(");
             }
-            if (formals != null && formals.Length > 0)
+            var sep = "";
+            if (FormalArguments != null)
             {
-                w.WriteFormalArgument(formals[0], emitStorage, t);
-                for (int i = 1; i < formals.Length; ++i)
+                for (int i = 0; i < FormalArguments.Length; ++i)
                 {
-                    fmt.Write(", ");
-                    w.WriteFormalArgument(formals[i], emitStorage, t);
+                    fmt.Write(sep);
+                    sep = ", ";
+                    w.WriteFormalArgument(FormalArguments[i], emitStorage, t);
                 }
             }
             fmt.Write(")");
+            
             if ((f & EmitFlags.LowLevelInfo) == EmitFlags.LowLevelInfo)
             {
                 fmt.WriteLine();
@@ -114,45 +139,6 @@ namespace Decompiler.Core
             }
         }
 
-		/// <summary>
-		/// Amount by which the FPU stack grows or shrinks after the procedure is called.
-		/// </summary>
-		public int FpuStackDelta { get;set; }
-
-		/// <summary>
-		/// The index of the 'deepest' FPU stack argument written. -1 means no stack parameters are used.
-		/// </summary>
-		public int FpuStackOutArgumentMax
-		{
-			get { return fpuStackWriteMax; }
-			set { fpuStackWriteMax = value; }
-		}
-
-		/// <summary>
-		/// The index of the 'deepest' FPU stack argument used. -1 means no stack parameters are used.
-		/// </summary>
-		public int FpuStackArgumentMax
-		{
-			get { return fpuStackMax; }
-			set { fpuStackMax = value; }
-		}
-
-		public bool ArgumentsValid
-		{
-			get { return formals != null || ret != null; }
-		}
-
-		/// <summary>
-		/// Amount of bytes to add to the stack pointer after returning from the procedure.
-		/// Note that this also includes the return address size, if the return address is 
-		/// passed on the stack.
-		/// </summary>
-		public int StackDelta { get;set; }
-
-		public Identifier ReturnValue
-		{
-			get { return ret; }
-		}
 
 		public override string ToString()
 		{
@@ -174,11 +160,6 @@ namespace Decompiler.Core
 			return sw.ToString();
 		}
 
-		public TypeVariable TypeVariable
-		{
-			get { return typeVar; }
-			set { typeVar = value; }
-		}
 
 		[Flags]
 		public enum EmitFlags
@@ -186,6 +167,7 @@ namespace Decompiler.Core
 			None = 0,
 			ArgumentKind = 1,
 			LowLevelInfo = 2,
-		}
-	}
+        }
+        #endregion
+    }
 }

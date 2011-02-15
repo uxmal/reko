@@ -619,7 +619,7 @@ namespace Decompiler.Analysis
             {
             }
 
-            public override void Accept(StorageVisitor visitor)
+            public override T Accept<T>(StorageVisitor<T> visitor)
             {
                 throw new NotImplementedException();
             }

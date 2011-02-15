@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
-    public class FakeRewriter : Rewriter2
+    public class FakeRewriter : Rewriter
     {
         IEnumerable<RtlInstructionCluster> instrs;
 

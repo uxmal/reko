@@ -26,7 +26,7 @@ using System.IO;
 
 namespace Decompiler.Analysis
 {
-	public class TrashStorageHelper : StorageVisitor
+	public class TrashStorageHelper : StorageVisitor<Storage>
 	{
 		private uint grfDefs;
 		private Dictionary<Storage, Storage> regDefs;
@@ -100,13 +100,14 @@ namespace Decompiler.Analysis
 
 		#region StorageVisitor Members
 
-		public void VisitFlagGroupStorage(FlagGroupStorage grf)
+		public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
 		{
 			if (defining)
 				this.grfDefs |= grf.FlagGroup;
+            return grf;
 		}
 
-		public void VisitFpuStackStorage(FpuStackStorage fpu)
+		public Storage VisitFpuStackStorage(FpuStackStorage fpu)
 		{
             if (defining)
                 regDefs[fpu] = value;
@@ -115,19 +116,20 @@ namespace Decompiler.Analysis
                 value = null;
                 regDefs.TryGetValue(fpu, out value);
             }
+            return fpu;
 		}
 
-		public void VisitMemoryStorage(MemoryStorage global)
+		public Storage VisitMemoryStorage(MemoryStorage global)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void VisitOutArgumentStorage(OutArgumentStorage arg)
+		public Storage VisitOutArgumentStorage(OutArgumentStorage arg)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void VisitRegisterStorage(RegisterStorage reg)
+		public Storage VisitRegisterStorage(RegisterStorage reg)
 		{
             if (defining)
             {
@@ -138,9 +140,10 @@ namespace Decompiler.Analysis
                 value = null;
                 regDefs.TryGetValue(reg, out value);
             }
+            return reg;
 		}
 
-		public void VisitSequenceStorage(SequenceStorage seq)
+		public Storage VisitSequenceStorage(SequenceStorage seq)
 		{
 			seq.Head.Storage.Accept(this);
 			seq.Tail.Storage.Accept(this);
@@ -152,9 +155,10 @@ namespace Decompiler.Analysis
 			{
 				value = regDefs[seq];
 			}
+            return seq;
 		}
 
-		public void VisitStackArgumentStorage(StackArgumentStorage stack)
+		public Storage VisitStackArgumentStorage(StackArgumentStorage stack)
 		{
             if (defining)
                 regDefs[stack] = value;
@@ -163,9 +167,10 @@ namespace Decompiler.Analysis
                 value = null;
                 regDefs.TryGetValue(stack, out value);
             }
+            return stack;
 		}
 
-		public void VisitStackLocalStorage(StackLocalStorage local)
+		public Storage VisitStackLocalStorage(StackLocalStorage local)
 		{
             if (defining)
                 regDefs[local] = value;
@@ -174,9 +179,10 @@ namespace Decompiler.Analysis
                 value = null;
                 regDefs.TryGetValue(local, out value);
             }
+            return local;
 		}
 
-		public void VisitTemporaryStorage(TemporaryStorage temp)
+		public Storage VisitTemporaryStorage(TemporaryStorage temp)
 		{
             if (defining)
                 regDefs[temp] = value;
@@ -185,6 +191,7 @@ namespace Decompiler.Analysis
                 value = null;
                 regDefs.TryGetValue(temp, out value);
             }
+            return temp;
 		}
 
 		#endregion

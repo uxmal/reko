@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void AddIncrement()
 		{
 			var id = new Identifier("id", 0, PrimitiveType.Word16, null);
-			var emitter = new CodeEmitter(null, null, null, null);
+			var emitter = new CodeEmitterOld(null, null, null, null);
 			var add = emitter.Add(id, 3);
 			Assert.AreEqual(PrimitiveType.Word16, add.DataType);
 			Assert.AreEqual(PrimitiveType.Word16, add.Right.DataType);
@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void SubIncrement()
 		{
 			var id = new Identifier("id", 0, PrimitiveType.Word16, null);
-			var emitter = new CodeEmitter(null, null, null, null);
+			var emitter = new CodeEmitterOld(null, null, null, null);
 			var add = emitter.Sub(id, 3);
 			Assert.AreEqual(PrimitiveType.Word16, add.DataType);
 			Assert.AreEqual(PrimitiveType.Word16, add.Right.DataType);

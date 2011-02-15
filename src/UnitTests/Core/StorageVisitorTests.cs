@@ -30,16 +30,14 @@ using System;
 namespace Decompiler.UnitTests.Core
 {
 	[TestFixture]
-	public class StorageVisitorTests : StorageVisitor
+	public class StorageVisitorTests : StorageVisitor<string>
 	{
-		private string type;
-
 		[Test]
 		public void VisitRegister()
 		{
 			var reg = new MachineRegister("r0", 0, PrimitiveType.Word16);
 			var r = new Identifier(reg.Name, 0, reg.DataType, new RegisterStorage(reg));
-			r.Storage.Accept(this);
+			var type = r.Storage.Accept(this);
 			Assert.AreEqual("reg", type);
 		}
 
@@ -47,7 +45,7 @@ namespace Decompiler.UnitTests.Core
 		public void VisitFlagGroup()
 		{
 			var f = new Identifier("grf", 0, PrimitiveType.Word16, new FlagGroupStorage(0x11, "ZO"));
-			f.Storage.Accept(this);
+			var type = f.Storage.Accept(this);
 			Assert.AreEqual("grf", type);
 		}
 
@@ -57,7 +55,7 @@ namespace Decompiler.UnitTests.Core
 			var ax = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, new RegisterStorage(Registers.ax));
 			var dx = new Identifier(Registers.dx.Name, 1, Registers.dx.DataType, new RegisterStorage(Registers.dx));
 			var seq = new Identifier("dx_ax", 2, PrimitiveType.Word32, new SequenceStorage(dx, ax));
-			seq.Storage.Accept(this);
+			var type = seq.Storage.Accept(this);
 			Assert.AreEqual("seq", type);
 		}
 
@@ -65,53 +63,53 @@ namespace Decompiler.UnitTests.Core
 		public void VisitFpuStackVariable()
 		{
 			Identifier f = new Identifier("st(0)", 0, PrimitiveType.Real80, new FpuStackStorage(0, PrimitiveType.Real80));
-			f.Storage.Accept(this);
+			var type = f.Storage.Accept(this);
 			Assert.AreEqual("fpu", type);
 		}
 
-		public void VisitFlagGroupStorage(FlagGroupStorage reg)
+		public string VisitFlagGroupStorage(FlagGroupStorage reg)
 		{
-			type = "grf";
+			return "grf";
 		}
 
-		public void VisitFpuStackStorage(FpuStackStorage fpu)
+		public string VisitFpuStackStorage(FpuStackStorage fpu)
 		{
-			type = "fpu";
+			return "fpu";
 		}
 
-		public void VisitMemoryStorage(MemoryStorage global)
+		public string VisitMemoryStorage(MemoryStorage global)
 		{
-			type = "global";
+			return "global";
 		}
 
-		public void VisitOutArgumentStorage(OutArgumentStorage arg)
+		public string VisitOutArgumentStorage(OutArgumentStorage arg)
 		{
-			type = "org";
+			return "org";
 		}
 
-		public void VisitRegisterStorage(RegisterStorage reg)
+		public string VisitRegisterStorage(RegisterStorage reg)
 		{
-			type = "reg";
+			return "reg";
 		}
 
-		public void VisitSequenceStorage(SequenceStorage seq)
+		public string VisitSequenceStorage(SequenceStorage seq)
 		{
-			type = "seq";
+			return "seq";
 		}
 
-		public void VisitStackArgumentStorage(StackArgumentStorage stack)
+		public string VisitStackArgumentStorage(StackArgumentStorage stack)
 		{
-			type = "stack";
+			return "stack";
 		}
 
-		public void VisitStackLocalStorage(StackLocalStorage local)
+		public string VisitStackLocalStorage(StackLocalStorage local)
 		{
-			type = "local";
+			return "local";
 		}
 
-		public void VisitTemporaryStorage(TemporaryStorage temp)
+		public string VisitTemporaryStorage(TemporaryStorage temp)
 		{
-			type = "temp";
+			return "temp";
 		}
 	}
 }

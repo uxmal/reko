@@ -28,11 +28,11 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Rewrites code from machine-specific to machine-independent IL codes.
 	/// </summary>
-	public abstract class Rewriter
+	public abstract class RewriterOld
 	{
         private IProcedureRewriter prw;
 
-        public Rewriter(IProcedureRewriter prw)
+        public RewriterOld(IProcedureRewriter prw)
         {
             this.prw = prw;
         }
@@ -44,7 +44,7 @@ namespace Decompiler.Core
 
         public abstract void GrowStack(int bytes);
 
-        public abstract void ConvertInstructions(MachineInstruction [] instrs, Address [] addrs, uint [] deadOutFlags,  Address addrEnd, CodeEmitter emitter);
+        public abstract void ConvertInstructions(MachineInstruction [] instrs, Address [] addrs, uint [] deadOutFlags,  Address addrEnd, CodeEmitterOld emitter);
 
 		public abstract void EmitCallAndReturn(Procedure callee);
     }
@@ -54,7 +54,7 @@ namespace Decompiler.Core
     /// machine-specific instractions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
     /// returned as clusters of RtlInstructions.
     /// </summary>
-    public interface Rewriter2 : IEnumerable<RtlInstructionCluster>
+    public interface Rewriter : IEnumerable<RtlInstructionCluster>
     {
     }
 }

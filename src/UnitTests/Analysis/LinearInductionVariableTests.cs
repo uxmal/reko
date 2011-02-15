@@ -60,10 +60,10 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier a3 = new Identifier("a3", 2, PrimitiveType.Word32, null);
 			PhiFunction phi = new PhiFunction(a1.DataType, new Expression [] { a1, a3 });
 
-			Statement stm_a1 = new Statement(new Assignment(a1, Constant.Word32(0)), null);
-			Statement stm_a2 = new Statement(new PhiAssignment(a2, new PhiFunction(a1.DataType, new Expression[] { a1, a3 } )), null);
-			Statement stm_ex = new Statement(new Branch(new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a2, Constant.Word32(10)), b2), null);
-			Statement stm_a3 = new Statement(new Assignment(a3, new BinaryExpression(Operator.Add, a3.DataType, a2, Constant.Word32(4))), null);
+			Statement stm_a1 = new Statement(0, new Assignment(a1, Constant.Word32(0)), null);
+			Statement stm_a2 = new Statement(0, new PhiAssignment(a2, new PhiFunction(a1.DataType,  a1, a3 )), null);
+			Statement stm_ex = new Statement(0, new Branch(new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a2, Constant.Word32(10)), b2), null);
+			Statement stm_a3 = new Statement(0, new Assignment(a3, new BinaryExpression(Operator.Add, a3.DataType, a2, Constant.Word32(4))), null);
 			b1.Statements.Add(stm_a1);
 			b2.Statements.Add(stm_a2);
 			b2.Statements.Add(stm_a3);
@@ -180,7 +180,7 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds.Add(new SsaIdentifier(id0, id0, null, null, false));
 			ssaIds.Add(new SsaIdentifier(id1, id1, null, null, false));
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
-			liv.Context.PhiStatement = new Statement(null, null);
+			liv.Context.PhiStatement = new Statement(0, null, null);
 			liv.Context.PhiIdentifier = new Identifier("i_3", 1, PrimitiveType.Word32, null);
 			liv.Context.DeltaValue = Constant.Word32(1);
 			LinearInductionVariable iv = liv.CreateInductionVariable();
@@ -193,11 +193,11 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds = new SsaIdentifierCollection();
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
 			liv.Context.InitialValue = Constant.Word32(0);
-			liv.Context.PhiStatement = new Statement(null, null);
+			liv.Context.PhiStatement = new Statement(0, null, null);
 			liv.Context.PhiIdentifier = new Identifier("foo_0", 0, PrimitiveType.Word32, null);
             ssaIds.Add(new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
 			liv.Context.DeltaValue = Constant.Word32(1);
-			liv.Context.DeltaStatement = new Statement(new Assignment(new Identifier("foo_1", 1, PrimitiveType.Word32, null), 
+			liv.Context.DeltaStatement = new Statement(0, new Assignment(new Identifier("foo_1", 1, PrimitiveType.Word32, null), 
 				new BinaryExpression(Operator.Add, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
 			ssaIds[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
 
@@ -216,7 +216,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			liv.Context.InitialValue = Constant.Word32(0);
 			Identifier id2 = m.Local32("id_2");
-			SsaId(id2, new Statement(null, null), null, false);
+			SsaId(id2, new Statement(0, null, null), null, false);
 			Assert.AreEqual(3, ssaIds.Count);
 
 			Identifier id3 = m.Local32("id_3");
@@ -227,7 +227,7 @@ namespace Decompiler.UnitTests.Analysis
 			SsaId(id3, liv.Context.PhiStatement, ((PhiAssignment)liv.Context.PhiStatement.Instruction).Src, false);
 			Assert.AreEqual(4, ssaIds.Count);
 
-			Statement use = new Statement(null, null);
+			Statement use = new Statement(0, null, null);
 			ssaIds[id3].Uses.Add(use);
 
 			liv.Context.DeltaValue = m.Int32(1);

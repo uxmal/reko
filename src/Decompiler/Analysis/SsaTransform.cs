@@ -73,6 +73,7 @@ namespace Decompiler.Analysis
 		private Instruction InsertPhiStatement(Block b, int v)
 		{
 			Statement stm = new Statement(
+                0,
 				new PhiAssignment(varsOrig[v], b.Pred.Count),
 				b);
 			b.Statements.Insert(0, stm);
@@ -304,7 +305,7 @@ namespace Decompiler.Analysis
 					// Variables that are used before defining are "predefined" in the 
 					// dummy entry block.
 
-					id.DefStatement = new Statement(new DefInstruction(proc.Frame.Identifiers[a]), entryBlock);
+					id.DefStatement = new Statement(0, new DefInstruction(proc.Frame.Identifiers[a]), entryBlock);
 					entryBlock.Statements.Add(id.DefStatement);
 					wasonentry[a] = -1;
 				}

@@ -48,13 +48,9 @@ namespace Decompiler.UnitTests.Typing
 
             var prog = ldr.Load(new Address(0xC00, 0));
             var ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
-			prog.AddEntryPoint(ep);
-			
-			var scan = new ScannerOld(prog, null);
+			var scan = new Scanner(prog.Architecture, prog.Image, prog.Platform, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
 			scan.EnqueueEntryPoint(ep);
 			scan.ProcessQueue();
-			var rw = new RewriterHost(prog, new FakeDecompilerEventListener(), scan.SystemCalls, scan.VectorUses);
-			rw.RewriteProgram();
 
 			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();

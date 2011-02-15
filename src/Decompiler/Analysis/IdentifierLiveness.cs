@@ -29,7 +29,7 @@ using System.IO;
 
 namespace Decompiler.Analysis
 {
-	public class IdentifierLiveness : StorageVisitor	
+	public class IdentifierLiveness : StorageVisitor<Storage>	
 	{
 		private Identifier id;
 		private BitSet bits;
@@ -134,7 +134,7 @@ namespace Decompiler.Analysis
 			set { liveStackVars = value; }
 		}
 
-		public void VisitFlagGroupStorage(FlagGroupStorage grf)
+		public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
 		{
 			if (define)
 			{
@@ -144,23 +144,27 @@ namespace Decompiler.Analysis
 			{
 				this.grf |= grf.FlagGroup;
 			}
+            return null;
 		}
 	
 
-		public void VisitFpuStackStorage(FpuStackStorage fpu)
+		public Storage VisitFpuStackStorage(FpuStackStorage fpu)
 		{
+            return null; 
 		}
 
-		public void VisitMemoryStorage(MemoryStorage global)
+		public Storage VisitMemoryStorage(MemoryStorage global)
 		{
+            return null;
 		}
 
-		public void VisitOutArgumentStorage(OutArgumentStorage arg)
+		public Storage VisitOutArgumentStorage(OutArgumentStorage arg)
 		{
 			Def(arg.OriginalIdentifier);
+            return null;
 		}
 
-		public void VisitRegisterStorage(RegisterStorage reg)
+		public Storage VisitRegisterStorage(RegisterStorage reg)
 		{
 			if (define)
 			{
@@ -175,10 +179,11 @@ namespace Decompiler.Analysis
 					r = reg.Register;
 				bits[r.Number] = true;
 			}
+            return null;
 		}
 
 
-		public void VisitSequenceStorage(SequenceStorage seq)
+		public Storage VisitSequenceStorage(SequenceStorage seq)
 		{
 			seq.Head.Storage.Accept(this);
 			seq.Tail.Storage.Accept(this);
@@ -192,9 +197,10 @@ namespace Decompiler.Analysis
 				//$NOTimplemented: what happens in cases like es_bx = AAAABBBB
 				// but only es is live out? AAAA but not BBBB should be live then.
 			}
+            return null;
 		}
 
-		public void VisitStackLocalStorage(StackLocalStorage local)
+		public Storage VisitStackLocalStorage(StackLocalStorage local)
 		{
 			if (define)
 			{
@@ -217,10 +223,11 @@ namespace Decompiler.Analysis
 					liveStackVars.Add(local, useBitSize);
 				}
 			}
+            return null;
 		}
 
 
-		public void VisitStackArgumentStorage(StackArgumentStorage arg)
+		public Storage VisitStackArgumentStorage(StackArgumentStorage arg)
 		{
 			if (define)
 			{
@@ -242,10 +249,11 @@ namespace Decompiler.Analysis
 					liveStackVars.Add(arg, useBitSize != 0 ? useBitSize : arg.DataType.BitSize);
 				}
 			}
+            return null;
 		}
 
 
-		public void VisitTemporaryStorage(TemporaryStorage tmp)
+		public Storage VisitTemporaryStorage(TemporaryStorage tmp)
 		{
 			if (define)
 			{
@@ -265,6 +273,7 @@ namespace Decompiler.Analysis
 				else
 					liveStackVars.Add(tmp, useBitSize != 0 ? useBitSize : id.DataType.BitSize);
 			}
+            return null;
 		}
 
 		public void Write(TextWriter writer, string format, params object [] args)

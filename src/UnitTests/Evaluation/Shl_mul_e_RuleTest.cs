@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Evaluation
 		{
 			BinaryExpression b = m.Shl(m.Muls(id, 3), 2);
 			Assignment ass = new Assignment(x, b);
-			Statement stm = new Statement(ass, null);
+			Statement stm = new Statement(0, ass, null);
 			ssaIds[id].Uses.Add(stm);
 			ssaIds[id].Uses.Add(stm);
 
