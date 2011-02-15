@@ -52,8 +52,13 @@ namespace Decompiler.Environments.Msdos
 			{
 				libPath = Directory.GetCurrentDirectory() + "/realmodeintservices.xml";
 			}
-			SerializedLibrary lib = SerializedLibrary.LoadFromFile(libPath);
-			int i = 0;
+            SerializedLibrary lib;
+            using (FileStream stm = new FileStream(libPath, FileMode.Open))
+			{
+                lib = SerializedLibrary.LoadFromStream(stm);
+			}
+
+            int i = 0;
 			realModeServices = new SystemService[lib.Procedures.Count];
 			foreach (SerializedService ssvc in lib.Procedures)
 			{

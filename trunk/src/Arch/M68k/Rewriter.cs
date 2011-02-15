@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
-    public class Rewriter : Decompiler.Core.Rewriter
+    public class Rewriter : Decompiler.Core.RewriterOld
     {
         public Rewriter(M68kArchitecture arch, IProcedureRewriter prw)
             : base(prw)
@@ -38,7 +38,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitter emitter)
+        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitterOld emitter)
         {
             throw new NotImplementedException();
         }

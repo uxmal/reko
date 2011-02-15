@@ -151,9 +151,9 @@ done:
 			Identifier f = Reg32("f");
 
             
-			Statement stmZ = new Statement(new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.Sub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
+			Statement stmZ = new Statement(0, new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.Sub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
 			ssaIds[Z].DefStatement = stmZ;
-			Statement stmF = new Statement(new Assignment(f, new TestCondition(ConditionCode.NE, Z)), null);
+			Statement stmF = new Statement(0, new Assignment(f, new TestCondition(ConditionCode.NE, Z)), null);
 			ssaIds[f].DefStatement = stmF;
 			ssaIds[Z].Uses.Add(stmF);
 

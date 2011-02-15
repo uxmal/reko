@@ -61,18 +61,6 @@ namespace Decompiler.Core
 			typeStore = new TypeStore();
 		}
 
-        [Obsolete("Belongs in the Scanner class")]
-		public void AddEntryPoint(EntryPoint ep)
-		{
-			Procedure proc; 
-			if (!procedures.TryGetValue(ep.Address, out proc))
-			{
-				proc = Procedure.Create(ep.Name, ep.Address, arch.CreateFrame());
-				procedures.Add(ep.Address, proc);
-			}
-			CallGraph.AddEntryPoint(proc);
-		}
-
 		public IProcessorArchitecture Architecture
 		{
 			get { return arch; }

@@ -55,7 +55,7 @@ namespace Decompiler.Arch.Pdp11
 
         public Disassembler CreateDisassembler(ImageReader rdr)
         {
-            return new Pdp11Disassembler(rdr);
+            return new Pdp11Disassembler(rdr, this);
         }
 
         public Dumper CreateDumper()
@@ -88,12 +88,12 @@ namespace Decompiler.Arch.Pdp11
             return new BitSet(16);
         }
 
-        public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+        public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
         {
             return new Pdp11Rewriter(this, prw);
         }
 
-        public Rewriter2 CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public Rewriter CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
             throw new NotImplementedException();
         }
@@ -165,6 +165,16 @@ namespace Decompiler.Arch.Pdp11
         }
 
         public MachineRegister StackRegister { get { return Registers.sp; } }
+
+        #endregion
+
+        #region IProcessorArchitecture Members
+
+
+        public Decompiler.Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

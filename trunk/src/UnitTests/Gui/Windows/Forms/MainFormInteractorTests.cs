@@ -102,7 +102,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             CreateMainFormInteractor();
 
-            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
             svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
             svc.Decompiler.LoadProgram("foo.exe");
             Decompiler.Core.Serialization.SerializedProcedure p = new Decompiler.Core.Serialization.SerializedProcedure();
@@ -137,7 +137,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             CreateMainFormInteractor();
             Assert.IsNull(interactor.ProjectFileName);
 
-            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
             svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
             svc.Decompiler.LoadProgram("foo.exe");
 
@@ -152,7 +152,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         {
             CreateMainFormInteractorWithLoader();
             form.Show();
-            object oSvc = interactor.ProbeGetService(typeof(IDiagnosticsService));
+            object oSvc = interactor.ProbeGetService<IDiagnosticsService>();
             Assert.IsNotNull(oSvc, "IDiagnosticsService should be available!");
             IDiagnosticsService svc = (IDiagnosticsService) oSvc;
             svc.AddDiagnostic(new NullCodeLocation("30000"), new WarningDiagnostic("Whoa"));
@@ -163,7 +163,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void DecompilerServiceInstalled()
         {
             CreateMainFormInteractor();
-            Assert.IsNotNull(interactor.ProbeGetService(typeof (IDecompilerService)), "Should have IDecompilerService available.");
+            Assert.IsNotNull(interactor.ProbeGetService<IDecompilerService>(), "Should have IDecompilerService available.");
         }
 
         [Test] 
@@ -187,7 +187,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void GetWorkerService()
         {
             CreateMainFormInteractor();
-            Assert.IsNotNull(interactor.ProbeGetService(typeof(IWorkerDialogService)));
+            Assert.IsNotNull(interactor.ProbeGetService<IWorkerDialogService>());
 
         }
 
@@ -195,7 +195,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void StatusBarServiceSetText()
         {
             CreateMainFormInteractor();
-            var sbSvc = (IStatusBarService)interactor.ProbeGetService(typeof(IStatusBarService));
+            var sbSvc = (IStatusBarService)interactor.ProbeGetService<IStatusBarService>();
             sbSvc.SetText("Hello!");
             Assert.AreEqual("Hello!", form.StatusStrip.Items[0].Text);
         }
@@ -214,7 +214,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void QueryFindProceduresLoaded()
         {
             CreateMainFormInteractorWithLoader();
-            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
             svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
             svc.Decompiler.LoadProgram("foo.exe");
             var status = QueryStatus(CmdIds.ViewFindAllProcedures);
@@ -225,7 +225,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
         public void ExecuteFindProcedures()
         {
             CreateMainFormInteractorWithLoader();
-            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService(typeof(IDecompilerService));
+            IDecompilerService svc = (IDecompilerService)interactor.ProbeGetService<IDecompilerService>();
             svc.Decompiler = interactor.CreateDecompiler(new FakeLoader());
             svc.Decompiler.LoadProgram("foo.exe");
 
@@ -394,12 +394,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             promptedForSaving = true;
             testFilename = suggestedName;
             return suggestedName;
-        }
-
-        [Obsolete]
-        public object ProbeGetService(Type service)
-        {
-            return base.GetService(service);
         }
 
         public T ProbeGetService<T>()

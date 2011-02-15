@@ -125,12 +125,12 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+        public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
         {
             throw new NotImplementedException();
         }
 
-        public Rewriter2 CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public Rewriter CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
             throw new NotImplementedException();
         }
@@ -186,6 +186,16 @@ namespace Decompiler.Arch.PowerPC
         }
 
         public MachineRegister StackRegister { get { return regs[1]; } }
+
+        #endregion
+
+        #region IProcessorArchitecture Members
+
+
+        public Decompiler.Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

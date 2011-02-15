@@ -796,7 +796,7 @@ namespace Decompiler.Analysis
 		/// <summary>
 		/// Determines whether an identifier is live in <paramref>liveStat</paramref>.
 		/// </summary>
-		public class IsLiveHelper : StorageVisitor
+		public class IsLiveHelper : StorageVisitor<bool>
 		{
 			private bool retval;
 			private IdentifierLiveness liveState;
@@ -805,60 +805,61 @@ namespace Decompiler.Analysis
 			{
 				retval = false;
 				this.liveState = liveState;
-				id.Storage.Accept(this);
+				retval = id.Storage.Accept(this);
 				return retval;
 			}
 
 			#region StorageVisitor Members
 
-			public void VisitTemporaryStorage(TemporaryStorage temp)
+			public bool VisitTemporaryStorage(TemporaryStorage temp)
 			{
-				retval = liveState.LiveStorages.ContainsKey(temp);
+				return liveState.LiveStorages.ContainsKey(temp);
 			}
 
-			public void VisitStackArgumentStorage(StackArgumentStorage stack)
+			public bool VisitStackArgumentStorage(StackArgumentStorage stack)
 			{
-				retval = liveState.LiveStorages.ContainsKey(stack);
+				return liveState.LiveStorages.ContainsKey(stack);
 			}
 
-			public void VisitOutArgumentStorage(OutArgumentStorage arg)
-			{
-				throw new NotImplementedException();
-			}
-
-			public void VisitMemoryStorage(MemoryStorage global)
+			public bool VisitOutArgumentStorage(OutArgumentStorage arg)
 			{
 				throw new NotImplementedException();
 			}
 
-			public void VisitRegisterStorage(RegisterStorage reg)
+			public bool VisitMemoryStorage(MemoryStorage global)
+			{
+				throw new NotImplementedException();
+			}
+
+			public bool VisitRegisterStorage(RegisterStorage reg)
 			{
 				//$REFACTOR: make SetAliases be a bitset of Register.
 				BitSet b = new BitSet(liveState.BitSet.Count);
 				reg.Register.SetAliases(b, true);
-				retval = !(liveState.BitSet & b).IsEmpty;
+				return !(liveState.BitSet & b).IsEmpty;
 			}
 
-			public void VisitFpuStackStorage(FpuStackStorage fpu)
+			public bool VisitFpuStackStorage(FpuStackStorage fpu)
 			{
-				retval = liveState.LiveStorages.ContainsKey(fpu);
+				return liveState.LiveStorages.ContainsKey(fpu);
 			}
 
-			public void VisitFlagGroupStorage(FlagGroupStorage grf)
+			public bool VisitFlagGroupStorage(FlagGroupStorage grf)
 			{
-				retval = (grf.FlagGroup & liveState.Grf) != 0;
+				return (grf.FlagGroup & liveState.Grf) != 0;
 			}
 
-			public void VisitSequenceStorage(SequenceStorage seq)
+			public bool VisitSequenceStorage(SequenceStorage seq)
 			{
-				seq.Head.Storage.Accept(this);
-				if (!retval)
-					seq.Tail.Storage.Accept(this);
+				var f = seq.Head.Storage.Accept(this);
+				if (!f)
+					f = seq.Tail.Storage.Accept(this);
+                return f;
 			}
 
-			public void VisitStackLocalStorage(StackLocalStorage local)
+			public bool VisitStackLocalStorage(StackLocalStorage local)
 			{
-				retval = liveState.LiveStorages.ContainsKey(local);
+				return liveState.LiveStorages.ContainsKey(local);
 			}
 
 			#endregion

@@ -100,7 +100,7 @@ namespace Decompiler.UnitTests.Mocks
             branchBlock = BlockOf(label);
             TerminateBlock();
 
-            Statement stm = new Statement(new Branch(expr, branchBlock), b);
+            Statement stm = new Statement(0, new Branch(expr, branchBlock), b);
             b.Statements.Add(stm);
             return stm;
         }
@@ -154,7 +154,7 @@ namespace Decompiler.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             EnsureBlock(null);
-            block.Statements.Add(instr);
+            block.Statements.Add(0, instr);
             return block.Statements.Last;
         }
 

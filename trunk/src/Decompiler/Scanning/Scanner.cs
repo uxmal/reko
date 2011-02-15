@@ -207,7 +207,7 @@ namespace Decompiler.Scanning
         {
             return new BlockWorkitem(
                                 this,
-                                this.arch.CreateRewriter2(CreateReader(addrStart), state, proc.Frame, this),
+                                this.arch.CreateRewriter(CreateReader(addrStart), state, proc.Frame, this),
                                 state,
                                 proc.Frame,
                                 addrStart);

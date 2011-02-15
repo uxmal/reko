@@ -73,9 +73,9 @@ namespace Decompiler.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+		public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
 		{
-			return CreateRewriter(prw, proc, host);
+			return CreateRewriterOld(prw, proc, host);
 		}
 
 		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, Address addrProc, int cbReturnOnStack, IRewriterHost host)
@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateRewriter implementation");
 		}
 
-        public Rewriter2 CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
             return new FakeRewriter(InstructionStream);
         }

@@ -32,8 +32,6 @@ namespace Decompiler.Core.Serialization
 	/// </summary>
 	public class ProcedureSerializer
 	{
-		private int stackOffset;
-		private int fpuStackOffset;
 		private IProcessorArchitecture arch;
 		private string defaultConvention;
 		private int identifierNumber;
@@ -45,15 +43,18 @@ namespace Decompiler.Core.Serialization
 			this.identifierNumber = 0;
 		}
 
+        public int FpuStackOffset { get; set; }
+        public int StackOffset { get; set; }
+
 		public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
 		{
 			string d = ssig.Convention;
 			if (d == null || d.Length == 0)
 				d = defaultConvention;
 			if (d != null && d == "stdapi")
-				sig.StackDelta = stackOffset;
+				sig.StackDelta = StackOffset;
 
-			sig.FpuStackDelta = fpuStackOffset;
+			sig.FpuStackDelta = FpuStackOffset;
 		}
 
 		public Identifier CreateId(string name, DataType type, Storage storage)
@@ -63,13 +64,13 @@ namespace Decompiler.Core.Serialization
 
 		public ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
 		{
-			ArgumentSerializer argser = new ArgumentSerializer(this, arch, frame);
+			var argser = new ArgumentSerializer(this, arch, frame);
 			Identifier ret = null;
 			if (ss.ReturnValue != null)
 			{
 				ret = argser.Deserialize(ss.ReturnValue);
 			}
-			List<Identifier> args = new List<Identifier>();
+			var args = new List<Identifier>();
 			if (ss.Arguments != null)
 			{
 				foreach (SerializedArgument arg in ss.Arguments)
@@ -77,17 +78,12 @@ namespace Decompiler.Core.Serialization
 					args.Add(argser.Deserialize(arg));
 				}
 			}
-            ProcedureSignature sig = new ProcedureSignature(ret, args.ToArray());
+            var sig = new ProcedureSignature(ret, args.ToArray());
 			ApplyConvention(ss, sig);
 			return sig;
 		}
 
 
-		public int FpuStackOffset
-		{
-			get { return fpuStackOffset; }
-			set { fpuStackOffset = value; }
-		}
 
         public SerializedSignature Serialize(ProcedureSignature sig)
         {
@@ -108,11 +104,6 @@ namespace Decompiler.Core.Serialization
         }
 
 
-        public int StackOffset
-        {
-            get { return stackOffset; }
-            set { stackOffset = value; }
-        }
 
         public SerializedProcedure Serialize(Procedure proc, Address addr)
         {

@@ -193,7 +193,7 @@ namespace Decompiler.Scanning
 		public virtual void RewriteProcedureBlocks(Procedure proc, Address addrProc, IProcessorArchitecture arch)
 		{
             ProcedureRewriter prw = new ProcedureRewriter(this, arch, proc);
-            Rewriter rw = arch.CreateRewriter(prw, proc, this);
+            RewriterOld rw = arch.CreateRewriterOld(prw, proc, this);
 			prw.Rewriter = rw;
 
             rw.GrowStack(proc.Frame.ReturnAddressSize);

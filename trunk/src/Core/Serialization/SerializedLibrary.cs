@@ -44,16 +44,11 @@ namespace Decompiler.Core.Serialization
 			this.Procedures = new List<SerializedProcedureBase>();
 		}
 
-		public static SerializedLibrary LoadFromFile(string filename)
-		{
-			SerializedLibrary lib;
-			XmlSerializer ser = new XmlSerializer(typeof (SerializedLibrary));
-			using (FileStream stm = new FileStream(filename, FileMode.Open))
-			{
-				XmlTextReader rdr = new XmlTextReader(stm);
-				lib = (SerializedLibrary) ser.Deserialize(rdr);
-			}
-			return lib;
-		}
+        public static SerializedLibrary LoadFromStream(Stream stm)
+        {
+            var ser = new XmlSerializer(typeof(SerializedLibrary));
+            var rdr = new XmlTextReader(stm);
+            return (SerializedLibrary)ser.Deserialize(rdr);
+        }
 	}
 }

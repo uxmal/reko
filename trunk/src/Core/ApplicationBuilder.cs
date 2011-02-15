@@ -42,26 +42,24 @@ namespace Decompiler.Core
     ///    is declared void, unless flags are returned.
     /// </remarks>
     //$TODO: make this a StorageVisitor and move teh Storage.BindFormaArgumentToFrame method here
-    public class ApplicationBuilder
+    public class ApplicationBuilder : StorageVisitor<Expression>
 	{
         private IProcessorArchitecture arch;
-        private Identifier idOut;
-        private Application appl;
         private Frame frame;
+        private CallSite site;
+        private Expression callee;
+        private ProcedureSignature sigCallee;
 
-        public ApplicationBuilder(IProcessorArchitecture arch, Frame frame, CallSite cs, Expression callee, ProcedureSignature sigCallee)
+        public ApplicationBuilder(IProcessorArchitecture arch, Frame frame, CallSite site, Expression callee, ProcedureSignature sigCallee)
         {
 			if (sigCallee == null || !sigCallee.ArgumentsValid)
 				throw new InvalidOperationException("No signature available; application cannot be constructed.");
 
             this.arch = arch;
+            this.site = site;
             this.frame = frame;
-            FindReturnValue(cs, sigCallee);
-            List<Expression> actuals = BindArguments(frame, cs, sigCallee);
-			appl = new Application(
-                callee, 
-                (idOut == null ? PrimitiveType.Void : idOut.DataType),
-                actuals.ToArray());
+            this.callee = callee;
+            this.sigCallee = sigCallee;
         }
 
         private List<Expression> BindArguments(Frame frame, CallSite cs, ProcedureSignature sigCallee)
@@ -70,7 +68,7 @@ namespace Decompiler.Core
             for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
             {
                 var formalArg = sigCallee.FormalArguments[i];
-                var actualArg = formalArg.Storage.BindFormalArgumentToFrame(arch, frame, cs);
+                var actualArg = formalArg.Storage.Accept(this);
                 if (formalArg.Storage is OutArgumentStorage)
                 {
                     actuals.Add(new UnaryExpression(UnaryOperator.AddrOf, frame.FramePointer.DataType, actualArg));
@@ -83,23 +81,31 @@ namespace Decompiler.Core
             return actuals;
         }
 
-        private void FindReturnValue(CallSite cs, ProcedureSignature sigCallee)
+        private Identifier FindReturnValue(CallSite cs, ProcedureSignature sigCallee)
         {
-            idOut = null;
+            Identifier idOut = null;
             if (sigCallee.ReturnValue != null)
             {
                 idOut = (Identifier) Bind(sigCallee.ReturnValue, cs);
             }
+            return idOut;
 
         }
 
 		public Expression Bind(Identifier id, CallSite cs)
 		{
-			return id.Storage.BindFormalArgumentToFrame(arch, frame, cs);
+            return id.Storage.Accept(this);
 		}
 
         public Instruction CreateInstruction()
         {
+            var idOut = FindReturnValue(site, sigCallee);
+            List<Expression> actuals = BindArguments(frame, site, sigCallee);
+            var appl = new Application(
+                callee,
+                (idOut == null ? PrimitiveType.Void : idOut.DataType),
+                actuals.ToArray());
+
 			if (idOut == null)
 			{
                 return new SideEffect(appl);
@@ -109,5 +115,60 @@ namespace Decompiler.Core
                 return new Assignment(idOut, appl);
 			}
         }
+
+        #region StorageVisitor<Expression> Members
+
+        public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
+        {
+            return frame.EnsureFlagGroup(grf.FlagGroup, grf.Name, PrimitiveType.Byte);		//$REVIEW: PrimitiveType.Byte is hard-wired here.
+        }
+
+        public Expression VisitFpuStackStorage(FpuStackStorage fpu)
+        {
+            return frame.EnsureFpuStackVariable(fpu.FpuStackOffset - site.FpuStackDepthBefore, fpu.DataType);
+        }
+
+        public Expression VisitMemoryStorage(MemoryStorage global)
+        {
+            throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", global.GetType().FullName));
+        }
+
+        public Expression VisitStackLocalStorage(StackLocalStorage local)
+        {
+            throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", local.GetType().FullName));
+        }
+
+        public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
+        {
+            return arg.OriginalIdentifier.Storage.Accept(this);
+        }
+
+        public Expression VisitRegisterStorage(RegisterStorage reg)
+        {
+			return frame.EnsureRegister(reg.Register);
+        }
+
+        public Expression VisitSequenceStorage(SequenceStorage seq)
+        {
+            var h = seq.Head.Storage.Accept(this);
+            var t = seq.Tail.Storage.Accept(this);
+            var idHead = h as Identifier;
+            var idTail = t as Identifier;
+            if (idHead != null && idTail != null)
+                return frame.EnsureSequence(idHead, idTail, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
+            throw new NotImplementedException("Handle case when stack parameter is passed.");
+        }
+
+        public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
+        {
+            return arch.CreateStackAccess(frame, stack.StackOffset - sigCallee.ReturnAddressOnStack, stack.DataType);
+        }
+
+        public Expression VisitTemporaryStorage(TemporaryStorage temp)
+        {
+            throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", temp.GetType().FullName));
+        }
+
+        #endregion
     }
 }

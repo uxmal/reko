@@ -22,16 +22,16 @@ using System;
 
 namespace Decompiler.Core
 {
-	public interface StorageVisitor
+	public interface StorageVisitor<T>
 	{
-		void VisitFlagGroupStorage(FlagGroupStorage grf);
-		void VisitFpuStackStorage(FpuStackStorage fpu);
-		void VisitMemoryStorage(MemoryStorage global);
-		void VisitStackLocalStorage(StackLocalStorage local);
-		void VisitOutArgumentStorage(OutArgumentStorage arg);
-		void VisitRegisterStorage(RegisterStorage reg);
-		void VisitSequenceStorage(SequenceStorage seq);
-		void VisitStackArgumentStorage(StackArgumentStorage stack);
-		void VisitTemporaryStorage(TemporaryStorage temp);
+		T VisitFlagGroupStorage(FlagGroupStorage grf);
+		T VisitFpuStackStorage(FpuStackStorage fpu);
+		T VisitMemoryStorage(MemoryStorage global);
+		T VisitStackLocalStorage(StackLocalStorage local);
+		T VisitOutArgumentStorage(OutArgumentStorage arg);
+		T VisitRegisterStorage(RegisterStorage reg);
+		T VisitSequenceStorage(SequenceStorage seq);
+		T VisitStackArgumentStorage(StackArgumentStorage stack);
+		T VisitTemporaryStorage(TemporaryStorage temp);
 	}
 }

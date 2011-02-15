@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		private PrimitiveType w16 = PrimitiveType.Word16;
 		private IntelInstruction addAxMem;
 		private IntelInstruction adcDxMem;
-        private CodeEmitter emitter;
+        private CodeEmitterOld emitter;
         private Block block;
 
 		public LongAddRewriterTests()
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			rw = new LongAddRewriter(frame, orw, null);
             Procedure proc = new Procedure("test", frame);
             block = new Block(proc, "bloke");
-            emitter = new CodeEmitter(arch, null, proc, block); 
+            emitter = new CodeEmitterOld(arch, null, proc, block); 
 		}
 
 		[Test]

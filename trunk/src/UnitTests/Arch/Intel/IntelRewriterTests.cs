@@ -341,14 +341,14 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         #region IProcedureRewriter Members
 
-        public Block RewriteBlock(Address addr, Block prev, Rewriter rewriter)
+        public Block RewriteBlock(Address addr, Block prev, RewriterOld rewriter)
         {
             return new Block(proc, addr.GenerateName("l", ""));
         }
 
-        public CodeEmitter CreateEmitter(Block block)
+        public CodeEmitterOld CreateEmitter(Block block)
         {
-            return new CodeEmitter(arch, host, proc, block);
+            return new CodeEmitterOld(arch, host, proc, block);
         }
 
         #endregion
@@ -358,7 +358,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             private FakeRewriterHost host;
             private Block block;
-            private CodeEmitter emitter;
+            private CodeEmitterOld emitter;
 
             public TestRewriter(IProcedureRewriter prw, Procedure proc, FakeRewriterHost host, IntelArchitecture arch, IntelRewriterState state)
                 : base(prw, proc, host, arch, state)

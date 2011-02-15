@@ -64,12 +64,12 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+        public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
         {
             return new Rewriter(this, prw);
         }
 
-        public Rewriter2 CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public Decompiler.Core.Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
             throw new NotImplementedException();
         }
