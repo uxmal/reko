@@ -54,7 +54,7 @@ namespace Decompiler.Analysis
 
 		public Identifier InsertAssignmentNewId(Identifier idOld, Block b, int i)
 		{
-			Statement stm = new Statement(null, b);
+			Statement stm = new Statement(0, null, b);
             SsaIdentifier sidNew = ssaIds.Add(ssaIds[idOld].OriginalIdentifier, stm, idOld, false);
 			stm.Instruction = new Assignment(sidNew.Identifier, idOld);
 			b.Statements.Insert(i, stm);
@@ -63,7 +63,7 @@ namespace Decompiler.Analysis
 
 		public Identifier InsertAssignment(Identifier idDst, Identifier idSrc, Block b, int i)
 		{
-			b.Statements.Insert(i, new Assignment(idDst, idSrc));
+			b.Statements.Insert(i, 0, new Assignment(idDst, idSrc));
 			return idDst;
 		}
 

@@ -372,7 +372,7 @@ namespace Decompiler.Arch.Intel
                 {
                     dasm.MoveNext();
                     emitter.Assign(StackPointer(), emitter.Sub(StackPointer(), reg.Register.DataType.Size));
-                    throw new NotImplementedException("RewriteCall(dasm.Current.Instruction.op1, PrimitiveType.Word32)");
+                    RewriteCall(dasm.Current.Instruction.op1, dasm.Current.Instruction.op1.Width);
                     return;
                 }
 
@@ -385,7 +385,7 @@ namespace Decompiler.Arch.Intel
                     (dasm.Peek(3).Instruction.op1 is AddressOperand))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
-                    throw new NotImplementedException(" EmitCall(((AddressOperand) dasm.Peek(3).Instruction.op1).addr, 2, true);");
+                    this.RewriteCall(dasm.Peek(3).Instruction.op1, di.Instruction.op1.Width);
                     dasm.MoveNext();
                     dasm.MoveNext();
                     dasm.MoveNext();

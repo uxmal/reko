@@ -81,6 +81,8 @@ namespace Decompiler.Arch.Intel
 
         private void RewriteCall(MachineOperand callTarget, PrimitiveType opsize)
         {
+            var sp = StackPointer();
+            emitter.Assign(sp, emitter.Sub(sp, opsize.Size));
             Address addr = OperandAsCodeAddress(callTarget);
             if (addr != null)
             {
@@ -179,7 +181,6 @@ namespace Decompiler.Arch.Intel
             di = dasm.Current;
             ric.Length += (byte) di.Length;
             var strFollow = dasm.Peek(1);
-            emitter.MachineInstructionLength += (byte) di.Length;
             emitter.BranchInMiddleOfInstruction(emitter.Eq0(regCX), strFollow.Address);
             RewriteStringInstruction();
             emitter.Assign(regCX, emitter.Sub(regCX, 1));

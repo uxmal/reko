@@ -65,19 +65,19 @@ namespace Decompiler.UnitTests.Mocks
 
         public RtlInstruction Assign(Expression dst, Expression src)
         {
-            var ass = new RtlAssignment(new Address(linAddress), 4, dst, src);
+            var ass = new RtlAssignment(dst, src);
             return Emit(ass);
         }
 
         public RtlInstruction Branch(Expression cond, Address target)
         {
-            var br = new RtlBranch(new Address(linAddress), 4, cond, target);
+            var br = new RtlBranch(cond, target);
             return Emit(br);
         }
 
         public RtlInstruction Call(Expression target)
         {
-            var call = new RtlCall(new Address(linAddress), 4, target, 4);
+            var call = new RtlCall(target, 4);
             return Emit(call);
         }
 
@@ -96,7 +96,7 @@ namespace Decompiler.UnitTests.Mocks
 
         internal RtlInstruction Goto(uint target)
         {
-            var g = new RtlGoto(new Address(linAddress), 4, new Address(target));
+            var g = new RtlGoto(new Address(target));
             return Emit(g);
         }
 
@@ -107,13 +107,13 @@ namespace Decompiler.UnitTests.Mocks
 
         internal RtlInstruction Return()
         {
-            var ret = new RtlReturn(new Address(linAddress), 4, 0, 0);
+            var ret = new RtlReturn(0, 0);
             return Emit(ret);
         }
 
         internal RtlInstruction SideEffect(Expression exp)
         {
-            var side = new RtlSideEffect(new Address(linAddress), 4, exp);
+            var side = new RtlSideEffect(exp);
             return Emit(side);
         }
 

@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			Assert.AreEqual(87, lib.Procedures.Count);
+			Assert.AreEqual(88, lib.Procedures.Count);
 		}
 
 		private SerializedProcedure MkMalloc()

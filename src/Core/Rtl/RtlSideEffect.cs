@@ -28,8 +28,7 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlSideEffect : RtlInstruction
     {
-        public RtlSideEffect(Address addr, byte length, Expression sideEffect)
-            : base(addr, length)
+        public RtlSideEffect(Expression sideEffect)
         {
             this.Expression = sideEffect;
         }

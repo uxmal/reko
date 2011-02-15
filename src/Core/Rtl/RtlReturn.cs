@@ -28,15 +28,10 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlReturn : RtlInstruction
     {
-        public RtlReturn(Address addr, byte length, int returnAddressBytes, int extraBytesPopped) : base(addr, length)
+        public RtlReturn(int returnAddressBytes, int extraBytesPopped)
         {
             this.ReturnAddressBytes = returnAddressBytes;
             this.ExtraBytesPopped = extraBytesPopped;
-        }
-
-        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
-        {
-            return visitor.VisitReturn(this);
         }
 
         /// <summary>
@@ -47,8 +42,12 @@ namespace Decompiler.Core.Rtl
         /// size of this property.
         /// </remarks>
         public int ReturnAddressBytes { get; private set; }
-
         public int ExtraBytesPopped { get; private set; }
+
+        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
+        {
+            return visitor.VisitReturn(this);
+        }
 
         protected override void WriteInner(TextWriter writer)
         {

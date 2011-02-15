@@ -196,6 +196,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.ror: RewriteRotation("__ror", false, false); break;
                 case Opcode.rep: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
+                case Opcode.retf: RewriteRet(); break;
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.Sub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
                 case Opcode.scasb: RewriteStringInstruction(); break;

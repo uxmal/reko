@@ -18,31 +18,29 @@
  */
 #endregion
 
-using Decompiler.Core.Expressions;
+using Decompiler;
+using Decompiler.Core;
+using Decompiler.Core.Assemblers;
+using Decompiler.Core.Code;
+using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
+using Decompiler.Arch.Intel;
+using Decompiler.Assemblers.x86;
+using Decompiler.Scanning;
+using Decompiler.Loading;
+using Decompiler.UnitTests.Mocks;
+using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Text;
 
-namespace Decompiler.Core.Rtl
+namespace Decompiler.UnitTests.Scanning
 {
-    public class RtlGoto : RtlInstruction
+    [TestFixture]  
+    public class ProcedureScannerTests
     {
-        public RtlGoto(Expression target)
-        {
-            this.Target = target;
-        }
 
-        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
-        {
-            return visitor.VisitGoto(this);
-        }
-
-        public Expression Target { get; private set; }
-
-        protected override void WriteInner(TextWriter writer)
-        {
-            writer.Write("goto {0}", Target);
-        }
     }
 }

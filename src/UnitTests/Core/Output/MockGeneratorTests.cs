@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Return();
             });
             string sExp =
-                "public class MockProcedure : ProcedureMock" + nl + 
+                "public class ProcedureBuilder : ProcedureMock" + nl + 
                 "{" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl + 
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Return();
             });
             string sExp =
-                "public class MockProcedure : ProcedureMock" + nl +
+                "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
                 "    Identifier id = Local(PrimitiveType.Word32, \"id\");" + nl +
                 "    " + nl +
@@ -92,7 +92,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Return();
             });
             string sExp =
-                "public class MockProcedure : ProcedureMock" + nl +
+                "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
                 "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
                 "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
@@ -114,7 +114,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Return();
             });
             string sExp =
-                "public class MockProcedure : ProcedureMock" + nl +
+                "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
@@ -135,7 +135,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Return();
             });
             string sExp = 
-"public class MockProcedure : ProcedureMock" + nl + 
+"public class ProcedureBuilder : ProcedureMock" + nl + 
 "{" + nl + 
 "    Identifier id = Local(PrimitiveType.Word16, \"id\");" + nl + 
 "    " + nl + 
@@ -159,7 +159,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Return();
             });
             string sExp =
-"public class MockProcedure : ProcedureMock" + nl + 
+"public class ProcedureBuilder : ProcedureMock" + nl + 
 "{" + nl + 
 "    Identifier inp = Local(PrimitiveType.Word32, \"inp\");" + nl + 
 "    Identifier outp = Local(PrimitiveType.Word32, \"outp\");" + nl + 
@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.SideEffect(m.Fn("foo", es));
             });
             string sExp = 
-"public class MockProcedure : ProcedureMock" + nl + 
+"public class ProcedureBuilder : ProcedureMock" + nl + 
 "{" + nl + 
 "    Identifier es = Local(PrimitiveType.SegmentSelector, \"es\");" + nl + 
 "    " + nl + 
@@ -208,7 +208,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Return(i);
             });
             string sExp = 
-"public class MockProcedure : ProcedureMock" + nl + 
+"public class ProcedureBuilder : ProcedureMock" + nl + 
 "{" + nl + 
 "    Identifier i = Local(PrimitiveType.Int32, \"i\");" + nl + 
 "    " + nl + 
@@ -245,7 +245,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Assign(f, m.Ult(a, b)); 
             });
             VerifyTest(
-                "public class MockProcedure : ProcedureMock" + nl +
+                "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
                 "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
                 "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
@@ -278,7 +278,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Assign(f, m.Cand(a, m.Cor(a, b)));
             });
             VerifyTest(
-                "public class MockProcedure : ProcedureMock" + nl +
+                "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
                 "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
                 "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
@@ -303,7 +303,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Assign(c, m.Xor(a, m.Or(a, m.And(a, b))));
             });
             VerifyTest(
-                "public class MockProcedure : ProcedureMock" + nl +
+                "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
                 "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
                 "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
@@ -327,7 +327,7 @@ namespace Decompiler.UnitTests.Core.Output
                 m.Assign(a, m.Dpb(a, m.Slice(PrimitiveType.Word16, b, 16), 0, 16));
             });
             VerifyTest(
-                "public class MockProcedure : ProcedureMock" + nl +
+                "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
                 "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
                 "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +

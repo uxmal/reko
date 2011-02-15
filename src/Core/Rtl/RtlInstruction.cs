@@ -30,19 +30,16 @@ namespace Decompiler.Core.Rtl
     /// </summary>
     public abstract class RtlInstruction
     {
-        public RtlInstruction(Address addr, byte length)
-        {
-            this.Address = addr;
-            this.Length = length;
-        }
         /// <summary>
         /// The address of the original machine instruction.
         /// </summary>
+        [Obsolete("", true)]
         public Address Address { get; private set; }
 
         /// <summary>
         /// The length of the original machine instruction, in bytes.
         /// </summary>
+        [Obsolete("", true)]
         public byte Length { get; private set; }
 
         /// <summary>

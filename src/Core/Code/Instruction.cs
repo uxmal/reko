@@ -155,23 +155,21 @@ namespace Decompiler.Core.Code
 	/// </summary>
 	public class UseInstruction : Instruction
 	{
-		private Expression expr;
-		private Identifier argOut;
 
 		public UseInstruction(Identifier id)
 		{
-			this.expr = id;
+			this.Expression = id;
 		}
 
 		public UseInstruction(Identifier id, Identifier argument)
 		{
-			this.expr = id;
-			this.argOut = argument;
+			this.Expression = id;
+			this.OutArgument = argument;
 		}
 
         public Expression Expression  {get ;set; }
         public override bool IsControlFlow { get { return false; } }
-        public Identifier OutArgument { get { return argOut; } }
+        public Identifier OutArgument { get; set; }
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{
