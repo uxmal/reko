@@ -29,19 +29,20 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlCall : RtlInstruction
     {
-        public RtlCall(Address addr, byte length, Expression target, byte stackPushedReturnAddressSize) : base(addr, length)
+        public RtlCall(Expression target, byte stackPushedReturnAddressSize)
         {
             this.Target = target;
             this.ReturnAddressSize = stackPushedReturnAddressSize;
         }
+
+        public int ReturnAddressSize { get; private set; }
+        public Expression Target { get; private set; }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitCall(this);
         }
 
-        public int ReturnAddressSize { get; private set; }
-        public Expression Target { get; private set; }
 
         protected override void WriteInner(TextWriter writer)
         {

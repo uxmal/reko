@@ -6,56 +6,49 @@
 // ds:Register ds
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
-	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	call fn0C00_000A (depth: 2;)
+fn0C00_0000_entry:
+l0C00_0000:
+	call fn0C00_000A (depth: 0;)
 	branch Test(ULT,C) l0C00_0009
-	// succ:  l0C00_0005 l0C00_0009
-l0C00_0005:		// pred: l0C00_0000
+l0C00_0005:
 	store(Mem0[ds:0x0200:word16]) = bp
-	// succ:  l0C00_0009
-l0C00_0009:		// pred: l0C00_0000 l0C00_0005
+l0C00_0009:
 	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0009
-	// succ: 
+fn0C00_0000_exit:
 // fn0C00_000A
 // Mem0:Global memory
 // fp:Temporary
 // bp:Register bp
-// wLoc04:Local -0004
+// sp:Register sp
+// ss:Register ss
 // SCZO:Flags
 // Z:Flags
 // C:Flags
-// ss:Register ss
 // return address size: 2
 void fn0C00_000A()
-fn0C00_000A_entry:		// pred:
-	// succ:  l0C00_000A
-l0C00_000A:		// pred: fn0C00_000A_entry
-	wLoc04 = bp
+fn0C00_000A_entry:
+l0C00_000A:
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = bp
 	bp = 0x0300
-	// succ:  l0C00_0014
-l0C00_0014:		// pred: l0C00_000A l0C00_0011
+	goto l0C00_0014
+l0C00_0011:
+	bp = Mem0[ss:bp + 0x0000:word16]
+l0C00_0014:
 	SCZO = cond(bp - 0x0000)
 	branch Test(EQ,Z) l0C00_0024
-	// succ:  l0C00_0019 l0C00_0024
-l0C00_0019:		// pred: l0C00_0014
+l0C00_0019:
 	SCZO = cond(Mem0[ss:bp + 0x0000:word16] - 0x0000)
 	branch Test(NE,Z) l0C00_0011
-	// succ:  l0C00_001F l0C00_0011
-l0C00_001F:		// pred: l0C00_0019
+l0C00_001F:
+	sp = sp + 0x0002
+	SCZO = cond(sp)
 	C = false
 	return
-	// succ:  fn0C00_000A_exit
-fn0C00_000A_exit:		// pred: l0C00_0024 l0C00_001F
-	// succ: 
-l0C00_0011:		// pred: l0C00_0019
-	bp = Mem0[ss:bp + 0x0000:word16]
-	// succ:  l0C00_0014
-l0C00_0024:		// pred: l0C00_0014
-	bp = wLoc04
+	goto fn0C00_000A_exit
+l0C00_0024:
+	bp = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
 	C = true
 	return
-	// succ:  fn0C00_000A_exit
+fn0C00_000A_exit:

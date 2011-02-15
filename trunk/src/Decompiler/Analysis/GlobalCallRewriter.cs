@@ -91,15 +91,14 @@ namespace Decompiler.Analysis
 		{
 			foreach (Identifier id in proc.Signature.FormalArguments)
 			{
-				OutArgumentStorage os = id.Storage as OutArgumentStorage;
+				var os = id.Storage as OutArgumentStorage;
 				if (os == null)
 					continue;
-				RegisterStorage r = os.OriginalIdentifier.Storage as RegisterStorage;
+				var r = os.OriginalIdentifier.Storage as RegisterStorage;
 				if (r == null)
 					continue;
 
-				proc.ExitBlock.Statements.Add(
-					new UseInstruction(os.OriginalIdentifier, id));
+				proc.ExitBlock.Statements.Add(0, new UseInstruction(os.OriginalIdentifier, id));
 			}
 		}
 

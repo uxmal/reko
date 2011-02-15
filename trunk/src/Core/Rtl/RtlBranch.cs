@@ -28,7 +28,7 @@ namespace Decompiler.Core.Rtl
 {
     public class RtlBranch : RtlInstruction
     {
-        public RtlBranch(Address addr, byte length, Expression condition, Address target) : base(addr, length)
+        public RtlBranch(Expression condition, Address target) 
         {
             this.Condition = condition;
             this.Target = target;

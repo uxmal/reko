@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Scanning
             };
             arch.InstructionStream = new RtlInstructionCluster[] {
                 new RtlInstructionCluster(new Address(0x12314), 1, 
-                new RtlReturn(new Address(0x12314), 1, 4, 0)),
+                new RtlReturn(4, 0)),
             };
             var sc = new Scanner(arch, new ProgramImage(new Address(0x12314), new byte[1]), new FakePlatform(), null, new FakeDecompilerEventListener());
             sc.EnqueueEntryPoint(

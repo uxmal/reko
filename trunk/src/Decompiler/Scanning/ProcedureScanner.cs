@@ -18,31 +18,31 @@
  */
 #endregion
 
+using Decompiler;
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
+using Decompiler.Core.Serialization;
+using Decompiler.Core.Services;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
+using System.Diagnostics;
 
-namespace Decompiler.Core.Rtl
+namespace Decompiler.Scanning
 {
-    public class RtlGoto : RtlInstruction
+    public class ProcedureScanner
     {
-        public RtlGoto(Expression target)
+        PriorityQueue<BlockWorkitem> workItems;
+
+        public ProcedureScanner()
         {
-            this.Target = target;
+            workItems = new PriorityQueue<BlockWorkitem>();
         }
 
-        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
+        public bool ProcessItem()
         {
-            return visitor.VisitGoto(this);
-        }
-
-        public Expression Target { get; private set; }
-
-        protected override void WriteInner(TextWriter writer)
-        {
-            writer.Write("goto {0}", Target);
+            return false;
         }
     }
 }
