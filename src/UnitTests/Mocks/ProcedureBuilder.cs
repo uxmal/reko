@@ -41,6 +41,7 @@ namespace Decompiler.UnitTests.Mocks
         private int numBlock;
         private ProgramBuilder programMock;
         private List<ProcUpdater> unresolvedProcedures;
+        private uint iStmt;
 
         public ProcedureBuilder()
         {
@@ -154,7 +155,7 @@ namespace Decompiler.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             EnsureBlock(null);
-            block.Statements.Add(0, instr);
+            block.Statements.Add(iStmt++, instr);
             return block.Statements.Last;
         }
 

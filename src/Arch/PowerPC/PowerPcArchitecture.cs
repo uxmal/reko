@@ -110,7 +110,7 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public BackWalker CreateBackWalker(ProgramImage img)
+        public Backwalker CreateBackWalker(ProgramImage img)
         {
             throw new NotImplementedException();
         }

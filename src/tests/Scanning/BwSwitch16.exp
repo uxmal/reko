@@ -1,0 +1,28 @@
+// ProcedureBuilder
+void ProcedureBuilder()
+ProcedureBuilder_entry:		// pred:
+	// succ:  l1
+	goto l1
+grox:		// pred: l1
+	// succ: 
+l1:		// pred: ProcedureBuilder_entry
+	sp = sp - 0x0002
+	store(Mem0[sp:selector]) = cs
+	ds = Mem0[sp:word16]
+	sp = sp + 0x0002
+	bl = Mem0[si:byte]
+	SCZO = cond(bl - 0x02)
+	branch Test(UGT,SCZO) grox
+	// succ:  l2 grox
+l2:		// pred: l1
+	bh = bh ^ bh
+	SCZO = cond(bh)
+	bx = bx + bx
+	SCZO = cond(bx)
+	// succ: 
+ProcedureBuilder_exit:
+cmp 2
+branch UGT
+& 255
+* 2
+Index register: bl

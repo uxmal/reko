@@ -42,6 +42,7 @@ namespace Decompiler.Scanning
         void ProcessQueue();
 
         CallGraph CallGraph { get; }
+        ProgramImage Image { get; }
         IProcessorArchitecture Architecture { get; } 
         Platform Platform { get; }
         IDictionary<Address, VectorUse> VectorUses { get; } 
@@ -63,6 +64,7 @@ namespace Decompiler.Scanning
         Block SplitBlock(Block block, Address addr);
 
         ImageReader CreateReader(Address addr);
+
     }
 
     /// <summary>
@@ -117,6 +119,7 @@ namespace Decompiler.Scanning
             this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
             this.vectors = new Dictionary<Address, ImageMapVectorTable>();
             this.VectorUses = new Dictionary<Address, VectorUse>();
+            this.importThunks = new Dictionary<uint, PseudoProcedure>();
             this.visitedProcs = new HashSet<Procedure>();
         }
 
@@ -142,6 +145,7 @@ namespace Decompiler.Scanning
 
         public IProcessorArchitecture Architecture { get { return arch; } }
         public CallGraph CallGraph { get { return callgraph; } }
+        public ProgramImage Image { get { return image; } } 
         public Platform Platform { get { return platform; } }
         public PriorityQueue<WorkItem> Queue { get { return queue; } }
         public Stack<ProcedureScanner> Stack { get { return stack; } }
@@ -814,7 +818,7 @@ namespace Decompiler.Scanning
             map.TryFindItem(wi.Address, out q);
             ImageMapVectorTable item = (ImageMapVectorTable)q;
             VectorBuilder builder = new VectorBuilder(program, map, jumpGraph);
-            Address[] vector = builder.Build(wi.Address, wi.addrFrom, wi.segBase, wi.stride);
+            var vector = builder.Build(wi.Address, wi.addrFrom, wi.state);
             if (vector == null)
             {
                 Address addrNext = wi.Address + wi.stride.Size;
@@ -827,7 +831,7 @@ namespace Decompiler.Scanning
             }
 
             item.Addresses.AddRange(vector);
-            for (int i = 0; i < vector.Length; ++i)
+            for (int i = 0; i < vector.Count; ++i)
             {
                 ProcessorState st = wi.state.Clone();
                 if (wi.table.IsCallTable)
@@ -907,6 +911,7 @@ namespace Decompiler.Scanning
             get { return vectorUses; }
         }
 
+        public ProgramImage Image { get { return program.Image; } } 
 
         // Event handlers ///////////////
 

@@ -73,7 +73,7 @@ namespace Decompiler.Arch.Pdp11
             return new Pdp11ProcessorState();
         }
 
-        public BackWalker CreateBackWalker(ProgramImage img)
+        public Backwalker CreateBackWalker(ProgramImage img)
         {
             return new Pdp11BackWalker(img);
         }

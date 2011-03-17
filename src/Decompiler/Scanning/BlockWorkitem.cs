@@ -135,40 +135,6 @@ namespace Decompiler.Scanning
             }
         }
 
-        private void ProcessVector(Address addrSwitch, Address addrVector, ushort segBase, int stride)
-        {
-            VectorBuilder builder = new VectorBuilder(arch, null, new Decompiler.Core.Lib.DirectedGraphImpl<object>());
-            Address[] vector = builder.Build(addrVector, addrSwitch, segBase, stride);
-            if (vector == null)
-            {
-                throw new NotImplementedException();
-                //Address addrNext = addrVector + wi.stride.Size;
-                //if (scanner.isprogram.Image.IsValidAddress(addrNext))
-                //{
-                //    // Can't determine the size of the table, but surely it has one entry?
-                //    map.AddItem(addrNext, new ImageMapItem());
-                //}
-                //return;
-            }
-
-            throw new NotImplementedException();
-            //item.Addresses.AddRange(vector);
-            //for (int i = 0; i < vector.Length; ++i)
-            //{
-            //    ProcessorState st = wi.state.Clone();
-            //    if (wi.table.IsCallTable)
-            //    {
-            //        EnqueueProcedure(wiCur, vector[i], null, st);
-            //    }
-            //    else
-            //    {
-            //        jumpGraph.AddEdge(wi.addrFrom - 1, vector[i]);
-            //        EnqueueJumpTarget(vector[i], st, wi.proc);
-            //    }
-            //}
-            //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
-            //map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
-        }
 
         #region InstructionVisitor Members
 
@@ -211,10 +177,10 @@ namespace Decompiler.Scanning
 
         public bool VisitGoto(RtlGoto g)
         {
-            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
+                scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
                 var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 blockSource.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
@@ -222,34 +188,8 @@ namespace Decompiler.Scanning
                 return false;
             }
 
-            blockCur.Statements.Add(ric.Address.Linear, new GotoInstruction(g.Target));
-            var mem = g.Target as MemoryAccess;
-            if (mem == null)
-                return false;
-            var ea = mem.EffectiveAddress as BinaryExpression;
-            if (ea != null)
-                return false;
-            if (ea.op != Operator.Add)
-                return false;
-            var cTableOffset = ea.Right as Constant;
-            if (cTableOffset == null || cTableOffset == Constant.Invalid)
-                return false;
-            ea = ea.Left as BinaryExpression;
-            if (ea == null)
-                return false;
-            if (ea.op != Operator.Muls && ea.op != Operator.Mul && ea.op != Operator.Mulu)
-                return false;
-            var cStride = ea.Right as Constant;
-            if (cStride == null || cStride == Constant.Invalid)
-                return false;
-
-            ProcessVector(ric.Address, OffsetToAddress(mem, cTableOffset), 0, cStride.ToInt32());
+            ProcessVector(ric.Address, g);
             return false;
-        }
-
-        private Address OffsetToAddress(MemoryAccess mem, Constant cTableOffset)
-        {
-            throw new NotImplementedException();
         }
 
 
@@ -384,12 +324,54 @@ namespace Decompiler.Scanning
             return true;
         }
 
+        #endregion
+
+        private void ProcessVector(Address addrSwitch, RtlTransfer xfer)
+        {
+            var bw = new Backwalker(xfer, eval);
+            if (!bw.CanBackwalk())
+                throw new NotImplementedException(" scanner.AddDiagnostic(...");
+            var bwos = bw.BackWalk(blockCur, null);
+            if (bwos.Count == 0)
+                return;     //$REVIEW: warn?
+
+            VectorBuilder builder = new VectorBuilder(arch, scanner, new Decompiler.Core.Lib.DirectedGraphImpl<object>());
+            List<Address> vector = builder.BuildAux(bw, addrSwitch, state);
+            if (vector.Count == 0)
+            {
+                var addrNext = bw.VectorAddress + bw.Stride;
+                var rdr = scanner.CreateReader(bw.VectorAddress);
+                if (!rdr.IsValid)
+                    return;
+                // Can't determine the size of the table, but surely it has one entry?
+                vector.Add(arch.ReadCodeAddress(xfer.Target.DataType.Size, rdr, state));
+            }
+
+            foreach (Address addr in vector)
+            {
+                var st = state.Clone();
+                if (xfer is RtlCall)
+                {
+                    scanner.ScanProcedure(addr, null, st);
+                }
+                else
+                {
+                    var blockDest = scanner.EnqueueJumpTarget(addr, blockCur.Procedure, state);
+                    var blockSource = scanner.FindContainingBlock(ric.Address);
+                    blockSource.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
+                }
+            }
+            //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
+            //map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
+        }
+
         private Block FallthroughBlock(Procedure proc, Address fallthruAddress)
         {
             if (ri.NextStatementRequiresLabel)
             {
-                // Some machine instructions, like the X86 'rep' prefix, force the need to generate 
-                // a label where there wouldn't be one normally.
+                // Some machine instructions, like the X86 'rep cmps' instruction, force the need to generate 
+                // a label where there wouldn't be one normally, in the middle of the rtl sequence corresponding to
+                // the machine instruction.
 
                 var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
                 proc.ControlGraph.Nodes.Add(fallthru);
@@ -535,7 +517,6 @@ namespace Decompiler.Scanning
             return scanner.Platform.FindService(vector.ToInt32(), state);
         }
 
-        #endregion
 
     }
 }

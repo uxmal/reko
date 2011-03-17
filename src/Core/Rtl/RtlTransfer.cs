@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2011 John Källén.
+ * Copyright (C) 1999-2011 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,35 +18,21 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Machine;
+using Decompiler.Core.Expressions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Decompiler.Core.Rtl
 {
-    public class Pdp11BackWalker : Backwalker
+    public abstract class RtlTransfer : RtlInstruction
     {
-        public Pdp11BackWalker(ProgramImage img)
-            : base(img)
+        public RtlTransfer(Expression target)
         {
+            this.Target = target;
         }
 
-
-        public override List<BackwalkOperation> BackWalk(Address addrFrom, IBackWalkHost host)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Address MakeAddress(Decompiler.Core.Types.PrimitiveType size, ImageReader rdr, ushort segBase)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override MachineRegister IndexRegister
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public Expression Target { get; private set; }
     }
 }

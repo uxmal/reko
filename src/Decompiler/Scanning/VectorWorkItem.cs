@@ -34,8 +34,8 @@ namespace Decompiler.Scanning
         public override void Process()
         {
             VectorBuilder builder = new VectorBuilder(scanner.Architecture, image, new DirectedGraphImpl<object>());
-            Address[] vector = builder.Build(table.TableAddress, addrFrom, segBase, stride);
-            if (vector == null)
+            var vector = builder.Build(table.TableAddress, addrFrom, state);
+            if (vector.Count == 0)
             {
                 Address addrNext = table.TableAddress + stride.Size;
                 if (image.IsValidAddress(addrNext))
@@ -47,7 +47,7 @@ namespace Decompiler.Scanning
             }
 
             table.Addresses.AddRange(vector);
-            for (int i = 0; i < vector.Length; ++i)
+            for (int i = 0; i < vector.Count; ++i)
             {
                 ProcessorState st = state.Clone();
                 if (table.IsCallTable)
