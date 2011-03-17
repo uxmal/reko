@@ -110,11 +110,6 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public Backwalker CreateBackWalker(ProgramImage img)
-        {
-            throw new NotImplementedException();
-        }
-
         public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
         {
             throw new NotImplementedException();
@@ -193,6 +188,21 @@ namespace Decompiler.Arch.PowerPC
 
 
         public Decompiler.Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IProcessorArchitecture Members
+
+
+        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }

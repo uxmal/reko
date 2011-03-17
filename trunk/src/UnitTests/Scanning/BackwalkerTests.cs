@@ -144,7 +144,7 @@ namespace Decompiler.UnitTests.Scanning
             Assert.IsTrue(bw.BackwalkInstruction(
                 m.Assign(bh, m.Xor(bh, bh))));
             Assert.AreSame(Registers.bl, bw.Index);
-            Assert.AreEqual("& 255", bw.Operations[0]);
+            Assert.AreEqual("& 255", bw.Operations[0].ToString());
         }
 
         [Test]
@@ -291,32 +291,6 @@ namespace Decompiler.UnitTests.Scanning
         }
          
 
-		private void RunTest(string sourceFile, string outputFile, IntelArchitecture arch, Address addrBase, Address addrJump, IBackWalkHost host)
-		{
-			using (FileUnitTester fut = new FileUnitTester(outputFile))
-			{
-				AssemblerLoader ld = new AssemblerLoader(
-                    new IntelTextAssembler(),
-				    FileUnitTester.MapTestPath(sourceFile));
-                Program prog = ld.Load(addrBase);
-                Assert.IsTrue(prog.Architecture is IntelArchitecture);
-				IntelDumper dumper = new IntelDumper(arch);
-				dumper.ShowAddresses = true;
-				dumper.ShowCodeBytes = true;
-				dumper.DumpAssembler(prog.Image, prog.Image.BaseAddress, prog.Image.BaseAddress + prog.Image.Bytes.Length, fut.TextWriter);
-				fut.TextWriter.Flush();
-
-                Backwalker ibw = new Backwalker(null, null);
-				List<BackwalkOperation> bws = ibw.BackWalk(addrJump, host);
-				foreach (BackwalkOperation bwo in bws)
-				{
-					fut.TextWriter.WriteLine(bwo);
-				}
-				fut.TextWriter.WriteLine("Index register: {0}", ibw.Index);
-				fut.AssertFilesEqual();
-			}
-		}
-
         private class BackwalkerHost : IBackWalkHost
         {
             #region IBackWalkHost Members
@@ -338,56 +312,5 @@ namespace Decompiler.UnitTests.Scanning
 
             #endregion
         }
-
-		private class IbwSwitch16Helper : IBackWalkHost
-		{
-			public Address GetBlockStartAddress(Address addr)
-			{
-				switch (addr.Offset)
-				{
-					case 0x000D: return new Address(addr.Selector, 0x0009);
-					default: throw new ArgumentException(string.Format("offset {0:X4} not handled", addr.Offset));
-				}
-			}
-
-            public Block GetSinglePredecessor(Block block)
-            {
-                throw new NotImplementedException();
-            }
-
-			public AddressRange GetSinglePredecessorAddressRange(Address addrBegin)
-			{
-				if (addrBegin.Offset == 0x0009)
-					return new AddressRange(new Address(addrBegin.Selector, 0), addrBegin);
-				else
-					return null;
-			}
-		}
-
-		private class IbwSwitch32Helper : IBackWalkHost
-		{
-            public Block GetSinglePredecessor(Block block)
-            {
-                throw new NotImplementedException();
-            }
-
-			public AddressRange GetSinglePredecessorAddressRange(Address addr)
-			{
-				switch (addr.Offset)
-				{
-					case 0x1000000B: return new AddressRange(new Address(0x10000000), addr);
-					default: throw new ArgumentException(string.Format("offset {0:X8} not handled", addr.Offset));
-				}
-			}
-
-			public Address GetBlockStartAddress(Address addr)
-			{
-				switch (addr.Offset)
-				{
-					case 0x10000013: return new Address(0x1000000B);
-					default: throw new ArgumentException(string.Format("offset {0:X8} not handled", addr.Offset));
-				}
-			}
-		}
 	}
 }
