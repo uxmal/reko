@@ -27,16 +27,14 @@ using System.Text;
 
 namespace Decompiler.Core.Rtl
 {
-    public class RtlCall : RtlInstruction
+    public class RtlCall : RtlTransfer
     {
-        public RtlCall(Expression target, byte stackPushedReturnAddressSize)
+        public RtlCall(Expression target, byte stackPushedReturnAddressSize)  :base(target)
         {
-            this.Target = target;
             this.ReturnAddressSize = stackPushedReturnAddressSize;
         }
 
         public int ReturnAddressSize { get; private set; }
-        public Expression Target { get; private set; }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {

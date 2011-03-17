@@ -56,7 +56,7 @@ namespace Decompiler.Assemblers.x86
 
         public IntelAssembler(IntelArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
         {
-            this.arch = new IntelArchitecture(ProcessorMode.Real);
+            this.arch = arch;
             this.platform = new MsdosPlatform(arch);
             this.addrBase = addrBase;
             this.entryPoints = entryPoints;
@@ -1024,7 +1024,7 @@ namespace Decompiler.Assemblers.x86
 
 
 
-        internal void i386()
+        public void i386()
         {
             arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             SetDefaultWordWidth(PrimitiveType.Word32);

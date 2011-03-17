@@ -24,6 +24,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Decompiler.Scanning
 {
@@ -34,10 +35,11 @@ namespace Decompiler.Scanning
     public class VectorBuilder : IBackWalkHost
     {
         private IProcessorArchitecture arch;
+        private IScanner scanner;
         private ProgramImage image;
         private ImageMap imageMap;
         private int cbTable;
-        private BackWalker bw;
+        private Backwalker bw;
         private DirectedGraphImpl<object> jumpGraph;        //$TODO:
 
         [Obsolete]
@@ -51,31 +53,41 @@ namespace Decompiler.Scanning
         public VectorBuilder(IProcessorArchitecture arch, ProgramImage image, DirectedGraphImpl<object> jumpGraph)
         {
             this.arch = arch;
+            this.image = image;
             this.imageMap = image.Map;
             this.jumpGraph = jumpGraph;
         }
 
-        public Address[] Build(Address addrTable, Address addrFrom, ushort segBase, PrimitiveType stride)
+        public VectorBuilder(IProcessorArchitecture arch, IScanner scanner, DirectedGraphImpl<object> jumpGraph)
         {
-            bw = arch.CreateBackWalker(image);
+            this.arch = arch;
+            this.scanner = scanner;
+            this.jumpGraph = jumpGraph;
+        }
+
+        public List<Address> Build(Address addrTable, Address addrFrom, ProcessorState state)
+        {
+            bw = new Backwalker(null, null);
             if (bw == null)
                 return null;
             List<BackwalkOperation> operations = bw.BackWalk(addrFrom, this);
             if (operations == null)
                 return PostError("Unable to determine limit", addrFrom, addrTable);
-            return BuildAux(operations, addrTable, addrFrom, stride, segBase);
+            return BuildAux(bw, addrFrom, state);
         }
 
-        private Address[] BuildAux(List<BackwalkOperation> operations, Address addrTable, Address addrFrom, PrimitiveType stride, ushort segBase)
+        public List<Address> BuildAux(Backwalker bw, Address addrFrom, ProcessorState state)
         {
             int limit = 0;
             int[] permutation = null;
-            foreach (BackwalkOperation op in operations)
+            foreach (BackwalkOperation op in bw.Operations)
             {
                 BackwalkError err = op as BackwalkError;
                 if (err != null)
-                    return PostError(err.ErrorMessage, addrFrom, addrTable);
-                BackwalkDereference deref = op as BackwalkDereference;
+                {
+                    return PostError(err.ErrorMessage, addrFrom, bw.VectorAddress);
+                }
+                var deref = op as BackwalkDereference;
                 if (deref != null)
                 {
                     permutation = BuildMapping(deref, limit);
@@ -83,9 +95,9 @@ namespace Decompiler.Scanning
                 limit = op.Apply(limit);
             }
             if (limit == 0)
-                return PostError("Unable to determine limit", addrFrom, addrTable);
+                return PostError("Unable to determine limit", addrFrom, bw.VectorAddress);
 
-            return BuildTable(addrTable, limit, permutation, stride, segBase);
+            return BuildTable(bw.VectorAddress, limit, permutation, bw.Stride, state);
         }
 
         private int[] BuildMapping(BackwalkDereference deref, int limit)
@@ -99,34 +111,37 @@ namespace Decompiler.Scanning
             return map;
         }
 
-        private Address[] BuildTable(Address addrTable, int limit, int[] permutation, PrimitiveType stride, ushort segBase)
+        private List<Address> BuildTable(Address addrTable, int limit, int[] permutation, int stride, ProcessorState state)
         {
-            Address[] vector;
+            List<Address> vector = new List<Address>();
             if (permutation != null)
             {
-                int cbEntry = (int)stride.Size;
+                int cbEntry = stride;
                 int iMax = 0;
-                vector = new Address[permutation.Length];
                 for (int i = 0; i < permutation.Length; ++i)
                 {
                     if (permutation[i] > iMax)
                         iMax = permutation[i];
-                    vector[i] = new Address(image.ReadLeUint32(addrTable + permutation[i] * cbEntry));      //$BUG: will fail on 64-bit arch.
+                    vector.Add(new Address(scanner.Image.ReadLeUint32(addrTable + permutation[i] * cbEntry)));      //$BUG: will fail on 64-bit arch.
                 }
             }
             else
             {
-                ImageReader rdr = image.CreateReader(addrTable);
-                int cItems = limit / (int)stride.Size;
-                vector = new Address[cItems];
-                for (int i = 0; i < vector.Length; ++i)
+                ImageReader rdr = scanner.CreateReader(addrTable);
+                int cItems = limit / (int)stride;
+                for (int i = 0; i < cItems; ++i)
                 {
-                    vector[i] = bw.MakeAddress(stride, rdr, segBase);
+                    vector.Add(arch.ReadCodeAddress(stride, rdr, state));
                 }
                 cbTable = limit;
             }
             return vector;
 
+        }
+
+        public Block GetSinglePredecessor(Block block)
+        {
+            return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();
         }
 
         public AddressRange GetSinglePredecessorAddressRange(Address addr)
@@ -160,23 +175,18 @@ namespace Decompiler.Scanning
 
         public MachineRegister IndexRegister
         {
-            get { return bw != null ? bw.IndexRegister : null; }
+            get { return bw != null ? bw.Index: MachineRegister.None; }
         }
 
-        private Address[] PostError(string err, Address addrInstr, Address addrTable)
+        private List<Address> PostError(string err, Address addrInstr, Address addrTable)
         {
             System.Diagnostics.Trace.WriteLine(string.Format("Instruction at {0}, table at {1}: {2}", addrInstr, addrTable, err));
-            return null;
+            return new List<Address>();
         }
 
         public int TableByteSize
         {
             get { return cbTable; }
-        }
-
-        internal Address[] Build(Address addrVector, Address addrSwitch, ushort segBase, int stride)
-        {
-            throw new NotImplementedException();
         }
     }
 }

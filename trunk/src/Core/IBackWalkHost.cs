@@ -29,5 +29,7 @@ namespace Decompiler.Core
 	{
 		AddressRange GetSinglePredecessorAddressRange(Address block);
 		Address GetBlockStartAddress(Address addr);
-	}
+
+        Block GetSinglePredecessor(Block block);
+    }
 }

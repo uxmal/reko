@@ -26,19 +26,16 @@ using System.Text;
 
 namespace Decompiler.Core.Rtl
 {
-    public class RtlGoto : RtlInstruction
+    public class RtlGoto : RtlTransfer
     {
-        public RtlGoto(Expression target)
+        public RtlGoto(Expression target) : base(target)
         {
-            this.Target = target;
         }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitGoto(this);
         }
-
-        public Expression Target { get; private set; }
 
         protected override void WriteInner(TextWriter writer)
         {

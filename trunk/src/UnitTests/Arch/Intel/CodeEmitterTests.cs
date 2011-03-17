@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Code;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -34,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void AddIncrement()
 		{
 			var id = new Identifier("id", 0, PrimitiveType.Word16, null);
-			var emitter = new CodeEmitterOld(null, null, null, null);
+            var emitter = new CodeEmitterImpl();
 			var add = emitter.Add(id, 3);
 			Assert.AreEqual(PrimitiveType.Word16, add.DataType);
 			Assert.AreEqual(PrimitiveType.Word16, add.Right.DataType);
@@ -45,11 +46,32 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void SubIncrement()
 		{
 			var id = new Identifier("id", 0, PrimitiveType.Word16, null);
-			var emitter = new CodeEmitterOld(null, null, null, null);
+            var emitter = new CodeEmitterImpl();
 			var add = emitter.Sub(id, 3);
 			Assert.AreEqual(PrimitiveType.Word16, add.DataType);
 			Assert.AreEqual(PrimitiveType.Word16, add.Right.DataType);
 			Assert.AreEqual("id - 0x0003", add.ToString());
 		}
+
+        private class CodeEmitterImpl : CodeEmitter2
+        {
+            private Frame frame = new Frame(PrimitiveType.Word32);
+            private Block block = new Block(null, "test");
+
+            public override Statement Emit(Instruction instr)
+            {
+                return new Statement(0, instr, block);
+            }
+
+            public override Frame Frame
+            {
+                get { return frame;  }
+            }
+
+            public override Identifier Register(int i)
+            {
+                throw new NotImplementedException();
+            }
+        }
 	}
 }

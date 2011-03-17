@@ -65,8 +65,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void FindJumps()
 		{
 			Program pgm = BuildProgram();
-			ScannerOld sc = new ScannerOld(pgm, null);
-
+			var sc = new Scanner(pgm, new Dictionary<Address,ProcedureSignature>(), null);
 			sc.EnqueueEntryPoint(new EntryPoint(pgm.Image.BaseAddress, new IntelState()));
 			sc.ProcessQueue();
 			Assert.AreEqual(4, pgm.Image.Map.Items.Count);
@@ -259,7 +258,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                     new IntelTextAssembler(),
                     FileUnitTester.MapTestPath(sourceFile));
                 Program prog = ld.Load(addrBase);
-				ScannerOld sc = new ScannerOld(prog, new FakeDecompilerEventListener());
+				var sc = new Scanner(prog, new Dictionary<Address,ProcedureSignature>(), new FakeDecompilerEventListener());
 				foreach (EntryPoint ep in ld.EntryPoints)
 				{
 					sc.EnqueueEntryPoint(ep);

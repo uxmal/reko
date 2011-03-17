@@ -89,7 +89,7 @@
     <Compile Include="Analysis\VariableLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
-    <Compile Include="Arch\Intel\BackWalkerTests.cs" />
+    <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
     <Compile Include="Arch\Intel\CodeWalkerTests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />

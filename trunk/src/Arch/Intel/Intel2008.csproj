@@ -96,9 +96,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DisassembledInstruction.cs" />
-    <Compile Include="IntelBackWalker.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="IntelCodeWalker.cs">
       <SubType>Code</SubType>
     </Compile>

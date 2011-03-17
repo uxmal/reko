@@ -49,11 +49,6 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public BackWalker CreateBackWalker(ProgramImage img)
-        {
-            throw new NotImplementedException();
-        }
-
         public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
         {
             return new M68kCodeWalker(img, platform, addr, st);
@@ -113,6 +108,15 @@ namespace Decompiler.Arch.M68k
                 dataType);
         }
 
+        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Address CreateSegmentedAddress(int size, ImageReader rdr, ushort segBase)
+        {
+            throw new NotSupportedException("M68k architecture doesn't support segmented pointers.");
+        }
         public BitSet ImplicitArgumentRegisters
         {
             get { throw new NotImplementedException(); }

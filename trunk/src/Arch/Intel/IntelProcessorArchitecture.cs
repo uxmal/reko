@@ -241,11 +241,6 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
-		public BackWalker CreateBackWalker(ProgramImage img)
-		{
-			return new IntelBackWalker(this, img);
-		}
-
 		public virtual CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
 		{
 			return new IntelCodeWalker(this, platform, new IntelDisassembler(img.CreateReader(addr), this.WordWidth), (IntelState) st);
@@ -290,6 +285,31 @@ namespace Decompiler.Arch.Intel
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             return this.mode.CreateStackAccess(frame, offset, dataType);
+        }
+
+        //$REFACTOR: this into the different processor modes.
+        public Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
+        {
+            var st = (IntelState)state;
+            if (WordWidth == PrimitiveType.Word16)
+            {
+                if (byteSize == PrimitiveType.Word16.Size)
+                {
+                    return new Address(state.Get(Registers.cs).ToUInt16(), rdr.ReadLeUint16());
+                }
+                else
+                {
+                    ushort off = rdr.ReadLeUint16();
+                    ushort seg = rdr.ReadLeUint16();
+                    return new Address(seg, off);
+                }
+            }
+            else if (WordWidth == PrimitiveType.Word32)
+            {
+                return new Address(rdr.ReadLeUint32());
+            }
+            else
+                throw new ApplicationException("Unexpected word width: " + byteSize);
         }
 
 		public MachineFlags GetFlagGroup(uint grf)

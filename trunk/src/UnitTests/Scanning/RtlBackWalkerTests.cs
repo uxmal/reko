@@ -133,16 +133,15 @@ namespace Decompiler.UnitTests.Scanning
 		[Test]
 		public void IbwPowersOfTwo()
 		{
-			Assert.IsTrue(IntelBackWalker.IsEvenPowerOfTwo(2), "2 is power of two");
-			Assert.IsTrue(IntelBackWalker.IsEvenPowerOfTwo(4), "4 is power of two");
-			Assert.IsTrue(IntelBackWalker.IsEvenPowerOfTwo(8), "8 is power of two");
-			Assert.IsTrue(IntelBackWalker.IsEvenPowerOfTwo(16), "16 is power of two");
-			Assert.IsTrue(IntelBackWalker.IsEvenPowerOfTwo(256), "256 is power of two");
-			Assert.IsFalse(IntelBackWalker.IsEvenPowerOfTwo(3), "3 isn't power of two");
-			Assert.IsFalse(IntelBackWalker.IsEvenPowerOfTwo(7), "7 isn't power of two");
-			Assert.IsFalse(IntelBackWalker.IsEvenPowerOfTwo(127), "127 isn't power of two");
+			Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(2), "2 is power of two");
+            Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(4), "4 is power of two");
+            Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(8), "8 is power of two");
+			Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(16), "16 is power of two");
+            Assert.IsTrue(Backwalker.IsEvenPowerOfTwo(256), "256 is power of two");
+            Assert.IsFalse(Backwalker.IsEvenPowerOfTwo(3), "3 isn't power of two");
+            Assert.IsFalse(Backwalker.IsEvenPowerOfTwo(7), "7 isn't power of two");
+            Assert.IsFalse(Backwalker.IsEvenPowerOfTwo(127), "127 isn't power of two");
 		}
-
 	}
 }
 

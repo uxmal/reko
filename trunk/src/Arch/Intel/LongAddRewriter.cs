@@ -30,21 +30,30 @@ namespace Decompiler.Arch.Intel
 	public class LongAddRewriter
 	{
 		private Frame frame;
-		private OperandRewriterOld orw;
+		private OperandRewriter orw;
 		private IntelRewriterState state;
 
 		private Expression dst;
 		private Expression src;
 		private bool useStore;
 
+        [Obsolete]
 		public LongAddRewriter(Frame frame, OperandRewriterOld orw, IntelRewriterState state)
 		{
+            throw new NotImplementedException("Use the other constructor");
 			this.frame = frame;
-			this.orw = orw;
 			this.state = state;
 		}
 
-        public void EmitInstruction(BinaryOperator op, CodeEmitterOld emitter)
+        public LongAddRewriter(Frame frame, OperandRewriter orw, IntelRewriterState state)
+        {
+            this.frame = frame;
+            this.orw = orw;
+            this.state = state;
+        }
+
+
+        public void EmitInstruction(BinaryOperator op, CodeEmitter2 emitter)
         {
             BinaryExpression b = new BinaryExpression(op, dst.DataType, dst, src);
             if (useStore)
@@ -93,7 +102,8 @@ namespace Decompiler.Arch.Intel
 			{
 				if (isDef)
 					useStore = true;
-				return orw.CreateMemoryAccess(memDstLo, totalSize, state);
+                throw new NotImplementedException("The <null> on the next line needs an IntelState, not an IntelRewriterState.");
+				return orw.CreateMemoryAccess(memDstLo, totalSize, null);
 			}
 			ImmediateOperand immLo = opLo as ImmediateOperand;
 			ImmediateOperand immHi = opHi as ImmediateOperand;

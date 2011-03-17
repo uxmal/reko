@@ -136,11 +136,6 @@ namespace Decompiler.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
 		}
 
-		public BackWalker CreateBackWalker(ProgramImage img)
-		{
-			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateBackWalker implementation");
-		}
-
 		public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
 		{
 			return new MockCodeWalker(addr);
@@ -194,7 +189,17 @@ namespace Decompiler.UnitTests.Mocks
 
 		#endregion
 
-	}
+
+        #region IProcessorArchitecture Members
+
+
+        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 
 	public class MockMachineRegister : MachineRegister
 	{

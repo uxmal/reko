@@ -37,7 +37,6 @@ namespace Decompiler.Core
 
 		Dumper CreateDumper();
 		ProcessorState CreateProcessorState();
-		BackWalker CreateBackWalker(ProgramImage img);
 		CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st);
 		BitSet CreateRegisterBitset();
 		RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host);
@@ -50,6 +49,7 @@ namespace Decompiler.Core
         MachineFlags GetFlagGroup(uint grf);		// Returns flag group matching the bitflags.
 		MachineFlags GetFlagGroup(string name);
         Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
+        Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
 
 		/// <summary>
 		/// A bitset that represents those registers that may never be used as arguments to a procedure. 
