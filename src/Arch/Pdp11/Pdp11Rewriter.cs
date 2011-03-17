@@ -20,32 +20,27 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Decompiler.Arch.Pdp11
 {
-    public class Pdp11Rewriter : RewriterOld
+    public class Pdp11Rewriter : Rewriter
     {
         public Pdp11Rewriter(Pdp11Architecture arch, IProcedureRewriter prw)
-            : base(prw)
         {
         }
 
-        public override void EmitCallAndReturn(Procedure callee)
+        public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             throw new NotImplementedException();
         }
 
-        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitterOld emitter)
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
-        }
-
-        public override void GrowStack(int bytes)
-        {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

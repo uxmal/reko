@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -58,31 +59,38 @@ namespace Decompiler.Arch.Pdp11
                     op2 = DecodeOperand(opcode >> 6)
                 };
             }
+            throw new NotImplementedException();
         }
 
-        private MachineInstruction NonDoubleOperandInstruction(ushort opcode)
+        private PrimitiveType DataWidthFromSizeBit(uint p)
         {
             throw new NotImplementedException();
         }
 
-        private MachineOperand DecodeOperand(ushort operandBits)
+        private MachineInstruction NonDoubleOperandInstruction(int opcode)
+        {
+            throw new NotImplementedException();
+        }
+
+        private MachineOperand DecodeOperand(int operandBits)
         {
             MachineRegister reg = arch.GetRegister(operandBits & 7);
             if (reg == Registers.pc)
             {
+                throw new NotImplementedException();
             }
             else
             {
                 switch ((operandBits >> 3) & 7)
                 {
-                case 0: return new RegisterOperand(reg);    //   Reg           Direct addressing of the register
-                case 1: return new MemoryOperand(reg);      //   Reg Def       Contents of Reg is the address
-                case 2:    //   AutoIncr      Contents of Reg is the address, then Reg incremented
-                case 3:    //   AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented
-                case 4:    //   AutoDecr      Reg is decremented then contents is address
-                case 5:    //   AutoDecrDef   Reg is decremented then contents is addr of addr
-                case 6: return new MemoryOperand(reg, rdr.ReadLeUint16());   //   Index         Contents of Reg + Following word is address
-                case 7:   //   IndexDef      Contents of Reg + Following word is addr of addr
+                //case 0: return new RegisterOperand(reg);    //   Reg           Direct addressing of the register
+                //case 1: return new MemoryOperand(reg);      //   Reg Def       Contents of Reg is the address
+                //case 2:    //   AutoIncr      Contents of Reg is the address, then Reg incremented
+                //case 3:    //   AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented
+                //case 4:    //   AutoDecr      Reg is decremented then contents is address
+                //case 5:    //   AutoDecrDef   Reg is decremented then contents is addr of addr
+                //case 6: return new MemoryOperand(reg, rdr.ReadLeUint16());   //   Index         Contents of Reg + Following word is address
+                //case 7:   //   IndexDef      Contents of Reg + Following word is addr of addr
                 default: throw new NotSupportedException();
                 }
             }

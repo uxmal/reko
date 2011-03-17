@@ -204,9 +204,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Backwalker.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="BackwalkOperation.cs">
       <SubType>Code</SubType>
     </Compile>

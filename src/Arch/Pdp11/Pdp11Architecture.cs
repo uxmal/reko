@@ -73,11 +73,6 @@ namespace Decompiler.Arch.Pdp11
             return new Pdp11ProcessorState();
         }
 
-        public Backwalker CreateBackWalker(ProgramImage img)
-        {
-            return new Pdp11BackWalker(img);
-        }
-
         public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
         {
             return new Pdp11CodeWalker();
@@ -90,12 +85,12 @@ namespace Decompiler.Arch.Pdp11
 
         public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
         {
-            return new Pdp11Rewriter(this, prw);
+            throw new NotImplementedException();
         }
 
         public Rewriter CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
-            throw new NotImplementedException();
+            return new Pdp11Rewriter(this, null);
         }
 
         public MachineRegister GetRegister(int i)
@@ -172,6 +167,21 @@ namespace Decompiler.Arch.Pdp11
 
 
         public Decompiler.Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IProcessorArchitecture Members
+
+
+        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
