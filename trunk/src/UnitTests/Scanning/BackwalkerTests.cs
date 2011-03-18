@@ -64,6 +64,7 @@ namespace Decompiler.UnitTests.Scanning
             Assert.IsTrue(bw.BackwalkInstruction(m.Assign(eax, m.Add(eax, eax))));
             Assert.AreSame(Registers.eax, bw.Index);
             Assert.AreEqual("* 2", bw.Operations[0].ToString());
+            Assert.AreEqual(2, bw.Stride);
         }
 
         [Test]

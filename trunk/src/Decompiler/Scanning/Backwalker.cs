@@ -320,6 +320,7 @@ namespace Decompiler.Scanning
 				if (ropSrc == ropDst && add)
 				{
 					Operations.Add(new BackwalkOperation(BackwalkOperator.mul, 2));
+                    Stride *= 2;
 					return ropSrc;
 				}		
 				else

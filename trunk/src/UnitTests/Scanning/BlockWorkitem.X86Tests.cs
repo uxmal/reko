@@ -240,18 +240,15 @@ namespace Decompiler.UnitTests.Scanning
 
 
         [Test]
+        //$TODO: big-endian version of this, please.
         public void IndirectJumpGated()
         {
             BuildTest16(delegate(IntelAssembler m)
             {
                 m.And(m.bx, m.Const(3));
+                m.Add(m.bx, m.bx);
                 m.Jmp(m.MemW(Registers.cs, Registers.bx, "table"));
                 m.Label("table");
-                m.Dw(0x1234);
-                m.Dw(0x1236);
-                m.Dw(0x123F);
-                m.Dw(0x1241);
-                m.Dw(0xCCCC);
 
                 scanner.Expect(x => x.EnqueueVectorTable(
                     Arg<Address>.Is.Anything,
@@ -261,6 +258,18 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<bool>.Is.Equal(false),
                     Arg<Procedure>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything));
+                scanner.Expect(x => x.CreateReader(
+                    Arg<Address>.Is.Anything)).Return(new ImageReader(new byte[] {
+                        0x34, 0x12,
+                        0x36, 0x12,
+                        0x38, 0x12,
+                        0x3A, 0x12,
+                        0xCC, 0xCC},
+                        0));
+                ExpectJumpTarget(0x0C00, 0x1234, "foo1");
+                ExpectJumpTarget(0x0C00, 0x1236, "foo2");
+                ExpectJumpTarget(0x0C00, 0x1238, "foo3");
+                ExpectJumpTarget(0x0C00, 0x123A, "foo4");
             });
             wi.Process();
             var sw = new StringWriter();
@@ -269,9 +278,19 @@ namespace Decompiler.UnitTests.Scanning
             string sExp = "\tbx = bx & 0x0003" + nl +
                 "\tSZO = cond(bx)" + nl +
                 "\tC = false" + nl +
-                "\tgoto Mem0[0x0C00:bx + 0x0008:word16]" + nl;
+                "\tbx = bx + bx" + nl + 
+                "\tSCZO = cond(bx)" + nl +
+                "\tswitch (bx) { foo1 foo2 foo3 foo4 }" + nl;
             Assert.AreEqual(sExp, sw.ToString());
             Assert.IsTrue(proc.ControlGraph.Nodes.Contains(block));
+        }
+
+        private void ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
+        {
+            scanner.Expect(x => x.EnqueueJumpTarget(
+                Arg<Address>.Matches(q => (q.Selector == selector && q.Offset == offset)),
+                Arg<Procedure>.Is.Anything,
+                Arg<ProcessorState>.Is.Anything)).Return(new Block(proc, blockLabel));
         }
 
         [Test]
@@ -296,7 +315,9 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Matches(a => a.Offset == 0),
                     Arg<Procedure>.Is.Same(proc),
                     Arg<ProcessorState>.Is.Anything)).Return(block);
-
+                scanner.Expect(x => x.TerminateBlock(
+                    Arg<Block>.Is.Anything,
+                    Arg<Address>.Is.Anything));
                 scanner.Expect(x => x.FindContainingBlock(
                     Arg<Address>.Matches(a => a.Offset == 0x0000))).Return(block);
 
@@ -320,6 +341,9 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Matches(a => a.Offset == 0x0003),
                     Arg<Procedure>.Is.Same(proc),
                     Arg<ProcessorState>.Is.Anything)).Return(new Block(proc, "l0003"));
+                scanner.Expect(x => x.TerminateBlock(
+                    Arg<Block>.Is.Anything,
+                    Arg<Address>.Is.Anything));
 
             });
             wi.Process();
