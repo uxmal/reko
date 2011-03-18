@@ -334,6 +334,7 @@ namespace Decompiler.Scanning
             var bwos = bw.BackWalk(blockCur, null);
             if (bwos.Count == 0)
                 return;     //$REVIEW: warn?
+            var idIndex = blockCur.Procedure.Frame.EnsureRegister(bw.Index);
 
             VectorBuilder builder = new VectorBuilder(arch, scanner, new Decompiler.Core.Lib.DirectedGraphImpl<object>());
             List<Address> vector = builder.BuildAux(bw, addrSwitch, state);
@@ -359,7 +360,14 @@ namespace Decompiler.Scanning
                     var blockDest = scanner.EnqueueJumpTarget(addr, blockCur.Procedure, state);
                     var blockSource = scanner.FindContainingBlock(ric.Address);
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
+                    blockCur = blockSource;
                 }
+            }
+            if (xfer is RtlGoto)
+            {
+                blockCur.Statements.Add(
+                    ric.Address.Linear,
+                    new SwitchInstruction(idIndex, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
             //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
             //map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());

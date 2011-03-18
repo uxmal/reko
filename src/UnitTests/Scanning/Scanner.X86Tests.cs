@@ -41,7 +41,6 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildTest16(Action<IntelAssembler> asmProg)
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            var emitter = new IntelEmitter();
             var entryPoints = new List<EntryPoint>();
             var addrBase = new Address(0xC00, 0);
             var asm = new IntelAssembler(arch, addrBase, entryPoints);
@@ -49,7 +48,7 @@ namespace Decompiler.UnitTests.Scanning
 
             scanner = new Scanner(
                 arch,
-                new ProgramImage(addrBase, emitter.Bytes),
+                asm.GetImage(),
                 new MsdosPlatform(arch),
                 new Dictionary<Address, ProcedureSignature>(),
                 new FakeDecompilerEventListener());
@@ -101,13 +100,12 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 l0C00_0000:
 	branch cx == 0x0000 l0C00_0002
-l
-l0C00_0002:
-	v3 = Mem0[ds:si:word16]
-	store(Mem0[es:di:word16]) = v3
-	si = si + 0x0002
+l0C00_0000_1:
+	SCZO = cond(ax - Mem0[es:di:word16])
 	di = di + 0x0002
 	cx = cx - 0x0001
+	branch Test(NE,Z) l0C00_0000
+l0C00_0002:
 	return
 fn0C00_0000_exit:
 ";
