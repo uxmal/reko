@@ -43,7 +43,7 @@ namespace Decompiler
 
         void LoadProgram(string fileName);
         void ScanProgram();
-        Procedure ScanProcedure(Address procAddress);
+        ProcedureBase ScanProcedure(Address procAddress);
         void RewriteMachineCode();
         DataFlowAnalysis AnalyzeDataFlow();
         void ReconstructTypes();
@@ -311,13 +311,13 @@ namespace Decompiler
         /// Starts a scan at address <paramref name="addr"/> on the user's request.
         /// </summary>
         /// <param name="addr"></param>
-        /// <returns></returns>
-		public Procedure ScanProcedure(Address addr)
+        /// <returns>a ProcedureBase, because the target procedure may have been a thunk or 
+        /// an linked procedure the user has decreed not decompileable.</returns>
+		public ProcedureBase ScanProcedure(Address addr)
 		{
 			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
 				scanner = CreateScanner(prog, eventListener);
-			Procedure proc = scanner.ScanProcedure(addr, null, prog.Architecture.CreateProcessorState());
-            return proc;
+			return scanner.ScanProcedure(addr, null, prog.Architecture.CreateProcessorState());
 		}
 
 		/// <summary>

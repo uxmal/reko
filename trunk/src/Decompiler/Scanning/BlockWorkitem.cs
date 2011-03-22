@@ -27,6 +27,7 @@ using Decompiler.Core.Types;
 using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Decompiler.Scanning
@@ -46,6 +47,7 @@ namespace Decompiler.Scanning
         private Rewriter rewriter;
         private ProcessorState state;
         private ExpressionSimplifier eval;
+        private ScannerEvaluator scEval;
         private IEnumerator<RtlInstructionCluster> rtlStream;
         private int extraLabels;
 
@@ -60,12 +62,14 @@ namespace Decompiler.Scanning
             this.arch = scanner.Architecture;
             this.rewriter = rewriter;
             this.state = state;
-            this.eval = new ExpressionSimplifier(new ScannerEvaluator(state));
+            this.scEval = new ScannerEvaluator(state);
+            this.eval = new ExpressionSimplifier(scEval);
             this.frame = frame;
             this.addr = addr;
             this.blockCur = null;
         }
 
+        public Block Block { get { return blockCur; } } 
         public ProcessorState State { get { return state; } }
 
         public override void Process()
@@ -94,18 +98,15 @@ namespace Decompiler.Scanning
             return block.Statements.Count > 0;
         }
 
-        /// <summary>
-        /// Rewrites instructions until the current address is exactly on an instruction boundary.
-        /// </summary>
-        /// <param name="block"></param>
-        /// <param name="blockCur"></param>
-        /// <param name="addrStart"></param>
-        private void ResyncBlocks(Block oldBlock, Address addrStart)
+        private void BuildApplication(Expression fn, ProcedureSignature sig, CallSite site)
         {
-            uint linAddr = (uint) addrStart.Linear;
+            var ab = CreateApplicationBuilder(fn, sig, site);
+            //state.ShrinkStack(sig.StackDelta);
+            //state.ShrinkFpuStack(sig.FpuStackDelta);
+            blockCur.Statements.Add(ric.Address.Linear, ab.CreateInstruction());
         }
 
-        private void BuildApplication(Expression fn, ProcedureSignature sig, CallSite site)
+        private ApplicationBuilder CreateApplicationBuilder(Expression fn, ProcedureSignature sig, CallSite site)
         {
             var ab = new ApplicationBuilder(
                 arch,
@@ -113,9 +114,7 @@ namespace Decompiler.Scanning
                 site,
                 fn,
                 sig);
-            //state.ShrinkStack(sig.StackDelta);
-            //state.ShrinkFpuStack(sig.FpuStackDelta);
-            blockCur.Statements.Add(ric.Address.Linear, ab.CreateInstruction());
+            return ab;
         }
 
         public Constant GetValue(Expression op)
@@ -200,6 +199,15 @@ namespace Decompiler.Scanning
             Address addr = call.Target as Address;
             if (addr != null)
             {
+                var impProc = scanner.GetImportedProcedure(addr.Linear);
+                if (impProc != null)
+                {
+                    if (impProc.Characteristics.IsAlloca)
+                    {
+                        return ProcessAlloca(site, impProc);
+                    }
+                }
+
                 var callee = scanner.ScanProcedure(addr, null, state);
                 blockCur.Statements.Add(
                     ric.Address.Linear, 
@@ -207,7 +215,11 @@ namespace Decompiler.Scanning
                         new ProcedureConstant(PrimitiveType.Pointer32, callee),
                         site,
                         call.ReturnAddressSize));
-                scanner.CallGraph.AddEdge(blockCur.Statements.Last, callee);
+                var pCallee = callee as Procedure;
+                if (pCallee != null)
+                {
+                    scanner.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
+                }
                 state.OnAfterCall(callee.Signature);
                 return true;
             }
@@ -258,6 +270,32 @@ namespace Decompiler.Scanning
                         site));
             state.OnAfterCall(sig);
             return true;        //$BUGBUG: The called procedure could be exit(), or ExitThread(), in which case we should return false.
+        }
+
+        public bool ProcessAlloca(CallSite site, PseudoProcedure impProc)
+        {
+            if (impProc.Signature == null)
+                throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
+            var ab = CreateApplicationBuilder(new ProcedureConstant(arch.PointerType, impProc), impProc.Signature, site);
+            if (impProc.Signature.FormalArguments.Length != 1)
+                throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.FormalArguments.Length));
+            var target = ab.Bind(impProc.Signature.FormalArguments[0], site);
+            var id = target as Identifier;
+            if (id == null)
+                throw new ApplicationException(string.Format("The parameter of {0} wasn't a register.", impProc.Name));
+            Constant c = scEval.GetValue(id) as Constant;
+            if (c != null && c.IsValid)
+            {
+                var sp = frame.EnsureRegister(arch.StackRegister);
+                blockCur.Statements.Add(
+                    ric.Address.Linear,
+                    new Assignment(sp, new BinaryExpression(Operator.Sub, sp.DataType, sp, c)));
+            }
+            else
+            {
+                blockCur.Statements.Add(ric.Address.Linear, ab.CreateInstruction());
+            }
+            return true;
         }
 
         public bool VisitReturn(RtlReturn ret)

@@ -22,8 +22,10 @@ using Decompiler;
 using Decompiler.Core;
 using Decompiler.Core.Assemblers;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Types;
 using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
@@ -39,7 +41,7 @@ using System.IO;
 namespace Decompiler.UnitTests.Scanning
 {
     [TestFixture]
-    public class Scanner2Tests
+    public class ScannerTests
     {
         ArchitectureMock arch;
         Program prog;
@@ -64,6 +66,18 @@ namespace Decompiler.UnitTests.Scanning
         public void Setup()
         {
             arch = new ArchitectureMock();
+        }
+
+        private ProcedureSignature CreateSignature(string ret, params string[] args)
+        {
+            var retReg = new Identifier(ret, 0, PrimitiveType.Word32, new RegisterStorage(new MachineRegister(ret, 0, PrimitiveType.Word32)));
+            var argIds = new List<Identifier>();
+            foreach (var arg in args)
+            {
+                argIds.Add(new Identifier(arg, argIds.Count + 1, PrimitiveType.Word32,
+                    new RegisterStorage(new MachineRegister(ret, argIds.Count + 1, PrimitiveType.Word32))));
+            }
+            return new ProcedureSignature(retReg, argIds.ToArray());
         }
 
         private void BuildX86RealTest(Action<IntelAssembler> test)
@@ -114,7 +128,10 @@ namespace Decompiler.UnitTests.Scanning
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            prog = new Program();
+            if (prog == null)
+            {
+                prog = new Program();
+            }
             prog.Architecture = arch;
             prog.Platform = new FakePlatform();
             prog.Image = new ProgramImage(new Address(startAddress), new byte[imageSize]);
@@ -258,6 +275,19 @@ fn0C00_0000_exit:
             Assert.AreEqual(0, stNew.FpuStackItems);
         }
 
+
+        [Test]
+        public void ScanImportedProcedure()
+        {
+            prog = new Program();
+            prog.ImportThunks.Add(0x2000, new PseudoProcedure(
+                "grox", CreateSignature("ax", "bx")));
+            var scan = CreateScanner(0x1000, 0x200);
+            var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", new FakeProcessorState());
+            Assert.AreEqual("grox", proc.Name);
+            Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
+            Assert.AreEqual("bx", proc.Signature.FormalArguments[0].Name);
+        }
         //        [Test(Description="When entrypoints are added they should end up in the top-level scanner queue")]
         //public void EntryPointsAddedToScanQueue()
         //{

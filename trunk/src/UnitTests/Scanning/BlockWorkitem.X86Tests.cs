@@ -285,6 +285,7 @@ namespace Decompiler.UnitTests.Scanning
             Assert.IsTrue(proc.ControlGraph.Nodes.Contains(block));
         }
 
+
         private void ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
             scanner.Expect(x => x.EnqueueJumpTarget(

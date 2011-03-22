@@ -138,7 +138,7 @@ namespace Decompiler.Gui.Windows.Forms
             AddressRange addrRange = memSvc.GetSelectedAddressRange();
             if (addrRange.IsValid)
             {
-                Procedure proc = Decompiler.ScanProcedure(addrRange.Begin);
+                var proc = Decompiler.ScanProcedure(addrRange.Begin);
                 SerializedProcedure userp = new SerializedProcedure();
                 userp.Address = addrRange.Begin.ToString();
                 userp.Name = proc.Name;

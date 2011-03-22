@@ -81,12 +81,12 @@ namespace Decompiler.Core
             return actuals;
         }
 
-        private Identifier FindReturnValue(CallSite cs, ProcedureSignature sigCallee)
+        public Identifier FindReturnValue()
         {
             Identifier idOut = null;
             if (sigCallee.ReturnValue != null)
             {
-                idOut = (Identifier) Bind(sigCallee.ReturnValue, cs);
+                idOut = (Identifier) Bind(sigCallee.ReturnValue, site);
             }
             return idOut;
 
@@ -99,7 +99,7 @@ namespace Decompiler.Core
 
         public Instruction CreateInstruction()
         {
-            var idOut = FindReturnValue(site, sigCallee);
+            var idOut = FindReturnValue();
             List<Expression> actuals = BindArguments(frame, site, sigCallee);
             var appl = new Application(
                 callee,
