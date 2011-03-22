@@ -34,7 +34,17 @@ namespace Decompiler.Core
         void OnProcedureEntered();                 // Some registers need to be updated when a procedure is entered.
 
         void OnProcedureLeft(ProcedureSignature procedureSignature);
+        
+        /// <summary>
+        /// Captures the the processor's state before calling a procedure.
+        /// </summary>
+        /// <returns>A CallSite object that abstracts the processor state right before the call.</returns>
         CallSite OnBeforeCall();
+        /// <summary>
+        /// Perform any adjustments to the processor's state after returning from a procedure call with the
+        /// specified signature.
+        /// </summary>
+        /// <param name="sigCallee">The signature of the called procedure.</param>
         void OnAfterCall(ProcedureSignature sigCallee);
     }
 }

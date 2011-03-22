@@ -220,6 +220,8 @@ namespace Decompiler.UnitTests.Mocks
 
 	public class FakeProcessorState : ProcessorState
 	{
+        private Dictionary<MachineRegister, Constant> regValues = new Dictionary<MachineRegister, Constant>();
+
 		public ProcessorState Clone()
 		{
 			return new FakeProcessorState();
@@ -227,7 +229,12 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Constant Get(MachineRegister r)
 		{
-			return Constant.Invalid;
+            Constant c;
+            if (!regValues.TryGetValue(r, out c))
+            {
+                c = Constant.Invalid;
+            }
+            return c;
 		}
 
         public void OnProcedureEntered()
@@ -240,6 +247,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public void Set(MachineRegister r, Constant v)
 		{
+            regValues[r] = v;
 		}
 
 		public void SetInstructionPointer(Address addr)

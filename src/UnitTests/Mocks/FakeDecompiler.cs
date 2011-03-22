@@ -70,7 +70,7 @@ namespace Decompiler.UnitTests.Mocks
             ScanProgram_Called = true;
         }
 
-        public Procedure ScanProcedure(Address procAddress)
+        public ProcedureBase ScanProcedure(Address procAddress)
         {
             throw new NotImplementedException();
         }

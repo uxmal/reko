@@ -94,13 +94,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void RwAlloca()
-		{
-			ConfigFile = "Fragments/multiple/alloca.xml";
-			RunTest("Fragments/multiple/alloca.asm", "Intel/RwAlloca.txt");
-		}
-
-		[Test]
 		public void RwStackVariables()
 		{
 			RunTest("Fragments/stackvars.asm", "Intel/RwStackVariables.txt");

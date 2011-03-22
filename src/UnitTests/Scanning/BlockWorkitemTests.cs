@@ -21,7 +21,10 @@
 using Decompiler.Arch.Intel;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using Decompiler.Scanning;
 using Decompiler.UnitTests.Mocks;
@@ -62,6 +65,17 @@ namespace Decompiler.UnitTests.Scanning
         private BlockWorkitem CreateWorkItem(Address addr)
         {
             return new BlockWorkitem(scanner, rewriter, new FakeProcessorState(), proc.Frame, addr);
+        }
+
+        private ProcedureSignature CreateSignature(MachineRegister  ret, params MachineRegister[] args)
+        {
+            var retReg = proc.Frame.EnsureRegister(ret);
+            var argIds = new List<Identifier>();
+            foreach (var arg in args)
+            {
+                argIds.Add(proc.Frame.EnsureRegister(arg));
+            }
+            return new ProcedureSignature(retReg, argIds.ToArray());
         }
 
         [Test]
@@ -177,7 +191,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
-                rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                StubRewriterStream();
                 scanner.Stub(x => x.CallGraph).Return(cg);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -192,6 +206,70 @@ namespace Decompiler.UnitTests.Scanning
             var callees = new List<Procedure>(cg.Callees(block.Procedure));
             Assert.AreEqual(1, callees.Count);
             Assert.AreEqual("fn1200", callees[0].Name);
+        }
+
+        private void StubRewriterStream()
+        {
+            rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+        }
+
+        [Test]
+        public void CallingAllocaWithConstant()
+        {
+            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            var sig = CreateSignature(Registers.esp, Registers.eax);
+            var alloca = new PseudoProcedure("alloca", sig);
+            alloca.Characteristics = new ProcedureCharacteristics
+            {
+                IsAlloca = true
+            };
+
+            m.Call(new Address(0x2000));
+            using (repository.Record())
+            {
+                StubRewriterStream();
+                scanner.Stub(x => x.Architecture).Return(arch);
+                scanner.Stub(x => x.FindContainingBlock(
+                    Arg<Address>.Is.Anything)).Return(block);
+                scanner.Expect(x => x.GetImportedProcedure(
+                    Arg<uint>.Is.Equal(0x2000u))).Return(alloca);
+                    
+            }
+            var wi = CreateWorkItem(new Address(0x1000));
+            wi.State.Set(Registers.eax, Constant.Word32(0x0400));
+            wi.Process();
+            repository.VerifyAll();
+            Assert.AreEqual(1, block.Statements.Count);
+            Assert.AreEqual("esp = esp - 0x00000400", wi.Block.Statements.Last.ToString());
+        }
+
+        [Test]
+        public void CallingAllocaWithNonConstant()
+        {
+            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            var sig = CreateSignature(Registers.esp, Registers.eax);
+            var alloca = new PseudoProcedure("alloca", sig);
+            alloca.Characteristics = new ProcedureCharacteristics
+            {
+                IsAlloca = true
+            };
+
+            m.Call(new Address(0x2000));
+            using (repository.Record())
+            {
+                StubRewriterStream();
+                scanner.Stub(x => x.Architecture).Return(arch);
+                scanner.Stub(x => x.FindContainingBlock(
+                    Arg<Address>.Is.Anything)).Return(block);
+                scanner.Expect(x => x.GetImportedProcedure(
+                    Arg<uint>.Is.Equal(0x2000u))).Return(alloca);
+                    
+            }
+            var wi = CreateWorkItem(new Address(0x1000));
+            wi.Process();
+            repository.VerifyAll();
+            Assert.AreEqual(1, block.Statements.Count);
+            Assert.AreEqual("esp = alloca(eax)", wi.Block.Statements.Last.ToString());
         }
     }
 }

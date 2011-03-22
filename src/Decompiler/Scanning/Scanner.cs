@@ -36,7 +36,7 @@ namespace Decompiler.Scanning
         void EnqueueEntryPoint(EntryPoint ep);
         Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state);
         void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc);
-        Procedure ScanProcedure(Address addr, string procedureName, ProcessorState state);
+        ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
         void EnqueueUserProcedure(SerializedProcedure sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
         void ProcessQueue();
@@ -269,8 +269,12 @@ namespace Decompiler.Scanning
         }
 
 
-        public Procedure ScanProcedure(Address addr, string procedureName, ProcessorState state)
+        public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
+            var pb = GetImportedProcedure(addr.Linear);
+            if (pb != null)
+                return pb;
+
             Procedure proc;
             if (!Procedures.TryGetValue(addr, out proc))
             {
@@ -292,7 +296,7 @@ namespace Decompiler.Scanning
 
         public void EnqueueUserProcedure(SerializedProcedure sp)
         {
-            Procedure proc = ScanProcedure(Address.ToAddress(sp.Address, 16), sp.Name, arch.CreateProcessorState());
+            var proc = (Procedure) ScanProcedure(Address.ToAddress(sp.Address, 16), sp.Name, arch.CreateProcessorState());
             if (sp.Signature != null)
             {
                 var sser = new ProcedureSerializer(arch, platform.DefaultCallingConvention);
@@ -967,7 +971,7 @@ namespace Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        Procedure IScanner.ScanProcedure(Address addr, string procedureName, ProcessorState state)
+        ProcedureBase IScanner.ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             throw new NotImplementedException();
         }
