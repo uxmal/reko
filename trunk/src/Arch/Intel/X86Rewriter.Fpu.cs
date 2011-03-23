@@ -11,7 +11,6 @@ namespace Decompiler.Arch.Intel
     {
         private int maxFpuStackWrite;
 
-
         public void EmitCommonFpuInstruction(
             BinaryOperator op,
             bool fReversed,

@@ -98,7 +98,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void TestCallInstruction()
 		{
-			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(null, null), new CallSite(0, 0), 0)));
+			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(null, null), new CallSite(0, 0))));
 		}
 
 		[Test]

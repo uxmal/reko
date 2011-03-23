@@ -220,7 +220,7 @@ namespace Decompiler.UnitTests.Analysis
             {
                 project = SerializedProject.Load(FileUnitTester.MapTestPath(configFile));
             }
-            EntryPoint ep = new EntryPoint(asm.StartAddress, new IntelState());
+            EntryPoint ep = new EntryPoint(asm.StartAddress, new X86State());
             scan.EnqueueEntryPoint(ep);
             foreach (SerializedProcedure sp in project.UserProcedures)
             {
@@ -238,7 +238,7 @@ namespace Decompiler.UnitTests.Analysis
 			{
 				project = SerializedProject.Load(FileUnitTester.MapTestPath(configFile));
 			}
-			EntryPoint ep = new EntryPoint(asm.StartAddress, new IntelState());
+			EntryPoint ep = new EntryPoint(asm.StartAddress, new X86State());
 			scan.EnqueueEntryPoint(ep);
 			foreach (SerializedProcedure sp in project.UserProcedures)
 			{

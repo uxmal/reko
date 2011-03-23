@@ -82,7 +82,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.Selector), exe.e_ip);
 			imageMap.AddSegment(new Address(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWrite);
-			entryPoints.Add(new EntryPoint(addrStart, new IntelState()));
+			entryPoints.Add(new EntryPoint(addrStart, new X86State()));
 		}
 
         public override ProgramImage Load(Address addrLoad)

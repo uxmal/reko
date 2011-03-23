@@ -67,10 +67,10 @@ namespace Decompiler.Scanning
 
         public List<Address> Build(Address addrTable, Address addrFrom, ProcessorState state)
         {
-            bw = new Backwalker(null, null);
+            bw = new Backwalker(this, null, null);
             if (bw == null)
                 return null;
-            List<BackwalkOperation> operations = bw.BackWalk(addrFrom, this);
+            List<BackwalkOperation> operations = bw.BackWalk(null);
             if (operations == null)
                 return PostError("Unable to determine limit", addrFrom, addrTable);
             return BuildAux(bw, addrFrom, state);
@@ -103,7 +103,7 @@ namespace Decompiler.Scanning
         private int[] BuildMapping(BackwalkDereference deref, int limit)
         {
             int[] map = new int[limit];
-            var rdr = image.CreateReader(new Address((uint)deref.TableOffset));
+            var rdr = scanner.Image.CreateReader(new Address((uint)deref.TableOffset));
             for (int i = 0; i < limit; ++i)
             {
                 map[i] = rdr.ReadByte();

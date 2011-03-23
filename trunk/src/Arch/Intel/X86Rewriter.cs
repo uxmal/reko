@@ -46,7 +46,7 @@ namespace Decompiler.Arch.Intel
         private OperandRewriter orw;
         private DisassembledInstruction di;
         private RtlInstructionCluster ric;
-        private IntelState state;
+        private X86State state;
 
         [Obsolete("Phasing out old rewriter")]
         public X86Rewriter(IProcedureRewriter prw)
@@ -57,7 +57,7 @@ namespace Decompiler.Arch.Intel
         public X86Rewriter(
             IntelArchitecture arch,
             IRewriterHost2 host,
-            IntelState state,
+            X86State state,
             ImageReader rdr, 
             Frame frame)
             : base(null)

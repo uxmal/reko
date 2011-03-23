@@ -32,14 +32,14 @@ namespace Decompiler.Arch.Intel
 	{
 		private IntelArchitecture arch;
 		private IntelDisassembler dasm; 
-		private IntelState state;
+		private X86State state;
 		private Platform platform;
 
 		public IntelCodeWalker(
 			IntelArchitecture arch,
 			Platform platform,
 			IntelDisassembler dasm,
-			IntelState state)
+			X86State state)
 		{
 			this.arch = arch;
 			this.platform = platform;
@@ -185,7 +185,7 @@ namespace Decompiler.Arch.Intel
 						if (ds.IsValid && dx.IsValid)
 						{
 							listener.OnProcedure(
-								new IntelState(),
+								new X86State(),
 								new Address((ushort)ds.ToUInt32(), dx.ToUInt32()));
 						}
 						break;

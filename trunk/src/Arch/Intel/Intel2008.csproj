@@ -119,7 +119,7 @@
     </Compile>
     <Compile Include="IntelRewriter.Fpu.cs">
     </Compile>
-    <Compile Include="IntelState.cs">
+    <Compile Include="X86State.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LongAddRewriter.cs">

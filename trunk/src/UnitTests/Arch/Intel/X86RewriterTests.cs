@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         private IntelArchitecture arch;
         private IntelArchitecture arch32;
         private RewriterHost host;
-        private IntelState state;
+        private X86State state;
 
         public X86RewriterTests()
         {
@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            state = new IntelState();
+            state = new X86State();
         }
 
         private IntelAssembler Create16bitAssembler()
@@ -341,8 +341,9 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Call("self");
             });
             AssertCode(e, 
-                "0|0C00:0000(3): 1 instructions", 
-                "1|call 0C00:0000 (2)");
+                "0|0C00:0000(3): 2 instructions", 
+                "1|sp = sp - 0x0002", 
+                "2|call 0C00:0000 (2)");
         }
 
         [Test]
@@ -354,8 +355,9 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Call("self");
             });
             AssertCode(e,
-                "0|10000000(5): 1 instructions", 
-                "1|call 10000000 (4)");
+                "0|10000000(5): 2 instructions", 
+                "1|esp = esp - 0x00000004",
+                "2|call 10000000 (4)");
         }
 
         [Test]
@@ -620,6 +622,18 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "1|rLoc1 = (real64) Mem0[ebx + 0x00000004:int32]");
         }
 
+        [Test]
+        public void Fstp()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Fstp(m.MemDw(Registers.ebx, 4));
+            });
+            AssertCode(e,
+                "0|10000000(3): 1 instructions",
+                "1|Mem0[ebx + 0x00000004:real32] = rArg0");
+
+        }
         [Test]
         public void RepScasb()
         {

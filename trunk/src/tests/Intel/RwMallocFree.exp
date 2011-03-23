@@ -1,44 +1,25 @@
-// fn10000000
+// fn10000008
 // Mem0:Global memory
 // fp:Temporary
-// eax:Register eax
-// al:Register al
-// v4:Temporary
-// SCZO:Flags
-// v6:Temporary
-// v7:Temporary
-// v8:Temporary
 // esp:Register esp
+// eax:Register eax
+// SCZO:Flags
 // return address size: 4
-void fn10000000()
-fn10000000_entry:
-l10000000:
-	v4 = Mem0[eax:byte] + al
-	store(Mem0[eax:byte]) = v4
-	SCZO = cond(v4)
-	v6 = Mem0[eax:byte] + al
-	store(Mem0[eax:byte]) = v6
-	SCZO = cond(v6)
-	v7 = Mem0[eax:byte] + al
-	store(Mem0[eax:byte]) = v7
-	SCZO = cond(v7)
-	v8 = Mem0[eax:byte] + al
-	store(Mem0[eax:byte]) = v8
-	SCZO = cond(v8)
+void fn10000008()
+fn10000008_entry:
+l10000008:
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = 0x00000008
-	esp = esp - 0x00000004
-	eax = malloc(Mem0[esp - 0x00000004:word32])
+	eax = malloc(Mem0[esp:word32])
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
 	store(Mem0[eax:word32]) = 0x00000000
 	store(Mem0[eax + 0x00000004:word32]) = 0x00001024
-	esp = esp - 0x00000004	
-	store(Mem0[esp:word32]) = eax
 	esp = esp - 0x00000004
-	free(Mem0[esp - 0x00000004:word32])
+	store(Mem0[esp:word32]) = eax
+	free(Mem0[esp:word32])
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
 	return
-fn10000000_exit:
+fn10000008_exit:
 

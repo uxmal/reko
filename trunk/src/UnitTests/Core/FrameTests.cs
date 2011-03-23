@@ -130,8 +130,8 @@ namespace Decompiler.UnitTests.Core
 					new Identifier("arg0", 0, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
 					new Identifier("arg1", 1, PrimitiveType.Word16, new StackArgumentStorage(6, PrimitiveType.Word16)) });
 
-			CallSite cs = new CallSite(stack + f.ReturnAddressSize, 0);
-			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
+			var cs = new CallSite(f.ReturnAddressSize, 0);
+			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
 			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig);
             Instruction instr = ab.CreateInstruction(); 
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
@@ -156,7 +156,7 @@ namespace Decompiler.UnitTests.Core
 			    cx,
 			    new Identifier("arg0", 0, PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)));
 			
-			CallSite cs = new CallSite(stack, 0);
+			var cs = new CallSite(stack, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));
 			ApplicationBuilder ab = new ApplicationBuilder(arch, f, cs, fn, sig);
             Instruction instr = ab.CreateInstruction();
@@ -217,7 +217,7 @@ namespace Decompiler.UnitTests.Core
 			caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word16, "bindToArg08");
 			caller.Frame.EnsureStackLocal(-8, PrimitiveType.Word32, "bindToArg04");
 			caller.Frame.EnsureStackLocal(-10, PrimitiveType.Word16, "bindToArg02");
-			CallSite cs = new CallSite(10 + callee.Frame.ReturnAddressSize, 0);
+			var cs = new CallSite(10 + callee.Frame.ReturnAddressSize, 0);
 			var id = arg08.Storage.BindFormalArgumentToFrame(arch, caller.Frame, cs);
 			Assert.AreEqual("bindToArg08", id.ToString());
 			id = arg02.Storage.BindFormalArgumentToFrame(arch, caller.Frame, cs);

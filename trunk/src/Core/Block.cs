@@ -145,6 +145,11 @@ namespace Decompiler.Core
 			set { succ[1] = value; }
 		}
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
 		public void Write(TextWriter sb)
 		{
 			if (pred.Count == 0 && succ.Count == 0)

@@ -72,10 +72,10 @@ namespace Decompiler.Core
             return blockCur.Statements.Last;
 		}
 
-        public void Call(Procedure procCallee, CallSite site, int stackReturnAddressSize)
+        public void Call(Procedure procCallee, CallSite site)
         {
             ProcedureConstant pc = new ProcedureConstant(arch.PointerType, procCallee);
-            Emit(new CallInstruction(pc, site, stackReturnAddressSize));
+            Emit(new CallInstruction(pc, site));
         }
 
 
@@ -190,11 +190,6 @@ namespace Decompiler.Core
             Branch b = new Branch(condition, target);
             Emit(b);
             return b;
-        }
-
-        public void Call(Expression target)
-        {
-            Emit(new IndirectCall(target, null));
         }
 
         public Identifier Flags(uint grf, string name)

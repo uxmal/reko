@@ -45,7 +45,7 @@ namespace Decompiler.Arch.Intel
             this.pointerType = pointerType;
 		}
 
-        public virtual Address AddressFromSegOffset(IntelState state, MachineRegister seg, uint offset)
+        public virtual Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
         {
             return state.AddressFromSegOffset(seg, offset);
         }
@@ -94,7 +94,7 @@ namespace Decompiler.Arch.Intel
 		{
 		}
 
-		public override Address AddressFromSegOffset(IntelState state, MachineRegister seg, uint offset)
+		public override Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
 		{
 			return new Address(offset);
 		}

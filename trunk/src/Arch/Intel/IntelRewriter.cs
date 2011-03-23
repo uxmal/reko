@@ -966,7 +966,7 @@ namespace Decompiler.Arch.Intel
             ApplicationBuilder ab = new ApplicationBuilder(
                 arch,
                 frame, 
-                new CallSite(state.StackBytes, state.FpuStackItems),
+                new CallSite(sig.ReturnAddressOnStack, state.FpuStackItems),
                 fn,
                 sig);
             state.ShrinkStack(sig.StackDelta);
@@ -1183,7 +1183,7 @@ namespace Decompiler.Arch.Intel
 
 		private void EmitCall(Procedure procCallee)
 		{
-            CallSite site = new CallSite(state.StackBytes, state.FpuStackItems);
+            var site = new CallSite(procCallee.Signature.ReturnAddressOnStack, state.FpuStackItems);
 			if (procCallee.Characteristics.IsAlloca)
 			{
 				if (procCallee.Signature == null)
@@ -1204,7 +1204,7 @@ namespace Decompiler.Arch.Intel
                     }
                 }
 			}
-			emitter.Call(procCallee, site, 0);
+			emitter.Call(procCallee, site);
             state.OnReturnFromCall(procCallee.Signature);
 			host.AddCallEdge(this.proc, emitter.Block.Statements.Last, procCallee);
 		}
