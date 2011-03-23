@@ -174,7 +174,6 @@ join:
 				proc.Write(true, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
-			Assert.IsTrue(proc.RpoBlocks.Count == 3);
 		}
 
 		[Test]
@@ -242,7 +241,6 @@ join:
 		{
 			RunTest("Fragments/fpureversibles.asm", "Intel/RwFpuReversibles.txt");
 		}
-
 
 		private void RunTest(string sourceFile, string outputFile)
 		{

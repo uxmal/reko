@@ -181,7 +181,7 @@ namespace Decompiler.UnitTests.Analysis
         public void CallInstruction()
         {
             var callee = new Procedure("Callee", prog.Architecture.CreateFrame());
-            var ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(0, 0), 4);
+            var ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0));
             var pf = new ProcedureFlow(callee, prog.Architecture);
             pf.TrashedRegisters[Registers.ebx.Number] = true;
             flow[callee] = pf;
@@ -465,7 +465,7 @@ TrashEaxEbx eax ebx ax bx al bl ah bh
         public void CallInstruction()
         {
             var callee = new Procedure("Callee", prog.Architecture.CreateFrame());
-            var ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(0, 0), 4);
+            var ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0));
             var pf = new ProcedureFlow(callee, prog.Architecture);
             pf.TrashedRegisters[Registers.ebx.Number] = true;
             flow[callee] = pf;

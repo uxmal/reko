@@ -23,15 +23,59 @@ using System.Text;
 
 namespace Decompiler.Core.Code
 {
+    /// <summary>
+    /// Interface between a calling procedure and a callee procedure. All registers
+    /// used or defined by the called procedure are stored here, as is the stack
+    /// depth before the call. The stack depth includes any return address pushed
+    /// on the stack before control transfers to the callee. 
+    /// </summary>
+    public class CallSite
+    {
+        public CallSite(int sizeOfReturnAddressOnStack, int fpuStackDepthBefore)
+        {
+            this.SizeOfReturnAddressOnStack = sizeOfReturnAddressOnStack;
+            this.FpuStackDepthBefore = fpuStackDepthBefore;
+        }
+
+        /// <summary>
+        /// Depth of FPU stack before call.
+        /// </summary>
+        public int FpuStackDepthBefore { get; private set; }
+
+        /// <summary>
+        /// Size of the return address on the stack. Some architectures don't pass the continuation
+        /// address on the stack, in which case this property should have the value 0.
+        /// </summary>
+        public int SizeOfReturnAddressOnStack { get; private set; }
+
+        public int StackDepthBefore { get; set; }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("retsize: {0};", SizeOfReturnAddressOnStack);
+            if (StackDepthBefore != 0)
+            {
+                sb.AppendFormat(" depth: {0}", StackDepthBefore);
+            }
+            if (FpuStackDepthBefore != 0)
+            {
+                sb.AppendFormat(" FPU: {0};", FpuStackDepthBefore);
+            }
+            return sb.ToString();
+        }
+    }
+
 	/// <summary>
 	/// Interface between a calling procedure and a callee procedure. All registers
 	/// used or defined by the called procedure are stored here, as is the stack
 	/// depth before the call. The stack depth includes any return address pushed
 	/// on the stack before control transfers to the callee. 
 	/// </summary>
-	public class CallSite
+    [Obsolete]
+	public class CallSiteOld
 	{
-        public CallSite(int stackDepthBefore, int fpuStackDepthBefore)
+        public CallSiteOld(int stackDepthBefore, int fpuStackDepthBefore)
         {
             this.StackDepthBefore = stackDepthBefore;
             this.FpuStackDepthBefore = fpuStackDepthBefore;

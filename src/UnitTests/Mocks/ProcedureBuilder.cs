@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public Statement Call(string procedureName)
         {
-            CallInstruction ci = new CallInstruction(null, new CallSite(0, 0), 4);  //$REVIEW: hard-wired 4-byte pointer.
+            var ci = new CallInstruction(null, new CallSite(4, 0));  //$REVIEW: hard-wired 4-byte pointer.
             unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
             return Emit(ci);
         }
@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Mocks
         public Statement Call(ProcedureBase callee)
         {
             ProcedureConstant c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
-            CallInstruction ci = new CallInstruction(c, new CallSite(0, 0), 4);     //$REVIEW: hard-widerd 4-byte pointer.
+            CallInstruction ci = new CallInstruction(c, new CallSite(4, 0));     //$REVIEW: hard-wired 4-byte pointer.
             return Emit(ci);
         }
 

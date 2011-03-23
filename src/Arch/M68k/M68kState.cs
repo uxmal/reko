@@ -59,7 +59,7 @@ namespace Decompiler.Arch.M68k
         {
         }
 
-        public CallSite OnBeforeCall()
+        public CallSite OnBeforeCall(int returnAddressSize)
         {
             throw new NotImplementedException();
         }

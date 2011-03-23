@@ -254,9 +254,9 @@ namespace Decompiler.UnitTests.Mocks
 		{
 		}
 
-        public CallSite OnBeforeCall()
+        public CallSite OnBeforeCall(int returnAddressSize)
         {
-            return new CallSite(0, 0);
+            return new CallSite(returnAddressSize, 0);
         }
 
         public void OnAfterCall(ProcedureSignature sigCallee)

@@ -81,6 +81,7 @@ namespace Decompiler.Arch.Intel
         public static readonly FlagRegister P;
 
         public static readonly MachineRegister FPUF;
+        public static readonly MachineRegister FPST;    // virtual register; the x87 FPU stack pointer.
 
 		private static readonly MachineRegister[] regs;
 
@@ -123,6 +124,7 @@ namespace Decompiler.Arch.Intel
             O = new FlagRegister("O", 36);
             P = new FlagRegister("P", 37);
             FPUF = new MachineRegister("FPUF", 38, PrimitiveType.Byte);
+            FPST = new MachineRegister("FPST", 38, PrimitiveType.Byte);
 
 			regs = new MachineRegister[] {
 				eax,
@@ -229,7 +231,7 @@ namespace Decompiler.Arch.Intel
 			implicitRegs[Registers.esp.Number] = true;
 		}
 
-		public Address AddressFromSegOffset(IntelState state, MachineRegister seg, uint offset)
+		public Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
 		{
 			if (mode == ProcessorMode.ProtectedFlat)
 			{
@@ -243,7 +245,7 @@ namespace Decompiler.Arch.Intel
 
 		public virtual CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
 		{
-			return new IntelCodeWalker(this, platform, new IntelDisassembler(img.CreateReader(addr), this.WordWidth), (IntelState) st);
+			return new IntelCodeWalker(this, platform, new IntelDisassembler(img.CreateReader(addr), this.WordWidth), (X86State) st);
 		}
 
 		public virtual Disassembler CreateDisassembler(ImageReader imageReader)
@@ -268,7 +270,7 @@ namespace Decompiler.Arch.Intel
 
 		public virtual ProcessorState CreateProcessorState()
 		{
-			return new IntelState();
+			return new X86State();
 		}
 
         [Obsolete]
@@ -279,7 +281,7 @@ namespace Decompiler.Arch.Intel
 
         public virtual Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
-            return new X86Rewriter(this, host, (IntelState) state, rdr, frame);
+            return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -290,7 +292,7 @@ namespace Decompiler.Arch.Intel
         //$REFACTOR: this into the different processor modes.
         public Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
-            var st = (IntelState)state;
+            var st = (X86State)state;
             if (WordWidth == PrimitiveType.Word16)
             {
                 if (byteSize == PrimitiveType.Word16.Size)

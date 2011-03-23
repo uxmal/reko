@@ -18,37 +18,26 @@
  */
 #endregion
 
-using Decompiler.Core;
+using Decompiler.Arch.Intel;
 using Decompiler.Core.Expressions;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
-namespace Decompiler.Core.Rtl
+namespace Decompiler.UnitTests.Arch.Intel
 {
-    public class RtlCall : RtlTransfer
+    [TestFixture]
+    public class X86StateTests
     {
-        public RtlCall(Expression target, byte stackPushedReturnAddressSize) : base(target)
+        [Test]
+        public void State()
         {
-            this.ReturnAddressSize = stackPushedReturnAddressSize;
-        }
-
-        /// <summary>
-        /// The size in bytes of the return address. Some architectures don't 
-        /// pass the return address on the stack, but in a register. In those
-        /// cases, this property should have the value 0.
-        /// </summary>
-        public int ReturnAddressSize { get; private set; }
-
-        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
-        {
-            return visitor.VisitCall(this);
-        }
-
-        protected override void WriteInner(TextWriter writer)
-        {
-            writer.Write("call {0} ({1})", Target, ReturnAddressSize);
+            var state = new X86State();
+            state.Set(Registers.esp, Constant.Word32(-4));
+            state.OnProcedureEntered();
+            var site = state.OnBeforeCall(4);
+            Assert.AreEqual(4, site.SizeOfReturnAddressOnStack);
         }
     }
 }

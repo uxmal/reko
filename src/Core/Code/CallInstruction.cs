@@ -28,16 +28,15 @@ namespace Decompiler.Core.Code
 	{
 		protected Expression expr;
 
-        [Obsolete]
-		public CallBase(Expression expr, CallSite site) : this(expr, site, 0)
+        [Obsolete("", true)]
+		public CallBase(Expression expr, CallSiteOld site) 
         {
         }
 
-		public CallBase(Expression expr, CallSite site, int stackReturnAddressSize)
+		public CallBase(Expression expr, CallSite site)
 		{
 			this.expr = expr;
             this.CallSite = site;
-            this.StackReturnAddressSize = stackReturnAddressSize;
 		}
 
 		public CallSite CallSite { get; private set; }
@@ -47,13 +46,13 @@ namespace Decompiler.Core.Code
             get { return false; }
         }
 
+        [Obsolete("Use the call site", true)]
         public int StackReturnAddressSize { get ; private set; }
 	}
 
-    [Obsolete("Use Call with a non-procedure constant")]
+    //$TODO: the distinction between indirect call and call is just the type of the target expression. We can get rid of the two subclasses.
 	public class IndirectCall : CallBase
 	{
-
         public IndirectCall(Expression expr, CallSite site) : base(expr, site)
         {
         }
@@ -67,7 +66,6 @@ namespace Decompiler.Core.Code
         {
             return visitor.VisitIndirectCall(this);
         }
-
 
 		public override void Accept(InstructionVisitor v)
 		{
@@ -86,12 +84,10 @@ namespace Decompiler.Core.Code
 	{
 		private ProcedureBase proc;
 
-        public CallInstruction(ProcedureConstant pc, CallSite site, int stackReturnAddressSize)
-            : base(pc, site, stackReturnAddressSize)
+        public CallInstruction(ProcedureConstant pc, CallSite site) : base(pc, site)
         {
             this.proc = pc.Procedure;
         }
-
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{

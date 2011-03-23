@@ -29,7 +29,6 @@ using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Decompiler.Scanning
 {
@@ -39,12 +38,13 @@ namespace Decompiler.Scanning
 	/// </summary>
 	public class Backwalker
 	{
-		private bool returnToCaller;
+        private IBackWalkHost host;
         private ExpressionSimplifier eval;
         private static TraceSwitch trace = new TraceSwitch("BackWalker", "Traces the progress backward instruction walking");
 
-		public Backwalker(RtlTransfer xfer, ExpressionSimplifier eval)
+		public Backwalker(IBackWalkHost host, RtlTransfer xfer, ExpressionSimplifier eval)
 		{
+            this.host = host;
             this.eval = eval;
             var mem = xfer.Target as MemoryAccess;
             if (mem == null)
@@ -75,14 +75,12 @@ namespace Decompiler.Scanning
             }
         }
 
-        public List<BackwalkOperation> BackWalk(Block block, IBackWalkHost host)
+        public List<BackwalkOperation> BackWalk(Block block)
         {
             // Record the operations done to the idx register.
 
             if (Stride > 1)
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
-
-            returnToCaller = false;
 
             bool continueBackwalking = BackwalkInstructions(Index, StatementsInReverseOrder(block));
             if (Index == null)
@@ -249,12 +247,15 @@ namespace Decompiler.Scanning
             var bin = exp as BinaryExpression;
             if (bin == null)
                 return 1;
-            if (bin.op != Operator.Mul && bin.op != Operator.Muls && bin.op != Operator.Mulu)
+            if (bin.op is MulOperator)
+            {
+                var scale = bin.Right as Constant;
+                if (scale == null)
+                    return 1;
+                return scale.ToInt32();
+            }
+            else
                 return 1;
-            var scale = bin.Right as Constant;
-            if (scale == null)
-                return 1;
-            return scale.ToInt32();
         }
 
         public bool CanBackwalk()
@@ -297,15 +298,41 @@ namespace Decompiler.Scanning
             if (idLeft != null)
             {
                 Stride = 1;
+                DetermineVector(bin.Right);
                 return RegisterOf(idLeft);
             }
             var binLeft = bin.Left as BinaryExpression;
-            if (binLeft != null && binLeft.op is MulOperator && binLeft.Right is Constant)
+            if (IsScaledIndex(binLeft))
             {
-                Stride = ((Constant)binLeft.Right).ToInt32();   // Mem[x + reg * C]
-                return RegisterOf(binLeft.Left as Identifier);
+                return DetermineVectorWithScaledIndex(bin.Right, binLeft);
+            }
+            var binRight = bin.Right as BinaryExpression;
+            if (IsScaledIndex(binRight))
+            {
+                return DetermineVectorWithScaledIndex(bin.Left, binRight);
             }
             return null;
+        }
+
+        private bool IsScaledIndex(BinaryExpression bin)
+        {
+            return bin != null && bin.op is MulOperator && bin.Right is Constant;
+        }
+
+        private MachineRegister DetermineVectorWithScaledIndex(Expression possibleVector, BinaryExpression scaledIndex)
+        {
+            Stride = ((Constant)scaledIndex.Right).ToInt32();   // Mem[x + reg * C]
+            DetermineVector(possibleVector);
+            return RegisterOf(scaledIndex.Left as Identifier);
+        }
+
+        private void DetermineVector(Expression possibleVector)
+        {
+            var vector = possibleVector as Constant;
+            if (vector != null)
+            {
+                VectorAddress = new Address(vector.ToUInt32());
+            }
         }
 
         private MachineRegister HandleAddition(

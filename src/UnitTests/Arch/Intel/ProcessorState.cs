@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[Test]
 		public void Simple()
 		{
-			IntelState st = new IntelState();
+			X86State st = new X86State();
 			st.Set(Registers.cs, new Constant(PrimitiveType.Word16, 0xC00));
 			st.Set(Registers.ax, new Constant(PrimitiveType.Word16, 0x1234));
 			Assert.IsTrue(!st.Get(Registers.bx).IsValid);
@@ -47,8 +47,8 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void AreEqual()
         {
-            IntelState st1 = new IntelState();
-            IntelState st2 = new IntelState();
+            X86State st1 = new X86State();
+            X86State st2 = new X86State();
             Assert.IsTrue(st1.HasSameValues(st2));
         }
 	}

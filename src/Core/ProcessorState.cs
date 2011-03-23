@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Machine;
 using System;
 
@@ -39,7 +40,7 @@ namespace Decompiler.Core
         /// Captures the the processor's state before calling a procedure.
         /// </summary>
         /// <returns>A CallSite object that abstracts the processor state right before the call.</returns>
-        CallSite OnBeforeCall();
+        CallSite OnBeforeCall(int returnAddressSize);
         /// <summary>
         /// Perform any adjustments to the processor's state after returning from a procedure call with the
         /// specified signature.

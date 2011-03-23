@@ -2,80 +2,78 @@
 // Mem0:Global memory
 // fp:Temporary
 // eax:Register eax
-// dwLoc08:Local -0008
+// esp:Register esp
+// SCZO:Flags
 // ax:Register ax
 // return address size: 4
 void fn10000000()
-fn10000000_entry:		// pred:
-	// succ:  l10000000
-l10000000:		// pred: fn10000000_entry
+fn10000000_entry:
+l10000000:
 	eax = Mem0[0x10003420:word32]
-	dwLoc08 = eax
-	call fn10000017 (depth: 8;)
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = eax
+	call fn10000017 (retsize: 4;)
+	esp = esp + 0x00000004
+	SCZO = cond(esp)
 	store(Mem0[0x10003428:word16]) = ax
 	return
-	// succ:  fn10000000_exit
-fn10000000_exit:		// pred: l10000000
-	// succ: 
+fn10000000_exit:
 
 // fn10000017
 // Mem0:Global memory
 // fp:Temporary
 // ebp:Register ebp
-// dwLoc08:Local -0008
+// esp:Register esp
 // ecx:Register ecx
-// dwLoc0C:Local -000C
-// wLoc0C:Local -000C
-// dwArg00:Stack +0000
 // SCZO:Flags
 // Z:Flags
+// ax:Register ax
+// SZO:Flags
+// C:Flags
 // eax:Register eax
 // edx:Register edx
-// C:Flags
-// ax:Register ax
 // SO:Flags
 // cx:Register cx
 // return address size: 4
 void fn10000017()
-fn10000017_entry:		// pred:
-	// succ:  l10000017
-l10000017:		// pred: fn10000017_entry
-	dwLoc08 = ebp
-	dwLoc0C = ecx
-	wLoc0C = 0x0000
-	SCZO = cond(dwArg00 - 0x00000000)
+fn10000017_entry:
+l10000017:
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = ebp
+	ebp = esp
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = ecx
+	store(Mem0[ebp - 0x00000004:word16]) = 0x0000
+	SCZO = cond(Mem0[ebp + 0x00000008:word32] - 0x00000000)
 	branch Test(NE,Z) l1000002F
-	// succ:  l10000027 l1000002F
-l10000027:		// pred: l10000017
-	ax = 0x0000
-	SCZO = cond(ax)
-	// succ:  l1000005E
-l1000005E:		// pred: l1000005A l10000027
-	ebp = dwLoc08
-	return
-	// succ:  fn10000017_exit
-fn10000017_exit:		// pred: l1000005E
-	// succ: 
-l1000002F:		// pred: l10000017 l10000049
-	eax = (int32) wLoc0C
-	ecx = dwArg00
+l10000027:
+	ax = ax ^ ax
+	SZO = cond(ax)
+	C = false
+	goto l1000005E
+l1000002F:
+	eax = (int32) Mem0[ebp - 0x00000004:word16]
+	ecx = Mem0[ebp + 0x00000008:word32]
 	edx = (int32) Mem0[ecx + eax:byte]
-	SCZO = cond(edx - 0x00000000)
+	SZO = cond(edx & edx)
 	C = false
 	branch Test(EQ,Z) l1000005A
-	// succ:  l1000003E l1000005A
-l1000003E:		// pred: l1000002F
-	eax = (int32) wLoc0C
+l1000003E:
+	eax = (int32) Mem0[ebp - 0x00000004:word16]
 	SCZO = cond(eax - 0x00007FFF)
 	branch Test(GE,SO) l1000005A
-	// succ:  l10000049 l1000005A
-l10000049:		// pred: l1000003E
-	cx = wLoc0C
+l10000049:
+	cx = Mem0[ebp - 0x00000004:word16]
 	cx = cx + 0x0001
 	SCZO = cond(cx)
-	wLoc0C = cx
-	// succ:  l1000002F
-l1000005A:		// pred: l1000002F l1000003E
-	ax = wLoc0C
-	// succ:  l1000005E
+	store(Mem0[ebp - 0x00000004:word16]) = cx
+	goto l1000002F
+l1000005A:
+	ax = Mem0[ebp - 0x00000004:word16]
+l1000005E:
+	esp = ebp
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+fn10000017_exit:
 

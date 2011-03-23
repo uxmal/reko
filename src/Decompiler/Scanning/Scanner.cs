@@ -287,10 +287,15 @@ namespace Decompiler.Scanning
                 return proc;
 
             visitedProcs.Add(proc);
+
+            var oldQueue = queue;
+            queue = new PriorityQueue<WorkItem>();
             var st = state.Clone();
             st.OnProcedureEntered();
             var block = EnqueueJumpTarget(addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
+            ProcessQueue();
+            queue = oldQueue;
             return proc;
         }
 

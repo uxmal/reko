@@ -42,7 +42,7 @@ namespace Decompiler.Arch.Intel
         }
 
 
-        public Expression Transform(MachineOperand op, PrimitiveType opWidth, IntelState state)
+        public Expression Transform(MachineOperand op, PrimitiveType opWidth, X86State state)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
@@ -83,7 +83,7 @@ namespace Decompiler.Arch.Intel
                 return new Constant(imm.Width, imm.Value.ToUInt32());
         }
 
-        public Expression CreateMemoryAccess(MemoryOperand mem, DataType dt, IntelState state)
+        public Expression CreateMemoryAccess(MemoryOperand mem, DataType dt, X86State state)
         {
             PseudoProcedure ppp = ImportedProcedureName(mem.Width, mem);
             if (ppp != null)
@@ -103,7 +103,7 @@ namespace Decompiler.Arch.Intel
             }
         }
 
-        public Expression CreateMemoryAccess(MemoryOperand memoryOperand, IntelState state)
+        public Expression CreateMemoryAccess(MemoryOperand memoryOperand, X86State state)
         {
             return CreateMemoryAccess(memoryOperand, memoryOperand.Width, state);
         }
@@ -126,7 +126,7 @@ namespace Decompiler.Arch.Intel
         /// <param name="mem"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public Expression EffectiveAddressExpression(MemoryOperand mem, IntelState state)
+        public Expression EffectiveAddressExpression(MemoryOperand mem, X86State state)
         {
             Expression eIndex = null;
             Expression eBase = null;
@@ -194,7 +194,7 @@ namespace Decompiler.Arch.Intel
         /// </summary>
         /// <param name="reg"></param>
         /// <returns></returns>
-        public Identifier FpuRegister(int reg, IntelState state)
+        public Identifier FpuRegister(int reg, X86State state)
         {
             return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
         }
@@ -209,7 +209,7 @@ namespace Decompiler.Arch.Intel
             return null;
         }
 
-        public Constant ReplaceCodeSegment(MachineRegister reg, IntelState state)
+        public Constant ReplaceCodeSegment(MachineRegister reg, X86State state)
         {
             if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
                 return state.Get(reg);

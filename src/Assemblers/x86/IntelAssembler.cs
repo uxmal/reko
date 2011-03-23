@@ -1125,6 +1125,16 @@ namespace Decompiler.Assemblers.x86
             }
         }
 
+        public void Fst(ParsedOperand parsedOperand)
+        {
+            ProcessFst(false, parsedOperand);
+        }
+
+        public void Fstp(ParsedOperand parsedOperand)
+        {
+            ProcessFst(true, parsedOperand);
+        }
+
         public void Ret()
         {
             emitter.EmitOpcode(0xC3, null);
@@ -1163,7 +1173,7 @@ namespace Decompiler.Assemblers.x86
         {
             DefineSymbol(procName);
             if (entryPoints != null && entryPoints.Count == 0)
-                entryPoints.Add(new EntryPoint(addrBase + emitter.Position, new IntelState()));
+                entryPoints.Add(new EntryPoint(addrBase + emitter.Position, new X86State()));
         }
 
         public void Push(ParsedOperand op)
@@ -1953,6 +1963,7 @@ namespace Decompiler.Assemblers.x86
         {
             SwitchSegment(unknownSegment);
         }
+
     }
 }
 

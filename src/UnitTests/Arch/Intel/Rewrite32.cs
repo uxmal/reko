@@ -110,9 +110,11 @@ namespace Decompiler.UnitTests.Arch.Intel
                 prog.ImportThunks.Add(item.Key, item.Value);
             }
             Scanner scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
-			EntryPoint ep = new EntryPoint(prog.Image.BaseAddress, new IntelState());
-			scan.EnqueueEntryPoint(ep);
-			scan.ProcessQueue();
+            foreach (var ep in asm.EntryPoints)
+            {
+                scan.EnqueueEntryPoint(ep);
+            }
+            scan.ProcessQueue();
 
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{

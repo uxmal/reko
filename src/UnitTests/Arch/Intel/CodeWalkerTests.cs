@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		{
 			Program pgm = BuildProgram();
 			var sc = new Scanner(pgm, new Dictionary<Address,ProcedureSignature>(), null);
-			sc.EnqueueEntryPoint(new EntryPoint(pgm.Image.BaseAddress, new IntelState()));
+			sc.EnqueueEntryPoint(new EntryPoint(pgm.Image.BaseAddress, new X86State()));
 			sc.ProcessQueue();
 			Assert.AreEqual(4, pgm.Image.Map.Items.Count);
 			StringBuilder sb = new StringBuilder();
@@ -120,55 +120,6 @@ namespace Decompiler.UnitTests.Arch.Intel
 			RunAsmTest("fragments/multiple/calltables.asm", "intel/WalkCallTables.txt", ProcessorMode.Real, new Address(0xC00, 0));
 		}
 
-		[Test]
-		public void WalkServiceCall()
-		{
-			// Checks to see if a sequence return value (es:bx) trashes the state appropriately.
-			IntelState state = new IntelState();
-			state.Set(Registers.es, Constant.Word16(0));	
-			state.Set(Registers.es, Constant.Word16(0));
-
-			state.Set(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
-            IntelInstruction instr = new IntelInstruction(Opcode.@int, PrimitiveType.Word16, PrimitiveType.Word16,
-                new ImmediateOperand(Constant.Byte(0x21)));
-
-			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-			TestCodeWalkerListener listener = new TestCodeWalkerListener();
-			IntelCodeWalker cw = new IntelCodeWalker(arch, new MsdosPlatform(arch), null, state);
-			cw.WalkInstruction(new Address(0x100, 0x100), instr, null, listener);
-			Assert.IsFalse(state.Get(Registers.es).IsValid, "should have trashed ES");
-			Assert.IsFalse(state.Get(Registers.bx).IsValid, "should have trashed BX");
-			Assert.AreEqual(1, listener.SystemCalls.Count);
-		}
-
-		[Test]
-		public void WalkBswap()
-		{
-			IntelState state = new IntelState();
-			state.Set(Registers.ebp, new Constant(PrimitiveType.Word32, 0x12345678));
-			IntelInstruction instr = new IntelInstruction(Opcode.bswap, PrimitiveType.Word32, PrimitiveType.Word32, 
-				new RegisterOperand(Registers.ebp));
-
-			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-			IntelCodeWalker cw = new IntelCodeWalker(arch, null, null, state);
-			cw.WalkInstruction(new Address(0x100000), instr, null, null);
-			Assert.AreSame(Constant.Invalid, state.Get(Registers.ebp));
-		}
-
-        [Test]
-        public void WalkMovConst()
-        {
-            IntelState state = new IntelState();
-            state.Set(Registers.esi, new Constant(PrimitiveType.Word32, 0x42424242));
-            IntelInstruction instr = new IntelInstruction(Opcode.mov, PrimitiveType.Word16, PrimitiveType.Word32,
-                new RegisterOperand(Registers.si),
-                new ImmediateOperand(new Constant(0x0606)));
-
-            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-            IntelCodeWalker cw = new IntelCodeWalker(arch, null, null, state);
-            cw.WalkInstruction(new Address(0x0100000), instr, null, null);
-            Assert.AreEqual(0x42420606, state.Get(Registers.esi).ToInt32());
-        }
 
 		private class TestCodeWalkerListener : ICodeWalkerListener
 		{

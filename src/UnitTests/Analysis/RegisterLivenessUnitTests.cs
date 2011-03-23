@@ -223,7 +223,7 @@ namespace Decompiler.UnitTests.Analysis
 			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;
 			rl.IdentifierLiveness.BitSet[Registers.esi.Number] = true;
 			rl.IdentifierLiveness.BitSet[Registers.edi.Number] = true;
-			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(0, 0), 4);
+			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0));
 			rl.VisitCallInstruction(ci);
 			Assert.AreEqual(" ecx ebx esi", Dump(rl.IdentifierLiveness));
 		}
@@ -240,7 +240,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
 			Identifier w08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
-			new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(0x0C, 0), 4).Accept(rl);
+			new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0)).Accept(rl);
 			Assert.AreEqual(2, rl.IdentifierLiveness.LiveStorages.Count, "Should have two accesses");
 			foreach (object o in rl.IdentifierLiveness.LiveStorages.Keys)
 			{
@@ -267,7 +267,7 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier loc0C = m.Frame.EnsureStackLocal(-12, PrimitiveType.Word32);
 			Identifier loc10 = m.Frame.EnsureStackLocal(-16, PrimitiveType.Word32);
 			rl.CurrentState = new RegisterLiveness.ByPassState();
-			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(16, 0), 4);
+			var ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0));
 			rl.Procedure = m.Procedure;
 			rl.MarkLiveStackParameters(ci);
 			Assert.AreEqual(" Local -000C Local -0010", Dump(rl.IdentifierLiveness));

@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ using System.Diagnostics;
 
 namespace Decompiler.Arch.Intel
 {
-	public class IntelState : ProcessorState
+	public class X86State : ProcessorState
 	{
 		private ulong [] regs;
 		private bool [] valid;
@@ -37,14 +38,14 @@ namespace Decompiler.Arch.Intel
 
         private const int StackItemSize = 2;
 
-		public IntelState()
+		public X86State()
 		{
 			regs = new ulong[(int)Registers.Max];
 			valid = new bool[(int)Registers.Max];
 			stack = new Stack<Constant>();
 		}
 
-		public IntelState(IntelState st)
+		public X86State(X86State st)
 		{
 			regs = (ulong []) st.regs.Clone();
 			valid = (bool []) st.valid.Clone();
@@ -78,7 +79,7 @@ namespace Decompiler.Arch.Intel
 
 		public ProcessorState Clone()
 		{
-			return new IntelState(this);
+			return new X86State(this);
 		}
 
 		public void Set(MachineRegister reg, Constant c)
@@ -109,6 +110,7 @@ namespace Decompiler.Arch.Intel
         public void OnProcedureEntered()
         {
             FpuStackItems = 0;
+            Set(Registers.D, Constant.False());
         }
 
         public void OnProcedureLeft(ProcedureSignature sig)
@@ -116,9 +118,9 @@ namespace Decompiler.Arch.Intel
             sig.FpuStackDelta = FpuStackItems;     
         }
 
-        public CallSite OnBeforeCall()
+        public CallSite OnBeforeCall(int returnAddressSize)
         {
-            return new CallSite(stack.Count * StackItemSize, FpuStackItems);  
+            return new CallSite(returnAddressSize, FpuStackItems);  
         }
 
         public void OnAfterCall(ProcedureSignature sig)
@@ -203,7 +205,7 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
-        public bool HasSameValues(IntelState st2)
+        public bool HasSameValues(X86State st2)
         {
             for (int i = 0; i < valid.Length; ++i)
             {

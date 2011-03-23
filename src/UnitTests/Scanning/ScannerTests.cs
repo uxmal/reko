@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Scanning
             prog.Architecture = m.Architecture;
             prog.Platform = new FakePlatform();
             scan = new TestScanner(prog);
-            EntryPoint ep = new EntryPoint(addr, new IntelState());
+            EntryPoint ep = new EntryPoint(addr, new X86State());
             scan.EnqueueEntryPoint(ep);
         }
 
@@ -217,7 +217,7 @@ namespace Decompiler.UnitTests.Scanning
 
             prog.Image = m.GetImage();
             var scan = new Scanner(m.Architecture, prog.Image, new FakePlatform(), new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
-            EntryPoint ep = new EntryPoint(addr, new IntelState());
+            EntryPoint ep = new EntryPoint(addr, new X86State());
             scan.EnqueueEntryPoint(ep);
             scan.ProcessQueue();
 
@@ -265,10 +265,10 @@ fn0C00_0000_exit:
         public void EnqueueingProcedureShouldResetItsFpuStack()
         {
             var scan = CreateScanner(0x100000, 0x1000);
-            IntelState st = new IntelState();
+            X86State st = new X86State();
             st.GrowFpuStack(new Address(0x100000));
             scan.ScanProcedure(new Address(0x200000), null, st);
-            var stNew = (IntelState)scan.Test_LastBlockWorkitem.State;
+            var stNew = (X86State)scan.Test_LastBlockWorkitem.State;
             Assert.IsNotNull(stNew);
             Assert.AreNotSame(st, stNew);
             Assert.AreEqual(1, st.FpuStackItems);
@@ -362,7 +362,7 @@ fn0C00_0000_exit:
             asm.Assemble(new Address(0xC00, 0x0000), FileUnitTester.MapTestPath("Fragments/multiple/jumpintoproc.asm"));
             prog.Image = asm.Image;
             ScannerOld scan = new ScannerOld(prog, null);
-            scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, new IntelState()));
+            scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, new X86State()));
             scan.ProcessQueue();
             using (FileUnitTester fut = new FileUnitTester("Scanning/ScanInterprocedureJump.txt"))
             {

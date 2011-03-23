@@ -81,25 +81,25 @@ namespace Decompiler.Core
             return actuals;
         }
 
-        public Identifier FindReturnValue()
+        public Identifier BindReturnValue()
         {
             Identifier idOut = null;
             if (sigCallee.ReturnValue != null)
             {
-                idOut = (Identifier) Bind(sigCallee.ReturnValue, site);
+                idOut = (Identifier) Bind(sigCallee.ReturnValue);
             }
             return idOut;
 
         }
 
-		public Expression Bind(Identifier id, CallSite cs)
+		public Expression Bind(Identifier id)
 		{
             return id.Storage.Accept(this);
 		}
 
         public Instruction CreateInstruction()
         {
-            var idOut = FindReturnValue();
+            var idOut = BindReturnValue();
             List<Expression> actuals = BindArguments(frame, site, sigCallee);
             var appl = new Application(
                 callee,

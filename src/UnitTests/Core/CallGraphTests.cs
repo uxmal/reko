@@ -41,27 +41,27 @@ namespace Decompiler.UnitTests.Core
 			Procedure p3 = new Procedure("p3000", null);
 			Procedure p4 = new Procedure("p4000", null);
 
-            ProcedureConstant pc1 = new ProcedureConstant(PrimitiveType.Pointer32, p1);
-            ProcedureConstant pc2 = new ProcedureConstant(PrimitiveType.Pointer32, p2);
-            ProcedureConstant pc3 = new ProcedureConstant(PrimitiveType.Pointer32, p3);
-            ProcedureConstant pc4 = new ProcedureConstant(PrimitiveType.Pointer32, p4);
+            var pc1 = new ProcedureConstant(PrimitiveType.Pointer32, p1);
+            var pc2 = new ProcedureConstant(PrimitiveType.Pointer32, p2);
+            var pc3 = new ProcedureConstant(PrimitiveType.Pointer32, p3);
+            var pc4 = new ProcedureConstant(PrimitiveType.Pointer32, p4);
 
-            Statement s11 = new Statement(0, new CallInstruction(pc2, new CallSite(0, 0), 4), p1.EntryBlock);
-            Statement s12 = new Statement(0, new CallInstruction(pc2, new CallSite(0, 0), 4), p1.EntryBlock);
-            Statement s13 = new Statement(0, new CallInstruction(pc3, new CallSite(0, 0), 4), p1.EntryBlock);
+            Statement s11 = new Statement(0, CreateCall(pc2), p1.EntryBlock);
+            Statement s12 = new Statement(0, CreateCall(pc2), p1.EntryBlock);
+            Statement s13 = new Statement(0, CreateCall(pc3), p1.EntryBlock);
 			p1.EntryBlock.Statements.Add(s11);
 			p1.EntryBlock.Statements.Add(s12);
 			p1.EntryBlock.Statements.Add(s13);
 
-            Statement s21 = new Statement(0, new CallInstruction(pc3, new CallSite(0, 0), 4), p2.EntryBlock);
-            Statement s22 = new Statement(0, new CallInstruction(pc4, new CallSite(0, 0), 4), p2.EntryBlock);
+            Statement s21 = new Statement(0, CreateCall(pc3), p2.EntryBlock);
+            Statement s22 = new Statement(0, CreateCall(pc4), p2.EntryBlock);
 			p2.EntryBlock.Statements.Add(s21);
 			p2.EntryBlock.Statements.Add(s22);
 
-            Statement s31 = new Statement(0, new CallInstruction(pc4, new CallSite(0, 0), 4), p3.EntryBlock);
+            Statement s31 = new Statement(0, CreateCall(pc4), p3.EntryBlock);
 			p3.EntryBlock.Statements.Add(s31);
 
-            Statement s41 = new Statement(0, new CallInstruction(pc4, new CallSite(0, 0), 4), p4.EntryBlock);
+            Statement s41 = new Statement(0, CreateCall(pc4), p4.EntryBlock);
 
 			g.AddEntryPoint(p1);
 			g.AddEdge(s11, p2);
@@ -79,5 +79,10 @@ namespace Decompiler.UnitTests.Core
 //			Assert.IsTrue(g.Callees(p1).Count == 3);
 //			Assert.IsTrue(g.CallerStatements(p4).Count == 3);
 		}
+
+        private CallInstruction CreateCall(ProcedureConstant pc)
+        {
+            return new CallInstruction(pc, new CallSite(4, 0));
+        }
 	}
 }

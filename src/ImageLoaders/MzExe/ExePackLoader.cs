@@ -178,7 +178,7 @@ namespace Decompiler.ImageLoaders.MzExe
             this.cs += segCode;
             imageMap.AddSegment(new Address(cs, 0), cs.ToString("X4"), AccessMode.ReadWrite);
             this.ss += segCode;
-            IntelState state = new IntelState();
+            X86State state = new X86State();
             state.Set(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.Selector));
             state.Set(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.Selector));
             state.Set(Registers.cs, new Constant(PrimitiveType.Word16, cs));

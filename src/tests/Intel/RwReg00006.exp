@@ -100,43 +100,42 @@ l10000056:		// pred: l1000002C
 	ebp = dwLoc0C
 	ebx = dwLoc08
 	return
-	// succ:  fn10000000_exit
-l10000061:		// pred: l1000002C
+l10000061:
 	SCZO = cond(di - 0x0001)
 	branch Test(NE,Z) l1000006D
-	// succ:  l10000067 l1000006D
-l10000067:		// pred: l10000061
+l10000067:
 	store(Mem0[esi + 0x00000204:byte]) = bl
-	// succ:  l1000006D
-l1000006D:		// pred: l10000061 l10000067
-	dwLoc18 = esi
-	call fn1000023D (depth: 24;)
+l1000006D:
+	esp = esp - 0x00000004
+	store(Mem0[esp:word32]) = esi
+	call fn1000023D (depth: 0;)
 	eax = Mem0[esi:word32]
-	ebp = 0x00000000
+	ebp = ebp ^ ebp
+	SZO = cond(ebp)
+	C = false
+	esp = esp + 0x00000004
+	SCZO = cond(esp)
 	SCZO = cond(Mem0[eax:word16] - bp)
 	branch Test(NE,Z) l1000022E
-	// succ:  l10000083 l1000022E
-l10000083:		// pred: l1000006D
+l10000083:
 	SCZO = cond(di - bp)
 	branch Test(LE,SZO) l1000020C
-	// succ:  l1000008C l1000020C
-l1000008C:		// pred: l10000083
+l1000008C:
 	SCZO = cond(di - 0x0005)
 	branch Test(GT,SZO) l1000020C
 	// succ:  l10000096 l1000020C
 l10000096:		// pred: l1000008C
 	SCZO = cond(di - 0x0001)
 	branch Test(NE,Z) l100000BC
-	// succ:  l100000A0 l100000BC
-l100000A0:		// pred: l10000096
+l100000A0:
 	dwLoc18 = esi
 	call fn1000023D (depth: 24;)
 	edx = Mem0[esi + 0x00000004:word32]
 	eax = Mem0[edx + 0x0000000C:word32]
 	ecx = Mem0[eax:word32]
 	store(Mem0[ecx:word32]) = 0x00000001
-	// succ:  l10000211
-l10000211:		// pred: l1000020C l100000F8 l100001B2 l10000194 l10000198 l10000138 l100000A0
+	goto l10000211
+l10000211:
 	eax = dwArg08
 	eax = Mem0[eax:word32]
 	SCZO = cond(eax - ebp)
