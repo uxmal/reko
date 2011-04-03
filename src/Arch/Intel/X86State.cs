@@ -120,6 +120,7 @@ namespace Decompiler.Arch.Intel
 
         public CallSite OnBeforeCall(int returnAddressSize)
         {
+            Push(PrimitiveType.CreateWord(returnAddressSize), Constant.Invalid);
             return new CallSite(returnAddressSize, FpuStackItems);  
         }
 
@@ -156,7 +157,7 @@ namespace Decompiler.Arch.Intel
 				case 4:
 					if (stack.Count < 2)
 					{
-                        System.Diagnostics.Debug.WriteLine("Stack underflow from popping.");
+                        Debug.WriteLine("Stack underflow from popping.");
 						return Constant.Invalid;
 					}
 					Constant v = stack.Pop();

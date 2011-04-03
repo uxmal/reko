@@ -45,9 +45,6 @@ namespace Decompiler.Core.Code
         {
             get { return false; }
         }
-
-        [Obsolete("Use the call site", true)]
-        public int StackReturnAddressSize { get ; private set; }
 	}
 
     //$TODO: the distinction between indirect call and call is just the type of the target expression. We can get rid of the two subclasses.
@@ -77,7 +74,6 @@ namespace Decompiler.Core.Code
 			get { return expr; }
 			set { expr = value; }
 		}
-
 	}
 
 	public class CallInstruction : CallBase

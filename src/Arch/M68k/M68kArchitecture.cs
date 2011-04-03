@@ -142,7 +142,9 @@ namespace Decompiler.Arch.M68k
             get { return PrimitiveType.Word32; }
         }
 
+        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
         public MachineRegister StackRegister { get { return Registers.a7; } }
+
 
         #endregion
     }

@@ -379,7 +379,7 @@ namespace Decompiler.UnitTests.Scanning
             var sExp =
                 "testblock:" + nl +
                 "\tebx = GetDC" + nl +
-                "\teax = GetDC(dwLoc00)" + nl +
+                "\teax = GetDC(Mem0[esp:word32])" + nl +
                 "\treturn" + nl;
             var sw = new StringWriter();
             block.Write(sw);

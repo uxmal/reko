@@ -160,6 +160,7 @@ namespace Decompiler.Arch.Pdp11
         }
 
         public MachineRegister StackRegister { get { return Registers.sp; } }
+        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
 
         #endregion
 

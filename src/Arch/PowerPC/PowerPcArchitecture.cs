@@ -165,12 +165,12 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Types.PrimitiveType FramePointerType
+        public PrimitiveType FramePointerType
         {
             get { throw new NotImplementedException(); }
         }
 
-        public Decompiler.Core.Types.PrimitiveType PointerType
+        public PrimitiveType PointerType
         {
             get { throw new NotImplementedException(); }
         }
@@ -180,6 +180,7 @@ namespace Decompiler.Arch.PowerPC
             get { return this.wordWidth; } 
         }
 
+        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
         public MachineRegister StackRegister { get { return regs[1]; } }
 
         #endregion

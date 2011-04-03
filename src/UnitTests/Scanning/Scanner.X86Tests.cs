@@ -41,15 +41,26 @@ namespace Decompiler.UnitTests.Scanning
         private void BuildTest16(Action<IntelAssembler> asmProg)
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
+            BuildTest(new Address(0x0C00, 0x0000), new MsdosPlatform(arch), asmProg);
+        }
+
+        private void BuildTest32(Action<IntelAssembler> asmProg)
+        {
+            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            BuildTest(new Address(0x00100000), new FakePlatform(), asmProg);
+        }
+
+
+        private void BuildTest(Address addrBase, Platform platform , Action<IntelAssembler> asmProg)
+        {
             var entryPoints = new List<EntryPoint>();
-            var addrBase = new Address(0xC00, 0);
             var asm = new IntelAssembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
             scanner = new Scanner(
                 arch,
                 asm.GetImage(),
-                new MsdosPlatform(arch),
+                platform,
                 new Dictionary<Address, ProcedureSignature>(),
                 new FakeDecompilerEventListener());
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
@@ -59,6 +70,14 @@ namespace Decompiler.UnitTests.Scanning
 
         private void DumpProgram(Scanner scanner)
         {
+            var dasm = new IntelDisassembler(scanner.Image.CreateReader(0), arch.WordWidth);
+            while (scanner.Image.IsValidAddress(dasm.Address))
+            {
+                var addr = dasm.Address;
+                var instr = dasm.Disassemble();
+                Console.Out.WriteLine("{0} {1}", addr, instr);
+            }
+            
             foreach (Procedure proc in scanner.Procedures.Values)
             {
                 proc.Write(true, Console.Out);
@@ -94,7 +113,6 @@ namespace Decompiler.UnitTests.Scanning
             });
             var sw = new StringWriter();
             scanner.Procedures.Values[0].Write(false, sw);
-            Console.WriteLine(sw.ToString());
             var sExp = @"// fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -110,6 +128,79 @@ l0C00_0002:
 fn0C00_0000_exit:
 ";
             Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        /// <summary>
+        /// If a procedure p1 makes a call into the body of an existing procedure  p2 (not the entry block p2),
+        /// a new procedure p3 should be created.
+        /// </summary>
+        [Test]
+        public void JumpIntoProc()
+        {
+            BuildTest32(delegate(IntelAssembler m)
+            {
+                m.Proc("p1");
+                m.Call("p2");
+                m.Call("p3");
+                m.Mov(m.MemDw(Registers.ebx, 0x123C), m.eax);
+                m.Ret();
+
+                m.Proc("p2");
+                m.Mov(m.MemDw(Registers.ebx, 0x1234), 4);
+                m.Label("p3");
+                m.Mov(m.eax, 1);
+                m.Cmp(m.MemDw(Registers.ebx, 0x1238), 5);
+                m.Jnz("p2_done");
+                m.Mov(m.eax, 0);
+                m.Label("p2_done");
+                m.Ret();
+            });
+            var sw = new StringWriter();
+            WriteProcedures(scanner.Procedures.Values, sw);
+            var sExp = @"// fn00100000
+void fn00100000()
+fn00100000_entry:
+l00100000:
+	call fn00100011 (retsize: 4;)
+	call fn0010001B (retsize: 4;)
+	store(Mem0[ebx + 0x0000123C:word32]) = eax
+	return
+fn00100000_exit:
+
+// fn00100011
+void fn00100011()
+fn00100011_entry:
+l00100011:
+	store(Mem0[ebx + 0x00001234:word32]) = 0x00000004
+    call fn0010001B
+    return
+fn00100011_exit:
+
+// fn0010001B
+// fn0010001B
+void fn0010001B()
+fn0010001B_entry:
+l0010001B:
+    eax = 0x00000001
+	SCZO = cond(Mem0[ebx + 0x00001238:word32] - 0x00000005)
+	branch Test(NE,Z) l0010002E
+l00100029:
+	eax = 0x00000000
+l0010002E:
+	return
+fn0010001B_exit:
+
+";
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        private void WriteProcedures(IList<Procedure> procs, StringWriter sw)
+        {
+            foreach (Procedure proc in procs)
+            {
+                proc.Write(false, sw);
+                sw.WriteLine();
+            }
         }
     }
 }

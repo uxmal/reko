@@ -31,8 +31,14 @@ namespace Decompiler.UnitTests.Mocks
     {
         IEnumerable<RtlInstructionCluster> instrs;
 
+        public FakeRewriter(params RtlInstructionCluster[] instrs)
+        {
+            this.instrs = instrs;
+        }
+
         public FakeRewriter(IEnumerable<RtlInstructionCluster> instrs)
         {
+            NUnit.Framework.Assert.IsNotNull(instrs, "instrs");
             this.instrs = instrs;
         }
 

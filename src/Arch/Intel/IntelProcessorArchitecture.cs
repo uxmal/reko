@@ -410,5 +410,6 @@ namespace Decompiler.Arch.Intel
         }
 
         public MachineRegister StackRegister { get { return mode.StackRegister; } }
+        public uint CarryFlagMask { get { return (uint)FlagM.CF; } }
     }
 }

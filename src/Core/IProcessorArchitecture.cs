@@ -67,7 +67,7 @@ namespace Decompiler.Core
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
 
-        MachineRegister StackRegister { get; }               // Stack pointer for this machine. //$REVIEW: push this into rewriter and return instead references to frame.FramePointer?
-
+        MachineRegister StackRegister { get; }              // Stack pointer for this machine. //$REVIEW: push this into rewriter and return instead references to frame.FramePointer?
+        uint CarryFlagMask { get; }                      // Used when building large adds/subs when carry flag is used.
     }
 }
