@@ -27,6 +27,8 @@ using System;
 
 namespace Decompiler.Arch.Intel
 {
+    [Obsolete("Moved to scanning and made generic")]
+    //$DELETEME
 	public class LongAddRewriter
 	{
 		private Frame frame;

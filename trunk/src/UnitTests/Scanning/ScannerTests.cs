@@ -102,10 +102,10 @@ namespace Decompiler.UnitTests.Scanning
                     new RegisterOperand(arch.GetRegister(1)), 
                     ImmediateOperand.Word32(1))
             };
-            arch.InstructionStream = new RtlInstructionCluster[] {
+            arch.SetRewriterForAddress(new Address(0x12314), new FakeRewriter(new RtlInstructionCluster[] {
                 new RtlInstructionCluster(new Address(0x12314), 1, 
                 new RtlReturn(4, 0)),
-            };
+            }));
             var sc = new Scanner(arch, new ProgramImage(new Address(0x12314), new byte[1]), new FakePlatform(), null, new FakeDecompilerEventListener());
             sc.EnqueueEntryPoint(
                 new EntryPoint(
@@ -141,20 +141,22 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void SplitBlock()
         {
-            var sc = CreateScanner(0x100, 10);
+            scan = CreateScanner(0x100, 0x100);
             var proc = new Procedure("foo", arch.CreateFrame());
-            var b101 = sc.EnqueueJumpTarget(new Address(0x101), proc, null);
-            b101.Statements.Add(0x101,new DefInstruction(null));
-            var b106 = sc.EnqueueJumpTarget(new Address(0x106), proc, null);
-            b106.Statements.Add(0x106,new DefInstruction(null));
-            var b104 = sc.EnqueueJumpTarget(new Address(0x104), proc, null);
-            b104.Statements.Add(0x104, new DefInstruction(null));
-            Assert.IsTrue(proc.ControlGraph.Nodes.Contains(b101));
-            Assert.IsTrue(proc.ControlGraph.Nodes.Contains(b106));
-            Assert.IsTrue(proc.ControlGraph.Nodes.Contains(b104));
-            Assert.AreEqual("l00000101", sc.FindContainingBlock(new Address(0x103)).Name);
-            Assert.AreEqual("l00000104", sc.FindContainingBlock(new Address(0x105)).Name);
-            Assert.AreEqual("l00000106", sc.FindContainingBlock(new Address(0x106)).Name);
+            Enqueue(new Address(0x101), proc);
+            Enqueue(new Address(0x106), proc);
+            Enqueue(new Address(0x104), proc);
+
+            Assert.AreEqual("l00000101", scan.FindContainingBlock(new Address(0x103)).Name);
+            Assert.AreEqual("l00000104", scan.FindContainingBlock(new Address(0x105)).Name);
+            Assert.AreEqual("l00000106", scan.FindContainingBlock(new Address(0x106)).Name);
+        }
+
+        private void Enqueue(Address addr, Procedure proc)
+        {
+            arch.SetRewriterForAddress(addr, new FakeRewriter(new RtlInstructionCluster(addr, 4,
+                new RtlAssignment(new MemoryAccess(new Constant(0x3000), PrimitiveType.Word32), Constant.Word32(42)))));
+            scan.EnqueueJumpTarget(addr, proc, null);
         }
 
         [Test]
@@ -265,9 +267,14 @@ fn0C00_0000_exit:
         public void EnqueueingProcedureShouldResetItsFpuStack()
         {
             var scan = CreateScanner(0x100000, 0x1000);
+            var rtls = new List<RtlInstructionCluster>();
+            arch.SetRewriterForAddress(new Address(0x100100), new FakeRewriter(
+                new RtlInstructionCluster(new Address(0x100100), 4,
+                    new RtlReturn(4, 0))));
+            
             X86State st = new X86State();
             st.GrowFpuStack(new Address(0x100000));
-            scan.ScanProcedure(new Address(0x200000), null, st);
+            scan.ScanProcedure(new Address(0x100100),  null, st);
             var stNew = (X86State)scan.Test_LastBlockWorkitem.State;
             Assert.IsNotNull(stNew);
             Assert.AreNotSame(st, stNew);

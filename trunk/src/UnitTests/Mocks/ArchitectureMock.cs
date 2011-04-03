@@ -41,6 +41,7 @@ namespace Decompiler.UnitTests.Mocks
 	{
 		private static MachineRegister [] registers;
 		private BitSet implicitRegs;
+        private Dictionary<uint, FakeRewriter> rewriters;
 
 		internal const int RegisterCount = 64;
 		private const int iStackRegister = 63;
@@ -51,6 +52,7 @@ namespace Decompiler.UnitTests.Mocks
 			this.implicitRegs = new BitSet(RegisterCount);
 			implicitRegs[iStackRegister]  = true;
 			implicitRegs[iReturnRegister] = true;
+            this.rewriters = new Dictionary<uint, FakeRewriter>();
 		}
 
 		static ArchitectureMock()
@@ -64,7 +66,10 @@ namespace Decompiler.UnitTests.Mocks
 
         public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
 
-        public IEnumerable<RtlInstructionCluster> InstructionStream { get; set; }
+        public void SetRewriterForAddress(Address address, FakeRewriter rewriter)
+        {
+            rewriters.Add(address.Linear, rewriter);
+        }
 
 		public static MachineRegister GetMachineRegister(int i)
 		{
@@ -85,7 +90,11 @@ namespace Decompiler.UnitTests.Mocks
 
         public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
         {
-            return new FakeRewriter(InstructionStream);
+            var linAddr = rdr.Address.Linear;
+            FakeRewriter rewriter;
+            if (!rewriters.TryGetValue(linAddr, out rewriter))
+                NUnit.Framework.Assert.Fail(string.Format("Unexpected request for a rewriter at address {0}", rdr.Address));
+            return rewriters[linAddr];
         }
 
 		public Dumper CreateDumper()
@@ -185,18 +194,14 @@ namespace Decompiler.UnitTests.Mocks
 			get { return PrimitiveType.Word32; }
 		}
 
+        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
         public MachineRegister StackRegister { get { return GetRegister(ArchitectureMock.iStackRegister); } }
-
-		#endregion
-
-
-        #region IProcessorArchitecture Members
-
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
+
 
         #endregion
     }

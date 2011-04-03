@@ -341,9 +341,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Call("self");
             });
             AssertCode(e, 
-                "0|0C00:0000(3): 2 instructions", 
-                "1|sp = sp - 0x0002", 
-                "2|call 0C00:0000 (2)");
+                "0|0C00:0000(3): 1 instructions", 
+                "1|call 0C00:0000 (2)");
         }
 
         [Test]
@@ -355,9 +354,8 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Call("self");
             });
             AssertCode(e,
-                "0|10000000(5): 2 instructions", 
-                "1|esp = esp - 0x00000004",
-                "2|call 10000000 (4)");
+                "0|10000000(5): 1 instructions", 
+                "1|call 10000000 (4)");
         }
 
         [Test]

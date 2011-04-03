@@ -63,7 +63,7 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public CallSite OnBeforeCall()
+        public CallSite OnBeforeCall(int returnSize)
         {
             throw new NotImplementedException();
         }
