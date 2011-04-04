@@ -55,7 +55,7 @@ namespace Decompiler.Arch.Intel
         }
 
 
-        public void EmitInstruction(BinaryOperator op, CodeEmitter2 emitter)
+        public void EmitInstruction(BinaryOperator op, CodeEmitter emitter)
         {
             BinaryExpression b = new BinaryExpression(op, dst.DataType, dst, src);
             if (useStore)

@@ -1161,7 +1161,7 @@ namespace Decompiler.Arch.Intel
 				// is translated into a CALL proc, RETURN sequence.
 				Block block = emitter.Block;
 				blockTo = proc.AddBlock(state.InstructionAddress.GenerateName("l", "_branch"));
-				proc.AddEdge(block, blockTo);
+                proc.ControlGraph.AddEdge(block, blockTo);
                 CodeEmitterOld e = emitter;
                 emitter = ProcedureRewriter.CreateEmitter(blockTo);
 				EmitCallAndReturn(p);       //$REFACTOR: pass emitter.
@@ -1430,7 +1430,7 @@ namespace Decompiler.Arch.Intel
 				BuildApplication(fn, ep.Signature);
 				if (svc.Characteristics.Terminates)
 				{
-					proc.AddEdge(emitter.Block, proc.ExitBlock);
+                    proc.ControlGraph.AddEdge(emitter.Block, proc.ExitBlock);
 				}
 			}
 			else
@@ -1553,7 +1553,7 @@ namespace Decompiler.Arch.Intel
 				// Splice in a new block.
 
 				blockNew = proc.AddBlock(state.InstructionAddress.GenerateName("l","_loop"));
-				proc.AddEdge(blockHead, blockNew);
+                proc.ControlGraph.AddEdge(blockHead, blockNew);
 
 				emitter = ProcedureRewriter.CreateEmitter(blockNew);
 				Block tgt = EmitBranchInstruction(emitter.Eq0(cx), instrCur.op1);
@@ -1567,7 +1567,7 @@ namespace Decompiler.Arch.Intel
 			}
 			if (blockNew != null)
 			{
-				proc.AddEdge(blockHead, blockNew.Succ[1]);
+                proc.ControlGraph.AddEdge(blockHead, blockNew.Succ[1]);
 			}
 		}
 
@@ -1708,7 +1708,7 @@ namespace Decompiler.Arch.Intel
 
 			Block blockFollow = EmitBranchPath(blockHead, this.addrEnd);
 			Block blockStringInstr = proc.AddBlock(state.InstructionAddress.GenerateName("l", "_rep"));
-			proc.AddEdge(blockHead, blockStringInstr);
+            proc.ControlGraph.AddEdge(blockHead, blockStringInstr);
             emitter.Branch(emitter.Eq0(regCX), blockStringInstr);
 
 			// Decrement the [E]CX register.
@@ -1734,13 +1734,13 @@ namespace Decompiler.Arch.Intel
 						? ConditionCode.NE
 						: ConditionCode.EQ;
                     emitter.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)), blockHead);
-					proc.AddEdge(blockStringInstr, blockFollow);
+                    proc.ControlGraph.AddEdge(blockStringInstr, blockFollow);
 					break;
 				}
 				default:
 					break;
 			}
-			proc.AddEdge(blockStringInstr, blockHead);
+            proc.ControlGraph.AddEdge(blockStringInstr, blockHead);
 		}
 
 		public void EmitReturnInstruction(int cbReturnAddress, int cbBytesPop)
@@ -1768,7 +1768,7 @@ namespace Decompiler.Arch.Intel
 			proc.Signature.FpuStackDelta = state.FpuStackItems;
 			proc.Signature.FpuStackArgumentMax = maxFpuStackRead;
 			proc.Signature.FpuStackOutArgumentMax = maxFpuStackWrite;
-			proc.AddEdge(emitter.Block, proc.ExitBlock);
+            proc.ControlGraph.AddEdge(emitter.Block, proc.ExitBlock);
 		}
 
 		public void EmitRotation(string operation, bool useCarry, bool left, FlagM defFlags, FlagM deadFlags)

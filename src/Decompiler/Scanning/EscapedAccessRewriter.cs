@@ -81,9 +81,9 @@ namespace Decompiler.Scanning
 		{
 			Block b = proc.AddBlock(proc.Name + "_frame_asgn");
 			Block s = proc.EntryBlock.Succ[0];
-			proc.RemoveEdge(proc.EntryBlock, s);
-            proc.AddEdge(proc.EntryBlock, b);
-			proc.AddEdge(b, s);
+            proc.ControlGraph.RemoveEdge(proc.EntryBlock, s);
+            proc.ControlGraph.AddEdge(proc.EntryBlock, b);
+            proc.ControlGraph.AddEdge(b, s);
 			StructureType st = new StructureType(proc.Name + "_frame_t", 0);
 			Identifier frame = proc.Frame.CreateTemporary(proc.Name + "_frame", st);
 			b.Statements.Add(

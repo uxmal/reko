@@ -1,20 +1,16 @@
 // ProcedureBuilder
 void ProcedureBuilder()
-ProcedureBuilder_entry:		// pred:
-	// succ:  l1
+ProcedureBuilder_entry:
 	goto l1
-default:		// pred: l1
-	// succ: 
-l1:		// pred: ProcedureBuilder_entry
+default:
+l1:
 	eax = Mem0[esp + 0x00000004:word32]
 	SCZO = cond(eax - 0x00000003)
 	branch Test(UGT,SCZO) default
-	// succ:  l2 default
-l2:		// pred: l1
+l2:
 	edx = edx ^ edx
 	SCZO = cond(edx)
 	dl = Mem0[eax + 0x00010000:byte]
-	// succ: 
 ProcedureBuilder_exit:
 cmp 3
 branch UGT

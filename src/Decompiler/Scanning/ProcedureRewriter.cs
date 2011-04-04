@@ -116,7 +116,7 @@ namespace Decompiler.Scanning
             Block block;
             if (blocksVisited.TryGetValue(addr, out block))
             {
-                proc.AddEdge(pred, block);
+                proc.ControlGraph.AddEdge(pred, block);
                 return block;
             }
             ImageMapItem item;
@@ -138,7 +138,7 @@ namespace Decompiler.Scanning
                 block = proc.ExitBlock;
             }
             blocksVisited.Add(addr, block);
-            proc.AddEdge(pred, block);
+            proc.ControlGraph.AddEdge(pred, block);
             return block;
         }
 

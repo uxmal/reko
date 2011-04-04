@@ -232,17 +232,32 @@ namespace Decompiler.Scanning
         public virtual Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
         {
             Block block = FindExactBlock(addrStart);
-            if (block == null)
+            if (block != null)
             {
-                block = FindContainingBlock(addrStart);
-                if (block != null)
+                if (block.Procedure != proc)
                 {
-                    block = SplitBlock(block, addrStart);
+                    Procedure procNew;
+                    if (!Procedures.TryGetValue(addrStart, out procNew))
+                    {
+                        procNew = Procedure.Create(addrStart, arch.CreateFrame());
+                        Procedures.Add(addrStart, proc);
+                        CallGraph.AddProcedure(proc);
+                    }
+                    var bp = new BlockPromoter(block, procNew, arch);
+                    bp.Promote();
+                    block = bp.CallRetThunkBlock;
                 }
-                else
-                {
-                    block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
-                }
+                return block;
+            }
+
+            block = FindContainingBlock(addrStart);
+            if (block != null)
+            {
+                block = SplitBlock(block, addrStart);
+            }
+            else
+            {
+                block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
             }
             queue.Enqueue(PriorityJumpTarget, CreateBlockWorkItem(addrStart, proc, state));
             return block;
@@ -349,23 +364,23 @@ namespace Decompiler.Scanning
         /// <param name="block"></param>
         /// <param name="addr"></param>
         /// <returns>The newly created, empty second block</returns>
-        public Block SplitBlock(Block block, Address addr)
+        public Block SplitBlock(Block blockToSplit, Address addr)
         {
-            var graph = block.Procedure.ControlGraph;
-            var blockNew = AddBlock(addr, block.Procedure, GenerateBlockName(addr));
-            foreach (var succ in graph.Successors(block))
+            var graph = blockToSplit.Procedure.ControlGraph;
+            var blockNew = AddBlock(addr, blockToSplit.Procedure, GenerateBlockName(addr));
+            foreach (var succ in graph.Successors(blockToSplit))
             {
                 graph.AddEdge(blockNew, succ);
             }
             foreach (var succ in graph.Successors(blockNew))
             {
-                graph.RemoveEdge(block, succ);
+                graph.RemoveEdge(blockToSplit, succ);
             }
 
             var linAddr = addr.Linear;
-            blockNew.Statements.AddRange(block.Statements.FindAll(s => s.LinearAddress >= linAddr));
-            block.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
-            blocks[blockStarts[block]].End = linAddr;
+            blockNew.Statements.AddRange(blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr));
+            blockToSplit.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
+            blocks[blockStarts[blockToSplit]].End = linAddr;
             return blockNew;
         }
 

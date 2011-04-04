@@ -120,7 +120,8 @@ namespace Decompiler.Arch.Intel
 
         public CallSite OnBeforeCall(int returnAddressSize)
         {
-            Push(PrimitiveType.CreateWord(returnAddressSize), Constant.Invalid);
+            if (returnAddressSize > 0)
+                Push(PrimitiveType.CreateWord(returnAddressSize), Constant.Invalid);
             return new CallSite(returnAddressSize, FpuStackItems);  
         }
 
