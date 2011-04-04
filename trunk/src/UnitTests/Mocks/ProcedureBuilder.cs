@@ -31,7 +31,7 @@ namespace Decompiler.UnitTests.Mocks
     /// <summary>
     /// Supports the building of a procedure without having to go through assembler.
     /// </summary>
-    public class ProcedureBuilder : CodeEmitter2
+    public class ProcedureBuilder : CodeEmitter
     {
         private Block block;
         private Dictionary<string, Block> blocks;
@@ -187,7 +187,7 @@ namespace Decompiler.UnitTests.Mocks
         {
             EnsureBlock(null);
             Block blockTo = BlockOf(name);
-            proc.AddEdge(block, blockTo);
+            proc.ControlGraph.AddEdge(block, blockTo);
             block = null;
         }
 
@@ -209,20 +209,20 @@ namespace Decompiler.UnitTests.Mocks
             block = BlockOf(name);
             if (proc.EntryBlock.Succ.Count == 0)
             {
-                proc.AddEdge(proc.EntryBlock, block);
+                proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             }
 
             if (lastBlock != null)
             {
                 if (branchBlock != null)
                 {
-                    proc.AddEdge(lastBlock, block);
-                    proc.AddEdge(lastBlock, branchBlock);
+                    proc.ControlGraph.AddEdge(lastBlock, block);
+                    proc.ControlGraph.AddEdge(lastBlock, branchBlock);
                     branchBlock = null;
                 }
                 else
                 {
-                    proc.AddEdge(lastBlock, block);
+                    proc.ControlGraph.AddEdge(lastBlock, block);
                 }
                 lastBlock = null;
             }
@@ -234,7 +234,7 @@ namespace Decompiler.UnitTests.Mocks
         public void FinishProcedure()
         {
             TerminateBlock();
-            proc.AddEdge(lastBlock, proc.ExitBlock);
+            proc.ControlGraph.AddEdge(lastBlock, proc.ExitBlock);
         }
 
         public ICollection<ProcUpdater> UnresolvedProcedures
@@ -266,7 +266,7 @@ namespace Decompiler.UnitTests.Mocks
         public override void Return(Expression exp)
         {
             base.Return(exp);
-            proc.AddEdge(block, proc.ExitBlock);
+            proc.ControlGraph.AddEdge(block, proc.ExitBlock);
             block = null;
         }
 
@@ -281,7 +281,7 @@ namespace Decompiler.UnitTests.Mocks
             Emit(new SwitchInstruction(e, blox));
             for (int i = 0; i < blox.Length; ++i)
             {
-                proc.AddEdge(this.block, blox[i]);
+                proc.ControlGraph.AddEdge(this.block, blox[i]);
             }
             lastBlock = null;
             block = null;

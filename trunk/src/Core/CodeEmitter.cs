@@ -31,7 +31,7 @@ namespace Decompiler.Core
 	/// Emits code sequences into basic blocks.
 	/// </summary>
     [Obsolete("Don't use this class anymore; RtlEmitter or ProcedureBuilder are your friends.")]
-	public class CodeEmitterOld : CodeEmitter2
+	public class CodeEmitterOld : CodeEmitter
 	{
         private IProcessorArchitecture arch;
 		private IRewriterHost host;
@@ -160,7 +160,7 @@ namespace Decompiler.Core
         }
     }
 
-    public abstract class CodeEmitter2 : ExpressionEmitter
+    public abstract class CodeEmitter : ExpressionEmitter
     {
         private int localStackOffset;
 

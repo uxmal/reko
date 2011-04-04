@@ -59,8 +59,11 @@ namespace Decompiler.Core
 
         public void RemoveEdge(Block nodeFrom, Block nodeTo)
         {
-            nodeFrom.Succ.Remove(nodeTo);
-            nodeTo.Pred.Remove(nodeFrom);
+            if (nodeFrom.Succ.Contains(nodeTo) && nodeTo.Pred.Contains(nodeFrom))
+            {
+                nodeFrom.Succ.Remove(nodeTo);
+                nodeTo.Pred.Remove(nodeFrom);
+            }
         }
 
         public bool ContainsEdge(Block from, Block to)

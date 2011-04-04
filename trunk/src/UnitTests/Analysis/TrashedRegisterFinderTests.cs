@@ -486,8 +486,8 @@ TrashEaxEbx eax ebx ax bx al bl ah bh
             Block b = proc.AddBlock("b");
             Block t = proc.AddBlock("t");
             Block e = proc.AddBlock("e");
-            m.Procedure.AddEdge(b, e);
-            m.Procedure.AddEdge(b, t);
+            m.Procedure.ControlGraph.AddEdge(b, e);
+            m.Procedure.ControlGraph.AddEdge(b, t);
             flow[t] = new BlockFlow(t, null);
             flow[e] = new BlockFlow(e, null);
 

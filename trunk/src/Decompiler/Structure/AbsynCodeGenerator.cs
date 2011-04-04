@@ -36,15 +36,15 @@ namespace Decompiler.Structure
     {
         private Stack<StructureNode> followStack;
         private Queue<NodeEmitter> nodesToRender;
-        private HashedSet<StructureNode> visited;
-        private HashedSet<StructureNode> incomplete;
+        private HashSet<StructureNode> visited;
+        private HashSet<StructureNode> incomplete;
 
         public AbsynCodeGenerator()
         {
             followStack = new Stack<StructureNode>();
             nodesToRender = new Queue<NodeEmitter>();
-            visited = new HashedSet<StructureNode>();
-            incomplete = new HashedSet<StructureNode>();
+            visited = new HashSet<StructureNode>();
+            incomplete = new HashSet<StructureNode>();
         }
 
 
@@ -214,7 +214,7 @@ namespace Decompiler.Structure
             }
         }
 
-        public HashedSet<StructureNode> IncompleteNodes
+        public HashSet<StructureNode> IncompleteNodes
         {
             get { return incomplete; }
         }

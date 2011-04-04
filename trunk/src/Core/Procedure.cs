@@ -38,8 +38,9 @@ namespace Decompiler.Core
 	public class Procedure : ProcedureBase
 	{
 		private List<AbsynStatement> body;
+        private List<Block> blocks;
 		private List<Block> rpoBlocks;
-        private DirectedGraphImpl<Block> controlGraph;
+        private BlockGraph controlGraph;
 		private Block blockEntry;
 		private Block blockExit;
 		private Frame frame;
@@ -49,8 +50,9 @@ namespace Decompiler.Core
 		public Procedure(string name, Frame frame) : base(name)
 		{
             this.body = new List<AbsynStatement>();
+            this.blocks = new List<Block>();
 			this.rpoBlocks = new List<Block>();
-            this.controlGraph = new DirectedGraphImpl<Block>();
+            this.controlGraph = new BlockGraph(blocks);
 			this.frame = frame;
 			this.signature = new ProcedureSignature();
 			this.blockEntry = AddBlock(Name + "_entry");	
@@ -145,7 +147,7 @@ namespace Decompiler.Core
         /// </summary>
         /// <param name="emitFrame"></param>
         /// <param name="writer"></param>
-		public void  Write(bool emitFrame, TextWriter writer)
+		public void Write(bool emitFrame, TextWriter writer)
 		{
 			writer.WriteLine("// {0}", Name);
 			if (emitFrame)
@@ -153,9 +155,7 @@ namespace Decompiler.Core
             Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(writer));
 			writer.WriteLine();
 
-            var blocks = controlGraph.Nodes.
-                OrderBy((x => x), new BlockComparer()).ToArray();
-            Block prev = null;
+            var blocks = SortBlocksByName().ToArray();
             for (var i = 0; i < blocks.Length; ++i)
 			{
                 var block = blocks[i];
@@ -165,11 +165,35 @@ namespace Decompiler.Core
                 if (block != ExitBlock)
                 {
                     var succ = controlGraph.Successors(block).ToArray();
-                    if (succ.Length == 1 && succ[0] != blocks[i + 1])
-                        writer.WriteLine("\tgoto {0}", succ[0].Name);
+                    if (succ.Length == 1)
+                    {
+                        if (i == blocks.Length - 1 || succ[0] != blocks[i + 1])
+                            writer.WriteLine("\tgoto {0}", succ[0].Name);
+                    }
                 }
 			}
 		}
+
+        public void WriteGraph(TextWriter writer)
+        {
+            foreach (var b in SortBlocksByName())
+            {
+                writer.WriteLine(b.Name);
+                writer.Write("    Pred:");
+                foreach (var p in b.Pred)
+                    writer.Write(" {0}", p.Name);
+                writer.WriteLine();
+                writer.Write("    Succ:");
+                foreach (var s in b.Succ)
+                    writer.Write(" {0}", s.Name);
+                writer.WriteLine();
+            }
+        }
+
+        private IOrderedEnumerable<Block> SortBlocksByName()
+        {
+            return blocks.OrderBy((x => x), new BlockComparer());
+        }
 
 		public Frame Frame
 		{
@@ -276,28 +300,18 @@ namespace Decompiler.Core
         public Block AddBlock(string name)
         {
             Block block = new Block(this, name);
-            controlGraph.AddNode(block);
+            blocks.Add(block);
             return block;
         }
 
-        [Obsolete("Change references to ControlGraph")]
-        public void AddEdge(Block block, Block blockTo)
+        public void AddBlock(Block block)
         {
-            block.Succ.Add(blockTo);
-            blockTo.Pred.Add(block);
-            controlGraph.AddEdge(block, blockTo);
+            blocks.Add(block);
         }
 
-        [Obsolete("Change references to ControlGraph")]
-        public void RemoveEdge(Block from, Block to)
+        public void RemoveBlock(Block block)
         {
-            if (from.Succ.Contains(to) && to.Pred.Contains(from))
-            {
-                from.Succ.Remove(to);
-                to.Pred.Remove(from);
-            }
-            controlGraph.RemoveEdge(from, to);
+            blocks.Remove(block);
         }
-
     }
 }

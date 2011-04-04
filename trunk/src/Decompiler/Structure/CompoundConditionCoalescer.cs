@@ -190,7 +190,7 @@ namespace Decompiler.Structure
 			ReplaceBlock(blockChain.Pred, blockRedundant, block);
 			blockRedundant.Succ.Remove(blockChain);
 
-			proc.RemoveEdge(blockRedundant, blockCommon);
+			proc.ControlGraph.RemoveEdge(blockRedundant, blockCommon);
 
 			blockRedundant.Statements.Clear();
 		}

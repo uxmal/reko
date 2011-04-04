@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			Assert.AreEqual("id - 0x0003", add.ToString());
 		}
 
-        private class CodeEmitterImpl : CodeEmitter2
+        private class CodeEmitterImpl : CodeEmitter
         {
             private Frame frame = new Frame(PrimitiveType.Word32);
             private Block block = new Block(null, "test");

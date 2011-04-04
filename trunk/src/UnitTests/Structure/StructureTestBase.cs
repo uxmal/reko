@@ -30,7 +30,7 @@ using Decompiler.Scanning;
 using Decompiler.Structure;
 using Decompiler.UnitTests.Mocks;
 using System;
-
+using System.Collections.Generic;   
 namespace Decompiler.UnitTests.Structure
 {
 	public class StructureTestBase
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Structure
 
             prog = ldr.Load(addrBase);
 
-            ScannerOld scan = new ScannerOld(prog, new FakeDecompilerEventListener());
+            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);
@@ -58,9 +58,6 @@ namespace Decompiler.UnitTests.Structure
 			scan.ProcessQueue();
 
             DecompilerEventListener eventListener = new FakeDecompilerEventListener();
-			RewriterHost rw = new RewriterHost(prog, eventListener, scan.SystemCalls, scan.VectorUses);
-			rw.RewriteProgram();
-
 			DataFlowAnalysis da = new DataFlowAnalysis(prog, eventListener);
 			da.AnalyzeProgram();
 

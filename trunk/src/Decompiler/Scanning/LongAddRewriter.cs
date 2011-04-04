@@ -42,7 +42,7 @@ namespace Decompiler.Scanning
             this.frame = frame;
         }
 
-        public void EmitInstruction(BinaryOperator op, CodeEmitter2 emitter)
+        public void EmitInstruction(BinaryOperator op, CodeEmitter emitter)
         {
             var b = new BinaryExpression(op, dst.DataType, dst, src);
             if (useStore)

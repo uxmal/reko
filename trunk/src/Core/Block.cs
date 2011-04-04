@@ -124,11 +124,6 @@ namespace Decompiler.Core
 			get { return pred; }
 		}
 
-        //public Procedure Procedure
-        //{
-        //    get { return proc; }
-        //}
-
 		public List<Block> Succ
 		{
 			get { return succ; }
@@ -152,27 +147,8 @@ namespace Decompiler.Core
 
 		public void Write(TextWriter sb)
 		{
-			if (pred.Count == 0 && succ.Count == 0)
-			{
-				sb.WriteLine("{0}:", Name);
-				WriteStatements(sb);
-			}
-			else
-			{
-				sb.Write("{0}:\t\t// pred:", Name);
-				foreach (Block p in Pred)
-				{
-					sb.Write(" {0}", p.Name);
-				}
-				sb.WriteLine();
-				WriteStatements(sb);
-				sb.Write("\t// succ: ");
-				foreach (Block s in Succ)
-				{
-					sb.Write(" {0}", s.Name);
-				}
-				sb.WriteLine();
-			}
+			sb.WriteLine("{0}:", Name);
+			WriteStatements(sb);
 		}
 
 		public void WriteStatements(TextWriter writer)
