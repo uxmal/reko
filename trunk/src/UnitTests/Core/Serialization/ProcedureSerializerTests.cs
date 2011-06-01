@@ -104,6 +104,48 @@ namespace Decompiler.UnitTests.Core.Serialization
             Assert.AreEqual("eax", sproc.Signature.ReturnValue.Name);
         }
 
+        [Test]
+        public void DeserializeFpuStackargument()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "stdapi",
+                ReturnValue = new SerializedArgument {
+                    Type = "int", 
+                    Kind = new SerializedRegister { Name = "eax" },
+                },
+                Arguments = new SerializedArgument[] {
+                    new SerializedArgument {
+                        Type = "double", 
+                        Kind = new SerializedFpuStackVariable {
+                            ByteSize = 8
+                        }
+                    }
+                }
+            };
+            var ps = new ProcedureSerializer(arch, "stdapi");
+            var sig = ps.Deserialize(ssig, arch.CreateFrame());
+            Assert.AreEqual(-1, sig.FpuStackDelta);
+        }
+
+        [Test]
+        public void DeserializeFpuStackReturnValue()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "stdapi",
+                ReturnValue = new SerializedArgument
+                {
+                    Type = "double",
+                    Kind = new SerializedFpuStackVariable { ByteSize = 8 },
+                }
+            };
+            var ps = new ProcedureSerializer(arch, "stdapi");
+            var sig = ps.Deserialize(ssig, arch.CreateFrame());
+            Assert.AreEqual(1, sig.FpuStackDelta);
+        }
+    
+
         private void Verify(SerializedSignature ssig, string outputFilename)
         {
             using (FileUnitTester fut = new FileUnitTester(outputFilename))

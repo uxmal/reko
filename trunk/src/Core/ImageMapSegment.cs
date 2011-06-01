@@ -28,35 +28,24 @@ namespace Decompiler.Core
 	/// </summary>
 	public class ImageMapSegment : ImageMapItem
 	{
-		private string name;
-		private AccessMode access; 
-
 		public ImageMapSegment(string name, AccessMode access) : base() 
 		{
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");
-			this.name = name;
-			this.access = access;
+			this.Name = name;
+			this.Access = access;
 		}
 
 		public ImageMapSegment(string name, uint size, AccessMode access) : base(size) 
 		{
 			if (name == null)
 				throw new ArgumentNullException("name", "Segments must have names.");
-			this.name = name;
-			this.access = access;
+			this.Name = name;
+			this.Access = access;
 		}
 
-		public AccessMode Access
-		{
-			get { return access; }
-		}
-
-		public string Name
-		{
-			get { return name; }
-			set { name = value; }
-		}
+		public AccessMode Access { get; private set; }
+		public string Name { get;set; }
 
 		public override string ToString()
 		{

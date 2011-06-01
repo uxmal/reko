@@ -128,6 +128,13 @@ namespace Decompiler.Evaluation
         void InstructionVisitor.VisitStore(Store store)
         {
             var valSrc = store.Src.Accept(eval);
+            var segmem = store.Dst as SegmentedAccess;
+            if (segmem != null)
+            {
+                var basePtr = segmem.BasePointer.Accept(eval);
+                var ea = segmem.EffectiveAddress.Accept(eval);
+                ctx.SetValueEa(basePtr, ea, valSrc);
+            }
             var access = store.Dst as MemoryAccess;
             if (access != null)
             {
@@ -285,6 +292,13 @@ namespace Decompiler.Evaluation
         }
 
         public void SetValueEa(Expression ea, Expression value)
+        {
+            int offset;
+            if (GetStackAddressOffset(ea, out offset))
+                StackState[offset] = value;
+        }
+
+        public void SetValueEa(Expression basePtr, Expression ea, Expression value)
         {
             int offset;
             if (GetStackAddressOffset(ea, out offset))

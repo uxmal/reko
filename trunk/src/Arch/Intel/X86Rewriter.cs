@@ -181,6 +181,8 @@ namespace Decompiler.Arch.Intel
                 case Opcode.loopne: RewriteLoop(FlagM.ZF, ConditionCode.NE); break;
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
                 case Opcode.mov: RewriteMov(); break;
+                case Opcode.movs: RewriteStringInstruction(); break;
+                case Opcode.movsb: RewriteStringInstruction(); break;
                 case Opcode.movsx: EmitCopy(di.Instruction.op1, emitter.Cast(PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size), SrcOp(di.Instruction.op2)), false); break;
                 case Opcode.movzx: EmitCopy(di.Instruction.op1, emitter.Cast(di.Instruction.op1.Width, SrcOp(di.Instruction.op2)), false); break;
                 case Opcode.mul: RewriteMultiply(Operator.Mulu, Domain.UnsignedInt); break;

@@ -27,7 +27,7 @@ namespace Decompiler.Core.Serialization
 {
 	public class ArgumentSerializer
 	{
-		private ProcedureSerializer sig;
+		private ProcedureSerializer ps;
 		private IProcessorArchitecture arch;
 		private Frame frame;
 		private SerializedArgument argCur;
@@ -35,10 +35,11 @@ namespace Decompiler.Core.Serialization
 
 		public ArgumentSerializer(ProcedureSerializer sig, IProcessorArchitecture arch, Frame frame)
 		{
-			this.sig = sig;
+			this.ps = sig;
 			this.arch = arch;
 			this.frame = frame;
 		}
+
 
 		public string ArgumentName(string argName, string argName2)
 		{
@@ -59,18 +60,18 @@ namespace Decompiler.Core.Serialization
 
 		public void Deserialize(SerializedStackVariable ss)
 		{
-			PrimitiveType dt = PrimitiveType.CreateWord(ss.ByteSize);
-			idArg = sig.CreateId(
-				ArgumentName(argCur.Name, "arg" + sig.StackOffset), 
+			var dt = PrimitiveType.CreateWord(ss.ByteSize);
+			idArg = ps.CreateId(
+				argCur.Name ?? "arg" + ps.StackOffset, 
 				dt,
-				new StackArgumentStorage(sig.StackOffset, dt));
-			sig.StackOffset += ss.ByteSize;
+				new StackArgumentStorage(ps.StackOffset, dt));
+			ps.StackOffset += ss.ByteSize;
 		}
 
 		public void Deserialize(SerializedFpuStackVariable fs)
 		{
-			idArg = sig.CreateId(ArgumentName(argCur.Name, "fpArg" + sig.FpuStackOffset), PrimitiveType.Real64, new FpuStackStorage(sig.FpuStackOffset, PrimitiveType.Real64));
-			++sig.FpuStackOffset;
+			idArg = ps.CreateId(argCur.Name ?? "fpArg" + ps.FpuStackOffset , PrimitiveType.Real64, new FpuStackStorage(ps.FpuStackOffset, PrimitiveType.Real64));
+			++ps.FpuStackOffset;
 		}
 
 		public void Deserialize(SerializedFlag flag)

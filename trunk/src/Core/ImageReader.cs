@@ -176,5 +176,36 @@ namespace Decompiler.Core
             return (int) ReadBeUint32();
         }
 
+        public virtual short ReadInt16() { throw new NotSupportedException(); }
+        public virtual int ReadInt32() { throw new NotSupportedException(); }
+        public virtual long ReadInt64() { throw new NotSupportedException(); }
+
+        public virtual ushort ReadUInt16() { throw new NotSupportedException(); }
+        public virtual uint ReadUInt32() { throw new NotSupportedException(); }
+        public virtual ulong ReadUInt64() { throw new NotSupportedException(); }
+
     }
+
+    public class LeImageReader : ImageReader
+    {
+        public LeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
+        public override short ReadInt16() { return ReadLeInt16(); }
+        public override int ReadInt32() { return ReadLeInt32(); }
+        //public override long ReadInt64() { return ReadLeInt64(); }
+        public override ushort ReadUInt16() { return ReadLeUint16(); }
+        public override uint ReadUInt32() { return ReadLeUint32(); }
+        //public override long ReadUInt64() { return ReadLeuInt64(); }
+    }
+
+    public class BeImageReader : ImageReader
+    {
+        public BeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
+        public override short ReadInt16() { return ReadBeInt16(); }
+        public override int ReadInt32() { return ReadBeInt32(); }
+        //public override long ReadInt64() { return ReadBeInt64(); }
+        public override ushort ReadUInt16() { return ReadBeUint16(); }
+        public override uint ReadUInt32() { return ReadBeUint32(); }
+        //public override ulong ReadUInt64() { return ReadBeuInt64(); }
+    }
+
 }

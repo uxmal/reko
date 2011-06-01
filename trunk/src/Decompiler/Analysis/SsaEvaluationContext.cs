@@ -91,6 +91,11 @@ namespace Decompiler.Analysis
             throw new NotSupportedException();
         }
 
+        public void SetValueEa(Expression basePtr, Expression ea, Expression value)
+        {
+            throw new NotSupportedException();
+        }
+
         public void UseExpression(Expression exp)
         {
             var xu = new ExpressionUseAdder(Statement, ssaIds);

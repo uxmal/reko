@@ -65,8 +65,6 @@ namespace Decompiler.Analysis
 
         private bool ProcedureTerminates(ProcedureBase proc)
         {
-            if (proc.Name.Contains("msdos_terminate"))//$DEBUG
-                proc.ToString();
             if (proc.Characteristics.Terminates)
                 return true;
             var callee = proc as Procedure;

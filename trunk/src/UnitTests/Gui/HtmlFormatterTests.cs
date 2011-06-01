@@ -52,14 +52,14 @@ namespace Decompiler.UnitTests.Gui
         public void WriteEscapedCharacters()
         {
             hf.Write("a = (b < c ? 3 : d->foo & 0xFF);");
-            Assert.AreEqual("a = (b &lt; c ? 3 : d-&gt;foo &amp; 0xFF);", sb.ToString());
+            Assert.AreEqual("a&nbsp;=&nbsp;(b&nbsp;&lt;&nbsp;c&nbsp;?&nbsp;3&nbsp;:&nbsp;d-&gt;foo&nbsp;&amp;&nbsp;0xFF);", sb.ToString());
         }
 
         [Test]
         public void EscapeFormatString()
         {
             hf.Write("a = {0}->{1}", "b->c", "d & 3");
-            Assert.AreEqual("a = b-&gt;c-&gt;d &amp; 3", sb.ToString());
+            Assert.AreEqual("a&nbsp;=&nbsp;b-&gt;c-&gt;d&nbsp;&amp;&nbsp;3", sb.ToString());
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Gui
         public void WriteHyperlink()
         {
             hf.WriteHyperlink("Click <me>", "foo(\"bar\")");
-            Assert.AreEqual("<a href=\"foo(&quot;bar&quot;)\">Click &lt;me&gt;</a>", sb.ToString());
+            Assert.AreEqual("<a href=\"foo(&quot;bar&quot;)\">Click&nbsp;&lt;me&gt;</a>", sb.ToString());
         }
     }
 }

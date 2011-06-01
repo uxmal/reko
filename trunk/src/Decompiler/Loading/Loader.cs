@@ -32,7 +32,7 @@ using System.Xml.Serialization;
 namespace Decompiler.Loading
 {
 	/// <summary>
-	/// Loads an image into memory, and deduces the processor architecture 
+	/// Loads an executable image into memory, and deduces the processor architecture 
 	/// from the image contents.
 	/// </summary>
 	public class Loader : LoaderBase
@@ -46,7 +46,6 @@ namespace Decompiler.Loading
             this.config = config;
             this.serviceProvider = services;
             this.eventListener = (DecompilerEventListener) services.GetService(typeof(DecompilerEventListener));
-
         }
 
         public override Program Load(byte[] image, Address addrLoad)

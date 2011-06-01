@@ -32,28 +32,21 @@ namespace Decompiler.Core
 	public class ProgramImage
 	{
 		private byte [] abImage;
-		private Address addrBase;				// address of start of image.
 		private ImageMap map;
-		private RelocationDictionary relocations;
 
 		public ProgramImage(Address addrBase, byte [] ab)
 		{
-			this.addrBase = addrBase;
+			this.BaseAddress = addrBase;
 			this.abImage = ab;
 			this.map = new ImageMap(addrBase, ab.Length);
-			this.relocations = new RelocationDictionary();
+			this.Relocations = new RelocationDictionary();
 		}
 
-		public Address BaseAddress
-		{
-			get { return addrBase; }
-			set { addrBase = value; }
-		}
+        public Address BaseAddress { get; set; }        // Address of start of image.
+        public byte[] Bytes { get { return abImage; } }
+        public RelocationDictionary Relocations { get; private set; }
 
-		public byte [] Bytes
-		{
-			get { return abImage; }
-		}
+
 
         public static bool CompareArrays(byte[] src, int iSrc, byte[] dst, int cb)
         {
@@ -128,9 +121,9 @@ namespace Decompiler.Core
 
         public bool IsValidLinearAddress(uint linearAddr)
         {
-            if (linearAddr < addrBase.Linear)
+            if (linearAddr < BaseAddress.Linear)
                 return false;
-			uint offset = (linearAddr - addrBase.Linear);
+            uint offset = (linearAddr - BaseAddress.Linear);
 			return offset < abImage.Length;
         }
 
@@ -151,7 +144,7 @@ namespace Decompiler.Core
 		/// <returns>Typed constant from the image.</returns>
 		public Constant ReadLe(int imageOffset, PrimitiveType type)
 		{
-			Constant c = relocations[imageOffset];
+			Constant c = Relocations[imageOffset];
 			if (c != null && c.DataType.Size == type.Size)
 				return c;
 			switch (type.Size)
@@ -165,7 +158,7 @@ namespace Decompiler.Core
 
         public Constant ReadBe(int imageOffset, PrimitiveType type)
         {
-            Constant c = relocations[imageOffset];
+            Constant c = Relocations[imageOffset];
             if (c != null && c.DataType.Size == type.Size)
                 return c;
             switch (type.Size)
@@ -234,7 +227,7 @@ namespace Decompiler.Core
 
 		public uint ReadLeUint32(Address addr)
 		{
-			return (uint) ReadLeInt32(abImage, addr - addrBase);
+			return (uint) ReadLeInt32(abImage, addr - BaseAddress);
 		}
 
         public static uint ReadBeUint32(byte[] abImage, int off)
@@ -271,10 +264,6 @@ namespace Decompiler.Core
         }
 
 
-		public RelocationDictionary Relocations
-		{
-			get { return relocations; }
-		}
 
 		public void WriteLeUint16(int offset, ushort w)
 		{

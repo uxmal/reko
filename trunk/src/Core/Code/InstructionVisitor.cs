@@ -57,8 +57,6 @@ namespace Decompiler.Core.Code
         T VisitUseInstruction(UseInstruction u);
     }
 
-
-
 	/// <summary>
 	/// Useful base class when only a few of the methods of InstructionVisitor and IExpressionVisitor 
 	/// are actually implemented.

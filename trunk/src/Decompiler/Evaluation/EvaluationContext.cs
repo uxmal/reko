@@ -48,5 +48,6 @@ namespace Decompiler.Evaluation
         void UseExpression(Expression expr);
         void SetValue(Identifier id, Expression value);
         void SetValueEa(Expression ea, Expression value);
+        void SetValueEa(Expression basePointer, Expression ea, Expression value);
     }
 }
