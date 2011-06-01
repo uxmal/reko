@@ -33,21 +33,16 @@ namespace Decompiler.Core
 	/// </summary>
 	public abstract class Storage
 	{
-		private string storageKind;
-
 		public Storage(string storageKind)
 		{
-			this.storageKind = storageKind;
+			this.Kind = storageKind;
 		}
 
-		public abstract T Accept<T>(StorageVisitor<T> visitor);
 
-		public string Kind
-		{
-			get { return storageKind; }
-		}
-
+		public string Kind { get; private set; }
 		public abstract int OffsetOf(Storage storage);
+
+        public abstract T Accept<T>(StorageVisitor<T> visitor);
 
 		public virtual SerializedKind Serialize()
 		{
@@ -73,14 +68,14 @@ namespace Decompiler.Core
 
 	public class FlagGroupStorage : Storage
 	{
-		private string name;
-		private uint grfMask;
-
 		public FlagGroupStorage(uint grfMask, string name) : base("FlagGroup")
 		{
-			this.grfMask = grfMask;
-			this.name = name;
+			this.FlagGroup = grfMask;
+			this.Name = name;
 		}
+
+        public uint FlagGroup { get; private set; }
+        public string Name { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -92,19 +87,12 @@ namespace Decompiler.Core
 			FlagGroupStorage fgs = obj as FlagGroupStorage;
 			if (fgs == null)
 				return false;
-			return grfMask == fgs.grfMask;
+			return FlagGroup == fgs.FlagGroup;
 		}
-
-		public uint FlagGroup
-		{
-			get { return grfMask; }
-		}
-
-        public string Name { get { return name; } } 
 
 		public override int GetHashCode()
 		{
-			return GetType().GetHashCode() ^ grfMask.GetHashCode();
+			return GetType().GetHashCode() ^ FlagGroup.GetHashCode();
 		}
 
 		public override int OffsetOf(Storage stgSub)
@@ -112,12 +100,12 @@ namespace Decompiler.Core
 			FlagGroupStorage f = stgSub as FlagGroupStorage;
 			if (f == null)
 				return -1;
-			return ((f.grfMask & grfMask) != 0) ? 0 : -1;
+			return ((f.FlagGroup & FlagGroup) != 0) ? 0 : -1;
 		}
 
 		public override SerializedKind Serialize()
 		{
-			return new SerializedFlag(name);
+			return new SerializedFlag(Name);
 		}
 
 		public override void Write(TextWriter writer)
@@ -128,14 +116,15 @@ namespace Decompiler.Core
 
 	public class FpuStackStorage : Storage
 	{
-		private int depth;
-		private DataType dataType;
 
 		public FpuStackStorage(int depth, DataType dataType) : base("FpuStack")
 		{
-			this.depth = depth;
-			this.dataType = dataType;
+			this.FpuStackOffset = depth;
+			this.DataType = dataType;
 		}
+
+        public DataType DataType { get; private set; }
+        public int FpuStackOffset { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -148,19 +137,12 @@ namespace Decompiler.Core
 			FpuStackStorage fss = obj as FpuStackStorage;
 			if (fss == null)
 				return false;
-			return depth == fss.depth;
+			return FpuStackOffset == fss.FpuStackOffset;
 		}
 
 		public override int GetHashCode()
 		{
-			return GetType().GetHashCode() ^ depth.GetHashCode();
-		}
-
-        public DataType DataType { get { return dataType; } } 
-             
-		public int FpuStackOffset
-		{
-			get { return depth; }
+			return GetType().GetHashCode() ^ FpuStackOffset.GetHashCode();
 		}
 
 		public override int OffsetOf(Storage stgSub)
@@ -204,11 +186,10 @@ namespace Decompiler.Core
 	/// </summary>
 	public class OutArgumentStorage : Storage
 	{
-		private Identifier originalId; 
 
 		public OutArgumentStorage(Identifier originalId) : base("out")
 		{
-			this.originalId = originalId;
+			this.OriginalIdentifier = originalId;
 		}
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -227,7 +208,7 @@ namespace Decompiler.Core
 
 		public override int GetHashCode()
 		{
-			return GetType().GetHashCode() ^ originalId.GetHashCode();
+			return GetType().GetHashCode() ^ OriginalIdentifier.GetHashCode();
 		}
 
 		public override int OffsetOf(Storage stgSub)
@@ -235,10 +216,7 @@ namespace Decompiler.Core
 			return -1;
 		}
 
-		public Identifier OriginalIdentifier
-		{
-			get { return originalId; }
-		}
+		public Identifier OriginalIdentifier { get; private set; }
 
         public override SerializedKind Serialize()
         {
@@ -254,12 +232,13 @@ namespace Decompiler.Core
 
 	public class RegisterStorage : Storage
 	{
-		private MachineRegister reg;
-
 		public RegisterStorage(MachineRegister reg) : base("Register")
 		{
-			this.reg = reg;
+			this.Register = reg;
 		}
+
+        public MachineRegister Register { get; private set; }
+
 
 		public override T Accept<T>(StorageVisitor<T> visitor)
 		{
@@ -268,22 +247,20 @@ namespace Decompiler.Core
 
 		public override bool Equals(object obj)
 		{
-			RegisterStorage rs = obj as RegisterStorage;
+			var rs = obj as RegisterStorage;
 			if (rs == null)
 				return false;
-			return reg.Number == rs.Register.Number;
+			return Register.Number == rs.Register.Number;
 		}
 
 		public override int GetHashCode()
 		{
-			return GetType().GetHashCode() ^ reg.Number;
+			return GetType().GetHashCode() ^ Register.Number;
 		}
-
-
 
 		public override int OffsetOf(Storage stgSub)
 		{
-			RegisterStorage regSub = stgSub as RegisterStorage;
+			var regSub = stgSub as RegisterStorage;
 			if (regSub == null)
 				return -1;
 			if (regSub.Register == Register)
@@ -293,36 +270,32 @@ namespace Decompiler.Core
 				: -1;
 		}
 
-		public MachineRegister Register
-		{
-			get { return reg; }
-		}
 
 		public override SerializedKind Serialize()
 		{
-			return new SerializedRegister(reg.Name);
+			return new SerializedRegister(Register.Name);
 		}
 
 
 		public override void Write(TextWriter writer)
 		{
 			writer.Write("Register ");
-			writer.Write(reg.Name);
+			writer.Write(Register.Name);
 		}
 	}
 
 	public class SequenceStorage : Storage
 	{
-		private Identifier head;
-		private Identifier tail;
-
 		//$REFACTOR: make this params Identifier [], to support arbitrarily long identifiers
 		public SequenceStorage(Identifier head, Identifier tail) 
 			: base("Sequence")		
 		{
-			this.head = head;
-			this.tail = tail;
+			this.Head = head;
+			this.Tail = tail;
 		}
+
+        public Identifier Head { get; private set; }
+        public Identifier Tail { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -335,32 +308,23 @@ namespace Decompiler.Core
 			SequenceStorage ss = obj as SequenceStorage;
 			if (ss == null)
 				return false;
-			return head.Equals(ss.head) && tail.Equals(ss.tail);
+			return Head.Equals(ss.Head) && Tail.Equals(ss.Tail);
 		}
 
 		public override int GetHashCode()
 		{
-			return GetType().GetHashCode() ^ head.GetHashCode() ^ (3 * tail.GetHashCode());
+			return GetType().GetHashCode() ^ Head.GetHashCode() ^ (3 * Tail.GetHashCode());
 		}
 
-		public Identifier Head
-		{
-			get { return head; }
-		}
-
-		public Identifier Tail
-		{
-			get { return tail; }
-		}
 
 		public override int OffsetOf(Storage stgSub)
 		{
-			int off = tail.Storage.OffsetOf(stgSub);
+			int off = Tail.Storage.OffsetOf(stgSub);
 			if (off != -1)
 				return off;
-			off = head.Storage.OffsetOf(stgSub);
+			off = Head.Storage.OffsetOf(stgSub);
 			if (off != -1)
-				return off + tail.DataType.BitSize;
+				return off + Tail.DataType.BitSize;
 			return -1;
 		}
 
@@ -371,42 +335,48 @@ namespace Decompiler.Core
 
 		public override void Write(TextWriter writer)
 		{
-			writer.Write("Sequence {0}:{1}", head.Name, tail.Name);
+			writer.Write("Sequence {0}:{1}", Head.Name, Tail.Name);
 		}
 	}
 
 	public class StackArgumentStorage : Storage
 	{
-		private int cbOffset;		// offset stack pointer on entry to routine.
-		private DataType dataType;
-
 		public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
 		{
-			this.cbOffset = cbOffset;
-			this.dataType = dataType;
+			this.StackOffset = cbOffset;
+			this.DataType = dataType;
 		}
+
+        /// <summary>
+        /// Offset from stack pointer as it was when the procedure was entered.
+        /// </summary>
+        /// <remarks>
+        /// If the architecture stores the return address on the stack, the return address will be at offset 0 and
+        /// any stack arguments will have offsets > 0. If the architecture passes the return address in a
+        /// register or a separate return stack, there may be stack arguments with offset 0. In either case,
+        /// negative stack offsets for parameters are not legal.
+        /// </remarks>
+        public int StackOffset { get; private set; }
+        public DataType DataType { get; private set; }
+
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
 			return visitor.VisitStackArgumentStorage(this);
 		}
 
-		public DataType DataType
-		{
-			get { return dataType; }
-		}
 
 		public override bool Equals(object obj)
 		{
 			StackArgumentStorage sas = obj as StackArgumentStorage;
 			if (sas == null)
 				return false;
-			return cbOffset == sas.cbOffset;
+			return StackOffset == sas.StackOffset;
 		}
 
 		public override int GetHashCode()
 		{
-			return GetType().GetHashCode() ^ cbOffset;
+			return GetType().GetHashCode() ^ StackOffset;
 		}
 
 		public override int OffsetOf(Storage stgSub)
@@ -414,35 +384,23 @@ namespace Decompiler.Core
 			StackArgumentStorage arg = stgSub as StackArgumentStorage;
 			if (arg == null)
 				return -1;
-			if (arg.cbOffset >= cbOffset && arg.cbOffset + arg.DataType.Size <= cbOffset + DataType.Size)
-				return (arg.cbOffset - cbOffset) * DataType.BitsPerByte;
+            if (arg.StackOffset >= StackOffset && arg.StackOffset + arg.DataType.Size <= StackOffset + DataType.Size)
+                return (arg.StackOffset - StackOffset) * DataType.BitsPerByte;
 			return -1;
 		}
 
         public override SerializedKind Serialize()
         {
             SerializedStackVariable svar = new SerializedStackVariable();
-            svar.ByteSize = dataType.Size;
+            svar.ByteSize = DataType.Size;
             return svar;
         }
 
-		/// <summary>
-		/// Offset from stack pointer as it was when the procedure was entered.
-		/// </summary>
-		/// <remarks>
-		/// If the architecture stores the return address on the stack, the return address will be at offset 0 and
-		/// any stack arguments will have offsets > 0. If the architecture passes the return address in a
-		/// register or a separate return stack, there may be stack arguments with offset 0. In either case,
-        /// negative stack offsets for parameters are not legal.
-		/// </remarks>
-		public int StackOffset
-		{
-			get { return cbOffset; }
-		}
+
 
 		public override void Write(TextWriter writer)
 		{
-			writer.Write("{0} +{1:X4}", Kind, cbOffset);
+            writer.Write("{0} +{1:X4}", Kind, StackOffset);
 		}
 	}
 

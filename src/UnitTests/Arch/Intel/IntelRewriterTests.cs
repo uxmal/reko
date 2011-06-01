@@ -32,6 +32,7 @@ using System.Collections.Generic;
 namespace Decompiler.UnitTests.Arch.Intel
 {
     [TestFixture]
+    [Obsolete("This class is superseded by the x86Rewriter class. Move methods as appropriate over to that class.")]
     public partial class IntelRewriterTests
     {
         private IntelArchitecture arch;

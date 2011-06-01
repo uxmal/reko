@@ -136,6 +136,7 @@ namespace Decompiler.UnitTests.Analysis
 			return prog;
 		}
 
+        [Obsolete]
 		protected Program RewriteFileOld(string relativePath)
 		{
 			return RewriteFileOld(relativePath, null);

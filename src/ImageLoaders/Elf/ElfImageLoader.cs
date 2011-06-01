@@ -20,22 +20,23 @@ namespace Decompiler.ImageLoaders.Elf
         public int iSymSize; // Size associated with symbol
     }
 
-    // Internal elf info
-
+    /// <summary>
+    /// ELF executable header.
+    /// </summary>
     public class Elf32_Ehdr
     {
         public const byte EM_SPARC = 2;			// Sun SPARC
         public const byte EM_386 = 3;			// Intel 80386 or higher
         public const byte EM_68K = 4;			// Motorola 68000
         public const byte EM_MIPS = 8;			// MIPS
-        public const byte EM_PA_RISC = 15;			// HP PA-RISC
-        public const byte EM_SPARC32PLUS = 18;			// Sun SPARC 32+
+        public const byte EM_PA_RISC = 15;		// HP PA-RISC
+        public const byte EM_SPARC32PLUS = 18;	// Sun SPARC 32+
         public const byte EM_PPC = 20;			// PowerPC
         public const byte EM_X86_64 = 62;
-        public const byte EM_ST20 = 0xa8;			// ST20 (made up... there is no official value?)
+        public const byte EM_ST20 = 0xa8;		// ST20 (made up... there is no official value?)
 
-        public const byte ET_DYN = 3;	// Elf type (dynamic library)
-        public const byte E_REL = 1;		// Relocatable file type
+        public const byte ET_DYN = 3;	        // Elf type (dynamic library)
+        public const byte E_REL = 1;		    // Relocatable file type
 
 
         public byte[] e_ident; // 4
@@ -44,6 +45,7 @@ namespace Decompiler.ImageLoaders.Elf
         public byte version;
         public byte osAbi;
         public byte[] pad; // 8
+
         public short e_type;
         public short e_machine;
         public int e_version;
@@ -140,57 +142,6 @@ namespace Decompiler.ImageLoaders.Elf
 
     public class ElfImageLoader : ImageLoader
     {
-        public int ELF32_R_SYM(int info) { return ((info) >> 8); }
-        public int ELF32_ST_BIND(int i) { return ((i) >> 4); }
-        public int ELF32_ST_INFO(int b, int t) { return (((b) << 4) + ((t) & 0xf)); }
-        public const byte STT_NOTYPE = 0;			// Symbol table type: none
-        public const byte STT_FUNC = 2;				// Symbol table type: function
-        public const byte STT_SECTION = 3;
-        public const byte STT_FILE = 4;
-        public const byte STB_GLOBAL = 1;
-        public const byte STB_WEAK = 2;
-
-
-        // Tag values
-        public const byte DT_NULL = 0;	// Last entry in list
-        public const byte DT_STRTAB = 5;	// String table
-        public const byte DT_NEEDED = 1;		// A needed link-type object
-
-        public uint NO_ADDRESS = ~0U;
-
-        // Header functions
-  
-        // Symbol functions
-        // Get value of symbol, if any
-        public ADDRESS GetAddressByName(string pName) { return GetAddressByName(pName, false); }
-        // Get the size associated with the symbol
-        public int GetSizeByName(string pName) { return GetSizeByName(pName, false); }
-
-        public virtual List<ADDRESS> GetExportedAddresses() { return GetExportedAddresses(true); }
-
-
-        // Relocation functions
-
-
-        //
-        //	--	--	--	--	--	--	--	--	--	--	--
-        //
-        // Internal information
-        // Dump headers, etc
-        //virtual bool    DisplayDetails(string  fileName, FILE* f = stdout);
-
-
-
-        // Analysis functions
-        public virtual List<SectionInfo> GetEntryPoints() { return GetEntryPoints("main"); }
-
-        public virtual SortedList<ADDRESS, string> getSymbols()
-        {
-            return m_SymTab;
-        }
-
-        private bool ValueByName(string pName, SymValue pVal) { return ValueByName(pName, null); }
-
         private byte[] m_pImage; // Pointer to the loaded image
         private Elf32_Phdr[] m_pPhdrs; // Pointer to program headers
         private Elf32_Shdr[] sectionHeaders; // Array of section header structs
@@ -204,12 +155,10 @@ namespace Decompiler.ImageLoaders.Elf
         private bool m_bAddend; // true if reloc table has addend
         private ADDRESS m_uLastAddr; // Save last address looked up
         private int m_iLastSize; // Size associated with that name
+        private List<SectionInfo> m_EntryPoint; // A list of one entry point
         private ADDRESS m_uPltMin; // Min address of PLT table
         private ADDRESS m_uPltMax; // Max address (1 past last) of PLT
-        private List<SectionInfo> m_EntryPoint; // A list of one entry point
-        private ADDRESS [] m_pImportStubs; // An array of import stubs
-        private ADDRESS m_uBaseAddr; // Base image virtual address
-        private uint m_uImageSize; // total image size (bytes)
+        private ADDRESS[] m_pImportStubs; // An array of import stubs
         private ADDRESS first_extern; // where the first extern will be placed
         private ADDRESS next_extern; // where the next extern will be placed
         public int[] m_sh_link; // pointer to array of sh_link values
@@ -220,6 +169,42 @@ namespace Decompiler.ImageLoaders.Elf
         public Elf32_Ehdr ElfHeader { get; private set; }
         private IProcessorArchitecture arch;
 
+        public override IProcessorArchitecture Architecture { get { return arch; } }
+        public override Platform Platform { get { throw new NotSupportedException(); } }
+
+        public int ELF32_R_SYM(int info) { return ((info) >> 8); }
+        public int ELF32_ST_BIND(int i) { return ((i) >> 4); }
+        public int ELF32_ST_INFO(int b, int t) { return (((b) << 4) + ((t) & 0xf)); }
+        public const byte STT_NOTYPE = 0;			// Symbol table type: none
+        public const byte STT_FUNC = 2;				// Symbol table type: function
+        public const byte STT_SECTION = 3;
+        public const byte STT_FILE = 4;
+        public const byte STB_GLOBAL = 1;
+        public const byte STB_WEAK = 2;
+
+
+        // Tag values
+        public const byte DT_NULL = 0;	            // Last entry in list
+        public const byte DT_STRTAB = 5;	        // String table
+        public const byte DT_NEEDED = 1;		    // A needed link-type object
+
+        public uint NO_ADDRESS = ~0U;
+
+        public ADDRESS GetAddressByName(string pName) { return GetAddressByName(pName, false); }
+        public int GetSizeByName(string pName) { return GetSizeByName(pName, false); }
+
+        public virtual List<ADDRESS> GetExportedAddresses() { return GetExportedAddresses(true); }
+
+        public virtual List<SectionInfo> GetEntryPoints() { return GetEntryPoints("main"); }
+
+        public virtual SortedList<ADDRESS, string> getSymbols()
+        {
+            return m_SymTab;
+        }
+
+        private bool ValueByName(string pName, SymValue pVal) { return ValueByName(pName, null); }
+
+
         public ElfImageLoader(IServiceProvider services, byte[] rawImage, bool bArchive /* = false */)
             : base(services, rawImage)
         {
@@ -229,8 +214,6 @@ namespace Decompiler.ImageLoaders.Elf
         }
 
 
-        public override IProcessorArchitecture Architecture { get { return arch; } }
-        public override Platform Platform { get { throw new NotSupportedException(); } }
 
         // Reset internal state, except for those that keep track of which member
         // we're up to
@@ -416,7 +399,8 @@ namespace Decompiler.ImageLoaders.Elf
             }
 
             // Apply relocations; important when the input program is not compiled with -fPIC
-            applyRelocations();
+            var relocator = new Relocator(this);
+            relocator.ApplyRelocations();
         }
 
         private SectionInfo GetSectionInfoByName(string sectionName)
@@ -424,9 +408,9 @@ namespace Decompiler.ImageLoaders.Elf
             throw new NotImplementedException();
         }
 
-        public string ReadAsciizString(uint pName)
+        public string ReadAsciizString(uint offset)
         {
-            int iStart = (int)pName;
+            int iStart = (int)offset;
             int i = iStart;
             for (; i < m_pImage.Length && m_pImage[i] != 0; ++i)
                 ;
@@ -1113,16 +1097,6 @@ namespace Decompiler.ImageLoaders.Elf
             dyn.data = rdr.ReadInt32();
             return dyn;
 
-        }
-
-        public ADDRESS getImageBase()
-        {
-            return m_uBaseAddr;
-        }
-
-        public uint getImageSize()
-        {
-            return m_uImageSize;
         }
 
         /*==============================================================================
