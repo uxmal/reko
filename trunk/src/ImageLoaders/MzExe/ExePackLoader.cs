@@ -59,13 +59,13 @@ namespace Decompiler.ImageLoaders.MzExe
             this.exeHdrSize = (uint)(exe.e_cparHeader * 0x10U);
             this.hdrOffset = (uint)(exe.e_cparHeader + exe.e_cs) * 0x10U;
             ImageReader rdr = new ImageReader(RawImage, hdrOffset);
-            this.ip = rdr.ReadLeUint16();
-            this.cs = rdr.ReadLeUint16();
-            rdr.ReadLeUint16();
-            this.cbExepackHeader = rdr.ReadLeUint16();
-            this.sp = rdr.ReadLeUint16();
-            this.ss = rdr.ReadLeUint16();
-            this.cpUncompressed = rdr.ReadLeUint16();
+            this.ip = rdr.ReadLeUInt16();
+            this.cs = rdr.ReadLeUInt16();
+            rdr.ReadLeUInt16();
+            this.cbExepackHeader = rdr.ReadLeUInt16();
+            this.sp = rdr.ReadLeUInt16();
+            this.ss = rdr.ReadLeUInt16();
+            this.cpUncompressed = rdr.ReadLeUInt16();
 
             int offset = ExePackHeaderOffset(exe);
             if (ProgramImage.CompareArrays(imgRaw, offset, signature, signature.Length))
@@ -110,7 +110,7 @@ namespace Decompiler.ImageLoaders.MzExe
             Array.Copy(abC, exeHdrSize, abU, ExeImageLoader.CbPsp, abC.Length - exeHdrSize);
             imgU = new ProgramImage(addr, abU);
 
-            int SI = (int)hdrOffset - 1;
+            uint SI = hdrOffset - 1;
             while (abC[SI] == 0xFF)
             {
                 --SI;
@@ -121,7 +121,7 @@ namespace Decompiler.ImageLoaders.MzExe
             do
             {
                 op = abC[SI];
-                int cx = ProgramImage.ReadLeUint16(abC, SI - 2);
+                int cx = ProgramImage.ReadLeUInt16(abC, SI - 2);
                 SI -= 3;
                 if ((op & 0xFE) == 0xB0)
                 {
@@ -159,14 +159,14 @@ namespace Decompiler.ImageLoaders.MzExe
             ushort dx = 0;
             for (; ; )
             {
-                int cx = rdr.ReadLeUint16();
+                int cx = rdr.ReadLeUInt16();
                 if (cx != 0)
                 {
-                    int relocBase = ExeImageLoader.CbPsp + dx * 0x10;
+                    uint relocBase = ExeImageLoader.CbPsp + dx * 0x10u;
                     do
                     {
-                        ushort relocOff = rdr.ReadLeUint16();
-                        ushort seg = imgU.FixupLeUint16(relocBase + relocOff, segCode);
+                        ushort relocOff = rdr.ReadLeUInt16();
+                        ushort seg = imgU.FixupLeUInt16(relocBase + relocOff, segCode);
                         imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
                     } while (--cx != 0);
                 }

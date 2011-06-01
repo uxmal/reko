@@ -297,18 +297,18 @@ namespace Decompiler.Arch.Intel
             {
                 if (byteSize == PrimitiveType.Word16.Size)
                 {
-                    return new Address(state.Get(Registers.cs).ToUInt16(), rdr.ReadLeUint16());
+                    return new Address(state.Get(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
                 }
                 else
                 {
-                    ushort off = rdr.ReadLeUint16();
-                    ushort seg = rdr.ReadLeUint16();
+                    ushort off = rdr.ReadLeUInt16();
+                    ushort seg = rdr.ReadLeUInt16();
                     return new Address(seg, off);
                 }
             }
             else if (WordWidth == PrimitiveType.Word32)
             {
-                return new Address(rdr.ReadLeUint32());
+                return new Address(rdr.ReadLeUInt32());
             }
             else
                 throw new ApplicationException("Unexpected word width: " + byteSize);

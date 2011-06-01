@@ -46,7 +46,7 @@ namespace Decompiler.Arch.Pdp11
 
         public MachineInstruction DisassembleInstruction()
         {
-            ushort opcode = rdr.ReadLeUint16();
+            ushort opcode = rdr.ReadLeUInt16();
             switch ((opcode >> 0x0C) & 7)
             {
             case 0: return NonDoubleOperandInstruction(opcode);
@@ -89,7 +89,7 @@ namespace Decompiler.Arch.Pdp11
                 //case 3:    //   AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented
                 //case 4:    //   AutoDecr      Reg is decremented then contents is address
                 //case 5:    //   AutoDecrDef   Reg is decremented then contents is addr of addr
-                //case 6: return new MemoryOperand(reg, rdr.ReadLeUint16());   //   Index         Contents of Reg + Following word is address
+                //case 6: return new MemoryOperand(reg, rdr.ReadLeUInt16());   //   Index         Contents of Reg + Following word is address
                 //case 7:   //   IndexDef      Contents of Reg + Following word is addr of addr
                 default: throw new NotSupportedException();
                 }

@@ -122,7 +122,8 @@ namespace Decompiler.Scanning
                 {
                     if (permutation[i] > iMax)
                         iMax = permutation[i];
-                    vector.Add(new Address(scanner.Image.ReadLeUint32(addrTable + permutation[i] * cbEntry)));      //$BUG: will fail on 64-bit arch.
+                    var entryAddr = addrTable.Linear + (uint) (permutation[i] * cbEntry);
+                    vector.Add(new Address(scanner.Image.ReadLeUInt32(entryAddr)));      //$BUG: will fail on 64-bit arch.
                 }
             }
             else

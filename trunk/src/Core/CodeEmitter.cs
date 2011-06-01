@@ -30,6 +30,7 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Emits code sequences into basic blocks.
 	/// </summary>
+    /// <remarks>Only used by the old x86 rewriting code. When that is obsoleted, this class may be deleted.</remarks>
     [Obsolete("Don't use this class anymore; RtlEmitter or ProcedureBuilder are your friends.")]
 	public class CodeEmitterOld : CodeEmitter
 	{

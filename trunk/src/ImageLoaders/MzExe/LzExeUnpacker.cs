@@ -36,7 +36,7 @@ namespace Decompiler.ImageLoaders.MzExe
         private IProcessorArchitecture arch;
         private Platform platform;
 
-		private int lzHdrOffset;
+		private uint lzHdrOffset;
 		private bool isLz91;
 		private ProgramImage imgLoaded;
 		private ushort lzIp;
@@ -49,12 +49,12 @@ namespace Decompiler.ImageLoaders.MzExe
             this.arch = new IntelArchitecture(ProcessorMode.Real);
             this.platform = new MsdosPlatform(arch);
 
-			this.lzHdrOffset = (exe.e_cparHeader + exe.e_cs) << 4;
+			this.lzHdrOffset = (uint)(exe.e_cparHeader + exe.e_cs) << 4;
 
 			// Locate the LzExe header and verify signature.
 
 			byte [] abC = RawImage;
-			int entry = lzHdrOffset + exe.e_ip;
+			int entry = (int) lzHdrOffset + exe.e_ip;
 			if (ProgramImage.CompareArrays(abC, entry, s_sig90, s_sig90.Length)) 
 			{
 				// Untested binary version
@@ -115,7 +115,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		// for LZEXE ver 0.90 
 		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, ProgramImage pgmImgNew, RelocationDictionary relocations)
 		{
-			int ifile = lzHdrOffset + 0x19D;
+			uint ifile = lzHdrOffset + 0x19D;
 
 			// 0x19d=compressed relocation table address 
 
@@ -149,9 +149,9 @@ namespace Decompiler.ImageLoaders.MzExe
 		{
 			ImageMap imageMap = pgmImgNew.Map;
             const int CompressedRelocationTableAddress = 0x0158;
-			int ifile = lzHdrOffset + CompressedRelocationTableAddress;
+			uint ifile = lzHdrOffset + CompressedRelocationTableAddress;
 
-			int rel_off=0;
+			uint rel_off=0;
 			for (;;)
 			{
     			ushort span = abUncompressed[ifile++];
@@ -161,7 +161,7 @@ namespace Decompiler.ImageLoaders.MzExe
 					span |= (ushort) (abUncompressed[ifile++] << 8);
 					if (span == 0)
 					{
-						rel_off += 0x0FFF0;
+						rel_off += 0x0FFF0u;
 						continue;
 					}
 					else if (span == 1)
@@ -171,8 +171,8 @@ namespace Decompiler.ImageLoaders.MzExe
 				}
 
 				rel_off += span;
-				ushort seg = (ushort) (pgmImgNew.ReadLeUint16(rel_off) + segReloc);
-				pgmImgNew.WriteLeUint16(rel_off, seg);
+				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16(rel_off) + segReloc);
+				pgmImgNew.WriteLeUInt16(rel_off, seg);
 				relocations.AddSegmentReference(rel_off, seg);
 				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 			}
@@ -196,16 +196,16 @@ namespace Decompiler.ImageLoaders.MzExe
 			// Extract the LZ stuff.
 
 			ImageReader rdr = new ImageReader(abC, (uint) lzHdrOffset);
-			lzIp = rdr.ReadLeUint16();
-			lzCs = rdr.ReadLeUint16();
-			ushort lzSp = rdr.ReadLeUint16();
-			ushort lzSs = rdr.ReadLeUint16();
-			ushort lzcpCompressed = rdr.ReadLeUint16();
-			ushort lzcpDecompressed = rdr.ReadLeUint16();
+			lzIp = rdr.ReadLeUInt16();
+			lzCs = rdr.ReadLeUInt16();
+			ushort lzSp = rdr.ReadLeUInt16();
+			ushort lzSs = rdr.ReadLeUInt16();
+			ushort lzcpCompressed = rdr.ReadLeUInt16();
+			ushort lzcpDecompressed = rdr.ReadLeUInt16();
 
 			// Find the start of the compressed stream.
 
-			int ifile = lzHdrOffset - (lzcpCompressed << 4);
+			uint ifile = (uint) (lzHdrOffset - (lzcpCompressed << 4));
 
 			// Allocate space for the decompressed goo.
 
@@ -214,8 +214,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
 			// Decompress this sorry mess.
 
-			int len;
-			int span;
+			uint len;
+			uint span;
 			int p = 0;
 			BitStream bits = new BitStream(abC, ifile);
 			for (;;)
@@ -233,7 +233,7 @@ namespace Decompiler.ImageLoaders.MzExe
 					len = bits.GetBit() << 1;
 					len |= bits.GetBit();
 					len += 2;
-					span = bits.GetByte() | ~0xFF;
+					span = bits.GetByte() | ~0xFFu;
 				} 
 				else
 				{
@@ -241,7 +241,7 @@ namespace Decompiler.ImageLoaders.MzExe
 
 					span = bits.GetByte();
 					len = bits.GetByte();;
-					span |= ((len & ~0x07)<<5) | ~0x1FFF;
+					span |= ((len & ~0x07u)<<5) | ~0x1FFFu;
 					len = (len & 0x07) + 2;
 					if (len == 2)
 					{
@@ -339,11 +339,11 @@ namespace Decompiler.ImageLoaders.MzExe
 	public class BitStream
 	{
 		private byte [] ab;
-		private int p;
+		private uint p;
 		private int cb;
 		private ushort bitBuf;
 
-		public BitStream(byte [] ab, int i) 
+		public BitStream(byte [] ab, uint i) 
 		{
 			this.ab = ab;
 			this.p = i;
@@ -351,14 +351,14 @@ namespace Decompiler.ImageLoaders.MzExe
 			LoadNextWord();
 		}
 
-		public int AccumulateBit(int acc)
+		public uint AccumulateBit(uint acc)
 		{
 			return (acc << 1) | GetBit();
 		}
 
-		public int GetBit()
+		public uint GetBit()
 		{
-			int b = (bitBuf & 1);
+			uint b = (bitBuf & 1u);
 			bitBuf >>= 1;
 			if (--cb == 0)
 			{

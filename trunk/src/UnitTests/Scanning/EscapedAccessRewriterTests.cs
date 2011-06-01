@@ -22,11 +22,13 @@ using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using Decompiler.Loading;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.UnitTests.Scanning
 {
@@ -66,14 +68,12 @@ namespace Decompiler.UnitTests.Scanning
                 new IntelTextAssembler(),
                 FileUnitTester.MapTestPath(sourceFile));
             Program prog = ldr.Load(addr);
-			ScannerOld scan = new ScannerOld(prog, null);
+			var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), null);
 			foreach (EntryPoint ep in ldr.EntryPoints)
 			{
 				scan.EnqueueEntryPoint(ep);
 			}
 			scan.ProcessQueue();
-			RewriterHost host = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
-			host.RewriteProgram();
 			return prog;
 		}
 

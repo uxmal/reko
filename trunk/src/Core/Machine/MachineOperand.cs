@@ -26,6 +26,9 @@ using System.Text;
 
 namespace Decompiler.Core.Machine
 {
+    /// <summary>
+    /// Abstraction of a processor instruction operand.
+    /// </summary>
 	public abstract class MachineOperand
 	{
 		public PrimitiveType Width;

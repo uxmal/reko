@@ -129,7 +129,7 @@ namespace Decompiler.Assemblers.x86
             {
                 foreach (var reloc in seg.Relocations)
                 {
-                    image.WriteLeUint16((int)((reloc.Segment.Selector - addrBase.Selector) * 16 + reloc.Offset), seg.Selector);
+                    image.WriteLeUInt16((uint)((reloc.Segment.Selector - addrBase.Selector) * 16u + reloc.Offset), seg.Selector);
                 }
             }
         }

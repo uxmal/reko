@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -559,9 +559,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\AboutDialog.resx">
       <DependentUpon>AboutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\ArchiveBrowserDialog.resx">
       <DependentUpon>ArchiveBrowserDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\EnvironmentSelectorDialog.resx">
       <SubType>Designer</SubType>
@@ -577,6 +579,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\ProcedureDialog.resx">
       <DependentUpon>ProcedureDialog.cs</DependentUpon>
@@ -584,13 +587,16 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\EditProjectDialog.resx">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Windows\Forms\WorkerDialog.resx">
       <DependentUpon>WorkerDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

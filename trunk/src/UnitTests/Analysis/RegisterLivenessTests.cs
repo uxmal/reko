@@ -176,11 +176,11 @@ namespace Decompiler.UnitTests.Analysis
 
         protected override void RunTest(Program prog, FileUnitTester fut)
 		{
-            FakeDecompilerEventListener eventListener = new FakeDecompilerEventListener();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, eventListener);
-			TrashedRegisterFinderOld trf = new TrashedRegisterFinderOld(prog, dfa.ProgramDataFlow, eventListener);
+            var eventListener = new FakeDecompilerEventListener();
+			var dfa = new DataFlowAnalysis(prog, eventListener);
+			var trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
-			RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
+			var rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
 			DumpProcedureFlows(prog, dfa, rl, fut.TextWriter);
 		}
 	}

@@ -63,23 +63,19 @@ namespace Decompiler.UnitTests.Loading
 
         private byte[] CreateMsdosHeader()
         {
-            using (MemoryStream s = new MemoryStream())
-            {
-                ImageWriter stm = new ImageWriter(s);
-                stm.WriteByte(0x4D);    // MZ
-                stm.WriteByte(0x5A);
-                stm.WriteBytes(0xCC, 4);
-                stm.WriteLeUint16(0x0090);
-                stm.WriteBytes(0xCC, 0x12);
-                stm.WriteByte(0x00);
-                stm.WriteByte(0x00);
-                stm.WriteByte(0x05);
-                stm.WriteByte(0x21);
-                stm.WriteString("PKLITE", Encoding.ASCII);
-                stm.WriteBytes(0xCC, 0x0C);
-                s.Flush();
-                return s.GetBuffer();
-            }
+            ImageWriter stm = new LeImageWriter();
+            stm.WriteByte(0x4D);    // MZ
+            stm.WriteByte(0x5A);
+            stm.WriteBytes(0xCC, 4);
+            stm.WriteLeUInt16(0x0090);
+            stm.WriteBytes(0xCC, 0x12);
+            stm.WriteByte(0x00);
+            stm.WriteByte(0x00);
+            stm.WriteByte(0x05);
+            stm.WriteByte(0x21);
+            stm.WriteString("PKLITE", Encoding.ASCII);
+            stm.WriteBytes(0xCC, 0x0C);
+            return stm.Bytes;
         }
 
 

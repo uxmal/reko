@@ -30,9 +30,9 @@ namespace Decompiler.Core
 	/// </summary>
 	public class RelocationDictionary 
     {
-        private Dictionary<int, Constant> map = new Dictionary<int, Constant>();
+        private Dictionary<uint, Constant> map = new Dictionary<uint, Constant>();
 
-        public Constant this[int imageOffset]
+        public Constant this[uint imageOffset]
         {
             get
             {
@@ -44,19 +44,19 @@ namespace Decompiler.Core
             }
         }
 
-		public void AddPointerReference(int imageOffset, uint pointer)
+		public void AddPointerReference(uint imageOffset, uint pointer)
 		{
 			Constant c = new Constant(PrimitiveType.Pointer32, pointer);
 			map.Add(imageOffset, c);
 		}
 
-		public void AddSegmentReference(int imageOffset, ushort segmentSelector)
+		public void AddSegmentReference(uint imageOffset, ushort segmentSelector)
 		{
 			Constant c = new Constant(PrimitiveType.SegmentSelector, segmentSelector);
 			map.Add(imageOffset, c);
 		}
 
-		public bool Contains(int imageOffset)
+		public bool Contains(uint imageOffset)
 		{
 			return map.ContainsKey(imageOffset);
 		}

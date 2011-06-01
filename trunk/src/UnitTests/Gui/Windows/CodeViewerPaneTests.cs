@@ -33,7 +33,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.UnitTests.Gui.Windows
 {
-    [TestFixture]   
+    [TestFixture]
     public class CodeViewerPaneTests
     {
         private string nl = Environment.NewLine;
@@ -88,9 +88,9 @@ namespace Decompiler.UnitTests.Gui.Windows
             string sExp =
                 "<html><head><style> </style></head>" + nl +
                 "<body><pre id=\"contents\">void ProcedureMock()<br />" + nl +
-                "{<br />" + nl + 
+                "{<br />" + nl +
                 "ProcedureMock_entry:<br />" + nl +
-                "}<br />" +nl +
+                "}<br />" + nl +
                 "</pre></body></html>";
             Assert.AreEqual(sExp, codeViewer.WebControl.DocumentText);
         }
@@ -114,7 +114,8 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             public string DocumentText
             {
-                get { return Text; } set { Text= value; }
+                get { return Text; }
+                set { Text = value; }
             }
 
             public void SetInnerHtmlOfElement(string elementId, string innerHtml)
@@ -129,8 +130,18 @@ namespace Decompiler.UnitTests.Gui.Windows
             public event WebBrowserNavigatingEventHandler Navigating;
 
             #endregion
+
+            public void Test_Navigate(string url, string target)
+            {
+                if (Navigating != null)
+                    Navigating(this, new WebBrowserNavigatingEventArgs(new Uri(url), target));
+            }
+
+            public void Test_FireDocumentCompleted(string url)
+            {
+                if (DocumentCompleted != null)
+                    DocumentCompleted(this, new WebBrowserDocumentCompletedEventArgs(new Uri(url)));
+            }
         }
     }
-
-
 }

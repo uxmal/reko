@@ -1,4 +1,6 @@
-﻿using Decompiler.Core;
+﻿using Decompiler.Arch.Intel;
+using Decompiler.Arch.Sparc;
+using Decompiler.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +35,12 @@ namespace Decompiler.ImageLoaders.Elf
         public const byte EM_ST20 = 0xa8;			// ST20 (made up... there is no official value?)
 
         public const byte ET_DYN = 3;	// Elf type (dynamic library)
+        public const byte E_REL = 1;		// Relocatable file type
 
 
         public byte[] e_ident; // 4
         public byte e_class;
-        public byte endianness;
+        public byte Endianness;
         public byte version;
         public byte osAbi;
         public byte[] pad; // 8
@@ -58,22 +61,24 @@ namespace Decompiler.ImageLoaders.Elf
 
 
 
-    // Program header
-
+    /// <summary>
+    /// ELF Program header 
+    /// </summary>
     public class Elf32_Phdr
     {
-        public int p_type; /* entry Type */
-        public int p_offset; /* file offset */
-        public int p_vaddr; /* virtual address */
-        public int p_paddr; /* physical address */
-        public int p_filesz; /* file size */
-        public int p_memsz; /* memory size */
-        public int p_flags; /* entry flags */
-        public int p_align; /* memory/file alignment */
+        public int p_type; //  entry Type 
+        public int p_offset; //  file offset 
+        public int p_vaddr; //  virtual address 
+        public int p_paddr; //  physical address 
+        public int p_filesz; //  file size 
+        public int p_memsz; //  memory size 
+        public int p_flags; //  entry flags 
+        public int p_align; //  memory/file alignment 
     }
 
-    // Section header
-
+    /// <summary>
+    /// Section header
+    /// </summary>
     public class Elf32_Shdr
     {
         public const byte SHF_WRITE = 1;		// Writeable
@@ -101,6 +106,8 @@ namespace Decompiler.ImageLoaders.Elf
 
     public class Elf32_Sym
     {
+        public int ELF32_ST_TYPE { get { return st_info & 0x0F; } }
+
         public uint st_name;
         public uint st_value;
         public int st_size;
@@ -123,8 +130,8 @@ namespace Decompiler.ImageLoaders.Elf
 
     struct Elf32_Dyn
     {
-        short d_tag; /* how to interpret value */
-        int data;
+        public short d_tag; //  how to interpret value 
+        public int data;
         public int d_val { get { return data; } }
         public int d_ptr { get { return data; } }
         public int d_off { get { return data; } }
@@ -135,7 +142,6 @@ namespace Decompiler.ImageLoaders.Elf
     {
         public int ELF32_R_SYM(int info) { return ((info) >> 8); }
         public int ELF32_ST_BIND(int i) { return ((i) >> 4); }
-        public int ELF32_ST_TYPE(int i) { return ((i) & 0xf); }
         public int ELF32_ST_INFO(int b, int t) { return (((b) << 4) + ((t) & 0xf)); }
         public const byte STT_NOTYPE = 0;			// Symbol table type: none
         public const byte STT_FUNC = 2;				// Symbol table type: function
@@ -150,8 +156,7 @@ namespace Decompiler.ImageLoaders.Elf
         public const byte DT_STRTAB = 5;	// String table
         public const byte DT_NEEDED = 1;		// A needed link-type object
 
-        public const byte E_REL = 1;		// Relocatable file type
-
+        public uint NO_ADDRESS = ~0U;
 
         // Header functions
   
@@ -175,19 +180,6 @@ namespace Decompiler.ImageLoaders.Elf
         //virtual bool    DisplayDetails(string  fileName, FILE* f = stdout);
 
 
-        public class SectionInfo
-        {
-            internal string pSectionName;
-            internal uint uType;
-            internal bool bCode;
-            internal bool bBss;
-            internal uint uNativeAddr;
-            internal uint uHostAddr;
-            internal uint uSectionSize;
-            internal uint uSectionEntrySize;
-            internal bool bData;
-            internal bool bReadOnly;
-        }
 
         // Analysis functions
         public virtual List<SectionInfo> GetEntryPoints() { return GetEntryPoints("main"); }
@@ -201,14 +193,13 @@ namespace Decompiler.ImageLoaders.Elf
 
         private byte[] m_pImage; // Pointer to the loaded image
         private Elf32_Phdr[] m_pPhdrs; // Pointer to program headers
-        private Elf32_Shdr[] m_pShdrs; // Array of section header structs
+        private Elf32_Shdr[] sectionHeaders; // Array of section header structs
         private uint m_pStrings; // Pointer to the string section
         private int m_elfEndianness; // 1 = Big Endian
         private SortedList<ADDRESS, string> m_SymTab; // Map from address to symbol name; contains symbols from the
         // various elf symbol tables, and possibly some symbols with fake
         // addresses
         //private SymTab m_Reloc; // Object to store the reloc syms
-        private Elf32_Rel[] m_pReloc; // Pointer to the relocation section
         private Elf32_Sym[] m_pSym; // Pointer to loaded symbol section
         private bool m_bAddend; // true if reloc table has addend
         private ADDRESS m_uLastAddr; // Save last address looked up
@@ -216,17 +207,17 @@ namespace Decompiler.ImageLoaders.Elf
         private ADDRESS m_uPltMin; // Min address of PLT table
         private ADDRESS m_uPltMax; // Max address (1 past last) of PLT
         private List<SectionInfo> m_EntryPoint; // A list of one entry point
-        private ADDRESS m_pImportStubs; // An array of import stubs
+        private ADDRESS [] m_pImportStubs; // An array of import stubs
         private ADDRESS m_uBaseAddr; // Base image virtual address
         private uint m_uImageSize; // total image size (bytes)
         private ADDRESS first_extern; // where the first extern will be placed
         private ADDRESS next_extern; // where the next extern will be placed
-        private int[] m_sh_link; // pointer to array of sh_link values
-        private int[] m_sh_info; // pointer to array of sh_info values
+        public int[] m_sh_link; // pointer to array of sh_link values
+        public int[] m_sh_info; // pointer to array of sh_info values
         private bool m_bArchive;
         private int m_iNumSections;
-        private SectionInfo [] m_pSections;        //$ImageMap
-        private Elf32_Ehdr pHeader;
+        public SectionInfo[] Sections { get; private set; }        //$ImageMap
+        public Elf32_Ehdr ElfHeader { get; private set; }
         private IProcessorArchitecture arch;
 
         public ElfImageLoader(IServiceProvider services, byte[] rawImage, bool bArchive /* = false */)
@@ -238,19 +229,22 @@ namespace Decompiler.ImageLoaders.Elf
         }
 
 
+        public override IProcessorArchitecture Architecture { get { return arch; } }
+        public override Platform Platform { get { throw new NotSupportedException(); } }
+
         // Reset internal state, except for those that keep track of which member
         // we're up to
         private void Init()
         {
             m_pImage = null;
             m_pPhdrs = null; // No program headers
-            m_pShdrs = null; // No section headers
+            sectionHeaders = null; // No section headers
             m_pStrings = 0; // No strings
             m_pSym = null;
             m_uPltMin = 0; // No PLT limits
             m_uPltMax = 0;
             m_iLastSize = 0;
-            m_pImportStubs = 0;
+            m_pImportStubs = null;
         }
 
         uint elf_hash(string name)
@@ -282,62 +276,61 @@ namespace Decompiler.ImageLoaders.Elf
             }
 
             m_pImage = RawImage;
-            pHeader = LoadElf32Header(m_pImage); // Save a lot of casts
+            ElfHeader = LoadElf32Header(m_pImage); // Save a lot of casts
+
             // Basic checks
 
-
-            if (pHeader.endianness != 1 && pHeader.endianness != 2)
-                throw new BadImageFormatException(string.Format("Unknown ELF endianness {0:X2}.", pHeader.endianness));
-            m_elfEndianness = pHeader.endianness - 1;
-            
+            if (ElfHeader.Endianness != 1 && ElfHeader.Endianness != 2)
+                throw new BadImageFormatException(string.Format("Unknown ELF endianness {0:X2}.", ElfHeader.Endianness));
+            m_elfEndianness = ElfHeader.Endianness - 1;
             return true;
         }
 
         public override ProgramImage Load(Address addrLoad)
         {
             // Load program headers (in case needed)
-            m_pPhdrs = LoadElf32ProgramHeader(pHeader);
+            m_pPhdrs = LoadElf32ProgramHeader(ElfHeader);
 
             // Load section headers 
-            m_pShdrs = LoadElf32SectionHeaders();
+            sectionHeaders = LoadElf32SectionHeaders();
 
             // Set up section header string table pointer
             // NOTE: it does not appear that endianness affects shorts.. they are always in little endian format
             // Gerard: I disagree. I need the elfRead on linux/i386
-            uint i = pHeader.e_shstrndx; // pHeader.e_shstrndx;
-            if (i != 0) m_pStrings = m_pShdrs[i].sh_offset;
+            uint i = ElfHeader.e_shstrndx; // pHeader.e_shstrndx;
+            if (i != 0) m_pStrings = sectionHeaders[i].sh_offset;
 
             i = 1; // counter - # sects. Start @ 1, total m_iNumSections
             uint pName; // Section's name
 
             // Number of sections
-            m_iNumSections = pHeader.e_shnum;
+            m_iNumSections = ElfHeader.e_shnum;
 
             // Allocate room for all the Elf sections (including the silly first one)
-            m_pSections = new SectionInfo[m_iNumSections];
+            Sections = new SectionInfo[m_iNumSections];
 
             // Set up the m_sh_link and m_sh_info arrays
             m_sh_link = new int[m_iNumSections];
             m_sh_info = new int[m_iNumSections];
 
-            // Number of elf sections
+            // Number of ELF sections
             bool bGotCode = false; // True when have seen a code sect
             ADDRESS arbitaryLoadAddr = PreferredBaseAddress.Linear;
             for (i = 0; i < m_iNumSections; i++)
             {
                 // Get section information.
-                Elf32_Shdr pShdr = m_pShdrs[i];
+                Elf32_Shdr pShdr = sectionHeaders[i];
                 pName = m_pStrings + pShdr.sh_name;
                 if (pName >= m_pImage.Length)
                     throw new BadImageFormatException("The name for section " + i + " is outside the image size.");
                 
                 var sectionName = ReadAsciizString(pName);
-                m_pSections[i].pSectionName = sectionName;
+                Sections[i].pSectionName = sectionName;      //$ Move.
                 uint off = pShdr.sh_offset;
-                if (off != 0) m_pSections[i].uHostAddr = off;
-                m_pSections[i].uNativeAddr = pShdr.sh_addr;
-                m_pSections[i].uSectionSize = pShdr.sh_size;
-                if (m_pSections[i].uNativeAddr == 0 && string.Compare(sectionName, 0, ".rel", 0, 4) != 0)
+                if (off != 0) Sections[i].uHostAddr = off;
+                Sections[i].uNativeAddr = pShdr.sh_addr;
+                Sections[i].uSectionSize = pShdr.sh_size;
+                if (Sections[i].uNativeAddr == 0 && !sectionName.StartsWith(".rel"))
                 {
                     uint align = pShdr.sh_addralign;
                     if (align > 1)
@@ -345,25 +338,25 @@ namespace Decompiler.ImageLoaders.Elf
                         if ((arbitaryLoadAddr % align) != 0)
                             arbitaryLoadAddr += align - (arbitaryLoadAddr % align);
                     }
-                    m_pSections[i].uNativeAddr = arbitaryLoadAddr;
-                    arbitaryLoadAddr += m_pSections[i].uSectionSize;
+                    Sections[i].uNativeAddr = arbitaryLoadAddr;
+                    arbitaryLoadAddr += Sections[i].uSectionSize;
                 }
-                m_pSections[i].uType = pShdr.sh_type;
+                Sections[i].uType = pShdr.sh_type;       //$ Move
                 m_sh_link[i] = pShdr.sh_link;
                 m_sh_info[i] = pShdr.sh_info;
-                m_pSections[i].uSectionEntrySize = pShdr.sh_entsize;
-                if (m_pSections[i].uNativeAddr + m_pSections[i].uSectionSize > next_extern)
-                    first_extern = next_extern = m_pSections[i].uNativeAddr + m_pSections[i].uSectionSize;
+                Sections[i].uSectionEntrySize = pShdr.sh_entsize;
+                if (Sections[i].uNativeAddr + Sections[i].uSectionSize > next_extern)
+                    first_extern = next_extern = Sections[i].uNativeAddr + Sections[i].uSectionSize;
                 if ((pShdr.sh_flags & Elf32_Shdr.SHF_WRITE) == 0)
-                    m_pSections[i].bReadOnly = true;
+                    Sections[i].IsReadOnly = true;
                 // Can't use the Elf32_Shdr.SHF_ALLOC bit to determine bss section; the bss section has SHF_ALLOC but also Elf32_Shdr.SHT_NOBITS.
                 // (But many other sections, such as .comment, also have Elf32_Shdr.SHT_NOBITS). So for now, just use the name
                 //      if ((elfRead4(ref pShdr.sh_flags) & SHF_ALLOC) == 0)
                 if (sectionName == ".bss")
-                    m_pSections[i].bBss = true;
+                    Sections[i].bBss = true;
                 if ((pShdr.sh_flags & Elf32_Shdr.SHF_EXECINSTR) != 0)
                 {
-                    m_pSections[i].bCode = true;
+                    Sections[i].bCode = true;
                     bGotCode = true; // We've got to a code section
                 }
                 // Deciding what is data and what is not is actually quite tricky but important.
@@ -377,24 +370,24 @@ namespace Decompiler.ImageLoaders.Elf
                 if (bGotCode && 
                     ((pShdr.sh_flags & (Elf32_Shdr.SHF_EXECINSTR | Elf32_Shdr.SHF_ALLOC)) == Elf32_Shdr.SHF_ALLOC) &&
                     (pShdr.sh_type != Elf32_Shdr.SHT_NOBITS))
-                    m_pSections[i].bData = true;
+                    Sections[i].bData = true;
             } // for each section
 
             // assign arbitary addresses to .rel.* sections too
             for (i = 0; i < m_iNumSections; i++)
-                if (m_pSections[i].uNativeAddr == 0 && string.Compare(m_pSections[i].pSectionName, 0, ".rel", 0, 4) == 0)
+                if (Sections[i].uNativeAddr == 0 && string.Compare(Sections[i].pSectionName, 0, ".rel", 0, 4) == 0)
                 {
-                    m_pSections[i].uNativeAddr = arbitaryLoadAddr;
-                    arbitaryLoadAddr += m_pSections[i].uSectionSize;
+                    Sections[i].uNativeAddr = arbitaryLoadAddr;
+                    arbitaryLoadAddr += Sections[i].uSectionSize;
                 }
 
             // Add symbol info. Note that some symbols will be in the main table only, and others in the dynamic table only.
             // So the best idea is to add symbols for all sections of the appropriate type
             for (i = 1; i < m_iNumSections; ++i)
             {
-                uint uType = m_pSections[i].uType;
+                uint uType = Sections[i].uType;
                 if (uType == Elf32_Shdr.SHT_SYMTAB || uType == Elf32_Shdr.SHT_DYNSYM)
-                    AddSyms(pHeader, i);
+                    AddSyms(ElfHeader, i);
             }
             return new ProgramImage(null, m_pImage);
         }
@@ -406,18 +399,12 @@ namespace Decompiler.ImageLoaders.Elf
             if (pRel != null)
             {
                 m_bAddend = true; // Remember its a relA table
-                m_pReloc = (Elf32_Rel)pRel.uHostAddr; // Save pointer to reloc table
                 //SetRelocInfo(pRel);
             }
             else
             {
                 m_bAddend = false;
                 pRel = GetSectionInfoByName(".rel.text");
-                if (pRel != null)
-                {
-                    //SetRelocInfo(pRel);
-                    m_pReloc = (Elf32_Rel)pRel.uHostAddr; // Save pointer to reloc table
-                }
             }
 
             // Find the PLT limits. Required for IsDynamicLinkedProc(), e.g.
@@ -437,7 +424,7 @@ namespace Decompiler.ImageLoaders.Elf
             throw new NotImplementedException();
         }
 
-        private string ReadAsciizString(uint pName)
+        public string ReadAsciizString(uint pName)
         {
             int iStart = (int)pName;
             int i = iStart;
@@ -448,10 +435,10 @@ namespace Decompiler.ImageLoaders.Elf
 
         private Elf32_Shdr [] LoadElf32SectionHeaders()
         {
-            if (pHeader.e_shnum == 0)
+            if (ElfHeader.e_shnum == 0)
                 return null;
-            var rdr = CreateReader(pHeader.e_shoff);
-            var shdrs = new Elf32_Shdr[pHeader.e_shnum];
+            var rdr = CreateReader(ElfHeader.e_shoff);
+            var shdrs = new Elf32_Shdr[ElfHeader.e_shnum];
             for (int i = 0; i < shdrs.Length; ++i)
             {
                 var shdr = new Elf32_Shdr();
@@ -481,21 +468,21 @@ namespace Decompiler.ImageLoaders.Elf
             for (int i = 0; i < phdrs.Length; ++i)
             {
                 var phdr = new Elf32_Phdr();
-                phdr.p_type = rdr.ReadInt32(); /* entry Type */
-                phdr.p_offset = rdr.ReadInt32(); /* file offset */
-                phdr.p_vaddr = rdr.ReadInt32(); /* virtual address */
-                phdr.p_paddr = rdr.ReadInt32(); /* physical address */
-                phdr.p_filesz = rdr.ReadInt32(); /* file size */
-                phdr.p_memsz = rdr.ReadInt32(); /* memory size */
-                phdr.p_flags = rdr.ReadInt32(); /* entry flags */
-                phdr.p_align = rdr.ReadInt32(); /* memory/file alignment */
+                phdr.p_type = rdr.ReadInt32(); //  entry Type 
+                phdr.p_offset = rdr.ReadInt32(); //  file offset 
+                phdr.p_vaddr = rdr.ReadInt32(); //  virtual address 
+                phdr.p_paddr = rdr.ReadInt32(); //  physical address 
+                phdr.p_filesz = rdr.ReadInt32(); //  file size 
+                phdr.p_memsz = rdr.ReadInt32(); //  memory size 
+                phdr.p_flags = rdr.ReadInt32(); //  entry flags 
+                phdr.p_align = rdr.ReadInt32(); //  memory/file alignment 
                 phdrs[i] = phdr;
             }
             return phdrs;
         }
 
 
-        private ImageReader CreateReader(uint imageOffset)
+        public ImageReader CreateReader(uint imageOffset)
         {
             if (m_elfEndianness > 0)
                 return new BeImageReader(RawImage, imageOffset);
@@ -503,6 +490,13 @@ namespace Decompiler.ImageLoaders.Elf
                 return new LeImageReader(RawImage, imageOffset);
         }
 
+        public ImageWriter CreateWriter()
+        {
+            if (m_elfEndianness > 0)
+                return new BeImageWriter(RawImage);
+            else
+                return new LeImageWriter(RawImage);
+        }
 
         private Elf32_Ehdr LoadElf32Header(byte[] m_pImage)
         {
@@ -516,7 +510,7 @@ namespace Decompiler.ImageLoaders.Elf
                 throw new BadImageFormatException("The file doesn't appear to be an ELF executable binary.");
 
             hdr.e_class = m_pImage[4];
-            hdr.endianness = m_pImage[4];
+            hdr.Endianness = m_pImage[4];
             hdr.version = m_pImage[4];
             hdr.osAbi = m_pImage[4];
 
@@ -553,7 +547,7 @@ namespace Decompiler.ImageLoaders.Elf
                 return "Error!";
             }
             // Get a pointer to the start of the string table
-            var pSym = m_pSections[idx].uHostAddr;
+            var pSym = Sections[idx].uHostAddr;
             // Just add the offset
             return ReadAsciizString(pSym + offset);
         }
@@ -565,22 +559,22 @@ namespace Decompiler.ImageLoaders.Elf
         // typically minimise the number of entries to search
         ADDRESS findRelPltOffset(int i, ADDRESS addrRelPlt, uint sizeRelPlt, uint numRelPlt, ADDRESS addrPlt)
         {
-            int first = i;
-            if (first >= (int) numRelPlt)
-                first = (int) numRelPlt - 1;
-            int curr = first;
+            uint first = (uint) i;
+            if (first >= numRelPlt)
+                first = numRelPlt - 1u;
+            uint curr = first;
             do
             {
                 // Each entry is sizeRelPlt bytes, and will contain the offset, then the info (addend optionally follows)
-                int* pEntry = (int*)(addrRelPlt + (curr * sizeRelPlt));
-                int entry = elfRead4(pEntry + 1); // Read pEntry[1]
+                var pEntry = CreateReader(addrRelPlt + curr * sizeRelPlt + 4);
+                int entry = pEntry.ReadInt32(); // Read pEntry[1]
                 int sym = entry >> 8; // The symbol index is in the top 24 bits (Elf32 only)
                 if (sym == i)
                 {
                     // Found! Now we want the native address of the associated PLT entry.
                     // For now, assume a size of 0x10 for each PLT entry, and assume that each entry in the .rel.plt section
                     // corresponds exactly to an entry in the .plt (except there is one dummy .plt entry)
-                    return addrPlt + 0x10 * (curr + 1);
+                    return addrPlt + 0x10 * (curr + 1u);
                 }
                 if (--curr < 0)
                     curr = numRelPlt - 1;
@@ -592,7 +586,7 @@ namespace Decompiler.ImageLoaders.Elf
         private void AddSyms(Elf32_Ehdr header, uint secIndex)
         {
             var e_type = header.e_type;
-            SectionInfo pSect = m_pSections[secIndex];
+            SectionInfo pSect = Sections[secIndex];
             // Calc number of symbols
             var nSyms = pSect.uSectionSize / pSect.uSectionEntrySize;
             int strIdx = m_sh_link[secIndex]; // sh_link points to the string table
@@ -632,7 +626,7 @@ namespace Decompiler.ImageLoaders.Elf
                 if ((pos = str.IndexOf("@@")) >= 0)
                     str = str.Remove(pos);
                 // Ensure no overwriting (except functions)
-                if (!m_SymTab.ContainsKey(val) || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC)
+                if (!m_SymTab.ContainsKey(val) || m_pSym[i].ELF32_ST_TYPE == STT_FUNC)
                 {
                     if (val == 0 && siPlt != null)
                     { //&& i < max_i_for_hack) {
@@ -642,11 +636,11 @@ namespace Decompiler.ImageLoaders.Elf
                         // section. Thanks, gcc!  Note that this hack can cause strange symbol names to appear
                         val = findRelPltOffset(i, addrRelPlt, sizeRelPlt, numRelPlt, addrPlt);
                     }
-                    else if (e_type == E_REL)
+                    else if (e_type == Elf32_Ehdr.E_REL)
                     {
                         int nsec = sym.st_shndx;
                         if (nsec >= 0 && nsec < m_iNumSections)
-                            val += m_pSections[nsec].uNativeAddr;
+                            val += Sections[nsec].uNativeAddr;
                     }
 
 #if		ECHO_SYMS
@@ -677,13 +671,12 @@ namespace Decompiler.ImageLoaders.Elf
 
         List<ADDRESS> GetExportedAddresses(bool funcsOnly)
         {
-            List<ADDRESS> exported;
+            var exported = new List<ADDRESS>();
 
-            int i;
             int secIndex = 0;
-            for (i = 1; i < m_iNumSections; ++i)
+            for (int i = 1; i < m_iNumSections; ++i)
             {
-                uint uType = m_pSections[i].uType;
+                uint uType = Sections[i].uType;
                 if (uType == Elf32_Shdr.SHT_SYMTAB)
                 {
                     secIndex = i;
@@ -693,19 +686,23 @@ namespace Decompiler.ImageLoaders.Elf
             if (secIndex == 0)
                 return exported;
 
-            int e_type = pHeader.e_type;
-            SectionInfo pSect = m_pSections[secIndex];
+            int e_type = ElfHeader.e_type;
+            SectionInfo pSect = Sections[secIndex];
             // Calc number of symbols
-            int nSyms = pSect.uSectionSize / pSect.uSectionEntrySize;
-            m_pSym = (Elf32_Sym*)pSect.uHostAddr; // Pointer to symbols
+            uint nSyms = pSect.uSectionSize / pSect.uSectionEntrySize;
+            var rdr = CreateReader(pSect.uHostAddr); // Pointer to symbols
             int strIdx = m_sh_link[secIndex]; // sh_link points to the string table
 
             // Index 0 is a dummy entry
-            for (i = 1; i < nSyms; i++)
+            ReadSymbolEntry(rdr);
+            for (int i = 1; i < nSyms; i++)
             {
-                ADDRESS val = (ADDRESS)sym.st_value;
-                uint name = sym[i].st_name;
-                if (name == 0) /* Silly symbols with no names */ continue;
+                var sym = ReadSymbolEntry(rdr);
+                var val = CreateReader(sym.st_value).ReadUInt32();
+
+                uint name = sym.st_name;
+                if (name == 0) // Silly symbols with no names 
+                    continue;
                 string str = GetStrPtr(strIdx, name);
                 // Hack off the "@@GLIBC_2.0" of Linux, if present
                 int pos;
@@ -713,13 +710,13 @@ namespace Decompiler.ImageLoaders.Elf
                     str.Remove(pos);
                 if (ELF32_ST_BIND(m_pSym[i].st_info) == STB_GLOBAL || ELF32_ST_BIND(m_pSym[i].st_info) == STB_WEAK)
                 {
-                    if (funcsOnly == false || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC)
+                    if (funcsOnly == false || m_pSym[i].ELF32_ST_TYPE == STT_FUNC)
                     {
-                        if (e_type == E_REL)
+                        if (e_type == Elf32_Ehdr.E_REL)
                         {
                             var nsec = sym.st_shndx;
                             if (nsec >= 0 && nsec < m_iNumSections)
-                                val += m_pSections[nsec].uNativeAddr;
+                                val += Sections[nsec].uNativeAddr;
                         }
                         exported.Add(val);
                     }
@@ -799,15 +796,15 @@ namespace Decompiler.ImageLoaders.Elf
             }
             // Beware of symbols with STT_NOTYPE, e.g. "open" in libstdc++ !
             // But sometimes "main" has the STT_NOTYPE attribute, so if bNoTypeOK is passed as true, return true
-            if (found && (bNoTypeOK || (ELF32_ST_TYPE(pSym[y].st_info) != STT_NOTYPE)))
+            if (found && (bNoTypeOK || (pSym[y].ELF32_ST_TYPE != STT_NOTYPE)))
             {
                 pVal.uSymAddr = pSym[y].st_value;
-                int e_type = pHeader.e_type;
-                if (e_type == E_REL)
+                int e_type = ElfHeader.e_type;
+                if (e_type == Elf32_Ehdr.E_REL)
                 {
                     int nsec = pSym[y].st_shndx;
                     if (nsec >= 0 && nsec < m_iNumSections)
-                        pVal.uSymAddr += m_pSections[nsec].uNativeAddr;
+                        pVal.uSymAddr += Sections[nsec].uNativeAddr;
                 }
                 pVal.iSymSize = pSym[y].st_size;
                 return true;
@@ -820,7 +817,7 @@ namespace Decompiler.ImageLoaders.Elf
             }
         }
 
-        private Elf32_Sym[] LoadElf32Symbols(SectionInfo section)
+        public Elf32_Sym[] LoadElf32Symbols(SectionInfo section)
         {
             if (section.uHostAddr == 0)
                 return null;
@@ -844,9 +841,9 @@ namespace Decompiler.ImageLoaders.Elf
 
         private int GetSectionIndexByName(string sectionName)
         {
-            for (int i = 0; i < m_pSections.Length; i++)
+            for (int i = 0; i < Sections.Length; i++)
             {
-                if (m_pSections[i].pSectionName == sectionName)
+                if (Sections[i].pSectionName == sectionName)
                     return i;
             }
             return -1;
@@ -863,30 +860,35 @@ namespace Decompiler.ImageLoaders.Elf
             if (pSect == null) return false;
             pStrSect = GetSectionInfoByName(pStrName);
             if (pStrSect == null) return false;
-            string pStr = (string)pStrSect.uHostAddr;
+            var pStr = pStrSect.uHostAddr;
             // Find number of symbols
-            int n = pSect.uSectionSize / pSect.uSectionEntrySize;
-            Elf32_Sym pSym = (Elf32_Sym)pSect.uHostAddr;
+            uint n = pSect.uSectionSize / pSect.uSectionEntrySize;
+            var rdr = CreateReader(pSect.uHostAddr);
             // Search all the symbols. It may be possible to start later than index 0
             for (int i = 0; i < n; i++)
             {
-                int idx = elfRead4(&pSym[i].st_name);
-                if (strcmp(pName, pStr + idx) == 0)
+                var sym = ReadSymbolEntry(rdr);
+                if (pName == ReadAsciizString(pStrSect.uHostAddr + sym.st_name))
                 {
                     // We have found the symbol
-                    pVal.uSymAddr = elfRead4((int*)&pSym[i].st_value);
-                    int e_type = elfRead2(&((Elf32_Ehdr*)m_pImage).e_type);
-                    if (e_type == E_REL)
+                    pVal.uSymAddr = sym.st_value;
+                    int e_type = ElfHeader.e_type;
+                    if (e_type == Elf32_Ehdr.E_REL)
                     {
-                        int nsec = elfRead2(&pSym[i].st_shndx);
+                        short nsec = sym.st_shndx;
                         if (nsec >= 0 && nsec < m_iNumSections)
                             pVal.uSymAddr += GetSectionInfo(nsec).uNativeAddr;
                     }
-                    pVal.iSymSize = elfRead4(&pSym[i].st_size);
+                    pVal.iSymSize = sym.st_size;
                     return true;
                 }
             }
             return false; // Not found (this table)
+        }
+
+        public SectionInfo GetSectionInfo(int nsec)
+        {
+            throw new NotImplementedException();
         }
 
         // Search for the given symbol. First search .symtab (if present); if not found or the table has been stripped,
@@ -902,21 +904,21 @@ namespace Decompiler.ImageLoaders.Elf
         ADDRESS GetAddressByName(string pName,
             bool bNoTypeOK /* = false */)
         {
-            SymValue Val;
-            bool bSuccess = ValueByName(pName, &Val, bNoTypeOK);
+            SymValue Val = new SymValue();
+            bool bSuccess = ValueByName(pName, Val, bNoTypeOK);
             if (bSuccess)
             {
                 m_iLastSize = Val.iSymSize;
                 m_uLastAddr = Val.uSymAddr;
                 return Val.uSymAddr;
             }
-            else return ADDRESS.NO_ADDRESS;
+            else return NO_ADDRESS;
         }
 
         int GetSizeByName(string pName, bool bNoTypeOK /* = false */)
         {
-            SymValue Val;
-            bool bSuccess = ValueByName(pName, &Val, bNoTypeOK);
+            SymValue Val = new SymValue();
+            bool bSuccess = ValueByName(pName, Val, bNoTypeOK);
             if (bSuccess)
             {
                 m_iLastSize = Val.iSymSize;
@@ -931,31 +933,33 @@ namespace Decompiler.ImageLoaders.Elf
         int GetDistanceByName(string sName, string pSectName)
         {
             int size = GetSizeByName(sName);
-            if (size) return size; // No need to guess!
+            if (size!=0) return size; // No need to guess!
             // No need to guess, but if there are fillers, then subtracting labels will give a better answer for coverage
             // purposes. For example, switch_cc. But some programs (e.g. switch_ps) have the switch tables between the
             // end of _start and main! So we are better off overall not trying to guess the size of _start
-            unsigned value = GetAddressByName(sName);
+            uint value = GetAddressByName(sName);
             if (value == 0) return 0; // Symbol doesn't even exist!
 
-            PSectionInfo pSect;
-            pSect = GetSectionInfoByName(pSectName);
-            if (pSect == 0) return 0;
+            SectionInfo pSect = GetSectionInfoByName(pSectName);
+            if (pSect == null) return 0;
             // Find number of symbols
-            int n = pSect.uSectionSize / pSect.uSectionEntrySize;
-            Elf32_Sym* pSym = (Elf32_Sym*)pSect.uHostAddr;
+            uint n = pSect.uSectionSize / pSect.uSectionEntrySize;
+            var rdr = CreateReader(pSect.uHostAddr);
             // Search all the symbols. It may be possible to start later than index 0
-            unsigned closest = 0xFFFFFFFF;
+            uint closest = 0xFFFFFFFFu;
             int idx = -1;
             for (int i = 0; i < n; i++)
             {
-                if ((pSym[i].st_value > value) && (pSym[i].st_value < closest))
+                var sym = ReadSymbolEntry(rdr);
+                if ((sym.st_value > value) && sym.st_value < closest)
                 {
                     idx = i;
-                    closest = pSym[i].st_value;
+                    closest = sym.st_value;
                 }
             }
-            if (idx == -1) return 0;
+            if (idx == -1) 
+                return 0;
+            
             // Do some checks on the symbol's value; it might be at the end of the .text section
             pSect = GetSectionInfoByName(".text");
             ADDRESS low = pSect.uNativeAddr;
@@ -965,14 +969,14 @@ namespace Decompiler.ImageLoaders.Elf
                 // Our symbol is in the .text section. Put a ceiling of the end of the section on closest.
                 if (closest > hi) closest = hi;
             }
-            return closest - value;
+            return (int) closest - (int) value;
         }
 
 
         int GetDistanceByName(string sName)
         {
             int val = GetDistanceByName(sName, ".symtab");
-            if (val) return val;
+            if (val!= 0) return val;
             return GetDistanceByName(sName, ".dynsym");
         }
 
@@ -1022,14 +1026,14 @@ namespace Decompiler.ImageLoaders.Elf
 
         ADDRESS GetEntryPoint()
         {
-            return (ADDRESS)elfRead4(&((Elf32_Ehdr*)m_pImage).e_entry);
+            return (ADDRESS)ElfHeader.e_entry;
         }
 
         // FIXME: the below assumes a fixed delta
         ADDRESS NativeToHostAddress(ADDRESS uNative)
         {
             if (m_iNumSections == 0) return 0;
-            return m_pSections[1].uHostAddr - m_pSections[1].uNativeAddr + uNative;
+            return Sections[1].uHostAddr - Sections[1].uNativeAddr + uNative;
         }
 
         ADDRESS GetRelocatedAddress(ADDRESS uNative)
@@ -1039,20 +1043,20 @@ namespace Decompiler.ImageLoaders.Elf
         }
 
 
-        public override IProcessorArchitecture Architecture { get { return arch; } }
-        public override Platform Platform { get{ throw new NotSupportedException(); }}
 
         private IProcessorArchitecture CreateArchitecture()
         {
-            int machine = header.e_machine;
-            if (machine == EM_386) return IntelArchitecture.Flat();
-            else if ((machine == EM_SPARC) || (machine == EM_SPARC32PLUS)) return MACHINE_SPARC;
+            int machine = ElfHeader.e_machine;
+            if (machine == Elf32_Ehdr.EM_386) 
+                return new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            else if ((machine == Elf32_Ehdr.EM_SPARC) || (machine == Elf32_Ehdr.EM_SPARC32PLUS))
+                return new SparcArchitecture();
             //else if (machine == EM_PA_RISC) return MACHINE_HPRISC;
             //else if (machine == EM_68K) return MACHINE_PALM; // Unlikely
             //else if (machine == EM_PPC) return MACHINE_PPC;
             //else if (machine == EM_ST20) return MACHINE_ST20;
             //else if (machine == EM_MIPS) return MACHINE_MIPS;
-            else if (machine == EM_X86_64)
+            else if (machine == Elf32_Ehdr.EM_X86_64)
             {
                 throw new NotSupportedException("The AMD x86-64 architecture is not supported yet.");
             }
@@ -1062,8 +1066,8 @@ namespace Decompiler.ImageLoaders.Elf
 
         public virtual bool isLibrary()
         {
-            int type = elfRead2(&((Elf32_Ehdr*)m_pImage).e_type);
-            return (type == ET_DYN);
+            int type = ElfHeader.e_type;
+            return (type == Elf32_Ehdr.ET_DYN);
         }
 
         List<string> getDependencyList()
@@ -1072,32 +1076,43 @@ namespace Decompiler.ImageLoaders.Elf
             ADDRESS stringtab = ~0U;
             var dynsect = GetSectionInfoByName(".dynamic");
             if (dynsect == null)
-                return result; /* no dynamic section = statically linked */
+                return result; //  no dynamic section = statically linked 
 
-            Elf32_Dyn* dyn;
-            for (dyn = (Elf32_Dyn*)dynsect.uHostAddr; dyn.d_tag != DT_NULL; dyn++)
+            var rdr = CreateReader(dynsect.uHostAddr);
+            Elf32_Dyn dyn;
+            for (dyn = ReadDependencyEntry(rdr); dyn.d_tag != DT_NULL; dyn = ReadDependencyEntry(rdr))
             {
                 if (dyn.d_tag == DT_STRTAB)
                 {
-                    stringtab = (ADDRESS)dyn.d_un.d_ptr;
+                    stringtab = (ADDRESS)dyn.d_ptr;
                     break;
                 }
             }
 
-            if (stringtab == ADDRESS.NO_ADDRESS) /* No string table = no names */
+            if (stringtab == NO_ADDRESS) //  No string table = no names 
                 return result;
             stringtab = NativeToHostAddress(stringtab);
 
-            for (dyn = (Elf32_Dyn*)dynsect.uHostAddr; dyn.d_tag != DT_NULL; dyn++)
+            rdr = CreateReader(dynsect.uHostAddr);
+            for (dyn = ReadDependencyEntry(rdr); dyn.d_tag != DT_NULL; dyn = ReadDependencyEntry(rdr))
             {
                 if (dyn.d_tag == DT_NEEDED)
                 {
-                    string need = (char*)stringtab + dyn.d_un.d_val;
-                    if (need != null)
-                        result.push_back(need);
+                    uint need = (uint)(stringtab + dyn.d_val);
+                    if (need != 0)
+                        result.Add(ReadAsciizString(need));
                 }
             }
             return result;
+        }
+
+        private Elf32_Dyn ReadDependencyEntry(ImageReader rdr)
+        {
+            var dyn = new Elf32_Dyn();
+            dyn.d_tag = rdr.ReadInt16();
+            dyn.data = rdr.ReadInt32();
+            return dyn;
+
         }
 
         public ADDRESS getImageBase()
@@ -1118,41 +1133,41 @@ namespace Decompiler.ImageLoaders.Elf
          * PARAMETERS:	  numImports - reference to integer set to the number of these
          * RETURNS:		  An array of native ADDRESSes
          *============================================================================*/
-        ADDRESS GetImportStubs(out int numImports)
+        ADDRESS [] GetImportStubs(out int numImports)
         {
             ADDRESS a = m_uPltMin;
             int n = 0;
-            std_map<ADDRESS, string>.iterator aa = m_SymTab.find(a);
-            std_map<ADDRESS, string>.iterator ff = aa;
+            int aa = m_SymTab.IndexOfKey(a);
+            int ff = aa;
             bool delDummy = false;
-            if (aa == m_SymTab.end())
+            if (aa < 0)
             {
                 // Need to insert a dummy entry at m_uPltMin
                 delDummy = true;
                 m_SymTab[a] = "";
-                ff = m_SymTab.find(a);
+                ff = m_SymTab.IndexOfKey(a);
                 aa = ff;
                 aa++;
             }
-            while ((aa != m_SymTab.end()) && (a < m_uPltMax))
+            while ((0 <= aa && aa < m_SymTab.Count) && (a < m_uPltMax))
             {
                 n++;
-                a = aa.first;
+                a = m_SymTab.Keys[aa];
                 aa++;
             }
             // Allocate an array of ADDRESSESes
             m_pImportStubs = new ADDRESS[n];
             aa = ff; // Start at first
-            a = aa.first;
+            a = m_SymTab.Keys[aa];
             int i = 0;
-            while ((aa != m_SymTab.end()) && (a < m_uPltMax))
+            while ((0 <= aa && aa < m_SymTab.Count) && (a < m_uPltMax))
             {
                 m_pImportStubs[i++] = a;
-                a = aa.first;
+                a = m_SymTab.Keys[aa];
                 aa++;
             }
             if (delDummy)
-                m_SymTab.erase(ff); // Delete dummy entry
+                m_SymTab.RemoveAt(ff); // Delete dummy entry
             numImports = n;
             return m_pImportStubs;
         }
@@ -1205,12 +1220,15 @@ namespace Decompiler.ImageLoaders.Elf
             uint p = pSect.uHostAddr;
             for (int i = 0; i < numEnt; i++)
             {
+                throw new NotImplementedException();
+#if NYI
                 // The ugly p[1] below is because it p might point to an Elf32_Rela struct, or an Elf32_Rel struct
                 int sym = ELF32_R_SYM(((int*)p)[1]);
                 uint name = pSym[sym].st_name; // Index into string table
                 string s = GetStrPtr(idxStr, name);
                 ADDRESS val = ((int*)p)[0];
                 ret[val] = s; // Add the (val, s) mapping to ret
+#endif
                 p += pSect.uSectionEntrySize;
             }
 
@@ -1221,201 +1239,87 @@ namespace Decompiler.ImageLoaders.Elf
         // Apply relocations; important when compiled without -fPIC
         private void applyRelocations()
         {
-            int nextFakeLibAddr = -2; // See R_386_PC32 below; -1 sometimes used for main
-            if (m_pImage == null) return; // No file loaded
-            int machine = pHeader.e_machine;
-            int e_type = pHeader.e_type;
-            switch (machine)
-            {
-            default:
-                throw new NotImplementedException();
-            case Elf32_Ehdr.EM_386:
-                {
-                    for (int i = 1; i < m_iNumSections; ++i)
-                    {
-                        SectionInfo ps = m_pSections[i];
-                        if (ps.uType == Elf32_Shdr.SHT_REL)
-                        {
-                            // A section such as .rel.dyn or .rel.plt (without an addend field).
-                            // Each entry has 2 words: r_offet and r_info. The r_offset is just the offset from the beginning
-                            // of the section (section given by the section header's sh_info) to the word to be modified.
-                            // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
-                            // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
-                            // the section header's sh_link field.
-                            var pReloc = CreateReader(ps.uHostAddr);
-                            uint size = ps.uSectionSize;
-                            // NOTE: the r_offset is different for .o files (E_REL in the e_type header field) than for exe's
-                            // and shared objects!
-                            ADDRESS destNatOrigin = 0, destHostOrigin = 0;
-                            if (e_type == E_REL)
-                            {
-                                int destSection = m_sh_info[i];
-                                destNatOrigin = m_pSections[destSection].uNativeAddr;
-                                destHostOrigin = m_pSections[destSection].uHostAddr;
-                            }
-                            int symSection = m_sh_link[i]; // Section index for the associated symbol table
-                            int strSection = m_sh_link[symSection]; // Section index for the string section assoc with this
-                            uint pStrSection = m_pSections[strSection].uHostAddr;
-                            uint symOrigin = m_pSections[symSection].uHostAddr;     // Elf32_sym's
-                            for (uint u = 0; u < size; u += 2 * sizeof(uint))
-                            {
-                                uint r_offset = pReloc.ReadUInt32();
-                                uint info = pReloc.ReadUInt32();
-                                byte relType = (byte)info;
-                                uint symTabIndex = info >> 8;
-                                uint pRelWord; // Pointer to the word to be relocated
-                                if (e_type == E_REL)
-                                    pRelWord = (destHostOrigin + r_offset);
-                                else
-                                {
-                                    if (r_offset == 0) continue;
-                                    SectionInfo destSec = GetSectionInfoByAddr(r_offset);
-                                    pRelWord = (destSec.uHostAddr - destSec.uNativeAddr + r_offset);
-                                    destNatOrigin = 0;
-                                }
-                                ADDRESS A, S = 0, P;
-                                int nsec;
-                                switch (relType)
-                                {
-                                case 0: // R_386_NONE: just ignore (common)
-                                    break;
-                                case 1: // R_386_32: S + A
-                                    S = elfRead4((int*)&symOrigin[symTabIndex].st_value);
-                                    if (e_type == E_REL)
-                                    {
-                                        nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
-                                        if (nsec >= 0 && nsec < m_iNumSections)
-                                            S += GetSectionInfo(nsec).uNativeAddr;
-                                    }
-                                    A = elfRead4(pRelWord);
-                                    elfWrite4(pRelWord, S + A);
-                                    break;
-                                case 2: // R_386_PC32: S + A - P
-                                    if (ELF32_ST_TYPE(symOrigin[symTabIndex].st_info) == STT_SECTION)
-                                    {
-                                        nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
-                                        if (nsec >= 0 && nsec < m_iNumSections)
-                                            S = GetSectionInfo(nsec).uNativeAddr;
-                                    }
-                                    else
-                                    {
-                                        S = elfRead4((int*)&symOrigin[symTabIndex].st_value);
-                                        if (S == 0)
-                                        {
-                                            // This means that the symbol doesn't exist in this module, and is not accessed
-                                            // through the PLT, i.e. it will be statically linked, e.g. strcmp. We have the
-                                            // name of the symbol right here in the symbol table entry, but the only way
-                                            // to communicate with the loader is through the target address of the call.
-                                            // So we use some very improbable addresses (e.g. -1, -2, etc) and give them entries
-                                            // in the symbol table
-                                            int nameOffset = elfRead4((int*)&symOrigin[symTabIndex].st_name);
-                                            string pName = pStrSection + nameOffset;
-                                            // this is too slow, I'm just going to assume it is 0
-                                            //S = GetAddressByName(pName);
-                                            //if (S == (e_type == E_REL ? 0x8000000 : 0)) {
-                                            S = nextFakeLibAddr--; // Allocate a new fake address
-                                            AddSymbol(S, pName);
-                                            //}
-                                        }
-                                        else if (e_type == E_REL)
-                                        {
-                                            nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
-                                            if (nsec >= 0 && nsec < m_iNumSections)
-                                                S += GetSectionInfo(nsec).uNativeAddr;
-                                        }
-                                    }
-                                    A = elfRead4(pRelWord);
-                                    P = destNatOrigin + r_offset;
-                                    elfWrite4(pRelWord, S + A - P);
-                                    break;
-                                case 7:
-                                case 8: // R_386_RELATIVE
-                                    break; // No need to do anything with these, if a shared object
-                                default:
-                                    // Console.Out.WriteLine( "Relocation type " + (int)relType + " not handled yet");
-                                    ;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            var relocator = new Relocator(this);
+            relocator.ApplyRelocations();
+        }
+
+        public SectionInfo GetSectionInfoByAddr(uint r_offset)
+        {
+            throw new NotImplementedException();
         }
 
         bool IsRelocationAt(ADDRESS uNative)
         {
             //int nextFakeLibAddr = -2;			// See R_386_PC32 below; -1 sometimes used for main
-            if (m_pImage == 0) return false; // No file loaded
-            int machine = elfRead2(&((Elf32_Ehdr*)m_pImage).e_machine);
-            int e_type = elfRead2(&((Elf32_Ehdr*)m_pImage).e_type);
+            if (m_pImage == null) return false; // No file loaded
+            int machine = ElfHeader.e_machine;
+            int e_type = ElfHeader.e_type;
             switch (machine)
             {
-            case EM_SPARC:
-                break; // Not implemented yet
-            case EM_386:
+            default:
+                throw new NotSupportedException("Unsupported machine type.");
+            case Elf32_Ehdr.EM_SPARC:
+                throw new NotImplementedException();
+            case Elf32_Ehdr.EM_386:
+                for (int i = 1; i < m_iNumSections; ++i)
                 {
-                    for (int i = 1; i < m_iNumSections; ++i)
+                    SectionInfo ps = Sections[i];
+                    if (ps.uType == Elf32_Shdr.SHT_REL)
                     {
-                        SectionInfo* ps = &m_pSections[i];
-                        if (ps.uType == Elf32_Shdr.SHT_REL)
+                        // A section such as .rel.dyn or .rel.plt (without an addend field).
+                        // Each entry has 2 words: r_offet and r_info. The r_offset is just the offset from the beginning
+                        // of the section (section given by the section header's sh_info) to the word to be modified.
+                        // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
+                        // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
+                        // the section header's sh_link field.
+                        var pReloc = CreateReader(ps.uHostAddr);
+                        uint size = ps.uSectionSize;
+                        // NOTE: the r_offset is different for .o files (E_REL in the e_type header field) than for exe's
+                        // and shared objects!
+                        ADDRESS destNatOrigin = 0, destHostOrigin;
+                        if (e_type == Elf32_Ehdr.E_REL)
                         {
-                            // A section such as .rel.dyn or .rel.plt (without an addend field).
-                            // Each entry has 2 words: r_offet and r_info. The r_offset is just the offset from the beginning
-                            // of the section (section given by the section header's sh_info) to the word to be modified.
-                            // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
-                            // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
-                            // the section header's sh_link field.
-                            int* pReloc = (int*)ps.uHostAddr;
-                            unsigned size = ps.uSectionSize;
-                            // NOTE: the r_offset is different for .o files (E_REL in the e_type header field) than for exe's
-                            // and shared objects!
-                            ADDRESS destNatOrigin = 0, destHostOrigin;
-                            if (e_type == E_REL)
+                            int destSection = m_sh_info[i];
+                            destNatOrigin = Sections[destSection].uNativeAddr;
+                            destHostOrigin = Sections[destSection].uHostAddr;
+                        }
+                        //int symSection = m_sh_link[i];			// Section index for the associated symbol table
+                        //int strSection = m_sh_link[symSection];	// Section index for the string section assoc with this
+                        //string pStrSection = (char*)m_pSections[strSection].uHostAddr;
+                        //Elf32_Sym* symOrigin = (Elf32_Sym*) m_pSections[symSection].uHostAddr;
+                        for (uint u = 0; u < size; u += 2 * sizeof(uint))
+                        {
+                            uint r_offset = pReloc.ReadUInt32();
+                            uint info = pReloc.ReadUInt32();
+                            //byte relType = (byte) info;
+                            //unsigned symTabIndex = info >> 8;
+                            ADDRESS pRelWord; // Pointer to the word to be relocated
+                            if (e_type == Elf32_Ehdr.E_REL)
+                                pRelWord = destNatOrigin + r_offset;
+                            else
                             {
-                                int destSection = m_sh_info[i];
-                                destNatOrigin = m_pSections[destSection].uNativeAddr;
-                                destHostOrigin = m_pSections[destSection].uHostAddr;
+                                if (r_offset == 0) continue;
+                                var destSec = GetSectionInfoByAddr(r_offset);
+                                pRelWord = destSec.uNativeAddr + r_offset;
+                                destNatOrigin = 0;
                             }
-                            //int symSection = m_sh_link[i];			// Section index for the associated symbol table
-                            //int strSection = m_sh_link[symSection];	// Section index for the string section assoc with this
-                            //string pStrSection = (char*)m_pSections[strSection].uHostAddr;
-                            //Elf32_Sym* symOrigin = (Elf32_Sym*) m_pSections[symSection].uHostAddr;
-                            for (unsigned u = 0; u < size; u += 2 * sizeof(unsigned))
-                            {
-                                unsigned r_offset = elfRead4(pReloc++);
-                                //unsigned info	= elfRead4(pReloc);
-                                pReloc++;
-                                //byte relType = (byte) info;
-                                //unsigned symTabIndex = info >> 8;
-                                ADDRESS pRelWord; // Pointer to the word to be relocated
-                                if (e_type == E_REL)
-                                    pRelWord = destNatOrigin + r_offset;
-                                else
-                                {
-                                    if (r_offset == 0) continue;
-                                    SectionInfo* destSec = GetSectionInfoByAddr(r_offset);
-                                    pRelWord = destSec.uNativeAddr + r_offset;
-                                    destNatOrigin = 0;
-                                }
-                                if (uNative == pRelWord)
-                                    return true;
-                            }
+                            if (uNative == pRelWord)
+                                return true;
                         }
                     }
                 }
-            default:
-                break; // Not implemented
+                break;
             }
             return false;
         }
 
-        string getFilenameSymbolFor(string sym)
+        string getFilenameSymbolFor(string symbol)
         {
             int i;
             int secIndex = 0;
             for (i = 1; i < m_iNumSections; ++i)
             {
-                unsigned uType = m_pSections[i].uType;
+                uint uType = Sections[i].uType;
                 if (uType == Elf32_Shdr.SHT_SYMTAB)
                 {
                     secIndex = i;
@@ -1426,35 +1330,37 @@ namespace Decompiler.ImageLoaders.Elf
                 return null;
 
             //int e_type = elfRead2(&((Elf32_Ehdr*)m_pImage).e_type);
-            SectionInfo pSect = m_pSections[secIndex];
+            SectionInfo pSect = Sections[secIndex];
             // Calc number of symbols
-            int nSyms = pSect.uSectionSize / pSect.uSectionEntrySize;
-            m_pSym = (Elf32_Sym*)pSect.uHostAddr; // Pointer to symbols
+            uint nSyms = pSect.uSectionSize / pSect.uSectionEntrySize;
+            var rdr = CreateReader(pSect.uHostAddr); // Pointer to symbols
             int strIdx = m_sh_link[secIndex]; // sh_link points to the string table
+            string filename = "";
 
-            string filename;
-
-            // Index 0 is a dummy entry
-            for (int i = 1; i < nSyms; i++)
+            ReadSymbolEntry(rdr); // Index 0 is a dummy entry
+            for ( i = 1; i < nSyms; i++)
             {
+                var sym = ReadSymbolEntry(rdr);
                 //ADDRESS val = (ADDRESS) elfRead4((int*)&m_pSym[i].st_value);
-                int name = elfRead4(&m_pSym[i].st_name);
-                if (name == 0) /* Silly symbols with no names */ continue;
+                uint name = sym.st_name;
+                if (name == 0) // Silly symbols with no names
+                    continue;
                 string str = GetStrPtr(strIdx, name);
                 // Hack off the "@@GLIBC_2.0" of Linux, if present
-                unsigned pos;
-                if ((pos = str.find("@@")) >= 0)
-                    str.erase(pos);
-                if (ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FILE)
+                int pos;
+                if ((pos = str.IndexOf("@@")) >= 0)
+                    str = str.Remove(pos);
+                if (m_pSym[i].ELF32_ST_TYPE == STT_FILE)
                 {
                     filename = str;
                     continue;
                 }
-                if (str == sym)
+                if (str == symbol)
                 {
-                    if (filename.length())
-                        return strdup(filename.c_str());
-                    return null;
+                    if (string.IsNullOrEmpty(filename))
+                        return null;
+                    else 
+                        return filename;
                 }
             }
             return null;
@@ -1466,7 +1372,7 @@ namespace Decompiler.ImageLoaders.Elf
             int secIndex = 0;
             for (i = 1; i < m_iNumSections; ++i)
             {
-                var uType = m_pSections[i].uType;
+                var uType = Sections[i].uType;
                 if (uType == Elf32_Shdr.SHT_SYMTAB)
                 {
                     secIndex = i;
@@ -1479,7 +1385,7 @@ namespace Decompiler.ImageLoaders.Elf
 
                 for (i = 1; i < m_iNumSections; ++i)
                 {
-                    var uType = m_pSections[i].uType;
+                    var uType = Sections[i].uType;
                     if (uType == Elf32_Shdr.SHT_DYNSYM)
                     {
                         secIndex = i;
@@ -1494,8 +1400,8 @@ namespace Decompiler.ImageLoaders.Elf
                 }
             }
 
-            int e_type = pHeader.e_type;
-            SectionInfo pSect = m_pSections[secIndex];
+            int e_type = ElfHeader.e_type;
+            SectionInfo pSect = Sections[secIndex];
             // Calc number of symbols
             var nSyms = pSect.uSectionSize / pSect.uSectionEntrySize;
             var rdr = CreateReader(pSect.uHostAddr); // Pointer to symbols
@@ -1505,7 +1411,7 @@ namespace Decompiler.ImageLoaders.Elf
 
             // Index 0 is a dummy entry
             ReadSymbolEntry(rdr);
-            for (int i = 1; i < nSyms; i++)
+            for (i = 1; i < nSyms; i++)
             {
                 var sym = ReadSymbolEntry(rdr);
                 var name = sym.st_name;
@@ -1515,19 +1421,19 @@ namespace Decompiler.ImageLoaders.Elf
                 int pos = str.IndexOf("@@");
                 if (pos >= 0)
                     str = str.Remove(pos);
-                if (ELF32_ST_TYPE(sym.st_info) == STT_FILE)
+                if (sym.ELF32_ST_TYPE == STT_FILE)
                 {
                     filename = str;
                     continue;
                 }
-                if (ELF32_ST_TYPE(sym.st_info) == STT_FUNC)
+                if (sym.ELF32_ST_TYPE == STT_FUNC)
                 {
                     var val = (ADDRESS)sym.st_value;
-                    if (e_type == E_REL)
+                    if (e_type == Elf32_Ehdr.E_REL)
                     {
                         var nsec = sym.st_shndx;
                         if (nsec >= 0 && nsec < m_iNumSections)
-                            val += m_pSections[nsec].uNativeAddr;
+                            val += Sections[nsec].uNativeAddr;
                     }
                     if (val == 0)
                     {
@@ -1543,7 +1449,7 @@ namespace Decompiler.ImageLoaders.Elf
 
         // A map for extra symbols, those not in the usual Elf symbol tables
 
-        private void AddSymbol(ADDRESS uNative, string pName)
+        public void AddSymbol(ADDRESS uNative, string pName)
         {
             m_SymTab[uNative] = pName;
         }

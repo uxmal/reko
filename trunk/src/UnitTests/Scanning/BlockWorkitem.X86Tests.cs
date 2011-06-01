@@ -44,7 +44,6 @@ namespace Decompiler.UnitTests.Scanning
         private Procedure proc;
         private Block block;
         private RtlStatementStream stm;
-        private IntelEmitter emitter;
         private IScanner scanner;
         private RewriterHost host;
         private MockRepository repository;

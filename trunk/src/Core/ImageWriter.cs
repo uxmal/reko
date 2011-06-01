@@ -25,36 +25,47 @@ using System.Text;
 
 namespace Decompiler.Core
 {
-    public class ImageWriter
+    public abstract class ImageWriter
     {
-        private Stream stm;
-
-        public ImageWriter() : this(new MemoryStream())
+        public ImageWriter() 
         {
+            this.Bytes = new byte[16];
+            this.Position = 0;
         }
 
-        public ImageWriter(Stream stm)
+        public ImageWriter(byte[] image)
         {
-            this.stm = stm;
+            this.Bytes = image;
+            this.Position = 0;
         }
+
+        public byte[] Bytes { get; private set;}
+        public int Position { get; set; }
 
         public void WriteByte(byte b)
         {
-            stm.WriteByte(b);
+            if (Position >= Bytes.Length)
+            {
+                var bytes = Bytes;
+                Array.Resize<byte>(ref bytes, (Bytes.Length + 1) * 2);
+                Bytes = bytes;
+            }
+            Bytes[Position++] = b;
         }
 
         public void WriteBytes(byte b, uint count)
         {
             while (count > 0)
             {
-                stm.WriteByte(b);
+                WriteByte(b);
                 --count;
             }
         }
 
         public void WriteBytes(byte[] bytes)
         {
-            stm.Write(bytes, 0, bytes.Length);
+            foreach (byte b in bytes)
+                WriteByte(b);
         }
 
         public void WriteString(string str, Encoding enc)
@@ -62,10 +73,55 @@ namespace Decompiler.Core
             WriteBytes(enc.GetBytes(str));
         }
 
-        public void WriteLeUint16(ushort us)
+        public void WriteLeUInt16(ushort us)
         {
-            stm.WriteByte((byte) us);
-            stm.WriteByte((byte) (us >> 8));
+            WriteByte((byte) us);
+            WriteByte((byte) (us >> 8));
         }
+
+        public void WriteBeUInt32(uint offset, uint ui)
+        {
+            Bytes[offset] = (byte)(ui >> 24);
+            Bytes[offset + 1] = (byte)(ui >> 16);
+            Bytes[offset + 2] = (byte)(ui >> 8);
+            Bytes[offset + 3] = (byte)ui;
+        }
+
+        public void WriteLeUInt32(uint offset, uint ui)
+        {
+            Bytes[offset] = (byte)ui;
+            Bytes[offset+1] = (byte)(ui >> 8);
+            Bytes[offset+2] = (byte)(ui >> 16);
+            Bytes[offset+3] = (byte)(ui >> 24);
+        }
+
+        public abstract void WriteUInt32(uint offset, uint w);
+
+    }
+
+    public class BeImageWriter : ImageWriter
+    {
+        public BeImageWriter()
+        {
+        }
+
+        public BeImageWriter(byte [] image) : base(image)
+        {
+        }
+
+        public override void WriteUInt32(uint offset, uint w) { WriteBeUInt32(offset, w); }
+    }
+
+    public class LeImageWriter : ImageWriter
+    {
+        public LeImageWriter()
+        {
+        }
+
+        public LeImageWriter(byte [] image) :base(image)
+        {
+        }
+
+        public override void WriteUInt32(uint offset, uint w) { WriteLeUInt32(offset, w); }
     }
 }
