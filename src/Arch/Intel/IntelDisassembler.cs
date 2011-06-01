@@ -323,8 +323,8 @@ namespace Decompiler.Arch.Intel
                     break;
                 case 'A':		// Absolute memory address.
                     ++i;
-                    ushort off = rdr.ReadLeUint16();
-                    ushort seg = rdr.ReadLeUint16();
+                    ushort off = rdr.ReadLeUInt16();
+                    ushort seg = rdr.ReadLeUInt16();
                     pOperand = addrOp = new AddressOperand(new Address(seg, off));
                     break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.

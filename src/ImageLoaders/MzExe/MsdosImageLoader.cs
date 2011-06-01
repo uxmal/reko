@@ -66,12 +66,12 @@ namespace Decompiler.ImageLoaders.MzExe
 			int i = exe.e_cRelocations;
 			while (i != 0)
 			{
-				int offset = rdr.ReadLeUint16();
-				ushort segOffset = rdr.ReadLeUint16();
-				offset += segOffset * 0x0010;
+				uint offset = rdr.ReadLeUInt16();
+				ushort segOffset = rdr.ReadLeUInt16();
+				offset += segOffset * 0x0010u;
 
-				ushort seg = (ushort) (imgLoaded.ReadLeUint16(offset) + addrLoad.Selector);
-				imgLoaded.WriteLeUint16(offset, seg);
+				ushort seg = (ushort) (imgLoaded.ReadLeUInt16(offset) + addrLoad.Selector);
+				imgLoaded.WriteLeUInt16(offset, seg);
 				relocations.AddSegmentReference(offset, seg);
 
 				imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);

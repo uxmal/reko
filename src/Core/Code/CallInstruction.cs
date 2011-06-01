@@ -28,11 +28,6 @@ namespace Decompiler.Core.Code
 	{
 		protected Expression expr;
 
-        [Obsolete("", true)]
-		public CallBase(Expression expr, CallSiteOld site) 
-        {
-        }
-
 		public CallBase(Expression expr, CallSite site)
 		{
 			this.expr = expr;
@@ -47,7 +42,7 @@ namespace Decompiler.Core.Code
         }
 	}
 
-    //$TODO: the distinction between indirect call and call is just the type of the target expression. We can get rid of the two subclasses.
+    //$TODO: the distinction between indirect call and call is just the type of the target expression. We should attempt to get rid of the two subclasses.
 	public class IndirectCall : CallBase
 	{
         public IndirectCall(Expression expr, CallSite site) : base(expr, site)

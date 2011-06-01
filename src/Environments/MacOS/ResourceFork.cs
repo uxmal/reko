@@ -44,10 +44,10 @@ namespace Decompiler.Environments.MacOS
         {
             image = bytes;
 
-             rsrcDataOff = ProgramImage.ReadBeUint32(bytes, 0);
-             rsrcMapOff = ProgramImage.ReadBeUint32(bytes, 4);
-             dataSize = ProgramImage.ReadBeUint32(bytes, 8);
-             mapSize = ProgramImage.ReadBeUint32(bytes, 0x0C);
+             rsrcDataOff = ProgramImage.ReadBeUInt32(bytes, 0);
+             rsrcMapOff = ProgramImage.ReadBeUInt32(bytes, 4);
+             dataSize = ProgramImage.ReadBeUInt32(bytes, 8);
+             mapSize = ProgramImage.ReadBeUInt32(bytes, 0x0C);
 
             rsrcTypes =  new ResourceTypeCollection(image, rsrcMapOff, mapSize);
             
@@ -108,9 +108,9 @@ namespace Decompiler.Environments.MacOS
             public ResourceTypeCollection(byte [] bytes, uint offset, uint size)
             {
                 this.bytes = bytes;
-                rsrcTypeListOff = offset + ProgramImage.ReadBeUint16(bytes, (int)offset + 0x18) + 2u;
-                rsrcNameListOff = offset + ProgramImage.ReadBeUint16(bytes, (int) offset + 0x1A);
-                crsrcTypes = ProgramImage.ReadBeUint16(bytes, (int) offset + 0x1C) + 1;
+                rsrcTypeListOff = offset + ProgramImage.ReadBeUInt16(bytes, offset + 0x18) + 2u;
+                rsrcNameListOff = offset + ProgramImage.ReadBeUInt16(bytes, offset + 0x1A);
+                crsrcTypes = ProgramImage.ReadBeUInt16(bytes, offset + 0x1C) + 1;
             }
 
             #region ICollection<ResourceType> Members
@@ -156,12 +156,12 @@ namespace Decompiler.Environments.MacOS
 
             public IEnumerator<ResourceType> GetEnumerator()
             {
-                int offset = (int) rsrcTypeListOff;
+                var offset = rsrcTypeListOff;
                 for (int i = 0; i < crsrcTypes; ++i)
                 {
-                    string rsrcTypeName = Encoding.ASCII.GetString(bytes, offset, 4);
-                    int crsrc = ProgramImage.ReadBeUint16(bytes, offset + 4) + 1;
-                    uint rsrcReferenceListOffset = rsrcTypeListOff + ProgramImage.ReadBeUint16(bytes, offset + 6) - 2;
+                    string rsrcTypeName = Encoding.ASCII.GetString(bytes, (int)offset, 4);
+                    int crsrc = ProgramImage.ReadBeUInt16(bytes, offset + 4) + 1;
+                    uint rsrcReferenceListOffset = rsrcTypeListOff + ProgramImage.ReadBeUInt16(bytes, offset + 6) - 2;
                     yield return new ResourceType(bytes, rsrcTypeName, rsrcReferenceListOffset, rsrcNameListOff, crsrc);
                     offset += 8;
                 }
@@ -237,12 +237,12 @@ namespace Decompiler.Environments.MacOS
 
             public IEnumerator<ResourceReference> GetEnumerator()
             {
-                int offset = (int) this.offset;
+                var offset = this.offset;
                 for (int i = 0; i < count; ++i)
                 {
-                    ushort rsrcID = ProgramImage.ReadBeUint16(bytes, offset);
-                    string name = ReadName(ProgramImage.ReadBeUint16(bytes, offset + 2));
-                    uint dataOff = ProgramImage.ReadBeUint32(bytes, offset + 4) & 0x00FFFFFFU;
+                    ushort rsrcID = ProgramImage.ReadBeUInt16(bytes, offset);
+                    string name = ReadName(ProgramImage.ReadBeUInt16(bytes, offset + 2));
+                    uint dataOff = ProgramImage.ReadBeUInt32(bytes, offset + 4) & 0x00FFFFFFU;
                     yield return new ResourceReference(rsrcID, name, dataOff);
 
                     offset += 0x0C;
@@ -335,9 +335,9 @@ namespace Decompiler.Environments.MacOS
             while (size > 0)
             {
                 JumpTableEntry jte = new JumpTableEntry();
-                jte.RoutineOffsetFromSegmentStart = ir.ReadBeUint16();
+                jte.RoutineOffsetFromSegmentStart = ir.ReadBeUInt16();
                 jte.Instruction = ir.ReadBeUint32();
-                jte.LoadSegTrapNumber = ir.ReadBeUint16();
+                jte.LoadSegTrapNumber = ir.ReadBeUInt16();
                 Debug.WriteLine(string.Format("Jump table entry: {0:x2} {1:X4} {2:X2}", jte.RoutineOffsetFromSegmentStart, jte.Instruction, jte.LoadSegTrapNumber));
                 size -= 8;
             }

@@ -43,24 +43,24 @@ namespace Decompiler.ImageLoaders.MzExe
 		private ushort pklIp;
 		private BitStream bitStm;
 
-		private const int signatureOffset = 0x1C;
-		private const int PspSize = 0x0100;
+		private const uint signatureOffset = 0x1C;
+		private const uint PspSize = 0x0100;
 
 		public PkLiteUnpacker(IServiceProvider services, ExeImageLoader exe, byte [] rawImg) : base(services, rawImg)
 		{
             arch = new IntelArchitecture(ProcessorMode.Real);
             platform = new MsdosPlatform(arch);
 
-			int pkLiteHdrOffset = exe.e_cparHeader * 0x10;
+			uint pkLiteHdrOffset = (uint) (exe.e_cparHeader * 0x10);
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
 				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}", pkLiteHdrOffset));
-			uint cparUncompressed = ProgramImage.ReadLeUint16(RawImage, pkLiteHdrOffset + 1);
+			uint cparUncompressed = ProgramImage.ReadLeUInt16(RawImage, pkLiteHdrOffset + 1);
 			abU = new byte[cparUncompressed * 0x10U];
 
 			if (RawImage[pkLiteHdrOffset + 0x04C] != 0x83)
 				throw new ApplicationException(string.Format("Expected ADD BX,+XX at offset 0x{0:X4}", pkLiteHdrOffset + 0x04C));
-			int offCompressedData = pkLiteHdrOffset + RawImage[pkLiteHdrOffset + 0x04E] * 0x10 - PspSize;
+			uint offCompressedData = pkLiteHdrOffset + RawImage[pkLiteHdrOffset + 0x04E] * 0x10u - PspSize;
 			bitStm = new BitStream(RawImage, offCompressedData);
 		}
 
@@ -79,12 +79,12 @@ namespace Decompiler.ImageLoaders.MzExe
 			if (exe.e_ovno != 0)
 				return false;
 
-			return ProgramImage.CompareArrays(rawImg, signatureOffset, signature, signature.Length);
+			return ProgramImage.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
 		}
 
         public override ProgramImage Load(Address addrLoad)
 		{
-			int dst = PspSize;
+			uint dst = PspSize;
 
 			for (;;)
 			{
@@ -96,8 +96,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
 				// Read span length
 
-				int CX = 0;
-				int BX = bitStm.AccumulateBit(0);				// bx= [0-1]
+				uint CX = 0;
+				uint BX = bitStm.AccumulateBit(0);				// bx= [0-1]
 				BX = bitStm.AccumulateBit(BX);					// bx= [0-3]
 				if (BX < 0x02)
 				{
@@ -216,10 +216,10 @@ l01C8:
 			return imgU;
 		}
 
-		public int CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, int dst)
+		public uint CopyDictionaryWord(byte [] abU, uint offset, uint bytes, BitStream stm, uint dst)
 		{
 			offset |= stm.GetByte();
-			int src = dst - offset;
+			var src = dst - offset;
 			do 
 			{
 				abU[dst++] = abU[src++];
@@ -227,9 +227,9 @@ l01C8:
 			return dst;
 		}
 	
-		public int CopyDictionaryWord2(byte [] abU, int BX, int bytes, BitStream stm, int dst)
+		public uint CopyDictionaryWord2(byte [] abU, uint BX, uint bytes, BitStream stm, uint dst)
 		{
-			BX = (ushort) ab022C[BX] << 8;
+			BX = (ushort) (ab022C[BX] << 8);
 			return CopyDictionaryWord(abU, BX, bytes, stm, dst);
 		}
 
@@ -249,14 +249,14 @@ l01C8:
 				if (relocs == 0)
 					break;
 
-				int relocBase = PspSize + bitStm.GetWord() * 0x10;
+				uint relocBase = PspSize + bitStm.GetWord() * 0x10u;
 				do
 				{
 					ushort relocOff = bitStm.GetWord();
-					ushort seg = imgU.ReadLeUint16(relocBase + relocOff);
+					ushort seg = imgU.ReadLeUInt16(relocBase + relocOff);
 					seg = (ushort) (seg + segCode);
 
-					imgU.WriteLeUint16(relocBase + relocOff, seg);
+					imgU.WriteLeUInt16(relocBase + relocOff, seg);
 					relocations.AddSegmentReference(relocBase + relocOff, seg);
 					imageMap.AddSegment(new Address(seg, 0), seg.ToString("X4"), AccessMode.ReadWrite);
 				} while (--relocs != 0);

@@ -60,10 +60,9 @@ namespace Decompiler.Gui.Windows.Forms
             txt.SuspendLayout();
         }
 
-        private class InnerFormatter : Formatter
+        private new class InnerFormatter : Formatter
         {
             private RichTextBox txt;
-            private WebBrowser wb;
 
             public InnerFormatter(RichTextBox txt) : base(StringWriter.Null)
             {

@@ -44,7 +44,7 @@ namespace Decompiler
         void LoadProgram(string fileName);
         void ScanProgram();
         ProcedureBase ScanProcedure(Address procAddress);
-        void RewriteMachineCode();
+        void RewriteMachineCodeOld();
         DataFlowAnalysis AnalyzeDataFlow();
         void ReconstructTypes();
         void StructureProgram();
@@ -85,7 +85,7 @@ namespace Decompiler
             {
                 LoadProgram(filename);
                 ScanProgram();
-                RewriteMachineCode();
+                RewriteMachineCodeOld();
                 AnalyzeDataFlow();
                 ReconstructTypes();
                 StructureProgram();
@@ -251,7 +251,8 @@ namespace Decompiler
 		/// </summary>
 		/// <param name="prog">the program to rewrite</param>
 		/// <param name="cfg">configuration information</param>
-		public virtual void RewriteMachineCode()
+        [Obsolete("Rewriting is now done by the Scanner. When new Scanner is completed, remove this method.")]
+		public virtual void RewriteMachineCodeOld()
 		{
             eventListener.ShowStatus("Rewriting machine code to intermediate code.");
             if (scanner == null)

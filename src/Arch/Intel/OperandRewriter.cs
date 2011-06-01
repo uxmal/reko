@@ -368,9 +368,9 @@ namespace Decompiler.Arch.Intel
 			if (addr != null && host.Image.Map.IsReadOnlyAddress(addr) && mem.Width.Domain == Domain.Real)
 			{
 				if (mem.Width == PrimitiveType.Real32)
-					return new Cast(PrimitiveType.Real64, host.Image.ReadLeFloat(addr - host.Image.BaseAddress));
+					return new Cast(PrimitiveType.Real64, host.Image.ReadLeFloat(addr));
 				if (mem.Width == PrimitiveType.Real64)
-					return host.Image.ReadLeDouble(addr - host.Image.BaseAddress);
+					return host.Image.ReadLeDouble(addr);
 			}
 			return CreateMemoryAccess(mem, state);
 		}

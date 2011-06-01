@@ -75,7 +75,7 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public void RewriteMachineCode()
+        public void RewriteMachineCodeOld()
         {
             throw new NotImplementedException();
         }

@@ -170,33 +170,33 @@ namespace Decompiler.ImageLoaders.MzExe
 		{
 			ImageReader rdr = new ImageReader(RawImage, 0);
 
-			e_magic = rdr.ReadLeUint16();        
-			e_cbLastPage = rdr.ReadLeUint16();         
-			e_cpImage = rdr.ReadLeUint16();           
-			this.e_cRelocations = rdr.ReadLeUint16();         
-			e_cparHeader = rdr.ReadLeUint16();      
-			e_minalloc = rdr.ReadLeUint16();     
-			e_maxalloc = rdr.ReadLeUint16();     
-			e_ss = rdr.ReadLeUint16();           
-			e_sp = rdr.ReadLeUint16();           
-			e_csum = rdr.ReadLeUint16();         
-			e_ip = rdr.ReadLeUint16();              
-			e_cs = rdr.ReadLeUint16();              
-			e_lfaRelocations = rdr.ReadLeUint16();          
-			e_ovno = rdr.ReadLeUint16();            
+			e_magic = rdr.ReadLeUInt16();        
+			e_cbLastPage = rdr.ReadLeUInt16();         
+			e_cpImage = rdr.ReadLeUInt16();           
+			this.e_cRelocations = rdr.ReadLeUInt16();         
+			e_cparHeader = rdr.ReadLeUInt16();      
+			e_minalloc = rdr.ReadLeUInt16();     
+			e_maxalloc = rdr.ReadLeUInt16();     
+			e_ss = rdr.ReadLeUInt16();           
+			e_sp = rdr.ReadLeUInt16();           
+			e_csum = rdr.ReadLeUInt16();         
+			e_ip = rdr.ReadLeUInt16();              
+			e_cs = rdr.ReadLeUInt16();              
+			e_lfaRelocations = rdr.ReadLeUInt16();          
+			e_ovno = rdr.ReadLeUInt16();            
 			e_res = new ushort[4];
 			for (int i = 0; i != 4; ++i)
 			{
-				e_res[i] = rdr.ReadLeUint16();          
+				e_res[i] = rdr.ReadLeUInt16();          
 			}
-			e_oemid = rdr.ReadLeUint16();           
-			e_oeminfo = rdr.ReadLeUint16();         
+			e_oemid = rdr.ReadLeUInt16();           
+			e_oeminfo = rdr.ReadLeUInt16();         
 			e_res2 = new ushort[10];
 			for (int i = 0; i != 10; ++i)
 			{
-				e_res2[i] = rdr.ReadLeUint16();        
+				e_res2[i] = rdr.ReadLeUInt16();        
 			}
-			e_lfanew = rdr.ReadLeUint32();          
+			e_lfanew = rdr.ReadLeUInt32();          
 		}
 
 		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)

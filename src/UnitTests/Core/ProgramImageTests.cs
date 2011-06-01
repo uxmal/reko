@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Core
 		{
 			var bytes = new byte[] { 0x01, 0x02, 0x03 };
 			var img = new ProgramImage(new Address(0x0C00, 0), bytes);
-			ushort newSeg = img.FixupLeUint16(1, 0x4444);
+			ushort newSeg = img.FixupLeUInt16(1, 0x4444);
 			Assert.AreEqual(0x4746, newSeg);
 		}
 

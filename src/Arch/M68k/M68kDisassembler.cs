@@ -72,7 +72,7 @@ namespace Decompiler.Arch.M68k
 
         public M68kInstruction Disassemble()
         {
-            ushort opcode = rdr.ReadBeUint16();
+            ushort opcode = rdr.ReadBeUInt16();
             DumpOprecs();
             Decoder decoder = FindDecoder(opcode);
             if (decoder == null)
@@ -3999,7 +3999,7 @@ namespace Decompiler.Arch.M68k
                 g_initialized = true;
             }
             g_helper_str = "";
-            g_cpu_ir = g_cpu_pc.ReadBeUint16();
+            g_cpu_ir = g_cpu_pc.ReadBeUInt16();
             g_opcode_type = 0;
 
             instr = new M68kInstruction();
