@@ -603,7 +603,7 @@ namespace Decompiler.Analysis
             ProcedureFlow pf = flow[callee];
 			foreach (int r in pf.TrashedRegisters)
 			{
-				RegisterStorage reg = new RegisterStorage(prog.Architecture.GetRegister(r));
+				var reg = new RegisterStorage(prog.Architecture.GetRegister(r));
 				tsh.TrashedRegisters[reg] = trash;
 			}
 			tsh.TrashedFlags |= pf.grfTrashed;
