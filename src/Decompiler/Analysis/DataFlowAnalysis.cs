@@ -73,21 +73,21 @@ namespace Decompiler.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture, flow);
 				alias.Transform();
                 var doms = new DominatorGraph<Block>(new BlockGraph(proc.RpoBlocks), proc.EntryBlock);
-                SsaTransform sst = new SsaTransform(proc, doms, true);
-				SsaState ssa = sst.SsaState;
+                var sst = new SsaTransform(proc, doms, true);
+				var ssa = sst.SsaState;
 
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
 				cce.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
-				ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
+				var vp = new ValuePropagator(ssa.Identifiers, proc);
 				vp.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
 				// Build expressions. A definition with a single value can be subsumed
 				// into the using expression. 
 
-				Coalescer coa = new Coalescer(proc, ssa);
+				var coa = new Coalescer(proc, ssa);
 				coa.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
@@ -103,12 +103,12 @@ namespace Decompiler.Analysis
                     str.ClassifyUses();
                     str.ModifyUses();
                 }
-				OutParameterTransformer opt = new OutParameterTransformer(proc, ssa.Identifiers);
+				var opt = new OutParameterTransformer(proc, ssa.Identifiers);
 				opt.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
                 // Definitions with multiple uses and variables joined by PHI functions become webs.
-                WebBuilder web = new WebBuilder(proc, ssa.Identifiers, prog.InductionVariables);
+                var web = new WebBuilder(proc, ssa.Identifiers, prog.InductionVariables);
 				web.Transform();
 				ssa.ConvertBack(false);
 			} 

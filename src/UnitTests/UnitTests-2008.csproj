@@ -445,6 +445,7 @@
     <Compile Include="Scanning\ProcedureScannerTests.cs" />
     <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
+    <Compile Include="Scanning\ScannerEvaluatorTests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
   <ItemGroup>

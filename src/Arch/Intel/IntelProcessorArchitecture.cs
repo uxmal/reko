@@ -389,27 +389,17 @@ namespace Decompiler.Arch.Intel
 			return (u & (u - 1)) == 0;
 		}
 
-        public PrimitiveType PointerType
-        {
-            get { return mode.PointerType; }
-        }
 
 		public ProcessorMode ProcessorMode
 		{
 			get { return mode; }
 		}
 
-		public PrimitiveType WordWidth
-		{
-			get { return mode.WordWidth; }
-		}
-
-        public PrimitiveType FramePointerType
-        {
-            get { return mode.FramePointerType; }
-        }
-
+        public PrimitiveType PointerType { get { return mode.PointerType; } }
+        public PrimitiveType WordWidth { get { return mode.WordWidth; } }
+        public PrimitiveType FramePointerType { get { return mode.FramePointerType; } }
         public MachineRegister StackRegister { get { return mode.StackRegister; } }
+        
         public uint CarryFlagMask { get { return (uint)FlagM.CF; } }
     }
 }

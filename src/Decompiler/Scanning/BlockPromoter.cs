@@ -100,9 +100,5 @@ namespace Decompiler.Scanning
         }
 
         public Block CallRetThunkBlock { get; private set; }
-        internal Block CallRetThunkBlock()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

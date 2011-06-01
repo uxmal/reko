@@ -15,7 +15,6 @@
 // esi:Register esi
 // edi:Register edi
 // rLoc2:FPU stack
-// rLoc3:FPU stack
 // FPUF:Flags
 // ax:Register ax
 // ah:Register ah
@@ -48,7 +47,7 @@ l10000000:
 	store(Mem0[edx:word32]) = ecx
 	branch Test(EQ,Z) l10000107
 l10000035:
-	rLoc1 = (real64)Mem0[ebx:int32]
+	rLoc1 = (real64) Mem0[ebx:int32]
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = esi
 	esp = esp - 0x00000004
@@ -65,11 +64,11 @@ l10000048:
 	esi = esi + 0x00000001
 	SZO = cond(esi)
 	store(Mem0[esp + 0x00000014:real32]) = rLoc2
-	call fn1000010A (depth: 0;)
+	call fn1000010A (retsize: 4; FPU: 2;)
 	ecx = eax
 	store(Mem0[esp + 0x0000001C:word32]) = ecx
 	rLoc2 = (real64) Mem0[esp + 0x0000001C:int32]
-	FPUF = cond(rLoc2 - Mem0[esp + 0x0000001C:real32])
+	FPUF = cond(rLoc2 - Mem0[esp + 0x00000014:real32])
 	ax = (word16) FPUF << 8
 	SZO = cond(ah & 0x40)
 	C = false
@@ -79,15 +78,15 @@ l10000072:
 	SZO = cond(ecx)
 	store(Mem0[esp + 0x00000014:word32]) = ecx
 	rLoc2 = (real64) Mem0[esp + 0x00000014:int32]
-	store(Mem0[esp + 0x00000014:real32]) = (word32) rLoc2
+	store(Mem0[esp + 0x00000014:real32]) = rLoc2
 l1000007F:
 	rLoc1 = rLoc1 *s Mem0[0x10033290:real64]
 	rLoc2 = rLoc2
-	call fn1000010A (depth: 0;)
+	call fn1000010A (retsize: 4; FPU: 2;)
 	ecx = eax
 	store(Mem0[esp + 0x0000001C:word32]) = ecx
-	rLoc2 = (real64) Mem0[esp + 0x0000001C:word32]
-	rLoc3 = rLoc1
+	rLoc2 = (real64) Mem0[esp + 0x0000001C:int32]
+	rLoc3 = rLoc2
 	FPUF = cond(rLoc3 - rLoc2)
 	ax = (word16) FPUF << 8
 	SZO = cond(ah & 0x40)
@@ -121,10 +120,10 @@ l100000D7:
 	SCZO = cond(esi - ebp)
 	branch Test(LT,SO) l10000048
 l100000DF:
-	rLoc2 = Mem0[esp + 0x0000014:real32]
-	call fn1000010A (depth: 0;)
+	rLoc2 = Mem0[esp + 0x00000014:real32]
+	call fn1000010A (retsize: 4; FPU: 2;)
 	store(Mem0[ebx:word32]) = eax
-	call fn1000010A (depth: 0;)
+	call fn1000010A (retsize: 4; FPU: 1;)
 	ecx = Mem0[esp + 0x00000020:word32]
 	SCZO = cond(ebp - edi)
 	edi = Mem0[esp:word32]
@@ -153,7 +152,7 @@ fn10000000_exit:
 // return address size: 4
 void fn1000010A()
 fn1000010A_entry:
-l1000010A:	
+l1000010A:
 	store(Mem0[esp - 0x00000004:int32]) = (int32) rArg0
 	eax = Mem0[esp - 0x00000004:word32]
 	return

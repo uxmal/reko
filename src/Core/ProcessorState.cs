@@ -26,14 +26,17 @@ using System;
 
 namespace Decompiler.Core
 {
+    /// <summary>
+    /// ProcessorState simulates the state of the processor and a part of the stack during scanning.
+    /// </summary>
 	public interface ProcessorState
 	{
 		ProcessorState Clone();
         Constant Get(MachineRegister r);
         void Set(MachineRegister r, Constant v);
 		void SetInstructionPointer(Address addr);
+        
         void OnProcedureEntered();                 // Some registers need to be updated when a procedure is entered.
-
         void OnProcedureLeft(ProcedureSignature procedureSignature);
         
         /// <summary>
@@ -47,5 +50,6 @@ namespace Decompiler.Core
         /// </summary>
         /// <param name="sigCallee">The signature of the called procedure.</param>
         void OnAfterCall(ProcedureSignature sigCallee);
+
     }
 }

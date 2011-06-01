@@ -39,16 +39,16 @@ namespace Decompiler.Core
         }
 
         public abstract IProcessorArchitecture Architecture { get; }
+        public virtual Dictionary<uint, PseudoProcedure> ImportThunks { get { return null; } }
+        public abstract Platform Platform { get; }
+        public abstract Address PreferredBaseAddress { get; }
+        public byte[] RawImage { get { return imgRaw; } }
 
         public T GetService<T>()
         {
             return (T)services.GetService(typeof(T));
         }
 
-        public virtual Dictionary<uint, PseudoProcedure> ImportThunks
-        {
-            get { return null; }
-        }
 
         /// <summary>
 		/// Loads the image into memory starting at the specified address
@@ -56,18 +56,6 @@ namespace Decompiler.Core
 		/// <param name="addrLoad">Base address of program image</param>
 		/// <returns></returns>
         public abstract ProgramImage Load(Address addrLoad);
-
-        public abstract Platform Platform { get; }
-
-		public abstract Address PreferredBaseAddress
-		{
-			get; 
-		}
-
-		public byte [] RawImage
-		{
-			get { return imgRaw; }
-		}
 
 		/// <summary>
 		/// Performs fix-ups of the loaded image, adding findings to the supplied collections.

@@ -62,7 +62,7 @@ namespace Decompiler.Scanning
             this.arch = scanner.Architecture;
             this.rewriter = rewriter;
             this.state = state;
-            this.scEval = new ScannerEvaluator(state);
+            this.scEval = new ScannerEvaluator(arch, state);
             this.eval = new ExpressionSimplifier(scEval);
             this.frame = frame;
             this.addr = addr;
@@ -243,7 +243,7 @@ namespace Decompiler.Scanning
                 {
                     var e = new ProcedureConstant(PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), ppp);
                     Emit(BuildApplication(e, ppp.Signature, site));
-                    return true;
+                    return !ppp.Characteristics.Terminates;
                 }
             }
 
@@ -252,12 +252,22 @@ namespace Decompiler.Scanning
             {
                 Emit(BuildApplication(new ProcedureConstant(arch.PointerType, imp), imp.Signature, site));
                 state.OnAfterCall(imp.Signature);
-                return true;
+                return !imp.Characteristics.Terminates;
             }
 
-            Emit(new IndirectCall(call.Target, site));
+            var ic = new IndirectCall(call.Target, site);
+            Emit(ic);
+            sig = GuessProcedureSignature(ic);
             state.OnAfterCall(sig);
             return true;        //$BUGBUG: The called procedure could be exit(), or ExitThread(), in which case we should return false.
+        }
+
+        private ProcedureSignature GuessProcedureSignature(IndirectCall ic)
+        {
+            return new ProcedureSignature(); //$TODO: attempt to detect parameters of procedure?
+            // This would have to be arch-dependent + platform-dependent as some arch pass
+            // on stack, while others pass in registers, or a combination or both
+            // (" xthiscall" in x86 µsoft world).
         }
 
         public bool ProcessAlloca(CallSite site, PseudoProcedure impProc)
@@ -505,8 +515,6 @@ namespace Decompiler.Scanning
                 return null;
             return (PseudoProcedure)scanner.GetImportedProcedure(offset.ToUInt32());
         }
-
-
 
         //$TODO: merge these?
         private void AffectProcessorState(ProcedureSignature sig)

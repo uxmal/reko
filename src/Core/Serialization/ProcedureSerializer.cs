@@ -66,10 +66,16 @@ namespace Decompiler.Core.Serialization
 		{
 			var argser = new ArgumentSerializer(this, arch, frame);
 			Identifier ret = null;
+            int fpuDelta = FpuStackOffset;
+
+            FpuStackOffset = 0;
 			if (ss.ReturnValue != null)
 			{
 				ret = argser.Deserialize(ss.ReturnValue);
+                fpuDelta += FpuStackOffset;
 			}
+
+            FpuStackOffset = 0;
 			var args = new List<Identifier>();
 			if (ss.Arguments != null)
 			{
@@ -77,7 +83,10 @@ namespace Decompiler.Core.Serialization
 				{
 					args.Add(argser.Deserialize(arg));
 				}
+                fpuDelta -= FpuStackOffset;
 			}
+            FpuStackOffset = fpuDelta;
+
             var sig = new ProcedureSignature(ret, args.ToArray());
 			ApplyConvention(ss, sig);
 			return sig;

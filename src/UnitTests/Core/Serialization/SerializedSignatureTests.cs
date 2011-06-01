@@ -94,6 +94,7 @@ namespace Decompiler.UnitTests.Core.Serialization
 			Assert.AreEqual("void foo(Register out ptr16 bpOut)", ps.ToString("foo"));
 		}
 
+
 		public static SerializedSignature BuildSsigAxBxCl()
 		{
 			SerializedSignature ssig = new SerializedSignature();

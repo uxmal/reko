@@ -35,15 +35,18 @@ namespace Decompiler.Core
 	/// <remarks>
 	/// Calling a procedure affects a few things: the registers, the stack depth, and in the case of the Intel x86
 	/// architecture the FPU stack depth. These effects are summarized by the signature.
+    /// <para>
+    /// $TODO: There are CPU-specific items (like x86 FPU stack gunk). Move these into processor-specific subclasses
+    /// </para>
 	/// </remarks>
-    //$REFACTOR: break out CPU-specific stuff like x86 FPU stack gunk into a subclass?
 	public class ProcedureSignature
 	{
 		public ProcedureSignature()
 		{
+            this.FpuStackArgumentMax = -1;
 		}
 
-		public ProcedureSignature(Identifier returnId, params Identifier [] formalArguments)
+		public ProcedureSignature(Identifier returnId, params Identifier [] formalArguments) : this()
 		{
 			this.ReturnValue = returnId;
 			this.FormalArguments = formalArguments;
@@ -53,15 +56,23 @@ namespace Decompiler.Core
 		public Identifier [] FormalArguments { get; private set; }
         public Identifier ReturnValue { get; private set; }
         public int ReturnAddressOnStack { get; set; }           // The size of the return address if pushed on stack.
+
         /// <summary>
-        /// Number of slots by which the FPU stack grows or shrinks after the procedure is called.
+        /// Number of slots by which the FPU stack grows or shrinks after the procedure is called. A positive number 
+        /// means that items are left on the stack, a negative number means items are removed from stack.
         /// </summary>
+        /// <remarks>
+        /// This is x86-specific.
+        /// </remarks>
         public int FpuStackDelta { get; set; }
         /// <summary>
         /// Number of bytes to add to the stack pointer after returning from the procedure.
         /// Note that this doesn't include the return address size, if the return address is 
         /// passed on the stack. 
         /// </summary>
+        /// <remarks>
+        /// This is x86-specific.
+        /// </remarks>
         public int StackDelta { get; set; }
         /// <summary>
         /// The index of the 'deepest' FPU stack argument used. -1 means no stack parameters are used.

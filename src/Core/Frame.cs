@@ -40,19 +40,19 @@ namespace Decompiler.Core
 	/// <code>
 	///   Layout             offset value
 	/// +-----------------+
-	/// | arg3            |   4
+	/// | arg3            |   6
 	/// +-----------------+
-	/// | arg2            |   2
+	/// | arg2            |   4
 	/// +-----------------+
-	/// | arg1            |   0
+	/// | arg1            |   2
 	/// +-----------------+
-	/// | return address  |	  -2
+	/// | return address  |	  0
 	/// +-----------------+
-	/// | frame pointer   |   -4
+	/// | frame pointer   |   -2
 	/// +-----------------+
-	/// | local1          |   -6
+	/// | local1          |   -4
 	/// +-----------------+
-	/// | local2          |
+	/// | local2          |   -6
 	/// 
 	/// etc.
 	/// </code>

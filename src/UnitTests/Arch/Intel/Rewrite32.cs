@@ -105,7 +105,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             }
             prog.Platform = new Decompiler.Environments.Win32.Win32Platform(asm.Architecture);
             prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
+            foreach (var item in asm.ImportThunks)
             {
                 prog.ImportThunks.Add(item.Key, item.Value);
             }

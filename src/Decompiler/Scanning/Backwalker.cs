@@ -167,7 +167,7 @@ namespace Decompiler.Scanning
                 }
 
                 var memSrc = ass.Src as MemoryAccess;
-                if (memSrc != null)
+                if (memSrc != null && RegisterOf(ass.Dst) == Index)
                 {
                     var rIdx = Index;
                     var rDst = RegisterOf(ass.Dst);
@@ -298,18 +298,18 @@ namespace Decompiler.Scanning
             if (idLeft != null)
             {
                 Stride = 1;
-                DetermineVector(bin.Right);
+                DetermineVector(mem, bin.Right);
                 return RegisterOf(idLeft);
             }
             var binLeft = bin.Left as BinaryExpression;
             if (IsScaledIndex(binLeft))
             {
-                return DetermineVectorWithScaledIndex(bin.Right, binLeft);
+                return DetermineVectorWithScaledIndex(mem, bin.Right, binLeft);
             }
             var binRight = bin.Right as BinaryExpression;
             if (IsScaledIndex(binRight))
             {
-                return DetermineVectorWithScaledIndex(bin.Left, binRight);
+                return DetermineVectorWithScaledIndex(mem, bin.Left, binRight);
             }
             return null;
         }
@@ -319,17 +319,28 @@ namespace Decompiler.Scanning
             return bin != null && bin.op is MulOperator && bin.Right is Constant;
         }
 
-        private MachineRegister DetermineVectorWithScaledIndex(Expression possibleVector, BinaryExpression scaledIndex)
+        private MachineRegister DetermineVectorWithScaledIndex(MemoryAccess mem, Expression possibleVector, BinaryExpression scaledIndex)
         {
             Stride = ((Constant)scaledIndex.Right).ToInt32();   // Mem[x + reg * C]
-            DetermineVector(possibleVector);
+            DetermineVector(mem, possibleVector);
             return RegisterOf(scaledIndex.Left as Identifier);
         }
 
-        private void DetermineVector(Expression possibleVector)
+        private void DetermineVector(MemoryAccess mem, Expression possibleVector)
         {
             var vector = possibleVector as Constant;
-            if (vector != null)
+            if (vector == null)
+                return;
+            var segmem = mem as SegmentedAccess;
+            if (segmem != null)
+            {
+                var selector = segmem.BasePointer.Accept(eval) as Constant;
+                if (selector != null)
+                {
+                    VectorAddress = new Address(selector.ToUInt16(), vector.ToUInt16());
+                }
+            }
+            else
             {
                 VectorAddress = new Address(vector.ToUInt32());
             }

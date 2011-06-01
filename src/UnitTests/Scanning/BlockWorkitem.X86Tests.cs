@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Scanning
             this.arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
-            stm = new RtlStatementStream(0x1000, block);
+            stm = new RtlStatementStream(addr.Linear, block);
             state = new X86State();
             var asm = new IntelAssembler(arch, addr, new List<EntryPoint>());
             scanner = repository.Stub<IScanner>();
@@ -122,11 +122,11 @@ namespace Decompiler.UnitTests.Scanning
                 m(asm);
                 scanner.Stub(x => x.Platform).Return(platform);
                 scanner.Stub(x => x.Architecture).Return(arch);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
+                //scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             }
             var image = asm.GetImage();
             var rw = arch.CreateRewriter(new ImageReader(image, addr), state, proc.Frame, host);
-            wi = new BlockWorkitem(scanner, rw, state, proc.Frame, new Address(0x01000));
+            wi = new BlockWorkitem(scanner, rw, state, proc.Frame, addr);
         }
 
 
@@ -266,6 +266,7 @@ namespace Decompiler.UnitTests.Scanning
                         0x3A, 0x12,
                         0xCC, 0xCC},
                         0));
+                ExpectJumpTarget(0x0C00, 0x0000, "l0C00_0000");
                 ExpectJumpTarget(0x0C00, 0x1234, "foo1");
                 ExpectJumpTarget(0x0C00, 0x1236, "foo2");
                 ExpectJumpTarget(0x0C00, 0x1238, "foo3");
@@ -289,9 +290,14 @@ namespace Decompiler.UnitTests.Scanning
         private void ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
             scanner.Expect(x => x.EnqueueJumpTarget(
-                Arg<Address>.Matches(q => (q.Selector == selector && q.Offset == offset)),
+                Arg<Address>.Matches(q => (Niz(q, selector, offset))),
                 Arg<Procedure>.Is.Anything,
                 Arg<ProcessorState>.Is.Anything)).Return(new Block(proc, blockLabel));
+        }
+
+        private bool Niz(Address q, ushort selector, ushort offset)
+        {
+            return q.Selector == selector && q.Offset == offset;
         }
 
         [Test]

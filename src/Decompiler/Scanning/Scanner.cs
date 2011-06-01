@@ -924,16 +924,9 @@ namespace Decompiler.Scanning
             }
         }
 
+        public SortedList<Address, SystemService> SystemCalls { get { return syscalls; } }
 
-        public SortedList<Address, SystemService> SystemCalls
-        {
-            get { return syscalls; }
-        }
-
-        public Map<Address, VectorUse> VectorUses
-        {
-            get { return vectorUses; }
-        }
+        public Map<Address, VectorUse> VectorUses { get { return vectorUses; }}
 
         public ProgramImage Image { get { return program.Image; } } 
 
@@ -961,60 +954,22 @@ namespace Decompiler.Scanning
 
         #region IScanner Members
 
-        public Block AddBlock(Address addr, Procedure proc, string blockName)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IScanner.AddDiagnostic(Address addr, Diagnostic d)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Block FindExactBlock(Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Block SplitBlock(Block block, Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ImageReader CreateReader(Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        ProcedureBase IScanner.ScanProcedure(Address addr, string procedureName, ProcessorState state)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        void IScanner.EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc)
-        {
-            throw new NotImplementedException();
-        }
-
-         IProcessorArchitecture IScanner.Architecture { get { return program.Architecture; } } 
-
-        CallGraph IScanner.CallGraph { get { throw new NotImplementedException(); } }
+        public Block AddBlock(Address addr, Procedure proc, string blockName) { throw new NotImplementedException();}
+        void IScanner.AddDiagnostic(Address addr, Diagnostic d) { throw new NotImplementedException();}
+        public Block FindExactBlock(Address addr) { throw new NotImplementedException(); }
+        public Block SplitBlock(Block block, Address addr) { throw new NotImplementedException();}
+        public Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state) { throw new NotImplementedException(); }
+        public ImageReader CreateReader(Address addr) { throw new NotImplementedException(); }
+        ProcedureBase IScanner.ScanProcedure(Address addr, string procedureName, ProcessorState state) { throw new NotImplementedException(); }
+        void IScanner.EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc) { throw new NotImplementedException(); }
+        IProcessorArchitecture IScanner.Architecture { get { return program.Architecture; } } 
 
         Platform IScanner.Platform { get { return program.Platform; } }
-
-        ProcedureSignature IScanner.GetCallSignatureAtAddress(Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
         IDictionary<Address, VectorUse> IScanner.VectorUses { get { return vectorUses; } }
-        void IScanner.TerminateBlock(Block block, Address addr) { }
+
+        CallGraph IScanner.CallGraph { get { throw new NotImplementedException(); } }
+        ProcedureSignature IScanner.GetCallSignatureAtAddress(Address addr) { throw new NotImplementedException(); }
+        void IScanner.TerminateBlock(Block block, Address addr) { throw new NotImplementedException(); }
         Block IScanner.FindContainingBlock(Address addr) { throw new NotImplementedException(); }
         PseudoProcedure IScanner.GetImportedProcedure(uint linaddr) { throw new NotImplementedException(); }
         #endregion
