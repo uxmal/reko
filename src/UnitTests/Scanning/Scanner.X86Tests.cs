@@ -37,6 +37,7 @@ namespace Decompiler.UnitTests.Scanning
     {
         private IntelArchitecture arch;
         private Scanner scanner;
+        private Program prog;
 
         private void BuildTest16(Action<IntelAssembler> asmProg)
         {
@@ -57,10 +58,12 @@ namespace Decompiler.UnitTests.Scanning
             var asm = new IntelAssembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
+            prog = new Program();
+            prog.Architecture = arch;
+            prog.Image = asm.GetImage();
+            prog.Platform = platform;
             scanner = new Scanner(
-                arch,
-                asm.GetImage(),
-                platform,
+                prog,
                 new Dictionary<Address, ProcedureSignature>(),
                 new FakeDecompilerEventListener());
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
@@ -112,7 +115,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Ret();
             });
             var sw = new StringWriter();
-            scanner.Procedures.Values[0].Write(false, sw);
+            prog.Procedures.Values[0].Write(false, sw);
             var sExp = @"// fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:

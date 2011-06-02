@@ -119,8 +119,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 	ret
 ");
 
-			Assert.AreEqual(1, scanner.Procedures.Count );
-			Procedure proc = scanner.Procedures.Values[0];
+			Assert.AreEqual(1, prog.Procedures.Count );
+			Procedure proc = prog.Procedures.Values[0];
 			Assert.AreEqual(3, proc.ControlGraph.Nodes.Count);		// Entry, code, Exit
 
             Block block = new List<Block>(proc.ControlGraph.Successors(proc.EntryBlock))[0];

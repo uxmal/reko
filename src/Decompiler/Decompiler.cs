@@ -373,9 +373,7 @@ namespace Decompiler
         private IScanner CreateScanner(Program prog, DecompilerEventListener eventListener)
         {
             return new Scanner(
-                prog.Architecture,
-                prog.Image,
-                prog.Platform, 
+                prog, 
                 LoadCallSignatures(project.UserCalls.Values),
                 eventListener);
         }

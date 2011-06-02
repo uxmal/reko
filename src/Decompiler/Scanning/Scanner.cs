@@ -97,32 +97,6 @@ namespace Decompiler.Scanning
         private const int PriorityJumpTarget = 6;
         private const int PriorityVector = 7;
 
-        public Scanner(
-            IProcessorArchitecture arch, 
-            ProgramImage image, 
-            Platform platform,
-            IDictionary<Address, ProcedureSignature> callSigs,
-            DecompilerEventListener eventListener)
-        {
-            this.arch = arch;
-            this.image = image;
-            this.platform = platform;
-            this.callSigs = callSigs;
-            this.eventListener = eventListener;
-
-            this.Procedures = new SortedList<Address, Procedure>();
-            this.queue = new PriorityQueue<WorkItem>();
-            this.stack = new Stack<ProcedureScanner>();
-            this.blocks = new Map<uint, BlockRange>();
-            this.blockStarts = new Dictionary<Block, uint>();
-            this.callgraph = new CallGraph();
-            this.pseudoProcs = new Dictionary<string, PseudoProcedure>();
-            this.vectors = new Dictionary<Address, ImageMapVectorTable>();
-            this.VectorUses = new Dictionary<Address, VectorUse>();
-            this.importThunks = new Dictionary<uint, PseudoProcedure>();
-            this.visitedProcs = new HashSet<Procedure>();
-        }
-
         public Scanner(Program program, IDictionary<Address, ProcedureSignature> callSigs, DecompilerEventListener eventListener)
         {
             this.arch = program.Architecture;

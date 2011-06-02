@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Typing
 
             var prog = ldr.Load(new Address(0xC00, 0));
             var ep = new EntryPoint(prog.Image.BaseAddress, new X86State());
-			var scan = new Scanner(prog.Architecture, prog.Image, prog.Platform, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+			var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
 			scan.EnqueueEntryPoint(ep);
 			scan.ProcessQueue();
 
