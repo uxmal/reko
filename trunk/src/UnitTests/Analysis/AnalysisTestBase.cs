@@ -214,7 +214,7 @@ namespace Decompiler.UnitTests.Analysis
 
         private void Rewrite(Program prog, Assembler asm, string configFile)
         {
-            Scanner scan = new Scanner(prog.Architecture, prog.Image, prog.Platform, 
+            Scanner scan = new Scanner(prog, 
                 new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             SerializedProject project = new SerializedProject();
             if (configFile != null)

@@ -106,7 +106,13 @@ namespace Decompiler.UnitTests.Scanning
                 new RtlInstructionCluster(new Address(0x12314), 1, 
                 new RtlReturn(4, 0)),
             }));
-            var sc = new Scanner(arch, new ProgramImage(new Address(0x12314), new byte[1]), new FakePlatform(), null, new FakeDecompilerEventListener());
+            var prog = new Program
+            {
+                Architecture = arch,
+                Image = new ProgramImage(new Address(0x12314), new byte[1]),
+                Platform = new FakePlatform()
+            };
+            var sc = new Scanner(prog, null, new FakeDecompilerEventListener());
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     new Address(0x12314),
@@ -218,12 +224,14 @@ namespace Decompiler.UnitTests.Scanning
 
 
             prog.Image = m.GetImage();
-            var scan = new Scanner(m.Architecture, prog.Image, new FakePlatform(), new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
+            prog.Architecture = m.Architecture;
+            prog.Platform = new FakePlatform();
+            var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
             EntryPoint ep = new EntryPoint(addr, new X86State());
             scan.EnqueueEntryPoint(ep);
             scan.ProcessQueue();
 
-            Assert.AreEqual(4, scan.Procedures.Count);
+            Assert.AreEqual(4, prog.Procedures.Count);
         }
 
         [Test]
