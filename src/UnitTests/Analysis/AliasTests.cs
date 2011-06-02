@@ -249,7 +249,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
             FakeDecompilerEventListener eventListener = new FakeDecompilerEventListener();
-			TrashedRegisterFinderOld trf = new TrashedRegisterFinderOld(prog, dfa.ProgramDataFlow, eventListener);
+			TrashedRegisterFinder trf = new TrashedRegisterFinder(prog, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
             RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
 			foreach (Procedure proc in prog.Procedures.Values)

@@ -26,6 +26,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
+using Decompiler.Evaluation;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -60,6 +61,14 @@ namespace Decompiler.UnitTests.Analysis
 			rl.IdentifierLiveness.BitSet = prog.Architecture.CreateRegisterBitset();
 
 		}
+
+        private BlockFlow CreateBlockFlow(Block block)
+        {
+            return new BlockFlow(
+                block,
+                prog.Architecture.CreateRegisterBitset(),
+                new SymbolicEvaluationContext(prog.Architecture));
+        }
 
 		/// <summary>
 		/// Tests using only part of a register.
@@ -285,7 +294,7 @@ namespace Decompiler.UnitTests.Analysis
 								   new Identifier("edxOut", -1, PrimitiveType.Word32, new OutArgumentStorage(edx))});
 
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
-			BlockFlow bf = new BlockFlow(callee.ExitBlock, prog.Architecture.CreateRegisterBitset());
+			BlockFlow bf = CreateBlockFlow(callee.ExitBlock);
 			mpprocflow[callee.ExitBlock] = bf;
 			st.InitializeBlockFlow(callee.ExitBlock, mpprocflow, true);
 			Assert.IsTrue(bf.DataOut[Registers.eax.Number],"eax is a return register");
@@ -311,7 +320,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
-			BlockFlow bf = new BlockFlow(proc.ExitBlock, prog.Architecture.CreateRegisterBitset());
+			BlockFlow bf = CreateBlockFlow(proc.ExitBlock);
 			mpprocflow[proc.ExitBlock] = bf;
 			st.InitializeBlockFlow(proc.ExitBlock, mpprocflow, true);
 			Assert.IsFalse(bf.DataOut[Registers.ebp.Number], "preserved registers cannot be live out");
@@ -324,7 +333,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void TerminatingProcedure()
 		{
 			Procedure terminator = new Procedure("terminator", null);
-			mpprocflow[terminator.ExitBlock] = new BlockFlow(terminator.ExitBlock, prog.Architecture.CreateRegisterBitset());
+			mpprocflow[terminator.ExitBlock] = CreateBlockFlow(terminator.ExitBlock);
 			terminator.Signature = new ProcedureSignature(
 				null,
 				new Identifier[] {

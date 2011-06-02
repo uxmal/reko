@@ -156,7 +156,7 @@ namespace Decompiler.Core.Lib
 		{
             int iNode;
             if (!mpobjectNode.TryGetValue(o, out iNode))
-				return new EdgeCollection(this, -1, true);
+				return new EdgeCollection(this, -1, fSuccessors);
 			return new EdgeCollection(this, iNode, fSuccessors);
 		}
 
@@ -240,6 +240,11 @@ namespace Decompiler.Core.Lib
 			public int firstSucc;
 			public int cSucc;
 			public int cPred;
+
+            public override string ToString()
+            {
+                return "Node: " + Item == null ? "(null)" : Item.ToString();
+            }
 		}
 
 		private struct Edge
@@ -250,8 +255,7 @@ namespace Decompiler.Core.Lib
 			public int nextSucc;
 		}
 
-		private class EdgeCollection :
-			ICollection<T>
+		private class EdgeCollection : ICollection<T>
 		{
 			private DirectedGraphImpl<T> graph;
 			private int iNode;
@@ -292,7 +296,7 @@ namespace Decompiler.Core.Lib
 
             private IEnumerator<T> GetPredecessorEnumerator()
             {
-                if (graph.nodes == null)
+                if (graph.nodes == null || iNode == -1)
                     yield break;
                 int iEdge = graph.nodes[iNode].firstPred;
                 while (iEdge >= 0)

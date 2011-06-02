@@ -31,17 +31,17 @@ namespace Decompiler.Core.Expressions
 	/// </summary>
 	public class Identifier : Expression
 	{
-		private int idx;
-		private string name;
-		private Storage storage;
-
 		public Identifier(string name, int number, DataType type, Storage stg) : base(type)
 		{
-			this.name = name;
-			this.idx = number;
-			this.storage = stg;
+			this.Name = name;
+			this.Number = number;
+			this.Storage = stg;
 		}
-		 
+
+        public string Name { get; private set; }
+        public int Number { get; private set; }
+        public Storage Storage { get; private set; }
+
 		public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformIdentifier(this);
@@ -67,20 +67,6 @@ namespace Decompiler.Core.Expressions
 			return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
 		}
 
-		public string Name
-		{
-			get { return name; } 
-		}
-
-		public int Number
-		{
-			get { return idx; }
-		}
-
-		public Storage Storage
-		{
-			get { return storage; }
-		}
 
 		public void Write(bool writeStorage, TextWriter writer)
 		{
@@ -93,7 +79,7 @@ namespace Decompiler.Core.Expressions
 		{
 			if (writeStorage)
 			{
-				OutArgumentStorage os = storage as OutArgumentStorage;
+				OutArgumentStorage os = Storage as OutArgumentStorage;
 				if (os != null)
 				{
 					writer.Write(os.OriginalIdentifier.Storage.Kind);
@@ -101,7 +87,7 @@ namespace Decompiler.Core.Expressions
 				}	
 				else
 				{
-					writer.Write(storage.Kind);
+					writer.Write(Storage.Kind);
 					writer.Write(' ');
 				}
 			}

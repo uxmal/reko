@@ -342,8 +342,8 @@ namespace Decompiler.Core.Expressions
 
 		public override string ToString()
 		{
-			if (Object.ReferenceEquals(this, Invalid))
-				return "<void>";
+			if (!IsValid)
+				return "<invalid>";
 			PrimitiveType t = (PrimitiveType) DataType;
 			if (t.Domain == Domain.Boolean)
 			{
@@ -386,6 +386,7 @@ namespace Decompiler.Core.Expressions
         }
 
 		public static readonly Constant Invalid = new Constant(PrimitiveType.Void, 0xBADDCAFE);
+        public static readonly Constant Unknown = new Constant(PrimitiveType.Void, 0xDEADFACE);
 
     }
 }

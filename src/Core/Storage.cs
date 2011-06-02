@@ -353,12 +353,12 @@ namespace Decompiler.Core
         /// <remarks>
         /// If the architecture stores the return address on the stack, the return address will be at offset 0 and
         /// any stack arguments will have offsets > 0. If the architecture passes the return address in a
-        /// register or a separate return stack, there may be stack arguments with offset 0. In either case,
-        /// negative stack offsets for parameters are not legal.
+        /// register or a separate return stack, there may be stack arguments with offset 0. Depending on which
+        /// direction the stack grows, there may be negative stack offsets for parameters, although most popular
+        /// general purpose processors (x86, PPC, m68K) grown their stacks down toward lower memory addresses.
         /// </remarks>
         public int StackOffset { get; private set; }
         public DataType DataType { get; private set; }
-
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -396,69 +396,59 @@ namespace Decompiler.Core
             return svar;
         }
 
-
-
 		public override void Write(TextWriter writer)
 		{
             writer.Write("{0} +{1:X4}", Kind, StackOffset);
 		}
 	}
 
-	public class StackLocalStorage : Storage
-	{
-		private int cbOffset;
-		private DataType dataType;
+    public class StackLocalStorage : Storage
+    {
+        public StackLocalStorage(int cbOffset, DataType dataType)
+            : base("Local")
+        {
+            this.StackOffset = cbOffset;
+            this.DataType = dataType;
+        }
 
-		public StackLocalStorage(int cbOffset, DataType dataType) : base("Local")
-		{
-			this.cbOffset = cbOffset;
-			this.dataType = dataType;
-		}
+        public DataType DataType { get; private set; }
+        public int StackOffset { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
-			return visitor.VisitStackLocalStorage(this);
-		}
+            return visitor.VisitStackLocalStorage(this);
+        }
 
-		public override bool Equals(object obj)
-		{
-			StackLocalStorage sas = obj as StackLocalStorage;
-			if (sas == null)
-				return false;
-			return cbOffset == sas.cbOffset;
-		}
+        public override bool Equals(object obj)
+        {
+            StackLocalStorage sas = obj as StackLocalStorage;
+            if (sas == null)
+                return false;
+            return StackOffset == sas.StackOffset;
+        }
 
-		public override int GetHashCode()
-		{
-			return GetType().GetHashCode() ^ cbOffset;
-		}
+        public override int GetHashCode()
+        {
+            return GetType().GetHashCode() ^ StackOffset;
+        }
 
 
-		public override int OffsetOf(Storage stgSub)
-		{
-			StackLocalStorage local = stgSub as StackLocalStorage;
-			if (local == null)
-				return -1;
-			if (local.cbOffset >= cbOffset && local.cbOffset + local.DataType.Size <= cbOffset + DataType.Size)
-				return (local.cbOffset - cbOffset) * DataType.BitsPerByte;
-			return -1;
-		}
+        public override int OffsetOf(Storage stgSub)
+        {
+            StackLocalStorage local = stgSub as StackLocalStorage;
+            if (local == null)
+                return -1;
+            if (local.StackOffset >= StackOffset && local.StackOffset + local.DataType.Size <= StackOffset + DataType.Size)
+                return (local.StackOffset - StackOffset) * DataType.BitsPerByte;
+            return -1;
+        }
 
-		public DataType DataType
-		{
-			get { return dataType; }
-		}
 
-		public int StackOffset
-		{
-			get { return cbOffset; }
-		}
-
-		public override void Write(TextWriter writer)
-		{
-			writer.Write("{0} -{1:X4}", base.Kind, Math.Abs(cbOffset));
-		}
-	}
+        public override void Write(TextWriter writer)
+        {
+            writer.Write("{0} -{1:X4}", base.Kind, Math.Abs(StackOffset));
+        }
+    }
 
 	public class TemporaryStorage : Storage
 	{

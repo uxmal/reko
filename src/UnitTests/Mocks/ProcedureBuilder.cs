@@ -33,13 +33,10 @@ namespace Decompiler.UnitTests.Mocks
     /// </summary>
     public class ProcedureBuilder : CodeEmitter
     {
-        private Block block;
         private Dictionary<string, Block> blocks;
-        private Procedure proc;
         private Block branchBlock;
         private Block lastBlock;
         private int numBlock;
-        private ProgramBuilder programMock;
         private List<ProcUpdater> unresolvedProcedures;
         private uint iStmt;
 
@@ -56,26 +53,25 @@ namespace Decompiler.UnitTests.Mocks
         private void Init(string name)
         {
             blocks = new Dictionary<string, Block>();
-            proc = new Procedure(name, new Frame(PrimitiveType.Word32));
+            Procedure = new Procedure(name, new Frame(PrimitiveType.Word32));
             unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();
-            proc.RenumberBlocks();
+            Procedure.RenumberBlocks();
         }
 
         /// <summary>
         /// Current block, into which the next statement will be added.
         /// </summary>
-        public Block Block
-        {
-            get { return block; }
-        }
+        public Block Block { get; private set; }
+        public Procedure Procedure { get; private set; }
+        public ProgramBuilder ProgramMock { get; set; }
 
         private Block BlockOf(string label)
         {
             Block b;
             if (!blocks.TryGetValue(label, out b))
             {
-                b = proc.AddBlock(label);
+                b = Procedure.AddBlock(label);
                 blocks.Add(label, b);
             }
             return b;
@@ -131,17 +127,17 @@ namespace Decompiler.UnitTests.Mocks
 
         public Block CurrentBlock
         {
-            get { return this.block; }
+            get { return this.Block; }
         }
 
         public Identifier Declare(DataType dt, string name)
         {
-            return proc.Frame.CreateTemporary(name, dt);
+            return Procedure.Frame.CreateTemporary(name, dt);
         }
 
         public Identifier Declare(DataType dt, string name, Expression expr)
         {
-            Identifier id = proc.Frame.CreateTemporary(name, dt);
+            Identifier id = Procedure.Frame.CreateTemporary(name, dt);
             Emit(new Declaration(id, expr));
             return id;
         }
@@ -155,8 +151,8 @@ namespace Decompiler.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             EnsureBlock(null);
-            block.Statements.Add(iStmt++, instr);
-            return block.Statements.Last;
+            Block.Statements.Add(iStmt++, instr);
+            return Block.Statements.Last;
         }
 
         public Identifier Flags(string s)
@@ -187,8 +183,8 @@ namespace Decompiler.UnitTests.Mocks
         {
             EnsureBlock(null);
             Block blockTo = BlockOf(name);
-            proc.ControlGraph.AddEdge(block, blockTo);
-            block = null;
+            Procedure.ControlGraph.AddEdge(Block, blockTo);
+            Block = null;
         }
 
         public Block Label(string name)
@@ -199,34 +195,34 @@ namespace Decompiler.UnitTests.Mocks
 
         private Block EnsureBlock(string name)
         {
-            if (block != null)
-                return block;
+            if (Block != null)
+                return Block;
 
             if (name == null)
             {
                 name = string.Format("l{0}", ++numBlock);
             }
-            block = BlockOf(name);
-            if (proc.EntryBlock.Succ.Count == 0)
+            Block = BlockOf(name);
+            if (Procedure.EntryBlock.Succ.Count == 0)
             {
-                proc.ControlGraph.AddEdge(proc.EntryBlock, block);
+                Procedure.ControlGraph.AddEdge(Procedure.EntryBlock, Block);
             }
 
             if (lastBlock != null)
             {
                 if (branchBlock != null)
                 {
-                    proc.ControlGraph.AddEdge(lastBlock, block);
-                    proc.ControlGraph.AddEdge(lastBlock, branchBlock);
+                    Procedure.ControlGraph.AddEdge(lastBlock, Block);
+                    Procedure.ControlGraph.AddEdge(lastBlock, branchBlock);
                     branchBlock = null;
                 }
                 else
                 {
-                    proc.ControlGraph.AddEdge(lastBlock, block);
+                    Procedure.ControlGraph.AddEdge(lastBlock, Block);
                 }
                 lastBlock = null;
             }
-            return block;
+            return Block;
         }
 
 
@@ -234,7 +230,7 @@ namespace Decompiler.UnitTests.Mocks
         public void FinishProcedure()
         {
             TerminateBlock();
-            proc.ControlGraph.AddEdge(lastBlock, proc.ExitBlock);
+            Procedure.ControlGraph.AddEdge(lastBlock, Procedure.ExitBlock);
         }
 
         public ICollection<ProcUpdater> UnresolvedProcedures
@@ -244,18 +240,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public override Frame Frame
         {
-            get { return proc.Frame; }
-        }
-
-        public Procedure Procedure
-        {
-            get { return proc; }
-        }
-
-        public ProgramBuilder ProgramMock
-        {
-            get { return programMock; }
-            set { programMock = value; }
+            get { return Procedure.Frame; }
         }
 
         public override Identifier Register(int i)
@@ -266,8 +251,8 @@ namespace Decompiler.UnitTests.Mocks
         public override void Return(Expression exp)
         {
             base.Return(exp);
-            proc.ControlGraph.AddEdge(block, proc.ExitBlock);
-            block = null;
+            Procedure.ControlGraph.AddEdge(Block, Procedure.ExitBlock);
+            Block = null;
         }
 
         public void Switch(Expression e, params string[] labels)
@@ -281,21 +266,19 @@ namespace Decompiler.UnitTests.Mocks
             Emit(new SwitchInstruction(e, blox));
             for (int i = 0; i < blox.Length; ++i)
             {
-                proc.ControlGraph.AddEdge(this.block, blox[i]);
+                Procedure.ControlGraph.AddEdge(this.Block, blox[i]);
             }
             lastBlock = null;
-            block = null;
+            Block = null;
         }
 
         private void TerminateBlock()
         {
-            if (block != null)
+            if (Block != null)
             {
-                lastBlock = block;
-                block = null;
+                lastBlock = Block;
+                Block = null;
             }
         }
-
     }
-
 }

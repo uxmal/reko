@@ -25,28 +25,20 @@ namespace Decompiler.Core.Absyn
 {
 	public class AbsynDeclaration : AbsynStatement
 	{
-		private Identifier id;
-		private Expression expr;
 
 		public AbsynDeclaration(Identifier id, Expression expr)
 		{
-			this.id = id;
-			this.expr = expr;
+			this.Identifier = id;
+			this.Expression = expr;
 		}
 
-		public override void Accept(IAbsynVisitor visitor)
+        public Identifier Identifier { get; private set; }
+        public Expression Expression { get; private set; }
+        
+        public override void Accept(IAbsynVisitor visitor)
 		{
 			visitor.VisitDeclaration(this);
 		}
 
-		public Identifier Identifier
-		{
-			get { return id; }
-		}
-
-		public Expression Expression
-		{
-			get { return expr; }
-		}
 	}
 }

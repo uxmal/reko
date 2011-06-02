@@ -104,13 +104,13 @@ namespace Decompiler.Scanning
             return ab.CreateInstruction();
         }
 
-        private ApplicationBuilder CreateApplicationBuilder(Expression fn, ProcedureSignature sig, CallSite site)
+        private ApplicationBuilder CreateApplicationBuilder(Expression callee, ProcedureSignature sig, CallSite site)
         {
             var ab = new ApplicationBuilder(
                 arch,
                 frame,
                 site,
-                fn,
+                callee,
                 sig);
             return ab;
         }
@@ -166,7 +166,7 @@ namespace Decompiler.Scanning
             proc.ControlGraph.AddEdge(branchingBlock, blockElse);
             proc.ControlGraph.AddEdge(branchingBlock, blockThen);
 
-            // Now, switch to the fallthru block.
+            // Now, switch to the fallthru block and keep rewriting.
             blockCur = blockElse;
             return true;
         }
@@ -187,6 +187,11 @@ namespace Decompiler.Scanning
             return false;
         }
 
+        private ProcedureConstant CreateProcedureConstant(ProcedureBase callee)
+        {
+            return new ProcedureConstant(arch.PointerType, callee);
+        }
+
         public bool VisitCall(RtlCall call)
         {
             var site = state.OnBeforeCall(call.ReturnAddressSize);
@@ -204,9 +209,7 @@ namespace Decompiler.Scanning
                 }
 
                 var callee = scanner.ScanProcedure(addr, null, state);
-                Emit(new CallInstruction(
-                        new ProcedureConstant(PrimitiveType.Pointer32, callee),
-                        site));
+                Emit(new CallInstruction(CreateProcedureConstant(callee), site));
                 var pCallee = callee as Procedure;
                 if (pCallee != null)
                 {
@@ -241,7 +244,7 @@ namespace Decompiler.Scanning
                 var ppp = SearchBackForProcedureConstant(id);
                 if (ppp != null)
                 {
-                    var e = new ProcedureConstant(PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), ppp);
+                    var e = CreateProcedureConstant(ppp);
                     Emit(BuildApplication(e, ppp.Signature, site));
                     return !ppp.Characteristics.Terminates;
                 }
@@ -250,7 +253,7 @@ namespace Decompiler.Scanning
             var imp = ImportedProcedureName(call.Target);
             if (imp != null)
             {
-                Emit(BuildApplication(new ProcedureConstant(arch.PointerType, imp), imp.Signature, site));
+                Emit(BuildApplication(CreateProcedureConstant(imp), imp.Signature, site));
                 state.OnAfterCall(imp.Signature);
                 return !imp.Characteristics.Terminates;
             }
@@ -267,7 +270,7 @@ namespace Decompiler.Scanning
             return new ProcedureSignature(); //$TODO: attempt to detect parameters of procedure?
             // This would have to be arch-dependent + platform-dependent as some arch pass
             // on stack, while others pass in registers, or a combination or both
-            // (" xthiscall" in x86 µsoft world).
+            // ("thiscall" in x86 µsoft world).
         }
 
         public bool ProcessAlloca(CallSite site, PseudoProcedure impProc)
