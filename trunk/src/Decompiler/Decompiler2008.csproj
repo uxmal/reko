@@ -245,6 +245,7 @@
     <Compile Include="Evaluation\SliceMem_Rule.cs" />
     <Compile Include="Evaluation\SliceShift.cs" />
     <Compile Include="Evaluation\Sub_Xor_Zero_Rule.cs" />
+    <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Evaluation\SymbolicEvaluator.cs" />
     <Compile Include="Gui\BlockNavigator.cs" />
     <Compile Include="Gui\CommandGroup.cs" />

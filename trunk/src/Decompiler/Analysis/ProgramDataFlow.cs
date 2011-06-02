@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
 
@@ -43,9 +44,12 @@ namespace Decompiler.Analysis
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				procFlow[proc] = new ProcedureFlow(proc, prog.Architecture);
-				foreach (Block block in proc.RpoBlocks)
+				foreach (Block block in proc.ControlGraph.Nodes)
 				{
-					blockFlow[block] = new BlockFlow(block, prog.Architecture.CreateRegisterBitset());
+					blockFlow[block] = new BlockFlow(
+                        block, 
+                        prog.Architecture.CreateRegisterBitset(),
+                        new SymbolicEvaluationContext(prog.Architecture));
 				}
 			}
 		}

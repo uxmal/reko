@@ -73,12 +73,13 @@ namespace Decompiler.Core.Code
 
 	public class CallInstruction : CallBase
 	{
-		private ProcedureBase proc;
 
         public CallInstruction(ProcedureConstant pc, CallSite site) : base(pc, site)
         {
-            this.proc = pc.Procedure;
+            this.Callee = pc != null ? pc.Procedure : null;
         }
+
+        public ProcedureBase Callee { get; set; }
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{
@@ -93,12 +94,6 @@ namespace Decompiler.Core.Code
 		public override void Accept(InstructionVisitor v)
 		{
 			v.VisitCallInstruction(this);
-		}
-
-		public ProcedureBase Callee
-		{
-			get { return proc; }
-			set { proc = value; }
 		}
 	}
 }

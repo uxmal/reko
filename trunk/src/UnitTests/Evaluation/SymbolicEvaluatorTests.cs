@@ -120,7 +120,7 @@ namespace Decompiler.UnitTests.Evaluation
             CreateSymbolicEvaluator();
             var ass = new Assignment(al, new MemoryAccess(ebx, al.DataType));
             se.Evaluate(ass);
-            Assert.AreEqual("<void>", ctx.TemporaryState[al.Storage].ToString());
+            Assert.AreEqual("<invalid>", ctx.TemporaryState[al.Storage].ToString());
         }
 
         [Test]
@@ -190,7 +190,7 @@ namespace Decompiler.UnitTests.Evaluation
                 m.Assign(r1, 1);
                 m.SideEffect(m.Fn("foo", m.AddrOf(r1)));
             });
-            Assert.AreEqual("<void>", GetRegisterState(se, r1).ToString());
+            Assert.AreEqual("<invalid>", GetRegisterState(se, r1).ToString());
         }
 
         [Test]
@@ -202,7 +202,7 @@ namespace Decompiler.UnitTests.Evaluation
                 r1 = m.Register(1);
                 m.Assign(r1, m.Fn("foo"));
             });
-            Assert.AreEqual("<void>", GetRegisterState(se, r1).ToString());
+            Assert.AreEqual("<invalid>", GetRegisterState(se, r1).ToString());
         }
 
         [Test]

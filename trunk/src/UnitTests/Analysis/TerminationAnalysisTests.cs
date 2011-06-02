@@ -23,6 +23,7 @@ using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
+using Decompiler.Evaluation;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
@@ -37,6 +38,7 @@ namespace Decompiler.UnitTests.Analysis
         ProcedureBase exit;
         ProgramBuilder progMock;
         private ProgramDataFlow flow;
+        private Program prog;
 
         [SetUp]
         public void Setup()
@@ -50,16 +52,24 @@ namespace Decompiler.UnitTests.Analysis
             flow = new ProgramDataFlow();
         }
 
+        private BlockFlow CreateBlockFlow(Block block)
+        {
+            return new BlockFlow(
+                block,
+                prog.Architecture.CreateRegisterBitset(),
+                new SymbolicEvaluationContext(prog.Architecture));
+        }
+
         [Test]
         public void BlockTerminates()
         {
-            ProcedureBuilder m = new ProcedureBuilder();
+            var m = new ProcedureBuilder();
             m.Call(exit);
             var b = m.CurrentBlock;
             m.Return();
 
             var a = new TerminationAnalysis(flow);
-            flow[b] = new BlockFlow(b, null);
+            flow[b] = CreateBlockFlow(b);
             a.Analyze(b);
             Assert.IsTrue(flow[b].TerminatesProcess);
         }
@@ -72,7 +82,11 @@ namespace Decompiler.UnitTests.Analysis
             var b = m.Block;
             m.Return();
             var a = new TerminationAnalysis(flow);
-            flow[b] = new BlockFlow(b, null);
+            prog = new Program
+            {
+                Architecture = new ArchitectureMock()
+            };
+            flow[b] = CreateBlockFlow(b);
             a.Analyze(b);
             Assert.IsFalse(flow[b].TerminatesProcess);
         }
@@ -156,7 +170,7 @@ namespace Decompiler.UnitTests.Analysis
         [Test]
         public void TerminatingApplication()
         {
-            var test= CompileProcedure("test", delegate(ProcedureBuilder m)
+            var test= CompileProcedure("test", m =>
             {
                 m.SideEffect(m.Fn(new ProcedureConstant(PrimitiveType.Pointer32, exit)));
                 m.FinishProcedure();

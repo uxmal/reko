@@ -166,7 +166,7 @@ namespace Decompiler.Analysis
             var term = new TerminationAnalysis(flow);
             term.Analyze(prog);
 			eventListener.ShowStatus("Finding trashed registers.");
-            var trf = new TrashedRegisterFinderOld(prog, flow, eventListener);
+            var trf = new TrashedRegisterFinder(prog, flow, eventListener);
 			trf.Compute();
             eventListener.ShowStatus("Computing register liveness.");
             var rl = RegisterLiveness.Compute(prog, flow, eventListener);

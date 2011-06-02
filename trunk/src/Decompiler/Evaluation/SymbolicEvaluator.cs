@@ -23,6 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 
@@ -70,7 +71,7 @@ namespace Decompiler.Evaluation
 
         #region InstructionVisitor Members
 
-        void InstructionVisitor.VisitAssignment(Assignment a)
+        public void VisitAssignment(Assignment a)
         {
             var valSrc = a.Src.Accept(eval);
             ctx.SetValue(a.Dst, valSrc);
@@ -81,7 +82,7 @@ namespace Decompiler.Evaluation
             b.Condition.Accept(eval);
         }
 
-        void InstructionVisitor.VisitCallInstruction(CallInstruction ci)
+        public void VisitCallInstruction(CallInstruction ci)
         {
         }
 
@@ -120,12 +121,12 @@ namespace Decompiler.Evaluation
                 ret.Expression.Accept(eval);
         }
 
-        void InstructionVisitor.VisitSideEffect(SideEffect side)
+        public void VisitSideEffect(SideEffect side)
         {
             side.Expression.Accept(eval);
         }
 
-        void InstructionVisitor.VisitStore(Store store)
+        public void VisitStore(Store store)
         {
             var valSrc = store.Src.Accept(eval);
             var segmem = store.Dst as SegmentedAccess;
@@ -156,194 +157,4 @@ namespace Decompiler.Evaluation
         #endregion
     }
 
-    public class SymbolicEvaluationContext : EvaluationContext
-    {
-        private IProcessorArchitecture arch;
-
-        public SymbolicEvaluationContext(IProcessorArchitecture arch)
-        {
-            this.arch = arch;
-            RegisterState = new Dictionary<RegisterStorage, Expression>();
-            StackState = new Map<int, Expression>();
-            TemporaryState = new Dictionary<Storage, Expression>();
-        }
-
-        //$REVIEW: make all states a single collection indexed by storage, and eliminate the map?
-        public Dictionary<RegisterStorage, Expression> RegisterState { get; private set; }
-        public Map<int, Expression> StackState { get; private set; }
-        public Dictionary<Storage, Expression> TemporaryState { get; private set; }
-        public uint TrashedFlags { get; set; }
-        
-
-        #region EvaluationContext Members
-        /// <summary>
-        /// Used by the symbolic evaluator to obtain the symbolic value of <paramref name="id"/>.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Expression GetValue(Identifier id)
-        {
-            var reg = id.Storage as RegisterStorage;
-            Expression value;
-            if (reg != null && RegisterState.TryGetValue(reg, out value))
-                return value;
-            var tmp = id.Storage as TemporaryStorage;
-            if (tmp != null && TemporaryState.TryGetValue(tmp, out value))
-                return value;
-            return id;
-        }
-
-        public Expression GetValue(MemoryAccess access)
-        {
-            return GetValueEa(access);
-        }
-
-        public Expression GetValue(SegmentedAccess access)
-        {
-            return GetValueEa(access);
-        }
-
-        private Expression GetValueEa(MemoryAccess access)
-        {
-            int offset;
-            if (!GetStackAddressOffset(access.EffectiveAddress, out offset))
-                return Constant.Invalid;
-
-            Expression value;
-            if (StackState.TryGetValue(offset, out value))
-            {
-                int excess = access.DataType.Size - value.DataType.Size;
-                if (excess == 0)
-                    return value;
-                else if (excess > 0)
-                {
-                    // Example: word32 fetch from SP+04, where SP+04 is a word16 and SP+06 is a word16
-                    int remainder = offset + value.DataType.Size;
-                    Expression v2;
-                    if (StackState.TryGetValue(remainder, out v2))
-                    {
-                        //$BUGBUG: should evaluate the MkSequence, possibly creating a longer constant.
-                        return new MkSequence(access.DataType, v2, value);
-                    }
-                }
-                else
-                {
-                    return new Cast(access.DataType, value);
-                }
-            }
-            else
-            {
-                int offset2;
-                if (StackState.TryGetLowerBoundKey(offset, out offset2))
-                {
-                    var value2 = StackState[offset2];
-                    if (offset2 + value2.DataType.Size > offset)
-                        return new Slice(access.DataType, StackState[offset2], (uint)((offset - offset2) * 8));
-                }
-            }
-            return Constant.Invalid;
-        }
-
-        /// <summary>
-        /// Used primarily to make sure that register out parameters are trashed appropriately.
-        /// </summary>
-        /// <param name="appl"></param>
-        /// <returns></returns>
-        public Expression GetValue(Application appl)
-        {
-            var args = appl.Arguments;
-            for (int i = 0; i < args.Length; ++i)
-            {
-                var outArg = args[i] as UnaryExpression;
-                if (outArg == null || outArg.op != Operator.AddrOf) continue;
-                var outId = outArg.Expression as Identifier;
-                if (outId != null)
-                    SetValue(outId, Constant.Invalid);
-
-            }
-            return Constant.Invalid;
-        }
-
-        public void RemoveIdentifierUse(Identifier id)
-        {
-        }
-
-        public void SetValue(Identifier id, Expression value)
-        {
-            var reg = id.Storage as RegisterStorage;
-            if (reg != null)
-            {
-                RegisterState[reg] = value;
-                return;
-            }
-            var tmp = id.Storage as TemporaryStorage;
-            if (tmp != null)
-            {
-                TemporaryState[id.Storage] = value;
-                return;
-            }
-            var grf = id.Storage as FlagGroupStorage;
-            if (grf != null)
-            {
-                TrashedFlags |= grf.FlagGroup;
-                return;
-            }
-            throw new NotImplementedException("Unable to set value for identifier " + id);
-        }
-
-        public void SetValueEa(Expression ea, Expression value)
-        {
-            int offset;
-            if (GetStackAddressOffset(ea, out offset))
-                StackState[offset] = value;
-        }
-
-        public void SetValueEa(Expression basePtr, Expression ea, Expression value)
-        {
-            int offset;
-            if (GetStackAddressOffset(ea, out offset))
-                StackState[offset] = value;
-        }
-
-        public void UseExpression(Expression e)
-        {
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Stack addresses are of the pattern <code>stackpointer+/-const</code>.
-        /// </summary>
-        /// <param name="value">The byte offset of the parameter</param>
-        /// <returns>True if the effective address was a stack access, false if not.</returns>
-        private bool GetStackAddressOffset(Expression effectiveAddress, out int offset)
-        {
-            offset = 0;
-            var ea = effectiveAddress as BinaryExpression;
-            if (ea != null)
-            {
-                if (!IsStackRegister(ea.Left))
-                    return false;
-                var o = ea.Right as Constant;
-                if (o == null) return false;
-                offset = o.ToInt32();
-                if (ea.op == Operator.Sub)
-                    offset = -offset;
-                return true;
-            }
-            else
-            {
-                return IsStackRegister(effectiveAddress);
-            }
-        }
-
-        private bool IsStackRegister(Expression exp)
-        {
-            var sp = exp as Identifier;
-            if (sp == null) return false;
-            var regSp = sp.Storage as RegisterStorage;
-            if (regSp == null) return false;
-            return (regSp.Register == arch.StackRegister);
-        }
-    }
 }

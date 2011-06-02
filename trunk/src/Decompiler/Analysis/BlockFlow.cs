@@ -24,6 +24,7 @@ using Expression = Decompiler.Core.Expressions.Expression;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
 using Storage = Decompiler.Core.Storage;
 using StringWriter = System.IO.StringWriter;
+using SymbolicEvaluationContext = Decompiler.Evaluation.SymbolicEvaluationContext;
 using TextWriter = System.IO.TextWriter;
 using System;
 using System.Collections.Generic;
@@ -31,27 +32,28 @@ using System.Collections.Generic;
 namespace Decompiler.Analysis
 {
 	/// <summary>
-	/// Dataflow summary information about the dataflow of a basic block.
+	/// Summary information about the dataflow of a basic block.
 	/// </summary>
 	public class BlockFlow : DataFlow
 	{
 		public Block Block;
-		public int iStm;
 		public BitSet DataOut;						    // each bit corresponds to a register that is live at the end of the
 		public uint grfOut;							    // each bit corresponds to a condition code register that is live at the end of the block
 		public Dictionary<Storage,int> StackVarsOut;    // stack-based storages that are live at the end of the block.
 		public uint grfTrashedIn;					    // each bit corresnpots to a condition code register that is trashed on entrance.
         [Obsolete] public Dictionary<Storage, Storage> TrashedIn;  
+        public SymbolicEvaluationContext SymbolicAuxIn;
         public Dictionary<Storage, Expression> SymbolicIn;        // maps identifiers to symbolic values on entrance to the block.
         public bool TerminatesProcess;                  // True if entering this block means the process/thread is terminated.
 
-		public BlockFlow(Block block, BitSet dataOut)
+		public BlockFlow(Block block, BitSet dataOut, SymbolicEvaluationContext ctx)
 		{
 			this.Block = block;
 			this.DataOut = dataOut;
 			this.StackVarsOut = new Dictionary<Storage,int>();
 			this.TrashedIn = new Dictionary<Storage, Storage>();
             this.SymbolicIn = new Dictionary<Storage, Expression>();
+            this.SymbolicAuxIn = ctx;
 		}
 
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)
@@ -90,5 +92,6 @@ namespace Decompiler.Analysis
             writer.WriteLine();
 
         }
-	}
+
+    }
 }
