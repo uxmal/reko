@@ -200,6 +200,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<string>.Is.Null,
                     Arg<ProcessorState>.Is.Anything))
                         .Return(new Procedure("fn1200", new Frame(null)));
+                scanner.Stub(x=> x.Architecture).Return(arch);
             }
             var wi = CreateWorkItem(new Address(0x1000));
             wi.Process();

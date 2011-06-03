@@ -339,7 +339,7 @@ namespace Decompiler.Analysis
 
 				// Rename arguments to phi functions in successor blocks.
 
-				bool [] visited = new bool[proc.RpoBlocks.Count];
+				bool [] visited = new bool[proc.ControlGraph.Nodes.Count];
 				foreach (Block y in n.Succ)
 				{
 					for (int j = 0; j < y.Pred.Count; ++j)
