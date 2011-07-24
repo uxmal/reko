@@ -318,7 +318,7 @@ namespace Decompiler
 		{
 			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
 				scanner = CreateScanner(prog, eventListener);
-			return scanner.ScanProcedure(addr, null, prog.Architecture.CreateProcessorState());
+			return scanner.ScanProcedure(addr, null, new ScannerEvaluationContext(prog.Architecture));
 		}
 
 		/// <summary>

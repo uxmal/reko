@@ -35,7 +35,7 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public void Set(MachineRegister r, Constant v)
+        public void SetRegister(MachineRegister r, Constant v)
         {
             throw new NotImplementedException();
         }
@@ -45,7 +45,7 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public Constant Get(MachineRegister r)
+        public Constant GetRegister(MachineRegister r)
         {
             throw new NotImplementedException();
         }

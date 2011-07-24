@@ -32,9 +32,9 @@ namespace Decompiler.Arch.Intel
     {
         private IntelArchitecture arch;
         private Frame frame;
-        private IRewriterHost2 host;
+        private IRewriterHost host;
 
-        public OperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost2 host)
+        public OperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
             this.frame = frame;
@@ -212,7 +212,7 @@ namespace Decompiler.Arch.Intel
         public Constant ReplaceCodeSegment(MachineRegister reg, X86State state)
         {
             if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
-                return state.Get(reg);
+                return state.GetRegister(reg);
             else
                 return null;
         }
@@ -240,11 +240,11 @@ namespace Decompiler.Arch.Intel
 
     public class OperandRewriterOld
 	{
-        private IRewriterHost host;
+        private IRewriterHostOld host;
         private IntelArchitecture arch;
         private Frame frame;
 
-        public OperandRewriterOld(IRewriterHost host, IntelArchitecture arch, Frame frame)
+        public OperandRewriterOld(IRewriterHostOld host, IntelArchitecture arch, Frame frame)
         {
             this.host = host;
             this.arch = arch;

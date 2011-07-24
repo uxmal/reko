@@ -32,12 +32,12 @@ using System.Text;
 namespace Decompiler.UnitTests.Scanning
 {
     [TestFixture]
-    public class ScannerEvaluatorTests
+    public class ScannerEvaluationContextTests
     {
         private MachineRegister sp;
         private FakeArchitecture arch;
         private FakeProcessorState state;
-        private ScannerEvaluator sce;
+        private ScannerEvaluationContext sce;
         private Identifier idSp;
         private ExpressionEmitter m;
 
@@ -48,9 +48,8 @@ namespace Decompiler.UnitTests.Scanning
             arch = new FakeArchitecture();
             arch.StackRegister = sp;
 
-            arch = new FakeArchitecture();
             state = new FakeProcessorState();
-            sce = new ScannerEvaluator(arch, state);
+            sce = new ScannerEvaluationContext(arch, state);
 
             idSp = new Identifier(sp.Name, 1, sp.DataType, new RegisterStorage(sp));
             m = new ExpressionEmitter();
@@ -65,14 +64,14 @@ namespace Decompiler.UnitTests.Scanning
         }
 
         [Test]
-        [Ignore()]
-        public void PushLittleEndianValueOnstack()
+        public void PushValueOnstack()
         {
             sce.SetValue(idSp, m.Sub(idSp, 4));
             sce.SetValueEa(idSp, Constant.Word32(0x12345678));
 
-            Assert.AreEqual("@@@", sce.GetValue(m.LoadDw(idSp)).ToString());
+            Assert.AreEqual("0x12345678", sce.GetValue(m.LoadDw(idSp)).ToString());
         }
+
 
         public class FakeArchitecture : IProcessorArchitecture
         {
@@ -103,12 +102,12 @@ namespace Decompiler.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-            public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+            public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host)
             {
                 throw new NotImplementedException();
             }
 
-            public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+            public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
             {
                 throw new NotImplementedException();
             }
@@ -191,6 +190,7 @@ namespace Decompiler.UnitTests.Scanning
         public class FakeProcessorState : ProcessorState
         {
             private Dictionary<MachineRegister, Constant> regs = new Dictionary<MachineRegister, Constant>();
+            private SortedList<int, Constant> stack = new SortedList<int, Constant>();
             #region ProcessorState Members
 
             public ProcessorState Clone()
@@ -198,7 +198,7 @@ namespace Decompiler.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-            public Constant Get(MachineRegister r)
+            public Constant GetRegister(MachineRegister r)
             {
                 Constant c;
                 if (!regs.TryGetValue(r, out c))
@@ -206,7 +206,7 @@ namespace Decompiler.UnitTests.Scanning
                 return c;
             }
 
-            public void Set(MachineRegister r, Constant v)
+            public void SetRegister(MachineRegister r, Constant v)
             {
                 throw new NotImplementedException();
             }

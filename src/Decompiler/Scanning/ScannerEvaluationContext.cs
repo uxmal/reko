@@ -32,17 +32,38 @@ namespace Decompiler.Scanning
     /// <summary>
     /// Used by the Scanner and related classes to evaluate possibly constant expressions.
     /// </summary>
-    public class ScannerEvaluator : EvaluationContext
+    public class ScannerEvaluationContext : EvaluationContext
     {
         private IProcessorArchitecture arch;
-        private ProcessorState state;
         private Dictionary<MachineRegister, Expression> offsets;
+        private SortedList<int, Expression> stackState;
 
-        public ScannerEvaluator(IProcessorArchitecture arch, ProcessorState state)
+        public ScannerEvaluationContext(IProcessorArchitecture arch)
+            : this(arch, arch.CreateProcessorState())
+        {
+        }
+
+        public ScannerEvaluationContext(IProcessorArchitecture arch, ProcessorState state)
         {
             this.arch = arch;
-            this.state = state;
+            this.State = state;
             this.offsets = new Dictionary<MachineRegister, Expression>();
+            this.stackState = new SortedList<int, Expression>();
+        }
+
+        private ScannerEvaluationContext(ScannerEvaluationContext original)
+        {
+            this.arch = original.arch;
+            this.State = original.State.Clone();
+            this.offsets = new Dictionary<MachineRegister, Expression>(original.offsets);
+            this.stackState = new SortedList<int, Expression>(original.stackState);
+        }
+
+        public ProcessorState State { get; private set; }
+
+        public ScannerEvaluationContext Clone()
+        {
+            return new ScannerEvaluationContext(this);
         }
 
         #region EvaluationContext Members
@@ -53,7 +74,7 @@ namespace Decompiler.Scanning
             if (reg == null)
                 return Constant.Invalid;
          
-            Expression exp = state.Get(reg.Register);
+            Expression exp = State.GetRegister(reg.Register);
             if (exp != Constant.Invalid)
                 return exp;
             if (offsets.TryGetValue(reg.Register, out exp))
@@ -63,11 +84,25 @@ namespace Decompiler.Scanning
 
         public Expression GetValue(MemoryAccess access)
         {
+            int stackOffset;
+            if (GetStackOffset(access.EffectiveAddress, out stackOffset))
+            {
+                Expression value;
+                if (stackState.TryGetValue(stackOffset, out value))
+                    return value;
+            }
             return Constant.Invalid;
         }
 
         public Expression GetValue(SegmentedAccess access)
         {
+            int stackOffset;
+            if (GetStackOffset(access.EffectiveAddress, out stackOffset))
+            {
+                Expression value;
+                if (stackState.TryGetValue(stackOffset, out value))
+                    return value;
+            }
             return Constant.Invalid;
         }
 
@@ -92,7 +127,7 @@ namespace Decompiler.Scanning
             var constVal = value as Constant;
             if (constVal != null)
             {
-                state.Set(reg.Register, constVal);
+                State.SetRegister(reg.Register, constVal);
                 offsets.Remove(reg.Register);
                 return;
             }
@@ -107,29 +142,54 @@ namespace Decompiler.Scanning
                     return;
                 }
             }
-            state.Set(reg.Register, Constant.Invalid);
+            State.SetRegister(reg.Register, Constant.Invalid);
             offsets.Remove(reg.Register); 
         }
 
         public void SetValueEa(Expression ea, Expression value)
         {
+            int stackOffset;
+            if (GetStackOffset(ea, out stackOffset))
+                stackState[stackOffset] = value;
+        }
+
+        private bool IsStackRegister(Expression ea)
+        {
             var id = ea as Identifier;
-            if (id != null)
-            {
-                var reg = id.Storage as RegisterStorage;
-                if (reg == null)
-                    return;
-                if (reg.Register == arch.StackRegister)
-                {
-                    throw new NotImplementedException("state.WriteOnStack(0, value);");
-                }
-            }
+            if (id == null)
+                return false;
+            var reg = id.Storage as RegisterStorage;
+            if (reg == null)
+                return false;
+            return (reg.Register == arch.StackRegister);
         }
 
         public void SetValueEa(Expression basePtr, Expression ea, Expression value)
         {
+            int stackOffset;
+            if (GetStackOffset(ea, out stackOffset))
+                stackState[stackOffset] = value;
         }
 
+        private bool GetStackOffset(Expression ea, out int offset)
+        {
+            if (IsStackRegister(ea))
+            {
+                offset = 0;
+                return true;
+            }
+
+            var bin = ea as BinaryExpression;
+            if (bin != null && (bin.op == Operator.Add || bin.op == Operator.Sub) && IsStackRegister(bin.Left))
+            {
+                offset = ((Constant) bin.Right).ToInt32();
+                if (bin.op == Operator.Sub)
+                    offset = -offset;
+                return true;
+            }
+            offset = 0;
+            return false;
+        }
         #endregion
     }
 }

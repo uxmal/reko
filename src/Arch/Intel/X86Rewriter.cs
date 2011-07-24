@@ -38,7 +38,7 @@ namespace Decompiler.Arch.Intel
     /// </summary>
     public partial class X86Rewriter : RewriterOld, Rewriter
     {
-        private IRewriterHost2 host;
+        private IRewriterHost host;
         private IntelArchitecture arch;
         private Frame frame;
         private LookaheadEnumerator<DisassembledInstruction> dasm;
@@ -56,7 +56,7 @@ namespace Decompiler.Arch.Intel
 
         public X86Rewriter(
             IntelArchitecture arch,
-            IRewriterHost2 host,
+            IRewriterHost host,
             X86State state,
             ImageReader rdr, 
             Frame frame)
@@ -131,6 +131,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.fcompp: RewriteFcom(2); break;
                 case Opcode.fdiv: EmitCommonFpuInstruction(Operator.Divs, false, false); break;
                 case Opcode.fdivp: EmitCommonFpuInstruction(Operator.Divs, false, true); break;
+                case Opcode.fiadd: EmitCommonFpuInstruction(Operator.Add, false, false, PrimitiveType.Real64);break;
                 case Opcode.fidiv: EmitCommonFpuInstruction(Operator.Divs, false, false, PrimitiveType.Real64); break;
                 case Opcode.fdivr: EmitCommonFpuInstruction(Operator.Divs, true, false); break;
                 case Opcode.fdivrp: EmitCommonFpuInstruction(Operator.Divs, true, true); break;
@@ -199,6 +200,7 @@ namespace Decompiler.Arch.Intel
                 case Opcode.rep: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.retf: RewriteRet(); break;
+                case Opcode.sahf: emitter.Assign(orw.FlagGroup(IntelInstruction.DefCc(di.Instruction.code)), orw.AluRegister(Registers.ah)); break;
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.Sub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
                 case Opcode.scasb: RewriteStringInstruction(); break;

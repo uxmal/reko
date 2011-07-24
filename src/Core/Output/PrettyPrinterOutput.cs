@@ -22,14 +22,14 @@ namespace Decompiler.Core.Output
 
         public int total_pchars_enqueued { get; set; }
 
-        public void Indent(int indentAmt)
+        public void Indent(int indentAmount)
         {
-            indentColumn += indentAmt;
+            indentColumn += indentAmount;
         }
 
-        public void Outdent(int outdentAmt)
+        public void Outdent(int outdentAmount)
         {
-            indentColumn -= outdentAmt;
+            indentColumn -= outdentAmount;
         }
 
         public bool MustSplitLine

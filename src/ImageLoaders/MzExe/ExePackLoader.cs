@@ -179,11 +179,11 @@ namespace Decompiler.ImageLoaders.MzExe
             imageMap.AddSegment(new Address(cs, 0), cs.ToString("X4"), AccessMode.ReadWrite);
             this.ss += segCode;
             X86State state = new X86State();
-            state.Set(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.Selector));
-            state.Set(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.Selector));
-            state.Set(Registers.cs, new Constant(PrimitiveType.Word16, cs));
-            state.Set(Registers.ss, new Constant(PrimitiveType.Word16, ss));
-            state.Set(Registers.bx, new Constant(PrimitiveType.Word16, 0));
+            state.SetRegister(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.Selector));
+            state.SetRegister(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.Selector));
+            state.SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, cs));
+            state.SetRegister(Registers.ss, new Constant(PrimitiveType.Word16, ss));
+            state.SetRegister(Registers.bx, new Constant(PrimitiveType.Word16, 0));
             entryPoints.Add(new EntryPoint(new Address(cs, ip), state));
         }
 

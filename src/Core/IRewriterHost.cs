@@ -23,13 +23,13 @@ using System;
 
 namespace Decompiler.Core
 {
-    public interface IRewriterHost2
+    public interface IRewriterHost
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
         PseudoProcedure GetImportThunkAtAddress(uint addrThunk);
     }
 
-    public interface IRewriterHost
+    public interface IRewriterHostOld
 	{
 		void AddCallEdge(Procedure caller, Statement stm, Procedure callee);
 		ImageReader CreateImageReader(Address addr);

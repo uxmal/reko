@@ -1011,7 +1011,6 @@ namespace Decompiler.Assemblers.x86
             asm.ProcessMov(ParseOperandList(2));
         }
 
-
 		private void ProcessMovx(int opcode)
 		{
 			ParsedOperand [] ops = ParseOperandList(2);
@@ -1021,7 +1020,7 @@ namespace Decompiler.Assemblers.x86
 		private void ProcessMul()
 		{
 			ParsedOperand [] ops = ParseOperandList(1);
-            asm.ProcessMul(ops[0]);
+            asm.Mul(ops[0]);
 		}
 
 		private void ProcessUnary(int operation)

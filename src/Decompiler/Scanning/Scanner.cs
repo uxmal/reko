@@ -34,11 +34,11 @@ namespace Decompiler.Scanning
     public interface IScanner
     {
         void EnqueueEntryPoint(EntryPoint ep);
-        Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state);
+        Block EnqueueJumpTarget(Address addr, Procedure proc, ScannerEvaluationContext state);
         void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc);
-        ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
+        ProcedureBase ScanProcedure(Address addr, string procedureName, ScannerEvaluationContext state);
         void EnqueueUserProcedure(SerializedProcedure sp);
-        void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state);
+        void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ScannerEvaluationContext state);
         void ProcessQueue();
 
         CallGraph CallGraph { get; }
@@ -76,7 +76,7 @@ namespace Decompiler.Scanning
     /// Callers feed the scanner by calling EnqueueXXX methods before calling Scan(). Scan() then
     /// processes the queues.
     /// </remarks>
-    public class Scanner : IScanner, IRewriterHost2
+    public class Scanner : IScanner, IRewriterHost
     {
         private IProcessorArchitecture arch;
         private PriorityQueue<WorkItem> queue;
@@ -181,12 +181,12 @@ namespace Decompiler.Scanning
             return image.CreateReader(addr);
         }
 
-        public virtual BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ProcessorState state)
+        public virtual BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ScannerEvaluationContext scEval)
         {
             return new BlockWorkitem(
                                 this,
-                                this.arch.CreateRewriter(CreateReader(addrStart), state, proc.Frame, this),
-                                state,
+                                this.arch.CreateRewriter(CreateReader(addrStart), scEval.State, proc.Frame, this),
+                                scEval,
                                 proc.Frame,
                                 addrStart);
         }
@@ -194,7 +194,7 @@ namespace Decompiler.Scanning
 
         public void EnqueueEntryPoint(EntryPoint ep)
         {
-            queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem2(this, ep));
+            queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, ep));
         }
 
         public void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc)
@@ -203,7 +203,7 @@ namespace Decompiler.Scanning
         }
 
         // Method is virtual because we want to peek into the parameters being passed to it.
-        public virtual Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
+        public virtual Block EnqueueJumpTarget(Address addrStart, Procedure proc, ScannerEvaluationContext state)
         {
             Block block = FindExactBlock(addrStart);
             if (block != null)
@@ -238,7 +238,7 @@ namespace Decompiler.Scanning
         }
 
 
-        public void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
+        public void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ScannerEvaluationContext state)
         {
             ImageMapVectorTable table;
             if (vectors.TryGetValue(addrTable, out table))
@@ -258,7 +258,7 @@ namespace Decompiler.Scanning
         }
 
 
-        public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
+        public ProcedureBase ScanProcedure(Address addr, string procedureName, ScannerEvaluationContext state)
         {
             var pb = GetImportedProcedure(addr.Linear);
             if (pb != null)
@@ -280,7 +280,7 @@ namespace Decompiler.Scanning
             var oldQueue = queue;
             queue = new PriorityQueue<WorkItem>();
             var st = state.Clone();
-            st.OnProcedureEntered();
+            st.State.OnProcedureEntered();
             var block = EnqueueJumpTarget(addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
@@ -290,7 +290,10 @@ namespace Decompiler.Scanning
 
         public void EnqueueUserProcedure(SerializedProcedure sp)
         {
-            var proc = (Procedure) ScanProcedure(Address.ToAddress(sp.Address, 16), sp.Name, arch.CreateProcessorState());
+            var proc = (Procedure) ScanProcedure(
+                Address.ToAddress(sp.Address, 16),
+                sp.Name,
+                new ScannerEvaluationContext(arch, arch.CreateProcessorState()));
             if (sp.Signature != null)
             {
                 var sser = new ProcedureSerializer(arch, platform.DefaultCallingConvention);
@@ -932,9 +935,10 @@ namespace Decompiler.Scanning
         void IScanner.AddDiagnostic(Address addr, Diagnostic d) { throw new NotImplementedException();}
         public Block FindExactBlock(Address addr) { throw new NotImplementedException(); }
         public Block SplitBlock(Block block, Address addr) { throw new NotImplementedException();}
-        public Block EnqueueJumpTarget(Address addr, Procedure proc, ProcessorState state) { throw new NotImplementedException(); }
+        public Block EnqueueJumpTarget(Address addr, Procedure proc, ScannerEvaluationContext state) { throw new NotImplementedException(); }
+        void IScanner.EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ScannerEvaluationContext state) { throw new NotImplementedException(); }
         public ImageReader CreateReader(Address addr) { throw new NotImplementedException(); }
-        ProcedureBase IScanner.ScanProcedure(Address addr, string procedureName, ProcessorState state) { throw new NotImplementedException(); }
+        ProcedureBase IScanner.ScanProcedure(Address addr, string procedureName, ScannerEvaluationContext state) { throw new NotImplementedException(); }
         void IScanner.EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc) { throw new NotImplementedException(); }
         IProcessorArchitecture IScanner.Architecture { get { return program.Architecture; } } 
 

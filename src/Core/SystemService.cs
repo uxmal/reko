@@ -58,7 +58,7 @@ namespace Decompiler.Core
 				return false;
 			for (int i = 0; i < RegisterValues.Length; ++i)
 			{
-				Constant v = state.Get(RegisterValues[i].Register);
+				Constant v = state.GetRegister(RegisterValues[i].Register);
 				if (v == null || v == Constant.Invalid)
 					return false;
 				if (v.ToUInt32() != RegisterValues[i].Value)

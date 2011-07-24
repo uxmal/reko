@@ -26,14 +26,14 @@ using System.Text;
 namespace Decompiler.Core.Rtl
 {
     /// <summary>
-    /// RtlInstructions are the low-level register-transfer instructions emitted by the Instruction rewriters
+    /// RtlInstructions are the low-level register-transfer instructions emitted by the Instruction rewriters.
     /// </summary>
     public abstract class RtlInstruction
     {
         /// <summary>
-        /// If true, the next statement need a label. This is required in cases where the original machine code 
+        /// If true, the next statement needs a label. This is required in cases where the original machine code 
         /// maps to many RtlInstructions, some of which are branches (see the X86 REP instruction for a particularly
-        /// hideous example.
+        /// hideous example).
         /// </summary>
         public bool NextStatementRequiresLabel { get; set; }
 

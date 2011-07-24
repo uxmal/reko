@@ -83,8 +83,8 @@ namespace Decompiler.ImageLoaders.MzExe
 
         private ImageLoader CreateRealModeLoader(byte[] image)
         {
-            IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
-            MsdosPlatform platform = new MsdosPlatform(arch);
+            var arch = new IntelArchitecture(ProcessorMode.Real);
+            var platform = new MsdosPlatform(arch);
 
             if (LzExeUnpacker.IsCorrectUnpacker(this, image))
             {

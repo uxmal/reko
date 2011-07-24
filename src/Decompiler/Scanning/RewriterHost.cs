@@ -33,7 +33,7 @@ namespace Decompiler.Scanning
 	/// The RewriterHost hosts the environment required to rewrite the machine code of the
 	/// analyzed program into the machine-independent intermediate language.
 	/// </summary>
-	public class RewriterHost : IRewriterHost
+	public class RewriterHost : IRewriterHostOld
 	{
 		private Program prog;
 		private DecompilerEventListener eventListener;

@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Scanning
             BuildTest(arch, new Address(0x0C00, 0x000), new MsdosPlatform(arch), m);
         }
 
-        private class RewriterHost : IRewriterHost2
+        private class RewriterHost : IRewriterHost
         {
             Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
             Dictionary<uint, ProcedureSignature> sigs = new Dictionary<uint, ProcedureSignature>();
@@ -125,7 +125,8 @@ namespace Decompiler.UnitTests.Scanning
             }
             var image = asm.GetImage();
             var rw = arch.CreateRewriter(new ImageReader(image, addr), state, proc.Frame, host);
-            wi = new BlockWorkitem(scanner, rw, state, proc.Frame, addr);
+            var scEval = new ScannerEvaluationContext(arch, state);
+            wi = new BlockWorkitem(scanner, rw, scEval, proc.Frame, addr);
         }
 
 
@@ -142,15 +143,15 @@ namespace Decompiler.UnitTests.Scanning
             {
                 m.Int(0x21);
 
-                state.Set(Registers.es, Constant.Word16(0));
-                state.Set(Registers.bx, Constant.Word16(0));
-                state.Set(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
+                state.SetRegister(Registers.es, Constant.Word16(0));
+                state.SetRegister(Registers.bx, Constant.Word16(0));
+                state.SetRegister(Registers.ah, new Constant(PrimitiveType.Word16, 0x2F));
             });
 
             wi.Process();
 
-            Assert.IsFalse(state.Get(Registers.es).IsValid, "should have trashed ES");
-            Assert.IsFalse(state.Get(Registers.bx).IsValid, "should have trashed BX");
+            Assert.IsFalse(state.GetRegister(Registers.es).IsValid, "should have trashed ES");
+            Assert.IsFalse(state.GetRegister(Registers.bx).IsValid, "should have trashed BX");
         }
 
         [Test]
@@ -161,9 +162,9 @@ namespace Decompiler.UnitTests.Scanning
                 m.Bswap(m.ebp);
             });
 
-            state.Set(Registers.ebp, new Constant(PrimitiveType.Word32, 0x12345678));
+            state.SetRegister(Registers.ebp, new Constant(PrimitiveType.Word32, 0x12345678));
             wi.Process();
-            Assert.AreSame(Constant.Invalid, state.Get(Registers.ebp));
+            Assert.AreSame(Constant.Invalid, state.GetRegister(Registers.ebp));
         }
 
         [Test]
@@ -173,9 +174,9 @@ namespace Decompiler.UnitTests.Scanning
             {
                 m.Mov(m.si, 0x606);
             });
-            state.Set(Registers.esi, new Constant(PrimitiveType.Word32, 0x42424242));
+            state.SetRegister(Registers.esi, new Constant(PrimitiveType.Word32, 0x42424242));
             wi.Process();
-            Assert.AreEqual(0x42420606, state.Get(Registers.esi).ToInt32());
+            Assert.AreEqual(0x42420606, state.GetRegister(Registers.esi).ToInt32());
         }
 
         [Test]
@@ -184,10 +185,11 @@ namespace Decompiler.UnitTests.Scanning
             BuildTest32(delegate(IntelAssembler m)
             {
                 m.Xor(m.eax, m.eax);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
             });
-            state.Set(Registers.eax, Constant.Invalid);
+            state.SetRegister(Registers.eax, Constant.Invalid);
             wi.Process();
-            Assert.AreEqual(0, state.Get(Registers.eax).ToInt32());
+            Assert.AreEqual(0, state.GetRegister(Registers.eax).ToInt32());
         }
 
 
@@ -197,10 +199,11 @@ namespace Decompiler.UnitTests.Scanning
             BuildTest32(delegate(IntelAssembler m)
             {
                 m.Sub(m.eax, m.eax);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
             });
-            state.Set(Registers.eax, Constant.Invalid);
+            state.SetRegister(Registers.eax, Constant.Invalid);
             wi.Process();
-            Assert.AreEqual(0, state.Get(Registers.eax).ToInt32());
+            Assert.AreEqual(0, state.GetRegister(Registers.eax).ToInt32());
         }
 
         [Test]
@@ -209,10 +212,11 @@ namespace Decompiler.UnitTests.Scanning
             BuildTest16(delegate(IntelAssembler m)
             {
                 m.In(m.al, m.dx);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             });
-            state.Set(Registers.al, Constant.Byte(3));
+            state.SetRegister(Registers.al, Constant.Byte(3));
             wi.Process();
-            Assert.AreSame(Constant.Invalid, state.Get(Registers.al));
+            Assert.AreSame(Constant.Invalid, state.GetRegister(Registers.al));
         }
 
         [Test]
@@ -256,7 +260,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ushort>.Is.Anything,
                     Arg<bool>.Is.Equal(false),
                     Arg<Procedure>.Is.Anything,
-                    Arg<ProcessorState>.Is.Anything));
+                    Arg<ScannerEvaluationContext>.Is.Anything));
                 scanner.Expect(x => x.CreateReader(
                     Arg<Address>.Is.Anything)).Return(new ImageReader(new byte[] {
                         0x34, 0x12,
@@ -266,10 +270,18 @@ namespace Decompiler.UnitTests.Scanning
                         0xCC, 0xCC},
                         0));
                 ExpectJumpTarget(0x0C00, 0x0000, "l0C00_0000");
-                ExpectJumpTarget(0x0C00, 0x1234, "foo1");
-                ExpectJumpTarget(0x0C00, 0x1236, "foo2");
-                ExpectJumpTarget(0x0C00, 0x1238, "foo3");
-                ExpectJumpTarget(0x0C00, 0x123A, "foo4");
+                var block1234 = ExpectJumpTarget(0x0C00, 0x1234, "foo1");
+                var block1236 = ExpectJumpTarget(0x0C00, 0x1236, "foo2");
+                var block1238 = ExpectJumpTarget(0x0C00, 0x1238, "foo3");
+                var block123A = ExpectJumpTarget(0x0C00, 0x123A, "foo4");
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0000))).Return(block);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0003))).Return(block);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0005))).Return(block);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1234))).Return(block1234);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1236))).Return(block1236);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1238))).Return(block1238);
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x123A))).Return(block123A);
+                
             });
             wi.Process();
             var sw = new StringWriter();
@@ -286,12 +298,14 @@ namespace Decompiler.UnitTests.Scanning
         }
 
 
-        private void ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
+        private Block ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
+            var block = new Block(proc, blockLabel);
             scanner.Expect(x => x.EnqueueJumpTarget(
                 Arg<Address>.Matches(q => (Niz(q, selector, offset))),
                 Arg<Procedure>.Is.Anything,
-                Arg<ProcessorState>.Is.Anything)).Return(new Block(proc, blockLabel));
+                Arg<ScannerEvaluationContext>.Is.Anything)).Return(block);
+            return block;
         }
 
         private bool Niz(Address q, ushort selector, ushort offset)
@@ -312,20 +326,18 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(a => a.Offset == 2),
                     Arg<Procedure>.Is.Same(proc),
-                    Arg<ProcessorState>.Is.Anything)).Return(follow);
+                    Arg<ScannerEvaluationContext>.Is.Anything)).Return(follow);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(a => a.Offset == 2),
                     Arg<Procedure>.Is.Same(proc),
-                    Arg<ProcessorState>.Is.Anything)).Return(block);
+                    Arg<ScannerEvaluationContext>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(a => a.Offset == 0),
                     Arg<Procedure>.Is.Same(proc),
-                    Arg<ProcessorState>.Is.Anything)).Return(block);
+                    Arg<ScannerEvaluationContext>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
-                scanner.Expect(x => x.FindContainingBlock(
-                    Arg<Address>.Matches(a => a.Offset == 0x0000))).Return(block);
 
             });
             wi.Process();
@@ -346,11 +358,11 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(a => a.Offset == 0x0003),
                     Arg<Procedure>.Is.Same(proc),
-                    Arg<ProcessorState>.Is.Anything)).Return(new Block(proc, "l0003"));
+                    Arg<ScannerEvaluationContext>.Is.Anything)).Return(new Block(proc, "l0003"));
                 scanner.Expect(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
-
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             });
             wi.Process();
             var sExp =
@@ -378,6 +390,7 @@ namespace Decompiler.UnitTests.Scanning
 
                 scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(null);
                 scanner.Stub(x => x.TerminateBlock(Arg<Block>.Is.Anything, Arg<Address>.Is.Anything));
+                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             });
             wi.Process();
             repository.VerifyAll();

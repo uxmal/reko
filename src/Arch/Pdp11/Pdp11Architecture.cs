@@ -83,12 +83,12 @@ namespace Decompiler.Arch.Pdp11
             return new BitSet(16);
         }
 
-        public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+        public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host)
         {
             throw new NotImplementedException();
         }
 
-        public Rewriter CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public Rewriter CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Pdp11Rewriter(this, null);
         }
@@ -177,7 +177,7 @@ namespace Decompiler.Arch.Pdp11
         #region IProcessorArchitecture Members
 
 
-        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             throw new NotImplementedException();
         }

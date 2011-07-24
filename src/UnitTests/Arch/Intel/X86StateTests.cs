@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         public void State()
         {
             var state = new X86State();
-            state.Set(Registers.esp, Constant.Word32(-4));
+            state.SetRegister(Registers.esp, Constant.Word32(-4));
             state.OnProcedureEntered();
             var site = state.OnBeforeCall(4);
             Assert.AreEqual(4, site.SizeOfReturnAddressOnStack);

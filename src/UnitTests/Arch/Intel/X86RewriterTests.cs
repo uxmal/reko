@@ -22,6 +22,7 @@ using Decompiler.Arch.Intel;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using NUnit.Framework;
@@ -89,7 +90,28 @@ namespace Decompiler.UnitTests.Arch.Intel
             Assert.IsFalse(e.MoveNext(), "More instructions were emitted than were expected.");
         }
 
-        private class RewriterHost : IRewriterHost2
+        private Identifier Reg(IntelRegister r)
+        {
+            return new Identifier(r.Name, 0, r.DataType, new RegisterStorage(r));
+        }
+
+
+
+        private MemoryOperand Mem16(RegisterOperand reg, int offset)
+        {
+            return new MemoryOperand(PrimitiveType.Word16, reg.Register, new Constant(reg.Register.DataType, offset));
+        }
+
+        private ImmediateOperand Imm16(ushort u) { return new ImmediateOperand(new Constant(PrimitiveType.Word16, u)); }
+
+        private PrimitiveType Word16 { get { return PrimitiveType.Word16; } }
+
+        private IntelInstruction Instr(Opcode op, PrimitiveType dSize, PrimitiveType aSize, params MachineOperand[] ops)
+        {
+            return new IntelInstruction(op, dSize, aSize, ops);
+        }
+
+        private class RewriterHost : IRewriterHost
         {
             private Dictionary<string, PseudoProcedure> ppp ;
             private Dictionary<uint, PseudoProcedure> importThunks;
@@ -650,6 +672,226 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "5|if (Test(NE,Z)) branch 0C00:0000",
                 "6|0C00:0002(1): 1 instructions",
                 "7|return (2,0)");
+        }
+
+        [Test]
+        public void RewriteLesBxStack()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Les(m.bx, m.MemW(Registers.bp, 6));
+            });
+            var ass = (RtlAssignment)SingleInstruction(e); 
+            Assert.AreEqual("es_bx = Mem0[ss:bp + 0x0006:ptr32]", ass.ToString());
+            Assert.AreSame(PrimitiveType.Pointer32, ass.Src.DataType);
+        }
+
+        private RtlInstruction SingleInstruction(IEnumerator<RtlInstructionCluster> e)
+        {
+            Assert.IsTrue(e.MoveNext());
+            Assert.AreEqual(1, e.Current.Instructions.Count);
+            var instr = e.Current.Instructions[0];
+            return instr;
+        }
+
+        [Test]
+        public void RewriteBswap()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Bswap(m.ebx);
+            });
+            Assert.AreEqual("ebx = __bswap(ebx)", SingleInstruction(e).ToString());
+        }
+
+        [Test]
+        public void RewriteFiadd()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Fiadd(m.WordPtr(m.bx, 0));
+            });
+            Assert.AreEqual("rArg0 = rArg0 + (real64) Mem0[ds:bx + 0x0000:word16]", SingleInstruction(e).ToString());
+        }
+
+        /// <summary>
+        /// Captures the side effect of setting CF = 0
+        /// </summary>
+        [Test]
+        public void RewriteAnd()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.And(m.ax, m.Const(8));
+            });
+            AssertCode(e,
+                "0|0C00:0000(3): 3 instructions",
+                "1|ax = ax & 0x0008",
+                "2|SZO = cond(ax)",
+                "3|C = false");
+        }
+
+        [Test(Description="Captures the side effect of setting CF = 0")]
+        public void RewriteTest()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Test(m.ax, m.Const(8));
+            });
+            AssertCode(e, 
+                "0|0C00:0000(4): 2 instructions",
+                "1|SZO = cond(ax & 0x0008)",
+                "2|C = false");
+        }
+
+        [Test]
+        public void RewriteImul()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Imul(m.cx);
+            });
+            AssertCode(e,
+                "0|0C00:0000(2): 2 instructions",
+                "1|dx_ax = cx *s ax",
+                "2|SCZO = cond(dx_ax)");
+        }
+
+        [Test]
+        public void RewriteMul()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Mul(m.cx);
+            });
+            AssertCode(e,
+                "0|0C00:0000(2): 2 instructions",
+                "1|dx_ax = cx *u ax",
+                "2|SCZO = cond(dx_ax)");
+        }
+
+        [Test]
+        public void RewriteFmul()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Fmul(m.St(1));
+            });
+            AssertCode(e,
+                "0|0C00:0000(2): 1 instructions",
+                "1|rArg0 = rArg0 *s rArg1");
+        }
+
+        [Test]
+        public void RewriteDivWithRemainder()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Div(m.cx);
+            });
+            AssertCode(e,
+                    "0|0C00:0000(2): 3 instructions",
+                    "1|dx = dx_ax % cx",
+                    "2|ax = dx_ax /u cx",
+                    "3|SCZO = cond(ax)");
+        }
+
+        [Test]
+        public void RewriteIdivWithRemainder()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Idiv(m.cx);
+            });
+            AssertCode(e,
+                    "0|0C00:0000(2): 3 instructions",
+                    "1|dx = dx_ax % cx",
+                    "2|ax = dx_ax / cx",
+                    "3|SCZO = cond(ax)");
+        }
+
+        [Test]
+        public void RewriteBsr()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Bsr(m.ecx, m.eax);
+            });
+            AssertCode(e,
+                "0|10000000(3): 2 instructions",
+                "1|Z = eax == 0x00000000",
+                "2|ecx = __bsr(eax)");
+        }
+
+        [Test]
+        public void RewriteIndirectCalls()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Call(m.bx);
+                m.Call(m.WordPtr(m.bx, 4));
+                m.Call(m.DwordPtr(m.bx, 8));
+            });
+            AssertCode(e,
+                "0|0C00:0000(2): 1 instructions",
+                "1|call SEQ(cs, bx) (2)",
+                "2|0C00:0002(3): 1 instructions",
+                "3|call SEQ(cs, Mem0[ds:bx + 0x0004:word16]) (2)",
+                "4|0C00:0005(3): 1 instructions",
+                "4|call Mem0[ds:bx + 0x0008:ptr32] (2)");
+        }
+
+
+        [Test]
+        [Ignore("Look at the other jump statement tests.")]
+        public void RewriteJp()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                //new IntelInstruction(Opcode.jpe, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word32, 0x100))),
+                //new IntelInstruction(Opcode.jpo, PrimitiveType.Word16, PrimitiveType.Word16, new ImmediateOperand(new Constant(PrimitiveType.Word32, 0x102)))
+            });
+            //Assert.AreEqual("branch Test(PE,P) l0C00_0100", rw.Block.Statements[0].Instruction.ToString());
+            //Assert.AreEqual("branch Test(PO,P) l0C00_0102", rw.Block.Statements[1].Instruction.ToString());
+        }
+
+        [Test]
+        public void FstswSahf()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Fstsw(m.ax);
+                m.Sahf();
+            });
+            AssertCode(e,
+                "0|0C00:0000(2): 1 instructions",
+                "1|ax = (word16) FPUF << 8",
+                "2|0C00:0002(1): 1 instructions",
+                "3|SCZO = ah");
+        }
+
+        [Test]
+        [Ignore("The X86rewriter needs to keep a history of past instructions, or do this fstsw elimination at a higher level (ugh).")]
+        public void FstswTestAhEq()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Label("foo");
+                m.Fcompp();
+                m.Fstsw(m.ax);
+                m.Test(m.ah, m.Const(0x44));
+                m.Jpe("foo");
+            });
+            AssertCode(e,
+                "0|0C00:0000(2): 1 instructions",
+                "1|FPUF = cond(rArg0 - rArg1)",
+                "2|0C00:0002(2): 1 instructions",
+                "3|ax = (word16) FPUF << 8",
+                "4|0C00:0004(3): 2 instructions",
+                "5|SZO = cond(ah & 0x44)",
+                "6|C = false",
+                "7|0C00:0007(2): 1 instructions",
+                "8|if (Test(NE,FPUF)) branch 0C00:0000");
         }
     }
 }

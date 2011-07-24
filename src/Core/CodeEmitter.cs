@@ -35,12 +35,12 @@ namespace Decompiler.Core
 	public class CodeEmitterOld : CodeEmitter
 	{
         private IProcessorArchitecture arch;
-		private IRewriterHost host;
+		private IRewriterHostOld host;
 		private Procedure proc;
 
 		private Block blockCur;
 
-		public CodeEmitterOld(IProcessorArchitecture arch, IRewriterHost host, Procedure proc, Block block)
+		public CodeEmitterOld(IProcessorArchitecture arch, IRewriterHostOld host, Procedure proc, Block block)
 		{
             this.arch = arch;
 			this.host = host;

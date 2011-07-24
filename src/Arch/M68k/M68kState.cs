@@ -37,7 +37,7 @@ namespace Decompiler.Arch.M68k
             return new M68kState();
         }
 
-        public void Set(MachineRegister r, Constant v)
+        public void SetRegister(MachineRegister r, Constant v)
         {
             throw new NotImplementedException();
         }
@@ -46,7 +46,7 @@ namespace Decompiler.Arch.M68k
         {
         }
 
-        public Constant Get(MachineRegister r)
+        public Constant GetRegister(MachineRegister r)
         {
             throw new NotImplementedException();
         }

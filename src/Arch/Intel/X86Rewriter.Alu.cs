@@ -377,15 +377,12 @@ namespace Decompiler.Arch.Intel
                 }
 
                 if (
-                    dasm.Peek(1).Instruction.code == Opcode.push &&
-                    (dasm.Peek(1).Instruction.op1 is ImmediateOperand) &&
-                    dasm.Peek(2).Instruction.code == Opcode.push &&
-                    (dasm.Peek(2).Instruction.op1 is ImmediateOperand) &&
-                    dasm.Peek(3).Instruction.code == Opcode.jmp &&
-                    (dasm.Peek(3).Instruction.op1 is AddressOperand))
+                    dasm.Peek(1).Instruction.code == Opcode.push && (dasm.Peek(1).Instruction.op1 is ImmediateOperand) &&
+                    dasm.Peek(2).Instruction.code == Opcode.push && (dasm.Peek(2).Instruction.op1 is ImmediateOperand) &&
+                    dasm.Peek(3).Instruction.code == Opcode.jmp && (dasm.Peek(3).Instruction.op1 is AddressOperand))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
-                    this.RewriteCall(dasm.Peek(3).Instruction.op1, di.Instruction.op1.Width);
+                    RewriteCall(dasm.Peek(3).Instruction.op1, di.Instruction.op1.Width);
                     dasm.MoveNext();
                     dasm.MoveNext();
                     dasm.MoveNext();

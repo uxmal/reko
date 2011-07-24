@@ -25,12 +25,12 @@ using System.Text;
 
 namespace Decompiler.Scanning
 {
-    public class EntryPointWorkitem2 : WorkItem
+    public class EntryPointWorkitem : WorkItem
     {
         private IScanner scanner;
         private EntryPoint ep;
 
-        public EntryPointWorkitem2(IScanner scanner, EntryPoint ep)
+        public EntryPointWorkitem(IScanner scanner, EntryPoint ep)
         {
             this.scanner = scanner;
             this.ep = ep;
@@ -38,7 +38,8 @@ namespace Decompiler.Scanning
         }
         public override void Process()
         {
-            var pb = scanner.ScanProcedure(ep.Address, ep.Name, ep.ProcessorState);
+            var evalCtx = new ScannerEvaluationContext(scanner.Architecture, ep.ProcessorState);
+            var pb = scanner.ScanProcedure(ep.Address, ep.Name, evalCtx);
             var proc = pb as Procedure;
             if (proc != null)
             {

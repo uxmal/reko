@@ -37,7 +37,7 @@ namespace Decompiler.Arch.Intel
 		//$REVIEW: accumulating a lot of members; put this class on diet?
 
 		private IntelArchitecture arch;
-		private IRewriterHost host;
+		private IRewriterHostOld host;
 		private Procedure proc;
 		private Frame frame;
 		private Address addrEnd;			// address of the end of this block.
@@ -55,7 +55,7 @@ namespace Decompiler.Arch.Intel
 		public IntelRewriter(
 			IProcedureRewriter prw,
 			Procedure proc,
-			IRewriterHost host,
+			IRewriterHostOld host,
 			IntelArchitecture arch,
 			IntelRewriterState state) : base(prw)
 		{
@@ -1381,8 +1381,7 @@ namespace Decompiler.Arch.Intel
 			ProcedureConstant pc = e as ProcedureConstant;
 			if (pc != null)
 			{
-				PseudoProcedure ppp = (PseudoProcedure) pc.Procedure;
-				BuildApplication(ppp);
+				BuildApplication((PseudoProcedure) pc.Procedure);
 				return;
 			}
 
@@ -1476,8 +1475,7 @@ namespace Decompiler.Arch.Intel
                 ImageMapItem t;
                 if (host.Image.Map.TryFindItemExact(vu.TableAddress, out t))
                 {
-                    ImageMapVectorTable table = (ImageMapVectorTable) t;
-					EmitSwitch(vu.IndexRegister, table);
+					EmitSwitch(vu.IndexRegister, (ImageMapVectorTable) t);
 					return;
 				}
 			}
@@ -1498,7 +1496,7 @@ namespace Decompiler.Arch.Intel
 		public void RewriteLea()
 		{
 			Expression src;
-			MemoryOperand mem = (MemoryOperand) instrCur.op2;
+			var mem = (MemoryOperand) instrCur.op2;
 			if (mem.Base == MachineRegister.None && mem.Index == MachineRegister.None)
 			{																			   
 				src = mem.Offset;

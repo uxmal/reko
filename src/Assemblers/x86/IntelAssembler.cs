@@ -197,7 +197,7 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitLeUint32(0);
         }
 
-        internal void ProcessFpuCommon(int opcodeFreg, int opcodeMem, int fpuOperation, bool isPop, bool fixedOrder, ParsedOperand[] ops)
+        internal void ProcessFpuCommon(int opcodeFreg, int opcodeMem, int fpuOperation, bool isPop, bool fixedOrder, params ParsedOperand[] ops)
         {
             if (ops.Length == 0)
             {
@@ -552,7 +552,7 @@ namespace Decompiler.Assemblers.x86
             EmitModRM(RegisterEncoding(regDst.Register), ops[1]);
         }
 
-        internal void ProcessMul(ParsedOperand op)
+        public void Mul(ParsedOperand op)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(op);
             // Single operand doesn't accept immediate values.
@@ -1060,6 +1060,25 @@ namespace Decompiler.Assemblers.x86
             ProcessCallJmp(true, 0x03, parsedOperand);
         }
 
+        public void Fadd(ParsedOperand op)
+        {
+            ProcessFpuCommon(0xD8, 0xD8, 0, false, false, op);
+        }
+
+        public void Fiadd(ParsedOperand operand)
+        {
+            var dataWidth = EnsureValidOperandSize(operand);
+            int opcode;
+            switch (dataWidth.Size)
+            {
+            case 2: opcode = 0xDE; break;
+            case 4: opcode = 0xDA; break;
+            default: Error(string.Format("Instruction doesn't support {0}-byte operands.", dataWidth.Size)); return;
+            }
+            emitter.EmitOpcode(opcode, dataWidth);
+            EmitModRM(0, operand);
+        }
+
         public void Fild(ParsedOperand op)
         {
             PrimitiveType dataWidth = EnsureValidOperandSize(op);
@@ -1102,6 +1121,11 @@ namespace Decompiler.Assemblers.x86
         {
             emitter.EmitOpcode(0xD9, null);
             emitter.EmitByte(0xEE);
+        }
+
+        public void Fmul(ParsedOperand op)
+        {
+            ProcessFpuCommon(0xD8, 0xD8, 1, false, false, op);
         }
 
         public void Fstsw(ParsedOperand dst)
@@ -1243,6 +1267,14 @@ namespace Decompiler.Assemblers.x86
                 IntegralConstant(offset, emitter.AddressWidth)));
         }
 
+        public ParsedOperand DwordPtr(ParsedOperand reg, int offset)
+        {
+            return new ParsedOperand(new MemoryOperand(
+                PrimitiveType.Word32,
+                ((RegisterOperand)reg.Operand).Register,
+                IntegralConstant(offset, emitter.AddressWidth)));
+        }
+
         public void Lea(ParsedOperand dst, ParsedOperand addr)
         {
             RegisterOperand ropLhs = (RegisterOperand) dst.Operand;
@@ -1272,6 +1304,18 @@ namespace Decompiler.Assemblers.x86
             ProcessIncDec(true, op);
         }
 
+        public void Div(ParsedOperand op)
+        {
+            ProcessDiv(0x06, op);
+        }
+
+        public void Idiv(ParsedOperand op)
+        {
+            ProcessDiv(0x07, op);
+        }
+
+
+
         public void Import(string symbolName, string fnName, string dllName)
         {
             DefineSymbol(symbolName);
@@ -1285,15 +1329,14 @@ namespace Decompiler.Assemblers.x86
             AddImport(fnName, lib.Lookup(fnName), PrimitiveType.Word32);
         }
 
-        public void Imul(ParsedOperand dx)
+        public void Imul(ParsedOperand op)
         {
-            ProcessImul(dx);
+            ProcessImul(op);
         }
 
         public void Int(int serviceVector)
         {
             ProcessInt(Const(serviceVector));
-
         }
 
         public void In(ParsedOperand dst, ParsedOperand port)
@@ -1320,6 +1363,11 @@ namespace Decompiler.Assemblers.x86
         public void Jnz(string destination)
         {
             ProcessShortBranch(0x05, destination);
+        }
+
+        public void Jpe(string destination)
+        {
+            ProcessShortBranch(0x0A, destination);
         }
 
         public void Jz(string destination)
@@ -1353,6 +1401,12 @@ namespace Decompiler.Assemblers.x86
         public void Endp(string p)
         {
         }
+
+        public void Ends()
+        {
+            SwitchSegment(unknownSegment);
+        }
+
 
         public void Enter(int cbStack, int nLevel)
         {
@@ -1584,6 +1638,10 @@ namespace Decompiler.Assemblers.x86
             }
         }
 
+        public void Bsr(ParsedOperand dst, ParsedOperand src)
+        {
+            ProcessBitScan(0xBD, dst, src);
+        }
 
         public void Clc()
         {
@@ -1653,6 +1711,11 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitOpcode(0xC9, null);
         }
 
+        public void Les(ParsedOperand dst, ParsedOperand src)
+        {
+            ProcessLxs(-1, 0xC4, dst, src);
+        }
+
         public void Lodsw()
         {
             ProcessStringInstruction(0xAC, PrimitiveType.Word16);
@@ -1691,6 +1754,11 @@ namespace Decompiler.Assemblers.x86
         public void Scasw()
         {
             ProcessStringInstruction(0xAE, PrimitiveType.Word16);
+        }
+
+        public ParsedOperand St(int n)
+        {
+            return new ParsedOperand(new FpuOperand(n));
         }
 
         public void Stc()
@@ -1764,6 +1832,15 @@ namespace Decompiler.Assemblers.x86
             get { return new ParsedOperand(new RegisterOperand(Registers.di)); }
         }
 
+        public ParsedOperand sp
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.sp)); }
+        }
+
+        public ParsedOperand bp
+        {
+            get { return new ParsedOperand(new RegisterOperand(Registers.bp)); }
+        }
 
         public ParsedOperand al
         {
@@ -1958,12 +2035,6 @@ namespace Decompiler.Assemblers.x86
             }
             SwitchSegment(seg);
         }
-
-        public void Ends()
-        {
-            SwitchSegment(unknownSegment);
-        }
-
     }
 }
 

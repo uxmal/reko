@@ -13,13 +13,13 @@ namespace Decompiler.Scanning
     /// Class for searching string for one or multiple 
     /// keywords using efficient Aho-Corasick search algorithm
     /// </summary>
-    public class AhoCorasickSearch<Symbol> : StringSearch<Symbol> 
-        where Symbol : IComparable<Symbol>
+    public class AhoCorasickSearch<TSymbol> : StringSearch<TSymbol> 
+        where TSymbol : IComparable<TSymbol>
     {
-        private TreeNode _root;
-        private Symbol[][] _keywords;
+        private TreeNode root;
+        private TSymbol[][] keywords;
 
-        public AhoCorasickSearch(Symbol[][] keywords) : base(null)
+        public AhoCorasickSearch(TSymbol[][] keywords) : base(null)
         {
             Keywords = keywords;
         }
@@ -30,9 +30,9 @@ namespace Decompiler.Scanning
 
         private void BuildTree()
         {
-            _root = new TreeNode(null, default(Symbol));
-            _root.Failure = _root;
-            foreach (Symbol[] p in _keywords)
+            root = new TreeNode(null, default(TSymbol));
+            root.Failure = root;
+            foreach (TSymbol[] p in keywords)
             {
                 AddPatternToTree(p);
             }
@@ -44,9 +44,9 @@ namespace Decompiler.Scanning
         {
             var nodes = new List<TreeNode>();
             // level 1 nodes - fail to root node
-            foreach (TreeNode nd in _root.Transitions)
+            foreach (TreeNode nd in root.Transitions)
             {
-                nd.Failure = _root;
+                nd.Failure = root;
                 foreach (TreeNode child in nd.Transitions) 
                     nodes.Add(child);
             }
@@ -57,16 +57,16 @@ namespace Decompiler.Scanning
                 foreach (TreeNode nd in nodes)
                 {
                     TreeNode r = nd.Parent.Failure;
-                    Symbol c = nd.Char;
+                    TSymbol c = nd.Char;
 
                     while (r != null && !r.ContainsTransition(c)) 
                         r = r.Failure;
                     if (r == null)
-                        nd.Failure = _root;
+                        nd.Failure = root;
                     else
                     {
                         nd.Failure = r.GetTransition(c);
-                        foreach (Symbol[] result in nd.Failure.Results)
+                        foreach (TSymbol[] result in nd.Failure.Results)
                             nd.AddResult(result);
                     }
 
@@ -78,10 +78,10 @@ namespace Decompiler.Scanning
             }
         }
 
-        private void AddPatternToTree(Symbol[] p)
+        private void AddPatternToTree(TSymbol[] p)
         {
-            TreeNode nd = _root;
-            foreach (Symbol c in p)
+            TreeNode nd = root;
+            foreach (TSymbol c in p)
             {
                 TreeNode ndNew = null;
                 foreach (TreeNode trans in nd.Transitions)
@@ -105,33 +105,33 @@ namespace Decompiler.Scanning
         /// Keywords to search for (setting this property is slow, because
         /// it requieres rebuilding of keyword tree)
         /// </summary>
-        public Symbol[][] Keywords
+        public TSymbol[][] Keywords
         {
-            get { return _keywords; }
+            get { return keywords; }
             set
             {
-                _keywords = value;
+                keywords = value;
                 BuildTree();
             }
         }
 
-        public override IEnumerator<int> GetMatchPositions(Symbol[] text)
+        public override IEnumerator<int> GetMatchPositions(TSymbol[] text)
         {
-            var ptr = _root;
+            var ptr = root;
             for (var index = 0; index < text.Length; ++index)
             {
                 TreeNode trans = null;
                 while (trans == null)
                 {
                     trans = ptr.GetTransition(text[index]);
-                    if (ptr == _root)
+                    if (ptr == root)
                         break;
                     if (trans == null)
                         ptr = ptr.Failure;
                 }
                 if (trans != null)
                     ptr = trans;
-                foreach (Symbol[] found in ptr.Results)
+                foreach (TSymbol[] found in ptr.Results)
                 {
                     yield return index - found.Length + 1;
                 }
@@ -140,22 +140,22 @@ namespace Decompiler.Scanning
 
         private class TreeNode
         {
-            private Symbol _char;
+            private TSymbol _char;
             private TreeNode _parent;
             private TreeNode _failure;
-            private List<Symbol[]> _results;
-            private Dictionary<Symbol,TreeNode> _transHash;
+            private List<TSymbol[]> _results;
+            private Dictionary<TSymbol,TreeNode> _transHash;
 
-            public TreeNode(TreeNode parent, Symbol c)
+            public TreeNode(TreeNode parent, TSymbol c)
             {
                 _char = c; _parent = parent;
-                _results = new List<Symbol[]>();
+                _results = new List<TSymbol[]>();
 
-                _transHash = new Dictionary<Symbol,TreeNode>();
+                _transHash = new Dictionary<TSymbol,TreeNode>();
             }
 
 
-            public void AddResult(Symbol [] result)
+            public void AddResult(TSymbol [] result)
             {
                 if (_results.Contains(result)) return;
                 _results.Add(result);
@@ -167,7 +167,7 @@ namespace Decompiler.Scanning
             }
 
 
-            public TreeNode GetTransition(Symbol c)
+            public TreeNode GetTransition(TSymbol c)
             {
                 TreeNode  t;
                 if (_transHash.TryGetValue(c, out t))
@@ -176,13 +176,13 @@ namespace Decompiler.Scanning
                     return null;
             }
 
-            public bool ContainsTransition(Symbol c)
+            public bool ContainsTransition(TSymbol c)
             {
                 return GetTransition(c) != null;
             }
 
 
-            public Symbol Char
+            public TSymbol Char
             {
                 get { return _char; }
             }
@@ -207,7 +207,7 @@ namespace Decompiler.Scanning
             }
 
 
-            public ICollection<Symbol[]> Results
+            public ICollection<TSymbol[]> Results
             {
                 get { return _results; }
             }

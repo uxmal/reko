@@ -29,16 +29,17 @@ namespace Decompiler.Core.Expressions
 	/// </summary>
 	public class Application : Expression
 	{
-		public Expression Procedure;
-		public Expression [] Arguments;
-
 		public Application(Expression proc, DataType retVal, params Expression [] arguments) : base(retVal)
 		{
 			this.Procedure = proc;
 			this.Arguments = arguments;
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
+        public Expression Procedure { get; set; }
+        public Expression[] Arguments { get; set; }
+
+
+        public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformApplication(this);
 		}

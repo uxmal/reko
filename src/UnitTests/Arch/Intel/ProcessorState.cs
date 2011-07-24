@@ -34,14 +34,14 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void Simple()
 		{
 			X86State st = new X86State();
-			st.Set(Registers.cs, new Constant(PrimitiveType.Word16, 0xC00));
-			st.Set(Registers.ax, new Constant(PrimitiveType.Word16, 0x1234));
-			Assert.IsTrue(!st.Get(Registers.bx).IsValid);
-			Assert.IsTrue(st.Get(Registers.ax).IsValid);
-			Assert.IsTrue(st.Get(Registers.al).IsValid);
-			Assert.AreEqual(0x34, st.Get(Registers.al).ToUInt32());
-			Assert.IsTrue(st.Get(Registers.ah).IsValid);
-			Assert.AreEqual(0x12, st.Get(Registers.ah).ToUInt32());
+			st.SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, 0xC00));
+			st.SetRegister(Registers.ax, new Constant(PrimitiveType.Word16, 0x1234));
+			Assert.IsTrue(!st.GetRegister(Registers.bx).IsValid);
+			Assert.IsTrue(st.GetRegister(Registers.ax).IsValid);
+			Assert.IsTrue(st.GetRegister(Registers.al).IsValid);
+			Assert.AreEqual(0x34, st.GetRegister(Registers.al).ToUInt32());
+			Assert.IsTrue(st.GetRegister(Registers.ah).IsValid);
+			Assert.AreEqual(0x12, st.GetRegister(Registers.ah).ToUInt32());
 		}
 
         [Test]
