@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private BlockWorkitem CreateWorkItem(Address addr)
         {
-            return new BlockWorkitem(scanner, rewriter, new FakeProcessorState(), proc.Frame, addr);
+            return new BlockWorkitem(scanner, rewriter, new ScannerEvaluationContext(arch, new FakeProcessorState()), proc.Frame, addr);
         }
 
         private ProcedureSignature CreateSignature(MachineRegister  ret, params MachineRegister[] args)
@@ -112,14 +112,14 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
-                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
+                    Arg<IRewriterHost>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Is.Anything,
                     Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Is.Anything)).Return(next);
+                    Arg<ScannerEvaluationContext>.Is.Anything)).Return(next);
             }
 
             var wi = CreateWorkItem(new Address(0x1000));
@@ -132,7 +132,7 @@ namespace Decompiler.UnitTests.Scanning
             repository.VerifyAll();
         }
 
-        private bool StashArg(ref ProcessorState state, ProcessorState value)
+        private bool StashArg(ref ScannerEvaluationContext state, ScannerEvaluationContext value)
         {
             state = value;
             return true;
@@ -145,26 +145,26 @@ namespace Decompiler.UnitTests.Scanning
             m.Assign(m.Register(1), m.Register(2));
             var blockElse = new Block(proc, "else");
             var blockThen = new Block(proc, "then");
-            ProcessorState s1 = null;
-            ProcessorState s2 = null;
+            ScannerEvaluationContext s1 = null;
+            ScannerEvaluationContext s2 = null;
             using (repository.Record())
             {
                 arch.Stub(x => x.CreateRewriter(
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
-                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
+                    Arg<IRewriterHost>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x1004),
                     Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Matches(arg => StashArg(ref s1, arg)))).Return(blockElse); 
+                    Arg<ScannerEvaluationContext>.Matches(arg => StashArg(ref s1, arg)))).Return(blockElse); 
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(arg => arg.Offset == 0x4000),
                     Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(blockThen);
+                    Arg<ScannerEvaluationContext>.Matches(arg => StashArg(ref s2, arg)))).Return(blockThen);
             }
             var wi = CreateWorkItem(new Address(0x1000));
             wi.Process();
@@ -190,7 +190,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
-                    Arg<IRewriterHost2>.Is.Anything)).Return(rewriter);
+                    Arg<IRewriterHost>.Is.Anything)).Return(rewriter);
                 StubRewriterStream();
                 scanner.Stub(x => x.CallGraph).Return(cg);
                 scanner.Stub(x => x.FindContainingBlock(
@@ -198,7 +198,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Expect(x => x.ScanProcedure(
                     Arg<Address>.Matches(arg => arg.Offset == 0x1200),
                     Arg<string>.Is.Null,
-                    Arg<ProcessorState>.Is.Anything))
+                    Arg<ScannerEvaluationContext>.Is.Anything))
                         .Return(new Procedure("fn1200", new Frame(null)));
                 scanner.Stub(x=> x.Architecture).Return(arch);
             }
@@ -237,7 +237,7 @@ namespace Decompiler.UnitTests.Scanning
                     
             }
             var wi = CreateWorkItem(new Address(0x1000));
-            wi.State.Set(Registers.eax, Constant.Word32(0x0400));
+            wi.Context.State.SetRegister(Registers.eax, Constant.Word32(0x0400));
             wi.Process();
             repository.VerifyAll();
             Assert.AreEqual(1, block.Statements.Count);

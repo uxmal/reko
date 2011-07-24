@@ -173,7 +173,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 	}
 
-	public class FakeRewriterHost : IRewriterHost
+	public class FakeRewriterHost : IRewriterHostOld
 	{
         private Program prog;
 		private Dictionary<Address,ProcedureSignature> callSignatures;

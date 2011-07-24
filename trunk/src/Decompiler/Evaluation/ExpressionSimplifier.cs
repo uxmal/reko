@@ -655,8 +655,7 @@ namespace Decompiler.Evaluation
 
 		public Expression TransformPointerAddition(PointerAddition pa)
 		{
-			pa.Pointer = pa.Pointer.Accept(this);
-			return pa;
+			return new PointerAddition(pa.DataType, pa.Pointer.Accept(this), pa.Offset);
 		}
 
 		public Expression TransformProcedureConstant(ProcedureConstant pc)

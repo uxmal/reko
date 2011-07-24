@@ -235,8 +235,7 @@ namespace Decompiler.Core.Code
 
 		public virtual Expression TransformPointerAddition(PointerAddition pa)
 		{
-			pa.Pointer = pa.Pointer.Accept(this);
-			return pa;
+			return new PointerAddition(pa.DataType, pa.Pointer.Accept(this), pa.Offset);
 		}
 
 		public virtual Expression TransformProcedureConstant(ProcedureConstant pc)

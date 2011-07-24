@@ -90,7 +90,7 @@ namespace Decompiler.Arch.Intel
 		{
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)
-				return state.Get(regOp.Register);
+				return state.GetRegister(regOp.Register);
 			ImmediateOperand immOp = op as ImmediateOperand;
 			if (immOp != null)
 				return immOp.Value;
@@ -172,7 +172,7 @@ namespace Decompiler.Arch.Intel
 				break;
 			case 0x21:				// MS-DOS interrupt.
 			{
-				Constant ah = state.Get(Registers.ah);
+				Constant ah = state.GetRegister(Registers.ah);
 				if (ah.IsValid)
 				{
 					switch (ah.ToUInt32())
@@ -180,8 +180,8 @@ namespace Decompiler.Arch.Intel
 					case 0x25:				// Set interrupt vector
 					{
 						// DS:DX contain the address of an interrupt routine.
-						Constant ds = state.Get(Registers.ds);
-						Constant dx = state.Get(Registers.dx);
+						Constant ds = state.GetRegister(Registers.ds);
+						Constant dx = state.GetRegister(Registers.dx);
 						if (ds.IsValid && dx.IsValid)
 						{
 							listener.OnProcedure(
@@ -273,7 +273,7 @@ namespace Decompiler.Arch.Intel
 			//$REVIEW: can do more; we know the source operand is a memory address
 			// to a pointer value.
 			SetValue(instr.op1, Constant.Invalid);
-			state.Set(seg, Constant.Invalid);
+			state.SetRegister(seg, Constant.Invalid);
 		}
 
 		private void HandleRepInstruction(Address addrTerm, ICodeWalkerListener listener)
@@ -283,7 +283,7 @@ namespace Decompiler.Arch.Intel
 			switch (instr.code)
 			{
 			case Opcode.cmps: case Opcode.cmpsb: case Opcode.scas: case Opcode.scasb:
-				state.Set(Registers.ecx, Constant.Invalid);			
+				state.SetRegister(Registers.ecx, Constant.Invalid);			
 				break;
 			}
 			listener.OnBranch(state, addrBegin, dasm.Address, addrBegin);
@@ -306,7 +306,7 @@ namespace Decompiler.Arch.Intel
 			{
 				Address addrGlob = AddressFromSegOffset(memOp.DefaultSegment, memOp.Offset.ToUInt32());
 				ushort segBase = (memOp.Width == PrimitiveType.Word16)
-					? (ushort) state.Get(Registers.cs).ToUInt32()
+					? (ushort) state.GetRegister(Registers.cs).ToUInt32()
 					: (ushort) 0;
 				if (memOp.IsAbsolute)
 				{
@@ -354,7 +354,7 @@ namespace Decompiler.Arch.Intel
 			RegisterOperand regOp = op as RegisterOperand;
 			if (regOp != null)
 			{
-				state.Set(regOp.Register, c);
+				state.SetRegister(regOp.Register, c);
 			}
 		}
 
@@ -365,7 +365,7 @@ namespace Decompiler.Arch.Intel
 			RegisterStorage reg = id.Storage as RegisterStorage;
 			if (reg != null)
 			{	
-				state.Set(reg.Register, Constant.Invalid);
+				state.SetRegister(reg.Register, Constant.Invalid);
 			}
 			SequenceStorage seq = id.Storage as SequenceStorage;
 			if (seq != null)
@@ -397,7 +397,7 @@ namespace Decompiler.Arch.Intel
 			case Opcode.aaa:
 			case Opcode.aam:
 			case Opcode.daa:
-				state.Set(Registers.ax, Constant.Invalid);
+				state.SetRegister(Registers.ax, Constant.Invalid);
 				break;
 			case Opcode.add:
 			case Opcode.adc:
@@ -441,12 +441,12 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.cbw:
 			{
-				Constant t = state.Get(Registers.al);
+				Constant t = state.GetRegister(Registers.al);
 				if (t.IsValid)
 				{
 					t = new Constant(PrimitiveType.Word16, t.ToInt32());
 				}
-				state.Set(Registers.ax, t);
+				state.SetRegister(Registers.ax, t);
 				break;
 			}
 			case Opcode.cli:
@@ -473,24 +473,24 @@ namespace Decompiler.Arch.Intel
 			case Opcode.cwd:
 			{
 				//$BUG: 32-bit registers?
-				Constant t = state.Get(Registers.ax);
+				Constant t = state.GetRegister(Registers.ax);
 				if (t.IsValid)
 				{
 					t = new Constant(PrimitiveType.Word16, t.ToInt32() < 0 ? -1 : 0);
 				}
-				state.Set(Registers.dx, t);
+				state.SetRegister(Registers.dx, t);
 				break;
 			}
 			case Opcode.das:
-				state.Set(Registers.al, Constant.Invalid);
-				state.Set(Registers.C, Constant.Invalid);
+				state.SetRegister(Registers.al, Constant.Invalid);
+				state.SetRegister(Registers.C, Constant.Invalid);
 				break;
 			case Opcode.div:
 			case Opcode.idiv:
 				break;		//$BUGBUG: trashes many registers in some cases!
 			case Opcode.enter:
-				state.Push(instr.dataWidth, state.Get(Registers.bp));
-				state.Set(Registers.bp, state.Get(Registers.sp));
+				state.Push(instr.dataWidth, state.GetRegister(Registers.bp));
+				state.SetRegister(Registers.bp, state.GetRegister(Registers.sp));
 				break;
 			case Opcode.fadd:
 			case Opcode.faddp:
@@ -545,7 +545,7 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.@ins:
 			case Opcode.@insb:
-				state.Set(Registers.edi, Constant.Invalid);
+				state.SetRegister(Registers.edi, Constant.Invalid);
 				break;
 			case Opcode.inc:
 			case Opcode.dec:
@@ -576,7 +576,7 @@ namespace Decompiler.Arch.Intel
 				HandleJmpInstruction(instr, addrStart, addrTerm, listener);
 				break;
 			case Opcode.lahf:
-				state.Set(Registers.ah, Constant.Invalid);
+				state.SetRegister(Registers.ah, Constant.Invalid);
 				break;
 			case Opcode.lds:
 				HandleLxsInstruction(instr, Registers.ds);
@@ -585,8 +585,8 @@ namespace Decompiler.Arch.Intel
 				HandleLeaInstruction(instr);
 				break;
 			case Opcode.leave:
-				state.Set(Registers.bp, state.Pop(instr.dataWidth));
-				state.Set(Registers.sp, state.Get(Registers.bp));
+				state.SetRegister(Registers.bp, state.Pop(instr.dataWidth));
+				state.SetRegister(Registers.sp, state.GetRegister(Registers.bp));
 				break;
 			case Opcode.les:
 				HandleLxsInstruction(instr, Registers.es);
@@ -603,7 +603,7 @@ namespace Decompiler.Arch.Intel
 			case Opcode.loop:
 			case Opcode.loope:
 			case Opcode.loopne:
-				state.Set(Registers.ecx.GetPart(instr.dataWidth), Constant.Invalid);
+				state.SetRegister(Registers.ecx.GetPart(instr.dataWidth), Constant.Invalid);
 				HandleBranch(addrStart, instr, addrTerm, listener);
 				break;
 			case Opcode.mov:
@@ -632,7 +632,7 @@ namespace Decompiler.Arch.Intel
 				break;
 			case Opcode.outs:
 			case Opcode.outsb:
-				state.Set(Registers.si, Constant.Invalid);
+				state.SetRegister(Registers.si, Constant.Invalid);
 				break;
 			case Opcode.pop:
 				SetValue(instr.op1, state.Pop(instr.op1.Width));

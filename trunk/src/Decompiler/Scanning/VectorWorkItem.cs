@@ -10,9 +10,8 @@ namespace Decompiler.Scanning
 {
     public class VectorWorkItem : WorkItem
     {
-
         public ImageMapVectorTable table;
-        public ProcessorState state;
+        public ScannerEvaluationContext state;
         public Address addrFrom;			// address from which the jump is called.
         public PrimitiveType stride;
         public ushort segBase;
@@ -33,8 +32,8 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            VectorBuilder builder = new VectorBuilder(scanner.Architecture, image, new DirectedGraphImpl<object>());
-            var vector = builder.Build(table.TableAddress, addrFrom, state);
+            var builder = new VectorBuilder(scanner.Architecture, image, new DirectedGraphImpl<object>());
+            var vector = builder.Build(table.TableAddress, addrFrom, state.State);
             if (vector.Count == 0)
             {
                 Address addrNext = table.TableAddress + stride.Size;
@@ -49,7 +48,7 @@ namespace Decompiler.Scanning
             table.Addresses.AddRange(vector);
             for (int i = 0; i < vector.Count; ++i)
             {
-                ProcessorState st = state.Clone();
+                var st = state.Clone();
                 if (table.IsCallTable)
                 {
                     scanner.ScanProcedure(vector[i], null, st);

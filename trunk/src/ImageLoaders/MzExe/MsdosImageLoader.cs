@@ -59,6 +59,17 @@ namespace Decompiler.ImageLoaders.MzExe
 			get { return new Address(0x800, 0); }
 		}
 
+        public override ProgramImage Load(Address addrLoad)
+        {
+            int iImageStart = (exe.e_cparHeader * 0x10);
+            int cbImageSize = exe.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
+            byte[] bytes = new byte[cbImageSize];
+            int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
+            Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
+            imgLoaded = new ProgramImage(addrLoad, bytes);
+            return imgLoaded;
+        }
+
 		public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
 		{
 			ImageMap imageMap = imgLoaded.Map;
@@ -83,17 +94,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			Address addrStart = new Address((ushort)(exe.e_cs + addrLoad.Selector), exe.e_ip);
 			imageMap.AddSegment(new Address(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWrite);
 			entryPoints.Add(new EntryPoint(addrStart, new X86State()));
-		}
-
-        public override ProgramImage Load(Address addrLoad)
-		{
-			int iImageStart = (exe.e_cparHeader * 0x10);
-			int cbImageSize = exe.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
-			byte [] bytes = new byte[cbImageSize];
-			int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
-			Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
-			imgLoaded = new ProgramImage(addrLoad, bytes);
-			return imgLoaded;
 		}
 
 	}

@@ -34,7 +34,7 @@ namespace Decompiler.Arch.Intel
 	{
 		private ulong [] regs;
 		private bool [] valid;
-		private Stack<Constant> stack;
+		private Stack<Constant> stackOld;
 
         private const int StackItemSize = 2;
 
@@ -42,14 +42,14 @@ namespace Decompiler.Arch.Intel
 		{
 			regs = new ulong[(int)Registers.Max];
 			valid = new bool[(int)Registers.Max];
-			stack = new Stack<Constant>();
+			stackOld = new Stack<Constant>();
 		}
 
 		public X86State(X86State st)
 		{
 			regs = (ulong []) st.regs.Clone();
 			valid = (bool []) st.valid.Clone();
-            stack = new Stack<Constant>(st.stack);
+            stackOld = new Stack<Constant>(st.stackOld);
             FpuStackItems = st.FpuStackItems;
 		}
 
@@ -57,7 +57,7 @@ namespace Decompiler.Arch.Intel
 
 		public Address AddressFromSegOffset(MachineRegister seg, uint offset)
 		{
-			Constant c = Get(seg);
+			Constant c = GetRegister(seg);
 			if (c.IsValid)
 			{
 				return new Address((ushort) c.ToUInt32(), offset & 0xFFFF);
@@ -68,7 +68,7 @@ namespace Decompiler.Arch.Intel
 
 		public Address AddressFromSegReg(MachineRegister seg, MachineRegister reg)
 		{
-			Constant c = Get(reg);
+			Constant c = GetRegister(reg);
 			if (c.IsValid)
 			{
 				return AddressFromSegOffset(seg, c.ToUInt32());
@@ -82,7 +82,7 @@ namespace Decompiler.Arch.Intel
 			return new X86State(this);
 		}
 
-		public void Set(MachineRegister reg, Constant c)
+		public void SetRegister(MachineRegister reg, Constant c)
 		{
 			if (c == null || !c.IsValid)
 			{
@@ -96,10 +96,10 @@ namespace Decompiler.Arch.Intel
 
 		public void SetInstructionPointer(Address addr)
 		{
-			Set(Registers.cs, new Constant(PrimitiveType.Word16, addr.Selector));
+			SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, addr.Selector));
 		}
 
-		public Constant Get(MachineRegister reg)
+		public Constant GetRegister(MachineRegister reg)
 		{
 			if (valid[reg.Number])
 				return new Constant(reg.DataType, regs[reg.Number]);
@@ -110,7 +110,7 @@ namespace Decompiler.Arch.Intel
         public void OnProcedureEntered()
         {
             FpuStackItems = 0;
-            Set(Registers.D, Constant.False());
+            SetRegister(Registers.D, Constant.False());
         }
 
         public void OnProcedureLeft(ProcedureSignature sig)
@@ -140,6 +140,7 @@ namespace Decompiler.Arch.Intel
             }
         }
 
+        [Obsolete("Use GetStackValue")]
 		public Constant Pop(PrimitiveType t)
 		{
 			try
@@ -149,20 +150,20 @@ namespace Decompiler.Arch.Intel
 				default:
 					throw new ArgumentOutOfRangeException("t");
 				case 2:
-					if (stack.Count < 1)
+					if (stackOld.Count < 1)
 					{
 						Debug.WriteLine("Stack underflow from popping.");
 						return Constant.Invalid;
 					}
-					return stack.Pop();
+					return stackOld.Pop();
 				case 4:
-					if (stack.Count < 2)
+					if (stackOld.Count < 2)
 					{
                         Debug.WriteLine("Stack underflow from popping.");
 						return Constant.Invalid;
 					}
-					Constant v = stack.Pop();
-					Constant v2 = stack.Pop();
+					Constant v = stackOld.Pop();
+					Constant v2 = stackOld.Pop();
 					if (v.IsValid && v2.IsValid)
 					{
 						return new Constant(t, (v.ToUInt32() & 0x0000FFFF) | (v2.ToUInt32() << 16));
@@ -180,6 +181,7 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
+        [Obsolete("Use SetStackValue")]
 		public void Push(PrimitiveType t, Constant c)
 		{
 			switch (t.Size)
@@ -188,20 +190,20 @@ namespace Decompiler.Arch.Intel
 				throw new ArgumentOutOfRangeException();
 			case 1:
 			case 2:
-				stack.Push(c);
+				stackOld.Push(c);
 				break;
 			case 4:
 				if (!c.IsValid)
 				{
-					stack.Push(c);
-					stack.Push(c);
+					stackOld.Push(c);
+					stackOld.Push(c);
 				}				 
 				else
 				{
 					//$REVIEW: we lose type information here, change stack model to sortedlist.
 					//$BUG: 64-bit constants?
-					stack.Push(new Constant(PrimitiveType.Word16, c.ToUInt32() >> 16));
-					stack.Push(new Constant(PrimitiveType.Word16, c.ToUInt32() & 0xFFFF));
+					stackOld.Push(new Constant(PrimitiveType.Word16, c.ToUInt32() >> 16));
+					stackOld.Push(new Constant(PrimitiveType.Word16, c.ToUInt32() & 0xFFFF));
 				}
 				break;
 			}

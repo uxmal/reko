@@ -26,6 +26,7 @@ namespace Decompiler.Core.Expressions
 	/// <summary>
 	/// Creates a sequence out of two components. Contrast with <see cref="Slice"/>.
 	/// </summary>
+    /// <remarks>Yeah, this is (cons) for you Lisp fans out there.</remarks>
 	public class MkSequence : Expression
 	{
 		public MkSequence(DataType dt, Expression head, Expression tail) : base(dt)

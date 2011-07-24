@@ -82,7 +82,7 @@ namespace Decompiler.Core.Expressions
     }
 
 	/// <summary>
-	/// Segmented memory access that models x86 segmented memory adderssing.
+	/// Segmented memory access that models x86 segmented memory addressing.
 	/// </summary>
 	public class SegmentedAccess : MemoryAccess
 	{

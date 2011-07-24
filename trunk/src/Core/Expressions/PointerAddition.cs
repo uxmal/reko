@@ -25,13 +25,13 @@ namespace Decompiler.Core.Expressions
 {
 	public class PointerAddition : Expression
 	{
-		public Expression Pointer;
-		public int offset;
-
 		public PointerAddition(DataType addType, Expression expr, int offset) : base(addType)
 		{
-			Pointer = expr; this.offset = offset;
+			Pointer = expr; this.Offset = offset;
 		}
+
+        public Expression Pointer { get; private set; }
+        public int Offset { get; private set; }
 
 		public override Expression Accept(IExpressionTransformer xform)
 		{
@@ -50,7 +50,7 @@ namespace Decompiler.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			throw new NotImplementedException();
+            return new PointerAddition(DataType, Pointer, Offset);
 		}
 	}
 }

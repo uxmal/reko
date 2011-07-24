@@ -338,13 +338,11 @@ namespace Decompiler.Arch.Intel
                 case 'I':		// Immediate operand.
                     if (strFormat[i] == 'x')
                     {
-                        // Use width of the previous operand.
-                        iWidth = width;
+                        iWidth = width; // Use width of the previous operand.
                     }
                     else
                     {
-                        //  Don't use the width of the previous operand.
-                        width = OperandWidth(strFormat[i]);
+                        width = OperandWidth(strFormat[i]); //  Don't use the width of the previous operand.
                     }
                     ++i;
                     pOperand = CreateImmediateOperand(width, dataWidth);
@@ -1496,7 +1494,7 @@ namespace Decompiler.Arch.Intel
 				new SingleByteOpRec(Opcode.fidiv, "Md"),
 				new SingleByteOpRec(Opcode.fidivr, "Md"),
 				
-				// C0 
+				// DA C0 
 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
@@ -1581,7 +1579,7 @@ namespace Decompiler.Arch.Intel
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.fstp, "Mh", OpFlag.X),
 						
-				// C0, Conditional moves.
+				// DB C0, Conditional moves.
 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
@@ -1665,6 +1663,8 @@ namespace Decompiler.Arch.Intel
 				new SingleByteOpRec(Opcode.fsubr, "Mg"),
 				new SingleByteOpRec(Opcode.fdiv, "Mg"),
 				new SingleByteOpRec(Opcode.fdivr, "Mg"),
+
+                // DC C0
 						
 				new SingleByteOpRec(Opcode.fadd, "f,F"),
 				new SingleByteOpRec(Opcode.fadd, "f,F", OpFlag.X),
@@ -1750,6 +1750,7 @@ namespace Decompiler.Arch.Intel
 				new SingleByteOpRec(Opcode.fstsw, "Mw"),
 						
 				// DD C0
+
 				new SingleByteOpRec(Opcode.ffree, "F", OpFlag.X),
 				new SingleByteOpRec(Opcode.ffree, "F", OpFlag.X),
 				new SingleByteOpRec(Opcode.ffree, "F", OpFlag.X),
@@ -1834,8 +1835,10 @@ namespace Decompiler.Arch.Intel
 				new SingleByteOpRec(Opcode.fisubr, "Mw", OpFlag.X),
 				new SingleByteOpRec(Opcode.fidiv, "Mw"),
 				new SingleByteOpRec(Opcode.fidivr, "Mw", OpFlag.X),
-				// DE C0
-				new SingleByteOpRec(Opcode.faddp, "F,f", OpFlag.X),
+				
+                // DE C0
+				
+                new SingleByteOpRec(Opcode.faddp, "F,f", OpFlag.X),
 				new SingleByteOpRec(Opcode.faddp, "F,f"),
 				new SingleByteOpRec(Opcode.faddp, "F,f"),
 				new SingleByteOpRec(Opcode.faddp, "F,f"),

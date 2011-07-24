@@ -78,17 +78,17 @@ namespace Decompiler.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-		public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+		public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host)
 		{
 			return CreateRewriterOld(prw, proc, host);
 		}
 
-		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, Address addrProc, int cbReturnOnStack, IRewriterHost host)
+		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, Address addrProc, int cbReturnOnStack, IRewriterHostOld host)
 		{
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateRewriter implementation");
 		}
 
-        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             var linAddr = rdr.Address.Linear;
             FakeRewriter rewriter;
@@ -226,13 +226,14 @@ namespace Decompiler.UnitTests.Mocks
 	public class FakeProcessorState : ProcessorState
 	{
         private Dictionary<MachineRegister, Constant> regValues = new Dictionary<MachineRegister, Constant>();
+        private SortedList<int, Constant> stackValues = new SortedList<int, Constant>();
 
 		public ProcessorState Clone()
 		{
 			return new FakeProcessorState();
 		}
 
-		public Constant Get(MachineRegister r)
+		public Constant GetRegister(MachineRegister r)
 		{
             Constant c;
             if (!regValues.TryGetValue(r, out c))
@@ -250,7 +251,7 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
-		public void Set(MachineRegister r, Constant v)
+		public void SetRegister(MachineRegister r, Constant v)
 		{
             regValues[r] = v;
 		}

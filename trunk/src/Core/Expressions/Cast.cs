@@ -30,6 +30,8 @@ namespace Decompiler.Core.Expressions
 			this.Expression = expr;
 		}
 
+        public Expression Expression { get; set; }
+
 		public override Expression Accept(IExpressionTransformer xform)
 		{
 			return xform.TransformCast(this);
@@ -50,6 +52,5 @@ namespace Decompiler.Core.Expressions
 			return new Cast(DataType, Expression.CloneExpression());
 		}
 
-		public Expression Expression { get;set;}
 	}
 }

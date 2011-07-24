@@ -39,8 +39,8 @@ namespace Decompiler.Core
 		ProcessorState CreateProcessorState();
 		CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st);
 		BitSet CreateRegisterBitset();
-		RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host);
-        Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host);
+		RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host);
+        Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
         Frame CreateFrame();
 
 		MachineRegister GetRegister(int i);			// Returns register corresponding to number i.

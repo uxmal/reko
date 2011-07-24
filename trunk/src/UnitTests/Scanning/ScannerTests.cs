@@ -55,7 +55,8 @@ namespace Decompiler.UnitTests.Scanning
             }
 
             public BlockWorkitem Test_LastBlockWorkitem { get; private set; } 
-            public override BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ProcessorState state)
+
+            public override BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ScannerEvaluationContext state)
             {
                 Test_LastBlockWorkitem = base.CreateBlockWorkItem(addrStart, proc, state);
                 return Test_LastBlockWorkitem;
@@ -282,8 +283,9 @@ fn0C00_0000_exit:
             
             X86State st = new X86State();
             st.GrowFpuStack(new Address(0x100000));
-            scan.ScanProcedure(new Address(0x100100),  null, st);
-            var stNew = (X86State)scan.Test_LastBlockWorkitem.State;
+            var scEval = new ScannerEvaluationContext(arch, st);
+            scan.ScanProcedure(new Address(0x100100),  null, scEval);
+            var stNew = (X86State)scan.Test_LastBlockWorkitem.Context.State;
             Assert.IsNotNull(stNew);
             Assert.AreNotSame(st, stNew);
             Assert.AreEqual(1, st.FpuStackItems);
@@ -298,7 +300,7 @@ fn0C00_0000_exit:
             prog.ImportThunks.Add(0x2000, new PseudoProcedure(
                 "grox", CreateSignature("ax", "bx")));
             var scan = CreateScanner(0x1000, 0x200);
-            var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", new FakeProcessorState());
+            var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", new ScannerEvaluationContext(arch, new FakeProcessorState()));
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
             Assert.AreEqual("bx", proc.Signature.FormalArguments[0].Name);

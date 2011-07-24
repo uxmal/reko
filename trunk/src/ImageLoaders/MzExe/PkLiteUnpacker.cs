@@ -268,17 +268,17 @@ l01C8:
 			pklIp = bitStm.GetWord();
 
 			X86State state = new X86State();
-			state.Set(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.Selector));
-			state.Set(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.Selector));
-			state.Set(Registers.cs, new Constant(PrimitiveType.Word16, pklCs));
-			state.Set(Registers.ax, new Constant(PrimitiveType.Word16, 0));
-			state.Set(Registers.bx, new Constant(PrimitiveType.Word16, 0));
-			state.Set(Registers.cx, new Constant(PrimitiveType.Word16, 0));
-			state.Set(Registers.dx, new Constant(PrimitiveType.Word16, 0));
-			state.Set(Registers.bp, new Constant(PrimitiveType.Word16, 0));
-			state.Set(Registers.sp, new Constant(PrimitiveType.Word16, pklSp));
-			state.Set(Registers.si, new Constant(PrimitiveType.Word16, 0));
-			state.Set(Registers.di, new Constant(PrimitiveType.Word16, 0));
+			state.SetRegister(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.Selector));
+			state.SetRegister(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.Selector));
+			state.SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, pklCs));
+			state.SetRegister(Registers.ax, new Constant(PrimitiveType.Word16, 0));
+			state.SetRegister(Registers.bx, new Constant(PrimitiveType.Word16, 0));
+			state.SetRegister(Registers.cx, new Constant(PrimitiveType.Word16, 0));
+			state.SetRegister(Registers.dx, new Constant(PrimitiveType.Word16, 0));
+			state.SetRegister(Registers.bp, new Constant(PrimitiveType.Word16, 0));
+			state.SetRegister(Registers.sp, new Constant(PrimitiveType.Word16, pklSp));
+			state.SetRegister(Registers.si, new Constant(PrimitiveType.Word16, 0));
+			state.SetRegister(Registers.di, new Constant(PrimitiveType.Word16, 0));
 
 			entryPoints.Add(new EntryPoint(new Address(pklCs, pklIp), state));
 		}

@@ -30,14 +30,14 @@ namespace Decompiler.Scanning
     /// </summary>
     public class ProcedureRewriter : IProcedureRewriter
     {
-        private IRewriterHost host;
+        private IRewriterHostOld host;
         private Procedure proc;
         private RewriterOld rewriter;
         private Dictionary<Address, Block> blocksVisited;
         private IProcessorArchitecture arch;
         private Stack<WorkItem> blocksToRewrite;
 
-        public ProcedureRewriter(IRewriterHost host, IProcessorArchitecture arch, Procedure proc)
+        public ProcedureRewriter(IRewriterHostOld host, IProcessorArchitecture arch, Procedure proc)
         {
             this.host = host;
             this.arch = arch;

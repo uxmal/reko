@@ -40,7 +40,6 @@ namespace Decompiler.Core.Rtl
         }
 
         public Expression Dst { get; private set; }
-
         public Expression Src { get; private set; }
 
         protected override void WriteInner(TextWriter writer)
