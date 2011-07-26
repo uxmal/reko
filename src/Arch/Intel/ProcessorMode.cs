@@ -25,25 +25,25 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
-	public class ProcessorMode 
-	{
-		private PrimitiveType wordSize;
+    public abstract class ProcessorMode
+    {
+        private PrimitiveType wordSize;
         private PrimitiveType framePtrSize;
         private PrimitiveType pointerType;
 
-		public static readonly ProcessorMode None = new ProcessorMode(null, null, null);
-        public static readonly ProcessorMode Real = new ProcessorMode(PrimitiveType.Word16, PrimitiveType.Ptr16, PrimitiveType.Pointer32);
-        public static readonly ProcessorMode ProtectedSegmented = new ProcessorMode(PrimitiveType.Word16, PrimitiveType.Ptr16, PrimitiveType.Pointer32);
-		public static readonly ProcessorMode ProtectedFlat = new FlatMode();
+        //public static readonly ProcessorMode None = new ProcessorMode(null, null, null);
+        public static readonly ProcessorMode Real = new RealMode();
+        public static readonly ProcessorMode ProtectedSegmented = new SegmentedMode();
+        public static readonly ProcessorMode ProtectedFlat = new FlatMode();
 
-		protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType)
-		{
-			this.wordSize = wordSize;
+        protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType)
+        {
+            this.wordSize = wordSize;
             this.framePtrSize = framePointerType;
             this.pointerType = pointerType;
-		}
+        }
 
         public virtual Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
         {
@@ -60,10 +60,10 @@ namespace Decompiler.Arch.Intel
             get { return pointerType; }
         }
 
-		public PrimitiveType WordWidth
-		{
-			get { return wordSize; }
-		}
+        public PrimitiveType WordWidth
+        {
+            get { return wordSize; }
+        }
 
 
         public virtual bool IsPointerRegister(MachineRegister machineRegister)
@@ -86,18 +86,69 @@ namespace Decompiler.Arch.Intel
             var ss = frame.EnsureRegister(Registers.ss);
             return SegmentedAccess.Create(ss, sp, offset, dataType);
         }
+
+        public virtual Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        {
+            return null;
+        }
+
+        protected Address ReadSegmentedCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        {
+            if (byteSize == PrimitiveType.Word16.Size)
+            {
+                return new Address(state.GetRegister(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
+            }
+            else
+            {
+                ushort off = rdr.ReadLeUInt16();
+                ushort seg = rdr.ReadLeUInt16();
+                return new Address(seg, off);
+            }
+        }
     }
 
-	internal class FlatMode : ProcessorMode
-	{
-		internal FlatMode() : base(PrimitiveType.Word32, PrimitiveType.Pointer32, PrimitiveType.Pointer32)
-		{
-		}
+    internal class RealMode : ProcessorMode
+    {
+        public RealMode()
+            : base(PrimitiveType.Word16, PrimitiveType.Ptr16, PrimitiveType.Pointer32)
+        {
+        }
 
-		public override Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
-		{
-			return new Address(offset);
-		}
+        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        {
+            return ReadSegmentedCodeAddress(byteSize, rdr, state);
+        }
+    }
+
+    internal class SegmentedMode : ProcessorMode
+    {
+        public SegmentedMode()
+            : base(PrimitiveType.Word16, PrimitiveType.Ptr16, PrimitiveType.Pointer32)
+        {
+        }
+
+        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        {
+            return ReadSegmentedCodeAddress(byteSize, rdr, state);
+        }
+    }
+
+    internal class FlatMode : ProcessorMode
+    {
+        internal FlatMode()
+            : base(PrimitiveType.Word32, PrimitiveType.Pointer32, PrimitiveType.Pointer32)
+        {
+        }
+
+        public override MachineRegister StackRegister
+        {
+            get { return Registers.esp; }
+        }
+
+        public override Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
+        {
+            return new Address(offset);
+        }
 
         public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
@@ -110,9 +161,10 @@ namespace Decompiler.Arch.Intel
             return machineRegister.DataType.BitSize == PointerType.BitSize;
         }
 
-        public override MachineRegister StackRegister
+        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
         {
-            get { return Registers.esp; }
+            return new Address(rdr.ReadLeUInt32());
         }
-	}
+
+    }
 }

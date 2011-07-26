@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
@@ -45,24 +46,22 @@ namespace Decompiler.Scanning
         private RtlInstruction ri;
         private RtlInstructionCluster ric;
         private Rewriter rewriter;
-        private ProcessorState state;
+        private ScannerEvaluationContext scEval;
         private ExpressionSimplifier eval;
-        private ScannerEvaluator scEval;
         private IEnumerator<RtlInstructionCluster> rtlStream;
         private int extraLabels;
 
         public BlockWorkitem(
             IScanner scanner,
             Rewriter rewriter,
-            ProcessorState state,
+            ScannerEvaluationContext state,
             Frame frame,
             Address addr)
         {
             this.scanner = scanner;
             this.arch = scanner.Architecture;
             this.rewriter = rewriter;
-            this.state = state;
-            this.scEval = new ScannerEvaluator(arch, state);
+            this.scEval = state;
             this.eval = new ExpressionSimplifier(scEval);
             this.frame = frame;
             this.addr = addr;
@@ -70,7 +69,7 @@ namespace Decompiler.Scanning
         }
 
         public Block Block { get { return blockCur; } } 
-        public ProcessorState State { get { return state; } }
+        public ScannerEvaluationContext Context { get { return scEval; } }       //$TODO: can we get rid of this? apparently only test use it.
 
         public override void Process()
         {
@@ -83,7 +82,7 @@ namespace Decompiler.Scanning
                 ric = rtlStream.Current;
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;
-                state.SetInstructionPointer(ric.Address);
+                scEval.State.SetInstructionPointer(ric.Address);
                 for (var e = ric.Instructions.GetEnumerator(); e.MoveNext();)
                 {
                     ri = e.Current;
@@ -115,23 +114,31 @@ namespace Decompiler.Scanning
             return ab;
         }
 
-        public Constant GetValue(Expression op)
+        public Expression GetValue(Expression op)
         {
-            return op.Accept<Expression>(eval) as Constant;
+            return op.Accept<Expression>(eval);
         }
 
-        public void SetValue(Expression op, Constant c)
+        public void SetValue(Expression dst, Expression  value)
         {
-            var id = op as Identifier;
-            if (id == null)
-                return;
-            var reg = id.Storage as RegisterStorage;
-            if (reg != null)
+            var id = dst as Identifier;
+            if (id != null)
             {
-                state.Set(reg.Register, c);
+                scEval.SetValue(id, value);
+                return;
+            }
+            var smem = dst as SegmentedAccess;
+            if (smem != null)
+            {
+                scEval.SetValueEa(smem.BasePointer, GetValue(smem.EffectiveAddress), value);
+            }
+            var mem = dst as MemoryAccess;
+            if (mem != null)
+            {
+                scEval.SetValueEa(GetValue(mem.EffectiveAddress), value);
+                return;
             }
         }
-
 
         #region InstructionVisitor Members
 
@@ -158,11 +165,11 @@ namespace Decompiler.Scanning
             var proc = blockCur.Procedure;
             var fallthruAddress = ric.Address + ric.Length;
 
-            var blockThen = scanner.EnqueueJumpTarget(b.Target, proc, state.Clone());
+            var blockThen = scanner.EnqueueJumpTarget(b.Target, proc, scEval.Clone());
 
             var blockElse = FallthroughBlock(proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
-            branch.Target = blockThen;
+            branch.Target = blockThen;      // The back-patch referred to above.
             proc.ControlGraph.AddEdge(branchingBlock, blockElse);
             proc.ControlGraph.AddEdge(branchingBlock, blockThen);
 
@@ -177,7 +184,7 @@ namespace Decompiler.Scanning
             if (addrTarget != null)
             {
                 scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
+                var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, scEval);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 blockSource.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
 
@@ -194,7 +201,7 @@ namespace Decompiler.Scanning
 
         public bool VisitCall(RtlCall call)
         {
-            var site = state.OnBeforeCall(call.ReturnAddressSize);
+            var site = scEval.State.OnBeforeCall(call.ReturnAddressSize);
 
             Address addr = call.Target as Address;
             if (addr != null)
@@ -208,14 +215,14 @@ namespace Decompiler.Scanning
                     }
                 }
 
-                var callee = scanner.ScanProcedure(addr, null, state);
+                var callee = scanner.ScanProcedure(addr, null, scEval);
                 Emit(new CallInstruction(CreateProcedureConstant(callee), site));
                 var pCallee = callee as Procedure;
                 if (pCallee != null)
                 {
                     scanner.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
                 }
-                state.OnAfterCall(callee.Signature);
+                scEval.State.OnAfterCall(callee.Signature);
                 return true;
             }
 
@@ -226,7 +233,7 @@ namespace Decompiler.Scanning
                 if (ppp != null)
                 {
                     Emit(BuildApplication(procCallee, ppp.Signature, site));
-                    state.OnAfterCall(ppp.Signature);
+                    scEval.State.OnAfterCall(ppp.Signature);
                     return !ppp.Characteristics.Terminates;
                 }
             }
@@ -234,7 +241,7 @@ namespace Decompiler.Scanning
             if (sig != null)
             {
                 Emit(BuildApplication(call.Target, sig, site));
-                state.OnAfterCall(sig);
+                scEval.State.OnAfterCall(sig);
                 return true;
             }
 
@@ -254,49 +261,16 @@ namespace Decompiler.Scanning
             if (imp != null)
             {
                 Emit(BuildApplication(CreateProcedureConstant(imp), imp.Signature, site));
-                state.OnAfterCall(imp.Signature);
+                scEval.State.OnAfterCall(imp.Signature);
                 return !imp.Characteristics.Terminates;
             }
 
             var ic = new IndirectCall(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
-            state.OnAfterCall(sig);
+            scEval.State.OnAfterCall(sig);
             return true;        //$BUGBUG: The called procedure could be exit(), or ExitThread(), in which case we should return false.
         }
-
-        private ProcedureSignature GuessProcedureSignature(IndirectCall ic)
-        {
-            return new ProcedureSignature(); //$TODO: attempt to detect parameters of procedure?
-            // This would have to be arch-dependent + platform-dependent as some arch pass
-            // on stack, while others pass in registers, or a combination or both
-            // ("thiscall" in x86 µsoft world).
-        }
-
-        public bool ProcessAlloca(CallSite site, PseudoProcedure impProc)
-        {
-            if (impProc.Signature == null)
-                throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
-            var ab = CreateApplicationBuilder(new ProcedureConstant(arch.PointerType, impProc), impProc.Signature, site);
-            if (impProc.Signature.FormalArguments.Length != 1)
-                throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.FormalArguments.Length));
-            var target = ab.Bind(impProc.Signature.FormalArguments[0]);
-            var id = target as Identifier;
-            if (id == null)
-                throw new ApplicationException(string.Format("The parameter of {0} wasn't a register.", impProc.Name));
-            Constant c = scEval.GetValue(id) as Constant;
-            if (c != null && c.IsValid)
-            {
-                var sp = frame.EnsureRegister(arch.StackRegister);
-                Emit(new Assignment(sp, new BinaryExpression(Operator.Sub, sp.DataType, sp, c)));
-            }
-            else
-            {
-                Emit(ab.CreateInstruction());
-            }
-            return true;
-        }
-
 
         public bool VisitReturn(RtlReturn ret)
         {
@@ -332,7 +306,7 @@ namespace Decompiler.Scanning
             {
                 proc.Signature.StackDelta = stackDelta;
             }
-            state.OnProcedureLeft(proc.Signature);
+            scEval.State.OnProcedureLeft(proc.Signature);
             scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
             return false;
         }
@@ -344,7 +318,7 @@ namespace Decompiler.Scanning
             {
                 var ep = svc.CreateExternalProcedure(arch);
                 var fn = new ProcedureConstant(arch.PointerType, ep);
-                var site = state.OnBeforeCall(svc.Signature.ReturnAddressOnStack);
+                var site = scEval.State.OnBeforeCall(svc.Signature.ReturnAddressOnStack);
                 Emit(BuildApplication(fn, ep.Signature, site));
                 if (svc.Characteristics.Terminates)
                 {
@@ -360,6 +334,38 @@ namespace Decompiler.Scanning
             return true;
         }
 
+        private ProcedureSignature GuessProcedureSignature(IndirectCall ic)
+        {
+            return new ProcedureSignature(); //$TODO: attempt to detect parameters of procedure?
+            // This would have to be arch-dependent + platform-dependent as some arch pass
+            // on stack, while others pass in registers, or a combination or both
+            // (" xthiscall" in x86 µsoft world).
+        }
+
+        public bool ProcessAlloca(CallSite site, PseudoProcedure impProc)
+        {
+            if (impProc.Signature == null)
+                throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
+            var ab = CreateApplicationBuilder(new ProcedureConstant(arch.PointerType, impProc), impProc.Signature, site);
+            if (impProc.Signature.FormalArguments.Length != 1)
+                throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.FormalArguments.Length));
+            var target = ab.Bind(impProc.Signature.FormalArguments[0]);
+            var id = target as Identifier;
+            if (id == null)
+                throw new ApplicationException(string.Format("The parameter of {0} wasn't a register.", impProc.Name));
+            Constant c = scEval.GetValue(id) as Constant;
+            if (c != null && c.IsValid)
+            {
+                var sp = frame.EnsureRegister(arch.StackRegister);
+                Emit(new Assignment(sp, new BinaryExpression(Operator.Sub, sp.DataType, sp, c)));
+            }
+            else
+            {
+                Emit(ab.CreateInstruction());
+            }
+            return true;
+        }
+
         #endregion
 
         private void ProcessVector(Address addrSwitch, RtlTransfer xfer)
@@ -371,13 +377,13 @@ namespace Decompiler.Scanning
                     string.Format("Unable to determine register used in transfer instruction {0}.", xfer)));
                 return;
             }
-            var bwos = bw.BackWalk(blockCur);
-            if (bwos.Count == 0)
+            var bwops = bw.BackWalk(blockCur);
+            if (bwops.Count == 0)
                 return;     //$REVIEW: warn?
             var idIndex = blockCur.Procedure.Frame.EnsureRegister(bw.Index);
 
-            VectorBuilder builder = new VectorBuilder(arch, scanner, new Decompiler.Core.Lib.DirectedGraphImpl<object>());
-            List<Address> vector = builder.BuildAux(bw, addrSwitch, state);
+            VectorBuilder builder = new VectorBuilder(arch, scanner, new DirectedGraphImpl<object>());
+            List<Address> vector = builder.BuildAux(bw, addrSwitch, scEval.State);
             if (vector.Count == 0)
             {
                 var addrNext = bw.VectorAddress + bw.Stride;
@@ -385,21 +391,11 @@ namespace Decompiler.Scanning
                 if (!rdr.IsValid)
                     return;
                 // Can't determine the size of the table, but surely it has one entry?
-                vector.Add(arch.ReadCodeAddress(xfer.Target.DataType.Size, rdr, state));
+                vector.Add(arch.ReadCodeAddress(xfer.Target.DataType.Size, rdr, scEval.State));
             }
 
-            foreach (Address addr in vector)
-            {
-                var st = state.Clone();
-                if (xfer is RtlCall)
-                {
-                    scanner.ScanProcedure(addr, null, st);
-                }
-                else
-                {
-                    scanner.EnqueueJumpTarget(addr, blockCur.Procedure, state);
-                }
-            }
+            ScanVectorTargets(xfer, vector);
+
             if (xfer is RtlGoto)
             {
                 var blockSource = scanner.FindContainingBlock(ric.Address);
@@ -407,13 +403,29 @@ namespace Decompiler.Scanning
                 foreach (Address addr in vector)
                 {
                     var dest = scanner.FindContainingBlock(addr);
-                    Debug.Assert(dest != null, "The block should have been enqueued.");
+                    Debug.Assert(dest != null, "The block at address " + addr + "should have been enqueued.");
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, dest);
                 }
                 Emit(new SwitchInstruction(idIndex, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
             //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
             //map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
+        }
+
+        private void ScanVectorTargets(RtlTransfer xfer, List<Address> vector)
+        {
+            foreach (Address addr in vector)
+            {
+                var st = scEval.Clone();
+                if (xfer is RtlCall)
+                {
+                    scanner.ScanProcedure(addr, null, st);
+                }
+                else
+                {
+                    scanner.EnqueueJumpTarget(addr, blockCur.Procedure, scEval);
+                }
+            }
         }
 
         private void Emit(Instruction instruction)
@@ -435,7 +447,7 @@ namespace Decompiler.Scanning
             }
             else
             {
-                return scanner.EnqueueJumpTarget(fallthruAddress, proc, state);
+                return scanner.EnqueueJumpTarget(fallthruAddress, proc, scEval);
             }
         }
 
@@ -450,7 +462,7 @@ namespace Decompiler.Scanning
         /// <param name="id"></param>
         /// <returns></returns>
         //$REVIEW: we're effectively doing constant propagation during scanning, why not use that information?
-        // Because the scanner constant propagation is doing its propagation by bits (see IntelProcessorstate)
+        // Because the scanner constant propagation is doing its propagation by bits (see X86Processorstate)
         // but we want to propagate procedure constants. For the future: change processor state to handle
         // not only numeric constants, but all constants.
         private PseudoProcedure SearchBackForProcedureConstant(Identifier id)
@@ -540,7 +552,7 @@ namespace Decompiler.Scanning
             var reg = id.Storage as RegisterStorage;
             if (reg != null)
             {
-                state.Set(reg.Register, Constant.Invalid);
+                scEval.SetValue(id, Constant.Invalid);
             }
             SequenceStorage seq = id.Storage as SequenceStorage;
             if (seq != null)
@@ -568,7 +580,7 @@ namespace Decompiler.Scanning
             var vector = fn.Arguments[0] as Constant;
             if (vector == null)
                 return null;
-            return scanner.Platform.FindService(vector.ToInt32(), state);
+            return scanner.Platform.FindService(vector.ToInt32(), scEval.State);
         }
 
         private class BackwalkerHost : IBackWalkHost

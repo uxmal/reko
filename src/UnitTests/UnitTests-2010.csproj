@@ -105,6 +105,7 @@
     <Compile Include="Analysis\VariableLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
+    <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
     <Compile Include="Arch\Intel\CodeWalkerTests.cs" />
@@ -117,7 +118,6 @@
     <Compile Include="Arch\Intel\IntelInstructionTrieTests.cs" />
     <Compile Include="Arch\Intel\IntelRegisterTests.cs" />
     <Compile Include="Arch\Intel\IntelRewriterTests.cs" />
-    <Compile Include="Arch\Intel\LongAddRewriterTests.cs" />
     <Compile Include="Arch\Intel\MsDosPlatformTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterRealModeTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterTests.cs" />

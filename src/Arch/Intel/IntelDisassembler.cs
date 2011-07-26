@@ -27,7 +27,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
 	/// <summary>
 	/// Intel x86 opcode disassembler 

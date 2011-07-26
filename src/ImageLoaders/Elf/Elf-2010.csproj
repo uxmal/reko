@@ -68,6 +68,10 @@
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
       <Name>X86-2010</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Sparc\Sparc-2010.csproj">
+      <Project>{454D9734-EDF3-4646-8C7F-8449C68EB826}</Project>
+      <Name>Sparc-2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core-2010</Name>

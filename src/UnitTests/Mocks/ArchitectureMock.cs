@@ -66,7 +66,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
 
-        public void SetRewriterForAddress(Address address, FakeRewriter rewriter)
+        public void Test_SetRewriterForAddress(Address address, FakeRewriter rewriter)
         {
             rewriters.Add(address.Linear, rewriter);
         }
@@ -194,7 +194,7 @@ namespace Decompiler.UnitTests.Mocks
 			get { return PrimitiveType.Word32; }
 		}
 
-        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
+        public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
         public MachineRegister StackRegister { get { return GetRegister(ArchitectureMock.iStackRegister); } }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

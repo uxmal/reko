@@ -35,7 +35,7 @@ using System.Xml.Serialization;
 
 using BitSet = Decompiler.Core.Lib.BitSet;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
 	/// <summary>
     /// The registers of an Intel ia32 machine.
@@ -274,12 +274,12 @@ namespace Decompiler.Arch.Intel
 		}
 
         [Obsolete]
-		public virtual RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
+		public virtual RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host)
 		{
 			return new IntelRewriter(prw, proc, host, this, new IntelRewriterState(proc.Frame));
 		}
 
-        public virtual Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public virtual Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
@@ -293,25 +293,7 @@ namespace Decompiler.Arch.Intel
         public Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             var st = (X86State)state;
-            if (WordWidth == PrimitiveType.Word16)
-            {
-                if (byteSize == PrimitiveType.Word16.Size)
-                {
-                    return new Address(state.Get(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
-                }
-                else
-                {
-                    ushort off = rdr.ReadLeUInt16();
-                    ushort seg = rdr.ReadLeUInt16();
-                    return new Address(seg, off);
-                }
-            }
-            else if (WordWidth == PrimitiveType.Word32)
-            {
-                return new Address(rdr.ReadLeUInt32());
-            }
-            else
-                throw new ApplicationException("Unexpected word width: " + byteSize);
+            return mode.ReadCodeAddress(byteSize, rdr, st);
         }
 
 		public MachineFlags GetFlagGroup(uint grf)

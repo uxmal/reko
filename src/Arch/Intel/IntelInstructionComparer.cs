@@ -23,7 +23,7 @@ using Decompiler.Core.Machine;
 using System;
 using System.Collections;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
 	/// <summary>
 	/// Compares pairs of Intel instructions -- for equality only.

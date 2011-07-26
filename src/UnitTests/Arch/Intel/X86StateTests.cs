@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Core.Expressions;
 using NUnit.Framework;
 using System;

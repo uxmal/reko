@@ -22,7 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;

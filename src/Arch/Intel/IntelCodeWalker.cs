@@ -26,7 +26,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
 	public class IntelCodeWalker : CodeWalker
 	{

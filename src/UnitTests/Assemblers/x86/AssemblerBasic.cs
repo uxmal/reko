@@ -22,7 +22,7 @@ using Decompiler;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
 using NUnit.Framework;

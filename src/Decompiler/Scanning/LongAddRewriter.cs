@@ -25,6 +25,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Scanning
 {
@@ -158,5 +159,27 @@ namespace Decompiler.Scanning
         {
             throw new NotImplementedException();
         }
+
+        private Identifier AddSubDestination(Instruction instruction)
+        {
+            var ass = instruction as Assignment;
+            if (ass == null)
+                return null;
+            var bin = ass.Src as BinaryExpression;
+            if (bin == null || (bin.op != Operator.Add && bin.op != Operator.Sub))
+                return null;
+            return ass.Dst;
+        }
+
+        public IEnumerable<CarryLinkedInstructions> FindCarryLinkedInstructions(Block block)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class CarryLinkedInstructions
+    {
+        public Instruction High;
+        public Instruction Low;
     }
 }

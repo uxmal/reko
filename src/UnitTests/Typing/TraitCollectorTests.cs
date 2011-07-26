@@ -26,7 +26,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using Decompiler.Analysis;
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Scanning;
 using Decompiler.Typing;
 using Decompiler.UnitTests.Mocks;

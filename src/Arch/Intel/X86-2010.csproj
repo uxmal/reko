@@ -11,7 +11,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Decompiler.Arch.Intel</AssemblyName>
+    <AssemblyName>Decompiler.Arch.X86</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -19,7 +19,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>Decompiler.Arch.Intel</RootNamespace>
+    <RootNamespace>Decompiler.Arch.X86</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -138,9 +138,6 @@
     <Compile Include="IntelRewriter.Fpu.cs">
     </Compile>
     <Compile Include="X86State.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LongAddRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MemoryOperand.cs">

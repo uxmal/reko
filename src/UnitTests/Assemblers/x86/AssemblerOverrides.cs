@@ -20,7 +20,7 @@
 
 using Decompiler;
 using Decompiler.Core;
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Scanning;
 using NUnit.Framework;
 using System;

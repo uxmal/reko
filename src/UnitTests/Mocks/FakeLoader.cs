@@ -20,7 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Loading;
 using System;
 using System.Collections.Generic;

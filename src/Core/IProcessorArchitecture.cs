@@ -60,14 +60,13 @@ namespace Decompiler.Core
 		/// </remarks>
 		BitSet ImplicitArgumentRegisters { get; }
 
-
         string GrfToString(uint grf);                       // Converts a union of processor flag bits to its string representation
 
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
 
-        MachineRegister StackRegister { get; }              // Stack pointer for this machine. //$REVIEW: push this into rewriter and return instead references to frame.FramePointer?
-        uint CarryFlagMask { get; }                      // Used when building large adds/subs when carry flag is used.
+        MachineRegister StackRegister { get; }              // Stack pointer for this machine.
+        uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
     }
 }

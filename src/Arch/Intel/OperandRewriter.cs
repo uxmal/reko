@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
@@ -26,7 +26,7 @@ using Decompiler.Core.Types;
 using Decompiler.Core;
 using System;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
     public class OperandRewriter
     {

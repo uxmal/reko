@@ -23,7 +23,7 @@ using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Lib;
 using Decompiler.Scanning;
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

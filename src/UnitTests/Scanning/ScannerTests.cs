@@ -26,7 +26,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
 using Decompiler.Loading;
@@ -103,7 +103,7 @@ namespace Decompiler.UnitTests.Scanning
                     new RegisterOperand(arch.GetRegister(1)), 
                     ImmediateOperand.Word32(1))
             };
-            arch.SetRewriterForAddress(new Address(0x12314), new FakeRewriter(new RtlInstructionCluster[] {
+            arch.Test_SetRewriterForAddress(new Address(0x12314), new FakeRewriter(new RtlInstructionCluster[] {
                 new RtlInstructionCluster(new Address(0x12314), 1, 
                 new RtlReturn(4, 0)),
             }));
@@ -161,9 +161,10 @@ namespace Decompiler.UnitTests.Scanning
 
         private void Enqueue(Address addr, Procedure proc)
         {
-            arch.SetRewriterForAddress(addr, new FakeRewriter(new RtlInstructionCluster(addr, 4,
+            arch.Test_SetRewriterForAddress(addr, new FakeRewriter(new RtlInstructionCluster(addr, 4,
                 new RtlAssignment(new MemoryAccess(new Constant(0x3000), PrimitiveType.Word32), Constant.Word32(42)))));
-            scan.EnqueueJumpTarget(addr, proc, null);
+
+            scan.EnqueueJumpTarget(addr, proc, new ScannerEvaluationContext(arch));
         }
 
         [Test]
@@ -277,7 +278,7 @@ fn0C00_0000_exit:
         {
             var scan = CreateScanner(0x100000, 0x1000);
             var rtls = new List<RtlInstructionCluster>();
-            arch.SetRewriterForAddress(new Address(0x100100), new FakeRewriter(
+            arch.Test_SetRewriterForAddress(new Address(0x100100), new FakeRewriter(
                 new RtlInstructionCluster(new Address(0x100100), 4,
                     new RtlReturn(4, 0))));
             
