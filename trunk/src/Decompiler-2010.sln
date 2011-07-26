@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arm-2010", "Arch\Arm\Arm-20
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elf-2010", "ImageLoaders\Elf\Elf-2010.csproj", "{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc-2008", "Arch\Sparc\Sparc-2008.csproj", "{454D9734-EDF3-4646-8C7F-8449C68EB826}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc-2010", "Arch\Sparc\Sparc-2010.csproj", "{454D9734-EDF3-4646-8C7F-8449C68EB826}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -303,7 +303,6 @@ Global
 		{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}.Release|.NET.ActiveCfg = Release|Any CPU
 		{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -23,7 +23,7 @@ using Decompiler.Core.Machine;
 using System;
 using System.Diagnostics;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
 	/// <summary>
 	/// Keeps track of internal state for the IntelRewriter. Useful when forking at the

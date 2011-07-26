@@ -69,6 +69,11 @@ namespace Decompiler.Core.Expressions
             return new Cast(dataType, expr);
         }
 
+        public ConditionOf Cond(Expression expr)
+        {
+            return new ConditionOf(expr);
+        }
+
         public Constant Const(DataType dataType, int n)
         {
             return new Constant(dataType, n);

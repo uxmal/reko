@@ -105,17 +105,17 @@ namespace Decompiler.Scanning
             var ass = instr as Assignment;
             if (ass != null)
             {
-                var idSrc = RegisterOf(ass.Src as Identifier);
+                var regSrc = RegisterOf(ass.Src as Identifier);
                 var binSrc = ass.Src as BinaryExpression;
                 if (binSrc != null)
                 {
                     if (RegisterOf(ass.Dst) == Index)
                     {
-                        idSrc = RegisterOf(binSrc.Left as Identifier);
+                        regSrc = RegisterOf(binSrc.Left as Identifier);
                         var immSrc = binSrc.Right as Constant;
                         if (binSrc.op == Operator.Add || binSrc.op == Operator.Sub)
                         {
-                            Index = HandleAddition(Index, Index, idSrc, immSrc, binSrc.op == Operator.Add);
+                            Index = HandleAddition(Index, Index, regSrc, immSrc, binSrc.op == Operator.Add);
                             return true;
                         }
                         if (binSrc.op == Operator.And)
@@ -167,7 +167,8 @@ namespace Decompiler.Scanning
                 }
 
                 var memSrc = ass.Src as MemoryAccess;
-                if (memSrc != null && RegisterOf(ass.Dst) == Index)
+                var regDst = RegisterOf(ass.Dst);
+                if (memSrc != null && (regDst == Index || regDst.IsSubRegisterOf(Index)))
                 {
                     var rIdx = Index;
                     var rDst = RegisterOf(ass.Dst);
@@ -210,7 +211,10 @@ namespace Decompiler.Scanning
         {
             if (id == null)
                 return MachineRegister.None;
-            return ((RegisterStorage)id.Storage).Register;
+            var reg = id.Storage as RegisterStorage;
+            if (reg == null)
+                return MachineRegister.None;
+            return reg.Register;
         }
 
         public bool BackwalkInstructions(

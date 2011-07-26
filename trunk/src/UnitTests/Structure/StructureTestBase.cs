@@ -21,7 +21,7 @@
 using Decompiler;
 using Decompiler.Analysis;
 using Decompiler.Assemblers.x86;
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Core;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;

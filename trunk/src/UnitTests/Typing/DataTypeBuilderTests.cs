@@ -331,7 +331,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier bx = m.Local16("bx");
 			Expression e = m.SegMem(bx.DataType, ds, m.Add(bx, 4));
             Program prog = new Program();
-            prog.Architecture = new Decompiler.Arch.Intel.IntelArchitecture(Decompiler.Arch.Intel.ProcessorMode.Real);
+            prog.Architecture = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
 			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
 			e = e.Accept(aen);
 			e.Accept(eqb);
@@ -345,7 +345,7 @@ namespace Decompiler.UnitTests.Typing
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
             Program prog = new Program();
-            prog.Architecture = new Decompiler.Arch.Intel.IntelArchitecture(Decompiler.Arch.Intel.ProcessorMode.Real);
+            prog.Architecture = new Decompiler.Arch.X86.IntelArchitecture(Decompiler.Arch.X86.ProcessorMode.Real);
             store.EnsureExpressionTypeVariable(factory, prog.Globals);
 
 			Identifier ds = m.Local16("ds");

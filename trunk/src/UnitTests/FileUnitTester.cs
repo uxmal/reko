@@ -65,8 +65,8 @@ namespace Decompiler.UnitTests
 		{
 			get 
 			{ 
-				string prefix = Environment.GetEnvironmentVariable("REVENGETESTDIR");
-				Assert.IsFalse(string.IsNullOrEmpty(prefix), "Must define the environment variable REVENGETESTDIR");
+				string prefix = Environment.GetEnvironmentVariable("DECOMPILERTESTDIR");
+				Assert.IsNotNullOrEmpty(prefix, "Must define the environment variable DECOMPILERTESTDIR");
 				return prefix;
 			}
 		}

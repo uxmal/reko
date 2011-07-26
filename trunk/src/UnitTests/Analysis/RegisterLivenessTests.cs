@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;

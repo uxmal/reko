@@ -24,7 +24,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
 	/// <summary>
 	/// Assists in rewriting X86 string instructions.

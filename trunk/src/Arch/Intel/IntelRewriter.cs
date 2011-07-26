@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
     [Obsolete("Use x86Rewriter")]
 	public partial class IntelRewriter : X86Rewriter
@@ -996,14 +996,6 @@ namespace Decompiler.Arch.Intel
 		/// <returns></returns>
 		public Expression EmitAddSub(IntelInstruction [] instrs, int i, Opcode next, BinaryOperator op)
 		{
-            LongAddRewriter larw = new LongAddRewriter(this.frame, orw, state);
-			int iUse = larw.IndexOfUsingOpcode(instrs, i, next);
-			if (iUse >= 0 && larw.Match(instrCur, instrs[iUse]))
-			{
-				instrs[iUse].code = Opcode.nop;
-                larw.EmitInstruction(op, emitter);
-				return larw.Dst;
-			}
 			Assignment ass = EmitBinOp(op, instrCur.op1, instrCur.op1.Width, instrCur.op1, instrCur.op2);
 			return ass.Dst;
 		}

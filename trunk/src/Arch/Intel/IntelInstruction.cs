@@ -24,7 +24,7 @@ using Decompiler.Core.Machine;
 using System;
 using System.Text;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
 	/// <summary>
 	/// Models an X86 instruction.

@@ -23,7 +23,7 @@ using System;
 using System.Text;
 using System.IO;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
 	public class IntelDumper : Dumper
 	{

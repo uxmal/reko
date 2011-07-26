@@ -1,4 +1,4 @@
-﻿using Decompiler.Arch.Intel;
+﻿using Decompiler.Arch.X86;
 using Decompiler.Arch.Sparc;
 using Decompiler.Core;
 using System;
@@ -20,6 +20,19 @@ namespace Decompiler.ImageLoaders.Elf
         public int iSymSize; // Size associated with symbol
     }
 
+    public class SectionInfo
+    {
+        public string pSectionName;
+        public ADDRESS uHostAddr;
+        public ADDRESS uNativeAddr;
+        public ADDRESS uSectionSize;
+        public ADDRESS uType;
+        public ADDRESS uSectionEntrySize;
+        public bool IsReadOnly;
+        public bool bBss;
+        public bool bCode;
+        public bool bData;
+    }
     /// <summary>
     /// ELF executable header.
     /// </summary>

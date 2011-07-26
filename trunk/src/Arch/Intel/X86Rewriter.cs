@@ -31,7 +31,7 @@ using System.Text;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
     /// <summary>
     /// Rewrites x86 instructions into a stream of low-level RTL-like instructions.

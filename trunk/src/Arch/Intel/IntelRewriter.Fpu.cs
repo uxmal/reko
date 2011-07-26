@@ -25,7 +25,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
     public partial class IntelRewriter
     {

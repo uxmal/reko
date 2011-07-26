@@ -24,7 +24,7 @@ using Decompiler.Core.Assemblers;
 using Decompiler.Core.Code;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
 using Decompiler.Loading;
