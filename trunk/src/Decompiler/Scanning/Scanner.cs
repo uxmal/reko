@@ -35,7 +35,6 @@ namespace Decompiler.Scanning
     {
         void EnqueueEntryPoint(EntryPoint ep);
         Block EnqueueJumpTarget(Address addr, Procedure proc, ScannerEvaluationContext state);
-        void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc);
         ProcedureBase ScanProcedure(Address addr, string procedureName, ScannerEvaluationContext state);
         void EnqueueUserProcedure(SerializedProcedure sp);
         void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ScannerEvaluationContext state);
@@ -80,7 +79,6 @@ namespace Decompiler.Scanning
     {
         private IProcessorArchitecture arch;
         private PriorityQueue<WorkItem> queue;
-        private Stack<ProcedureScanner> stack;
         private ProgramImage image;
         private Map<uint, BlockRange> blocks;
         private Dictionary<Block, uint> blockStarts;
@@ -122,7 +120,6 @@ namespace Decompiler.Scanning
         public ProgramImage Image { get { return image; } } 
         public Platform Platform { get { return platform; } }
         public PriorityQueue<WorkItem> Queue { get { return queue; } }
-        public Stack<ProcedureScanner> Stack { get { return stack; } }
         public SortedList<Address, Procedure> Procedures { get; private set; }
         public IDictionary<Address, VectorUse> VectorUses { get; private set; } 
 
@@ -197,11 +194,6 @@ namespace Decompiler.Scanning
             queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, ep));
         }
 
-        public void EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc)
-        {
-            throw new NotImplementedException();
-        }
-
         // Method is virtual because we want to peek into the parameters being passed to it.
         public virtual Block EnqueueJumpTarget(Address addrStart, Procedure proc, ScannerEvaluationContext state)
         {
@@ -237,7 +229,6 @@ namespace Decompiler.Scanning
             return block;
         }
 
-
         public void EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ScannerEvaluationContext state)
         {
             ImageMapVectorTable table;
@@ -264,13 +255,7 @@ namespace Decompiler.Scanning
             if (pb != null)
                 return pb;
 
-            Procedure proc;
-            if (!Procedures.TryGetValue(addr, out proc))
-            {
-                proc = Procedure.Create(procedureName, addr, arch.CreateFrame());
-                Procedures.Add(addr, proc);
-                CallGraph.AddProcedure(proc);
-            }
+            Procedure proc = EnsureProcedure(addr, procedureName);
             TerminateAnyBlockAt(addr);
             if (visitedProcs.Contains(proc))
                 return proc;
@@ -281,10 +266,24 @@ namespace Decompiler.Scanning
             queue = new PriorityQueue<WorkItem>();
             var st = state.Clone();
             st.State.OnProcedureEntered();
+            st.SetValue(proc.Frame.EnsureRegister(arch.StackRegister), proc.Frame.FramePointer);
             var block = EnqueueJumpTarget(addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
             queue = oldQueue;
+
+            return proc;
+        }
+
+        private Procedure EnsureProcedure(Address addr, string procedureName)
+        {
+            Procedure proc;
+            if (!Procedures.TryGetValue(addr, out proc))
+            {
+                proc = Procedure.Create(procedureName, addr, arch.CreateFrame());
+                Procedures.Add(addr, proc);
+                CallGraph.AddProcedure(proc);
+            }
             return proc;
         }
 
@@ -487,8 +486,6 @@ namespace Decompiler.Scanning
         /// <param name="proc"></param>
         private void EnqueueJumpTarget(Address addrTarget, ProcessorState st, Procedure proc)
         {
-            if (proc == null)
-                throw new ArgumentNullException("proc");
             Debug.Assert(program.Image.IsValidAddress(addrTarget), string.Format("{0} is not a valid address.", addrTarget));
             WorkItemOld wi = new WorkItemOld(wiCur, BlockType.JumpTarget, addrTarget);
             wi.state = st.Clone();
@@ -939,7 +936,6 @@ namespace Decompiler.Scanning
         void IScanner.EnqueueVectorTable(Address addrUser, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ScannerEvaluationContext state) { throw new NotImplementedException(); }
         public ImageReader CreateReader(Address addr) { throw new NotImplementedException(); }
         ProcedureBase IScanner.ScanProcedure(Address addr, string procedureName, ScannerEvaluationContext state) { throw new NotImplementedException(); }
-        void IScanner.EnqueueProcedure(WorkItem wiPrev, Procedure proc, Address addrProc) { throw new NotImplementedException(); }
         IProcessorArchitecture IScanner.Architecture { get { return program.Architecture; } } 
 
         Platform IScanner.Platform { get { return program.Platform; } }

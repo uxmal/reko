@@ -112,7 +112,7 @@ namespace Decompiler.Analysis
 
         public void Analyze(Program program)
         {
-            DirectedGraph<Procedure> gr = new ProgramGraph(program);
+            var gr = new ProgramGraph(program);
             foreach (var proc in new DfsIterator<Procedure>(gr).PostOrder())
             {
                 Analyze(proc);

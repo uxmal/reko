@@ -327,16 +327,16 @@ namespace Decompiler.Environments.MacOS
         {
             var j = new JumpTable();
             ImageReader ir = new ImageReader(image, jtOffset);
-            j.AboveA5Size = ir.ReadBeUint32();
-            j.BelowA5Size = ir.ReadBeUint32();
-            j.JumpTableSize = ir.ReadBeUint32();
-            j.JumpTableOffset = ir.ReadBeUint32();
+            j.AboveA5Size = ir.ReadBeUInt32();
+            j.BelowA5Size = ir.ReadBeUInt32();
+            j.JumpTableSize = ir.ReadBeUInt32();
+            j.JumpTableOffset = ir.ReadBeUInt32();
             uint size = j.JumpTableSize;
             while (size > 0)
             {
                 JumpTableEntry jte = new JumpTableEntry();
                 jte.RoutineOffsetFromSegmentStart = ir.ReadBeUInt16();
-                jte.Instruction = ir.ReadBeUint32();
+                jte.Instruction = ir.ReadBeUInt32();
                 jte.LoadSegTrapNumber = ir.ReadBeUInt16();
                 Debug.WriteLine(string.Format("Jump table entry: {0:x2} {1:X4} {2:X2}", jte.RoutineOffsetFromSegmentStart, jte.Instruction, jte.LoadSegTrapNumber));
                 size -= 8;

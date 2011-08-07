@@ -110,14 +110,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FstswChainMatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DisassembledInstruction.cs" />
     <Compile Include="IntelCodeWalker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IntelDisassembler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IntelDumper.cs">
@@ -129,14 +127,13 @@
     <Compile Include="IntelInstructionComparer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IntelProcessorArchitecture.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="IntelRegister.cs" />
     <Compile Include="IntelRewriter.cs">
     </Compile>
     <Compile Include="IntelRewriter.Fpu.cs">
     </Compile>
+    <Compile Include="X86Disassembler.cs" />
+    <Compile Include="X86lProcessorArchitecture.cs" />
     <Compile Include="X86State.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -207,13 +207,8 @@ namespace Decompiler.Scanning
             if (addr != null)
             {
                 var impProc = scanner.GetImportedProcedure(addr.Linear);
-                if (impProc != null)
-                {
-                    if (impProc.Characteristics.IsAlloca)
-                    {
-                        return ProcessAlloca(site, impProc);
-                    }
-                }
+                if (impProc != null && impProc.Characteristics.IsAlloca)
+                    return ProcessAlloca(site, impProc);
 
                 var callee = scanner.ScanProcedure(addr, null, scEval);
                 Emit(new CallInstruction(CreateProcedureConstant(callee), site));
