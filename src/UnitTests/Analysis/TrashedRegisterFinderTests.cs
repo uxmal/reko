@@ -55,21 +55,6 @@ namespace Decompiler.UnitTests.Analysis
             flow = new ProgramDataFlow();
         }
 
-        [Test]
-        public void TrashRegister()
-        {
-            var r1 = m.Register(1);
-            var stm = m.Assign(r1, m.Int32(0));
-
-            trf = CreateTrashedRegisterFinder();
-            trf.EnsureEvaluationContext(CreateBlockFlow(m.Block));
-
-            stm.Accept(trf);
-            Debug.WriteLine(trf.RegisterSymbolicValues[(RegisterStorage)r1.Storage].ToString());
-            Assert.IsTrue(trf.IsTrashed(r1.Storage), "r1 should have been marked as trashed.");
-            //			Assert.AreNotSame(trf.RegisterSet[r1], r1);
-        }
-
         private BlockFlow CreateBlockFlow(Block block)
         {
             return new BlockFlow(
@@ -119,6 +104,22 @@ namespace Decompiler.UnitTests.Analysis
                 return rst.Register.Name;
             return o.ToString();
         }
+
+        [Test]
+        public void TrashRegister()
+        {
+            var r1 = m.Register(1);
+            var stm = m.Assign(r1, m.Int32(0));
+
+            trf = CreateTrashedRegisterFinder();
+            trf.EnsureEvaluationContext(CreateBlockFlow(m.Block));
+
+            stm.Accept(trf);
+            Debug.WriteLine(trf.RegisterSymbolicValues[(RegisterStorage)r1.Storage].ToString());
+            Assert.IsTrue(trf.IsTrashed(r1.Storage), "r1 should have been marked as trashed.");
+            //			Assert.AreNotSame(trf.RegisterSet[r1], r1);
+        }
+
 
         [Test]
         public void TrashFlag()

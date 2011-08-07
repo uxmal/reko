@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
     public class FstswChainMatcher
     {

@@ -153,14 +153,14 @@ namespace Decompiler.Core
             return u;
         }
 
-        public uint ReadBeUint32()
+        public uint ReadBeUInt32()
         {
             uint u = ProgramImage.ReadBeUInt32(img, off);
             off += 4;
             return u;
         }
 
-        public int ReadBeInt32() { return (int)ReadBeUint32(); }
+        public int ReadBeInt32() { return (int)ReadBeUInt32(); }
         public int ReadLeInt32() { return (int)ReadLeUInt32(); }
 
         public uint ReadLeUInt32(uint offset) { return ProgramImage.ReadLeUInt32(img, off); }
@@ -240,7 +240,7 @@ namespace Decompiler.Core
         public override int ReadInt32() { return ReadBeInt32(); }
         public override long ReadInt64() { return ReadBeInt64(); }
         public override ushort ReadUInt16() { return ReadBeUInt16(); }
-        public override uint ReadUInt32() { return ReadBeUint32(); }
+        public override uint ReadUInt32() { return ReadBeUInt32(); }
         public override ulong ReadUInt64() { return ReadBeUInt64(); }
 
         public override short ReadInt16(uint offset) { return ReadBeInt16(offset); }

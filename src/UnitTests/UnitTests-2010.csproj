@@ -105,6 +105,7 @@
     <Compile Include="Analysis\VariableLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
+    <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
@@ -392,10 +393,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arch\Intel\X86-2010.csproj">
-      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
-      <Name>X86-2010</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Arch\M68k\M68k-2010.csproj">
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k-2010</Name>
@@ -407,6 +404,10 @@
     <ProjectReference Include="..\Arch\PowerPC\PowerPC-2010.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
       <Name>PowerPC-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\X86\X86-2010.csproj">
+      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
+      <Name>X86-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\M68k\M68kAssembler-2010.csproj">
       <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>

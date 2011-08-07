@@ -1,4 +1,5 @@
-﻿/* 
+﻿#region License
+/* 
  * Copyright (C) 1999-2010 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -15,12 +16,14 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
 
-using Decompiler.Arch.Intel;
+using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Types;
+using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -29,10 +32,11 @@ using System.Text;
 namespace Decompiler.UnitTests.Arch.Intel
 {
     [TestFixture]
+    [Ignore("Disabled until we come up woth a mechanism to perform architecture-specific expression simplifications, at which point this should go to Analysis")]
     public class FstswChainMatcherTests
     {
         IntelArchitecture arch;
-        CodeEmitter emitter;
+        ProcedureBuilder emitter;
         IntelAssembler asm;
         OperandRewriter orw;
         List<IntelInstruction> instrs;
@@ -41,10 +45,9 @@ namespace Decompiler.UnitTests.Arch.Intel
         public void Setup()
         {
             arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-            asm = new IntelAssembler(arch, PrimitiveType.Word32, new Address(0x10000), new IntelEmitter(), new List<EntryPoint>());
+            asm = new IntelAssembler(arch, new Address(0x10000), new List<EntryPoint>());
             Procedure proc = new Procedure("test", arch.CreateFrame());
-            orw = new OperandRewriter(null, arch, proc.Frame);
-            emitter = new CodeEmitter(arch, null, proc, proc.AddBlock("testblok"));
+            orw = new OperandRewriter(arch, proc.Frame, null);
         }
 
         [Test]

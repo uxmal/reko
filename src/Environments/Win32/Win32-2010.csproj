@@ -78,10 +78,6 @@
     <Content Include="wininet.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\Intel\X86-2010.csproj">
-      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
-      <Name>X86-2010</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Arch\PowerPC\PowerPC-2010.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
       <Name>PowerPC-2010</Name>

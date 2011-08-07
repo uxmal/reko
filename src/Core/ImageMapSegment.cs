@@ -56,9 +56,9 @@ namespace Decompiler.Core
 	[Flags]
 	public enum AccessMode
 	{
-		Read = 1,
+		Read = 4,
 		Write = 2,
-		Execute = 4,
+		Execute = 1,
 
 		ReadWrite = Read|Write,
 	}

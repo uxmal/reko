@@ -48,7 +48,7 @@ namespace Decompiler.Arch.PowerPC
 
         public PowerPcInstruction Disassemble()
         {
-            uint wInstr = rdr.ReadBeUint32();
+            uint wInstr = rdr.ReadBeUInt32();
             return oprecs[wInstr >> 26].Decode(this, wInstr);
         }
 
