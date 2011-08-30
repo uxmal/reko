@@ -1,6 +1,7 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
+// esp:Register esp
 // edi:Register edi
 // rLoc1:FPU stack
 // rLoc2:FPU stack

@@ -38,6 +38,7 @@ fn0C00_0000_exit:
 // fn0C00_001F
 // Mem0:Global memory
 // fp:Temporary
+// sp:Register sp
 // ah:Register ah
 // al:Register al
 // return address size: 0
@@ -50,6 +51,7 @@ fn0C00_001F_exit:
 // fn0C00_0023
 // Mem0:Global memory
 // fp:Temporary
+// sp:Register sp
 // ah:Register ah
 // C:Flags
 // bx:Register bx

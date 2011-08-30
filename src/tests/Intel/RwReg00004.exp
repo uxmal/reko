@@ -146,8 +146,8 @@ fn10000000_exit:
 // fn1000010A
 // Mem0:Global memory
 // fp:Temporary
-// rArg0:FPU stack
 // esp:Register esp
+// rArg0:FPU stack
 // eax:Register eax
 // return address size: 4
 void fn1000010A()

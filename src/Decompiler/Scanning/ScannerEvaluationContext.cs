@@ -32,10 +32,16 @@ namespace Decompiler.Scanning
     /// <summary>
     /// Used by the Scanner and related classes to evaluate possibly constant expressions.
     /// </summary>
+    /// <remarks>
+    /// This class keeps track of whether registers have been assigned constant values. If so, then
+    /// occurrences of r1 = c; r2 = r1 can be replaced with r1 = c; r2 = c. The class also keeps track of derived registers; 
+    /// that is, all registers rd which have been assigned rs + c. This allows sequences like r1 = r2 + c; r3 = r2 + d
+    /// to be replaced with r1 = r2 + c; r3 = (r1 + c) + d => r1 + (c + d) = r1 + e.
+    /// </remarks>
     public class ScannerEvaluationContext : EvaluationContext
     {
         private IProcessorArchitecture arch;
-        private Dictionary<MachineRegister, Expression> offsets;
+        private Dictionary<MachineRegister, Expression> linearDerived;
         private SortedList<int, Expression> stackState;
 
         public ScannerEvaluationContext(IProcessorArchitecture arch)
@@ -47,7 +53,7 @@ namespace Decompiler.Scanning
         {
             this.arch = arch;
             this.State = state;
-            this.offsets = new Dictionary<MachineRegister, Expression>();
+            this.linearDerived = new Dictionary<MachineRegister, Expression>();
             this.stackState = new SortedList<int, Expression>();
         }
 
@@ -55,7 +61,7 @@ namespace Decompiler.Scanning
         {
             this.arch = original.arch;
             this.State = original.State.Clone();
-            this.offsets = new Dictionary<MachineRegister, Expression>(original.offsets);
+            this.linearDerived = new Dictionary<MachineRegister, Expression>(original.linearDerived);
             this.stackState = new SortedList<int, Expression>(original.stackState);
         }
 
@@ -77,7 +83,7 @@ namespace Decompiler.Scanning
             Expression exp = State.GetRegister(reg.Register);
             if (exp != Constant.Invalid)
                 return exp;
-            if (offsets.TryGetValue(reg.Register, out exp))
+            if (linearDerived.TryGetValue(reg.Register, out exp))
                 return exp;
             return Constant.Invalid;
         }
@@ -128,7 +134,7 @@ namespace Decompiler.Scanning
             if (constVal != null)
             {
                 State.SetRegister(reg.Register, constVal);
-                offsets.Remove(reg.Register);
+                linearDerived.Remove(reg.Register);
                 return;
             }
             var binVal = value as BinaryExpression;
@@ -138,12 +144,12 @@ namespace Decompiler.Scanning
                     binVal.Left is Identifier &&
                     binVal.Right is Constant)
                 {
-                    offsets[reg.Register] = binVal;
+                    linearDerived[reg.Register] = binVal;
                     return;
                 }
             }
             State.SetRegister(reg.Register, Constant.Invalid);
-            offsets.Remove(reg.Register); 
+            linearDerived.Remove(reg.Register); 
         }
 
         public void SetValueEa(Expression ea, Expression value)

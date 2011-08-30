@@ -1,6 +1,7 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
+// sp:Register sp
 // rLoc1:FPU stack
 // ds:Register ds
 // rLoc2:FPU stack
