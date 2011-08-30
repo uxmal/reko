@@ -1,8 +1,8 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
-// ebx:Register ebx
 // esp:Register esp
+// ebx:Register ebx
 // ebp:Register ebp
 // esi:Register esi
 // edi:Register edi
@@ -466,8 +466,8 @@ fn1000026E_exit:
 // fn10000277
 // Mem0:Global memory
 // fp:Temporary
-// edx:Register edx
 // esp:Register esp
+// edx:Register edx
 // eax:Register eax
 // return address size: 4
 void fn10000277()
@@ -492,6 +492,7 @@ fn10000277_exit:
 // fn100002A8
 // Mem0:Global memory
 // fp:Temporary
+// esp:Register esp
 // return address size: 4
 void fn100002A8()
 fn100002A8_entry:
@@ -502,8 +503,8 @@ fn100002A8_exit:
 // fn100002A9
 // Mem0:Global memory
 // fp:Temporary
-// edx:Register edx
 // esp:Register esp
+// edx:Register edx
 // eax:Register eax
 // return address size: 4
 void fn100002A9()
