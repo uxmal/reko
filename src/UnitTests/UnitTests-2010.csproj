@@ -109,7 +109,6 @@
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
-    <Compile Include="Arch\Intel\CodeWalkerTests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />
     <Compile Include="Arch\Intel\DisassemblerTests.cs" />
     <Compile Include="Arch\Intel\Fragments\Factorial.cs" />
