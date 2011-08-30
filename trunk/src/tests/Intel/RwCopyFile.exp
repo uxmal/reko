@@ -1,8 +1,8 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register bp
 // sp:Register sp
+// bp:Register bp
 // ss:Register ss
 // SCZO:Flags
 // ax:Register ax

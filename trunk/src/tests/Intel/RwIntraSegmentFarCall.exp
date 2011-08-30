@@ -32,8 +32,8 @@ fn0C00_0000_exit:
 // fn0C00_0020
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register bp
 // sp:Register sp
+// bp:Register bp
 // ss:Register ss
 // es:Register es
 // bx:Register bx
@@ -60,8 +60,8 @@ fn0C00_0020_exit:
 // fn0C00_002E
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register bp
 // sp:Register sp
+// bp:Register bp
 // ss:Register ss
 // es:Register es
 // bx:Register bx

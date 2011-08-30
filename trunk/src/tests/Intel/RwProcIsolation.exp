@@ -1,8 +1,8 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// di:Register di
 // sp:Register sp
+// di:Register di
 // ss:Register ss
 // ax:Register ax
 // ds:Register ds
@@ -22,6 +22,7 @@ fn0C00_0000_exit:
 // fn0C00_000F
 // Mem0:Global memory
 // fp:Temporary
+// sp:Register sp
 // di:Register di
 // ds:Register ds
 // return address size: 2
@@ -34,6 +35,7 @@ fn0C00_000F_exit:
 // fn0C00_0014
 // Mem0:Global memory
 // fp:Temporary
+// sp:Register sp
 // di:Register di
 // SZO:Flags
 // C:Flags

@@ -1,8 +1,8 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
-// eax:Register eax
 // esp:Register esp
+// eax:Register eax
 // SCZO:Flags
 // ax:Register ax
 // return address size: 4
@@ -22,8 +22,8 @@ fn10000000_exit:
 // fn10000017
 // Mem0:Global memory
 // fp:Temporary
-// ebp:Register ebp
 // esp:Register esp
+// ebp:Register ebp
 // ecx:Register ecx
 // SCZO:Flags
 // Z:Flags

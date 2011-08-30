@@ -1,11 +1,12 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
+// sp:Register sp
 // ds:Register ds
 // eax:Register eax
 // edx:Register edx
 // SCZO:Flags
-// v6:Temporary
+// v7:Temporary
 // C:Flags
 // return address size: 2
 void fn0C00_0000()
@@ -22,9 +23,9 @@ l0C00_0000:
 	edx = Mem0[ds:0x0104:word32]
 	eax = eax << 0x00000001
 	SCZO = cond(eax)
-	v6 = (edx & 0x00000001 << 0x20 - 0x01) != 0x00000000
+	v7 = (edx & 0x00000001 << 0x20 - 0x01) != 0x00000000
 	edx = __rcl(edx, 0x01, C)
-	C = v6
+	C = v7
 	return
 fn0C00_0000_exit:
 

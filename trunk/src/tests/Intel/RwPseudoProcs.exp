@@ -1,15 +1,16 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
+// sp:Register sp
 // bp:Register bp
 // ss:Register ss
 // si:Register si
 // dx:Register dx
 // al:Register al
-// v7:Temporary
+// v8:Temporary
 // bx:Register bx
 // C:Flags
-// v10:Temporary
+// v11:Temporary
 // cx:Register cx
 // SZO:Flags
 // es:Register es
@@ -25,12 +26,12 @@ fn0C00_0000_entry:
 l0C00_0000:
 	si = bp + 0x000C
 	__outb(dx, al)
-	v7 = (bx & 0x0001 << 0x01) != 0x0000
+	v8 = (bx & 0x0001 << 0x01) != 0x0000
 	bx = __ror(bx, 0x01)
-	C = v7
-	v10 = (cx & 0x0001 << 0x01) != 0x0000
+	C = v8
+	v11 = (cx & 0x0001 << 0x01) != 0x0000
 	cx = __rcr(cx, 0x01, C)
-	C = v10
+	C = v11
 	dx = dx + 0x0001
 	SZO = cond(dx)
 	al = __inb(dx)

@@ -1,6 +1,7 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
+// sp:Register sp
 // ax:Register ax
 // ds:Register ds
 // return address size: 2

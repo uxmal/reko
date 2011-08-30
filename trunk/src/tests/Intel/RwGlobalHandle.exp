@@ -1,8 +1,8 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
-// esi:Register esi
 // esp:Register esp
+// esi:Register esi
 // edi:Register edi
 // eax:Register eax
 // return address size: 4

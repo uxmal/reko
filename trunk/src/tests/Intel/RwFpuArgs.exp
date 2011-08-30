@@ -1,10 +1,10 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
+// sp:Register sp
 // rLoc1:FPU stack
 // ds:Register ds
 // rLoc2:FPU stack
-// sp:Register sp
 // ss:Register ss
 // ax:Register ax
 // SCZO:Flags
@@ -32,8 +32,8 @@ fn0C00_0000_exit:
 // fn0C00_0024
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register bp
 // sp:Register sp
+// bp:Register bp
 // ss:Register ss
 // bx:Register bx
 // rArg0:FPU stack
@@ -57,8 +57,8 @@ fn0C00_0024_exit:
 // fn0C00_0031
 // Mem0:Global memory
 // fp:Temporary
-// bp:Register bp
 // sp:Register sp
+// bp:Register bp
 // ss:Register ss
 // bx:Register bx
 // rLoc1:FPU stack

@@ -1,13 +1,13 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
+// esp:Register esp
 // edi:Register edi
 // esi:Register esi
 // ebx:Register ebx
 // SZO:Flags
 // C:Flags
 // Z:Flags
-// esp:Register esp
 // eax:Register eax
 // SCZO:Flags
 // return address size: 4
