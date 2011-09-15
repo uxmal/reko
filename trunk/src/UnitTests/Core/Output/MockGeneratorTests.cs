@@ -343,7 +343,6 @@ namespace Decompiler.UnitTests.Core.Output
         {
             ProcedureBuilder m = new ProcedureBuilder();
             buildMock(m);
-            m.Procedure.RenumberBlocks();
             MockGenerator g = new MockGenerator(sb);
             g.Write(m.Procedure);
         }

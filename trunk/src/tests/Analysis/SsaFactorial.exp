@@ -24,23 +24,25 @@ Mem8: orig: Mem0
     def:  store(Mem8[ds:0x0064:word16]) = ax
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
 	def fp
+	def sp
 	def cx
-	def wLoc04
+	def ss
+	def SCZO
 	def ax
 	def ds
-	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	cx_6 = 0x0064
-	wLoc04_7 = cx_6
-	call fn0C00_000F (depth: 4;)
-	store(Mem8[ds:0x0064:word16]) = ax
+l0C00_0000:
+	cx_8 = 0x0064
+	sp_9 = sp - 0x0002
+	store(Mem10[ss:sp_9:word16]) = cx_8
+	call fn0C00_000F (retsize: 2;)
+	sp_11 = sp_9 + 0x0002
+	SCZO_12 = cond(sp_11)
+	store(Mem13[ds:0x0064:word16]) = ax
 	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 
 Mem0:Global memory
     def:  def Mem0

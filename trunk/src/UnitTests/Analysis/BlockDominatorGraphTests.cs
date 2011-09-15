@@ -36,9 +36,10 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure proc = new DiamondMock().Procedure;
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
-            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[1], proc.RpoBlocks[2]));
-            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[1], proc.RpoBlocks[3]));
-            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[1], proc.RpoBlocks[4]));
+            var topDiamond = proc.ControlGraph.Blocks[1];
+            Assert.IsTrue(doms.DominatesStrictly(topDiamond, topDiamond.ElseBlock));
+            Assert.IsTrue(doms.DominatesStrictly(topDiamond, topDiamond.ThenBlock));
+            Assert.IsTrue(doms.DominatesStrictly(topDiamond, topDiamond.ThenBlock.Succ[0]));
 		}
 
 		[Test]
@@ -46,10 +47,10 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure proc = new DiamondMock().Procedure;
 			var doms = proc.CreateBlockDominatorGraph();
-			Block head = proc.RpoBlocks[1];
-			Block f = proc.RpoBlocks[2];
-			Block t = proc.RpoBlocks[3];
-			Block join = proc.RpoBlocks[4];
+			Block head = proc.ControlGraph.Blocks[1];
+            Block f = head.ElseBlock;
+            Block t = head.ThenBlock;
+            Block join = t.Succ[0];
 			Assert.AreEqual("false", f.Name);
 			Assert.AreEqual("true", t.Name);
 			Assert.AreEqual("join", join.Name);
@@ -67,10 +68,10 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure proc = new DiamondMock().Procedure;
 			var doms = proc.CreateBlockDominatorGraph();
-			Block head = proc.RpoBlocks[1];
-			Block f = proc.RpoBlocks[2];
-			Block t = proc.RpoBlocks[3];
-			Block join = proc.RpoBlocks[4];
+			Block head = proc.ControlGraph.Blocks[1];
+			Block f = head.ElseBlock;
+			Block t = head.ThenBlock;
+			Block join = t.Succ[0];
 
 			Assert.IsTrue(doms.DominatesStrictly(join.Statements[0], join.Statements[1]), "First statement should dominate next statement"); 
 			Assert.IsFalse(doms.DominatesStrictly(join.Statements[1], join.Statements[0]), "Second statement shouldn't  dominate prev statement"); 

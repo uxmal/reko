@@ -198,7 +198,7 @@ namespace Decompiler.Analysis
 
 		public void Transform()
 		{
-			foreach (Block b in proc.RpoBlocks)
+			foreach (Block b in proc.ControlGraph.Blocks)
 			{
 				Process(b);
 			}

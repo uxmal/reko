@@ -126,7 +126,6 @@ namespace Decompiler.UnitTests.Structure
 
         private void CompileTest(ProcedureBuilder pm)
         {
-            pm.Procedure.RenumberBlocks();
             ProcedureStructureBuilder g = new ProcedureStructureBuilder(pm.Procedure);
             Dictionary<Block, StructureNode> nodes = new Dictionary<Block, StructureNode>();
             g.BuildNodes();

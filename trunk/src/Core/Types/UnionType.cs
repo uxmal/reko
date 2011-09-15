@@ -75,6 +75,10 @@ namespace Decompiler.Core.Types
 			v.VisitUnion(this);
 		}
 
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitUnion<T>(this);
+        }
 
 		public UnionAlternativeCollection Alternatives
 		{
@@ -159,9 +163,6 @@ namespace Decompiler.Core.Types
 
 	public class UnionAlternative
 	{
-		public DataType DataType;
-		public string Name;
-
 		public UnionAlternative(DataType t)
 		{
 			this.DataType = t;
@@ -172,6 +173,9 @@ namespace Decompiler.Core.Types
 			DataType = dt;
 			Name = name;
 		}
+
+        public DataType DataType { get; set; }
+        public string Name { get; set; }
 
 		public string MakeName(int i)
 		{

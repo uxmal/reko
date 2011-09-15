@@ -42,7 +42,7 @@ namespace Decompiler.Core.Types
 
 		public void CopyTo(Array arr, int i)
 		{
-			throw new NotImplementedException("NYI");
+			throw new NotImplementedException();
 		}
 
 		public int Compare(object a, object b)

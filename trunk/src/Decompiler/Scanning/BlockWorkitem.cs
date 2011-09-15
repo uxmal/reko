@@ -89,7 +89,21 @@ namespace Decompiler.Scanning
                     if (!ri.Accept(this))
                         return;
                 }
+                var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
+                if (blNext != null)
+                {
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blNext);
+                    return;
+                }
             }
+        }
+
+        private Block FallenThroughNextBlock(Address addr)
+        {
+            var cont = scanner.FindContainingBlock(addr);
+            if (cont == null || cont == blockCur)
+                return null;
+            return cont;
         }
 
         private bool BlockHasBeenScanned(Block block)
@@ -437,7 +451,7 @@ namespace Decompiler.Scanning
                 // the machine instruction.
 
                 var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
-                proc.ControlGraph.Nodes.Add(fallthru);
+                proc.ControlGraph.Blocks.Add(fallthru);
                 return fallthru;
             }
             else
@@ -495,7 +509,7 @@ namespace Decompiler.Scanning
 
         private void DumpCfg()
         {
-            foreach (Block block in blockCur.Procedure.ControlGraph.Nodes)
+            foreach (Block block in blockCur.Procedure.ControlGraph.Blocks)
             {
                 Console.WriteLine("block: {0}", block.Name);
                 Console.Write("\tpred:");

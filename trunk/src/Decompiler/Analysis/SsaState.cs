@@ -47,7 +47,7 @@ namespace Decompiler.Analysis
 		public void ConvertBack(bool fRenameVariables)
 		{
 			UnSSA unssa = new UnSSA(this);
-			foreach (Block block in proc.RpoBlocks)
+			foreach (Block block in proc.ControlGraph.Blocks)
 			{
 				for (int st = 0; st < block.Statements.Count; ++st)
 				{

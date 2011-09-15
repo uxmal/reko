@@ -328,7 +328,6 @@ namespace Decompiler.UnitTests.Analysis
             m.Return();
 
             Procedure proc = m.Procedure;
-            proc.RenumberBlocks();
             prog.Procedures.Add(new Address(0x10000), proc);
             prog.CallGraph.AddProcedure(proc);
             flow = new ProgramDataFlow(prog);
@@ -382,7 +381,6 @@ namespace Decompiler.UnitTests.Analysis
             m.Call("TrashEaxEbx");
             m.Assign(eax, tmp);
             m.Return();
-            m.Procedure.RenumberBlocks();
             p.Add(m);
 
 
@@ -392,7 +390,6 @@ namespace Decompiler.UnitTests.Analysis
             TrashEaxEbx.Assign(ebx, m.Int32(0x1231313));
             TrashEaxEbx.Assign(eax, m.LoadDw(ebx));
             TrashEaxEbx.Return();
-            TrashEaxEbx.Procedure.RenumberBlocks();
             p.Add(TrashEaxEbx);
 
             var arch = prog.Architecture;
@@ -414,6 +411,5 @@ TrashEaxEbx eax ebx ax bx al bl ah bh
 ";
             Assert.AreEqual(exp, sb.ToString());
         }
-
     }
 }

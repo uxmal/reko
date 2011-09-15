@@ -49,6 +49,11 @@ namespace Decompiler.Core.Types
 			v.VisitMemberPointer(this);
 		}
 
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitMemberPointer<T>(this);
+        }
+
 		public override DataType Clone()
 		{
 			return new MemberPointer(BasePointer.Clone(), Pointee.Clone(), byteSize);

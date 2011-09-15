@@ -61,6 +61,11 @@ namespace Decompiler.Core.Types
 			v.VisitStructure(this);
 		}
 
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitStructure<T>(this);
+        }
+
 		public override DataType Clone()
 		{
 			StructureType s = new StructureType(name, size);

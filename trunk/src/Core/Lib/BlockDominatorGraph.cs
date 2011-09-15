@@ -24,7 +24,7 @@ using System.Text;
 
 namespace Decompiler.Core.Lib
 {
-   public  class BlockDominatorGraph : DominatorGraph<Block>
+   public class BlockDominatorGraph : DominatorGraph<Block>
    {
        public BlockDominatorGraph(DirectedGraph<Block> graph, Block entry) : base(graph, entry)
        {

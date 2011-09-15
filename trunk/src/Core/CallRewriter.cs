@@ -78,23 +78,20 @@ namespace Decompiler.Core
 		/// </summary>
 		/// <param name="proc"></param>
 		/// <returns>The number of calls that couldn't be converted</returns>
-		public int RewriteCalls(Procedure proc, IProcessorArchitecture arch)
-		{
-			int unConverted = 0;
-			foreach (Block b in proc.RpoBlocks)
-			{
-				foreach (Statement stm in b.Statements)
-				{
-					CallInstruction ci = stm.Instruction as CallInstruction;
-					if (ci != null)
-					{
+        public int RewriteCalls(Procedure proc, IProcessorArchitecture arch)
+        {
+            int unConverted = 0;
+            foreach (Statement stm in proc.Statements)
+            {
+                CallInstruction ci = stm.Instruction as CallInstruction;
+                if (ci != null)
+                {
 
-						if (!RewriteCall(proc, arch, stm, ci))
-							++unConverted;
-					}
-				}
-			}
-			return unConverted;
-		}
+                    if (!RewriteCall(proc, arch, stm, ci))
+                        ++unConverted;
+                }
+            }
+            return unConverted;
+        }
 	}
 }

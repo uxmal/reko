@@ -43,9 +43,32 @@ namespace Decompiler.Core.Expressions
         public DoubleConstant(double d) : base(PrimitiveType.Real64, d) { this.d = d; }
     }
 
+    public class StringConstant : Constant
+    {
+        private string str;
+
+        public StringConstant(DataType type, string str) : base(type) 
+        {
+            this.str = str;
+        }
+
+        public int Length { get { return str.Length; } }
+
+        public override string ToString()
+        {
+            return str;
+        }
+    }
+
+
 	public class Constant : Expression
 	{
 		private object c;
+
+        public Constant(DataType t)
+            : base(t)
+        {
+        }
 
 		public Constant(DataType t, object v) : base(t)
 		{
@@ -133,13 +156,7 @@ namespace Decompiler.Core.Expressions
 
 		public static Constant DoubleFromBitpattern(long bits)
 		{
-			long mant = bits & 0x000FFFFFFFFFFFFF;
-			int exp =   (int) (bits >> 52) & 0x7FF;
-			double sign = (bits < 0) ? -1.0 : 1.0;
-			if (mant == 0 && exp == 0)
-				return new Constant(0.0);
-			return new Constant(MakeReal(exp, 0x3FF, mant, 52) * sign);
-
+            return new Constant(BitConverter.Int64BitsToDouble(bits));
 		}
 
 		private static double MakeReal(int exponent, int expBias, long mantissa, int mantissaSize)

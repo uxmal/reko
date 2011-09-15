@@ -47,7 +47,7 @@ namespace Decompiler.Evaluation
         {
             Expression e = ctx.GetValue(id);
             cSrc = e as Constant;
-            if (cSrc == null || cSrc == Constant.Invalid)
+            if (cSrc == null)
                 return false;
             idDst = id;
             return true;
@@ -56,6 +56,8 @@ namespace Decompiler.Evaluation
         public Expression Transform()
         {
             ctx.RemoveIdentifierUse(idDst);
+            if (!cSrc.IsValid)
+                return cSrc;
             DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
             if (dt is PrimitiveType)
                 return new Constant(dt, cSrc.ToInt64());

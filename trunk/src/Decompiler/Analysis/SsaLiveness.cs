@@ -54,7 +54,7 @@ namespace Decompiler.Analysis
 			this.proc = proc;
 			this.ssaIds = ssaIds;
             this.visited = new HashSet<Block>();
-            BuildRecords(proc.RpoBlocks);
+            BuildRecords(proc.ControlGraph.Blocks);
 			BuildDefinedMap(ssaIds);
 			BuildInterferenceGraph(ssaIds);
 		}
@@ -206,20 +206,19 @@ namespace Decompiler.Analysis
 
 		public void Write(Procedure proc, TextWriter writer)
 		{
-			for (int i = 0; i < proc.RpoBlocks.Count; ++i)
+			foreach (var block in proc.ControlGraph.Blocks)
 			{
-				Block b = proc.RpoBlocks[i];
 				writer.Write("liveIn: ");
-				foreach (SsaIdentifier v in records[b].LiveIn)
+				foreach (SsaIdentifier v in records[block].LiveIn)
 				{
 					writer.Write(" {0}", v.Identifier.Name);
 				}
 				writer.WriteLine();
 
-				b.Write(writer);
+				block.Write(writer);
 
 				writer.Write("liveOut:");
-				foreach (SsaIdentifier v in records[b].LiveOut)
+				foreach (SsaIdentifier v in records[block].LiveOut)
 				{
 					writer.Write(" {0}", v.Identifier.Name);
 				}

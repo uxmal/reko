@@ -411,7 +411,6 @@ namespace Decompiler.UnitTests.Typing
 			Identifier loc2 = m.Local32("loc2");
 			m.Assign(loc2, m.Fn("Fn2", loc1));
 			m.Return();
-			m.Procedure.RenumberBlocks();
 			pp.Add(m);
 
 			m = new ProcedureBuilder("Fn2");
@@ -421,8 +420,6 @@ namespace Decompiler.UnitTests.Typing
 			m.Procedure.Signature.FormalArguments[0] = arg1;
 			m.Assign(ret, m.Add(arg1, 1));
 			m.Return(ret);
-			m.Procedure.RenumberBlocks();
-			pp.Add(m);
 
 			RunTest(pp.BuildProgram(), "Typing/DtbFn1CallFn2.txt");
 		}
@@ -437,16 +434,12 @@ namespace Decompiler.UnitTests.Typing
 			m.Store(m.Add(p, 4), m.Word32(0x42));
 			m.SideEffect(m.Fn("Fn2", p));
 			m.Return();
-			m.Procedure.RenumberBlocks();
-			pp.Add(m);
 
 			m = new ProcedureBuilder("Fn2");
 			Identifier arg1 = m.Local32("arg1");
 			m.Procedure.Signature = new ProcedureSignature(null, new Identifier[] { arg1 });
 			m.Store(m.Add(arg1, 8), m.Int32(0x23));
 			m.Return();
-			m.Procedure.RenumberBlocks();
-			pp.Add(m);
 
 			RunTest(pp.BuildProgram(), "Typing/DtbStructurePointerPassedToFunction.txt");
 		}

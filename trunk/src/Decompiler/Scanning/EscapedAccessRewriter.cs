@@ -100,13 +100,10 @@ namespace Decompiler.Scanning
 
 		public void Transform()
 		{
-			foreach (Block block in proc.RpoBlocks)
-			{
-				foreach (Statement stm in block.Statements)
-				{
-					stm.Instruction = stm.Instruction.Accept(this);
-				}
-			}
+            foreach (Statement stm in proc.Statements)
+            {
+                stm.Instruction = stm.Instruction.Accept(this);
+            }
 		}
 
 		public override Instruction TransformAssignment(Assignment a)

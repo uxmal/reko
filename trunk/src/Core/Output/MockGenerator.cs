@@ -66,8 +66,7 @@ namespace Decompiler.Core.Output
         {
             SortedList<string, Identifier> identifiers = new SortedList<string, Identifier>();
             IdentifierCollector coll = new IdentifierCollector(identifiers);
-            DirectedGraph<Block> graph = new BlockGraph(proc.RpoBlocks);
-            foreach (Block block in new DfsIterator<Block>(graph).PreOrder(proc.EntryBlock))
+            foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PreOrder(proc.EntryBlock))
             {
                 foreach (Statement stm in block.Statements)
                 {
@@ -115,7 +114,7 @@ namespace Decompiler.Core.Output
 
         private void WriteCode(Procedure proc)
         {
-            BlockGraph graph = new BlockGraph(proc.RpoBlocks);
+            BlockGraph graph = proc.ControlGraph;
 
             DfsIterator<Block> iterator = new DfsIterator<Block>(graph);
             foreach (Block block in new DfsIterator<Block>(graph).PreOrder(proc.EntryBlock))

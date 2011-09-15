@@ -20,11 +20,13 @@
 
 using Decompiler.Core.Absyn;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 
 namespace Decompiler.Core.Output
@@ -662,9 +664,8 @@ namespace Decompiler.Core.Output
 			}
 			else
 			{
-				for (int i = 0; i < proc.RpoBlocks.Count; ++i)
+				foreach (Block b in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
 				{
-					Block b = proc.RpoBlocks[i];
                     if (!string.IsNullOrEmpty(b.Name))
                     {
                         writer.Write(b.Name);
@@ -830,6 +831,5 @@ namespace Decompiler.Core.Output
 				s.Accept(this);
 			}
 		}
-
     }
 }

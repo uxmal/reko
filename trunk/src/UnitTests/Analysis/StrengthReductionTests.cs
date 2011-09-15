@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Analysis
             Procedure proc = BuildSimpleLoop();
 
             var dom = proc.CreateBlockDominatorGraph();
-            SsaTransform ssa = new SsaTransform(proc, dom, false);
+            SsaTransform ssa = new SsaTransform(proc, dom);
             proc.Write(false, Console.Out);
             LinearInductionVariableFinder lif = new LinearInductionVariableFinder(proc, ssa.SsaState.Identifiers, dom);
             lif.Find();
@@ -83,7 +83,6 @@ namespace Decompiler.UnitTests.Analysis
 
             m.Label("done");
             m.Return();
-            m.Procedure.RenumberBlocks();
             return m.Procedure;
         }
 

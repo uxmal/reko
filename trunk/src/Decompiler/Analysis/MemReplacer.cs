@@ -43,13 +43,10 @@ namespace Decompiler.Analysis
 
 		public void Transform(Procedure proc)
 		{
-			foreach (Block block in proc.RpoBlocks)
-			{
-				foreach (Statement stm in block.Statements)
-				{
-					stm.Instruction.Accept(this);
-				}
-			}
+            foreach (var stm in proc.Statements)
+            {
+                stm.Instruction.Accept(this);
+            }
 		}
 
 		public void RewriteProgram()

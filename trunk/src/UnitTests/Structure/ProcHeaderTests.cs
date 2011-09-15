@@ -33,8 +33,6 @@ namespace Decompiler.UnitTests.Structure
 
         protected virtual void RunTest(ProcedureBuilder pm)
         {
-            pm.Procedure.RenumberBlocks();
-
             ProcedureStructureBuilder g = new ProcedureStructureBuilder(pm.Procedure);
             g.BuildNodes();
             g.DefineEdges();

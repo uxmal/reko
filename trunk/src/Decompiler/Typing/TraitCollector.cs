@@ -109,19 +109,16 @@ namespace Decompiler.Typing
 		public void CollectProgramTraits(Program prog)
 		{
 			this.prog = prog;
-			foreach (Procedure p in prog.Procedures.Values)
-			{
+            foreach (Procedure p in prog.Procedures.Values)
+            {
                 proc = p;
-				AddProcedureTraits(p);
-				foreach (Block block in p.RpoBlocks)
-				{
-					foreach (Statement stm in block.Statements)
-					{
-						Debug.WriteLineIf(trace.TraceVerbose, string.Format("Tracing: {0} ", stm.Instruction));
-						stm.Instruction.Accept(this);
-					}
-				}
-			} 
+                AddProcedureTraits(p);
+                foreach (Statement stm in p.Statements)
+                {
+                    Debug.WriteLineIf(trace.TraceVerbose, string.Format("Tracing: {0} ", stm.Instruction));
+                    stm.Instruction.Accept(this);
+                }
+            }
 		}
 		
 		public Domain DomainOf(DataType t)

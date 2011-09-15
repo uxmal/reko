@@ -555,6 +555,7 @@
     <Compile Include="Types\MemberPointer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\NamedType.cs" />
     <Compile Include="Types\Pointer.cs">
       <SubType>Code</SubType>
     </Compile>

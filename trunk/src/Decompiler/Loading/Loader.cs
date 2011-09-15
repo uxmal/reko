@@ -66,8 +66,6 @@ namespace Decompiler.Loading
             return new NullLoader(null, rawBytes);
         }
 
-
-
 		/// <summary>
 		/// Loads the <paramref>binaryFile</paramref> into memory without any 
 		/// relocation or other processing. The beginning of the
@@ -164,4 +162,3 @@ namespace Decompiler.Loading
         }
 	}
 }
-

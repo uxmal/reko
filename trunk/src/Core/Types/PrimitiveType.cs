@@ -72,6 +72,10 @@ namespace Decompiler.Core.Types
 			v.VisitPrimitive(this);
 		}
 
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitPrimitive<T>(this);
+        }
 
 		public override DataType Clone()
 		{
@@ -157,7 +161,11 @@ namespace Decompiler.Core.Types
 			case Domain.Boolean:
 				return "bool";
 			case Domain.Character:
-				return "char";
+                if (bitSize == 8)
+				    return "char";
+                if (bitSize == 16)
+                    return "wchar_t";
+                return "char" + bitSize;
 			case Domain.SignedInt:
 				return "int" + bitSize;
 			case Domain.UnsignedInt:
@@ -275,6 +283,7 @@ namespace Decompiler.Core.Types
 			uint16 = Create(Domain.UnsignedInt, 2);
 			ptr16 = Create(Domain.Pointer, 2);
 			selector = Create(Domain.Selector, 2);
+            WChar = Create(Domain.Character, 2);
 
 			word32 = CreateWord(4);
 			int32 = Create(Domain.SignedInt, 4);
@@ -292,128 +301,130 @@ namespace Decompiler.Core.Types
 
 		}
 
-		static private PrimitiveType _void;
+		private static PrimitiveType _void;
 
-		static private PrimitiveType _byte;
-		static private PrimitiveType bool1;
-		static private PrimitiveType _char;
-		static private PrimitiveType int8;
-		static private PrimitiveType uint8;
+		private static PrimitiveType _byte;
+		private static PrimitiveType bool1;
+		private static PrimitiveType _char;
+		private static PrimitiveType int8;
+		private static PrimitiveType uint8;
 
-		static private PrimitiveType word16;
-		static private PrimitiveType int16;
-		static private PrimitiveType uint16;
-		static private PrimitiveType ptr16;
-		static private PrimitiveType selector;
+		private static PrimitiveType word16;
+		private static PrimitiveType int16;
+		private static PrimitiveType uint16;
+		private static PrimitiveType ptr16;
+		private static PrimitiveType selector;
 
-		static private PrimitiveType word32;
-		static private PrimitiveType int32;
-		static private PrimitiveType uint32;
-		static private PrimitiveType pointer32;
-		static private PrimitiveType real32;
+		private static PrimitiveType word32;
+		private static PrimitiveType int32;
+		private static PrimitiveType uint32;
+		private static PrimitiveType pointer32;
+		private static PrimitiveType real32;
 
-		static private PrimitiveType word64;
-		static private PrimitiveType int64;
-		static private PrimitiveType uint64;
-		static private PrimitiveType pointer64;
-		static private PrimitiveType real64;
+		private static PrimitiveType word64;
+		private static PrimitiveType int64;
+		private static PrimitiveType uint64;
+		private static PrimitiveType pointer64;
+		private static PrimitiveType real64;
 
-		static private PrimitiveType real80;
+		private static PrimitiveType real80;
 
-		static public PrimitiveType Void
+		public static PrimitiveType Void
 		{
 			get { return _void; }
 		}
 		
-		static public PrimitiveType Bool
+		public static PrimitiveType Bool
 		{
 			get { return bool1; }
 		}
 
-		static public PrimitiveType Byte
+		public static PrimitiveType Byte
 		{
 			get { return _byte; }
 		}
-		static public PrimitiveType Char
+		public static PrimitiveType Char
 		{
 			get { return _char; }
 		}
-		static public PrimitiveType SByte
+		public static PrimitiveType SByte
 		{
 			get { return int8; }
 		}
-		static public PrimitiveType UInt8
+		public static PrimitiveType UInt8
 		{
 			get { return uint8; }
 		}
 
-		static public PrimitiveType Word16
+		public static PrimitiveType Word16
 		{
 			get { return word16; }
 		}
-		static public PrimitiveType Int16
+		public static PrimitiveType Int16
 		{
 			get { return int16; }
 		}
-		static public PrimitiveType UInt16
+		public static PrimitiveType UInt16
 		{
 			get { return uint16; }
 		}
-		static public PrimitiveType Ptr16
+		public static PrimitiveType Ptr16
 		{
 			get { return ptr16; }
 		}
 
-		static public PrimitiveType SegmentSelector
+		public static PrimitiveType SegmentSelector
 		{
 			get { return selector; }
 		}
 
-		static public PrimitiveType Word32
+		public static PrimitiveType Word32
 		{
 			get { return word32; }
 		}
-		static public PrimitiveType Int32
+		public static PrimitiveType Int32
 		{
 			get { return int32; }
 		}
-		static public PrimitiveType UInt32
+		public static PrimitiveType UInt32
 		{
 			get { return uint32; }
 		}
-		static public PrimitiveType Pointer32
+		public static PrimitiveType Pointer32
 		{
 			get { return pointer32; }
 		}
-		static public PrimitiveType Real32
+		public static PrimitiveType Real32
 		{
 			get { return real32; }
 		}
 
-		static public PrimitiveType Word64
+		public static PrimitiveType Word64
 		{
 			get { return word64; }
 		}
-		static public PrimitiveType Int64
+		public static PrimitiveType Int64
 		{
 			get { return int64; }
 		}
-		static public PrimitiveType UInt64
+		public static PrimitiveType UInt64
 		{
 			get { return uint64; }
 		}
-		static public PrimitiveType Pointer64
+		public static PrimitiveType Pointer64
 		{
 			get { return pointer64; }
 		}
-		static public PrimitiveType Real64
+		public static PrimitiveType Real64
 		{
 			get { return real64; }
 		}
 
-		static public PrimitiveType Real80
+		public static PrimitiveType Real80
 		{
 			get { return real80; }
 		}
-	}
+
+        public static PrimitiveType WChar { get; private set; } 
+    }
 }

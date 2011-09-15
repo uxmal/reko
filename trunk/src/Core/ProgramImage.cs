@@ -187,10 +187,10 @@ namespace Decompiler.Core
                 ((long)image[off+1] << 8) |
                 ((long)image[off+2] << 16) | 
                 ((long)image[off+3] << 24) |
-                ((long)image[off+3] << 32) |
-                ((long)image[off+3] << 40) |
-                ((long)image[off+3] << 48) |
-                ((long)image[off+3] << 56);
+                ((long)image[off+4] << 32) |
+                ((long)image[off+5] << 40) |
+                ((long)image[off+6] << 48) |
+                ((long)image[off+7] << 56);
         }
 
 
@@ -311,5 +311,6 @@ namespace Decompiler.Core
             abImage[offset + 2] = (byte) (dw >> 16);
             abImage[offset + 3] = (byte) (dw >> 24);
         }
+
     }
 }

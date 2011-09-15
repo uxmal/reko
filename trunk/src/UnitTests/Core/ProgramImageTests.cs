@@ -23,6 +23,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
+using System.Text;
 
 namespace Decompiler.UnitTests.Core
 {
@@ -94,7 +95,9 @@ namespace Decompiler.UnitTests.Core
 			Constant c = img.ReadLe(0, PrimitiveType.Int32);
 			Assert.AreSame(PrimitiveType.Int32, c.DataType);
 			Assert.AreEqual("-2", c.ToString());
-
 		}
+
+
 	}
+
 }

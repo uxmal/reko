@@ -100,7 +100,7 @@ namespace Decompiler.Analysis
 		public void Classify()
 		{
 			sequencePoint = 0;
-			foreach (Block b in proc.RpoBlocks)
+			foreach (Block b in proc.ControlGraph.Blocks)
 			{
 				foreach (Statement stm in b.Statements)
 				{

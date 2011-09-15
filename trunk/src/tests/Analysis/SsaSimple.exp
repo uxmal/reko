@@ -1,54 +1,76 @@
 Mem0:Global memory
     def:  def Mem0
+    uses: ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
 fp:Temporary
     def:  def fp
-wArg04:Stack +0004
-    def:  def wArg04
-    uses: ax_6 = wArg04
+sp:Register sp
+    def:  def sp
+    uses: bp_9 = sp
+bp:Register bp
+    def:  def bp
+ss:Register ss
+    def:  def ss
+    uses: ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
 ax:Register ax
     def:  def ax
-SCZO:Flags
-    def:  def SCZO
+SZO:Flags
+    def:  def SZO
+C:Flags
+    def:  def C
 Z:Flags
     def:  def Z
-ax_6: orig: ax
-    def:  ax_6 = wArg04
-    uses: SCZO_7 = cond(ax_6 - 0x0000)
-          ax_10 = PHI(ax_6, ax_9)
-SCZO_7: orig: SCZO
-    def:  SCZO_7 = cond(ax_6 - 0x0000)
-    uses: Z_8 = SCZO_7 (alias)
-Z_8: orig: Z
-    def:  Z_8 = SCZO_7 (alias)
-    uses: branch Test(NE,Z_8) l0C00_000C
-ax_9: orig: ax
-    def:  ax_9 = 0xFFFF
-    uses: ax_10 = PHI(ax_6, ax_9)
+bp_9: orig: bp
+    def:  bp_9 = sp
+    uses: ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
+          sp_16 = bp_9
 ax_10: orig: ax
-    def:  ax_10 = PHI(ax_6, ax_9)
+    def:  ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
+    uses: ax_11 = ax_10 | ax_10
+          ax_11 = ax_10 | ax_10
+ax_11: orig: ax
+    def:  ax_11 = ax_10 | ax_10
+    uses: SZO_12 = cond(ax_11)
+          ax_15 = PHI(ax_11, ax_17)
+SZO_12: orig: SZO
+    def:  SZO_12 = cond(ax_11)
+    uses: Z_13 = SZO_12 (alias)
+Z_13: orig: Z
+    def:  Z_13 = SZO_12 (alias)
+    uses: branch Test(NE,Z_13) l0C00_000C
+C_14: orig: C
+    def:  C_14 = false
+ax_15: orig: ax
+    def:  ax_15 = PHI(ax_11, ax_17)
+sp_16: orig: sp
+    def:  sp_16 = bp_9
+ax_17: orig: ax
+    def:  ax_17 = 0xFFFF
+    uses: ax_15 = PHI(ax_11, ax_17)
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
 	def fp
-	def wArg04
+	def sp
+	def bp
+	def ss
 	def ax
-	def SCZO
+	def SZO
+	def C
 	def Z
-	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	ax_6 = wArg04
-	SCZO_7 = cond(ax_6 - 0x0000)
-	Z_8 = SCZO_7 (alias)
-	branch Test(NE,Z_8) l0C00_000C
-	// succ:  l0C00_0009 l0C00_000C
-l0C00_0009:		// pred: l0C00_0000
-	ax_9 = 0xFFFF
-	// succ:  l0C00_000C
-l0C00_000C:		// pred: l0C00_0000 l0C00_0009
-	ax_10 = PHI(ax_6, ax_9)
+l0C00_0000:
+	bp_9 = sp
+	ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
+	ax_11 = ax_10 | ax_10
+	SZO_12 = cond(ax_11)
+	Z_13 = SZO_12 (alias)
+	C_14 = false
+	branch Test(NE,Z_13) l0C00_000C
+l0C00_0009:
+	ax_17 = 0xFFFF
+l0C00_000C:
+	ax_15 = PHI(ax_11, ax_17)
+	sp_16 = bp_9
 	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_000C
-	// succ: 
+fn0C00_0000_exit:
 

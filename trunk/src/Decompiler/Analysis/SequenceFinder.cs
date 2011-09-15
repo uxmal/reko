@@ -40,7 +40,7 @@ namespace Decompiler.Analysis
 
 		public void Find()
 		{
-			foreach (Block block in proc.RpoBlocks)
+			foreach (Block block in proc.ControlGraph.Blocks)
 			{
 				for (int i = 0; i < block.Statements.Count; ++i)
 				{

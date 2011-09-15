@@ -294,7 +294,7 @@ namespace Decompiler.UnitTests.Scanning
                 "\tSCZO = cond(bx)" + nl +
                 "\tswitch (bx) { foo1 foo2 foo3 foo4 }" + nl;
             Assert.AreEqual(sExp, sw.ToString());
-            Assert.IsTrue(proc.ControlGraph.Nodes.Contains(block));
+            Assert.IsTrue(proc.ControlGraph.Blocks.Contains(block));
         }
 
 

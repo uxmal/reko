@@ -114,7 +114,7 @@ namespace Decompiler.Analysis
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				foreach (Block block in proc.RpoBlocks)
+				foreach (Block block in proc.ControlGraph.Blocks)
 				{
 					worklist.Add(mpprocData[block]);
 				}
@@ -383,7 +383,7 @@ namespace Decompiler.Analysis
 				state.UpdateSummary(flow);
                 foreach (Statement stmCaller in prog.CallGraph.CallerStatements(p))
 				{
-					Debug.WriteLineIf(trace.TraceVerbose, string.Format("Propagating to {0} (block {1} in {2}", stmCaller.Instruction.ToString(), stmCaller.Block.RpoNumber, stmCaller.Block.Procedure.Name));
+					Debug.WriteLineIf(trace.TraceVerbose, string.Format("Propagating to {0} (block {1} in {2}", stmCaller.Instruction.ToString(), stmCaller.Block.Name, stmCaller.Block.Procedure.Name));
 					worklist.Add(mpprocData[stmCaller.Block]);
 				}
 			}

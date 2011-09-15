@@ -33,40 +33,48 @@ using System.Text;
 namespace Decompiler.Core
 {
 	/// <summary>
-	/// Represents a procedure that has been decompiled from code.
+	/// Represents a procedure that has been decompiled from machine code.
 	/// </summary>
 	public class Procedure : ProcedureBase
 	{
 		private List<AbsynStatement> body;
         private List<Block> blocks;
-		private List<Block> rpoBlocks;
         private BlockGraph controlGraph;
 		private Block blockEntry;
 		private Block blockExit;
 		private Frame frame;
-		private ProcedureSignature signature;
-        private bool userSpecified;
 
 		public Procedure(string name, Frame frame) : base(name)
 		{
             this.body = new List<AbsynStatement>();
             this.blocks = new List<Block>();
-			this.rpoBlocks = new List<Block>();
             this.controlGraph = new BlockGraph(blocks);
 			this.frame = frame;
-			this.signature = new ProcedureSignature();
+			this.Signature = new ProcedureSignature();
 			this.blockEntry = AddBlock(Name + "_entry");	
 			this.blockExit = AddBlock(Name + "_exit");
 		}
 
-		public List<AbsynStatement> Body
-		{
-			get { return body; }
-		}
+		public List<AbsynStatement> Body { get { return body; } }
+        public BlockGraph ControlGraph { get { return controlGraph; } }
+        public Block EntryBlock { get { return blockEntry; } }
+        public Block ExitBlock { get { return blockExit; } }
 
-        public DirectedGraph<Block> ControlGraph
+        /// <summary>
+        /// Returns the statements of the procedure, in no particular order.
+        /// </summary>
+        public IEnumerable<Statement> Statements
         {
-            get { return controlGraph; }
+            get
+            {
+                foreach (Block b in blocks)
+                {
+                    foreach (Statement stm in b.Statements)
+                    {
+                        yield return stm;
+                    }
+                }
+            }
         }
 
 		/// <summary>
@@ -107,18 +115,8 @@ namespace Decompiler.Core
 
         public BlockDominatorGraph CreateBlockDominatorGraph()
         {
-            return new BlockDominatorGraph(new BlockGraph(RpoBlocks), EntryBlock);
+            return new BlockDominatorGraph(new BlockGraph(blocks), EntryBlock);
         }
-
-		public Block EntryBlock
-		{
-			get { return blockEntry; }
-		}
-
-		public Block ExitBlock
-		{
-			get { return blockExit; }
-		}
 
         private class BlockComparer : IComparer<Block>
         {
@@ -202,100 +200,21 @@ namespace Decompiler.Core
 		
         //$REVIEW: this causes a lot of bugs. It's needed to generate dominator trees, but not much used elsewhere.
         // Consider moving numbering into dominator graph generation.
-		public void RenumberBlocks()
+		[Obsolete("", true)]
+        public void RenumberBlocks()
 		{
-			BlockRenumbering br = new BlockRenumbering();
-			rpoBlocks = br.Renumber(blockEntry);
-		}
-
-        /// <summary>
-        /// Returns a list of the blocks of this procedure in reverse post order.
-        /// </summary>
-		public List<Block> RpoBlocks
-		{
-			get { return rpoBlocks; }
 		}
 
 		/// <summary>
 		/// The effects of this procedure on registers, stack, and FPU stack.
 		/// </summary>
-		public override ProcedureSignature Signature
-		{
-			get { return signature; }
-			set { signature = value; }
-		}
-
+		public override ProcedureSignature Signature { get; set; }
 
         /// <summary>
         /// True if the user specified this procedure by adding it to the project
         /// file or by marking it in the user interface.
         /// </summary>
-        public bool UserSpecified
-        {
-            get { return userSpecified; }
-            set { userSpecified = value; }
-        }
-
-        /// <summary>
-        /// Auxiliary class used to renumber the blocks in RPO (reverse post order).
-        /// </summary>
-		private class BlockRenumbering
-		{
-			private List<Block> rpoBlocks;
-			private int rpo;
-
-			private void DFS(Block block, Dictionary<Block,Block> visited)
-			{
-				visited[block] = block;
-				foreach (Block s in block.Succ)
-				{
-					if (!visited.ContainsKey(s)) // && !IsEmpty(s))
-					{
-						DFS(s, visited);
-					}
-				}
-			}
-
-			public bool IsEmpty(Block b)
-			{
-				if (b.Statements.Count > 0)
-					return false;
-				if (b.Pred.Count > 0)
-					return false;
-				return b.Succ.Count == 0;
-			}
-
-			public List<Block> Renumber(Block block)
-			{
-                Dictionary<Block, Block> visited = new Dictionary<Block, Block>();
-				DFS(block, visited);
-				rpo = visited.Count;
-
-				rpoBlocks = new List<Block>(rpo);
-                for (int i = 0; i < rpo; ++i)
-                {
-                    rpoBlocks.Add(null);
-                }
-                RenumberBlock(block, new Dictionary<Block, Block>());
-
-				return rpoBlocks;
-			}
-
-            private void RenumberBlock(Block block, Dictionary<Block, Block> visited)
-			{
-				visited[block] = block;
-				for (int i = 0; i < block.Succ.Count; ++i)
-				{
-					Block s = block.Succ[i];
-					if (!visited.ContainsKey(s))
-					{
-						RenumberBlock(s, visited);
-					}
-				}
-				block.RpoNumber = --rpo;
-				rpoBlocks[rpo] = block;
-			}
-		}
+        public bool UserSpecified { get; set; }
 
         public Block AddBlock(string name)
         {

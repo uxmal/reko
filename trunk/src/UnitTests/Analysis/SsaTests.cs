@@ -18,17 +18,15 @@
  */
 #endregion
 
-using Decompiler;
 using Decompiler.Analysis;
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Machine;
+using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -104,11 +102,26 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/nested_repeats.asm", "Analysis/SsaNestedRepeats.txt");
 		}
 
-		[Test]
-		public void SsaMockTest()
-		{
-			RunTest(new SsaMock(), "Analysis/SsaMockTest.txt");
-		}
+        [Test]
+        public void SsaMockTest()
+        {
+            var m = new ProcedureBuilder("SsaMock");
+            Identifier r0 = m.Register(0);
+            Identifier r1 = m.Register(1);
+
+            m.Assign(r0, m.Int32(0));
+
+            m.Label("top");
+            m.Compare("Z", r0, m.Int32(2));
+            m.BranchCc(ConditionCode.NE, "skip");
+            m.Assign(r0, m.Int32(0));
+
+            m.Label("skip");
+            m.Compare("Z", r1, m.Int32(3));
+            m.BranchCc(ConditionCode.NE, "top");
+            m.Return();
+            RunTest(m, "Analysis/SsaMockTest.txt");
+        }
 
         [Test]
         public void SsaOutParamters()
@@ -121,6 +134,44 @@ namespace Decompiler.UnitTests.Analysis
             RunTest(m, "Analysis/SsaOutParameters.txt");
         }
 
+        [Test]
+        public void SsaPushAndPop()
+        {
+            // Mirrors the pattern of stack accesses used by x86 compilers.
+            var m = new ProcedureBuilder("SsaPushAndPop");
+            var esp = EnsureRegister32(m, "esp");
+            var ebp = EnsureRegister32(m, "ebp");
+            var eax = EnsureRegister32(m, "eax");
+            m.Assign(esp, m.Sub(esp, 4));
+            m.Store(esp, ebp);
+            m.Assign(ebp, esp);
+            m.Assign(eax, m.LoadDw(m.Add(ebp, 8)));  // dwArg04
+            m.Assign(ebp, m.LoadDw(esp));
+            m.Assign(esp, m.Add(esp,4));
+            m.Return();
+
+            RunUnitTest(m, "Analysis/SsaPushAndPop.txt");
+
+        }
+
+        private void RunUnitTest(ProcedureBuilder m, string outfile)
+        {
+            var proc = m.Procedure;
+            var sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
+            ssa = sst.SsaState;
+            using (var fut = new FileUnitTester(outfile))
+            {
+                ssa.Write(fut.TextWriter);
+                proc.Write(false, fut.TextWriter);
+                fut.AssertFilesEqual();
+            }
+        }
+
+        private Identifier EnsureRegister32(ProcedureBuilder m, string name)
+        {
+            return m.Frame.EnsureRegister(new MachineRegister(name, m.Frame.Identifiers.Count, PrimitiveType.Word32));
+        }
+
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
@@ -128,32 +179,11 @@ namespace Decompiler.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(proc, gr, false);
+				SsaTransform sst = new SsaTransform(proc, gr);
 				ssa = sst.SsaState;
 				ssa.Write(fut.TextWriter);
 				proc.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine();
-			}
-		}
-
-		private class SsaMock : ProcedureBuilder
-		{
-			protected override void BuildBody()
-			{
-				Identifier r0 = Register(0);
-				Identifier r1 = Register(1);
-
-				Assign(r0, Int32(0));
-			
-				Label("top");
-				Compare("Z", r0, Int32(2));
-				BranchCc(ConditionCode.NE, "skip");
-				Assign(r0, Int32(0));
-				
-				Label("skip");
-				Compare("Z", r1, Int32(3));
-				BranchCc(ConditionCode.NE, "top");
-				Return();
 			}
 		}
 	}

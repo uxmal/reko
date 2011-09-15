@@ -487,7 +487,6 @@ namespace Decompiler.UnitTests.Structure
         private void CompileTest(ProcedureBuilder mock)
         {
             proc = mock.Procedure;
-            proc.RenumberBlocks();
             StructureAnalysis sa = new StructureAnalysis(mock.Procedure);
             sa.BuildProcedureStructure();
             sa.FindStructures();

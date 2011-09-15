@@ -87,7 +87,6 @@ namespace Decompiler.UnitTests.Structure
 
         private void RunTest(ProcedureBuilder m)
         {
-            m.Procedure.RenumberBlocks();
             var psb = new ProcedureStructureBuilder(m.Procedure);
             proc = psb.Build();
         }

@@ -35,7 +35,7 @@ namespace Decompiler.Core
         [Obsolete]
 		public int RpoNumber;			// Reverse post order number.
 
-		private List<Block> pred = new List<Block>();
+		private List<Block> pred = new List<Block>(2);
         private List<Block> succ = new List<Block>(2);
 		private StatementList stms;
 

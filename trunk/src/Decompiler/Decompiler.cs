@@ -18,6 +18,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Output;
 using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
@@ -29,8 +30,8 @@ using Decompiler.Structure;
 using Decompiler.Typing;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -140,7 +141,7 @@ namespace Decompiler
                         output.Write("Warning: no signature found for {0}", proc.Name);
                     output.WriteLine();
                     flow.Emit(prog.Architecture, output);
-                    foreach (Block block in proc.RpoBlocks)
+                    foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
                     {
                         if (block == null)
                             continue;

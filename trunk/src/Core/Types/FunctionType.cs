@@ -53,6 +53,11 @@ namespace Decompiler.Core.Types
 			v.VisitFunctionType(this);
 		}
 
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitFunctionType<T>(this);
+        }
+
 		public override DataType Clone()
 		{
 			DataType ret = (ReturnType != null) ? ReturnType.Clone() : null;
@@ -91,6 +96,5 @@ namespace Decompiler.Core.Types
 			}
 			writer.Write("))");
 		}
-
 	}
 }

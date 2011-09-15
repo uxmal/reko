@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(proc, gr, false);
+				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				DumpProc(proc, ssa, fut);
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr, false);
+				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				DumpProc(proc, ssa, fut);
@@ -120,7 +120,7 @@ done:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr, false);
+				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut);
 
@@ -157,7 +157,7 @@ done:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr, false);
+				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
@@ -190,7 +190,7 @@ looptest:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr, false);
+				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
@@ -225,7 +225,7 @@ looptest:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr, false);
+				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);

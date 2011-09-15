@@ -264,7 +264,9 @@ namespace Decompiler.Evaluation
 
             public Storage VisitSequenceStorage(SequenceStorage seq)
             {
-                throw new NotImplementedException();
+                seq.Head.Storage.Accept(this);
+                seq.Tail.Storage.Accept(this);
+                return seq;
             }
 
             public Storage VisitStackArgumentStorage(StackArgumentStorage stack)

@@ -49,7 +49,6 @@ namespace Decompiler.UnitTests.Core
 			var ab = new ApplicationBuilder(new ArchitectureMock(), frame, new CallSite(0, 0), fn, ep.Signature);
             var instr = ab.CreateInstruction();
 			Assert.AreEqual("ax = foo(bx, cl)", instr.ToString());
-
 		}
 	}
 }

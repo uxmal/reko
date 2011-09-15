@@ -131,7 +131,6 @@ namespace Decompiler.UnitTests.Structure
 
         private void FindPostDominators(ProcedureBuilder m)
         {
-            m.Procedure.RenumberBlocks();
             ProcedureStructureBuilder graphs = new ProcedureStructureBuilder(m.Procedure);
             h = graphs.Build();
             sw = new StringWriter();
