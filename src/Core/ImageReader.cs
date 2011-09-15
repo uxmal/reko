@@ -21,6 +21,7 @@
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
+using System.Text;
 
 namespace Decompiler.Core
 {
@@ -211,12 +212,45 @@ namespace Decompiler.Core
         public virtual uint ReadUInt32(uint offset) { throw new NotSupportedException(); }
         public virtual ulong ReadUInt64(uint offset) { throw new NotSupportedException(); }
 
+        public virtual Constant Read(PrimitiveType dataType) { throw new NotSupportedException(); }
 
+        public char ReadChar(DataType charType)
+        {
+            switch (charType.Size)
+            {
+            case 1: return (char)ReadByte();
+            case 2: return (char)ReadUInt16();
+            default: throw new NotSupportedException(string.Format("Character size {0} not supported."));
+            }
+        }
+
+        public StringConstant ReadCString(DataType charType)
+        {
+            int iStart = (int) Offset;
+            var sb = new StringBuilder();
+            for (char ch = ReadChar(charType); ch != 0; ch = ReadChar(charType))
+            {
+                sb.Append(ch);
+            }
+            return new StringConstant(charType, Encoding.GetEncoding("ISO_8859-1").GetString(img, iStart, (int)Offset-iStart-1));
+        }
+
+        public StringConstant ReadLengthPrefixedString(PrimitiveType lengthType, PrimitiveType charType)
+        {
+            int length = Read(lengthType).ToInt32();
+            var sb = new StringBuilder();
+            for (int i = 0; i < length; ++i)
+            {
+                sb.Append(ReadChar(charType));
+            }
+            return new StringConstant(charType, sb.ToString());
+        }
     }
 
     public class LeImageReader : ImageReader
     {
         public LeImageReader(byte[] bytes, uint offset) : base(bytes, offset) { }
+        public LeImageReader(ProgramImage image, uint offset) : base(image, offset) { }
         public override short ReadInt16() { return ReadLeInt16(); }
         public override int ReadInt32() { return ReadLeInt32(); }
         public override long ReadInt64() { return ReadLeInt64(); }
@@ -231,6 +265,7 @@ namespace Decompiler.Core
         public override uint ReadUInt32(uint offset) { return ReadLeUInt32(offset); }
         public override ulong ReadUInt64(uint offset) { return ReadLeUint64(offset); }
 
+        public override Constant Read(PrimitiveType dataType) { return ReadLe(dataType); }
     }
 
     public class BeImageReader : ImageReader
@@ -249,5 +284,8 @@ namespace Decompiler.Core
         public override ushort ReadUInt16(uint offset) { return ReadBeUInt16(offset); }
         public override uint ReadUInt32(uint offset) { return ReadBeUInt32(offset); }
         public override ulong ReadUInt64(uint offset) { return ReadBeUInt64(offset); }
+
+        public override Constant Read(PrimitiveType dataType) { return ReadBe(dataType); }
+
     }
 }

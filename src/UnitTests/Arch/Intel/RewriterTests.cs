@@ -121,7 +121,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 
 			Assert.AreEqual(1, prog.Procedures.Count );
 			Procedure proc = prog.Procedures.Values[0];
-			Assert.AreEqual(3, proc.ControlGraph.Nodes.Count);		// Entry, code, Exit
+			Assert.AreEqual(3, proc.ControlGraph.Blocks.Count);		// Entry, code, Exit
 
             Block block = new List<Block>(proc.ControlGraph.Successors(proc.EntryBlock))[0];
 			Assert.AreEqual(5, block.Statements.Count);
@@ -146,7 +146,7 @@ not_eq:
 join:
 	ret
 ");
-			Assert.AreEqual(6, proc.ControlGraph.Nodes.Count);
+			Assert.AreEqual(6, proc.ControlGraph.Blocks.Count);
 			StringWriter sb = new StringWriter();
 			proc.Write(true, sb);
 		}
@@ -161,7 +161,7 @@ join:
 				proc.Write(true, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
-			Assert.AreEqual(5, proc.ControlGraph.Nodes.Count);
+			Assert.AreEqual(5, proc.ControlGraph.Blocks.Count);
 		}
 
 		[Test]

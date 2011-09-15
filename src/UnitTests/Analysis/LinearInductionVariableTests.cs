@@ -155,7 +155,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			liv.Context.PhiStatement = ssaIds[5].DefStatement;
 			liv.Context.PhiIdentifier = (Identifier) ((PhiAssignment) liv.Context.PhiStatement.Instruction).Dst;
-			liv.Context.TestStatement = proc.RpoBlocks[2].Statements[1];
+			liv.Context.TestStatement = proc.ControlGraph.Blocks[2].Statements[1];
 			liv.Context.DeltaStatement = ssaIds[8].DefStatement;
 			liv.Context.InitialValue = Constant.Word32(0);
 			liv.Context.DeltaValue = Constant.Word32(1);
@@ -315,9 +315,8 @@ namespace Decompiler.UnitTests.Analysis
 		private void Prepare(Procedure proc)
 		{
 			this.proc = proc;
-            proc.RenumberBlocks();
             doms = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(proc, doms, false);
+			SsaTransform sst = new SsaTransform(proc, doms);
 			SsaState ssa = sst.SsaState;
 			ssaIds = ssa.Identifiers;
 	

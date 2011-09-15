@@ -128,7 +128,7 @@ namespace Decompiler.Analysis
 		/// </summary>
 		public void Restore()
 		{
-			foreach (Block block in proc.RpoBlocks)
+			foreach (Block block in proc.ControlGraph.Blocks)
 			{
 				for (int i = block.Statements.Count-1; i >= 0; --i)
 				{
@@ -140,6 +140,7 @@ namespace Decompiler.Analysis
 
 		public void StartBlock(Block block)
 		{
+            this.block = block;
 			if (this.pdf != null)
 			{
 				BlockFlow bf = pdf[block];
@@ -164,9 +165,8 @@ namespace Decompiler.Analysis
 		/// <param name="proc"></param>
 		public void Transform()
 		{
-			for (int b = 0; b < proc.RpoBlocks.Count; ++b)
+			foreach (var block in proc.ControlGraph.Blocks)
 			{
-				block = proc.RpoBlocks[b];
 				StartBlock(block);
 				for (iStm = block.Statements.Count-1; iStm >= 0; --iStm)
 				{
@@ -253,7 +253,7 @@ namespace Decompiler.Analysis
 
 		public static void Undo(Procedure proc)
 		{
-			foreach (Block block in proc.RpoBlocks)
+			foreach (Block block in proc.ControlGraph.Blocks)
 			{
 				for (int i = block.Statements.Count - 1; i >= 0; --i)
 				{

@@ -34,6 +34,7 @@ namespace Decompiler.Core.Lib
     {
         private Dictionary<T, T> idoms;
         private Dictionary<T, List<T>> domFrontier;
+        private Dictionary<T, int> reversePostOrder;
 
         private const int Undefined = -1;
 
@@ -43,6 +44,8 @@ namespace Decompiler.Core.Lib
             this.idoms[entryNode] = null;		// No-one postdominates the root node.
             this.domFrontier = BuildDominanceFrontiers(graph, idoms);
         }
+
+        public Dictionary<T, int> ReversePostOrder { get { return reversePostOrder; } }
 
         public Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph)
         {
@@ -99,7 +102,6 @@ namespace Decompiler.Core.Lib
                 }
             }
             return dominator;
-
         }
 
         public List<T> DominatorFrontier(T node)
@@ -127,13 +129,13 @@ namespace Decompiler.Core.Lib
         // Postdominators
         // http://www.lib.ncsu.edu/theses/available/etd-05022008-163037/unrestricted/etd.pdf
 
-        public Dictionary<T, T> Build(DirectedGraph<T> graph, T entryNode)
+        private Dictionary<T, T> Build(DirectedGraph<T> graph, T entryNode)
         {
             Dictionary<T, T> idoms = new Dictionary<T, T>();
             idoms[entryNode] = entryNode;
-            Dictionary<T, int> postorder = ReversePostorderNumbering(graph);
+            reversePostOrder = ReversePostorderNumbering(graph);
             SortedList<int, T> nodes = new SortedList<int, T>();
-            foreach (KeyValuePair<T, int> de in postorder)
+            foreach (KeyValuePair<T, int> de in reversePostOrder)
             {
                 nodes.Add(de.Value, de.Key);
             }
@@ -155,7 +157,7 @@ namespace Decompiler.Core.Lib
                                 newIdom = p;
                             else if (idoms.ContainsKey(p))
                             {
-                                newIdom = Intersect(idoms, p, newIdom, postorder);
+                                newIdom = Intersect(idoms, p, newIdom);
                             }
                         }
                     }
@@ -210,17 +212,17 @@ namespace Decompiler.Core.Lib
             Debug.Write(sw.ToString());
         }
 
-        private static T Intersect(Dictionary<T, T> postdoms, T b1, T b2, Dictionary<T, int> postorder)
+        private T Intersect(Dictionary<T, T> postdoms, T b1, T b2)
         {
             T i1 = b1;
             T i2 = b2;
             while (i1 != i2)
             {
-                while (postorder[i1] > postorder[i2])
+                while (reversePostOrder[i1] > reversePostOrder[i2])
                 {
                     i1 = postdoms[i1];
                 }
-                while (postorder[i2] > postorder[i1])
+                while (reversePostOrder[i2] > reversePostOrder[i1])
                 {
                     i2 = postdoms[i2];
                 }

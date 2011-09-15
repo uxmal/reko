@@ -80,6 +80,7 @@
     <Compile Include="Analysis\DeadCodeTests.cs" />
     <Compile Include="Analysis\DeclarationInserterTests.cs" />
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
+    <Compile Include="Analysis\Fragments\EvenOdd.cs" />
     <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
     <Compile Include="Analysis\InterferenceGraphTests.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
+    <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />

@@ -39,6 +39,20 @@ namespace Decompiler.Core.Types
 		void VisitUnknownType(UnknownType ut);
 	}
 
+    public interface IDataTypeVisitor<T>
+    {
+        T VisitArray<T>(ArrayType at);
+        T VisitEquivalenceClass<T>(EquivalenceClass eq);
+        T VisitFunctionType<T>(FunctionType ft);
+        T VisitPrimitive<T>(PrimitiveType pt);
+        T VisitMemberPointer<T>(MemberPointer memptr);
+        T VisitPointer<T>(Pointer ptr);
+        T VisitStructure<T>(StructureType str);
+        T VisitTypeVar<T>(TypeVariable tv);
+        T VisitUnion<T>(UnionType ut);
+        T VisitUnknownType<T>(UnknownType ut);
+    }
+
 	/// <summary>
 	/// Implements the "Visitor" pattern on types.
 	/// </summary>

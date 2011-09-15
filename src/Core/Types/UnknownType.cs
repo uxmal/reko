@@ -38,6 +38,11 @@ namespace Decompiler.Core.Types
 			v.VisitUnknownType(this);
 		}
 
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            throw new NotImplementedException();
+        }
+
 		public override DataType Clone()
 		{
 			return this;

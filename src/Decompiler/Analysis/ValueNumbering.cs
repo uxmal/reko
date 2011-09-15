@@ -154,7 +154,7 @@ namespace Decompiler.Analysis
 			Block header = null;
 			foreach (Node n in scc)
 			{
-				if (header == null || header.RpoNumber > n.info.DefStatement.Block.RpoNumber)
+				if (header == null) // || header.RpoNumber > n.info.DefStatement.Block.RpoNumber)
 					header = n.info.DefStatement.Block;
 			}
 

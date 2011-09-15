@@ -97,7 +97,6 @@ namespace Decompiler.UnitTests.Structure
         {
             ProcedureBuilder pm = new ProcedureBuilder();
             pg(pm);
-            pm.Procedure.RenumberBlocks();
             RunTest(pm.Procedure);
         }
 

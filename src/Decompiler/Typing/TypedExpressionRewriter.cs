@@ -124,12 +124,9 @@ namespace Decompiler.Typing
                 try
                 {
                     RewriteFormals(proc.Signature);
-                    foreach (Block b in proc.RpoBlocks)
+                    foreach (Statement stm in proc.Statements)
                     {
-                        foreach (Statement stm in b.Statements)
-                        {
-                            stm.Instruction = stm.Instruction.Accept(this);
-                        }
+                        stm.Instruction = stm.Instruction.Accept(this);
                     }
                 }
                 catch (Exception ex)

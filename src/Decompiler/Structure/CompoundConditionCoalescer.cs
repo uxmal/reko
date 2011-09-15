@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
@@ -51,9 +52,8 @@ namespace Decompiler.Structure
 			do
 			{
 				fChanged = false;
-				for (int i = proc.RpoBlocks.Count - 1; i >= 0; --i)
+				foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PostOrder())
 				{
-					Block block = proc.RpoBlocks[i];
 					if (block.Statements.Count > 0 && 
 						block.Statements.Last.Instruction is Branch)
 					{

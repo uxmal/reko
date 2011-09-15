@@ -90,7 +90,6 @@ namespace Decompiler.Analysis
                 var e = eventListener;
                 if (e != null)
                     eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
-
                 ProcessBlock(block);
             }
             CompleteWork();
@@ -100,7 +99,7 @@ namespace Decompiler.Analysis
         {
             foreach (Procedure proc in prog.Procedures.Values)
             {
-                foreach (Block block in proc.ControlGraph.Nodes)
+                foreach (Block block in proc.ControlGraph.Blocks)
                 {
                     worklist.Add(block);
                 }
@@ -233,6 +232,10 @@ namespace Decompiler.Analysis
             BlockFlow sf = flow[s];
             var successorState = sf.SymbolicIn;
             var ctxSucc = sf.SymbolicAuxIn;
+
+            Dump(ctx.RegisterState);
+            Dump(ctx.StackState);
+
             foreach (KeyValuePair<RegisterStorage, Expression> de in ctx.RegisterState)
             {
                 Expression oldValue;
@@ -285,6 +288,28 @@ namespace Decompiler.Analysis
             {
                 worklist.Add(s);
             }
+        }
+
+        [Conditional("DEBUG")]
+        private void Dump(Map<int, Expression> map)
+        {
+            var sort = new SortedList<string, string>();
+            foreach (var de in map)
+                sort.Add(de.Key.ToString(), de.Value.ToString());
+            foreach (var de in sort)
+                Debug.Write(string.Format("{0}:{1} ", de.Key, de.Value));
+            Debug.WriteLine("");
+        }
+
+        [Conditional("DEBUG")]
+        private void Dump(Dictionary<RegisterStorage, Expression> dictionary)
+        {
+            var sort = new SortedList<string, string>();
+            foreach (var de in dictionary)
+                sort.Add(de.Key.ToString(), de.Value.ToString());
+            foreach (var de in sort)
+                Debug.Write(string.Format("{0}:{1} ", de.Key, de.Value));
+            Debug.WriteLine("");
         }
 
         public override void VisitAssignment(Assignment a)

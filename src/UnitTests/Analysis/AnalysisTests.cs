@@ -42,10 +42,9 @@ namespace Decompiler.UnitTests.Analysis
 			Program prog = RewriteFileOld("Fragments/diamond.asm");
 			Procedure proc = prog.Procedures.Values[0];
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
-			List<Block> bl = proc.RpoBlocks;
-			Assert.IsTrue(doms.ImmediateDominator(bl[2]) == bl[1]);
-			Assert.IsTrue(doms.ImmediateDominator(bl[3]) != bl[2]);
-			Assert.IsTrue(doms.ImmediateDominator(bl[3]) == bl[1]);
+			var diamondTop = proc.ControlGraph.Blocks[1];
+            Assert.AreSame(diamondTop, doms.ImmediateDominator(diamondTop.ElseBlock));
+            Assert.AreSame(diamondTop, doms.ImmediateDominator(diamondTop.ThenBlock));
 		}
 
 		[Test]
@@ -54,10 +53,12 @@ namespace Decompiler.UnitTests.Analysis
 			Program prog = RewriteFileOld("Fragments/while_loop.asm");
             var proc = prog.Procedures.Values[0];
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
-            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[0], proc.RpoBlocks[1]));
-            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[0], proc.RpoBlocks[2]));
-            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[1], proc.RpoBlocks[2]));
-            Assert.IsTrue(doms.DominatesStrictly(proc.RpoBlocks[3], proc.RpoBlocks[4]));
+            Assert.IsTrue(doms.DominatesStrictly(proc.EntryBlock, proc.EntryBlock.Succ[0]));
+            Assert.IsTrue(doms.DominatesStrictly(proc.EntryBlock, proc.EntryBlock.Succ[0].Succ[0]));
+            Assert.IsTrue(doms.DominatesStrictly(proc.EntryBlock.Succ[0], proc.EntryBlock.Succ[0].Succ[0]));
+            Assert.IsTrue(doms.DominatesStrictly(
+                proc.EntryBlock.Succ[0].Succ[0].Succ[0],
+                proc.EntryBlock.Succ[0].Succ[0].Succ[0].Succ[0]));
 		}
 
 

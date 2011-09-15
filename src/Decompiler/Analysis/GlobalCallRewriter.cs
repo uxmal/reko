@@ -141,23 +141,20 @@ namespace Decompiler.Analysis
 		/// return statements to return that variable.
 		/// </summary>
 		/// <param name="proc"></param>
- 		private void RewriteReturns(Procedure proc)
-		{
-			Identifier idRet = proc.Signature.ReturnValue;
-			if (idRet == null)
-				return;
-			foreach (Block b in proc.RpoBlocks)
-			{
-				foreach (Statement i in b.Statements)
-				{
-					ReturnInstruction ret = i.Instruction as ReturnInstruction;
-					if (ret != null)
-					{
-						ret.Expression = idRet;
-					}
-				}
-			}
-		}
+        private void RewriteReturns(Procedure proc)
+        {
+            Identifier idRet = proc.Signature.ReturnValue;
+            if (idRet == null)
+                return;
+            foreach (Statement stm in proc.Statements)
+            {
+                var ret = stm.Instruction as ReturnInstruction;
+                if (ret != null)
+                {
+                    ret.Expression = idRet;
+                }
+            }
+        }
 
 
 		/// <summary>

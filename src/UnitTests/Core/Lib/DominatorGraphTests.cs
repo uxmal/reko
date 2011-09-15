@@ -36,6 +36,7 @@ namespace Decompiler.UnitTests.Core.Lib
         public void Setup()
         {
             graph = new DirectedGraphImpl<string>();
+
         }
         [Test]
         public void SingleItem()
@@ -129,7 +130,36 @@ namespace Decompiler.UnitTests.Core.Lib
             CompileTest(graph, "exit");
             Assert.AreEqual("infinity", pdg.ImmediateDominator("side2"));
             Assert.AreEqual("exit", pdg.ImmediateDominator("infinity"));
+        }
 
+        [Test]
+        public void DominanceFrontier()
+        {
+            graph.AddEdge("entry", "split");
+
+            graph.AddEdge("split", "left");
+            graph.AddEdge("split", "right");
+            graph.AddEdge("left", "join");
+            graph.AddEdge("right", "join");
+
+            CompileTest(graph, "entry");
+            DumpDominatorFrontier(pdg);
+            Assert.AreEqual(1, pdg.DominatorFrontier("split").Count);
+            Assert.AreEqual("join", pdg.DominatorFrontier("split")[0]);
+
+        }
+
+        private void DumpDominatorFrontier(DominatorGraph<string> pdg)
+        {
+            foreach (var n in graph.Nodes)
+            {
+                Console.Write("{0}:", n);
+                foreach (var df in pdg.DominatorFrontier(n))
+                {
+                    Console.Write(" {0}", df);
+                }
+                Console.WriteLine();
+            }
         }
 
         private void CompileTest(DirectedGraphImpl<string> e, string entry)

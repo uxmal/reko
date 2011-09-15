@@ -36,7 +36,6 @@ namespace Decompiler.ImageLoaders.MzExe
 		private ExeImageLoader exe;
 		private ProgramImage imgLoaded;
 
-
 		public MsdosImageLoader(IServiceProvider services, ExeImageLoader exe) : base(services, exe.RawImage)
 		{
 			this.exe = exe;
@@ -95,6 +94,5 @@ namespace Decompiler.ImageLoaders.MzExe
 			imageMap.AddSegment(new Address(addrStart.Selector, 0), addrStart.Selector.ToString("X4"), AccessMode.ReadWrite);
 			entryPoints.Add(new EntryPoint(addrStart, new X86State()));
 		}
-
 	}
 }

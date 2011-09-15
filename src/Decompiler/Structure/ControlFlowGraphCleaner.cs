@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using System;
 using System.Diagnostics;
 
@@ -88,9 +89,8 @@ namespace Decompiler.Structure
 			{
 				dirty = false;
 
-                for (int i = proc.RpoBlocks.Count - 1; i >= 0; --i)
+                foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PostOrder())
                 {
-                    Block block = proc.RpoBlocks[i];
                     if (block == null)
                         continue;
 
@@ -127,7 +127,6 @@ namespace Decompiler.Structure
                 }
 			} while (dirty);
 
-			proc.RenumberBlocks();
 			proc.Dump(true, false);
 		}
 	}

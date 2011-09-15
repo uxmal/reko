@@ -49,25 +49,20 @@ namespace Decompiler.Typing
 		public void Build(Program prog)
 		{
 			EnsureTypeVariable(prog.Globals, "Globals");
-			
-			foreach (Procedure proc in prog.Procedures.Values)
-			{
+
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
                 ProcedureSignature signature = proc.Signature;
-                if (signature != null)
+                if (signature != null && signature.ReturnValue != null)
                 {
-                    if (signature.ReturnValue != null)
-                    {
-                        signature.ReturnValue.Accept(this);
-                    }
+                    signature.ReturnValue.Accept(this);
                 }
-				foreach (Block block in proc.RpoBlocks)
-				{
-					foreach (Statement stm in block.Statements)
-					{
-						stm.Instruction.Accept(this);
-					}
-				}
-			}
+                
+                foreach (Statement stm in proc.Statements)
+                {
+                    stm.Instruction.Accept(this);
+                }
+            }
 		}
 
 		public TypeVariable EnsureTypeVariable(Expression e)

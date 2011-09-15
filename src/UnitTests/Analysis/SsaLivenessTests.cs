@@ -56,11 +56,12 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual("i_4", i_4.Name);
 			Assert.AreEqual("i_6", i_6.Name);
 			Assert.IsFalse(sla.IsLiveOut(i, ssa.Identifiers[4].DefStatement));
-			Assert.AreEqual("branch Mem0[i_6:byte] != 0x00 loop", proc.RpoBlocks[1].Statements[2].Instruction.ToString());
-			Assert.IsTrue(sla.IsLiveOut(i_4, proc.RpoBlocks[1].Statements[2]), "i_4 should be live at the end of block 1");
-			Assert.IsTrue(sla.IsLiveOut(i_6, proc.RpoBlocks[1].Statements[2]),"i_6 should be live at the end of block 1");
-			Assert.AreEqual("i_4 = PHI(i, i_6)", proc.RpoBlocks[1].Statements[0].Instruction.ToString());
-			Assert.IsFalse(sla.IsLiveOut(i_6, proc.RpoBlocks[1].Statements[0]), "i_6 is dead after the phi function");
+            var block1 = proc.ControlGraph.Blocks[1];
+			Assert.AreEqual("branch Mem0[i_6:byte] != 0x00 loop", block1.Statements[2].Instruction.ToString());
+			Assert.IsTrue(sla.IsLiveOut(i_4, block1.Statements[2]), "i_4 should be live at the end of block 1");
+			Assert.IsTrue(sla.IsLiveOut(i_6, block1.Statements[2]),"i_6 should be live at the end of block 1");
+			Assert.AreEqual("i_4 = PHI(i, i_6)", block1.Statements[0].Instruction.ToString());
+			Assert.IsFalse(sla.IsLiveOut(i_6, block1.Statements[0]), "i_6 is dead after the phi function");
 		}
 
 		[Test]
@@ -76,7 +77,7 @@ namespace Decompiler.UnitTests.Analysis
 				fut.AssertFilesEqual();
 			}
 
-			Block block = proc.RpoBlocks[1];
+			Block block = proc.ControlGraph.Blocks[0];
 			block.Write(Console.Out);
 			Assert.AreEqual("store(Mem6[0x10000000:word32]) = a + b", block.Statements[0].Instruction.ToString());
 			Assert.AreEqual("store(Mem7[0x10000004:word32]) = a", block.Statements[1].Instruction.ToString());
@@ -117,7 +118,7 @@ namespace Decompiler.UnitTests.Analysis
 				proc.Write(false, fut.TextWriter);
 			}
 
-			Statement phiStm = proc.RpoBlocks[3].Statements[0];
+			Statement phiStm = proc.ControlGraph.Blocks[3].Statements[0];
 			Assert.AreEqual("reg_6 = PHI(reg, reg_5)", phiStm.Instruction.ToString());
 			Identifier reg   = ssa.Identifiers[3].Identifier;
 			Assert.AreEqual("reg", reg.Name);
@@ -140,7 +141,7 @@ namespace Decompiler.UnitTests.Analysis
 				sla2.InterferenceGraph.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
-			Statement phiStm = proc.RpoBlocks[1].Statements[0];
+			Statement phiStm = proc.ControlGraph.Blocks[1].Statements[0];
 			Identifier r0_4 = ssa.Identifiers[4].Identifier;
 			Identifier r0_15 = ssa.Identifiers[15].Identifier;
 			Console.WriteLine(r0_15);
@@ -152,7 +153,7 @@ namespace Decompiler.UnitTests.Analysis
 			this.proc = proc;
 			Aliases alias = new Aliases(proc, arch);
 			alias.Transform();
-			SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph(), false);
+			SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
 			ssa = sst.SsaState;
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, arch);
 			cce.Transform();

@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Analysis
 				w.WriteLine("// {0}", proc.Name);
 				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, new Formatter(w));
 				w.WriteLine();
-				foreach (Block block in proc.RpoBlocks)
+				foreach (Block block in proc.ControlGraph.Blocks)
 				{
 					block.Write(w);
 					if (live != null)
@@ -253,7 +253,7 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected void RunTest(string sourceFile, string outputFile)
 		{
-			Program prog = RewriteFileOld(sourceFile);
+			Program prog = RewriteFile(sourceFile, null);
 			SaveRunOutput(prog, outputFile);
 		}
 

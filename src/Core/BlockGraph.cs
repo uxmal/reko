@@ -27,9 +27,9 @@ namespace Decompiler.Core
 {
     public class BlockGraph : DirectedGraph<Block>
     {
-        private ICollection<Block> blocks;
+        private IList<Block> blocks;
 
-        public BlockGraph(ICollection<Block> blocks)
+        public BlockGraph(IList<Block> blocks)
         {
             this.blocks = blocks;
         }
@@ -46,10 +46,8 @@ namespace Decompiler.Core
             return node.Succ;
         }
 
-        public ICollection<Block> Nodes
-        {
-            get { return blocks; }
-        }
+        public IList<Block> Blocks { get { return blocks; } }
+        ICollection<Block> DirectedGraph<Block>.Nodes { get { return blocks; } }
 
         public void AddEdge(Block nodeFrom, Block nodeTo)
         {

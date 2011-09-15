@@ -72,8 +72,8 @@ namespace Decompiler.Analysis
 
 				Aliases alias = new Aliases(proc, prog.Architecture, flow);
 				alias.Transform();
-                var doms = new DominatorGraph<Block>(new BlockGraph(proc.RpoBlocks), proc.EntryBlock);
-                var sst = new SsaTransform(proc, doms, true);
+                var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
+                var sst = new SsaTransform(proc, doms);
 				var ssa = sst.SsaState;
 
                 var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
@@ -94,7 +94,7 @@ namespace Decompiler.Analysis
                 var liv = new LinearInductionVariableFinder(
                     proc, 
                     ssa.Identifiers, 
-                    new BlockDominatorGraph(new BlockGraph(proc.RpoBlocks), proc.EntryBlock));
+                    new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
                 liv.Find();
      
                 foreach (KeyValuePair<LinearInductionVariable, LinearInductionVariableContext> de in liv.Contexts)
@@ -133,7 +133,7 @@ namespace Decompiler.Analysis
 				output.WriteLine("// {0}", proc.Name);
 				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
 				output.WriteLine();
-				foreach (Block block in proc.RpoBlocks)
+				foreach (Block block in proc.ControlGraph.Blocks)
 				{
 					if (block != null)
 					{

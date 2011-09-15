@@ -104,7 +104,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure proc = new DpbMock().Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(proc, gr, false);
+			SsaTransform sst = new SsaTransform(proc, gr);
 			SsaState ssa = sst.SsaState;
 			ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
 			vp.Transform();
@@ -354,7 +354,7 @@ namespace Decompiler.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, gr, true);
+				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 
 				ssa.Write(fut.TextWriter);

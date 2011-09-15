@@ -532,6 +532,5 @@ namespace Decompiler.ImageLoaders.MzExe
 				get { return (Flags & SectionFlagsDiscardable) != 0; }
 			}
 		}
-
     }
 }

@@ -39,24 +39,35 @@ namespace Decompiler.UnitTests.Mocks
         private int numBlock;
         private List<ProcUpdater> unresolvedProcedures;
         private uint iStmt;
+        private IProcessorArchitecture arch;
 
         public ProcedureBuilder()
         {
-            Init(this.GetType().Name);
+            Init(new ArchitectureMock(), this.GetType().Name);
         }
 
         public ProcedureBuilder(string name)
         {
-            Init(name);
+            Init(new ArchitectureMock(), name);
         }
 
-        private void Init(string name)
+        public ProcedureBuilder(IProcessorArchitecture arch)
         {
+            Init(arch, this.GetType().Name);
+        }
+
+        public ProcedureBuilder(IProcessorArchitecture arch, string name)
+        {
+            Init(arch,name);
+        }
+
+        private void Init(IProcessorArchitecture arch, string name)
+        {
+            this.arch = arch;
             blocks = new Dictionary<string, Block>();
             Procedure = new Procedure(name, new Frame(PrimitiveType.Word32));
             unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();
-            Procedure.RenumberBlocks();
         }
 
         /// <summary>

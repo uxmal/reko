@@ -54,7 +54,7 @@ namespace Decompiler.Analysis
 		/// </summary>
 		public void AdjustApplicationsWithDeadReturnValues()
 		{
-			foreach (Block b in proc.RpoBlocks)
+			foreach (Block b in proc.ControlGraph.Blocks)
 			{
 				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
 				{
@@ -90,18 +90,15 @@ namespace Decompiler.Analysis
 			// These are calls to other functions, functions (which have side effects) and use statements.
 			// Critical instructions must never be considered dead.
 
-			foreach (Block b in proc.RpoBlocks)
-			{
-				foreach (Statement stm in b.Statements)
-				{
-					if (critical.IsCritical(stm.Instruction))
-					{
-						if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Critical: {0}", stm.Instruction));
-						marks[stm] = stm;
-						stm.Instruction.Accept(this);		// mark all used identifiers as live.
-					}
-				}
-			}
+            foreach (var stm in proc.Statements)
+            {
+                if (critical.IsCritical(stm.Instruction))
+                {
+                    if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Critical: {0}", stm.Instruction));
+                    marks[stm] = stm;
+                    stm.Instruction.Accept(this);		// mark all used identifiers as live.
+                }
+            }
 			
 			// Each identifier is live, so its defining statement is also live.
 
@@ -123,7 +120,7 @@ namespace Decompiler.Analysis
 			// We have now marked all the useful instructions in the code. Any non-marked
 			// instruction is now useless and should be deleted.
 
-			foreach (Block b in proc.RpoBlocks)
+			foreach (Block b in proc.ControlGraph.Blocks)
 			{
 				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
 				{

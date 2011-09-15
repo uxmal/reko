@@ -56,16 +56,16 @@ namespace Decompiler.Structure
         public void BuildNodes()
         {
             int bId = 0;
-            var iterator = new DfsIterator<Block>(new BlockGraph(proc.RpoBlocks));
+            var iterator = new DfsIterator<Block>(proc.ControlGraph);
             foreach (Block b in iterator.PreOrder(proc.EntryBlock))
             {
-                StructureNode cfgNode = new StructureNode(b, ++bId);
+                var cfgNode = new StructureNode(b, ++bId);
                 nodeList.Add(cfgNode);
                 blockNodes.Add(b, cfgNode);
             }
             if (!blockNodes.ContainsKey(proc.ExitBlock))
             {
-                StructureNode cfgNode = new StructureNode(proc.ExitBlock, ++bId);
+                var cfgNode = new StructureNode(proc.ExitBlock, ++bId);
                 nodeList.Add(cfgNode);
                 blockNodes.Add(proc.ExitBlock, cfgNode);
             }

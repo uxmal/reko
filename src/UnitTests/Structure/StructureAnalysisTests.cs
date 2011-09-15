@@ -100,8 +100,7 @@ unstructuredexit
 
         private static StructureAnalysis CompileTest(ProcedureBuilder mock)
         {
-            mock.Procedure.RenumberBlocks();
-            StructureAnalysis sa = new StructureAnalysis(mock.Procedure);
+            var sa = new StructureAnalysis(mock.Procedure);
             sa.BuildProcedureStructure();
             sa.FindStructures();
             return sa;

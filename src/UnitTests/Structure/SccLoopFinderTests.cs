@@ -17,9 +17,8 @@ namespace Decompiler.UnitTests.Structure
         {
             ProcedureBuilder m = new ProcedureBuilder();
             m.Return();
-            m.Procedure.RenumberBlocks();
 
-            StructureNode node = new StructureNode(m.Procedure.RpoBlocks[1], 3);
+            StructureNode node = new StructureNode(m.Procedure.ControlGraph.Blocks[1], 3);
             node.Order = 0;
             Interval interval = new Interval(1, node);
 
@@ -108,7 +107,6 @@ namespace Decompiler.UnitTests.Structure
 
         private ProcedureStructure CompileTest(Procedure proc)
         {
-            proc.RenumberBlocks();
             ProcedureStructureBuilder g = new ProcedureStructureBuilder(proc);
             g.BuildNodes();
             g.DefineEdges();

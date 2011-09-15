@@ -95,7 +95,7 @@ namespace Decompiler.Analysis
 			InsertDeclarations();
 
 			WebReplacer replacer = new WebReplacer(this);
-			foreach (Block bl in proc.RpoBlocks)
+			foreach (Block bl in proc.ControlGraph.Blocks)
 			{
 				for (int i = bl.Statements.Count - 1; i >= 0; --i)
 				{

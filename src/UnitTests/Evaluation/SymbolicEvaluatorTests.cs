@@ -271,6 +271,20 @@ namespace Decompiler.UnitTests.Evaluation
             });
             Assert.AreEqual(0x03, ctx.TrashedFlags);
         }
+
+        [Test]
+        public void OffsetToInvalidIsInvalid()
+        {
+            Identifier si = null;
+            RunBlockTest(m =>
+                {
+                    si = m.Frame.EnsureRegister(Registers.si);
+
+                    m.Assign(si,m.LoadW(m.Word16(0x0032)));
+                    m.Assign(si, m.Add(si,2));
+                });
+            Assert.AreEqual("<invalid>", ctx.RegisterState[(RegisterStorage)si.Storage].ToString());
+        }
     }
 }
 

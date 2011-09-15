@@ -44,7 +44,7 @@ namespace Decompiler.Analysis
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				procFlow[proc] = new ProcedureFlow(proc, prog.Architecture);
-				foreach (Block block in proc.ControlGraph.Nodes)
+				foreach (Block block in proc.ControlGraph.Blocks)
 				{
 					blockFlow[block] = new BlockFlow(
                         block, 

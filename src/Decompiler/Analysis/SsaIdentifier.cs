@@ -28,13 +28,7 @@ namespace Decompiler.Analysis
 {
 	public class SsaIdentifier
 	{
-        private Identifier id;
-        private Identifier idOrig;
-        private Statement def;
-        private Expression exprDef;
         private List<Statement> uses;
-        private LinearInductionVariable iv; 
-        private bool isSideEffect;
 
 		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
@@ -42,66 +36,45 @@ namespace Decompiler.Analysis
 				throw new ArgumentNullException("id");
 			if (idOrig == null)
 				throw new ArgumentNullException("idOrig");
-			this.id = id;
-			this.idOrig = idOrig;
-			this.def = stmDef;
-            this.exprDef = exprDef;
-            this.isSideEffect = isSideEffect;
+			this.Identifier = id;
+			this.OriginalIdentifier = idOrig;
+			this.DefStatement = stmDef;
+            this.DefExpression = exprDef;
+            this.IsSideEffect = isSideEffect;
 			this.uses = new List<Statement>();
 		}
 
         /// <summary>
         /// Expression that defines identifier.
         /// </summary>
-        public Expression DefExpression
-        {
-            get { return exprDef; }
-            set { exprDef = value; }
-        }
+        public Expression DefExpression { get; set; }
 
         /// <summary>
         /// Statement that defines the identifier
         /// </summary>
-        public Statement DefStatement
-        {
-            get { return def; }
-            set { def = value; }
-        }
+        public Statement DefStatement { get; set; }
 
         /// <summary>
         /// The Identifier itself
         /// </summary>
-        public Identifier Identifier
-        {
-            get { return id; }
-        } 
+        public Identifier Identifier { get; private set; }
 
 		public bool IsOriginal
 		{
-			get { return id.Number == idOrig.Number; }
+			get { return Identifier.Number == OriginalIdentifier.Number; }
 		}
 
-        public bool IsSideEffect
-        {
-            get { return isSideEffect; }
-        }
+        public bool IsSideEffect { get; private set; }
 
         /// <summary>
         /// If not null, the induction variable associated with this identifier.
         /// </summary>
-        public LinearInductionVariable InductionVariable
-        {
-            get { return iv; }
-            set { iv = value; }
-        }
+        public LinearInductionVariable InductionVariable { get; set; }
 
         /// <summary>
         /// The original name of the identifier.
         /// </summary>
-        public Identifier OriginalIdentifier
-        {
-            get { return idOrig; }
-        } 
+        public Identifier OriginalIdentifier { get; private set; }
 
 		public override string ToString()
 		{
@@ -123,17 +96,17 @@ namespace Decompiler.Analysis
 		{
 			if (IsOriginal)
 			{
-				writer.Write("{0}:", id);
-				idOrig.Storage.Write(writer);
+				writer.Write("{0}:", Identifier);
+				OriginalIdentifier.Storage.Write(writer);
 			}
 			else
 			{
-				writer.Write("{0}: orig: {1}", id, idOrig);
+				writer.Write("{0}: orig: {1}", Identifier, OriginalIdentifier);
 			}
-			if (def != null)
+			if (DefStatement != null)
 			{
                 writer.WriteLine();
-				writer.Write("    def:  {0}", def.Instruction);
+				writer.Write("    def:  {0}", DefStatement.Instruction);
 			}
 			if (uses.Count > 0)
 			{

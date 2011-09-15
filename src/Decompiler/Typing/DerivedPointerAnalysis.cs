@@ -62,13 +62,10 @@ namespace Decompiler.Typing
 			this.prog = prog;
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				foreach (Block b in proc.RpoBlocks)
-				{
-					foreach (Statement stm in b.Statements)
-					{
-						stm.Instruction.Accept(this);
-					}
-				}
+                foreach (var stm in proc.Statements)
+                {
+                    stm.Instruction.Accept(this);
+                }
 			}
 		}
 

@@ -54,6 +54,11 @@ namespace Decompiler.Core.Types
 			v.VisitTypeVar(this);
 		}
 
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitTypeVar<T>(this);
+        }
+
 		/// <summary>
 		/// The equivalence class this type variable belongs to.
 		/// </summary>

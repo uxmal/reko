@@ -62,12 +62,9 @@ namespace Decompiler.Analysis
             do
             {
                 Changed = false;
-                foreach (Block block in proc.RpoBlocks)
+                foreach (Statement stm in proc.Statements)
                 {
-                    for (int i = 0; i < block.Statements.Count; ++i)
-                    {
-                        Transform(block.Statements[i]);
-                    }
+                    Transform(stm);
                 }
             } while (Changed);
         }

@@ -46,8 +46,8 @@ namespace Decompiler.Core.Types
 
 
 		public abstract DataType Accept(DataTypeTransformer t);
-
 		public abstract void Accept(IDataTypeVisitor v);
+        public abstract T Accept<T>(IDataTypeVisitor<T> v);
 
 		public int BitSize
 		{

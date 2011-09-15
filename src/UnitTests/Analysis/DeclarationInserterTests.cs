@@ -46,14 +46,14 @@ namespace Decompiler.UnitTests.Analysis
 			web.Add(r_5);
 			web.Add(r_6);
 			deci.InsertDeclaration(web);
-			Assert.AreEqual("word32 r_4", proc.RpoBlocks[1].Statements[0].Instruction.ToString());
+			Assert.AreEqual("word32 r_4", proc.ControlGraph.Blocks[1].Statements[0].Instruction.ToString());
 		}
 
 		private void Build(Procedure proc)
 		{
 			this.proc = proc;
 			this.doms = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(proc, doms, false);
+			SsaTransform sst = new SsaTransform(proc, doms);
 			
 			this.ssaIds = sst.SsaState.Identifiers;
 		}

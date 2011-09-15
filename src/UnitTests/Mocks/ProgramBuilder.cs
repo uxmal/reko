@@ -53,30 +53,26 @@ namespace Decompiler.UnitTests.Mocks
         {
             mock.ProgramMock = this;
             Procedure proc = mock.Procedure;
-            proc.RenumberBlocks();
             Add(proc);
             unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
         }
 
-		public void BuildCallgraph()
-		{
-			foreach (Procedure proc in prog.Procedures.Values)
-			{
-				foreach (Block block in proc.RpoBlocks)
-				{
-					foreach (Statement stm in block.Statements)
-					{
-						CallInstruction call = stm.Instruction as CallInstruction;
-						if (call == null)
-							continue;
-                        var callee = call.Callee as Procedure;
-                        if (callee == null)
-                            continue;
-						prog.CallGraph.AddEdge(stm, callee);
-					}
-				}
-			}
-		}
+        public void BuildCallgraph()
+        {
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                foreach (Statement stm in proc.Statements)
+                {
+                    CallInstruction call = stm.Instruction as CallInstruction;
+                    if (call == null)
+                        continue;
+                    var callee = call.Callee as Procedure;
+                    if (callee == null)
+                        continue;
+                    prog.CallGraph.AddEdge(stm, callee);
+                }
+            }
+        }
 
 		public Program BuildProgram()
 		{

@@ -44,6 +44,11 @@ namespace Decompiler.Core.Types
 			v.VisitArray(this);
 		}
 
+        public override T Accept<T>(IDataTypeVisitor<T> v)
+        {
+            return v.VisitArray<T>(this);
+        }
+
 		public override DataType Clone()
 		{
 			return new ArrayType(ElementType, Length);

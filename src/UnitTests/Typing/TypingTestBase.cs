@@ -75,7 +75,6 @@ namespace Decompiler.UnitTests.Typing
         {
             ProcedureBuilder m = new ProcedureBuilder();
             pg(m);
-            m.Procedure.RenumberBlocks();
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);
             RunTest(prog, outputFile);
