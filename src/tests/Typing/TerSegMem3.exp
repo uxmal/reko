@@ -1,8 +1,8 @@
 // SegMem3Mock
 void SegMem3Mock()
-SegMem3Mock_entry:		// pred:
+SegMem3Mock_entry:
 	// succ:  l1
-l1:		// pred: SegMem3Mock_entry
+l1:
 	0x1796->ptr0001 = 0x0800;
 	0x0800->ptr5422 = ds;
 	0x0800->w0066 = 0x0800->w5420;

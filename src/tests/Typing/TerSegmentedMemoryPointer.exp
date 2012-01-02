@@ -1,8 +1,8 @@
 // SegmentedMemoryPointerMock
 void SegmentedMemoryPointerMock()
-SegmentedMemoryPointerMock_entry:		// pred:
+SegmentedMemoryPointerMock_entry:
 	// succ:  l1
-l1:		// pred: SegmentedMemoryPointerMock_entry
+l1:
 	si = &Eq_4::w0001;
 	ax = (cs->*si).w0000;
 	si2 = &Eq_4::w0005;
@@ -10,6 +10,7 @@ l1:		// pred: SegmentedMemoryPointerMock_entry
 	cs->w1234 = ax;
 	(cs->*si).w0002 = ax;
 	// succ: 
+SegmentedMemoryPointerMock_exit:
 
 // Equivalence classes ////////////
 Eq_2: (struct "Eq_2" (0 word16 w0000) (2 word16 w0002))

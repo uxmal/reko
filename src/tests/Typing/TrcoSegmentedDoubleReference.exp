@@ -1,8 +1,8 @@
 // SegmentedDoubleReferenceMock
 void SegmentedDoubleReferenceMock()
-SegmentedDoubleReferenceMock_entry:		// pred:
+SegmentedDoubleReferenceMock_entry:
 	// succ:  l1
-l1:		// pred: SegmentedDoubleReferenceMock_entry
+l1:
 	si1 = Mem0[ds:0x0300:word16]
 	store(Mem0[ds:0x0100:word16]) = Mem0[ds:si1 + 0x0004:word16]
 	si2 = Mem0[ds:0x0300:word16]

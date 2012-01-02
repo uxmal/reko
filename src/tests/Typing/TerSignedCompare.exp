@@ -1,12 +1,13 @@
-// ProcedureMock
-void ProcedureMock()
-ProcedureMock_entry:		// pred:
+// ProcedureBuilder
+void ProcedureBuilder()
+ProcedureBuilder_entry:
 	// succ:  l1
-l1:		// pred: ProcedureMock_entry
+l1:
 	ds2 = ds;
 	ds->f5400 = ds->w5404 < 0x0014;
 	ds2->w5404 = 0x0000;
 	// succ: 
+ProcedureBuilder_exit:
 
 // Equivalence classes ////////////
 Eq_2: (segment "Eq_2" (5400 bool f5400) (5404 int16 w5404))

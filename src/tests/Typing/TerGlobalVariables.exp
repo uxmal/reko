@@ -1,8 +1,8 @@
 // GlobalVariablesMock
 void GlobalVariablesMock()
-GlobalVariablesMock_entry:		// pred:
+GlobalVariablesMock_entry:
 	// succ:  l1
-l1:		// pred: GlobalVariablesMock_entry
+l1:
 	real32 * ptr = &globals->r10000004
 	*ptr = 0.75F;
 	globals->r10000000 = 0.5F;

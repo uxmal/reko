@@ -354,7 +354,10 @@ namespace Decompiler.Scanning
 
 
             var linAddr = addr.Linear;
-            blockNew.Statements.AddRange(blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr));
+            foreach (var stm in blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr))
+            {
+                blockNew.Statements.Add(stm.LinearAddress, stm.Instruction);
+            }
             if (blockToSplit.Statements.Count > 0 && blockToSplit.Statements.Last.LinearAddress >= linAddr)
             {
                 graph.AddEdge(blockToSplit, blockNew);

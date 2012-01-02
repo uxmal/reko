@@ -1,12 +1,13 @@
-// ProcedureMock
-void ProcedureMock()
-ProcedureMock_entry:		// pred:
+// ProcedureBuilder
+void ProcedureBuilder()
+ProcedureBuilder_entry:
 	// succ:  l1
-l1:		// pred: ProcedureMock_entry
+l1:
 	p->w0000 = 0x0004;
 	p->w0004 = 0x0004;
 	p = p + i;
 	// succ: 
+ProcedureBuilder_exit:
 
 // Equivalence classes ////////////
 Eq_3: (struct "Eq_3" (0 word16 w0000) (4 word16 w0004))

@@ -1,16 +1,15 @@
 // PtrPtrIntMock
 void PtrPtrIntMock()
-PtrPtrIntMock_entry:		// pred:
+PtrPtrIntMock_entry:
 	// succ:  l1
-l1:		// pred: PtrPtrIntMock_entry
+l1:
 	r2 = *r1;
 	r3 = *r2;
 	globals->dw10000 = r3;
 	globals->ptr10004 = r1;
 	return r3
 	// succ:  PtrPtrIntMock_exit
-PtrPtrIntMock_exit:		// pred: l1
-	// succ: 
+PtrPtrIntMock_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Eq_1" (10000 word32 dw10000) (10004 (ptr (ptr word32)) ptr10004))
