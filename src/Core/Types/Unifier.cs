@@ -19,11 +19,10 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Typing
+namespace Decompiler.Core.Types
 {
 	/// <summary>
 	/// Performs type unification, returning a general unifier for the two parameters.

@@ -45,9 +45,10 @@ namespace Decompiler.UnitTests.Typing
 			get { return GetTypeTraits(t); }
 		}
 
-		public void AddTrait(TypeVariable t, Trait tr)
+		public DataType AddTrait(TypeVariable t, Trait tr)
 		{
             GetTypeTraits(t).Add(tr);
+            return null;
 		}
 
 		public void AddTypeVar(TypeVariable t)

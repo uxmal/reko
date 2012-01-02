@@ -111,6 +111,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FstswChainMatcher.cs" />
+    <Compile Include="OperandRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -138,9 +141,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Opcode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="OperandRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProcessorMode.cs">

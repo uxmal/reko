@@ -70,7 +70,7 @@ namespace Decompiler.Typing
 			ProcedureSignature sig = proc.Signature;
             if (sig.ReturnValue != null)
             {
-                handler.DataTypeTrait(sig.ReturnValue.TypeVariable, sig.ReturnValue.DataType);
+                handler.DataTypeTrait(sig.ReturnValue, sig.ReturnValue.DataType);
             }
 		}
 
@@ -89,21 +89,21 @@ namespace Decompiler.Typing
                     pc.Procedure.Name, appl.Arguments.Length, sig.FormalArguments.Length));
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                handler.EqualTrait(appl.Arguments[i].TypeVariable, sig.FormalArguments[i].TypeVariable);
+                handler.EqualTrait(appl.Arguments[i], sig.FormalArguments[i]);
                 sig.FormalArguments[i].Accept(this);
             }
             if (sig.ReturnValue != null)
-                handler.EqualTrait(appl.TypeVariable, sig.ReturnValue.TypeVariable);
+                handler.EqualTrait(appl, sig.ReturnValue);
         }
 
-		public void CollectEffectiveAddress(TypeVariable fieldType, Expression effectiveAddress)
+		public void CollectEffectiveAddress(Expression field, Expression effectiveAddress)
 		{
-			atrco.Collect(null, 0, fieldType, effectiveAddress);
+			atrco.Collect(null, 0, field, effectiveAddress);
 		}
 
-		public void CollectEffectiveAddress(TypeVariable basePtrType, int basePtrSize, TypeVariable fieldType, Expression effectiveAddress)
+		public void CollectEffectiveAddress(Expression basePtr, int basePtrSize, Expression field, Expression effectiveAddress)
 		{
-			atrco.Collect(basePtrType, basePtrSize, fieldType, effectiveAddress);
+			atrco.Collect(basePtr, basePtrSize, field, effectiveAddress);
 		}
 
 		public void CollectProgramTraits(Program prog)
@@ -175,14 +175,14 @@ namespace Decompiler.Typing
 		{
 			a.Src.Accept(this);
 			a.Dst.Accept(this);
-			handler.EqualTrait(a.Dst.TypeVariable, a.Src.TypeVariable);
+			handler.EqualTrait(a.Dst, a.Src);
 		}
 
 		public override void VisitStore(Store store)
 		{
 			store.Src.Accept(this);
 			store.Dst.Accept(this);
-			handler.EqualTrait(store.Dst.TypeVariable, store.Src.TypeVariable);
+			handler.EqualTrait(store.Dst, store.Src);
 		}
 
 		public override void VisitCallInstruction(CallInstruction ci)
@@ -198,14 +198,14 @@ namespace Decompiler.Typing
 		public override void VisitIndirectCall(IndirectCall ic)
 		{
 			ic.Callee.Accept(this);
-			handler.FunctionTrait(ic.Callee.TypeVariable, ic.Callee.DataType.Size, null, new TypeVariable[0]);
+			handler.FunctionTrait(ic.Callee, ic.Callee.DataType.Size, null, new TypeVariable[0]);
 		}
 
 		public override void VisitPhiAssignment(PhiAssignment phi)
 		{
 			phi.Src.Accept(this);
 			phi.Dst.Accept(this);
-			handler.EqualTrait(phi.Dst.TypeVariable, phi.Src.TypeVariable);
+			handler.EqualTrait(phi.Dst, phi.Src);
 		}
 
         public override void VisitReturnInstruction(ReturnInstruction ret)
@@ -216,7 +216,7 @@ namespace Decompiler.Typing
             ret.Expression.Accept(this);
             if (proc.Signature != null && proc.Signature.ReturnValue != null)
             {
-                handler.EqualTrait(proc.Signature.ReturnValue.TypeVariable, ret.Expression.TypeVariable);
+                handler.EqualTrait(proc.Signature.ReturnValue, ret.Expression);
             }
         }
 
@@ -244,8 +244,8 @@ namespace Decompiler.Typing
 				appl.Arguments[i].Accept(this);
 				paramTypes[i] = appl.Arguments[i].TypeVariable;
 			}
-			handler.DataTypeTrait(appl.TypeVariable, appl.DataType as PrimitiveType); 
-			handler.FunctionTrait(appl.Procedure.TypeVariable, appl.Procedure.DataType.Size, appl.TypeVariable, paramTypes);
+			handler.DataTypeTrait(appl, appl.DataType as PrimitiveType); 
+			handler.FunctionTrait(appl.Procedure, appl.Procedure.DataType.Size, appl.TypeVariable, paramTypes);
 
 			BindActualTypesToFormalTypes(appl);
 
@@ -268,13 +268,13 @@ namespace Decompiler.Typing
 				Constant c = b.Right as Constant;
 				if (c != null)
 				{
-					atrco.CollectArray(null, acc.TypeVariable, acc.Array, c.ToInt32(), 0);
-					handler.DataTypeTrait(acc.TypeVariable, acc.DataType);
+					atrco.CollectArray(null, acc, acc.Array, c.ToInt32(), 0);
+					handler.DataTypeTrait(acc, acc.DataType);
 					return;
 				}
 			}
-			atrco.CollectArray(null, acc.TypeVariable, acc.Array, 1, 0);
-			CollectEffectiveAddress(acc.TypeVariable, acc.Array);
+			atrco.CollectArray(null, acc, acc.Array, 1, 0);
+			CollectEffectiveAddress(acc, acc.Array);
 		}
 
 		public override void VisitIdentifier(Identifier id)
@@ -282,7 +282,7 @@ namespace Decompiler.Typing
 			if (id is MemoryIdentifier)
 				return;
 
-			handler.DataTypeTrait(id.TypeVariable, id.DataType);
+			handler.DataTypeTrait(id, id.DataType);
             if (!prog.InductionVariables.TryGetValue(id, out ivCur))
                 ivCur = null;
 		}
@@ -322,57 +322,57 @@ namespace Decompiler.Typing
 				binExp.op == Operator.Or  ||
 				binExp.op == Operator.Xor)
 			{
-				handler.DataTypeTrait(tvExp, binExp.DataType);
+				handler.DataTypeTrait(binExp, binExp.DataType);
 				return;
 			} 
 			else if (binExp.op == Operator.Muls ||
 				binExp.op == Operator.Divs)
 			{
-                handler.DataTypeTrait(tvExp, MakeNonPointer(binExp.DataType));
-				handler.DataTypeTrait(tvExp, binExp.DataType);
-				handler.DataTypeTrait(binExp.Left.TypeVariable, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Left.DataType.Size));
-				handler.DataTypeTrait(binExp.Right.TypeVariable, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.Size));
+                handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
+                handler.DataTypeTrait(binExp, binExp.DataType);
+				handler.DataTypeTrait(binExp.Left, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Left.DataType.Size));
+				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.Size));
 				return;
 			}
 			else if (binExp.op == Operator.Mulu ||
 				binExp.op == Operator.Divu ||
 				binExp.op == Operator.Shr)
 			{
-                handler.DataTypeTrait(tvExp, MakeNonPointer(binExp.DataType));
-                handler.DataTypeTrait(tvExp, MakeUnsigned(binExp.DataType));
-				handler.DataTypeTrait(binExp.Left.TypeVariable, MakeUnsigned(binExp.Left.DataType));
-				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeUnsigned(binExp.Right.DataType));
+                handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
+                handler.DataTypeTrait(binExp, MakeUnsigned(binExp.DataType));
+				handler.DataTypeTrait(binExp.Left, MakeUnsigned(binExp.Left.DataType));
+				handler.DataTypeTrait(binExp.Right, MakeUnsigned(binExp.Right.DataType));
 				return;
 			}
 			else if (binExp.op == Operator.Mul)
 			{
-				handler.DataTypeTrait(tvExp, MakeNonPointer(binExp.DataType));
+				handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
 				return;
 			}
 			else if (binExp.op == Operator.Sar)
 			{
-				handler.DataTypeTrait(tvExp, MakeSigned(binExp.DataType));
-				handler.DataTypeTrait(binExp.Left.TypeVariable, MakeSigned(binExp.Left.DataType));
-				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeUnsigned(binExp.Right.DataType));
+				handler.DataTypeTrait(binExp, MakeSigned(binExp.DataType));
+				handler.DataTypeTrait(binExp.Left, MakeSigned(binExp.Left.DataType));
+				handler.DataTypeTrait(binExp.Right, MakeUnsigned(binExp.Right.DataType));
 				return;
 			}
 			else if (binExp.op == Operator.Shl)
 			{
-				handler.DataTypeTrait(tvExp, binExp.DataType);
+				handler.DataTypeTrait(binExp, binExp.DataType);
 				return;
 			}
 			else if (binExp.op == Operator.Mod)
 			{
-				handler.DataTypeTrait(tvExp, binExp.DataType);
-				handler.DataTypeTrait(binExp.Left.TypeVariable, binExp.Left.DataType);
-				handler.DataTypeTrait(binExp.Right.TypeVariable, binExp.Right.DataType);
+				handler.DataTypeTrait(binExp, binExp.DataType);
+				handler.DataTypeTrait(binExp.Left, binExp.Left.DataType);
+				handler.DataTypeTrait(binExp.Right, binExp.Right.DataType);
 				return;
 			}
 			else if (binExp.op == Operator.Eq ||
 				binExp.op == Operator.Ne)
 			{
-				handler.EqualTrait(binExp.Left.TypeVariable, binExp.Right.TypeVariable);
-				handler.DataTypeTrait(tvExp, PrimitiveType.Bool);
+				handler.EqualTrait(binExp.Left, binExp.Right);
+				handler.DataTypeTrait(binExp, PrimitiveType.Bool);
 				return;
 			}
 			else if (binExp.op == Operator.Ge ||
@@ -380,18 +380,18 @@ namespace Decompiler.Typing
 				binExp.op == Operator.Le ||
 				binExp.op == Operator.Lt)
 			{
-				handler.EqualTrait(binExp.Left.TypeVariable, binExp.Right.TypeVariable);
-				handler.DataTypeTrait(tvExp, PrimitiveType.Bool);
-				handler.DataTypeTrait(binExp.Left.TypeVariable, MakeSigned(binExp.Left.DataType));
-				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeSigned(binExp.Right.DataType));
+				handler.EqualTrait(binExp.Left, binExp.Right);
+				handler.DataTypeTrait(binExp, PrimitiveType.Bool);
+				handler.DataTypeTrait(binExp.Left, MakeSigned(binExp.Left.DataType));
+				handler.DataTypeTrait(binExp.Right, MakeSigned(binExp.Right.DataType));
 				return;
 			}
 			else if (binExp.op is RealConditionalOperator)
 			{
-				handler.EqualTrait(binExp.Left.TypeVariable, binExp.Right.TypeVariable);
-				handler.DataTypeTrait(tvExp, PrimitiveType.Bool);
-				handler.DataTypeTrait(binExp.Left.TypeVariable, PrimitiveType.Create(Domain.Real, binExp.Left.DataType.Size));
-				handler.DataTypeTrait(binExp.Right.TypeVariable, PrimitiveType.Create(Domain.Real, binExp.Right.DataType.Size));
+				handler.EqualTrait(binExp.Left, binExp.Right);
+				handler.DataTypeTrait(binExp, PrimitiveType.Bool);
+				handler.DataTypeTrait(binExp.Left, PrimitiveType.Create(Domain.Real, binExp.Left.DataType.Size));
+				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(Domain.Real, binExp.Right.DataType.Size));
 				return;
 			}
 			else if (binExp.op == Operator.Uge ||
@@ -399,10 +399,10 @@ namespace Decompiler.Typing
 				binExp.op == Operator.Ule ||
 				binExp.op == Operator.Ult)
 			{
-				handler.EqualTrait(binExp.Left.TypeVariable, binExp.Right.TypeVariable);
-				handler.DataTypeTrait(tvExp, PrimitiveType.Bool);
-				handler.DataTypeTrait(binExp.Left.TypeVariable, MakeNotSigned(binExp.Left.DataType));
-				handler.DataTypeTrait(binExp.Right.TypeVariable, MakeNotSigned(binExp.Right.DataType));
+				handler.EqualTrait(binExp.Left, binExp.Right);
+				handler.DataTypeTrait(binExp, PrimitiveType.Bool);
+				handler.DataTypeTrait(binExp.Left, MakeNotSigned(binExp.Left.DataType));
+				handler.DataTypeTrait(binExp.Right, MakeNotSigned(binExp.Right.DataType));
 				return;
 			}
 			throw new NotImplementedException("NYI: " + binExp.op + " in " + binExp);
@@ -417,18 +417,18 @@ namespace Decompiler.Typing
 		public override void VisitCast(Cast cast)
 		{
 			cast.Expression.Accept(this);
-			handler.DataTypeTrait(cast.TypeVariable, cast.DataType);
+			handler.DataTypeTrait(cast, cast.DataType);
 		}
 
 		public override void VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression.Accept(this);
-			handler.DataTypeTrait(cof.TypeVariable, cof.DataType);
+			handler.DataTypeTrait(cof, cof.DataType);
 		}
 
 		public override void VisitConstant(Constant c)
 		{
-			handler.DataTypeTrait(c.TypeVariable, c.DataType);
+			handler.DataTypeTrait(c, c.DataType);
 			ivCur = null;
 		}
 
@@ -438,7 +438,7 @@ namespace Decompiler.Typing
 			if (decl.Expression != null) 
 			{
 				decl.Expression.Accept(this);
-				handler.EqualTrait(decl.Identifier.TypeVariable, decl.Expression.TypeVariable);
+				handler.EqualTrait(decl.Identifier, decl.Expression);
 			}
 		}
 
@@ -446,14 +446,14 @@ namespace Decompiler.Typing
 		{
 			d.Source.Accept(this);
             d.InsertedBits.Accept(this);
-			handler.DataTypeTrait(d.TypeVariable, d.DataType);
+			handler.DataTypeTrait(d, d.DataType);
 			ivCur = null;
 		}
 
 		public override void VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);
-			handler.MemAccessTrait(null, deref.Expression.TypeVariable, 0, deref.TypeVariable, 0);
+			handler.MemAccessTrait(null, deref.Expression, 0, deref, 0);
 		}
 
 		public override void VisitFieldAccess(FieldAccess acc)
@@ -464,14 +464,14 @@ namespace Decompiler.Typing
         public override void VisitMkSequence(MkSequence seq)
         {
             base.VisitMkSequence(seq);
-            handler.DataTypeTrait(seq.TypeVariable, seq.DataType);
+            handler.DataTypeTrait(seq, seq.DataType);
         }
 
         public override void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			mps.BasePointer.Accept(this);
 			mps.MemberPointer.Accept(this);
-			handler.DataTypeTrait(mps.TypeVariable, prog.Architecture.PointerType);
+			handler.DataTypeTrait(mps, prog.Architecture.PointerType);
 		}
 
 
@@ -479,16 +479,16 @@ namespace Decompiler.Typing
 		{
 			base.VisitMemoryAccess(access);
 			TypeVariable tAccess = access.TypeVariable;
-			handler.DataTypeTrait(tAccess, access.DataType);
-			CollectEffectiveAddress(tAccess, access.EffectiveAddress);
+			handler.DataTypeTrait(access, access.DataType);
+			CollectEffectiveAddress(access, access.EffectiveAddress);
 		}
 
 		public override void VisitSegmentedAccess(SegmentedAccess access)
 		{
 			base.VisitSegmentedAccess(access);
 			TypeVariable tAccess = access.TypeVariable;
-			handler.DataTypeTrait(tAccess, access.DataType);
-			CollectEffectiveAddress(access.BasePointer.TypeVariable, access.BasePointer.DataType.Size, tAccess, access.EffectiveAddress);
+			handler.DataTypeTrait(access, access.DataType);
+			CollectEffectiveAddress(access.BasePointer, access.BasePointer.DataType.Size, access, access.EffectiveAddress);
 		}
 
 		public override void VisitPhiFunction(PhiFunction phi)
@@ -539,13 +539,13 @@ namespace Decompiler.Typing
 		public override void VisitSlice(Slice slice)
 		{
 			slice.Expression.Accept(this);
-			handler.DataTypeTrait(slice.TypeVariable, slice.DataType);
+			handler.DataTypeTrait(slice, slice.DataType);
 		}
 
 		public override void VisitTestCondition(TestCondition tc)
 		{
 			tc.Expression.Accept(this);
-			handler.DataTypeTrait(tc.TypeVariable, tc.DataType);
+			handler.DataTypeTrait(tc, tc.DataType);
 		}
 
 		public override void VisitUnaryExpression(UnaryExpression unary)
@@ -554,23 +554,23 @@ namespace Decompiler.Typing
 			if (unary.op == Operator.AddrOf)
 			{
 				handler.PointerTrait(
-                    unary.TypeVariable, 
+                    unary, 
                     unary.DataType.Size,
-                    unary.Expression.TypeVariable);
+                    unary.Expression);
 			}
 			else if (unary.op == Operator.Neg)
 			{
-				handler.DataTypeTrait(unary.TypeVariable, MakeSigned(unary.Expression.DataType));
-				handler.DataTypeTrait(unary.Expression.TypeVariable, MakeSigned(unary.Expression.DataType));
+				handler.DataTypeTrait(unary, MakeSigned(unary.Expression.DataType));
+				handler.DataTypeTrait(unary.Expression, MakeSigned(unary.Expression.DataType));
 			}
 			else if (unary.op == Operator.Comp)
 			{
-				handler.DataTypeTrait(unary.TypeVariable, unary.DataType);
+				handler.DataTypeTrait(unary, unary.DataType);
 			}
 			else if (unary.op == Operator.Not)
 			{
-				handler.DataTypeTrait(unary.TypeVariable, PrimitiveType.Bool);
-				handler.DataTypeTrait(unary.Expression.TypeVariable, PrimitiveType.Bool);
+				handler.DataTypeTrait(unary, PrimitiveType.Bool);
+				handler.DataTypeTrait(unary.Expression, PrimitiveType.Bool);
 			}
 			else
 				throw new NotImplementedException(string.Format("TraitCollection.UnaryExpression: {0}", unary));

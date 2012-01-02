@@ -1,10 +1,11 @@
-// ProcedureMock
-void ProcedureMock()
-ProcedureMock_entry:		// pred:
+// ProcedureBuilder
+void ProcedureBuilder()
+ProcedureBuilder_entry:
 	// succ:  l1
-l1:		// pred: ProcedureMock_entry
+l1:
 	store(Mem0[0x0100:ptr32]) = SEQ(ds, 0x1234)
 	// succ: 
+ProcedureBuilder_exit:
 
 // Equivalence classes ////////////
 Eq_1: (ptr (struct (100 T_6 t0100)))

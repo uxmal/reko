@@ -587,50 +587,43 @@ namespace Decompiler.UnitTests.Typing
         {
         }
 
-        public void DataTypeTrait(TypeVariable type, DataType p)
+        public DataType DataTypeTrait(Expression exp, DataType p)
         {
-            traits.AddTrait(type, new TraitDataType(p));
+            return traits.AddTrait(exp.TypeVariable, new TraitDataType(p));
         }
 
-        public void EqualTrait(TypeVariable t1, TypeVariable t2)
+        public DataType EqualTrait(Expression t1, Expression t2)
         {
             if (t1 != null && t2 != null)
-                traits.AddTrait(t1, new TraitEqual(t2));
+                traits.AddTrait(t1.TypeVariable, new TraitEqual(t2.TypeVariable));
+            return null;
         }
 
-        public void FunctionTrait(TypeVariable function, int funcPtrSize, TypeVariable ret, params TypeVariable[] actuals)
+        public DataType FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable[] actuals)
         {
-            traits.AddTrait(function, new TraitFunc(function, funcPtrSize, ret, actuals));
+            return traits.AddTrait(function.TypeVariable, new TraitFunc(function.TypeVariable, funcPtrSize, ret, actuals));
         }
 
-        public void MemAccessArrayTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tAccess)
+        public DataType MemAccessArrayTrait(Expression tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tAccess)
         {
-            traits.AddTrait(tStruct, new TraitMemArray(tBase, structPtrSize, offset, elementSize, length, tAccess));
+            return traits.AddTrait(tStruct.TypeVariable, new TraitMemArray(tBase.TypeVariable, structPtrSize, offset, elementSize, length, tAccess.TypeVariable));
         }
 
-        public void MemAccessTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, TypeVariable tField, int offset)
+        public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
         {
-            traits.AddTrait(tStruct, new TraitMem(tBase, structPtrSize, tField, offset));
+            return traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase.TypeVariable, structPtrSize, tField.TypeVariable, offset));
         }
 
-        public void MemSizeTrait(TypeVariable tBase, TypeVariable tStruct, int size)
+        public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)
         {
-            traits.AddTrait(tStruct, new TraitMemSize(size));
+            return traits.AddTrait(tStruct.TypeVariable, new TraitMemSize(size));
         }
 
-        public void PointerTrait(TypeVariable tPtr, int ptrSize, TypeVariable tPointee)
+        public DataType PointerTrait(Expression tPtr, int ptrSize, Expression tPointee)
         {
-            traits.AddTrait(tPtr, new TraitPointer(tPointee));
-        }
-
-        public void UnknownTrait(TypeVariable tUnknown)
-        {
-            throw new NotImplementedException("UnknownTrait not handled");
+            return traits.AddTrait(tPtr.TypeVariable, new TraitPointer(tPointee.TypeVariable));
         }
 
         #endregion
-
     }
-
-
 }

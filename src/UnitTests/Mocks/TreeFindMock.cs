@@ -34,18 +34,18 @@ namespace Decompiler.UnitTests.Mocks
 			var t = Local32("t");
 			var vv = Local32("vv");
 
-			Label("seek");
-			BranchIf(Eq(t, 0), "found"); 
+			Label("l0_seek");
+			BranchIf(Eq(t, 0), "l5_found"); 
 			Assign(vv, Load(PrimitiveType.Word32, t));
-			BranchIf(Eq(v, vv), "found");
-			BranchIf(Lt(v, vv), "lt");
+			BranchIf(Eq(v, vv), "l5_found");
+			BranchIf(Lt(v, vv), "l4_lt");
 			Assign(t, Load(PrimitiveType.Word32, Add(t, 8)));
-			Jump("seek");
+			Jump("l0_seek");
 
-			Label("lt");
+			Label("l4_lt");
 			Assign(t, Load(PrimitiveType.Word32, Add(t, 4)));
 
-			Label("found");
+			Label("l5_found");
 			Return(t);
 		}
 	}

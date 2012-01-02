@@ -482,7 +482,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\UnstructuredConditionalAnalysis.cs" />
-    <Compile Include="Typing\DataFlowTyping.cs" />
     <Compile Include="Typing\StructureFieldMerger.cs" />
     <Compile Include="Structure\StructureNode.cs">
       <SubType>Code</SubType>
@@ -541,9 +540,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\TypeVariableReplacer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Typing\Unifier.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\UnionPointersStructuresMatcher.cs">

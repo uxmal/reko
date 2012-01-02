@@ -28,7 +28,8 @@ namespace Decompiler.Typing
 {
 	/// <summary>
 	/// The methods of this interface are called by the TraitCollector as it traverses 
-	/// the instructions and expressions of the program. 
+	/// the instructions and expressions of the program. The methods return a reference
+    /// to the new data type.
 	/// </summary>
 	public interface ITraitHandler
 	{
@@ -40,20 +41,20 @@ namespace Decompiler.Typing
 		void BuildEquivalenceClassDataTypes();
 
 		/// <summary>
-		/// <paramref>type</paramref> has the data type <paramref>dataType</paramref>
+		/// <paramref>exp</paramref> has the data type <paramref>dataType</paramref>
 		/// </summary>
-		void DataTypeTrait(TypeVariable type, DataType dataType);
+        DataType DataTypeTrait(Expression exp, DataType dataType);
 
 		/// <summary>
-		/// The types <paramref>tv1</paramref> and <paramref>tv2</paramref> are assignable
+		/// The types <paramref>exp1</paramref> and <paramref>exp2</paramref> are assignable
 		/// </summary>
-		void EqualTrait(TypeVariable tv1, TypeVariable tv2);
+		DataType EqualTrait(Expression exp1, Expression exp2);
 
 		/// <summary>
 		/// <paramref>function</paramref> is a function pointer whose return type is <paramref>ret</paramref> and whose
 		/// actual parameters in this call are <paramref>actuals</paramref>
 		/// </summary>
-		void FunctionTrait(TypeVariable function, int funcPtrSize, TypeVariable ret, params TypeVariable [] actuals);
+		DataType FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable [] actuals);
 
 		/// <summary>
 		/// <paramref>tStruct</paramref> has a field of type <paramref>tField</paramref> at offset <paramref>offset</paramref>. Optionally,
@@ -64,17 +65,15 @@ namespace Decompiler.Typing
 		/// <param name="structPtrSize">Size of the pointer associated with the structure field reference.</param>
 		/// <param name="tField">Type variable for the field.</param>
 		/// <param name="offset">Field offset within the structure (in bytes).</param>
-		void MemAccessTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, TypeVariable tField, int offset);
+		DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset);
 
 		/// <summary>
 		/// <paramref>tStruct</paramref> has an array at offset <paramref>offset</paramref> whose elementsize is <paramref>elementSize</paramref>
 		/// and consists of <paramref>length items</paramref>.
 		/// </summary>
-		void MemAccessArrayTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tField33);
+		DataType MemAccessArrayTrait(Expression tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tField);
 
-		void MemSizeTrait(TypeVariable tBase, TypeVariable tStruct, int size);
-		void PointerTrait(TypeVariable tPointer, int ptrSize, TypeVariable tPointee);
-		void UnknownTrait(TypeVariable tUnknown);
-
+		DataType MemSizeTrait(Expression tBase, Expression tStruct, int size);
+		DataType PointerTrait(Expression tPointer, int ptrSize, Expression tPointee);
 	}
 }
