@@ -1,29 +1,28 @@
 // CmpMock
 void CmpMock()
-CmpMock_entry:		// pred:
+CmpMock_entry:
 	// succ:  l1
-l1:		// pred: CmpMock_entry
+l1:
 	Z = cond(r0 - 0x00000000)
 	branch Test(EQ,Z) skip
 	// succ:  l2 skip
-l2:		// pred: l1
+l2:
 	r0 = r0 + r1
 	// succ:  skip
-skip:		// pred: l1 l2
+skip:
 	store(Mem0[0x10003000:word32]) = r0
 	return
 	// succ:  CmpMock_exit
-CmpMock_exit:		// pred: skip
-	// succ: 
+CmpMock_exit:
 
 Globals (in globals : ptr32)
-	trait_mem(T_11, 10003000)
+	trait_mem(T_9, 10003000)
 T_2 (in r0 : word32)
 	trait_primitive(word32)
 	trait_primitive(word32)
 	trait_primitive(word32)
-	trait_equal(T_9)
 	trait_primitive(word32)
+	trait_equal(T_11)
 T_3 (in 0x00000000 : word32)
 	trait_primitive(word32)
 T_4 (in r0 - 0x00000000 : word32)
@@ -36,13 +35,13 @@ T_6 (in Z : byte)
 	trait_primitive(byte)
 T_7 (in Test(EQ,Z) : bool)
 	trait_primitive(bool)
-T_8 (in r1 : word32)
+T_8 (in 0x10003000 : word32)
 	trait_primitive(word32)
-T_9 (in r0 + r1 : word32)
-	trait_primitive(word32)
-T_10 (in 0x10003000 : word32)
-	trait_primitive(word32)
-	trait_mem(T_11, 0)
-T_11 (in Mem0[0x10003000:word32] : word32)
+	trait_mem(T_9, 0)
+T_9 (in Mem0[0x10003000:word32] : word32)
 	trait_primitive(word32)
 	trait_equal(T_2)
+T_10 (in r1 : word32)
+	trait_primitive(word32)
+T_11 (in r0 + r1 : word32)
+	trait_primitive(word32)

@@ -1,11 +1,12 @@
 // StaggeredArraysMock
 void StaggeredArraysMock()
-StaggeredArraysMock_entry:		// pred:
+StaggeredArraysMock_entry:
 	// succ:  l1
-l1:		// pred: StaggeredArraysMock_entry
+l1:
 	x = p[i * 0x00000008]
 	x = (p + 4)[i * 0x00000008]
 	// succ: 
+StaggeredArraysMock_exit:
 
 // Equivalence classes ////////////
 Eq_2: (arr Eq_13)

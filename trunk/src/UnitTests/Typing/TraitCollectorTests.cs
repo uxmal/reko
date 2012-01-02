@@ -611,7 +611,7 @@ namespace Decompiler.UnitTests.Typing
 
         public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
         {
-            return traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase.TypeVariable, structPtrSize, tField.TypeVariable, offset));
+            return traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase != null ? tBase.TypeVariable: null, structPtrSize, tField.TypeVariable, offset));
         }
 
         public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)

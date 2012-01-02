@@ -1,16 +1,15 @@
 // UnionIntRealMock
 void UnionIntRealMock()
-UnionIntRealMock_entry:		// pred:
+UnionIntRealMock_entry:
 	// succ:  l1
-l1:		// pred: UnionIntRealMock_entry
+l1:
 	x = i;
 	x = r;
 	ptr->t0000 = i;
 	ptr->t0004 = r;
 	return
 	// succ:  UnionIntRealMock_exit
-UnionIntRealMock_exit:		// pred: l1
-	// succ: 
+UnionIntRealMock_exit:
 
 // Equivalence classes ////////////
 Eq_2: (union "Eq_2" (int32 u0) (real32 u1))

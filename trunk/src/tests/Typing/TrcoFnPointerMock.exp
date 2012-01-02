@@ -1,12 +1,13 @@
 // FnPointerMock
 void FnPointerMock()
-FnPointerMock_entry:		// pred:
+FnPointerMock_entry:
 	// succ:  l1
-l1:		// pred: FnPointerMock_entry
+l1:
 	pfn = 0x01213130
 	store(Mem0[0x10000000:word32]) = pfn
 	icall Mem0[0x10000000:word32]
 	// succ: 
+FnPointerMock_exit:
 
 Globals (in globals : ptr32)
 	trait_mem(T_5, 10000000)

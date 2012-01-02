@@ -1,8 +1,8 @@
 // RepeatedLoadsMock
 void RepeatedLoadsMock()
-RepeatedLoadsMock_entry:		// pred:
+RepeatedLoadsMock_entry:
 	// succ:  l1
-l1:		// pred: RepeatedLoadsMock_entry
+l1:
 	x = Mem0[pfoo + 0x00000004:word32]
 	x = Mem0[pfoo + 0x00000004:word32]
 	// succ: 

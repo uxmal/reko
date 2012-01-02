@@ -1,8 +1,8 @@
 // ProcedureBuilder
 void ProcedureBuilder()
-ProcedureBuilder_entry:		// pred:
+ProcedureBuilder_entry:
 	// succ:  l1
-l1:		// pred: ProcedureBuilder_entry
+l1:
 	store(Mem0[ds:0x00001B58:word16]) = Mem0[ds:Mem0[ds:0x00005321:word16]:word16]
 	// succ: 
 ProcedureBuilder_exit:
