@@ -155,7 +155,7 @@ namespace Decompiler.Typing
 			return UnifyInternal(a, b);
 		}
 
-		public DataType UnifyInternal(DataType a, DataType b)
+		private DataType UnifyInternal(DataType a, DataType b)
 		{
 			if (a == null)
 				return b;

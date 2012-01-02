@@ -94,6 +94,15 @@ namespace Decompiler.Arch.Arm
         umaal,
         umull,
         umlal,
+        ands,
+        srs,
+        eors,
+        subs,
+        rsbs,
+        adcs,
+        sbcs,
+        rscs,
+        tsts,
 
 
 

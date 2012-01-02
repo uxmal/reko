@@ -1045,7 +1045,8 @@ namespace Decompiler.Assemblers.x86
 
         public void Call(ParsedOperand parsedOperand)
         {
-            ProcessCallJmp(false, 0x02, parsedOperand);
+            var far = (parsedOperand.Operand is MemoryOperand && parsedOperand.Operand.Width.Size == 4);
+            ProcessCallJmp(far, 0x02, parsedOperand);
         }
 
 
@@ -1561,6 +1562,7 @@ namespace Decompiler.Assemblers.x86
 
         internal void ProcessCallJmp(bool far, int indirect, ParsedOperand op)
         {
+            if (far) indirect |= 1;
             emitter.EmitOpcode(0xFF, emitter.SegmentDataWidth);
             EmitModRM(indirect, op);
         }

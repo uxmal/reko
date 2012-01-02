@@ -75,11 +75,6 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public void RewriteMachineCodeOld()
-        {
-            throw new NotImplementedException();
-        }
-
         public DataFlowAnalysis AnalyzeDataFlow()
         {
             throw new NotImplementedException();

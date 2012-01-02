@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -26,26 +27,33 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
-    public class Rewriter : Decompiler.Core.RewriterOld
+    [Obsolete]
+    public class Rewriter : Decompiler.Core.Rewriter
     {
-        public Rewriter(M68kArchitecture arch, IProcedureRewriter prw)
-            : base(prw)
+        private M68kArchitecture arch;
+        private M68kState state;
+        private Frame frame;
+        private IRewriterHost host;
+
+
+        public Rewriter(M68kArchitecture m68kArchitecture, M68kState m68kState, Frame frame, IRewriterHost host)
         {
+            // TODO: Complete member initialization
+            this.arch = m68kArchitecture;
+            this.state = m68kState;
+            this.frame = frame;
+            this.host = host;
         }
 
-        public override void EmitCallAndReturn(Procedure callee)
+        public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             throw new NotImplementedException();
         }
 
-        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitterOld emitter)
-        {
-            throw new NotImplementedException();
-        }
 
-        public override void GrowStack(int bytes)
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

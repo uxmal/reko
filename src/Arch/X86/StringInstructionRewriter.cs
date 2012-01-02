@@ -31,13 +31,13 @@ namespace Decompiler.Arch.X86
 	/// </summary>
 	public class StringInstructionRewriter
 	{
-		private CodeEmitterOld emitter;
-		private OperandRewriterOld orw;
+		private CodeEmitter emitter;
+		private OperandRewriter orw;
 		private IntelArchitecture arch;
 
 		private IntelInstruction instrCur;
 
-		public StringInstructionRewriter(IntelArchitecture arch, OperandRewriterOld orw)
+		public StringInstructionRewriter(IntelArchitecture arch, OperandRewriter orw)
 		{
 			this.arch = arch;
 			this.orw = orw;
@@ -72,7 +72,7 @@ namespace Decompiler.Arch.X86
 				case Opcode.movs:
 				case Opcode.movsb:
 				{
-					Identifier tmp = orw.CreateTemporary(instrCur.dataWidth);
+					Identifier tmp = frame.CreateTemporary(instrCur.dataWidth);
 					emitter.Assign(tmp, MemSi());
 					emitter.Store(MemDi(), tmp);
 					incSi = true;

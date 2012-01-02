@@ -36,7 +36,7 @@ namespace Decompiler.Arch.X86
     /// <summary>
     /// Rewrites x86 instructions into a stream of low-level RTL-like instructions.
     /// </summary>
-    public partial class X86Rewriter : RewriterOld, Rewriter
+    public partial class X86Rewriter : Rewriter
     {
         private IRewriterHost host;
         private IntelArchitecture arch;
@@ -48,19 +48,12 @@ namespace Decompiler.Arch.X86
         private RtlInstructionCluster ric;
         private X86State state;
 
-        [Obsolete("Phasing out old rewriter")]
-        public X86Rewriter(IProcedureRewriter prw)
-            : base(prw)
-        {
-        }
-
         public X86Rewriter(
             IntelArchitecture arch,
             IRewriterHost host,
             X86State state,
             ImageReader rdr, 
             Frame frame)
-            : base(null)
         {
             this.host = host;
             this.arch = arch;
@@ -81,23 +74,6 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        #region old Rewriter overrides; delete when done.
-        public override void GrowStack(int bytes)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void ConvertInstructions(MachineInstruction[] instrs, Address[] addrs, uint[] deadOutFlags, Address addrEnd, CodeEmitterOld emitter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void EmitCallAndReturn(Procedure callee)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())
@@ -109,7 +85,7 @@ namespace Decompiler.Arch.X86
                 switch (di.Instruction.code)
                 {
                 default:
-                    throw new NotImplementedException(string.Format("x86 opcode '{0}' not supported yet.", di.Instruction.code));
+                    throw new NotImplementedException(string.Format("Rewrtining of x86 opcode '{0}' not supported yet.", di.Instruction.code));
                 case Opcode.adc: RewriteAdcSbb(BinaryOperator.Add); break;
                 case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
                 case Opcode.and: RewriteLogical(BinaryOperator.And); break;

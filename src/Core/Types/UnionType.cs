@@ -77,7 +77,7 @@ namespace Decompiler.Core.Types
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
-            return v.VisitUnion<T>(this);
+            return v.VisitUnion(this);
         }
 
 		public UnionAlternativeCollection Alternatives

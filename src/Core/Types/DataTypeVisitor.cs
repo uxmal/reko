@@ -41,16 +41,16 @@ namespace Decompiler.Core.Types
 
     public interface IDataTypeVisitor<T>
     {
-        T VisitArray<T>(ArrayType at);
-        T VisitEquivalenceClass<T>(EquivalenceClass eq);
-        T VisitFunctionType<T>(FunctionType ft);
-        T VisitPrimitive<T>(PrimitiveType pt);
-        T VisitMemberPointer<T>(MemberPointer memptr);
-        T VisitPointer<T>(Pointer ptr);
-        T VisitStructure<T>(StructureType str);
-        T VisitTypeVar<T>(TypeVariable tv);
-        T VisitUnion<T>(UnionType ut);
-        T VisitUnknownType<T>(UnknownType ut);
+        T VisitArray(ArrayType at);
+        T VisitEquivalenceClass(EquivalenceClass eq);
+        T VisitFunctionType(FunctionType ft);
+        T VisitPrimitive(PrimitiveType pt);
+        T VisitMemberPointer(MemberPointer memptr);
+        T VisitPointer(Pointer ptr);
+        T VisitStructure(StructureType str);
+        T VisitTypeVar(TypeVariable tv);
+        T VisitUnion(UnionType ut);
+        T VisitUnknownType(UnknownType ut);
     }
 
 	/// <summary>

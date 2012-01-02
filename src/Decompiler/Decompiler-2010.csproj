@@ -262,7 +262,7 @@
     <Compile Include="Evaluation\SliceConstant_Rule.cs" />
     <Compile Include="Evaluation\SliceMem_Rule.cs" />
     <Compile Include="Evaluation\SliceShift.cs" />
-    <Compile Include="Evaluation\Sub_Xor_Zero_Rule.cs" />
+    <Compile Include="Evaluation\BinOpWithSelf_Rule.cs" />
     <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Evaluation\SymbolicEvaluator.cs" />
     <Compile Include="Gui\BlockNavigator.cs" />
@@ -436,16 +436,10 @@
     <Compile Include="Scanning\InstructionTrie.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scanning\ProcedureRewriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Scanning\Regexp.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scanning\RegexpBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Scanning\RewriterHost.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scanning\Scanner.cs">
@@ -488,6 +482,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\UnstructuredConditionalAnalysis.cs" />
+    <Compile Include="Typing\DataFlowTyping.cs" />
     <Compile Include="Typing\StructureFieldMerger.cs" />
     <Compile Include="Structure\StructureNode.cs">
       <SubType>Code</SubType>

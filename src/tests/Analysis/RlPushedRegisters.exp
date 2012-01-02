@@ -6,29 +6,43 @@
 	Preserved:
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
-	// succ:  l0C00_0000
+fn0C00_0000_entry:
 // DataOut: ds
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	cx = 0x002A
-	wLoc04 = 0x0001
-	wLoc06 = 0x0002
-	call fn0C00_0026 (depth: 6;)
-	ax = 0x0000
-	wLoc04 = ax
-	wLoc06 = ax
-	wLoc08 = ax
-	wLoc0A = ax
-	wLoc0C = ax
-	wLoc0E = ax
-	call fn0C00_0035 (depth: 14;)
-	wLoc04 = 0x0001
-	wLoc06 = 0x0002
-	call fn0C00_005E (depth: 6;)
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = 0x0001
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = 0x0002
+	call fn0C00_0023 (retsize: 2;)
+	ax = ax ^ ax
+	SZO = cond(ax)
+	C = false
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = ax
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = ax
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = ax
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = ax
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = ax
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = ax
+	call fn0C00_0034 (retsize: 2;)
+	sp = sp + 0x000C
+	SCZO = cond(sp)
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = 0x0001
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = 0x0002
+	call fn0C00_005D (retsize: 2;)
+	sp = sp + 0x0004
+	SCZO = cond(sp)
 	return
-	// succ:  fn0C00_0000_exit
 // DataOut:
-fn0C00_0000_exit:		// pred: l0C00_0000
+fn0C00_0000_exit:
 	// succ: 
 // DataOut:
 // fn0C00_0026 /////////////////////
@@ -82,78 +96,82 @@ l0C00_0035:		// pred: fn0C00_0035_entry
 // DataOut: bx ds
 // LocalsOut: Stack +0004(16)
 
-l0C00_003E:		// pred: l0C00_0035 l0C00_003E
+l0C00_003D:
 	ax = Mem0[ds:bx:word16]
 	bx = bx + 0x0002
-	SCZO = cond(ax - 0x0000)
+	SCZO = cond(bx)
+	SZO = cond(ax & ax)
 	C = false
-	branch Test(NE,Z) l0C00_003E
-	// succ:  l0C00_0047 l0C00_003E
+	branch Test(NE,Z) l0C00_003D
+	// succ:  l0C00_0046 l0C00_003D
 // DataOut: bx ds
 // LocalsOut: Stack +0004(16)
 
-l0C00_0047:		// pred: l0C00_003E
-	dx = wArg02
+l0C00_0046:
+	dx = Mem0[ss:bp + 0x000C:word16]
 	bx = bx + 0x0002
 	SCZO = cond(bx)
-	ax = wArg00
+	ax = Mem0[ss:bp + 0x000A:word16]
 	cx = Mem0[ds:bx - 0x0002:word16]
-	bx = &wArg04
-	call fn0C00_006A (depth: 10;)
-	bp = wLoc0A
-	dx = wLoc08
-	cx = wLoc06
-	bx = wLoc04
+	bx = bp + 0x000E
+	call fn0C00_006A (retsize: 2;)
+	bp = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	ds = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	cx = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	bx = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
 	return
-	// succ:  fn0C00_0035_exit
 // DataOut:
-fn0C00_0035_exit:		// pred: l0C00_0047
-	// succ: 
+fn0C00_0035_exit:
 // DataOut:
-// fn0C00_005E /////////////////////
+// fn0C00_005D /////////////////////
 	LiveOut:  
 	MayUseIn:  cx
 	BypassIn: 
 	Trashed:   SCZO ax al ah
 	Preserved: cx bp
-// fn0C00_005E
-void fn0C00_005E()
-fn0C00_005E_entry:		// pred:
-	// succ:  l0C00_005E
+// fn0C00_005D
+void fn0C00_005D()
+fn0C00_005D_entry:
+	// succ:  l0C00_005D
 // DataOut: cx
 // LocalsOut: Stack +0002(16)
 
-l0C00_005E:		// pred: fn0C00_005E_entry
-	wLoc04 = cx
-	wLoc06 = bp
-	ax = wArg02
+l0C00_005D:		
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = cx
+	sp = sp - 0x0002
+	store(Mem0[ss:sp:word16]) = bp
+	bp = sp
+	ax = Mem0[ss:bp + 0x0008:word16]
 	ax = ax + cx
 	SCZO = cond(ax)
-	bp = wLoc06
-	cx = wLoc04
+	bp = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
+	cx = Mem0[ss:sp:word16]
+	sp = sp + 0x0002
 	return
-	// succ:  fn0C00_005E_exit
 // DataOut:
-fn0C00_005E_exit:		// pred: l0C00_005E
-	// succ: 
+fn0C00_005D_exit:
 // DataOut:
-// fn0C00_006A /////////////////////
+// fn0C00_0069 /////////////////////
 	LiveOut:  
 	MayUseIn:  cx bx ds
 	BypassIn: 
 	Trashed:  
 	Preserved:
-// fn0C00_006A
-void fn0C00_006A()
-fn0C00_006A_entry:		// pred:
-	// succ:  l0C00_006A
+// fn0C00_00699
+void fn0C00_0069()
+fn0C00_0069_entry:
 // DataOut: cx bx ds
-l0C00_006A:		// pred: fn0C00_006A_entry
+l0C00_0069:
 	store(Mem0[ds:0x0200:word16]) = bx
 	store(Mem0[ds:0x0300:word16]) = cx
 	return
 	// succ:  fn0C00_006A_exit
 // DataOut:
-fn0C00_006A_exit:		// pred: l0C00_006A
-	// succ: 
+fn0C00_006A_exit:
 // DataOut:

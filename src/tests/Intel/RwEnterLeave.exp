@@ -9,6 +9,7 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	sp = sp - 0x0002
 	store(Mem0[ss:sp:word16]) = bp
@@ -19,5 +20,6 @@ l0C00_0000:
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 0x0002
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 

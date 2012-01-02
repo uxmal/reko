@@ -58,7 +58,6 @@ namespace Decompiler.Gui.Windows.Forms
         public override void PerformWork(IWorkerDialogService workerDlgSvc)
         {
             workerDlgSvc.SetCaption("Generating intermediate code");
-            Decompiler.RewriteMachineCodeOld();
             Decompiler.AnalyzeDataFlow();
         }
 

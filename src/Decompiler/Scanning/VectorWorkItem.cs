@@ -28,6 +28,7 @@ namespace Decompiler.Scanning
             this.image = image;
             this.table = table;
             this.proc = proc;
+            this.vectorUses = new Dictionary<Address, VectorUse>();
         }
 
         public override void Process()

@@ -22,6 +22,7 @@
 // return address size: 4
 void fn10000000()
 fn10000000_entry:
+	// succ:  l10000000
 l10000000:
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = ebx
@@ -38,6 +39,7 @@ l10000000:
 	SZO = cond(di & di)
 	C = false
 	branch Test(NE,Z) l10000021
+	// succ:  l10000010 l10000021
 l10000010:
 	store(Mem0[0x1006B8E0:byte]) = 0x00
 	call fn100002A8 (retsize: 4;)
@@ -50,13 +52,15 @@ l10000010:
 	ebx = Mem0[esp:word32]
 	esp = esp + 0x00000004
 	return
-	goto fn10000000_exit
+	// succ:  fn10000000_exit
 l10000021:
 	eax = Mem0[esp + 0x0000001C:word32]
 	SCZO = cond(Mem0[eax:word32] - 0x00000000)
 	branch Test(NE,Z) l1000002C
+	// succ:  l1000002A l1000002C
 l1000002A:
 	bl = 0x01
+	// succ:  l1000002C
 l1000002C:
 	ebp = Mem0[esp + 0x00000020:word32]
 	esp = esp - 0x00000004
@@ -80,6 +84,7 @@ l1000002C:
 	SZO = cond(esi & esi)
 	C = false
 	branch Test(NE,Z) l10000061
+	// succ:  l10000056 l10000061
 l10000056:
 	edi = Mem0[esp:word32]
 	esp = esp + 0x00000004
@@ -91,12 +96,14 @@ l10000056:
 	ebx = Mem0[esp:word32]
 	esp = esp + 0x00000004
 	return
-	goto fn10000000_exit
+	// succ:  fn10000000_exit
 l10000061:
 	SCZO = cond(di - 0x0001)
 	branch Test(NE,Z) l1000006D
+	// succ:  l10000067 l1000006D
 l10000067:
 	store(Mem0[esi + 0x00000204:byte]) = bl
+	// succ:  l1000006D
 l1000006D:
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = esi
@@ -109,15 +116,19 @@ l1000006D:
 	SCZO = cond(esp)
 	SCZO = cond(Mem0[eax:word16] - bp)
 	branch Test(NE,Z) l1000022E
+	// succ:  l10000083 l1000022E
 l10000083:
 	SCZO = cond(di - bp)
 	branch Test(LE,SZO) l1000020C
+	// succ:  l1000008C l1000020C
 l1000008C:
 	SCZO = cond(di - 0x0005)
 	branch Test(GT,SZO) l1000020C
+	// succ:  l10000096 l1000020C
 l10000096:
 	SCZO = cond(di - 0x0001)
 	branch Test(NE,Z) l100000BC
+	// succ:  l100000A0 l100000BC
 l100000A0:
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = esi
@@ -129,9 +140,11 @@ l100000A0:
 	ecx = Mem0[eax:word32]
 	store(Mem0[ecx:word32]) = 0x00000001
 	goto l10000211
+	// succ:  l10000211
 l100000BC:
 	SCZO = cond(di - 0x0002)
 	branch Test(NE,Z) l10000132
+	// succ:  l100000C2 l10000132
 l100000C2:
 	edx = Mem0[esi + 0x00000004:word32]
 	esp = esp - 0x00000004
@@ -151,6 +164,7 @@ l100000C2:
 	store(Mem0[esi + 0x000000B2:word16]) = dx
 	cx = Mem0[eax + 0x00000006:word16]
 	store(Mem0[esi + 0x000000B8:word16]) = cx
+	// succ:  l100000F8
 l100000F8:
 	dx = Mem0[eax + 0x00000004:word16]
 	store(Mem0[esi + 0x000000B6:word16]) = dx
@@ -174,9 +188,11 @@ l100000F8:
 	esp = esp + 0x0000001C
 	SCZO = cond(esp)
 	goto l10000211
+	// succ:  l10000211
 l10000132:
 	SCZO = cond(di - 0x0003)
 	branch Test(NE,Z) l10000146
+	// succ:  l10000138 l10000146
 l10000138:
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = esi
@@ -184,13 +200,16 @@ l10000138:
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
 	goto l10000211
+	// succ:  l10000211
 l10000146:
 	SCZO = cond(di - 0x0004)
 	branch Test(NE,Z) l100000F8
+	// succ:  l1000014C l100000F8
 l1000014C:
 	ecx = Mem0[esi + 0x00000004:word32]
 	SCZO = cond(Mem0[ecx + 0x000000E0:word32] - ebp)
 	bl = Test(NE,Z)
+	// succ:  l10000158
 l10000158:
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = esi
@@ -200,30 +219,38 @@ l10000158:
 	SCZO = cond(esp)
 	SCZO = cond(Mem0[eax:word16] - bp)
 	branch Test(EQ,Z) l1000016F
+	// succ:  l10000168 l1000016F
 l10000168:
 	store(Mem0[esi + 0x000000AC:byte]) = 0x00
+	// succ:  l1000016F
 l1000016F:
 	SCZO = cond(Mem0[esi + 0x000000AD:byte] - 0x01)
 	branch Test(NE,Z) l1000017D
+	// succ:  l10000178 l1000017D
 l10000178:
 	SCZO = cond(Mem0[eax:word16] - bp)
 	branch Test(EQ,Z) l10000158
+	// succ:  l1000017D l10000158
 l1000017D:
 	SCZO = cond(Mem0[eax:word16] - bp)
 	branch Test(NE,Z) l1000018B
+	// succ:  l10000182 l1000018B
 l10000182:
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = esi
 	call fn10000238 (retsize: 4;)
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
+	// succ:  l1000018B
 l1000018B:
 	SCZO = cond(Mem0[esi + 0x000000AC:byte] - 0x01)
 	branch Test(NE,Z) l100001B2
+	// succ:  l10000194 l100001B2
 l10000194:
 	SZO = cond(bl & bl)
 	C = false
 	branch Test(EQ,Z) l10000211
+	// succ:  l10000198 l10000211
 l10000198:
 	edx = Mem0[esi + 0x00000004:word32]
 	icall Mem0[edx + 0x000000E0:word32]
@@ -232,7 +259,10 @@ l10000198:
 	edx = Mem0[esi:word32]
 	SCZO = cond(Mem0[edx:word16] - bp)
 	branch Test(NE,Z) l10000211
+	// succ:  l100001AD l10000211
 l100001AD:
+	goto l10000158
+	// succ:  l10000158
 l100001B2:
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = esi
@@ -285,13 +315,16 @@ l100001B2:
 	esp = esp + 0x00000044
 	SCZO = cond(esp)
 	goto l10000211
+	// succ:  l10000211
 l1000020C:
 	store(Mem0[eax:word16]) = 0x8A6C
+	// succ:  l10000211
 l10000211:
 	eax = Mem0[esp + 0x0000001C:word32]
 	eax = Mem0[eax:word32]
 	SCZO = cond(eax - ebp)
 	branch Test(EQ,Z) l1000022E
+	// succ:  l1000021B l1000022E
 l1000021B:
 	ecx = Mem0[esi + 0x00000004:word32]
 	esp = esp - 0x00000004
@@ -302,6 +335,7 @@ l1000021B:
 	call fn1000026E (retsize: 4;)
 	esp = esp + 0x00000008
 	SCZO = cond(esp)
+	// succ:  l1000022E
 l1000022E:
 	edi = Mem0[esp:word32]
 	esp = esp + 0x00000004
@@ -312,6 +346,7 @@ l1000022E:
 	ebx = Mem0[esp:word32]
 	esp = esp + 0x00000004
 	return
+	// succ:  fn10000000_exit
 fn10000000_exit:
 
 // fn10000233
@@ -322,9 +357,11 @@ fn10000000_exit:
 // return address size: 4
 void fn10000233()
 fn10000233_entry:
+	// succ:  l10000233
 l10000233:
 	eax = Mem0[esp + 0x00000004:word32]
 	return
+	// succ:  fn10000233_exit
 fn10000233_exit:
 
 // fn10000238
@@ -335,9 +372,11 @@ fn10000233_exit:
 // return address size: 4
 void fn10000238()
 fn10000238_entry:
+	// succ:  l10000238
 l10000238:
 	eax = Mem0[esp + 0x00000004:word32]
 	return
+	// succ:  fn10000238_exit
 fn10000238_exit:
 
 // fn1000023D
@@ -348,9 +387,11 @@ fn10000238_exit:
 // return address size: 4
 void fn1000023D()
 fn1000023D_entry:
+	// succ:  l1000023D
 l1000023D:
 	eax = Mem0[esp + 0x00000004:word32]
 	return
+	// succ:  fn1000023D_exit
 fn1000023D_exit:
 
 // fn10000242
@@ -361,9 +402,11 @@ fn1000023D_exit:
 // return address size: 4
 void fn10000242()
 fn10000242_entry:
+	// succ:  l10000242
 l10000242:
 	eax = Mem0[esp + 0x00000004:word32]
 	return
+	// succ:  fn10000242_exit
 fn10000242_exit:
 
 // fn1000024C
@@ -374,9 +417,11 @@ fn10000242_exit:
 // return address size: 4
 void fn1000024C()
 fn1000024C_entry:
+	// succ:  l1000024C
 l1000024C:
 	eax = Mem0[esp + 0x00000004:word32]
 	return
+	// succ:  fn1000024C_exit
 fn1000024C_exit:
 
 // fn10000251
@@ -387,9 +432,11 @@ fn1000024C_exit:
 // return address size: 4
 void fn10000251()
 fn10000251_entry:
+	// succ:  l10000251
 l10000251:
 	eax = Mem0[esp + 0x00000004:word32]
 	return
+	// succ:  fn10000251_exit
 fn10000251_exit:
 
 // fn10000256
@@ -400,9 +447,11 @@ fn10000251_exit:
 // return address size: 4
 void fn10000256()
 fn10000256_entry:
+	// succ:  l10000256
 l10000256:
 	eax = Mem0[esp + 0x00000004:word32]
 	return
+	// succ:  fn10000256_exit
 fn10000256_exit:
 
 // fn1000025B
@@ -413,9 +462,11 @@ fn10000256_exit:
 // return address size: 4
 void fn1000025B()
 fn1000025B_entry:
+	// succ:  l1000025B
 l1000025B:
 	eax = Mem0[esp + 0x00000004:word32]
 	return
+	// succ:  fn1000025B_exit
 fn1000025B_exit:
 
 // fn10000260
@@ -427,11 +478,13 @@ fn1000025B_exit:
 // return address size: 4
 void fn10000260()
 fn10000260_entry:
+	// succ:  l10000260
 l10000260:
 	eax = Mem0[esp + 0x00000008:word32]
 	eax = eax + Mem0[esp + 0x00000004:word32]
 	SCZO = cond(eax)
 	return
+	// succ:  fn10000260_exit
 fn10000260_exit:
 
 // fn10000269
@@ -442,9 +495,11 @@ fn10000260_exit:
 // return address size: 4
 void fn10000269()
 fn10000269_entry:
+	// succ:  l10000269
 l10000269:
 	eax = Mem0[esp + 0x00000004:word32]
 	return
+	// succ:  fn10000269_exit
 fn10000269_exit:
 
 // fn1000026E
@@ -456,11 +511,13 @@ fn10000269_exit:
 // return address size: 4
 void fn1000026E()
 fn1000026E_entry:
+	// succ:  l1000026E
 l1000026E:
 	eax = Mem0[esp + 0x00000008:word32]
 	eax = eax + Mem0[esp + 0x00000004:word32]
 	SCZO = cond(eax)
 	return
+	// succ:  fn1000026E_exit
 fn1000026E_exit:
 
 // fn10000277
@@ -472,6 +529,7 @@ fn1000026E_exit:
 // return address size: 4
 void fn10000277()
 fn10000277_entry:
+	// succ:  l10000277
 l10000277:
 	edx = Mem0[0x20000000:word32]
 	eax = Mem0[esp + 0x00000004:word32]
@@ -487,6 +545,7 @@ l10000277:
 	eax = Mem0[esp + 0x00000018:word32]
 	store(Mem0[edx + 0x0000001C:word32]) = eax
 	return
+	// succ:  fn10000277_exit
 fn10000277_exit:
 
 // fn100002A8
@@ -496,8 +555,10 @@ fn10000277_exit:
 // return address size: 4
 void fn100002A8()
 fn100002A8_entry:
+	// succ:  l100002A8
 l100002A8:
 	return
+	// succ:  fn100002A8_exit
 fn100002A8_exit:
 
 // fn100002A9
@@ -509,6 +570,7 @@ fn100002A8_exit:
 // return address size: 4
 void fn100002A9()
 fn100002A9_entry:
+	// succ:  l100002A9
 l100002A9:
 	edx = Mem0[0x20000000:word32]
 	eax = Mem0[esp + 0x00000004:word32]
@@ -522,5 +584,6 @@ l100002A9:
 	eax = Mem0[esp + 0x00000014:word32]
 	store(Mem0[edx + 0x00000014:word32]) = eax
 	return
+	// succ:  fn100002A9_exit
 fn100002A9_exit:
 

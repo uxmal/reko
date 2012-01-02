@@ -27,8 +27,6 @@ namespace Decompiler.Core.Assemblers
 {
 	public interface Assembler
 	{
-        [Obsolete]
-        void Assemble(Address baseAddress, string sourcefile);
         void Assemble(Address baseAddress, TextReader reader);
         void AssembleFragment(Address baseAddress, string fragment);
         ProgramImage Image { get; }

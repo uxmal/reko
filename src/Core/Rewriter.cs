@@ -25,30 +25,6 @@ using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
-	/// <summary>
-	/// Rewrites code from machine-specific to machine-independent IL codes.
-	/// </summary>
-	public abstract class RewriterOld
-	{
-        private IProcedureRewriter prw;
-
-        public RewriterOld(IProcedureRewriter prw)
-        {
-            this.prw = prw;
-        }
-
-        public IProcedureRewriter ProcedureRewriter
-        {
-            get { return prw; }
-        }
-
-        public abstract void GrowStack(int bytes);
-
-        public abstract void ConvertInstructions(MachineInstruction [] instrs, Address [] addrs, uint [] deadOutFlags,  Address addrEnd, CodeEmitterOld emitter);
-
-		public abstract void EmitCallAndReturn(Procedure callee);
-    }
-
     /// <summary>
     /// A rewriter implements a stream of machine-independent instructions, which it generates by successively disassembling
     /// machine-specific instractions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 

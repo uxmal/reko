@@ -58,6 +58,7 @@ fn0C00_0000_entry:
 	def SZO
 	def C
 	def Z
+	// succ:  l0C00_0000
 l0C00_0000:
 	bp_9 = sp
 	ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
@@ -66,11 +67,14 @@ l0C00_0000:
 	Z_13 = SZO_12 (alias)
 	C_14 = false
 	branch Test(NE,Z_13) l0C00_000C
+	// succ:  l0C00_0009 l0C00_000C
 l0C00_0009:
 	ax_17 = 0xFFFF
+	// succ:  l0C00_000C
 l0C00_000C:
 	ax_15 = PHI(ax_11, ax_17)
 	sp_16 = bp_9
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 

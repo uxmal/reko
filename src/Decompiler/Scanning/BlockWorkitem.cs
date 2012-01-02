@@ -77,6 +77,8 @@ namespace Decompiler.Scanning
             blockCur = scanner.FindContainingBlock(addr);
             if (BlockHasBeenScanned(blockCur))
                 return;
+            if (blockCur.Name.Contains("0020")) //$dEBUG
+                blockCur.ToString();
             while (rtlStream.MoveNext())
             {
                 ric = rtlStream.Current;
@@ -90,7 +92,7 @@ namespace Decompiler.Scanning
                         return;
                 }
                 var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
-                if (blNext != null)
+                if (blNext != null) // && !blockCur.Procedure.ControlGraph.ContainsEdge(blockCur, blNext))
                 {
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blNext);
                     return;
@@ -184,12 +186,18 @@ namespace Decompiler.Scanning
             var blockElse = FallthroughBlock(proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
             branch.Target = blockThen;      // The back-patch referred to above.
-            proc.ControlGraph.AddEdge(branchingBlock, blockElse);
-            proc.ControlGraph.AddEdge(branchingBlock, blockThen);
+            EnsureEdge(proc, branchingBlock, blockElse);
+            EnsureEdge(proc, branchingBlock, blockThen);
 
             // Now, switch to the fallthru block and keep rewriting.
             blockCur = blockElse;
             return true;
+        }
+
+        private void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
+        {
+            if (!proc.ControlGraph.ContainsEdge(blockFrom, blockTo))
+                proc.ControlGraph.AddEdge(blockFrom, blockTo);
         }
 
         public bool VisitGoto(RtlGoto g)
@@ -200,7 +208,7 @@ namespace Decompiler.Scanning
                 scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
                 var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, scEval);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
-                blockSource.Procedure.ControlGraph.AddEdge(blockSource, blockDest);
+                EnsureEdge(blockSource.Procedure, blockSource, blockDest);
 
                 return false;
             }

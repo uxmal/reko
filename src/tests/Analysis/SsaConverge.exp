@@ -2,109 +2,131 @@ Mem0:Global memory
     def:  def Mem0
 fp:Temporary
     def:  def fp
+sp:Register sp
+    def:  def sp
 bx:Register bx
     def:  def bx
-    uses: SCZO_8 = cond(bx - 0x0000)
+    uses: SCZO_10 = cond(bx - 0x0000)
 SCZO:Flags
     def:  def SCZO
 Z:Flags
     def:  def Z
-ax:Register ax
-    def:  def ax
-ds:Register ds
-    def:  def ds
-    uses: store(Mem21[ds:0x0100:word16]) = ax_18
 SZO:Flags
     def:  def SZO
-SCZO_8: orig: SCZO
-    def:  SCZO_8 = cond(bx - 0x0000)
-    uses: Z_9 = SCZO_8 (alias)
-          SZO_10 = SCZO_8 (alias)
-          SCZO_20 = PHI(SCZO_12, SCZO_8, SCZO_8)
-          SCZO_20 = PHI(SCZO_12, SCZO_8, SCZO_8)
-Z_9: orig: Z
-    def:  Z_9 = SCZO_8 (alias)
-    uses: branch Test(EQ,Z_9) l0C00_0013
-          Z_19 = PHI(Z_13, Z_9, Z_9)
-          Z_19 = PHI(Z_13, Z_9, Z_9)
-SZO_10: orig: SZO
-    def:  SZO_10 = SCZO_8 (alias)
-    uses: branch Test(GT,SZO_10) l0C00_000D
-          SZO_17 = PHI(SZO_14, SZO_10, SZO_10)
-          SZO_17 = PHI(SZO_14, SZO_10, SZO_10)
-ax_11: orig: ax
-    def:  ax_11 = 0x0000
-    uses: SCZO_12 = cond(ax_11)
-          ax_18 = PHI(ax_11, ax_15, ax_16)
-SCZO_12: orig: SCZO
-    def:  SCZO_12 = cond(ax_11)
-    uses: Z_13 = SCZO_12 (alias)
-          SZO_14 = SCZO_12 (alias)
-          SCZO_20 = PHI(SCZO_12, SCZO_8, SCZO_8)
-Z_13: orig: Z
-    def:  Z_13 = SCZO_12 (alias)
-    uses: Z_19 = PHI(Z_13, Z_9, Z_9)
-SZO_14: orig: SZO
-    def:  SZO_14 = SCZO_12 (alias)
-    uses: SZO_17 = PHI(SZO_14, SZO_10, SZO_10)
+ax:Register ax
+    def:  def ax
+    uses: ax_22 = ax ^ ax
+          ax_22 = ax ^ ax
+C:Flags
+    def:  def C
+ds:Register ds
+    def:  def ds
+    uses: store(Mem19[ds:0x0100:word16]) = ax_15
+SCZO_10: orig: SCZO
+    def:  SCZO_10 = cond(bx - 0x0000)
+    uses: Z_11 = SCZO_10 (alias)
+          SZO_12 = SCZO_10 (alias)
+          C_13 = SCZO_10 (alias)
+          SCZO_18 = PHI(SCZO_10, SCZO_26, SCZO_10)
+          SCZO_18 = PHI(SCZO_10, SCZO_26, SCZO_10)
+Z_11: orig: Z
+    def:  Z_11 = SCZO_10 (alias)
+    uses: branch Test(EQ,Z_11) l0C00_0013
+          Z_17 = PHI(Z_11, Z_24, Z_11)
+          Z_17 = PHI(Z_11, Z_24, Z_11)
+SZO_12: orig: SZO
+    def:  SZO_12 = SCZO_10 (alias)
+    uses: branch Test(GT,SZO_12) l0C00_000D
+          SZO_16 = PHI(SZO_12, SZO_23, SZO_12)
+          SZO_16 = PHI(SZO_12, SZO_23, SZO_12)
+C_13: orig: C
+    def:  C_13 = SCZO_10 (alias)
+    uses: C_14 = PHI(C_13, C_25, C_13)
+          C_14 = PHI(C_13, C_25, C_13)
+C_14: orig: C
+    def:  C_14 = PHI(C_13, C_25, C_13)
 ax_15: orig: ax
-    def:  ax_15 = 0x0001
-    uses: ax_18 = PHI(ax_11, ax_15, ax_16)
-ax_16: orig: ax
-    def:  ax_16 = 0xFFFF
-    uses: ax_18 = PHI(ax_11, ax_15, ax_16)
-SZO_17: orig: SZO
-    def:  SZO_17 = PHI(SZO_14, SZO_10, SZO_10)
-ax_18: orig: ax
-    def:  ax_18 = PHI(ax_11, ax_15, ax_16)
-    uses: store(Mem21[ds:0x0100:word16]) = ax_18
-Z_19: orig: Z
-    def:  Z_19 = PHI(Z_13, Z_9, Z_9)
-SCZO_20: orig: SCZO
-    def:  SCZO_20 = PHI(SCZO_12, SCZO_8, SCZO_8)
-Mem21: orig: Mem0
-    def:  store(Mem21[ds:0x0100:word16]) = ax_18
+    def:  ax_15 = PHI(ax_20, ax_22, ax_21)
+    uses: store(Mem19[ds:0x0100:word16]) = ax_15
+SZO_16: orig: SZO
+    def:  SZO_16 = PHI(SZO_12, SZO_23, SZO_12)
+Z_17: orig: Z
+    def:  Z_17 = PHI(Z_11, Z_24, Z_11)
+SCZO_18: orig: SCZO
+    def:  SCZO_18 = PHI(SCZO_10, SCZO_26, SCZO_10)
+Mem19: orig: Mem0
+    def:  store(Mem19[ds:0x0100:word16]) = ax_15
+ax_20: orig: ax
+    def:  ax_20 = 0xFFFF
+    uses: ax_15 = PHI(ax_20, ax_22, ax_21)
+ax_21: orig: ax
+    def:  ax_21 = 0x0001
+    uses: ax_15 = PHI(ax_20, ax_22, ax_21)
+ax_22: orig: ax
+    def:  ax_22 = ax ^ ax
+    uses: SZO_23 = cond(ax_22)
+          ax_15 = PHI(ax_20, ax_22, ax_21)
+SZO_23: orig: SZO
+    def:  SZO_23 = cond(ax_22)
+    uses: Z_24 = SZO_23 (alias)
+          SZO_16 = PHI(SZO_12, SZO_23, SZO_12)
+Z_24: orig: Z
+    def:  Z_24 = SZO_23 (alias)
+    uses: Z_17 = PHI(Z_11, Z_24, Z_11)
+C_25: orig: C
+    def:  C_25 = false
+    uses: SCZO_26 = C_25 (alias)
+          C_14 = PHI(C_13, C_25, C_13)
+SCZO_26: orig: SCZO
+    def:  SCZO_26 = C_25 (alias)
+    uses: SCZO_18 = PHI(SCZO_10, SCZO_26, SCZO_10)
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
 	def fp
+	def sp
 	def bx
 	def SCZO
 	def Z
-	def ax
-	def ds
 	def SZO
+	def ax
+	def C
+	def ds
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	SCZO_8 = cond(bx - 0x0000)
-	Z_9 = SCZO_8 (alias)
-	SZO_10 = SCZO_8 (alias)
-	branch Test(EQ,Z_9) l0C00_0013
+l0C00_0000:
+	SCZO_10 = cond(bx - 0x0000)
+	Z_11 = SCZO_10 (alias)
+	SZO_12 = SCZO_10 (alias)
+	C_13 = SCZO_10 (alias)
+	branch Test(EQ,Z_11) l0C00_0013
 	// succ:  l0C00_0005 l0C00_0013
-l0C00_0005:		// pred: l0C00_0000
-	branch Test(GT,SZO_10) l0C00_000D
+l0C00_0005:
+	branch Test(GT,SZO_12) l0C00_000D
 	// succ:  l0C00_0007 l0C00_000D
-l0C00_0007:		// pred: l0C00_0005
-	ax_16 = 0xFFFF
+l0C00_0007:
+	ax_20 = 0xFFFF
+	goto l0C00_0015
 	// succ:  l0C00_0015
-l0C00_0015:		// pred: l0C00_0013 l0C00_000D l0C00_0007
-	SZO_17 = PHI(SZO_14, SZO_10, SZO_10)
-	ax_18 = PHI(ax_11, ax_15, ax_16)
-	Z_19 = PHI(Z_13, Z_9, Z_9)
-	SCZO_20 = PHI(SCZO_12, SCZO_8, SCZO_8)
-	store(Mem21[ds:0x0100:word16]) = ax_18
+l0C00_000D:
+	ax_21 = 0x0001
+	goto l0C00_0015
+	// succ:  l0C00_0015
+l0C00_0013:
+	ax_22 = ax ^ ax
+	SZO_23 = cond(ax_22)
+	Z_24 = SZO_23 (alias)
+	C_25 = false
+	SCZO_26 = C_25 (alias)
+	// succ:  l0C00_0015
+l0C00_0015:
+	C_14 = PHI(C_13, C_25, C_13)
+	ax_15 = PHI(ax_20, ax_22, ax_21)
+	SZO_16 = PHI(SZO_12, SZO_23, SZO_12)
+	Z_17 = PHI(Z_11, Z_24, Z_11)
+	SCZO_18 = PHI(SCZO_10, SCZO_26, SCZO_10)
+	store(Mem19[ds:0x0100:word16]) = ax_15
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0015
-	// succ: 
-l0C00_000D:		// pred: l0C00_0005
-	ax_15 = 0x0001
-	// succ:  l0C00_0015
-l0C00_0013:		// pred: l0C00_0000
-	ax_11 = 0x0000
-	SCZO_12 = cond(ax_11)
-	Z_13 = SCZO_12 (alias)
-	SZO_14 = SCZO_12 (alias)
-	// succ:  l0C00_0015
+fn0C00_0000_exit:
 

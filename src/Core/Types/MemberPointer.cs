@@ -51,7 +51,7 @@ namespace Decompiler.Core.Types
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
-            return v.VisitMemberPointer<T>(this);
+            return v.VisitMemberPointer(this);
         }
 
 		public override DataType Clone()

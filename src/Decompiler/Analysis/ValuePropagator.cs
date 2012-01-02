@@ -43,7 +43,6 @@ namespace Decompiler.Analysis
         private ExpressionSimplifier eval;
         private SsaEvaluationContext evalCtx;
         private Procedure proc;
-        private bool changed;
 
         private static TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
 

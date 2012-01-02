@@ -838,7 +838,7 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "2|0C00:0002(3): 1 instructions",
                 "3|call SEQ(cs, Mem0[ds:bx + 0x0004:word16]) (2)",
                 "4|0C00:0005(3): 1 instructions",
-                "4|call Mem0[ds:bx + 0x0008:ptr32] (2)");
+                "5|call Mem0[ds:bx + 0x0008:ptr32] (4)");
         }
 
 

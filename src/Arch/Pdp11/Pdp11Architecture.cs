@@ -73,25 +73,11 @@ namespace Decompiler.Arch.Pdp11
             return new Pdp11ProcessorState();
         }
 
-        public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
-        {
-            return new Pdp11CodeWalker();
-        }
-
         public BitSet CreateRegisterBitset()
         {
             return new BitSet(16);
         }
 
-        public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Rewriter CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
-        {
-            return new Pdp11Rewriter(this, null);
-        }
 
         public MachineRegister GetRegister(int i)
         {
@@ -179,7 +165,7 @@ namespace Decompiler.Arch.Pdp11
 
         public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Pdp11Rewriter(this);
         }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

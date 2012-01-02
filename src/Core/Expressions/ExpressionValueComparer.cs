@@ -32,9 +32,10 @@ namespace Decompiler.Core.Expressions
         private delegate bool EqualsFn(Expression x, Expression y);
         private delegate int HashFn(Expression obj);
 
-        private Dictionary<Type, EqualsFn> eqs = new Dictionary<Type, EqualsFn>();
-        private Dictionary<Type, HashFn> hashes = new Dictionary<Type, HashFn>();
-        public ExpressionValueComparer()
+        private static Dictionary<Type, EqualsFn> eqs = new Dictionary<Type, EqualsFn>();
+        private static Dictionary<Type, HashFn> hashes = new Dictionary<Type, HashFn>();
+
+        static ExpressionValueComparer()
         {
             Add(typeof(Application),
                 delegate(Expression ea, Expression eb)
@@ -42,11 +43,11 @@ namespace Decompiler.Core.Expressions
                     Application a = (Application) ea, b = (Application) eb;
                     if (a.Arguments.Length != b.Arguments.Length)
                         return false;
-                    if (!Equals(a.Procedure, b.Procedure))
+                    if (!EqualsImpl(a.Procedure, b.Procedure))
                         return false;
                     for (int i = 0; i != a.Arguments.Length; ++i)
                     {
-                        if (!Equals(a.Arguments[i], b.Arguments[i]))
+                        if (!EqualsImpl(a.Arguments[i], b.Arguments[i]))
                             return false;
                     }
                     return true;
@@ -54,13 +55,13 @@ namespace Decompiler.Core.Expressions
                 delegate(Expression obj)
                 {
                     Application a = (Application) obj;
-                    int h = GetHashCode(a.Procedure);
+                    int h = GetHashCodeImpl(a.Procedure);
                     h ^= a.Arguments.Length;
                     foreach (Expression e in a.Arguments)
                     {
                         h *= 47;
                         if (e != null)
-                            h ^= GetHashCode(e);
+                            h ^= GetHashCodeImpl(e);
                     }
                     return h;
                 });
@@ -70,23 +71,23 @@ namespace Decompiler.Core.Expressions
                     BinaryExpression a = (BinaryExpression) ea, b = (BinaryExpression) eb;
                     if (a.op != b.op)
                         return false;
-                    return (Equals(a.Left, b.Left) && Equals(a.Right, b.Right));
+                    return (EqualsImpl(a.Left, b.Left) && EqualsImpl(a.Right, b.Right));
                 },
                 delegate(Expression obj)
                 {
                     BinaryExpression b = (BinaryExpression) obj;
-                    return b.op.GetHashCode() ^ GetHashCode(b.Left) ^ 47 * GetHashCode(b.Right);
+                    return b.op.GetHashCode() ^ GetHashCodeImpl(b.Left) ^ 47 * GetHashCodeImpl(b.Right);
                 });
 
             Add(typeof(ConditionOf),
                 delegate(Expression ea, Expression eb)
                 {
                     ConditionOf a = (ConditionOf) ea, b = (ConditionOf) eb;
-                    return Equals(a.Expression, b.Expression);
+                    return EqualsImpl(a.Expression, b.Expression);
                 },
                 delegate(Expression obj)
                 {
-                    return 0x10101010 * GetHashCode(((ConditionOf) obj).Expression);
+                    return 0x10101010 * GetHashCodeImpl(((ConditionOf) obj).Expression);
                 });
 
             Add(typeof(Constant),
@@ -105,23 +106,23 @@ namespace Decompiler.Core.Expressions
                 {
                     DepositBits a = (DepositBits) ea, b = (DepositBits) eb;
                     return a.BitCount == b.BitCount && a.BitPosition == b.BitPosition &&
-                        Equals(a.Source, b.Source) && Equals(a.InsertedBits, b.InsertedBits);
+                        EqualsImpl(a.Source, b.Source) && EqualsImpl(a.InsertedBits, b.InsertedBits);
                 },
                 delegate(Expression obj)
                 {
                     DepositBits dpb = (DepositBits) obj;
-                    return GetHashCode(dpb.Source) * 67 ^ GetHashCode(dpb.InsertedBits) * 43 ^ dpb.BitPosition * 7 ^ dpb.BitCount;
+                    return GetHashCodeImpl(dpb.Source) * 67 ^ GetHashCodeImpl(dpb.InsertedBits) * 43 ^ dpb.BitPosition * 7 ^ dpb.BitCount;
                 });
 
             Add(typeof(Dereference),
                 delegate(Expression ea, Expression eb)
                 {
                     Dereference a = (Dereference) ea, b = (Dereference) eb;
-                    return Equals(a.Expression, b.Expression);
+                    return EqualsImpl(a.Expression, b.Expression);
                 },
                 delegate(Expression obj)
                 {
-                    return GetHashCode(((Dereference) obj).Expression) * 129;
+                    return GetHashCodeImpl(((Dereference) obj).Expression) * 129;
                 });
 
 
@@ -141,14 +142,14 @@ namespace Decompiler.Core.Expressions
                 delegate(Expression ea, Expression eb)
                 {
                     MemoryAccess a = (MemoryAccess) ea, b = (MemoryAccess) eb;
-                    return Equals(a.MemoryId, b.MemoryId) &&
+                    return EqualsImpl(a.MemoryId, b.MemoryId) &&
                         a.DataType == b.DataType &&
-                        Equals(a.EffectiveAddress, b.EffectiveAddress);
+                        EqualsImpl(a.EffectiveAddress, b.EffectiveAddress);
                 },
                 delegate(Expression obj)
                 {
                     MemoryAccess m = (MemoryAccess) obj;
-                    return GetHashCode(m.MemoryId) ^ m.DataType.GetHashCode() ^ 47 * GetHashCode(m.EffectiveAddress);
+                    return GetHashCodeImpl(m.MemoryId) ^ m.DataType.GetHashCode() ^ 47 * GetHashCodeImpl(m.EffectiveAddress);
                 });
 
             Add(typeof(MemoryIdentifier),
@@ -169,7 +170,7 @@ namespace Decompiler.Core.Expressions
                         return false;
                     for (int i = 0; i != a.Arguments.Length; ++i)
                     {
-                        if (!Equals(a.Arguments[i], b.Arguments[i]))
+                        if (!EqualsImpl(a.Arguments[i], b.Arguments[i]))
                             return false;
                     }
                     return true;
@@ -180,7 +181,7 @@ namespace Decompiler.Core.Expressions
                     int h = phi.Arguments.Length.GetHashCode();
                     for (int i = 0; i < phi.Arguments.Length; ++i)
                     {
-                        h = h * 47 ^ GetHashCode(phi.Arguments[i]);
+                        h = h * 47 ^ GetHashCodeImpl(phi.Arguments[i]);
                     }
                     return h;
                 });
@@ -190,31 +191,31 @@ namespace Decompiler.Core.Expressions
                 {
                     SegmentedAccess a = (SegmentedAccess) ea, b = (SegmentedAccess) eb;
                     return
-                        Equals(a.BasePointer, b.BasePointer) &&
-                        Equals(a.MemoryId, b.MemoryId) &&
+                        EqualsImpl(a.BasePointer, b.BasePointer) &&
+                        EqualsImpl(a.MemoryId, b.MemoryId) &&
                         a.DataType == b.DataType &&
-                        Equals(a.EffectiveAddress, b.EffectiveAddress);
+                        EqualsImpl(a.EffectiveAddress, b.EffectiveAddress);
                 },
                 delegate(Expression obj)
                 {
                     SegmentedAccess m = (SegmentedAccess) obj;
-                    return GetHashCode(m.MemoryId) ^
+                    return GetHashCodeImpl(m.MemoryId) ^
                         m.DataType.GetHashCode() ^
-                        47 * GetHashCode(m.EffectiveAddress) ^
-                        GetHashCode(m.BasePointer);
+                        47 * GetHashCodeImpl(m.EffectiveAddress) ^
+                        GetHashCodeImpl(m.BasePointer);
                 });
 
             Add(typeof(Slice),
                 delegate(Expression ea, Expression eb)
                 {
                     Slice a = (Slice) ea, b = (Slice) eb;
-                    return Equals(a.Expression, b.Expression) &&
+                    return EqualsImpl(a.Expression, b.Expression) &&
                         a.Offset == b.Offset && a.DataType == b.DataType;
                 },
                 delegate(Expression obj)
                 {
                     Slice s = (Slice) obj;
-                    return GetHashCode(s.Expression) ^ s.Offset * 47 ^ s.DataType.GetHashCode() * 23;
+                    return GetHashCodeImpl(s.Expression) ^ s.Offset * 47 ^ s.DataType.GetHashCode() * 23;
                 }); 
 
 
@@ -223,12 +224,12 @@ namespace Decompiler.Core.Expressions
                 delegate(Expression x, Expression y)
                 {
                     TestCondition tx = (TestCondition) x, ty = (TestCondition) y; 
-                    return Equals(tx.ConditionCode, ty.ConditionCode) && Equals(tx.Expression, ty.Expression);
+                    return Equals(tx.ConditionCode, ty.ConditionCode) && EqualsImpl(tx.Expression, ty.Expression);
                 },
                 delegate(Expression x)
                 {
                     TestCondition tx = (TestCondition) x;
-                    return tx.ConditionCode.GetHashCode() ^ GetHashCode(tx.Expression) & 47;
+                    return tx.ConditionCode.GetHashCode() ^ GetHashCodeImpl(tx.Expression) & 47;
                 });
 
             Add(typeof (UnaryExpression),
@@ -236,16 +237,16 @@ namespace Decompiler.Core.Expressions
                 {
                     UnaryExpression a = (UnaryExpression) x, b = (UnaryExpression) y;
                     return a.op == b.op && 
-                        Equals(a.Expression, b.Expression);
+                        EqualsImpl(a.Expression, b.Expression);
                 },
                 delegate(Expression obj)
                 {
                     UnaryExpression u = (UnaryExpression) obj;
-                    return GetHashCode(u.Expression) ^ u.op.GetHashCode();
+                    return GetHashCodeImpl(u.Expression) ^ u.op.GetHashCode();
                 });
         }
 
-        private void Add(Type t, EqualsFn eq, HashFn hash)
+        private static void Add(Type t, EqualsFn eq, HashFn hash)
         {
             eqs.Add(t, eq);
             hashes.Add(t, hash);
@@ -259,7 +260,11 @@ namespace Decompiler.Core.Expressions
                 return true;
             if (x == null || y == null)
                 return false;
+            return EqualsImpl(x, y);
+        }
 
+        private static bool EqualsImpl(Expression x, Expression y)
+        {
             Type tx = x.GetType();
             Type ty = y.GetType();
             if (tx != ty)
@@ -268,11 +273,16 @@ namespace Decompiler.Core.Expressions
             return eqs[tx](x, y);
         }
 
-        public int GetHashCode(Expression obj)
+        private static int GetHashCodeImpl(Expression obj)
         {
             if (obj == null)
                 throw new ArgumentNullException();
             return hashes[obj.GetType()](obj);
+        }
+
+        public int GetHashCode(Expression obj)
+        {
+            return GetHashCodeImpl(obj);
         }
         #endregion
     }

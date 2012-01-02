@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2011 John Källén.
+ * Copyright (C) 1999-2011 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,27 +19,33 @@
 #endregion
 
 using Decompiler.Core;
-using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Pdp11
+namespace Decompiler.Scanning
 {
-    public class Pdp11CodeWalker : CodeWalker
+    /// <summary>
+    /// Replaces 
+    /// </summary>
+    class FrameAccessSimplifier
     {
-        public Pdp11CodeWalker()
+        private WorkList<Block> wl;
+
+        public FrameAccessSimplifier(Procedure proc)
         {
+            wl = new WorkList<Block>(proc.ControlGraph.Blocks);
         }
 
-        public override Address Address
+        private void SimplifyConstants(Procedure proc)
         {
-            get { throw new NotImplementedException(); }
-        }
+            Block item;
+            while (wl.GetWorkItem(out item))
+            {
 
-        public override MachineInstruction WalkInstruction(ICodeWalkerListener listener)
-        {
-            throw new NotImplementedException();
-        }
+
+            }
+        }        
     }
 }

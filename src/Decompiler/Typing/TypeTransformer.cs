@@ -191,7 +191,7 @@ namespace Decompiler.Typing
 
 		public void Transform()
 		{
-			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store);
+			var ppr = new PtrPrimitiveReplacer(factory, store);
 			ppr.ReplaceAll();
 			int iteration = 0;
 			do

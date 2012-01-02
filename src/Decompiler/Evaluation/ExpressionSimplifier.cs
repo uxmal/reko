@@ -51,7 +51,7 @@ namespace Decompiler.Evaluation
         private SliceShift sliceShift;
         private NegSub_Rule negSub;
         private Mps_Constant_Rule mpsRule;
-        private Sub_Xor_Zero_Rule subxorZero;
+        private BinOpWithSelf_Rule binopWithSelf;
 
         public ExpressionSimplifier(EvaluationContext ctx)
         {
@@ -72,7 +72,7 @@ namespace Decompiler.Evaluation
             this.shiftShift = new ShiftShift_c_c_Rule(ctx);
             this.mpsRule = new Mps_Constant_Rule(ctx);
             this.sliceShift = new SliceShift(ctx);
-            this.subxorZero = new Sub_Xor_Zero_Rule();
+            this.binopWithSelf = new BinOpWithSelf_Rule();
         }
 
         public bool Changed { get; set; }
@@ -133,10 +133,10 @@ namespace Decompiler.Evaluation
                 Changed = true;
                 return add2ids.Transform().Accept(this);
             }
-            if (subxorZero.Match(binExp))
+            if (binopWithSelf.Match(binExp))
             {
                 Changed = true;
-                return subxorZero.Transform();
+                return binopWithSelf.Transform(ctx).Accept(this);
             }
 
             var left = binExp.Left.Accept(this);
@@ -268,6 +268,8 @@ namespace Decompiler.Evaluation
             var e = c.Expression.Accept(this);
             //$REVIEW: if e == 0, then Z flags could be set to 1. But that's architecture specific, so
             // we leave that as an exercise to re reader
+            if (e != c.Expression)
+                c = new ConditionOf(e);
             return c;
         }
 

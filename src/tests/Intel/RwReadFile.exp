@@ -15,6 +15,7 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	sp = sp - 0x0002
 	store(Mem0[ss:sp:word16]) = 0x0D00
@@ -28,12 +29,15 @@ l0C00_0000:
 	SZO = cond(ax)
 	C = false
 	branch Test(GE,SO) l0C00_001A
+	// succ:  l0C00_0015 l0C00_001A
 l0C00_0015:
 	al = 0x01
 	call fn0C00_001F (retsize: 2;)
+	// succ:  l0C00_001A
 l0C00_001A:
 	store(Mem0[ds:0x0302:word16]) = ax
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 // fn0C00_001F
 // Mem0:Global memory
@@ -44,9 +48,11 @@ fn0C00_0000_exit:
 // return address size: 0
 void fn0C00_001F()
 fn0C00_001F_entry:
+	// succ:  l0C00_001F
 l0C00_001F:
 	ah = 0x4C
 	msdos_terminate(al)
+	// succ:  fn0C00_001F_exit
 fn0C00_001F_exit:
 // fn0C00_0023
 // Mem0:Global memory
@@ -63,12 +69,16 @@ fn0C00_001F_exit:
 // return address size: 2
 void fn0C00_0023()
 fn0C00_0023_entry:
+	// succ:  l0C00_0023
 l0C00_0023:
 	ah = 0x3F
 	C = msdos_read_file(bx, cx, ds_dx, &ax)
 	branch Test(UGE,C) l0C00_002C
+	// succ:  l0C00_0029 l0C00_002C
 l0C00_0029:
 	ax = 0xFFFF
+	// succ:  l0C00_002C
 l0C00_002C:
 	return
+	// succ:  fn0C00_0023_exit
 fn0C00_0023_exit:

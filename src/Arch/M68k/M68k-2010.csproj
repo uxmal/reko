@@ -64,7 +64,6 @@
     <Compile Include="Decoder.cs" />
     <Compile Include="InstructionFormatter.cs" />
     <Compile Include="M68kArchitecture.cs" />
-    <Compile Include="M68kCodeWalker.cs" />
     <Compile Include="M68kDisassembler.cs" />
     <Compile Include="M68kInstruction.cs" />
     <Compile Include="M68kState.cs" />

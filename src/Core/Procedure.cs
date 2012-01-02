@@ -42,14 +42,13 @@ namespace Decompiler.Core
         private BlockGraph controlGraph;
 		private Block blockEntry;
 		private Block blockExit;
-		private Frame frame;
 
 		public Procedure(string name, Frame frame) : base(name)
 		{
             this.body = new List<AbsynStatement>();
             this.blocks = new List<Block>();
             this.controlGraph = new BlockGraph(blocks);
-			this.frame = frame;
+			this.Frame = frame;
 			this.Signature = new ProcedureSignature();
 			this.blockEntry = AddBlock(Name + "_entry");	
 			this.blockExit = AddBlock(Name + "_exit");
@@ -59,6 +58,7 @@ namespace Decompiler.Core
         public BlockGraph ControlGraph { get { return controlGraph; } }
         public Block EntryBlock { get { return blockEntry; } }
         public Block ExitBlock { get { return blockExit; } }
+        public Frame Frame { get; private set; }
 
         /// <summary>
         /// Returns the statements of the procedure, in no particular order.
@@ -146,10 +146,15 @@ namespace Decompiler.Core
         /// <param name="emitFrame"></param>
         /// <param name="writer"></param>
 		public void Write(bool emitFrame, TextWriter writer)
-		{
+        {
+            Write(emitFrame, false, writer);
+        }
+
+		public void Write(bool emitFrame, bool showEdges, TextWriter writer)
+        {
 			writer.WriteLine("// {0}", Name);
 			if (emitFrame)
-				frame.Write(writer);
+				Frame.Write(writer);
             Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new Formatter(writer));
 			writer.WriteLine();
 
@@ -162,12 +167,22 @@ namespace Decompiler.Core
                 block.Write(writer);
                 if (block != ExitBlock)
                 {
-                    var succ = controlGraph.Successors(block).ToArray();
-                    if (succ.Length == 1)
+                    var succ = block.Succ;
+                    if (succ.Count == 1)
                     {
-                        if (i == blocks.Length - 1 || succ[0] != blocks[i + 1])
+                        var ret = block.Statements.Count > 0 && (block.Statements.Last.Instruction is ReturnInstruction);
+                        if (!ret && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
                             writer.WriteLine("\tgoto {0}", succ[0].Name);
                     }
+                    else if (succ.Count == 2)
+                    {
+                        var br = block.Statements.Last.Instruction is Branch;
+                        if (br && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
+                            writer.WriteLine("\tgoto {0}", succ[0].Name);
+                    }
+                    writer.Write("\t// succ: ");
+                    foreach (var s in succ) writer.Write(" {0}", s.Name);
+                    writer.WriteLine();
                 }
 			}
 		}
@@ -192,18 +207,6 @@ namespace Decompiler.Core
         {
             return blocks.OrderBy((x => x), new BlockComparer());
         }
-
-		public Frame Frame
-		{
-			get { return frame; }
-		}
-		
-        //$REVIEW: this causes a lot of bugs. It's needed to generate dominator trees, but not much used elsewhere.
-        // Consider moving numbering into dominator graph generation.
-		[Obsolete("", true)]
-        public void RenumberBlocks()
-		{
-		}
 
 		/// <summary>
 		/// The effects of this procedure on registers, stack, and FPU stack.

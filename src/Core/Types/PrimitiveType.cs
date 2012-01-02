@@ -38,6 +38,7 @@ namespace Decompiler.Core.Types
 		Real = 32,
 		Pointer = 64,
 		Selector = 128,
+        Code = 256,      // Executable code.
 	}
 
 	/// <summary>
@@ -51,9 +52,9 @@ namespace Decompiler.Core.Types
 	public class PrimitiveType : DataType
 	{
 		private Domain domain;
-		private int byteSize;
+		private short byteSize;
 		
-		private PrimitiveType(Domain dom, int byteSize, string name)
+		private PrimitiveType(Domain dom, short byteSize, string name)
 		{
 			if (dom == 0)
 				throw new ArgumentException("Domain is empty.");
@@ -74,7 +75,7 @@ namespace Decompiler.Core.Types
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
-            return v.VisitPrimitive<T>(this);
+            return v.VisitPrimitive(this);
         }
 
 		public override DataType Clone()
@@ -93,10 +94,10 @@ namespace Decompiler.Core.Types
 
 		public static PrimitiveType Create(Domain dom, int byteSize)
 		{
-			return Create(dom, byteSize, null);
+			return Create(dom, (short) byteSize, null);
 		}
 
-		private static PrimitiveType Create(Domain dom, int byteSize, string name)
+		private static PrimitiveType Create(Domain dom, short byteSize, string name)
 		{
 			PrimitiveType p = new PrimitiveType(dom, byteSize, null);
 			PrimitiveType shared;
@@ -135,7 +136,7 @@ namespace Decompiler.Core.Types
 			default:
 				throw new ArgumentException("Only primitives of sizes 1, 2, 4, or 8 bytes are supported.");
 			}
-			return Create(w, byteSize, name);
+			return Create(w, (short) byteSize, name);
 		}
 
 		public Domain Domain
@@ -270,160 +271,68 @@ namespace Decompiler.Core.Types
 			cache = new Dictionary<PrimitiveType,PrimitiveType>();
             lookupByName = new Dictionary<string, PrimitiveType>();
 
-			_void = Create(Domain.Void, 0);
+			Void = Create(Domain.Void, 0);
 
-			_byte = CreateWord(1);
-			bool1 = Create(Domain.Boolean, 1);
-			_char = Create(Domain.Character, 1);
-			int8 = Create(Domain.SignedInt, 1);
-			uint8 = Create(Domain.UnsignedInt, 1);
+			Byte = CreateWord(1);
+			Bool = Create(Domain.Boolean, 1);
+		    Char = Create(Domain.Character, 1);
+			SByte = Create(Domain.SignedInt, 1);
+			UInt8 = Create(Domain.UnsignedInt, 1);
 
-			word16 = CreateWord(2);
-			int16 = Create(Domain.SignedInt, 2);
-			uint16 = Create(Domain.UnsignedInt, 2);
-			ptr16 = Create(Domain.Pointer, 2);
-			selector = Create(Domain.Selector, 2);
+			Word16 = CreateWord(2);
+			Int16 = Create(Domain.SignedInt, 2);
+			UInt16 = Create(Domain.UnsignedInt, 2);
+			Ptr16 = Create(Domain.Pointer, 2);
+			SegmentSelector = Create(Domain.Selector, 2);
             WChar = Create(Domain.Character, 2);
 
-			word32 = CreateWord(4);
-			int32 = Create(Domain.SignedInt, 4);
-			uint32 = Create(Domain.UnsignedInt, 4);
-			pointer32 = Create(Domain.Pointer, 4);
-			real32 = Create(Domain.Real, 4);
+			Word32 = CreateWord(4);
+			Int32 = Create(Domain.SignedInt, 4);
+			UInt32 = Create(Domain.UnsignedInt, 4);
+			Pointer32 = Create(Domain.Pointer, 4);
+			Real32 = Create(Domain.Real, 4);
 
-			word64 = CreateWord(8);
-			int64 = Create(Domain.SignedInt, 8);
-			uint64 = Create(Domain.UnsignedInt, 8);
-			pointer64 = Create(Domain.Pointer, 8);
-			real64 = Create(Domain.Real, 8);
+			Word64 = CreateWord(8);
+			Int64 = Create(Domain.SignedInt, 8);
+			UInt64 = Create(Domain.UnsignedInt, 8);
+			Pointer64 = Create(Domain.Pointer, 8);
+			Real64 = Create(Domain.Real, 8);
 
-			real80 = Create(Domain.Real, 10);
+			Real80 = Create(Domain.Real, 10);
 
 		}
 
-		private static PrimitiveType _void;
 
-		private static PrimitiveType _byte;
-		private static PrimitiveType bool1;
-		private static PrimitiveType _char;
-		private static PrimitiveType int8;
-		private static PrimitiveType uint8;
 
-		private static PrimitiveType word16;
-		private static PrimitiveType int16;
-		private static PrimitiveType uint16;
-		private static PrimitiveType ptr16;
-		private static PrimitiveType selector;
-
-		private static PrimitiveType word32;
-		private static PrimitiveType int32;
-		private static PrimitiveType uint32;
-		private static PrimitiveType pointer32;
-		private static PrimitiveType real32;
-
-		private static PrimitiveType word64;
-		private static PrimitiveType int64;
-		private static PrimitiveType uint64;
-		private static PrimitiveType pointer64;
-		private static PrimitiveType real64;
-
-		private static PrimitiveType real80;
-
-		public static PrimitiveType Void
-		{
-			get { return _void; }
-		}
+		public static PrimitiveType Void { get; private set; }
 		
-		public static PrimitiveType Bool
-		{
-			get { return bool1; }
-		}
+		public static PrimitiveType Bool {get; private set; }
 
-		public static PrimitiveType Byte
-		{
-			get { return _byte; }
-		}
-		public static PrimitiveType Char
-		{
-			get { return _char; }
-		}
-		public static PrimitiveType SByte
-		{
-			get { return int8; }
-		}
-		public static PrimitiveType UInt8
-		{
-			get { return uint8; }
-		}
+		public static PrimitiveType Byte {get; private set; }
+		public static PrimitiveType Char {get; private set; }
+		public static PrimitiveType SByte {get; private set; }
+		public static PrimitiveType UInt8 {get; private set; }
 
-		public static PrimitiveType Word16
-		{
-			get { return word16; }
-		}
-		public static PrimitiveType Int16
-		{
-			get { return int16; }
-		}
-		public static PrimitiveType UInt16
-		{
-			get { return uint16; }
-		}
-		public static PrimitiveType Ptr16
-		{
-			get { return ptr16; }
-		}
+		public static PrimitiveType Word16 {get; private set; }
+		public static PrimitiveType Int16 {get; private set; }
+		public static PrimitiveType UInt16 {get; private set; }
+		public static PrimitiveType Ptr16 {get; private set; }
 
-		public static PrimitiveType SegmentSelector
-		{
-			get { return selector; }
-		}
+		public static PrimitiveType SegmentSelector {get; private set; }
 
-		public static PrimitiveType Word32
-		{
-			get { return word32; }
-		}
-		public static PrimitiveType Int32
-		{
-			get { return int32; }
-		}
-		public static PrimitiveType UInt32
-		{
-			get { return uint32; }
-		}
-		public static PrimitiveType Pointer32
-		{
-			get { return pointer32; }
-		}
-		public static PrimitiveType Real32
-		{
-			get { return real32; }
-		}
+		public static PrimitiveType Word32 {get; private set; }
+		public static PrimitiveType Int32 {get; private set; }
+		public static PrimitiveType UInt32 {get; private set; }
+		public static PrimitiveType Pointer32 {get; private set; }
+		public static PrimitiveType Real32 {get; private set; }
 
-		public static PrimitiveType Word64
-		{
-			get { return word64; }
-		}
-		public static PrimitiveType Int64
-		{
-			get { return int64; }
-		}
-		public static PrimitiveType UInt64
-		{
-			get { return uint64; }
-		}
-		public static PrimitiveType Pointer64
-		{
-			get { return pointer64; }
-		}
-		public static PrimitiveType Real64
-		{
-			get { return real64; }
-		}
+		public static PrimitiveType Word64 {get; private set; }
+		public static PrimitiveType Int64 {get; private set; }
+		public static PrimitiveType UInt64 {get; private set; }
+		public static PrimitiveType Pointer64 {get; private set; }
+        public static PrimitiveType Real64 { get; private set; }
 
-		public static PrimitiveType Real80
-		{
-			get { return real80; }
-		}
+		public static PrimitiveType Real80 {get; private set; }
 
         public static PrimitiveType WChar { get; private set; } 
     }

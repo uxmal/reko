@@ -411,5 +411,62 @@ TrashEaxEbx eax ebx ax bx al bl ah bh
 ";
             Assert.AreEqual(exp, sb.ToString());
         }
+
+        [Test]
+        public void PreservedValues()
+        {
+            arch = new IntelArchitecture(ProcessorMode.Real);
+            var sp = m.Frame.EnsureRegister(Registers.sp);
+            var ss = m.Frame.EnsureRegister(Registers.ss);
+            var ax = m.Frame.EnsureRegister(Registers.ax);
+            m.Assign(sp, m.Sub(sp, 2));
+            m.SegStoreW(ss, sp, ax);
+            m.Assign(ax, 1);
+            m.Assign(ax, m.SegMemW(ss, sp));
+            m.Assign(sp, m.Add(sp, 2));
+            m.Return();
+
+            prog.Architecture = arch;
+            prog.Procedures.Add(new Address(0x0C00, 0), m.Procedure);
+            prog.CallGraph.AddEntryPoint(m.Procedure);
+            flow = new ProgramDataFlow(prog);
+
+            trf = CreateTrashedRegisterFinder();
+            trf.Compute();
+
+            var pf = flow[m.Procedure];
+            Assert.AreEqual("ProcedureBuilder ax", pf.EmitRegisters(arch, m.Procedure.Name, pf.PreservedRegisters));
+        }
+
+
+        [Test]
+        public void SimpleAssignment()
+        {
+            var p = new ProgramBuilder();
+
+            var r0 = m.Register(0);
+            m.Assign(r0, 0x30);
+            m.Return();
+
+            p.Add(m);
+
+            prog = p.BuildProgram();
+            flow = new ProgramDataFlow(prog);
+            trf = CreateTrashedRegisterFinder();
+            trf.Compute();
+
+            var bf = flow[m.Procedure.EntryBlock.Succ[0]];
+            Assert.AreEqual(PrimitiveType.Word32, bf.DataTypes[r0]);
+        }
+
+        [Test]
+        public void ConstantUsedAsFnPointer()
+        {
+            var r1 = m.Register(1);
+            m.Assign(r1, 0x1234567);
+            m.Call(r1);
+
+            Assert.AreEqual(new Pointer(new FunctionType(null, null, null, null), 4), null);
+        }
     }
 }

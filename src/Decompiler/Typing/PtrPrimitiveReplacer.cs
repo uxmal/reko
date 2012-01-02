@@ -27,6 +27,12 @@ namespace Decompiler.Typing
 	/// <summary>
 	/// Replaces references to classes which are PrimitiveType or Pointer to T,
     /// with the actual primitive type or (ptr T) respectively.
+    /// <remarks>
+    /// If an expression e has the type [[e]] = Eq1 where Eq1 is PrimitiveType.Int16
+    /// then after this transformation [[e]] will be PrimitiveType.Int16.
+    /// If a expression e2 as the type [[e2] = Eq1 where Eq1 is Pointer(T)
+    /// then after this transformation [[e2]] = Pointer(T)
+    /// </remarks>
 	/// </summary>
 	public class PtrPrimitiveReplacer : DataTypeTransformer
 	{

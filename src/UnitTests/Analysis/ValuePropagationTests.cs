@@ -106,9 +106,11 @@ namespace Decompiler.UnitTests.Analysis
 			var gr = proc.CreateBlockDominatorGraph();
 			SsaTransform sst = new SsaTransform(proc, gr);
 			SsaState ssa = sst.SsaState;
+
+            ssa.DebugDump(true);
+
 			ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
 			vp.Transform();
-			DeadCode.Eliminate(proc, ssa);
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
 			{
@@ -316,6 +318,8 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual("4711:4111", e.ToString());
         }
 
+        [Test]
+
 		private Identifier Reg32(string name)
 		{
 			MachineRegister mr = new MachineRegister(name, ssaIds.Count, PrimitiveType.Word32);
@@ -346,7 +350,7 @@ namespace Decompiler.UnitTests.Analysis
 
         protected override void RunTest(Program prog, FileUnitTester fut)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
@@ -363,7 +367,6 @@ namespace Decompiler.UnitTests.Analysis
 
 				ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
 				vp.Transform();
-				DeadCode.Eliminate(proc, ssa);
 
 				ssa.Write(fut.TextWriter);
 				proc.Write(false, fut.TextWriter);
@@ -374,10 +377,9 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			protected override void BuildBody()
 			{
-				Identifier dl = LocalByte("dl");
-				Identifier dx = Local16("dx");
-				Identifier edx = Local32("edx");
-
+				var dl = LocalByte("dl");
+				var dx = Local16("dx");
+				var edx = Local32("edx");
 
 				Assign(edx, Int32(0x0AAA00AA));
 				Assign(edx, Dpb(edx, Int8(0x55), 8, 8));

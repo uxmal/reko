@@ -25,14 +25,6 @@ namespace Decompiler.Core
 {
 	public class Statement
 	{
-        [Obsolete("Use the other constructor", true)]
-		public Statement(Instruction instr, Block block)
-		{
-            this.LinearAddress = 0;
-			this.Instruction = instr;
-			this.Block = block;
-		}
-
         public Statement(uint linearAddress, Instruction instr, Block block)
         {
             this.LinearAddress = linearAddress;

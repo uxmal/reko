@@ -12,3 +12,5 @@ zok:
 	mov cx,[si]
 wol:
 	mov [0300],cx
+	ret
+

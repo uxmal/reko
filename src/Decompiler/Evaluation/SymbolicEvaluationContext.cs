@@ -43,6 +43,7 @@ namespace Decompiler.Evaluation
         }
 
         //$REVIEW: make all states a single collection indexed by storage, and eliminate the map?
+
         public Dictionary<RegisterStorage, Expression> RegisterState { get; private set; }
         public Map<int, Expression> StackState { get; private set; }
         public Dictionary<Storage, Expression> TemporaryState { get; private set; }
@@ -105,12 +106,15 @@ namespace Decompiler.Evaluation
                     Expression v2;
                     if (StackState.TryGetValue(remainder, out v2))
                     {
-                        //$BUGBUG: should evaluate the MkSequence, possibly creating a longer constant.
+                        //$BUGBUG: should evaluate the MkSequence, possibly creating a longer constant if v2 and value are 
+                        // constant.
+                        //$BUGBUG: the sequence below is little-endian!!!
                         return new MkSequence(accessDataType, v2, value);
                     }
                 }
                 else
                 {
+                    // Example: fetching a byte from SP+04, which previously was assigend an int32.
                     return new Cast(accessDataType, value);
                 }
             }

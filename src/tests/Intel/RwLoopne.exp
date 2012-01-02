@@ -17,6 +17,7 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	si = Mem0[ds:0x0100:word16]
 	cx = Mem0[ds:si:word16]
@@ -24,12 +25,14 @@ l0C00_0000:
 	SZO = cond(si)
 	si = si + 0x0001
 	SZO = cond(si)
+	// succ:  l0C00_0008
 l0C00_0008:
 	al = Mem0[ds:si:byte]
 	si = si + 0x0001
 	SCZO = cond(al - ah)
 	cx = cx - 0x0001
 	branch Test(NE,Z) && cx != 0x0000 l0C00_0008
+	// succ:  l0C00_000D l0C00_0008
 l0C00_000D:
 	si = Mem0[ds:0x0100:word16]
 	ax = Mem0[ds:si:word16]
@@ -37,11 +40,14 @@ l0C00_000D:
 	al = al ^ al
 	SZO = cond(al)
 	C = false
+	// succ:  l0C00_0014
 l0C00_0014:
 	store(Mem0[es:di:byte]) = al
 	di = di + 0x0001
 	cx = cx - 0x0001
 	branch cx != 0x0000 l0C00_0014
+	// succ:  l0C00_0017 l0C00_0014
 l0C00_0017:
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
