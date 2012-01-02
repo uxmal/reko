@@ -78,15 +78,6 @@ namespace Decompiler.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-		public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host)
-		{
-			return CreateRewriterOld(prw, proc, host);
-		}
-
-		public Rewriter CreateRewriter(IProcedureRewriter prw, Procedure proc, Address addrProc, int cbReturnOnStack, IRewriterHostOld host)
-		{
-			throw new NotImplementedException("// TODO:  Add ArchitectureMock.CreateRewriter implementation");
-		}
 
         public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
@@ -143,11 +134,6 @@ namespace Decompiler.UnitTests.Mocks
 		public string RegisterToString(int reg)
 		{
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
-		}
-
-		public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
-		{
-			return new MockCodeWalker(addr);
 		}
 
 		public Disassembler CreateDisassembler(ImageReader rdr)

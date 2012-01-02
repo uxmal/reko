@@ -508,6 +508,7 @@ namespace Decompiler.Arch.X86
 			return (reg == Registers.sp || reg == Registers.esp);
 		}
 
+        [Obsolete]
 		public Identifier CreateTemporary(PrimitiveType width)
 		{
 			return frame.CreateTemporary(width);

@@ -94,8 +94,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void SltWhileGoto()
 		{
-			Program prog = RewriteFileOld("Fragments/while_goto.asm");
-			prog.Procedures.Values[0].Dump(true, false);
+			Program prog = RewriteFile("Fragments/while_goto.asm");
 			Build(prog.Procedures.Values[0], prog.Architecture);
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltWhileGoto.txt"))

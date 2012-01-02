@@ -31,22 +31,26 @@ namespace Decompiler.Core.Expressions
     /// </summary>
     public abstract class Expression
     {
-        private TypeVariable typeVariable;			// index to high-level type of this expression. //$REVIEW: only used for typing, perhaps move it to hashtable?
-
         public Expression(DataType dataType)
         {
             this.DataType = dataType;
         }
 
         // Data type of this expression.
+
         public DataType DataType { get; set; }
-        public TypeVariable TypeVariable { get; set; }
+        public TypeVariable TypeVariable { get; set; } 		// index to high-level type of this expression.
+        //$REVIEW: only used for typing, perhaps move it to hashtable? Argument against: there may be a lot of these.
 
         public abstract Expression Accept(IExpressionTransformer xform);
         public abstract void Accept(IExpressionVisitor visit);
         public abstract T Accept<T>(ExpressionVisitor<T> visitor);
         public abstract Expression CloneExpression();
         
+        /// <summary>
+        /// Applies logical (not-bitwise) negation to the expression.
+        /// </summary>
+        /// <returns></returns>
         public virtual Expression Invert()
         {
             throw new NotSupportedException(string.Format("Expression of type {0} doesn't support Invert.", GetType().Name));

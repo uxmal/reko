@@ -182,7 +182,7 @@ namespace Decompiler.UnitTests.Analysis
 				SsaTransform sst = new SsaTransform(proc, gr);
 				ssa = sst.SsaState;
 				ssa.Write(fut.TextWriter);
-				proc.Write(false, fut.TextWriter);
+				proc.Write(false, true, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 			}
 		}

@@ -110,17 +110,7 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
-        {
-            throw new NotImplementedException();
-        }
-
         public BitSet CreateRegisterBitset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host)
         {
             throw new NotImplementedException();
         }

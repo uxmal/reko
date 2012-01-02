@@ -33,29 +33,15 @@ namespace Decompiler.Core
 			this.block = block;
 		}
 
-        [Obsolete("Use other add method", true)]
-		public void Add(Instruction instr)
-		{
-            Add(0, instr);
-		}
-
         public void Add(uint linearAddress, Instruction instr)
         {
             Add(new Statement(linearAddress, instr, block));
         }
 
-        [Obsolete("Use other Insert method", true)]
-		public void Insert(int position, Instruction instr)
-		{
-            Insert(position, 0, instr);
-		}
-
         public void Insert(int position, uint linearAddress, Instruction instr)
         {
             base.Insert(position, new Statement(linearAddress, instr, block));
         }
-
-        
 
 		public Statement Last
 		{

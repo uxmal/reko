@@ -82,7 +82,7 @@ namespace Decompiler.Typing
             if (dtNew == null)
                 return;
 
-            DataType dtCurrent = tv.OriginalDataType; ;
+            DataType dtCurrent = tv.OriginalDataType;
             if (dtCurrent != null)
             {
                 dtNew = unifier.Unify(dtCurrent, dtNew);
@@ -127,10 +127,10 @@ namespace Decompiler.Typing
 
 		public void MemAccessArrayTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tField)
 		{
-			StructureType element = factory.CreateStructureType(null, elementSize);
+			var element = factory.CreateStructureType(null, elementSize);
 			if (tField != null)
 				element.Fields.Add(0, tField, null);
-			ArrayType a = factory.CreateArrayType(element, length);
+			var a = factory.CreateArrayType(element, length);
 
 			MemoryAccessCommon(tBase, tStruct, new StructureField(offset, a), structPtrSize);
 		}
@@ -145,7 +145,7 @@ namespace Decompiler.Typing
 			StructureType s = factory.CreateStructureType(null, 0);
 			s.Fields.Add(field);
 
-			DataType pointer = tBase != null
+			var pointer = tBase != null
 				? (DataType)factory.CreateMemberPointer(tBase, s, structPtrSize)			//$REFACTOR: duplicated code (see memaccesstrait)
 				: (DataType)factory.CreatePointer(s, structPtrSize);
 			MergeIntoDataType(pointer, tStruct);
@@ -155,8 +155,8 @@ namespace Decompiler.Typing
 		{
 			if (size <= 0)
 				throw new ArgumentOutOfRangeException("size must be positive");
-			StructureType s = factory.CreateStructureType(null, size);
-			DataType ptr = tBase != null
+			var s = factory.CreateStructureType(null, size);
+			var ptr = tBase != null
 				? (DataType)factory.CreateMemberPointer(tBase, s, arch.FramePointerType.Size)
 				: (DataType)factory.CreatePointer(s, arch.PointerType.Size);
 			MergeIntoDataType(ptr, tStruct);
@@ -164,7 +164,7 @@ namespace Decompiler.Typing
 
 		public void PointerTrait(TypeVariable tPtr, int ptrSize, TypeVariable tPointee)
 		{
-			Pointer ptr = factory.CreatePointer(tPointee, ptrSize);
+			var ptr = factory.CreatePointer(tPointee, ptrSize);
 			MergeIntoDataType(ptr, tPtr);
 		}
 
@@ -190,8 +190,8 @@ namespace Decompiler.Typing
 		{
             if (++nestedCalls > 300)        //$DEBUG
                 nestedCalls.ToString();
-            DataType dt = Unify(tA.Class.DataType, tB.Class.DataType);
-            EquivalenceClass eq = store.MergeClasses(tA, tB);
+            var dt = Unify(tA.Class.DataType, tB.Class.DataType);
+            var eq = store.MergeClasses(tA, tB);
             eq.DataType = dt;
             --nestedCalls;
             return eq.Representative;

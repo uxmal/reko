@@ -27,7 +27,6 @@ using BitSet = Decompiler.Core.Lib.BitSet;
 
 namespace Decompiler.Core
 {
-    
     /// <summary>
     /// Abstraction of a CPU architecture.
     /// </summary>
@@ -37,9 +36,7 @@ namespace Decompiler.Core
 
 		Dumper CreateDumper();
 		ProcessorState CreateProcessorState();
-		CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st);
 		BitSet CreateRegisterBitset();
-		RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host);
         Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
         Frame CreateFrame();
 

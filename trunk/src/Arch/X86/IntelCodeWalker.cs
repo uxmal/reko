@@ -28,7 +28,8 @@ using System.Diagnostics;
 
 namespace Decompiler.Arch.X86
 {
-	public class IntelCodeWalker : CodeWalker
+    [Obsolete("Code walkers are officially dead", true)]
+	public class IntelCodeWalker 
 	{
 		private IntelArchitecture arch;
 		private IntelDisassembler dasm; 
@@ -47,7 +48,7 @@ namespace Decompiler.Arch.X86
 			this.state = state;
 		}
 
-		public override Address Address
+		public Address Address
 		{
 			get { return dasm.Address; }
 		}
@@ -379,7 +380,7 @@ namespace Decompiler.Arch.X86
 		/// Simulates the execution of an Intel x86 instruction.
 		/// </summary>
 		/// <returns>The simulated instruction.</returns>
-		public override MachineInstruction WalkInstruction(ICodeWalkerListener listener)
+		public MachineInstruction WalkInstruction(ICodeWalkerListener listener)
 		{
 			Address addrStart = dasm.Address;
 			IntelInstruction instr = dasm.Disassemble();

@@ -37,7 +37,7 @@ namespace Decompiler.Arch.X86
 		//$REVIEW: accumulating a lot of members; put this class on diet?
 
 		private IntelArchitecture arch;
-		private IRewriterHostOld host;
+		private IRewriterHost host;
 		private Procedure proc;
 		private Frame frame;
 		private Address addrEnd;			// address of the end of this block.
@@ -48,14 +48,14 @@ namespace Decompiler.Arch.X86
 		private IntelRewriterState state;
 		private int maxFpuStackRead;
 		private int maxFpuStackWrite;
-		private OperandRewriterOld orw;
+		private OperandRewriter orw;
 		private StringInstructionRewriter siw;
-		private CodeEmitterOld emitter;
+		private CodeEmitter emitter;
 		
 		public IntelRewriter(
 			IProcedureRewriter prw,
 			Procedure proc,
-			IRewriterHostOld host,
+			IRewriterHost host,
 			IntelArchitecture arch,
 			IntelRewriterState state) : base(prw)
 		{
@@ -64,7 +64,7 @@ namespace Decompiler.Arch.X86
 			this.frame = proc.Frame;
 			this.arch = arch;
 			this.state = state;
-			this.orw = new OperandRewriterOld(host, arch, frame);
+			this.orw = new OperandRewriter(arch, frame, host);
 			this.siw = new StringInstructionRewriter(arch, orw);
 			maxFpuStackRead = -1;
 			maxFpuStackWrite = -1;

@@ -20,24 +20,38 @@
 
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
- 
+using System;
+
 namespace Decompiler.Evaluation
 {
-    public class Sub_Xor_Zero_Rule
+    public class BinOpWithSelf_Rule
     {
         private BinaryExpression binExp;
+        private Identifier id;
 
         public bool Match(BinaryExpression binExp)
         {
-            if (binExp.op != Operator.Sub && binExp.op != Operator.Xor)
+            if (binExp.op != Operator.Sub && binExp.op != Operator.Xor && binExp.op != Operator.And && binExp.op != Operator.Or)
                 return false;
             this.binExp = binExp;
-            return (binExp.Left is Identifier) && binExp.Left == binExp.Right;
+            id = binExp.Left as Identifier;
+            return (id != null&& binExp.Left == binExp.Right);
         }
 
-        public Expression Transform()
+        public Expression Transform(EvaluationContext ctx)
         {
-            return Constant.Zero(binExp.DataType);
-        }
+            if (binExp.op == Operator.Sub || binExp.op == Operator.Xor)
+            {
+                ctx.RemoveIdentifierUse(id);
+                ctx.RemoveIdentifierUse(id);
+                return Constant.Zero(binExp.DataType);
+            }
+            if (binExp.op == Operator.And || binExp.op == Operator.Or)
+            {
+                ctx.RemoveIdentifierUse(id);
+                return id;
+            }
+            throw new NotImplementedException();
+         }
     }
 }

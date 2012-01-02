@@ -18,6 +18,7 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	sp = sp - 0x0002
 	store(Mem0[ss:sp:word16]) = bp
@@ -33,11 +34,13 @@ l0C00_0000:
 	C = msdos_open_file(ds_dx, al, &ax)
 	store(Mem0[ss:bp - 0x0004:word16]) = ax
 	goto l0C00_002A
+	// succ:  l0C00_002A
 l0C00_001F:
 	bx = Mem0[ss:bp - 0x0004:word16]
 	dx = 0x0800
 	ax = 0x4000
 	C = msdos_write_file(bx, cx, ds_dx, &ax)
+	// succ:  l0C00_002A
 l0C00_002A:
 	bx = Mem0[ss:bp - 0x0002:word16]
 	dx = 0x0800
@@ -45,14 +48,17 @@ l0C00_002A:
 	ax = 0x3F00
 	C = msdos_read_file(bx, cx, ds_dx, &ax)
 	branch Test(ULT,C) l0C00_003E
+	// succ:  l0C00_003A l0C00_003E
 l0C00_003A:
 	ax = ax | ax
 	SZO = cond(ax)
 	C = false
 	branch Test(NE,Z) l0C00_001F
+	// succ:  l0C00_003E l0C00_001F
 l0C00_003E:
 	sp = bp
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 0x0002
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

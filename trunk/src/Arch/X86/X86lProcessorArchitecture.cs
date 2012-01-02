@@ -243,11 +243,6 @@ namespace Decompiler.Arch.Intel
 			}
 		}
 
-		public virtual CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
-		{
-			return new IntelCodeWalker(this, platform, new IntelDisassembler(img.CreateReader(addr), this.WordWidth), (X86State) st);
-		}
-
 		public virtual Disassembler CreateDisassembler(ImageReader imageReader)
 		{
 			return new IntelDisassembler(imageReader, WordWidth);

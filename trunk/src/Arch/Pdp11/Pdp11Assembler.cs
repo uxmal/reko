@@ -29,11 +29,6 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Pdp11Assembler : Assembler
     {
-        public void Assemble(Address baseAddress, string sourcefile)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Assemble(Address baseAddress, TextReader rdr)
         {
             throw new NotImplementedException();

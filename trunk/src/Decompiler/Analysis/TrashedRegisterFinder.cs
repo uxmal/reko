@@ -26,6 +26,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Services;
 using Decompiler.Core.Types;
 using Decompiler.Evaluation;
+using Decompiler.Typing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,7 +38,9 @@ namespace Decompiler.Analysis
 	/// <summary>
 	/// Uses an interprocedural reaching definition analysis to detect which 
 	/// registers are modified by the procedures, which registers are constant at block
-    /// exits, and which registers have their values preserved. 
+    /// exits, and which registers have their values preserved. A useful side effect is the
+    /// tentative typing of procedure frames and global function pointers.<para>
+    /// The results of the analysis are stored in the ProgramDataFlow.</para>
 	/// </summary>
     public class TrashedRegisterFinder : InstructionVisitorBase
     {
@@ -49,6 +52,8 @@ namespace Decompiler.Analysis
         private SymbolicEvaluationContext ctx;
         private DecompilerEventListener eventListener;
         private ExpressionValueComparer ecomp;
+        private DataTypeBuilder dtb;
+        private TraitCollector traitCollector;
 
         public TrashedRegisterFinder(
             Program prog,
@@ -61,18 +66,19 @@ namespace Decompiler.Analysis
             this.tsh = new TrashStorageHelper(null);
             this.worklist = new WorkList<Block>();
             this.ecomp = new ExpressionValueComparer();
+            this.dtb = new DataTypeBuilder(prog.TypeFactory, prog.TypeStore, prog.Architecture);
+            this.traitCollector = new TraitCollector(prog.TypeFactory, prog.TypeStore, dtb, prog);
         }
 
         public Dictionary<RegisterStorage, Expression> RegisterSymbolicValues { get { return ctx.RegisterState; } }
         public IDictionary<int, Expression> StackSymbolicValues { get { return ctx.StackState; } } 
         public uint TrashedFlags {get { return ctx.TrashedFlags; } }
 
-
         public void CompleteWork()
         {
             foreach (Procedure proc in prog.Procedures.Values)
             {
-                ProcedureFlow pf = flow[proc];
+                var pf = flow[proc];
                 foreach (int r in pf.TrashedRegisters)
                 {
                     prog.Architecture.GetRegister(r).SetAliases(pf.TrashedRegisters, true);
@@ -109,17 +115,16 @@ namespace Decompiler.Analysis
         public bool IsTrashed(Storage storage)
         {
             var reg = storage as RegisterStorage;
-            if (reg != null)
-            {
-                Expression regVal;
-                if (!ctx.RegisterState.TryGetValue(reg, out regVal))
-                    return false;
-                var id = regVal as Identifier;
-                if (id == null)
-                    return true;
-                return id.Storage == reg;
-            }
-            throw new NotImplementedException();
+            if (reg == null)
+                throw new NotImplementedException();
+
+            Expression regVal;
+            if (!ctx.RegisterState.TryGetValue(reg, out regVal))
+                return false;
+            var id = regVal as Identifier;
+            if (id == null)
+                return true;
+            return id.Storage == reg;
         }
 
         public void ProcessBlock(Block block)
@@ -135,10 +140,7 @@ namespace Decompiler.Analysis
             }
             else
             {
-                foreach (Block s in block.Procedure.ControlGraph.Successors(block))
-                {
-                    PropagateToSuccessorBlock(s);
-                }
+                block.Succ.ForEach(s => PropagateToSuccessorBlock(s));
             }
         }
 
@@ -150,7 +152,6 @@ namespace Decompiler.Analysis
             }
             this.ctx = bf.SymbolicAuxIn;
             this.se = new SymbolicEvaluator(new TrashedExpressionSimplifier(this, ctx), ctx);
-
         }
 
         private TrashStorageHelper CreateTrashStorageHelper(BlockFlow bf)
@@ -229,9 +230,9 @@ namespace Decompiler.Analysis
         public void PropagateToSuccessorBlock(Block s)
         {
             bool changed = false;
-            BlockFlow sf = flow[s];
-            var successorState = sf.SymbolicIn;
-            var ctxSucc = sf.SymbolicAuxIn;
+            BlockFlow succFlow = flow[s];
+            var successorState = succFlow.SymbolicIn;
+            var ctxSucc = succFlow.SymbolicAuxIn;
 
             Dump(ctx.RegisterState);
             Dump(ctx.StackState);
@@ -278,10 +279,10 @@ namespace Decompiler.Analysis
                 }
             }
 
-            uint grfNew = sf.grfTrashedIn | tsh.TrashedFlags;
-            if (grfNew != sf.grfTrashedIn)
+            uint grfNew = succFlow.grfTrashedIn | tsh.TrashedFlags;
+            if (grfNew != succFlow.grfTrashedIn)
             {
-                sf.grfTrashedIn = grfNew;
+                succFlow.grfTrashedIn = grfNew;
                 changed = true;
             }
             if (changed)
@@ -374,19 +375,15 @@ namespace Decompiler.Analysis
             {
                 var e = base.VisitApplication(appl);
                 var pc = appl.Procedure as ProcedureConstant;
-                if (pc != null)
+                if (pc != null && trf.ProcedureTerminates(pc.Procedure))
                 {
-                    if (trf.ProcedureTerminates(pc.Procedure))
-                    {
-                        ctx.TrashedFlags = 0;
-                        ctx.RegisterState.Clear();
-                        return appl;
-                    }
+                    ctx.TrashedFlags = 0;
+                    ctx.RegisterState.Clear();
+                    return appl;
                 }
-                for (int i = 0; i < appl.Arguments.Length; ++i)
+                foreach (var u in appl.Arguments.OfType<UnaryExpression>())
                 {
-                    UnaryExpression u = appl.Arguments[i] as UnaryExpression;
-                    if (u != null && u.op == UnaryOperator.AddrOf)
+                    if (u.op == UnaryOperator.AddrOf)
                     {
                         Identifier id = u.Expression as Identifier;
                         if (id != null)

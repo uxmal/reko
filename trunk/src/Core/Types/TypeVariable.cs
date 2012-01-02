@@ -56,7 +56,7 @@ namespace Decompiler.Core.Types
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
-            return v.VisitTypeVar<T>(this);
+            return v.VisitTypeVar(this);
         }
 
 		/// <summary>

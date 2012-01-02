@@ -11,6 +11,7 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	eax = Mem0[ds:0x0100:word32]
 	edx = Mem0[ds:0x0104:word32]
@@ -27,5 +28,6 @@ l0C00_0000:
 	edx = __rcl(edx, 0x01, C)
 	C = v7
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 

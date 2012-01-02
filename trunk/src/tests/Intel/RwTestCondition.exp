@@ -15,6 +15,7 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	ecx = ecx ^ ecx
 	SZO = cond(ecx)
@@ -25,8 +26,11 @@ l0C00_0000:
 	store(Mem0[ds:0x0300:word32]) = ecx
 	SCZO = cond(ax - 0x0030)
 	branch Test(LT,SO) l0C00_0016
+	// succ:  l0C00_0012 l0C00_0016
 l0C00_0012:
 	store(Mem0[ds:0x0302:word16]) = ax
+	// succ:  l0C00_0016
 l0C00_0016:
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

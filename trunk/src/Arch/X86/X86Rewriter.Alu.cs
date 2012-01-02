@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
@@ -531,6 +532,8 @@ namespace Decompiler.Arch.X86
         {
             bool incSi = false;
             bool incDi = false;
+            Identifier regDX;
+            PseudoProcedure ppp;
             switch (di.Instruction.code)
             {
             default:
@@ -551,32 +554,26 @@ namespace Decompiler.Arch.X86
                 break;
             case Opcode.movs:
             case Opcode.movsb:
-                {
-                    Identifier tmp = frame.CreateTemporary(di.Instruction.dataWidth);
-                    emitter.Assign(tmp, MemSi());
-                    emitter.Assign(MemDi(), tmp);
-                    incSi = true;
-                    incDi = true;
-                    break;
-                }
+                Identifier tmp = frame.CreateTemporary(di.Instruction.dataWidth);
+                emitter.Assign(tmp, MemSi());
+                emitter.Assign(MemDi(), tmp);
+                incSi = true;
+                incDi = true;
+                break;
             case Opcode.ins:
             case Opcode.insb:
-                {
-                    Identifier regDX = orw.AluRegister(Registers.edx, di.Instruction.addrWidth);
-                    var ppp = host.EnsurePseudoProcedure("__in", di.Instruction.dataWidth, 1);
-                    emitter.Assign(MemDi(), emitter.Fn(ppp, regDX));
-                    incDi = true;
-                    break;
-                }
+                regDX = orw.AluRegister(Registers.edx, di.Instruction.addrWidth);
+                ppp = host.EnsurePseudoProcedure("__in", di.Instruction.dataWidth, 1);
+                emitter.Assign(MemDi(), emitter.Fn(ppp, regDX));
+                incDi = true;
+                break;
             case Opcode.outs:
             case Opcode.outsb:
-                {
-                    Identifier regDX = orw.AluRegister(Registers.edx, di.Instruction.addrWidth);
-                    var ppp = host.EnsurePseudoProcedure("__out" + RegAl.DataType.Prefix, PrimitiveType.Void, 2);
-                    emitter.SideEffect(emitter.Fn(ppp, regDX, RegAl));
-                    incSi = true;
-                    break;
-                }
+                regDX = orw.AluRegister(Registers.edx, di.Instruction.addrWidth);
+                ppp = host.EnsurePseudoProcedure("__out" + RegAl.DataType.Prefix, PrimitiveType.Void, 2);
+                emitter.SideEffect(emitter.Fn(ppp, regDX, RegAl));
+                incSi = true;
+                break;
             case Opcode.scas:
             case Opcode.scasb:
                 emitter.Assign(

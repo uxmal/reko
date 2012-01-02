@@ -56,6 +56,12 @@ namespace Decompiler.Core
 			}
 		}
 
+        public void AddRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                Add(item);
+        }
+
 		public int Count
 		{
 			get { return inQ.Count; }

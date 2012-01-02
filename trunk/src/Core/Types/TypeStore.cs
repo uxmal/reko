@@ -32,38 +32,38 @@ namespace Decompiler.Core.Types
 	/// </summary>
 	public class TypeStore
 	{
-		private List<TypeVariable> typevars;
         private SortedList<int, EquivalenceClass> usedClasses;
         private Dictionary<TypeVariable, Expression> tvSources;
 		private DataTypeComparer tycomp = new DataTypeComparer();
 
 		public TypeStore()
 		{
-			typevars = new List<TypeVariable>();
+			TypeVariables = new List<TypeVariable>();
 			usedClasses = new SortedList<int, EquivalenceClass>();
             tvSources = new Dictionary<TypeVariable, Expression>();
 		}
+
+        public List<TypeVariable> TypeVariables { get; private set; }
 
 		public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e)
 		{
 			return EnsureExpressionTypeVariable(factory, e, null);
 		}
 
-		public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e, string name)
-		{
-			if (e == null || e.TypeVariable == null)
-			{
-				TypeVariable tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
-                AddDebugSource(tv, e);
-				tv.Class = new EquivalenceClass(tv);
-				if (e != null)
-					e.TypeVariable = tv;
-				typevars.Add(tv);
-				usedClasses.Add(tv.Class.Number, tv.Class);
-				return tv;
-			}
-			return e.TypeVariable;
-		}
+        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e, string name)
+        {
+            if (e != null && e.TypeVariable != null)
+                return e.TypeVariable;
+
+            TypeVariable tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
+            AddDebugSource(tv, e);
+            tv.Class = new EquivalenceClass(tv);
+            if (e != null)
+                e.TypeVariable = tv;
+            TypeVariables.Add(tv);
+            usedClasses.Add(tv.Class.Number, tv.Class);
+            return tv;
+        }
 
         private void AddDebugSource(TypeVariable tv, Expression e)
         {
@@ -105,10 +105,6 @@ namespace Decompiler.Core.Types
 			return merged;
 		}
 
-		public List<TypeVariable> TypeVariables
-		{
-			get { return typevars; }
-		}
 
 
 		/// <summary>

@@ -77,14 +77,6 @@ namespace Decompiler.UnitTests.Analysis
             return BuildProgramMock(m);
         }
 
-        [Obsolete]
-        protected Program BuildProgramMockOld(Action<ProcedureBuilder> builder)
-        {
-            ProcedureBuilder m = new ProcedureBuilder();
-            builder(m);
-            return BuildProgramMockOld(m);
-        }
-
         protected Program BuildProgramMock(ProcedureBuilder mock)
         {
             var m = new ProgramBuilder();
@@ -96,19 +88,13 @@ namespace Decompiler.UnitTests.Analysis
             return prog;
         }
 
-        [Obsolete]
-        protected Program BuildProgramMockOld(ProcedureBuilder mock)
-		{
-			ProgramBuilder m = new ProgramBuilder();
-			m.Add(mock);
-			Program prog = m.BuildProgram();
-            prog.CallGraph.AddProcedure(mock.Procedure);
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			return prog;
-		}
 
-        private Program RewriteFile(string relativePath, string configFile)
+        protected Program RewriteFile(string relativePath)
+        {
+            return RewriteFile(relativePath, "");
+        }
+
+        protected Program RewriteFile(string relativePath, string configFile)
         {
             Program prog = new Program();
             prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
@@ -122,25 +108,6 @@ namespace Decompiler.UnitTests.Analysis
             Rewrite(prog, asm, configFile);
             return prog;
         }
-
-        [Obsolete]
-		private Program RewriteFileOld(string relativePath, string configFile)
-		{
-			Program prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-			prog.Platform = new MsdosPlatform(prog.Architecture);
-            Assembler asm = new IntelTextAssembler();
-			asm.Assemble(new Address(0xC00, 0), FileUnitTester.MapTestPath(relativePath));
-            prog.Image = asm.Image;
-			Rewrite(prog, asm, configFile);
-			return prog;
-		}
-
-        [Obsolete]
-		protected Program RewriteFileOld(string relativePath)
-		{
-			return RewriteFileOld(relativePath, null);
-		}
 
         protected Program RewriteFile32(string sourceFile)
         {
@@ -166,29 +133,6 @@ namespace Decompiler.UnitTests.Analysis
             return prog;
         }
 
-        [Obsolete]
-		protected Program RewriteFile32Old(string sourceFile)
-		{
-			return RewriteFile32Old(sourceFile, null);
-		}
-
-        [Obsolete]
-        private Program RewriteFile32Old(string relativePath, string configFile)
-        {
-            Program prog = new Program();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.ProtectedFlat);
-            Assembler asm = new IntelTextAssembler();
-            asm.Assemble(new Address(0x10000000), FileUnitTester.MapTestPath(relativePath));
-            prog.Image = asm.Image;
-            prog.Architecture = asm.Architecture;
-            foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
-            {
-                prog.ImportThunks.Add(item.Key, item.Value);
-            }
-            RewriteOld(prog, asm, configFile);
-            return prog;
-        }
-
         protected Program RewriteCodeFragment(string s)
         {
             Program prog = new Program();
@@ -208,47 +152,25 @@ namespace Decompiler.UnitTests.Analysis
             Assembler asm = new IntelTextAssembler();
 			asm.AssembleFragment(new Address(0xC00, 0), s);
             prog.Image = asm.Image;
-			RewriteOld(prog, asm, null);
+			Rewrite(prog, asm, null);
 			return prog;
 		}
 
         private void Rewrite(Program prog, Assembler asm, string configFile)
         {
-            Scanner scan = new Scanner(prog, 
+            var scan = new Scanner(prog, 
                 new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
-            SerializedProject project = new SerializedProject();
-            if (configFile != null)
-            {
-                project = SerializedProject.Load(FileUnitTester.MapTestPath(configFile));
-            }
-            EntryPoint ep = new EntryPoint(asm.StartAddress, new X86State());
-            scan.EnqueueEntryPoint(ep);
-            foreach (SerializedProcedure sp in project.UserProcedures)
+            var project = string.IsNullOrEmpty(configFile)
+                ? new SerializedProject()
+                :  SerializedProject.Load(FileUnitTester.MapTestPath(configFile));
+            
+            scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, new X86State()));
+            foreach (var sp in project.UserProcedures)
             {
                 scan.EnqueueUserProcedure(sp);
             }
             scan.ProcessQueue();
         }
-
-        [Obsolete]
-		private void RewriteOld(Program prog, Assembler asm, string configFile)
-		{
-			ScannerOld scan = new ScannerOld(prog, new FakeDecompilerEventListener());
-			SerializedProject project = new SerializedProject();
-			if (configFile != null)
-			{
-				project = SerializedProject.Load(FileUnitTester.MapTestPath(configFile));
-			}
-			EntryPoint ep = new EntryPoint(asm.StartAddress, new X86State());
-			scan.EnqueueEntryPoint(ep);
-			foreach (SerializedProcedure sp in project.UserProcedures)
-			{
-				scan.EnqueueUserProcedure(sp);
-			}
-			scan.ProcessQueue();
-			RewriterHost rw = new RewriterHost(prog, null, scan.SystemCalls, scan.VectorUses);
-			rw.RewriteProgram();
-		}
 
 
 		protected void RunTest(string sourceFile, string outputFile)
@@ -259,25 +181,25 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected void RunTest(ProcedureBuilder mock, string outputFile)
 		{
-			Program prog = BuildProgramMockOld(mock);
+			Program prog = BuildProgramMock(mock);
 			SaveRunOutput(prog, outputFile);
 		}
 
 		protected void RunTest(string sourceFile, string configFile, string outputFile)
 		{
-			Program prog = RewriteFileOld(sourceFile, configFile);
+			Program prog = RewriteFile(sourceFile, configFile);
 			SaveRunOutput(prog, outputFile);
 		}
 
 		protected void RunTest32(string sourceFile, string outputFile)
 		{
-			Program prog = RewriteFile32Old(sourceFile);
+			Program prog = RewriteFile32(sourceFile);
 			SaveRunOutput(prog, outputFile);
 		}
 
 		protected void RunTest32(string sourceFile, string configFile, string outputFile)
 		{
-			Program prog = RewriteFile32Old(sourceFile, configFile);
+			Program prog = RewriteFile32(sourceFile, configFile);
 			SaveRunOutput(prog, outputFile);
 		}
 

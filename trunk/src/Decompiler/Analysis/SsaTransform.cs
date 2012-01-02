@@ -24,12 +24,13 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
 using System;
+using System.Linq;
 using System.Diagnostics;
 
 namespace Decompiler.Analysis
 {
 	/// <summary>
-	/// Transforms a <see cref="Decompiler.Core.Procedure"/> to Static Single Assignment.
+	/// Transforms a <see cref="Decompiler.Core.Procedure"/> to Static Single Assignment form.
 	/// </summary>
 	public class SsaTransform
 	{
@@ -93,16 +94,13 @@ namespace Decompiler.Analysis
 
 		private void MarkTemporariesDeadIn(byte [,] def)
 		{
-			foreach (Identifier id in proc.Frame.Identifiers)
+			foreach (Identifier id in proc.Frame.Identifiers.Where(id =>id.Storage is TemporaryStorage))
 			{
-				if (id.Storage is TemporaryStorage)
-				{
-					foreach (var block in proc.ControlGraph.Blocks)
-					{
-						def[id.Number, RpoNumber(block)] |= BitDeadIn;
-					}
-				}
-			}
+                foreach (var block in proc.ControlGraph.Blocks)
+                {
+                    def[id.Number, RpoNumber(block)] |= BitDeadIn;
+                }
+            }
 		}
 
 		private void PlacePhiFunctions()
@@ -117,7 +115,7 @@ namespace Decompiler.Analysis
 			{
 				// Create a worklist W of all the blocks that define a.
 
-				WorkList<Block> W = new WorkList<Block>();
+				var W = new WorkList<Block>();
                 foreach (Block b in domGraph.ReversePostOrder.Keys) 
 				{
 					if ((AOrig[a, RpoNumber(b)] & BitDefined) != 0)

@@ -238,9 +238,6 @@
     <Compile Include="CodeEmitter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CodeWalker.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Code\Assignment.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -312,9 +309,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageWriter.cs" />
-    <Compile Include="IProcedureRewriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="IProcessorArchitecture.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -568,6 +562,7 @@
     <Compile Include="Types\StructureType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\Typeable.cs" />
     <Compile Include="Types\TypeFactory.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -168,7 +168,8 @@ namespace Decompiler.Core
 		{
 			get { return vectors; }
 		}
-	}
+
+    }
 
 	public class VectorUse
 	{

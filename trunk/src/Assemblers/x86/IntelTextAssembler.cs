@@ -51,14 +51,6 @@ namespace Decompiler.Assemblers.x86
             this.entryPoints = new List<EntryPoint>();
         }
 
-		public void Assemble(Address addr, string file)
-		{
-			using (StreamReader rdr = new StreamReader(file))
-			{
-                Assemble(addr, rdr);
-			}
-		}
-
         public void Assemble(Address addr, TextReader rdr)
         {
             addrBase = addr;

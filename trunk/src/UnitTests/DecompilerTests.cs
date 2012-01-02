@@ -18,14 +18,15 @@
  */
 #endregion
 
-using Decompiler.Configuration;
+using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Services;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
-using DecompilerHost = Decompiler.DecompilerHost;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
@@ -81,6 +82,29 @@ namespace Decompiler.UnitTests
             Assert.AreEqual("foo.bar", decompiler.Project.InputFilename);
         }
 
+        [Test]
+        public void LoadCallSignatures()
+        {
+            var arch = new IntelArchitecture(ProcessorMode.Real);
+            Program prog = new Program();
+            prog.Architecture = arch;
+            decompiler.Program = prog;
+            List<SerializedCall> al = new List<SerializedCall>();
+            SerializedSignature sig = new SerializedSignature();
+            sig.Arguments = new SerializedArgument[] {
+			    new SerializedArgument {
+			        Kind = new SerializedRegister("ds")
+                },
+                new SerializedArgument {
+			        Kind = new SerializedRegister("bx"),
+                }
+            };
+            al.Add(new SerializedCall(new Address(0x0C32, 0x3200), sig));
+            var sigs = decompiler.LoadCallSignatures(al);
+
+            ProcedureSignature ps = sigs[new Address(0x0C32, 0x3200)];
+            Assert.IsNotNull(ps, "Expected a call signature for address");
+        }
     }
 
     public class TestDecompiler : DecompilerDriver

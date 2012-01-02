@@ -208,19 +208,19 @@ namespace Decompiler.Typing
 			handler.EqualTrait(phi.Dst.TypeVariable, phi.Src.TypeVariable);
 		}
 
-		public override void VisitReturnInstruction(ReturnInstruction ret)
-		{
-            if (ret.Expression != null)
-            {
-                ret.Expression.Accept(this);
-                if (proc.Signature != null && proc.Signature.ReturnValue != null)
-                {
-                    handler.EqualTrait(proc.Signature.ReturnValue.TypeVariable, ret.Expression.TypeVariable);
-                }
-            }
-		}
+        public override void VisitReturnInstruction(ReturnInstruction ret)
+        {
+            if (ret.Expression == null)
+                return;
 
-		public override void VisitSwitchInstruction(SwitchInstruction si)
+            ret.Expression.Accept(this);
+            if (proc.Signature != null && proc.Signature.ReturnValue != null)
+            {
+                handler.EqualTrait(proc.Signature.ReturnValue.TypeVariable, ret.Expression.TypeVariable);
+            }
+        }
+
+        public override void VisitSwitchInstruction(SwitchInstruction si)
 		{
 			si.Expression.Accept(this);
 		}
@@ -304,9 +304,9 @@ namespace Decompiler.Typing
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
 			binExp.Left.Accept(this);
-			LinearInductionVariable ivLeft = ivCur;
+			var ivLeft = ivCur;
 			binExp.Right.Accept(this);
-			LinearInductionVariable ivRight = ivCur;
+			var ivRight = ivCur;
 
 			ivCur = null;
 			if (ivLeft != null)

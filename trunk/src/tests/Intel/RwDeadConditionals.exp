@@ -12,11 +12,13 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	ax = ax ^ ax
 	SZO = cond(ax)
 	C = false
 	cx = Mem0[ds:bx:word16]
+	// succ:  l0C00_0004
 l0C00_0004:
 	ax = ax + cx
 	SCZO = cond(ax)
@@ -24,7 +26,9 @@ l0C00_0004:
 	SCZO = cond(ax)
 	cx = cx - 0x0001
 	branch cx != 0x0000 l0C00_0004
+	// succ:  l0C00_000A l0C00_0004
 l0C00_000A:
 	store(Mem0[ds:0x0300:word16]) = ax
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

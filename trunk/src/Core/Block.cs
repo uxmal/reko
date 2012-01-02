@@ -32,25 +32,36 @@ namespace Decompiler.Core
 	/// </summary>
 	public class Block
 	{
-        [Obsolete]
-		public int RpoNumber;			// Reverse post order number.
-
-		private List<Block> pred = new List<Block>(2);
-        private List<Block> succ = new List<Block>(2);
-		private StatementList stms;
-
 		public Block(Procedure proc, string name)
 		{
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Blocks must have a valid name.", "name"); 
 			this.Procedure = proc;
 			this.Name = name;
-			this.stms = new StatementList(this);
+			this.Statements = new StatementList(this);
+            this.Pred = new List<Block>(2);
+            this.Succ = new List<Block>(2);
 		}
 
         public string Name { get; private set; }
         public Procedure Procedure { get; set; }
+       
+        public Block ElseBlock
+        {
+            get { return Succ[0]; }
+            set { Succ[0] = value; }
+        }
 
+        public Block ThenBlock
+        {
+            get { return Succ[1]; }
+            set { Succ[1] = value; }
+        }
+
+        public List<Block> Pred { get; private set; }
+        public List<Block> Succ { get; private set; }
+        public StatementList Statements { get; private set; }
+        
 		public static void Coalesce(Block block, Block next)
 		{
 			foreach (Statement stm in next.Statements)
@@ -58,7 +69,7 @@ namespace Decompiler.Core
 				block.Statements.Add(stm);
 			}
 
-			block.succ = new List<Block>(next.succ);
+			block.Succ = new List<Block>(next.Succ);
 			ReplaceJumpsFrom(next, block);
 			next.Pred.Clear();
 			next.Statements.Clear();
@@ -113,32 +124,6 @@ namespace Decompiler.Core
 			return change;
 		}
 
-		public Block ElseBlock
-		{
-			get { return succ[0]; }
-			set { succ[0] = value; }
-		}
-
-		public List<Block> Pred
-		{
-			get { return pred; }
-		}
-
-		public List<Block> Succ
-		{
-			get { return succ; }
-		}
-
-		public StatementList Statements
-		{
-			get { return stms; }
-		}
-
-		public Block ThenBlock
-		{
-			get { return succ[1]; }
-			set { succ[1] = value; }
-		}
 
         public override string ToString()
         {

@@ -45,7 +45,6 @@ namespace Decompiler
         void LoadProgram(string fileName);
         void ScanProgram();
         ProcedureBase ScanProcedure(Address procAddress);
-        void RewriteMachineCodeOld();
         DataFlowAnalysis AnalyzeDataFlow();
         void ReconstructTypes();
         void StructureProgram();
@@ -65,7 +64,6 @@ namespace Decompiler
 		private DecompilerHost host;
 		private LoaderBase loader;
 		private IScanner scanner;
-		private RewriterHost rewriterHost;
         private DecompilerEventListener eventListener;
         private IServiceProvider services;
 
@@ -86,7 +84,6 @@ namespace Decompiler
             {
                 LoadProgram(filename);
                 ScanProgram();
-                RewriteMachineCodeOld();
                 AnalyzeDataFlow();
                 ReconstructTypes();
                 StructureProgram();
@@ -212,6 +209,7 @@ namespace Decompiler
 
         private static bool IsXmlFile(byte[] image)
         {
+            //$UTF-8-encoded BOM? UTF-16 BOM?
             bool isXmlFile = ProgramImage.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5);	// <?xml
             return isXmlFile;
         }
@@ -227,7 +225,8 @@ namespace Decompiler
 
 		public Program Program
 		{
-			get { return prog; }
+            get { return prog; }
+            set { prog = value; } 
 		}
 
 		public Project Project
@@ -246,29 +245,6 @@ namespace Decompiler
             analyzer.RewriteProgram();
             host.WriteTypes(analyzer.WriteTypes);
         }
-
-		/// <summary>
-		/// Converts the machine-specific machine code to intermediate format.
-		/// </summary>
-		/// <param name="prog">the program to rewrite</param>
-		/// <param name="cfg">configuration information</param>
-        [Obsolete("Rewriting is now done by the Scanner. When new Scanner is completed, remove this method.")]
-		public virtual void RewriteMachineCodeOld()
-		{
-            eventListener.ShowStatus("Rewriting machine code to intermediate code.");
-            if (scanner == null)
-                throw new InvalidOperationException("Program must be scanned before it can be rewritten.");
-            var sc = (ScannerOld)scanner;
-			rewriterHost = new RewriterHost(prog, eventListener, sc.SystemCalls, sc.VectorUses);
-			rewriterHost.LoadCallSignatures(this.project.UserCalls.Values);
-			rewriterHost.RewriteProgram();
-
-            host.WriteIntermediateCode(delegate(TextWriter writer)
-            {
-                EmitProgram(null, writer);
-            });
-			eventListener.ShowStatus("Machine code rewritten.");
-		}
 
         public void WriteDecompiledProcedures(TextWriter w)
         {
@@ -357,17 +333,14 @@ namespace Decompiler
 
         public IDictionary<Address, ProcedureSignature> LoadCallSignatures(ICollection<SerializedCall> serializedCalls)
         {
-            var callSignatures = new Dictionary<Address, ProcedureSignature>();
-            foreach (SerializedCall sc in serializedCalls)
-            {
-                if (sc.Signature != null)
-                {
-                    Address addr = Address.ToAddress(sc.InstructionAddress, 16);
-                    ProcedureSerializer sser = new ProcedureSerializer(prog.Architecture, "stdapi");
-                    callSignatures.Add(addr, sser.Deserialize(sc.Signature, prog.Architecture.CreateFrame()));
-                }
-            }
-            return callSignatures;
+            return
+                (from sc in serializedCalls
+                 where sc != null && sc.Signature != null
+                 let sser = new ProcedureSerializer(prog.Architecture, "stdapi")
+                 select new KeyValuePair<Address, ProcedureSignature>(
+                     Address.ToAddress(sc.InstructionAddress, 16),
+                     sser.Deserialize(sc.Signature, prog.Architecture.CreateFrame())
+                 )).ToDictionary(item => item.Key, item => item.Value);
         }
 
 

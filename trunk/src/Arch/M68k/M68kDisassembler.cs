@@ -376,7 +376,7 @@ namespace Decompiler.Arch.M68k
         string g_helper_str; /* string to hold helpful info */
         ImageReader g_cpu_pc;        /* program counter */
         ushort g_cpu_ir;        /* instruction register */
-        uint g_cpu_type;
+        uint g_cpu_type = 0;
         uint g_opcode_type;
         string g_rawop;
         uint g_rawbasepc;

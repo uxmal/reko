@@ -18,15 +18,13 @@
  */
 #endregion
 
-using Decompiler;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
-using Decompiler.Scanning;
 using NUnit.Framework;
-using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
@@ -73,7 +71,10 @@ namespace Decompiler.UnitTests.Assemblers.x86
 		protected void RunTest(string sourceFile, string outputFile, Address addrBase)
 		{
 			Program prog = new Program();
-			asm.Assemble(addrBase, FileUnitTester.MapTestPath(sourceFile));
+            using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
+            {
+                asm.Assemble(addrBase, rdr);
+            }
             prog.Image = asm.Image;
             foreach (KeyValuePair<uint, PseudoProcedure> item in asm.ImportThunks)
             {
@@ -235,7 +236,10 @@ foo		endp
 		public void AsCarryInstructions()
 		{
 			Program prog = new Program();
-			asm.Assemble(new Address(0xBAC, 0), FileUnitTester.MapTestPath("Fragments/carryinsts.asm"));
+            using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/carryinsts.asm")))
+            {
+			    asm.Assemble(new Address(0xBAC, 0), rdr);
+            }
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
 				IntelDumper dump = new IntelDumper(arch);
@@ -359,7 +363,10 @@ foo		endp
 		private void RunTest(string sourceFile, string outputFile)
 		{
 			Program prog = new Program();
-			asm.Assemble(new Address(0x0C00, 0), FileUnitTester.MapTestPath(sourceFile));
+            using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
+            {
+                asm.Assemble(new Address(0x0C00, 0), rdr);
+            }
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				Dumper dump = asm.Architecture.CreateDumper();

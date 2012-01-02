@@ -271,7 +271,7 @@ namespace Decompiler.Analysis
 			int cBegin = callee.Frame.GetStackArgumentSpace();
 			foreach (Identifier id in Procedure.Frame.Identifiers)
 			{
-				StackLocalStorage sl = id.Storage as StackLocalStorage;
+				var sl = id.Storage as StackLocalStorage;
 				if (sl == null)
 					continue;
 				if (-ci.CallSite.StackDepthBefore <= sl.StackOffset && sl.StackOffset < cBegin - ci.CallSite.StackDepthBefore)
@@ -338,10 +338,10 @@ namespace Decompiler.Analysis
 		{
 			BitSet liveOrig = new BitSet(varLive.BitSet);
 			uint grfOrig = varLive.Grf;
-            Dictionary<Storage, int> stackOrig = new Dictionary<Storage, int>(varLive.LiveStorages);
+            var stackOrig = new Dictionary<Storage, int>(varLive.LiveStorages);
 			foreach (Procedure p in prog.CallGraph.Callees(stm))
 			{
-				ProcedureFlow flow = mpprocData[p];
+				var flow = mpprocData[p];
 				varLive.BitSet = liveOrig - flow.PreservedRegisters;
 				varLive.LiveStorages = new Dictionary<Storage,int>();
 				MergeBlockInfo(p.ExitBlock);
@@ -372,12 +372,10 @@ namespace Decompiler.Analysis
 		/// <param name="p"></param>
 		public void PropagateToProcedureSummary(IdentifierLiveness varLive, Procedure p)
 		{
-			bool fChange = false;
 			ProcedureFlow flow = mpprocData[p];
-
             state.ApplySavedRegisters(flow, varLive);
-			fChange = MergeIntoProcedureFlow(varLive, flow);
-			if (fChange)
+			var change = MergeIntoProcedureFlow(varLive, flow);
+			if (change)
 			{
 				Debug.WriteLineIf(trace.TraceInfo, flow.EmitRegisters(prog.Architecture, p.Name + " summary:", flow.Summary));
 				state.UpdateSummary(flow);

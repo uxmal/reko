@@ -207,7 +207,7 @@ namespace Decompiler.Typing
 		{
             int delta = iv.Delta.ToInt32();
             int offset = StructureField.ToOffset(cOffset);
-            TypeVariable tvBase = (tvBasePointer != null) ? tvBasePointer : prog.Globals.TypeVariable;
+            var tvBase = (tvBasePointer != null) ? tvBasePointer : prog.Globals.TypeVariable;
             if (delta < 0)
             {
                 // induction variable is decremented, so the actual array begings at ivFinal - delta.

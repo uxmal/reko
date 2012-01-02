@@ -32,8 +32,6 @@ namespace Decompiler.Arch.M68k
 {
     public class M68kArchitecture : IProcessorArchitecture
     {
-        #region IProcessorArchitecture Members
-
         public Disassembler CreateDisassembler(ImageReader rdr)
         {
             return new M68kDisassembler(rdr);
@@ -49,22 +47,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public CodeWalker CreateCodeWalker(ProgramImage img, Platform platform, Address addr, ProcessorState st)
-        {
-            return new M68kCodeWalker(img, platform, addr, st);
-        }
-
         public BitSet CreateRegisterBitset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHostOld host)
-        {
-            return new Rewriter(this, prw);
-        }
-
-        public Decompiler.Core.Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             throw new NotImplementedException();
         }
@@ -98,6 +81,11 @@ namespace Decompiler.Arch.M68k
         public MachineFlags GetFlagGroup(string name)
         {
             throw new NotImplementedException();
+        }
+
+        public Core.Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        {
+            return new Rewriter(this, (M68kState) state, frame, host);
         }
 
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -146,6 +134,5 @@ namespace Decompiler.Arch.M68k
         public MachineRegister StackRegister { get { return Registers.a7; } }
 
 
-        #endregion
     }
 }

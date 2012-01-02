@@ -20,6 +20,7 @@
 
 using BitSet = Decompiler.Core.Lib.BitSet;
 using Block = Decompiler.Core.Block;
+using DataType = Decompiler.Core.Types.DataType;    
 using Expression = Decompiler.Core.Expressions.Expression;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
 using Storage = Decompiler.Core.Storage;
@@ -44,7 +45,8 @@ namespace Decompiler.Analysis
         [Obsolete] public Dictionary<Storage, Storage> TrashedIn;  
         public SymbolicEvaluationContext SymbolicAuxIn;
         public Dictionary<Storage, Expression> SymbolicIn;        // maps identifiers to symbolic values on entrance to the block.
-        public bool TerminatesProcess;                  // True if entering this block means the process/thread is terminated.
+        public bool TerminatesProcess;                  // True if entering this block means the process/thread will be terminated.
+        public Dictionary<Expression, DataType> DataTypes { get; private set; }
 
 		public BlockFlow(Block block, BitSet dataOut, SymbolicEvaluationContext ctx)
 		{
@@ -54,6 +56,7 @@ namespace Decompiler.Analysis
 			this.TrashedIn = new Dictionary<Storage, Storage>();
             this.SymbolicIn = new Dictionary<Storage, Expression>();
             this.SymbolicAuxIn = ctx;
+            this.DataTypes = new Dictionary<Expression, DataType>();
 		}
 
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)
@@ -90,8 +93,6 @@ namespace Decompiler.Analysis
                 writer.Write(s);
             }
             writer.WriteLine();
-
         }
-
     }
 }

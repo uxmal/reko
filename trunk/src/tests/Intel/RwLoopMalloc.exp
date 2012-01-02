@@ -13,11 +13,13 @@
 // return address size: 4
 void fn10000000()
 fn10000000_entry:
+	// succ:  l10000000
 l10000000:
 	edi = 0x10000034
 	esi = 0x00000003
 	ebx = malloc
 	goto l1000002F
+	// succ:  l1000002F
 l10000015:
 	esp = esp - 0x00000004
 	store(Mem0[esp:word32]) = 0x00000008
@@ -31,12 +33,15 @@ l10000015:
 	SZO = cond(esi)
 	edi = edi + 0x00000004
 	SCZO = cond(edi)
+	// succ:  l1000002F
 l1000002F:
 	esi = esi | esi
 	SZO = cond(esi)
 	C = false
 	branch Test(NE,Z) l10000015
+	// succ:  l10000033 l10000015
 l10000033:
 	return
+	// succ:  fn10000000_exit
 fn10000000_exit:
 

@@ -9,6 +9,7 @@
 // return address size: 0
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_000F (retsize: 2;)
 	sp = sp - 0x0002
@@ -18,6 +19,8 @@ l0C00_0000:
 	store(Mem0[ds:0x0300:word16]) = ax
 	di = Mem0[ss:sp:word16]
 	sp = sp + 0x0002
+	goto l0C00_000F
+	// succ:  l0C00_000F
 fn0C00_0000_exit:
 // fn0C00_000F
 // Mem0:Global memory
@@ -28,9 +31,11 @@ fn0C00_0000_exit:
 // return address size: 2
 void fn0C00_000F()
 fn0C00_000F_entry:
+	// succ:  l0C00_000F
 l0C00_000F:
 	store(Mem0[ds:di:word16]) = 0x0000
 	return
+	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
 // fn0C00_0014
 // Mem0:Global memory
@@ -43,6 +48,7 @@ fn0C00_000F_exit:
 // return address size: 2
 void fn0C00_0014()
 fn0C00_0014_entry:
+	// succ:  l0C00_0014
 l0C00_0014:
 	di = di ^ di
 	SZO = cond(di)
@@ -50,4 +56,5 @@ l0C00_0014:
 	ax = ax - 0x0001
 	SZO = cond(ax)
 	return
+	// succ:  fn0C00_0014_exit
 fn0C00_0014_exit:

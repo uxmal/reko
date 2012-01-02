@@ -29,8 +29,11 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Pdp11Rewriter : Rewriter
     {
-        public Pdp11Rewriter(Pdp11Architecture arch, IProcedureRewriter prw)
+        private Pdp11Architecture arch;
+
+        public Pdp11Rewriter(Pdp11Architecture arch)
         {
+            this.arch = arch;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

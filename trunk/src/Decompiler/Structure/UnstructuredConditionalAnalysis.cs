@@ -127,7 +127,5 @@ namespace Decompiler.Structure
                 curNode.Conditional = new IfThen(null);
             }
         }
-
-
     }
 }

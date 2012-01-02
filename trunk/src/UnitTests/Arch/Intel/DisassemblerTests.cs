@@ -23,8 +23,7 @@ using Decompiler.Assemblers.x86;
 using Decompiler.Core;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
-using System;
-using System.Diagnostics;
+using System.IO;
 using System.Text;
 using NUnit.Framework;
 
@@ -186,7 +185,10 @@ movzx	ax,byte ptr [bp+04]
 			{
 				Program prog = new Program();
 				IntelTextAssembler asm = new IntelTextAssembler();
-				asm.Assemble(new Address(0xC32, 0), FileUnitTester.MapTestPath("Fragments/fpuops.asm"));
+                using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/fpuops.asm")))
+                {
+                    asm.Assemble(new Address(0xC32, 0), rdr);
+                }
 				CreateDisassembler(asm, PrimitiveType.Word16);
 				while (asm.Image.IsValidAddress(dasm.Address))
 				{

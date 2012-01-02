@@ -29,8 +29,6 @@ namespace Decompiler.Core.Code
 	/// </summary>
 	public class SideEffect : Instruction
 	{
-		private Expression expr;
-
 		public SideEffect(Expression expr)
 		{
 			this.Expression = expr;
@@ -53,9 +51,6 @@ namespace Decompiler.Core.Code
 			v.VisitSideEffect(this);
 		}
 
-		public override bool IsControlFlow
-		{
-			get { return false; }
-		}
+		public override bool IsControlFlow { get { return false; } }
 	}
 }

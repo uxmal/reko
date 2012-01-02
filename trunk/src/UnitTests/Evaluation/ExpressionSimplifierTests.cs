@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Evaluation
 	public class ExpressionSimplifierTests
 	{
 		private Dictionary<Expression, Expression> table;
-		private ExpressionSimplifierOld simplifier;
+		private ExpressionSimplifier simplifier;
 		private Identifier foo;
 		private Identifier bar;
 
@@ -46,24 +46,33 @@ namespace Decompiler.UnitTests.Evaluation
 			BuildExpressionSimplifier();
 			Expression expr = new BinaryExpression(Operator.Add, PrimitiveType.Word32, 
 				Constant.Word32(1), Constant.Word32(2));
-			Constant c = (Constant) simplifier.Simplify(expr);
+			Constant c = (Constant) expr.Accept(simplifier);
 
 			Assert.AreEqual(3, c.ToInt32());
 		}
+
+        [Test]
+        public void OrWithSelf()
+        {
+            BuildExpressionSimplifier();
+            var expr = new BinaryExpression(Operator.Or, foo.DataType, foo, foo);
+            var result = expr.Accept(simplifier);
+            Assert.AreSame(foo, result);
+        }
 
 		private void BuildExpressionSimplifier()
 		{
 			SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
 			table = new Dictionary<Expression,Expression>();
-			simplifier = new ExpressionSimplifierOld(new ValueNumbering(ssaIds), table);
+            simplifier = new ExpressionSimplifier(new SsaEvaluationContext(ssaIds));
 		}
 
 		private SsaIdentifierCollection BuildSsaIdentifiers()
 		{
 			MachineRegister mrFoo = new MachineRegister("foo", 1, PrimitiveType.Word32);
 			MachineRegister mrBar = new MachineRegister("bar", 2, PrimitiveType.Word32);
-			foo = new Identifier(mrFoo.Name, 1, mrFoo.DataType, new RegisterStorage(mrFoo));
-			bar = new Identifier(mrBar.Name, 2, mrBar.DataType, new RegisterStorage(mrBar));
+			foo = new Identifier(mrFoo.Name, 0, mrFoo.DataType, new RegisterStorage(mrFoo));
+			bar = new Identifier(mrBar.Name, 1, mrBar.DataType, new RegisterStorage(mrBar));
 
 			var coll = new SsaIdentifierCollection();
             var src = Constant.Word32(1);

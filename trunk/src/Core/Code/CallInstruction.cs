@@ -73,7 +73,6 @@ namespace Decompiler.Core.Code
 
 	public class CallInstruction : CallBase
 	{
-
         public CallInstruction(ProcedureConstant pc, CallSite site) : base(pc, site)
         {
             this.Callee = pc != null ? pc.Procedure : null;
