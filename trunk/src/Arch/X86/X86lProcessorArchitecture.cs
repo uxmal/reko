@@ -35,7 +35,7 @@ using System.Xml.Serialization;
 
 using BitSet = Decompiler.Core.Lib.BitSet;
 
-namespace Decompiler.Arch.Intel
+namespace Decompiler.Arch.X86
 {
 	/// <summary>
     /// The registers of an Intel ia32 machine.
@@ -268,13 +268,7 @@ namespace Decompiler.Arch.Intel
 			return new X86State();
 		}
 
-        [Obsolete]
-		public virtual RewriterOld CreateRewriterOld(IProcedureRewriter prw, Procedure proc, IRewriterHost host)
-		{
-			return new IntelRewriter(prw, proc, host, this, new IntelRewriterState(proc.Frame));
-		}
-
-        public virtual Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost2 host)
+        public virtual Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
@@ -292,7 +286,7 @@ namespace Decompiler.Arch.Intel
             {
                 if (byteSize == PrimitiveType.Word16.Size)
                 {
-                    return new Address(state.Get(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
+                    return new Address(state.GetRegister(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
                 }
                 else
                 {

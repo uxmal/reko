@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Typing
 			var r = m.Local32("r");
 			var mem = m.Load(PrimitiveType.Word32, m.Add(r, 4));
 			mem.Accept(eqb);
-			atrco.Collect(null, 0, mem.TypeVariable, mem.EffectiveAddress);
+			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoTestIdPlusConst.txt");
 		}
 
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Typing
 			var r = m.Local32("r");
 			var mem = m.Load(PrimitiveType.Byte, r);
 			mem.Accept(eqb);
-			atrco.Collect(null, 0, mem.TypeVariable, mem.EffectiveAddress);
+			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoTestId.txt");
 		}
 
@@ -68,7 +68,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier s = m.Local32("s");
 			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.Add(r, s));
 			mem.Accept(eqb);
-			atrco.Collect(null, 0, mem.TypeVariable, mem.EffectiveAddress);
+			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 		}
 
 		[Test]
@@ -77,7 +77,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier r = m.Local32("r");
 			MemoryAccess mem = m.Load(PrimitiveType.Word32, m.Sub(r, 4));
 			mem.Accept(eqb);
-			atrco.Collect(null, 0, mem.TypeVariable, mem.EffectiveAddress);
+			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoIdMinusConst.txt");
 
 		}
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier pp = m.Local32("pp");
 			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.Load(PrimitiveType.Word32, pp));
 			mem.Accept(eqb);
-			atrco.Collect(null, 0, mem.TypeVariable, mem.EffectiveAddress);
+			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoMem.txt");
 		}
 
@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Typing
 			Identifier bx = m.Local16("bx");
 			MemoryAccess mem = m.SegMem(PrimitiveType.Word16, ds, bx);
 			mem.Accept(eqb);
-			atrco.Collect(prog.Globals.TypeVariable, 2, mem.TypeVariable, mem.EffectiveAddress);
+			atrco.Collect(prog.Globals, 2, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoSegPtr.txt");
 		}
 
@@ -116,7 +116,7 @@ namespace Decompiler.UnitTests.Typing
             Constant zero = m.Word32(0);
 			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.Add(id, zero));
 			mem.Accept(eqb);
-            atrco.Collect(null, 0, mem.TypeVariable, mem.EffectiveAddress);
+            atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoInductionVariableIncr.txt");
 		}
 

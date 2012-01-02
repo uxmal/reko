@@ -46,7 +46,6 @@ namespace Decompiler.Core
 		private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Identifier, LinearInductionVariable> ivs;
 		private TypeFactory typefactory;
-		private TypeStore typeStore;
 
 		public Program()
 		{
@@ -58,7 +57,7 @@ namespace Decompiler.Core
             pseudoProcs = new Dictionary<string, PseudoProcedure>();
             ivs = new Dictionary<Identifier, LinearInductionVariable>();
 			typefactory = new TypeFactory();
-			typeStore = new TypeStore();
+			this.TypeStore = new TypeStore();
 		}
 
 		public IProcessorArchitecture Architecture
@@ -156,10 +155,7 @@ namespace Decompiler.Core
 			get { return typefactory; }
 		}
 		
-		public TypeStore TypeStore
-		{
-			get { return typeStore; }
-		}
+		public TypeStore TypeStore { get; private set; }
 
 		/// <summary>
 		/// Provides access to the program's jump and call tables, sorted by address.

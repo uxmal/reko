@@ -38,9 +38,9 @@ namespace Decompiler.Typing
 		private ITraitHandler handler;
 		private Program prog;
 
-		private TypeVariable tvField;
+        private Expression basePointer;
+        private Expression tvField;
 		private bool arrayContext;
-		private TypeVariable tvBasePointer;
 		private int basePointerSize;
 		private int arrayElementSize;
 		private int arrayLength;
@@ -54,17 +54,17 @@ namespace Decompiler.Typing
 			this.arrayContext = false;
 		}
 
-		public void Collect(TypeVariable tvBasePointer, int basePointerSize, TypeVariable tvField, Expression effectiveAddress)
+		public void Collect(Expression tvBasePointer, int basePointerSize, Expression tvField, Expression effectiveAddress)
 		{
-			this.tvBasePointer = tvBasePointer;
+			this.basePointer = tvBasePointer;
 			this.basePointerSize = basePointerSize;
 			this.tvField = tvField;
 			effectiveAddress.Accept(this);
 		}
 
-		public void CollectArray(TypeVariable tvBasePointer, TypeVariable tvField, Expression arrayBase, int elementSize, int length)
+		public void CollectArray(Expression tvBasePointer, Expression tvField, Expression arrayBase, int elementSize, int length)
 		{
-			this.tvBasePointer = tvBasePointer;
+			this.basePointer = tvBasePointer;
 			this.tvField = tvField;
 			bool c = arrayContext;
 			arrayContext = true;
@@ -74,7 +74,7 @@ namespace Decompiler.Typing
 			arrayContext = c;
 		}
 
-		public void EmitAccessTrait(TypeVariable tvBase, TypeVariable tvMemPtr, int ptrSize, int offset)
+		public void EmitAccessTrait(Expression tvBase, Expression tvMemPtr, int ptrSize, int offset)
 		{
 			if (arrayContext)
 				handler.MemAccessArrayTrait(tvBase, tvMemPtr, ptrSize, offset, arrayElementSize, arrayLength, tvField);
@@ -100,12 +100,12 @@ namespace Decompiler.Typing
 
 		public void VisitApplication(Application appl)
 		{
-			handler.MemAccessTrait(tvBasePointer, appl.TypeVariable, appl.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, appl, appl.DataType.Size, tvField, 0);
 		}
 
 		public void VisitArrayAccess(ArrayAccess access)
 		{
-			handler.MemAccessTrait(tvBasePointer, access.TypeVariable, access.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, access, access.DataType.Size, tvField, 0);
 		}
 
 		public void VisitBinaryExpression(BinaryExpression bin)
@@ -128,7 +128,7 @@ namespace Decompiler.Typing
                     }
                     else
                     {
-                        EmitAccessTrait(tvBasePointer, bin.Left.TypeVariable, bin.DataType.Size, offset.ToInt32());
+                        EmitAccessTrait(basePointer, bin.Left, bin.DataType.Size, offset.ToInt32());
                     }
 					return;
 				}
@@ -136,7 +136,7 @@ namespace Decompiler.Typing
 				// Handle odd mem[x + y] case; perhaps a later stage can detect that x (or y)
 				// is a pointer and therefore y isn't.
 
-				EmitAccessTrait(tvBasePointer, bin.Left.TypeVariable, bin.DataType.Size, 0);
+				EmitAccessTrait(basePointer, bin.Left, bin.DataType.Size, 0);
 				return;
 			}
             throw new TypeInferenceException("Couldn't generate address traits for expression {0}.", bin);
@@ -156,17 +156,17 @@ namespace Decompiler.Typing
 		{
 			// Globals has a field at offset C that is a tvField: [[g->c]] = ptr(tvField)
 			int v = StructureField.ToOffset(c);
-			if (tvBasePointer != null)
-				handler.MemAccessTrait(null, tvBasePointer, basePointerSize, tvField, v);
+			if (basePointer != null)
+				handler.MemAccessTrait(null, basePointer, basePointerSize, tvField, v);
 			else
-				handler.MemAccessTrait(null, prog.Globals.TypeVariable, c.DataType.Size, tvField, v);
+				handler.MemAccessTrait(null, prog.Globals, c.DataType.Size, tvField, v);
 			// C is a pointer to tvField: [[c]] = ptr(tvField)
-			handler.MemAccessTrait(tvBasePointer, c.TypeVariable, c.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, c, c.DataType.Size, tvField, 0);
 		}
 
 		public void VisitDepositBits(DepositBits dpb)
 		{
-			handler.MemAccessTrait(tvBasePointer, dpb.TypeVariable, dpb.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, dpb, dpb.DataType.Size, tvField, 0);
 		}
 
 		public void VisitDereference(Dereference deref)
@@ -194,7 +194,7 @@ namespace Decompiler.Typing
 			{
 				VisitInductionVariable(id, iv, null);
 			}
-			EmitAccessTrait(tvBasePointer, id.TypeVariable, id.DataType.Size, 0);
+			EmitAccessTrait(basePointer, id, id.DataType.Size, 0);
 		}
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace Decompiler.Typing
 		{
             int delta = iv.Delta.ToInt32();
             int offset = StructureField.ToOffset(cOffset);
-            var tvBase = (tvBasePointer != null) ? tvBasePointer : prog.Globals.TypeVariable;
+            var tvBase = (basePointer != null) ? basePointer : prog.Globals;
             if (delta < 0)
             {
                 // induction variable is decremented, so the actual array begings at ivFinal - delta.
@@ -244,20 +244,20 @@ namespace Decompiler.Typing
             {
                 if (cOffset != null)
                 {
-                    handler.MemSizeTrait(tvBasePointer, cOffset.TypeVariable, Math.Abs(delta));
-                    EmitAccessTrait(tvBasePointer, cOffset.TypeVariable, cOffset.DataType.Size, 0);
+                    handler.MemSizeTrait(basePointer, cOffset, Math.Abs(delta));
+                    EmitAccessTrait(basePointer, cOffset, cOffset.DataType.Size, 0);
                 }
             }
             else
             {
-                handler.MemSizeTrait(tvBasePointer, id.TypeVariable, Math.Abs(delta));
-                EmitAccessTrait(tvBasePointer, id.TypeVariable, id.DataType.Size, offset);
+                handler.MemSizeTrait(basePointer, id, Math.Abs(delta));
+                EmitAccessTrait(basePointer, id, id.DataType.Size, offset);
             }
 		}
 
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
-			handler.MemAccessTrait(tvBasePointer, mps.TypeVariable, mps.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, mps, mps.DataType.Size, tvField, 0);
 		}
 
 		public void VisitMkSequence(MkSequence seq)
@@ -269,18 +269,18 @@ namespace Decompiler.Typing
                 Constant c = seq.Tail as Constant;
                 if (c == null)
                     return;
-                handler.MemAccessArrayTrait(null, seq.Head.TypeVariable, seq.Head.DataType.Size, c.ToInt32(), arrayElementSize, 0, tvField); 
+                handler.MemAccessArrayTrait(null, seq.Head, seq.Head.DataType.Size, c.ToInt32(), arrayElementSize, 0, tvField); 
             }
 		}
 
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
-			handler.MemAccessTrait(tvBasePointer, access.TypeVariable, access.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, access, access.DataType.Size, tvField, 0);
 		}
 
 		public void VisitSegmentedAccess(SegmentedAccess access)
 		{
-			handler.MemAccessTrait(tvBasePointer, access.TypeVariable, access.DataType.Size, tvField, 0);
+			handler.MemAccessTrait(basePointer, access, access.DataType.Size, tvField, 0);
 		}
 
 		public void VisitPhiFunction(PhiFunction phi)

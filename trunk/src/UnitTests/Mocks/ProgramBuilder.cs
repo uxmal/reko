@@ -52,8 +52,16 @@ namespace Decompiler.UnitTests.Mocks
         public void Add(ProcedureBuilder mock)
         {
             mock.ProgramMock = this;
-            Procedure proc = mock.Procedure;
-            Add(proc);
+            Add(mock.Procedure);
+            unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
+        }
+
+        public void Add(string procName, Action<ProcedureBuilder> testCodeBuilder)
+        {
+            var mock = new ProcedureBuilder(prog.Architecture, procName);
+            mock.ProgramMock = this;
+            testCodeBuilder(mock);
+            Add(mock.Procedure);
             unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
         }
 

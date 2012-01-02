@@ -22,6 +22,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Output;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Decompiler.Core.Types
@@ -30,7 +31,14 @@ namespace Decompiler.Core.Types
 	/// Stores, for a particular program, all type variables, equivalence classes, and their mappings to
 	/// each other.
 	/// </summary>
-	public class TypeStore
+	public interface ITypeStore
+    {
+        DataType GetDataTypeOf(Expression tField);
+        DataType MergeIntoDataType(Expression exp, DataType dt, Unifier unifier);
+        void Write(TextWriter writer);
+    }
+
+	public class TypeStore : ITypeStore
 	{
         private SortedList<int, EquivalenceClass> usedClasses;
         private Dictionary<TypeVariable, Expression> tvSources;
@@ -76,11 +84,12 @@ namespace Decompiler.Core.Types
             throw new NotImplementedException();
         }
 
+        [Conditional("DEBUG")]
 		public void Dump()
 		{
-			StringWriter sw = new StringWriter();
+			var sw = new StringWriter();
 			Write(sw);
-			System.Diagnostics.Debug.WriteLine(sw.ToString());
+			Debug.WriteLine(sw.ToString());
 		}
 
         public Expression ExpressionOf(TypeVariable tv)
@@ -91,6 +100,7 @@ namespace Decompiler.Core.Types
             else
                 return null; 
         }
+
 
 		public EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2)
 		{
@@ -105,6 +115,20 @@ namespace Decompiler.Core.Types
 			return merged;
 		}
 
+        public DataType MergeIntoDataType(Expression exp, DataType dtNew, Unifier unifier)
+        {
+            var tv = exp.TypeVariable;
+            if (dtNew == null)
+                return tv.OriginalDataType;
+
+            DataType dtCurrent = tv.OriginalDataType;
+            if (dtCurrent != null)
+            {
+                dtNew = unifier.Unify(dtCurrent, dtNew);
+            }
+            tv.OriginalDataType = dtNew;
+            return dtNew;
+        }
 
 
 		/// <summary>
@@ -209,5 +233,10 @@ namespace Decompiler.Core.Types
 
 			writer.WriteLine();
 		}
-	}
+
+        public DataType GetDataTypeOf(Expression tField)
+        {
+            return tField.TypeVariable;
+        }
+     }
 }

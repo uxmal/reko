@@ -402,45 +402,48 @@ namespace Decompiler.UnitTests.Typing
 			RunTest(m.BuildProgram(), "Typing/DtbSegmentedMemoryPointer.txt");
 		}
 
-		[Test]
-		public void DtbFn1CallFn2()
-		{
-			ProgramBuilder pp = new ProgramBuilder();
-			ProcedureBuilder m = new ProcedureBuilder("Fn1");
-			Identifier loc1 = m.Local32("loc1");
-			Identifier loc2 = m.Local32("loc2");
-			m.Assign(loc2, m.Fn("Fn2", loc1));
-			m.Return();
-			pp.Add(m);
-
-			m = new ProcedureBuilder("Fn2");
-			Identifier arg1 = m.Local32("arg1");
-			Identifier ret = m.Register(1);
-			m.Procedure.Signature = new ProcedureSignature(ret, new Identifier[] { arg1 });
-			m.Procedure.Signature.FormalArguments[0] = arg1;
-			m.Assign(ret, m.Add(arg1, 1));
-			m.Return(ret);
-
-			RunTest(pp.BuildProgram(), "Typing/DtbFn1CallFn2.txt");
-		}
+        [Test]
+        public void DtbFn1CallFn2()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn1", m =>
+            {
+                Identifier loc1 = m.Local32("loc1");
+                Identifier loc2 = m.Local32("loc2");
+                m.Assign(loc2, m.Fn("Fn2", loc1));
+                m.Return();
+            });
+            pp.Add("Fn2", m =>
+            {
+                Identifier arg1 = m.Local32("arg1");
+                Identifier ret = m.Register(1);
+                m.Procedure.Signature = new ProcedureSignature(ret, new Identifier[] { arg1 });
+                m.Procedure.Signature.FormalArguments[0] = arg1;
+                m.Assign(ret, m.Add(arg1, 1));
+                m.Return(ret);
+            });
+            RunTest(pp.BuildProgram(), "Typing/DtbFn1CallFn2.txt");
+        }
 
 		[Test]
 		public void DtbStructurePointerPassedToFunction()
 		{
 			ProgramBuilder pp = new ProgramBuilder();
-			
-			ProcedureBuilder m = new ProcedureBuilder("Fn1");
-			Identifier p = m.Local32("p");
-			m.Store(m.Add(p, 4), m.Word32(0x42));
-			m.SideEffect(m.Fn("Fn2", p));
-			m.Return();
+            pp.Add("Fn1", m =>
+            {
+                Identifier p = m.Local32("p");
+                m.Store(m.Add(p, 4), m.Word32(0x42));
+                m.SideEffect(m.Fn("Fn2", p));
+                m.Return();
+            });
 
-			m = new ProcedureBuilder("Fn2");
-			Identifier arg1 = m.Local32("arg1");
-			m.Procedure.Signature = new ProcedureSignature(null, new Identifier[] { arg1 });
-			m.Store(m.Add(arg1, 8), m.Int32(0x23));
-			m.Return();
-
+            pp.Add("Fn2", m =>
+            {
+                Identifier arg1 = m.Local32("arg1");
+                m.Procedure.Signature = new ProcedureSignature(null, new Identifier[] { arg1 });
+                m.Store(m.Add(arg1, 8), m.Int32(0x23));
+                m.Return();
+            });
 			RunTest(pp.BuildProgram(), "Typing/DtbStructurePointerPassedToFunction.txt");
 		}
 

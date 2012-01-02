@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
 
@@ -77,6 +78,7 @@ namespace Decompiler.Typing
 			}
 		}
 
+        [Obsolete("Moved this to typestore")]
         public void MergeIntoDataType(DataType dtNew, TypeVariable tv)
         {
             if (dtNew == null)
@@ -112,66 +114,74 @@ namespace Decompiler.Typing
 			MergeIntoDataType(dt, type);
 		}
 
-		public void EqualTrait(TypeVariable tv1, TypeVariable tv2)
+        public DataType DataTypeTrait(Expression exp, DataType dt)
+        {
+            if (dt == PrimitiveType.SegmentSelector)
+            {
+                StructureType seg = factory.CreateStructureType(null, 0);
+                seg.IsSegment = true;
+                Pointer ptr = factory.CreatePointer(seg, dt.Size);
+                dt = ptr;
+            }
+            return store.MergeIntoDataType(exp, dt, unifier);
+        }
+
+		public DataType EqualTrait(Expression tv1, Expression tv2)
 		{
+            return null;
 		}
 
-		public void FunctionTrait(TypeVariable function, int funcPtrSize, TypeVariable ret, params TypeVariable [] actuals)
+		public DataType FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable [] actuals)
 		{
 			DataType [] adt = new DataType[actuals.Length];
 			actuals.CopyTo(adt, 0);
 			FunctionType f = factory.CreateFunctionType(null, ret, adt, null);
-			Pointer ptr = factory.CreatePointer(f, funcPtrSize);
-			MergeIntoDataType(ptr, function);
+			Pointer pfn = factory.CreatePointer(f, funcPtrSize);
+			return store.MergeIntoDataType(function, pfn, unifier);
 		}
 
-		public void MemAccessArrayTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tField)
+		public DataType MemAccessArrayTrait(Expression tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tField)
 		{
 			var element = factory.CreateStructureType(null, elementSize);
 			if (tField != null)
-				element.Fields.Add(0, tField, null);
+				element.Fields.Add(0, store.GetDataTypeOf(tField), null);
 			var a = factory.CreateArrayType(element, length);
 
-			MemoryAccessCommon(tBase, tStruct, new StructureField(offset, a), structPtrSize);
+			return MemoryAccessCommon(tBase, tStruct, offset, a, structPtrSize);
 		}
 		
-		public void MemAccessTrait(TypeVariable tBase, TypeVariable tStruct, int structPtrSize, TypeVariable tField, int offset)
+		public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
 		{
-			MemoryAccessCommon(tBase, tStruct, new StructureField(offset, tField), structPtrSize);
+			return MemoryAccessCommon(tBase, tStruct, offset, store.GetDataTypeOf(tField), structPtrSize);
 		}
 
-		public void MemoryAccessCommon(TypeVariable tBase, TypeVariable tStruct, StructureField field, int structPtrSize)
-		{
-			StructureType s = factory.CreateStructureType(null, 0);
-			s.Fields.Add(field);
+        public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
+        {
+            StructureType s = factory.CreateStructureType(null, 0);
+            var field = new StructureField(offset, tField);
+            s.Fields.Add(field);
 
-			var pointer = tBase != null
-				? (DataType)factory.CreateMemberPointer(tBase, s, structPtrSize)			//$REFACTOR: duplicated code (see memaccesstrait)
-				: (DataType)factory.CreatePointer(s, structPtrSize);
-			MergeIntoDataType(pointer, tStruct);
-		}
+            var pointer = tBase != null
+                ? (DataType)factory.CreateMemberPointer(store.GetDataTypeOf(tBase), s, structPtrSize)			//$REFACTOR: duplicated code (see memaccesstrait)
+                : (DataType)factory.CreatePointer(s, structPtrSize);
+            return store.MergeIntoDataType(tStruct, pointer, unifier);
+        }
 
-		public void MemSizeTrait(TypeVariable tBase, TypeVariable tStruct, int size)
+		public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)
 		{
 			if (size <= 0)
 				throw new ArgumentOutOfRangeException("size must be positive");
 			var s = factory.CreateStructureType(null, size);
 			var ptr = tBase != null
-				? (DataType)factory.CreateMemberPointer(tBase, s, arch.FramePointerType.Size)
+				? (DataType)factory.CreateMemberPointer(store.GetDataTypeOf(tBase), s, arch.FramePointerType.Size)
 				: (DataType)factory.CreatePointer(s, arch.PointerType.Size);
-			MergeIntoDataType(ptr, tStruct);
+			return store.MergeIntoDataType(tStruct, ptr, unifier);
 		}
 
-		public void PointerTrait(TypeVariable tPtr, int ptrSize, TypeVariable tPointee)
+		public DataType PointerTrait(Expression ptrExp, int ptrSize, Expression tPointee)
 		{
-			var ptr = factory.CreatePointer(tPointee, ptrSize);
-			MergeIntoDataType(ptr, tPtr);
-		}
-
-		public void UnknownTrait(TypeVariable tUnknown)
-		{
-			UnknownType unk = factory.CreateUnknown();
-			MergeIntoDataType(unk, tUnknown);
+			var ptr = factory.CreatePointer(store.GetDataTypeOf(tPointee), ptrSize);
+            return store.MergeIntoDataType(ptrExp, ptr, unifier);
 		}
 		#endregion
 	}

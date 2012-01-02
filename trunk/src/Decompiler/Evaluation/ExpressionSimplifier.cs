@@ -61,7 +61,7 @@ namespace Decompiler.Evaluation
             this.addEcc = new Add_e_c_cRule(ctx);
             this.addMici = new Add_mul_id_c_id_Rule(ctx);
             this.dpbConstantRule = new DpbConstantRule();
-            this.idConst = new IdConstant(ctx, new Decompiler.Typing.Unifier());
+            this.idConst = new IdConstant(ctx, new Unifier());
             this.idCopyPropagation = new IdCopyPropagationRule(ctx);
             this.idBinIdc = new IdBinIdc_Rule(ctx);
             this.sliceConst = new SliceConstant_Rule();
