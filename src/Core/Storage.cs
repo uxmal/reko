@@ -59,7 +59,7 @@ namespace Decompiler.Core
 		public abstract void Write(TextWriter writer);
 
         [Obsolete("Moved to ApplicationBuilder")]
-        public Expression BindFormalArgumentToFrame(IProcessorArchitecture iProcessorArchitecture, Frame frame, CallSite callSite)
+        public Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite callSite)
         {
             throw new NotImplementedException();
         }
@@ -364,7 +364,6 @@ namespace Decompiler.Core
         {
 			return visitor.VisitStackArgumentStorage(this);
 		}
-
 
 		public override bool Equals(object obj)
 		{

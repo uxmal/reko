@@ -24,6 +24,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -42,6 +43,7 @@ namespace Decompiler.Analysis
 
 		public uint grfTrashed;
 		public BitSet TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
+        public Dictionary<Storage, Constant> ConstantRegisters; // If present, indicates a register always has a constant value leaving the procedure.
 
 		public BitSet ByPass;
 		public uint grfByPass;
@@ -65,6 +67,7 @@ namespace Decompiler.Analysis
 
 			PreservedRegisters = arch.CreateRegisterBitset();
 			TrashedRegisters = arch.CreateRegisterBitset();
+            ConstantRegisters = new Dictionary<Storage, Constant>();
 
 			ByPass = arch.CreateRegisterBitset();
 			MayUse = arch.CreateRegisterBitset();

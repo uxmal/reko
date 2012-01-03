@@ -118,7 +118,10 @@ namespace Decompiler.Core
             return new BlockDominatorGraph(new BlockGraph(blocks), EntryBlock);
         }
 
-        private class BlockComparer : IComparer<Block>
+        /// <summary>
+        /// Used to order blocks within a procedure for display.
+        /// </summary>
+        public class BlockComparer : IComparer<Block>
         {
             public int Compare(Block x, Block y)
             {

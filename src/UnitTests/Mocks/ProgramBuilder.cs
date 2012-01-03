@@ -82,11 +82,16 @@ namespace Decompiler.UnitTests.Mocks
             }
         }
 
-		public Program BuildProgram()
+        public Program BuildProgram()
+        {
+            return BuildProgram(new ArchitectureMock());
+        }
+
+		public Program BuildProgram(IProcessorArchitecture arch)
 		{
-			ResolveUnresolved();
+            prog.Architecture = arch;
+            ResolveUnresolved();
 			BuildCallgraph();
-			prog.Architecture = new ArchitectureMock();
 			return prog;
 		}
 

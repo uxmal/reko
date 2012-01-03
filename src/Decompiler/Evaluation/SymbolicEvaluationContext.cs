@@ -114,7 +114,7 @@ namespace Decompiler.Evaluation
                 }
                 else
                 {
-                    // Example: fetching a byte from SP+04, which previously was assigend an int32.
+                    // Example: fetching a byte from SP+04, which previously was assigned an int32.
                     return new Cast(accessDataType, value);
                 }
             }
