@@ -206,6 +206,8 @@ namespace Decompiler.Evaluation
                 {
                     c = Operator.Sub.ApplyConstants(cRight, cLeftRight);
                 }
+                if (c.IsIntegerZero)
+                    return binLeft.Left;
                 return new BinaryExpression(binExp.op, binExp.DataType, binLeft.Left, c);
             }
 

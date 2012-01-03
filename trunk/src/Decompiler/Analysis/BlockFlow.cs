@@ -41,8 +41,7 @@ namespace Decompiler.Analysis
 		public BitSet DataOut;						    // each bit corresponds to a register that is live at the end of the
 		public uint grfOut;							    // each bit corresponds to a condition code register that is live at the end of the block
 		public Dictionary<Storage,int> StackVarsOut;    // stack-based storages that are live at the end of the block.
-		public uint grfTrashedIn;					    // each bit corresnpots to a condition code register that is trashed on entrance.
-        [Obsolete] public Dictionary<Storage, Storage> TrashedIn;  
+		public uint grfTrashedIn;					    // each bit corresponds to a condition code register that is trashed on entrance.
         public SymbolicEvaluationContext SymbolicAuxIn;
         public Dictionary<Storage, Expression> SymbolicIn;        // maps identifiers to symbolic values on entrance to the block.
         public bool TerminatesProcess;                  // True if entering this block means the process/thread will be terminated.
@@ -53,7 +52,6 @@ namespace Decompiler.Analysis
 			this.Block = block;
 			this.DataOut = dataOut;
 			this.StackVarsOut = new Dictionary<Storage,int>();
-			this.TrashedIn = new Dictionary<Storage, Storage>();
             this.SymbolicIn = new Dictionary<Storage, Expression>();
             this.SymbolicAuxIn = ctx;
             this.DataTypes = new Dictionary<Expression, DataType>();
@@ -65,7 +63,8 @@ namespace Decompiler.Analysis
             writer.WriteLine();
 			EmitFlagGroup(arch, "// DataOut (flags):", grfOut, writer);
             writer.WriteLine();
-
+            EmitRegisterValues("// SymbolicIn:", SymbolicIn, writer);
+            writer.WriteLine();
             EmitLocals("// LocalsOut:", writer);
             if (TerminatesProcess)
                 writer.WriteLine("// Terminates process");

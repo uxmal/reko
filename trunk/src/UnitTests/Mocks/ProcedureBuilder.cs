@@ -180,8 +180,9 @@ namespace Decompiler.UnitTests.Mocks
                 switch (s[i])
                 {
                 case 'S': grf |= 0x01; break;
-                case 'Z': grf |= 0x02; break;
-                case 'C': grf |= 0x04; break;
+                case 'C': grf |= 0x02; break;
+                case 'Z': grf |= 0x04; break;
+                case 'O': grf |= 0x10; break;
                 }
             }
             return base.Flags(grf, s);

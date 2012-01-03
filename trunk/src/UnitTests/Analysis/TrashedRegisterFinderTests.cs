@@ -31,6 +31,8 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.UnitTests.Analysis
@@ -47,8 +49,8 @@ namespace Decompiler.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            m = new ProcedureBuilder();
             arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            m = new ProcedureBuilder(arch);
             prog = new Program();
             prog.Architecture = arch;
             exit = new Procedure("exit", new Frame(PrimitiveType.Word32));
@@ -72,6 +74,43 @@ namespace Decompiler.UnitTests.Analysis
         {
             return new TrashedRegisterFinder(prog, this.flow, new FakeDecompilerEventListener());
         }
+
+        private string DumpProcedureSummaries()
+        {
+            var sw = new StringWriter();
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                DataFlow.EmitRegisters(prog.Architecture, proc.Name, flow[proc].grfTrashed, flow[proc].TrashedRegisters, sw);
+                sw.WriteLine();
+                if (flow[proc].ConstantRegisters.Count > 0)
+                {
+                    DataFlow.EmitRegisterValues("const", flow[proc].ConstantRegisters, sw);
+                    sw.WriteLine();
+                }
+                foreach (var block in proc.ControlGraph.Blocks.OrderBy(b => b, new Procedure.BlockComparer()))
+                {
+                    DataFlow.EmitRegisterValues("    " + block.Name, flow[block].SymbolicIn, sw);
+                    sw.WriteLine();
+                }
+                sw.WriteLine();
+            }
+            return sw.ToString();
+        }
+
+        private void RunTest(ProgramBuilder p, string sExp)
+        {
+            prog = p.BuildProgram(arch);
+            flow = new ProgramDataFlow(prog);
+            trf = CreateTrashedRegisterFinder();
+            trf.Compute();
+
+            var summary = DumpProcedureSummaries().Trim();
+            if (sExp == summary)
+                return;
+            Console.WriteLine(summary);
+            Assert.AreEqual(sExp, summary);
+        }
+
 
         private string DumpValues()
         {
@@ -375,68 +414,112 @@ namespace Decompiler.UnitTests.Analysis
         {
             var p = new ProgramBuilder();
 
-            var eax = m.Frame.EnsureRegister(Registers.eax);
-            var tmp = m.Local32("tmp");
-            m.Assign(tmp, eax);
-            m.Call("TrashEaxEbx");
-            m.Assign(eax, tmp);
-            m.Return();
-            p.Add(m);
-
-
-            var TrashEaxEbx = new ProcedureBuilder("TrashEaxEbx");
-            eax = TrashEaxEbx.Frame.EnsureRegister(Registers.eax);
-            Identifier ebx = TrashEaxEbx.Frame.EnsureRegister(Registers.ebx);
-            TrashEaxEbx.Assign(ebx, m.Int32(0x1231313));
-            TrashEaxEbx.Assign(eax, m.LoadDw(ebx));
-            TrashEaxEbx.Return();
-            p.Add(TrashEaxEbx);
-
-            var arch = prog.Architecture;
-            prog = p.BuildProgram();
-            prog.Architecture = arch;
-
-            flow = new ProgramDataFlow(prog);
-            trf = CreateTrashedRegisterFinder(prog);
-            trf.Compute();
-
-            var sb = new StringBuilder();
-            foreach (Procedure proc in prog.Procedures.Values)
+            p.Add("main", m =>
             {
-                sb.Append(flow[proc].EmitRegisters(prog.Architecture, proc.Name, flow[proc].TrashedRegisters));
-                sb.Append(Environment.NewLine);
-            }
-            string exp = @"ProcedureBuilder ebx bx bl bh
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                var tmp = m.Local32("tmp");
+                m.Assign(tmp, eax);
+                m.Call("TrashEaxEbx");
+                m.Assign(eax, tmp);
+                m.Return();
+            });
+
+            p.Add("TrashEaxEbx", m =>
+            {
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                var ebx = m.Frame.EnsureRegister(Registers.ebx);
+                m.Assign(ebx, m.Int32(0x1231313));
+                m.Assign(eax, m.LoadDw(ebx));
+                m.Return();
+            });
+
+            RunTest(p,
+@"main ebx bx bl bh
+const Register ebx:0x01231313
+    main_entry
+    l1
+    main_exit Register eax:eax Register ebx:0x01231313
+
 TrashEaxEbx eax ebx ax bx al bl ah bh
-";
-            Assert.AreEqual(exp, sb.ToString());
+const Register ebx:0x01231313
+    TrashEaxEbx_entry
+    l1
+    TrashEaxEbx_exit Register eax:<invalid> Register ebx:0x01231313");
         }
+
 
         [Test]
         public void PreservedValues()
         {
             arch = new IntelArchitecture(ProcessorMode.Real);
-            var sp = m.Frame.EnsureRegister(Registers.sp);
-            var ss = m.Frame.EnsureRegister(Registers.ss);
-            var ax = m.Frame.EnsureRegister(Registers.ax);
-            m.Assign(sp, m.Sub(sp, 2));
-            m.SegStoreW(ss, sp, ax);
-            m.Assign(ax, 1);
-            m.Assign(ax, m.SegMemW(ss, sp));
-            m.Assign(sp, m.Add(sp, 2));
-            m.Return();
+            var p = new ProgramBuilder();
+            p.Add("main", m =>
+            {
+                var sp = m.Frame.EnsureRegister(Registers.sp);
+                var ss = m.Frame.EnsureRegister(Registers.ss);
+                var ax = m.Frame.EnsureRegister(Registers.ax);
+                m.Assign(sp, m.Sub(sp, 2));
+                m.SegStoreW(ss, sp, ax);
+                m.Assign(ax, 1);
+                m.Assign(ax, m.SegMemW(ss, sp));
+                m.Assign(sp, m.Add(sp, 2));
+                m.Return();
+            });
 
-            prog.Architecture = arch;
-            prog.Procedures.Add(new Address(0x0C00, 0), m.Procedure);
-            prog.CallGraph.AddEntryPoint(m.Procedure);
-            flow = new ProgramDataFlow(prog);
-
-            trf = CreateTrashedRegisterFinder();
-            trf.Compute();
-
-            var pf = flow[m.Procedure];
-            Assert.AreEqual("ProcedureBuilder ax", pf.EmitRegisters(arch, m.Procedure.Name, pf.PreservedRegisters));
+            RunTest(p, 
+@"main
+    main_entry
+    l1
+    main_exit Register ax:ax Register sp:sp");
         }
+
+
+        [Test]
+        public void TrashFlagProcedure()
+        {
+            var p = new ProgramBuilder();
+            p.Add("main", m =>
+                {
+                    var eax = m.Frame.EnsureRegister(Registers.eax);
+                    m.Assign(eax, m.Add(eax, 4));
+                    m.Assign(m.Flags("SZCO"), m.Cond(eax));
+                    m.Return();
+                });
+
+            var sExp = 
+@"main SCZO eax ax al ah
+    main_entry
+    l1
+    main_exit Register eax:eax + 0x00000004";
+            RunTest(p, sExp);
+        }
+
+        [Test]
+        public void RegistersPreservedOnStack()
+        {
+            var p = new ProgramBuilder();
+            p.Add("main", m =>
+            {
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                var esp = m.Frame.EnsureRegister(Registers.esp);
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, eax);
+                m.Assign(eax, 1);
+                m.Assign(m.Flags("SCZO"), m.Cond(eax));
+                m.Store(m.Word32(0x12340000), eax);
+                m.Assign(eax, m.LoadDw(esp));
+                m.Assign(esp, m.Add(esp, 4));
+                m.Return();
+            });
+
+            var sExp =
+@"main SCZO
+    main_entry
+    l1
+    main_exit Register eax:eax Register esp:esp";
+            RunTest(p, sExp);
+        }
+
 
 
         [Test]

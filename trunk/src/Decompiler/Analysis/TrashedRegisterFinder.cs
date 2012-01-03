@@ -47,7 +47,6 @@ namespace Decompiler.Analysis
         private Program prog;
         private ProgramDataFlow flow;
         private WorkList<Block> worklist;
-        private TrashStorageHelper tsh;
         private SymbolicEvaluator se;
         private SymbolicEvaluationContext ctx;
         private DecompilerEventListener eventListener;
@@ -63,7 +62,6 @@ namespace Decompiler.Analysis
             this.prog = prog;
             this.flow = flow;
             this.eventListener = eventListener;
-            this.tsh = new TrashStorageHelper(null);
             this.worklist = new WorkList<Block>();
             this.ecomp = new ExpressionValueComparer();
             this.dtb = new DataTypeBuilder(prog.TypeFactory, prog.TypeStore, prog.Architecture);
@@ -131,7 +129,7 @@ namespace Decompiler.Analysis
         {
             var bf = flow[block];
             EnsureEvaluationContext(bf);
-            tsh = CreateTrashStorageHelper(bf);
+            ctx.TrashedFlags = bf.grfTrashedIn;
             block.Statements.ForEach(stm => stm.Instruction.Accept(this));
             
             if (block == block.Procedure.ExitBlock)
@@ -154,11 +152,6 @@ namespace Decompiler.Analysis
             this.se = new SymbolicEvaluator(new TrashedExpressionSimplifier(this, ctx), ctx);
         }
 
-        private TrashStorageHelper CreateTrashStorageHelper(BlockFlow bf)
-        {
-            return new TrashStorageHelper(new Dictionary<Storage, Storage>(bf.TrashedIn), bf.grfTrashedIn, null);
-        }
-
         public void PropagateToProcedureSummary(Procedure proc)
         {
             bool changed = false;
@@ -177,9 +170,15 @@ namespace Decompiler.Analysis
                     changed = true;
                     pf.grfTrashed = 0;
                 }
+                if (pf.ConstantRegisters.Count > 0)
+                {
+                    pf.ConstantRegisters.Clear();
+                    changed = true;
+                }
             }
             else
             {
+                var cmp = new ExpressionValueComparer();
                 foreach (KeyValuePair<RegisterStorage, Expression> de in ctx.RegisterState)
                 {
                     var idValue = de.Value as Identifier;
@@ -197,7 +196,23 @@ namespace Decompiler.Analysis
                     else
                     {
                         tr[de.Key.Register.Number] = true;
+                        var c = de.Value as Constant;
+                        if (c != null)
+                        {
+                            if (c.IsValid)
+                            {
+                                Constant cOld;
+                                if (!pf.ConstantRegisters.TryGetValue(de.Key, out cOld) || !cmp.Equals(cOld, c))
+                                {
+                                    changed = true;
+                                    pf.ConstantRegisters[de.Key] = c;
+                                }
+                            }
+                            else
+                                pf.ConstantRegisters.Remove(de.Key);
+                        }
                     }
+
                 }
 
                 if (!(tr & ~pf.TrashedRegisters).IsEmpty)
@@ -237,7 +252,7 @@ namespace Decompiler.Analysis
             Dump(ctx.RegisterState);
             Dump(ctx.StackState);
 
-            foreach (KeyValuePair<RegisterStorage, Expression> de in ctx.RegisterState)
+            foreach (var de in ctx.RegisterState)
             {
                 Expression oldValue;
                 if (!ctxSucc.RegisterState.TryGetValue(de.Key, out oldValue))
@@ -279,7 +294,7 @@ namespace Decompiler.Analysis
                 }
             }
 
-            uint grfNew = succFlow.grfTrashedIn | tsh.TrashedFlags;
+            uint grfNew = succFlow.grfTrashedIn | ctx.TrashedFlags;
             if (grfNew != succFlow.grfTrashedIn)
             {
                 succFlow.grfTrashedIn = grfNew;
@@ -334,8 +349,8 @@ namespace Decompiler.Analysis
             if (ProcedureTerminates(ci.Callee))
             {
                 // A terminating procedure has no trashed registers because caller will never see those effects!
-                tsh.TrashedFlags = 0;
                 ctx.RegisterState.Clear();
+                ctx.TrashedFlags = 0;
                 return;
             }
 
@@ -346,9 +361,14 @@ namespace Decompiler.Analysis
             foreach (int r in pf.TrashedRegisters)
             {
                 var reg = new RegisterStorage(prog.Architecture.GetRegister(r));
-                ctx.RegisterState[reg] = Constant.Invalid;
+                Constant c;
+                if (!pf.ConstantRegisters.TryGetValue(reg, out c))
+                {
+                    c = Constant.Invalid;
+                }
+                ctx.RegisterState[reg] = c;
             }
-            tsh.TrashedFlags |= pf.grfTrashed;
+            ctx.TrashedFlags |= pf.grfTrashed;
         }
 
         private bool ProcedureTerminates(ProcedureBase proc)
