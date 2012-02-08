@@ -46,6 +46,7 @@ namespace Decompiler.Analysis
     {
         private Program prog;
         private ProgramDataFlow flow;
+        private BlockFlow bf;
         private WorkList<Block> worklist;
         private SymbolicEvaluator se;
         private SymbolicEvaluationContext ctx;
@@ -53,6 +54,7 @@ namespace Decompiler.Analysis
         private ExpressionValueComparer ecomp;
         private DataTypeBuilder dtb;
         private TraitCollector traitCollector;
+        private TrfTypeStore typeStore;
 
         public TrashedRegisterFinder(
             Program prog,
@@ -64,8 +66,45 @@ namespace Decompiler.Analysis
             this.eventListener = eventListener;
             this.worklist = new WorkList<Block>();
             this.ecomp = new ExpressionValueComparer();
-            this.dtb = new DataTypeBuilder(prog.TypeFactory, prog.TypeStore, prog.Architecture);
-            this.traitCollector = new TraitCollector(prog.TypeFactory, prog.TypeStore, dtb, prog);
+            this.typeStore = new TrfTypeStore(this);
+            this.dtb = new DataTypeBuilder(prog.TypeFactory, typeStore, prog.Architecture);
+            this.traitCollector = new TraitCollector(prog.TypeFactory, typeStore, dtb, prog);
+        }
+
+        private class TrfTypeStore : ITypeStore
+        {
+            private TrashedRegisterFinder trf;
+
+            public TrfTypeStore(TrashedRegisterFinder trf)
+            {
+                this.trf = trf;
+            }
+
+            public DataType GetDataTypeOf(Expression exp)
+            {
+                DataType dt;
+                if (trf.bf.DataTypes.TryGetValue(exp, out dt))
+                    return dt;
+                return null;
+            }
+
+            public EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void BuildEquivalenceClassDataTypes(TypeFactory factory)
+            {
+            }
+
+            public void Write(TextWriter writer)
+            {
+            }
+
+            public void SetDataTypeOf(Expression exp, DataType dt)
+            {
+                trf.bf.DataTypes[exp] = dt;
+            }
         }
 
         public Dictionary<RegisterStorage, Expression> RegisterSymbolicValues { get { return ctx.RegisterState; } }
@@ -127,9 +166,7 @@ namespace Decompiler.Analysis
 
         public void ProcessBlock(Block block)
         {
-            var bf = flow[block];
-            EnsureEvaluationContext(bf);
-            ctx.TrashedFlags = bf.grfTrashedIn;
+            StartProcessingBlock(block);
             block.Statements.ForEach(stm => stm.Instruction.Accept(this));
             
             if (block == block.Procedure.ExitBlock)
@@ -140,6 +177,13 @@ namespace Decompiler.Analysis
             {
                 block.Succ.ForEach(s => PropagateToSuccessorBlock(s));
             }
+        }
+
+        public void StartProcessingBlock(Block block)
+        {
+            bf = flow[block];
+            EnsureEvaluationContext(bf);
+            ctx.TrashedFlags = bf.grfTrashedIn;
         }
 
         public void EnsureEvaluationContext(BlockFlow bf)
@@ -331,6 +375,8 @@ namespace Decompiler.Analysis
         public override void VisitAssignment(Assignment a)
         {
             se.VisitAssignment(a);
+            traitCollector.VisitAssignment(a);
+            
         }
 
         public override void VisitSideEffect(SideEffect side)
@@ -341,6 +387,11 @@ namespace Decompiler.Analysis
         public override void VisitStore(Store store)
         {
             se.VisitStore(store);
+        }
+
+        public override void VisitIndirectCall(IndirectCall ic)
+        {
+            ic.Accept(traitCollector);
         }
 
         public override void VisitCallInstruction(CallInstruction ci)
@@ -355,20 +406,25 @@ namespace Decompiler.Analysis
             }
 
             var callee = ci.Callee as Procedure;
-            if (callee == null)
-                return;             //$TODO: get trash information from signature?
-            ProcedureFlow pf = flow[callee];
-            foreach (int r in pf.TrashedRegisters)
+            if (callee != null)
             {
-                var reg = new RegisterStorage(prog.Architecture.GetRegister(r));
-                Constant c;
-                if (!pf.ConstantRegisters.TryGetValue(reg, out c))
+                ProcedureFlow pf = flow[callee];
+                foreach (int r in pf.TrashedRegisters)
                 {
-                    c = Constant.Invalid;
+                    var reg = new RegisterStorage(prog.Architecture.GetRegister(r));
+                    Constant c;
+                    if (!pf.ConstantRegisters.TryGetValue(reg, out c))
+                    {
+                        c = Constant.Invalid;
+                    }
+                    ctx.RegisterState[reg] = c;
                 }
-                ctx.RegisterState[reg] = c;
+                ctx.TrashedFlags |= pf.grfTrashed;
             }
-            ctx.TrashedFlags |= pf.grfTrashed;
+            else
+            {
+                //$TODO: get trash information from signature?
+            }
         }
 
         private bool ProcedureTerminates(ProcedureBase proc)

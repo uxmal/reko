@@ -545,9 +545,6 @@
     <Compile Include="Typing\UnionPointersStructuresMatcher.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Typing\UnionTypeVarsReplacer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Gui\ILoadedPage.cs" />
     <Compile Include="Gui\IDiagnosticsService.cs" />
     <Compile Include="Gui\IListViewItem.cs" />

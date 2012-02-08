@@ -38,12 +38,12 @@ namespace Decompiler.Typing
 	/// </remarks>
 	public class DataTypeBuilder : ITraitHandler
 	{
-		private TypeStore store;
+		private ITypeStore store;
 		private TypeFactory factory;
 		private DataTypeBuilderUnifier unifier;
         private IProcessorArchitecture arch;
 
-		public DataTypeBuilder(TypeFactory factory, TypeStore store, IProcessorArchitecture arch)
+		public DataTypeBuilder(TypeFactory factory, ITypeStore store, IProcessorArchitecture arch)
 		{
 			this.store = store;
 			this.factory = factory;
@@ -58,31 +58,13 @@ namespace Decompiler.Typing
 
 		public void BuildEquivalenceClassDataTypes()
 		{
-			UnionTypeVarsReplacer utv = new UnionTypeVarsReplacer(store);
-			foreach (TypeVariable tv in store.TypeVariables)
-			{
-				if (tv.OriginalDataType != null)
-					tv.OriginalDataType.Accept(utv);
-			}
-			Unifier u = new DataTypeBuilderUnifier(factory, store);
-			foreach (TypeVariable tv in store.TypeVariables)
-			{
-                DataType dt = tv.OriginalDataType;
-				EquivalenceClass c = tv.Class;
-				DataType dtOld = c.DataType;
-				if (dtOld != null)
-					dt = u.Unify(dt, dtOld);
-				else if (dt != null)
-					dt = dt.Clone();
-				c.DataType = dt;
-			}
+            store.BuildEquivalenceClassDataTypes(factory);
 		}
 
-        [Obsolete("Moved this to typestore")]
-        public void MergeIntoDataType(DataType dtNew, TypeVariable tv)
+        public DataType MergeIntoDataType(DataType dtNew, TypeVariable tv)
         {
             if (dtNew == null)
-                return;
+                return tv.OriginalDataType;
 
             DataType dtCurrent = tv.OriginalDataType;
             if (dtCurrent != null)
@@ -90,12 +72,27 @@ namespace Decompiler.Typing
                 dtNew = unifier.Unify(dtCurrent, dtNew);
             }
             tv.OriginalDataType = dtNew;
+            return dtNew;
         }
 
 
-		#region ITraitHandler Members
+        public DataType MergeIntoDataType(Expression exp, DataType dtNew)
+        {
+            if (dtNew == null)
+                return exp.DataType;
 
-		public void ArrayTrait(TypeVariable tArray, int elementSize, int length)
+            DataType dtCurrent = store.GetDataTypeOf(exp);
+            if (dtCurrent != null)
+            {
+                dtNew = unifier.Unify(dtCurrent, dtNew);
+            }
+            store.SetDataTypeOf(exp, dtNew);
+            return dtNew;
+        }
+
+        #region ITraitHandler Members
+
+        public void ArrayTrait(TypeVariable tArray, int elementSize, int length)
 		{
 			DataType elem = factory.CreateStructureType(null, elementSize);
 			Pointer ptr = factory.CreatePointer(factory.CreateArrayType(elem, length), 0);
@@ -123,7 +120,7 @@ namespace Decompiler.Typing
                 Pointer ptr = factory.CreatePointer(seg, dt.Size);
                 dt = ptr;
             }
-            return store.MergeIntoDataType(exp, dt, unifier);
+            return MergeIntoDataType(exp, dt);
         }
 
 		public DataType EqualTrait(Expression tv1, Expression tv2)
@@ -137,7 +134,7 @@ namespace Decompiler.Typing
 			actuals.CopyTo(adt, 0);
 			FunctionType f = factory.CreateFunctionType(null, ret, adt, null);
 			Pointer pfn = factory.CreatePointer(f, funcPtrSize);
-			return store.MergeIntoDataType(function, pfn, unifier);
+			return MergeIntoDataType(function, pfn);
 		}
 
 		public DataType MemAccessArrayTrait(Expression tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tField)
@@ -164,7 +161,7 @@ namespace Decompiler.Typing
             var pointer = tBase != null
                 ? (DataType)factory.CreateMemberPointer(store.GetDataTypeOf(tBase), s, structPtrSize)			//$REFACTOR: duplicated code (see memaccesstrait)
                 : (DataType)factory.CreatePointer(s, structPtrSize);
-            return store.MergeIntoDataType(tStruct, pointer, unifier);
+            return MergeIntoDataType(tStruct, pointer);
         }
 
 		public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)
@@ -175,36 +172,16 @@ namespace Decompiler.Typing
 			var ptr = tBase != null
 				? (DataType)factory.CreateMemberPointer(store.GetDataTypeOf(tBase), s, arch.FramePointerType.Size)
 				: (DataType)factory.CreatePointer(s, arch.PointerType.Size);
-			return store.MergeIntoDataType(tStruct, ptr, unifier);
+			return MergeIntoDataType(tStruct, ptr);
 		}
 
 		public DataType PointerTrait(Expression ptrExp, int ptrSize, Expression tPointee)
 		{
 			var ptr = factory.CreatePointer(store.GetDataTypeOf(tPointee), ptrSize);
-            return store.MergeIntoDataType(ptrExp, ptr, unifier);
+            return MergeIntoDataType(ptrExp, ptr);
 		}
 		#endregion
 	}
 
-	public class DataTypeBuilderUnifier : Unifier
-	{
-		private TypeStore store;
-        private int nestedCalls;        //$DEBUG
 
-		public DataTypeBuilderUnifier(TypeFactory factory, TypeStore store) : base(factory)
-		{
-			this.store = store;
-		}
-
-		public override DataType UnifyTypeVariables(TypeVariable tA, TypeVariable tB)
-		{
-            if (++nestedCalls > 300)        //$DEBUG
-                nestedCalls.ToString();
-            var dt = Unify(tA.Class.DataType, tB.Class.DataType);
-            var eq = store.MergeClasses(tA, tB);
-            eq.DataType = dt;
-            --nestedCalls;
-            return eq.Representative;
-		}
-	}
 }

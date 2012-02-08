@@ -47,7 +47,6 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest("Fragments/3converge.asm", "Analysis/SsaConverge.txt");
 		}
 
-
 		[Test]
 		public void SsaMemoryTest()
 		{
