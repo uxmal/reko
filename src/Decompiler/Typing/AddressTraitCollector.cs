@@ -34,7 +34,7 @@ namespace Decompiler.Typing
 	public class AddressTraitCollector : IExpressionVisitor
 	{
 		private TypeFactory factory;
-		private TypeStore store;
+		private ITypeStore store;
 		private ITraitHandler handler;
 		private Program prog;
 
@@ -45,7 +45,7 @@ namespace Decompiler.Typing
 		private int arrayElementSize;
 		private int arrayLength;
 
-		public AddressTraitCollector(TypeFactory factory, TypeStore store, ITraitHandler handler, Program prog)
+		public AddressTraitCollector(TypeFactory factory, ITypeStore store, ITraitHandler handler, Program prog)
 		{
 			this.factory = factory;
 			this.store = store;

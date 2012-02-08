@@ -531,6 +531,7 @@
     <Compile Include="Types\DataType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\DataTypeBuilderUnifier.cs" />
     <Compile Include="Types\DataTypeComparer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -575,6 +576,7 @@
     <Compile Include="Types\UnionType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\UnionTypeVarsReplacer.cs" />
     <Compile Include="Types\UnknownType.cs">
       <SubType>Code</SubType>
     </Compile>

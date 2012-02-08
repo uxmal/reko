@@ -18,11 +18,10 @@
  */
 #endregion
 
-using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Decompiler.Typing
+namespace Decompiler.Core.Types
 {
 	/// <summary>
 	/// Replaces a union of TypeVars with a reference to an equivalence class.

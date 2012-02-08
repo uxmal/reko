@@ -26,8 +26,8 @@ using System.Text;
 namespace Decompiler.Core.Lib
 {
     /// <summary>
-    /// An extension of IEnumerator&lt;T&gt; that wraps an  IEnmerator and 
-    /// which lets the caller look ahead in the underly.
+    /// An extension of IEnumerator&lt;T&gt; that wraps an IEnumerator and 
+    /// which lets the caller look ahead in the underlying enumeration.
     /// </summary>
     public class LookaheadEnumerator<T> : IEnumerator<T>
     {

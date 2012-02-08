@@ -38,7 +38,7 @@ namespace Decompiler.Core.Types
 		Real = 32,
 		Pointer = 64,
 		Selector = 128,
-        Code = 256,      // Executable code.
+        PtrCode = 256,      // Pointer to executable code.
 	}
 
 	/// <summary>
@@ -122,15 +122,15 @@ namespace Decompiler.Core.Types
 				name = "byte";
 				break;
 			case 2:
-				w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Selector;
+				w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Selector|Domain.PtrCode;
 				name = "word16";
 				break;
 			case 4:
-				w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Real;
+                w = Domain.SignedInt | Domain.UnsignedInt | Domain.Pointer | Domain.Real | Domain.PtrCode;
 				name = "word32";
 				break;
 			case 8:
-				w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Real;
+                w = Domain.SignedInt | Domain.UnsignedInt | Domain.Pointer | Domain.Real | Domain.PtrCode;
 				name = "word64";
 				break;
 			default:
@@ -177,6 +177,8 @@ namespace Decompiler.Core.Types
 				return "real" + bitSize;
 			case Domain.Selector:
 				return "selector";
+            case Domain.PtrCode:
+                return "pfn" + bitSize;
 			default:
 				sb = new StringBuilder();
 				if ((dom & Domain.Boolean) != 0)
@@ -193,6 +195,8 @@ namespace Decompiler.Core.Types
 					sb.Append('s');
 				if ((dom & Domain.Real) != 0)
 					sb.Append('r');
+                if ((dom & Domain.Pointer) != 0)
+                    sb.Append("pfn");
 				sb.Append(bitSize);
 				return sb.ToString();
 			}
@@ -241,6 +245,8 @@ namespace Decompiler.Core.Types
 					return "ptr";
 				case Domain.Selector:
 					return "pseg";
+                case Domain.PtrCode:
+                    return "pfn";
 				default:
 					switch (byteSize)
 					{
@@ -285,18 +291,21 @@ namespace Decompiler.Core.Types
 			Ptr16 = Create(Domain.Pointer, 2);
 			SegmentSelector = Create(Domain.Selector, 2);
             WChar = Create(Domain.Character, 2);
+            PtrCode16 = Create(Domain.PtrCode, 2);
 
 			Word32 = CreateWord(4);
 			Int32 = Create(Domain.SignedInt, 4);
 			UInt32 = Create(Domain.UnsignedInt, 4);
 			Pointer32 = Create(Domain.Pointer, 4);
 			Real32 = Create(Domain.Real, 4);
+            PtrCode32 = Create(Domain.PtrCode, 4);
 
 			Word64 = CreateWord(8);
 			Int64 = Create(Domain.SignedInt, 8);
 			UInt64 = Create(Domain.UnsignedInt, 8);
 			Pointer64 = Create(Domain.Pointer, 8);
 			Real64 = Create(Domain.Real, 8);
+            PtrCode64 = Create(Domain.PtrCode, 8);
 
 			Real80 = Create(Domain.Real, 10);
 
@@ -316,7 +325,8 @@ namespace Decompiler.Core.Types
 		public static PrimitiveType Word16 {get; private set; }
 		public static PrimitiveType Int16 {get; private set; }
 		public static PrimitiveType UInt16 {get; private set; }
-		public static PrimitiveType Ptr16 {get; private set; }
+        public static PrimitiveType Ptr16 { get; private set; }
+        public static PrimitiveType PtrCode16 { get; private set; }
 
 		public static PrimitiveType SegmentSelector {get; private set; }
 
@@ -325,12 +335,14 @@ namespace Decompiler.Core.Types
 		public static PrimitiveType UInt32 {get; private set; }
 		public static PrimitiveType Pointer32 {get; private set; }
 		public static PrimitiveType Real32 {get; private set; }
+        public static PrimitiveType PtrCode32 { get; private set; }
 
 		public static PrimitiveType Word64 {get; private set; }
 		public static PrimitiveType Int64 {get; private set; }
 		public static PrimitiveType UInt64 {get; private set; }
 		public static PrimitiveType Pointer64 {get; private set; }
         public static PrimitiveType Real64 { get; private set; }
+        public static PrimitiveType PtrCode64 { get; private set; }
 
 		public static PrimitiveType Real80 {get; private set; }
 

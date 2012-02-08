@@ -217,6 +217,7 @@ namespace Decompiler.ImageLoaders.Elf
             m_iLastSize = 0;
             m_pImportStubs = 0;
         }
+#if NYU
 
         // Hand decompiled from sparc library function
         //extern "C" { // So we can call this with dlopen()
@@ -564,19 +565,18 @@ namespace Decompiler.ImageLoaders.Elf
             // Index 0 is a dummy entry
             for (int i = 1; i < nSyms; i++)
             {
-                ADDRESS val = (ADDRESS)elfRead4((int*)&m_pSym[i].st_value);
-                int name = elfRead4(&m_pSym[i].st_name);
+                ADDRESS val = (ADDRESS)elfRead4((int)m_pSym[i].st_value);
+                int name = elfRead4(m_pSym[i].st_name);
                 if (name == 0) /* Silly symbols with no names */ continue;
                 string str = GetStrPtr(strIdx, name);
                 // Hack off the "@@GLIBC_2.0" of Linux, if present
                 int pos;
                 if ((pos = str.IndexOf("@@")) >= 0)
                     str = str.Remove(pos);
-                std_map<ADDRESS, string>.iterator aa = m_SymTab.find(val);
                 // Ensure no overwriting (except functions)
-                if (aa == m_SymTab.end() || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC)
+                if (m_SymTab.ContainsKey(val) || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC)
                 {
-                    if (val == 0 && siPlt)
+                    if (val == 0 && siPlt != null)
                     { //&& i < max_i_for_hack) {
                         // Special hack for gcc circa 3.3.3: (e.g. test/pentium/settest).  The value in the dynamic symbol table
                         // is zero!  I was assuming that index i in the dynamic symbol table would always correspond to index i
@@ -586,7 +586,7 @@ namespace Decompiler.ImageLoaders.Elf
                     }
                     else if (e_type == E_REL)
                     {
-                        int nsec = elfRead2(&m_pSym[i].st_shndx);
+                        int nsec = elfRead2(m_pSym[i].st_shndx);
                         if (nsec >= 0 && nsec < m_iNumSections)
                             val += GetSectionInfo(nsec)->uNativeAddr;
                     }
@@ -598,7 +598,7 @@ namespace Decompiler.ImageLoaders.Elf
                 }
             }
             ADDRESS uMain = GetMainEntryPoint();
-            if (uMain != ADDRESS.NO_ADDRESS && m_SymTab.find(uMain) == m_SymTab.end())
+            if (uMain != NO_ADDRESS && m_SymTab.find(uMain) == m_SymTab.end())
             {
                 // Ugh - main mustn't have the STT_FUNC attribute. Add it
                 string sMain = "main";
@@ -667,11 +667,11 @@ namespace Decompiler.ImageLoaders.Elf
         // So currently not called
         private void AddRelocsAsSyms(int relSecIdx)
         {
-            PSectionInfo pSect = &m_pSections[relSecIdx];
-            if (pSect == 0) return;
+            SectionInfo pSect = m_pSections[relSecIdx];
+            if (pSect == null) return;
             // Calc number of relocations
             int nRelocs = pSect.uSectionSize / pSect.uSectionEntrySize;
-            m_pReloc = (Elf32_Rel*)pSect.uHostAddr; // Pointer to symbols
+            m_pReloc = (Elf32_Rel)pSect.uHostAddr; // Pointer to symbols
             int symSecIdx = m_sh_link[relSecIdx];
             int strSecIdx = m_sh_link[symSecIdx];
 
@@ -731,7 +731,7 @@ namespace Decompiler.ImageLoaders.Elf
             int* pBuckets;
             int* pChains; // For symbol table work
             int found;
-            int* pHash; // Pointer to hash table
+            int [] pHash; // Pointer to hash table
             Elf32_Sym* pSym; // Pointer to the symbol table
             int iStr; // Section index of the string table
             PSectionInfo pSect;
@@ -745,11 +745,11 @@ namespace Decompiler.ImageLoaders.Elf
                 // Note MVE: We can't use m_SymTab because we may need the size
                 return SearchValueByName(pName, pVal);
             }
-            pSym = (Elf32_Sym*)pSect.uHostAddr;
-            if (pSym == 0) return false;
+            pSym = (Elf32_Sym)pSect.uHostAddr;
+            if (pSym == null) return false;
             pSect = GetSectionInfoByName(".hash");
             if (pSect == 0) return false;
-            pHash = (int*)pSect.uHostAddr;
+            pHash = (int[])pSect.uHostAddr;
             iStr = GetSectionIndexByName(".dynstr");
 
             // First organise the hash table
@@ -1474,7 +1474,7 @@ namespace Decompiler.ImageLoaders.Elf
             return null;
         }
 
-        private void getFunctionSymbols(std_map<string, std_map<ADDRESS, string>> syms_in_file) {
+        private void getFunctionSymbols(SortedList<string, SortedList<ADDRESS, string>> syms_in_file) {
     int i;
     int secIndex = 0;
     for (i = 1; i < m_iNumSections; ++i) {
@@ -1551,6 +1551,8 @@ namespace Decompiler.ImageLoaders.Elf
             foreach (var de in m_SymTab)
                 Console.Error.WriteLine("0x{0:X} {1}        ", de.Key, de.Value);
         }
+#endif
+
     }
 
     public class SymTab
@@ -1570,6 +1572,7 @@ namespace Decompiler.ImageLoaders.Elf
         public bool bCode;
         public bool bData;
     }
+
 }
 
 									
