@@ -152,6 +152,17 @@ namespace Decompiler.Assemblers.x86
             emitter.EmitByte(0x9E);
         }
 
+        public void Sar(ParsedOperand dst, byte c)
+        {
+            ProcessShiftRotation(0x07, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+        }
+
+
+        public void Sar(ParsedOperand op1, ParsedOperand op2)
+        {
+            ProcessShiftRotation(0x7, op1, op2);
+        }
+
         public void Shld(ParsedOperand op1, ParsedOperand op2, ParsedOperand op3)
         {
             ProcessDoubleShift(0, op1, op2, op3);
@@ -1037,6 +1048,17 @@ namespace Decompiler.Assemblers.x86
             SetDefaultWordWidth(PrimitiveType.Word16);
         }
 
+        public void Aaa()
+        {
+            emitter.EmitByte(0x37);
+        }
+
+        public void Aam()
+        {
+            emitter.EmitByte(0xD4);
+            emitter.EmitByte(0x0A);
+        }
+
         public void Call(string destination)
         {
             ProcessCallJmp(false, 0xE8, destination);
@@ -1660,6 +1682,11 @@ namespace Decompiler.Assemblers.x86
             ProcessBinop(0x7, src, Imm(dst));
         }
 
+        public void Cmpsb()
+        {
+            ProcessStringInstruction(0xA6, PrimitiveType.Byte);
+        }
+
         public void Db(params int[] bytes)
         {
             for (int i = 0; i < bytes.Length; ++i)
@@ -2037,6 +2064,12 @@ namespace Decompiler.Assemblers.x86
             }
             SwitchSegment(seg);
         }
+
+        public void Xlat()
+        {
+            emitter.EmitByte(0xD7);
+        }
+
     }
 }
 
