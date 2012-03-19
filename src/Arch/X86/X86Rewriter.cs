@@ -85,17 +85,25 @@ namespace Decompiler.Arch.X86
                 switch (di.Instruction.code)
                 {
                 default:
-                    throw new NotImplementedException(string.Format("Rewrtining of x86 opcode '{0}' not supported yet.", di.Instruction.code));
+                    throw new NotImplementedException(string.Format("Rewriting of x86 opcode '{0}' not supported yet.", di.Instruction.code));
+                case Opcode.aaa: RewriteAaa(); break;
+                case Opcode.aam: RewriteAam(); break;
                 case Opcode.adc: RewriteAdcSbb(BinaryOperator.Add); break;
                 case Opcode.add: RewriteAddSub(BinaryOperator.Add); break;
                 case Opcode.and: RewriteLogical(BinaryOperator.And); break;
+                case Opcode.arpl: RewriteArpl(); break;
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.bswap: RewriteBswap(); break;
                 case Opcode.bt: RewriteBt(); break;
                 case Opcode.call: RewriteCall(di.Instruction.op1, di.Instruction.op1.Width); break;
+                case Opcode.cbw: RewriteCbw(); break;
                 case Opcode.clc: emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False()); break;
+                case Opcode.cld: break; //$TODO
+                case Opcode.cli: break; //$TODO
                 case Opcode.cmc: emitter.Assign(orw.FlagGroup(FlagM.CF), emitter.Not(orw.FlagGroup(FlagM.CF))); break;
                 case Opcode.cmp: RewriteCmp(); break;
+                case Opcode.cmps: RewriteStringInstruction(); break;
+                case Opcode.cmpsb: RewriteStringInstruction(); break;
                 case Opcode.cwd: RewriteCwd(); break;
                 case Opcode.dec: RewriteIncDec(-1); break;
                 case Opcode.div: RewriteDivide(Operator.Divu, Domain.UnsignedInt); break;
@@ -125,6 +133,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.fsubp: EmitCommonFpuInstruction(Operator.Sub, false, true); break;
                 case Opcode.fsubr: EmitCommonFpuInstruction(Operator.Sub, true, false); break;
                 case Opcode.fsubrp: EmitCommonFpuInstruction(Operator.Sub, true, true); break;
+                case Opcode.fxch: RewriteExchange(); break;
                 case Opcode.idiv: RewriteDivide(Operator.Divs, Domain.SignedInt); break;
                 case Opcode.@in: RewriteIn(); break;
                 case Opcode.imul: RewriteMultiply(Operator.Muls, Domain.SignedInt); break;
@@ -177,6 +186,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.retf: RewriteRet(); break;
                 case Opcode.sahf: emitter.Assign(orw.FlagGroup(IntelInstruction.DefCc(di.Instruction.code)), orw.AluRegister(Registers.ah)); break;
+                case Opcode.sar: RewriteBinOp(Operator.Sar); break;
                 case Opcode.sbb: RewriteAdcSbb(BinaryOperator.Sub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
                 case Opcode.scasb: RewriteStringInstruction(); break;
@@ -196,6 +206,8 @@ namespace Decompiler.Arch.X86
                 case Opcode.stosb: RewriteStringInstruction(); break;
                 case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;
                 case Opcode.test: RewriteTest(); break;
+                case Opcode.xchg: RewriteExchange(); break;
+                case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
                 }
                 yield return ric;

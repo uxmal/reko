@@ -29,9 +29,9 @@ namespace Decompiler.Arch.PowerPC
     public class PowerPcInstruction : MachineInstruction
     {
         private Opcode opcode;
-        private MachineOperand op1;
-        private MachineOperand op2;
-        private MachineOperand op3;
+        public MachineOperand op1;
+        public MachineOperand op2;
+        public MachineOperand op3;
         private bool setsCR0;
 
         public PowerPcInstruction(Opcode opcode)
@@ -47,6 +47,8 @@ namespace Decompiler.Arch.PowerPC
             this.op3 = op3;
             this.setsCR0 = setsCR0;
         }
+
+        public Address Address { get; set; }
 
         public int Operands
         {
@@ -93,13 +95,16 @@ namespace Decompiler.Arch.PowerPC
 
         public override uint DefCc()
         {
-            throw new NotImplementedException();
+            if (setsCR0)
+                return 0xF;
+            return 0;
         }
 
         public override uint UseCc()
         {
             throw new NotImplementedException();
         }
+
     }
 
 }

@@ -41,7 +41,7 @@ namespace Decompiler.Arch.PowerPC
         public PowerPcArchitecture(PrimitiveType wordWidth)
         {
             if (wordWidth != PrimitiveType.Word32)
-                throw new ArgumentException("Only 32-bit mode of the architecture is supported.");
+                throw new ArgumentException("Only 32-bit mode of the architecture is currently supported.");
             this.wordWidth = wordWidth;
 
             regs = new ReadOnlyCollection<MachineRegister>(new MachineRegister[] {

@@ -37,6 +37,7 @@ namespace Decompiler.Arch.X86
         public static readonly ProcessorMode Real = new RealMode();
         public static readonly ProcessorMode ProtectedSegmented = new SegmentedMode();
         public static readonly ProcessorMode ProtectedFlat = new FlatMode();
+        public static readonly ProcessorMode Protected64 = new FlatMode64();
 
         protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType)
         {
@@ -164,6 +165,41 @@ namespace Decompiler.Arch.X86
         public override Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
         {
             return new Address(rdr.ReadLeUInt32());
+        }
+
+    }
+
+    internal class FlatMode64 : ProcessorMode
+    {
+        internal FlatMode64()
+            : base(PrimitiveType.Word64, PrimitiveType.Pointer64, PrimitiveType.Pointer64)
+        {
+        }
+
+        public override MachineRegister StackRegister
+        {
+            get { return Registers.rsp; }
+        }
+
+        public override Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
+        {
+            return new Address(offset);
+        }
+
+        public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
+        {
+            var rsp = frame.EnsureRegister(Registers.rsp);
+            return MemoryAccess.Create(rsp, offset, dataType);
+        }
+
+        public override bool IsPointerRegister(MachineRegister machineRegister)
+        {
+            return machineRegister.DataType.BitSize == PointerType.BitSize;
+        }
+
+        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        {
+            throw new NotImplementedException("Address constants need to be 64-bit //return new Address(rdr.ReadLeUInt64());");
         }
 
     }

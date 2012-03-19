@@ -38,7 +38,7 @@ namespace Decompiler.Arch.X86
 		private PrimitiveType addressWidth;
 		private PrimitiveType defaultDataWidth;
 		private PrimitiveType defaultAddressWidth;
-		private byte m_modrm;
+		private byte modrm;
 		private bool isModrmValid;
 		private MachineRegister segmentOverride;
 		private ImageReader	rdr;
@@ -271,10 +271,10 @@ namespace Decompiler.Arch.X86
 		{
 			if (!isModrmValid)
 			{
-				m_modrm = rdr.ReadByte();
+				this.modrm = rdr.ReadByte();
 				isModrmValid = true;
 			}
-			return m_modrm;
+			return this.modrm;
 		}
 
 
@@ -483,8 +483,8 @@ namespace Decompiler.Arch.X86
 		{
 			EnsureModRM();
 
-			int  rm = m_modrm & 0x07;
-			int  mod = m_modrm >> 6;
+			int  rm = this.modrm & 0x07;
+			int  mod = this.modrm >> 6;
 
 			MachineRegister b;
             MachineRegister idx;
@@ -558,7 +558,7 @@ namespace Decompiler.Arch.X86
 					// We have SIB'ness, your majesty!
 
 					byte sib = rdr.ReadByte();
-					if (((m_modrm & 0xC0) == 0) && ((sib & 0x7) == 5))
+					if (((this.modrm & 0xC0) == 0) && ((sib & 0x7) == 5))
 					{
 						offsetWidth = PrimitiveType.Word32;
 						b = MachineRegister.None;
@@ -576,20 +576,17 @@ namespace Decompiler.Arch.X86
 
 			// Now fetch the offset if there was any.
 
-			Constant offset = null;
-			if (offsetWidth != null)
-			{
-				offset = rdr.ReadLe(offsetWidth);
-			}
-			else
-				offset = Constant.Invalid;
+			Constant offset = (offsetWidth != null)
+			    ? rdr.ReadLe(offsetWidth)
+			    : Constant.Invalid;
 
-			MemoryOperand memOp = new MemoryOperand(dataWidth, offset);
-			memOp.Base = b;
-			memOp.Index = idx;
-			memOp.Scale = scale;
-			memOp.SegOverride = segOverride;
-			return memOp;
+            return new MemoryOperand(dataWidth, offset)
+            {
+                Base = b,
+                Index = idx,
+                Scale = scale,
+                SegOverride = segOverride,
+            };
 		}
 
 
@@ -870,7 +867,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.aam, "Ib"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.xlat),
+				new SingleByteOpRec(Opcode.xlat, "b"),
 
 				new FpuOpRec(),
 				new FpuOpRec(),

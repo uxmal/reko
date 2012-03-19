@@ -119,6 +119,50 @@ namespace Decompiler.Arch.X86
 		}
 	}
 
+	public class Intel64Register : IntelRegister
+	{
+		public Intel64Register(string name, int number, int regWord, int regHiByte, int regLoByte)
+			: base(name, number, PrimitiveType.Word32, number, regWord, regHiByte, regLoByte) 
+		{
+		}
+
+		public override MachineRegister GetSubregister(int offset, int size)
+		{
+			if (offset == 0)
+			{
+				if (size == 16)
+					return Registers.GetRegister(Number + Registers.di.Number - Registers.edi.Number);
+				if (size == 32)
+					return this;
+			}
+			return null;
+		}
+
+		public override MachineRegister GetWidestSubregister(BitSet bits)
+		{
+			if (bits[Number])
+				return this;
+			int w = Number + Registers.ax.Number - Registers.eax.Number;
+			if (bits[w])
+				return Registers.GetRegister(w);
+			return null; 
+		}
+
+		public override void SetAliases(BitSet bits, bool f)
+		{
+			bits[Number] = f;
+			bits[regWord] = f;
+		}
+
+		public override void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
+		{
+			base.SetRegisterFileValues (registerFile, value, valid);
+			int r = regWord;
+			registerFile[r] = value & 0xFFFFU;
+			valid[r] = true;
+		}
+	}
+
 	public class Intel32AccRegister : Intel32Register
 	{
 		public Intel32AccRegister(string name, int number, int regWord, int regLoByte, int regHiByte)
@@ -182,6 +226,70 @@ namespace Decompiler.Arch.X86
 		}
 
 	}
+
+    public class Intel64AccRegister : Intel64Register
+    {
+        public Intel64AccRegister(string name, int number, int regWord, int regLoByte, int regHiByte)
+            : base(name, number, regWord, regLoByte, regHiByte)
+        {
+        }
+
+        public override MachineRegister GetSubregister(int offset, int size)
+        {
+            if (offset == 0)
+            {
+                if (size == 8)
+                    return Registers.GetRegister(Number + Registers.al.Number);
+                if (size == 16)
+                    return Registers.GetRegister(Number + Registers.ax.Number);
+                if (size == 32)
+                    return this;
+            }
+            if (offset == 8)
+            {
+                if (size == 8)
+                    return Registers.GetRegister(Number + Registers.ah.Number - Registers.eax.Number);
+            }
+            return null;
+        }
+
+        public override MachineRegister GetWidestSubregister(BitSet bits)
+        {
+            if (bits[Number])
+                return this;
+            if (bits[regWord])
+                return Registers.GetRegister(regWord);
+            if (bits[regHiByte] && bits[regLoByte])
+                return Registers.GetRegister(regWord);
+            if (bits[regHiByte])
+                return Registers.GetRegister(regHiByte);
+            if (bits[regLoByte])
+                return Registers.GetRegister(regLoByte);
+
+            return null;
+        }
+
+        public override void SetAliases(BitSet bits, bool f)
+        {
+            bits[Number] = f;
+            bits[regWord] = f;
+            bits[regLoByte] = f;
+            bits[regHiByte] = f;
+        }
+
+        public override void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
+        {
+            base.SetRegisterFileValues(registerFile, value, valid);
+            int r = regLoByte;
+            registerFile[r] = value & 0xFFU;
+            valid[r] = true;
+            r = regHiByte;
+            registerFile[r] = (value >> 8) & 0xFFU;
+            valid[r] = true;
+
+        }
+
+    }
 
 
 	public class Intel16Register : IntelRegister

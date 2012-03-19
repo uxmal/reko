@@ -131,6 +131,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IntelRegister.cs" />
+    <Compile Include="Registers.cs" />
     <Compile Include="X86Disassembler.cs" />
     <Compile Include="X86lProcessorArchitecture.cs" />
     <Compile Include="X86Rewriter.Fpu.cs" />
