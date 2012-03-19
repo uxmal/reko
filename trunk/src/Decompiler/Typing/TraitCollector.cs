@@ -499,7 +499,6 @@ namespace Decompiler.Typing
 		public DataType VisitMemoryAccess(MemoryAccess access)
 		{
             access.EffectiveAddress.Accept(this);
-			TypeVariable tAccess = access.TypeVariable;
 			var dt = handler.DataTypeTrait(access, access.DataType);
 			CollectEffectiveAddress(access, access.EffectiveAddress);
             return dt;

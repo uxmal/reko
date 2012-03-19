@@ -34,6 +34,16 @@ namespace Decompiler.Core.TreeMatching
     //        post_process(n);
     //    }
     //}
+    #if noz
+    let K be keywords
+    make root node
+    foreach k in K
+        make path from root to K
+    
+    add transition from state s to t on c 
+    failure:
+
+#endif
 
     public interface TreeMatchAdapter
     {

@@ -258,7 +258,7 @@ namespace Decompiler.Structure
                 if (!IsInfiniteLoop(graph, scc))
                     return;
 
-                StructureNode header = FindNodeWithHighestPostOrderNumber(scc);
+                var header = FindNodeWithHighestPostOrderNumber(scc);
                 foreach (StructureNode tail in graph.Predecessors(header))
                 {
                     if (scc.Contains(tail))

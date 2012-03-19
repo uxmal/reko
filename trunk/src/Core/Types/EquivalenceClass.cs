@@ -58,6 +58,7 @@ namespace Decompiler.Core.Types
         {
             return v.VisitEquivalenceClass(this);
         }
+
 		public override DataType Clone()
 		{
 			return this;

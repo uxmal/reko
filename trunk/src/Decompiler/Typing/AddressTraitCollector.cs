@@ -74,12 +74,12 @@ namespace Decompiler.Typing
 			arrayContext = c;
 		}
 
-		public void EmitAccessTrait(Expression tvBase, Expression tvMemPtr, int ptrSize, int offset)
+		public void EmitAccessTrait(Expression baseExpr, Expression memPtr, int ptrSize, int offset)
 		{
 			if (arrayContext)
-				handler.MemAccessArrayTrait(tvBase, tvMemPtr, ptrSize, offset, arrayElementSize, arrayLength, tvField);
+				handler.MemAccessArrayTrait(baseExpr, memPtr, ptrSize, offset, arrayElementSize, arrayLength, tvField);
 			else
-				handler.MemAccessTrait(tvBase, tvMemPtr, ptrSize, tvField, offset);
+				handler.MemAccessTrait(baseExpr, memPtr, ptrSize, tvField, offset);
 		}
 
 		public LinearInductionVariable GetInductionVariable(Expression e)

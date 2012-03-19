@@ -2,20 +2,20 @@
 // Mem0:Global memory
 // fp:Temporary
 // bx:Register bx
+// sp:Register sp
 // return address size: 2
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:		// pred: fn0C00_0000_entry
 	bx = 0x1234
-	call fn0C00_000C (depth: 2;)
+	call fn0C00_000C (retsize: 2;)
 	bx = 0x5678
-	call fn0C00_0018 (depth: 2;)
-	call fn0C00_000C (depth: 2;)
-	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+	call fn0C00_0018 (retsize: 2;)
+	goto l0C00_000C
+	// succ:  l0C00_000C
+fn0C00_0000_exit:
+
 // fn0C00_000C
 // Mem0:Global memory
 // fp:Temporary

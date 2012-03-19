@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Decompiler.Core
@@ -65,7 +66,6 @@ namespace Decompiler.Core
 		private List<Identifier> identifiers;	// Identifiers for each access.
 		
 		private bool escapes;
-		private Identifier framePointer;
 		private int frameOffset;				// frame offset from stack pointer in bytes.
 
 		public Frame(PrimitiveType framePointerSize)
@@ -76,8 +76,8 @@ namespace Decompiler.Core
 			// pointer.
 
 			Identifier g = new MemoryIdentifier(0, PrimitiveType.Void);
-			identifiers.Add(g);
-			framePointer = CreateTemporary("fp", framePointerSize);
+			this.identifiers.Add(g);
+			this.FramePointer = CreateTemporary("fp", framePointerSize);
 		}
 
 		public Identifier CreateSequence(Identifier head, Identifier tail, DataType dt)
@@ -293,10 +293,7 @@ namespace Decompiler.Core
 			set { frameOffset = value; }
 		}
 
-		public Identifier FramePointer
-		{
-			get { return framePointer; }
-		}
+		public Identifier FramePointer { get; private set; }
 
 		/// <summary>
 		/// Returns the number of bytes the stack arguments consume on the stack.

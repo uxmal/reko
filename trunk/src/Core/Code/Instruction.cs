@@ -54,6 +54,10 @@ namespace Decompiler.Core.Code
 		}
     }
 
+    /// <summary>
+    /// This class is used in the SSA generation stage to simulate incoming parameters. DefInstructions are generated
+    /// in the entry block.
+    /// </summary>
 	public class DefInstruction : Instruction
 	{
 		public DefInstruction(Expression e)

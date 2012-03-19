@@ -51,6 +51,5 @@ namespace Decompiler.Core.Expressions
 		{
 			return new Cast(DataType, Expression.CloneExpression());
 		}
-
 	}
 }

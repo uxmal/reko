@@ -62,8 +62,13 @@
   <ItemGroup>
     <Compile Include="ElfImageLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SectionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\M68k\M68k-2010.csproj">
+      <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
+      <Name>M68k-2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Sparc\Sparc-2010.csproj">
       <Project>{454D9734-EDF3-4646-8C7F-8449C68EB826}</Project>
       <Name>Sparc-2010</Name>

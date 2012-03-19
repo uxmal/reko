@@ -48,7 +48,6 @@ namespace Decompiler.Core.Expressions
             return v.VisitMkSequence(this);
         }
 
-
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitMkSequence(this);

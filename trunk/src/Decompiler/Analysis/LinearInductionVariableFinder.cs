@@ -153,7 +153,7 @@ namespace Decompiler.Analysis
         /// </summary>
         public void Find()
         {
-            var sccFinder = new SccFinder<SsaIdentifier>(new SsaGraph(ssaIds), ProcessScc);
+            var sccFinder = new SccFinder<SsaIdentifier>(new SsaGraph(ssaIds), x=> {}, ProcessScc);
             foreach (SsaIdentifier sid in ssaIds)
             {
                 sccFinder.Find(sid);
