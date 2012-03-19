@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Arm
 {
-           public class OpGroup
+    public class OpGroup
         {
             public BitRange [] Selectors;
             public OpRec [] oprecs;

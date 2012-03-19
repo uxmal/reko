@@ -33,6 +33,25 @@ namespace Decompiler.Arch.X86
 {
     public partial class X86Rewriter
     {
+        private void RewriteAaa()
+        {
+            emitter.Assign(
+                orw.FlagGroup(FlagM.CF),
+                PseudoProc("__aaa", PrimitiveType.Bool,
+                    orw.AluRegister(Registers.al),
+                    orw.AluRegister(Registers.ah),
+                            orw.AddrOf(orw.AluRegister(Registers.al)),
+                            orw.AddrOf(orw.AluRegister(Registers.ah))));
+        }
+
+        private void RewriteAam()
+        {
+            emitter.Assign(
+                orw.AluRegister(Registers.ax),
+                PseudoProc("__aam", PrimitiveType.Word16,
+                    orw.AluRegister(Registers.al)));
+        }
+        
         /// <summary>
         /// Doesn't handle the x86 idiom add ... adc => long add (and 
         /// sub ..sbc => long sub)
@@ -80,6 +99,16 @@ namespace Decompiler.Arch.X86
             return ass.Dst;
         }
 
+        private void RewriteArpl()
+        {
+            emitter.Assign(
+                orw.FlagGroup(FlagM.ZF),
+                PseudoProc("__arpl", PrimitiveType.Bool, 
+                    SrcOp(di.Instruction.op1),
+                    SrcOp(di.Instruction.op2),
+                    orw.AddrOf(SrcOp(di.Instruction.op1))));
+        }
+
         public void RewriteBinOp(BinaryOperator opr)
         {
             var ass = EmitBinOp(opr, di.Instruction.op1, di.Instruction.dataWidth, SrcOp(di.Instruction.op1), SrcOp(di.Instruction.op2));
@@ -106,6 +135,21 @@ namespace Decompiler.Arch.X86
             emitter.Assign(reg, PseudoProc("__bswap", (PrimitiveType)reg.DataType, reg));
         }
 
+        public void RewriteCbw()
+        {
+            if (di.Instruction.dataWidth == PrimitiveType.Word32)
+            {
+                emitter.Assign(
+                    orw.AluRegister(Registers.eax),
+                    emitter.Cast(PrimitiveType.Int32, orw.AluRegister(Registers.ax)));
+            }
+            else
+            {
+                emitter.Assign(
+                    orw.AluRegister(Registers.ax),
+                    emitter.Cast(PrimitiveType.Int16, orw.AluRegister(Registers.al)));
+            }
+        }
 
         public RtlAssignment EmitBinOp(BinaryOperator binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right)
         {
@@ -213,6 +257,14 @@ namespace Decompiler.Arch.X86
             {
                 emitter.Assign(sp, emitter.Sub(sp, cbExtraSavedBytes));
             }
+        }
+
+        private void RewriteExchange()
+        {
+            Identifier itmp = frame.CreateTemporary(di.Instruction.dataWidth);
+            emitter.Assign(itmp, SrcOp(di.Instruction.op1));
+            EmitCopy(di.Instruction.op1, SrcOp(di.Instruction.op2), false);
+            EmitCopy(di.Instruction.op2, itmp, false);
         }
 
         private void RewriteIncDec(int amount)
@@ -499,7 +551,7 @@ namespace Decompiler.Arch.X86
 				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.es), RegDi, di.Instruction.dataWidth);
 			}
 			else
-				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegDi, di.Instruction.addrWidth);
+				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegDi, di.Instruction.dataWidth);
 		}
 
 		public MemoryAccess MemSi()
@@ -511,7 +563,17 @@ namespace Decompiler.Arch.X86
 			else
 				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegSi, di.Instruction.dataWidth);
 		}
-		
+
+        public MemoryAccess Mem(Expression defaultSegment, Expression effectiveAddress)
+        {
+            if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
+            {
+                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, defaultSegment, effectiveAddress, di.Instruction.dataWidth);
+            }
+            else
+                return new MemoryAccess(MemoryIdentifier.GlobalMemory, effectiveAddress, di.Instruction.dataWidth);
+        }
+
 		public Identifier RegAl
 		{
 			get { return orw.AluRegister(Registers.eax, di.Instruction.dataWidth); }
@@ -638,6 +700,20 @@ namespace Decompiler.Arch.X86
                 EmitCopy(opDst, new UnaryExpression(op, opSrc.Width, src), false);
                 return src;
             }
+        }
+
+        private void RewriteXlat()
+        {
+            var al = orw.AluRegister(Registers.al);
+            var bx = orw.AluRegister(Registers.ebx, di.Instruction.addrWidth);
+            var offsetType = PrimitiveType.Create(Domain.UnsignedInt, bx.DataType.Size); 
+            emitter.Assign(
+                al,
+                Mem(
+                    orw.AluRegister(Registers.ds),
+                    emitter.Add(
+                        bx,
+                        emitter.Cast(offsetType, al))));
         }
 
         private Identifier StackPointer()

@@ -47,6 +47,7 @@ namespace Decompiler.Arch.Pdp11
         public MachineInstruction DisassembleInstruction()
         {
             ushort opcode = rdr.ReadLeUInt16();
+            var dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
             switch ((opcode >> 0x0C) & 7)
             {
             case 0: return NonDoubleOperandInstruction(opcode);
@@ -54,10 +55,52 @@ namespace Decompiler.Arch.Pdp11
                 return new Pdp11Instruction
                 {
                     Opcode = Opcodes.mov,
-                    DataWidth = DataWidthFromSizeBit(opcode & 0x8000u),
+                    DataWidth = dataWidth,
                     op1 = DecodeOperand(opcode),
                     op2 = DecodeOperand(opcode >> 6)
                 };
+            case 2:
+                return new Pdp11Instruction
+                {
+                    Opcode = Opcodes.cmp,
+                    DataWidth = dataWidth,
+                    op1 = DecodeOperand(opcode),
+                    op2 = DecodeOperand(opcode >> 6),
+                };
+            case 3:
+                return new Pdp11Instruction
+                {
+                    Opcode = Opcodes.bit,
+                    DataWidth = dataWidth,
+                    op1 = DecodeOperand(opcode),
+                    op2 = DecodeOperand(opcode >> 6),
+                };
+            case 4:
+                return new Pdp11Instruction
+                {
+                    Opcode = Opcodes.bic,
+                    DataWidth = dataWidth,
+                    op1 = DecodeOperand(opcode),
+                    op2 = DecodeOperand(opcode >> 6),
+                };
+            case 5:
+                return new Pdp11Instruction
+                {
+                    Opcode = Opcodes.bis,
+                    DataWidth = dataWidth,
+                    op1 = DecodeOperand(opcode),
+                    op2 = DecodeOperand(opcode >> 6),
+                };
+            case 6:
+                return new Pdp11Instruction
+                {
+                    Opcode = (opcode & 0x8000u) != 0 ? Opcodes.sub : Opcodes.add,
+                    DataWidth = dataWidth,
+                    op1 = DecodeOperand(opcode),
+                    op2 = DecodeOperand(opcode >> 6),
+                };
+            case 7:
+                throw new NotSupportedException();
             }
             throw new NotImplementedException();
         }
@@ -67,9 +110,129 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        private MachineInstruction NonDoubleOperandInstruction(int opcode)
+        private MachineInstruction NonDoubleOperandInstruction(ushort opcode)
         {
-            throw new NotImplementedException();
+            var dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
+            var op = DecodeOperand(opcode);
+            Opcodes oc = Opcodes.illegal;
+            switch ((opcode >> 6) & 0x3FF)
+            {
+            case 0x003:
+                    oc = Opcodes.swab;
+                    dataWidth = PrimitiveType.Byte;
+                break;
+
+            case 0x203:
+                return BranchInstruction(opcode);
+            case 0x028:
+            case 0x228:
+                    oc = Opcodes.clr;
+                break;
+            case 0x029:
+            case 0x229:
+                oc = Opcodes.com;
+                break;
+            case 0x02A:
+            case 0x22A:
+                oc = Opcodes.inc;
+                break;
+            case 0x02B:
+            case 0x22B:
+                oc = Opcodes.dec;
+                break;
+            case 0x02C:
+            case 0x22C:
+                oc = Opcodes.neg;
+                break;
+            case 0x02D:
+            case 0x22D:
+                oc = Opcodes.adc;
+                break;
+            case 0x02E:
+            case 0x22E:
+                oc = Opcodes.sbc;
+                break;
+            case 0x02F:
+            case 0x22F:
+                oc = Opcodes.tst;
+                break;
+            case 0x030:
+            case 0x230:
+                oc = Opcodes.ror;
+                break;
+            case 0x031:
+            case 0x231:
+                oc = Opcodes.rol;
+                break;
+            case 0x032:
+            case 0x232:
+                oc = Opcodes.asr;
+                break;
+            case 0x033:
+            case 0x233:
+                oc = Opcodes.asl;
+                break;
+            case 0x034:
+                oc = Opcodes.mark;
+                break;
+            case 0x234:
+                oc = Opcodes.mtps;
+                break;
+            case 0x035:
+                oc = Opcodes.mfpi;
+                break;
+            case 0x235:
+                oc = Opcodes.mfpd;
+                break;
+            case 0x036:
+                oc = Opcodes.mtpi;
+                break;
+            case 0x236:
+                oc = Opcodes.mtpd;
+                break;
+            case 0x037:
+                oc = Opcodes.sxt;
+                break;
+            case 0x237:
+                oc = Opcodes.mfps;
+                break;
+            }
+            return new Pdp11Instruction
+            {
+                Opcode = oc,
+                DataWidth = dataWidth,
+                op1 = op,
+            };
+        }
+
+        private MachineInstruction BranchInstruction(ushort opcode)
+        {
+            var oc = Opcodes.illegal;
+            switch ((opcode >> 8) | (opcode >> 15))
+            {
+            case 1: oc = Opcodes.br; break;
+            case 2: oc = Opcodes.bne; break;
+            case 3: oc = Opcodes.beq; break;
+            case 4: oc = Opcodes.bge; break;
+            case 5: oc = Opcodes.blt; break;
+            case 6: oc = Opcodes.bgt; break;
+            case 7: oc = Opcodes.ble; break;
+
+            case 8: oc = Opcodes.bpl; break;
+            case 9: oc = Opcodes.bmi; break;
+            case 0xA: oc = Opcodes.bhi; break;
+            case 0xB: oc = Opcodes.blos; break;
+            case 0xC: oc = Opcodes.bvc; break;
+            case 0xD: oc= Opcodes.bvs; break;
+            case 0xE: oc = Opcodes.bcc; break;
+            case 0xF: oc = Opcodes.bcs; break;
+            }
+            return new Pdp11Instruction
+            {
+                Opcode = oc,
+                DataWidth = PrimitiveType.Word16,
+                op1 = new AddressOperand(rdr.Address + (sbyte)(opcode & 0xFF)),
+            };
         }
 
         private MachineOperand DecodeOperand(int operandBits)
@@ -95,5 +258,12 @@ namespace Decompiler.Arch.Pdp11
                 }
             }
         }
+
+        private static OpRec [] oprecs = new OpRec[] 
+        { 
+            null,
+
+        };
     }
+    public class OpRec { }
 }

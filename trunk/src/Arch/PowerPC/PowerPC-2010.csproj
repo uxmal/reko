@@ -64,7 +64,9 @@
     <Compile Include="PowerPcArchitecture.cs" />
     <Compile Include="PowerPcDisassembler.cs" />
     <Compile Include="PowerPcInstruction.cs" />
+    <Compile Include="PowerPcRewriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

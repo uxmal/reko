@@ -28,6 +28,7 @@ namespace Decompiler.Arch.PowerPC
     {
         illegal,
 
+        add,
         addi,
         or,
         ori,
