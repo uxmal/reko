@@ -48,7 +48,7 @@ namespace Decompiler.Structure
         public HashSet<StructureNode> FindLoop()
         {
             loopNodeSet = new HashSet<StructureNode>();
-            var f = new SccFinder<StructureNode>(new GraphAdapter(this), ProcessScc);
+            var f = new SccFinder<StructureNode>(new GraphAdapter(this), x=> {}, ProcessScc);
             f.Find(interval.Header);
             return loopNodeSet;
         }

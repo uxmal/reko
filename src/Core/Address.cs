@@ -57,6 +57,7 @@ namespace Decompiler.Core
         {
             visit.VisitAddress(this);
         }
+
         public override Expression CloneExpression()
         {
             return new Address(this.Selector, this.Offset);

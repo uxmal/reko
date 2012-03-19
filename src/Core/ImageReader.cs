@@ -25,69 +25,69 @@ using System.Text;
 
 namespace Decompiler.Core
 {
-	/// <summary>
-	/// Reads bytes and differently sized words sequentially from an associated ProgramImage.
-	/// </summary>
-	public class ImageReader
-	{
-		private ProgramImage image;
-		private byte[] img;
-		private uint offStart;
-		private uint off;
-		private Address addrStart;
+    /// <summary>
+    /// Reads bytes and differently sized words sequentially from an associated ProgramImage.
+    /// </summary>
+    public class ImageReader
+    {
+        private ProgramImage image;
+        private byte[] img;
+        private uint offStart;
+        private uint off;
+        private Address addrStart;
 
-		public ImageReader(ProgramImage img, Address addr)
-		{
+        public ImageReader(ProgramImage img, Address addr)
+        {
             int o = addr - img.BaseAddress;
             if (o < 0 || o >= img.Bytes.Length)
                 throw new ArgumentOutOfRangeException("addr", "Address is outside of image.");
-			this.image = img;
-			this.img = img.Bytes;
-			this.addrStart = addr;
+            this.image = img;
+            this.img = img.Bytes;
+            this.addrStart = addr;
             this.off = offStart = (uint)o;
-		}
+        }
 
-		public ImageReader(ProgramImage img, uint off)
-		{
-			this.image = img;
-			this.img = img.Bytes;
+        public ImageReader(ProgramImage img, uint off)
+        {
+            this.image = img;
+            this.img = img.Bytes;
             this.addrStart = img.BaseAddress + off;
-			this.off = offStart = off;
-		}
+            this.off = offStart = off;
+        }
 
-		public ImageReader(byte[] img, uint off)
-		{
-			this.img = img;
-			this.off = offStart = off;
-		}
+        public ImageReader(byte[] img, uint off)
+        {
+            this.img = img;
+            this.off = offStart = off;
+        }
 
-		public Address Address { get { return addrStart + (off - offStart); } }
-		public uint Offset { get { return off; } }
+        public Address Address { get { return addrStart + (off - offStart); } }
+        public uint Offset { get { return off; } }
         public bool IsValid { get { return 0 <= off && off < img.Length; } }
 
-		public byte ReadByte()
-		{
-			byte b = img[off];
-			++off;
-			return b;
-		}
+        public byte ReadByte()
+        {
+            byte b = img[off];
+            ++off;
+            return b;
+        }
 
         /// <summary>
         /// Little-endian read.
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-		public Constant ReadLe(PrimitiveType type)
-		{
-			Constant c = image.ReadLe(off, type);
-			off += (uint) type.Size;
-			return c;
-		}
+        public Constant ReadLe(PrimitiveType type)
+        {
+            Constant c = image.ReadLe(off, type);
+            off += (uint)type.Size;
+            return c;
+        }
 
         public Constant ReadBe(PrimitiveType type)
         {
             Constant c = image.ReadBe(off, type);
-            off += (uint) type.Size;
+            off += (uint)type.Size;
             return c;
         }
 
@@ -123,12 +123,12 @@ namespace Decompiler.Core
 
 
 
-		public ushort ReadLeUInt16()
-		{
-			ushort u = ProgramImage.ReadLeUInt16(img, off);
-			off += 2;
-			return u;
-		}
+        public ushort ReadLeUInt16()
+        {
+            ushort u = ProgramImage.ReadLeUInt16(img, off);
+            off += 2;
+            return u;
+        }
 
         public ushort ReadBeUInt16()
         {
@@ -139,7 +139,7 @@ namespace Decompiler.Core
 
         public short ReadBeInt16() { return (short)ReadBeUInt16(); }
         public short ReadLeInt16() { return (short)ReadLeUInt16(); }
-        
+
         public ushort ReadLeUInt16(uint offset) { return ProgramImage.ReadLeUInt16(img, off); }
         public ushort ReadBeUInt16(uint offset) { return ProgramImage.ReadBeUInt16(img, off); }
         public short ReadLeInt16(uint offset) { return (short)ProgramImage.ReadLeUInt16(img, off); }
@@ -193,9 +193,6 @@ namespace Decompiler.Core
         public long ReadLeInt64(uint offset) { return (long)ProgramImage.ReadLeUInt64(img, off); }
         public long ReadBeInt64(uint offset) { return (long)ProgramImage.ReadBeUInt64(img, off); }
 
-
-
-
         public virtual short ReadInt16() { throw new NotSupportedException(); }
         public virtual int ReadInt32() { throw new NotSupportedException(); }
         public virtual long ReadInt64() { throw new NotSupportedException(); }
@@ -224,15 +221,20 @@ namespace Decompiler.Core
             }
         }
 
+        /// <summary>
+        /// Reads a NUL-terminated string starting at the current position.
+        /// </summary>
+        /// <param name="charType"></param>
+        /// <returns></returns>
         public StringConstant ReadCString(DataType charType)
         {
-            int iStart = (int) Offset;
+            int iStart = (int)Offset;
             var sb = new StringBuilder();
             for (char ch = ReadChar(charType); ch != 0; ch = ReadChar(charType))
             {
                 sb.Append(ch);
             }
-            return new StringConstant(charType, Encoding.GetEncoding("ISO_8859-1").GetString(img, iStart, (int)Offset-iStart-1));
+            return new StringConstant(charType, Encoding.GetEncoding("ISO_8859-1").GetString(img, iStart, (int)Offset - iStart - 1));
         }
 
         public StringConstant ReadLengthPrefixedString(PrimitiveType lengthType, PrimitiveType charType)
@@ -244,6 +246,11 @@ namespace Decompiler.Core
                 sb.Append(ReadChar(charType));
             }
             return new StringConstant(charType, sb.ToString());
+        }
+
+        public void Seek(int offset)
+        {
+            off = (uint)(off + offset);
         }
     }
 

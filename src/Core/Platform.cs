@@ -32,4 +32,21 @@ namespace Decompiler.Core
         public abstract string DefaultCallingConvention { get; }
     }
 
+    public class DefaultPlatform : Platform
+    {
+        public DefaultPlatform()
+        {
+        }
+
+        public override SystemService FindService(int vector, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string DefaultCallingConvention
+        {
+            get { throw new NotImplementedException(); }
+        }
+    }
+
 }

@@ -57,6 +57,8 @@ namespace Decompiler.Analysis
 			Transform();
 		}
 
+        public SsaState SsaState { get; private set; }
+
         private int RpoNumber(Block b)
         {
             return domGraph.ReversePostOrder[b];
@@ -79,10 +81,6 @@ namespace Decompiler.Analysis
 			return stm.Instruction;
 		}
 
-		
-		public SsaState SsaState { get; private set; }
-
-
 		private void LocateAllDefinedVariables(byte [,] defOrig)
 		{
 			var ldv = new LocateDefinedVariables(proc, this, defOrig);
@@ -94,7 +92,7 @@ namespace Decompiler.Analysis
 
 		private void MarkTemporariesDeadIn(byte [,] def)
 		{
-			foreach (Identifier id in proc.Frame.Identifiers.Where(id =>id.Storage is TemporaryStorage))
+			foreach (Identifier id in proc.Frame.Identifiers.Where(id => id.Storage is TemporaryStorage))
 			{
                 foreach (var block in proc.ControlGraph.Blocks)
                 {
@@ -270,7 +268,6 @@ namespace Decompiler.Analysis
 			private Statement stmCur; 
 			private Procedure proc;
 
-
 			/// <summary>
 			/// Walks the dominator tree, renaming the different definitions of variables
 			/// (including phi-functions). 
@@ -380,25 +377,29 @@ namespace Decompiler.Analysis
 				}	
 			}
 
+            // A new definition of id requires a new SSA name.
 			private Identifier NewDef(Identifier idOld, Expression exprDef, bool isSideEffect)
 			{
-				// A new definition of id requires a new SSA name.
-
 				var sid = ssa.SsaState.Identifiers.Add(idOld, stmCur, exprDef, isSideEffect);
-				int idPrev = rename[idOld.Number];
+				int iNew = Rename(idOld);
 				rename[idOld.Number] = sid.Identifier.Number;
-				EnsureWasOnEntry(idOld.Number, idPrev);
+				EnsureWasOnEntry(idOld.Number, iNew);
 				return sid.Identifier;
 			}
 
 
 			private Identifier NewUse(Identifier idOld, Statement stm)
 			{
-				int iNew = rename[idOld.Number];
+                int iNew = Rename(idOld);
 				var sid = ssa.SsaState.Identifiers[iNew];
 				sid.Uses.Add(stm);
 				return sid.Identifier;
 			}
+
+            private int Rename(Identifier idOld)
+            {
+                return rename[idOld.Number];
+            }
 
 			public override Instruction TransformAssignment(Assignment ass)
 			{
@@ -408,7 +409,6 @@ namespace Decompiler.Analysis
 				return ass;
 			}
 
-
 			public override Instruction TransformPhiAssignment(PhiAssignment phi)
 			{
 				// Only rename the defined variable in phi-functions.
@@ -417,7 +417,6 @@ namespace Decompiler.Analysis
                 phi.Dst = NewDef(id, phi.Src, false);
 				return phi;
 			}
-
 
 			public override Instruction TransformCallInstruction(CallInstruction ci)
 			{
@@ -463,7 +462,7 @@ namespace Decompiler.Analysis
 			{
 				store.Src = store.Src.Accept(this);
 
-				MemoryAccess acc = store.Dst as MemoryAccess;
+				var acc = store.Dst as MemoryAccess;
 				if (acc != null)
 				{
 					acc.MemoryId = (MemoryIdentifier) NewDef(acc.MemoryId, store.Src, false);

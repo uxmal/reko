@@ -45,6 +45,7 @@ namespace Decompiler.Analysis
     public class TrashedRegisterFinder : InstructionVisitorBase
     {
         private Program prog;
+        private IEnumerable<Procedure> procedures;
         private ProgramDataFlow flow;
         private BlockFlow bf;
         private WorkList<Block> worklist;
@@ -52,59 +53,19 @@ namespace Decompiler.Analysis
         private SymbolicEvaluationContext ctx;
         private DecompilerEventListener eventListener;
         private ExpressionValueComparer ecomp;
-        private DataTypeBuilder dtb;
-        private TraitCollector traitCollector;
-        private TrfTypeStore typeStore;
 
         public TrashedRegisterFinder(
             Program prog,
+            IEnumerable<Procedure> procedures,
             ProgramDataFlow flow,
             DecompilerEventListener eventListener)
         {
             this.prog = prog;
+            this.procedures = procedures;
             this.flow = flow;
             this.eventListener = eventListener;
             this.worklist = new WorkList<Block>();
             this.ecomp = new ExpressionValueComparer();
-            this.typeStore = new TrfTypeStore(this);
-            this.dtb = new DataTypeBuilder(prog.TypeFactory, typeStore, prog.Architecture);
-            this.traitCollector = new TraitCollector(prog.TypeFactory, typeStore, dtb, prog);
-        }
-
-        private class TrfTypeStore : ITypeStore
-        {
-            private TrashedRegisterFinder trf;
-
-            public TrfTypeStore(TrashedRegisterFinder trf)
-            {
-                this.trf = trf;
-            }
-
-            public DataType GetDataTypeOf(Expression exp)
-            {
-                DataType dt;
-                if (trf.bf.DataTypes.TryGetValue(exp, out dt))
-                    return dt;
-                return null;
-            }
-
-            public EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void BuildEquivalenceClassDataTypes(TypeFactory factory)
-            {
-            }
-
-            public void Write(TextWriter writer)
-            {
-            }
-
-            public void SetDataTypeOf(Expression exp, DataType dt)
-            {
-                trf.bf.DataTypes[exp] = dt;
-            }
         }
 
         public Dictionary<RegisterStorage, Expression> RegisterSymbolicValues { get { return ctx.RegisterState; } }
@@ -113,7 +74,7 @@ namespace Decompiler.Analysis
 
         public void CompleteWork()
         {
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in procedures)
             {
                 var pf = flow[proc];
                 foreach (int r in pf.TrashedRegisters)
@@ -126,6 +87,24 @@ namespace Decompiler.Analysis
         public void Compute()
         {
             FillWorklist();
+            ProcessWorkList();
+            CompleteWork();
+        }
+
+        public void RewriteBasicBlocks()
+        {
+            foreach (var proc in procedures)
+            {
+                foreach (var block in proc.ControlGraph.Blocks)
+                {
+                    RewriteBlock(block);
+                }
+            }
+        }
+
+        public void ProcessWorkList()
+        {
+
             int initial = worklist.Count;
             Block block;
             while (worklist.GetWorkItem(out block))
@@ -135,12 +114,11 @@ namespace Decompiler.Analysis
                     eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
                 ProcessBlock(block);
             }
-            CompleteWork();
         }
 
         public void FillWorklist()
         {
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in procedures)
             {
                 foreach (Block block in proc.ControlGraph.Blocks)
                 {
@@ -179,10 +157,22 @@ namespace Decompiler.Analysis
             }
         }
 
+        public void RewriteBlock(Block block)
+        {
+            StartProcessingBlock(block);
+            var updater = new Updater(se);
+            block.Statements.ForEach(stm => stm.Instruction.Accept(updater));
+        }
+
         public void StartProcessingBlock(Block block)
         {
             bf = flow[block];
             EnsureEvaluationContext(bf);
+            if (block.Procedure.EntryBlock == block)
+            {
+                var sp = block.Procedure.Frame.EnsureRegister(prog.Architecture.StackRegister);
+                bf.SymbolicIn[sp.Storage] = block.Procedure.Frame.FramePointer;
+            }
             ctx.TrashedFlags = bf.grfTrashedIn;
         }
 
@@ -199,9 +189,9 @@ namespace Decompiler.Analysis
         public void PropagateToProcedureSummary(Procedure proc)
         {
             bool changed = false;
-            ProcedureFlow pf = flow[proc];
-            BitSet tr = prog.Architecture.CreateRegisterBitset();
-            BitSet pr = prog.Architecture.CreateRegisterBitset();
+            var pf = flow[proc];
+            var tr = prog.Architecture.CreateRegisterBitset();
+            var pr = prog.Architecture.CreateRegisterBitset();
             if (pf.TerminatesProcess)
             {
                 if (!pf.TrashedRegisters.IsEmpty)
@@ -375,8 +365,6 @@ namespace Decompiler.Analysis
         public override void VisitAssignment(Assignment a)
         {
             se.VisitAssignment(a);
-            traitCollector.VisitAssignment(a);
-            
         }
 
         public override void VisitSideEffect(SideEffect side)
@@ -391,7 +379,6 @@ namespace Decompiler.Analysis
 
         public override void VisitIndirectCall(IndirectCall ic)
         {
-            ic.Accept(traitCollector);
         }
 
         public override void VisitCallInstruction(CallInstruction ci)
@@ -469,6 +456,196 @@ namespace Decompiler.Analysis
                     }
                 }
                 return e;
+            }
+        }
+
+        public class Updater : InstructionVisitor<Instruction>, ExpressionVisitor<Expression>
+        {
+            private SymbolicEvaluator se;
+            
+            public Updater(SymbolicEvaluator se)
+            {
+                this.se = se;
+            }
+
+            public Instruction VisitAssignment(Assignment a)
+            {
+                a.Accept(se);
+                se.VisitAssignment(a);
+                return a;
+            }
+
+            public Instruction VisitBranch(Branch b)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Instruction VisitCallInstruction(CallInstruction ci)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Instruction VisitDeclaration(Declaration decl)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Instruction VisitDefInstruction(DefInstruction def)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Instruction VisitPhiAssignment(PhiAssignment phi)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Instruction VisitIndirectCall(IndirectCall ic)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Instruction VisitReturnInstruction(ReturnInstruction ret)
+            {
+                if (ret.Expression != null)
+                    ret.Expression.Accept(this);
+                return ret;
+            }
+
+            public Instruction VisitSideEffect(SideEffect side)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Instruction VisitStore(Store store)
+            {
+                se.VisitStore(store);
+                return store;
+            }
+
+            public Instruction VisitSwitchInstruction(SwitchInstruction si)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Instruction VisitUseInstruction(UseInstruction u)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitAddress(Address addr)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitApplication(Application appl)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitArrayAccess(ArrayAccess acc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitBinaryExpression(BinaryExpression binExp)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitCast(Cast cast)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitConditionOf(ConditionOf cof)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitConstant(Constant c)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitDepositBits(DepositBits d)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitDereference(Dereference deref)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitFieldAccess(FieldAccess acc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitIdentifier(Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitMemoryAccess(MemoryAccess access)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitMkSequence(MkSequence seq)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitPhiFunction(PhiFunction phi)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitPointerAddition(PointerAddition pa)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitProcedureConstant(ProcedureConstant pc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitScopeResolution(ScopeResolution scopeResolution)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitSegmentedAccess(SegmentedAccess access)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitSlice(Slice slice)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitTestCondition(TestCondition tc)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression VisitUnaryExpression(UnaryExpression unary)
+            {
+                throw new NotImplementedException();
             }
         }
     }

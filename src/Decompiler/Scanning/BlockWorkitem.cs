@@ -77,8 +77,6 @@ namespace Decompiler.Scanning
             blockCur = scanner.FindContainingBlock(addr);
             if (BlockHasBeenScanned(blockCur))
                 return;
-            if (blockCur.Name.Contains("0020")) //$dEBUG
-                blockCur.ToString();
             while (rtlStream.MoveNext())
             {
                 ric = rtlStream.Current;
@@ -92,7 +90,7 @@ namespace Decompiler.Scanning
                         return;
                 }
                 var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
-                if (blNext != null) // && !blockCur.Procedure.ControlGraph.ContainsEdge(blockCur, blNext))
+                if (blNext != null)
                 {
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blNext);
                     return;

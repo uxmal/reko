@@ -39,17 +39,11 @@ namespace Decompiler.Analysis
 		private List<int> [] aliases;
 		private IProcessorArchitecture arch;
 
-		public Aliases(Procedure proc, IProcessorArchitecture arch)
-		{
-			Init(proc, arch, null);
+		public Aliases(Procedure proc, IProcessorArchitecture arch) : this(proc, arch, null)
+        {
 		}
 
 		public Aliases(Procedure proc, IProcessorArchitecture arch, ProgramDataFlow pdf)
-		{
-			Init(proc, arch, pdf);
-		}
-
-		private void Init(Procedure proc, IProcessorArchitecture arch, ProgramDataFlow pdf)
 		{
 			this.proc = proc; 
 			this.arch = arch;
@@ -84,7 +78,6 @@ namespace Decompiler.Analysis
 
 		/// We've encountered a variable that is defined. We must generate an
 		// alias statement for all aliased variables.
-
 		private void Def(int v)
 		{
 			deadIn[v] = true;

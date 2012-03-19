@@ -89,6 +89,7 @@ namespace Decompiler.Core
                 throw new ArgumentException("Must be a nonnegative number.", "cbBytes"); 
             DumpData(image, address, (uint)cbBytes, stm);
         }
+
 		public void DumpData(ProgramImage image, Address address, uint cbBytes, TextWriter stm)
 		{
 			uint cSkip = address.Linear & 0x0F;

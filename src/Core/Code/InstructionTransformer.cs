@@ -25,8 +25,7 @@ using System;
 namespace Decompiler.Core.Code
 {
 	/// <summary>
-	/// Base class for rebuilding instructions -- and expressions therein. Visits an instruction
-	/// and replaces identifiers with new values provided by the Rename abstract method.
+	/// Base class for rebuilding instructions -- and expressions therein.
 	/// </summary>
 	public class InstructionTransformer : IExpressionTransformer
 	{

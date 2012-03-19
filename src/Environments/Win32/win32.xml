@@ -4,7 +4,7 @@
 <uint32 />
 </typedef>
 <typedef name="wchar_t"><uint16 /></typedef>
-<enum name="SA_YesNoMaybe"><item name="SA_No" value="0x0fff0001" /><item name="SA_Maybe" value="0x0fff0010" /><item name="SA_Yes" value="0x0fff0100" /> };
+<enum name="SA_YesNoMaybe"><item name="SA_No" value="0x0fff0001" /><item name="SA_Maybe" value="0x0fff0010" /><item name="SA_Yes" value="0x0fff0100" /></enum>
 typedef enum SA_YesNoMaybe SA_YesNoMaybe;
 <enum name="SA_AccessType"><item name="SA_NoAccess" value="0"/><item name="SA_Read" value="1"/><item name="SA_Write" value="2"/><item name="SA_ReadWrite" value="3"/></enum>
 typedef enum SA_AccessType SA_AccessType;
@@ -189,7 +189,7 @@ int32 __cdecl _abnormal_termination();
 <procedure name="__pctype_func"><signature convention="__cdecl"><return><ptr><uint16/></ptr></return></signature></procedure>
 <data name="_pctype"><ptr const="true"><uint16 /></ptr></data>
 <data name="_wctype"><arr const="true"><uint16 /></arr></data>
-<procedure name="__pwctype_func"><signature convention="__cdecl"><return><ptr><wctype_t/></ptr></return></signature>
+<procedure name="__pwctype_func"><signature convention="__cdecl"><return><ptr><wctype_t/></ptr></return></signature></procedure>
 <data name="_pwctype"><ptr const="true"><wctype_t /></ptr></data>
 int32 __cdecl _isctype( int32 _C, int32 _Type);
 int32 __cdecl _isctype_l( int32 _C, int32 _Type, _locale_t _Locale);

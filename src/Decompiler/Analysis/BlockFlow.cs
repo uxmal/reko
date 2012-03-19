@@ -45,7 +45,6 @@ namespace Decompiler.Analysis
         public SymbolicEvaluationContext SymbolicAuxIn;
         public Dictionary<Storage, Expression> SymbolicIn;        // maps identifiers to symbolic values on entrance to the block.
         public bool TerminatesProcess;                  // True if entering this block means the process/thread will be terminated.
-        public Dictionary<Expression, DataType> DataTypes { get; private set; }
 
 		public BlockFlow(Block block, BitSet dataOut, SymbolicEvaluationContext ctx)
 		{
@@ -54,7 +53,6 @@ namespace Decompiler.Analysis
 			this.StackVarsOut = new Dictionary<Storage,int>();
             this.SymbolicIn = new Dictionary<Storage, Expression>();
             this.SymbolicAuxIn = ctx;
-            this.DataTypes = new Dictionary<Expression, DataType>();
 		}
 
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)

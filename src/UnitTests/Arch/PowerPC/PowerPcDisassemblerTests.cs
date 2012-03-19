@@ -88,6 +88,7 @@ namespace Decompiler.UnitTests.Arch.PowerPC
             img.WriteBeUint32(0, w);
             return Disassemble(img);
         }
+
         private static PowerPcInstruction DisassembleWord(byte[] a)
         {
             ProgramImage img = new ProgramImage(new Address(0x00100000), a);
@@ -96,9 +97,9 @@ namespace Decompiler.UnitTests.Arch.PowerPC
 
         private static PowerPcInstruction Disassemble(ProgramImage img)
         {
-            PowerPcArchitecture arch = new PowerPcArchitecture(PrimitiveType.Word32);
-            PowerPcDisassembler dasm = new PowerPcDisassembler(arch, img.CreateReader(0U), arch.WordWidth);
-            PowerPcInstruction instr = dasm.Disassemble();
+            var arch = new PowerPcArchitecture(PrimitiveType.Word32);
+            var dasm = new PowerPcDisassembler(arch, img.CreateReader(0U), arch.WordWidth);
+            var instr = dasm.Disassemble();
             return instr;
         }
     }

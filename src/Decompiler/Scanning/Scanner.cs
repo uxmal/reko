@@ -258,7 +258,6 @@ namespace Decompiler.Scanning
             TerminateAnyBlockAt(addr);
             if (visitedProcs.Contains(proc))
                 return proc;
-
             visitedProcs.Add(proc);
 
             var oldQueue = queue;

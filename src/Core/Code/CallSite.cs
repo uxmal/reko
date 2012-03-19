@@ -65,41 +65,4 @@ namespace Decompiler.Core.Code
             return sb.ToString();
         }
     }
-
-	/// <summary>
-	/// Interface between a calling procedure and a callee procedure. All registers
-	/// used or defined by the called procedure are stored here, as is the stack
-	/// depth before the call. The stack depth includes any return address pushed
-	/// on the stack before control transfers to the callee. 
-	/// </summary>
-    [Obsolete]
-	public class CallSiteOld
-	{
-        public CallSiteOld(int stackDepthBefore, int fpuStackDepthBefore)
-        {
-            this.StackDepthBefore = stackDepthBefore;
-            this.FpuStackDepthBefore = fpuStackDepthBefore;
-        }
-
-		/// <summary>
-		/// Depth of FPU stack before call.
-		/// </summary>
-		public int FpuStackDepthBefore { get; private set; }
-
-		/// <summary>
-		/// Depth of stack before call, including possible return address.
-		/// </summary>
-		public int StackDepthBefore { get; private set; }
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendFormat("depth: {0};", StackDepthBefore);
-			if (FpuStackDepthBefore != 0)
-			{
-				sb.AppendFormat(" FPU: {0};", FpuStackDepthBefore);
-			}
-			return sb.ToString();
-		}
-	}
 }

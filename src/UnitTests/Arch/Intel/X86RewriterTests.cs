@@ -893,5 +893,88 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "7|0C00:0007(2): 1 instructions",
                 "8|if (Test(NE,FPUF)) branch 0C00:0000");
         }
+
+        [Test]
+        public void Sar()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Sar(m.ax, 1);
+                m.Sar(m.bx, m.cl);
+                m.Sar(m.dx, 4);
+            });
+            AssertCode(e,
+                "0|0C00:0000(2): 2 instructions",
+                "1|ax = ax >> 0x0001",
+                "2|SCZO = cond(ax)",
+                "3|0C00:0002(2): 2 instructions",
+                "4|bx = bx >> cl",
+                "5|SCZO = cond(bx)",
+                "6|0C00:0004(3): 2 instructions",
+                "7|dx = dx >> 0x0004", 
+                "8|SCZO = cond(dx)");
+        }
+
+        [Test]
+        public void Xlat16()
+        {
+            var e = Run16bitTest(delegate(IntelAssembler m)
+            {
+                m.Xlat();
+            });
+            AssertCode(e,
+                "0|0C00:0000(1): 1 instructions",
+                "1|al = Mem0[ds:bx + (uint16) al:byte]");
+        }
+
+        [Test]
+        public void Xlat32()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Xlat();
+            });
+            AssertCode(e,
+                "0|10000000(1): 1 instructions",
+                "1|al = Mem0[ebx + (uint32) al:byte]");
+        }
+
+        [Test]
+        public void Aaa()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Aaa();
+            });
+            AssertCode(e,
+                "0|10000000(1): 1 instructions",
+                "1|C = __aaa(al, ah, &al, &ah)");
+        }
+
+        [Test]
+        public void Aam()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Aam();
+            });
+            AssertCode(e,
+                "0|10000000(2): 1 instructions",
+                "1|ax = __aam(al)");
+        }
+
+        [Test]
+        public void Cmpsb()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Cmpsb();
+            });
+            AssertCode(e,
+                "0|10000000(1): 3 instructions",
+                "1|SCZO = cond(Mem0[esi:byte] - Mem0[edi:byte])",
+                "2|esi = esi + 0x00000001",
+                "3|edi = edi + 0x00000001");
+        }
     }
 }

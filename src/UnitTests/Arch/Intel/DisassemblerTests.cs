@@ -311,5 +311,32 @@ movzx	ax,byte ptr [bp+04]
             var instr = dasm.Disassemble();
             Assert.AreEqual("call\tfar 1234:5678", instr.ToString());
         }
+
+        [Test]
+        public void Xlat16()
+        {
+            byte[] image = new byte[] { 0xD7 };
+            var img = new ProgramImage(new Address(0x0C00, 0x0000), image);
+            var rdr = img.CreateReader(img.BaseAddress);
+            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word16);
+            var instr = dasm.Disassemble();
+            Assert.AreEqual("xlat\t", instr.ToString());
+            Assert.AreEqual(PrimitiveType.Byte, instr.dataWidth);
+            Assert.AreEqual(PrimitiveType.Word16, instr.addrWidth);
+        }
+
+
+        [Test]
+        public void Xlat32()
+        {
+            byte[] image = new byte[] { 0xD7 };
+            var img = new ProgramImage(new Address(0x0C00, 0x0000), image);
+            var rdr = img.CreateReader(img.BaseAddress);
+            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word32);
+            var instr = dasm.Disassemble();
+            Assert.AreEqual("xlat\t", instr.ToString());
+            Assert.AreEqual(PrimitiveType.Byte, instr.dataWidth);
+            Assert.AreEqual(PrimitiveType.Word32, instr.addrWidth);
+        }
 	}
 }
