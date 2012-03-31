@@ -30,8 +30,8 @@ using System.Collections.Generic;
 namespace Decompiler.Evaluation
 {
     /// <summary>
-    /// Before we have the luxury of SSA, we need to perform some simplifications. This class keeps a context of symbolic
-    /// expressions for the different registers.
+    /// Before we have the luxury of SSA, we need to perform some simplifications. 
+    /// This class keeps a context of symbolic expressions for the different registers.
     /// </summary>
     public class SymbolicEvaluator : InstructionVisitor
     {
@@ -48,6 +48,7 @@ namespace Decompiler.Evaluation
         {
         }
 
+        public ExpressionSimplifier Simplifier { get { return eval; } }
 
         public void Evaluate(Instruction instr)
         {
@@ -71,7 +72,7 @@ namespace Decompiler.Evaluation
 
         #region InstructionVisitor Members
 
-        public void VisitAssignment(Assignment a)
+        public virtual void VisitAssignment(Assignment a)
         {
             var valSrc = a.Src.Accept(eval);
             ctx.SetValue(a.Dst, valSrc);
@@ -110,7 +111,7 @@ namespace Decompiler.Evaluation
             throw new NotSupportedException("PhiAssignments shouldn't have been generated yet.");
         }
 
-        void InstructionVisitor.VisitIndirectCall(IndirectCall ic)
+        public void VisitIndirectCall(IndirectCall ic)
         {
             ic.Callee.Accept(eval);
         }

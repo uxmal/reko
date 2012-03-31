@@ -59,12 +59,14 @@ namespace Decompiler.UnitTests.Analysis
             p = new ProgramBuilder();
         }
 
-        private BlockFlow CreateBlockFlow(Block block)
+        private BlockFlow CreateBlockFlow(Block block, Identifier framePointer)
         {
             var bflow = new BlockFlow(
                 block,
                 prog.Architecture.CreateRegisterBitset(),
-                new SymbolicEvaluationContext(prog.Architecture));
+                new SymbolicEvaluationContext(
+                    prog.Architecture,
+                    framePointer));
             flow[block] = bflow;
             return bflow;
         }
@@ -93,7 +95,7 @@ namespace Decompiler.UnitTests.Analysis
                 }
                 foreach (var block in proc.ControlGraph.Blocks.OrderBy(b => b, new Procedure.BlockComparer()))
                 {
-                    DataFlow.EmitRegisterValues("    " + block.Name, flow[block].SymbolicIn, sw);
+                    DataFlow.EmitRegisterValues("    " + block.Name, flow[block].SymbolicIn.RegisterState, sw);
                     sw.WriteLine();
                 }
                 sw.WriteLine();
@@ -121,7 +123,7 @@ namespace Decompiler.UnitTests.Analysis
             var l = new SortedList<string, string>();
             foreach (var item in trf.RegisterSymbolicValues)
             {
-                l.Add(item.Key.Register.Name, item.Value.ToString());
+                l.Add(item.Key.ToString(), item.Value.ToString());
             }
             foreach (var item in trf.StackSymbolicValues)
             {
@@ -155,15 +157,13 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.Assign(r1, m.Int32(0));
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block);
+            CreateBlockFlow(m.Block, m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
 
             stm.Accept(trf);
             Debug.WriteLine(trf.RegisterSymbolicValues[(RegisterStorage)r1.Storage].ToString());
             Assert.IsTrue(trf.IsTrashed(r1.Storage), "r1 should have been marked as trashed.");
-            //			Assert.AreNotSame(trf.RegisterSet[r1], r1);
         }
-
 
         [Test]
         public void TrashFlag()
@@ -172,7 +172,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.Assign(scz, m.Int32(3));
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block);
+            CreateBlockFlow(m.Block, m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
             stm.Accept(trf);
             Assert.AreEqual(0x7, trf.TrashedFlags);
@@ -185,11 +185,11 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.Assign(ax, 1);
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block);
+            CreateBlockFlow(m.Block, m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
 
             stm.Accept(trf);
-            Assert.AreEqual("(ax:0x0001)", DumpValues());
+            Assert.AreEqual("(Register ax:0x0001)", DumpValues());
         }
 
         [Test]
@@ -200,7 +200,7 @@ namespace Decompiler.UnitTests.Analysis
             var ass = m.Assign(r2, r1);
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block);
+            CreateBlockFlow(m.Block, m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
 
             ass.Accept(trf);
@@ -218,7 +218,8 @@ namespace Decompiler.UnitTests.Analysis
             var stm3 = m.Assign(r2, m.LoadDw(m.Sub(esp, 0x10)));
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block);
+            var flow = CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            flow.SymbolicIn.SetValue(esp, m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
 
             stm1.Instruction.Accept(trf);
@@ -235,7 +236,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(r2)));
 
             trf = CreateTrashedRegisterFinder();
-            trf.EnsureEvaluationContext(CreateBlockFlow(m.Block));
+            trf.EnsureEvaluationContext(CreateBlockFlow(m.Block, m.Frame.FramePointer));
 
             stm.Instruction.Accept(trf);
             Assert.AreEqual("<invalid>", trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage].ToString());
@@ -251,17 +252,18 @@ namespace Decompiler.UnitTests.Analysis
             flow[callee] = pf;
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block);
+            CreateBlockFlow(m.Block, m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
 
             stm.Instruction.Accept(trf);
-            Assert.AreEqual("(ebx:<invalid>)", DumpValues());
+            Assert.AreEqual("(Register ebx:<invalid>)", DumpValues());
         }
 
         [Test]
         public void PropagateToSuccessorBlocks()
         {
             Procedure proc = new Procedure("test", prog.Architecture.CreateFrame());
+            var fp = proc.Frame.FramePointer;
             Identifier r1 = m.Register(1);
             Identifier r2 = m.Register(2);
             Identifier r3 = m.Register(3);
@@ -270,32 +272,31 @@ namespace Decompiler.UnitTests.Analysis
             Block e = proc.AddBlock("e");
             proc.ControlGraph.AddEdge(b, e);
             proc.ControlGraph.AddEdge(b, t);
-            flow[t] = new BlockFlow(t, null, new SymbolicEvaluationContext(prog.Architecture));
-            flow[e] = new BlockFlow(e, null, new SymbolicEvaluationContext(prog.Architecture));
+            flow[t] = new BlockFlow(t, null, new SymbolicEvaluationContext(prog.Architecture, fp));
+            flow[e] = new BlockFlow(e, null, new SymbolicEvaluationContext(prog.Architecture, fp));
 
             trf = CreateTrashedRegisterFinder(prog);
-            CreateBlockFlow(b);
+            CreateBlockFlow(b, proc.Frame.FramePointer);
             trf.StartProcessingBlock(b);
             trf.RegisterSymbolicValues[(RegisterStorage)r1.Storage] = Constant.Invalid;
             trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage] = r3;
 
-            flow[e].SymbolicIn[r1.Storage] = r2;
-            flow[e].SymbolicIn[r2.Storage] = r3;
+            flow[e].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage] = r2;
+            flow[e].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage] = r3;
 
-            flow[t].SymbolicIn[r1.Storage] = Constant.Invalid;
-            flow[t].SymbolicIn[r2.Storage] = r2;
+            flow[t].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage] = Constant.Invalid;
+            flow[t].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage] = r2;
 
             trf.PropagateToSuccessorBlock(e);
             trf.PropagateToSuccessorBlock(t);
             Assert.AreEqual(2, proc.ControlGraph.Successors(b).Count);
-            Assert.AreEqual("<invalid>", flow[e].SymbolicIn[r1.Storage].ToString(), "trash & r2 => trash");
-            Assert.AreEqual("r3", flow[e].SymbolicIn[r2.Storage].ToString(), "r3 & r3 => r3");
-            Assert.AreEqual("<invalid>", flow[e].SymbolicAuxIn.RegisterState[(RegisterStorage)r1.Storage].ToString(), "trash & r2 => trash");
-            Assert.AreEqual("r3", flow[e].SymbolicAuxIn.RegisterState[(RegisterStorage)r2.Storage].ToString(), "r3 & r3 => r3");
+            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage].ToString(), "trash & r2 => trash");
+            Assert.AreEqual("r3", flow[e].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage].ToString(), "r3 & r3 => r3");
+            Assert.AreEqual("<invalid>", flow[e].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage].ToString(), "trash & r2 => trash");
+            Assert.AreEqual("r3", flow[e].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage].ToString(), "r3 & r3 => r3");
 
-
-            Assert.AreEqual("<invalid>", flow[t].SymbolicIn[r1.Storage].ToString(), "trash & trash => trash");
-            Assert.AreEqual("<invalid>", flow[t].SymbolicIn[r2.Storage].ToString(), "r3 & r2 => trash");
+            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage)r1.Storage].ToString(), "trash & trash => trash");
+            Assert.AreEqual("<invalid>", flow[t].SymbolicIn.RegisterState[(RegisterStorage)r2.Storage].ToString(), "r3 & r2 => trash");
         }
 
         [Test]
@@ -304,7 +305,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Label("Start");
             Identifier r1 = m.Register(1);
             trf = CreateTrashedRegisterFinder(prog);
-            CreateBlockFlow(m.Block);
+            CreateBlockFlow(m.Block, m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
 
             trf.StackSymbolicValues[-4] = r1;
@@ -315,21 +316,21 @@ namespace Decompiler.UnitTests.Analysis
             trf.StackSymbolicValues[-24] = m.Word32(0x9ABC);
 
             var succ = new Block(m.Procedure, "succ");
-            var sf = CreateBlockFlow(succ);
+            var sf = CreateBlockFlow(succ, m.Frame.FramePointer);
             flow[succ] = sf;
-            sf.SymbolicAuxIn.StackState[-8] = r1;
-            sf.SymbolicAuxIn.StackState[-12] = Constant.Word32(1231);
-            sf.SymbolicAuxIn.StackState[-20] = Constant.Word32(0x5678);
-            sf.SymbolicAuxIn.StackState[-24] = Constant.Word32(0xCCCC);
+            sf.SymbolicIn.StackState[-8] = r1;
+            sf.SymbolicIn.StackState[-12] = Constant.Word32(1231);
+            sf.SymbolicIn.StackState[-20] = Constant.Word32(0x5678);
+            sf.SymbolicIn.StackState[-24] = Constant.Word32(0xCCCC);
 
             trf.PropagateToSuccessorBlock(succ);
 
-            Assert.AreEqual("r1", sf.SymbolicAuxIn.StackState[-4].ToString(), "Didn't have a value before");
-            Assert.AreEqual("r1", sf.SymbolicAuxIn.StackState[-8].ToString(), "Same value as before");
-            Assert.AreEqual("<invalid>", sf.SymbolicAuxIn.StackState[-12].ToString());
-            Assert.AreEqual("0x00001234", sf.SymbolicAuxIn.StackState[-16].ToString());
-            Assert.AreEqual("0x00005678", sf.SymbolicAuxIn.StackState[-20].ToString());
-            Assert.AreEqual("<invalid>", sf.SymbolicAuxIn.StackState[-24].ToString());
+            Assert.AreEqual("r1", sf.SymbolicIn.StackState[-4].ToString(), "Didn't have a value before");
+            Assert.AreEqual("r1", sf.SymbolicIn.StackState[-8].ToString(), "Same value as before");
+            Assert.AreEqual("<invalid>", sf.SymbolicIn.StackState[-12].ToString());
+            Assert.AreEqual("0x00001234", sf.SymbolicIn.StackState[-16].ToString());
+            Assert.AreEqual("0x00005678", sf.SymbolicIn.StackState[-20].ToString());
+            Assert.AreEqual("<invalid>", sf.SymbolicIn.StackState[-24].ToString());
         }
 
         [Test]
@@ -344,7 +345,7 @@ namespace Decompiler.UnitTests.Analysis
             flow[proc] = new ProcedureFlow(proc, prog.Architecture);
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(proc.ExitBlock);
+            CreateBlockFlow(proc.ExitBlock, proc.Frame.FramePointer);
             trf.StartProcessingBlock(proc.ExitBlock);
 
             trf.RegisterSymbolicValues[(RegisterStorage)eax.Storage] = eax;			// preserved
@@ -366,7 +367,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.Assign(sz, m.Int32(3));
             flow[proc] = new ProcedureFlow(proc, prog.Architecture);
             trf = CreateTrashedRegisterFinder(prog);
-            CreateBlockFlow(m.Block);
+            CreateBlockFlow(m.Block, m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
             stm.Accept(trf);
             trf.PropagateToProcedureSummary(proc);
@@ -391,7 +392,7 @@ namespace Decompiler.UnitTests.Analysis
             trf = CreateTrashedRegisterFinder(prog);
             trf.Compute();
             ProcedureFlow pf = flow[proc];
-            Assert.AreEqual(" ebp", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters));
+            Assert.AreEqual(" esp ebp", pf.EmitRegisters(prog.Architecture, "", pf.PreservedRegisters), "ebp should have been preserved");
         }
 
         [Test]
@@ -403,13 +404,12 @@ namespace Decompiler.UnitTests.Analysis
             m.Assign(eax, m.Int32(3));
             m.Assign(eax, m.LoadDw(m.Sub(esp, 4)));
 
-            var block = m.Block;
-            flow[m.Block] = CreateBlockFlow(block);
+            flow[m.Block] = CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            flow[m.Block].SymbolicIn.SetValue(esp, m.Frame.FramePointer);
             trf = CreateTrashedRegisterFinder(prog);
             trf.ProcessBlock(m.Block);
-            Assert.AreEqual("(eax:eax), (Stack -4:eax)", DumpValues());
+            Assert.AreEqual("(Register eax:eax), (Register esp:fp), (Stack -4:eax)", DumpValues());
         }
-
 
         [Test]
         public void TerminatingProcedure()
@@ -418,7 +418,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Assign(eax, m.Word32(0x40));
             m.Call(exit);
 
-            flow[m.Block] = CreateBlockFlow(m.Block);
+            flow[m.Block] = CreateBlockFlow(m.Block, m.Frame.FramePointer);
             flow[exit] = new ProcedureFlow(exit, prog.Architecture);
             flow[exit].TerminatesProcess = true;
             trf = CreateTrashedRegisterFinder(prog);
@@ -452,14 +452,14 @@ namespace Decompiler.UnitTests.Analysis
 @"main ebx bx bl bh
 const Register ebx:0x01231313
     main_entry Register esp:fp
-    l1
-    main_exit Register eax:eax Register ebx:0x01231313
+    l1 Register esp:fp
+    main_exit Register eax:eax Register ebx:0x01231313 Register esp:fp
 
 TrashEaxEbx eax ebx ax bx al bl ah bh
 const Register ebx:0x01231313
     TrashEaxEbx_entry Register esp:fp
-    l1
-    TrashEaxEbx_exit Register eax:<invalid> Register ebx:0x01231313");
+    l1 Register esp:fp
+    TrashEaxEbx_exit Register eax:<invalid> Register ebx:0x01231313 Register esp:fp");
         }
 
 
@@ -483,27 +483,26 @@ const Register ebx:0x01231313
             RunTest(p,
 @"main
     main_entry Register sp:fp
-    l1
-    main_exit Register ax:ax Register sp:sp");
+    l1 Register sp:fp
+    main_exit Register ax:ax Register sp:fp");
         }
-
 
         [Test]
         public void TrashFlagProcedure()
         {
             p.Add("main", m =>
-                {
-                    var eax = m.Frame.EnsureRegister(Registers.eax);
-                    m.Assign(eax, m.Add(eax, 4));
-                    m.Assign(m.Flags("SZCO"), m.Cond(eax));
-                    m.Return();
-                });
+            {
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                m.Assign(eax, m.Add(eax, 4));
+                m.Assign(m.Flags("SZCO"), m.Cond(eax));
+                m.Return();
+            });
 
             var sExp =
 @"main SCZO eax ax al ah
     main_entry Register esp:fp
-    l1
-    main_exit Register eax:eax + 0x00000004";
+    l1 Register esp:fp
+    main_exit Register eax:eax + 0x00000004 Register esp:fp";
             RunTest(p, sExp);
         }
 
@@ -527,8 +526,8 @@ const Register ebx:0x01231313
             var sExp =
 @"main SCZO
     main_entry Register esp:fp
-    l1
-    main_exit Register eax:eax Register esp:esp";
+    l1 Register esp:fp
+    main_exit Register eax:eax Register esp:fp";
             RunTest(p, sExp);
         }
     }

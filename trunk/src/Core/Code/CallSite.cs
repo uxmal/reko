@@ -31,6 +31,8 @@ namespace Decompiler.Core.Code
     /// </summary>
     public class CallSite
     {
+        //$REVIEW: perhaps this can be architecture-specific? M68K doesn't need fpuStack,
+        // and PowerPC doesn't need sizeOfReturnAddressOnStack.
         public CallSite(int sizeOfReturnAddressOnStack, int fpuStackDepthBefore)
         {
             this.SizeOfReturnAddressOnStack = sizeOfReturnAddressOnStack;

@@ -52,12 +52,12 @@ namespace Decompiler.UnitTests.Analysis
             flow = new ProgramDataFlow();
         }
 
-        private BlockFlow CreateBlockFlow(Block block)
+        private BlockFlow CreateBlockFlow(Block block, Identifier framePointer)
         {
             return new BlockFlow(
                 block,
                 prog.Architecture.CreateRegisterBitset(),
-                new SymbolicEvaluationContext(prog.Architecture));
+                new SymbolicEvaluationContext(prog.Architecture, framePointer));
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Return();
 
             var a = new TerminationAnalysis(flow);
-            flow[b] = CreateBlockFlow(b);
+            flow[b] = CreateBlockFlow(b, m.Frame.FramePointer);
             a.Analyze(b);
             Assert.IsTrue(flow[b].TerminatesProcess);
         }
@@ -86,7 +86,7 @@ namespace Decompiler.UnitTests.Analysis
             {
                 Architecture = new ArchitectureMock()
             };
-            flow[b] = CreateBlockFlow(b);
+            flow[b] = CreateBlockFlow(b, m.Frame.FramePointer);
             a.Analyze(b);
             Assert.IsFalse(flow[b].TerminatesProcess);
         }

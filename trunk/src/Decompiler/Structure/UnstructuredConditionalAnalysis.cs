@@ -34,6 +34,12 @@ namespace Decompiler.Structure
             this.curProc = curProc;
         }
 
+        /// <summary>
+        /// This routine is called after all the other structuring has been done. It detects
+        /// conditionals that are in fact the head of a jump into/outof a loop or into a case body. 
+        /// Only forward jumps are considered as unstructured backward jumps will always be generated nicely.
+        /// </summary>
+        /// <param name="curProc"></param>
         public void Adjust()
         {
             foreach (StructureNode node in curProc.Ordering)

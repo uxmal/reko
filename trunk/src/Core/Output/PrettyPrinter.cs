@@ -87,7 +87,7 @@ namespace Decompiler.Core.Output
 
         public void OptionalLineBreak()
         {
-            // discard breaks we are no longer interested in
+            // Discard breaks we are no longer interested in
 
             while (breaks.Count != 0 &&
                 (breaks.PeekFront().Level > currentGroupLevel
@@ -103,7 +103,7 @@ namespace Decompiler.Core.Output
         {
             if (breakLevel < currentGroupLevel)
             {
-                // discard breaks we are no longer interested in.
+                // Discard breaks we are no longer interested in.
 
                 while (breaks.Count != 0 &&
                     breaks.PeekFront().Level >= currentGroupLevel)
@@ -134,7 +134,7 @@ namespace Decompiler.Core.Output
                     PrintBuffer(br.TokensEnqueued - totalFlushedTokens);
                     if (!br.IsConnected)
                     {
-                        output.PrintNewLine();
+                        output.PrintLine();
                     }
                     breakLevel = Math.Min(breakLevel, currentGroupLevel);
                 }
@@ -198,7 +198,7 @@ namespace Decompiler.Core.Output
             public override void Print(int break_level)
             {
                 if (groupingLevel <= break_level)
-                    Output.PrintNewLine();
+                    Output.PrintLine();
             }
         }
 
@@ -242,7 +242,7 @@ namespace Decompiler.Core.Output
 
             public override void Print(int break_level)
             {
-                Output.PrintNewLine();
+                Output.PrintLine();
             }
         }
         

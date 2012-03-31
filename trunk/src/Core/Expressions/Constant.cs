@@ -191,31 +191,7 @@ namespace Decompiler.Core.Expressions
 			return new Constant(PrimitiveType.Bool, 0);
 		}
 
-		private string FormatString(PrimitiveType type)
-		{
-			switch (type.Domain)
-			{
-			case Domain.SignedInt:
-				return "{0}";
-			case Domain.Real:
-				switch (type.Size)
-				{
-				case 4: return "{0:g}F";
-				case 8: return "{0:g}";
-				default: throw new ArgumentOutOfRangeException("Only real types of size 4 and 8 are supported.");
-				}
-			default:
-				switch (type.Size)
-				{
-				case 1: return "0x{0:X2}";
-				case 2: return "0x{0:X4}";
-				case 4: return "0x{0:X8}";
-                    case 5: case 3: return "$$0x{0:X16}$$";
-				case 8: return "0x{0:X16}";
-				default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} are not supported.", type.Size));
-				}
-			}
-		}
+        internal object GetValue() { return c; }
 
 		private static double IntPow(double b, int e)
 		{
@@ -355,21 +331,6 @@ namespace Decompiler.Core.Expressions
 		public ulong ToUInt64()
 		{
 			return Convert.ToUInt64(c);
-		}
-
-		public override string ToString()
-		{
-			if (!IsValid)
-				return "<invalid>";
-			PrimitiveType t = (PrimitiveType) DataType;
-			if (t.Domain == Domain.Boolean)
-			{
-				return (Convert.ToBoolean(c)) ? "true" : "false";
-			}
-			else
-			{
-				return string.Format(CultureInfo.InvariantCulture, FormatString(t), c);
-			}
 		}
 
 		public static Constant True()

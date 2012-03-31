@@ -20,6 +20,7 @@
 
 using System;
 using System.IO;
+using System.Globalization;
 
 namespace Decompiler.Core.Output
 {
@@ -107,7 +108,6 @@ namespace Decompiler.Core.Output
             writer.Write(format, arguments);
         }
 
-	
         public virtual void WriteKeyword(string keyword)
         {
             writer.Write(keyword);
@@ -126,5 +126,5 @@ namespace Decompiler.Core.Output
 				--n;
 			}
 		}
-	}
+    }
 }

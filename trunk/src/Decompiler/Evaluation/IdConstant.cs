@@ -47,7 +47,7 @@ namespace Decompiler.Evaluation
         {
             Expression e = ctx.GetValue(id);
             cSrc = e as Constant;
-            if (cSrc == null)
+            if (cSrc == null || !cSrc.IsValid)
                 return false;
             idDst = id;
             return true;
