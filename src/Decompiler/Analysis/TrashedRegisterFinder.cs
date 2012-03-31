@@ -68,7 +68,7 @@ namespace Decompiler.Analysis
             this.ecomp = new ExpressionValueComparer();
         }
 
-        public Dictionary<RegisterStorage, Expression> RegisterSymbolicValues { get { return ctx.RegisterState; } }
+        public Dictionary<Storage, Expression> RegisterSymbolicValues { get { return ctx.RegisterState; } }
         public IDictionary<int, Expression> StackSymbolicValues { get { return ctx.StackState; } } 
         public uint TrashedFlags {get { return ctx.TrashedFlags; } }
 
@@ -124,7 +124,15 @@ namespace Decompiler.Analysis
                 {
                     worklist.Add(block);
                 }
+                SetInitialValueOfStackPointer(proc);
             }
+        }
+
+        private void SetInitialValueOfStackPointer(Procedure proc)
+        {
+            flow[proc.EntryBlock].SymbolicIn.SetValue(
+                proc.Frame.EnsureRegister(prog.Architecture.StackRegister),
+                proc.Frame.FramePointer);
         }
 
         public bool IsTrashed(Storage storage)
@@ -160,8 +168,8 @@ namespace Decompiler.Analysis
         public void RewriteBlock(Block block)
         {
             StartProcessingBlock(block);
-            var updater = new Updater(se);
-            block.Statements.ForEach(stm => stm.Instruction.Accept(updater));
+            var propagator = new ExpressionPropagator(se.Simplifier, ctx, flow);
+            block.Statements.ForEach(stm => { stm.Instruction = stm.Instruction.Accept(propagator); });
         }
 
         public void StartProcessingBlock(Block block)
@@ -171,18 +179,14 @@ namespace Decompiler.Analysis
             if (block.Procedure.EntryBlock == block)
             {
                 var sp = block.Procedure.Frame.EnsureRegister(prog.Architecture.StackRegister);
-                bf.SymbolicIn[sp.Storage] = block.Procedure.Frame.FramePointer;
+                bf.SymbolicIn.RegisterState[sp.Storage] = block.Procedure.Frame.FramePointer;
             }
             ctx.TrashedFlags = bf.grfTrashedIn;
         }
 
         public void EnsureEvaluationContext(BlockFlow bf)
         {
-            if (bf.SymbolicAuxIn == null)
-            {
-                bf.SymbolicAuxIn = new SymbolicEvaluationContext(prog.Architecture);
-            }
-            this.ctx = bf.SymbolicAuxIn;
+            this.ctx = bf.SymbolicIn.Clone();
             this.se = new SymbolicEvaluator(new TrashedExpressionSimplifier(this, ctx), ctx);
         }
 
@@ -213,23 +217,25 @@ namespace Decompiler.Analysis
             else
             {
                 var cmp = new ExpressionValueComparer();
-                foreach (KeyValuePair<RegisterStorage, Expression> de in ctx.RegisterState)
+                foreach (var de in ctx.RegisterState)
                 {
+                    var reg = ((RegisterStorage)de.Key).Register;
                     var idValue = de.Value as Identifier;
                     if (idValue != null)
                     {
-                        if (de.Key != idValue.Storage)
+                        if (de.Key == idValue.Storage ||
+                            (reg == prog.Architecture.StackRegister && idValue == proc.Frame.FramePointer))
                         {
-                            tr[de.Key.Register.Number] = true;
+                            pr[reg.Number] = true;
                         }
                         else
                         {
-                            pr[de.Key.Register.Number] = true;
+                            tr[reg.Number] = true;
                         }
                     }
                     else
                     {
-                        tr[de.Key.Register.Number] = true;
+                        tr[reg.Number] = true;
                         var c = de.Value as Constant;
                         if (c != null)
                         {
@@ -246,7 +252,6 @@ namespace Decompiler.Analysis
                                 pf.ConstantRegisters.Remove(de.Key);
                         }
                     }
-
                 }
 
                 if (!(tr & ~pf.TrashedRegisters).IsEmpty)
@@ -280,8 +285,7 @@ namespace Decompiler.Analysis
         {
             bool changed = false;
             BlockFlow succFlow = flow[s];
-            var successorState = succFlow.SymbolicIn;
-            var ctxSucc = succFlow.SymbolicAuxIn;
+            var ctxSucc = succFlow.SymbolicIn;
 
             Dump(ctx.RegisterState);
             Dump(ctx.StackState);
@@ -297,18 +301,6 @@ namespace Decompiler.Analysis
                 else if (!ecomp.Equals(oldValue, de.Value) && oldValue != Constant.Invalid)
                 {
                     ctxSucc.RegisterState[de.Key] = Constant.Invalid;
-                    changed = true;
-                }
-
-                Expression oldValue2;
-                if (!successorState.TryGetValue(de.Key, out oldValue2))
-                {
-                    successorState[de.Key] = de.Value;
-                    changed = true;
-                }
-                else if (oldValue2 != de.Value && oldValue2 != Constant.Invalid)
-                {
-                    successorState[de.Key] = Constant.Invalid;
                     changed = true;
                 }
             }
@@ -352,7 +344,7 @@ namespace Decompiler.Analysis
         }
 
         [Conditional("DEBUG")]
-        private void Dump(Dictionary<RegisterStorage, Expression> dictionary)
+        private void Dump(Dictionary<Storage, Expression> dictionary)
         {
             var sort = new SortedList<string, string>();
             foreach (var de in dictionary)
@@ -379,6 +371,7 @@ namespace Decompiler.Analysis
 
         public override void VisitIndirectCall(IndirectCall ic)
         {
+            se.VisitIndirectCall(ic);
         }
 
         public override void VisitCallInstruction(CallInstruction ci)
@@ -395,24 +388,14 @@ namespace Decompiler.Analysis
             var callee = ci.Callee as Procedure;
             if (callee != null)
             {
-                ProcedureFlow pf = flow[callee];
-                foreach (int r in pf.TrashedRegisters)
-                {
-                    var reg = new RegisterStorage(prog.Architecture.GetRegister(r));
-                    Constant c;
-                    if (!pf.ConstantRegisters.TryGetValue(reg, out c))
-                    {
-                        c = Constant.Invalid;
-                    }
-                    ctx.RegisterState[reg] = c;
-                }
-                ctx.TrashedFlags |= pf.grfTrashed;
+                ctx.UpdateRegistersTrashedByProcedure(flow[callee]);
             }
             else
             {
                 //$TODO: get trash information from signature?
             }
         }
+
 
         private bool ProcedureTerminates(ProcedureBase proc)
         {
@@ -459,194 +442,5 @@ namespace Decompiler.Analysis
             }
         }
 
-        public class Updater : InstructionVisitor<Instruction>, ExpressionVisitor<Expression>
-        {
-            private SymbolicEvaluator se;
-            
-            public Updater(SymbolicEvaluator se)
-            {
-                this.se = se;
-            }
-
-            public Instruction VisitAssignment(Assignment a)
-            {
-                a.Accept(se);
-                se.VisitAssignment(a);
-                return a;
-            }
-
-            public Instruction VisitBranch(Branch b)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Instruction VisitCallInstruction(CallInstruction ci)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Instruction VisitDeclaration(Declaration decl)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Instruction VisitDefInstruction(DefInstruction def)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Instruction VisitPhiAssignment(PhiAssignment phi)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Instruction VisitIndirectCall(IndirectCall ic)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Instruction VisitReturnInstruction(ReturnInstruction ret)
-            {
-                if (ret.Expression != null)
-                    ret.Expression.Accept(this);
-                return ret;
-            }
-
-            public Instruction VisitSideEffect(SideEffect side)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Instruction VisitStore(Store store)
-            {
-                se.VisitStore(store);
-                return store;
-            }
-
-            public Instruction VisitSwitchInstruction(SwitchInstruction si)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Instruction VisitUseInstruction(UseInstruction u)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitAddress(Address addr)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitApplication(Application appl)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitArrayAccess(ArrayAccess acc)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitBinaryExpression(BinaryExpression binExp)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitCast(Cast cast)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitConditionOf(ConditionOf cof)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitConstant(Constant c)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitDepositBits(DepositBits d)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitDereference(Dereference deref)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitFieldAccess(FieldAccess acc)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitIdentifier(Identifier id)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitMemoryAccess(MemoryAccess access)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitMkSequence(MkSequence seq)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitPhiFunction(PhiFunction phi)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitPointerAddition(PointerAddition pa)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitProcedureConstant(ProcedureConstant pc)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitScopeResolution(ScopeResolution scopeResolution)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitSegmentedAccess(SegmentedAccess access)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitSlice(Slice slice)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitTestCondition(TestCondition tc)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression VisitUnaryExpression(UnaryExpression unary)
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }

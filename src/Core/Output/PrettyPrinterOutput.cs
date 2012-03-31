@@ -52,13 +52,13 @@ namespace Decompiler.Core.Output
             ++totalCharsFlushed;
         }
 
-        public void PrintNewLine()
+        public void PrintLine()
         {
-            WriteNewLine();
+            WriteLine();
             emitIndentationFirst = true;
         }
 
-        public virtual void WriteNewLine()
+        public virtual void WriteLine()
         {
             writer.WriteLine();
         }

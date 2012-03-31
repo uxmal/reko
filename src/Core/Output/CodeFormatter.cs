@@ -23,8 +23,10 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -178,10 +180,26 @@ namespace Decompiler.Core.Output
 			writer.Write(")");
 		}
 
-		public void VisitConstant(Constant c)
-		{
-			writer.Write(c.ToString());
-		}
+        public void VisitConstant(Constant c)
+        {
+            if (!c.IsValid)
+            {
+                writer.Write("<invalid>");
+            }
+            else
+            {
+                PrimitiveType t = (PrimitiveType)c.DataType;
+                if (t.Domain == Domain.Boolean)
+                {
+                    writer.Write(Convert.ToBoolean(c) ? "true" : "false");
+                }
+                else
+                {
+                    object v = c.GetValue();
+                    writer.Write(FormatString(t, v), v);
+                }
+            }
+        }
 
 		public void VisitDepositBits(DepositBits d)
 		{
@@ -592,6 +610,33 @@ namespace Decompiler.Core.Output
 			}
 		}
 
+        private string FormatString(PrimitiveType type, object value)
+        {
+            switch (type.Domain)
+            {
+            case Domain.SignedInt:
+                return "{0}";
+            case Domain.Real:
+                switch (type.Size)
+                {
+                case 4: return "{0:g}F";
+                case 8: return "{0:g}";
+                default: throw new ArgumentOutOfRangeException("Only real types of size 4 and 8 are supported.");
+                }
+            default:
+                var iVal = Convert.ToUInt64(value);
+                switch (type.Size)
+                {
+                case 1: return "0x{0:X2}";
+                case 2: return "0x{0:X4}";
+                case 4: return "0x{0:X8}";
+                case 5:
+                case 3: return "$$0x{0:X16}$$";
+                case 8: return "0x{0:X16}";
+                default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} are not supported.", type.Size));
+                }
+            }
+        }
         private bool IsSingleIfStatement(List<AbsynStatement> stms, out AbsynIf elseIf)
         {
             elseIf = null;

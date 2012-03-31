@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
@@ -25,29 +26,53 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
-
+using System.IO;
 namespace Decompiler.Evaluation
 {
     public class SymbolicEvaluationContext : EvaluationContext
     {
         private IProcessorArchitecture arch;
         private StorageValueSetter setter;
+        private Identifier framePointer;
 
-        public SymbolicEvaluationContext(IProcessorArchitecture arch)
+        public SymbolicEvaluationContext(IProcessorArchitecture arch, Identifier framePointer)
         {
             this.arch = arch;
-            RegisterState = new Dictionary<RegisterStorage, Expression>();
-            StackState = new Map<int, Expression>();
-            TemporaryState = new Dictionary<Storage, Expression>();
+            this.framePointer = framePointer;
+            this.RegisterState = new Dictionary<Storage, Expression>();
+            this.StackState = new Map<int, Expression>();
+            this.TemporaryState = new Dictionary<Storage, Expression>();
+            this.setter = new StorageValueSetter(this);
+        }
+
+        public SymbolicEvaluationContext(SymbolicEvaluationContext old)
+        {
+            this.arch = old.arch;
+            this.framePointer = old.framePointer;
+            this.RegisterState = new Dictionary<Storage, Expression>(old.RegisterState);
+            this.StackState = new Map<int, Expression>(old.StackState);
+            this.TemporaryState = new Dictionary<Storage, Expression>(old.TemporaryState);
+            this.TrashedFlags = old.TrashedFlags;
             this.setter = new StorageValueSetter(this);
         }
 
         //$REVIEW: make all states a single collection indexed by storage, and eliminate the map?
 
-        public Dictionary<RegisterStorage, Expression> RegisterState { get; private set; }
+        public Dictionary<Storage, Expression> RegisterState { get; private set; }
         public Map<int, Expression> StackState { get; private set; }
         public Dictionary<Storage, Expression> TemporaryState { get; private set; }
         public uint TrashedFlags { get; set; }
+
+        public SymbolicEvaluationContext Clone()
+        {
+            return new SymbolicEvaluationContext(this);
+        }
+
+        public void Emit(IProcessorArchitecture arch, TextWriter writer)
+        {
+
+            throw new NotImplementedException();
+        }
 
 
         #region EvaluationContext Members
@@ -99,7 +124,7 @@ namespace Decompiler.Evaluation
                 int excess = accessDataType.Size - value.DataType.Size;
                 if (excess == 0)
                     return value;
-                else if (excess > 0)
+                if (excess > 0)
                 {
                     // Example: word32 fetch from SP+04, where SP+04 is a word16 and SP+06 is a word16
                     int remainder = offset + value.DataType.Size;
@@ -178,6 +203,21 @@ namespace Decompiler.Evaluation
         {
         }
 
+        public void UpdateRegistersTrashedByProcedure(ProcedureFlow pf)
+        {
+            foreach (int r in pf.TrashedRegisters)
+            {
+                var reg = new RegisterStorage(arch.GetRegister(r));
+                Constant c;
+                if (!pf.ConstantRegisters.TryGetValue(reg, out c))
+                {
+                    c = Constant.Invalid;
+                }
+                RegisterState[reg] = c;
+            }
+            TrashedFlags |= pf.grfTrashed;
+        }
+
         #endregion
 
         /// <summary>
@@ -191,7 +231,7 @@ namespace Decompiler.Evaluation
             var ea = effectiveAddress as BinaryExpression;
             if (ea != null)
             {
-                if (!IsStackRegister(ea.Left))
+                if (!IsFramePointer(ea.Left))
                     return false;
                 var o = ea.Right as Constant;
                 if (o == null) return false;
@@ -202,17 +242,13 @@ namespace Decompiler.Evaluation
             }
             else
             {
-                return IsStackRegister(effectiveAddress);
+                return IsFramePointer(effectiveAddress);
             }
         }
 
-        private bool IsStackRegister(Expression exp)
+        private bool IsFramePointer(Expression exp)
         {
-            var sp = exp as Identifier;
-            if (sp == null) return false;
-            var regSp = sp.Storage as RegisterStorage;
-            if (regSp == null) return false;
-            return (regSp.Register == arch.StackRegister);
+            return exp == framePointer;
         }
 
         private class StorageValueSetter : StorageVisitor<Storage>
@@ -286,5 +322,6 @@ namespace Decompiler.Evaluation
 
             #endregion
         }
+
     }
 }

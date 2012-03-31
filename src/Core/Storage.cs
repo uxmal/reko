@@ -186,7 +186,6 @@ namespace Decompiler.Core
 	/// </summary>
 	public class OutArgumentStorage : Storage
 	{
-
 		public OutArgumentStorage(Identifier originalId) : base("out")
 		{
 			this.OriginalIdentifier = originalId;

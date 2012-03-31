@@ -49,7 +49,9 @@ namespace Decompiler.Analysis
 					blockFlow[block] = new BlockFlow(
                         block, 
                         prog.Architecture.CreateRegisterBitset(),
-                        new SymbolicEvaluationContext(prog.Architecture));
+                        new SymbolicEvaluationContext(
+                            prog.Architecture,
+                            proc.Frame.FramePointer));
 				}
 			}
 		}

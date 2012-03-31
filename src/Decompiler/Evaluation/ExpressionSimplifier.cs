@@ -182,8 +182,8 @@ namespace Decompiler.Evaluation
                 if (t != null)
                     left = t;
             }
-            BinaryExpression binLeft = left as BinaryExpression;
-            Constant cLeftRight = (binLeft != null) ? binLeft.Right as Constant : null;
+            var binLeft = left as BinaryExpression;
+            var cLeftRight = (binLeft != null) ? binLeft.Right as Constant : null;
 
             // (+ (+ e c1) c2) ==> (+ e (+ c1 c2))
             // (+ (- e c1) c2) ==> (+ e (- c2 c1))
@@ -219,8 +219,8 @@ namespace Decompiler.Evaluation
             {
                 Changed = true;
                 ctx.RemoveIdentifierUse(idLeft);
-                BinaryOperator op = binLeft.op == Operator.Add ? Operator.Sub : Operator.Add;
-                Constant c = ExpressionSimplifierOld.SimplifyTwoConstants(op, cLeftRight, cRight);
+                var op = binLeft.op == Operator.Add ? Operator.Sub : Operator.Add;
+                var c = ExpressionSimplifierOld.SimplifyTwoConstants(op, cLeftRight, cRight);
                 return new BinaryExpression(binExp.op, PrimitiveType.Bool, binLeft.Left, c);
             }
 

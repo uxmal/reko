@@ -58,10 +58,12 @@ namespace Decompiler.UnitTests.Scanning
             var asm = new IntelAssembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
-            prog = new Program();
-            prog.Architecture = arch;
-            prog.Image = asm.GetImage();
-            prog.Platform = platform;
+            prog = new Program
+            {
+                Architecture = arch,
+                Image = asm.GetImage(),
+                Platform = platform,
+            };
             scanner = new Scanner(
                 prog,
                 new Dictionary<Address, ProcedureSignature>(),

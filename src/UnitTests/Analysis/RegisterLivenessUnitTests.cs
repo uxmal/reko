@@ -62,12 +62,12 @@ namespace Decompiler.UnitTests.Analysis
 
 		}
 
-        private BlockFlow CreateBlockFlow(Block block)
+        private BlockFlow CreateBlockFlow(Block block, Identifier framePointer)
         {
             return new BlockFlow(
                 block,
                 prog.Architecture.CreateRegisterBitset(),
-                new SymbolicEvaluationContext(prog.Architecture));
+                new SymbolicEvaluationContext(prog.Architecture, framePointer));
         }
 
 		/// <summary>
@@ -294,7 +294,7 @@ namespace Decompiler.UnitTests.Analysis
 								   new Identifier("edxOut", -1, PrimitiveType.Word32, new OutArgumentStorage(edx))});
 
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
-			BlockFlow bf = CreateBlockFlow(callee.ExitBlock);
+			BlockFlow bf = CreateBlockFlow(callee.ExitBlock, null);
 			mpprocflow[callee.ExitBlock] = bf;
 			st.InitializeBlockFlow(callee.ExitBlock, mpprocflow, true);
 			Assert.IsTrue(bf.DataOut[Registers.eax.Number],"eax is a return register");
@@ -320,7 +320,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
-			BlockFlow bf = CreateBlockFlow(proc.ExitBlock);
+			BlockFlow bf = CreateBlockFlow(proc.ExitBlock, proc.Frame.FramePointer);
 			mpprocflow[proc.ExitBlock] = bf;
 			st.InitializeBlockFlow(proc.ExitBlock, mpprocflow, true);
 			Assert.IsFalse(bf.DataOut[Registers.ebp.Number], "preserved registers cannot be live out");
@@ -333,7 +333,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void TerminatingProcedure()
 		{
 			Procedure terminator = new Procedure("terminator", null);
-			mpprocflow[terminator.ExitBlock] = CreateBlockFlow(terminator.ExitBlock);
+			mpprocflow[terminator.ExitBlock] = CreateBlockFlow(terminator.ExitBlock, terminator.Frame.FramePointer);
 			terminator.Signature = new ProcedureSignature(
 				null,
 				new Identifier[] {

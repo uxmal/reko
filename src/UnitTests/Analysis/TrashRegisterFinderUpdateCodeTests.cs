@@ -63,6 +63,7 @@ namespace Decompiler.UnitTests.Analysis
             var sw = new StringWriter();
             foreach (var proc in prog.Procedures.Values)
             {
+                flow[proc].EmitRegisters(arch, "// Trashed", flow[proc].TrashedRegisters);
                 proc.Write(false, sw);
                 sw.WriteLine();
             }
@@ -92,17 +93,72 @@ void main()
 main_entry:
 	// succ:  l1
 l1:
-	esp = fp0 - 0x00000004
-	store(Mem0[fp0 - 0x00000004:word32]) = ebp
-	ebp = fp0 - 0x00000004
-	eax = Mem0[fp0 + 0x00000004:word32]
-	ebp = Mem0[fp0 - 0x00000004:word32]
-	esp = fp0
+	esp = fp - 0x00000004
+	store(Mem0[fp - 0x00000004:word32]) = ebp
+	ebp = fp - 0x00000004
+	eax = Mem0[fp + 0x00000004:word32]
+	ebp = Mem0[fp - 0x00000004:word32]
+	esp = fp
 	return
 	// succ:  main_exit
 main_exit:
+
 ";
             RunTest(sExp);
         }
+
+        [Test]
+        public void CallToFunction()
+        {
+            p.Add("main", m =>
+            {
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                var ebx = m.Frame.EnsureRegister(Registers.ebx);
+                var esp = m.Frame.EnsureRegister(Registers.esp);
+                m.Assign(eax, 0x1234);
+                m.Assign(ebx, 0x1234);
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, eax);
+                m.Call("foo");
+                m.Assign(ebx, eax);
+                m.Return();
+            });
+
+            p.Add("foo", m =>
+            {
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                m.Assign(eax, 0x471100);
+                m.Return();
+            });
+
+            var sExp = @"// main
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	eax = 0x00001234
+	ebx = 0x00001234
+	esp = fp - 0x00000004
+	store(Mem0[fp - 0x00000004:word32]) = 0x00001234
+	call foo (retsize: 4;)
+	ebx = 0x00471100
+	return
+	// succ:  main_exit
+main_exit:
+
+// foo
+void foo()
+foo_entry:
+	// succ:  l1
+l1:
+	eax = 0x00471100
+	return
+	// succ:  foo_exit
+foo_exit:
+
+";
+            RunTest(sExp);
+        }
+
     }
 }

@@ -64,7 +64,14 @@ namespace Decompiler.UnitTests.Scanning
 
         private BlockWorkitem CreateWorkItem(Address addr)
         {
-            return new BlockWorkitem(scanner, rewriter, new ScannerEvaluationContext(arch, new FakeProcessorState()), proc.Frame, addr);
+            return new BlockWorkitem(
+                scanner, 
+                rewriter, 
+                new ScannerEvaluationContext(
+                    arch, 
+                    new FakeProcessorState()),
+                proc.Frame, 
+                addr);
         }
 
         private ProcedureSignature CreateSignature(MachineRegister  ret, params MachineRegister[] args)

@@ -181,6 +181,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\ProgramDataFlow.cs" />
+    <Compile Include="Analysis\ExpressionPropagator.cs" />
     <Compile Include="Analysis\RegisterLiveness.cs">
       <SubType>Code</SubType>
     </Compile>

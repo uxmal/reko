@@ -54,7 +54,10 @@ namespace Decompiler.UnitTests.Scanning
             arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             m = new ProcedureBuilder();
             state = new X86State();
-            expSimp = new ExpressionSimplifier(new ScannerEvaluationContext(new IntelArchitecture(ProcessorMode.ProtectedFlat), state));
+            expSimp = new ExpressionSimplifier(
+                new ScannerEvaluationContext(
+                    new IntelArchitecture(ProcessorMode.ProtectedFlat), 
+                    state));
             SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost();
         }
