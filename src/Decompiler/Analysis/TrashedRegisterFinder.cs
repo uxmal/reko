@@ -168,7 +168,7 @@ namespace Decompiler.Analysis
         public void RewriteBlock(Block block)
         {
             StartProcessingBlock(block);
-            var propagator = new ExpressionPropagator(se.Simplifier, ctx, flow);
+            var propagator = new ExpressionPropagator(prog.Architecture, se.Simplifier, ctx, flow);
             block.Statements.ForEach(stm => { stm.Instruction = stm.Instruction.Accept(propagator); });
         }
 
@@ -219,7 +219,7 @@ namespace Decompiler.Analysis
                 var cmp = new ExpressionValueComparer();
                 foreach (var de in ctx.RegisterState)
                 {
-                    var reg = ((RegisterStorage)de.Key).Register;
+                    var reg = (RegisterStorage)de.Key;
                     var idValue = de.Value as Identifier;
                     if (idValue != null)
                     {

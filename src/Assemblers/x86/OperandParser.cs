@@ -43,7 +43,7 @@ namespace Decompiler.Assemblers.x86
 		private Address addrBase;
 		private PrimitiveType defaultWordWidth;
 		private PrimitiveType defaultAddressWidth;
-		private MachineRegister segOverride;
+		private RegisterStorage segOverride;
 		private int totalInt;
 
 		public OperandParser(Lexer lexer, SymbolTable symtab, Address addrBase, PrimitiveType defaultWordWidth, PrimitiveType defaultAddressWidth)
@@ -103,7 +103,7 @@ namespace Decompiler.Assemblers.x86
 		private void ParseMemoryFactor(MemoryOperand memOp)
 		{
 			Token token = lexer.GetToken();
-			MachineRegister reg = MachineRegister.None;
+			RegisterStorage reg = RegisterStorage.None;
 			switch (token)
 			{
 			default:
@@ -140,10 +140,10 @@ namespace Decompiler.Assemblers.x86
 
 			if (lexer.PeekToken() == Token.TIMES)
 			{
-				if (reg == MachineRegister.None)
+				if (reg == RegisterStorage.None)
 					throw new ApplicationException("Scale factor must be preceded by a register");
 				lexer.GetToken();
-				if (memOp.Index != MachineRegister.None)
+				if (memOp.Index != RegisterStorage.None)
 					throw new ApplicationException("Scale can only be used once in an addressing form");
 				Expect(Token.INTEGER, "Expected an integer scale");
 				if (lexer.Integer != 1 && lexer.Integer != 2 && lexer.Integer != 4 && lexer.Integer != 8)
@@ -151,11 +151,11 @@ namespace Decompiler.Assemblers.x86
 				memOp.Scale = (byte) lexer.Integer;
 				memOp.Index = reg;
 			}
-			else if (reg != MachineRegister.None)
+			else if (reg != RegisterStorage.None)
 			{
-				if (memOp.Base == MachineRegister.None)
+				if (memOp.Base == RegisterStorage.None)
 					memOp.Base = reg;
-				else if (memOp.Index == MachineRegister.None)
+				else if (memOp.Index == RegisterStorage.None)
 				{
 					memOp.Index = reg;
 					memOp.Scale = 1;
@@ -165,7 +165,7 @@ namespace Decompiler.Assemblers.x86
 			}
 		}
 
-		private ParsedOperand ParseMemoryOperand(MachineRegister segOver)
+		private ParsedOperand ParseMemoryOperand(RegisterStorage segOver)
 		{
 			MemoryOperand memOp = new MemoryOperand(null);
 			memOp.SegOverride = segOver;
@@ -207,7 +207,7 @@ namespace Decompiler.Assemblers.x86
 		{
 			sym = null;
 			totalInt = 0;
-			segOverride = MachineRegister.None;
+			segOverride = RegisterStorage.None;
 			Token token = lexer.GetToken();
 			switch (token)
 			{
@@ -215,7 +215,7 @@ namespace Decompiler.Assemblers.x86
 				OnError(string.Format("Unexpected token '{0}'", token));
 				return null;
 			case Token.BRA:
-				return ParseMemoryOperand(MachineRegister.None);
+				return ParseMemoryOperand(RegisterStorage.None);
 			case Token.MINUS:
 				Expect(Token.INTEGER);
 				totalInt -= lexer.Integer;
@@ -226,7 +226,7 @@ namespace Decompiler.Assemblers.x86
 				if (lexer.PeekToken() == Token.BRA)
 				{
 					Expect(Token.BRA);
-					return ParseMemoryOperand(MachineRegister.None);
+					return ParseMemoryOperand(RegisterStorage.None);
 				}
 				else
 				{
@@ -234,7 +234,7 @@ namespace Decompiler.Assemblers.x86
 				}
 			case Token.REGISTER:
 			{
-				MachineRegister reg = lexer.Register;
+				RegisterStorage reg = lexer.Register;
 				switch (lexer.PeekToken())
 				{
 				case Token.COLON:		// Segment override of the form "es:" usually precedes a memory operand.
@@ -295,7 +295,7 @@ namespace Decompiler.Assemblers.x86
 			return op;
 		}
 
-		public MachineRegister SegmentOverride
+		public RegisterStorage SegmentOverride
 		{
 			get { return segOverride; }
 		}

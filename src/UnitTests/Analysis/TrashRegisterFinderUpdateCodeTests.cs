@@ -94,10 +94,10 @@ main_entry:
 	// succ:  l1
 l1:
 	esp = fp - 0x00000004
-	store(Mem0[fp - 0x00000004:word32]) = ebp
+	dwLoc04 = ebp
 	ebp = fp - 0x00000004
-	eax = Mem0[fp + 0x00000004:word32]
-	ebp = Mem0[fp - 0x00000004:word32]
+	eax = dwArg04
+	ebp = dwLoc04
 	esp = fp
 	return
 	// succ:  main_exit
@@ -139,7 +139,7 @@ l1:
 	eax = 0x00001234
 	ebx = 0x00001234
 	esp = fp - 0x00000004
-	store(Mem0[fp - 0x00000004:word32]) = 0x00001234
+	dwLoc04 = 0x00001234
 	call foo (retsize: 4;)
 	ebx = 0x00471100
 	return

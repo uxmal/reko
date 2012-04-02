@@ -892,7 +892,7 @@ namespace Decompiler.Assemblers.x86
             return w;
         }
 
-        private int IsAccumulator(MachineRegister reg)
+        private int IsAccumulator(RegisterStorage reg)
         {
             return (reg == Registers.eax || reg == Registers.ax || reg == Registers.al) ? 1 : 0;
         }
@@ -959,7 +959,7 @@ namespace Decompiler.Assemblers.x86
             return registerEncodings[b];
         }
 
-        public static byte RegisterEncoding(MachineRegister reg)
+        public static byte RegisterEncoding(RegisterStorage reg)
         {
             return registerEncodings[reg.Number];
         }
@@ -1958,7 +1958,7 @@ namespace Decompiler.Assemblers.x86
             return new ParsedOperand(new ImmediateOperand(IntegralConstant(n, this.defaultWordSize)));
         }
 
-        public ParsedOperand MemW(SegmentRegister seg, MachineRegister @base, int offset)
+        public ParsedOperand MemW(SegmentRegister seg, RegisterStorage @base, int offset)
         {
             var mem = new MemoryOperand(PrimitiveType.Word16);
             mem.Base = @base;
@@ -1968,7 +1968,7 @@ namespace Decompiler.Assemblers.x86
         }
 
 
-        public ParsedOperand MemDw(MachineRegister @base, int scale, string offset)
+        public ParsedOperand MemDw(RegisterStorage @base, int scale, string offset)
         {
             return Mem(PrimitiveType.Word32, null, @base, scale, offset);
         }
@@ -1978,42 +1978,42 @@ namespace Decompiler.Assemblers.x86
             return Mem(PrimitiveType.Word32, null, null, 1, offset);
         }
 
-        public ParsedOperand MemDw(MachineRegister @base, string offset)
+        public ParsedOperand MemDw(RegisterStorage @base, string offset)
         {
             return Mem(PrimitiveType.Word32, null, @base, 1, offset);
         }
 
-        public ParsedOperand MemW(MachineRegister @base, string offset)
+        public ParsedOperand MemW(RegisterStorage @base, string offset)
         {
             return Mem(PrimitiveType.Word16, null, @base,1, offset);
         }
 
-        public ParsedOperand MemB(MachineRegister @base, string offset)
+        public ParsedOperand MemB(RegisterStorage @base, string offset)
         {
             return Mem(PrimitiveType.Byte, null, @base,1, offset);
         }
 
-        public ParsedOperand MemW(SegmentRegister seg, MachineRegister @base, string offset)
+        public ParsedOperand MemW(SegmentRegister seg, RegisterStorage @base, string offset)
         {
             return Mem(PrimitiveType.Word16, seg, @base, 1, offset);
         }
 
-        public ParsedOperand MemDw(MachineRegister @base, int offset)
+        public ParsedOperand MemDw(RegisterStorage @base, int offset)
         {
             return Mem(PrimitiveType.Word32, @base, offset);
         }
 
-        public ParsedOperand MemW(MachineRegister @base, int offset)
+        public ParsedOperand MemW(RegisterStorage @base, int offset)
         {
             return Mem(PrimitiveType.Word16, @base, offset);
         }
 
-        public ParsedOperand MemB(MachineRegister @base, int offset)
+        public ParsedOperand MemB(RegisterStorage @base, int offset)
         {
             return Mem(PrimitiveType.Byte, @base, offset);
         }
 
-        private ParsedOperand Mem(PrimitiveType width, SegmentRegister seg, MachineRegister @base, int scale, string offset)
+        private ParsedOperand Mem(PrimitiveType width, SegmentRegister seg, RegisterStorage @base, int scale, string offset)
         {
             int val;
             MemoryOperand mem;
@@ -2031,7 +2031,7 @@ namespace Decompiler.Assemblers.x86
                     ? seg != null ? PrimitiveType.Word16 : PrimitiveType.Word32
                     : @base.DataType,
                     val);
-                mem = new MemoryOperand(width, @base ?? MachineRegister.None, off);
+                mem = new MemoryOperand(width, @base ?? RegisterStorage.None, off);
             }
             if (seg != null)
             {
@@ -2042,12 +2042,12 @@ namespace Decompiler.Assemblers.x86
             if (scale > 1)
             {
                 mem.Index = mem.Base;
-                mem.Base = MachineRegister.None;
+                mem.Base = RegisterStorage.None;
             }
             return new ParsedOperand(mem, sym);
         }
 
-        private ParsedOperand Mem(PrimitiveType width, MachineRegister @base, int offset)
+        private ParsedOperand Mem(PrimitiveType width, RegisterStorage @base, int offset)
         {
             return new ParsedOperand(
                 new MemoryOperand(width, @base, IntegralConstant(offset)));

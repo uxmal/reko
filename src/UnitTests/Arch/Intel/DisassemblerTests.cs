@@ -174,7 +174,7 @@ movzx	ax,byte ptr [bp+04]
             IntelInstruction instr = dasm.Disassemble();
 			MemoryOperand mem = (MemoryOperand) instr.op2;
 			Assert.AreEqual(2, mem.Scale);
-			Assert.AreEqual(MachineRegister.None, mem.Base);
+			Assert.AreEqual(RegisterStorage.None, mem.Base);
 			Assert.AreEqual(Registers.edi,  mem.Index);
 		}
 

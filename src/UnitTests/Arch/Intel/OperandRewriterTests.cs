@@ -118,7 +118,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Ignore("Escaping frame registers are ignored for now.")]
 		public void OrwEbpEscapes()
 		{
-			state.FrameRegister = MachineRegister.None;
+			state.FrameRegister = RegisterStorage.None;
 			proc.Frame.FrameOffset = 0;
 			Assert.AreEqual(false, proc.Frame.Escapes);
 

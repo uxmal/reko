@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Decompiler.Arch.X86
 {
-	public class IntelRegister : MachineRegister
+	public class IntelRegister : RegisterStorage
 	{
 		protected readonly int regDword;
 		protected readonly int regWord;
@@ -50,7 +50,7 @@ namespace Decompiler.Arch.X86
 			get { return isBaseRegister; }
 		}
 
-		public override bool IsSubRegisterOf(MachineRegister reg2)
+		public override bool IsSubRegisterOf(RegisterStorage reg2)
 		{
 			if (this != reg2 &&
 				0 <= Number && Number <= Registers.bh.Number&&
@@ -82,7 +82,7 @@ namespace Decompiler.Arch.X86
 		{
 		}
 
-		public override MachineRegister GetSubregister(int offset, int size)
+		public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			if (offset == 0)
 			{
@@ -94,7 +94,7 @@ namespace Decompiler.Arch.X86
 			return null;
 		}
 
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+        public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			if (bits[Number])
 				return this;
@@ -126,7 +126,7 @@ namespace Decompiler.Arch.X86
 		{
 		}
 
-		public override MachineRegister GetSubregister(int offset, int size)
+		public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			if (offset == 0)
 			{
@@ -138,7 +138,7 @@ namespace Decompiler.Arch.X86
 			return null;
 		}
 
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+        public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			if (bits[Number])
 				return this;
@@ -170,7 +170,7 @@ namespace Decompiler.Arch.X86
 		{
 		}
 
-		public override MachineRegister GetSubregister(int offset, int size)
+		public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			if (offset == 0)
 			{
@@ -189,7 +189,7 @@ namespace Decompiler.Arch.X86
 			return null;
 		}
 
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+		public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			if (bits[Number])
 				return this;
@@ -234,7 +234,7 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override MachineRegister GetSubregister(int offset, int size)
+        public override RegisterStorage GetSubregister(int offset, int size)
         {
             if (offset == 0)
             {
@@ -253,7 +253,7 @@ namespace Decompiler.Arch.X86
             return null;
         }
 
-        public override MachineRegister GetWidestSubregister(BitSet bits)
+        public override RegisterStorage GetWidestSubregister(BitSet bits)
         {
             if (bits[Number])
                 return this;
@@ -299,7 +299,7 @@ namespace Decompiler.Arch.X86
 		{
 		}
 
-		public override MachineRegister GetSubregister(int offset, int size)
+        public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			if (offset == 0)
 			{
@@ -309,7 +309,7 @@ namespace Decompiler.Arch.X86
 			return null;
 		}
 
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+        public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			int dw = Number + Registers.eax.Number - Registers.ax.Number;
 			if (bits[dw])
@@ -335,7 +335,7 @@ namespace Decompiler.Arch.X86
 		{
 		}
 
-		public override MachineRegister GetSubregister(int offset, int size)
+        public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			if (offset == 0)
 			{
@@ -352,7 +352,7 @@ namespace Decompiler.Arch.X86
 			return null;
 		}
 
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+        public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			if (bits[Number])
 				return this;
@@ -397,7 +397,7 @@ namespace Decompiler.Arch.X86
 		{
 		}
 
-		public override MachineRegister GetSubregister(int offset, int size)
+        public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			if (offset == 0)
 			{
@@ -407,7 +407,7 @@ namespace Decompiler.Arch.X86
 			return null;
 		}
 
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+        public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			int dw = Number + Registers.eax.Number - Registers.al.Number;
 			if (bits[dw])
@@ -453,7 +453,7 @@ namespace Decompiler.Arch.X86
 			get { return 8; }
 		}
 
-		public override MachineRegister GetSubregister(int offset, int size)
+        public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			if (offset == 0)
 			{
@@ -469,8 +469,8 @@ namespace Decompiler.Arch.X86
 			}
 			return null;
 		}
-	
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+
+        public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			int dw = Number + Registers.eax.Number - Registers.ah.Number;
 			if (bits[dw])
@@ -512,7 +512,7 @@ namespace Decompiler.Arch.X86
 			isBaseRegister = false;
 		}
 
-		public override MachineRegister GetSubregister(int offset, int size)
+        public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			if (offset == 0)
 			{
@@ -522,7 +522,7 @@ namespace Decompiler.Arch.X86
 			return null;
 		}
 
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+        public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			if (bits[Number])
 				return this;
@@ -543,7 +543,7 @@ namespace Decompiler.Arch.X86
 			get { return false; }
 		}
 
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+        public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			if (bits[Number])
 				return this;

@@ -33,22 +33,21 @@ namespace Decompiler.Evaluation
     {
         private IProcessorArchitecture arch;
         private StorageValueSetter setter;
-        private Identifier framePointer;
 
-        public SymbolicEvaluationContext(IProcessorArchitecture arch, Identifier framePointer)
+        public SymbolicEvaluationContext(IProcessorArchitecture arch, Frame frame)
         {
             this.arch = arch;
-            this.framePointer = framePointer;
+            this.Frame = frame;
             this.RegisterState = new Dictionary<Storage, Expression>();
             this.StackState = new Map<int, Expression>();
             this.TemporaryState = new Dictionary<Storage, Expression>();
             this.setter = new StorageValueSetter(this);
         }
 
-        public SymbolicEvaluationContext(SymbolicEvaluationContext old)
+        private SymbolicEvaluationContext(SymbolicEvaluationContext old)
         {
             this.arch = old.arch;
-            this.framePointer = old.framePointer;
+            this.Frame = old.Frame;
             this.RegisterState = new Dictionary<Storage, Expression>(old.RegisterState);
             this.StackState = new Map<int, Expression>(old.StackState);
             this.TemporaryState = new Dictionary<Storage, Expression>(old.TemporaryState);
@@ -62,6 +61,7 @@ namespace Decompiler.Evaluation
         public Map<int, Expression> StackState { get; private set; }
         public Dictionary<Storage, Expression> TemporaryState { get; private set; }
         public uint TrashedFlags { get; set; }
+        public Frame Frame { get; private set; }
 
         public SymbolicEvaluationContext Clone()
         {
@@ -207,7 +207,7 @@ namespace Decompiler.Evaluation
         {
             foreach (int r in pf.TrashedRegisters)
             {
-                var reg = new RegisterStorage(arch.GetRegister(r));
+                var reg = arch.GetRegister(r);
                 Constant c;
                 if (!pf.ConstantRegisters.TryGetValue(reg, out c))
                 {
@@ -246,9 +246,9 @@ namespace Decompiler.Evaluation
             }
         }
 
-        private bool IsFramePointer(Expression exp)
+        public bool IsFramePointer(Expression exp)
         {
-            return exp == framePointer;
+            return exp == Frame.FramePointer;
         }
 
         private class StorageValueSetter : StorageVisitor<Storage>
@@ -271,7 +271,7 @@ namespace Decompiler.Evaluation
 
             public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
             {
-                ctx.TrashedFlags |= grf.FlagGroup;
+                ctx.TrashedFlags |= grf.FlagGroupBits;
                 return grf;
             }
 

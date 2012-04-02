@@ -43,8 +43,8 @@ namespace Decompiler.Analysis
 		/// <summary>
 		/// Given a procedure in SSA form, converts it back to "normal" form.
 		/// </summary>
-		/// <param name="fRenameVariables"></param>
-		public void ConvertBack(bool fRenameVariables)
+		/// <param name="renameVariables"></param>
+		public void ConvertBack(bool renameVariables)
 		{
 			UnSSA unssa = new UnSSA(this);
 			foreach (Block block in proc.ControlGraph.Blocks)
@@ -57,7 +57,7 @@ namespace Decompiler.Analysis
 						block.Statements.RemoveAt(st);
 						--st;
 					}
-					else if (fRenameVariables)
+					else if (renameVariables)
 					{
 						instr.Accept(unssa);
 					}

@@ -42,6 +42,13 @@ namespace Decompiler.UnitTests.Mocks
 			prog = new Program();
 		}
 
+        public ProgramBuilder(IProcessorArchitecture arch)
+        {
+            prog = new Program {
+                Architecture = arch,
+            };
+        }
+
         public void Add(Procedure proc)
         {
             ++procCount;

@@ -29,42 +29,42 @@ namespace Decompiler.Arch.X86
 {
 	public class MemoryOperand : MachineOperand
 	{
-		public MachineRegister SegOverride  {get;set;}
-        public MachineRegister Base { get; set; }
-        public MachineRegister Index { get; set; }
+		public RegisterStorage SegOverride  {get;set;}
+        public RegisterStorage Base { get; set; }
+        public RegisterStorage Index { get; set; }
         public byte Scale { get; set; }
 		public Constant Offset {get;set;}
 
 		public MemoryOperand(PrimitiveType width) : base(width)
 		{
-            SegOverride = MachineRegister.None;
-			Base = MachineRegister.None;
-            Index = MachineRegister.None;
-            SegOverride = MachineRegister.None;
+            SegOverride = RegisterStorage.None;
+			Base = RegisterStorage.None;
+            Index = RegisterStorage.None;
+            SegOverride = RegisterStorage.None;
 			Scale = 1;
 		}
 
 		public MemoryOperand(PrimitiveType width, Constant off) : base(width)
 		{
-            SegOverride = MachineRegister.None;
-            Base = MachineRegister.None;
+            SegOverride = RegisterStorage.None;
+            Base = RegisterStorage.None;
 			Offset = off;
-            Index = MachineRegister.None;
+            Index = RegisterStorage.None;
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, MachineRegister @base, Constant off) : base(width)
+		public MemoryOperand(PrimitiveType width, RegisterStorage @base, Constant off) : base(width)
 		{
-            SegOverride = MachineRegister.None;
+            SegOverride = RegisterStorage.None;
 			Base = @base;
 			Offset = off;
-            Index = MachineRegister.None;
+            Index = RegisterStorage.None;
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, MachineRegister @base, MachineRegister index, byte scale,  Constant off) : base(width)
+		public MemoryOperand(PrimitiveType width, RegisterStorage @base, RegisterStorage index, byte scale,  Constant off) : base(width)
 		{
-            SegOverride = MachineRegister.None;
+            SegOverride = RegisterStorage.None;
 			Base = @base;
 			Offset = off;
 			Index = index;
@@ -73,7 +73,7 @@ namespace Decompiler.Arch.X86
 
 		public bool IsAbsolute
 		{
-            get { return Offset.IsValid && Base == MachineRegister.None && Index == MachineRegister.None; }
+            get { return Offset.IsValid && Base == RegisterStorage.None && Index == RegisterStorage.None; }
 		}
 
 		public override string ToString()
@@ -106,13 +106,13 @@ namespace Decompiler.Arch.X86
 				sb.Append(s);
 			}
 
-            if (SegOverride != MachineRegister.None)
+            if (SegOverride != RegisterStorage.None)
 			{
 				sb.Append(SegOverride.ToString());
 				sb.Append(":");
 			}
 			sb.Append("[");
-			if (Base != MachineRegister.None)
+			if (Base != RegisterStorage.None)
 			{
 				sb.Append(Base.ToString());
 			}
@@ -121,7 +121,7 @@ namespace Decompiler.Arch.X86
 				sb.AppendFormat(FormatUnsignedValue(Offset));
 			}
 
-			if (Index != MachineRegister.None)
+			if (Index != RegisterStorage.None)
 			{
 				sb.Append("+");
 				sb.Append(Index.ToString());
@@ -131,7 +131,7 @@ namespace Decompiler.Arch.X86
 					sb.Append(Scale);
 				}
 			}
-			if (Base != MachineRegister.None && Offset != null && Offset.IsValid)
+			if (Base != RegisterStorage.None && Offset != null && Offset.IsValid)
 			{
 				if (Offset.DataType == PrimitiveType.Byte || Offset.DataType == PrimitiveType.SByte)
 				{
@@ -150,11 +150,11 @@ namespace Decompiler.Arch.X86
 		/// <summary>
         /// Returns the segment to use when referring to data unless an overriding segment was specfied.
 		/// </summary>
-		public MachineRegister DefaultSegment
+		public RegisterStorage DefaultSegment
 		{					 
 			get 
 			{
-				if (SegOverride != MachineRegister.None)
+				if (SegOverride != RegisterStorage.None)
 					return SegOverride;
 				if (Base == Registers.bp || Base == Registers.ebp || Base == Registers.sp || Base == Registers.esp)
 					return Registers.ss;

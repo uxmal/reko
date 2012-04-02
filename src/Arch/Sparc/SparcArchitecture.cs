@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
@@ -48,13 +49,10 @@ namespace Decompiler.Arch.Sparc
             throw new NotImplementedException();
         }
 
- 
-
         public BitSet CreateRegisterBitset()
         {
             throw new NotImplementedException();
         }
-
 
         public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
@@ -66,32 +64,32 @@ namespace Decompiler.Arch.Sparc
             throw new NotImplementedException();
         }
 
-        public MachineRegister GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();
         }
 
-        public MachineRegister GetRegister(string name)
+        public RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryGetRegister(string name, out MachineRegister reg)
+        public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Machine.MachineFlags GetFlagGroup(uint grf)
+        public FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Machine.MachineFlags GetFlagGroup(string name)
+        public FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
@@ -126,7 +124,7 @@ namespace Decompiler.Arch.Sparc
             get { throw new NotImplementedException(); }
         }
 
-        public MachineRegister StackRegister
+        public RegisterStorage StackRegister
         {
             get { throw new NotImplementedException(); }
         }

@@ -35,8 +35,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void VisitRegister()
 		{
-			var reg = new MachineRegister("r0", 0, PrimitiveType.Word16);
-			var r = new Identifier(reg.Name, 0, reg.DataType, new RegisterStorage(reg));
+			var reg = new RegisterStorage("r0", 0, PrimitiveType.Word16);
+			var r = new Identifier(reg.Name, 0, reg.DataType, reg);
 			var type = r.Storage.Accept(this);
 			Assert.AreEqual("reg", type);
 		}
@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void VisitFlagGroup()
 		{
-			var f = new Identifier("grf", 0, PrimitiveType.Word16, new FlagGroupStorage(0x11, "ZO"));
+			var f = new Identifier("grf", 0, PrimitiveType.Word16, new FlagGroupStorage(0x11, "ZO", PrimitiveType.Byte));
 			var type = f.Storage.Accept(this);
 			Assert.AreEqual("grf", type);
 		}
@@ -52,8 +52,8 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void VisitSequenceVariable()
 		{
-			var ax = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, new RegisterStorage(Registers.ax));
-			var dx = new Identifier(Registers.dx.Name, 1, Registers.dx.DataType, new RegisterStorage(Registers.dx));
+			var ax = new Identifier(Registers.ax.Name, 0, Registers.ax.DataType, Registers.ax);
+			var dx = new Identifier(Registers.dx.Name, 1, Registers.dx.DataType, Registers.dx);
 			var seq = new Identifier("dx_ax", 2, PrimitiveType.Word32, new SequenceStorage(dx, ax));
 			var type = seq.Storage.Accept(this);
 			Assert.AreEqual("seq", type);

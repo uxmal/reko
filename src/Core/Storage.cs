@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using Decompiler.Core.Serialization;
@@ -37,7 +38,6 @@ namespace Decompiler.Core
 		{
 			this.Kind = storageKind;
 		}
-
 
 		public string Kind { get; private set; }
 		public abstract int OffsetOf(Storage storage);
@@ -68,14 +68,16 @@ namespace Decompiler.Core
 
 	public class FlagGroupStorage : Storage
 	{
-		public FlagGroupStorage(uint grfMask, string name) : base("FlagGroup")
+		public FlagGroupStorage(uint grfMask, string name, DataType dataType) : base("FlagGroup")
 		{
-			this.FlagGroup = grfMask;
+			this.FlagGroupBits = grfMask;
 			this.Name = name;
+            this.DataType = dataType;
 		}
 
-        public uint FlagGroup { get; private set; }
+        public uint FlagGroupBits { get; private set; }
         public string Name { get; private set; }
+        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -87,12 +89,12 @@ namespace Decompiler.Core
 			FlagGroupStorage fgs = obj as FlagGroupStorage;
 			if (fgs == null)
 				return false;
-			return FlagGroup == fgs.FlagGroup;
+			return FlagGroupBits == fgs.FlagGroupBits;
 		}
 
 		public override int GetHashCode()
 		{
-			return GetType().GetHashCode() ^ FlagGroup.GetHashCode();
+			return GetType().GetHashCode() ^ FlagGroupBits.GetHashCode();
 		}
 
 		public override int OffsetOf(Storage stgSub)
@@ -100,7 +102,7 @@ namespace Decompiler.Core
 			FlagGroupStorage f = stgSub as FlagGroupStorage;
 			if (f == null)
 				return -1;
-			return ((f.FlagGroup & FlagGroup) != 0) ? 0 : -1;
+			return ((f.FlagGroupBits & FlagGroupBits) != 0) ? 0 : -1;
 		}
 
 		public override SerializedKind Serialize()
@@ -231,15 +233,29 @@ namespace Decompiler.Core
 
 	public class RegisterStorage : Storage
 	{
-		public RegisterStorage(MachineRegister reg) : base("Register")
+		public RegisterStorage(string name, int number, PrimitiveType dt) : base("Register")
 		{
-			this.Register = reg;
+			this.Name = name;
+            this.Number = number;
+            this.DataType = dt;
 		}
 
-        public MachineRegister Register { get; private set; }
+        /// <summary>
+        /// If this register is a subregister of a wider register, this property the bit offset within that wider register.
+        /// </summary>
+        /// <remarks>For instance, on i386 systems, AH would return 8 here, since it is located at that bit offset of EAX.</remarks>
+        public virtual int AliasOffset { get { return 0; } }
+        public string Name { get; private set; }
+        public PrimitiveType DataType { get; private set; }
 
+        /// <summary>
+        /// Returns true if this is an ALU register that supports operations like addition, address dereference and the like.
+        /// </summary>
+        public virtual bool IsAluRegister { get { return true; } }
 
-		public override T Accept<T>(StorageVisitor<T> visitor)
+        public int Number { get; private set; }
+
+        public override T Accept<T>(StorageVisitor<T> visitor)
 		{
 			return visitor.VisitRegisterStorage(this);
 		}
@@ -249,38 +265,96 @@ namespace Decompiler.Core
 			var rs = obj as RegisterStorage;
 			if (rs == null)
 				return false;
-			return Register.Number == rs.Register.Number;
+			return Number == rs.Number;
 		}
 
 		public override int GetHashCode()
 		{
-			return GetType().GetHashCode() ^ Register.Number;
+			return GetType().GetHashCode() ^ Number;
 		}
+
+        public RegisterStorage GetPart(DataType width)
+        {
+            return GetSubregister(0, width.BitSize);
+        }
+
+        public virtual RegisterStorage GetSubregister(int offset, int size)
+        {
+            throw new NotSupportedException(string.Format("Invalid offset {0} or size {1} for register {2}.", offset, size, Name));
+        }
+
+        public virtual RegisterStorage GetWidestSubregister(BitSet bits)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Returns true if this register is strictly contained by reg2.
+        /// </summary>
+        /// <param name="reg1"></param>
+        /// <param name="reg2"></param>
+        /// <returns></returns>
+        public virtual bool IsSubRegisterOf(RegisterStorage reg2)
+        {
+            return false;
+        }
 
 		public override int OffsetOf(Storage stgSub)
 		{
 			var regSub = stgSub as RegisterStorage;
 			if (regSub == null)
 				return -1;
-			if (regSub.Register == Register)
+			if (regSub == this)
 				return 0;
-			return regSub.Register.IsSubRegisterOf(Register)
-				? regSub.Register.AliasOffset
+			return regSub.IsSubRegisterOf(this)
+				? regSub.AliasOffset
 				: -1;
 		}
 
+        /// <summary>
+		/// Given a register, sets/resets the bits corresponding to the register
+		/// and any other registers it aliases.
+		/// </summary>
+		/// <param name="iReg">Register to set</param>
+		/// <param name="bits">BitSet to modify</param>
+		/// <param name="f">truth value to set</param>
+		public virtual void SetAliases(BitSet bitset, bool f)
+		{
+			bitset[Number] = f;
+		}
 
 		public override SerializedKind Serialize()
 		{
-			return new SerializedRegister(Register.Name);
+			return new SerializedRegister(Name);
 		}
 
+        public virtual void SetRegisterFileValues(ulong[] registerFile, ulong value, bool[] valid)
+        {
+            registerFile[Number] = value;
+            valid[Number] = true;
+        }
+
+        public int SubregisterOffset(RegisterStorage subReg)
+        {
+            var sub = subReg as RegisterStorage;
+            if (sub != null)
+            {
+                if (Number == sub.Number)
+                    return 0;
+            }
+            return -1;
+        }
 
 		public override void Write(TextWriter writer)
 		{
 			writer.Write("Register ");
-			writer.Write(Register.Name);
+			writer.Write(Name);
 		}
+
+        public static RegisterStorage None { get { return none; } }
+
+        private static RegisterStorage none = new RegisterStorage("None", -1, PrimitiveType.Void);
+
 	}
 
 	public class SequenceStorage : Storage

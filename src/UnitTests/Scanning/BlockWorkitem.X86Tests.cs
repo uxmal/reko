@@ -132,7 +132,7 @@ namespace Decompiler.UnitTests.Scanning
 
         private Identifier Reg(IntelRegister r)
         {
-            return new Identifier(r.Name, 0, r.DataType, new RegisterStorage(r));
+            return new Identifier(r.Name, 0, r.DataType, r);
         }
 
         [Test]

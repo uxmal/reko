@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
@@ -70,8 +71,8 @@ namespace Decompiler.Arch.X86
         public static readonly FlagRegister O;
         public static readonly FlagRegister P;
 
-        public static readonly MachineRegister FPUF;
-        public static readonly MachineRegister FPST;    // virtual register; the x87 FPU stack pointer.
+        public static readonly RegisterStorage FPUF;
+        public static readonly RegisterStorage FPST;    // virtual register; the x87 FPU stack pointer.
 
         public static readonly Intel64AccRegister rax;
         public static readonly Intel64AccRegister rcx;
@@ -110,7 +111,7 @@ namespace Decompiler.Arch.X86
         public static readonly Intel64Register r15b;
 
 
-        private static readonly MachineRegister[] regs;
+        private static readonly RegisterStorage[] regs;
 
         static Registers()
         {
@@ -150,8 +151,8 @@ namespace Decompiler.Arch.X86
             D = new FlagRegister("D", 35);
             O = new FlagRegister("O", 36);
             P = new FlagRegister("P", 37);
-            FPUF = new MachineRegister("FPUF", 38, PrimitiveType.Byte);
-            FPST = new MachineRegister("FPST", 38, PrimitiveType.Byte);
+            FPUF = new RegisterStorage("FPUF", 38, PrimitiveType.Byte);
+            FPST = new RegisterStorage("FPST", 38, PrimitiveType.Byte);
             rax = new Intel64AccRegister("rax", 0, 8, 16, 20);
             rcx = new Intel64AccRegister("rcx", 1, 9, 17, 21);
             rdx = new Intel64AccRegister("rdx", 2, 10, 18, 22);
@@ -161,7 +162,7 @@ namespace Decompiler.Arch.X86
             rsi = new Intel64Register("rsi", 6, 14, -1, -1);
             rdi = new Intel64Register("rdi", 7, 15, -1, -1);
 
-            regs = new MachineRegister[] {
+            regs = new RegisterStorage[] {
 				eax,
 				ecx,
 				edx,
@@ -209,21 +210,21 @@ namespace Decompiler.Arch.X86
 			};
         }
 
-        public static MachineRegister GetRegister(int i)
+        public static RegisterStorage GetRegister(int i)
         {
             return (0 <= i && i < regs.Length)
                 ? regs[i]
                 : null;
         }
 
-        public static MachineRegister GetRegister(string name)
+        public static RegisterStorage GetRegister(string name)
         {
             for (int i = 0; i < regs.Length; ++i)
             {
                 if (regs[i] != null && String.Compare(regs[i].Name, name, true) == 0)
                     return regs[i];
             }
-            return MachineRegister.None;
+            return RegisterStorage.None;
         }
 
         public static int Max

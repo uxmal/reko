@@ -237,7 +237,7 @@ namespace Decompiler.Arch.Pdp11
 
         private MachineOperand DecodeOperand(int operandBits)
         {
-            MachineRegister reg = arch.GetRegister(operandBits & 7);
+            var reg = arch.GetRegister(operandBits & 7);
             if (reg == Registers.pc)
             {
                 throw new NotImplementedException();

@@ -93,16 +93,15 @@ namespace Decompiler.UnitTests.Analysis
 			Assert.AreEqual("void foo(Stack uipr16 dwArg04)", proc.Signature.ToString(proc.Name));
 		}
 
-
 		// Ensure that UseInstructions for "out" parameters are generated even when a signature is pre-specified.
 		[Test]
 		public void GenerateUseInstructionsForSpecifiedSignature()
 		{
             Procedure proc = new Procedure("foo", prog.Architecture.CreateFrame());
 			proc.Signature = new ProcedureSignature(
-				new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
+				new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
 				new Identifier [] { 
-					new Identifier("ecx", 1, PrimitiveType.Word32, new RegisterStorage(Registers.ecx)),
+					new Identifier("ecx", 1, PrimitiveType.Word32, Registers.ecx),
 					new Identifier("edxOut", 2, PrimitiveType.Word32, 
 									  new OutArgumentStorage(proc.Frame.EnsureRegister(Registers.edx)))});
 			gcr.EnsureSignature(proc, null);

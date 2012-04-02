@@ -56,7 +56,7 @@ namespace Decompiler.Scanning
         /// <summary>
         /// The register used to perform a table-dispatch switch.
         /// </summary>
-        public MachineRegister Index { get; private set; }
+        public RegisterStorage Index { get; private set; }
         public Identifier UsedFlagIdentifier { get; set; } 
         public int Stride { get; private set; }
         public Address VectorAddress { get; private set; }
@@ -145,15 +145,15 @@ namespace Decompiler.Scanning
                 var cof = ass.Src as ConditionOf;
                 if (cof != null && UsedFlagIdentifier != null)
                 {
-                    var grfDef = (ass.Dst.Storage as FlagGroupStorage).FlagGroup;
-                    var grfUse = (UsedFlagIdentifier.Storage as FlagGroupStorage).FlagGroup;
+                    var grfDef = (ass.Dst.Storage as FlagGroupStorage).FlagGroupBits;
+                    var grfUse = (UsedFlagIdentifier.Storage as FlagGroupStorage).FlagGroupBits;
                     if ((grfDef & grfUse) == 0)
                         return true;
                     var binCmp = cof.Expression as BinaryExpression;
                     if (binCmp != null && binCmp.op is SubOperator)
                     {
                         var idLeft = RegisterOf(binCmp.Left  as Identifier);
-                        if (idLeft != MachineRegister.None &&
+                        if (idLeft != RegisterStorage.None &&
                             (idLeft == Index || idLeft == Index.GetPart(PrimitiveType.Byte)))
                         {
                             var immSrc = binCmp.Right as Constant;
@@ -207,18 +207,18 @@ namespace Decompiler.Scanning
             return true;
         }
 
-        private MachineRegister RegisterOf(Identifier id)
+        private RegisterStorage RegisterOf(Identifier id)
         {
             if (id == null)
-                return MachineRegister.None;
+                return RegisterStorage.None;
             var reg = id.Storage as RegisterStorage;
             if (reg == null)
-                return MachineRegister.None;
-            return reg.Register;
+                return RegisterStorage.None;
+            return reg;
         }
 
         public bool BackwalkInstructions(
-            MachineRegister regIdx,
+            RegisterStorage regIdx,
             IEnumerable<Statement> backwardStatementSequence)
         {
             foreach (var stm in backwardStatementSequence)
@@ -229,20 +229,20 @@ namespace Decompiler.Scanning
             return true;
         }
 
-        private MachineRegister GetBaseRegister(Expression ea)
+        private RegisterStorage GetBaseRegister(Expression ea)
         {
             var id = ea as Identifier;
             if (id != null)
                 return RegisterOf(id);
             var bin = ea as BinaryExpression;
             if (bin == null)
-                return MachineRegister.None;
+                return RegisterStorage.None;
             id = bin.Left as Identifier;
             if (id != null)
                 return RegisterOf(id);
             var scaledExpr = bin.Left as BinaryExpression;
             if (bin == null)
-                return MachineRegister.None;
+                return RegisterStorage.None;
             return RegisterOf(scaledExpr.Left as Identifier);
         }
 
@@ -279,7 +279,7 @@ namespace Decompiler.Scanning
             }
         }
 		
-        public MachineRegister DetermineIndexRegister(MemoryAccess mem)
+        public RegisterStorage DetermineIndexRegister(MemoryAccess mem)
         {
             Stride = 0;
             var id = mem.EffectiveAddress as Identifier;    // Mem[reg]
@@ -323,7 +323,7 @@ namespace Decompiler.Scanning
             return bin != null && bin.op is MulOperator && bin.Right is Constant;
         }
 
-        private MachineRegister DetermineVectorWithScaledIndex(MemoryAccess mem, Expression possibleVector, BinaryExpression scaledIndex)
+        private RegisterStorage DetermineVectorWithScaledIndex(MemoryAccess mem, Expression possibleVector, BinaryExpression scaledIndex)
         {
             Stride = ((Constant)scaledIndex.Right).ToInt32();   // Mem[x + reg * C]
             DetermineVector(mem, possibleVector);
@@ -350,10 +350,10 @@ namespace Decompiler.Scanning
             }
         }
 
-        private MachineRegister HandleAddition(
-			MachineRegister regIdx,
-			MachineRegister ropDst,
-			MachineRegister ropSrc, 
+        private RegisterStorage HandleAddition(
+			RegisterStorage regIdx,
+			RegisterStorage ropDst,
+			RegisterStorage ropSrc, 
 			Constant immSrc, 
 			bool add)
 		{

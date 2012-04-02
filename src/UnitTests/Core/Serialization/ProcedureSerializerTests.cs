@@ -45,9 +45,9 @@ namespace Decompiler.UnitTests.Core.Serialization
         {
             ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
             ProcedureSignature sig = new ProcedureSignature(
-                new Identifier("qax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
+                new Identifier("qax", 0, PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
-                    new Identifier("qbx", 0, PrimitiveType.Word32, new RegisterStorage(Registers.ebx))
+                    new Identifier("qbx", 0, PrimitiveType.Word32, Registers.ebx)
                 });
                 
             SerializedSignature ssig = ser.Serialize(sig);
@@ -69,8 +69,8 @@ namespace Decompiler.UnitTests.Core.Serialization
         public void SsigSerializeSequence()
         {
             Identifier seq = new Identifier("es_bx", 0, PrimitiveType.Word32, new SequenceStorage(
-                new Identifier(Registers.es.Name, 0, Registers.es.DataType, new RegisterStorage(Registers.es)),
-                new Identifier(Registers.bx.Name, 1, Registers.bx.DataType, new RegisterStorage(Registers.bx))));
+                new Identifier(Registers.es.Name, 0, Registers.es.DataType, Registers.es),
+                new Identifier(Registers.bx.Name, 1, Registers.bx.DataType, Registers.bx)));
             ProcedureSerializer ser = new ProcedureSerializer(arch, "stdapi");
             SerializedSignature ssig = ser.Serialize(new ProcedureSignature(seq, new Identifier[0]));
             Verify(ssig, "Core/SsigSerializeSequence.txt");
@@ -93,7 +93,7 @@ namespace Decompiler.UnitTests.Core.Serialization
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame());
             proc.Signature = new ProcedureSignature(
-                new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
+                new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
                     new Identifier("arg00", 0, PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32))
                 });

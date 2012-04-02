@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
@@ -32,7 +33,7 @@ namespace Decompiler.Arch.PowerPC
     public class PowerPcArchitecture : IProcessorArchitecture
     {
         private PrimitiveType wordWidth;
-        private ReadOnlyCollection<MachineRegister> regs;
+        private ReadOnlyCollection<RegisterStorage> regs;
 
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
@@ -44,46 +45,46 @@ namespace Decompiler.Arch.PowerPC
                 throw new ArgumentException("Only 32-bit mode of the architecture is currently supported.");
             this.wordWidth = wordWidth;
 
-            regs = new ReadOnlyCollection<MachineRegister>(new MachineRegister[] {
-                new MachineRegister("r0", 0, wordWidth),
-                new MachineRegister("r1", 1, wordWidth),
-                new MachineRegister("r2", 2, wordWidth),
-                new MachineRegister("r3", 3, wordWidth),
-                new MachineRegister("r4", 4, wordWidth),
-                new MachineRegister("r5", 5, wordWidth),
-                new MachineRegister("r6", 6, wordWidth),
-                new MachineRegister("r7", 7, wordWidth),
-                new MachineRegister("r8", 8, wordWidth),
-                new MachineRegister("r9", 9, wordWidth),
+            regs = new ReadOnlyCollection<RegisterStorage>(new RegisterStorage[] {
+                new RegisterStorage("r0", 0, wordWidth),
+                new RegisterStorage("r1", 1, wordWidth),
+                new RegisterStorage("r2", 2, wordWidth),
+                new RegisterStorage("r3", 3, wordWidth),
+                new RegisterStorage("r4", 4, wordWidth),
+                new RegisterStorage("r5", 5, wordWidth),
+                new RegisterStorage("r6", 6, wordWidth),
+                new RegisterStorage("r7", 7, wordWidth),
+                new RegisterStorage("r8", 8, wordWidth),
+                new RegisterStorage("r9", 9, wordWidth),
 
-                new MachineRegister("r10", 10, wordWidth),
-                new MachineRegister("r11", 11, wordWidth),
-                new MachineRegister("r12", 12, wordWidth),
-                new MachineRegister("r13", 13, wordWidth),
-                new MachineRegister("r14", 14, wordWidth),
-                new MachineRegister("r15", 15, wordWidth),
-                new MachineRegister("r16", 16, wordWidth),
-                new MachineRegister("r17", 17, wordWidth),
-                new MachineRegister("r18", 18, wordWidth),
-                new MachineRegister("r19", 19, wordWidth),
+                new RegisterStorage("r10", 10, wordWidth),
+                new RegisterStorage("r11", 11, wordWidth),
+                new RegisterStorage("r12", 12, wordWidth),
+                new RegisterStorage("r13", 13, wordWidth),
+                new RegisterStorage("r14", 14, wordWidth),
+                new RegisterStorage("r15", 15, wordWidth),
+                new RegisterStorage("r16", 16, wordWidth),
+                new RegisterStorage("r17", 17, wordWidth),
+                new RegisterStorage("r18", 18, wordWidth),
+                new RegisterStorage("r19", 19, wordWidth),
 
-                new MachineRegister("r20", 20, wordWidth),
-                new MachineRegister("r21", 21, wordWidth),
-                new MachineRegister("r22", 22, wordWidth),
-                new MachineRegister("r23", 23, wordWidth),
-                new MachineRegister("r24", 24, wordWidth),
-                new MachineRegister("r25", 25, wordWidth),
-                new MachineRegister("r26", 26, wordWidth),
-                new MachineRegister("r27", 27, wordWidth),
-                new MachineRegister("r28", 28, wordWidth),
-                new MachineRegister("r29", 29, wordWidth),
+                new RegisterStorage("r20", 20, wordWidth),
+                new RegisterStorage("r21", 21, wordWidth),
+                new RegisterStorage("r22", 22, wordWidth),
+                new RegisterStorage("r23", 23, wordWidth),
+                new RegisterStorage("r24", 24, wordWidth),
+                new RegisterStorage("r25", 25, wordWidth),
+                new RegisterStorage("r26", 26, wordWidth),
+                new RegisterStorage("r27", 27, wordWidth),
+                new RegisterStorage("r28", 28, wordWidth),
+                new RegisterStorage("r29", 29, wordWidth),
 
-                new MachineRegister("r30", 30, wordWidth),
-                new MachineRegister("r31", 31, wordWidth),
+                new RegisterStorage("r30", 30, wordWidth),
+                new RegisterStorage("r31", 31, wordWidth),
             });
         }
 
-        public ReadOnlyCollection<MachineRegister> Registers
+        public ReadOnlyCollection<RegisterStorage> Registers
         {
             get { return regs; }
         }
@@ -120,27 +121,27 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public MachineRegister GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();
         }
 
-        public MachineRegister GetRegister(string name)
+        public RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryGetRegister(string name, out MachineRegister reg)
+        public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public MachineFlags GetFlagGroup(uint grf)
+        public FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public MachineFlags GetFlagGroup(string name)
+        public FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
@@ -171,22 +172,14 @@ namespace Decompiler.Arch.PowerPC
         }
 
         public uint CarryFlagMask { get { throw new NotImplementedException(); } }
-        public MachineRegister StackRegister { get { return regs[1]; } }
-
-        #endregion
-
-        #region IProcessorArchitecture Members
+        public RegisterStorage StackRegister { get { return regs[1]; } }
 
 
-        public Decompiler.Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+
+        public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IProcessorArchitecture Members
-
 
         public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {

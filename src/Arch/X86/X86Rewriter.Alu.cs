@@ -365,7 +365,7 @@ namespace Decompiler.Arch.X86
         {
             Expression src;
             MemoryOperand mem = (MemoryOperand)di.Instruction.op2;
-            if (mem.Base == MachineRegister.None && mem.Index == MachineRegister.None)
+            if (mem.Base == RegisterStorage.None && mem.Index == RegisterStorage.None)
             {
                 src = mem.Offset;
             }
@@ -394,7 +394,7 @@ namespace Decompiler.Arch.X86
             emitter.Assign(sp, emitter.Add(sp, bp.DataType.Size));
         }
 
-        private void RewriteLxs(MachineRegister seg)
+        private void RewriteLxs(RegisterStorage seg)
         {
             var reg = (RegisterOperand)di.Instruction.op1;
             MemoryOperand mem = (MemoryOperand)di.Instruction.op2;

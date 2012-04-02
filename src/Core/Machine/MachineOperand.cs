@@ -85,15 +85,15 @@ namespace Decompiler.Core.Machine
 
 	public class RegisterOperand : MachineOperand
 	{
-		private MachineRegister reg;
+		private RegisterStorage reg;
 		
-		public RegisterOperand(MachineRegister reg) :
+		public RegisterOperand(RegisterStorage reg) :
 			base(reg.DataType)
 		{
 			this.reg = reg;
 		}
 
-		public MachineRegister Register
+		public RegisterStorage Register
 		{
 			get { return reg; }
 		}

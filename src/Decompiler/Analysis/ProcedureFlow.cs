@@ -123,13 +123,13 @@ namespace Decompiler.Analysis
 			FlagGroupStorage flags = id.Storage as FlagGroupStorage;
 			if (flags != null)
 			{
-				uint grf = flags.FlagGroup;
+				uint grf = flags.FlagGroupBits;
 				return ((grf & grfLiveOut) != 0);
 			}
 			RegisterStorage reg = id.Storage as RegisterStorage;
 			if (reg != null)
 			{
-				return LiveOut[reg.Register.Number];
+				return LiveOut[reg.Number];
 			}
 			return false;
 		}

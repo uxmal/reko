@@ -65,7 +65,7 @@ namespace Decompiler.Arch.X86
             return frame.EnsureRegister(reg.Register);
         }
 
-        public Identifier AluRegister(MachineRegister reg)
+        public Identifier AluRegister(RegisterStorage reg)
         {
             return frame.EnsureRegister(reg);
         }
@@ -133,7 +133,7 @@ namespace Decompiler.Arch.X86
             Expression expr = null;
             PrimitiveType type = PrimitiveType.CreateWord(mem.Width.Size);
 
-            if (mem.Base != MachineRegister.None)
+            if (mem.Base != RegisterStorage.None)
             {
                 eBase = AluRegister(mem.Base);
                 if (expr != null)
@@ -168,7 +168,7 @@ namespace Decompiler.Arch.X86
                 }
             }
 
-            if (mem.Index != MachineRegister.None)
+            if (mem.Index != RegisterStorage.None)
             {
                 eIndex = AluRegister(mem.Index);
                 if (mem.Scale != 0 && mem.Scale != 1)
@@ -201,15 +201,15 @@ namespace Decompiler.Arch.X86
 
         public PseudoProcedure ImportedProcedureName(PrimitiveType addrWidth, MemoryOperand mem)
         {
-            if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == MachineRegister.None &&
-                mem.Index == MachineRegister.None)
+            if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
+                mem.Index == RegisterStorage.None)
             {
                 return (PseudoProcedure)host.GetImportThunkAtAddress(mem.Offset.ToUInt32());
             }
             return null;
         }
 
-        public Constant ReplaceCodeSegment(MachineRegister reg, X86State state)
+        public Constant ReplaceCodeSegment(RegisterStorage reg, X86State state)
         {
             if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
                 return state.GetRegister(reg);
@@ -255,7 +255,7 @@ namespace Decompiler.Arch.X86
 		{
 			if (arch.ProcessorMode != ProcessorMode.ProtectedFlat)
 				return null;
-			if (mem.Base != MachineRegister.None || mem.Index != MachineRegister.None)
+			if (mem.Base != RegisterStorage.None || mem.Index != RegisterStorage.None)
 				return null;
 			return new Address(0, mem.Offset.ToUInt32());
 		}
@@ -266,7 +266,7 @@ namespace Decompiler.Arch.X86
                 PrimitiveType.Create(Domain.Pointer, arch.WordWidth.Size), expr);
 		}
 
-		public Identifier AluRegister(MachineRegister reg)
+		public Identifier AluRegister(RegisterStorage reg)
 		{
 			return frame.EnsureRegister(reg);
 		}
@@ -318,7 +318,7 @@ namespace Decompiler.Arch.X86
 				// Stack-based (or frame-based) accesses should be converted to temp variable
 				// accesses, but only if there is no index register involved.
 
-				if (IsFrameRegisterReference(mem.Base, state) && mem.Index == MachineRegister.None)
+				if (IsFrameRegisterReference(mem.Base, state) && mem.Index == RegisterStorage.None)
 				{
 					return frame.EnsureStackVariable(
 						mem.Offset,
@@ -410,7 +410,7 @@ namespace Decompiler.Arch.X86
 			Expression expr = null;
 			PrimitiveType type = PrimitiveType.CreateWord(mem.Width.Size);
 
-			if (mem.Base != MachineRegister.None)
+			if (mem.Base != RegisterStorage.None)
 			{
 				eBase = AluRegister(mem.Base);
 				if (expr != null)
@@ -445,7 +445,7 @@ namespace Decompiler.Arch.X86
 				}
 			}
 
-			if (mem.Index != MachineRegister.None)
+			if (mem.Index != RegisterStorage.None)
 			{
 				eIndex = AluRegister(mem.Index);
 				if (mem.Scale != 0 && mem.Scale != 1)
@@ -488,33 +488,27 @@ namespace Decompiler.Arch.X86
 
 		public PseudoProcedure ImportedProcedureName(PrimitiveType addrWidth, MemoryOperand mem)
 		{
-			if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == MachineRegister.None && 
-				mem.Index == MachineRegister.None)
+			if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None && 
+				mem.Index == RegisterStorage.None)
 			{
 				return (PseudoProcedure) host.GetImportThunkAtAddress(new Address(mem.Offset.ToUInt32()));
 			}
 			return null;
 		}
 
-		public bool IsFrameRegisterReference(MachineRegister reg, IntelRewriterState state)
+		public bool IsFrameRegisterReference(RegisterStorage reg, IntelRewriterState state)
 		{
 			return IsStackRegister(reg) || 
-				(state.FrameRegister != MachineRegister.None && state.FrameRegister == reg);
+				(state.FrameRegister != RegisterStorage.None && state.FrameRegister == reg);
 
 		}
 
-		public static bool IsStackRegister(MachineRegister reg)
+		public static bool IsStackRegister(RegisterStorage reg)
 		{
 			return (reg == Registers.sp || reg == Registers.esp);
 		}
-
-        [Obsolete]
-		public Identifier CreateTemporary(PrimitiveType width)
-		{
-			return frame.CreateTemporary(width);
-		}
 	
-		public Constant ReplaceCodeSegment(MachineRegister reg, IntelRewriterState state)
+		public Constant ReplaceCodeSegment(RegisterStorage reg, IntelRewriterState state)
 		{
 			if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
 				return new Constant(PrimitiveType.Word16, state.CodeSegment);

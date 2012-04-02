@@ -180,6 +180,7 @@ namespace Decompiler.UnitTests.Analysis
 			var dfa = new DataFlowAnalysis(prog, eventListener);
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
+            trf.RewriteBasicBlocks();
 			var rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
 			DumpProcedureFlows(prog, dfa, rl, fut.TextWriter);
 		}

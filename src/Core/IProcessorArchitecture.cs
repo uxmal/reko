@@ -40,11 +40,11 @@ namespace Decompiler.Core
         Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
         Frame CreateFrame();
 
-		MachineRegister GetRegister(int i);			// Returns register corresponding to number i.
-		MachineRegister GetRegister(string name);	// Returns register whose name is 'name'
-        bool TryGetRegister(string name, out MachineRegister reg); // Attempts to find a register with name <paramref>name</paramref>
-        MachineFlags GetFlagGroup(uint grf);		// Returns flag group matching the bitflags.
-		MachineFlags GetFlagGroup(string name);
+		RegisterStorage GetRegister(int i);			// Returns register corresponding to number i.
+		RegisterStorage GetRegister(string name);	// Returns register whose name is 'name'
+        bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
+        FlagGroupStorage GetFlagGroup(uint grf);		// Returns flag group matching the bitflags.
+		FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
 
@@ -63,7 +63,7 @@ namespace Decompiler.Core
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
 		PrimitiveType WordWidth { get; }					// Processor's native word size
 
-        MachineRegister StackRegister { get; }              // Stack pointer for this machine.
+        RegisterStorage StackRegister { get; }              // Stack pointer for this machine.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
     }
 }

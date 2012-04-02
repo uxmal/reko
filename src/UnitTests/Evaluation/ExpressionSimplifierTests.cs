@@ -69,10 +69,10 @@ namespace Decompiler.UnitTests.Evaluation
 
 		private SsaIdentifierCollection BuildSsaIdentifiers()
 		{
-			MachineRegister mrFoo = new MachineRegister("foo", 1, PrimitiveType.Word32);
-			MachineRegister mrBar = new MachineRegister("bar", 2, PrimitiveType.Word32);
-			foo = new Identifier(mrFoo.Name, 0, mrFoo.DataType, new RegisterStorage(mrFoo));
-			bar = new Identifier(mrBar.Name, 1, mrBar.DataType, new RegisterStorage(mrBar));
+			RegisterStorage mrFoo = new RegisterStorage("foo", 1, PrimitiveType.Word32);
+			RegisterStorage mrBar = new RegisterStorage("bar", 2, PrimitiveType.Word32);
+			foo = new Identifier(mrFoo.Name, 0, mrFoo.DataType, mrFoo);
+			bar = new Identifier(mrBar.Name, 1, mrBar.DataType, mrBar);
 
 			var coll = new SsaIdentifierCollection();
             var src = Constant.Word32(1);

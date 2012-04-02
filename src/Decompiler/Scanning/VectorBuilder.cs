@@ -174,9 +174,9 @@ namespace Decompiler.Scanning
             return block.Address;
         }
 
-        public MachineRegister IndexRegister
+        public RegisterStorage IndexRegister
         {
-            get { return bw != null ? bw.Index: MachineRegister.None; }
+            get { return bw != null ? bw.Index: RegisterStorage.None; }
         }
 
         private List<Address> PostError(string err, Address addrInstr, Address addrTable)

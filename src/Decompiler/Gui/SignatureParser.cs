@@ -101,7 +101,7 @@ namespace Decompiler.Gui
             if (w == "void")
                 return null;
             Console.WriteLine(w);
-            MachineRegister reg;
+            RegisterStorage reg;
             if (arch.TryGetRegister(w, out reg))
             {
                 return new SerializedArgument(
@@ -123,7 +123,7 @@ namespace Decompiler.Gui
             var regs = new List<SerializedRegister>();
             foreach (string subReg in subregs)
             {
-                MachineRegister r;
+                RegisterStorage r;
                 if (!arch.TryGetRegister(subReg, out r))
                     return null;
                 regs.Add(new SerializedRegister(r.Name));
@@ -175,7 +175,7 @@ namespace Decompiler.Gui
             if (w == null)
                 return null;
 
-            MachineRegister reg;
+            RegisterStorage reg;
             string type = null;
             if (!arch.TryGetRegister(w, out reg))
             {
@@ -208,13 +208,13 @@ namespace Decompiler.Gui
             return arg;
         }
 
-        private SerializedArgument ParseRegisterSequence(MachineRegister reg, string type)
+        private SerializedArgument ParseRegisterSequence(RegisterStorage reg, string type)
         {
             ++idx;
             string w2 = GetNextWord();
             if (w2 == null)
                 return null;
-            MachineRegister reg2;
+            RegisterStorage reg2;
             if (!arch.TryGetRegister(w2, out reg2))
                 return null;
             var seqArgName = reg.Name + "_" + reg2.Name;

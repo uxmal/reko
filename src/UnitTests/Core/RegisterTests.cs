@@ -28,12 +28,12 @@ using System;
 namespace Decompiler.UnitTests.Core
 {
 	[TestFixture]
-	public class MachineRegisterTests
+	public class RegisterStorageTests
 	{
 		[Test]
 		public void Create()
 		{
-			MachineRegister reg = new MachineRegister("eax", 0, PrimitiveType.Word32);
+			RegisterStorage reg = new RegisterStorage("eax", 0, PrimitiveType.Word32);
 			Assert.AreEqual("eax", reg.Name);
 			Assert.AreEqual(0, reg.Number);
 			Assert.AreEqual("word32", reg.DataType.ToString());

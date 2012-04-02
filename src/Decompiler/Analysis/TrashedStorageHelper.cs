@@ -103,7 +103,7 @@ namespace Decompiler.Analysis
 		public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
 		{
 			if (defining)
-				this.grfDefs |= grf.FlagGroup;
+				this.grfDefs |= grf.FlagGroupBits;
             return grf;
 		}
 

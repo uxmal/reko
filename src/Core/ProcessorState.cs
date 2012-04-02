@@ -32,8 +32,8 @@ namespace Decompiler.Core
 	public interface ProcessorState
 	{
 		ProcessorState Clone();
-        Constant GetRegister(MachineRegister r);
-        void SetRegister(MachineRegister r, Constant v);
+        Constant GetRegister(RegisterStorage r);
+        void SetRegister(RegisterStorage r, Constant v);
 		void SetInstructionPointer(Address addr);
         
         void OnProcedureEntered();                 // Some registers need to be updated when a procedure is entered.

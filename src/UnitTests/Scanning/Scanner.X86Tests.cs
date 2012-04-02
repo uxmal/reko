@@ -98,7 +98,7 @@ namespace Decompiler.UnitTests.Scanning
                 m.Mov(m.ax, 3);
                 m.Push(m.ax);
                 m.Call("p2");
-                m.Mov(m.MemW(Registers.ds, MachineRegister.None, 300), m.ax);
+                m.Mov(m.MemW(Registers.ds, RegisterStorage.None, 300), m.ax);
                 m.Ret();
 
                 m.Proc("p2");

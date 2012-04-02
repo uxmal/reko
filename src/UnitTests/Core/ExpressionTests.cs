@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Core
 
 		public IdentifierTests()
 		{
-			reg = new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax));
+			reg = new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax);
 			outReg = new Identifier("eaxOut", 1, PrimitiveType.Pointer32, new OutArgumentStorage(reg));
 		}
 

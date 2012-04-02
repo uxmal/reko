@@ -62,12 +62,12 @@ namespace Decompiler.UnitTests.Analysis
 
 		}
 
-        private BlockFlow CreateBlockFlow(Block block, Identifier framePointer)
+        private BlockFlow CreateBlockFlow(Block block, Frame frame)
         {
             return new BlockFlow(
                 block,
                 prog.Architecture.CreateRegisterBitset(),
-                new SymbolicEvaluationContext(prog.Architecture, framePointer));
+                new SymbolicEvaluationContext(prog.Architecture, frame));
         }
 
 		/// <summary>
@@ -221,12 +221,12 @@ namespace Decompiler.UnitTests.Analysis
 		{
 			Procedure callee = new Procedure("callee", null);
 			callee.Signature = new ProcedureSignature(
-				new Identifier("eax", -1, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
+				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
 				new Identifier[] {
-					new Identifier("ebx", -1, PrimitiveType.Word32, new RegisterStorage(Registers.ebx)),
-					new Identifier("ecx", -1, PrimitiveType.Word32, new RegisterStorage(Registers.ecx)),
+					new Identifier("ebx", -1, PrimitiveType.Word32, Registers.ebx),
+					new Identifier("ecx", -1, PrimitiveType.Word32, Registers.ecx),
 					new Identifier("edi", -1, PrimitiveType.Word32, new OutArgumentStorage(
-						new Identifier("edi", -1, PrimitiveType.Word32, new RegisterStorage(Registers.edi))))
+						new Identifier("edi", -1, PrimitiveType.Word32, Registers.edi)))
 								 });
 			
 			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;
@@ -243,7 +243,7 @@ namespace Decompiler.UnitTests.Analysis
 			Procedure callee = new Procedure("callee", null);
 			BitSet trash = prog.Architecture.CreateRegisterBitset();
 			callee.Signature = new ProcedureSignature(
-				new Identifier("eax", -1, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
+				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
 				new Identifier[] { new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
 								   new Identifier("arg08", -1, PrimitiveType.Byte, new StackArgumentStorage(8, PrimitiveType.Byte)) });
 
@@ -264,7 +264,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void MarkLiveStackParameters()
 		{
-            Procedure callee = new Procedure("callee", prog.Architecture.CreateFrame());
+            var callee = new Procedure("callee", prog.Architecture.CreateFrame());
 			callee.Frame.ReturnAddressSize = 4;
 			callee.Frame.EnsureStackArgument(0, PrimitiveType.Word32);
 			callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
@@ -286,10 +286,10 @@ namespace Decompiler.UnitTests.Analysis
 		public void PredefinedSignature()
 		{
 			Procedure callee = new Procedure("callee", null);
-			Identifier edx = new Identifier("edx", -1, PrimitiveType.Word32, new RegisterStorage(Registers.edx));
+			Identifier edx = new Identifier("edx", -1, PrimitiveType.Word32, Registers.edx);
 			callee.Signature = new ProcedureSignature(
-				new Identifier("eax", -1, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
-				new Identifier[] { new Identifier("ecx", -1, PrimitiveType.Word32, new RegisterStorage(Registers.ecx)),
+				new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax),
+				new Identifier[] { new Identifier("ecx", -1, PrimitiveType.Word32, Registers.ecx),
 								   new Identifier("arg04", -1, PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
 								   new Identifier("edxOut", -1, PrimitiveType.Word32, new OutArgumentStorage(edx))});
 
@@ -320,7 +320,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState();
-			BlockFlow bf = CreateBlockFlow(proc.ExitBlock, proc.Frame.FramePointer);
+			BlockFlow bf = CreateBlockFlow(proc.ExitBlock, proc.Frame);
 			mpprocflow[proc.ExitBlock] = bf;
 			st.InitializeBlockFlow(proc.ExitBlock, mpprocflow, true);
 			Assert.IsFalse(bf.DataOut[Registers.ebp.Number], "preserved registers cannot be live out");
@@ -333,11 +333,11 @@ namespace Decompiler.UnitTests.Analysis
 		public void TerminatingProcedure()
 		{
 			Procedure terminator = new Procedure("terminator", null);
-			mpprocflow[terminator.ExitBlock] = CreateBlockFlow(terminator.ExitBlock, terminator.Frame.FramePointer);
+			mpprocflow[terminator.ExitBlock] = CreateBlockFlow(terminator.ExitBlock, terminator.Frame);
 			terminator.Signature = new ProcedureSignature(
 				null,
 				new Identifier[] {
-					new Identifier("eax", -1, PrimitiveType.Word32, new RegisterStorage(Registers.eax)) });
+					new Identifier("eax", -1, PrimitiveType.Word32, Registers.eax) });
 			terminator.Characteristics = new ProcedureCharacteristics();
 			terminator.Characteristics.Terminates = true;
 			rl.IdentifierLiveness.BitSet[Registers.eax.Number] = true;

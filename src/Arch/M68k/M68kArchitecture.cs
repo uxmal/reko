@@ -57,28 +57,28 @@ namespace Decompiler.Arch.M68k
             return new Frame(FramePointerType);
         }
 
-        public MachineRegister GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
             return Registers.GetRegister(i);
         }
 
-        public MachineRegister GetRegister(string name)
+        public RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryGetRegister(string name, out MachineRegister reg)
+        public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
 
-        public MachineFlags GetFlagGroup(uint grf)
+        public FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public MachineFlags GetFlagGroup(string name)
+        public FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
@@ -105,6 +105,7 @@ namespace Decompiler.Arch.M68k
         {
             throw new NotSupportedException("M68k architecture doesn't support segmented pointers.");
         }
+
         public BitSet ImplicitArgumentRegisters
         {
             get { throw new NotImplementedException(); }
@@ -131,7 +132,7 @@ namespace Decompiler.Arch.M68k
         }
 
         public uint CarryFlagMask { get { throw new NotImplementedException(); } }
-        public MachineRegister StackRegister { get { return Registers.a7; } }
+        public RegisterStorage StackRegister { get { return Registers.a7; } }
 
 
     }

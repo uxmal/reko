@@ -59,14 +59,14 @@ namespace Decompiler.UnitTests.Analysis
             p = new ProgramBuilder();
         }
 
-        private BlockFlow CreateBlockFlow(Block block, Identifier framePointer)
+        private BlockFlow CreateBlockFlow(Block block, Frame frame)
         {
             var bflow = new BlockFlow(
                 block,
                 prog.Architecture.CreateRegisterBitset(),
                 new SymbolicEvaluationContext(
                     prog.Architecture,
-                    framePointer));
+                    frame));
             flow[block] = bflow;
             return bflow;
         }
@@ -146,7 +146,7 @@ namespace Decompiler.UnitTests.Analysis
         {
             RegisterStorage rst = o as RegisterStorage;
             if (rst != null)
-                return rst.Register.Name;
+                return rst.Name;
             return o.ToString();
         }
 
@@ -157,7 +157,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.Assign(r1, m.Int32(0));
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
 
             stm.Accept(trf);
@@ -172,7 +172,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.Assign(scz, m.Int32(3));
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
             stm.Accept(trf);
             Assert.AreEqual(0x7, trf.TrashedFlags);
@@ -185,7 +185,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.Assign(ax, 1);
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
 
             stm.Accept(trf);
@@ -200,7 +200,7 @@ namespace Decompiler.UnitTests.Analysis
             var ass = m.Assign(r2, r1);
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
 
             ass.Accept(trf);
@@ -218,7 +218,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm3 = m.Assign(r2, m.LoadDw(m.Sub(esp, 0x10)));
 
             trf = CreateTrashedRegisterFinder();
-            var flow = CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            var flow = CreateBlockFlow(m.Block, m.Frame);
             flow.SymbolicIn.SetValue(esp, m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
 
@@ -236,7 +236,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(r2)));
 
             trf = CreateTrashedRegisterFinder();
-            trf.EnsureEvaluationContext(CreateBlockFlow(m.Block, m.Frame.FramePointer));
+            trf.EnsureEvaluationContext(CreateBlockFlow(m.Block, m.Frame));
 
             stm.Instruction.Accept(trf);
             Assert.AreEqual("<invalid>", trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage].ToString());
@@ -252,7 +252,7 @@ namespace Decompiler.UnitTests.Analysis
             flow[callee] = pf;
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
 
             stm.Instruction.Accept(trf);
@@ -263,7 +263,7 @@ namespace Decompiler.UnitTests.Analysis
         public void PropagateToSuccessorBlocks()
         {
             Procedure proc = new Procedure("test", prog.Architecture.CreateFrame());
-            var fp = proc.Frame.FramePointer;
+            var frame = proc.Frame;
             Identifier r1 = m.Register(1);
             Identifier r2 = m.Register(2);
             Identifier r3 = m.Register(3);
@@ -272,11 +272,11 @@ namespace Decompiler.UnitTests.Analysis
             Block e = proc.AddBlock("e");
             proc.ControlGraph.AddEdge(b, e);
             proc.ControlGraph.AddEdge(b, t);
-            flow[t] = new BlockFlow(t, null, new SymbolicEvaluationContext(prog.Architecture, fp));
-            flow[e] = new BlockFlow(e, null, new SymbolicEvaluationContext(prog.Architecture, fp));
+            flow[t] = new BlockFlow(t, null, new SymbolicEvaluationContext(prog.Architecture, frame));
+            flow[e] = new BlockFlow(e, null, new SymbolicEvaluationContext(prog.Architecture, frame));
 
             trf = CreateTrashedRegisterFinder(prog);
-            CreateBlockFlow(b, proc.Frame.FramePointer);
+            CreateBlockFlow(b, frame);
             trf.StartProcessingBlock(b);
             trf.RegisterSymbolicValues[(RegisterStorage)r1.Storage] = Constant.Invalid;
             trf.RegisterSymbolicValues[(RegisterStorage)r2.Storage] = r3;
@@ -305,7 +305,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Label("Start");
             Identifier r1 = m.Register(1);
             trf = CreateTrashedRegisterFinder(prog);
-            CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
 
             trf.StackSymbolicValues[-4] = r1;
@@ -316,7 +316,7 @@ namespace Decompiler.UnitTests.Analysis
             trf.StackSymbolicValues[-24] = m.Word32(0x9ABC);
 
             var succ = new Block(m.Procedure, "succ");
-            var sf = CreateBlockFlow(succ, m.Frame.FramePointer);
+            var sf = CreateBlockFlow(succ, m.Frame);
             flow[succ] = sf;
             sf.SymbolicIn.StackState[-8] = r1;
             sf.SymbolicIn.StackState[-12] = Constant.Word32(1231);
@@ -345,7 +345,7 @@ namespace Decompiler.UnitTests.Analysis
             flow[proc] = new ProcedureFlow(proc, prog.Architecture);
 
             trf = CreateTrashedRegisterFinder();
-            CreateBlockFlow(proc.ExitBlock, proc.Frame.FramePointer);
+            CreateBlockFlow(proc.ExitBlock, proc.Frame);
             trf.StartProcessingBlock(proc.ExitBlock);
 
             trf.RegisterSymbolicValues[(RegisterStorage)eax.Storage] = eax;			// preserved
@@ -367,7 +367,7 @@ namespace Decompiler.UnitTests.Analysis
             var stm = m.Assign(sz, m.Int32(3));
             flow[proc] = new ProcedureFlow(proc, prog.Architecture);
             trf = CreateTrashedRegisterFinder(prog);
-            CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
             stm.Accept(trf);
             trf.PropagateToProcedureSummary(proc);
@@ -404,7 +404,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Assign(eax, m.Int32(3));
             m.Assign(eax, m.LoadDw(m.Sub(esp, 4)));
 
-            flow[m.Block] = CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            flow[m.Block] = CreateBlockFlow(m.Block, m.Frame);
             flow[m.Block].SymbolicIn.SetValue(esp, m.Frame.FramePointer);
             trf = CreateTrashedRegisterFinder(prog);
             trf.ProcessBlock(m.Block);
@@ -418,7 +418,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Assign(eax, m.Word32(0x40));
             m.Call(exit);
 
-            flow[m.Block] = CreateBlockFlow(m.Block, m.Frame.FramePointer);
+            flow[m.Block] = CreateBlockFlow(m.Block, m.Frame);
             flow[exit] = new ProcedureFlow(exit, prog.Architecture);
             flow[exit].TerminatesProcess = true;
             trf = CreateTrashedRegisterFinder(prog);

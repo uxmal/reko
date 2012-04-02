@@ -110,16 +110,15 @@ namespace Decompiler.Analysis
 
 		public virtual void DefinedRegister(RegisterStorage reg)
 		{
-			MachineRegister mr = reg.Register;
-			defOffset = mr.AliasOffset;
-			defBitSize = mr.DataType.BitSize;
-			MachineRegister widestSub = mr.GetWidestSubregister(bits);
+			defOffset = reg.AliasOffset;
+			defBitSize = reg.DataType.BitSize;
+			var widestSub = reg.GetWidestSubregister(bits);
 			if (widestSub != null)
 			{
 				defOffset = Math.Max(widestSub.AliasOffset, defOffset);
 				defBitSize = Math.Min(widestSub.DataType.BitSize, defBitSize);
 			}
-			reg.Register.SetAliases(bits, false);
+			reg.SetAliases(bits, false);
 		}
 
 		public uint Grf
@@ -138,11 +137,11 @@ namespace Decompiler.Analysis
 		{
 			if (define)
 			{
-				this.grf &= ~grf.FlagGroup;
+				this.grf &= ~grf.FlagGroupBits;
 			}
 			else
 			{
-				this.grf |= grf.FlagGroup;
+				this.grf |= grf.FlagGroupBits;
 			}
             return null;
 		}
@@ -172,11 +171,11 @@ namespace Decompiler.Analysis
 			}
 			else
 			{
-				MachineRegister r = (useBitSize == 0)
-					? reg.Register
-					: reg.Register.GetSubregister(useOffset, useBitSize);
+				RegisterStorage r = (useBitSize == 0)
+					? reg
+					: reg.GetSubregister(useOffset, useBitSize);
 				if (r == null)
-					r = reg.Register;
+					r = reg;
 				bits[r.Number] = true;
 			}
             return null;
@@ -291,7 +290,7 @@ namespace Decompiler.Analysis
 				{
 					if (bits[i])
 					{
-						MachineRegister reg = arch.GetRegister(i);
+						var reg = arch.GetRegister(i);
                         if (reg != null && reg.IsAluRegister)
 						{
 							writer.Write(' ');

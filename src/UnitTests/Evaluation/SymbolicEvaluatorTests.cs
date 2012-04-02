@@ -40,13 +40,14 @@ namespace Decompiler.UnitTests.Evaluation
         private SymbolicEvaluator se;
         private SymbolicEvaluationContext ctx;
         private IProcessorArchitecture arch;
+        private Frame frame;
 
         [SetUp]
         public void Setup()
         {
             arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            frame = new Frame(arch.FramePointerType);
         }
-
 
         private Expression GetRegisterState(SymbolicEvaluator se, Identifier id)
         {
@@ -63,9 +64,9 @@ namespace Decompiler.UnitTests.Evaluation
             return new Identifier(name, 1, PrimitiveType.Byte, new TemporaryStorage());
         }
 
-        private void CreateSymbolicEvaluator(Identifier framePointer)
+        private void CreateSymbolicEvaluator(Frame frame)
         {
-            ctx = new SymbolicEvaluationContext(arch, framePointer);
+            ctx = new SymbolicEvaluationContext(arch, frame);
             se = new SymbolicEvaluator(ctx);
         }
 
@@ -74,7 +75,7 @@ namespace Decompiler.UnitTests.Evaluation
             var builder = new ProcedureBuilder(); 
             testBuilder(builder);
             var proc = builder.Procedure;
-            CreateSymbolicEvaluator(proc.Frame.FramePointer);
+            CreateSymbolicEvaluator(proc.Frame);
             proc.ControlGraph.Successors(proc.EntryBlock).First().Statements.ForEach(x => se.Evaluate(x.Instruction));
         }
 
@@ -96,7 +97,7 @@ namespace Decompiler.UnitTests.Evaluation
         {
             var esp = Tmp32("esp");
             var ebp = Tmp32("ebp");
-            CreateSymbolicEvaluator(esp);
+            CreateSymbolicEvaluator(frame);
             var ass = new Assignment(ebp, esp);
             se.Evaluate(ass);
             Assert.AreSame(esp, ctx.TemporaryState[ebp.Storage], "Expected ebp to have the value of esp");
@@ -106,7 +107,7 @@ namespace Decompiler.UnitTests.Evaluation
         public void AdjustValue()
         {
             var esp = Tmp32("esp");
-            CreateSymbolicEvaluator(esp);
+            CreateSymbolicEvaluator(frame);
             var ass = new Assignment(esp, new BinaryExpression(BinaryOperator.Add, esp.DataType, esp, Constant.Word32(4)));
             se.Evaluate(ass);
             Assert.AreEqual("esp + 0x00000004", ctx.TemporaryState[esp.Storage].ToString());

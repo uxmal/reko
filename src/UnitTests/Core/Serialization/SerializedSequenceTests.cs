@@ -39,8 +39,8 @@ namespace Decompiler.UnitTests.Core.Serialization
 		[Test]
 		public void SseqCreate()
 		{
-			Identifier head = new Identifier(Registers.dx.Name, 0, Registers.dx.DataType, new RegisterStorage(Registers.dx));
-			Identifier tail = new Identifier(Registers.ax.Name, 1, Registers.ax.DataType, new RegisterStorage(Registers.ax));
+			Identifier head = new Identifier(Registers.dx.Name, 0, Registers.dx.DataType, Registers.dx);
+			Identifier tail = new Identifier(Registers.ax.Name, 1, Registers.ax.DataType, Registers.ax);
 			Identifier seq = new Identifier("dx_ax", 2, PrimitiveType.Word32, new SequenceStorage(head, tail));
 			SerializedSequence sq = new SerializedSequence((SequenceStorage) seq.Storage);
 			Assert.AreEqual("dx", sq.Registers[0].Name);

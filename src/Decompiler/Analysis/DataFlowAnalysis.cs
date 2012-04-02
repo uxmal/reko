@@ -167,6 +167,8 @@ namespace Decompiler.Analysis
 			eventListener.ShowStatus("Finding trashed registers.");
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
 			trf.Compute();
+            eventListener.ShowStatus("Rewriting affine expressions.");
+            trf.RewriteBasicBlocks();
             eventListener.ShowStatus("Computing register liveness.");
             var rl = RegisterLiveness.Compute(prog, flow, eventListener);
             eventListener.ShowStatus("Rewriting calls.");

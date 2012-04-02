@@ -260,8 +260,8 @@ namespace Decompiler.UnitTests.Typing
         {
             RunTest(delegate(ProcedureBuilder m)
             {
-                Identifier es = m.Frame.EnsureRegister(new MachineRegister("es", 1, PrimitiveType.SegmentSelector));
-                Identifier bx = m.Frame.EnsureRegister(new MachineRegister("bx", 2, PrimitiveType.Word16));
+                Identifier es = m.Frame.EnsureRegister(new RegisterStorage("es", 1, PrimitiveType.SegmentSelector));
+                Identifier bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 2, PrimitiveType.Word16));
                 Identifier es_bx = m.Frame.EnsureSequence(es, bx, PrimitiveType.Pointer32);
                 m.Store(m.Word16(0x300), m.Word16(0));
                 m.Store(m.Word16(0x302), m.Word16(0));

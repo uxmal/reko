@@ -59,10 +59,10 @@ namespace Decompiler.UnitTests.Scanning
         public void Setup()
         {
             frame = arch.CreateFrame();
-            ax = frame.EnsureRegister(new MachineRegister("ax", 0, PrimitiveType.Word16));
-            bx = frame.EnsureRegister(new MachineRegister("bx", 3, PrimitiveType.Word16));
-            cx = frame.EnsureRegister(new MachineRegister("Cx", 1, PrimitiveType.Word16));
-            dx = frame.EnsureRegister(new MachineRegister("dx", 2, PrimitiveType.Word16));
+            ax = frame.EnsureRegister(new RegisterStorage("ax", 0, PrimitiveType.Word16));
+            bx = frame.EnsureRegister(new RegisterStorage("bx", 3, PrimitiveType.Word16));
+            cx = frame.EnsureRegister(new RegisterStorage("Cx", 1, PrimitiveType.Word16));
+            dx = frame.EnsureRegister(new RegisterStorage("dx", 2, PrimitiveType.Word16));
             SCZ = frame.EnsureFlagGroup(7, "SCZ", PrimitiveType.Byte);
             CF = frame.EnsureFlagGroup(1, "C", PrimitiveType.Bool);
             m = new ProcedureBuilder();
