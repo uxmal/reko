@@ -1,0 +1,29 @@
+Mem0:Global memory
+    def:  def Mem0
+    uses: ax_4 = Mem0[esp + 0x00000004:word16]
+fp:Temporary
+    def:  def fp
+esp:Register esp
+    def:  def esp
+    uses: ax_4 = Mem0[esp + 0x00000004:word16]
+ax:Register ax
+    def:  def ax
+wArg0004:StackArgument +0004
+    def:  def wArg0004
+    uses: ax_5 = wArg0004
+ax_5: orig: ax
+    def:  ax_5 = Mem0[esp + 0x00000004:word16]
+// SsaStackReference
+void SsaStackReference()
+SsaStackReference_entry:
+	def Mem0
+	def fp
+	def esp
+	def wArg0004	
+	def ax
+	// succ:  l1
+l1:
+	ax_4 = wArg0004
+	return
+	// succ:  SsaStackReference_exit
+SsaStackReference_exit:

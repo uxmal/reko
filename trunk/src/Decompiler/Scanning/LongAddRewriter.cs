@@ -76,7 +76,7 @@ namespace Decompiler.Scanning
                 var grfDef = ass.Dst.Storage as FlagGroupStorage;
                 if (grfDef == null)
                     continue;
-                if ((arch.CarryFlagMask & grfDef.FlagGroup) != 0)
+                if ((arch.CarryFlagMask & grfDef.FlagGroupBits) != 0)
                     return -1;
             }
             return -1;

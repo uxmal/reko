@@ -191,7 +191,7 @@ namespace Decompiler.Core.Output
                 PrimitiveType t = (PrimitiveType)c.DataType;
                 if (t.Domain == Domain.Boolean)
                 {
-                    writer.Write(Convert.ToBoolean(c) ? "true" : "false");
+                    writer.Write(Convert.ToBoolean(c.GetValue()) ? "true" : "false");
                 }
                 else
                 {

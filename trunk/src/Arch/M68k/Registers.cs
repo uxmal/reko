@@ -47,10 +47,10 @@ namespace Decompiler.Arch.M68k
         public static  AddressRegister a6;
         public static  AddressRegister a7;
 
-        public static readonly MachineRegister ccr;
-        public static readonly MachineRegister sr;
+        public static readonly RegisterStorage ccr;
+        public static readonly RegisterStorage sr;
 
-        private static MachineRegister[] regs;
+        private static RegisterStorage[] regs;
 
         static Registers()
         {
@@ -72,10 +72,10 @@ namespace Decompiler.Arch.M68k
             a6 = new AddressRegister("a6", 14, PrimitiveType.Word32);
             a7 = new AddressRegister("a7", 15, PrimitiveType.Word32);
 
-            ccr = new MachineRegister("ccr", 16, PrimitiveType.Byte);
-            sr = new MachineRegister("sr", 17, PrimitiveType.Byte);
+            ccr = new RegisterStorage("ccr", 16, PrimitiveType.Byte);
+            sr = new RegisterStorage("sr", 17, PrimitiveType.Byte);
 
-            regs = new MachineRegister[] { 
+            regs = new RegisterStorage[] { 
                 d0, 
                 d1, 
                 d2, 
@@ -96,7 +96,7 @@ namespace Decompiler.Arch.M68k
             };
         }
 
-        public static MachineRegister GetRegister(int p)
+        public static RegisterStorage GetRegister(int p)
         {
             return regs[p];
         }
@@ -112,14 +112,14 @@ namespace Decompiler.Arch.M68k
         XF = 16,
     }
 
-    public class AddressRegister : MachineRegister
+    public class AddressRegister : RegisterStorage
     {
         public AddressRegister(string name, int number, PrimitiveType dt) : base(name, number, dt)
         {
         }
     }
 
-    public class DataRegister : MachineRegister
+    public class DataRegister : RegisterStorage
     {
         public DataRegister(string name, int number, PrimitiveType dt) : base(name, number, dt)
         {

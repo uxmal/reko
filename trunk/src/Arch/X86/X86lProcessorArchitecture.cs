@@ -58,12 +58,12 @@ namespace Decompiler.Arch.X86
 	{
 		private BitSet implicitRegs;
 		private ProcessorMode mode;
-		private List<MachineFlags> flagGroups;
+        private List<FlagGroupStorage> flagGroups;
 
 		public IntelArchitecture(ProcessorMode mode)
 		{
 			this.mode = mode;
-			this.flagGroups = new List<MachineFlags>();
+            this.flagGroups = new List<FlagGroupStorage>();
 		
 			implicitRegs = CreateRegisterBitset();
 			implicitRegs[Registers.cs.Number] = true;
@@ -72,7 +72,7 @@ namespace Decompiler.Arch.X86
 			implicitRegs[Registers.esp.Number] = true;
 		}
 
-		public Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
+		public Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
 		{
 			if (mode == ProcessorMode.ProtectedFlat)
 			{
@@ -144,21 +144,21 @@ namespace Decompiler.Arch.X86
                 throw new ApplicationException("Unexpected word width: " + byteSize);
         }
 
-		public MachineFlags GetFlagGroup(uint grf)
+		public FlagGroupStorage GetFlagGroup(uint grf)
 		{
-			foreach (MachineFlags f in flagGroups)
+			foreach (FlagGroupStorage f in flagGroups)
 			{
 				if (f.FlagGroupBits == grf)
 					return f;
 			}
 
 			PrimitiveType dt = IsSingleBit(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            MachineFlags fl = new MachineFlags(GrfToString(grf), grf, dt);
+            var fl = new FlagGroupStorage(grf, GrfToString(grf), dt);
 			flagGroups.Add(fl);
 			return fl;
 		}
 
-		public MachineFlags GetFlagGroup(string name)
+        public FlagGroupStorage GetFlagGroup(string name)
 		{
 			FlagM grf = 0;
 			for (int i = 0; i < name.Length; ++i)
@@ -176,25 +176,24 @@ namespace Decompiler.Arch.X86
 			return GetFlagGroup((uint) grf);
 		}
 
-		public MachineRegister GetRegister(int i)
+		public RegisterStorage GetRegister(int i)
 		{
 			return Registers.GetRegister(i);
 		}
 
-		public MachineRegister GetRegister(string name)
+        public RegisterStorage GetRegister(string name)
 		{
-			MachineRegister r = Registers.GetRegister(name);
-			if (r == MachineRegister.None)
+			var r = Registers.GetRegister(name);
+			if (r == RegisterStorage.None)
 				throw new ArgumentException(string.Format("'{0}' is not a register name.", name));
 			return r;
 		}
 
-        public bool TryGetRegister(string name, out MachineRegister reg)
+        public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             reg = Registers.GetRegister(name);
-            return (reg != MachineRegister.None);
+            return (reg != RegisterStorage.None);
         }
-
 
 		public BitSet ImplicitArgumentRegisters
 		{
@@ -219,7 +218,6 @@ namespace Decompiler.Arch.X86
 			return (u & (u - 1)) == 0;
 		}
 
-
 		public ProcessorMode ProcessorMode
 		{
 			get { return mode; }
@@ -228,7 +226,7 @@ namespace Decompiler.Arch.X86
         public PrimitiveType PointerType { get { return mode.PointerType; } }
         public PrimitiveType WordWidth { get { return mode.WordWidth; } }
         public PrimitiveType FramePointerType { get { return mode.FramePointerType; } }
-        public MachineRegister StackRegister { get { return mode.StackRegister; } }
+        public RegisterStorage StackRegister { get { return mode.StackRegister; } }
         
         public uint CarryFlagMask { get { return (uint)FlagM.CF; } }
     }

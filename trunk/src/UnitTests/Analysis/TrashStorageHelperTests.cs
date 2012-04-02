@@ -61,7 +61,7 @@ namespace Decompiler.UnitTests.Analysis
             var ebx = frame.EnsureRegister(Registers.ebx);
             tsh.Copy(eax, ebx);
             Assert.AreEqual(1, tsh.TrashedRegisters.Count);
-            Assert.AreEqual("ebx", ((RegisterStorage) tsh.TrashedRegisters[eax.Storage]).Register.Name);
+            Assert.AreEqual("ebx", ((RegisterStorage) tsh.TrashedRegisters[eax.Storage]).Name);
         }
 
         [Test]

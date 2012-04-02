@@ -48,27 +48,27 @@ namespace Decompiler.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public MachineRegister GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();
         }
 
-        public MachineRegister GetRegister(string name)
+        public RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryGetRegister(string name, out MachineRegister reg)
+        public bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
 
-        public MachineFlags GetFlagGroup(uint grf)
+        public FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public MachineFlags GetFlagGroup(string name)
+        public FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
@@ -108,7 +108,7 @@ namespace Decompiler.Arch.Arm
             get { return PrimitiveType.Word32; }
         }
 
-        public MachineRegister StackRegister
+        public RegisterStorage StackRegister
         {
             get { return ArmRegisters.r13; }
         }
@@ -123,31 +123,31 @@ namespace Decompiler.Arch.Arm
 
     public static class ArmRegisters
     {
-        public static readonly MachineRegister r0 = new MachineRegister("r0", 0, PrimitiveType.Word32);
-        public static readonly MachineRegister r1 = new MachineRegister("r1", 1, PrimitiveType.Word32);
-        public static readonly MachineRegister r2 = new MachineRegister("r2", 2, PrimitiveType.Word32);
-        public static readonly MachineRegister r3 = new MachineRegister("r3", 3, PrimitiveType.Word32);
+        public static readonly RegisterStorage r0 = new RegisterStorage("r0", 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r1 = new RegisterStorage("r1", 1, PrimitiveType.Word32);
+        public static readonly RegisterStorage r2 = new RegisterStorage("r2", 2, PrimitiveType.Word32);
+        public static readonly RegisterStorage r3 = new RegisterStorage("r3", 3, PrimitiveType.Word32);
 
-        public static readonly MachineRegister r4 = new MachineRegister("r4", 4, PrimitiveType.Word32);
-        public static readonly MachineRegister r5 = new MachineRegister("r5", 5, PrimitiveType.Word32);
-        public static readonly MachineRegister r6 = new MachineRegister("r6", 6, PrimitiveType.Word32);
-        public static readonly MachineRegister r7 = new MachineRegister("r7", 7, PrimitiveType.Word32);
+        public static readonly RegisterStorage r4 = new RegisterStorage("r4", 4, PrimitiveType.Word32);
+        public static readonly RegisterStorage r5 = new RegisterStorage("r5", 5, PrimitiveType.Word32);
+        public static readonly RegisterStorage r6 = new RegisterStorage("r6", 6, PrimitiveType.Word32);
+        public static readonly RegisterStorage r7 = new RegisterStorage("r7", 7, PrimitiveType.Word32);
 
-        public static readonly MachineRegister r8 = new MachineRegister("r8", 8, PrimitiveType.Word32);
-        public static readonly MachineRegister r9 = new MachineRegister("r9", 9, PrimitiveType.Word32);
-        public static readonly MachineRegister r10 = new MachineRegister("r10", 10, PrimitiveType.Word32);
-        public static readonly MachineRegister r11 = new MachineRegister("r11", 11, PrimitiveType.Word32);
+        public static readonly RegisterStorage r8 = new RegisterStorage("r8", 8, PrimitiveType.Word32);
+        public static readonly RegisterStorage r9 = new RegisterStorage("r9", 9, PrimitiveType.Word32);
+        public static readonly RegisterStorage r10 = new RegisterStorage("r10", 10, PrimitiveType.Word32);
+        public static readonly RegisterStorage r11 = new RegisterStorage("r11", 11, PrimitiveType.Word32);
 
-        public static readonly MachineRegister r12 = new MachineRegister("r12", 12, PrimitiveType.Word32);
-        public static readonly MachineRegister r13 = new MachineRegister("r13", 13, PrimitiveType.Word32);
-        public static readonly MachineRegister r14 = new MachineRegister("r14", 14, PrimitiveType.Word32);
-        public static readonly MachineRegister r15 = new MachineRegister("r15", 15, PrimitiveType.Word32);
+        public static readonly RegisterStorage r12 = new RegisterStorage("r12", 12, PrimitiveType.Word32);
+        public static readonly RegisterStorage r13 = new RegisterStorage("r13", 13, PrimitiveType.Word32);
+        public static readonly RegisterStorage r14 = new RegisterStorage("r14", 14, PrimitiveType.Word32);
+        public static readonly RegisterStorage r15 = new RegisterStorage("r15", 15, PrimitiveType.Word32);
 
-        public static readonly MachineRegister[] Registers;
+        public static readonly RegisterStorage[] Registers;
 
         static ArmRegisters()
         {
-            Registers = new MachineRegister[] { r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15 };
+            Registers = new RegisterStorage[] { r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15 };
         }
     }
 }

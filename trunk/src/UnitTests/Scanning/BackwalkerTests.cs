@@ -247,11 +247,12 @@ namespace Decompiler.UnitTests.Scanning
                 new RtlGoto(m.LoadW(m.Add(bx, 0x1234))),
                 "Scanning/BwSwitch16.txt");
         }
+
 		[Test]
 		public void IbwInc()
 		{
             var state = new X86State();
-            var di = new Identifier("di", 0, Registers.di.DataType, new RegisterStorage(Registers.di));
+            var di = new Identifier("di", 0, Registers.di.DataType, Registers.di);
 			Backwalker bw = new Backwalker(host, new RtlGoto(new MemoryAccess(di, di.DataType)),
                 new ExpressionSimplifier(new ScannerEvaluationContext(arch, state)));
 			var instrs = new StatementList(new Block(null, "foo"));

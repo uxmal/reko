@@ -39,7 +39,7 @@ namespace Decompiler.Arch.X86
 		{
 			this.frame = frame;
 			fpuStackDepth = 0;
-			FrameRegister = MachineRegister.None;
+			FrameRegister = RegisterStorage.None;
 		}
 
 		public Address InstructionAddress
@@ -69,9 +69,9 @@ namespace Decompiler.Arch.X86
 		/// Implements a frame shift.
 		/// </summary>
 		/// <param name="regFrame">Register used as a frame register</param>
-		public void EnterFrame(MachineRegister regFrame)
+		public void EnterFrame(RegisterStorage regFrame)
 		{
-            if (FrameRegister == MachineRegister.None)
+            if (FrameRegister == RegisterStorage.None)
             {
                 frame.FrameOffset = StackBytes;
             }
@@ -81,7 +81,7 @@ namespace Decompiler.Arch.X86
 
 		public void LeaveFrame()
 		{
-			FrameRegister = MachineRegister.None;
+			FrameRegister = RegisterStorage.None;
 			StackBytes = frame.FrameOffset;
             FrameOffset = 0;
 		}
@@ -97,7 +97,7 @@ namespace Decompiler.Arch.X86
         /// </summary>
         public int FrameOffset { get; set; }
 
-        public MachineRegister FrameRegister { get; set; }
+        public RegisterStorage FrameRegister { get; set; }
 
 		public void GrowFpuStack(Address addrInstr)
 		{

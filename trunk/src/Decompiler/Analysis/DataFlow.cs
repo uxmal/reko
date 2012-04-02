@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BitSet = Decompiler.Core.Lib.BitSet;
 using Expression = Decompiler.Core.Expressions.Expression;
-using MachineRegister = Decompiler.Core.Machine.MachineRegister;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
 using SortedList = System.Collections.SortedList;
 using Storage = Decompiler.Core.Storage;
@@ -77,7 +76,7 @@ namespace Decompiler.Analysis
 				{
 					if (regs[i])
 					{
-						MachineRegister r = arch.GetRegister(i);
+						var r = arch.GetRegister(i);
 						if (r != null && r.IsAluRegister)
 						{
 							sb.Write(" ");

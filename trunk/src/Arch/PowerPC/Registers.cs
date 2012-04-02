@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Decompiler.Core.Machine;
+using Decompiler.Core;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -29,37 +29,37 @@ namespace Decompiler.Arch.PowerPC
 {
     public static class Registers
     {
-        public static MachineRegister r0 = new MachineRegister("r0", 0, PrimitiveType.Word32);
-        public static MachineRegister r1 = new MachineRegister("r1", 1, PrimitiveType.Word32);
-        public static MachineRegister r2 = new MachineRegister("r2", 2, PrimitiveType.Word32);
-        public static MachineRegister r3 = new MachineRegister("r3", 3, PrimitiveType.Word32);
-        public static MachineRegister r4 = new MachineRegister("r4", 4, PrimitiveType.Word32);
-        public static MachineRegister r5 = new MachineRegister("r5", 5, PrimitiveType.Word32);
-        public static MachineRegister r6 = new MachineRegister("r6", 6, PrimitiveType.Word32);
-        public static MachineRegister r7 = new MachineRegister("r7", 7, PrimitiveType.Word32);
-        public static MachineRegister r8 = new MachineRegister("r8", 8, PrimitiveType.Word32);
-        public static MachineRegister r9 = new MachineRegister("r9", 9, PrimitiveType.Word32);
-        public static MachineRegister r10 = new MachineRegister("r10", 10, PrimitiveType.Word32);
-        public static MachineRegister r11 = new MachineRegister("r11", 11, PrimitiveType.Word32);
-        public static MachineRegister r12 = new MachineRegister("r12", 12, PrimitiveType.Word32);
-        public static MachineRegister r13 = new MachineRegister("r13", 13, PrimitiveType.Word32);
-        public static MachineRegister r14 = new MachineRegister("r14", 14, PrimitiveType.Word32);
-        public static MachineRegister r15 = new MachineRegister("r15", 15, PrimitiveType.Word32);
-        public static MachineRegister r16 = new MachineRegister("r16", 16, PrimitiveType.Word32);
-        public static MachineRegister r17 = new MachineRegister("r17", 17, PrimitiveType.Word32);
-        public static MachineRegister r18 = new MachineRegister("r18", 18, PrimitiveType.Word32);
-        public static MachineRegister r19 = new MachineRegister("r19", 19, PrimitiveType.Word32);
-        public static MachineRegister r20 = new MachineRegister("r20", 20, PrimitiveType.Word32);
-        public static MachineRegister r21 = new MachineRegister("r21", 21, PrimitiveType.Word32);
-        public static MachineRegister r22 = new MachineRegister("r22", 22, PrimitiveType.Word32);
-        public static MachineRegister r23 = new MachineRegister("r23", 23, PrimitiveType.Word32);
-        public static MachineRegister r24 = new MachineRegister("r24", 24, PrimitiveType.Word32);
-        public static MachineRegister r25 = new MachineRegister("r25", 25, PrimitiveType.Word32);
-        public static MachineRegister r26 = new MachineRegister("r26", 26, PrimitiveType.Word32);
-        public static MachineRegister r27 = new MachineRegister("r27", 27, PrimitiveType.Word32);
-        public static MachineRegister r28 = new MachineRegister("r28", 28, PrimitiveType.Word32);
-        public static MachineRegister r29 = new MachineRegister("r29", 29, PrimitiveType.Word32);
-        public static MachineRegister r30 = new MachineRegister("r30", 30, PrimitiveType.Word32);
-        public static MachineRegister r31 = new MachineRegister("r31", 31, PrimitiveType.Word32);
+        public static RegisterStorage r0 = new RegisterStorage("r0", 0, PrimitiveType.Word32);
+        public static RegisterStorage r1 = new RegisterStorage("r1", 1, PrimitiveType.Word32);
+        public static RegisterStorage r2 = new RegisterStorage("r2", 2, PrimitiveType.Word32);
+        public static RegisterStorage r3 = new RegisterStorage("r3", 3, PrimitiveType.Word32);
+        public static RegisterStorage r4 = new RegisterStorage("r4", 4, PrimitiveType.Word32);
+        public static RegisterStorage r5 = new RegisterStorage("r5", 5, PrimitiveType.Word32);
+        public static RegisterStorage r6 = new RegisterStorage("r6", 6, PrimitiveType.Word32);
+        public static RegisterStorage r7 = new RegisterStorage("r7", 7, PrimitiveType.Word32);
+        public static RegisterStorage r8 = new RegisterStorage("r8", 8, PrimitiveType.Word32);
+        public static RegisterStorage r9 = new RegisterStorage("r9", 9, PrimitiveType.Word32);
+        public static RegisterStorage r10 = new RegisterStorage("r10", 10, PrimitiveType.Word32);
+        public static RegisterStorage r11 = new RegisterStorage("r11", 11, PrimitiveType.Word32);
+        public static RegisterStorage r12 = new RegisterStorage("r12", 12, PrimitiveType.Word32);
+        public static RegisterStorage r13 = new RegisterStorage("r13", 13, PrimitiveType.Word32);
+        public static RegisterStorage r14 = new RegisterStorage("r14", 14, PrimitiveType.Word32);
+        public static RegisterStorage r15 = new RegisterStorage("r15", 15, PrimitiveType.Word32);
+        public static RegisterStorage r16 = new RegisterStorage("r16", 16, PrimitiveType.Word32);
+        public static RegisterStorage r17 = new RegisterStorage("r17", 17, PrimitiveType.Word32);
+        public static RegisterStorage r18 = new RegisterStorage("r18", 18, PrimitiveType.Word32);
+        public static RegisterStorage r19 = new RegisterStorage("r19", 19, PrimitiveType.Word32);
+        public static RegisterStorage r20 = new RegisterStorage("r20", 20, PrimitiveType.Word32);
+        public static RegisterStorage r21 = new RegisterStorage("r21", 21, PrimitiveType.Word32);
+        public static RegisterStorage r22 = new RegisterStorage("r22", 22, PrimitiveType.Word32);
+        public static RegisterStorage r23 = new RegisterStorage("r23", 23, PrimitiveType.Word32);
+        public static RegisterStorage r24 = new RegisterStorage("r24", 24, PrimitiveType.Word32);
+        public static RegisterStorage r25 = new RegisterStorage("r25", 25, PrimitiveType.Word32);
+        public static RegisterStorage r26 = new RegisterStorage("r26", 26, PrimitiveType.Word32);
+        public static RegisterStorage r27 = new RegisterStorage("r27", 27, PrimitiveType.Word32);
+        public static RegisterStorage r28 = new RegisterStorage("r28", 28, PrimitiveType.Word32);
+        public static RegisterStorage r29 = new RegisterStorage("r29", 29, PrimitiveType.Word32);
+        public static RegisterStorage r30 = new RegisterStorage("r30", 30, PrimitiveType.Word32);
+        public static RegisterStorage r31 = new RegisterStorage("r31", 31, PrimitiveType.Word32);
     }
 }

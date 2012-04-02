@@ -21,10 +21,13 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	cl = cl ^ 0x11
 	cl = cl | Mem0[ds:bx + 0x0003:byte]
 	cx = DPB(cx, cl, 0, 8) (alias)
+	SZO = cond(cl)
+	C = false
 	al = al | cl
 	ax = DPB(ax, al, 0, 8) (alias)
-	SCZO = cond(al)
+	SZO = cond(al)
+	C = false
+	SCZO = C (alias)
 	bx = ax
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
+fn0C00_0000_exit:

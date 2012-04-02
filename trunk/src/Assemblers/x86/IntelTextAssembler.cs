@@ -133,12 +133,12 @@ namespace Decompiler.Assemblers.x86
 		{
             OperandParser opp = asm.CreateOperandParser(lexer);
             List<ParsedOperand> ops = new List<ParsedOperand>();
-			emitter.SegmentOverride = MachineRegister.None;
+			emitter.SegmentOverride = RegisterStorage.None;
 			emitter.AddressWidth = emitter.SegmentAddressWidth;
 			if (lexer.PeekToken() != Token.EOL)
 			{
 				ops.Add(opp.ParseOperand());
-				if (opp.SegmentOverride != MachineRegister.None)
+				if (opp.SegmentOverride != RegisterStorage.None)
 					emitter.SegmentOverride = opp.SegmentOverride;
 				if (opp.AddressWidth != null)
 					emitter.AddressWidth = opp.AddressWidth;
@@ -148,9 +148,9 @@ namespace Decompiler.Assemblers.x86
 					lexer.DiscardToken();
 					opp.DataWidth = ops[0].Operand.Width;
 					ops.Add(opp.ParseOperand());
-					if (opp.SegmentOverride != MachineRegister.None)
+					if (opp.SegmentOverride != RegisterStorage.None)
 					{
-						if (emitter.SegmentOverride != MachineRegister.None)
+						if (emitter.SegmentOverride != RegisterStorage.None)
 							Error("Can't have two segment overrides in one instruction");
 						emitter.SegmentOverride = opp.SegmentOverride;
 					}

@@ -172,8 +172,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[Test]
 		public void IaGetFlagGroup1()
 		{
-			MachineFlags s1 = arch.GetFlagGroup("S");
-			MachineFlags s2 = arch.GetFlagGroup("S");
+			var s1 = arch.GetFlagGroup("S");
+			var s2 = arch.GetFlagGroup("S");
 			Assert.AreEqual("S", s1.Name);
 			Assert.AreSame(s1, s2);
 			Assert.AreEqual(PrimitiveType.Bool, s1.DataType);
@@ -183,7 +183,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		[Test]
 		public void IaGetFlagGroup2()
 		{
-			MachineFlags sz = arch.GetFlagGroup("ZS");
+			var sz = arch.GetFlagGroup("ZS");
 			Assert.AreEqual("SZ", sz.Name);
 			Assert.AreEqual(PrimitiveType.Byte, sz.DataType);
 		}

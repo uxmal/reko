@@ -34,7 +34,6 @@ using Frame = Decompiler.Core.Frame;
 using Identifier = Decompiler.Core.Expressions.Identifier;
 using Instruction = Decompiler.Core.Code.Instruction;
 using IProcessorArchitecture = Decompiler.Core.IProcessorArchitecture;
-using MachineRegister = Decompiler.Core.Machine.MachineRegister;
 using Operator = Decompiler.Core.Operators.Operator;
 using OutArgumentStorage = Decompiler.Core.OutArgumentStorage;
 using PrimtiveType = Decompiler.Core.Types.PrimitiveType;
@@ -259,7 +258,7 @@ namespace Decompiler.Analysis
 		/// <returns></returns>
 		private bool IsSubRegisterOfRegisters(int r, BitSet regs)
 		{
-			MachineRegister rr = prog.Architecture.GetRegister(r);
+			var rr = prog.Architecture.GetRegister(r);
 			foreach (int r2 in regs)
 			{
 				if (rr.IsSubRegisterOf(prog.Architecture.GetRegister(r2)))

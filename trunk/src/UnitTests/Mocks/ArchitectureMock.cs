@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Mocks
 	/// </remarks>
 	public class ArchitectureMock : IProcessorArchitecture
 	{
-		private static MachineRegister [] registers;
+		private static RegisterStorage [] registers;
 		private BitSet implicitRegs;
         private Dictionary<uint, FakeRewriter> rewriters;
 
@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		static ArchitectureMock()
 		{
-			registers = new MachineRegister[RegisterCount];
+			registers = new RegisterStorage[RegisterCount];
 			for (int i = 0; i < registers.Length; ++i)
 			{
 				registers[i] = new MockMachineRegister("r" + i, i, PrimitiveType.Word32);
@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Mocks
             rewriters.Add(address.Linear, rewriter);
         }
 
-		public static MachineRegister GetMachineRegister(int i)
+		public static RegisterStorage GetMachineRegister(int i)
 		{
 			return registers[i];
 		}
@@ -98,30 +98,30 @@ namespace Decompiler.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-		public MachineFlags GetFlagGroup(uint grf)
+        public FlagGroupStorage GetFlagGroup(uint grf)
 		{
 			return null;
 		}
 
-		public MachineFlags GetFlagGroup(string name)
+		public FlagGroupStorage GetFlagGroup(string name)
 		{
 			return null;
 		}
 
-        public MachineRegister GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
             if (0 <= i && i < registers.Length)
                 return registers[i];
             return null;
         }
 
-        public bool TryGetRegister(string name, out MachineRegister result)
+        public bool TryGetRegister(string name, out RegisterStorage result)
         {
             result = null;
             return false;
         }
 
-		public MachineRegister GetRegister(string s)
+		public RegisterStorage GetRegister(string s)
 		{
 			return null;
 		}
@@ -181,7 +181,7 @@ namespace Decompiler.UnitTests.Mocks
 		}
 
         public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
-        public MachineRegister StackRegister { get { return GetRegister(ArchitectureMock.iStackRegister); } }
+        public RegisterStorage StackRegister { get { return GetRegister(ArchitectureMock.iStackRegister); } }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
@@ -192,16 +192,16 @@ namespace Decompiler.UnitTests.Mocks
         #endregion
     }
 
-	public class MockMachineRegister : MachineRegister
+	public class MockMachineRegister : RegisterStorage
 	{
 		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, dt) { }
 
-		public override MachineRegister GetSubregister(int offset, int size)
+        public override RegisterStorage GetSubregister(int offset, int size)
 		{
 			return this;
 		}
 
-		public override MachineRegister GetWidestSubregister(BitSet bits)
+		public override RegisterStorage GetWidestSubregister(BitSet bits)
 		{
 			return (bits[Number])
 				? this
@@ -211,7 +211,7 @@ namespace Decompiler.UnitTests.Mocks
 
 	public class FakeProcessorState : ProcessorState
 	{
-        private Dictionary<MachineRegister, Constant> regValues = new Dictionary<MachineRegister, Constant>();
+        private Dictionary<RegisterStorage, Constant> regValues = new Dictionary<RegisterStorage, Constant>();
         private SortedList<int, Constant> stackValues = new SortedList<int, Constant>();
 
 		public ProcessorState Clone()
@@ -219,7 +219,7 @@ namespace Decompiler.UnitTests.Mocks
 			return new FakeProcessorState();
 		}
 
-		public Constant GetRegister(MachineRegister r)
+		public Constant GetRegister(RegisterStorage r)
 		{
             Constant c;
             if (!regValues.TryGetValue(r, out c))
@@ -237,7 +237,7 @@ namespace Decompiler.UnitTests.Mocks
         {
         }
 
-		public void SetRegister(MachineRegister r, Constant v)
+		public void SetRegister(RegisterStorage r, Constant v)
 		{
             regValues[r] = v;
 		}

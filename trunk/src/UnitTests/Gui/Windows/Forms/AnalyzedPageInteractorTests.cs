@@ -125,7 +125,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Show();
             Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
-                new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
+                new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
                     new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
@@ -153,7 +153,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             form.Show();
             Procedure p = new Procedure("foo_proc", prog.Architecture.CreateFrame());
             p.Signature = new ProcedureSignature(
-                new Identifier("eax", 0, PrimitiveType.Word32, new RegisterStorage(Registers.eax)),
+                new Identifier("eax", 0, PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
                     new Identifier("arg04", 1, PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });

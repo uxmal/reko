@@ -28,7 +28,7 @@ using System.Text;
 namespace Decompiler.UnitTests.Analysis
 {
     [TestFixture]
-    class DominatorGraphTests : AnalysisTestBase
+    public class DominatorGraphTests : AnalysisTestBase
     {
         [Test]
         public void DgWhileGoto()

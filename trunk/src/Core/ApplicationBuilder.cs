@@ -94,6 +94,8 @@ namespace Decompiler.Core
 
 		public Expression Bind(Identifier id)
 		{
+            if (id == null)
+                return null;
             return id.Storage.Accept(this);
 		}
 
@@ -120,7 +122,7 @@ namespace Decompiler.Core
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return frame.EnsureFlagGroup(grf.FlagGroup, grf.Name, PrimitiveType.Byte);		//$REVIEW: PrimitiveType.Byte is hard-wired here.
+            return frame.EnsureFlagGroup(grf.FlagGroupBits, grf.Name, PrimitiveType.Byte);		//$REVIEW: PrimitiveType.Byte is hard-wired here.
         }
 
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)
@@ -145,7 +147,7 @@ namespace Decompiler.Core
 
         public Expression VisitRegisterStorage(RegisterStorage reg)
         {
-			return frame.EnsureRegister(reg.Register);
+			return frame.EnsureRegister(reg);
         }
 
         public Expression VisitSequenceStorage(SequenceStorage seq)

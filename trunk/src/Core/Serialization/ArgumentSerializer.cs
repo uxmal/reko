@@ -76,14 +76,14 @@ namespace Decompiler.Core.Serialization
 
 		public void Deserialize(SerializedFlag flag)
 		{
-			MachineFlags flags = arch.GetFlagGroup(flag.Name);
+			var flags = arch.GetFlagGroup(flag.Name);
 			idArg = frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, flags.DataType);
 		}
 			
 		public void Deserialize(SerializedSequence sq)
 		{
-			MachineRegister h = arch.GetRegister(sq.Registers[0].Name.Trim());
-			MachineRegister t = arch.GetRegister(sq.Registers[1].Name.Trim());
+			var h = arch.GetRegister(sq.Registers[0].Name.Trim());
+			var t = arch.GetRegister(sq.Registers[1].Name.Trim());
 			Identifier head = frame.EnsureRegister(h);
 			Identifier tail = frame.EnsureRegister(t);
 			idArg = frame.EnsureSequence(head, tail, 

@@ -43,7 +43,7 @@ namespace Decompiler.Core
 
 	public class RegValue
 	{
-		public MachineRegister Register;
+		public RegisterStorage Register;
 		public int Value;
 	}
 

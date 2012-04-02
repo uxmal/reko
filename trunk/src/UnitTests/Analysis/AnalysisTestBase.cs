@@ -144,18 +144,6 @@ namespace Decompiler.UnitTests.Analysis
             return prog;
         }
 
-        [Obsolete]
-		protected Program RewriteCodeFragmentOld(string s)
-		{
-			Program prog = new Program();
-			prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            Assembler asm = new IntelTextAssembler();
-			asm.AssembleFragment(new Address(0xC00, 0), s);
-            prog.Image = asm.Image;
-			Rewrite(prog, asm, null);
-			return prog;
-		}
-
         private void Rewrite(Program prog, Assembler asm, string configFile)
         {
             var scan = new Scanner(prog, 

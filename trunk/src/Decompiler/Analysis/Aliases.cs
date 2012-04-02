@@ -325,7 +325,7 @@ namespace Decompiler.Analysis
 
         public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            liveVars[idCur.Number] = (grf.FlagGroup & liveGrf) != 0;
+            liveVars[idCur.Number] = (grf.FlagGroupBits & liveGrf) != 0;
             return null;
         }
 
@@ -351,7 +351,7 @@ namespace Decompiler.Analysis
 
         public Storage VisitRegisterStorage(RegisterStorage reg)
         {
-            liveVars[idCur.Number] = liveRegs[reg.Register.Number];
+            liveVars[idCur.Number] = liveRegs[reg.Number];
             return null;
         }
 

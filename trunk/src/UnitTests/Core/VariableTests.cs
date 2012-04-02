@@ -36,9 +36,9 @@ namespace Decompiler.UnitTests.Core
 		[Test]
 		public void CreateOutArgumentRegister()
 		{
-			MachineRegister mr = new MachineRegister("r1", 1, PrimitiveType.Word32);
+			RegisterStorage mr = new RegisterStorage("r1", 1, PrimitiveType.Word32);
 			Identifier oarg = new Identifier("r1Out", 2, PrimitiveType.Word32, new OutArgumentStorage(
-				new Identifier(mr.Name, 3, PrimitiveType.Word32, new RegisterStorage(mr))));
+				new Identifier(mr.Name, 3, PrimitiveType.Word32, mr)));
 			StringWriter w = new StringWriter();
 			oarg.Write(true, w);
 			Assert.AreEqual("Register out word32 r1Out", w.ToString());

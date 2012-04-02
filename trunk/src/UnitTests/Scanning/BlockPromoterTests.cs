@@ -81,7 +81,7 @@ fn00123440_exit
         private static void BuildSimpleProc(out ProcedureBuilder m, out Block blockToPromote)
         {
             m = new ProcedureBuilder("fn00123440");
-            var r0 = m.Frame.EnsureRegister(new MachineRegister("r0", 0, PrimitiveType.Word32));
+            var r0 = m.Frame.EnsureRegister(new RegisterStorage("r0", 0, PrimitiveType.Word32));
             m.Assign(r0, 1);
             blockToPromote = m.Label("blockToPromote");
             m.Store(m.Word32(0x123456), r0);

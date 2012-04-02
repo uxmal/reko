@@ -33,7 +33,7 @@ namespace Decompiler.UnitTests.Analysis
 	[TestFixture]
 	public class SsaTests : AnalysisTestBase
 	{
-		private SsaState ssa; 
+		private SsaState ssa;
 
 		[Test]
 		public void SsaSimple()
@@ -153,6 +153,18 @@ namespace Decompiler.UnitTests.Analysis
 
         }
 
+        [Test]
+        public void SsaStackReference_Load()
+        {
+            var m = new ProcedureBuilder("SsaStackReference");
+            var esp = EnsureRegister32(m, "esp");
+            var ax = EnsureRegister16(m, "ax");
+            m.Assign(ax, m.LoadW(m.Add(esp, 4)));
+            m.Return();
+
+            RunUnitTest(m, "Analysis/SsaStackReference.txt");
+        }
+
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
             var proc = m.Procedure;
@@ -166,9 +178,14 @@ namespace Decompiler.UnitTests.Analysis
             }
         }
 
+        private Identifier EnsureRegister16(ProcedureBuilder m, string name)
+        {
+            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, PrimitiveType.Word16));
+        }
+
         private Identifier EnsureRegister32(ProcedureBuilder m, string name)
         {
-            return m.Frame.EnsureRegister(new MachineRegister(name, m.Frame.Identifiers.Count, PrimitiveType.Word32));
+            return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, PrimitiveType.Word32));
         }
 
 		protected override void RunTest(Program prog, FileUnitTester fut)

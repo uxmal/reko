@@ -44,7 +44,7 @@ namespace Decompiler.UnitTests.Core
 		public void UseCreateWithArg()
 		{
 			var id2 = new Identifier("bar", -1, PrimitiveType.Word32, new TemporaryStorage());
-			var r = new Identifier(Registers.edx.Name, 2, Registers.edx.DataType, new RegisterStorage(Registers.edx));
+			var r = new Identifier(Registers.edx.Name, 2, Registers.edx.DataType, Registers.edx);
 			var arg = new Identifier("barOut", 3, PrimitiveType.Pointer32, new OutArgumentStorage(r));
 			var use2 = new UseInstruction(id2, arg);
 			Assert.AreSame(id2, use2.Expression);
@@ -58,7 +58,7 @@ namespace Decompiler.UnitTests.Core
 			var use = new UseInstruction(id1);
 			Assert.AreEqual("use foo", use.ToString());
 
-			var r = new Identifier(Registers.edx.Name, 3, Registers.edx.DataType, new RegisterStorage(Registers.edx));
+			var r = new Identifier(Registers.edx.Name, 3, Registers.edx.DataType, Registers.edx);
 			var arg = new Identifier("edxOut", 4, PrimitiveType.Pointer32, new OutArgumentStorage(r));
 			use = new UseInstruction(id1, arg);
 			Assert.AreEqual("use foo (=> edxOut)" , use.ToString());

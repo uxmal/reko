@@ -92,10 +92,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 
         private Identifier Reg(IntelRegister r)
         {
-            return new Identifier(r.Name, 0, r.DataType, new RegisterStorage(r));
+            return new Identifier(r.Name, 0, r.DataType, r);
         }
-
-
 
         private MemoryOperand Mem16(RegisterOperand reg, int offset)
         {

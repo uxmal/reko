@@ -170,9 +170,9 @@ namespace Decompiler.Core
 	public class VectorUse
 	{
 		public Address TableAddress;
-		public MachineRegister IndexRegister;
+		public RegisterStorage IndexRegister;
 
-		public VectorUse(Address tblAddr, MachineRegister idxReg)
+		public VectorUse(Address tblAddr, RegisterStorage idxReg)
 		{
 			TableAddress = tblAddr;
 			IndexRegister = idxReg;

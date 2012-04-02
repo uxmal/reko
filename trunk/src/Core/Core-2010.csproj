@@ -338,7 +338,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LinearInductionVariable.cs" />
-    <Compile Include="Machine\MachineFlags.cs" />
     <Compile Include="Machine\MachineInstruction.cs" />
     <Compile Include="Machine\MachineOperand.cs" />
     <Compile Include="Machine\MachineRegister.cs" />

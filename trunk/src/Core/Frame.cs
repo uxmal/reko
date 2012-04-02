@@ -114,7 +114,7 @@ namespace Decompiler.Core
 			Identifier id = FindFlagGroup(grfMask);
 			if (id == null)
 			{
-				id = new Identifier(name, identifiers.Count, dt, new FlagGroupStorage(grfMask, name));
+				id = new Identifier(name, identifiers.Count, dt, new FlagGroupStorage(grfMask, name, dt));
 				identifiers.Add(id);
 			}
 			return id;
@@ -140,12 +140,12 @@ namespace Decompiler.Core
 		/// <param name="name"></param>
 		/// <param name="vt"></param>
 		/// <returns></returns>
-		public Identifier EnsureRegister(MachineRegister reg)
+		public Identifier EnsureRegister(RegisterStorage reg)
 		{
 			Identifier id = FindRegister(reg);
 			if (id == null)
 			{
-				id = new Identifier(reg.Name, identifiers.Count, reg.DataType, new RegisterStorage(reg));
+				id = new Identifier(reg.Name, identifiers.Count, reg.DataType, reg);
 				identifiers.Add(id);
 			}
 			return id;
@@ -317,7 +317,7 @@ namespace Decompiler.Core
 			foreach (Identifier id in identifiers)
 			{
 				FlagGroupStorage flags = id.Storage as FlagGroupStorage;
-				if (flags != null && flags.FlagGroup == grfMask)
+				if (flags != null && flags.FlagGroupBits == grfMask)
 				{
 					return id;
 				}
@@ -350,12 +350,12 @@ namespace Decompiler.Core
 		}
 
 
-		public Identifier FindRegister(MachineRegister reg)
+		public Identifier FindRegister(RegisterStorage reg)
 		{
 			foreach (Identifier id in identifiers)
 			{
 				RegisterStorage s = id.Storage as RegisterStorage;
-				if (s != null && s.Register == reg)
+				if (s == reg)
 					return id;
 			}
 			return null;

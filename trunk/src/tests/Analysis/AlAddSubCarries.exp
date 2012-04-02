@@ -1,5 +1,6 @@
 Mem0:Global memory (aliases:)
 fp:Temporary (aliases:)
+sp:Register sp (aliases:)
 ds:Register ds (aliases:)
 ax:Register ax (aliases: dx_ax)
 dx:Register dx (aliases: dx_ax)
@@ -16,9 +17,9 @@ C:Flags (aliases: SCZO)
 v15:Temporary (aliases:)
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	ax = Mem0[ds:0x0200:word16]
 	dx = Mem0[ds:0x0202:word16]
 	dx_ax = SEQ(dx, ax) (alias)
@@ -60,6 +61,5 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	store(Mem0[ds:0x0222:word16]) = ax
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 

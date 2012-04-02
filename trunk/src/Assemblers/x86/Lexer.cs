@@ -38,7 +38,7 @@ namespace Decompiler.Assemblers.x86
 		private Token tok;
 		private int lineNumber;
 		private StringBuilder sb;
-		private MachineRegister reg;
+		private RegisterStorage reg;
 		private int integer;
 
         private static SortedList<string, Token> keywords = new SortedList<string, Token>(StringComparer.InvariantCultureIgnoreCase);
@@ -218,8 +218,8 @@ namespace Decompiler.Assemblers.x86
             Token tok;
             if (keywords.TryGetValue(s, out tok))
                 return tok;
-			MachineRegister reg = Registers.GetRegister(s);
-			if (reg != MachineRegister.None)
+			RegisterStorage reg = Registers.GetRegister(s);
+			if (reg != RegisterStorage.None)
 			{
 				this.reg = reg;
 				return Token.REGISTER;
@@ -381,7 +381,7 @@ namespace Decompiler.Assemblers.x86
 			return tok;
 		}
 
-		public MachineRegister Register
+		public RegisterStorage Register
 		{
 			get { return reg; }
 		}

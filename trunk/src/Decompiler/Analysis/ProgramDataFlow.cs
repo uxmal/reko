@@ -51,7 +51,7 @@ namespace Decompiler.Analysis
                         prog.Architecture.CreateRegisterBitset(),
                         new SymbolicEvaluationContext(
                             prog.Architecture,
-                            proc.Frame.FramePointer));
+                            proc.Frame));
 				}
 			}
 		}

@@ -56,37 +56,37 @@ namespace Decompiler.Arch.M68k
 
     public class MemoryOperand : MachineOperand
     {
-        public MachineRegister Base;
+        public RegisterStorage Base;
         public Constant Offset;
 
-        public MemoryOperand(PrimitiveType dataWidth, MachineRegister baseReg)
+        public MemoryOperand(PrimitiveType dataWidth, RegisterStorage baseReg)
             : base(dataWidth)
         {
             this.Base = baseReg;
         }
-        public MemoryOperand(PrimitiveType dataWidth, MachineRegister baseReg, Constant offset)
+        public MemoryOperand(PrimitiveType dataWidth, RegisterStorage baseReg, Constant offset)
             : base(dataWidth)
         {
             this.Base = baseReg;
             this.Offset = offset;
         }
 
-        public static MemoryOperand Indirect(PrimitiveType dataWidth, MachineRegister baseReg)
+        public static MemoryOperand Indirect(PrimitiveType dataWidth, RegisterStorage baseReg)
         {
             return new MemoryOperand(dataWidth, baseReg);
         }
 
-        public static MachineOperand Indirect(PrimitiveType dataWidth, MachineRegister baseReg, Constant offset)
+        public static MachineOperand Indirect(PrimitiveType dataWidth, RegisterStorage baseReg, Constant offset)
         {
             return new MemoryOperand(dataWidth, baseReg, offset);
         }
 
-        public static MachineOperand PreDecrement(PrimitiveType dataWidth, MachineRegister baseReg)
+        public static MachineOperand PreDecrement(PrimitiveType dataWidth, RegisterStorage baseReg)
         {
             return new PredecrementMemoryOperand(dataWidth, baseReg);
         }
 
-        public static MachineOperand PostIncrement(PrimitiveType dataWidth, MachineRegister baseReg)
+        public static MachineOperand PostIncrement(PrimitiveType dataWidth, RegisterStorage baseReg)
         {
             return new PostIncrementMemoryOperand(dataWidth, baseReg);
         }
@@ -95,9 +95,9 @@ namespace Decompiler.Arch.M68k
 
     public class PredecrementMemoryOperand : M68kOperandImpl
     {
-        public readonly MachineRegister Register;
+        public readonly RegisterStorage Register;
 
-        public PredecrementMemoryOperand(PrimitiveType dataWidth, MachineRegister areg)
+        public PredecrementMemoryOperand(PrimitiveType dataWidth, RegisterStorage areg)
             : base(dataWidth)
         {
             this.Register = areg;
@@ -111,9 +111,9 @@ namespace Decompiler.Arch.M68k
 
     public class PostIncrementMemoryOperand : M68kOperandImpl
     {
-        public readonly MachineRegister Register;
+        public readonly RegisterStorage Register;
 
-        public PostIncrementMemoryOperand(PrimitiveType dataWidth, MachineRegister areg)
+        public PostIncrementMemoryOperand(PrimitiveType dataWidth, RegisterStorage areg)
             : base(dataWidth)
         {
             this.Register = areg;

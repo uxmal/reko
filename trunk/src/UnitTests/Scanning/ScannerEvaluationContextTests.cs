@@ -34,7 +34,7 @@ namespace Decompiler.UnitTests.Scanning
     [TestFixture]
     public class ScannerEvaluationContextTests
     {
-        private MachineRegister sp;
+        private RegisterStorage sp;
         private FakeArchitecture arch;
         private FakeProcessorState state;
         private ScannerEvaluationContext sce;
@@ -44,14 +44,14 @@ namespace Decompiler.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            sp = new MachineRegister("sp", 42, PrimitiveType.Pointer32);
+            sp = new RegisterStorage("sp", 42, PrimitiveType.Pointer32);
             arch = new FakeArchitecture();
             arch.StackRegister = sp;
 
             state = new FakeProcessorState();
             sce = new ScannerEvaluationContext(arch, state);
 
-            idSp = new Identifier(sp.Name, 1, sp.DataType, new RegisterStorage(sp));
+            idSp = new Identifier(sp.Name, 1, sp.DataType, sp);
             m = new ExpressionEmitter();
         }
 
@@ -71,7 +71,6 @@ namespace Decompiler.UnitTests.Scanning
 
             Assert.AreEqual("0x12345678", sce.GetValue(m.LoadDw(idSp)).ToString());
         }
-
 
         public class FakeArchitecture : IProcessorArchitecture
         {
@@ -107,32 +106,32 @@ namespace Decompiler.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-            public MachineRegister GetRegister(int i)
+            public RegisterStorage GetRegister(int i)
             {
                 throw new NotImplementedException();
             }
 
-            public MachineRegister GetRegister(string name)
+            public RegisterStorage GetRegister(string name)
             {
                 throw new NotImplementedException();
             }
 
-            public bool TryGetRegister(string name, out MachineRegister reg)
+            public bool TryGetRegister(string name, out RegisterStorage reg)
             {
                 throw new NotImplementedException();
             }
 
-            public MachineFlags GetFlagGroup(uint grf)
+            public FlagGroupStorage GetFlagGroup(uint grf)
             {
                 throw new NotImplementedException();
             }
 
-            public MachineFlags GetFlagGroup(string name)
+            public FlagGroupStorage GetFlagGroup(string name)
             {
                 throw new NotImplementedException();
             }
 
-            public Expression CreateStackAccess(Frame frame, int cbOffset, Decompiler.Core.Types.DataType dataType)
+            public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
             {
                 throw new NotImplementedException();
             }
@@ -167,7 +166,7 @@ namespace Decompiler.UnitTests.Scanning
                 get { throw new NotImplementedException(); }
             }
 
-            public MachineRegister StackRegister { get; set; }
+            public RegisterStorage StackRegister { get; set; }
 
             public uint CarryFlagMask
             {
@@ -179,7 +178,7 @@ namespace Decompiler.UnitTests.Scanning
 
         public class FakeProcessorState : ProcessorState
         {
-            private Dictionary<MachineRegister, Constant> regs = new Dictionary<MachineRegister, Constant>();
+            private Dictionary<RegisterStorage, Constant> regs = new Dictionary<RegisterStorage, Constant>();
             private SortedList<int, Constant> stack = new SortedList<int, Constant>();
             #region ProcessorState Members
 
@@ -188,7 +187,7 @@ namespace Decompiler.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-            public Constant GetRegister(MachineRegister r)
+            public Constant GetRegister(RegisterStorage r)
             {
                 Constant c;
                 if (!regs.TryGetValue(r, out c))
@@ -196,7 +195,7 @@ namespace Decompiler.UnitTests.Scanning
                 return c;
             }
 
-            public void SetRegister(MachineRegister r, Constant v)
+            public void SetRegister(RegisterStorage r, Constant v)
             {
                 throw new NotImplementedException();
             }

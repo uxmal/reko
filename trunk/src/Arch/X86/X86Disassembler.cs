@@ -40,7 +40,7 @@ namespace Decompiler.Arch.X86
 		private PrimitiveType defaultAddressWidth;
 		private byte modrm;
 		private bool isModrmValid;
-		private MachineRegister segmentOverride;
+		private RegisterStorage segmentOverride;
 		private ImageReader	rdr;
 
 		/// <summary>
@@ -288,7 +288,7 @@ namespace Decompiler.Arch.X86
 			dataWidth = defaultDataWidth;
 			addressWidth = defaultAddressWidth;
 			isModrmValid = false;
-			segmentOverride = MachineRegister.None;
+			segmentOverride = RegisterStorage.None;
             byte op = rdr.ReadByte();
             return s_aOpRec[op].Decode(this, op, "");
         }
@@ -461,16 +461,16 @@ namespace Decompiler.Arch.X86
 			Registers.bx,
 		};
 
-		private static MachineRegister [] s_ma16Index =
+		private static RegisterStorage [] s_ma16Index =
 		{
 			Registers.si,	 
 			Registers.di,	 
 			Registers.si,	 
 			Registers.di,	 
-			MachineRegister.None,
-			MachineRegister.None,
-			MachineRegister.None,
-			MachineRegister.None,
+			RegisterStorage.None,
+			RegisterStorage.None,
+			RegisterStorage.None,
+			RegisterStorage.None,
 		};
 
 
@@ -479,15 +479,15 @@ namespace Decompiler.Arch.X86
 			return new ImmediateOperand(rdr.ReadLe(immWidth));
 		}
 
-		private MachineOperand DecodeModRM(PrimitiveType dataWidth, MachineRegister segOverride)
+		private MachineOperand DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride)
 		{
 			EnsureModRM();
 
 			int  rm = this.modrm & 0x07;
 			int  mod = this.modrm >> 6;
 
-			MachineRegister b;
-            MachineRegister idx;
+			RegisterStorage b;
+            RegisterStorage idx;
 			byte scale = 1;
 			PrimitiveType offsetWidth = null;
 
@@ -505,8 +505,8 @@ namespace Decompiler.Arch.X86
 					if (rm == 0x06)
 					{
 						offsetWidth = PrimitiveType.Word16;
-						b = MachineRegister.None;
-						idx = MachineRegister.None;
+						b = RegisterStorage.None;
+						idx = RegisterStorage.None;
 					}
 					else
 					{
@@ -526,7 +526,7 @@ namespace Decompiler.Arch.X86
 			else 
 			{
 				b = RegFromBits(rm, addressWidth);
-				idx = MachineRegister.None;
+				idx = RegisterStorage.None;
 
 				switch (mod)
 				{
@@ -534,7 +534,7 @@ namespace Decompiler.Arch.X86
 					if (rm == 0x05)
 					{
 						offsetWidth = PrimitiveType.Word32;
-						b = MachineRegister.None;
+						b = RegisterStorage.None;
 					}
 					else
 					{
@@ -561,7 +561,7 @@ namespace Decompiler.Arch.X86
 					if (((this.modrm & 0xC0) == 0) && ((sib & 0x7) == 5))
 					{
 						offsetWidth = PrimitiveType.Word32;
-						b = MachineRegister.None;
+						b = RegisterStorage.None;
 					}
 					else
 					{
@@ -569,7 +569,7 @@ namespace Decompiler.Arch.X86
 					}
 			
 					int i = (sib >> 3) & 0x7;
-					idx = (i == 0x04) ? MachineRegister.None : RegFromBits(i, addressWidth);
+					idx = (i == 0x04) ? RegisterStorage.None : RegFromBits(i, addressWidth);
 					scale = (byte) (1 << (sib >> 6));
 				}
 			}

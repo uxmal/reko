@@ -55,7 +55,7 @@ namespace Decompiler.Arch.X86
 
         public int FpuStackItems { get; set; }
 
-		public Address AddressFromSegOffset(MachineRegister seg, uint offset)
+		public Address AddressFromSegOffset(RegisterStorage seg, uint offset)
 		{
 			Constant c = GetRegister(seg);
 			if (c.IsValid)
@@ -66,7 +66,7 @@ namespace Decompiler.Arch.X86
 				return null;
 		}
 
-		public Address AddressFromSegReg(MachineRegister seg, MachineRegister reg)
+        public Address AddressFromSegReg(RegisterStorage seg, RegisterStorage reg)
 		{
 			Constant c = GetRegister(reg);
 			if (c.IsValid)
@@ -82,7 +82,15 @@ namespace Decompiler.Arch.X86
 			return new X86State(this);
 		}
 
-		public void SetRegister(MachineRegister reg, Constant c)
+        public Constant GetRegister(RegisterStorage reg)
+        {
+            if (valid[reg.Number])
+                return new Constant(reg.DataType, regs[reg.Number]);
+            else
+                return Constant.Invalid;
+        }
+
+		public void SetRegister(RegisterStorage reg, Constant c)
 		{
 			if (c == null || !c.IsValid)
 			{
@@ -97,14 +105,6 @@ namespace Decompiler.Arch.X86
 		public void SetInstructionPointer(Address addr)
 		{
 			SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, addr.Selector));
-		}
-
-		public Constant GetRegister(MachineRegister reg)
-		{
-			if (valid[reg.Number])
-				return new Constant(reg.DataType, regs[reg.Number]);
-			else
-				return Constant.Invalid;
 		}
 
         public void OnProcedureEntered()
@@ -217,7 +217,7 @@ namespace Decompiler.Arch.X86
                     return false;
                 if (valid[i])
                 {
-                    MachineRegister reg = Registers.GetRegister(i);
+                    RegisterStorage reg = Registers.GetRegister(i);
                     ulong u1 = (ulong)(regs[reg.Number] & ((1UL << reg.DataType.BitSize) - 1UL));
                     ulong u2 = (ulong)(st2.regs[reg.Number] & ((1UL << reg.DataType.BitSize) - 1UL));
                     if (u1 != u2)

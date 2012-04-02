@@ -41,7 +41,7 @@ namespace Decompiler.Scanning
     public class ScannerEvaluationContext : EvaluationContext
     {
         private IProcessorArchitecture arch;
-        private Dictionary<MachineRegister, Expression> linearDerived;
+        private Dictionary<RegisterStorage, Expression> linearDerived;
         private SortedList<int, Expression> stackState;
 
         public ScannerEvaluationContext(IProcessorArchitecture arch)
@@ -53,7 +53,7 @@ namespace Decompiler.Scanning
         {
             this.arch = arch;
             this.State = state;
-            this.linearDerived = new Dictionary<MachineRegister, Expression>();
+            this.linearDerived = new Dictionary<RegisterStorage, Expression>();
             this.stackState = new SortedList<int, Expression>();
         }
 
@@ -61,7 +61,7 @@ namespace Decompiler.Scanning
         {
             this.arch = original.arch;
             this.State = original.State.Clone();
-            this.linearDerived = new Dictionary<MachineRegister, Expression>(original.linearDerived);
+            this.linearDerived = new Dictionary<RegisterStorage, Expression>(original.linearDerived);
             this.stackState = new SortedList<int, Expression>(original.stackState);
         }
 
@@ -80,10 +80,10 @@ namespace Decompiler.Scanning
             if (reg == null)
                 return Constant.Invalid;
          
-            Expression exp = State.GetRegister(reg.Register);
+            Expression exp = State.GetRegister(reg);
             if (exp != Constant.Invalid)
                 return exp;
-            if (linearDerived.TryGetValue(reg.Register, out exp))
+            if (linearDerived.TryGetValue(reg, out exp))
                 return exp;
             return Constant.Invalid;
         }
@@ -133,8 +133,8 @@ namespace Decompiler.Scanning
             var constVal = value as Constant;
             if (constVal != null)
             {
-                State.SetRegister(reg.Register, constVal);
-                linearDerived.Remove(reg.Register);
+                State.SetRegister(reg, constVal);
+                linearDerived.Remove(reg);
                 return;
             }
             var binVal = value as BinaryExpression;
@@ -144,12 +144,12 @@ namespace Decompiler.Scanning
                     binVal.Left is Identifier &&
                     binVal.Right is Constant)
                 {
-                    linearDerived[reg.Register] = binVal;
+                    linearDerived[reg] = binVal;
                     return;
                 }
             }
-            State.SetRegister(reg.Register, Constant.Invalid);
-            linearDerived.Remove(reg.Register); 
+            State.SetRegister(reg, Constant.Invalid);
+            linearDerived.Remove(reg); 
         }
 
         public void SetValueEa(Expression ea, Expression value)
@@ -167,7 +167,7 @@ namespace Decompiler.Scanning
             var reg = id.Storage as RegisterStorage;
             if (reg == null)
                 return false;
-            return (reg.Register == arch.StackRegister);
+            return (reg == arch.StackRegister);
         }
 
         public void SetValueEa(Expression basePtr, Expression ea, Expression value)

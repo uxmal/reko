@@ -46,7 +46,7 @@ namespace Decompiler.Arch.X86
             this.pointerType = pointerType;
         }
 
-        public virtual Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
+        public virtual Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return state.AddressFromSegOffset(seg, offset);
         }
@@ -66,8 +66,7 @@ namespace Decompiler.Arch.X86
             get { return wordSize; }
         }
 
-
-        public virtual bool IsPointerRegister(MachineRegister machineRegister)
+        public virtual bool IsPointerRegister(RegisterStorage machineRegister)
         {
             return machineRegister == Registers.bx ||
                 machineRegister == Registers.sp ||
@@ -76,7 +75,7 @@ namespace Decompiler.Arch.X86
                 machineRegister == Registers.di;
         }
 
-        public virtual MachineRegister StackRegister
+        public virtual RegisterStorage StackRegister
         {
             get { return Registers.sp; }
         }
@@ -141,12 +140,12 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override MachineRegister StackRegister
+        public override RegisterStorage StackRegister
         {
             get { return Registers.esp; }
         }
 
-        public override Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
+        public override Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return new Address(offset);
         }
@@ -157,7 +156,7 @@ namespace Decompiler.Arch.X86
             return MemoryAccess.Create(esp, offset, dataType);
         }
 
-        public override bool IsPointerRegister(MachineRegister machineRegister)
+        public override bool IsPointerRegister(RegisterStorage machineRegister)
         {
             return machineRegister.DataType.BitSize == PointerType.BitSize;
         }
@@ -166,7 +165,6 @@ namespace Decompiler.Arch.X86
         {
             return new Address(rdr.ReadLeUInt32());
         }
-
     }
 
     internal class FlatMode64 : ProcessorMode
@@ -176,12 +174,12 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override MachineRegister StackRegister
+        public override RegisterStorage StackRegister
         {
             get { return Registers.rsp; }
         }
 
-        public override Address AddressFromSegOffset(X86State state, MachineRegister seg, uint offset)
+        public override Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return new Address(offset);
         }
@@ -192,7 +190,7 @@ namespace Decompiler.Arch.X86
             return MemoryAccess.Create(rsp, offset, dataType);
         }
 
-        public override bool IsPointerRegister(MachineRegister machineRegister)
+        public override bool IsPointerRegister(RegisterStorage machineRegister)
         {
             return machineRegister.DataType.BitSize == PointerType.BitSize;
         }
@@ -201,6 +199,5 @@ namespace Decompiler.Arch.X86
         {
             throw new NotImplementedException("Address constants need to be 64-bit //return new Address(rdr.ReadLeUInt64());");
         }
-
     }
 }

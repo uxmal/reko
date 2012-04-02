@@ -201,14 +201,18 @@ done:
 
 		private Identifier Reg32(string name)
 		{
-			MachineRegister mr = new MachineRegister(name, ssaIds.Count, PrimitiveType.Word32);
-			Identifier id = new Identifier(name, ssaIds.Count, PrimitiveType.Word32, new RegisterStorage(mr));
+			var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
+			var id = new Identifier(name, ssaIds.Count, PrimitiveType.Word32, mr);
 			return ssaIds.Add(id, null, null, false).Identifier;
 		}
 
 		private Identifier FlagGroup(string name)
 		{
-			Identifier id = new Identifier(name, ssaIds.Count, PrimitiveType.Word32, new FlagGroupStorage(1U, "C"));
+			Identifier id = new Identifier(
+                name, 
+                ssaIds.Count, 
+                PrimitiveType.Word32, 
+                new FlagGroupStorage(1U, "C", PrimitiveType.Byte));
 			return ssaIds.Add(id, null, null, false).Identifier;
 		}
 

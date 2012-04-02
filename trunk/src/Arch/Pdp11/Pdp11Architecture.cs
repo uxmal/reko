@@ -30,28 +30,31 @@ namespace Decompiler.Arch.Pdp11
 {
     public class Registers
     {
-        public static MachineRegister r0 = new MachineRegister("r0", 0, PrimitiveType.Word16);
-        public static MachineRegister r1 = new MachineRegister("r1", 1, PrimitiveType.Word16);
-        public static MachineRegister r2 = new MachineRegister("r2", 2, PrimitiveType.Word16);
-        public static MachineRegister r3 = new MachineRegister("r3", 3, PrimitiveType.Word16);
-        public static MachineRegister r4 = new MachineRegister("r4", 4, PrimitiveType.Word16);
-        public static MachineRegister r5 = new MachineRegister("r5", 5, PrimitiveType.Word16);
-        public static MachineRegister sp = new MachineRegister("sp", 6, PrimitiveType.Word16);
-        public static MachineRegister pc = new MachineRegister("pc", 7, PrimitiveType.Word16);
+        public static RegisterStorage r0 = new RegisterStorage("r0", 0, PrimitiveType.Word16);
+        public static RegisterStorage r1 = new RegisterStorage("r1", 1, PrimitiveType.Word16);
+        public static RegisterStorage r2 = new RegisterStorage("r2", 2, PrimitiveType.Word16);
+        public static RegisterStorage r3 = new RegisterStorage("r3", 3, PrimitiveType.Word16);
+        public static RegisterStorage r4 = new RegisterStorage("r4", 4, PrimitiveType.Word16);
+        public static RegisterStorage r5 = new RegisterStorage("r5", 5, PrimitiveType.Word16);
+        public static RegisterStorage sp = new RegisterStorage("sp", 6, PrimitiveType.Word16);
+        public static RegisterStorage pc = new RegisterStorage("pc", 7, PrimitiveType.Word16);
     }
 
     public class Pdp11Architecture : IProcessorArchitecture
     {
-        private MachineRegister[] regs;
+        private RegisterStorage[] regs;
 
         public Pdp11Architecture()
         {
-            regs = new MachineRegister[] { 
+            regs = new RegisterStorage[] { 
                 Registers.r0, Registers.r1, Registers.r2, Registers.r3, 
                 Registers.r4, Registers.r5, Registers.sp, Registers.pc, };
         }
 
         #region IProcessorArchitecture Members
+
+        public RegisterStorage StackRegister { get { return Registers.sp; } }
+        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
 
         public Disassembler CreateDisassembler(ImageReader rdr)
         {
@@ -78,17 +81,16 @@ namespace Decompiler.Arch.Pdp11
             return new BitSet(16);
         }
 
-
-        public MachineRegister GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
             return (0 <= i && i < regs.Length)
                 ? regs[i]
                 : null;
         }
 
-        public MachineRegister GetRegister(string name)
+        public RegisterStorage GetRegister(string name)
         {
-            foreach (MachineRegister reg in regs)
+            foreach (RegisterStorage reg in regs)
             {
                 if (string.Compare(reg.Name, name, StringComparison.InvariantCultureIgnoreCase) != 0)
                     return reg;
@@ -96,10 +98,10 @@ namespace Decompiler.Arch.Pdp11
             return null;
         }
 
-        public bool TryGetRegister(string name, out MachineRegister result)
+        public bool TryGetRegister(string name, out RegisterStorage result)
         {
             result = null;
-            foreach (MachineRegister reg in regs)
+            foreach (RegisterStorage reg in regs)
             {
                 if (string.Compare(reg.Name, name, StringComparison.InvariantCultureIgnoreCase) != 0)
                 {
@@ -110,12 +112,12 @@ namespace Decompiler.Arch.Pdp11
             return false;
         }
 
-        public MachineFlags GetFlagGroup(uint grf)
+        public FlagGroupStorage GetFlagGroup(uint grf)
         {
             throw new NotImplementedException();
         }
 
-        public MachineFlags GetFlagGroup(string name)
+        public FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
         }
@@ -145,23 +147,10 @@ namespace Decompiler.Arch.Pdp11
             get { throw new NotImplementedException(); }
         }
 
-        public MachineRegister StackRegister { get { return Registers.sp; } }
-        public uint CarryFlagMask { get { throw new NotImplementedException(); } }
-
-        #endregion
-
-        #region IProcessorArchitecture Members
-
-
         public Decompiler.Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IProcessorArchitecture Members
-
 
         public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {

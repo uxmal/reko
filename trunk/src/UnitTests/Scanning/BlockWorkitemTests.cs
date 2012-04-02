@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Scanning
                 addr);
         }
 
-        private ProcedureSignature CreateSignature(MachineRegister  ret, params MachineRegister[] args)
+        private ProcedureSignature CreateSignature(RegisterStorage  ret, params RegisterStorage[] args)
         {
             var retReg = proc.Frame.EnsureRegister(ret);
             var argIds = new List<Identifier>();

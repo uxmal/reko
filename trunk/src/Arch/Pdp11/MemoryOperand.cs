@@ -29,11 +29,11 @@ namespace Decompiler.Arch.Pdp11
 {
     public class MemoryOperand : MachineOperand
     {
-        public MemoryOperand(PrimitiveType type, MachineRegister reg) : base(type)
+        public MemoryOperand(PrimitiveType type, RegisterStorage reg) : base(type)
         {
             Register = reg;
         }
 
-        public MachineRegister Register { get;set;}
+        public RegisterStorage Register { get;set;}
     }
 }

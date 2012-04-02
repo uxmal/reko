@@ -181,7 +181,7 @@ namespace Decompiler.Arch.M68k
             }
         }
 
-        private static MachineRegister AddressRegister(ushort opcode, int bitOffset)
+        private static RegisterStorage AddressRegister(ushort opcode, int bitOffset)
         {
             return Registers.GetRegister(8 + ((opcode >> bitOffset) & 0x7));
         }

@@ -73,7 +73,7 @@ namespace Decompiler.Evaluation
 				cRight = cRight.Negate();
 
 			BinaryOperator op = Operator.Add;
-			Constant c = ExpressionSimplifierOld.SimplifyTwoConstants(op, cLeftRight, cRight);
+			Constant c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
 			if (c.IsNegative)
 			{
 				c = c.Negate();

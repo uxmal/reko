@@ -91,6 +91,16 @@ namespace Decompiler.Evaluation
                    op == Operator.Ule || op == Operator.Ult;
         }
 
+
+        public static Constant SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r)
+        {
+            PrimitiveType lType = (PrimitiveType)l.DataType;
+            PrimitiveType rType = (PrimitiveType)r.DataType;
+            if (lType.Domain != rType.Domain)
+                throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
+            return op.ApplyConstants(l, r);
+        }
+
         public Expression VisitAddress(Address addr)
         {
             return addr;

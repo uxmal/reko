@@ -148,20 +148,20 @@ namespace Decompiler.Analysis
 
 		private void DumpBlock(Block block)
 		{
-			StringWriter sw = new StringWriter();
+			var sw = new StringWriter();
 			block.Write(sw);
 			Debug.WriteLine(sw.ToString());
 		}
 
 		private string DumpRegisters(BitSet arr)
 		{
-			StringBuilder sb = new StringBuilder();
-			IProcessorArchitecture arch = prog.Architecture;
+			var sb = new StringBuilder();
+			var arch = prog.Architecture;
 			for (int i = 0; i < arr.Count; ++i)
 			{
 				if (arr[i])
 				{
-					MachineRegister reg = arch.GetRegister(i);
+					var reg = arch.GetRegister(i);
 					if (reg != null && reg.IsAluRegister)
 					{
 						sb.Append(reg.Name);
@@ -263,6 +263,8 @@ namespace Decompiler.Analysis
 			}
 		}
 
+
+        // Consults the instruction ci and determines which of the parameters on stack are live.
 		public void MarkLiveStackParameters(CallInstruction ci)
 		{
             var callee = ci.Callee as Procedure;
@@ -499,9 +501,11 @@ namespace Decompiler.Analysis
 		{
 			if (ci.Callee.Signature != null && ci.Callee.Signature.ArgumentsValid)		
 			{
-				ProcedureSignature sig = ci.Callee.Signature;
+                var sig = ci.Callee.Signature;
+                var ab = new ApplicationBuilder(prog.Architecture, proc.Frame, ci.CallSite, new ProcedureConstant(prog.Architecture.PointerType, ci.Callee), sig);
 				if (sig.ReturnValue != null)
 				{
+                    varLive.Def(ab.Bind(sig.ReturnValue));
 					varLive.Def(sig.ReturnValue.Storage.BindFormalArgumentToFrame(prog.Architecture, proc.Frame, ci.CallSite));
 				}
 				foreach (Identifier arg in sig.FormalArguments)
@@ -678,7 +682,7 @@ namespace Decompiler.Analysis
 					{
 						RegisterStorage rs = ret.Storage as RegisterStorage;
 						if (rs != null)
-							rs.Register.SetAliases(bf.DataOut, true);
+							rs.SetAliases(bf.DataOut, true);
 					}
 					foreach (Identifier id in block.Procedure.Signature.FormalArguments)
 					{
@@ -688,7 +692,7 @@ namespace Decompiler.Analysis
 						RegisterStorage rs = os.OriginalIdentifier.Storage as RegisterStorage;
 						if (rs != null) 
 						{
-							rs.Register.SetAliases(bf.DataOut, true);
+							rs.SetAliases(bf.DataOut, true);
 						}
 					}
 				}
@@ -833,7 +837,7 @@ namespace Decompiler.Analysis
 			{
 				//$REFACTOR: make SetAliases be a bitset of Register.
 				BitSet b = new BitSet(liveState.BitSet.Count);
-				reg.Register.SetAliases(b, true);
+				reg.SetAliases(b, true);
 				return !(liveState.BitSet & b).IsEmpty;
 			}
 
@@ -844,7 +848,7 @@ namespace Decompiler.Analysis
 
 			public bool VisitFlagGroupStorage(FlagGroupStorage grf)
 			{
-				return (grf.FlagGroup & liveState.Grf) != 0;
+				return (grf.FlagGroupBits & liveState.Grf) != 0;
 			}
 
 			public bool VisitSequenceStorage(SequenceStorage seq)
