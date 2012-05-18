@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Analysis
 			Statement def = proc.ControlGraph.Blocks[1].Statements[0];
             Statement use = proc.ControlGraph.Blocks[1].Statements[2];
 			Assert.AreEqual("id = bar(0x00000003)", def.Instruction.ToString());
-			Assert.AreEqual("store(Mem0[0x10000304:word32]) = id", use.Instruction.ToString());
+			Assert.AreEqual("Mem0[0x10000304:word32] = id", use.Instruction.ToString());
 			Assert.AreEqual(SideEffectFlags.Application, sef.FindSideEffect(def.Instruction));
             Assert.AreEqual(SideEffectFlags.Load | SideEffectFlags.Store, sef.FindSideEffect(proc.ControlGraph.Blocks[1].Statements[1].Instruction));
 			Assert.AreEqual(SideEffectFlags.Load|SideEffectFlags.Store, sef.FindSideEffect(use.Instruction));
@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Analysis
 			Statement use = proc.ControlGraph.Blocks[1].Statements[2];
 
 			Assert.AreEqual("id = Mem0[0x01000000:word32]", def.Instruction.ToString());
-			Assert.AreEqual("store(Mem0[0x10000008:word32]) = id", use.Instruction.ToString());
+			Assert.AreEqual("Mem0[0x10000008:word32] = id", use.Instruction.ToString());
 			Assert.AreEqual(SideEffectFlags.Load, sef.FindSideEffect(def.Instruction));
 			Assert.AreEqual(SideEffectFlags.Load, sef.FindSideEffect(proc.ControlGraph.Blocks[1].Statements[1].Instruction));
 			Assert.AreEqual(SideEffectFlags.Store|SideEffectFlags.Load, sef.FindSideEffect(use.Instruction));

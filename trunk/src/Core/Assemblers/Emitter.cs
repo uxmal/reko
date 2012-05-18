@@ -171,6 +171,5 @@ namespace Decompiler.Core.Assemblers
 		{
 			get { return (int) stmOut.Position; }
 		}
-
     }
 }

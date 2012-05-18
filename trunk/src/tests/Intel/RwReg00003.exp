@@ -1,11 +1,11 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// ecx:Register ecx
+// sp:sp
+// ecx:ecx
 // SZO:Flags
 // C:Flags
-// ds:Register ds
+// ds:ds
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -16,7 +16,7 @@ l0C00_0000:
 	ecx = ecx ^ ecx
 	SZO = cond(ecx)
 	C = false
-	store(Mem0[ds:0x0310:word32]) = ecx
+	Mem0[ds:0x0310:word32] = ecx
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -24,7 +24,7 @@ fn0C00_0000_exit:
 // fn0C00_000F
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
+// sp:sp
 // return address size: 2
 void fn0C00_000F()
 fn0C00_000F_entry:
@@ -37,13 +37,13 @@ fn0C00_000F_exit:
 // fn0C00_0010
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// ch:Register ch
+// sp:sp
+// ch:ch
 // SZO:Flags
 // C:Flags
-// ds:Register ds
-// cl:Register cl
-// cx:Register cx
+// ds:ds
+// cl:cl
+// cx:cx
 // return address size: 2
 void fn0C00_0010()
 fn0C00_0010_entry:
@@ -56,7 +56,7 @@ l0C00_0010:
 	branch cx == 0x0000 l0C00_001E
 	// succ:  l0C00_0018 l0C00_001E
 l0C00_0018:
-	store(Mem0[ds:0x0302:word16]) = 0x0000
+	Mem0[ds:0x0302:word16] = 0x0000
 	// succ:  l0C00_001E
 l0C00_001E:
 	return

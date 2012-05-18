@@ -1,14 +1,16 @@
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = cs
+	Mem0[ss:sp:word16] = cs
 	ds = Mem0[ss:sp:selector]
 	sp = sp + 0x0002
 	bl = Mem0[ds:si:byte]
 	SCZO = cond(bl - 0x02)
 	branch Test(UGT,CZ) l0C00_0023
+	// succ:  l0C00_0009 l0C00_0023
 l0C00_0009:
 	bh = bh ^ bh
 	SZO = cond(bh)
@@ -16,19 +18,21 @@ l0C00_0009:
 	bx = bx + bx
 	SCZO = cond(bx)
 	switch (bl) { l0C00_0017 l0C00_001B l0C00_001F }
+	// succ:  l0C00_0017 l0C00_001B l0C00_001F
 l0C00_0017:
 	ax = 0x0001
 	return
-	goto fn0C00_0000_exit
+	// succ:  fn0C00_0000_exit
 l0C00_001B:
 	ax = 0x0002
 	return
-	goto fn0C00_0000_exit
+	// succ:  fn0C00_0000_exit
 l0C00_001F:
 	ax = 0x0003
 	return
-	goto fn0C00_0000_exit
+	// succ:  fn0C00_0000_exit
 l0C00_0023:
 	ax = 0x0000
 	return
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

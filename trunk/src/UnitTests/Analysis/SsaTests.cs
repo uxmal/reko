@@ -190,6 +190,14 @@ namespace Decompiler.UnitTests.Analysis
 
 		protected override void RunTest(Program prog, FileUnitTester fut)
 		{
+            var flow = new ProgramDataFlow(prog);
+            var eventListener = new FakeDecompilerEventListener();
+            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
+            trf.Compute();
+            trf.RewriteBasicBlocks();
+            var rl = RegisterLiveness.Compute(prog, flow, eventListener);
+            GlobalCallRewriter.Rewrite(prog, flow);
+
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				Aliases alias = new Aliases(proc, prog.Architecture);

@@ -206,7 +206,7 @@ namespace Decompiler.Core
             }
         }
 
-        private IOrderedEnumerable<Block> SortBlocksByName()
+        public IOrderedEnumerable<Block> SortBlocksByName()
         {
             return blocks.OrderBy((x => x), new BlockComparer());
         }

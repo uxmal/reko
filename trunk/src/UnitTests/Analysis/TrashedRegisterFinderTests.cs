@@ -189,7 +189,7 @@ namespace Decompiler.UnitTests.Analysis
             trf.StartProcessingBlock(m.Block);
 
             stm.Accept(trf);
-            Assert.AreEqual("(Register ax:0x0001)", DumpValues());
+            Assert.AreEqual("(ax:0x0001)", DumpValues());
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace Decompiler.UnitTests.Analysis
             trf.StartProcessingBlock(m.Block);
 
             stm.Instruction.Accept(trf);
-            Assert.AreEqual("(Register ebx:<invalid>)", DumpValues());
+            Assert.AreEqual("(ebx:<invalid>)", DumpValues());
         }
 
         [Test]
@@ -371,7 +371,7 @@ namespace Decompiler.UnitTests.Analysis
             trf.StartProcessingBlock(m.Block);
             stm.Accept(trf);
             trf.PropagateToProcedureSummary(proc);
-            Assert.AreEqual(" SZ" + Environment.NewLine, flow[proc].EmitFlagGroup(prog.Architecture, "", flow[proc].grfTrashed));
+            Assert.AreEqual(" SZ", flow[proc].EmitFlagGroup(prog.Architecture, "", flow[proc].grfTrashed));
         }
 
         [Test]
@@ -408,7 +408,7 @@ namespace Decompiler.UnitTests.Analysis
             flow[m.Block].SymbolicIn.SetValue(esp, m.Frame.FramePointer);
             trf = CreateTrashedRegisterFinder(prog);
             trf.ProcessBlock(m.Block);
-            Assert.AreEqual("(Register eax:eax), (Register esp:fp), (Stack -4:eax)", DumpValues());
+            Assert.AreEqual("(eax:eax), (esp:fp), (Stack -4:eax)", DumpValues());
         }
 
         [Test]
@@ -450,16 +450,16 @@ namespace Decompiler.UnitTests.Analysis
 
             RunTest(p,
 @"main ebx bx bl bh
-const Register ebx:0x01231313
-    main_entry Register esp:fp
-    l1 Register esp:fp
-    main_exit Register eax:eax Register ebx:0x01231313 Register esp:fp
+const ebx:0x01231313
+    main_entry esp:fp
+    l1 esp:fp
+    main_exit eax:eax ebx:0x01231313 esp:fp
 
 TrashEaxEbx eax ebx ax bx al bl ah bh
-const Register ebx:0x01231313
-    TrashEaxEbx_entry Register esp:fp
-    l1 Register esp:fp
-    TrashEaxEbx_exit Register eax:<invalid> Register ebx:0x01231313 Register esp:fp");
+const ebx:0x01231313
+    TrashEaxEbx_entry esp:fp
+    l1 esp:fp
+    TrashEaxEbx_exit eax:<invalid> ebx:0x01231313 esp:fp");
         }
 
 
@@ -482,9 +482,9 @@ const Register ebx:0x01231313
 
             RunTest(p,
 @"main
-    main_entry Register sp:fp
-    l1 Register sp:fp
-    main_exit Register ax:ax Register sp:fp");
+    main_entry sp:fp
+    l1 sp:fp
+    main_exit ax:ax sp:fp");
         }
 
         [Test]
@@ -500,9 +500,9 @@ const Register ebx:0x01231313
 
             var sExp =
 @"main SCZO eax ax al ah
-    main_entry Register esp:fp
-    l1 Register esp:fp
-    main_exit Register eax:eax + 0x00000004 Register esp:fp";
+    main_entry esp:fp
+    l1 esp:fp
+    main_exit eax:eax + 0x00000004 esp:fp";
             RunTest(p, sExp);
         }
 
@@ -525,9 +525,34 @@ const Register ebx:0x01231313
 
             var sExp =
 @"main SCZO
-    main_entry Register esp:fp
-    l1 Register esp:fp
-    main_exit Register eax:eax Register esp:fp";
+    main_entry esp:fp
+    l1 esp:fp
+    main_exit eax:eax esp:fp";
+            RunTest(p, sExp);
+        }
+
+        [Test]
+        public void TrashInLoop()
+        {
+            p.Add("main", m =>
+            {
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                var ebx = m.Frame.EnsureRegister(Registers.ebx);
+                m.Assign(eax, 1);
+                m.Label("Lupe");
+                m.Store(m.Add(ebx, eax), m.Word16(0));
+                m.Assign(eax, m.Add(eax, 2));
+                m.BranchIf(m.Le(eax, 10), "Lupe");
+                m.Return();
+            });
+
+            var sExp =
+@"main eax ax al ah
+    main_entry esp:fp
+    l1 esp:fp
+    l2 eax:<invalid> esp:fp
+    Lupe eax:<invalid> esp:fp
+    main_exit eax:<invalid> esp:fp";
             RunTest(p, sExp);
         }
     }

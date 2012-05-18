@@ -1,21 +1,21 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// ds:Register ds
-// ax:Register ax
-// dx:Register dx
+// sp:sp
+// ds:ds
+// ax:ax
+// dx:dx
 // SCZO:Flags
 // v7:Temporary
 // C:Flags
-// si:Register si
-// cx:Register cx
+// si:si
+// cx:cx
 // v11:Temporary
-// bx:Register bx
-// eax:Register eax
+// bx:bx
+// eax:eax
 // v14:Temporary
 // v15:Temporary
-// edx:Register edx
+// edx:edx
 // v17:Temporary
 // v18:Temporary
 // return address size: 2
@@ -38,11 +38,11 @@ l0C00_0000:
 	dx = v11 + (word16) C
 	SCZO = cond(dx)
 	v14 = Mem0[ds:0x0200:word32] + eax
-	store(Mem0[ds:0x0200:word32]) = v14
+	Mem0[ds:0x0200:word32] = v14
 	SCZO = cond(v14)
 	v15 = Mem0[ds:0x0204:word32] + edx
 	v17 = v15 + (word32) C
-	store(Mem0[ds:0x0204:word32]) = v17
+	Mem0[ds:0x0204:word32] = v17
 	SCZO = cond(v17)
 	cx = Mem0[ds:si + 0x030C:word16]
 	ax = ax - cx

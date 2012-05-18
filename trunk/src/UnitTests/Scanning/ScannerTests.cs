@@ -258,7 +258,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	ax = 0x0000
 l0C00_0003:
-	store(Mem0[ds:si + 0x0000:byte]) = 0x00
+	Mem0[ds:si + 0x0000:byte] = 0x00
 	si = si + 0x0001
 	SZO = cond(si)
 	cx = cx - 0x0001

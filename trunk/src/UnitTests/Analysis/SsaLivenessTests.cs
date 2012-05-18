@@ -79,8 +79,8 @@ namespace Decompiler.UnitTests.Analysis
 
 			Block block = proc.ControlGraph.Blocks[0];
 			block.Write(Console.Out);
-			Assert.AreEqual("store(Mem6[0x10000000:word32]) = a + b", block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("store(Mem7[0x10000004:word32]) = a", block.Statements[1].Instruction.ToString());
+			Assert.AreEqual("Mem6[0x10000000:word32] = a + b", block.Statements[0].Instruction.ToString());
+			Assert.AreEqual("Mem7[0x10000004:word32] = a", block.Statements[1].Instruction.ToString());
 
 			Identifier a = ssa.Identifiers[2].Identifier;
 			Identifier c_5 = ssa.Identifiers[5].Identifier;

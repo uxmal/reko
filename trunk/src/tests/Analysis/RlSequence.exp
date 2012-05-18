@@ -1,50 +1,58 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	MayUseIn:  es ds
+	MayUseIn:  es ss ds
 	BypassIn: 
 	Trashed:   SCZO ax si di al ah
-	Preserved:
+	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
-	// succ:  l0C00_0000
-// DataOut: es ds
-l0C00_0000:		// pred: fn0C00_0000_entry
+fn0C00_0000_entry:
+// DataOut: es ss ds
+
+// SymbolicIn: sp:fp
+
+fn0C00_0000_exit:
+// DataOut:
+
+// SymbolicIn: sp:fp si:0x1234 ax:<invalid> di:<invalid>
+
+l0C00_0000:
 	si = 0x1234
-	call fn0C00_000B (depth: 2;)
+	call fn0C00_000B (retsize: 2; depth: 2)
 	store(Mem0[ds:0x4321:word16]) = ax
 	return
-	// succ:  fn0C00_0000_exit
 // DataOut:
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
-// DataOut:
+// SymbolicIn: sp:fp
+
 // fn0C00_000B /////////////////////
 	LiveOut:   ax ds
-	MayUseIn:  si es ds
+	MayUseIn:  si es ss ds
 	BypassIn: 
 	Trashed:   SCZO ax di al ah
-	Preserved: si
+	Preserved: sp si
 // fn0C00_000B
 void fn0C00_000B()
-fn0C00_000B_entry:		// pred:
-	// succ:  l0C00_000B
-// DataOut: si es ds
-l0C00_000B:		// pred: fn0C00_000B_entry
-	wLoc04 = si
-	call fn0C00_0026 (depth: 4;)
+fn0C00_000B_entry:
+// DataOut: si es ss ds
+l0C00_000B:
+	sp = fp - 0x0002
+	store(Mem0[ss:fp - 0x0002:word16]) = si
+	call fn0C00_0026 (retsize: 2;depth: 4)
 	di = ax
-	store(Mem0[ds:di:word16]) = 0x0000
-	store(Mem0[ds:di + 0x0002:word16]) = 0x0000
-	store(Mem0[ds:di + 0x0004:word16]) = 0x0000
-	call fn0C00_0035 (depth: 4;)
+	store(Mem0[ds:ax:word16]) = 0x0000
+	store(Mem0[ds:ax + 0x0002:word16]) = 0x0000
+	store(Mem0[ds:ax + 0x0004:word16]) = 0x0000
+	call fn0C00_0035 (retsize: 2;depth: 4)
 	ax = si
-	si = wLoc04
+	si = Mem0[ss:fp - 0x0002:word16]
+	sp = fp
 	return
-	// succ:  fn0C00_000B_exit
 // DataOut: ax ds
-fn0C00_000B_exit:		// pred: l0C00_000B
-	// succ: 
+
+// SymbolicIn: sp:fp
+
+fn0C00_000B_exit:
+
 // DataOut: ax ds
 // fn0C00_0026 /////////////////////
 	LiveOut:   ax es ds
@@ -54,47 +62,57 @@ fn0C00_000B_exit:		// pred: l0C00_000B
 	Preserved: si
 // fn0C00_0026
 void fn0C00_0026()
-fn0C00_0026_entry:		// pred:
-	// succ:  l0C00_0026
-// DataOut: si es ds
-l0C00_0026:		// pred: fn0C00_0026_entry
-	wLoc04 = si
+fn0C00_0026_entry:
+// DataOut: si es ss ds
+
+// SymbolicIn: sp:fp
+l0C00_0026:
+	sp = fp - 0x0002
+	store(Mem0[ss:fp - 0x0002:word16]) = si
 	store(Mem0[ds:si:word16]) = 0x0001
 	store(Mem0[ds:si + 0x0002:word16]) = 0x0000
 	ax = si + 0x0004
-	si = wLoc04
+	si = Mem0[ss:fp - 0x0002:word16]
+	sp = fp
 	return
-	// succ:  fn0C00_0026_exit
 // DataOut: ax es ds
 fn0C00_0026_exit:		// pred: l0C00_0026
 	// succ: 
 // DataOut: ax es ds
 // fn0C00_0035 /////////////////////
-	LiveOut:   si ds
-	MayUseIn:  si di es ds
+	LiveOut:   si ss ds
+	MayUseIn:  si di es ss ds
 	BypassIn: 
 	Trashed:   SCZO ax di al ah
-	Preserved:
+	Preserved:	sp
 // fn0C00_0035
 void fn0C00_0035()
-fn0C00_0035_entry:		// pred:
-	// succ:  l0C00_0035
-// DataOut: si di es ds
-l0C00_0035:		// pred: fn0C00_0035_entry
-	wLoc04 = di
-	v6 = Mem0[ds:si + 0x0002:word16] + 0x0001
-	store(Mem0[ds:si + 0x0002:word16]) = v6
+fn0C00_0035_entry:
+// DataOut: si di es ss ds
+l0C00_0035:
+	sp = fp - 0x0002
+	store(Mem0[ss:fp - 0x0002:word16]) = di
+	v7 = Mem0[ds:si + 0x0002:word16] + 0x0001
+	store(Mem0[ds:si + 0x0002:word16]) = v7
+	SCZO = cond(v7)	
 	ax = Mem0[ds:si + 0x0002:word16]
 	ax = ax << 0x0002
-	di = si + 0x0004
-	di = di + ax
+	SCZO = cond(ax)	
+	di = si + 0x0004 + (ax << 0x0002)
 	SCZO = cond(di)
-	ax = wLoc04
+	ax = Mem0[ss:fp - 0x0002:word16]
+	sp = fp
 	store(Mem0[es:di:word16]) = ax
 	di = di + 0x0002
 	return
-	// succ:  fn0C00_0035_exit
-// DataOut: si ds
-fn0C00_0035_exit:		// pred: l0C00_0035
-	// succ: 
-// DataOut: si ds
+// DataOut: si ss ds
+
+// SymbolicIn: sp:fp
+
+fn0C00_0035_exit:
+
+// DataOut: si ss ds
+
+// SymbolicIn: sp:fp ax:di di:di + 0x0002 -2:di
+
+

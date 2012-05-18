@@ -168,7 +168,7 @@ fn00100000_entry:
 l00100000:
 	call fn00100011 (retsize: 4;)
 	call fn0010001B (retsize: 4;)
-	store(Mem0[ebx + 0x0000123C:word32]) = eax
+	Mem0[ebx + 0x0000123C:word32] = eax
 	return
 fn00100000_exit:
 
@@ -176,7 +176,7 @@ fn00100000_exit:
 void fn00100011()
 fn00100011_entry:
 l00100011:
-	store(Mem0[ebx + 0x00001234:word32]) = 0x00000004
+	Mem0[ebx + 0x00001234:word32] = 0x00000004
     call fn0010001B
     return
 fn00100011_exit:

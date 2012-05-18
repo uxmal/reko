@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Analysis
 			OutParameterTransformer opt = new OutParameterTransformer(null, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 
-			Assert.AreEqual("store(Mem0[pfoo:word32]) = 0x00000003", assDef.ToString());
+			Assert.AreEqual("Mem0[pfoo:word32] = 0x00000003", assDef.ToString());
 		}
 
 		[Test]
@@ -113,8 +113,8 @@ namespace Decompiler.UnitTests.Analysis
 			OutParameterTransformer opt = new OutParameterTransformer(null, ssaIds);
 			opt.ReplaceDefinitionsWithOutParameter(foo3, pfoo);
 
-			Assert.AreEqual("store(Mem0[pfoo:word32]) = 0x00000001", stmFoo1.Instruction.ToString());
-			Assert.AreEqual("store(Mem0[pfoo:word32]) = 0x00000002", stmFoo2.Instruction.ToString());
+			Assert.AreEqual("Mem0[pfoo:word32] = 0x00000001", stmFoo1.Instruction.ToString());
+			Assert.AreEqual("Mem0[pfoo:word32] = 0x00000002", stmFoo2.Instruction.ToString());
 			Assert.AreEqual("foo3 = PHI(foo1, foo2)", stmFoo3.Instruction.ToString());
 
 		}
@@ -155,7 +155,7 @@ namespace Decompiler.UnitTests.Analysis
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 			Assert.AreEqual(3, block.Statements.Count);
 			Assert.AreEqual("foo = 0x00000001", block.Statements[0].Instruction.ToString());
-			Assert.AreEqual("store(Mem0[pfoo:word32]) = foo", block.Statements[1].Instruction.ToString());
+			Assert.AreEqual("Mem0[pfoo:word32] = foo", block.Statements[1].Instruction.ToString());
 			Assert.AreEqual("bar = foo", block.Statements[2].Instruction.ToString());
 		}
 

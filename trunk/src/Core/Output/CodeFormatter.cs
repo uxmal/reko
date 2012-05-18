@@ -457,10 +457,8 @@ namespace Decompiler.Core.Output
 		public void VisitStore(Store store)
 		{
 			writer.Indent();
-			writer.WriteKeyword("store");
-            writer.Write("(");
 			WriteExpression(store.Dst);
-			writer.Write(") = ");
+			writer.Write(" = ");
 			WriteExpression(store.Src);
 			writer.Terminate();
 		}

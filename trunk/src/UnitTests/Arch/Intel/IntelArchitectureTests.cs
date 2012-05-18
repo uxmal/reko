@@ -20,6 +20,7 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using NUnit.Framework;
@@ -194,5 +195,63 @@ namespace Decompiler.UnitTests.Arch.Intel
 		{
 			Assert.IsNull(arch.GetRegister("NonExistingRegisterName"));
 		}
+
+        private ImageReader CreateImageReader(params byte[] bytes)
+        {
+            return new LeImageReader(bytes, 0);
+        }
+
+        [Test]
+        public void ReadCodeAddress_RealMode_Offset()
+        {
+            arch = new IntelArchitecture(ProcessorMode.Real);
+            var rdr = CreateImageReader(0x78, 0x56);
+            var state = arch.CreateProcessorState();
+            state.SetRegister(Registers.cs, Constant.Word16(0x1234));
+            Address addr = arch.ReadCodeAddress(2, rdr, state);
+
+            Assert.AreEqual("1234:5678", addr.ToString());
+        }
+
+
+        [Test]
+        public void ReadCodeAddress_RealMode_SegOffset()
+        {
+            arch = new IntelArchitecture(ProcessorMode.Real);
+            var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
+            var state = arch.CreateProcessorState();
+            state.SetRegister(Registers.cs, Constant.Word16(0x1111));
+            Address addr = arch.ReadCodeAddress(4, rdr, state);
+
+            Assert.AreEqual("1234:5678", addr.ToString());
+        }
+
+      
+
+        [Test][Ignore("need to implement protected 16-bit mode first")]
+        public void ReadCodeAddress_ProtectedMode16_Offset()
+        {
+
+        }
+
+        [Test]
+        [Ignore("need to implement protected 16-bit mode first")]
+        public void ReadCodeAddress_ProtectedMode16_SegOffset()
+        {
+
+        }
+
+        [Test]
+        public void ReadCodeAddress_ProtectedFlatMode32()
+        {
+            arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
+            var state = arch.CreateProcessorState();
+            state.SetRegister(Registers.cs, Constant.Word16(0x1111));
+            Address addr = arch.ReadCodeAddress(4, rdr, state);
+
+            Assert.AreEqual("12345678", addr.ToString());
+        }
+        
 	}
 }

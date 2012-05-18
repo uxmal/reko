@@ -140,7 +140,7 @@ l1:
 	ebx = 0x00001234
 	esp = fp - 0x00000004
 	dwLoc04 = 0x00001234
-	call foo (retsize: 4;)
+	call foo (retsize: 4; depth: 8)
 	ebx = 0x00471100
 	return
 	// succ:  main_exit

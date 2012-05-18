@@ -87,15 +87,11 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		public void EmitFlagGroup(IProcessorArchitecture arch, string caption, uint grfFlags, TextWriter sb)
-		{
-			if (grfFlags != 0)
-			{
-				sb.Write(caption);
-				sb.Write(" {0}", arch.GrfToString(grfFlags));
-				sb.WriteLine();
-			}
-		}
+        public void EmitFlagGroup(IProcessorArchitecture arch, string caption, uint grfFlags, TextWriter sb)
+        {
+            sb.Write(caption);
+            sb.Write(" {0}", arch.GrfToString(grfFlags));
+        }
 
 		public string EmitRegisters(IProcessorArchitecture arch, string caption, BitSet regs)
 		{

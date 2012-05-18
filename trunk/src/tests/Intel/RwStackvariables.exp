@@ -1,42 +1,42 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// bp:Register bp
-// ss:Register ss
-// es:Register es
-// bx:Register bx
+// sp:sp
+// bp:bp
+// ss:ss
+// es:es
+// bx:bx
 // es_bx:Sequence es:bx
 // SCZO:Flags
-// ax:Register ax
-// ds:Register ds
+// ax:ax
+// ds:ds
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = bp
+	Mem0[ss:sp:word16] = bp
 	bp = sp
 	es_bx = Mem0[ss:bp + 0x0006:ptr32]
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = es
+	Mem0[ss:sp:word16] = es
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = bx
+	Mem0[ss:sp:word16] = bx
 	call fn0C00_0020 (retsize: 2;)
 	sp = sp + 0x0004
 	SCZO = cond(sp)
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = ax
+	Mem0[ss:sp:word16] = ax
 	es_bx = Mem0[ss:bp + 0x0006:ptr32]
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = es
+	Mem0[ss:sp:word16] = es
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = bx
+	Mem0[ss:sp:word16] = bx
 	call fn0C00_002E (retsize: 2;)
 	sp = sp + 0x0006
 	SCZO = cond(sp)
-	store(Mem0[ds:0x0200:word16]) = ax
+	Mem0[ds:0x0200:word16] = ax
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 0x0002
 	return
@@ -45,20 +45,20 @@ fn0C00_0000_exit:
 // fn0C00_0020
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// bp:Register bp
-// ss:Register ss
-// es:Register es
-// bx:Register bx
+// sp:sp
+// bp:bp
+// ss:ss
+// es:es
+// bx:bx
 // es_bx:Sequence es:bx
-// ax:Register ax
+// ax:ax
 // return address size: 2
 void fn0C00_0020()
 fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = bp
+	Mem0[ss:sp:word16] = bp
 	bp = sp
 	es_bx = Mem0[ss:bp + 0x0004:ptr32]
 	ax = Mem0[es:bx + 0x0004:word16]
@@ -71,13 +71,13 @@ fn0C00_0020_exit:
 // fn0C00_002E
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// bp:Register bp
-// ss:Register ss
-// es:Register es
-// bx:Register bx
+// sp:sp
+// bp:bp
+// ss:ss
+// es:es
+// bx:bx
 // es_bx:Sequence es:bx
-// ax:Register ax
+// ax:ax
 // SCZO:Flags
 // return address size: 2
 void fn0C00_002E()
@@ -85,7 +85,7 @@ fn0C00_002E_entry:
 	// succ:  l0C00_002E
 l0C00_002E:
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = bp
+	Mem0[ss:sp:word16] = bp
 	bp = sp
 	es_bx = Mem0[ss:bp + 0x0004:ptr32]
 	ax = Mem0[ss:bp + 0x0008:word16]
