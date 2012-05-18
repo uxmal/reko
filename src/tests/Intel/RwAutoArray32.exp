@@ -1,13 +1,13 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
-// esp:Register esp
+// esp:esp
 // SCZO:Flags
-// eax:Register eax
+// eax:eax
 // SZO:Flags
 // C:Flags
-// ecx:Register ecx
-// edi:Register edi
+// ecx:ecx
+// edi:edi
 // return address size: 4
 void fn10000000()
 fn10000000_entry:
@@ -21,9 +21,9 @@ l10000000:
 	ecx = ecx ^ ecx
 	SZO = cond(ecx)
 	C = false
-	store(Mem0[esp:word32]) = 0x00000001
-	store(Mem0[esp + 0x00000004:word32]) = 0x00000002
-	store(Mem0[esp + 0x00000008:word32]) = 0x00000003
+	Mem0[esp:word32] = 0x00000001
+	Mem0[esp + 0x00000004:word32] = 0x00000002
+	Mem0[esp + 0x00000008:word32] = 0x00000003
 	goto l10000027
 	// succ:  l10000027
 l10000023:
@@ -38,7 +38,7 @@ l10000027:
 	// succ:  l1000002C l10000023
 l1000002C:
 	edi = Mem0[esp + 0x00000010:word32]
-	store(Mem0[edi:word32]) = eax
+	Mem0[edi:word32] = eax
 	esp = esp + 0x0000000C
 	SCZO = cond(esp)
 	return

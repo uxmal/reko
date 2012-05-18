@@ -87,12 +87,9 @@ namespace Decompiler.Arch.X86
             return SegmentedAccess.Create(ss, sp, offset, dataType);
         }
 
-        public virtual Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
-        {
-            return null;
-        }
+        public abstract Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state);
 
-        protected Address ReadSegmentedCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        protected Address ReadSegmentedCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             if (byteSize == PrimitiveType.Word16.Size)
             {
@@ -114,7 +111,7 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
         }
@@ -127,7 +124,7 @@ namespace Decompiler.Arch.X86
         {
         }
 
-        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return ReadSegmentedCodeAddress(byteSize, rdr, state);
         }
@@ -161,7 +158,7 @@ namespace Decompiler.Arch.X86
             return machineRegister.DataType.BitSize == PointerType.BitSize;
         }
 
-        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             return new Address(rdr.ReadLeUInt32());
         }
@@ -195,7 +192,7 @@ namespace Decompiler.Arch.X86
             return machineRegister.DataType.BitSize == PointerType.BitSize;
         }
 
-        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, X86State state)
+        public override Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException("Address constants need to be 64-bit //return new Address(rdr.ReadLeUInt64());");
         }

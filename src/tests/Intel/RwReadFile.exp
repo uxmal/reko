@@ -1,24 +1,24 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// ss:Register ss
-// ds:Register ds
-// dx:Register dx
-// bx:Register bx
-// cx:Register cx
-// ax:Register ax
+// sp:sp
+// ss:ss
+// ds:ds
+// dx:dx
+// bx:bx
+// cx:cx
+// ax:ax
 // SZO:Flags
 // C:Flags
 // SO:Flags
-// al:Register al
+// al:al
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = 0x0D00
+	Mem0[ss:sp:word16] = 0x0D00
 	ds = Mem0[ss:sp:selector]
 	sp = sp + 0x0002
 	dx = 0x3000
@@ -35,16 +35,16 @@ l0C00_0015:
 	call fn0C00_001F (retsize: 2;)
 	// succ:  l0C00_001A
 l0C00_001A:
-	store(Mem0[ds:0x0302:word16]) = ax
+	Mem0[ds:0x0302:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 // fn0C00_001F
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// ah:Register ah
-// al:Register al
+// sp:sp
+// ah:ah
+// al:al
 // return address size: 0
 void fn0C00_001F()
 fn0C00_001F_entry:
@@ -57,15 +57,15 @@ fn0C00_001F_exit:
 // fn0C00_0023
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// ah:Register ah
+// sp:sp
+// ah:ah
 // C:Flags
-// bx:Register bx
-// cx:Register cx
-// ds:Register ds
-// dx:Register dx
+// bx:bx
+// cx:cx
+// ds:ds
+// dx:dx
 // ds_dx:Sequence ds:dx
-// ax:Register ax
+// ax:ax
 // return address size: 2
 void fn0C00_0023()
 fn0C00_0023_entry:

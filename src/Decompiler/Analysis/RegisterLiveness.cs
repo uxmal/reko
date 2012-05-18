@@ -506,13 +506,12 @@ namespace Decompiler.Analysis
 				if (sig.ReturnValue != null)
 				{
                     varLive.Def(ab.Bind(sig.ReturnValue));
-					varLive.Def(sig.ReturnValue.Storage.BindFormalArgumentToFrame(prog.Architecture, proc.Frame, ci.CallSite));
 				}
 				foreach (Identifier arg in sig.FormalArguments)
 				{
 					if (arg.Storage is OutArgumentStorage)
 					{
-                        varLive.Def(arg.Storage.BindFormalArgumentToFrame(prog.Architecture, proc.Frame, ci.CallSite));
+                        varLive.Def(ab.Bind(arg));
 					}
 				}
 
@@ -520,7 +519,7 @@ namespace Decompiler.Analysis
 				{
 					if (!(arg.Storage is OutArgumentStorage))
 					{
-                        varLive.Use(arg.Storage.BindFormalArgumentToFrame(prog.Architecture, proc.Frame, ci.CallSite));
+                        varLive.Def(ab.Bind(arg));
 					}
 				}
 			}
@@ -594,6 +593,8 @@ namespace Decompiler.Analysis
             get { return state; }
             set
             {
+                if (value == null) 
+                    throw new ArgumentNullException();
                 state = value;
                 foreach (ProcedureFlow pi in mpprocData.ProcedureFlows)
                 {

@@ -230,7 +230,7 @@ namespace Decompiler.Analysis
 			}
 
 			/// <summary>
-			/// Unresolved calls are "hell nodes". Typically, these are indirect calls or indirect
+			/// Unresolved calls can be "hell nodes". A hell node is an indirect calls or indirect
             /// jump that prior passes of the decompiler have been unable to resolve.
 			/// </summary>
 			/// <param name="ci"></param>

@@ -340,7 +340,6 @@
     <Compile Include="LinearInductionVariable.cs" />
     <Compile Include="Machine\MachineInstruction.cs" />
     <Compile Include="Machine\MachineOperand.cs" />
-    <Compile Include="Machine\MachineRegister.cs" />
     <Compile Include="Operators\AddOperator.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,19 +1,19 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// eax:Register eax
+// sp:sp
+// eax:eax
 // SCZO:Flags
 // C:Flags
 // v6:Temporary
-// ds:Register ds
+// ds:ds
 // v8:Temporary
 // v9:Temporary
 // v10:Temporary
-// ecx:Register ecx
-// bx:Register bx
+// ecx:ecx
+// bx:bx
 // v13:Temporary
-// cx:Register cx
+// cx:cx
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -25,30 +25,30 @@ l0C00_0000:
 	v6 = eax - eax
 	eax = v6 - (word32) C
 	SCZO = cond(eax)
-	store(Mem0[ds:0x0300:word32]) = eax
+	Mem0[ds:0x0300:word32] = eax
 	v8 = Mem0[ds:0x0202:word16]
-	store(Mem0[ds:0x0202:word16]) = -v8
+	Mem0[ds:0x0202:word16] = -v8
 	SCZO = cond(v8)
 	C = v8 == 0x0000
 	v9 = Mem0[ds:0x0200:word16]
-	store(Mem0[ds:0x0200:word16]) = -v9
+	Mem0[ds:0x0200:word16] = -v9
 	SCZO = cond(v9)
 	C = v9 == 0x0000
 	v10 = ecx - ecx
 	ecx = v10 - (word32) C
 	SCZO = cond(ecx)
-	store(Mem0[ds:0x0308:word32]) = ecx
+	Mem0[ds:0x0308:word32] = ecx
 	bx = ~bx
-	store(Mem0[ds:0x0304:word16]) = bx
+	Mem0[ds:0x0304:word16] = bx
 	v13 = Mem0[ds:0x0204:word16]
-	store(Mem0[ds:0x0204:word16]) = ~v13
+	Mem0[ds:0x0204:word16] = ~v13
 	cx = Mem0[ds:0x0304:word16]
 	cx = cx - 0x03E8
 	SCZO = cond(cx)
 	cx = -cx
 	SCZO = cond(cx)
 	C = cx == 0x0000
-	store(Mem0[ds:0x0306:word16]) = cx
+	Mem0[ds:0x0306:word16] = cx
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

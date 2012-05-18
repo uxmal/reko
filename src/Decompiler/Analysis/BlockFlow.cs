@@ -59,7 +59,7 @@ namespace Decompiler.Analysis
             writer.WriteLine();
 			EmitFlagGroup(arch, "// DataOut (flags):", grfOut, writer);
             writer.WriteLine();
-            SymbolicIn.Emit(arch, writer);
+            SymbolicIn.Emit(arch, "// SymbolicIn:", writer);
             writer.WriteLine();
             EmitLocals("// LocalsOut:", writer);
             if (TerminatesProcess)

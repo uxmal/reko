@@ -1,25 +1,25 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// bp:Register bp
-// ss:Register ss
-// si:Register si
-// dx:Register dx
-// al:Register al
+// sp:sp
+// bp:bp
+// ss:ss
+// si:si
+// dx:dx
+// al:al
 // v8:Temporary
-// bx:Register bx
+// bx:bx
 // C:Flags
 // v11:Temporary
-// cx:Register cx
+// cx:cx
 // SZO:Flags
-// es:Register es
-// di:Register di
-// ds:Register ds
-// ax:Register ax
+// es:es
+// di:di
+// ds:ds
+// ax:ax
 // Z:Flags
-// eax:Register eax
-// ecx:Register ecx
+// eax:eax
+// ecx:ecx
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -36,7 +36,7 @@ l0C00_0000:
 	dx = dx + 0x0001
 	SZO = cond(dx)
 	al = __inb(dx)
-	store(Mem0[es:di:byte]) = al
+	Mem0[es:di:byte] = al
 	di = di + 0x0001
 	C = __bt(Mem0[ds:0x3000:word16], ax)
 	C = __bt(cx, ax)

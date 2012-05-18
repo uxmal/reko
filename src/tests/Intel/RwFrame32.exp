@@ -1,10 +1,10 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
-// esp:Register esp
-// eax:Register eax
+// esp:esp
+// eax:eax
 // SCZO:Flags
-// ax:Register ax
+// ax:ax
 // return address size: 4
 void fn10000000()
 fn10000000_entry:
@@ -12,11 +12,11 @@ fn10000000_entry:
 l10000000:
 	eax = Mem0[0x10003420:word32]
 	esp = esp - 0x00000004
-	store(Mem0[esp:word32]) = eax
+	Mem0[esp:word32] = eax
 	call fn10000017 (retsize: 4;)
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
-	store(Mem0[0x10003428:word16]) = ax
+	Mem0[0x10003428:word16] = ax
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:
@@ -24,29 +24,29 @@ fn10000000_exit:
 // fn10000017
 // Mem0:Global memory
 // fp:Temporary
-// esp:Register esp
-// ebp:Register ebp
-// ecx:Register ecx
+// esp:esp
+// ebp:ebp
+// ecx:ecx
 // SCZO:Flags
 // Z:Flags
-// ax:Register ax
+// ax:ax
 // SZO:Flags
 // C:Flags
-// eax:Register eax
-// edx:Register edx
+// eax:eax
+// edx:edx
 // SO:Flags
-// cx:Register cx
+// cx:cx
 // return address size: 4
 void fn10000017()
 fn10000017_entry:
 	// succ:  l10000017
 l10000017:
 	esp = esp - 0x00000004
-	store(Mem0[esp:word32]) = ebp
+	Mem0[esp:word32] = ebp
 	ebp = esp
 	esp = esp - 0x00000004
-	store(Mem0[esp:word32]) = ecx
-	store(Mem0[ebp - 0x00000004:word16]) = 0x0000
+	Mem0[esp:word32] = ecx
+	Mem0[ebp - 0x00000004:word16] = 0x0000
 	SCZO = cond(Mem0[ebp + 0x00000008:word32] - 0x00000000)
 	branch Test(NE,Z) l1000002F
 	// succ:  l10000027 l1000002F
@@ -73,7 +73,7 @@ l10000049:
 	cx = Mem0[ebp - 0x00000004:word16]
 	cx = cx + 0x0001
 	SCZO = cond(cx)
-	store(Mem0[ebp - 0x00000004:word16]) = cx
+	Mem0[ebp - 0x00000004:word16] = cx
 	goto l1000002F
 	// succ:  l1000002F
 l1000005A:

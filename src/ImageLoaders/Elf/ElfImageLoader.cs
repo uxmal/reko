@@ -19,10 +19,231 @@ namespace Decompiler.ImageLoaders.Elf
     /// <summary>
     /// Loader for (32-bit) ELF images.
     /// </summary>
-    public class ElfLoader : ImageLoader
+    public class ElfImageLoader : ImageLoader
     {
         private const int ELF_MAGIC = 0x7F454C46;         // "\x7FELF"
+        private const byte LITTLE_ENDIAN = 1;
+        private const byte BIG_ENDIAN = 2;
+        private const int HEADER_OFFSET = 0x0010;
 
+        private const ushort EM_NONE = 0; // No machine
+        private const ushort EM_M32 = 1; //AT&T WE 32100
+        private const ushort EM_SPARC = 2; //SPARC
+        private const ushort EM_386 = 3; //Intel 80386
+        private const ushort EM_68K = 4; //Motorola 68000
+        private const ushort EM_88K = 5; //Motorola 88000
+        private const ushort EM_860 = 7; //Intel 80860
+        private const ushort EM_MIPS = 8; //MIPS RS3000 Big-Endian E
+        private const ushort EM_MIPSRS4BE = 10; // MIPS RS4000 Big-Endian E
+
+        private const uint SHF_WRITE =  0x1;
+        private const uint SHF_ALLOC  =  0x2;
+        private const uint SHF_EXECINSTR =  0x4;
+
+        private byte fileClass;
+        private byte endianness;
+        private byte fileVersion;
+        private IProcessorArchitecture arch;
+        private Address addrPreferred;
+
+        public ElfImageLoader(IServiceProvider services, byte[] rawBytes)
+            : base(services, rawBytes)
+        {
+        }
+
+        public override IProcessorArchitecture Architecture { get { return arch; } }
+        public Elf32_EHdr Header { get; set; }
+        public List<Elf32_SHdr> SectionHeaders { get; private set; }
+        public List<Elf32_PHdr> ProgramHeaders { get; private set; }
+        public override Address PreferredBaseAddress { get { return addrPreferred; } }
+
+
+        public override Platform Platform
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+
+        public override ProgramImage Load(Address addrLoad)
+        {
+            LoadElfIdentification();
+            LoadHeader();
+            LoadProgramHeaderTable();
+
+            LoadSectionHeaders();
+            return new ProgramImage(addrLoad, RawImage);
+        }
+
+        public void LoadElfIdentification()
+        {
+            var rdr = new ImageReader(base.RawImage, 0);
+            var elfMagic = rdr.ReadBeInt32();
+            if (elfMagic != ELF_MAGIC)
+                throw new BadImageFormatException("File is not in ELF format.");
+            this.fileClass = rdr.ReadByte();
+            this.endianness = rdr.ReadByte();
+            this.fileVersion = rdr.ReadByte();
+        }
+
+        public void LoadProgramHeaderTable()
+        {
+            this.ProgramHeaders = new List<Elf32_PHdr>();
+            var rdr = CreateReader(Header.e_phoff);
+            for (int i = 0; i < Header.e_phnum; ++i)
+            {
+                ProgramHeaders.Add(new Elf32_PHdr
+                {
+                    p_type = (ProgramHeaderType) rdr.ReadUInt32(),
+                    p_offset = rdr.ReadUInt32(),
+                    p_vaddr = rdr.ReadUInt32(),
+                    p_paddr = rdr.ReadUInt32(),
+                    p_filesz = rdr.ReadUInt32(),
+                    p_pmemsz = rdr.ReadUInt32(),
+                    p_flags = rdr.ReadUInt32(),
+                    p_align = rdr.ReadUInt32(),
+                });
+            }
+        }
+
+        public void LoadSectionHeaders()
+        {
+            this.SectionHeaders = new List<Elf32_SHdr>();
+            var rdr = CreateReader(Header.e_shoff);
+            for (int i = 0; i < Header.e_shnum; ++i)
+            {
+                SectionHeaders.Add(new Elf32_SHdr
+                {
+                    sh_name = rdr.ReadUInt32(),
+                    sh_type = ( SectionHeaderType) rdr.ReadUInt32(),
+                    sh_flags = rdr.ReadUInt32(),
+                    sh_addr = rdr.ReadUInt32(),        // Address
+                    sh_offset = rdr.ReadUInt32(),
+                    sh_size = rdr.ReadUInt32(),
+                    sh_link = rdr.ReadUInt32(),
+                    sh_info = rdr.ReadUInt32(),
+                    sh_addralign = rdr.ReadUInt32(),
+                    sh_entsize = rdr.ReadUInt32(),
+                });
+            }
+        }
+
+        public void LoadHeader()
+        {
+            var rdr = CreateReader(HEADER_OFFSET);
+            this.Header = new Elf32_EHdr
+            {
+                e_type = rdr.ReadUInt16(),
+                e_machine = rdr.ReadUInt16(),
+                e_version = rdr.ReadUInt32(),
+                e_entry = rdr.ReadUInt32(),
+                e_phoff = rdr.ReadUInt32(),
+                e_shoff = rdr.ReadUInt32(),
+                e_flags = rdr.ReadUInt32(),
+                e_ehsize = rdr.ReadUInt16(),
+                e_phentsize = rdr.ReadUInt16(),
+                e_phnum = rdr.ReadUInt16(),
+                e_shentsize = rdr.ReadUInt16(),
+                e_shnum = rdr.ReadUInt16(),
+                e_shstrndx = rdr.ReadUInt16(),
+            };
+            arch = CreateArchitecture(Header.e_machine);
+        }
+
+        public Address ComputeBaseAddress()
+        {
+            return new Address(ProgramHeaders.Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0).Min(ph => ph.p_vaddr));
+        }
+
+        private IProcessorArchitecture CreateArchitecture(ushort machineType)
+        {
+            switch (machineType)
+            {
+            case EM_NONE: return null; // No machine
+            case EM_SPARC: return new SparcArchitecture(); //SPARC
+            case EM_386: return new IntelArchitecture(ProcessorMode.ProtectedFlat); //Intel 80386
+            case EM_68K: return new M68kArchitecture();//Motorola 68000
+            case EM_M32: //AT&T WE 32100
+            case EM_88K: //Motorola 88000
+            case EM_860: //Intel 80860
+            case EM_MIPS: //MIPS RS3000 Big-Endian E
+            case EM_MIPSRS4BE: // MIPS RS4000 Big-Endian E
+            default:
+                throw new NotSupportedException("Processor format is not supported.");
+            }
+        }
+
+        public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ImageReader CreateReader(uint fileOffset)
+        {
+            switch (endianness)
+            {
+            case LITTLE_ENDIAN: return new LeImageReader(RawImage, fileOffset);
+            case BIG_ENDIAN: return new BeImageReader(RawImage, fileOffset);
+            default: throw new BadImageFormatException("Endianness is incorrectly specified.");
+            }
+        }
+
+
+        public string GetStringTableEntry(uint idxString)
+        {
+            var offset = (int)(SectionHeaders[Header.e_shstrndx].sh_offset + idxString);
+            var i = offset;
+            for (; i < RawImage.Length && RawImage[i] != 0; ++i)
+                ;
+            return Encoding.ASCII.GetString(RawImage, (int)offset, i - offset);
+        }
+
+
+        public void Dump(TextWriter writer)
+        {
+            writer.WriteLine("Sections:");
+            foreach (var sh in SectionHeaders)
+            {
+                writer.WriteLine("{0,-12} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6:X8} sh_info: {7:X8} sh_addralign: {8:X8} sh_entsize: {9:X8}",
+                    GetStringTableEntry(sh.sh_name),
+                    sh.sh_type,
+                    DumpShFlags(sh.sh_flags),
+                    sh.sh_addr,
+                    sh.sh_offset,
+                    sh.sh_size,
+                    sh.sh_link,
+                    sh.sh_info,
+                    sh.sh_addralign,
+                    sh.sh_entsize);
+            }
+            writer.WriteLine();
+            writer.WriteLine("Program headers:");
+            foreach (var ph in ProgramHeaders)
+            {
+                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
+                    ph.p_type,
+                    ph.p_offset,
+                    ph.p_vaddr,
+                    ph.p_paddr,
+                    ph.p_filesz,
+                    ph.p_pmemsz,
+                    ph.p_flags,
+                    ph.p_align);
+            }
+            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress());
+        }
+
+        private string DumpShFlags(uint shf)
+        {
+            return string.Format("{0}{1}{2}",
+                ((shf & SHF_EXECINSTR) != 0) ? "x" : " ",
+                ((shf & SHF_ALLOC) != 0) ? "a" : " ",
+                ((shf & SHF_WRITE) != 0) ? "w" : " ");
+        }
+    }
+
+#if ZLON
+    public class ElfObslete
+    {
         private long m_lImageSize; // Size of image in bytes
         private byte[] m_pImage; // Pointer to the loaded image
         private Elf32_Ehdr pHeader;
@@ -74,32 +295,6 @@ namespace Decompiler.ImageLoaders.Elf
         public override IProcessorArchitecture Architecture { get { return arch; } }
         public override Platform Platform { get { return platform; } }
         
-#if NYI
-
-        // Hand decompiled from sparc library function
-        //extern "C" { // So we can call this with dlopen()
-
-        //    uint elf_hash(string  o0) {
-        //        int o3 = *o0;
-        //        string  g1 = o0;
-        //        uint o4 = 0;
-        //        while (o3 != 0) {
-        //            o4.Write(= 4);
-        //            o3 += o4;
-        //            g1++;
-        //            o4 = o3 & 0xf0000000;
-        //            if (o4 != 0) {
-        //                int o2 = (int) ((uint) o4 >> 24);
-        //                o3 = o3 ^ o2;
-        //            }
-        //            o4 = o3 & ~o4;
-        //            o3 = *g1;
-        //        }
-        //        return o4;
-        //    }
-        //} // extern "C"
-#endif
-
         private uint elf_hash(string s)
         {
             int i = 0;
@@ -120,8 +315,10 @@ namespace Decompiler.ImageLoaders.Elf
             return m_SymTab;
         }
 
-        // Return true for a good load
-
+        /// <summary>
+        /// Reads the ELF header.
+        /// </summary>
+        /// <returns></returns>
         private Elf32_Ehdr ReadElfHeaderStart()
         {
             var rdr = new ImageReader(RawImage, 0);
@@ -165,7 +362,6 @@ namespace Decompiler.ImageLoaders.Elf
             Dump("e_shentsize: {0}", h.e_shentsize);
             Dump("e_shnum: {0}", h.e_shnum);
             Dump("e_shstrndx: {0}", h.e_shstrndx);
-
             
             return h;
         }
@@ -179,7 +375,7 @@ namespace Decompiler.ImageLoaders.Elf
         {
             switch (endianness)
             {
-            case 1:return new LeImageReader(RawImage, offset);
+            case 1: return new LeImageReader(RawImage, offset);
             case 2: return new BeImageReader(RawImage, offset);
             default: throw new NotSupportedException(string.Format("Unknown endianness {0}.", endianness));
             }
@@ -314,13 +510,12 @@ namespace Decompiler.ImageLoaders.Elf
                     AddSyms(i);
             }
 
-#if NYI
             // Save the relocation to symbol table info
             SectionInfo pRel = GetSectionInfoByName(".rela.text");
             if (pRel != null)
             {
                 m_bAddend = true; // Remember its a relA table
-                m_pReloc = (Elf32_Rel*)pRel.uHostAddr; // Save pointer to reloc table
+                m_pReloc =   (Elf32_Rel*)pRel.uHostAddr; // Save pointer to reloc table
             }
             else
             {
@@ -328,11 +523,11 @@ namespace Decompiler.ImageLoaders.Elf
                 pRel = GetSectionInfoByName(".rel.text");
                 if (pRel != null)
                 {
-                    //SetRelocInfo(pRel);
+                    SetRelocInfo(pRel);
                     m_pReloc = (Elf32_Rel*)pRel.uHostAddr; // Save pointer to reloc table
                 }
             }
-#endif
+
             // Find the PLT limits. Required for IsDynamicLinkedProc(), e.g.
             SectionInfo pPlt = GetSectionInfoByName(".plt");
             if (pPlt != null)
@@ -345,7 +540,6 @@ namespace Decompiler.ImageLoaders.Elf
 
         public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
         {
-#if NYI
             int nextFakeLibAddr = -2; // See R_386_PC32 below; -1 sometimes used for main
             if (m_pImage == null) return; // No file loaded
             int e_type = pHeader.e_type;
@@ -366,7 +560,7 @@ namespace Decompiler.ImageLoaders.Elf
                             // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
                             // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
                             // the section header's sh_link field.
-                            int* pReloc = (int*)ps.uHostAddr;
+                            var pReloc = CreateImageReader(ps.uHostAddr);
                             uint size = ps.uSectionSize;
                             // NOTE: the r_offset is different for .o files (E_REL in the e_type header field) than for exe's
                             // and shared objects!
@@ -379,22 +573,23 @@ namespace Decompiler.ImageLoaders.Elf
                             }
                             int symSection = m_sh_link[i]; // Section index for the associated symbol table
                             int strSection = m_sh_link[symSection]; // Section index for the string section assoc with this
-                            string pStrSection = (char*)m_pSections[strSection].uHostAddr;
-                            Elf32_Sym* symOrigin = (Elf32_Sym*)m_pSections[symSection].uHostAddr;
+                            uint pStrSection = m_pSections[strSection].uHostAddr;
+                            uint symOrigin = /*(Elf32_Sym)*/m_pSections[symSection].uHostAddr;
                             for (uint u = 0; u < size; u += 2 * sizeof(uint))
                             {
-                                uint r_offset = elfRead4(pReloc++);
-                                uint info = elfRead4(pReloc++);
+                                uint r_offset = pReloc.ReadUInt32();
+                                uint info = pReloc.ReadUInt32();
+
                                 byte relType = (byte)info;
                                 uint symTabIndex = info >> 8;
-                                int* pRelWord; // Pointer to the word to be relocated
+                                uint pRelWord; // Pointer to the word to be relocated
                                 if (e_type == E_REL)
-                                    pRelWord = ((int*)(destHostOrigin + r_offset));
+                                    pRelWord = destHostOrigin + r_offset;
                                 else
                                 {
                                     if (r_offset == 0) continue;
                                     SectionInfo destSec = GetSectionInfoByAddr(r_offset);
-                                    pRelWord = (int*)(destSec.uHostAddr - destSec.uNativeAddr + r_offset);
+                                    pRelWord = destSec.uHostAddr - destSec.uNativeAddr + r_offset;
                                     destNatOrigin = 0;
                                 }
                                 ADDRESS A, S = 0, P;
@@ -404,7 +599,7 @@ namespace Decompiler.ImageLoaders.Elf
                                 case 0: // R_386_NONE: just ignore (common)
                                     break;
                                 case 1: // R_386_32: S + A
-                                    S = elfRead4((int*)&symOrigin[symTabIndex].st_value);
+                                    S = ReadUInt32((int*)&symOrigin[symTabIndex].st_value);
                                     if (e_type == E_REL)
                                     {
                                         nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
@@ -433,7 +628,7 @@ namespace Decompiler.ImageLoaders.Elf
                                             // So we use some very improbable addresses (e.g. -1, -2, etc) and give them entries
                                             // in the symbol table
                                             int nameOffset = elfRead4((int*)&symOrigin[symTabIndex].st_name);
-                                            string pName = pStrSection + nameOffset;
+                                            string pName = ReadAsciiString( pStrSection + nameOffset;
                                             // this is too slow, I'm just going to assume it is 0
                                             //S = GetAddressByName(pName);
                                             //if (S == (e_type == E_REL ? 0x8000000 : 0)) {
@@ -463,7 +658,6 @@ namespace Decompiler.ImageLoaders.Elf
                     }
                 }
             }
-#endif
         }
 
 
@@ -575,7 +769,6 @@ namespace Decompiler.ImageLoaders.Elf
         // typically minimise the number of entries to search
         ADDRESS findRelPltOffset(uint i, ADDRESS addrRelPlt, uint sizeRelPlt, uint numRelPlt, ADDRESS addrPlt)
         {
-#if NYI
             uint first = i;
             if (first >= numRelPlt)
                 first = numRelPlt - 1;
@@ -583,8 +776,9 @@ namespace Decompiler.ImageLoaders.Elf
             do
             {
                 // Each entry is sizeRelPlt bytes, and will contain the offset, then the info (addend optionally follows)
-                int* pEntry = (int*)(addrRelPlt + (curr * sizeRelPlt));
-                int entry = elfRead4(pEntry + 1); // Read pEntry[1]
+                var pEntry = CreateImageReader(addrRelPlt + (curr * sizeRelPlt));
+                pEntry.ReadInt32();
+                int entry = pEntry.ReadInt32(); // Read pEntry[1]
                 int sym = entry >> 8; // The symbol index is in the top 24 bits (Elf32 only)
                 if (sym == i)
                 {
@@ -596,7 +790,6 @@ namespace Decompiler.ImageLoaders.Elf
                 if (--curr < 0)
                     curr = numRelPlt - 1;
             } while (curr != first); // Will eventually wrap around to first if not present
-#endif
             return 0; // Exit if this happens
         }
 
@@ -1724,8 +1917,7 @@ namespace Decompiler.ImageLoaders.Elf
     public class SymTab
     {
     }
-
+#endif
 
 }
 
-									

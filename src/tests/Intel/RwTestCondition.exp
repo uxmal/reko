@@ -1,16 +1,16 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// sp:Register sp
-// ecx:Register ecx
+// sp:sp
+// ecx:ecx
 // SZO:Flags
 // C:Flags
-// ax:Register ax
-// bx:Register bx
+// ax:ax
+// bx:bx
 // SCZO:Flags
 // Z:Flags
-// cl:Register cl
-// ds:Register ds
+// cl:cl
+// ds:ds
 // SO:Flags
 // return address size: 2
 void fn0C00_0000()
@@ -23,12 +23,12 @@ l0C00_0000:
 	ax = ax - bx
 	SCZO = cond(ax)
 	cl = Test(EQ,Z)
-	store(Mem0[ds:0x0300:word32]) = ecx
+	Mem0[ds:0x0300:word32] = ecx
 	SCZO = cond(ax - 0x0030)
 	branch Test(LT,SO) l0C00_0016
 	// succ:  l0C00_0012 l0C00_0016
 l0C00_0012:
-	store(Mem0[ds:0x0302:word16]) = ax
+	Mem0[ds:0x0302:word16] = ax
 	// succ:  l0C00_0016
 l0C00_0016:
 	return

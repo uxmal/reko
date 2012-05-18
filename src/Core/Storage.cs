@@ -347,7 +347,6 @@ namespace Decompiler.Core
 
 		public override void Write(TextWriter writer)
 		{
-			writer.Write("Register ");
 			writer.Write(Name);
 		}
 

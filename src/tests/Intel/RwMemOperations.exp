@@ -8,18 +8,18 @@ l0C00_0000:
 	branch Test(GT,SZO) l0C00_000F
 	// succ:  l0C00_0007 l0C00_000F
 l0C00_0007:
-	store(Mem0[ds:bx + 0x0004:word16]) = 0x0001
+	Mem0[ds:bx + 0x0004:word16] = 0x0001
 	goto l0C00_002B
 	// succ:  l0C00_002B
 l0C00_000F:
-	store(Mem0[ds:bx + 0x0004:word16]) = 0x0000
+	Mem0[ds:bx + 0x0004:word16] = 0x0000
 	ax = Mem0[ds:bx + 0x0004:word16]
-	store(Mem0[ds:bx + 0x0006:word16]) = ax
+	Mem0[ds:bx + 0x0006:word16] = ax
 	eax = (word32) Mem0[ds:bx + 0x0008:word16]
 	ecx = (int32) Mem0[ds:bx + 0x000A:word16]
 	eax = eax + ecx
 	SCZO = cond(eax)
-	store(Mem0[ds:bx + 0x000C:word32]) = eax
+	Mem0[ds:bx + 0x000C:word32] = eax
 	// succ:  l0C00_002B
 l0C00_002B:
 	return

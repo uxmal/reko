@@ -80,5 +80,26 @@ namespace Decompiler.UnitTests.Core
             var instr = ab.CreateInstruction();
 			Assert.AreEqual("eax = foo(Mem0[esp + 4:word32], Mem0[esp + 8:word16], Mem0[esp + 12:byte], &edx)", instr.ToString());
 		}
+
+        [Test]
+        public void BindToCallingFrame()
+        {
+            Procedure caller = new Procedure("caller", new Frame(PrimitiveType.Word16));
+            caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word32, "bindToArg04");
+            caller.Frame.EnsureStackLocal(-6, PrimitiveType.Word16, "bindToArg02");
+
+            Procedure callee = new Procedure("callee", new  Frame (PrimitiveType.Word16));
+            callee.Frame.EnsureStackArgument(4, PrimitiveType.Word16);
+            callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
+
+            throw new NotImplementedException();
+            //ab = new ApplicationBuilder(arch, caller, new CallSite(6 + 2, 0), callee, callee.Signature); 
+            //var id2 = id.Storage.BindFormalArgumentToFrame(arch, caller, 
+            //Assert.AreEqual("bindToArg04", id2.ToString());
+
+            //id = callee.EnsureStackArgument(2, PrimitiveType.Word16);
+            //id2 = id.Storage.BindFormalArgumentToFrame(arch, caller, new CallSite(6 + 2, 0));
+            //Assert.AreEqual("bindToArg02", id2.ToString());
+        }
 	}
 }

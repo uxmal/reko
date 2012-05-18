@@ -1,14 +1,14 @@
 // fn10000000
 // Mem0:Global memory
 // fp:Temporary
-// esp:Register esp
-// eax:Register eax
+// esp:esp
+// eax:eax
 // SCZO:Flags
 // CZ:Flags
-// edx:Register edx
+// edx:edx
 // SZO:Flags
 // C:Flags
-// dl:Register dl
+// dl:dl
 // return address size: 4
 void fn10000000()
 fn10000000_entry:
@@ -41,7 +41,7 @@ l10000048:
 	eax = 0xFFFFFFFF
 	// succ:  l1000004D
 l1000004D:
-	store(Mem0[0x10000054:word32]) = eax
+	Mem0[0x10000054:word32] = eax
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

@@ -37,7 +37,6 @@ using BitSet = Decompiler.Core.Lib.BitSet;
 
 namespace Decompiler.Arch.X86
 {
-
 	// X86 flag masks.
 
 	[Flags]
@@ -53,7 +52,10 @@ namespace Decompiler.Arch.X86
         FPUF = 64,          // FPU flags
 	}
 
-
+    /// <summary>
+    /// Processor architecture definition for the Intel x86 family. Currently supported processors are 8086/7,
+    /// 80186/7, 80286/7, 80386/7, 80486, and Pentium. 
+    /// </summary>
 	public class IntelArchitecture : IProcessorArchitecture
 	{
 		private BitSet implicitRegs;
@@ -119,29 +121,9 @@ namespace Decompiler.Arch.X86
             return mode.CreateStackAccess(frame, offset, dataType);
         }
 
-        //$REFACTOR: this into the different processor modes.
         public Address ReadCodeAddress(int byteSize, ImageReader rdr, ProcessorState state)
         {
-            var st = (X86State)state;
-            if (WordWidth == PrimitiveType.Word16)
-            {
-                if (byteSize == PrimitiveType.Word16.Size)
-                {
-                    return new Address(state.GetRegister(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
-                }
-                else
-                {
-                    ushort off = rdr.ReadLeUInt16();
-                    ushort seg = rdr.ReadLeUInt16();
-                    return new Address(seg, off);
-                }
-            }
-            else if (WordWidth == PrimitiveType.Word32)
-            {
-                return new Address(rdr.ReadLeUInt32());
-            }
-            else
-                throw new ApplicationException("Unexpected word width: " + byteSize);
+            return mode.ReadCodeAddress(byteSize, rdr, state);
         }
 
 		public FlagGroupStorage GetFlagGroup(uint grf)

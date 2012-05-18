@@ -61,7 +61,9 @@ namespace Decompiler.Analysis
 
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
-            ci.CallSite.StackDepthBefore = GetStackDepthBeforeCall(ci.CallSite.SizeOfReturnAddressOnStack);
+            ci.CallSite.StackDepthBefore =
+                GetStackDepthBeforeCall() +
+                ci.CallSite.SizeOfReturnAddressOnStack;
             var proc = ci.Callee as Procedure;
             if (proc != null)
             {
@@ -70,9 +72,20 @@ namespace Decompiler.Analysis
             return ci;
         }
 
-        private int GetStackDepthBeforeCall(int returnAddressBytes)
+        private int GetStackDepthBeforeCall()
         {
-            throw new NotImplementedException();
+            var spVal = ctx.RegisterState[arch.StackRegister];
+            if (ctx.IsFramePointer(spVal))
+                return 0;
+            var bin = spVal as BinaryExpression;
+            if (bin == null || !ctx.IsFramePointer(bin.Left))
+                return 0;
+            if (bin.op != Operator.Sub)
+                throw new NotImplementedException();
+            var c = bin.Right as Constant;
+            if (c == null)
+                throw new NotImplementedException();
+            return c.ToInt32();
         }
 
         public Instruction VisitDeclaration(Declaration decl)
@@ -103,13 +116,13 @@ namespace Decompiler.Analysis
         public Instruction VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression != null)
-                ret.Expression.Accept(this);
+                ret.Expression = SimplifyExpression(ret.Expression.Accept(this));
             return ret;
         }
 
         public Instruction VisitSideEffect(SideEffect side)
         {
-            return new SideEffect(side.Expression.Accept(this));
+            return new SideEffect(SimplifyExpression(side.Expression.Accept(this)));
         }
 
         public Instruction VisitStore(Store store)
@@ -210,8 +223,7 @@ namespace Decompiler.Analysis
 
         public Expression VisitConditionOf(ConditionOf cof)
         {
-            var c = SimplifyExpression(cof.Expression.Accept(this));
-            return SimplifyExpression(new ConditionOf(c));
+            return cof;
         }
 
         public Expression VisitConstant(Constant c)
@@ -290,7 +302,7 @@ namespace Decompiler.Analysis
                 access.BasePointer.Accept(this),
                 access.EffectiveAddress.Accept(this),
                 access.DataType);
-            return SimplifyExpression(m);
+            return ConvertToParamOrLocal(SimplifyExpression(m));
         }
 
         public Expression VisitSlice(Slice slice)

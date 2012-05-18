@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,42 @@ namespace Decompiler.Analysis
 
         public void Def(Expression e)
         {
-            throw new NotImplementedException();
+            var id = e as Identifier;
+            if (id != null)
+            {
+                Def(id);
+                return;
+            }
+            var bin = e as MemoryAccess;
+            if (bin != null)
+            {
+                Def(bin);
+                return;
+            }
+            throw new NotImplementedException(string.Format("Can't handle {0}", e));
+        }
+
+
+        public bool Def(MemoryAccess mem)
+        {
+            var bin = mem.EffectiveAddress as BinaryExpression;
+            if (bin == null ||(bin.op != Operator.Add && bin.op != Operator.Sub))
+                return false;
+
+            var idLeft = bin.Left as Identifier;
+            if (idLeft == null || idLeft.Storage != arch.StackRegister)
+                return false;
+            var cRight = bin.Right as Constant;
+            if (cRight == null || !cRight.IsValid)
+                return false;
+            int val = cRight.ToInt32();
+            if (bin.op == Operator.Sub)
+            {
+                VisitStackLocalStorage(new StackLocalStorage(-val, bin.DataType));
+            }
+            else 
+                VisitStackArgumentStorage(new StackArgumentStorage(val, bin.DataType));
+            return true;
         }
 
 		public int DefBitSize

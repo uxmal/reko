@@ -10,7 +10,7 @@ namespace Decompiler.ImageLoaders.Elf
     public class SectionInfo
     {
         internal string pSectionName;
-        internal ElfLoader.SectionType uType;
+        //internal ElfLoader.SectionType uType;
         internal bool IsCode;
         internal bool IsBss;
         internal uint uNativeAddr;
@@ -24,7 +24,7 @@ namespace Decompiler.ImageLoaders.Elf
         public void Dump()
         {
             Debug.Print("pSectionName: {0}", pSectionName);
-            Debug.Print("uType: {0}", uType);
+            //Debug.Print("uType: {0}", uType);
             Debug.Print("IsCode: {0}", IsCode);
             Debug.Print("IsBss: {0}", IsBss);
             Debug.Print("uNativeAddr: {0:X}", uNativeAddr);

@@ -57,7 +57,7 @@ namespace Decompiler.UnitTests.Analysis
 				w.WriteLine("// {0}", proc.Name);
 				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, new Formatter(w));
 				w.WriteLine();
-				foreach (Block block in proc.ControlGraph.Blocks)
+				foreach (Block block in proc.SortBlocksByName())
 				{
 					block.Write(w);
 					if (live != null)

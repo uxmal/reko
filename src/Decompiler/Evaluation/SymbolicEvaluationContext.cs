@@ -68,10 +68,17 @@ namespace Decompiler.Evaluation
             return new SymbolicEvaluationContext(this);
         }
 
-        public void Emit(IProcessorArchitecture arch, TextWriter writer)
+        public void Emit(IProcessorArchitecture arch, string prefix, TextWriter writer)
         {
-
-            throw new NotImplementedException();
+            writer.Write(prefix);
+            foreach (var de in RegisterState)
+            {
+                writer.Write(" {0}:{1}", de.Key, de.Value);
+            }
+            foreach (var de in StackState)
+            {
+                writer.Write(" {0}:{1}", de.Key, de.Value);
+            }
         }
 
 
@@ -322,6 +329,7 @@ namespace Decompiler.Evaluation
 
             #endregion
         }
+
 
     }
 }

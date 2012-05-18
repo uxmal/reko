@@ -1,17 +1,16 @@
 Mem0:Global memory
     def:  def Mem0
-    uses: ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
 fp:Temporary
     def:  def fp
-sp:Register sp
+    uses: bp_10 = fp
+          sp_17 = fp
+sp:sp
     def:  def sp
-    uses: bp_9 = sp
-bp:Register bp
+bp:bp
     def:  def bp
-ss:Register ss
+ss:ss
     def:  def ss
-    uses: ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
-ax:Register ax
+ax:ax
     def:  def ax
 SZO:Flags
     def:  def SZO
@@ -19,33 +18,34 @@ C:Flags
     def:  def C
 Z:Flags
     def:  def Z
-bp_9: orig: bp
-    def:  bp_9 = sp
-    uses: ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
-          sp_16 = bp_9
-ax_10: orig: ax
-    def:  ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
-    uses: ax_11 = ax_10 | ax_10
-          ax_11 = ax_10 | ax_10
+wArg06:Stack +0006
+    def:  def wArg06
+    uses: ax_11 = wArg06
+          ax_12 = wArg06 | wArg06
+          ax_12 = wArg06 | wArg06
+bp_10: orig: bp
+    def:  bp_10 = fp
 ax_11: orig: ax
-    def:  ax_11 = ax_10 | ax_10
-    uses: SZO_12 = cond(ax_11)
-          ax_15 = PHI(ax_11, ax_17)
-SZO_12: orig: SZO
-    def:  SZO_12 = cond(ax_11)
-    uses: Z_13 = SZO_12 (alias)
-Z_13: orig: Z
-    def:  Z_13 = SZO_12 (alias)
-    uses: branch Test(NE,Z_13) l0C00_000C
-C_14: orig: C
-    def:  C_14 = false
-ax_15: orig: ax
-    def:  ax_15 = PHI(ax_11, ax_17)
-sp_16: orig: sp
-    def:  sp_16 = bp_9
-ax_17: orig: ax
-    def:  ax_17 = 0xFFFF
-    uses: ax_15 = PHI(ax_11, ax_17)
+    def:  ax_11 = wArg06
+ax_12: orig: ax
+    def:  ax_12 = wArg06 | wArg06
+    uses: SZO_13 = cond(ax_12)
+          ax_16 = PHI(ax_12, ax_18)
+SZO_13: orig: SZO
+    def:  SZO_13 = cond(ax_12)
+    uses: Z_14 = SZO_13 (alias)
+Z_14: orig: Z
+    def:  Z_14 = SZO_13 (alias)
+    uses: branch Test(NE,Z_14) l0C00_000C
+C_15: orig: C
+    def:  C_15 = false
+ax_16: orig: ax
+    def:  ax_16 = PHI(ax_12, ax_18)
+sp_17: orig: sp
+    def:  sp_17 = fp
+ax_18: orig: ax
+    def:  ax_18 = 0xFFFF
+    uses: ax_16 = PHI(ax_12, ax_18)
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -58,22 +58,23 @@ fn0C00_0000_entry:
 	def SZO
 	def C
 	def Z
+	def wArg06
 	// succ:  l0C00_0000
 l0C00_0000:
-	bp_9 = sp
-	ax_10 = Mem0[ss:bp_9 + 0x0006:word16]
-	ax_11 = ax_10 | ax_10
-	SZO_12 = cond(ax_11)
-	Z_13 = SZO_12 (alias)
-	C_14 = false
-	branch Test(NE,Z_13) l0C00_000C
+	bp_10 = fp
+	ax_11 = wArg06
+	ax_12 = wArg06 | wArg06
+	SZO_13 = cond(ax_12)
+	Z_14 = SZO_13 (alias)
+	C_15 = false
+	branch Test(NE,Z_14) l0C00_000C
 	// succ:  l0C00_0009 l0C00_000C
 l0C00_0009:
-	ax_17 = 0xFFFF
+	ax_18 = 0xFFFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	ax_15 = PHI(ax_11, ax_17)
-	sp_16 = bp_9
+	ax_16 = PHI(ax_12, ax_18)
+	sp_17 = fp
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

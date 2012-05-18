@@ -1,4 +1,4 @@
-#region License
+ #region License
 /* 
  * Copyright (C) 1999-2012 John Källén.
  *
@@ -38,8 +38,8 @@ namespace Decompiler.Analysis
 	/// <summary>
 	/// Uses an interprocedural reaching definition analysis to detect which 
 	/// registers are modified by the procedures, which registers are constant at block
-    /// exits, and which registers have their values preserved. A useful side effect is the
-    /// tentative typing of procedure frames and global function pointers.<para>
+    /// exits, and which registers have their values preserved.
+    /// <para>
     /// The results of the analysis are stored in the ProgramDataFlow.</para>
 	/// </summary>
     public class TrashedRegisterFinder : InstructionVisitorBase
