@@ -130,6 +130,7 @@ namespace Decompiler.Arch.X86
 		fyl2x,
 		fyl2xp1,
 
+        hlt,
 		idiv,
 		imul,
 		@in,

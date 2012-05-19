@@ -83,7 +83,7 @@ namespace Decompiler.Gui.Windows
                     if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                         return true;
                     if (lastException != null)
-                        throw new ApplicationException("An fatal internal error occurred; decompilation has been stopped.", lastException);
+                        throw new ApplicationException("A fatal internal error occurred; decompilation has been stopped.", lastException);
                     return false;
                 }
             }

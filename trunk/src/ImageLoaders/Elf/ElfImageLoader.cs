@@ -1,4 +1,24 @@
-﻿using Decompiler.Arch.M68k;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2012 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Decompiler.Arch.M68k;
 using Decompiler.Arch.Sparc;
 using Decompiler.Arch.X86;
 using Decompiler.Core;
@@ -57,12 +77,7 @@ namespace Decompiler.ImageLoaders.Elf
         public List<Elf32_PHdr> ProgramHeaders { get; private set; }
         public override Address PreferredBaseAddress { get { return addrPreferred; } }
 
-
-        public override Platform Platform
-        {
-            get { throw new NotImplementedException(); }
-        }
-
+        public override Platform Platform { get { return new DefaultPlatform(); } }
 
         public override ProgramImage Load(Address addrLoad)
         {
@@ -71,7 +86,9 @@ namespace Decompiler.ImageLoaders.Elf
             LoadProgramHeaderTable();
 
             LoadSectionHeaders();
-            return new ProgramImage(addrLoad, RawImage);
+            addrPreferred = ComputeBaseAddress();
+            var addrMax = ComputeMaxAddress();
+            return LoadImageBytes(addrPreferred, addrMax);
         }
 
         public void LoadElfIdentification()
@@ -85,23 +102,27 @@ namespace Decompiler.ImageLoaders.Elf
             this.fileVersion = rdr.ReadByte();
         }
 
+
+        private ProgramImage LoadImageBytes(Address addrPreferred, Address addrMax)
+        {
+            var bytes = new byte[addrMax - addrPreferred];
+            var v_base = addrPreferred.Linear;
+            foreach (var ph in ProgramHeaders)
+            {
+                if (ph.p_vaddr > 0 && ph.p_filesz > 0)
+                    Array.Copy(RawImage, ph.p_offset, bytes, ph.p_vaddr - v_base, ph.p_filesz);
+            }
+            return new ProgramImage(addrPreferred, bytes);
+        }
+
+
         public void LoadProgramHeaderTable()
         {
             this.ProgramHeaders = new List<Elf32_PHdr>();
             var rdr = CreateReader(Header.e_phoff);
             for (int i = 0; i < Header.e_phnum; ++i)
             {
-                ProgramHeaders.Add(new Elf32_PHdr
-                {
-                    p_type = (ProgramHeaderType) rdr.ReadUInt32(),
-                    p_offset = rdr.ReadUInt32(),
-                    p_vaddr = rdr.ReadUInt32(),
-                    p_paddr = rdr.ReadUInt32(),
-                    p_filesz = rdr.ReadUInt32(),
-                    p_pmemsz = rdr.ReadUInt32(),
-                    p_flags = rdr.ReadUInt32(),
-                    p_align = rdr.ReadUInt32(),
-                });
+                ProgramHeaders.Add(Elf32_PHdr.Load(rdr));
             }
         }
 
@@ -111,47 +132,32 @@ namespace Decompiler.ImageLoaders.Elf
             var rdr = CreateReader(Header.e_shoff);
             for (int i = 0; i < Header.e_shnum; ++i)
             {
-                SectionHeaders.Add(new Elf32_SHdr
-                {
-                    sh_name = rdr.ReadUInt32(),
-                    sh_type = ( SectionHeaderType) rdr.ReadUInt32(),
-                    sh_flags = rdr.ReadUInt32(),
-                    sh_addr = rdr.ReadUInt32(),        // Address
-                    sh_offset = rdr.ReadUInt32(),
-                    sh_size = rdr.ReadUInt32(),
-                    sh_link = rdr.ReadUInt32(),
-                    sh_info = rdr.ReadUInt32(),
-                    sh_addralign = rdr.ReadUInt32(),
-                    sh_entsize = rdr.ReadUInt32(),
-                });
+                SectionHeaders.Add(Elf32_SHdr.Load(rdr));
             }
         }
 
         public void LoadHeader()
         {
             var rdr = CreateReader(HEADER_OFFSET);
-            this.Header = new Elf32_EHdr
-            {
-                e_type = rdr.ReadUInt16(),
-                e_machine = rdr.ReadUInt16(),
-                e_version = rdr.ReadUInt32(),
-                e_entry = rdr.ReadUInt32(),
-                e_phoff = rdr.ReadUInt32(),
-                e_shoff = rdr.ReadUInt32(),
-                e_flags = rdr.ReadUInt32(),
-                e_ehsize = rdr.ReadUInt16(),
-                e_phentsize = rdr.ReadUInt16(),
-                e_phnum = rdr.ReadUInt16(),
-                e_shentsize = rdr.ReadUInt16(),
-                e_shnum = rdr.ReadUInt16(),
-                e_shstrndx = rdr.ReadUInt16(),
-            };
+            this.Header = Elf32_EHdr.Load(rdr);
             arch = CreateArchitecture(Header.e_machine);
         }
 
         public Address ComputeBaseAddress()
         {
-            return new Address(ProgramHeaders.Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0).Min(ph => ph.p_vaddr));
+            return new Address(
+                ProgramHeaders
+                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                .Min(ph => ph.p_vaddr));
+        }
+
+        private Address ComputeMaxAddress()
+        {
+            return new Address(
+                ProgramHeaders
+                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                .Select(ph => ph.p_vaddr + ph.p_pmemsz)
+                .Max());
         }
 
         private IProcessorArchitecture CreateArchitecture(ushort machineType)
@@ -165,8 +171,8 @@ namespace Decompiler.ImageLoaders.Elf
             case EM_M32: //AT&T WE 32100
             case EM_88K: //Motorola 88000
             case EM_860: //Intel 80860
-            case EM_MIPS: //MIPS RS3000 Big-Endian E
-            case EM_MIPSRS4BE: // MIPS RS4000 Big-Endian E
+            case EM_MIPS: //MIPS RS3000 Big-Endian
+            case EM_MIPSRS4BE: // MIPS RS4000 Big-Endian
             default:
                 throw new NotSupportedException("Processor format is not supported.");
             }
@@ -174,7 +180,7 @@ namespace Decompiler.ImageLoaders.Elf
 
         public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
         {
-            throw new NotImplementedException();
+            entryPoints.Add(new EntryPoint(new Address(Header.e_entry), this.Architecture.CreateProcessorState()));
         }
 
         private ImageReader CreateReader(uint fileOffset)
@@ -197,9 +203,9 @@ namespace Decompiler.ImageLoaders.Elf
             return Encoding.ASCII.GetString(RawImage, (int)offset, i - offset);
         }
 
-
         public void Dump(TextWriter writer)
         {
+            writer.WriteLine("Entry: {0:X}", Header.e_entry);
             writer.WriteLine("Sections:");
             foreach (var sh in SectionHeaders)
             {

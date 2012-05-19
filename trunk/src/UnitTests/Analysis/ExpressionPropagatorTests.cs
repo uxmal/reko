@@ -22,6 +22,7 @@ using Decompiler.Arch.X86;
 using Decompiler.Analysis;
 using Decompiler.Evaluation;
 using Decompiler.Core;
+using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
@@ -78,8 +79,52 @@ namespace Decompiler.UnitTests.Analysis
 
             var newInstr = proc.EntryBlock.Succ[0].Statements[2].Instruction.Accept(ep);
             Assert.AreEqual("SZO = cond(v4)", newInstr.ToString());
+        }
 
+        [Test]
+        public void Application()
+        {
+            var p = new ProgramBuilder();
+            var proc = p.Add("main", (m) =>
+            {
+                var r1 = m.Frame.EnsureRegister(new RegisterStorage("r1", 1, PrimitiveType.Word32));
 
+                m.Assign(r1, m.Word32(0x42));
+                m.SideEffect(m.Fn("foo", r1));
+                m.Return();
+            });
+
+            var ctx = new SymbolicEvaluationContext(new ArchitectureMock(), proc.Frame);
+            var simplifier = new ExpressionSimplifier(ctx);
+            var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
+
+            var stms = proc.EntryBlock.Succ[0].Statements;
+            stms[0].Instruction.Accept(ep);
+            var newInstr = stms[1].Instruction.Accept(ep);
+            Assert.AreEqual("foo(0x00000042)", newInstr.ToString());
+        }
+
+        [Test]
+        public void IndirectCall()
+        {
+            var p = new ProgramBuilder();
+            var proc = p.Add("main", (m) =>
+            {
+                var r1 = m.Frame.EnsureRegister(new RegisterStorage("r1", 1, PrimitiveType.Word32));
+
+                m.Assign(r1, m.Word32(0x42));
+                m.Emit(new IndirectCall(r1, new CallSite(4, 0)));
+                m.Return();
+            });
+
+            var ctx = new SymbolicEvaluationContext(new ArchitectureMock(), proc.Frame);
+            var simplifier = new ExpressionSimplifier(ctx);
+            var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
+
+            var stms = proc.EntryBlock.Succ[0].Statements;
+            stms[0].Instruction.Accept(ep);
+            var newInstr = stms[1].Instruction.Accept(ep);
+            Assert.AreEqual("icall 0x00000042", newInstr.ToString());
         }
     }
 }
