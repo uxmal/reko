@@ -289,6 +289,8 @@ namespace Decompiler.Scanning
                 return RegisterOf(id);
             }
             var bin = mem.EffectiveAddress as BinaryExpression;
+            if (bin == null)
+                return null;
             var idLeft = bin.Left as Identifier;
             var idRight = bin.Right as Identifier;
             if (idRight != null && idLeft == null)

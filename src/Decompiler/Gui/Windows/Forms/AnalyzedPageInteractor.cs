@@ -179,6 +179,8 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void memViewerSvc_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (e.AddressRange.Begin.Linear == 0)
+                return;
             disasmViewerSvc.DisassembleStartingAtAddress(e.AddressRange.Begin);
         }
 	}

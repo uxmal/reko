@@ -902,7 +902,7 @@ namespace Decompiler.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.repne),
 				new SingleByteOpRec(Opcode.rep),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.hlt),
 				new SingleByteOpRec(Opcode.cmc),
 				new GroupOpRec(3, "Eb"),
 				new GroupOpRec(3, "Ev"),

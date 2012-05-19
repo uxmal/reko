@@ -974,5 +974,21 @@ namespace Decompiler.UnitTests.Arch.Intel
                 "2|esi = esi + 0x00000001",
                 "3|edi = edi + 0x00000001");
         }
+
+        [Test]
+        public void Hlt()
+        {
+            var e = Run32bitTest(delegate(IntelAssembler m)
+            {
+                m.Hlt();
+            });
+            Assert.IsTrue(e.MoveNext());
+            var rtls= e.Current;
+            Assert.AreEqual(1, rtls.Instructions.Count);
+            var rtl = (RtlSideEffect) rtls.Instructions[0];
+            var fnExp = ((Application)rtl.Expression).Procedure;
+            var ppp = ((ProcedureConstant)fnExp).Procedure;
+            Assert.IsTrue(ppp.Characteristics.Terminates);
+        }
     }
 }

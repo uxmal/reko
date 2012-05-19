@@ -1357,6 +1357,11 @@ namespace Decompiler.Assemblers.x86
             ProcessImul(op);
         }
 
+        public void Hlt()
+        {
+            emitter.EmitByte(0xF4);
+        }
+
         public void Int(int serviceVector)
         {
             ProcessInt(Const(serviceVector));
@@ -2069,7 +2074,6 @@ namespace Decompiler.Assemblers.x86
         {
             emitter.EmitByte(0xD7);
         }
-
     }
 }
 

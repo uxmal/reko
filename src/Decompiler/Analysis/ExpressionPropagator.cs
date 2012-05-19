@@ -110,7 +110,8 @@ namespace Decompiler.Analysis
 
         public Instruction VisitIndirectCall(IndirectCall ic)
         {
-            throw new NotImplementedException();
+            var fn = SimplifyExpression(ic.Callee);
+            return new IndirectCall(fn, ic.CallSite);
         }
 
         public Instruction VisitReturnInstruction(ReturnInstruction ret)
@@ -157,7 +158,14 @@ namespace Decompiler.Analysis
 
         public Expression VisitApplication(Application appl)
         {
-            throw new NotImplementedException();
+            var fn = SimplifyExpression(appl.Procedure);
+            var args = new Expression[appl.Arguments.Length];
+            for (int i = 0; i < args.Length; ++i)
+            {
+                args[i] = SimplifyExpression(appl.Arguments[i]);
+            }
+            var a = new Application(fn, appl.DataType, args);
+            return SimplifyExpression(a);
         }
 
         public Expression VisitArrayAccess(ArrayAccess acc)

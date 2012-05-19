@@ -338,5 +338,16 @@ movzx	ax,byte ptr [bp+04]
             Assert.AreEqual(PrimitiveType.Byte, instr.dataWidth);
             Assert.AreEqual(PrimitiveType.Word32, instr.addrWidth);
         }
+
+        [Test]
+        public void Hlt()
+        {
+            byte[] image = new byte[] { 0xF4 };
+            var img = new ProgramImage(new Address(0xC000, 0x0000), image);
+            var rdr = img.CreateReader(img.BaseAddress);
+            var dasm = new IntelDisassembler(rdr, PrimitiveType.Word32);
+            var instr = dasm.Disassemble();
+            Assert.AreEqual("hlt\t", instr.ToString());
+        }
 	}
 }

@@ -30,8 +30,6 @@ namespace Decompiler.Core.Serialization
 	/// </summary>
 	public class ProcedureCharacteristics
 	{
-        private bool allocator;
-		private bool isAlloca;
         private ArraySizeCharacteristic arraySize;
 
 		public ProcedureCharacteristics()
@@ -40,15 +38,11 @@ namespace Decompiler.Core.Serialization
 
 		[XmlElement("is-alloca")]
 		[DefaultValue(false)]
-		public virtual bool IsAlloca
-		{ 
-			get { return isAlloca; }
-			set { isAlloca = value; }
-		}
+		public virtual bool IsAlloca { get; set; }
 
 		[XmlElement("terminates")]
 		[DefaultValue(false)]
-		public virtual bool Terminates { get;set;} 
+		public virtual bool Terminates { get;set; } 
 
 		public void Write()
 		{
@@ -61,11 +55,7 @@ namespace Decompiler.Core.Serialization
 
         [XmlElement("allocator")]
         [DefaultValue(false)]
-        public bool Allocator
-        {
-            get { return allocator; }
-            set { allocator = value; }
-        }
+        public bool Allocator { get; set; }
 
         [XmlElement("array-size")]
         public ArraySizeCharacteristic ArraySize
@@ -107,7 +97,7 @@ namespace Decompiler.Core.Serialization
 
 		private Exception Invalid()
 		{
-			return new InvalidOperationException("Default characteristics may not be assigned");
+			return new InvalidOperationException("Default characteristics may not be assigned.");
 		}
 	}
 }

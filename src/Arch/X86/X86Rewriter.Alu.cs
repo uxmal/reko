@@ -23,6 +23,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Rtl;
+using Decompiler.Core.Serialization;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,16 @@ namespace Decompiler.Arch.X86
                     orw.AluRegister(Registers.ah),
                             orw.AddrOf(orw.AluRegister(Registers.al)),
                             orw.AddrOf(orw.AluRegister(Registers.ah))));
+        }
+
+        private void RewriteHlt()
+        {
+            var ppp = host.EnsurePseudoProcedure("__hlt", PrimitiveType.Void, 0);
+            ppp.Characteristics = new ProcedureCharacteristics
+            {
+                Terminates = true,
+            };
+            emitter.SideEffect(PseudoProc(ppp, PrimitiveType.Void));
         }
 
         private void RewriteAam()

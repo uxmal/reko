@@ -134,6 +134,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.fsubr: EmitCommonFpuInstruction(Operator.Sub, true, false); break;
                 case Opcode.fsubrp: EmitCommonFpuInstruction(Operator.Sub, true, true); break;
                 case Opcode.fxch: RewriteExchange(); break;
+                case Opcode.hlt: RewriteHlt(); break;
                 case Opcode.idiv: RewriteDivide(Operator.Divs, Domain.SignedInt); break;
                 case Opcode.@in: RewriteIn(); break;
                 case Opcode.imul: RewriteMultiply(Operator.Muls, Domain.SignedInt); break;
@@ -172,6 +173,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.movsx: EmitCopy(di.Instruction.op1, emitter.Cast(PrimitiveType.Create(Domain.SignedInt, di.Instruction.op1.Width.Size), SrcOp(di.Instruction.op2)), false); break;
                 case Opcode.movzx: EmitCopy(di.Instruction.op1, emitter.Cast(di.Instruction.op1.Width, SrcOp(di.Instruction.op2)), false); break;
                 case Opcode.mul: RewriteMultiply(Operator.Mulu, Domain.UnsignedInt); break;
+                case Opcode.nop: continue;
                 case Opcode.not: RewriteNot(); break;
                 case Opcode.neg: RewriteNeg(); break;
                 case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
