@@ -46,7 +46,5 @@ namespace Decompiler.Gui
         void ShowMemoryAtAddress(Address addr);
         AddressRange GetSelectedAddressRange();
         void InvalidateWindow();
-
-
     }
 }

@@ -39,7 +39,7 @@ namespace Decompiler.Gui.Windows.Forms
 	/// <summary>
 	/// Provices a component Container implementation, and specifically handles interactions 
     /// with the MainForm. This decouples platform-specific code from the user interaction 
-    /// code. This will make it easier to portto other GUI platforms.
+    /// code. This will make it easier to port to other GUI platforms.
 	/// </summary>
 	public class MainFormInteractor : 
         Container,

@@ -112,7 +112,14 @@ namespace Decompiler.ImageLoaders.Elf
                 if (ph.p_vaddr > 0 && ph.p_filesz > 0)
                     Array.Copy(RawImage, ph.p_offset, bytes, ph.p_vaddr - v_base, ph.p_filesz);
             }
-            return new ProgramImage(addrPreferred, bytes);
+            var image = new ProgramImage(addrPreferred, bytes);
+            foreach (var segment in SectionHeaders)
+            {
+                if (segment.sh_name == 0)
+                    continue;
+                image.Map.AddSegment(new Address(segment.sh_addr), GetStringTableEntry(segment.sh_name), AccessMode.Read);
+            }
+            return image;
         }
 
 
