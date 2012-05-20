@@ -30,6 +30,6 @@ namespace Decompiler.Core
 			get; 
 		}
 
-		MachineInstruction DisassembleInstruction();
+        MachineInstruction DisassembleInstruction();
 	}
 }

@@ -111,6 +111,8 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool LeavePage()
         {
+            var browserSvc = EnsureService<IProgramImageBrowserService>();
+            browserSvc.SelectionChanged -= BrowserItemSelected;
             return (Decompiler != null);
         }
 
@@ -141,6 +143,17 @@ namespace Decompiler.Gui.Windows.Forms
             });
             browserSvc.Enabled = true;
             browserSvc.Caption = "Segments";
+            browserSvc.SelectionChanged += BrowserItemSelected;
+
         }
+
+        public void BrowserItemSelected(object sender, EventArgs e)
+        {
+            ImageMapSegment segment = (ImageMapSegment)browserSvc.FocusedItem;
+            var memSvc = EnsureService<IMemoryViewService>();
+            memSvc.ShowMemoryAtAddress(segment.Address);
+            memSvc.ShowWindow();
+        }
+
     }
 }
