@@ -115,7 +115,7 @@ namespace Decompiler.ImageLoaders.Elf
             var image = new ProgramImage(addrPreferred, bytes);
             foreach (var segment in SectionHeaders)
             {
-                if (segment.sh_name == 0)
+                if (segment.sh_name == 0 || segment.sh_addr == 0)
                     continue;
                 image.Map.AddSegment(new Address(segment.sh_addr), GetStringTableEntry(segment.sh_name), AccessMode.Read);
             }
@@ -216,7 +216,7 @@ namespace Decompiler.ImageLoaders.Elf
             writer.WriteLine("Sections:");
             foreach (var sh in SectionHeaders)
             {
-                writer.WriteLine("{0,-12} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6:X8} sh_info: {7:X8} sh_addralign: {8:X8} sh_entsize: {9:X8}",
+                writer.WriteLine("{0,-14} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6:X8} sh_info: {7:X8} sh_addralign: {8:X8} sh_entsize: {9:X8}",
                     GetStringTableEntry(sh.sh_name),
                     sh.sh_type,
                     DumpShFlags(sh.sh_flags),

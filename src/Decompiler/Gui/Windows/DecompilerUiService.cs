@@ -97,7 +97,6 @@ namespace Decompiler.Gui.Windows
             form.Invoke(new Action<string>(delegate(string s)
                 { MessageBox.Show(form, s, "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
                 sb.ToString() );
-            MessageBox.Show(form, sb.ToString(), "Decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         public virtual void ShowError(string format, params object[] args)

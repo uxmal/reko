@@ -123,7 +123,10 @@ namespace Decompiler.Core.Lib
 
         public T ImmediateDominator(T node)
         {
-            return idoms[node];
+            T idom;
+            if (idoms.TryGetValue(node, out idom))
+                return idom;
+            return default(T);
         }
 
         // Postdominators

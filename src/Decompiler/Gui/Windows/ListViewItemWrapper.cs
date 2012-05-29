@@ -32,17 +32,112 @@ namespace Decompiler.Gui.Windows
     public class ListViewItemWrapper : IListViewItem
     {
         private ListViewItem item;
+        private IList<IListViewSubItem> subItems;
 
-        public ListViewItem Item { get { return item; } set { item = value; } }
+        public ListViewItemWrapper(ListViewItem item)
+        {
+            this.item = item;
+        }
+
+        public ListViewItem Item { get { return item; } }
+
 
         #region IListViewItem Members
 
-        public string Text
+        public string Text { get { return item.Text; } set { item.Text = value; } }
+        public object Tag { get { return item.Tag; } set { item.Tag = value; } }
+
+        public void AddSubItem(string text)
         {
-            get { return item.Text; }
-            set { item.Text = value; }
+            item.SubItems.Add(text);
         }
 
         #endregion
+
+        private class ListViewSubItem : IListViewSubItem
+        {
+            public ListViewSubItem(ListViewItem.ListViewSubItem subItem)
+            {
+                this.SubItem = subItem;
+            }
+
+            public ListViewItem.ListViewSubItem SubItem { get; private set; }
+            public string Text { get { return SubItem.Text; } set { SubItem.Text = value; } }
+        }
+
+        private class SubItemList : IList<IListViewSubItem>
+        {
+            private ListViewItem.ListViewSubItemCollection collection;
+
+            public SubItemList(ListViewItem.ListViewSubItemCollection listViewSubItemCollection)
+            {
+                // TODO: Complete member initialization
+                this.collection = listViewSubItemCollection;
+            }
+
+            public int IndexOf(IListViewSubItem item)
+            {
+                throw new NotSupportedException();
+            }
+
+            public void Insert(int index, IListViewSubItem item)
+            {
+                throw new NotSupportedException();
+            }
+
+            public void RemoveAt(int index)
+            {
+                collection.RemoveAt(index);
+            }
+
+            public IListViewSubItem this[int index] { get { return new ListViewSubItem(collection[index]); } set { collection[index] = ((ListViewSubItem) value).SubItem; } } 
+
+            public void Add(string text)
+            {
+                collection.Add(text);
+            }
+
+            public void Add(IListViewSubItem item)
+            {
+                throw new NotSupportedException();
+            }
+
+            public void Clear()
+            {
+                collection.Clear();
+            }
+
+            public bool Contains(IListViewSubItem item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void CopyTo(IListViewSubItem[] array, int arrayIndex)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int Count { get { return collection.Count; } }
+            public bool IsReadOnly { get { return collection.IsReadOnly; } }
+
+            public bool Remove(IListViewSubItem item)
+            {
+                collection.Remove(((ListViewSubItem)item).SubItem);
+                return true;
+            }
+
+            public IEnumerator<IListViewSubItem> GetEnumerator()
+            {
+                foreach (ListViewItem.ListViewSubItem item in collection)
+                {
+                    yield return new ListViewSubItem(item);
+                }
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
     }
 }

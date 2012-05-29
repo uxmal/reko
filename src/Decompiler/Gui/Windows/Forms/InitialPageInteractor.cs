@@ -139,10 +139,13 @@ namespace Decompiler.Gui.Windows.Forms
             var browserSvc = EnsureService<IProgramImageBrowserService>();
             browserSvc.Populate(Decompiler.Program.Image.Map.Segments.Values, delegate(object item, IListViewItem listItem)
             {
-                listItem.Text = ((ImageMapSegment)item).Name;
+                var ims = (ImageMapSegment)item;
+                listItem.Text = ims.Name;
+                listItem.AddSubItem(ims.Address.ToString());
             });
             browserSvc.Enabled = true;
             browserSvc.Caption = "Segments";
+            browserSvc.AddColumn("Address");
             browserSvc.SelectionChanged += BrowserItemSelected;
 
         }

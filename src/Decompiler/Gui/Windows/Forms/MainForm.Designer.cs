@@ -34,23 +34,23 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.listBrowser = new System.Windows.Forms.ListView();
-            this.colBrowserHeader = new System.Windows.Forms.ColumnHeader();
+            this.colBrowserHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabFindResults = new System.Windows.Forms.TabPage();
-            this.listFindResults = new System.Windows.Forms.ListView();
             this.tabDiagnostics = new System.Windows.Forms.TabPage();
             this.listDiagnostics = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.tabFindResults = new System.Windows.Forms.TabPage();
+            this.listFindResults = new System.Windows.Forms.ListView();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabFindResults.SuspendLayout();
             this.tabDiagnostics.SuspendLayout();
+            this.tabFindResults.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -76,7 +76,7 @@
             this.listBrowser.Dock = System.Windows.Forms.DockStyle.Left;
             this.listBrowser.Location = new System.Drawing.Point(3, 0);
             this.listBrowser.Name = "listBrowser";
-            this.listBrowser.Size = new System.Drawing.Size(200, 328);
+            this.listBrowser.Size = new System.Drawing.Size(333, 328);
             this.listBrowser.TabIndex = 4;
             this.listBrowser.UseCompatibleStateImageBehavior = false;
             this.listBrowser.View = System.Windows.Forms.View.Details;
@@ -84,7 +84,7 @@
             // colBrowserHeader
             // 
             this.colBrowserHeader.Text = "";
-            this.colBrowserHeader.Width = 196;
+            this.colBrowserHeader.Width = 136;
             // 
             // tabControl1
             // 
@@ -96,27 +96,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(784, 180);
             this.tabControl1.TabIndex = 5;
-            // 
-            // tabFindResults
-            // 
-            this.tabFindResults.Controls.Add(this.listFindResults);
-            this.tabFindResults.Location = new System.Drawing.Point(4, 22);
-            this.tabFindResults.Name = "tabFindResults";
-            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFindResults.Size = new System.Drawing.Size(776, 154);
-            this.tabFindResults.TabIndex = 0;
-            this.tabFindResults.Text = "Find results";
-            this.tabFindResults.UseVisualStyleBackColor = true;
-            // 
-            // listFindResults
-            // 
-            this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listFindResults.FullRowSelect = true;
-            this.listFindResults.Location = new System.Drawing.Point(3, 3);
-            this.listFindResults.Name = "listFindResults";
-            this.listFindResults.Size = new System.Drawing.Size(770, 148);
-            this.listFindResults.TabIndex = 0;
-            this.listFindResults.UseCompatibleStateImageBehavior = false;
             // 
             // tabDiagnostics
             // 
@@ -144,6 +123,48 @@
             this.listDiagnostics.UseCompatibleStateImageBehavior = false;
             this.listDiagnostics.View = System.Windows.Forms.View.Details;
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Address";
+            this.columnHeader1.Width = 95;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Description";
+            this.columnHeader2.Width = 624;
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "Open.ico");
+            this.imageList.Images.SetKeyName(1, "Save.ico");
+            this.imageList.Images.SetKeyName(2, "NextPhase.ico");
+            this.imageList.Images.SetKeyName(3, "FinishDecompilation.ico");
+            this.imageList.Images.SetKeyName(4, "Error");
+            this.imageList.Images.SetKeyName(5, "Warning");
+            // 
+            // tabFindResults
+            // 
+            this.tabFindResults.Controls.Add(this.listFindResults);
+            this.tabFindResults.Location = new System.Drawing.Point(4, 22);
+            this.tabFindResults.Name = "tabFindResults";
+            this.tabFindResults.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFindResults.Size = new System.Drawing.Size(776, 154);
+            this.tabFindResults.TabIndex = 0;
+            this.tabFindResults.Text = "Find results";
+            this.tabFindResults.UseVisualStyleBackColor = true;
+            // 
+            // listFindResults
+            // 
+            this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listFindResults.FullRowSelect = true;
+            this.listFindResults.Location = new System.Drawing.Point(3, 3);
+            this.listFindResults.Name = "listFindResults";
+            this.listFindResults.Size = new System.Drawing.Size(770, 148);
+            this.listFindResults.TabIndex = 0;
+            this.listFindResults.UseCompatibleStateImageBehavior = false;
+            // 
             // splitter1
             // 
             this.splitter1.Location = new System.Drawing.Point(0, 0);
@@ -166,27 +187,6 @@
             // 
             this.ofd.FileName = "openFileDialog1";
             // 
-            // imageList
-            // 
-            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
-            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "Open.ico");
-            this.imageList.Images.SetKeyName(1, "Save.ico");
-            this.imageList.Images.SetKeyName(2, "NextPhase.ico");
-            this.imageList.Images.SetKeyName(3, "FinishDecompilation.ico");
-            this.imageList.Images.SetKeyName(4, "Error");
-            this.imageList.Images.SetKeyName(5, "Warning");
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Address";
-            this.columnHeader1.Width = 95;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Description";
-            this.columnHeader2.Width = 624;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -204,8 +204,8 @@
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabFindResults.ResumeLayout(false);
             this.tabDiagnostics.ResumeLayout(false);
+            this.tabFindResults.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

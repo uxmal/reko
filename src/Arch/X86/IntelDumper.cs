@@ -49,6 +49,11 @@ namespace Decompiler.Arch.X86
 			if (showAddresses)
 				writer.Write("{0} ", addrBegin);
 			IntelInstruction instr = (IntelInstruction) dasm.DisassembleInstruction();
+            if (instr == null)
+            {
+                writer.WriteLine();
+                return;
+            }
 			if (showCodeBytes)
 			{
 				StringWriter sw = new StringWriter();
