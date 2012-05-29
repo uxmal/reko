@@ -200,16 +200,30 @@ namespace Decompiler.Scanning
 
         public bool VisitGoto(RtlGoto g)
         {
+            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
-                scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
                 var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, scEval);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 EnsureEdge(blockSource.Procedure, blockSource, blockDest);
 
                 return false;
             }
+            var mem = g.Target as MemoryAccess;
+            if (mem != null)
+            {
+                if (mem.EffectiveAddress is Constant)
+                {
+                    var site = scEval.State.OnBeforeCall(4);            //$BUGBUG: hard coded.
+                    Emit(new IndirectCall(g.Target, site));
+                    Emit(new ReturnInstruction());
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+
+                    return false;
+                }
+            }
+
             ProcessVector(ric.Address, g);
             return false;
         }
@@ -245,6 +259,8 @@ namespace Decompiler.Scanning
             if (procCallee != null)
             {
                 var ppp = procCallee.Procedure as PseudoProcedure;
+                if (ppp.Name.StartsWith("__"))
+                    ppp.ToString();
                 if (ppp != null)
                 {
                     Emit(BuildApplication(procCallee, ppp.Signature, site));
@@ -345,6 +361,13 @@ namespace Decompiler.Scanning
             else
             {
                 Emit(new SideEffect(side.Expression));
+                var appl = side.Expression as Application;
+                if (appl != null)
+                {
+                    var fn = appl.Procedure as ProcedureConstant;
+                    if (fn != null)
+                        return !fn.Procedure.Characteristics.Terminates;
+                }
             }
             return true;
         }

@@ -42,5 +42,7 @@ namespace Decompiler.Gui
         void Populate(IEnumerable items, ListViewItemDecoratorHandler handler);
 
         string Caption { get; set; }
+
+        void AddColumn(string p);
     }
 }

@@ -84,7 +84,7 @@ namespace Decompiler.Analysis
 				vp.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
-				// Build expressions. A definition with a single value can be subsumed
+				// Build expressions. A definition with a single use can be subsumed
 				// into the using expression. 
 
 				var coa = new Coalescer(proc, ssa);

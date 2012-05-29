@@ -336,11 +336,19 @@ namespace Decompiler.Gui.Windows.Controls
 					Brush fg = GetForegroundBrush(item, isSelected);
 					Brush bg = GetBackgroundBrush(item, isSelected);
 
-					byte b = rdr.ReadByte();
-					char ch = (char) b;
-					sbCode.Append(Char.IsControl(ch) ? '.' : ch);
+                    if (rdr.IsValid)
+                    {
+                        byte b = rdr.ReadByte();
+                        s = string.Format("{0:X2}", b);
+                        char ch = (char)b;
+                        sbCode.Append(Char.IsControl(ch) ? '.' : ch);
+                    }
+                    else
+                    {
+                        s = "??";
+                        sbCode.Append(' ');
+                    }
 
-					s = string.Format("{0:X2}", b);
 					cx = cellSize.Width * 3;
 					Rectangle rcByte = new Rectangle(
 						rc.Left,

@@ -289,6 +289,8 @@ namespace Decompiler.Arch.X86
 			addressWidth = defaultAddressWidth;
 			isModrmValid = false;
 			segmentOverride = RegisterStorage.None;
+            if (!rdr.IsValid)
+                return null;
             byte op = rdr.ReadByte();
             return s_aOpRec[op].Decode(this, op, "");
         }

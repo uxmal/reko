@@ -297,6 +297,17 @@ namespace Decompiler.Arch.X86
 
         private void RewriteLogical(BinaryOperator op)
         {
+            if (di.Instruction.code == Opcode.and)
+            {
+                var r = di.Instruction.op1 as RegisterOperand;
+                if (r != null && r.Register == arch.StackRegister &&
+                    di.Instruction.op2 is ImmediateOperand)
+                {
+                    emitter.SideEffect(PseudoProc("__align", PrimitiveType.Void, SrcOp(di.Instruction.op1)));
+                    return;
+                }
+            }
+
             var ass = EmitBinOp(
                 op,
                 di.Instruction.op1,

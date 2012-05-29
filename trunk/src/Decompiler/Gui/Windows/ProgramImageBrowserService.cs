@@ -65,14 +65,18 @@ namespace Decompiler.Gui.Windows
             get { return list.SelectedItems.Count > 0; }
         }
 
+        public void AddColumn(string text)
+        {
+            list.Columns.Add(text);
+        }
+
         public void Populate(IEnumerable items, ListViewItemDecoratorHandler handler)
         {
             list.Items.Clear();
-            ListViewItemWrapper wli = new ListViewItemWrapper();
 			foreach (object item in items)
 			{
-                wli.Item = new ListViewItem();
-                wli.Item.Tag = item;
+                ListViewItemWrapper wli = new ListViewItemWrapper(new ListViewItem());
+                wli.Tag = item;
                 handler(item, wli);
 				list.Items.Add(wli.Item);
 			}

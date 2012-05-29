@@ -33,6 +33,14 @@ namespace Decompiler.Gui
         //$REVIEW: consider exposing an IconIndex property as well to cover th 90% case and avoid the delegate below.
 
         string Text { get; set; }
+        object Tag { get; set; }
+
+        void AddSubItem(string text);
+    }
+
+    public interface IListViewSubItem
+    {
+        string Text { get; set; }
     }
 
     public delegate void ListViewItemDecoratorHandler(object item, IListViewItem listItem);

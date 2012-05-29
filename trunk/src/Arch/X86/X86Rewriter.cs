@@ -69,6 +69,8 @@ namespace Decompiler.Arch.X86
             {
                 var addr = d.Address;
                 var instr = d.Disassemble();
+                if (instr == null)
+                    yield break;
                 var length = (uint)(d.Address - addr);
                 yield return new DisassembledInstruction(addr, instr, length);
             }

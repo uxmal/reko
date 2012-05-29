@@ -34,9 +34,9 @@ namespace Decompiler.Analysis
 	/// uses in this block as possible. 
 	/// </summary>
     /// <remarks>
-    /// This transformation is quite destabiling and ineffective if long chains of expressions are still in their
-    /// 3-address format. Before coalescing, call ValuePropagation to perform constant propagation and 
-    /// other transformations that make the expression trees smaller.
+    /// This transformation is quite destabilizing and ineffective if long chains of expressions are still 
+    /// in their 3-address format. Before coalescing, call ValuePropagation to perform constant propagation
+    /// and other transformations that make the expression trees smaller.
     /// </remarks>
 	public class Coalescer : InstructionTransformer
 	{
