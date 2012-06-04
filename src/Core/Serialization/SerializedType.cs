@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Types;
 using System;
+using System.Xml.Serialization;
 
 namespace Decompiler.Core.Serialization
 {

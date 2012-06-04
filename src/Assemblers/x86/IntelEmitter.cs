@@ -32,20 +32,22 @@ namespace Decompiler.Assemblers.x86
     public class IntelEmitter : Emitter
     {
         private RegisterStorage segOverride;
-        private PrimitiveType dataWidthSeg;	// Default data width for this segment.
-        private PrimitiveType addrWidthSeg;	// Default address width for this segment.
-        private PrimitiveType addrWidth;	// width of the address of this opcode.
 
         public IntelEmitter()
 		{
 			segOverride = RegisterStorage.None;
 		}
 
-        public PrimitiveType AddressWidth
-        {
-            get { return addrWidth; }
-            set { addrWidth = value; }
-        }
+        // width of the address of this opcode.
+        public PrimitiveType AddressWidth { get; set; }
+        
+        // Default address width for this segment.
+        public PrimitiveType SegmentAddressWidth { get; set; }
+
+        // Default data width for this segment.
+        public PrimitiveType SegmentDataWidth { get; set; }
+
+        public RegisterStorage SegmentOverride { get; set; }
 
 
 		public void EmitOpcode(int b, PrimitiveType dataWidth)
@@ -80,25 +82,6 @@ namespace Decompiler.Assemblers.x86
                 dataWidth.Domain != Domain.Real &&
                 dataWidth.Size != 1 &&
                 dataWidth != SegmentDataWidth;
-        }
-
-
-        public PrimitiveType SegmentAddressWidth
-        {
-            get { return addrWidthSeg; }
-            set { addrWidthSeg = value; }
-        }
-
-        public PrimitiveType SegmentDataWidth
-        {
-            get { return dataWidthSeg; }
-            set { dataWidthSeg = value; }
-        }
-
-        public RegisterStorage SegmentOverride
-        {
-            get { return segOverride; }
-            set { segOverride = value; }
         }
 	}
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Arm
 {
-    public enum Opcode
+    public enum Opcode : short
     {
         illegal,
 
@@ -155,6 +155,11 @@ namespace Decompiler.Arch.Arm
         mrs,
         msr,
         stc,
+        lsl,
+        lsr,
+        asr,
+        ror,
+        rrx,
 
 
 

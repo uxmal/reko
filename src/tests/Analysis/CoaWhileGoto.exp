@@ -11,15 +11,15 @@ ax:Register ax
 ds:Register ds
     def:  def ds
     uses: ax_14 = Mem13[ds:si_12:word16]
-          store(Mem19[ds:di:word16]) = ax_14
-          store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
-          store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
-          store(Mem42[ds:0x0300:word16]) = ax_40
+          Mem19[ds:di:word16] = ax_14
+          Mem27[ds:0x0302:word16] = Mem19[ds:0x0302:word16] + 0x0001
+          Mem27[ds:0x0302:word16] = Mem19[ds:0x0302:word16] + 0x0001
+          Mem42[ds:0x0300:word16] = ax_40
 SCZO:Flags
 Z:Flags
 di:Register di
     def:  def di
-    uses: store(Mem19[ds:di:word16]) = ax_14
+    uses: Mem19[ds:di:word16] = ax_14
 v9:Temporary
 SZO:Flags
 bx_11: orig: bx
@@ -32,7 +32,7 @@ Mem13: orig: Mem0
     uses: ax_14 = Mem13[ds:si_12:word16]
 ax_14: orig: ax
     def:  ax_14 = Mem13[ds:si_12:word16]
-    uses: store(Mem19[ds:di:word16]) = ax_14
+    uses: Mem19[ds:di:word16] = ax_14
           branch ax_14 != 0x0020 l0C00_0005
           branch ax_14 != 0x0000 l0C00_0011
           branch ax_14 != 0x000D l0C00_001A
@@ -45,9 +45,9 @@ SCZO_16: orig: SCZO
 Z_17: orig: Z
 SZO_18: orig: SZO
 Mem19: orig: Mem0
-    def:  store(Mem19[ds:di:word16]) = ax_14
+    def:  Mem19[ds:di:word16] = ax_14
     uses: Mem13 = PHI(Mem0, Mem19, Mem27)
-          store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
+          Mem27[ds:0x0302:word16] = Mem19[ds:0x0302:word16] + 0x0001
 SCZO_20: orig: SCZO
 Z_21: orig: Z
 SZO_22: orig: SZO
@@ -55,9 +55,9 @@ SCZO_23: orig: SCZO
 Z_24: orig: Z
 SZO_25: orig: SZO
 v9_26: orig: v9
-    uses: store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
+    uses: Mem27[ds:0x0302:word16] = Mem19[ds:0x0302:word16] + 0x0001
 Mem27: orig: Mem0
-    def:  store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
+    def:  Mem27[ds:0x0302:word16] = Mem19[ds:0x0302:word16] + 0x0001
     uses: Mem13 = PHI(Mem0, Mem19, Mem27)
 SZO_28: orig: SZO
 SCZO_29: orig: SCZO
@@ -77,10 +77,10 @@ Z_38: orig: Z
 SCZO_39: orig: SCZO
 ax_40: orig: ax
     def:  ax_40 = PHI(ax_31, ax_33)
-    uses: store(Mem42[ds:0x0300:word16]) = ax_40
+    uses: Mem42[ds:0x0300:word16] = ax_40
 Mem41: orig: Mem0
 Mem42: orig: Mem0
-    def:  store(Mem42[ds:0x0300:word16]) = ax_40
+    def:  Mem42[ds:0x0300:word16] = ax_40
 // fn0C00_0000
 void fn0C00_0000(word16 si, word16 di, selector ds)
 fn0C00_0000_entry:		// pred:
@@ -103,13 +103,13 @@ l0C00_0020:		// pred: l0C00_001A
 	// succ:  l0C00_0024
 l0C00_0024:		// pred: l0C00_000B l0C00_0020
 	ax_40 = PHI(ax_31, ax_33)
-	store(Mem42[ds:0x0300:word16]) = ax_40
+	Mem42[ds:0x0300:word16] = ax_40
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0024
 	// succ: 
 l0C00_0005:		// pred: l0C00_001A
-	store(Mem19[ds:di:word16]) = ax_14
+	Mem19[ds:di:word16] = ax_14
 	branch ax_14 != 0x0000 l0C00_0011
 	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:		// pred: l0C00_0005
@@ -119,6 +119,6 @@ l0C00_0011:		// pred: l0C00_0005
 	branch ax_14 != 0x000D l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:		// pred: l0C00_0011
-	store(Mem27[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
+	Mem27[ds:0x0302:word16] = Mem19[ds:0x0302:word16] + 0x0001
 	// succ:  l0C00_001A
 

@@ -276,7 +276,7 @@ namespace Decompiler.Analysis
 				var sl = id.Storage as StackLocalStorage;
 				if (sl == null)
 					continue;
-				if (-ci.CallSite.StackDepthBefore <= sl.StackOffset && sl.StackOffset < cBegin - ci.CallSite.StackDepthBefore)
+				if (-ci.CallSite.StackDepthOnEntry <= sl.StackOffset && sl.StackOffset < cBegin - ci.CallSite.StackDepthOnEntry)
 				{
 					Use(id);
 				}
@@ -450,7 +450,7 @@ namespace Decompiler.Analysis
 				bitUseOffset = 0;
 				cbitsUse = 0;
 				UnaryExpression u = appl.Arguments[i] as UnaryExpression;
-				if (u != null && u.op == Operator.AddrOf)
+				if (u != null && u.Operator == Operator.AddrOf)
 				{
 					Identifier id = u.Expression as Identifier;
                     if (id != null)
@@ -462,7 +462,7 @@ namespace Decompiler.Analysis
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{	
 				UnaryExpression u = appl.Arguments[i] as UnaryExpression;
-				if (u == null || u.op != Operator.AddrOf)
+				if (u == null || u.Operator != Operator.AddrOf)
 				{
 					appl.Arguments[i].Accept(this);
 				}

@@ -26,6 +26,15 @@ using System.Text;
 namespace Decompiler.Core.Types
 {
 
+    /// <summary>
+    /// A Domain specifies the possible interpretation of a chunk of bytes.
+    /// </summary>
+    /// <remarks>
+    /// A 32-bit load from memory could mean that the variable could be treated as an signed int, unsigned int,
+    /// floating point number, a pointer to something. As the decompiler records how the value is used,
+    /// some of these alternatives will be discarded. For instance, if the 32-bit word is used in a memory access,
+    /// it is certain that it is a pointer to (something), and it can't be a float.
+    /// </remarks>
 	[Flags]
 	public enum Domain
 	{
@@ -51,14 +60,13 @@ namespace Decompiler.Core.Types
 	/// </remarks>
 	public class PrimitiveType : DataType
 	{
-		private Domain domain;
 		private short byteSize;
 		
 		private PrimitiveType(Domain dom, short byteSize, string name)
 		{
 			if (dom == 0)
 				throw new ArgumentException("Domain is empty.");
-			this.domain = dom;
+			this.Domain = dom;
 			this.byteSize = byteSize;
 			this.Name = name;
 		}
@@ -86,7 +94,7 @@ namespace Decompiler.Core.Types
 		public int Compare(object a)
 		{
 			PrimitiveType p = (PrimitiveType) a;
-			int d = (int) domain - (int) p.domain;
+			int d = (int) Domain - (int) p.Domain;
 			if (d != 0)
 				return d;
 			return byteSize - p.byteSize;
@@ -126,11 +134,11 @@ namespace Decompiler.Core.Types
 				name = "word16";
 				break;
 			case 4:
-                w = Domain.SignedInt | Domain.UnsignedInt | Domain.Pointer | Domain.Real | Domain.PtrCode;
+                w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Real|Domain.PtrCode;
 				name = "word32";
 				break;
 			case 8:
-                w = Domain.SignedInt | Domain.UnsignedInt | Domain.Pointer | Domain.Real | Domain.PtrCode;
+                w = Domain.SignedInt|Domain.UnsignedInt|Domain.Pointer|Domain.Real|Domain.PtrCode;
 				name = "word64";
 				break;
 			default:
@@ -139,17 +147,14 @@ namespace Decompiler.Core.Types
 			return Create(w, (short) byteSize, name);
 		}
 
-		public Domain Domain
-		{
-			get { return domain; }
-		}
+        public Domain Domain { get; private set; }
 
 		public override bool Equals(object obj)
 		{
 			PrimitiveType p = obj as PrimitiveType;
 			if (p == null)
 				return false;
-			return p.domain == domain && p.byteSize == byteSize;
+			return p.Domain == Domain && p.byteSize == byteSize;
 		}
 	
 		public static string GenerateName(Domain dom, int bitSize)
@@ -195,7 +200,7 @@ namespace Decompiler.Core.Types
 					sb.Append('s');
 				if ((dom & Domain.Real) != 0)
 					sb.Append('r');
-                if ((dom & Domain.Pointer) != 0)
+                if ((dom & Domain.PtrCode) != 0)
                     sb.Append("pfn");
 				sb.Append(bitSize);
 				return sb.ToString();
@@ -209,12 +214,15 @@ namespace Decompiler.Core.Types
 
 		public override int GetHashCode()
 		{
-			return byteSize * 256 ^ domain.GetHashCode();
+			return byteSize * 256 ^ Domain.GetHashCode();
 		}
 
+        /// <summary>
+        /// True if the type can only be some kind of numeric type
+        /// </summary>
 		public bool IsIntegral
 		{
-			get { return (domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0; }
+			get { return (Domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0; }
 		}
 
         /// <summary>
@@ -232,7 +240,7 @@ namespace Decompiler.Core.Types
 		{
 			get
 			{
-				switch (domain)
+				switch (Domain)
 				{
 				case Domain.None:
                 case Domain.Void:
@@ -308,10 +316,7 @@ namespace Decompiler.Core.Types
             PtrCode64 = Create(Domain.PtrCode, 8);
 
 			Real80 = Create(Domain.Real, 10);
-
 		}
-
-
 
 		public static PrimitiveType Void { get; private set; }
 		

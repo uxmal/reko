@@ -106,6 +106,7 @@
     <Compile Include="Analysis\ValuePropagationTests.cs" />
     <Compile Include="Analysis\VariableLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
+    <Compile Include="Arch\Arm\ArmDisassemblerTests.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />
@@ -395,6 +396,10 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arch\Arm\Arm-2010.csproj">
+      <Project>{32F09304-51BE-4797-A86A-C0BEFED2422B}</Project>
+      <Name>Arm-2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\M68k\M68k-2010.csproj">
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k-2010</Name>
@@ -472,7 +477,6 @@
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Arch\Arm\" />
     <Folder Include="ImageLoaders\MzExe\" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ l0C00_0000:
 	bx = si
 	goto l0C00_001A
 l0C00_0005:
-	store(Mem0[ds:di:word16]) = ax
+	Mem0[ds:di:word16] = ax
 	ax = ax | ax
 	SZO = cond(ax)
 	C = false
@@ -19,7 +19,7 @@ l0C00_0011:
 	branch Test(NE,Z) l0C00_001A
 l0C00_0016:
 	v12 = Mem0[ds:0x0302:word16] + 0x0001
-	store(Mem0[ds:0x0302:word16]) = v12
+	Mem0[ds:0x0302:word16] = v12
 	SZO = cond(Mem0[ds:0x0302:word16])
 l0C00_001A:
 	ax = Mem0[ds:si:word16]
@@ -31,7 +31,7 @@ l0C00_0020:
 	ax = ax - bx
 	SCZO = cond(ax)
 l0C00_0024:
-	store(Mem0[ds:0x0300:word16]) = ax
+	Mem0[ds:0x0300:word16] = ax
 	return
 fn0C00_0000_exit:
 == Predecessors

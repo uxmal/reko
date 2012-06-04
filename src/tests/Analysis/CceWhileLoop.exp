@@ -15,7 +15,7 @@ SZO:Flags
 C:Flags
 ds:Register ds
     def:  def ds
-    uses: store(Mem34[ds:0x0300:word16]) = bx_33
+    uses: Mem34[ds:0x0300:word16] = bx_33
 cx:Register cx
 Z:Flags
 bx_12: orig: bx
@@ -64,9 +64,9 @@ SCZO_31: orig: SCZO
 ax_32: orig: ax
 bx_33: orig: bx
     def:  bx_33 = PHI(bx_19, bx_23)
-    uses: store(Mem34[ds:0x0300:word16]) = bx_33
+    uses: Mem34[ds:0x0300:word16] = bx_33
 Mem34: orig: Mem0
-    def:  store(Mem34[ds:0x0300:word16]) = bx_33
+    def:  Mem34[ds:0x0300:word16] = bx_33
 // fn0C00_0000
 void fn0C00_0000(word16 bp, selector ds)
 fn0C00_0000_entry:		// pred:
@@ -94,7 +94,7 @@ l0C00_000F:		// pred: l0C00_000B
 	// succ:  l0C00_0016
 l0C00_0016:		// pred: l0C00_0012 l0C00_000F
 	bx_33 = PHI(bx_19, bx_23)
-	store(Mem34[ds:0x0300:word16]) = bx_33
+	Mem34[ds:0x0300:word16] = bx_33
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0016

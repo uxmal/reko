@@ -57,7 +57,7 @@ l0C00_0015:
 	ax = Mem0[si + 02:I2]
 	ax = ax + Mem0[si + 04:I2]
 	SCZO = cond(ax)
-	store(Mem0[si + 06:I2]) = ax
+	Mem0[si + 06:I2] = ax
 	return
 	// succ:  2
 // block 2, pred: 1
@@ -84,7 +84,7 @@ l0C00_001F:
 	ax = Mem0[si + 02:I2]
 	ax = ax - Mem0[si + 04:I2]
 	SCZO = cond(ax)
-	store(Mem0[si + 06:I2]) = ax
+	Mem0[si + 06:I2] = ax
 	return
 	// succ:  2
 // block 2, pred: 1
@@ -112,7 +112,7 @@ l0C00_0029:
 	ax = Mem0[si + 02:I2]
 	ax = ax & Mem0[bx + 04:I2]
 	SCZO = cond(ax)
-	store(Mem0[si + 06:I2]) = ax
+	Mem0[si + 06:I2] = ax
 	return
 	// succ:  2
 // block 2, pred: 1

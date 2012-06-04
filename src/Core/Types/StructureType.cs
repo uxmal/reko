@@ -28,27 +28,23 @@ namespace Decompiler.Core.Types
 	/// </summary>
 	public class StructureType : DataType
 	{
-		private int size;
-		private bool isSegment;
-		private StructureFieldCollection fields;
-
 		public StructureType() : base(null)
 		{
-			this.fields = new StructureFieldCollection();
-			this.size = 0;
+			this.Fields = new StructureFieldCollection();
+			this.Size = 0;
 		}
 
 		public StructureType(string name, int size, StructureField field) : base(name)
 		{
-			this.fields = new StructureFieldCollection();
-			this.size = size; 
+			this.Fields = new StructureFieldCollection();
+			this.Size = size; 
 			Fields.Add(field);
 		}
 
 		public StructureType(string name, int size) : base(name)
 		{
-			this.fields = new StructureFieldCollection();
-			this.size = size; 
+			this.Fields = new StructureFieldCollection();
+			this.Size = size; 
 		}
 
 		public override DataType Accept(DataTypeTransformer t)
@@ -68,7 +64,7 @@ namespace Decompiler.Core.Types
 
 		public override DataType Clone()
 		{
-			StructureType s = new StructureType(name, size);
+			var s = new StructureType(Name, Size);
 			s.IsSegment = IsSegment;
 			foreach (StructureField f in Fields)
 			{
@@ -77,53 +73,31 @@ namespace Decompiler.Core.Types
 			return s;
 		}
 
-
-		public StructureFieldCollection Fields
-		{
-			get { return fields; }
-		}
-
-		public override bool IsComplex
-		{
-			get { return true; }
-		}
+		public StructureFieldCollection Fields { get; private set; }
+		public override bool IsComplex  { get { return true; } }
 
 		/// <summary>
 		/// If true, the structure is an Intel-style segment. In particular, segments must never be converted to 
 		/// primitive types.
 		/// </summary>
-		public bool IsSegment
-		{
-			get { return isSegment; }
-			set { isSegment = value; }
-		}
+		public bool IsSegment { get ; set; }
+        public bool IsEmpty { get { return Size == 0 && Fields.Count == 0; } }
+		public override int Size { get; set; }
 
-		public bool IsEmpty
-		{
-			get { return size == 0 && fields.Count == 0; }
-		}
+        public DataType Simplify()
+        {
+            if (Fields.Count == 1 && !IsSegment)
+            {
+                StructureField f = Fields[0];
+                if (f.Offset == 0 && (Size == 0 || Size == f.DataType.Size))
+                {
+                    return f.DataType;
+                }
+            }
+            return this;
+        }
 
-		public DataType Simplify()
-		{
-			if (Fields.Count == 1 && !IsSegment)
-			{
-				StructureField f = Fields[0];
-				if (f.Offset == 0 && (Size == 0 || Size == f.DataType.Size))
-				{
-					return f.DataType;
-				}
-			}
-			return this;
-		}
-
-		public override int Size
-		{
-			get { return size; }
-			set { size = value; }
-		}
-
-
-		public override void Write(System.IO.TextWriter writer)
+		public override void Write(TextWriter writer)
 		{
 			writer.Write("({0}", IsSegment ? "segment" : "struct");
 			if (Name != null)

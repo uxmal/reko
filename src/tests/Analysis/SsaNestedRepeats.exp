@@ -22,7 +22,7 @@ ax:Register ax
 ds:Register ds
     def:  def ds
     uses: ax_24 = Mem0[ds:si_20:word16]
-          store(Mem37[ds:0x0300:word16]) = dx_26
+          Mem37[ds:0x0300:word16] = dx_26
 si:Register si
     def:  def si
     uses: si_20 = PHI(si, si_25, si_25)
@@ -76,7 +76,7 @@ dx_26: orig: dx
     uses: SCZO_27 = cond(dx_26)
           dx_23 = PHI(dx_13, dx_26, dx_26)
           dx_23 = PHI(dx_13, dx_26, dx_26)
-          store(Mem37[ds:0x0300:word16]) = dx_26
+          Mem37[ds:0x0300:word16] = dx_26
 SCZO_27: orig: SCZO
     def:  SCZO_27 = cond(dx_26)
     uses: SZO_28 = SCZO_27 (alias)
@@ -109,7 +109,7 @@ Z_36: orig: Z
     def:  Z_36 = SZO_34 (alias)
     uses: branch Test(NE,Z_36) l0C00_0008
 Mem37: orig: Mem0
-    def:  store(Mem37[ds:0x0300:word16]) = dx_26
+    def:  Mem37[ds:0x0300:word16] = dx_26
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -160,7 +160,7 @@ l0C00_000D:
 	branch Test(NE,Z_36) l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:
-	store(Mem37[ds:0x0300:word16]) = dx_26
+	Mem37[ds:0x0300:word16] = dx_26
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

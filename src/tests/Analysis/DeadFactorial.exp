@@ -5,7 +5,7 @@ wLoc04:Local -0004
 ax:Register ax
 ds:Register ds
     def:  def ds
-    uses: store(Mem9[ds:0x0064:word16]) = ax_8
+    uses: Mem9[ds:0x0064:word16] = ax_8
 cx_6: orig: cx
     def:  cx_6 = 0x0064
     uses: wLoc04_7 = cx_6
@@ -14,9 +14,9 @@ wLoc04_7: orig: wLoc04
     uses: ax_8 = fn0C00_000F(wLoc04_7)
 ax_8: orig: ax
     def:  ax_8 = fn0C00_000F(wLoc04_7)
-    uses: store(Mem9[ds:0x0064:word16]) = ax_8
+    uses: Mem9[ds:0x0064:word16] = ax_8
 Mem9: orig: Mem0
-    def:  store(Mem9[ds:0x0064:word16]) = ax_8
+    def:  Mem9[ds:0x0064:word16] = ax_8
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
@@ -26,7 +26,7 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	cx_6 = 0x0064
 	wLoc04_7 = cx_6
 	ax_8 = fn0C00_000F(wLoc04_7)
-	store(Mem9[ds:0x0064:word16]) = ax_8
+	Mem9[ds:0x0064:word16] = ax_8
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000

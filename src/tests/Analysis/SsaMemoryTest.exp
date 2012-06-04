@@ -13,10 +13,10 @@ ds:Register ds
     def:  def ds
     uses: bx_9 = Mem0[ds:bx + 0x0004:word16]
           cx_10 = Mem0[ds:bx_9 + 0x0002:word16]
-          store(Mem15[ds:0x012C:word16]) = cx_13
-          store(Mem16[ds:bx_9 + 0x0006:word16]) = 0x0000
+          Mem15[ds:0x012C:word16] = cx_13
+          Mem16[ds:bx_9 + 0x0006:word16] = 0x0000
           cx_17 = Mem16[ds:si:word16]
-          store(Mem18[ds:bx_9 + 0x0006:word16]) = 0x0001
+          Mem18[ds:bx_9 + 0x0006:word16] = 0x0001
           cx_19 = Mem18[ds:si:word16]
 cx:Register cx
     def:  def cx
@@ -31,8 +31,8 @@ si:Register si
 bx_9: orig: bx
     def:  bx_9 = Mem0[ds:bx + 0x0004:word16]
     uses: cx_10 = Mem0[ds:bx_9 + 0x0002:word16]
-          store(Mem16[ds:bx_9 + 0x0006:word16]) = 0x0000
-          store(Mem18[ds:bx_9 + 0x0006:word16]) = 0x0001
+          Mem16[ds:bx_9 + 0x0006:word16] = 0x0000
+          Mem18[ds:bx_9 + 0x0006:word16] = 0x0001
 cx_10: orig: cx
     def:  cx_10 = Mem0[ds:bx_9 + 0x0002:word16]
     uses: SCZO_11 = cond(cx_10 - 0x0000)
@@ -44,20 +44,20 @@ Z_12: orig: Z
     uses: branch Test(NE,Z_12) l0C00_0015
 cx_13: orig: cx
     def:  cx_13 = PHI(cx_17, cx_19)
-    uses: store(Mem15[ds:0x012C:word16]) = cx_13
+    uses: Mem15[ds:0x012C:word16] = cx_13
 Mem14: orig: Mem0
     def:  Mem14 = PHI(Mem16, Mem18)
 Mem15: orig: Mem0
-    def:  store(Mem15[ds:0x012C:word16]) = cx_13
+    def:  Mem15[ds:0x012C:word16] = cx_13
 Mem16: orig: Mem0
-    def:  store(Mem16[ds:bx_9 + 0x0006:word16]) = 0x0000
+    def:  Mem16[ds:bx_9 + 0x0006:word16] = 0x0000
     uses: cx_17 = Mem16[ds:si:word16]
           Mem14 = PHI(Mem16, Mem18)
 cx_17: orig: cx
     def:  cx_17 = Mem16[ds:si:word16]
     uses: cx_13 = PHI(cx_17, cx_19)
 Mem18: orig: Mem0
-    def:  store(Mem18[ds:bx_9 + 0x0006:word16]) = 0x0001
+    def:  Mem18[ds:bx_9 + 0x0006:word16] = 0x0001
     uses: cx_19 = Mem18[ds:si:word16]
           Mem14 = PHI(Mem16, Mem18)
 cx_19: orig: cx
@@ -84,18 +84,18 @@ l0C00_0000:
 	branch Test(NE,Z_12) l0C00_0015
 	// succ:  l0C00_000B l0C00_0015
 l0C00_000B:
-	store(Mem16[ds:bx_9 + 0x0006:word16]) = 0x0000
+	Mem16[ds:bx_9 + 0x0006:word16] = 0x0000
 	cx_17 = Mem16[ds:si:word16]
 	goto l0C00_001C
 	// succ:  l0C00_001C
 l0C00_0015:
-	store(Mem18[ds:bx_9 + 0x0006:word16]) = 0x0001
+	Mem18[ds:bx_9 + 0x0006:word16] = 0x0001
 	cx_19 = Mem18[ds:si:word16]
 	// succ:  l0C00_001C
 l0C00_001C:
 	cx_13 = PHI(cx_17, cx_19)
 	Mem14 = PHI(Mem16, Mem18)
-	store(Mem15[ds:0x012C:word16]) = cx_13
+	Mem15[ds:0x012C:word16] = cx_13
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -44,7 +44,7 @@ l0C00_0023:		// pred: l0C00_0016
 	ax_45 = DPB(ax_45, (ah_41 & 0x0F) + 0x37, 8, 8) (alias)
 	// succ:  l0C00_0026
 l0C00_0026:		// pred: l0C00_0016 l0C00_0023
-	store(Mem53[ds:0x5427:word16]) = ax_45
+	Mem53[ds:0x5427:word16] = ax_45
 	msdos_write_file(Mem53[ds:0x5424:word16], 0x0004, SEQ(ds, 0x5427), &ax)
 	si = si + 0x0001
 	bp = bp - 0x0001

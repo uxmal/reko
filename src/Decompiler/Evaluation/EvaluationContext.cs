@@ -36,7 +36,11 @@ namespace Decompiler.Evaluation
     ///     a = constant
     ///     b = a + 3
     /// </code>
-    /// can be merged if we know that a == constant.
+    /// can be merged to
+    /// <code>
+    ///     b = (constant + 3)
+    /// </code>
+    /// if we know that a == constant.
     /// </remarks>
     public interface EvaluationContext
     {

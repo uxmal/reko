@@ -4,8 +4,8 @@ GlobalVariablesMock_entry:
 	// succ:  l1
 l1:
 	word32 ptr = 0x10000004
-	store(Mem0[ptr + 0x00000000:real32]) = 0.75F
-	store(Mem0[0x10000000:real32]) = 0.5F
+	Mem0[ptr + 0x00000000:real32] = 0.75F
+	Mem0[0x10000000:real32] = 0.5F
 	// succ: 
 GlobalVariablesMock_exit:
 

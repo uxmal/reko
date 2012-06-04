@@ -3,8 +3,8 @@ void ProcedureMock()
 ProcedureMock_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
-	store(Mem0[0x1000:0x0001:word16]) = 0x0800
-	store(Mem0[0x0800:0x5422:word16]) = ds
+	Mem0[0x1000:0x0001:word16] = 0x0800
+	Mem0[0x0800:0x5422:word16] = ds
 	// succ: 
 
 // Equivalence classes ////////////

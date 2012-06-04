@@ -7,8 +7,8 @@ l1:
 	ax = Mem0[cs:si + 0x0000:word16]
 	si2 = 0x0005
 	ax = Mem0[cs:si2 + 0x0000:word16]
-	store(Mem0[cs:0x1234:word16]) = ax
-	store(Mem0[cs:si + 0x0002:word16]) = ax
+	Mem0[cs:0x1234:word16] = ax
+	Mem0[cs:si + 0x0002:word16] = ax
 	// succ: 
 SegmentedMemoryPointerMock_exit:
 

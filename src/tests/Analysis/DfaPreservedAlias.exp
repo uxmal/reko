@@ -11,7 +11,7 @@ fn0C00_0000_entry:		// pred:
 l0C00_0000:		// pred: fn0C00_0000_entry
 	word16 ax_4 = Mem0[ds:0x0100:word16]
 	fn0C00_000C(ds)
-	store(Mem5[ds:0x0102:word16]) = ax_4
+	Mem5[ds:0x0102:word16] = ax_4
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000
@@ -28,7 +28,7 @@ void fn0C00_000C(selector ds)
 fn0C00_000C_entry:		// pred:
 	// succ:  l0C00_000C
 l0C00_000C:		// pred: fn0C00_000C_entry
-	store(Mem8[ds:0x0105:byte]) = Mem0[ds:0x0104:byte]
+	Mem8[ds:0x0105:byte] = Mem0[ds:0x0104:byte]
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:		// pred: l0C00_000C

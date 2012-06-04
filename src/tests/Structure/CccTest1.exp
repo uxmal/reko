@@ -6,7 +6,7 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	branch ax == 0x0001 l0C00_000E
 	// succ:  l0C00_0005 l0C00_000E
 l0C00_0005:		// pred: l0C00_0000 l0C00_000E
-	store(Mem14[ds:0x0302:word16]) = 0x0000
+	Mem14[ds:0x0302:word16] = 0x0000
 	// succ:  l0C00_0019
 l0C00_0019:		// pred: l0C00_0013 l0C00_0005
 	branch ax == 0x0001 l0C00_002C
@@ -15,7 +15,7 @@ l0C00_001E:		// pred: l0C00_0019
 	branch bx == 0x0002 l0C00_002C
 	// succ:  l0C00_0023 l0C00_002C
 l0C00_0023:		// pred: l0C00_001E
-	store(Mem20[ds:0x0304:word16]) = 0x0000
+	Mem20[ds:0x0304:word16] = 0x0000
 	// succ:  l0C00_0032
 l0C00_0032:		// pred: l0C00_002C l0C00_0023
 	branch ax == 0x0001 l0C00_003C
@@ -24,7 +24,7 @@ l0C00_0037:		// pred: l0C00_0032
 	branch bx == 0x0002 l0C00_0045
 	// succ:  l0C00_003C l0C00_0045
 l0C00_003C:		// pred: l0C00_0032 l0C00_0037
-	store(Mem32[ds:0x0306:word16]) = 0x0000
+	Mem32[ds:0x0306:word16] = 0x0000
 	// succ:  l0C00_004B
 l0C00_004B:		// pred: l0C00_003C l0C00_0045
 	return
@@ -32,16 +32,16 @@ l0C00_004B:		// pred: l0C00_003C l0C00_0045
 fn0C00_0000_exit:		// pred: l0C00_004B
 	// succ: 
 l0C00_0045:		// pred: l0C00_0037
-	store(Mem29[ds:0x0306:word16]) = 0x0001
+	Mem29[ds:0x0306:word16] = 0x0001
 	// succ:  l0C00_004B
 l0C00_002C:		// pred: l0C00_0019 l0C00_001E
-	store(Mem23[ds:0x0304:word16]) = 0x0001
+	Mem23[ds:0x0304:word16] = 0x0001
 	// succ:  l0C00_0032
 l0C00_000E:		// pred: l0C00_0000
 	branch bx == 0x0002 l0C00_0005
 	// succ:  l0C00_0013 l0C00_0005
 l0C00_0013:		// pred: l0C00_000E
-	store(Mem11[ds:0x0302:word16]) = 0x0001
+	Mem11[ds:0x0302:word16] = 0x0001
 	// succ:  l0C00_0019
 
 // fn0C00_0000
@@ -52,21 +52,21 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	branch ax == 0x0001 && bx != 0x0002 l0C00_000E
 	// succ:  l0C00_0005 l0C00_0013
 l0C00_0005:		// pred: l0C00_0000
-	store(Mem14[ds:0x0302:word16]) = 0x0000
+	Mem14[ds:0x0302:word16] = 0x0000
 	// succ:  l0C00_0019
 l0C00_0019:		// pred: l0C00_0013 l0C00_0005
 	branch ax == 0x0001 || bx == 0x0002 l0C00_002C
 	// succ:  l0C00_0023 l0C00_002C
 l0C00_001E:
 l0C00_0023:		// pred: l0C00_0019
-	store(Mem20[ds:0x0304:word16]) = 0x0000
+	Mem20[ds:0x0304:word16] = 0x0000
 	// succ:  l0C00_0032
 l0C00_0032:		// pred: l0C00_002C l0C00_0023
 	branch ax == 0x0001 || bx != 0x0002 l0C00_003C
 	// succ:  l0C00_0045 l0C00_003C
 l0C00_0037:
 l0C00_0045:		// pred: l0C00_0032
-	store(Mem29[ds:0x0306:word16]) = 0x0001
+	Mem29[ds:0x0306:word16] = 0x0001
 	// succ:  l0C00_004B
 l0C00_004B:		// pred: l0C00_003C l0C00_0045
 	return
@@ -74,13 +74,13 @@ l0C00_004B:		// pred: l0C00_003C l0C00_0045
 fn0C00_0000_exit:		// pred: l0C00_004B
 	// succ: 
 l0C00_003C:		// pred: l0C00_0032
-	store(Mem32[ds:0x0306:word16]) = 0x0000
+	Mem32[ds:0x0306:word16] = 0x0000
 	// succ:  l0C00_004B
 l0C00_002C:		// pred: l0C00_0019
-	store(Mem23[ds:0x0304:word16]) = 0x0001
+	Mem23[ds:0x0304:word16] = 0x0001
 	// succ:  l0C00_0032
 l0C00_000E:
 l0C00_0013:		// pred: l0C00_0000
-	store(Mem11[ds:0x0302:word16]) = 0x0001
+	Mem11[ds:0x0302:word16] = 0x0001
 	// succ:  l0C00_0019
 ================

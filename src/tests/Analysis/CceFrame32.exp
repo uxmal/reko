@@ -11,9 +11,9 @@ eax_5: orig: eax
 dwLoc08_6: orig: dwLoc08
 ax_7: orig: ax
     def:  ax_7 = fn10000017(eax_5)
-    uses: store(Mem8[0x10003428:word16]) = ax_7
+    uses: Mem8[0x10003428:word16] = ax_7
 Mem8: orig: Mem0
-    def:  store(Mem8[0x10003428:word16]) = ax_7
+    def:  Mem8[0x10003428:word16] = ax_7
 // fn10000000
 void fn10000000()
 fn10000000_entry:		// pred:
@@ -22,7 +22,7 @@ fn10000000_entry:		// pred:
 l10000000:		// pred: fn10000000_entry
 	eax_5 = Mem0[0x10003420:word32]
 	ax_7 = fn10000017(eax_5)
-	store(Mem8[0x10003428:word16]) = ax_7
+	Mem8[0x10003428:word16] = ax_7
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:		// pred: l10000000

@@ -31,7 +31,7 @@ namespace Decompiler.Evaluation
 
 		public bool Match(UnaryExpression unary)
 		{
-			if (unary.op == Operator.Neg)
+			if (unary.Operator == Operator.Neg)
 			{
 				bin = unary.Expression as BinaryExpression;
 				if (bin != null && bin.op == Operator.Sub)

@@ -31,7 +31,7 @@ l0C00_0004:		// pred: fn0C00_0004_entry
 	branch dx != 0x001E l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:		// pred: l0C00_0004
-	store(Mem0[dxOut:word16]) = fn0C00_0013(dx)
+	Mem0[dxOut:word16] = fn0C00_0013(dx)
 	// succ:  l0C00_0010
 l0C00_0010:		// pred: l0C00_000F l0C00_0009
 	return dx_10
@@ -39,7 +39,7 @@ l0C00_0010:		// pred: l0C00_000F l0C00_0009
 fn0C00_0004_exit:		// pred: l0C00_0010
 	// succ: 
 l0C00_000F:		// pred: l0C00_0004
-	store(Mem0[dxOut:word16]) = dx - 0x0001
+	Mem0[dxOut:word16] = dx - 0x0001
 	// succ:  l0C00_0010
 
 // Register word16 fn0C00_0013(Register word16 dx)

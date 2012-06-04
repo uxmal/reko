@@ -13,10 +13,10 @@ ax_11: orig: ax, def: {ax_11 = PHI(ax, ax_16)}, uses: {SCZO_13 = cond(ax_11 - bx
 Mem12: orig: Mem0, def: {Mem12 = PHI(Mem0, Mem18)}, uses: {si_15 = Mem12[0x0302:word16]}{ax_16 = Mem12[si_15 + 0x0004:word16]}{v8_17 = Mem12[si_15 + 0x0006:word16] + ax_16}
 SCZO_13: orig: SCZO, def: {SCZO_13 = cond(ax_11 - bx)}, uses: {SO_14 = SCZO_13 (alias)}
 SO_14: orig: SO, def: {SO_14 = SCZO_13 (alias)}, uses: {branch Test(LT,SO_14)}
-si_15: orig: si, def: {si_15 = Mem12[0x0302:word16]}, uses: {ax_16 = Mem12[si_15 + 0x0004:word16]}{v8_17 = Mem12[si_15 + 0x0006:word16] + ax_16}{store(Mem18[si_15 + 0x0006:word16]) = v8_17}{si_10 = PHI(si, si_15)}
+si_15: orig: si, def: {si_15 = Mem12[0x0302:word16]}, uses: {ax_16 = Mem12[si_15 + 0x0004:word16]}{v8_17 = Mem12[si_15 + 0x0006:word16] + ax_16}{Mem18[si_15 + 0x0006:word16] = v8_17}{si_10 = PHI(si, si_15)}
 ax_16: orig: ax, def: {ax_16 = Mem12[si_15 + 0x0004:word16]}, uses: {v8_17 = Mem12[si_15 + 0x0006:word16] + ax_16}{ax_11 = PHI(ax, ax_16)}
-v8_17: orig: v8, def: {v8_17 = Mem12[si_15 + 0x0006:word16] + ax_16}, uses: {store(Mem18[si_15 + 0x0006:word16]) = v8_17}{SCZO_19 = cond(v8_17)}
-Mem18: orig: Mem0, def: {store(Mem18[si_15 + 0x0006:word16]) = v8_17}, uses: {Mem12 = PHI(Mem0, Mem18)}
+v8_17: orig: v8, def: {v8_17 = Mem12[si_15 + 0x0006:word16] + ax_16}, uses: {Mem18[si_15 + 0x0006:word16] = v8_17}{SCZO_19 = cond(v8_17)}
+Mem18: orig: Mem0, def: {Mem18[si_15 + 0x0006:word16] = v8_17}, uses: {Mem12 = PHI(Mem0, Mem18)}
 SCZO_19: orig: SCZO, def: {SCZO_19 = cond(v8_17)}, uses: {SO_20 = SCZO_19 (alias)}
 SO_20: orig: SO, def: {SO_20 = SCZO_19 (alias)}
 ax_21: orig: ax, def: {ax_21 = loc02_9}
@@ -48,7 +48,7 @@ l0C00_0004:		// block 3, pred: 2
 	si_15 = Mem12[0x0302:word16]
 	ax_16 = Mem12[si_15 + 0x0004:word16]
 	v8_17 = Mem12[si_15 + 0x0006:word16] + ax_16
-	store(Mem18[si_15 + 0x0006:word16]) = v8_17
+	Mem18[si_15 + 0x0006:word16] = v8_17
 	SCZO_19 = cond(v8_17)
 	SO_20 = SCZO_19 (alias)
 	// succ:  2

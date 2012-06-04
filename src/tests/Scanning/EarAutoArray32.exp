@@ -25,9 +25,9 @@ l04000000:		// block 2, pred: 1
 	eax = 0x00000000
 	ecx = 0x00000000
 	SCZO = cond(ecx)
-	store(Mem0[fp - 12:word32]) = 0x00000001
-	store(Mem0[fp - 8:word32]) = 0x00000002
-	store(Mem0[fp - 4:word32]) = 0x00000003
+	Mem0[fp - 12:word32] = 0x00000001
+	Mem0[fp - 8:word32] = 0x00000002
+	Mem0[fp - 4:word32] = 0x00000003
 	// succ:  3
 l04000027:		// block 3, pred: 2 4
 	SCZO = cond(ecx - 0x00000003)
@@ -41,7 +41,7 @@ l04000023:		// block 4, pred: 3
 	// succ:  3
 l0400002C:		// block 5, pred: 3
 	edi = dwArg04
-	store(Mem0[edi:word32]) = eax
+	Mem0[edi:word32] = eax
 	return
 	// succ:  6
 fn04000000_exit:		// block 6, pred: 5
@@ -74,9 +74,9 @@ l04000000:		// block 2, pred: 1
 	eax = 0x00000000
 	ecx = 0x00000000
 	SCZO = cond(ecx)
-	store(Mem0[fp - 12:word32]) = 0x00000001
-	store(Mem0[fp - 8:word32]) = 0x00000002
-	store(Mem0[fp - 4:word32]) = 0x00000003
+	Mem0[fp - 12:word32] = 0x00000001
+	Mem0[fp - 8:word32] = 0x00000002
+	Mem0[fp - 4:word32] = 0x00000003
 	// succ:  3
 l04000027:		// block 3, pred: 2 4
 	SCZO = cond(ecx - 0x00000003)
@@ -90,7 +90,7 @@ l04000023:		// block 4, pred: 3
 	// succ:  3
 l0400002C:		// block 5, pred: 3
 	edi = dwArg04
-	store(Mem0[edi:word32]) = eax
+	Mem0[edi:word32] = eax
 	return
 	// succ:  6
 fn04000000_exit:		// block 6, pred: 5

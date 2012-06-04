@@ -160,5 +160,60 @@ foo_exit:
             RunTest(sExp);
         }
 
+        [Test]
+        public void DontCopyRegistersUnlessFramepointer()
+        {
+            p.Add("main", m =>
+            {
+                var ecx = m.Frame.EnsureRegister(Registers.ecx);
+                var esi = m.Frame.EnsureRegister(Registers.esi);
+                m.Assign(esi, ecx);
+                m.Call("foo");
+                m.Assign(esi, m.Add(esi, 1));
+                m.Return();
+            });
+
+            p.Add("foo", m =>
+            {
+                var esp = m.Frame.EnsureRegister(Registers.esp);
+                var esi = m.Frame.EnsureRegister(Registers.esi);
+                var ecx = m.Frame.EnsureRegister(Registers.ecx);
+
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, esi);
+                m.Assign(ecx, m.Sub(ecx, 1));
+                m.Assign(esi, m.LoadDw(esp));
+                m.Assign(esp, m.Add(esp, 4));
+                m.Return();
+            });
+
+            var sExp = @"// main
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	esi = ecx
+	call foo (retsize: 4; depth: 4)
+	esi = esi + 0x00000001
+	return
+	// succ:  main_exit
+main_exit:
+
+// foo
+void foo()
+foo_entry:
+	// succ:  l1
+l1:
+	esp = fp - 0x00000004
+	dwLoc04 = esi
+	ecx = ecx - 0x00000001
+	esi = dwLoc04
+	esp = fp
+	return
+	// succ:  foo_exit
+foo_exit:
+";
+            RunTest(sExp);
+        }
     }
 }

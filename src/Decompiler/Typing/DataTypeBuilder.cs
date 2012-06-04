@@ -75,7 +75,6 @@ namespace Decompiler.Typing
             return dtNew;
         }
 
-
         public DataType MergeIntoDataType(Expression exp, DataType dtNew)
         {
             if (dtNew == null)
@@ -115,9 +114,9 @@ namespace Decompiler.Typing
         {
             if (dt == PrimitiveType.SegmentSelector)
             {
-                StructureType seg = factory.CreateStructureType(null, 0);
+                var seg = factory.CreateStructureType(null, 0);
                 seg.IsSegment = true;
-                Pointer ptr = factory.CreatePointer(seg, dt.Size);
+                var ptr = factory.CreatePointer(seg, dt.Size);
                 dt = ptr;
             }
             return MergeIntoDataType(exp, dt);
@@ -132,8 +131,8 @@ namespace Decompiler.Typing
 		{
 			DataType [] adt = new DataType[actuals.Length];
 			actuals.CopyTo(adt, 0);
-			FunctionType f = factory.CreateFunctionType(null, ret, adt, null);
-			Pointer pfn = factory.CreatePointer(f, funcPtrSize);
+			var fn = factory.CreateFunctionType(null, ret, adt, null);
+			var pfn = factory.CreatePointer(fn, funcPtrSize);
 			return MergeIntoDataType(function, pfn);
 		}
 
@@ -154,12 +153,12 @@ namespace Decompiler.Typing
 
         public DataType MemoryAccessCommon(Expression tBase, Expression tStruct, int offset, DataType tField, int structPtrSize)
         {
-            StructureType s = factory.CreateStructureType(null, 0);
+            var s = factory.CreateStructureType(null, 0);
             var field = new StructureField(offset, tField);
             s.Fields.Add(field);
 
             var pointer = tBase != null
-                ? (DataType)factory.CreateMemberPointer(store.GetDataTypeOf(tBase), s, structPtrSize)			//$REFACTOR: duplicated code (see memaccesstrait)
+                ? (DataType)factory.CreateMemberPointer(store.GetDataTypeOf(tBase), s, structPtrSize)
                 : (DataType)factory.CreatePointer(s, structPtrSize);
             return MergeIntoDataType(tStruct, pointer);
         }

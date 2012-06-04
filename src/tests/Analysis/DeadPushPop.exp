@@ -4,11 +4,11 @@ cx:Register cx
 ax:Register ax
 si:Register si
     def:  def si
-    uses: store(Mem9[ds:si:word16]) = ax_8
+    uses: Mem9[ds:si:word16] = ax_8
 ds:Register ds
     def:  def ds
     uses: ax_8 = fn0C00_0008(cx_7, di, ds)
-          store(Mem9[ds:si:word16]) = ax_8
+          Mem9[ds:si:word16] = ax_8
           fn0C00_0008(cx_7, di, ds)
 di:Register di
     def:  def di
@@ -20,9 +20,9 @@ cx_7: orig: cx
           fn0C00_0008(cx_7, di, ds)
 ax_8: orig: ax
     def:  ax_8 = fn0C00_0008(cx_7, di, ds)
-    uses: store(Mem9[ds:si:word16]) = ax_8
+    uses: Mem9[ds:si:word16] = ax_8
 Mem9: orig: Mem0
-    def:  store(Mem9[ds:si:word16]) = ax_8
+    def:  Mem9[ds:si:word16] = ax_8
 ax_10: orig: ax
 // fn0C00_0000
 void fn0C00_0000(word16 si, word16 di, selector ds)
@@ -34,7 +34,7 @@ fn0C00_0000_entry:		// pred:
 l0C00_0000:		// pred: fn0C00_0000_entry
 	cx_7 = 0x0014
 	ax_8 = fn0C00_0008(cx_7, di, ds)
-	store(Mem9[ds:si:word16]) = ax_8
+	Mem9[ds:si:word16] = ax_8
 	fn0C00_0008(cx_7, di, ds)
 	return
 	// succ:  fn0C00_0000_exit

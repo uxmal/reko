@@ -1,6 +1,6 @@
 Mem0:Global memory (aliases:)
 fp:Temporary (aliases:)
-sp:Register sp (aliases:)
+sp:sp (aliases:)
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -59,7 +59,7 @@ l0C00_000C:
 	al = al | ah
 	SZO = cond(al)
 	C = false
-	store(Mem0[0x4DE1:bx:byte]) = al
+	Mem0[0x4DE1:bx:byte] = al
 	bx = bx - 0x0001
 	bh = SLICE(bx, byte, 8) (alias)
 	bl = (byte) bx (alias)

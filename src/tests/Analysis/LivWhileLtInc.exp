@@ -16,7 +16,7 @@ l2:		// pred: loopHdr
 WhileLtIncMock_exit:		// pred: l2
 	// succ: 
 loop:		// pred: loopHdr
-	store(Mem7[a + i_5 * 0x00000004:word32]) = 0x00000000
+	Mem7[a + i_5 * 0x00000004:word32] = 0x00000000
 	i_8 = i_5 + 0x00000001
 	// succ:  loopHdr
 

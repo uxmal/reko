@@ -5,9 +5,9 @@ fp:Temporary
 r4:Register r4
     def:  def r4
 r4_3: orig: r4
-    def:  store(Mem4[0x00000400:word32]) = foo(&r4_3)
+    def:  Mem4[0x00000400:word32] = foo(&r4_3)
 Mem4: orig: Mem0
-    def:  store(Mem4[0x00000400:word32]) = foo(&r4_3)
+    def:  Mem4[0x00000400:word32] = foo(&r4_3)
 // foo
 void foo()
 foo_entry:
@@ -16,7 +16,7 @@ foo_entry:
 	def r4
 	// succ:  l1
 l1:
-	store(Mem4[0x00000400:word32]) = foo(&r4_3)
+	Mem4[0x00000400:word32] = foo(&r4_3)
 	return
 	// succ:  foo_exit
 foo_exit:

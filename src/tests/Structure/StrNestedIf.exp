@@ -15,8 +15,8 @@ l0C00_000C:		// pred: l0C00_0005
 l0C00_000F:		// pred:
 	// succ:  l0C00_001C
 l0C00_001C:		// pred: l0C00_0012 l0C00_0019 l0C00_0005 l0C00_000C
-	store(Mem24[ds:0x0300:word16]) = ax
-	store(Mem25[ds:0x0302:byte]) = cl_10
+	Mem24[ds:0x0300:word16] = ax
+	Mem25[ds:0x0302:byte] = cl_10
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_001C

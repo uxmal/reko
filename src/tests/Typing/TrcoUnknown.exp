@@ -3,7 +3,7 @@ void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	store(Mem7[ds:bx + 0x0000:word32]) = Mem0[ds:bx + 0x0004:word32]
+	Mem7[ds:bx + 0x0000:word32] = Mem0[ds:bx + 0x0004:word32]
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

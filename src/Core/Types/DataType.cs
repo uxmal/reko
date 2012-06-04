@@ -31,8 +31,6 @@ namespace Decompiler.Core.Types
 	/// </remarks>
 	public abstract class DataType
 	{
-		protected string name;
-
 		public const int BitsPerByte = 8;
 
 		protected DataType()
@@ -41,45 +39,19 @@ namespace Decompiler.Core.Types
 
 		protected DataType(string name)
 		{
-			this.name = name;
+			this.Name = name;
 		}
 
+        public int BitSize { get { return Size * BitsPerByte; } }		//$REVIEW: Wrong for 36-bit machines
+        public virtual bool IsComplex { get { return false; } }
+        public virtual string Name { get; set; }
+        public virtual string Prefix { get { return "t"; } }
+        public abstract int Size { get; set; }  // Size in bytes of the concrete datatype.
 
 		public abstract DataType Accept(DataTypeTransformer t);
 		public abstract void Accept(IDataTypeVisitor v);
         public abstract T Accept<T>(IDataTypeVisitor<T> v);
-
-		public int BitSize
-		{
-			get { return Size * BitsPerByte; }			//$REVIEW: Wrong for 36-bit machines
-		}
-
-		public abstract DataType Clone();
-
-		public virtual bool IsComplex
-		{
-			get { return false; }
-		}
-
-		public virtual string Name
-		{
-			get { return name; }
-			set { name = value; }
-		}
-		
-
-		public virtual string Prefix
-		{
-			get { return "t"; }
-		}
-
-		/// <summary>
-		/// Size in bytes of the concrete datatype.
-		/// </summary>
-		public abstract int Size 
-		{ 
-			get; set;
-		}
+        public abstract DataType Clone();
 
 		protected void ThrowBadSize()
 		{
@@ -88,7 +60,7 @@ namespace Decompiler.Core.Types
 
 		public sealed override string ToString()
 		{
-			StringWriter sw = new StringWriter();
+			var sw = new StringWriter();
 			Write(sw);
 			return sw.ToString();
 		}

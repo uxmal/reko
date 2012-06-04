@@ -39,11 +39,11 @@ l4:
 l5:
 	ax_88 = fn1B96_0540(loc02_26, ds)
 	v19_89 = Mem0[0x8416:word16] - 0x0001
-	store(Mem0[0x8416:word16]) = v19_89
+	Mem0[0x8416:word16] = v19_89
 	branch v19_89 != 0x0000 block11
 	// succ:  8 9
 l6:
-	store(Mem0[0x8414:word16]) = 0x0000
+	Mem0[0x8414:word16] = 0x0000
 	branch Mem0[0x8414:word16] == 0x0000 block11
 	// succ:  10 9
 l7:

@@ -228,13 +228,18 @@ namespace Decompiler.Core
         /// <returns></returns>
         public StringConstant ReadCString(DataType charType)
         {
+            return ReadCString(charType, Encoding.GetEncoding("ISO_8859-1"));
+        }
+
+        public StringConstant ReadCString(DataType charType, Encoding encoding)
+        {
             int iStart = (int)Offset;
             var sb = new StringBuilder();
             for (char ch = ReadChar(charType); ch != 0; ch = ReadChar(charType))
             {
                 sb.Append(ch);
             }
-            return new StringConstant(charType, Encoding.GetEncoding("ISO_8859-1").GetString(img, iStart, (int)Offset - iStart - 1));
+            return new StringConstant(charType, encoding.GetString(img, iStart, (int)Offset - iStart - 1));
         }
 
         public StringConstant ReadLengthPrefixedString(PrimitiveType lengthType, PrimitiveType charType)

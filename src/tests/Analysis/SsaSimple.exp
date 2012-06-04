@@ -47,7 +47,7 @@ ax_18: orig: ax
     def:  ax_18 = 0xFFFF
     uses: ax_16 = PHI(ax_12, ax_18)
 // fn0C00_0000
-void fn0C00_0000()
+void fn0C00_0000(word16 wArg06)
 fn0C00_0000_entry:
 	def Mem0
 	def fp

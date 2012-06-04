@@ -35,21 +35,24 @@ namespace Decompiler.Configuration
 
     public class LoaderElementImpl : ConfigurationElement, LoaderElement
     {
+        /// <summary>
+        /// The first few bytes of an image file expressed as a hexadecimal string. The presence of such a
+        /// sequence of bytes selects this loader
+        /// </summary>
+        /// <remarks>
+        /// For instance, the 'MZ' signature of MS-DOS executables is expressed as the hexadecimal string 4D5A.</remarks>
         [ConfigurationProperty("MagicNumber", IsRequired = true)]
         public string MagicNumber
         {
-            get { return (string) this["MagicNumber"]; }
+            get { return (string)this["MagicNumber"]; }
             set { this["MagicNumber"] = value; }
         }
 
         [ConfigurationProperty("Type", IsRequired = true)]
         public string TypeName
         {
-            get { return (string) this["Type"]; }
+            get { return (string)this["Type"]; }
             set { this["Type"] = value; }
         }
-
-
-
     }
 }

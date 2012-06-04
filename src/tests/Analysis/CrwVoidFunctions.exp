@@ -94,7 +94,7 @@ void fn0C00_0029(word16 ax, word16 di, selector ds)
 fn0C00_0029_entry:		// pred:
 	// succ:  l0C00_0029
 l0C00_0029:		// pred: fn0C00_0029_entry
-	store(Mem0[ds:di:word16]) = ax
+	Mem0[ds:di:word16] = ax
 	return
 	// succ:  fn0C00_0029_exit
 fn0C00_0029_exit:		// pred: l0C00_0029
@@ -121,7 +121,7 @@ fn0C00_002C_entry:		// pred:
 l0C00_002C:		// pred: fn0C00_002C_entry
 	wLoc04 = bp
 	ax = wArg00
-	store(Mem0[ds:di:word16]) = ax
+	Mem0[ds:di:word16] = ax
 	bp = wLoc04
 	return
 	// succ:  fn0C00_002C_exit

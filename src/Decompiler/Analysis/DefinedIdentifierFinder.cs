@@ -112,7 +112,7 @@ namespace Decompiler.Analysis
                 foreach (Expression exp in app.Arguments)
                 {
                     UnaryExpression u = exp as UnaryExpression;
-                    if (u != null && u.op == Operator.AddrOf)
+                    if (u != null && u.Operator == Operator.AddrOf)
                     {
                         Identifier id = u.Expression as Identifier;
                         if (id != null)

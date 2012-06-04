@@ -29,13 +29,10 @@ namespace Decompiler.Core.Absyn
 	/// </summary>
 	public class AbsynAssignment : AbsynStatement
 	{
-		private Expression dst;
-		private Expression src;
-
 		public AbsynAssignment(Expression dst, Expression src)
 		{
-			this.dst = dst;
-			this.src = src;
+			this.Dst = dst;
+			this.Src = src;
 		}
 
 		public override void Accept(IAbsynVisitor visitor)
@@ -43,15 +40,7 @@ namespace Decompiler.Core.Absyn
 			visitor.VisitAssignment(this);
 		}
 
-		public Expression Dst
-		{
-			get { return dst; } 
-		}
-
-		public Expression Src
-		{
-			get { return src; } 
-		}
-
+		public Expression Dst  {get; private set; }
+		public Expression Src { get; private set; }
 	}
 }

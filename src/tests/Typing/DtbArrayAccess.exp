@@ -3,7 +3,7 @@ void ArrayAccess()
 ArrayAccess_entry:
 	// succ:  l1
 l1:
-	store((r + 0x00000014)[i * 0x0000000A]) = 0x00000000
+	(r + 0x00000014)[i * 0x0000000A] = 0x00000000
 	return (r + 0x00000010)[i * 0x0000000A]
 	// succ:  ArrayAccess_exit
 ArrayAccess_exit:

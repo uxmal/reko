@@ -10,7 +10,7 @@ looptest:		// pred: l1 l2
 	branch ptr_4 >=u 0x04001000 done
 	// succ:  l2 done
 l2:		// pred: looptest
-	store(Mem6[ptr_4:word32]) = 0x00000000
+	Mem6[ptr_4:word32] = 0x00000000
 	ptr_7 = ptr_4 + 0x00000004
 	// succ:  looptest
 done:		// pred: looptest

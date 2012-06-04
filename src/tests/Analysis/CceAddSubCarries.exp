@@ -11,16 +11,16 @@ ds:Register ds
           dx_17 = Mem0[ds:0x0202:word16]
           cx_19 = Mem0[ds:0x0204:word16]
           bx_20 = Mem0[ds:0x0206:word16]
-          store(Mem26[ds:0x0208:word16]) = ax_23
-          store(Mem27[ds:0x020A:word16]) = dx_24
+          Mem26[ds:0x0208:word16] = ax_23
+          Mem27[ds:0x020A:word16] = dx_24
           ax_28 = Mem27[ds:0x0210:word16]
           dx_29 = Mem27[ds:0x0212:word16]
           es_cx_31 = Mem27[ds:0x0214:ptr32]
-          store(Mem39[ds:0x0218:word16]) = ax_36
-          store(Mem40[ds:0x021A:word16]) = dx_37
+          Mem39[ds:0x0218:word16] = ax_36
+          Mem40[ds:0x021A:word16] = dx_37
           cl_42 = Mem40[ds:0x0220:byte]
           cl_47 = Mem40[ds:0x0221:byte]
-          store(Mem54[ds:0x0222:word16]) = ax_52
+          Mem54[ds:0x0222:word16] = ax_52
 ax:Register ax
 dx:Register dx
 cx:Register cx
@@ -59,15 +59,15 @@ dx_ax_22: orig: dx_ax
           dx_24 = SLICE(dx_ax_22, word16, 16) (alias)
 ax_23: orig: ax
     def:  ax_23 = (word16) dx_ax_22 (alias)
-    uses: store(Mem26[ds:0x0208:word16]) = ax_23
+    uses: Mem26[ds:0x0208:word16] = ax_23
 dx_24: orig: dx
     def:  dx_24 = SLICE(dx_ax_22, word16, 16) (alias)
-    uses: store(Mem27[ds:0x020A:word16]) = dx_24
+    uses: Mem27[ds:0x020A:word16] = dx_24
 SCZO_25: orig: SCZO
 Mem26: orig: Mem0
-    def:  store(Mem26[ds:0x0208:word16]) = ax_23
+    def:  Mem26[ds:0x0208:word16] = ax_23
 Mem27: orig: Mem0
-    def:  store(Mem27[ds:0x020A:word16]) = dx_24
+    def:  Mem27[ds:0x020A:word16] = dx_24
     uses: ax_28 = Mem27[ds:0x0210:word16]
           dx_29 = Mem27[ds:0x0212:word16]
           es_cx_31 = Mem27[ds:0x0214:ptr32]
@@ -96,15 +96,15 @@ dx_ax_35: orig: dx_ax
           dx_37 = SLICE(dx_ax_35, word16, 16) (alias)
 ax_36: orig: ax
     def:  ax_36 = (word16) dx_ax_35 (alias)
-    uses: store(Mem39[ds:0x0218:word16]) = ax_36
+    uses: Mem39[ds:0x0218:word16] = ax_36
 dx_37: orig: dx
     def:  dx_37 = SLICE(dx_ax_35, word16, 16) (alias)
-    uses: store(Mem40[ds:0x021A:word16]) = dx_37
+    uses: Mem40[ds:0x021A:word16] = dx_37
 SCZO_38: orig: SCZO
 Mem39: orig: Mem0
-    def:  store(Mem39[ds:0x0218:word16]) = ax_36
+    def:  Mem39[ds:0x0218:word16] = ax_36
 Mem40: orig: Mem0
-    def:  store(Mem40[ds:0x021A:word16]) = dx_37
+    def:  Mem40[ds:0x021A:word16] = dx_37
     uses: cl_42 = Mem40[ds:0x0220:byte]
           cl_47 = Mem40[ds:0x0221:byte]
 ax_41: orig: ax
@@ -127,10 +127,10 @@ C_50: orig: C
 v15_51: orig: v15
 ax_52: orig: ax
     def:  ax_52 = ax_46 * 0x0002 + (word16) (cl_47 >=u 0x3A)
-    uses: store(Mem54[ds:0x0222:word16]) = ax_52
+    uses: Mem54[ds:0x0222:word16] = ax_52
 SCZO_53: orig: SCZO
 Mem54: orig: Mem0
-    def:  store(Mem54[ds:0x0222:word16]) = ax_52
+    def:  Mem54[ds:0x0222:word16] = ax_52
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
@@ -147,8 +147,8 @@ l0C00_0000:		// block 1, pred: 0
 	dx_ax_22 = dx_ax_18 + bx_cx_21
 	ax_23 = (word16) dx_ax_22 (alias)
 	dx_24 = SLICE(dx_ax_22, word16, 16) (alias)
-	store(Mem26[ds:0x0208:word16]) = ax_23
-	store(Mem27[ds:0x020A:word16]) = dx_24
+	Mem26[ds:0x0208:word16] = ax_23
+	Mem27[ds:0x020A:word16] = dx_24
 	ax_28 = Mem27[ds:0x0210:word16]
 	dx_29 = Mem27[ds:0x0212:word16]
 	dx_ax_30 = SEQ(dx_29, ax_28) (alias)
@@ -158,13 +158,13 @@ l0C00_0000:		// block 1, pred: 0
 	dx_ax_35 = dx_ax_30 - bx_cx_34
 	ax_36 = (word16) dx_ax_35 (alias)
 	dx_37 = SLICE(dx_ax_35, word16, 16) (alias)
-	store(Mem39[ds:0x0218:word16]) = ax_36
-	store(Mem40[ds:0x021A:word16]) = dx_37
+	Mem39[ds:0x0218:word16] = ax_36
+	Mem40[ds:0x021A:word16] = dx_37
 	cl_42 = Mem40[ds:0x0220:byte]
 	ax_46 = (word16) cond(cl_42 - 0x30)
 	cl_47 = Mem40[ds:0x0221:byte]
 	ax_52 = ax_46 * 0x0002 + (word16) (cl_47 >=u 0x3A)
-	store(Mem54[ds:0x0222:word16]) = ax_52
+	Mem54[ds:0x0222:word16] = ax_52
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1

@@ -19,7 +19,7 @@ l0C00_000D:		// pred: l0C00_0008
 	branch di_16 != 0x0000 l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:		// pred: l0C00_000D
-	store(Mem34[ds:0x0300:word16]) = dx_11
+	Mem34[ds:0x0300:word16] = dx_11
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0013

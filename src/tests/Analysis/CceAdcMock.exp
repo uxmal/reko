@@ -17,9 +17,9 @@ C_9: orig: C
 r0_10: orig: r0
 r0_11: orig: r0
     def:  r0_11 = r0_7 * 0x00000002 + (r1 <u 0x00000002)
-    uses: store(Mem12[0x01001004:word32]) = r0_11
+    uses: Mem12[0x01001004:word32] = r0_11
 Mem12: orig: Mem0
-    def:  store(Mem12[0x01001004:word32]) = r0_11
+    def:  Mem12[0x01001004:word32] = r0_11
 // AdcMock
 void AdcMock(word32 r1)
 AdcMock_entry:		// pred:
@@ -29,7 +29,7 @@ AdcMock_entry:		// pred:
 l1:		// pred: AdcMock_entry
 	r0_7 = Mem0[0x01001000:word32]
 	r0_11 = r0_7 * 0x00000002 + (r1 <u 0x00000002)
-	store(Mem12[0x01001004:word32]) = r0_11
+	Mem12[0x01001004:word32] = r0_11
 	return
 	// succ:  AdcMock_exit
 AdcMock_exit:		// pred: l1

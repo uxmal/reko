@@ -31,7 +31,7 @@ l0C00_0004:		// pred: fn0C00_0004_entry
 	byte bl_17 = 0xFF
 	// succ:  l0C00_000C
 l0C00_000C:		// pred: l0C00_0004 l0C00_000C
-	store(Mem37[0x4DE1:bx_15:byte]) = bl_17 & 0xF0 | SLICE((bl_17 & 0x0F) *u (bh_16 + 0x01) << 0x0004, byte, 8) & 0x0F
+	Mem37[0x4DE1:bx_15:byte] = bl_17 & 0xF0 | SLICE((bl_17 & 0x0F) *u (bh_16 + 0x01) << 0x0004, byte, 8) & 0x0F
 	bx_15 = bx_15 - 0x0001
 	bh_16 = SLICE(bx_15, byte, 8) (alias)
 	bl_17 = (byte) bx_15 (alias)

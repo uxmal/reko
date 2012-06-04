@@ -124,9 +124,6 @@ namespace Decompiler.Typing
 
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
-			if (binExp.Left.ToString().IndexOf("ax_349") >= 0)
-				binExp.ToString();
-
 			binExp.Left.Accept(this);
 			binExp.Right.Accept(this);
 			if (binExp.op is ConditionalOperator)

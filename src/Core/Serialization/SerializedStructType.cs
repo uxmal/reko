@@ -47,7 +47,7 @@ namespace Decompiler.Core.Serialization
 			get { return fields; }
 		}
 
-		public override Decompiler.Core.Types.DataType BuildDataType(Decompiler.Core.Types.TypeFactory factory)
+		public override DataType BuildDataType(Decompiler.Core.Types.TypeFactory factory)
 		{
 			StructureType str = factory.CreateStructureType(null, 0);
 			foreach (SerializedStructField f in fields)

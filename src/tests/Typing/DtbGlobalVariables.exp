@@ -3,8 +3,8 @@ void GlobalVariablesMock()
 GlobalVariablesMock_entry:		// pred:
 	// succ:  l1
 l1:		// pred: GlobalVariablesMock_entry
-	store(Mem3[ptr + 0x00000000:real32]) = 0.75F
-	store(Mem4[0x10000000:real32]) = 0.5F
+	Mem3[ptr + 0x00000000:real32] = 0.75F
+	Mem4[0x10000000:real32] = 0.5F
 	// succ: 
 GlobalVariablesMock_exit:
 

@@ -16,19 +16,19 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	// succ:  l0C00_000A l0C00_000F
 // DataOut: bp ss ds
 l0C00_000A:		// pred: l0C00_0000
-	store(Mem0[ds:0x0F00:byte]) = 0x01
+	Mem0[ds:0x0F00:byte] = 0x01
 	// succ:  l0C00_000F
 // DataOut: bp ss ds
 l0C00_000F:		// pred: l0C00_0000 l0C00_000A
 	ax = Mem0[ds:0x0104:word16]
 	v6 = Mem0[ds:0x0106:word16] - ax
-	store(Mem0[ds:0x0106:word16]) = v6
+	Mem0[ds:0x0106:word16] = v6
 	SCZO = cond(v6)
 	branch Test(LE,SZO) l0C00_001E
 	// succ:  l0C00_0019 l0C00_001E
 // DataOut: bp ss ds
 l0C00_0019:		// pred: l0C00_000F
-	store(Mem0[ds:0x0F01:byte]) = 0x01
+	Mem0[ds:0x0F01:byte] = 0x01
 	// succ:  l0C00_001E
 // DataOut: bp ss ds
 l0C00_001E:		// pred: l0C00_000F l0C00_0019
@@ -40,7 +40,7 @@ l0C00_001E:		// pred: l0C00_000F l0C00_0019
 	// succ:  l0C00_0028 l0C00_002D
 // DataOut: bp ss ds
 l0C00_0028:		// pred: l0C00_001E
-	store(Mem0[ds:0x0F02:byte]) = 0x01
+	Mem0[ds:0x0F02:byte] = 0x01
 	// succ:  l0C00_002D
 // DataOut: bp ss ds
 l0C00_002D:		// pred: l0C00_001E l0C00_0028
@@ -51,7 +51,7 @@ l0C00_002D:		// pred: l0C00_001E l0C00_0028
 	// succ:  l0C00_0038 l0C00_003D
 // DataOut: bp ss ds
 l0C00_0038:		// pred: l0C00_002D
-	store(Mem0[ds:0x0F03:byte]) = 0x01
+	Mem0[ds:0x0F03:byte] = 0x01
 	// succ:  l0C00_003D
 // DataOut: bp ss ds
 l0C00_003D:		// pred: l0C00_002D l0C00_0038
@@ -61,7 +61,7 @@ l0C00_003D:		// pred: l0C00_002D l0C00_0038
 	// succ:  l0C00_0044 l0C00_0049
 // DataOut: bp ss ds
 l0C00_0044:		// pred: l0C00_003D
-	store(Mem0[ds:0x0F04:byte]) = 0x01
+	Mem0[ds:0x0F04:byte] = 0x01
 	// succ:  l0C00_0049
 // DataOut: bp ss ds
 l0C00_0049:		// pred: l0C00_003D l0C00_0044
@@ -71,7 +71,7 @@ l0C00_0049:		// pred: l0C00_003D l0C00_0044
 	// succ:  l0C00_0051 l0C00_0056
 // DataOut: bp ss ds
 l0C00_0051:		// pred: l0C00_0049
-	store(Mem0[ds:0x0F05:byte]) = 0x01
+	Mem0[ds:0x0F05:byte] = 0x01
 	// succ:  l0C00_0056
 // DataOut: bp ss ds
 l0C00_0056:		// pred: l0C00_0049 l0C00_0051
@@ -81,7 +81,7 @@ l0C00_0056:		// pred: l0C00_0049 l0C00_0051
 	// succ:  l0C00_005B l0C00_005F
 // DataOut: bp ss ds
 l0C00_005B:		// pred: l0C00_0056
-	store(Mem0[ss:bp + 0x0006:byte]) = 0x01
+	Mem0[ss:bp + 0x0006:byte] = 0x01
 	// succ:  l0C00_005F
 // DataOut: bp ds
 l0C00_005F:		// pred: l0C00_0056 l0C00_005B
@@ -91,7 +91,7 @@ l0C00_005F:		// pred: l0C00_0056 l0C00_005B
 	// succ:  l0C00_0063 l0C00_0068
 // DataOut: ds
 l0C00_0063:		// pred: l0C00_005F
-	store(Mem0[ds:0x0F07:byte]) = 0x01
+	Mem0[ds:0x0F07:byte] = 0x01
 	// succ:  l0C00_0068
 // DataOut:
 l0C00_0068:		// pred: l0C00_005F l0C00_0063

@@ -35,12 +35,10 @@ namespace Decompiler.Core.Expressions
         {
             this.DataType = dataType;
         }
-
-        // Data type of this expression.
-
-        public DataType DataType { get; set; }
+        
+        public DataType DataType { get; set; }              // Data type of this expression.
         public TypeVariable TypeVariable { get; set; } 		// index to high-level type of this expression.
-        //$REVIEW: only used for typing, perhaps move it to hashtable? Argument against: there may be a lot of these.
+        //$REVIEW: TypeVariable is only used for typing, perhaps move it to hashtable? Argument against: there may be a lot of these.
 
         public abstract Expression Accept(IExpressionTransformer xform);
         public abstract void Accept(IExpressionVisitor visit);

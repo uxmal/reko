@@ -5,7 +5,7 @@ FramePointerMock_entry:		// block 0, pred:
 l1:		// block 1, pred: 0
 	(struct "frame_t") frame_4
 	word32 fp_5 = &frame_4
-	store(Mem6[fp_5 + 0x00000004:word32]) = Mem0[fp_5 + 0x00000008:word32]
+	Mem6[fp_5 + 0x00000004:word32] = Mem0[fp_5 + 0x00000008:word32]
 	// succ: 
 
 // Equivalence classes ////////////

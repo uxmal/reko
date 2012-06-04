@@ -3,7 +3,7 @@ fp: fp:Temporary
 bx: bx:Register bx
 rArg0: rArg0:FPU stack, def: {def rArg0}, uses: {FPUF_15 = cond(rArg0 - Mem0[ds:si:real32])}
 si: si:Register si, def: {def si}, uses: {FPUF_15 = cond(rArg0 - Mem0[ds:si:real32])}
-ds: ds:Register ds, def: {def ds}, uses: {FPUF_15 = cond(rArg0 - Mem0[ds:si:real32])}{store(Mem21[ds:0x0300:byte]) = 0x01}
+ds: ds:Register ds, def: {def ds}, uses: {FPUF_15 = cond(rArg0 - Mem0[ds:si:real32])}{Mem21[ds:0x0300:byte] = 0x01}
 FPUF: FPUF:Flags
 ax: ax:Register ax
 ah: ah:Register ah
@@ -19,7 +19,7 @@ ah_17: orig: ah
 SCZO_18: orig: SCZO
 Z_19: orig: Z
 C_20: orig: C
-Mem21: orig: Mem0, def: {store(Mem21[ds:0x0300:byte]) = 0x01}
+Mem21: orig: Mem0, def: {Mem21[ds:0x0300:byte] = 0x01}
 Mem22: orig: Mem0
 // fn0C00_0000
 void fn0C00_0000(word16 si, selector ds, real64 rArg0)
@@ -33,7 +33,7 @@ l0C00_0000:		// block 1, pred: 0
 	branch (rArg0 < Mem0[ds:si:real32]) l0C00_0010
 	// succ:  2 3
 l0C00_000B:		// block 2, pred: 1
-	store(Mem21[ds:0x0300:byte]) = 0x01
+	Mem21[ds:0x0300:byte] = 0x01
 	// succ:  3
 l0C00_0010:		// block 3, pred: 1 2
 	return

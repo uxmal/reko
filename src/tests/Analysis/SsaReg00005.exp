@@ -8,20 +8,20 @@ sp:Register sp
 bx:Register bx
     def:  def bx
     uses: call fn0C00_000C (retsize: 2;)
-          store(Mem6[ds:0x0300:word16]) = bx
+          Mem6[ds:0x0300:word16] = bx
 ds:Register ds
     def:  def ds
     uses: call fn0C00_000C (retsize: 2;)
-          store(Mem6[ds:0x0300:word16]) = bx
-          store(Mem7[ds:0x0302:byte]) = cl
+          Mem6[ds:0x0300:word16] = bx
+          Mem7[ds:0x0302:byte] = cl
 cl:Register cl
     def:  def cl
     uses: call fn0C00_000C (retsize: 2;)
-          store(Mem7[ds:0x0302:byte]) = cl
+          Mem7[ds:0x0302:byte] = cl
 Mem6: orig: Mem0
-    def:  store(Mem6[ds:0x0300:word16]) = bx
+    def:  Mem6[ds:0x0300:word16] = bx
 Mem7: orig: Mem0
-    def:  store(Mem7[ds:0x0302:byte]) = cl
+    def:  Mem7[ds:0x0302:byte] = cl
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -34,8 +34,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_000C (retsize: 2;)
-	store(Mem6[ds:0x0300:word16]) = bx
-	store(Mem7[ds:0x0302:byte]) = cl
+	Mem6[ds:0x0300:word16] = bx
+	Mem7[ds:0x0302:byte] = cl
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -11,10 +11,10 @@ eax:Register eax
     def:  def eax
 ebx:Register ebx
     def:  def ebx
-    uses: store(Mem23[esp_22:word32]) = ebx
+    uses: Mem23[esp_22:word32] = ebx
 ebp:Register ebp
     def:  def ebp
-    uses: store(Mem26[esp_25:word32]) = ebp
+    uses: Mem26[esp_25:word32] = ebp
 ecx:Register ecx
     def:  def ecx
 edx:Register edx
@@ -33,13 +33,13 @@ rLoc1:FPU stack
 esi:Register esi
     def:  def esi
     uses: esi_54 = PHI(esi, esi_155, esi_155)
-          store(Mem71[esp_70:word32]) = esi
+          Mem71[esp_70:word32] = esi
           esi_74 = esi ^ esi
           esi_74 = esi ^ esi
 edi:Register edi
     def:  def edi
     uses: edi_53 = PHI(edi, edi_153, edi_153)
-          store(Mem73[esp_72:word32]) = edi
+          Mem73[esp_72:word32] = edi
 rLoc2:FPU stack
     def:  def rLoc2
     uses: rLoc2_52 = PHI(rLoc2, rLoc2_145, rLoc2_145)
@@ -65,32 +65,32 @@ eax_21: orig: eax
           eax_35 = (int32) Mem33[eax_21:word16]
 esp_22: orig: esp
     def:  esp_22 = esp - 0x00000004
-    uses: store(Mem23[esp_22:word32]) = ebx
+    uses: Mem23[esp_22:word32] = ebx
           ebx_24 = Mem23[esp_22 + 0x00000010:word32]
           esp_25 = esp_22 - 0x00000004
 Mem23: orig: Mem0
-    def:  store(Mem23[esp_22:word32]) = ebx
+    def:  Mem23[esp_22:word32] = ebx
     uses: ebx_24 = Mem23[esp_22 + 0x00000010:word32]
 ebx_24: orig: ebx
     def:  ebx_24 = Mem23[esp_22 + 0x00000010:word32]
-    uses: store(Mem33[ebx_24:word32]) = ecx_30
+    uses: Mem33[ebx_24:word32] = ecx_30
           rLoc1_69 = (real64) Mem46[ebx_24:int32]
           call fn1000010A (retsize: 4; FPU: 2;)
           call fn1000010A (retsize: 4; FPU: 2;)
           call fn1000010A (retsize: 4; FPU: 2;)
-          store(Mem146[ebx_24:word32]) = eax_139
+          Mem146[ebx_24:word32] = eax_139
           call fn1000010A (retsize: 4; FPU: 1;)
-          store(Mem158[ebx_24:word32]) = 0x00000000
+          Mem158[ebx_24:word32] = 0x00000000
 esp_25: orig: esp
     def:  esp_25 = esp_22 - 0x00000004
-    uses: store(Mem26[esp_25:word32]) = ebp
+    uses: Mem26[esp_25:word32] = ebp
           ebp_29 = Mem26[esp_25 + 0x00000010:word32]
           edx_32 = Mem26[esp_25 + 0x00000018:word32]
-          store(Mem45[esp_25 + 0x00000014:word32]) = ecx_38
+          Mem45[esp_25 + 0x00000014:word32] = ecx_38
           esp_63 = PHI(esp_25, esp_156, esp_156)
           esp_70 = esp_25 - 0x00000004
 Mem26: orig: Mem0
-    def:  store(Mem26[esp_25:word32]) = ebp
+    def:  Mem26[esp_25:word32] = ebp
     uses: ecx_27 = (int32) Mem26[eax_21 + 0x00000006:word16]
           edx_28 = (int32) Mem26[eax_21 + 0x00000002:word16]
           ebp_29 = Mem26[esp_25 + 0x00000010:word32]
@@ -114,12 +114,12 @@ ebp_29: orig: ebp
 ecx_30: orig: ecx
     def:  ecx_30 = ecx_27 - edx_28
     uses: SCZO_31 = cond(ecx_30)
-          store(Mem33[ebx_24:word32]) = ecx_30
+          Mem33[ebx_24:word32] = ecx_30
 SCZO_31: orig: SCZO
     def:  SCZO_31 = cond(ecx_30)
 edx_32: orig: edx
     def:  edx_32 = Mem26[esp_25 + 0x00000018:word32]
-    uses: store(Mem46[edx_32:word32]) = ecx_38
+    uses: Mem46[edx_32:word32] = ecx_38
           edx_60 = PHI(edx_32, edx_32, edx_32)
           call fn1000010A (retsize: 4; FPU: 2;)
           call fn1000010A (retsize: 4; FPU: 2;)
@@ -128,7 +128,7 @@ edx_32: orig: edx
           edx_60 = PHI(edx_32, edx_32, edx_32)
           edx_60 = PHI(edx_32, edx_32, edx_32)
 Mem33: orig: Mem0
-    def:  store(Mem33[ebx_24:word32]) = ecx_30
+    def:  Mem33[ebx_24:word32] = ecx_30
     uses: ecx_34 = (int32) Mem33[eax_21 + 0x00000004:word16]
           eax_35 = (int32) Mem33[eax_21:word16]
 ecx_34: orig: ecx
@@ -154,8 +154,8 @@ ah_37: orig: ah
 ecx_38: orig: ecx
     def:  ecx_38 = ecx_34 - eax_35
     uses: SCZO_39 = cond(ecx_38)
-          store(Mem45[esp_25 + 0x00000014:word32]) = ecx_38
-          store(Mem46[edx_32:word32]) = ecx_38
+          Mem45[esp_25 + 0x00000014:word32] = ecx_38
+          Mem46[edx_32:word32] = ecx_38
           ecx_61 = PHI(ecx_38, ecx_147, ecx_147)
           call fn1000010A (retsize: 4; FPU: 2;)
 SCZO_39: orig: SCZO
@@ -180,9 +180,9 @@ SCZO_44: orig: SCZO
     def:  SCZO_44 = C_43 (alias)
     uses: SCZO_59 = PHI(SCZO_44, SCZO_148, SCZO_148)
 Mem45: orig: Mem0
-    def:  store(Mem45[esp_25 + 0x00000014:word32]) = ecx_38
+    def:  Mem45[esp_25 + 0x00000014:word32] = ecx_38
 Mem46: orig: Mem0
-    def:  store(Mem46[edx_32:word32]) = ecx_38
+    def:  Mem46[edx_32:word32] = ecx_38
     uses: Mem64 = PHI(Mem46, Mem157, Mem159)
           rLoc1_69 = (real64) Mem46[ebx_24:int32]
 SO_47: orig: SO
@@ -237,21 +237,21 @@ esp_68: orig: esp
     def:  esp_68 = esp_66 + 0x00000004
 rLoc1_69: orig: rLoc1
     def:  rLoc1_69 = (real64) Mem46[ebx_24:int32]
-    uses: store(Mem81[esp_72 + 0x00000014:real32]) = rLoc1_69
+    uses: Mem81[esp_72 + 0x00000014:real32] = rLoc1_69
 esp_70: orig: esp
     def:  esp_70 = esp_25 - 0x00000004
-    uses: store(Mem71[esp_70:word32]) = esi
+    uses: Mem71[esp_70:word32] = esi
           esp_72 = esp_70 - 0x00000004
 Mem71: orig: Mem0
-    def:  store(Mem71[esp_70:word32]) = esi
+    def:  Mem71[esp_70:word32] = esi
 esp_72: orig: esp
     def:  esp_72 = esp_70 - 0x00000004
-    uses: store(Mem73[esp_72:word32]) = edi
-          store(Mem81[esp_72 + 0x00000014:real32]) = rLoc1_69
+    uses: Mem73[esp_72:word32] = edi
+          Mem81[esp_72 + 0x00000014:real32] = rLoc1_69
           rLoc1_82 = (real64) Mem81[esp_72 + 0x0000001C:int32]
           esp_86 = PHI(esp_72, esp_86)
 Mem73: orig: Mem0
-    def:  store(Mem73[esp_72:word32]) = edi
+    def:  Mem73[esp_72:word32] = edi
 esi_74: orig: esi
     def:  esi_74 = esi ^ esi
     uses: SZO_75 = cond(esi_74)
@@ -282,7 +282,7 @@ edi_80: orig: edi
           SCZO_169 = cond(edi_80 - 0x000186A0)
           edi_138 = PHI(edi_80, edi_80, edi_80, edi_174)
 Mem81: orig: Mem0
-    def:  store(Mem81[esp_72 + 0x00000014:real32]) = rLoc1_69
+    def:  Mem81[esp_72 + 0x00000014:real32] = rLoc1_69
     uses: rLoc1_82 = (real64) Mem81[esp_72 + 0x0000001C:int32]
           Mem87 = PHI(Mem81, Mem124)
 rLoc1_82: orig: rLoc1
@@ -299,13 +299,13 @@ rLoc1_85: orig: rLoc1
 esp_86: orig: esp
     def:  esp_86 = PHI(esp_72, esp_86)
     uses: rLoc2_88 = Mem87[esp_86 + 0x00000014:real32]
-          store(Mem92[esp_86 + 0x00000014:real32]) = rLoc2_89
+          Mem92[esp_86 + 0x00000014:real32] = rLoc2_89
           call fn1000010A (retsize: 4; FPU: 2;)
-          store(Mem94[esp_86 + 0x0000001C:word32]) = ecx_93
+          Mem94[esp_86 + 0x0000001C:word32] = ecx_93
           rLoc2_95 = (real64) Mem94[esp_86 + 0x0000001C:int32]
           FPUF_96 = cond(rLoc2_95 - Mem94[esp_86 + 0x00000014:real32])
           call fn1000010A (retsize: 4; FPU: 2;)
-          store(Mem110[esp_86 + 0x0000001C:word32]) = ecx_109
+          Mem110[esp_86 + 0x0000001C:word32] = ecx_109
           rLoc2_111 = (real64) Mem110[esp_86 + 0x0000001C:int32]
           rLoc2_125 = Mem124[esp_86 + 0x00000014:real32]
           esp_86 = PHI(esp_72, esp_86)
@@ -315,11 +315,11 @@ esp_86: orig: esp
           ecx_147 = Mem146[esp_86 + 0x00000020:word32]
           edi_153 = Mem146[esp_86:word32]
           esp_154 = esp_86 + 0x00000004
-          store(Mem181[esp_86 + 0x0000001C:word32]) = ecx_175
+          Mem181[esp_86 + 0x0000001C:word32] = ecx_175
           rLoc1_182 = (real64) Mem181[esp_86 + 0x0000001C:int32]
-          store(Mem188[esp_86 + 0x00000014:word32]) = ecx_183
+          Mem188[esp_86 + 0x00000014:word32] = ecx_183
           rLoc2_189 = (real64) Mem188[esp_86 + 0x00000014:int32]
-          store(Mem190[esp_86 + 0x00000014:real32]) = rLoc2_189
+          Mem190[esp_86 + 0x00000014:real32] = rLoc2_189
 Mem87: orig: Mem0
     def:  Mem87 = PHI(Mem81, Mem124)
     uses: rLoc2_88 = Mem87[esp_86 + 0x00000014:real32]
@@ -329,7 +329,7 @@ rLoc2_88: orig: rLoc2
     uses: rLoc2_89 = rLoc2_88 *s Mem87[0x0099188A:real64]
 rLoc2_89: orig: rLoc2
     def:  rLoc2_89 = rLoc2_88 *s Mem87[0x0099188A:real64]
-    uses: store(Mem92[esp_86 + 0x00000014:real32]) = rLoc2_89
+    uses: Mem92[esp_86 + 0x00000014:real32] = rLoc2_89
 esi_90: orig: esi
     def:  esi_90 = esi_84 + 0x00000001
     uses: SZO_91 = cond(esi_90)
@@ -344,14 +344,14 @@ SZO_91: orig: SZO
     def:  SZO_91 = cond(esi_90)
     uses: call fn1000010A (retsize: 4; FPU: 2;)
 Mem92: orig: Mem0
-    def:  store(Mem92[esp_86 + 0x00000014:real32]) = rLoc2_89
+    def:  Mem92[esp_86 + 0x00000014:real32] = rLoc2_89
 ecx_93: orig: ecx
     def:  ecx_93 = eax_35
-    uses: store(Mem94[esp_86 + 0x0000001C:word32]) = ecx_93
+    uses: Mem94[esp_86 + 0x0000001C:word32] = ecx_93
           call fn1000010A (retsize: 4; FPU: 2;)
           ecx_183 = ecx_93 + 0x00000001
 Mem94: orig: Mem0
-    def:  store(Mem94[esp_86 + 0x0000001C:word32]) = ecx_93
+    def:  Mem94[esp_86 + 0x0000001C:word32] = ecx_93
     uses: rLoc2_95 = (real64) Mem94[esp_86 + 0x0000001C:int32]
           FPUF_96 = cond(rLoc2_95 - Mem94[esp_86 + 0x00000014:real32])
           Mem106 = PHI(Mem190, Mem94)
@@ -410,11 +410,11 @@ rLoc2_108: orig: rLoc2
     def:  rLoc2_108 = rLoc2_105
 ecx_109: orig: ecx
     def:  ecx_109 = eax_98
-    uses: store(Mem110[esp_86 + 0x0000001C:word32]) = ecx_109
+    uses: Mem110[esp_86 + 0x0000001C:word32] = ecx_109
           ecx_123 = PHI(ecx_109, ecx_175)
           ecx_175 = ecx_109 + 0x00000001
 Mem110: orig: Mem0
-    def:  store(Mem110[esp_86 + 0x0000001C:word32]) = ecx_109
+    def:  Mem110[esp_86 + 0x0000001C:word32] = ecx_109
     uses: rLoc2_111 = (real64) Mem110[esp_86 + 0x0000001C:int32]
           Mem124 = PHI(Mem110, Mem181)
 rLoc2_111: orig: rLoc2
@@ -531,9 +531,9 @@ edi_138: orig: edi
 eax_139: orig: eax
     def:  eax_139 = PHI(eax_128, eax_162, eax_162, eax_162)
     uses: call fn1000010A (retsize: 4; FPU: 2;)
-          store(Mem146[ebx_24:word32]) = eax_139
+          Mem146[ebx_24:word32] = eax_139
           call fn1000010A (retsize: 4; FPU: 1;)
-          store(Mem157[ecx_147:word32]) = eax_139
+          Mem157[ecx_147:word32] = eax_139
           eax_62 = PHI(eax_35, eax_139, eax_139)
           eax_62 = PHI(eax_35, eax_139, eax_139)
 SCZO_140: orig: SCZO
@@ -566,15 +566,15 @@ rLoc2_145: orig: rLoc2
     uses: rLoc2_52 = PHI(rLoc2, rLoc2_145, rLoc2_145)
           rLoc2_52 = PHI(rLoc2, rLoc2_145, rLoc2_145)
 Mem146: orig: Mem0
-    def:  store(Mem146[ebx_24:word32]) = eax_139
+    def:  Mem146[ebx_24:word32] = eax_139
     uses: ecx_147 = Mem146[esp_86 + 0x00000020:word32]
           edi_153 = Mem146[esp_86:word32]
           esi_155 = Mem146[esp_154:word32]
 ecx_147: orig: ecx
     def:  ecx_147 = Mem146[esp_86 + 0x00000020:word32]
-    uses: store(Mem157[ecx_147:word32]) = eax_139
+    uses: Mem157[ecx_147:word32] = eax_139
           ecx_61 = PHI(ecx_38, ecx_147, ecx_147)
-          store(Mem159[ecx_147:word32]) = 0x00000000
+          Mem159[ecx_147:word32] = 0x00000000
           ecx_61 = PHI(ecx_38, ecx_147, ecx_147)
 SCZO_148: orig: SCZO
     def:  SCZO_148 = cond(ebp_29 - edi_138)
@@ -618,12 +618,12 @@ esp_156: orig: esp
     uses: esp_63 = PHI(esp_25, esp_156, esp_156)
           esp_63 = PHI(esp_25, esp_156, esp_156)
 Mem157: orig: Mem0
-    def:  store(Mem157[ecx_147:word32]) = eax_139
+    def:  Mem157[ecx_147:word32] = eax_139
     uses: Mem64 = PHI(Mem46, Mem157, Mem159)
 Mem158: orig: Mem0
-    def:  store(Mem158[ebx_24:word32]) = 0x00000000
+    def:  Mem158[ebx_24:word32] = 0x00000000
 Mem159: orig: Mem0
-    def:  store(Mem159[ecx_147:word32]) = 0x00000000
+    def:  Mem159[ecx_147:word32] = 0x00000000
     uses: Mem64 = PHI(Mem46, Mem157, Mem159)
 FPUF_160: orig: FPUF
     def:  FPUF_160 = cond(rLoc1_122 - Mem124[0x10033298:real64])
@@ -684,7 +684,7 @@ edi_174: orig: edi
 ecx_175: orig: ecx
     def:  ecx_175 = ecx_109 + 0x00000001
     uses: SZO_176 = cond(ecx_175)
-          store(Mem181[esp_86 + 0x0000001C:word32]) = ecx_175
+          Mem181[esp_86 + 0x0000001C:word32] = ecx_175
           ecx_123 = PHI(ecx_109, ecx_175)
 SZO_176: orig: SZO
     def:  SZO_176 = cond(ecx_175)
@@ -700,7 +700,7 @@ SO_179: orig: SO
 rLoc1_180: orig: rLoc1
     def:  rLoc1_180 = rLoc1_107
 Mem181: orig: Mem0
-    def:  store(Mem181[esp_86 + 0x0000001C:word32]) = ecx_175
+    def:  Mem181[esp_86 + 0x0000001C:word32] = ecx_175
     uses: rLoc1_182 = (real64) Mem181[esp_86 + 0x0000001C:int32]
           Mem124 = PHI(Mem110, Mem181)
 rLoc1_182: orig: rLoc1
@@ -709,7 +709,7 @@ rLoc1_182: orig: rLoc1
 ecx_183: orig: ecx
     def:  ecx_183 = ecx_93 + 0x00000001
     uses: SZO_184 = cond(ecx_183)
-          store(Mem188[esp_86 + 0x00000014:word32]) = ecx_183
+          Mem188[esp_86 + 0x00000014:word32] = ecx_183
 SZO_184: orig: SZO
     def:  SZO_184 = cond(ecx_183)
     uses: SCZO_185 = SZO_184 (alias)
@@ -722,14 +722,14 @@ Z_186: orig: Z
 SO_187: orig: SO
     def:  SO_187 = SZO_184 (alias)
 Mem188: orig: Mem0
-    def:  store(Mem188[esp_86 + 0x00000014:word32]) = ecx_183
+    def:  Mem188[esp_86 + 0x00000014:word32] = ecx_183
     uses: rLoc2_189 = (real64) Mem188[esp_86 + 0x00000014:int32]
 rLoc2_189: orig: rLoc2
     def:  rLoc2_189 = (real64) Mem188[esp_86 + 0x00000014:int32]
-    uses: store(Mem190[esp_86 + 0x00000014:real32]) = rLoc2_189
+    uses: Mem190[esp_86 + 0x00000014:real32] = rLoc2_189
           rLoc2_105 = PHI(rLoc2_189, rLoc2_95)
 Mem190: orig: Mem0
-    def:  store(Mem190[esp_86 + 0x00000014:real32]) = rLoc2_189
+    def:  Mem190[esp_86 + 0x00000014:real32] = rLoc2_189
     uses: Mem106 = PHI(Mem190, Mem94)
 // fn10000000
 void fn10000000()
@@ -759,17 +759,17 @@ fn10000000_entry:
 l10000000:
 	eax_21 = Mem0[esp + 0x00000004:word32]
 	esp_22 = esp - 0x00000004
-	store(Mem23[esp_22:word32]) = ebx
+	Mem23[esp_22:word32] = ebx
 	ebx_24 = Mem23[esp_22 + 0x00000010:word32]
 	esp_25 = esp_22 - 0x00000004
-	store(Mem26[esp_25:word32]) = ebp
+	Mem26[esp_25:word32] = ebp
 	ecx_27 = (int32) Mem26[eax_21 + 0x00000006:word16]
 	edx_28 = (int32) Mem26[eax_21 + 0x00000002:word16]
 	ebp_29 = Mem26[esp_25 + 0x00000010:word32]
 	ecx_30 = ecx_27 - edx_28
 	SCZO_31 = cond(ecx_30)
 	edx_32 = Mem26[esp_25 + 0x00000018:word32]
-	store(Mem33[ebx_24:word32]) = ecx_30
+	Mem33[ebx_24:word32] = ecx_30
 	ecx_34 = (int32) Mem33[eax_21 + 0x00000004:word16]
 	eax_35 = (int32) Mem33[eax_21:word16]
 	ax_36 = (word16) eax_35 (alias)
@@ -781,16 +781,16 @@ l10000000:
 	SO_42 = SZO_40 (alias)
 	C_43 = false
 	SCZO_44 = C_43 (alias)
-	store(Mem45[esp_25 + 0x00000014:word32]) = ecx_38
-	store(Mem46[edx_32:word32]) = ecx_38
+	Mem45[esp_25 + 0x00000014:word32] = ecx_38
+	Mem46[edx_32:word32] = ecx_38
 	branch Test(EQ,Z_41) l10000107
 	// succ:  l10000035 l10000107
 l10000035:
 	rLoc1_69 = (real64) Mem46[ebx_24:int32]
 	esp_70 = esp_25 - 0x00000004
-	store(Mem71[esp_70:word32]) = esi
+	Mem71[esp_70:word32] = esi
 	esp_72 = esp_70 - 0x00000004
-	store(Mem73[esp_72:word32]) = edi
+	Mem73[esp_72:word32] = edi
 	esi_74 = esi ^ esi
 	SZO_75 = cond(esi_74)
 	Z_76 = SZO_75 (alias)
@@ -798,7 +798,7 @@ l10000035:
 	C_78 = false
 	SCZO_79 = C_78 (alias)
 	edi_80 = 0x000186A0
-	store(Mem81[esp_72 + 0x00000014:real32]) = rLoc1_69
+	Mem81[esp_72 + 0x00000014:real32] = rLoc1_69
 	rLoc1_82 = (real64) Mem81[esp_72 + 0x0000001C:int32]
 	// succ:  l10000048
 l10000048:
@@ -811,10 +811,10 @@ l10000048:
 	rLoc2_89 = rLoc2_88 *s Mem87[0x0099188A:real64]
 	esi_90 = esi_84 + 0x00000001
 	SZO_91 = cond(esi_90)
-	store(Mem92[esp_86 + 0x00000014:real32]) = rLoc2_89
+	Mem92[esp_86 + 0x00000014:real32] = rLoc2_89
 	call fn1000010A (retsize: 4; FPU: 2;)
 	ecx_93 = eax_35
-	store(Mem94[esp_86 + 0x0000001C:word32]) = ecx_93
+	Mem94[esp_86 + 0x0000001C:word32] = ecx_93
 	rLoc2_95 = (real64) Mem94[esp_86 + 0x0000001C:int32]
 	FPUF_96 = cond(rLoc2_95 - Mem94[esp_86 + 0x00000014:real32])
 	ax_97 = (word16) FPUF_96 << 8
@@ -833,9 +833,9 @@ l10000072:
 	SCZO_185 = SZO_184 (alias)
 	Z_186 = SZO_184 (alias)
 	SO_187 = SZO_184 (alias)
-	store(Mem188[esp_86 + 0x00000014:word32]) = ecx_183
+	Mem188[esp_86 + 0x00000014:word32] = ecx_183
 	rLoc2_189 = (real64) Mem188[esp_86 + 0x00000014:int32]
-	store(Mem190[esp_86 + 0x00000014:real32]) = rLoc2_189
+	Mem190[esp_86 + 0x00000014:real32] = rLoc2_189
 	// succ:  l1000007F
 l1000007F:
 	rLoc2_105 = PHI(rLoc2_189, rLoc2_95)
@@ -844,7 +844,7 @@ l1000007F:
 	rLoc2_108 = rLoc2_105
 	call fn1000010A (retsize: 4; FPU: 2;)
 	ecx_109 = eax_98
-	store(Mem110[esp_86 + 0x0000001C:word32]) = ecx_109
+	Mem110[esp_86 + 0x0000001C:word32] = ecx_109
 	rLoc2_111 = (real64) Mem110[esp_86 + 0x0000001C:int32]
 	rLoc3_112 = rLoc2_111
 	FPUF_113 = cond(rLoc3_112 - rLoc2_111)
@@ -865,7 +865,7 @@ l100000A2:
 	Z_178 = SZO_176 (alias)
 	SO_179 = SZO_176 (alias)
 	rLoc1_180 = rLoc1_107
-	store(Mem181[esp_86 + 0x0000001C:word32]) = ecx_175
+	Mem181[esp_86 + 0x0000001C:word32] = ecx_175
 	rLoc1_182 = (real64) Mem181[esp_86 + 0x0000001C:int32]
 	// succ:  l100000AD
 l100000AD:
@@ -923,7 +923,7 @@ l100000D7:
 l100000DF:
 	rLoc2_145 = Mem124[esp_86 + 0x00000014:real32]
 	call fn1000010A (retsize: 4; FPU: 2;)
-	store(Mem146[ebx_24:word32]) = eax_139
+	Mem146[ebx_24:word32] = eax_139
 	call fn1000010A (retsize: 4; FPU: 1;)
 	ecx_147 = Mem146[esp_86 + 0x00000020:word32]
 	SCZO_148 = cond(ebp_29 - edi_138)
@@ -935,12 +935,12 @@ l100000DF:
 	esp_154 = esp_86 + 0x00000004
 	esi_155 = Mem146[esp_154:word32]
 	esp_156 = esp_154 + 0x00000004
-	store(Mem157[ecx_147:word32]) = eax_139
+	Mem157[ecx_147:word32] = eax_139
 	branch Test(LE,SZO_149) l10000107
 	// succ:  l100000FB l10000107
 l100000FB:
-	store(Mem158[ebx_24:word32]) = 0x00000000
-	store(Mem159[ecx_147:word32]) = 0x00000000
+	Mem158[ebx_24:word32] = 0x00000000
+	Mem159[ecx_147:word32] = 0x00000000
 	// succ:  l10000107
 l10000107:
 	SO_47 = PHI(SO_42, SO_152, SO_152)
@@ -975,15 +975,15 @@ fp:Temporary
     def:  def fp
 esp:Register esp
     def:  def esp
-    uses: store(Mem5[esp - 0x00000004:int32]) = (int32) rArg0
+    uses: Mem5[esp - 0x00000004:int32] = (int32) rArg0
           eax_6 = Mem5[esp - 0x00000004:word32]
 rArg0:FPU stack
     def:  def rArg0
-    uses: store(Mem5[esp - 0x00000004:int32]) = (int32) rArg0
+    uses: Mem5[esp - 0x00000004:int32] = (int32) rArg0
 eax:Register eax
     def:  def eax
 Mem5: orig: Mem0
-    def:  store(Mem5[esp - 0x00000004:int32]) = (int32) rArg0
+    def:  Mem5[esp - 0x00000004:int32] = (int32) rArg0
     uses: eax_6 = Mem5[esp - 0x00000004:word32]
 eax_6: orig: eax
     def:  eax_6 = Mem5[esp - 0x00000004:word32]
@@ -997,7 +997,7 @@ fn1000010A_entry:
 	def eax
 	// succ:  l1000010A
 l1000010A:
-	store(Mem5[esp - 0x00000004:int32]) = (int32) rArg0
+	Mem5[esp - 0x00000004:int32] = (int32) rArg0
 	eax_6 = Mem5[esp - 0x00000004:word32]
 	return
 	// succ:  fn1000010A_exit

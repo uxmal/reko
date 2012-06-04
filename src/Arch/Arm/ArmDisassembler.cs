@@ -19,14 +19,1141 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
+
+/* disarm -- a simple disassembler for ARM instructions
+ * (c) 2000 Gareth McCaughan
+ *
+ * This file may be distributed and used freely provided:
+ * 1. You do not distribute any version that lacks this
+ *    copyright notice (exactly as it appears here, extending
+ *    from the start to the end of the C-language comment
+ *    containing these words)); and,
+ * 2. If you distribute any modified version, its source
+ *    contains a clear description of the ways in which
+ *    it differs from the original version, and a clear
+ *    indication that the changes are not mine.
+ * There is no restriction on your permission to use and
+ * distribute object code or executable code derived from
+ * this.
+ *
+ * The original version of this file (or perhaps a later
+ * version by the original author) may or may not be
+ * available at http://web.ukonline.co.uk/g.mccaughan/g/software.html .
+ *
+ * Share and enjoy!    -- g
+ */
 
 namespace Decompiler.Arch.Arm
 {
+    using word = UInt32;
+    using address = UInt32;
+    using addrdiff = UInt32;
+
+    public class ArmDisassembler2 : Disassembler
+    {
+
+        /* (*This* comment is NOT part of the notice mentioned in the
+         * distribution conditions above.)
+         *
+         * The bulk of this code was ripped brutally from the middle
+         * of a much more interesting piece of software whose purpose
+         * is to disassemble object files in the format known as AOF;
+         * it's quite clever at spotting blocks of non-code embedded
+         * in code, identifying labels, and so on.
+         *
+         * This program, on the other hand, is very much simpler.
+         * It simply disassembles one instruction at a time. Some
+         * traces of the original purpose can be seen here and there.
+         * You might want to make this do a two-phase disassembly,
+         * adding labels etc the second time around. I've made this
+         * work by loading the whole file into memory first, partly
+         * because that makes a two-pass approach easier.
+         *
+         * One word of warning: I believe that the syntax this program
+         * uses for the MSR instruction is now obsolete.
+         *
+         * Usage:
+         *   disarm <filename> <base-address>
+         * will disassemble every word in <filename>.
+         *
+         * <base-address> should be something understood by strtol.
+         * So you can get hex (which is probably what you want)
+         * by prefixing "0x".
+         *
+         * The -r option will byte-reverse each word before it's
+         * disassembled.
+         *
+         * The code is rather unmaintainable. I'm sorry.
+         *
+         * Changes since original release:
+         *   ????-??-?? v0.00 Initial release.
+         *   2007-09-02 v0.11 Change %X to %lX in a format string.
+         *                    (Thanks to Vincent Zweije for reporting this.)
+         */
+
+        private ArmProcessorArchitecture arch;
+        private ImageReader rdr;
+        private ArmInstruction arm;
+        private eTargetType poss_tt;
+        private  OpFlags flag;
+
+        public ArmDisassembler2(ArmProcessorArchitecture arch, ImageReader rdr)
+        {
+            this.arch = arch;
+            this.rdr = rdr;
+        }
+
+        public Address Address { get { return rdr.Address; } }
+
+        public MachineInstruction DisassembleInstruction()
+        {
+            var addr = rdr.Address.Linear;
+            this.instr_disassemble(rdr.ReadLeUInt32(), addr, new DisOptions());
+            return arm;
+        }
+
+        public ArmInstruction Disassemble()
+        {
+            var addr = rdr.Address.Linear;
+            this.instr_disassemble(rdr.ReadLeUInt32(), addr, new DisOptions());
+            return arm;
+        }
+
+        public enum eTargetType
+        {
+            target_None,		// instruction doesn't refer to an address 
+            target_Data,		// instruction refers to address of data 
+            target_FloatS,	    // instruction refers to address of single-float 
+            target_FloatD,	    // instruction refers to address of double-float 
+            target_FloatE,	    // blah blah extended-float 
+            target_FloatP,	    // blah blah packed decimal float 
+            target_Code,		// instruction refers to address of code 
+            target_Unknown	    // instruction refers to address of *something* 
+        }
+
+        public class Instruction
+        {
+            public StringBuilder text = new StringBuilder();	// the disassembled instruction 
+            public bool undefined;	// non-0 iff it's an undefined instr 
+            public bool badbits;		// non-0 iff something reserved has the wrong value 
+            public bool oddbits;		// non-0 iff something unspecified isn't 0 
+            public bool is_SWI;		// non-0 iff it's a SWI 
+            public word swinum;		// only set for SWIs 
+            public address target;	// address instr refers to 
+            public eTargetType target_type;	// and what we expect to be there 
+            public int offset;		// offset from register in LDR or STR or similar 
+            public int addrstart;	// start of address part of instruction, or 0 
+        };
+
+        const int disopt_SWInames = 1;	// use names, not &nnnn 
+        const int disopt_CommaSpace = 2;	// put spaces after commas 
+        const int disopt_FIXS = 4;	// bogus FIX syntax for ObjAsm 
+        const int disopt_ReverseBytes = 8;	// byte-reverse words first 
+
+        public class DisOptions
+        {
+            public word flags;
+            public string[] regnames;	// pointer to 16 |char *|s: register names 
+        }
+
+        const bool INSTR_grok_v4 = true;
+
+        /* Preprocessor defs you can give to affect this stuff:
+         * INSTR_grok_v4   understand ARMv4 instructions (halfword & sign-ext LDR/STR)
+         * INSTR_new_msr   be prepared to produce new MSR syntax if asked
+         * The first of these is supported; the second isn't.
+         */
+
+        // Some important single-bit fields. 
+
+        const int Sbit = (1 << 20);	// set condition codes (data processing) 
+        const int Lbit = (1 << 20);	// load, not store (data transfer) 
+        const int Wbit = (1 << 21);	// writeback (data transfer) 
+        const int Bbit = (1 << 22);	// single byte (data transfer, SWP) 
+        const int Ubit = (1 << 23);	// up, not down (data transfer) 
+        const int Pbit = (1 << 24);	// pre-, not post-, indexed (data transfer) 
+        const int Ibit = (1 << 25);	// non-immediate (data transfer) 
+
+        // immediate (data processing) 
+        const int SPSRbit = (1 << 22);	// SPSR, not CPSR (MRS, MSR) 
+
+        // Some important 4-bit fields. 
+
+        private int RD(int x) { return ((x) << 12); }	// destination register 
+        private int RN(int x) { return ((x) << 16); }	// operand/base register 
+        private int CP(int x) { return ((x) << 8); }	// coprocessor number 
+        private int RDbits() { return RD(15); }
+        private int RNbits() { return RN(15); }
+        private int CPbits() { return CP(15); }
+        private bool RD_is(int x) { return ((instr & RDbits()) == RD(x)); }
+        private bool RN_is(int x) { return ((instr & RNbits()) == RN(x)); }
+        private bool CP_is(int x) { return ((instr & CPbits()) == CP(x)); }
+
+        /* A slightly efficient way of telling whether two bits are the same
+         * or not. It's assumed that a<b.
+         */
+        private bool BitsDiffer(int a, int b) { return (((instr >> a) ^ (instr >> b)) & 1) != 0; }
+
+        //extern void swiname(word, char *, size_t);
+
+        /* op = append(op,ip) === op += sprintf(op,"%s",ip),
+         * except that it's faster.
+         */
+        static void append(StringBuilder op, string ip)
+        {
+            op.Append(ip);
+        }
+
+        /* op = hex8(op,w) === op += sprintf(op,"&%08lX",w), but faster.
+         */
+        static void hex8(StringBuilder op, word w)
+        {
+            int i;
+            op.Append('&');
+            for (i = 28; i >= 0; i -= 4) op.Append("0123456789ABCDEF"[(int)((w >> i) & 15)]);
+        }
+
+        /* op = reg(op,'x',n) === op += sprintf(op,"x%lu",n&15).
+         */
+        static void reg(StringBuilder op, char c, word n)
+        {
+            op.Append(c);
+            op.Append(n & 15);
+        }
+
+        /* op = num(op,n) appends n in decimal or &n in hex
+         * depending on whether n<100. It's assumed that n>=0.
+         */
+        static void num(StringBuilder op, word w)
+        {
+            if (w >= 100)
+            {
+                int i;
+                word t;
+                op.Append('&');
+                for (i = 28; (t = (w >> i) & 15) == 0; i -= 4) ;
+                for (; i >= 0; i -= 4) op.Append("0123456789ABCDEF"[(int)((w >> i) & 15)]);
+            }
+            else
+            {
+                // divide by 10. You can prove this works by exhaustive search. :-) 
+                word t = w - (w >> 2); t = (t + (t >> 4)) >> 3;
+                {
+                    word u = w - 10 * t;
+                    if (u == 10) { u = 0; ++t; }
+                    if (t != 0) op.Append((char)(t + '0'));
+                    op.Append((char)(u + '0'));
+                }
+            }
+        }
+
+        /* instr_disassemble
+         * Disassemble a single instruction.
+         *
+         * args:   instr   a single ARM instruction
+         *         addr    the address it's presumed to have come from
+         *         opts    cosmetic preferences for our output
+         *
+         * reqs:   opts must be filled in right. In particular, it must contain
+         *         a list of register names.
+         *
+         * return: a pointer to a structure containing the disassembled instruction
+         *         and some other information about it.
+         *
+         * This is basically a replacement for the SWI Debugger_Disassemble,
+         * but it has the following advantages:
+         *
+         *   + it's 3-4 times as fast
+         *   + it's better at identifying undefined instructions,
+         *     and instructions not invariant under { disassemble; ObjAsm; }
+         *   + it provides some other useful information as well
+         *   + its output syntax is the same as ObjAsm's input syntax
+         *     (where possible)
+         *   + it doesn't disassemble FIX incorrectly unless you ask it to
+         *   + it's more configurable in some respects
+         *
+         * It also has the following disadvantages:
+         *
+         *   - it increases the size of ObjDism
+         *   - it doesn't provide so many `helpful' usage comments etc
+         *   - it's less configurable in some respects
+         *   - it doesn't (yet) know about ARMv4 instructions
+         *
+         * This function proceeds in two phases. The first is very simple:
+         * it works out what sort of instruction it's looking at and sets up
+         * three strings:
+         *   - |mnemonic|  (the basic mnemonic: LDR or whatever)
+         *   - |flagchars| (things to go after the cond code: B or whatever)
+         *   - |format|    (a string describing how to display the instruction)
+         * The second phase consists of interpreting |format|, character by
+         * character. Some characters (e.g., letters) just mean `append this
+         * character to the output string'; some mean more complicated things
+         * like `append the name of the register whose number is in bits 12..15'
+         * or, worse, `append a description of the <op2> field'.
+         *
+         * I'm afraid the magic characters in |format| are rather arbitrary.
+         * One criterion in choosing them was that they should form a contiguous
+         * subrange of the character set! Sorry.
+         *
+         * Things I still want to do:
+         *
+         *   - more configurability?
+         *   - make it much faster, if possible
+         *   - make it much smaller, if possible
+         *
+         * Format characters:
+         *
+         *   \01..\05 copro register number from nybble (\001 == nybble 0, sorry)
+         *   $        SWI number
+         *   %        register set for LDM/STM (takes note of bit 22 for ^)
+         *   &        address for B/BL
+         *   '        ! if bit 21 set, else nothing (mnemonic: half a !)
+         *   (        #regs for SFM (bits 22,15 = fpn, assumed already tweaked)
+         *   )        copro opcode in bits 20..23 (for CDP)
+         *   *        op2 (takes note of bottom 12 bits, and bit 25)
+         *   +        FP register or immediate value: bits 0..3
+         *   ,        comma or comma-space
+         *   -        copro extra info in bits 5..7 preceded by , omitted if 0
+         *   .        address in ADR instruction
+         *   /        address for LDR/STR (takes note of bit 23 & reg in bits 16..19)
+         *   0..4     register number from nybble
+         *   5..9     FP register number from nybble
+         *   :        copro opcode in bits 21..23 (for MRC/MCR)
+         *   ;        copro number in bits 8..11
+         *
+         * NB that / takes note of bit 22, too, and does its own ! when
+         * appropriate.
+         *
+         * On typical instructions this seems to take about 100us on my ARM6;
+         * that's about 3000 cycles, which seems grossly excessive. I'm not
+         * sure where all those cycles are being spent. Perhaps it's possible
+         * to make it much, much faster. Most of this time is spent on phase 2.
+         */
+        StringBuilder flagchars;
+        StringBuilder flagp;
+        Instruction result;
+        word fpn;
+        word instr;
+        Opcode mnemonic;
+
+
+        Instruction instr_disassemble(word instr, address addr, DisOptions opts)
+        {
+            this.instr = instr;
+            this.mnemonic = Opcode.illegal;
+            this.flagp = new StringBuilder();
+            this.flagchars = flagp;
+
+            this.fpn = (word)0;
+            this.poss_tt = eTargetType.target_None;
+            int is_v4 = 0;
+            string format = "";
+
+            // PHASE 0. Set up default values for |result|. 
+
+            fpn = ((instr >> 15) & 1) + ((instr >> 21) & 2);
+
+            result = new Instruction();
+            result.undefined =
+                result.badbits =
+                result.oddbits =
+                result.is_SWI = false;
+            result.target_type = eTargetType.target_None;
+            result.offset = (int)-0x80000000;
+            result.addrstart = 0;
+
+            // PHASE 1. Decode and classify instruction. 
+
+            switch ((instr >> 24) & 15)
+            {
+            case 0:
+                // multiply or data processing, or LDRH etc 
+                if ((instr & (15 << 4)) != (9 << 4))
+                    goto lMaybeLDRHetc;
+                // multiply 
+                if ((instr & (1 << 23)) != 0)
+                {
+                    // long multiply 
+                    mnemonic = new Opcode[] { Opcode.umull, Opcode.umlal, Opcode.smull, Opcode.smlal }[(instr >> 21) & 3];
+                    format = "3,4,0,2";
+                }
+                else
+                {
+                    if ((instr & (1 << 22)) != 0)
+                        return lUndefined();	// "class C" 
+                    // short multiply 
+                    if ((instr & (1 << 21)) != 0)
+                    {
+                        mnemonic = Opcode.mla;
+                        format = "4,0,2,3";
+                    }
+                    else
+                    {
+                        mnemonic = Opcode.mul;
+                        format = "4,0,2";
+                    }
+                }
+                if ((instr & Sbit) != 0)
+                {
+                    this.flag = OpFlags.S;
+                    flagp.Append('S');
+                }
+                break;
+            case 1:
+            case 3:
+                // SWP or MRS/MSR or data processing 
+                if ((instr & 0x02B00FF0) == 0x00000090)
+                {
+                    // SWP 
+                    mnemonic = Opcode.swp;
+                    format = "3,0,[4]";
+                    if ((instr & Bbit) != 0)
+                    {
+                        this.flag = OpFlags.B;
+                        flagp.Append('B');
+                    }
+                    break;
+                }
+                else if ((instr & 0x02BF0FFF) == 0x000F0000)
+                {
+                    // MRS 
+                    mnemonic = Opcode.mrs;
+                    format = ((instr & SPSRbit) != 0) ? "3,SPSR" : "3,CPSR";
+                    break;
+                }
+                else if ((instr & 0x02BFFFF0) == 0x0029F000)
+                {
+                    // MSR psr<P=0/1...>,Rs 
+                    mnemonic = Opcode.msr;
+                    format = ((instr & SPSRbit) != 0) ? "SPSR,0" : "CPSR,0";
+                    break;
+                }
+                else if ((instr & 0x00BFF000) == 0x0028F000)
+                {
+                    // MSR {C,S}PSR_flag,op2 
+                    mnemonic = Opcode.msr;
+                    format = ((instr & SPSRbit) != 0) ? "SPSR_flg,*" : "CPSR_flg,*";
+                    if ((instr & Ibit) == 0 && ((instr & (15 << 4)) != 0))
+                        goto lMaybeLDRHetc;
+                    break;
+                }
+            // fall through here 
+            lMaybeLDRHetc:
+                if ((instr & (14 << 24)) == 0
+                    && ((instr & (9 << 4)) == (9 << 4)))
+                {
+                    // Might well be LDRH or similar. 
+                    if ((instr & (Wbit + Pbit)) == Wbit)
+                        return lUndefined();	// "class E", case 1 
+                    if ((instr & (Lbit + (1 << 6))) == (1 << 6))
+                        return lUndefined();	// STRSH etc 
+                    mnemonic = ((instr & Lbit) >> 18) != 0 ? Opcode.ldr : Opcode.str;
+                    switch ((instr & (3 << 5)) >> 5)
+                    {
+                    case 0: flag = OpFlags.B; break;
+                    case 1: flag = OpFlags.H; break;
+                    case 2: flag = OpFlags.S|OpFlags.B; break;
+                    case 3: flag = OpFlags.S|OpFlags.H; break;
+                    }
+                    format = "3,/";
+                    // aargh: 
+                    if ((instr & (1 << 22)) == 0)
+                        instr |= Ibit;
+                    is_v4 = 1;
+                    break;
+                }
+                goto case 2;
+            case 2:
+                // data processing 
+                {
+                    word op21 = (instr >> 21) & 15;
+                    if ((op21 == 2 || op21 == 4)			// ADD or SUB 
+                        && ((instr & (RNbits() + Ibit + Sbit)) == RN(15) + Ibit)	// imm, no S 
+                        && ((instr & (30 << 7)) == 0 || (instr & 3) != 0))
+                    {		// normal rot 
+                        // ADD ...,pc,#... or SUB ...,pc,#...: turn into ADR 
+                        mnemonic = Opcode.adr;
+                        format = "3,.";
+                        if ((instr & (30 << 7)) != 0 && (instr & 3) == 0) 
+                            result.oddbits = true;
+                        break;
+                    }
+                    mnemonic = aluOps[op21 >> 19];
+                    // Rd needed for all but TST,TEQ,CMP,CMN (8..11) 
+                    // Rn needed for all but MOV,MVN (13,15) 
+                    if (op21 < (8 << 21))
+                    {
+                        format = "3,4,*";
+                    }
+                    else if (op21 < (12 << 21))
+                    {
+                        format = "4,*";
+                        if ((instr & RDbits()) != 0)
+                        {
+                            if (((instr & Sbit) != 0) && RD_is(15))
+                            {
+                                flag = OpFlags.P;
+                                flagp.Append('P');
+                            }
+                            else
+                                result.oddbits = true;
+                        }
+                        if ((instr & Sbit) == 0)
+                            return lUndefined();	// CMP etc, no S bit 
+                    }
+                    else if ((op21 & (1 << 21)) != 0)
+                    {
+                        format = "3,*";
+                        if ((instr & RNbits()) != 0) result.oddbits = true;
+                    }
+                    else
+                        format = "3,4,*";
+                    if ((instr & Sbit) != 0 && (op21 < (8 << 21) || op21 >= (12 << 21)))
+                    {
+                        flag = OpFlags.S;
+                        flagp.Append('S');
+                    }
+                }
+                break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                // undefined or STR/LDR 
+                if (((instr & Ibit) != 0) && (instr & (1 << 4)) != 0)
+                    return lUndefined();	// "class A" 
+                mnemonic = ((instr & Lbit) >> 18)!=0 ? Opcode.ldr : Opcode.str;
+                format = "3,/";
+                if ((instr & Bbit) != 0)
+                {
+                    flag = OpFlags.B;
+                    flagp.Append('B');
+                }
+                if ((instr & (Wbit + Pbit)) == Wbit)
+                {
+                    flag |= OpFlags.T;
+                    flagp.Append('T');
+                }
+                poss_tt = eTargetType.target_Data;
+                break;
+            case 8:
+            case 9:
+                // STM/LDM 
+                mnemonic = new Opcode[] { Opcode.stm, Opcode.ldm }[(instr & Lbit) >> 18];
+                if (RN_is(13))
+                {
+                    // r13, so treat as stack 
+                    int x = (int)(instr & (3 << 23)) >> 22;
+                    if ((instr & Lbit) != 0)
+                        x ^= 6;
+                    flagp.Append("EDEAFDFA".Substring(x, 2));
+                }
+                else
+                {
+                    // not r13, so don't treat as stack 
+                    flagp.Append(((instr & Ubit) != 0) ? 'I' : 'D');
+                    flagp.Append(((instr & Pbit) != 0) ? 'B' : 'A');
+                }
+                format = "4',%";
+                break;
+            case 10:
+            case 11:
+                // B or BL 
+                mnemonic = new Opcode[] { Opcode.b, Opcode.bl }[(instr & (1 << 24)) >> 23];
+                format = "&";
+                break;
+            case 12:
+            case 13:
+                // STC or LDC 
+                if (CP_is(1))
+                {
+                    // copro 1: FPU. This is STF or LDF. 
+                    mnemonic = new Opcode[] { Opcode.stf, Opcode.ldf }[(instr & Lbit) >> 18];
+                    format = "8,/";
+                    flag = FpPrecisionOpFlag(fpn);
+                    poss_tt = (eTargetType)((int)eTargetType.target_FloatS + fpn);
+                }
+                else if (CP_is(2))
+                {
+                    // copro 2: this is LFM or SFM. 
+                    mnemonic = new Opcode[] { Opcode.sfm, Opcode.lfm }[(instr & Lbit) >> 18];
+                    if (fpn == 0) fpn = 4;
+                    if (RN_is(13) && BitsDiffer(23, 24))
+                    {
+                        if ((instr & 0xFF) != fpn)
+                        {
+                            // not r13 or U=P or wrong offset, so don't treat as stack 
+                            format = "8,(,/";
+                            poss_tt = eTargetType.target_FloatE;
+                        }
+                        else
+                        {
+                            // r13 and U!=P, so treat as stack 
+                            if (BitsDiffer(20, 24))
+                            {
+                                // L != P, so FD 
+                                flag = OpFlags.FD;
+                                flagp.Append('F'); 
+                                flagp.Append('D');
+                            }
+                            else
+                            {
+                                flag = OpFlags.EA;
+                                // L == P, so EA 
+                                flagp.Append('E');
+                                flagp.Append('A');
+                            }
+                            format = "8,(,[4]'";
+                        }
+                    }
+                    else
+                    {
+                        // not r13 or U=P or wrong offset, so don't treat as stack 
+                        format = "8,(,/";
+                        poss_tt = eTargetType.target_FloatE;
+                    }
+                }
+                else
+                {
+                    // some other copro number: STC or LDC. 
+                    mnemonic = new Opcode[] { Opcode.stc, Opcode.ldc }[(instr & Lbit) >> 18];
+                    format = ";,\004,/";
+                    if ((instr & (1 << 22)) != 0)
+                    {
+                        flag = OpFlags.L;
+                        flagp.Append('L');
+                    }
+                    poss_tt = eTargetType.target_Unknown;
+                }
+                break;
+            case 14:
+                // CDP or MRC/MCR 
+                if ((instr & (1 << 4)) != 0)
+                {
+                    // MRC/MCR. 
+                    if (CP_is(1))
+                    {
+                        // copro 1: FPU. 
+                        if ((instr & Lbit) != 0 && RD_is(15))
+                        {
+                            // MCR in FPU with Rd=r15: comparison (ugh) 
+                            if ((instr & (1 << 23)) == 0)
+                                return lUndefined();	// unused operation 
+                            mnemonic = new Opcode[] { Opcode.cmf, Opcode.cnf, Opcode.cmfe, Opcode.cnfe }[(instr & (3 << 21)) >> 21];
+                            format = "9,+";
+                            if ((instr & ((1 << 19) + (7 << 5))) != 0)
+                                result.badbits = true;	// size,rmode reseved 
+                        }
+                        else
+                        {
+                            // normal FPU MCR/MRC 
+                            word op20 = instr & (15 << 20);
+                            if (op20 >= 6 << 20)
+                                return lUndefined();
+                            mnemonic = new Opcode[] { Opcode.flt, Opcode.fix, Opcode.wfs, Opcode.rfs, Opcode.wfc, Opcode.rfc }[op20 >> 18];
+                            if (op20 == 0)
+                            {
+                                // FLT instruction 
+                                format = "9,3";
+                                {
+                                    flag = FpPrecisionOpFlag(((instr >> 7) & 1) + ((instr >> 18) & 2));
+                                    if (flag == OpFlags.P)
+                                        return lUndefined();
+                                    flagp.Append("\0PMZ"[(int)((instr & (3 << 5)) >> 5)]);
+                                }
+                                if ((instr & 15) != 0) result.oddbits = true;	// Fm and const flag unused 
+                            }
+                            else
+                            {
+                                // not FLT instruction 
+                                if ((instr & ((1 << 7) + (1 << 19))) != 0)
+                                    result.badbits = true;	// size bits reserved 
+                                if (op20 == 1 << 20)
+                                {
+                                    // FIX instruction 
+                                    format = "3,+";
+                                    if ((opts.flags & disopt_FIXS) != 0)
+                                    {
+                                        flagp.Append("SDEP"[(int)(((instr >> 7) & 1) + ((instr >> 18) & 2))]);
+                                    }
+                                    flagp.Append("\0PMZ"[(int)((instr & (3 << 5)) >> 5)]);
+                                    if ((instr & (7 << 15)) != 0) result.oddbits = true;	// Fn unused 
+                                    if ((instr & (1 << 3)) != 0) result.badbits = true;	// no immediate consts 
+                                }
+                                else
+                                {
+                                    // neither FLT nor FIX 
+                                    format = "3";
+                                    if ((instr & (3 << 5)) != 0) result.badbits = true;	// rmode reserved 
+                                    if ((instr & (15 + (7 << 15))) != 0) result.oddbits = true;// iFm, Fn unused 
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // some other copro number. Not FPU. 
+                        /* NB that ObjAsm documentation gets MCR and MRC the wrong way round!
+                         */
+                        mnemonic = new Opcode[] { Opcode.mcr, Opcode.mrc }[(instr & Lbit) >> 18];
+                        format = ";,:,3,\005,\001-";
+                    }
+                }
+                else
+                {
+                    // CDP. 
+                    if (CP_is(1))
+                    {
+                        // copro 1: FPU. 
+                        mnemonic = fpuOps[
+                            ((instr & (15 << 20)) >> 18)	// opcode   -> bits 5432 
+                             + ((instr & (1 << 15)) >> 9)];	// monadicP -> bit 6 
+                                                    format = (instr & (1 << 15)) != 0 ? "8,+" : "8,9,+";
+                        flagp.Append("SDE*"[(int)(((instr >> 7) & 1) + ((instr >> 18) & 2))]);
+                        flagp.Append("\0PMZ"[(int)((instr & (3 << 5)) >> 5)]);
+                        // NB that foregoing relies on this being the last flag! 
+                        if (mnemonic == Opcode.illegal || flagchars[0] == '*')
+                            return lUndefined();
+                    }
+                    else
+                    {
+                        // some other copro number. Not FPU. 
+                        mnemonic = Opcode.cdp;
+                        format = ";,),\004,\005,\001-";
+                    }
+                }
+                break;
+            case 15:
+                // SWI 
+                mnemonic = Opcode.swi;
+                format = "$";
+                break;
+            /* Nasty hack: this is code that won't be reached in the normal
+             * course of events, and after the last case of the switch is a
+             * convenient place for it.
+             */
+            }
+
+            var op = result.text;
+
+            this.arm = new ArmInstruction();
+            arm.Opcode = this.mnemonic;
+            arm.Cond = (Condition)(instr >> 28);
+            arm.OpFlags = flag;
+            return BuildOperands(addr, format, opts, is_v4, op);
+        }
+
+
+
+        private static OpFlags FpPrecisionOpFlag(word fpn)
+        {
+            switch (fpn)
+            {
+            case 0: return OpFlags.S;
+            case 1: return OpFlags.D;
+            case 2: return OpFlags.E;
+            case 3: return OpFlags.P;
+            }
+            return 0;
+        }
+        
+        private Instruction BuildOperands(address addr, string format, DisOptions opts, int is_v4, StringBuilder op)
+        {
+            int ip = 0; // format
+            string f = format;
+            char c;
+
+            Debug.Print("Format: {0}", format);
+            string[] regnames = opts.regnames;
+            word oflags = opts.flags;
+            var operands = new List<MachineOperand>();
+            while (ip < f.Length)
+            {
+                c = f[ip++];
+                switch (c)
+                {
+                case '$':
+                    operands.Add(new ImmediateOperand(Constant.Word32(instr & 0x00FFFFFF)));
+                    result.is_SWI = true;
+                    result.swinum = instr & 0x00FFFFFF;
+                    result.addrstart = op.Length;
+                    //if ((oflags&disopt_SWInames)!=0) {
+                    //  swiname(result.swinum, op, 128-(op-result.text));
+                    //  op += strlen(op);
+                    //}
+                    //else
+                    op.AppendFormat("&{0:X}", result.swinum);
+                    break;
+                case '%':
+                    operands.Add(new RegisterRangeOperand(instr & 0xFFFF));
+                    break;
+                case '&':
+                    operands.Add(new AddressOperand(new Address((addr + 8 + ((instr << 8) >> 6)) & 0x03FFFFFCu)));
+                    RenderAddress(instr, addr, op);
+                    break;
+                case '\'':
+                    LPling(instr, op);
+                    break;
+                case '(':
+                    op.Append((char)('0' + fpn));
+                    break;
+                case ')':
+                    op.Append((instr >> 20) & 15);
+                    break;
+                case '*':
+                case '.':
+                    var ops = RenderOperand2(instr, addr, c, op);
+                    if (ops == null)
+                        return lUndefined();
+                    operands.AddRange(ops);
+                    break;
+                case '+':
+                    operands.Add(FpRegisterOrConstant(instr, op));
+                    break;
+                case ',':
+                    break;
+                case '-':
+                    operands.Add(CoprocessorExtraInfo(instr, op, oflags));
+                    break;
+                case '/':
+                    result.addrstart = op.Length;
+                    op.Append('[');
+                    var rn = new RegisterOperand(A32Registers.GpRegs[(instr & RNbits()) >> 16]);
+                    append(op, reg_names[(instr & RNbits()) >> 16]);
+                    if ((instr & Pbit) == 0) op.Append(']');
+                    op.Append(','); if ((oflags & disopt_CommaSpace) != 0) op.Append(' ');
+                    // For following, NB that bit 25 is always 0 for LDC, SFM etc 
+                    if ((instr & Ibit) != 0)
+                    {
+                        // shifted offset 
+                        if ((instr & Ubit) == 0) op.Append('-');
+                        /* We're going to transfer to '*', basically. The stupid
+                         * thing is that the meaning of bit 25 is reversed there;
+                         * I don't know why the designers of the ARM did that.
+                         */
+                        instr ^= Ibit;
+                        if ((instr & (1 << 4)) != 0)
+                        {
+                            if (is_v4 != 0 && (instr & (15 << 8)) == 0)
+                            {
+                                f = ((instr & Pbit) != 0) ? "0]" : "0";
+                                ip = 0;
+                                break;
+                            }
+                        }
+                        /* Need a ] iff it was pre-indexed; and an optional ! iff
+                         * it's pre-indexed *or* a copro instruction,
+                         * except that FPU operations don't need the !. Bletch.
+                         */
+                        if ((instr & Pbit) != 0) 
+                        {
+                            f = "*]'"; ip = 0; 
+                        }
+                        else if ((instr & (1 << 27)) != 0)
+                        {
+                            if (CP_is(1) || CP_is(2))
+                            {
+                                if ((instr & Wbit) == 0)
+                                    return lUndefined();
+                                f = "*"; ip = 0;
+                            }
+                            else 
+                            {
+                                f = "*'"; ip = 0; 
+                            }
+                        }
+                        else 
+                        {
+                            f = "*"; ip = 0;
+                        }
+                    }
+                    else
+                    {
+                        // immediate offset 
+                        word offset;
+                        if ((instr & (1 << 27)) != 0)
+                        {
+                            // LDF or LFM or similar 
+                            offset = (instr & 255) << 2;
+                        }
+                        else if (is_v4 != 0)
+                        {
+                            offset = (instr & 15) + ((instr & (15 << 8)) >> 4);
+                        }
+                        else
+                        {
+                            // LDR or STR 
+                            offset = instr & 0xFFF;
+                        }
+                        op.Append('#');
+                        if ((instr & Ubit) == 0)
+                        {
+                            if (offset != 0) op.Append('-');
+                            else result.oddbits = true;
+                            result.offset = -(int)offset;
+                        }
+                        else result.offset = (int)offset;
+                        num(op, offset);
+                        if (RN_is(15) && (instr & Pbit) != 0)
+                        {
+                            // Immediate, pre-indexed and PC-relative. Set target. 
+                            result.target_type = poss_tt;
+                            result.target = (instr & Ubit) != 0 ? addr + 8 + offset
+                                                              : addr + 8 - offset;
+                            if ((instr & Wbit) == 0)
+                            {
+                                // no writeback, either. Use friendly form. 
+                                throw new NotImplementedException();
+                                //hex8(result.addrstart, result.target);
+                                break;
+                            }
+                        }
+                        if ((instr & Pbit) != 0)
+                        {
+                            op.Append(']');
+                            LPling(instr, op);
+                        }
+                        else if ((instr & (1 << 27)) != 0)
+                        {
+                            if (CP_is(1) || CP_is(2))
+                            {
+                                if ((instr & Wbit) == 0)
+                                    return lUndefined();
+                            }
+                            else
+                                LPling(instr, op);
+                        }
+                    }
+                    break;
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    operands.Add(new RegisterOperand(A32Registers.GpRegs[(instr >> (4 * (c - '0'))) & 15]));
+                    append(op, reg_names[(instr >> (4 * (c - '0'))) & 15]);
+                    break;
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    operands.Add(new RegisterOperand(A32Registers.FpRegs[(instr >> (4 * (c - '5'))) & 7]));
+                    op.Append('f');
+                    op.Append((char)('0' + ((instr >> (4 * (c - '5'))) & 7)));
+                    break;
+                case ':':
+                    op.Append((char)('0' + ((instr >> 21) & 7)));
+                    break;
+                case ';':
+                    reg(op, 'p', instr >> 8);
+                    break;
+                default:
+                    if (c <= 5)
+                        reg(op, 'c', instr >> (4 * (c - 1)));
+                    else
+                        op.Append(c);
+                    break;
+                }
+                if (operands.Count > 0)
+                {
+                    arm.Dst = operands[0];
+                    if (operands.Count > 1)
+                    {
+                        arm.Src1 = operands[1];
+                    if (operands.Count > 2)
+                    {
+                        arm.Src2 = operands[2];
+                    if (operands.Count > 3)
+                    {
+                        arm.Src3 = operands[3];
+                    }
+                    }
+                    }
+                }
+            }
+            return result;
+        }
+
+        private static MachineOperand CoprocessorExtraInfo(word instr, StringBuilder op, word oflags)
+        {
+            word w = instr & (7 << 5);
+            if (w != 0)
+            {
+                return new ImmediateOperand(Constant.Byte((byte)(w >> 5)));
+            }
+            else
+                return null;
+        }
+
+        private static MachineOperand FpRegisterOrConstant(word instr, StringBuilder op)
+        {
+            word w = instr & 7;
+            if ((instr & (1 << 3)) != 0)
+            {
+                op.Append('#');
+                if (w < 6)
+                {
+                    op.Append((char)('0' + w));
+                    return new ImmediateOperand(new DoubleConstant(w));
+                }
+                else
+                {
+                    append(op, w == 6 ? "0.5" : "10");
+                    return new ImmediateOperand(new DoubleConstant(w == 6 ? 0.5 : 10.0));
+                }
+            }
+            else
+            {
+                op.Append('f');
+                op.Append((char)('0' + (instr & 7)));
+                return new RegisterOperand(A32Registers.FpRegs[instr & 7]);
+            } 
+        }
+
+        private static void LPling(word instr, StringBuilder op)
+        {
+            if ((instr & Wbit) != 0) op.Append('!');
+        }
+
+        private void RenderAddress(word instr, address addr, StringBuilder op)
+        {
+            uint target = (addr + 8 + ((instr << 8) >> 6)) & 0x03FFFFFCu;
+            result.addrstart = op.Length;
+            hex8(op, target);
+            result.target_type = eTargetType.target_Code;
+            result.target = target;
+        }
+
+        private MachineOperand [] RenderOperand2(word instr ,address addr, char c, StringBuilder op)
+        {
+            if ((instr & Ibit) != 0)
+            {
+                // immediate constant 
+                uint imm8 = (instr & 255);
+                int rot = (int)((instr >> 7) & 0x1E);
+                if (rot != 0 && (imm8 & 3) == 0 && c == '*')
+                {
+                    // Funny immediate const. Guaranteed not '.', btw 
+                    op.AppendFormat("#&{0:X2},", imm8 & 0xFF);
+                    return new MachineOperand[] { new ImmediateOperand(Constant.Word32(imm8 & 0xFF)) };
+                }
+                else
+                {
+                    imm8 = (imm8 >> rot) | (imm8 << (32 - rot));
+                    if (c == '*')
+                    {
+                        op.Append('#');
+                        return new MachineOperand[] { ArmImmediateOperand.Word32((int)imm8) };
+                    }
+                    else
+                    {
+                        address a = addr + 8;
+                        if ((instr & (1 << 22)) != 0)
+                            a -= imm8;
+                        else
+                            a += imm8;
+                        result.addrstart = op.Length;
+                        hex8(op, a);
+                        result.target = a; result.target_type = eTargetType.target_Unknown;
+                        return new MachineOperand[] { ImmediateOperand.Word32((int)imm8) };
+                    }
+                }
+            }
+            else
+            {
+                // rotated register 
+                Opcode rot = new Opcode[] { Opcode.lsl, Opcode.lsr, Opcode.asr, Opcode.ror }[(instr & (3 << 5)) >> 5];
+                var operand = new RegisterOperand(A32Registers.GpRegs[instr & 0x0F]);
+                append(op, reg_names[instr & 15]);
+                if ((instr & (1 << 4)) != 0)
+                {
+                    // register rotation 
+                    if ((instr & (1 << 7)) != 0)
+                        return null;
+                    // yield operator
+                    op.Append(',');
+                    append(op, rot.ToString()); op.Append(' ');
+                    append(op, reg_names[(instr & (15 << 8)) >> 8]);
+                    return new MachineOperand[] { operand, new ShiftOperand(rot, new RegisterOperand(A32Registers.GpRegs[(instr & (15 << 8)) >> 8])) };
+                }
+                else
+                {
+                    // constant rotation 
+                    word n = instr & (31 << 7);
+                    if (n == 0)
+                    {
+                        if ((instr & (3 << 5)) == 0)
+                            return new MachineOperand[] { new RegisterOperand(A32Registers.GpRegs[instr & 0x0F]) };
+                        else if ((instr & (3 << 5)) == (3 << 5))
+                        {
+                            // yield operand
+                            append(op, "," + Opcode.rrx);
+                            return new MachineOperand[] { operand, new ShiftOperand(Opcode.rrx, PrimitiveType.Word32) };
+                        }
+                        else
+                            n = 32 << 7;
+                    }
+                    op.Append(','); 
+                    append(op, rot.ToString());
+                    append(op, " #");
+                    num(op, n >> 7);
+                    return new MachineOperand[] { operand, new ShiftOperand(rot, ImmediateOperand.Byte((byte) (n >> 7))) };
+                }
+            }
+        }
+
+
+        private Instruction lUndefined()
+        {
+            result.text.Append("Undefined instruction");
+            result.undefined = true;
+            return result;
+        }
+
+        static Opcode[] aluOps = new Opcode[] { 
+            Opcode.and, Opcode.eor, Opcode.sub, Opcode.rsb, Opcode.add, Opcode.adc, Opcode.sbc, Opcode.rsc,
+            Opcode.tst, Opcode.teq, Opcode.cmp, Opcode.cmn, Opcode.orr, Opcode.mov, Opcode.bic, Opcode.mvn
+        };
+
+        Opcode[] fpuOps = new Opcode[] 
+        { 
+            // dyadics: 
+            Opcode.adf, Opcode.muf, Opcode.suf,Opcode.rsf,
+            Opcode.dvf, Opcode.rdf, Opcode.pow, Opcode.rpw,
+            Opcode.rmf, Opcode.fml, Opcode.fdv, Opcode.frd,
+            Opcode.pol, Opcode.illegal, Opcode.illegal, Opcode.illegal,
+            // monadics: 
+            Opcode.mvf, Opcode.mnf, Opcode.abs, Opcode.rnd,
+            Opcode.sqt, Opcode.log, Opcode.lgn, Opcode.exp,
+            Opcode.sin, Opcode.cos, Opcode.tan, Opcode.asn,
+            Opcode.acs, Opcode.atn, Opcode.urd, Opcode.nrm
+        };
+
+
+        static string[] reg_names = new string[] {
+              "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
+              "r8", "r9", "r10", "r11", "ip", "sp", "lr", "pc"
+        };
+
+        static DisOptions options = new DisOptions
+        {
+            flags = disopt_CommaSpace,
+            regnames = reg_names
+        };
+
+        void swiname(word w, string s, int sz) { return; }
+    }
+
+    #region Broken
     public class ArmDisassembler : Disassembler
     {
         private ImageReader rdr;
@@ -613,7 +1740,10 @@ namespace Decompiler.Arch.Arm
             throw new NotImplementedException();
         }
     }
+#endregion
 }
+
+#region OpCode map
 /*
 http://imrannazar.com/ARM-Opcode-Map
  * <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -3100,3 +4230,4 @@ http://imrannazar.com/ARM-Opcode-Map
 
 
 */
+#endregion

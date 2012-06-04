@@ -18,7 +18,7 @@ l0C00_000B:		// pred: l0C00_0009 l0C00_000B
 l0C00_000F:		// pred: l0C00_000B
 	// succ:  l0C00_0016
 l0C00_0016:		// pred: l0C00_0012 l0C00_000F
-	store(Mem41[ds:0x0300:word16]) = bx_12
+	Mem41[ds:0x0300:word16] = bx_12
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0016

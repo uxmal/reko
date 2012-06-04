@@ -15,13 +15,13 @@ l0C00_0020:		// pred: l0C00_001A
 	ax_27 = si_13 - si
 	// succ:  l0C00_0024
 l0C00_0024:		// pred: l0C00_000B l0C00_0020
-	store(Mem35[ds:0x0300:word16]) = ax_27
+	Mem35[ds:0x0300:word16] = ax_27
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0024
 	// succ: 
 l0C00_0005:		// pred: l0C00_001A
-	store(Mem19[ds:di:word16]) = ax_15
+	Mem19[ds:di:word16] = ax_15
 	branch ax_15 != 0x0000 l0C00_0011
 	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:		// pred: l0C00_0005
@@ -31,7 +31,7 @@ l0C00_0011:		// pred: l0C00_0005
 	branch ax_15 != 0x000D l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:		// pred: l0C00_0011
-	store(Mem25[ds:0x0302:word16]) = Mem19[ds:0x0302:word16] + 0x0001
+	Mem25[ds:0x0302:word16] = Mem19[ds:0x0302:word16] + 0x0001
 	// succ:  l0C00_001A
 
 void fn0C00_0000(word16 si, word16 di, selector ds)

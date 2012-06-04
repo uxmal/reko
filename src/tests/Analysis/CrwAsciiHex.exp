@@ -18,7 +18,7 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	branch Test(ULT,C) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:		// pred: l0C00_0000
-	store(Mem0[ds:0x0300:byte]) = al
+	Mem0[ds:0x0300:byte] = al
 	// succ:  l0C00_0009
 l0C00_0009:		// pred: l0C00_0000 l0C00_0005
 	return

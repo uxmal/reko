@@ -429,7 +429,7 @@ namespace Decompiler.Analysis
                 }
                 foreach (var u in appl.Arguments.OfType<UnaryExpression>())
                 {
-                    if (u.op == UnaryOperator.AddrOf)
+                    if (u.Operator == UnaryOperator.AddrOf)
                     {
                         Identifier id = u.Expression as Identifier;
                         if (id != null)

@@ -61,11 +61,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArmDisassembler.cs" />
+    <Compile Include="ArmImmediateOperand.cs" />
     <Compile Include="ArmInstruction.cs" />
     <Compile Include="ArmProcessorArchitecture.cs" />
     <Compile Include="Condition.cs" />
     <Compile Include="Opcode.cs" />
+    <Compile Include="OpFlags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="A32Registers.cs" />
+    <Compile Include="RegisterRangeOperand.cs" />
+    <Compile Include="ShiftOperand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core-2010.csproj">

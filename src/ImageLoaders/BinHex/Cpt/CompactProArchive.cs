@@ -315,7 +315,7 @@ namespace Decompiler.ImageLoaders.BinHex.Cpt
 
         const int CHDRSIZE = (CPTHDRSIZE + CPTHDR2SIZE);
 
-        class CptHdr
+        public class CptHdr
         {			// 8 bytes
             public byte signature;	    // = 1 -- for verification 
             public byte volume;		    // for multi-file archives 

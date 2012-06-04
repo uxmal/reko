@@ -14,7 +14,7 @@ done:		// block 3, pred: 2
 ArrayLoopMock_exit:		// block 4, pred: 3
 	// succ: 
 l2:		// block 5, pred: 2
-	store(Mem6[ptr_3:word32]) = 0x00000000
+	Mem6[ptr_3:word32] = 0x00000000
 	ptr_3 = ptr_3 + 0x00000004
 	// succ:  2
 

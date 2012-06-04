@@ -211,6 +211,5 @@ namespace Decompiler.ImageLoaders. BinHex
                 }
             }
         }
-
     }
 }

@@ -15,17 +15,17 @@ ax:Register ax
 ds:Register ds
     def:  def ds
     uses: ax_14 = Mem13[ds:si_12:word16]
-          store(Mem19[ds:di:word16]) = ax_14
+          Mem19[ds:di:word16] = ax_14
           v9_26 = Mem19[ds:0x0302:word16] + 0x0001
-          store(Mem27[ds:0x0302:word16]) = v9_26
-          store(Mem42[ds:0x0300:word16]) = ax_40
+          Mem27[ds:0x0302:word16] = v9_26
+          Mem42[ds:0x0300:word16] = ax_40
 SCZO:Flags
     def:  def SCZO
 Z:Flags
     def:  def Z
 di:Register di
     def:  def di
-    uses: store(Mem19[ds:di:word16]) = ax_14
+    uses: Mem19[ds:di:word16] = ax_14
 v9:Temporary
     def:  def v9
 SZO:Flags
@@ -44,7 +44,7 @@ Mem13: orig: Mem0
 ax_14: orig: ax
     def:  ax_14 = Mem13[ds:si_12:word16]
     uses: SCZO_16 = cond(ax_14 - 0x0020)
-          store(Mem19[ds:di:word16]) = ax_14
+          Mem19[ds:di:word16] = ax_14
           SCZO_20 = cond(ax_14 - 0x0000)
           SCZO_23 = cond(ax_14 - 0x000D)
 si_15: orig: si
@@ -62,7 +62,7 @@ Z_17: orig: Z
 SZO_18: orig: SZO
     def:  SZO_18 = SCZO_16 (alias)
 Mem19: orig: Mem0
-    def:  store(Mem19[ds:di:word16]) = ax_14
+    def:  Mem19[ds:di:word16] = ax_14
     uses: Mem13 = PHI(Mem0, Mem19, Mem27)
           v9_26 = Mem19[ds:0x0302:word16] + 0x0001
           Mem41 = PHI(Mem19, Mem13)
@@ -89,10 +89,10 @@ SZO_25: orig: SZO
     def:  SZO_25 = SCZO_23 (alias)
 v9_26: orig: v9
     def:  v9_26 = Mem19[ds:0x0302:word16] + 0x0001
-    uses: store(Mem27[ds:0x0302:word16]) = v9_26
+    uses: Mem27[ds:0x0302:word16] = v9_26
           SZO_28 = cond(v9_26)
 Mem27: orig: Mem0
-    def:  store(Mem27[ds:0x0302:word16]) = v9_26
+    def:  Mem27[ds:0x0302:word16] = v9_26
     uses: Mem13 = PHI(Mem0, Mem19, Mem27)
 SZO_28: orig: SZO
     def:  SZO_28 = cond(v9_26)
@@ -131,11 +131,11 @@ SCZO_39: orig: SCZO
     def:  SCZO_39 = PHI(SCZO_20, SCZO_34)
 ax_40: orig: ax
     def:  ax_40 = PHI(ax_31, ax_33)
-    uses: store(Mem42[ds:0x0300:word16]) = ax_40
+    uses: Mem42[ds:0x0300:word16] = ax_40
 Mem41: orig: Mem0
     def:  Mem41 = PHI(Mem19, Mem13)
 Mem42: orig: Mem0
-    def:  store(Mem42[ds:0x0300:word16]) = ax_40
+    def:  Mem42[ds:0x0300:word16] = ax_40
 // fn0C00_0000
 void fn0C00_0000(word16 si, word16 di, selector ds)
 fn0C00_0000_entry:		// pred:
@@ -177,13 +177,13 @@ l0C00_0024:		// pred: l0C00_000B l0C00_0020
 	SCZO_39 = PHI(SCZO_20, SCZO_34)
 	ax_40 = PHI(ax_31, ax_33)
 	Mem41 = PHI(Mem19, Mem13)
-	store(Mem42[ds:0x0300:word16]) = ax_40
+	Mem42[ds:0x0300:word16] = ax_40
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0024
 	// succ: 
 l0C00_0005:		// pred: l0C00_001A
-	store(Mem19[ds:di:word16]) = ax_14
+	Mem19[ds:di:word16] = ax_14
 	SCZO_20 = cond(ax_14 - 0x0000)
 	Z_21 = SCZO_20 (alias)
 	SZO_22 = SCZO_20 (alias)
@@ -200,7 +200,7 @@ l0C00_0011:		// pred: l0C00_0005
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:		// pred: l0C00_0011
 	v9_26 = Mem19[ds:0x0302:word16] + 0x0001
-	store(Mem27[ds:0x0302:word16]) = v9_26
+	Mem27[ds:0x0302:word16] = v9_26
 	SZO_28 = cond(v9_26)
 	SCZO_29 = SZO_28 (alias)
 	Z_30 = SZO_28 (alias)
@@ -219,15 +219,15 @@ ax:Register ax
 ds:Register ds
     def:  def ds
     uses: ax_14 = Mem13[ds:si_12:word16]
-          store(Mem19[ds:di:word16]) = ax_14
+          Mem19[ds:di:word16] = ax_14
           v9_26 = Mem19[ds:0x0302:word16] + 0x0001
-          store(Mem27[ds:0x0302:word16]) = v9_26
-          store(Mem42[ds:0x0300:word16]) = ax_40
+          Mem27[ds:0x0302:word16] = v9_26
+          Mem42[ds:0x0300:word16] = ax_40
 SCZO:Flags
 Z:Flags
 di:Register di
     def:  def di
-    uses: store(Mem19[ds:di:word16]) = ax_14
+    uses: Mem19[ds:di:word16] = ax_14
 v9:Temporary
 SZO:Flags
 bx_11: orig: bx
@@ -241,7 +241,7 @@ Mem13: orig: Mem0
 ax_14: orig: ax
     def:  ax_14 = Mem13[ds:si_12:word16]
     uses: SCZO_16 = cond(ax_14 - 0x0020)
-          store(Mem19[ds:di:word16]) = ax_14
+          Mem19[ds:di:word16] = ax_14
           SCZO_20 = cond(ax_14)
           SCZO_23 = cond(ax_14 - 0x000D)
 si_15: orig: si
@@ -255,7 +255,7 @@ SCZO_16: orig: SCZO
 Z_17: orig: Z
 SZO_18: orig: SZO
 Mem19: orig: Mem0
-    def:  store(Mem19[ds:di:word16]) = ax_14
+    def:  Mem19[ds:di:word16] = ax_14
     uses: Mem13 = PHI(Mem0, Mem19, Mem27)
           v9_26 = Mem19[ds:0x0302:word16] + 0x0001
 SCZO_20: orig: SCZO
@@ -270,9 +270,9 @@ Z_24: orig: Z
 SZO_25: orig: SZO
 v9_26: orig: v9
     def:  v9_26 = Mem19[ds:0x0302:word16] + 0x0001
-    uses: store(Mem27[ds:0x0302:word16]) = v9_26
+    uses: Mem27[ds:0x0302:word16] = v9_26
 Mem27: orig: Mem0
-    def:  store(Mem27[ds:0x0302:word16]) = v9_26
+    def:  Mem27[ds:0x0302:word16] = v9_26
     uses: Mem13 = PHI(Mem0, Mem19, Mem27)
 SZO_28: orig: SZO
 SCZO_29: orig: SCZO
@@ -292,9 +292,9 @@ Z_38: orig: Z
 SCZO_39: orig: SCZO
 ax_40: orig: ax
     def:  ax_40 = PHI(ax_31, ax_33)
-    uses: store(Mem42[ds:0x0300:word16]) = ax_40
+    uses: Mem42[ds:0x0300:word16] = ax_40
 Mem41: orig: Mem0
-    def:  store(Mem41[ds:0x0302:word16]) = v12_40
+    def:  Mem41[ds:0x0302:word16] = v12_40
     uses: Mem15 = PHI(Mem0, Mem28, Mem41)
 SZO_42: orig: SZO
 SCZO_43: orig: SCZO
@@ -309,7 +309,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	goto l0C00_001A
 l0C00_0005:
-	store(Mem28[ds:di:word16]) = ax_16
+	Mem28[ds:di:word16] = ax_16
 	SZO_30 = cond(ax_16)
 	branch Test(NE,SZO_20) l0C00_0011
 l0C00_000B:
@@ -320,7 +320,7 @@ l0C00_0011:
 	branch Test(NE,SCZO_36) l0C00_001A
 l0C00_0016:
 	v12_40 = Mem28[ds:0x0302:word16] + 0x0001
-	store(Mem41[ds:0x0302:word16]) = v12_40
+	Mem41[ds:0x0302:word16] = v12_40
 l0C00_001A:
 	si_14 = PHI(si, si_17, si_17)
 	Mem15 = PHI(Mem0, Mem28, Mem41)
@@ -332,6 +332,6 @@ l0C00_0020:
 	ax_33 = si_15 - si
 l0C00_0024:
 	ax_40 = PHI(ax_31, ax_33)
-	store(Mem35[ds:0x0300:word16]) = ax_40
+	Mem35[ds:0x0300:word16] = ax_40
 	return
 fn0C00_0000_exit:

@@ -21,7 +21,7 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:		// pred: l0C00_0000
 	v5 = Mem0[ds:0x0300:word16] + ax
-	store(Mem0[ds:0x0300:word16]) = v5
+	Mem0[ds:0x0300:word16] = v5
 	SCZO = cond(v5)
 	// succ:  l0C00_0009
 l0C00_0009:		// pred: l0C00_0000 l0C00_0005
@@ -59,7 +59,7 @@ l0C00_0014:		// pred: l0C00_000A
 	si = si + 0x0001
 	si = si + 0x0001
 	SZO = cond(si)
-	store(Mem0[ds:0x0100:word16]) = si
+	Mem0[ds:0x0100:word16] = si
 	C = false
 	return C
 	// succ:  fn0C00_000A_exit

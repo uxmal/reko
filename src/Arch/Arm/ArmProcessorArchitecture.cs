@@ -50,7 +50,7 @@ namespace Decompiler.Arch.Arm
 
         public RegisterStorage GetRegister(int i)
         {
-            throw new NotImplementedException();
+            return A32Registers.GpRegs[i];
         }
 
         public RegisterStorage GetRegister(string name)
