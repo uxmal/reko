@@ -3,7 +3,7 @@ void Fn1()
 Fn1_entry:
 	// succ:  l1
 l1:
-	store(Mem0[p + 0x00000004:word32]) = 0x00000042
+	Mem0[p + 0x00000004:word32] = 0x00000042
 	Fn2(p)
 	return
 	// succ:  Fn1_exit
@@ -14,7 +14,7 @@ void Fn2(word32 arg1)
 Fn2_entry:
 	// succ:  l1
 l1:
-	store(Mem0[arg1 + 0x00000008:word32]) = 0x00000023
+	Mem0[arg1 + 0x00000008:word32] = 0x00000023
 	return
 	// succ:  Fn2_exit
 Fn2_exit:

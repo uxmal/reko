@@ -9,7 +9,7 @@ cx:Register cx
     def:  def cx
 ss:Register ss
     def:  def ss
-    uses: store(Mem10[ss:sp_9:word16]) = cx_8
+    uses: Mem10[ss:sp_9:word16] = cx_8
           call fn0C00_000F (retsize: 2;)
 SCZO:Flags
     def:  def SCZO
@@ -17,29 +17,29 @@ SCZO:Flags
 ax:Register ax
     def:  def ax
     uses: call fn0C00_000F (retsize: 2;)
-          store(Mem13[ds:0x0064:word16]) = ax
+          Mem13[ds:0x0064:word16] = ax
 ds:Register ds
     def:  def ds
     uses: call fn0C00_000F (retsize: 2;)
-          store(Mem13[ds:0x0064:word16]) = ax
+          Mem13[ds:0x0064:word16] = ax
 cx_8: orig: cx
     def:  cx_8 = 0x0064
-    uses: store(Mem10[ss:sp_9:word16]) = cx_8
+    uses: Mem10[ss:sp_9:word16] = cx_8
           call fn0C00_000F (retsize: 2;)
 sp_9: orig: sp
     def:  sp_9 = sp - 0x0002
-    uses: store(Mem10[ss:sp_9:word16]) = cx_8
+    uses: Mem10[ss:sp_9:word16] = cx_8
           call fn0C00_000F (retsize: 2;)
           sp_11 = sp_9 + 0x0002
 Mem10: orig: Mem0
-    def:  store(Mem10[ss:sp_9:word16]) = cx_8
+    def:  Mem10[ss:sp_9:word16] = cx_8
 sp_11: orig: sp
     def:  sp_11 = sp_9 + 0x0002
     uses: SCZO_12 = cond(sp_11)
 SCZO_12: orig: SCZO
     def:  SCZO_12 = cond(sp_11)
 Mem13: orig: Mem0
-    def:  store(Mem13[ds:0x0064:word16]) = ax
+    def:  Mem13[ds:0x0064:word16] = ax
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -55,11 +55,11 @@ fn0C00_0000_entry:
 l0C00_0000:
 	cx_8 = 0x0064
 	sp_9 = sp - 0x0002
-	store(Mem10[ss:sp_9:word16]) = cx_8
+	Mem10[ss:sp_9:word16] = cx_8
 	call fn0C00_000F (retsize: 2;)
 	sp_11 = sp_9 + 0x0002
 	SCZO_12 = cond(sp_11)
-	store(Mem13[ds:0x0064:word16]) = ax
+	Mem13[ds:0x0064:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -73,12 +73,12 @@ sp:Register sp
     uses: sp_11 = sp - 0x0002
 bp:Register bp
     def:  def bp
-    uses: store(Mem12[ss:sp_11:word16]) = bp
+    uses: Mem12[ss:sp_11:word16] = bp
 ss:Register ss
     def:  def ss
-    uses: store(Mem12[ss:sp_11:word16]) = bp
+    uses: Mem12[ss:sp_11:word16] = bp
           ax_14 = Mem12[ss:bp_13 + 0x0004:word16]
-          store(Mem32[ss:sp_31:word16]) = ax_15
+          Mem32[ss:sp_31:word16] = ax_15
           call fn0C00_000F (retsize: 2;)
           dx_37 = Mem32[ss:bp_13 + 0x0004:word16]
           ss_26 = PHI(ss, ss)
@@ -101,12 +101,12 @@ SCZO:Flags
     def:  def SCZO
 sp_11: orig: sp
     def:  sp_11 = sp - 0x0002
-    uses: store(Mem12[ss:sp_11:word16]) = bp
+    uses: Mem12[ss:sp_11:word16] = bp
           bp_13 = sp_11
           sp_31 = sp_11 - 0x0002
           sp_27 = PHI(sp_35, sp_11)
 Mem12: orig: Mem0
-    def:  store(Mem12[ss:sp_11:word16]) = bp
+    def:  Mem12[ss:sp_11:word16] = bp
     uses: ax_14 = Mem12[ss:bp_13 + 0x0004:word16]
           Mem28 = PHI(Mem32, Mem12)
 bp_13: orig: bp
@@ -121,7 +121,7 @@ ax_15: orig: ax
     def:  ax_15 = ax_14 - 0x0001
     uses: dx_ax_16 = SEQ(dx, ax_15) (alias)
           SZO_17 = cond(ax_15)
-          store(Mem32[ss:sp_31:word16]) = ax_15
+          Mem32[ss:sp_31:word16] = ax_15
           call fn0C00_000F (retsize: 2;)
           dx_ax_38 = dx_37 *s ax_15
 dx_ax_16: orig: dx_ax
@@ -169,11 +169,11 @@ sp_30: orig: sp
     def:  sp_30 = sp_27 + 0x0002
 sp_31: orig: sp
     def:  sp_31 = sp_11 - 0x0002
-    uses: store(Mem32[ss:sp_31:word16]) = ax_15
+    uses: Mem32[ss:sp_31:word16] = ax_15
           call fn0C00_000F (retsize: 2;)
           sp_33 = sp_31 + 0x0001
 Mem32: orig: Mem0
-    def:  store(Mem32[ss:sp_31:word16]) = ax_15
+    def:  Mem32[ss:sp_31:word16] = ax_15
     uses: dx_37 = Mem32[ss:bp_13 + 0x0004:word16]
           Mem28 = PHI(Mem32, Mem12)
 sp_33: orig: sp
@@ -238,7 +238,7 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp_11 = sp - 0x0002
-	store(Mem12[ss:sp_11:word16]) = bp
+	Mem12[ss:sp_11:word16] = bp
 	bp_13 = sp_11
 	ax_14 = Mem12[ss:bp_13 + 0x0004:word16]
 	ax_15 = ax_14 - 0x0001
@@ -250,7 +250,7 @@ l0C00_000F:
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
 	sp_31 = sp_11 - 0x0002
-	store(Mem32[ss:sp_31:word16]) = ax_15
+	Mem32[ss:sp_31:word16] = ax_15
 	call fn0C00_000F (retsize: 2;)
 	sp_33 = sp_31 + 0x0001
 	SZO_34 = cond(sp_33)

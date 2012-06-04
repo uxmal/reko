@@ -71,7 +71,7 @@ namespace Decompiler.UnitTests.Analysis
             Identifier bx = frame.EnsureRegister(Registers.bx);
             Identifier es_bx = frame.EnsureSequence(es, bx, PrimitiveType.Pointer32);
             tsh.Trash(es_bx, trash);
-            Assert.AreEqual("(Register bx:TRASH) (Register es:TRASH) (Sequence es:bx:TRASH) ", Dump(tsh.TrashedRegisters));
+            Assert.AreEqual("(bx:TRASH) (es:TRASH) (Sequence es:bx:TRASH) ", Dump(tsh.TrashedRegisters));
         }
 
         private string Dump(Dictionary<Storage, Storage> trashedRegs)

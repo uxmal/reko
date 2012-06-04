@@ -38,18 +38,18 @@ namespace WindowsDecompiler
 		{
 			if (args.Length == 0)
 			{
-                MainFormInteractor interactor = new MainFormInteractor();
+                var interactor = new MainFormInteractor();
                 interactor.Run();
             }
 			else
 			{
-                DecompilerHost host = NullDecompilerHost.Instance;
-                DecompilerEventListener listener = NullDecompilerEventListener.Instance;
+                var host = NullDecompilerHost.Instance;
+                var listener = NullDecompilerEventListener.Instance;
 
-                ServiceContainer sc = new ServiceContainer();
+                var sc = new ServiceContainer();
                 sc.AddService(typeof (DecompilerEventListener), listener);
-                Loader ldr = new Loader(new DecompilerConfiguration(), sc);
-				DecompilerDriver dec = new DecompilerDriver(ldr, host, sc);
+                var ldr = new Loader(new DecompilerConfiguration(), sc);
+				var dec = new DecompilerDriver(ldr, host, sc);
 				dec.Decompile(args[0]);
 			}
 		}

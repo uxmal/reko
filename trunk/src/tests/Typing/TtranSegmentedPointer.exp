@@ -3,10 +3,10 @@ void ProcedureMock()
 ProcedureMock_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
-	store(Mem5[0x0300:word16]) = 0x0000
-	store(Mem6[0x0302:word16]) = 0x0000
+	Mem5[0x0300:word16] = 0x0000
+	Mem6[0x0302:word16] = 0x0000
 	ptr32 es_bx_7 = Mem6[0x0300:ptr32]
-	store(Mem8[0x0304:word16]) = Mem6[SLICE(es_bx_7, selector, 8):SLICE(es_bx_7, word16, 0) + 0x0004:word16]
+	Mem8[0x0304:word16] = Mem6[SLICE(es_bx_7, selector, 8):SLICE(es_bx_7, word16, 0) + 0x0004:word16]
 	// succ: 
 
 // Equivalence classes ////////////

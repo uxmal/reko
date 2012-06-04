@@ -35,7 +35,7 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	wLoc08 = es
 	wLoc0A = bx
 	ax = fn0C00_002E(ptrLoc0A, wLoc06)
-	store(Mem0[ds:0x0200:word16]) = ax
+	Mem0[ds:0x0200:word16] = ax
 	bp = wLoc04
 	return
 	// succ:  fn0C00_0000_exit

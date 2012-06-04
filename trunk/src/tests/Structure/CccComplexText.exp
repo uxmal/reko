@@ -17,7 +17,7 @@ l0C00_000F:		// pred: l0C00_000A
 	// succ:  l0C00_001A
 l0C00_001A:		// pred: l0C00_0015 l0C00_000F
 	word16 ax_22
-	store(Mem17[ds:0x0300:word16]) = ax_12
+	Mem17[ds:0x0300:word16] = ax_12
 	branch ax_12 != 0x000A l0C00_002E
 	// succ:  l0C00_0023 l0C00_002E
 l0C00_0023:		// pred: l0C00_001A
@@ -27,7 +27,7 @@ l0C00_0028:		// pred: l0C00_0023
 	ax_22 = 0x0001
 	// succ:  l0C00_0030
 l0C00_0030:		// pred: l0C00_002E l0C00_0028
-	store(Mem29[ds:0x0302:word16]) = ax_22
+	Mem29[ds:0x0302:word16] = ax_22
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0030
 	// succ: 
@@ -53,7 +53,7 @@ l0C00_000F:		// pred: l0C00_0000
 	// succ:  l0C00_001A
 l0C00_001A:		// pred: l0C00_0015 l0C00_000F
 	word16 ax_22
-	store(Mem17[ds:0x0300:word16]) = ax_12
+	Mem17[ds:0x0300:word16] = ax_12
 	branch ax_12 != 0x000A || ax_12 != 0x000B l0C00_002E
 	// succ:  l0C00_0028 l0C00_002E
 l0C00_0023:
@@ -61,7 +61,7 @@ l0C00_0028:		// pred: l0C00_001A
 	ax_22 = 0x0001
 	// succ:  l0C00_0030
 l0C00_0030:		// pred: l0C00_002E l0C00_0028
-	store(Mem29[ds:0x0302:word16]) = ax_22
+	Mem29[ds:0x0302:word16] = ax_22
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0030
 	// succ: 

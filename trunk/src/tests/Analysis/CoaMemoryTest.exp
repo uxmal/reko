@@ -5,30 +5,30 @@ fp:Temporary
 bx:Register bx
     def:  def bx
     uses: ax_7 = Mem0[ds:bx + 0x0004:word16]
-          store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
+          Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
 ds:Register ds
     def:  def ds
     uses: ax_7 = Mem0[ds:bx + 0x0004:word16]
-          store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
-          store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
+          Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
+          Mem11[ds:si + 0x04D4:word16] = si + 0x0002
 ax:Register ax
 si:Register si
     def:  def si
-    uses: store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
-          store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
+    uses: Mem11[ds:si + 0x04D4:word16] = si + 0x0002
+          Mem11[ds:si + 0x04D4:word16] = si + 0x0002
 SCZO:Flags
 ax_7: orig: ax
     def:  ax_7 = Mem0[ds:bx + 0x0004:word16]
-    uses: store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
-          store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
+    uses: Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
+          Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
 ax_8: orig: ax
-    uses: store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
+    uses: Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
 Mem9: orig: Mem0
-    def:  store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
+    def:  Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
 bx_10: orig: bx
-    uses: store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
+    uses: Mem11[ds:si + 0x04D4:word16] = si + 0x0002
 Mem11: orig: Mem0
-    def:  store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
+    def:  Mem11[ds:si + 0x04D4:word16] = si + 0x0002
 ax_12: orig: ax
 SCZO_13: orig: SCZO
 // fn0C00_0000
@@ -41,8 +41,8 @@ fn0C00_0000_entry:		// pred:
 	// succ:  l0C00_0000
 l0C00_0000:		// pred: fn0C00_0000_entry
 	ax_7 = Mem0[ds:bx + 0x0004:word16]
-	store(Mem9[ds:bx + 0x0006:word16]) = ax_7 *s ax_7
-	store(Mem11[ds:si + 0x04D4:word16]) = si + 0x0002
+	Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
+	Mem11[ds:si + 0x04D4:word16] = si + 0x0002
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000

@@ -9,23 +9,23 @@ SCZO:Flags
     def:  def SCZO
 ds:Register ds
     def:  def ds
-    uses: store(Mem7[ds:0x0300:word16]) = ax_5
-          store(Mem8[ds:0x0302:word16]) = ax_5
-          store(Mem9[ds:0x0304:word16]) = ax_5
+    uses: Mem7[ds:0x0300:word16] = ax_5
+          Mem8[ds:0x0302:word16] = ax_5
+          Mem9[ds:0x0304:word16] = ax_5
 ax_5: orig: ax
     def:  ax_5 = 0x0000
     uses: SCZO_6 = cond(ax_5)
-          store(Mem7[ds:0x0300:word16]) = ax_5
-          store(Mem8[ds:0x0302:word16]) = ax_5
-          store(Mem9[ds:0x0304:word16]) = ax_5
+          Mem7[ds:0x0300:word16] = ax_5
+          Mem8[ds:0x0302:word16] = ax_5
+          Mem9[ds:0x0304:word16] = ax_5
 SCZO_6: orig: SCZO
     def:  SCZO_6 = cond(ax_5)
 Mem7: orig: Mem0
-    def:  store(Mem7[ds:0x0300:word16]) = ax_5
+    def:  Mem7[ds:0x0300:word16] = ax_5
 Mem8: orig: Mem0
-    def:  store(Mem8[ds:0x0302:word16]) = ax_5
+    def:  Mem8[ds:0x0302:word16] = ax_5
 Mem9: orig: Mem0
-    def:  store(Mem9[ds:0x0304:word16]) = ax_5
+    def:  Mem9[ds:0x0304:word16] = ax_5
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
@@ -38,9 +38,9 @@ fn0C00_0000_entry:		// pred:
 l0C00_0000:		// pred: fn0C00_0000_entry
 	ax_5 = 0x0000
 	SCZO_6 = cond(ax_5)
-	store(Mem7[ds:0x0300:word16]) = ax_5
-	store(Mem8[ds:0x0302:word16]) = ax_5
-	store(Mem9[ds:0x0304:word16]) = ax_5
+	Mem7[ds:0x0300:word16] = ax_5
+	Mem8[ds:0x0302:word16] = ax_5
+	Mem9[ds:0x0304:word16] = ax_5
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000
@@ -52,26 +52,26 @@ ax:Register ax
 SCZO:Flags
 ds:Register ds
     def:  def ds
-    uses: store(Mem7[ds:0x0300:word16]) = 0x0000
-          store(Mem8[ds:0x0302:word16]) = 0x0000
-          store(Mem9[ds:0x0304:word16]) = 0x0000
+    uses: Mem7[ds:0x0300:word16] = 0x0000
+          Mem8[ds:0x0302:word16] = 0x0000
+          Mem9[ds:0x0304:word16] = 0x0000
 ax_5: orig: ax
 SCZO_6: orig: SCZO
 Mem7: orig: Mem0
-    def:  store(Mem7[ds:0x0300:word16]) = 0x0000
+    def:  Mem7[ds:0x0300:word16] = 0x0000
 Mem8: orig: Mem0
-    def:  store(Mem8[ds:0x0302:word16]) = 0x0000
+    def:  Mem8[ds:0x0302:word16] = 0x0000
 Mem9: orig: Mem0
-    def:  store(Mem9[ds:0x0304:word16]) = 0x0000
+    def:  Mem9[ds:0x0304:word16] = 0x0000
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:		// pred: fn0C00_0000_entry
-	store(Mem7[ds:0x0300:word16]) = 0x0000
-	store(Mem8[ds:0x0302:word16]) = 0x0000
-	store(Mem9[ds:0x0304:word16]) = 0x0000
+	Mem7[ds:0x0300:word16] = 0x0000
+	Mem8[ds:0x0302:word16] = 0x0000
+	Mem9[ds:0x0304:word16] = 0x0000
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000

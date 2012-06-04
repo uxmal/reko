@@ -45,9 +45,9 @@ l0C00_0010:		// block 1, pred: 0
 	rLoc2 = rLoc2 *s rLoc2
 	rLoc1 = rLoc1 + rLoc2
 	bx = wArg02
-	store(Mem0[ds:bx:real64]) = rLoc1
+	Mem0[ds:bx:real64] = rLoc1
 	rLoc1 = (real64) Mem0[ds:bx + 0x0020:word16]
-	store(Mem0[ds:bx + 0x0028:real64]) = rLoc1
+	Mem0[ds:bx + 0x0028:real64] = rLoc1
 	bp = wLoc04
 	return
 	// succ:  2
@@ -68,9 +68,9 @@ fn0C00_0037_entry:		// block 0, pred:
 // DataOut: ds
 l0C00_0037:		// block 1, pred: 0
 	rLoc1 = 0
-	store(Mem0[ds:0x0400:real64]) = rLoc1
+	Mem0[ds:0x0400:real64] = rLoc1
 	rLoc1 = 1
-	store(Mem0[ds:0x0408:word32]) = (word32) rLoc1
+	Mem0[ds:0x0408:word32] = (word32) rLoc1
 	return
 	// succ:  2
 // DataOut:

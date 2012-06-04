@@ -5,8 +5,23 @@ using System.Text;
 
 namespace Decompiler.Arch.Arm
 {
-    public enum Condition
+    public enum Condition : byte
     {
-        Always,
+        eq,
+        ne,
+        cs,
+        cc,
+        mi,
+        pl,
+        vs,
+        vc,
+        hi,
+        ls,
+        ge,
+        lt,
+        gt,
+        le,
+        al,
+        nv,
     }
 }

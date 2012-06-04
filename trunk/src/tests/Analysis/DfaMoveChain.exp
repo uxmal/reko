@@ -9,7 +9,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
 	// succ:  l0C00_0000
 l0C00_0000:		// pred: fn0C00_0000_entry
-	store(Mem9[ds:0x0300:word16]) = 0x0004
+	Mem9[ds:0x0300:word16] = 0x0004
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000

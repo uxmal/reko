@@ -20,7 +20,7 @@ l0C00_001A:
 fn0C00_0000_exit:
 	// succ: 
 l0C00_0016:
-	store(Mem17[ds:0x0302:word16]) = cx
+	Mem17[ds:0x0302:word16] = cx
 	// succ:  l0C00_001A
 
 // fn0C00_0000
@@ -32,7 +32,7 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	// succ:  l0C00_0016 l0C00_000F
 l0C00_0005:
 l0C00_0016:		// pred: l0C00_0000
-	store(Mem17[ds:0x0302:word16]) = cx
+	Mem17[ds:0x0302:word16] = cx
 	// succ:  l0C00_001A
 l0C00_001A:		// pred: l0C00_0016 l0C00_000F
 	return
@@ -41,6 +41,6 @@ fn0C00_0000_exit:		// pred: l0C00_001A
 	// succ: 
 l0C00_000A:
 l0C00_000F:		// pred: l0C00_0000
-	store(Mem14[ds:0x0300:word16]) = ax
+	Mem14[ds:0x0300:word16] = ax
 	// succ:  l0C00_001A
 ================

@@ -3,8 +3,8 @@ void SegmentedDoubleReferenceMock()
 SegmentedDoubleReferenceMock_entry:		// pred:
 	// succ:  l1
 l1:		// pred: SegmentedDoubleReferenceMock_entry
-	store(Mem8[ds:0x0100:word16]) = Mem0[ds:Mem0[ds:0x0300:word16] + 0x0004:word16]
-	store(Mem10[ds:0x0102:word16]) = Mem8[ds:Mem8[ds:0x0300:word16] + 0x0004:word16]
+	Mem8[ds:0x0100:word16] = Mem0[ds:Mem0[ds:0x0300:word16] + 0x0004:word16]
+	Mem10[ds:0x0102:word16] = Mem8[ds:Mem8[ds:0x0300:word16] + 0x0004:word16]
 	// succ: 
 
 // Equivalence classes ////////////

@@ -278,7 +278,7 @@ namespace Decompiler.UnitTests.Analysis
 			rl.CurrentState = new RegisterLiveness.ByPassState();
             var ci = new CallInstruction(
                 new ProcedureConstant(PrimitiveType.Pointer32, callee),
-                new CallSite(4, 0) { StackDepthBefore = 16 });
+                new CallSite(4, 0) { StackDepthOnEntry = 16 });
 			rl.Procedure = m.Procedure;
 			rl.MarkLiveStackParameters(ci);
 			Assert.AreEqual(" Local -000C Local -0010", Dump(rl.IdentifierLiveness));

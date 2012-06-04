@@ -5,8 +5,8 @@ UnionIntRealMock_entry:
 l1:
 	x = i
 	x = r
-	store(Mem0[ptr:int32]) = i
-	store(Mem0[ptr + 0x00000004:real32]) = r
+	Mem0[ptr:int32] = i
+	Mem0[ptr + 0x00000004:real32] = r
 	return
 	// succ:  UnionIntRealMock_exit
 UnionIntRealMock_exit:

@@ -223,7 +223,7 @@ namespace Decompiler.Typing
             var dt = ret.Expression.Accept(this);
             if (proc.Signature != null && proc.Signature.ReturnValue != null)
             {
-                dt =handler.EqualTrait(proc.Signature.ReturnValue, ret.Expression);
+                dt = handler.EqualTrait(proc.Signature.ReturnValue, ret.Expression);
             }
             return dt;
         }
@@ -233,6 +233,7 @@ namespace Decompiler.Typing
             sideEffect.Accept(this);
             return PrimitiveType.Void;
         }
+
         public DataType VisitSwitchInstruction(SwitchInstruction si)
 		{
 			si.Expression.Accept(this);
@@ -582,23 +583,23 @@ namespace Decompiler.Typing
 		public DataType VisitUnaryExpression(UnaryExpression unary)
 		{
 			unary.Expression.Accept(this);
-			if (unary.op == Operator.AddrOf)
+			if (unary.Operator == Operator.AddrOf)
 			{
 				return handler.PointerTrait(
                     unary, 
                     unary.DataType.Size,
                     unary.Expression);
 			}
-			else if (unary.op == Operator.Neg)
+			else if (unary.Operator == Operator.Neg)
 			{
 				handler.DataTypeTrait(unary.Expression, MakeSigned(unary.Expression.DataType));
                 return handler.DataTypeTrait(unary, MakeSigned(unary.Expression.DataType));
             }
-			else if (unary.op == Operator.Comp)
+			else if (unary.Operator == Operator.Comp)
 			{
 				return handler.DataTypeTrait(unary, unary.DataType);
 			}
-			else if (unary.op == Operator.Not)
+			else if (unary.Operator == Operator.Not)
 			{
                 handler.DataTypeTrait(unary.Expression, PrimitiveType.Bool);
                 return handler.DataTypeTrait(unary, PrimitiveType.Bool);

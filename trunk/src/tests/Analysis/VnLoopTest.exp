@@ -7,13 +7,13 @@ Z: Z:Flags, def: {def Z}
 SZO: SZO:Flags, def: {def SZO}
 ax_7: orig: ax, def: {ax_7 = 0x0001}, uses: {ax_10 = PHI(ax_7, ax_16)}
 bx_8: orig: bx, def: {bx_8 = 0x0001}, uses: {bx_9 = PHI(bx_8, bx_17)}
-bx_9: orig: bx, def: {bx_9 = PHI(bx_8, bx_17)}, uses: {store(Mem15[0x0004:word16]) = bx_9}{bx_17 = bx_9 + 0x0001}
-ax_10: orig: ax, def: {ax_10 = PHI(ax_7, ax_16)}, uses: {SCZO_11 = cond(ax_10 - 0x000A)}{store(Mem14[0x0002:word16]) = ax_10}{ax_16 = ax_10 + 0x0001}
+bx_9: orig: bx, def: {bx_9 = PHI(bx_8, bx_17)}, uses: {Mem15[0x0004:word16] = bx_9}{bx_17 = bx_9 + 0x0001}
+ax_10: orig: ax, def: {ax_10 = PHI(ax_7, ax_16)}, uses: {SCZO_11 = cond(ax_10 - 0x000A)}{Mem14[0x0002:word16] = ax_10}{ax_16 = ax_10 + 0x0001}
 SCZO_11: orig: SCZO, def: {SCZO_11 = cond(ax_10 - 0x000A)}, uses: {Z_12 = SCZO_11 (alias)}{SZO_13 = SCZO_11 (alias)}
 Z_12: orig: Z, def: {Z_12 = SCZO_11 (alias)}, uses: {branch Test(EQ,Z_12)}
 SZO_13: orig: SZO, def: {SZO_13 = SCZO_11 (alias)}
-Mem14: orig: Mem0, def: {store(Mem14[0x0002:word16]) = ax_10}
-Mem15: orig: Mem0, def: {store(Mem15[0x0004:word16]) = bx_9}
+Mem14: orig: Mem0, def: {Mem14[0x0002:word16] = ax_10}
+Mem15: orig: Mem0, def: {Mem15[0x0004:word16] = bx_9}
 ax_16: orig: ax, def: {ax_16 = ax_10 + 0x0001}, uses: {ax_10 = PHI(ax_7, ax_16)}
 bx_17: orig: bx, def: {bx_17 = bx_9 + 0x0001}, uses: {SZO_18 = cond(bx_17)}{bx_9 = PHI(bx_8, bx_17)}
 SZO_18: orig: SZO, def: {SZO_18 = cond(bx_17)}, uses: {SCZO_19 = SZO_18 (alias)}{Z_20 = SZO_18 (alias)}
@@ -43,8 +43,8 @@ l0C00_0006:		// block 2, pred: 1 5
 	branch Test(EQ,Z_12)
 	// succ:  5 3
 l0C00_0010:		// block 3, pred: 2
-	store(Mem14[0x0002:word16]) = ax_10
-	store(Mem15[0x0004:word16]) = bx_9
+	Mem14[0x0002:word16] = ax_10
+	Mem15[0x0004:word16] = bx_9
 	return
 	// succ:  4
 fn0C00_0000_exit:		// block 4, pred: 3
@@ -65,13 +65,13 @@ Z: Z:Flags
 SZO: SZO:Flags
 ax_7: orig: ax, def: {ax_7 = 0x0001}, uses: {ax_10 = PHI(ax_7, ax_16)}
 bx_8: orig: bx, def: {bx_8 = 0x0001}, uses: {bx_9 = PHI(bx_8, bx_17)}
-bx_9: orig: bx, def: {bx_9 = PHI(bx_8, bx_17)}, uses: {store(Mem15[0x0004:word16]) = bx_9}{bx_17 = bx_9 + 0x0001}
-ax_10: orig: ax, def: {ax_10 = PHI(ax_7, ax_16)}, uses: {SCZO_11 = cond(ax_10 - 0x000A)}{store(Mem14[0x0002:word16]) = ax_10}{ax_16 = ax_10 + 0x0001}
+bx_9: orig: bx, def: {bx_9 = PHI(bx_8, bx_17)}, uses: {Mem15[0x0004:word16] = bx_9}{bx_17 = bx_9 + 0x0001}
+ax_10: orig: ax, def: {ax_10 = PHI(ax_7, ax_16)}, uses: {SCZO_11 = cond(ax_10 - 0x000A)}{Mem14[0x0002:word16] = ax_10}{ax_16 = ax_10 + 0x0001}
 SCZO_11: orig: SCZO, def: {SCZO_11 = cond(ax_10 - 0x000A)}, uses: {Z_12 = SCZO_11 (alias)}
 Z_12: orig: Z, def: {Z_12 = SCZO_11 (alias)}, uses: {branch Test(EQ,Z_12)}
 SZO_13: orig: SZO
-Mem14: orig: Mem0, def: {store(Mem14[0x0002:word16]) = ax_10}
-Mem15: orig: Mem0, def: {store(Mem15[0x0004:word16]) = bx_9}
+Mem14: orig: Mem0, def: {Mem14[0x0002:word16] = ax_10}
+Mem15: orig: Mem0, def: {Mem15[0x0004:word16] = bx_9}
 ax_16: orig: ax, def: {ax_16 = ax_10 + 0x0001}, uses: {ax_10 = PHI(ax_7, ax_16)}
 bx_17: orig: bx, def: {bx_17 = bx_9 + 0x0001}, uses: {bx_9 = PHI(bx_8, bx_17)}
 SZO_18: orig: SZO
@@ -93,8 +93,8 @@ l0C00_0006:		// block 2, pred: 1 5
 	branch Test(EQ,Z_12)
 	// succ:  5 3
 l0C00_0010:		// block 3, pred: 2
-	store(Mem14[0x0002:word16]) = ax_10
-	store(Mem15[0x0004:word16]) = bx_9
+	Mem14[0x0002:word16] = ax_10
+	Mem15[0x0004:word16] = bx_9
 	return
 	// succ:  4
 fn0C00_0000_exit:		// block 4, pred: 3

@@ -18,8 +18,8 @@ l0C00_0010:		// pred: fn0C00_0010_entry
 	real64 rLoc1_12 = Mem0[ds:wArg00 + 0x0000:real64]
 	real64 rLoc2_14 = Mem0[ds:wArg00 + 0x0008:real64]
 	real64 rLoc2_17 = Mem0[ds:wArg00 + 0x0010:real64]
-	store(Mem21[ds:wArg02 + 0x0000:real64]) = rLoc1_12 *s rLoc1_12 + rLoc2_14 *s rLoc2_14 + rLoc2_17 *s rLoc2_17
-	store(Mem23[ds:wArg02 + 0x0028:real64]) = (real64) Mem21[ds:wArg02 + 0x0020:word16]
+	Mem21[ds:wArg02 + 0x0000:real64] = rLoc1_12 *s rLoc1_12 + rLoc2_14 *s rLoc2_14 + rLoc2_17 *s rLoc2_17
+	Mem23[ds:wArg02 + 0x0028:real64] = (real64) Mem21[ds:wArg02 + 0x0020:word16]
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:		// pred: l0C00_0010
@@ -30,8 +30,8 @@ void fn0C00_0037(selector ds)
 fn0C00_0037_entry:		// pred:
 	// succ:  l0C00_0037
 l0C00_0037:		// pred: fn0C00_0037_entry
-	store(Mem5[ds:0x0400:real64]) = 0
-	store(Mem7[ds:0x0408:word32]) = (word32) 1
+	Mem5[ds:0x0400:real64] = 0
+	Mem7[ds:0x0408:word32] = (word32) 1
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:		// pred: l0C00_0037

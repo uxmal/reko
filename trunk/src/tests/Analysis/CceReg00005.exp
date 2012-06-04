@@ -4,19 +4,19 @@ bx:Register bx
 ds:Register ds
     def:  def ds
     uses: bx_6 = fn0C00_000C(ds, &cl_5)
-          store(Mem7[ds:0x0300:word16]) = bx_6
-          store(Mem8[ds:0x0302:byte]) = cl_5
+          Mem7[ds:0x0300:word16] = bx_6
+          Mem8[ds:0x0302:byte] = cl_5
 cl:Register cl
 cl_5: orig: cl
     def:  bx_6 = fn0C00_000C(ds, &cl_5)
-    uses: store(Mem8[ds:0x0302:byte]) = cl_5
+    uses: Mem8[ds:0x0302:byte] = cl_5
 bx_6: orig: bx
     def:  bx_6 = fn0C00_000C(ds, &cl_5)
-    uses: store(Mem7[ds:0x0300:word16]) = bx_6
+    uses: Mem7[ds:0x0300:word16] = bx_6
 Mem7: orig: Mem0
-    def:  store(Mem7[ds:0x0300:word16]) = bx_6
+    def:  Mem7[ds:0x0300:word16] = bx_6
 Mem8: orig: Mem0
-    def:  store(Mem8[ds:0x0302:byte]) = cl_5
+    def:  Mem8[ds:0x0302:byte] = cl_5
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
@@ -24,8 +24,8 @@ fn0C00_0000_entry:		// pred:
 	// succ:  l0C00_0000
 l0C00_0000:		// pred: fn0C00_0000_entry
 	bx_6 = fn0C00_000C(ds, &cl_5)
-	store(Mem7[ds:0x0300:word16]) = bx_6
-	store(Mem8[ds:0x0302:byte]) = cl_5
+	Mem7[ds:0x0300:word16] = bx_6
+	Mem8[ds:0x0302:byte] = cl_5
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000

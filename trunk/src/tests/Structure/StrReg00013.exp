@@ -1,16 +1,16 @@
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
-	store(Mem34[0x0C00:0x0001:word16]) = 0x0800
-	store(Mem35[0x0800:0x5422:word16]) = ds
-	store(Mem39[0x0800:0x0066:word16]) = Mem35[0x0800:0x5420:word16]
+	Mem34[0x0C00:0x0001:word16] = 0x0800
+	Mem35[0x0800:0x5422:word16] = ds
+	Mem39[0x0800:0x0066:word16] = Mem35[0x0800:0x5420:word16]
 	selector es_42 = Mem39[0x0800:0x5422:word16]
 	word16 bx_43
 	msdos_resize_memory_block(es_42, 0xFFFF, &bx_43)
-	store(Mem47[0x0800:0x53CD:word16]) = Mem39[0x0800:0x5422:word16] + bx_43
+	Mem47[0x0800:0x53CD:word16] = Mem39[0x0800:0x5422:word16] + bx_43
 	word16 bx_49
 	msdos_resize_memory_block(es_42, bx_43, &bx_49)
-	store(Mem51[0x0800:0x0400:word16]) = 0x1758
+	Mem51[0x0800:0x0400:word16] = 0x1758
 	fn0C00_0288()
 	msdos_set_interrupt_vector(0x24, 0x0C000295)
 	fn0C00_0262()
@@ -24,9 +24,9 @@ l0C00_005F:		// pred: fn0C00_0000_entry
 l0C00_0062:		// pred: fn0C00_0000_entry l0C00_005F
 	fn0C00_027E()
 	fn0C00_028F(0x53F4, 0x0800)
-	store(Mem65[0x0800:0x53FE:word16]) = 0x0001
+	Mem65[0x0800:0x53FE:word16] = 0x0001
 	fn0C00_0261()
-	store(Mem66[0x0800:0x53C2:word16]) = 0x4AF3
+	Mem66[0x0800:0x53C2:word16] = 0x4AF3
 	fn0C00_0283(0x5447, 0x0800)
 	branch fn0C00_0271(0x0800) l0C00_008D
 	// succ:  l0C00_0086 l0C00_008D
@@ -41,14 +41,14 @@ l0C00_0094:		// pred: l0C00_008D
 	// succ:  l0C00_009B l0C00_008D
 l0C00_009B:		// pred: l0C00_008D l0C00_0094
 	fn0C00_0283(0x5450, 0x0800)
-	store(Mem77[0x0800:0x5404:word16]) = 0x0000
+	Mem77[0x0800:0x5404:word16] = 0x0000
 	fn0C00_0259()
 	branch Mem77[0x0800:0x53B8:word16] < 0x0004 l0C00_0251
 	// succ:  l0C00_00B4 l0C00_0251
 l0C00_00B4:		// pred: l0C00_009B
 	word16 bx_80 = Mem77[0x0800:0x53B8:word16]
-	store(Mem82[0x0800:0x53BE:word16]) = bx_80 - 0x0001
-	store(Mem84[0x0800:0x53C0:word16]) = bx_80 - 0x0002
+	Mem82[0x0800:0x53BE:word16] = bx_80 - 0x0001
+	Mem84[0x0800:0x53C0:word16] = bx_80 - 0x0002
 	fn0C00_025A(Mem84[0x0800:0x53C0:word16], 0x0800)
 	selector es_86 = Mem84[0x0800:0x53C2:word16]
 	word16 di_87 = 0x0000
@@ -69,12 +69,12 @@ l0C00_00F5:		// pred: l0C00_00DB l0C00_00F5_rep
 	branch cx_113 == 0x0000 l0C00_00F5_rep
 	// succ:  l0C00_00F8 l0C00_00F5_rep
 l0C00_00F8:		// pred: l0C00_00F5
-	store(Mem127[0x0800:0x7E52:word16]) = Mem117[0x0800:0x53BE:word16]
+	Mem127[0x0800:0x7E52:word16] = Mem117[0x0800:0x53BE:word16]
 	word16 ax_128 = Mem127[0x0800:0x53C2:word16]
-	store(Mem129[0x0800:0x7E50:word16]) = ax_128
-	store(Mem130[0x0800:0x5380:word16]) = ax_128
+	Mem129[0x0800:0x7E50:word16] = ax_128
+	Mem130[0x0800:0x5380:word16] = ax_128
 	word16 ax_132 = Mem130[0x0800:0x53B8:word16] - 0x0002
-	store(Mem139[0x0800:0x53BC:word16]) = ax_132
+	Mem139[0x0800:0x53BC:word16] = ax_132
 	fn0C00_025F()
 	fn0C00_0282()
 	branch Mem139[0x0800:0x54A6:word16] == 0x0000 l0C00_0144
@@ -82,7 +82,7 @@ l0C00_00F8:		// pred: l0C00_00F5
 l0C00_0128:		// pred: l0C00_00F8
 	fn0C00_027D()
 	word64 edx_eax_144 = (int32) Mem139[0x0800:0x5418:word16] *s 0x0000F000
-	store(Mem151[0x0800:0x6FF0:ui64]) = Mem139[0x0800:0x6FF0:ui64] - edx_eax_144
+	Mem151[0x0800:0x6FF0:ui64] = Mem139[0x0800:0x6FF0:ui64] - edx_eax_144
 	ax_132 = (word16) edx_eax_144 (alias)
 	// succ:  l0C00_0144
 l0C00_0144:		// pred: l0C00_00F8 l0C00_0128
@@ -123,33 +123,33 @@ l0C00_01A4:		// pred: l0C00_0198 l0C00_018F
 	branch Mem198[0x0800:0xC3CF:word16] == 0x0000 l0C00_01B1
 	// succ:  l0C00_01AB l0C00_01B1
 l0C00_01AB:		// pred: l0C00_01A4
-	store(Mem201[0x0800:0x0412:word16]) = 0x0000
+	Mem201[0x0800:0x0412:word16] = 0x0000
 	// succ:  l0C00_01B1
 l0C00_01B1:		// pred: l0C00_01A4 l0C00_01AB
-	store(Mem203[0x0800:0x5376:word16]) = 0x0000
+	Mem203[0x0800:0x5376:word16] = 0x0000
 	// succ:  l0C00_01B7
 l0C00_01B7:		// pred: l0C00_016A l0C00_01B1
 	fn0C00_027C()
 	fn0C00_0263()
 	word16 v23_206 = Mem204[0x0800:0x5404:word16]
-	store(Mem207[0x0800:0x5404:word16]) = 0x0000
+	Mem207[0x0800:0x5404:word16] = 0x0000
 	word16 dx_209 = Mem207[0x0800:0x541A:word16]
-	store(Mem211[0x0800:0x541A:word16]) = ax_132
+	Mem211[0x0800:0x541A:word16] = ax_132
 	word16 ax_212 = ax_132 - dx_209
-	store(Mem225[0x0800:0x5408:word16]) = SLICE(DPB(ax_212, (byte) (v23_206 - (word16) (ax_212 <u 0x0000)), 8, 8) *u 0x3865, word16, 16)
+	Mem225[0x0800:0x5408:word16] = SLICE(DPB(ax_212, (byte) (v23_206 - (word16) (ax_212 <u 0x0000)), 8, 8) *u 0x3865, word16, 16)
 	branch (Mem225[0x0800:Mem225[0x0800:0x5A02:word16] + 0x0094:word16] & 0xFFFF) != 0x0000 l0C00_01FA
 	// succ:  l0C00_01EC l0C00_01FA
 l0C00_01EC:		// pred: l0C00_01B7
 	branch (Mem225[0x0800:Mem225[0x0800:0x5BD8:word16] + 0x0094:word16] & 0xFFFF) == 0x0000 l0C00_0200
 	// succ:  l0C00_01FA l0C00_0200
 l0C00_01FA:		// pred: l0C00_01B7 l0C00_01EC
-	store(Mem241[0x0800:0x5408:word16]) = 0x0000
+	Mem241[0x0800:0x5408:word16] = 0x0000
 	// succ:  l0C00_0200
 l0C00_0200:		// pred: l0C00_01FA l0C00_01EC
 	branch (Mem244[0x0800:0x919E:word16] & 0x02FF) != 0x0000 l0C00_020E
 	// succ:  l0C00_0208 l0C00_020E
 l0C00_0208:		// pred: l0C00_0200
-	store(Mem248[0x0800:0x5408:word16]) = 0x0044
+	Mem248[0x0800:0x5408:word16] = 0x0044
 	// succ:  l0C00_020E
 l0C00_020E:		// pred: l0C00_0200 l0C00_0208
 	ax_132 = Mem249[0x0800:0x919E:word16] & 0x05FF
@@ -169,7 +169,7 @@ l0C00_022D:		// pred: l0C00_021C l0C00_0223 l0C00_022A
 	branch (Mem249[0x0800:0x6FCA:byte] & 0x10) == 0x00 l0C00_023D
 	// succ:  l0C00_0237 l0C00_023D
 l0C00_0237:		// pred: l0C00_022D
-	store(Mem268[0x0800:0x5376:word16]) = 0x0001
+	Mem268[0x0800:0x5376:word16] = 0x0001
 	// succ:  l0C00_023D
 l0C00_023D:		// pred: l0C00_022D l0C00_0237
 	fn0C00_028A()
@@ -182,20 +182,20 @@ l0C00_024B:		// pred: l0C00_023D l0C00_0248
 	fn0C00_0294()
 	// succ:  l0C00_016A
 l0C00_0198:		// pred: l0C00_0188
-	store(Mem197[0x0800:0x540C:word32]) = 0x00000000
+	Mem197[0x0800:0x540C:word32] = 0x00000000
 	fn0C00_0264()
 	// succ:  l0C00_01A4
 l0C00_0182:		// pred: l0C00_0172
-	store(Mem193[0x0800:0xC3CF:word16]) = 0x0000
+	Mem193[0x0800:0xC3CF:word16] = 0x0000
 	// succ:  l0C00_0188
 l0C00_00F5_rep:		// pred: l0C00_00F5
-	store(Mem120[es_106:di_107:word32]) = Mem117[0x5D02:si_111:word32]
+	Mem120[es_106:di_107:word32] = Mem117[0x5D02:si_111:word32]
 	cx_113 = cx_113 - 0x0001
 	si_111 = si_111 + 0x0004
 	di_107 = di_107 + 0x0004
 	// succ:  l0C00_00F5
 l0C00_00D8_rep:		// pred: l0C00_00D8
-	store(Mem100[es_86:di_87:word32]) = Mem97[0x6C34:si_91:word32]
+	Mem100[es_86:di_87:word32] = Mem97[0x6C34:si_91:word32]
 	cx_93 = cx_93 - 0x0001
 	si_91 = si_91 + 0x0004
 	di_87 = di_87 + 0x0004
@@ -401,7 +401,7 @@ void fn0C00_025A(word16 bx, selector ds)
 fn0C00_025A_entry:		// pred:
 	// succ:  l0C00_025A
 l0C00_025A:		// pred: fn0C00_025A_entry
-	store(Mem4[ds:0x0540:word16]) = bx
+	Mem4[ds:0x0540:word16] = bx
 	return
 	// succ:  fn0C00_025A_exit
 fn0C00_025A_exit:		// pred: l0C00_025A
@@ -688,7 +688,7 @@ void fn0C00_0283(word16 si, selector ds)
 fn0C00_0283_entry:		// pred:
 	// succ:  l0C00_0283
 l0C00_0283:		// pred: fn0C00_0283_entry
-	store(Mem4[ds:0x4AFB:word16]) = si
+	Mem4[ds:0x4AFB:word16] = si
 	return
 	// succ:  fn0C00_0283_exit
 fn0C00_0283_exit:		// pred: l0C00_0283
@@ -810,7 +810,7 @@ void fn0C00_028F(word16 dx, selector ds)
 fn0C00_028F_entry:		// pred:
 	// succ:  l0C00_028F
 l0C00_028F:		// pred: fn0C00_028F_entry
-	store(Mem4[ds:0xC54C:word16]) = dx
+	Mem4[ds:0xC54C:word16] = dx
 	return
 	// succ:  fn0C00_028F_exit
 fn0C00_028F_exit:		// pred: l0C00_028F

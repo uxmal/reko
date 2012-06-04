@@ -3,10 +3,10 @@ void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	store(Mem9[ds:0x0300:word16]) = 0x0000
-	store(Mem10[ds:0x0302:word16]) = 0x00CA
-	store(Mem11[ds:0x0304:word16]) = 0x0194
-	store(Mem19[ds:0x0306:word16]) = Mem11[ds:0x0302:word16] + Mem11[ds:0x0304:word16]
+	Mem9[ds:0x0300:word16] = 0x0000
+	Mem10[ds:0x0302:word16] = 0x00CA
+	Mem11[ds:0x0304:word16] = 0x0194
+	Mem19[ds:0x0306:word16] = Mem11[ds:0x0302:word16] + Mem11[ds:0x0304:word16]
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

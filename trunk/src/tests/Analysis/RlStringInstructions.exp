@@ -11,19 +11,19 @@ fn0C00_0000_entry:		// pred:
 // DataOut: eax si es ds
 l0C00_0000:		// pred: fn0C00_0000_entry
 	eax = eax + eax * 0x00000004
-	store(Mem0[ds:0x02FC:word32]) = eax
+	Mem0[ds:0x02FC:word32] = eax
 	eax = Mem0[ds:si:word32]
 	si = si + 0x0004
-	store(Mem0[ds:0x0300:word32]) = eax
+	Mem0[ds:0x0300:word32] = eax
 	eax = Mem0[ds:si:word32]
 	si = si + 0x0004
-	store(Mem0[ds:0x0304:word32]) = eax
+	Mem0[ds:0x0304:word32] = eax
 	ax = Mem0[ds:si:word16]
 	si = si + 0x0002
-	store(Mem0[ds:0x0308:word16]) = ax
+	Mem0[ds:0x0308:word16] = ax
 	ax = Mem0[ds:si:word16]
 	si = si + 0x0002
-	store(Mem0[ds:0x030A:word16]) = ax
+	Mem0[ds:0x030A:word16] = ax
 	call fn0C00_0026 (depth: 2;)
 	return
 	// succ:  fn0C00_0000_exit
@@ -60,7 +60,7 @@ l0C00_0030_rep:		// pred: l0C00_0030
 	// succ:  l0C00_0032 l0C00_0030
 // DataOut: cx di al es ds
 l0C00_0032:		// pred: l0C00_0030 l0C00_0030_rep
-	store(Mem0[ds:0x0404:word16]) = di
+	Mem0[ds:0x0404:word16] = di
 	return
 	// succ:  fn0C00_0026_exit
 // DataOut:

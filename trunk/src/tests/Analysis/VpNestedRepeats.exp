@@ -17,7 +17,7 @@ ax:Register ax
 ds:Register ds
     def:  def ds
     uses: ax_21 = Mem0[ds:si_17:word16]
-          store(Mem34[ds:0x0300:word16]) = dx_23
+          Mem34[ds:0x0300:word16] = dx_23
 si:Register si
     def:  def si
     uses: si_17 = PHI(si, si_22, si_22)
@@ -69,7 +69,7 @@ dx_23: orig: dx
     uses: SCZO_24 = cond(dx_23)
           dx_20 = PHI(dx_11, dx_23, dx_23)
           dx_20 = PHI(dx_11, dx_23, dx_23)
-          store(Mem34[ds:0x0300:word16]) = dx_23
+          Mem34[ds:0x0300:word16] = dx_23
 SCZO_24: orig: SCZO
     def:  SCZO_24 = cond(dx_23)
 cx_25: orig: cx
@@ -102,7 +102,7 @@ Z_33: orig: Z
     def:  Z_33 = SZO_31 (alias)
     uses: branch Test(NE,Z_33) l0C00_0008
 Mem34: orig: Mem0
-    def:  store(Mem34[ds:0x0300:word16]) = dx_23
+    def:  Mem34[ds:0x0300:word16] = dx_23
 // fn0C00_0000
 void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:		// pred:
@@ -150,7 +150,7 @@ l0C00_000D:		// pred: l0C00_0008
 	branch Test(NE,Z_33) l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:		// pred: l0C00_000D
-	store(Mem34[ds:0x0300:word16]) = dx_23
+	Mem34[ds:0x0300:word16] = dx_23
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0013
@@ -168,7 +168,7 @@ ax:Register ax
 ds:Register ds
     def:  def ds
     uses: ax_21 = Mem0[ds:si_17:word16]
-          store(Mem34[ds:0x0300:word16]) = dx_23
+          Mem34[ds:0x0300:word16] = dx_23
 si:Register si
     def:  def si
     uses: si_17 = PHI(si, si_22, si_22)
@@ -213,7 +213,7 @@ dx_23: orig: dx
     def:  dx_23 = dx_20 + ax_21
     uses: dx_20 = PHI(dx_11, dx_23, dx_23)
           dx_20 = PHI(dx_11, dx_23, dx_23)
-          store(Mem34[ds:0x0300:word16]) = dx_23
+          Mem34[ds:0x0300:word16] = dx_23
 SCZO_24: orig: SCZO
 cx_25: orig: cx
     def:  cx_25 = cx_19 - 0x0001
@@ -235,7 +235,7 @@ SZO_31: orig: SZO
 SCZO_32: orig: SCZO
 Z_33: orig: Z
 Mem34: orig: Mem0
-    def:  store(Mem34[ds:0x0300:word16]) = dx_23
+    def:  Mem34[ds:0x0300:word16] = dx_23
 // fn0C00_0000
 void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:		// pred:
@@ -267,7 +267,7 @@ l0C00_000D:		// pred: l0C00_0008
 	branch Test(NE,SZO_31) l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:		// pred: l0C00_000D
-	store(Mem34[ds:0x0300:word16]) = dx_23
+	Mem34[ds:0x0300:word16] = dx_23
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0013

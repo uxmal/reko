@@ -6,14 +6,14 @@ al:Register al
     uses: branch fn0C00_000A(al, &al_5) l0C00_0009
 ds:Register ds
     def:  def ds
-    uses: store(Mem7[ds:0x0300:byte]) = al_5
+    uses: Mem7[ds:0x0300:byte] = al_5
 al_5: orig: al
     def:  branch fn0C00_000A(al, &al_5) l0C00_0009
-    uses: store(Mem7[ds:0x0300:byte]) = al_5
+    uses: Mem7[ds:0x0300:byte] = al_5
 C_6: orig: C
     uses: branch fn0C00_000A(al, &al_5) l0C00_0009
 Mem7: orig: Mem0
-    def:  store(Mem7[ds:0x0300:byte]) = al_5
+    def:  Mem7[ds:0x0300:byte] = al_5
 Mem8: orig: Mem0
 // fn0C00_0000
 void fn0C00_0000(byte al, selector ds)
@@ -25,7 +25,7 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	branch fn0C00_000A(al, &al_5) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:		// pred: l0C00_0000
-	store(Mem7[ds:0x0300:byte]) = al_5
+	Mem7[ds:0x0300:byte] = al_5
 	// succ:  l0C00_0009
 l0C00_0009:		// pred: l0C00_0000 l0C00_0005
 	return

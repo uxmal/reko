@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using System;
+using System.IO;
 using System.Text;
 
 namespace Decompiler.Core.Machine
@@ -42,6 +43,11 @@ namespace Decompiler.Core.Machine
 		{
 			return ToString();
 		}
+
+        public virtual void Write(bool fExplicit, TextWriter writer)
+        {
+            writer.Write(ToString(fExplicit));
+        }
 
 		public string FormatSignedValue(Constant c)
 		{

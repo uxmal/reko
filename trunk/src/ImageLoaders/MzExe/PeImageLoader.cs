@@ -53,7 +53,6 @@ namespace Decompiler.ImageLoaders.MzExe
 		private const short ImageFileRelocationsStripped = 0x0001;
 		private const short ImageFileExecutable = 0x0002;
 
-
 		public PeImageLoader(IServiceProvider services, byte [] img, uint peOffset) : base(services, img)
 		{
 			ImageReader rdr = new ImageReader(RawImage, peOffset);
@@ -62,7 +61,7 @@ namespace Decompiler.ImageLoaders.MzExe
 				rdr.ReadByte() != 0x0 ||
 				rdr.ReadByte() != 0x0)
 			{
-				throw new ApplicationException("Not a valid PE header.");
+				throw new BadImageFormatException("Not a valid PE header.");
 			}
             importThunks = new Dictionary<uint, PseudoProcedure>();
 			ReadCoffHeader(rdr);
@@ -150,10 +149,9 @@ namespace Decompiler.ImageLoaders.MzExe
 		/// <returns></returns>
 		private void LoadSections(Address addrLoad, uint sectionOffset, int sections)
 		{
-			Section section;
 			ImageReader rdr = new ImageReader(RawImage, sectionOffset);
-			section = ReadSection(rdr);
-			Section sectionMax = section;
+			var section = ReadSection(rdr);
+			var sectionMax = section;
 			sectionMap[section.Name] = section;
 			
 			for (int i = 1; i != sections; ++i)
@@ -183,8 +181,6 @@ namespace Decompiler.ImageLoaders.MzExe
 
 		public void ReadCoffHeader(ImageReader rdr)
 		{
-			// Read COFF header.
-
 			short machine = rdr.ReadLeInt16();
 			arch = CreateArchitecture(machine);
 			platform = new Win32Platform(arch);

@@ -3,7 +3,7 @@ void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	store(Mem0[cs:0x00000001:word16]) = 0x0800
+	Mem0[cs:0x00000001:word16] = 0x0800
 	// succ: 
 ProcedureBuilder_exit:
 

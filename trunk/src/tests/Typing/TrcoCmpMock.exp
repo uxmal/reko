@@ -10,7 +10,7 @@ l2:
 	r0 = r0 + r1
 	// succ:  skip
 skip:
-	store(Mem0[0x10003000:word32]) = r0
+	Mem0[0x10003000:word32] = r0
 	return
 	// succ:  CmpMock_exit
 CmpMock_exit:

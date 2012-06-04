@@ -17,10 +17,10 @@ fn0B00_0000_frame_asgn:		// block 1, pred: 0
 	fp = &fn0B00_0000_frame
 	// succ:  2
 l0B00_0000:		// block 2, pred: 1
-	store(Mem0[fp + 0x0000:word16]) = bp
-	store(Mem0[fp - 0x0004:word16]) = 0x0000
-	store(Mem0[fp - 0x0002:word16]) = 0x0001
-	store(Mem0[fp - 0x0006:word16]) = bp
+	Mem0[fp + 0x0000:word16] = bp
+	Mem0[fp - 0x0004:word16] = 0x0000
+	Mem0[fp - 0x0002:word16] = 0x0001
+	Mem0[fp - 0x0006:word16] = bp
 	call fn0B00_0018 (depth: 8;)
 	bp = Mem0[fp + 0x0000:word16]
 	return
@@ -47,10 +47,10 @@ fn0B00_0000_frame_asgn:		// block 1, pred: 0
 	fp = &fn0B00_0000_frame
 	// succ:  2
 l0B00_0000:		// block 2, pred: 1
-	store(Mem0[fp + 0x0000:word16]) = bp
-	store(Mem0[fp - 0x0004:word16]) = 0x0000
-	store(Mem0[fp - 0x0002:word16]) = 0x0001
-	store(Mem0[fp - 0x0006:word16]) = bp
+	Mem0[fp + 0x0000:word16] = bp
+	Mem0[fp - 0x0004:word16] = 0x0000
+	Mem0[fp - 0x0002:word16] = 0x0001
+	Mem0[fp - 0x0006:word16] = bp
 	call fn0B00_0018 (depth: 8;)
 	bp = Mem0[fp + 0x0000:word16]
 	return
@@ -74,7 +74,7 @@ fn0B00_0018_entry:		// block 0, pred:
 l0B00_0018:		// block 1, pred: 0
 	loc02 = bp
 	di = arg02
-	store(Mem0[ds:di - 0x0002:word16]) = 0x0000
+	Mem0[ds:di - 0x0002:word16] = 0x0000
 	bp = loc02
 	return
 	// succ:  2

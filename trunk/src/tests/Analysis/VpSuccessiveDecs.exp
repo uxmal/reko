@@ -7,7 +7,7 @@ fp:Temporary
 ds:Register ds
     def:  def ds
     uses: ax_4 = Mem0[ds:0x0300:word16]
-          store(Mem6[ds:0x0302:word16]) = ax_5
+          Mem6[ds:0x0302:word16] = ax_5
 ax:Register ax
     def:  def ax
 ax_4: orig: ax
@@ -15,9 +15,9 @@ ax_4: orig: ax
     uses: ax_5 = fn0C00_000C(ax_4)
 ax_5: orig: ax
     def:  ax_5 = fn0C00_000C(ax_4)
-    uses: store(Mem6[ds:0x0302:word16]) = ax_5
+    uses: Mem6[ds:0x0302:word16] = ax_5
 Mem6: orig: Mem0
-    def:  store(Mem6[ds:0x0302:word16]) = ax_5
+    def:  Mem6[ds:0x0302:word16] = ax_5
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
@@ -29,7 +29,7 @@ fn0C00_0000_entry:		// pred:
 l0C00_0000:		// pred: fn0C00_0000_entry
 	ax_4 = Mem0[ds:0x0300:word16]
 	ax_5 = fn0C00_000C(ax_4)
-	store(Mem6[ds:0x0302:word16]) = ax_5
+	Mem6[ds:0x0302:word16] = ax_5
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000
@@ -42,16 +42,16 @@ fp:Temporary
 ds:Register ds
     def:  def ds
     uses: ax_4 = Mem0[ds:0x0300:word16]
-          store(Mem6[ds:0x0302:word16]) = ax_5
+          Mem6[ds:0x0302:word16] = ax_5
 ax:Register ax
 ax_4: orig: ax
     def:  ax_4 = Mem0[ds:0x0300:word16]
     uses: ax_5 = fn0C00_000C(ax_4)
 ax_5: orig: ax
     def:  ax_5 = fn0C00_000C(ax_4)
-    uses: store(Mem6[ds:0x0302:word16]) = ax_5
+    uses: Mem6[ds:0x0302:word16] = ax_5
 Mem6: orig: Mem0
-    def:  store(Mem6[ds:0x0302:word16]) = ax_5
+    def:  Mem6[ds:0x0302:word16] = ax_5
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
@@ -61,7 +61,7 @@ fn0C00_0000_entry:		// pred:
 l0C00_0000:		// pred: fn0C00_0000_entry
 	ax_4 = Mem0[ds:0x0300:word16]
 	ax_5 = fn0C00_000C(ax_4)
-	store(Mem6[ds:0x0302:word16]) = ax_5
+	Mem6[ds:0x0302:word16] = ax_5
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000

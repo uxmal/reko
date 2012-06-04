@@ -4,30 +4,30 @@ si:Register si
 ax:Register ax
 ds:Register ds
     def:  def ds
-    uses: store(Mem8[ds:0x0202:word16]) = fn0C00_0015(0x0200, ds)
-          store(Mem8[ds:0x0202:word16]) = fn0C00_0015(0x0200, ds)
-          store(Mem12[ds:0x0302:byte]) = (byte) fn0C00_0015(0x0300, ds)
-          store(Mem12[ds:0x0302:byte]) = (byte) fn0C00_0015(0x0300, ds)
+    uses: Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+          Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+          Mem12[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+          Mem12[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 al:Register al
 si_6: orig: si
 ax_7: orig: ax
-    uses: store(Mem8[ds:0x0202:word16]) = fn0C00_0015(0x0200, ds)
+    uses: Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
 Mem8: orig: Mem0
-    def:  store(Mem8[ds:0x0202:word16]) = fn0C00_0015(0x0200, ds)
+    def:  Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
 si_9: orig: si
 ax_10: orig: ax
 al_11: orig: al
-    uses: store(Mem12[ds:0x0302:byte]) = (byte) fn0C00_0015(0x0300, ds)
+    uses: Mem12[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 Mem12: orig: Mem0
-    def:  store(Mem12[ds:0x0302:byte]) = (byte) fn0C00_0015(0x0300, ds)
+    def:  Mem12[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:		// pred: fn0C00_0000_entry
-	store(Mem8[ds:0x0202:word16]) = fn0C00_0015(0x0200, ds)
-	store(Mem12[ds:0x0302:byte]) = (byte) fn0C00_0015(0x0300, ds)
+	Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+	Mem12[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000

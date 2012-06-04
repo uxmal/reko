@@ -29,7 +29,6 @@ namespace Decompiler.Core.Absyn
 	/// </summary>
 	public class AbsynWhile : AbsynLoop
 	{
-
 		public AbsynWhile(Expression condition, List<AbsynStatement> body) : base(condition, body)
 		{
 		}

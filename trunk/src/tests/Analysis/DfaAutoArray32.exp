@@ -13,9 +13,9 @@ fn10000000_frame_asgn:		// pred: fn10000000_entry
 	ptr32 fp_13 = &fn10000000_frame
 	// succ:  l10000000
 l10000000:		// pred: fn10000000_frame_asgn
-	store(Mem17[fp_13 - 16:word32]) = 0x00000001
-	store(Mem18[fp_13 - 12:word32]) = 0x00000002
-	store(Mem19[fp_13 - 8:word32]) = 0x00000003
+	Mem17[fp_13 - 16:word32] = 0x00000001
+	Mem18[fp_13 - 12:word32] = 0x00000002
+	Mem19[fp_13 - 8:word32] = 0x00000003
 	word32 eax_14 = 0x00000000
 	word32 ecx_15 = 0x00000000
 	// succ:  l10000027
@@ -23,7 +23,7 @@ l10000027:		// pred: l10000000 l10000023
 	branch ecx_15 <= 0x00000003 l10000023
 	// succ:  l1000002C l10000023
 l1000002C:		// pred: l10000027
-	store(Mem29[dwArg00:word32]) = eax_14
+	Mem29[dwArg00:word32] = eax_14
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:		// pred: l1000002C

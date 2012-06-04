@@ -34,26 +34,26 @@ namespace Decompiler.Configuration
         string TypeName { get; }
     }
 
-    class ArchitectureElement : ConfigurationElement, Architecture
+    public class ArchitectureElement : ConfigurationElement, Architecture
     {
         [ConfigurationProperty("Name", IsRequired = true)]
         public string Name
         {
-            get { return (string) this["Name"]; }
+            get { return (string)this["Name"]; }
             set { this["Name"] = value; }
         }
 
         [ConfigurationProperty("Description", IsRequired = true)]
         public string Description
         {
-            get { return (string) this["Description"]; }
+            get { return (string)this["Description"]; }
             set { this["Description"] = value; }
         }
 
         [ConfigurationProperty("Type", IsRequired = true)]
         public string TypeName
         {
-            get { return (string) this["Type"]; }
+            get { return (string)this["Type"]; }
             set { this["Type"] = value; }
         }
     }

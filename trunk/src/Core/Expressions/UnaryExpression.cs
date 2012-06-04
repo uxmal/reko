@@ -27,13 +27,16 @@ namespace Decompiler.Core.Expressions
 {
 	public class UnaryExpression : Expression
 	{
+        [Obsolete("Use the property")]
 		public UnaryOperator op;
-		private Expression expression;
 
 		public UnaryExpression(UnaryOperator op, DataType type, Expression expr) : base(type)
 		{
-			this.op = op; this.Expression = expr;
+			this.Operator = op; this.Expression = expr;
 		}
+
+        public UnaryOperator Operator { get { return op; } private set { op = value; } }
+        public Expression Expression { get; set; }
 
 		public override Expression Accept(IExpressionTransformer xform)
 		{
@@ -45,7 +48,6 @@ namespace Decompiler.Core.Expressions
             return v.VisitUnaryExpression(this);
         }
 
-
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitUnaryExpression(this);
@@ -53,21 +55,15 @@ namespace Decompiler.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			throw new NotImplementedException();
+            return new UnaryExpression(Operator, DataType.Clone(), Expression.CloneExpression());
 		}
-
-        public Expression Expression
-        {
-            get { return expression; }
-            set { expression = value; }
-        }
 
 		public override Expression Invert()
 		{
-			if (op == Operator.Not)
+			if (Operator == Operators.Operator.Not)
 				return Expression;
-			else 
-				return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
+			else
+                return new UnaryExpression(Operators.Operator.Not, PrimitiveType.Bool, this);
 		}
 	}
 }

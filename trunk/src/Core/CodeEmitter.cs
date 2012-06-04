@@ -30,12 +30,13 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Provides an interface for simple generation of intermediate code.
 	/// </summary>
-    /// <remarks>Only used by the old x86 rewriting code. When that is obsoleted, this class may be deleted.</remarks>
     public abstract class CodeEmitter : ExpressionEmitter
     {
         private int localStackOffset;
 
         public abstract Statement Emit(Instruction instr);
+        public abstract Frame Frame { get; }
+        public abstract Identifier Register(int i);
 
         public virtual Assignment Assign(Identifier dst, Expression src)
         {
@@ -67,9 +68,6 @@ namespace Decompiler.Core
         {
             return Frame.EnsureFlagGroup(grf, name, PrimitiveType.Byte);
         }
-
-        public abstract Frame Frame { get; }
-
 
         public GotoInstruction Goto(Expression dest)
         {
@@ -110,7 +108,6 @@ namespace Decompiler.Core
             return Emit(new PhiAssignment(idDst, new PhiFunction(idDst.DataType, ids)));
         }
 
-        public abstract Identifier Register(int i);
 
         public void Return()
         {
@@ -199,6 +196,5 @@ namespace Decompiler.Core
         {
             return Emit(new UseInstruction(id));
         }
-
     }
 }

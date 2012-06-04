@@ -10,7 +10,7 @@ l0C00_0005:		// pred: l0C00_0000
 	bx_10 = 0x1234
 	// succ:  l0C00_000E
 l0C00_000E:		// pred: l0C00_000B l0C00_0005
-	store(Mem13[ds:si:word16]) = bx_10
+	Mem13[ds:si:word16] = bx_10
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_000E
@@ -29,7 +29,7 @@ l0C00_0005:		// pred: fn0C00_0000_entry
 	bx_10 = 0x1234
 	// succ:  l0C00_000E
 l0C00_000E:		// pred: l0C00_000B l0C00_0005
-	store(Mem13[ds:si:word16]) = bx_10
+	Mem13[ds:si:word16] = bx_10
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_000E

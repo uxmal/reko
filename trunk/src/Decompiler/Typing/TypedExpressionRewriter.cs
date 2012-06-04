@@ -152,7 +152,7 @@ namespace Decompiler.Typing
             UnaryExpression u = arrayExp as UnaryExpression;
             if (u == null)
                 return arrayExp;
-            if (u.op != Operator.AddrOf)
+            if (u.Operator != Operator.AddrOf)
                 return arrayExp;
             ArrayAccess a = u.Expression as ArrayAccess;
             if (a == null)

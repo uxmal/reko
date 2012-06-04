@@ -9,7 +9,7 @@ Z:Flags
 ax:Register ax
 ds:Register ds
     def:  def ds
-    uses: store(Mem21[ds:0x0100:word16]) = ax_18
+    uses: Mem21[ds:0x0100:word16] = ax_18
 SZO:Flags
 SCZO_8: orig: SCZO
 Z_9: orig: Z
@@ -29,11 +29,11 @@ ax_16: orig: ax
 SZO_17: orig: SZO
 ax_18: orig: ax
     def:  ax_18 = PHI(ax_11, ax_15, ax_16)
-    uses: store(Mem21[ds:0x0100:word16]) = ax_18
+    uses: Mem21[ds:0x0100:word16] = ax_18
 Z_19: orig: Z
 SCZO_20: orig: SCZO
 Mem21: orig: Mem0
-    def:  store(Mem21[ds:0x0100:word16]) = ax_18
+    def:  Mem21[ds:0x0100:word16] = ax_18
 // fn0C00_0000
 void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:		// pred:
@@ -51,7 +51,7 @@ l0C00_0007:		// pred: l0C00_0005
 	// succ:  l0C00_0015
 l0C00_0015:		// pred: l0C00_0013 l0C00_000D l0C00_0007
 	ax_18 = PHI(ax_11, ax_15, ax_16)
-	store(Mem21[ds:0x0100:word16]) = ax_18
+	Mem21[ds:0x0100:word16] = ax_18
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0015

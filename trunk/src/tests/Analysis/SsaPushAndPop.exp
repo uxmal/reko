@@ -2,22 +2,22 @@ Mem0:Global memory
     def:  def Mem0
 fp:Temporary
     def:  def fp
-esp:Register esp
+esp:esp
     def:  def esp
     uses: esp_5 = esp - 0x00000004
-ebp:Register ebp
+ebp:ebp
     def:  def ebp
-    uses: store(Mem6[esp_5:word32]) = ebp
-eax:Register eax
+    uses: Mem6[esp_5:word32] = ebp
+eax:eax
     def:  def eax
 esp_5: orig: esp
     def:  esp_5 = esp - 0x00000004
-    uses: store(Mem6[esp_5:word32]) = ebp
+    uses: Mem6[esp_5:word32] = ebp
           ebp_7 = esp_5
           ebp_9 = Mem6[esp_5:word32]
           esp_10 = esp_5 + 0x00000004
 Mem6: orig: Mem0
-    def:  store(Mem6[esp_5:word32]) = ebp
+    def:  Mem6[esp_5:word32] = ebp
     uses: eax_8 = Mem6[ebp_7 + 0x00000008:word32]
           ebp_9 = Mem6[esp_5:word32]
 ebp_7: orig: ebp
@@ -40,7 +40,7 @@ SsaPushAndPop_entry:
 	// succ:  l1
 l1:
 	esp_5 = esp - 0x00000004
-	store(Mem6[esp_5:word32]) = ebp
+	Mem6[esp_5:word32] = ebp
 	ebp_7 = esp_5
 	eax_8 = Mem6[ebp_7 + 0x00000008:word32]
 	ebp_9 = Mem6[esp_5:word32]

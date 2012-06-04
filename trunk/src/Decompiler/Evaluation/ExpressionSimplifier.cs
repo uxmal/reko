@@ -113,7 +113,7 @@ namespace Decompiler.Evaluation
             {
                 var arg = appl.Arguments[i];
                 var outArg = arg as UnaryExpression;
-                if (outArg != null && outArg.op == Operator.AddrOf)
+                if (outArg != null && outArg.Operator == Operator.AddrOf)
                 {
                     if (outArg.Expression is Identifier)
                     {
@@ -436,7 +436,7 @@ namespace Decompiler.Evaluation
 
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
-            unary = new UnaryExpression(unary.op, unary.DataType, unary.Expression.Accept(this));
+            unary = new UnaryExpression(unary.Operator, unary.DataType, unary.Expression.Accept(this));
             if (negSub.Match(unary))
             {
                 Changed = true;
@@ -741,12 +741,12 @@ namespace Decompiler.Evaluation
 
 		public Expression TransformUnaryExpression(UnaryExpression unary)
 		{
-			if (unary.op == Operator.AddrOf)
+			if (unary.Operator == Operator.AddrOf)
 				return unary;
 			Expression u = unary.Expression.Accept(this);
 			if (u is ValueNumbering.AnyValueNumber)
 				return unary;
-			return new UnaryExpression(unary.op, unary.DataType, u);
+			return new UnaryExpression(unary.Operator, unary.DataType, u);
 		}
 		
 

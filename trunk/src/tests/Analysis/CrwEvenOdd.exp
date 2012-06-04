@@ -16,10 +16,10 @@ fn0C00_0000_entry:		// pred:
 l0C00_0000:		// pred: fn0C00_0000_entry
 	ax = 0x0003
 	al = fn0C00_0015(ax)
-	store(Mem0[ds:0x0300:byte]) = al
+	Mem0[ds:0x0300:byte] = al
 	ax = 0x0003
 	al = fn0C00_0020(ax)
-	store(Mem0[ds:0x0301:byte]) = al
+	Mem0[ds:0x0301:byte] = al
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000

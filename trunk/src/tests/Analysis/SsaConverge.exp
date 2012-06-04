@@ -21,7 +21,7 @@ C:Flags
     def:  def C
 ds:Register ds
     def:  def ds
-    uses: store(Mem19[ds:0x0100:word16]) = ax_15
+    uses: Mem19[ds:0x0100:word16] = ax_15
 SCZO_10: orig: SCZO
     def:  SCZO_10 = cond(bx - 0x0000)
     uses: Z_11 = SCZO_10 (alias)
@@ -47,7 +47,7 @@ C_14: orig: C
     def:  C_14 = PHI(C_13, C_25, C_13)
 ax_15: orig: ax
     def:  ax_15 = PHI(ax_20, ax_22, ax_21)
-    uses: store(Mem19[ds:0x0100:word16]) = ax_15
+    uses: Mem19[ds:0x0100:word16] = ax_15
 SZO_16: orig: SZO
     def:  SZO_16 = PHI(SZO_12, SZO_23, SZO_12)
 Z_17: orig: Z
@@ -55,7 +55,7 @@ Z_17: orig: Z
 SCZO_18: orig: SCZO
     def:  SCZO_18 = PHI(SCZO_10, SCZO_26, SCZO_10)
 Mem19: orig: Mem0
-    def:  store(Mem19[ds:0x0100:word16]) = ax_15
+    def:  Mem19[ds:0x0100:word16] = ax_15
 ax_20: orig: ax
     def:  ax_20 = 0xFFFF
     uses: ax_15 = PHI(ax_20, ax_22, ax_21)
@@ -125,7 +125,7 @@ l0C00_0015:
 	SZO_16 = PHI(SZO_12, SZO_23, SZO_12)
 	Z_17 = PHI(Z_11, Z_24, Z_11)
 	SCZO_18 = PHI(SCZO_10, SCZO_26, SCZO_10)
-	store(Mem19[ds:0x0100:word16]) = ax_15
+	Mem19[ds:0x0100:word16] = ax_15
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -4,15 +4,15 @@ cx:Register cx
 ax:Register ax
 ds:Register ds
     def:  def ds
-    uses: store(Mem7[ds:0x0064:word16]) = ax_6
+    uses: Mem7[ds:0x0064:word16] = ax_6
 cx_5: orig: cx
     def:  cx_5 = 0x0005
     uses: ax_6 = fn0C00_000B(cx_5)
 ax_6: orig: ax
     def:  ax_6 = fn0C00_000B(cx_5)
-    uses: store(Mem7[ds:0x0064:word16]) = ax_6
+    uses: Mem7[ds:0x0064:word16] = ax_6
 Mem7: orig: Mem0
-    def:  store(Mem7[ds:0x0064:word16]) = ax_6
+    def:  Mem7[ds:0x0064:word16] = ax_6
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// pred:
@@ -21,7 +21,7 @@ fn0C00_0000_entry:		// pred:
 l0C00_0000:		// pred: fn0C00_0000_entry
 	cx_5 = 0x0005
 	ax_6 = fn0C00_000B(cx_5)
-	store(Mem7[ds:0x0064:word16]) = ax_6
+	Mem7[ds:0x0064:word16] = ax_6
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000

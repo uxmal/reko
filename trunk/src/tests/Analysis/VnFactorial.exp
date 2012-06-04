@@ -2,10 +2,10 @@ Mem0: Mem0:Global memory, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
 cx: cx:Register, def: {def cx}
 loc02: loc02:Local -0002 (temp), def: {def loc02}
-ax: ax:Register, def: {def ax}, uses: {call fn0C00_000F (depth: 2;)}{store(Mem7[0x0064:word16]) = ax}
+ax: ax:Register, def: {def ax}, uses: {call fn0C00_000F (depth: 2;)}{Mem7[0x0064:word16] = ax}
 cx_5: orig: cx, def: {cx_5 = 0x0064}, uses: {loc02_6 = cx_5}{call fn0C00_000F (depth: 2;)}
 loc02_6: orig: loc02, def: {loc02_6 = cx_5}
-Mem7: orig: Mem0, def: {store(Mem7[0x0064:word16]) = ax}
+Mem7: orig: Mem0, def: {Mem7[0x0064:word16] = ax}
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:		// block 0, pred:
@@ -19,7 +19,7 @@ l0C00_0000:		// block 1, pred: 0
 	cx_5 = 0x0064
 	loc02_6 = cx_5
 	call fn0C00_000F (depth: 2;)
-	store(Mem7[0x0064:word16]) = ax
+	Mem7[0x0064:word16] = ax
 	return
 	// succ:  2
 fn0C00_0000_exit:		// block 2, pred: 1

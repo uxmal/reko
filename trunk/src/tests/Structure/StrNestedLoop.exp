@@ -8,7 +8,7 @@ l0C00_0003:		// pred: fn0C00_0000_entry l0C00_001A
 	word16 cx_22 = 0x0004
 	// succ:  l0C00_0006
 l0C00_0006:		// pred: l0C00_0003 l0C00_0006
-	store(Mem31[ds:di:word32]) = Mem27[ds:si:word32] + Mem27[ds:bx:word32]
+	Mem31[ds:di:word32] = Mem27[ds:si:word32] + Mem27[ds:bx:word32]
 	si = si + 0x0004
 	bx = bx + 0x0004
 	di = di + 0x0004

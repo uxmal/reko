@@ -50,15 +50,15 @@ namespace Decompiler.Core.Code
         /// </summary>
         public int SizeOfReturnAddressOnStack { get; private set; }
 
-        public int StackDepthBefore { get; set; }
+        public int StackDepthOnEntry { get; set; }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("retsize: {0};", SizeOfReturnAddressOnStack);
-            if (StackDepthBefore != 0)
+            if (StackDepthOnEntry != 0)
             {
-                sb.AppendFormat(" depth: {0}", StackDepthBefore);
+                sb.AppendFormat(" depth: {0}", StackDepthOnEntry);
             }
             if (FpuStackDepthBefore != 0)
             {

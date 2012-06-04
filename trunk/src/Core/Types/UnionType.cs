@@ -112,7 +112,6 @@ namespace Decompiler.Core.Types
 			get { return true; }
 		}
 
-
 		public override string Prefix
 		{
 			get { return "u"; }
@@ -145,9 +144,9 @@ namespace Decompiler.Core.Types
 		public override void Write(TextWriter writer)
 		{
 			writer.Write("(union");
-			if (name != null)
+			if (Name != null)
 			{
-				writer.Write(" \"{0}\"", name);
+				writer.Write(" \"{0}\"", Name);
 			}
 			int i = 0;
 			foreach (UnionAlternative alt in Alternatives.Values)

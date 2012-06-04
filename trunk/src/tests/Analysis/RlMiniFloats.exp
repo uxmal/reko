@@ -18,8 +18,8 @@ l0C00_0000:		// block 1, pred: 0
 	bx = 0x0005
 	ch = 0x03
 	call fn0C00_0032 (depth: 2;)
-	store(Mem0[ds:0x0120:word16]) = ax
-	store(Mem0[ds:0x0122:byte]) = cl
+	Mem0[ds:0x0120:word16] = ax
+	Mem0[ds:0x0122:byte] = cl
 	return
 	// succ:  2
 // DataOut:

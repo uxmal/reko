@@ -5,7 +5,7 @@ ProcedureBuilder_entry:
 grox:
 l1:
 	sp = sp - 0x0002
-	store(Mem0[sp:selector]) = cs
+	Mem0[sp:selector] = cs
 	ds = Mem0[sp:word16]
 	sp = sp + 0x0002
 	bl = Mem0[si:byte]

@@ -1,11 +1,11 @@
 Mem0: Mem0:Global memory, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
-bx: bx:Register, def: {def bx}, uses: {store(Mem7[bx + 0x0002:word16]) = 0x0000}{si_8 = Mem7[bx + 0x0004:word16]}{ax_9 = Mem7[bx + 0x0002:word16]}{cx_10 = Mem7[bx + 0x0002:word16]}{dx_11 = Mem7[bx + 0x0004:word16]}
+bx: bx:Register, def: {def bx}, uses: {Mem7[bx + 0x0002:word16] = 0x0000}{si_8 = Mem7[bx + 0x0004:word16]}{ax_9 = Mem7[bx + 0x0002:word16]}{cx_10 = Mem7[bx + 0x0002:word16]}{dx_11 = Mem7[bx + 0x0004:word16]}
 si: si:Register, def: {def si}
 ax: ax:Register, def: {def ax}
 cx: cx:Register, def: {def cx}
 dx: dx:Register, def: {def dx}
-Mem7: orig: Mem0, def: {store(Mem7[bx + 0x0002:word16]) = 0x0000}, uses: {si_8 = Mem7[bx + 0x0004:word16]}{ax_9 = Mem7[bx + 0x0002:word16]}{cx_10 = Mem7[bx + 0x0002:word16]}{dx_11 = Mem7[bx + 0x0004:word16]}
+Mem7: orig: Mem0, def: {Mem7[bx + 0x0002:word16] = 0x0000}, uses: {si_8 = Mem7[bx + 0x0004:word16]}{ax_9 = Mem7[bx + 0x0002:word16]}{cx_10 = Mem7[bx + 0x0002:word16]}{dx_11 = Mem7[bx + 0x0004:word16]}
 si_8: orig: si, def: {si_8 = Mem7[bx + 0x0004:word16]}
 ax_9: orig: ax, def: {ax_9 = Mem7[bx + 0x0002:word16]}
 cx_10: orig: cx, def: {cx_10 = Mem7[bx + 0x0002:word16]}
@@ -22,7 +22,7 @@ fn0C00_0000_entry:		// block 0, pred:
 	def dx
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	store(Mem7[bx + 0x0002:word16]) = 0x0000
+	Mem7[bx + 0x0002:word16] = 0x0000
 	si_8 = Mem7[bx + 0x0004:word16]
 	ax_9 = Mem7[bx + 0x0002:word16]
 	cx_10 = Mem7[bx + 0x0002:word16]

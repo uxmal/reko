@@ -1,6 +1,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DEF8CEB8-51B6-4D65-8F5B-35C5931E30E7}"
+	ProjectSection(SolutionItems) = preProject
+		devnotes.txt = devnotes.txt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xslt", "tools\xslt\xslt.csproj", "{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}"
 EndProject
@@ -52,6 +55,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparc-2010", "Arch\Sparc\Sparc-2010.csproj", "{454D9734-EDF3-4646-8C7F-8449C68EB826}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X86-2010", "Arch\X86\X86-2010.csproj", "{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coff-2010", "ImageLoaders\Coff\Coff-2010.csproj", "{02595A47-2592-441D-B44D-8EA8C19EE5E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachO-2010", "ImageLoaders\MachO\MachO-2010.csproj", "{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -323,6 +330,30 @@ Global
 		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}.Release|Win32.ActiveCfg = Release|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Release|.NET.ActiveCfg = Release|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{02595A47-2592-441D-B44D-8EA8C19EE5E2}.Release|Win32.ActiveCfg = Release|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Release|.NET.ActiveCfg = Release|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DB44D301-72EA-4F9B-8327-BE8EBC5B1BC8}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,7 +14,7 @@ l0C00_0006:		// pred: l0C00_0002
 	// succ:  l0C00_0002
 	goto l0C00_0002
 l0C00_000D:		// pred: l0C00_0002
-	store(Mem15[ds:0x0200:word16]) = ax_8
+	Mem15[ds:0x0200:word16] = ax_8
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_000D

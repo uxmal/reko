@@ -174,7 +174,7 @@ namespace Decompiler.Evaluation
             for (int i = 0; i < args.Length; ++i)
             {
                 var outArg = args[i] as UnaryExpression;
-                if (outArg == null || outArg.op != Operator.AddrOf) continue;
+                if (outArg == null || outArg.Operator != Operator.AddrOf) continue;
                 var outId = outArg.Expression as Identifier;
                 if (outId != null)
                     SetValue(outId, Constant.Invalid);

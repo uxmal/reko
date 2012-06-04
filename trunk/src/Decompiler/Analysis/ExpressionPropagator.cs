@@ -37,7 +37,11 @@ namespace Decompiler.Analysis
         private SymbolicEvaluationContext ctx;
         private ProgramDataFlow flow;
 
-        public ExpressionPropagator(IProcessorArchitecture arch, ExpressionSimplifier simplifier, SymbolicEvaluationContext ctx, ProgramDataFlow flow)
+        public ExpressionPropagator(
+            IProcessorArchitecture arch, 
+            ExpressionSimplifier simplifier, 
+            SymbolicEvaluationContext ctx, 
+            ProgramDataFlow flow)
         {
             this.arch = arch;
             this.eval = simplifier;
@@ -61,7 +65,7 @@ namespace Decompiler.Analysis
 
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
-            ci.CallSite.StackDepthBefore =
+            ci.CallSite.StackDepthOnEntry =
                 GetStackDepthBeforeCall() +
                 ci.CallSite.SizeOfReturnAddressOnStack;
             var proc = ci.Callee as Procedure;
@@ -333,7 +337,7 @@ namespace Decompiler.Analysis
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
             return SimplifyExpression(
-                new UnaryExpression(unary.op, unary.DataType,
+                new UnaryExpression(unary.Operator, unary.DataType,
                     unary.Expression.Accept(this)));
         }
     }

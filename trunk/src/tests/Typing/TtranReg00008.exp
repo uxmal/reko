@@ -3,14 +3,14 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:		// block 0, pred:
 	// succ:  1
 l0C00_0000:		// block 1, pred: 0
-	store(Mem11[ds:0x9A2E:word16]) = 0x0000
-	store(Mem13[ds:0x9A26:word16]) = 0x0100
+	Mem11[ds:0x9A2E:word16] = 0x0000
+	Mem13[ds:0x9A26:word16] = 0x0100
 	word16 si_16 = 0x0000
 	// succ:  2
 l0C00_0015:		// block 2, pred: 1 2
-	store(Mem19[0x5CE1:si_16 + 0x0000:word16]) = 0xFFFF
+	Mem19[0x5CE1:si_16 + 0x0000:word16] = 0xFFFF
 	word16 v8_22 = Mem19[ds:0x9A26:word16] - 0x0001
-	store(Mem23[ds:0x9A26:word16]) = v8_22
+	Mem23[ds:0x9A26:word16] = v8_22
 	si_16 = si_16 + 0x0026
 	branch v8_22 != 0x0000
 	// succ:  3 2

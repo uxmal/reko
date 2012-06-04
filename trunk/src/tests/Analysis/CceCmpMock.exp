@@ -15,9 +15,9 @@ r0_6: orig: r0
     uses: r0_7 = PHI(r0, r0_6)
 r0_7: orig: r0
     def:  r0_7 = PHI(r0, r0_6)
-    uses: store(Mem8[0x10003000:word32]) = r0_7
+    uses: Mem8[0x10003000:word32] = r0_7
 Mem8: orig: Mem0
-    def:  store(Mem8[0x10003000:word32]) = r0_7
+    def:  Mem8[0x10003000:word32] = r0_7
 // CmpMock
 void CmpMock(word32 r0, word32 r1)
 CmpMock_entry:		// pred:
@@ -32,7 +32,7 @@ l2:		// pred: l1
 	// succ:  skip
 skip:		// pred: l1 l2
 	r0_7 = PHI(r0, r0_6)
-	store(Mem8[0x10003000:word32]) = r0_7
+	Mem8[0x10003000:word32] = r0_7
 	return
 	// succ:  CmpMock_exit
 CmpMock_exit:		// pred: skip

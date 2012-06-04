@@ -27,7 +27,7 @@ using System.Text;
 namespace Decompiler.Configuration
 {
     /// <summary>
-    /// Provides access to information stored in the configuration file.
+    /// Provides access to information stored in the app.config file.
     /// </summary>
     public interface IDecompilerConfigurationService
     {
@@ -40,19 +40,19 @@ namespace Decompiler.Configuration
     {
         public virtual ICollection GetImageLoaders()
         {
-            LoaderSectionHandler handler = (LoaderSectionHandler) ConfigurationManager.GetSection("Decompiler/Loaders");
+            var handler = (LoaderSectionHandler) ConfigurationManager.GetSection("Decompiler/Loaders");
             return handler.ImageLoaders;
         }
 
         public virtual ICollection GetArchitectures()
         {
-            ArchitectureSectionHandler handler = (ArchitectureSectionHandler) ConfigurationManager.GetSection("Decompiler/Architectures");
+            var handler = (ArchitectureSectionHandler) ConfigurationManager.GetSection("Decompiler/Architectures");
             return handler.Architectures;
         }
 
         public virtual ICollection GetEnvironments()
         {
-            OperatingEnvironmentSectionHandler handler = (OperatingEnvironmentSectionHandler) ConfigurationManager.GetSection("Decompiler/Environments");
+            var handler = (OperatingEnvironmentSectionHandler) ConfigurationManager.GetSection("Decompiler/Environments");
             return handler.Environments;
         }
     }

@@ -40,7 +40,7 @@ l0C00_0023:		// pred: l0C00_001D
 	branch bx >= Mem0[ds:0x53B8:word16] l0C00_003C
 	// succ:  l0C00_0029 l0C00_003C
 l0C00_0029:		// pred: l0C00_0023
-	store(Mem13[ds:0x53BA:word16]) = bx
+	Mem13[ds:0x53BA:word16] = bx
 	fn0C00_0046(0x4400, SEQ(ds, 0x5388)[bx * 0x0002], 0x0000, ds)
 	// succ:  l0C00_003C
 l0C00_003C:		// pred: l0C00_001D l0C00_0023 l0C00_0029
@@ -54,8 +54,8 @@ void fn0C00_003D(word16 dx, byte ah, selector ds)
 fn0C00_003D_entry:		// pred:
 	// succ:  l0C00_003D
 l0C00_003D:		// pred: fn0C00_003D_entry
-	store(Mem5[ds:0x0110:byte]) = ah
-	store(Mem6[ds:0x0112:word16]) = dx
+	Mem5[ds:0x0110:byte] = ah
+	Mem6[ds:0x0112:word16] = dx
 	return
 	// succ:  fn0C00_003D_exit
 fn0C00_003D_exit:		// pred: l0C00_003D
@@ -66,9 +66,9 @@ void fn0C00_0046(word16 ax, word16 dx, word16 bx, selector ds)
 fn0C00_0046_entry:		// pred:
 	// succ:  l0C00_0046
 l0C00_0046:		// pred: fn0C00_0046_entry
-	store(Mem6[ds:0x0114:word16]) = ax
-	store(Mem7[ds:0x0116:word16]) = bx
-	store(Mem8[ds:0x0118:word16]) = dx
+	Mem6[ds:0x0114:word16] = ax
+	Mem7[ds:0x0116:word16] = bx
+	Mem8[ds:0x0118:word16] = dx
 	return
 	// succ:  fn0C00_0046_exit
 fn0C00_0046_exit:		// pred: l0C00_0046

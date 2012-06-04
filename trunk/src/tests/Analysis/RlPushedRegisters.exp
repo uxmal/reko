@@ -11,32 +11,32 @@ fn0C00_0000_entry:
 l0C00_0000:
 	cx = 0x002A
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = 0x0001
+	Mem0[ss:sp:word16] = 0x0001
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = 0x0002
+	Mem0[ss:sp:word16] = 0x0002
 	call fn0C00_0023 (retsize: 2;)
 	ax = ax ^ ax
 	SZO = cond(ax)
 	C = false
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = ax
+	Mem0[ss:sp:word16] = ax
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = ax
+	Mem0[ss:sp:word16] = ax
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = ax
+	Mem0[ss:sp:word16] = ax
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = ax
+	Mem0[ss:sp:word16] = ax
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = ax
+	Mem0[ss:sp:word16] = ax
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = ax
+	Mem0[ss:sp:word16] = ax
 	call fn0C00_0034 (retsize: 2;)
 	sp = sp + 0x000C
 	SCZO = cond(sp)
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = 0x0001
+	Mem0[ss:sp:word16] = 0x0001
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = 0x0002
+	Mem0[ss:sp:word16] = 0x0002
 	call fn0C00_005D (retsize: 2;)
 	sp = sp + 0x0004
 	SCZO = cond(sp)
@@ -142,9 +142,9 @@ fn0C00_005D_entry:
 
 l0C00_005D:		
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = cx
+	Mem0[ss:sp:word16] = cx
 	sp = sp - 0x0002
-	store(Mem0[ss:sp:word16]) = bp
+	Mem0[ss:sp:word16] = bp
 	bp = sp
 	ax = Mem0[ss:bp + 0x0008:word16]
 	ax = ax + cx
@@ -168,8 +168,8 @@ void fn0C00_0069()
 fn0C00_0069_entry:
 // DataOut: cx bx ds
 l0C00_0069:
-	store(Mem0[ds:0x0200:word16]) = bx
-	store(Mem0[ds:0x0300:word16]) = cx
+	Mem0[ds:0x0200:word16] = bx
+	Mem0[ds:0x0300:word16] = cx
 	return
 	// succ:  fn0C00_006A_exit
 // DataOut:

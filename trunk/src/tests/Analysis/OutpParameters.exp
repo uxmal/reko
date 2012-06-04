@@ -10,14 +10,14 @@ fn0C00_0000_entry:		// pred:
 l0C00_0000:		// pred: fn0C00_0000_entry
 	si_5 = Mem0[ds:0x0200:word16]
 	ax_7 = fn0C00_0025(si_5, ds, &si_6)
-	store(Mem8[ds:0x0310:word16]) = ax_7
+	Mem8[ds:0x0310:word16] = ax_7
 	ax_10 = fn0C00_0027(si_6, ds, &si_9)
-	store(Mem11[ds:0x0320:word16]) = ax_10
+	Mem11[ds:0x0320:word16] = ax_10
 	ax_13 = fn0C00_002F(si_9, ds, &si_12)
-	store(Mem14[ds:0x0330:word16]) = ax_13
+	Mem14[ds:0x0330:word16] = ax_13
 	ax_16 = fn0C00_0036(si_12, ds, &si_15)
-	store(Mem17[ds:0x0340:word16]) = ax_16
-	store(Mem18[ds:0x0400:word16]) = si_15
+	Mem17[ds:0x0340:word16] = ax_16
+	Mem18[ds:0x0400:word16] = si_15
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000
@@ -32,14 +32,14 @@ fn0C00_0000_entry:		// pred:
 l0C00_0000:		// pred: fn0C00_0000_entry
 	si_5 = Mem0[ds:0x0200:word16]
 	ax_7 = fn0C00_0025(si_5, ds, &si_6)
-	store(Mem8[ds:0x0310:word16]) = ax_7
+	Mem8[ds:0x0310:word16] = ax_7
 	ax_10 = fn0C00_0027(si_6, ds, &si_9)
-	store(Mem11[ds:0x0320:word16]) = ax_10
+	Mem11[ds:0x0320:word16] = ax_10
 	ax_13 = fn0C00_002F(si_9, ds, &si_12)
-	store(Mem14[ds:0x0330:word16]) = ax_13
+	Mem14[ds:0x0330:word16] = ax_13
 	ax_16 = fn0C00_0036(si_12, ds, &si_15)
-	store(Mem17[ds:0x0340:word16]) = ax_16
-	store(Mem18[ds:0x0400:word16]) = si_15
+	Mem17[ds:0x0340:word16] = ax_16
+	Mem18[ds:0x0400:word16] = si_15
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:		// pred: l0C00_0000
@@ -74,7 +74,7 @@ fn0C00_0025_entry:		// pred:
 	// succ:  l0C00_0025
 l0C00_0025:		// pred: fn0C00_0025_entry
 	ax_6 = Mem0[ds:si:word16]
-	store(Mem0[siOut:word16]) = si + 0x0002
+	Mem0[siOut:word16] = si + 0x0002
 	return ax_6
 	// succ:  fn0C00_0025_exit
 fn0C00_0025_exit:		// pred: l0C00_0025
@@ -116,7 +116,7 @@ word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
 fn0C00_0027_entry:		// pred:
 	def Mem0
 	def si
-	store(Mem0[siOut:word16]) = si
+	Mem0[siOut:word16] = si
 	def ds
 	def siOut
 	// succ:  l0C00_0027
@@ -128,7 +128,7 @@ l0C00_0027:		// pred: fn0C00_0027_entry
 	// succ:  l0C00_002D l0C00_002E
 l0C00_002D:		// pred: l0C00_0027
 	ax_11 = Mem0[ds:si:word16]
-	store(Mem0[siOut:word16]) = si + 0x0002
+	Mem0[siOut:word16] = si + 0x0002
 	// succ:  l0C00_002E
 l0C00_002E:		// pred: l0C00_0027 l0C00_002D
 	ax_14 = PHI(ax_8, ax_11)
@@ -150,7 +150,7 @@ fn0C00_002F_entry:		// pred:
 l0C00_002F:		// pred: fn0C00_002F_entry
 	ax_6 = Mem0[ds:si:word16]
 	si_7 = si + 0x0002
-	store(Mem8[ds:si_7 + 0x0002:word16]) = 0x0000
+	Mem8[ds:si_7 + 0x0002:word16] = 0x0000
 	return ax_6
 	// succ:  fn0C00_002F_exit
 fn0C00_002F_exit:		// pred: l0C00_002F
@@ -168,8 +168,8 @@ fn0C00_002F_entry:		// pred:
 l0C00_002F:		// pred: fn0C00_002F_entry
 	ax_6 = Mem0[ds:si:word16]
 	si_7 = si + 0x0002
-	store(Mem0[siOut:word16]) = si_7
-	store(Mem8[ds:si_7 + 0x0002:word16]) = 0x0000
+	Mem0[siOut:word16] = si_7
+	Mem8[ds:si_7 + 0x0002:word16] = 0x0000
 	return ax_6
 	// succ:  fn0C00_002F_exit
 fn0C00_002F_exit:		// pred: l0C00_002F

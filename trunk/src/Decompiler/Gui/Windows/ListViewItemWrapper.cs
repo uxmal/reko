@@ -32,7 +32,6 @@ namespace Decompiler.Gui.Windows
     public class ListViewItemWrapper : IListViewItem
     {
         private ListViewItem item;
-        private IList<IListViewSubItem> subItems;
 
         public ListViewItemWrapper(ListViewItem item)
         {
