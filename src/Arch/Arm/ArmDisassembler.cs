@@ -1,3 +1,25 @@
+#region License
+/* 
+ * Copyright (C) 1999-2012 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Decompiler.Core;
+using Decompiler.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,121 +27,206 @@ using System.Text;
 
 namespace Decompiler.Arch.Arm
 {
-    public class OpGroup
+    public class ArmDisassembler : Disassembler
+    {
+        private ImageReader rdr;
+
+        public ArmDisassembler(ImageReader rdr)
         {
-            public BitRange [] Selectors;
-            public OpRec [] oprecs;
+            // TODO: Complete member initialization
+            this.rdr = rdr;
         }
 
-        public struct BitRange {
-            public uint bitPos;
-            public uint mask;
+        public Address Address
+        {
+            get { throw new NotImplementedException(); }
         }
 
-    public class OpRec
-    {
-        public Opcode op;
-        public string format;
-        public int mask;
-        public OpGroup Group;
-    }
-
-    class ArmDisassembler
-    {
-        public void Decode(uint instr)
+        public MachineInstruction DisassembleInstruction()
         {
-            uint cond = instr>>28;
+            throw new NotImplementedException();
+        }
+
+        public ArmInstruction Disassemble()
+        {
+            // ARM instructions are always little-endian.
+            uint instr = rdr.ReadLeUInt32();
+            uint cond = instr >> 28;
             if (cond == 0xF)
             {
                 //Unconditional();
+                throw new NotImplementedException();
             }
             else
             {
                 uint sel = ((instr >> 23) & 0x0E) | ((instr >> 4) & 1);
-                var oprec = firstLevel.Selectors[sel];
+                var oprec = firstLevel.oprecs[sel];
+                return oprec.Decode(instr);
             }
         }
 
- 
-        
         public static OpGroup firstLevel = new OpGroup
         {
             Selectors = new BitRange[]{
                 new BitRange { bitPos=28, mask=0xF }
             },
 
-            oprecs = new OpRec[]{ 
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = predicated },
-                new OpRec { Group = nonpredicated },
+            oprecs = new OpRec[] { 
+                new DataMiscOpRec { },
+                new DataMiscOpRec { },
+                new DataMiscOpRec { },
+                new DataMiscOpRec { },
+                new LoadStoreOpRec { },
+                new LoadStoreOpRec { },
+                new LoadStoreOpRec { },
+                new MediaOpRec { },
 
+                new BranchBdtOpRec { },
+                new BranchBdtOpRec { },
+                new BranchBdtOpRec { },
+                new BranchBdtOpRec { },
+                new SwiCopOpRec {},
+                new SwiCopOpRec {},
+                new SwiCopOpRec {},
+                new SwiCopOpRec {},
             }
         };
 
+        public class DataMiscOpRec : OpRec
+        {
+            public ArmInstruction Decode(uint instr)
+            {
+                throw new NotImplementedException();
+            }
+
+            static OpRec[] opRecs = new OpRec[] {
+                new DataProcessingOpRec(),
+
+                // 1 00000
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),
+  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(), 
+ 
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(), 
+ 
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(), 
+ 
+                // 1 10000
+                new MovImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(), 
+                new MsrImmediateOpRec(),
+                new DataProcessingImmediateOpRec(), 
+
+                new MovTOpRec(),
+                new DataProcessingImmediateOpRec(), 
+                new MsrImmediateOpRec(),
+                new DataProcessingImmediateOpRec(), 
+
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(), 
+ 
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(),  
+                new DataProcessingImmediateOpRec(), 
+            };
+        }
+
+        public class MsrImmediateOpRec : OpRec { }
+
+        public class MovTOpRec : OpRec { }
+
+        public class DataProcessingOpRec :OpRec
+        {
+        }
+
+        public class DataProcessingImmediateOpRec : OpRec
+        {
+        }
+
+        public class LoadStoreOpRec : OpRec
+        {
+        }
+
+        public class MediaOpRec : OpRec
+        {
+        }
+
+        public class BranchBdtOpRec : OpRec
+        {
+        }
+
+        public class SwiCopOpRec : OpRec
+        {
+        }
+
+        public class MovImmediateOpRec : OpRec { }
+
         public static OpGroup predicated = new OpGroup
         {
-            Selectors = {},
-            oprecs = new OpRec[]{
+            Selectors = { },
+            oprecs = new OpRec[]
+            {
+                new OpRec { Group = DataMisc },
+                new OpRec { Group=  DataMisc },
+                new OpRec { Group=  DataMisc },
+                new OpRec { Group = DataMisc },
 
-            new OpRec { Group = DataMisc },
-            new OpRec { Group=  DataMisc },
-            new OpRec { Group=  DataMisc },
-            new OpRec { Group = DataMisc },
+                new OpRec { Group = LdStWord },
+                new OpRec { Group = LdStWord },
+                new OpRec { Group = LdStWord },
+                new OpRec { Group = Media },
 
-            new OpRec { Group = LdStWord },
-            new OpRec { Group = LdStWord },
-            new OpRec { Group = LdStWord },
-            new OpRec { Group = Media },
+                new OpRec { Group = BranchBlockTransfer },
+                new OpRec { Group = BranchBlockTransfer},
+                new OpRec { Group = BranchBlockTransfer},
+                new OpRec { Group = BranchBlockTransfer},
 
-            new OpRec { Group = BranchBlockTransfer },
-            new OpRec { Group = BranchBlockTransfer},
-            new OpRec { Group = BranchBlockTransfer},
-            new OpRec { Group = BranchBlockTransfer},
-
-            new OpRec { Group = SysCoproc },
-            new OpRec { Group = SysCoproc },
-            new OpRec { Group = SysCoproc },
-            new OpRec { Group = SysCoproc },
+                new OpRec { Group = SysCoproc },
+                new OpRec { Group = SysCoproc },
+                new OpRec { Group = SysCoproc },
+                new OpRec { Group = SysCoproc },
             }
         };
 
         public static OpGroup DataMisc = new OpGroup
         {
-            
+
         };
 
-                public static OpGroup LdStWord = new OpGroup
+        public static OpGroup LdStWord = new OpGroup
         {
         };
-                public static OpGroup Media = new OpGroup
-        {
-        };
-
-                public static OpGroup BranchBlockTransfer = new OpGroup
+        public static OpGroup Media = new OpGroup
         {
         };
 
-                public static OpGroup SysCoproc = new OpGroup
-        {
-        };
+        public static OpGroup BranchBlockTransfer = new OpGroup
+{
+};
+
+        public static OpGroup SysCoproc = new OpGroup
+{
+};
 
         public static OpGroup nonpredicated = new OpGroup
         {
-            Selectors = new BitRange[] { new BitRange{ bitPos = 27, mask = 1 },},
-                oprecs = new OpRec[]
+            Selectors = new BitRange[] { new BitRange { bitPos = 27, mask = 1 }, },
+            oprecs = new OpRec[]
                 {
                     new OpRec{ Group = NonpMisc },
                     new OpRec { Group = nonp2 } 
@@ -128,7 +235,7 @@ namespace Decompiler.Arch.Arm
 
         public static OpGroup nonp2 = new OpGroup
         {
-            Selectors = new BitRange[] { new BitRange { bitPos = 24, mask =0x7}, },
+            Selectors = new BitRange[] { new BitRange { bitPos = 24, mask = 0x7 }, },
             oprecs = new OpRec[]
             {
                 new OpRec { op= Opcode.srs, },
@@ -470,16 +577,42 @@ namespace Decompiler.Arch.Arm
         };
 
 
-    // 00-01 - cruft
-    // 20-5F - rows
-    // 60-7F - striped rows
-    // 80-9F - rows
-    // A0-AF - B
-    // B0-BF - BL
-    // C0-DF - rows
-    // E0-EF - crucft
-    // F0-FF - SWI
-}
+        // 00-01 - cruft
+        // 20-5F - rows
+        // 60-7F - striped rows
+        // 80-9F - rows
+        // A0-AF - B
+        // B0-BF - BL
+        // C0-DF - rows
+        // E0-EF - crucft
+        // F0-FF - SWI
+
+    }
+
+    public class OpGroup
+    {
+        public BitRange[] Selectors;
+        public OpRec[] oprecs;
+    }
+
+    public struct BitRange
+    {
+        public uint bitPos;
+        public uint mask;
+    }
+
+    public class OpRec
+    {
+        public Opcode op;
+        public string format;
+        public int mask;
+        public OpGroup Group;
+
+        internal ArmInstruction Decode(uint instr)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 /*
 http://imrannazar.com/ARM-Opcode-Map
