@@ -28,22 +28,23 @@ using System.Text;
 
 namespace Decompiler.Arch.Arm
 {
-    public class ShiftOperand : MachineOperand
+    public class ArmMemoryOperand : MachineOperand
     {
-
-        public ShiftOperand(Opcode opcode, MachineOperand op) : base(op.Width)
+        public ArmMemoryOperand(PrimitiveType width, RegisterStorage regBase) :base(width)
         {
-            this.Opcode = opcode;
-            this.Shift = op;
+            Base = regBase;
+
         }
 
-        public ShiftOperand(Opcode opcode, PrimitiveType width) : base(width)
+        public ArmMemoryOperand(PrimitiveType width, RegisterStorage regBase, MachineOperand offset) : base(width)
         {
-            this.Opcode = opcode;
+            Base = regBase;
+            Offset = offset;
         }
 
-        public Opcode Opcode { get; set; }
-        public MachineOperand Shift { get; set; }
-
+        public RegisterStorage Base;
+        public MachineOperand Offset;
+        public bool Preindexed;
+        public bool Writeback;
     }
 }

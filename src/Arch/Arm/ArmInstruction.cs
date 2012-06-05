@@ -108,6 +108,39 @@ namespace Decompiler.Arch.Arm
                 writer.Write("{0,8:X}", adr.Address);
                 return;
             }
+            var mem = op as ArmMemoryOperand;
+            if (mem != null)
+            {
+                writer.Write('[');
+                writer.Write(mem.Base);
+                if (mem.Offset != null)
+                {
+                    if (mem.Preindexed)
+                    {
+                        writer.Write("],");
+                        Write(mem.Offset, writer);
+                    }
+                    else
+                    {
+                        writer.Write(",");
+                        Write(mem.Offset, writer);
+                        writer.Write("]");
+                    }
+                    if (mem.Writeback)
+                        writer.Write("!");
+                }
+                else
+                    writer.Write(']');
+                return;
+            }
+            var sh = op as ShiftOperand;
+            if (sh != null)
+            {
+                writer.Write(sh.Opcode);
+                writer.Write(' ');
+                Write(sh.Shift, writer);
+                return;
+            }
             op.Write(false, writer);
         }
 

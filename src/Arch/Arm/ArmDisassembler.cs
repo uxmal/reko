@@ -1,20 +1,20 @@
-#region License
+#region license
 /* 
- * Copyright (C) 1999-2012 John Källén.
+ * copyright (c) 1999-2012 john källén.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * this program is free software; you can redistribute it and/or modify
+ * it under the terms of the gnu general public license as published by
+ * the free software foundation; either version 2, or (at your option)
  * any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * this program is distributed in the hope that it will be useful,
+ * but without any warranty; without even the implied warranty of
+ * merchantability or fitness for a particular purpose.  see the
+ * gnu general public license for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; see the file COPYING.  If not, write to
- * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ * you should have received a copy of the gnu general public license
+ * along with this program; see the file copying.  if not, write to
+ * the free software foundation, 675 mass ave, cambridge, ma 02139, usa.
  */
 #endregion
 
@@ -103,7 +103,8 @@ namespace Decompiler.Arch.Arm
         private ImageReader rdr;
         private ArmInstruction arm;
         private eTargetType poss_tt;
-        private  OpFlags flag;
+        private OpFlags flag;
+        private uint addr;
 
         public ArmDisassembler2(ArmProcessorArchitecture arch, ImageReader rdr)
         {
@@ -115,15 +116,15 @@ namespace Decompiler.Arch.Arm
 
         public MachineInstruction DisassembleInstruction()
         {
-            var addr = rdr.Address.Linear;
-            this.instr_disassemble(rdr.ReadLeUInt32(), addr, new DisOptions());
+            addr = rdr.Address.Linear;
+            this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
             return arm;
         }
 
         public ArmInstruction Disassemble()
         {
-            var addr = rdr.Address.Linear;
-            this.instr_disassemble(rdr.ReadLeUInt32(), addr, new DisOptions());
+            addr = rdr.Address.Linear;
+            this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
             return arm;
         }
 
@@ -343,9 +344,11 @@ namespace Decompiler.Arch.Arm
         word fpn;
         word instr;
         Opcode mnemonic;
+        PrimitiveType width;
 
+        public ArmInstruction Disassemble(word instr) { return Disassemble(instr, new DisOptions()); }
 
-        Instruction instr_disassemble(word instr, address addr, DisOptions opts)
+        public ArmInstruction Disassemble(word instr, DisOptions opts)
         {
             this.instr = instr;
             this.mnemonic = Opcode.illegal;
@@ -356,6 +359,7 @@ namespace Decompiler.Arch.Arm
             this.poss_tt = eTargetType.target_None;
             int is_v4 = 0;
             string format = "";
+            this.width = PrimitiveType.Word32;
 
             // PHASE 0. Set up default values for |result|. 
 
@@ -382,13 +386,14 @@ namespace Decompiler.Arch.Arm
                 if ((instr & (1 << 23)) != 0)
                 {
                     // long multiply 
+                    width = PrimitiveType.Word64;
                     mnemonic = new Opcode[] { Opcode.umull, Opcode.umlal, Opcode.smull, Opcode.smlal }[(instr >> 21) & 3];
                     format = "3,4,0,2";
                 }
                 else
                 {
                     if ((instr & (1 << 22)) != 0)
-                        return lUndefined();	// "class C" 
+                        return IllegalInstruction();	// "class C" 
                     // short multiply 
                     if ((instr & (1 << 21)) != 0)
                     {
@@ -417,7 +422,7 @@ namespace Decompiler.Arch.Arm
                     format = "3,0,[4]";
                     if ((instr & Bbit) != 0)
                     {
-                        this.flag = OpFlags.B;
+                        width = PrimitiveType.Byte;
                         flagp.Append('B');
                     }
                     break;
@@ -448,20 +453,21 @@ namespace Decompiler.Arch.Arm
             // fall through here 
             lMaybeLDRHetc:
                 if ((instr & (14 << 24)) == 0
-                    && ((instr & (9 << 4)) == (9 << 4)))
+                    && 
+                    ((instr & (9 << 4)) == (9 << 4)))
                 {
                     // Might well be LDRH or similar. 
                     if ((instr & (Wbit + Pbit)) == Wbit)
-                        return lUndefined();	// "class E", case 1 
+                        return IllegalInstruction();	// "class E", case 1 
                     if ((instr & (Lbit + (1 << 6))) == (1 << 6))
-                        return lUndefined();	// STRSH etc 
+                        return IllegalInstruction();	// STRSH etc 
                     mnemonic = ((instr & Lbit) >> 18) != 0 ? Opcode.ldr : Opcode.str;
                     switch ((instr & (3 << 5)) >> 5)
                     {
-                    case 0: flag = OpFlags.B; break;
-                    case 1: flag = OpFlags.H; break;
-                    case 2: flag = OpFlags.S|OpFlags.B; break;
-                    case 3: flag = OpFlags.S|OpFlags.H; break;
+                    case 0: width = PrimitiveType.Byte; break;
+                    case 1: width = PrimitiveType.Word16; break;
+                    case 2: flag = OpFlags.S; width = PrimitiveType.Byte; break;
+                    case 3: flag = OpFlags.S; width = PrimitiveType.Word16; break;
                     }
                     format = "3,/";
                     // aargh: 
@@ -507,15 +513,18 @@ namespace Decompiler.Arch.Arm
                                 result.oddbits = true;
                         }
                         if ((instr & Sbit) == 0)
-                            return lUndefined();	// CMP etc, no S bit 
+                            return IllegalInstruction();	// CMP etc, no S bit 
                     }
                     else if ((op21 & (1 << 21)) != 0)
                     {
                         format = "3,*";
-                        if ((instr & RNbits()) != 0) result.oddbits = true;
+                        if ((instr & RNbits()) != 0) 
+                            result.oddbits = true;
                     }
                     else
+                    {
                         format = "3,4,*";
+                    }
                     if ((instr & Sbit) != 0 && (op21 < (8 << 21) || op21 >= (12 << 21)))
                     {
                         flag = OpFlags.S;
@@ -529,12 +538,12 @@ namespace Decompiler.Arch.Arm
             case 7:
                 // undefined or STR/LDR 
                 if (((instr & Ibit) != 0) && (instr & (1 << 4)) != 0)
-                    return lUndefined();	// "class A" 
-                mnemonic = ((instr & Lbit) >> 18)!=0 ? Opcode.ldr : Opcode.str;
+                    return IllegalInstruction();	// "class A" 
+                mnemonic = (instr & Lbit)!=0 ? Opcode.ldr : Opcode.str;
                 format = "3,/";
                 if ((instr & Bbit) != 0)
                 {
-                    flag = OpFlags.B;
+                    width = PrimitiveType.Byte;
                     flagp.Append('B');
                 }
                 if ((instr & (Wbit + Pbit)) == Wbit)
@@ -547,7 +556,7 @@ namespace Decompiler.Arch.Arm
             case 8:
             case 9:
                 // STM/LDM 
-                mnemonic = new Opcode[] { Opcode.stm, Opcode.ldm }[(instr & Lbit) >> 18];
+                mnemonic = (instr & Lbit) != 0 ? Opcode.ldm : Opcode.stm;
                 if (RN_is(13))
                 {
                     // r13, so treat as stack 
@@ -567,7 +576,7 @@ namespace Decompiler.Arch.Arm
             case 10:
             case 11:
                 // B or BL 
-                mnemonic = new Opcode[] { Opcode.b, Opcode.bl }[(instr & (1 << 24)) >> 23];
+                mnemonic = (instr & (1 << 24)) != 0 ? Opcode.bl : Opcode.b;
                 format = "&";
                 break;
             case 12:
@@ -576,7 +585,7 @@ namespace Decompiler.Arch.Arm
                 if (CP_is(1))
                 {
                     // copro 1: FPU. This is STF or LDF. 
-                    mnemonic = new Opcode[] { Opcode.stf, Opcode.ldf }[(instr & Lbit) >> 18];
+                    mnemonic = ((instr & Lbit) >> 18) != 0 ? Opcode.ldf : Opcode.stf;
                     format = "8,/";
                     flag = FpPrecisionOpFlag(fpn);
                     poss_tt = (eTargetType)((int)eTargetType.target_FloatS + fpn);
@@ -584,7 +593,7 @@ namespace Decompiler.Arch.Arm
                 else if (CP_is(2))
                 {
                     // copro 2: this is LFM or SFM. 
-                    mnemonic = new Opcode[] { Opcode.sfm, Opcode.lfm }[(instr & Lbit) >> 18];
+                    mnemonic = ((instr & Lbit) >> 18) != 0 ? Opcode.lfm : Opcode.sfm;
                     if (fpn == 0) fpn = 4;
                     if (RN_is(13) && BitsDiffer(23, 24))
                     {
@@ -624,7 +633,7 @@ namespace Decompiler.Arch.Arm
                 else
                 {
                     // some other copro number: STC or LDC. 
-                    mnemonic = new Opcode[] { Opcode.stc, Opcode.ldc }[(instr & Lbit) >> 18];
+                    mnemonic = (instr & Lbit) != 0 ? Opcode.ldc : Opcode.stc;
                     format = ";,\004,/";
                     if ((instr & (1 << 22)) != 0)
                     {
@@ -646,7 +655,7 @@ namespace Decompiler.Arch.Arm
                         {
                             // MCR in FPU with Rd=r15: comparison (ugh) 
                             if ((instr & (1 << 23)) == 0)
-                                return lUndefined();	// unused operation 
+                                return IllegalInstruction();	// unused operation 
                             mnemonic = new Opcode[] { Opcode.cmf, Opcode.cnf, Opcode.cmfe, Opcode.cnfe }[(instr & (3 << 21)) >> 21];
                             format = "9,+";
                             if ((instr & ((1 << 19) + (7 << 5))) != 0)
@@ -657,7 +666,7 @@ namespace Decompiler.Arch.Arm
                             // normal FPU MCR/MRC 
                             word op20 = instr & (15 << 20);
                             if (op20 >= 6 << 20)
-                                return lUndefined();
+                                return IllegalInstruction();
                             mnemonic = new Opcode[] { Opcode.flt, Opcode.fix, Opcode.wfs, Opcode.rfs, Opcode.wfc, Opcode.rfc }[op20 >> 18];
                             if (op20 == 0)
                             {
@@ -666,7 +675,7 @@ namespace Decompiler.Arch.Arm
                                 {
                                     flag = FpPrecisionOpFlag(((instr >> 7) & 1) + ((instr >> 18) & 2));
                                     if (flag == OpFlags.P)
-                                        return lUndefined();
+                                        return IllegalInstruction();
                                     flagp.Append("\0PMZ"[(int)((instr & (3 << 5)) >> 5)]);
                                 }
                                 if ((instr & 15) != 0) result.oddbits = true;	// Fm and const flag unused 
@@ -721,7 +730,7 @@ namespace Decompiler.Arch.Arm
                         flagp.Append("\0PMZ"[(int)((instr & (3 << 5)) >> 5)]);
                         // NB that foregoing relies on this being the last flag! 
                         if (mnemonic == Opcode.illegal || flagchars[0] == '*')
-                            return lUndefined();
+                            return IllegalInstruction();
                     }
                     else
                     {
@@ -748,36 +757,59 @@ namespace Decompiler.Arch.Arm
             arm.Opcode = this.mnemonic;
             arm.Cond = (Condition)(instr >> 28);
             arm.OpFlags = flag;
-            return BuildOperands(addr, format, opts, is_v4, op);
+            var operands = new List<MachineOperand>();
+            if (!BuildOperands(format.GetEnumerator(), opts, is_v4, operands, op))
+                return IllegalInstruction();
+            if (operands.Count > 0)
+            {
+                arm.Dst = operands[0];
+                if (operands.Count > 1)
+                {
+                    arm.Src1 = operands[1];
+                    if (operands.Count > 2)
+                    {
+                        arm.Src2 = operands[2];
+                        if (operands.Count > 3)
+                        {
+                            arm.Src3 = operands[3];
+                        }
+                    }
+                }
+            }
+            return arm;
         }
 
-
-
-        private static OpFlags FpPrecisionOpFlag(word fpn)
+        private  OpFlags FpPrecisionOpFlag(word fpn)
         {
             switch (fpn)
             {
-            case 0: return OpFlags.S;
-            case 1: return OpFlags.D;
-            case 2: return OpFlags.E;
-            case 3: return OpFlags.P;
+            case 0: width = PrimitiveType.Real32; return OpFlags.S;
+            case 1: width = PrimitiveType.Real64; return OpFlags.D;
+            case 2: width = PrimitiveType.Real80; return OpFlags.E;
+            case 3: width = PrimitiveType.Real32; return OpFlags.P;
             }
             return 0;
         }
         
-        private Instruction BuildOperands(address addr, string format, DisOptions opts, int is_v4, StringBuilder op)
+        /// <summary>
+        /// Adds operands to the <paramref name="operands"/> list, basing the operand types on the provided format characters
+        /// in the <paramref name="f"/> stream.
+        /// </summary>
+        /// <param name="f"></param>
+        /// <param name="opts"></param>
+        /// <param name="is_v4"></param>
+        /// <param name="operands"></param>
+        /// <param name="op"></param>
+        /// <returns>Returns false if an invalid operand is discovered, otherwise true.</returns>
+        private bool BuildOperands(IEnumerator<char> f, DisOptions opts, int is_v4, List<MachineOperand> operands, StringBuilder op)
         {
-            int ip = 0; // format
-            string f = format;
             char c;
 
-            Debug.Print("Format: {0}", format);
             string[] regnames = opts.regnames;
             word oflags = opts.flags;
-            var operands = new List<MachineOperand>();
-            while (ip < f.Length)
+            while (f.MoveNext())
             {
-                c = f[ip++];
+                c = f.Current;
                 switch (c)
                 {
                 case '$':
@@ -796,8 +828,7 @@ namespace Decompiler.Arch.Arm
                     operands.Add(new RegisterRangeOperand(instr & 0xFFFF));
                     break;
                 case '&':
-                    operands.Add(new AddressOperand(new Address((addr + 8 + ((instr << 8) >> 6)) & 0x03FFFFFCu)));
-                    RenderAddress(instr, addr, op);
+                    RenderAddress(operands, op);
                     break;
                 case '\'':
                     LPling(instr, op);
@@ -808,33 +839,41 @@ namespace Decompiler.Arch.Arm
                 case ')':
                     op.Append((instr >> 20) & 15);
                     break;
+                case '[':
+                    var nestedOperands = new List<MachineOperand>();
+                    BuildOperands(f, opts, is_v4, nestedOperands, op);
+                    Debug.Assert(nestedOperands.Count == 1);
+                    operands.Add(new ArmMemoryOperand(width, ((RegisterOperand) nestedOperands[0]).Register));
+                    break;
+                case ']':
+                    return true;
                 case '*':
                 case '.':
-                    var ops = RenderOperand2(instr, addr, c, op);
-                    if (ops == null)
-                        return lUndefined();
-                    operands.AddRange(ops);
+                    if (!AddSecondOperand(c, operands, op))
+                        return false;
                     break;
                 case '+':
-                    operands.Add(FpRegisterOrConstant(instr, op));
+                    operands.Add(FpRegisterOrConstant(instr, operands, op));
                     break;
                 case ',':
                     break;
                 case '-':
-                    operands.Add(CoprocessorExtraInfo(instr, op, oflags));
+                    if (!AddCoprocessorExtraInfo(operands))
+                        return false;
                     break;
                 case '/':
                     result.addrstart = op.Length;
                     op.Append('[');
                     var rn = new RegisterOperand(A32Registers.GpRegs[(instr & RNbits()) >> 16]);
                     append(op, reg_names[(instr & RNbits()) >> 16]);
-                    if ((instr & Pbit) == 0) op.Append(']');
-                    op.Append(','); if ((oflags & disopt_CommaSpace) != 0) op.Append(' ');
+                    if ((instr & Pbit) == 0)
+                        op.Append(']');
                     // For following, NB that bit 25 is always 0 for LDC, SFM etc 
                     if ((instr & Ibit) != 0)
                     {
                         // shifted offset 
-                        if ((instr & Ubit) == 0) op.Append('-');
+                        if ((instr & Ubit) == 0) 
+                            op.Append('-');
                         /* We're going to transfer to '*', basically. The stupid
                          * thing is that the meaning of bit 25 is reversed there;
                          * I don't know why the designers of the ARM did that.
@@ -844,8 +883,7 @@ namespace Decompiler.Arch.Arm
                         {
                             if (is_v4 != 0 && (instr & (15 << 8)) == 0)
                             {
-                                f = ((instr & Pbit) != 0) ? "0]" : "0";
-                                ip = 0;
+                                f = ((instr & Pbit) != 0 ? "0]" : "0").GetEnumerator();
                                 break;
                             }
                         }
@@ -855,24 +893,24 @@ namespace Decompiler.Arch.Arm
                          */
                         if ((instr & Pbit) != 0) 
                         {
-                            f = "*]'"; ip = 0; 
+                            f = "*]'".GetEnumerator(); 
                         }
                         else if ((instr & (1 << 27)) != 0)
                         {
                             if (CP_is(1) || CP_is(2))
                             {
                                 if ((instr & Wbit) == 0)
-                                    return lUndefined();
-                                f = "*"; ip = 0;
+                                    return false;
+                                f = "*".GetEnumerator(); 
                             }
                             else 
                             {
-                                f = "*'"; ip = 0; 
+                                f = "*'".GetEnumerator(); 
                             }
                         }
                         else 
                         {
-                            f = "*"; ip = 0;
+                            f = "*".GetEnumerator();
                         }
                     }
                     else
@@ -900,19 +938,20 @@ namespace Decompiler.Arch.Arm
                             else result.oddbits = true;
                             result.offset = -(int)offset;
                         }
-                        else result.offset = (int)offset;
+                        else 
+                            result.offset = (int)offset;
                         num(op, offset);
                         if (RN_is(15) && (instr & Pbit) != 0)
                         {
                             // Immediate, pre-indexed and PC-relative. Set target. 
                             result.target_type = poss_tt;
-                            result.target = (instr & Ubit) != 0 ? addr + 8 + offset
-                                                              : addr + 8 - offset;
+                            result.target = (instr & Ubit) != 0 
+                                ? addr + 8 + offset
+                                : addr + 8 - offset;
                             if ((instr & Wbit) == 0)
                             {
                                 // no writeback, either. Use friendly form. 
-                                throw new NotImplementedException();
-                                //hex8(result.addrstart, result.target);
+                                operands.Add(new AddressOperand(new Address(result.target)));
                                 break;
                             }
                         }
@@ -926,7 +965,7 @@ namespace Decompiler.Arch.Arm
                             if (CP_is(1) || CP_is(2))
                             {
                                 if ((instr & Wbit) == 0)
-                                    return lUndefined();
+                                    return false;
                             }
                             else
                                 LPling(instr, op);
@@ -939,7 +978,6 @@ namespace Decompiler.Arch.Arm
                 case '3':
                 case '4':
                     operands.Add(new RegisterOperand(A32Registers.GpRegs[(instr >> (4 * (c - '0'))) & 15]));
-                    append(op, reg_names[(instr >> (4 * (c - '0'))) & 15]);
                     break;
                 case '5':
                 case '6':
@@ -947,11 +985,9 @@ namespace Decompiler.Arch.Arm
                 case '8':
                 case '9':
                     operands.Add(new RegisterOperand(A32Registers.FpRegs[(instr >> (4 * (c - '5'))) & 7]));
-                    op.Append('f');
-                    op.Append((char)('0' + ((instr >> (4 * (c - '5'))) & 7)));
                     break;
                 case ':':
-                    op.Append((char)('0' + ((instr >> 21) & 7)));
+                    operands.Add(ImmediateOperand.Byte((byte)((instr >> 21) & 7)));
                     break;
                 case ';':
                     reg(op, 'p', instr >> 8);
@@ -963,38 +999,23 @@ namespace Decompiler.Arch.Arm
                         op.Append(c);
                     break;
                 }
-                if (operands.Count > 0)
-                {
-                    arm.Dst = operands[0];
-                    if (operands.Count > 1)
-                    {
-                        arm.Src1 = operands[1];
-                    if (operands.Count > 2)
-                    {
-                        arm.Src2 = operands[2];
-                    if (operands.Count > 3)
-                    {
-                        arm.Src3 = operands[3];
-                    }
-                    }
-                    }
-                }
             }
-            return result;
+            return true;
         }
 
-        private static MachineOperand CoprocessorExtraInfo(word instr, StringBuilder op, word oflags)
+        private bool AddCoprocessorExtraInfo(List<MachineOperand> operands)
         {
             word w = instr & (7 << 5);
             if (w != 0)
             {
-                return new ImmediateOperand(Constant.Byte((byte)(w >> 5)));
+                operands.Add(new ImmediateOperand(Constant.Byte((byte)(w >> 5))));
+                return true;
             }
             else
-                return null;
+                return false;
         }
 
-        private static MachineOperand FpRegisterOrConstant(word instr, StringBuilder op)
+        private MachineOperand FpRegisterOrConstant(word instr, List<MachineOperand> operands, StringBuilder op)
         {
             word w = instr & 7;
             if ((instr & (1 << 3)) != 0)
@@ -1024,16 +1045,17 @@ namespace Decompiler.Arch.Arm
             if ((instr & Wbit) != 0) op.Append('!');
         }
 
-        private void RenderAddress(word instr, address addr, StringBuilder op)
+        private void RenderAddress(List<MachineOperand> operands, StringBuilder op)
         {
             uint target = (addr + 8 + ((instr << 8) >> 6)) & 0x03FFFFFCu;
+            operands.Add(new AddressOperand(new Address(target)));
             result.addrstart = op.Length;
             hex8(op, target);
             result.target_type = eTargetType.target_Code;
             result.target = target;
         }
 
-        private MachineOperand [] RenderOperand2(word instr ,address addr, char c, StringBuilder op)
+        private bool AddSecondOperand(char c, List<MachineOperand> operands, StringBuilder op)
         {
             if ((instr & Ibit) != 0)
             {
@@ -1044,7 +1066,8 @@ namespace Decompiler.Arch.Arm
                 {
                     // Funny immediate const. Guaranteed not '.', btw 
                     op.AppendFormat("#&{0:X2},", imm8 & 0xFF);
-                    return new MachineOperand[] { new ImmediateOperand(Constant.Word32(imm8 & 0xFF)) };
+                    operands.Add(new ImmediateOperand(Constant.Word32(imm8 & 0xFF)));
+                    return true;
                 }
                 else
                 {
@@ -1052,7 +1075,8 @@ namespace Decompiler.Arch.Arm
                     if (c == '*')
                     {
                         op.Append('#');
-                        return new MachineOperand[] { ArmImmediateOperand.Word32((int)imm8) };
+                        operands.Add(ImmediateOperand.Word32((int)imm8));
+                        return true;
                     }
                     else
                     {
@@ -1064,7 +1088,8 @@ namespace Decompiler.Arch.Arm
                         result.addrstart = op.Length;
                         hex8(op, a);
                         result.target = a; result.target_type = eTargetType.target_Unknown;
-                        return new MachineOperand[] { ImmediateOperand.Word32((int)imm8) };
+                        operands.Add(ImmediateOperand.Word32((int)imm8));
+                        return true;
                     }
                 }
             }
@@ -1078,12 +1103,15 @@ namespace Decompiler.Arch.Arm
                 {
                     // register rotation 
                     if ((instr & (1 << 7)) != 0)
-                        return null;
+                        return false;
+
                     // yield operator
                     op.Append(',');
                     append(op, rot.ToString()); op.Append(' ');
                     append(op, reg_names[(instr & (15 << 8)) >> 8]);
-                    return new MachineOperand[] { operand, new ShiftOperand(rot, new RegisterOperand(A32Registers.GpRegs[(instr & (15 << 8)) >> 8])) };
+                    operands.Add(operand);
+                    operands.Add(new ShiftOperand(rot, new RegisterOperand(A32Registers.GpRegs[(instr & (15 << 8)) >> 8])));
+                    return true;
                 }
                 else
                 {
@@ -1092,12 +1120,16 @@ namespace Decompiler.Arch.Arm
                     if (n == 0)
                     {
                         if ((instr & (3 << 5)) == 0)
-                            return new MachineOperand[] { new RegisterOperand(A32Registers.GpRegs[instr & 0x0F]) };
+                        {
+                            operands.Add(new RegisterOperand(A32Registers.GpRegs[instr & 0x0F]));
+                            return true;
+                        }
                         else if ((instr & (3 << 5)) == (3 << 5))
                         {
-                            // yield operand
+                            operands.Add(operand);
                             append(op, "," + Opcode.rrx);
-                            return new MachineOperand[] { operand, new ShiftOperand(Opcode.rrx, PrimitiveType.Word32) };
+                            operands.Add(new ShiftOperand(Opcode.rrx, PrimitiveType.Word32));
+                            return true;
                         }
                         else
                             n = 32 << 7;
@@ -1106,17 +1138,21 @@ namespace Decompiler.Arch.Arm
                     append(op, rot.ToString());
                     append(op, " #");
                     num(op, n >> 7);
-                    return new MachineOperand[] { operand, new ShiftOperand(rot, ImmediateOperand.Byte((byte) (n >> 7))) };
+                    operands.Add(operand);
+                    operands.Add(new ShiftOperand(rot, ImmediateOperand.Byte((byte)(n >> 7))));
+                    return true;
                 }
             }
         }
 
-
-        private Instruction lUndefined()
+        private ArmInstruction IllegalInstruction()
         {
             result.text.Append("Undefined instruction");
             result.undefined = true;
-            return result;
+            return new ArmInstruction
+            {
+                Opcode = Opcode.illegal
+            };
         }
 
         static Opcode[] aluOps = new Opcode[] { 

@@ -34,9 +34,6 @@ namespace Decompiler.Arch.Arm
         E = 2,
         P = 3,
 
-        B = 4,
-        H = 8,
-        
         L = 0x10,
      
         EA = 0x20,

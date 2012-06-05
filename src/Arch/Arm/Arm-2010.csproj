@@ -63,6 +63,7 @@
     <Compile Include="ArmDisassembler.cs" />
     <Compile Include="ArmImmediateOperand.cs" />
     <Compile Include="ArmInstruction.cs" />
+    <Compile Include="ArmMemoryOperand.cs" />
     <Compile Include="ArmProcessorArchitecture.cs" />
     <Compile Include="Condition.cs" />
     <Compile Include="Opcode.cs" />
