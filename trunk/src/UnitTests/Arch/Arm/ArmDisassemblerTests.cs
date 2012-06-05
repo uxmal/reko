@@ -39,6 +39,13 @@ namespace Decompiler.UnitTests.Arch.Arm
             return instr;
         }
 
+        private static ArmInstruction Disassemble(uint instr)
+        {
+            var image = new ProgramImage(new Address(0x00100000), new byte[4]);
+            var dasm = new ArmDisassembler2(new ArmProcessorArchitecture(), image.CreateReader(0));
+            return dasm.Disassemble(instr);
+        }
+
         [Test]
         public void Branch()
         {
@@ -51,15 +58,22 @@ namespace Decompiler.UnitTests.Arch.Arm
         [Test]
         public void AllZeroes()
         {
-            var instr = Disassemble(new byte[] { 0x00, 0x00, 0x00, 0x00, });
+            var instr = Disassemble(0x00000000u);
             Assert.AreEqual("andeq\tr0,r0,r0", instr.ToString());
         }
 
         [Test]
         public void AndWithShift()
         {
-            var instr = Disassemble(new byte[] { 0xE0, 0x10, 0x02, 0x66, });
+            var instr = Disassemble(0xE0100266u);
             Assert.AreEqual("ands\tr0,r0,r0", instr.ToString());
+        }
+
+        [Test]
+        public void Swpb()
+        {
+            var instr = Disassemble(0xE1412093u);
+            Assert.AreEqual("swpb\tr2,r3,[r1]", instr.ToString());
         }
     }
 }
