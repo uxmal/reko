@@ -319,6 +319,8 @@ namespace Decompiler.Evaluation
                 Changed = true;
                 return idConst.Transform();
             }
+            // jkl: Copy propagation causes real problems when used during trashed register analysis.
+            // If needed in other passes, it should be an option for expression e
             if (idCopyPropagation.Match(id))
             {
                 Changed = true;

@@ -187,7 +187,8 @@ namespace Decompiler.Analysis
         public void EnsureEvaluationContext(BlockFlow bf)
         {
             this.ctx = bf.SymbolicIn.Clone();
-            this.se = new SymbolicEvaluator(new TrashedExpressionSimplifier(this, ctx), ctx);
+            var tes = new TrashedExpressionSimplifier(this, ctx);
+            this.se = new SymbolicEvaluator(tes, ctx);
         }
 
         public void PropagateToProcedureSummary(Procedure proc)

@@ -181,6 +181,10 @@ namespace Decompiler.UnitTests.Analysis
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
             trf.RewriteBasicBlocks();
+            foreach (var procedure in prog.Procedures.Values)
+            {
+                procedure.Dump(true, false);        //$DEBUG
+            }
 			var rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
 			DumpProcedureFlows(prog, dfa, rl, fut.TextWriter);
 		}

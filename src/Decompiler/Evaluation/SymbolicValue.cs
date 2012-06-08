@@ -18,32 +18,29 @@
  */
 #endregion
 
+using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.Arch.Arm
+namespace Decompiler.Evaluation
 {
-    [Flags]
-    public enum OpFlags : short
+    public class SymbolicValue
     {
-        None,
-        S = 0,
-        D = 1,
-        E = 2,
-        P = 3,
+        private SymbolicValue(Statement def, Expression value)
+        {
+            this.Definition = def;
+            this.Value = value;
+        }
 
-        // Rounding modes
-        Pl = 4,
-        Mi = 5,
-        Zr = 6,
+        private SymbolicValue( Expression value) : this(null, value)
+        {
+        }
 
-        L = 0x10,
-     
-        EA = 0x20,
-        FD = 0x30,
-
-        T = 0x40,
+        // The statement that defined the value, or null if it was defined on procedure entry.
+        public Statement Definition { get; private set; }
+        public Expression Value { get; private set; }
     }
 }
