@@ -43,7 +43,7 @@ namespace Decompiler.Evaluation
         {
             idOld = id;
             idNew = ctx.GetValue(id) as Identifier;
-            return idNew != null && idNew != idOld;
+            return idNew != null && idNew != idOld);
         }
 
         public Expression Transform()

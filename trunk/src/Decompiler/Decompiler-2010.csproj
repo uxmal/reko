@@ -266,6 +266,7 @@
     <Compile Include="Evaluation\BinOpWithSelf_Rule.cs" />
     <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Evaluation\SymbolicEvaluator.cs" />
+    <Compile Include="Evaluation\SymbolicValue.cs" />
     <Compile Include="Gui\BlockNavigator.cs" />
     <Compile Include="Gui\CommandGroup.cs" />
     <Compile Include="Gui\FindResult.cs" />

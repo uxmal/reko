@@ -154,15 +154,17 @@ namespace Decompiler.Arch.Arm
             public int addrstart;	// start of address part of instruction, or 0 
         };
 
-        const int disopt_SWInames = 1;	// use names, not &nnnn 
-        const int disopt_CommaSpace = 2;	// put spaces after commas 
-        const int disopt_FIXS = 4;	// bogus FIX syntax for ObjAsm 
-        const int disopt_ReverseBytes = 8;	// byte-reverse words first 
+        [Flags]
+        public enum disopt : uint
+        {
+            SWInames = 1,	    // use names, not &nnnn 
+            FIXS = 4,	        // bogus FIX syntax for ObjAsm 
+            ReverseBytes = 8,	// byte-reverse words first 
+        }
 
         public class DisOptions
         {
-            public word flags;
-            public string[] regnames;	// pointer to 16 |char *|s: register names 
+            public disopt flags;
         }
 
         const bool INSTR_grok_v4 = true;
@@ -676,7 +678,7 @@ namespace Decompiler.Arch.Arm
                                     flag = FpPrecisionOpFlag(((instr >> 7) & 1) + ((instr >> 18) & 2));
                                     if (flag == OpFlags.P)
                                         return IllegalInstruction();
-                                    flagp.Append("\0PMZ"[(int)((instr & (3 << 5)) >> 5)]);
+                                    flag |= FpRoundingMode((instr & (3 << 5)) >> 5);
                                 }
                                 if ((instr & 15) != 0) result.oddbits = true;	// Fm and const flag unused 
                             }
@@ -689,7 +691,7 @@ namespace Decompiler.Arch.Arm
                                 {
                                     // FIX instruction 
                                     format = "3,+";
-                                    if ((opts.flags & disopt_FIXS) != 0)
+                                    if ((opts.flags & disopt.FIXS) != 0)
                                     {
                                         flagp.Append("SDEP"[(int)(((instr >> 7) & 1) + ((instr >> 18) & 2))]);
                                     }
@@ -745,10 +747,6 @@ namespace Decompiler.Arch.Arm
                 mnemonic = Opcode.swi;
                 format = "$";
                 break;
-            /* Nasty hack: this is code that won't be reached in the normal
-             * course of events, and after the last case of the switch is a
-             * convenient place for it.
-             */
             }
 
             var op = result.text;
@@ -790,7 +788,18 @@ namespace Decompiler.Arch.Arm
             }
             return 0;
         }
-        
+
+        private OpFlags FpRoundingMode(word w)
+        {
+            switch (w)
+            {
+            case 0: return 0;
+            case 1: return OpFlags.Pl;
+            case 2: return OpFlags.Mi;
+            case 3: return OpFlags.Zr;
+            }
+            return 0;
+        }
         /// <summary>
         /// Adds operands to the <paramref name="operands"/> list, basing the operand types on the provided format characters
         /// in the <paramref name="f"/> stream.
@@ -805,8 +814,7 @@ namespace Decompiler.Arch.Arm
         {
             char c;
 
-            string[] regnames = opts.regnames;
-            word oflags = opts.flags;
+            string[] regnames = reg_names;
             while (f.MoveNext())
             {
                 c = f.Current;
@@ -817,7 +825,7 @@ namespace Decompiler.Arch.Arm
                     result.is_SWI = true;
                     result.swinum = instr & 0x00FFFFFF;
                     result.addrstart = op.Length;
-                    //if ((oflags&disopt_SWInames)!=0) {
+                    //if ((oflags&disopt.SWInames)!=0) {
                     //  swiname(result.swinum, op, 128-(op-result.text));
                     //  op += strlen(op);
                     //}
@@ -1042,7 +1050,8 @@ namespace Decompiler.Arch.Arm
 
         private static void LPling(word instr, StringBuilder op)
         {
-            if ((instr & Wbit) != 0) op.Append('!');
+            if ((instr & Wbit) != 0) 
+                op.Append('!');
         }
 
         private void RenderAddress(List<MachineOperand> operands, StringBuilder op)
@@ -1178,12 +1187,6 @@ namespace Decompiler.Arch.Arm
         static string[] reg_names = new string[] {
               "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
               "r8", "r9", "r10", "r11", "ip", "sp", "lr", "pc"
-        };
-
-        static DisOptions options = new DisOptions
-        {
-            flags = disopt_CommaSpace,
-            regnames = reg_names
         };
 
         void swiname(word w, string s, int sz) { return; }

@@ -212,6 +212,7 @@ l1:
 	return
 	// succ:  foo_exit
 foo_exit:
+
 ";
             RunTest(sExp);
         }
