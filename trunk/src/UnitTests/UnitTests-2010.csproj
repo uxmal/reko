@@ -330,7 +330,6 @@
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
-    <Compile Include="Scanning\WorkItemTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
     <Compile Include="Structure\DerivedSequenceBuilderTests.cs" />
