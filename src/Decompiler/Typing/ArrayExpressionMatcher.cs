@@ -52,7 +52,7 @@ namespace Decompiler.Typing
 
 		public bool MatchMul(BinaryExpression b)
 		{
-			if (b.op == Operator.Muls || b.op == Operator.Mulu || b.op == Operator.Mul)
+			if (b.Operator == Operator.Muls || b.Operator == Operator.Mulu || b.Operator == Operator.Mul)
 			{
 				Constant c = b.Left as Constant;
 				Expression e = b.Right;
@@ -68,12 +68,12 @@ namespace Decompiler.Typing
 					return true;
 				}
 			}
-			if (b.op == Operator.Shl)
+			if (b.Operator == Operator.Shl)
 			{
 				Constant c = b.Right as Constant;
 				if (c != null)
 				{
-					elemSize = b.op.ApplyConstants(new Constant(b.Left.DataType, 1), c);
+					elemSize = b.Operator.ApplyConstants(new Constant(b.Left.DataType, 1), c);
 					index = b.Left;
 					return true;
 				}
@@ -94,7 +94,7 @@ namespace Decompiler.Typing
 				return true;
 
 			// (+ x y)
-			if (b.op == Operator.Add)
+			if (b.Operator == Operator.Add)
 			{
 				BinaryExpression bInner = b.Left as BinaryExpression;
 				if (bInner != null)
@@ -115,7 +115,7 @@ namespace Decompiler.Typing
 						arrayPtr = b.Left;
 						return true;
 					}
-					if (bInner.op == Operator.Add)
+					if (bInner.Operator == Operator.Add)
 					{
 						// (+ x (+ a b)) 
 						BinaryExpression bbInner = bInner.Left as BinaryExpression;

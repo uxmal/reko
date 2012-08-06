@@ -87,7 +87,10 @@ namespace Decompiler.Scanning
                 foreach (TreeNode trans in nd.Transitions)
                 {
                     if (trans.Char.CompareTo(c) == 0) 
-                    { ndNew = trans; break; }
+                    { 
+                        ndNew = trans; 
+                        break; 
+                    }
                 }
 
                 if (ndNew == null)

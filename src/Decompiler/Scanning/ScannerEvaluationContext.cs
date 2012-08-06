@@ -140,7 +140,7 @@ namespace Decompiler.Scanning
             var binVal = value as BinaryExpression;
             if (binVal != null)
             {
-                if ((binVal.op == Operator.Add || binVal.op == Operator.Sub) &&
+                if ((binVal.Operator == Operator.Add || binVal.Operator == Operator.Sub) &&
                     binVal.Left is Identifier &&
                     binVal.Right is Constant)
                 {
@@ -186,10 +186,10 @@ namespace Decompiler.Scanning
             }
 
             var bin = ea as BinaryExpression;
-            if (bin != null && (bin.op == Operator.Add || bin.op == Operator.Sub) && IsStackRegister(bin.Left))
+            if (bin != null && (bin.Operator == Operator.Add || bin.Operator == Operator.Sub) && IsStackRegister(bin.Left))
             {
                 offset = ((Constant) bin.Right).ToInt32();
-                if (bin.op == Operator.Sub)
+                if (bin.Operator == Operator.Sub)
                     offset = -offset;
                 return true;
             }

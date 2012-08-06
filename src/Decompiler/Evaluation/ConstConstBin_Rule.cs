@@ -38,11 +38,11 @@ namespace Decompiler.Evaluation
 		{
 			cLeft = binExp.Left as Constant; 
 			cRight = binExp.Right as Constant;
-			if (cLeft != null && cRight != null && binExp.op != Operator.Eq)
+			if (cLeft != null && cRight != null && binExp.Operator != Operator.Eq)
 			{
 				if (!cLeft.IsReal && !cRight.IsReal)
 				{
-					op = binExp.op;
+					op = binExp.Operator;
 					return true;
 				}
 			}

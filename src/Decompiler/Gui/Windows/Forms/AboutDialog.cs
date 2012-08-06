@@ -27,7 +27,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-    partial class AboutDialog : Form
+    partial class AboutDialog : Form, IDialog
     {
         public AboutDialog()
         {

@@ -58,7 +58,7 @@ namespace Decompiler.Evaluation
             }
             if (shift == null)
                 return false;
-            if (shift.op != BinaryOperator.Shl)
+            if (shift.Operator != BinaryOperator.Shl)
                 return false;
             Constant c = shift.Right as Constant;
             if (c == null)

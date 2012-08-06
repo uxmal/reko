@@ -279,7 +279,7 @@ namespace Decompiler.Typing
 			acc.Array.Accept(this);
 			acc.Index.Accept(this);
 			BinaryExpression b = acc.Index as BinaryExpression;
-			if (b != null && b.op == Operator.Mul)
+			if (b != null && b.Operator == Operator.Mul)
 			{
 				Constant c = b.Right as Constant;
 				if (c != null)
@@ -328,21 +328,21 @@ namespace Decompiler.Typing
 			ivCur = null;
 			if (ivLeft != null)
 			{
-				if (binExp.op == Operator.Muls || binExp.op == Operator.Mulu || binExp.op == Operator.Mul || binExp.op == Operator.Shl)
-					ivCur = MergeInductionVariableConstant(ivLeft, binExp.op, binExp.Right as Constant);
+				if (binExp.Operator == Operator.Muls || binExp.Operator == Operator.Mulu || binExp.Operator == Operator.Mul || binExp.Operator == Operator.Shl)
+					ivCur = MergeInductionVariableConstant(ivLeft, binExp.Operator, binExp.Right as Constant);
 			} 
 
 			TypeVariable tvExp = binExp.TypeVariable;
-			if (binExp.op == Operator.Add || 
-				binExp.op == Operator.Sub ||
-				binExp.op == Operator.And ||
-				binExp.op == Operator.Or  ||
-				binExp.op == Operator.Xor)
+			if (binExp.Operator == Operator.Add || 
+				binExp.Operator == Operator.Sub ||
+				binExp.Operator == Operator.And ||
+				binExp.Operator == Operator.Or  ||
+				binExp.Operator == Operator.Xor)
 			{
                 return handler.DataTypeTrait(binExp, binExp.DataType);
 			} 
-			else if (binExp.op == Operator.Muls ||
-				binExp.op == Operator.Divs)
+			else if (binExp.Operator == Operator.Muls ||
+				binExp.Operator == Operator.Divs)
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
                 var dt = handler.DataTypeTrait(binExp, binExp.DataType);
@@ -350,9 +350,9 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.Size));
                 return dt;
 			}
-			else if (binExp.op == Operator.Mulu ||
-				binExp.op == Operator.Divu ||
-				binExp.op == Operator.Shr)
+			else if (binExp.Operator == Operator.Mulu ||
+				binExp.Operator == Operator.Divu ||
+				binExp.Operator == Operator.Shr)
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
                 var dt = handler.DataTypeTrait(binExp, MakeUnsigned(binExp.DataType));
@@ -360,39 +360,39 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(binExp.Right, MakeUnsigned(binExp.Right.DataType));
                 return dt;
 			}
-			else if (binExp.op == Operator.Mul)
+			else if (binExp.Operator == Operator.Mul)
 			{
                 return handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
 				
 			}
-			else if (binExp.op == Operator.Sar)
+			else if (binExp.Operator == Operator.Sar)
 			{
 				var dt = handler.DataTypeTrait(binExp, MakeSigned(binExp.DataType));
 				handler.DataTypeTrait(binExp.Left, MakeSigned(binExp.Left.DataType));
 				handler.DataTypeTrait(binExp.Right, MakeUnsigned(binExp.Right.DataType));
                 return dt;
 			}
-			else if (binExp.op == Operator.Shl)
+			else if (binExp.Operator == Operator.Shl)
 			{
 				return handler.DataTypeTrait(binExp, binExp.DataType);
 			}
-			else if (binExp.op == Operator.Mod)
+			else if (binExp.Operator == Operator.Mod)
 			{
 				var dt = handler.DataTypeTrait(binExp, binExp.DataType);
 				handler.DataTypeTrait(binExp.Left, binExp.Left.DataType);
 				handler.DataTypeTrait(binExp.Right, binExp.Right.DataType);
                 return dt;
 			}
-			else if (binExp.op == Operator.Eq ||
-				binExp.op == Operator.Ne)
+			else if (binExp.Operator == Operator.Eq ||
+				binExp.Operator == Operator.Ne)
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				return handler.DataTypeTrait(binExp, PrimitiveType.Bool);
 			}
-			else if (binExp.op == Operator.Ge ||
-				binExp.op == Operator.Gt ||
-				binExp.op == Operator.Le ||
-				binExp.op == Operator.Lt)
+			else if (binExp.Operator == Operator.Ge ||
+				binExp.Operator == Operator.Gt ||
+				binExp.Operator == Operator.Le ||
+				binExp.Operator == Operator.Lt)
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				var dt = handler.DataTypeTrait(binExp, PrimitiveType.Bool);
@@ -400,7 +400,7 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(binExp.Right, MakeSigned(binExp.Right.DataType));
                 return dt;
 			}
-			else if (binExp.op is RealConditionalOperator)
+			else if (binExp.Operator is RealConditionalOperator)
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				var dt = handler.DataTypeTrait(binExp, PrimitiveType.Bool);
@@ -408,10 +408,10 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(Domain.Real, binExp.Right.DataType.Size));
                 return dt;
 			}
-			else if (binExp.op == Operator.Uge ||
-				binExp.op == Operator.Ugt ||
-				binExp.op == Operator.Ule ||
-				binExp.op == Operator.Ult)
+			else if (binExp.Operator == Operator.Uge ||
+				binExp.Operator == Operator.Ugt ||
+				binExp.Operator == Operator.Ule ||
+				binExp.Operator == Operator.Ult)
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				var dt = handler.DataTypeTrait(binExp, PrimitiveType.Bool);
@@ -419,7 +419,7 @@ namespace Decompiler.Typing
 				handler.DataTypeTrait(binExp.Right, MakeNotSigned(binExp.Right.DataType));
                 return dt;
 			}
-			throw new NotImplementedException("NYI: " + binExp.op + " in " + binExp);
+			throw new NotImplementedException("NYI: " + binExp.Operator + " in " + binExp);
 		}
 
 

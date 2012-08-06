@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Decompiler.Core.Archives;
+using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,21 +30,35 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-    public partial class ArchiveBrowserDialog : Form
+    public partial class ArchiveBrowserDialog : Form, IDialog
     {
         public ArchiveBrowserDialog()
         {
             InitializeComponent();
+            var interactor = new ArchiveBrowserService.ArchiveBrowserInteractor();
+            interactor.Attach(this);
         }
 
-        public TreeView ArchiveTree
+        public ICollection<ArchiveDirectoryEntry> ArchiveEntries { get; set; }
+        public TreeView ArchiveTree { get { return archiveTree; } }
+        public Button OkButton{ get { return btnOK; } }
+
+        public ArchiveDirectoryEntry SelectedArchiveEntry
         {
-            get { return archiveTree; }
+            get
+            {
+                return ArchiveTree.SelectedNode != null
+                    ? (ArchiveDirectoryEntry) ArchiveTree.SelectedNode.Tag
+                    : null;
+            }
         }
 
-        public Button OkButton
+        public byte[] GetSelectedFileBytes()
         {
-            get { return btnOK; }
+            ArchivedFile file = SelectedArchiveEntry as ArchivedFile;
+            return file != null
+                ? file.GetBytes()
+                : null;
         }
     }
 }

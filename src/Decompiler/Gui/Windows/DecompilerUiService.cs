@@ -45,7 +45,7 @@ namespace Decompiler.Gui.Windows
 
         #region IDecompilerUIService Members
 
-        public virtual DialogResult ShowModalDialog(Form dlg)
+        private DialogResult ShowModalDialog(Form dlg)
         {
             return (DialogResult)
                 form.Invoke(new Converter<Form, DialogResult>(delegate(Form dlgToShow)

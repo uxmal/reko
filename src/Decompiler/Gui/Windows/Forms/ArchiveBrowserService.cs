@@ -43,10 +43,8 @@ namespace Decompiler.Gui.Windows.Forms
                 return null;
             using (ArchiveBrowserDialog dlg = new ArchiveBrowserDialog())
             {
-                ArchiveBrowserInteractor interactor = new ArchiveBrowserInteractor(archiveEntries);
-                interactor.Attach(dlg);
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
-                    return interactor.GetSelectedFileBytes();
+                    return dlg.GetSelectedFileBytes();
                 else
                     return null;
             }
@@ -54,28 +52,17 @@ namespace Decompiler.Gui.Windows.Forms
 
         public class ArchiveBrowserInteractor
         {
-            ICollection<ArchiveDirectoryEntry> archiveEntries;
             private ArchiveBrowserDialog dlg;
 
-            public ArchiveBrowserInteractor(ICollection<ArchiveDirectoryEntry> archiveEntries)
+            public ArchiveBrowserInteractor()
             {
-                this.archiveEntries = archiveEntries;
-            }
-
-            public byte[] GetSelectedFileBytes()
-            {
-                ArchivedFile file = SelectedArchiveEntry as ArchivedFile;
-                return file != null
-                    ? file.GetBytes()
-                    : null;
-                    
             }
 
             private void EnableControls()
             {
                 dlg.OkButton.Enabled =
-                    SelectedArchiveEntry != null &&
-                    SelectedArchiveEntry is ArchivedFile;
+                    dlg.SelectedArchiveEntry != null &&
+                    dlg.SelectedArchiveEntry is ArchivedFile;
             }
 
             public void Attach(ArchiveBrowserDialog dlg)
@@ -87,26 +74,18 @@ namespace Decompiler.Gui.Windows.Forms
 
             void ArchiveTree_DoubleClick(object sender, EventArgs e)
             {
-                if (SelectedArchiveEntry != null)
+                if (dlg.SelectedArchiveEntry != null)
                 {
                     dlg.DialogResult = DialogResult.OK;
                     dlg.Close();
                 }
             }
 
-            private ArchiveDirectoryEntry SelectedArchiveEntry
-            {
-                get
-                {
-                    return dlg.ArchiveTree.SelectedNode != null
-                        ? (ArchiveDirectoryEntry)dlg.ArchiveTree.SelectedNode.Tag
-                        : null;
-                }
-            }
+
 
             void dlg_Load(object sender, EventArgs e)
             {
-                Populate(archiveEntries, dlg.ArchiveTree.Nodes);
+                Populate(dlg.ArchiveEntries, dlg.ArchiveTree.Nodes);
             }
 
             private void Populate(ICollection<ArchiveDirectoryEntry> archiveEntries, TreeNodeCollection treeNodeCollection)

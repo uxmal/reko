@@ -170,9 +170,9 @@ namespace Decompiler.Analysis
                     if (b == null)
                         continue;
 					BinaryExpression bin = b.Condition as BinaryExpression;
-					if (bin != null && bin.op is ConditionalOperator)
+					if (bin != null && bin.Operator is ConditionalOperator)
 					{
-						ctx.TestOperator = bin.op;
+						ctx.TestOperator = bin.Operator;
 						ctx.TestStatement = u;
 						ctx.TestValue = bin.Right as Constant;
 						return ctx.TestValue;
@@ -218,7 +218,7 @@ namespace Decompiler.Analysis
                 if (ass == null)
                     continue;
                 BinaryExpression bin = ass.Src as BinaryExpression;
-                if (bin != null && (bin.op == Operator.Add || bin.op == Operator.Sub))
+                if (bin != null && (bin.Operator == Operator.Add || bin.Operator == Operator.Sub))
                 {
                     Identifier idLeft = bin.Left as Identifier;
                     if (idLeft != null && IsSccMember(idLeft, sids))
@@ -227,7 +227,7 @@ namespace Decompiler.Analysis
                         if (c != null)
                         {
                             ctx.DeltaStatement = sid.DefStatement;
-                            ctx.DeltaValue = (bin.op == Operator.Sub)
+                            ctx.DeltaValue = (bin.Operator == Operator.Sub)
                                 ? c.Negate()
                                 : c;
                             return ctx.DeltaValue;

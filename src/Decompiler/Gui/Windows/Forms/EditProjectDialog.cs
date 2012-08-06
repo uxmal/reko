@@ -28,7 +28,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-    public partial class EditProjectDialog : Form
+    public partial class EditProjectDialog : Form, IDialog
     {
         public EditProjectDialog()
         {

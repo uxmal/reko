@@ -60,16 +60,16 @@ namespace Decompiler.Evaluation
 			cRight = right as Constant;
 			if (cRight == null)
 				return false;
-			if (!IsAddOrSub(binExp.op))
+			if (!IsAddOrSub(binExp.Operator))
 				return false;
 			return (!cRight.IsReal && !cRight.IsReal);
 		}
 
 		public Expression Transform(Statement stm)
 		{
-			if (binLeft.op == Operator.Sub)
+			if (binLeft.Operator == Operator.Sub)
 				cLeftRight = cLeftRight.Negate();
-			if (bin.op == Operator.Sub)
+			if (bin.Operator == Operator.Sub)
 				cRight = cRight.Negate();
 
 			BinaryOperator op = Operator.Add;

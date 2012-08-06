@@ -39,7 +39,7 @@ namespace Decompiler.Evaluation
 
 		public bool Match(BinaryExpression b)
 		{
-			if (b.op != Operator.Shl)
+			if (b.Operator != Operator.Shl)
 				return false;
 			cShift = b.Right as Constant;
 			if (cShift == null)
@@ -49,9 +49,9 @@ namespace Decompiler.Evaluation
 			if (b == null)
 				return false;
 
-			if (b.op != Operator.Muls && b.op != Operator.Mulu && b.op != Operator.Mul)
+			if (b.Operator != Operator.Muls && b.Operator != Operator.Mulu && b.Operator != Operator.Mul)
 				return false;
-			op = b.op;
+			op = b.Operator;
 			cMul = b.Right as Constant;
 			if (cMul == null)
 				return false;

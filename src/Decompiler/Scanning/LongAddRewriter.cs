@@ -71,7 +71,7 @@ namespace Decompiler.Scanning
                 if (ass == null)
                     continue;
                 var bin = ass.Src as BinaryExpression;
-                if (bin.op == next)
+                if (bin.Operator == next)
                     return i;
                 var grfDef = ass.Dst.Storage as FlagGroupStorage;
                 if (grfDef == null)
@@ -166,7 +166,7 @@ namespace Decompiler.Scanning
             if (ass == null)
                 return null;
             var bin = ass.Src as BinaryExpression;
-            if (bin == null || (bin.op != Operator.Add && bin.op != Operator.Sub))
+            if (bin == null || (bin.Operator != Operator.Add && bin.Operator != Operator.Sub))
                 return null;
             return ass.Dst;
         }

@@ -471,25 +471,25 @@ namespace Decompiler.Analysis
 
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
-			if (binExp.op is ConditionalOperator ||
-				binExp.op == BinaryOperator.Mul ||
-				binExp.op == BinaryOperator.Muls ||
-				binExp.op == BinaryOperator.Mulu ||
-				binExp.op == BinaryOperator.Divs ||
-				binExp.op == BinaryOperator.Divu)
+			if (binExp.Operator is ConditionalOperator ||
+				binExp.Operator == BinaryOperator.Mul ||
+				binExp.Operator == BinaryOperator.Muls ||
+				binExp.Operator == BinaryOperator.Mulu ||
+				binExp.Operator == BinaryOperator.Divs ||
+				binExp.Operator == BinaryOperator.Divu)
 			{
 				bitUseOffset = 0;
 				cbitsUse = 0;
 			}
 			binExp.Left.Accept(this);
 
-			if (binExp.op == BinaryOperator.Shl ||
-				binExp.op == BinaryOperator.Sar ||
-				binExp.op == BinaryOperator.Mul ||
-				binExp.op == BinaryOperator.Muls ||
-				binExp.op == BinaryOperator.Mulu ||
-				binExp.op == BinaryOperator.Divs ||
-				binExp.op == BinaryOperator.Divu)
+			if (binExp.Operator == BinaryOperator.Shl ||
+				binExp.Operator == BinaryOperator.Sar ||
+				binExp.Operator == BinaryOperator.Mul ||
+				binExp.Operator == BinaryOperator.Muls ||
+				binExp.Operator == BinaryOperator.Mulu ||
+				binExp.Operator == BinaryOperator.Divs ||
+				binExp.Operator == BinaryOperator.Divu)
 			{
 				bitUseOffset = 0;
 				cbitsUse = 0;

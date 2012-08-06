@@ -24,6 +24,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
+using System.Diagnostics;
 
 namespace Decompiler.Typing
 {
@@ -131,7 +132,7 @@ namespace Decompiler.Typing
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(
+                    Debug.WriteLine(
                         string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
                 }
 			}
@@ -179,12 +180,12 @@ namespace Decompiler.Typing
 				UnionType uSrc = AsUnion(dtSrc);
 				if (uDst != null)
 				{
-					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
+					var ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
 					dst = ceb.BuildComplex();
 				}
 				else if (uSrc != null)
 				{
-					ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
+					var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
 					src = ceb.BuildComplex();
 				}
 				else
@@ -206,7 +207,9 @@ namespace Decompiler.Typing
         /// <remarks>
         /// If [[a]] is a complex type, it's with high likelihood a pointer type. If this is the case,
         /// we want to return something like &(*a).b. If this sum is in a Mem context, the & is removed to yield
-        /// (*a).b. <para>If [[a]] is a memptr(ptr(A), x), and b is a constant, then we want to return something like &A::b
+        /// (*a).b. 
+        /// <para>
+        /// If [[a]] is a memptr(ptr(A), x), and b is a constant, then we want to return something like &A::b
         /// </para>
         /// </remarks>
         /// <returns>The rewritten expression</returns>
@@ -216,7 +219,7 @@ namespace Decompiler.Typing
 
 			DataType dtLeft = DataTypeOf(binExp.Left);
 			DataType dtRight = DataTypeOf(binExp.Right);
-            if (binExp.op == Operator.Add)
+            if (binExp.Operator == Operator.Add)
             {
                 return TransformSum(binExp, dtLeft, dtRight);
             }
@@ -268,13 +271,13 @@ namespace Decompiler.Typing
 
 		public override Expression TransformMemoryAccess(MemoryAccess access)
 		{
-			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, globals);
+			var tmer = new TypedMemoryExpressionRewriter(store, globals);
 			return tmer.Rewrite(access);
 		}
 
 		public override Expression TransformSegmentedAccess(SegmentedAccess access)
 		{
-			TypedMemoryExpressionRewriter tmer = new TypedMemoryExpressionRewriter(store, globals);
+			var tmer = new TypedMemoryExpressionRewriter(store, globals);
 			return tmer.Rewrite(access);
 		}
 
@@ -296,7 +299,6 @@ namespace Decompiler.Typing
                         null,
                         StructureField.ToOffset(c));
                     return ceb.BuildComplex();
-
             }
             return seq;
         }

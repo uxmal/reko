@@ -39,7 +39,7 @@ namespace Decompiler.Evaluation
 
 		public bool Match(BinaryExpression b)
 		{
-			op = b.op;
+			op = b.Operator;
 			if (op != Operator.Shl && op != Operator.Shr && op != Operator.Sar)
 				return false;
 			c1 = b.Right as Constant;
@@ -48,7 +48,7 @@ namespace Decompiler.Evaluation
 			BinaryExpression b2 = b.Left as BinaryExpression;
 			if (b2 == null)
 				return false;
-			if (op != b2.op)
+			if (op != b2.Operator)
 				return false;
 			c2 = b2.Right as Constant;
 			if (c2 == null)

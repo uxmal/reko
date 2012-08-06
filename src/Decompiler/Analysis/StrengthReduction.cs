@@ -177,7 +177,7 @@ namespace Decompiler.Analysis
             public override void VisitBinaryExpression(BinaryExpression binExp)
             {
                 base.VisitBinaryExpression(binExp);
-                if (binExp.op != Operator.Add)
+                if (binExp.Operator != Operator.Add)
                     return;
                 if (binExp.Left != id)
                     return;

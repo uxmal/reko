@@ -184,7 +184,7 @@ namespace Decompiler.Analysis
 			BinaryExpression binUse = a.Src as BinaryExpression;
 			if (binUse == null)
 				return a;
-			if (!IsAddOrSub(binUse.op))
+			if (!IsAddOrSub(binUse.Operator))
 				return a;
 			Expression u = binUse.Right;
 			Cast c = null;
@@ -253,7 +253,7 @@ namespace Decompiler.Analysis
 			}
 
 			Expression e;
-			if (bin.op == Operator.Sub)
+			if (bin.Operator == Operator.Sub)
 			{
 				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
 			}

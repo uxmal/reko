@@ -84,7 +84,7 @@ namespace Decompiler.Analysis
             var bin = spVal as BinaryExpression;
             if (bin == null || !ctx.IsFramePointer(bin.Left))
                 return 0;
-            if (bin.op != Operator.Sub)
+            if (bin.Operator != Operator.Sub)
                 throw new NotImplementedException();
             var c = bin.Right as Constant;
             if (c == null)
@@ -181,7 +181,7 @@ namespace Decompiler.Analysis
         {
             var l = SimplifyExpression(binExp.Left.Accept(this));
             var r = SimplifyExpression(binExp.Right.Accept(this));
-            var b = new BinaryExpression(binExp.op, binExp.DataType, l, r);
+            var b = new BinaryExpression(binExp.Operator, binExp.DataType, l, r);
             return SimplifyExpression(b);
         }
 
@@ -195,15 +195,20 @@ namespace Decompiler.Analysis
             if (simp is Constant)
                 return simp;
 
-            var binExp = simp as BinaryExpression;
-            if (binExp == null)
+            if (!IsConstantOffsetFromFramePointer(simp))
                 return e;
-            if (binExp.op != Operator.Add && binExp.op != Operator.Sub)
-                return e;
-            if (ctx.IsFramePointer(binExp.Left))
-                return simp;
             else
-                return e;
+                return simp;
+        }
+
+        private bool IsConstantOffsetFromFramePointer(Expression e)
+        {
+            var binExp = e as BinaryExpression;
+            if (binExp == null)
+                return false;
+            if (binExp.Operator != Operator.Add && binExp.Operator != Operator.Sub)
+                return false;
+            return ctx.IsFramePointer(binExp.Left);
         }
 
         private Expression ConvertToParamOrLocal(Expression exp)
@@ -222,7 +227,7 @@ namespace Decompiler.Analysis
             if (c == null)
                 return exp;
             int cc = c.ToInt32();
-            if (bin.op == Operator.Sub)
+            if (bin.Operator == Operator.Sub)
                 cc = -cc;
             return ctx.Frame.EnsureStackVariable(cc, exp.DataType);
         }
