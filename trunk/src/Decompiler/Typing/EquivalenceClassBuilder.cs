@@ -126,7 +126,7 @@ namespace Decompiler.Typing
 		{
 			binExp.Left.Accept(this);
 			binExp.Right.Accept(this);
-			if (binExp.op is ConditionalOperator)
+			if (binExp.Operator is ConditionalOperator)
 			{
 				store.MergeClasses(binExp.Left.TypeVariable, binExp.Right.TypeVariable);
 			}			

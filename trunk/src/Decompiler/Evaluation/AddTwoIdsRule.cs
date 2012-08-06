@@ -47,7 +47,7 @@ namespace Decompiler.Evaluation
 			idRight = binExp.Right as Identifier;
 			if (idRight == null)
 				return false;
-			return (idLeft == idRight && binExp.op == Operator.Add);
+			return (idLeft == idRight && binExp.Operator == Operator.Add);
 		}
 
         public Expression Transform()

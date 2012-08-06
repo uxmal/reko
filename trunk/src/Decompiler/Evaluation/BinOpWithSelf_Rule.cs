@@ -31,7 +31,7 @@ namespace Decompiler.Evaluation
 
         public bool Match(BinaryExpression binExp)
         {
-            if (binExp.op != Operator.Sub && binExp.op != Operator.Xor && binExp.op != Operator.And && binExp.op != Operator.Or)
+            if (binExp.Operator != Operator.Sub && binExp.Operator != Operator.Xor && binExp.Operator != Operator.And && binExp.Operator != Operator.Or)
                 return false;
             this.binExp = binExp;
             id = binExp.Left as Identifier;
@@ -40,13 +40,13 @@ namespace Decompiler.Evaluation
 
         public Expression Transform(EvaluationContext ctx)
         {
-            if (binExp.op == Operator.Sub || binExp.op == Operator.Xor)
+            if (binExp.Operator == Operator.Sub || binExp.Operator == Operator.Xor)
             {
                 ctx.RemoveIdentifierUse(id);
                 ctx.RemoveIdentifierUse(id);
                 return Constant.Zero(binExp.DataType);
             }
-            if (binExp.op == Operator.And || binExp.op == Operator.Or)
+            if (binExp.Operator == Operator.And || binExp.Operator == Operator.Or)
             {
                 ctx.RemoveIdentifierUse(id);
                 return id;

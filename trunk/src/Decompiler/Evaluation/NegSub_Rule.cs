@@ -34,7 +34,7 @@ namespace Decompiler.Evaluation
 			if (unary.Operator == Operator.Neg)
 			{
 				bin = unary.Expression as BinaryExpression;
-				if (bin != null && bin.op == Operator.Sub)
+				if (bin != null && bin.Operator == Operator.Sub)
 					return true;
 			}
 			return false;
@@ -42,7 +42,7 @@ namespace Decompiler.Evaluation
 
 		public Expression Transform()
 		{
-			return new BinaryExpression(bin.op, bin.DataType, bin.Right, bin.Left);
+			return new BinaryExpression(bin.Operator, bin.DataType, bin.Right, bin.Left);
 		}
 	}
 }

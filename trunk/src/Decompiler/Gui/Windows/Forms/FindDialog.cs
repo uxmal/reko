@@ -1,3 +1,4 @@
+#region License
 /* 
 * Copyright (C) 1999-2012 John Källén.
 *
@@ -15,6 +16,7 @@
 * along with this program; see the file COPYING.  If not, write to
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+#endregion
 
 using System;
 using System.Collections.Generic;
@@ -26,7 +28,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Forms
 {
-    public partial class FindDialog : Form
+    public partial class FindDialog : Form, IDialog
     {
         public FindDialog()
         {

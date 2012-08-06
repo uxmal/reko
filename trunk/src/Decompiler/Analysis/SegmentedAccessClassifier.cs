@@ -128,7 +128,7 @@ namespace Decompiler.Analysis
 			if (bin != null)
 			{
 				Identifier mp = bin.Left as Identifier;
-				if (bin.op == BinaryOperator.Add && mp != null)
+				if (bin.Operator == BinaryOperator.Add && mp != null)
 				{
 					Associate(pointer, mp);
 				}

@@ -50,7 +50,7 @@ namespace Decompiler.Typing
 			{
 				if (globals != null && globals.TypeVariable != null)
 				{
-					Pointer pGlob = globals.TypeVariable.DataType as Pointer;
+					var pGlob = globals.TypeVariable.DataType as Pointer;
 					if (pGlob != null)
 					{
 						object o = store.ResolvePossibleTypeVar(pGlob.Pointee);

@@ -113,12 +113,12 @@ namespace Decompiler.Scanning
                     {
                         regSrc = RegisterOf(binSrc.Left as Identifier);
                         var immSrc = binSrc.Right as Constant;
-                        if (binSrc.op == Operator.Add || binSrc.op == Operator.Sub)
+                        if (binSrc.Operator == Operator.Add || binSrc.Operator == Operator.Sub)
                         {
-                            Index = HandleAddition(Index, Index, regSrc, immSrc, binSrc.op == Operator.Add);
+                            Index = HandleAddition(Index, Index, regSrc, immSrc, binSrc.Operator == Operator.Add);
                             return true;
                         }
-                        if (binSrc.op == Operator.And)
+                        if (binSrc.Operator == Operator.And)
                         {
                             if (immSrc != null && IsEvenPowerOfTwo(immSrc.ToInt32() + 1))
                             {
@@ -131,7 +131,7 @@ namespace Decompiler.Scanning
                             return false;
                         }
                     }
-                    if (binSrc.op == Operator.Xor && 
+                    if (binSrc.Operator == Operator.Xor && 
                         binSrc.Left == ass.Dst && 
                         binSrc.Right == ass.Dst && 
                         RegisterOf(ass.Dst) == Index.GetSubregister(8,8))
@@ -150,7 +150,7 @@ namespace Decompiler.Scanning
                     if ((grfDef & grfUse) == 0)
                         return true;
                     var binCmp = cof.Expression as BinaryExpression;
-                    if (binCmp != null && binCmp.op is SubOperator)
+                    if (binCmp != null && binCmp.Operator is SubOperator)
                     {
                         var idLeft = RegisterOf(binCmp.Left  as Identifier);
                         if (idLeft != RegisterStorage.None &&
@@ -251,7 +251,7 @@ namespace Decompiler.Scanning
             var bin = exp as BinaryExpression;
             if (bin == null)
                 return 1;
-            if (bin.op is MulOperator)
+            if (bin.Operator is MulOperator)
             {
                 var scale = bin.Right as Constant;
                 if (scale == null)
@@ -322,7 +322,7 @@ namespace Decompiler.Scanning
 
         private bool IsScaledIndex(BinaryExpression bin)
         {
-            return bin != null && bin.op is MulOperator && bin.Right is Constant;
+            return bin != null && bin.Operator is MulOperator && bin.Right is Constant;
         }
 
         private RegisterStorage DetermineVectorWithScaledIndex(MemoryAccess mem, Expression possibleVector, BinaryExpression scaledIndex)

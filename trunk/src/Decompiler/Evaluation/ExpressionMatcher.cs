@@ -78,7 +78,7 @@ namespace Decompiler.Evaluation
             var bP = p as BinaryExpression;
             if (bP == null)
                 return false;
-            if (binExp.op != bP.op)
+            if (binExp.Operator != bP.Operator)
                 return false;
 
             return (Match(bP.Left, binExp.Left) && Match(bP.Right, binExp.Right));

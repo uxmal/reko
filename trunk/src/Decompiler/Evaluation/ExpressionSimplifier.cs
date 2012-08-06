@@ -153,7 +153,7 @@ namespace Decompiler.Evaluation
             var right = binExp.Right.Accept(this);
             Constant cLeft = left as Constant;
             Constant cRight = right as Constant;
-            if (cLeft != null && BinaryExpression.Commutes(binExp.op))
+            if (cLeft != null && BinaryExpression.Commutes(binExp.Operator))
             {
                 cRight = cLeft; left = right; right = cLeft;
             }
@@ -161,7 +161,7 @@ namespace Decompiler.Evaluation
             // (- X 0) ==> X
             // (+ X 0) ==> X
 
-            if (cRight != null && cRight.IsIntegerZero && IsAddOrSub(binExp.op))
+            if (cRight != null && cRight.IsIntegerZero && IsAddOrSub(binExp.Operator))
             {
                 Changed = true;
                 return left;
@@ -169,7 +169,7 @@ namespace Decompiler.Evaluation
             if (left == Constant.Invalid || right == Constant.Invalid)
                 return Constant.Invalid;
 
-            binExp = new BinaryExpression(binExp.op, binExp.DataType, left, right);
+            binExp = new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
             if (constConstBin.Match(binExp))
             {
                 Changed = true;
@@ -181,7 +181,7 @@ namespace Decompiler.Evaluation
 
             // (rel? id1 c) should just pass.
 
-            if (IsComparison(binExp.op) && cRight != null && idLeft != null)
+            if (IsComparison(binExp.Operator) && cRight != null && idLeft != null)
                 return binExp;
 
             // Replace identifier with its definition if possible.
@@ -201,14 +201,14 @@ namespace Decompiler.Evaluation
             // (- (- e c1) c2) ==> (- e (+ c1 c2))
 
             if (binLeft != null && cLeftRight != null && cRight != null &&
-                IsAddOrSub(binExp.op) && IsAddOrSub(binLeft.op) &&
+                IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
                 Changed = true;
                 ctx.RemoveIdentifierUse(idLeft);
                 ctx.UseExpression(left);
                 Constant c;
-                if (binLeft.op == binExp.op)
+                if (binLeft.Operator == binExp.Operator)
                 {
                     c = Operator.Add.ApplyConstants(cLeftRight, cRight);
                 }
@@ -218,20 +218,20 @@ namespace Decompiler.Evaluation
                 }
                 if (c.IsIntegerZero)
                     return binLeft.Left;
-                return new BinaryExpression(binExp.op, binExp.DataType, binLeft.Left, c);
+                return new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c);
             }
 
             // (== (- e c1) c2) => (== e c1+c2)
 
             if (binLeft != null && cLeftRight != null && cRight != null &&
-                IsComparison(binExp.op) && IsAddOrSub(binLeft.op) &&
+                IsComparison(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
                 Changed = true;
                 ctx.RemoveIdentifierUse(idLeft);
-                var op = binLeft.op == Operator.Add ? Operator.Sub : Operator.Add;
+                var op = binLeft.Operator == Operator.Add ? Operator.Sub : Operator.Add;
                 var c = ExpressionSimplifierOld.SimplifyTwoConstants(op, cLeftRight, cRight);
-                return new BinaryExpression(binExp.op, PrimitiveType.Bool, binLeft.Left, c);
+                return new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c);
             }
 
             if (addMici.Match(binExp))
@@ -538,7 +538,7 @@ namespace Decompiler.Evaluation
 			if (binLeft != null)
 			{
 				Constant cLeftRight = binLeft.Right as Constant;
-				if (cLeftRight != null && cRight != null && binLeft.op == Operator.Add && binOp == Operator.Add)
+				if (cLeftRight != null && cRight != null && binLeft.Operator == Operator.Add && binOp == Operator.Add)
 				{
 					return new BinaryExpression(binOp, valType, binLeft.Left, SimplifyTwoConstants(binOp, cLeftRight, cRight));
 				}
@@ -615,7 +615,7 @@ namespace Decompiler.Evaluation
 			Expression simpleLeft = bin.Left.Accept(this);
 			Expression simpleRight = bin.Right.Accept(this);
 
-			return AlgebraicSimplification(bin.op, bin.DataType, simpleLeft, simpleRight);
+			return AlgebraicSimplification(bin.Operator, bin.DataType, simpleLeft, simpleRight);
 		}
 
 		public Expression TransformCast(Cast cast)
