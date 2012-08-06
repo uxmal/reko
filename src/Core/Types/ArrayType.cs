@@ -63,6 +63,8 @@ namespace Decompiler.Core.Types
 			set { elType = value; }
 		}
 
+        public bool IsUnbounded { get { return length == 0; } }
+
 		/// <summary>
 		/// Number of elements. 0 means unknown number of elements.
 		/// </summary>

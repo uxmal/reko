@@ -62,7 +62,7 @@ namespace Decompiler.Core.Types
 		{
 			var sw = new StringWriter();
 			Write(sw);
-			return sw.ToString();
+ 			return sw.ToString();
 		}
 
 		public virtual void Write(TextWriter writer)

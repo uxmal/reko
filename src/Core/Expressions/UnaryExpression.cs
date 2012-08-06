@@ -27,15 +27,12 @@ namespace Decompiler.Core.Expressions
 {
 	public class UnaryExpression : Expression
 	{
-        [Obsolete("Use the property")]
-		public UnaryOperator op;
-
 		public UnaryExpression(UnaryOperator op, DataType type, Expression expr) : base(type)
 		{
 			this.Operator = op; this.Expression = expr;
 		}
 
-        public UnaryOperator Operator { get { return op; } private set { op = value; } }
+        public UnaryOperator Operator { get; set; }
         public Expression Expression { get; set; }
 
 		public override Expression Accept(IExpressionTransformer xform)

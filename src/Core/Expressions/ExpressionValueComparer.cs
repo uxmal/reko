@@ -69,14 +69,14 @@ namespace Decompiler.Core.Expressions
                 delegate(Expression ea, Expression eb)
                 {
                     BinaryExpression a = (BinaryExpression) ea, b = (BinaryExpression) eb;
-                    if (a.op != b.op)
+                    if (a.Operator != b.Operator)
                         return false;
                     return (EqualsImpl(a.Left, b.Left) && EqualsImpl(a.Right, b.Right));
                 },
                 delegate(Expression obj)
                 {
                     BinaryExpression b = (BinaryExpression) obj;
-                    return b.op.GetHashCode() ^ GetHashCodeImpl(b.Left) ^ 47 * GetHashCodeImpl(b.Right);
+                    return b.Operator.GetHashCode() ^ GetHashCodeImpl(b.Left) ^ 47 * GetHashCodeImpl(b.Right);
                 });
 
             Add(typeof(ConditionOf),
@@ -236,13 +236,13 @@ namespace Decompiler.Core.Expressions
                 delegate(Expression x, Expression y)
                 {
                     UnaryExpression a = (UnaryExpression) x, b = (UnaryExpression) y;
-                    return a.op == b.op && 
+                    return a.Operator == b.Operator && 
                         EqualsImpl(a.Expression, b.Expression);
                 },
                 delegate(Expression obj)
                 {
                     UnaryExpression u = (UnaryExpression) obj;
-                    return GetHashCodeImpl(u.Expression) ^ u.op.GetHashCode();
+                    return GetHashCodeImpl(u.Expression) ^ u.Operator.GetHashCode();
                 });
         }
 
