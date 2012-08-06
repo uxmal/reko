@@ -316,6 +316,8 @@ namespace Decompiler.Core.Types
             PtrCode64 = Create(Domain.PtrCode, 8);
 
 			Real80 = Create(Domain.Real, 10);
+
+            Real128 = Create(Domain.Real, 16);
 		}
 
 		public static PrimitiveType Void { get; private set; }
@@ -350,6 +352,8 @@ namespace Decompiler.Core.Types
         public static PrimitiveType PtrCode64 { get; private set; }
 
 		public static PrimitiveType Real80 {get; private set; }
+
+        public static PrimitiveType Real128 { get; private set; }
 
         public static PrimitiveType WChar { get; private set; } 
     }

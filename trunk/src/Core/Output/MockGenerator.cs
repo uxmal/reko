@@ -283,8 +283,8 @@ namespace Decompiler.Core.Output
         void IExpressionVisitor.VisitBinaryExpression(BinaryExpression binExp)
         {
             string str;
-            if (!mpopstr.TryGetValue(binExp.op, out str))
-                throw new NotImplementedException(binExp.op.ToString());
+            if (!mpopstr.TryGetValue(binExp.Operator, out str))
+                throw new NotImplementedException(binExp.Operator.ToString());
             writer.Write(str);
             writer.Write("(");
             binExp.Left.Accept(this);
@@ -412,7 +412,7 @@ namespace Decompiler.Core.Output
 
         void IExpressionVisitor.VisitUnaryExpression(UnaryExpression unary)
         {
-            if (unary.op == Operator.AddrOf)
+            if (unary.Operator == Operator.AddrOf)
                 writer.Write("AddrOf(");
             else
                 throw new NotImplementedException(unary.ToString());

@@ -40,14 +40,5 @@ namespace Decompiler.Core.Serialization
 
 		[XmlElement("address")]
 		public string Address;
-
-        [XmlIgnore]
-        [Obsolete("This is done by the project class now")]
-        public Address BaseAddress
-        {
-            get { return Decompiler.Core.Address.ToAddress(Address, 16); }
-            set { Address = value.ToString(); }
-        }
     }
-
 }
