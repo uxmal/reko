@@ -229,11 +229,6 @@ namespace Decompiler.Evaluation
 
             public string Label { get; private set; }
 
-            public override Expression Accept(IExpressionTransformer xform)
-            {
-                throw new NotSupportedException();
-            }
-
             public override void Accept(IExpressionVisitor visit)
             {
                 throw new NotSupportedException();

@@ -38,12 +38,6 @@ namespace Decompiler.Core.Expressions
         public Expression Procedure { get; set; }
         public Expression[] Arguments { get; set; }
 
-
-        public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformApplication(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitApplication(this);

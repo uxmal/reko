@@ -30,11 +30,6 @@ namespace Decompiler.Core.Expressions
 			Expression = ex;
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformConditionOf(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitConditionOf(this);

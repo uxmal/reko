@@ -27,12 +27,11 @@ namespace Decompiler.Core.Code
 	/// <summary>
 	/// Base class for rebuilding instructions -- and expressions therein.
 	/// </summary>
-	public class InstructionTransformer : IExpressionTransformer
+	public class InstructionTransformer : ExpressionVisitor<Expression>
 	{
 		public InstructionTransformer()
 		{
 		}
-
 
 		public Instruction Transform(Instruction instr)
 		{
@@ -132,12 +131,12 @@ namespace Decompiler.Core.Code
 
 		#region IExpressionTransformer Members
 
-        public virtual Expression TransformAddress(Address addr)
+        public virtual Expression VisitAddress(Address addr)
         {
             return addr;
         }
 
-		public virtual Expression TransformApplication(Application appl)
+		public virtual Expression VisitApplication(Application appl)
 		{
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{
@@ -146,7 +145,7 @@ namespace Decompiler.Core.Code
 			return appl;
 		}
 
-		public virtual Expression TransformArrayAccess(ArrayAccess acc)
+		public virtual Expression VisitArrayAccess(ArrayAccess acc)
 		{
 			acc.Array = acc.Array.Accept(this);
 			acc.Index = acc.Index.Accept(this);
@@ -154,76 +153,76 @@ namespace Decompiler.Core.Code
 		}
 
 
-		public virtual Expression TransformBinaryExpression(BinaryExpression binExp)
+		public virtual Expression VisitBinaryExpression(BinaryExpression binExp)
 		{
 			binExp.Left = binExp.Left.Accept(this);
 			binExp.Right = binExp.Right.Accept(this);
 			return binExp;
 		}
 
-		public virtual Expression TransformCast(Cast cast)
+		public virtual Expression VisitCast(Cast cast)
 		{
 			cast.Expression = cast.Expression.Accept(this);
 			return cast;
 		}
 
-		public Expression TransformConditionOf(ConditionOf cof)
+		public Expression VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression = cof.Expression.Accept(this);
 			return cof;
 		}
 
-		public virtual Expression TransformConstant(Constant c)
+		public virtual Expression VisitConstant(Constant c)
 		{
 			return c;
 		}
 
-		public virtual Expression TransformDepositBits(DepositBits d)
+		public virtual Expression VisitDepositBits(DepositBits d)
 		{
 			d.Source = d.Source.Accept(this);
 			d.InsertedBits = d.InsertedBits.Accept(this);
 			return d;
 		}
 
-		public virtual Expression TransformDereference(Dereference deref)
+		public virtual Expression VisitDereference(Dereference deref)
 		{
 			deref.Expression = deref.Expression.Accept(this);
 			return deref;
 		}
 
-		public virtual Expression TransformFieldAccess(FieldAccess acc)
+		public virtual Expression VisitFieldAccess(FieldAccess acc)
 		{
 			acc.structure = acc.structure.Accept(this);
 			return acc;
 		}
 
-		public virtual Expression TransformIdentifier(Identifier id)
+		public virtual Expression VisitIdentifier(Identifier id)
 		{
 			return id;
 		}
 
-		public virtual Expression TransformMemberPointerSelector(MemberPointerSelector mps)
+		public virtual Expression VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			mps.BasePointer = mps.BasePointer.Accept(this);
 			mps.MemberPointer = mps.MemberPointer.Accept(this);
 			return mps;
 		}
 		
-		public virtual Expression TransformMemoryAccess(MemoryAccess access)
+		public virtual Expression VisitMemoryAccess(MemoryAccess access)
 		{
 			access.EffectiveAddress = access.EffectiveAddress.Accept(this);
 			access.MemoryId = (MemoryIdentifier) access.MemoryId.Accept(this);
 			return access;
 		}
 
-		public virtual Expression TransformMkSequence(MkSequence seq)
+		public virtual Expression VisitMkSequence(MkSequence seq)
 		{
 			seq.Head = seq.Head.Accept(this);
 			seq.Tail = seq.Tail.Accept(this);
 			return seq;
 		}
 
-		public virtual Expression TransformPhiFunction(PhiFunction phi)
+		public virtual Expression VisitPhiFunction(PhiFunction phi)
 		{
 			for (int i = 0; i < phi.Arguments.Length; ++i)
 			{
@@ -232,17 +231,17 @@ namespace Decompiler.Core.Code
 			return phi;
 		}
 
-		public virtual Expression TransformPointerAddition(PointerAddition pa)
+		public virtual Expression VisitPointerAddition(PointerAddition pa)
 		{
 			return new PointerAddition(pa.DataType, pa.Pointer.Accept(this), pa.Offset);
 		}
 
-		public virtual Expression TransformProcedureConstant(ProcedureConstant pc)
+		public virtual Expression VisitProcedureConstant(ProcedureConstant pc)
 		{
 			return pc;
 		}
 
-		public virtual Expression TransformSegmentedAccess(SegmentedAccess access)
+		public virtual Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
 			access.BasePointer = access.BasePointer.Accept(this);
 				access.EffectiveAddress = access.EffectiveAddress.Accept(this);
@@ -250,24 +249,24 @@ namespace Decompiler.Core.Code
 			return access;
 		}
 
-		public virtual Expression TransformScopeResolution(ScopeResolution scope)
+		public virtual Expression VisitScopeResolution(ScopeResolution scope)
 		{
 			return scope;
 		}
 
-		public virtual Expression TransformSlice(Slice slice)
+		public virtual Expression VisitSlice(Slice slice)
 		{
 			slice.Expression = slice.Expression.Accept(this);
 			return slice;
 		}
 
-		public virtual Expression TransformTestCondition(TestCondition tc)
+		public virtual Expression VisitTestCondition(TestCondition tc)
 		{
 			tc.Expression = tc.Expression.Accept(this);
 			return tc;
 		}
 
-		public virtual Expression TransformUnaryExpression(UnaryExpression unary)
+		public virtual Expression VisitUnaryExpression(UnaryExpression unary)
 		{
 			unary.Expression = unary.Expression.Accept(this);
 			return unary;

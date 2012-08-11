@@ -38,6 +38,5 @@ namespace Decompiler.Core.Operators
 		{
 			return " + ";
 		}
-
 	}
 }

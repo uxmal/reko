@@ -35,11 +35,6 @@ namespace Decompiler.Core.Expressions
 			this.exp = exp;
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformDereference(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitDereference(this);

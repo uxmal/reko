@@ -64,7 +64,7 @@ namespace Decompiler.Typing
         }
 
 
-		public override Expression TransformMemoryAccess(MemoryAccess access)
+		public override Expression VisitMemoryAccess(MemoryAccess access)
 		{
             access.EffectiveAddress = access.EffectiveAddress.Accept(this);
             if (aem.Match(access.EffectiveAddress))
@@ -83,7 +83,7 @@ namespace Decompiler.Typing
         }
 
 
-        public override Expression TransformSegmentedAccess(SegmentedAccess access)
+        public override Expression VisitSegmentedAccess(SegmentedAccess access)
         {
             access.EffectiveAddress = access.EffectiveAddress.Accept(this);
             if (aem.Match(access.EffectiveAddress))

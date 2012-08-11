@@ -35,11 +35,6 @@ namespace Decompiler.Core.Expressions
         public UnaryOperator Operator { get; set; }
         public Expression Expression { get; set; }
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformUnaryExpression(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitUnaryExpression(this);

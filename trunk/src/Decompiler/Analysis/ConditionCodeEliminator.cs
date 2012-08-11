@@ -207,7 +207,7 @@ namespace Decompiler.Analysis
 			return a;
 		}
 
-		public override Expression TransformTestCondition(TestCondition tc)
+		public override Expression VisitTestCondition(TestCondition tc)
 		{
 			SsaIdentifier sid = ssaIds[(Identifier) tc.Expression];
 		

@@ -43,11 +43,6 @@ namespace Decompiler.Core
 				this.Offset = (ushort) off;
 		}
 
-        public override Expression Accept(IExpressionTransformer xform)
-        {
-            return xform.TransformAddress(this);
-        }
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitAddress(this);

@@ -141,7 +141,7 @@ namespace Decompiler.Typing
 
 		#region InstructionTransformer methods //////////////////////
 
-        public override Expression TransformArrayAccess(ArrayAccess acc)
+        public override Expression VisitArrayAccess(ArrayAccess acc)
         {
             acc.Array = NormalizeArrayPointer(acc.Array.Accept(this));
             acc.Index = acc.Index.Accept(this);
@@ -213,9 +213,9 @@ namespace Decompiler.Typing
         /// </para>
         /// </remarks>
         /// <returns>The rewritten expression</returns>
-		public override Expression TransformBinaryExpression(BinaryExpression binExp)
+		public override Expression VisitBinaryExpression(BinaryExpression binExp)
 		{
-			base.TransformBinaryExpression(binExp);
+			base.VisitBinaryExpression(binExp);
 
 			DataType dtLeft = DataTypeOf(binExp.Left);
 			DataType dtRight = DataTypeOf(binExp.Right);
@@ -256,7 +256,7 @@ namespace Decompiler.Typing
             return binExp;
         }
 
-		public override Expression TransformConstant(Constant c)
+		public override Expression VisitConstant(Constant c)
 		{
 			return tcr.Rewrite(c, false);
 		}
@@ -269,19 +269,19 @@ namespace Decompiler.Typing
 			return decl;
 		}
 
-		public override Expression TransformMemoryAccess(MemoryAccess access)
+		public override Expression VisitMemoryAccess(MemoryAccess access)
 		{
 			var tmer = new TypedMemoryExpressionRewriter(store, globals);
 			return tmer.Rewrite(access);
 		}
 
-		public override Expression TransformSegmentedAccess(SegmentedAccess access)
+		public override Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
 			var tmer = new TypedMemoryExpressionRewriter(store, globals);
 			return tmer.Rewrite(access);
 		}
 
-        public override Expression TransformMkSequence(MkSequence seq)
+        public override Expression VisitMkSequence(MkSequence seq)
         {
             seq.Head = seq.Head.Accept(this);
             seq.Tail = seq.Tail.Accept(this);

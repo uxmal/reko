@@ -27,8 +27,7 @@ namespace Decompiler.Core.Expressions
 {
 	public class BinaryExpression : Expression
 	{
-
-		public BinaryExpression(BinaryOperator op, DataType dt, Expression left, Expression right) : base(dt)
+		public BinaryExpression(BinaryOperator op, DataType dtResult, Expression left, Expression right) : base(dtResult)
 		{
 			this.Operator = op;
 			this.Left = left;
@@ -39,10 +38,6 @@ namespace Decompiler.Core.Expressions
         public Expression Left { get; set; }
         public Expression Right { get; set; }
 
-        public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformBinaryExpression(this);
-		}
 
         public override T Accept<T>(ExpressionVisitor<T> v)
         {

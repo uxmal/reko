@@ -34,11 +34,6 @@ namespace Decompiler.Core.Expressions
 			this.structure = expr; this.FieldName = fieldName;
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformFieldAccess(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitFieldAccess(this);

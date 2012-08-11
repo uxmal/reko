@@ -40,11 +40,6 @@ namespace Decompiler.Core.Expressions
 			this.bitCount = bitCount;
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformDepositBits(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitDepositBits(this);

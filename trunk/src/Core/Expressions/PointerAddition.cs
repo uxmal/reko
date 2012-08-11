@@ -33,11 +33,6 @@ namespace Decompiler.Core.Expressions
         public Expression Pointer { get; private set; }
         public int Offset { get; private set; }
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformPointerAddition(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitPointerAddition(this);

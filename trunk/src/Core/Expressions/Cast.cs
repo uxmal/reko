@@ -32,11 +32,6 @@ namespace Decompiler.Core.Expressions
 
         public Expression Expression { get; set; }
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformCast(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitCast(this);

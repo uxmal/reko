@@ -185,7 +185,7 @@ namespace Decompiler.Analysis
 				this.bld = bld;
 			}
 
-			public override Expression TransformIdentifier(Identifier id)
+			public override Expression VisitIdentifier(Identifier id)
 			{
 				return bld.webOf[id.Number].Identifier;
 			}

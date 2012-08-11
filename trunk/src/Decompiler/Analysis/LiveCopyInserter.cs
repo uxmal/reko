@@ -157,7 +157,7 @@ namespace Decompiler.Analysis
 				}
 			}
 
-			public override Expression TransformIdentifier(Identifier id)
+			public override Expression VisitIdentifier(Identifier id)
 			{
 				return (id == sidOld.Identifier) ? sidNew.Identifier : id;
 			}
