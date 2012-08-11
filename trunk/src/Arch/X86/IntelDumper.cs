@@ -29,42 +29,12 @@ namespace Decompiler.Arch.X86
 	{
 		private IntelArchitecture arch;
 
-		public IntelDumper(IntelArchitecture arch) 
+		public IntelDumper(IntelArchitecture arch)  : base(arch)
 		{
 			this.arch = arch;
 		}
 
-		public override void DumpAssembler(ProgramImage image, Address addrStart, Address addrLast, TextWriter writer)
-		{
-			IntelDisassembler dasm = new IntelDisassembler(image.CreateReader(addrStart), arch.WordWidth);
-			while (dasm.Address < addrLast)
-			{
-				DumpAssemblerLine(image, dasm, ShowAddresses, ShowCodeBytes, writer);
-			}
-		}
 
-		public override void DumpAssemblerLine(ProgramImage image, Disassembler dasm, bool showAddresses, bool showCodeBytes, TextWriter writer)
-		{
-			Address addrBegin = dasm.Address;
-			if (showAddresses)
-				writer.Write("{0} ", addrBegin);
-			IntelInstruction instr = (IntelInstruction) dasm.DisassembleInstruction();
-            if (instr == null)
-            {
-                writer.WriteLine();
-                return;
-            }
-			if (showCodeBytes)
-			{
-				StringWriter sw = new StringWriter();
-				WriteByteRange(image, addrBegin, dasm.Address, sw);
-				writer.WriteLine("{0,-16}\t{1}", sw.ToString(), instr);
-			}
-			else
-			{
-				writer.WriteLine("\t{0}", instr.ToString());
-			}
-		}
 		
 	}
 }

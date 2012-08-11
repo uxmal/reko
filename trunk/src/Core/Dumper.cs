@@ -29,11 +29,11 @@ namespace Decompiler.Core
 	/// </summary>
 	public class Dumper
 	{
-		private bool showAddress;
-		private bool showBytes;
+        private IProcessorArchitecture arch;
 
-		public Dumper()
+		public Dumper(IProcessorArchitecture arch)
 		{
+            this.arch = arch;
 		}
 
 		public void Dump(Program program, ImageMap map, TextWriter stm)
@@ -130,26 +130,42 @@ namespace Decompiler.Core
 			}
 		}
 
-		public virtual void DumpAssembler(ProgramImage image, Address addrStart, Address addrEnd, TextWriter writer)
-		{
-		}
+        public void DumpAssembler(ProgramImage image, Address addrStart, Address addrLast, TextWriter writer)
+        {
+            var dasm = arch.CreateDisassembler(image.CreateReader(addrStart));
+            while (dasm.Address < addrLast)
+            {
+                DumpAssemblerLine(image, dasm, writer);
+            }
+        }
 
-		public virtual void DumpAssemblerLine(ProgramImage image, Disassembler dis, bool showAddress, bool showCodeBytes, TextWriter writer)
-		{
-		}
+        public void DumpAssemblerLine(ProgramImage image, Disassembler dasm, TextWriter writer)
+        {
+            Address addrBegin = dasm.Address;
+            if (ShowAddresses)
+                writer.Write("{0} ", addrBegin);
+            var instr = dasm.DisassembleInstruction();
+            if (instr == null)
+            {
+                writer.WriteLine();
+                return;
+            }
+            if (ShowCodeBytes)
+            {
+                StringWriter sw = new StringWriter();
+                WriteByteRange(image, addrBegin, dasm.Address, sw);
+                writer.WriteLine("{0,-16}\t{1}", sw.ToString(), instr);
+            }
+            else
+            {
+                writer.WriteLine("\t{0}", instr.ToString());
+            }
+        }
 
 
-		public bool ShowAddresses
-		{
-			get { return showAddress; }
-			set { showAddress = value; }
-		}
+		public bool ShowAddresses { get; set; }
 
-		public bool ShowCodeBytes
-		{
-			get { return showBytes; }
-			set { showBytes = value; }
-		}
+		public bool ShowCodeBytes { get; set; }
 
 		public void WriteByteRange(ProgramImage image, Address begin, Address addrEnd, TextWriter writer)
 		{

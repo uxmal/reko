@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public Dumper CreateDumper()
 		{
-			return new Dumper();
+			return new Dumper(this);
 		}
 
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)

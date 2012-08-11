@@ -411,7 +411,15 @@ namespace Decompiler.Core
 		}
 	}
 
-	public class StackArgumentStorage : Storage
+    public abstract class StackStorage : Storage
+    {
+        public StackStorage(string kind)
+            : base(kind)
+        {
+        }
+    }
+
+	public class StackArgumentStorage : StackStorage
 	{
 		public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
 		{
@@ -473,7 +481,7 @@ namespace Decompiler.Core
 		}
 	}
 
-    public class StackLocalStorage : Storage
+    public class StackLocalStorage : StackStorage
     {
         public StackLocalStorage(int cbOffset, DataType dataType)
             : base("Local")

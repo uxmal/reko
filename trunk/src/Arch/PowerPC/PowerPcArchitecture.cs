@@ -116,11 +116,6 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public Rewriter CreateRewriter2(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
-        {
-            throw new NotImplementedException();
-        }
-
         public RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();
@@ -146,7 +141,7 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public Decompiler.Core.Lib.BitSet ImplicitArgumentRegisters
+        public BitSet ImplicitArgumentRegisters
         {
             get { throw new NotImplementedException(); }
         }

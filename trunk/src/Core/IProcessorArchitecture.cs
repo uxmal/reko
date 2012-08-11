@@ -49,7 +49,7 @@ namespace Decompiler.Core
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
 
 		/// <summary>
-		/// A bitset that represents those registers that may never be used as arguments to a procedure. 
+		/// A bitset that represents those registers that are never used as arguments to a procedure. 
 		/// </summary>
 		/// <remarks>
 		/// Typically, the stack pointer register is one of these registers. Some architectures define

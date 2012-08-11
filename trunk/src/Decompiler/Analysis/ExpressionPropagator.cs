@@ -30,6 +30,16 @@ using System.Text;
 
 namespace Decompiler.Analysis
 {
+    /// <summary>
+    /// Propagates expressions used in TrashedRegisters to replace expressions of the type
+    ///     mem[fp + c]
+    /// with
+    ///     idC
+    /// and expressions of the type
+    ///     fp + c
+    /// with
+    ///     &idC
+    /// </summary>
     public class ExpressionPropagator : InstructionVisitor<Instruction>, ExpressionVisitor<Expression>
     {
         private IProcessorArchitecture arch;
@@ -51,9 +61,25 @@ namespace Decompiler.Analysis
 
         public Instruction VisitAssignment(Assignment a)
         {
-            var src = a.Src.Accept(this);
+            var src =  a.Src.Accept(this);
             ctx.SetValue(a.Dst, src);
+            if (!MayReplace(src))
+                src = a.Src;
             return new Assignment(a.Dst, src);
+        }
+
+        private bool MayReplace(Expression exp)
+        {
+            if (exp == ctx.Frame.FramePointer)
+                return true;
+            if (exp is Constant)
+                return true;
+            var id = exp as Identifier;
+            if (id != null && (id.Storage is StackStorage))
+                return true;
+            if (IsConstantOffsetFromFramePointer(exp))
+                return true;
+            return false;
         }
 
         public Instruction VisitBranch(Branch b)
@@ -195,10 +221,10 @@ namespace Decompiler.Analysis
             if (simp is Constant)
                 return simp;
 
-            if (!IsConstantOffsetFromFramePointer(simp))
-                return e;
-            else
+            if (IsConstantOffsetFromFramePointer(simp))
                 return simp;
+            
+            return e;
         }
 
         private bool IsConstantOffsetFromFramePointer(Expression e)
@@ -216,9 +242,15 @@ namespace Decompiler.Analysis
             var m = exp as MemoryAccess;
             if (m == null)
                 return exp;
-            if (ctx.IsFramePointer(m.EffectiveAddress))
-                return ctx.Frame.EnsureStackArgument(0, m.DataType);
-            var bin = m.EffectiveAddress as BinaryExpression;
+            var address = m.EffectiveAddress;
+            return ConvertAddressToStackVariable(exp, address);
+        }
+
+        private Expression ConvertAddressToStackVariable(Expression exp, Expression address)
+        {
+            if (ctx.IsFramePointer(address))
+                return ctx.Frame.EnsureStackArgument(0, exp.DataType);
+            var bin = address as BinaryExpression;
             if (bin == null)
                 return exp;
             if (!ctx.IsFramePointer(bin.Left))
@@ -229,7 +261,15 @@ namespace Decompiler.Analysis
             int cc = c.ToInt32();
             if (bin.Operator == Operator.Sub)
                 cc = -cc;
-            return ctx.Frame.EnsureStackVariable(cc, exp.DataType);
+            var sv = ctx.Frame.EnsureStackVariable(cc, exp.DataType);
+            if (sv.DataType.Size > exp.DataType.Size)
+            {
+                return new Slice(exp.DataType, sv, 0);
+            }
+            else
+            {
+                return sv;
+            }
         }
 
         public Expression VisitCast(Cast cast)

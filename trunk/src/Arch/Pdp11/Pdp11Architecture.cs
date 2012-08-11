@@ -63,7 +63,7 @@ namespace Decompiler.Arch.Pdp11
 
         public Dumper CreateDumper()
         {
-            return new Pdp11Dumper();
+            return new Dumper(this);
         }
 
         public Frame CreateFrame()

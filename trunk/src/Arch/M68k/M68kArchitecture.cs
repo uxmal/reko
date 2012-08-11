@@ -39,7 +39,7 @@ namespace Decompiler.Arch.M68k
 
         public Dumper CreateDumper()
         {
-            return new Dumper();
+            return new Dumper(this);
         }
 
         public ProcessorState CreateProcessorState()

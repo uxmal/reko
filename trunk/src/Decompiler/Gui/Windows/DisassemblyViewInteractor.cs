@@ -54,20 +54,24 @@ namespace Decompiler.Gui.Windows
                 int lines = CountVisibleLines();
                 if (lines < 1)
                     lines = 1;
-                StringWriter writer = new StringWriter();
+                var writer = new StringWriter();
                 var arch = Decompiler.Program.Architecture;
-                Dumper dumper = arch.CreateDumper();
-                Disassembler dasm = arch.CreateDisassembler(Decompiler.Program.Image.CreateReader(StartAddress));
+                var dumper = arch.CreateDumper();
+                dumper.ShowAddresses = true;
+                dumper.ShowCodeBytes = true;
+                var image = Decompiler.Program.Image;
+                var dasm = arch.CreateDisassembler(image.CreateReader(StartAddress));
                 while (lines > 0)
                 {
-                    dumper.DumpAssemblerLine(Decompiler.Program.Image, dasm, true, true, writer);
+                    dumper.DumpAssemblerLine(image, dasm, writer);
                     --lines;
                 }
                 txtDisassembly.Text = writer.ToString();
             }
         }
 
-        public Address StartAddress { get { return startAddress; }
+        public Address StartAddress { 
+            get { return startAddress; }
             set
             {
                 startAddress = value;
