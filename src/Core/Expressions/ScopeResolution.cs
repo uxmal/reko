@@ -35,11 +35,6 @@ namespace Decompiler.Core.Expressions
 
         public string TypeName { get; private set; }
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformScopeResolution(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitScopeResolution(this);

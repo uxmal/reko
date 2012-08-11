@@ -119,7 +119,7 @@ namespace Decompiler.Scanning
 		}
 
 
-		public override Expression TransformIdentifier(Identifier id)
+		public override Expression VisitIdentifier(Identifier id)
 		{
 			if (IsLocal(id))
 				return new MemoryAccess(MemoryIdentifier.GlobalMemory, EffectiveAddress(id), id.DataType);

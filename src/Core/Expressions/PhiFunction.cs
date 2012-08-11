@@ -35,11 +35,6 @@ namespace Decompiler.Core.Expressions
 			this.Arguments = arguments;
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformPhiFunction(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitPhiFunction(this);

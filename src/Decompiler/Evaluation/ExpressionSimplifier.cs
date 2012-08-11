@@ -458,7 +458,7 @@ namespace Decompiler.Evaluation
 	/// Simplifies expressions by using common algebraic tricks and 
 	/// other well known formulae.
 	/// </summary>
-	public class ExpressionSimplifierOld : IExpressionTransformer
+	public class ExpressionSimplifierOld : ExpressionVisitor<Expression>
 	{
 		private Decompiler.Analysis.ValueNumbering dad;
 		private Dictionary<Expression,Expression> table;
@@ -588,17 +588,17 @@ namespace Decompiler.Evaluation
 			return eq;
 		}
 
-        public Expression TransformAddress(Address addr)
+        public Expression VisitAddress(Address addr)
         {
             throw new NotImplementedException();
         }
 
-		public Expression TransformApplication(Application app)
+		public Expression VisitApplication(Application app)
 		{
 			return app;
 		}
 
-		public Expression TransformArrayAccess(ArrayAccess acc)
+		public Expression VisitArrayAccess(ArrayAccess acc)
 		{
 			acc.Index = acc.Index.Accept(this);
 			acc.Array = acc.Array.Accept(this);
@@ -610,7 +610,7 @@ namespace Decompiler.Evaluation
 		/// </summary>
 		/// <param name="bin"></param>
 		/// <returns></returns>
-		public virtual Expression TransformBinaryExpression(BinaryExpression bin)
+		public virtual Expression VisitBinaryExpression(BinaryExpression bin)
 		{
 			Expression simpleLeft = bin.Left.Accept(this);
 			Expression simpleRight = bin.Right.Accept(this);
@@ -618,7 +618,7 @@ namespace Decompiler.Evaluation
 			return AlgebraicSimplification(bin.Operator, bin.DataType, simpleLeft, simpleRight);
 		}
 
-		public Expression TransformCast(Cast cast)
+		public Expression VisitCast(Cast cast)
 		{
 			cast.Expression.Accept(this);
 			Constant c = cast.Expression as Constant;
@@ -633,18 +633,18 @@ namespace Decompiler.Evaluation
 			return cast;
 		}
 
-		public Expression TransformConditionOf(ConditionOf cc)
+		public Expression VisitConditionOf(ConditionOf cc)
 		{
 			cc.Expression.Accept(this);
 			return cc;
 		}
 
-		public Expression TransformConstant(Constant c)
+		public Expression VisitConstant(Constant c)
 		{
 			return c;
 		}
 
-		public Expression TransformDepositBits(DepositBits d)
+		public Expression VisitDepositBits(DepositBits d)
 		{
 			Expression src = d.Source.Accept(this);
 			if (src is ValueNumbering.AnyValueNumber)
@@ -657,29 +657,29 @@ namespace Decompiler.Evaluation
 			return d;
 		}
 
-		public Expression TransformDereference(Dereference deref)
+		public Expression VisitDereference(Dereference deref)
 		{
 			deref.Expression = deref.Expression.Accept(this);
 			return deref;
 		}
 
-		public Expression TransformFieldAccess(FieldAccess acc)
+		public Expression VisitFieldAccess(FieldAccess acc)
 		{
 			acc.structure = acc.structure.Accept(this);
 			return acc;
 		}
 
-		public Expression TransformPointerAddition(PointerAddition pa)
+		public Expression VisitPointerAddition(PointerAddition pa)
 		{
 			return new PointerAddition(pa.DataType, pa.Pointer.Accept(this), pa.Offset);
 		}
 
-		public Expression TransformProcedureConstant(ProcedureConstant pc)
+		public Expression VisitProcedureConstant(ProcedureConstant pc)
 		{
 			return pc;
 		}
 
-		public Expression TransformIdentifier(Identifier id)
+		public Expression VisitIdentifier(Identifier id)
 		{
 			if (id.Number >= 0)
 				return dad.GetValueNumber(id);
@@ -687,39 +687,39 @@ namespace Decompiler.Evaluation
 				return id;
 		}
 
-		public Expression TransformMemberPointerSelector(MemberPointerSelector mps)
+		public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			Expression ptr = mps.BasePointer.Accept(this);
 			Expression memberPtr = mps.MemberPointer.Accept(this);
 			return new MemberPointerSelector(mps.DataType, ptr, memberPtr);
 		}
 
-		public Expression TransformMemoryAccess(MemoryAccess access)
+		public Expression VisitMemoryAccess(MemoryAccess access)
 		{
 			Expression simpleExpr = access.EffectiveAddress.Accept(this);
 			return new MemoryAccess(access.MemoryId, simpleExpr, access.DataType);
 		}
 
-		public Expression TransformMkSequence(MkSequence seq)
+		public Expression VisitMkSequence(MkSequence seq)
 		{
 			Expression head = seq.Head.Accept(this);
 			Expression tail = seq.Tail.Accept(this);
 			return new MkSequence(seq.DataType, head, tail);
 		}
 
-		public Expression TransformScopeResolution(ScopeResolution scope)
+		public Expression VisitScopeResolution(ScopeResolution scope)
 		{
 			return scope;
 		}
 
-		public Expression TransformSegmentedAccess(SegmentedAccess access)
+		public Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
 			Expression b = access.BasePointer.Accept(this);
 			Expression ea = access.EffectiveAddress.Accept(this);
 			return new SegmentedAccess(access.MemoryId, b, ea, access.DataType);
 		}
 
-		public Expression TransformPhiFunction(PhiFunction phi)
+		public Expression VisitPhiFunction(PhiFunction phi)
 		{
 			Expression [] simpleParams = new Expression[phi.Arguments.Length];
 			int i = 0;
@@ -731,17 +731,17 @@ namespace Decompiler.Evaluation
 			return SimplifyPhiFunction(simpleParams);
 		}
 			
-		public Expression TransformTestCondition(TestCondition tc)
+		public Expression VisitTestCondition(TestCondition tc)
 		{
 			return new TestCondition(tc.ConditionCode, tc.Expression.Accept(this));
 		}
 
-		public Expression TransformSlice(Slice slice)
+		public Expression VisitSlice(Slice slice)
 		{
 			return new Slice(slice.DataType, slice.Expression.Accept(this), (uint) slice.Offset);
 		}
 
-		public Expression TransformUnaryExpression(UnaryExpression unary)
+		public Expression VisitUnaryExpression(UnaryExpression unary)
 		{
 			if (unary.Operator == Operator.AddrOf)
 				return unary;

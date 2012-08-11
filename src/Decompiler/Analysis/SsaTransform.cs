@@ -433,7 +433,7 @@ namespace Decompiler.Analysis
 			}
 
 
-			public override Expression TransformApplication(Application appl)
+			public override Expression VisitApplication(Application appl)
 			{
 				for (int i = 0; i < appl.Arguments.Length; ++i)
 				{
@@ -453,7 +453,7 @@ namespace Decompiler.Analysis
 			}
 
 
-			public override Expression TransformIdentifier(Identifier id)
+			public override Expression VisitIdentifier(Identifier id)
 			{
 				return NewUse(id, stmCur);
 			}
@@ -479,7 +479,7 @@ namespace Decompiler.Analysis
 			}
 
 
-			public override Expression TransformUnaryExpression(UnaryExpression unary)
+			public override Expression VisitUnaryExpression(UnaryExpression unary)
 			{
 				unary.Expression = unary.Expression.Accept(this);
 				return unary;

@@ -127,7 +127,7 @@ namespace Decompiler.Analysis
 			return phi;
 		}
 
-		public override Expression TransformUnaryExpression(UnaryExpression unary)
+		public override Expression VisitUnaryExpression(UnaryExpression unary)
 		{
 			if (unary.Operator == Operator.AddrOf)
 			{
@@ -137,7 +137,7 @@ namespace Decompiler.Analysis
 					return idOut;
 				}
 			}
-			return base.TransformUnaryExpression (unary);
+			return base.VisitUnaryExpression(unary);
 		}
 
 	}

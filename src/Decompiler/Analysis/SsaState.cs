@@ -165,7 +165,7 @@ namespace Decompiler.Analysis
 				this.ssa = ssa;
 			}
 
-			public override Expression TransformIdentifier(Identifier id)
+			public override Expression VisitIdentifier(Identifier id)
 			{
 				return ssa.Identifiers[id].OriginalIdentifier;
 			}

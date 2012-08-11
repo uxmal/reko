@@ -38,11 +38,6 @@ namespace Decompiler.Core.Expressions
         public Expression Head { get; set; }
         public Expression Tail { get; set; }
 
-        public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformMkSequence(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitMkSequence(this);

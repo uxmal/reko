@@ -33,11 +33,6 @@ namespace Decompiler.Core.Expressions
 			this.Array = array; this.Index = index;
 		}
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformArrayAccess(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitArrayAccess(this);

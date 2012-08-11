@@ -259,7 +259,7 @@ namespace Decompiler.Analysis
             this.defExpr = defExpr;
         }
 
-        public override Expression TransformIdentifier(Identifier id)
+        public override Expression VisitIdentifier(Identifier id)
         {
             if (idOld == id)
                 return defExpr;

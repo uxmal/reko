@@ -42,11 +42,6 @@ namespace Decompiler.Core.Expressions
         public int Number { get; private set; }
         public Storage Storage { get; private set; }
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformIdentifier(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitIdentifier(this);

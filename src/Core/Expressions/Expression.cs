@@ -40,7 +40,6 @@ namespace Decompiler.Core.Expressions
         public TypeVariable TypeVariable { get; set; } 		// index to high-level type of this expression.
         //$REVIEW: TypeVariable is only used for typing, perhaps move it to hashtable? Argument against: there may be a lot of these.
 
-        public abstract Expression Accept(IExpressionTransformer xform);
         public abstract void Accept(IExpressionVisitor visit);
         public abstract T Accept<T>(ExpressionVisitor<T> visitor);
         public abstract Expression CloneExpression();

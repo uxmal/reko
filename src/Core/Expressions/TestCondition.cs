@@ -45,11 +45,6 @@ namespace Decompiler.Core.Expressions
         public ConditionCode ConditionCode { get; set; }
         public Expression Expression { get; set; }
 
-        public override Expression Accept(IExpressionTransformer xform)
-        {
-            return xform.TransformTestCondition(this);
-        }
-
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitTestCondition(this);

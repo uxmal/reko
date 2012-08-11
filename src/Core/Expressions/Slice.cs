@@ -41,11 +41,6 @@ namespace Decompiler.Core.Expressions
         public Expression Expression { get; set; }
         public int Offset { get { return offset; } }
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformSlice(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitSlice(this);

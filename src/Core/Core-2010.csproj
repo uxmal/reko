@@ -188,7 +188,6 @@
     <Compile Include="Expressions\ExpressionVisitor.cs" />
     <Compile Include="Expressions\FieldAccess.cs" />
     <Compile Include="Expressions\Identifier.cs" />
-    <Compile Include="Expressions\IExpressionTransformer.cs" />
     <Compile Include="Expressions\MemberPointerSelector.cs" />
     <Compile Include="Expressions\MemoryAccess.cs" />
     <Compile Include="Expressions\MkSequence.cs" />

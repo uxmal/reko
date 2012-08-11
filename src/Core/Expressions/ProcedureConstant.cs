@@ -32,11 +32,6 @@ namespace Decompiler.Core.Expressions
 
         public ProcedureBase Procedure { get; private set; }
 
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformProcedureConstant(this);
-		}
-
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitProcedureConstant(this);

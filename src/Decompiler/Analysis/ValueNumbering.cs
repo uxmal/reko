@@ -114,6 +114,61 @@ namespace Decompiler.Analysis
 			}
 		}
 
+        public class ValueNumberingContext : EvaluationContext
+        {
+            private Dictionary<Expression,Expression> table;
+
+            public ValueNumberingContext(Dictionary<Expression , Expression> table)
+            {
+                this.table = table;
+            }
+            
+            public Expression GetValue(Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression GetValue(MemoryAccess access)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression GetValue(SegmentedAccess access)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression GetValue(Application appl)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveIdentifierUse(Identifier id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void UseExpression(Expression expr)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SetValue(Identifier id, Expression value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SetValueEa(Expression ea, Expression value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SetValueEa(Expression basePointer, Expression ea, Expression value)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
 		/// <summary>
 		/// Assigns a value number to the variable identified by the node 'n'.
 		/// If the node changes value, we return true.
@@ -123,7 +178,7 @@ namespace Decompiler.Analysis
 		/// <returns></returns>
 		private bool AssignValueNumber(Node n, Dictionary<Expression,Expression> table)
 		{
-			ExpressionSimplifierOld simp = new ExpressionSimplifierOld(this, table);
+            var  simp = new ExpressionSimplifier(new ValueNumberingContext(table));
 			Expression expr;
 			if (n.definingExpr == null)
 			{
@@ -133,7 +188,7 @@ namespace Decompiler.Analysis
 			else
 			{
 				if (trace.TraceVerbose) Debug.Write("Simplified: " + n.definingExpr);
-				expr = simp.Simplify(n.definingExpr);
+				expr = n.definingExpr.Accept(simp);
 				if (trace.TraceVerbose) Debug.Write(" to: " + expr);
 			}
 			Expression tmp = Lookup(expr, table, n.lvalue);

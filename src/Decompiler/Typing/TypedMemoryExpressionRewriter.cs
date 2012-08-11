@@ -28,7 +28,7 @@ namespace Decompiler.Typing
 	/// <summary>
 	/// Rewrites expressions that are located in a memory expression context.
 	/// </summary>
-	public class TypedMemoryExpressionRewriter : IExpressionTransformer
+	public class TypedMemoryExpressionRewriter : ExpressionVisitor<Expression>
 	{
 		private TypeStore store;
 		private Identifier globals;
@@ -58,22 +58,22 @@ namespace Decompiler.Typing
 			return access.EffectiveAddress.Accept(this);
 		}
 
-        public Expression TransformAddress(Address addr)
+        public Expression VisitAddress(Address addr)
         {
             throw new NotImplementedException();
         }
 
-		public Expression TransformApplication(Application appl)
+		public Expression VisitApplication(Application appl)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformArrayAccess(ArrayAccess acc)
+		public Expression VisitArrayAccess(ArrayAccess acc)
 		{
 			throw new NotImplementedException();
 		}
 
-        public Expression TransformBinaryExpression(BinaryExpression binExp)
+        public Expression VisitBinaryExpression(BinaryExpression binExp)
         {
             Expression left = binExp.Left;
             Expression right = binExp.Right;
@@ -87,7 +87,7 @@ namespace Decompiler.Typing
                         binExp,
                         tvLeft.DataType,
                         tvRight.DataType));
-                return TransformBinaryExpression(binExp.Commute());
+                return VisitBinaryExpression(binExp.Commute());
             }
             else if (tvRight.DataType.IsComplex)
             {
@@ -131,12 +131,12 @@ namespace Decompiler.Typing
         }
 		
 
-		public Expression TransformCast(Cast cast)
+		public Expression VisitCast(Cast cast)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformConditionOf(ConditionOf cof)
+		public Expression VisitConditionOf(ConditionOf cof)
 		{
 			throw new NotImplementedException();
 		}
@@ -146,12 +146,12 @@ namespace Decompiler.Typing
 		/// </summary>
 		/// <param name="c"></param>
 		/// <returns></returns>
-		public Expression TransformConstant(Constant c)
+		public Expression VisitConstant(Constant c)
 		{
-            return TransformConstant(c, true);
+            return VisitConstant(c, true);
 		}
 
-        private Expression TransformConstant(Constant c, bool dereferenced)
+        private Expression VisitConstant(Constant c, bool dereferenced)
         {
             if (basePointer != null)
             {
@@ -173,22 +173,22 @@ namespace Decompiler.Typing
             }
         }
 
-		public Expression TransformDepositBits(DepositBits d)
+		public Expression VisitDepositBits(DepositBits d)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformDereference(Dereference deref)
+		public Expression VisitDereference(Dereference deref)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformFieldAccess(FieldAccess acc)
+		public Expression VisitFieldAccess(FieldAccess acc)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformIdentifier(Identifier id)
+		public Expression VisitIdentifier(Identifier id)
 		{
 			ComplexExpressionBuilder ceb = new ComplexExpressionBuilder(
                 dtResult,
@@ -199,37 +199,37 @@ namespace Decompiler.Typing
 			return ceb.BuildComplex();
 		}
 
-		public Expression TransformMemberPointerSelector(MemberPointerSelector mps)
+		public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformMemoryAccess(MemoryAccess access)
+		public Expression VisitMemoryAccess(MemoryAccess access)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformMkSequence(MkSequence seq)
+		public Expression VisitMkSequence(MkSequence seq)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformPhiFunction(PhiFunction phi)
+		public Expression VisitPhiFunction(PhiFunction phi)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformPointerAddition(PointerAddition pa)
+		public Expression VisitPointerAddition(PointerAddition pa)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformProcedureConstant(ProcedureConstant pc)
+		public Expression VisitProcedureConstant(ProcedureConstant pc)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformSegmentedAccess(SegmentedAccess access)
+		public Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
             TypedMemoryExpressionRewriter r = new TypedMemoryExpressionRewriter(store, globals);
             Expression e = r.Rewrite(access);
@@ -243,22 +243,22 @@ namespace Decompiler.Typing
             return ceb.BuildComplex();
 		}
 
-		public Expression TransformScopeResolution(ScopeResolution scope)
+		public Expression VisitScopeResolution(ScopeResolution scope)
 		{
 			return scope;
 		}
 
-		public Expression TransformSlice(Slice slice)
+		public Expression VisitSlice(Slice slice)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformTestCondition(TestCondition tc)
+		public Expression VisitTestCondition(TestCondition tc)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Expression TransformUnaryExpression(UnaryExpression unary)
+		public Expression VisitUnaryExpression(UnaryExpression unary)
 		{
 			throw new NotImplementedException();
 		}

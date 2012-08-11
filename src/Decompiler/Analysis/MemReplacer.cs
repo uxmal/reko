@@ -57,7 +57,7 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		public override Expression TransformMemoryAccess(MemoryAccess access)
+		public override Expression VisitMemoryAccess(MemoryAccess access)
 		{
 			Expression ea = access.EffectiveAddress.Accept(this);
 			DataType type = access.DataType;
@@ -81,7 +81,7 @@ namespace Decompiler.Analysis
 			return new Dereference(null, ea);
 		}
 
-        public override Expression TransformSegmentedAccess(SegmentedAccess access)
+        public override Expression VisitSegmentedAccess(SegmentedAccess access)
         {
             Expression basePtr = access.BasePointer.Accept(this);
             Expression ea = access.EffectiveAddress.Accept(this);

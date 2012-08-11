@@ -54,11 +54,6 @@ namespace Decompiler.Core.Expressions
             return v.VisitMemoryAccess(this);
         }
 
-        public override Expression Accept(IExpressionTransformer xform)
-        {
-            return xform.TransformMemoryAccess(this);
-        }
-
         public override Expression CloneExpression()
         {
             return new MemoryAccess(EffectiveAddress.CloneExpression(), DataType);
@@ -92,12 +87,6 @@ namespace Decompiler.Core.Expressions
 		}
 
         public Expression BasePointer { get; set; }         // Segment selector
-
-
-		public override Expression Accept(IExpressionTransformer xform)
-		{
-			return xform.TransformSegmentedAccess(this);
-		}
 
         public override T Accept<T>(ExpressionVisitor<T> visit)
         {
