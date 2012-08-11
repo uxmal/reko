@@ -29,6 +29,7 @@ namespace Decompiler.Core
         PseudoProcedure GetImportThunkAtAddress(uint addrThunk);
     }
 
+    [Obsolete("Use IRewriterHost and move members from this interface if necessary.", true)]
     public interface IRewriterHostOld
 	{
 		void AddCallEdge(Procedure caller, Statement stm, Procedure callee);

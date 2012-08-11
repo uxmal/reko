@@ -31,11 +31,9 @@ namespace Decompiler.Assemblers.x86
 {
     public class IntelEmitter : Emitter
     {
-        private RegisterStorage segOverride;
-
         public IntelEmitter()
 		{
-			segOverride = RegisterStorage.None;
+			SegmentOverride = RegisterStorage.None;
 		}
 
         // width of the address of this opcode.

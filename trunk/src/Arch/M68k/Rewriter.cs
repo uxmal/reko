@@ -34,10 +34,8 @@ namespace Decompiler.Arch.M68k
         private Frame frame;
         private IRewriterHost host;
 
-
         public Rewriter(M68kArchitecture m68kArchitecture, M68kState m68kState, Frame frame, IRewriterHost host)
         {
-            // TODO: Complete member initialization
             this.arch = m68kArchitecture;
             this.state = m68kState;
             this.frame = frame;

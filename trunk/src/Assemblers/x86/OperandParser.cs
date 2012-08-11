@@ -53,6 +53,7 @@ namespace Decompiler.Assemblers.x86
 			this.addrBase = addrBase;
 			this.defaultWordWidth = defaultWordWidth;
 			this.defaultAddressWidth = defaultAddressWidth;
+            this.segOverride = RegisterStorage.None;
 		}
 
 		public PrimitiveType AddressWidth
