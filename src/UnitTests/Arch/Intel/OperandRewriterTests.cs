@@ -32,9 +32,9 @@ namespace Decompiler.UnitTests.Arch.Intel
 	[TestFixture]
 	public class OperandRewriterTests
 	{
-		private OperandRewriterOld orw;
+		private OperandRewriter orw;
 		private IntelArchitecture arch;
-		private IntelRewriterState state;
+		private X86State state;
 		private Procedure proc;
         private Program prog;
 
@@ -56,15 +56,15 @@ namespace Decompiler.UnitTests.Arch.Intel
             prog.Image = new ProgramImage(new Address(0x10000), new byte[4]);
             var procAddress = new Address(0x10000000);
             proc = Procedure.Create(procAddress, arch.CreateFrame());
-			state = new IntelRewriterState(proc.Frame);
-			orw = new OperandRewriterOld(new FakeRewriterHost(prog), arch, proc.Frame);
+			state = new X86State();
+			orw = new OperandRewriter(arch, proc.Frame, new FakeRewriterHost(prog));
 		}
 
 		[Test]
 		public void OrwRegister()
 		{
 			var r = new RegisterOperand(Registers.ebp);
-			var id = (Identifier) orw.Transform(r, r.Width, r.Width, state);
+			var id = (Identifier) orw.Transform(r, r.Width, state);
 			Assert.AreEqual("ebp", id.Name);
 			Assert.IsNotNull(proc.Frame.FramePointer);
 		}
@@ -73,7 +73,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void OrwImmediate()
 		{
 			var imm = new ImmediateOperand(Constant.Word16(0x0003));
-			var c = (Constant) orw.Transform(imm, imm.Width, imm.Width, state);
+			var c = (Constant) orw.Transform(imm, imm.Width, state);
 			Assert.AreEqual("0x0003", c.ToString());
 		}
 
@@ -81,27 +81,20 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void OrwImmediateExtend()
 		{
 			var imm = new ImmediateOperand(Constant.SByte(-1));
-			var c = (Constant) orw.Transform(imm, PrimitiveType.Word16, PrimitiveType.Word16, state);
+			var c = (Constant) orw.Transform(imm, PrimitiveType.Word16, state);
 			Assert.AreEqual("0xFFFF", c.ToString());
-		}
-
-		[Test]
-		public void OrwOperandAsCodeAddress()
-		{
-            var imm = new ImmediateOperand(Constant.Word32(0x100F0000));
-			var addr = orw.OperandAsCodeAddress(imm, null);
-			Assert.AreEqual(imm.Value.ToUInt32(), addr.Offset);
 		}
 
 		[Test]
 		public void OrwFpu()
 		{
 			FpuOperand f = new FpuOperand(3);
-			Identifier id = (Identifier) orw.Transform(f, PrimitiveType.Real64, PrimitiveType.Word32, state);
+			Identifier id = (Identifier) orw.Transform(f, PrimitiveType.Real64,  state);
 			Assert.AreEqual(PrimitiveType.Real64, id.DataType);
 		}
 
 		[Test]
+        [Ignore("Frame escapes should be handled in Scanner/Rewriter, not in arch-dependent places")]
 		public void OrwFrameEscapes()
 		{
 			Assert.IsFalse(proc.Frame.Escapes);
@@ -110,7 +103,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			mem.Index = Registers.eax;
 			mem.Scale = 4;
 			mem.Offset = new Constant(PrimitiveType.Byte, 0x02);
-			Expression expr = orw.Transform(mem, PrimitiveType.Word32, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
 			Assert.IsTrue(proc.Frame.Escapes);
 		}
 
@@ -118,26 +111,26 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Ignore("Escaping frame registers are ignored for now.")]
 		public void OrwEbpEscapes()
 		{
-			state.FrameRegister = RegisterStorage.None;
-			proc.Frame.FrameOffset = 0;
-			Assert.AreEqual(false, proc.Frame.Escapes);
+            //state.FrameRegister = RegisterStorage.None;
+            //proc.Frame.FrameOffset = 0;
+            //Assert.AreEqual(false, proc.Frame.Escapes);
 
-			RegisterOperand r = new RegisterOperand(Registers.ebp);
-			orw.Transform(r, PrimitiveType.Word32, PrimitiveType.Word32, state);
-			Assert.AreEqual(false, proc.Frame.Escapes);
+            //RegisterOperand r = new RegisterOperand(Registers.ebp);
+            //orw.Transform(r, PrimitiveType.Word32, state);
+            //Assert.AreEqual(false, proc.Frame.Escapes);
 
-			state.GrowStack(4);
-			state.EnterFrame(Registers.ebp);
-			Assert.AreEqual("fp", proc.Frame.FramePointer.Name);
+            //state.GrowStack(4);
+            //state.EnterFrame(Registers.ebp);
+            //Assert.AreEqual("fp", proc.Frame.FramePointer.Name);
 
-			MemoryOperand m = new MemoryOperand(PrimitiveType.Word32);
-			m.Base = Registers.ebp;
-			m.Offset = new Constant(PrimitiveType.Byte, 0x08);
-			Expression expr = orw.Transform(m, m.Width, PrimitiveType.Word32, state);
-			Assert.AreEqual(false, proc.Frame.Escapes);
+            //MemoryOperand m = new MemoryOperand(PrimitiveType.Word32);
+            //m.Base = Registers.ebp;
+            //m.Offset = new Constant(PrimitiveType.Byte, 0x08);
+            //Expression expr = orw.Transform(m, m.Width,  state);
+            //Assert.AreEqual(false, proc.Frame.Escapes);
 
-			expr = orw.Transform(r, null, null, state);
-			Assert.AreEqual(true, proc.Frame.Escapes);
+            //expr = orw.Transform(r, null, state);
+            //Assert.AreEqual(true, proc.Frame.Escapes);
 		}
 
 		[Test]
@@ -146,7 +139,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32);
 			mem.Base = Registers.ecx;
 			mem.Offset = Constant.Word32(4);
-			Expression expr = orw.Transform(mem, PrimitiveType.Word32, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[ecx + 0x00000004:word32]", expr.ToString());
 		}	
 
@@ -154,7 +147,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public void OrwIndexedAccess()
 		{
 			MemoryOperand mem = new MemoryOperand(PrimitiveType.Word32, Registers.eax, Registers.edx, 4, new Constant(PrimitiveType.Word32, 0x24));
-			Expression expr = orw.Transform(mem, PrimitiveType.Word32, PrimitiveType.Word32, state);
+			Expression expr = orw.Transform(mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[eax + 0x00000024 + edx * 0x00000004:word32]", expr.ToString());
 		}
 
@@ -173,7 +166,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 		}
 	}
 
-	public class FakeRewriterHost : IRewriterHostOld
+	public class FakeRewriterHost : IRewriterHost
 	{
         private Program prog;
 		private Dictionary<Address,ProcedureSignature> callSignatures;
@@ -235,7 +228,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-		public PseudoProcedure GetImportThunkAtAddress(Address addr)
+		public PseudoProcedure GetImportThunkAtAddress(uint linaddr)
 		{
 			return null;
 		}

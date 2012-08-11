@@ -945,11 +945,10 @@ namespace Decompiler.Assemblers.x86
         {
             if (psym.fResolved)
             {
-                emitter.Patch(off, psym.offset, width);
+                emitter.PatchLe(off, psym.offset, width);
             }
             else
             {
-                // Add forward references to the backpatch list.
                 psym.AddForwardReference(off, width);
             }
         }

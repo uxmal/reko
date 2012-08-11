@@ -42,7 +42,8 @@ namespace Decompiler.Core.Assemblers
 			Patches = new List<BackPatch>();
 		}
 
-		public void AddForwardReference(int offset, DataType width)
+        // Add forward references to the backpatch list.
+        public void AddForwardReference(int offset, DataType width)
 		{
 			Patches.Add(new BackPatch(offset, width));
 		}
