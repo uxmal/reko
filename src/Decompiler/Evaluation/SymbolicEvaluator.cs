@@ -33,7 +33,7 @@ namespace Decompiler.Evaluation
     /// Before we have the luxury of SSA, we need to perform some simplifications. 
     /// This class keeps a context of symbolic expressions for the different registers.
     /// </summary>
-    public class SymbolicEvaluator : InstructionVisitor
+    public class SymbolicEvaluator : InstructionVisitor<Instruction>
     {
         private ExpressionSimplifier eval;
         private EvaluationContext ctx;
@@ -72,62 +72,71 @@ namespace Decompiler.Evaluation
 
         #region InstructionVisitor Members
 
-        public virtual void VisitAssignment(Assignment a)
+        public Instruction VisitAssignment(Assignment a)
         {
             var valSrc = a.Src.Accept(eval);
             ctx.SetValue(a.Dst, valSrc);
+            return a;
         }
 
-        void InstructionVisitor.VisitBranch(Branch b)
+        public Instruction VisitBranch(Branch b)
         {
             b.Condition.Accept(eval);
+            return b;
         }
 
-        public void VisitCallInstruction(CallInstruction ci)
+        public Instruction VisitCallInstruction(CallInstruction ci)
         {
+            return ci;
         }
 
-        void InstructionVisitor.VisitDeclaration(Declaration decl)
+        public Instruction VisitDeclaration(Declaration decl)
         {
             if (decl.Expression != null)
             {
                 var value = decl.Expression.Accept(eval);
                 ctx.SetValue(decl.Identifier, value);
             }
+            return decl;
         }
 
-        void InstructionVisitor.VisitDefInstruction(DefInstruction def)
+        public Instruction VisitDefInstruction(DefInstruction def)
         {
             throw new NotSupportedException("Def instructions shouldn't have been generated yet.");
         }
 
-        void InstructionVisitor.VisitGotoInstruction(GotoInstruction gotoInstruction)
+        public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             // Goto instructions always go to a constant label.
+        return gotoInstruction;
         }
 
-        void InstructionVisitor.VisitPhiAssignment(PhiAssignment phi)
+
+        public Instruction  VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotSupportedException("PhiAssignments shouldn't have been generated yet.");
         }
 
-        public void VisitIndirectCall(IndirectCall ic)
+        public Instruction VisitIndirectCall(IndirectCall ic)
         {
             ic.Callee.Accept(eval);
+            return ic;
         }
 
-        void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)
+        public Instruction VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression != null)
                 ret.Expression.Accept(eval);
+            return ret;
         }
 
-        public void VisitSideEffect(SideEffect side)
+        public Instruction VisitSideEffect(SideEffect side)
         {
             side.Expression.Accept(eval);
+            return side;
         }
 
-        public void VisitStore(Store store)
+        public Instruction VisitStore(Store store)
         {
             var valSrc = store.Src.Accept(eval);
             var segmem = store.Dst as SegmentedAccess;
@@ -143,14 +152,16 @@ namespace Decompiler.Evaluation
                 var ea = access.EffectiveAddress.Accept(eval);
                 ctx.SetValueEa(ea, valSrc);
             }
+            return store;
         }
 
-        void InstructionVisitor.VisitSwitchInstruction(SwitchInstruction si)
+        public Instruction VisitSwitchInstruction(SwitchInstruction si)
         {
             si.Expression.Accept(eval);
+            return si;
         }
 
-        void InstructionVisitor.VisitUseInstruction(UseInstruction u)
+        public Instruction VisitUseInstruction(UseInstruction u)
         {
             throw new NotSupportedException("Use expressions shouldn't have been generated yet.");
         }

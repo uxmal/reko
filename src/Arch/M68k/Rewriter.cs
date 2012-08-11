@@ -27,7 +27,6 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
-    [Obsolete]
     public class Rewriter : Decompiler.Core.Rewriter
     {
         private M68kArchitecture arch;

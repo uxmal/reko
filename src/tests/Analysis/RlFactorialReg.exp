@@ -19,6 +19,7 @@ l0C00_0000:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
@@ -34,12 +35,19 @@ fn0C00_0000_exit:
 void fn0C00_000B()
 fn0C00_000B_entry:
 // DataOut: cx ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: Temporary(16)
+
 l0C00_000B:
-	sp = fp - 0x0002	
+	sp = fp - 0x0002
 	wLoc02 = si
 	SCZO = cond(cx - 0x0001)
 	branch Test(LE,SZO) l0C00_001C
 // DataOut: cx ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 l0C00_0011:
 	si = cx
 	cx = cx - 0x0001
@@ -48,15 +56,25 @@ l0C00_0011:
 	dx_ax = si *s ax
 	SCZO = cond(dx_ax)
 // DataOut: ax ds
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 -2:si
+
 l0C00_001C:
 	ax = 0x0001
 // DataOut: ax ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 -2:si
 
 l0C00_001F:
-	si = wLoc04
+	si = wLoc02
+	sp = fp
 	return
-	// succ:  fn0C00_000B_exit
+// DataOut: ax ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 ax:<invalid> si:cx cx:<invalid> dx:cx *s ax -2:si
+
 fn0C00_000B_exit:
 // DataOut: ax ds
+// DataOut (flags): 
+// SymbolicIn: sp:fp ax:<invalid> si:si cx:<invalid> dx:cx *s ax -2:si
+

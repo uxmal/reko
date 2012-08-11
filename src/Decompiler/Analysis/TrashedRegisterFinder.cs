@@ -42,7 +42,7 @@ namespace Decompiler.Analysis
     /// <para>
     /// The results of the analysis are stored in the ProgramDataFlow.</para>
 	/// </summary>
-    public class TrashedRegisterFinder : InstructionVisitorBase
+    public class TrashedRegisterFinder : InstructionVisitor<Instruction>
     {
         private Program prog;
         private IEnumerable<Procedure> procedures;
@@ -104,7 +104,6 @@ namespace Decompiler.Analysis
 
         public void ProcessWorkList()
         {
-
             int initial = worklist.Count;
             Block block;
             while (worklist.GetWorkItem(out block))
@@ -154,7 +153,6 @@ namespace Decompiler.Analysis
         {
             StartProcessingBlock(block);
             block.Statements.ForEach(stm => stm.Instruction.Accept(this));
-            
             if (block == block.Procedure.ExitBlock)
             {
                 PropagateToProcedureSummary(block.Procedure);
@@ -355,27 +353,19 @@ namespace Decompiler.Analysis
             Debug.WriteLine("");
         }
 
-        public override void VisitAssignment(Assignment a)
+        public Instruction VisitAssignment(Assignment ass)
         {
-            se.VisitAssignment(a);
+            se.VisitAssignment(ass);
+            return ass;
         }
 
-        public override void VisitSideEffect(SideEffect side)
+        public Instruction VisitBranch(Branch br)
         {
-            se.VisitSideEffect(side);
+            se.VisitBranch(br);
+            return br;
         }
 
-        public override void VisitStore(Store store)
-        {
-            se.VisitStore(store);
-        }
-
-        public override void VisitIndirectCall(IndirectCall ic)
-        {
-            se.VisitIndirectCall(ic);
-        }
-
-        public override void VisitCallInstruction(CallInstruction ci)
+        public Instruction VisitCallInstruction(CallInstruction ci)
         {
             se.VisitCallInstruction(ci);
             if (ProcedureTerminates(ci.Callee))
@@ -383,7 +373,7 @@ namespace Decompiler.Analysis
                 // A terminating procedure has no trashed registers because caller will never see those effects!
                 ctx.RegisterState.Clear();
                 ctx.TrashedFlags = 0;
-                return;
+                return ci;
             }
 
             var callee = ci.Callee as Procedure;
@@ -395,8 +385,67 @@ namespace Decompiler.Analysis
             {
                 //$TODO: get trash information from signature?
             }
+            return ci;
         }
 
+        public Instruction VisitDeclaration(Declaration decl)
+        {
+            se.VisitDeclaration(decl);
+            return decl;
+        }
+
+        public Instruction VisitDefInstruction(DefInstruction def)
+        {
+            se.VisitDefInstruction(def);
+            return def;
+        }
+
+        public Instruction VisitGotoInstruction(GotoInstruction g)
+        {
+            se.VisitGotoInstruction(g);
+            return g;
+        }
+        public Instruction VisitIndirectCall(IndirectCall ic)
+        {
+            se.VisitIndirectCall(ic);
+            return ic;
+        }
+
+        public Instruction VisitPhiAssignment(PhiAssignment phi)
+        {
+            se.VisitPhiAssignment(phi);
+            return phi;
+        }
+
+        public Instruction VisitSideEffect(SideEffect side)
+        {
+            se.VisitSideEffect(side);
+            return side;
+        }
+
+        public Instruction VisitReturnInstruction(ReturnInstruction r)
+        {
+            se.VisitReturnInstruction(r);
+            return r;
+        }
+
+        public Instruction VisitStore(Store store)
+        {
+            se.VisitStore(store);
+            return store;
+        }
+
+
+
+        public Instruction VisitSwitchInstruction(SwitchInstruction sw)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Instruction VisitUseInstruction(UseInstruction u)
+        {
+            throw new NotSupportedException();
+        }
 
         private bool ProcedureTerminates(ProcedureBase proc)
         {
@@ -442,6 +491,5 @@ namespace Decompiler.Analysis
                 return e;
             }
         }
-
     }
 }

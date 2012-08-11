@@ -1,9 +1,9 @@
 Mem0:Global memory (aliases:)
 fp:Temporary (aliases:)
-sp:Register sp (aliases:)
-cx:Register cx (aliases:)
-ax:Register ax (aliases:)
-ds:Register ds (aliases:)
+sp:sp (aliases:)
+cx:cx (aliases:)
+ax:ax (aliases:)
+ds:ds (aliases:)
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
