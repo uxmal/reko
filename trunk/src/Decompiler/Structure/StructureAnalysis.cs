@@ -60,7 +60,7 @@ namespace Decompiler.Structure
                 
                 // if the current conditional header is a two way node and has a back edge, 
                 // then it won't have a follow.
-                if (curNode.HasABackEdge() && curNode.BlockType == BlockTerminationType.cBranch)
+                if (curNode.HasABackEdge() && curNode.BlockType == BlockTerminationType.Branch)
                 {
                     curNode.Conditional = CreateConditional(curNode, null);
                 }
@@ -73,7 +73,7 @@ namespace Decompiler.Structure
 
         private Conditional CreateConditional(StructureNode node, StructureNode follow)
         {
-            if (node.BlockType == BlockTerminationType.nway)
+            if (node.BlockType == BlockTerminationType.Multiway)
             {
                 var c = new Case(follow);
                 var cf = new CaseFinder(node, follow);
@@ -197,7 +197,6 @@ namespace Decompiler.Structure
             LoopFinder lf = new LoopFinder(headNode, latch, curProc.Ordering);
             HashSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
             Loop loop = lf.DetermineLoopType(loopNodes);
-            lf.TagNodesInLoop(loop, loopNodes);
         }
 
         public ProcedureStructure ProcedureStructure

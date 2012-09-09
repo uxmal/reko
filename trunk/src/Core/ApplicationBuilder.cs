@@ -62,7 +62,7 @@ namespace Decompiler.Core
             this.sigCallee = sigCallee;
         }
 
-        private List<Expression> BindArguments(Frame frame, CallSite cs, ProcedureSignature sigCallee)
+        private List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
         {
             var actuals = new List<Expression>();
             for (int i = 0; i < sigCallee.FormalArguments.Length; ++i)
@@ -89,7 +89,6 @@ namespace Decompiler.Core
                 idOut = (Identifier) Bind(sigCallee.ReturnValue);
             }
             return idOut;
-
         }
 
 		public Expression Bind(Identifier id)
@@ -102,7 +101,7 @@ namespace Decompiler.Core
         public Instruction CreateInstruction()
         {
             var idOut = BindReturnValue();
-            List<Expression> actuals = BindArguments(frame, site, sigCallee);
+            var actuals = BindArguments(frame, sigCallee);
             var appl = new Application(
                 callee,
                 (idOut == null ? PrimitiveType.Void : idOut.DataType),

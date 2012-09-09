@@ -112,6 +112,7 @@ namespace Decompiler.Analysis
 			define = false;
 			id.Storage.Accept(this);
 		}
+
         public void Use(Expression ex)
         {
             throw new NotImplementedException();

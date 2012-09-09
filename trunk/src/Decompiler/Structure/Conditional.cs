@@ -43,7 +43,6 @@ namespace Decompiler.Structure
         }
 
         public abstract void GenerateCode(AbsynCodeGenerator absynCodeGenerator2, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter);
-
     }
 
     public abstract class IfConditional : Conditional

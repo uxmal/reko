@@ -23,6 +23,23 @@ using System;
 
 namespace Decompiler.Core.Expressions
 {
+    /// <summary>
+    /// Models the common occurrence of CPU condition codes. The return
+    /// value is the condition codes that were set when the Expression was evaluated.
+    /// </summary>
+    /// <remarks>
+    /// For instance, the x86 instruction 
+    /// <code>
+    ///     add eax,ebx
+    /// </code>
+    /// should be translated to:
+    /// <code>
+    ///     eax = eax + ebx
+    ///     SZCO = COND(eax)
+    /// </code>
+    /// which models the fact that the SZCO condition codes are set by the ADD instruction
+    /// that produced eax.
+    /// </remarks>
 	public class ConditionOf : Expression
 	{
 		public ConditionOf(Expression ex) : base(PrimitiveType.Byte)

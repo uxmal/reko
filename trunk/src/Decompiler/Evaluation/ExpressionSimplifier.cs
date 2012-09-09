@@ -94,14 +94,14 @@ namespace Decompiler.Evaluation
 
         public static Constant SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r)
         {
-            PrimitiveType lType = (PrimitiveType)l.DataType;
-            PrimitiveType rType = (PrimitiveType)r.DataType;
+            var lType = (PrimitiveType)l.DataType;
+            var rType = (PrimitiveType)r.DataType;
             if (lType.Domain != rType.Domain)
                 throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
             return op.ApplyConstants(l, r);
         }
 
-        public Expression VisitAddress(Address addr)
+        public virtual Expression VisitAddress(Address addr)
         {
             return addr;
         }
@@ -129,12 +129,12 @@ namespace Decompiler.Evaluation
             return ctx.GetValue(appl);
         }
 
-        public Expression VisitArrayAccess(ArrayAccess acc)
+        public virtual Expression VisitArrayAccess(ArrayAccess acc)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitBinaryExpression(BinaryExpression binExp)
+        public virtual Expression VisitBinaryExpression(BinaryExpression binExp)
         {
             // (+ id1 id1) ==> (* id1 2)
 
@@ -257,7 +257,7 @@ namespace Decompiler.Evaluation
             return binExp;
         }
 
-        public Expression VisitCast(Cast cast)
+        public virtual Expression VisitCast(Cast cast)
         {
             var exp = cast.Expression.Accept(this);
 
@@ -275,7 +275,7 @@ namespace Decompiler.Evaluation
             return new Cast(cast.DataType, exp);
         }
 
-        public Expression VisitConditionOf(ConditionOf c)
+        public virtual Expression VisitConditionOf(ConditionOf c)
         {
             var e = c.Expression.Accept(this);
             //$REVIEW: if e == 0, then Z flags could be set to 1. But that's architecture specific, so
@@ -285,12 +285,12 @@ namespace Decompiler.Evaluation
             return c;
         }
 
-        public Expression VisitConstant(Constant c)
+        public virtual Expression VisitConstant(Constant c)
         {
             return c;
         }
 
-        public Expression VisitDepositBits(DepositBits d)
+        public virtual Expression VisitDepositBits(DepositBits d)
         {
             d.Source = d.Source.Accept(this);
             d.InsertedBits = d.InsertedBits.Accept(this);
@@ -302,17 +302,17 @@ namespace Decompiler.Evaluation
             return d;
         }
 
-        public Expression VisitDereference(Dereference deref)
+        public virtual Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitFieldAccess(FieldAccess acc)
+        public virtual Expression VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitIdentifier(Identifier id)
+        public virtual Expression VisitIdentifier(Identifier id)
         {
             if (idConst.Match(id))
             {
@@ -334,7 +334,7 @@ namespace Decompiler.Evaluation
             return id;
         }
 
-        public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
+        public virtual Expression VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             if (mpsRule.Match(mps))
             {
@@ -344,7 +344,7 @@ namespace Decompiler.Evaluation
             return mps;
         }
 
-        public Expression VisitMemoryAccess(MemoryAccess access)
+        public virtual Expression VisitMemoryAccess(MemoryAccess access)
         {
             var value = new MemoryAccess(
                 access.MemoryId,
@@ -353,7 +353,7 @@ namespace Decompiler.Evaluation
             return ctx.GetValue(value);
         }
 
-        public Expression VisitMkSequence(MkSequence seq)
+        public virtual Expression VisitMkSequence(MkSequence seq)
         {
             var head = seq.Head.Accept(this);
             var tail = seq.Tail.Accept(this);
@@ -379,27 +379,27 @@ namespace Decompiler.Evaluation
             return new MkSequence(seq.DataType, head, tail);
         }
 
-        public Expression VisitPhiFunction(PhiFunction pc)
+        public virtual Expression VisitPhiFunction(PhiFunction pc)
         {
             return pc;
         }
 
-        public Expression VisitPointerAddition(PointerAddition pa)
+        public virtual Expression VisitPointerAddition(PointerAddition pa)
         {
             return pa;
         }
 
-        public Expression VisitProcedureConstant(ProcedureConstant pc)
+        public virtual Expression VisitProcedureConstant(ProcedureConstant pc)
         {
             return pc;
         }
 
-        public Expression VisitScopeResolution(ScopeResolution sc)
+        public virtual Expression VisitScopeResolution(ScopeResolution sc)
         {
             return sc;
         }
 
-        public Expression VisitSegmentedAccess(SegmentedAccess segMem)
+        public virtual Expression VisitSegmentedAccess(SegmentedAccess segMem)
         {
             return ctx.GetValue(new SegmentedAccess(
                 segMem.MemoryId,
@@ -408,7 +408,7 @@ namespace Decompiler.Evaluation
                 segMem.DataType));
         }
 
-        public Expression VisitSlice(Slice slice)
+        public virtual Expression VisitSlice(Slice slice)
         {
             slice.Expression = slice.Expression.Accept(this);
             if (sliceConst.Match(slice))
@@ -431,12 +431,12 @@ namespace Decompiler.Evaluation
             return slice;
         }
 
-        public Expression VisitTestCondition(TestCondition tc)
+        public virtual Expression VisitTestCondition(TestCondition tc)
         {
             return new TestCondition(tc.ConditionCode, tc.Expression.Accept(this));
         }
 
-        public Expression VisitUnaryExpression(UnaryExpression unary)
+        public virtual Expression VisitUnaryExpression(UnaryExpression unary)
         {
             unary = new UnaryExpression(unary.Operator, unary.DataType, unary.Expression.Accept(this));
             if (negSub.Match(unary))
