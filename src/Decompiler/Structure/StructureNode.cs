@@ -38,42 +38,30 @@ namespace Decompiler.Structure
 
     public class StructureNode : GraphNode<StructureNode>
     {
-        private Block block;
-        private int id;
-        private int ord;
-
         internal travType traversed;          //$REFACTOR: use visited hashtables instead.
-        private bool forceLabel;
-
-        private StructureNode immPDom;
-        private StructureNode caseHead;
 
         private UnstructuredType usType;
-        private Conditional cond;
-        private Interval interval;
 
         private int[] loopStamps;
         private int[] revLoopStamps;
-
-        private BlockTerminationType type;
 
         public StructureNode(Block block, int id)
         {
             if (block == null)
                 throw new ArgumentNullException("block");
-            this.block = block;
-            this.id = id;
+            this.Block = block;
+            this.Number = id;
 
-            ord = -1;
+            Order = -1;
 
             traversed = travType.UNTRAVERSED;
-            forceLabel = false;
+            ForceLabel = false;
 
-            immPDom = null;
-            caseHead = null;
+            ImmPDom = null;
+            CaseHead = null;
 
             usType = UnstructuredType.Structured;
-            interval = null;
+            Interval = null;
 
             //initialize the two timestamp tuples
             loopStamps = new int[2];
@@ -81,26 +69,24 @@ namespace Decompiler.Structure
             for (int i = 0; i < 2; i++)
                 loopStamps[i] = revLoopStamps[i] = -1;
 
-
-            type = TypeOfBlock(block);
+            BlockType = TypeOfBlock(block);
         }
-
 
         // Constructor used by the IntNode derived class
         protected StructureNode(int newId, BlockTerminationType t)
         {
-            id = newId; type = t;
+            Number = newId; BlockType = t;
         }
 
         // Add an edge from this node to dest. If this is a cBranch type of node and it already
         // has an edge to dest then node edge is added and the node type is changed to fall
         public void AddEdgeTo(StructureNode dest)
         {
-            if (type != BlockTerminationType.cBranch || !HasEdgeTo(dest))
+            if (BlockType != BlockTerminationType.Branch || !HasEdgeTo(dest))
                 OutEdges.Add(dest);    
             else
                 //reset the type to fall if no edge was added (i.e. this edge already existed)
-                type = BlockTerminationType.fall;
+                BlockType = BlockTerminationType.FallThrough;
         }
 
         // Add an edge from src to this node if it doesn't already exist. NB: only interval
@@ -112,28 +98,24 @@ namespace Decompiler.Structure
         }
 
 
-        public Block Block
-        {
-            get { return block; }
-        }
+        public Block Block { get; private set; }
+        public BlockTerminationType BlockType { get; private set; }
+        public StructureNode CaseHead { get; set; }
+        public Conditional Conditional { get; set; }
+        public bool ForceLabel { get; set; }
+        public int Number { get; private set; }
+        public StructureNode Then { get { return OutEdges[1]; } }
+        public StructureNode Else { get { return OutEdges[0]; } }
 
-        public BlockTerminationType BlockType
+        public UnstructuredType UnstructType
         {
-            get { return type; }
+            get { return usType; }
+            set
+            {
+                Debug.Assert(Conditional != null && !(Conditional is Case));
+                usType = value;
+            }
         }
-
-        public StructureNode CaseHead
-        {
-            get { return caseHead; }
-            set { caseHead = value; }
-        }
-
-        public Conditional Conditional
-        {
-            get { return cond; }
-            set { cond = value; }
-        }
-
 
         // Do a DFS on the graph headed by this node, simply tagging the nodes visited.  //$move to GraphNode.
         public void DfsTag()
@@ -144,15 +126,6 @@ namespace Decompiler.Structure
                     OutEdges[i].DfsTag();
         }
 
-        public StructureNode Then { get { return OutEdges[1]; } }
-
-        public StructureNode Else { get { return OutEdges[0]; } }
-
-        public bool ForceLabel
-        {
-            get { return forceLabel; }
-            set { forceLabel = value; }
-        }
 
         /// <summary>
         /// Returns true of this node has a back edge to <paramref name="dest"/>.
@@ -174,32 +147,30 @@ namespace Decompiler.Structure
             return false;
         }
 
-        // Does this node have an edge to dest?
+        /// <summary>
+        /// Does this node have an edge to dest?
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <returns></returns>
         public bool HasEdgeTo(StructureNode dest)
         {
             return OutEdges.Contains(dest);
         }
 
 
-        public int Number { get { return id; } }
 
-        public StructureNode ImmPDom
-        {
-            get { return immPDom; }
-            set { immPDom = value; }
-        }
+        /// <summary>
+        /// The immediate postdominator of this node (if it exists)
+        /// </summary>
+        public StructureNode ImmPDom {get;set; }
 
 
         public StatementList Instructions
         {
-            get { return block.Statements; }
+            get { return Block.Statements; }
         }
 
-        public Interval Interval
-        {
-            get { return interval; }
-            set { interval = value; }
-        }
+        public Interval Interval { get; set; }
 
         /// <summary>
         /// Is this node an ancestor of <paramref name="other"/>?
@@ -229,12 +200,17 @@ namespace Decompiler.Structure
         ///<summary>
         ///The innermost loop this node belongs to.
         ///</summary>
-        public Loop Loop { get;set; } 
+        public Loop Loop { get; set; } 
 
         public virtual string Name
         {
-            get { return block.Name; }
+            get { return Block.Name; }
         }
+
+        /// <summary>
+        /// The index of this node within the ordering array.
+        /// </summary>
+        public int Order { get; set; }
 
         // Do a DFS on the graph headed by this node, giving each node its time stamp tuple
         // that will be used for loop structuring as well as building the structure that will
@@ -264,7 +240,7 @@ namespace Decompiler.Structure
             loopStamps[1] = ++time;
 
             //add this node to the ordering structure as well as recording its position within the ordering
-            ord = order.Count;
+            Order = order.Count;
             order.Add(this);
         }
 
@@ -291,15 +267,6 @@ namespace Decompiler.Structure
             revLoopStamps[1] = ++time;
         }
 
-        /// <summary>
-        /// The index of this node within the ordering array.
-        /// </summary>
-        public int Order
-        {
-            get { return ord; }
-            set { ord = value; }
-        }
-
         public override string ToString()
         {
             StringWriter sw = new StringWriter();
@@ -311,43 +278,33 @@ namespace Decompiler.Structure
         {
             Statement stm = block.Statements.Last;
             if (stm == null)
-                return BlockTerminationType.fall;
+                return BlockTerminationType.FallThrough;
             Instruction i = stm.Instruction;
             if (i is Branch)
-                return BlockTerminationType.cBranch;
+                return BlockTerminationType.Branch;
             if (i is SwitchInstruction)
-                return BlockTerminationType.nway;
+                return BlockTerminationType.Multiway;
             if (i is ReturnInstruction)
-                return BlockTerminationType.ret;
-            return BlockTerminationType.fall;
+                return BlockTerminationType.Return;
+            if (i is GotoInstruction)
+                return BlockTerminationType.Goto;
+            return BlockTerminationType.FallThrough;
         }
-
-        public UnstructuredType UnstructType
-        {
-            get { return usType; }
-            set
-            {
-                Debug.Assert(Conditional != null && !(cond is Case));
-                usType = value;
-            }
-        }
-
 
         public virtual void Write(TextWriter tw)
         {
             tw.Write("{0} ({1})", Block.Name, Number);
         }
-
     }
 
     public enum BlockTerminationType
     {
         None,
-        cBranch,
-        fall,
-        nway,
-        uBranch,
-        ret,
+        FallThrough,
+        Goto,
+        Return,
+        Branch,
+        Multiway,
         IntervalNode
     }
 

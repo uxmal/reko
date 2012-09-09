@@ -32,7 +32,6 @@ namespace Decompiler.Structure
     public class AbsynStatementEmitter : InstructionVisitor, IAbsynVisitor
     {
         private List<AbsynStatement> stms;
-        private bool stripDeclarations;
 
         public AbsynStatementEmitter(List<AbsynStatement> stms)
         {
@@ -105,11 +104,7 @@ namespace Decompiler.Structure
             return switchStm;
         }
 
-        public bool StripDeclarations
-        {
-            get { return stripDeclarations; }
-            set { stripDeclarations = value; }
-        }
+        public bool StripDeclarations { get; set; }
 
 
         #region InstructionVisitor Members
@@ -131,7 +126,7 @@ namespace Decompiler.Structure
 
         void InstructionVisitor.VisitDeclaration(Declaration decl)
         {
-            if (stripDeclarations)
+            if (StripDeclarations)
             {
                 if (decl.Expression != null)
                 {

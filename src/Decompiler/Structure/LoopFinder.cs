@@ -168,12 +168,12 @@ namespace Decompiler.Structure
         public Loop DetermineLoopType(HashSet<StructureNode> loopNodes)
         {
             // if the latch node is a two way node then this must be a post tested loop
-            if (latch.BlockType == BlockTerminationType.cBranch)
+            if (latch.BlockType == BlockTerminationType.Branch)
             {
                 header.Loop = CreatePostTestedLoop(loopNodes);
             }
             // otherwise it is either a pretested or endless loop
-            else if (header.BlockType == BlockTerminationType.cBranch)
+            else if (header.BlockType == BlockTerminationType.Branch)
             {
                 if (loopNodes.Contains(header.OutEdges[0]) && !loopNodes.Contains(header.OutEdges[1]))
                     header.Loop = CreatePreTestedLoop(loopNodes);
@@ -187,6 +187,7 @@ namespace Decompiler.Structure
             {
                 header.Loop = CreateTestlessLoop(loopNodes);
             }
+            header.Loop.TagNodes(loopNodes);
             return header.Loop;
         }
 
@@ -272,29 +273,6 @@ namespace Decompiler.Structure
         {
             var finder = new SccLoopFinder(header.Interval, intNodes);
             return finder.FindLoop();
-        }
-
-        //$REVIEW: add to Loop class instead?
-        public void TagNodesInLoop(Loop loop, HashSet<StructureNode> loopNodes)
-        {
-            foreach (StructureNode node in loopNodes)
-            {
-                if (node.Loop == null)
-                {
-                    TagLoopNode(loop, node);
-                }
-            }
-        }
-
-        private void TagLoopNode(Loop loop, StructureNode node)
-        {
-            node.Loop = loop;
-            if (node.Conditional == null)
-                return;
-            if (node.Conditional.Follow != null)
-                return;
-
-
         }
     }
 }

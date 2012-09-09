@@ -33,45 +33,30 @@ namespace Decompiler.Structure
     /// </summary>
     public abstract class Loop
     {
-        private StructureNode header;
-        private StructureNode latch;
-        private StructureNode follow;
-        private HashSet<StructureNode> loopNodes;
 
         public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
         {
-            this.header = header;
-            this.latch = latch;
-            this.loopNodes = loopNodes;
+            this.Header = header;
+            this.Latch = latch;
+            this.Nodes = loopNodes;
         }
 
         public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes, StructureNode follow)
         {
-            this.header = header;
-            this.latch = latch;
-            this.loopNodes = loopNodes;
-            this.follow = follow;
+            this.Header = header;
+            this.Latch = latch;
+            this.Nodes = loopNodes;
+            this.Follow = follow;
         }
 
-        public StructureNode Header
-        {
-            get { return header; }
-        }
+        public StructureNode Header { get; private set; }
 
-        public StructureNode Latch
-        {
-            get { return latch; }
-        }
+        public StructureNode Latch { get;private set; }
 
-        public HashSet<StructureNode> Nodes
-        {
-            get { return loopNodes; }
-        }
+        public StructureNode Follow { get; private set; }
 
-        public StructureNode Follow
-        {
-            get { return follow; }
-        }
+        public HashSet<StructureNode> Nodes { get; private set; }
+
 
         public void GenerateCode(AbsynCodeGenerator codeGen, StructureNode node, StructureNode latchNode, AbsynStatementEmitter emitter)
         {
@@ -88,6 +73,25 @@ namespace Decompiler.Structure
 
         protected abstract void GenerateCodeInner(AbsynCodeGenerator codeGen, StructureNode node, AbsynStatementEmitter emitter);
 
+        public void TagNodes(HashSet<StructureNode> loopNodes)
+        {
+            foreach (StructureNode node in loopNodes)
+            {
+                if (node.Loop == null)
+                {
+                    TagLoopNode(node);
+                }
+            }
+        }
+
+        private void TagLoopNode(StructureNode node)
+        {
+            node.Loop = this;
+            if (node.Conditional == null)
+                return;
+            if (node.Conditional.Follow != null)
+                return;
+        }
     }
 
     /// <summary>

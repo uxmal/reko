@@ -519,7 +519,7 @@ namespace Decompiler.Analysis
 				{
 					if (!(arg.Storage is OutArgumentStorage))
 					{
-                        varLive.Def(ab.Bind(arg));
+                        varLive.Use(ab.Bind(arg));
 					}
 				}
 			}

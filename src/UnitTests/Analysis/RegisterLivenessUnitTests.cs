@@ -250,11 +250,12 @@ namespace Decompiler.UnitTests.Analysis
 			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
 			Identifier w08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
 			new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0)).Accept(rl);
-			Assert.AreEqual(2, rl.IdentifierLiveness.LiveStorages.Count, "Should have two accesses");
+
 			foreach (object o in rl.IdentifierLiveness.LiveStorages.Keys)
 			{
 				Console.WriteLine("{0} {1} {2}",o, Object.Equals(o, b04.Storage), Object.Equals(o, b04.Storage));
 			}
+            Assert.AreEqual(2, rl.IdentifierLiveness.LiveStorages.Count, "Should have two accesses");
 
 			Assert.IsTrue(rl.IdentifierLiveness.LiveStorages.ContainsKey(b04.Storage), "Should have storage for b04");
 			Assert.IsTrue(rl.IdentifierLiveness.LiveStorages.ContainsKey(w08.Storage), "Should have storage for w08");

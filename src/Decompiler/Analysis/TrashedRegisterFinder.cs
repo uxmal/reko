@@ -355,14 +355,12 @@ namespace Decompiler.Analysis
 
         public Instruction VisitAssignment(Assignment ass)
         {
-            se.VisitAssignment(ass);
-            return ass;
+            return se.VisitAssignment(ass);
         }
 
         public Instruction VisitBranch(Branch br)
         {
-            se.VisitBranch(br);
-            return br;
+            return se.VisitBranch(br);
         }
 
         public Instruction VisitCallInstruction(CallInstruction ci)
@@ -390,52 +388,43 @@ namespace Decompiler.Analysis
 
         public Instruction VisitDeclaration(Declaration decl)
         {
-            se.VisitDeclaration(decl);
-            return decl;
+            return se.VisitDeclaration(decl);
         }
 
         public Instruction VisitDefInstruction(DefInstruction def)
         {
-            se.VisitDefInstruction(def);
-            return def;
+            return se.VisitDefInstruction(def);
         }
 
         public Instruction VisitGotoInstruction(GotoInstruction g)
         {
-            se.VisitGotoInstruction(g);
-            return g;
+            return se.VisitGotoInstruction(g);
         }
+
         public Instruction VisitIndirectCall(IndirectCall ic)
         {
-            se.VisitIndirectCall(ic);
-            return ic;
+            return se.VisitIndirectCall(ic);
         }
 
         public Instruction VisitPhiAssignment(PhiAssignment phi)
         {
-            se.VisitPhiAssignment(phi);
-            return phi;
+            return se.VisitPhiAssignment(phi);
         }
 
         public Instruction VisitSideEffect(SideEffect side)
         {
-            se.VisitSideEffect(side);
-            return side;
+            return se.VisitSideEffect(side);
         }
 
         public Instruction VisitReturnInstruction(ReturnInstruction r)
         {
-            se.VisitReturnInstruction(r);
-            return r;
+            return se.VisitReturnInstruction(r);
         }
 
         public Instruction VisitStore(Store store)
         {
-            se.VisitStore(store);
-            return store;
+            return se.VisitStore(store);
         }
-
-
 
         public Instruction VisitSwitchInstruction(SwitchInstruction sw)
         {
@@ -446,6 +435,8 @@ namespace Decompiler.Analysis
         {
             throw new NotSupportedException();
         }
+
+
 
         private bool ProcedureTerminates(ProcedureBase proc)
         {

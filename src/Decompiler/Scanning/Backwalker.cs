@@ -62,11 +62,6 @@ namespace Decompiler.Scanning
         public Address VectorAddress { get; private set; }
         public List<BackwalkOperation> Operations { get; private set; }
 
-        public virtual List<BackwalkOperation> BackWalk(Address addrFrom, IBackWalkHost host)
-        {
-            throw new NotImplementedException();
-        }
-
         private IEnumerable<Statement> StatementsInReverseOrder(Block block)
         {
             for (int i = block.Statements.Count - 1; i >= 0; --i)

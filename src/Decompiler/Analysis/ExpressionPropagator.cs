@@ -40,8 +40,19 @@ namespace Decompiler.Analysis
     /// with
     ///     &idC
     /// </summary>
-    public class ExpressionPropagator : InstructionVisitor<Instruction>, ExpressionVisitor<Expression>
+    public class ExpressionPropagator : InstructionVisitor<Instruction>, ExpressionVisitor<ExpressionPropagator.Result>
     {
+        public class Result
+        {
+            public Expression Value;
+            public Expression PropagatedExpression;
+            
+            public override string ToString()
+            {
+                return string.Format("V: {0}; E:{1}", Value, PropagatedExpression);
+            }
+        }
+
         private IProcessorArchitecture arch;
         private ExpressionSimplifier eval;
         private SymbolicEvaluationContext ctx;
@@ -59,13 +70,11 @@ namespace Decompiler.Analysis
             this.flow = flow;
         }
 
-        public Instruction VisitAssignment(Assignment a)
+        public Instruction VisitAssignment(Assignment ass)
         {
-            var src =  a.Src.Accept(this);
-            ctx.SetValue(a.Dst, src);
-            if (!MayReplace(src))
-                src = a.Src;
-            return new Assignment(a.Dst, src);
+            var src = ass.Src.Accept(this);
+            ctx.SetValue(ass.Dst, src.Value);
+            return new Assignment(ass.Dst, src.PropagatedExpression);
         }
 
         private bool MayReplace(Expression exp)
@@ -85,7 +94,7 @@ namespace Decompiler.Analysis
         public Instruction VisitBranch(Branch b)
         {
             return new Branch(
-                b.Condition.Accept(this),
+                b.Condition.Accept(this).PropagatedExpression,
                 b.Target);
         }
 
@@ -140,35 +149,46 @@ namespace Decompiler.Analysis
 
         public Instruction VisitIndirectCall(IndirectCall ic)
         {
-            var fn = SimplifyExpression(ic.Callee);
-            return new IndirectCall(fn, ic.CallSite);
+            var fn = ic.Callee.Accept(this);
+            return new IndirectCall(fn.PropagatedExpression, ic.CallSite);
         }
 
         public Instruction VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression != null)
-                ret.Expression = SimplifyExpression(ret.Expression.Accept(this));
+                ret.Expression = ret.Expression.Accept(this).PropagatedExpression;
             return ret;
         }
 
         public Instruction VisitSideEffect(SideEffect side)
         {
-            return new SideEffect(SimplifyExpression(side.Expression.Accept(this)));
+            return new SideEffect(side.Expression.Accept(this).PropagatedExpression);
         }
 
         public Instruction VisitStore(Store store)
         {
-            var src = SimplifyExpression(store.Src.Accept(this));
-            var dst = SimplifyExpression(store.Dst.Accept(this));
+            var src = store.Src.Accept(this);
+            var dst = store.Dst.Accept(this);
 
-            if (dst != Constant.Invalid)
-                ctx.SetValueEa(dst, src);
-
-            var idDst = dst as Identifier;
-            if (idDst != null)
-                return new Assignment(idDst, src);
+            var m = dst.PropagatedExpression as MemoryAccess;
+            if (m != null)
+            {
+                ctx.SetValueEa(m.EffectiveAddress, src.Value);
+            }
             else
-                return new Store(dst, src);
+            {
+                var sm = dst.PropagatedExpression as SegmentedAccess;
+                if (sm != null)
+                {
+                    ctx.SetValueEa(sm.BasePointer, sm.EffectiveAddress, src.Value);
+                }
+            }
+
+            var idDst = dst.PropagatedExpression as Identifier;
+            if (idDst != null)
+                return new Assignment(idDst, src.PropagatedExpression);
+            else
+                return new Store(dst.PropagatedExpression, src.PropagatedExpression);
         }
 
         public Instruction VisitSwitchInstruction(SwitchInstruction si)
@@ -181,50 +201,50 @@ namespace Decompiler.Analysis
             throw new NotImplementedException();
         }
 
-        public Expression VisitAddress(Address addr)
+        public Result VisitAddress(Address addr)
         {
-            return addr;
+            return new Result { Value = addr, PropagatedExpression = addr };
         }
 
-        public Expression VisitApplication(Application appl)
+        public Result VisitApplication(Application appl)
         {
             var fn = SimplifyExpression(appl.Procedure);
             var args = new Expression[appl.Arguments.Length];
             for (int i = 0; i < args.Length; ++i)
             {
-                args[i] = SimplifyExpression(appl.Arguments[i]);
+                args[i] = appl.Arguments[i].Accept(this).PropagatedExpression;
             }
-            var a = new Application(fn, appl.DataType, args);
+            var a = new Application(fn.PropagatedExpression, appl.DataType, args);
             return SimplifyExpression(a);
         }
 
-        public Expression VisitArrayAccess(ArrayAccess acc)
+        public Result VisitArrayAccess(ArrayAccess acc)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitBinaryExpression(BinaryExpression binExp)
+        public Result VisitBinaryExpression(BinaryExpression binExp)
         {
-            var l = SimplifyExpression(binExp.Left.Accept(this));
-            var r = SimplifyExpression(binExp.Right.Accept(this));
+            var l = binExp.Left.Accept(this).PropagatedExpression;
+            var r = binExp.Right.Accept(this).PropagatedExpression;
             var b = new BinaryExpression(binExp.Operator, binExp.DataType, l, r);
             return SimplifyExpression(b);
         }
 
-        private Expression SimplifyExpression(Expression e)
+        private Result SimplifyExpression(Expression e)
         {
             var simp = e.Accept(eval);
             if (simp == Constant.Invalid)
-                return e;
+                return new Result { Value = simp, PropagatedExpression = e };
             if (ctx.IsFramePointer(simp))
-                return simp;
+                return new Result { Value = simp, PropagatedExpression = simp };
             if (simp is Constant)
-                return simp;
+                return new Result { Value = simp, PropagatedExpression = simp };
 
             if (IsConstantOffsetFromFramePointer(simp))
-                return simp;
-            
-            return e;
+                return new Result { Value = simp, PropagatedExpression = simp };
+
+            return new Result { Value = simp, PropagatedExpression = e };
         }
 
         private bool IsConstantOffsetFromFramePointer(Expression e)
@@ -237,153 +257,157 @@ namespace Decompiler.Analysis
             return ctx.IsFramePointer(binExp.Left);
         }
 
-        private Expression ConvertToParamOrLocal(Expression exp)
+        private Result ConvertToParamOrLocal(Result res)
         {
-            var m = exp as MemoryAccess;
+            var m = res.PropagatedExpression as MemoryAccess;
             if (m == null)
-                return exp;
+                return res;
             var address = m.EffectiveAddress;
-            return ConvertAddressToStackVariable(exp, address);
+            return ConvertAddressToStackVariable(res, address);
         }
 
-        private Expression ConvertAddressToStackVariable(Expression exp, Expression address)
+        private Result ConvertAddressToStackVariable(Result res, Expression address)
         {
             if (ctx.IsFramePointer(address))
-                return ctx.Frame.EnsureStackArgument(0, exp.DataType);
+                return new Result { Value = res.Value, PropagatedExpression= ctx.Frame.EnsureStackArgument(0, res.PropagatedExpression.DataType) };
             var bin = address as BinaryExpression;
             if (bin == null)
-                return exp;
+                return res;
             if (!ctx.IsFramePointer(bin.Left))
-                return exp;
+                return res;
             var c = bin.Right as Constant;
             if (c == null)
-                return exp;
+                return res;
             int cc = c.ToInt32();
             if (bin.Operator == Operator.Sub)
                 cc = -cc;
-            var sv = ctx.Frame.EnsureStackVariable(cc, exp.DataType);
-            if (sv.DataType.Size > exp.DataType.Size)
+            var sv = ctx.Frame.EnsureStackVariable(cc, res.PropagatedExpression.DataType);
+            if (sv.DataType.Size > res.PropagatedExpression.DataType.Size)
             {
-                return new Slice(exp.DataType, sv, 0);
+                return new Result { Value = res.Value, PropagatedExpression = new Slice(res.PropagatedExpression.DataType, sv, 0) };
             }
             else
             {
-                return sv;
+                return new Result { Value=res.Value, PropagatedExpression = sv };
             }
         }
 
-        public Expression VisitCast(Cast cast)
+        public Result VisitCast(Cast cast)
         {
             var e = cast.Expression.Accept(this);
-            return SimplifyExpression(new Cast(cast.DataType, e));
+            return SimplifyExpression(new Cast(cast.DataType, e.PropagatedExpression));
         }
 
-        public Expression VisitConditionOf(ConditionOf cof)
+        public Result VisitConditionOf(ConditionOf cof)
         {
-            return cof;
+            return SimplifyExpression(cof);
         }
 
-        public Expression VisitConstant(Constant c)
+        public Result VisitConstant(Constant c)
         {
-            return c;
+            return new Result { Value = c, PropagatedExpression = c };
         }
 
-        public Expression VisitDepositBits(DepositBits dpb)
+        public Result VisitDepositBits(DepositBits dpb)
         {
             var d = new DepositBits(
-                dpb.Source.Accept(this),
-                dpb.InsertedBits.Accept(this),
+                dpb.Source.Accept(this).PropagatedExpression,
+                dpb.InsertedBits.Accept(this).PropagatedExpression,
                 dpb.BitPosition,
                 dpb.BitCount);
             return SimplifyExpression(d);
         }
 
-        public Expression VisitDereference(Dereference deref)
+        public Result VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitFieldAccess(FieldAccess acc)
+        public Result VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitIdentifier(Identifier id)
+        public Result VisitIdentifier(Identifier id)
         {
-            return SimplifyExpression(id.Accept(eval));
+            var ev = id.Accept(eval);
+            if (!MayReplace(ev))
+                return new Result { Value = ev, PropagatedExpression = id };
+            else 
+                return SimplifyExpression(ev);
         }
 
-        public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
+        public Result VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitMemoryAccess(MemoryAccess access)
+        public Result VisitMemoryAccess(MemoryAccess access)
         {
             var m = new MemoryAccess(
                 access.MemoryId,
-                access.EffectiveAddress.Accept(this),
+                access.EffectiveAddress.Accept(this).PropagatedExpression,
                 access.DataType);
             return ConvertToParamOrLocal(SimplifyExpression(m));
         }
 
-        public Expression VisitMkSequence(MkSequence seq)
+        public Result VisitMkSequence(MkSequence seq)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitPhiFunction(PhiFunction phi)
+        public Result VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitPointerAddition(PointerAddition pa)
+        public Result VisitPointerAddition(PointerAddition pa)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitProcedureConstant(ProcedureConstant pc)
+        public Result VisitProcedureConstant(ProcedureConstant pc)
         {
-            return pc;
+            return new Result { Value = pc, PropagatedExpression = pc };
         }
 
-        public Expression VisitScopeResolution(ScopeResolution scopeResolution)
+        public Result VisitScopeResolution(ScopeResolution scopeResolution)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitSegmentedAccess(SegmentedAccess access)
+        public Result VisitSegmentedAccess(SegmentedAccess access)
         {
             var m = new SegmentedAccess(
                 access.MemoryId, 
-                access.BasePointer.Accept(this),
-                access.EffectiveAddress.Accept(this),
+                SimplifyExpression(access.BasePointer).PropagatedExpression,
+                SimplifyExpression(access.EffectiveAddress).PropagatedExpression,
                 access.DataType);
             return ConvertToParamOrLocal(SimplifyExpression(m));
         }
 
-        public Expression VisitSlice(Slice slice)
+        public Result VisitSlice(Slice slice)
         {
             var s = new Slice(
                 slice.DataType,
-                slice.Expression.Accept(this),
+                SimplifyExpression(slice.Expression).PropagatedExpression,
                 (byte) slice.Offset);
             return SimplifyExpression(s);
         }
 
-        public Expression VisitTestCondition(TestCondition tc)
+        public Result VisitTestCondition(TestCondition tc)
         {
             var t = new TestCondition(
                 tc.ConditionCode,
-                tc.Expression.Accept(this));
+                SimplifyExpression(tc.Expression).PropagatedExpression);
             return SimplifyExpression(t);
         }
 
-        public Expression VisitUnaryExpression(UnaryExpression unary)
+        public Result VisitUnaryExpression(UnaryExpression unary)
         {
             return SimplifyExpression(
                 new UnaryExpression(unary.Operator, unary.DataType,
-                    unary.Expression.Accept(this)));
+                    SimplifyExpression(unary.Expression).PropagatedExpression));
         }
     }
 }

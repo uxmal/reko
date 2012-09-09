@@ -216,5 +216,94 @@ foo_exit:
 ";
             RunTest(sExp);
         }
+
+        [Test]
+        public void PromoteMemoryAccessParametersToApiCalls()
+        {
+            p.Add("main", m =>
+            {
+                var esp = m.Frame.EnsureRegister(Registers.esp);
+                var ebp = m.Frame.EnsureRegister(Registers.ebp);
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, ebp);
+                m.Assign(ebp, esp);
+                m.SideEffect(m.Fn(
+                    new ProcedureConstant(PrimitiveType.Word32, new ExternalProcedure("strcpy", null)),
+                    m.LoadDw(m.Add(ebp, 8)),
+                    m.LoadDw(m.Add(ebp, 12))));
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.Add(esp, 4));
+                m.Return();
+            });
+
+            var sExp =
+@"// main
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	esp = fp - 0x00000004
+	dwLoc04 = ebp
+	ebp = fp - 0x00000004
+	strcpy(dwArg04, dwArg08)
+	ebp = dwLoc04
+	esp = fp
+	return
+	// succ:  main_exit
+main_exit:
+
+";
+            RunTest(sExp);
+        }
+
+        [Test]
+        public void PromoteMemoryAccessParametersToApiCallsWithLocalPushes()
+        {
+            p.Add("main", m =>
+            {
+                var esp = m.Frame.EnsureRegister(Registers.esp);
+                var ebp = m.Frame.EnsureRegister(Registers.ebp);
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, ebp);
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, m.Word32(55));
+                m.Assign(esp, m.Sub(esp, 4));
+                m.Store(esp, m.Word32(45));
+                m.Assign(
+                    eax,
+                    m.Fn(
+                        new ProcedureConstant(PrimitiveType.Word32, new ExternalProcedure("add", null)),
+                        m.LoadDw(esp),
+                        m.LoadDw(m.Add(esp, 4))));
+                m.Assign(esp, m.Add(esp, 8));
+                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(esp, m.Add(esp, 4));
+                m.Return();
+            });
+
+            var sExp =
+@"// main
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	esp = fp - 0x00000004
+	dwLoc04 = ebp
+	esp = fp - 0x00000008
+	dwLoc08 = 0x00000037
+	esp = fp - 0x0000000C
+	dwLoc0C = 0x0000002D
+	eax = add(dwLoc0C, dwLoc08)
+	esp = fp + 0xFFFFFFFC
+	ebp = dwLoc04
+	esp = fp
+	return
+	// succ:  main_exit
+main_exit:
+
+";
+            RunTest(sExp);
+        }
     }
 }
