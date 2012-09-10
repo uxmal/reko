@@ -26,6 +26,7 @@ using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Decompiler.Scanning
 {
@@ -92,15 +93,14 @@ namespace Decompiler.Scanning
                     useStore = false;
                 return frame.EnsureSequence(regDstHi, regDstLo, totalSize);
             }
-            //MemoryOperand memDstLo = opLo as MemoryOperand;
-            //MemoryOperand memDstHi = opHi as MemoryOperand;
-            //if (memDstLo != null && memDstHi != null && MemoryOperandsAdjacent(memDstLo, memDstHi))
-            //{
-            //    if (isDef)
-            //        useStore = true;
-            //    throw new NotImplementedException("The <null> on the next line needs an IntelState, not an IntelRewriterState.");
-            //    return orw.CreateMemoryAccess(memDstLo, totalSize, null);
-            //}
+            var memDstLo = opLo as MemoryAccess;
+            var memDstHi = opHi as MemoryAccess;
+            if (memDstLo != null && memDstHi != null && MemoryOperandsAdjacent(memDstLo, memDstHi))
+            {
+                if (isDef)
+                    useStore = true;
+                return CreateMemoryAccess(memDstLo, totalSize);
+            }
             var immLo = opLo as Constant;
             var immHi = opHi as Constant;
             if (immLo != null && immHi != null)
@@ -109,6 +109,21 @@ namespace Decompiler.Scanning
             }
             return null;
         }
+
+        private Expression CreateMemoryAccess(MemoryAccess mem, DataType totalSize)
+        {
+            var segmem = mem as SegmentedAccess;
+            if (segmem != null)
+            {
+                return new SegmentedAccess(segmem.MemoryId, segmem.BasePointer, segmem.EffectiveAddress, totalSize);
+            }
+            else
+            {
+                return new MemoryAccess(mem.MemoryId, segmem.EffectiveAddress, totalSize);
+            }
+        }
+
+
 
         public bool Match(Instruction loInstr, Instruction hiInstr)
         {
@@ -173,7 +188,13 @@ namespace Decompiler.Scanning
 
         public IEnumerable<CarryLinkedInstructions> FindCarryLinkedInstructions(Block block)
         {
-            throw new NotImplementedException();
+            for (var i = block.Statements.Count - 1; i>= 0; --i) 
+            {
+                //FindUseCarryFlagInAddition(stm);
+                //FindDefOfCarry(stm);
+
+            }
+            yield break;
         }
     }
 

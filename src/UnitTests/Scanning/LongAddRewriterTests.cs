@@ -34,7 +34,7 @@ using System.Linq;
 namespace Decompiler.UnitTests.Scanning
 {
     [TestFixture]
-    [Ignore("Should be moved to analysis, because we need data flow analysis to trace the uses of carry flags.")]
+    [Obsolete("Should be moved to analysis, because we need data flow analysis to trace the uses of carry flags.")]
     public class LongAddRewriterTests
     {
         private Frame frame;

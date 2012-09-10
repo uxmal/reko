@@ -24,6 +24,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Operators;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 
@@ -71,17 +72,17 @@ namespace Decompiler.Analysis
 		/// <param name="b">Block into which the phi statement is inserted</param>
 		/// <param name="v">Destination variable for the phi assignment</param>
 		/// <returns>The inserted phi Assignment</returns>
-		private Instruction InsertPhiStatement(Block b, int v)
+		private Instruction InsertPhiStatement(Block b, Identifier v)
 		{
 			var stm = new Statement(
                 0,
-				new PhiAssignment(varsOrig[v], b.Pred.Count),
+				new PhiAssignment(v, b.Pred.Count),
 				b);
 			b.Statements.Insert(0, stm);
 			return stm.Instruction;
 		}
 
-		private void LocateAllDefinedVariables(byte [,] defOrig)
+		private void LocateAllDefinedVariables(Dictionary<Identifier, byte>[] defOrig)
 		{
 			var ldv = new LocateDefinedVariables(proc, this, defOrig);
 			foreach (Block n in domGraph.ReversePostOrder.Keys)
@@ -90,33 +91,39 @@ namespace Decompiler.Analysis
 			}
 		}
 
-		private void MarkTemporariesDeadIn(byte [,] def)
+		private void MarkTemporariesDeadIn(Dictionary<Identifier, byte>[] def)
 		{
-			foreach (Identifier id in proc.Frame.Identifiers.Where(id => id.Storage is TemporaryStorage))
-			{
-                foreach (var block in proc.ControlGraph.Blocks)
+            foreach (var block in proc.ControlGraph.Blocks)
+            {
+                int iBlock = RpoNumber(block);
+                foreach (Identifier id in proc.Frame.Identifiers.Where(id => id.Storage is TemporaryStorage))
                 {
-                    def[id.Number, RpoNumber(block)] |= BitDeadIn;
+                    byte bits;
+                    if (!def[iBlock].TryGetValue(id, out bits))
+                        bits = 0;
+                    def[iBlock][id] = (byte)(bits | BitDeadIn);
                 }
             }
 		}
 
 		private void PlacePhiFunctions()
 		{
-			byte [,] AOrig = new byte[varsOrig.Length, proc.ControlGraph.Blocks.Count];	
+            var AOrig = CreateA();
 			LocateAllDefinedVariables(AOrig);
 			MarkTemporariesDeadIn(AOrig);
 
 			// For each defined variable in block n, collect the places where it is defined
 
-			for (int a = 0; a < varsOrig.Length; ++a)
+			foreach (var a in varsOrig)
 			{
 				// Create a worklist W of all the blocks that define a.
 
 				var W = new WorkList<Block>();
                 foreach (Block b in domGraph.ReversePostOrder.Keys) 
 				{
-					if ((AOrig[a, RpoNumber(b)] & BitDefined) != 0)
+                    byte bits;
+                    AOrig[RpoNumber(b)].TryGetValue(a, out bits);
+					if ((bits & BitDefined) != 0)
 						W.Add(b);
 				}
                 Block n;
@@ -124,14 +131,18 @@ namespace Decompiler.Analysis
                 {
                     foreach (Block y in domGraph.DominatorFrontier(n))
                     {
-                        // Only add phi functions if theere is no
+                        // Only add phi functions if there is no
                         // phi already and variable is not deadIn.
 
-                        if ((AOrig[a, RpoNumber(y)] & (BitHasPhi | BitDeadIn)) == 0)
+                        var dict = AOrig[RpoNumber(y)];
+                        byte bits;
+                        dict.TryGetValue(a, out bits);
+                        if ((bits & (BitHasPhi | BitDeadIn)) == 0)
                         {
-                            AOrig[a, RpoNumber(y)] |= BitHasPhi;
+                            bits |= BitHasPhi;
+                            dict[a] = bits;
                             InsertPhiStatement(y, a);
-                            if ((AOrig[a, RpoNumber(y)] & BitDefined) == 0)
+                            if ((bits & BitDefined) == 0)
                             {
                                 W.Add(y);
                             }
@@ -141,6 +152,16 @@ namespace Decompiler.Analysis
 			}
 		}
 
+        private Dictionary<Identifier, byte>[] CreateA()
+        {
+            var a = new Dictionary<Identifier, byte>[proc.ControlGraph.Blocks.Count];
+            for (int i = 0; i < a.Length; ++i)
+            {
+                a[i] = new Dictionary<Identifier, byte>();
+            }
+            return a;
+        }
+
 		public void Transform()
 		{
             this.SsaState = new SsaState(proc);
@@ -148,8 +169,6 @@ namespace Decompiler.Analysis
 			var rn = new VariableRenamer(this, varsOrig, proc);
 			rn.RenameBlock(proc.EntryBlock);
 		}
-
-
 
 		/// <summary>
 		/// Locates the variables defined in this block by examining each
@@ -162,21 +181,24 @@ namespace Decompiler.Analysis
 		{
 			private Procedure proc;
 			private Block block;
-			private byte [,] defVars;		// variables defined by a statement.
+            private Dictionary<Identifier, byte>[] defVars; // variables defined by a statement.
 			private Statement stmCur;
             private SsaTransform ssa;
 
-			public LocateDefinedVariables(Procedure proc, SsaTransform ssa, byte [,] defOrig)
+			public LocateDefinedVariables(Procedure proc, SsaTransform ssa, Dictionary<Identifier, byte>[] defOrig)
 			{
 				this.proc = proc;
                 this.ssa = ssa;
-				this.defVars = defOrig;
+                this.defVars = defOrig;
 			}
 
 			private void MarkDefined(Identifier id)
 			{
 				Debug.Assert(id.Number >= 0);
-				defVars[id.Number, ssa.RpoNumber(block)] |= (BitDefined | BitDeadIn);
+                var dict = defVars[ssa.RpoNumber(block)];
+                byte bits;
+                dict.TryGetValue(id, out bits);
+				dict[id] = (byte) (bits | (BitDefined | BitDeadIn));
 			}
 
 			public void LocateDefs(Block b)
@@ -198,10 +220,12 @@ namespace Decompiler.Analysis
 
 			public override void VisitStore(Store store)
 			{
-				MemoryAccess access = (MemoryAccess) store.Dst;
-                int grf = defVars[access.MemoryId.Number, ssa.RpoNumber(block)];
-				grf = (grf & ~BitDeadIn) | BitDefined;
-				defVars[access.MemoryId.Number, ssa.RpoNumber(block)] = (byte) grf;
+				var access = (MemoryAccess) store.Dst;
+                var iBlock = ssa.RpoNumber(block);
+                byte grf;
+                defVars[iBlock].TryGetValue(access.MemoryId, out grf);
+				grf = (byte)((grf & ~BitDeadIn) | BitDefined);
+				defVars[iBlock][access.MemoryId] = grf;
 
 				store.Dst.Accept(this);
 				store.Src.Accept(this);
@@ -247,7 +271,6 @@ namespace Decompiler.Analysis
 				}
 			}
 
-
 			/// <summary>
 			/// Any uses of the identifier <paramref>id</paramref> 
 			/// make it liveIn, and therefore no longer deadIn.
@@ -256,7 +279,10 @@ namespace Decompiler.Analysis
 			/// <returns></returns>
 			public override void VisitIdentifier(Identifier id)
 			{
-                defVars[id.Number, ssa.RpoNumber(block)] &= unchecked((byte)~BitDeadIn);
+                var dict = defVars[ssa.RpoNumber(block)];
+                byte bits;
+                dict.TryGetValue(id, out bits);
+                dict[id] = (byte)(bits & unchecked((byte)~BitDeadIn));
 			}
 		}
 

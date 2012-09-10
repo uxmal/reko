@@ -98,6 +98,8 @@ namespace Decompiler.Analysis
 
         public void UseExpression(Expression exp)
         {
+            if (Statement == null)
+                return;
             var xu = new ExpressionUseAdder(Statement, ssaIds);
             exp.Accept(xu);
         }

@@ -15,17 +15,15 @@ Mem6: orig: Mem0
 Mem7: orig: Mem0
     def:  Mem7[0x10000004:word32] = a
 liveIn:  c_5
-SimpleMock_entry:		// pred:
+SimpleMock_entry:
 	def a
 	def b
-	// succ:  l1
 liveOut: a b c_5
 
 liveIn:  a b c_5
-l1:		// pred: SimpleMock_entry
+l1:
 	Mem6[0x10000000:word32] = a + b
 	Mem7[0x10000004:word32] = a
-	// succ: 
 liveOut:
 
 

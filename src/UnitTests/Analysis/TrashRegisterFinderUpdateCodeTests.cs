@@ -305,5 +305,28 @@ main_exit:
 ";
             RunTest(sExp);
         }
+
+        [Test]
+        public void ReplaceLongAdds()
+        {
+            p.Add("main", m =>
+            {
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                var edx = m.Frame.EnsureRegister(Registers.edx);
+                var ebx = m.Frame.EnsureRegister(Registers.ebx);
+                var ecx = m.Frame.EnsureRegister(Registers.ecx);
+                var SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF), "SCZO", PrimitiveType.Byte);
+                var C = m.Frame.EnsureFlagGroup((uint)(FlagM.CF), "SCZO", PrimitiveType.Bool);
+
+                m.Assign(eax, m.Add(eax, ecx));
+                m.Assign(SCZO, m.Cond(eax));
+                m.Assign(edx, m.Add(m.Add(edx, ebx), C));
+                m.Assign(SCZO, m.Cond(edx));
+                m.Return();
+            });
+
+            var sExp = @"@@@";
+            RunTest(sExp);
+        }
     }
 }
