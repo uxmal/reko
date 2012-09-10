@@ -6,22 +6,22 @@ void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	call fn0C00_0004 (retsize: 2;)
+	call fn0C00_0004 (retsize: 2; depth: 2)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 Mem0:Global memory (aliases:)
 fp:Temporary (aliases:)
-sp:Register sp (aliases:)
-ax:Register ax (aliases: al ah)
-es:Register es (aliases:)
-bx:Register bx (aliases: bh bl)
-bh:Register bh (aliases: bx)
-al:Register al (aliases: ax)
+sp:sp (aliases:)
+ax:ax (aliases: al ah)
+es:es (aliases:)
+bx:bx (aliases: bh bl)
+bh:bh (aliases: bx)
+al:al (aliases: ax)
 SZO:Flags (aliases: SCZO S)
-bl:Register bl (aliases: bx)
-ah:Register ah (aliases: ax)
+bl:bl (aliases: bx)
+ah:ah (aliases: ax)
 C:Flags (aliases: SCZO)
 SCZO:Flags (aliases: SZO C S)
 S:Flags (aliases: SZO SCZO)

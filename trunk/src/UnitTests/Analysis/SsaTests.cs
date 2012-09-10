@@ -150,16 +150,15 @@ namespace Decompiler.UnitTests.Analysis
             m.Return();
 
             RunUnitTest(m, "Analysis/SsaPushAndPop.txt");
-
         }
 
         [Test]
         public void SsaStackReference_Load()
         {
             var m = new ProcedureBuilder("SsaStackReference");
-            var esp = EnsureRegister32(m, "esp");
+            var wRef = m.Frame.EnsureStackArgument(4, PrimitiveType.Word16);
             var ax = EnsureRegister16(m, "ax");
-            m.Assign(ax, m.LoadW(m.Add(esp, 4)));
+            m.Assign(ax, wRef);
             m.Return();
 
             RunUnitTest(m, "Analysis/SsaStackReference.txt");

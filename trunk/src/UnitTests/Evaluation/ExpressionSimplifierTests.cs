@@ -60,6 +60,23 @@ namespace Decompiler.UnitTests.Evaluation
             Assert.AreSame(foo, result);
         }
 
+        [Test]
+        public void AddPositiveConstantToNegative()
+        {
+            BuildExpressionSimplifier();
+            var expr = new BinaryExpression(
+                Operator.Add,
+                foo.DataType,
+                new BinaryExpression(
+                    Operator.Sub,
+                    foo.DataType,
+                    foo,
+                    Constant.Word32(4)),
+                Constant.Word32(1));
+            var result = expr.Accept(simplifier);
+            Assert.AreEqual("foo - 0x00000003", result.ToString());
+        }
+
 		private void BuildExpressionSimplifier()
 		{
 			SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
@@ -69,8 +86,8 @@ namespace Decompiler.UnitTests.Evaluation
 
 		private SsaIdentifierCollection BuildSsaIdentifiers()
 		{
-			RegisterStorage mrFoo = new RegisterStorage("foo", 1, PrimitiveType.Word32);
-			RegisterStorage mrBar = new RegisterStorage("bar", 2, PrimitiveType.Word32);
+			var mrFoo = new RegisterStorage("foo", 1, PrimitiveType.Word32);
+			var mrBar = new RegisterStorage("bar", 2, PrimitiveType.Word32);
 			foo = new Identifier(mrFoo.Name, 0, mrFoo.DataType, mrFoo);
 			bar = new Identifier(mrBar.Name, 1, mrBar.DataType, mrBar);
 

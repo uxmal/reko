@@ -21,14 +21,14 @@ Z:Flags
 wArg06:Stack +0006
     def:  def wArg06
     uses: ax_11 = wArg06
-          ax_12 = wArg06 | wArg06
-          ax_12 = wArg06 | wArg06
 bp_10: orig: bp
     def:  bp_10 = fp
 ax_11: orig: ax
     def:  ax_11 = wArg06
+    uses: ax_12 = ax_11 | ax_11
+          ax_12 = ax_11 | ax_11
 ax_12: orig: ax
-    def:  ax_12 = wArg06 | wArg06
+    def:  ax_12 = ax_11 | ax_11
     uses: SZO_13 = cond(ax_12)
           ax_16 = PHI(ax_12, ax_18)
 SZO_13: orig: SZO
@@ -63,7 +63,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	bp_10 = fp
 	ax_11 = wArg06
-	ax_12 = wArg06 | wArg06
+	ax_12 = ax_11 | ax_11
 	SZO_13 = cond(ax_12)
 	Z_14 = SZO_13 (alias)
 	C_15 = false

@@ -205,20 +205,32 @@ namespace Decompiler.Evaluation
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
                 Changed = true;
+                var binOperator = binExp.Operator;
                 ctx.RemoveIdentifierUse(idLeft);
                 ctx.UseExpression(left);
                 Constant c;
-                if (binLeft.Operator == binExp.Operator)
+                if (binLeft.Operator == binOperator)
                 {
                     c = Operator.Add.ApplyConstants(cLeftRight, cRight);
                 }
                 else
                 {
-                    c = Operator.Sub.ApplyConstants(cRight, cLeftRight);
+                    if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
+                    {
+                        c = Operator.Sub.ApplyConstants(cRight, cLeftRight);
+                    }
+                    else
+                    {
+                        binOperator = 
+                            binOperator == Operator.Add 
+                                ? Operator.Sub 
+                                : Operator.Add;
+                        c = Operator.Sub.ApplyConstants(cLeftRight, cRight);
+                    }
                 }
                 if (c.IsIntegerZero)
                     return binLeft.Left;
-                return new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c);
+                return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
             }
 
             // (== (- e c1) c2) => (== e c1+c2)

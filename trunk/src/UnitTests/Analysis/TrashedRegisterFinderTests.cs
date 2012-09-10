@@ -37,7 +37,7 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Analysis
 {
-    public class TrashedRegisterFinderTests
+    public class TrashedRegisterFinderTests : AnalysisTestBase
     {
         private ProcedureBuilder m;
         private Program prog;
@@ -84,28 +84,34 @@ namespace Decompiler.UnitTests.Analysis
         private string DumpProcedureSummaries()
         {
             var sw = new StringWriter();
+            return DumpProcedureSummaries(sw).ToString();
+        }
+
+        private TextWriter DumpProcedureSummaries(TextWriter writer)
+        {
             foreach (Procedure proc in prog.Procedures.Values)
             {
-                DataFlow.EmitRegisters(prog.Architecture, proc.Name, flow[proc].grfTrashed, flow[proc].TrashedRegisters, sw);
-                sw.WriteLine();
+                DataFlow.EmitRegisters(prog.Architecture, proc.Name, flow[proc].grfTrashed, flow[proc].TrashedRegisters, writer);
+                writer.WriteLine();
                 if (flow[proc].ConstantRegisters.Count > 0)
                 {
-                    DataFlow.EmitRegisterValues("const", flow[proc].ConstantRegisters, sw);
-                    sw.WriteLine();
+                    DataFlow.EmitRegisterValues("const", flow[proc].ConstantRegisters, writer);
+                    writer.WriteLine();
                 }
                 foreach (var block in proc.ControlGraph.Blocks.OrderBy(b => b, new Procedure.BlockComparer()))
                 {
-                    DataFlow.EmitRegisterValues("    " + block.Name, flow[block].SymbolicIn.RegisterState, sw);
-                    sw.WriteLine();
+                    DataFlow.EmitRegisterValues("    " + block.Name, flow[block].SymbolicIn.RegisterState, writer);
+                    writer.WriteLine();
                 }
-                sw.WriteLine();
+                writer.WriteLine();
             }
-            return sw.ToString();
+            return writer;
         }
 
         private void RunTest(ProgramBuilder p, string sExp)
         {
             prog = p.BuildProgram(arch);
+
             flow = new ProgramDataFlow(prog);
             trf = CreateTrashedRegisterFinder();
             trf.Compute();
@@ -117,6 +123,14 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual(sExp, summary);
         }
 
+        protected override void RunTest(Program prog, FileUnitTester fut)
+        {
+            this.prog = prog;
+            flow = new ProgramDataFlow(prog);
+            trf = CreateTrashedRegisterFinder();
+            trf.Compute();
+            DumpProcedureSummaries(fut.TextWriter);
+        }
 
         private string DumpValues()
         {
@@ -554,6 +568,12 @@ const ebx:0x01231313
     Lupe eax:<invalid> esp:fp
     main_exit eax:<invalid> esp:fp";
             RunTest(p, sExp);
+        }
+
+        [Test]
+        public void TrfFactorial()
+        {
+            RunTest("Fragments/factorial.asm", "Analysis/TrfFactorial.txt");
         }
     }
 }
