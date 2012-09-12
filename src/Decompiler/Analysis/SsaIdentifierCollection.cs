@@ -41,9 +41,9 @@ namespace Decompiler.Analysis
 			{
 				idNew = idOld;
 			}
-			SsaIdentifier id = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
-			Add(id);
-			return id;
+			var sid = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
+			Add(sid);
+			return sid;
 		}
 
 		public SsaIdentifier this[Identifier id]

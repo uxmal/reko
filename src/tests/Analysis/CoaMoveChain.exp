@@ -1,27 +1,27 @@
 Mem0:Global memory
 fp:Temporary
-ax:Register ax
-bx:Register bx
-cx:Register cx
-ds:Register ds
+sp:sp
+ax:ax
+bx:bx
+cx:cx
+ds:ds
     def:  def ds
-    uses: Mem9[ds:0x0300:word16] = 0x0004
-ax_6: orig: ax
-bx_7: orig: bx
-cx_8: orig: cx
-Mem9: orig: Mem0
-    def:  Mem9[ds:0x0300:word16] = 0x0004
-bx_10: orig: bx
-ax_11: orig: ax
+    uses: Mem10[ds:0x0300:word16] = 0x0004
+ax_7: orig: ax
+bx_8: orig: bx
+cx_9: orig: cx
+Mem10: orig: Mem0
+    def:  Mem10[ds:0x0300:word16] = 0x0004
+bx_11: orig: bx
+ax_12: orig: ax
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	Mem9[ds:0x0300:word16] = 0x0004
+l0C00_0000:
+	Mem10[ds:0x0300:word16] = 0x0004
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 

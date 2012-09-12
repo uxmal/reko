@@ -2,21 +2,24 @@ Mem0:Global memory
     def:  def Mem0
 fp:Temporary
     def:  def fp
-r4:Register r4
+r4:r4
     def:  def r4
-r4_3: orig: r4
-    def:  Mem4[0x00000400:word32] = foo(&r4_3)
-Mem4: orig: Mem0
-    def:  Mem4[0x00000400:word32] = foo(&r4_3)
+r63:r63
+    def:  def r63
+r4_4: orig: r4
+    def:  Mem5[0x00000400:word32] = foo(&r4_4)
+Mem5: orig: Mem0
+    def:  Mem5[0x00000400:word32] = foo(&r4_4)
 // foo
 void foo()
 foo_entry:
 	def Mem0
 	def fp
 	def r4
+	def r63
 	// succ:  l1
 l1:
-	Mem4[0x00000400:word32] = foo(&r4_3)
+	Mem5[0x00000400:word32] = foo(&r4_4)
 	return
 	// succ:  foo_exit
 foo_exit:

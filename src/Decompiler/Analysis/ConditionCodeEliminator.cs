@@ -26,6 +26,7 @@ using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Decompiler.Analysis
 {
@@ -42,14 +43,15 @@ namespace Decompiler.Analysis
 	///	    jl less
 	///	    jg greater
     ///	<para>
-    ///	For best performance, preprocess the intermediate code with the ValuePropgator transformer.
+    ///	For best performance, preprocess the intermediate code with the ValuePropagator transformer.
     ///	</para>
 	/// </remarks>
 	public class ConditionCodeEliminator : InstructionTransformer
 	{
 		private SsaIdentifierCollection ssaIds;
 		private SsaIdentifier sidGrf;
-		private Statement useStm;
+        private HashSet<SsaIdentifier> aliases;     // aliases of sidGrf
+        private Statement useStm;
         private IProcessorArchitecture arch;
 
 		private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator");
@@ -60,68 +62,74 @@ namespace Decompiler.Analysis
             this.arch = arch;
 		}
 
-		public void Transform()
-		{
-			for (int i = 0; i < ssaIds.Count; ++i)
+        public void Transform()
+        {
+            for (int i = 0; i < ssaIds.Count; ++i)
             {
-				sidGrf = ssaIds[i];
+                sidGrf = ssaIds[i];
                 if (!IsLocallyDefinedFlagGroup(sidGrf))
                     continue;
-                ForwardSubstituteDefiningExpression(sidGrf, sidGrf.DefExpression);
 
-					if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
+                var uses = new HashSet<Statement>();
+                aliases = new HashSet<SsaIdentifier>();
+                ClosureOfUsingStatements(sidGrf, sidGrf.DefExpression, uses, aliases);
 
-                Statement[] uses = sidGrf.Uses.ToArray();
+                if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
+
                 foreach (var u in uses)
-					{
+                {
                     useStm = u;
-						if (trace.TraceInfo) Debug.WriteLine(string.Format("   used {0}", useStm.Instruction));
-						useStm.Instruction.Accept(this);
-						if (trace.TraceInfo) Debug.WriteLine(string.Format("    now {0}", useStm.Instruction));
-					}
-				}
-			}
 
+                    if (trace.TraceInfo) Debug.WriteLine(string.Format("   used {0}", useStm.Instruction));
+                    useStm.Instruction.Accept(this);
+                    if (trace.TraceInfo) Debug.WriteLine(string.Format("    now {0}", useStm.Instruction));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Computes the close of a web of using statements. The <paramref name="uses"/> hash set 
+        /// will contain all non-trivial uses of the expression.
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="expr"></param>
+        /// <param name="uses"></param>
+        public HashSet<Statement> ClosureOfUsingStatements(
+            SsaIdentifier sid,
+            Expression expr,
+            HashSet<Statement> uses,
+            HashSet<SsaIdentifier> aliases)
+        {
+            foreach (var use in sid.Uses)
+            {
+                if (uses.Contains(use))
+                    continue;
+                uses.Add(use);
+                if (IsCopyWithOptionalCast(sid.Identifier, use))
+                {
+                    var ass = (Assignment)use.Instruction;
+                    var sidAlias = ssaIds[ass.Dst];
+                    aliases.Add(sidAlias);
+                    ClosureOfUsingStatements(sidAlias, expr, uses, aliases);
+                }
+            }
+            return uses;
+        }
 
         private bool IsLocallyDefinedFlagGroup(SsaIdentifier sid)
         {
             return sid.OriginalIdentifier.Storage is FlagGroupStorage && sid.DefStatement != null;
 		}
 
-        private void ForwardSubstituteDefiningExpression(SsaIdentifier sid, Expression expr)
-        {
-            var condExpr = sidGrf.DefExpression;
-            foreach (Statement use in sid.Uses)
-            {
-                if (IsCopyWithOptionalCast(sid.Identifier, use))
-                {
-                    var ass = (Assignment)use.Instruction;
-                    var ir = new IdentifierReplacer(sid.Identifier, expr);
-                    ass.Accept(ir);
-                    var eua = new ExpressionUseAdder(use, ssaIds);
-                    ass.Src.Accept(eua);
-                    ForwardSubstituteDefiningExpression(ssaIds[ass.Dst], expr);
-                }
-            }
-        }
-
-        private void ReplaceTransitiveUses(SsaIdentifier sidGrfOrig, SsaIdentifier sidGrf, Statement use)
-        {
-            if (IsCopyWithOptionalCast(sidGrf.Identifier, use))
-            {
-                Assignment ass = (Assignment)use.Instruction;
-                foreach (Statement u in ssaIds[ass.Dst].Uses)
-                {
-                    ReplaceTransitiveUses(sidGrfOrig, ssaIds[ass.Dst], u);
-                }
-            }
-            else
-            {
-                IdentifierReplacer ir = new IdentifierReplacer(sidGrf.Identifier, sidGrfOrig.Identifier);
-                use.Instruction.Accept(ir);
-            }
-        }
-
+        /// <summary>
+        /// Returns true if the instruction in the statement is an assignment of the form
+        ///     grf = src
+        /// or
+        ///     grf = (foo) src 
+        /// </summary>
+        /// <param name="grf"></param>
+        /// <param name="stm"></param>
+        /// <returns></returns>
         private bool IsCopyWithOptionalCast(Identifier grf, Statement stm)
         {
             Assignment ass = stm.Instruction as Assignment;
@@ -160,10 +168,9 @@ namespace Decompiler.Analysis
 			if (cof != null)
 			{
 				binDef = cof.Expression as BinaryExpression;
-				if (binDef != null)
-					return ComparisonFromConditionCode(cc, binDef, gf.IsNegated);
-				else
-					return ComparisonFromConditionCode(cc, CmpExpressionToZero(cof.Expression), gf.IsNegated);
+				if (binDef == null)
+                    binDef = CmpExpressionToZero(cof.Expression);
+				return ComparisonFromConditionCode(cc, binDef, gf.IsNegated);
 			}
 			Application app = e as Application;
 			if (app != null)
@@ -197,6 +204,11 @@ namespace Decompiler.Analysis
 			if (u != sidGrf.Identifier)
 				return a;
 
+            var law = new Scanning.LongAddRewriter(arch, useStm.Block.Procedure.Frame);
+            if (law.Match(sidGrf, u, a))
+            {
+                InsertLongAdd(sidGrf, u, a));
+            }
 			u = UseGrfConditionally(sidGrf, ConditionCode.ULT);
 			if (c != null)
 				c.Expression = u;

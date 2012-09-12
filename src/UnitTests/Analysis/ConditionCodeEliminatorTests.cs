@@ -42,6 +42,63 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds = new SsaIdentifierCollection();
 		}
 
+        protected Program CompileTest(Action<ProcedureBuilder> m)
+        {
+            var mock = new ProcedureBuilder();
+            m(mock);
+            var pmock = new ProgramBuilder();
+            pmock.Add(mock);
+            return pmock.BuildProgram();
+        }
+
+        private void RunTest(ProgramBuilder p, string output)
+        {
+            SaveRunOutput(p.BuildProgram(), output);
+        }
+
+        private Identifier Reg32(string name)
+        {
+            var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
+            var id = new Identifier(name, ssaIds.Count, PrimitiveType.Word32, mr);
+            return ssaIds.Add(id, null, null, false).Identifier;
+        }
+
+        private Identifier FlagGroup(string name)
+        {
+            Identifier id = new Identifier(
+                name,
+                ssaIds.Count,
+                PrimitiveType.Word32,
+                new FlagGroupStorage(1U, "C", PrimitiveType.Byte));
+            return ssaIds.Add(id, null, null, false).Identifier;
+        }
+
+        protected override void RunTest(Program prog, FileUnitTester fut)
+        {
+            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            dfa.UntangleProcedures();
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
+                alias.Transform();
+                SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
+                SsaState ssa = sst.SsaState;
+
+                proc.Dump(true, false);
+
+                ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
+                vp.Transform();
+
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
+                cce.Transform();
+                DeadCode.Eliminate(proc, ssa);
+
+                ssa.Write(fut.TextWriter);
+                proc.Write(false, fut.TextWriter);
+                fut.TextWriter.WriteLine();
+            }
+        }
+
 		[Test]
 		public void CceAsciiHex()
 		{
@@ -170,14 +227,6 @@ done:
             throw new NotImplementedException();
         }
 
-        protected Program CompileTest(Action<ProcedureBuilder> m)
-        {
-            var mock = new ProcedureBuilder();
-            m(mock);
-            var pmock = new ProgramBuilder();
-            pmock.Add(mock);
-            return pmock.BuildProgram();
-        }
 
         [Test]
 		public void SignedIntComparisonFromConditionCode()
@@ -199,45 +248,32 @@ done:
 			Assert.AreEqual("RltOperator", b.Operator.GetType().Name);
 		}
 
-		private Identifier Reg32(string name)
-		{
-			var mr = new RegisterStorage(name, ssaIds.Count, PrimitiveType.Word32);
-			var id = new Identifier(name, ssaIds.Count, PrimitiveType.Word32, mr);
-			return ssaIds.Add(id, null, null, false).Identifier;
-		}
+        private Identifier MockReg(ProcedureBuilder m, int i)
+        {
+            return m.Frame.EnsureRegister(ArchitectureMock.GetMachineRegister(i));
+        }
 
-		private Identifier FlagGroup(string name)
-		{
-			Identifier id = new Identifier(
-                name, 
-                ssaIds.Count, 
-                PrimitiveType.Word32, 
-                new FlagGroupStorage(1U, "C", PrimitiveType.Byte));
-			return ssaIds.Add(id, null, null, false).Identifier;
-		}
+        [Test]
+        public void CceAddAdcPattern()
+        {
+            var p = new ProgramBuilder(new ArchitectureMock());
+            p.Add("main", (m) =>
+            {
+                var r1 = MockReg(m, 1);
+                var r2 = MockReg(m, 2);
+                var r3 = MockReg(m, 3);
+                var r4 = MockReg(m, 4);
+                var SCZ = m.Frame.EnsureFlagGroup(0x7, "SZC", PrimitiveType.Byte);
+                var C = m.Frame.EnsureFlagGroup(0x4, "C", PrimitiveType.Byte);
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
-		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
-			{
-				Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());
-				SsaState ssa = sst.SsaState;
-
-                ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
-                vp.Transform();
-
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Architecture);
-				cce.Transform();
-				DeadCode.Eliminate(proc, ssa);
-
-				ssa.Write(fut.TextWriter);
-				proc.Write(false, fut.TextWriter);
-				fut.TextWriter.WriteLine();
-			}
-		}
+                m.Assign(r1, m.Add(r1, r2));
+                m.Assign(SCZ, m.Cond(r1));
+                m.Assign(r3, m.Add(m.Add(r3, r4), C));
+                m.Store(m.Word32(0x0444400), r1);
+                m.Store(m.Word32(0x0444404), r3);
+                m.Return();
+            });
+            RunTest(p, "Analysis/CceAddAdcPattern.txt");
+        }
 	}
 }

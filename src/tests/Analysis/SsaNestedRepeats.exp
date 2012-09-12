@@ -3,27 +3,25 @@ Mem0:Global memory
     uses: ax_24 = Mem0[ds:si_20:word16]
 fp:Temporary
     def:  def fp
-sp:Register sp
+sp:sp
     def:  def sp
-dx:Register dx
+dx:dx
     def:  def dx
-    uses: dx_13 = dx ^ dx
-          dx_13 = dx ^ dx
 SZO:Flags
     def:  def SZO
 C:Flags
     def:  def C
-cx:Register cx
+cx:cx
     def:  def cx
-di:Register di
+di:di
     def:  def di
-ax:Register ax
+ax:ax
     def:  def ax
-ds:Register ds
+ds:ds
     def:  def ds
     uses: ax_24 = Mem0[ds:si_20:word16]
           Mem37[ds:0x0300:word16] = dx_26
-si:Register si
+si:si
     def:  def si
     uses: si_20 = PHI(si, si_25, si_25)
 SCZO:Flags
@@ -31,7 +29,7 @@ SCZO:Flags
 Z:Flags
     def:  def Z
 dx_13: orig: dx
-    def:  dx_13 = dx ^ dx
+    def:  dx_13 = 0x0000
     uses: SZO_14 = cond(dx_13)
           dx_23 = PHI(dx_13, dx_26, dx_26)
 SZO_14: orig: SZO
@@ -111,7 +109,7 @@ Z_36: orig: Z
 Mem37: orig: Mem0
     def:  Mem37[ds:0x0300:word16] = dx_26
 // fn0C00_0000
-void fn0C00_0000()
+void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
 	def Mem0
 	def fp
@@ -128,7 +126,7 @@ fn0C00_0000_entry:
 	def Z
 	// succ:  l0C00_0000
 l0C00_0000:
-	dx_13 = dx ^ dx
+	dx_13 = 0x0000
 	SZO_14 = cond(dx_13)
 	Z_15 = SZO_14 (alias)
 	C_16 = false

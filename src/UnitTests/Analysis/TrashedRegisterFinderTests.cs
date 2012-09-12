@@ -575,5 +575,12 @@ const ebx:0x01231313
         {
             RunTest("Fragments/factorial.asm", "Analysis/TrfFactorial.txt");
         }
+
+        [Test]
+        public void TrfReg00007()
+        {
+            RunTest("Fragments/regressions/r00007.asm", "Analysis/TrfReg00007.txt");
+        }
+
     }
 }

@@ -28,8 +28,6 @@ namespace Decompiler.Analysis
 {
 	public class SsaIdentifier
 	{
-        private List<Statement> uses;
-
 		public SsaIdentifier(Identifier id, Identifier idOrig, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
 			if (id == null)
@@ -41,7 +39,7 @@ namespace Decompiler.Analysis
 			this.DefStatement = stmDef;
             this.DefExpression = exprDef;
             this.IsSideEffect = isSideEffect;
-			this.uses = new List<Statement>();
+			this.Uses = new List<Statement>();
 		}
 
         /// <summary>
@@ -86,11 +84,7 @@ namespace Decompiler.Analysis
         /// <summary>
         /// _Bag_ of Statements that use the identifier. A bag is needed, since the statement a = i * i uses i twice.
         /// </summary>
-        public List<Statement> Uses
-        {
-            get { return uses; }
-        } 
-
+        public List<Statement> Uses { get; private set; }
 
 		public void Write(TextWriter writer)
 		{
@@ -108,10 +102,10 @@ namespace Decompiler.Analysis
                 writer.WriteLine();
 				writer.Write("    def:  {0}", DefStatement.Instruction);
 			}
-			if (uses.Count > 0)
+			if (Uses.Count > 0)
 			{
                 bool first = true;
-				foreach (Statement u in uses)
+				foreach (Statement u in Uses)
 				{
                     writer.WriteLine();
                     if (first)
