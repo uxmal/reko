@@ -78,7 +78,17 @@ namespace Decompiler.Core.Expressions
                     BinaryExpression b = (BinaryExpression) obj;
                     return b.Operator.GetHashCode() ^ GetHashCodeImpl(b.Left) ^ 47 * GetHashCodeImpl(b.Right);
                 });
-
+            Add(typeof(Cast),
+                delegate(Expression ea, Expression eb)
+                {
+                    Cast a = (Cast)ea, b = (Cast)eb;
+                    return EqualsImpl(a.Expression, b.Expression);
+                },
+                delegate(Expression obj)
+                {
+                    Cast c = (Cast)obj;
+                    return GetHashCodeImpl(c.Expression) * 43;
+                });
             Add(typeof(ConditionOf),
                 delegate(Expression ea, Expression eb)
                 {

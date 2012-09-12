@@ -2,14 +2,15 @@
 	LiveOut:  
 	MayUseIn:  eax si es ds
 	BypassIn: 
-	Trashed:   SCZO eax ax cx si di al cl ah ch
-	Preserved:
+	Trashed:   eax ax cx si di al cl ah ch
+	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
-	// succ:  l0C00_0000
+fn0C00_0000_entry:
 // DataOut: eax si es ds
-l0C00_0000:		// pred: fn0C00_0000_entry
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+l0C00_0000:
 	eax = eax + eax * 0x00000004
 	Mem0[ds:0x02FC:word32] = eax
 	eax = Mem0[ds:si:word32]
@@ -24,46 +25,60 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 	ax = Mem0[ds:si:word16]
 	si = si + 0x0002
 	Mem0[ds:0x030A:word16] = ax
-	call fn0C00_0026 (depth: 2;)
+	call fn0C00_0026 (retsize: 2; depth: 2)
 	return
-	// succ:  fn0C00_0000_exit
 // DataOut:
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+fn0C00_0000_exit:
 // DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp eax:<invalid> si:si + 0x000C ax:<invalid> cx:<invalid> di:<invalid> al:0x00
+
 // fn0C00_0026 /////////////////////
 	LiveOut:  
 	MayUseIn:  es ds
 	BypassIn: 
-	Trashed:   SCZO ax cx di al cl ch
-	Preserved:
+	Trashed:   ax cx di al cl ch
+	Preserved: sp
 // fn0C00_0026
 void fn0C00_0026()
-fn0C00_0026_entry:		// pred:
-	// succ:  l0C00_0026
+fn0C00_0026_entry:
 // DataOut: es ds
-l0C00_0026:		// pred: fn0C00_0026_entry
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+l0C00_0026:
 	cx = Mem0[ds:0x0400:word16]
 	al = 0x00
 	di = Mem0[ds:0x0402:word16]
-	// succ:  l0C00_0030
 // DataOut: cx di al es ds
-l0C00_0030:		// pred: l0C00_0026 l0C00_0030_rep
-	branch cx == 0x0000 l0C00_0030_rep
-	// succ:  l0C00_0032 l0C00_0030_rep
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l0C00_0030:
+	branch cx == 0x0000 l0C00_0032
 // DataOut: cx di al es ds
-l0C00_0030_rep:		// pred: l0C00_0030
-	cx = cx - 0x0001
+// DataOut (flags): 
+// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+
+l0C00_0030_1:
 	SCZO = cond(al - Mem0[es:di:byte])
 	di = di + 0x0001
-	branch Test(EQ,Z) l0C00_0030
-	// succ:  l0C00_0032 l0C00_0030
-// DataOut: cx di al es ds
-l0C00_0032:		// pred: l0C00_0030 l0C00_0030_rep
+	cx = cx - 0x0001
+	branch Test(NE,Z) l0C00_0030
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+l0C00_0032:
 	Mem0[ds:0x0404:word16] = di
 	return
-	// succ:  fn0C00_0026_exit
 // DataOut:
-fn0C00_0026_exit:		// pred: l0C00_0032
-	// succ: 
+// DataOut (flags): 
+// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+
+fn0C00_0026_exit:
 // DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+

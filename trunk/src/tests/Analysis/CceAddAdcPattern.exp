@@ -1,0 +1,46 @@
+Mem0:Global memory
+fp:Temporary
+r1:r1
+    def:  def r1
+    uses: r1_9 = r1 + r2
+r2:r2
+    def:  def r2
+    uses: r1_9 = r1 + r2
+r3:r3
+    def:  def r3
+    uses: r3_12 = r3 + r4 + (r1_9 <u 0x00000000)
+r4:r4
+    def:  def r4
+    uses: r3_12 = r3 + r4 + (r1_9 <u 0x00000000)
+SZC:Flags
+C:Flags
+r63:r63
+r1_9: orig: r1
+    def:  r1_9 = r1 + r2
+    uses: Mem13[0x00444400:word32] = r1_9
+          r3_12 = r3 + r4 + (r1_9 <u 0x00000000)
+SZC_10: orig: SZC
+C_11: orig: C
+r3_12: orig: r3
+    def:  r3_12 = r3 + r4 + (r1_9 <u 0x00000000)
+    uses: Mem14[0x00444404:word32] = r3_12
+Mem13: orig: Mem0
+    def:  Mem13[0x00444400:word32] = r1_9
+Mem14: orig: Mem0
+    def:  Mem14[0x00444404:word32] = r3_12
+// main
+void main(word32 r1, word32 r2, word32 r3, word32 r4)
+main_entry:
+	def r1
+	def r2
+	def r3
+	def r4
+	// succ:  l1
+l1:
+	r3_r1_9 = r3_r1 + r4_r2
+	Mem13[0x00444400:word32] = (word32) r3_r1_9
+	Mem14[0x00444404:word32] = SLICE(r3_r1_9, 32, 32)
+	return
+	// succ:  main_exit
+main_exit:
+

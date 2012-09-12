@@ -23,7 +23,7 @@ LiveCopyMock_entry:
 even:
 	reg_5 = PHI(reg, reg_6)
 	return reg_5 - reg
-	// succ: LiveCopyMock_exit
+	// succ:  LiveCopyMock_exit
 l1:
 	branch (reg & 0x00000001) == 0x00000000 even
 	// succ:  l2 even

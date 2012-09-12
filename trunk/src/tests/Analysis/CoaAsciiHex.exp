@@ -17,20 +17,20 @@ Mem7: orig: Mem0
 Mem8: orig: Mem0
 // fn0C00_0000
 void fn0C00_0000(byte al, selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def al
 	def ds
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	branch fn0C00_000A(al, &al_5) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
-l0C00_0005:		// pred: l0C00_0000
+l0C00_0005:
 	Mem7[ds:0x0300:byte] = al_5
 	// succ:  l0C00_0009
-l0C00_0009:		// pred: l0C00_0000 l0C00_0005
+l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0009
+fn0C00_0000_exit:
 	// succ: 
 
 Mem0:Global memory
@@ -106,47 +106,47 @@ al_47: orig: al
     uses: use al_47 (=> alOut)
 // fn0C00_000A
 byte fn0C00_000A(byte al, ptr16 alOut)
-fn0C00_000A_entry:		// pred:
+fn0C00_000A_entry:
 	def al
 	// succ:  l0C00_000A
-l0C00_000A:		// pred: fn0C00_000A_entry
+l0C00_000A:
 	branch al <u 0x30 l0C00_0032
 	// succ:  l0C00_000E l0C00_0032
-l0C00_000E:		// pred: l0C00_000A
+l0C00_000E:
 	branch al <=u 0x39 l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
-l0C00_0012:		// pred: l0C00_000E
+l0C00_0012:
 	branch al <u 0x41 l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
-l0C00_0016:		// pred: l0C00_0012
+l0C00_0016:
 	branch al <=u 0x46 l0C00_0022
 	// succ:  l0C00_001A l0C00_0022
-l0C00_001A:		// pred: l0C00_0016
+l0C00_001A:
 	branch al <u 0x61 l0C00_0032
 	// succ:  l0C00_001E l0C00_0032
-l0C00_001E:		// pred: l0C00_001A
+l0C00_001E:
 	branch al >u 0x66 l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
-l0C00_0022:		// pred: l0C00_000E l0C00_0016 l0C00_001E
+l0C00_0022:
 	al_25 = al - 0x30
 	branch al_25 <u 0x0A l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
-l0C00_0028:		// pred: l0C00_0022
+l0C00_0028:
 	al_29 = al - 0x37
 	branch al_29 <u 0x10 l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
-l0C00_002E:		// pred: l0C00_0028
+l0C00_002E:
 	al_33 = al - 0x57
 	// succ:  l0C00_0030
-l0C00_0030:		// pred: l0C00_0022 l0C00_0028 l0C00_002E
+l0C00_0030:
 	al_37 = PHI(al_25, al_29, al_33)
 	return false
 	// succ:  fn0C00_000A_exit
-fn0C00_000A_exit:		// pred: l0C00_0032 l0C00_0030
+fn0C00_000A_exit:
 	al_47 = PHI(al, al_37)
 	use al_47 (=> alOut)
 	// succ: 
-l0C00_0032:		// pred: l0C00_000A l0C00_0012 l0C00_001A l0C00_001E
+l0C00_0032:
 	return true
 	// succ:  fn0C00_000A_exit
 

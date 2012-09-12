@@ -1,6 +1,5 @@
 Mem0:Global memory
     def:  def Mem0
-    uses: ax_14 = fn0C00_000F(wLoc02_11, &bp_13)
 fp:Temporary
     def:  def fp
     uses: sp_10 = fp - 0x0002
@@ -11,25 +10,24 @@ cx:cx
     def:  def cx
 ss:ss
     def:  def ss
-    uses: ax_14 = fn0C00_000F(wLoc02_11)
 SCZO:Flags
     def:  def SCZO
 ax:ax
     def:  def ax
 ds:ds
     def:  def ds
-    uses: Mem17[ds:0x0064:word16] = ax_12
+    uses: Mem15[ds:0x0064:word16] = ax_12
 wLoc02:Local -0002
     def:  def wLoc02
 cx_9: orig: cx
     def:  cx_9 = 0x0064
 sp_10: orig: sp
     def:  sp_10 = fp - 0x0002
-    uses: ax_12 = fn0C00_000F(Mem0[ss:sp_10 + 2:word16])
 wLoc02_11: orig: wLoc02
     def:  wLoc02_11 = 0x0064
+    uses: ax_12 = fn0C00_000F(wLoc02_11)
 ax_12: orig: ax
-    def:  ax_12 = fn0C00_000F(Mem0[ss:sp_10 + 2:word16])
+    def:  ax_12 = fn0C00_000F(wLoc02_11)
     uses: Mem15[ds:0x0064:word16] = ax_12
 sp_13: orig: sp
     def:  sp_13 = fp
@@ -38,7 +36,6 @@ SCZO_14: orig: SCZO
     def:  SCZO_14 = cond(sp_13)
 Mem15: orig: Mem0
     def:  Mem15[ds:0x0064:word16] = ax_12
-
 // fn0C00_0000
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
@@ -66,7 +63,6 @@ fn0C00_0000_exit:
 
 Mem0:Global memory
     def:  def Mem0
-    uses: ax_34 = fn0C00_000F(Mem0[ss:sp_32 + 2:word16])
 fp:Temporary
     def:  def fp
     uses: sp_14 = fp - 0x0002
@@ -82,7 +78,6 @@ bp:bp
     uses: wLoc02_15 = bp
 ss:ss
     def:  def ss
-    uses: ax_34 = fn0C00_000F(Mem0[ss:sp_32 + 2:word16])
 ax:ax
     def:  def ax
 SZO:Flags
@@ -157,12 +152,12 @@ sp_31: orig: sp
     def:  sp_31 = fp
 sp_32: orig: sp
     def:  sp_32 = fp - 0x0004
-    uses: ax_34 = fn0C00_000F(Mem0[ss:sp_32 + 2:word16])
 wLoc04_33: orig: wLoc04
     def:  wLoc04_33 = ax_18
-    uses: wLoc04_23 = PHI(wLoc04_33, wLoc04)
+    uses: ax_34 = fn0C00_000F(wLoc04_33)
+          wLoc04_23 = PHI(wLoc04_33, wLoc04)
 ax_34: orig: ax
-    def:  ax_34 = fn0C00_000F(Mem0[ss:sp_32 + 2:word16])
+    def:  ax_34 = fn0C00_000F(wLoc04_33)
     uses: dx_ax_40 = dx_39 *s ax_34
 sp_35: orig: sp
     def:  sp_35 = fp - 0x0003
@@ -207,7 +202,6 @@ ax_46: orig: ax
 dx_ax_47: orig: dx_ax
     def:  dx_ax_47 = SEQ(dx, ax_46) (alias)
     uses: dx_ax_25 = PHI(dx_ax_40, dx_ax_47)
-
 // fn0C00_000F
 word16 fn0C00_000F(word16 wArg02)
 fn0C00_000F_entry:

@@ -51,8 +51,10 @@ namespace Decompiler.UnitTests.Core
 			arg08 = new Identifier("arg08", -1, PrimitiveType.Word16, new StackArgumentStorage(8, PrimitiveType.Word16));
 			arg0C = new Identifier("arg0C", -1, PrimitiveType.Byte, new StackArgumentStorage(0x0C, PrimitiveType.Byte));
 			regOut = new Identifier("edxOut", -1, PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
-			sig = new ProcedureSignature(ret,
-				new Identifier[] { arg04, arg08, arg0C, regOut });
+            sig = new ProcedureSignature(ret,
+                new Identifier[] { arg04, arg08, arg0C, regOut })
+                {
+                };
 		
         }
 
@@ -84,22 +86,24 @@ namespace Decompiler.UnitTests.Core
         [Test]
         public void BindToCallingFrame()
         {
-            Procedure caller = new Procedure("caller", new Frame(PrimitiveType.Word16));
+            var caller = new Procedure("caller", new Frame(PrimitiveType.Word16));
             caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word32, "bindToArg04");
             caller.Frame.EnsureStackLocal(-6, PrimitiveType.Word16, "bindToArg02");
 
-            Procedure callee = new Procedure("callee", new  Frame (PrimitiveType.Word16));
-            callee.Frame.EnsureStackArgument(4, PrimitiveType.Word16);
-            callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
-
-            throw new NotImplementedException();
-            //ab = new ApplicationBuilder(arch, caller, new CallSite(6 + 2, 0), callee, callee.Signature); 
-            //var id2 = id.Storage.BindFormalArgumentToFrame(arch, caller, 
-            //Assert.AreEqual("bindToArg04", id2.ToString());
-
-            //id = callee.EnsureStackArgument(2, PrimitiveType.Word16);
-            //id2 = id.Storage.BindFormalArgumentToFrame(arch, caller, new CallSite(6 + 2, 0));
-            //Assert.AreEqual("bindToArg02", id2.ToString());
+            var callee = new Procedure("callee", new  Frame (PrimitiveType.Word16));
+            var wArg = callee.Frame.EnsureStackArgument(0, PrimitiveType.Word16);
+            var dwArg = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word32);
+            callee.Signature = new ProcedureSignature(
+                null,
+                wArg,
+                dwArg);
+            var cs = new CallSite(0, 0)
+            {
+                StackDepthOnEntry = 6
+            };
+            ab = new ApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(null, callee), callee.Signature); 
+            var instr = ab.CreateInstruction();
+            Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
         }
 	}
 }

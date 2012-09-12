@@ -9,7 +9,7 @@ r1:r1
     def:  def r1
     uses: r0_9 = r0 + r1
 Z:Flags
-Z_5: orig: Z
+r63:r63
 Z_6: orig: Z
 r0_7: orig: r0
     def:  r0_7 = PHI(r0, r0_9)

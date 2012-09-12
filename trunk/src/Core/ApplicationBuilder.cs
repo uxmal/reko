@@ -162,7 +162,9 @@ namespace Decompiler.Core
 
         public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
         {
-            return arch.CreateStackAccess(frame, stack.StackOffset - sigCallee.ReturnAddressOnStack, stack.DataType);
+            return frame.EnsureStackVariable(
+                stack.StackOffset - (site.StackDepthOnEntry + sigCallee.ReturnAddressOnStack),
+                stack.DataType);
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)

@@ -245,28 +245,27 @@ namespace Decompiler.Analysis
 		}
     }
 
-		/// <summary>
-		/// Replaces all occurences of an identifier with another identifier.
-		/// </summary>
+	/// <summary>
+	/// Replaces all occurences of an identifier with an expression.
+	/// </summary>
     public class IdentifierReplacer : InstructionTransformer
     {
         private Identifier idOld;
-        private Expression defExpr;
+        private Expression exprNew;
 
-        public IdentifierReplacer(Identifier idOld, Expression defExpr)
+        public IdentifierReplacer(Identifier idOld, Expression exprNew)
         {
             this.idOld = idOld;
-            this.defExpr = defExpr;
+            this.exprNew = exprNew;
         }
 
         public override Expression VisitIdentifier(Identifier id)
         {
             if (idOld == id)
-                return defExpr;
+                return exprNew;
             else
                 return id;
         }
-
     }
 
     /// <summary>

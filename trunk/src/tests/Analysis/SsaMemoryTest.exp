@@ -4,35 +4,35 @@ Mem0:Global memory
           cx_10 = Mem0[ds:bx_9 + 0x0002:word16]
 fp:Temporary
     def:  def fp
-sp:Register sp
+sp:sp
     def:  def sp
-bx:Register bx
+bx:bx
     def:  def bx
     uses: bx_9 = Mem0[ds:bx + 0x0004:word16]
-ds:Register ds
+ds:ds
     def:  def ds
     uses: bx_9 = Mem0[ds:bx + 0x0004:word16]
           cx_10 = Mem0[ds:bx_9 + 0x0002:word16]
-          Mem15[ds:0x012C:word16] = cx_13
-          Mem16[ds:bx_9 + 0x0006:word16] = 0x0000
-          cx_17 = Mem16[ds:si:word16]
-          Mem18[ds:bx_9 + 0x0006:word16] = 0x0001
-          cx_19 = Mem18[ds:si:word16]
-cx:Register cx
+          Mem14[ds:0x012C:word16] = cx_13
+          Mem15[ds:bx_9 + 0x0006:word16] = 0x0000
+          cx_16 = Mem15[ds:si:word16]
+          Mem17[ds:bx_9 + 0x0006:word16] = 0x0001
+          cx_18 = Mem17[ds:si:word16]
+cx:cx
     def:  def cx
 SCZO:Flags
     def:  def SCZO
 Z:Flags
     def:  def Z
-si:Register si
+si:si
     def:  def si
-    uses: cx_17 = Mem16[ds:si:word16]
-          cx_19 = Mem18[ds:si:word16]
+    uses: cx_16 = Mem15[ds:si:word16]
+          cx_18 = Mem17[ds:si:word16]
 bx_9: orig: bx
     def:  bx_9 = Mem0[ds:bx + 0x0004:word16]
     uses: cx_10 = Mem0[ds:bx_9 + 0x0002:word16]
-          Mem16[ds:bx_9 + 0x0006:word16] = 0x0000
-          Mem18[ds:bx_9 + 0x0006:word16] = 0x0001
+          Mem15[ds:bx_9 + 0x0006:word16] = 0x0000
+          Mem17[ds:bx_9 + 0x0006:word16] = 0x0001
 cx_10: orig: cx
     def:  cx_10 = Mem0[ds:bx_9 + 0x0002:word16]
     uses: SCZO_11 = cond(cx_10 - 0x0000)
@@ -43,28 +43,24 @@ Z_12: orig: Z
     def:  Z_12 = SCZO_11 (alias)
     uses: branch Test(NE,Z_12) l0C00_0015
 cx_13: orig: cx
-    def:  cx_13 = PHI(cx_17, cx_19)
-    uses: Mem15[ds:0x012C:word16] = cx_13
+    def:  cx_13 = PHI(cx_16, cx_18)
+    uses: Mem14[ds:0x012C:word16] = cx_13
 Mem14: orig: Mem0
-    def:  Mem14 = PHI(Mem16, Mem18)
+    def:  Mem14[ds:0x012C:word16] = cx_13
 Mem15: orig: Mem0
-    def:  Mem15[ds:0x012C:word16] = cx_13
-Mem16: orig: Mem0
-    def:  Mem16[ds:bx_9 + 0x0006:word16] = 0x0000
-    uses: cx_17 = Mem16[ds:si:word16]
-          Mem14 = PHI(Mem16, Mem18)
-cx_17: orig: cx
-    def:  cx_17 = Mem16[ds:si:word16]
-    uses: cx_13 = PHI(cx_17, cx_19)
-Mem18: orig: Mem0
-    def:  Mem18[ds:bx_9 + 0x0006:word16] = 0x0001
-    uses: cx_19 = Mem18[ds:si:word16]
-          Mem14 = PHI(Mem16, Mem18)
-cx_19: orig: cx
-    def:  cx_19 = Mem18[ds:si:word16]
-    uses: cx_13 = PHI(cx_17, cx_19)
+    def:  Mem15[ds:bx_9 + 0x0006:word16] = 0x0000
+    uses: cx_16 = Mem15[ds:si:word16]
+cx_16: orig: cx
+    def:  cx_16 = Mem15[ds:si:word16]
+    uses: cx_13 = PHI(cx_16, cx_18)
+Mem17: orig: Mem0
+    def:  Mem17[ds:bx_9 + 0x0006:word16] = 0x0001
+    uses: cx_18 = Mem17[ds:si:word16]
+cx_18: orig: cx
+    def:  cx_18 = Mem17[ds:si:word16]
+    uses: cx_13 = PHI(cx_16, cx_18)
 // fn0C00_0000
-void fn0C00_0000()
+void fn0C00_0000(word16 bx, word16 si, selector ds)
 fn0C00_0000_entry:
 	def Mem0
 	def fp
@@ -84,18 +80,17 @@ l0C00_0000:
 	branch Test(NE,Z_12) l0C00_0015
 	// succ:  l0C00_000B l0C00_0015
 l0C00_000B:
-	Mem16[ds:bx_9 + 0x0006:word16] = 0x0000
-	cx_17 = Mem16[ds:si:word16]
+	Mem15[ds:bx_9 + 0x0006:word16] = 0x0000
+	cx_16 = Mem15[ds:si:word16]
 	goto l0C00_001C
 	// succ:  l0C00_001C
 l0C00_0015:
-	Mem18[ds:bx_9 + 0x0006:word16] = 0x0001
-	cx_19 = Mem18[ds:si:word16]
+	Mem17[ds:bx_9 + 0x0006:word16] = 0x0001
+	cx_18 = Mem17[ds:si:word16]
 	// succ:  l0C00_001C
 l0C00_001C:
-	cx_13 = PHI(cx_17, cx_19)
-	Mem14 = PHI(Mem16, Mem18)
-	Mem15[ds:0x012C:word16] = cx_13
+	cx_13 = PHI(cx_16, cx_18)
+	Mem14[ds:0x012C:word16] = cx_13
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

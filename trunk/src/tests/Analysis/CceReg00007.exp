@@ -1,68 +1,83 @@
-Mem0: Mem0:Global memory
-fp: fp:Temporary
-al: al:Register al
-C: C:Flags
-ds: ds:Register ds, def: {def ds}, uses: {C_6 = fn0C00_000C(al_5, ds)}{Mem7[ds:0x0300:byte] = al_5}
-al_5: orig: al, def: {al_5 = 0x20}, uses: {C_6 = fn0C00_000C(al_5, ds)}{Mem7[ds:0x0300:byte] = al_5}
-C_6: orig: C, def: {C_6 = fn0C00_000C(al_5, ds)}, uses: {branch C_6 l0C00_000B}
-Mem7: orig: Mem0, def: {Mem7[ds:0x0300:byte] = al_5}
+Mem0:Global memory
+fp:Temporary
+sp:sp
+al:al
+C:Flags
+ds:ds
+    def:  def ds
+    uses: C_7 = fn0C00_000C(0x20, ds)
+          Mem8[ds:0x0300:byte] = 0x20
+al_6: orig: al
+C_7: orig: C
+    def:  C_7 = fn0C00_000C(0x20, ds)
+    uses: branch C_7 l0C00_000B
 Mem8: orig: Mem0
+    def:  Mem8[ds:0x0300:byte] = 0x20
 // fn0C00_0000
 void fn0C00_0000(selector ds)
-fn0C00_0000_entry:		// block 0, pred:
+fn0C00_0000_entry:
 	def ds
-	// succ:  1
-l0C00_0000:		// block 1, pred: 0
-	al_5 = 0x20
-	C_6 = fn0C00_000C(al_5, ds)
-	branch C_6 l0C00_000B
-	// succ:  2 3
-l0C00_0007:		// block 2, pred: 1
-	Mem7[ds:0x0300:byte] = al_5
-	// succ:  3
-l0C00_000B:		// block 3, pred: 1 2
+	// succ:  l0C00_0000
+l0C00_0000:
+	C_7 = fn0C00_000C(0x20, ds)
+	branch C_7 l0C00_000B
+	// succ:  l0C00_0007 l0C00_000B
+l0C00_0007:
+	Mem8[ds:0x0300:byte] = 0x20
+	// succ:  l0C00_000B
+l0C00_000B:
 	return
-	// succ:  4
-fn0C00_0000_exit:		// block 4, pred: 3
-	// succ: 
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
 
-Mem0: Mem0:Global memory, def: {def Mem0}, uses: {v6_11 = Mem0[ds:0x0201:word16] + 0x0001}
-fp: fp:Temporary
-al: al:Register al, def: {def al}, uses: {SCZO_8 = cond(al - 0x20)}{branch al <u 0x20 l0C00_0014}
-SCZO: SCZO:Flags
-C: C:Flags
-ds: ds:Register ds, def: {def ds}, uses: {v6_11 = Mem0[ds:0x0201:word16] + 0x0001}{Mem12[ds:0x0201:word16] = v6_11}
-v6: v6:Temporary
-SZO: SZO:Flags
-SCZO_8: orig: SCZO, def: {SCZO_8 = cond(al - 0x20)}, uses: {C_9 = SCZO_8 (alias)}
-C_9: orig: C, def: {C_9 = SCZO_8 (alias)}, uses: {return C_9}
-SZO_10: orig: SZO
-v6_11: orig: v6, def: {v6_11 = Mem0[ds:0x0201:word16] + 0x0001}, uses: {Mem12[ds:0x0201:word16] = v6_11}
-Mem12: orig: Mem0, def: {Mem12[ds:0x0201:word16] = v6_11}
-SZO_13: orig: SZO
-SCZO_14: orig: SCZO
-SZO_15: orig: SZO
-SCZO_16: orig: SCZO
-Mem17: orig: Mem0
+Mem0:Global memory
+    def:  def Mem0
+    uses: v7_14 = Mem0[ds:0x0201:word16] + 0x0001
+fp:Temporary
+sp:sp
+al:al
+    def:  def al
+    uses: SCZO_9 = cond(al - 0x20)
+          branch al <u 0x20 l0C00_0014
+SCZO:Flags
+C:Flags
+ds:ds
+    def:  def ds
+    uses: v7_14 = Mem0[ds:0x0201:word16] + 0x0001
+          Mem15[ds:0x0201:word16] = v7_14
+v7:Temporary
+SZO:Flags
+SCZO_9: orig: SCZO
+    def:  SCZO_9 = cond(al - 0x20)
+    uses: return SCZO_9
+C_10: orig: C
+SZO_11: orig: SZO
+SZO_12: orig: SZO
+SCZO_13: orig: SCZO
+v7_14: orig: v7
+    def:  v7_14 = Mem0[ds:0x0201:word16] + 0x0001
+    uses: Mem15[ds:0x0201:word16] = v7_14
+Mem15: orig: Mem0
+    def:  Mem15[ds:0x0201:word16] = v7_14
+SZO_16: orig: SZO
+SCZO_17: orig: SCZO
 // fn0C00_000C
 byte fn0C00_000C(byte al, selector ds)
-fn0C00_000C_entry:		// block 0, pred:
+fn0C00_000C_entry:
 	def Mem0
 	def al
 	def ds
-	// succ:  1
-l0C00_000C:		// block 1, pred: 0
-	SCZO_8 = cond(al - 0x20)
-	C_9 = SCZO_8 (alias)
+	// succ:  l0C00_000C
+l0C00_000C:
+	SCZO_9 = cond(al - 0x20)
 	branch al <u 0x20 l0C00_0014
-	// succ:  2 3
-l0C00_0010:		// block 2, pred: 1
-	v6_11 = Mem0[ds:0x0201:word16] + 0x0001
-	Mem12[ds:0x0201:word16] = v6_11
-	// succ:  3
-l0C00_0014:		// block 3, pred: 1 2
+	// succ:  l0C00_0010 l0C00_0014
+l0C00_0010:
+	v7_14 = Mem0[ds:0x0201:word16] + 0x0001
+	Mem15[ds:0x0201:word16] = v7_14
+	// succ:  l0C00_0014
+l0C00_0014:
 	return C_9
-	// succ:  4
-fn0C00_000C_exit:		// block 4, pred: 3
-	// succ: 
+	// succ:  fn0C00_000C_exit
+fn0C00_000C_exit:
 

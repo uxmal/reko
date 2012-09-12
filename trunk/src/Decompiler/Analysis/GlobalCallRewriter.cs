@@ -213,7 +213,6 @@ namespace Decompiler.Analysis
 			proc.Signature = flow.Signature;
 		}
 
-
 		public SortedList<int, Identifier> GetSortedArguments(Frame f, Type type, int startOffset)
 		{
 			SortedList<int, Identifier> arguments = new SortedList<int,Identifier>();

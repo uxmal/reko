@@ -6,36 +6,34 @@ Mem0:Global memory
           ax_39 = ax_19 + Mem0[ds:si_38 + 0x0004:word16]
 fp:Temporary
     def:  def fp
-sp:Register sp
+sp:sp
     def:  def sp
-ax:Register ax
+ax:ax
     def:  def ax
-    uses: ax_12 = ax ^ ax
-          ax_12 = ax ^ ax
 SZO:Flags
     def:  def SZO
 C:Flags
     def:  def C
-bx:Register bx
+bx:bx
     def:  def bx
     uses: SCZO_20 = cond(ax_19 - bx)
 SCZO:Flags
     def:  def SCZO
 SO:Flags
     def:  def SO
-ds:Register ds
+ds:ds
     def:  def ds
     uses: si_25 = Mem0[ds:0x0300:word16]
           ax_32 = ax_19 + Mem0[ds:si_26:word16]
           si_38 = Mem0[ds:0x0302:word16]
           ax_39 = ax_19 + Mem0[ds:si_38 + 0x0004:word16]
-si:Register si
+si:si
     def:  def si
     uses: si_18 = PHI(si, si_26, si_38)
 Z:Flags
     def:  def Z
 ax_12: orig: ax
-    def:  ax_12 = ax ^ ax
+    def:  ax_12 = 0x0000
     uses: SZO_13 = cond(ax_12)
           ax_19 = PHI(ax_12, ax_32, ax_39)
 SZO_13: orig: SZO
@@ -137,7 +135,7 @@ SO_43: orig: SO
 Z_44: orig: Z
     def:  Z_44 = SCZO_40 (alias)
 // fn0C00_0000
-void fn0C00_0000()
+void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	def Mem0
 	def fp
@@ -153,7 +151,7 @@ fn0C00_0000_entry:
 	def Z
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_12 = ax ^ ax
+	ax_12 = 0x0000
 	SZO_13 = cond(ax_12)
 	SO_14 = SZO_13 (alias)
 	Z_15 = SZO_13 (alias)
