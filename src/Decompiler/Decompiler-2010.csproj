@@ -171,6 +171,7 @@
     <Compile Include="Analysis\Liveness.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\LongAddRewriter.cs" />
     <Compile Include="Analysis\MemReplacer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -382,7 +383,6 @@
     <Compile Include="Scanning\Backwalker.cs" />
     <Compile Include="Scanning\BlockPromoter.cs" />
     <Compile Include="Scanning\FrameAccessSimplifier.cs" />
-    <Compile Include="Scanning\LongAddRewriter.cs" />
     <Compile Include="Scanning\ProcedureScanner.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\EntryPointWorkitem.cs" />

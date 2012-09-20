@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
@@ -31,10 +32,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Decompiler.UnitTests.Scanning
+namespace Decompiler.UnitTests.Analysis
 {
     [TestFixture]
-    [Obsolete("Should be moved to analysis, because we need data flow analysis to trace the uses of carry flags.")]
     public class LongAddRewriterTests
     {
         private Frame frame;
