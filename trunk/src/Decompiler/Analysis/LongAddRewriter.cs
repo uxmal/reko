@@ -28,8 +28,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Decompiler.Scanning
+namespace Decompiler.Analysis
 {
+    /// <summary>
+    /// Locates instances of add aLo, bLow, adc aHi, bHi and merges them into add a, b
+    /// </summary>
     public class LongAddRewriter
     {
         private Frame frame;

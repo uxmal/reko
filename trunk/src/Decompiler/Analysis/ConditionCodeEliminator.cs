@@ -204,11 +204,11 @@ namespace Decompiler.Analysis
 			if (u != sidGrf.Identifier)
 				return a;
 
-            var law = new Scanning.LongAddRewriter(arch, useStm.Block.Procedure.Frame);
-            if (law.Match(sidGrf, u, a))
-            {
-                InsertLongAdd(sidGrf, u, a));
-            }
+            //var law = new LongAddRewriter(arch, useStm.Block.Procedure.Frame);
+            //if (law.Match(u, a))
+            //{
+            //    InsertLongAdd(sidGrf, u, a);
+            //}
 			u = UseGrfConditionally(sidGrf, ConditionCode.ULT);
 			if (c != null)
 				c.Expression = u;
