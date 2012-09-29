@@ -164,7 +164,7 @@ namespace Decompiler.Analysis
 
 		public void Transform()
 		{
-            this.SsaState = new SsaState(proc);
+            this.SsaState = new SsaState(proc, domGraph);
 			PlacePhiFunctions();
 			var rn = new VariableRenamer(this, varsOrig, proc);
 			rn.RenameBlock(proc.EntryBlock);

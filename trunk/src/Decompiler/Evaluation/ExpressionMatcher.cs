@@ -18,7 +18,10 @@
  */
 #endregion
 
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Operators;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,15 +30,17 @@ namespace Decompiler.Evaluation
 {
     public class ExpressionMatcher : ExpressionVisitor<bool>
     {
-        private Expression pattern;
         private Expression p;
         private Dictionary<string, Expression> capturedExpressions;
+        private Dictionary<string, Operator> capturedOperators;
 
         public ExpressionMatcher(Expression pattern)
         {
-            this.pattern = pattern;
+            this.Pattern = pattern;
             this.capturedExpressions = new Dictionary<string, Expression>();
+            this.capturedOperators = new Dictionary<string, Operator>();
         }
+
 
         public Expression CapturedExpression(string label)
         {
@@ -45,15 +50,40 @@ namespace Decompiler.Evaluation
             return value;
         }
 
+        public Operator CapturedOperators(string label)
+        {
+            Operator value;
+            if (string.IsNullOrEmpty(label) || !capturedOperators.TryGetValue(label, out value))
+                return null;
+            return value;
+        }
+
         public bool Match(Expression expr)
         {
-            return Match(pattern, expr);
+            return Match(Pattern, expr);
         }
 
         private bool Match(Expression p, Expression expr)
         {
             this.p = p;
+            var w = p as WildExpression;
+            if (w != null)
+            {
+                capturedExpressions[w.Label] = expr;
+                return true;
+            }
             return expr.Accept(this);
+        }
+
+        private bool Match(Operator opPattern, Operator op)
+        {
+            var wildOp = opPattern as WildOperator;
+            if (wildOp != null)
+            {
+                capturedOperators[wildOp.Label] = op;
+                return true;
+            }
+            return opPattern == op;
         }
 
         #region ExpressionVisitor<bool> Members
@@ -78,7 +108,7 @@ namespace Decompiler.Evaluation
             var bP = p as BinaryExpression;
             if (bP == null)
                 return false;
-            if (binExp.Operator != bP.Operator)
+            if (!Match(bP.Operator, binExp.Operator))
                 return false;
 
             return (Match(bP.Left, binExp.Left) && Match(bP.Right, binExp.Right));
@@ -86,12 +116,18 @@ namespace Decompiler.Evaluation
 
         bool ExpressionVisitor<bool>.VisitCast(Cast cast)
         {
-            throw new NotImplementedException();
+            var castP = p as Cast;
+            return 
+                castP != null &&
+                Match(castP.Expression, cast.Expression);
         }
 
         bool ExpressionVisitor<bool>.VisitConditionOf(ConditionOf cof)
         {
-            throw new NotImplementedException();
+            var condP = p as ConditionOf;
+            return
+                condP != null &&
+                Match(condP.Expression, cof.Expression);
         }
 
         bool ExpressionVisitor<bool>.VisitConstant(Constant c)
@@ -100,7 +136,7 @@ namespace Decompiler.Evaluation
             if (anyC != null)
             {
                 if (!string.IsNullOrEmpty(anyC.Label))
-                    capturedExpressions.Add(anyC.Label, c);
+                    capturedExpressions[anyC.Label] = c;
                 return true;
             }
             var cP = p as Constant;
@@ -149,7 +185,10 @@ namespace Decompiler.Evaluation
             var mp = p as MemoryAccess;
             if (mp == null)
                 return false;
-            if (mp.DataType.Size != access.DataType.Size)
+            if (mp.DataType is WildDataType)
+            {
+            }
+            else if (mp.DataType.Size != access.DataType.Size)
                 return false;
             return Match(mp.EffectiveAddress, access.EffectiveAddress);
         }
@@ -211,52 +250,135 @@ namespace Decompiler.Evaluation
             return new WildConstant(label);
         }
 
+        public static Expression AnyExpression(string label)
+        {
+            return new WildExpression(label);
+        }
+
         public static Expression AnyId()
         {
             return new WildId(null);
         }
-        public static Expression AnyId(string label)
+
+        public static Identifier AnyId(string label)
         {
             return new WildId(label);
         }
 
-        private class WildExpression : Expression
+        public static Operator AnyOperator(string label)
         {
-            public WildExpression(string label) : base(null)
+            return new WildOperator(label);
+        }
+
+        public static DataType AnyDataType(string label)
+        {
+            return new WildDataType(label);
+        }
+
+        private interface IWildExpression
+        {
+            string Label { get; }
+        }
+
+        private class WildConstant : Constant, IWildExpression
+        {
+            public WildConstant(string label) : base(0u)
+            {
+                this.Label = label;
+            }
+
+            public string Label { get; private set; }
+        }
+
+        private class WildExpression : Expression, IWildExpression
+        {
+            public WildExpression(string label)
+                : base(null)
             {
                 this.Label = label;
             }
 
             public string Label { get; private set; }
 
-            public override void Accept(IExpressionVisitor visit)
-            {
-                throw new NotSupportedException();
-            }
-
             public override T Accept<T>(ExpressionVisitor<T> visitor)
             {
-                throw new NotSupportedException();
+                throw new NotImplementedException();
+            }
+
+            public override void Accept(IExpressionVisitor visit)
+            {
+                throw new NotImplementedException();
             }
 
             public override Expression CloneExpression()
             {
-                throw new NotSupportedException();
+                throw new NotImplementedException();
             }
         }
 
-        private class WildConstant : WildExpression
+        private class WildId : Identifier
         {
-            public WildConstant(string label) : base(label)
+            public WildId(string label) : base(label, 0, null, null)
             {
+                this.Label = label;
+            }
+
+            public string Label { get; private set; }
+        }
+
+        private class WildOperator : Operator
+        {
+            public WildOperator(string Label)
+            {
+                this.Label = Label;
+            }
+
+            public string Label { get; private set; }
+
+            public override string ToString()
+            {
+                return string.Format("[{0}]", Label);
             }
         }
 
-        private class WildId : WildExpression
+        private class WildDataType : DataType
         {
-            public WildId(string label) : base(label)
+            public WildDataType(string label)
             {
+                this.Label = label;
             }
+
+            public override int Size { get; set; }
+
+            public string Label { get; private set; }
+
+            public override DataType Accept(DataTypeTransformer t)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void Accept(IDataTypeVisitor v)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override T Accept<T>(IDataTypeVisitor<T> v)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override DataType Clone()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Expression Pattern { get; set; }
+
+        public void Clear()
+        {
+            this.capturedExpressions.Clear();
+            this.capturedOperators.Clear();
         }
     }
 }

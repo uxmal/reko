@@ -27,14 +27,14 @@ namespace Decompiler.Core.Expressions
 {
 	public class BinaryExpression : Expression
 	{
-		public BinaryExpression(BinaryOperator op, DataType dtResult, Expression left, Expression right) : base(dtResult)
+		public BinaryExpression(Operator op, DataType dtResult, Expression left, Expression right) : base(dtResult)
 		{
 			this.Operator = op;
 			this.Left = left;
 			this.Right = right;
 		}
 
-        public BinaryOperator Operator { get; set; } 
+        public Operator Operator { get; set; } 
         public Expression Left { get; set; }
         public Expression Right { get; set; }
 
@@ -72,7 +72,7 @@ namespace Decompiler.Core.Expressions
 			return Commutes(Operator);
 		}
 
-		public static bool Commutes(BinaryOperator op)
+		public static bool Commutes(Operator op)
 		{
 			return op == Operators.Operator.Add ||
                 op == Operators.Operator.And ||

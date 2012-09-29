@@ -35,5 +35,7 @@ namespace Decompiler.Arch.Pdp11
         }
 
         public RegisterStorage Register { get;set;}
+        public bool PreInc { get; set; }
+        public bool PostInc { get; set; }
     }
 }

@@ -20,18 +20,21 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Types;
+using Decompiler.Evaluation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Decompiler.Analysis
 {
     /// <summary>
-    /// Locates instances of add aLo, bLow, adc aHi, bHi and merges them into add a, b
+    /// Locates instances of add aLo, bLow, adc aHi, bHi and merges them into (add a, b)
     /// </summary>
     public class LongAddRewriter
     {
@@ -40,23 +43,64 @@ namespace Decompiler.Analysis
         private Expression src;
         private bool useStore;
         private IProcessorArchitecture arch;
+        private InstructionMatcher adcPattern;
+        private InstructionMatcher addPattern;
+        private ExpressionMatcher memOffset;
+        private ExpressionMatcher segMemOffset;
 
-        public LongAddRewriter(IProcessorArchitecture arch,  Frame frame)
+        public LongAddRewriter(IProcessorArchitecture arch, Frame frame)
         {
             this.arch = arch;
             this.frame = frame;
+
+            this.addPattern = new InstructionMatcher(
+                new Assignment(
+                    ExpressionMatcher.AnyId("dst"),
+                    new BinaryExpression(
+                        ExpressionMatcher.AnyOperator("op"), null,
+                        ExpressionMatcher.AnyExpression("left"),
+                        ExpressionMatcher.AnyExpression("right"))));
+
+            this.adcPattern = new InstructionMatcher(
+                new Assignment(
+                    ExpressionMatcher.AnyId("dst"),
+                    new BinaryExpression(
+                        ExpressionMatcher.AnyOperator("op1"), null,
+                        new BinaryExpression(
+                            ExpressionMatcher.AnyOperator("op2"), null,
+                            ExpressionMatcher.AnyExpression("left"),
+                            ExpressionMatcher.AnyExpression("right")),
+                        ExpressionMatcher.AnyExpression("cf"))));
+
+            this.memOffset = new ExpressionMatcher(
+                new MemoryAccess(
+                    new BinaryExpression(
+                        ExpressionMatcher.AnyOperator("op"), null,
+                        ExpressionMatcher.AnyExpression("base"),
+                        ExpressionMatcher.AnyConstant("offset")),
+                    ExpressionMatcher.AnyDataType("dt")));
+            this.segMemOffset = new ExpressionMatcher(
+                new SegmentedAccess(
+                    null,
+                    ExpressionMatcher.AnyId(),
+                    new BinaryExpression(
+                        ExpressionMatcher.AnyOperator("op"), null,
+                        ExpressionMatcher.AnyExpression("base"),
+                        ExpressionMatcher.AnyConstant("offset")),
+                    ExpressionMatcher.AnyDataType("dt")));
         }
 
-        public void EmitInstruction(BinaryOperator op, CodeEmitter emitter)
+        private Instruction CreateInstruction(Expression dst, Operator op, Expression left, Expression right)
         {
-            var b = new BinaryExpression(op, dst.DataType, dst, src);
-            if (useStore)
+            var expSum = new BinaryExpression(op, left.DataType, left, right);
+            var idDst = dst as Identifier;
+            if (idDst != null)
             {
-                emitter.Store((MemoryAccess)dst.CloneExpression(), b);
+                return new Assignment(idDst, expSum);
             }
             else
             {
-                emitter.Assign((Identifier)dst, b);
+                return new Store(dst, expSum);
             }
         }
 
@@ -77,38 +121,74 @@ namespace Decompiler.Analysis
                 var bin = ass.Src as BinaryExpression;
                 if (bin.Operator == next)
                     return i;
-                var grfDef = ass.Dst.Storage as FlagGroupStorage;
-                if (grfDef == null)
-                    continue;
-                if ((arch.CarryFlagMask & grfDef.FlagGroupBits) != 0)
+                if (IsCarryFlag(ass.Dst))
                     return -1;
             }
             return -1;
         }
 
-        public Expression MakeMatch(Expression opLo, Expression opHi, DataType totalSize, bool isDef)
+        public bool IsCarryFlag(Expression exp)
         {
-            var regDstLo = opLo as Identifier;
-            var regDstHi = opHi as Identifier;
-            if (regDstLo != null && regDstHi != null)
+            var cf = exp as Identifier;
+            if (cf == null)
+                return false;
+            var grf = cf.Storage as FlagGroupStorage;
+            if (grf == null)
+                return false;
+            return (arch.CarryFlagMask & grf.FlagGroupBits) != 0;
+        }
+
+        /// <summary>
+        /// Finds the subsequent statement in this block that defines a condition code based on the
+        /// result in expression <paramref name="exp"/>.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="ax"></param>
+        /// <returns></returns>
+        public CondMatch FindCond(StatementList stms, int iStm, Expression exp)
+        {
+            var condm = new InstructionMatcher(
+                new Assignment(
+                    ExpressionMatcher.AnyId("grf"),
+                    new ConditionOf(
+                        ExpressionMatcher.AnyExpression("exp"))));
+            for (int i = iStm + 1; i < stms.Count; ++i)
+            {
+                if (!condm.Match(stms[i].Instruction))
+                    continue;
+                var grf = (Identifier) condm.CapturedExpressions("grf");
+                var condExp = condm.CapturedExpressions("exp");
+                if (grf.Storage is FlagGroupStorage && exp == condExp)
+                {
+                    return new CondMatch { FlagGroup = grf, src = exp, StatementIndex = i };
+                }
+            }
+            return null;
+        }
+
+        public Expression MakeMatch(Expression expLo, Expression expHi, DataType totalSize, bool isDef)
+        {
+            var idLo = expLo as Identifier;
+            var idHi = expHi as Identifier;
+            if (idLo != null && idHi != null)
             {
                 if (isDef)
                     useStore = false;
-                return frame.EnsureSequence(regDstHi, regDstLo, totalSize);
+                return frame.EnsureSequence(idHi, idLo, totalSize);
             }
-            var memDstLo = opLo as MemoryAccess;
-            var memDstHi = opHi as MemoryAccess;
+            var memDstLo = expLo as MemoryAccess;
+            var memDstHi = expHi as MemoryAccess;
             if (memDstLo != null && memDstHi != null && MemoryOperandsAdjacent(memDstLo, memDstHi))
             {
                 if (isDef)
                     useStore = true;
                 return CreateMemoryAccess(memDstLo, totalSize);
             }
-            var immLo = opLo as Constant;
-            var immHi = opHi as Constant;
+            var immLo = expLo as Constant;
+            var immHi = expHi as Constant;
             if (immLo != null && immHi != null)
             {
-                return new Constant(totalSize, ((ulong)immHi.ToUInt32() << opLo.DataType.BitSize) | immLo.ToUInt32());
+                return new Constant(totalSize, ((ulong)immHi.ToUInt32() << expLo.DataType.BitSize) | immLo.ToUInt32());
             }
             return null;
         }
@@ -122,37 +202,50 @@ namespace Decompiler.Analysis
             }
             else
             {
-                return new MemoryAccess(mem.MemoryId, segmem.EffectiveAddress, totalSize);
+                return new MemoryAccess(mem.MemoryId, mem.EffectiveAddress, totalSize);
             }
         }
 
-
-
-        public bool Match(Instruction loInstr, Instruction hiInstr)
+        public Instruction Match(Instruction loInstr, Instruction hiInstr)
         {
-            var loAss = loInstr as Assignment;
-            var hiAss = loInstr as Assignment;
-            if (loAss != null && hiAss != null)
-            {
-                var totalSize = PrimitiveType.Create(Domain.SignedInt | Domain.UnsignedInt, loAss.Dst.DataType.Size + loAss.Dst.DataType.Size);
-                src = MakeMatch(loAss.Src, hiAss.Src, totalSize, false);
-                dst = MakeMatch(loAss.Dst, hiAss.Dst, totalSize, true);
-            }
-            else
-            {
-                var loStore = loInstr as Store;
-                var hiStore = hiInstr as Store;
-                if (loStore != null && hiStore != null)
-                {
-                    var totalSize = PrimitiveType.Create(Domain.SignedInt | Domain.UnsignedInt, loStore.Dst.DataType.Size + loStore.Dst.DataType.Size);
-                    src = MakeMatch(loStore.Src, hiStore.Src, totalSize, false);
-                    dst = MakeMatch(loStore.Dst, hiStore.Dst, totalSize, true);
-                    return dst != null && src != null;
+            var loAss = MatchAddSub(loInstr);
+            var hiAss = MatchAdcSbc(hiInstr);
+            if (loAss == null || hiAss == null)
+                return null;
+            if (loAss.Op != hiAss.Op)
+                return null;
+            var totalSize = PrimitiveType.Create(Domain.SignedInt | Domain.UnsignedInt, loAss.Dst.DataType.Size + loAss.Dst.DataType.Size);
+            var left = MakeMatch(loAss.Left, hiAss.Left, totalSize, false);
+            var right = MakeMatch(loAss.Right, hiAss.Right, totalSize, false);
+            var dst = MakeMatch(loAss.Dst, hiAss.Dst, totalSize, true);
 
-                }
-            }
-            return dst != null && src != null;
+            if (left != null && right != null && dst != null)
+                return CreateInstruction(dst, loAss.Op, left, right);
+            else
+                return null;
         }
+
+        public class CondMatch
+        {
+            public Expression src;
+            public Identifier FlagGroup;
+            public int StatementIndex;
+        }
+
+        public CondMatch MatchCond(Instruction instr)
+        {
+            var ass = instr as Assignment;
+            if (ass == null)
+                return null;
+            var cond = ass.Src as ConditionOf;
+            if (cond == null)
+                return null;
+            var src = cond.Expression as Identifier;
+            if (cond == null)
+                return null;
+            return new CondMatch { src = src, FlagGroup = ass.Dst };
+        }
+
 
         public Expression Src
         {
@@ -168,25 +261,67 @@ namespace Decompiler.Analysis
         {
             var off1 = GetOffset(m1);
             var off2 = GetOffset(m2);
-            if (!off1.IsValid || !off2.IsValid)
+            if (off1 == null || off2 == null)
                 return false;
             return off1.ToInt32() + m1.DataType.Size == off2.ToInt32();
         }
 
         private Constant GetOffset(MemoryAccess access)
         {
-            throw new NotImplementedException();
+            if (memOffset.Match(access))
+            {
+                return (Constant) memOffset.CapturedExpression("offset");
+            }
+            if (segMemOffset.Match(access))
+            {
+                return (Constant)segMemOffset.CapturedExpression("offset");
+            }
+            return null;
         }
 
-        private Identifier AddSubDestination(Instruction instruction)
+        /// <summary>
+        /// Matches an "ADC" or "SBB/SBC" pattern.
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <returns>If the match succeeded, returns a partial BinaryExpression
+        /// with the left and right side of the ADC/SBC instruction.</returns>
+        public AddSubCandidate MatchAdcSbc(Instruction instr)
         {
-            var ass = instruction as Assignment;
-            if (ass == null)
+            if (!adcPattern.Match(instr))
                 return null;
-            var bin = ass.Src as BinaryExpression;
-            if (bin == null || (bin.Operator != Operator.Add && bin.Operator != Operator.Sub))
+            if (!IsCarryFlag(adcPattern.CapturedExpressions("cf")))
                 return null;
-            return ass.Dst;
+            var op = adcPattern.CapturedOperators("op2");
+            if (!IsAddOrSub(op))
+                return null;
+            return new AddSubCandidate
+            {
+                Dst = adcPattern.CapturedExpressions("dst"),
+                Op = op,
+                Left = adcPattern.CapturedExpressions("left"),
+                Right = adcPattern.CapturedExpressions("right")
+            };
+        }
+
+        public AddSubCandidate MatchAddSub(Instruction instr)
+        {
+            if (!addPattern.Match(instr))
+                return null;
+            var op = addPattern.CapturedOperators("op");
+            if (!IsAddOrSub(op))
+                return null;
+            return new AddSubCandidate
+            {
+                Dst = addPattern.CapturedExpressions("dst"),
+                Op = op,
+                Left = addPattern.CapturedExpressions("left"),
+                Right = addPattern.CapturedExpressions("right")
+            };
+        }
+
+        private static bool IsAddOrSub(Operator op)
+        {
+            return (op == Operator.Add || op == Operator.Sub);
         }
 
         public IEnumerable<CarryLinkedInstructions> FindCarryLinkedInstructions(Block block)
@@ -199,6 +334,27 @@ namespace Decompiler.Analysis
             }
             yield break;
         }
+
+        public static void TestCondition()
+        {
+            //LongAddRewriter larw = new LongAddRewriter(this.frame, state);
+            //int iUse = larw.IndexOfUsingOpcode(instrs, i, next);
+            //if (iUse >= 0 && larw.Match(instrCur, instrs[iUse]))
+            //{
+            //    instrs[iUse].code = Opcode.nop;
+            //    larw.EmitInstruction(op, emitter);
+            //    return larw.Dst;
+            //}
+        }
+
+    }
+
+    public class AddSubCandidate
+    {
+        public Expression Dst;
+        public Operator Op;
+        public Expression Left;
+        public Expression Right;
     }
 
     public class CarryLinkedInstructions

@@ -68,6 +68,9 @@ namespace Decompiler.UnitTests.Evaluation
         {
             ctx = new SymbolicEvaluationContext(arch, frame);
             se = new SymbolicEvaluator(ctx);
+            if (esp == null)
+                esp = Tmp32("esp");
+            ctx.SetValue(esp, frame.FramePointer);
         }
 
         private void RunBlockTest(Action<ProcedureBuilder> testBuilder)
@@ -85,7 +88,7 @@ namespace Decompiler.UnitTests.Evaluation
             var name = "edx";
             var edx = Tmp32(name);
             var ass = new Assignment(edx, Constant.Word32(3));
-            CreateSymbolicEvaluator(null);
+            CreateSymbolicEvaluator(frame);
             se.Evaluate(ass);
             Assert.IsNotNull(ctx.RegisterState);
             Assert.IsInstanceOf(typeof(Constant), ctx.TemporaryState[edx.Storage]);
@@ -95,22 +98,22 @@ namespace Decompiler.UnitTests.Evaluation
         [Test]
         public void IdentifierCopy()
         {
-            var esp = Tmp32("esp");
+            esp = Tmp32("esp");
             var ebp = Tmp32("ebp");
             CreateSymbolicEvaluator(frame);
             var ass = new Assignment(ebp, esp);
             se.Evaluate(ass);
-            Assert.AreSame(esp, ctx.TemporaryState[ebp.Storage], "Expected ebp to have the value of esp");
+            Assert.AreSame(frame.FramePointer, ctx.TemporaryState[ebp.Storage], "Expected ebp to have the value of esp");
         }
 
         [Test]
         public void AdjustValue()
         {
-            var esp = Tmp32("esp");
+            esp = Tmp32("esp");
             CreateSymbolicEvaluator(frame);
             var ass = new Assignment(esp, new BinaryExpression(BinaryOperator.Add, esp.DataType, esp, Constant.Word32(4)));
             se.Evaluate(ass);
-            Assert.AreEqual("esp + 0x00000004", ctx.TemporaryState[esp.Storage].ToString());
+            Assert.AreEqual("fp + 0x00000004", ctx.TemporaryState[esp.Storage].ToString());
         }
 
         [Test]
@@ -118,7 +121,7 @@ namespace Decompiler.UnitTests.Evaluation
         {
             var ebx = Tmp32("ebx");
             var al = Tmp8("al");
-            CreateSymbolicEvaluator(null);
+            CreateSymbolicEvaluator(frame);
             var ass = new Assignment(al, new MemoryAccess(ebx, al.DataType));
             se.Evaluate(ass);
             Assert.AreEqual("<invalid>", ctx.TemporaryState[al.Storage].ToString());
@@ -135,8 +138,8 @@ namespace Decompiler.UnitTests.Evaluation
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
             });
-            Assert.AreEqual("esp - 0x00000004", GetRegisterState(se, esp).ToString());
-            Assert.AreEqual("esp - 0x00000004", GetRegisterState(se, ebp).ToString());
+            Assert.AreEqual("fp - 0x00000004", GetRegisterState(se, esp).ToString());
+            Assert.AreEqual("fp - 0x00000004", GetRegisterState(se, ebp).ToString());
         }
 
         [Test]
@@ -177,8 +180,8 @@ namespace Decompiler.UnitTests.Evaluation
                 m.Assign(ebp, m.LoadDw(esp));
                 m.Assign(esp, m.Add(esp, 4));
             });
-            Assert.AreEqual("0x00000001", GetRegisterState(se, eax).ToString());
             Assert.AreEqual("ebp", GetRegisterState(se, ebp).ToString());
+            Assert.AreEqual("0x00000001", GetRegisterState(se, eax).ToString());
         }
 
         [Test]
@@ -212,7 +215,6 @@ namespace Decompiler.UnitTests.Evaluation
             Identifier ds = null;
             Identifier ax = null;
             Identifier eax = null;
-            Identifier esp = null;
             RunBlockTest(delegate (ProcedureBuilder m)
             {
                 ds = m.Frame.EnsureRegister(Registers.ds);
@@ -232,7 +234,6 @@ namespace Decompiler.UnitTests.Evaluation
             Identifier ax = null;
             Identifier cx = null;
             Identifier ebx = null;
-            Identifier esp = null;
             RunBlockTest(delegate(ProcedureBuilder m)
             {
                 ax = m.Frame.EnsureRegister(Registers.ax);
@@ -278,12 +279,12 @@ namespace Decompiler.UnitTests.Evaluation
         {
             Identifier si = null;
             RunBlockTest(m =>
-                {
-                    si = m.Frame.EnsureRegister(Registers.si);
+            {
+                si = m.Frame.EnsureRegister(Registers.si);
 
-                    m.Assign(si,m.LoadW(m.Word16(0x0032)));
-                    m.Assign(si, m.Add(si,2));
-                });
+                m.Assign(si,m.LoadW(m.Word16(0x0032)));
+                m.Assign(si, m.Add(si,2));
+            });
             Assert.AreEqual("<invalid>", ctx.RegisterState[(RegisterStorage)si.Storage].ToString());
         }
     }

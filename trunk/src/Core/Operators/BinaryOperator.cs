@@ -30,8 +30,6 @@ namespace Decompiler.Core.Operators
 		{
 		}
 
-		public abstract Constant ApplyConstants(Constant c1, Constant c2);
-
 		protected Constant BuildConstant(DataType t1, DataType t2, int val)
 		{
 			PrimitiveType p1 = (PrimitiveType) t1;

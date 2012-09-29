@@ -159,7 +159,7 @@ namespace Decompiler.Typing
 				return null;
 		}
 
-		public LinearInductionVariable MergeInductionVariableConstant(LinearInductionVariable iv, BinaryOperator op, Constant c)
+		public LinearInductionVariable MergeInductionVariableConstant(LinearInductionVariable iv, Operator op, Constant c)
 		{
 			if (iv == null || c == null)
 				return null;

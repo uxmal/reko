@@ -27,6 +27,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Pdp11
 {
+
     public class Pdp11Disassembler : Disassembler
     {
         private ImageReader rdr;
@@ -38,6 +39,7 @@ namespace Decompiler.Arch.Pdp11
             this.rdr = rdr;
             this.arch = arch;
         }
+
 
         public Address Address
         {
@@ -118,15 +120,15 @@ namespace Decompiler.Arch.Pdp11
             switch ((opcode >> 6) & 0x3FF)
             {
             case 0x003:
-                    oc = Opcodes.swab;
-                    dataWidth = PrimitiveType.Byte;
+                oc = Opcodes.swab;
+                dataWidth = PrimitiveType.Byte;
                 break;
 
             case 0x203:
                 return BranchInstruction(opcode);
             case 0x028:
             case 0x228:
-                    oc = Opcodes.clr;
+                oc = Opcodes.clr;
                 break;
             case 0x029:
             case 0x229:
@@ -223,7 +225,7 @@ namespace Decompiler.Arch.Pdp11
             case 0xA: oc = Opcodes.bhi; break;
             case 0xB: oc = Opcodes.blos; break;
             case 0xC: oc = Opcodes.bvc; break;
-            case 0xD: oc= Opcodes.bvs; break;
+            case 0xD: oc = Opcodes.bvs; break;
             case 0xE: oc = Opcodes.bcc; break;
             case 0xF: oc = Opcodes.bcs; break;
             }
@@ -259,11 +261,12 @@ namespace Decompiler.Arch.Pdp11
             }
         }
 
-        private static OpRec [] oprecs = new OpRec[] 
+        private static OpRec[] oprecs = new OpRec[] 
         { 
             null,
 
         };
     }
     public class OpRec { }
+
 }

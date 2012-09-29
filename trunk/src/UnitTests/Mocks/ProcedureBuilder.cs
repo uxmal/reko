@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Mocks
         {
             this.arch = arch;
             blocks = new Dictionary<string, Block>();
-            Procedure = new Procedure(name, new Frame(PrimitiveType.Word32));
+            Procedure = new Procedure(name, arch.CreateFrame());
             unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();
         }

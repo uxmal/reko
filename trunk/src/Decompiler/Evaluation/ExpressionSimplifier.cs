@@ -482,7 +482,7 @@ namespace Decompiler.Evaluation
 		}
 
 		private Expression AlgebraicSimplification(
-			BinaryOperator binOp, 
+			Operator binOp, 
 			DataType valType,
 			Expression left,
 			Expression right)
@@ -788,13 +788,13 @@ namespace Decompiler.Evaluation
 			return dad.Lookup(expr, table, id);
 		}
 
-		public static Constant SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r)
+		public static Constant SimplifyTwoConstants(Operator op, Constant l, Constant r)
 		{
 			PrimitiveType lType = (PrimitiveType) l.DataType;
 			PrimitiveType rType = (PrimitiveType) r.DataType;
 			if (lType.Domain != rType.Domain)
 				throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
-			return op.ApplyConstants(l, r);
+			return ((BinaryOperator)op).ApplyConstants(l, r);
 		}
     }
     #endregion

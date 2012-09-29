@@ -28,34 +28,35 @@ namespace Decompiler.Analysis
 {
 	public class Web
 	{
-        private Identifier id;
-		private List<SsaIdentifier> members;
-		private List<Statement> defs;
-        private List<Statement> uses;
 		private LinearInductionVariable iv;
 
 		public Web()
 		{
-			members = new List<SsaIdentifier>();
-			defs = new List<Statement>();
-			uses = new List<Statement>();
+			this.Members = new List<SsaIdentifier>();
+			this.Definitions = new List<Statement>();
+			this.Uses = new List<Statement>();
 		}
+
+        public Identifier Identifier { get; private set; }
+        public List<SsaIdentifier> Members { get; private set; }
+        public List<Statement> Uses { get; private set; }
+        public List<Statement> Definitions { get; private set; }
 
         public void Add(SsaIdentifier sid)
 		{
-            if (members.Contains(sid))		// should be a set!
+            if (Members.Contains(sid))		// should be a set!
                 return;
 
-			members.Add(sid);
-			if (this.id == null)
+			Members.Add(sid);
+			if (this.Identifier == null)
 			{
-				this.id = sid.Identifier;
+				this.Identifier = sid.Identifier;
 			}
 			else
 			{
 				if (sid.Identifier.Number < this.Identifier.Number)
 				{
-					this.id = sid.Identifier;
+					this.Identifier = sid.Identifier;
 				}
 
 				if (iv == null)
@@ -76,40 +77,23 @@ namespace Decompiler.Analysis
 					sid.InductionVariable = iv;
 				}
 			}
-			defs.Add(sid.DefStatement);
+			Definitions.Add(sid.DefStatement);
 			foreach (Statement u in sid.Uses)
-				uses.Add(u);
+				Uses.Add(u);
 		}
 
-        public List<Statement> Definitions
-        {
-            get { return defs; }
-        }
 
-        public Identifier Identifier
-        {
-            get { return id; }
-        }
         
 		public LinearInductionVariable InductionVariable
 		{
 			get { return iv; }
 		}
 
-		public List<SsaIdentifier> Members
-		{
-			get { return members; }
-		}
-
-        public List<Statement> Uses
-        {
-            get { return uses; }
-        }
 
 		public void Write(TextWriter writer)
 		{
 			writer.Write("{0}: {{ ", Identifier.Name);
-			foreach (SsaIdentifier m in members)
+			foreach (SsaIdentifier m in Members)
 			{
 				writer.Write("{0} ", m.Identifier.Name);
 			}

@@ -30,7 +30,7 @@ namespace Decompiler.Evaluation
 	{
 		private Constant cShift;
 		private Constant cMul;
-		private BinaryOperator op;
+		private Operator op;
 		private Expression e;
 
 		public Shl_mul_e_Rule(EvaluationContext ctx)

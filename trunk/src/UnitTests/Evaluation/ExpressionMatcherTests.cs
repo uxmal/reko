@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core.Expressions;
+using Decompiler.Core.Operators;
 using Decompiler.Evaluation;
 using NUnit.Framework;
 using System;
@@ -101,6 +102,24 @@ namespace Decompiler.UnitTests.Evaluation
             Assert.AreEqual("ebx", matcher.CapturedExpression("idx").ToString());
         }
 
+        [Test]
+        public void MatchAnyOp()
+        {
+            var sum = m.Add(Id("ebx"), Id("ecx"));
+            Create(new BinaryExpression(AnyOp("op"), null, AnyId("left"), AnyId("right")));
+            Assert.IsTrue(matcher.Match(sum));
+            Assert.AreEqual(" + ", matcher.CapturedOperators("op").ToString());
+        }
+
+        [Test]
+        public void MatchCondOf()
+        {
+            var e = m.Add(Id("ebx"), m.Cond(Id("ecx")));
+            Create(m.Add(AnyId(""), m.Cond(AnyId("q"))));
+            Assert.IsTrue(matcher.Match(e));
+            Assert.AreEqual("ecx", matcher.CapturedExpression("q").ToString());
+        }
+
         private Expression AnyC(string p)
         {
             return ExpressionMatcher.AnyConstant(p);
@@ -109,6 +128,11 @@ namespace Decompiler.UnitTests.Evaluation
         private Expression AnyId(string label)
         {
             return ExpressionMatcher.AnyId(label);
+        }
+
+        private Operator AnyOp(string label)
+        {
+            return ExpressionMatcher.AnyOperator(label);
         }
     }
 }

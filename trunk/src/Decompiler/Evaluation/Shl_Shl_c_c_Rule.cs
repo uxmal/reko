@@ -30,7 +30,7 @@ namespace Decompiler.Evaluation
 		private Constant c1;
 		private Constant c2;
 		private Expression e;
-		private BinaryOperator op;
+		private Operator op;
 
 		public ShiftShift_c_c_Rule(EvaluationContext ctx)
 		{

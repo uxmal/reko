@@ -191,13 +191,13 @@ namespace Decompiler.Arch.Arm
         // Some important 4-bit fields. 
 
         private int RD(int x) { return ((x) << 12); }	// destination register 
-        private int RN(int x) { return ((x) << 16); }	// operand/base register 
+        private uint RN(uint x) { return ((x) << 16); }	// operand/base register 
         private int CP(int x) { return ((x) << 8); }	// coprocessor number 
         private int RDbits() { return RD(15); }
-        private int RNbits() { return RN(15); }
+        private uint RNbits() { return RN(15); }
         private int CPbits() { return CP(15); }
         private bool RD_is(int x) { return ((instr & RDbits()) == RD(x)); }
-        private bool RN_is(int x) { return ((instr & RNbits()) == RN(x)); }
+        private bool RN_is(uint x) { return ((instr & RNbits()) == RN(x)); }
         private bool CP_is(int x) { return ((instr & CPbits()) == CP(x)); }
 
         /* A slightly efficient way of telling whether two bits are the same
@@ -872,7 +872,7 @@ namespace Decompiler.Arch.Arm
                 case '/':
                     result.addrstart = op.Length;
                     op.Append('[');
-                    var rn = new RegisterOperand(A32Registers.GpRegs[(instr & RNbits()) >> 16]);
+                    var rn = GpReg((instr & RNbits()) >> 16);
                     append(op, reg_names[(instr & RNbits()) >> 16]);
                     if ((instr & Pbit) == 0)
                         op.Append(']');
@@ -1009,6 +1009,11 @@ namespace Decompiler.Arch.Arm
                 }
             }
             return true;
+        }
+
+        private static RegisterOperand GpReg(uint gpReg)
+        {
+            return new RegisterOperand(A32Registers.GpRegs[gpReg]);
         }
 
         private bool AddCoprocessorExtraInfo(List<MachineOperand> operands)
