@@ -229,7 +229,7 @@ namespace Decompiler.Analysis
 			return c;
 		}
 
-		private static bool IsAddOrSub(BinaryOperator op)
+		private static bool IsAddOrSub(Operator op)
 		{
 			return op == Operator.Add || op == Operator.Sub;
 		}

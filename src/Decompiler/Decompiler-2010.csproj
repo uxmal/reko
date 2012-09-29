@@ -257,6 +257,7 @@
     <Compile Include="Evaluation\IdBinIdc_Rule.cs" />
     <Compile Include="Evaluation\IdConstant.cs" />
     <Compile Include="Evaluation\IdCopyPropagationRule.cs" />
+    <Compile Include="Evaluation\InstructionMatcher.cs" />
     <Compile Include="Evaluation\Mps_Constant_Rule.cs" />
     <Compile Include="Evaluation\NegSub_Rule.cs" />
     <Compile Include="Evaluation\Shl_mul_e_Rule.cs" />

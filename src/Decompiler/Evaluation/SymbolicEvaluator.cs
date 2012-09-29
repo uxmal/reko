@@ -55,21 +55,6 @@ namespace Decompiler.Evaluation
             instr.Accept(this);
         }
 
-        //public bool IsTrashed(Storage storage)
-        //{
-        //    RegisterStorage reg = storage as RegisterStorage;
-        //    if (reg != null)
-        //    {
-        //        Expression exp;
-        //        if (RegisterState.TryGetValue(reg, out exp))
-        //        {
-        //            return exp == Constant.Invalid;
-        //        }
-        //    }
-        //    throw new NotImplementedException();
-        //}
-
-
         #region InstructionVisitor Members
 
         public Instruction VisitAssignment(Assignment a)

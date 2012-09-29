@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using System;
 using System.Collections.Generic;
@@ -31,15 +32,43 @@ namespace Decompiler.Analysis
 {
 	public class SsaState
 	{
-		private Procedure proc;
 		private SsaIdentifierCollection ids;
+        private DominatorGraph<Block> domGraph;
 
-		public SsaState(Procedure proc)
+		public SsaState(Procedure proc, DominatorGraph<Block> domGraph)
 		{
-			this.proc = proc;
+			this.Procedure = proc;
+            this.domGraph = domGraph;
 			this.ids = new SsaIdentifierCollection();
 		}
 
+        public Procedure Procedure { get; private set; }
+
+
+        /// <summary>
+        /// Inserts the instr d of the identifier v at statement S.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="v"></param>
+        /// <param name="S"></param>
+        public void Insert(Instruction d, Identifier v, Statement S)
+        {
+            // Insert new phi-functions.
+            foreach (var dfFode in domGraph.DominatorFrontier(S.Block))
+            {
+                // If there is no phi-function for v
+                //    create new phi-function for v. (which is an insert, so call self recursively)
+                // All input operands of the new phi-finctions are initually assumed to be
+                // uses of r.
+
+                // Update uses sets for all uses dominated by S, or the new phi statements.
+                // This is done by walking down the dominator tree from each def and find uses
+                // that along wit the def match property 1.
+
+                // Update each use that is a parameter of a newly created phi-function, according
+                // to property 2.
+            }
+        }
 		/// <summary>
 		/// Given a procedure in SSA form, converts it back to "normal" form.
 		/// </summary>
@@ -47,7 +76,7 @@ namespace Decompiler.Analysis
 		public void ConvertBack(bool renameVariables)
 		{
 			UnSSA unssa = new UnSSA(this);
-			foreach (Block block in proc.ControlGraph.Blocks)
+			foreach (Block block in Procedure.ControlGraph.Blocks)
 			{
 				for (int st = 0; st < block.Statements.Count; ++st)
 				{
@@ -67,7 +96,7 @@ namespace Decompiler.Analysis
 			// Remove any instructions in the return block, used only 
 			// for computation of reaching definitions.
 
-			proc.ExitBlock.Statements.Clear();
+			Procedure.ExitBlock.Statements.Clear();
 		}
 
 #if DEBUG
@@ -77,7 +106,7 @@ namespace Decompiler.Analysis
 			{
 				StringWriter sb = new StringWriter();
 				Write(sb);
-				proc.Write(false, sb);
+				Procedure.Write(false, sb);
 				Debug.WriteLineIf(trace, sb.ToString());
 			}
 		}

@@ -21,6 +21,7 @@
 using Decompiler.Analysis;
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
@@ -58,31 +59,47 @@ namespace Decompiler.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            frame = arch.CreateFrame();
+            m = new ProcedureBuilder(arch);
+            frame = m.Frame;
             ax = frame.EnsureRegister(new RegisterStorage("ax", 0, PrimitiveType.Word16));
             bx = frame.EnsureRegister(new RegisterStorage("bx", 3, PrimitiveType.Word16));
-            cx = frame.EnsureRegister(new RegisterStorage("Cx", 1, PrimitiveType.Word16));
+            cx = frame.EnsureRegister(new RegisterStorage("cx", 1, PrimitiveType.Word16));
             dx = frame.EnsureRegister(new RegisterStorage("dx", 2, PrimitiveType.Word16));
             SCZ = frame.EnsureFlagGroup(7, "SCZ", PrimitiveType.Byte);
-            CF = frame.EnsureFlagGroup(1, "C", PrimitiveType.Bool);
-            m = new ProcedureBuilder();
+            CF = frame.EnsureFlagGroup(arch.CarryFlagMask, "C", PrimitiveType.Bool);
             rw = new LongAddRewriter(arch, frame);
             Procedure proc = new Procedure("test", frame);
             block = new Block(proc, "bloke");
         }
 
         [Test]
-        public void FindCarryLinkedInstructions()
+        public void FindCond()
         {
             m.Assign(ax, m.Add(ax, cx));
             m.Assign(SCZ, m.Cond(ax));
-            m.Assign(dx, m.Add(m.Add(dx, 0), CF));
-            m.Assign(SCZ, m.Cond(dx));
+            var block = m.CurrentBlock;
+            m.Return();
 
-            var instrs = rw.FindCarryLinkedInstructions(m.CurrentBlock).ToArray();
-            Assert.AreEqual(1, instrs.Length);
-            Assert.AreEqual("ax = ax + cx", instrs[0].Low);
-            Assert.AreEqual("dx = dx + 0x0000 + C", instrs[0].High);
+            rw = new LongAddRewriter(arch, m.Frame);
+            var cm = rw.FindCond(block.Statements, 0, ax);
+
+            Assert.AreEqual("SCZ", cm.FlagGroup.ToString());
+            Assert.AreEqual(1, cm.StatementIndex);
+        }
+
+        [Test]
+        public void FindInstructionUsesCond()
+        {
+            m.Assign(ax, m.Add(ax, cx));
+            m.Assign(SCZ, m.Cond(ax));
+            var block = m.CurrentBlock;
+            m.Assign(dx, m.Add(m.Add(dx, bx), CF));
+            m.Return();
+
+            rw = new LongAddRewriter(arch, m.Frame);
+            var cm = rw.FindCond(block.Statements, 0, ax);
+            int i = rw.IndexOfUsingOpcode(block.Statements, cm.StatementIndex, Operator.Add);
+            Assert.AreEqual("dx = dx + bx + C", block.Statements[i].Instruction.ToString());
         }
 
         [Test]
@@ -93,13 +110,12 @@ namespace Decompiler.UnitTests.Analysis
                 dx,
                 m.Add(
                     m.Add(
-                        ax,
+                        dx,
                         m.LoadDw(m.Add(bx, 0x302))),
-                    frame.EnsureFlagGroup(arch.CarryFlagMask, "C", PrimitiveType.Bool)));
+                    CF));
 
-            Assert.IsTrue(rw.Match(addAxMem, adcDxMem));
-            Assert.AreEqual("dx_ax", rw.Dst.ToString());
-            Assert.AreEqual("Mem0[ds:bx + 0x0300:ui32]", rw.Src.ToString());
+            var instr = rw.Match(addAxMem, adcDxMem);
+            Assert.AreEqual("dx_ax = dx_ax + Mem0[bx + 0x0300:ui32]", instr.ToString());
         }
 
         [Test]
@@ -108,20 +124,18 @@ namespace Decompiler.UnitTests.Analysis
             var i1 = m.Assign(ax, m.Add(ax, 0x5678));
             var i2 = m.Assign(CF, m.Cond(ax));
             var i3 = m.Assign(dx, m.Add(m.Add(dx, 0x1234), CF));
-            Assert.IsTrue(rw.Match(i1, i2));
-            Assert.AreEqual("0x12345678", rw.Src.ToString());
+            var instr = rw.Match(i1, i3);
+            Assert.AreEqual("dx_ax = dx_ax + 0x12345678", instr.ToString());
         }
 
-
         [Test]
-        public void Adc1()
+        public void Adc_Constant()
         {
             var in1 = m.Assign(ax, m.Add(ax, 1));
             var in2 = m.Assign(CF, m.Cond(ax));
             var in3 = m.Assign(dx, m.Add(m.Add(dx, 0), CF));
-            Assert.IsTrue(rw.Match(in1, in2));
-            Assert.AreEqual("dx_ax", rw.Dst.ToString());
-            Assert.AreEqual("0x00000001", rw.Src.ToString());
+            var instr = rw.Match(in1, in3);
+            Assert.AreEqual("dx_ax = dx_ax + 0x00000001", instr.ToString());
         }
 
         [Test]
@@ -132,13 +146,30 @@ namespace Decompiler.UnitTests.Analysis
                 dx,
                 m.Add(
                     m.Add(
-                        ax,
-                        m.LoadDw(m.Add(bx, 0x302))),
-                    frame.EnsureFlagGroup(arch.CarryFlagMask, "C", PrimitiveType.Bool)));
+                        dx,
+                        m.LoadW(m.Add(bx, 0x302))),
+                    CF));
 
-            rw.Match(addAxMem, adcDxMem);
-            rw.EmitInstruction(Operator.Add, m);
-            Assert.AreEqual("dx_ax = dx_ax + Mem0[ds:bx + 0x0300:ui32]", block.Statements[0].ToString());
+            var instr = rw.Match(addAxMem, adcDxMem);
+            Assert.AreEqual("dx_ax = dx_ax + Mem0[bx + 0x0300:ui32]", instr.ToString());
+        }
+
+        [Test]
+        public void MatchAdc()
+        {
+            var adc = m.Assign(ax, m.Add(m.Add(ax, cx), CF));
+            var regPair = rw.MatchAdcSbc(adc);
+            Assert.AreSame(ax, regPair.Left);
+            Assert.AreSame(cx, regPair.Right);
+        }
+
+        [Test]
+        public void MatchAdd()
+        {
+            var add = m.Assign(ax, m.Add(ax, cx));
+            var regPair = rw.MatchAddSub(add);
+            Assert.AreSame(ax, regPair.Left);
+            Assert.AreSame(cx, regPair.Right);
         }
     }
 }

@@ -25,8 +25,8 @@ namespace Decompiler.Core.Code
 {
     public interface InstructionVisitor
 	{
-		void VisitAssignment(Assignment a);
-		void VisitBranch(Branch b);
+		void VisitAssignment(Assignment ass);
+		void VisitBranch(Branch branch);
 		void VisitCallInstruction(CallInstruction ci);
 		void VisitDeclaration(Declaration decl);
 		void VisitDefInstruction(DefInstruction def);
@@ -37,13 +37,13 @@ namespace Decompiler.Core.Code
 		void VisitSideEffect(SideEffect side);
 		void VisitStore(Store store);
 		void VisitSwitchInstruction(SwitchInstruction si);
-		void VisitUseInstruction(UseInstruction u);
+		void VisitUseInstruction(UseInstruction use);
     }
 
     public interface InstructionVisitor<T>
     {
-        T VisitAssignment(Assignment a);
-        T VisitBranch(Branch b);
+        T VisitAssignment(Assignment ass);
+        T VisitBranch(Branch branch);
         T VisitCallInstruction(CallInstruction ci);
         T VisitDeclaration(Declaration decl);
         T VisitDefInstruction(DefInstruction def);
@@ -54,7 +54,7 @@ namespace Decompiler.Core.Code
         T VisitSideEffect(SideEffect side);
         T VisitStore(Store store);
         T VisitSwitchInstruction(SwitchInstruction si);
-        T VisitUseInstruction(UseInstruction u);
+        T VisitUseInstruction(UseInstruction use);
     }
 
 	/// <summary>

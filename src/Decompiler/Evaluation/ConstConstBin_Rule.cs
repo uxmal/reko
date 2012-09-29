@@ -32,7 +32,7 @@ namespace Decompiler.Evaluation
 	{
 		private Constant cLeft;
 		private Constant cRight;
-		private BinaryOperator op;
+		private Operator op;
 
 		public bool Match(BinaryExpression binExp)
 		{

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Expressions;
 using System;
 
 namespace Decompiler.Core.Operators
@@ -67,7 +68,12 @@ namespace Decompiler.Core.Operators
 		public static readonly UnaryOperator Comp = new ComplementOperator();
 		public static readonly UnaryOperator AddrOf = new AddressOfOperator();
 
-		public virtual Operator Invert()
+        public virtual Constant ApplyConstants(Constant c1, Constant c2)
+        {
+            throw new NotSupportedException();
+        }
+
+        public virtual Operator Invert()
 		{
 			throw new NotImplementedException();
 		}
