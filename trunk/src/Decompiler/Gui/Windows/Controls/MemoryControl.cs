@@ -290,7 +290,7 @@ namespace Decompiler.Gui.Windows.Controls
 
         private bool IsAddressInSelection(Address addr)
         {
-            if (addr == null)
+            if (addr == null || addrAnchor == null || addrSelected == null)
                 return false;
             var linAddr = addr.Linear;
             var linAnch = addrAnchor.Linear;

@@ -58,6 +58,12 @@ namespace Decompiler.Evaluation
             return value;
         }
 
+        public void Clear()
+        {
+            this.capturedExpressions.Clear();
+            this.capturedOperators.Clear();
+        }
+
         public bool Match(Expression expr)
         {
             return Match(Pattern, expr);
@@ -392,11 +398,5 @@ namespace Decompiler.Evaluation
         }
 
         public Expression Pattern { get; set; }
-
-        public void Clear()
-        {
-            this.capturedExpressions.Clear();
-            this.capturedOperators.Clear();
-        }
     }
 }

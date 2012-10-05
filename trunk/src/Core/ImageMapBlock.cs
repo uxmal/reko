@@ -25,16 +25,9 @@ namespace Decompiler.Core
 	/// <summary>
 	/// Describes a block of executable code. 
 	/// </summary>
-
 	public class ImageMapBlock : ImageMapItem
 	{
-		private Procedure		proc;
-
-		public Procedure Procedure
-		{
-			get { return proc; }
-			set { proc = value; }
-		}
+        public Block Block { get; set; }
 
 		public override string ToString()
 		{

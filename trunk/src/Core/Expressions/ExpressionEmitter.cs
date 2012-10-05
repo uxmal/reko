@@ -219,6 +219,14 @@ namespace Decompiler.Core.Expressions
                 Operator.Ne, PrimitiveType.Bool, expr, new Constant(expr.DataType, 0));
         }
 
+        public UnaryExpression Neg(Expression expr)
+        {
+            return new UnaryExpression(
+                Operator.Neg,
+                expr.DataType,
+                expr);
+        }
+
         public MkSequence Seq(Expression head, Expression tail)
         {
             int totalSize = head.DataType.Size + tail.DataType.Size;

@@ -4,17 +4,16 @@ sp:sp (aliases:)
 ds:ds (aliases:)
 ax:ax (aliases: dx_ax)
 dx:dx (aliases: dx_ax)
-cx:cx (aliases: bx_cx es_cx cl)
+cx:cx (aliases: es_cx cl bx_cx)
 bx:bx (aliases: bx_cx)
-bx_cx:Sequence bx:cx (aliases: cx bx cl)
-dx_ax:Sequence dx:ax (aliases: ax dx)
 SCZO:Flags (aliases: C)
+C:Flags (aliases SCZO)
 es:es (aliases: es_cx)
 es_cx:Sequence es:cx (aliases: cx es cl)
-cl:cl (aliases: cx bx_cx es_cx)
-v13:Temporary (aliases:)
-C:Flags (aliases: SCZO)
-v15:Temporary (aliases:)
+SZO:Flags (aliases: SCZO)
+cl:cl (aliases: cx es_cx bx_cx)
+dx_ax:Sequence dx:ax (aliases: ax dx)
+bx_cx:Sequence bx:cx (aliases: cx bx cl)
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
@@ -25,7 +24,9 @@ l0C00_0000:
 	cx = Mem0[ds:0x0204:word16]
 	bx = Mem0[ds:0x0206:word16]
 	bx_cx = SEQ(bx, cx) (alias)
+        ax = ax + cx
 	dx_ax = SEQ(dx, ax) (alias)
+	SCZO = cond(ax)
 	dx_ax = dx_ax + bx_cx
 	ax = (word16) dx_ax (alias)
 	dx = SLICE(dx_ax, word16, 16) (alias)
@@ -34,29 +35,32 @@ l0C00_0000:
 	Mem0[ds:0x020A:word16] = dx
 	ax = Mem0[ds:0x0210:word16]
 	dx = Mem0[ds:0x0212:word16]
-	dx_ax = SEQ(dx, ax) (alias)
 	es_cx = Mem0[ds:0x0214:ptr32]
+	cx = (word16) es_cx (alias)
 	es = SLICE(es_cx, selector, 16) (alias)
 	bx = es
 	bx_cx = SEQ(bx, cx) (alias)
+	ax = ax - cx
+	dx_ax = SEQ(dx, ax) (alias)
+	SCZO = cond(ax)
+	Mem0[ds:0x0218:word16] = ax
 	dx_ax = dx_ax - bx_cx
-	ax = (word16) dx_ax (alias)
 	dx = SLICE(dx_ax, word16, 16) (alias)
 	SCZO = cond(dx_ax)
-	Mem0[ds:0x0218:word16] = ax
 	Mem0[ds:0x021A:word16] = dx
 	ax = 0x0000
+	SZO = cond(ax)
+	C = false 
 	cl = Mem0[ds:0x0220:byte]
 	SCZO = cond(cl - 0x30)
 	C = SCZO (alias)
-	v13 = ax + ax
-	ax = v13 + (word16) C
+	ax = 0x0000 + C
+        SCZO = cond(ax)
 	cl = Mem0[ds:0x0221:byte]
 	SCZO = cond(cl - 0x3A)
 	C = SCZO (alias)
 	C = !C
-	v15 = ax + ax
-	ax = v15 + (word16) C
+	ax = ax + ax + C
 	SCZO = cond(ax)
 	Mem0[ds:0x0222:word16] = ax
 	return
