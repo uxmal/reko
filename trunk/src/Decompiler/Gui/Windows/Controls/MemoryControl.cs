@@ -93,7 +93,7 @@ namespace Decompiler.Gui.Windows.Controls
                 if (addrSelected <= addrAnchor)
                 {
                     return new AddressRange(addrSelected, addrAnchor);
-        }
+                }
                 else
                 {
                     return new AddressRange(addrAnchor, addrSelected);
@@ -156,6 +156,22 @@ namespace Decompiler.Gui.Windows.Controls
 				return base.IsInputKey (keyData);
 			}
 		}
+
+
+
+        public Point AddressToPoint(Address addr)
+        {
+            if (addr == null || TopAddress == null)
+                return Point.Empty;
+            int cbOffset = addr - TopAddress;
+            int yRow = cbOffset / (int)cbRow;
+            if (yTopRow <= yRow && yRow < yTopRow + cyPage)
+            {
+                return new Point(60, yRow * cellSize.Height);
+            }
+            else
+                return Point.Empty;
+        }
 
 		private bool IsVisible(Address addr)
 		{
@@ -241,6 +257,7 @@ namespace Decompiler.Gui.Windows.Controls
             AffectSelection(e);
             base.OnMouseUp(e);
         }
+
 
         private void AffectSelection(MouseEventArgs e)
         {

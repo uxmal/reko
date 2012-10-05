@@ -94,6 +94,13 @@ namespace Decompiler.Gui.Windows
 
         public void MarkType()
         {
+            var addrRange = Control.GetAddressRange();
+            if (!addrRange.IsValid)
+                return;
+            var typeMarker = new TypeMarker(Control);
+            typeMarker.TextChanged += (sender, e) => { e.FormattedType = "@@@" + e.UserText; };
+            typeMarker.TextAccepted += (sender, e) => { MessageBox.Show(Control, e.UserText, "Do something with this"); };
+            typeMarker.Show(Control.AddressToPoint(addrRange.Begin));
         }
 
         //$REVIEW: consider moving this to a ICommonDialogFactoryService
