@@ -138,6 +138,9 @@ namespace Decompiler.Gui.Windows.Forms
             CommandMenuItem slActionEditSignature = new CommandMenuItem("Edit _Signature...", new Guid(CmdSets.Decompiler), CmdIds.ActionEditSignature);
             slActionEditSignature.IsDynamic = false;
             
+            CommandMenuItem slActionMarkType = new CommandMenuItem("Mark _Type", new Guid(CmdSets.Decompiler), CmdIds.ActionMarkType);
+            slActionMarkType.IsDynamic = false;
+            
             CommandMenuItem slWindowsCascade = new CommandMenuItem("_Cacade", new Guid(CmdSets.Decompiler), CmdIds.WindowsCascade);
             slWindowsCascade.IsDynamic = false;
             slGrpWindows.Add(0, slWindowsCascade);
@@ -181,6 +184,7 @@ namespace Decompiler.Gui.Windows.Forms
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
 			slGrpMemoryControl.Add(0, slActionMarkProcedure);
+			slGrpMemoryControl.Add(0, slActionMarkType);
 			slGrpBrowser.Add(0, slActionEditSignature);
 			slGrpActionsRewritten.Add(0, slActionEditSignature);
 			this.MainMenu = new System.Windows.Forms.MainMenu();

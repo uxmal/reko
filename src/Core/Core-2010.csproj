@@ -162,6 +162,7 @@
     <Compile Include="Address.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AddressCorrelatedException.cs" />
     <Compile Include="AddressRange.cs">
       <SubType>Code</SubType>
     </Compile>

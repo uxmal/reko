@@ -140,7 +140,7 @@ namespace Decompiler.Evaluation
                 return true;
             }
             var cP = p as Constant;
-            if (p == null)
+            if (cP == null)
                 return false;
             return (c.ToInt64() == cP.ToInt64());
         }
@@ -220,6 +220,18 @@ namespace Decompiler.Evaluation
 
         bool ExpressionVisitor<bool>.VisitSegmentedAccess(SegmentedAccess access)
         {
+            var smp = p as SegmentedAccess;
+            if (smp == null)
+                return false;
+            if (smp.DataType is WildDataType)
+            {
+            }
+            else if (smp.DataType.Size != access.DataType.Size)
+                return false;
+
+            return 
+                Match(smp.BasePointer, access.BasePointer) &&
+                Match(smp.EffectiveAddress, access.EffectiveAddress);
             throw new NotImplementedException();
         }
 
@@ -235,7 +247,13 @@ namespace Decompiler.Evaluation
 
         bool ExpressionVisitor<bool>.VisitUnaryExpression(UnaryExpression unary)
         {
-            throw new NotImplementedException();
+            var unaryPat = p as UnaryExpression;
+            if (unaryPat == null)
+                return false;
+            if (!Match(unaryPat.Operator, unary.Operator))
+                return false;
+
+            return Match(unaryPat.Expression, unary.Expression);
         }
 
         #endregion

@@ -65,6 +65,5 @@ namespace Decompiler.Core.Serialization
             XmlSerializer ser = new XmlSerializer(typeof(SerializedProject));
             ser.Serialize(sw, this);
         }
-
     }
 }

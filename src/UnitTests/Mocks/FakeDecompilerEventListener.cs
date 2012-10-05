@@ -24,7 +24,6 @@ using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
 
 namespace Decompiler.UnitTests.Mocks
 {
@@ -131,7 +130,7 @@ namespace Decompiler.UnitTests.Mocks
 
         #region IWorkerDialogService Members
 
-        public bool StartBackgroundWork(string caption, ThreadStart backgroundWork)
+        public bool StartBackgroundWork(string caption, Action backgroundWork)
         {
             backgroundWork();
             return true;

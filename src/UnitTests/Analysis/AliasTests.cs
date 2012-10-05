@@ -44,6 +44,27 @@ namespace Decompiler.UnitTests.Analysis
             proc = new Procedure("foo", arch.CreateFrame());
             alias = new Aliases(proc, arch);
         }
+
+        protected override void RunTest(Program prog, FileUnitTester fut)
+        {
+            var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            var eventListener = new FakeDecompilerEventListener();
+            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
+            trf.Compute();
+            trf.RewriteBasicBlocks();
+            RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                LongAddRewriter larw = new LongAddRewriter(proc, prog.Architecture);
+                larw.Transform();
+                Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
+                alias.Transform();
+                alias.Write(fut.TextWriter);
+                proc.Write(false, fut.TextWriter);
+                fut.TextWriter.WriteLine();
+            }
+        }
+
         [Test]
         public void AlFactorialReg()
         {
@@ -126,24 +147,6 @@ namespace Decompiler.UnitTests.Analysis
             Identifier argPtr = proc.Frame.EnsureStackArgument(4, PrimitiveType.Pointer32);
             Assignment ass = alias.CreateAliasInstruction(argOff.Number, argPtr.Number);
             Assert.AreEqual("ptrArg04 = DPB(ptrArg04, wArg04, 0, 16) (alias)", ass.ToString());
-        }
-
-        protected override void RunTest(Program prog, FileUnitTester fut)
-        {
-            var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
-            var eventListener = new FakeDecompilerEventListener();
-            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
-            trf.Compute();
-            trf.RewriteBasicBlocks();
-            RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
-            foreach (Procedure proc in prog.Procedures.Values)
-            {
-                Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
-                alias.Transform();
-                alias.Write(fut.TextWriter);
-                proc.Write(false, fut.TextWriter);
-                fut.TextWriter.WriteLine();
-            }
         }
     }
 }

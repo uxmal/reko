@@ -28,7 +28,7 @@ namespace Decompiler.UnitTests.Mocks
 {
     public class FakeWorkerDialogService : IWorkerDialogService
     {
-        public bool StartBackgroundWork(string caption, ThreadStart backgroundWork)
+        public bool StartBackgroundWork(string caption, Action backgroundWork)
         {
             backgroundWork();
             return true;

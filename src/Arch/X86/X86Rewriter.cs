@@ -87,7 +87,9 @@ namespace Decompiler.Arch.X86
                 switch (di.Instruction.code)
                 {
                 default:
-                    throw new NotImplementedException(string.Format("Rewriting of x86 opcode '{0}' not supported yet.", di.Instruction.code));
+                    throw new AddressCorrelatedException(string.Format("Rewriting x86 opcode '{0}' is not supported yet.",
+                        di.Instruction.code),
+                        di.Address);
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aam: RewriteAam(); break;
                 case Opcode.adc: RewriteAdcSbb(BinaryOperator.Add); break;
@@ -160,6 +162,7 @@ namespace Decompiler.Arch.X86
                 case Opcode.jpo: RewriteConditionalGoto(ConditionCode.PO, di.Instruction.op1); break;
                 case Opcode.js: RewriteConditionalGoto(ConditionCode.SG, di.Instruction.op1); break;
                 case Opcode.jz: RewriteConditionalGoto(ConditionCode.EQ, di.Instruction.op1); break;
+                case Opcode.lds: RewriteLxs(Registers.ds); break;
                 case Opcode.les: RewriteLxs(Registers.es); break;
                 case Opcode.lea: RewriteLea(); break;
                 case Opcode.leave: RewriteLeave(); break;
@@ -181,12 +184,15 @@ namespace Decompiler.Arch.X86
                 case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
                 case Opcode.@out: RewriteOut(); break;
                 case Opcode.push: RewritePush(); break;
+                case Opcode.pushf: RewritePushf(); break;
                 case Opcode.pop: RewritePop(); break;
+                case Opcode.popf: RewritePopf(); break;
                 case Opcode.rcl: RewriteRotation("__rcl", true, true); break;
                 case Opcode.rcr: RewriteRotation("__rcr", true, false); break;
                 case Opcode.rol: RewriteRotation("__rol", false, true); break;
                 case Opcode.ror: RewriteRotation("__ror", false, false); break;
                 case Opcode.rep: RewriteRep(); break;
+                case Opcode.repne: RewriteRep(); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.retf: RewriteRet(); break;
                 case Opcode.sahf: emitter.Assign(orw.FlagGroup(IntelInstruction.DefCc(di.Instruction.code)), orw.AluRegister(Registers.ah)); break;
@@ -206,6 +212,8 @@ namespace Decompiler.Arch.X86
                 case Opcode.shr: RewriteBinOp(BinaryOperator.Shr); break;
                 case Opcode.shrd: RewriteShxd("__shrd"); break;
                 case Opcode.stc: emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.True()); break;
+                case Opcode.std: break; //$TODO:
+                case Opcode.sti: break; //$TODO:
                 case Opcode.stos: RewriteStringInstruction(); break;
                 case Opcode.stosb: RewriteStringInstruction(); break;
                 case Opcode.sub: RewriteAddSub(BinaryOperator.Sub); break;

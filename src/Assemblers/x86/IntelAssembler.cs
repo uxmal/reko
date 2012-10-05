@@ -1227,6 +1227,16 @@ namespace Decompiler.Assemblers.x86
             ProcessPushPop(false, op);
         }
 
+        public void Pushf()
+        {
+            emitter.EmitByte(0x9C);
+        }
+
+        public void Popf()
+        {
+            emitter.EmitByte(0x9D);
+        }
+
         public void Adc(ParsedOperand op, int constant)
         {
             Adc(op, new ParsedOperand(new ImmediateOperand(IntelAssembler.IntegralConstant(constant))));

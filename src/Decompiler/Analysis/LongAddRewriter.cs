@@ -38,22 +38,31 @@ namespace Decompiler.Analysis
     /// </summary>
     public class LongAddRewriter
     {
-        private Frame frame;
+        private Procedure proc;
         private Expression dst;
-        private Expression src;
-        private bool useStore;
         private IProcessorArchitecture arch;
-        private InstructionMatcher adcPattern;
-        private InstructionMatcher addPattern;
-        private ExpressionMatcher memOffset;
-        private ExpressionMatcher segMemOffset;
 
-        public LongAddRewriter(IProcessorArchitecture arch, Frame frame)
+        private static InstructionMatcher adcPattern;
+        private static InstructionMatcher addPattern;
+        private static ExpressionMatcher memOffset;
+        private static ExpressionMatcher segMemOffset;
+        private static InstructionMatcher condm;
+
+        public LongAddRewriter(Procedure proc, IProcessorArchitecture arch)
         {
             this.arch = arch;
-            this.frame = frame;
+            this.proc = proc;
+        }
 
-            this.addPattern = new InstructionMatcher(
+        static LongAddRewriter()
+        {
+            condm = new InstructionMatcher(
+                new Assignment(
+                    ExpressionMatcher.AnyId("grf"),
+                    new ConditionOf(
+                        ExpressionMatcher.AnyExpression("exp"))));
+
+            addPattern = new InstructionMatcher(
                 new Assignment(
                     ExpressionMatcher.AnyId("dst"),
                     new BinaryExpression(
@@ -61,7 +70,7 @@ namespace Decompiler.Analysis
                         ExpressionMatcher.AnyExpression("left"),
                         ExpressionMatcher.AnyExpression("right"))));
 
-            this.adcPattern = new InstructionMatcher(
+            adcPattern = new InstructionMatcher(
                 new Assignment(
                     ExpressionMatcher.AnyId("dst"),
                     new BinaryExpression(
@@ -72,14 +81,15 @@ namespace Decompiler.Analysis
                             ExpressionMatcher.AnyExpression("right")),
                         ExpressionMatcher.AnyExpression("cf"))));
 
-            this.memOffset = new ExpressionMatcher(
+            memOffset = new ExpressionMatcher(
                 new MemoryAccess(
                     new BinaryExpression(
                         ExpressionMatcher.AnyOperator("op"), null,
                         ExpressionMatcher.AnyExpression("base"),
                         ExpressionMatcher.AnyConstant("offset")),
                     ExpressionMatcher.AnyDataType("dt")));
-            this.segMemOffset = new ExpressionMatcher(
+
+            segMemOffset = new ExpressionMatcher(
                 new SegmentedAccess(
                     null,
                     ExpressionMatcher.AnyId(),
@@ -90,9 +100,19 @@ namespace Decompiler.Analysis
                     ExpressionMatcher.AnyDataType("dt")));
         }
 
-        private Instruction CreateInstruction(Expression dst, Operator op, Expression left, Expression right)
+        public Instruction CreateLongInstruction(AddSubCandidate loCandidate, AddSubCandidate hiCandidate)
         {
-            var expSum = new BinaryExpression(op, left.DataType, left, right);
+            var totalSize = PrimitiveType.Create(
+                Domain.SignedInt | Domain.UnsignedInt,
+                loCandidate.Dst.DataType.Size + loCandidate.Dst.DataType.Size);
+            var left = CreateCandidate(loCandidate.Left, hiCandidate.Left, totalSize);
+            var right = CreateCandidate(loCandidate.Right, hiCandidate.Right, totalSize);
+            this.dst = CreateCandidate(loCandidate.Dst, hiCandidate.Dst, totalSize);
+
+            if (left == null || right == null || dst == null)
+                return null;
+        
+            var expSum = new BinaryExpression(loCandidate.Op, left.DataType, left, right);
             var idDst = dst as Identifier;
             if (idDst != null)
             {
@@ -104,6 +124,45 @@ namespace Decompiler.Analysis
             }
         }
 
+        public void Transform()
+        {
+            foreach (var block in proc.ControlGraph.Blocks)
+            {
+                ReplaceLongAdditions(block);
+            }
+            proc.Dump(true, true);
+        }
+
+        public void ReplaceLongAdditions(Block block)
+        {
+            for (int i = 0; i < block.Statements.Count; ++i)
+            {
+                var loInstr = MatchAddSub(block.Statements[i].Instruction);
+                if (loInstr == null)
+                    continue;
+                var cond = FindConditionOf(block.Statements, i, loInstr.Dst);
+                if (cond == null)
+                    continue;
+
+                var hiInstr = FindUsingInstruction(block.Statements, cond.StatementIndex, loInstr.Op);
+                if (hiInstr == null)
+                    continue;
+
+                var longInstr = CreateLongInstruction(loInstr, hiInstr);
+                if (longInstr != null)
+                {
+                    block.Statements[hiInstr.StatementIndex].Instruction = longInstr;
+                    cond = FindConditionOf(block.Statements, hiInstr.StatementIndex, hiInstr.Dst);
+                    if (cond != null)
+                    {
+                        block.Statements[cond.StatementIndex].Instruction =
+                            new Assignment(
+                                cond.FlagGroup, new ConditionOf(dst));
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Determines if the carry flag reaches a using instruction.
         /// </summary>
@@ -111,7 +170,29 @@ namespace Decompiler.Analysis
         /// <param name="i"></param>
         /// <param name="next"></param>
         /// <returns></returns>
-        public int IndexOfUsingOpcode(StatementList stms, int i, Operator next)
+        public AddSubCandidate FindUsingInstruction(StatementList stms, int i, Operator next)
+        {
+            for (++i; i < stms.Count; ++i)
+            {
+                var asc = MatchAdcSbc(stms[i].Instruction);
+                if (asc != null)
+                {
+                    asc.StatementIndex = i;
+                    return asc;
+                }
+                var ass = stms[i].Instruction as Assignment;
+                if (ass == null)
+                    continue;
+                var bin = ass.Src as BinaryExpression;
+                if (bin == null)
+                    continue;
+                if (IsCarryFlag(ass.Dst))
+                    return null;
+            }
+            return null;
+        }
+
+        public int FindUsingInstruction2(StatementList stms, int i, Operator next)
         {
             for (++i; i < stms.Count; ++i)
             {
@@ -119,6 +200,8 @@ namespace Decompiler.Analysis
                 if (ass == null)
                     continue;
                 var bin = ass.Src as BinaryExpression;
+                if (bin == null)
+                    continue;
                 if (bin.Operator == next)
                     return i;
                 if (IsCarryFlag(ass.Dst))
@@ -145,13 +228,8 @@ namespace Decompiler.Analysis
         /// <param name="p"></param>
         /// <param name="ax"></param>
         /// <returns></returns>
-        public CondMatch FindCond(StatementList stms, int iStm, Expression exp)
+        public CondMatch FindConditionOf(StatementList stms, int iStm, Expression exp)
         {
-            var condm = new InstructionMatcher(
-                new Assignment(
-                    ExpressionMatcher.AnyId("grf"),
-                    new ConditionOf(
-                        ExpressionMatcher.AnyExpression("exp"))));
             for (int i = iStm + 1; i < stms.Count; ++i)
             {
                 if (!condm.Match(stms[i].Instruction))
@@ -166,22 +244,18 @@ namespace Decompiler.Analysis
             return null;
         }
 
-        public Expression MakeMatch(Expression expLo, Expression expHi, DataType totalSize, bool isDef)
+        private Expression CreateCandidate(Expression expLo, Expression expHi, DataType totalSize)
         {
             var idLo = expLo as Identifier;
             var idHi = expHi as Identifier;
             if (idLo != null && idHi != null)
             {
-                if (isDef)
-                    useStore = false;
-                return frame.EnsureSequence(idHi, idLo, totalSize);
+                return proc.Frame.EnsureSequence(idHi, idLo, totalSize);
             }
             var memDstLo = expLo as MemoryAccess;
             var memDstHi = expHi as MemoryAccess;
             if (memDstLo != null && memDstHi != null && MemoryOperandsAdjacent(memDstLo, memDstHi))
             {
-                if (isDef)
-                    useStore = true;
                 return CreateMemoryAccess(memDstLo, totalSize);
             }
             var immLo = expLo as Constant;
@@ -206,30 +280,11 @@ namespace Decompiler.Analysis
             }
         }
 
-        public Instruction Match(Instruction loInstr, Instruction hiInstr)
-        {
-            var loAss = MatchAddSub(loInstr);
-            var hiAss = MatchAdcSbc(hiInstr);
-            if (loAss == null || hiAss == null)
-                return null;
-            if (loAss.Op != hiAss.Op)
-                return null;
-            var totalSize = PrimitiveType.Create(Domain.SignedInt | Domain.UnsignedInt, loAss.Dst.DataType.Size + loAss.Dst.DataType.Size);
-            var left = MakeMatch(loAss.Left, hiAss.Left, totalSize, false);
-            var right = MakeMatch(loAss.Right, hiAss.Right, totalSize, false);
-            var dst = MakeMatch(loAss.Dst, hiAss.Dst, totalSize, true);
-
-            if (left != null && right != null && dst != null)
-                return CreateInstruction(dst, loAss.Op, left, right);
-            else
-                return null;
-        }
-
         public class CondMatch
         {
-            public Expression src;
-            public Identifier FlagGroup;
             public int StatementIndex;
+            public Identifier FlagGroup;
+            public Expression src;
         }
 
         public CondMatch MatchCond(Instruction instr)
@@ -246,19 +301,9 @@ namespace Decompiler.Analysis
             return new CondMatch { src = src, FlagGroup = ass.Dst };
         }
 
-
-        public Expression Src
-        {
-            get { return src; }
-        }
-
-        public Expression Dst
-        {
-            get { return dst; }
-        }
-
         public bool MemoryOperandsAdjacent(MemoryAccess m1, MemoryAccess m2)
         {
+            //$TODO: endianness?
             var off1 = GetOffset(m1);
             var off2 = GetOffset(m2);
             if (off1 == null || off2 == null)
@@ -351,6 +396,7 @@ namespace Decompiler.Analysis
 
     public class AddSubCandidate
     {
+        public int StatementIndex;
         public Expression Dst;
         public Operator Op;
         public Expression Left;

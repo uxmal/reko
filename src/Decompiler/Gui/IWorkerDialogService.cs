@@ -28,7 +28,8 @@ namespace Decompiler.Gui
 {
     public interface IWorkerDialogService
     {
-        bool StartBackgroundWork(string caption, ThreadStart backgroundWork);
+        bool StartBackgroundWork(string caption, Action backgroundWork);
+
         /// <summary>
         /// Allows the background thread to update the caption.
         /// </summary>

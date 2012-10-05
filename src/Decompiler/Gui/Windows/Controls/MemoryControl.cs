@@ -122,13 +122,10 @@ namespace Decompiler.Gui.Windows.Controls
 			}
 		}
 
-
 		private Size CellSize
 		{
 			get { return cellSize; }
 		}
-
-
 
 		private Brush GetBackgroundBrush(ImageMapItem item, bool selected)
 		{
@@ -227,25 +224,69 @@ namespace Decompiler.Gui.Windows.Controls
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			base.OnMouseDown(e);
-            
-			Focus();
-			CacheCellSize();
-			if (image == null)
-				return;
-			ptDown = new Point(e.X, e.Y);
-			using (Graphics g = this.CreateGraphics())
-			{
-				addrSelected = PaintWindow(g, false);
-                if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift)
-                {
-                    addrAnchor = addrSelected;
-                }
-                Debug.WriteLine(string.Format("MouseDown: ctrl{2}: sel: {0}, anchor {1}", addrSelected, addrAnchor, iCtrl));
-				Invalidate();
-			}
-			OnSelectionChanged();
+            if (image == null)
+                return;
+            ptDown = new Point(e.X, e.Y);
+            Focus();
+            CacheCellSize();
+
+            AffectSelection(e);
+            base.OnMouseDown(e);
 		}
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            if (image == null)
+                return;
+            AffectSelection(e);
+            base.OnMouseUp(e);
+        }
+
+        private void AffectSelection(MouseEventArgs e)
+        {
+            using (Graphics g = this.CreateGraphics())
+            {
+                var addrClicked = PaintWindow(g, false);
+                if (ShouldChangeSelection(e, addrClicked))
+                {
+                    addrSelected = addrClicked;
+                    if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift)
+                    {
+                        addrAnchor = addrSelected;
+                    }
+                    Debug.WriteLine(string.Format("MouseDown: ctrl{2}: sel: {0}, anchor {1}", addrSelected, addrAnchor, iCtrl));
+                    Invalidate();
+                    OnSelectionChanged();
+                }
+            }
+        }
+
+        private bool ShouldChangeSelection(MouseEventArgs e, Address addrClicked)
+        {
+            if (e.Button == MouseButtons.Left)
+                return true;
+            if (addrClicked == null)
+                return true;
+
+            return !IsAddressInSelection(addrClicked);
+        }
+
+        private bool IsAddressInSelection(Address addr)
+        {
+            if (addr == null)
+                return false;
+            var linAddr = addr.Linear;
+            var linAnch = addrAnchor.Linear;
+            var linSel = addrSelected.Linear;
+            if (linAnch <= linSel)
+            {
+                return linAnch <= linAddr && linAddr <= linSel;
+            }
+            else 
+            {
+                return linSel <= linAddr && linAddr <= linAnch;
+            }
+        }
 
 		protected override void OnPaint(PaintEventArgs pea)
 		{
@@ -308,7 +349,6 @@ namespace Decompiler.Gui.Windows.Controls
             uint linearAnchor = addrAnchor != null ? addrAnchor.Linear : ~0U;
             uint linearBeginSelection = Math.Min(linearSelected, linearAnchor);
             uint linearEndSelection = Math.Max(linearSelected, linearAnchor);
-//            Debug.WriteLine(string.Format("s: {0:X}, a: {1:X}, [{2:X}-{3:X}]", linearSelected, linearAnchor, linearBeginSelection, linearEndSelection));
 
 			do 
 			{

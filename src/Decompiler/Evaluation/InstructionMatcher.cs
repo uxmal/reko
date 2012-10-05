@@ -60,19 +60,24 @@ namespace Decompiler.Evaluation
             if (!matcher.Match(ass.Src))
                 return false;
             matcher.Pattern = assPat.Dst;
-            if (!matcher.Match(ass.Dst))
-                return false;
-            return true;
+            return matcher.Match(ass.Dst);
         }
 
-        public bool VisitBranch(Branch b)
+        public bool VisitBranch(Branch branch)
         {
-            throw new NotImplementedException();
+            var branchPat = pattern as Branch;
+            if (branchPat == null)
+                return false;
+            matcher.Pattern = branchPat.Condition;
+            return matcher.Match(branch.Condition);
         }
 
         public bool VisitCallInstruction(CallInstruction ci)
         {
-            throw new NotImplementedException();
+            var callPat = pattern as CallInstruction;
+            if (callPat == null)
+                return false;
+            return true;
         }
 
         public bool VisitDeclaration(Declaration decl)
@@ -102,7 +107,15 @@ namespace Decompiler.Evaluation
 
         public bool VisitReturnInstruction(ReturnInstruction ret)
         {
-            throw new NotImplementedException();
+            var retPat = pattern as ReturnInstruction;
+            if (retPat == null)
+                return false;
+            if (retPat.Expression == null && ret.Expression == null)
+                return true;
+            if (retPat.Expression == null || ret.Expression == null)
+                return false;
+            matcher.Pattern = retPat.Expression;
+            return matcher.Match(ret.Expression);
         }
 
         public bool VisitSideEffect(SideEffect side)
@@ -112,7 +125,14 @@ namespace Decompiler.Evaluation
 
         public bool VisitStore(Store store)
         {
-            throw new NotImplementedException();
+            var storePat = pattern as Store;
+            if (storePat == null)
+                return false;
+            matcher.Pattern = storePat.Src;
+            if (!matcher.Match(store.Src))
+                return false;
+            matcher.Pattern = storePat.Dst;
+            return matcher.Match(store.Dst);
         }
 
         public bool VisitSwitchInstruction(SwitchInstruction si)

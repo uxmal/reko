@@ -99,6 +99,5 @@ namespace Decompiler.Core
             OutputFilename = Path.ChangeExtension(inputFilename, ".c");
             TypesFilename = Path.ChangeExtension(inputFilename, ".h");
         }
-
     }
 }
