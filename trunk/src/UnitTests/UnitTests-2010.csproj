@@ -114,6 +114,7 @@
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
+    <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />

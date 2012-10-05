@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2012 John Källén.
+ * Copyright (C) 1999-2012 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,27 +20,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
 
-namespace Decompiler.Core.Serialization
+namespace Decompiler.Core
 {
-    public class SerializedProcedureBase
+    /// <summary>
+    /// An exception that happened while processing something at a particular address.
+    /// </summary>
+    public class AddressCorrelatedException : Exception
     {
-        /// <summary>
-        /// The name of a procedure.
-        /// </summary>
-        [XmlAttribute("name")]
-        public string Name;
+        public AddressCorrelatedException(string message, Address addr)
+            : base(message)
+        {
+            this.Address = addr;
+        }
 
-        /// <summary>
-        /// Procedure signature. If non-null, the user has specified a signature. If null, the
-        /// signature is unknown.
-        /// </summary>
-        [XmlElement("signature")]
-        public SerializedSignature Signature;
-
-        [XmlElement("characteristics")]
-        public ProcedureCharacteristics Characteristics;
+        public Address Address { get; private set; }
     }
 }

@@ -79,6 +79,9 @@ namespace Decompiler.UnitTests.Analysis
             dfa.UntangleProcedures();
             foreach (Procedure proc in prog.Procedures.Values)
             {
+                LongAddRewriter larw = new LongAddRewriter(proc, prog.Architecture);
+                larw.Transform();
+
                 Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
                 SsaTransform sst = new SsaTransform(proc, proc.CreateBlockDominatorGraph());

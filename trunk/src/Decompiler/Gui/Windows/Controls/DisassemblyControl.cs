@@ -19,10 +19,11 @@
 #endregion
 
 using System;
+using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows.Controls
 {
-	public class DisassemblyControl
+	public class DisassemblyControl : Control
 	{
 		public DisassemblyControl()
 		{

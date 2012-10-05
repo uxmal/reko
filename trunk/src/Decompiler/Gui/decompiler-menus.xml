@@ -74,7 +74,7 @@
 
 	<cmd id="ActionMarkProcedure" cmdSet="Decompiler" container="ActionMarkProcedure">Mark _Procedure Entry</cmd>
   <cmd id="ActionEditSignature" cmdSet="Decompiler" container="ActionEditSignature">Edit _Signature...</cmd>
-
+  <cmd id="ActionMarkType" cmdSet="Decompiler" container="ActionMarkType">Mark _Type</cmd>
   <cmd id="WindowsCascade" cmdSet="Decompiler" container="GrpWindows">_Cacade</cmd>
   <cmd id="WindowsTileVertical" cmdSet="Decompiler" container="GrpWindows">Tile _Vertically</cmd>
   <cmd id="WindowsTileHorizontal" cmdSet="Decompiler" container="GrpWindows">Tile _Horizontally</cmd>
@@ -94,6 +94,7 @@
   <placement item="ActionMarkProcedure" container="GrpActionsScanned"/>
 	<placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
+  <placement item="ActionMarkType" container="GrpMemoryControl"/>
   <placement item="ActionEditSignature" container="GrpBrowser"/>
   <placement item="ActionEditSignature" container="GrpActionsRewritten" />
 </menu-definitions>

@@ -26,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
-using System.Threading;
 using System.IO;
 using System.Windows.Forms;
 
@@ -38,10 +37,10 @@ namespace Decompiler.Gui.Windows
     public class WindowsDecompilerEventListener : IWorkerDialogService, DecompilerEventListener
     {
         private WorkerDialog dlg;
-        private ThreadStart worker;
+        private Action task;
         private IServiceProvider sp;
         private IDecompilerUIService uiSvc;
-        private IDiagnosticsService diagnosticService;
+        private IDiagnosticsService diagnosticSvc;
         private Exception lastException;
 
         private string status;
@@ -51,7 +50,7 @@ namespace Decompiler.Gui.Windows
         {
             this.sp = sp;
             uiSvc = sp.GetService<IDecompilerUIService>();
-            diagnosticService = sp.GetService<IDiagnosticsService>();
+            diagnosticSvc = sp.GetService<IDiagnosticsService>();
         }
 
         private WorkerDialog CreateDialog(string caption)
@@ -72,18 +71,24 @@ namespace Decompiler.Gui.Windows
             return dlg;
         }
 
-        public bool StartBackgroundWork(string caption, ThreadStart backgroundworker)
+        /// <summary>
+        /// The UI thread requests a background operation by calling this method.
+        /// </summary>
+        /// <param name="caption"></param>
+        /// <param name="backgroundTask"></param>
+        /// <returns></returns>
+        public bool StartBackgroundWork(string caption, Action backgroundTask)
         {
             lastException = null;
             try
             {
-                this.worker = backgroundworker;
+                this.task = backgroundTask;
                 using (dlg = CreateDialog(caption))
                 {
                     if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                         return true;
                     if (lastException != null)
-                        throw new ApplicationException("A fatal internal error occurred; decompilation has been stopped.", lastException);
+                        uiSvc.ShowError(lastException, "{0}", caption);
                     return false;
                 }
             }
@@ -117,25 +122,28 @@ namespace Decompiler.Gui.Windows
 
         void dlg_Load(object sender, EventArgs e)
         {
-            dlg.Worker.RunWorkerAsync(worker);
+            dlg.Worker.RunWorkerAsync(task);
         }
 
         private void dlg_Closed(object sender, EventArgs e)
         {
             dlg.Worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
             dlg.Worker.ProgressChanged -= new ProgressChangedEventHandler(Worker_ProgressChanged);
-            dlg = null;
-            worker = null;
+            task = null;
         }
-
 
         void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            ThreadStart worker = (ThreadStart)e.Argument;
-            worker();
+            try
+            {
+                Action worker = (Action)e.Argument;
+                worker();
+            }
+            catch (AddressCorrelatedException acex)
+            {
+                AddDiagnostic(CreateAddressNavigator(acex.Address), new ErrorDiagnostic(acex.Message));
+            }
         }
-
-
 
         void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -173,9 +181,9 @@ namespace Decompiler.Gui.Windows
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             if (dlg != null)
-                dlg.Invoke(new Action<ICodeLocation, Diagnostic>(diagnosticService.AddDiagnostic), location, d);
+                dlg.Invoke(new Action<ICodeLocation, Diagnostic>(diagnosticSvc.AddDiagnostic), location, d);
             else
-                diagnosticService.AddDiagnostic(location, d);
+                diagnosticSvc.AddDiagnostic(location, d);
                     
         }
 
@@ -184,7 +192,7 @@ namespace Decompiler.Gui.Windows
             ShowStatus(caption);
         }
 
-        ICodeLocation DecompilerEventListener.CreateAddressNavigator(Address addr)
+        public ICodeLocation CreateAddressNavigator(Address addr)
         {
             return new AddressNavigator(addr, sp);
         }
@@ -200,11 +208,11 @@ namespace Decompiler.Gui.Windows
         }
 
 
-        private void ShowStatus(string caption)
+        private void ShowStatus(string newStatus)
         {
             if (dlg == null)
                 return;
-            Interlocked.Exchange<string>(ref status, caption);
+            System.Threading.Interlocked.Exchange<string>(ref status, newStatus);
             dlg.Worker.ReportProgress(STATUS_UPDATE_ONLY);
         }
 
@@ -212,7 +220,7 @@ namespace Decompiler.Gui.Windows
         {
             if (dlg == null)
                 return;
-            Interlocked.Exchange<string>(ref status, caption);
+            System.Threading.Interlocked.Exchange<string>(ref status, caption);
             dlg.Worker.ReportProgress((int)((numerator * 100L) / denominator));
         }
 

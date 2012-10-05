@@ -499,7 +499,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             AssertCode(e,
                 "0|0C00:0000(4): 4 instructions",
                 "1|v2 = Mem0[ds:0x0100:word16] + ax",
-                "2|v6 = v2 + (word16) C",
+                "2|v6 = v2 + C",
                 "3|Mem0[ds:0x0100:word16] = v6",
                 "4|SCZO = cond(v6)");
         }
@@ -989,6 +989,23 @@ namespace Decompiler.UnitTests.Arch.Intel
             var fnExp = ((Application)rtl.Expression).Procedure;
             var ppp = ((ProcedureConstant)fnExp).Procedure;
             Assert.IsTrue(ppp.Characteristics.Terminates);
+        }
+
+        [Test]
+        public void Pushf_Popf()
+        {
+            var e = Run16bitTest((m) =>
+            {
+                m.Pushf();
+                m.Popf();
+            });
+            AssertCode(e,
+                "0|0C00:0000(1): 2 instructions",
+                "1|sp = sp - 0x0002",
+                "2|Mem0[ss:sp:word16] = SCZDOP",
+                "3|0C00:0001(1): 2 instructions",
+                "4|SCZDOP = Mem0[ss:sp:word16]",
+                "5|sp = sp + 0x0002");
         }
     }
 }

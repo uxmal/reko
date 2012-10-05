@@ -274,6 +274,7 @@
     <Compile Include="Gui\FindResult.cs" />
     <Compile Include="Gui\HtmlCodeFormatter.cs" />
     <Compile Include="Gui\HtmlFormatter.cs" />
+    <Compile Include="Gui\HungarianParser.cs" />
     <Compile Include="Gui\ICodeViewerService.cs" />
     <Compile Include="Gui\ICommandTarget.cs" />
     <Compile Include="Gui\IDecompilerService.cs" />
@@ -307,7 +308,9 @@
     <Compile Include="Gui\Windows\Controls\DirtyManager.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Controls\DisassemblyControl.cs" />
+    <Compile Include="Gui\Windows\Controls\DisassemblyControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Gui\Windows\Controls\ImageMapControl.cs">
       <SubType>Component</SubType>
     </Compile>

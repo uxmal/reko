@@ -95,14 +95,20 @@ namespace Decompiler.Arch.X86
 
         public Expression RewriteAdcSbb(BinaryOperator opr)
         {
-            Identifier tmp = frame.CreateTemporary(di.Instruction.dataWidth);
-            emitter.Assign(tmp, new BinaryExpression(
-                opr,
-                tmp.DataType,
-                SrcOp(di.Instruction.op1),
-                SrcOp(di.Instruction.op2)));
-            Cast c = emitter.Cast(di.Instruction.op1.Width, orw.FlagGroup(FlagM.CF));
-            var ass = EmitCopy(di.Instruction.op1, new BinaryExpression(opr, tmp.DataType, tmp, c), true);
+            // We do not take the trouble of widening the CF to the word size
+            // to simplify code analysis in later stages. 
+            var c = orw.FlagGroup(FlagM.CF);       
+            var ass = EmitCopy(
+                di.Instruction.op1, 
+                new BinaryExpression(
+                    opr, 
+                    di.Instruction.dataWidth,
+                    new BinaryExpression(
+                        opr,
+                        di.Instruction.dataWidth, 
+                        SrcOp(di.Instruction.op1),
+                        SrcOp(di.Instruction.op2)),
+                    c), true);
             var ccSrc = ass.Dst;
             if (ccSrc is MemoryAccess)
                 ccSrc = ass.Src;
@@ -468,6 +474,15 @@ namespace Decompiler.Arch.X86
             RewritePush(dasm.Current.Instruction.dataWidth, SrcOp(dasm.Current.Instruction.op1));
         }
 
+        private void RewritePushf()
+        {
+            RewritePush(
+                dasm.Current.Instruction.dataWidth,
+                frame.EnsureFlagGroup(
+                    (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
+                    "SCZDOP", 
+                    PrimitiveType.Byte));
+        }
 
         private void RewriteNeg()
         {
@@ -497,6 +512,18 @@ namespace Decompiler.Arch.X86
         {
             var sp = StackPointer();
             EmitCopy(op, orw.StackAccess(sp, width), false);
+            emitter.Assign(sp, emitter.Add(sp, width.Size));
+        }
+
+        private void RewritePopf()
+        {
+            var width = di.Instruction.dataWidth;
+            var sp = StackPointer();
+            emitter.Assign(frame.EnsureFlagGroup(
+                    (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
+                    "SCZDOP",
+                    PrimitiveType.Byte),
+                    orw.StackAccess(sp, width));
             emitter.Assign(sp, emitter.Add(sp, width.Size));
         }
 

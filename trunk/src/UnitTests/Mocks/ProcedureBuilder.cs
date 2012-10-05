@@ -64,9 +64,9 @@ namespace Decompiler.UnitTests.Mocks
         private void Init(IProcessorArchitecture arch, string name)
         {
             this.arch = arch;
-            blocks = new Dictionary<string, Block>();
-            Procedure = new Procedure(name, arch.CreateFrame());
-            unresolvedProcedures = new List<ProcUpdater>();
+            this.blocks = new Dictionary<string, Block>();
+            this.Procedure = new Procedure(name, arch.CreateFrame());
+            this.unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();
         }
 

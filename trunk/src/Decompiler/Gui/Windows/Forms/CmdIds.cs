@@ -87,11 +87,12 @@ namespace Decompiler.Gui.Windows.Forms
 		public const int ActionFinishDecompilation = 14 + 2000;
 		public const int ActionMarkProcedure = 15 + 2000;
 		public const int ActionEditSignature = 16 + 2000;
-		public const int WindowsCascade = 17 + 2000;
-		public const int WindowsTileVertical = 18 + 2000;
-		public const int WindowsTileHorizontal = 19 + 2000;
-		public const int WindowsCloseAll = 20 + 2000;
-		public const int HelpAbout = 21 + 2000;
+		public const int ActionMarkType = 17 + 2000;
+		public const int WindowsCascade = 18 + 2000;
+		public const int WindowsTileVertical = 19 + 2000;
+		public const int WindowsTileHorizontal = 20 + 2000;
+		public const int WindowsCloseAll = 21 + 2000;
+		public const int HelpAbout = 22 + 2000;
 		public const int FileMru = 2200;
 	}
 

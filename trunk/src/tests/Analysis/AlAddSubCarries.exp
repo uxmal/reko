@@ -22,10 +22,10 @@ fn0C00_0000_entry:
 l0C00_0000:
 	ax = Mem0[ds:0x0200:word16]
 	dx = Mem0[ds:0x0202:word16]
-	dx_ax = SEQ(dx, ax) (alias)
 	cx = Mem0[ds:0x0204:word16]
 	bx = Mem0[ds:0x0206:word16]
 	bx_cx = SEQ(bx, cx) (alias)
+	dx_ax = SEQ(dx, ax) (alias)
 	dx_ax = dx_ax + bx_cx
 	ax = (word16) dx_ax (alias)
 	dx = SLICE(dx_ax, word16, 16) (alias)

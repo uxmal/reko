@@ -92,6 +92,10 @@ namespace Decompiler.Gui.Windows
             }
         }
 
+        public void MarkType()
+        {
+        }
+
         //$REVIEW: consider moving this to a ICommonDialogFactoryService
         public virtual IAddressPromptDialog CreateAddressPromptDialog()
         {
@@ -115,7 +119,9 @@ namespace Decompiler.Gui.Windows
             {
                 switch (cmdId)
                 {
-                case CmdIds.ViewGoToAddress: status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
+                case CmdIds.ViewGoToAddress:
+                case CmdIds.ActionMarkType:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
                 }
             }
             return false;
@@ -128,6 +134,7 @@ namespace Decompiler.Gui.Windows
                 switch (cmdId)
                 {
                 case CmdIds.ViewGoToAddress: GotoAddress(); return true;
+                case CmdIds.ActionMarkType: MarkType(); return true;
                 }
             }
             return false;

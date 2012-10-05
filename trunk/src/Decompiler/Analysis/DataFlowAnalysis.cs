@@ -70,6 +70,9 @@ namespace Decompiler.Analysis
                 eventListener.ShowProgress("Building complex expressions.", i, prog.Procedures.Values.Count);
                 ++i;
 
+                LongAddRewriter larw = new LongAddRewriter(proc, prog.Architecture);
+                larw.Transform();
+
 				Aliases alias = new Aliases(proc, prog.Architecture, flow);
 				alias.Transform();
                 var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);

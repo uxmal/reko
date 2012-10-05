@@ -260,6 +260,8 @@ namespace Decompiler.Scanning
                 return proc;
             visitedProcs.Add(proc);
 
+            Debug.Print("Scanning procedure at {0}", addr);
+
             var oldQueue = queue;
             queue = new PriorityQueue<WorkItem>();
             var st = state.Clone();
