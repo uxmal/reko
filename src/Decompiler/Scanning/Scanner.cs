@@ -147,6 +147,8 @@ namespace Decompiler.Scanning
             blocks.Add(addr.Linear, new BlockRange(b, addr.Linear, image.BaseAddress.Linear + (uint)image.Bytes.Length));
             blockStarts.Add(b, addr.Linear);
             proc.ControlGraph.Blocks.Add(b);
+
+            image.Map.AddItem(addr, new ImageMapBlock { Block = b }); 
             return b;
         }
 

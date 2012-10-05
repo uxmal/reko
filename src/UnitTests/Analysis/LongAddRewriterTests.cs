@@ -37,7 +37,7 @@ using System.Linq;
 namespace Decompiler.UnitTests.Analysis
 {
     [TestFixture]
-    public class LongAddRewriterTests
+    public class LongAddRewriterTests : AnalysisTestBase
     {
         private Frame frame;
         private LongAddRewriter rw;
@@ -67,6 +67,23 @@ namespace Decompiler.UnitTests.Analysis
                 return null;
 
             return rw.CreateLongInstruction(loAss, hiAss);
+        }
+
+        protected override void RunTest(Program prog, FileUnitTester fut)
+        {
+            var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
+            var eventListener = new FakeDecompilerEventListener();
+            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
+            trf.Compute();
+            trf.RewriteBasicBlocks();
+            RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
+            foreach (Procedure proc in prog.Procedures.Values)
+            {
+                LongAddRewriter larw = new LongAddRewriter(proc, prog.Architecture);
+                larw.Transform();
+                proc.Write(false, fut.TextWriter);
+                fut.TextWriter.WriteLine();
+            }
         }
 
         [SetUp]
@@ -214,27 +231,30 @@ namespace Decompiler.UnitTests.Analysis
         {
             m.Assign(SCZ, m.Cond(m.Sub(cx, 0x0030)));
         	m.Assign(ax, m.Add(m.Word16(0x0000) ,CF));
+            m.Assign(SCZ, m.Cond(ax));
             m.Assign(SCZ, m.Cond(m.Sub(cx , 0x003A)));
             m.Assign(CF, m.Not(CF));
             m.Assign(ax, m.Add(m.Add(ax, ax),CF));
-            m.Assign(CF, m.Cond(ax));
+            m.Assign(SCZ, m.Cond(ax));
             var block = m.Block;
             m.Return();
 
             rw.Transform();
 
             var sExp = @"l1:
-	C = cond(cx - 0x0030) 
-	C = cond(ax)
-	dx_ax = dx_ax + Mem0[bx + 0x0300:ui32]
-	C = cond(dx_ax)
+	SCZ = cond(cx - 0x0030)
+	ax = 0x0000 + C
+	SCZ = cond(ax)
+	SCZ = cond(cx - 0x003A)
+	C = !C
+	ax = ax + ax + C
+	SCZ = cond(ax)
 	return
 ";
             var sb = new StringWriter();
             block.Write(sb);
             Console.WriteLine(sb);
             Assert.AreEqual(sExp, sb.ToString());
-
         }
     }
 }

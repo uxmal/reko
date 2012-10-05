@@ -209,6 +209,15 @@ namespace Decompiler.Arch.X86
                 di.Instruction.Operands == 1 ? ((ImmediateOperand)di.Instruction.op1).Value.ToInt32() : 0);
         }
 
+
+        public void RewriteIret()
+        {
+            RewritePop(
+                orw.FlagGroup(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), di.Instruction.dataWidth);
+            //$BUGBUG: what if in 32-bit mode?
+            EmitReturnInstruction(4, 0);
+        }
+
         private void EmitReturnInstruction(int cbReturnAddress, int cbBytesPop)
         {
             emitter.Return(cbReturnAddress, cbBytesPop);

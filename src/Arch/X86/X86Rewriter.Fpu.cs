@@ -84,6 +84,19 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        private void EmitFchs()
+        {
+            emitter.Assign(
+                orw.FpuRegister(0, state),
+                emitter.Neg(orw.FpuRegister(0, state)));		//$BUGBUG: should be Real, since we don't know the actual size.
+            WriteFpuStack(0);
+        }
+
+        private void RewriteFclex()
+        {
+            emitter.SideEffect(PseudoProc("__fclex", PrimitiveType.Void));
+        }
+
         private void RewriteFcom(int pops)
         {
             Identifier op1 = FpuRegister(0);
@@ -95,6 +108,14 @@ namespace Decompiler.Arch.X86
                 new ConditionOf(
                     new BinaryExpression(Operator.Sub, di.Instruction.dataWidth, op1, op2)));
             state.ShrinkFpuStack(pops);
+        }
+
+        private void RewriteFUnary(string name)
+        {
+            emitter.Assign(
+                orw.FpuRegister(0, state),
+                PseudoProc(name, PrimitiveType.Real64, orw.FpuRegister(0, state)));
+            WriteFpuStack(0);
         }
 
         private void RewriteFild()
@@ -123,9 +144,42 @@ namespace Decompiler.Arch.X86
 
         private void RewriteFldConst(double constant)
         {
+            RewriteFldConst(new Constant(constant));
+        }
+
+        private void RewriteFldConst(Constant c)
+        {
             state.GrowFpuStack(di.Address);
-            emitter.Assign(FpuRegister(0), new Constant(constant));
+            emitter.Assign(FpuRegister(0), c);
             WriteFpuStack(0);
+        }
+        private void RewriteFldcw()
+        {
+            emitter.SideEffect(PseudoProc(
+                "__fldcw",
+                PrimitiveType.Void,
+                SrcOp(di.Instruction.op1)));
+        }
+
+        private void RewriteFpatan()
+        {
+            Expression op1 = FpuRegister(1);
+            Expression op2 = FpuRegister(0);
+            state.ShrinkFpuStack(1);
+            emitter.Assign(FpuRegister(0), PseudoProc("atan", PrimitiveType.Real64, op1, op2));
+            WriteFpuStack(0);
+        }
+
+        private void RewriteFsincos()
+        {
+            Identifier itmp = frame.CreateTemporary(PrimitiveType.Real64);
+            emitter.Assign(itmp, FpuRegister(0));
+
+            state.GrowFpuStack(di.Address);
+            emitter.Assign(FpuRegister(1), PseudoProc("cos", PrimitiveType.Real64, itmp));
+            emitter.Assign(FpuRegister(0), PseudoProc("sin", PrimitiveType.Real64, itmp));
+            WriteFpuStack(0);
+            WriteFpuStack(1);
         }
 
         private void RewriteFst(bool pop)
@@ -133,6 +187,14 @@ namespace Decompiler.Arch.X86
             EmitCopy(di.Instruction.op1, FpuRegister(0), false);
             if (pop)
                 state.ShrinkFpuStack(1);
+        }
+
+        private void RewriterFstcw()
+        {
+			EmitCopy(
+                di.Instruction.op1, 
+                PseudoProc("__fstcw", PrimitiveType.UInt16),
+                false);
         }
 
         private void RewriteFstsw()
@@ -143,6 +205,29 @@ namespace Decompiler.Arch.X86
                         new Cast(PrimitiveType.Word16, orw.FlagGroup(FlagM.FPUF)),
                         new Constant(PrimitiveType.Int16, 8)),
                 false);
+        }
+
+        private void RewriteFtst()
+        {
+            emitter.Assign(orw.FlagGroup(FlagM.CF),
+                emitter.Sub(FpuRegister(0), new Constant(0.0)));
+        }
+
+        private void RewriteFxam()
+        {
+            //$TODO: need to make this an assignment to C0|C1|C2|C3 = __fxam();
+            // idiomatically followed by fstsw &c.
+            emitter.SideEffect(PseudoProc("__fxam", PrimitiveType.Byte));
+        }
+
+        private void RewriteFyl2x()
+        {
+            //$REVIEW: Candidate for idiom search.
+            Identifier op1 = FpuRegister(0);
+            Identifier op2 = FpuRegister(1);
+            emitter.Assign(op1, emitter.Sub(op2, PseudoProc("lg2", PrimitiveType.Real64, op1)));
+            state.ShrinkFpuStack(1);
+            WriteFpuStack(0);
         }
 
         private Identifier FpuRegister(int reg)

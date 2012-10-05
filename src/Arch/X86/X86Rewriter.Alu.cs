@@ -222,6 +222,15 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        private void EmitDaaDas(string fnName)
+        {
+            emitter.Assign(orw.FlagGroup(FlagM.CF), PseudoProc(
+                fnName,
+                PrimitiveType.Bool,
+                orw.AluRegister(Registers.al),
+                orw.AddrOf(orw.AluRegister(Registers.al))));
+        }
+
         private void RewriteDivide(BinaryOperator op, Domain domain)
         {
             if (di.Instruction.Operands != 1)
@@ -389,6 +398,11 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        public void RewriteLahf()
+        {
+            emitter.Assign(orw.AluRegister(Registers.ah), orw.FlagGroup(FlagM.FPUF));
+        }
+
         public void RewriteLea()
         {
             Expression src;
@@ -474,6 +488,37 @@ namespace Decompiler.Arch.X86
             RewritePush(dasm.Current.Instruction.dataWidth, SrcOp(dasm.Current.Instruction.op1));
         }
 
+        private void RewritePush(IntelRegister reg)
+        {
+            RewritePush(di.Instruction.dataWidth, orw.AluRegister(reg));
+        }
+
+        private void RewritePusha()
+        {
+            if (di.Instruction.dataWidth == PrimitiveType.Word16)
+            {
+                RewritePush(Registers.ax);
+                RewritePush(Registers.cx);
+                RewritePush(Registers.dx);
+                RewritePush(Registers.bx);
+                RewritePush(Registers.sp);
+                RewritePush(Registers.bp);
+                RewritePush(Registers.si);
+                RewritePush(Registers.di);
+            }
+            else
+            {
+                RewritePush(Registers.eax);
+                RewritePush(Registers.ecx);
+                RewritePush(Registers.edx);
+                RewritePush(Registers.ebx);
+                RewritePush(Registers.esp);
+                RewritePush(Registers.ebp);
+                RewritePush(Registers.esi);
+                RewritePush(Registers.edi);
+            }
+        }
+
         private void RewritePushf()
         {
             RewritePush(
@@ -513,6 +558,46 @@ namespace Decompiler.Arch.X86
             var sp = StackPointer();
             EmitCopy(op, orw.StackAccess(sp, width), false);
             emitter.Assign(sp, emitter.Add(sp, width.Size));
+        }
+
+        private void RewritePop(Identifier dst, PrimitiveType width)
+        {
+            var sp = StackPointer();
+            emitter.Assign(dst, orw.StackAccess(sp, width));
+            emitter.Assign(sp, emitter.Add(sp, width.Size));
+        }
+
+        private void EmitPop(IntelRegister reg)
+        {
+            RewritePop(orw.AluRegister(reg), di.Instruction.dataWidth);
+        }
+
+        private void RewritePopa()
+        {
+            Debug.Assert(di.Instruction.dataWidth == PrimitiveType.Word16 || di.Instruction.dataWidth == PrimitiveType.Word32);
+            var sp = StackPointer();
+            if (di.Instruction.dataWidth == PrimitiveType.Word16)
+            {
+                EmitPop(Registers.di);
+                EmitPop(Registers.si);
+                EmitPop(Registers.bp);
+                emitter.Assign(sp, emitter.Add(sp, di.Instruction.dataWidth.Size));
+                EmitPop(Registers.bx);
+                EmitPop(Registers.dx);
+                EmitPop(Registers.cx);
+                EmitPop(Registers.ax);
+            }
+            else
+            {
+                EmitPop(Registers.edi);
+                EmitPop(Registers.esi);
+                EmitPop(Registers.ebp);
+                emitter.Assign(sp, emitter.Add(sp, di.Instruction.dataWidth.Size));
+                EmitPop(Registers.ebx);
+                EmitPop(Registers.edx);
+                EmitPop(Registers.ecx);
+                EmitPop(Registers.eax);
+            }
         }
 
         private void RewritePopf()
@@ -638,7 +723,6 @@ namespace Decompiler.Arch.X86
 			get { return orw.AluRegister(Registers.esi, di.Instruction.addrWidth); }
 		}
 	
-
         private void RewriteStringInstruction()
         {
             bool incSi = false;

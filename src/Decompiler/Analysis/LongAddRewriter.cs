@@ -159,6 +159,7 @@ namespace Decompiler.Analysis
                             new Assignment(
                                 cond.FlagGroup, new ConditionOf(dst));
                     }
+                    i = cond.StatementIndex;
                 }
             }
         }

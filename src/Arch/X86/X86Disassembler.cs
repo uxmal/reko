@@ -58,8 +58,10 @@ namespace Decompiler.Arch.X86
 		private static IntelRegister RegFromBits(int bits, PrimitiveType dataWidth)
 		{
 			bits = bits & 0x7;
-			if (dataWidth == PrimitiveType.Byte)
-			{
+            int bitSize = dataWidth.BitSize;
+			switch (bitSize)
+            {
+            case 8:
 				switch (bits)
 				{
 				case 0: return Registers.al;
@@ -71,9 +73,8 @@ namespace Decompiler.Arch.X86
 				case 6: return Registers.dh;
 				case 7: return Registers.bh;
 				}
-			}
-			else if (dataWidth == PrimitiveType.Word16)
-			{
+                break;
+            case 16:
 				switch (bits)
 				{
 				case 0: return Registers.ax;
@@ -85,9 +86,8 @@ namespace Decompiler.Arch.X86
 				case 6: return Registers.si;
 				case 7: return Registers.di;
 				}
-			}
-			else if (dataWidth == PrimitiveType.Word32)
-			{
+			    break;
+            case 32:
 				switch (bits)
 				{
 				case 0: return Registers.eax;
@@ -99,6 +99,7 @@ namespace Decompiler.Arch.X86
 				case 6: return Registers.esi;
 				case 7: return Registers.edi;
 				}
+                break;
 			}
 			throw new ArgumentOutOfRangeException("Unsupported data width: " + dataWidth.ToString());
 		}
