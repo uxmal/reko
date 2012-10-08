@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Evaluation
+namespace Decompiler.Core
 {
     /// <summary>
     /// An EvaluationContext is used by the SymbolicEvaluator to provide a statement context for the

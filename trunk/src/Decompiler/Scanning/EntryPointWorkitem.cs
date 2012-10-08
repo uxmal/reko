@@ -38,8 +38,7 @@ namespace Decompiler.Scanning
         }
         public override void Process()
         {
-            var evalCtx = new ScannerEvaluationContext(scanner.Architecture, ep.ProcessorState);
-            var pb = scanner.ScanProcedure(ep.Address, ep.Name, evalCtx);
+            var pb = scanner.ScanProcedure(ep.Address, ep.Name, scanner.Architecture.CreateProcessorState());
             var proc = pb as Procedure;
             if (proc != null)
             {

@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Scanning
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             stm = new RtlStatementStream(addr.Linear, block);
-            state = arch.CreateProcessorState();
+            this.state = arch.CreateProcessorState();
             var asm = new IntelAssembler(arch, addr, new List<EntryPoint>());
             scanner = repository.Stub<IScanner>();
             host = new RewriterHost(asm.ImportThunks);
@@ -124,9 +124,8 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             }
             var image = asm.GetImage();
-            var rw = arch.CreateRewriter(new ImageReader(image, addr), state, proc.Frame, host);
-            var scEval = new ScannerEvaluationContext(arch, state);
-            wi = new BlockWorkitem(scanner, rw, scEval, proc.Frame, addr);
+            var rw = arch.CreateRewriter(new ImageReader(image, addr), this.state, proc.Frame, host);
+            wi = new BlockWorkitem(scanner, rw, state, proc.Frame, addr);
         }
 
 
@@ -260,7 +259,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ushort>.Is.Anything,
                     Arg<bool>.Is.Equal(false),
                     Arg<Procedure>.Is.Anything,
-                    Arg<ScannerEvaluationContext>.Is.Anything));
+                    Arg<ProcessorState>.Is.Anything));
                 scanner.Expect(x => x.CreateReader(
                     Arg<Address>.Is.Anything)).Return(new ImageReader(new byte[] {
                         0x34, 0x12,
@@ -304,7 +303,7 @@ namespace Decompiler.UnitTests.Scanning
             scanner.Expect(x => x.EnqueueJumpTarget(
                 Arg<Address>.Matches(q => (Niz(q, selector, offset))),
                 Arg<Procedure>.Is.Anything,
-                Arg<ScannerEvaluationContext>.Is.Anything)).Return(block);
+                Arg<ProcessorState>.Is.Anything)).Return(block);
             return block;
         }
 
@@ -326,15 +325,15 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(a => a.Offset == 2),
                     Arg<Procedure>.Is.Same(proc),
-                    Arg<ScannerEvaluationContext>.Is.Anything)).Return(follow);
+                    Arg<ProcessorState>.Is.Anything)).Return(follow);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(a => a.Offset == 2),
                     Arg<Procedure>.Is.Same(proc),
-                    Arg<ScannerEvaluationContext>.Is.Anything)).Return(block);
+                    Arg<ProcessorState>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(a => a.Offset == 0),
                     Arg<Procedure>.Is.Same(proc),
-                    Arg<ScannerEvaluationContext>.Is.Anything)).Return(block);
+                    Arg<ProcessorState>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
@@ -358,7 +357,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Matches(a => a.Offset == 0x0003),
                     Arg<Procedure>.Is.Same(proc),
-                    Arg<ScannerEvaluationContext>.Is.Anything)).Return(new Block(proc, "l0003"));
+                    Arg<ProcessorState>.Is.Anything)).Return(new Block(proc, "l0003"));
                 scanner.Expect(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));

@@ -37,13 +37,18 @@ namespace Decompiler.Arch.M68k
             this.arch = arch;
         }
 
+        public M68kState(M68kState orig) : base(orig)
+        {
+            this.arch = orig.arch;
+        }
+
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         #region ProcessorState Members
 
-        protected override ProcessorState CloneInternal()
+        public override ProcessorState Clone()
         {
-            return new M68kState(arch);
+            return new M68kState(this);
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

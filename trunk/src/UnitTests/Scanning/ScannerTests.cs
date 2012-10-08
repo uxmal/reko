@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Scanning
 
             public BlockWorkitem Test_LastBlockWorkitem { get; private set; } 
 
-            public override BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ScannerEvaluationContext state)
+            public override BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ProcessorState state)
             {
                 Test_LastBlockWorkitem = base.CreateBlockWorkItem(addrStart, proc, state);
                 return Test_LastBlockWorkitem;
@@ -164,7 +164,7 @@ namespace Decompiler.UnitTests.Scanning
             arch.Test_SetRewriterForAddress(addr, new FakeRewriter(new RtlInstructionCluster(addr, 4,
                 new RtlAssignment(new MemoryAccess(new Constant(0x3000), PrimitiveType.Word32), Constant.Word32(42)))));
 
-            scan.EnqueueJumpTarget(addr, proc, new ScannerEvaluationContext(arch));
+            scan.EnqueueJumpTarget(addr, proc, arch.CreateProcessorState());
         }
 
         [Test]
@@ -284,9 +284,8 @@ fn0C00_0000_exit:
             
             var st = (X86State) arch.CreateProcessorState();
             st.GrowFpuStack(new Address(0x100000));
-            var scEval = new ScannerEvaluationContext(arch, st);
-            scan.ScanProcedure(new Address(0x100100),  null, scEval);
-            var stNew = (X86State)scan.Test_LastBlockWorkitem.Context.State;
+            scan.ScanProcedure(new Address(0x100100),  null, st);
+            var stNew = (X86State)scan.Test_LastBlockWorkitem.Context;
             Assert.IsNotNull(stNew);
             Assert.AreNotSame(st, stNew);
             Assert.AreEqual(1, st.FpuStackItems);
@@ -300,7 +299,7 @@ fn0C00_0000_exit:
             prog.ImportThunks.Add(0x2000, new PseudoProcedure(
                 "grox", CreateSignature("ax", "bx")));
             var scan = CreateScanner(0x1000, 0x200);
-            var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", new ScannerEvaluationContext(arch, arch.CreateProcessorState()));
+            var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
             Assert.AreEqual("bx", proc.Signature.FormalArguments[0].Name);

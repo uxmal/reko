@@ -46,7 +46,7 @@ namespace Decompiler.Arch.X86
 			stackOld = new Stack<Constant>();
 		}
 
-		public X86State(X86State st)
+		public X86State(X86State st) : base(st)
 		{
             arch = st.arch;
 			regs = (ulong []) st.regs.Clone();
@@ -80,7 +80,7 @@ namespace Decompiler.Arch.X86
 				return null;
 		}
 
-		protected override ProcessorState CloneInternal()
+		public override ProcessorState Clone()
 		{
 			return new X86State(this);
 		}
