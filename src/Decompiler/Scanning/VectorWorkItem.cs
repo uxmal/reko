@@ -10,11 +10,11 @@ namespace Decompiler.Scanning
 {
     public class VectorWorkItem : WorkItem
     {
-        public ImageMapVectorTable table;
-        public ScannerEvaluationContext state;
-        public Address addrFrom;			// address from which the jump is called.
-        public PrimitiveType stride;
-        public ushort segBase;
+        public ImageMapVectorTable Table;
+        public ProcessorState State;
+        public Address AddrFrom;			// address from which the jump is called.
+        public PrimitiveType Stride;
+        public ushort SegBase;
 
         private IScanner scanner;
         private ProgramImage image;
@@ -26,7 +26,7 @@ namespace Decompiler.Scanning
         {
             this.scanner = scanner;
             this.image = image;
-            this.table = table;
+            this.Table = table;
             this.proc = proc;
             this.vectorUses = new Dictionary<Address, VectorUse>();
         }
@@ -34,10 +34,10 @@ namespace Decompiler.Scanning
         public override void Process()
         {
             var builder = new VectorBuilder(scanner.Architecture, image, new DirectedGraphImpl<object>());
-            var vector = builder.Build(table.TableAddress, addrFrom, state.State);
+            var vector = builder.Build(Table.TableAddress, AddrFrom, State);
             if (vector.Count == 0)
             {
-                Address addrNext = table.TableAddress + stride.Size;
+                Address addrNext = Table.TableAddress + Stride.Size;
                 if (image.IsValidAddress(addrNext))
                 {
                     // Can't determine the size of the table, but surely it has one entry?
@@ -46,11 +46,11 @@ namespace Decompiler.Scanning
                 return;
             }
 
-            table.Addresses.AddRange(vector);
+            Table.Addresses.AddRange(vector);
             for (int i = 0; i < vector.Count; ++i)
             {
-                var st = state.Clone();
-                if (table.IsCallTable)
+                var st = State.Clone();
+                if (Table.IsCallTable)
                 {
                     scanner.ScanProcedure(vector[i], null, st);
                 }
@@ -59,8 +59,8 @@ namespace Decompiler.Scanning
                     scanner.EnqueueJumpTarget(vector[i], proc, st);
                 }
             }
-            vectorUses[addrFrom] = new VectorUse(table.TableAddress, builder.IndexRegister);
-            image.Map.AddItem(table.TableAddress + builder.TableByteSize, new ImageMapItem());
+            vectorUses[AddrFrom] = new VectorUse(Table.TableAddress, builder.IndexRegister);
+            image.Map.AddItem(Table.TableAddress + builder.TableByteSize, new ImageMapItem());
         }
 
     }

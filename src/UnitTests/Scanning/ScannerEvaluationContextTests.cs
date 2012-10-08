@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Scanning
             arch.StackRegister = sp;
 
             state = new FakeProcessorState(arch);
-            sce = new ScannerEvaluationContext(arch, state);
+            sce = new ScannerEvaluationContext(state);
 
             idSp = new Identifier(sp.Name, 1, sp.DataType, sp);
             m = new ExpressionEmitter();
@@ -191,7 +191,7 @@ namespace Decompiler.UnitTests.Scanning
 
             #region ProcessorState Members
 
-            protected override ProcessorState CloneInternal()
+            public override ProcessorState Clone()
             {
                 throw new NotImplementedException();
             }

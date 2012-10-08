@@ -39,7 +39,7 @@ namespace Decompiler.Arch.Pdp11
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
         
-        protected override ProcessorState CloneInternal()
+        public override ProcessorState Clone()
         {
             throw new NotImplementedException();
         }

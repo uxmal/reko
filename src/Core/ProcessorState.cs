@@ -19,31 +19,43 @@
 #endregion
 
 using Decompiler.Core.Code;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Machine;
 using System;
+using System.Collections.Generic;
 
 namespace Decompiler.Core
 {
     /// <summary>
     /// ProcessorState simulates the state of the processor and a part of the stack during scanning.
     /// </summary>
-	public abstract class ProcessorState
+    public abstract class ProcessorState : EvaluationContext
 	{
+        private Dictionary<RegisterStorage, Expression> linearDerived;
+        private SortedList<int, Expression> stackState;
+        
+        public ProcessorState()
+        {
+            this.linearDerived = new Dictionary<RegisterStorage, Expression>();
+            this.stackState = new SortedList<int, Expression>();
+        }
+
+        public ProcessorState(ProcessorState orig)
+        {
+            this.linearDerived = new Dictionary<RegisterStorage, Expression>(orig.linearDerived);
+            this.stackState = new SortedList<int, Expression>(orig.stackState);
+            this.ErrorListener = this.ErrorListener;
+        }
+
         /// <summary>
         /// Method to call if an error occurs within the processor state object (such as stack over/underflows).
         /// </summary>
         public Action<string> ErrorListener { get; set; }
-	    public ProcessorState Clone()
-        {
-            var clone = this.CloneInternal();
-            clone.ErrorListener = this.ErrorListener;
-            return clone;
-        }
 
         public abstract IProcessorArchitecture Architecture { get; }
-        protected abstract ProcessorState CloneInternal();
+        public abstract ProcessorState Clone();
 
         public abstract Constant GetRegister(RegisterStorage r);
         public abstract void SetRegister(RegisterStorage r, Constant v);
@@ -65,6 +77,8 @@ namespace Decompiler.Core
         public abstract void OnAfterCall(ProcedureSignature sigCallee);
 
 
+
+
         [Obsolete("Make this private as soon as possible")]
         public bool IsStackRegister(Expression ea)
         {
@@ -76,5 +90,119 @@ namespace Decompiler.Core
                 return false;
             return (reg == Architecture.StackRegister);
         }
+
+        [Obsolete("Make this private as soon as possible")]
+        public bool GetStackOffset(Expression ea, out int offset)
+        {
+            if (IsStackRegister(ea))
+            {
+                offset = 0;
+                return true;
+            }
+
+            var bin = ea as BinaryExpression;
+            if (bin != null && (bin.Operator == Operator.Add || bin.Operator == Operator.Sub) && IsStackRegister(bin.Left))
+            {
+                offset = ((Constant)bin.Right).ToInt32();
+                if (bin.Operator == Operator.Sub)
+                    offset = -offset;
+                return true;
+            }
+            offset = 0;
+            return false;
+        }
+
+        public Expression GetValue(Identifier id)
+        {
+            var reg = id.Storage as RegisterStorage;
+            if (reg == null)
+                return Constant.Invalid;
+
+            Expression exp = GetRegister(reg);
+            if (exp != Constant.Invalid)
+                return exp;
+            if (linearDerived.TryGetValue(reg, out exp))
+                return exp;
+            return Constant.Invalid;
+        }
+
+        public Expression GetValue(MemoryAccess access)
+        {
+            int stackOffset;
+            if (GetStackOffset(access.EffectiveAddress, out stackOffset))
+            {
+                Expression value;
+                if (stackState.TryGetValue(stackOffset, out value))
+                    return value;
+            }
+            return Constant.Invalid;
+        }
+
+        public Expression GetValue(SegmentedAccess access)
+        {
+            int stackOffset;
+            if (GetStackOffset(access.EffectiveAddress, out stackOffset))
+            {
+                Expression value;
+                if (stackState.TryGetValue(stackOffset, out value))
+                    return value;
+            }
+            return Constant.Invalid;
+        }
+
+        public Expression GetValue(Application appl)
+        {
+            return Constant.Invalid;
+        }
+
+        public void RemoveIdentifierUse(Identifier id)
+        {
+        }
+
+        public void UseExpression(Expression expr)
+        {
+        }
+
+        public void SetValue(Identifier id, Expression value)
+        {
+            var reg = id.Storage as RegisterStorage;
+            if (reg == null)
+                return;
+            var constVal = value as Constant;
+            if (constVal != null)
+            {
+                SetRegister(reg, constVal);
+                linearDerived.Remove(reg);
+                return;
+            }
+            var binVal = value as BinaryExpression;
+            if (binVal != null)
+            {
+                if ((binVal.Operator == Operator.Add || binVal.Operator == Operator.Sub) &&
+                    binVal.Left is Identifier &&
+                    binVal.Right is Constant)
+                {
+                    linearDerived[reg] = binVal;
+                    return;
+                }
+            }
+            SetRegister(reg, Constant.Invalid);
+            linearDerived.Remove(reg);
+        }
+
+        public void SetValueEa(Expression ea, Expression value)
+        {
+            int stackOffset;
+            if (GetStackOffset(ea, out stackOffset))
+                stackState[stackOffset] = value;
+        }
+
+        public void SetValueEa(Expression basePtr, Expression ea, Expression value)
+        {
+            int stackOffset;
+            if (GetStackOffset(ea, out stackOffset))
+                stackState[stackOffset] = value;
+        }
+
     }
 }

@@ -40,18 +40,16 @@ namespace Decompiler.Scanning
     /// </remarks>
     public class ScannerEvaluationContext : EvaluationContext
     {
-        private IProcessorArchitecture arch;
         private Dictionary<RegisterStorage, Expression> linearDerived;
         private SortedList<int, Expression> stackState;
 
         public ScannerEvaluationContext(IProcessorArchitecture arch)
-            : this(arch, arch.CreateProcessorState())
+            : this(arch.CreateProcessorState())
         {
         }
 
-        public ScannerEvaluationContext(IProcessorArchitecture arch, ProcessorState state)
+        public ScannerEvaluationContext(ProcessorState state)
         {
-            this.arch = arch;
             this.State = state;
             this.linearDerived = new Dictionary<RegisterStorage, Expression>();
             this.stackState = new SortedList<int, Expression>();
@@ -59,7 +57,6 @@ namespace Decompiler.Scanning
 
         private ScannerEvaluationContext(ScannerEvaluationContext original)
         {
-            this.arch = original.arch;
             this.State = original.State.Clone();
             this.linearDerived = new Dictionary<RegisterStorage, Expression>(original.linearDerived);
             this.stackState = new SortedList<int, Expression>(original.stackState);
@@ -76,41 +73,19 @@ namespace Decompiler.Scanning
 
         public Expression GetValue(Identifier id)
         {
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
-                return Constant.Invalid;
-         
-            Expression exp = State.GetRegister(reg);
-            if (exp != Constant.Invalid)
-                return exp;
-            if (linearDerived.TryGetValue(reg, out exp))
-                return exp;
-            return Constant.Invalid;
+            return State.GetValue(id);
         }
 
         public Expression GetValue(MemoryAccess access)
         {
-            int stackOffset;
-            if (GetStackOffset(access.EffectiveAddress, out stackOffset))
-            {
-                Expression value;
-                if (stackState.TryGetValue(stackOffset, out value))
-                    return value;
-            }
-            return Constant.Invalid;
+            return State.GetValue(access);
         }
 
         public Expression GetValue(SegmentedAccess access)
         {
-            int stackOffset;
-            if (GetStackOffset(access.EffectiveAddress, out stackOffset))
-            {
-                Expression value;
-                if (stackState.TryGetValue(stackOffset, out value))
-                    return value;
-            }
-            return Constant.Invalid;
+            return State.GetValue(access);
         }
+
 
         public Expression GetValue(Application appl)
         {
@@ -127,37 +102,14 @@ namespace Decompiler.Scanning
 
         public void SetValue(Identifier id, Expression value)
         {
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
-                return;
-            var constVal = value as Constant;
-            if (constVal != null)
-            {
-                State.SetRegister(reg, constVal);
-                linearDerived.Remove(reg);
-                return;
-            }
-            var binVal = value as BinaryExpression;
-            if (binVal != null)
-            {
-                if ((binVal.Operator == Operator.Add || binVal.Operator == Operator.Sub) &&
-                    binVal.Left is Identifier &&
-                    binVal.Right is Constant)
-                {
-                    linearDerived[reg] = binVal;
-                    return;
-                }
-            }
-            State.SetRegister(reg, Constant.Invalid);
-            linearDerived.Remove(reg); 
+            State.SetValue(id, value);
         }
 
         public void SetValueEa(Expression ea, Expression value)
         {
-            int stackOffset;
-            if (GetStackOffset(ea, out stackOffset))
-                stackState[stackOffset] = value;
+            State.SetValueEa(ea, value);
         }
+        
 
         [Obsolete]
         private bool IsStackRegister(Expression ea)
@@ -168,30 +120,15 @@ namespace Decompiler.Scanning
 
         public void SetValueEa(Expression basePtr, Expression ea, Expression value)
         {
-            int stackOffset;
-            if (GetStackOffset(ea, out stackOffset))
-                stackState[stackOffset] = value;
+            State.SetValueEa(basePtr, ea, value);
         }
 
+        [Obsolete]
         private bool GetStackOffset(Expression ea, out int offset)
         {
-            if (IsStackRegister(ea))
-            {
-                offset = 0;
-                return true;
-            }
-
-            var bin = ea as BinaryExpression;
-            if (bin != null && (bin.Operator == Operator.Add || bin.Operator == Operator.Sub) && IsStackRegister(bin.Left))
-            {
-                offset = ((Constant) bin.Right).ToInt32();
-                if (bin.Operator == Operator.Sub)
-                    offset = -offset;
-                return true;
-            }
-            offset = 0;
-            return false;
+            return State.GetStackOffset(ea, out offset);
         }
+
         #endregion
     }
 }

@@ -173,6 +173,7 @@
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
+    <Compile Include="EvaluationContext.cs" />
     <Compile Include="Expressions\Application.cs" />
     <Compile Include="Expressions\ArrayAccess.cs" />
     <Compile Include="Expressions\BinaryExpression.cs" />

@@ -212,19 +212,29 @@ namespace Decompiler.UnitTests.Mocks
 	public class FakeProcessorState : ProcessorState
 	{
         private IProcessorArchitecture arch;
-        private Dictionary<RegisterStorage, Constant> regValues = new Dictionary<RegisterStorage, Constant>();
-        private SortedList<int, Constant> stackValues = new SortedList<int, Constant>();
+        private Dictionary<RegisterStorage, Constant> regValues;
+        private SortedList<int, Constant> stackValues;
 
         public FakeProcessorState(IProcessorArchitecture arch)
         {
             this.arch = arch;
+            this.regValues = new Dictionary<RegisterStorage, Constant>();
+            this.stackValues = new SortedList<int, Constant>();
+        }
+
+        public FakeProcessorState(FakeProcessorState orig)
+            : base(orig)
+        {
+            this.arch = orig.arch;
+            this.regValues = new Dictionary<RegisterStorage, Constant>(regValues);
+            this.stackValues = new SortedList<int, Constant>(stackValues);
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; }  }
 		
-        protected override ProcessorState CloneInternal()
+        public override ProcessorState Clone()
 		{
-			return new FakeProcessorState(arch);
+			return new FakeProcessorState(this);
 		}
 
 		public override Constant GetRegister(RegisterStorage r)
