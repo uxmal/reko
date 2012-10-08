@@ -41,6 +41,8 @@ namespace Decompiler.Core
             clone.ErrorListener = this.ErrorListener;
             return clone;
         }
+
+        public abstract IProcessorArchitecture Architecture { get; }
         protected abstract ProcessorState CloneInternal();
 
         public abstract Constant GetRegister(RegisterStorage r);
@@ -62,5 +64,17 @@ namespace Decompiler.Core
         /// <param name="sigCallee">The signature of the called procedure.</param>
         public abstract void OnAfterCall(ProcedureSignature sigCallee);
 
+
+        [Obsolete("Make this private as soon as possible")]
+        public bool IsStackRegister(Expression ea)
+        {
+            var id = ea as Identifier;
+            if (id == null)
+                return false;
+            var reg = id.Storage as RegisterStorage;
+            if (reg == null)
+                return false;
+            return (reg == Architecture.StackRegister);
+        }
     }
 }

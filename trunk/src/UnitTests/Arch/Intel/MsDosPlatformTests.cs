@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 			Platform platform = new MsdosPlatform(arch);
 
-			X86State state = new X86State();
+			var state = arch.CreateProcessorState();
 			state.SetRegister(Registers.ah, new Constant(PrimitiveType.Byte, 0x3E));
 			SystemService svc = platform.FindService(0x21, state);
 			Assert.AreEqual("msdos_close_file", svc.Name);

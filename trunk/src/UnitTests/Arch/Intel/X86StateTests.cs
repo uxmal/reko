@@ -19,8 +19,9 @@
 #endregion
 
 using Decompiler.Arch.X86;
-using Decompiler.Core.Expressions;
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
+using Decompiler.Core.Types;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -32,10 +33,14 @@ namespace Decompiler.UnitTests.Arch.Intel
     [TestFixture]
     public class X86StateTests
     {
+        public X86StateTests()
+        {
+        }
         [Test]
         public void State()
         {
-            var state = new X86State();
+            var arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            var state = new X86State(arch);
             state.SetRegister(Registers.esp, Constant.Word32(-4));
             state.OnProcedureEntered();
             var site = state.OnBeforeCall(4);
@@ -45,8 +50,9 @@ namespace Decompiler.UnitTests.Arch.Intel
         [Test]
         public void StackUnderflow_ReportError()
         {
+            var arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             string reportedError = null;
-            var state = new X86State
+            var state = new X86State(arch)
             {
                 ErrorListener = (err) => { reportedError = err; }
             };
@@ -58,6 +64,31 @@ namespace Decompiler.UnitTests.Arch.Intel
                 StackDelta = 16,
             });
             Assert.IsNotNull(reportedError);
+        }
+
+        [Test]
+        public void Simple()
+        {
+            var arch = new IntelArchitecture(ProcessorMode.Real);
+
+            X86State st = new X86State(arch);
+            st.SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, 0xC00));
+            st.SetRegister(Registers.ax, new Constant(PrimitiveType.Word16, 0x1234));
+            Assert.IsTrue(!st.GetRegister(Registers.bx).IsValid);
+            Assert.IsTrue(st.GetRegister(Registers.ax).IsValid);
+            Assert.IsTrue(st.GetRegister(Registers.al).IsValid);
+            Assert.AreEqual(0x34, st.GetRegister(Registers.al).ToUInt32());
+            Assert.IsTrue(st.GetRegister(Registers.ah).IsValid);
+            Assert.AreEqual(0x12, st.GetRegister(Registers.ah).ToUInt32());
+        }
+
+        [Test]
+        public void AreEqual()
+        {
+            var arch = new IntelArchitecture(ProcessorMode.Real);
+            X86State st1 = new X86State(arch);
+            X86State st2 = new X86State(arch);
+            Assert.IsTrue(st1.HasSameValues(st2));
         }
     }
 }

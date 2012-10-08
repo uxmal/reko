@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Scanning
             prog.Architecture = m.Architecture;
             prog.Platform = new FakePlatform();
             scan = new TestScanner(prog);
-            EntryPoint ep = new EntryPoint(addr, new X86State());
+            EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
         }
 
@@ -229,7 +229,7 @@ namespace Decompiler.UnitTests.Scanning
             prog.Architecture = m.Architecture;
             prog.Platform = new FakePlatform();
             var scan = new Scanner(prog, new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
-            EntryPoint ep = new EntryPoint(addr, new X86State());
+            EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ProcessQueue();
 
@@ -282,7 +282,7 @@ fn0C00_0000_exit:
                 new RtlInstructionCluster(new Address(0x100100), 4,
                     new RtlReturn(4, 0))));
             
-            X86State st = new X86State();
+            var st = (X86State) arch.CreateProcessorState();
             st.GrowFpuStack(new Address(0x100000));
             var scEval = new ScannerEvaluationContext(arch, st);
             scan.ScanProcedure(new Address(0x100100),  null, scEval);
@@ -293,7 +293,6 @@ fn0C00_0000_exit:
             Assert.AreEqual(0, stNew.FpuStackItems);
         }
 
-
         [Test]
         public void ScanImportedProcedure()
         {
@@ -301,7 +300,7 @@ fn0C00_0000_exit:
             prog.ImportThunks.Add(0x2000, new PseudoProcedure(
                 "grox", CreateSignature("ax", "bx")));
             var scan = CreateScanner(0x1000, 0x200);
-            var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", new ScannerEvaluationContext(arch, new FakeProcessorState()));
+            var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", new ScannerEvaluationContext(arch, arch.CreateProcessorState()));
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
             Assert.AreEqual("bx", proc.Signature.FormalArguments[0].Name);

@@ -35,10 +35,11 @@ namespace Decompiler.Arch.X86
 		private ulong [] regs;
 		private bool [] valid;
 		private Stack<Constant> stackOld;
+        private IntelArchitecture arch;
 
         private const int StackItemSize = 2;
 
-		public X86State()
+		public X86State(IntelArchitecture arch)
 		{
 			regs = new ulong[(int)Registers.Max];
 			valid = new bool[(int)Registers.Max];
@@ -47,12 +48,14 @@ namespace Decompiler.Arch.X86
 
 		public X86State(X86State st)
 		{
+            arch = st.arch;
 			regs = (ulong []) st.regs.Clone();
 			valid = (bool []) st.valid.Clone();
             stackOld = new Stack<Constant>(st.stackOld);
             FpuStackItems = st.FpuStackItems;
 		}
 
+        public override IProcessorArchitecture Architecture { get { return arch; } }
         public int FpuStackItems { get; set; }
 
 		public Address AddressFromSegOffset(RegisterStorage seg, uint offset)

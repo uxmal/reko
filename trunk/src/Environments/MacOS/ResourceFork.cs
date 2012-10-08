@@ -32,6 +32,7 @@ namespace Decompiler.Environments.MacOS
     public class ResourceFork
     {
         private byte[]  image;
+        private IProcessorArchitecture arch;
         private ResourceTypeCollection rsrcTypes;
 
         uint rsrcDataOff;
@@ -40,17 +41,17 @@ namespace Decompiler.Environments.MacOS
         uint mapSize;
 
 
-        public ResourceFork(byte [] bytes)
+        public ResourceFork(byte[] bytes, IProcessorArchitecture arch)
         {
-            image = bytes;
+            this.image = bytes;
+            this.arch = arch;
 
-             rsrcDataOff = ProgramImage.ReadBeUInt32(bytes, 0);
-             rsrcMapOff = ProgramImage.ReadBeUInt32(bytes, 4);
-             dataSize = ProgramImage.ReadBeUInt32(bytes, 8);
-             mapSize = ProgramImage.ReadBeUInt32(bytes, 0x0C);
+            rsrcDataOff = ProgramImage.ReadBeUInt32(bytes, 0);
+            rsrcMapOff = ProgramImage.ReadBeUInt32(bytes, 4);
+            dataSize = ProgramImage.ReadBeUInt32(bytes, 8);
+            mapSize = ProgramImage.ReadBeUInt32(bytes, 0x0C);
 
-            rsrcTypes =  new ResourceTypeCollection(image, rsrcMapOff, mapSize);
-            
+            rsrcTypes = new ResourceTypeCollection(image, rsrcMapOff, mapSize);
         }
 
         public ResourceTypeCollection ResourceTypes
@@ -301,7 +302,7 @@ namespace Decompiler.Environments.MacOS
                         }
                         else
                         {
-                            entryPoints.Add(new EntryPoint(addrSegment + 4, new M68kState()));
+                            entryPoints.Add(new EntryPoint(addrSegment + 4, arch.CreateProcessorState()));
                         }
                     }
                 }

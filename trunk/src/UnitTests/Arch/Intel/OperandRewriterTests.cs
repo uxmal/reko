@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Arch.Intel
             prog.Image = new ProgramImage(new Address(0x10000), new byte[4]);
             var procAddress = new Address(0x10000000);
             proc = Procedure.Create(procAddress, arch.CreateFrame());
-			state = new X86State();
+			state = (X86State) arch.CreateProcessorState();
 			orw = new OperandRewriter(arch, proc.Frame, new FakeRewriterHost(prog));
 		}
 

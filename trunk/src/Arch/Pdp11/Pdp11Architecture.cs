@@ -73,7 +73,7 @@ namespace Decompiler.Arch.Pdp11
 
         public ProcessorState CreateProcessorState()
         {
-            return new Pdp11ProcessorState();
+            return new Pdp11ProcessorState(this);
         }
 
         public BitSet CreateRegisterBitset()

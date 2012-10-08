@@ -30,6 +30,15 @@ namespace Decompiler.Arch.Pdp11
 {
     class Pdp11ProcessorState : ProcessorState
     {
+        private Pdp11Architecture arch;
+
+        public Pdp11ProcessorState(Pdp11Architecture arch)
+        {
+            this.arch = arch;
+        }
+
+        public override IProcessorArchitecture Architecture { get { return arch; } }
+        
         protected override ProcessorState CloneInternal()
         {
             throw new NotImplementedException();

@@ -109,7 +109,7 @@ namespace Decompiler.Arch.X86
 
 		public virtual ProcessorState CreateProcessorState()
 		{
-			return new X86State();
+			return new X86State(this);
 		}
 
         public virtual Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)

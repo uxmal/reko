@@ -1219,7 +1219,7 @@ namespace Decompiler.Assemblers.x86
         {
             DefineSymbol(procName);
             if (entryPoints != null && entryPoints.Count == 0)
-                entryPoints.Add(new EntryPoint(addrBase + emitter.Position, new X86State()));
+                entryPoints.Add(new EntryPoint(addrBase + emitter.Position, arch.CreateProcessorState()));
         }
 
         public void Push(ParsedOperand op)

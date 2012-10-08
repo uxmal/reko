@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Scanning
             arch = new FakeArchitecture();
             arch.StackRegister = sp;
 
-            state = new FakeProcessorState();
+            state = new FakeProcessorState(arch);
             sce = new ScannerEvaluationContext(arch, state);
 
             idSp = new Identifier(sp.Name, 1, sp.DataType, sp);
@@ -178,8 +178,17 @@ namespace Decompiler.UnitTests.Scanning
 
         public class FakeProcessorState : ProcessorState
         {
+            private IProcessorArchitecture arch;
             private Dictionary<RegisterStorage, Constant> regs = new Dictionary<RegisterStorage, Constant>();
             private SortedList<int, Constant> stack = new SortedList<int, Constant>();
+
+            public FakeProcessorState(IProcessorArchitecture arch)
+            {
+                this.arch = arch;
+            }
+
+            public override IProcessorArchitecture Architecture { get { return arch; } }
+
             #region ProcessorState Members
 
             protected override ProcessorState CloneInternal()

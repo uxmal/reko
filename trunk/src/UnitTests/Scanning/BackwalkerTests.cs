@@ -53,7 +53,7 @@ namespace Decompiler.UnitTests.Scanning
         {
             arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             m = new ProcedureBuilder();
-            state = new X86State();
+            state = arch.CreateProcessorState();
             expSimp = new ExpressionSimplifier(
                 new ScannerEvaluationContext(
                     new IntelArchitecture(ProcessorMode.ProtectedFlat), 
@@ -251,7 +251,7 @@ namespace Decompiler.UnitTests.Scanning
 		[Test]
 		public void IbwInc()
 		{
-            var state = new X86State();
+            var state = arch.CreateProcessorState();
             var di = new Identifier("di", 0, Registers.di.DataType, Registers.di);
 			Backwalker bw = new Backwalker(host, new RtlGoto(new MemoryAccess(di, di.DataType)),
                 new ExpressionSimplifier(new ScannerEvaluationContext(arch, state)));

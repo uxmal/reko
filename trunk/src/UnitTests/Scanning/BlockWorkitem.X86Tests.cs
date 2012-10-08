@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Scanning
         private IScanner scanner;
         private RewriterHost host;
         private MockRepository repository;
-        private X86State state;
+        private ProcessorState state;
         private BlockWorkitem wi;
         private string nl = Environment.NewLine;
 
@@ -112,7 +112,7 @@ namespace Decompiler.UnitTests.Scanning
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             stm = new RtlStatementStream(addr.Linear, block);
-            state = new X86State();
+            state = arch.CreateProcessorState();
             var asm = new IntelAssembler(arch, addr, new List<EntryPoint>());
             scanner = repository.Stub<IScanner>();
             host = new RewriterHost(asm.ImportThunks);
