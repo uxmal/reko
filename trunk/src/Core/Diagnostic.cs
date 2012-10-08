@@ -37,7 +37,6 @@ namespace Decompiler.Core
             get { return message; }
         }
 
-        //$REVIEW: this is being used as a type code. Be careful...
         public virtual string ImageKey
         {
             get { return ""; }

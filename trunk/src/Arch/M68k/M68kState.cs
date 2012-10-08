@@ -32,39 +32,39 @@ namespace Decompiler.Arch.M68k
     {
         #region ProcessorState Members
 
-        public ProcessorState Clone()
+        protected override ProcessorState CloneInternal()
         {
             return new M68kState();
         }
 
-        public void SetRegister(RegisterStorage r, Constant v)
+        public override void SetRegister(RegisterStorage r, Constant v)
         {
             throw new NotImplementedException();
         }
 
-        public void SetInstructionPointer(Address addr)
+        public override void SetInstructionPointer(Address addr)
         {
         }
 
-        public Constant GetRegister(RegisterStorage r)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnProcedureEntered()
-        {
-        }
-
-        public void OnProcedureLeft(ProcedureSignature sig)
-        {
-        }
-
-        public CallSite OnBeforeCall(int returnAddressSize)
+        public override Constant GetRegister(RegisterStorage r)
         {
             throw new NotImplementedException();
         }
 
-        public void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnProcedureEntered()
+        {
+        }
+
+        public override void OnProcedureLeft(ProcedureSignature sig)
+        {
+        }
+
+        public override CallSite OnBeforeCall(int returnAddressSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void OnAfterCall(ProcedureSignature sigCallee)
         {
             throw new NotImplementedException();
         }

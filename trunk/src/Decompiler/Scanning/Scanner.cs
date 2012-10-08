@@ -196,7 +196,7 @@ namespace Decompiler.Scanning
         }
 
         // Method is virtual because we want to peek into the parameters being passed to it.
-        public virtual Block EnqueueJumpTarget(Address addrStart, Procedure proc, ScannerEvaluationContext state)
+        public virtual Block EnqueueJumpTarget(Address addrStart, Procedure proc, ScannerEvaluationContext scEval)
         {
             Block block = FindExactBlock(addrStart);
             if (block != null)
@@ -226,7 +226,8 @@ namespace Decompiler.Scanning
             {
                 block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
             }
-            queue.Enqueue(PriorityJumpTarget, CreateBlockWorkItem(addrStart, proc, state));
+            var wi = CreateBlockWorkItem(addrStart, proc, scEval);
+            queue.Enqueue(PriorityJumpTarget, wi);
             return block;
         }
 

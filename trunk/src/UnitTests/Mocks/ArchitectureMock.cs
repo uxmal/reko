@@ -214,12 +214,12 @@ namespace Decompiler.UnitTests.Mocks
         private Dictionary<RegisterStorage, Constant> regValues = new Dictionary<RegisterStorage, Constant>();
         private SortedList<int, Constant> stackValues = new SortedList<int, Constant>();
 
-		public ProcessorState Clone()
+		protected override ProcessorState CloneInternal()
 		{
 			return new FakeProcessorState();
 		}
 
-		public Constant GetRegister(RegisterStorage r)
+		public override Constant GetRegister(RegisterStorage r)
 		{
             Constant c;
             if (!regValues.TryGetValue(r, out c))
@@ -229,29 +229,29 @@ namespace Decompiler.UnitTests.Mocks
             return c;
 		}
 
-        public void OnProcedureEntered()
+        public override void OnProcedureEntered()
         {
         }
 
-        public void OnProcedureLeft(ProcedureSignature sig)
+        public override void OnProcedureLeft(ProcedureSignature sig)
         {
         }
 
-		public void SetRegister(RegisterStorage r, Constant v)
+        public override void SetRegister(RegisterStorage r, Constant v)
 		{
             regValues[r] = v;
 		}
 
-		public void SetInstructionPointer(Address addr)
+        public override void SetInstructionPointer(Address addr)
 		{
 		}
 
-        public CallSite OnBeforeCall(int returnAddressSize)
+        public override CallSite OnBeforeCall(int returnAddressSize)
         {
             return new CallSite(returnAddressSize, 0);
         }
 
-        public void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(ProcedureSignature sigCallee)
         {
         }
 	}

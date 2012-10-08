@@ -30,49 +30,44 @@ namespace Decompiler.Arch.Pdp11
 {
     class Pdp11ProcessorState : ProcessorState
     {
-        public ProcessorState Clone()
+        protected override ProcessorState CloneInternal()
         {
             throw new NotImplementedException();
         }
 
-        public void SetRegister(RegisterStorage r, Constant v)
+        public override void SetRegister(RegisterStorage r, Constant v)
         {
             throw new NotImplementedException();
         }
 
-        public void SetInstructionPointer(Address addr)
+        public override void SetInstructionPointer(Address addr)
         {
             throw new NotImplementedException();
         }
 
-        public Constant GetRegister(RegisterStorage r)
+        public override Constant GetRegister(RegisterStorage r)
         {
             throw new NotImplementedException();
         }
 
-        #region ProcessorState Members
-
-
-        public void OnProcedureEntered()
+        public override void OnProcedureEntered()
         {
             throw new NotImplementedException();
         }
 
-        public void OnProcedureLeft(ProcedureSignature procedureSignature)
+        public override void OnProcedureLeft(ProcedureSignature procedureSignature)
         {
             throw new NotImplementedException();
         }
 
-        public CallSite OnBeforeCall(int returnSize)
+        public override CallSite OnBeforeCall(int returnSize)
         {
             throw new NotImplementedException();
         }
 
-        public void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(ProcedureSignature sigCallee)
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

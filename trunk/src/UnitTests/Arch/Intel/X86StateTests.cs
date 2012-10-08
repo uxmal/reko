@@ -20,7 +20,9 @@
 
 using Decompiler.Arch.X86;
 using Decompiler.Core.Expressions;
+using Decompiler.Core;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,6 +40,24 @@ namespace Decompiler.UnitTests.Arch.Intel
             state.OnProcedureEntered();
             var site = state.OnBeforeCall(4);
             Assert.AreEqual(4, site.SizeOfReturnAddressOnStack);
+        }
+
+        [Test]
+        public void StackUnderflow_ReportError()
+        {
+            string reportedError = null;
+            var state = new X86State
+            {
+                ErrorListener = (err) => { reportedError = err; }
+            };
+            state.OnProcedureEntered();
+            state.SetRegister(Registers.esp, Constant.Word32(-4));
+            var site = state.OnBeforeCall(4);
+            state.OnAfterCall(new ProcedureSignature
+            {
+                StackDelta = 16,
+            });
+            Assert.IsNotNull(reportedError);
         }
     }
 }

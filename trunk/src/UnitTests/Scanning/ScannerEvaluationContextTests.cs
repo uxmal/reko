@@ -182,12 +182,12 @@ namespace Decompiler.UnitTests.Scanning
             private SortedList<int, Constant> stack = new SortedList<int, Constant>();
             #region ProcessorState Members
 
-            public ProcessorState Clone()
+            protected override ProcessorState CloneInternal()
             {
                 throw new NotImplementedException();
             }
 
-            public Constant GetRegister(RegisterStorage r)
+            public override Constant GetRegister(RegisterStorage r)
             {
                 Constant c;
                 if (!regs.TryGetValue(r, out c))
@@ -195,32 +195,32 @@ namespace Decompiler.UnitTests.Scanning
                 return c;
             }
 
-            public void SetRegister(RegisterStorage r, Constant v)
+            public override void SetRegister(RegisterStorage r, Constant v)
             {
                 throw new NotImplementedException();
             }
 
-            public void SetInstructionPointer(Address addr)
+            public override void SetInstructionPointer(Address addr)
             {
                 throw new NotImplementedException();
             }
 
-            public void OnProcedureEntered()
+            public override void OnProcedureEntered()
             {
                 throw new NotImplementedException();
             }
 
-            public void OnProcedureLeft(ProcedureSignature procedureSignature)
+            public override void OnProcedureLeft(ProcedureSignature procedureSignature)
             {
                 throw new NotImplementedException();
             }
 
-            public CallSite OnBeforeCall(int returnAddressSize)
+            public override CallSite OnBeforeCall(int returnAddressSize)
             {
                 throw new NotImplementedException();
             }
 
-            public void OnAfterCall(ProcedureSignature sigCallee)
+            public override void OnAfterCall(ProcedureSignature sigCallee)
             {
                 throw new NotImplementedException();
             }
