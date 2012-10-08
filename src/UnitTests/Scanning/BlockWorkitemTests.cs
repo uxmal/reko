@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Scanning
                 rewriter, 
                 new ScannerEvaluationContext(
                     arch, 
-                    new FakeProcessorState()),
+                    new FakeProcessorState(arch)),
                 proc.Frame, 
                 addr);
         }

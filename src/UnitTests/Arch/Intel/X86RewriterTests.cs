@@ -49,7 +49,7 @@ namespace Decompiler.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            state = new X86State();
+            state = (X86State) arch.CreateProcessorState();
         }
 
         private IntelAssembler Create16bitAssembler()

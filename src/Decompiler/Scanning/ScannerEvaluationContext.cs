@@ -159,16 +159,12 @@ namespace Decompiler.Scanning
                 stackState[stackOffset] = value;
         }
 
+        [Obsolete]
         private bool IsStackRegister(Expression ea)
         {
-            var id = ea as Identifier;
-            if (id == null)
-                return false;
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
-                return false;
-            return (reg == arch.StackRegister);
+            return State.IsStackRegister(ea);
         }
+
 
         public void SetValueEa(Expression basePtr, Expression ea, Expression value)
         {

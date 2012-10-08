@@ -148,7 +148,7 @@ namespace Decompiler.UnitTests.Mocks
 
 		public ProcessorState CreateProcessorState()
 		{
-			return new FakeProcessorState();
+			return new FakeProcessorState(this);
 		}
 
 		public BitSet CreateRegisterBitset()
@@ -211,12 +211,20 @@ namespace Decompiler.UnitTests.Mocks
 
 	public class FakeProcessorState : ProcessorState
 	{
+        private IProcessorArchitecture arch;
         private Dictionary<RegisterStorage, Constant> regValues = new Dictionary<RegisterStorage, Constant>();
         private SortedList<int, Constant> stackValues = new SortedList<int, Constant>();
 
-		protected override ProcessorState CloneInternal()
+        public FakeProcessorState(IProcessorArchitecture arch)
+        {
+            this.arch = arch;
+        }
+
+        public override IProcessorArchitecture Architecture { get { return arch; }  }
+		
+        protected override ProcessorState CloneInternal()
 		{
-			return new FakeProcessorState();
+			return new FakeProcessorState(arch);
 		}
 
 		public override Constant GetRegister(RegisterStorage r)

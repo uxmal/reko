@@ -35,7 +35,7 @@ namespace Decompiler.UnitTests.Arch.Intel
 	{
 		private OperandRewriter orw;
 		private IntelArchitecture arch;
-		private X86State state;
+        private X86State state;
 		private Procedure proc;
 
 		[TestFixtureSetUp]
@@ -47,8 +47,8 @@ namespace Decompiler.UnitTests.Arch.Intel
 			var procAddress = new Address(0x10000000);
             proc = Procedure.Create(null, procAddress, arch.CreateFrame());
 			orw = new OperandRewriter(arch, proc.Frame, new FakeRewriterHost(prog));
-            state = new X86State();
-		}
+            state = (X86State)arch.CreateProcessorState();
+        }
 
 		[Test]
 		public void RewriteSegConst()

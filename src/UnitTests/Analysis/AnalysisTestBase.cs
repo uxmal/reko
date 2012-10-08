@@ -152,7 +152,7 @@ namespace Decompiler.UnitTests.Analysis
                 ? new SerializedProject()
                 :  SerializedProject.Load(FileUnitTester.MapTestPath(configFile));
             
-            scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, new X86State()));
+            scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, prog.Architecture.CreateProcessorState()));
             foreach (var sp in project.UserProcedures)
             {
                 scan.EnqueueUserProcedure(sp);

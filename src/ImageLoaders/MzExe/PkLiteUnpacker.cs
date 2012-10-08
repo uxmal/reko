@@ -267,7 +267,7 @@ l01C8:
 			pklCs = (ushort) (bitStm.GetWord() + segCode);
 			pklIp = bitStm.GetWord();
 
-			X86State state = new X86State();
+			var state = arch.CreateProcessorState();
 			state.SetRegister(Registers.ds, new Constant(PrimitiveType.Word16, addrLoad.Selector));
 			state.SetRegister(Registers.es, new Constant(PrimitiveType.Word16, addrLoad.Selector));
 			state.SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, pklCs));

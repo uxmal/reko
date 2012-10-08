@@ -262,7 +262,7 @@ namespace Decompiler.ImageLoaders.MzExe
 			{
 				ApplyRelocations(relocSection.OffsetRawData, relocSection.VirtualSize, (uint) addrLoad.Linear, relocations);
 			}
-			entryPoints.Add(new EntryPoint(addrLoad + rvaStartAddress, new X86State()));
+			entryPoints.Add(new EntryPoint(addrLoad + rvaStartAddress, arch.CreateProcessorState()));
 			AddExportedEntryPoints(addrLoad, imageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
 		}

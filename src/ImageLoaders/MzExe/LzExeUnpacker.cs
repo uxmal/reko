@@ -100,7 +100,7 @@ namespace Decompiler.ImageLoaders.MzExe
 		{
 			// Seed the scanner with the start location.
 
-			EntryPoint ep =  new EntryPoint(new Address((ushort) (lzCs + addrLoad.Selector), lzIp), new X86State());
+			EntryPoint ep =  new EntryPoint(new Address((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState());
 			entryPoints.Add(ep);
 			if (isLz91)
 			{

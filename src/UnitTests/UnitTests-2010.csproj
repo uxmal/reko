@@ -130,7 +130,6 @@
     <Compile Include="Arch\Intel\MsDosPlatformTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterRealModeTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterTests.cs" />
-    <Compile Include="Arch\Intel\ProcessorState.cs" />
     <Compile Include="Arch\Intel\Rewrite32.cs" />
     <Compile Include="Arch\Intel\RewriteFpuInstructionTests.cs" />
     <Compile Include="Arch\Intel\RewriterTests.cs" />
