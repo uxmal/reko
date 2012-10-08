@@ -142,11 +142,28 @@ namespace Decompiler.Gui.Windows
                 {
                 case CmdIds.ViewGoToAddress: GotoAddress(); return true;
                 case CmdIds.ActionMarkType: MarkType(); return true;
+                case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
                 }
             }
             return false;
         }
 
+        public void MarkAndScanProcedure()
+        {
+            AddressRange addrRange = Control.GetAddressRange();
+            if (addrRange.IsValid)
+            {
+                var decompiler = sp.GetService<IDecompilerService>().Decompiler;
+                var proc = decompiler.ScanProcedure(addrRange.Begin);
+                var userp = new Decompiler.Core.Serialization.SerializedProcedure
+                {
+                    Address = addrRange.Begin.ToString(),
+                    Name = proc.Name,
+                };
+                decompiler.Project.UserProcedures.Add(addrRange.Begin, userp);
+                Control.Invalidate();
+            }
+        }
         #endregion
     }
 }

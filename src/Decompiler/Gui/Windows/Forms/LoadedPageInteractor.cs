@@ -147,7 +147,6 @@ namespace Decompiler.Gui.Windows.Forms
             }
         }
 
-
 		public void PopulateBrowser()
 		{
             browserSvc.Populate(Decompiler.Program.Image.Map.Segments.Values, delegate(object item, IListViewItem listItem)

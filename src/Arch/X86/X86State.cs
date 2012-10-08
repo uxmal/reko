@@ -77,12 +77,12 @@ namespace Decompiler.Arch.X86
 				return null;
 		}
 
-		public ProcessorState Clone()
+		protected override ProcessorState CloneInternal()
 		{
 			return new X86State(this);
 		}
 
-        public Constant GetRegister(RegisterStorage reg)
+        public override Constant GetRegister(RegisterStorage reg)
         {
             if (valid[reg.Number])
                 return new Constant(reg.DataType, regs[reg.Number]);
@@ -90,7 +90,7 @@ namespace Decompiler.Arch.X86
                 return Constant.Invalid;
         }
 
-		public void SetRegister(RegisterStorage reg, Constant c)
+		public override void SetRegister(RegisterStorage reg, Constant c)
 		{
 			if (c == null || !c.IsValid)
 			{
@@ -102,37 +102,43 @@ namespace Decompiler.Arch.X86
 			}
 		}
 
-		public void SetInstructionPointer(Address addr)
+		public override void SetInstructionPointer(Address addr)
 		{
 			SetRegister(Registers.cs, new Constant(PrimitiveType.Word16, addr.Selector));
 		}
 
-        public void OnProcedureEntered()
+        public override void OnProcedureEntered()
         {
             FpuStackItems = 0;
             SetRegister(Registers.D, Constant.False());
         }
 
-        public void OnProcedureLeft(ProcedureSignature sig)
+        public override void OnProcedureLeft(ProcedureSignature sig)
         {
             sig.FpuStackDelta = FpuStackItems;     
         }
 
-        public CallSite OnBeforeCall(int returnAddressSize)
+        public override CallSite OnBeforeCall(int returnAddressSize)
         {
             if (returnAddressSize > 0)
                 Push(PrimitiveType.CreateWord(returnAddressSize), Constant.Invalid);
             return new CallSite(returnAddressSize, FpuStackItems);  
         }
 
-        public void OnAfterCall(ProcedureSignature sig)
+        public override void OnAfterCall(ProcedureSignature sig)
         {
             ShrinkStack(sig.StackDelta);
             ShrinkFpuStack(-sig.FpuStackDelta);
         }
 
-        private void ShrinkStack(int shr)
+        private void ShrinkStack(int bytesToShrink)
         {
+            if (bytesToShrink > stackOld.Count * StackItemSize)
+            {
+                ErrorListener("Possible stack underflow detected");
+            }
+
+            int shr = bytesToShrink;
             while (shr > 0)
             {
                 Pop(PrimitiveType.Word16);
@@ -140,7 +146,6 @@ namespace Decompiler.Arch.X86
             }
         }
 
-        [Obsolete("Use GetStackValue")]
 		public Constant Pop(PrimitiveType t)
 		{
 			try
@@ -152,14 +157,12 @@ namespace Decompiler.Arch.X86
 				case 2:
 					if (stackOld.Count < 1)
 					{
-						Debug.WriteLine("Stack underflow from popping.");
 						return Constant.Invalid;
 					}
 					return stackOld.Pop();
 				case 4:
 					if (stackOld.Count < 2)
 					{
-                        Debug.WriteLine("Stack underflow from popping.");
 						return Constant.Invalid;
 					}
 					Constant v = stackOld.Pop();

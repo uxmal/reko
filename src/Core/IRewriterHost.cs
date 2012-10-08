@@ -28,21 +28,5 @@ namespace Decompiler.Core
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
         PseudoProcedure GetImportThunkAtAddress(uint addrThunk);
     }
-
-    [Obsolete("Use IRewriterHost and move members from this interface if necessary.", true)]
-    public interface IRewriterHostOld
-	{
-		void AddCallEdge(Procedure caller, Statement stm, Procedure callee);
-		ImageReader CreateImageReader(Address addr);
-		PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
-		Procedure GetProcedureAtAddress(Address addr, int cbReturnAddress);
-		ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
-		Procedure [] GetProceduresFromVector(Address addrCallingInstruction, int cbReturnAddress);
-		PseudoProcedure GetImportThunkAtAddress(Address addrThunk);
-		VectorUse VectorUseAt(Address addr);
-		SystemService SystemCallAt(Address addr);
-		PseudoProcedure TrampolineAt(Address addr);
-		ProgramImage Image { get; }
-        void AddDiagnostic(Address addr, Diagnostic diagnostic);
-    }
 }
+

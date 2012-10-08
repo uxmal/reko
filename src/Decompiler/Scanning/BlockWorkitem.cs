@@ -40,7 +40,7 @@ namespace Decompiler.Scanning
     {
         private IScanner scanner;
         private IProcessorArchitecture arch;
-        private Address addr;
+        private Address addrStart;
         private Block blockCur;
         private Frame frame;
         private RtlInstruction ri;
@@ -54,17 +54,17 @@ namespace Decompiler.Scanning
         public BlockWorkitem(
             IScanner scanner,
             Rewriter rewriter,
-            ScannerEvaluationContext state,
+            ScannerEvaluationContext scEval,
             Frame frame,
             Address addr)
         {
             this.scanner = scanner;
             this.arch = scanner.Architecture;
             this.rewriter = rewriter;
-            this.scEval = state;
+            this.scEval = scEval;
             this.eval = new ExpressionSimplifier(scEval);
             this.frame = frame;
-            this.addr = addr;
+            this.addrStart = addr;
             this.blockCur = null;
         }
 
@@ -74,7 +74,8 @@ namespace Decompiler.Scanning
         public override void Process()
         {
             rtlStream = rewriter.GetEnumerator();
-            blockCur = scanner.FindContainingBlock(addr);
+            scEval.State.ErrorListener = (message) => { scanner.AddDiagnostic(ric.Address, new WarningDiagnostic(message)); };
+            blockCur = scanner.FindContainingBlock(addrStart);
             if (BlockHasBeenScanned(blockCur))
                 return;
             while (rtlStream.MoveNext())

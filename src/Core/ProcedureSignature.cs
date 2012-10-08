@@ -67,12 +67,9 @@ namespace Decompiler.Core
         public int FpuStackDelta { get; set; }
         /// <summary>
         /// Number of bytes to add to the stack pointer after returning from the procedure.
-        /// Note that this doesn't include the return address size, if the return address is 
+        /// Note that this does include the return address size, if the return address is 
         /// passed on the stack. 
         /// </summary>
-        /// <remarks>
-        /// This is x86-specific.
-        /// </remarks>
         public int StackDelta { get; set; }
         /// <summary>
         /// The index of the 'deepest' FPU stack argument used. -1 means no stack parameters are used.
