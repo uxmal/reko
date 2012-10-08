@@ -55,8 +55,7 @@ namespace Decompiler.UnitTests.Scanning
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
             expSimp = new ExpressionSimplifier(
-                new ScannerEvaluationContext(
-                    new IntelArchitecture(ProcessorMode.ProtectedFlat)));
+                    new IntelArchitecture(ProcessorMode.ProtectedFlat).CreateProcessorState());
             SCZO = m.Frame.EnsureFlagGroup((uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost();
         }
@@ -253,7 +252,7 @@ namespace Decompiler.UnitTests.Scanning
             var state = arch.CreateProcessorState();
             var di = new Identifier("di", 0, Registers.di.DataType, Registers.di);
 			Backwalker bw = new Backwalker(host, new RtlGoto(new MemoryAccess(di, di.DataType)),
-                new ExpressionSimplifier(new ScannerEvaluationContext(state)));
+                new ExpressionSimplifier(state));
 			var instrs = new StatementList(new Block(null, "foo"));
 			instrs.Add(0, new Assignment(di, new BinaryExpression(Operator.Add, di.DataType, di, Constant.Word16(1))));
 			var r = bw.BackwalkInstructions(Registers.di, instrs);

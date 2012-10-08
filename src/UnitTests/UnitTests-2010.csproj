@@ -113,6 +113,7 @@
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
     <Compile Include="Core\CodeEmitterTests.cs" />
     <Compile Include="Core\ImageReaderTests.cs" />
+    <Compile Include="Core\ProcedureStateTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
@@ -473,7 +474,6 @@
     <Compile Include="Scanning\ProcedureScannerTests.cs" />
     <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
-    <Compile Include="Scanning\ScannerEvaluationContextTests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
   <ItemGroup>
