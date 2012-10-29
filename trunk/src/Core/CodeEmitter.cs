@@ -83,21 +83,6 @@ namespace Decompiler.Core
             return gi;
         }
 
-        public GotoInstruction IfGoto(Expression condition, Address addr)
-        {
-            var gi = new GotoInstruction(condition, addr);
-            Emit(gi);
-            return gi;
-        }
-
-        public GotoInstruction IfGoto(Expression condition, uint linearAddress)
-        {
-            var gi = new GotoInstruction(condition,
-                new Constant(PrimitiveType.Word32, linearAddress));
-            Emit(gi);
-            return gi;
-        }
-
         public void Load(Identifier reg, Expression ea)
         {
             Assign(reg, new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, reg.DataType));
@@ -114,14 +99,9 @@ namespace Decompiler.Core
             Return(null);
         }
 
-        //public virtual void Return(Expression exp)
-        //{
-        //    Emit(new ReturnInstruction(exp));
-        //}
-
-        public virtual void Return(Expression rv)
+        public virtual void Return(Expression exp)
         {
-            Emit(new ReturnInstruction(rv));
+            Emit(new ReturnInstruction(exp));
         }
 
         public Statement SideEffect(Expression side)

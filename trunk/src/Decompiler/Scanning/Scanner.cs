@@ -157,6 +157,7 @@ namespace Decompiler.Scanning
             BlockRange range;
             if (blocks.TryGetLowerBound(addr.Linear, out range) && range.Start < addr.Linear)
                 range.End = addr.Linear;
+            image.Map.TerminateItem(addr);
         }
 
 
@@ -207,8 +208,9 @@ namespace Decompiler.Scanning
                     if (!Procedures.TryGetValue(addrStart, out procNew))
                     {
                         procNew = Procedure.Create(addrStart, arch.CreateFrame());
-                        Procedures.Add(addrStart, proc);
-                        CallGraph.AddProcedure(proc);
+                        Procedures.Add(addrStart, procNew);
+                        CallGraph.AddProcedure(procNew);
+                        procNew.Frame.ReturnAddressSize = proc.Frame.ReturnAddressSize;
                     }
                     var bp = new BlockPromoter(block, procNew, arch);
                     bp.Promote();

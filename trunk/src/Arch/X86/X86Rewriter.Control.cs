@@ -100,7 +100,6 @@ namespace Decompiler.Arch.X86
             emitter.Branch(CreateTestCondition(cc, orw.FlagGroup(IntelInstruction.UseCc(di.Instruction.code))), OperandAsCodeAddress(op1));
         }
 
-
         private void RewriteInt()
         {
             emitter.SideEffect(PseudoProc("__syscall", PrimitiveType.Void, SrcOp(di.Instruction.op1)));

@@ -29,36 +29,24 @@ namespace Decompiler.Core
     /// </summary>
     public class ImageMapVectorTable : ImageMapItem
     {
-        private bool fCallTable;
-        private List<Address> addresses;
-        private Dictionary<Address, int> registerUsed = new Dictionary<Address, int>();
-
         public ImageMapVectorTable(Address addrTable, bool fCallTable)
         {
             this.TableAddress = addrTable;
-            this.fCallTable = fCallTable;
-            this.addresses = new List<Address>();
+            this.IsCallTable = fCallTable;
+            this.Addresses = new List<Address>();
+            this.RegisterUsed = new Dictionary<Address, int>();
         }
 
         public ImageMapVectorTable(bool isCallTable, Address[] vector, int size)
         {
-            this.fCallTable = isCallTable;
-            this.addresses = new List<Address>(vector);
+            this.IsCallTable = isCallTable;
+            this.Addresses = new List<Address>(vector);
+            this.RegisterUsed = new Dictionary<Address,int>();
         }
 
         public Address TableAddress { get; private set; }
-
-        public List<Address> Addresses { get { return addresses; } }
-
-        public bool IsCallTable
-        {
-            get { return fCallTable; }
-        }
-
-        public Dictionary<Address,int> RegisterUsed
-        {
-            get { return registerUsed; }
-        }
+        public List<Address> Addresses { get; private set; }
+        public bool IsCallTable { get; private set;}
+        public Dictionary<Address,int> RegisterUsed { get; private set; }
     }
-
 }

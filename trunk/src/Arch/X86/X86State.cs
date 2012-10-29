@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Operators;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
@@ -34,25 +35,23 @@ namespace Decompiler.Arch.X86
 	{
 		private ulong [] regs;
 		private bool [] valid;
-		private Stack<Constant> stackOld;
         private IntelArchitecture arch;
 
         private const int StackItemSize = 2;
 
 		public X86State(IntelArchitecture arch)
 		{
-			regs = new ulong[(int)Registers.Max];
-			valid = new bool[(int)Registers.Max];
-			stackOld = new Stack<Constant>();
+            this.arch = arch;
+			this.regs = new ulong[(int)Registers.Max];
+			this.valid = new bool[(int)Registers.Max];
 		}
 
 		public X86State(X86State st) : base(st)
 		{
             arch = st.arch;
-			regs = (ulong []) st.regs.Clone();
-			valid = (bool []) st.valid.Clone();
-            stackOld = new Stack<Constant>(st.stackOld);
             FpuStackItems = st.FpuStackItems;
+            regs = (ulong[])st.regs.Clone();
+			valid = (bool []) st.valid.Clone();
 		}
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -121,99 +120,45 @@ namespace Decompiler.Arch.X86
             sig.FpuStackDelta = FpuStackItems;     
         }
 
-        public override CallSite OnBeforeCall(int returnAddressSize)
+        public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)
         {
             if (returnAddressSize > 0)
-                Push(PrimitiveType.CreateWord(returnAddressSize), Constant.Invalid);
+            {
+                var spVal = GetValue(sp);
+                SetValue(
+                    arch.StackRegister,
+                    new BinaryExpression(
+                        Operator.Sub,
+                        spVal.DataType,
+                        sp,
+                        new Constant(
+                            PrimitiveType.CreateWord(returnAddressSize),
+                            returnAddressSize)));
+            }
             return new CallSite(returnAddressSize, FpuStackItems);  
         }
 
-        public override void OnAfterCall(ProcedureSignature sig)
+        public override void OnAfterCall(Identifier sp, ProcedureSignature sig, ExpressionVisitor<Expression> eval)
         {
-            ShrinkStack(sig.StackDelta);
+            var spReg = (RegisterStorage) sp.Storage;
+            var spVal = GetValue(spReg);
+            var stackOffset = SetValue(
+                spReg,
+                new BinaryExpression(
+                    Operator.Add,
+                    spVal.DataType,
+                    sp,
+                    new Constant(
+                        PrimitiveType.CreateWord(spReg.DataType.Size),
+                        sig.StackDelta)).Accept(eval));
+            if (stackOffset.IsValid)
+            {
+                if (stackOffset.ToInt32() > 0)
+                    ErrorListener("Possible stack underflow detected.");
+            }
             ShrinkFpuStack(-sig.FpuStackDelta);
         }
 
-        private void ShrinkStack(int bytesToShrink)
-        {
-            if (bytesToShrink > stackOld.Count * StackItemSize)
-            {
-                ErrorListener("Possible stack underflow detected");
-            }
-
-            int shr = bytesToShrink;
-            while (shr > 0)
-            {
-                Pop(PrimitiveType.Word16);
-                shr -= StackItemSize;
-            }
-        }
-
-		public Constant Pop(PrimitiveType t)
-		{
-			try
-			{
-				switch (t.Size)
-				{
-				default:
-					throw new ArgumentOutOfRangeException("t");
-				case 2:
-					if (stackOld.Count < 1)
-					{
-						return Constant.Invalid;
-					}
-					return stackOld.Pop();
-				case 4:
-					if (stackOld.Count < 2)
-					{
-						return Constant.Invalid;
-					}
-					Constant v = stackOld.Pop();
-					Constant v2 = stackOld.Pop();
-					if (v.IsValid && v2.IsValid)
-					{
-						return new Constant(t, (v.ToUInt32() & 0x0000FFFF) | (v2.ToUInt32() << 16));
-					}
-					else
-					{
-						return Constant.Invalid;
-					}
-				}
-			}
-			catch (InvalidOperationException)
-			{
-				//$NYI:				Log.Warn("Stack underflow");
-				return Constant.Invalid;
-			}
-		}
-
-        [Obsolete("Use SetStackValue")]
-		public void Push(PrimitiveType t, Constant c)
-		{
-			switch (t.Size)
-			{
-			default:
-				throw new ArgumentOutOfRangeException();
-			case 1:
-			case 2:
-				stackOld.Push(c);
-				break;
-			case 4:
-				if (!c.IsValid)
-				{
-					stackOld.Push(c);
-					stackOld.Push(c);
-				}				 
-				else
-				{
-					//$REVIEW: we lose type information here, change stack model to sortedlist.
-					//$BUG: 64-bit constants?
-					stackOld.Push(new Constant(PrimitiveType.Word16, c.ToUInt32() >> 16));
-					stackOld.Push(new Constant(PrimitiveType.Word16, c.ToUInt32() & 0xFFFF));
-				}
-				break;
-			}
-		}
 
         public bool HasSameValues(X86State st2)
         {

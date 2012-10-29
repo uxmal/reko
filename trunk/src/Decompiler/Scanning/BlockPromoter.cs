@@ -39,6 +39,7 @@ namespace Decompiler.Scanning
         Procedure procOld;
         Procedure procNew;
         private IProcessorArchitecture arch;
+        private IdentifierReplacer replacer;
 
         public BlockPromoter(Block blockToPromote, Procedure procNew, IProcessorArchitecture arch)
         {
@@ -46,6 +47,7 @@ namespace Decompiler.Scanning
             this.procOld = blockToPromote.Procedure;
             this.procNew = procNew;
             this.arch = arch;
+            this.replacer = new IdentifierReplacer(procNew.Frame);
         }
 
         public void Promote()
@@ -62,6 +64,10 @@ namespace Decompiler.Scanning
                 procOld.RemoveBlock(b);
                 procNew.AddBlock(b);
                 b.Procedure = procNew;
+                foreach (var stm in b.Statements)
+                {
+                    stm.Instruction = replacer.ReplaceIdentifiers(stm.Instruction);
+                }
             }
 
             ReplaceJumpsToExitBlock(movedBlocks);
@@ -86,8 +92,13 @@ namespace Decompiler.Scanning
             }
         }
 
+        /// <summary>
+        /// Patches all inbound edges, replacing jumps with call/return sequences, and 
+        /// calls
+        /// </summary>
         private void FixInboundEdges()
         {
+
             CallRetThunkBlock = procOld.AddBlock(blockToPromote+ "_tmp");
             CallRetThunkBlock.Statements.Add(0, new CallInstruction(
                 new ProcedureConstant(arch.PointerType, procNew),
@@ -100,5 +111,85 @@ namespace Decompiler.Scanning
         }
 
         public Block CallRetThunkBlock { get; private set; }
+
+
+        public class IdentifierReplacer : InstructionTransformer, StorageVisitor<Identifier>
+        {
+            private Frame frame;
+            private Dictionary<Identifier, Identifier> mapIds;
+            private Identifier id;
+
+            public IdentifierReplacer(Frame frame)
+            {
+                this.frame = frame;
+                this.mapIds = new Dictionary<Identifier, Identifier>();
+            }
+
+            public Instruction ReplaceIdentifiers(Instruction instr)
+            {
+                return instr.Accept(this);
+            }
+
+            public override Expression VisitIdentifier(Identifier id)
+            {
+                this.id = id;
+                Identifier idNew;
+                if (!mapIds.TryGetValue(id, out idNew))
+                {
+                    idNew = id.Storage.Accept(this);
+                    mapIds.Add(id, idNew);
+                }
+                return idNew;
+            }
+
+            public Identifier VisitFlagGroupStorage(FlagGroupStorage flags)
+            {
+                return frame.EnsureFlagGroup(flags.FlagGroupBits, flags.Name, id.DataType);
+            }
+
+            public Identifier VisitFpuStackStorage(FpuStackStorage fpu)
+            {
+                return frame.EnsureFpuStackVariable(fpu.FpuStackOffset, id.DataType);
+            }
+
+            public Identifier VisitRegisterStorage(RegisterStorage reg)
+            {
+                return frame.EnsureRegister(reg);
+            }
+
+            public Identifier VisitMemoryStorage(MemoryStorage mem)
+            {
+                return frame.Memory;
+            }
+
+            public Identifier VisitStackArgumentStorage(StackArgumentStorage arg)
+            {
+                return frame.EnsureStackArgument(arg.StackOffset, arg.DataType);
+            }
+
+            public Identifier VisitStackLocalStorage(StackLocalStorage loc)
+            {
+                return frame.EnsureStackLocal(loc.StackOffset, loc.DataType);
+            }
+
+            public Identifier VisitTemporaryStorage(TemporaryStorage tmp)
+            {
+                return frame.CreateTemporary(id.DataType);
+            }
+
+            public Identifier VisitSequenceStorage(SequenceStorage seq)
+            {
+                var idSeq = id;
+                var newHead = (Identifier) VisitIdentifier(seq.Head);
+                var newTail = (Identifier) VisitIdentifier(seq.Tail);
+                return frame.EnsureSequence(newHead, newTail, idSeq.DataType);
+            }
+
+            public Identifier VisitOutArgumentStorage(OutArgumentStorage ost)
+            {
+                var idOut = id;
+                return frame.EnsureOutArgument((Identifier)VisitIdentifier(ost.OriginalIdentifier), idOut.DataType);
+            }
+        }
     }
 }

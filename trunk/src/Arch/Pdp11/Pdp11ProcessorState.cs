@@ -69,12 +69,12 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public override CallSite OnBeforeCall(int returnSize)
+        public override CallSite OnBeforeCall(Identifier stackReg, int returnSize)
         {
             throw new NotImplementedException();
         }
 
-        public override void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
         {
             throw new NotImplementedException();
         }
