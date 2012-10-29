@@ -390,7 +390,6 @@
     <Compile Include="Scanning\ProcedureScanner.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\EntryPointWorkitem.cs" />
-    <Compile Include="Scanning\ScannerEvaluationContext.cs" />
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
     <Compile Include="Scanning\VectorWorkItem.cs" />

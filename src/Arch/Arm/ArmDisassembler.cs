@@ -1265,7 +1265,7 @@ namespace Decompiler.Arch.Arm
 
         public class DataMiscOpRec : OpRec
         {
-            public ArmInstruction Decode(uint instr)
+            public new ArmInstruction Decode(uint instr)
             {
                 throw new NotImplementedException();
             }

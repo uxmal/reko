@@ -86,10 +86,32 @@ namespace Decompiler.Core
                 else
                 {
                     OnItemCoincides(item, itemNew);
+                    if (item.GetType() != itemNew.GetType())
+                    {
+                        items[itemNew.Address] = itemNew;
+                        itemNew.Size = item.Size;
+                    }
                     return item;
                 }
             }
 		}
+
+        public void TerminateItem(Address addr)
+        {
+            ImageMapItem item;
+            if (!TryFindItem(addr, out item))
+                return;
+            int delta = addr - item.Address;
+            if (delta == 0)
+                return;
+            
+            // Need to split the item.
+            var itemNew = new ImageMapItem { Address = addr, Size = (uint)(item.Size - delta) };
+            items.Add(itemNew.Address, itemNew);
+
+            item.Size = (uint)delta;
+            OnSplitItem(item, itemNew);
+        }
 
 		public ImageMapSegment AddSegment(Address addr, string segmentName, AccessMode access)
 		{
@@ -234,7 +256,8 @@ namespace Decompiler.Core
                 return a - b;
 			}
 		}
-	}
+
+    }
 
 	/// <summary>
 	/// Represents a span of memory. 

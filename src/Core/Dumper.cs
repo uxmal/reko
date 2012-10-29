@@ -46,6 +46,8 @@ namespace Decompiler.Core
 			{
 				foreach (ImageMapItem i in map.Items.Values)
 				{
+                    if (!program.Image.IsValidAddress(i.Address))
+                        continue;
 					//				Address addrLast = i.Address + i.Size;
 					ImageMapBlock block = i as ImageMapBlock;
 					if (block != null)

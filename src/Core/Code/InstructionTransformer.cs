@@ -244,7 +244,7 @@ namespace Decompiler.Core.Code
 		public virtual Expression VisitSegmentedAccess(SegmentedAccess access)
 		{
 			access.BasePointer = access.BasePointer.Accept(this);
-				access.EffectiveAddress = access.EffectiveAddress.Accept(this);
+			access.EffectiveAddress = access.EffectiveAddress.Accept(this);
 			access.MemoryId = (MemoryIdentifier) access.MemoryId.Accept(this);
 			return access;
 		}

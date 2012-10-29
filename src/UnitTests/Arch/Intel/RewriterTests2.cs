@@ -36,7 +36,20 @@ namespace Decompiler.UnitTests.Arch.Intel
 		public RewriterTests2()
 		{
 		}
+
+        private void RunTest(string sourceFile, string outputFile)
+        {
+            DoRewriteFile(sourceFile);
+            using (FileUnitTester fut = new FileUnitTester(outputFile))
+            {
+                foreach (Procedure proc in prog.Procedures.Values)
+                    proc.Write(true, fut.TextWriter);
+
+                fut.AssertFilesEqual();
+            }
+        }
 	
+
 		[Test]
 		public void RwSwitch()
 		{
@@ -177,17 +190,5 @@ namespace Decompiler.UnitTests.Arch.Intel
         {
             RunTest("Fragments/multiple/intrasegmentfarcall.asm", "Intel/RwIntraSegmentFarCall.txt");
         }
-
-		private void RunTest(string sourceFile, string outputFile)
-		{
-			DoRewriteFile(sourceFile);
-			using (FileUnitTester fut = new FileUnitTester(outputFile))
-			{
-				foreach (Procedure proc in prog.Procedures.Values)
-					proc.Write(true, fut.TextWriter);
-
-				fut.AssertFilesEqual();
-			}
-		}
 	}
 }

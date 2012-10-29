@@ -37,7 +37,7 @@ namespace Decompiler.Arch.Arm
         {
         }
 
-        private static ArmImmediateOperand Word32(int w) { return new ArmImmediateOperand(Constant.Word32(w)); }
+        private new static ArmImmediateOperand Word32(int w) { return new ArmImmediateOperand(Constant.Word32(w)); }
 
         public override void Write(bool fExplicit, TextWriter writer)
         {

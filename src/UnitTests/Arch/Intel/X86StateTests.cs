@@ -36,15 +36,23 @@ namespace Decompiler.UnitTests.Arch.Intel
         public X86StateTests()
         {
         }
+
+        private Identifier CreateId(RegisterStorage reg)
+        {
+            return new Identifier(reg.Name, reg.Number, reg.DataType, reg);
+        }
+
         [Test]
-        public void State()
+        public void OnBeforeCall_DecrementStackRegister()
         {
             var arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             var state = new X86State(arch);
+            var esp = CreateId(Registers.esp);
             state.SetRegister(Registers.esp, Constant.Word32(-4));
             state.OnProcedureEntered();
-            var site = state.OnBeforeCall(4);
+            var site = state.OnBeforeCall(esp, 4);
             Assert.AreEqual(4, site.SizeOfReturnAddressOnStack);
+            Assert.AreEqual("0xFFFFFFFC", state.GetValue(esp).ToString());
         }
 
         [Test]
@@ -57,12 +65,14 @@ namespace Decompiler.UnitTests.Arch.Intel
                 ErrorListener = (err) => { reportedError = err; }
             };
             state.OnProcedureEntered();
-            state.SetRegister(Registers.esp, Constant.Word32(-4));
-            var site = state.OnBeforeCall(4);
-            state.OnAfterCall(new ProcedureSignature
+            state.SetRegister(Registers.esp, Constant.Word32(-4)); // Push only 4 bytes
+            var esp = CreateId(Registers.esp);
+            var site = state.OnBeforeCall(esp, 4);
+            state.OnAfterCall(esp, new ProcedureSignature
             {
-                StackDelta = 16,
-            });
+                StackDelta = 16,                        // ...but pop 16 bytes
+            },
+            new Decompiler.Evaluation.ExpressionSimplifier(state)); //$TODO: hm. Move simplification out of state.
             Assert.IsNotNull(reportedError);
         }
 

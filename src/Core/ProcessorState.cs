@@ -67,20 +67,18 @@ namespace Decompiler.Core
         /// <summary>
         /// Captures the the processor's state before calling a procedure.
         /// </summary>
+        /// <param name="stackReg">An identifier for the stack register of the processor.</param>
+        /// <param name="returnAddressSize">The size of the return address on stack.</param>
         /// <returns>A CallSite object that abstracts the processor state right before the call.</returns>
-        public abstract CallSite OnBeforeCall(int returnAddressSize);
+        public abstract CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize);
         /// <summary>
         /// Perform any adjustments to the processor's state after returning from a procedure call with the
         /// specified signature.
         /// </summary>
         /// <param name="sigCallee">The signature of the called procedure.</param>
-        public abstract void OnAfterCall(ProcedureSignature sigCallee);
+        public abstract void OnAfterCall(Identifier stackReg, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval);
 
-
-
-
-        [Obsolete("Make this private as soon as possible")]
-        public bool IsStackRegister(Expression ea)
+        private bool IsStackRegister(Expression ea)
         {
             var id = ea as Identifier;
             if (id == null)
@@ -91,8 +89,7 @@ namespace Decompiler.Core
             return (reg == Architecture.StackRegister);
         }
 
-        [Obsolete("Make this private as soon as possible")]
-        public bool GetStackOffset(Expression ea, out int offset)
+        private bool GetStackOffset(Expression ea, out int offset)
         {
             if (IsStackRegister(ea))
             {
@@ -118,6 +115,11 @@ namespace Decompiler.Core
             if (reg == null)
                 return Constant.Invalid;
 
+            return GetValue(reg);
+        }
+
+        public Expression GetValue(RegisterStorage reg)
+        {
             Expression exp = GetRegister(reg);
             if (exp != Constant.Invalid)
                 return exp;
@@ -168,12 +170,17 @@ namespace Decompiler.Core
             var reg = id.Storage as RegisterStorage;
             if (reg == null)
                 return;
+            SetValue(reg, value);
+        }
+
+        public Constant SetValue(RegisterStorage reg, Expression value)
+        {
             var constVal = value as Constant;
             if (constVal != null)
             {
                 SetRegister(reg, constVal);
                 linearDerived.Remove(reg);
-                return;
+                return constVal;
             }
             var binVal = value as BinaryExpression;
             if (binVal != null)
@@ -183,11 +190,12 @@ namespace Decompiler.Core
                     binVal.Right is Constant)
                 {
                     linearDerived[reg] = binVal;
-                    return;
+                    return Constant.Invalid;
                 }
             }
             SetRegister(reg, Constant.Invalid);
             linearDerived.Remove(reg);
+            return Constant.Invalid;
         }
 
         public void SetValueEa(Expression ea, Expression value)

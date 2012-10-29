@@ -1,13 +1,13 @@
 // fn0C00_0000
 // Mem0:Global memory
 // fp:Temporary
-// bx:Register bx
-// sp:Register sp
+// sp:sp
+// bx:bx
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	bx = 0x1234
 	call fn0C00_000C (retsize: 2;)
 	bx = 0x5678
@@ -19,51 +19,55 @@ fn0C00_0000_exit:
 // fn0C00_000C
 // Mem0:Global memory
 // fp:Temporary
-// bx:Register bx
-// ds:Register ds
+// sp:sp
+// bx:bx
+// ds:ds
 // SCZO:Flags
 // SZO:Flags
-// ax:Register ax
+// ax:ax
+// C:Flags
 // return address size: 2
 void fn0C00_000C()
-fn0C00_000C_entry:		// pred:
+fn0C00_000C_entry:
 	// succ:  l0C00_000C
-l0C00_000C:		// pred: fn0C00_000C_entry
+l0C00_000C:
 	SCZO = cond(Mem0[ds:bx:word16] - 0x007B)
-	branch Test(LE,SZO) l0C00_000F_branch
-	// succ:  l0C00_0011 l0C00_000F_branch
-l0C00_0011:		// pred: l0C00_000C
-	ax = 0x0000
-	SCZO = cond(ax)
+	branch Test(LE,SZO) l0C00_0014_tmp
+	// succ:  l0C00_0011 l0C00_0014_tmp
+l0C00_0011:
+	ax = ax ^ ax
+	SZO = cond(ax)
+	C = false
 	return
 	// succ:  fn0C00_000C_exit
-fn0C00_000C_exit:		// pred: l0C00_000F_branch l0C00_0011
-	// succ: 
-l0C00_000F_branch:		// pred: l0C00_000C
-	call fn0C00_0014 (depth: 2;)
+l0C00_0014_tmp:
+	call fn0C00_0014 (retsize: 0;)
 	return
 	// succ:  fn0C00_000C_exit
+fn0C00_000C_exit:
 // fn0C00_0014
 // Mem0:Global memory
 // fp:Temporary
-// bx:Register bx
-// ds:Register ds
-// ax:Register ax
+// ds:ds
+// bx:bx
+// ax:ax
 // SZO:Flags
 // return address size: 2
 void fn0C00_0014()
-fn0C00_0014_entry:		// pred:
+fn0C00_0014_entry:
 	// succ:  l0C00_0014
-l0C00_0014:		// pred: fn0C00_0014_entry
+l0C00_0014:
 	ax = Mem0[ds:bx:word16]
 	ax = ax + 0x0001
 	SZO = cond(ax)
 	return
+	// succ:  fn0C00_0014_exit
 fn0C00_0014_exit:
 // fn0C00_0018
 // Mem0:Global memory
 // fp:Temporary
-// bx:Register bx
+// sp:sp
+// bx:bx
 // SCZO:Flags
 // return address size: 2
 void fn0C00_0018()

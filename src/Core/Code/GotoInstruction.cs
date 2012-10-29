@@ -24,8 +24,7 @@ using System;
 namespace Decompiler.Core.Code
 {
     /// <summary>
-    /// This class models both unconditional jumps and conditional jumps. The 
-    /// rewriting phase converts these to Branch instructions as appropriate.
+    /// This instruction models unconditional jumps.
     /// </summary>
     public class GotoInstruction : Instruction
     {
@@ -40,17 +39,6 @@ namespace Decompiler.Core.Code
         {
             this.target = target;
             this.condition = Constant.Invalid;
-        }
-
-        /// <summary>
-        /// Use this constructor to crate a conditional branch instruction.
-        /// </summary>
-        /// <param name="condition"></param>
-        /// <param name="target"></param>
-        public GotoInstruction(Expression condition, Expression target)
-        {
-            this.condition = condition;
-            this.target = target;
         }
 
         public override Instruction Accept(InstructionTransformer xform)

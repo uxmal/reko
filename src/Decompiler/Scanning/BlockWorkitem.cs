@@ -50,6 +50,7 @@ namespace Decompiler.Scanning
         private ExpressionSimplifier eval;
         private IEnumerator<RtlInstructionCluster> rtlStream;
         private int extraLabels;
+        private Identifier stackReg;
 
         public BlockWorkitem(
             IScanner scanner,
@@ -63,6 +64,7 @@ namespace Decompiler.Scanning
             this.rewriter = rewriter;
             this.state = state;
             this.eval = new ExpressionSimplifier(state);
+            this.stackReg = frame.EnsureRegister(arch.StackRegister);
             this.frame = frame;
             this.addrStart = addr;
             this.blockCur = null;
@@ -82,11 +84,11 @@ namespace Decompiler.Scanning
             {
                 ric = rtlStream.Current;
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
-                    break;
+                    break;  
                 state.SetInstructionPointer(ric.Address);
-                for (var e = ric.Instructions.GetEnumerator(); e.MoveNext();)
+                foreach (var rtlInstr in ric.Instructions)
                 {
-                    ri = e.Current;
+                    ri = rtlInstr;
                     if (!ri.Accept(this))
                         return;
                 }
@@ -216,7 +218,7 @@ namespace Decompiler.Scanning
             {
                 if (mem.EffectiveAddress is Constant)
                 {
-                    var site = state.OnBeforeCall(4);            //$BUGBUG: hard coded.
+                    var site = state.OnBeforeCall(this.stackReg, 4);            //$BUGBUG: hard coded.
                     Emit(new IndirectCall(g.Target, site));
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -236,8 +238,8 @@ namespace Decompiler.Scanning
 
         public bool VisitCall(RtlCall call)
         {
-            var site = state.OnBeforeCall(call.ReturnAddressSize);
-
+            var site = state.OnBeforeCall(stackReg, call.ReturnAddressSize);
+            
             Address addr = call.Target as Address;
             if (addr != null)
             {
@@ -252,7 +254,7 @@ namespace Decompiler.Scanning
                 {
                     scanner.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
                 }
-                state.OnAfterCall(callee.Signature);
+                state.OnAfterCall(stackReg, callee.Signature,eval);
                 return true;
             }
 
@@ -265,7 +267,7 @@ namespace Decompiler.Scanning
                 if (ppp != null)
                 {
                     Emit(BuildApplication(procCallee, ppp.Signature, site));
-                    state.OnAfterCall(ppp.Signature);
+                    state.OnAfterCall(stackReg, ppp.Signature, eval);
                     return !ppp.Characteristics.Terminates;
                 }
             }
@@ -273,7 +275,7 @@ namespace Decompiler.Scanning
             if (sig != null)
             {
                 Emit(BuildApplication(call.Target, sig, site));
-                state.OnAfterCall(sig);
+                state.OnAfterCall(stackReg, sig, eval);
                 return true;
             }
 
@@ -293,14 +295,16 @@ namespace Decompiler.Scanning
             if (imp != null)
             {
                 Emit(BuildApplication(CreateProcedureConstant(imp), imp.Signature, site));
-                state.OnAfterCall(imp.Signature);
+                state.OnAfterCall(stackReg, imp.Signature, eval);
                 return !imp.Characteristics.Terminates;
             }
+
+            ProcessVector(ric.Address, call);
 
             var ic = new IndirectCall(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
-            state.OnAfterCall(sig);
+            state.OnAfterCall(stackReg, sig, eval);
             return true;        //$BUGBUG: The called procedure could be exit(), or ExitThread(), in which case we should return false.
         }
 
@@ -350,7 +354,7 @@ namespace Decompiler.Scanning
             {
                 var ep = svc.CreateExternalProcedure(arch);
                 var fn = new ProcedureConstant(arch.PointerType, ep);
-                var site = state.OnBeforeCall(svc.Signature.ReturnAddressOnStack);
+                var site = state.OnBeforeCall(stackReg, svc.Signature.ReturnAddressOnStack);
                 Emit(BuildApplication(fn, ep.Signature, site));
                 if (svc.Characteristics.Terminates)
                 {
@@ -395,8 +399,7 @@ namespace Decompiler.Scanning
             Constant c = state.GetValue(id) as Constant;
             if (c != null && c.IsValid)
             {
-                var sp = frame.EnsureRegister(arch.StackRegister);
-                Emit(new Assignment(sp, new BinaryExpression(Operator.Sub, sp.DataType, sp, c)));
+                Emit(new Assignment(stackReg, new BinaryExpression(Operator.Sub, stackReg.DataType, stackReg, c)));
             }
             else
             {
@@ -448,7 +451,8 @@ namespace Decompiler.Scanning
                 Emit(new SwitchInstruction(idIndex, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
             }
             //vectorUses[wi.addrFrom] = new VectorUse(wi.Address, builder.IndexRegister);
-            //map.AddItem(wi.Address + builder.TableByteSize, new ImageMapItem());
+            scanner.Image.Map.AddItem(bw.VectorAddress,
+                new ImageMapVectorTable(xfer is RtlCall, vector.ToArray(), builder.TableByteSize));
         }
 
         private void ScanVectorTargets(RtlTransfer xfer, List<Address> vector)
@@ -458,7 +462,12 @@ namespace Decompiler.Scanning
                 var st = state.Clone();
                 if (xfer is RtlCall)
                 {
-                    scanner.ScanProcedure(addr, null, st);
+                    var pbase = scanner.ScanProcedure(addr, null, st);
+                    var pcallee = pbase as Procedure;
+                    if (pcallee != null)
+                    {
+                        scanner.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
+                    }
                 }
                 else
                 {

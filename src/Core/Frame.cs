@@ -65,9 +65,6 @@ namespace Decompiler.Core
 	{
 		private List<Identifier> identifiers;	// Identifiers for each access.
 		
-		private bool escapes;
-		private int frameOffset;				// frame offset from stack pointer in bytes.
-
 		public Frame(PrimitiveType framePointerSize)
 		{
 			identifiers = new List<Identifier>();
@@ -75,18 +72,31 @@ namespace Decompiler.Core
 			// There is always a "variable" for the global memory and the frame
 			// pointer.
 
-			Identifier g = new MemoryIdentifier(0, PrimitiveType.Void);
-			this.identifiers.Add(g);
+            this.Memory = new MemoryIdentifier(0, PrimitiveType.Void);
+            this.Identifiers.Add(Memory);
 			this.FramePointer = CreateTemporary("fp", framePointerSize);
 		}
 
-		public Identifier CreateSequence(Identifier head, Identifier tail, DataType dt)
-		{
-			Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), identifiers.Count, dt, new
-				SequenceStorage(head, tail));
-			identifiers.Add(id);
-			return id;
-		}
+        public bool Escapes { get; set; }
+        public int FrameOffset { get; set; }
+        public Identifier FramePointer { get; private set; }
+        public List<Identifier> Identifiers { get { return identifiers; } }
+        public Identifier Memory { get; private set; }
+
+        /// <summary>
+        /// Amount of bytes that the calling function pushed on the stack to store 
+        /// the return address. Some architectures pass the return address in a register,
+        /// which implies that in those architectures the return address size should be zero.
+        /// </summary>
+        public int ReturnAddressSize { get; set; }
+
+        public Identifier CreateSequence(Identifier head, Identifier tail, DataType dt)
+        {
+            Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), identifiers.Count, dt, new
+                SequenceStorage(head, tail));
+            identifiers.Add(id);
+            return id;
+        }
 
 		/// <summary>
 		/// Creates a temporary variable whose storage and name is guaranteed not to collide with any other variable.
@@ -151,7 +161,7 @@ namespace Decompiler.Core
 			return id;
 		}
 
-		public Identifier EnsureOutArgument(Identifier idOrig, PrimitiveType outArgumentPointer)
+		public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
 		{
 			Identifier idOut = FindOutArgument(idOrig);
 			if (idOut == null)
@@ -236,11 +246,6 @@ namespace Decompiler.Core
                 : EnsureStackLocal(byteOffset, type);
         }
 
-		public bool Escapes
-		{
-			get { return escapes; }
-			set { escapes = value; }
-		}
 
 		/// <summary>
 		/// The offset of a variable from the return address, as seen from a caller.
@@ -287,13 +292,6 @@ namespace Decompiler.Core
 			else return FormatStackAccessName(type, prefix, cbOffset);
 		}
 
-		public int FrameOffset
-		{
-			get { return frameOffset; }
-			set { frameOffset = value; }
-		}
-
-		public Identifier FramePointer { get; private set; }
 
 		/// <summary>
 		/// Returns the number of bytes the stack arguments consume on the stack.
@@ -361,7 +359,6 @@ namespace Decompiler.Core
 			return null;
 		}
 
-
 		public Identifier FindStackArgument(int offset, int size)
 		{
 			foreach (Identifier id in identifiers)
@@ -385,19 +382,6 @@ namespace Decompiler.Core
 			}
 			return null;
 		}
-
-		/// <summary>
-		/// Amount of bytes that the calling function pushed on the stack to store 
-		/// the return address. Some architectures pass the return address in a register,
-		/// which implies that in those architectures the return address size should be zero.
-		/// </summary>
-		public int ReturnAddressSize { get;set; }
-
-		public List<Identifier> Identifiers
-		{
-			get { return identifiers; }
-		}
-
 
 		public void Write(TextWriter text)
 		{

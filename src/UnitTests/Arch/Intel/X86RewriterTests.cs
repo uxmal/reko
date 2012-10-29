@@ -497,11 +497,10 @@ namespace Decompiler.UnitTests.Arch.Intel
                 m.Adc(m.WordPtr(0x100), m.ax);
             });
             AssertCode(e,
-                "0|0C00:0000(4): 4 instructions",
-                "1|v2 = Mem0[ds:0x0100:word16] + ax",
-                "2|v6 = v2 + C",
-                "3|Mem0[ds:0x0100:word16] = v6",
-                "4|SCZO = cond(v6)");
+                "0|0C00:0000(4): 3 instructions",
+                "1|v5 = Mem0[ds:0x0100:word16] + ax + C",
+                "2|Mem0[ds:0x0100:word16] = v5",
+                "3|SCZO = cond(v5)");
         }
 
         [Test]

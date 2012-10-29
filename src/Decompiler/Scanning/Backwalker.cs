@@ -46,7 +46,13 @@ namespace Decompiler.Scanning
 		{
             this.host = host;
             this.eval = eval;
-            var mem = xfer.Target as MemoryAccess;
+            var target = xfer.Target;
+            var seq = xfer.Target as MkSequence;
+            if (seq != null)
+            {
+                target = seq.Tail;
+            }
+            var mem = target as MemoryAccess;
             if (mem == null)
                 throw new ArgumentException("Expected an indirect JMP or CALL");
             Index = DetermineIndexRegister(mem);
@@ -182,6 +188,12 @@ namespace Decompiler.Scanning
                         Index = baseReg;
                         return true;
                     }
+                }
+
+                if (regSrc != null && regDst == Index)
+                {
+                    Index = regSrc;
+                    return true;
                 }
                 return true;
             }

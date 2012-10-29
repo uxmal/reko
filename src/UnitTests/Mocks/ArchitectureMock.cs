@@ -264,12 +264,12 @@ namespace Decompiler.UnitTests.Mocks
 		{
 		}
 
-        public override CallSite OnBeforeCall(int returnAddressSize)
+        public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)
         {
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(Identifier sp, ProcedureSignature sigCallee, ExpressionVisitor<Expression> eval)
         {
         }
 	}
