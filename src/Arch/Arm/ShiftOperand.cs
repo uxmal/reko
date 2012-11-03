@@ -30,7 +30,6 @@ namespace Decompiler.Arch.Arm
 {
     public class ShiftOperand : MachineOperand
     {
-
         public ShiftOperand(Opcode opcode, MachineOperand op) : base(op.Width)
         {
             this.Opcode = opcode;
@@ -44,6 +43,5 @@ namespace Decompiler.Arch.Arm
 
         public Opcode Opcode { get; set; }
         public MachineOperand Shift { get; set; }
-
     }
 }

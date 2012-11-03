@@ -255,7 +255,7 @@ namespace Decompiler.Scanning
                     scanner.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
                 }
                 state.OnAfterCall(stackReg, callee.Signature,eval);
-                return true;
+                return !callee.Characteristics.Terminates;
             }
 
             var procCallee = call.Target as ProcedureConstant;

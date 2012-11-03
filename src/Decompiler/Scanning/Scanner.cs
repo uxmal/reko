@@ -309,8 +309,6 @@ namespace Decompiler.Scanning
             }
         }
 
-
-
         public Block FindContainingBlock(Address address)
         {
             BlockRange b;

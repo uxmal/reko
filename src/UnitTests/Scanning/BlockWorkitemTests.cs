@@ -277,5 +277,40 @@ namespace Decompiler.UnitTests.Scanning
             Assert.AreEqual(1, block.Statements.Count);
             Assert.AreEqual("esp = alloca(eax)", wi.Block.Statements.Last.ToString());
         }
+
+        [Test]
+        public void CallTerminatingProcedure_StopScanning()
+        {
+            var proc = Procedure.Create("proc", new Address(0x002000), new Frame(PrimitiveType.Pointer32));
+            var terminator = Procedure.Create("terminator", new Address(0x0001000), new Frame(PrimitiveType.Pointer32));
+            terminator.Characteristics = new ProcedureCharacteristics {
+                Terminates = true,
+             };
+            var block = new Block(proc, "the_block");
+            var callGraph = new CallGraph();
+            scanner = repository.StrictMock<IScanner>();
+            scanner.Stub(s => s.Architecture).Return(arch);
+            scanner.Stub(s => s.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
+            scanner.Stub(s => s.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(null);
+            scanner.Stub(s => s.GetImportedProcedure(Arg<uint>.Is.Anything)).Return(null);
+            scanner.Stub(s => s.CallGraph).Return(callGraph);
+            scanner.Expect(s => s.ScanProcedure(
+                Arg<Address>.Is.Anything, 
+                Arg<string>.Is.Anything,
+                Arg<ProcessorState>.Is.Anything))
+                .Return(terminator);
+            arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
+            rewriter.Stub(r => r.GetEnumerator()).Return(m.GetRewrittenInstructions());
+            repository.ReplayAll();
+
+            m.Call(new Address(0x0001000));
+            m.SideEffect(new ProcedureConstant(PrimitiveType.Void, new PseudoProcedure("shouldnt_decompile_this", PrimitiveType.Void, 0)));
+
+            var wi = CreateWorkItem(new Address(0x2000));
+            wi.Process();
+
+            Assert.AreEqual(1, block.Statements.Count, "Should only have rewritten the Call to 'terminator'");
+            repository.VerifyAll();
+        }
     }
 }
