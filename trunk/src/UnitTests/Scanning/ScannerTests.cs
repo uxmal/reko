@@ -304,6 +304,9 @@ fn0C00_0000_exit:
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
             Assert.AreEqual("bx", proc.Signature.FormalArguments[0].Name);
         }
+
+
+
         //        [Test(Description="When entrypoints are added they should end up in the top-level scanner queue")]
         //public void EntryPointsAddedToScanQueue()
         //{

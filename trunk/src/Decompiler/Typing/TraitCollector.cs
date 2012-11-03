@@ -188,7 +188,7 @@ namespace Decompiler.Typing
 
 		public DataType VisitCallInstruction(CallInstruction ci)
 		{
-			throw new NotImplementedException();
+			 throw new NotImplementedException();
 		}
 
 

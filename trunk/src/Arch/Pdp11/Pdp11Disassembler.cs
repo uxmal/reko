@@ -27,7 +27,6 @@ using System.Text;
 
 namespace Decompiler.Arch.Pdp11
 {
-
     public class Pdp11Disassembler : Disassembler
     {
         private ImageReader rdr;
@@ -39,7 +38,6 @@ namespace Decompiler.Arch.Pdp11
             this.rdr = rdr;
             this.arch = arch;
         }
-
 
         public Address Address
         {

@@ -152,6 +152,11 @@ namespace Decompiler.Analysis
         public void ProcessBlock(Block block)
         {
             StartProcessingBlock(block);
+            if (block.Name == "l0824_0AFE") //$DEBUG
+                block.Name.ToString();
+            if (block.Name == "l35B8_021C") //$DEBUG
+                block.Name.ToString();
+
             block.Statements.ForEach(stm => stm.Instruction.Accept(this));
             if (block == block.Procedure.ExitBlock)
             {
@@ -347,7 +352,7 @@ namespace Decompiler.Analysis
         {
             var sort = new SortedList<string, string>();
             foreach (var de in dictionary)
-                sort.Add(de.Key.ToString(), de.Value.ToString());
+                sort[de.Key.ToString()] = de.Value.ToString();
             foreach (var de in sort)
                 Debug.Write(string.Format("{0}:{1} ", de.Key, de.Value));
             Debug.WriteLine("");

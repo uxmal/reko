@@ -171,7 +171,20 @@ namespace Decompiler.Core.Expressions
                 {
                     return ((Identifier)x).Number.GetHashCode();
                 });
-            
+            Add(typeof(MkSequence),
+                delegate(Expression ea, Expression eb)
+                {
+                    var a = (MkSequence)ea;
+                    var b = (MkSequence)eb;
+                    return EqualsImpl(a.Head, b.Tail) && EqualsImpl(a.Head, b.Tail);
+                },
+                delegate(Expression obj)
+                {
+                    var s = (MkSequence)obj;
+                    return obj.GetType().GetHashCode() ^ 37 * GetHashCodeImpl(s.Head) ^
+                        GetHashCodeImpl(s.Tail);
+                });
+
             Add(typeof(PhiFunction),
                 delegate(Expression ea, Expression eb)
                 {

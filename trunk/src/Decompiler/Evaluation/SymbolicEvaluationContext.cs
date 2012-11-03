@@ -311,8 +311,7 @@ namespace Decompiler.Evaluation
 
             public Storage VisitSequenceStorage(SequenceStorage seq)
             {
-                seq.Head.Storage.Accept(this);
-                seq.Tail.Storage.Accept(this);
+                ctx.RegisterState[seq] = value;
                 return seq;
             }
 

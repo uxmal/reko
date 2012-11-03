@@ -306,7 +306,6 @@ namespace Decompiler.ImageLoaders.MzExe
 			default:
 				throw new NotImplementedException(string.Format("Fixup type: {0:X}", fixup >> 12));
 			}
-
 		}
 
 		public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage, RelocationDictionary relocations)
