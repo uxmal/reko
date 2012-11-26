@@ -29,9 +29,7 @@ namespace Decompiler.Core.Types
     /// </summary>
 	public class StructureField
 	{
-		public int Offset;
         public TypeVariable TypeVariable;
-		public DataType DataType;
 
 		private string name;
 
@@ -51,15 +49,18 @@ namespace Decompiler.Core.Types
 			return new StructureField(Offset, DataType.Clone(), name);
 		}
 
+        public DataType DataType { get; set; }
+
 		public string Name
 		{
 			get 
 			{ 
-				if (name != null)
-					return name;
+				if (name != null) return name;
 				return string.Format("{0}{1:X4}", DataType.Prefix, Offset);         //$Naming should be given at a different level.
 			}
 		}
+
+        public int Offset;
 
         public static int ToOffset(Constant offset)
         {
