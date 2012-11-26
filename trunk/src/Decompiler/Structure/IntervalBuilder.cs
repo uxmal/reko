@@ -54,12 +54,12 @@ namespace Decompiler.Structure
                 // Process each succesive node in the interval until no more nodes can be added to the interval.
                 for (int i = 0; i < newInt.Nodes.Count; i++)
                 {
-                    StructureNode curNode = newInt.Nodes[i];
+                    var curNode = newInt.Nodes[i];
 
                     // Process each child of the current node
                     for (int j = 0; j < curNode.OutEdges.Count; j++)
                     {
-                        StructureNode succ = curNode.OutEdges[j];
+                        var succ = curNode.OutEdges[j];
 
                         // Only further consider the current child if it isn't already in the interval
                         if (!newInt.Nodes.Contains(succ))
@@ -67,7 +67,7 @@ namespace Decompiler.Structure
                             // If the current child has all its parents
                             // inside the interval, then add it to the interval. Remove it from the header
                             // sequence if it is on it.
-                            if (SubSetOf(succ.InEdges, newInt))
+                            if (IsSubSetOf(succ.InEdges, newInt))
                             {
                                 newInt.AddNode(succ);
                                 headerSeq.Remove(succ);
@@ -120,7 +120,7 @@ namespace Decompiler.Structure
                             // If the current child has all its parents
                             // inside the interval, then add it to the interval. Remove it from the header
                             // sequence if it is on it.
-                            if (SubSetOf(graph.Predecessors(succ), newInt))
+                            if (IsSubSetOf(graph.Predecessors(succ), newInt))
                             {
                                 newInt.AddNode(succ);
                                 headers.Remove(succ);
@@ -142,7 +142,7 @@ namespace Decompiler.Structure
             return intervalsInGraph;
         }
 
-        private bool SubSetOf(IEnumerable <StructureNode> inEdges, Interval newInt)
+        private bool IsSubSetOf(IEnumerable <StructureNode> inEdges, Interval newInt)
         {
             foreach (StructureNode inEdge in inEdges)
                 if (inEdge.Interval != newInt)

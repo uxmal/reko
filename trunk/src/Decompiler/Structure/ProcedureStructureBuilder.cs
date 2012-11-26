@@ -106,7 +106,7 @@ namespace Decompiler.Structure
                 nodes.Add(node);
             }
 
-            ProcedureStructure newProc = new ProcedureStructure(proc.Name, nodes);
+            var newProc = new ProcedureStructure(proc.Name, nodes);
             newProc.EntryNode = blockNodes[proc.EntryBlock];
             newProc.ExitNode = blockNodes[proc.ExitBlock];
             this.curProc = newProc;

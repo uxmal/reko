@@ -30,8 +30,8 @@ using System.IO;
 namespace Decompiler.Structure
 {
     /// <summary>
-    /// Given an interval and its constituent nodes, finds a strongly connected component entirely within the interval. That
-    /// SCC is a loop.
+    /// Given an interval and its constituent nodes, finds a strongly connected component 
+    /// entirely within the interval. That SCC is a loop.
     /// </summary>
     public class SccLoopFinder
     {
@@ -118,11 +118,13 @@ namespace Decompiler.Structure
             }
         }
 
+        [Conditional("DEBUG")]
         private void Dump(ICollection<StructureNode> scc)
         {
             Dump(scc, Console.Out);
         }
 
+        [Conditional("DEBUG")]
         private void Dump(ICollection<StructureNode> scc, TextWriter writer)
         {
             writer.WriteLine("===");

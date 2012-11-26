@@ -119,6 +119,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                scanner.Stub(s => s.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
@@ -154,12 +155,14 @@ namespace Decompiler.UnitTests.Scanning
             ProcessorState s2 = null;
             using (repository.Record())
             {
+                arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
                 arch.Stub(x => x.CreateRewriter(
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(rewriter);
                 rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(

@@ -73,7 +73,7 @@ namespace Decompiler.Scanning
         public Block Block { get { return blockCur; } } 
         public ProcessorState  Context { get { return state; } }       //$TODO: can we get rid of this? apparently only test use it.
 
-        public override void Process()
+        public override void  Process()
         {
             rtlStream = rewriter.GetEnumerator();
             state.ErrorListener = (message) => { scanner.AddDiagnostic(ric.Address, new WarningDiagnostic(message)); };

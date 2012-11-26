@@ -49,6 +49,7 @@ namespace Decompiler.UnitTests.Scanning
         private MockRepository repository;
         private ProcessorState state;
         private BlockWorkitem wi;
+        private ProgramImage image;
         private string nl = Environment.NewLine;
 
         [SetUp]
@@ -123,7 +124,7 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             }
-            var image = asm.GetImage();
+            image = asm.GetImage();
             var rw = arch.CreateRewriter(new ImageReader(image, addr), this.state, proc.Frame, host);
             wi = new BlockWorkitem(scanner, rw, state, proc.Frame, addr);
         }
@@ -260,6 +261,9 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<bool>.Is.Equal(false),
                     Arg<Procedure>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything));
+                scanner.Stub(x => x.TerminateBlock(
+                    Arg<Block>.Is.Anything,
+                    Arg<Address>.Is.Anything));
                 scanner.Expect(x => x.CreateReader(
                     Arg<Address>.Is.Anything)).Return(new ImageReader(new byte[] {
                         0x34, 0x12,
@@ -280,8 +284,10 @@ namespace Decompiler.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1236))).Return(block1236);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x1238))).Return(block1238);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x123A))).Return(block123A);
+                scanner.Stub(x => x.Image).Return(new ProgramImage(new Address(0xc00, 0), new byte[100]));
                 
             });
+
             wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(Console.Out);

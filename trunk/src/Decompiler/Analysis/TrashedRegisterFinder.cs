@@ -196,86 +196,8 @@ namespace Decompiler.Analysis
 
         public void PropagateToProcedureSummary(Procedure proc)
         {
-            bool changed = false;
-            var pf = flow[proc];
-            var tr = prog.Architecture.CreateRegisterBitset();
-            var pr = prog.Architecture.CreateRegisterBitset();
-            if (pf.TerminatesProcess)
-            {
-                if (!pf.TrashedRegisters.IsEmpty)
-                {
-                    changed = true;
-                    pf.TrashedRegisters.SetAll(false);
-                }
-                if (pf.grfTrashed != 0)
-                {
-                    changed = true;
-                    pf.grfTrashed = 0;
-                }
-                if (pf.ConstantRegisters.Count > 0)
-                {
-                    pf.ConstantRegisters.Clear();
-                    changed = true;
-                }
-            }
-            else
-            {
-                var cmp = new ExpressionValueComparer();
-                foreach (var de in ctx.RegisterState)
-                {
-                    var reg = (RegisterStorage)de.Key;
-                    var idValue = de.Value as Identifier;
-                    if (idValue != null)
-                    {
-                        if (de.Key == idValue.Storage ||
-                            (reg == prog.Architecture.StackRegister && idValue == proc.Frame.FramePointer))
-                        {
-                            pr[reg.Number] = true;
-                        }
-                        else
-                        {
-                            tr[reg.Number] = true;
-                        }
-                    }
-                    else
-                    {
-                        tr[reg.Number] = true;
-                        var c = de.Value as Constant;
-                        if (c != null)
-                        {
-                            if (c.IsValid)
-                            {
-                                Constant cOld;
-                                if (!pf.ConstantRegisters.TryGetValue(de.Key, out cOld) || !cmp.Equals(cOld, c))
-                                {
-                                    changed = true;
-                                    pf.ConstantRegisters[de.Key] = c;
-                                }
-                            }
-                            else
-                                pf.ConstantRegisters.Remove(de.Key);
-                        }
-                    }
-                }
-
-                if (!(tr & ~pf.TrashedRegisters).IsEmpty)
-                {
-                    pf.TrashedRegisters |= tr;
-                    changed = true;
-                }
-                if (!(pr & ~pf.PreservedRegisters).IsEmpty)
-                {
-                    pf.PreservedRegisters |= pr;
-                    changed = true;
-                }
-                uint grfNew = pf.grfTrashed | ctx.TrashedFlags;
-                if (grfNew != pf.grfTrashed)
-                {
-                    pf.grfTrashed = grfNew;
-                    changed = true;
-                }
-            }
-
+            var prop = new TrashedRegisterSummarizer(prog.Architecture, proc, flow[proc], ctx);
+            bool changed = prop.PropagateToProcedureSummary();
             if (changed)
             {
                 foreach (Statement stm in prog.CallGraph.CallerStatements(proc))

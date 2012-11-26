@@ -63,6 +63,8 @@ namespace Decompiler.UnitTests.Mocks
 
         private void Init(IProcessorArchitecture arch, string name)
         {
+            if (arch == null)
+                throw new ArgumentNullException("arch");
             this.arch = arch;
             this.blocks = new Dictionary<string, Block>();
             this.Procedure = new Procedure(name, arch.CreateFrame());

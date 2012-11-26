@@ -33,12 +33,13 @@ namespace Decompiler.Structure
     public class StructureAnalysis
     {
         private Procedure proc;
-        private ProcedureStructure curProc;
 
         public StructureAnalysis(Procedure proc)
         {
             this.proc = proc;
         }
+
+        public ProcedureStructure ProcedureStructure { get; private set; }
 
         public void Structure()
         {
@@ -53,7 +54,7 @@ namespace Decompiler.Structure
         /// </summary>
         private void StructConds()
         {
-            foreach (StructureNode curNode in curProc.Ordering)
+            foreach (StructureNode curNode in ProcedureStructure.Ordering)
             {
                 if (curNode.OutEdges.Count < 2)
                     continue;
@@ -91,8 +92,8 @@ namespace Decompiler.Structure
         private void GenerateStructuredCode()
         {
             AbsynCodeGenerator codeGen = new AbsynCodeGenerator();
-            curProc.Dump();
-            codeGen.GenerateCode(curProc, proc.Body);
+            ProcedureStructure.Dump();
+            codeGen.GenerateCode(ProcedureStructure, proc.Body);
         }
 
         private void CoalesceCompoundConditions()
@@ -104,19 +105,19 @@ namespace Decompiler.Structure
         public void BuildProcedureStructure()
         {
             var cfgs = new ProcedureStructureBuilder(proc);
-            curProc = cfgs.Build();
+            ProcedureStructure = cfgs.Build();
             cfgs.AnalyzeGraph();
         }
 
         public void FindStructures()
         {
             StructConds();
-            StructLoops(curProc);
-            var uns = new UnstructuredConditionalAnalysis(curProc);
+            StructureLoops(ProcedureStructure);
+            var uns = new UnstructuredConditionalAnalysis(ProcedureStructure);
             uns.Adjust();
         }
 
-        private void StructLoops(ProcedureStructure curProc)
+        private void StructureLoops(ProcedureStructure curProc)
         {
             for (int gLevel = 0; gLevel < curProc.DerivedGraphs.Count; ++gLevel)
             {
@@ -194,14 +195,9 @@ namespace Decompiler.Structure
 //                latch.SetStructType(structType.Seq);
 
 
-            LoopFinder lf = new LoopFinder(headNode, latch, curProc.Ordering);
-            HashSet<StructureNode> loopNodes = lf.FindNodesInLoop(intervalNodes);
-            Loop loop = lf.DetermineLoopType(loopNodes);
-        }
-
-        public ProcedureStructure ProcedureStructure
-        {
-            get { return curProc; }
+            var lf = new LoopFinder(headNode, latch, curProc.Ordering);
+            var loopNodes = lf.FindNodesInLoop(intervalNodes);
+            var loop = lf.DetermineLoopType(loopNodes);
         }
     }
 }
