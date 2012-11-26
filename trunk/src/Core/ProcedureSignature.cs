@@ -177,5 +177,5 @@ namespace Decompiler.Core
 			LowLevelInfo = 2,
         }
         #endregion
-    }
+        }
 }

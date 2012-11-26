@@ -26,12 +26,11 @@ namespace Decompiler.Core.Types
 	public class ArrayType : DataType
 	{
 		private DataType elType;
-		private int length;
 
 		public ArrayType(DataType elType, int length)
 		{
 			this.elType = elType;
-			this.length = length;
+			this.Length = length;
 		}
 
 		public override DataType Accept(DataTypeTransformer t)
@@ -63,15 +62,12 @@ namespace Decompiler.Core.Types
 			set { elType = value; }
 		}
 
-        public bool IsUnbounded { get { return length == 0; } }
+        public bool IsUnbounded { get { return Length == 0; } }
 
 		/// <summary>
 		/// Number of elements. 0 means unknown number of elements.
 		/// </summary>
-		public int Length
-		{
-			get { return length; }
-		}
+		public int Length { get; set; }
 
 		public override bool IsComplex
 		{
