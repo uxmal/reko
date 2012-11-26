@@ -47,7 +47,6 @@ namespace Decompiler.Structure
             incomplete = new HashSet<StructureNode>();
         }
 
-
         public void DeferRendering(StructureNode predecessor, StructureNode node, AbsynStatementEmitter emitter)
         {
             foreach (NodeEmitter ne in nodesToRender)
@@ -234,38 +233,25 @@ namespace Decompiler.Structure
 
         private class NodeEmitter
         {
-            private AbsynStatementEmitter emitter;
-            private StructureNode node;
-            private StructureNode pred;
-
             public NodeEmitter(StructureNode node, AbsynStatementEmitter emitter)
             {
-                this.node = node;
-                this.pred = null;
-                this.emitter = emitter;
+                this.Node = node;
+                this.Predecessor = null;
+                this.Emitter = emitter;
             }
 
             public NodeEmitter(StructureNode pred, StructureNode node, AbsynStatementEmitter emitter)
             {
-                this.pred = pred;
-                this.node = node;
-                this.emitter = emitter;
+                this.Predecessor = pred;
+                this.Node = node;
+                this.Emitter = emitter;
             }
 
-            public StructureNode Node
-            {
-                get { return node; }
-            }
+            public StructureNode Node { get; private set; }
 
-            public AbsynStatementEmitter Emitter
-            {
-                get { return emitter; }
-            }
+            public AbsynStatementEmitter Emitter { get; private set; }
 
-            public StructureNode Predecessor
-            {
-                get { return pred; } 
-            }
+            public StructureNode Predecessor { get; private set; }
         }
 
     }

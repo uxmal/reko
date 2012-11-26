@@ -137,7 +137,7 @@ namespace Decompiler.Analysis
 			if (this.pdf != null)
 			{
 				BlockFlow bf = pdf[block];
-				AliasDeadVariableMarker marker = new AliasDeadVariableMarker(bf.DataOut, bf.grfOut);
+				var marker = new AliasDeadVariableMarker(bf.DataOut, bf.grfOut);
 				deadIn = marker.Compute(arch, proc.Frame);
 			}
 			else

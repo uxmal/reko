@@ -120,7 +120,11 @@ namespace Decompiler.Evaluation
 
         public bool VisitSideEffect(SideEffect side)
         {
-            throw new NotImplementedException();
+            var sidePat = pattern as SideEffect;
+            if (sidePat == null)
+                return false;
+            matcher.Pattern = sidePat.Expression;
+            return matcher.Match(side.Expression);
         }
 
         public bool VisitStore(Store store)

@@ -121,13 +121,16 @@ namespace Decompiler.UnitTests.Scanning
             var sExp = @"// fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
+	// succ:  l0C00_0000
 l0C00_0000:
 	branch cx == 0x0000 l0C00_0002
+	// succ:  l0C00_0000_1 l0C00_0002
 l0C00_0000_1:
 	SCZO = cond(ax - Mem0[es:di:word16])
 	di = di + 0x0002
 	cx = cx - 0x0001
 	branch Test(NE,Z) l0C00_0000
+	// succ:  l0C00_0002 l0C00_0000
 l0C00_0002:
 	return
 fn0C00_0000_exit:

@@ -226,8 +226,8 @@ namespace Decompiler.UnitTests.Mocks
             : base(orig)
         {
             this.arch = orig.arch;
-            this.regValues = new Dictionary<RegisterStorage, Constant>(regValues);
-            this.stackValues = new SortedList<int, Constant>(stackValues);
+            this.regValues = new Dictionary<RegisterStorage, Constant>(orig.regValues);
+            this.stackValues = new SortedList<int, Constant>(orig.stackValues);
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; }  }

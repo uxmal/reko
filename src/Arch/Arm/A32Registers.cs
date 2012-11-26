@@ -74,7 +74,9 @@ namespace Decompiler.Arch.Arm
         public static readonly RegisterStorage f6 = new RegisterStorage("f6", 6, PrimitiveType.Real64);
         public static readonly RegisterStorage f7 = new RegisterStorage("f7", 7, PrimitiveType.Real64);
 
-        public static readonly RegisterStorage[] FpRegs = {
+        public static readonly RegisterStorage[] FpRegs =
+        {
+            f0, f1, f2, f3, f4, f5, f6, f7
         };
     }
 }

@@ -51,7 +51,7 @@ namespace Decompiler.UnitTests.Structure
                 m.Return();
             });
             RunTest(
-                "ProcedureMock()" + nl +
+                "ProcedureBuilder()" + nl +
                 "{" + nl +
                 "\treturn;" + nl +
                 "}" + nl);
@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Structure
                 m.Return();
             });
             RunTest(
-                "ProcedureMock()" + nl + 
+                "ProcedureBuilder()" + nl + 
                 "{" + nl +
                 "\tif (!foo())" + nl+ 
                 "\t\tbar();" + nl +
@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Structure
             });
 
             RunTest(
-                "ProcedureMock()" + nl +
+                "ProcedureBuilder()" + nl +
                 "{" + nl +
                 "\tif (!foo())" + nl +
                 "\t\tThen();" + nl +
@@ -355,7 +355,7 @@ namespace Decompiler.UnitTests.Structure
                 m.Return();
             });
             RunTest(
-                "ProcedureMock()" + nl +
+                "ProcedureBuilder()" + nl +
                 "{" + nl +
                 "	while (!done)" + nl +
                 "	{" + nl +
@@ -412,7 +412,7 @@ namespace Decompiler.UnitTests.Structure
 	                m.Return(a1);
             });
             RunTest(
-"ProcedureMock()" + nl +
+"ProcedureBuilder()" + nl +
 "{" + nl +
 "	a1 = fn0540();" + nl +
 "	tmp = Mem0[0x8416:word16];" + nl +
@@ -464,7 +464,7 @@ namespace Decompiler.UnitTests.Structure
                 m.Return();
             });
             RunTest(
-                "ProcedureMock()" + nl +
+                "ProcedureBuilder()" + nl +
                 "{" + nl +
                 "\twhile (true)" + nl +
                 "\t{" + nl + 

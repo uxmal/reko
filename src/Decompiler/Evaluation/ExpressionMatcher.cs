@@ -101,7 +101,19 @@ namespace Decompiler.Evaluation
 
         bool ExpressionVisitor<bool>.VisitApplication(Application appl)
         {
-            throw new NotImplementedException();
+            var appP = p as Application;
+            if (appP == null)
+                return false;
+            if (!Match(appP.Procedure, appl.Procedure))
+                return false;
+            if (appP.Arguments.Length != appl.Arguments.Length)
+                return false;
+            for (int i =0; i < appP.Arguments.Length; ++i)
+            {
+                if (!Match(appP.Arguments[i], appl.Arguments[i]))
+                    return false;
+            }
+            return true;
         }
 
         bool ExpressionVisitor<bool>.VisitArrayAccess(ArrayAccess acc)

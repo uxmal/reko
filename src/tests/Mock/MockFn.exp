@@ -5,13 +5,12 @@
 // r2:Local -0008
 // return address size: 0
 void FnMock()
-FnMock_entry:		// pred:
+FnMock_entry:
 	// succ:  l1
-l1:		// pred: FnMock_entry
+l1:
 	r1 = foo()
 	r1 = bar(r1)
 	baz(r1, r2)
 	return
 	// succ:  FnMock_exit
-FnMock_exit:		// pred: l1
-	// succ: 
+FnMock_exit:

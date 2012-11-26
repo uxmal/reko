@@ -213,6 +213,7 @@
     </Compile>
     <Compile Include="Analysis\TerminationAnalysis.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder.cs" />
+    <Compile Include="Analysis\TrashedRegisterSummarizer.cs" />
     <Compile Include="Analysis\TrashedStorageHelper.cs" />
     <Compile Include="Analysis\ValueNumbering.cs">
       <SubType>Code</SubType>
