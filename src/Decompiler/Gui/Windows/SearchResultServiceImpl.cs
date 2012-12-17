@@ -29,9 +29,11 @@ namespace Decompiler.Gui.Windows
     {
         private ListView listView;
         private ISearchResult result;
+        private IWindowFrame frame;
 
-        public SearchResultServiceImpl(ListView listView)
+        public SearchResultServiceImpl(IWindowFrame frame, ListView listView)
         {
+            this.frame = frame;
             this.listView = listView;
             listView.VirtualMode = true;
             listView.View = View.Details;
@@ -41,7 +43,6 @@ namespace Decompiler.Gui.Windows
             this.listView.DoubleClick += new EventHandler(listView_DoubleClick);
 
             ShowSearchResults(new EmptyResult());
-
         }
 
 
@@ -52,6 +53,7 @@ namespace Decompiler.Gui.Windows
             listView.VirtualListSize = result.Count;
             var searchResultView = new SearchResultView(this.listView);
             result.CreateColumns(searchResultView);
+            frame.Show();
         }
 
         private ListViewItem GetItem(int i)

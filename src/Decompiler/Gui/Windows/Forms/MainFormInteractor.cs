@@ -176,7 +176,7 @@ namespace Decompiler.Gui.Windows.Forms
             sc.AddService(typeof(IMemoryViewService), new MemoryViewServiceImpl(sc));
             sc.AddService(typeof(IDisassemblyViewService), new DisassemblyViewServiceImpl(sc));
 
-            srSvc = new SearchResultServiceImpl(form.FindResultsList);
+            srSvc = new SearchResultServiceImpl(new TabControlWindowFrame(form.TabControl, form.FindResultsPage), form.FindResultsList);
             sc.AddService(typeof(ISearchResultService), srSvc);
         }
 

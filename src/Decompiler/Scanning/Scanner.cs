@@ -90,6 +90,8 @@ namespace Decompiler.Scanning
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
 
+        private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
+        
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
         private const int PriorityVector = 7;
@@ -265,7 +267,7 @@ namespace Decompiler.Scanning
                 return proc;
             visitedProcs.Add(proc);
 
-            Debug.Print("Scanning procedure at {0}", addr);
+            Debug.WriteLineIf(trace.TraceInfo, string.Format("Scanning procedure at {0}", addr));
 
             var oldQueue = queue;
             queue = new PriorityQueue<WorkItem>();

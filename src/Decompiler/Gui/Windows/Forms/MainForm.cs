@@ -53,6 +53,11 @@ namespace Decompiler.Gui.Windows.Forms
             this.toolBar = toolBar;
         }
 
+        public TabControl TabControl
+        {
+            get { return tabControl1; }
+        }
+
         public ListView BrowserList
         {
             get { return listBrowser; }
@@ -66,6 +71,11 @@ namespace Decompiler.Gui.Windows.Forms
         public ListView FindResultsList
         {
             get { return listFindResults; }
+        }
+
+        public TabPage FindResultsPage
+        {
+            get {return tabFindResults; }
         }
 
         public ListView DiagnosticsList

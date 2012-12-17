@@ -43,7 +43,7 @@ namespace Decompiler.UnitTests.Gui.Windows
             form = new Form();
             listSearchResults = new ListView();
             form.Controls.Add(listSearchResults);
-            svc = new SearchResultServiceImpl(listSearchResults);
+            svc = new SearchResultServiceImpl(null, listSearchResults);
             repository = new MockRepository();
         }
 
