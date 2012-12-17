@@ -37,11 +37,13 @@ namespace Decompiler.Gui
 
         ListView BrowserList { get; }
         ListView FindResultsList { get; }
+        TabPage FindResultsPage { get; }
         ListView DiagnosticsList { get; }
         OpenFileDialog OpenFileDialog { get; }
         SaveFileDialog SaveFileDialog { get; }
         void SetStatus(string txt);
         void SetStatusDetails(string txt);
+        TabControl TabControl { get; }
         ToolStrip ToolBar { get; }
         MainMenu Menu { get; set; }
 

@@ -374,6 +374,7 @@
     <Compile Include="Gui\Windows\MemoryViewInteractor.cs" />
     <Compile Include="Gui\Windows\MemoryViewServiceImpl.cs" />
     <Compile Include="Gui\Windows\SearchResultServiceImpl.cs" />
+    <Compile Include="Gui\Windows\TabControlWindowFrame.cs" />
     <Compile Include="Gui\Windows\TypeMarker.cs" />
     <Compile Include="Gui\Windows\ViewService.cs" />
     <Compile Include="Gui\Windows\WindowsDecompilerEventListener.cs" />
