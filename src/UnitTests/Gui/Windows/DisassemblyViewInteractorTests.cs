@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2012 John Källén.
+ * Copyright (C) 1999-2013 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Decompiler;
 using Decompiler.Core;
 using Decompiler.Gui;
+using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
@@ -39,6 +40,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private DisassemblyViewInteractor interactor;
         private MockRepository repository;
         private IDecompilerShellUiService uiSvc;
+		private IDialogFactory dlgFactory;
         private IServiceContainer sp;
 
         [SetUp]
@@ -48,8 +50,10 @@ namespace Decompiler.UnitTests.Gui.Windows
             interactor = repository.Stub<DisassemblyViewInteractor>();
             sp = new ServiceContainer();
             uiSvc = repository.DynamicMock<IDecompilerShellUiService>();
+			dlgFactory = repository.DynamicMock<IDialogFactory>();
             sp.AddService<IDecompilerShellUiService>(uiSvc);
             sp.AddService<IDecompilerService>(repository.Stub<IDecompilerService>());
+			sp.AddService<IDialogFactory>(dlgFactory);
         }
 
         private void Initialize()
@@ -71,7 +75,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var dlg = repository.Stub<IAddressPromptDialog>();
             dlg.Stub(x => dlg.Address).Return(new Address(0x41104110));
-            interactor.Stub(x => x.CreateAddressPromptDialog()).Return(dlg);
+            dlgFactory.Stub(x => x.CreateAddressPromptDialog()).Return(dlg);
             uiSvc.Expect(x => uiSvc.ShowModalDialog(
                     Arg<IAddressPromptDialog>.Is.Same(dlg)))
                 .Return(DialogResult.OK);

@@ -1,6 +1,6 @@
 #region license
 /* 
- * copyright (c) 1999-2012 john källén.
+ * copyright (c) 1999-2013 john källén.
  *
  * this program is free software; you can redistribute it and/or modify
  * it under the terms of the gnu general public license as published by

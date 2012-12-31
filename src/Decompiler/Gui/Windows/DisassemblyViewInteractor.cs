@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2012 John Källén.
+ * Copyright (C) 1999-2013 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Gui;
 using Decompiler.Gui.Windows;
-using Decompiler.Gui.Windows.Forms;
+using Decompiler.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -101,7 +101,8 @@ namespace Decompiler.Gui.Windows
 
         private void GotoAddress()
         {
-            using (IAddressPromptDialog dlg = CreateAddressPromptDialog())
+			var dlgFactory = sp.RequireService<IDialogFactory>();
+            using (IAddressPromptDialog dlg = dlgFactory.CreateAddressPromptDialog())
             {
                 if (sp.GetService<IDecompilerShellUiService>().ShowModalDialog(dlg) == DialogResult.OK)
                 {
@@ -111,22 +112,18 @@ namespace Decompiler.Gui.Windows
             }
         }
 
-        public virtual IAddressPromptDialog CreateAddressPromptDialog()
-        {
-            return new AddressPromptDialog();
-        }
-
-
         #region IWindowPane Members
 
         public Control CreateControl()
         {
-            txtDisassembly = new TextBox();
-            this.txtDisassembly.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-            this.txtDisassembly.Multiline = true;
-            this.txtDisassembly.Name = "txtDisassembly";
-            this.txtDisassembly.ReadOnly = true;
-            this.txtDisassembly.WordWrap = false;
+            txtDisassembly = new TextBox
+			{
+				Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0))),
+				Multiline = true,
+				Name = "txtDisassembly",
+				ReadOnly = true,
+				WordWrap = false,
+			};
             txtDisassembly.Resize += txtDisassembly_Resize;
             txtDisassembly.KeyDown += txtDisassembly_KeyDown;
             txtDisassembly.KeyPress += txtDisassembly_KeyPress;

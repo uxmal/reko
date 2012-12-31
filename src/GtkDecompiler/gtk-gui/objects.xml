@@ -1,6 +1,1 @@
-<objects>
-  <object type="MainWindow" palette-category="widget" allow-children="false" base-type="Gtk.Window">
-    <itemgroups />
-    <signals />
-  </object>
-</objects>
+<objects attr-sync="on"></objects>
