@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2012 John Källén.
+ * Copyright (C) 1999-2013 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Decompiler;
 using Decompiler.Core;
 using Decompiler.Gui;
+using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using Decompiler.UnitTests.Mocks;
@@ -37,9 +38,10 @@ namespace Decompiler.UnitTests.Gui.Windows
     [TestFixture]
     public class MemoryViewInteractorTests
     {
-        private TestMemoryViewInteractor interactor;
+        private MemoryViewInteractor interactor;
         private MockRepository repository;
         private IDecompilerShellUiService decShellUiSvc;
+        private IDialogFactory dlgFactory;
         private ServiceContainer sp;
 
         [SetUp]
@@ -48,7 +50,9 @@ namespace Decompiler.UnitTests.Gui.Windows
             repository = new MockRepository();
             sp = new ServiceContainer();
             decShellUiSvc = repository.DynamicMock<IDecompilerShellUiService>();
+			dlgFactory = repository.DynamicMock<IDialogFactory>();
             sp.AddService(typeof(IDecompilerShellUiService), decShellUiSvc);
+			sp.AddService(typeof(IDialogFactory), dlgFactory);
         }
 
         private void Initialize()
@@ -60,7 +64,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void GotoAddressEnabled()
         {
-            interactor = new TestMemoryViewInteractor();
+            interactor = new MemoryViewInteractor();
             var status = new CommandStatus();
             Assert.IsTrue(interactor.QueryStatus(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress, status, null));
             Assert.AreEqual(status.Status, MenuStatus.Enabled | MenuStatus.Visible);
@@ -71,39 +75,18 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             var dlg = repository.Stub<IAddressPromptDialog>();
             dlg.Stub(x => dlg.Address).Return(new Address(0x12345678));
-            interactor = new TestMemoryViewInteractor(dlg);
             decShellUiSvc.Expect(x => x.ShowModalDialog(
                     Arg<IAddressPromptDialog>.Is.Same(dlg)))
                 .Return(DialogResult.OK);
             dlg.Expect(x => x.Dispose());
             repository.ReplayAll();
 
+            interactor = new MemoryViewInteractor();
             Initialize();
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
 
             repository.VerifyAll();
             Assert.AreEqual(0x12345678, interactor.Control.SelectedAddress.Linear);
-        }
-
-        private class TestMemoryViewInteractor : MemoryViewInteractor
-        {
-            private IAddressPromptDialog dlg;
-
-            public TestMemoryViewInteractor()
-            {
-            }
-            public TestMemoryViewInteractor(IAddressPromptDialog dlg)
-            {
-                this.dlg = dlg;
-            }
-
-            public override IAddressPromptDialog CreateAddressPromptDialog()
-            {
-                if (dlg != null)
-                    return dlg;
-                else
-                    return base.CreateAddressPromptDialog();
-            }
         }
     }
 }

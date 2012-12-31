@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2012 John Källén.
+ * Copyright (C) 1999-2013 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ namespace Decompiler.ImageLoaders.BinHex
                     byte[] image = abSvc.UserSelectFileFromArchive(items);
                     if (image != null)
                     {
-                        this.rsrcFork = new ResourceFork(image);
+                        this.rsrcFork = new ResourceFork(image, Architecture);
                         this.image = new ProgramImage(addrLoad, image);
                         return this.image;
                     }

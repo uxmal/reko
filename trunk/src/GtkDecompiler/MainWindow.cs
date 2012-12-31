@@ -1,11 +1,11 @@
 using System;
 using Gtk;
 
-public class MainWindow: Gtk.Window
+public partial class MainWindow: Gtk.Window
 {	
-	public MainWindow (): base ("")
+	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
-		Stetic.Gui.Build (this, typeof(MainWindow));
+		Build ();
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
