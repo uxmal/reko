@@ -60,10 +60,10 @@ namespace Decompiler.Gui.Windows.Forms
             this.btnFind.Text = "&Find";
             this.btnFind.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // txtFindText
             // 
             this.txtFindText.Location = new System.Drawing.Point(12, 29);
-            this.txtFindText.Name = "textBox1";
+            this.txtFindText.Name = "txtFindText";
             this.txtFindText.Size = new System.Drawing.Size(268, 20);
             this.txtFindText.TabIndex = 1;
             // 
@@ -80,6 +80,7 @@ namespace Decompiler.Gui.Windows.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(292, 97);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtFindText);

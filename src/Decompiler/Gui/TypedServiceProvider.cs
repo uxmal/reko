@@ -46,6 +46,14 @@ namespace Decompiler.Gui
             return (T)sp.GetService(typeof(T));
         }
 
+        public static T RequireService<T>(this IServiceProvider sp) where T : class
+        {
+            var result = sp.GetService<T>();
+            if (result == default(T))
+                throw new InvalidOperationException(string.Format("Service {0} is required.", typeof(T).Name);
+            return result;
+        }
+
         public static void AddService<T>(this IServiceContainer sc, object service)
         {
             sc.AddService(typeof(T), service);
