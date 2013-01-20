@@ -66,7 +66,7 @@ namespace Decompiler.Gui
 
         public void NavigateTo(int i)
         {
-            var mvs = (IMemoryViewService)sp.GetService(typeof(IMemoryViewService));
+            var mvs = sp.GetService<IMemoryViewService>();
             if (mvs == null)
                 return;
             mvs.ShowMemoryAtAddress(procs.Keys[i]);

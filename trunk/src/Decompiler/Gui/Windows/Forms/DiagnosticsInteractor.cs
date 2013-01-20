@@ -34,6 +34,8 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void Attach(ListView listView)
         {
+            if (listView == null)
+                throw new ArgumentNullException("listView");
             this.listView = listView;
             listView.DoubleClick += listView_DoubleClick;
         }

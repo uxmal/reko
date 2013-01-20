@@ -118,6 +118,7 @@
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
+    <Compile Include="Mocks\FakeDialogFactory.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />

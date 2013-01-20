@@ -24,7 +24,8 @@ using Decompiler.Core;
 using Decompiler.Core.Services;
 using Decompiler.Configuration;
 using Decompiler.Gui;
-using Decompiler.Gui.Windows.Forms;
+using Decompiler.Gui.Forms;
+using Decompiler.Gui.Windows;
 using System;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
@@ -38,7 +39,10 @@ namespace WindowsDecompiler
 		{
 			if (args.Length == 0)
 			{
-                var interactor = new MainFormInteractor();
+                var services = new ServiceContainer();
+                services.AddService(typeof(IServiceFactory), new ServiceFactory(services));
+                services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory());
+                var interactor = new MainFormInteractor(services);
                 interactor.Run();
             }
 			else

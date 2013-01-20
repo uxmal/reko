@@ -24,7 +24,9 @@ using Decompiler.Core.Services;
 using Decompiler.Core.Serialization;
 using Decompiler.Gui;
 using Decompiler.Loading;
+using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Controls;
+using Decompiler.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,7 +36,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui.Windows.Forms
+namespace Decompiler.Gui.Forms
 {
     /// <summary>
     /// Provices a component Container implementation, and specifically handles interactions 
@@ -53,6 +55,7 @@ namespace Decompiler.Gui.Windows.Forms
         private IDiagnosticsService diagnosticsSvc;
         private ISearchResultService srSvc;
         private IWorkerDialogService workerDlgSvc;
+        private IDialogFactory dlgFactory;
 
         private IPhasePageInteractor currentPhase;
         private InitialPageInteractor pageInitial;
@@ -65,23 +68,23 @@ namespace Decompiler.Gui.Windows.Forms
         private Dictionary<IPhasePageInteractor, IPhasePageInteractor> nextPage;
         private IDecompilerConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
-
         private static string dirSettings;
 
         private const int MaxMruItems = 9;
 
-        public MainFormInteractor()
+        public MainFormInteractor(IServiceProvider services)
         {
-            mru = new MruList(MaxMruItems);
-            mru.Load(MruListFile);
-            sc = new ServiceContainer();
-            nextPage = new Dictionary<IPhasePageInteractor, IPhasePageInteractor>();
+            this.dlgFactory = services.RequireService<IDialogFactory>();
+            this.mru = new MruList(MaxMruItems);
+            this.mru.Load(MruListFile);
+            this.sc = new ServiceContainer(services);
+            this.nextPage = new Dictionary<IPhasePageInteractor, IPhasePageInteractor>();
         }
 
-        private void CreatePhaseInteractors()
+        private void CreatePhaseInteractors(IServiceFactory svcFactory)
         {
-            pageInitial = CreateInitialPageInteractor();
-            pageLoaded = CreateLoadedPageInteractor();
+            pageInitial =  svcFactory.CreateInitialPageInteractor();
+            pageLoaded = svcFactory.CreateLoadedPageInteractor();
             pageAnalyzed = new AnalyzedPageInteractorImpl();
             pageFinal = new FinalPageInteractor();
 
@@ -95,17 +98,6 @@ namespace Decompiler.Gui.Windows.Forms
             nextPage[pageAnalyzed] = pageFinal;
         }
 
-
-        protected virtual InitialPageInteractor CreateInitialPageInteractor()
-        {
-            return new InitialPageInteractorImpl();
-        }
-
-        protected virtual ILoadedPageInteractor CreateLoadedPageInteractor()
-        {
-            return new LoadedPageInteractor();
-        }
-
         public virtual IDecompiler CreateDecompiler(LoaderBase ldr)
         {
             return new DecompilerDriver(ldr, this, sc);
@@ -113,7 +105,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public IMainForm LoadForm()
         {
-            this.form = CreateForm();
+            this.form = dlgFactory.CreateMainForm();
 
             DecompilerMenus dm = new DecompilerMenus(this);
             form.Menu = dm.MainMenu;
@@ -121,9 +113,9 @@ namespace Decompiler.Gui.Windows.Forms
             dm.MainToolbar.ImageList = form.ImageList;
             form.AddToolbar(dm.MainToolbar);
 
-            CreateServices(sc, dm);
-            CreatePhaseInteractors();
-
+            var svcFactory = sc.RequireService<IServiceFactory>();
+            CreateServices(svcFactory, sc, dm);
+            CreatePhaseInteractors(svcFactory);
 
             form.Load += this.MainForm_Loaded;
             form.Closed += new System.EventHandler(this.MainForm_Closed);
@@ -134,24 +126,17 @@ namespace Decompiler.Gui.Windows.Forms
             return form;
         }
 
-        protected virtual IMainForm CreateForm()
+        protected void CreateServices(IServiceFactory svcFactory, ServiceContainer sc, DecompilerMenus dm)
         {
-            return new MainForm();
-        }
-
-        protected virtual void CreateServices(ServiceContainer sc, DecompilerMenus dm)
-        {
-            config = new DecompilerConfiguration();
+            config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IDecompilerConfigurationService), config);
 
             sc.AddService(typeof(IStatusBarService), (IStatusBarService)this);
 
-            var d = new DiagnosticsInteractor();
-            d.Attach(form.DiagnosticsList);
-            diagnosticsSvc = d;
-            sc.AddService(typeof(IDiagnosticsService), d);
+            diagnosticsSvc = svcFactory.CreateDiagnosticsService(form.DiagnosticsList);
+            sc.AddService(typeof(IDiagnosticsService), diagnosticsSvc);
 
-            decompilerSvc = new DecompilerService();
+            decompilerSvc = svcFactory.CreateDecompilerService();
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
             uiSvc = CreateShellUiService(dm);
@@ -165,7 +150,7 @@ namespace Decompiler.Gui.Windows.Forms
             var pibSvc = new ProgramImageBrowserService(form.BrowserList);
             sc.AddService(typeof(IProgramImageBrowserService), pibSvc);
 
-            var del = CreateDecompilerListener();
+            var del = svcFactory.CreateDecompilerEventListener();
             workerDlgSvc = (IWorkerDialogService)del;
             sc.AddService(typeof(IWorkerDialogService), workerDlgSvc);
             sc.AddService(typeof(DecompilerEventListener), del);
@@ -173,16 +158,11 @@ namespace Decompiler.Gui.Windows.Forms
             ArchiveBrowserService abSvc = new ArchiveBrowserService(sc);
             sc.AddService(typeof(IArchiveBrowserService), abSvc);
 
-            sc.AddService(typeof(IMemoryViewService), new MemoryViewServiceImpl(sc));
-            sc.AddService(typeof(IDisassemblyViewService), new DisassemblyViewServiceImpl(sc));
+            sc.AddService(typeof(IMemoryViewService), svcFactory.CreateMemoryViewService());
+            sc.AddService(typeof(IDisassemblyViewService), svcFactory.CreateDisassemblyViewService());
 
             srSvc = new SearchResultServiceImpl(new TabControlWindowFrame(form.TabControl, form.FindResultsPage), form.FindResultsList);
             sc.AddService(typeof(ISearchResultService), srSvc);
-        }
-
-        protected virtual DecompilerEventListener CreateDecompilerListener()
-        {
-            return new WindowsDecompilerEventListener(sc);
         }
 
         protected virtual IDecompilerShellUiService CreateShellUiService(DecompilerMenus dm)
@@ -226,7 +206,7 @@ namespace Decompiler.Gui.Windows.Forms
             try
             {
                 diagnosticsSvc.ClearDiagnostics();
-                CloseAllMdiWindows();
+                form.CloseAllDocumentWindows();
                 SwitchInteractor(InitialPageInteractor);
                 pageInitial.OpenBinary(file, this);
             }
@@ -320,17 +300,9 @@ namespace Decompiler.Gui.Windows.Forms
             workerDlgSvc.FinishBackgroundWork();
         }
 
-        public void LayoutMdi(MdiLayout layout)
+        public void LayoutMdi(DocumentWindowLayout layout)
         {
-            ((Form)form).LayoutMdi(layout);
-        }
-
-        public void CloseAllMdiWindows()
-        {
-            foreach (Form mdi in ((Form)form).MdiChildren)
-            {
-                mdi.Close();
-            }
+            form.LayoutMdi(layout);
         }
 
         public void ShowAboutBox()
@@ -518,10 +490,10 @@ namespace Decompiler.Gui.Windows.Forms
                 case CmdIds.ViewMemory: ViewMemoryWindow(); return true;
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); return true;
 
-                case CmdIds.WindowsCascade: LayoutMdi(MdiLayout.Cascade); return true;
-                case CmdIds.WindowsTileVertical: LayoutMdi(MdiLayout.TileVertical); return true;
-                case CmdIds.WindowsTileHorizontal: LayoutMdi(MdiLayout.TileHorizontal); return true;
-                case CmdIds.WindowsCloseAll: CloseAllMdiWindows(); return true;
+                case CmdIds.WindowsCascade: LayoutMdi(DocumentWindowLayout.None); return true;
+                case CmdIds.WindowsTileVertical: LayoutMdi(DocumentWindowLayout.TiledVertical); return true;
+                case CmdIds.WindowsTileHorizontal: LayoutMdi(DocumentWindowLayout.TiledHorizontal); return true;
+                case CmdIds.WindowsCloseAll: form.CloseAllDocumentWindows(); return true;
 
                 case CmdIds.HelpAbout: ShowAboutBox(); return true;
                 }

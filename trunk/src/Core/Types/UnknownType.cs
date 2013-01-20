@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.IO;
 
 namespace Decompiler.Core.Types
 {
@@ -40,7 +41,7 @@ namespace Decompiler.Core.Types
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
-            throw new NotImplementedException();
+            return v.VisitUnknownType(this);
         }
 
 		public override DataType Clone()
@@ -54,10 +55,9 @@ namespace Decompiler.Core.Types
 			set { ThrowBadSize(); }
 		}
 
-		public override void Write(System.IO.TextWriter writer)
+		public override void Write(TextWriter writer)
 		{
 			writer.Write("<unknown>");
 		}
-
 	}
 }

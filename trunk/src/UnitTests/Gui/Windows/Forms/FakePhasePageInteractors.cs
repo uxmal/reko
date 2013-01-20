@@ -111,7 +111,6 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             OpenBinaryCalled = true;
 
         }
-
         #endregion
     }
 

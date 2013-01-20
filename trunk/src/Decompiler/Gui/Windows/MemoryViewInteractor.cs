@@ -34,24 +34,24 @@ namespace Decompiler.Gui.Windows
     {
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
-        private IServiceProvider sp;
+        private IServiceProvider services;
         private MemoryControl ctrl;
 
         public Control CreateControl()
         {
             ctrl = new MemoryControl();
-            Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
             Control.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(ctl_SelectionChanged);
-            var uiService = (IDecompilerShellUiService)sp.GetService(typeof(IDecompilerShellUiService));
+            Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
+            var uiService = services.RequireService<IDecompilerShellUiService>();
             Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
             return Control;
         }
 
         public virtual MemoryControl Control { get { return ctrl; } }
 
-        public void SetSite(IServiceProvider sp)
+        public void SetSite(IServiceProvider services)
         {
-            this.sp = sp;
+            this.services = services;
         }
 
         public void Close()
@@ -83,7 +83,7 @@ namespace Decompiler.Gui.Windows
 
         public void GotoAddress()
         {
-            var uiSvc = sp.GetService<IDecompilerShellUiService>();
+            var uiSvc = services.GetService<IDecompilerShellUiService>();
             using (IAddressPromptDialog dlg = CreateAddressPromptDialog())
             {
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
@@ -119,6 +119,7 @@ namespace Decompiler.Gui.Windows
                 Control.TopAddress = value;
             }
         }
+
         #region ICommandTarget Members
 
         public bool QueryStatus(ref Guid cmdSet, int cmdId, CommandStatus status, CommandText text)
@@ -154,7 +155,7 @@ namespace Decompiler.Gui.Windows
             AddressRange addrRange = Control.GetAddressRange();
             if (addrRange.IsValid)
             {
-                var decompiler = sp.GetService<IDecompilerService>().Decompiler;
+                var decompiler = services.GetService<IDecompilerService>().Decompiler;
                 var proc = decompiler.ScanProcedure(addrRange.Begin);
                 var userp = new Decompiler.Core.Serialization.SerializedProcedure
                 {

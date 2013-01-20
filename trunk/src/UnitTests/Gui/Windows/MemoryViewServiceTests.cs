@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Gui;
+using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Controls;
 using Decompiler.Gui.Windows.Forms;
@@ -109,11 +110,17 @@ namespace Decompiler.UnitTests.Gui.Windows
 
         private class TestMainFormInteractor : MainFormInteractor
         {
-            protected override void CreateServices(ServiceContainer sc, DecompilerMenus dm)
+            public static TestMainFormInteractor Create()
             {
-                sc.AddService(typeof(IMemoryViewService), new MemoryViewServiceImpl(sc));
+                var services = new ServiceContainer();
+                services.AddService(typeof(IServiceFactory), new ServiceFactory(services));
+                return new TestMainFormInteractor(services);
+            }
+
+            private TestMainFormInteractor(IServiceProvider services)
+                : base(services)
+            {
             }
         }
-
     }
 }

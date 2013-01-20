@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2013 John Källén.
+ * Copyright (C) 1999-2013 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,21 +19,24 @@
 #endregion
 
 using Decompiler.Gui;
-using NUnit.Framework;
+using Decompiler.Gui.Forms;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Decompiler.UnitTests.Gui.Windows
+namespace Decompiler.UnitTests.Mocks
 {
-	[TestFixture]
-	public class MruListTests
-	{
-		[Test]
-		public void Add()
-		{
-			MruList m = new MruList(2);
-            m.Use("Hiz");
-            Assert.AreEqual(1, m.Items.Count);
-            Assert.AreEqual("Hiz", m.Items[0]);
-		}
-	}
+    public class FakeDialogFactory : IDialogFactory
+    {
+        public virtual IAddressPromptDialog CreateAddressPromptDialog()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IMainForm CreateMainForm()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -19,9 +19,11 @@
 #endregion
 
 using Decompiler.Core.Lib;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
 namespace Decompiler.Core
 {
@@ -266,6 +268,7 @@ namespace Decompiler.Core
 	{
 		public Address Address;
 		public uint Size;
+        public DataType Type;
 
 		public ImageMapItem(uint size)
 		{
@@ -275,6 +278,7 @@ namespace Decompiler.Core
 
 		public ImageMapItem()
 		{
+            Type = new UnknownType();
 		}
 
 		public bool IsInRange(Address addr)
@@ -290,7 +294,7 @@ namespace Decompiler.Core
 
 		public override string ToString()
 		{
-			return Address.ToString() + ", size: " + Size;
+            return string.Format("{0}, size: {1}, type:{2}", Address, Size, Type);
 		}
 	}
 

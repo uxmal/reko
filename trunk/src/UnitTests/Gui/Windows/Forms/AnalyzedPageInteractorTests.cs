@@ -27,6 +27,7 @@ using Decompiler.Core.Types;
 using Decompiler.Gui;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
+using Decompiler.Gui.Forms;
 using Decompiler.Gui.Windows;
 using Decompiler.Gui.Windows.Forms;
 using NUnit.Framework;
