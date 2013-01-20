@@ -24,6 +24,7 @@ using Decompiler.Gui.Windows.Forms;
 using Decompiler.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -83,8 +84,10 @@ namespace Decompiler.Gui.Windows
 
         public void GotoAddress()
         {
+            Debug.Print("GotoAddress invoked");
             var uiSvc = services.GetService<IDecompilerShellUiService>();
-            using (IAddressPromptDialog dlg = CreateAddressPromptDialog())
+            var dlgSvc = services.RequireService<IDialogFactory>();
+            using (IAddressPromptDialog dlg = dlgSvc.CreateAddressPromptDialog())
             {
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
@@ -102,12 +105,6 @@ namespace Decompiler.Gui.Windows
             typeMarker.TextChanged += (sender, e) => { e.FormattedType = "@@@" + e.UserText; };
             typeMarker.TextAccepted += (sender, e) => { MessageBox.Show(Control, e.UserText, "Do something with this"); };
             typeMarker.Show(Control.AddressToPoint(addrRange.Begin));
-        }
-
-        //$REVIEW: consider moving this to a ICommonDialogFactoryService
-        public virtual IAddressPromptDialog CreateAddressPromptDialog()
-        {
-            return new AddressPromptDialog();
         }
 
         public virtual Address SelectedAddress

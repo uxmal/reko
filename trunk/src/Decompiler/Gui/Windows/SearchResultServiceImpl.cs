@@ -33,6 +33,8 @@ namespace Decompiler.Gui.Windows
 
         public SearchResultServiceImpl(IWindowFrame frame, ListView listView)
         {
+            if (frame == null)
+                throw new ArgumentNullException("frame");
             this.frame = frame;
             this.listView = listView;
             listView.VirtualMode = true;

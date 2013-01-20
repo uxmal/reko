@@ -524,7 +524,7 @@ namespace Decompiler.Gui.Windows.Controls
 
 		public void ShowAddress(Address addr)
 		{
-            if (addr < image.BaseAddress)
+            if (image == null || addr < image.BaseAddress)
                 return;
 
             uint cbOffset = (uint)(addr - image.BaseAddress);

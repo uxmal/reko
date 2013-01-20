@@ -224,9 +224,7 @@
     <Compile Include="Gui\SignatureParserTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\CodeViewerPaneTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Gui\Windows\CodeViewerPaneTests.cs" />
     <Compile Include="Gui\Windows\CodeViewerServiceTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -266,9 +264,7 @@
     <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>

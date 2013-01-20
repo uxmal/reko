@@ -291,6 +291,13 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
             repository.ReplayAll();
 
             CreateMainFormInteractorWithLoader();
+            interactor.ProbeGetService<IDecompilerService>().Decompiler = new DecompilerDriver(null, null, services)
+            {
+                Program = new Program
+                {
+                    Image = new ProgramImage(new Address(0x0004), new byte[0x100])
+                }
+            };
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewMemory);
 
             repository.VerifyAll();
@@ -362,7 +369,7 @@ namespace Decompiler.UnitTests.Gui.Windows.Forms
 
             svcFactory.Stub(s => s.CreateDecompilerConfiguration()).Return(new FakeDecompilerConfiguration());
             svcFactory.Stub(s => s.CreateDiagnosticsService(Arg<ListView>.Is.Anything)).Return(diagnosticSvc);
-            svcFactory.Stub(s => s.CreateDecompilerService()).Return(new DecompilerService { Decompiler = new DecompilerDriver(null, null, services) { Program = new Program { Image = new ProgramImage(new Address(0x11231), new byte[120] ) } } });
+            svcFactory.Stub(s => s.CreateDecompilerService()).Return(new DecompilerService { }); 
             svcFactory.Stub(s => s.CreateDisassemblyViewService()).Return(disasmSvc);
             svcFactory.Stub(s => s.CreateMemoryViewService()).Return(memSvc);
             svcFactory.Stub(s => s.CreateDecompilerEventListener()).Return(new FakeDecompilerEventListener());

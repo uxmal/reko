@@ -31,12 +31,31 @@ namespace Decompiler.Gui.Windows
 {
     public interface IWebBrowser
     {
-        HtmlDocument Document { get; }
+        IHtmlDocument Document { get; }
         string DocumentText {get;set;}
         void SetInnerHtmlOfElement(string elementId, string innerHtml);
 
         event WebBrowserDocumentCompletedEventHandler DocumentCompleted;
         event WebBrowserNavigatingEventHandler Navigating;
+    }
+
+    public interface IHtmlDocument
+    {
+        HtmlElement GetElementById(string elementId);
+        void Write(string html);
+    }
+
+    public class HtmlDocumentAdapter : IHtmlDocument
+    {
+        private HtmlDocument doc;
+
+        public HtmlDocumentAdapter(HtmlDocument doc)
+        {
+            this.doc = doc;
+        }
+
+        public HtmlElement GetElementById(string elementId) { return doc.GetElementById(elementId); }
+        public void Write(string html) { doc.Write(html); }
     }
 
     public class CodeViewerPane : IWindowPane
@@ -154,6 +173,8 @@ namespace Decompiler.Gui.Windows
             {
                 AllowNavigation = true;
             }
+
+            public new IHtmlDocument Document { get { return new HtmlDocumentAdapter(base.Document); } }
 
             public void SetInnerHtmlOfElement(string elementId, string innerHtml)
             {
