@@ -21,6 +21,7 @@
 using Decompiler.Gui;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -34,6 +35,8 @@ namespace Decompiler.UnitTests.Mocks
 
         public void ShowError(Exception ex, string format, params object[] args)
         {
+            Debug.Print("*** Exception reported: {0}", ex);
+            Debug.Print("{0}", ex.StackTrace);
             throw new ApplicationException(string.Format(format, args), ex);
         }
 

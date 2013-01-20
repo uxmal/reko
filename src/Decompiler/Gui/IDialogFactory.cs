@@ -26,6 +26,7 @@ namespace Decompiler.Gui
 	public interface IDialogFactory
 	{
 		IAddressPromptDialog CreateAddressPromptDialog();
-	}
+        IMainForm CreateMainForm();
+    }
 }
 

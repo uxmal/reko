@@ -33,6 +33,9 @@ namespace Decompiler.Gui.Windows
 
         public event EventHandler<TypeMarkerEventArgs> TextChanged;
         public event EventHandler<TypeMarkerEventArgs> TextAccepted;
+
+        private const string TypeMarkerEnterType = "<Enter type>";
+
         public TypeMarker(Control bgControl)
         {
             text = new TextBox
@@ -42,10 +45,12 @@ namespace Decompiler.Gui.Windows
             };
             label = new Label
             {
+                ForeColor = SystemColors.GrayText,
                 BackColor = SystemColors.Info,
                 BorderStyle = BorderStyle.FixedSingle,
                 AutoSize = true,
                 Parent = bgControl,
+                Text = TypeMarkerEnterType,
             };
 
             text.LostFocus += text_LostFocus;
@@ -98,7 +103,17 @@ namespace Decompiler.Gui.Windows
             {
                 var ee = new TypeMarkerEventArgs(text.Text);
                 TextChanged(this, ee);
-                label.Text = ee.FormattedType;
+                var formattedText = ee.FormattedType;
+                if (formattedText.Length > 0)
+                {
+                    label.ForeColor = SystemColors.ControlText;
+                    label.Text = ee.FormattedType;
+                }
+                else
+                {
+                    label.ForeColor = SystemColors.GrayText;
+                    label.Text = TypeMarkerEnterType; 
+                }
             }
         }
 

@@ -34,6 +34,12 @@ namespace Decompiler.Gui.Windows
 		{
 			return new AddressPromptDialog();
 		}
-	}
+
+
+        public IMainForm CreateMainForm()
+        {
+            return new MainForm();
+        }
+    }
 }
 

@@ -20,6 +20,7 @@
 
 using Decompiler.Core.Services;
 using Decompiler.Gui;
+using Decompiler.Gui.Forms;
 using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
 using Decompiler.Gui.Windows;

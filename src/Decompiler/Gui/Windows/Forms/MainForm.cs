@@ -18,11 +18,13 @@
  */
 #endregion
 
+using Decompiler.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -33,10 +35,12 @@ namespace Decompiler.Gui.Windows.Forms
         IMainForm
     {
         private ToolStrip toolBar;
+        private DocumentWindowCollection docWindows;
 
         public MainForm()
         {
             InitializeComponent();
+            docWindows = new DocumentWindowCollection(this);
         }
 
         #region IMainForm Members
@@ -62,6 +66,8 @@ namespace Decompiler.Gui.Windows.Forms
         {
             get { return listBrowser; }
         }
+
+        public ICollection<IWindowFrame> DocumentWindows { get { return docWindows; } }
 
         public ImageList ImageList
         {
@@ -91,6 +97,11 @@ namespace Decompiler.Gui.Windows.Forms
         public SaveFileDialog SaveFileDialog
         {
             get { return sfd; }
+        }
+
+        public void LayoutMdi(DocumentWindowLayout layout)
+        {
+            LayoutMdi ((MdiLayout) ((int) layout));
         }
 
         public void SetStatus(string txt)
@@ -134,6 +145,77 @@ namespace Decompiler.Gui.Windows.Forms
         }
 
         #endregion
-        
+
+        public void CloseAllDocumentWindows()
+        {
+            DocumentWindows.Clear();
+        }
+
+        private class DocumentWindowCollection : ICollection<IWindowFrame>
+        {
+            private MainForm mainForm;
+
+            public DocumentWindowCollection(MainForm mainForm)
+            {
+                this.mainForm = mainForm;
+            }
+
+            public void Add(IWindowFrame item)
+            {
+                ((Form)item).MdiParent = mainForm;
+            }
+
+            public void Clear()
+            {
+                foreach (Form docWindow in mainForm.MdiChildren)
+                {
+                    docWindow.Close();
+                }
+            }
+
+            public bool Contains(IWindowFrame item)
+            {
+                return mainForm.MdiChildren.OfType<IWindowFrame>().Contains(item);
+            }
+
+            public void CopyTo(IWindowFrame[] array, int arrayIndex)
+            {
+                
+                throw new NotImplementedException();
+            }
+
+            public int Count
+            {
+                get { return mainForm.MdiChildren.Length; }
+            }
+
+            public bool IsReadOnly
+            {
+                get { return false; }
+            }
+
+            public bool Remove(IWindowFrame item)
+            {
+                foreach (var form in mainForm.MdiChildren)
+                {
+                    if (item == (IWindowFrame)form)
+                    {
+                        form.Close();
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public IEnumerator<IWindowFrame> GetEnumerator()
+            {
+                return mainForm.MdiChildren.OfType<IWindowFrame>().GetEnumerator();
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Decompiler.Core.Types;
 using System;
 
 namespace Decompiler.Core
@@ -28,6 +29,10 @@ namespace Decompiler.Core
 	public class ImageMapBlock : ImageMapItem
 	{
         public Block Block { get; set; }
+
+        public ImageMapBlock()
+        {
+        }
 
 		public override string ToString()
 		{

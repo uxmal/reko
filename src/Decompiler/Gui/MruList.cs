@@ -19,11 +19,11 @@
 #endregion
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Decompiler.Gui.Windows
+namespace Decompiler.Gui
 {
 	/// <summary>
 	/// Maintains a most-recently used file lists at a specified location in the user's settings directory.
@@ -31,15 +31,15 @@ namespace Decompiler.Gui.Windows
 	public class MruList
 	{
 		private int itemsMax;
-		private ArrayList items;
+		private List<string> items;
 
 		public MruList(int itemsMax)
 		{
 			this.itemsMax = itemsMax;
-			this.items = new ArrayList(itemsMax);
+			this.items = new List<string>(itemsMax);
 		}
 
-		public IList Items
+		public IList<string> Items
 		{
 			get { return items; }
 		}
@@ -48,13 +48,13 @@ namespace Decompiler.Gui.Windows
 		{
 			try
 			{
-				using (StreamReader rdr = new StreamReader(fileLocation, new UTF8Encoding(false)))
+				using (var reader = new StreamReader(fileLocation, new UTF8Encoding(false)))
 				{
-					string line = rdr.ReadLine();
+					string line = reader.ReadLine();
 					while (line != null && items.Count < items.Capacity)
 					{
 						this.items.Add(line.TrimEnd('\r', '\n'));
-						line = rdr.ReadLine();
+						line = reader.ReadLine();
 					}
 				}
 			}
@@ -65,11 +65,11 @@ namespace Decompiler.Gui.Windows
 
 		public void Save(string fileLocation)
 		{
-			using (StreamWriter wrt = new StreamWriter(fileLocation, false, new UTF8Encoding(false)))
+			using (var writer = new StreamWriter(fileLocation, false, new UTF8Encoding(false)))
 			{
 				foreach (string line in items)
 				{
-					wrt.WriteLine(line);
+					writer.WriteLine(line);
 				}
 			}
 		}

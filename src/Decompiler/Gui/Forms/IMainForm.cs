@@ -19,10 +19,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
-namespace Decompiler.Gui
+namespace Decompiler.Gui.Forms
 {
 	/// <summary>
 	/// Interface that abstracts the functionality of the main form.
@@ -36,13 +37,13 @@ namespace Decompiler.Gui
         void AddToolbar(System.Windows.Forms.ToolStrip toolStrip);
 
         ListView BrowserList { get; }
+        ICollection<IWindowFrame> DocumentWindows { get; }
         ListView FindResultsList { get; }
         TabPage FindResultsPage { get; }
         ListView DiagnosticsList { get; }
         OpenFileDialog OpenFileDialog { get; }
         SaveFileDialog SaveFileDialog { get; }
-        void SetStatus(string txt);
-        void SetStatusDetails(string txt);
+        StatusStrip StatusStrip { get; }
         TabControl TabControl { get; }
         ToolStrip ToolBar { get; }
         MainMenu Menu { get; set; }
@@ -50,6 +51,8 @@ namespace Decompiler.Gui
         event EventHandler Closed;
         event EventHandler Load;
 
+        void LayoutMdi(DocumentWindowLayout layout);
+        
         void Show();
 
         DialogResult ShowDialog(System.Windows.Forms.Form dialog);
@@ -57,6 +60,7 @@ namespace Decompiler.Gui
         DialogResult ShowDialog(System.Windows.Forms.CommonDialog dialog);
 
         void Close();
+        void CloseAllDocumentWindows();
 
         void SetCurrentPage(object page);
 
@@ -66,7 +70,16 @@ namespace Decompiler.Gui
 
         DialogResult ShowMessageBox(string messageBox, string caption, MessageBoxButtons messageBoxButtons, MessageBoxIcon messageBoxIcon);
 
-        StatusStrip StatusStrip { get; }
+        void SetStatus(string txt);
+        void SetStatusDetails(string txt);
+
+    }
+
+    public enum DocumentWindowLayout
+    {
+        None,
+        TiledHorizontal,
+        TiledVertical,
     }
 
 	public delegate void MenuCommandHandler(object sender, MenuCommandArgs arg);

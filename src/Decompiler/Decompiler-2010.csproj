@@ -262,13 +262,14 @@
     <Compile Include="Gui\IDecompilerUIService.cs" />
     <Compile Include="Gui\IDialog.cs" />
     <Compile Include="Gui\IDisassemblyViewService.cs" />
-    <Compile Include="Gui\IMainForm.cs" />
+    <Compile Include="Gui\Forms\IMainForm.cs" />
     <Compile Include="Gui\IMemoryViewService.cs" />
     <Compile Include="Gui\IProgramImageBrowserService.cs" />
     <Compile Include="Gui\IProgressBar.cs" />
     <Compile Include="Gui\ISearchResult.cs" />
     <Compile Include="Gui\ISearchResultService.cs">
     </Compile>
+    <Compile Include="Gui\IServiceFactory.cs" />
     <Compile Include="Gui\IStartPage.cs" />
     <Compile Include="Gui\IStatusBarService.cs" />
     <Compile Include="Gui\IWindowPane.cs" />
@@ -396,7 +397,7 @@
     <Compile Include="Gui\Windows\Forms\AddressPromptInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\InitialPageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\LoadedPageInteractor.cs" />
-    <Compile Include="Gui\Windows\Forms\MainFormInteractor.cs" />
+    <Compile Include="Gui\Forms\MainFormInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\PhasePageInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\ProcedureDialog.cs">
       <SubType>Form</SubType>
@@ -407,7 +408,7 @@
     <Compile Include="Gui\Windows\Forms\ProcedureDialogInteractor.cs" />
     <Compile Include="Gui\Windows\Forms\RicheditFormatter.cs" />
     <Compile Include="Gui\Windows\ListViewItemWrapper.cs" />
-    <Compile Include="Gui\Windows\MruList.cs" />
+    <Compile Include="Gui\MruList.cs" />
     <Compile Include="Gui\Windows\ProgramImageBrowserService.cs" />
     <Compile Include="Loading\AssemblerFragmentLoader.cs" />
     <Compile Include="Loading\AssemblerLoader.cs" />
@@ -536,7 +537,6 @@
     <Compile Include="Gui\ILoadedPage.cs" />
     <Compile Include="Gui\IDiagnosticsService.cs" />
     <Compile Include="Gui\IListViewItem.cs" />
-    <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Gui\Forms\IAddressPromptDialog.cs" />
     <Compile Include="Gui\IDialogFactory.cs" />
     <Compile Include="Gui\Windows\WindowsFormsDialogFactory.cs" />
@@ -592,9 +592,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="gtk-gui\gui.stetic">
-      <LogicalName>gui.stetic</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Gui\decompiler-menus.xml" />
@@ -639,7 +636,5 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Gui\Forms\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
