@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Gui.Windows
     {
         private MemoryViewInteractor interactor;
         private MockRepository repository;
-        private IDecompilerShellUiService decShellUiSvc;
+        private IDecompilerShellUiService uiSvc;
         private IDialogFactory dlgFactory;
         private ServiceContainer sp;
 
@@ -49,9 +49,9 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             repository = new MockRepository();
             sp = new ServiceContainer();
-            decShellUiSvc = repository.DynamicMock<IDecompilerShellUiService>();
+            uiSvc = repository.DynamicMock<IDecompilerShellUiService>();
 			dlgFactory = repository.DynamicMock<IDialogFactory>();
-            sp.AddService(typeof(IDecompilerShellUiService), decShellUiSvc);
+            sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
 			sp.AddService(typeof(IDialogFactory), dlgFactory);
         }
 
@@ -74,8 +74,9 @@ namespace Decompiler.UnitTests.Gui.Windows
         public void GotoAddress()
         {
             var dlg = repository.Stub<IAddressPromptDialog>();
+            dlgFactory.Expect(d => d.CreateAddressPromptDialog()).Return(dlg);
             dlg.Stub(x => dlg.Address).Return(new Address(0x12345678));
-            decShellUiSvc.Expect(x => x.ShowModalDialog(
+            uiSvc.Expect(x => x.ShowModalDialog(
                     Arg<IAddressPromptDialog>.Is.Same(dlg)))
                 .Return(DialogResult.OK);
             dlg.Expect(x => x.Dispose());
@@ -83,10 +84,11 @@ namespace Decompiler.UnitTests.Gui.Windows
 
             interactor = new MemoryViewInteractor();
             Initialize();
+            interactor.ProgramImage = new ProgramImage(new Address(0x12345670), new byte[16]);
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
 
             repository.VerifyAll();
-            Assert.AreEqual(0x12345678, interactor.Control.SelectedAddress.Linear);
+            Assert.AreEqual(0x12345670, interactor.Control.TopAddress.Linear);
         }
     }
 }

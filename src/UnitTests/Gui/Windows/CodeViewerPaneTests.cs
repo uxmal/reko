@@ -86,10 +86,13 @@ namespace Decompiler.UnitTests.Gui.Windows
             }
             codeViewer.DisplayProcedure(m.Procedure);
             string sExp =
-                "<html><head><style> </style></head>" + nl +
-                "<body><pre id=\"contents\">void ProcedureMock()<br />" + nl +
+                "<html><head><style>.kw { color:blue } </style></head>" + nl +
+                "<body><pre id=\"contents\">void&nbsp;ProcedureBuilder()<br />" + nl +
                 "{<br />" + nl +
-                "ProcedureMock_entry:<br />" + nl +
+                "ProcedureBuilder_entry:<br />" + nl +
+                "l1:<br />" + nl +
+                "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"kw\">return</span><br />" + nl +
+                "ProcedureBuilder_exit:<br />" + nl +
                 "}<br />" + nl +
                 "</pre></body></html>";
             Assert.AreEqual(sExp, codeViewer.WebControl.DocumentText);
@@ -107,15 +110,12 @@ namespace Decompiler.UnitTests.Gui.Windows
         {
             #region IWebBrowser Members
 
-            public HtmlDocument Document
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public IHtmlDocument Document {get; private set; }
 
             public string DocumentText
             {
                 get { return Text; }
-                set { Text = value; }
+                set { Text = value; if (Document == null) Document = new FakeHtmlDocument(); }
             }
 
             public void SetInnerHtmlOfElement(string elementId, string innerHtml)
@@ -141,6 +141,21 @@ namespace Decompiler.UnitTests.Gui.Windows
             {
                 if (DocumentCompleted != null)
                     DocumentCompleted(this, new WebBrowserDocumentCompletedEventArgs(new Uri(url)));
+            }
+
+            private class FakeHtmlDocument : IHtmlDocument
+            {
+                private StringBuilder sb = new StringBuilder();
+
+                public HtmlElement GetElementById(string elementId)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public void Write(string text)
+                {
+                    sb.Append(text);
+                }
             }
         }
     }

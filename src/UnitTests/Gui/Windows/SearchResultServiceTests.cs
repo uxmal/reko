@@ -32,19 +32,25 @@ namespace Decompiler.UnitTests.Gui.Windows
     [TestFixture]
     public class SearchResultServiceTests
     {
+        private MockRepository repository;
         private Form form;
         private ListView listSearchResults;
         private SearchResultServiceImpl svc;
-        private MockRepository repository;
+        private IWindowFrame frame;
 
         [SetUp]
         public void Setup()
         {
+            repository = new MockRepository();
+            frame = repository.DynamicMock<IWindowFrame>();
+        }
+
+        private void CreateUI()
+        {
             form = new Form();
             listSearchResults = new ListView();
             form.Controls.Add(listSearchResults);
-            svc = new SearchResultServiceImpl(null, listSearchResults);
-            repository = new MockRepository();
+            svc = new SearchResultServiceImpl(frame, listSearchResults);
         }
 
         [TearDown]
@@ -56,6 +62,10 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void Creation()
         {
+            repository.ReplayAll();
+
+            CreateUI();
+
             Assert.IsTrue(listSearchResults.VirtualMode);
             Assert.AreEqual(View.Details, listSearchResults.View);
         }
@@ -63,7 +73,6 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void ShowSingleItem()
         {
-            form.Show();
             var result = repository.StrictMock<ISearchResult>();
             result.Expect(s => s.Count).Return(1);
             result.Expect(s => s.CreateColumns(
@@ -79,7 +88,10 @@ namespace Decompiler.UnitTests.Gui.Windows
             result.Expect(s => s.GetItemImageIndex(0)).Return(-1);
             repository.ReplayAll();
 
+            CreateUI();
+            form.Show();
             svc.ShowSearchResults(result);
+
             Assert.AreEqual(1, listSearchResults.Items.Count);
             Assert.AreEqual(1, listSearchResults.VirtualListSize);
             Assert.AreEqual(2, listSearchResults.Items[0].SubItems.Count);
@@ -92,14 +104,14 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void CreateColumns()
         {
-            form.Show();
-
             var result = repository.StrictMock<ISearchResult>();
             result.Expect(s => s.Count).Return(0);
             result.Expect(s => s.CreateColumns(
                 Arg<ISearchResultView>.Is.NotNull));
             repository.ReplayAll();
 
+            CreateUI();
+            form.Show();
             svc.ShowSearchResults(result);
 
             repository.VerifyAll();
@@ -109,12 +121,12 @@ namespace Decompiler.UnitTests.Gui.Windows
         [Test]
         public void DoubleClickShouldNavigate()
         {
-            form.Show();
-
             var result = repository.DynamicMock<ISearchResult>();
             result.Expect(s => s.NavigateTo(1));
             repository.ReplayAll();
 
+            CreateUI();
+            form.Show();
             svc.ShowSearchResults(result);
             svc.DoubleClickItem(1);
 
