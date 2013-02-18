@@ -34,8 +34,13 @@ using System.Linq;
 namespace Decompiler.Analysis
 {
     /// <summary>
-    /// Locates instances of add aLo, bLow, adc aHi, bHi and merges them into (add a, b)
+    /// Locates instances of add aLo, bLow followed later adc aHi, bHi and merges them into (add a, b)
     /// </summary>
+    /// <remarks>Limitations: only does this on pairs within the same basic block, as dominator analysis
+    /// and SSA analysis haven't been done this early. 
+    /// //$TODO: consider doing this _after_ SSA, so that we reap the benefit of performing this across 
+    /// basic block boundaries.
+    /// </remarks>
     public class LongAddRewriter
     {
         private Procedure proc;
@@ -144,7 +149,7 @@ namespace Decompiler.Analysis
                 if (cond == null)
                     continue;
 
-                var hiInstr = FindUsingInstruction(block.Statements, cond.StatementIndex, loInstr.Op);
+                var hiInstr = FindUsingInstruction(block.Statements, cond.StatementIndex, loInstr);
                 if (hiInstr == null)
                     continue;
 
@@ -171,13 +176,16 @@ namespace Decompiler.Analysis
         /// <param name="i"></param>
         /// <param name="next"></param>
         /// <returns></returns>
-        public AddSubCandidate FindUsingInstruction(StatementList stms, int i, Operator next)
+        public AddSubCandidate FindUsingInstruction(StatementList stms, int i, AddSubCandidate loInstr)
         {
             for (++i; i < stms.Count; ++i)
             {
                 var asc = MatchAdcSbc(stms[i].Instruction);
                 if (asc != null)
                 {
+                    Debug.Print("Left sides: [{0}] [{1}]", asc.Left, loInstr.Left);
+                    if (asc.Left.GetType() != loInstr.Left.GetType())
+                        return null;
                     asc.StatementIndex = i;
                     return asc;
                 }

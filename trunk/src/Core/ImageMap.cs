@@ -88,7 +88,17 @@ namespace Decompiler.Core
                 else
                 {
                     OnItemCoincides(item, itemNew);
-                    if (item.GetType() != itemNew.GetType())
+                    if (itemNew.Size > 0)
+                    {
+                        Debug.Assert(item.Size > itemNew.Size);
+                        item.Size -= itemNew.Size;
+                        item.Address += itemNew.Size;
+                        items[itemNew.Address] = itemNew;
+                        items[item.Address] = item;
+                        OnSplitItem(itemNew, item);
+                        return itemNew;
+                    }
+                    if (item.GetType() != itemNew.GetType())    //$BUGBUG: replaces the type.
                     {
                         items[itemNew.Address] = itemNew;
                         itemNew.Size = item.Size;
@@ -97,6 +107,50 @@ namespace Decompiler.Core
                 }
             }
 		}
+
+        public void AddItemWithSize(Address addr, ImageMapItem itemNew)
+        {
+            ImageMapItem item;
+            if (!TryFindItem(addr, out item))
+            {
+                throw new ArgumentException(string.Format("Address {0} is not within the image range.", addr));
+            }
+            int delta = addr - item.Address;
+            Debug.Assert(delta >= 0, "Should have found an item at the supplied address.");
+            if (delta > 0)
+            {
+                int afterOffset = (int) (delta + itemNew.Size);
+                var itemAfter = new ImageMapItem
+                {
+                    Size = (uint)(item.Size - afterOffset),
+                    DataType = ChopBefore(item.DataType, afterOffset),
+                };
+
+                item.Size = (uint) delta;
+                item.DataType = ChopAfter(item.DataType, delta);      // Shrink the existing mofo.
+
+                items.Add(addr, itemNew);
+                items.Add(addr + afterOffset, itemAfter);
+            }
+        }
+
+        private DataType ChopAfter(DataType type, int offset)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+            if (type is UnknownType)
+                return type;
+            throw new NotImplementedException();
+        }
+
+        private DataType ChopBefore(DataType type, int offset)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+            if (type is UnknownType)
+                return type;
+            throw new NotImplementedException();
+        }
 
         public void TerminateItem(Address addr)
         {
@@ -156,7 +210,7 @@ namespace Decompiler.Core
 			seg.Address = addr;
 			segments.Add(addr, seg);
 
-			ImageMapItem it = new ImageMapItem(size);
+            ImageMapItem it = new ImageMapItem(size) { DataType = new UnknownType() };
 			it.Address = addr;
 			items.Add(addr, it);
 		}
@@ -259,6 +313,14 @@ namespace Decompiler.Core
 			}
 		}
 
+        [Conditional("DEBUG")]
+        public void Dump()
+        {
+            foreach (var item in Items)
+            {
+                Debug.Print("Key: {0}, Value: size: {1}, Type: {2}", item.Key, item.Value.Size, item.Value.DataType);
+            }
+        }
     }
 
 	/// <summary>
@@ -268,7 +330,7 @@ namespace Decompiler.Core
 	{
 		public Address Address;
 		public uint Size;
-        public DataType Type;
+        public DataType DataType;
 
 		public ImageMapItem(uint size)
 		{
@@ -278,7 +340,7 @@ namespace Decompiler.Core
 
 		public ImageMapItem()
 		{
-            Type = new UnknownType();
+            DataType = new UnknownType();
 		}
 
 		public bool IsInRange(Address addr)
@@ -294,7 +356,7 @@ namespace Decompiler.Core
 
 		public override string ToString()
 		{
-            return string.Format("{0}, size: {1}, type:{2}", Address, Size, Type);
+            return string.Format("{0}, size: {1}, type:{2}", Address, Size, DataType);
 		}
 	}
 

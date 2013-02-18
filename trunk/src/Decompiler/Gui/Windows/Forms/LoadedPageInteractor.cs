@@ -176,10 +176,10 @@ namespace Decompiler.Gui.Windows.Forms
                 base.Site = value;
                 if (value != null)
                 {
-                    browserSvc = EnsureService<IProgramImageBrowserService>();
-                    sbSvc = EnsureService<IStatusBarService>();
-                    memSvc = EnsureService<IMemoryViewService>();
-                    disSvc = EnsureService<IDisassemblyViewService>();
+                    browserSvc = Site.RequireService<IProgramImageBrowserService>();
+                    sbSvc = Site.RequireService<IStatusBarService>();
+                    memSvc = Site.RequireService<IMemoryViewService>();
+                    disSvc = Site.RequireService<IDisassemblyViewService>();
                 }
                 else
                 {

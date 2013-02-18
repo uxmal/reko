@@ -1,6 +1,6 @@
 // Mem0:Global memory
 // fp:Temporary
-// ax:Register ax
-// dx:Register dx
+// ax:ax
+// dx:dx
 // dx_ax:Sequence dx:ax
 // return address size: 0

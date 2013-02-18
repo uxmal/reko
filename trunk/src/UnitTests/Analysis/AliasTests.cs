@@ -29,6 +29,7 @@ using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -45,7 +46,7 @@ namespace Decompiler.UnitTests.Analysis
             alias = new Aliases(proc, arch);
         }
 
-        protected override void RunTest(Program prog, FileUnitTester fut)
+        protected override void RunTest(Program prog, TextWriter writer)
         {
             var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
             var eventListener = new FakeDecompilerEventListener();
@@ -59,9 +60,9 @@ namespace Decompiler.UnitTests.Analysis
                 larw.Transform();
                 Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
-                alias.Write(fut.TextWriter);
-                proc.Write(false, fut.TextWriter);
-                fut.TextWriter.WriteLine();
+                alias.Write(writer);
+                proc.Write(false, writer);
+                writer.WriteLine();
             }
         }
 

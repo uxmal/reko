@@ -37,11 +37,13 @@ namespace Decompiler.Evaluation
     {
         private ExpressionSimplifier eval;
         private EvaluationContext ctx;
+        private Substitutor sub;
 
         public SymbolicEvaluator(ExpressionSimplifier expSimp, EvaluationContext ctx)
         {
             this.eval = expSimp;
             this.ctx = ctx;
+            this.sub = new Substitutor(ctx);
         }
 
         public SymbolicEvaluator(EvaluationContext ctx) : this(new ExpressionSimplifier(ctx), ctx)
@@ -59,7 +61,7 @@ namespace Decompiler.Evaluation
 
         public Instruction VisitAssignment(Assignment a)
         {
-            var valSrc = a.Src.Accept(eval);
+            var valSrc = a.Src.Accept(sub).Accept(eval);
             ctx.SetValue(a.Dst, valSrc);
             return a;
         }
@@ -93,7 +95,7 @@ namespace Decompiler.Evaluation
         public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             // Goto instructions always go to a constant label.
-        return gotoInstruction;
+            return gotoInstruction;
         }
 
 

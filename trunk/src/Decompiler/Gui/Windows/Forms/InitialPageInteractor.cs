@@ -54,7 +54,7 @@ namespace Decompiler.Gui.Windows.Forms
         protected virtual LoaderBase CreateLoader(IServiceContainer sc)
         {
             return new Loader(
-                GetService<IDecompilerConfigurationService>(),
+                Site.GetService<IDecompilerConfigurationService>(),
                 sc);
         }
 
@@ -91,7 +91,7 @@ namespace Decompiler.Gui.Windows.Forms
                 base.Site = value;
                 if (value != null)
                 {
-                    browserSvc = GetService<IProgramImageBrowserService>();
+                    browserSvc = Site.RequireService<IProgramImageBrowserService>();
                 }
                 else
                 {
@@ -111,17 +111,17 @@ namespace Decompiler.Gui.Windows.Forms
 
         public override bool LeavePage()
         {
-            var browserSvc = EnsureService<IProgramImageBrowserService>();
+            var browserSvc = Site.RequireService<IProgramImageBrowserService>();
             browserSvc.SelectionChanged -= BrowserItemSelected;
             return (Decompiler != null);
         }
 
         public void OpenBinary(string file, DecompilerHost host)
         {
-            var sc = GetService<IServiceContainer>();
+            var sc = Site.RequireService<IServiceContainer>();
             LoaderBase ldr = CreateLoader(sc);
             Decompiler = CreateDecompiler(ldr, host, sc);
-            IWorkerDialogService svc = EnsureService<IWorkerDialogService>();
+            IWorkerDialogService svc = Site.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
                 Decompiler.LoadProgram(file);
@@ -129,14 +129,14 @@ namespace Decompiler.Gui.Windows.Forms
                 Decompiler.ScanProgram();
             });
 
-            var memSvc = EnsureService<IMemoryViewService>();
+            var memSvc = Site.RequireService<IMemoryViewService>();
             memSvc.ViewImage(Decompiler.Program.Image);
             PopulateBrowserServiceWithSegments();
         }
 
         private void PopulateBrowserServiceWithSegments()
         {
-            var browserSvc = EnsureService<IProgramImageBrowserService>();
+            var browserSvc = Site.RequireService<IProgramImageBrowserService>();
             browserSvc.Populate(Decompiler.Program.Image.Map.Segments.Values, delegate(object item, IListViewItem listItem)
             {
                 var ims = (ImageMapSegment)item;
@@ -153,7 +153,7 @@ namespace Decompiler.Gui.Windows.Forms
         public void BrowserItemSelected(object sender, EventArgs e)
         {
             ImageMapSegment segment = (ImageMapSegment)browserSvc.FocusedItem;
-            var memSvc = EnsureService<IMemoryViewService>();
+            var memSvc = Site.RequireService<IMemoryViewService>();
             memSvc.ShowMemoryAtAddress(segment.Address);
             memSvc.ShowWindow();
         }

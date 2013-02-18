@@ -184,14 +184,6 @@ namespace Decompiler.Evaluation
             if (IsComparison(binExp.Operator) && cRight != null && idLeft != null)
                 return binExp;
 
-            // Replace identifier with its definition if possible.
-
-            if (idLeft != null)
-            {
-                var t = ctx.GetValue(idLeft);
-                if (t != null)
-                    left = t;
-            }
             var binLeft = left as BinaryExpression;
             var cLeftRight = (binLeft != null) ? binLeft.Right as Constant : null;
 

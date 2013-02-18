@@ -21,6 +21,7 @@
 using Decompiler;
 using Decompiler.Core;
 using Decompiler.Scanning;
+using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,6 @@ namespace Decompiler.UnitTests.Core
 	{
 		private Address addrBase = new Address(0x8000, 0);
 		private byte [] img = new Byte [] { 0x00, 0x00, 0x00, 0x00 };
-		private int cItemsSplit;
 
 		public ImageMapTests()
 		{
@@ -88,8 +88,8 @@ namespace Decompiler.UnitTests.Core
 		public void ImageItems()
 		{
 			ImageMap im = new ImageMap(new Address(0xC00, 0), 0x4000);
-			cItemsSplit = 0;
-			im.ItemSplit += new ItemSplitHandler(ImageItems_ItemSplit);
+			int cItemsSplit = 0;
+			im.ItemSplit += delegate { ++cItemsSplit; };
 
 			im.AddItem(new Address(0xC00, 30), new ImageMapItem());
 			im.AddItem(new Address(0xC00, 30), new ImageMapItem());
@@ -122,10 +122,29 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual(35904, s.Size);
 		}
 
+        [Test]
+        public void CreateTypedItem_EmptyMap()
+        {
+            var map = new ImageMap(addrBase, 0x0100);
+            Assert.AreEqual(1, map.Items.Count);
+            ImageMapItem item;
+            Assert.IsTrue(map.TryFindItemExact(addrBase, out item));
+            Assert.AreEqual(0x100, item.Size);
+        }
 
-		private void ImageItems_ItemSplit(object o, ItemSplitArgs isa)
-		{
-			++cItemsSplit;
-		}
+        [Test]
+        public void CreateItem_MiddleOfEmptyRange()
+        {
+            var map = new ImageMap(addrBase, 0x0100);
+            map.AddItemWithSize(
+                addrBase + 0x10,
+                new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 10) });
+            map.Dump();
+            Assert.AreEqual(3, map.Items.Count);
+            ImageMapItem item;
+            Assert.IsTrue(map.TryFindItemExact(addrBase, out item));
+            Assert.AreEqual(0x10, item.Size);
+            Assert.IsInstanceOf<UnknownType>(item.DataType);
+        }
 	}
 }

@@ -132,6 +132,14 @@ namespace Decompiler.UnitTests.Core.Lib
             Assert.AreEqual("exit", pdg.ImmediateDominator("infinity"));
         }
 
+        // Graph:
+        //           entry
+        //             |
+        //           split
+        //           /   \
+        //        left   right
+        //           \   /
+        //            join
         [Test]
         public void DominanceFrontier()
         {
@@ -144,8 +152,8 @@ namespace Decompiler.UnitTests.Core.Lib
 
             CompileTest(graph, "entry");
             DumpDominatorFrontier(pdg);
-            Assert.AreEqual(1, pdg.DominatorFrontier("split").Count);
-            Assert.AreEqual("join", pdg.DominatorFrontier("split")[0]);
+            Assert.AreEqual(1, pdg.DominatorFrontier("left").Count);
+            Assert.AreEqual("join", pdg.DominatorFrontier("left")[0]);
 
         }
 

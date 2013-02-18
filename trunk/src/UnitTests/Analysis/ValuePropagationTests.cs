@@ -29,6 +29,7 @@ using Decompiler.Core.Machine;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -348,28 +349,28 @@ namespace Decompiler.UnitTests.Analysis
             return sid.Identifier;
         }
 
-        protected override void RunTest(Program prog, FileUnitTester fut)
+        protected override void RunTest(Program prog, TextWriter writer)
 		{
 			var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				fut.TextWriter.WriteLine("= {0} ========================", proc.Name);
+				writer.WriteLine("= {0} ========================", proc.Name);
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 
-				ssa.Write(fut.TextWriter);
-				proc.Write(false, fut.TextWriter);
-				fut.TextWriter.WriteLine();
+				ssa.Write(writer);
+				proc.Write(false, writer);
+				writer.WriteLine();
 
 				ValuePropagator vp = new ValuePropagator(ssa.Identifiers, proc);
 				vp.Transform();
 
-				ssa.Write(fut.TextWriter);
-				proc.Write(false, fut.TextWriter);
+				ssa.Write(writer);
+				proc.Write(false, writer);
 			}
 		}
 

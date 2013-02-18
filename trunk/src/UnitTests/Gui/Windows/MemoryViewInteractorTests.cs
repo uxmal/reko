@@ -43,6 +43,7 @@ namespace Decompiler.UnitTests.Gui.Windows
         private IDecompilerShellUiService uiSvc;
         private IDialogFactory dlgFactory;
         private ServiceContainer sp;
+        private Address addrBase;
 
         [SetUp]
         public void Setup()
@@ -53,10 +54,12 @@ namespace Decompiler.UnitTests.Gui.Windows
 			dlgFactory = repository.DynamicMock<IDialogFactory>();
             sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
 			sp.AddService(typeof(IDialogFactory), dlgFactory);
+            addrBase = new Address(0x0100000);
         }
 
-        private void Initialize()
+        private void CreateInteractor()
         {
+            interactor = new MemoryViewInteractor();
             interactor.SetSite(sp);
             interactor.CreateControl();
         }
@@ -82,13 +85,26 @@ namespace Decompiler.UnitTests.Gui.Windows
             dlg.Expect(x => x.Dispose());
             repository.ReplayAll();
 
-            interactor = new MemoryViewInteractor();
-            Initialize();
+            CreateInteractor();
             interactor.ProgramImage = new ProgramImage(new Address(0x12345670), new byte[16]);
             interactor.Execute(ref CmdSets.GuidDecompiler, CmdIds.ViewGoToAddress);
 
             repository.VerifyAll();
             Assert.AreEqual(0x12345670, interactor.Control.TopAddress.Linear);
+        }
+
+        [Test]
+        public void MarkAreaWithType()
+        {
+            CreateInteractor();
+            var image = new ProgramImage(addrBase, new byte[0x100]);
+            interactor.ProgramImage = image;
+            interactor.SetTypeAtAddressRange(addrBase, "i32");
+
+            ImageMapItem item;
+            Assert.IsTrue(image.Map.TryFindItemExact(addrBase, out item));
+            Assert.AreEqual(addrBase, item.Address);
+            Assert.AreEqual("int32", item.DataType.ToString());
         }
     }
 }

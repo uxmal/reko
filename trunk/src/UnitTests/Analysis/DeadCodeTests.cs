@@ -76,7 +76,7 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest(m, "Analysis/DeadFnReturn.txt");
 		}
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
+		protected override void RunTest(Program prog, TextWriter writer)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
@@ -90,8 +90,8 @@ namespace Decompiler.UnitTests.Analysis
 				cce.Transform();
 
 				DeadCode.Eliminate(proc, ssa);
-				ssa.Write(fut.TextWriter);
-				proc.Write(false, fut.TextWriter);
+				ssa.Write(writer);
+				proc.Write(false, writer);
 			}
 		}
  	}

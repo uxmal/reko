@@ -37,27 +37,23 @@ namespace Decompiler.Core
 	/// </summary>
 	public class Procedure : ProcedureBase
 	{
-		private List<AbsynStatement> body;
         private List<Block> blocks;
-        private BlockGraph controlGraph;
-		private Block blockEntry;
-		private Block blockExit;
 
 		public Procedure(string name, Frame frame) : base(name)
 		{
-            this.body = new List<AbsynStatement>();
+            this.Body = new List<AbsynStatement>();
             this.blocks = new List<Block>();
-            this.controlGraph = new BlockGraph(blocks);
+            this.ControlGraph = new BlockGraph(blocks);
 			this.Frame = frame;
 			this.Signature = new ProcedureSignature();
-			this.blockEntry = AddBlock(Name + "_entry");	
-			this.blockExit = AddBlock(Name + "_exit");
+			this.EntryBlock = AddBlock(Name + "_entry");	
+			this.ExitBlock = AddBlock(Name + "_exit");
 		}
 
-		public List<AbsynStatement> Body { get { return body; } }
-        public BlockGraph ControlGraph { get { return controlGraph; } }
-        public Block EntryBlock { get { return blockEntry; } }
-        public Block ExitBlock { get { return blockExit; } }
+        public List<AbsynStatement> Body { get; private set; }
+        public BlockGraph ControlGraph { get; private set; }
+        public Block EntryBlock { get; private set; }
+        public Block ExitBlock { get; private set; }
         public Frame Frame { get; private set; }
 
         /// <summary>

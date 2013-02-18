@@ -144,18 +144,18 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
+		protected override void RunTest(Program prog, TextWriter writer)
 		{
 			dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind, new Formatter(fut.TextWriter));
-				fut.TextWriter.WriteLine();
-				flow.Emit(prog.Architecture, fut.TextWriter);
-				proc.Write(true, fut.TextWriter);
-				fut.TextWriter.Flush();
+				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind, new Formatter(writer));
+				writer.WriteLine();
+				flow.Emit(prog.Architecture, writer);
+				proc.Write(true, writer);
+				writer.Flush();
 			}
 		}
 	}

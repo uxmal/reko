@@ -92,28 +92,28 @@ ax_36: orig: ax
     uses: return ax_36
 bp_37: orig: bp
 // fn0C00_000F
-word16 fn0C00_000F(word16 wArg00)
-fn0C00_000F_entry:		// pred:
-	def wArg00
+word16 fn0C00_000F(word16 wArg02)
+fn0C00_000F_entry:
+	def wArg02
 	// succ:  l0C00_000F
-l0C00_000F:		// pred: fn0C00_000F_entry
-	ax_13 = wArg00
-	ax_14 = ax_13 - 0x0001
-	branch ax_14 == 0x0000 l0C00_0026
+l0C00_000F:
+	ax_17 = wArg02
+	ax_18 = ax_17 - 0x0001
+	branch ax_18 == 0x0000 l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
-l0C00_0018:		// pred: l0C00_000F
+l0C00_0018:
 	wLoc06_21 = ax_14
-	ax_22 = fn0C00_000F(wLoc06_21)
-	dx_23 = wArg00
-	dx_ax_24 = dx_23 *s ax_22
-	ax_25 = (word16) dx_ax_24 (alias)
+	ax_34 = fn0C00_000F(wLoc06)
+	dx_39 = wArg02
+	dx_ax_40 = dx_39 *s ax_34
+	ax_41 = (word16) dx_ax_40 (alias)
+	goto l0C00_0029
 	// succ:  l0C00_0029
-l0C00_0029:		// pred: l0C00_0026 l0C00_0018
-	ax_36 = PHI(ax_19, ax_25)
-	return ax_36
+l0C00_0026:
+	ax_46 = 0x0001
+	// succ:  l0C00_0029
+l0C00_0029:
+	ax_29 = PHI(ax_41, ax_46)
+	return ax_29
 	// succ:  fn0C00_000F_exit
-fn0C00_000F_exit:		// pred: l0C00_0029
-	// succ: 
-l0C00_0026:		// pred: l0C00_000F
-	ax_19 = 0x0001
-	// succ:  l0C00_0029
+fn0C00_000F_exit:

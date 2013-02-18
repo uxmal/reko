@@ -3,28 +3,32 @@
 	MayUseIn:  ds
 	BypassIn: 
 	Trashed:   ax si al ah
-	Preserved:
+	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
-fn0C00_0000_entry:		// pred:
-	// succ:  l0C00_0000
-// DataOut: ds
-l0C00_0000:		// pred: fn0C00_0000_entry
+fn0C00_0000_entry:
+	// DataOut: ds
+	// DataOut (flags):
+	// SymbolicIn: sp:fp
+l0C00_0000:
 	si = 0x1234
-	call fn0C00_000B (depth: 2;)
+	call fn0C00_000B (retsize: 2;depth: 2)
 	Mem0[ds:0x5431:word16] = ax
 	return
-	// succ:  fn0C00_0000_exit
 // DataOut:
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+// DataOut (flags):
+// SymbolicIn: sp:fp
+fn0C00_0000_exit:
 // DataOut:
+// DataOut (flags):
+// SymbolicIn: sp:fp si:0x1234 ax:<invalid>
+
 // fn0C00_000B /////////////////////
 	LiveOut:   ax ds
 	MayUseIn:  si ds
 	BypassIn: 
 	Trashed:   ax al ah
-	Preserved: si
+	Preserved: sp si
 // fn0C00_000B
 void fn0C00_000B()
 fn0C00_000B_entry:		// pred:

@@ -20,6 +20,7 @@
 
 using Decompiler;
 using Decompiler.Core;
+using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -133,6 +134,8 @@ namespace Decompiler.Gui.Windows.Controls
 				return SystemBrushes.Highlight;
 			if (item is ImageMapBlock)
 				return Brushes.Pink;
+            if (item.DataType != null && !(item.DataType is UnknownType))
+                return Brushes.LightBlue;
 			return SystemBrushes.Window;
 		} 
 
@@ -320,8 +323,9 @@ namespace Decompiler.Gui.Windows.Controls
 
 		protected virtual void OnSelectionChanged()
 		{
-			if (SelectionChanged != null)
-                SelectionChanged(this, new SelectionChangedEventArgs(GetAddressRange()));
+            var eh = SelectionChanged;
+            if (eh != null)
+                eh(this, new SelectionChangedEventArgs(GetAddressRange()));
 		}
 
 		protected override void OnSizeChanged(EventArgs e)

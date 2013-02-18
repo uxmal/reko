@@ -123,13 +123,13 @@ namespace Decompiler.UnitTests.Analysis
             Assert.AreEqual(sExp, summary);
         }
 
-        protected override void RunTest(Program prog, FileUnitTester fut)
+        protected override void RunTest(Program prog, TextWriter writer)
         {
             this.prog = prog;
             flow = new ProgramDataFlow(prog);
             trf = CreateTrashedRegisterFinder();
             trf.Compute();
-            DumpProcedureSummaries(fut.TextWriter);
+            DumpProcedureSummaries(writer);
         }
 
         private string DumpValues()

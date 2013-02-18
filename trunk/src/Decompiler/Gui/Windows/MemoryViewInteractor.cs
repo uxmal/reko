@@ -37,6 +37,7 @@ namespace Decompiler.Gui.Windows
 
         private IServiceProvider services;
         private MemoryControl ctrl;
+        private TypeMarker typeMarker;
 
         public Control CreateControl()
         {
@@ -45,6 +46,10 @@ namespace Decompiler.Gui.Windows
             Control.Font = new Font("Lucida Console", 10F);     //$TODO: make this user configurable.
             var uiService = services.RequireService<IDecompilerShellUiService>();
             Control.ContextMenu = uiService.GetContextMenu(MenuIds.CtxMemoryControl);
+            typeMarker = new TypeMarker(Control);
+            typeMarker.TextChanged += FormatType;
+            typeMarker.TextAccepted += SetTypeAtAddressRange;
+
             return Control;
         }
 
@@ -58,7 +63,6 @@ namespace Decompiler.Gui.Windows
         public void Close()
         {
         }
-
 
         public ProgramImage ProgramImage
         {
@@ -101,10 +105,43 @@ namespace Decompiler.Gui.Windows
             var addrRange = Control.GetAddressRange();
             if (!addrRange.IsValid)
                 return;
-            var typeMarker = new TypeMarker(Control);
-            typeMarker.TextChanged += (sender, e) => { e.FormattedType = "@@@" + e.UserText; };
-            typeMarker.TextAccepted += (sender, e) => { MessageBox.Show(Control, e.UserText, "Do something with this"); };
             typeMarker.Show(Control.AddressToPoint(addrRange.Begin));
+        }
+
+        public void FormatType(object sender, TypeMarkerEventArgs e)
+        {
+            try
+            {
+                var parser = new HungarianParser();
+                var dataType = parser.Parse(e.UserText);
+                if (dataType == null)
+                    e.FormattedType = " - Null - ";
+                else 
+                    e.FormattedType = dataType.ToString();
+            }
+            catch
+            {
+                e.FormattedType = " - Error - ";
+            }
+        }
+
+        private void SetTypeAtAddressRange(object sender, TypeMarkerEventArgs e)
+        {
+            SetTypeAtAddressRange(GetSelectedAddressRange().Begin, e.UserText);
+        }
+
+        public void SetTypeAtAddressRange(Address address, string userText)
+        {
+           var parser = new HungarianParser();
+           var dataType = parser.Parse(userText);
+           if (dataType == null)
+               return;
+            ProgramImage.Map.AddItem(address, new ImageMapItem
+            {
+                Size = (uint) dataType.Size,
+                DataType = dataType,
+            });
+            Control.Invalidate();
         }
 
         public virtual Address SelectedAddress

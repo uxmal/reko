@@ -69,38 +69,38 @@ Mem34: orig: Mem0
     def:  Mem34[ds:0x0300:word16] = bx_33
 // fn0C00_0000
 void fn0C00_0000(word16 bp, selector ds)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
 	def bp
 	def ss
 	def ds
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
+l0C00_0000:
 	bx_12 = 0x0000
-	ax_13 = Mem0[ss:bp + 0x0006:word16]
-	branch ax_13 <= 0x0000 l0C00_0012
+	ax_15 = wArg06
+	branch ax_15 <= 0x0000 l0C00_0012
 	// succ:  l0C00_0009 l0C00_0012
-l0C00_0009:		// pred: l0C00_0000
-	cx_20 = ax_13
+l0C00_0009:
+	cx_25 = ax_15
 	// succ:  l0C00_000B
-l0C00_000B:		// pred: l0C00_0009 l0C00_000B
-	cx_21 = PHI(cx_20, cx_25)
-	bx_22 = PHI(bx_12, bx_23)
-	bx_23 = bx_22 + cx_21
-	cx_25 = cx_21 - 0x0001
-	branch cx_25 != 0x0000 l0C00_000B
+l0C00_000B:
+	cx_26 = PHI(cx_25, cx_30)
+	bx_27 = PHI(bx_12, bx_28)
+	bx_28 = bx_27 + cx_26
+	cx_30 = cx_26 - 0x0001
+	branch cx_30 != 0x0000 l0C00_000B
 	// succ:  l0C00_000F l0C00_000B
-l0C00_000F:		// pred: l0C00_000B
+l0C00_000F:
+	goto l0C00_0016
 	// succ:  l0C00_0016
-l0C00_0016:		// pred: l0C00_0012 l0C00_000F
-	bx_33 = PHI(bx_19, bx_23)
-	Mem34[ds:0x0300:word16] = bx_33
+l0C00_0012:
+	ax_31 = -ax_15
+	bx_34 = ax_31
+	// succ:  l0C00_0016
+l0C00_0016:
+	bx_23 = PHI(bx_28, bx_34)
+	Mem24[ds:0x0300:word16] = bx_23
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0016
-	// succ: 
-l0C00_0012:		// pred: l0C00_0000
-	ax_16 = -ax_13
-	bx_19 = ax_16
-	// succ:  l0C00_0016
+fn0C00_0000_exit:
 

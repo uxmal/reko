@@ -116,6 +116,7 @@
     <Compile Include="Core\ImageReaderTests.cs" />
     <Compile Include="Core\ProcedureStateTests.cs" />
     <Compile Include="Evaluation\InstructionMatcherTests.cs" />
+    <Compile Include="Evaluation\SubstitutorTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
     <Compile Include="Mocks\FakeDialogFactory.cs" />

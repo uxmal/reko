@@ -22,6 +22,7 @@ using Decompiler.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -36,34 +37,34 @@ namespace Decompiler.UnitTests.Analysis
             RunTest("fragments/while_goto.asm", "Analysis/DgWhileGoto.txt");
         }
 
-        protected override void RunTest(Program prog, FileUnitTester fut)
+        protected override void RunTest(Program prog, TextWriter writer)
         {
             foreach (var proc in prog.Procedures.Values)
             {
-                fut.TextWriter.WriteLine("===========");
-                proc.Write(false, fut.TextWriter);
-                fut.TextWriter.WriteLine("== Predecessors");
+                writer.WriteLine("===========");
+                proc.Write(false, writer);
+                writer.WriteLine("== Predecessors");
                 foreach (var block in proc.ControlGraph.Blocks.OrderBy(block => block.Name))
                 {
-                    fut.TextWriter.Write("  {0}:", block.Name);
+                    writer.Write("  {0}:", block.Name);
                     foreach (var df in block.Pred)
                     {
-                        fut.TextWriter.Write(" {0}", df.Name);
+                        writer.Write(" {0}", df.Name);
                     }
-                    fut.TextWriter.WriteLine();
+                    writer.WriteLine();
                 }
-                fut.TextWriter.WriteLine("== Immediate dominators");
+                writer.WriteLine("== Immediate dominators");
                 var gr = proc.CreateBlockDominatorGraph();
-                gr.Write(fut.TextWriter);
-                fut.TextWriter.WriteLine("== Dominance frontiers");
+                gr.Write(writer);
+                writer.WriteLine("== Dominance frontiers");
                 foreach (var block in proc.ControlGraph.Blocks.OrderBy(block => block.Name))
                 {
-                    fut.TextWriter.Write("  {0}:", block.Name);
+                    writer.Write("  {0}:", block.Name);
                     foreach (var df in gr.DominatorFrontier(block).OrderBy(b => b.Name))
                     {
-                        fut.TextWriter.Write(" {0}", df.Name);
+                        writer.Write(" {0}", df.Name);
                     }
-                    fut.TextWriter.WriteLine();
+                    writer.WriteLine();
                 }
             }
         }

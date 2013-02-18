@@ -1,45 +1,48 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	MayUseIn:  bp ss ds
+	MayUseIn:  ds
 	BypassIn: 
-	Trashed:   SCZO ax cx dx sp bp al cl dl ah ch dh
+	Trashed:   SCZO ax cx dx al cl dl ah ch dh
 	Preserved: sp
 // fn0C00_0000
 void fn0C00_0000()
 fn0C00_0000_entry:
-// DataOut: ss ds
-// DataOut (flags):
+// DataOut: ds
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: Temporary(16)
+
 l0C00_0000:
 	cx = 0x0064
 	sp = fp - 0x0002
 	wLoc02 = 0x0064
-	call fn0C00_000F (retsize: 2;depth: 4)
-	sp = sp + 0x0002
+	call fn0C00_000F (retsize: 2; depth: 4)
+	sp = fp
 	SCZO = cond(sp)
 	Mem0[ds:0x0064:word16] = ax
 	return
 // DataOut:
-// DataOut (flags):
+// DataOut (flags): 
 // SymbolicIn: sp:fp
 
 fn0C00_0000_exit:
 // DataOut:
-
-// SymbolicIn: sp:<invalid> cx:0x0064 ax:<invalid> dx:<invalid> bp:<invalid> -2:0x0064
+// DataOut (flags): 
+// SymbolicIn: sp:fp cx:0x0064 ax:<invalid> dx:<invalid> -2:0x0064
 
 // fn0C00_000F /////////////////////
 	LiveOut:   ax ds
 	MayUseIn: 
 	BypassIn: 
 	Trashed:   SCZO ax dx al dl ah dh
-	Preserved: bp
+	Preserved: sp bp
 // fn0C00_000F
 void fn0C00_000F()
 fn0C00_000F_entry:
 // DataOut: ds
-// LocalsOut: Stack +0000(16)
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: Stack +0002(16) Temporary(16)
 
 l0C00_000F:
 	sp = fp - 0x0002
@@ -50,12 +53,14 @@ l0C00_000F:
 	SZO = cond(ax)
 	branch Test(EQ,Z) l0C00_0026
 // DataOut: ax ds
-// LocalsOut: Stack +0000(16)
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: Stack +0002(16) Temporary(16)
 
 l0C00_0018:
 	sp = fp - 0x0004
-	wLoc04 = ax - 0x0001
-	call fn0C00_000F (retsize: 2;depth: 6)
+	wLoc04 = ax
+	call fn0C00_000F (retsize: 2; depth: 6)
 	sp = fp - 0x0003
 	SZO = cond(sp)
 	sp = fp - 0x0002
@@ -64,23 +69,25 @@ l0C00_0018:
 	dx_ax = dx *s ax
 	SCZO = cond(dx_ax)
 // DataOut: ax ds
-// DataOut (flags):
-// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:ax - 0x0001
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> -2:bp
+
 l0C00_0026:
 	ax = 0x0001
 // DataOut: ax ds
-// DataOut (flags):
-
-// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:ax - 0x0001 -2:bp
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> -2:bp
 
 l0C00_0029:
-	bp = Mem0[ss:fp - 0x0002:word16]
+	bp = wLoc02
 	sp = fp
 	return
 // DataOut: ax ds
-// DataOut (flags):
-// SymbolicIn: sp:<invalid> bp:<invalid> ax:<invalid> dx:<invalid> -4:ax - 0x0001 -2:bp
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4:ax -2:bp
+
 fn0C00_000F_exit:
 // DataOut: ax ds
-// DataOut (flags):
-// SymbolicIn: sp:sp + 0x0002 bp:<invalid> ax:<invalid> dx:<invalid> -4:ax - 0x0001 -2:bp
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid> -4:ax -2:bp
+

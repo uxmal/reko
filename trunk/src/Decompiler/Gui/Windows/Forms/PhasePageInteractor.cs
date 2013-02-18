@@ -72,20 +72,6 @@ namespace Decompiler.Gui.Windows.Forms
             set { decompilerSvc.Decompiler = value; }
         }
 
-        protected T EnsureService<T>()
-        {
-            var svc = GetService<T>();
-            if (svc == null)
-                throw new InvalidOperationException(string.Format(
-                    "Attempt to obtain {0} service interface failed.", typeof(T).FullName));
-            return svc;
-        }
-
-        protected T GetService<T>()
-        {
-            return (T)site.GetService(typeof(T));
-        }
-
         /// <summary>
         /// Derived classes should copy populate editable controls with initial values.
         /// </summary>
@@ -128,9 +114,9 @@ namespace Decompiler.Gui.Windows.Forms
                 site = value;
                 if (site != null)
                 {
-                    decompilerSvc = EnsureService<IDecompilerService>();
-                    decompilerUiSvc = EnsureService<IDecompilerShellUiService>();
-                    workerDlgSvc = EnsureService<IWorkerDialogService>();
+                    decompilerSvc = Site.RequireService<IDecompilerService>();
+                    decompilerUiSvc = Site.RequireService<IDecompilerShellUiService>();
+                    workerDlgSvc = Site.RequireService<IWorkerDialogService>();
                 }
                 else
                 {

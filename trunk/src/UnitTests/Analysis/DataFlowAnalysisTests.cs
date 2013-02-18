@@ -187,21 +187,21 @@ namespace Decompiler.UnitTests.Analysis
 done:   
                 ret
 ");
-           SaveRunOutput(prog, "Analysis/DfaFstsw.txt");
+           SaveRunOutput(prog, RunTest, "Analysis/DfaFstsw.txt");
         }
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
+		protected override void RunTest(Program prog, TextWriter writer)
 		{
 			dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				fut.TextWriter.Write("// ");
-				flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind|ProcedureSignature.EmitFlags.LowLevelInfo, fut.TextWriter);
-				flow.Emit(prog.Architecture, fut.TextWriter);
-				proc.Write(false, fut.TextWriter);
-				fut.TextWriter.WriteLine();
+				writer.Write("// ");
+				flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind|ProcedureSignature.EmitFlags.LowLevelInfo, writer);
+				flow.Emit(prog.Architecture, writer);
+				proc.Write(false, writer);
+				writer.WriteLine();
 			}
 		}	
 
