@@ -58,7 +58,7 @@ namespace Decompiler.Gui.Windows.Forms
 
         public void ConnectToBrowserService()
         {
-            browserService = GetService<IProgramImageBrowserService>();
+            browserService = Site.GetService<IProgramImageBrowserService>();
             browserService.Enabled = true;
             browserService.SelectionChanged += browserService_SelectionChanged;
             browserService.Caption = "Procedures";
@@ -110,7 +110,7 @@ namespace Decompiler.Gui.Windows.Forms
         void browserService_SelectionChanged(object sender, EventArgs e)
         {
             var proc = (Procedure) browserService.SelectedItem;
-            var codeSvc = GetService<ICodeViewerService>();
+            var codeSvc = Site.RequireService<ICodeViewerService>();
             codeSvc.DisplayProcedure(proc);
         }
     }

@@ -110,7 +110,7 @@ namespace Decompiler.UnitTests.Analysis
             RunTest("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");
         }
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
+		protected override void RunTest(Program prog, TextWriter fut)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
@@ -132,9 +132,9 @@ namespace Decompiler.UnitTests.Analysis
 				Coalescer co = new Coalescer(proc, ssa);
 				co.Transform();
 
-				ssa.Write(fut.TextWriter);
-				proc.Write(false, fut.TextWriter);
-				fut.TextWriter.WriteLine();
+				ssa.Write(fut);
+				proc.Write(false, fut);
+				fut.WriteLine();
 			}
 		}
 	}

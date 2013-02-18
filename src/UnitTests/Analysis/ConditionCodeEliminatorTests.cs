@@ -28,6 +28,7 @@ using Decompiler.Analysis;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -53,7 +54,7 @@ namespace Decompiler.UnitTests.Analysis
 
         private void RunTest(ProgramBuilder p, string output)
         {
-            SaveRunOutput(p.BuildProgram(), output);
+            SaveRunOutput(p.BuildProgram(), RunTest, output);
         }
 
         private Identifier Reg32(string name)
@@ -73,7 +74,7 @@ namespace Decompiler.UnitTests.Analysis
             return ssaIds.Add(id, null, null, false).Identifier;
         }
 
-        protected override void RunTest(Program prog, FileUnitTester fut)
+        protected override void RunTest(Program prog, TextWriter writer)
         {
             DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
             dfa.UntangleProcedures();
@@ -96,9 +97,9 @@ namespace Decompiler.UnitTests.Analysis
                 cce.Transform();
                 DeadCode.Eliminate(proc, ssa);
 
-                ssa.Write(fut.TextWriter);
-                proc.Write(false, fut.TextWriter);
-                fut.TextWriter.WriteLine();
+                ssa.Write(writer);
+                proc.Write(false, writer);
+                writer.WriteLine();
             }
         }
 
@@ -163,7 +164,7 @@ namespace Decompiler.UnitTests.Analysis
  done:
                 ret
 ");
-            SaveRunOutput(prog, "Analysis/CceFstswTestAx.txt");
+            SaveRunOutput(prog, RunTest, "Analysis/CceFstswTestAx.txt");
         }
 
         [Test]
@@ -179,7 +180,7 @@ namespace Decompiler.UnitTests.Analysis
 done:
                 ret
 ");
-            SaveRunOutput(prog, "Analysis/CceFstswTextAxWithConstantBl.txt");
+            SaveRunOutput(prog, RunTest, "Analysis/CceFstswTextAxWithConstantBl.txt");
         }
 
 		[Test]
@@ -196,7 +197,7 @@ done:
             ssaIds[y].DefStatement = m.Block.Statements.Last;
 			ssaIds[z].Uses.Add(m.Block.Statements.Last);
 			var stmBr = m.BranchIf(new TestCondition(ConditionCode.EQ, y), "foo");
-            ssaIds[y].Uses.Add(m.Block.Statements.Last);
+            ssaIds[y].Uses.Add(stmBr);
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new ArchitectureMock());
 			Instruction instr = stmBr.Instruction.Accept(cce);

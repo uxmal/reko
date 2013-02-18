@@ -180,19 +180,15 @@ namespace Decompiler.UnitTests.Analysis
             RunTest("Fragments/regressions/r00007.asm", "Analysis/RlReg00007.txt");
         }
 
-        protected override void RunTest(Program prog, FileUnitTester fut)
+        protected override void RunTest(Program prog, TextWriter writer)
 		{
             var eventListener = new FakeDecompilerEventListener();
 			var dfa = new DataFlowAnalysis(prog, eventListener);
             var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
             trf.RewriteBasicBlocks();
-            foreach (var procedure in prog.Procedures.Values)
-            {
-                procedure.Dump(true, false);        //$DEBUG
-            }
 			var rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
-			DumpProcedureFlows(prog, dfa, rl, fut.TextWriter);
+			DumpProcedureFlows(prog, dfa, rl, writer);
 		}
 	}
 }

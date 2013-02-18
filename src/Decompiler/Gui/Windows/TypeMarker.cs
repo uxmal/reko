@@ -26,7 +26,7 @@ using System.Windows.Forms;
 
 namespace Decompiler.Gui.Windows
 {
-    public class TypeMarker
+    public class TypeMarker : IDisposable
     {
         private TextBox text;
         private Label label;
@@ -42,6 +42,7 @@ namespace Decompiler.Gui.Windows
             {
                 BorderStyle = BorderStyle.FixedSingle,
                 Parent = bgControl,
+                Visible = false,
             };
             label = new Label
             {
@@ -51,6 +52,7 @@ namespace Decompiler.Gui.Windows
                 AutoSize = true,
                 Parent = bgControl,
                 Text = TypeMarkerEnterType,
+                Visible = false,
             };
 
             text.LostFocus += text_LostFocus;
@@ -63,13 +65,13 @@ namespace Decompiler.Gui.Windows
             switch (e.KeyCode)
             {
             case Keys.Escape:
-                TearDown();
+                HideControls();
                 e.Handled = true;
                 break;
             case Keys.Enter:
                 if (TextAccepted != null)
                     TextAccepted(this, new TypeMarkerEventArgs(text.Text));
-                TearDown();
+                HideControls();
                 e.Handled = true;
                 return;
             }
@@ -80,21 +82,21 @@ namespace Decompiler.Gui.Windows
             text.Location = location;
             label.Location = new Point(location.X, location.Y + text.Height + 3);
             label.BringToFront();
+            text.Visible = true;
+            label.Visible = true;
             text.BringToFront();
             text.Focus();
+        }
+
+        public void HideControls()
+        {
+            text.Visible = false;
+            label.Visible = false;
         }
 
         public string FormatText(string text)
         {
             return text;
-        }
-
-        private void TearDown()
-        {
-            if (text != null) text.Dispose();
-            if (label != null) label.Dispose();
-            text = null;
-            label = null;
         }
 
         void text_TextChanged(object sender, EventArgs e)
@@ -119,7 +121,16 @@ namespace Decompiler.Gui.Windows
 
         void text_LostFocus(object sender, EventArgs e)
         {
-            TearDown();
+            text.Visible = false;
+            label.Visible = false;
+        }
+
+        public void Dispose()
+        {
+            if (text != null) text.Dispose();
+            if (label != null) label.Dispose();
+            text = null;
+            label = null;
         }
     }
 

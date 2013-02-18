@@ -91,17 +91,6 @@ namespace Decompiler.Analysis
             CompleteWork();
         }
 
-        public void RewriteBasicBlocks()
-        {
-            foreach (var proc in procedures)
-            {
-                foreach (var block in proc.ControlGraph.Blocks)
-                {
-                    RewriteBlock(block);
-                }
-            }
-        }
-
         public void ProcessWorkList()
         {
             int initial = worklist.Count;
@@ -127,7 +116,19 @@ namespace Decompiler.Analysis
             }
         }
 
-        private void SetInitialValueOfStackPointer(Procedure proc)
+        public void RewriteBasicBlocks()
+        {
+            foreach (var proc in procedures)
+            {
+                SetInitialValueOfStackPointer(proc);
+                foreach (var block in proc.ControlGraph.Blocks)
+                {
+                    RewriteBlock(block);
+                }
+            }
+        }
+
+       private void SetInitialValueOfStackPointer(Procedure proc)
         {
             flow[proc.EntryBlock].SymbolicIn.SetValue(
                 proc.Frame.EnsureRegister(prog.Architecture.StackRegister),
@@ -152,11 +153,6 @@ namespace Decompiler.Analysis
         public void ProcessBlock(Block block)
         {
             StartProcessingBlock(block);
-            if (block.Name == "l0824_0AFE") //$DEBUG
-                block.Name.ToString();
-            if (block.Name == "l35B8_021C") //$DEBUG
-                block.Name.ToString();
-
             block.Statements.ForEach(stm => stm.Instruction.Accept(this));
             if (block == block.Procedure.ExitBlock)
             {
@@ -224,7 +220,7 @@ namespace Decompiler.Analysis
                     ctxSucc.RegisterState[de.Key] = de.Value;
                     changed = true;
                 }
-                else if (!ecomp.Equals(oldValue, de.Value) && oldValue != Constant.Invalid)
+                else if (oldValue != Constant.Invalid && !ecomp.Equals(oldValue, de.Value))
                 {
                     ctxSucc.RegisterState[de.Key] = Constant.Invalid;
                     changed = true;
@@ -362,8 +358,6 @@ namespace Decompiler.Analysis
         {
             throw new NotSupportedException();
         }
-
-
 
         private bool ProcedureTerminates(ProcedureBase proc)
         {

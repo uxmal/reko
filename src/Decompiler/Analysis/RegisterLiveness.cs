@@ -24,6 +24,7 @@ using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
 using Decompiler.Core.Services;
+using Decompiler.Core.Types;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -216,7 +217,7 @@ namespace Decompiler.Analysis
 			
 			varLive.BitSet = new BitSet(item.DataOut);
 			varLive.Grf = item.grfOut;
-            varLive.LiveStorages = new Dictionary<Storage, int>(item.StackVarsOut);
+            varLive.LiveStorages = new Dictionary<Storage,int>(item.StackVarsOut);
 
 			Debug.WriteLineIf(t, string.Format("   out: {0}", DumpRegisters(varLive.BitSet)));
 			Procedure = item.Block.Procedure;		// Used by statements because we need to look up registers using identifiers and the procedure frame.

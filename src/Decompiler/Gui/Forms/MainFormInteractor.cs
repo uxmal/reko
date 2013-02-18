@@ -64,7 +64,7 @@ namespace Decompiler.Gui.Forms
         private IFinalPageInteractor pageFinal;
         private MruList mru;
         private string projectFileName;
-        private ServiceContainer sc;
+        private IServiceContainer sc;
         private Dictionary<IPhasePageInteractor, IPhasePageInteractor> nextPage;
         private IDecompilerConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
@@ -77,7 +77,7 @@ namespace Decompiler.Gui.Forms
             this.dlgFactory = services.RequireService<IDialogFactory>();
             this.mru = new MruList(MaxMruItems);
             this.mru.Load(MruListFile);
-            this.sc = new ServiceContainer(services);
+            this.sc = services.RequireService<IServiceContainer>();
             this.nextPage = new Dictionary<IPhasePageInteractor, IPhasePageInteractor>();
         }
 
@@ -126,7 +126,7 @@ namespace Decompiler.Gui.Forms
             return form;
         }
 
-        protected void CreateServices(IServiceFactory svcFactory, ServiceContainer sc, DecompilerMenus dm)
+        protected void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
         {
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IDecompilerConfigurationService), config);

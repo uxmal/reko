@@ -247,6 +247,7 @@
     <Compile Include="Evaluation\SliceMem_Rule.cs" />
     <Compile Include="Evaluation\SliceShift.cs" />
     <Compile Include="Evaluation\BinOpWithSelf_Rule.cs" />
+    <Compile Include="Evaluation\Substitutor.cs" />
     <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Evaluation\SymbolicEvaluator.cs" />
     <Compile Include="Evaluation\SymbolicValue.cs" />

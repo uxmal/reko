@@ -201,31 +201,5 @@ namespace Decompiler.UnitTests.Core
 			Assert.AreEqual("r1Out", arg.Name);
 			Assert.AreSame(PrimitiveType.Pointer32, arg.DataType);
 		}
-
-		[Test]
-		public void BindStackArgumentToCallerFrame()
-		{
-			Procedure callee = new Procedure("callee", new Frame(PrimitiveType.Word16));
-			callee.Frame.ReturnAddressSize = 2;				// "near" call.
-			Identifier arg02 = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word16, "wArg02");
-			Identifier arg04 = callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32, "dwArg04");
-			Identifier arg08 = callee.Frame.EnsureStackArgument(8, PrimitiveType.Word16, "wArg08");
-
-			Procedure caller = new Procedure("caller", new Frame(PrimitiveType.Word16));
-			caller.Frame.ReturnAddressSize = 2;
-			caller.Frame.EnsureStackLocal(-2, PrimitiveType.Word16, "bpSaved");
-			caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word16, "bindToArg08");
-			caller.Frame.EnsureStackLocal(-8, PrimitiveType.Word32, "bindToArg04");
-			caller.Frame.EnsureStackLocal(-10, PrimitiveType.Word16, "bindToArg02");
-			var cs = new CallSite(10 + callee.Frame.ReturnAddressSize, 0);
-			var id = arg08.Storage.BindFormalArgumentToFrame(arch, caller.Frame, cs);
-			Assert.AreEqual("bindToArg08", id.ToString());
-			id = arg02.Storage.BindFormalArgumentToFrame(arch, caller.Frame, cs);
-            Assert.AreEqual("bindToArg02", id.ToString());
-			id = arg04.Storage.BindFormalArgumentToFrame(arch, caller.Frame, cs);
-			caller.Frame.Write(Console.Out);
-
-            Assert.AreEqual("bindToArg04", id.ToString());
-		}
 	}
 }

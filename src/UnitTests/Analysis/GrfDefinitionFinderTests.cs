@@ -23,6 +23,7 @@ using Decompiler.Core;
 using NUnit.Framework;
 using Decompiler.UnitTests.Mocks;
 using System;
+using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -47,7 +48,7 @@ namespace Decompiler.UnitTests.Analysis
 			RunTest(new CmpMock(), "Analysis/GrfdCmpMock.txt");
 		}
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
+		protected override void RunTest(Program prog, TextWriter writer)
 		{
             DataFlowAnalysis dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
@@ -62,10 +63,10 @@ namespace Decompiler.UnitTests.Analysis
 				{
 					if (!(sid.OriginalIdentifier.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
 						continue;
-					fut.TextWriter.Write("{0}: ", sid.DefStatement.Instruction);
+					writer.Write("{0}: ", sid.DefStatement.Instruction);
 					grfd.FindDefiningExpression(sid);
 					string fmt = grfd.IsNegated ? "!{0};" : "{0}";
-					fut.TextWriter.WriteLine(fmt, grfd.DefiningExpression);
+					writer.WriteLine(fmt, grfd.DefiningExpression);
 				}
 			}
 		}

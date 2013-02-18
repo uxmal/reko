@@ -90,7 +90,7 @@ namespace Decompiler.UnitTests.Analysis
 			var arg = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			flow.StackArguments[arg] = 16;
 			gcr.EnsureSignature(proc, flow);
-			Assert.AreEqual("void foo(Stack uipr16 dwArg04)", proc.Signature.ToString(proc.Name));
+			Assert.AreEqual("void foo(Stack uiprpfn16 dwArg04)", proc.Signature.ToString(proc.Name));
 		}
 
 		// Ensure that UseInstructions for "out" parameters are generated even when a signature is pre-specified.
@@ -127,7 +127,7 @@ namespace Decompiler.UnitTests.Analysis
 				foreach (KeyValuePair<int,Identifier> de in gcr.GetSortedStackArguments(f))
 				{
 					fut.TextWriter.Write("{0:X4} ", de.Key);
-					de.Value.Write(true, fut.TextWriter);
+                    de.Value.Write(true, fut.TextWriter);
 					fut.TextWriter.WriteLine();
 				}
 				fut.AssertFilesEqual();

@@ -57,12 +57,6 @@ namespace Decompiler.Core
 		}
 
 		public abstract void Write(TextWriter writer);
-
-        [Obsolete("Moved to ApplicationBuilder")]
-        public Expression BindFormalArgumentToFrame(IProcessorArchitecture arch, Frame frame, CallSite callSite)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 

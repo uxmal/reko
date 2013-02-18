@@ -69,7 +69,7 @@ namespace Decompiler.UnitTests.Analysis
             return rw.CreateLongInstruction(loAss, hiAss);
         }
 
-        protected override void RunTest(Program prog, FileUnitTester fut)
+        protected override void RunTest(Program prog, TextWriter writer)
         {
             var dfa = new DataFlowAnalysis(prog, new FakeDecompilerEventListener());
             var eventListener = new FakeDecompilerEventListener();
@@ -81,8 +81,8 @@ namespace Decompiler.UnitTests.Analysis
             {
                 LongAddRewriter larw = new LongAddRewriter(proc, prog.Architecture);
                 larw.Transform();
-                proc.Write(false, fut.TextWriter);
-                fut.TextWriter.WriteLine();
+                proc.Write(false, writer);
+                writer.WriteLine();
             }
         }
 
@@ -126,7 +126,7 @@ namespace Decompiler.UnitTests.Analysis
             m.Return();
 
             var cm = rw.FindConditionOf(block.Statements, 0, ax);
-            var asc =  rw.FindUsingInstruction(block.Statements, cm.StatementIndex, Operator.Add);
+            var asc = rw.FindUsingInstruction(block.Statements, cm.StatementIndex, new AddSubCandidate { Left=ax, Right=cx });
             Assert.AreEqual("dx = dx + bx + C", block.Statements[asc.StatementIndex].Instruction.ToString());
         }
 

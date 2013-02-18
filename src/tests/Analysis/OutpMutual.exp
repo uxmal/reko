@@ -1,35 +1,35 @@
 // fn0C00_0000
 void fn0C00_0000(word16 dx)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def Mem0
 	def fp
+	def sp
 	def dx
 	def ax
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	ax_5 = fn0C00_0004(dx, &dx_4)
+l0C00_0000:
+	ax_6 = fn0C00_0004(dx, &dx_5)
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 
 // fn0C00_0000
 void fn0C00_0000(word16 dx)
-fn0C00_0000_entry:		// pred:
+fn0C00_0000_entry:
 	def dx
 	// succ:  l0C00_0000
-l0C00_0000:		// pred: fn0C00_0000_entry
-	fn0C00_0004(dx, &dx_4)
+l0C00_0000:
+	fn0C00_0004(dx, &dx_5)
 	return
 	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:		// pred: l0C00_0000
-	// succ: 
+fn0C00_0000_exit:
 ====================
 // fn0C00_0004
 word16 fn0C00_0004(word16 dx, ptr16 dxOut)
-fn0C00_0004_entry:		// pred:
+fn0C00_0004_entry:
 	def Mem0
 	def fp
+	def sp
 	def dx
 	def SCZO
 	def Z
@@ -37,16 +37,13 @@ fn0C00_0004_entry:		// pred:
 	def ax
 	def dxOut
 	// succ:  l0C00_0004
-l0C00_0004:		// pred: fn0C00_0004_entry
-	SCZO_8 = cond(dx - 0x001E)
-	Z_9 = SCZO_8 (alias)
-	SZO_10 = SCZO_8 (alias)
-	branch Test(NE,Z_9) l0C00_000F
+l0C00_0004:
+	SCZO_9 = cond(dx - 0x001E)
+	Z_10 = SCZO_9 (alias)
+	SZO_11 = SCZO_9 (alias)
+	branch Test(NE,Z_10) l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
-l0C00_0009:		// pred: l0C00_0004
-	dx_15 = fn0C00_0013(dx)
-	// succ:  l0C00_0010
-l0C00_0010:		// pred: l0C00_000F l0C00_0009
+l0C00_0009:
 	SZO_16 = PHI(SZO_12, SZO_10)
 	Z_17 = PHI(Z_14, Z_9)
 	SCZO_18 = PHI(SCZO_13, SCZO_8)

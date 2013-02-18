@@ -65,7 +65,7 @@ namespace Decompiler.UnitTests.Core
         public void PushValueOnstack()
         {
             sce.SetValue(idSp, m.Sub(idSp, 4));
-            sce.SetValueEa(new MemoryAccess(idSp, PrimitiveType.Word32), Constant.Word32(0x12345678));
+            sce.SetValueEa(idSp, Constant.Word32(0x12345678));
 
             Assert.AreEqual("0x12345678", sce.GetValue(m.LoadDw(idSp)).ToString());
         }

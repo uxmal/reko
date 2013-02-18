@@ -56,16 +56,16 @@ namespace Decompiler.UnitTests.Analysis
 				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
-				DumpProc(proc, ssa, fut);
+				DumpProc(proc, ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
 
-		private void DumpProc(Procedure proc, SsaState ssa, FileUnitTester fut)
+		private void DumpProc(Procedure proc, SsaState ssa, TextWriter writer)
 		{
-			ssa.Write(fut.TextWriter);
-			proc.Write(false, fut.TextWriter);
+			ssa.Write(writer);
+			proc.Write(false, writer);
 		}
 
 		[Test]
@@ -89,7 +89,7 @@ namespace Decompiler.UnitTests.Analysis
 				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
-				DumpProc(proc, ssa, fut);
+				DumpProc(proc, ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
@@ -122,11 +122,11 @@ done:
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
-				DumpProc(proc, ssa, fut);
+				DumpProc(proc, ssa, fut.TextWriter);
 
 				DeadCode.Eliminate(proc, ssa);
 
-				DumpProc(proc, ssa, fut);
+				DumpProc(proc, ssa, fut.TextWriter);
 
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				vn.Write(fut.TextWriter);
@@ -159,7 +159,7 @@ done:
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
-				DumpProc(proc, ssa, fut);
+				DumpProc(proc, ssa, fut.TextWriter);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				vn.Write(fut.TextWriter);
 
@@ -192,7 +192,7 @@ looptest:
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
-				DumpProc(proc, ssa, fut);
+				DumpProc(proc, ssa, fut.TextWriter);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				vn.Write(fut.TextWriter);
 
@@ -218,7 +218,7 @@ looptest:
 			RunTest("Fragments/stringinstr.asm", "Analysis/VnStringInstructions.txt");
 		}
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
+		protected override void RunTest(Program prog, TextWriter writer)
 		{
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
@@ -227,13 +227,12 @@ looptest:
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(proc, gr);
 				SsaState ssa = sst.SsaState;
-				DumpProc(proc, ssa, fut);
+				DumpProc(proc, ssa, writer);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
-				vn.Write(fut.TextWriter);
-				fut.TextWriter.WriteLine();
+				vn.Write(writer);
+				writer.WriteLine();
 
 			}
-			fut.AssertFilesEqual();
 		}
 	}
 }

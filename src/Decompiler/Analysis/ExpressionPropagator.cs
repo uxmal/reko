@@ -56,6 +56,8 @@ namespace Decompiler.Analysis
         private IProcessorArchitecture arch;
         private ExpressionSimplifier eval;
         private SymbolicEvaluationContext ctx;
+        private Substitutor sub;
+
         private ProgramDataFlow flow;
 
         public ExpressionPropagator(
@@ -68,11 +70,13 @@ namespace Decompiler.Analysis
             this.eval = simplifier;
             this.ctx = ctx;
             this.flow = flow;
+            this.sub = new Substitutor(ctx);
         }
 
         public Instruction VisitAssignment(Assignment ass)
         {
-            var src = ass.Src.Accept(this);
+            var s = ass.Src.Accept(sub);
+            var src = s.Accept(this);
             ctx.SetValue(ass.Dst, src.Value);
             return new Assignment(ass.Dst, src.PropagatedExpression);
         }

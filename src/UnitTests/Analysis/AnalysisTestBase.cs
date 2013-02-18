@@ -70,13 +70,6 @@ namespace Decompiler.UnitTests.Analysis
 		}
 
 
-        protected Program BuildProgramMock(Action<ProcedureBuilder> builder)
-        {
-            ProcedureBuilder m = new ProcedureBuilder();
-            builder(m);
-            return BuildProgramMock(m);
-        }
-
         protected Program BuildProgramMock(ProcedureBuilder mock)
         {
             var m = new ProgramBuilder();
@@ -91,14 +84,17 @@ namespace Decompiler.UnitTests.Analysis
 
         protected Program RewriteFile(string relativePath)
         {
-            return RewriteFile(relativePath, "");
+            return RewriteMsdosAssembler(relativePath, "");
         }
 
-        protected Program RewriteFile(string relativePath, string configFile)
+        protected static Program RewriteMsdosAssembler(string relativePath, string configFile)
         {
-            Program prog = new Program();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
-            prog.Platform = new MsdosPlatform(prog.Architecture);
+            var arch = new IntelArchitecture(ProcessorMode.Real);
+            Program prog = new Program
+            {
+                Architecture = arch,
+                Platform = new MsdosPlatform(arch),
+            };
             Assembler asm = new IntelTextAssembler();
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
@@ -144,7 +140,7 @@ namespace Decompiler.UnitTests.Analysis
             return prog;
         }
 
-        private void Rewrite(Program prog, Assembler asm, string configFile)
+        private static void Rewrite(Program prog, Assembler asm, string configFile)
         {
             var scan = new Scanner(prog, 
                 new Dictionary<Address, ProcedureSignature>(), new FakeDecompilerEventListener());
@@ -160,47 +156,52 @@ namespace Decompiler.UnitTests.Analysis
             scan.ProcessQueue();
         }
 
+        public static void RunTest(string sourceFile, Action<Program, TextWriter> test, string outputFile)
+        {
+            Program prog = RewriteMsdosAssembler(sourceFile, null);
+            SaveRunOutput(prog, test, outputFile);
+        }
 
 		protected void RunTest(string sourceFile, string outputFile)
 		{
-			Program prog = RewriteFile(sourceFile, null);
-			SaveRunOutput(prog, outputFile);
+			Program prog = RewriteMsdosAssembler(sourceFile, null);
+            SaveRunOutput(prog, RunTest, outputFile);
 		}
 
 		protected void RunTest(ProcedureBuilder mock, string outputFile)
 		{
 			Program prog = BuildProgramMock(mock);
-			SaveRunOutput(prog, outputFile);
+            SaveRunOutput(prog, RunTest, outputFile);
 		}
 
 		protected void RunTest(string sourceFile, string configFile, string outputFile)
 		{
-			Program prog = RewriteFile(sourceFile, configFile);
-			SaveRunOutput(prog, outputFile);
+			Program prog = RewriteMsdosAssembler(sourceFile, configFile);
+            SaveRunOutput(prog, RunTest, outputFile);
 		}
 
 		protected void RunTest32(string sourceFile, string outputFile)
 		{
 			Program prog = RewriteFile32(sourceFile);
-			SaveRunOutput(prog, outputFile);
+            SaveRunOutput(prog, RunTest, outputFile);
 		}
 
 		protected void RunTest32(string sourceFile, string configFile, string outputFile)
 		{
 			Program prog = RewriteFile32(sourceFile, configFile);
-			SaveRunOutput(prog, outputFile);
+			SaveRunOutput(prog, RunTest, outputFile);
 		}
 
-		protected virtual void RunTest(Program prog, FileUnitTester fut)
-		{
-		}
+        protected virtual void RunTest(Program prog, TextWriter writer)
+        {
+        }
 
-		protected void SaveRunOutput(Program prog, string outputFile)
+		protected static void SaveRunOutput(Program prog, Action<Program, TextWriter> test, string outputFile)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				RunTest(prog, fut);
-				fut.AssertFilesEqual();
+				test(prog, fut.TextWriter);
+                fut.AssertFilesEqual();
 			}
 		}
 	}

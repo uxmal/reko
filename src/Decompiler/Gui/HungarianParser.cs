@@ -42,6 +42,8 @@ namespace Decompiler.Gui
                 if (s.Length == 1)
                     return null;
                 var elemType = Parse(s.Substring(1));
+                if (elemType == null)
+                    return null;
                 return new ArrayType(elemType, 0);
             }
             if (s == "pfn")
@@ -52,7 +54,10 @@ namespace Decompiler.Gui
             {
                 if (s.Length == 1)
                     return PrimitiveType.Pointer32;     //$ARch-dependent?
-                return new Pointer(Parse(s.Substring(1)), 4);
+                var pointee = Parse(s.Substring(1));
+                if (pointee == null)
+                    return null;
+                return new Pointer(pointee, 4);
             }
             if (s == "b")
                 return PrimitiveType.Byte;

@@ -132,11 +132,11 @@ namespace Decompiler.Gui.Windows.Forms
             set 
             {
                 base.Site = value;
-                browserSvc = EnsureService<IProgramImageBrowserService>();
-                codeViewerSvc = EnsureService<ICodeViewerService>();
-                memViewerSvc = EnsureService<IMemoryViewService>();
+                browserSvc = Site.RequireService<IProgramImageBrowserService>();
+                codeViewerSvc = Site.RequireService<ICodeViewerService>();
+                memViewerSvc = Site.RequireService<IMemoryViewService>();
                 memViewerSvc.SelectionChanged += memViewerSvc_SelectionChanged;
-                disasmViewerSvc = EnsureService<IDisassemblyViewService>();
+                disasmViewerSvc = Site.RequireService<IDisassemblyViewService>();
             }
         }
 

@@ -37,7 +37,8 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Analysis
 {
-    class TrashRegisterFinderUpdateCodeTests
+    [TestFixture]
+    public class TrashRegisterFinderUpdateCodeTests
     {
         private ProgramBuilder p;
         private Program prog;
@@ -54,21 +55,26 @@ namespace Decompiler.UnitTests.Analysis
 
         private void RunTest(string sExp)
         {
+            var sw = new StringWriter();
             prog = p.BuildProgram(arch);
+            RunTest(prog, sw);
+            Console.WriteLine(sw);
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        private void RunTest(Program prog, TextWriter writer)
+        {
             flow = new ProgramDataFlow(prog);
             trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, this.flow, new FakeDecompilerEventListener());
             trf.Compute();
             trf.RewriteBasicBlocks();
 
-            var sw = new StringWriter();
             foreach (var proc in prog.Procedures.Values)
             {
                 flow[proc].EmitRegisters(arch, "// Trashed", flow[proc].TrashedRegisters);
-                proc.Write(false, sw);
-                sw.WriteLine();
+                proc.Write(false, writer);
+                writer.WriteLine();
             }
-            Console.WriteLine(sw);
-            Assert.AreEqual(sExp, sw.ToString());
         }
 
         [Test]
@@ -295,7 +301,7 @@ l1:
 	esp = fp - 0x0000000C
 	dwLoc0C = 0x0000002D
 	eax = add(dwLoc0C, dwLoc08)
-	esp = fp + 0xFFFFFFFC
+	esp = fp - 0x00000004
 	ebp = dwLoc04
 	esp = fp
 	return
@@ -327,6 +333,12 @@ main_exit:
 
             var sExp = @"@@@";
             RunTest(sExp);
+        }
+
+        [Test]
+        public void TrfuProcIsolation()
+        {
+            AnalysisTestBase.RunTest("Fragments/multiple/procisolation.asm", RunTest, "Analysis/TrfuProcIsolation.txt");
         }
     }
 }

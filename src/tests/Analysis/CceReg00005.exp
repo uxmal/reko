@@ -1,7 +1,8 @@
 Mem0:Global memory
 fp:Temporary
-bx:Register bx
-ds:Register ds
+sp:sp
+bx:bx
+ds:ds
     def:  def ds
     uses: bx_6 = fn0C00_000C(ds, &cl_5)
           Mem7[ds:0x0300:word16] = bx_6
@@ -151,29 +152,29 @@ SCZO_57: orig: SCZO
 cx_58: orig: cx
 // fn0C00_000C
 word16 fn0C00_000C(selector ds, ptr16 clOut)
-fn0C00_000C_entry:		// pred:
+fn0C00_000C_entry:
 	def Mem0
 	def ds
 	def ax
 	// succ:  l0C00_000C
-l0C00_000C:		// pred: fn0C00_000C_entry
+l0C00_000C:
 	di_17 = 0x7E0F
 	cx_18 = 0x000C
 	ax_21 = DPB(ax, 0x00, 0, 8) (alias)
 	Z_23 = cond(0x00) (alias)
 	// succ:  l0C00_0019
-l0C00_0019:		// pred: l0C00_000C l0C00_0019_rep
+l0C00_0019:
 	Z_25 = PHI(Z_23, Z_32)
 	di_27 = PHI(di_17, di_33)
 	cx_28 = PHI(cx_18, cx_29)
 	branch cx_28 == 0x0000 l0C00_0019_rep
 	// succ:  l0C00_001B l0C00_0019_rep
-l0C00_001B:		// pred: l0C00_0019 l0C00_0019_rep
+l0C00_001B:
 	Z_35 = PHI(Z_25, Z_32)
 	di_37 = PHI(di_27, di_33)
 	branch Z_35 l0C00_002D
 	// succ:  l0C00_001D l0C00_002D
-l0C00_001D:		// pred: l0C00_001B
+l0C00_001D:
 	ah_43 = Mem0[ds:di_37 + 0x0001:byte]
 	ax_44 = DPB(ax_21, ah_43, 8, 8) (alias)
 	cx_46 = __bsr(ax_44)
@@ -182,18 +183,18 @@ l0C00_001D:		// pred: l0C00_001B
 	bx_50 = di_37 - 0x7E03
 	return bx_50
 	// succ:  fn0C00_000C_exit
-fn0C00_000C_exit:		// pred: l0C00_002D l0C00_001D
-	cl_54 = PHI(cl_40, cl_48)
-	use cl_54 (=> clOut)
-	// succ: 
-l0C00_002D:		// pred: l0C00_001B
-	cl_40 = 0x00
-	return 0x0000
-	// succ:  fn0C00_000C_exit
 l0C00_0019_rep:		// pred: l0C00_0019
 	cx_29 = cx_28 - 0x0001
 	Z_32 = cond(0x00 - Mem0[ds:di_27:byte]) (alias)
 	di_33 = di_27 + 0x0001
 	branch 0x00 == Mem0[ds:di_27:byte] l0C00_0019
 	// succ:  l0C00_001B l0C00_0019
+l0C00_002D:		// pred: l0C00_001B
+	cl_40 = 0x00
+	return 0x0000
+	// succ:  fn0C00_000C_exit
+fn0C00_000C_exit:		// pred: l0C00_002D l0C00_001D
+	cl_54 = PHI(cl_40, cl_48)
+	use cl_54 (=> clOut)
+	// succ: 
 

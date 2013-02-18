@@ -27,6 +27,7 @@ using Decompiler.Core.Types;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using System.IO;
 
 namespace Decompiler.UnitTests.Analysis
 {
@@ -187,7 +188,7 @@ namespace Decompiler.UnitTests.Analysis
             return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, PrimitiveType.Word32));
         }
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
+		protected override void RunTest(Program prog, TextWriter writer)
 		{
             var flow = new ProgramDataFlow(prog);
             var eventListener = new FakeDecompilerEventListener();
@@ -204,9 +205,9 @@ namespace Decompiler.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				SsaTransform sst = new SsaTransform(proc, gr);
 				ssa = sst.SsaState;
-				ssa.Write(fut.TextWriter);
-				proc.Write(false, true, fut.TextWriter);
-				fut.TextWriter.WriteLine();
+				ssa.Write(writer);
+				proc.Write(false, true, writer);
+				writer.WriteLine();
 			}
 		}
 	}

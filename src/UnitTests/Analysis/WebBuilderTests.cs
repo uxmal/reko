@@ -100,13 +100,13 @@ namespace Decompiler.UnitTests.Analysis
 
 		}
 
-		protected override void RunTest(Program prog, FileUnitTester fut)
+		protected override void RunTest(Program prog, TextWriter writer)
 		{
 			Build(prog);
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				proc.Write(false, fut.TextWriter);
-				fut.TextWriter.WriteLine();
+				proc.Write(false, writer);
+				writer.WriteLine();
 			}
 		}	
 	}
