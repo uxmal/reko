@@ -28,7 +28,7 @@ namespace Decompiler.Core.Output
 	/// <summary>
 	/// Formats types using indentation settings specified by caller.
 	/// </summary>
-	public class TypeFormatter : IDataTypeVisitor
+	public class TypeFormatter : IDataTypeVisitor<Formatter>
 	{
         private Formatter writer;
 
@@ -112,7 +112,7 @@ namespace Decompiler.Core.Output
 
 		#region IDataTypeVisitor methods ///////////////////////////////////////
 
-		public void VisitArray(ArrayType at)
+		public Formatter VisitArray(ArrayType at)
 		{
 			string oldName = name;
 			name = null;
@@ -126,9 +126,10 @@ namespace Decompiler.Core.Output
 				writer.Write(at.Length.ToString());
 			}
 			writer.Write("]");
+            return writer;
 		}
 
-		public void VisitEquivalenceClass(EquivalenceClass eq)
+		public Formatter VisitEquivalenceClass(EquivalenceClass eq)
 		{
             if (eq.DataType == null)
             {
@@ -139,9 +140,10 @@ namespace Decompiler.Core.Output
                 writer.Write(eq.DataType.Name);
             }
             WriteName(true);
+            return writer;
 		}
 
-		public void VisitFunctionType(FunctionType ft)
+		public Formatter VisitFunctionType(FunctionType ft)
 		{
 			string oldName = name;
 			name = null;
@@ -165,9 +167,10 @@ namespace Decompiler.Core.Output
 			}
 
 			writer.Write(")");
+            return writer;
 		}
 
-		public void VisitStructure(StructureType str)
+		public Formatter VisitStructure(StructureType str)
 		{
 			string n = name;
 			if (mode == Mode.Writing)
@@ -213,6 +216,7 @@ namespace Decompiler.Core.Output
 					writer.WriteLine();
 				}
 			}
+            return writer;
 		}
 
 		public void ScanFields(StructureType str)
@@ -227,7 +231,7 @@ namespace Decompiler.Core.Output
 			mode = m;
 		}
 
-		public void VisitMemberPointer(MemberPointer memptr)
+		public Formatter VisitMemberPointer(MemberPointer memptr)
 		{
 			Pointer p = memptr.BasePointer as Pointer;
 			DataType baseType;
@@ -254,9 +258,10 @@ namespace Decompiler.Core.Output
             {
                 WriteName(false);
             }
+            return writer;
 		}
 
-		public void VisitPointer(Pointer pt)
+		public Formatter VisitPointer(Pointer pt)
 		{
 			if (mode == Mode.Writing)
 			{
@@ -266,23 +271,25 @@ namespace Decompiler.Core.Output
 					name = "* " + name;
 			}
 			pt.Pointee.Accept(this);
+            return writer;
 		}
 
-		public void VisitPrimitive(PrimitiveType pt)
+		public Formatter VisitPrimitive(PrimitiveType pt)
 		{
 			if (mode == Mode.Writing)
 			{
                 writer.Write(pt.ToString());
 				WriteName(true);
 			}
+            return writer;
 		}
 
-		public void VisitTypeVar(TypeVariable t)
+		public Formatter VisitTypeVar(TypeVariable t)
 		{
 			throw new NotImplementedException("TypeFormatter.TypeVariable");
 		}
 
-		public void VisitUnion(UnionType ut)
+        public Formatter VisitUnion(UnionType ut)
 		{
 			string n = name;
 
@@ -303,14 +310,16 @@ namespace Decompiler.Core.Output
 
 			name = n;
 			WriteName(true);
+            return writer;
 		}
 
-		public void VisitUnknownType(UnknownType ut)
+		public Formatter VisitUnknownType(UnknownType ut)
 		{
 			if (mode == Mode.Writing)
 			{
 				writer.Write("void");
 			}
+            return writer;
 		}
 
 		#endregion

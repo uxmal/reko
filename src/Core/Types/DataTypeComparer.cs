@@ -28,10 +28,8 @@ namespace Decompiler.Core.Types
 	/// Compares two data types to see if they are equal or
 	/// less than each other.
 	/// </summary>
-	public class DataTypeComparer : IComparer<DataType>, IDataTypeVisitor
+	public class DataTypeComparer : IComparer<DataType>, IDataTypeVisitor<int>
 	{
-		private int prio;
-
 		private const int Prim  =  0;
 		private const int Ptr =    1;
 		private const int MemPtr = 2;
@@ -65,10 +63,9 @@ namespace Decompiler.Core.Types
 		{
 			if (count > 20)
 				throw new ApplicationException("Way too deep");
-			x.Accept(this);
-			int prioX = prio;
-			y.Accept(this);
-			int dPrio = prioX - prio;
+			int prioX = x.Accept(this);
+			int prioY = y.Accept(this);
+			int dPrio = prioX - prioY;
 			if (dPrio != 0)
 				return dPrio;
 
@@ -195,54 +192,54 @@ namespace Decompiler.Core.Types
 
 		#region IDataTypeVisitor Members /////////////////////////////////////////
 
-		public void VisitArray(ArrayType at)
+		public int VisitArray(ArrayType at)
 		{
-			prio = Array;
+			return Array;
 		}
 
-		public void VisitEquivalenceClass(EquivalenceClass eq)
+		public int VisitEquivalenceClass(EquivalenceClass eq)
 		{
-			prio = EqClass;
+			return EqClass;
 		}
 
-		public void VisitFunctionType(FunctionType ft)
+		public int VisitFunctionType(FunctionType ft)
 		{
-			prio = Fn;
+			return Fn;
 		}
 
-		public void VisitMemberPointer(MemberPointer memptr)
+		public int VisitMemberPointer(MemberPointer memptr)
 		{
-			prio = MemPtr;
+			return MemPtr;
 		}
 
-		public void VisitPrimitive(PrimitiveType pt)
+		public int VisitPrimitive(PrimitiveType pt)
 		{
-			prio = Prim;
+			return Prim;
 		}
 
-		public void VisitStructure(StructureType str)
+		public int VisitStructure(StructureType str)
 		{
-			prio = Struct;
+			return Struct;
 		}
 
-		public void VisitPointer(Pointer ptr)
+		public int VisitPointer(Pointer ptr)
 		{
-			prio = Ptr;
+			return Ptr;
 		}
 
-		public void VisitTypeVar(TypeVariable tv)
+		public int VisitTypeVar(TypeVariable tv)
 		{
-			prio = TVar;
+			return TVar;
 		}
 
-		public void VisitUnion(UnionType ut)
+		public int VisitUnion(UnionType ut)
 		{
-			prio = Union;
+			return Union;
 		}
 
-		public void VisitUnknownType(UnknownType ut)
+		public int VisitUnknownType(UnknownType ut)
 		{
-			prio = Unk;
+			return Unk;
 		}
 
 		#endregion

@@ -48,8 +48,6 @@ namespace Decompiler.Core.Types
         public virtual string Prefix { get { return "t"; } }
         public abstract int Size { get; set; }  // Size in bytes of the concrete datatype.
 
-		public abstract DataType Accept(DataTypeTransformer t);
-		public abstract void Accept(IDataTypeVisitor v);
         public abstract T Accept<T>(IDataTypeVisitor<T> v);
         public abstract DataType Clone();
 

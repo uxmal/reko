@@ -388,16 +388,6 @@ namespace Decompiler.Evaluation
 
             public string Label { get; private set; }
 
-            public override DataType Accept(DataTypeTransformer t)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void Accept(IDataTypeVisitor v)
-            {
-                throw new NotImplementedException();
-            }
-
             public override T Accept<T>(IDataTypeVisitor<T> v)
             {
                 throw new NotImplementedException();

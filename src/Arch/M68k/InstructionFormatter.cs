@@ -100,7 +100,13 @@ namespace Decompiler.Arch.M68k
             }
             M68kOperand m68kop = op as M68kOperand;
             m68kop.Accept<M68kOperand>(this);
+        }
 
+        public M68kOperand Visit(M68kImmediateOperand imm)
+        {
+            writer.Write("#$");
+            writer.Write(imm.FormatValue(imm.Constant));
+            return imm;
         }
 
         public M68kOperand Visit(PredecrementMemoryOperand pre)

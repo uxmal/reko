@@ -29,13 +29,12 @@ namespace Decompiler.Typing
 	/// <summary>
 	/// Rewrites a constant based on its type.
 	/// </summary>
-	public class TypedConstantRewriter : IDataTypeVisitor
+	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
 		private TypeStore store;
 		private Identifier globals;
 		private Constant c;
 		private PrimitiveType pOrig;
-		private Expression exp;
 		private bool dereferenced;
 
 		public TypedConstantRewriter(TypeStore store, Identifier globals)
@@ -46,19 +45,19 @@ namespace Decompiler.Typing
 
 		private StructureType GlobalVars
 		{
-			get
-			{
-				if (globals != null && globals.TypeVariable != null)
-				{
-					var pGlob = globals.TypeVariable.DataType as Pointer;
-					if (pGlob != null)
-					{
-						object o = store.ResolvePossibleTypeVar(pGlob.Pointee);
-						return (StructureType) o;
-					}
-				}
-					return null;
-			}
+            get
+            {
+                if (globals != null && globals.TypeVariable != null)
+                {
+                    var pGlob = globals.TypeVariable.DataType as Pointer;
+                    if (pGlob != null)
+                    {
+                        object o = store.ResolvePossibleTypeVar(pGlob.Pointee);
+                        return (StructureType)o;
+                    }
+                }
+                return null;
+            }
 		}
 
         //$REVIEW: special cased code; we need to handle segments appropriately and remove this function.
@@ -79,32 +78,25 @@ namespace Decompiler.Typing
 			DataType dtInferred = store.ResolvePossibleTypeVar(c.TypeVariable.DataType);
 			pOrig = c.TypeVariable.OriginalDataType as PrimitiveType;
 			this.dereferenced = dereferenced;
-			dtInferred.Accept(this);
-			return exp;
+			return dtInferred.Accept(this);
 		}
 
-
-		private void Return(Expression exp)
-		{
-			this.exp = exp; 
-		}
-
-		public void VisitArray(ArrayType at)
+        public Expression VisitArray(ArrayType at)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void VisitEquivalenceClass(EquivalenceClass eq)
+        public Expression VisitEquivalenceClass(EquivalenceClass eq)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void VisitFunctionType(FunctionType ft)
+		public Expression VisitFunctionType(FunctionType ft)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void VisitMemberPointer(MemberPointer memptr)
+		public Expression VisitMemberPointer(MemberPointer memptr)
 		{
 			// The constant is a member pointer.
 			Pointer p = (Pointer) memptr.BasePointer;
@@ -128,15 +120,15 @@ namespace Decompiler.Typing
 			{
 				ex = new UnaryExpression(Operator.AddrOf, memptr, ex);
 			}
-			Return(ex);
+            return ex;
 		}
 
-		public void VisitPointer(Pointer ptr)
+		public Expression VisitPointer(Pointer ptr)
 		{
 			Expression e = c;
             if (IsSegmentPointer(ptr))
             {
-                Return(e);
+                return e;
             } 
             else if (GlobalVars != null)
             {
@@ -154,28 +146,28 @@ namespace Decompiler.Typing
                     e = new UnaryExpression(Operator.AddrOf, ptr, e);
                 }
             }
-			Return(e);
+			return e;
 		}
 
-		public void VisitPrimitive(PrimitiveType pt)
+		public Expression VisitPrimitive(PrimitiveType pt)
 		{
 			if (pt.Domain == Domain.Real && pOrig.IsIntegral)
 			{
-				Return(Constant.RealFromBitpattern(pt, c.ToInt64()));
+				return(Constant.RealFromBitpattern(pt, c.ToInt64()));
 			}
 			else
 			{
-				Return(c);
+                return c;
 			}
 		}
 
-		public void VisitStructure(StructureType str)
+		public Expression VisitStructure(StructureType str)
 		{
 			throw new NotImplementedException();
 		}
 
 
-		public void VisitUnion(UnionType ut)
+		public Expression VisitUnion(UnionType ut)
 		{
 			// A constant can't have a union value, so we coerce it to the appropriate type.
 			UnionAlternative a = ut.FindAlternative(pOrig);
@@ -188,16 +180,16 @@ namespace Decompiler.Typing
                 a = ut.Alternatives.Values[0];
             }
 			c.TypeVariable.DataType = a.DataType;
-			Return(c);
+            return c;
 		}
 
 
-		public void VisitTypeVar(TypeVariable tv)
+		public Expression VisitTypeVar(TypeVariable tv)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void VisitUnknownType(UnknownType ut)
+        public Expression VisitUnknownType(UnknownType ut)
 		{
 			throw new NotImplementedException();
 		}

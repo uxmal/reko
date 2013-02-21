@@ -103,7 +103,7 @@ namespace Decompiler.Typing
 
 		#region DataTypeTransformer methods //////////////////////////
 
-        public override DataType TransformEquivalenceClass(EquivalenceClass eq)
+        public override DataType VisitEquivalenceClass(EquivalenceClass eq)
         {
             if (!classesVisited.ContainsKey(eq))
             {
@@ -144,7 +144,7 @@ namespace Decompiler.Typing
             return eq;
         }
 
-		public override DataType TransformTypeVar(TypeVariable tv)
+		public override DataType VisitTypeVar(TypeVariable tv)
 		{
 			throw new TypeInferenceException("Type variables mustn't occur at this stage.");
 		}

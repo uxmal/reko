@@ -44,16 +44,6 @@ namespace Decompiler.Core.Types
 			this.number = n;
 		}
 
-		public override DataType Accept(DataTypeTransformer t)
-		{
-			return t.TransformTypeVar(this);
-		}
-
-		public override void Accept(IDataTypeVisitor v)
-		{
-			v.VisitTypeVar(this);
-		}
-
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitTypeVar(this);
