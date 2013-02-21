@@ -33,7 +33,6 @@ namespace Decompiler.Structure
     /// </summary>
     public abstract class Loop
     {
-
         public Loop(StructureNode header, StructureNode latch, HashSet<StructureNode> loopNodes)
         {
             this.Header = header;

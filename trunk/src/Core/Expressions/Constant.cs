@@ -337,6 +337,16 @@ namespace Decompiler.Core.Expressions
             return new Constant(PrimitiveType.SByte, p);
         }
 
+        public static Constant Int16(short s)
+        {
+            return new Constant(PrimitiveType.Int16, s);
+        }
+
+        public static Constant Int32(int i)
+        {
+            return new Constant(PrimitiveType.Int32, i);
+        }
+
         public static Constant Word16(ushort n)
         {
             return new Constant(PrimitiveType.Word16, n);

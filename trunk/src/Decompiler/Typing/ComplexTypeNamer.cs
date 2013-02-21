@@ -26,7 +26,7 @@ namespace Decompiler.Typing
 	/// <summary>
 	/// Gives names to complex types.
 	/// </summary>
-	public class ComplexTypeNamer : DataTypeVisitor
+	public class ComplexTypeNamer : IDataTypeVisitor<DataType>
 	{
 		private EquivalenceClass eq;
 
@@ -50,13 +50,14 @@ namespace Decompiler.Typing
 			}
 		}
 
-		public override void VisitStructure(StructureType str)
+		public DataType VisitStructure(StructureType str)
 		{
 			if (str.Name == null && eq != null)
 				str.Name = eq.Name;
+            return str;
 		}
 
-		public override void VisitUnion(UnionType ut)
+		public DataType VisitUnion(UnionType ut)
 		{
 			if (ut.Name == null && eq != null)
 				ut.Name = eq.Name;
@@ -65,6 +66,47 @@ namespace Decompiler.Typing
 			{
 				a.Name = a.MakeName(i++);
 			}
+            return ut;
 		}
-	}
+
+        public DataType VisitArray(ArrayType at)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitEquivalenceClass(EquivalenceClass eq)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitFunctionType(FunctionType ft)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitPrimitive(PrimitiveType pt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitMemberPointer(MemberPointer memptr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitPointer(Pointer ptr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitTypeVar(TypeVariable tv)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataType VisitUnknownType(UnknownType ut)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

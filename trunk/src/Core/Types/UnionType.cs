@@ -64,17 +64,6 @@ namespace Decompiler.Core.Types
             }
         }
 
-		public override DataType Accept(DataTypeTransformer t)
-		{
-			return t.TransformUnionType(this);
-		}
-
-
-		public override void Accept(IDataTypeVisitor v)
-		{
-			v.VisitUnion(this);
-		}
-
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitUnion(this);

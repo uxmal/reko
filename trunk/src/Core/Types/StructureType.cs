@@ -47,16 +47,6 @@ namespace Decompiler.Core.Types
 			this.Size = size; 
 		}
 
-		public override DataType Accept(DataTypeTransformer t)
-		{
-			return t.TransformStructure(this);
-		}
-
-		public override void Accept(IDataTypeVisitor v)
-		{
-			v.VisitStructure(this);
-		}
-
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitStructure(this);

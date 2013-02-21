@@ -169,14 +169,14 @@ namespace Decompiler.Arch.M68k
             case 1: // Address register direct
                 return new RegisterOperand(AddressRegister(operandBits, 0));
             case 2:  // Address register indirect
-                return MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0));
+                return MemoryOperand.Indirect(AddressRegister(operandBits, 0));
             case 3:  // Address register indirect with postincrement.
-                return MemoryOperand.PostIncrement(dataWidth, AddressRegister(operandBits, 0));
+                return MemoryOperand.PostIncrement(AddressRegister(operandBits, 0));
             case 4:  // Address register indirect with predecrement.
-                return MemoryOperand.PreDecrement(dataWidth, AddressRegister(operandBits, 0));
+                return MemoryOperand.PreDecrement(AddressRegister(operandBits, 0));
             case 5: // Address register indirect with displacement.
                 offset = new Constant(PrimitiveType.Int16, rdr.ReadBeInt16());
-                return MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0), offset);
+                return MemoryOperand.Indirect(AddressRegister(operandBits, 0), offset);
             default: throw new NotImplementedException(string.Format("Address mode {0:X} not implemented.", addressMode));
             }
         }

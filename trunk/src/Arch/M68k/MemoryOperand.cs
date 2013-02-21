@@ -35,6 +35,8 @@ namespace Decompiler.Arch.M68k
 
     public interface M68kOperandVisitor<T>
     {
+        T Visit(M68kImmediateOperand imm);
+
         T Visit(PredecrementMemoryOperand pre);
 
         T Visit(AddressOperand addressOperand);
@@ -54,41 +56,74 @@ namespace Decompiler.Arch.M68k
         public abstract T Accept<T>(M68kOperandVisitor<T> visitor);
     }
 
+    public class M68kImmediateOperand : M68kOperandImpl
+    {
+        public M68kImmediateOperand(Constant cons) : base((PrimitiveType)cons.DataType)
+        {
+            Constant = cons;
+        }
+
+        public Constant Constant { get; private set; }
+
+        public override T Accept<T>(M68kOperandVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+        }
+    }
+
+    public class DoubleRegisterOperand : M68kOperandImpl
+    {
+        public DoubleRegisterOperand(RegisterStorage reg1, RegisterStorage reg2) : base(null)
+        {
+            this.Register1 = reg1;
+            this.Register2 = reg2;
+        }
+
+        public RegisterStorage Register1 { get; private set; }
+        public RegisterStorage Register2 { get; private set; }
+
+        public override T Accept<T>(M68kOperandVisitor<T> visitor)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class MemoryOperand : MachineOperand
     {
         public RegisterStorage Base;
         public Constant Offset;
 
-        public MemoryOperand(PrimitiveType dataWidth, RegisterStorage baseReg)
-            : base(dataWidth)
+        public MemoryOperand(RegisterStorage baseReg)
+            : base(null)
         {
             this.Base = baseReg;
         }
-        public MemoryOperand(PrimitiveType dataWidth, RegisterStorage baseReg, Constant offset)
-            : base(dataWidth)
+        public MemoryOperand(RegisterStorage baseReg, Constant offset)
+            : base(null)
         {
             this.Base = baseReg;
             this.Offset = offset;
         }
 
-        public static MemoryOperand Indirect(PrimitiveType dataWidth, RegisterStorage baseReg)
+        public static MemoryOperand Indirect(RegisterStorage baseReg)
         {
-            return new MemoryOperand(dataWidth, baseReg);
+            return new MemoryOperand(baseReg);
         }
 
-        public static MachineOperand Indirect(PrimitiveType dataWidth, RegisterStorage baseReg, Constant offset)
+        public static MachineOperand Indirect(RegisterStorage baseReg, Constant offset)
         {
-            return new MemoryOperand(dataWidth, baseReg, offset);
+            return new MemoryOperand(baseReg, offset);
         }
 
-        public static MachineOperand PreDecrement(PrimitiveType dataWidth, RegisterStorage baseReg)
+        public static MachineOperand PreDecrement(RegisterStorage baseReg)
         {
-            return new PredecrementMemoryOperand(dataWidth, baseReg);
+            return new PredecrementMemoryOperand(baseReg);
         }
 
-        public static MachineOperand PostIncrement(PrimitiveType dataWidth, RegisterStorage baseReg)
+        public static MachineOperand PostIncrement(RegisterStorage baseReg)
         {
-            return new PostIncrementMemoryOperand(dataWidth, baseReg);
+            return new PostIncrementMemoryOperand(baseReg);
         }
     }
 
@@ -97,8 +132,8 @@ namespace Decompiler.Arch.M68k
     {
         public readonly RegisterStorage Register;
 
-        public PredecrementMemoryOperand(PrimitiveType dataWidth, RegisterStorage areg)
-            : base(dataWidth)
+        public PredecrementMemoryOperand(RegisterStorage areg)
+            : base(null)
         {
             this.Register = areg;
         }
@@ -113,8 +148,8 @@ namespace Decompiler.Arch.M68k
     {
         public readonly RegisterStorage Register;
 
-        public PostIncrementMemoryOperand(PrimitiveType dataWidth, RegisterStorage areg)
-            : base(dataWidth)
+        public PostIncrementMemoryOperand(RegisterStorage areg)
+            : base(null)
         {
             this.Register = areg;
         }

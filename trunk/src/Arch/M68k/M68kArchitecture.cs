@@ -44,7 +44,7 @@ namespace Decompiler.Arch.M68k
 
         public ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new M68kState(this);
         }
 
         public BitSet CreateRegisterBitset()
@@ -64,7 +64,10 @@ namespace Decompiler.Arch.M68k
 
         public RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            var r = Registers.GetRegister(name);
+            if (r == RegisterStorage.None)
+                throw new ArgumentException(string.Format("'{0}' is not a register name.", name));
+            return r;
         }
 
         public bool TryGetRegister(string name, out RegisterStorage reg)

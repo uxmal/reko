@@ -70,23 +70,22 @@ namespace Decompiler.Typing
 			return changed;
 		}
 
-        public override DataType TransformArrayType(ArrayType at)
+        public override DataType VisitArray(ArrayType at)
         {
             if (insideComplexType)
             {
-                NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
+                var nctr = new NestedComplexTypeExtractor(factory, store);
                 at.Accept(nctr);
                 return at;
             }
             else
             {
                 insideComplexType = true;
-                return base.TransformArrayType(at);
+                return base.VisitArray(at);
             }
-
         }
 
-		public override DataType TransformStructure(StructureType str)
+		public override DataType VisitStructure(StructureType str)
 		{
 			if (insideComplexType)
 			{
@@ -98,11 +97,11 @@ namespace Decompiler.Typing
 			else
 			{
 				insideComplexType = true;
-				return base.TransformStructure(str);
+				return base.VisitStructure(str);
 			}
 		}
 
-		public override DataType TransformUnionType(UnionType ut)
+		public override DataType VisitUnion(UnionType ut)
 		{
 			if (insideComplexType)
 			{
@@ -114,7 +113,7 @@ namespace Decompiler.Typing
 			else
 			{
 				insideComplexType = true;
-				return base.TransformUnionType(ut);
+				return base.VisitUnion(ut);
 			}
 		}
 	}

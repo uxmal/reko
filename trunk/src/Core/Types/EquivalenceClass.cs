@@ -44,16 +44,6 @@ namespace Decompiler.Core.Types
             types.Add(rep);
         }
 
-        public override DataType Accept(DataTypeTransformer t)
-		{
-			return t.TransformEquivalenceClass(this);
-		}
-
-		public override void Accept(IDataTypeVisitor v)
-		{
-			v.VisitEquivalenceClass(this);
-		}
-
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitEquivalenceClass(this);

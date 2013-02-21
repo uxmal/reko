@@ -37,7 +37,7 @@ namespace Decompiler.Typing
     /// what do you get if you add two pointers? Also, expressions where both a and b are simple should never reach this
     /// class, as such expressions are by definition simple also.
     /// </remarks>
-	public class ComplexExpressionBuilder : DataTypeVisitor
+	public class ComplexExpressionBuilder : IDataTypeVisitor<Expression>
 	{
         private DataType dtResult;
 		private DataType dt;
@@ -46,12 +46,11 @@ namespace Decompiler.Typing
 		private Expression complexExp;
         private Expression indexExp;
 		private int offset;
-		private Expression result;
+        //private Expression result;
 		private bool dereferenced;
 		private bool seenPtr;
         private DataTypeComparer comp; 
-
-
+        
         public ComplexExpressionBuilder(DataType dtResult, DataType dt, DataType dtOrig, Expression basePointer, Expression complexExp, Expression indexExp, int offset)
         {
             this.dtResult = dtResult;
@@ -66,9 +65,7 @@ namespace Decompiler.Typing
 
 		public Expression BuildComplex()
 		{
-			result = null;
-			dt.Accept(this);
-			return result;
+			return dt.Accept(this);
 		}
 
 		private Expression CreateDereference(DataType dt, Expression e)
@@ -97,15 +94,15 @@ namespace Decompiler.Typing
             }
         }
 
-		private void RewritePointer(DataType dtPtr, DataType dtPointee, DataType dtPointeeOriginal)
+		private Expression RewritePointer(DataType dtPtr, DataType dtPointee, DataType dtPointeeOriginal)
 		{
 			if (seenPtr)
 			{
-				result = complexExp;
-				return;
+				return complexExp;
 			}
 
 			seenPtr = true;
+            Expression result;
 			if (dtPointee is PrimitiveType || dtPointee is Pointer || dtPointee is MemberPointer ||
                 comp.Compare(dtPtr, dtResult) == 0)
 			{
@@ -138,7 +135,7 @@ namespace Decompiler.Typing
 				bool deref = Dereferenced;
 				Dereferenced = false;
 				basePointer = null;
-				dtPointee.Accept(this);
+				result = dtPointee.Accept(this);
 				if (!deref)
 				{
 					result = new UnaryExpression(UnaryOperator.AddrOf, dtPtr, result);
@@ -146,6 +143,7 @@ namespace Decompiler.Typing
 				Dereferenced = deref; 
 			}
 			seenPtr = false;
+            return result;
 		}
 
 
@@ -188,7 +186,7 @@ namespace Decompiler.Typing
 		}
 
 
-		public override void VisitArray(ArrayType array)
+		public Expression VisitArray(ArrayType array)
 		{
 			int i = (int) (offset / array.ElementType.Size);
 			int r = (int) (offset % array.ElementType.Size);
@@ -197,50 +195,50 @@ namespace Decompiler.Typing
 			complexExp.DataType = array;
 			complexExp = CreateArrayAccess(dt, array, i, indexExp, true);
 			offset = r;
-			dt.Accept(this);
+			return dt.Accept(this);
 		}
 
 
-		public override void VisitFunctionType(FunctionType ft)
+		public Expression VisitFunctionType(FunctionType ft)
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void VisitPrimitive(PrimitiveType pt)
+		public Expression VisitPrimitive(PrimitiveType pt)
 		{
-			result = complexExp;
+			return complexExp;
 		}
 
-		public override void VisitEquivalenceClass(EquivalenceClass eq)
+		public Expression VisitEquivalenceClass(EquivalenceClass eq)
 		{
 			EquivalenceClass eqOriginal = dtOriginal as EquivalenceClass;
 			if (eqOriginal != null && eq.Number == eqOriginal.Number)
 			{
-				result = complexExp;
-				result.DataType = eq;
+				complexExp.DataType = eq;
+                return complexExp;
 			}
 			else
 			{
 				dt = eq.DataType;
-				dt.Accept(this);
+				return dt.Accept(this);
 			}
 		}
 
-		public override void VisitPointer(Pointer ptr)
+		public Expression VisitPointer(Pointer ptr)
 		{
-			RewritePointer(ptr, ptr.Pointee, ((Pointer) this.dtOriginal).Pointee);
+			return RewritePointer(ptr, ptr.Pointee, ((Pointer) this.dtOriginal).Pointee);
 		}
 
-		public override void VisitMemberPointer(MemberPointer memptr)
+		public Expression VisitMemberPointer(MemberPointer memptr)
 		{
 			if (!(dtOriginal is MemberPointer))
 				throw new TypeInferenceException("MemberPointer expression {0}  was expected to have MemberPointer as its " +
 					"original type, but was {1}.", memptr, dtOriginal);
-			RewritePointer(memptr, memptr.Pointee, ((MemberPointer) dtOriginal).Pointee);
+			return RewritePointer(memptr, memptr.Pointee, ((MemberPointer) dtOriginal).Pointee);
 		}
 
 
-		public override void VisitStructure(StructureType str)
+		public Expression VisitStructure(StructureType str)
 		{
 			StructureField field = str.Fields.LowerBound(this.offset);
 			if (field == null)
@@ -250,11 +248,15 @@ namespace Decompiler.Typing
 			dtOriginal = field.DataType;
 			complexExp = CreateFieldAccess(str, field.DataType, complexExp, field.Name);
 			offset -= field.Offset;
-			dt.Accept(this);
+			return dt.Accept(this);
 		}
 
+        public Expression VisitTypeVar(TypeVariable tv)
+        {
+            throw new NotImplementedException();
+        }
 
-		public override void VisitUnion(UnionType ut)
+		public Expression VisitUnion(UnionType ut)
 		{
 			UnionAlternative alt = ut.FindAlternative(dtOriginal);
 			if (alt == null)
@@ -270,7 +272,12 @@ namespace Decompiler.Typing
 			{
 				complexExp = new FieldAccess(alt.DataType, complexExp, alt.Name);
 			}
-			dt.Accept(this);
+			return dt.Accept(this);
 		}
+
+        public Expression VisitUnknownType(UnknownType unk)
+        {
+            throw new NotImplementedException();
+        }
 	}
 }

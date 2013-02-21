@@ -25,22 +25,10 @@ namespace Decompiler.Core.Types
 {
 	public class ArrayType : DataType
 	{
-		private DataType elType;
-
 		public ArrayType(DataType elType, int length)
 		{
-			this.elType = elType;
+			this.ElementType = elType;
 			this.Length = length;
-		}
-
-		public override DataType Accept(DataTypeTransformer t)
-		{
-			return t.TransformArrayType(this);
-		}
-
-		public override void Accept(IDataTypeVisitor v)
-		{
-			v.VisitArray(this);
 		}
 
         public override T Accept<T>(IDataTypeVisitor<T> v)
@@ -56,11 +44,7 @@ namespace Decompiler.Core.Types
 		/// <summary>
 		/// DataType of each element in the array.
 		/// </summary>
-		public DataType ElementType
-		{
-			get { return elType; }
-			set { elType = value; }
-		}
+		public DataType ElementType { get; set; }
 
         public bool IsUnbounded { get { return Length == 0; } }
 
@@ -69,15 +53,9 @@ namespace Decompiler.Core.Types
 		/// </summary>
 		public int Length { get; set; }
 
-		public override bool IsComplex
-		{
-			get { return true; }
-		}
+		public override bool IsComplex { get { return true; } }
 
-		public override string Prefix
-		{
-			get { return "a"; }
-		}
+		public override string Prefix { get { return "a"; } }
 
 		public override int Size
 		{

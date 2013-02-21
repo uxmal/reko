@@ -63,7 +63,7 @@ namespace Decompiler.Typing
 		}
 
 
-		public override DataType TransformTypeVar(TypeVariable tv)
+		public override DataType VisitTypeVar(TypeVariable tv)
 		{
 			return tv.Class;
 		}

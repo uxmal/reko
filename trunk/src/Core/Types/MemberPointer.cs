@@ -39,16 +39,6 @@ namespace Decompiler.Core.Types
 			this.byteSize = byteSize;
 		}
 
-		public override DataType Accept(DataTypeTransformer t)
-		{
-			return t.TransformMemberPointer(this);
-		}
-
-		public override void Accept(IDataTypeVisitor v)
-		{
-			v.VisitMemberPointer(this);
-		}
-
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitMemberPointer(this);

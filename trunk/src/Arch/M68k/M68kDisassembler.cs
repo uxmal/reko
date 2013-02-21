@@ -20,6 +20,7 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Code;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
@@ -169,8 +170,47 @@ namespace Decompiler.Arch.M68k
         }
     }
 
-    public class M68kDisassembler2
+    public class M68kDisassembler2 
     {
+        ImageReader g_cpu_pc;        /* program counter */
+
+        public M68kDisassembler2(ImageReader rdr)
+        {
+            GenTable();
+            this.g_cpu_pc = rdr;
+        }
+
+        public M68kInstruction Disassemble()
+        {
+            throw new NotImplementedException();
+#if NEVER
+            if (!g_initialized)
+            {
+                build_opcode_table();
+                g_initialized = true;
+            }
+            g_helper_str = "";
+            g_cpu_ir = g_cpu_pc.ReadBeUInt16();
+            g_opcode_type = 0;
+
+            instr = new M68kInstruction();
+            instr.code = g_instruction_table[g_cpu_ir].opcode;
+            var args = g_instruction_table[g_cpu_ir].operandFormat;
+            int i = 0;
+            if (args[0] == 's')
+            {
+                instr.dataWidth = OperandFormatDecoder.GetSizeType(g_cpu_ir, args[1], null);
+                i = 3;
+            }
+            OperandFormatDecoder opTranslator = new OperandFormatDecoder(g_cpu_ir, args, i);
+            instr.op1 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
+            instr.op2 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
+            instr.op3 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
+            return instr;
+#endif
+        }
+
+#if !NEVER
         /* ======================================================================== */
         /* ========================= LICENSING & COPYRIGHT ======================== */
         /* ======================================================================== */
@@ -324,7 +364,7 @@ namespace Decompiler.Arch.M68k
         /* used to build opcode handler jump table */
         class opcode_struct
         {
-            public readonly Action opcode_handler;
+            public readonly Func<M68kInstruction> opcode_handler;
             public readonly uint mask;                  // opcode mask
             public readonly uint match;                 // opcode bit patter (after mask)
             public readonly uint ea_mask;               // Permitted ea modes are allowed 
@@ -332,7 +372,7 @@ namespace Decompiler.Arch.M68k
             public readonly Opcode opcode;              // The decoded opcode.
             public readonly string operandFormat;       // Format string which when interpreted generates the operands of the instruction.
 
-            public opcode_struct(Action handler, uint mask, uint match, uint ea_mask)
+            public opcode_struct(Func<M68kInstruction> handler, uint mask, uint match, uint ea_mask)
             {
                 this.opcode_handler = handler;
                 this.mask = mask;
@@ -355,7 +395,7 @@ namespace Decompiler.Arch.M68k
                 this.opcode_handler = UseDecodeMethod; 
             }
 
-            public void UseDecodeMethod()
+            public M68kInstruction UseDecodeMethod()
             {
                 throw new InvalidOperationException("Use the Decode method instead.");
             }
@@ -374,7 +414,6 @@ namespace Decompiler.Arch.M68k
 
         string g_dasm_str; /* string to hold disassembly */
         string g_helper_str; /* string to hold helpful info */
-        ImageReader g_cpu_pc;        /* program counter */
         ushort g_cpu_ir;        /* instruction register */
         uint g_cpu_type = 0;
         uint g_opcode_type;
@@ -392,6 +431,19 @@ namespace Decompiler.Arch.M68k
         };
 
         static string[] g_cc = new string[16] { "t", "f", "hi", "ls", "cc", "cs", "ne", "eq", "vc", "vs", "pl", "mi", "ge", "lt", "gt", "le" };
+        static Opcode[] g_bcc = new Opcode[16] { 
+            Opcode.bt, Opcode.bf, Opcode.bhi, Opcode.bls, Opcode.bcc, Opcode.bcs, Opcode.bne, Opcode.beq, 
+            Opcode.bvc, Opcode.bvs, Opcode.bpl, Opcode.bmi, Opcode.bge, Opcode.blt, Opcode.bgt, Opcode.ble };
+        static Opcode[] g_dbcc = new Opcode[16] { 
+            Opcode.dbt, Opcode.dbf, Opcode.dbhi, Opcode.dbls, Opcode.dbcc, Opcode.dbcs, Opcode.dbne, Opcode.dbeq, 
+            Opcode.dbvc, Opcode.dbvs, Opcode.dbpl, Opcode.dbmi, Opcode.dbge, Opcode.dblt, Opcode.dbgt, Opcode.dble };
+        static Opcode[] g_scc = new Opcode[16] { 
+            Opcode.st, Opcode.sf, Opcode.shi, Opcode.sls, Opcode.scc, Opcode.scs, Opcode.sne, Opcode.seq, 
+            Opcode.svc, Opcode.svs, Opcode.spl, Opcode.smi, Opcode.sge, Opcode.slt, Opcode.sgt, Opcode.sle };
+        static Opcode[] g_trapcc = new Opcode[16] { 
+            Opcode.trapt, Opcode.trapf, Opcode.traphi, Opcode.trapls, Opcode.trapcc, Opcode.trapcs, Opcode.trapne, Opcode.trapeq, 
+            Opcode.trapvc, Opcode.trapvs, Opcode.trappl, Opcode.trapmi, Opcode.trapge, Opcode.traplt, Opcode.trapgt, Opcode.traple };
+
 
         static string[] g_cpcc = new string[64] 
         {
@@ -470,26 +522,57 @@ namespace Decompiler.Arch.M68k
         //#define peek_imm_32() dasm_read_imm_32(0)
 
         /* Fake a split interface */
-        private string get_ea_mode_str_8(uint instruction) { return get_ea_mode_str(instruction, 0); }
-        private string get_ea_mode_str_16(uint instruction) { return get_ea_mode_str(instruction, 1); }
-        private string get_ea_mode_str_32(uint instruction) { return get_ea_mode_str(instruction, 2); }
-        private string get_ea_mode_str_8(int instruction) { return get_ea_mode_str((uint)instruction, 0); }
-        private string get_ea_mode_str_16(int instruction) { return get_ea_mode_str((uint)instruction, 1); }
-        private string get_ea_mode_str_32(int instruction) { return get_ea_mode_str((uint)instruction, 2); }
+        private MachineOperand get_ea_mode_str_8(uint instruction) { return get_ea_mode_str(instruction, 0); }
+        private MachineOperand get_ea_mode_str_16(uint instruction) { return get_ea_mode_str(instruction, 1); }
+        private MachineOperand get_ea_mode_str_32(uint instruction) { return get_ea_mode_str(instruction, 2); }
+        private MachineOperand get_ea_mode_str_8(int instruction) { return get_ea_mode_str((uint)instruction, 0); }
+        private MachineOperand get_ea_mode_str_16(int instruction) { return get_ea_mode_str((uint)instruction, 1); }
+        private MachineOperand get_ea_mode_str_32(int instruction) { return get_ea_mode_str((uint)instruction, 2); }
 
-        private static string get_imm_str_s8() { return get_imm_str_s(0); }
-        private static string get_imm_str_s16() { return get_imm_str_s(1); }
-        private static string get_imm_str_s32() { return get_imm_str_s(2); }
+        private M68kImmediateOperand get_imm_str_s8() { return get_imm_str_s(0); }
+        private M68kImmediateOperand get_imm_str_s16() { return get_imm_str_s(1); }
+        private M68kImmediateOperand get_imm_str_s32() { return get_imm_str_s(2); }
 
-        private static string get_imm_str_u8() { return get_imm_str_u(0); }
-        private static string get_imm_str_u16() { return get_imm_str_u(1); }
-        private static string get_imm_str_u32() { return get_imm_str_u(2); }
+        private M68kImmediateOperand get_imm_str_u8() { return get_imm_str_u(0); }
+        private M68kImmediateOperand get_imm_str_u16() { return get_imm_str_u(1); }
+        private M68kImmediateOperand get_imm_str_u32() { return get_imm_str_u(2); }
+
+        private RegisterOperand get_data_reg(int d) { return new RegisterOperand(Registers.DataRegister(d)); }
+        private RegisterOperand get_addr_reg(int a) { return new RegisterOperand(Registers.AddressRegister(a)); }
+        private RegisterOperand get_addr_or_data_reg(bool addrReg, int bits)
+        {
+            return addrReg ? get_addr_reg(bits) : get_data_reg(bits);
+        }
+        private RegisterOperand get_fp_reg(int fp) { return new RegisterOperand(Registers.FpRegister(fp)); }
+
+        private PredecrementMemoryOperand get_pre_dec(int a)
+        {
+            return new PredecrementMemoryOperand(Registers.AddressRegister(a & 7));
+        }
+        private PostIncrementMemoryOperand get_post_inc(int a)
+        {
+            return new PostIncrementMemoryOperand(Registers.AddressRegister(a & 7));
+        }
+        private RegisterOperand get_ctrl_reg(string regName, int number)
+        {
+            return new RegisterOperand(new RegisterStorage(regName, number, PrimitiveType.Word16));
+        }
+        private DoubleRegisterOperand get_double_data_reg(uint d1, uint d2)
+        {
+            return new DoubleRegisterOperand(
+                Registers.DataRegister((int)d1&7),
+                Registers.DataRegister((int)d2&7));
+        }
 
         static int sext_7bit_int(int value)
-        {
+        { 
             return (value & 0x40) != 0 ? (value | ~0x7F) : (value & 0x7f);
         }
 
+        private M68kImmediateOperand get_3bit_qdata(int bitPattern)
+        {
+            return new M68kImmediateOperand(Constant.Byte((byte) g_3bit_qdata_table[bitPattern]));
+        }
 
         /* 100% portable signed int generators */
         static int make_int_8(uint value) { return make_int_8((int)value); }
@@ -511,65 +594,75 @@ namespace Decompiler.Arch.M68k
         }
 
         /* Get string representation of hex values */
-        static string make_signed_hex_str_8(uint val)
+        Constant make_signed_hex_str_8(uint val)
         {
             val &= 0xff;
 
+            sbyte s;
             if (val == 0x80)
-                return "-$80";
+                s = -0x80;
             else if ((val & 0x80) != 0)
-                return string.Format("-${0:X2}", (0 - val) & 0x7f);
+                s = (sbyte) ((0 - val) & 0x7f);
             else
-                return string.Format("${0:X2}", val & 0x7f);
+                s = (sbyte)(val & 0x7f);
+            return Constant.SByte(s);
         }
 
-        static string make_signed_hex_str_16(uint val)
+        Constant make_signed_hex_str_16(uint val)
         {
             val &= 0xffff;
 
+            short s;
             if (val == 0x8000)
-                return "-$8000";
+                s = -0x8000;
             else if ((val & 0x8000) != 0)
-                return string.Format("-${0:X4}", (0 - val) & 0x7fff);
+                s = (short) ((0 - val) & 0x7fff);
             else
-                return string.Format("${0:X4}", val & 0x7fff);
+                s = (short) (val & 0x7fff);
+            return Constant.Int16(s);
         }
 
-        static string make_signed_hex_str_32(uint val)
+        Constant make_signed_hex_str_32(uint val)
         {
             val &= 0xffffffff;
 
+            int s;
             if (val == 0x80000000)
-                return "-$80000000";
+                s = (int)-0x80000000;
             else if ((val & 0x80000000) != 0)
-                return string.Format("-${0:X8}", (0 - val) & 0x7fffffff);
+                s = (int)((0 - val) & 0x7fffffff);
             else
-                return string.Format("${0:X8}", val & 0x7fffffff);
+                s = (int)(val & 0x7fffffff);
+            return Constant.Int32(s);
         }
 
-        private static byte read_imm_8() { throw new NotImplementedException(); }
-        private static ushort read_imm_16() { throw new NotImplementedException(); }
-        private static uint read_imm_32() { throw new NotImplementedException(); }
+        private static byte read_imm_8() { throw new NotImplementedException("2"); }
+        private static ushort read_imm_16() { throw new NotImplementedException("2"); }
+        private static uint read_imm_32() { throw new NotImplementedException("4"); }
 
         /* make string of immediate value */
-        private static string get_imm_str_s(uint size)
+        private M68kImmediateOperand get_imm_str_s(uint size)
         {
+            Constant c;
             if (size == 0)
-                return "#" + make_signed_hex_str_8(read_imm_8());
+                c = make_signed_hex_str_8(read_imm_8());
             else if (size == 1)
-                return "#" + make_signed_hex_str_16(read_imm_16());
+                c =  make_signed_hex_str_16(read_imm_16());
             else
-                return "#" + make_signed_hex_str_32(read_imm_32());
+                c = make_signed_hex_str_32(read_imm_32());
+            return new M68kImmediateOperand(c);
         }
 
-        private static string get_imm_str_u(uint size)
+        private M68kImmediateOperand get_imm_str_u(uint size)
         {
+            Constant c;
             if (size == 0)
-                return string.Format("#${0:X2}", read_imm_8() & 0xff);
+                c = Constant.Byte(read_imm_8());
             else if (size == 1)
-                return string.Format("#${0:Xr}", read_imm_16() & 0xffff);
+                c= Constant.Word16(read_imm_16());
             else
-                return string.Format("#${0:X8}", read_imm_32() & 0xffffffff);
+                c = Constant.Word32(read_imm_32());
+            return new M68kImmediateOperand(c);
         }
 
         static string b1 = "";
@@ -577,7 +670,7 @@ namespace Decompiler.Arch.M68k
         static string mode = b2;
 
         /* Make string of effective address mode */
-        private string get_ea_mode_str(uint instruction, uint size)
+        private MachineOperand get_ea_mode_str(uint instruction, uint size)
         {
             uint extension;
             uint @base;
@@ -586,9 +679,8 @@ namespace Decompiler.Arch.M68k
             string index_reg = "";
             bool preindex;
             bool postindex;
-            uint comma = 0;
+            bool comma = false;
             uint temp_value;
-            byte invalid_mode = 0;
 
             /* Switch buffers so we don't clobber on a double-call to this function */
             mode = mode == b1 ? b2 : b1;
@@ -604,7 +696,7 @@ namespace Decompiler.Arch.M68k
             case 0x06:
             case 0x07:
                 /* data register direct */
-                return string.Format("D{0}", instruction & 7);
+                return get_data_reg((int)instruction & 7);
             case 0x08:
             case 0x09:
             case 0x0a:
@@ -614,7 +706,7 @@ namespace Decompiler.Arch.M68k
             case 0x0e:
             case 0x0f:
                 /* address register direct */
-                return string.Format("A{0}", instruction & 7);
+                return get_addr_reg((int)instruction & 7);
             case 0x10:
             case 0x11:
             case 0x12:
@@ -624,7 +716,7 @@ namespace Decompiler.Arch.M68k
             case 0x16:
             case 0x17:
                 /* address register indirect */
-                return string.Format("(A{0})", instruction & 7);
+                return MemoryOperand.Indirect(Registers.AddressRegister((int)instruction & 7));
             case 0x18:
             case 0x19:
             case 0x1a:
@@ -634,7 +726,7 @@ namespace Decompiler.Arch.M68k
             case 0x1e:
             case 0x1f:
                 /* address register indirect with postincrement */
-                return string.Format("(A{0})+", instruction & 7);
+                return new PostIncrementMemoryOperand(Registers.AddressRegister((int)instruction & 7));
             case 0x20:
             case 0x21:
             case 0x22:
@@ -644,7 +736,7 @@ namespace Decompiler.Arch.M68k
             case 0x26:
             case 0x27:
                 /* address register indirect with predecrement */
-                return string.Format("-(A{0}))", instruction & 7);
+                return new PredecrementMemoryOperand(Registers.AddressRegister((int)instruction & 7));
             case 0x28:
             case 0x29:
             case 0x2a:
@@ -654,7 +746,9 @@ namespace Decompiler.Arch.M68k
             case 0x2e:
             case 0x2f:
                 /* address register indirect with displacement*/
-                return string.Format("({0},A{1})", make_signed_hex_str_16(read_imm_16()), instruction & 7);
+                return MemoryOperand.Indirect(
+                    Registers.AddressRegister((int)instruction & 7),
+                    make_signed_hex_str_16(read_imm_16()));
             case 0x30:
             case 0x31:
             case 0x32:
@@ -668,16 +762,14 @@ namespace Decompiler.Arch.M68k
 
                 if ((g_cpu_type & M68010_LESS) != 0 && EXT_INDEX_SCALE(extension) != 0)
                 {
-                    invalid_mode = 1;
-                    break;
+                    throw new NotSupportedException("Invalid address mode.");
                 }
 
                 if (EXT_FULL(extension))
                 {
                     if ((g_cpu_type & M68010_LESS) != 0)
                     {
-                        invalid_mode = 1;
-                        break;
+                        throw new NotSupportedException("Invalid address mode.");
                     }
 
                     if (EXT_EFFECTIVE_ZERO(extension))
@@ -716,35 +808,35 @@ namespace Decompiler.Arch.M68k
                         {
                             mode += make_signed_hex_str_16(@base);
                         }
-                        comma = 1;
+                        comma = true;
                     }
                     if (base_reg != "")
                     {
-                        if (comma != 0)
+                        if (comma)
                             mode += ",";
                         mode += base_reg;
-                        comma = 1;
+                        comma = true;
                     }
                     if (postindex)
                     {
                         mode += "]";
-                        comma = 1;
+                        comma = true;
                     }
                     if (index_reg != "")
                     {
-                        if (comma != 0)
+                        if (comma)
                             mode += ",";
                         mode += index_reg;
-                        comma = 1;
+                        comma = true;
                     }
                     if (preindex)
                     {
-                        mode += "]"; ;
-                        comma = 1;
+                        mode += "]";
+                        comma = true;
                     }
                     if (outer != 0)
                     {
-                        if (comma != 0)
+                        if (comma)
                             mode += ",";
                         mode += make_signed_hex_str_16(outer);
                     }
@@ -770,27 +862,24 @@ namespace Decompiler.Arch.M68k
                 break;
             case 0x3a:
                 // Program counter with displacement
-                throw new NotImplementedException();
-                //temp_value = read_imm_16();
-                //mode = string.Format("({0},PC)", make_signed_hex_str_16(temp_value));
+                temp_value = read_imm_16();
+                return new MemoryOperand(Registers.pc, make_signed_hex_str_16(temp_value));
                 //g_helper_str = string.Format("; (${0})", (make_int_16(temp_value) + g_cpu_pc - 2) & 0xffffffff);
-                //break;
+            //break;
             case 0x3b:
                 // Program counter with index
                 extension = read_imm_16();
 
                 if ((g_cpu_type & M68010_LESS) != 0 && EXT_INDEX_SCALE(extension) != 0)
                 {
-                    invalid_mode = 1;
-                    break;
+                    throw new NotSupportedException("Invalid address mode.");
                 }
 
                 if (EXT_FULL(extension))
                 {
                     if ((g_cpu_type & M68010_LESS) != 0)
                     {
-                        invalid_mode = 1;
-                        break;
+                        throw new NotSupportedException("Invalid address mode.");
                     }
 
                     if (EXT_EFFECTIVE_ZERO(extension))
@@ -821,35 +910,35 @@ namespace Decompiler.Arch.M68k
                     if (@base != 0)
                     {
                         mode += make_signed_hex_str_16(@base);
-                        comma = 1;
+                        comma = true;
                     }
                     if (base_reg != "")
                     {
-                        if (comma != 0)
+                        if (comma)
                             mode += ",";
                         mode += base_reg;
-                        comma = 1;
+                        comma = true;
                     }
                     if (postindex)
                     {
                         mode += "]";
-                        comma = 1;
+                        comma = true;
                     }
                     if (index_reg != "")
                     {
-                        if (comma != 0)
+                        if (comma)
                             mode += ",";
                         mode += index_reg;
-                        comma = 1;
+                        comma = true;
                     }
                     if (preindex)
                     {
                         mode += "]";
-                        comma = 1;
+                        comma = true;
                     }
                     if (outer != 0)
                     {
-                        if (comma != 0)
+                        if (comma)
                             mode += ",";
                         mode += make_signed_hex_str_16(outer);
                     }
@@ -867,17 +956,11 @@ namespace Decompiler.Arch.M68k
                 break;
             case 0x3c:
                 /* Immediate */
-                mode = string.Format("{0}", get_imm_str_u(size));
-                break;
+                return get_imm_str_u(size);
             default:
-                invalid_mode = 1;
-                break;
+                throw new NotSupportedException(string.Format("INVALID {0}", instruction & 0x3f));
             }
-
-            if (invalid_mode != 0)
-                mode = string.Format("INVALID {0}", instruction & 0x3f);
-
-            return mode;
+            throw new NotImplementedException();
         }
 
 
@@ -920,317 +1003,628 @@ namespace Decompiler.Arch.M68k
          * al  : absolute long
          */
 
-        private void d68000_illegal()
+        private M68kInstruction d68000_illegal()
         {
-            g_dasm_str = string.Format("dc.w    $%04x; ILLEGAL", g_cpu_ir);
+            throw new NotSupportedException(string.Format("dc.w    ${0:X}; ILLEGAL", g_cpu_ir));
         }
 
-        private void d68000_1010()
+        private M68kInstruction d68000_1010()
         {
-            g_dasm_str = string.Format("dc.w    $%04x; opcode 1010", g_cpu_ir);
+            throw new NotSupportedException(string.Format("dc.w    $%04x; opcode 1010", g_cpu_ir));
         }
 
-
-        private void d68000_1111()
+        private M68kInstruction d68000_1111()
         {
-            g_dasm_str = string.Format("dc.w    $%04x; opcode 1111", g_cpu_ir);
-        }
-
-
-        private void d68000_abcd_rr()
-        {
-            g_dasm_str = string.Format("abcd    D{0},D{1}", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            throw new NotSupportedException(string.Format("dc.w    $%04x; opcode 1111", g_cpu_ir));
         }
 
 
-        private void d68000_abcd_mm()
+        private M68kInstruction d68000_abcd_rr()
         {
-            g_dasm_str = string.Format("abcd    -(A{0}), -(A%d)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.abcd,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_add_er_8()
+
+        private M68kInstruction d68000_abcd_mm()
         {
-            g_dasm_str = string.Format("add.b   {0},D{1}", get_ea_mode_str_8(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.abcd,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7)
+            };
+        }
+
+        private M68kInstruction d68000_add_er_8()
+        {
+            return new M68kInstruction
+            {
+                code = Opcode.add,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
 
-        private void d68000_add_er_16()
+        private M68kInstruction d68000_add_er_16()
         {
-            g_dasm_str = string.Format("add.w   {0},D{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.add,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_add_er_32()
+        private M68kInstruction d68000_add_er_32()
         {
-            g_dasm_str = string.Format("add.l   {0},D{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.add,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_add_re_8()
+        private M68kInstruction d68000_add_re_8()
         {
-            g_dasm_str = string.Format("add.b   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.add,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir),
+            };
         }
 
-        private void d68000_add_re_16()
+        private M68kInstruction d68000_add_re_16()
         {
-            g_dasm_str = string.Format("add.w   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.add,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_16(g_cpu_ir),
+            };
         }
 
-        private void d68000_add_re_32()
+        private M68kInstruction d68000_add_re_32()
         {
-            g_dasm_str = string.Format("add.l   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.add,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_32(g_cpu_ir),
+            };
         }
 
-        private void d68000_adda_16()
+        private M68kInstruction d68000_adda_16()
         {
-            g_dasm_str = string.Format("adda.w  {0},A{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.adda,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_addr_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_adda_32()
+        private M68kInstruction d68000_adda_32()
         {
-            g_dasm_str = string.Format("adda.l  {0},A{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.adda,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_addr_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_addi_8()
+        private M68kInstruction d68000_addi_8()
         {
-            string str = get_imm_str_s8();
-            g_dasm_str = string.Format("addi.b  {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_s8();
+            return new M68kInstruction
+            {
+                code = Opcode.addi,
+                dataWidth = PrimitiveType.Byte,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_addi_16()
+        private M68kInstruction d68000_addi_16()
         {
-            string str = get_imm_str_s16();
-            g_dasm_str = string.Format("addi.w  {0},{1}", str, get_ea_mode_str_16(g_cpu_ir));
+            var str = get_imm_str_s16();
+            return new M68kInstruction
+            {
+                code = Opcode.addi,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_addi_32()
+        private M68kInstruction d68000_addi_32()
         {
-            string str = get_imm_str_s32();
-            g_dasm_str = string.Format("addi.l  {0},{1}", str, get_ea_mode_str_32(g_cpu_ir));
+            var str = get_imm_str_s32();
+            return new M68kInstruction
+            {
+                code = Opcode.addi,
+                dataWidth = PrimitiveType.Word32,
+                op1 = str,
+                op2 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_addq_8()
+        private M68kInstruction d68000_addq_8()
         {
-            g_dasm_str = string.Format("addq.b  #{0},{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.addq,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_addq_16()
+        private M68kInstruction d68000_addq_16()
         {
-            g_dasm_str = string.Format("addq.w  #{0},{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.addq,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_addq_32()
+        private M68kInstruction d68000_addq_32()
         {
-            g_dasm_str = string.Format("addq.l  #{0},{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.addq,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_addx_rr_8()
+        private M68kInstruction d68000_addx_rr_8()
         {
-            g_dasm_str = string.Format("addx.b  D{0},D{1}", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.addx,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_addx_rr_16()
+        private M68kInstruction d68000_addx_rr_16()
         {
-            g_dasm_str = string.Format("addx.w  D{0},D{1}", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.addx,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_addx_rr_32()
+        private M68kInstruction d68000_addx_rr_32()
         {
-            g_dasm_str = string.Format("addx.l  D{0},D{1}", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.addx,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_addx_mm_8()
+        private M68kInstruction d68000_addx_mm_8()
         {
-            g_dasm_str = string.Format("addx.b  -(A{0}), -(A%d)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.addx,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_addx_mm_16()
+        private M68kInstruction d68000_addx_mm_16()
         {
-            g_dasm_str = string.Format("addx.w  -(A{0}), -(A%d)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.addx,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_addx_mm_32()
+        private M68kInstruction d68000_addx_mm_32()
         {
-            g_dasm_str = string.Format("addx.l  -(A{0}), -(A%d)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.addx,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_and_er_8()
+        private M68kInstruction d68000_and_er_8()
         {
-            g_dasm_str = string.Format("and.b   {0},D{1}", get_ea_mode_str_8(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.and,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_and_er_16()
+        private M68kInstruction d68000_and_er_16()
         {
-            g_dasm_str = string.Format("and.w   {0},D{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.and,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_and_er_32()
+        private M68kInstruction d68000_and_er_32()
         {
-            g_dasm_str = string.Format("and.l   {0},D{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.and,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_and_re_8()
+        private M68kInstruction d68000_and_re_8()
         {
-            g_dasm_str = string.Format("and.b   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.and,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir),
+            };
         }
 
-        private void d68000_and_re_16()
+        private M68kInstruction d68000_and_re_16()
         {
-            g_dasm_str = string.Format("and.w   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.and,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_16(g_cpu_ir),
+            };
         }
 
-        private void d68000_and_re_32()
+        private M68kInstruction d68000_and_re_32()
         {
-            g_dasm_str = string.Format("and.l   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.and,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_32(g_cpu_ir),
+            };
         }
 
-        private void d68000_andi_8()
+        private M68kInstruction d68000_andi_8()
         {
-            string str = get_imm_str_u8();
-            g_dasm_str = string.Format("andi.b  {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_u8();
+            return new M68kInstruction
+            {
+                code = Opcode.andi,
+                dataWidth = PrimitiveType.Byte,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir),
+            };
         }
 
-        private void d68000_andi_16()
+        private M68kInstruction d68000_andi_16()
         {
-            string str = get_imm_str_u16();
-            g_dasm_str = string.Format("andi.w  {0},{1}", str, get_ea_mode_str_16(g_cpu_ir));
+            var str = get_imm_str_u16();
+            return new M68kInstruction
+            {
+                code = Opcode.andi,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir),
+            };
         }
 
-        private void d68000_andi_32()
+        private M68kInstruction d68000_andi_32()
         {
-            string str = get_imm_str_u32();
-            g_dasm_str = string.Format("andi.l  {0},{1}", str, get_ea_mode_str_32(g_cpu_ir));
+            var str = get_imm_str_u32();
+            return new M68kInstruction
+            {
+                code = Opcode.andi,
+                dataWidth = PrimitiveType.Word32,
+                op1 = str,
+                op2 = get_ea_mode_str_32(g_cpu_ir),
+            };
         }
 
-        private void d68000_andi_to_ccr()
+        private M68kInstruction d68000_andi_to_ccr()
         {
-            g_dasm_str = string.Format("andi    {0}, CCR", get_imm_str_u8());
+            return new M68kInstruction
+            {
+                code = Opcode.andi,
+                op1 = get_imm_str_u8(),
+                op2 = new RegisterOperand(Registers.ccr),
+            };
         }
 
-        private void d68000_andi_to_sr()
+        private M68kInstruction d68000_andi_to_sr()
         {
-            g_dasm_str = string.Format("andi    {0}, SR", get_imm_str_u16());
+            return new M68kInstruction
+            {
+                code = Opcode.andi,
+                op1 = get_imm_str_u16(),
+                op2 = new RegisterOperand(Registers.sr),
+            };
         }
 
-        private void d68000_asr_s_8()
+        private M68kInstruction d68000_asr_s_8()
         {
-            g_dasm_str = string.Format("asr.b   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asr,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_asr_s_16()
+        private M68kInstruction d68000_asr_s_16()
         {
-            g_dasm_str = string.Format("asr.w   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asr,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_asr_s_32()
+        private M68kInstruction d68000_asr_s_32()
         {
-            g_dasm_str = string.Format("asr.l   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asr,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_asr_r_8()
+        private M68kInstruction d68000_asr_r_8()
         {
-            g_dasm_str = string.Format("asr.b   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asr,
+                dataWidth = PrimitiveType.Byte,
+                op1 = new RegisterOperand(Registers.DataRegister((g_cpu_ir >> 9) & 7)),
+                op2 = new RegisterOperand(Registers.DataRegister(g_cpu_ir & 7)),
+            };
         }
 
-        private void d68000_asr_r_16()
+        private M68kInstruction d68000_asr_r_16()
         {
-            g_dasm_str = string.Format("asr.w   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asr,
+                dataWidth = PrimitiveType.Word16,
+                op1 = new RegisterOperand(Registers.DataRegister((g_cpu_ir >> 9) & 7)),
+                op2 = new RegisterOperand(Registers.DataRegister(g_cpu_ir & 7)),
+            };
         }
 
-        private void d68000_asr_r_32()
+        private M68kInstruction d68000_asr_r_32()
         {
-            g_dasm_str = string.Format("asr.l   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asr,
+                dataWidth = PrimitiveType.Word32,
+                op1 = new RegisterOperand(Registers.DataRegister((g_cpu_ir >> 9) & 7)),
+                op2 = new RegisterOperand(Registers.DataRegister(g_cpu_ir & 7)),
+            };
         }
 
-        private void d68000_asr_ea()
+        private M68kInstruction d68000_asr_ea()
         {
-            g_dasm_str = string.Format("asr.w   {0}", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.asr,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_asl_s_8()
+        private M68kInstruction d68000_asl_s_8()
         {
-            g_dasm_str = string.Format("asl.b   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asl,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_asl_s_16()
+        private M68kInstruction d68000_asl_s_16()
         {
-            g_dasm_str = string.Format("asl.w   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_asl_s_32()
+        private M68kInstruction d68000_asl_s_32()
         {
-            g_dasm_str = string.Format("asl.l   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asl,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_asl_r_8()
+        private M68kInstruction d68000_asl_r_8()
         {
-            g_dasm_str = string.Format("asl.b   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asl,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_asl_r_16()
+        private M68kInstruction d68000_asl_r_16()
         {
-            g_dasm_str = string.Format("asl.w   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_asl_r_32()
+        private M68kInstruction d68000_asl_r_32()
         {
-            g_dasm_str = string.Format("asl.l   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.asl,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_asl_ea()
+        private M68kInstruction d68000_asl_ea()
         {
-            g_dasm_str = string.Format("asl.w   {0}", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.asl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_bcc_8()
+        private M68kInstruction d68000_bcc_8()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
-            g_dasm_str = string.Format("b%-2s     $%x", g_cc[(g_cpu_ir >> 8) & 0xf], temp_pc + make_int_8(g_cpu_ir));
+            var temp_pc = g_cpu_pc.Address;
+            return new M68kInstruction
+            {
+                code = g_bcc[(g_cpu_ir >> 8) & 0xf], 
+                op1 = new AddressOperand(temp_pc + make_int_8(g_cpu_ir))
+            };
         }
 
-        private void d68000_bcc_16()
+        private M68kInstruction d68000_bcc_16()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
-            g_dasm_str = string.Format("b%-2s     $%x", g_cc[(g_cpu_ir >> 8) & 0xf], temp_pc + make_int_16(read_imm_16()));
+            var temp_pc = g_cpu_pc.Address;
+            return new M68kInstruction
+            {
+                code = g_bcc[(g_cpu_ir >> 8) & 0xf], 
+                op1 = new AddressOperand(temp_pc + make_int_16(read_imm_16())),
+            };
         }
 
-        private void d68020_bcc_32()
+        private M68kInstruction d68020_bcc_32()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("b%-2s     $%x; (2+)", g_cc[(g_cpu_ir >> 8) & 0xf], temp_pc + read_imm_32());
+            var temp_pc = g_cpu_pc.Address;
+            return new M68kInstruction
+            {
+                code = g_bcc[(g_cpu_ir >> 8) & 0xf], 
+                op1 = new AddressOperand(temp_pc + read_imm_32()),
+            };
         }
 
-        private void d68000_bchg_r()
+        private M68kInstruction d68000_bchg_r()
         {
-            g_dasm_str = string.Format("bchg    D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.bchg,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_bchg_s()
+        private M68kInstruction d68000_bchg_s()
         {
-            string str = get_imm_str_u8();
-            g_dasm_str = string.Format("bchg    {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_u8();
+            return new M68kInstruction
+            {
+                code = Opcode.bchg,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_bclr_r()
+        private M68kInstruction d68000_bclr_r()
         {
-            g_dasm_str = string.Format("bclr    D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.bclr,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_bclr_s()
+        private M68kInstruction d68000_bclr_s()
         {
-            string str = get_imm_str_u8();
-            g_dasm_str = string.Format("bclr    {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_u8();
+            return new M68kInstruction
+            {
+                code = Opcode.bclr,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68010_bkpt()
+        private M68kInstruction d68010_bkpt()
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
-            g_dasm_str = string.Format("bkpt #{0}; (1+)", g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.bkpt,
+                op1 = new M68kImmediateOperand(Constant.Byte((byte)(g_cpu_ir & 7)))
+            };
         }
 
-        private void d68020_bfchg()
+        private M68kInstruction d68020_bfchg()
         {
             uint extension;
-            string offset;
+            MachineOperand offset;
             string width;
 
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -1238,17 +1632,18 @@ namespace Decompiler.Arch.M68k
             extension = read_imm_16();
 
             if (BIT_B(extension))
-                offset = string.Format("D{0}", (extension >> 6) & 7);
+                offset = get_data_reg((int)(extension >> 6) & 7);
             else
-                offset = string.Format("{0}", (extension >> 6) & 31);
+                offset = new M68kImmediateOperand(Constant.Byte((byte)((extension >> 6) & 31)));
             if (BIT_5(extension))
                 width = string.Format("D{0}", extension & 7);
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             g_dasm_str = string.Format("bfchg   {0} {%s:%s}; (2+)", get_ea_mode_str_8(g_cpu_ir), offset, width);
+            throw new NotImplementedException();
         }
 
-        private void d68020_bfclr()
+        private M68kInstruction d68020_bfclr()
         {
             uint extension;
             string offset;
@@ -1267,9 +1662,10 @@ namespace Decompiler.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             g_dasm_str = string.Format("bfclr   {0} {%s:%s}; (2+)", get_ea_mode_str_8(g_cpu_ir), offset, width);
+            throw new NotImplementedException();
         }
 
-        private void d68020_bfexts()
+        private M68kInstruction d68020_bfexts()
         {
             uint extension;
             string offset; ;
@@ -1288,9 +1684,10 @@ namespace Decompiler.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             g_dasm_str = string.Format("bfexts  D{0},{1} {%s:%s}; (2+)", (extension >> 12) & 7, get_ea_mode_str_8(g_cpu_ir), offset, width);
+            throw new NotImplementedException();
         }
 
-        private void d68020_bfextu()
+        private M68kInstruction d68020_bfextu()
         {
             uint extension;
             string offset; ;
@@ -1309,9 +1706,10 @@ namespace Decompiler.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             g_dasm_str = string.Format("bfextu  D{0},{1} {%s:%s}; (2+)", (extension >> 12) & 7, get_ea_mode_str_8(g_cpu_ir), offset, width);
+            throw new NotImplementedException();
         }
 
-        private void d68020_bfffo()
+        private M68kInstruction d68020_bfffo()
         {
             uint extension;
             string offset; ;
@@ -1330,9 +1728,10 @@ namespace Decompiler.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             g_dasm_str = string.Format("bfffo   D{0},{1} {%s:%s}; (2+)", (extension >> 12) & 7, get_ea_mode_str_8(g_cpu_ir), offset, width);
+            throw new NotImplementedException();
         }
 
-        private void d68020_bfins()
+        private M68kInstruction d68020_bfins()
         {
             uint extension;
             string offset; ;
@@ -1351,9 +1750,10 @@ namespace Decompiler.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             g_dasm_str = string.Format("bfins   D{0},{1} {%s:%s}; (2+)", (extension >> 12) & 7, get_ea_mode_str_8(g_cpu_ir), offset, width);
+            throw new NotImplementedException();
         }
 
-        private void d68020_bfset()
+        private M68kInstruction d68020_bfset()
         {
             uint extension;
             string offset; ;
@@ -1372,9 +1772,10 @@ namespace Decompiler.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             g_dasm_str = string.Format("bfset   {0} {%s:%s}; (2+)", get_ea_mode_str_8(g_cpu_ir), offset, width);
+            throw new NotImplementedException();
         }
 
-        private void d68020_bftst()
+        private M68kInstruction d68020_bftst()
         {
             uint extension;
             string offset; ;
@@ -1393,105 +1794,174 @@ namespace Decompiler.Arch.M68k
             else
                 width = string.Format("{0}", g_5bit_data_table[extension & 31]);
             g_dasm_str = string.Format("bftst   {0} {%s:%s}; (2+)", get_ea_mode_str_8(g_cpu_ir), offset, width);
+            throw new NotImplementedException();
         }
 
-        private void d68000_bra_8()
+        private M68kInstruction d68000_bra_8()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
-            g_dasm_str = string.Format("bra     ${0}", temp_pc + make_int_8(g_cpu_ir));
+            Address temp_pc = g_cpu_pc.Address;
+            return new M68kInstruction
+            {
+                code = Opcode.bra,
+                op1 = new AddressOperand(temp_pc + make_int_8(g_cpu_ir))
+            };
         }
 
-        private void d68000_bra_16()
+        private M68kInstruction d68000_bra_16()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
-            g_dasm_str = string.Format("bra     ${0}", temp_pc + make_int_16(read_imm_16()));
+             Address temp_pc = g_cpu_pc.Address;
+             return new M68kInstruction
+             {
+                 code = Opcode.bra,
+                 op1 = new AddressOperand(temp_pc + make_int_16(read_imm_16()))
+             };
         }
 
-        private void d68020_bra_32()
+        private M68kInstruction d68020_bra_32()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
+            Address temp_pc = g_cpu_pc.Address;
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("bra     ${0}; (2+)", temp_pc + read_imm_32());
+            return new M68kInstruction
+            {
+                code = Opcode.bra,
+                op1 = new AddressOperand(temp_pc + read_imm_32())
+            };
         }
 
-        private void d68000_bset_r()
+        private M68kInstruction d68000_bset_r()
         {
-            g_dasm_str = string.Format("bset    D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.bset,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_bset_s()
+        private M68kInstruction d68000_bset_s()
         {
-            string str = get_imm_str_u8();
-            g_dasm_str = string.Format("bset    {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_u8();
+            return new M68kInstruction
+            {
+                code = Opcode.bset,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_bsr_8()
+        private M68kInstruction d68000_bsr_8()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
-            g_dasm_str = string.Format("bsr     ${0}", temp_pc + make_int_8(g_cpu_ir));
+            Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = Opcode.bsr,
+                op1 = new AddressOperand(temp_pc + make_int_8(g_cpu_ir))
+            };
         }
 
-        private void d68000_bsr_16()
+        private M68kInstruction d68000_bsr_16()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
-            g_dasm_str = string.Format("bsr     ${0}", temp_pc + make_int_16(read_imm_16()));
+            Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = Opcode.bsr,
+                op1 = new AddressOperand( temp_pc + make_int_16(read_imm_16())),
+            };
         }
 
-        private void d68020_bsr_32()
+        private M68kInstruction d68020_bsr_32()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
-            LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("bsr     ${0}; (2+)", temp_pc + read_imm_32());
+            Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = Opcode.bsr,
+                op1 = new AddressOperand(temp_pc + read_imm_32())
+            };
         }
 
-        private void d68000_btst_r()
+        private M68kInstruction d68000_btst_r()
         {
-            g_dasm_str = string.Format("btst    D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.btst,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_btst_s()
+        private M68kInstruction d68000_btst_s()
         {
-            string str = get_imm_str_u8();
-            g_dasm_str = string.Format("btst    {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_u8();
+            return new M68kInstruction
+            {
+                code = Opcode.btst,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68020_callm()
+        //$REVIEW: doesn't appear to be official opcode mnemonic?
+        private M68kInstruction d68020_callm()
         {
-            string str;
             LIMIT_CPU_TYPES(M68020_ONLY);
-            str = get_imm_str_u8();
-
-            g_dasm_str = string.Format("callm   {0},{1}; (2)", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_u8();
+            return new M68kInstruction
+            {
+                code = Opcode.callm,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68020_cas_8()
+        private M68kInstruction d68020_cas_8()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
             extension = read_imm_16();
-            g_dasm_str = string.Format("cas.b   D{0},D{1},{1}; (2+)", extension & 7, (extension >> 8) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.cas,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((int)extension & 7),
+                op2 = get_data_reg((int)(extension >> 8) & 7),
+                op3 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68020_cas_16()
+        private M68kInstruction d68020_cas_16()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
             extension = read_imm_16();
-            g_dasm_str = string.Format("cas.w   D{0},D{1},{1}; (2+)", extension & 7, (extension >> 8) & 7, get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.cas,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((int)extension & 7),
+                op2 = get_data_reg((int)(extension >> 8) & 7),
+                op3 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68020_cas_32()
+        private M68kInstruction d68020_cas_32()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
             extension = read_imm_16();
-            g_dasm_str = string.Format("cas.l   D{0},D{1},{1}; (2+)", extension & 7, (extension >> 8) & 7, get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.cas,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((int)extension & 7),
+                op2 = get_data_reg((int)(extension >> 8) & 7),
+                op3 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68020_cas2_16()
+        private M68kInstruction d68020_cas2_16()
         {
             /* CAS2 Dc1:Dc2,Du1:Dc2:(Rn1):(Rn2)
             f e d c b a 9 8 7 6 5 4 3 2 1 0
@@ -1506,9 +1976,10 @@ namespace Decompiler.Arch.M68k
                 (extension >> 16) & 7, extension & 7, (extension >> 22) & 7, (extension >> 6) & 7,
                 BIT_1F(extension) ? 'A' : 'D', (extension >> 28) & 7,
                 BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
+            throw new NotImplementedException();
         }
 
-        private void d68020_cas2_32()
+        private M68kInstruction d68020_cas2_32()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
@@ -1517,46 +1988,78 @@ namespace Decompiler.Arch.M68k
                 (extension >> 16) & 7, extension & 7, (extension >> 22) & 7, (extension >> 6) & 7,
                 BIT_1F(extension) ? 'A' : 'D', (extension >> 28) & 7,
                 BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
+            throw new NotImplementedException();
+
         }
 
-        private void d68000_chk_16()
+        private M68kInstruction d68000_chk_16()
         {
-            g_dasm_str = string.Format("chk.w   {0},D{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = Opcode.chk,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68020_chk_32()
+        private M68kInstruction d68020_chk_32()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("chk.l   {0},D{1}; (2+)", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = Opcode.chk,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68020_chk2_cmp2_8()
+        private M68kInstruction d68020_chk2_cmp2_8()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
             extension = read_imm_16();
-            g_dasm_str = string.Format("{0}.b  %s, %c%d; (2+)", BIT_B(extension) ? "chk2" : "cmp2", get_ea_mode_str_8(g_cpu_ir), BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
+            return new M68kInstruction
+            {
+                code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir), 
+                op2 = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7),
+            };
         }
 
-        private void d68020_chk2_cmp2_16()
+        private M68kInstruction d68020_chk2_cmp2_16()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
             extension = read_imm_16();
-            g_dasm_str = string.Format("{0}.w  %s, %c%d; (2+)", BIT_B(extension) ? "chk2" : "cmp2", get_ea_mode_str_16(g_cpu_ir), BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
+            return new M68kInstruction
+            {
+                code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7),
+            };
         }
 
-        private void d68020_chk2_cmp2_32()
+        private M68kInstruction d68020_chk2_cmp2_32()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
             extension = read_imm_16();
-            g_dasm_str = string.Format("{0}.l  %s, %c%d; (2+)", BIT_B(extension) ? "chk2" : "cmp2", get_ea_mode_str_32(g_cpu_ir), BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
+            return new M68kInstruction
+            {
+                code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7),
+            };
         }
 
-        private void d68040_cinv()
+        private M68kInstruction d68040_cinv()
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
             switch ((g_cpu_ir >> 3) & 3)
@@ -1574,132 +2077,240 @@ namespace Decompiler.Arch.M68k
                 g_dasm_str = string.Format("cinva   {0}; (4)", (g_cpu_ir >> 6) & 3);
                 break;
             }
+            throw new NotImplementedException();
         }
 
-        private void d68000_clr_8()
+        private M68kInstruction d68000_clr_8()
         {
-            g_dasm_str = string.Format("clr.b   {0}", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.clr,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_clr_16()
+        private M68kInstruction d68000_clr_16()
         {
-            g_dasm_str = string.Format("clr.w   {0}", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.clr,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_clr_32()
+        private M68kInstruction d68000_clr_32()
         {
-            g_dasm_str = string.Format("clr.l   {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.clr,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_cmp_8()
+        private M68kInstruction d68000_cmp_8()
         {
-            g_dasm_str = string.Format("cmp.b   {0},D{1}", get_ea_mode_str_8(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.cmp,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_cmp_16()
+        private M68kInstruction d68000_cmp_16()
         {
-            g_dasm_str = string.Format("cmp.w   {0},D{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.cmp,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_cmp_32()
+        private M68kInstruction d68000_cmp_32()
         {
-            g_dasm_str = string.Format("cmp.l   {0},D{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.cmp,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_cmpa_16()
+        private M68kInstruction d68000_cmpa_16()
         {
-            g_dasm_str = string.Format("cmpa.w  {0},A{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.cmpa,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_addr_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_cmpa_32()
+        private M68kInstruction d68000_cmpa_32()
         {
-            g_dasm_str = string.Format("cmpa.l  {0},A{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.cmpa,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_addr_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_cmpi_8()
+        private M68kInstruction d68000_cmpi_8()
         {
-            string str = get_imm_str_s8();
-            g_dasm_str = string.Format("cmpi.b  {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_s8();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68020_cmpi_pcdi_8()
+        private M68kInstruction d68020_cmpi_pcdi_8()
         {
-            string str;
             LIMIT_CPU_TYPES(M68010_PLUS);
-            str = get_imm_str_s8();
-            g_dasm_str = string.Format("cmpi.b  {0},{1}; (2+)", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_s8();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68020_cmpi_pcix_8()
+        private M68kInstruction d68020_cmpi_pcix_8()
         {
-            string str;
             LIMIT_CPU_TYPES(M68010_PLUS);
-            str = get_imm_str_s8();
-            g_dasm_str = string.Format("cmpi.b  {0},{1}; (2+)", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_s8();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                dataWidth = PrimitiveType.Byte,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_cmpi_16()
+        private M68kInstruction d68000_cmpi_16()
         {
-            string str;
-            str = get_imm_str_s16();
-            g_dasm_str = string.Format("cmpi.w  {0},{1}", str, get_ea_mode_str_16(g_cpu_ir));
+            var str = get_imm_str_s16();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68020_cmpi_pcdi_16()
+        private M68kInstruction d68020_cmpi_pcdi_16()
         {
-            string str;
             LIMIT_CPU_TYPES(M68010_PLUS);
-            str = get_imm_str_s16();
-            g_dasm_str = string.Format("cmpi.w  {0},{1}; (2+)", str, get_ea_mode_str_16(g_cpu_ir));
+            var str = get_imm_str_s16();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68020_cmpi_pcix_16()
+        private M68kInstruction d68020_cmpi_pcix_16()
         {
-            string str;
             LIMIT_CPU_TYPES(M68010_PLUS);
-            str = get_imm_str_s16();
-            g_dasm_str = string.Format("cmpi.w  {0},{1}; (2+)", str, get_ea_mode_str_16(g_cpu_ir));
+            var str = get_imm_str_s16();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_cmpi_32()
+        private M68kInstruction d68000_cmpi_32()
         {
-            string str;
-            str = get_imm_str_s32();
-            g_dasm_str = string.Format("cmpi.l  {0},{1}", str, get_ea_mode_str_32(g_cpu_ir));
+            var str = get_imm_str_s32();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                dataWidth = PrimitiveType.Word32,
+                op1 = str,
+                op2 = get_ea_mode_str_32(g_cpu_ir) 
+            };
         }
 
-        private void d68020_cmpi_pcdi_32()
+        private M68kInstruction d68020_cmpi_pcdi_32()
         {
-            string str;
             LIMIT_CPU_TYPES(M68010_PLUS);
-            str = get_imm_str_s32();
-            g_dasm_str = string.Format("cmpi.l  {0},{1}; (2+)", str, get_ea_mode_str_32(g_cpu_ir));
+            var str = get_imm_str_s32();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                dataWidth = PrimitiveType.Word32,
+                op1 = str,
+                op2 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68020_cmpi_pcix_32()
+        private M68kInstruction d68020_cmpi_pcix_32()
         {
-            string str;
             LIMIT_CPU_TYPES(M68010_PLUS);
-            str = get_imm_str_s32();
-            g_dasm_str = string.Format("cmpi.l  {0},{1}; (2+)", str, get_ea_mode_str_32(g_cpu_ir));
+            var str = get_imm_str_s32();
+            return new M68kInstruction
+            {
+                code = Opcode.cmpi,
+                dataWidth = PrimitiveType.Word32,
+                op1 = str,
+                op2 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_cmpm_8()
+        private M68kInstruction d68000_cmpm_8()
         {
-            g_dasm_str = string.Format("cmpm.b  (A{0})+, (A%d)+", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.cmpm,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_post_inc(g_cpu_ir & 7),
+                op2 = get_post_inc((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_cmpm_16()
+        private M68kInstruction d68000_cmpm_16()
         {
-            g_dasm_str = string.Format("cmpm.w  (A{0})+, (A%d)+", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.cmpm,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_post_inc(g_cpu_ir & 7),
+                op2 = get_post_inc((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_cmpm_32()
+        private M68kInstruction d68000_cmpm_32()
         {
-            g_dasm_str = string.Format("cmpm.l  (A{0})+, (A%d)+", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.cmpm,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_post_inc(g_cpu_ir & 7),
+                op2 = get_post_inc((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68020_cpbcc_16()
+        private M68kInstruction d68020_cpbcc_16()
         {
             uint extension;
             uint new_pc = g_cpu_pc.Address.Linear;
@@ -1707,9 +2318,10 @@ namespace Decompiler.Arch.M68k
             extension = read_imm_16();
             new_pc = ((uint)(new_pc + make_int_16(read_imm_16())));
             g_dasm_str = string.Format("%db%-4s  %s; %x (extension = %x) (2-3)", (g_cpu_ir >> 9) & 7, g_cpcc[g_cpu_ir & 0x3f], get_imm_str_s16(), new_pc, extension);
+            throw new NotImplementedException();
         }
 
-        private void d68020_cpbcc_32()
+        private M68kInstruction d68020_cpbcc_32()
         {
             uint extension;
             uint new_pc = g_cpu_pc.Address.Linear;
@@ -1717,9 +2329,10 @@ namespace Decompiler.Arch.M68k
             extension = read_imm_16();
             new_pc += read_imm_32();
             g_dasm_str = string.Format("%db%-4s  %s; %x (extension = %x) (2-3)", (g_cpu_ir >> 9) & 7, g_cpcc[g_cpu_ir & 0x3f], get_imm_str_s16(), new_pc, extension);
+            throw new NotImplementedException();
         }
 
-        private void d68020_cpdbcc()
+        private M68kInstruction d68020_cpdbcc()
         {
             uint extension1;
             uint extension2;
@@ -1729,15 +2342,17 @@ namespace Decompiler.Arch.M68k
             extension2 = read_imm_16();
             new_pc += ((uint)make_int_16(read_imm_16()));
             g_dasm_str = string.Format("%ddb%-4s D%d,%s; %x (extension = %x) (2-3)", (g_cpu_ir >> 9) & 7, g_cpcc[extension1 & 0x3f], g_cpu_ir & 7, get_imm_str_s16(), new_pc, extension2);
+            throw new NotImplementedException();
         }
 
-        private void d68020_cpgen()
+        private M68kInstruction d68020_cpgen()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             g_dasm_str = string.Format("%dgen    %s; (2-3)", (g_cpu_ir >> 9) & 7, get_imm_str_u32());
+            throw new NotImplementedException();
         }
 
-        private void d68020_cprestore()
+        private M68kInstruction d68020_cprestore()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             if (((g_cpu_ir >> 9) & 7) == 1)
@@ -1748,9 +2363,10 @@ namespace Decompiler.Arch.M68k
             {
                 g_dasm_str = string.Format("%drestore %s; (2-3)", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
             }
+            throw new NotImplementedException();
         }
 
-        private void d68020_cpsave()
+        private M68kInstruction d68020_cpsave()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
             if (((g_cpu_ir >> 9) & 7) == 1)
@@ -1761,9 +2377,10 @@ namespace Decompiler.Arch.M68k
             {
                 g_dasm_str = string.Format("%dsave   %s; (2-3)", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
             }
+            throw new NotImplementedException();
         }
 
-        private void d68020_cpscc()
+        private M68kInstruction d68020_cpscc()
         {
             uint extension1;
             uint extension2;
@@ -1771,9 +2388,10 @@ namespace Decompiler.Arch.M68k
             extension1 = read_imm_16();
             extension2 = read_imm_16();
             g_dasm_str = string.Format("%ds%-4s  %s; (extension = %x) (2-3)", (g_cpu_ir >> 9) & 7, g_cpcc[extension1 & 0x3f], get_ea_mode_str_8(g_cpu_ir), extension2);
+            throw new NotImplementedException();
         }
 
-        private void d68020_cptrapcc_0()
+        private M68kInstruction d68020_cptrapcc_0()
         {
             uint extension1;
             uint extension2;
@@ -1781,9 +2399,10 @@ namespace Decompiler.Arch.M68k
             extension1 = read_imm_16();
             extension2 = read_imm_16();
             g_dasm_str = string.Format("%dtrap%-4s; (extension = %x) (2-3)", (g_cpu_ir >> 9) & 7, g_cpcc[extension1 & 0x3f], extension2);
+            throw new NotImplementedException();
         }
 
-        private void d68020_cptrapcc_16()
+        private M68kInstruction d68020_cptrapcc_16()
         {
             uint extension1;
             uint extension2;
@@ -1791,9 +2410,10 @@ namespace Decompiler.Arch.M68k
             extension1 = read_imm_16();
             extension2 = read_imm_16();
             g_dasm_str = string.Format("%dtrap%-4s %s; (extension = %x) (2-3)", (g_cpu_ir >> 9) & 7, g_cpcc[extension1 & 0x3f], get_imm_str_u16(), extension2);
+            throw new NotImplementedException();
         }
 
-        private void d68020_cptrapcc_32()
+        private M68kInstruction d68020_cptrapcc_32()
         {
             uint extension1;
             uint extension2;
@@ -1801,9 +2421,10 @@ namespace Decompiler.Arch.M68k
             extension1 = read_imm_16();
             extension2 = read_imm_16();
             g_dasm_str = string.Format("%dtrap%-4s %s; (extension = %x) (2-3)", (g_cpu_ir >> 9) & 7, g_cpcc[extension1 & 0x3f], get_imm_str_u32(), extension2);
+            throw new NotImplementedException();
         }
 
-        private void d68040_cpush()
+        private M68kInstruction d68040_cpush()
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
             switch ((g_cpu_ir >> 3) & 3)
@@ -1821,129 +2442,255 @@ namespace Decompiler.Arch.M68k
                 g_dasm_str = string.Format("cpusha  {0}; (4)", (g_cpu_ir >> 6) & 3);
                 break;
             }
+            throw new NotImplementedException();
         }
 
-        private void d68000_dbra()
+        private M68kInstruction d68000_dbra()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
-            g_dasm_str = string.Format("dbra    D{0}, $%x", g_cpu_ir & 7, temp_pc + make_int_16(read_imm_16()));
+            Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = Opcode.dbra,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = new AddressOperand(temp_pc + make_int_16(read_imm_16()))
+            };
         }
 
-        private void d68000_dbcc()
+        private M68kInstruction d68000_dbcc()
         {
-            uint temp_pc = g_cpu_pc.Address.Linear;
-            g_dasm_str = string.Format("db%-2s    D%d, $%x", g_cc[(g_cpu_ir >> 8) & 0xf], g_cpu_ir & 7, temp_pc + make_int_16(read_imm_16()));
+            Address temp_pc = g_cpu_pc.Address;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = g_dbcc[(g_cpu_ir >> 8) & 0xf],
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = new AddressOperand(temp_pc + make_int_16(read_imm_16()))
+            };
         }
 
-        private void d68000_divs()
+        private M68kInstruction d68000_divs()
         {
-            g_dasm_str = string.Format("divs.w  {0},D{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.divs,
+                dataWidth = PrimitiveType.UInt16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_divu()
+        private M68kInstruction d68000_divu()
         {
-            g_dasm_str = string.Format("divu.w  {0},D{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.divu,
+                dataWidth = PrimitiveType.UInt16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68020_divl()
+        private M68kInstruction d68020_divl()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
             extension = read_imm_16();
 
+            var ea = get_ea_mode_str_32(g_cpu_ir); 
+            var code = BIT_B(extension) ? Opcode.divs : Opcode.divu;
             if (BIT_A(extension))
-                g_dasm_str = string.Format("div{0}.l  %s, D%d:D%d; (2+)", BIT_B(extension) ? 's' : 'u', get_ea_mode_str_32(g_cpu_ir), extension & 7, (extension >> 12) & 7);
+                return new M68kInstruction
+                {
+                    code = code,
+                    dataWidth = PrimitiveType.Word32,
+                    op1 = ea,
+                    op2 = get_double_data_reg(extension, (extension >> 12) & 7),
+                };
             else if ((extension & 7) == ((extension >> 12) & 7))
-                g_dasm_str = string.Format("div{0}.l  %s, D%d; (2+)", BIT_B(extension) ? 's' : 'u', get_ea_mode_str_32(g_cpu_ir), (extension >> 12) & 7);
+                return new M68kInstruction
+                {
+                    code = code,
+                    dataWidth = PrimitiveType.Word32,
+                    op1 = ea,
+                    op2 = get_data_reg((int)(extension >> 12) & 7)
+                };
             else
-                g_dasm_str = string.Format("div%cl.l %s, D%d:D%d; (2+)", BIT_B(extension) ? 's' : 'u', get_ea_mode_str_32(g_cpu_ir), extension & 7, (extension >> 12) & 7);
+                return new M68kInstruction
+                {
+                    code = code,
+                    dataWidth = PrimitiveType.Word32,
+                    op1 = ea,
+                    op2 = get_double_data_reg(extension, (extension >> 12) & 7),
+                };
         }
 
-        private void d68000_eor_8()
+        private M68kInstruction d68000_eor_8()
         {
-            g_dasm_str = string.Format("eor.b   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.eor,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_eor_16()
+        private M68kInstruction d68000_eor_16()
         {
-            g_dasm_str = string.Format("eor.w   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.eor,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_eor_32()
+        private M68kInstruction d68000_eor_32()
         {
-            g_dasm_str = string.Format("eor.l   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.eor,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_eori_8()
+        private M68kInstruction d68000_eori_8()
         {
-            string str = get_imm_str_u8();
-            g_dasm_str = string.Format("eori.b  {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_u8();
+            return new M68kInstruction
+            {
+                code = Opcode.eori,
+                dataWidth = PrimitiveType.Byte,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_eori_16()
+        private M68kInstruction d68000_eori_16()
         {
-            string str = get_imm_str_u16();
-            g_dasm_str = string.Format("eori.w  {0},{1}", str, get_ea_mode_str_16(g_cpu_ir));
+            var str = get_imm_str_u16();
+            return new M68kInstruction
+            {
+                code = Opcode.eori,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_eori_32()
+        private M68kInstruction d68000_eori_32()
         {
-            string str = get_imm_str_u32();
-            g_dasm_str = string.Format("eori.l  {0},{1}", str, get_ea_mode_str_32(g_cpu_ir));
+            var str = get_imm_str_u32();
+            return new M68kInstruction
+            {
+                code = Opcode.eori,
+                dataWidth = PrimitiveType.Word32,
+                op1 = str,
+                op2 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_eori_to_ccr()
+        private M68kInstruction d68000_eori_to_ccr()
         {
-            g_dasm_str = string.Format("eori    {0}, CCR", get_imm_str_u8());
+            return new M68kInstruction
+            {
+                code = Opcode.eori,
+                op1 = get_imm_str_u8(),
+                op2 = new RegisterOperand(Registers.ccr),
+            };
         }
 
-        private void d68000_eori_to_sr()
+        private M68kInstruction d68000_eori_to_sr()
         {
-            g_dasm_str = string.Format("eori    {0}, SR", get_imm_str_u16());
+            return new M68kInstruction
+            {
+                code = Opcode.eori,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_imm_str_u16(),
+                op2 = new RegisterOperand(Registers.sr),
+            };
         }
 
-        private void d68000_exg_dd()
+        private M68kInstruction d68000_exg_dd()
         {
-            g_dasm_str = string.Format("exg     D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.exg,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_exg_aa()
+        private M68kInstruction d68000_exg_aa()
         {
-            g_dasm_str = string.Format("exg     A{0},A{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.exg,
+                op1 = get_addr_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_addr_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_exg_da()
+        private M68kInstruction d68000_exg_da()
         {
-            g_dasm_str = string.Format("exg     D{0},A{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.exg,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_addr_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_ext_16()
+        private M68kInstruction d68000_ext_16()
         {
-            g_dasm_str = string.Format("ext.w   D{0}", g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.ext,
+                dataWidth = PrimitiveType.Word16,
+                op1 = new RegisterOperand(Registers.DataRegister(g_cpu_ir & 7)),
+            };
         }
 
-        private void d68000_ext_32()
+        private M68kInstruction d68000_ext_32()
         {
-            g_dasm_str = string.Format("ext.l   D{0}", g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.ext,
+                dataWidth = PrimitiveType.Word32,
+                op1 = new RegisterOperand(Registers.DataRegister(g_cpu_ir & 7)),
+            };
         }
 
-        private void d68020_extb_32()
+        private M68kInstruction d68020_extb_32()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("extb.l  D{0}; (2+)", g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.extb,
+                dataWidth = PrimitiveType.Word32,
+                op1 = new RegisterOperand(Registers.DataRegister(g_cpu_ir & 7)),
+            };
         }
 
-        static string[] float_data_format = new string[8] 
-	{
-		".l", ".s", ".x", ".p", ".w", ".d", ".b", ".p"
-	};
+        static PrimitiveType[] float_data_format = new PrimitiveType[8] 
+	    {
+            PrimitiveType.Int32,  // ".l",
+            PrimitiveType.Real32, //".s",
+            PrimitiveType.Real80, // ".x",
+            null,                 //".p", 
+            PrimitiveType.Int16,  // ".w",
+            PrimitiveType.Real64, // ".d", 
+            PrimitiveType.Byte,   // ".b",
+            null,                   //".p"
+	    };
 
-        private void d68040_fpu()
+        private M68kInstruction d68040_fpu()
         {
-
-            string mnemonic;
+            Opcode mnemonic;
             uint w2, src, dst_reg;
             LIMIT_CPU_TYPES(M68030_PLUS);
             w2 = read_imm_16();
@@ -1954,8 +2701,12 @@ namespace Decompiler.Arch.M68k
             // special override for FMOVECR
             if ((((w2 >> 13) & 0x7) == 2) && (((w2 >> 10) & 0x7) == 7))
             {
-                g_dasm_str = string.Format("fmovecr   #$%0x, fp%d", (w2 & 0x7f), dst_reg);
-                return;
+                return new M68kInstruction
+                {
+                    code = Opcode.fmovecr,
+                    op1 = new M68kImmediateOperand(Constant.Byte((byte)(w2 & 0x7f))),
+                    op2 = get_fp_reg((int)dst_reg),
+                };
             }
 
             switch ((w2 >> 13) & 0x7)
@@ -1965,41 +2716,41 @@ namespace Decompiler.Arch.M68k
                 {
                     switch (w2 & 0x7f)
                     {
-                    case 0x00: mnemonic = "fmove"; break;
-                    case 0x01: mnemonic = "fint"; break;
-                    case 0x02: mnemonic = "fsinh"; break;
-                    case 0x03: mnemonic = "fintrz"; break;
-                    case 0x04: mnemonic = "fsqrt"; break;
-                    case 0x06: mnemonic = "flognp1"; break;
-                    case 0x08: mnemonic = "fetoxm1"; break;
-                    case 0x09: mnemonic = "ftanh1"; break;
-                    case 0x0a: mnemonic = "fatan"; break;
-                    case 0x0c: mnemonic = "fasin"; break;
-                    case 0x0d: mnemonic = "fatanh"; break;
-                    case 0x0e: mnemonic = "fsin"; break;
-                    case 0x0f: mnemonic = "ftan"; break;
-                    case 0x10: mnemonic = "fetox"; break;
-                    case 0x11: mnemonic = "ftwotox"; break;
-                    case 0x12: mnemonic = "ftentox"; break;
-                    case 0x14: mnemonic = "flogn"; break;
-                    case 0x15: mnemonic = "flog10"; break;
-                    case 0x16: mnemonic = "flog2"; break;
-                    case 0x18: mnemonic = "fabs"; break;
-                    case 0x19: mnemonic = "fcosh"; break;
-                    case 0x1a: mnemonic = "fneg"; break;
-                    case 0x1c: mnemonic = "facos"; break;
-                    case 0x1d: mnemonic = "fcos"; break;
-                    case 0x1e: mnemonic = "fgetexp"; break;
-                    case 0x1f: mnemonic = "fgetman"; break;
-                    case 0x20: mnemonic = "fdiv"; break;
-                    case 0x21: mnemonic = "fmod"; break;
-                    case 0x22: mnemonic = "fadd"; break;
-                    case 0x23: mnemonic = "fmul"; break;
-                    case 0x24: mnemonic = "fsgldiv"; break;
-                    case 0x25: mnemonic = "frem"; break;
-                    case 0x26: mnemonic = "fscale"; break;
-                    case 0x27: mnemonic = "fsglmul"; break;
-                    case 0x28: mnemonic = "fsub"; break;
+                    case 0x00: mnemonic = Opcode.fmove; break;
+                    case 0x01: mnemonic = Opcode.fint; break;
+                    case 0x02: mnemonic = Opcode.fsinh; break;
+                    case 0x03: mnemonic = Opcode.fintrz; break;
+                    case 0x04: mnemonic = Opcode.fsqrt; break;
+                    case 0x06: mnemonic = Opcode.flognp1; break;
+                    case 0x08: mnemonic = Opcode.fetoxm1; break;
+                    case 0x09: mnemonic = Opcode.ftanh1; break;
+                    case 0x0a: mnemonic = Opcode.fatan; break;
+                    case 0x0c: mnemonic = Opcode.fasin; break;
+                    case 0x0d: mnemonic = Opcode.fatanh; break;
+                    case 0x0e: mnemonic = Opcode.fsin; break;
+                    case 0x0f: mnemonic = Opcode.ftan; break;
+                    case 0x10: mnemonic = Opcode.fetox; break;
+                    case 0x11: mnemonic = Opcode.ftwotox; break;
+                    case 0x12: mnemonic = Opcode.ftentox; break;
+                    case 0x14: mnemonic = Opcode.flogn; break;
+                    case 0x15: mnemonic = Opcode.flog10; break;
+                    case 0x16: mnemonic = Opcode.flog2; break;
+                    case 0x18: mnemonic = Opcode.fabs; break;
+                    case 0x19: mnemonic = Opcode.fcosh; break;
+                    case 0x1a: mnemonic = Opcode.fneg; break;
+                    case 0x1c: mnemonic = Opcode.facos; break;
+                    case 0x1d: mnemonic = Opcode.fcos; break;
+                    case 0x1e: mnemonic = Opcode.fgetexp; break;
+                    case 0x1f: mnemonic = Opcode.fgetman; break;
+                    case 0x20: mnemonic = Opcode.fdiv; break;
+                    case 0x21: mnemonic = Opcode.fmod; break;
+                    case 0x22: mnemonic = Opcode.fadd; break;
+                    case 0x23: mnemonic = Opcode.fmul; break;
+                    case 0x24: mnemonic = Opcode.fsgldiv; break;
+                    case 0x25: mnemonic = Opcode.frem; break;
+                    case 0x26: mnemonic = Opcode.fscale; break;
+                    case 0x27: mnemonic = Opcode.fsglmul; break;
+                    case 0x28: mnemonic = Opcode.fsub; break;
                     case 0x30:
                     case 0x31:
                     case 0x32:
@@ -2008,36 +2759,47 @@ namespace Decompiler.Arch.M68k
                     case 0x35:
                     case 0x36:
                     case 0x37:
-                        mnemonic = "fsincos"; break;
-                    case 0x38: mnemonic = "fcmp"; break;
-                    case 0x3a: mnemonic = "ftst"; break;
-                    case 0x41: mnemonic = "fssqrt"; break;
-                    case 0x45: mnemonic = "fdsqrt"; break;
-                    case 0x58: mnemonic = "fsabs"; break;
-                    case 0x5a: mnemonic = "fsneg"; break;
-                    case 0x5c: mnemonic = "fdabs"; break;
-                    case 0x5e: mnemonic = "fdneg"; break;
-                    case 0x60: mnemonic = "fsdiv"; break;
-                    case 0x62: mnemonic = "fsadd"; break;
-                    case 0x63: mnemonic = "fsmul"; break;
-                    case 0x64: mnemonic = "fddiv"; break;
-                    case 0x66: mnemonic = "fdadd"; break;
-                    case 0x67: mnemonic = "fdmul"; break;
-                    case 0x68: mnemonic = "fssub"; break;
-                    case 0x6c: mnemonic = "fdsub"; break;
+                        mnemonic = Opcode.fsincos; break;
+                    case 0x38: mnemonic = Opcode.fcmp; break;
+                    case 0x3a: mnemonic = Opcode.ftst; break;
+                    case 0x41: mnemonic = Opcode.fssqrt; break;
+                    case 0x45: mnemonic = Opcode.fdsqrt; break;
+                    case 0x58: mnemonic = Opcode.fsabs; break;
+                    case 0x5a: mnemonic = Opcode.fsneg; break;
+                    case 0x5c: mnemonic = Opcode.fdabs; break;
+                    case 0x5e: mnemonic = Opcode.fdneg; break;
+                    case 0x60: mnemonic = Opcode.fsdiv; break;
+                    case 0x62: mnemonic = Opcode.fsadd; break;
+                    case 0x63: mnemonic = Opcode.fsmul; break;
+                    case 0x64: mnemonic = Opcode.fddiv; break;
+                    case 0x66: mnemonic = Opcode.fdadd; break;
+                    case 0x67: mnemonic = Opcode.fdmul; break;
+                    case 0x68: mnemonic = Opcode.fssub; break;
+                    case 0x6c: mnemonic = Opcode.fdsub; break;
 
-                    default: mnemonic = "FPU (?)"; break;
+                    default: throw new NotImplementedException("FPU (?)");
                     }
 
                     if ((w2 & 0x4000) != 0)
                     {
-                        g_dasm_str = string.Format("{0}{1}   {2},FP{3}", mnemonic, float_data_format[src], get_ea_mode_str_32(g_cpu_ir), dst_reg);
+                        return new M68kInstruction
+                        {
+                            code = mnemonic,
+                            dataWidth = float_data_format[src],
+                            op1 = get_ea_mode_str_32(g_cpu_ir),
+                            op2 = get_fp_reg((int) dst_reg)
+                        };
                     }
                     else
                     {
-                        g_dasm_str = string.Format("{0}.x   FP{1}, FP{2}", mnemonic, src, dst_reg);
+                        return new M68kInstruction
+                        {
+                            code = mnemonic,
+                            dataWidth = PrimitiveType.Real80,
+                            op1 = get_fp_reg((int)src),
+                            op2 = get_fp_reg((int)dst_reg),
+                        };
                     }
-                    break;
                 }
 
             case 0x3:
@@ -2045,8 +2807,14 @@ namespace Decompiler.Arch.M68k
                     switch ((w2 >> 10) & 7)
                     {
                     case 3:		// packed decimal w/fixed k-factor
-                        g_dasm_str = string.Format("fmove{0}   FP%d, %s {#%d}", float_data_format[(w2 >> 10) & 7], dst_reg, get_ea_mode_str_32(g_cpu_ir), sext_7bit_int((int)w2 & 0x7f));
-                        break;
+                        return new M68kInstruction
+                        {
+                            code = Opcode.fmove,
+                            dataWidth = float_data_format[(w2 >> 10) & 7],
+                            op1 = get_fp_reg((int)dst_reg),
+                            op2 = get_ea_mode_str_32(g_cpu_ir),
+                            // sext_7bit_int((int)w2 & 0x7f));
+                        };
 
                     case 7:		// packed decimal w/dynamic k-factor (register)
                         g_dasm_str = string.Format("fmove{0}   FP%d, %s {D%d}", float_data_format[(w2 >> 10) & 7], dst_reg, get_ea_mode_str_32(g_cpu_ir), (w2 >> 4) & 7);
@@ -2155,251 +2923,436 @@ namespace Decompiler.Arch.M68k
                     break;
                 }
             }
+            throw new NotImplementedException();
         }
 
-        private void d68000_jmp()
+        private M68kInstruction d68000_jmp()
         {
-            g_dasm_str = string.Format("jmp     {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.jmp,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_jsr()
+        private M68kInstruction d68000_jsr()
         {
-            g_dasm_str = string.Format("jsr     {0}", get_ea_mode_str_32(g_cpu_ir));
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = Opcode.jsr,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            }; 
         }
 
-        private void d68000_lea()
+        private M68kInstruction d68000_lea()
         {
-            g_dasm_str = string.Format("lea     {0},A{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction 
+            {
+                code = Opcode.lea,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir), 
+                op2 = get_addr_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_link_16()
+        private M68kInstruction d68000_link_16()
         {
-            g_dasm_str = string.Format("link    A{0},{1}", g_cpu_ir & 7, get_imm_str_s16());
+            return new M68kInstruction
+            {
+                code = Opcode.link,
+                op1 = get_addr_reg(g_cpu_ir & 7),
+                op2 = get_imm_str_s16()
+            };
         }
 
-        private void d68020_link_32()
+        private M68kInstruction d68020_link_32()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("link    A{0},{1}; (2+)", g_cpu_ir & 7, get_imm_str_s32());
+            return new M68kInstruction
+            {
+                code = Opcode.link,
+                op1 = get_addr_reg(g_cpu_ir & 7),
+                op2 = get_imm_str_s32()
+            };
         }
 
-        private void d68000_lsr_s_8()
+        private M68kInstruction d68000_lsr_s_8()
         {
-            g_dasm_str = string.Format("lsr.b   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsr,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsr_s_16()
+        private M68kInstruction d68000_lsr_s_16()
         {
-            g_dasm_str = string.Format("lsr.w   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsr,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsr_s_32()
+        private M68kInstruction d68000_lsr_s_32()
         {
-            g_dasm_str = string.Format("lsr.l   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsr,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsr_r_8()
+        private M68kInstruction d68000_lsr_r_8()
         {
-            g_dasm_str = string.Format("lsr.b   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsr_r_16()
+        private M68kInstruction d68000_lsr_r_16()
         {
-            g_dasm_str = string.Format("lsr.w   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsr_r_32()
+        private M68kInstruction d68000_lsr_r_32()
         {
-            g_dasm_str = string.Format("lsr.l   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsr_ea()
+        private M68kInstruction d68000_lsr_ea()
         {
-            g_dasm_str = string.Format("lsr.w   {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.lsr,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_lsl_s_8()
+        private M68kInstruction d68000_lsl_s_8()
         {
-            g_dasm_str = string.Format("lsl.b   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsl_s_16()
+        private M68kInstruction d68000_lsl_s_16()
         {
-            g_dasm_str = string.Format("lsl.w   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsl_s_32()
+        private M68kInstruction d68000_lsl_s_32()
         {
-            g_dasm_str = string.Format("lsl.l   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsl_r_8()
+        private M68kInstruction d68000_lsl_r_8()
         {
-            g_dasm_str = string.Format("lsl.b   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsl_r_16()
+        private M68kInstruction d68000_lsl_r_16()
         {
-            g_dasm_str = string.Format("lsl.w   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsl_r_32()
+        private M68kInstruction d68000_lsl_r_32()
         {
-            g_dasm_str = string.Format("lsl.l   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7), 
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_lsl_ea()
+        private M68kInstruction d68000_lsl_ea()
         {
-            g_dasm_str = string.Format("lsl.w   {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.lsl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_move_8()
+        private M68kInstruction d68000_move_8()
         {
-            string str = get_ea_mode_str_8(g_cpu_ir);
-            g_dasm_str = string.Format("move.b  {0},{1}", str, get_ea_mode_str_8(((g_cpu_ir >> 9) & 7) | ((g_cpu_ir >> 3) & 0x38)));
+            var str = get_ea_mode_str_8(g_cpu_ir);
+            return new M68kInstruction
+            {
+                code = Opcode.move,
+                dataWidth = PrimitiveType.Byte,
+                op1 = str,
+                op2 = get_ea_mode_str_8(((g_cpu_ir >> 9) & 7) | ((g_cpu_ir >> 3) & 0x38))
+            };
         }
 
-        private void d68000_move_16()
+        private M68kInstruction d68000_move_16()
         {
-            string str = get_ea_mode_str_16(g_cpu_ir);
-            g_dasm_str = string.Format("move.w  {0},{1}", str, get_ea_mode_str_16(((g_cpu_ir >> 9) & 7) | ((g_cpu_ir >> 3) & 0x38)));
+            var str = get_ea_mode_str_16(g_cpu_ir);
+            return new M68kInstruction
+            {
+                code = Opcode.move,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(((g_cpu_ir >> 9) & 7) | ((g_cpu_ir >> 3) & 0x38))
+            };
         }
 
-        private void d68000_move_32()
+        private M68kInstruction d68000_move_32()
         {
-            string str = get_ea_mode_str_32(g_cpu_ir);
-            g_dasm_str = string.Format("move.l  {0},{1}", str, get_ea_mode_str_32(((g_cpu_ir >> 9) & 7) | ((g_cpu_ir >> 3) & 0x38)));
+            var str = get_ea_mode_str_32(g_cpu_ir);
+            return new M68kInstruction
+            {
+                code = Opcode.move,
+                dataWidth = PrimitiveType.Word32,
+                op1 = str,
+                op2 = get_ea_mode_str_32(((g_cpu_ir >> 9) & 7) | ((g_cpu_ir >> 3) & 0x38))
+            };
         }
 
-        private void d68000_movea_16()
+        private M68kInstruction d68000_movea_16()
         {
-            g_dasm_str = string.Format("movea.w {0},A{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.movea,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_addr_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_movea_32()
+        private M68kInstruction d68000_movea_32()
         {
-            g_dasm_str = string.Format("movea.l {0},A{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.movea,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_addr_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_move_to_ccr()
+        private M68kInstruction d68000_move_to_ccr()
         {
-            g_dasm_str = string.Format("move    {0}, CCR", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction 
+            {
+                code = Opcode.move,
+                op1 = get_ea_mode_str_8(g_cpu_ir),
+                op2 = new RegisterOperand(Registers.ccr),
+            };
         }
 
-        private void d68010_move_fr_ccr()
+        private M68kInstruction d68010_move_fr_ccr()
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
-            g_dasm_str = string.Format("move    CCR, {0}; (1+)", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.move,
+                op1 = new RegisterOperand(Registers.ccr),
+                op2 = get_ea_mode_str_8(g_cpu_ir),
+            };
         }
 
-        private void d68000_move_fr_sr()
+        private M68kInstruction d68000_move_fr_sr()
         {
-            g_dasm_str = string.Format("move    SR, {0}", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.move,
+                op1 = new RegisterOperand(Registers.sr),
+                op2 = get_ea_mode_str_16(g_cpu_ir),
+            };
         }
 
-        private void d68000_move_to_sr()
+        private M68kInstruction d68000_move_to_sr()
         {
-            g_dasm_str = string.Format("move    {0}, SR", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.move,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = new RegisterOperand(Registers.sr)
+            };
         }
 
-        private void d68000_move_fr_usp()
+        private M68kInstruction d68000_move_fr_usp()
         {
-            g_dasm_str = string.Format("move    USP, A{0}", g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.move,
+                op1 = new RegisterOperand(Registers.usp),
+                op2 = get_addr_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_move_to_usp()
+        private M68kInstruction d68000_move_to_usp()
         {
-            g_dasm_str = string.Format("move    A{0}, USP", g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.move,
+                op1 = get_addr_reg(g_cpu_ir & 7),
+                op2 = new RegisterOperand(Registers.usp),
+            };
         }
 
-        private void d68010_movec()
+        private M68kInstruction d68010_movec()
         {
             uint extension;
-            string reg_name;
+            MachineOperand reg_name;
             string processor;
             LIMIT_CPU_TYPES(M68010_PLUS);
             extension = read_imm_16();
 
-            switch (extension & 0xfff)
+            int regNumber = (int)extension & 0xfff;
+            switch (regNumber)
             {
             case 0x000:
-                reg_name = "SFC";
+                reg_name = get_ctrl_reg("SFC", regNumber);
                 processor = "1+";
                 break;
             case 0x001:
-                reg_name = "DFC";
+                reg_name = get_ctrl_reg("DFC", regNumber);
                 processor = "1+";
                 break;
             case 0x800:
-                reg_name = "USP";
+                reg_name = get_ctrl_reg("USP", regNumber);
                 processor = "1+";
                 break;
             case 0x801:
-                reg_name = "VBR";
+                reg_name = get_ctrl_reg("VBR", regNumber);
                 processor = "1+";
                 break;
             case 0x002:
-                reg_name = "CACR";
+                reg_name = get_ctrl_reg("CACR", regNumber);
                 processor = "2+";
                 break;
             case 0x802:
-                reg_name = "CAAR";
+                reg_name = get_ctrl_reg("CAAR", regNumber);
                 processor = "2,3";
                 break;
             case 0x803:
-                reg_name = "MSP";
+                reg_name = get_ctrl_reg("MSP", regNumber);
                 processor = "2+";
                 break;
             case 0x804:
-                reg_name = "ISP";
+                reg_name = get_ctrl_reg("ISP", regNumber);
                 processor = "2+";
                 break;
             case 0x003:
-                reg_name = "TC";
+                reg_name = get_ctrl_reg("TC", regNumber);
                 processor = "4+";
                 break;
             case 0x004:
-                reg_name = "ITT0";
+                reg_name = get_ctrl_reg("ITT0", regNumber);
                 processor = "4+";
                 break;
             case 0x005:
-                reg_name = "ITT1";
+                reg_name = get_ctrl_reg("ITT1", regNumber);
                 processor = "4+";
                 break;
             case 0x006:
-                reg_name = "DTT0";
+                reg_name = get_ctrl_reg("DTT0", regNumber);
                 processor = "4+";
                 break;
             case 0x007:
-                reg_name = "DTT1";
+                reg_name = get_ctrl_reg("DTT1", regNumber);
                 processor = "4+";
                 break;
             case 0x805:
-                reg_name = "MMUSR";
+                reg_name = get_ctrl_reg("MMUSR", regNumber);
                 processor = "4+";
                 break;
             case 0x806:
-                reg_name = "URP";
+                reg_name = get_ctrl_reg("URP", regNumber);
                 processor = "4+";
                 break;
             case 0x807:
-                reg_name = "SRP";
+                reg_name = get_ctrl_reg("SRP", regNumber);
                 processor = "4+";
                 break;
             default:
-                reg_name = make_signed_hex_str_16(extension & 0xfff);
+                reg_name = new M68kImmediateOperand(make_signed_hex_str_16(extension & 0xfff));
                 processor = "?";
                 break;
             }
 
+            var other_reg = BIT_F(extension)
+                        ? get_addr_reg((int)(extension >> 12) & 7)
+                        : get_data_reg((int)(extension >> 12) & 7);
             if (BIT_0(g_cpu_ir))
-                g_dasm_str = string.Format("movec {0}%d, %s; (%s)", BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7, reg_name, processor);
+            {
+                return new M68kInstruction
+                {
+                    code = Opcode.movec,
+                    op1 = other_reg,
+                    op2 = reg_name
+                };
+            }
             else
-                g_dasm_str = string.Format("movec {0}, %c%d; (%s)", reg_name, BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7, processor);
+            {
+                return new M68kInstruction
+                {
+                    code = Opcode.movec,
+                    op1 = reg_name,
+                    op2 = other_reg
+                };
+            }
         }
 
-        private void d68000_movem_pd_16()
+        private M68kInstruction d68000_movem_pd_16()
         {
             uint data = read_imm_16();
             StringBuilder buffer = new StringBuilder();
@@ -2443,9 +3396,10 @@ namespace Decompiler.Arch.M68k
                 }
             }
             g_dasm_str = string.Format("movem.w {0},{1}", buffer, get_ea_mode_str_16(g_cpu_ir));
+            throw new NotImplementedException();
         }
 
-        private void d68000_movem_pd_32()
+        private M68kInstruction d68000_movem_pd_32()
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
@@ -2489,9 +3443,10 @@ namespace Decompiler.Arch.M68k
                 }
             }
             g_dasm_str = string.Format("movem.l {0},{1}", buffer, get_ea_mode_str_32(g_cpu_ir));
+            throw new NotImplementedException();
         }
 
-        private void d68000_movem_er_16()
+        private M68kInstruction d68000_movem_er_16()
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
@@ -2535,9 +3490,10 @@ namespace Decompiler.Arch.M68k
                 }
             }
             g_dasm_str = string.Format("movem.w {0}, {1}", get_ea_mode_str_16(g_cpu_ir), buffer);
+            throw new NotImplementedException();
         }
 
-        private void d68000_movem_er_32()
+        private M68kInstruction d68000_movem_er_32()
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
@@ -2581,15 +3537,17 @@ namespace Decompiler.Arch.M68k
                 }
             }
             g_dasm_str = string.Format("movem.l {0},{1}", get_ea_mode_str_32(g_cpu_ir), buffer);
+            throw new NotImplementedException();
         }
 
-        private void d68000_movem_re_16()
+        private M68kInstruction d68000_movem_re_16()
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
             WriteRegisterSet(data, 0, 1, "D", buffer);
             WriteRegisterSet(data, 8, 1, "A", buffer);
             g_dasm_str = string.Format("movem.w {0},{1}", buffer, get_ea_mode_str_16(g_cpu_ir));
+            throw new NotImplementedException();
         }
 
         public static bool bit(uint word, int pos)
@@ -2622,257 +3580,510 @@ namespace Decompiler.Arch.M68k
 
         }
 
-        private void d68000_movem_re_32()
+        private M68kInstruction d68000_movem_re_32()
         {
             uint data = read_imm_16();
             var buffer = new StringBuilder();
             WriteRegisterSet(data, 0, 1, "D", buffer);
             WriteRegisterSet(data, 8, 1, "A", buffer);
             g_dasm_str = string.Format("movem.l {0},{1}", buffer, get_ea_mode_str_32(g_cpu_ir));
+            throw new NotImplementedException();
         }
 
-        private void d68000_movep_re_16()
+        private M68kInstruction d68000_movep_re_16()
         {
-            g_dasm_str = string.Format("movep.w D{0}, ($%x,A%d)", (g_cpu_ir >> 9) & 7, read_imm_16(), g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.movep,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = new MemoryOperand(
+                        Registers.AddressRegister(g_cpu_ir & 7),
+                        Constant.Int16((short)read_imm_16()))
+            };
         }
 
-        private void d68000_movep_re_32()
+        private M68kInstruction d68000_movep_re_32()
         {
-            g_dasm_str = string.Format("movep.l D{0}, ($%x,A%d)", (g_cpu_ir >> 9) & 7, read_imm_16(), g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.movep,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = new MemoryOperand(
+                        Registers.AddressRegister(g_cpu_ir & 7),
+                        Constant.Int16((short)read_imm_16()))
+            };
         }
 
-        private void d68000_movep_er_16()
+        private M68kInstruction d68000_movep_er_16()
         {
-            g_dasm_str = string.Format("movep.w (${0},A%d),D{1}", read_imm_16(), g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.movep,
+                dataWidth = PrimitiveType.Word16,
+                op1 = new MemoryOperand(
+                        Registers.AddressRegister(g_cpu_ir & 7),
+                        Constant.Int16((short)read_imm_16())),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_movep_er_32()
+        private M68kInstruction d68000_movep_er_32()
         {
-            g_dasm_str = string.Format("movep.l (${0},A%d),D{1}", read_imm_16(), g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.movep,
+                dataWidth = PrimitiveType.Word32,
+                op1 = new MemoryOperand(
+                        Registers.AddressRegister(g_cpu_ir & 7),
+                        Constant.Int16((short)read_imm_16())),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68010_moves_8()
+        private M68kInstruction d68010_moves_8()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68010_PLUS);
             extension = read_imm_16();
+            var reg = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7);
+            var ea = get_ea_mode_str_8(g_cpu_ir);
             if (BIT_B(extension))
-                g_dasm_str = string.Format("moves.b {0}{1},{2}; (1+)", BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7, get_ea_mode_str_8(g_cpu_ir));
+                return new M68kInstruction
+                {
+                    code = Opcode.moves,
+                    dataWidth = PrimitiveType.Word16,
+                    op1 = reg,
+                    op2 = ea
+                };
             else
-                g_dasm_str = string.Format("moves.b {0},{1}{2}; (1+)", get_ea_mode_str_8(g_cpu_ir), BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
+                return new M68kInstruction
+                {
+                    code = Opcode.moves,
+                    dataWidth = PrimitiveType.Word16,
+                    op1 = ea,
+                    op2 = reg,
+                };
         }
 
-        private void d68010_moves_16()
+        private M68kInstruction d68010_moves_16()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68010_PLUS);
             extension = read_imm_16();
+            var reg = get_addr_or_data_reg(BIT_F(extension), (int) (extension >> 12) & 7);
+            var ea = get_ea_mode_str_16(g_cpu_ir);
             if (BIT_B(extension))
-                g_dasm_str = string.Format("moves.w {0}{1},{2}; (1+)", BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7, get_ea_mode_str_16(g_cpu_ir));
-            else
-                g_dasm_str = string.Format("moves.w {0},{1}{2}; (1+)", get_ea_mode_str_16(g_cpu_ir), BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
+                return new M68kInstruction {
+                    code = Opcode.moves,
+                    dataWidth = PrimitiveType.Word16,
+                    op1 = reg,
+                    op2 = ea
+                };
+            else 
+                return new M68kInstruction {
+                    code = Opcode.moves,
+                    dataWidth = PrimitiveType.Word16,
+                    op1 = ea,
+                    op2 = reg,
+                };
         }
 
-        private void d68010_moves_32()
+        private M68kInstruction d68010_moves_32()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68010_PLUS);
             extension = read_imm_16();
+            var reg = get_addr_or_data_reg(BIT_F(extension), (int)(extension >> 12) & 7);
+            var ea = get_ea_mode_str_32(g_cpu_ir);
             if (BIT_B(extension))
-                g_dasm_str = string.Format("moves.l {0}%d, %s; (1+)", BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7, get_ea_mode_str_32(g_cpu_ir));
+                return new M68kInstruction
+                {
+                    code = Opcode.moves,
+                    dataWidth = PrimitiveType.Word16,
+                    op1 = reg,
+                    op2 = ea
+                };
             else
-                g_dasm_str = string.Format("moves.l {0}, %c%d; (1+)", get_ea_mode_str_32(g_cpu_ir), BIT_F(extension) ? 'A' : 'D', (extension >> 12) & 7);
+                return new M68kInstruction
+                {
+                    code = Opcode.moves,
+                    dataWidth = PrimitiveType.Word16,
+                    op1 = ea,
+                    op2 = reg,
+                };
         }
 
-        private void d68000_moveq()
+        private M68kInstruction d68000_moveq()
         {
-            g_dasm_str = string.Format("moveq   #{0}, D{1}", make_signed_hex_str_8(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.moveq,
+                op1 = new ImmediateOperand(make_signed_hex_str_8(g_cpu_ir)),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68040_move16_pi_pi()
-        {
-            LIMIT_CPU_TYPES(M68040_PLUS);
-            g_dasm_str = string.Format("move16  (A{0})+, (A{1})+; (4)", g_cpu_ir & 7, (read_imm_16() >> 12) & 7);
-        }
-
-        private void d68040_move16_pi_al()
-        {
-            LIMIT_CPU_TYPES(M68040_PLUS);
-            g_dasm_str = string.Format("move16  (A{0})+,{1}; (4)", g_cpu_ir & 7, get_imm_str_u32());
-        }
-
-        private void d68040_move16_al_pi()
-        {
-            LIMIT_CPU_TYPES(M68040_PLUS);
-            g_dasm_str = string.Format("move16  {0}, (A{1})+; (4)", get_imm_str_u32(), g_cpu_ir & 7);
-        }
-
-        private void d68040_move16_ai_al()
+        private M68kInstruction d68040_move16_pi_pi()
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
-            g_dasm_str = string.Format("move16  (A{0}),{1}; (4)", g_cpu_ir & 7, get_imm_str_u32());
+            return new M68kInstruction
+            {
+                code = Opcode.move16,
+                op1 = get_post_inc(g_cpu_ir & 7),
+                op2 = get_post_inc((read_imm_16() >> 12) & 7)
+            };
         }
 
-        private void d68040_move16_al_ai()
+        private M68kInstruction d68040_move16_pi_al()
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
-            g_dasm_str = string.Format("move16  {0}, (A{1}); (4)", get_imm_str_u32(), g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.move16,
+                op1 = get_post_inc(g_cpu_ir & 7),
+                op2 = get_imm_str_u32()
+            };
         }
 
-        private void d68000_muls()
+        private M68kInstruction d68040_move16_al_pi()
         {
-            g_dasm_str = string.Format("muls.w  {0}, D{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            LIMIT_CPU_TYPES(M68040_PLUS);
+            return new M68kInstruction
+            {
+                code = Opcode.move16,
+                op1 = get_imm_str_u32(),
+                op2 = get_post_inc(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_mulu()
+        private M68kInstruction d68040_move16_ai_al()
         {
-            g_dasm_str = string.Format("mulu.w  {0}, D{1} ", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            LIMIT_CPU_TYPES(M68040_PLUS);
+            return new M68kInstruction
+            {
+                code = Opcode.move16,
+                op1 = new MemoryOperand(Registers.AddressRegister(g_cpu_ir & 7)),
+                op2 = get_imm_str_u32()
+            };
         }
 
-        private void d68020_mull()
+        private M68kInstruction d68040_move16_al_ai()
+        {
+            LIMIT_CPU_TYPES(M68040_PLUS);
+            return new M68kInstruction
+            {
+                code = Opcode.move16,
+                op1 = get_imm_str_u32(),
+                op2 = new MemoryOperand(Registers.AddressRegister(g_cpu_ir & 7)),
+            };
+        }
+
+        private M68kInstruction d68000_muls()
+        {
+            return new M68kInstruction
+            {
+                code = Opcode.muls,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
+        }
+
+        private M68kInstruction d68000_mulu()
+        {
+            return new M68kInstruction
+            {
+                code = Opcode.mulu,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
+        }
+
+        private M68kInstruction d68020_mull()
         {
             uint extension;
             LIMIT_CPU_TYPES(M68020_PLUS);
             extension = read_imm_16();
 
-            if (BIT_A(extension))
-                g_dasm_str = string.Format("mul{0}.l %s, D%d-D%d; (2+)", BIT_B(extension) ? 's' : 'u', get_ea_mode_str_32(g_cpu_ir), extension & 7, (extension >> 12) & 7);
-            else
-                g_dasm_str = string.Format("mul{0}.l  %s, D%d; (2+)", BIT_B(extension) ? 's' : 'u', get_ea_mode_str_32(g_cpu_ir), (extension >> 12) & 7);
+            MachineOperand op2 = BIT_A(extension)
+                ? get_double_data_reg(extension & 7, (extension >> 12) & 7)
+                : (MachineOperand) get_data_reg((int)(extension >> 12) & 7);
+            return new M68kInstruction
+            {
+                code = BIT_B(extension) ? Opcode.muls : Opcode.mulu,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = op2
+            };
         }
 
-        private void d68000_nbcd()
+        private M68kInstruction d68000_nbcd()
         {
-            g_dasm_str = string.Format("nbcd    {0}", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.nbcd,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_neg_8()
+        private M68kInstruction d68000_neg_8()
         {
-            g_dasm_str = string.Format("neg.b   {0}", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.neg,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_neg_16()
+        private M68kInstruction d68000_neg_16()
         {
-            g_dasm_str = string.Format("neg.w   {0}", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.neg,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_neg_32()
+        private M68kInstruction d68000_neg_32()
         {
-            g_dasm_str = string.Format("neg.l   {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.neg,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_negx_8()
+        private M68kInstruction d68000_negx_8()
         {
-            g_dasm_str = string.Format("negx.b  {0}", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.negx,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_negx_16()
+        private M68kInstruction d68000_negx_16()
         {
-            g_dasm_str = string.Format("negx.w  {0}", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.negx,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_negx_32()
+        private M68kInstruction d68000_negx_32()
         {
-            g_dasm_str = string.Format("negx.l  {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.negx,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_nop()
+        private M68kInstruction d68000_nop()
         {
-            g_dasm_str = string.Format("nop");
+            return new M68kInstruction
+            {
+               code = Opcode.nop,
+            };
         }
 
-        private void d68000_not_8()
+        private M68kInstruction d68000_not_8()
         {
-            g_dasm_str = string.Format("not.b   {0}", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.not,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_not_16()
+        private M68kInstruction d68000_not_16()
         {
-            g_dasm_str = string.Format("not.w   {0}", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.not,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_not_32()
+        private M68kInstruction d68000_not_32()
         {
-            g_dasm_str = string.Format("not.l   {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.not,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_or_er_8()
+        private M68kInstruction d68000_or_er_8()
         {
-            g_dasm_str = string.Format("or.b    {0},D{1}", get_ea_mode_str_8(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.or,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_or_er_16()
+        private M68kInstruction d68000_or_er_16()
         {
-            g_dasm_str = string.Format("or.w    {0},D{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.or,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_or_er_32()
+        private M68kInstruction d68000_or_er_32()
         {
-            g_dasm_str = string.Format("or.l    {0},D{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.or,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+            };
         }
 
-        private void d68000_or_re_8()
+        private M68kInstruction d68000_or_re_8()
         {
-            g_dasm_str = string.Format("or.b    D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.or,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir),
+            };
         }
 
-        private void d68000_or_re_16()
+        private M68kInstruction d68000_or_re_16()
         {
-            g_dasm_str = string.Format("or.w    D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.or,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_16(g_cpu_ir),
+            };
         }
 
-        private void d68000_or_re_32()
+        private M68kInstruction d68000_or_re_32()
         {
-            g_dasm_str = string.Format("or.l    D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.or,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_32(g_cpu_ir),
+            };
         }
 
-        private void d68000_ori_8()
+        private M68kInstruction d68000_ori_8()
         {
-            string str = get_imm_str_u8();
-            g_dasm_str = string.Format("ori.b   {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_u8();
+            return new M68kInstruction
+            {
+                code = Opcode.ori,
+                dataWidth = PrimitiveType.Byte,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir),
+            };
         }
 
-        private void d68000_ori_16()
+        private M68kInstruction d68000_ori_16()
         {
-            string str = get_imm_str_u16();
-            g_dasm_str = string.Format("ori.w   {0},{1}", str, get_ea_mode_str_16(g_cpu_ir));
+            var str = get_imm_str_u16();
+            return new M68kInstruction
+            {
+                code = Opcode.ori,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir),
+            };
         }
 
-        private void d68000_ori_32()
+        private M68kInstruction d68000_ori_32()
         {
-            string str = get_imm_str_u32();
-            g_dasm_str = string.Format("ori.l   {0},{1}", str, get_ea_mode_str_32(g_cpu_ir));
+            var str = get_imm_str_u32();
+            return new M68kInstruction
+            {
+                code = Opcode.ori,
+                dataWidth = PrimitiveType.Word32,
+                op1 = str,
+                op2 = get_ea_mode_str_32(g_cpu_ir),
+            };
         }
 
-        private void d68000_ori_to_ccr()
+        private M68kInstruction d68000_ori_to_ccr()
         {
-            g_dasm_str = string.Format("ori     {0}, CCR", get_imm_str_u8());
+            return new M68kInstruction
+            {
+                code = Opcode.ori,
+                op1 = get_imm_str_u8(),
+                op2 = new RegisterOperand(Registers.ccr)
+            };
         }
 
-        private void d68000_ori_to_sr()
+        private M68kInstruction d68000_ori_to_sr()
         {
-            g_dasm_str = string.Format("ori     {0}, SR", get_imm_str_u16());
+            return new M68kInstruction
+            {
+                code = Opcode.ori,
+                op1 = get_imm_str_u16(),
+                op2 = new RegisterOperand(Registers.sr)
+            };
         }
 
-        private void d68020_pack_rr()
+        private M68kInstruction d68020_pack_rr()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("pack    D{0},D{1},{1}; (2+)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7, get_imm_str_u16());
+            return new M68kInstruction
+            {
+                code = Opcode.pack,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op3 = get_imm_str_u16()
+            };
         }
 
-        private void d68020_pack_mm()
+        private M68kInstruction d68020_pack_mm()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("pack    -(A{0}), -(A%d), %s; (2+)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7, get_imm_str_u16());
+            return new M68kInstruction
+            {
+                code = Opcode.pack,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7),
+                op3 = get_imm_str_u16()
+            };
         }
 
-        private void d68000_pea()
+        private M68kInstruction d68000_pea()
         {
-            g_dasm_str = string.Format("pea     {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.pea,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
         // this is a 68040-specific form of PFLUSH
-        private void d68040_pflush()
+        private M68kInstruction d68040_pflush()
         {
             LIMIT_CPU_TYPES(M68040_PLUS);
 
@@ -2884,447 +4095,884 @@ namespace Decompiler.Arch.M68k
             {
                 g_dasm_str = string.Format("pflush{0}(A%d)", (g_cpu_ir & 8)!=0 ? "" : "n", g_cpu_ir & 7);
             }
+            throw new NotImplementedException();
         }
 
-        private void d68000_reset()
+        private M68kInstruction d68000_reset()
         {
-            g_dasm_str = string.Format("reset");
+            return new M68kInstruction
+            {
+                code = Opcode.reset,
+            };
         }
 
-        private void d68000_ror_s_8()
+        private M68kInstruction d68000_ror_s_8()
         {
-            g_dasm_str = string.Format("ror.b   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.ror,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_ror_s_16()
+        private M68kInstruction d68000_ror_s_16()
         {
-            g_dasm_str = string.Format("ror.w   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.ror,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_ror_s_32()
+        private M68kInstruction d68000_ror_s_32()
         {
-            g_dasm_str = string.Format("ror.l   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.ror,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_ror_r_8()
+        private M68kInstruction d68000_ror_r_8()
         {
-            g_dasm_str = string.Format("ror.b   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.ror,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_ror_r_16()
+        private M68kInstruction d68000_ror_r_16()
         {
-            g_dasm_str = string.Format("ror.w   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.ror,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_ror_r_32()
+        private M68kInstruction d68000_ror_r_32()
         {
-            g_dasm_str = string.Format("ror.l   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.ror,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_ror_ea()
+        private M68kInstruction d68000_ror_ea()
         {
-            g_dasm_str = string.Format("ror.w   {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.ror,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_rol_s_8()
+        private M68kInstruction d68000_rol_s_8()
         {
-            g_dasm_str = string.Format("rol.b   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.rol,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_rol_s_16()
+        private M68kInstruction d68000_rol_s_16()
         {
-            g_dasm_str = string.Format("rol.w   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.rol,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_rol_s_32()
+        private M68kInstruction d68000_rol_s_32()
         {
-            g_dasm_str = string.Format("rol.l   #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.rol,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_rol_r_8()
+        private M68kInstruction d68000_rol_r_8()
         {
-            g_dasm_str = string.Format("rol.b   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.rol,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_rol_r_16()
+        private M68kInstruction d68000_rol_r_16()
         {
-            g_dasm_str = string.Format("rol.w   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.rol,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_rol_r_32()
+        private M68kInstruction d68000_rol_r_32()
         {
-            g_dasm_str = string.Format("rol.l   D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.rol,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_rol_ea()
+        private M68kInstruction d68000_rol_ea()
         {
-            g_dasm_str = string.Format("rol.w   {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.rol,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_roxr_s_8()
+        private M68kInstruction d68000_roxr_s_8()
         {
-            g_dasm_str = string.Format("roxr.b  #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxr,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxr_s_16()
+        private M68kInstruction d68000_roxr_s_16()
         {
-            g_dasm_str = string.Format("roxr.w  #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxr,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
 
-        private void d68000_roxr_s_32()
+        private M68kInstruction d68000_roxr_s_32()
         {
-            g_dasm_str = string.Format("roxr.l  #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxr,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxr_r_8()
+        private M68kInstruction d68000_roxr_r_8()
         {
-            g_dasm_str = string.Format("roxr.b  D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxr,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxr_r_16()
+        private M68kInstruction d68000_roxr_r_16()
         {
-            g_dasm_str = string.Format("roxr.w  D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxr,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxr_r_32()
+        private M68kInstruction d68000_roxr_r_32()
         {
-            g_dasm_str = string.Format("roxr.l  D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxr,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxr_ea()
+        private M68kInstruction d68000_roxr_ea()
         {
-            g_dasm_str = string.Format("roxr.w  {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.roxr,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68000_roxl_s_8()
+        private M68kInstruction d68000_roxl_s_8()
         {
-            g_dasm_str = string.Format("roxl.b  #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxl,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxl_s_16()
+        private M68kInstruction d68000_roxl_s_16()
         {
-            g_dasm_str = string.Format("roxl.w  #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxl_s_32()
+        private M68kInstruction d68000_roxl_s_32()
         {
-            g_dasm_str = string.Format("roxl.l  #{0},D{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxl,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxl_r_8()
+        private M68kInstruction d68000_roxl_r_8()
         {
-            g_dasm_str = string.Format("roxl.b  D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxl,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxl_r_16()
+        private M68kInstruction d68000_roxl_r_16()
         {
-            g_dasm_str = string.Format("roxl.w  D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.roxl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_data_reg(g_cpu_ir & 7)
+            };
         }
 
-        private void d68000_roxl_r_32()
+        private M68kInstruction d68000_roxl_r_32()
         {
-            g_dasm_str = string.Format("roxl.l  D{0},D{1}", (g_cpu_ir >> 9) & 7, g_cpu_ir & 7);
+            return new M68kInstruction
+             {
+                 code = Opcode.roxl,
+                 dataWidth = PrimitiveType.Word32,
+                 op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                 op2 = get_data_reg(g_cpu_ir & 7)
+             };
         }
 
-        private void d68000_roxl_ea()
+        private M68kInstruction d68000_roxl_ea()
         {
-            g_dasm_str = string.Format("roxl.w  {0}", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.roxl,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68010_rtd()
+        private M68kInstruction d68010_rtd()
         {
             LIMIT_CPU_TYPES(M68010_PLUS);
-            g_dasm_str = string.Format("rtd     {0}; (1+)", get_imm_str_s16());
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OUT);
+            return new M68kInstruction
+            {
+                code = Opcode.rtd,
+                op1 = get_imm_str_s16()
+            };
         }
 
-        private void d68000_rte()
+        private M68kInstruction d68000_rte()
         {
-            g_dasm_str = string.Format("rte");
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OUT);
+            return new M68kInstruction
+            {
+                code = Opcode.rte
+            };
         }
 
-        private void d68020_rtm()
+
+        private M68kInstruction d68020_rtm()
         {
             LIMIT_CPU_TYPES(M68020_ONLY);
-            g_dasm_str = string.Format("rtm     {0}%d; (2+)", BIT_3(g_cpu_ir) ? 'A' : 'D', g_cpu_ir & 7);
+            int reg = g_cpu_ir & 7;
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OUT);
+            return new M68kInstruction
+            {
+                code = Opcode.rtm,
+                op1 = BIT_3(g_cpu_ir) 
+                    ? get_addr_reg(reg)
+                    : get_data_reg(reg)
+            };
         }
 
-        private void d68000_rtr()
+        private M68kInstruction d68000_rtr()
         {
-            g_dasm_str = string.Format("rtr");
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OUT);
+            return new M68kInstruction
+            {
+                code = Opcode.rtr,
+            };
         }
 
-        private void d68000_rts()
+        private M68kInstruction d68000_rts()
         {
-            g_dasm_str = string.Format("rts");
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OUT);
+            return new M68kInstruction
+            {
+                code = Opcode.rts,
+            };
         }
 
-        private void d68000_sbcd_rr()
+        private M68kInstruction d68000_sbcd_rr()
         {
-            g_dasm_str = string.Format("sbcd    D{0},D{1}", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.sbcd,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_sbcd_mm()
+        private M68kInstruction d68000_sbcd_mm()
         {
-            g_dasm_str = string.Format("sbcd    -(A{0}), -(A%d)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.sbcd,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_scc()
+        private M68kInstruction d68000_scc()
         {
-            g_dasm_str = string.Format("s%-2s     %s", g_cc[(g_cpu_ir >> 8) & 0xf], get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = g_scc[(g_cpu_ir >> 8) & 0xf],
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_stop()
+        private M68kInstruction d68000_stop()
         {
-            g_dasm_str = string.Format("stop    {0}", get_imm_str_s16());
+            return new M68kInstruction
+            {
+                code = Opcode.stop,
+                op1 = get_imm_str_s16()
+            };
         }
 
-        private void d68000_sub_er_8()
+        private M68kInstruction d68000_sub_er_8()
         {
-            g_dasm_str = string.Format("sub.b   {0},D{1}", get_ea_mode_str_8(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.sub,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir), 
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_sub_er_16()
+        private M68kInstruction d68000_sub_er_16()
         {
-            g_dasm_str = string.Format("sub.w   {0},D{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.sub,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_sub_er_32()
+        private M68kInstruction d68000_sub_er_32()
         {
-            g_dasm_str = string.Format("sub.l   {0},D{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.sub,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_sub_re_8()
+        private M68kInstruction d68000_sub_re_8()
         {
-            g_dasm_str = string.Format("sub.b   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.sub,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir),
+            };
         }
 
-        private void d68000_sub_re_16()
+        private M68kInstruction d68000_sub_re_16()
         {
-            g_dasm_str = string.Format("sub.w   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.sub,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_16(g_cpu_ir),
+            };
         }
 
-        private void d68000_sub_re_32()
+        private M68kInstruction d68000_sub_re_32()
         {
-            g_dasm_str = string.Format("sub.l   D{0},{1}", (g_cpu_ir >> 9) & 7, get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.sub,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_32(g_cpu_ir),
+            };
         }
 
-        private void d68000_suba_16()
+        private M68kInstruction d68000_suba_16()
         {
-            g_dasm_str = string.Format("suba.w  {0},A{1}", get_ea_mode_str_16(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.suba,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir),
+                op2 = get_addr_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_suba_32()
+        private M68kInstruction d68000_suba_32()
         {
-            g_dasm_str = string.Format("suba.l  {0},A{1}", get_ea_mode_str_32(g_cpu_ir), (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.suba,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir),
+                op2 = get_addr_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_subi_8()
+        private M68kInstruction d68000_subi_8()
         {
-            string str = get_imm_str_s8();
-            g_dasm_str = string.Format("subi.b  {0},{1}", str, get_ea_mode_str_8(g_cpu_ir));
+            var str = get_imm_str_s8();
+            return new M68kInstruction
+            {
+                code = Opcode.subi,
+                dataWidth = PrimitiveType.Byte,
+                op1 = str,
+                op2 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_subi_16()
+        private M68kInstruction d68000_subi_16()
         {
-            string str = get_imm_str_s16();
-            g_dasm_str = string.Format("subi.w  {0},{1}", str, get_ea_mode_str_16(g_cpu_ir));
+            var str = get_imm_str_s16();
+            return new M68kInstruction
+            {
+                code = Opcode.subi,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_subi_32()
+        private M68kInstruction d68000_subi_32()
         {
-            string str = get_imm_str_s32();
-            g_dasm_str = string.Format("subi.l  {0},{1}", str, get_ea_mode_str_32(g_cpu_ir));
+            var str = get_imm_str_s32();
+            return new M68kInstruction
+            {
+                code = Opcode.subi,
+                dataWidth = PrimitiveType.Word16,
+                op1 = str,
+                op2 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_subq_8()
+        private M68kInstruction d68000_subq_8()
         {
-            g_dasm_str = string.Format("subq.b  #{0},{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.subq,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_8(g_cpu_ir),
+            };
         }
 
-        private void d68000_subq_16()
+        private M68kInstruction d68000_subq_16()
         {
-            g_dasm_str = string.Format("subq.w  #{0},{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.subq,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_16(g_cpu_ir),
+            };
         }
 
-        private void d68000_subq_32()
+        private M68kInstruction d68000_subq_32()
         {
-            g_dasm_str = string.Format("subq.l  #{0},{1}", g_3bit_qdata_table[(g_cpu_ir >> 9) & 7], get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.subq,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_3bit_qdata((g_cpu_ir >> 9) & 7),
+                op2 = get_ea_mode_str_32(g_cpu_ir),
+            };
         }
 
-        private void d68000_subx_rr_8()
+        private M68kInstruction d68000_subx_rr_8()
         {
-            g_dasm_str = string.Format("subx.b  D{0},D{1}", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.subx,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_subx_rr_16()
+        private M68kInstruction d68000_subx_rr_16()
         {
-            g_dasm_str = string.Format("subx.w  D{0},D{1}", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.subx,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_subx_rr_32()
+        private M68kInstruction d68000_subx_rr_32()
         {
-            g_dasm_str = string.Format("subx.l  D{0},D{1}", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.subx,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_subx_mm_8()
+        private M68kInstruction d68000_subx_mm_8()
         {
-            g_dasm_str = string.Format("subx.b  -(A{0}), -(A%d)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.subx,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_subx_mm_16()
+        private M68kInstruction d68000_subx_mm_16()
         {
-            g_dasm_str = string.Format("subx.w  -(A{0}), -(A%d)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.subx,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_subx_mm_32()
+        private M68kInstruction d68000_subx_mm_32()
         {
-            g_dasm_str = string.Format("subx.l  -(A{0}), -(A%d)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.subx,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7)
+            };
         }
 
-        private void d68000_swap()
+        private M68kInstruction d68000_swap()
         {
-            g_dasm_str = string.Format("swap    D{0}", g_cpu_ir & 7);
+            return new M68kInstruction 
+            {
+                code = Opcode.swap,
+            };
         }
 
-        private void d68000_tas()
+        private M68kInstruction d68000_tas()
         {
-            g_dasm_str = string.Format("tas     {0}", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.tas,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_trap()
+        private M68kInstruction d68000_trap()
         {
-            g_dasm_str = string.Format("trap    #${0}", g_cpu_ir & 0xf);
+            return new M68kInstruction
+            {
+                code = Opcode.trap,
+                op1 = new M68kImmediateOperand(Constant.Byte((byte)(g_cpu_ir & 0xf)))
+            };
         }
 
-        private void d68020_trapcc_0()
+        private M68kInstruction d68020_trapcc_0()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("trap%-2s; (2+)", g_cc[(g_cpu_ir >> 8) & 0xf]);
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = g_trapcc[(g_cpu_ir >> 8) & 0xf],
+            };
         }
 
-        private void d68020_trapcc_16()
+        private M68kInstruction d68020_trapcc_16()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("trap%-2s  %s; (2+)", g_cc[(g_cpu_ir >> 8) & 0xf], get_imm_str_u16());
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = g_trapcc[(g_cpu_ir >> 8) & 0xf],
+                op1 = get_imm_str_u16()
+            };
         }
 
-        private void d68020_trapcc_32()
+        private M68kInstruction d68020_trapcc_32()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("trap%-2s  %s; (2+)", g_cc[(g_cpu_ir >> 8) & 0xf], get_imm_str_u32());
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = g_trapcc[(g_cpu_ir >> 8) & 0xf],
+                op1 = get_imm_str_u32()
+            };
         }
 
-        private void d68000_trapv()
+        private M68kInstruction d68000_trapv()
         {
-            g_dasm_str = string.Format("trapv");
             SET_OPCODE_FLAGS(DASMFLAG_STEP_OVER);
+            return new M68kInstruction
+            {
+                code = Opcode.trapv
+            };
         }
 
-        private void d68000_tst_8()
+        private M68kInstruction d68000_tst_8()
         {
-            g_dasm_str = string.Format("tst.b   {0}", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68020_tst_pcdi_8()
-        {
-            LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.b   {0}; (2+)", get_ea_mode_str_8(g_cpu_ir));
-        }
-
-        private void d68020_tst_pcix_8()
-        {
-            LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.b   {0}; (2+)", get_ea_mode_str_8(g_cpu_ir));
-        }
-
-        private void d68020_tst_i_8()
+        private M68kInstruction d68020_tst_pcdi_8()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.b   {0}; (2+)", get_ea_mode_str_8(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68000_tst_16()
-        {
-            g_dasm_str = string.Format("tst.w   {0}", get_ea_mode_str_16(g_cpu_ir));
-        }
-
-        private void d68020_tst_a_16()
-        {
-            LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.w   {0}; (2+)", get_ea_mode_str_16(g_cpu_ir));
-        }
-
-        private void d68020_tst_pcdi_16()
+        private M68kInstruction d68020_tst_pcix_8()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.w   {0}; (2+)", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68020_tst_pcix_16()
+        private M68kInstruction d68020_tst_i_8()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.w   {0}; (2+)", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Byte,
+                op1 = get_ea_mode_str_8(g_cpu_ir)
+            };
         }
 
-        private void d68020_tst_i_16()
+        private M68kInstruction d68000_tst_16()
+        {
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
+        }
+
+        private M68kInstruction d68020_tst_a_16()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.w   {0}; (2+)", get_ea_mode_str_16(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_tst_32()
-        {
-            g_dasm_str = string.Format("tst.l   {0}", get_ea_mode_str_32(g_cpu_ir));
-        }
-
-        private void d68020_tst_a_32()
-        {
-            LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.l   {0}; (2+)", get_ea_mode_str_32(g_cpu_ir));
-        }
-
-        private void d68020_tst_pcdi_32()
+        private M68kInstruction d68020_tst_pcdi_16()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.l   {0}; (2+)", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68020_tst_pcix_32()
+        private M68kInstruction d68020_tst_pcix_16()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.l   {0}; (2+)", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68020_tst_i_32()
+        private M68kInstruction d68020_tst_i_16()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("tst.l   {0}; (2+)", get_ea_mode_str_32(g_cpu_ir));
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word16,
+                op1 = get_ea_mode_str_16(g_cpu_ir)
+            };
         }
 
-        private void d68000_unlk()
+        private M68kInstruction d68000_tst_32()
         {
-            g_dasm_str = string.Format("unlk    A{0}", g_cpu_ir & 7);
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68020_unpk_rr()
+        private M68kInstruction d68020_tst_a_32()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("unpk    D{0},D{1}, %s; (2+)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7, get_imm_str_u16());
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
         }
 
-        private void d68020_unpk_mm()
+        private M68kInstruction d68020_tst_pcdi_32()
         {
             LIMIT_CPU_TYPES(M68020_PLUS);
-            g_dasm_str = string.Format("unpk    -(A{0}), -(A%d), %s; (2+)", g_cpu_ir & 7, (g_cpu_ir >> 9) & 7, get_imm_str_u16());
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
+        }
+
+        private M68kInstruction d68020_tst_pcix_32()
+        {
+            LIMIT_CPU_TYPES(M68020_PLUS);
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
+        }
+
+        private M68kInstruction d68020_tst_i_32()
+        {
+            LIMIT_CPU_TYPES(M68020_PLUS);
+            return new M68kInstruction
+            {
+                code = Opcode.tst,
+                dataWidth = PrimitiveType.Word32,
+                op1 = get_ea_mode_str_32(g_cpu_ir)
+            };
+        }
+
+        private M68kInstruction d68000_unlk()
+        {
+            return new M68kInstruction
+            {
+                code = Opcode.unlk,
+                op1 = get_addr_reg(g_cpu_ir & 7)
+            };
+        }
+
+        private M68kInstruction d68020_unpk_rr()
+        {
+            LIMIT_CPU_TYPES(M68020_PLUS);
+            return new M68kInstruction
+            {
+                code = Opcode.unpk,
+                op1 = get_data_reg(g_cpu_ir & 7),
+                op2 = get_data_reg((g_cpu_ir >> 9) & 7),
+                op3 = get_imm_str_u16()
+            };
+        }
+
+        private M68kInstruction d68020_unpk_mm()
+        {
+            LIMIT_CPU_TYPES(M68020_PLUS);
+            return new M68kInstruction
+            {
+                code = Opcode.unpk,
+                op1 = get_pre_dec(g_cpu_ir & 7),
+                op2 = get_pre_dec((g_cpu_ir >> 9) & 7),
+                op3 = get_imm_str_u16()
+            };
         }
 
 
@@ -3336,55 +4984,84 @@ namespace Decompiler.Arch.M68k
         // PMOVE 2: 011xxxx0000xxx00
         // PMOVE 3: 011xxxx000000000
         // PTEST:   100xxxxxxxxxxxxx
-        // PFLUSHR:  1010000000000000
-        private void d68851_p000()
+        // PFLUSHR: 1010000000000000
+        private M68kInstruction d68851_p000()
         {
-            string str;
             ushort modes = read_imm_16();
 
             // do this after fetching the second PMOVE word so we properly get the 3rd if necessary
-            str = get_ea_mode_str_32(g_cpu_ir);
+            var str = get_ea_mode_str_32(g_cpu_ir);
 
             if ((modes & 0xfde0) == 0x2000)	// PLOAD
             {
                 if ((modes & 0x0200) !=0)
                 {
-                    g_dasm_str = string.Format("pload  #{0},{1}", (modes >> 10) & 7, str);
+                    return new M68kInstruction
+                    {
+                        code = Opcode.pload,
+                        op1 = new M68kImmediateOperand(Constant.Byte((byte)((modes >> 10) & 7))),
+                        op2 = str,
+                    };
                 }
                 else
                 {
-                    g_dasm_str = string.Format("pload  {0}, #%d", str, (modes >> 10) & 7);
+                    return new M68kInstruction
+                    {
+                        code = Opcode.pload,
+                        op1 = str,
+                        op2 = new M68kImmediateOperand(Constant.Byte((byte)((modes >> 10) & 7))),
+                    };
                 }
-                return;
             }
 
             if ((modes & 0xe200) == 0x2000)	// PFLUSH
             {
-                g_dasm_str = string.Format("pflushr {0}, %x, %s", modes & 0x1f, (modes >> 5) & 0xf, str);
-                return;
+                return new M68kInstruction
+                {
+                    code = Opcode.pflushr,
+                    op1 = new M68kImmediateOperand(Constant.Byte((byte)(modes & 0x1f))),
+                    op2 = new M68kImmediateOperand(Constant.Byte((byte)((modes >> 5) & 0xf))),
+                    op3 = str,
+                };
             }
 
             if (modes == 0xa000)	// PFLUSHR
             {
-                g_dasm_str = string.Format("pflushr {0}", str);
+                return new M68kInstruction
+                {
+                    code = Opcode.pflushr,
+                    op1 = str,
+                };
             }
 
             if (modes == 0x2800)	// PVALID (FORMAT 1)
             {
-                g_dasm_str = string.Format("pvalid VAL, {0}", str);
-                return;
+                return new M68kInstruction
+                {
+                    code = Opcode.pvalid,
+                    op1 = get_ctrl_reg("VAL", 0x2800),
+                    op2 = str
+                };
             }
 
             if ((modes & 0xfff8) == 0x2c00)	// PVALID (FORMAT 2)
             {
-                g_dasm_str = string.Format("pvalid A{0},{1}", modes & 0xf, str);
-                return;
+                return new M68kInstruction
+                {
+                    code = Opcode.pvalid,
+                    op1 = get_addr_reg(modes & 0xf),
+                    op2 = str
+                };
             }
 
             if ((modes & 0xe000) == 0x8000)	// PTEST
             {
-                g_dasm_str = string.Format("ptest #{0},{1}", modes & 0x1f, str);
-                return;
+                return new M68kInstruction
+                {
+                    code = Opcode.ptest,
+                    op1 = new M68kImmediateOperand(Constant.Byte((byte)(modes & 0x1f))),
+                    op2 = str,
+                };
             }
 
             switch ((modes >> 13) & 0x7)
@@ -3430,31 +5107,36 @@ namespace Decompiler.Arch.M68k
                 g_dasm_str = string.Format("pmove [unknown form] {0}", str);
                 break;
             }
+            throw new NotImplementedException();
         }
 
-        private void d68851_pbcc16()
+        private M68kInstruction d68851_pbcc16()
         {
             uint temp_pc = g_cpu_pc.Address.Linear;
             g_dasm_str = string.Format("pb{0} %x", g_mmucond[g_cpu_ir & 0xf], temp_pc + make_int_16(read_imm_16()));
+            throw new NotImplementedException();
         }
 
-        private void d68851_pbcc32()
+        private M68kInstruction d68851_pbcc32()
         {
             uint temp_pc = g_cpu_pc.Address.Linear;
             g_dasm_str = string.Format("pb{0} %x", g_mmucond[g_cpu_ir & 0xf], temp_pc + make_int_32(read_imm_32()));
+            throw new NotImplementedException();
         }
 
-        private void d68851_pdbcc()
+        private M68kInstruction d68851_pdbcc()
         {
             uint temp_pc = g_cpu_pc.Address.Linear;
             ushort modes = read_imm_16();
             g_dasm_str = string.Format("pb{0} %x", g_mmucond[modes & 0xf], temp_pc + make_int_16(read_imm_16()));
+            throw new NotImplementedException();
         }
 
         // PScc:  0000000000xxxxxx
-        private void d68851_p001()
+        private M68kInstruction d68851_p001()
         {
             g_dasm_str = string.Format("MMU 001 group");
+            throw new NotImplementedException();
         }
 
         /* ======================================================================== */
@@ -3478,11 +5160,6 @@ namespace Decompiler.Arch.M68k
 
         static opcode_struct[] g_opcode_info;
 
-        public M68kDisassembler2(ImageReader rdr)
-        {
-            GenTable();
-            this.g_cpu_pc = rdr;
-        }
 
         private void GenTable()
         {
@@ -3503,7 +5180,7 @@ namespace Decompiler.Arch.M68k
 	new opcode_struct(d68000_add_re_32    , 0xf1c0, 0xd180, 0x3f8),
 	new opcode_struct(0xf1c0, 0xd0c0, 0xfff, Opcode.adda, "sw:E0,A9"),
 	new opcode_struct(0xf1c0, 0xd1c0, 0xfff, Opcode.adda, "sw:E0,A9"),
-	new opcode_struct(d68000_addi_8       , 0xffc0, 0x0600, 0xbf8),
+	new opcode_struct(d68000_addi_8, 0xffc0, 0x0600, 0xbf8),
 	new opcode_struct(d68000_addi_16      , 0xffc0, 0x0640, 0xbf8),
 	new opcode_struct(d68000_addi_32      , 0xffc0, 0x0680, 0xbf8),
 	new opcode_struct(0xf1c0, 0x5000, 0xbf8, Opcode.addq, "s6:q9,E0"),          // d68000_addq_8       , 
@@ -3609,7 +5286,7 @@ namespace Decompiler.Arch.M68k
 	new opcode_struct(d68020_cptrapcc_16  , 0xf1ff, 0xf07a, 0x000),
 	new opcode_struct(d68020_cptrapcc_32  , 0xf1ff, 0xf07b, 0x000),
 	new opcode_struct(d68040_cpush        , 0xff20, 0xf420, 0x000),
-    //new opcode_struct(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000, Opcode.dbf, "D0,Rw"),
+    new opcode_struct(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000),
     new opcode_struct(0xfff8, 0x51c8, 0x000, Opcode.dbf, "D0,Rw"),      // d68000_dbcc         
 	new opcode_struct(d68000_dbra         , 0xfff8, 0x51c8, 0x000),
 	new opcode_struct(d68000_divs         , 0xf1c0, 0x81c0, 0xbff),
@@ -3946,8 +5623,8 @@ namespace Decompiler.Arch.M68k
         /* ================================= API ================================== */
         /* ======================================================================== */
 
-        /* Disasemble one instruction at pc and store in str_buff */
-        public uint m68k_disassemble(string str_buff, uint pc, uint cpu_type)
+        // Disasemble one instruction at pc and return it
+        public M68kInstruction m68k_disassemble(string str_buff, uint pc, uint cpu_type)
         {
             if (!g_initialized)
             {
@@ -3986,37 +5663,12 @@ namespace Decompiler.Arch.M68k
             g_helper_str = "";
             g_cpu_ir = read_imm_16();
             g_opcode_type = 0;
-            g_instruction_table[g_cpu_ir].opcode_handler();
-            str_buff = string.Format("{0}{1}", g_dasm_str, g_helper_str);
-            return 0;
+            return g_instruction_table[g_cpu_ir].opcode_handler();
+            //str_buff = string.Format("{0}{1}", g_dasm_str, g_helper_str);
+            //return 0;
         }
 
-        public M68kInstruction Disassemble()
-        {
-            if (!g_initialized)
-            {
-                build_opcode_table();
-                g_initialized = true;
-            }
-            g_helper_str = "";
-            g_cpu_ir = g_cpu_pc.ReadBeUInt16();
-            g_opcode_type = 0;
-
-            instr = new M68kInstruction();
-            instr.code = g_instruction_table[g_cpu_ir].opcode;
-            var args = g_instruction_table[g_cpu_ir].operandFormat;
-            int i = 0;
-            if (args[0] == 's')
-            {
-                instr.dataWidth = OperandFormatDecoder.GetSizeType(g_cpu_ir, args[1], null);
-                i = 3;
-            }
-            OperandFormatDecoder opTranslator = new OperandFormatDecoder(g_cpu_ir, args, i);
-            instr.op1 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
-            instr.op2 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
-            instr.op3 = opTranslator.GetOperand(g_cpu_pc, instr.dataWidth);
-            return instr;
-        }
+      
 
 #if UNUSED_FUNCTION
 string m68ki_disassemble_quick(unsigned int pc, unsigned int cpu_type)
@@ -4028,7 +5680,7 @@ string m68ki_disassemble_quick(unsigned int pc, unsigned int cpu_type)
 }
 #endif
 
-        uint m68k_disassemble_raw(string str_buff, uint pc, string opdata, string argdata, uint cpu_type)
+        M68kInstruction m68k_disassemble_raw(string str_buff, uint pc, string opdata, string argdata, uint cpu_type)
         {
             g_rawop = opdata;
             g_rawbasepc = pc;
@@ -4279,5 +5931,6 @@ unsigned int m68k_is_valid_instruction(unsigned int instruction, unsigned int cp
         /* ============================== END OF FILE ============================= */
         /* ======================================================================== */
 
+#endif
     }
 }

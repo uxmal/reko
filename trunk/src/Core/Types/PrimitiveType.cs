@@ -71,16 +71,6 @@ namespace Decompiler.Core.Types
 			this.Name = name;
 		}
 
-		public override DataType Accept(DataTypeTransformer t)
-		{
-			return t.TransformPrimitiveType(this);
-		}
-
-		public override void Accept(IDataTypeVisitor v)
-		{
-			v.VisitPrimitive(this);
-		}
-
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitPrimitive(this);

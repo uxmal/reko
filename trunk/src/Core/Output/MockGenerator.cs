@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Decompiler.Core.Output
 {
-    public class MockGenerator : InstructionVisitor, IExpressionVisitor, IDataTypeVisitor
+    public class MockGenerator : InstructionVisitor, IExpressionVisitor, IDataTypeVisitor<int>
     {
         private IndentingTextWriter writer;
         private Dictionary<Operator, string> mpopstr;
@@ -424,22 +424,22 @@ namespace Decompiler.Core.Output
 
         #region IDataTypeVisitor Members
 
-        public void VisitArray(ArrayType at)
+        public int VisitArray(ArrayType at)
         {
             throw new NotImplementedException();
         }
 
-        public void VisitEquivalenceClass(EquivalenceClass eq)
+        public int VisitEquivalenceClass(EquivalenceClass eq)
         {
             throw new NotImplementedException();
         }
 
-        public void VisitFunctionType(FunctionType ft)
+        public int VisitFunctionType(FunctionType ft)
         {
             throw new NotImplementedException();
         }
 
-        public void VisitPrimitive(PrimitiveType pt)
+        public int VisitPrimitive(PrimitiveType pt)
         {
             writer.Write("PrimitiveType.");
             if (pt == PrimitiveType.Word32)
@@ -456,34 +456,35 @@ namespace Decompiler.Core.Output
                 writer.Write("Bool");
             else
                 throw new NotSupportedException(pt.ToString());
+            return 0;
         }
 
-        public void VisitMemberPointer(MemberPointer memptr)
+        public int VisitMemberPointer(MemberPointer memptr)
         {
             throw new NotImplementedException();
         }
 
-        public void VisitPointer(Pointer ptr)
+        public int VisitPointer(Pointer ptr)
         {
             throw new NotImplementedException();
         }
 
-        public void VisitStructure(StructureType str)
+        public int VisitStructure(StructureType str)
         {
             throw new NotImplementedException();
         }
 
-        public void VisitTypeVar(TypeVariable tv)
+        public int VisitTypeVar(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
-        public void VisitUnion(UnionType ut)
+        public int VisitUnion(UnionType ut)
         {
             throw new NotImplementedException();
         }
 
-        public void VisitUnknownType(UnknownType ut)
+        public int VisitUnknownType(UnknownType ut)
         {
             throw new NotImplementedException();
         }

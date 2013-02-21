@@ -26,20 +26,20 @@ namespace Decompiler.Core.Types
 	/// Implements the "Visitor" pattern on types, with the intent of returning
 	/// a possibly completely different data type as a return value
 	/// </summary>
-	public abstract class DataTypeTransformer
+	public abstract class DataTypeTransformer : IDataTypeVisitor<DataType>
 	{
-		public virtual DataType TransformArrayType(ArrayType at)
+		public virtual DataType VisitArray(ArrayType at)
 		{
 			at.ElementType = at.ElementType.Accept(this);
 			return at;
 		}
 
-		public virtual DataType TransformEquivalenceClass(EquivalenceClass eq)
+		public virtual DataType VisitEquivalenceClass(EquivalenceClass eq)
 		{
 			return eq;
 		}
 
-		public virtual DataType TransformFunctionType(FunctionType ft)
+        public virtual DataType VisitFunctionType(FunctionType ft)
 		{
 			if (ft.ReturnType != null)
 				ft.ReturnType = ft.ReturnType.Accept(this);
@@ -53,12 +53,12 @@ namespace Decompiler.Core.Types
 			return ft;
 		}
 
-		public virtual DataType TransformPrimitiveType(PrimitiveType pt)
+        public virtual DataType VisitPrimitive(PrimitiveType pt)
 		{
 			return pt;
 		}
 
-		public virtual  DataType TransformStructure(StructureType str)
+        public virtual DataType VisitStructure(StructureType str)
 		{
 			foreach (StructureField field in str.Fields)
 			{
@@ -67,25 +67,25 @@ namespace Decompiler.Core.Types
 			return str;
 		}
 
-		public virtual DataType TransformMemberPointer(MemberPointer memptr)
+        public virtual DataType VisitMemberPointer(MemberPointer memptr)
 		{
 			memptr.Pointee = memptr.Pointee.Accept(this);
 			memptr.BasePointer = memptr.BasePointer.Accept(this);
 			return memptr;
 		}
 
-		public virtual DataType TransformPointer(Pointer ptr)
+        public virtual DataType VisitPointer(Pointer ptr)
 		{
 			ptr.Pointee = ptr.Pointee.Accept(this);
 			return ptr;
 		}
-		
-		public virtual DataType TransformTypeVar(TypeVariable tv)
+
+        public virtual DataType VisitTypeVar(TypeVariable tv)
 		{
 			return tv;
 		}
 
-		public virtual DataType TransformUnionType(UnionType ut)
+        public virtual DataType VisitUnion(UnionType ut)
 		{
 			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
@@ -94,9 +94,9 @@ namespace Decompiler.Core.Types
 			return ut;
 		}
 
-		public virtual DataType TransformUnknownType(UnknownType ut)
+        public virtual DataType VisitUnknownType(UnknownType unk)
 		{
-			return ut;
+			return unk;
 		}
 	}
 }

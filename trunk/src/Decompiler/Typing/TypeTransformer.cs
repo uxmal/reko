@@ -33,7 +33,7 @@ namespace Decompiler.Typing
 	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
 	/// </remarks>
 
-	public class TypeTransformer : DataTypeTransformer
+	public class TypeTransformer : IDataTypeVisitor<DataType>
 	{
 		private bool changed;
 		private TypeFactory factory;
@@ -131,7 +131,6 @@ namespace Decompiler.Typing
 
 		public StructureType MergeStructureFields(StructureType str)
 		{
-
 			if (!HasCoincidentFields(str))
 				return str;
 			StructureType strNew = new StructureType(str.Name, str.Size);
@@ -232,9 +231,54 @@ namespace Decompiler.Typing
 
 		#region DataTypeTransformer methods  //////////////////////////////////////////
 
-		public override DataType TransformStructure(StructureType str)
+        public DataType VisitArray(ArrayType arr)
+        {
+            arr.ElementType = arr.ElementType.Accept(this);
+            return arr;
+        }
+
+        public DataType VisitEquivalenceClass(EquivalenceClass eq)
+        {
+            return eq;
+        }
+
+        public DataType VisitFunctionType(FunctionType fn)
+        {
+            if (fn.ReturnType != null)
+            {
+                fn.ReturnType = fn.ReturnType.Accept(this);
+            }
+            for (int i = 0; i < fn.ArgumentTypes.Length; ++i)
+            {
+                fn.ArgumentTypes[i] = fn.ArgumentTypes[i].Accept(this);
+            }
+            return fn;
+        }
+
+        public DataType VisitMemberPointer(MemberPointer mptr)
+        {
+            mptr.BasePointer = mptr.BasePointer.Accept(this);
+            mptr.Pointee = mptr.Pointee.Accept(this);
+            return mptr;
+        }
+
+        public DataType VisitPointer(Pointer mptr)
+        {
+            mptr.Pointee = mptr.Pointee.Accept(this);
+            return mptr;
+        }
+
+        public DataType VisitPrimitive(PrimitiveType pt)
+        {
+            return pt;
+        }
+
+        public DataType VisitStructure(StructureType str)
 		{
-			base.TransformStructure(str);
+            foreach (var field in str.Fields)
+            {
+                field.DataType = field.DataType.Accept(this);
+            }
 			StructureType strNew = MergeStructureFields(str);
 			if (strNew.Fields.Count != str.Fields.Count)
 				Changed = true;
@@ -245,11 +289,19 @@ namespace Decompiler.Typing
 			return dt;
 		}
 
-		public override DataType TransformUnionType(UnionType ut)
-		{
-			base.TransformUnionType(ut);
+        public DataType VisitTypeVar(TypeVariable tv)
+        {
+            return tv;
+        }
 
-			UnionPointersStructuresMatcher upsm = new UnionPointersStructuresMatcher();
+		public DataType VisitUnion(UnionType ut)
+		{
+            foreach (var alt in ut.Alternatives.Values)
+            {
+                alt.DataType = alt.DataType.Accept(this);
+            }
+
+			var upsm = new UnionPointersStructuresMatcher();
 			if (upsm.Match(ut))
 			{
 				StructureMerger sm = new StructureMerger(upsm.Structures, upsm.EquivalenceClasses);
@@ -263,6 +315,11 @@ namespace Decompiler.Typing
 				Changed = true;
 			return utNew.Simplify();
 		}
+
+        public DataType VisitUnknownType(UnknownType unk)
+        {
+            return unk;
+        }
 
 		#endregion
 	}

@@ -26,7 +26,7 @@ namespace Decompiler.Core.Types
 	/// <summary>
 	/// Replaces a union of TypeVars with a reference to an equivalence class.
 	/// </summary>
-	public class UnionTypeVarsReplacer : DataTypeTransformer
+	public class UnionTypeVarsReplacer : IDataTypeVisitor<DataType>
 	{
 		private TypeStore store;
 
@@ -35,29 +35,88 @@ namespace Decompiler.Core.Types
 			this.store = store;
 		}
 
-		public override DataType TransformUnionType(UnionType ut)
-		{
-			List<TypeVariable> typeVars = new List<TypeVariable>();
-			foreach (UnionAlternative a in ut.Alternatives.Values)
-			{
-				TypeVariable tv = a.DataType as TypeVariable;
-				if (tv == null)
-					return ut;
-				typeVars.Add(tv);
-			}
+        public DataType VisitArray(ArrayType at)
+        {
+            at.ElementType = at.ElementType.Accept(this);
+            return at;
+        }
 
-			// Merge all the type variables.
+        public DataType VisitEquivalenceClass(EquivalenceClass eq)
+        {
+            return eq;
+        }
 
-			EquivalenceClass eq = null;
-			foreach (TypeVariable tv in typeVars)
-			{
-				if (eq == null)
-					eq = tv.Class;
-				else
-					eq = store.MergeClasses(eq.Representative, tv);
-			}
-			eq.DataType = ut;
-			return eq.Representative;
-		}
-	}
+        public DataType VisitFunctionType(FunctionType ft)
+        {
+            if (ft.ReturnType != null)
+                ft.ReturnType = ft.ReturnType.Accept(this);
+            for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+            {
+                ft.ArgumentTypes[i] = ft.ArgumentTypes[i].Accept(this);
+            }
+            return ft;
+        }
+
+        public DataType VisitPrimitive(PrimitiveType pt)
+        {
+            return pt;
+        }
+
+        public DataType VisitMemberPointer(MemberPointer memptr)
+        {
+            memptr.BasePointer = memptr.BasePointer.Accept(this);
+            memptr.Pointee = memptr.Pointee.Accept(this);
+            return memptr;
+        }
+
+        public DataType VisitPointer(Pointer ptr)
+        {
+            ptr.Pointee = ptr.Pointee.Accept(this);
+            return ptr;
+        }
+
+        public DataType VisitStructure(StructureType str)
+        {
+            foreach (var field in str.Fields)
+            {
+                field.DataType = field.DataType.Accept(this);
+            }
+            return str;
+        }
+
+        public DataType VisitTypeVar(TypeVariable tv)
+        {
+            return tv;
+        }
+
+        public DataType VisitUnion(UnionType ut)
+        {
+            List<TypeVariable> typeVars = new List<TypeVariable>();
+            foreach (UnionAlternative a in ut.Alternatives.Values)
+            {
+                TypeVariable tv = a.DataType as TypeVariable;
+                if (tv == null)
+                    return ut;
+                typeVars.Add(tv);
+            }
+
+            // Merge all the type variables.
+
+            EquivalenceClass eq = null;
+            foreach (TypeVariable tv in typeVars)
+            {
+                if (eq == null)
+                    eq = tv.Class;
+                else
+                    eq = store.MergeClasses(eq.Representative, tv);
+            }
+            eq.DataType = ut;
+            return eq.Representative;
+        }
+
+        public DataType VisitUnknownType(UnknownType unk)
+        {
+            return unk;
+        }
+    }
 }

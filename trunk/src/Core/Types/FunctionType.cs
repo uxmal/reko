@@ -45,16 +45,6 @@ namespace Decompiler.Core.Types
 			this.ArgumentNames = argumentNames;
 		}
 
-		public override DataType Accept(DataTypeTransformer t)
-		{
-			return t.TransformFunctionType(this);
-		}
-
-		public override void Accept(IDataTypeVisitor v)
-		{
-			v.VisitFunctionType(this);
-		}
-
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitFunctionType(this);

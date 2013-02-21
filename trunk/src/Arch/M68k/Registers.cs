@@ -29,26 +29,37 @@ namespace Decompiler.Arch.M68k
 {
     public static class Registers
     {
-        public static  DataRegister d0;
-        public static  DataRegister d1;
-        public static  DataRegister d2;
-        public static  DataRegister d3;
-        public static  DataRegister d4;
-        public static  DataRegister d5;
-        public static  DataRegister d6;
-        public static  DataRegister d7;
+        public static DataRegister d0;
+        public static DataRegister d1;
+        public static DataRegister d2;
+        public static DataRegister d3;
+        public static DataRegister d4;
+        public static DataRegister d5;
+        public static DataRegister d6;
+        public static DataRegister d7;
 
-        public static  AddressRegister a0;
-        public static  AddressRegister a1;
-        public static  AddressRegister a2;
-        public static  AddressRegister a3;
-        public static  AddressRegister a4;
-        public static  AddressRegister a5;
-        public static  AddressRegister a6;
-        public static  AddressRegister a7;
+        public static AddressRegister a0;
+        public static AddressRegister a1;
+        public static AddressRegister a2;
+        public static AddressRegister a3;
+        public static AddressRegister a4;
+        public static AddressRegister a5;
+        public static AddressRegister a6;
+        public static AddressRegister a7;
+
+        public static FpRegister fp0;
+        public static FpRegister fp1;
+        public static FpRegister fp2;
+        public static FpRegister fp3;
+        public static FpRegister fp4;
+        public static FpRegister fp5;
+        public static FpRegister fp6;
+        public static FpRegister fp7;
 
         public static readonly RegisterStorage ccr;
         public static readonly RegisterStorage sr;
+        public static readonly RegisterStorage usp;
+        public static readonly RegisterStorage pc;
 
         private static RegisterStorage[] regs;
 
@@ -72,8 +83,19 @@ namespace Decompiler.Arch.M68k
             a6 = new AddressRegister("a6", 14, PrimitiveType.Word32);
             a7 = new AddressRegister("a7", 15, PrimitiveType.Word32);
 
-            ccr = new RegisterStorage("ccr", 16, PrimitiveType.Byte);
-            sr = new RegisterStorage("sr", 17, PrimitiveType.Byte);
+            fp0 = new FpRegister("fp0", 16, PrimitiveType.Real64);
+            fp1 = new FpRegister("fp1", 17, PrimitiveType.Real64);
+            fp2 = new FpRegister("fp2", 18, PrimitiveType.Real64);
+            fp3 = new FpRegister("fp3", 19, PrimitiveType.Real64);
+            fp4 = new FpRegister("fp4", 20, PrimitiveType.Real64);
+            fp5 = new FpRegister("fp5", 21, PrimitiveType.Real64);
+            fp6 = new FpRegister("fp6", 22, PrimitiveType.Real64);
+            fp7 = new FpRegister("fp7", 23, PrimitiveType.Real64);
+
+            ccr = new RegisterStorage("ccr", 24, PrimitiveType.Byte);
+            sr = new RegisterStorage("sr", 25, PrimitiveType.Word16);
+            usp = new RegisterStorage("usp", 26, PrimitiveType.Word32);
+            pc = new RegisterStorage("pc", 27, PrimitiveType.Pointer32);
 
             regs = new RegisterStorage[] { 
                 d0, 
@@ -93,13 +115,48 @@ namespace Decompiler.Arch.M68k
                 a5, 
                 a6, 
                 a7, 
+
+                fp0,
+                fp1,
+                fp2,
+                fp3,
+                fp4,
+                fp5,
+                fp6,
+                fp7,
             };
         }
 
-        public static RegisterStorage GetRegister(int p)
+        public static RegisterStorage GetRegister(int reg)
         {
-            return regs[p];
+            return regs[reg];
         }
+
+        public static RegisterStorage DataRegister(int reg)
+        {
+            return regs[reg];
+        }
+
+        public static RegisterStorage AddressRegister(int reg)
+        {
+            return regs[reg + 8];
+        }
+
+        public static RegisterStorage FpRegister(int reg)
+        {
+            return regs[reg + 16];
+        }
+
+        public static RegisterStorage GetRegister(string name)
+        {
+            for (int i = 0; i < regs.Length; ++i)
+            {
+                if (regs[i] != null && String.Compare(regs[i].Name, name, true) == 0)
+                    return regs[i];
+            }
+            return RegisterStorage.None;
+        }
+
     }
 
     [Flags]
@@ -125,4 +182,13 @@ namespace Decompiler.Arch.M68k
         {
         }
     }
+
+    public class FpRegister : RegisterStorage
+    {
+        public FpRegister(string name, int number, PrimitiveType dt)
+            : base(name, number, dt)
+        {
+        }
+    }
+
 }
