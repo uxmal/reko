@@ -358,7 +358,6 @@ namespace Decompiler.Scanning
                 graph.RemoveEdge(blockToSplit, succ);
             }
 
-
             var linAddr = addr.Linear;
             foreach (var stm in blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr))
             {
