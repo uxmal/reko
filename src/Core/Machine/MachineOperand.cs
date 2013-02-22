@@ -138,6 +138,9 @@ namespace Decompiler.Core.Machine
         {
             return new ImmediateOperand(Constant.Word32(value));
         }
+
+        public static ImmediateOperand Word32(uint value) { return Word32((int) value); }
+
     }
 
     //$TODO: move into intel assembly.
