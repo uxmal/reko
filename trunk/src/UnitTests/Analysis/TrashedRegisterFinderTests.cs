@@ -582,5 +582,12 @@ const ebx:0x01231313
             RunTest("Fragments/regressions/r00007.asm", "Analysis/TrfReg00007.txt");
         }
 
+        [Test]
+        public void TrfProcIsolation()
+        {
+            RunTest("Fragments/multiple/procisolation.asm", "Analysis/TrfProcIsolation.txt");
+        }
+
+
     }
 }

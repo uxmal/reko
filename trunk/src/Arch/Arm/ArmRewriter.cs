@@ -74,16 +74,42 @@ namespace Decompiler.Arch.Arm
                 switch (di.Instruction.Opcode)
                 {
                 default:
-                    throw new AddressCorrelatedException(string.Format("Rewriting x86 opcode '{0}' is not supported yet.",
-                        di.Instruction.Opcode),
-                        di.Address);
+                    throw NYI();
                 case Opcode.add: RewriteBinOp(Operator.Add); break;
+                case Opcode.b: RewriteB(false); break;
                 case Opcode.mov:
                     emitter.Assign(Operand(di.Instruction.Dst), Operand(di.Instruction.Src1)); break;
                 case Opcode.orr: RewriteBinOp(Operator.Or); break;
                 case Opcode.sub: RewriteBinOp(Operator.Sub); break;
                 }
                 yield return ric;
+            }
+        }
+
+        private AddressCorrelatedException NYI()
+        {
+            return new AddressCorrelatedException(string.Format("Rewriting x86 opcode '{0}' is not supported yet.",
+                                    di.Instruction.Opcode),
+                                    di.Address);
+        }
+
+        private void RewriteB(bool link)
+        {
+            Address addr = ((AddressOperand)di.Instruction.Dst).Address;
+            if (link)
+            {
+                throw NYI();
+            }
+            else
+            {
+                if (di.Instruction.Cond == Condition.al)
+                {
+                    emitter.Goto(addr);
+                }
+                else
+                {
+                    emitter.Branch(TestCond(di.Instruction.Cond), addr);
+                }
             }
         }
 

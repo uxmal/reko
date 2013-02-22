@@ -112,5 +112,14 @@ namespace Decompiler.UnitTests.Arch.Arm
                 "1|r1 = r12 | r4 << 0x04");
         }
 
+        [Test]
+        public void brgt()
+        {
+            RewriteBits("1100 1010 000000000000000000000000");
+            AssertCode(
+                "0|00100000(4): 1 instructions",
+                "1|if (Test(GT,SCZO)) branch 00100008");
+        }
+
     }
 }
