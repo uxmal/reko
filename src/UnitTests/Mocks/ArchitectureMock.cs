@@ -88,11 +88,6 @@ namespace Decompiler.UnitTests.Mocks
             return rewriters[linAddr];
         }
 
-		public Dumper CreateDumper()
-		{
-			return new Dumper(this);
-		}
-
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
             throw new NotImplementedException();

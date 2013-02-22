@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2013 John Källén.
+ * Copyright (C) 1999-2013 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,21 +20,26 @@
 
 using Decompiler.Core;
 using System;
+using System.Collections.Generic;
 using System.Text;
-using System.IO;
 
-namespace Decompiler.Arch.X86
+namespace Decompiler.Arch.Arm
 {
-	public class IntelDumper : Dumper
-	{
-		private IntelArchitecture arch;
+    public class DisassembledInstruction
+    {
+        private Address addr;
+        private ArmInstruction instr;
+        private uint length;
 
-		public IntelDumper(IntelArchitecture arch)  : base(arch)
-		{
-			this.arch = arch;
-		}
+        public DisassembledInstruction(Address addr, ArmInstruction instr, uint length)
+        {
+            this.addr = addr;
+            this.instr = instr;
+            this.length = length;
+        }
 
-
-		
-	}
+        public Address Address { get { return addr; } }
+        public ArmInstruction Instruction { get { return instr; } }
+        public uint Length { get { return length; } }
+    }
 }

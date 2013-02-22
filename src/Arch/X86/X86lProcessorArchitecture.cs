@@ -92,11 +92,6 @@ namespace Decompiler.Arch.X86
 			return new IntelDisassembler(imageReader, WordWidth);
 		}
 
-		public virtual Dumper CreateDumper()
-		{
-			return new IntelDumper(this);
-		}
-
         public virtual Frame CreateFrame()
         {
             return new Frame(FramePointerType);

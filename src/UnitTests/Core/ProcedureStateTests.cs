@@ -79,11 +79,6 @@ namespace Decompiler.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public Dumper CreateDumper()
-            {
-                throw new NotImplementedException();
-            }
-
             public ProcessorState CreateProcessorState()
             {
                 throw new NotImplementedException();

@@ -61,11 +61,6 @@ namespace Decompiler.Arch.Pdp11
             return new Pdp11Disassembler(rdr, this);
         }
 
-        public Dumper CreateDumper()
-        {
-            return new Dumper(this);
-        }
-
         public Frame CreateFrame()
         {
             return new Frame(PrimitiveType.Word16);

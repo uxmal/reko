@@ -75,7 +75,7 @@ namespace Decompiler.Core
 		{
 			if (wr == null || arch == null)
 				return;
-			Dumper dump = arch.CreateDumper();
+			Dumper dump = new Dumper(arch);
 			dump.Dump(this, Image.Map, wr);
 		}
 

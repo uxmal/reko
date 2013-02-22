@@ -36,6 +36,9 @@ namespace Decompiler.Core
             this.arch = arch;
 		}
 
+        public bool ShowAddresses { get; set; }
+        public bool ShowCodeBytes { get; set; }
+
 		public void Dump(Program program, ImageMap map, TextWriter stm)
 		{
 			if (map == null)
@@ -163,11 +166,7 @@ namespace Decompiler.Core
                 writer.WriteLine("\t{0}", instr.ToString());
             }
         }
-
-
-		public bool ShowAddresses { get; set; }
-
-		public bool ShowCodeBytes { get; set; }
+		
 
 		public void WriteByteRange(ProgramImage image, Address begin, Address addrEnd, TextWriter writer)
 		{

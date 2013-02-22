@@ -308,6 +308,11 @@ namespace Decompiler.Scanning
             return true;        //$BUGBUG: The called procedure could be exit(), or ExitThread(), in which case we should return false.
         }
 
+        public bool VisitIf(RtlIf rtlIf)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitReturn(RtlReturn ret)
         {
             var proc = blockCur.Procedure;

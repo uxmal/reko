@@ -18,20 +18,37 @@
  */
 #endregion
 
+using Decompiler.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace Decompiler.Core.Rtl
 {
-    public interface RtlInstructionVisitor<T>
+    /// <summary>
+    /// Models conditionally executed statements, like those that appear in ARM.
+    /// </summary>
+    public class RtlIf : RtlInstruction
     {
-        T VisitAssignment(RtlAssignment ass);
-        T VisitBranch(RtlBranch branch);
-        T VisitCall(RtlCall call);
-        T VisitGoto(RtlGoto go);
-        T VisitIf(RtlIf rtlIf);
-        T VisitReturn(RtlReturn ret);
-        T VisitSideEffect(RtlSideEffect side);
+        public RtlIf(Expression condition, RtlInstruction instr)
+        {
+            this.Condition = condition;
+            this.Instruction = instr;
+        }
+
+        public override T Accept<T>(RtlInstructionVisitor<T> visitor)
+        {
+            return visitor.VisitIf(this);
+        }
+
+        public Expression Condition { get; private set; }
+        public RtlInstruction Instruction { get; private set; }
+
+        protected override void WriteInner(TextWriter writer)
+        {
+            writer.Write("if ({0}) ", Condition);
+            Instruction.Write(writer);
+        }
     }
 }

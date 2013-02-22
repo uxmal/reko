@@ -1,20 +1,20 @@
-#region license
+#region License
 /* 
- * copyright (c) 1999-2013 john källén.
+ * Copyright (C) 1999-2013 John Källén.
  *
- * this program is free software; you can redistribute it and/or modify
- * it under the terms of the gnu general public license as published by
- * the free software foundation; either version 2, or (at your option)
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
- * this program is distributed in the hope that it will be useful,
- * but without any warranty; without even the implied warranty of
- * merchantability or fitness for a particular purpose.  see the
- * gnu general public license for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * you should have received a copy of the gnu general public license
- * along with this program; see the file copying.  if not, write to
- * the free software foundation, 675 mass ave, cambridge, ma 02139, usa.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
 
@@ -62,8 +62,8 @@ namespace Decompiler.Arch.Arm
         private ArmProcessorArchitecture arch;
         private ImageReader rdr;
         private ArmInstruction arm;
-        private OpFlags flag;
         private uint addr;
+        private uint instr;
 
         private static Opcode[] dataprocessingOps = new Opcode[16] {
             Opcode.and, Opcode.eor, Opcode.sub, Opcode.rsb, 
@@ -99,18 +99,15 @@ namespace Decompiler.Arch.Arm
             this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
             return arm;
         }
-        public ArmInstruction Disassemble(word instr)
-        {
-            return Disassemble(instr, new DisOptions());
-        }
 
         public ArmInstruction Disassemble(word instr, DisOptions opts)
         {
+            this.instr = instr;
             DumpBits(instr);
-            DumpBits((0x0FB00FF0));
-            DumpBits((instr & 0x0FB00FF0));
             arm = new ArmInstruction();
-            arm.Cond = ConditionField(instr);
+            arm.Cond = ConditionField();
+            if (arm.Cond == Condition.nv)
+                return DecodeUnconditional();
             switch ((instr >> 24) & 0xF)
             {
             case 0x0:
@@ -130,7 +127,7 @@ namespace Decompiler.Arch.Arm
                 }
                 else
                 {
-                    DecodeAluInstruction(instr);
+                    DecodeAluInstruction();
                 }
                 break;
             case 0x1:
@@ -141,17 +138,17 @@ namespace Decompiler.Arch.Arm
                 }
                 else
                 {
-                    DecodeAluInstruction(instr);
+                    DecodeAluInstruction();
                 }
                 break;
             case 0x2: case 0x3:
-                DecodeAluInstruction(instr);
+                DecodeAluInstruction();
                 break;
             case 0x4: 
             case 0x5:
             case 0x6:
             case 0x7:
-                DecodeSingleDataTransfer(instr);
+                DecodeSingleDataTransfer();
                 break;
             case 0xA:
                 arm.Opcode = Opcode.b;
@@ -165,7 +162,7 @@ namespace Decompiler.Arch.Arm
             return arm;
         }
 
-        private void DecodeAluInstruction(word instr)
+        private void DecodeAluInstruction()
         {
             uint encodedOp = (instr >> 21) & 0xF;
             arm.Opcode = dataprocessingOps[encodedOp];
@@ -188,7 +185,7 @@ namespace Decompiler.Arch.Arm
             }
         }
 
-        private void DecodeSingleDataTransfer(word instr)
+        private void DecodeSingleDataTransfer()
         {
             switch ((instr >> 21) & 2 | (instr >> 20) & 1)
             {
@@ -200,6 +197,54 @@ namespace Decompiler.Arch.Arm
             DecodeOperands(instr, "3,/");
         }
 
+        private ArmInstruction DecodeUnconditional()
+        {
+            arm.Cond = Condition.al;
+            switch ((instr >> 24) & 0xF)
+            {
+            case 0: case 1: case 2: case 3:
+            case 4: case 5: case 6: case 7:
+                return DecodeMiscSimd();
+            case 8: case 9:
+                // SRS / RFE 
+            case 0xA: case 0xB:
+                // Branch with link and exchange
+            case 0xC: case 0xD: 
+                // Stored load coprocessor
+            case 0xE:
+                // Coprocessor data operations.
+            case 0xF:
+            default:
+                return ThrowIllegalInstruction(instr);
+            }
+        }
+
+        private ArmInstruction DecodeMiscSimd()
+        {
+            switch ((instr >> 20) & 0x7F)
+            {
+            case 0x10:
+                if (instr == 0xF1010000)
+                {
+                    arm.Opcode = Opcode.setendle;
+                    return arm;
+                }
+                else if (instr == 0xF1010200)
+                {
+                    arm.Opcode = Opcode.setendbe;
+                    return arm;
+                }
+                return ThrowIllegalInstruction(instr);
+            }
+            return ThrowIllegalInstruction(instr);
+        }
+
+
+        private ArmInstruction ThrowIllegalInstruction(uint instr)
+        {
+            throw new NotSupportedException(string.Format("Invalid instruction {0:X8}", instr));
+        }
+
         private static bool Bit_S_Set(word instr)
         {
             return ((instr >> 20) & 1) != 0;
@@ -208,7 +253,7 @@ namespace Decompiler.Arch.Arm
         private static bool Bit_20_Set(word instr) { return ((instr >> 20) & 1) != 0; }
         private static bool BitN_Set(word instr, int n) { return ((instr >> n) & 1) != 0; }
 
-        private Condition ConditionField(word instr)
+        private Condition ConditionField()
         {
             return (Condition)(instr >> 28);
         }
@@ -249,7 +294,7 @@ namespace Decompiler.Arch.Arm
                     uint dstAddr = (uint)(addr + 8 + offset);
                     ops[iOp] = new AddressOperand(new Address(dstAddr));
                     break;
-                case '/':
+                case '/':   // Format for ldr, str
                     ops[iOp] = DecodeIndirectOperand(instr);
                     break;
                 case 'I':   // Indirect register, nibble in following character.
