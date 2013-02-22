@@ -63,6 +63,8 @@ namespace Decompiler.Arch.Arm
         rsc,
         sbc,
         sel,
+        setendbe,
+        setendle,
         sfm,
         smlad,
         smlald,

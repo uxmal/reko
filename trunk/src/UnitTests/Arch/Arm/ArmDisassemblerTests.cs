@@ -28,10 +28,9 @@ using System.Text;
 
 namespace Decompiler.UnitTests.Arch.Arm
 {
-    [TestFixture]
-    public class ArmDisassemblerTests
+    public class ArmTestBase
     {
-        private static ArmInstruction Disassemble(byte[] bytes)
+        protected static ArmInstruction Disassemble(byte[] bytes)
         {
             var image = new ProgramImage(new Address(0x00100000), bytes);
             var dasm = new ArmDisassembler3(new ArmProcessorArchitecture(), image.CreateReader(0));
@@ -39,7 +38,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             return instr;
         }
 
-        private static ArmInstruction Disassemble(uint instr)
+        protected static ArmInstruction Disassemble(uint instr)
         {
             var image = new ProgramImage(new Address(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
@@ -48,7 +47,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             return dasm.Disassemble();
         }
 
-        private static ArmInstruction DisassembleBits(string bitPattern)
+        protected static ArmInstruction DisassembleBits(string bitPattern)
         {
             var image = new ProgramImage(new Address(0x00100000), new byte[4]);
             LeImageWriter w = new LeImageWriter(image.Bytes);
@@ -58,7 +57,7 @@ namespace Decompiler.UnitTests.Arch.Arm
             return dasm.Disassemble();
         }
 
-        private static uint ParseBitPattern(string bitPattern)
+        protected static uint ParseBitPattern(string bitPattern)
         {
             int cBits = 0;
             uint instr = 0;
@@ -77,7 +76,11 @@ namespace Decompiler.UnitTests.Arch.Arm
                 throw new ArgumentException("Bit pattern didn't contain exactly 32 binary digits.", "bitPattern");
             return instr;
         }
+    }
 
+    [TestFixture]
+    public class ArmDisassemblerTests : ArmTestBase
+    {
         [Test]
         public void Cond_Eq()
         {
@@ -237,6 +240,16 @@ namespace Decompiler.UnitTests.Arch.Arm
         {
             var instr = DisassembleBits("1110 0001 0100 0101 0110 000000000000");
             Assert.AreEqual("cmp\tr5,r0", instr.ToString());
+        }
+
+        [Test]
+        public void setend()
+        {
+            var instr = DisassembleBits("11110 0010000 000 1 00000000 0000 0000");
+            Assert.AreEqual("setendle", instr.ToString());
+            instr = DisassembleBits("11110 0010000 000 1 00000010 0000 0000");
+            Assert.AreEqual("setendbe", instr.ToString());
+
         }
     }
 }

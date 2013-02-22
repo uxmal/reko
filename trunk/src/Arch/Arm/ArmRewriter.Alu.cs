@@ -18,20 +18,32 @@
  */
 #endregion
 
+using Decompiler.Core;
+using Decompiler.Core.Expressions;
+using Decompiler.Core.Operators;
+using Decompiler.Core.Lib;
+using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
+using Decompiler.Core.Types;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Decompiler.Core.Rtl
+namespace Decompiler.Arch.Arm
 {
-    public interface RtlInstructionVisitor<T>
+    public partial class ArmRewriter : Rewriter
     {
-        T VisitAssignment(RtlAssignment ass);
-        T VisitBranch(RtlBranch branch);
-        T VisitCall(RtlCall call);
-        T VisitGoto(RtlGoto go);
-        T VisitIf(RtlIf rtlIf);
-        T VisitReturn(RtlReturn ret);
-        T VisitSideEffect(RtlSideEffect side);
+        private void RewriteBinOp(Operator op)
+        {
+            var opDst = this.Operand(di.Instruction.Dst);
+            var opSrc1 = this.Operand(di.Instruction.Src1);
+            var opSrc2 = this.Operand(di.Instruction.Src2);
+            AddConditional(new RtlAssignment(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2)));
+            if (di.Instruction.OpFlags == OpFlags.S)
+            {
+                emitter.Assign(frame.EnsureFlagGroup(0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));
+            }
+        }
     }
 }

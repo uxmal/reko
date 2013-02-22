@@ -34,7 +34,6 @@ namespace Decompiler.Core
 	{
         Disassembler CreateDisassembler(ImageReader imageReader);
 
-		Dumper CreateDumper();
 		ProcessorState CreateProcessorState();
 		BitSet CreateRegisterBitset();
         Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);

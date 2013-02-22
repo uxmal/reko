@@ -108,6 +108,7 @@
     <Compile Include="Analysis\VariableLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
     <Compile Include="Arch\Arm\ArmDisassemblerTests.cs" />
+    <Compile Include="Arch\Arm\ArmRewriterTests.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
     <Compile Include="Arch\Intel\FstswChainMatcherTests.cs" />
     <Compile Include="Arch\PowerPC\InstructionBuilder.cs" />

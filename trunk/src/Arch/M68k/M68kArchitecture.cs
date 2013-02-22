@@ -37,11 +37,6 @@ namespace Decompiler.Arch.M68k
             return new M68kDisassembler(rdr);
         }
 
-        public Dumper CreateDumper()
-        {
-            return new Dumper(this);
-        }
-
         public ProcessorState CreateProcessorState()
         {
             return new M68kState(this);

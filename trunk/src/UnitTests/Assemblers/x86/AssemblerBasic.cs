@@ -83,7 +83,7 @@ namespace Decompiler.UnitTests.Assemblers.x86
 
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Dumper dumper = asm.Architecture.CreateDumper();
+				Dumper dumper = new Dumper(asm.Architecture);
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
 				dumper.DumpData(prog.Image, prog.Image.BaseAddress, prog.Image.Bytes.Length, fut.TextWriter);
@@ -124,7 +124,7 @@ hello	endp
 				prog.Image = img;
 				IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
 				prog.Architecture = arch;
-				Dumper d = new IntelDumper(arch);
+				Dumper d = new Dumper(arch);
 				d.DumpData(prog.Image, img.BaseAddress, img.Bytes.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
@@ -242,7 +242,7 @@ foo		endp
             }
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
-				IntelDumper dump = new IntelDumper(arch);
+				Dumper dump = new Dumper(arch);
 				dump.DumpData(asm.Image, asm.Image.BaseAddress, asm.Image.Bytes.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
@@ -369,7 +369,7 @@ foo		endp
             }
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				Dumper dump = asm.Architecture.CreateDumper();
+				Dumper dump = new Dumper(asm.Architecture);
 				dump.DumpData(asm.Image, asm.Image.BaseAddress, asm.Image.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;

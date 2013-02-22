@@ -96,11 +96,6 @@ namespace Decompiler.Arch.PowerPC
             return new PowerPcDisassembler(this, rdr, WordWidth);
         }
 
-        public Dumper CreateDumper()
-        {
-            throw new NotImplementedException();
-        }
-
         public Frame CreateFrame()
         {
             return new Frame(FramePointerType); 

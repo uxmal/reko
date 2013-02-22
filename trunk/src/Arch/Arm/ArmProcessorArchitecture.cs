@@ -1,4 +1,24 @@
-﻿using Decompiler.Core;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2013 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Types;
 using Decompiler.Core.Machine;
@@ -19,17 +39,12 @@ namespace Decompiler.Arch.Arm
 
         public Disassembler CreateDisassembler(ImageReader imageReader)
         {
-            throw new NotImplementedException();
-        }
-
-        public Dumper CreateDumper()
-        {
-            throw new NotImplementedException();
+            return new ArmDisassembler2(this, imageReader);
         }
 
         public ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new ArmProcessorState(this);
         }
 
         public BitSet CreateRegisterBitset()
@@ -37,10 +52,9 @@ namespace Decompiler.Arch.Arm
             throw new NotImplementedException();
         }
 
-
         public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame);
         }
 
         public Frame CreateFrame()

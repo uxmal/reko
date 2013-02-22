@@ -56,7 +56,7 @@ namespace Decompiler.Gui.Windows
                     lines = 1;
                 var writer = new StringWriter();
                 var arch = Decompiler.Program.Architecture;
-                var dumper = arch.CreateDumper();
+                var dumper = new Dumper(arch);
                 dumper.ShowAddresses = true;
                 dumper.ShowCodeBytes = true;
                 var image = Decompiler.Program.Image;

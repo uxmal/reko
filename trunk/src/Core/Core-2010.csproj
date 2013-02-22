@@ -189,6 +189,7 @@
     <Compile Include="Rtl\RtlCall.cs" />
     <Compile Include="Rtl\RtlEmitter.cs" />
     <Compile Include="Rtl\RtlGoto.cs" />
+    <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="Rtl\RtlInstruction.cs" />
     <Compile Include="Rtl\RtlInstructionVisitor.cs" />
     <Compile Include="Rtl\RtlReturn.cs" />
