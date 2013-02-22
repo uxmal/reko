@@ -59,6 +59,322 @@ namespace Decompiler.Arch.Arm
 
     public class ArmDisassembler2 : Disassembler
     {
+        private ArmProcessorArchitecture arch;
+        private ImageReader rdr;
+        private ArmInstruction arm;
+        private OpFlags flag;
+        private uint addr;
+
+        private static Opcode[] dataprocessingOps = new Opcode[16] {
+            Opcode.and, Opcode.eor, Opcode.sub, Opcode.rsb, 
+            Opcode.add, Opcode.adc, Opcode.sbc, Opcode.rsc,
+            Opcode.tst, Opcode.teq, Opcode.cmp, Opcode.cmn,
+            Opcode.orr, Opcode.mov, Opcode.bic, Opcode.mvn,
+        };
+        private static Opcode[] shiftTypes = new Opcode[4] { 
+            Opcode.lsl, Opcode.lsr, Opcode.asr, Opcode.ror 
+        };
+
+        public class DisOptions
+        {
+        }
+
+        public ArmDisassembler2(ArmProcessorArchitecture arch, ImageReader rdr)
+        {
+            this.arch = arch;
+            this.rdr = rdr;
+        }
+        public Address Address { get { return rdr.Address; } }
+
+        public MachineInstruction DisassembleInstruction()
+        {
+            addr = rdr.Address.Linear;
+            this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
+            return arm;
+        }
+
+        public ArmInstruction Disassemble()
+        {
+            addr = rdr.Address.Linear;
+            this.Disassemble(rdr.ReadLeUInt32(), new DisOptions());
+            return arm;
+        }
+        public ArmInstruction Disassemble(word instr)
+        {
+            return Disassemble(instr, new DisOptions());
+        }
+
+        public ArmInstruction Disassemble(word instr, DisOptions opts)
+        {
+            DumpBits(instr);
+            DumpBits((0x0FB00FF0));
+            DumpBits((instr & 0x0FB00FF0));
+            arm = new ArmInstruction();
+            arm.Cond = ConditionField(instr);
+            switch ((instr >> 24) & 0xF)
+            {
+            case 0x0:
+                if ((instr & 0x0FE000F0) == 0x00000090)
+                {
+                    arm.Opcode = Opcode.mul;
+                    if (Bit_S_Set(instr))
+                        arm.OpFlags = OpFlags.S;
+                    DecodeOperands(instr, "4,0,2");
+                }
+                else if ((instr & 0x0FE000F0) == 0x00200090)
+                {
+                    arm.Opcode = Opcode.mla;
+                    if (Bit_S_Set(instr))
+                        arm.OpFlags = OpFlags.S;
+                    DecodeOperands(instr, "4,0,2,3");
+                }
+                else
+                {
+                    DecodeAluInstruction(instr);
+                }
+                break;
+            case 0x1:
+                if ((instr & 0x0FB00FF0) == 0x01000090)
+                {
+                    arm.Opcode = BitN_Set(instr, 22) ? Opcode.swpb : Opcode.swp;
+                    DecodeOperands(instr, "3,0,I4");
+                }
+                else
+                {
+                    DecodeAluInstruction(instr);
+                }
+                break;
+            case 0x2: case 0x3:
+                DecodeAluInstruction(instr);
+                break;
+            case 0x4: 
+            case 0x5:
+            case 0x6:
+            case 0x7:
+                DecodeSingleDataTransfer(instr);
+                break;
+            case 0xA:
+                arm.Opcode = Opcode.b;
+                DecodeOperands(instr, "&");
+                break;
+            case 0xB:
+                arm.Opcode = Opcode.bl;
+                DecodeOperands(instr, "&");
+                break;
+            }
+            return arm;
+        }
+
+        private void DecodeAluInstruction(word instr)
+        {
+            uint encodedOp = (instr >> 21) & 0xF;
+            arm.Opcode = dataprocessingOps[encodedOp];
+            if (Bit_S_Set(instr))
+                arm.OpFlags = OpFlags.S;
+            switch (encodedOp)
+            {
+            case 0: case 1: case 2: case 3:
+            case 4: case 5: case 6: case 7:
+            case 0xC: case 0xE:
+                DecodeOperands(instr, "3,4,*");
+                break;
+            case 8: case 9: case 0xA: case 0xB:
+                DecodeOperands(instr, "4,*");
+                arm.OpFlags = OpFlags.None;
+                break;
+            case 0xD: case 0xF:
+                DecodeOperands(instr, "3,*");
+                break;
+            }
+        }
+
+        private void DecodeSingleDataTransfer(word instr)
+        {
+            switch ((instr >> 21) & 2 | (instr >> 20) & 1)
+            {
+            case 0: arm.Opcode = Opcode.str; break;
+            case 1: arm.Opcode = Opcode.ldr; break;
+            case 2: arm.Opcode = Opcode.strb; break;
+            case 3: arm.Opcode = Opcode.ldrb; break;
+            }
+            DecodeOperands(instr, "3,/");
+        }
+
+        private static bool Bit_S_Set(word instr)
+        {
+            return ((instr >> 20) & 1) != 0;
+        }
+
+        private static bool Bit_20_Set(word instr) { return ((instr >> 20) & 1) != 0; }
+        private static bool BitN_Set(word instr, int n) { return ((instr >> n) & 1) != 0; }
+
+        private Condition ConditionField(word instr)
+        {
+            return (Condition)(instr >> 28);
+        }
+
+        [Conditional("DEBUG")]
+        public static void DumpBits(word instr)
+        {
+            string [] b = new string[16] {
+                "0000", "0001", "0010", "0011", 
+                "0100", "0101", "0110", "0111", 
+                "1000", "1001", "1010", "1011", 
+                "1100", "1101", "1110", "1111",
+            };
+            Debug.Print("{0} {1} {2} {3} {4} {5} {6} {7}",
+                b[(instr >> 28) & 15], b[(instr >> 24) & 15], b[(instr >> 20) & 15], b[(instr >> 16) & 15],
+                b[(instr >> 12) & 15], b[(instr >> 8) & 15], b[(instr >> 4) & 15], b[(instr) & 15]);
+        }
+
+        private void DecodeOperands(word instr, string format)
+        {
+            var ops = new MachineOperand[4];
+            int iOp = 0;
+            for (int i = 0; i < format.Length; ++i)
+            {
+                char ch = format[i];
+                switch (ch)
+                {
+                default:
+                    throw new NotImplementedException(string.Format("Unknown format character '{0}'.", ch));
+                case '0': case '1': case '2': case '3': case '4':
+                    ops[iOp] = new RegisterOperand(ArmRegisters.Registers[(instr >> ((ch - '0') << 2)) & 0xF]);
+                    break;
+                case '*':
+                    ops[iOp] = DecodeImmediateOperand(instr);
+                    break;
+                case '&':   // Offset for b and bl instructions.
+                    int offset = ((int)instr << 8) >> 6;
+                    uint dstAddr = (uint)(addr + 8 + offset);
+                    ops[iOp] = new AddressOperand(new Address(dstAddr));
+                    break;
+                case '/':
+                    ops[iOp] = DecodeIndirectOperand(instr);
+                    break;
+                case 'I':   // Indirect register, nibble in following character.
+                    ops[iOp] = new ArmMemoryOperand(null, ArmRegisters.Registers[(instr >> ((format[++i] - '0') << 2)) & 0xF]);
+                    break;
+                case ',':
+                    ++iOp;
+                    break;
+                }
+            }
+            if (ops[0] != null)
+            {
+                arm.Dst = ops[0];
+                if (ops[1] != null)
+                {
+                    arm.Src1 = ops[1];
+                    if (ops[2] != null)
+                    {
+                        arm.Src2 = ops[2];
+                        if (ops[3] != null)
+                        {
+                            arm.Src3 = ops[3];
+                        }
+                    }
+                }
+            }
+            Debug.Print("{0} {1} {2} {3}", arm.Dst != null, arm.Src1 != null, arm.Src2 != null, arm.Src3 != null);
+        }
+
+        private MachineOperand DecodeImmediateOperand(word instr)
+        {
+            if (((instr >> 25) & 1) == 0)
+            {
+                return DecodeShiftOperand(instr);
+            }
+            else
+            {
+                // Immediate value in bits 0..7, rotate amount in 8..11
+                uint imm8 = instr & 0xFF;
+                int rotAmt = (int)((instr >> 7) & 0x1E);
+                return ArmImmediateOperand.Word32((imm8 >> rotAmt) | (imm8 << (32 - rotAmt)));
+            }
+        }
+
+        private MachineOperand DecodeShiftOperand(word instr)
+        {
+            // Register (with shift) in 0..11
+            var shiftType = shiftTypes[(instr >> 5) & 3];
+            var reg = get_regop(instr & 0xF);
+            if ((instr & (1 << 4)) == 0)
+            {
+                // Shift by immediate amount in 7..11
+                int immShift = (int)((instr >> 7) & 0x1F);
+                if (immShift == 0)
+                {
+                    switch (shiftType)
+                    {
+                    case Opcode.lsl:
+                        // Special case: use Rm directly.
+                        return reg;
+                    case Opcode.lsr:
+                    case Opcode.asr:
+                        // Special case: lsr,asr #0 is actually lsr,asr #32
+                        immShift = 32;
+                        break;
+                    case Opcode.ror:
+                        // Special case: ror 0 is actually rrx 1
+                        shiftType = Opcode.rrx;
+                        immShift = 1;
+                        break;
+                    }
+                }
+                return new ShiftOperand(reg, shiftType, immShift);
+            }
+            else
+            {
+                // Shift by register in 8..11
+                return new ShiftOperand(reg, shiftType, get_regop(instr >> 8));
+            }
+        }
+
+        private ArmMemoryOperand DecodeIndirectOperand(uint instr)
+        {
+            var rn = ArmRegisters.Registers[(instr >> 16) & 0xF];
+            MachineOperand offset;
+            if (((instr >> 25) & 1) == 0)
+            {
+                // Offset is 12-bit immediate value-
+                var o = instr & 0xFFF;
+                offset = o != 0 ? ArmImmediateOperand.Word32(o) : null;
+            }
+            else
+            {
+                // Offset is shifted register
+                offset = DecodeShiftOperand(instr);
+            }
+            if (((instr >> 24) & 1) == 0)
+            {
+                // Post index
+                return new ArmMemoryOperand(null, rn, offset)
+                {
+                    Preindexed = false,
+                    Subtract = BitN_Set(instr, 23),
+                };
+            }
+            else
+            {
+                // Pre index
+                return new ArmMemoryOperand(null, rn, offset)
+                {
+                    Preindexed = true,
+                    Writeback = BitN_Set(instr, 21),
+                    Subtract = BitN_Set(instr, 23),
+                };
+            }
+        }
+
+        private static RegisterOperand get_regop(addrdiff bits)
+        {
+            return new RegisterOperand(ArmRegisters.Registers[bits&0xF]);
+        }
+    }
+
+    public class ArmDisassembler3 : Disassembler
+    {
 
         /* (*This* comment is NOT part of the notice mentioned in the
          * distribution conditions above.)
@@ -106,7 +422,7 @@ namespace Decompiler.Arch.Arm
         private OpFlags flag;
         private uint addr;
 
-        public ArmDisassembler2(ArmProcessorArchitecture arch, ImageReader rdr)
+        public ArmDisassembler3(ArmProcessorArchitecture arch, ImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -820,7 +1136,7 @@ namespace Decompiler.Arch.Arm
                 c = f.Current;
                 switch (c)
                 {
-                case '$':
+                case '$':   // Immediate operand.
                     operands.Add(new ImmediateOperand(Constant.Word32(instr & 0x00FFFFFF)));
                     result.is_SWI = true;
                     result.swinum = instr & 0x00FFFFFF;
@@ -832,7 +1148,7 @@ namespace Decompiler.Arch.Arm
                     //else
                     op.AppendFormat("&{0:X}", result.swinum);
                     break;
-                case '%':
+                case '%':   // Register range
                     operands.Add(new RegisterRangeOperand(instr & 0xFFFF));
                     break;
                 case '&':

@@ -19,6 +19,7 @@
 #endregion
 
 using Decompiler.Core;
+using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Types;
 using System;
@@ -41,6 +42,19 @@ namespace Decompiler.Arch.Arm
             this.Opcode = opcode;
         }
 
+        public ShiftOperand(MachineOperand op, Opcode opcode, int shAmt)
+            : this(op, opcode, new ImmediateOperand(Constant.Byte((byte)shAmt)))
+        {
+        }
+
+        public ShiftOperand(MachineOperand op, Opcode opcode, MachineOperand shAmt)
+            : base(op.Width)
+        {
+            this.Operand = op;
+            this.Opcode = opcode;
+            this.Shift = shAmt;
+        }
+        public MachineOperand Operand { get; set; }
         public Opcode Opcode { get; set; }
         public MachineOperand Shift { get; set; }
     }

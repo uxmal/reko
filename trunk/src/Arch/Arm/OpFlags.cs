@@ -29,15 +29,15 @@ namespace Decompiler.Arch.Arm
     public enum OpFlags : short
     {
         None,
-        S = 0,
-        D = 1,
-        E = 2,
-        P = 3,
+        S = 1,
+        D = 2,
+        E = 3,
+        P = 4,
 
         // Rounding modes
-        Pl = 4,
-        Mi = 5,
-        Zr = 6,
+        Pl = 5,
+        Mi = 6,
+        Zr = 7,
 
         L = 0x10,
      

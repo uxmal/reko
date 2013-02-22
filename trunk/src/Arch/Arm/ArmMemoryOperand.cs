@@ -33,7 +33,6 @@ namespace Decompiler.Arch.Arm
         public ArmMemoryOperand(PrimitiveType width, RegisterStorage regBase) :base(width)
         {
             Base = regBase;
-
         }
 
         public ArmMemoryOperand(PrimitiveType width, RegisterStorage regBase, MachineOperand offset) : base(width)
@@ -46,5 +45,6 @@ namespace Decompiler.Arch.Arm
         public MachineOperand Offset;
         public bool Preindexed;
         public bool Writeback;
+        public bool Subtract;
     }
 }

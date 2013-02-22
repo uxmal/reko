@@ -41,13 +41,13 @@ namespace Decompiler.Arch.Arm
         {
             var sb = new StringWriter();
             sb.Write(Opcode.ToString());
-            if (OpFlags != OpFlags.None)
-                sb.Write(OpFlags.ToString());
             if (Cond != Condition.al)
                 sb.Write(Cond.ToString());
-            sb.Write('\t');
+            if (OpFlags != OpFlags.None)
+                sb.Write(OpFlags.ToString().ToLower());
             if (Dst != null)
             {
+                sb.Write('\t');
                 Write(Dst, sb);
                 if (Src1 != null)
                 {
@@ -73,6 +73,7 @@ namespace Decompiler.Arch.Arm
             var imm = op as ImmediateOperand;
             if (imm != null)
             {
+                writer.Write("#");
                 int imm8 = imm.Value.ToInt32();
                 if (imm8 > 256 && ((imm8 & (imm8 - 1)) == 0))
                 {
@@ -93,11 +94,14 @@ namespace Decompiler.Arch.Arm
                 }
                 else
                 {
+                    var fmt = (-9 <= imm8 && imm8 <= 9) ? "{0}{1}" : "&{0}{1:X}";
+                    var sign = "";
                     if (((int)imm8) < 0 && ((int)imm8) > -100)
                     {
-                        writer.Write('-'); imm8 = -imm8;
+                        imm8 = -imm8;
+                        sign = "-";
                     }
-                    writer.Write(imm8);
+                    writer.Write(fmt,sign,imm8);
                 }
                 return;
             }
@@ -117,17 +121,21 @@ namespace Decompiler.Arch.Arm
                 {
                     if (mem.Preindexed)
                     {
-                        writer.Write("],");
+                        writer.Write(",");
+                        if (mem.Subtract)
+                            writer.Write("-");
                         Write(mem.Offset, writer);
+                        writer.Write("]");
+                        if (mem.Writeback)
+                            writer.Write("!");
                     }
                     else
                     {
-                        writer.Write(",");
+                        writer.Write("],");
+                        if (mem.Subtract)
+                            writer.Write("-");
                         Write(mem.Offset, writer);
-                        writer.Write("]");
                     }
-                    if (mem.Writeback)
-                        writer.Write("!");
                 }
                 else
                     writer.Write(']');
@@ -136,6 +144,8 @@ namespace Decompiler.Arch.Arm
             var sh = op as ShiftOperand;
             if (sh != null)
             {
+                Write(sh.Operand, writer);
+                writer.Write(",");
                 writer.Write(sh.Opcode);
                 writer.Write(' ');
                 Write(sh.Shift, writer);

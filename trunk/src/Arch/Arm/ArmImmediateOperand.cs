@@ -38,9 +38,11 @@ namespace Decompiler.Arch.Arm
         }
 
         private new static ArmImmediateOperand Word32(int w) { return new ArmImmediateOperand(Constant.Word32(w)); }
+        private new static ArmImmediateOperand Word32(uint w) { return new ArmImmediateOperand(Constant.Word32((int)w)); }
 
         public override void Write(bool fExplicit, TextWriter writer)
         {
+            writer.Write("#");
             int imm8 = Value.ToInt32();
             if (imm8 > 256 && ((imm8 & (imm8 - 1)) == 0))
             {
@@ -65,7 +67,7 @@ namespace Decompiler.Arch.Arm
                 {
                     writer.Write('-'); imm8 = -imm8;
                 }
-                writer.Write(imm8);
+                writer.Write("&{0:X}", imm8);
             }
         }
     }
