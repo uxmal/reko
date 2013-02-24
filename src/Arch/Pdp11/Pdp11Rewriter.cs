@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Pdp11
 {
-    public class Pdp11Rewriter : Rewriter
+    public class Pdp11Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private Pdp11Architecture arch;
 

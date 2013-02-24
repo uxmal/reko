@@ -37,7 +37,7 @@ namespace Decompiler.UnitTests.Mocks
         private Dictionary<string, Procedure> nameToProcedure = new Dictionary<string, Procedure>();
 		private List<ProcUpdater> unresolvedProcedures = new List<ProcUpdater>();
 
-		public ProgramBuilder() : this(new ArchitectureMock())
+		public ProgramBuilder() : this(new FakeArchitecture())
 		{
 		}
 
@@ -91,7 +91,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public Program BuildProgram()
         {
-            return BuildProgram(new ArchitectureMock());
+            return BuildProgram(new FakeArchitecture());
         }
 
 		public Program BuildProgram(IProcessorArchitecture arch)

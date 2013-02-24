@@ -155,7 +155,7 @@ namespace Decompiler.UnitTests.Typing
 		public void Setup()
 		{
             prog = new Program();
-            prog.Architecture = new ArchitectureMock();
+            prog.Architecture = new FakeArchitecture();
 			factory = prog.TypeFactory;
 			store = prog.TypeStore;
 			handler = new MockTraitHandler(store);

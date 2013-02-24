@@ -94,7 +94,7 @@ namespace Decompiler.UnitTests.Analysis
                 m.Return();
             });
 
-            var ctx = new SymbolicEvaluationContext(new ArchitectureMock(), proc.Frame);
+            var ctx = new SymbolicEvaluationContext(new FakeArchitecture(), proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 
@@ -117,7 +117,7 @@ namespace Decompiler.UnitTests.Analysis
                 m.Return();
             });
 
-            var ctx = new SymbolicEvaluationContext(new ArchitectureMock(), proc.Frame);
+            var ctx = new SymbolicEvaluationContext(new FakeArchitecture(), proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 

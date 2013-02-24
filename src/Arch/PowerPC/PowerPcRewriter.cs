@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Decompiler.Arch.PowerPC
 {
-    public class PowerPcRewriter : Rewriter
+    public class PowerPcRewriter : IEnumerable<RtlInstructionCluster>
     {
         private IEnumerator<PowerPcInstruction> instrs;
         private Frame frame;

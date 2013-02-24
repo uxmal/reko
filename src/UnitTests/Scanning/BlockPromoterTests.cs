@@ -42,7 +42,7 @@ namespace Decompiler.UnitTests.Scanning
             BuildSimpleProc(out m, out blockToPromote);
 
             Procedure promotedProcedure = Procedure.Create(new Address(0x123450), new Frame(PrimitiveType.Word32));
-            var blockPromoter = new BlockPromoter(blockToPromote, promotedProcedure, new ArchitectureMock());
+            var blockPromoter = new BlockPromoter(blockToPromote, promotedProcedure, new FakeArchitecture());
             blockPromoter.Promote();
 
             var sw = new StringWriter();

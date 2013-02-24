@@ -18,10 +18,7 @@
  */
 #endregion
 
-using Decompiler;
 using Decompiler.Core;
-using Decompiler.Core.Assemblers;
-using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
@@ -29,11 +26,9 @@ using Decompiler.Core.Types;
 using Decompiler.Arch.X86;
 using Decompiler.Assemblers.x86;
 using Decompiler.Scanning;
-using Decompiler.Loading;
 using Decompiler.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -43,7 +38,7 @@ namespace Decompiler.UnitTests.Scanning
     [TestFixture]
     public class ScannerTests
     {
-        ArchitectureMock arch;
+        FakeArchitecture arch;
         Program prog;
         TestScanner scan;
 
@@ -66,7 +61,7 @@ namespace Decompiler.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new ArchitectureMock();
+            arch = new FakeArchitecture();
         }
 
         private ProcedureSignature CreateSignature(string ret, params string[] args)
@@ -103,10 +98,10 @@ namespace Decompiler.UnitTests.Scanning
                     new RegisterOperand(arch.GetRegister(1)), 
                     ImmediateOperand.Word32(1))
             };
-            arch.Test_SetRewriterForAddress(new Address(0x12314), new FakeRewriter(new RtlInstructionCluster[] {
-                new RtlInstructionCluster(new Address(0x12314), 1, 
-                new RtlReturn(4, 0)),
-            }));
+            arch.Test_AddTrace(new RtlTrace(0x12314) 
+            {
+                m => { m.Return(4, 0); }
+            });
             var prog = new Program
             {
                 Architecture = arch,
@@ -161,9 +156,12 @@ namespace Decompiler.UnitTests.Scanning
 
         private void Enqueue(Address addr, Procedure proc)
         {
-            arch.Test_SetRewriterForAddress(addr, new FakeRewriter(new RtlInstructionCluster(addr, 4,
-                new RtlAssignment(new MemoryAccess(new Constant(0x3000), PrimitiveType.Word32), Constant.Word32(42)))));
-
+            arch.Test_AddTrace(new RtlTrace(addr.Linear)
+            {
+                m => {
+                    m.Assign(m.LoadDw(m.Word32(0x3000)), m.Word32(42));
+                }
+            });
             scan.EnqueueJumpTarget(addr, proc, arch.CreateProcessorState());
         }
 
@@ -284,9 +282,10 @@ fn0C00_0000_exit:
         {
             var scan = CreateScanner(0x100000, 0x1000);
             var rtls = new List<RtlInstructionCluster>();
-            arch.Test_SetRewriterForAddress(new Address(0x100100), new FakeRewriter(
-                new RtlInstructionCluster(new Address(0x100100), 4,
-                    new RtlReturn(4, 0))));
+            arch.Test_AddTrace(new RtlTrace(0x100100)
+            {
+                m => m.Return(4, 0)
+            });
             
             var st = (X86State) arch.CreateProcessorState();
             st.GrowFpuStack(new Address(0x100000));

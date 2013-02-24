@@ -1,8 +1,23 @@
-﻿/* Aho-Corasick text search algorithm implementation
- * 
- * For more information visit
- *		- http://www.cs.uku.fi/~kilpelai/BSA05/lectures/slides04.pdf
+﻿#region License
+/* 
+ * Copyright (C) 1999-2013 John Källén.
+ .
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
+#endregion
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +28,9 @@ namespace Decompiler.Scanning
     /// Class for searching string for one or multiple 
     /// keywords using efficient Aho-Corasick search algorithm
     /// </summary>
+    /// For more information visit
+    /// http://www.cs.uku.fi/~kilpelai/BSA05/lectures/slides04.pdf
+    /// </remarks>
     public class AhoCorasickSearch<TSymbol> : StringSearch<TSymbol> 
         where TSymbol : IComparable<TSymbol>
     {
@@ -36,7 +54,6 @@ namespace Decompiler.Scanning
             {
                 AddPatternToTree(p);
             }
-
             FindFailureFunctions();
         }
 
@@ -106,7 +123,7 @@ namespace Decompiler.Scanning
 
         /// <summary>
         /// Keywords to search for (setting this property is slow, because
-        /// it requieres rebuilding of keyword tree)
+        /// it requires rebuilding of keyword tree)
         /// </summary>
         public TSymbol[][] Keywords
         {
@@ -143,37 +160,38 @@ namespace Decompiler.Scanning
 
         private class TreeNode
         {
-            private TSymbol _char;
-            private TreeNode _parent;
-            private TreeNode _failure;
-            private List<TSymbol[]> _results;
-            private Dictionary<TSymbol,TreeNode> _transHash;
+            private List<TSymbol[]> results;
+            private Dictionary<TSymbol,TreeNode> hash;
 
             public TreeNode(TreeNode parent, TSymbol c)
             {
-                _char = c; _parent = parent;
-                _results = new List<TSymbol[]>();
+                this.Char = c; 
+                this.Parent = parent;
+                this.results = new List<TSymbol[]>();
 
-                _transHash = new Dictionary<TSymbol,TreeNode>();
+                hash = new Dictionary<TSymbol,TreeNode>();
             }
+
+            public TSymbol Char { get; private set; }
+            public TreeNode Parent { get; private set; }
+            public TreeNode Failure { get; set; }
 
 
             public void AddResult(TSymbol [] result)
             {
-                if (_results.Contains(result)) return;
-                _results.Add(result);
+                if (results.Contains(result)) return;
+                results.Add(result);
             }
 
             public void AddTransition(TreeNode node)
             {
-                _transHash.Add(node.Char, node);
+                hash.Add(node.Char, node);
             }
-
 
             public TreeNode GetTransition(TSymbol c)
             {
                 TreeNode  t;
-                if (_transHash.TryGetValue(c, out t))
+                if (hash.TryGetValue(c, out t))
                     return t;
                 else
                     return null;
@@ -184,35 +202,15 @@ namespace Decompiler.Scanning
                 return GetTransition(c) != null;
             }
 
-
-            public TSymbol Char
-            {
-                get { return _char; }
-            }
-
-
-            public TreeNode Parent
-            {
-                get { return _parent; }
-            }
-
-
-            public TreeNode Failure
-            {
-                get { return _failure; }
-                set { _failure = value; }
-            }
-
-
             public ICollection<TreeNode> Transitions
             {
-                get { return _transHash.Values; }
+                get { return hash.Values; }
             }
 
 
             public ICollection<TSymbol[]> Results
             {
-                get { return _results; }
+                get { return results; }
             }
         }
     }

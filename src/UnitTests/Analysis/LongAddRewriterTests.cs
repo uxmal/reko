@@ -54,7 +54,7 @@ namespace Decompiler.UnitTests.Analysis
 
         public LongAddRewriterTests()
         {
-            arch = new ArchitectureMock();
+            arch = new FakeArchitecture();
         }
 
         public Instruction CreateLongInstruction(Instruction loInstr, Instruction hiInstr)

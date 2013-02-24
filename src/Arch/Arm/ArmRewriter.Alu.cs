@@ -32,7 +32,7 @@ using System.Text;
 
 namespace Decompiler.Arch.Arm
 {
-    public partial class ArmRewriter : Rewriter
+    public partial class ArmRewriter
     {
         private void RewriteBinOp(Operator op)
         {

@@ -42,11 +42,13 @@ namespace Decompiler.UnitTests.Scanning
         private MockRepository repository;
         private IScanner scanner;
         private IProcessorArchitecture arch;
-        private Rewriter rewriter;
         private Program prog;
         private Procedure proc;
         private Block block;
-        private RtlStatementStream m;
+        private RtlTrace trace;
+        private Identifier r0;
+        private Identifier r1;
+        private Identifier r2;
 
         [SetUp]
         public void Setup()
@@ -55,18 +57,20 @@ namespace Decompiler.UnitTests.Scanning
             prog = new Program();
             proc = new Procedure("testProc", new Frame(null));
             block = new Block(proc, "test");
-            m = new RtlStatementStream(0x1000, block);
+            trace = new RtlTrace(0x1000);
+            r0 = new Identifier("r0", 0, PrimitiveType.Word32, new RegisterStorage("r0", 0, PrimitiveType.Word32));
+            r1 = new Identifier("r1", 0, PrimitiveType.Word32, new RegisterStorage("r1", 0, PrimitiveType.Word32));
+            r2 = new Identifier("r2", 0, PrimitiveType.Word32, new RegisterStorage("r2", 0, PrimitiveType.Word32));
 
             scanner = repository.DynamicMock<IScanner>();
             arch = repository.DynamicMock<IProcessorArchitecture>();
-            rewriter = repository.Stub<Rewriter>();
         }
 
         private BlockWorkitem CreateWorkItem(Address addr)
         {
             return new BlockWorkitem(
                 scanner, 
-                rewriter, 
+                trace, 
                 new FakeProcessorState(arch),
                 proc.Frame, 
                 addr);
@@ -86,15 +90,14 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void RewriteReturn()
         {
-            m.Return();
-            m.Fn(m.Int32(0x49242));
+            trace.Add(m => { m.Return(4, 0); });
+            trace.Add(m => { m.Fn(m.Int32(0x49242)); });
 
             using (repository.Record())
             {
                 scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
-                rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
             }
 
             var wi = CreateWorkItem(new Address(0x1000));
@@ -107,8 +110,11 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void StopOnGoto()
         {
-            m.Assign(m.Register(0), 3);
-            m.Goto(0x4000);
+            trace.Add(m =>
+            {
+                m.Assign(r0, m.Word32(3));
+                m.Goto(new Address(0x4000));
+            });
 
             Block next = new Block(block.Procedure, "next");
             using (repository.Record())
@@ -117,8 +123,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
-                    Arg<IRewriterHost>.Is.Anything)).Return(rewriter);
-                rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                    Arg<IRewriterHost>.Is.Anything)).Return(trace);
                 scanner.Stub(s => s.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -147,8 +152,8 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void HandleBranch()
         {
-            m.Branch(m.Register(1), new Address(0x4000));
-            m.Assign(m.Register(1), m.Register(2));
+            trace.Add(m => { m.Branch(r1, new Address(0x4000)); });
+            trace.Add(m => { m.Assign(r1, r2); });
             var blockElse = new Block(proc, "else");
             var blockThen = new Block(proc, "then");
             ProcessorState s1 = null;
@@ -160,8 +165,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
-                    Arg<IRewriterHost>.Is.Anything)).Return(rewriter);
-                rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
+                    Arg<IRewriterHost>.Is.Anything)).Return(trace);
                 scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -187,9 +191,9 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void CallInstructionShouldAddNodeToCallgraph()
         {
-            m.Call(new Address(0x1200));
-            m.Assign(m.Word32(0x4000), m.Word32(0));
-            m.Return();
+            trace.Add(m => { m.Call(new Address(0x1200), 4); });
+            trace.Add(m => { m.Assign(m.Word32(0x4000), m.Word32(0)); });
+            trace.Add(m => { m.Return(4, 0); });
 
             var cg = new CallGraph();
             using (repository.Record())
@@ -198,8 +202,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
-                    Arg<IRewriterHost>.Is.Anything)).Return(rewriter);
-                StubRewriterStream();
+                    Arg<IRewriterHost>.Is.Anything)).Return(trace);
                 scanner.Stub(x => x.CallGraph).Return(cg);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -217,11 +220,6 @@ namespace Decompiler.UnitTests.Scanning
             Assert.AreEqual("fn1200", callees[0].Name);
         }
 
-        private void StubRewriterStream()
-        {
-            rewriter.Stub(x => x.GetEnumerator()).Return(m.GetRewrittenInstructions());
-        }
-
         [Test]
         public void CallingAllocaWithConstant()
         {
@@ -233,10 +231,9 @@ namespace Decompiler.UnitTests.Scanning
                 IsAlloca = true
             };
 
-            m.Call(new Address(0x2000));
+            trace.Add(m => { m.Call(new Address(0x2000), 4); });
             using (repository.Record())
             {
-                StubRewriterStream();
                 scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -263,10 +260,10 @@ namespace Decompiler.UnitTests.Scanning
                 IsAlloca = true
             };
 
-            m.Call(new Address(0x2000));
+            trace.Add(m => { m.Call(new Address(0x2000), 4); });
+
             using (repository.Record())
             {
-                StubRewriterStream();
                 scanner.Stub(x => x.Architecture).Return(arch);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -303,11 +300,10 @@ namespace Decompiler.UnitTests.Scanning
                 Arg<ProcessorState>.Is.Anything))
                 .Return(terminator);
             arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
-            rewriter.Stub(r => r.GetEnumerator()).Return(m.GetRewrittenInstructions());
             repository.ReplayAll();
 
-            m.Call(new Address(0x0001000));
-            m.SideEffect(new ProcedureConstant(PrimitiveType.Void, new PseudoProcedure("shouldnt_decompile_this", PrimitiveType.Void, 0)));
+            trace.Add(m => { m.Call(new Address(0x0001000), 4); });
+            trace.Add(m => { m.SideEffect(new ProcedureConstant(PrimitiveType.Void, new PseudoProcedure("shouldnt_decompile_this", PrimitiveType.Void, 0))); });
 
             var wi = CreateWorkItem(new Address(0x2000));
             wi.Process();

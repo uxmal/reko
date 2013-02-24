@@ -321,7 +321,7 @@ namespace Decompiler.UnitTests.Analysis
 			ssaIds = ssa.Identifiers;
 	
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new ArchitectureMock());
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
 			cce.Transform();
 			
 

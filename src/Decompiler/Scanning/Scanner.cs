@@ -140,9 +140,6 @@ namespace Decompiler.Scanning
             public uint End { get; set; }
         }
 
-
-        #region IScanner Members
-
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName);
@@ -242,7 +239,7 @@ namespace Decompiler.Scanning
                 return;
 
             table = new ImageMapVectorTable(addrTable, calltable);
-            var wi = new VectorWorkItem(this, image, table, proc);
+            var wi = new VectorWorkItem(this, table, proc);
             wi.State = state.Clone();
             wi.Stride = stride;
             wi.SegBase = segBase;
@@ -381,11 +378,6 @@ namespace Decompiler.Scanning
             }
         }
 
-        #endregion
-
-
-        #region IRewriterHost2 Members
-
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
         {
             PseudoProcedure p;
@@ -417,8 +409,6 @@ namespace Decompiler.Scanning
             else
                 return null;
         }
-
-        #endregion
     }
 }
 

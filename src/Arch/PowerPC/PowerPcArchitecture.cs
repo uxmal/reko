@@ -22,6 +22,7 @@ using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -171,7 +172,7 @@ namespace Decompiler.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             throw new NotImplementedException();
         }

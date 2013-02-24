@@ -146,7 +146,7 @@ namespace Decompiler.UnitTests.Analysis
 
 			public class MainFn : ProcedureBuilder
 			{
-				private ArchitectureMock arch = new ArchitectureMock();
+				private FakeArchitecture arch = new FakeArchitecture();
 
 				protected override void BuildBody()
 				{

@@ -45,7 +45,7 @@ namespace Decompiler.Scanning
         private Frame frame;
         private RtlInstruction ri;
         private RtlInstructionCluster ric;
-        private Rewriter rewriter;
+        private IEnumerable<RtlInstructionCluster> rewriter;
         private ProcessorState state;
         private ExpressionSimplifier eval;
         private IEnumerator<RtlInstructionCluster> rtlStream;
@@ -54,13 +54,13 @@ namespace Decompiler.Scanning
 
         public BlockWorkitem(
             IScanner scanner,
-            Rewriter rewriter,
+            IEnumerable<RtlInstructionCluster> rewriter,
             ProcessorState state,
             Frame frame,
             Address addr)
         {
             this.scanner = scanner;
-            this.arch = scanner.Architecture;
+            this.arch = scanner.Architecture;   // cached since it's used heavily.
             this.rewriter = rewriter;
             this.state = state;
             this.eval = new ExpressionSimplifier(state);
@@ -73,7 +73,7 @@ namespace Decompiler.Scanning
         public Block Block { get { return blockCur; } } 
         public ProcessorState  Context { get { return state; } }       //$TODO: can we get rid of this? apparently only test use it.
 
-        public override void  Process()
+        public override void Process()
         {
             rtlStream = rewriter.GetEnumerator();
             state.ErrorListener = (message) => { scanner.AddDiagnostic(ric.Address, new WarningDiagnostic(message)); };
@@ -262,8 +262,6 @@ namespace Decompiler.Scanning
             if (procCallee != null)
             {
                 var ppp = procCallee.Procedure as PseudoProcedure;
-                if (ppp.Name.StartsWith("__"))
-                    ppp.ToString();
                 if (ppp != null)
                 {
                     Emit(BuildApplication(procCallee, ppp.Signature, site));

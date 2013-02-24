@@ -41,7 +41,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void SltLiveLoop()
 		{
-			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
+			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltLiveLoop.txt"))
 			{
@@ -67,7 +67,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void SltSimple()
 		{
-			Build(new SimpleMock().Procedure, new ArchitectureMock());
+			Build(new SimpleMock().Procedure, new FakeArchitecture());
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltSimple.txt"))
 			{
@@ -109,7 +109,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void SltLiveCopy()
 		{
-			Build(new LiveCopyMock().Procedure, new ArchitectureMock());
+			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
 			WebBuilder wb = new WebBuilder(proc, ssa.Identifiers, new Dictionary<Identifier,LinearInductionVariable>());
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltLiveCopy.txt"))
 			{
@@ -131,7 +131,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void SltManyIncrements()
 		{
-			Build(new ManyIncrements().Procedure, new ArchitectureMock());
+			Build(new ManyIncrements().Procedure, new FakeArchitecture());
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltManyIncrements.txt"))
 			{
 				ssa.Write(fut.TextWriter);

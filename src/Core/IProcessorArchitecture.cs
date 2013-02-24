@@ -20,8 +20,10 @@
 
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using BitSet = Decompiler.Core.Lib.BitSet;
 
@@ -35,8 +37,16 @@ namespace Decompiler.Core
         Disassembler CreateDisassembler(ImageReader imageReader);
 
 		ProcessorState CreateProcessorState();
+
 		BitSet CreateRegisterBitset();
-        Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
+
+        /// <summary>
+        /// Returns a stream of machine-independent instructions, which it generates by successively disassembling
+        /// machine-specific instractions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
+        /// returned as clusters of RtlInstructions.
+        /// </summary>
+        IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
+
         Frame CreateFrame();
 
 		RegisterStorage GetRegister(int i);			// Returns register corresponding to number i.

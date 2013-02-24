@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LciFindCopyslots()
 		{
-			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
+			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
 			Assert.AreEqual(2, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[0]));
             Assert.AreEqual(2, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[1].Succ[0]));
@@ -47,7 +47,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LciLiveAtLoop()
 		{
-			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
+			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
 
 			var i = ssaIds[2].Identifier;
@@ -60,7 +60,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LciLiveAtCopy()
 		{
-			Build(new LiveCopyMock().Procedure, new ArchitectureMock());
+			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
 
 			var reg   = ssaIds[3].Identifier;
@@ -74,7 +74,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LciInsertAssignmentCopy()
 		{
-			Build(new LiveCopyMock().Procedure, new ArchitectureMock());
+			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
 
 			int i = lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[1]);
@@ -88,7 +88,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LciInsertAssignmentLiveLoop()
 		{
-			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
+			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
 
 			var idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.ControlGraph.Blocks[1], 2);
@@ -99,7 +99,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LciRenameDominatedIdentifiers()
 		{
-			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
+			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
 
 			var idNew = lci.InsertAssignmentNewId(ssaIds[4].Identifier, proc.ControlGraph.Blocks[1], 2);
@@ -111,7 +111,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LciLiveLoop()
 		{
-			Build(new LiveLoopMock().Procedure, new ArchitectureMock());
+			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
 			lci.Transform();
 			using (FileUnitTester fut = new FileUnitTester("Analysis/LciLiveLoop.txt"))
@@ -124,7 +124,7 @@ namespace Decompiler.UnitTests.Analysis
 		[Test]
 		public void LciLiveCopy()
 		{
-			Build(new LiveCopyMock().Procedure, new ArchitectureMock());
+			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
 			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
 			lci.Transform();
 			using (FileUnitTester fut = new FileUnitTester("Analysis/LciLiveCopy.txt"))

@@ -39,7 +39,7 @@ namespace Decompiler.UnitTests.Typing
 		public void CpfSimple()
 		{
 			var prog = new Program();
-            prog.Architecture = new ArchitectureMock();
+            prog.Architecture = new FakeArchitecture();
 
 			var eqb = new EquivalenceClassBuilder(factory, store);
 			var dtb = new DataTypeBuilder(factory, store, prog.Architecture);

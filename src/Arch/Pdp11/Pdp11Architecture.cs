@@ -21,6 +21,7 @@
 using Decompiler.Core;
 using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -147,7 +148,7 @@ namespace Decompiler.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Pdp11Rewriter(this);
         }

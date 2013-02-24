@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Decompiler.Arch.M68k
 {
-    public class Rewriter : Decompiler.Core.Rewriter
+    public class Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private M68kArchitecture arch;
         private M68kState state;
