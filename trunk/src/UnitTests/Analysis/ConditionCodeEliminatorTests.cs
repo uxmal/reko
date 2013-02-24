@@ -199,7 +199,7 @@ done:
 			var stmBr = m.BranchIf(new TestCondition(ConditionCode.EQ, y), "foo");
             ssaIds[y].Uses.Add(stmBr);
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new ArchitectureMock());
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
 			Instruction instr = stmBr.Instruction.Accept(cce);
 			Assert.AreEqual("branch r == 0x00000000 foo", instr.ToString());
 		}
@@ -218,7 +218,7 @@ done:
 			ssaIds[f].DefStatement = stmF;
 			ssaIds[Z].Uses.Add(stmF);
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new ArchitectureMock());
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new FakeArchitecture());
 			cce.Transform();
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
@@ -235,7 +235,7 @@ done:
         [Test]
 		public void SignedIntComparisonFromConditionCode()
 		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new ArchitectureMock());
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
 			BinaryExpression bin = new BinaryExpression(Operator.Sub, PrimitiveType.Word16, new Identifier("a", 0, PrimitiveType.Word16, null), new Identifier("b", 1, PrimitiveType.Word16, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
@@ -245,7 +245,7 @@ done:
 		[Test]
 		public void RealComparisonFromConditionCode()
 		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new ArchitectureMock());
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new FakeArchitecture());
 			BinaryExpression bin = new BinaryExpression(Operator.Sub, PrimitiveType.Real64, new Identifier("a", 0, PrimitiveType.Real64, null), new Identifier("b", 1, PrimitiveType.Real64, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
@@ -254,13 +254,13 @@ done:
 
         private Identifier MockReg(ProcedureBuilder m, int i)
         {
-            return m.Frame.EnsureRegister(ArchitectureMock.GetMachineRegister(i));
+            return m.Frame.EnsureRegister(FakeArchitecture.GetMachineRegister(i));
         }
 
         [Test]
         public void CceAddAdcPattern()
         {
-            var p = new ProgramBuilder(new ArchitectureMock());
+            var p = new ProgramBuilder(new FakeArchitecture());
             p.Add("main", (m) =>
             {
                 var r1 = MockReg(m, 1);

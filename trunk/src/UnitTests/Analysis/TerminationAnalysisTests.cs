@@ -84,7 +84,7 @@ namespace Decompiler.UnitTests.Analysis
             var a = new TerminationAnalysis(flow);
             prog = new Program
             {
-                Architecture = new ArchitectureMock()
+                Architecture = new FakeArchitecture()
             };
             flow[b] = CreateBlockFlow(b, m.Frame);
             a.Analyze(b);

@@ -43,12 +43,12 @@ namespace Decompiler.UnitTests.Mocks
 
         public ProcedureBuilder()
         {
-            Init(new ArchitectureMock(), this.GetType().Name);
+            Init(new FakeArchitecture(), this.GetType().Name);
         }
 
         public ProcedureBuilder(string name)
         {
-            Init(new ArchitectureMock(), name);
+            Init(new FakeArchitecture(), name);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch)
@@ -265,7 +265,7 @@ namespace Decompiler.UnitTests.Mocks
 
         public override Identifier Register(int i)
         {
-            return Frame.EnsureRegister(ArchitectureMock.GetMachineRegister(i));
+            return Frame.EnsureRegister(FakeArchitecture.GetMachineRegister(i));
         }
 
         public override void Return(Expression exp)

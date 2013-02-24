@@ -64,7 +64,7 @@ namespace Decompiler.UnitTests.Environments.MacOS
             stm.WriteByte(4);
             WriteAsciiString(stm, "Test");
 
-            ResourceFork rsrc = new ResourceFork(stm.GetBuffer(), new UnitTests.Mocks.ArchitectureMock());
+            ResourceFork rsrc = new ResourceFork(stm.GetBuffer(), new UnitTests.Mocks.FakeArchitecture());
             Assert.AreEqual(1, rsrc.ResourceTypes.Count);
             IEnumerator<ResourceFork.ResourceType> ert = rsrc.ResourceTypes.GetEnumerator();
             Assert.IsTrue(ert.MoveNext());

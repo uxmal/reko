@@ -36,7 +36,7 @@ namespace Decompiler.Arch.X86
     /// <summary>
     /// Rewrites x86 instructions into a stream of low-level RTL-like instructions.
     /// </summary>
-    public partial class X86Rewriter : Rewriter
+    public partial class X86Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private IRewriterHost host;
         private IntelArchitecture arch;

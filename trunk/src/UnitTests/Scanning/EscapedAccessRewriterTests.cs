@@ -56,7 +56,7 @@ namespace Decompiler.UnitTests.Scanning
 			proc.ControlGraph.AddEdge(proc.EntryBlock, b);
             proc.ControlGraph.AddEdge(b, proc.ExitBlock);
 			EscapedAccessRewriter ear = new EscapedAccessRewriter(proc);
-			ear.InsertFramePointerAssignment(new Mocks.ArchitectureMock());
+			ear.InsertFramePointerAssignment(new Mocks.FakeArchitecture());
 			Block x = proc.EntryBlock.Succ[0];
 			Assert.AreEqual(1, x.Statements.Count);
 			Assert.AreEqual("fp = &foo_frame", x.Statements[0].Instruction.ToString());

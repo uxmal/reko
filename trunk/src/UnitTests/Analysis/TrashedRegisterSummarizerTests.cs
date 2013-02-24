@@ -36,7 +36,7 @@ namespace Decompiler.UnitTests.Analysis
     [TestFixture]
     public class TrashedRegisterSummarizerTests
     {
-        private ArchitectureMock arch;
+        private FakeArchitecture arch;
         private Procedure proc;
         private ProcedureFlow flow;
         private SymbolicEvaluationContext ctx;
@@ -45,7 +45,7 @@ namespace Decompiler.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            arch = new ArchitectureMock();
+            arch = new FakeArchitecture();
             proc = new Procedure("Test", new Frame(arch.FramePointerType));
             flow = new ProcedureFlow(proc, arch);
             ctx = new SymbolicEvaluationContext(arch, proc.Frame);

@@ -40,7 +40,7 @@ namespace Decompiler.UnitTests.Typing
 		private ExpressionNormalizer aen;
 		private EquivalenceClassBuilder eqb;
 		private DataTypeBuilder dtb;
-        private ArchitectureMock arch;
+        private FakeArchitecture arch;
         private Program prog;
 
         [SetUp]
@@ -50,7 +50,7 @@ namespace Decompiler.UnitTests.Typing
             factory = new TypeFactory();
             aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
             eqb = new EquivalenceClassBuilder(factory, store);
-            arch = new ArchitectureMock();
+            arch = new FakeArchitecture();
             prog = new Program();
             prog.Architecture = arch;
             dtb = new DataTypeBuilder(factory, store, arch);

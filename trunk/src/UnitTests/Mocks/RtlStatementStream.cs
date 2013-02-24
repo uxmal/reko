@@ -20,29 +20,24 @@
 
 using Decompiler.Core;
 using Decompiler.Core.Rtl;
-using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
-using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Decompiler.UnitTests.Mocks
 {
     public class RtlStatementStream : ExpressionEmitter
     {
-        private Block block;
         private Frame frame;
         private List<RtlInstructionCluster> stms;
         private IProcessorArchitecture arch;
         private uint linAddress;
 
-        public RtlStatementStream(uint address, Block block)
+        public RtlStatementStream(uint address, Frame frame)
         {
             this.linAddress = address;
-            this.block = block;
-            this.frame = block.Procedure.Frame;
-            this.arch = new ArchitectureMock();
+            this.arch = new FakeArchitecture();
+            this.frame = frame;
             this.stms = new List<RtlInstructionCluster>();   
         }
 
@@ -51,11 +46,6 @@ namespace Decompiler.UnitTests.Mocks
             stms.Add(new RtlInstructionCluster(new Address(linAddress), 4, instr));
             linAddress += 4;
             return instr;
-        }
-
-        public Block Block
-        {
-            get { return block; }
         }
 
         public RtlInstruction Assign(Expression dst, int n)
@@ -81,20 +71,13 @@ namespace Decompiler.UnitTests.Mocks
             return Emit(call);
         }
 
-        public Frame Frame
-        {
-            get { return frame; }
-        }
-
-
         public IEnumerator<RtlInstructionCluster> GetRewrittenInstructions()
         {
             foreach (var x in stms)
                 yield return x;
         }
 
-
-        internal RtlInstruction Goto(uint target)
+        public RtlInstruction Goto(uint target)
         {
             var g = new RtlGoto(new Address(target));
             return Emit(g);
@@ -105,18 +88,16 @@ namespace Decompiler.UnitTests.Mocks
             return frame.EnsureRegister(arch.GetRegister(iReg));
         }
 
-        internal RtlInstruction Return()
+        public RtlInstruction Return()
         {
             var ret = new RtlReturn(0, 0);
             return Emit(ret);
         }
 
-        internal RtlInstruction SideEffect(Expression exp)
+        public RtlInstruction SideEffect(Expression exp)
         {
             var side = new RtlSideEffect(exp);
             return Emit(side);
         }
-
-
     }
 }

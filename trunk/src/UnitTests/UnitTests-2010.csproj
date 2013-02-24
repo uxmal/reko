@@ -121,6 +121,7 @@
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
     <Compile Include="Mocks\FakeDialogFactory.cs" />
+    <Compile Include="Mocks\RtlTraceBuilder.cs" />
     <Compile Include="Scanning\BackwalkerTests.cs" />
     <Compile Include="Arch\Intel\CodeEmitterTests.cs" />
     <Compile Include="Arch\Intel\DeadConditionFlagsFinderTests.cs" />
@@ -293,14 +294,13 @@
     <Compile Include="Loading\LoaderTests.cs" />
     <Compile Include="Loading\PkLiteUnpackerTests.cs" />
     <Compile Include="Mocks\AdcMock.cs" />
-    <Compile Include="Mocks\ArchitectureMock.cs" />
+    <Compile Include="Mocks\FakeArchitecture.cs" />
     <Compile Include="Mocks\ArrayLoopMock.cs" />
     <Compile Include="Mocks\ArrayMock.cs" />
     <Compile Include="Mocks\BigLoopHeadFragment.cs" />
     <Compile Include="Mocks\ByteArrayLoopMock.cs" />
     <Compile Include="Mocks\FakeDisassembler.cs" />
     <Compile Include="Mocks\FakeInstruction.cs" />
-    <Compile Include="Mocks\FakeRewriter.cs" />
     <Compile Include="Mocks\FakeStatusBarService.cs" />
     <Compile Include="Mocks\FakeDecompiler.cs" />
     <Compile Include="Mocks\FakeDecompilerConfiguration.cs" />
@@ -331,6 +331,7 @@
     <Compile Include="Scanning\BlockWorkitemTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
+    <Compile Include="Scanning\InterProceduralJumpTests.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
@@ -471,7 +472,6 @@
     <Compile Include="Mocks\FakePlatform.cs" />
     <Compile Include="Scanning\BlockPromoterTests.cs" />
     <Compile Include="Analysis\LongAddRewriterTests.cs" />
-    <Compile Include="Scanning\ProcedureScannerTests.cs" />
     <Compile Include="Scanning\BlockWorkitem.X86Tests.cs" />
     <Compile Include="Scanning\Scanner.X86Tests.cs" />
     <Compile Include="TestCode\X86\Switch.cs" />

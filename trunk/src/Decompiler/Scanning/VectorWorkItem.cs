@@ -17,15 +17,13 @@ namespace Decompiler.Scanning
         public ushort SegBase;
 
         private IScanner scanner;
-        private ProgramImage image;
         private Procedure proc;
         private Dictionary<Address, VectorUse> vectorUses;
 
-        public VectorWorkItem(IScanner scanner, ProgramImage image, ImageMapVectorTable table, Procedure proc)
+        public VectorWorkItem(IScanner scanner, ImageMapVectorTable table, Procedure proc)
             : base()
         {
             this.scanner = scanner;
-            this.image = image;
             this.Table = table;
             this.proc = proc;
             this.vectorUses = new Dictionary<Address, VectorUse>();
@@ -33,15 +31,15 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            var builder = new VectorBuilder(scanner.Architecture, image, new DirectedGraphImpl<object>());
+            var builder = new VectorBuilder(scanner.Architecture,  scanner.Image, new DirectedGraphImpl<object>());
             var vector = builder.Build(Table.TableAddress, AddrFrom, State);
             if (vector.Count == 0)
             {
                 Address addrNext = Table.TableAddress + Stride.Size;
-                if (image.IsValidAddress(addrNext))
+                if (scanner.Image.IsValidAddress(addrNext))
                 {
                     // Can't determine the size of the table, but surely it has one entry?
-                    image.Map.AddItem(addrNext, new ImageMapItem());
+                   scanner.Image.Map.AddItem(addrNext, new ImageMapItem());
                 }
                 return;
             }
@@ -60,7 +58,7 @@ namespace Decompiler.Scanning
                 }
             }
             vectorUses[AddrFrom] = new VectorUse(Table.TableAddress, builder.IndexRegister);
-            image.Map.AddItem(Table.TableAddress + builder.TableByteSize, new ImageMapItem());
+            scanner.Image.Map.AddItem(Table.TableAddress + builder.TableByteSize, new ImageMapItem());
         }
 
     }

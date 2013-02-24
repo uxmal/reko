@@ -21,18 +21,16 @@
 using Decompiler.Core;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Operators;
-using Decompiler.Core.Lib;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Decompiler.Arch.Arm
 {
-    public partial class ArmRewriter : Rewriter
+    public partial class ArmRewriter : IEnumerable<RtlInstructionCluster>
     {
         private ArmProcessorArchitecture arch;
         private IEnumerator<DisassembledInstruction> instrs;

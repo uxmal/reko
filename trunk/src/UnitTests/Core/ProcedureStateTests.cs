@@ -23,6 +23,7 @@ using Decompiler.Core;
 using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using NUnit.Framework;
 using System;
@@ -89,7 +90,7 @@ namespace Decompiler.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+            public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
             {
                 throw new NotImplementedException();
             }

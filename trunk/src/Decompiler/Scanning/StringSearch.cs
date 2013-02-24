@@ -24,12 +24,12 @@ using System.Text;
 
 namespace Decompiler.Scanning
 {
-    public abstract class StringSearch<C>
+    public abstract class StringSearch<TChar>
     {
-        public StringSearch(C[] pattern)
+        public StringSearch(TChar[] pattern)
         {
         }
 
-        public abstract IEnumerator<int> GetMatchPositions(C[] stringToSearch);
+        public abstract IEnumerator<int> GetMatchPositions(TChar[] stringToSearch);
     }
 }

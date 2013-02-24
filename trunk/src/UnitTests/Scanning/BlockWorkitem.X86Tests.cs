@@ -43,7 +43,6 @@ namespace Decompiler.UnitTests.Scanning
         private IntelArchitecture arch;
         private Procedure proc;
         private Block block;
-        private RtlStatementStream stm;
         private IScanner scanner;
         private RewriterHost host;
         private MockRepository repository;
@@ -112,7 +111,6 @@ namespace Decompiler.UnitTests.Scanning
             this.arch = new IntelArchitecture(ProcessorMode.ProtectedFlat);
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
-            stm = new RtlStatementStream(addr.Linear, block);
             this.state = arch.CreateProcessorState();
             var asm = new IntelAssembler(arch, addr, new List<EntryPoint>());
             scanner = repository.Stub<IScanner>();

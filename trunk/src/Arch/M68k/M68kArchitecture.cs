@@ -23,6 +23,7 @@ using Decompiler.Core.Lib;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Operators;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace Decompiler.Arch.M68k
             throw new NotImplementedException();
         }
 
-        public Core.Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Rewriter(this, (M68kState) state, frame, host);
         }

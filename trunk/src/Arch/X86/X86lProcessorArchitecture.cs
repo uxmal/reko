@@ -23,6 +23,7 @@ using Decompiler.Core.Code;
 using Decompiler.Core.Expressions;
 using Decompiler.Core.Machine;
 using Decompiler.Core.Serialization;
+using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -107,7 +108,7 @@ namespace Decompiler.Arch.X86
 			return new X86State(this);
 		}
 
-        public virtual Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public virtual IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }

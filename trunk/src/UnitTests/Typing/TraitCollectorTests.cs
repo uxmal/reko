@@ -251,7 +251,7 @@ namespace Decompiler.UnitTests.Typing
         private static Program CreateProgram()
         {
             Program prog = new Program();
-            prog.Architecture = new ArchitectureMock();
+            prog.Architecture = new FakeArchitecture();
             return prog;
         }
 

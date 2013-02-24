@@ -48,7 +48,7 @@ namespace Decompiler.UnitTests.Typing
 		public void TerComplex()
 		{
             Program prog = new Program();
-            prog.Architecture = new ArchitectureMock();
+            prog.Architecture = new FakeArchitecture();
             SetupPreStages(prog.Architecture);
 			Identifier id = new Identifier("v0", 0, PrimitiveType.Word32, null);
 			Expression cmp = MemLoad(id, 4, PrimitiveType.Word32);
@@ -95,7 +95,7 @@ namespace Decompiler.UnitTests.Typing
 		public void TerConstants()
 		{
             Program prog = new Program();
-            prog.Architecture = new ArchitectureMock();
+            prog.Architecture = new FakeArchitecture();
             SetupPreStages(prog.Architecture);
 			Constant r = new Constant(3.0F);
 			Constant i = new Constant(PrimitiveType.Int32, 1);

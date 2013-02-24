@@ -26,6 +26,7 @@ using Decompiler.Core.Machine;
 using Decompiler.Core.Rtl;
 using Decompiler.Core.Types;
 using System;
+using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
@@ -37,25 +38,25 @@ namespace Decompiler.UnitTests.Mocks
 	/// <remarks>
 	/// Our fake architecture has 64 registers. r63 is the stack register, r62 is the return address register.
 	/// </remarks>
-	public class ArchitectureMock : IProcessorArchitecture
+	public class FakeArchitecture : IProcessorArchitecture
 	{
 		private static RegisterStorage [] registers;
 		private BitSet implicitRegs;
-        private Dictionary<uint, FakeRewriter> rewriters;
+        private RtlTraceBuilder rewriters;
 
 		internal const int RegisterCount = 64;
 		private const int iStackRegister = 63;
 		private const int iReturnRegister = 62;
 
-		public ArchitectureMock()
+		public FakeArchitecture()
 		{
 			this.implicitRegs = new BitSet(RegisterCount);
 			implicitRegs[iStackRegister]  = true;
 			implicitRegs[iReturnRegister] = true;
-            this.rewriters = new Dictionary<uint, FakeRewriter>();
+            this.rewriters = new RtlTraceBuilder();
 		}
 
-		static ArchitectureMock()
+		static FakeArchitecture()
 		{
 			registers = new RegisterStorage[RegisterCount];
 			for (int i = 0; i < registers.Length; ++i)
@@ -66,9 +67,9 @@ namespace Decompiler.UnitTests.Mocks
 
         public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
 
-        public void Test_SetRewriterForAddress(Address address, FakeRewriter rewriter)
+        public void Test_AddTrace(RtlTrace trace)
         {
-            rewriters.Add(address.Linear, rewriter);
+            rewriters.Add(trace);
         }
 
 		public static RegisterStorage GetMachineRegister(int i)
@@ -79,13 +80,13 @@ namespace Decompiler.UnitTests.Mocks
 		#region IProcessorArchitecture Members
 
 
-        public Rewriter CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             var linAddr = rdr.Address.Linear;
-            FakeRewriter rewriter;
-            if (!rewriters.TryGetValue(linAddr, out rewriter))
+            RtlTrace trace;
+            if (!rewriters.Traces.TryGetValue(rdr.Address, out trace))
                 NUnit.Framework.Assert.Fail(string.Format("Unexpected request for a rewriter at address {0}", rdr.Address));
-            return rewriters[linAddr];
+            return trace;
         }
 
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
@@ -176,7 +177,7 @@ namespace Decompiler.UnitTests.Mocks
 		}
 
         public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
-        public RegisterStorage StackRegister { get { return GetRegister(ArchitectureMock.iStackRegister); } }
+        public RegisterStorage StackRegister { get { return GetRegister(FakeArchitecture.iStackRegister); } }
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {

@@ -587,7 +587,5 @@ const ebx:0x01231313
         {
             RunTest("Fragments/multiple/procisolation.asm", "Analysis/TrfProcIsolation.txt");
         }
-
-
     }
 }
