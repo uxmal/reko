@@ -41,6 +41,7 @@ namespace Decompiler.UnitTests.Scanning
         FakeArchitecture arch;
         Program prog;
         TestScanner scan;
+        Identifier reg1;
 
         public class TestScanner : Scanner
         {
@@ -49,7 +50,7 @@ namespace Decompiler.UnitTests.Scanning
             {
             }
 
-            public BlockWorkitem Test_LastBlockWorkitem { get; private set; } 
+            public BlockWorkitem Test_LastBlockWorkitem { get; private set; }
 
             public override BlockWorkitem CreateBlockWorkItem(Address addrStart, Procedure proc, ProcessorState state)
             {
@@ -62,6 +63,8 @@ namespace Decompiler.UnitTests.Scanning
         public void Setup()
         {
             arch = new FakeArchitecture();
+            var r1 = arch.GetRegister(1);
+            reg1 = new Identifier(r1.Name, r1.Number, PrimitiveType.Word32, r1);
         }
 
         private ProcedureSignature CreateSignature(string ret, params string[] args)
@@ -88,6 +91,22 @@ namespace Decompiler.UnitTests.Scanning
             scan = new TestScanner(prog);
             EntryPoint ep = new EntryPoint(addr, arch.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
+        }
+
+        private void AssertProgram(string sExpected, Program prog)
+        {
+            var sw = new StringWriter();
+            foreach (var proc in prog.Procedures.Values)
+            {
+                proc.Write(false, false, sw);
+                sw.WriteLine();
+            }
+            var sActual = sw.ToString();
+            if (sExpected != sActual)
+            {
+                Debug.WriteLine(sActual);
+                Assert.AreEqual(sExpected, sActual);
+            }
         }
 
         [Test]
@@ -130,15 +149,23 @@ namespace Decompiler.UnitTests.Scanning
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            if (prog == null)
-            {
-                prog = new Program();
-            }
+            prog = new Program();
             prog.Architecture = arch;
             prog.Platform = new FakePlatform();
             prog.Image = new ProgramImage(new Address(startAddress), new byte[imageSize]);
             return new TestScanner(prog);
         }
+
+        private TestScanner CreateScanner(Program prog, uint startAddress, int imageSize)
+        {
+            this.prog = prog;
+            prog.Architecture = arch;
+            prog.Platform = new FakePlatform();
+            prog.Image = new ProgramImage(new Address(startAddress), new byte[imageSize]);
+            return new TestScanner(prog);
+        }
+
+
 
         [Test]
         public void SplitBlock()
@@ -237,7 +264,7 @@ namespace Decompiler.UnitTests.Scanning
         [Test]
         public void RepeatUntilBlock()
         {
-            BuildX86RealTest(delegate (IntelAssembler m)
+            BuildX86RealTest(delegate(IntelAssembler m)
             {
                 m.i86();
                 m.Mov(m.ax, 0);         // To ensure we end up with a split block.
@@ -286,11 +313,11 @@ fn0C00_0000_exit:
             {
                 m => m.Return(4, 0)
             });
-            
+
             var st = (X86State) arch.CreateProcessorState();
             st.GrowFpuStack(new Address(0x100000));
-            scan.ScanProcedure(new Address(0x100100),  null, st);
-            var stNew = (X86State)scan.Test_LastBlockWorkitem.Context;
+            scan.ScanProcedure(new Address(0x100100), null, st);
+            var stNew = (X86State) null; // scan.Test_LastBlockWorkitem.Context;
             Assert.IsNotNull(stNew);
             Assert.AreNotSame(st, stNew);
             Assert.AreEqual(1, st.FpuStackItems);
@@ -303,7 +330,7 @@ fn0C00_0000_exit:
             prog = new Program();
             prog.ImportThunks.Add(0x2000, new PseudoProcedure(
                 "grox", CreateSignature("ax", "bx")));
-            var scan = CreateScanner(0x1000, 0x200);
+            var scan = CreateScanner(prog, 0x1000, 0x200);
             var proc = scan.ScanProcedure(new Address(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
@@ -336,5 +363,119 @@ fn0C00_0000_exit:
         //    Assert.AreEqual(1, scan.Stack.Peek().Queue.Count);
         //}
 
+        [Test]
+        public void Interprocedural_JumpIntoOtherProc_PromoteJumpTarget()
+        {
+            var scan = CreateScanner(0x1000, 0x2000);
+            arch.Test_AddTrace(new RtlTrace(0x1000)
+            {
+                m => { m.Assign(reg1, m.Word32(0)); },
+                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Return(0, 0); }
+            });
+            arch.Test_AddTrace(new RtlTrace(0x1004)
+            {
+                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Return(0, 0); }
+            });
+            arch.Test_AddTrace(new RtlTrace(0x1100)
+            {
+                m => { m.Assign(reg1, m.Word32(1)); },
+                m => { m.Goto(new Address(0x1004)); },
+            });
+
+            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
+            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
+            scan.ProcessQueue();
+
+            var sExp =
+@"// fn00001000
+void fn00001000()
+fn00001000_entry:
+	// succ:  l00001000
+l00001000:
+	r1 = 0x00000000
+	// succ:  l00001004_tmp
+l00001004_tmp:
+	call fn00001004 (retsize: 0;)
+	return
+	// succ:  fn00001000_exit
+fn00001000_exit:
+
+// fn00001004
+void fn00001004()
+fn00001004_entry:
+	// succ:  l00001004
+l00001004:
+	Mem0[0x00001800:word32] = r1
+	return
+	// succ:  fn00001004_exit
+fn00001004_exit:
+
+// fn00001100
+void fn00001100()
+fn00001100_entry:
+	// succ:  l00001100
+l00001100:
+	r1 = 0x00000001
+	// succ:  l00001100_tmp
+l00001100_tmp:
+	call fn00001004 (retsize: 0;)
+	return
+	// succ:  fn00001100_exit
+fn00001100_exit:
+
+";
+            AssertProgram(sExp, prog);
+        }
+
+        [Test]
+        public void Interprocedural_JumpToOtherProcStart_PromoteJump()
+        {
+            var scan = CreateScanner(0x1000, 0x2000);
+            arch.Test_AddTrace(new RtlTrace(0x1000)
+            {
+                m => { m.Assign(reg1, m.Word32(0)); },
+                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Return(0, 0); }
+            });
+            arch.Test_AddTrace(new RtlTrace(0x1100)
+            {
+                m => { m.Assign(reg1, m.Word32(1)); },
+                m => { m.Goto(new Address(0x1000)); },
+            });
+
+            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1000), arch.CreateProcessorState()));
+            scan.EnqueueEntryPoint(new EntryPoint(new Address(0x1100), arch.CreateProcessorState()));
+            scan.ProcessQueue();
+
+            var sExp =
+@"// fn00001000
+void fn00001000()
+fn00001000_entry:
+	// succ:  l00001000
+l00001000:
+	r1 = 0x00000000
+	Mem0[0x00001800:word32] = r1
+	return
+	// succ:  fn00001000_exit
+fn00001000_exit:
+
+// fn00001100
+void fn00001100()
+fn00001100_entry:
+	// succ:  l00001100
+l00001100:
+	r1 = 0x00000001
+	// succ:  l00001100_tmp
+l00001100_tmp:
+	call fn00001000 (retsize: 0;)
+	return
+	// succ:  fn00001100_exit
+fn00001100_exit:
+
+";
+            AssertProgram(sExp, prog);
+        }
     }
 }

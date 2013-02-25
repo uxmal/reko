@@ -62,7 +62,7 @@ namespace Decompiler.Evaluation
 				return dpb;
 		}
 
-		public int Mask(int bitCount)
+		public static int Mask(int bitCount)
 		{
 			return ((1 << bitCount) - 1);
 		}

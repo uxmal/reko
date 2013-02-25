@@ -54,19 +54,21 @@ namespace Decompiler.Gui.Windows
                 int lines = CountVisibleLines();
                 if (lines < 1)
                     lines = 1;
-                var writer = new StringWriter();
-                var arch = Decompiler.Program.Architecture;
-                var dumper = new Dumper(arch);
-                dumper.ShowAddresses = true;
-                dumper.ShowCodeBytes = true;
-                var image = Decompiler.Program.Image;
-                var dasm = arch.CreateDisassembler(image.CreateReader(StartAddress));
-                while (lines > 0)
+                using (var writer = new StringWriter())
                 {
-                    dumper.DumpAssemblerLine(image, dasm, writer);
-                    --lines;
+                    var arch = Decompiler.Program.Architecture;
+                    var dumper = new Dumper(arch);
+                    dumper.ShowAddresses = true;
+                    dumper.ShowCodeBytes = true;
+                    var image = Decompiler.Program.Image;
+                    var dasm = arch.CreateDisassembler(image.CreateReader(StartAddress));
+                    while (lines > 0)
+                    {
+                        dumper.DumpAssemblerLine(image, dasm, writer);
+                        --lines;
+                    }
+                    txtDisassembly.Text = writer.ToString();
                 }
-                txtDisassembly.Text = writer.ToString();
             }
         }
 
@@ -132,12 +134,12 @@ namespace Decompiler.Gui.Windows
 
         void txtDisassembly_KeyDown(object sender, KeyEventArgs e)
         {
-            Debug.WriteLine(string.Format("Down:  c:{0} d:{1} v:{2}", e.KeyCode, e.KeyData, e.KeyValue));
+            Debug.Print("Down:  c:{0} d:{1} v:{2}", e.KeyCode, e.KeyData, e.KeyValue);
         }
 
         void txtDisassembly_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Debug.WriteLine(string.Format("Press: ch:{0}", e.KeyChar));
+            Debug.Print("Press: ch:{0}", e.KeyChar);
         }
 
         public void SetSite(IServiceProvider sp)

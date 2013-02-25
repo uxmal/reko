@@ -53,7 +53,7 @@ namespace Decompiler.Core
 		}
 
         /// <summary>
-        /// Adds an image map item at the specified address. If  <paramref name="addr"/> is 
+        /// Adds an image map item at the specified address. If <paramref name="addr"/> is 
         /// located inside of an existing address, a notification is sent that that location has
         /// been split.
         /// </summary>

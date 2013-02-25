@@ -89,6 +89,7 @@ namespace Decompiler.Core
         /// which implies that in those architectures the return address size should be zero.
         /// </summary>
         public int ReturnAddressSize { get; set; }
+        public bool ReturnAddressKnown { get; set; }
 
         public Identifier CreateSequence(Identifier head, Identifier tail, DataType dt)
         {
@@ -397,5 +398,5 @@ namespace Decompiler.Core
 				text.WriteLine("// Frame escapes");
 			text.WriteLine("// return address size: {0}", ReturnAddressSize);
 		}
-	}
+    }
 }

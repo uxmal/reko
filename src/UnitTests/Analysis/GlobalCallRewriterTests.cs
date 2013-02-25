@@ -115,6 +115,7 @@ namespace Decompiler.UnitTests.Analysis
 		public void GcrStackArguments()
 		{
             Frame f = prog.Architecture.CreateFrame();
+            f.ReturnAddressKnown = true;
 			f.ReturnAddressSize = PrimitiveType.Word16.Size;
 
 			f.EnsureStackVariable(new Constant(PrimitiveType.Word16, 8), 2, PrimitiveType.Word16);

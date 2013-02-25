@@ -224,7 +224,6 @@ namespace Decompiler.Core
             return (short)(abImage[offset] + ((short)abImage[offset + 1] << 8));
         }
 
-
         public static Constant ReadLeDouble(byte[] abImage, uint off)
         {
             return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, off));
@@ -288,7 +287,6 @@ namespace Decompiler.Core
         {
             return addr.Linear - this.BaseAddress.Linear;
         }
-        
 
         public void WriteLeUInt16(uint offset, ushort w)
 		{
@@ -311,6 +309,5 @@ namespace Decompiler.Core
             abImage[offset + 2] = (byte) (dw >> 16);
             abImage[offset + 3] = (byte) (dw >> 24);
         }
-
     }
 }

@@ -96,22 +96,26 @@ namespace Decompiler.Scanning
         /// Patches all inbound edges, replacing jumps with call/return sequences, and 
         /// calls
         /// </summary>
-        private void FixInboundEdges()
+        public void FixInboundEdges()
         {
+            CallRetThunkBlock = FixInboundEdges(blockToPromote, procOld, procNew);
+        }
 
-            CallRetThunkBlock = procOld.AddBlock(blockToPromote+ "_tmp");
-            CallRetThunkBlock.Statements.Add(0, new CallInstruction(
+        public Block FixInboundEdges(Block blockToPromote, Procedure procOld, Procedure procNew)
+        {
+            var callRetThunkBlock = procOld.AddBlock(blockToPromote + "_tmp");
+            callRetThunkBlock.Statements.Add(0, new CallInstruction(
                 new ProcedureConstant(arch.PointerType, procNew),
                 new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
-            CallRetThunkBlock.Statements.Add(0, new ReturnInstruction());
+            callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
 
-            Block.ReplaceJumpsTo(blockToPromote, CallRetThunkBlock);
+            Block.ReplaceJumpsTo(blockToPromote, callRetThunkBlock);
 
-            procOld.ControlGraph.AddEdge(CallRetThunkBlock, procOld.ExitBlock);
+            procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
+            return callRetThunkBlock;
         }
 
         public Block CallRetThunkBlock { get; private set; }
-
 
         public class IdentifierReplacer : InstructionTransformer, StorageVisitor<Identifier>
         {
