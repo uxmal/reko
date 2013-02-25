@@ -31,8 +31,8 @@ namespace Decompiler.Gui.Windows
 
         public const string ViewWindowType = "disassemblyViewWindow";
 
-        public DisassemblyViewServiceImpl(IServiceProvider sp)
-            : base(sp)
+        public DisassemblyViewServiceImpl(IServiceProvider services)
+            : base(services)
         {
         }
 

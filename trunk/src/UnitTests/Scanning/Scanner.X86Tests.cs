@@ -51,7 +51,6 @@ namespace Decompiler.UnitTests.Scanning
             BuildTest(new Address(0x00100000), new FakePlatform(), asmProg);
         }
 
-
         private void BuildTest(Address addrBase, Platform platform , Action<IntelAssembler> asmProg)
         {
             var entryPoints = new List<EntryPoint>();
@@ -168,16 +167,19 @@ fn0C00_0000_exit:
             var sExp = @"// fn00100000
 void fn00100000()
 fn00100000_entry:
+	// succ:  l00100000
 l00100000:
 	call fn00100011 (retsize: 4;)
 	call fn0010001B (retsize: 4;)
 	Mem0[ebx + 0x0000123C:word32] = eax
 	return
+	// succ:  fn00100000_exit
 fn00100000_exit:
 
 // fn00100011
 void fn00100011()
 fn00100011_entry:
+	// succ:  l00100011
 l00100011:
 	Mem0[ebx + 0x00001234:word32] = 0x00000004
     call fn0010001B
@@ -206,7 +208,7 @@ fn0010001B_exit:
         {
             foreach (Procedure proc in procs)
             {
-                proc.Write(false, sw);
+                proc.Write(false, false, sw);
                 sw.WriteLine();
             }
         }

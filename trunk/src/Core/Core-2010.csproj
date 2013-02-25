@@ -180,6 +180,7 @@
     <Compile Include="Expressions\Slice.cs" />
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ICodeLocation.cs" />
     <Compile Include="Lib\LookaheadEnumerator.cs" />
     <Compile Include="Lib\PriorityQueue.cs">

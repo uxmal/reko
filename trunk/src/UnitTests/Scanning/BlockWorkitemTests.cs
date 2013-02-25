@@ -66,12 +66,12 @@ namespace Decompiler.UnitTests.Scanning
             arch = repository.DynamicMock<IProcessorArchitecture>();
         }
 
-        private BlockWorkitem CreateWorkItem(Address addr)
+        private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
         {
             return new BlockWorkitem(
                 scanner, 
-                trace, 
-                new FakeProcessorState(arch),
+                trace,
+                state,
                 proc.Frame, 
                 addr);
         }
@@ -100,7 +100,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Is.Anything)).Return(block);
             }
 
-            var wi = CreateWorkItem(new Address(0x1000));
+            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, proc.ExitBlock), "Expected return to add an edge to the Exit block");
@@ -133,7 +133,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<ProcessorState>.Is.Anything)).Return(next);
             }
 
-            var wi = CreateWorkItem(new Address(0x1000));
+            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.AreEqual("r0 = 0x00000003", block.Statements[0].ToString());
@@ -178,7 +178,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Procedure>.Is.Same(block.Procedure),
                     Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(blockThen);
             }
-            var wi = CreateWorkItem(new Address(0x1000));
+            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.AreNotSame(s1, s2);
@@ -213,7 +213,7 @@ namespace Decompiler.UnitTests.Scanning
                         .Return(new Procedure("fn1200", new Frame(null)));
                 scanner.Stub(x=> x.Architecture).Return(arch);
             }
-            var wi = CreateWorkItem(new Address(0x1000));
+            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
             wi.Process();
             var callees = new List<Procedure>(cg.Callees(block.Procedure));
             Assert.AreEqual(1, callees.Count);
@@ -241,12 +241,13 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<uint>.Is.Equal(0x2000u))).Return(alloca);
                     
             }
-            var wi = CreateWorkItem(new Address(0x1000));
-            wi.Context.SetRegister(Registers.eax, Constant.Word32(0x0400));
+            var state = new FakeProcessorState(arch);
+            state.SetRegister(Registers.eax, Constant.Word32(0x0400));
+            var wi = CreateWorkItem(new Address(0x1000), state);
             wi.Process();
             repository.VerifyAll();
             Assert.AreEqual(1, block.Statements.Count);
-            Assert.AreEqual("esp = esp - 0x00000400", wi.Block.Statements.Last.ToString());
+            Assert.AreEqual("esp = esp - 0x00000400", block.Statements.Last.ToString());
         }
 
         [Test]
@@ -271,11 +272,11 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<uint>.Is.Equal(0x2000u))).Return(alloca);
                     
             }
-            var wi = CreateWorkItem(new Address(0x1000));
+            var wi = CreateWorkItem(new Address(0x1000), new FakeProcessorState(arch));
             wi.Process();
             repository.VerifyAll();
             Assert.AreEqual(1, block.Statements.Count);
-            Assert.AreEqual("esp = alloca(eax)", wi.Block.Statements.Last.ToString());
+            Assert.AreEqual("esp = alloca(eax)", block.Statements.Last.ToString());
         }
 
         [Test]
@@ -305,7 +306,7 @@ namespace Decompiler.UnitTests.Scanning
             trace.Add(m => { m.Call(new Address(0x0001000), 4); });
             trace.Add(m => { m.SideEffect(new ProcedureConstant(PrimitiveType.Void, new PseudoProcedure("shouldnt_decompile_this", PrimitiveType.Void, 0))); });
 
-            var wi = CreateWorkItem(new Address(0x2000));
+            var wi = CreateWorkItem(new Address(0x2000), new FakeProcessorState(arch));
             wi.Process();
 
             Assert.AreEqual(1, block.Statements.Count, "Should only have rewritten the Call to 'terminator'");

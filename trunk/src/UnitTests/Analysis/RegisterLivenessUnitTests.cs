@@ -267,6 +267,7 @@ namespace Decompiler.UnitTests.Analysis
 		{
             var callee = new Procedure("callee", prog.Architecture.CreateFrame());
 			callee.Frame.ReturnAddressSize = 4;
+            callee.Frame.ReturnAddressKnown = true;
 			callee.Frame.EnsureStackArgument(0, PrimitiveType.Word32);
 			callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			Assert.AreEqual(8, callee.Frame.GetStackArgumentSpace());

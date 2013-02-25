@@ -159,7 +159,6 @@ namespace Decompiler.Scanning
             image.Map.TerminateItem(addr);
         }
 
-
         private void TerminateAnyBlockAt(Address addr)
         {
             var block = FindContainingBlock(addr);
@@ -199,39 +198,68 @@ namespace Decompiler.Scanning
         public virtual Block EnqueueJumpTarget(Address addrStart, Procedure proc, ProcessorState state)
         {
             Block block = FindExactBlock(addrStart);
-            if (block != null)
+            if (block == null)
             {
-                if (block.Procedure != proc)
+                block = FindContainingBlock(addrStart);
+                if (block != null)
                 {
-                    Procedure procNew;
-                    if (!Procedures.TryGetValue(addrStart, out procNew))
-                    {
-                        procNew = Procedure.Create(addrStart, arch.CreateFrame());
-                        Procedures.Add(addrStart, procNew);
-                        CallGraph.AddProcedure(procNew);
-                        procNew.Frame.ReturnAddressSize = proc.Frame.ReturnAddressSize;
-                    }
-                    var bp = new BlockPromoter(block, procNew, arch);
-                    bp.Promote();
-                    block = bp.CallRetThunkBlock;
+                    block = SplitBlock(block, addrStart);
                 }
-                return block;
+                else
+                {
+                    block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
+                }
+                var wi = CreateBlockWorkItem(addrStart, proc, state);
+                queue.Enqueue(PriorityJumpTarget, wi);
             }
-
-            block = FindContainingBlock(addrStart);
-            if (block != null)
+            if (BlockInDifferentProcedure(block, proc))
             {
-                block = SplitBlock(block, addrStart);
+                if (!BlockIsEntryBlock(block))
+                {
+                    Debug.Print("Block {0} (proc {1}) is not entry block", block, block.Procedure);
+                    block = PromoteBlock(block, addrStart, proc);
+                }
             }
-            else
-            {
-                block = AddBlock(addrStart, proc, GenerateBlockName(addrStart));
-            }
-            var wi = CreateBlockWorkItem(addrStart, proc, state);
-            queue.Enqueue(PriorityJumpTarget, wi);
             return block;
         }
 
+        private bool BlockInDifferentProcedure(Block block, Procedure proc)
+        {
+            if (block.Procedure == null)
+                throw new InvalidOperationException("Blocks must always be associated with a procedure.");
+            Debug.Print("{0} should be promoted: {1}", block.Name, block.Procedure != proc);
+            return (block.Procedure != proc);
+        }
+
+        private bool BlockIsEntryBlock(Block block)
+        {
+            return 
+                block.Pred.Count == 1 &&
+                block.Pred[0] == block.Procedure.EntryBlock;
+        }
+
+        private Block PromoteBlock(Block block, Address addrStart, Procedure proc)
+        {
+            Procedure procNew;
+            if (!Procedures.TryGetValue(addrStart, out procNew))
+            {
+                procNew = Procedure.Create(addrStart, arch.CreateFrame());
+                Procedures.Add(addrStart, procNew);
+                CallGraph.AddProcedure(procNew);
+                procNew.Frame.ReturnAddressSize = proc.Frame.ReturnAddressSize;
+            }
+            var bp = new BlockPromoter(block, procNew, arch);
+            bp.Promote();
+            return block;
+        }
+
+        private Block FixInboundEdges(Block block, Procedure procNew)
+        {
+            var bp = new BlockPromoter(block, procNew, arch);
+            bp.FixInboundEdges();
+            return bp.CallRetThunkBlock;
+        }
+        
         public void EnqueueVectorTable(Address addrFrom, Address addrTable, PrimitiveType stride, ushort segBase, bool calltable, Procedure proc, ProcessorState state)
         {
             ImageMapVectorTable table;
@@ -250,7 +278,6 @@ namespace Decompiler.Scanning
             vectors[addrTable] = table;
             queue.Enqueue(PriorityVector, wi);
         }
-
 
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
@@ -411,4 +438,3 @@ namespace Decompiler.Scanning
         }
     }
 }
-

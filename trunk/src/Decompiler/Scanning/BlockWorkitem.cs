@@ -70,9 +70,6 @@ namespace Decompiler.Scanning
             this.blockCur = null;
         }
 
-        public Block Block { get { return blockCur; } } 
-        public ProcessorState  Context { get { return state; } }       //$TODO: can we get rid of this? apparently only test use it.
-
         public override void Process()
         {
             rtlStream = rewriter.GetEnumerator();
@@ -157,7 +154,7 @@ namespace Decompiler.Scanning
             }
         }
 
-        #region InstructionVisitor Members
+        #region RtlInstructionVisitor Members
 
         public bool VisitAssignment(RtlAssignment a)
         {
@@ -197,8 +194,23 @@ namespace Decompiler.Scanning
 
         private void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
         {
-            if (!proc.ControlGraph.ContainsEdge(blockFrom, blockTo))
-                proc.ControlGraph.AddEdge(blockFrom, blockTo);
+            if (blockFrom.Procedure == blockTo.Procedure)
+            {
+                if (!proc.ControlGraph.ContainsEdge(blockFrom, blockTo))
+                    proc.ControlGraph.AddEdge(blockFrom, blockTo);
+            }
+            else
+            {
+                Debug.Print("Thunking from {0} to {1}", blockFrom, blockTo);
+                Debug.Print("  procs {0}, {1}", blockFrom.Procedure, blockTo.Procedure);
+                var callRetThunkBlock = proc.AddBlock(blockFrom + "_tmp");
+                callRetThunkBlock.Statements.Add(0, new CallInstruction(
+                    new ProcedureConstant(arch.PointerType, blockTo.Procedure),
+                    new CallSite(blockTo.Procedure.Signature.ReturnAddressOnStack, 0)));
+                callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
+                proc.ControlGraph.AddEdge(blockFrom, callRetThunkBlock);
+                proc.ControlGraph.AddEdge(callRetThunkBlock, proc.ExitBlock);
+            }
         }
 
         public bool VisitGoto(RtlGoto g)
@@ -207,10 +219,10 @@ namespace Decompiler.Scanning
             var addrTarget = g.Target as Address;
             if (addrTarget != null)
             {
-                var blockDest = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
+                Debug.Print("Enqueueing jump target {0}", addrTarget);
+                var blockTarget = scanner.EnqueueJumpTarget(addrTarget, blockCur.Procedure, state);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
-                EnsureEdge(blockSource.Procedure, blockSource, blockDest);
-
+                EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
                 return false;
             }
             var mem = g.Target as MemoryAccess;
@@ -222,11 +234,9 @@ namespace Decompiler.Scanning
                     Emit(new IndirectCall(g.Target, site));
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
-
                     return false;
                 }
             }
-
             ProcessVector(ric.Address, g);
             return false;
         }
@@ -317,7 +327,7 @@ namespace Decompiler.Scanning
             Emit(new ReturnInstruction());
             blockCur.Procedure.ControlGraph.AddEdge(blockCur, proc.ExitBlock);
 
-            if (frame.ReturnAddressSize != 0)
+            if (frame.ReturnAddressKnown)
             {
                 if (frame.ReturnAddressSize != ret.ReturnAddressBytes)
                 {
@@ -331,6 +341,7 @@ namespace Decompiler.Scanning
             else
             {
                 frame.ReturnAddressSize = ret.ReturnAddressBytes;
+                frame.ReturnAddressKnown = true;
             }
 
             int stackDelta = ret.ReturnAddressBytes + ret.ExtraBytesPopped;

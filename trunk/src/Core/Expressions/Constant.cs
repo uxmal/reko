@@ -121,12 +121,10 @@ namespace Decompiler.Core.Expressions
             return new Constant(PrimitiveType.Byte, c);
         }
 
-
 		public override Expression CloneExpression()
 		{
 			return new Constant(DataType, c);
 		}
-
 
 		public static Constant RealFromBitpattern(PrimitiveType dt, long bits)
 		{
