@@ -4,16 +4,18 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_000F (retsize: 2; depth: 2)
-	sp = sp - 0x0002
-	wLoc04 = di
+	sp = fp - 0x0002
+	wLoc02 = di
 	ax = 0x0100
-	call fn0C00_0014 (retsize: 2; depth: 2)
+	call fn0C00_0014 (retsize: 2; depth: 4)
 	Mem0[ds:0x0300:word16] = ax
-	di = wLoc04
-	sp = sp + 0x0002
-	call fn0C00_000F (retsize: 2; depth: 2)
+	di = wLoc02
+	sp = fp
+	// succ:  l0C00_0000_tmp
+l0C00_0000_tmp:
+	call fn0C00_000F (retsize: 2;)
 	return
-	// succ:  l0C00_000F
+	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 // fn0C00_000F
@@ -32,10 +34,10 @@ fn0C00_0014_entry:
 	// succ:  l0C00_0014
 l0C00_0014:
 	di = 0x0000
-	SZO = cond(di)
+	SZO = cond(0x0000)
 	C = false
 	ax = ax - 0x0001
-	SZO = cond(ax)
+	SZO = cond(ax - 0x0001)
 	return
 	// succ:  fn0C00_0014_exit
 fn0C00_0014_exit:

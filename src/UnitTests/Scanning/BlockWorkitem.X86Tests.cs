@@ -343,6 +343,7 @@ namespace Decompiler.UnitTests.Scanning
                     Arg<Address>.Is.Anything));
 
             });
+            follow.Procedure = proc;
             wi.Process();
             Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, follow), "follow should follow block");
             Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, block), "block should loop back onto itself");

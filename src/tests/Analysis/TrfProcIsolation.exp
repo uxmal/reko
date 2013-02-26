@@ -1,7 +1,9 @@
-fn0C00_0000
+fn0C00_0000 SCZO ax al ah
+const ax:0x0100
     fn0C00_0000_entry sp:fp
     l0C00_0000 sp:fp
-    fn0C00_0000_exit
+    l0C00_0000_tmp ax:<invalid> di:di sp:fp
+    fn0C00_0000_exit ax:<invalid> di:di sp:fp
 
 fn0C00_000F SCZO ax sp di al ah
 const ax:0x0100
