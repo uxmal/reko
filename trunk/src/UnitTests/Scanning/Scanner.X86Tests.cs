@@ -69,7 +69,6 @@ namespace Decompiler.UnitTests.Scanning
                 new FakeDecompilerEventListener());
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
             scanner.ProcessQueue();
-            DumpProgram(scanner);
         }
 
         private void DumpProgram(Scanner scanner)
@@ -163,7 +162,6 @@ fn0C00_0000_exit:
                 m.Ret();
             });
             var sw = new StringWriter();
-            WriteProcedures(scanner.Procedures.Values, sw);
             var sExp = @"// fn00100000
 void fn00100000()
 fn00100000_entry:
@@ -201,6 +199,8 @@ l0010002E:
 fn0010001B_exit:
 
 ";
+            WriteProcedures(scanner.Procedures.Values, sw);
+            Console.WriteLine(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
 
