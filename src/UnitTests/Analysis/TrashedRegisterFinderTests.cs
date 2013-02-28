@@ -449,7 +449,7 @@ namespace Decompiler.UnitTests.Analysis
                 var tmp = m.Local32("tmp");
                 m.Assign(tmp, eax);
                 m.Call("TrashEaxEbx");
-                m.Assign(eax, tmp);
+                m.Assign(eax, tmp);     // eax is preserved!
                 m.Return();
             });
 
@@ -470,7 +470,7 @@ const ebx:0x01231313
     main_exit eax:eax ebx:0x01231313 esp:fp
 
 TrashEaxEbx eax ebx ax bx al bl ah bh
-const ebx:0x01231313
+const eax:<invalid> ebx:0x01231313
     TrashEaxEbx_entry esp:fp
     l1 esp:fp
     TrashEaxEbx_exit eax:<invalid> ebx:0x01231313 esp:fp");
@@ -514,6 +514,7 @@ const ebx:0x01231313
 
             var sExp =
 @"main SCZO eax ax al ah
+const eax:<invalid>
     main_entry esp:fp
     l1 esp:fp
     main_exit eax:eax + 0x00000004 esp:fp";
@@ -562,6 +563,7 @@ const ebx:0x01231313
 
             var sExp =
 @"main eax ax al ah
+const eax:<invalid>
     main_entry esp:fp
     l1 esp:fp
     l2 eax:<invalid> esp:fp
