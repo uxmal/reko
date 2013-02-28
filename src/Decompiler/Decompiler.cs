@@ -322,7 +322,6 @@ namespace Decompiler
 				}
 				scanner.ProcessQueue();
                 eventListener.ShowStatus("Finished rewriting reachable machine code.");
-
 			}
 			finally
 			{

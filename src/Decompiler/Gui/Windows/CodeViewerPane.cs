@@ -49,7 +49,12 @@ namespace Decompiler.Gui.Windows
     {
         private HtmlDocument doc;
 
-        public HtmlDocumentAdapter(HtmlDocument doc)
+        public static HtmlDocumentAdapter Create(HtmlDocument doc)
+        {
+            return (doc != null) ? new HtmlDocumentAdapter(doc) : null;
+        }
+
+        private HtmlDocumentAdapter(HtmlDocument doc)
         {
             this.doc = doc;
         }
@@ -174,7 +179,7 @@ namespace Decompiler.Gui.Windows
                 AllowNavigation = true;
             }
 
-            public new IHtmlDocument Document { get { return new HtmlDocumentAdapter(base.Document); } }
+            public new IHtmlDocument Document { get { return HtmlDocumentAdapter.Create(base.Document); } }
 
             public void SetInnerHtmlOfElement(string elementId, string innerHtml)
             {

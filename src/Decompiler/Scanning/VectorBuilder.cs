@@ -140,6 +140,10 @@ namespace Decompiler.Scanning
 
         }
 
+        public void AddDiagnostic(Address addr, Diagnostic diagnostic)
+        {
+        }
+
         public Block GetSinglePredecessor(Block block)
         {
             return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();

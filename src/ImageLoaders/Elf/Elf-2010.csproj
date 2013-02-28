@@ -62,7 +62,9 @@
   <ItemGroup>
     <Compile Include="Elf32_EHdr.cs" />
     <Compile Include="Elf32_PHdr.cs" />
+    <Compile Include="Elf32_Rel.cs" />
     <Compile Include="Elf32_SHdr.cs" />
+    <Compile Include="Elf32_Sym.cs" />
     <Compile Include="ElfImageLoader.cs" />
     <Compile Include="ProgramHeaderType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

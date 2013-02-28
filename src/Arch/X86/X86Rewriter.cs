@@ -76,6 +76,10 @@ namespace Decompiler.Arch.X86
             }
         }
 
+        /// <summary>
+        /// Iterator that yields one RtlIntructionCluster for each x86 instruction.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())

@@ -54,8 +54,13 @@ namespace Decompiler.Scanning
             }
             var mem = target as MemoryAccess;
             if (mem == null)
-                throw new ArgumentException("Expected an indirect JMP or CALL");
-            Index = DetermineIndexRegister(mem);
+            {
+                Index = null;
+            }
+            else
+            {
+                Index = DetermineIndexRegister(mem);
+            }
             Operations = new List<BackwalkOperation>();
 		}
 
