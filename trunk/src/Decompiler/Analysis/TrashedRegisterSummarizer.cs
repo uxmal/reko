@@ -94,22 +94,26 @@ namespace Decompiler.Analysis
                     else
                     {
                         Trash(de.Key);
-                        var c = de.Value as Constant;
-                        if (c != null)
+                        var cNew = de.Value as Constant;
+                        if (cNew != null)
                         {
-                            if (c.IsValid)
+                            if (cNew.IsValid)
                             {
                                 Constant cOld;
                                 if (!pf.ConstantRegisters.TryGetValue(de.Key, out cOld))
                                 {
                                     changed = true;
-                                    pf.ConstantRegisters[de.Key] = c;
+                                    pf.ConstantRegisters[de.Key] = cNew;
                                 }
-                                else if (!cmp.Equals(cOld, c))
+                                else if (!cmp.Equals(cOld, cNew))
                                 {
                                     changed = true;
-                                    SetConstant(de.Key,Constant.Invalid);
+                                    SetConstant(de.Key, Constant.Invalid);
                                 }
+                            }
+                            else
+                            {
+                                SetConstant(de.Key, Constant.Invalid);
                             }
                         }
                         else
@@ -148,6 +152,7 @@ namespace Decompiler.Analysis
                 {
                     SetConstant(seq.Head.Storage, constant);
                     SetConstant(seq.Tail.Storage, constant);
+                    pf.ConstantRegisters[storage] = Constant.Invalid;
                 }
                 return;
             }

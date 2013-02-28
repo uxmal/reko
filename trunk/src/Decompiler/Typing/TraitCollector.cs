@@ -230,7 +230,7 @@ namespace Decompiler.Typing
 
         public DataType VisitSideEffect(SideEffect sideEffect)
         {
-            sideEffect.Accept(this);
+            sideEffect.Expression.Accept(this);
             return PrimitiveType.Void;
         }
 
