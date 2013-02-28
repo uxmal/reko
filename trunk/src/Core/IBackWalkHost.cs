@@ -27,6 +27,8 @@ namespace Decompiler.Core
 	/// </summary>
 	public interface IBackWalkHost
 	{
+        void AddDiagnostic(Address addr, Diagnostic diagnostic);
+
 		AddressRange GetSinglePredecessorAddressRange(Address block);
 		Address GetBlockStartAddress(Address addr);
 

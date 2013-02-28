@@ -66,6 +66,10 @@ namespace Decompiler.Gui
 
         public void NavigateTo(int i)
         {
+            var codeSvc = sp.GetService<ICodeViewerService>();
+            if (codeSvc != null)
+                codeSvc.DisplayProcedure(procs.Values[i]);
+
             var mvs = sp.GetService<IMemoryViewService>();
             if (mvs == null)
                 return;

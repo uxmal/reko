@@ -72,29 +72,38 @@ namespace Decompiler.Scanning
 
         public override void Process()
         {
-            rtlStream = rewriter.GetEnumerator();
-            state.ErrorListener = (message) => { scanner.AddDiagnostic(ric.Address, new WarningDiagnostic(message)); };
-            blockCur = scanner.FindContainingBlock(addrStart);
-            if (BlockHasBeenScanned(blockCur))
-                return;
-            while (rtlStream.MoveNext())
+            try
             {
-                ric = rtlStream.Current;
-                if (blockCur != scanner.FindContainingBlock(ric.Address))
-                    break;  
-                state.SetInstructionPointer(ric.Address);
-                foreach (var rtlInstr in ric.Instructions)
-                {
-                    ri = rtlInstr;
-                    if (!ri.Accept(this))
-                        return;
-                }
-                var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
-                if (blNext != null)
-                {
-                    EnsureEdge(blockCur.Procedure, blockCur, blNext);
+                rtlStream = rewriter.GetEnumerator();
+                state.ErrorListener = (message) => { scanner.AddDiagnostic(ric.Address, new WarningDiagnostic(message)); };
+                blockCur = scanner.FindContainingBlock(addrStart);
+                if (BlockHasBeenScanned(blockCur))
                     return;
+                while (rtlStream.MoveNext())
+                {
+                    ric = rtlStream.Current;
+                    if (blockCur != scanner.FindContainingBlock(ric.Address))
+                        break;
+                    state.SetInstructionPointer(ric.Address);
+                    foreach (var rtlInstr in ric.Instructions)
+                    {
+                        ri = rtlInstr;
+                        if (!ri.Accept(this))
+                            return;
+                    }
+                    var blNext = FallenThroughNextBlock(ric.Address + ric.Length);
+                    if (blNext != null)
+                    {
+                        EnsureEdge(blockCur.Procedure, blockCur, blNext);
+                        return;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                if (ric == null)
+                    throw;
+                scanner.AddDiagnostic(ric.Address, new ErrorDiagnostic(ex.Message));
             }
         }
 
@@ -289,6 +298,8 @@ namespace Decompiler.Scanning
                 return true;
             }
 
+            if (ric.Address.Linear == 0x01001E95)
+                ric.ToString();         //$DEBUG
             var id = call.Target as Identifier;
             if (id != null)
             {
@@ -428,11 +439,11 @@ namespace Decompiler.Scanning
 
         private void ProcessVector(Address addrSwitch, RtlTransfer xfer)
         {
-            var bw = new Backwalker(new BackwalkerHost(), xfer, eval);
+            var bw = new Backwalker(new BackwalkerHost(scanner), xfer, eval);
             if (!bw.CanBackwalk())
             {
                 scanner.AddDiagnostic(addrSwitch, new WarningDiagnostic(
-                    string.Format("Unable to determine register used in transfer instruction {0}.", xfer)));
+                    string.Format("Unable to determine index register used in transfer instruction {0}.", xfer)));
                 return;
             }
             var bwops = bw.BackWalk(blockCur);
@@ -649,6 +660,18 @@ namespace Decompiler.Scanning
 
         private class BackwalkerHost : IBackWalkHost
         {
+            private IScanner scanner;
+
+            public BackwalkerHost(IScanner scanner)
+            {
+                this.scanner = scanner;
+            }
+
+            public void AddDiagnostic(Address addr, Diagnostic d)
+            {
+                scanner.AddDiagnostic(addr, d);
+            }
+
 
             public AddressRange GetSinglePredecessorAddressRange(Address block)
             {

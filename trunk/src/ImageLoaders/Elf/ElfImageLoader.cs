@@ -60,11 +60,26 @@ namespace Decompiler.ImageLoaders.Elf
         private const uint SHF_ALLOC  =  0x2;
         private const uint SHF_EXECINSTR =  0x4;
 
+        private const int ET_REL = 0x01;
+
+        private int ELF32_R_SYM(int info) { return ((info) >> 8); }
+        private int ELF32_ST_BIND(int i) { return ((i) >> 4); }
+        private int ELF32_ST_TYPE(int i) { return ((i) & 0xf); }
+        private int ELF32_ST_INFO(int b, int t) { return (((b) << 4) + ((t) & 0xf)); }
+
+        const int STT_NOTYPE = 0;			// Symbol table type: none
+        const int STT_FUNC = 2;				// Symbol table type: function
+        const int STT_SECTION = 3;
+        const int STT_FILE = 4;
+        const int STB_GLOBAL = 1;
+        const int STB_WEAK = 2;
+
         private byte fileClass;
         private byte endianness;
         private byte fileVersion;
         private IProcessorArchitecture arch;
         private Address addrPreferred;
+        private ProgramImage image;
 
         public ElfImageLoader(IServiceProvider services, byte[] rawBytes)
             : base(services, rawBytes)
@@ -88,7 +103,8 @@ namespace Decompiler.ImageLoaders.Elf
             LoadSectionHeaders();
             addrPreferred = ComputeBaseAddress();
             var addrMax = ComputeMaxAddress();
-            return LoadImageBytes(addrPreferred, addrMax);
+            this.image = LoadImageBytes(addrPreferred, addrMax);
+            return image;
         }
 
         public void LoadElfIdentification()
@@ -185,11 +201,6 @@ namespace Decompiler.ImageLoaders.Elf
             }
         }
 
-        public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
-        {
-            entryPoints.Add(new EntryPoint(new Address(Header.e_entry), this.Architecture.CreateProcessorState()));
-        }
-
         private ImageReader CreateReader(uint fileOffset)
         {
             switch (endianness)
@@ -252,6 +263,171 @@ namespace Decompiler.ImageLoaders.Elf
                 ((shf & SHF_ALLOC) != 0) ? "a" : " ",
                 ((shf & SHF_WRITE) != 0) ? "w" : " ");
         }
+
+
+        public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
+        {
+            if (image == null) 
+                throw new InvalidOperationException(); // No file loaded
+            entryPoints.Add(new EntryPoint(new Address(Header.e_entry), arch.CreateProcessorState()));
+            if (arch is IntelArchitecture)
+            {
+                RelocateI386();
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private void RelocateI386()
+        {
+            uint nextFakeLibAddr = ~1u; // See R_386_PC32 below; -1 sometimes used for main
+            for (int i = 1; i < this.SectionHeaders.Count; ++i)
+            {
+                var ps = SectionHeaders[i];
+                if (ps.sh_type == SectionHeaderType.SHT_REL)
+                {
+                    // A section such as .rel.dyn or .rel.plt (without an addend field).
+                    // Each entry has 2 words: r_offet and r_info. The r_offset is just the offset from the beginning
+                    // of the section (section given by the section header's sh_info) to the word to be modified.
+                    // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
+                    // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
+                    // the section header's sh_link field.
+                    var pReloc = CreateReader(ps.sh_offset);
+                    uint size = ps.sh_size;
+                    // NOTE: the r_offset is different for .o files (ET_REL in the e_type header field) than for exe's
+                    // and shared objects!
+                    ADDRESS destNatOrigin = 0;
+                    ADDRESS destHostOrigin = 0;
+                    if (Header.e_type == ET_REL)
+                    {
+                        int destSection = (int) SectionHeaders[i].sh_info;
+                        destNatOrigin = SectionHeaders[destSection].sh_addr;
+                        destHostOrigin = SectionHeaders[destSection].sh_offset;
+                    }
+                    int symSection = (int) SectionHeaders[i].sh_link; // Section index for the associated symbol table
+                    int strSection = (int) SectionHeaders[symSection].sh_link; // Section index for the string section assoc with this
+                    uint pStrSection = SectionHeaders[strSection].sh_offset;
+                    var symOrigin = SectionHeaders[symSection].sh_offset;
+                                                var relocR = CreateReader(0);
+                            var relocW = CreateWriter(0);
+
+                    for (uint u = 0; u < size; u += 2 * sizeof(uint))
+                    {
+                        uint r_offset = pReloc.ReadUInt32();
+                        uint info = pReloc.ReadUInt32();
+
+                        byte relType = (byte) info;
+                        uint symTabIndex = info >> 8;
+                        uint pRelWord; // Pointer to the word to be relocated
+                        if (Header.e_type == ET_REL)
+                        {
+                            pRelWord = destHostOrigin + r_offset;
+                        }
+                        else
+                        {
+                            if (r_offset == 0)
+                                continue;
+                            SectionInfo destSec = GetSectionInfoByAddr(r_offset);
+                            pRelWord = destSec.uHostAddr - destSec.uNativeAddr + r_offset;
+                            destNatOrigin = 0;
+                        }
+                        uint A, S = 0, P;
+                        int nsec;
+                        var sym = Elf32_Sym.Load(CreateReader(symOrigin + symTabIndex * Elf32_Sym.Size));
+                        switch (relType)
+                        {
+                        case 0: // R_386_NONE: just ignore (common)
+                            break;
+                        case 1: // R_386_32: S + A
+                            // Read the symTabIndex'th symbol.
+                            S = sym.st_value;
+                            if (Header.e_type == ET_REL)
+                            {
+                                nsec = sym.st_shndx;
+                                if (nsec >= 0 && nsec < SectionHeaders.Count)
+                                    S += SectionHeaders[nsec].sh_addr;
+                            }
+                            A = relocR.ReadUInt32(pRelWord);
+                            relocW.WriteUInt32(pRelWord, S + A);
+                            break;
+                        case 2: // R_386_PC32: S + A - P
+                            if (ELF32_ST_TYPE(sym.st_info) == STT_SECTION)
+                            {
+                                nsec = sym.st_shndx;
+                                if (nsec >= 0 && nsec < SectionHeaders.Count)
+                                    S = SectionHeaders[ nsec ].sh_addr;
+                            }
+                            else
+                            {
+                                S = sym.st_value;
+                                if (S == 0)
+                                {
+                                    // This means that the symbol doesn't exist in this module, and is not accessed
+                                    // through the PLT, i.e. it will be statically linked, e.g. strcmp. We have the
+                                    // name of the symbol right here in the symbol table entry, but the only way
+                                    // to communicate with the loader is through the target address of the call.
+                                    // So we use some very improbable addresses (e.g. -1, -2, etc) and give them entries
+                                    // in the symbol table
+                                    uint nameOffset = sym.st_name;
+                                    string pName = ReadAsciiString(pStrSection + nameOffset);
+                                    // this is too slow, I'm just going to assume it is 0
+                                    //S = GetAddressByName(pName);
+                                    //if (S == (e_type == E_REL ? 0x8000000 : 0)) {
+                                    S = nextFakeLibAddr--; // Allocate a new fake address
+                                    AddSymbol(S, pName);
+                                    //}
+                                }
+                                else if (Header.e_type == ET_REL)
+                                {
+                                    nsec = sym.st_shndx;
+                                    if (nsec >= 0 && nsec < SectionHeaders.Count)
+                                        S += SectionHeaders[nsec].sh_addr;
+                                }
+                            }
+                            A = relocR.ReadUInt32(pRelWord);
+                            P = destNatOrigin + r_offset;
+                            relocW.WriteUInt32(pRelWord, S + A - P);
+                            break;
+                        case 7:
+                        case 8: // R_386_RELATIVE
+                            break; // No need to do anything with these, if a shared object
+                        default:
+                            throw new NotSupportedException("Relocation type " + (int) relType + " not handled yet");
+                        }
+                    }
+                }
+            }
+        }
+
+        private SectionInfo GetSectionInfoByAddr(ADDRESS r_offset)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string ReadAsciiString(uint fileOffset)
+        {
+            int u = (int) fileOffset;
+            while (image.Bytes[u] != 0)
+            {
+                ++u;
+            }
+            return Encoding.ASCII.GetString(image.Bytes, (int) fileOffset, u - (int) fileOffset);
+        }
+
+        private ImageWriter CreateWriter(int p)
+        {
+            throw new NotImplementedException();
+        }
+
+        // A map for extra symbols, those not in the usual Elf symbol tables
+
+        private void AddSymbol(ADDRESS uNative, string pName)
+        {
+            //m_SymTab[uNative] = pName;
+        }
+
     }
 
 #if ZLON
@@ -549,128 +725,6 @@ namespace Decompiler.ImageLoaders.Elf
                 m_uPltMax = pPlt.uNativeAddr + pPlt.uSectionSize;
             }
             return new ProgramImage(addrLoad, new byte[arbitaryLoadAddr - addrLoad]);
-        }
-
-        public override void Relocate(Address addrLoad, List<EntryPoint> entryPoints, RelocationDictionary relocations)
-        {
-            int nextFakeLibAddr = -2; // See R_386_PC32 below; -1 sometimes used for main
-            if (m_pImage == null) return; // No file loaded
-            int e_type = pHeader.e_type;
-            switch ((MachineType) pHeader.e_machine)
-            {
-            default:
-                throw new NotImplementedException();
-            case MachineType.EM_386:
-                {
-                    for (int i = 1; i < m_iNumSections; ++i)
-                    {
-                        SectionInfo ps = m_pSections[i];
-                        if (ps.uType == SectionType.SHT_REL)
-                        {
-                            // A section such as .rel.dyn or .rel.plt (without an addend field).
-                            // Each entry has 2 words: r_offet and r_info. The r_offset is just the offset from the beginning
-                            // of the section (section given by the section header's sh_info) to the word to be modified.
-                            // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
-                            // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
-                            // the section header's sh_link field.
-                            var pReloc = CreateImageReader(ps.uHostAddr);
-                            uint size = ps.uSectionSize;
-                            // NOTE: the r_offset is different for .o files (E_REL in the e_type header field) than for exe's
-                            // and shared objects!
-                            ADDRESS destNatOrigin = 0, destHostOrigin = 0;
-                            if (e_type == E_REL)
-                            {
-                                int destSection = m_sh_info[i];
-                                destNatOrigin = m_pSections[destSection].uNativeAddr;
-                                destHostOrigin = m_pSections[destSection].uHostAddr;
-                            }
-                            int symSection = m_sh_link[i]; // Section index for the associated symbol table
-                            int strSection = m_sh_link[symSection]; // Section index for the string section assoc with this
-                            uint pStrSection = m_pSections[strSection].uHostAddr;
-                            uint symOrigin = /*(Elf32_Sym)*/m_pSections[symSection].uHostAddr;
-                            for (uint u = 0; u < size; u += 2 * sizeof(uint))
-                            {
-                                uint r_offset = pReloc.ReadUInt32();
-                                uint info = pReloc.ReadUInt32();
-
-                                byte relType = (byte)info;
-                                uint symTabIndex = info >> 8;
-                                uint pRelWord; // Pointer to the word to be relocated
-                                if (e_type == E_REL)
-                                    pRelWord = destHostOrigin + r_offset;
-                                else
-                                {
-                                    if (r_offset == 0) continue;
-                                    SectionInfo destSec = GetSectionInfoByAddr(r_offset);
-                                    pRelWord = destSec.uHostAddr - destSec.uNativeAddr + r_offset;
-                                    destNatOrigin = 0;
-                                }
-                                ADDRESS A, S = 0, P;
-                                int nsec;
-                                switch (relType)
-                                {
-                                case 0: // R_386_NONE: just ignore (common)
-                                    break;
-                                case 1: // R_386_32: S + A
-                                    S = ReadUInt32((int*)&symOrigin[symTabIndex].st_value);
-                                    if (e_type == E_REL)
-                                    {
-                                        nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
-                                        if (nsec >= 0 && nsec < m_iNumSections)
-                                            S += GetSectionInfo(nsec)->uNativeAddr;
-                                    }
-                                    A = elfRead4(pRelWord);
-                                    elfWrite4(pRelWord, S + A);
-                                    break;
-                                case 2: // R_386_PC32: S + A - P
-                                    if (ELF32_ST_TYPE(symOrigin[symTabIndex].st_info) == STT_SECTION)
-                                    {
-                                        nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
-                                        if (nsec >= 0 && nsec < m_iNumSections)
-                                            S = GetSectionInfo(nsec)->uNativeAddr;
-                                    }
-                                    else
-                                    {
-                                        S = elfRead4((int*)&symOrigin[symTabIndex].st_value);
-                                        if (S == 0)
-                                        {
-                                            // This means that the symbol doesn't exist in this module, and is not accessed
-                                            // through the PLT, i.e. it will be statically linked, e.g. strcmp. We have the
-                                            // name of the symbol right here in the symbol table entry, but the only way
-                                            // to communicate with the loader is through the target address of the call.
-                                            // So we use some very improbable addresses (e.g. -1, -2, etc) and give them entries
-                                            // in the symbol table
-                                            int nameOffset = elfRead4((int*)&symOrigin[symTabIndex].st_name);
-                                            string pName = ReadAsciiString( pStrSection + nameOffset;
-                                            // this is too slow, I'm just going to assume it is 0
-                                            //S = GetAddressByName(pName);
-                                            //if (S == (e_type == E_REL ? 0x8000000 : 0)) {
-                                            S = nextFakeLibAddr--; // Allocate a new fake address
-                                            AddSymbol(S, pName);
-                                            //}
-                                        }
-                                        else if (e_type == E_REL)
-                                        {
-                                            nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
-                                            if (nsec >= 0 && nsec < m_iNumSections)
-                                                S += GetSectionInfo(nsec)->uNativeAddr;
-                                        }
-                                    }
-                                    A = elfRead4(pRelWord);
-                                    P = destNatOrigin + r_offset;
-                                    elfWrite4(pRelWord, S + A - P);
-                                    break;
-                                case 7:
-                                case 8: // R_386_RELATIVE
-                                    break; // No need to do anything with these, if a shared object
-                                default:
-                                    throw new NotSupportedException( "Relocation type " + (int)relType + " not handled yet");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
 
 
@@ -1728,12 +1782,6 @@ namespace Decompiler.ImageLoaders.Elf
 #endif
         }
 
-        // A map for extra symbols, those not in the usual Elf symbol tables
-
-        private void AddSymbol(ADDRESS uNative, string pName)
-        {
-            m_SymTab[uNative] = pName;
-        }
 
         private void dumpSymbols()
         {
@@ -1893,18 +1941,6 @@ namespace Decompiler.ImageLoaders.Elf
             public int r_info;
         }
 
-
-        private int ELF32_R_SYM(int info) { return ((info) >> 8); }
-        private int ELF32_ST_BIND(int i) { return ((i) >> 4); }
-        private int ELF32_ST_TYPE(int i) { return ((i) & 0xf); }
-        private int ELF32_ST_INFO(int b, int t) { return (((b) << 4) + ((t) & 0xf)); }
-
-        const int STT_NOTYPE = 0;			// Symbol table type: none
-        const int STT_FUNC = 2;				// Symbol table type: function
-        const int STT_SECTION = 3;
-        const int STT_FILE = 4;
-        const int STB_GLOBAL = 1;
-        const int STB_WEAK = 2;
 
         public class Elf32_Dyn
         {

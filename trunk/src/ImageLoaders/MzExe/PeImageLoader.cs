@@ -48,8 +48,8 @@ namespace Decompiler.ImageLoaders.MzExe
 		private uint sizeExportTable;
 		private uint rvaImportTable;
 
-		private const short MACHINE_i386 = 0x14C;
-
+		private const short MACHINE_i386 = (short) 0x014C;
+        private const short MACHINE_x86_64 = unchecked((short)0x8664);
 		private const short ImageFileRelocationsStripped = 0x0001;
 		private const short ImageFileExecutable = 0x0002;
 
@@ -64,8 +64,8 @@ namespace Decompiler.ImageLoaders.MzExe
 				throw new BadImageFormatException("Not a valid PE header.");
 			}
             importThunks = new Dictionary<uint, PseudoProcedure>();
-			ReadCoffHeader(rdr);
-			ReadOptionalHeader(rdr);
+			short expectedMagic = ReadCoffHeader(rdr);
+			ReadOptionalHeader(rdr, expectedMagic);
 		}
 
         public override IProcessorArchitecture Architecture
@@ -122,9 +122,20 @@ namespace Decompiler.ImageLoaders.MzExe
 			switch (peMachineType)
 			{
 			case MACHINE_i386: return new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            case MACHINE_x86_64: return new IntelArchitecture(ProcessorMode.Protected64);
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
 		}
+
+        private short GetExpectedMagic(short peMachineType)
+        {
+            switch (peMachineType)
+            {
+            case MACHINE_i386: return 0x010B;
+            case MACHINE_x86_64: return 0x020B;
+			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
+			}
+        }
 
         public override ProgramImage Load(Address addrLoad)
 		{
@@ -179,10 +190,11 @@ namespace Decompiler.ImageLoaders.MzExe
 			get { return new Address(this.preferredBaseOfImage); }
 		}
 
-		public void ReadCoffHeader(ImageReader rdr)
+		public short ReadCoffHeader(ImageReader rdr)
 		{
 			short machine = rdr.ReadLeInt16();
-			arch = CreateArchitecture(machine);
+            short expectedMagic = GetExpectedMagic(machine);
+            arch = CreateArchitecture(machine);
 			platform = new Win32Platform(arch);
 
 			sections = rdr.ReadLeInt16();
@@ -193,15 +205,16 @@ namespace Decompiler.ImageLoaders.MzExe
 			optionalHeaderSize = rdr.ReadLeInt16();
 			short fileFlags = rdr.ReadLeInt16();
 			sectionOffset = (uint) (rdr.Offset + optionalHeaderSize);
+            return expectedMagic;
 		}
 
-		public void ReadOptionalHeader(ImageReader rdr)
+		public void ReadOptionalHeader(ImageReader rdr, short expectedMagic)
 		{
 			if (optionalHeaderSize <= 0)
 				throw new ApplicationException("Optional header size should be larger than 0 in a PE executable image file.");
 
 			short magic = rdr.ReadLeInt16();
-			if (magic != 0x010B)
+			if (magic != expectedMagic) // 0x010B || magic != 0x020B)
 				throw new ApplicationException("Not a valid PE Header.");
 			rdr.ReadByte();		// Linker major version
 			rdr.ReadByte();		// Linker minor version

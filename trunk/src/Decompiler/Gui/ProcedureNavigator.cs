@@ -25,6 +25,9 @@ using System.Text;
 
 namespace Decompiler.Gui
 {
+    /// <summary>
+    /// Used to navigate to a procedure.
+    /// </summary>
     public class ProcedureNavigator : ICodeLocation
     {
         private IServiceProvider sp;

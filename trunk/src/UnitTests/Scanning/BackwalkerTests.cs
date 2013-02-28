@@ -306,6 +306,9 @@ namespace Decompiler.UnitTests.Scanning
         {
             #region IBackWalkHost Members
 
+            public void AddDiagnostic(Address addr, Diagnostic diagnostic)
+            {
+            }
             public AddressRange GetSinglePredecessorAddressRange(Address block)
             {
                 throw new NotImplementedException();
